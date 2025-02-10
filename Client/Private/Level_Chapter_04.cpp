@@ -125,7 +125,16 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 		return E_FAIL;
 
 
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-20.f, 6.36f, -20.19f);
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-28.9f, 0.32f, -16.9f);
+	Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	Desc.eShapeType = SHAPE_TYPE::CAPSULE;
+	Desc.fRadius = 1.f;
+	Desc.fHalfHeight = 2.f;
+	Desc.vOffsetTrans = { 0.f,Desc.fRadius,0.f };
+	Desc.fRotAngle = 0.f;
+
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-20.f, 6.36f, 20.19f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
 		return E_FAIL;
 
@@ -852,16 +861,16 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	CBarfBug::MONSTER_DESC Monster_Desc;
 	Monster_Desc.iCurLevelID = m_eLevelID;
 
-	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -23.0f);
-	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-20.0f, 0.35f, -17.0f);
-	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -23.0f);
+	////Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-20.0f, 0.35f, -17.0f);
+	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &Monster_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &Monster_Desc)))
+	//	return E_FAIL;
 
-	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-18.0f, 0.35f, -17.0f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &Monster_Desc)))
-		return E_FAIL;
+	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-18.0f, 0.35f, -17.0f);
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &Monster_Desc)))
+	//	return E_FAIL;
 
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.0f, 0.35f, -19.0f);
 

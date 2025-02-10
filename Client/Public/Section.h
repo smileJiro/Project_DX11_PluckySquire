@@ -15,7 +15,10 @@ public:
 	{
 		_int	 iLayerGroupCount = 1;
 		_wstring strSectionName;
+		_uint iGroupID = RG_2D;
+		_uint iPriorityID = 0;
 	}SECTION_DESC;
+
 protected:
 	CSection(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CSection() = default;
@@ -80,7 +83,6 @@ protected:
 	_uint						m_iLayerGroupCount = {};
 	_wstring					m_strName;
 	CLayer**					m_Layers = nullptr;
-
 private:
 	
 	_bool Has_Exist_Layer(_uint _iLayerIndex) { return _iLayerIndex < m_iLayerGroupCount && nullptr != m_Layers[_iLayerIndex];  }

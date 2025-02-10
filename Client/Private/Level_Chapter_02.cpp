@@ -833,7 +833,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	NPCDesc.iMainIndex = 0;
 	NPCDesc.iSubIndex = 0;
 	wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_DJMoonbeard"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_OnlySocial"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
 
 	return S_OK;

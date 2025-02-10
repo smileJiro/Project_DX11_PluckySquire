@@ -44,7 +44,8 @@
 /* For. NPC*/
 #include "Npc_Body.h"
 #include "NPC_Store.h"
-#include "NPC_DJMoonBeard.h"
+#include "NPC_Social.h"
+#include "Npc_OnlySocial.h"
 
 
 
@@ -777,8 +778,11 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_StoreNPC"), 
         CNPC_Store::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_NPC_DJMoonbeard"),
-		CNPC_DJMoonBeard::Create(m_pDevice, m_pContext))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_NPC_OnlySocial"),
+		CNPC_OnlySocial::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_NPC_Social"),
+		CNPC_Social::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
     /* Boss */
@@ -1069,9 +1073,12 @@ HRESULT CLoader::Loading_Level_Chapter_4()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_StoreNPC"),
         CNPC_Store::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_NPC_DJMoonbeard"),
-        CNPC_DJMoonBeard::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_NPC_OnlySocial"),
+	//	CNPC_OnlySocial::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_NPC_Social"),
+    //    CNPC_Social::Create(m_pDevice, m_pContext))))
+    //    return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
     /* Boss */
 

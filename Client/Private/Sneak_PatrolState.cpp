@@ -13,7 +13,6 @@ HRESULT CSneak_PatrolState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
 	m_fAlertRange = pDesc->fAlertRange;
-	m_fAlert2DRange = pDesc->fAlert2DRange;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -150,7 +149,7 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 	{
 		//m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 		//웨이포인트 도달 했는지 체크 후 도달 했으면 idle로 전환
-		if (m_pOwner->Move_To(XMLoadFloat3(&m_Waypoints[m_iCurWayIndex])))
+		if (m_pOwner->Move_To(XMLoadFloat3(&m_Waypoints[m_iCurWayIndex]), 0.1f))
 		{
 			m_isTurn = false;
 			m_isMove = false;

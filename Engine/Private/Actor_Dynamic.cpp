@@ -40,11 +40,12 @@ void CActor_Dynamic::Update(_float _fTimeDelta)
 
 		_matrix OwnerWorldMatrix = m_pOwner->Get_FinalWorldMatrix();
 		_float4x4 FinalMatrix = {};
-		XMStoreFloat4x4(&FinalMatrix, XMLoadFloat4x4(&m_OffsetMatrix) * OwnerWorldMatrix);
+		_matrix matTranslation = XMMatrixTranslation(OwnerWorldMatrix.r[3].m128_f32[0], OwnerWorldMatrix.r[3].m128_f32[1], OwnerWorldMatrix.r[3].m128_f32[2]);
+		XMStoreFloat4x4(&FinalMatrix, XMLoadFloat4x4(&m_OffsetMatrix) * matTranslation);
 		PxMat44 PxFinalMatrix((_float*)(&FinalMatrix));
 		PxTransform pxTransform{ PxFinalMatrix };
 		if (pxTransform.isValid())
-			static_cast<PxRigidDynamic*>(m_pActor)->setKinematicTarget(pxTransform);
+			static_cast<PxRigidDynamic*>(m_pActor)->setKinematicTarget(pxTransform.getNormalized());
 		else
 			return;
 	}
@@ -112,8 +113,9 @@ void CActor_Dynamic::Set_Dynamic()
 	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
 	PxTransform pxTransform;
 	pDynamic->getKinematicTarget(pxTransform);
+	
 	pDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false); // Kinematic 
-	pDynamic->setGlobalPose(pxTransform);
+	pDynamic->setGlobalPose(pxTransform.getNormalized());
 }
 
 void CActor_Dynamic::Set_SleepThreshold(_float _fThreshold)
@@ -205,6 +207,7 @@ void CActor_Dynamic::Set_Rotation(_fvector _vLook)
 	PxTransform newTransform(currentPosition, newRotation);
 	pDynamicActor->setGlobalPose(newTransform, m_isActive); 
 }
+
 
 void CActor_Dynamic::Set_LinearDamping(_float _fValue)
 {
