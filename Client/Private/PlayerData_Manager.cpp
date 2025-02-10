@@ -25,7 +25,7 @@ HRESULT CPlayerData_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceCont
 	return S_OK;
 }
 
-HRESULT CPlayerData_Manager::Spawn_Item(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos)
+HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos)
 {
 	// ItemTag
 	// first: Flipping_Glove						second: latch_glove
@@ -41,6 +41,7 @@ HRESULT CPlayerData_Manager::Spawn_Item(_uint _iPrototypeLevelID, _uint _iLevelI
 	for (auto& ItemTag : m_ItemTags) {
 		if (ItemTag.first == _szItemTag) {
 			Desc.szModelTag = ItemTag.second;
+			Desc.szItemTag = ItemTag.first;
 			Desc.szEventTag = TEXT("Get_") + ItemTag.first;
 			break;
 		}
@@ -63,7 +64,7 @@ HRESULT CPlayerData_Manager::Spawn_Bulb(_uint _iPrototypeLevelID, _uint _iLevelI
 	return S_OK;
 }
 
-void CPlayerData_Manager::Get_Item(_wstring _szItemTag)
+void CPlayerData_Manager::Get_PlayerItem(_wstring _szItemTag)
 {
 	auto& iterator = m_ItemState.find(_szItemTag);
 

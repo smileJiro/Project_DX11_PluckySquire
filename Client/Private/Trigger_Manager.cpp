@@ -9,6 +9,8 @@
 #include "Section_2D_PlayMap.h"
 
 #include "UI_Manager.h"
+#include "PlayerData_Manager.h"
+
 
 IMPLEMENT_SINGLETON(CTrigger_Manager)
 
@@ -356,6 +358,10 @@ void CTrigger_Manager::Resister_Trigger_Action()
 
 	m_Actions[TEXT("Dialogue")] = [this](_wstring _wszEventTag) {
 		Uimgr->Set_DialogId(TEXT("Event_Dialogue_01"));
+		};
+
+	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) {
+		CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
 		};
 }
 
