@@ -33,9 +33,7 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 	_bool bSneak = tKeyResult.bInputStates[PLAYER_KEY_SNEAK];
 	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 	{
-		_float fMoveSpeed = bSneak ? m_fSneakSpeed : m_fSpeed;
-		m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* fMoveSpeed, _fTimeDelta);
-
+		_float fMoveSpeed = m_pOwner->Get_MoveSpeed(eCoord);;
 		COORDINATE eCoord = m_pOwner->Get_CurCoord();
 		if (COORDINATE_2D == eCoord)
 		{
@@ -56,7 +54,9 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 				Switch_RunAnimation3D(bSneak);
 				m_bSneakBefore = bSneak;
 			}
+			fMoveSpeed  = bSneak ? fMoveSpeed*0.5 : fMoveSpeed;
 		}
+		m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* fMoveSpeed, _fTimeDelta);
 
 		if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
