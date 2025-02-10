@@ -247,7 +247,22 @@ const _wstring* CSection_Manager::Get_SectionKey(CGameObject* _pGameObject)
 
 _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(const _wstring& _strSectionTag, _float2 _v2DTransformPosition)
 {
-    return _vector();
+    CSection* pSection = Find_Section(_strSectionTag);
+
+    if(nullptr == pSection)
+        return _vector();
+
+
+    CSection_2D* p2DSection = dynamic_cast<CSection_2D*>(pSection);
+
+
+    if (nullptr == p2DSection)
+        return _vector();
+
+    //p2DSection->
+
+     ID3D11Texture2D* pTexture2D = {};
+
 }
 
 /// <summary>

@@ -106,6 +106,12 @@ public:
 	_bool								Has_NextPage(_wstring& _strNextPageTag) { _strNextPageTag = m_strNextPageTag; return L"" != m_strNextPageTag; };
 	_bool								Has_NextPage() { return L"" != m_strNextPageTag; };
 
+	SECTION_2D_RENDER_TYPE				Get_Section_2D_RenderType() { return m_eMySectionRenderType; }
+	SECTION_2D_PLAY_TYPE				Get_Section_2D_PlayType() { return m_eMySectionPlayType;}
+
+	ID
+
+
 protected:
 	SECTION_2D_RENDER_TYPE	m_eMySectionRenderType;
 	SECTION_2D_PLAY_TYPE	m_eMySectionPlayType;
