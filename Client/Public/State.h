@@ -77,7 +77,7 @@ protected:
 	_float	m_fDelayTime = {};
 	_float	m_fCoolTime = {};
 	_float3 m_vSneakPos = {};
-	_float m_fRayDis = { 2.f };
+	_float m_fRayDis = { 5.f };
 
 public:
 	virtual void Free() override;

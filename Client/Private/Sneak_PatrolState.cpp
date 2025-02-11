@@ -127,7 +127,7 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 	//회전
 	if (true == m_isTurn && false == m_isMove)
 	{
-		if (m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+		if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 		{
 			m_isMove = true;
 
@@ -136,7 +136,7 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 		else
 		{
 			_bool isCW = true;
-			_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir));
+			_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vDir)));
 			if (fResult < 0)
 				isCW = false;
 
@@ -149,6 +149,10 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 	{
 		//m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 		//웨이포인트 도달 했는지 체크 후 도달 했으면 idle로 전환
+		
+		//Determine_AvoidDirection(XMLoadFloat3(&m_Waypoints[m_iCurWayIndex]), &m_vDir);
+		//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+
 		if (m_pOwner->Move_To(XMLoadFloat3(&m_Waypoints[m_iCurWayIndex]), 0.1f))
 		{
 			m_isTurn = false;
@@ -157,6 +161,8 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 		}
 	}
+
+	//웨이포인트로 이동하다가 장애물 피해야하므로 
 }
 
 void CSneak_PatrolState::Determine_Direction()
