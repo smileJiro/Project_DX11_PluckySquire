@@ -1,20 +1,20 @@
 #include "stdafx.h"
-#include "3DMapSpskObject.h"
+#include "3DMapSkspObject.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
 
 
-C3DMapSpskObject::C3DMapSpskObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+C3DMapSkspObject::C3DMapSkspObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :C3DMapObject(_pDevice, _pContext)
 {
 }
 
-C3DMapSpskObject::C3DMapSpskObject(const C3DMapSpskObject& _Prototype)
+C3DMapSkspObject::C3DMapSkspObject(const C3DMapSkspObject& _Prototype)
     :C3DMapObject(_Prototype)
 {
 }
 
-HRESULT C3DMapSpskObject::Initialize(void* _pArg)
+HRESULT C3DMapSkspObject::Initialize(void* _pArg)
 {
 
     if (nullptr == _pArg)
@@ -23,10 +23,10 @@ HRESULT C3DMapSpskObject::Initialize(void* _pArg)
     MAPOBJ_3D_DESC* pDesc = static_cast<MAPOBJ_3D_DESC*>(_pArg);
 
 
-    if (!pDesc->isSpsk)
+    if (!pDesc->isSksp)
         return E_FAIL;
 
-    m_strRenderSectionTag = StringToWstring(pDesc->strSpskTag);
+    m_strRenderSectionTag = StringToWstring(pDesc->strSkspTag);
 
     CSection* pSection = SECTION_MGR->Find_Section(m_strRenderSectionTag);
 
@@ -45,7 +45,7 @@ HRESULT C3DMapSpskObject::Initialize(void* _pArg)
     return __super::Initialize(_pArg);
 }
 
-void C3DMapSpskObject::Late_Update(_float _fTimeDelta)
+void C3DMapSkspObject::Late_Update(_float _fTimeDelta)
 {
     CGameObject::Late_Update_Component(_fTimeDelta);
 
@@ -61,7 +61,7 @@ void C3DMapSpskObject::Late_Update(_float _fTimeDelta)
     }
 }
 
-HRESULT C3DMapSpskObject::Render()
+HRESULT C3DMapSkspObject::Render()
 {
     if (FAILED(Bind_ShaderResources_WVP()))
         return E_FAIL;
@@ -119,12 +119,12 @@ HRESULT C3DMapSpskObject::Render()
     return S_OK;
 }
 
-HRESULT C3DMapSpskObject::Render_Shadow()
+HRESULT C3DMapSkspObject::Render_Shadow()
 {
     return __super::Render_Shadow();
 }
 
-HRESULT C3DMapSpskObject::Render_WorldPosMap()
+HRESULT C3DMapSkspObject::Render_WorldPosMap()
 {
 
     CSection* pSection = SECTION_MGR->Find_Section(m_strRenderSectionTag);
@@ -155,33 +155,33 @@ HRESULT C3DMapSpskObject::Render_WorldPosMap()
     return S_OK;
 }
 
-C3DMapSpskObject* C3DMapSpskObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+C3DMapSkspObject* C3DMapSkspObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    C3DMapSpskObject* pInstance = new C3DMapSpskObject(_pDevice, _pContext);
+    C3DMapSkspObject* pInstance = new C3DMapSkspObject(_pDevice, _pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : C3DMapSpskObject");
+        MSG_BOX("Failed to Created : C3DMapSkspObject");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* C3DMapSpskObject::Clone(void* _pArg)
+CGameObject* C3DMapSkspObject::Clone(void* _pArg)
 {
-    C3DMapSpskObject* pInstance = new C3DMapSpskObject(*this);
+    C3DMapSkspObject* pInstance = new C3DMapSkspObject(*this);
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : C3DMapSpskObject");
+        MSG_BOX("Failed to Cloned : C3DMapSkspObject");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void C3DMapSpskObject::Free()
+void C3DMapSkspObject::Free()
 {
     __super::Free();
 }

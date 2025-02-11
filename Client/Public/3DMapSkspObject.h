@@ -4,12 +4,12 @@
 
 BEGIN(Client)
 
-class C3DMapSpskObject final : public C3DMapObject
+class C3DMapSkspObject final : public C3DMapObject
 {
 private:
-	C3DMapSpskObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	C3DMapSpskObject(const C3DMapSpskObject& _Prototype);
-	virtual ~C3DMapSpskObject() = default;
+	C3DMapSkspObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	C3DMapSkspObject(const C3DMapSkspObject& _Prototype);
+	virtual ~C3DMapSkspObject() = default;
 
 public :
 	virtual HRESULT					Initialize(void* _pArg) override;
@@ -25,7 +25,7 @@ public :
 	_wstring m_strRenderSectionTag = L"";
 
 public:
-	static C3DMapSpskObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static C3DMapSkspObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void			Free() override;
 };

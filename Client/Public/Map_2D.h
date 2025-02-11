@@ -7,7 +7,7 @@ class CGameInstance;
 END
 BEGIN(Client)
 
-class C3DMapSpskObject;
+class C3DMapSkspObject;
 
 
 class CMap_2D final : public CBase
@@ -37,7 +37,7 @@ public:
 	HRESULT						Create_Default_MapTexture();
 
 public:
-	HRESULT						Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel);
+	HRESULT						Register_Capcher_WorldTexture(C3DMapSkspObject* _pModel);
 	void						Set_WorldTexture(ID3D11Texture2D* _pTexture) { m_pWorldTexture = _pTexture; }
 	ID3D11Texture2D*			Get_WorldTexture() { return m_pWorldTexture; }
 

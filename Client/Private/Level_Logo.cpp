@@ -15,7 +15,6 @@ CLevel_Logo::CLevel_Logo(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 HRESULT CLevel_Logo::Initialize()
 {
 	Ready_Layer_UI(TEXT("Layer_UI"));
-	Ready_Layer_NPC(TEXT("Layer_NPC"));
 
  	return S_OK;
 }
@@ -53,27 +52,30 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_LOGO, TEXT("Prototype_UIObejct_Logo"), LEVEL_LOGO, _strLayerTag, &pDesc)))
 		return E_FAIL;
-
-		
-	pDesc.iCurLevelID = LEVEL_LOGO;
-	pDesc.fX = g_iWinSizeX / 2.f;
-	pDesc.fY = g_iWinSizeY / 2.f;
-	pDesc.fSizeX = 200.f;
-	pDesc.fSizeY = 200.f;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_LOGO, TEXT("Prototype_UIObejct_JOT"), LEVEL_LOGO, _strLayerTag, &pDesc)))
-		return E_FAIL;
-
-
-	return S_OK;
-}
-
-HRESULT CLevel_Logo::Ready_Layer_NPC(const _wstring& _strLayerTag)
-{
 	
+	
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 2.8f;
+	pDesc.fY = g_iWinSizeY / 6.f;
+	pDesc.fSizeX = 60.f;
+	pDesc.fSizeY = 60.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_LOGO, TEXT("Prototype_UIObejct_NPC_Logo"), LEVEL_LOGO, _strLayerTag, &pDesc)))
+		return E_FAIL;
+		
+	//pDesc.iCurLevelID = LEVEL_LOGO;
+	//pDesc.fX = g_iWinSizeX / 2.f;
+	//pDesc.fY = g_iWinSizeY / 2.f;
+	//pDesc.fSizeX = 200.f;
+	//pDesc.fSizeY = 200.f;
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_LOGO, TEXT("Prototype_UIObejct_JOT"), LEVEL_LOGO, _strLayerTag, &pDesc)))
+	//	return E_FAIL;
+
 
 	return S_OK;
 }
+
+
 
 
 

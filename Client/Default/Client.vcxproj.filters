@@ -839,7 +839,7 @@
     <ClInclude Include="..\Public\RenderGroup_Combine.h">
       <Filter>94.RenderGroups%28Custom%29\PBR\Combine</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\3DMapSpskObject.h">
+    <ClInclude Include="..\Public\3DMapSkspObject.h">
       <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Section_2D.h">
@@ -1284,7 +1284,7 @@
     <ClCompile Include="..\Private\RenderGroup_Combine.cpp">
       <Filter>94.RenderGroups%28Custom%29\PBR\Combine</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\3DMapSpskObject.cpp">
+    <ClCompile Include="..\Private\3DMapSkspObject.cpp">
       <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Section_2D.cpp">
