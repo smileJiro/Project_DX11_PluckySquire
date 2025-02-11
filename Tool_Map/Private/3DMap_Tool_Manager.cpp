@@ -451,6 +451,21 @@ void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 				pPickingObj->Set_Operation(CMapObject::ROTATE);
 			if (ImGui::IsKeyPressed(ImGuiKey_F3))
 				pPickingObj->Set_Operation(CMapObject::SCALE);
+
+
+			_bool isSksp = pPickingObj->Is_SpskMode();
+
+			if (ImGui::Checkbox("SKSP?", &isSksp))
+			{
+				pPickingObj->Set_SpskMode(isSksp);
+			}
+
+			if (isSksp)
+			{
+				_string strSKSPName = pPickingObj->Set_SpskTag();
+				if (InputText("##Model Search Tag", strSKSPName))
+					pPickingObj->Set_SpskTag(strSKSPName);
+			}
 		}
 
 	}
@@ -1301,9 +1316,11 @@ void C3DMap_Tool_Manager::Save(_bool _bSelected)
 					WriteFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 					//	세이브 파라미터 4. 월드 매트릭스
 					WriteFile(hFile, &pObject->Get_WorldMatrix(), sizeof(_float4x4), &dwByte, nullptr);
-					//	세이브 파라미터 5. 월드 매트릭스
+					// 세이브 파라미터 5. 스케치스페이스
+					pObject->Save_Spsk(hFile);
+					//	세이브 파라미터 6. 컬러
 					pObject->Save_Override_Color(hFile);
-					// 세이브 파라미터 6. 마테리얼 오버라이드
+					// 세이브 파라미터 7. 마테리얼 오버라이드
 					pObject->Save_Override_Material(hFile);
 					iCount++;
 					log = "Save... Save Object Count :  ";
@@ -1481,6 +1498,7 @@ void C3DMap_Tool_Manager::Load(_bool _bSelected)
 
 			if (pGameObject)
 			{
+				static_cast<CMapObject*>(pGameObject)->Load_Spsk(hFile);
 				static_cast<CMapObject*>(pGameObject)->Load_Override_Color(hFile);
 				static_cast<CMapObject*>(pGameObject)->Load_Override_Material(hFile);
 
@@ -1804,7 +1822,7 @@ void C3DMap_Tool_Manager::Load_ModelList()
 	m_ObjectFileLists.clear();
 	_wstring strPath
 		= STATIC_3D_MODEL_FILE_PATH;
-
+	strPath += L"NonAnim/";
 	for (const auto& entry : ::recursive_directory_iterator(strPath))
 	{
 		if (is_directory(entry))
@@ -1820,6 +1838,26 @@ void C3DMap_Tool_Manager::Load_ModelList()
 			}
 		}
 	}
+
+	strPath
+		= STATIC_3D_MODEL_FILE_PATH;
+	strPath += L"3DMapObject/";
+	for (const auto& entry : ::recursive_directory_iterator(strPath))
+	{
+		if (is_directory(entry))
+		{
+			for (const auto& file : ::recursive_directory_iterator(entry))
+			{
+				if (file.path().extension() == ".model")
+				{
+					_wstring strName = file.path().stem().wstring();
+					_wstring strPath = file.path().wstring();
+					m_ObjectFileLists.push_back(make_pair(strName, strPath));
+				}
+			}
+		}
+	}
+
 }
 
 void C3DMap_Tool_Manager::Load_SaveFileList()

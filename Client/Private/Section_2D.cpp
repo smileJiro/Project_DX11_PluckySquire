@@ -7,8 +7,10 @@
 #include "Engine_Macro.h"
 #include "Trigger_Manager.h"
 
-CSection_2D::CSection_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:CSection(_pDevice, _pContext)
+CSection_2D::CSection_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_PLAY_TYPE _ePlayType, SECTION_2D_RENDER_TYPE _eRenderType)
+	:	m_eMySectionPlayType(_ePlayType),
+		m_eMySectionRenderType(_eRenderType),
+		CSection(_pDevice, _pContext)
 {
 }
 
@@ -53,7 +55,6 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 	else if (_SectionJson.contains("Section_Info"))
 	{
 		auto SectionInfo = _SectionJson["Section_Info"];
-		Desc.eSectionRenderType = SectionInfo["Section_Render_Type"];
 	}
 	else 
 	{
@@ -62,9 +63,10 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 	}
 
 
-	switch (Desc.eSectionRenderType)
+	switch (m_eMySectionPlayType)
 	{
-		case Client::CSection_2D::ON_SECTION_BOOK:
+		case Client::CSection_2D::NARRAION:
+		case Client::CSection_2D::PLAYMAP:
 		{
 			if (_SectionJson.contains("Section_Info"))
 			{
@@ -82,11 +84,25 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 			}
 		}
 		break;
-		case Client::CSection_2D::ON_SECTION_3D_IN_2D:
+		case Client::CSection_2D::SPSK:
 		{
-			// TODO :: Sketchspace 0210¹Ú¿¹½½ 
+			auto SectionInfo = _SectionJson["Section_Info"];
+
+			if (SectionInfo.contains("RenderResolution"))
+			{
+				Desc.fRenderResolution.x = SectionInfo["RenderResolution"]["X"];
+				Desc.fRenderResolution.y = SectionInfo["RenderResolution"]["Y"];
+			}
+			if (SectionInfo.contains("LevelSizePixels"))
+			{
+				Desc.fLevelSizePixels.x = SectionInfo["LevelSizePixels"]["X"];
+				Desc.fLevelSizePixels.y = SectionInfo["LevelSizePixels"]["Y"];
+			}
+
+			Desc.fRenderResolution.x *= RATIO_BOOK2D_X;
+			Desc.fRenderResolution.y *= RATIO_BOOK2D_Y;
 		}
-			break;
+		break;
 		default:
 			break;
 	}
@@ -138,9 +154,25 @@ _float2 CSection_2D::Get_RenderTarget_Size()
 	return m_pMap->Get_RenderTarget_Size();
 }
 
+const _wstring CSection_2D::Get_WorldRenderTarget_Tag()
+{
+	if (nullptr == m_pMap)
+		return L"";
+
+	return m_pMap->Get_WorldRenderTarget_Tag();
+}
+
+HRESULT CSection_2D::Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel)
+{
+	if (nullptr == m_pMap)
+		return E_FAIL;
+
+	return m_pMap->Register_Capcher_WorldTexture(_pModel);
+}
+
 HRESULT CSection_2D::Ready_Map_2D(_wstring _strMapFIleName)
 {
-	m_pMap = CMap_2D::Create(m_pDevice, m_pContext, _strMapFIleName, m_fLevelSizePixels, m_iPriorityID);
+	m_pMap = CMap_2D::Create(m_pDevice, m_pContext, _strMapFIleName, m_fRenderResolution, m_iPriorityID);
 	if (nullptr == m_pMap)
 		return E_FAIL;
 

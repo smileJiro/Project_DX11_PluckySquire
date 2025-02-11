@@ -28,6 +28,11 @@
         "Is_Sequence": true
       },
       {
+        "ActionTag": "Get_PlayerItem",
+        "EventTag": "Flipping_Glove",
+        "Is_Sequence": true
+      },
+      {
         "ActionTag": "Dialogue",
         "EventTag": "Event_Dialogue_01",
         "Is_Sequence": true

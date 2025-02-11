@@ -83,6 +83,14 @@ HRESULT CPrintFloorWord::Render()
 
 	m_pGameInstance->Render_Font(TEXT("Font28"), m_tFloorWord, vCalPos, XMVectorSet(0.f, 0.f, 0.f, m_fAmount));
 
+
+
+
+	/* 테스트 용도 */
+
+	m_pGameInstance->Render_Font(TEXT("Font28"), TEXT("앞에는         이\n      있었어요"), _float2(300.f, 300.f), XMVectorSet(0.f, 0.f, 0.f, m_fAmount));
+	m_pGameInstance->Render_Font(TEXT("Font35"), TEXT("      고블린"), _float2(300.f, 290.f), XMVectorSet(0.f, 0.f, 0.f, m_fAmount));
+
 	return S_OK;
 }
 

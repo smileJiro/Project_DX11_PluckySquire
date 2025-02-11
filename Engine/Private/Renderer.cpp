@@ -409,7 +409,7 @@ HRESULT CRenderer::Render_Final()
         return E_FAIL;
 
     /* Final Pass */
-    m_pShader->Begin((_uint)PASS_DEFERRED::FINAL);
+    m_pShader->Begin((_uint)PASS_DEFERRED::LIGHTING);
 
     m_pVIBuffer->Bind_BufferDesc();
 
@@ -483,7 +483,7 @@ HRESULT CRenderer::Render_After_Effect()
         return E_FAIL;
 
     /* Final Pass */
-    m_pShader->Begin((_uint)PASS_DEFERRED::AFTER_PARTICLE);
+    m_pShader->Begin((_uint)PASS_DEFERRED::AFTER_EFFECT);
 
     m_pVIBuffer->Bind_BufferDesc();
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "Base.h"
-#include "Section.h"
+#include "Section_2D.h"
 
 BEGIN(Engine)
 class CGameInstance;
@@ -12,13 +12,7 @@ BEGIN(Client)
 class CSection_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CSection_Manager)
-public :
-	enum SECTION_2D_PLAY_TYPE
-	{
-		PLAYMAP,
-		NARRAION,
-		SECTION_2D_PLAY_TYPE_LAST
-	};
+
 
 private:
 	CSection_Manager();
@@ -70,6 +64,7 @@ public:
 	/// </summary>
 	/// <param name="_strSectionTag">섹션 키</param>
 	/// <param name="_isActive">활성화 여부</param>
+	HRESULT							SetActive_Section(CSection* _pSection, _bool _isActive);
 	HRESULT							SetActive_Section(const _wstring& _strSectionTag, _bool _isActive);
 
 	/// <summary>
@@ -112,42 +107,54 @@ public :
 		return m_pCurSection->Get_RenderGroupKey(_iOutputGroupID, _iOutputPriorityID);
 	}
 
-	// 현재 활성화된 섹션에 다음 / 이전 섹션이 잇는가? 검사 (책용)
-	_bool							Has_Next_Section() { 
-		if (m_iMaxCurActiveSectionCount <= m_iCurActiveSectionIndex + 1) 
-			return false;
-		return nullptr != m_CurActiveSections[(m_iCurActiveSectionIndex) + 1]; };
-	_bool							Has_Prev_Section() { 
-		if (0 >= m_iCurActiveSectionIndex - 1)
-			return false;
-		return nullptr != m_CurActiveSections[(m_iCurActiveSectionIndex) - 1]; };
+	//  다음 / 이전 섹션이 잇는가? 검사 (책용)
+	_bool							Has_Next_Section() 
+	{
+		return nullptr != m_pCurSection && m_pCurSection->Has_NextPage();
+	}
 
+	_bool							Has_Prev_Section() 
+	{
+		return nullptr != m_pCurSection && m_pCurSection->Has_PrePage();
+	}
 
 	// 현재 활성화된 섹션 기준으로 다음/이전 키 가져오기.(책용)
-	const _wstring* Get_Next_Section_Key() {
-		if (!Has_Next_Section())
-			return nullptr;
-		return &m_CurActiveSections[m_iCurActiveSectionIndex + 1]->Get_SectionName();
+	const _wstring Get_Next_Section_Key() 
+	{
+		_wstring strTargetSectionTag = L"";
+		if (nullptr == m_pCurSection)
+			return strTargetSectionTag;
+		m_pCurSection->Has_NextPage(strTargetSectionTag);
+		return strTargetSectionTag;
 	}
-	const _wstring* Get_Prev_Section_Key() { 
-		if (!Has_Prev_Section())
-			return nullptr;
-		return &m_CurActiveSections[m_iCurActiveSectionIndex - 1]->Get_SectionName(); }
+	const _wstring Get_Prev_Section_Key() 
+	{ 
+		_wstring strTargetSectionTag = L"";
+		if (nullptr == m_pCurSection)
+			return strTargetSectionTag;
+		m_pCurSection->Has_PrePage(strTargetSectionTag);
+		return strTargetSectionTag;
+	}
 
 
 	// 현재 활성화된 섹션 기준으로 다음/이전 섹션으로 이동 (책용)
 	HRESULT							Change_Next_Section()
 	{
-		if (!Has_Next_Section())
+		_wstring strTargetSectionTag = L"";
+		if (nullptr == m_pCurSection)
 			return E_FAIL;
-		return Change_CurSection(m_CurActiveSections[m_iCurActiveSectionIndex + 1]->Get_SectionName());
+		if (!m_pCurSection->Has_NextPage(strTargetSectionTag))
+			return E_FAIL;
+		return Change_CurSection(strTargetSectionTag);
 	};
 	HRESULT							Change_Prev_Section()
 	{
-		if (!Has_Prev_Section())
+		_wstring strTargetSectionTag = L"";
+		if (nullptr == m_pCurSection)
 			return E_FAIL;
-		return Change_CurSection(m_CurActiveSections[m_iCurActiveSectionIndex - 1]->Get_SectionName());
-		
+		if (!m_pCurSection->Has_PrePage(strTargetSectionTag))
+			return E_FAIL;
+		return Change_CurSection(strTargetSectionTag);
 	};
 
 	
@@ -156,46 +163,73 @@ public :
 #pragma endregion
 
 public:
+	// 간접사용 *(추후 통합)
+	_vector Get_WorldPosition_FromWorldPosMap(const _wstring& _strSectionTag,  _float2 _v2DTransformPosition);
 	_vector Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransformPosition);
+	
+	// 실사용
+	_vector Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_pTargetTexture, _float2 _v2DTransformPosition);
 public:
 	// Get
 	_int							Get_SectionLeveID() { return m_iCurLevelID; }
+	/// <summary>
+	/// 해당 섹션을 Section_2D로 간주하고, 2DMap의 RTV을 가져온다.
+	/// </summary>
+	/// <param name="_strSectionTag">섹션 키</param>
 	ID3D11RenderTargetView*			Get_RTV_FromRenderTarget(const _wstring& _strSectionTag);
+
+	/// <summary>
+	/// 해당 섹션을 Section_2D로 간주하고, 2DMap의 SRV을 가져온다.
+	/// </summary>
+	/// <param name="_strSectionTag">섹션 키</param>
 	ID3D11ShaderResourceView*		Get_SRV_FromRenderTarget(const _wstring& _strSectionTag);
-	ID3D11ShaderResourceView*		Get_SRV_FromRenderTarget(_uint _iCurActiveIndex);
+
+	/// <summary>
+	/// 현재 책에 활성화된 메인 섹션을 Section_2D로 간주하고, 2DMap의 SRV을 가져온다.
+	/// </summary>
 	ID3D11ShaderResourceView*		Get_SRV_FromRenderTarget();
 	ID3D11ShaderResourceView*		Get_SRV_FromTexture(const _wstring& _strSectionTag, _uint _iTextureIndex = 0);
-	_uint							Get_MaxCurActiveSectionCount() { return m_iMaxCurActiveSectionCount; }
 
 	// Set
-	void							Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPosMap) { 
+	void							Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPosMap) 
+	{ 
 		if (nullptr != m_pBookWorldPosMap)
 			Safe_Release(m_pBookWorldPosMap);
 
-		m_pBookWorldPosMap = _pBookWorldPosMap; }
+		m_pBookWorldPosMap = _pBookWorldPosMap; 
+	}
+
+	_uint							Generate_WorldPos_Priority_ID() { return m_iWorldPriorityGenKey++; }
+
 
 private:
-	void							Section_Active(const _wstring& _strSectionTag, _uint iCurSectionIndex);
+	/// <summary>
+	/// 해당 섹션을 활성화 섹션 리스트에 추가하고, 앞뒤 페이지가 있을 경우 카피를 한번 돌려줌.
+	/// </summary>
+	/// <param name="_strSectionTag">기준 활성화 섹션 키</param>
+	void							Main_Section_Active_Process(const _wstring& _strSectionTag);
+
 private:
 	ID3D11Device*					m_pDevice = nullptr;
 	ID3D11DeviceContext*			m_pContext = nullptr;
 	CGameInstance*					m_pGameInstance = nullptr;
 private:
-
-
-	_uint							m_iPriorityGenKey = PR2D_SECTION_START;
-
-	_int							m_iCurLevelID = -1;
-	map<_wstring, CSection*>		m_CurLevelSections;
-	CSection*						m_pCurSection = nullptr;
 	
-	// index  m_iMaxCurActiveSectionCount / 2 -> Main Section(CurSection)
-	vector<CSection*>				m_CurActiveSections;
-	_uint							m_iMaxCurActiveSectionCount = 5;
-	_uint							m_iCurActiveSectionIndex;
+	// 발급할 Prority Key Start 지점.
+	_uint							m_iPriorityGenKey = PR2D_SECTION_START;
+	_uint							m_iWorldPriorityGenKey = PRWORLD_SKETCH_START;
+	// 전체 섹션 목록
+	map<_wstring, CSection*>		m_CurLevelSections;
 
-private: /* For. WorldPosMap */
+	// 현재 레벨 
+	LEVEL_ID						m_iCurLevelID = LEVEL_END;
+	
+	// 현재 책에서 재생중인 섹션
+	CSection_2D*					m_pCurSection = nullptr;
+
+private: 
 	ID3D11Texture2D*				m_pBookWorldPosMap = nullptr; // 더 좋은 위치가 있다면 추후 스케치 스페이스까지 추가하고 변경해주삼.(02.06 태웅)
+																  // 없는듯
 #pragma region 임시, 2D모델 Info
 
 

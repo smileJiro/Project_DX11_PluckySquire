@@ -19,6 +19,7 @@ public:
 
 public:
 	HRESULT					Ready_Lights();
+	HRESULT					Ready_CubeMap(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Camera(const _wstring& _strLayerTag);
 private :
 	class C2DMap_Tool_Manager* m_pToolManager = { nullptr };

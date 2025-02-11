@@ -547,8 +547,11 @@ HRESULT CEvent_Manager::Execute_Book_Main_Section_Change_Start(const EVENT& _tEv
 
 HRESULT CEvent_Manager::Execute_Book_Main_Section_Change_End(const EVENT& _tEvent)
 {
-	_wstring strLayerTag = reinterpret_cast<const _tchar*>(_tEvent.Parameters[0]);
-	return SECTION_MGR->Change_CurSection(strLayerTag);
+	_wstring* strSectionTag = (_wstring*)_tEvent.Parameters[0];
+	HRESULT hr = SECTION_MGR->Change_CurSection(*strSectionTag);
+	
+	Safe_Delete(strSectionTag);
+	return hr;
 }
 
 HRESULT CEvent_Manager::Execute_Book_Main_Change(const EVENT& _tEvent)
@@ -570,7 +573,7 @@ HRESULT CEvent_Manager::Execute_Hit(const EVENT& _tEvent)
 {
 	CGameObject* pHitter = (CGameObject*)_tEvent.Parameters[0];
 	CGameObject* pVIctim = (CGameObject*)_tEvent.Parameters[1];
-	_float fDamg = (_uint)_tEvent.Parameters[2];
+	_float fDamg = (_float)_tEvent.Parameters[2];
 
 	if (nullptr == pHitter || nullptr == pVIctim)
 		return E_FAIL;
@@ -593,7 +596,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 
 	CSection_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
-	
+	CCamera_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 
 	Uimgr->Level_Logo_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	Uimgr->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);

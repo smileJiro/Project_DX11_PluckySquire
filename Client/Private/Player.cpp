@@ -228,7 +228,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
     BodyDesc.iRenderGroupID_3D = RG_3D;
-    BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
+    BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
 
     m_PartObjects[PART_BODY] = m_pBody = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
@@ -249,7 +249,7 @@ HRESULT CPlayer::Ready_PartObjects()
     SwordDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     SwordDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
     SwordDesc.iRenderGroupID_3D = RG_3D;
-    SwordDesc.iPriorityID_3D = PR3D_NONBLEND;
+    SwordDesc.iPriorityID_3D = PR3D_GEOMETRY;
     SwordDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     SwordDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
     m_PartObjects[PLAYER_PART_SWORD] = m_pSword = static_cast<CPlayerSword*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"), &SwordDesc));
@@ -1019,7 +1019,18 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     }
     if (KEY_DOWN(KEY::F3))
     {
-        m_pActorCom->Set_AllShapeEnable(false);
+
+        _int iCurCoord = (_int)Get_CurCoord();
+        (_int)iCurCoord ^= 1;
+        _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
+        if (iCurCoord == COORDINATE_2D)
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this);
+        else
+            CSection_Manager::GetInstance()->Remove_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this);
+
+        Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
+
+        //m_pActorCom->Set_AllShapeEnable(false);
 
     }
     if (KEY_DOWN(KEY::B))

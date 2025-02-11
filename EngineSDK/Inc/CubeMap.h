@@ -39,6 +39,9 @@ public:
 	void				Late_Update(_float _fTimeDelta) override;
 	HRESULT				Render() override;
 
+public:
+	HRESULT				Bind_IBLTexture(CShader* _pShaderCom, const _char* _pBRDFConstName, const _char* _pSpecularConstName, const _char* _pIrradianceConstName);
+
 protected:
 	CShader*			m_pShaderCom = nullptr;
 	CTexture*			m_pCubeTexturesCom = {};		// multi texture

@@ -32,6 +32,14 @@ class CLevel_Trigger_Tool final : public CLevel
 		RETURN_MASK_END
 	};
 
+#ifdef _DEBUG
+	typedef struct tagBulbLineBuffer
+	{
+		_float3				vPos;
+		_float4				vColor;
+	} BULB_LINE_BUFFER;
+#endif
+
 	typedef struct tagTriggerObjectData
 	{
 		_uint				iShapeType = {};
@@ -63,7 +71,7 @@ public:
 
 private:
 	list<pair<TRIGGEROBJECT_DATA, class CTriggerObject*>>		m_Triggers;
-	pair<TRIGGEROBJECT_DATA, class CTriggerObject*>*			m_pCurTrigger = { nullptr };
+	pair<TRIGGEROBJECT_DATA, class CTriggerObject*>* m_pCurTrigger = { nullptr };
 
 	_float3				m_vPosition = {};
 	_float3				m_vRotation = {};
@@ -100,11 +108,29 @@ private:
 	_char				m_szSaveName[MAX_PATH] = { "" };
 	_bool				m_isShowPopUp = { false };
 
+	/////////////////
+	// Bulb
+	_bool				m_isCreateByLine = { false };
+	_bool				m_isCreateByPoint = { false };
+	_bool				m_isEditBulb = { false };
+
+	_float				m_fBulbPosOffset = {};
+
+	vector<class CBulbLine*>	m_BulbLines;
+	CBulbLine*					m_pMakingBulbLine = { nullptr };	
+	CBulbLine*					m_pCurBulbLine = { nullptr };
+
+	// Line
+
+
 private:
 	void				Show_TriggerTool();
 	void				Show_Info();
 	void				Show_CurTriggerInfo();
 	void				Show_SaveLoadFileWindow();
+
+	void				Show_BulbTool();
+	void				Show_BulbInfo();
 
 	// ========== ListBox
 	void				Show_TriggerTypeListBox();
@@ -129,6 +155,16 @@ private:
 
 	void				Save_TriggerData();
 	void				Load_TriggerData();
+
+
+	// Bulb
+	void				Create_Bulb_ByLine();
+	void				Create_Bulb_ByPoint();
+	void				Edit_Bulb();
+
+	CGameObject*		Create_BulbPoint();
+
+	void				Set_BulbBasicInfo();
 
 private:
 	_float3				Quaternion_ToEuler(const _float4 _q);

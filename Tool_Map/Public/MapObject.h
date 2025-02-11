@@ -96,11 +96,22 @@ public:
 
 	HRESULT					Save_Override_Material(HANDLE _hFile);
 	HRESULT					Save_Override_Color(HANDLE _hFile);
+	HRESULT					Save_Spsk(HANDLE _hFile);
 	HRESULT					Load_Override_Material(HANDLE _hFile);
 	HRESULT					Load_Override_Color(HANDLE _hFile);
+	HRESULT					Load_Spsk(HANDLE _hFile);
 
 	_uint					Get_MaterialCount();
+
+
 #endif // _DEBUG
+
+
+	void Set_SpskTag(const _string& _strSpskTag) { m_strSpskTag = _strSpskTag; }
+	void Set_SpskMode(_bool _isSpsk) { m_isSpsk = _isSpsk; }
+	
+	const _string& Set_SpskTag() { return m_strSpskTag; }
+	_bool Is_SpskMode() { return m_isSpsk; }
 
 private :
 	OPERATION				m_CurrentGizmoOperation = TRANSLATE;
@@ -110,7 +121,8 @@ private :
 	_float4x4				m_matWorld;
 
 	_uint					m_iDiffuseIndex = 0;
-
+	_bool					m_isSpsk = false;
+	_string					m_strSpskTag = "";
 
 	C3DModel::COLOR_SHADER_MODE		m_eColorShaderMode = C3DModel::COLOR_NONE;
 

@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Camera_Free.h"
 #include "Model_Tool_Manager.h"
+#include "CubeMap.h"
 
 CLevel_Model_Tool::CLevel_Model_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
@@ -15,6 +16,7 @@ HRESULT CLevel_Model_Tool::Initialize(CImguiLogger* _pLogger)
 	m_pLogger = _pLogger;
 	Safe_AddRef(m_pLogger);
 	Ready_Lights();
+	Ready_CubeMap(TEXT("Layer_CubeMap"));
 	Ready_Layer_Camera(L"Layer_Camera");
 	m_pToolManager = CModel_Tool_Manager::Create(m_pDevice, m_pContext, m_pLogger);
 	if (nullptr == m_pToolManager)
@@ -42,39 +44,62 @@ HRESULT CLevel_Model_Tool::Render()
 
 HRESULT CLevel_Model_Tool::Ready_Lights()
 {
-	LIGHT_DESC LightDesc{};
+	CONST_LIGHT LightDesc{};
 
 	ZeroMemory(&LightDesc, sizeof LightDesc);
 
-	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTOINAL;
-	LightDesc.vDirection = _float4(-1.f, -1.f, 0.5f, 0.f);
-	LightDesc.vDiffuse = _float4(1.0f, 1.0f, 1.0f, 1.f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
+	LightDesc.fFallOutStart = 20.0f;
+	LightDesc.fFallOutEnd = 1000.0f;
+	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
 
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
 		return E_FAIL;
 
 
+
+	return S_OK;
+}
+
+HRESULT CLevel_Model_Tool::Ready_CubeMap(const _wstring& _strLayerTag)
+{
+	CGameObject* pCubeMap = nullptr;
+	CCubeMap::CUBEMAP_DESC Desc;
+	Desc.iCurLevelID = LEVEL_TOOL_3D_MODEL;
+	Desc.iRenderGroupID = RG_3D;
+	Desc.iPriorityID = PR3D_PRIORITY;
+	Desc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
+	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
+		LEVEL_TOOL_3D_MODEL, _strLayerTag, &pCubeMap, &Desc)))
+		return E_FAIL;
+
+	m_pGameInstance->Set_CubeMap(static_cast<CCubeMap*>(pCubeMap));
 	return S_OK;
 }
 
 
 HRESULT CLevel_Model_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag)
 {
-	CCamera_Free::CAMERA_FREE_DESC		Desc{};
-	Desc.fMouseSensor = 0.2f;
-	Desc.eZoomLevel = Engine::CCamera::ZOOM_LEVEL::LEVEL_6;
+	CCamera_Free::CAMERA_FREE_DESC Desc{};
+
+	Desc.fMouseSensor = 0.1f;
+
+	Desc.fFovy = XMConvertToRadians(60.f);
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	Desc.fNear = 0.2f;
-	Desc.fFar = 10000.f;
+	Desc.fNear = 0.1f;
+	Desc.fFar = 1000.f;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
-	Desc.fFovy = XMConvertToRadians(60.f);
+	Desc.eZoomLevel = CCamera::LEVEL_6;
 	Desc.eMode = CCamera_Free::INPUT_MODE_WASD;
+	//Desc.iCameraType = CCamera_Manager::FREE;
 	CGameObject* pGameObject = nullptr;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
-		LEVEL_TOOL_3D_MODEL, _strLayerTag, &pGameObject, &Desc)))
+		LEVEL_TOOL_2D_MAP, _strLayerTag, &pGameObject, &Desc)))
 		return E_FAIL;
 	else
 	{

@@ -18,6 +18,7 @@ private:
 
 	_bool Try_Clamber();
 private:
+    F_DIRECTION m_eOldFDir = F_DIRECTION::F_DIR_LAST;
     _bool m_bGrounded = false;
     _float m_fAirRunSpeed = 10.f;
     _float m_fAirRunSpeed2D = 300.f;

@@ -440,7 +440,7 @@ public: /* 2D Ãæµ¹ */
 	_float Get_MoveSpeed(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DMoveSpeed : m_f3DMoveSpeed; }
 	_float Get_AttackDamg() { return m_tStat.fDamg; }
 	_uint Get_SpinAttackLevel() { return m_iSpinAttackLevel; }
-	_uint Get_2DAttackForwardingSpeed() { return m_f2DAttackForwardSpeed; }
+	_float Get_2DAttackForwardingSpeed() { return m_f2DAttackForwardSpeed; }
 	_vector Get_CenterPosition();
 	_vector  Get_HeadPosition();
 	_vector Get_LookDirection();

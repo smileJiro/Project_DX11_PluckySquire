@@ -9,7 +9,7 @@
 #include "Trigger_Manager.h"
 
 CSection_2D_Narration::CSection_2D_Narration(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:CSection_2D(_pDevice, _pContext)
+	:CSection_2D(_pDevice, _pContext, NARRAION, SECTION_2D_BOOK)
 {
 }
 

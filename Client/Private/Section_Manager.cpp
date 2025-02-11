@@ -2,7 +2,8 @@
 #include "Section_Manager.h"
 #include "GameInstance.h"
 
-#include "Section_2D_PlayMap.h"
+#include "Section_2D_PlayMap_Book.h"
+#include "Section_2D_PlayMap_Sksp.h"
 #include "Section_2D_Narration.h"
 #include "Collision_Manager.h"
 
@@ -16,7 +17,6 @@ CSection_Manager::CSection_Manager()
 HRESULT CSection_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 
-    m_iCurActiveSectionIndex = m_iMaxCurActiveSectionCount / 2;
 
     if (nullptr == _pDevice)
         return E_FAIL;
@@ -29,8 +29,6 @@ HRESULT CSection_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
     m_pContext = _pContext;
     Safe_AddRef(m_pContext);
 
-    m_CurActiveSections.resize(m_iMaxCurActiveSectionCount);
-
     return S_OK;
 }
 /// <summary>
@@ -40,7 +38,7 @@ HRESULT CSection_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 /// <param name="_iNextChangeLevelID"></param>
 HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 {
-    m_iCurLevelID = _iChangeLevelID;
+    m_iCurLevelID = (LEVEL_ID)_iChangeLevelID;
 
     Clear_Sections();
 
@@ -143,27 +141,33 @@ HRESULT CSection_Manager::Remove_GameObject_ToCurSectionLayer(CGameObject* _pGam
 }
 
 
+HRESULT CSection_Manager::SetActive_Section(CSection* _pSection, _bool _isActive)
+{
+    if (_pSection->Is_Active() != _isActive)
+    {
+        _pSection->Set_Active(_isActive);
+        _pSection->SetActive_GameObjects(_isActive);
+    }
+    return S_OK;
+}
+
 HRESULT CSection_Manager::SetActive_Section(const _wstring& _strSectionTag, _bool _isActive)
 {
     CSection* pSection = Find_Section(_strSectionTag);
     if (nullptr == pSection)
         return E_FAIL;
-
-    /* Section Active를 False 처리하면, 내부적으로 Objects Set_Active()*/
-    pSection->Set_Active(_isActive);
-
-    return S_OK;
+    return SetActive_Section(pSection, _isActive);
 }
 
 
 HRESULT CSection_Manager::Section_AddRenderGroup_Process()
 {
-    for (auto& pSection : m_CurActiveSections)
+    for (auto& SectionPair : m_CurLevelSections)
     {
-		if (pSection == nullptr)
+		if (nullptr == SectionPair.second || !SectionPair.second->Is_Active())
 			continue;
         
-        if (FAILED(pSection->Section_AddRenderGroup_Process()))
+        if (FAILED(SectionPair.second->Section_AddRenderGroup_Process()))
             return E_FAIL;
     }
 
@@ -177,6 +181,7 @@ _float2 CSection_Manager::Get_Section_RenderTarget_Size(const _wstring _strSecti
     if (nullptr == pSection)
         return _float2(-1.f, -1.f);
     CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(pSection);
+
     if (nullptr == pSection_2D)
         return _float2(-1.f, -1.f);
     return pSection_2D->Get_RenderTarget_Size();
@@ -187,17 +192,31 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 {
     // Clear_Section
     //CCollision_Manager::GetInstance()->Register_Section();
-    auto iter = m_CurLevelSections.find(_strSectionKey);
-    if (iter != m_CurLevelSections.end())
-    {
-        m_CurActiveSections.clear();
-        m_CurActiveSections.resize(m_iMaxCurActiveSectionCount);
+    CSection* pTargetSection = Find_Section(_strSectionKey);
 
-        m_pCurSection = (*iter).second;
+    if (nullptr != pTargetSection)
+    {
+        // 현재 활성화된 섹션이 있는지 검사한다.
+        if (nullptr != m_pCurSection)
+        {
+            //활성화된 섹션 제거 로직을 돌린다.
+            if (FAILED(SetActive_Section(m_pCurSection, false)))
+                return E_FAIL;
+            //TODO:: CollMgr 정리로직 추가 필요
+        }
+
+        // 섹션 2D로 생성하여, 현재 활성화된 페이지로 등록한다.
+        CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(pTargetSection);
+
+        if (nullptr == pSection_2D)
+            return E_FAIL;
+        m_pCurSection = pSection_2D;
 
         if (m_pCurSection)
             CCollision_Manager::GetInstance()->Register_Section(m_pCurSection->Get_SectionName());
-        Section_Active(m_pCurSection->Get_SectionName(), m_iCurActiveSectionIndex);
+
+        //
+        Main_Section_Active_Process(m_pCurSection->Get_SectionName());
 
     
 
@@ -228,15 +247,40 @@ const _wstring* CSection_Manager::Get_SectionKey(CGameObject* _pGameObject)
     return pReturn;
 }
 
+_vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(const _wstring& _strSectionTag, _float2 _v2DTransformPosition)
+{
+    CSection* pSection = Find_Section(_strSectionTag);
+
+    if(nullptr == pSection)
+        return _vector();
+
+    CSection_2D* p2DSection = dynamic_cast<CSection_2D*>(pSection);
+
+    if (nullptr == p2DSection)
+        return _vector();
+
+     ID3D11Texture2D* pTexture2D = p2DSection->Get_WorldTexture();
+
+     if(nullptr == pTexture2D)
+         return Get_WorldPosition_FromWorldPosMap(_v2DTransformPosition);
+     else
+         return Get_WorldPosition_FromWorldPosMap(pTexture2D,_v2DTransformPosition);
+}
+
 /// <summary>
 /// 책 렌더타겟을 언맵하여 책 렌더타겟 기준 좌표에서 3D 공간의 World Position을 획득한다.
 /// </summary>
 /// <param name="_v2DTransformPosition">책 렌더타겟 기준 좌표(Proj 좌표)</param>
 _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransformPosition)
 {
+    return Get_WorldPosition_FromWorldPosMap(m_pBookWorldPosMap, _v2DTransformPosition);
+}
+
+_vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_pTargetTexture, _float2 _v2DTransformPosition)
+{
     // 맵핑하여 데이터 접근
     D3D11_MAPPED_SUBRESOURCE mappedResource;
-    m_pContext->Map(m_pBookWorldPosMap, 0, D3D11_MAP_READ, 0, &mappedResource);
+    m_pContext->Map(m_pTargetTexture, 0, D3D11_MAP_READ, 0, &mappedResource);
 
     // 2D Transform 위치를 픽셀 좌표계로 변환. 해당 텍스쳐의 가로 세로 사이즈를 알아야함.
     _int iWidth = mappedResource.RowPitch / sizeof(_float) / 4;
@@ -255,8 +299,8 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransfor
 
     if (iWidth * iHeight <= iIndex || 0 > iIndex)
         return XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-    
-    
+
+
     _uint iDefaultIndex = iIndex * 4;
 
     // float4 데이터 읽기
@@ -270,7 +314,7 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransfor
         0.f == z
         )
     {
-        _vector vLerpPos =  XMVectorLerp(XMVectorSet(
+        _vector vLerpPos = XMVectorLerp(XMVectorSet(
             fData[iDefaultIndex - 4],
             fData[iDefaultIndex - 3],
             fData[iDefaultIndex - 2],
@@ -290,14 +334,11 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransfor
 
 
     // 맵핑 해제
-    m_pContext->Unmap(m_pBookWorldPosMap, 0);
+    m_pContext->Unmap(m_pTargetTexture, 0);
 
     return XMVectorSet(x, y, z, 1.0f);
 }
-/// <summary>
-/// 해당 섹션을 Section_2D로 간주하고, 2DMap의 RTV을 가져온다.
-/// </summary>
-/// <param name="_strSectionTag">섹션 키</param>
+
 ID3D11RenderTargetView* CSection_Manager::Get_RTV_FromRenderTarget(const _wstring& _strSectionTag)
 {
     /* Section 2D 인경우만 사용가능하다 */
@@ -309,10 +350,7 @@ ID3D11RenderTargetView* CSection_Manager::Get_RTV_FromRenderTarget(const _wstrin
 
     return pSection_2D->Get_RTV_FromRenderTarget();
 }
-/// <summary>
-/// 해당 섹션을 Section_2D로 간주하고, 2DMap의 SRV을 가져온다.
-/// </summary>
-/// <param name="_strSectionTag">섹션 키</param>
+
 ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromRenderTarget(const _wstring& _strSectionTag)
 {
     CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(Find_Section(_strSectionTag));
@@ -321,24 +359,8 @@ ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromRenderTarget(const _wstr
 
     return pSection_2D->Get_SRV_FromRenderTarget();
 }
-/// <summary>
-/// 해당 섹션을 Section_2D로 간주하고, 2DMap의 SRV을 가져온다.
-/// </summary>
-/// <param name="_strSectionTag">활성화된 섹션 인덱스</param>
-ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromRenderTarget(_uint _iCurActiveIndex)
-{
-    if (0 >= _iCurActiveIndex || m_iMaxCurActiveSectionCount <= _iCurActiveIndex || nullptr == m_CurActiveSections[_iCurActiveIndex])
-        return nullptr;
 
-    CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(m_CurActiveSections[_iCurActiveIndex]);
-    if (nullptr == pSection_2D)
-        return nullptr;
 
-    return pSection_2D->Get_SRV_FromRenderTarget();
-}
-/// <summary>
-/// 현재 책에 활성화된 메인 섹션을 Section_2D로 간주하고, 2DMap의 SRV을 가져온다.
-/// </summary>
 ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromRenderTarget()
 {
     CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(m_pCurSection);
@@ -356,45 +378,39 @@ ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromTexture(const _wstring& 
 
     return pSection_2D->Get_SRV_FromTexture(_iTextureIndex);
 }
-/// <summary>
-/// 책의 활성화 섹션을 지정할 때, 양옆 지정된 숫자만큼의 페이지를 활성화된 섹션으로 간주한다.
-/// 재귀함수
-/// </summary>
-/// <param name="_strSectionTag">기준 활성화 섹션 키</param>
-/// <param name="iCurSectionIndex">기준 활성화 섹션 인덱스</param>
-void CSection_Manager::Section_Active(const _wstring& _strSectionTag, _uint iCurSectionIndex)
+
+void CSection_Manager::Main_Section_Active_Process(const _wstring& _strSectionTag)
 {
     CSection* pCurSection = Find_Section(_strSectionTag);
     if (nullptr == pCurSection)
         return;
-    m_CurActiveSections[iCurSectionIndex] = pCurSection;
 
-    if (FAILED(pCurSection->SetActive_GameObjects(true)))
+    if (FAILED(SetActive_Section(pCurSection, true)))
         return;
 
-    if (0 >= iCurSectionIndex || m_iMaxCurActiveSectionCount <= iCurSectionIndex + 1)
-        return;
-
-    _uint iPreIndex = iCurSectionIndex - 1;
-    _uint iNextIndex = iCurSectionIndex + 1;
-
-    CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(Find_Section(_strSectionTag));
+    CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(pCurSection);
     if (nullptr == pSection_2D)
         return;
 
     _wstring strPageTag;
-    if (pSection_2D->Is_NextPage(strPageTag) && m_CurActiveSections[iNextIndex] == nullptr)
-        Section_Active(strPageTag, iNextIndex);
+    CSection_2D* pTargetSection = nullptr;
+    if (pSection_2D->Has_NextPage(strPageTag))
+    {
+        pTargetSection = static_cast<CSection_2D*>(Find_Section(strPageTag));
+        pTargetSection->Copy_DefaultMap_ToRenderTarget();
+    }
 
-    if (pSection_2D->Is_PrePage(strPageTag) && m_CurActiveSections[iPreIndex] == nullptr)
-        Section_Active(strPageTag, iPreIndex);
+    if (pSection_2D->Has_PrePage(strPageTag))
+    {
+        pTargetSection = static_cast<CSection_2D*>(Find_Section(strPageTag));
+        pTargetSection->Copy_DefaultMap_ToRenderTarget();
+    }
 }
 
 void CSection_Manager::Clear_Sections()
 {
     for (auto& Pair : m_CurLevelSections)
         Safe_Release(Pair.second);
-    m_CurActiveSections.clear();
     m_CurLevelSections.clear();
     m_pCurSection = nullptr;
     CCollision_Manager::GetInstance()->Clear_GroupFilter();
@@ -492,51 +508,68 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
             
             if (!ChildJson.contains("Section_Type"))
                 continue;
-            SECTION_2D_PLAY_TYPE eType = ChildJson["Section_Type"];
+            CSection_2D::SECTION_2D_PLAY_TYPE eType = ChildJson["Section_Type"];
 
 
-            CSection* pSection = nullptr;
+            CSection_2D* pSection = nullptr;
 
             switch (eType)
             {
-            case Client::CSection_Manager::PLAYMAP:
-            {
-                pSection = CSection_2D_PlayMap::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
-                if (nullptr == pSection)
+                case Client::CSection_2D::PLAYMAP:
                 {
-                    MSG_BOX("Failed Create CSection_2D");
-                    return E_FAIL;
+                    pSection = CSection_2D_PlayMap_Book::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
+                    if (nullptr == pSection)
+                    {
+                        MSG_BOX("Failed Create CSection_2D");
+                        return E_FAIL;
+                    }
+
+                    if (FAILED(SetActive_Section(pSection, false)))
+                        return E_FAIL;
                 }
-                m_iPriorityGenKey += 10;
-            }
                 break;
-            case Client::CSection_Manager::NARRAION:
-            {
-                // TODO :: 상욱님 나레이션 섹션 생성 코드 작성 , pSection에 넣어야함.
-				pSection = CSection_2D_Narration::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
-				if (nullptr == pSection)
-				{
-					MSG_BOX("Failed Create CNarration_2D");
-					return E_FAIL;
-				}
-				m_iPriorityGenKey += 10;
+                case Client::CSection_2D::NARRAION:
+                {
+                    // TODO :: 상욱님 나레이션 섹션 생성 코드 작성 , pSection에 넣어야함.
+			    	pSection = CSection_2D_Narration::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
+			    	if (nullptr == pSection)
+			    	{
+			    		MSG_BOX("Failed Create CNarration_2D");
+			    		return E_FAIL;
+			    	}
+                    if (FAILED(SetActive_Section(pSection, false)))
+                        return E_FAIL;
 
-
-            }
+                }            
                 break;
-            case Client::CSection_Manager::SECTION_2D_PLAY_TYPE_LAST:
+                case Client::CSection_2D::SPSK:
+                {
+                    pSection = CSection_2D_PlayMap_Sksp::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
+                    if (nullptr == pSection)
+                    {
+                        MSG_BOX("Failed Create CSection_2D_PlayMap_Sksp");
+                        return E_FAIL;
+                    }
+                    if (FAILED(SetActive_Section(pSection, true)))
+                        return E_FAIL;
+                }
                 break;
+                    case Client::CSection_2D::SECTION_2D_PLAY_TYPE_LAST:
+                    default:
+                    {
+                        MSG_BOX("Failed - Section_Manager Section Create Logic Error");
+                        return E_FAIL;
+                    }
             }
+            m_iPriorityGenKey += 10;
 
-
-
-            
-
-    
 
             if (m_CurLevelSections.empty())
                 strStartSectionKey = pSection->Get_SectionName();
             m_CurLevelSections.try_emplace(pSection->Get_SectionName(), pSection);
+            
+            
+
             iIndex++;
         }
     }

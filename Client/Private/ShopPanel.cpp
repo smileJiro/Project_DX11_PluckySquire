@@ -45,61 +45,58 @@ void CShopPanel::Priority_Update(_float _fTimeDelta)
 
 void CShopPanel::Update(_float _fTimeDelta)
 {
-	//if (!m_isOpenPanel || CUI_Manager::GetInstance()->Get_ConfirmStore())
+	//if (!m_isOpenPanel || true == CUI_Manager::GetInstance()->Get_ConfirmStore())
 	//{
 	//	Update_KeyInput(_fTimeDelta, -1);
-	//	return;
+	//	//return;
 	//}
-	//
-	_float2 cursorPos = m_pGameInstance->Get_CursorPos();
-	//
-	//
-	//if (!isInPanel(cursorPos))
-	//{
-	//	Update_KeyInput(_fTimeDelta, -1);
-	//	return;
-	//}
-	//
 
+	if (false == Uimgr->Get_DialogueFinishShopPanel())
+		return;
+
+	
+
+	/* 테스트용으로 m_isRender true 조건값 추가*/
+
+
+	
+	_float2 cursorPos = m_pGameInstance->Get_CursorPos();
+	_int iIndex = isInPanelItem(cursorPos);
+	
+	// 다이얼로그가 끝나면 상점을 오픈 시킨다.
 	if (true == Uimgr->Get_DialogueFinishShopPanel())
 	{
-		_int iIndex = isInPanelItem(cursorPos);
-
-		Update_KeyInput(_fTimeDelta, iIndex);
-
+		//Update_KeyInput(_fTimeDelta, iIndex);
 		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
 	}
 
-	
-	//
-	//if (iIndex != -1 && iIndex != m_iPreindex)
-	//{
-	//	CUI_Manager::GetInstance()->Set_ChooseItem(iIndex);
-	//	m_iPreindex = iIndex;
-	//}
-
-	
-		
-	
-
-
-
+	// 해당 인덱스를 체크해서 true로한다.
+	if (iIndex != -1 && iIndex != m_iPreindex)
+	{
+		CUI_Manager::GetInstance()->Set_ChooseItem(iIndex);
+		m_iPreindex = iIndex;
+	}
 
 	_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
-
-	/* 테스트용으로 m_isRender true 조건값 추가*/
 	if (true == Uimgr->Get_ShopUpdate() || true == m_isRender)
 	{
 		Cal_ShopPartPos(RTSize, Uimgr->Get_ShopPos());
 		Uimgr->Set_ShopUpdate(false);
 	}
-	
 
+	
+	if (isInPanel(cursorPos))
+	{
+		Update_KeyInput(_fTimeDelta, iIndex);
+		return;
+	}
 	
 }
 
 void CShopPanel::Late_Update(_float _fTimeDelta)
 {
+
+
 	if (true == m_isRender && SHOP_CHOOSEBG != m_eShopPanel)
 	{
 		for (int i = 0; i < CUI_Manager::GetInstance()->Get_ShopPanels().size(); ++i)
@@ -437,6 +434,7 @@ void CShopPanel::Update_KeyInput(_float _fTimeDelta, _int _index)
 	{
 		Uimgr->Set_DialogueFinishShopPanel(false);
 		instruct_ChildUpdate(_fTimeDelta);
+		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
 	}
 
 }
@@ -1001,9 +999,3 @@ void CShopPanel::Free()
 
 	__super::Free();
 }
-
-
-
-
-
-

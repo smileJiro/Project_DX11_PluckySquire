@@ -28,6 +28,16 @@ void CCamera_Manager::Update(_float fTimeDelta)
 	_int a = 0;
 }
 
+void CCamera_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
+{
+	m_iCurLevelID = _iChangeLevelID;
+
+	for (auto& Camera : m_Cameras) {
+		Safe_Release(Camera);
+		Camera = nullptr;
+	}
+}
+
 _vector CCamera_Manager::Get_CameraVector(CTransform::STATE _eState)
 {
 	CController_Transform* pConTrans = m_Cameras[m_eCurrentCameraType]->Get_ControllerTransform();
@@ -144,6 +154,16 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInit
 		CController_Transform* pTargetamTrans = m_Cameras[TARGET]->Get_ControllerTransform();
 		CController_Transform* pFreeCamTrans = m_Cameras[FREE]->Get_ControllerTransform();
 		pFreeCamTrans->Set_WorldMatrix(pTargetamTrans->Get_WorldMatrix());
+	}
+	break;
+	case TARGET_2D:
+	{
+		if (nullptr == m_Cameras[TARGET_2D])
+			return;
+		CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), L"Layer_Player", 0);
+		
+		if (nullptr != pPlayer)
+			static_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Set_Include_Section_Name(pPlayer->Get_Include_Section_Name());
 	}
 	break;
 	}

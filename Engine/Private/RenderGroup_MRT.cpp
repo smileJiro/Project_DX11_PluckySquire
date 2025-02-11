@@ -13,6 +13,7 @@ HRESULT CRenderGroup_MRT::Initialize(void* _pArg)
     // Save Desc
     m_strMRTTag = pDesc->strMRTTag;
     m_isClear = pDesc->isClear;
+    m_isMSAAResolving = pDesc->isMSAAResolving;
     m_isViewportSizeChange = pDesc->isViewportSizeChange;
     m_vViewportSize = pDesc->vViewportSize;
     m_pDSV = pDesc->pDSV;
@@ -50,6 +51,9 @@ HRESULT CRenderGroup_MRT::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuffer
 
     if (FAILED(m_pGameInstance->End_MRT())) // MRT에 정보들을 모두 저장했다면, 기존의 BackBuffer로 RTV를 변경. 
         return E_FAIL;
+
+    if (true == m_isMSAAResolving)
+        m_pGameInstance->Resolve_MRT_MSAA(m_strMRTTag);
 
     return S_OK;
 }

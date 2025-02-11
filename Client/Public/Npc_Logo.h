@@ -1,8 +1,8 @@
 #pragma once
-#include "Npc.h"
+#include "UI.h"
 
 BEGIN(Client)
-class CNPC_Logo final: public CNPC
+class CNPC_Logo final: public CUI
 {
 
 public:
@@ -61,16 +61,12 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta);
 	virtual HRESULT				Render();
 
-public:
-	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
-	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
-	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+
 
 
 protected:
-	virtual HRESULT Ready_ActorDesc(void* _pArg) override;
 	virtual HRESULT Ready_Components() override;
-	virtual HRESULT Ready_PartObjects() override;
+
 
 public:
 	static CNPC_Logo*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

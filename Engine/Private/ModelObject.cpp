@@ -34,6 +34,7 @@ HRESULT CModelObject::Initialize(void* _pArg)
 
     m_iRenderGroupID_3D = pDesc->iRenderGroupID_3D;
     m_iPriorityID_3D = pDesc->iPriorityID_3D;
+
     // Add
 
 
@@ -57,7 +58,6 @@ void CModelObject::Late_Update(_float _fTimeDelta)
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
     {
         m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
-            
     }
 
     /* Update Parent Matrix */
@@ -303,6 +303,9 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 	tModelDesc.wstr3DModelPrototypeTag = _pDesc->strModelPrototypeTag_3D;
 
 	m_pControllerModel = CController_Model::Create(m_pDevice, m_pContext, &tModelDesc);
+
+    //pDesc->isDeepCopyConstBuffer;
+    //pDesc->vMaterialDefaultColor;
     if (nullptr == m_pControllerModel)
         return E_FAIL;
 
