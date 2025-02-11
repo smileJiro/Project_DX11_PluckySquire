@@ -300,7 +300,11 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
-    COORDINATE eCoord  =  Get_CurCoord();
+
+    //TODO :: 테스트 용도 : 상욱
+    cout << "X : " << m_pControllerTransform->Get_State(CTransform::STATE_POSITION).m128_f32[0] << " Y :  " << m_pControllerTransform->Get_State(CTransform::STATE_POSITION).m128_f32[1] << endl;
+    
+        COORDINATE eCoord  =  Get_CurCoord();
     if (COORDINATE_2D == eCoord)
     {
         //// TestCode : 태웅

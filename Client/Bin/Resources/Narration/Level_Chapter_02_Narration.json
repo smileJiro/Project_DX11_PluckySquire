@@ -1,0 +1,34 @@
+{
+	"Narration": [
+		{
+			"strSectionid": "Chapter1_P0102",
+			"strid": "Chapter1_P0102_Narration_01",
+			"CurlevelId": 3,
+			"lines": [
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "{300}옛{100}날 옛적에#{175}저트{100}라는#{125}용감한 견습 기사{100}가#있었습니다.",
+					"fscale": 1.5,
+					"fposX": 500.0,
+					"fposY": 500.0,
+					"fwaitingTime": 300.0,
+					"NarAnim": [
+						{
+							"strAnimationid": "Prototype_Component_Narration_0102_01",
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 400.0,
+							"fPosY": 400.0,
+							"vAnimationScaleX": -500.0,
+							"vAnimationScaleY": 500.0,
+							"fwaitingTime": 450.0
+						}
+					]
+				},
+				{
+					"iduration": ""
+				}
+			]
+		}
+	]
+}
