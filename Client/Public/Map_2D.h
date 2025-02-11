@@ -7,7 +7,7 @@ class CGameInstance;
 END
 BEGIN(Client)
 
-class C3DMapSpskObject;
+class C3DMapSkspObject;
 
 
 class CMap_2D final : public CBase
@@ -37,7 +37,7 @@ public:
 	HRESULT						Create_Default_MapTexture();
 
 public:
-	HRESULT						Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel);
+	HRESULT						Register_Capcher_WorldTexture(C3DMapSkspObject* _pModel);
 	void						Set_WorldTexture(ID3D11Texture2D* _pTexture) { m_pWorldTexture = _pTexture; }
 	ID3D11Texture2D*			Get_WorldTexture() { return m_pWorldTexture; }
 
@@ -50,6 +50,10 @@ public:
 	const _wstring&				Get_MRT_Key() { return m_strMRTKey; }
 
 	const _float2&				Get_RenderTarget_Size() { return m_fRenderTargetSize; }
+
+
+	const _wstring				Get_WorldRenderTarget_Tag() { return m_strWorldRTKey; }
+
 
 private:
 	ID3D11Device*				m_pDevice = nullptr;
@@ -70,6 +74,8 @@ private:
 	_wstring					m_strRTKey;
 	_wstring					m_strDSVKey;
 	_wstring					m_strMRTKey;
+
+	_wstring					m_strWorldRTKey;
 
 	
 	CTexture*					m_pTextureCom = nullptr;		// Map Origin Texture;

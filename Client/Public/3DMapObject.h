@@ -14,8 +14,8 @@ public:
 		_bool isOverride = false;
 		// 프러스텀 컬링할지 여부를 판단한다.
 		_bool isCulling = true;
-		_bool isSpsk = false;
-		_string strSpskTag = "";
+		_bool isSksp = false;
+		_string strSkspTag = "";
 	}MAPOBJ_3D_DESC;
 
 protected:

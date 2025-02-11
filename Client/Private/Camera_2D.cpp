@@ -75,7 +75,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 
 	// Initial Data가 없어서 TargetPos + vArm * Length로 초기 위치를 바로 잡아주기
 	if (nullptr == _pInitialData) {
-		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap({ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 		_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 
 		m_fFixedY = XMVectorGetY(vTargetPos);
@@ -108,7 +108,7 @@ INITIAL_DATA CCamera_2D::Get_InitialData()
 
 	XMStoreFloat3(&tData.vPosition, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
 
-	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap({ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 	XMStoreFloat3(&tData.vAt, vAt);
 
@@ -177,7 +177,7 @@ void CCamera_2D::Action_SetUp_ByMode()
 
 			// 어디 볼지는 지금은 무조건 player 위치인데 위치랑 카메라가 못 가는 곳에 따라서
 			// 조정이 필요함
-			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap({ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 			XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 		}
 			break;
@@ -258,12 +258,12 @@ void CCamera_2D::Look_Target(_float fTimeDelta)
 
 _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
 {
-	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap({ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 	XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 
-	if (true == m_isBook) {
+	/*if (true == m_isBook) {
 		vTargetPos = XMVectorSetY(vTargetPos, m_fFixedY);
-	}
+	}*/
 
 	_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 
@@ -278,7 +278,7 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN);
 
 	if (fRatio > 1.f) {
-		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap({ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 		_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
 
@@ -295,7 +295,7 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 	}
 
 	// Pos
-	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap({ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 	_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 	_vector vResulPos = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vPosition), vCameraPos, fRatio);
 

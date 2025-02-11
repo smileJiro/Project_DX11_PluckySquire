@@ -2,6 +2,7 @@
 #include "UIObject.h"
 #include "GameInstance.h"
 #include "Player.h"
+#include "2DModel.h"
 //
 
 
@@ -9,7 +10,7 @@ BEGIN(Engine)
 class CTexture;
 class CVIBuffer_Rect;
 class CModelObject;
-class CController_Model;
+class C2DModel;
 END
 
 BEGIN(Client)
@@ -132,6 +133,7 @@ protected:
 	CShader*		m_pShaderComs[COORDINATE_LAST] = {nullptr};
 	CTexture*		m_pTextureCom = {nullptr};
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+	C2DModel*		m_pModelCom = { nullptr };
 	_uint			m_iShaderPasses[COORDINATE_LAST] = {};
 	CUI::SHOPPANEL	m_eShopPanel = CUI::SHOPPANEL::SHOP_DEFAULT;
 
@@ -143,8 +145,6 @@ protected:
 	_float			m_fBlue = { 0.f };
 	_tchar			m_tFont[MAX_PATH] = {};
 	_float2			m_vOriginSize = {0.f, 0.f};
-
-	CController_Model* m_pModelCom[COORDINATE_LAST] = { nullptr };
 
 
 

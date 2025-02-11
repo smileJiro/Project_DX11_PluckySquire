@@ -84,11 +84,25 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 			}
 		}
 		break;
-		case Client::CSection_2D::SPSK:
+		case Client::CSection_2D::SKSP:
 		{
-			// TODO :: Sketchspace 0210¹Ú¿¹½½ 
+			auto SectionInfo = _SectionJson["Section_Info"];
+
+			if (SectionInfo.contains("RenderResolution"))
+			{
+				Desc.fRenderResolution.x = SectionInfo["RenderResolution"]["X"];
+				Desc.fRenderResolution.y = SectionInfo["RenderResolution"]["Y"];
+			}
+			if (SectionInfo.contains("LevelSizePixels"))
+			{
+				Desc.fLevelSizePixels.x = SectionInfo["LevelSizePixels"]["X"];
+				Desc.fLevelSizePixels.y = SectionInfo["LevelSizePixels"]["Y"];
+			}
+
+			Desc.fRenderResolution.x *= RATIO_BOOK2D_X;
+			Desc.fRenderResolution.y *= RATIO_BOOK2D_Y;
 		}
-			break;
+		break;
 		default:
 			break;
 	}
@@ -140,7 +154,15 @@ _float2 CSection_2D::Get_RenderTarget_Size()
 	return m_pMap->Get_RenderTarget_Size();
 }
 
-HRESULT CSection_2D::Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel)
+const _wstring CSection_2D::Get_WorldRenderTarget_Tag()
+{
+	if (nullptr == m_pMap)
+		return L"";
+
+	return m_pMap->Get_WorldRenderTarget_Tag();
+}
+
+HRESULT CSection_2D::Register_Capcher_WorldTexture(C3DMapSkspObject* _pModel)
 {
 	if (nullptr == m_pMap)
 		return E_FAIL;
@@ -150,7 +172,7 @@ HRESULT CSection_2D::Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel)
 
 HRESULT CSection_2D::Ready_Map_2D(_wstring _strMapFIleName)
 {
-	m_pMap = CMap_2D::Create(m_pDevice, m_pContext, _strMapFIleName, m_fLevelSizePixels, m_iPriorityID);
+	m_pMap = CMap_2D::Create(m_pDevice, m_pContext, _strMapFIleName, m_fRenderResolution, m_iPriorityID);
 	if (nullptr == m_pMap)
 		return E_FAIL;
 

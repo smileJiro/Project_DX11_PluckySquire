@@ -39,7 +39,7 @@ HRESULT CSample_Skechspace::Initialize(void* _pArg)
     __super::Initialize(_pArg);
 
 
-    Set_Position(XMVectorSet(2.f, 0.f, -17.3f, 1.f));
+    Set_Position(XMVectorSet(2.f, 6.f, -17.3f, 1.f));
 
     return S_OK;
 }

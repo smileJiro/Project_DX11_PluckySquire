@@ -304,7 +304,7 @@ void CVIBuffer_Mesh_Particle::Spawn_Rate(_float _fTimeDelta, _float _fSpawnRate,
 
 void CVIBuffer_Mesh_Particle::Update_Buffer(_float _fTimeDelta, _bool _isPooling)
 {
-	for (_int i = 0; i < m_iNumInstances; i++)
+	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
 		if (0.f < m_pUpdateVertices[i].vLifeTime.y)
 		{

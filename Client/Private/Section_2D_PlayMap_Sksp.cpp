@@ -9,7 +9,7 @@
 #include "Trigger_Manager.h"
 
 CSection_2D_PlayMap_Sksp::CSection_2D_PlayMap_Sksp(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:CSection_2D_PlayMap(_pDevice, _pContext, SECTION_2D_SPSK)
+	:CSection_2D_PlayMap(_pDevice, _pContext, SKSP, SECTION_2D_SKSP)
 {
 }
 
@@ -18,6 +18,11 @@ HRESULT CSection_2D_PlayMap_Sksp::Initialize(SECTION_2D_PLAYMAP_DESC* _pDesc, _u
 	if (FAILED(__super::Initialize(_pDesc, _iPriorityKey)))
 		return E_FAIL;
 	return S_OK;
+}
+
+HRESULT CSection_2D_PlayMap_Sksp::Import(json _SectionJson, _uint _iPriorityKey)
+{
+	return __super::Import(_SectionJson, _iPriorityKey);
 }
 
 HRESULT CSection_2D_PlayMap_Sksp::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)

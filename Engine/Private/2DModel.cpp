@@ -23,8 +23,18 @@ C2DModel::C2DModel(const C2DModel& _Prototype)
 
 }
 
-HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
+HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath, _bool _bNoJson)
 {
+	if (_bNoJson)
+	{
+		m_eAnimType = NONANIM;
+		m_pNonAnimSprite = CSpriteFrame::Create(m_pDevice, m_pContext, _szModel2DFilePath);
+		if (nullptr == m_pNonAnimSprite)
+		{
+			return E_FAIL;
+		}
+		return S_OK;
+	}
 	std::ifstream inFile(_szModel2DFilePath, std::ios::binary);
 	if (!inFile) {
 		string str = "파일을 열 수 없습니다.";
@@ -169,7 +179,10 @@ const _matrix* C2DModel::Get_CurrentSpriteTransform()
 	if (ANIM == m_eAnimType)
 		return m_Animation2Ds[m_iCurAnimIdx]->Get_CurrentSpriteTransform();
 	else if (NONANIM == m_eAnimType)
-		return m_pNonAnimSprite->Get_Transform();
+	{
+		if (m_pNonAnimSprite)
+			return m_pNonAnimSprite->Get_Transform();
+	}
 	return nullptr;
  }
 
@@ -220,11 +233,11 @@ _bool C2DModel::Play_Animation(_float _fTimeDelta, _bool _bReverse)
 	return false;
 }
 
-C2DModel* C2DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath)
+C2DModel* C2DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _bool _bNoJson)
 {
 	C2DModel* pInstance = new C2DModel(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath)))
+	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, _bNoJson)))
 	{
 		MSG_BOX("Failed to Created : 2DModel");
 		Safe_Release(pInstance);

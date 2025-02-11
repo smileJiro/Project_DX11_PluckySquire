@@ -156,6 +156,16 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInit
 		pFreeCamTrans->Set_WorldMatrix(pTargetamTrans->Get_WorldMatrix());
 	}
 	break;
+	case TARGET_2D:
+	{
+		if (nullptr == m_Cameras[TARGET_2D])
+			return;
+		CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), L"Layer_Player", 0);
+		
+		if (nullptr != pPlayer)
+			static_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Set_Include_Section_Name(pPlayer->Get_Include_Section_Name());
+	}
+	break;
 	}
 
 	if (true == _isInitialData) {

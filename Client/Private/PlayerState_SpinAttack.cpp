@@ -80,28 +80,28 @@ void CPlayerState_SpinAttack::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 			if((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL1 == iAnimIdx
 				|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL1 == iAnimIdx
 				|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL1 == iAnimIdx)
-				On_RoundEnd();
+				Set_SpinState(SPIN_SPINEND);
 		}  
 		else if (2 == m_iSpinAttackLevel)
 		{
 			if ((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL2 == iAnimIdx
 				|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL2 == iAnimIdx
 				|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL2 == iAnimIdx)
-				On_RoundEnd();
+				Set_SpinState(SPIN_SPINEND);
 		}
 		else if (3 == m_iSpinAttackLevel)
 		{
 			if ((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL3 == iAnimIdx
 				|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL3 == iAnimIdx
 				|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL3 == iAnimIdx)
-				On_RoundEnd();
+				Set_SpinState(SPIN_SPINEND);
 		}
 		else if (4 == m_iSpinAttackLevel)
 		{
 			if ((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL4 == iAnimIdx
 				|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL4 == iAnimIdx
 				|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL4 == iAnimIdx)
-				On_RoundEnd();
+				Set_SpinState(SPIN_SPINEND);
 		}
 
 	}
@@ -149,13 +149,61 @@ void CPlayerState_SpinAttack::Set_SpinState(SPIN_STATE _eNewState)
 			{
 			case Client::F_DIRECTION::LEFT:
 			case Client::F_DIRECTION::RIGHT:
-				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL1);
+				switch (m_iSpinAttackLevel)
+				{
+				case 1 :
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL1);
+					break;
+				case 2:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL2);
+					break;
+				case 3:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL3);
+					break;
+				case 4:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL4);
+					break;
+				default:
+					break;
+				}
 				break;
 			case Client::F_DIRECTION::UP:
-				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_INTO_UP);
+				switch (m_iSpinAttackLevel)
+				{
+				case 1:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL1);
+					break;
+				case 2:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL2);
+					break;
+				case 3:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL3);
+					break;
+				case 4:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL4);
+					break;
+				default:
+					break;
+				}
 				break;
 			case Client::F_DIRECTION::DOWN:
-				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_INTO_DOWN);
+				switch (m_iSpinAttackLevel)
+				{
+				case 1:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL1);
+					break;
+				case 2:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL2);
+					break;
+				case 3:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL3);
+					break;
+				case 4:
+					m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL4);
+					break;
+				default:
+					break;
+				}
 				break;
 			default:
 				break;
@@ -169,21 +217,7 @@ void CPlayerState_SpinAttack::Set_SpinState(SPIN_STATE _eNewState)
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SPIN_ATTACK_OUT_GT);
 		else
 		{
-			switch (m_eFDir)
-			{
-			case Client::F_DIRECTION::LEFT:
-			case Client::F_DIRECTION::RIGHT:
-				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL1);
-				break;
-			case Client::F_DIRECTION::UP:
-				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_INTO_UP);
-				break;
-			case Client::F_DIRECTION::DOWN:
-				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_INTO_DOWN);
-				break;
-			default:
-				break;
-			}
+			m_pOwner->Set_State(CPlayer::IDLE);
 		}
 		break;
 	}
@@ -194,9 +228,9 @@ void CPlayerState_SpinAttack::Set_SpinState(SPIN_STATE _eNewState)
 
 void CPlayerState_SpinAttack::On_RoundEnd()
 {
-	if (m_iSpinAttackLevel >= m_iSpinCount)
+	m_iSpinCount++;
+	if (m_iSpinAttackLevel > m_iSpinCount)
 	{
-		m_iSpinCount++;
 		Set_SpinState(SPIN_SPINNING);
 	}
 	else
