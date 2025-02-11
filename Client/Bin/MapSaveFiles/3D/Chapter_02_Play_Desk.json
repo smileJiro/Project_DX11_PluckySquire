@@ -18,11 +18,8 @@
   "Button_02",
   "SafetyPin_02",
   "SM_Mod_Ramp_2x1x05",
-  "SM_Watercolor_Bottle_D",
   "SM_Paint_Container_1_C",
-  "SM_Watercolor_Bottle_F",
-  "SM_Paint_Container_2_A",
-  "SM_Watercolor_Bottle_A",
+  "SM_Watercolor_Bottle_D",
   "SM_Art_Brush_12_Handle",
   "SM_Mod_Block_2x1x05",
   "cardboard_boxes_01",
@@ -123,6 +120,7 @@
   "SM_Paint_Container_1_A",
   "SM_Paint_Container_2_C",
   "SM_Paint_Container_1_D",
+  "SM_Paint_Container_2_A",
   "SM_Paint_Container_2_B",
   "SM_Paint_Container_2_D",
   "SM_Paint_Container_3_2",
@@ -150,6 +148,8 @@
   "SM_Watercolor_Bottle_G",
   "SM_Watercolor_Bottle_D_Cap_2",
   "SM_Watercolor_Bottle_E",
+  "SM_Watercolor_Bottle_F",
+  "SM_Watercolor_Bottle_A",
   "SM_Watercolor_Bottle_B",
   "SM_Watercolor_Bottle_H",
   "SM_Watercolor_Pan",
@@ -203,6 +203,9 @@
   "WoodenSideWalls_01_06",
   "Wristband_02",
   "Wristband_03",
-  "Desk_C02_Sketchspace_Left_01"
+  "Desk_C02_Sketchspace_Left_01",
+  "Desk_C02_Sketchspace_768x2048_01",
+  "Desk_C02_Sketchspace_01",
+  "Desk_C02_Sketchspace_5832x768_01"
  ]
 }

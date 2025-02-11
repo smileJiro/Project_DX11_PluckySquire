@@ -618,5 +618,86 @@
   "SearchTag": "TopDownDecal_BP5",
   "Sorting": false,
   "TextureName": "D02_SKSP08_New_toppy"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Fence_BP_2",
+  "Sorting": false,
+  "TextureName": "fence"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Hedge_BP",
+  "Sorting": false,
+  "TextureName": "front_hedge_new"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_SketchTree_01",
+  "Sorting": false,
+  "TextureName": "pine_tree"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_SketchTree_Fallen",
+  "Sorting": false,
+  "TextureName": "DeskC02_SKSP10_tree_3"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_SketchTree_03",
+  "Sorting": false,
+  "TextureName": "DeskC02_SKSP10_tree_2"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_SketchTree_02",
+  "Sorting": false,
+  "TextureName": "DeskC02_SKSP10_tree_1"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Bush_03_BP",
+  "Sorting": false,
+  "TextureName": "DeskC02_SKSP10_bush_3"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Bush_02_BP",
+  "Sorting": false,
+  "TextureName": "DeskC02_SKSP10_bush_2"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Bush_01_BP",
+  "Sorting": false,
+  "TextureName": "DeskC02_SKSP10_bush_1"
  }
 ]
