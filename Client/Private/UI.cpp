@@ -94,6 +94,8 @@ HRESULT CUI::Render(C2DModel* _Model)
 	}
 
 	_Model->Render(m_pShaderComs[COORDINATE_2D], (_uint)PASS_VTXPOSTEX::SPRITE2D);
+
+	return S_OK;
 }
 
 HRESULT CUI::Ready_Components()
