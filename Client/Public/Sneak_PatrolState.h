@@ -1,9 +1,9 @@
 #pragma once
-#include "State.h"
+#include "State_Sneak.h"
 
 BEGIN(Client)
 
-class CSneak_PatrolState final : public CState
+class CSneak_PatrolState final : public CState_Sneak
 {
 public:
 	typedef struct tagSneak_PatrolBound {
@@ -35,6 +35,9 @@ private:
 	void Check_Bound(_float _fTimeDelta);
 
 private:
+	void Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex);
+
+private:
 	_float m_fAccTime = { 0.f };
 	_float m_fAccDistance = { 0.f };
 	_float m_fMoveDistance = {};
@@ -51,7 +54,7 @@ private:
 	_bool m_isBack = { false };
 	_float3 m_vDir = {};
 
-	vector<_float3> m_Waypoints = {};
+	vector<_float3> m_PatrolWaypoints = {};
 
 public:
 	static CSneak_PatrolState* Create(void* _pArg);

@@ -1,11 +1,11 @@
 #pragma once
-#include "State.h"
+#include "State_Sneak.h"
 
 BEGIN(Client)
 
 
 //공격 범위가 인식 범위보다 큰 원거리 공격 상태
-class CSneak_AttackState final : public CState
+class CSneak_AttackState final : public CState_Sneak
 {
 private:
 	CSneak_AttackState();

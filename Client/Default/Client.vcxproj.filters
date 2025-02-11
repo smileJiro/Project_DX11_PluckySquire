@@ -857,6 +857,9 @@
     <ClInclude Include="..\Public\Section_2D_PlayMap.h">
       <Filter>04.Section\Section_2D\PlayMap_2D\00. super</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Sneak.h">
+      <Filter>03.Components\FSM\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1301,6 +1304,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Section_2D_PlayMap.cpp">
       <Filter>04.Section\Section_2D\PlayMap_2D\00. super</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Sneak.cpp">
+      <Filter>03.Components\FSM\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

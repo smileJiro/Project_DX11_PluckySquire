@@ -121,11 +121,6 @@ _bool CState::Check_Target3D(_bool _isSneak)
 	return false;
 }
 
-void CState::Set_Sneak_InvestigatePos(_fvector _vPosition)
-{
-	XMStoreFloat3(&m_vSneakPos, _vPosition);
-}
-
 void CState::Determine_AvoidDirection(_fvector& _vDestination, _float3* _vDirection)
 {
 	if (COORDINATE_2D == m_pOwner->Get_CurCoord())

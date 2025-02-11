@@ -11,7 +11,7 @@ CSneak_PatrolState::CSneak_PatrolState()
 
 HRESULT CSneak_PatrolState::Initialize(void* _pArg)
 {
-	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
+	SNEAKSTATEDESC* pDesc = static_cast<SNEAKSTATEDESC*>(_pArg);
 	m_fAlertRange = pDesc->fAlertRange;
 
 	if (FAILED(__super::Initialize(pDesc)))
@@ -23,9 +23,7 @@ HRESULT CSneak_PatrolState::Initialize(void* _pArg)
 	m_iDir = -1;
 	//m_fDelayTime = 1.f;
 
-	m_Waypoints.push_back(_float3(-17.f, 6.55f, 23.f));
-	m_Waypoints.push_back(_float3(-20.f, 6.55f, 23.f));
-	m_Waypoints.push_back(_float3(-23.f, 6.55f, 20.5f));
+	Initialize_PatrolPoints(pDesc->eWayIndex);
 		
 	return S_OK;
 }
@@ -118,11 +116,11 @@ void CSneak_PatrolState::State_Exit()
 
 void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 {
-	if (m_Waypoints.size() <= m_iCurWayIndex)
+	if (m_PatrolWaypoints.size() <= m_iCurWayIndex)
 		return;
 
 
-	_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_Waypoints[m_iCurWayIndex])-m_pOwner->Get_FinalPosition());
+	_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex])-m_pOwner->Get_FinalPosition());
 
 	//회전
 	if (true == m_isTurn && false == m_isMove)
@@ -150,10 +148,10 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 		//m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 		//웨이포인트 도달 했는지 체크 후 도달 했으면 idle로 전환
 		
-		//Determine_AvoidDirection(XMLoadFloat3(&m_Waypoints[m_iCurWayIndex]), &m_vDir);
+		//Determine_AvoidDirection(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]), &m_vDir);
 		//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 
-		if (m_pOwner->Move_To(XMLoadFloat3(&m_Waypoints[m_iCurWayIndex]), 0.1f))
+		if (m_pOwner->Move_To(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]), 0.1f))
 		{
 			m_isTurn = false;
 			m_isMove = false;
@@ -176,13 +174,13 @@ void CSneak_PatrolState::Determine_Direction()
 	{
 		++m_iCurWayIndex;
 
-		if (m_Waypoints.size() - 1 == m_iCurWayIndex)
+		if (m_PatrolWaypoints.size() - 1 == m_iCurWayIndex)
 			m_isBack = true;
 
 		//예외처리
-		if (m_Waypoints.size()-1 < m_iCurWayIndex)
+		if (m_PatrolWaypoints.size()-1 < m_iCurWayIndex)
 		{
-			m_iCurWayIndex = m_Waypoints.size() - 1;
+			m_iCurWayIndex = m_PatrolWaypoints.size() - 1;
 			m_isBack = true;
 		}
 	}
@@ -202,7 +200,7 @@ void CSneak_PatrolState::Determine_Direction()
 	}
 
 	//시간 랜덤으로 지정 (양 끝 지점만 최솟값을 크게 놓음)
-	if (0 == m_iCurWayIndex || m_Waypoints.size() - 1 == m_iCurWayIndex)
+	if (0 == m_iCurWayIndex || m_PatrolWaypoints.size() - 1 == m_iCurWayIndex)
 		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(1.f, 3.f));
 	else
 	{
@@ -313,6 +311,20 @@ void CSneak_PatrolState::Check_Bound(_float _fTimeDelta)
 		}
 
 		m_isBack = false;
+	}
+}
+
+void CSneak_PatrolState::Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex)
+{
+	switch (_iWayIndex)
+	{
+	case Client::WAYPOINTINDEX::CHAPTER2_1:
+		m_PatrolWaypoints.push_back(_float3(-17.f, 6.55f, 23.f));
+		m_PatrolWaypoints.push_back(_float3(-20.f, 6.55f, 23.f));
+		m_PatrolWaypoints.push_back(_float3(-23.f, 6.55f, 20.5f));
+		break;
+	default:
+		break;
 	}
 }
 
