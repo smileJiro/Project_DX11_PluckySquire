@@ -1255,6 +1255,22 @@ _bool CGameInstance::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _
 	return m_pPhysx_Manager->RayCast(_vOrigin, _vRayDir, _fMaxDistance, _OutActors, _OutRaycastHits);
 }
 
+_bool CGameInstance::Overlap(SHAPE_TYPE _eShapeType, SHAPE_DESC* _pShape, _fvector _vPos, list<CActorObject*>& _OutActors)
+{
+	if (nullptr == m_pPhysx_Manager)
+		assert(nullptr);
+
+	return m_pPhysx_Manager->Overlap(_eShapeType, _pShape, _vPos, _OutActors);
+}
+
+_bool CGameInstance::Overlap(PxGeometry* pxGeom, _fvector _vPos, list<CActorObject*>& _OutActors)
+{
+	if (nullptr == m_pPhysx_Manager)
+		assert(nullptr);
+
+	return m_pPhysx_Manager->Overlap(pxGeom, _vPos, _OutActors);
+}
+
 
 void CGameInstance::Set_Physx_DebugRender(_bool _isDebugRender)
 {

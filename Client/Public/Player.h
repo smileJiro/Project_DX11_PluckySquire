@@ -488,7 +488,7 @@ private:
 	_float m_fFootLength = 0.25;
 	_float m_fAttackForwardingForce = 12.f;
 	_float m_fGroundRotateSpeed = 360.f;
-	_float m_fStepSlopeThreshold = 0.3f;
+	_float m_fStepSlopeThreshold = 0.1f;
 	//_float m_fFootHeightThreshold = 0.1f;
 	_float m_f3DJumpPower = 11.f;
 	_float m_fAirRotateSpeed = 40.f;

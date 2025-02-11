@@ -241,6 +241,11 @@ public: /* For. Physx_Manager*/
 //충돌된 액터에 user data로 ActorObject를 넣지 않았으면 nullptr이 들어감.
 // - 2.02 김지완 추가
 	_bool				RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits);
+	//지정된 위치에 셰이프를 만들어서 충돌되는지 체크
+	// - 2.11 김지완 추가
+	_bool Overlap(SHAPE_TYPE	_eShapeType, SHAPE_DESC* _pShape, _fvector _vPos, list<CActorObject*>& _OutActors);
+	_bool Overlap(PxGeometry* pxGeom, _fvector _vPos, list<CActorObject*>& _OutActors);
+
 	void				Set_Physx_DebugRender(_bool _isDebugRender);
 public: /* For. Frustum */
 	_bool				isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRange = 0.0f);
