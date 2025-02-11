@@ -362,17 +362,30 @@ void CLevel_AnimTool::Set_Animation(_uint _iAnimIdx, _bool _bLoop)
 HRESULT CLevel_AnimTool::Ready_Lights()
 {
 
-	LIGHT_DESC LightDesc{};
+	CONST_LIGHT LightDesc{};
 
 	ZeroMemory(&LightDesc, sizeof LightDesc);
 
-	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTOINAL;
-	LightDesc.vDirection = _float4(-1.f, -1.f, 0.5f, 0.f);
-	LightDesc.vDiffuse = _float4(1.0f, 1.0f, 1.0f, 1.f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vDirection = { 0.0f, -1.0f, 1.0f };
+	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+		return E_FAIL;
+
+	/* Á¡±¤¿ø */
+	ZeroMemory(&LightDesc, sizeof LightDesc);
+	LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
+	LightDesc.fFallOutStart = 20.0f;
+	LightDesc.fFallOutEnd = 1000.0f;
+	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
 		return E_FAIL;
 
 
