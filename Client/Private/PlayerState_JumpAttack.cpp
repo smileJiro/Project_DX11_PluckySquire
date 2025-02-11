@@ -13,9 +13,7 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 	_float fUpForce = m_pOwner->Get_UpForce();
 	F_DIRECTION eDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
 	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
-
-
-
+	_bool bGround = m_pOwner->Is_OnGround();
 	//떨어지기 시작
 	if (m_bRising && 0 > fUpForce)
 	{
@@ -45,13 +43,27 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 	_float fProgress = m_pOwner->Get_AnimProgress();
 
 	_float fMotionCancelProgress = eCoord == COORDINATE_2D ? m_f2DMotionCancelProgress : m_f3DMotionCancelProgress;
-	if (m_pOwner->Is_OnGround())
+	_float fFloorDistance = eCoord == COORDINATE_2D ?m_pOwner->Get_2DFloorDistance() :m_pOwner->Get_3DFloorDistance();
+	_float fLandAnimHeightThreshold = eCoord == COORDINATE_2D ? m_f2DLandAnimHeightThreshold : m_f3DLandAnimHeightThreshold;
+	if (COORDINATE_3D == eCoord)
 	{
-		if (false == m_bGrounded)
+		if (0 > fUpForce && fFloorDistance >= 0 && fFloorDistance <= fLandAnimHeightThreshold)
 		{
-			m_bGrounded = true;
-			if (COORDINATE_2D == eCoord)
+			if (false == m_fLandAnimed)
 			{
+				m_fLandAnimed = true;
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMPATTACK_LAND_GT_EDIT);
+				return;
+			}
+		}
+	}
+	else
+	{
+		if (bGround)
+		{
+			if (false == m_fLandAnimed)
+			{
+				m_fLandAnimed = true;
 				switch (eDir)
 				{
 				case Client::F_DIRECTION::LEFT:
@@ -66,12 +78,9 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 					break;
 				}
 			}
-			else
-				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMPATTACK_LAND_GT_EDIT);
-			return;
 		}
 	}
-	if (m_bGrounded)
+	if (bGround)
 	{
 		if (COORDINATE_3D == eCoord && fProgress >= fMotionCancelProgress)
 		{

@@ -121,7 +121,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.isTrigger = true;                    
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_fCenterHeight, 0)); //여기임
     SHAPE_SPHERE_DESC SphereDesc = {};
-	SphereDesc.fRadius = 1.5f;
+	SphereDesc.fRadius = 2.5f;
     ShapeData.pShapeDesc = &SphereDesc;
 
     ActorDesc.ShapeDatas.push_back(ShapeData);
@@ -159,7 +159,6 @@ HRESULT CPlayer::Ready_Components()
     Add_Component(TEXT("StateMachine"), m_pStateMachine);
 
     Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
-    Bind_AnimEventFunc("Attack", bind(&CPlayer::Move_Attack_3D, this));
     Bind_AnimEventFunc("Attack", bind(&CPlayer::Move_Attack_3D, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
@@ -375,29 +374,27 @@ void CPlayer::Late_Update(_float _fTimeDelta)
         _float3 vRayDir = { 0,-1,0 };
         list<CActorObject*> hitActors;
         list<RAYCASTHIT> raycasthits;
+        _float fFloorHeihgt = -1;
         if (m_pGameInstance->RayCast(vOrigin, vRayDir, 100, hitActors, raycasthits))
         {
+            //닿은 것들 중에서 가장 높은 것을 찾기
             auto& iterHitPoint = raycasthits.begin();
             for (auto& pActor : hitActors)
             {
-                if (nullptr != pActor && pActor != this 
-                    && OBJECT_GROUP::MAPOBJECT == pActor->Get_CollisionGroupID())//맵과 닿음.
+                if ( pActor != this )//맵과 닿음.
 				{
 					if (iterHitPoint->vNormal.y > m_fStepSlopeThreshold)//닿은 곳의 경사가 너무 급하지 않으면
 					{
-						_float fOtherAbsHeight = iterHitPoint->vPosition.y + m_fCenterHeight;
-						if (m_f3DFloorDistance > vPlayerPos.m128_f32[1])
-						{
-							m_pControllerTransform->Set_PositionY(fHeight);
-							m_bOnGround = true;
-						}
+						fFloorHeihgt = max(fFloorHeihgt, iterHitPoint->vPosition.y);
 					}
-
                 }
                 iterHitPoint++;
             }
         }
-        
+		if (fFloorHeihgt > -1)
+		    m_f3DFloorDistance = XMVectorGetY(vPlayerPos) - fFloorHeihgt;
+        else
+			m_f3DFloorDistance = -1;
     }
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
     //cout << endl;
