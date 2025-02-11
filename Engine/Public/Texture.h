@@ -9,8 +9,8 @@ private:
 	virtual ~CTexture() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isCubeMap = false);
-	virtual HRESULT Initialize_Prototype(const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isCubeMap = false);
+	virtual HRESULT Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isSRGB = false, _bool _isCubeMap = false);
+	virtual HRESULT Initialize_Prototype(const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isSRGB = false, _bool _isCubeMap = false);
 	virtual HRESULT Initialize(void* _pArg) override;
 
 public:
@@ -71,8 +71,8 @@ private:
 	vector<_wstring> m_SRVNames;
 
 public:
-	static CTexture* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szTextureFilePath, _uint _iNumTextures = 1);
-	static CTexture* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pTextureFilePath, _uint _iNumTextures = 1);
+	static CTexture* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szTextureFilePath, _uint _iNumTextures = 1, _bool _isCube = false);
+	static CTexture* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pTextureFilePath, _uint _iNumTextures = 1, _bool _isCube = false);
 	static CTexture* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CComponent* Clone(void* _pArg);
 	virtual void Free() override;

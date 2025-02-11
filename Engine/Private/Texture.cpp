@@ -20,10 +20,9 @@ CTexture::CTexture(const CTexture& _Prototype)
 
 }
 
-HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isCubeMap)
+HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isSRGB, _bool _isCubeMap)
 {
 	/* TextureFilePath 에서 확장자의 이름, %d >>> 숫자로 바꾸기, 등을 수행 후 Load 하고 m_SRVs 에 Pushback */
-
 	m_iNumSRVs = _iNumTextures;
 
 	_tchar szTextureFilePath[MAX_PATH] = TEXT("");
@@ -52,10 +51,34 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 
 				CreateDDSTextureFromFileEx(m_pDevice, szTextureFilePath, 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, miscFlags,
 										   DDS_LOADER_FLAGS(false), nullptr, &pSRV, NULL);
+
+#ifdef _DEBUG
+				D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+				pSRV->GetDesc(&srvDesc);
+#endif // _DEBUG
 			}
 			else
 			{
-				hr = DirectX::CreateDDSTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
+				if (true == _isSRGB)
+				{
+					hr = DirectX::CreateDDSTextureFromFileEx(
+						m_pDevice,               // Direct3D 장치
+						szTextureFilePath,             // DDS 파일 경로
+						0,                       // 최대 텍스처 크기 (0은 제한 없음)
+						D3D11_USAGE_DEFAULT,     // 리소스 사용 방법
+						D3D11_BIND_SHADER_RESOURCE, // 바인딩 플래그
+						0,                       // CPU 접근 플래그
+						0,                       // 기타 플래그
+						DirectX::DDS_LOADER_FORCE_SRGB, // sRGB 강제 적용
+						nullptr,                 // 생성된 텍스처 리소스 (필요 시 포인터 제공)
+						&pSRV                    // 생성된 셰이더 리소스 뷰
+					);
+				}
+				else
+				{
+					hr = DirectX::CreateDDSTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
+				}
+				//hr = DirectX::CreateDDSTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
 			}
 
 		}
@@ -78,7 +101,7 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 	return S_OK;
 }
 
-HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isCubeMap)
+HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isSRGB, _bool _isCubeMap)
 {
 	m_iNumSRVs = _iNumTextures;
 
@@ -109,10 +132,36 @@ HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _i
 				miscFlags |= D3D11_RESOURCE_MISC_TEXTURECUBE;
 				CreateDDSTextureFromFileEx(m_pDevice, wszFullPath, 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, miscFlags,
 					DDS_LOADER_FLAGS(false), nullptr, &pSRV, NULL);
+
+
+#ifdef _DEBUG
+				D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+				pSRV->GetDesc(&srvDesc);
+#endif // _DEBUG
 			}
 			else
 			{
-				hr = DirectX::CreateDDSTextureFromFile(m_pDevice, wszFullPath, nullptr, &pSRV);
+				if (true == _isSRGB)
+				{
+					hr = DirectX::CreateDDSTextureFromFileEx(
+						m_pDevice,               // Direct3D 장치
+						wszFullPath,             // DDS 파일 경로
+						0,                       // 최대 텍스처 크기 (0은 제한 없음)
+						D3D11_USAGE_DEFAULT,     // 리소스 사용 방법
+						D3D11_BIND_SHADER_RESOURCE, // 바인딩 플래그
+						0,                       // CPU 접근 플래그
+						0,                       // 기타 플래그
+						DirectX::DDS_LOADER_FORCE_SRGB, // sRGB 강제 적용
+						nullptr,                 // 생성된 텍스처 리소스 (필요 시 포인터 제공)
+						&pSRV                    // 생성된 셰이더 리소스 뷰
+					);
+				}
+				else
+				{
+					hr = DirectX::CreateDDSTextureFromFile(m_pDevice, wszFullPath, nullptr, &pSRV);
+				}
+
+
 			}
 		}
 		else if (false == strcmp(szEXT, ".tga"))
@@ -147,8 +196,6 @@ HRESULT CTexture::Bind_ShaderResource(CShader* _pShader, const _char* _pConstant
 
 
 	_pShader->Bind_SRV(_pConstantName, m_SRVs[_iSRVIndex]);
-
-	
 	return S_OK;
 }
 
@@ -200,11 +247,11 @@ const _float2 CTexture::Get_Size(_uint _iSRVIndex)
 	return fReturn;
 }
 
-CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szTextureFilePath, _uint _iNumTextures)
+CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isCubeMap)
 {
 	CTexture* pInstance = new CTexture(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(_szTextureFilePath, _iNumTextures)))
+	if (FAILED(pInstance->Initialize_Prototype(_szTextureFilePath, _iNumTextures, _isCubeMap)))
 	{
 		MSG_BOX("Failed to Created : CTexture");
 		Safe_Release(pInstance);
@@ -217,11 +264,11 @@ CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 	return new CTexture(_pDevice, _pContext);
 
 }
-CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pTextureFilePath, _uint _iNumTextures)
+CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isCubeMap)
 {
 	CTexture* pInstance = new CTexture(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(_pTextureFilePath, _iNumTextures)))
+	if (FAILED(pInstance->Initialize_Prototype(_pTextureFilePath, _iNumTextures, _isCubeMap)))
 	{
 		MSG_BOX("Failed to Created : CTexture");
 		Safe_Release(pInstance);

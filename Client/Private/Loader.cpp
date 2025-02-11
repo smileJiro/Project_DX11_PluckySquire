@@ -63,7 +63,8 @@
 #include "StateMachine.h"
 #include "2DMapDefaultObject.h"
 #include "2DMapActionObject.h"
-#include "3DMapObject.h"
+#include "3DMapDefaultObject.h"
+#include "3DMapSpskObject.h"
 #include "MapObjectFactory.h"
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
@@ -196,16 +197,16 @@ HRESULT CLoader::Loading_Level_Static()
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
-    ///* For. Prototype_Component_Texture_BRDF_Shilick */
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BRDF_Shilick"),
-    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/BRDF_Shilick.dds"), 1))))
-    //    return E_FAIL;
-    //
-    ///* For. Prototype_Component_Texture_TestEnv */
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_TestEnv"),
-    //    CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/TestEnv_%d.dds"), 3))))
-    //    return E_FAIL;
-    //
+    /* For. Prototype_Component_Texture_BRDF_Shilick */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BRDF_Shilick"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/BRDF_Shilick.dds"), 1))))
+        return E_FAIL;
+    
+    /* For. Prototype_Component_Texture_TestEnv */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_TestEnv"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/TestEnv_%d.dds"), 3, true))))
+        return E_FAIL;
+    
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom1.dds"), 1))))
 		return E_FAIL;
@@ -382,12 +383,16 @@ HRESULT CLoader::Loading_Level_Static()
         C2DMapDefaultObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DActionMapObject"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMap_ActionObject"),
         C2DMapActionObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),
-        C3DMapObject::Create(m_pDevice, m_pContext))))
+        C3DMapDefaultObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+        
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMap_SpskObject"),
+        C3DMapSpskObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
@@ -468,6 +473,7 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Popuff"),
         CPopuff::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("이펙트(을)를 로딩중입니다."));
 

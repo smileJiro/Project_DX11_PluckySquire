@@ -30,7 +30,7 @@ namespace Client
 	void Event_Trigger_Exit(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag);
 	void Event_Trigger_Exit_ByCollision(_uint _iTriggerType, _int _iTriggerID, _bool _isReturn = true);
 	void Event_Book_Main_Section_Change_Start(_uint _iPageDirection, _float3* _fNextPosition);
-	void Event_Book_Main_Section_Change_End(const _tchar* _strSectionTag);
+	void Event_Book_Main_Section_Change_End(const _wstring& _strSectionTag);
 	void Event_Book_Main_Change(_uint _iCameraType);
 	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID, _bool _bEnable);
 	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID, _bool _bEnable);
@@ -40,6 +40,12 @@ namespace Client
 	//void Event_CameraTriggerExit(_int _iTriggerID, _bool _isReturn = true);
 
 	//void Event_Book_Section_Change_Start(const _tchar* _strNextSectionKey, );
+
+
+
+
+
+
 
 	std::wstring StringToWstring(const std::string& _strUTF8);
 	std::string WstringToString(const std::wstring& wstr); 

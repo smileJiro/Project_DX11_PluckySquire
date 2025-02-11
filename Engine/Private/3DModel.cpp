@@ -15,7 +15,6 @@ C3DModel::C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 C3DModel::C3DModel(const C3DModel& _Prototype)
 	: CModel(_Prototype)
-
 	, m_iNumMeshes(_Prototype.m_iNumMeshes)
 	, m_Meshes(_Prototype.m_Meshes)
 	, m_iNumMaterials{ _Prototype.m_iNumMaterials }
@@ -133,7 +132,7 @@ HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 		if(FAILED(Bind_Material_PixelConstBuffer(iMaterialIndex, _pShader)))
 			return E_FAIL;
 
-		if (FAILED(Bind_Material(_pShader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_DIFFUSE])))
+		if (FAILED(Bind_Material(_pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_DIFFUSE])))
 		{
 			//continue;
 		}
@@ -146,11 +145,19 @@ HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 		{
 			int a = 0;
 		}
-		else
+		if (FAILED(Bind_Material(_pShader, "g_MetallicTexture", i, aiTextureType_METALNESS, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_METALNESS])))
 		{
 			int a = 0;
 		}
-
+		if (FAILED(Bind_Material(_pShader, "g_RoughnessTexture", i, aiTextureType_DIFFUSE_ROUGHNESS, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_DIFFUSE_ROUGHNESS])))
+		{
+			int a = 0;
+		}
+		if (FAILED(Bind_Material(_pShader, "g_AOTexture", i, aiTextureType_AMBIENT_OCCLUSION, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_AMBIENT_OCCLUSION])))
+		{
+			int a = 0;
+		}
+		
 		/* Bind Bone Matrices */
 		if (Is_AnimModel())
 		{

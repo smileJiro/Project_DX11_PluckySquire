@@ -158,9 +158,7 @@ void CMapObject::Late_Update(_float _fTimeDelta)
     if (m_eMode != PREVIEW)
     {
         if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
-            Register_RenderGroup(RG_3D, PR3D_NONBLEND);
-        else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
-            Register_RenderGroup(RG_2D, PR2D_BOOK_SECTION);
+            Register_RenderGroup(RG_3D, PR3D_GEOMETRY);
     }
 
     /* Update Parent Matrix */
@@ -169,10 +167,6 @@ void CMapObject::Late_Update(_float _fTimeDelta)
 
 HRESULT CMapObject::Render()
 {
-    if (FAILED(CModelObject::Bind_ShaderResources_WVP()))
-        return E_FAIL;
-    if (m_strModelName == L"ToyBrick_20")
-        int a = 1;
     switch (m_eColorShaderMode)
     {
         case Engine::C3DModel::COLOR_DEFAULT:
@@ -189,10 +183,6 @@ HRESULT CMapObject::Render()
                 m_iShaderPasses[COORDINATE_3D] = 0;
             break;
     }
-
-
-
-
     CModelObject::Render();
     return S_OK;
 }
@@ -441,6 +431,22 @@ HRESULT CMapObject::Save_Override_Color(HANDLE _hFile)
     return S_OK;
 }
 
+HRESULT CMapObject::Save_Spsk(HANDLE _hFile)
+{
+    DWORD	dwByte(0);
+    _uint iSpsk = m_isSpsk ? 1 : 0;
+    WriteFile(_hFile, &iSpsk, sizeof(_uint), &dwByte, nullptr);
+
+    if (m_isSpsk)
+    {
+        _char		szSaveSpskName[MAX_PATH];
+        strcpy_s(szSaveSpskName, m_strSpskTag.c_str());
+        WriteFile(_hFile, &szSaveSpskName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+    }
+
+    return S_OK;
+}
+
 
 
 HRESULT CMapObject::Load_Override_Material(HANDLE _hFile)
@@ -479,6 +485,23 @@ HRESULT CMapObject::Load_Override_Color(HANDLE _hFile)
     default:
         break;
     }
+    return S_OK;
+}
+
+HRESULT CMapObject::Load_Spsk(HANDLE _hFile)
+{
+    DWORD	dwByte(0);
+    _uint iSpsk =  0;
+    ReadFile(_hFile, &iSpsk, sizeof(_uint), &dwByte, nullptr);
+
+    m_isSpsk = 1 == iSpsk ? true : false;
+    if (m_isSpsk)
+    {
+        _char		szSaveSpskName[MAX_PATH];
+        ReadFile(_hFile, &szSaveSpskName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+        m_strSpskTag = szSaveSpskName;
+    }
+
     return S_OK;
 }
 

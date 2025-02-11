@@ -5,7 +5,7 @@
 
 BEGIN(Client)
 
-class C3DMapObject final : public CMapObject
+class C3DMapObject abstract : public CMapObject
 {
 public:
 	typedef struct tag3DMapObjectDesc : public CMapObject::MAPOBJ_DESC
@@ -14,9 +14,11 @@ public:
 		_bool isOverride = false;
 		// 프러스텀 컬링할지 여부를 판단한다.
 		_bool isCulling = true;
+		_bool isSpsk = false;
+		_string strSpskTag = "";
 	}MAPOBJ_3D_DESC;
 
-private:
+protected:
 	C3DMapObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	C3DMapObject(const C3DMapObject& _Prototype);
 	virtual ~C3DMapObject() = default;
@@ -36,7 +38,7 @@ public:
 	void							Set_Color_Shader_Mode(C3DModel::COLOR_SHADER_MODE _eMode) { m_eColorShaderMode = _eMode; }
 	C3DModel::COLOR_SHADER_MODE		Get_Color_Shader_Mode() { return m_eColorShaderMode; }
 
-private:
+protected:
 	_uint							m_iDiffuseIndex = 0;
 
 	C3DModel::COLOR_SHADER_MODE		m_eColorShaderMode = C3DModel::COLOR_NONE;
@@ -46,8 +48,6 @@ private:
 	_bool							m_isCulling = true;
 
 public:
-	static C3DMapObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void			Free() override;
 };
 END

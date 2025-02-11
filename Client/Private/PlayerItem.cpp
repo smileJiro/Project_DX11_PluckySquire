@@ -100,7 +100,7 @@ void CPlayerItem::Update(_float _fTimeDelta)
 
 void CPlayerItem::Late_Update(_float _fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_NONBLEND, this);
+	m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_GEOMETRY, this);
 
 	__super::Late_Update(_fTimeDelta);
 }

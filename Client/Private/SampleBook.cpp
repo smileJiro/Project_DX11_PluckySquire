@@ -43,7 +43,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	pDesc->tTransform3DDesc.fSpeedPerSec = 0.f;
 
 	pDesc->iRenderGroupID_3D = RG_3D;
-	pDesc->iPriorityID_3D = PR3D_NONBLEND;
+	pDesc->iPriorityID_3D = PR3D_GEOMETRY;
 
 	__super::Initialize(_pArg);
 	Set_AnimationLoop(COORDINATE_3D, 0, true);
@@ -188,16 +188,15 @@ HRESULT CSampleBook::Render()
 	_float2 fRightStartUV = { 0.5f, 0.f };
 	_float2 fRightEndUV = { 1.f, 1.f };
 
-	// 
-	_uint iMaxActiveSectionCount = CSection_Manager::GetInstance()->Get_MaxCurActiveSectionCount();
-	_uint iMainPageIndex = iMaxActiveSectionCount / 2;
-
 	for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
 	{
 		_uint iShaderPass = 0;
 		auto pMesh = pModel->Get_Mesh(i);
 		_uint iMaterialIndex = pMesh->Get_MaterialIndex();
 
+		
+		if (FAILED(pModel->Bind_Material_PixelConstBuffer(iMaterialIndex, pShader)))
+			return E_FAIL;
 
 		switch (iMaterialIndex)
 		{
@@ -237,7 +236,7 @@ HRESULT CSampleBook::Render()
 					if (!m_isAction)
 					{
 						if (CUR_LEFT == i || CUR_RIGHT == i)
-							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(*(SECTION_MGR->Get_Prev_Section_Key()));
+							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(SECTION_MGR->Get_Prev_Section_Key());
 						else if (NEXT_LEFT == i || NEXT_RIGHT == i)
 							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget();
 						else 
@@ -256,9 +255,9 @@ HRESULT CSampleBook::Render()
 					else if (NEXT_LEFT == i || NEXT_RIGHT == i)
 					{
 						if (SECTION_MGR->Has_Next_Section())
-							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(*(SECTION_MGR->Get_Next_Section_Key()));
+							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(SECTION_MGR->Get_Next_Section_Key());
 						else
-							if (FAILED(pModel->Bind_Material(pShader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+							if (FAILED(pModel->Bind_Material(pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, 0)))
 								continue;
 					}
 					else
@@ -271,16 +270,37 @@ HRESULT CSampleBook::Render()
 
 				if (nullptr != pResourceView)
 				{
-					pShader->Bind_SRV("g_DiffuseTexture", pResourceView);
+					pShader->Bind_SRV("g_AlbedoTexture", pResourceView);
 					iShaderPass = 4;
 				}
 		}
 		break;
 		default:
-			if (FAILED(pModel->Bind_Material(pShader, "g_DiffuseTexture", i, aiTextureType_DIFFUSE, 0)))
+			if (FAILED(pModel->Bind_Material(pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, 0)))
 			{
 				continue;
 			}
+			if (FAILED(pModel->Bind_Material(pShader, "g_NormalTexture", i, aiTextureType_NORMALS, 0)))
+			{
+				int a = 0;
+			}
+			if (FAILED(pModel->Bind_Material(pShader, "g_ORMHTexture", i, aiTextureType_BASE_COLOR, 0)))
+			{
+				int a = 0;
+			}
+			if (FAILED(pModel->Bind_Material(pShader, "g_MetallicTexture", i, aiTextureType_METALNESS, 0)))
+			{
+				int a = 0;
+			}
+			if (FAILED(pModel->Bind_Material(pShader, "g_RoughnessTexture", i, aiTextureType_DIFFUSE_ROUGHNESS, 0)))
+			{
+				int a = 0;
+			}
+			if (FAILED(pModel->Bind_Material(pShader, "g_AOTexture", i, aiTextureType_AMBIENT_OCCLUSION, 0)))
+			{
+				int a = 0;
+			}
+			
 			break;
 		}
 
@@ -353,12 +373,13 @@ _bool CSampleBook::Book_Action(BOOK_PAGE_ACTION _eAction)
 	case Client::CSampleBook::PREVIOUS:
 		if (!SECTION_MGR->Has_Prev_Section())
 			return false;
+		SECTION_MGR->SetActive_Section(SECTION_MGR->Get_Prev_Section_Key(),true);
 		m_eCurAction = PREVIOUS;
-
 		break;
 	case Client::CSampleBook::NEXT:
 		if (!SECTION_MGR->Has_Next_Section())
 			return false;
+		SECTION_MGR->SetActive_Section(SECTION_MGR->Get_Next_Section_Key(),true);
 		m_eCurAction = NEXT;
 		break;
 	case Client::CSampleBook::ACTION_LAST:
@@ -381,7 +402,7 @@ void CSampleBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 		if (NEXT == m_eCurAction)
 		{
 			if (SECTION_MGR->Has_Next_Section())
-				Event_Book_Main_Section_Change_End(SECTION_MGR->Get_Next_Section_Key()->c_str());
+				Event_Book_Main_Section_Change_End(SECTION_MGR->Get_Next_Section_Key());
 		}
 		else if (PREVIOUS == m_eCurAction)
 		{
@@ -407,7 +428,7 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 
 	if (nullptr != pGameObject)
 	{
-		const _wstring* strMoveSectionName = nullptr;
+		_wstring strMoveSectionName = L"";
 		if (FAILED(SECTION_MGR->Remove_GameObject_ToCurSectionLayer(pGameObject)))
 			return;
 
@@ -422,11 +443,13 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 				strMoveSectionName = SECTION_MGR->Get_Prev_Section_Key();
 		}
 		
-		if (nullptr != strMoveSectionName)
+		if (L"" != strMoveSectionName)
 		{
 			_vector vNewPos = XMVectorSet(m_fNextPos.x, m_fNextPos.y, 0.f, 1.f);
+
 			pGameObject->Set_Position(vNewPos);
-			if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(*strMoveSectionName,pGameObject)))
+
+			if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(strMoveSectionName, pGameObject)))
 				return;
 		}
 	}
