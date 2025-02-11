@@ -15,6 +15,8 @@
 #include "Backgorund.h"
 
 
+#include "CubeMap.h"
+
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
     , m_pContext(_pContext)
@@ -99,6 +101,16 @@ HRESULT CLoader::Loading_Level_Static()
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
+    /* For. Prototype_Component_Texture_BRDF_Shilick */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BRDF_Shilick"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/CubeMap/HDRI/BRDF_Shilick.dds"), 1))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Texture_TestEnv */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_TestEnv"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/CubeMap/HDRI/TestEnv/TestEnv_%d.dds"), 3, true))))
+        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
@@ -140,9 +152,18 @@ HRESULT CLoader::Loading_Level_Static()
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* For. Prototype_Component_VIBuffer_Cube */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
+        CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
 
+    /* For. Prototype_GameObject_CubeMap */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
+        CCubeMap::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
 
 

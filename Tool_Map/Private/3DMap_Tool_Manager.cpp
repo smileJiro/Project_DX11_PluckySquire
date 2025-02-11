@@ -53,6 +53,7 @@ HRESULT C3DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 
 	m_DefaultEgnoreLayerTags.push_back(L"Layer_Cell");
 	m_DefaultEgnoreLayerTags.push_back(L"Layer_Camera");
+	m_DefaultEgnoreLayerTags.push_back(L"Layer_CubeMap");
 
 
 	m_pMapParsingManager = CTask_Manager::Create(m_pDevice, m_pContext, m_pLogger);

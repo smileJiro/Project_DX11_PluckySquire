@@ -115,6 +115,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>.\;../Public/;../../EngineSDK/Inc/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -154,6 +155,14 @@
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Static.h" />
     <ClInclude Include="..\Public\Loader.h" />
+    <ClInclude Include="..\Public\RenderGroup_AfterEffect.h" />
+    <ClInclude Include="..\Public\RenderGroup_AfterParticle.h" />
+    <ClInclude Include="..\Public\RenderGroup_Blur.h" />
+    <ClInclude Include="..\Public\RenderGroup_Combine.h" />
+    <ClInclude Include="..\Public\RenderGroup_DirectLights.h" />
+    <ClInclude Include="..\Public\RenderGroup_DownSample.h" />
+    <ClInclude Include="..\Public\RenderGroup_Lighting.h" />
+    <ClInclude Include="..\Public\RenderGroup_WorldPos.h" />
     <ClInclude Include="..\Public\Test2DModel.h" />
     <ClInclude Include="..\Public\Test3DModel.h" />
     <ClInclude Include="..\Public\TestController_Model.h" />
@@ -181,6 +190,14 @@
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Static.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_AfterParticle.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Blur.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Combine.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_DirectLights.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_DownSample.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Lighting.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_WorldPos.cpp" />
     <ClCompile Include="..\Private\Test2DModel.cpp" />
     <ClCompile Include="..\Private\Test3DModel.cpp" />
     <ClCompile Include="..\Private\TestController_Model.cpp" />

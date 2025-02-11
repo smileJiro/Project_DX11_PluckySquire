@@ -17,6 +17,9 @@
     <Filter Include="Model">
       <UniqueIdentifier>{f0b6f478-e1e6-4595-89cd-25b105ae9a19}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RenderGroup">
+      <UniqueIdentifier>{33e3818e-c433-486a-8113-f607c59c5ec5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\TestTerrain.h" />
@@ -89,7 +92,30 @@
     <ClInclude Include="..\Public\ToolBone.h">
       <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Backgorund.h" />
+    <ClInclude Include="..\Public\RenderGroup_Lighting.h">
+      <Filter>RenderGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_WorldPos.h">
+      <Filter>RenderGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_AfterEffect.h">
+      <Filter>RenderGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_AfterParticle.h">
+      <Filter>RenderGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Blur.h">
+      <Filter>RenderGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Combine.h">
+      <Filter>RenderGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_DirectLights.h">
+      <Filter>RenderGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_DownSample.h">
+      <Filter>RenderGroup</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\TestTerrain.cpp" />
@@ -153,7 +179,30 @@
     <ClCompile Include="..\Private\ToolBone.cpp">
       <Filter>Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Backgorund.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Blur.cpp">
+      <Filter>RenderGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Combine.cpp">
+      <Filter>RenderGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_DirectLights.cpp">
+      <Filter>RenderGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_DownSample.cpp">
+      <Filter>RenderGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Lighting.cpp">
+      <Filter>RenderGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_WorldPos.cpp">
+      <Filter>RenderGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp">
+      <Filter>RenderGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_AfterParticle.cpp">
+      <Filter>RenderGroup</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tool_Animation.rc">
