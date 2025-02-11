@@ -137,7 +137,6 @@ HRESULT C3DMapSpskObject::Render_WorldPosMap()
 
     if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
         return E_FAIL;
-
     C3DModel* p3DModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(COORDINATE_3D));
     if (nullptr == p3DModel)
         return E_FAIL;

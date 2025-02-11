@@ -80,10 +80,9 @@ VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
     float4 vNDCCoord = float4(In.vTexcoord.xy, 0.0f, 1.0f);
     vNDCCoord = float4(vNDCCoord.xy * 2.0f - 1.0f, 0.0f, 1.0f);
     vNDCCoord.y *= -1.0f;
-
     Out.vPosition = vNDCCoord;
     Out.vTexcoord = In.vTexcoord;
-    Out.vWorldPos = mul(Out.vPosition, g_WorldMatrix);
+    Out.vWorldPos = mul(float4(In.vPosition, 1.0f), g_WorldMatrix);
 
     return Out;
 }
