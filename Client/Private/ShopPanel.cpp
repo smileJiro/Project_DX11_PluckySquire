@@ -54,14 +54,10 @@ void CShopPanel::Update(_float _fTimeDelta)
 	if (false == Uimgr->Get_DialogueFinishShopPanel())
 		return;
 
-	_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+	
 
 	/* 테스트용으로 m_isRender true 조건값 추가*/
-	if (true == Uimgr->Get_ShopUpdate() || true == m_isRender)
-	{
-		Cal_ShopPartPos(RTSize, Uimgr->Get_ShopPos());
-		Uimgr->Set_ShopUpdate(false);
-	}
+
 
 	
 	_float2 cursorPos = m_pGameInstance->Get_CursorPos();
@@ -81,7 +77,12 @@ void CShopPanel::Update(_float _fTimeDelta)
 		m_iPreindex = iIndex;
 	}
 
-
+	_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+	if (true == Uimgr->Get_ShopUpdate() || true == m_isRender)
+	{
+		Cal_ShopPartPos(RTSize, Uimgr->Get_ShopPos());
+		Uimgr->Set_ShopUpdate(false);
+	}
 
 	
 	if (isInPanel(cursorPos))
@@ -90,24 +91,12 @@ void CShopPanel::Update(_float _fTimeDelta)
 		return;
 	}
 	
-	
-
-
-	
-		
-	
-
-
-
-
-
-	
-
-	
 }
 
 void CShopPanel::Late_Update(_float _fTimeDelta)
 {
+
+
 	if (true == m_isRender && SHOP_CHOOSEBG != m_eShopPanel)
 	{
 		for (int i = 0; i < CUI_Manager::GetInstance()->Get_ShopPanels().size(); ++i)
@@ -1010,9 +999,3 @@ void CShopPanel::Free()
 
 	__super::Free();
 }
-
-
-
-
-
-
