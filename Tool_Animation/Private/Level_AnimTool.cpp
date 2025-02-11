@@ -8,6 +8,7 @@
 #include "Camera_Target.h"
 #include "CameraArm.h"
 #include "TestTerrain.h"
+#include "CubeMap.h"
 #include "AnimEventGenerator.h"
 
 CLevel_AnimTool::CLevel_AnimTool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -20,6 +21,7 @@ HRESULT CLevel_AnimTool::Initialize()
 	m_fDefault2DCamSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
 
 	Ready_Lights();
+	Ready_CubeMap(TEXT("Layer_CubeMap"));
 	//Ready_Layer_TestTerrain(TEXT("Terrain"));
 	//Create_Camera(TEXT("Camera"));
 	SetWindowText(g_hWnd, TEXT("애니메이션 툴입니다."));
@@ -348,23 +350,51 @@ void CLevel_AnimTool::Set_Animation(_uint _iAnimIdx, _bool _bLoop)
 
 }
 
+HRESULT CLevel_AnimTool::Ready_CubeMap(const _wstring& _strLayerTag)
+{
+	CGameObject* pCubeMap = nullptr;
+	CCubeMap::CUBEMAP_DESC Desc;
+	Desc.iCurLevelID = LEVEL_ANIMTOOL;
+	Desc.iRenderGroupID = RG_3D;
+	Desc.iPriorityID = PR3D_PRIORITY;
+	Desc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
+	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
+		LEVEL_ANIMTOOL, _strLayerTag, &pCubeMap, &Desc)))
+		return E_FAIL;
+
+	m_pGameInstance->Set_CubeMap(static_cast<CCubeMap*>(pCubeMap));
+	return S_OK;
+}
 
 HRESULT CLevel_AnimTool::Ready_Lights()
 {
+	CONST_LIGHT LightDesc{};
 
-	LIGHT_DESC LightDesc{};
-
+	/* 방향성광원*/
 	ZeroMemory(&LightDesc, sizeof LightDesc);
 
-	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTOINAL;
-	LightDesc.vDirection = _float4(-1.f, -1.f, 0.5f, 0.f);
-	LightDesc.vDiffuse = _float4(1.0f, 1.0f, 1.0f, 1.f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vDirection = { 0.0f, -1.0f, 1.0f };
+	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
 		return E_FAIL;
 
+	/* 점광원 */
+	ZeroMemory(&LightDesc, sizeof LightDesc);
+	LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
+	LightDesc.fFallOutStart = 20.0f;
+	LightDesc.fFallOutEnd = 1000.0f;
+	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
+		return E_FAIL;
 
 	return S_OK;
 }

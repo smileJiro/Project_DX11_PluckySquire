@@ -160,11 +160,14 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 {
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update ¼öÇà ÈÄ, DeadObject Safe_Release() + erase();
-	
+
 
 #ifdef _DEBUG
-	m_pNewRenderer->Update_Imgui();
-	m_pImgui_Manager->Imgui_Debug_Render();
+	if (m_pNewRenderer)
+	{
+		m_pNewRenderer->Update_Imgui();
+		m_pImgui_Manager->Imgui_Debug_Render();
+	}
 #endif
 
 

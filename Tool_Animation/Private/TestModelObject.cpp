@@ -46,9 +46,9 @@ void CTestModelObject::Late_Update(_float _fTimeDelta)
 {
     /* Add Render Group */
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
-        m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
+        Register_RenderGroup(RG_3D, PR3D_GEOMETRY);
     else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
-        m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
+        Register_RenderGroup(RG_3D, PR3D_UI);
 	CPartObject::Late_Update(_fTimeDelta);
 }
 

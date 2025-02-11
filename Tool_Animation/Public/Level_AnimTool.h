@@ -38,6 +38,8 @@ public:
 
 private:
 	HRESULT					Ready_Lights();
+	HRESULT					Ready_CubeMap(const _wstring& _strLayerTag);
+
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
 	HRESULT					Create_Camera(const _wstring& _strLayerTag,CGameObject* _pTarget);
 
