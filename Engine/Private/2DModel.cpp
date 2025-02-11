@@ -55,11 +55,11 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		std::filesystem::path path = szDrive;
 		path += szTextureName;
 		path += ".png";
-		CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, path.c_str());
+		CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, path.c_str(), 1, true);
 		if (nullptr == pTexture)
 		{
 			path.replace_extension(".dds");
-			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, path.c_str());
+			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, path.c_str(), 1, true);
 			if (nullptr == pTexture)
 			{
 				inFile.close();

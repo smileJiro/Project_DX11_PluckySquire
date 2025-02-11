@@ -13,17 +13,20 @@ private:
 	virtual ~CLight() = default;
 
 public:
-	const CONST_LIGHT* Get_LightDesc() const {
-		return &m_tLightConstData;
-	}
+
 
 public:
 	HRESULT Initialize(const CONST_LIGHT& _LightDesc);
-	void Update(_float _fTimeDelta);
-	void Late_Update(_float _fTimeDelta);
 	HRESULT Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer);
 
 public:
+	// Get
+	const CONST_LIGHT* Get_LightDesc_Ptr() const { return &m_tLightConstData; }
+	CONST_LIGHT Get_LightDesc() const { return m_tLightConstData; }
+	LIGHT_TYPE Get_Type() const { return m_eType; }
+
+
+	// Set
 	HRESULT Set_LightConstData_AndUpdateBuffer(const CONST_LIGHT& _LightConstData);
 
 private:

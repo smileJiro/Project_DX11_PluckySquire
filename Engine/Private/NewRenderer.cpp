@@ -186,6 +186,32 @@ HRESULT CNewRenderer::Erase_DSV(const _wstring _strDSVTag)
 	return S_OK;
 }
 
+HRESULT CNewRenderer::Load_IBL(const _wstring& _strIBLJsonPath)
+{
+	const std::string filePathIBL = m_pGameInstance->WStringToString(_strIBLJsonPath);
+	std::ifstream inputFile(filePathIBL);
+	if (!inputFile.is_open()) {
+		throw std::runtime_error("파일을 열 수 없습니다: " + filePathIBL);
+		return E_FAIL;
+	}
+	json jsonIBL;
+	inputFile >> jsonIBL;
+	CONST_IBL tIBLConstData = {};
+
+	tIBLConstData.fExposure = jsonIBL["fExposure"];
+	tIBLConstData.fGamma = jsonIBL["fGamma"];
+	tIBLConstData.fHDRMaxLuminance = jsonIBL["fHDRMaxLuminance"];
+	tIBLConstData.fRoughnessToMipFactor = jsonIBL["fRoughnessToMipFactor"];
+	tIBLConstData.fStrengthIBL = jsonIBL["fStrengthIBL"];
+	tIBLConstData.iSpecularBaseMipLevel = jsonIBL["iSpecularBaseMipLevel"];
+	tIBLConstData.iToneMappingFlag = jsonIBL["iToneMappingFlag"];
+
+	Set_GlobalIBLData(tIBLConstData, true);
+
+	inputFile.close();
+	return S_OK;
+}
+
 void CNewRenderer::Update_Imgui()
 {
 	for (auto& Pair : m_RenderGroups)

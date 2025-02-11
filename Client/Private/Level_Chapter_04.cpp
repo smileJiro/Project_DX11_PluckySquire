@@ -269,32 +269,36 @@ HRESULT CLevel_Chapter_04::Render()
 
 HRESULT CLevel_Chapter_04::Ready_Lights()
 {
-	CONST_LIGHT LightDesc{};
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
 
-	/* ¹æÇâ¼º±¤¿ø*/
-	ZeroMemory(&LightDesc, sizeof LightDesc);
 
-	LightDesc.vDirection = { 0.0f, -1.0f, 1.0f };
-	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
-	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	//CONST_LIGHT LightDesc{};
 
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
-		return E_FAIL;
+	///* ¹æÇâ¼º±¤¿ø*/
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
 
-	/* Á¡±¤¿ø */
-	ZeroMemory(&LightDesc, sizeof LightDesc);
-	LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
-	LightDesc.fFallOutStart = 20.0f;
-	LightDesc.fFallOutEnd = 1000.0f;
-	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
-	LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
-	
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
-		return E_FAIL;
+	//LightDesc.vDirection = { 0.0f, -1.0f, 1.0f };
+	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	//LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	//LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	//LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+	//	return E_FAIL;
+
+	///* Á¡±¤¿ø */
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
+	//LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
+	//LightDesc.fFallOutStart = 20.0f;
+	//LightDesc.fFallOutEnd = 1000.0f;
+	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	//LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+	//LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	//LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+	//
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
+	//	return E_FAIL;
 
 
 	return S_OK;
