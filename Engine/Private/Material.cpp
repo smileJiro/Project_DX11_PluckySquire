@@ -7,6 +7,21 @@ CMaterial::CMaterial(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	ZeroMemory(m_MaterialTextures, sizeof(m_MaterialTextures));
 }
 
+CMaterial::CMaterial(const CMaterial& _Rhs)
+	:CComponent(_Rhs)
+{
+	for (_uint i = 0; i < aiTextureType_UNKNOWN; ++i)
+	{
+		m_MaterialTextures[i] = _Rhs.m_MaterialTextures[i];
+		Safe_AddRef(m_MaterialTextures[i]);
+	}
+
+
+	// 이 두 데이터는 복사하지 않는다. 추후 CloneInitialize
+	// CONST_PS m_tPixelConstData = {};
+	//ID3D11Buffer* m_pPixeConstBuffer = nullptr;
+}
+
 HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 {
 	//cout << m_iNumSRVs << endl;
@@ -51,7 +66,28 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 			ID3D11ShaderResourceView* pSRV = { nullptr };
 			HRESULT		hr = {};
 			if (false == strcmp(szExt, ".dds") || false == strcmp(szExt, ".DDS"))
-				hr = CreateDDSTextureFromFile(m_pDevice, szWideFullPath, nullptr, &pSRV);
+			{
+				if (aiTextureType_DIFFUSE == texIdx || aiTextureType_EMISSIVE == texIdx || aiTextureType_EMISSION_COLOR == texIdx)
+				{
+					hr = DirectX::CreateDDSTextureFromFileEx(
+						m_pDevice,               // Direct3D 장치
+						szWideFullPath,             // DDS 파일 경로
+						0,                       // 최대 텍스처 크기 (0은 제한 없음)
+						D3D11_USAGE_DEFAULT,     // 리소스 사용 방법
+						D3D11_BIND_SHADER_RESOURCE, // 바인딩 플래그
+						0,                       // CPU 접근 플래그
+						0,                       // 기타 플래그
+						DirectX::DDS_LOADER_FORCE_SRGB, // sRGB 강제 적용
+						nullptr,                 // 생성된 텍스처 리소스 (필요 시 포인터 제공)
+						&pSRV                    // 생성된 셰이더 리소스 뷰
+					);
+
+				}
+				else
+				{
+					hr = DirectX::CreateDDSTextureFromFile(m_pDevice, szWideFullPath, nullptr, &pSRV);
+				}
+			}
 			else if (false == strcmp(szExt, ".tga"))
 				return E_FAIL;
 			else

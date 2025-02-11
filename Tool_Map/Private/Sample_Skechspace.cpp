@@ -56,7 +56,7 @@ void CSample_Skechspace::Update(_float _fTimeDelta)
 
 void CSample_Skechspace::Late_Update(_float _fTimeDelta)
 {
-    Register_RenderGroup(RG_3D, PRIORITY_3D::PR3D_NONBLEND);
+    Register_RenderGroup(RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
 
     __super::Update(_fTimeDelta);
 }
@@ -84,7 +84,7 @@ HRESULT CSample_Skechspace::Render()
         }
         else
         {
-            if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_DiffuseTexture", TEXT("Target_2D"))))
+            if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_AlbedoTexture", TEXT("Target_2D"))))
                 return E_FAIL;
         }
 

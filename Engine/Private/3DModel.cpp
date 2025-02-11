@@ -15,7 +15,6 @@ C3DModel::C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 C3DModel::C3DModel(const C3DModel& _Prototype)
 	: CModel(_Prototype)
-
 	, m_iNumMeshes(_Prototype.m_iNumMeshes)
 	, m_Meshes(_Prototype.m_Meshes)
 	, m_iNumMaterials{ _Prototype.m_iNumMaterials }

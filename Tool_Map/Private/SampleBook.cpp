@@ -59,7 +59,7 @@ void CSampleBook::Update(_float _fTimeDelta)
 
 void CSampleBook::Late_Update(_float _fTimeDelta)
 {
-    Register_RenderGroup(RG_3D, PRIORITY_3D::PR3D_NONBLEND);
+    Register_RenderGroup(RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
 
     __super::Update(_fTimeDelta);
 }

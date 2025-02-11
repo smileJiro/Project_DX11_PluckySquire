@@ -54,7 +54,7 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 				Switch_RunAnimation3D(bSneak);
 				m_bSneakBefore = bSneak;
 			}
-			fMoveSpeed  = bSneak ? fMoveSpeed*0.5 : fMoveSpeed;
+			fMoveSpeed  = bSneak ? fMoveSpeed * 0.5f : fMoveSpeed;
 		}
 		m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* fMoveSpeed, _fTimeDelta);
 

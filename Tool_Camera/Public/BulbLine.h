@@ -2,9 +2,19 @@
 #include "Engine_Defines.h"
 #include "GameObject.h"
 
+BEGIN(Engine)
+class CModelObject;
+END
+
 BEGIN(Camera_Tool)
 class CBulbLine final : public CBase
 {
+public:
+	typedef struct tagBulbLineDesc : public CModelObject::MODELOBJECT_DESC
+	{
+		_float fBulbPosOffset = {};
+	}BULBLINE_DESC;
+
 private:
 	CBulbLine(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CBulbLine(const CBulbLine& _Prototype);
@@ -18,7 +28,10 @@ public:
 	void				Late_Update(_float fTimeDelta);
 
 public:
-	void				Set_Line(CGameObject* _pPoint);
+	pair<CModelObject*, CModelObject*>* Get_Line() { return &m_Line; }
+
+public:
+	void				Add_Point(CModelObject* _pPoint);
 
 private:
 	ID3D11Device*						m_pDevice = { nullptr };
@@ -26,8 +39,14 @@ private:
 	CGameInstance*						m_pGameInstance = { nullptr };
 
 private:
-	pair<CGameObject*, CGameObject*>	m_Line;
+	pair<CModelObject*, CModelObject*>	m_Line;
 	vector<class CBulb*>				m_Bulbs;
+
+	_float								m_fBulbPosOffset = {};
+
+private:
+	void				Create_Bulbs();
+	void				Create_Bulb();
 
 public:
 	static CBulbLine*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* pArg);

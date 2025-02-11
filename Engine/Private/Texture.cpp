@@ -20,10 +20,9 @@ CTexture::CTexture(const CTexture& _Prototype)
 
 }
 
-HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isCubeMap)
+HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isSRGB, _bool _isCubeMap)
 {
 	/* TextureFilePath 에서 확장자의 이름, %d >>> 숫자로 바꾸기, 등을 수행 후 Load 하고 m_SRVs 에 Pushback */
-
 	m_iNumSRVs = _iNumTextures;
 
 	_tchar szTextureFilePath[MAX_PATH] = TEXT("");
@@ -60,7 +59,26 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 			}
 			else
 			{
-				hr = DirectX::CreateDDSTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
+				if (true == _isSRGB)
+				{
+					hr = DirectX::CreateDDSTextureFromFileEx(
+						m_pDevice,               // Direct3D 장치
+						szTextureFilePath,             // DDS 파일 경로
+						0,                       // 최대 텍스처 크기 (0은 제한 없음)
+						D3D11_USAGE_DEFAULT,     // 리소스 사용 방법
+						D3D11_BIND_SHADER_RESOURCE, // 바인딩 플래그
+						0,                       // CPU 접근 플래그
+						0,                       // 기타 플래그
+						DirectX::DDS_LOADER_FORCE_SRGB, // sRGB 강제 적용
+						nullptr,                 // 생성된 텍스처 리소스 (필요 시 포인터 제공)
+						&pSRV                    // 생성된 셰이더 리소스 뷰
+					);
+				}
+				else
+				{
+					hr = DirectX::CreateDDSTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
+				}
+				//hr = DirectX::CreateDDSTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
 			}
 
 		}
@@ -83,7 +101,7 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 	return S_OK;
 }
 
-HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isCubeMap)
+HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isSRGB, _bool _isCubeMap)
 {
 	m_iNumSRVs = _iNumTextures;
 
@@ -123,7 +141,27 @@ HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _i
 			}
 			else
 			{
-				hr = DirectX::CreateDDSTextureFromFile(m_pDevice, wszFullPath, nullptr, &pSRV);
+				if (true == _isSRGB)
+				{
+					hr = DirectX::CreateDDSTextureFromFileEx(
+						m_pDevice,               // Direct3D 장치
+						wszFullPath,             // DDS 파일 경로
+						0,                       // 최대 텍스처 크기 (0은 제한 없음)
+						D3D11_USAGE_DEFAULT,     // 리소스 사용 방법
+						D3D11_BIND_SHADER_RESOURCE, // 바인딩 플래그
+						0,                       // CPU 접근 플래그
+						0,                       // 기타 플래그
+						DirectX::DDS_LOADER_FORCE_SRGB, // sRGB 강제 적용
+						nullptr,                 // 생성된 텍스처 리소스 (필요 시 포인터 제공)
+						&pSRV                    // 생성된 셰이더 리소스 뷰
+					);
+				}
+				else
+				{
+					hr = DirectX::CreateDDSTextureFromFile(m_pDevice, wszFullPath, nullptr, &pSRV);
+				}
+
+
 			}
 		}
 		else if (false == strcmp(szEXT, ".tga"))

@@ -11,6 +11,10 @@
 #include "ModelObject.h"
 #include "Layer.h"
 
+#include "BulbLine.h"
+#include "Bulb.h"
+#include "Test_Terrain.h"
+
 CLevel_Trigger_Tool::CLevel_Trigger_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
 {
@@ -328,27 +332,37 @@ void CLevel_Trigger_Tool::Show_BulbTool()
 {
 	ImGui::Begin("Bulb Tool");
 
-	Set_TriggerBasicInfo();
-	Set_TriggerInfoByType();
+	Set_BulbBasicInfo();
+	//Set_TriggerInfoByType();
 
 	ImGui::NewLine();
-	ImGui::Checkbox("Create Trigger", &m_isCreate);
+	ImGui::Checkbox("Create Bulb By Line", &m_isCreateByLine);
 	ImGui::SameLine();
-	ImGui::Checkbox("Edit Trigger", &m_isEdit);
+	ImGui::Checkbox("Create Bulb By Point", &m_isCreateByPoint);
+	ImGui::SameLine();
+	ImGui::Checkbox("Edit Bulb", &m_isEditBulb);
+	
+	Show_BulbInfo();
+	//Set_CurTrigger();
+	//Delete_Trigger();
 
-	Set_CurTrigger();
-	Delete_Trigger();
-
-	if (true == m_isCreate && false == m_isEdit) {
-		Create_Trigger();
-
+	if (true == m_isCreateByLine && false == m_isCreateByPoint && false == m_isEditBulb) {
+		Create_Bulb_ByLine();
 	}
 
-	if (false == m_isCreate && true == m_isEdit) {
-		Edit_Trigger();
+	if (false == m_isCreateByLine && true == m_isCreateByPoint && false == m_isEditBulb) {
+		Create_Bulb_ByPoint();
+	}
+
+	if (false == m_isCreateByLine && false == m_isCreateByPoint && true == m_isEditBulb) {
+		Edit_Bulb();
 	}
 
 	ImGui::End();
+}
+
+void CLevel_Trigger_Tool::Show_BulbInfo()
+{
 }
 
 void CLevel_Trigger_Tool::Show_TriggerTypeListBox()
@@ -1261,9 +1275,123 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 	}
 }
 
-void CLevel_Trigger_Tool::Create_Bulb()
+void CLevel_Trigger_Tool::Create_Bulb_ByLine()
+{
+	if (KEY_PRESSING(KEY::CTRL)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+
+			if (false == m_isCreateByLine)
+				return;
+
+			_float2 fMousePos = m_pGameInstance->Get_CursorPos();
+
+			if (0 > fMousePos.x || g_iWinSizeX < fMousePos.x || 0 > fMousePos.y || g_iWinSizeY < fMousePos.y)
+				return;
+
+			_vector vRayPos, vRayDir;
+
+			Get_RayInfo(&vRayPos, &vRayDir);
+
+			_float fDist = {};
+
+			for (auto& BulbLine : m_BulbLines) {
+				pair<CModelObject*, CModelObject*>* pLine = BulbLine->Get_Line();
+
+				if (true == pLine->first->Is_PickingCursor_Model(fMousePos, fDist)
+					|| true == pLine->second->Is_PickingCursor_Model(fMousePos, fDist)) {
+					return;
+				}
+			}
+
+			if (nullptr != m_pMakingBulbLine) {
+				pair<CModelObject*, CModelObject*>* pLine = m_pMakingBulbLine->Get_Line();
+
+				if (true == pLine->first->Is_PickingCursor_Model(fMousePos, fDist)) {
+					return;
+				}
+
+				pLine->second = dynamic_cast<CModelObject*>(Create_BulbPoint());
+				
+				m_BulbLines.push_back(m_pMakingBulbLine);
+				m_pMakingBulbLine = nullptr;
+			}
+			else {
+				CBulbLine::BULBLINE_DESC Desc;
+				Desc.fBulbPosOffset = m_fBulbPosOffset;
+
+				CBulbLine* pBulbLine = CBulbLine::Create(m_pDevice, m_pContext, &Desc);
+				pBulbLine->Add_Point(dynamic_cast<CModelObject*>(Create_BulbPoint()));
+
+				m_pMakingBulbLine = pBulbLine;
+			}
+		}
+	}
+}
+
+void CLevel_Trigger_Tool::Create_Bulb_ByPoint()
+{
+	
+}
+
+void CLevel_Trigger_Tool::Edit_Bulb()
 {
 }
+
+CGameObject* CLevel_Trigger_Tool::Create_BulbPoint()
+{
+	CTest_Terrain::MODELOBJECT_DESC TerrainDesc{};
+
+	TerrainDesc.eStartCoord = COORDINATE_3D;
+	TerrainDesc.iCurLevelID = LEVEL_TRIGGER_TOOL;
+	TerrainDesc.isCoordChangeEnable = false;
+	TerrainDesc.iModelPrototypeLevelID_3D = LEVEL_TRIGGER_TOOL;
+
+	TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+	TerrainDesc.strModelPrototypeTag_3D = TEXT("alphabet_blocks_d_mesh");
+
+	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+
+	TerrainDesc.tTransform3DDesc.vInitialPosition = m_vPosition;
+	TerrainDesc.tTransform3DDesc.vInitialScaling = _float3(0.1f, 0.1f, 0.1f);
+	TerrainDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
+
+	CGameObject* pCube;
+
+	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TRIGGER_TOOL, TEXT("Prototype_GameObject_Test_Terrain"), LEVEL_TRIGGER_TOOL, TEXT("Layer_Cube"), &pCube, &TerrainDesc);
+	Safe_AddRef(pCube);
+
+	return pCube;
+}
+
+void CLevel_Trigger_Tool::Set_BulbBasicInfo()
+{
+	ImGui::NewLine();
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("Bulb Info");
+	ImGui::Separator();
+
+	ImGui::Text("Position: %.2f, %.2f, %.2f", m_vPosition.x, m_vPosition.y, m_vPosition.z);
+	ImGui::SameLine();
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##BulbX", &m_vPosition.x, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##BulbY", &m_vPosition.y, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##BulbZ", &m_vPosition.z, 0.1f);
+
+	ImGui::Text("Bulb PosOffset: %.2f", m_fBulbPosOffset);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##BulbPosOffset", &m_fBulbPosOffset, 0.1f);
+}
+
 
 _float3 CLevel_Trigger_Tool::Quaternion_ToEuler(const _float4 _q)
 {
@@ -1297,6 +1425,13 @@ void CLevel_Trigger_Tool::Free()
 
 	if(nullptr != m_pCurTrigger)
 		Safe_Release(m_pCurTrigger->second);
+
+	for (auto& BulbLine : m_BulbLines) {
+		Safe_Release(BulbLine);
+	}
+
+	Safe_Release(m_pMakingBulbLine);
+	Safe_Release(m_pCurBulbLine);
 
 	__super::Free();
 }

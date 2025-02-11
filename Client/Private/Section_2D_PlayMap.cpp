@@ -8,12 +8,12 @@
 #include "MapObjectFactory.h"
 #include "Trigger_Manager.h"
 
-CSection_2D_PlayMap::CSection_2D_PlayMap(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:CSection_2D(_pDevice, _pContext)
+CSection_2D_PlayMap::CSection_2D_PlayMap(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_RENDER_TYPE _eRenderType)
+	:CSection_2D(_pDevice, _pContext, PLAYMAP, _eRenderType)
 {
 }
 
-HRESULT CSection_2D_PlayMap::Initialize(SECTION_2D_DESC* _pDesc, _uint _iPriorityKey)
+HRESULT CSection_2D_PlayMap::Initialize(SECTION_2D_PLAYMAP_DESC* _pDesc, _uint _iPriorityKey)
 {
 	if (FAILED(__super::Initialize(_pDesc, _iPriorityKey)))
 		return E_FAIL;
@@ -64,7 +64,6 @@ HRESULT CSection_2D_PlayMap::Import(json _SectionJson, _uint _iPriorityKey)
 						hFile);
 				if (nullptr != pGameObject)
 				{
-					pGameObject->Set_Active(false);
 					Event_CreateObject(pGameObject->Get_CurLevelID(), L"Layer_2DMapObject", pGameObject);
 
 					Safe_AddRef(pGameObject);
@@ -122,31 +121,6 @@ HRESULT CSection_2D_PlayMap::Section_AddRenderGroup_Process()
 	return S_OK;
 }
 
-CSection_2D_PlayMap* CSection_2D_PlayMap::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iPriorityKey, SECTION_2D_DESC* _pDesc)
-{
-	CSection_2D_PlayMap* pInstance = new CSection_2D_PlayMap(_pDevice, _pContext);
-
-	if (FAILED(pInstance->Initialize(_pDesc, _iPriorityKey)))
-	{
-		MSG_BOX("Failed Create CSection_2D_PlayMap");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-
-CSection_2D_PlayMap* CSection_2D_PlayMap::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iPriorityKey, json _SectionJson)
-{
-	CSection_2D_PlayMap* pInstance = new CSection_2D_PlayMap(_pDevice, _pContext);
-
-	if (FAILED(pInstance->Import(_SectionJson, _iPriorityKey)))
-	{
-		MSG_BOX("Failed Create CSection_2D_PlayMap");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
 void CSection_2D_PlayMap::Free()
 {
 	__super::Free();
