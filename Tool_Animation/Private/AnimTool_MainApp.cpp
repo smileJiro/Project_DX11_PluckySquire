@@ -13,6 +13,7 @@
 #include "RenderGroup_Lighting.h"
 #include "RenderGroup_AfterEffect.h"
 #include "RenderGroup_Combine.h"
+#include "CubeMap.h"
 
 CAnimTool_MainApp::CAnimTool_MainApp()
 	: m_pGameInstance(CGameInstance::GetInstance())
