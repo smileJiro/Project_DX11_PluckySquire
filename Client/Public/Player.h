@@ -489,11 +489,13 @@ private:
 	_float m_fAttackForwardingForce = 12.f;
 	_float m_fGroundRotateSpeed = 360.f;
 	_float m_fStepSlopeThreshold = 0.1f;
+	_float m_f3DLandAnimHeightThreshold= 0.6f;
 	//_float m_fFootHeightThreshold = 0.1f;
 	_float m_f3DJumpPower = 11.f;
 	_float m_fAirRotateSpeed = 40.f;
 	_float m_fAirRunSpeed = 10.f;
 	_float m_f3DMoveSpeed= 10.f;
+	_float m_f3DHeight = 0;
 	_bool m_bOnGround = false;
 	_bool m_bAttackTrigger = false;
 	_uint m_iSpinAttackLevel = 4;

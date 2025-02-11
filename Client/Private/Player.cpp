@@ -119,9 +119,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
     ShapeData.iShapeUse = SHAPE_TRIGER;
     ShapeData.isTrigger = true;                    
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, 0.5, 0)); //여기임
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_fCenterHeight, 0)); //여기임
     SHAPE_SPHERE_DESC SphereDesc = {};
-	SphereDesc.fRadius = 0.5f;
+	SphereDesc.fRadius = 1.5f;
     ShapeData.pShapeDesc = &SphereDesc;
 
     ActorDesc.ShapeDatas.push_back(ShapeData);
@@ -353,19 +353,51 @@ void CPlayer::Late_Update(_float _fTimeDelta)
     {
         m_f2DUpForce -= 9.8f * _fTimeDelta * 300;
 
-        m_f2DHeight += m_f2DUpForce * _fTimeDelta;
-        if (0 > m_f2DHeight)
+        m_f2DFloorDistance += m_f2DUpForce * _fTimeDelta;
+        if (0 > m_f2DFloorDistance)
         {
-            m_f2DHeight = 0;
+            m_f2DFloorDistance = 0;
             m_bOnGround = true;
             m_f2DUpForce = 0;
         }
-        else if (0 == m_f2DHeight)
+        else if (0 == m_f2DFloorDistance)
             m_bOnGround = true;
         else
             m_bOnGround = false;
         // cout << "Upforce :" << m_f2DUpForce << " Height : " << m_f2DHeight << endl;
-        m_pBody->Set_Position({ 0,m_f2DHeight,0 });
+        m_pBody->Set_Position({ 0,m_f2DFloorDistance,0 });
+    }
+    else
+    {
+		_vector vPlayerPos = Get_FinalPosition();
+        _float3 vOrigin;
+        XMStoreFloat3(&vOrigin, vPlayerPos);
+        _float3 vRayDir = { 0,-1,0 };
+        list<CActorObject*> hitActors;
+        list<RAYCASTHIT> raycasthits;
+        if (m_pGameInstance->RayCast(vOrigin, vRayDir, 100, hitActors, raycasthits))
+        {
+            auto& iterHitPoint = raycasthits.begin();
+            for (auto& pActor : hitActors)
+            {
+                if (nullptr != pActor && pActor != this 
+                    && OBJECT_GROUP::MAPOBJECT == pActor->Get_CollisionGroupID())//맵과 닿음.
+				{
+					if (iterHitPoint->vNormal.y > m_fStepSlopeThreshold)//닿은 곳의 경사가 너무 급하지 않으면
+					{
+						_float fOtherAbsHeight = iterHitPoint->vPosition.y + m_fCenterHeight;
+						if (m_f3DFloorDistance > vPlayerPos.m128_f32[1])
+						{
+							m_pControllerTransform->Set_PositionY(fHeight);
+							m_bOnGround = true;
+						}
+					}
+
+                }
+                iterHitPoint++;
+            }
+        }
+        
     }
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
     //cout << endl;
@@ -395,17 +427,7 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
     switch (eShapeUse)
     {
     case Client::CPlayer::SHAPE_BODY:
-        for (auto& pxPairData : _ContactPointDatas)
-        {
-            if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
-            {
-                _vector vContactNormal = { pxPairData.normal.x,pxPairData.normal.y,pxPairData.normal.z };
-                if (abs(pxPairData.normal.y) < m_fStepSlopeThreshold)
-                {
-                    Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
-                }
-            }
-        }
+
         break;
     case Client::CPlayer::SHAPE_FOOT:
         //cout << "   COntatct Enter";
@@ -438,13 +460,6 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
     switch (eShapeUse)
     {
     case Client::CPlayer::SHAPE_BODY:
-        //for (auto& pxPairData : _ContactPointDatas)
-        //{
-        //    if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
-        //    {
-
-        //    }
-        //}
         break;
     case Client::CPlayer::SHAPE_FOOT:
         for (auto& pxPairData : _ContactPointDatas)
@@ -477,18 +492,7 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
     switch (eShapeUse)
     {
     case Client::CPlayer::SHAPE_BODY:
-        for (auto& pxPairData : _ContactPointDatas)
-        {
-            if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
-            {
-                _vector vContactNormal = { pxPairData.normal.x,pxPairData.normal.y,pxPairData.normal.z };
-                if (abs(pxPairData.normal.y) < m_fStepSlopeThreshold)
-                {
-                    Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
-                }
-            }
 
-        }
         break;
     case Client::CPlayer::SHAPE_FOOT:
         //cout << "   COntatct Exit";
@@ -517,7 +521,13 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 
 void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-
+    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
+    switch (eShapeUse)
+    {
+    case Client::CPlayer::SHAPE_TRIGER:
+        Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
+        break;
+    }
 
 }
 
@@ -544,7 +554,13 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    int a = 0;
+    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
+    switch (eShapeUse)
+    {
+    case Client::CPlayer::SHAPE_TRIGER:
+        Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
+        break;
+    }
 }
 
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -668,7 +684,6 @@ void CPlayer::Move_Forward(_float fVelocity, _float _fTimeDelta)
     }
 
 }
-
 
 void CPlayer::Jump()
 {		/* Test Jump */

@@ -221,7 +221,6 @@ _bool CPlayerState_JumpDown::Try_Clamber()
 				}
 				iterHitPoint++;
 			}
-
 		}
 	}
 	//벽이 이미 감지됨 -> 팔 높이를 넘어가는지 체크
@@ -234,7 +233,6 @@ _bool CPlayerState_JumpDown::Try_Clamber()
 		if (m_fArmYPositionBefore> m_fWallYPosition
 			&& fArmYPositionCurrent <= m_fWallYPosition)
 		{
-
 			_float3 vOrigin;
 			XMStoreFloat3(&vOrigin, vPlayerPos + _vector{ 0,m_fArmHeight,0 } );
 			_float3 vRayDir; 
