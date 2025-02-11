@@ -30,8 +30,8 @@ private:
 	SPIN_STATE m_eSpinState = SPIN_CHARGING;
 	_bool m_bLaunchInput = false;
 	_float m_fSpinMoveSpeed = 0;
-	_float m_fLaunchableProgress3D = 0.f;
-	_float m_fLaunchableProgress2D = 0.f;
+	_float m_fLaunchableProgress3D = 0.5f;
+	_float m_fLaunchableProgress2D = 0.5f;
     _int m_iSpinCount = 0;
     _int m_iSpinAttackLevel= 0;
 };
