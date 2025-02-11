@@ -12,7 +12,10 @@
 #include "TestModelObject.h"
 #include "Camera_Target.h"
 #include "TestTerrain.h"
+#include "Backgorund.h"
 
+
+#include "CubeMap.h"
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -98,6 +101,16 @@ HRESULT CLoader::Loading_Level_Static()
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
+    /* For. Prototype_Component_Texture_BRDF_Shilick */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BRDF_Shilick"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/CubeMap/HDRI/BRDF_Shilick.dds"), 1))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Texture_TestEnv */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_TestEnv"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/CubeMap/HDRI/TestEnv/TestEnv_%d.dds"), 3, true))))
+        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
@@ -139,9 +152,18 @@ HRESULT CLoader::Loading_Level_Static()
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* For. Prototype_Component_VIBuffer_Cube */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
+        CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
 
+    /* For. Prototype_GameObject_CubeMap */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
+        CCubeMap::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
 
 
@@ -165,15 +187,8 @@ HRESULT CLoader::Loading_Level_AnimTool()
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
-    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
-
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_ANIMTOOL, TEXT("WoodenPlatform_01"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_ANIMTOOL, TEXT("Latch_SkelMesh_NewRig"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/Latch_SkelMesh_NewRig.model", matPretransform))))
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_ANIMTOOL, TEXT("Prototype_Component_Background"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Background.png"), true))))
         return E_FAIL;
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
@@ -187,9 +202,10 @@ HRESULT CLoader::Loading_Level_AnimTool()
         CCamera_Target::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     /* For. Prototype_GameObject_TestTerrain */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_ANIMTOOL, TEXT("Prototype_GameObject_TestTerrain"),
-        CTestTerrain::Create(m_pDevice, m_pContext))))
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_ANIMTOOL, TEXT("Prototype_GameObject_BackGround"),
+        CBackgorund::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
 

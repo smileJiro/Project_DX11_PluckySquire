@@ -207,7 +207,6 @@ _bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, 
 	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
 
 	_bool isResult = m_pPxScene->raycast(vOrigin, vRayDir, _fMaxDistance, hit);
-
 	for (PxU32 i = 0; i < hit.nbTouches; i++) {
 		PxRigidActor* pActor = hit.touches[i].actor;
 		ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
@@ -216,6 +215,67 @@ _bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, 
 
 		_OutRaycastHits.push_back({ _float3{ hit.touches[i].position.x, hit.touches[i].position.y, hit.touches[i].position.z }
 		, _float3{hit.touches[i].normal.x,hit.touches[i].normal.y,hit.touches[i].normal.z}});
+	}
+	return isResult;
+}
+
+_bool CPhysx_Manager::Overlap(SHAPE_TYPE		_eShapeType ,SHAPE_DESC* _pShape, _fvector _vPos, list<CActorObject*>& _OutActors)
+{
+	// 1. 검사할 기하학: 반지름 1의 구
+	PxGeometry* pxGeom = nullptr;
+	switch (_eShapeType)
+	{
+	case Engine::SHAPE_TYPE::BOX:
+	{
+		SHAPE_BOX_DESC* pBoxDesc = static_cast<SHAPE_BOX_DESC*>(_pShape);
+		pxGeom = new  PxBoxGeometry(pBoxDesc->vHalfExtents.x, pBoxDesc->vHalfExtents.y, pBoxDesc->vHalfExtents.z);
+		break;
+	}
+	case Engine::SHAPE_TYPE::SPHERE:
+	{
+		SHAPE_SPHERE_DESC* pSphereDesc = static_cast<SHAPE_SPHERE_DESC*>(_pShape);
+		pxGeom = new  PxSphereGeometry(pSphereDesc->fRadius);
+		break;
+	}
+	case Engine::SHAPE_TYPE::CAPSULE:
+	{
+		SHAPE_CAPSULE_DESC* pCapsuleDesc = static_cast<SHAPE_CAPSULE_DESC*>(_pShape);
+		pxGeom = new  PxCapsuleGeometry(pCapsuleDesc->fRadius, pCapsuleDesc->fHalfHeight);
+		break;
+	}
+	default:
+		break;
+	}
+	if (nullptr == pxGeom)
+	{
+		return false;
+	}
+	_bool isResult = Overlap(pxGeom, _vPos, _OutActors);
+	delete pxGeom;
+	return isResult;
+}
+
+_bool CPhysx_Manager::Overlap(PxGeometry* _pxGeom, _fvector _vPos, list<CActorObject*>& _OutActors)
+{
+	// 2. 기하학의 시작 위치와 회전
+	PxTransform pxPose(PxVec3(XMVectorGetX(_vPos), XMVectorGetY(_vPos), XMVectorGetZ(_vPos)), PxQuat(PxIdentity));
+
+	// 3. 결과를 저장할 overlap 버퍼 생성
+	PxOverlapHit hits[10];
+	PxOverlapBuffer pxOverlapBuffer(hits, 10);
+
+	// 4. Overlap 쿼리 수행
+	_bool isResult = m_pPxScene->overlap(*_pxGeom, pxPose, pxOverlapBuffer);
+
+	if (isResult)
+	{
+		for (PxU32 i = 0; i < pxOverlapBuffer.nbTouches; i++)
+		{
+			PxRigidActor* pActor = pxOverlapBuffer.touches[i].actor;
+			ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+
+			_OutActors.push_back(nullptr != pActorUserData ? pActorUserData->pOwner : nullptr);
+		}
 	}
 	return isResult;
 }

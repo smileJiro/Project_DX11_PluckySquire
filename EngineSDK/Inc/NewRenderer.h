@@ -30,6 +30,9 @@ public: /* DSV */
 	HRESULT								Add_DSV(const _wstring _strDSVTag, _uint _iWidth, _uint _iHeight);
 	HRESULT								Add_DSV(const _wstring _strDSVTag, ID3D11DepthStencilView* _pDSV);
 	HRESULT								Erase_DSV(const _wstring _strDSVTag);
+
+public:
+	HRESULT								Load_IBL(const _wstring& _strIBLJsonPath);
 #ifdef _DEBUG
 
 public:

@@ -107,6 +107,7 @@ public:
 	virtual void Update(_float _fTimeDelta);
 	virtual void Late_Update(_float _fTimeDelta);
 	virtual HRESULT Render(_int _iTextureindex = 0, PASS_VTXPOSTEX _eShaderPass = PASS_VTXPOSTEX::DEFAULT);
+	virtual HRESULT Render(C2DModel* _Model);
 	CController_Transform* Get_Transform() { return m_pControllerTransform; }
 
 

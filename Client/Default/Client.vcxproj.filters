@@ -397,6 +397,12 @@
     <Filter Include="04.Section\Section_2D\PlayMap_2D\00. super">
       <UniqueIdentifier>{df0f7f72-4249-4e4f-a50a-e5e2a76d3121}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\06. Narration">
+      <UniqueIdentifier>{bc56d411-2d39-4049-8d2f-eabab8eabf86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\06. Narration\00. NarrationAnim">
+      <UniqueIdentifier>{6ae07d16-5d0c-4b03-885e-a61b2ed0258c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -839,7 +845,7 @@
     <ClInclude Include="..\Public\RenderGroup_Combine.h">
       <Filter>94.RenderGroups%28Custom%29\PBR\Combine</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\3DMapSpskObject.h">
+    <ClInclude Include="..\Public\3DMapSkspObject.h">
       <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Section_2D.h">
@@ -856,6 +862,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Section_2D_PlayMap.h">
       <Filter>04.Section\Section_2D\PlayMap_2D\00. super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Narration.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\06. Narration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Narration_Anim.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\06. Narration\00. NarrationAnim</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\State_Sneak.h">
       <Filter>03.Components\FSM\State</Filter>
@@ -1287,7 +1299,7 @@
     <ClCompile Include="..\Private\RenderGroup_Combine.cpp">
       <Filter>94.RenderGroups%28Custom%29\PBR\Combine</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\3DMapSpskObject.cpp">
+    <ClCompile Include="..\Private\3DMapSkspObject.cpp">
       <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Section_2D.cpp">
@@ -1304,6 +1316,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Section_2D_PlayMap.cpp">
       <Filter>04.Section\Section_2D\PlayMap_2D\00. super</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Narration.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\06. Narration</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Narration_Anim.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\06. Narration\00. NarrationAnim</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\State_Sneak.cpp">
       <Filter>03.Components\FSM\State</Filter>

@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "GameInstance.h"
 #include "Layer.h"
+#include "Light.h"
 
 CImgui_Manager::CImgui_Manager()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -145,7 +146,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Render()
 	}
 
 	Imgui_Debug_IBLGlobalVariable();
-
+	Imgui_Debug_Lights();
 
 
 	HWND hWnd = GetFocus();
@@ -449,7 +450,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_ObjectInfo_Detail(CGameObject* _pGame
 HRESULT CImgui_Manager::Imgui_Debug_IBLGlobalVariable()
 {
 	//
-	ImGui::Begin("IBL_GlobalVarialbe");
+	ImGui::Begin("IBL_GlobalVariable");
 	CONST_IBL tConstIBLData = m_pGameInstance->Get_GlobalIBLData();
 
 	ImGui::SliderFloat("StrengthIBL", &tConstIBLData.fStrengthIBL, 0.0f, 10.0f);
@@ -473,8 +474,282 @@ HRESULT CImgui_Manager::Imgui_Debug_IBLGlobalVariable()
 
 
 	m_pGameInstance->Set_GlobalIBLData(tConstIBLData, true);
+
+	// Save 
+	static char IBLPathBuffer[MAX_PATH] = "../Bin/DataFiles/IBL/default.json";
+	ImGui::InputText("Save Path", IBLPathBuffer, sizeof(IBLPathBuffer));
+	if (ImGui::Button("Save IBL Data"))
+	{
+		json IBLJson;
+		IBLJson["fStrengthIBL"] = tConstIBLData.fStrengthIBL;
+		IBLJson["iSpecularBaseMipLevel"] = tConstIBLData.iSpecularBaseMipLevel;
+		IBLJson["fRoughnessToMipFactor"] = tConstIBLData.fRoughnessToMipFactor;
+		IBLJson["fHDRMaxLuminance"] = tConstIBLData.fHDRMaxLuminance;
+		IBLJson["iToneMappingFlag"] = tConstIBLData.iToneMappingFlag;
+		IBLJson["fExposure"] = tConstIBLData.fExposure;
+		IBLJson["fGamma"] = tConstIBLData.fGamma;
+
+		std::ofstream outFile(IBLPathBuffer);
+		if (false == outFile.is_open()) 
+		{
+			MSG_BOX("Failed IBL Data Save Path Open");
+		}
+		outFile << IBLJson.dump(4);
+		outFile.close();
+	}
+	// Load Files
+	ImGui::Separator();
+	ImGui::Separator();
+
+	if (ImGui::Button("Load Lights Data##Lights"))
+	{
+		OPENFILENAME ofn = {};
+		ZeroMemory(&ofn, sizeof(ofn));
+		_tchar szName[MAX_PATH] = {};
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = m_pGameInstance->Get_HWND();
+		ofn.lpstrFile = szName;
+		ofn.nMaxFile = sizeof(szName);
+		ofn.lpstrFilter = L".json\0*.json\0";
+		ofn.nFilterIndex = 0;
+		ofn.lpstrFileTitle = nullptr;
+		ofn.nMaxFileTitle = 0;
+		wstring strPath = std::filesystem::absolute(L"../Bin/DataFiles/IBL/").wstring();
+		ofn.lpstrInitialDir = strPath.c_str();
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+		if (GetOpenFileName(&ofn))
+		{
+			//받아온 파일입니다
+			const _wstring strFilePath = szName;
+			m_pGameInstance->Load_IBL(strFilePath);
+		}
+	}
+
 	ImGui::End();
 	return S_OK;
+}
+
+HRESULT CImgui_Manager::Imgui_Debug_Lights()
+{
+	ImGui::Begin("Lights");
+
+	{ /* Add Light */
+		static int iSelectedType = 0;
+		if (ImGui::RadioButton("POINT##AddLight", iSelectedType == (int)LIGHT_TYPE::POINT))
+			iSelectedType = (int)LIGHT_TYPE::POINT; // Flag 1 선택
+		if (ImGui::RadioButton("DIRECTIONAL##AddLight", iSelectedType == (int)LIGHT_TYPE::DIRECTOINAL))
+			iSelectedType = (int)LIGHT_TYPE::DIRECTOINAL; // Flag 1 선택
+
+		if (ImGui::Button("Add_Light"))
+		{
+			CONST_LIGHT AddLightDesc = {};
+			m_pGameInstance->Add_Light(AddLightDesc, (LIGHT_TYPE)iSelectedType);
+		}
+	} /* Add Light */
+
+	{ /* Light Info */
+		const list<CLight*>& Lights = m_pGameInstance->Get_Lights();
+
+		static int selected_index = -1; // 선택된 항목의 인덱스
+		static CONST_LIGHT tConstLightData = {};
+		auto& iter = Lights.begin();
+		static auto& Selectiter = Lights.begin();
+		static LIGHT_TYPE eType = LIGHT_TYPE::LAST;
+		if (ImGui::BeginListBox("##Lights"))
+		{
+			for (int i = 0; i < Lights.size(); ++i)
+			{
+				bool is_selected = (selected_index == i);
+				string strGameObjectName;
+				strGameObjectName = "Light_" + to_string(i);
+				if (ImGui::Selectable(strGameObjectName.c_str(), is_selected))
+				{
+					selected_index = i; // 선택된 항목 업데이트
+					tConstLightData = (*iter)->Get_LightDesc();
+					eType = (*iter)->Get_Type();
+					Selectiter = iter;
+				}
+
+				// 선택된 항목에 포커스 설정
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+
+				++iter;
+			}
+			ImGui::EndListBox();
+
+		
+		}
+		ImGui::Separator();
+		ImGui::Separator();
+		switch (eType)
+		{
+		case Engine::LIGHT_TYPE::POINT:
+			ImGui::Text("LightType : POINT");
+			break;
+		case Engine::LIGHT_TYPE::DIRECTOINAL:
+			ImGui::Text("LightType : DIRECTOINAL");
+			break;
+		default:
+			break;
+		}
+
+		if (ImGui::DragFloat3("Position##Light", &tConstLightData.vPosition.x, 0.1f, -200.f, 200.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
+		{
+			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
+		}
+		if (ImGui::DragFloat3("Direction##Light", &tConstLightData.vDirection.x, 0.01f, -1.f, 1.f, "%.3f", ImGuiSliderFlags_AlwaysClamp))
+		{
+			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
+		}
+		if (ImGui::DragFloat3("Radiance##Light", &tConstLightData.vRadiance.x, 0.1f, 0.f, 500.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
+		{
+			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
+		}
+		if (ImGui::DragFloat3("Diffuse##Light", &tConstLightData.vDiffuse.x, 0.05f, 0.f, 100.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
+		{
+			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
+		}
+		if (ImGui::DragFloat3("Ambient##Light", &tConstLightData.vAmbient.x, 0.05f, 0.f, 100.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
+		{
+			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
+		}
+		if (ImGui::DragFloat3("Specular##Light", &tConstLightData.vSpecular.x, 0.05f, 0.f, 100.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
+		{
+			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
+		}
+
+		if (ImGui::SliderFloat("FallOutStart##Light", &tConstLightData.fFallOutStart, 0.0f, tConstLightData.fFallOutEnd, "%.2f"))
+		{
+			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
+		};
+		if (ImGui::SliderFloat("FallOutEnd##Light", &tConstLightData.fFallOutEnd, tConstLightData.fFallOutStart, 100.f, "%.2f"))
+		{
+			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
+		};
+		if (ImGui::SliderFloat("SpotPower##Light", &tConstLightData.fSpotPower, 0.0f, 10.f, "%.2f"))
+		{
+			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
+		};
+
+		// Delete Light 
+		if (ImGui::Button("Delete Light"))
+		{
+			if (FAILED(m_pGameInstance->Delete_Light(selected_index)))
+				return E_FAIL;
+		}
+
+		// Save Lights Data 
+		ImGui::Separator();
+		ImGui::Separator();
+		static char LightsPathBuffer[MAX_PATH] = "../Bin/DataFiles/DirectLights/default.json";
+		ImGui::InputText("Save Path##Lights", LightsPathBuffer, sizeof(LightsPathBuffer));
+		if (ImGui::Button("Save Lights Data##Lights"))
+		{
+			json LightsJson;
+			auto Saveiter = Lights.begin();
+			for (; Saveiter != Lights.end(); ++Saveiter)
+			{
+				CONST_LIGHT tConstLightData = (*Saveiter)->Get_LightDesc();
+				LIGHT_TYPE eType = (*Saveiter)->Get_Type();
+				json LightJson;
+
+				switch (eType)
+				{
+				case Engine::LIGHT_TYPE::POINT:
+					LightJson["eType"] = "POINT";
+					break;
+				case Engine::LIGHT_TYPE::DIRECTOINAL:
+					LightJson["eType"] = "DIRECTOINAL";
+					break;
+				}
+				LightJson["vRadiance"]["x"] = tConstLightData.vRadiance.x;
+				LightJson["vRadiance"]["y"] = tConstLightData.vRadiance.y;
+				LightJson["vRadiance"]["z"] = tConstLightData.vRadiance.z;
+
+				LightJson["fFallOutStart"] = tConstLightData.fFallOutStart;
+
+				LightJson["vDirection"]["x"] = tConstLightData.vDirection.x;
+				LightJson["vDirection"]["y"] = tConstLightData.vDirection.y;
+				LightJson["vDirection"]["z"] = tConstLightData.vDirection.z;
+
+				LightJson["fFallOutEnd"] = tConstLightData.fFallOutEnd;
+
+				LightJson["vPosition"]["x"] = tConstLightData.vPosition.x;
+				LightJson["vPosition"]["y"] = tConstLightData.vPosition.y;
+				LightJson["vPosition"]["z"] = tConstLightData.vPosition.z;
+
+				LightJson["fSpotPower"] = tConstLightData.fSpotPower;
+
+				LightJson["vDiffuse"]["r"] = tConstLightData.vDiffuse.x;
+				LightJson["vDiffuse"]["g"] = tConstLightData.vDiffuse.y;
+				LightJson["vDiffuse"]["b"] = tConstLightData.vDiffuse.z;
+				LightJson["vDiffuse"]["a"] = tConstLightData.vDiffuse.w;
+
+				LightJson["vAmbient"]["r"] = tConstLightData.vAmbient.x;
+				LightJson["vAmbient"]["g"] = tConstLightData.vAmbient.y;
+				LightJson["vAmbient"]["b"] = tConstLightData.vAmbient.z;
+				LightJson["vAmbient"]["a"] = tConstLightData.vAmbient.w;
+
+				LightJson["vSpecular"]["r"] = tConstLightData.vSpecular.x;
+				LightJson["vSpecular"]["g"] = tConstLightData.vSpecular.y;
+				LightJson["vSpecular"]["b"] = tConstLightData.vSpecular.z;
+				LightJson["vSpecular"]["a"] = tConstLightData.vSpecular.w;
+
+				LightsJson.push_back(LightJson);
+			}
+
+
+			std::ofstream outFile(LightsPathBuffer);
+			if (false == outFile.is_open())
+			{
+				MSG_BOX("Failed Lights Data Save Path Open");
+			}
+			outFile << LightsJson.dump(4);
+			outFile.close();
+		}
+
+		// Load Files
+		ImGui::Separator();
+		ImGui::Separator();
+
+		if (ImGui::Button("Load Lights Data##Lights"))
+		{
+			OPENFILENAME ofn = {};
+			ZeroMemory(&ofn, sizeof(ofn));
+			_tchar szName[MAX_PATH] = {};
+			ofn.lStructSize = sizeof(OPENFILENAME);
+			ofn.hwndOwner = m_pGameInstance->Get_HWND();
+			ofn.lpstrFile = szName;
+			ofn.nMaxFile = sizeof(szName);
+			ofn.lpstrFilter = L".json\0*.json\0";
+			ofn.nFilterIndex = 0;
+			ofn.lpstrFileTitle = nullptr;
+			ofn.nMaxFileTitle = 0;
+			wstring strPath = std::filesystem::absolute(L"../Bin/DataFiles/DirectLights/").wstring();
+			ofn.lpstrInitialDir = strPath.c_str();
+			ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+			if (GetOpenFileName(&ofn))
+			{
+				//받아온 파일입니다
+				const _wstring strFilePath = szName;
+				m_pGameInstance->Load_Lights(strFilePath);
+			}
+		}
+		
+
+
+		
+	} /* Light Info */
+
+	ImGui::End();
+
+	return S_OK;
+	
 }
 
 #endif // _DEBUG

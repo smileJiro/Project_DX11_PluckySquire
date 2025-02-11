@@ -88,7 +88,26 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 		}
 		else
 		{
-			hr = DirectX::CreateWICTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
+			if (true == _isSRGB)
+			{
+				hr = DirectX::CreateWICTextureFromFileEx(
+					m_pDevice,                  // Direct3D 디바이스 포인터
+					szTextureFilePath,          // 텍스처 파일 경로
+					0,                          // 최대 크기 (0은 제한 없음)
+					D3D11_USAGE_DEFAULT,        // 기본 사용 방식
+					D3D11_BIND_SHADER_RESOURCE, // 셰이더 리소스로 바인딩
+					0,                          // CPU 접근 플래그 (없음)
+					0,                          // 기타 플래그 (없음)
+					DirectX::WIC_LOADER_FORCE_SRGB,  // sRGB 포맷 강제 적용
+					nullptr,                    // 텍스처 리소스 (필요 없으면 nullptr)
+					&pSRV                       // 셰이더 리소스 뷰 출력
+				);
+			}
+			else
+			{
+				hr = DirectX::CreateWICTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
+			}
+
 		}
 
 		if (FAILED(hr))
@@ -247,11 +266,11 @@ const _float2 CTexture::Get_Size(_uint _iSRVIndex)
 	return fReturn;
 }
 
-CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isCubeMap)
+CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isSRGB, _bool _isCubeMap)
 {
 	CTexture* pInstance = new CTexture(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(_szTextureFilePath, _iNumTextures, _isCubeMap)))
+	if (FAILED(pInstance->Initialize_Prototype(_szTextureFilePath, _iNumTextures, _isSRGB, _isCubeMap)))
 	{
 		MSG_BOX("Failed to Created : CTexture");
 		Safe_Release(pInstance);
@@ -264,11 +283,11 @@ CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 	return new CTexture(_pDevice, _pContext);
 
 }
-CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isCubeMap)
+CTexture* CTexture::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isSRGB, _bool _isCubeMap)
 {
 	CTexture* pInstance = new CTexture(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(_pTextureFilePath, _iNumTextures, _isCubeMap)))
+	if (FAILED(pInstance->Initialize_Prototype(_pTextureFilePath, _iNumTextures, _isSRGB, _isCubeMap)))
 	{
 		MSG_BOX("Failed to Created : CTexture");
 		Safe_Release(pInstance);
