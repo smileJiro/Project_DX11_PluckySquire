@@ -46,7 +46,19 @@ HRESULT CSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 		return E_FAIL;
 	_inFile.read(reinterpret_cast<char*>(&m_matSpriteTransform), sizeof(_matrix));
 	return S_OK;
-}//39.8, 47.0
+}
+HRESULT CSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szTexturePath)
+{
+	m_vSpriteStartUV = { 0.f,0.f };
+	m_vSpriteEndUV = { 1.f,1.f };
+	m_fPixelsPerUnrealUnit = 1.0f;
+	m_pTexture = CTexture::Create(_pDevice, _pContext, szTexturePath);
+	if (nullptr == m_pTexture)
+		return E_FAIL;
+	m_matSpriteTransform = XMMatrixIdentity();
+	return S_OK;
+}
+//39.8, 47.0
 HRESULT CSpriteFrame::Bind_ShaderResource(CShader* _pShader)
 {
 	if (FAILED(m_pTexture->Bind_ShaderResource(_pShader, "g_DiffuseTexture")))
@@ -65,6 +77,18 @@ CSpriteFrame* CSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* 
 	CSpriteFrame* pInstance = new CSpriteFrame();
 
 	if (FAILED(pInstance->Initialize(_pDevice, _pContext, szDirPath,_infIle,_Textures)))
+	{
+		MSG_BOX("SpriteFrame Create Failed");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+CSpriteFrame* CSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szTexturePath)
+{
+	CSpriteFrame* pInstance = new CSpriteFrame();
+
+	if (FAILED(pInstance->Initialize(_pDevice, _pContext, szTexturePath)))
 	{
 		MSG_BOX("SpriteFrame Create Failed");
 		Safe_Release(pInstance);
