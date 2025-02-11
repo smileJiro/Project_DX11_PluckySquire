@@ -195,7 +195,7 @@ HRESULT C2DMapObject::Export(HANDLE hFile)
 	return S_OK;
 }
 
-HRESULT C2DMapObject::Import(HANDLE hFile, vector<C2DMapObjectInfo*>& _ModelInfos)
+HRESULT C2DMapObject::Import(HANDLE hFile, vector<C2DMapObjectInfo*>& _ModelInfos, _float2 _fRenderTargetSIze)
 {
 	MAPOBJ_2D_DESC Desc = {};
 
@@ -210,7 +210,7 @@ HRESULT C2DMapObject::Import(HANDLE hFile, vector<C2DMapObjectInfo*>& _ModelInfo
 	ReadFile(hFile, &isOverride, sizeof(_bool), &dwByte, nullptr);
 
 	m_fDefaultPosition = fPos;
-	m_fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X ,(_float)RTSIZE_BOOK2D_Y };
+	m_fRenderTargetSize =  _fRenderTargetSIze;
 
 	m_pModelInfo = _ModelInfos[iModelIndex];
 	m_strModelName = StringToWstring(_ModelInfos[iModelIndex]->Get_ModelName());
@@ -338,11 +338,11 @@ C2DMapObject* C2DMapObject::Create(ID3D11Device* pDevice, ID3D11DeviceContext* p
 	return pInstance;
 }
 
-C2DMapObject* C2DMapObject::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HANDLE _hFile, vector<C2DMapObjectInfo*>& _ModelInfos)
+C2DMapObject* C2DMapObject::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HANDLE _hFile, vector<C2DMapObjectInfo*>& _ModelInfos, _float2 _fRenderTargetSIze)
 {
 	C2DMapObject* pInstance = new C2DMapObject(pDevice, pContext);
 
-	if (FAILED(pInstance->Import(_hFile, _ModelInfos)))
+	if (FAILED(pInstance->Import(_hFile, _ModelInfos, _fRenderTargetSIze)))
 	{
 		MSG_BOX("Failed to Load : C2DMapObject");
 		Safe_Release(pInstance);
