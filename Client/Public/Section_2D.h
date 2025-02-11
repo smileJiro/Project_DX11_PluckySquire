@@ -125,16 +125,13 @@ public:
 	}
 	ID3D11Texture2D*					Get_WorldTexture()
 	{
-		if (nullptr != m_pMap) 
+		if (nullptr == m_pMap) 
 			return nullptr;
 		return m_pMap->Get_WorldTexture();
 	}
-
-
+	const _wstring						Get_WorldRenderTarget_Tag();
 public:
 	HRESULT					Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel);
-
-
 
 
 protected:

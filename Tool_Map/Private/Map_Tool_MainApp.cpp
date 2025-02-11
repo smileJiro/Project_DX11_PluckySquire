@@ -53,8 +53,6 @@ HRESULT CMap_Tool_MainApp::Initialize()
 	if (FAILED(Ready_RenderGroup()))
 		return E_FAIL;
 
-
-
 	/* Event Manager */
 	CEvent_Manager::GetInstance()->Initialize(m_pDevice, m_pContext, m_pLogger);
 
@@ -62,6 +60,9 @@ HRESULT CMap_Tool_MainApp::Initialize()
 	{
 		return E_FAIL;
 	}
+
+	Set_EffectRG();
+
 
 
 	return S_OK;
@@ -119,6 +120,14 @@ HRESULT CMap_Tool_MainApp::SetUp_StartLevel(LEVEL_ID _eLevelID)
 	Event_LevelChange(LEVEL_LOADING, _eLevelID);
 
 	return S_OK;
+}
+
+void CMap_Tool_MainApp::Set_EffectRG()
+{
+	CEmitter::SetID_2D(RG_2D);
+	CEmitter::SetID_3D(RG_3D);
+	CEmitter::SetID_Particle(PR3D_PARTICLE);
+	CEmitter::SetID_Effect(PR3D_EFFECT);
 }
 
 HRESULT CMap_Tool_MainApp::Ready_RenderGroup()

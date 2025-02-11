@@ -83,19 +83,22 @@ HRESULT CLevel_3D_Map_Tool::Ready_CubeMap(const _wstring& _strLayerTag)
 
 HRESULT CLevel_3D_Map_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag)
 {
-	CCamera_Free::CAMERA_FREE_DESC		Desc{};
-	Desc.fMouseSensor = 0.2f;
-	Desc.eZoomLevel = Engine::CCamera::ZOOM_LEVEL::LEVEL_6;
+	CCamera_Free::CAMERA_FREE_DESC Desc{};
+
+	Desc.fMouseSensor = 0.1f;
+
+	Desc.fFovy = XMConvertToRadians(60.f);
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	Desc.fNear = 0.2f;
+	Desc.fNear = 0.1f;
 	Desc.fFar = 1000.f;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
-	Desc.fFovy = XMConvertToRadians(60.f);
+	Desc.eZoomLevel = CCamera::LEVEL_6;
 	Desc.eMode = CCamera_Free::INPUT_MODE_WASD;
+	//Desc.iCameraType = CCamera_Manager::FREE;
 	CGameObject* pGameObject = nullptr;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
-		LEVEL_TOOL_3D_MAP, _strLayerTag, &pGameObject, &Desc)))
+		LEVEL_TOOL_2D_MAP, _strLayerTag, &pGameObject, &Desc)))
 		return E_FAIL;
 	else
 		pGameObject->Get_ControllerTransform()->Set_SpeedPerSec(100.f);

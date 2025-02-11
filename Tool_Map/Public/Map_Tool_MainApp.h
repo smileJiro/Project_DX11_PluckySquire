@@ -19,6 +19,8 @@ public:
 
 	HRESULT				Render();
 
+private :
+	void	Set_EffectRG();
 
 private:
 	CGameInstance*			m_pGameInstance = nullptr;

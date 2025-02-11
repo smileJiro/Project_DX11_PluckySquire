@@ -63,6 +63,31 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
+struct VS_WORLDOUT
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexcoord : TEXCOORD0;
+    float4 vWorldPos : TEXCOORD1;
+};
+
+VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
+{
+    VS_WORLDOUT Out = (VS_WORLDOUT)0;
+    matrix matWV, matWVP;
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+
+    float4 vNDCCoord = float4(In.vTexcoord.xy, 0.0f, 1.0f);
+    vNDCCoord = float4(vNDCCoord.xy * 2.0f - 1.0f, 0.0f, 1.0f);
+    vNDCCoord.y *= -1.0f;
+
+    Out.vPosition = vNDCCoord;
+    Out.vTexcoord = In.vTexcoord;
+    Out.vWorldPos = mul(Out.vPosition, g_WorldMatrix);
+
+    return Out;
+}
+
 // Rendering PipeLine : PixelShader //
 struct PS_IN
 {
@@ -182,6 +207,24 @@ PS_OUT PS_TEST_PROJECTILE(PS_IN In)
     return Out;
 }
 
+struct PS_WORLDIN
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexcoord : TEXCOORD0;
+    float4 vWorldPos : TEXCOORD1;
+};
+struct PS_WORLDOUT
+{
+    float4 vWorldPos : SV_TARGET0;
+};
+
+PS_WORLDOUT PS_WORLDPOSMAP(PS_WORLDIN In)
+{
+    PS_WORLDOUT Out = (PS_WORLDOUT)0;
+    Out.vWorldPos = In.vWorldPos;
+    return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -249,6 +292,17 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_TEST_PROJECTILE();
     }
+
+    pass BookWorldPosMap // 6
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_BOOKWORLDPOSMAP();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_WORLDPOSMAP();
+    }
+
 }
 
 /* 빛이 들어와서 맞고 튕긴 반사벡터와 이 픽셀을 바라보는 시선 벡터가 이루는 각이 180일때 최대 밝기 */

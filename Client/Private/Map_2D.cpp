@@ -148,6 +148,7 @@ HRESULT CMap_2D::Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel)
 	_wstring strWorldMRTTag = m_strMRTKey + L"_WorldPosMap";
 	_wstring strWorldDSVTag = m_strDSVKey + L"_WorldPosMap";
 
+	_uint iRenderGroupID = RG_WORLDPOSMAP;
 	_uint iPriorityID = SECTION_MGR->Generate_WorldPos_Priority_ID();
 
 	/* Target_WorldPosMap_Book */
@@ -155,11 +156,10 @@ HRESULT CMap_2D::Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel)
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_MRT(strWorldMRTTag, strWorldRVTag)))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(strWorldDSVTag, m_fRenderTargetSize.x, m_fRenderTargetSize.y)))
+	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(strWorldDSVTag, (_uint)m_fRenderTargetSize.x, (_uint)m_fRenderTargetSize.y)))
 		return E_FAIL;
-
 	CRenderGroup_WorldPos::RG_MRT_DESC Desc;
-	Desc.iRenderGroupID = RG_WORLDPOSMAP;
+	Desc.iRenderGroupID = iRenderGroupID;
 	Desc.iPriorityID = iPriorityID;
 	Desc.isClear = false;
 	Desc.isViewportSizeChange = true;
@@ -176,8 +176,8 @@ HRESULT CMap_2D::Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel)
 	Safe_Release(pRenderGroup_WorldPos);
 
 	D3D11_TEXTURE2D_DESC desc = {};
-	desc.Width = m_fRenderTargetSize.x; // 원본 텍스처 너비
-	desc.Height = m_fRenderTargetSize.y; // 원본 텍스처 높이
+	desc.Width = (_uint)m_fRenderTargetSize.x; // 원본 텍스처 너비
+	desc.Height = (_uint)m_fRenderTargetSize.y; // 원본 텍스처 높이
 	desc.MipLevels = 1;
 	desc.ArraySize = 1;
 	desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // 원본 텍스처와 동일한 포맷
@@ -187,7 +187,9 @@ HRESULT CMap_2D::Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel)
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
 	m_pDevice->CreateTexture2D(&desc, nullptr, &m_pWorldTexture);
 
-	m_pGameInstance->Add_RenderObject_New(RG_WORLDPOSMAP, PRWORLD_MAINBOOK, _pModel);
+	m_pGameInstance->Add_RenderObject_New(iRenderGroupID, iPriorityID, _pModel);
+
+	m_strWorldRTKey = strWorldRVTag;
 
 	return S_OK;
 }
