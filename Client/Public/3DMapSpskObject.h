@@ -13,12 +13,16 @@ private:
 
 public :
 	virtual HRESULT					Initialize(void* _pArg) override;
+
+public :
+	virtual void					Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT					Render() override;
 	virtual HRESULT					Render_Shadow() override;
+	virtual HRESULT					Render_WorldPosMap() override;
 
 
 public :
-	_string m_strRenderSectionTag = "";
+	_wstring m_strRenderSectionTag = L"";
 
 public:
 	static C3DMapSpskObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

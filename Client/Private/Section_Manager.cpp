@@ -143,9 +143,11 @@ HRESULT CSection_Manager::Remove_GameObject_ToCurSectionLayer(CGameObject* _pGam
 
 HRESULT CSection_Manager::SetActive_Section(CSection* _pSection, _bool _isActive)
 {
-    _pSection->Set_Active(_isActive);
-    _pSection->SetActive_GameObjects(_isActive);
-
+    if (_pSection->Is_Active() != _isActive)
+    {
+        _pSection->Set_Active(_isActive);
+        _pSection->SetActive_GameObjects(_isActive);
+    }
     return S_OK;
 }
 
@@ -259,10 +261,10 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(const _wstring& _str
 
      ID3D11Texture2D* pTexture2D = p2DSection->Get_WorldTexture();
 
-     if(nullptr != pTexture2D)
-         return Get_WorldPosition_FromWorldPosMap(pTexture2D, _v2DTransformPosition);
-     return _vector();
-
+     if(nullptr == pTexture2D)
+         return Get_WorldPosition_FromWorldPosMap(_v2DTransformPosition);
+     else
+         return Get_WorldPosition_FromWorldPosMap(pTexture2D,_v2DTransformPosition);
 }
 
 /// <summary>
@@ -278,7 +280,7 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_p
 {
     // 맵핑하여 데이터 접근
     D3D11_MAPPED_SUBRESOURCE mappedResource;
-    m_pContext->Map(m_pBookWorldPosMap, 0, D3D11_MAP_READ, 0, &mappedResource);
+    m_pContext->Map(m_pTargetTexture, 0, D3D11_MAP_READ, 0, &mappedResource);
 
     // 2D Transform 위치를 픽셀 좌표계로 변환. 해당 텍스쳐의 가로 세로 사이즈를 알아야함.
     _int iWidth = mappedResource.RowPitch / sizeof(_float) / 4;
@@ -332,7 +334,7 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_p
 
 
     // 맵핑 해제
-    m_pContext->Unmap(m_pBookWorldPosMap, 0);
+    m_pContext->Unmap(m_pTargetTexture, 0);
 
     return XMVectorSet(x, y, z, 1.0f);
 }
@@ -509,7 +511,7 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
             CSection_2D::SECTION_2D_PLAY_TYPE eType = ChildJson["Section_Type"];
 
 
-            CSection* pSection = nullptr;
+            CSection_2D* pSection = nullptr;
 
             switch (eType)
             {
@@ -521,6 +523,9 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
                         MSG_BOX("Failed Create CSection_2D");
                         return E_FAIL;
                     }
+
+                    if (FAILED(SetActive_Section(pSection, false)))
+                        return E_FAIL;
                 }
                 break;
                 case Client::CSection_2D::NARRAION:
@@ -532,6 +537,9 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 			    		MSG_BOX("Failed Create CNarration_2D");
 			    		return E_FAIL;
 			    	}
+                    if (FAILED(SetActive_Section(pSection, false)))
+                        return E_FAIL;
+
                 }            
                 break;
                 case Client::CSection_2D::SPSK:
@@ -542,6 +550,8 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
                         MSG_BOX("Failed Create CSection_2D_PlayMap_Sksp");
                         return E_FAIL;
                     }
+                    if (FAILED(SetActive_Section(pSection, true)))
+                        return E_FAIL;
                 }
                 break;
                     case Client::CSection_2D::SECTION_2D_PLAY_TYPE_LAST:
@@ -558,8 +568,6 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
                 strStartSectionKey = pSection->Get_SectionName();
             m_CurLevelSections.try_emplace(pSection->Get_SectionName(), pSection);
             
-            if (FAILED(SetActive_Section(pSection, false)))
-                return E_FAIL;
             
 
             iIndex++;

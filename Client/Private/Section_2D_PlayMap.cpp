@@ -8,8 +8,8 @@
 #include "MapObjectFactory.h"
 #include "Trigger_Manager.h"
 
-CSection_2D_PlayMap::CSection_2D_PlayMap(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_RENDER_TYPE _eRenderType)
-	:CSection_2D(_pDevice, _pContext, PLAYMAP, _eRenderType)
+CSection_2D_PlayMap::CSection_2D_PlayMap(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_PLAY_TYPE _ePlayType, SECTION_2D_RENDER_TYPE _eRenderType)
+	:CSection_2D(_pDevice, _pContext, _ePlayType, _eRenderType)
 {
 }
 
