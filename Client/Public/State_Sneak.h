@@ -24,6 +24,14 @@ public:
 		vector<_uint>Neighbors;
 	};
 
+	struct compare
+	{
+		bool operator()(pair<_float, pair<_uint, _uint>>a, pair<_float, pair<_uint, _uint>>b)
+		{
+			return a.first > b.first;
+		}
+	};
+
 protected:
 	CState_Sneak();
 	virtual ~CState_Sneak() = default;

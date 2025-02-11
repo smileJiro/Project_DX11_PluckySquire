@@ -143,7 +143,7 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 		}
 
 		//목표 위치로 가는 웨이포인트 경로 찾기
-		priority_queue <pair<_float, pair<_uint, _uint>>> PriorityQueue;	//비용, 부모 인덱스, 자기 인덱스
+		priority_queue <pair<_float, pair<_uint, _uint>>, vector<pair<_float, pair<_uint, _uint>>>, compare> PriorityQueue;	//비용, 부모 인덱스, 자기 인덱스
 		map<_uint, _float> OpenMap; //자기 인덱스, 비용
 		map<_uint, _uint> ClosedMap;	//자기 인덱스, 부모 인덱스
 		_float fCostFromStart = 0.f;
@@ -169,15 +169,15 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 				//닫힌 목록에 없을 때
 				if (ClosedMap.end() == ClosedMap.find(Neighbor))
 				{
-					_vector NodePos = XMLoadFloat3(&m_WayPoints[iIndex].vPosition);
+					_vector NodePos = XMLoadFloat3(&m_WayPoints[Neighbor].vPosition);
 					//비용 계산
 					fCostFromStart = XMVectorGetX(XMVector3Length(XMVectorSetY(NodePos - StartPos, 0.f)));
-					fTargetDis = XMVectorGetX(XMVector3Length(XMVectorSetY(DestPos - StartPos, 0.f)));
+					fTargetDis = XMVectorGetX(XMVector3Length(XMVectorSetY(DestPos - NodePos, 0.f)));
 
 					if (true == OpenMap.insert({ Neighbor, fCostFromStart + fTargetDis }).second)
 					{
-						//이웃과 부모 인덱스 저장
-						PriorityQueue.push({ fCostFromStart + fTargetDis, {iParentIndex, Neighbor} });
+						//이웃에 부모 인덱스 저장
+						PriorityQueue.push({ fCostFromStart + fTargetDis, {iIndex, Neighbor} });
 					}
 					//중복이면
 					else
@@ -185,7 +185,7 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 						//비용이 더 작은 걸 저장
 						if (fCostFromStart + fTargetDis < OpenMap[Neighbor])
 						{
-							PriorityQueue.push({ fCostFromStart + fTargetDis, {iParentIndex, Neighbor} });
+							PriorityQueue.push({ fCostFromStart + fTargetDis, {iIndex, Neighbor} });
 							OpenMap[Neighbor] = fCostFromStart + fTargetDis;
 						}
 					}
@@ -213,11 +213,11 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 		m_isOnWay = true;
 		m_isPathFind = false;
 
-		vResult = XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition) - XMLoadFloat3(&vPos);
+		vResult = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition) - XMLoadFloat3(&vPos),0.f);
 	}
 	else
 	{
-		vResult = XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition) - XMLoadFloat3(&vPos);
+		vResult = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition) - XMLoadFloat3(&vPos),0.f);
 	}
 
 	//타겟 방향이 막혀있으면 웨이포인트 이동
