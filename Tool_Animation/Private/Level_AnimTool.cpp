@@ -10,6 +10,7 @@
 #include "TestTerrain.h"
 #include "AnimEventGenerator.h"
 #include "Backgorund.h"
+#include "CubeMap.h"
 
 CLevel_AnimTool::CLevel_AnimTool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
@@ -21,6 +22,7 @@ HRESULT CLevel_AnimTool::Initialize()
 	m_fDefault2DCamSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
 
 	Ready_Lights();
+	Ready_CubeMap(TEXT("Layer_CubeMap"));
 	CModelObject::MODELOBJECT_DESC tModelObjDesc = {};
 	tModelObjDesc.Build_2D_Model(LEVEL_ANIMTOOL, TEXT("Prototype_Component_Background"), TEXT("Prototype_Component_Shader_VtxPosTex"), (_uint)PASS_VTXPOSTEX::SPRITE2D, false);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_ANIMTOOL, TEXT("Prototype_GameObject_BackGround"), LEVEL_ANIMTOOL, TEXT("Background"), (CGameObject**)&m_pBackground, &tModelObjDesc)))
@@ -78,6 +80,24 @@ HRESULT CLevel_AnimTool::Render()
 		SetWindowText(g_hWnd, m_szLoadedPath.c_str());
 #endif
 
+	return S_OK;
+}
+
+
+HRESULT CLevel_AnimTool::Ready_CubeMap(const _wstring& _strLayerTag)
+{
+	CGameObject* pCubeMap = nullptr;
+	CCubeMap::CUBEMAP_DESC Desc;
+	Desc.iCurLevelID = LEVEL_ANIMTOOL;
+	Desc.iRenderGroupID = RG_3D;
+	Desc.iPriorityID = PR3D_PRIORITY;
+	Desc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
+	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
+		LEVEL_ANIMTOOL, _strLayerTag, &pCubeMap, &Desc)))
+		return E_FAIL;
+
+	m_pGameInstance->Set_CubeMap(static_cast<CCubeMap*>(pCubeMap));
 	return S_OK;
 }
 
