@@ -95,6 +95,7 @@ public: /* For. NewRenderer*/
 	const _float4x4*	Get_ProjMatrix_Renderer() const;
 	CONST_IBL			Get_GlobalIBLData() const;
 	void				Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _isUpdateConstBuffer = false);
+	HRESULT				Load_IBL(const _wstring& _strIBLJsonPath);
 #ifdef _DEBUG
 	HRESULT				Add_DebugComponent_New(class CComponent* _pDebugCom);
 	void				Set_DebugRender_New(_bool _isBool);
@@ -119,9 +120,12 @@ public: /* For. PipeLine */
 
 public: /* For. Light_Manager */
 	HRESULT				Add_Light(const CONST_LIGHT& LightDesc, LIGHT_TYPE _eType);
-	const CONST_LIGHT*	Get_LightDesc(_uint _iIndex) const;
+	const CONST_LIGHT*	Get_LightDesc_Ptr(_uint _iIndex) const;
 	HRESULT				Render_Lights(class CShader* _pShader, class CVIBuffer_Rect* _pVIBuffer);
-
+	HRESULT				Load_Lights(const _wstring& _strLightsJsonPath);
+	const list<class CLight*>& Get_Lights() const;
+	HRESULT				Delete_Light(_uint _iLightIndex);
+	
 public: /* For. Collision_Manager */
 	//void				Add_CollisionLayerCheckInfo(COLL_CHECK* _pCollCheckLayerData);	/* 충돌 검사 수행 대상 정보 수집. */
 	//
