@@ -8,14 +8,14 @@ END
 
 BEGIN(Client)
 class CMap_2D;
-class C3DMapSpskObject;
+class C3DMapSkspObject;
 class CSection_2D abstract : public CSection
 {
 public:
 	enum SECTION_2D_RENDER_TYPE
 	{
 		SECTION_2D_BOOK,
-		SECTION_2D_SPSK,
+		SECTION_2D_SKSP,
 		SECTION_2D_RENDER_TYPE_LAST,
 	};
 
@@ -24,7 +24,7 @@ public:
 	{
 		PLAYMAP,
 		NARRAION,
-		SPSK,
+		SKSP,
 		SECTION_2D_PLAY_TYPE_LAST
 	};
 	// 섹션 내부 렌더그룹.
@@ -131,7 +131,7 @@ public:
 	}
 	const _wstring						Get_WorldRenderTarget_Tag();
 public:
-	HRESULT					Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel);
+	HRESULT					Register_Capcher_WorldTexture(C3DMapSkspObject* _pModel);
 
 
 protected:

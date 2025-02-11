@@ -84,7 +84,7 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 			}
 		}
 		break;
-		case Client::CSection_2D::SPSK:
+		case Client::CSection_2D::SKSP:
 		{
 			auto SectionInfo = _SectionJson["Section_Info"];
 
@@ -162,7 +162,7 @@ const _wstring CSection_2D::Get_WorldRenderTarget_Tag()
 	return m_pMap->Get_WorldRenderTarget_Tag();
 }
 
-HRESULT CSection_2D::Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel)
+HRESULT CSection_2D::Register_Capcher_WorldTexture(C3DMapSkspObject* _pModel)
 {
 	if (nullptr == m_pMap)
 		return E_FAIL;
