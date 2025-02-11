@@ -26,7 +26,7 @@ HRESULT CInteraction_Heart::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	m_isRender = false;
+	m_isRender = true;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -63,7 +63,7 @@ void CInteraction_Heart::Late_Update(_float _fTimeDelta)
 HRESULT CInteraction_Heart::Render()
 {
 	
-	if (true == m_isRender)
+	if (true == m_isRender && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 		// TODO :: ¿œ¥‹¿∫...
 

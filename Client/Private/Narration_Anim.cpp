@@ -44,11 +44,11 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 		pDesc->fY = m_vPos.y = pDesc->lines[pDesc->LineCount].NarAnim[0].vPos.y;
 		pDesc->fSizeX = m_fAnimationScale.x = pDesc->lines[pDesc->LineCount].NarAnim[0].vAnimationScale.x;
 		pDesc->fSizeY = m_fAnimationScale.y = pDesc->lines[pDesc->LineCount].NarAnim[0].vAnimationScale.y;
+
+		
 	}
 
 	m_fWaitingTime = pDesc->lines[pDesc->LineCount].fwaitingTime;
-
-
 
 
 	m_isRender = true;
@@ -59,8 +59,9 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_pModelCom->Set_AnimationLoop(0, true);
 	m_pModelCom->Set_Animation(0);
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_BACKGROUND);
 
 	_float2 vPos = { 0.f, 0.f };
 
@@ -70,7 +71,8 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 	vPos.y = -vPos.y + vRTSize.y / 2.f;
 
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
-
+	m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_vOriginSize.x, m_vOriginSize.y , 1.f));
+	//m_pControllerTransform->Set_Scale(m_fAnimationScale.x, m_fAnimationScale.y, 1.f);
 
 	//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.f, 0.f, 0.f, 1.f));
 
@@ -87,7 +89,6 @@ void CNarration_Anim::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
 	m_pModelCom->Play_Animation(_fTimeDelta, false);
-
 
 
 
@@ -113,6 +114,20 @@ void CNarration_Anim::Late_Update(_float _fTimeDelta)
 
 HRESULT CNarration_Anim::Render()
 {	
+	_matrix matLocal = *static_cast<C2DModel*>(m_pModelCom)->Get_CurrentSpriteTransform();
+	_matrix matRatioScalling = XMMatrixScaling((_float)RATIO_BOOK2D_X, (_float)RATIO_BOOK2D_Y, 1.f);
+	matLocal *= matRatioScalling;
+
+	//_matrix matWorld = matLocal * XMLoadFloat4x4(&m_WorldMatrices[COORDINATE_2D]);
+
+	_matrix matWorld = matLocal * XMLoadFloat4x4(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_WorldMatrix_Ptr());
+
+	_float4x4 matWorld4x4;
+	XMStoreFloat4x4(&matWorld4x4, matWorld);
+	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_WorldMatrix", &matWorld4x4)))
+		return E_FAIL;
+
+
 	//__super::Render();c
 	//if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
 	//	return E_FAIL;
@@ -123,9 +138,9 @@ HRESULT CNarration_Anim::Render()
 	//
 	//if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 	//	return E_FAIL;
-	__super::Render(m_pModelCom);
+	//__super::Render(m_pModelCom);
 
-	//m_pModelCom->Render(m_pShaderComs[COORDINATE_2D], (_uint)PASS_VTXPOSTEX::SPRITE2D);
+	m_pModelCom->Render(m_pShaderComs[COORDINATE_2D], (_uint)PASS_VTXPOSTEX::SPRITE2D);
 	int a = 0;
 	//Register_RenderGroup()
 
@@ -149,7 +164,7 @@ HRESULT CNarration_Anim::Ready_Components()
 		return E_FAIL;
 
 	// 모델쪽 생성하는 관련 부분 // 모델 게임레벨
-	CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_Narration_0102_01"), nullptr));
+	CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, m_strAnimationId, nullptr));
 
 	if (nullptr == pComponent)
 		return E_FAIL;

@@ -19,8 +19,8 @@
 							"strSectionid": "Chapter1_P0102",
 							"fPosX": 400.0,
 							"fPosY": 400.0,
-							"vAnimationScaleX": -500.0,
-							"vAnimationScaleY": 500.0,
+							"vAnimationScaleX": 0.5,
+							"vAnimationScaleY": 0.5,
 							"fwaitingTime": 450.0
 						}
 					]

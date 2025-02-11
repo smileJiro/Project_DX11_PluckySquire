@@ -701,7 +701,7 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/DJ_MoonBeard/DJ_MoonBeard.model2D")))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_Narration_0102_01"),
-		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Narration/0102/0102_01_Narration_Model.model2D")))))
+		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Narration/2DModel/0102/0102_01_Narration_Model.model2D")))))
 		return E_FAIL;
 
 
