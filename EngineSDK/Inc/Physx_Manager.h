@@ -62,6 +62,8 @@ public:
 	void Delete_ShapeUserData();
 	_bool RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
 	_bool RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits);
+	_bool Overlap(SHAPE_TYPE	_eShapeType, SHAPE_DESC* _pShape, _fvector _vPos, list<CActorObject*>& _OutActors);
+	_bool Overlap(PxGeometry* pxGeom, _fvector _vPos, list<CActorObject*>& _OutActors);
 
 private: /* SHAPE_USERDATA : 메모리 해제용 */
 	vector<SHAPE_USERDATA*> m_pShapeUserDatas;

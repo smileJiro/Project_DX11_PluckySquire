@@ -199,26 +199,40 @@ _bool CPlayerState_JumpDown::Try_Clamber()
 				{
 					if (iterHitPoint->vPosition.y > m_fWallYPosition)
 					{
-						m_fWallYPosition = iterHitPoint->vPosition.y;
-						m_vClamberEndPosition = { iterHitPoint->vPosition.x, iterHitPoint->vPosition.y, iterHitPoint->vPosition.z };
-						_vector vTmp = XMVectorSetY(m_vClamberEndPosition, XMVectorGetY( vPlayerPos));
+						//OverlapTest 벽
+						SHAPE_BOX_DESC tBoxDesc;
+						tBoxDesc.vHalfExtents = { 0.25f,0.5f,0.25f };
+						PxCapsuleGeometry pxGeom;
+						m_pOwner->Get_ActorCom()->Get_Shapes()[0]->getCapsuleGeometry(pxGeom);
+						_vector vTmp = { iterHitPoint->vPosition.x, iterHitPoint->vPosition.y, iterHitPoint->vPosition.z,1 };
+						_vector vCheckPos =  XMVectorSetY(vTmp, XMVectorGetY(vTmp) + pxGeom.halfHeight + 0.1);
+						list<CActorObject*> hitActors2;
+						if (false == m_pGameInstance->Overlap(&pxGeom,
+							vCheckPos, hitActors2))
+						{
+  							m_fWallYPosition = iterHitPoint->vPosition.y;
+							m_vClamberEndPosition = vTmp;
+						}
+						else
+						{
+    							int a = 0;
+						}
 					}
 				}
 				iterHitPoint++;
 			}
-
 		}
 	}
 	//벽이 이미 감지됨 -> 팔 높이를 넘어가는지 체크
 	else
 	{
+		//
 		//현재 바닥 높이가 팔 높이보다 높고 이전 바닥 높이는 팔 높이보다 낮으면?
 		//-> 기어오르기
 		_float fArmYPositionCurrent = XMVectorGetY(vPlayerPos) + m_fArmHeight;
 		if (m_fArmYPositionBefore> m_fWallYPosition
 			&& fArmYPositionCurrent <= m_fWallYPosition)
 		{
-
 			_float3 vOrigin;
 			XMStoreFloat3(&vOrigin, vPlayerPos + _vector{ 0,m_fArmHeight,0 } );
 			_float3 vRayDir; 
