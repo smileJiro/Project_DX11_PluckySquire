@@ -355,6 +355,7 @@ HRESULT CMap_Tool_MainApp::Ready_RenderGroup()
 	Safe_Release(pRenderGroup);
 	pRenderGroup = nullptr;
 
+
 	return S_OK;
 }
 
@@ -376,6 +377,20 @@ HRESULT CMap_Tool_MainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
 		return E_FAIL;
 
+#pragma region Light,Shadow(Old)
+	///* Target_Shade */ /* HDR */
+	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shade"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
+	//	return E_FAIL;
+	//
+	///* Target_Specular */ /* HDR */
+	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Specular"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
+	//	return E_FAIL;
+
+	///* Target_LightDepth */
+	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_LightDepth"), g_iShadowWidth, g_iShadowHeight, DXGI_FORMAT_R32_FLOAT, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
+	//	return E_FAIL;
+
+#pragma endregion
 	/* Target_DirectLightAcc */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_DirectLightAcc"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
@@ -508,8 +523,6 @@ HRESULT CMap_Tool_MainApp::Ready_RenderTargets()
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Normal"), fX, fY + fSizeY * 1.0f, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_EffectAccumulate"), fX, fY, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
 
-
-	return S_OK;
 	return S_OK;
 }
 

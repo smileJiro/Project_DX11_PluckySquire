@@ -84,7 +84,7 @@ HRESULT CSample_Skechspace::Render()
         }
         else
         {
-            if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_DiffuseTexture", TEXT("Target_2D"))))
+            if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_AlbedoTexture", TEXT("Target_2D"))))
                 return E_FAIL;
         }
 
