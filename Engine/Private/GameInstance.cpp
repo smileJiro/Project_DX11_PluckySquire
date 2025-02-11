@@ -160,11 +160,14 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 {
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update ¼öÇà ÈÄ, DeadObject Safe_Release() + erase();
-	
+
 
 #ifdef _DEBUG
-	m_pNewRenderer->Update_Imgui();
-	m_pImgui_Manager->Imgui_Debug_Render();
+	if (m_pNewRenderer)
+	{
+		m_pNewRenderer->Update_Imgui();
+		m_pImgui_Manager->Imgui_Debug_Render();
+	}
 #endif
 
 
@@ -544,6 +547,11 @@ void CGameInstance::Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _i
 	m_pNewRenderer->Set_GlobalIBLData(_tGlobalIBLData, _isUpdateConstBuffer);
 }
 
+HRESULT CGameInstance::Load_IBL(const _wstring& _strIBLJsonPath)
+{
+	return m_pNewRenderer->Load_IBL(_strIBLJsonPath);
+}
+
 HRESULT CGameInstance::Add_DebugComponent_New(CComponent* _pDebugCom)
 {
 	if (nullptr == m_pNewRenderer)
@@ -686,12 +694,12 @@ HRESULT CGameInstance::Add_Light(const CONST_LIGHT& _LightDesc, LIGHT_TYPE _eTyp
 	return m_pLight_Manager->Add_Light(_LightDesc, _eType);
 }
 
-const CONST_LIGHT* CGameInstance::Get_LightDesc(_uint _iIndex) const
+const CONST_LIGHT* CGameInstance::Get_LightDesc_Ptr(_uint _iIndex) const
 {
 	if (nullptr == m_pLight_Manager)
 		return nullptr;
 
-	return m_pLight_Manager->Get_LightDesc(_iIndex);
+	return m_pLight_Manager->Get_LightDesc_Ptr(_iIndex);
 }
 
 HRESULT CGameInstance::Render_Lights(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
@@ -700,6 +708,21 @@ HRESULT CGameInstance::Render_Lights(CShader* _pShader, CVIBuffer_Rect* _pVIBuff
 		return E_FAIL;
 
 	return m_pLight_Manager->Render(_pShader, _pVIBuffer);
+}
+
+HRESULT CGameInstance::Load_Lights(const _wstring& _strLightsJsonPath)
+{
+	return m_pLight_Manager->Load_Lights(_strLightsJsonPath);
+}
+
+const list<class CLight*>& CGameInstance::Get_Lights() const
+{
+	return m_pLight_Manager->Get_Lights();
+}
+
+HRESULT CGameInstance::Delete_Light(_uint _iLightIndex)
+{
+	return m_pLight_Manager->Delete_Light(_iLightIndex);
 }
 
 
@@ -1253,6 +1276,22 @@ _bool CGameInstance::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _
 		assert(nullptr);
 
 	return m_pPhysx_Manager->RayCast(_vOrigin, _vRayDir, _fMaxDistance, _OutActors, _OutRaycastHits);
+}
+
+_bool CGameInstance::Overlap(SHAPE_TYPE _eShapeType, SHAPE_DESC* _pShape, _fvector _vPos, list<CActorObject*>& _OutActors)
+{
+	if (nullptr == m_pPhysx_Manager)
+		assert(nullptr);
+
+	return m_pPhysx_Manager->Overlap(_eShapeType, _pShape, _vPos, _OutActors);
+}
+
+_bool CGameInstance::Overlap(PxGeometry* pxGeom, _fvector _vPos, list<CActorObject*>& _OutActors)
+{
+	if (nullptr == m_pPhysx_Manager)
+		assert(nullptr);
+
+	return m_pPhysx_Manager->Overlap(pxGeom, _vPos, _OutActors);
 }
 
 

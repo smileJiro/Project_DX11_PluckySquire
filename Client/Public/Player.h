@@ -439,6 +439,8 @@ public: /* 2D 충돌 */
 	_float Get_AirRunSpeed2D() { return m_f2DAirRunSpeed; }
 	_float Get_MoveSpeed(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DMoveSpeed : m_f3DMoveSpeed; }
 	_float Get_AttackDamg() { return m_tStat.fDamg; }
+	_float Get_3DFloorDistance() { return m_f3DFloorDistance; }
+	_float Get_2DFloorDistance() { return m_f2DFloorDistance; }
 	_uint Get_SpinAttackLevel() { return m_iSpinAttackLevel; }
 	_float Get_2DAttackForwardingSpeed() { return m_f2DAttackForwardSpeed; }
 	_vector Get_CenterPosition();
@@ -488,15 +490,17 @@ private:
 	_float m_fFootLength = 0.25;
 	_float m_fAttackForwardingForce = 12.f;
 	_float m_fGroundRotateSpeed = 360.f;
-	_float m_fStepSlopeThreshold = 0.3f;
+	_float m_fStepSlopeThreshold = 0.1f;
+	_float m_f3DLandAnimHeightThreshold= 0.6f;
 	//_float m_fFootHeightThreshold = 0.1f;
 	_float m_f3DJumpPower = 11.f;
 	_float m_fAirRotateSpeed = 40.f;
 	_float m_fAirRunSpeed = 10.f;
 	_float m_f3DMoveSpeed= 10.f;
+	_float m_f3DFloorDistance = 0;
 	_bool m_bOnGround = false;
 	_bool m_bAttackTrigger = false;
-	_uint m_iSpinAttackLevel = 1;
+	_uint m_iSpinAttackLevel = 4;
 	_vector m_vClamberEndPosition = { 0,0,0,1 };//벽타기 끝날 위치
 	_vector m_vWallNormal= { 0,0,1,0 };//접촉한 벽의 법선
 	_vector m_v3DTargetDirection = { 0,0,-1 };
@@ -505,7 +509,7 @@ private:
 	//2D전용
 	_float m_f2DAttackForwardSpeed = 700.f;
 	_float m_f2DUpForce = 0;
-	_float m_f2DHeight = 0;
+	_float m_f2DFloorDistance = 0;
 	_float m_f2DMoveSpeed= 400.f;
 	_float m_f2DJumpPower = 800.f;
 	_float m_f2DCenterYOffset= 36.f;

@@ -95,6 +95,7 @@ public: /* For. NewRenderer*/
 	const _float4x4*	Get_ProjMatrix_Renderer() const;
 	CONST_IBL			Get_GlobalIBLData() const;
 	void				Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _isUpdateConstBuffer = false);
+	HRESULT				Load_IBL(const _wstring& _strIBLJsonPath);
 #ifdef _DEBUG
 	HRESULT				Add_DebugComponent_New(class CComponent* _pDebugCom);
 	void				Set_DebugRender_New(_bool _isBool);
@@ -119,9 +120,12 @@ public: /* For. PipeLine */
 
 public: /* For. Light_Manager */
 	HRESULT				Add_Light(const CONST_LIGHT& LightDesc, LIGHT_TYPE _eType);
-	const CONST_LIGHT*	Get_LightDesc(_uint _iIndex) const;
+	const CONST_LIGHT*	Get_LightDesc_Ptr(_uint _iIndex) const;
 	HRESULT				Render_Lights(class CShader* _pShader, class CVIBuffer_Rect* _pVIBuffer);
-
+	HRESULT				Load_Lights(const _wstring& _strLightsJsonPath);
+	const list<class CLight*>& Get_Lights() const;
+	HRESULT				Delete_Light(_uint _iLightIndex);
+	
 public: /* For. Collision_Manager */
 	//void				Add_CollisionLayerCheckInfo(COLL_CHECK* _pCollCheckLayerData);	/* 충돌 검사 수행 대상 정보 수집. */
 	//
@@ -241,6 +245,11 @@ public: /* For. Physx_Manager*/
 //충돌된 액터에 user data로 ActorObject를 넣지 않았으면 nullptr이 들어감.
 // - 2.02 김지완 추가
 	_bool				RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits);
+	//지정된 위치에 셰이프를 만들어서 충돌되는지 체크
+	// - 2.11 김지완 추가
+	_bool Overlap(SHAPE_TYPE	_eShapeType, SHAPE_DESC* _pShape, _fvector _vPos, list<CActorObject*>& _OutActors);
+	_bool Overlap(PxGeometry* pxGeom, _fvector _vPos, list<CActorObject*>& _OutActors);
+
 	void				Set_Physx_DebugRender(_bool _isDebugRender);
 public: /* For. Frustum */
 	_bool				isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRange = 0.0f);

@@ -76,24 +76,15 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	}
 
 
-	//CModelObject::MODELOBJECT_DESC Desc = {};
-
-	//Desc.iCurLevelID = LEVEL_TOOL_2D_MAP;
-	//Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL_2D_MAP;
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_SampleBook"),
-	//	LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, &Desc)))
-	//	return E_FAIL;
-	//
 	CSample_Skechspace::SAMPLE_SKSP_DESC Desc = {};
 
 	Desc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL_2D_MAP;
 	Desc.isPreview = false;
-	Desc.strModelPrototypeTag_3D = TEXT("Desk_C02_Sketchspace_Left_01");
+	Desc.strModelPrototypeTag_3D = TEXT("Desk_C02_Sketchspace_768x2048_01");
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_Sample_Skechspace"),
-		LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, &Desc)))
+		LEVEL_TOOL_2D_MAP, L"Layer_Sksp", &pGameObject, &Desc)))
 		return E_FAIL;
 
 	Change_RenderGroup(_float2((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y));
@@ -216,7 +207,10 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		ofn.lpstrFileTitle = nullptr;
 		ofn.nMaxFileTitle = 0;
 		wstring strPath = strModelPath;
-		ofn.lpstrInitialDir = strPath.c_str();
+		if (GetFullPathName(strModelPath.c_str(), MAX_PATH, originalDir, NULL))
+			ofn.lpstrInitialDir = originalDir;
+		else
+			ofn.lpstrInitialDir = strModelPath.c_str();
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 
 		if (GetOpenFileName(&ofn))

@@ -92,12 +92,12 @@ public:
 		CBase* pBase = nullptr;
 
 
-		_uint iSpsk = 0;
-		ReadFile(_hFile, &iSpsk, sizeof(_uint), &dwByte, nullptr);
+		_uint iSksp = 0;
+		ReadFile(_hFile, &iSksp, sizeof(_uint), &dwByte, nullptr);
 
 		
 		// TODO : 맵 특수케이스 이넘 만들어서 관리할건데, 일단 스케치스페이스만 0210 박예슬
-		switch (iSpsk)
+		switch (iSksp)
 		{
 				// Default
 			case 0 :
@@ -113,15 +113,15 @@ public:
 				// Sksp
 			case 1 :
 				{
-					NormalDesc.isSpsk = true;
-					_char		szSaveSpskName[MAX_PATH];
-					ReadFile(_hFile, &szSaveSpskName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-					NormalDesc.strSpskTag = szSaveSpskName;
+					NormalDesc.isSksp = true;
+					_char		szSaveSkspName[MAX_PATH];
+					ReadFile(_hFile, &szSaveSkspName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+					NormalDesc.strSkspTag = szSaveSkspName;
 					pBase = _pGameInstance->
 						Clone_Prototype(
 							PROTOTYPE::PROTO_GAMEOBJ,
 							LEVEL_STATIC,
-							L"Prototype_GameObject_3DMap_SpskObject",
+							L"Prototype_GameObject_3DMap_SkspObject",
 							reinterpret_cast<void*>(&NormalDesc));
 				}
 				break;

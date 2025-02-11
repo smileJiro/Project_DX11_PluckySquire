@@ -242,6 +242,11 @@ void CModelObject::Set_Animation(_uint iIdx)
     m_pControllerModel->Set_Animation(iIdx, m_bReverseAnimation);
 }
 
+void CModelObject::Set_3DAnimationTransitionTime(_uint iIdx, _float _fTime)
+{
+ 	static_cast<C3DModel*>( m_pControllerModel->Get_Model(COORDINATE_3D))->Set_AnimationTransitionTime(iIdx, _fTime);
+}
+
 void CModelObject::Switch_Animation(_uint iIdx)
 {
     m_pControllerModel->Switch_Animation(iIdx, m_bReverseAnimation);

@@ -5,7 +5,7 @@
 #include "RenderGroup_2D.h"
 #include "RenderGroup_WorldPos.h"
 #include "ModelObject.h"
-#include "3DMapSpskObject.h"
+#include "3DMapSkspObject.h"
 #include "Section_Manager.h"
 
 CMap_2D::CMap_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -142,7 +142,7 @@ HRESULT CMap_2D::Create_Default_MapTexture()
 	return S_OK;
 }
 
-HRESULT CMap_2D::Register_Capcher_WorldTexture(C3DMapSpskObject* _pModel)
+HRESULT CMap_2D::Register_Capcher_WorldTexture(C3DMapSkspObject* _pModel)
 {
 	_wstring strWorldRVTag = m_strRTKey + L"_WorldPosMap";
 	_wstring strWorldMRTTag = m_strMRTKey + L"_WorldPosMap";
