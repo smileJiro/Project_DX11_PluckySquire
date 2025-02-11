@@ -51,6 +51,10 @@ public:
 
 	const _float2&				Get_RenderTarget_Size() { return m_fRenderTargetSize; }
 
+
+	const _wstring				Get_WorldRenderTarget_Tag() { return m_strWorldRTKey; }
+
+
 private:
 	ID3D11Device*				m_pDevice = nullptr;
 	ID3D11DeviceContext*		m_pContext = nullptr;
@@ -70,6 +74,8 @@ private:
 	_wstring					m_strRTKey;
 	_wstring					m_strDSVKey;
 	_wstring					m_strMRTKey;
+
+	_wstring					m_strWorldRTKey;
 
 	
 	CTexture*					m_pTextureCom = nullptr;		// Map Origin Texture;
