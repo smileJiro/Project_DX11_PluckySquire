@@ -36,16 +36,28 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 	//pDesc->isCoordChangeEnable = false;
 
 	m_iCurLevelID = pDesc->iCurLevelID = pDesc->eCurlevelId;
-	
+
 	if (0 < pDesc->lines[pDesc->LineCount].NarAnim.size())
 	{
-		m_strAnimationId = pDesc->lines[pDesc->LineCount].NarAnim[0].strAnimationid;
-		pDesc->fX = m_vPos.x = pDesc->lines[pDesc->LineCount].NarAnim[0].vPos.x;
-		pDesc->fY = m_vPos.y = pDesc->lines[pDesc->LineCount].NarAnim[0].vPos.y;
+		m_strAnimationId = pDesc->lines[pDesc->LineCount].NarAnim[pDesc->AnimIndex].strAnimationid;
+
+		if (true == pDesc->lines[pDesc->LineCount].isLeft)
+		{
+			pDesc->fX = m_vPos.x = pDesc->lines[pDesc->LineCount].NarAnim[0].vPos.x;
+			pDesc->fY = m_vPos.y = pDesc->lines[pDesc->LineCount].NarAnim[0].vPos.y;
+		}
+		else if (false == pDesc->lines[pDesc->LineCount].isLeft)
+		{
+			pDesc->fX = m_vPos.x = pDesc->lines[pDesc->LineCount].NarAnim[pDesc->AnimIndex].vPos.x + vRTSize.x / 2.f;
+			pDesc->fY = m_vPos.y = pDesc->lines[pDesc->LineCount].NarAnim[pDesc->AnimIndex].vPos.y;
+		}
+
+
+
 		pDesc->fSizeX = m_fAnimationScale.x = pDesc->lines[pDesc->LineCount].NarAnim[0].vAnimationScale.x;
 		pDesc->fSizeY = m_fAnimationScale.y = pDesc->lines[pDesc->LineCount].NarAnim[0].vAnimationScale.y;
 
-		
+
 	}
 
 	m_fWaitingTime = pDesc->lines[pDesc->LineCount].fwaitingTime;
@@ -60,7 +72,7 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 		return E_FAIL;
 
 	//m_pModelCom->Set_AnimationLoop(0, true);
-	m_pModelCom->Set_Animation(0);
+	m_pModelCom->Set_Animation(pDesc->lines[pDesc->LineCount].NarAnim[0].iAnimationIndex);
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_BACKGROUND);
 
 	_float2 vPos = { 0.f, 0.f };
@@ -71,14 +83,16 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 	vPos.y = -vPos.y + vRTSize.y / 2.f;
 
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
-	m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_vOriginSize.x, m_vOriginSize.y , 1.f));
+	m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_vOriginSize.x, m_vOriginSize.y, 1.f));
 	//m_pControllerTransform->Set_Scale(m_fAnimationScale.x, m_fAnimationScale.y, 1.f);
 
 	//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.f, 0.f, 0.f, 1.f));
 
 
 	return S_OK;
+
 }
+
 
 void CNarration_Anim::Priority_Update(_float _fTimeDelta)
 {
@@ -153,6 +167,11 @@ HRESULT CNarration_Anim::Render()
 void CNarration_Anim::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 
+}
+
+void CNarration_Anim::StartAnimation()
+{
+	m_pModelCom->Set_Animation(0);
 }
 
 
