@@ -146,6 +146,8 @@ namespace Client
 		STANDBY,
 		CHASE,
 		ATTACK,
+		HIT,
+		DEAD,
 		SNEAK_IDLE,
 		SNEAK_PATROL,
 		SNEAK_AWARE,

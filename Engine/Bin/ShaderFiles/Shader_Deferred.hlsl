@@ -59,7 +59,7 @@ Texture2D g_DirectLightsTexture;
 // Lighting 결과물 
 Texture2D g_LightingTexture;
 // Blur 대상 Texture2D
-Texture2D g_SrcBlurTarget;
+Texture2D g_SrcBlurTargetTexture;
 // etc
 Texture2D g_LightDepthTexture, g_FinalTexture;
 // Default Mtrl
@@ -534,22 +534,22 @@ PS_OUT PS_PBR_BLUR_DOWN(PS_IN In)
     float dx = g_TexelSize.x;
     float dy = g_TexelSize.y;
     
-    float3 a = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - 2 * dx, y + 2 * dy)).rgb;
-    float3 b = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x, y + 2 * dy)).rgb;
-    float3 c = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + 2 * dx, y + 2 * dy)).rgb;
+    float3 a = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x - 2 * dx, y + 2 * dy)).rgb;
+    float3 b = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x, y + 2 * dy)).rgb;
+    float3 c = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x + 2 * dx, y + 2 * dy)).rgb;
 
-    float3 d = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - 2 * dx, y)).rgb;
-    float3 e = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x, y)).rgb;
-    float3 f = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + 2 * dx, y)).rgb;
+    float3 d = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x - 2 * dx, y)).rgb;
+    float3 e = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x, y)).rgb;
+    float3 f = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x + 2 * dx, y)).rgb;
 
-    float3 g = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - 2 * dx, y - 2 * dy)).rgb;
-    float3 h = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x, y - 2 * dy)).rgb;
-    float3 i = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + 2 * dx, y - 2 * dy)).rgb;
+    float3 g = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x - 2 * dx, y - 2 * dy)).rgb;
+    float3 h = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x, y - 2 * dy)).rgb;
+    float3 i = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x + 2 * dx, y - 2 * dy)).rgb;
 
-    float3 j = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - dx, y + dy)).rgb;
-    float3 k = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + dx, y + dy)).rgb;
-    float3 l = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - dx, y - dy)).rgb;
-    float3 m = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + dx, y - dy)).rgb;
+    float3 j = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x - dx, y + dy)).rgb;
+    float3 k = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x + dx, y + dy)).rgb;
+    float3 l = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x - dx, y - dy)).rgb;
+    float3 m = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x + dx, y - dy)).rgb;
 
     float3 color = e * 0.125;
     color += (a + c + g + i) * 0.03125;
@@ -571,17 +571,17 @@ PS_OUT PS_PBR_BLUR_UP(PS_IN In)
     float dx = g_TexelSize.x;
     float dy = g_TexelSize.y;
     
-    float3 a = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - dx, y + dy)).rgb;
-    float3 b = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x, y + dy)).rgb;
-    float3 c = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + dx, y + dy)).rgb;
+    float3 a = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x - dx, y + dy)).rgb;
+    float3 b = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x, y + dy)).rgb;
+    float3 c = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x + dx, y + dy)).rgb;
 
-    float3 d = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - dx, y)).rgb;
-    float3 e = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x, y)).rgb;
-    float3 f = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + dx, y)).rgb;
+    float3 d = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x - dx, y)).rgb;
+    float3 e = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x, y)).rgb;
+    float3 f = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x + dx, y)).rgb;
 
-    float3 g = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - dx, y - dy)).rgb;
-    float3 h = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x, y - dy)).rgb;
-    float3 i = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + dx, y - dy)).rgb;
+    float3 g = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x - dx, y - dy)).rgb;
+    float3 h = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x, y - dy)).rgb;
+    float3 i = g_SrcBlurTargetTexture.Sample(LinearSampler_Clamp, float2(x + dx, y - dy)).rgb;
 
     float3 color = e * 4.0;
     color += (b + d + f + h) * 2.0;

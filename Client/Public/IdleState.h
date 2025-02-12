@@ -19,7 +19,6 @@ public:
 
 private:
 	_float m_fAccTime = { 0.f };
-	_float m_fDelayTime = {};
 
 public:
 	static CIdleState* Create(void* _pArg);

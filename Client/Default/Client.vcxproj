@@ -208,10 +208,13 @@
     <ClInclude Include="..\Public\Boss_YellowBall.h" />
     <ClInclude Include="..\Public\Camera_2D.h" />
     <ClInclude Include="..\Public\Camera_CutScene.h" />
+    <ClInclude Include="..\Public\CarriableObject.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\public\Collision_Manager.h" />
+    <ClInclude Include="..\Public\DeadState.h" />
     <ClInclude Include="..\Public\FloorWord.h" />
+    <ClInclude Include="..\Public\HitState.h" />
     <ClInclude Include="..\Public\Interactable.h" />
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
     <ClInclude Include="..\Public\Narration.h" />
@@ -373,10 +376,13 @@
     <ClCompile Include="..\Private\Boss_YellowBall.cpp" />
     <ClCompile Include="..\Private\Camera_2D.cpp" />
     <ClCompile Include="..\Private\Camera_CutScene.cpp" />
+    <ClCompile Include="..\Private\CarriableObject.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp" />
+    <ClCompile Include="..\Private\DeadState.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
+    <ClCompile Include="..\Private\HitState.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
     <ClCompile Include="..\Private\Narration.cpp" />
     <ClCompile Include="..\Private\Narration_Anim.cpp" />

@@ -126,6 +126,24 @@ HRESULT CContainerObject::Add_PartObject(CGameObject* _pPartObject)
     return S_OK;
 }
 
+HRESULT CContainerObject::Attach_PartObject(CPartObject* _pPartObject, _uint _iPartID)
+{
+    if (nullptr == _pPartObject)
+        return E_FAIL;
+
+    m_PartObjects.push_back(_pPartObject);
+    return S_OK;
+}
+
+HRESULT CContainerObject::Detach_PartObject(_uint _iPartID)
+{
+	if (m_PartObjects.size() <= _iPartID)
+		return E_FAIL;
+
+	
+    return S_OK;
+}
+
 void CContainerObject::Set_PartActive(_uint _iPartID, _bool _bValue)
 {
     if(m_PartObjects[_iPartID])

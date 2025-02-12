@@ -468,18 +468,17 @@ CRenderGroup* CGameInstance::Find_RenderGroup(_int _iGroupID, _int _iPriorityID)
 
 HRESULT CGameInstance::Add_RenderObject_New(_int _iGroupID, _int _iPriorityID, CGameObject* _pGameObject)
 {
-	if (nullptr == m_pNewRenderer)
-		return E_FAIL;
-
 	return m_pNewRenderer->Add_RenderObject(_iGroupID, _iPriorityID, _pGameObject);
 }
 
 HRESULT CGameInstance::Erase_RenderGroup_New(_int _iGroupID, _int _iPriorityID)
 {
-	if (nullptr == m_pNewRenderer)
-		return E_FAIL;
-
 	return m_pNewRenderer->Erase_RenderGroup(_iGroupID, _iPriorityID);
+}
+
+void CGameInstance::Set_Active_RenderGroup_New(_int _iGroupID, _int _iPriorityID, _bool _isActive)
+{
+	m_pNewRenderer->Set_Active_RenderGroup(_iGroupID, _iPriorityID, _isActive);
 }
 
 HRESULT CGameInstance::Add_DSV_ToRenderer(const _wstring _strDSVTag, _float2 _vDSVSize)
@@ -769,17 +768,11 @@ HRESULT CGameInstance::Add_Font(const _wstring& _strFontTag, const _tchar* _pFon
 
 HRESULT CGameInstance::Render_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation, const _float2& _vOrigin)
 {
-	if (nullptr == m_pFont_Manager)
-		return E_FAIL;
-
 	return m_pFont_Manager->Render_Font(_strFontTag, _pText, _vPosition, _vColor, _fRotation, _vOrigin);
 }
 
 HRESULT CGameInstance::Render_Scaling_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation, const _float2& _vOrigin, _float _fScale)
 {
-	if (nullptr == m_pFont_Manager)
-		return E_FAIL;
-
 	return m_pFont_Manager->Render_Scaling_Font(_strFontTag, _pText, _vPosition, _vColor, _fRotation, _vOrigin, _fScale);
 }
 
@@ -790,34 +783,32 @@ _vector CGameInstance::Measuring(const _wstring& _strFontTag, _wstring _text)
 
 HRESULT CGameInstance::Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut)
 {
-	if (nullptr == m_pTarget_Manager)
-		return E_FAIL;
-
 	return m_pTarget_Manager->Add_RenderTarget(_strTargetTag, _iWidth, _iHeight, _ePixelFormat, _vClearColor, _ppOut);
+}
+
+HRESULT CGameInstance::Add_RenderTarget(const _wstring& _strTargetTag, CRenderTarget* _pRenderTarget)
+{
+	return m_pTarget_Manager->Add_RenderTarget(_strTargetTag, _pRenderTarget);
 }
 
 HRESULT CGameInstance::Add_RenderTarget_MSAA(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut)
 {
-	if (nullptr == m_pTarget_Manager)
-		return E_FAIL;
-
 	return m_pTarget_Manager->Add_RenderTarget_MSAA(_strTargetTag, _iWidth, _iHeight, _ePixelFormat, _vClearColor, _ppOut);
 }
 
 HRESULT CGameInstance::Add_MRT(const _wstring& _strMRTTag, const _wstring& _strTargetTag)
 {
-	if (nullptr == m_pTarget_Manager)
-		return E_FAIL;
-
 	return m_pTarget_Manager->Add_MRT(_strMRTTag, _strTargetTag);
 }
 
-HRESULT CGameInstance::Begin_MRT(const _wstring& _strMRTTag, ID3D11DepthStencilView* _pDSV, _bool isClear)
+HRESULT CGameInstance::Begin_MRT(const _wstring& _strMRTTag, ID3D11DepthStencilView* _pDSV, _bool _isClear)
 {
-	if (nullptr == m_pTarget_Manager)
-		return E_FAIL;
+	return m_pTarget_Manager->Begin_MRT(_strMRTTag, _pDSV, _isClear);
+}
 
-	return m_pTarget_Manager->Begin_MRT(_strMRTTag, _pDSV, isClear);
+HRESULT CGameInstance::Begin_MRT(const vector<CRenderTarget*>& _MRT, ID3D11DepthStencilView* _pDSV, _bool _isClear)
+{
+	return m_pTarget_Manager->Begin_MRT(_MRT, _pDSV, _isClear);
 }
 
 HRESULT CGameInstance::End_MRT()
@@ -1319,6 +1310,11 @@ _bool CGameInstance::isIn_Frustum_InWorldSpace(_fvector _vWorldPos, _float _fRan
 		return true;
 
 	return m_pFrustum->isIn_InWorldSpace(_vWorldPos, _fRange);
+}
+
+HRESULT CGameInstance::Create_DSV(_uint _iWidth, _uint _iHeight, ID3D11DepthStencilView** _ppOutDSV)
+{
+	return m_pD3DUtils->Create_DSV(_iWidth, _iHeight, _ppOutDSV);
 }
 
 void CGameInstance::Set_CubeMap(CCubeMap* _pCubeMap)

@@ -136,9 +136,15 @@ void CProjectile_BarfBug::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
         if((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
         {
             Event_Hit(this, _Other.pActorUserData->pOwner, 1.f);
-            cout << "Projectile hit" << endl;
+            _float3 vRepulse; XMStoreFloat3(&vRepulse, 10.f * _My.pActorUserData->pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
+            _Other.pActorUserData->pOwner->Get_ActorCom()->Add_Impulse(vRepulse);
         }
+
+        Event_DeleteObject(this);
     }
+
+    //if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+    //    Event_DeleteObject(this);
 }
 
 void CProjectile_BarfBug::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -151,12 +157,20 @@ void CProjectile_BarfBug::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& 
 
 void CProjectile_BarfBug::Active_OnEnable()
 {
+    __super::Active_OnEnable();
+    
+	if (COORDINATE_3D == Get_CurCoord())
+        m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
 }
 
 void CProjectile_BarfBug::Active_OnDisable()
 {
     m_pControllerTransform->Set_WorldMatrix(XMMatrixIdentity());
     m_fAccTime = 0.f;
+
+    if (COORDINATE_3D == Get_CurCoord())
+	    m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
+    __super::Active_OnDisable();
 }
 
 HRESULT CProjectile_BarfBug::Ready_ActorDesc(void* _pArg)
@@ -189,6 +203,7 @@ HRESULT CProjectile_BarfBug::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
@@ -196,7 +211,7 @@ HRESULT CProjectile_BarfBug::Ready_ActorDesc(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER_PROJECTILE;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;
