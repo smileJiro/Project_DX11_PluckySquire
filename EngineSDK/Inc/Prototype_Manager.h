@@ -22,6 +22,7 @@
 #include "DebugDraw_For_Client.h"
 #include "Collider_Circle.h"
 #include "Collider_AABB.h"
+#include "Collider_Fan.h"
 #include "Compute_Shader.h"
 
 /* Etc */
