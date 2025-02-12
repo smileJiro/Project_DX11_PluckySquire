@@ -893,10 +893,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.f, 0.35f, -22.f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	Monster_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_1;
+	Monster_Desc.isSneakMode = true;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;
-	//
+	
+	//Monster_Desc.isSneakMode = false;
+	// 
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(8.0f, 0.35f, -19.0f);
 	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	//
