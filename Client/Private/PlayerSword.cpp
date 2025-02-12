@@ -386,8 +386,8 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn)
 {
 	if (false == _bOn)
         m_AttckedObjects.clear();
-    if (COORDINATE_3D == Get_CurCoord())
-        m_pActorCom->Set_ShapeEnable(0, _bOn);
+    //if (COORDINATE_3D == Get_CurCoord())
+    //    m_pActorCom->Set_ShapeEnable(0, _bOn);
     else
         m_pBody2DColliderCom->Set_Active(_bOn);
     m_bAttackEnable = _bOn;
