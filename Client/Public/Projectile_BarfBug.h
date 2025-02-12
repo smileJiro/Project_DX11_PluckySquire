@@ -36,6 +36,13 @@ public:
 	void Change_Animation();
 
 public:
+	virtual void			On_Hit(CGameObject* _pHitter, _float _fDamg);
+
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other);
+	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other);
+	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
+
+
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
