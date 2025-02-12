@@ -4,10 +4,8 @@
 BEGIN(Engine)
 class CShader;
 class CVIBuffer_Rect;
-class CRenderTarget : public CBase
+class ENGINE_DLL CRenderTarget : public CBase
 {
-public:
-
 protected:
 	CRenderTarget(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CRenderTarget() = default;
