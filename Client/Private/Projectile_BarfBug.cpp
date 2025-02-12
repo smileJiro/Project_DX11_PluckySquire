@@ -124,6 +124,31 @@ void CProjectile_BarfBug::Change_Animation()
 {
 }
 
+void CProjectile_BarfBug::On_Hit(CGameObject* _pHitter, _float _fDamg)
+{
+
+}
+
+void CProjectile_BarfBug::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
+    {
+        if((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
+        {
+            Event_Hit(this, _Other.pActorUserData->pOwner, 1.f);
+            cout << "Projectile hit" << endl;
+        }
+    }
+}
+
+void CProjectile_BarfBug::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+}
+
+void CProjectile_BarfBug::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+}
+
 void CProjectile_BarfBug::Active_OnEnable()
 {
 }
