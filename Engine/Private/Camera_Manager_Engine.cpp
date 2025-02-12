@@ -59,11 +59,17 @@ void CCamera_Manager_Engine::Change_CameraType(_uint _iCurrentCameraType)
 		m_Cameras[TARGET]->Set_Active(false);
 		
 		pFreeConTrans->Set_WorldMatrix(pTargetConTrans->Get_WorldMatrix());
+		m_Cameras[FREE]->Compute_FocalLength();
+		m_Cameras[FREE]->Bind_DofConstBuffer();
 		break;
 	
 	case TARGET:
 		m_Cameras[FREE]->Set_Active(false);
 		m_Cameras[TARGET]->Set_Active(true);	
+
+
+		m_Cameras[TARGET]->Compute_FocalLength();
+		m_Cameras[TARGET]->Bind_DofConstBuffer();
 		break;
 	}
 }

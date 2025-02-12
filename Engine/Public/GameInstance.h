@@ -39,7 +39,6 @@ public: /* For.GameInstance */
 
 	_int				Get_StaticLevelID() const { return m_iStaticLevelID; }
 
-
 public: /* For.Timer_Manager */
 	_float				Get_TimeDelta(const _wstring& _strTimerTag);
 	void				Render_FPS(const _wstring& _strTimerTag);
@@ -69,6 +68,7 @@ public: /* For. Object_Manager */
 	class CGameObject*	Get_PickingModelObjectByCursor(_uint _iLevelID, const _wstring& _strLayerTag, _float2 _fCursorPos); // 마우스 커서로 피킹체크 후 충돌 오브젝트중 가장 가까운 오브젝트 리턴.
 	class CGameObject*	Find_NearestObject_Scaled(_uint _iLevelID, const _wstring& _strLayerTag, CController_Transform* const _pTransform, CGameObject* pCurTargetObject = nullptr);
 	class CGameObject*	Get_GameObject_Ptr(_int _iLevelID, const _wstring& _strLayerTag, _int _iObjectIndex);
+
 #ifdef _DEBUG
 	map<const _wstring, class CLayer*>* Get_Layers_Ptr();
 #endif
@@ -98,6 +98,7 @@ public: /* For. NewRenderer*/
 	CONST_IBL			Get_GlobalIBLData() const;
 	void				Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _isUpdateConstBuffer = false);
 	HRESULT				Load_IBL(const _wstring& _strIBLJsonPath);
+	HRESULT				Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer);
 #ifdef _DEBUG
 	HRESULT				Add_DebugComponent_New(class CComponent* _pDebugCom);
 	void				Set_DebugRender_New(_bool _isBool);

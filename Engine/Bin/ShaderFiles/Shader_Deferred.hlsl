@@ -32,6 +32,19 @@ struct DirectLightData
     float4 vAmbient; // 주변광 (16byte)
     float4 vSpecular; // 정반사광 (16byte)
 };
+/* DofData */ 
+struct DofData
+{
+    float fSensorHeight;
+    float fAperture; // 조리개 크기
+    float fFocusDistance; // 초점 평면거리
+    float fFocalLength; // Fovy와 FocusDistance를 기반으로 구해지는 값.
+    float fDofBrightness;
+    float fBaseBlurPower; // 기본 전체 블러값
+    float dummy2;
+    float dummy3;
+};
+
 cbuffer GlobalIBLConstData : register(b0)
 {
     GlobalIBLData c_GlobalIBLVariable;
@@ -40,7 +53,10 @@ cbuffer BasicDirectLightConstData : register(b1)
 {
     DirectLightData c_DirectLight;
 }
-
+cbuffer DofConstData : register(b2)
+{
+    DofData c_DofVariable;
+}
 
 /* Basic */
 // Object Matrix Data 
@@ -378,7 +394,24 @@ PS_OUT PS_MAIN_COMBINE(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     float3 vLighting = g_LightingTexture.Sample(LinearSampler,In.vTexcoord).rgb;
+    float3 vPBRBlur = g_SrcBlurTargetTexture.Sample(LinearSampler, In.vTexcoord).rgb;
+    float2 vDepth = g_DepthTexture.Sample(PointSampler, In.vTexcoord).rg;
+    float fViewZ = vDepth.y * g_fFarZ;
+    float4 vPixelWorld = GetWorldPositionFromDepth(In.vTexcoord, vDepth.x, fViewZ); // 무조건 월드포지션 저장하는 타겟만들자. 세번이나 씀
+    float fObjectDistance = length(vPixelWorld - g_vCamWorld);
+    /* CoC 계산*/
+    //float fCoc = (fObjectDistance - 5.0f) / 30.0f;
+    float fCoc = c_DofVariable.fAperture *
+             (c_DofVariable.fFocalLength * (fObjectDistance - c_DofVariable.fFocusDistance)) /
+             (fObjectDistance * (c_DofVariable.fFocusDistance - (c_DofVariable.fFocalLength / 1000.0f)));
+    //fCoc = clamp(fCoc, 0.0, c_DofVariable.fDofBrightness);
+    //vLighting = vLighting + vPBRBlur * fCoc;
     
+    fCoc = clamp(fCoc, c_DofVariable.fBaseBlurPower, 1.0f);
+    vPBRBlur *= c_DofVariable.fDofBrightness;
+    vLighting = (vLighting * (1.0f - fCoc)) + (vPBRBlur * fCoc);
+    
+    //vLighting = vLighting + vPBRBlur;
     
     if (TONE_FILMIC == c_GlobalIBLVariable.iToneMappingFlag)
     {

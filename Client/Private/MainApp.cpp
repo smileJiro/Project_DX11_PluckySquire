@@ -266,7 +266,7 @@ HRESULT CMainApp::Ready_RenderGroup()
 	pRenderGroup_Lighting = nullptr;
 	/* RG_3D, PR3D_POSTPROCESSING */
 	CRenderGroup_PostProcessing::RG_POST_DESC RG_PostDesc;
-	RG_PostDesc.iBlurLevel = 4;
+	RG_PostDesc.iBlurLevel = 3;
 	RG_PostDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RG_PostDesc.iPriorityID = PR3D_POSTPROCESSING;
 	CRenderGroup_PostProcessing* pRenderGroup_Post = CRenderGroup_PostProcessing::Create(m_pDevice, m_pContext, &RG_PostDesc);

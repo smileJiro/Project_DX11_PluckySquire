@@ -551,6 +551,11 @@ HRESULT CGameInstance::Load_IBL(const _wstring& _strIBLJsonPath)
 	return m_pNewRenderer->Load_IBL(_strIBLJsonPath);
 }
 
+HRESULT CGameInstance::Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer)
+{
+	return m_pNewRenderer->Bind_DofConstBuffer(_szConstBufferName, _pConstBuffer);
+}
+
 HRESULT CGameInstance::Add_DebugComponent_New(CComponent* _pDebugCom)
 {
 	if (nullptr == m_pNewRenderer)

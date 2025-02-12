@@ -40,6 +40,7 @@ public:
 #ifdef _DEBUG
 	void				Start_ZoomIn();
 	void				Start_ZoomOut();
+	void				Imgui_Dof();
 #endif
 
 public:
@@ -68,7 +69,7 @@ private:
 
 private:
 	CCamera*			m_Cameras[CAMERA_TYPE_END];
-	_uint				m_eCurrentCameraType = { CAMERA_TYPE_END };
+	_uint				m_eCurrentCameraType = { FREE };
 
 	_int				m_iCurLevelID = {};
 

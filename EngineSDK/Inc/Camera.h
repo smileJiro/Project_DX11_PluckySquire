@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 BEGIN(Engine)
+
 class ENGINE_DLL CCamera abstract : public CGameObject
 {
 public:
@@ -24,6 +25,13 @@ public:
 		_float			fAspect = { 0.f };
 		_float			fNear = { 0.f };
 		_float			fFar = { 0.f };
+
+		// Dof 기본값 
+		_float			fSensorHeight = 24.0f;
+		_float			fAperture = 2.8f; // 조리개 크기
+		_float			fFocusDistance = 15.0f; // 초점 평면거리
+		_float			fDofBrightness = 1.5f;
+		_float			fBaseBlurPower = 0.1f;
 	}CAMERA_DESC;
 
 protected:
@@ -56,6 +64,7 @@ public:
 #endif
 
 	// Get
+	CONST_DOF Get_DofBufferData() const { return m_tConstDofData; }
 	_uint Get_CamType() const { return m_eCameraType; }
 	_float Get_Fovy() const { return m_fFovy; }
 	_float Get_Aspect() const { return m_fAspect; }
@@ -70,6 +79,7 @@ public:
 	}
 
 	// Set
+	void Set_DofBufferData(const CONST_DOF& _tDofConstData, _bool _isUpdate = false);
 	void Set_Fovy(const _float _fFovy) { m_fFovy = _fFovy; }
 	void Set_Aspect(const _float _fAspect) { m_fAspect = _fAspect; }
 	void Set_NearZ(const _float _fNear) { m_fNear = _fNear; }
@@ -98,6 +108,10 @@ public:
 	void		Start_Shake_ByTime(_float _fShakeTime, _float _fShakeForce, _float _fShakeCycleTime = 0.05f, SHAKE_TYPE _ShakeType = SHAKE_TYPE::SHAKE_XY, _float _fDelayTime = 0.f);
 	void		Start_Shake_ByCount(_float _fShakeTime, _float _fShakeForce, _int _iShakeCount, SHAKE_TYPE _ShakeType = SHAKE_TYPE::SHAKE_XY, _float _fDelayTime = 0.f);
 
+public:/* Dof 값 조절 후 Bind_DofBuffer() 호출 시 적용 */
+	HRESULT		Compute_FocalLength();
+	HRESULT		Bind_DofConstBuffer();
+
 public:
 	void		End_Shake();
 
@@ -109,6 +123,7 @@ protected:
 	_float		Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
 
 	virtual void		Switching(_float _fTimeDelta) {};
+
 
 protected: /* Zoom */
 	_float		m_ZoomLevels[(_uint)ZOOM_LAST] = {};
@@ -145,6 +160,13 @@ protected: // Initial
 
 protected: // EventTag (ex CutScene_1 ...)
 	_wstring					m_szEventTag = {};
+
+
+protected:
+	CONST_DOF					m_tConstDofData = {};
+	ID3D11Buffer*				m_pConstDofBuffer = nullptr;
+private:
+	HRESULT						Ready_DofConstData(CAMERA_DESC* _pDesc);
 
 public:
 	virtual CGameObject* Clone(void* _pArg) = 0;
