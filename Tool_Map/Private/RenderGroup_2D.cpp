@@ -2,6 +2,7 @@
 #include "RenderGroup_2D.h"
 #include "GameInstance.h"
 #include "Shader.h"
+#include "2DMapObject.h"
 
 CRenderGroup_2D::CRenderGroup_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CRenderGroup_MRT(_pDevice, _pContext)
@@ -51,6 +52,12 @@ HRESULT CRenderGroup_2D::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuffer)
 {
     if(FAILED(Binding_2D_View_Proj()))
         return E_FAIL;
+    
+    m_GroupObjects.sort([](CGameObject* pLeftGameObject, CGameObject* pRightGameObject)->_bool {
+        if (nullptr == dynamic_cast<C2DMapObject*>(pLeftGameObject)) return true;
+        if (nullptr == dynamic_cast<C2DMapObject*>(pRightGameObject)) return false;
+        return XMVectorGetY(pLeftGameObject->Get_FinalPosition()) > XMVectorGetY(pRightGameObject->Get_FinalPosition());
+        });
 
     return __super::Render(_pRTShader,_pRTBuffer);
 }

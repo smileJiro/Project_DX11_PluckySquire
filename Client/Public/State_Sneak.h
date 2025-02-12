@@ -56,6 +56,7 @@ protected:
 	//잠입 모드가 아니어도 필요할 것으로 보임. 일단 잠입상태에 둠
 	HRESULT Initialize_WayPoints(WAYPOINTINDEX _eWayIndex);
 	void Determine_NextDirection(_fvector& _vDestination, _float3* _vDirection);
+	void Determine_BackDirection(_fvector& _vDestination, _float3* _vDirection);
 
 public:
 	virtual HRESULT CleanUp();

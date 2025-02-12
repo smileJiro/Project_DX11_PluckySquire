@@ -886,6 +886,9 @@
     <ClInclude Include="..\Public\Bulb.h">
       <Filter>02.GameObjects\Bulb</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Sneak_BackState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1356,6 +1359,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Bulb.cpp">
       <Filter>02.GameObjects\Bulb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sneak_BackState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
