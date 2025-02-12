@@ -217,7 +217,8 @@ HRESULT C2DMapObject::Import(HANDLE hFile, vector<C2DMapObjectInfo*>& _ModelInfo
 
 	m_fDefaultPosition = fPos;
 	m_fRenderTargetSize =  _fRenderTargetSIze;
-
+	if (_ModelInfos.size() < iModelIndex)
+		return E_FAIL;
 	m_pModelInfo = _ModelInfos[iModelIndex];
 	m_strModelName = StringToWstring(_ModelInfos[iModelIndex]->Get_ModelName());
 	Desc.Build_2D_Model(
