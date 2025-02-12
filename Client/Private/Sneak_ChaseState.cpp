@@ -11,12 +11,14 @@ CSneak_ChaseState::CSneak_ChaseState()
 
 HRESULT CSneak_ChaseState::Initialize(void* _pArg)
 {
-	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
+	SNEAKSTATEDESC* pDesc = static_cast<SNEAKSTATEDESC*>(_pArg);
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+
+	Initialize_WayPoints(pDesc->eWayIndex);
 		
 	return S_OK;
 }

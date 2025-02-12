@@ -37,7 +37,6 @@ HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 
 	return S_OK;
 }
-
 HRESULT CLight::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 {
 

@@ -95,6 +95,7 @@ public:
 	// Set
 	void					Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
 	void					Set_Animation(_uint iIdx);
+	void					Set_3DAnimationTransitionTime(_uint iIdx, _float _fTime);
 	void					Switch_Animation(_uint iIdx);
 	void					To_NextAnimation();
 

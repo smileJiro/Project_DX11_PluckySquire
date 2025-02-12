@@ -190,4 +190,10 @@ namespace Client
 		LEFT_DOWN,
 		E_DIR_LAST
 	};
+
+	enum class WAYPOINTINDEX
+	{
+		CHAPTER2_1,
+		LAST
+	};
 }

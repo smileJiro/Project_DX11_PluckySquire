@@ -9,7 +9,7 @@
 #include "Trigger_Manager.h"
 
 CSection_2D_PlayMap_Sksp::CSection_2D_PlayMap_Sksp(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:CSection_2D_PlayMap(_pDevice, _pContext, SPSK, SECTION_2D_SPSK)
+	:CSection_2D_PlayMap(_pDevice, _pContext, SKSP, SECTION_2D_SKSP)
 {
 }
 

@@ -52,12 +52,11 @@ public:
 	_bool IsTransition_Ready() {};
 
 public:
-	HRESULT CleanUp();
+	virtual HRESULT CleanUp();
 
 protected:
 	_float Get_CurCoordRange(MONSTER_STATE _eState);
 	_bool Check_Target3D(_bool _isSneak = false);
-	void	Set_Sneak_InvestigatePos(_fvector _vPosition);
 	void Determine_AvoidDirection(_fvector& _vDestination, _float3* _vDirection);
 
 protected:
@@ -76,7 +75,6 @@ protected:
 	_float	m_fAttack2DRange = {};
 	_float	m_fDelayTime = {};
 	_float	m_fCoolTime = {};
-	_float3 m_vSneakPos = {};
 	_float m_fRayDis = { 2.f };
 
 public:

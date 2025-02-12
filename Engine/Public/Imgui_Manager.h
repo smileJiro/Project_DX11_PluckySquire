@@ -28,6 +28,8 @@ public:
 	HRESULT				Imgui_Debug_Render_ObjectInfo();
 	HRESULT				Imgui_Debug_Render_ObjectInfo_Detail(CGameObject* _pGameObject);
 	HRESULT				Imgui_Debug_IBLGlobalVariable();
+	HRESULT				Imgui_Debug_Lights();
+
 
 	HRESULT				Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag, _uint _iObjectId);
 #endif //  _DEBUG

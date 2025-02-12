@@ -29,6 +29,7 @@ public:
 		_float fFOVX;
 		_float fFOVY;
 		_bool isSneakMode = false;
+		WAYPOINTINDEX eWayIndex = WAYPOINTINDEX::LAST;
 	}MONSTER_DESC;
 
 protected:
@@ -173,6 +174,8 @@ protected:
 	_bool m_isSneakMode = { false };
 
 	//장애물 탐지
+	WAYPOINTINDEX m_eWayIndex;
+
 	_bool m_isDetect_Block = { false };
 	_uint m_iDetect_Block_Count = { 0 };
 

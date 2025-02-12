@@ -79,6 +79,25 @@ HRESULT CUI::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 	return S_OK;
 }
 
+HRESULT CUI::Render(C2DModel* _Model)
+{
+	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
+		return E_FAIL;
+
+	if (L"" == m_strSectionName)
+	{
+		if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+			return E_FAIL;
+	}
+
+	_Model->Render(m_pShaderComs[COORDINATE_2D], (_uint)PASS_VTXPOSTEX::SPRITE2D);
+
+	return S_OK;
+}
+
 HRESULT CUI::Ready_Components()
 {
 	return S_OK;
@@ -158,6 +177,7 @@ void CUI::Change_BookScale_ForShop(_float2 _vRTSize)
 
 void CUI::Free()
 {
+	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderComs[COORDINATE_2D]);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);

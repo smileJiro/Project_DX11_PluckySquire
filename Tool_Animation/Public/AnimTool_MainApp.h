@@ -25,11 +25,16 @@ private:
 	ID3D11DeviceContext* m_pContext = nullptr;
 
 private:
+	void	Set_EffectRG();
+
+private:
 	//HRESULT Loading_ShaderMaterials_PathFind(const _wstring& strDirectoryPath);
 	//HRESULT Loading_BGM_PathFind(const _wstring& strDirectoryPath);
 	//HRESULT Loading_SFX_PathFind(const _wstring& strDirectoryPath);
 	HRESULT SetUp_StartLevel(LEVEL_ID _eLevelID);
 
+	HRESULT Ready_RenderTargets();
+	HRESULT Ready_RenderGroup();
 
 public:
 	static CAnimTool_MainApp* Create();

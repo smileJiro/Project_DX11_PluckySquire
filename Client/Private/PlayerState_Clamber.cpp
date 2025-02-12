@@ -55,6 +55,7 @@ void CPlayerState_Clamber::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_CLAMBER_01_EDIT_NEWRIG == iAnimIdx)
 	{
 		m_pOwner->Set_Position(m_vClamberEndPosition);
+		m_pOwner->LookDirectionXZ_Kinematic(-m_vClamberNormal);
 		m_pOwner->Set_Kinematic(false);
 		m_pOwner->Equip_Part(CPlayer::PLAYER_PART_SWORD);
 		m_pOwner->Set_State(CPlayer::IDLE);

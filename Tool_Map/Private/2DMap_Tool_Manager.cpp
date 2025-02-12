@@ -76,24 +76,15 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	}
 
 
-	//CModelObject::MODELOBJECT_DESC Desc = {};
-
-	//Desc.iCurLevelID = LEVEL_TOOL_2D_MAP;
-	//Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL_2D_MAP;
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_SampleBook"),
-	//	LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, &Desc)))
-	//	return E_FAIL;
-	//
 	CSample_Skechspace::SAMPLE_SKSP_DESC Desc = {};
 
 	Desc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL_2D_MAP;
 	Desc.isPreview = false;
-	Desc.strModelPrototypeTag_3D = TEXT("Desk_C02_Sketchspace_Left_01");
+	Desc.strModelPrototypeTag_3D = TEXT("Desk_C02_Sketchspace_5832x768_01");
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_Sample_Skechspace"),
-		LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, &Desc)))
+		LEVEL_TOOL_2D_MAP, L"Layer_Sksp", &pGameObject, &Desc)))
 		return E_FAIL;
 
 	Change_RenderGroup(_float2((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y));
@@ -216,7 +207,10 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		ofn.lpstrFileTitle = nullptr;
 		ofn.nMaxFileTitle = 0;
 		wstring strPath = strModelPath;
-		ofn.lpstrInitialDir = strPath.c_str();
+		if (GetFullPathName(strModelPath.c_str(), MAX_PATH, originalDir, NULL))
+			ofn.lpstrInitialDir = originalDir;
+		else
+			ofn.lpstrInitialDir = strModelPath.c_str();
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 
 		if (GetOpenFileName(&ofn))
@@ -362,6 +356,44 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		_wstring strModelName = m_pPickingObject->Get_ModelName();
 		_float2 fPos = m_pPickingObject->Get_DefaultPosition();
 		//m_pPickingObject->Get_FinalPosition();
+		ImGui::SeparatorText("Object Control");
+		if (StyleButton(MINI, "Model Change"))
+		{
+			if (nullptr != m_pPickingObject && nullptr != m_pPickingInfo && m_pPickingInfo->Is_ModelLoad())
+			{
+				_float2 fPosition = m_pPickingObject->Get_DefaultPosition();
+				Event_DeleteObject(m_pPickingObject);
+
+				_float2 fSize = m_pGameInstance->Get_RT_Size(m_strRTKey);
+
+				C2DMapObject::MAPOBJ_2D_DESC NormalDesc = { };
+				NormalDesc.strProtoTag = StringToWstring(m_pPickingInfo->Get_ModelName());
+				NormalDesc.fDefaultPosition = { 0.f,0.f };
+				NormalDesc.fRenderTargetSize = { (_float)fSize.x, (_float)fSize.y };
+				NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
+				NormalDesc.iRenderGroupID_2D = m_p2DRenderGroup->Get_RenderGroupID();
+				NormalDesc.iPriorityID_2D = m_p2DRenderGroup->Get_PriorityID();
+				NormalDesc.pInfo = m_pPickingInfo;
+
+				CGameObject* pGameObject = nullptr;
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DMapObject"),
+					LEVEL_TOOL_2D_MAP,
+					L"Layer_2DMapObject",
+					&pGameObject,
+					(void*)&NormalDesc)))
+				{
+					int a = 1;
+				}
+				else 
+				{
+					m_pPickingObject = static_cast<C2DMapObject*>(pGameObject);
+					m_pPickingObject->Set_DefaultPosition(fPosition);
+					static_cast<C2DMapObject*>(m_pPickingObject)->Set_OffsetPos(m_fOffsetPos);
+				}
+			
+			}
+		
+		}
 		ImGui::Text("Model SearchKey : %s", WstringToString(strKey).c_str());
 		ImGui::Text("Model Name : %s", WstringToString(strModelName).c_str());
 		ImGui::Text("Model Load : %s", m_pPickingObject->Is_ModelLoad() ? "On" : "Off");
@@ -380,6 +412,7 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		}
 		ImGui::SameLine();
 		ImGui::Text("Position");
+		
 
 	}
 
@@ -605,6 +638,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 					if (ImGui::Button("Add .model2d"))
 					{
 						_tchar originalDir[MAX_PATH];
+						_tchar szOpenPath[MAX_PATH];
 						GetCurrentDirectory(MAX_PATH, originalDir);
 
 						_wstring strModelPath = L"../../Client/Bin/Resources/Models/2DMapObject";
@@ -619,8 +653,10 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 						ofn.nFilterIndex = 0;
 						ofn.lpstrFileTitle = nullptr;
 						ofn.nMaxFileTitle = 0;
-						wstring strPath = strModelPath;
-						ofn.lpstrInitialDir = strPath.c_str();
+						if (GetFullPathName(strModelPath.c_str(), MAX_PATH, szOpenPath, NULL))
+							ofn.lpstrInitialDir = szOpenPath;
+						else
+							ofn.lpstrInitialDir = strModelPath.c_str();
 						ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 
 						if (GetOpenFileName(&ofn))
@@ -1343,12 +1379,12 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 	}
 	auto Objects = pLayerMaps->Get_GameObjects();
 
-	if (Objects.empty())
-	{
-		log = "Save Failed... Save Layer Empty! ";
-		LOG_TYPE(log, LOG_ERROR);
-		return;
-	}
+	//if (Objects.empty())
+	//{
+	//	log = "Save Failed... Save Layer Empty! ";
+	//	LOG_TYPE(log, LOG_ERROR);
+	//	return;
+	//}
 	// 1. 레이어 검사 END
 
 
@@ -2297,7 +2333,15 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 	ReadFile(hFile, &szSaveMapName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 
 	// 텍스쳐로 렌더하는 모드로 바까주고
-	m_DefaultRenderObject->Set_Texture_Mode(szSaveMapName);
+	m_DefaultRenderObject->Set_Texture_Mode(szSaveMapName); //
+	_float2 fSize = m_DefaultRenderObject->Get_Texture_Size();
+
+	if (fSize.x != -1.f)
+	{
+		Change_RenderGroup(fSize);
+	}
+
+
 	// 타일 렌더하는 객체 지우고 !
 	Event_DeleteObject(m_pTileRenderObject);
 	m_pTileRenderObject = nullptr;
@@ -2311,7 +2355,8 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 	for (_uint i = 0; i < iLayerCount; ++i)
 	{
 
-		C2DMapObject* pObject = C2DMapObject::Create(m_pDevice, m_pContext, hFile, m_ObjectInfoLists);
+		C2DMapObject* pObject = C2DMapObject::Create(m_pDevice, m_pContext, hFile, m_ObjectInfoLists, fSize);
+		
 		if (nullptr != pObject)
 		{
 			Event_CreateObject(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject", pObject);

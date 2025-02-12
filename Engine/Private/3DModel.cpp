@@ -358,6 +358,17 @@ void C3DModel::Set_Animation(_uint iIdx, _bool _bReverse)
 	m_Animations[m_iCurrentAnimIndex]->Reset(_bReverse);
 }
 
+void C3DModel::Set_AnimationTransitionTime(_uint iIdx, _float _fTime)
+{
+	_int iTemp = (_int)m_Animations.size() - 1;
+	if (iTemp < (_int)iIdx)
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
+	m_Animations[iIdx]->Set_AnimTransitionTime(_fTime);
+}
+
 
 void C3DModel::Switch_Animation(_uint iIdx, _bool _bReverse)
 {

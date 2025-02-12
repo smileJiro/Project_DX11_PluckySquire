@@ -11,13 +11,16 @@ CSneak_InvestigateState::CSneak_InvestigateState()
 
 HRESULT CSneak_InvestigateState::Initialize(void* _pArg)
 {
-	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
+	SNEAKSTATEDESC* pDesc = static_cast<SNEAKSTATEDESC*>(_pArg);
 	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
+	m_fCoolTime = 2.f;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+
+	Initialize_WayPoints(pDesc->eWayIndex);
 		
 	return S_OK;
 }
@@ -25,6 +28,10 @@ HRESULT CSneak_InvestigateState::Initialize(void* _pArg)
 
 void CSneak_InvestigateState::State_Enter()
 {
+	//처리해야함
+	m_isPathFind = true;
+	m_fAccTime = 0.f;
+	m_isRenew = true;
 }
 
 void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
@@ -33,6 +40,17 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 		return;
 	if (nullptr == m_pOwner)
 		return;
+
+	if (false == m_isRenew)
+	{
+		m_fAccTime += _fTimeDelta;
+		if (m_fAccTime >= m_fCoolTime)
+		{
+			m_fAccTime = 0.f;
+			m_isRenew = true;
+		}
+	}
+
 
 	_vector vDir = XMLoadFloat3(&m_vSneakPos) - m_pOwner->Get_FinalPosition();
 	_float fDis = XMVectorGetX(XMVector3Length((vDir)));	//3D상에서 y값도 더해서 거리 계산하는거 주의
@@ -44,9 +62,10 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 	Check_Target3D(true);
 
 	//이동하다 소리가 나면 범위 내에서 가장 최근 위치로 다음 위치를 갱신
-	if (m_pOwner->IsTarget_In_Sneak_Detection())
+	if (m_isRenew && m_pOwner->IsTarget_In_Sneak_Detection())
 	{
 		Set_Sneak_InvestigatePos(m_pTarget->Get_FinalPosition());
+		m_isRenew = false;
 	}
 
 	//위치에 도착했는데 안 보이면 경계상태로 전환
@@ -60,9 +79,11 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 		//소리 난 위치로 장애물 피해서 추적
 		//m_pOwner->Move_To(XMLoadFloat3(&m_vSneakPos)-m_pOwner->Get_FinalPosition());
 		//m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
+		Determine_NextDirection(XMLoadFloat3(&m_vSneakPos), &m_vDir);
+
 		if (false == m_isTurn)
 		{
-			Determine_AvoidDirection(XMLoadFloat3(&m_vSneakPos), &m_vDir);
+			Determine_NextDirection(XMLoadFloat3(&m_vSneakPos), &m_vDir);
 			m_isTurn = true;
 		}
 		else if(m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
@@ -72,11 +93,19 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 			m_isTurn = false;
 		}
 	}
+	if (false == m_isPathFind)
+	{
+		if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_iCurWayIndex].vPosition)))
+		{
+			++m_iCurWayIndex;
+		}
+	}
 }
 
 void CSneak_InvestigateState::State_Exit()
 {
 	m_isTurn = false;
+	m_isPathFind = false;
 }
 
 void CSneak_InvestigateState::Determine_Direction()

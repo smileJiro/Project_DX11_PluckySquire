@@ -33,6 +33,7 @@ HRESULT CMonster::Initialize(void* _pArg)
 	m_fCoolTime = pDesc->fCoolTime;
 	m_fFOVX = pDesc->fFOVX;
 	m_fFOVY = pDesc->fFOVY;
+	m_eWayIndex = pDesc->eWayIndex;
 
 	if (true == pDesc->isSneakMode)
 		m_isSneakMode = true;

@@ -542,7 +542,7 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 
                 }            
                 break;
-                case Client::CSection_2D::SPSK:
+                case Client::CSection_2D::SKSP:
                 {
                     pSection = CSection_2D_PlayMap_Sksp::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
                     if (nullptr == pSection)

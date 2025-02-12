@@ -39,6 +39,8 @@
 #include "PrintFloorWord.h"
 #include "Npc_Logo.h"
 #include "UI_JotMain.h"
+#include "Narration.h"
+#include "Narration_Anim.h"
 /* For. UI*/
 
 /* For. NPC*/
@@ -64,7 +66,7 @@
 #include "2DMapDefaultObject.h"
 #include "2DMapActionObject.h"
 #include "3DMapDefaultObject.h"
-#include "3DMapSpskObject.h"
+#include "3DMapSkspObject.h"
 #include "MapObjectFactory.h"
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
@@ -391,8 +393,8 @@ HRESULT CLoader::Loading_Level_Static()
         C3DMapDefaultObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
         
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMap_SpskObject"),
-        C3DMapSpskObject::Create(m_pDevice, m_pContext))))
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMap_SkspObject"),
+        C3DMapSkspObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
@@ -698,6 +700,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_NPC_DJMoonBeard"),
 		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/DJ_MoonBeard/DJ_MoonBeard.model2D")))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_Narration_0102_01"),
+		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Narration/2DModel/0102/0102_01_Narration_Model.model2D")))))
+		return E_FAIL;
 
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
@@ -777,6 +782,12 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dialogue_Portrait"),
         CPortrait::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Narration"),
+		CNarration::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Narration_Anim"),
+		CNarration_Anim::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 
     

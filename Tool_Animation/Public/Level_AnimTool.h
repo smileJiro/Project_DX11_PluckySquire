@@ -4,10 +4,12 @@
 BEGIN(Engine)
 class CModel;
 class CTestTerrain;
+class CModelObject;
 class CAnimEventGenerator;
 END
 
 BEGIN(AnimTool)
+class CBackgorund;
 class CCamera_Target;
 class CTestModelObject;
 
@@ -38,6 +40,8 @@ public:
 
 private:
 	HRESULT					Ready_Lights();
+	HRESULT					Ready_CubeMap(const _wstring& _strLayerTag);
+
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
 	HRESULT					Create_Camera(const _wstring& _strLayerTag,CGameObject* _pTarget);
 
@@ -49,8 +53,7 @@ private:
 	HRESULT					Copy_Textures(CTestModelObject* _pModel, std::filesystem::path& _wstrSrcPath, std::filesystem::path& _wstrDstPath);
 
 private:
-	//모델 로딩 관련
-	CTestTerrain* m_pTestTerrain = nullptr;
+	CBackgorund* m_pBackground= nullptr;
 
 	std::filesystem::path					m_szLoadedPath;
 	CTestModelObject* m_pTestModelObj = nullptr;

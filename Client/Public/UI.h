@@ -2,6 +2,7 @@
 #include "UIObject.h"
 #include "GameInstance.h"
 #include "Player.h"
+#include "2DModel.h"
 //
 
 
@@ -9,7 +10,7 @@ BEGIN(Engine)
 class CTexture;
 class CVIBuffer_Rect;
 class CModelObject;
-class CController_Model;
+class C2DModel;
 END
 
 BEGIN(Client)
@@ -106,6 +107,7 @@ public:
 	virtual void Update(_float _fTimeDelta);
 	virtual void Late_Update(_float _fTimeDelta);
 	virtual HRESULT Render(_int _iTextureindex = 0, PASS_VTXPOSTEX _eShaderPass = PASS_VTXPOSTEX::DEFAULT);
+	virtual HRESULT Render(C2DModel* _Model);
 	CController_Transform* Get_Transform() { return m_pControllerTransform; }
 
 
@@ -132,6 +134,7 @@ protected:
 	CShader*		m_pShaderComs[COORDINATE_LAST] = {nullptr};
 	CTexture*		m_pTextureCom = {nullptr};
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+	C2DModel*		m_pModelCom = { nullptr };
 	_uint			m_iShaderPasses[COORDINATE_LAST] = {};
 	CUI::SHOPPANEL	m_eShopPanel = CUI::SHOPPANEL::SHOP_DEFAULT;
 
@@ -143,8 +146,6 @@ protected:
 	_float			m_fBlue = { 0.f };
 	_tchar			m_tFont[MAX_PATH] = {};
 	_float2			m_vOriginSize = {0.f, 0.f};
-
-	CController_Model* m_pModelCom[COORDINATE_LAST] = { nullptr };
 
 
 

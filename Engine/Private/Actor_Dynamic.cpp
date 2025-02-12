@@ -37,15 +37,22 @@ void CActor_Dynamic::Update(_float _fTimeDelta)
 	{
 		if (nullptr == m_pOwner)
 			return;
-
 		_matrix OwnerWorldMatrix = m_pOwner->Get_FinalWorldMatrix();
-		_float4x4 FinalMatrix = {};
-		_matrix matTranslation = XMMatrixTranslation(OwnerWorldMatrix.r[3].m128_f32[0], OwnerWorldMatrix.r[3].m128_f32[1], OwnerWorldMatrix.r[3].m128_f32[2]);
-		XMStoreFloat4x4(&FinalMatrix, XMLoadFloat4x4(&m_OffsetMatrix) * matTranslation);
-		PxMat44 PxFinalMatrix((_float*)(&FinalMatrix));
-		PxTransform pxTransform{ PxFinalMatrix };
+		_vector vScale, vRotation, vTranslation;
+		XMMatrixDecompose(&vScale, &vRotation, &vTranslation, OwnerWorldMatrix);
+
+		PxVec3 pxPos(XMVectorGetX(vTranslation),
+			XMVectorGetY(vTranslation),
+			XMVectorGetZ(vTranslation));
+
+		PxQuat pxQuat(XMVectorGetX(vRotation),
+			XMVectorGetY(vRotation),
+			XMVectorGetZ(vRotation),
+			XMVectorGetW(vRotation));
+		pxQuat.normalize();
+		PxTransform pxTransform{ pxPos, pxQuat };
 		if (pxTransform.isValid())
-			static_cast<PxRigidDynamic*>(m_pActor)->setKinematicTarget(pxTransform.getNormalized());
+			static_cast<PxRigidDynamic*>(m_pActor)->setKinematicTarget(pxTransform);
 		else
 			return;
 	}

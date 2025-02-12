@@ -98,7 +98,7 @@ HRESULT CRenderer::Initialize()
 
 
     /* 직교 투영으로 그리기 위한 Shader, VIBuffer, Matrix Init */
-    m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../../EngineSDK/Hlsl/Shader_Deferred.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements);
+    m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../../EngineSDK/Hlsl/Shader_Deferred_Backup.hlsl"), VTXPOSTEX::Elements, VTXPOSTEX::iNumElements);
     if (nullptr == m_pShader)
         return E_FAIL;
 
@@ -364,8 +364,8 @@ HRESULT CRenderer::Render_Lights()
     /* 4. 사각형 정점 정보 바인딩 */
     m_pVIBuffer->Bind_BufferDesc();
 
-    if (FAILED(m_pGameInstance->Render_Lights(m_pShader, m_pVIBuffer)))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Render_Lights(m_pShader, m_pVIBuffer)))
+    //    return E_FAIL;
 
     /* 5. 렌더 종료 시, 기존 Back Buffer RTV로 RTV 변경. */
     if (FAILED(m_pGameInstance->End_MRT()))
@@ -409,7 +409,7 @@ HRESULT CRenderer::Render_Final()
         return E_FAIL;
 
     /* Final Pass */
-    m_pShader->Begin((_uint)PASS_DEFERRED::LIGHTING);
+    m_pShader->Begin((_uint)3);
 
     m_pVIBuffer->Bind_BufferDesc();
 
@@ -483,7 +483,7 @@ HRESULT CRenderer::Render_After_Effect()
         return E_FAIL;
 
     /* Final Pass */
-    m_pShader->Begin((_uint)PASS_DEFERRED::AFTER_EFFECT);
+    m_pShader->Begin((_uint)4);
 
     m_pVIBuffer->Bind_BufferDesc();
 

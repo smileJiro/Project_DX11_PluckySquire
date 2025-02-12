@@ -498,9 +498,6 @@ HRESULT CMap_Tool_MainApp::Ready_RenderTargets()
 
 	/* Settiong DSV */
 
-	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), g_iShadowWidth, g_iShadowHeight)))
-		return E_FAIL;
-
 
 	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), g_iShadowWidth, g_iShadowHeight)))
 		return E_FAIL;

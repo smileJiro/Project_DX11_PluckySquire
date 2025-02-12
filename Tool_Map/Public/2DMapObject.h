@@ -50,7 +50,7 @@ public:
 	_bool						Is_ModelLoad() { return m_isModelLoad; }
 
 	HRESULT						Export(HANDLE hFile);
-	HRESULT						Import(HANDLE hFile,vector<C2DMapObjectInfo*>& _ModelInfos);
+	HRESULT						Import(HANDLE hFile,vector<C2DMapObjectInfo*>& _ModelInfos, _float2 _fRenderTargetSIze);
 
 	virtual _vector				Get_FinalPosition() const override; 
 	
@@ -77,7 +77,7 @@ private:
 
 public:
 	static C2DMapObject* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	static C2DMapObject* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HANDLE _hFile, vector<C2DMapObjectInfo*>& _ModelInfos);
+	static C2DMapObject* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HANDLE _hFile, vector<C2DMapObjectInfo*>& _ModelInfos, _float2 _fRenderTargetSIze);
 	virtual CGameObject* Clone(void* pArg);
 	virtual void Free() override;
 
