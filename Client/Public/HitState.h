@@ -3,11 +3,11 @@
 
 BEGIN(Client)
 
-class CIdleState final : public CState
+class CHitState final : public CState
 {
 private:
-	CIdleState();
-	virtual ~CIdleState() = default;
+	CHitState();
+	virtual ~CHitState() = default;
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -21,7 +21,7 @@ private:
 	_float m_fAccTime = { 0.f };
 
 public:
-	static CIdleState* Create(void* _pArg);
+	static CHitState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;

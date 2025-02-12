@@ -26,6 +26,7 @@ public:
 		_float fAttack2DRange;
 		_float fDelayTime;
 		_float fCoolTime;
+		_float fHP;
 		_float fFOVX;
 		_float fFOVY;
 		_bool isSneakMode = false;
@@ -103,6 +104,8 @@ public:
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other);
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
 
+	virtual void	On_Hit(CGameObject* _pHitter, _float _fDamg);
+
 public:
 	virtual void Attack();
 	virtual void Turn_Animation(_bool _isCW) {};
@@ -163,6 +166,8 @@ protected:
 	_bool m_isCool = { false };
 	_float m_fCoolTime = { 0.f };
 	_uint	 m_iAttackCount = { 0 };
+
+	_float m_fHp = { 0 };
 
 	//½Ã¾ß°¢
 	_float m_fFOVX = { 0.f };

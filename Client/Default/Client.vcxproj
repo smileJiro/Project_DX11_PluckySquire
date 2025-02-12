@@ -212,7 +212,9 @@
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\public\Collision_Manager.h" />
+    <ClInclude Include="..\Public\DeadState.h" />
     <ClInclude Include="..\Public\FloorWord.h" />
+    <ClInclude Include="..\Public\HitState.h" />
     <ClInclude Include="..\Public\Interactable.h" />
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
     <ClInclude Include="..\Public\Narration.h" />
@@ -378,7 +380,9 @@
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp" />
+    <ClCompile Include="..\Private\DeadState.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
+    <ClCompile Include="..\Private\HitState.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
     <ClCompile Include="..\Private\Narration.cpp" />
     <ClCompile Include="..\Private\Narration_Anim.cpp" />

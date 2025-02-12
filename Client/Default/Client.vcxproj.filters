@@ -394,6 +394,9 @@
     <Filter Include="02.GameObjects\Carriable">
       <UniqueIdentifier>{0b0f1611-bbbf-455b-a49a-4b3eb34fb7d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Components\FSM\State\Hit">
+      <UniqueIdentifier>{4983bbf5-cb92-4f92-8db8-82bb595203d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -871,6 +874,12 @@
     <ClInclude Include="..\Public\CarriableObject.h">
       <Filter>02.GameObjects\Carriable</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\HitState.h">
+      <Filter>03.Components\FSM\State\Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DeadState.h">
+      <Filter>03.Components\FSM\State\Hit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1332,6 +1341,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CarriableObject.cpp">
       <Filter>02.GameObjects\Carriable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HitState.cpp">
+      <Filter>03.Components\FSM\State\Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DeadState.cpp">
+      <Filter>03.Components\FSM\State\Hit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
