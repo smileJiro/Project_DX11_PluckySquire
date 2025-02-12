@@ -104,6 +104,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     //ShapeDesc.vHalfExtents = { 0.5f, 1.f, 0.5f };
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
+
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &CapsuleDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
@@ -1167,7 +1168,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 
     if (KEY_DOWN(KEY::TAB))
     {
-        m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 24.f));
+        //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
+        //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
+        m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
     }
 
 }

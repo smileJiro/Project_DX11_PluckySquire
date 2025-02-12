@@ -194,6 +194,8 @@ namespace Client
 	enum class WAYPOINTINDEX
 	{
 		CHAPTER2_1,
+		CHAPTER2_2,
+		CHAPTER2_3,
 		LAST
 	};
 

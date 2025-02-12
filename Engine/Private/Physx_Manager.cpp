@@ -200,6 +200,42 @@ _bool CPhysx_Manager::RayCast_Nearest(const _float3& _vOrigin, const _float3& _v
 	return isResult;
 }
 
+_bool CPhysx_Manager::RayCast_Nearest_GroupFilter(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _int _iGroupNum, _float3* _pOutPos, CActorObject** _ppOutActorObject)
+{
+	PxRaycastHit hitBuffer[10]; // 최대 10개까지 저장
+	PxRaycastBuffer hit(hitBuffer, 10); // 버퍼 설정
+	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
+	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
+
+	_bool isResult = m_pPxScene->raycast(vOrigin, vRayDir, _fMaxDistance, hit);
+
+	for (PxU32 i = 0; i < hit.nbTouches; i++) {
+		PxRigidActor* pActor = hit.touches[i].actor;
+		ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+
+		//지정된 그룹 제외
+		if (_iGroupNum & pActorUserData->iObjectGroup)
+		{
+			isResult = false;
+		}
+		else
+		{
+			if (nullptr != _ppOutActorObject)
+			{
+				if (nullptr != pActorUserData)
+					*_ppOutActorObject = pActorUserData->pOwner;
+			}
+			if (nullptr != _pOutPos)
+				*_pOutPos = _float3(hit.block.position.x, hit.block.position.y, hit.block.position.z);
+
+			isResult = true;
+			break;
+		}
+	}
+
+	return isResult;
+}
+
 _bool CPhysx_Manager::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance,list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits)
 {
 	PxRaycastHit hitBuffer[10]; // 최대 10개까지 저장
