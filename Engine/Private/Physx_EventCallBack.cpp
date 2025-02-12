@@ -98,8 +98,8 @@ void CPhysx_EventCallBack::onTrigger(PxTriggerPair* pairs, PxU32 count)
 		OtherCollInfo.pActorUserData = pOtherActorUserData;
 		OtherCollInfo.pShapeUserData = pOtherShapeUserData;
 
-		if ((pairs[i].flags & (PxTriggerPairFlag::eREMOVED_SHAPE_TRIGGER | PxTriggerPairFlag::eREMOVED_SHAPE_OTHER)) || 
-			false == pTriggerOwner->Get_ActorCom()->Is_Active() || false == pOtherOwner->Get_ActorCom()->Is_Active())
+		if ((pairs[i].flags & (PxTriggerPairFlag::eREMOVED_SHAPE_TRIGGER | PxTriggerPairFlag::eREMOVED_SHAPE_OTHER))
+			|| false == pTriggerOwner->Get_ActorCom()->Is_Active() || false == pOtherOwner->Get_ActorCom()->Is_Active())
 		{
 			_bool isResult = Erase_StayTrigger(ID.ID);
 			if (true == isResult || PxPairFlag::eNOTIFY_TOUCH_LOST == pairs[i].status)

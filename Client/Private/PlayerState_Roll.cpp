@@ -57,7 +57,9 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 		if (fProgress <= fForwardEndProgress)
 		{
 			_float fRatio = (fProgress - fForwardStartProgress) / (fForwardEndProgress - fForwardStartProgress);
-			_float fSpeed = m_fForwardSpeedMax - (m_fForwardSpeedMax - m_fForwardSpeedMin) * fRatio;
+			_float fMaxSpeed = eCoord == COORDINATE_2D ? m_f2DForwardSpeedMax : m_f3DForwardSpeedMax;
+			_float fMinSpeed = eCoord == COORDINATE_2D ? m_f2DForwardSpeedMin : m_f3DForwardSpeedMin;
+			_float fSpeed = fMaxSpeed - (fMaxSpeed - fMinSpeed) * fRatio;
 			m_pOwner->Move((m_vDirection)*fSpeed, _fTimeDelta);
 		}
 	}
