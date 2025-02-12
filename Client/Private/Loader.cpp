@@ -1004,7 +1004,6 @@ HRESULT CLoader::Loading_Level_Chapter_4()
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
         TEXT("../Bin/Resources/Models/2DMapObject/"))))
         return E_FAIL;
-
     /* 낱개 로딩 예시*/
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_player2DAnimation"),
@@ -1336,8 +1335,6 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
                 break;
             }
         }
-
-        
     }
     return S_OK;
 }
