@@ -10,8 +10,9 @@
 					"ispeed": 200,
 					"strtext": "{150}옛{100}날 옛적에#{125}저트{100}라는#{110}용감한 견습 기사{100}가#있었습니다.",
 					"fscale": 1.5,
-					"fposX": 300.0,
-					"fposY": 300.0,
+					"isLeft": true,
+					"fposX": 120.0,
+					"fposY": 200.0,
 					"fwaitingTime": 300.0,
 					"NarAnim": [
 						{
@@ -26,7 +27,52 @@
 					]
 				},
 				{
-					"iduration": ""
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "{100}저트는 사악한 마법사#{125}험그럼프로부터#{100}나라를 지켰고...",
+					"fscale": 1.5,
+					"isLeft": false,
+					"fposX": 120.0,
+					"fposY": 200.0,
+					"fwaitingTime": 300.0,
+					"NarAnim": [
+						{
+							"strAnimationid": "Prototype_Component_Narration_0102_02_Humgrump",
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 200.0,
+							"fPosY": 450.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 450.0
+						},
+						{
+							"strAnimationid": "Prototype_Component_Narration_0102_02_Jot",
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 50.0,
+							"fPosY": 450.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 450.0
+						},
+						{
+							"strAnimationid": "Prototype_Component_Narration_0102_02_Villagers",
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 550.0,
+							"fPosY": 450.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 450.0
+						},
+						{
+							"strAnimationid": "Prototype_Component_Narration_0102_01",
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 650.0,
+							"fPosY": 450.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 450.0
+						}
+					]
 				}
 			]
 		}

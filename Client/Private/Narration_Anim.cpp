@@ -39,11 +39,24 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 	
 	if (0 < pDesc->lines[pDesc->LineCount].NarAnim.size())
 	{
-		m_strAnimationId = pDesc->lines[pDesc->LineCount].NarAnim[0].strAnimationid;
-		pDesc->fX = m_vPos.x = pDesc->lines[pDesc->LineCount].NarAnim[0].vPos.x;
-		pDesc->fY = m_vPos.y = pDesc->lines[pDesc->LineCount].NarAnim[0].vPos.y;
-		pDesc->fSizeX = m_fAnimationScale.x = pDesc->lines[pDesc->LineCount].NarAnim[0].vAnimationScale.x;
-		pDesc->fSizeY = m_fAnimationScale.y = pDesc->lines[pDesc->LineCount].NarAnim[0].vAnimationScale.y;
+		//m_strAnimationId = pDesc->lines[0].NarAnim[0].strAnimationid;
+		m_strAnimationId = pDesc->lines[pDesc->LineCount].NarAnim[pDesc->lines[pDesc->LineCount].AnimCount].strAnimationid;
+
+		if (true == pDesc->lines[pDesc->LineCount].isLeft)
+		{
+
+
+			pDesc->fX = m_vPos.x = pDesc->lines[pDesc->LineCount].NarAnim[pDesc->lines[pDesc->LineCount].AnimCount].vPos.x;
+			pDesc->fY = m_vPos.y = pDesc->lines[pDesc->LineCount].NarAnim[pDesc->lines[pDesc->LineCount].AnimCount].vPos.y;
+		}
+		else if (false == pDesc->lines[pDesc->LineCount].isLeft)
+		{
+			pDesc->fX = m_vPos.x = pDesc->lines[pDesc->LineCount].NarAnim[pDesc->lines[pDesc->LineCount].AnimCount].vPos.x + (vRTSize.x / 2.f);
+			pDesc->fY = m_vPos.y = pDesc->lines[pDesc->LineCount].NarAnim[pDesc->lines[pDesc->LineCount].AnimCount].vPos.y;
+		}
+		
+		pDesc->fSizeX = m_fAnimationScale.x = pDesc->lines[pDesc->LineCount].NarAnim[pDesc->lines[pDesc->LineCount].AnimCount].vAnimationScale.x;
+		pDesc->fSizeY = m_fAnimationScale.y = pDesc->lines[pDesc->LineCount].NarAnim[pDesc->lines[pDesc->LineCount].AnimCount].vAnimationScale.y;
 
 		
 	}
@@ -61,7 +74,9 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 
 	//m_pModelCom->Set_AnimationLoop(0, true);
 	m_pModelCom->Set_Animation(0);
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_BACKGROUND);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_BACKGROUND);
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionid, this);
 
 	_float2 vPos = { 0.f, 0.f };
 

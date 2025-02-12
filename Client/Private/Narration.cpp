@@ -103,6 +103,8 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 				NarData.eCurlevelId = (LEVEL_ID)Nar["CurlevelId"].get<_int>();
 			}
 
+			_int iLine = { 0 };
+
 			if (Nar.contains("lines") && Nar["lines"].is_array())
 			{
 				for (auto& line : Nar["lines"])
@@ -129,6 +131,11 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 						DialogueData.fscale = line["fscale"].get<_float>();
 					}
 
+					if (line.contains("isLeft") && line["isLeft"].is_boolean())
+					{
+						DialogueData.isLeft = line["isLeft"].get<_bool>();
+					}
+
 					if (line.contains("fposX") && line["fposX"].is_number_float())
 					{
 						DialogueData.fpos.x = line["fposX"].get<_float>();
@@ -148,10 +155,11 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 					//NarData.lines.push_back(DialogueData);
 
 					// 애니메이션이 있는가 없는가
+
+					_int iAnim = { 0 };
+
 					if (line.contains("NarAnim") && line["NarAnim"].is_array())
 					{
-						_int iLine = { 0 };
-
 						for (auto& Anim : line["NarAnim"])
 						{
 							NarrationAnimation Animation;
@@ -168,6 +176,8 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 								}
 
 								Animation.strAnimationid = StringToWstring(Anim["strAnimationid"].get<_string>());
+
+								
 							}
 
 							if (Anim.contains("strSectionid") && Anim["strSectionid"].is_string())
@@ -201,12 +211,15 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 							}
 
 
+							
 							NarData.LineCount = iLine;
-							++iLine;
 							DialogueData.NarAnim.push_back(Animation);
 
+							DialogueData.AnimCount = iAnim;
+							++iAnim;
 							NarData.lines.push_back(DialogueData);
-
+							
+							
 
 							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(NarData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), NarData.eCurlevelId, TEXT("Layet_UI"), &NarData)))
 								return E_FAIL;
@@ -215,9 +228,15 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 
 							// TODO :: 여기서 이미지를 생성 시킨다.
 
-
+							
 						}
+						++iLine;
+						
+						
+
 					}
+
+					
 				}
 			}
 		}
@@ -235,8 +254,6 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 
 
 	// 들어오는 텍스트
-	//_wstring strDisplayText = TEXT("{150}옛{100}날 옛적에#{125}저트{100}라는#{110}용감한 견습 기사{100}가#있었습니다.");
-
 	_wstring strDisplayText = m_NarrationDatas[0].lines[0].strtext;
 
 	// 오직 글자만 노출 (특수기호 제거)
@@ -275,17 +292,13 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 			}
 		}
 
-
-
-		int tokenLength = static_cast<int>(token.strText.length());
-
+		_int tokenLength = static_cast<int>(token.strText.length());
 		_float CalY = { 0.f };
 		
 		if (iRemainLine > tokenLength)
 		{
-
 			_float2 vTextSize = { 0.f, 0.f };
-			_vector vecSize = m_pGameInstance->Measuring(TEXT("Font40"), token.strText.c_str());
+			_vector vecSize = m_pGameInstance->Measuring(TEXT("Font54"), token.strText.c_str());
 			XMStoreFloat2(&vTextSize, vecSize);
 
 			if (1.f < token.fScale)
@@ -293,22 +306,14 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 				CalY -= vTextSize.y / 2.f;
 			}
 			
-			m_pGameInstance->Render_Scaling_Font(TEXT("Font40"), token.strText.c_str(), _float2(fx, fy + CalY), XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.f, _float2(0.f, 0.f), token.fScale);
-
-			//_float2 vTextSize = { 0.f, 0.f };
-			//
-			//_vector vecSize = m_pGameInstance->Measuring(TEXT("Font40"), token.strText.c_str());
-			//XMStoreFloat2(&vTextSize, vecSize);
+			m_pGameInstance->Render_Scaling_Font(TEXT("Font54"), token.strText.c_str(), _float2(fx, fy + CalY), XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.f, _float2(0.f, 0.f), token.fScale);
 			fx += vTextSize.x * token.fScale * 0.98f;
-			
 		}
 		else
 		{
 			_wstring strPartial = token.strText.substr(0, iRemainLine);
 			CGameInstance* pGameInstance = CGameInstance::GetInstance();
-
-
-			_vector vecSize = m_pGameInstance->Measuring(TEXT("Font40"), token.strText.c_str());
+			_vector vecSize = m_pGameInstance->Measuring(TEXT("Font54"), token.strText.c_str());
 			_float2 vTextSize = { 0.f, 0.f };
 
 			XMStoreFloat2(&vTextSize, vecSize);
@@ -318,20 +323,12 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 				CalY -= vTextSize.y / 10.f;
 			}
 
-
-
-
-			pGameInstance->Render_Scaling_Font(TEXT("Font40"), token.strText.c_str(), _float2(fx, fy + CalY), XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.f, _float2(0, 0), token.fScale);
-
+			pGameInstance->Render_Scaling_Font(TEXT("Font54"), token.strText.c_str(), _float2(fx, fy + CalY), XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.f, _float2(0, 0), token.fScale);
 			fx += vTextSize.x * token.fScale * 0.98f;
-			
 		}
-		//break;
-
 	}
 
 	return S_OK;
-
 }
 
 
@@ -348,8 +345,6 @@ void CNarration::NextDialogue(_float2 _RTSize)
 
 HRESULT CNarration::Ready_Components()
 {
-	
-
 	return S_OK;
 }
 
@@ -398,7 +393,6 @@ HRESULT CNarration::Cleanup_DeadReferences()
 void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken)
 {
 	vector<TextTokens> vTokens;
-
 	size_t i = 0;
 
 	// 스케일쪽 변경 300 이면 3, 100이면 1
@@ -414,7 +408,6 @@ void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken
 				break;
 
 			_wstring strNum = _Text.substr(i + 1, iClosing - i - 1);
-
 			_int fvalue = stoi(strNum);
 
 			// 글자 크기 결정
@@ -429,13 +422,11 @@ void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken
 		else
 		{
 			size_t iNext = _Text.find_first_of(L"{#", i);
-			
 			_wstring strSub;
 
 			if (iNext == _wstring::npos)
 			{
 				strSub = _Text.substr(i);
-				
 				i = _Text.length();
 			}
 			else
@@ -443,7 +434,6 @@ void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken
 				strSub = _Text.substr(i, iNext - i);
 				i = iNext;
 			}
-
 			vTokens.push_back({ strSub, fCurrentSize });
 		}
 	}
@@ -455,21 +445,5 @@ void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken
 		_OutToken[i].strText = vTokens[i].strText;
 		_OutToken[i].fScale = vTokens[i].fScale;
 	}
-
 }
 
-void CNarration::DrawText(SpriteBatch* spriteBatch, SpriteFont* spriteFont, const _wstring& text, float fscale, float& fX, float fY)
-{
-	//CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	//// 현재 위치를 기준으로 텍스트를 그린다.
-	//_float2 vPos = { 0.f, 0.f };
-	//pGameInstance->Render_Scaling_Font(TEXT("Font35"), text.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.f,
-	//	_float2(0, 0), fscale);
-	//
-	//
-	//// 그려진 텍스트의 가로 길이를 측정하여 x 좌표를 이동
-	//_vector sizeVec = spriteFont->MeasureString(text.c_str());
-	//_float2 textSize;
-	//XMStoreFloat2(&textSize, sizeVec);
-	//fX += textSize.x * fscale;
-}

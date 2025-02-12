@@ -37,7 +37,8 @@ public:
 		_float fscale;              // 텍스트의 크기 변경
         _float2 fpos;               // X의 좌표
         _float fwaitingTime;        // 완료 후 다음 애니메이션까지의 대기 시간
-
+        _bool  isLeft;          // 왼쪽인가요 오른쪽인가요? 왼쪽이면 true;
+        _int     AnimCount = { 0 };
         vector<NarrationAnimation> NarAnim;
 
     };
@@ -48,6 +49,8 @@ public:
         wstring strid;              // 다이얼로그 ID
         LEVEL_ID eCurlevelId = { LEVEL_END };
         _int     LineCount = { 0 };
+        
+        
         vector<NarrationDialogData> lines;
     };
 
@@ -80,7 +83,7 @@ private:
     NarrationData            m_NarrationData;
     vector<NarrationData>  m_NarrationDatas;
 
-    _float                  m_fLineHeight = { 50.f };
+    _float                  m_fLineHeight = { 70.f };
     _int                    m_RemainWord = { 0 };
 
 protected:
@@ -95,7 +98,6 @@ public:
 
 private:
     void PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken);
-    void DrawText(SpriteBatch* spriteBatch, SpriteFont* spriteFont, const _wstring& text, float fscale, float& fX, float fY);
 
 };
 END
