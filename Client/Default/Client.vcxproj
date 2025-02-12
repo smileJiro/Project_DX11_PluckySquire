@@ -302,6 +302,7 @@
     <ClInclude Include="..\Public\Sneak_AlertState.h" />
     <ClInclude Include="..\Public\Sneak_AttackState.h" />
     <ClInclude Include="..\Public\Sneak_AwareState.h" />
+    <ClInclude Include="..\Public\Sneak_BackState.h" />
     <ClInclude Include="..\Public\Sneak_ChaseState.h" />
     <ClInclude Include="..\Public\Sneak_DetectionField.h" />
     <ClInclude Include="..\Public\Sneak_IdleState.h" />
@@ -467,6 +468,7 @@
     <ClCompile Include="..\Private\Sneak_AlertState.cpp" />
     <ClCompile Include="..\Private\Sneak_AttackState.cpp" />
     <ClCompile Include="..\Private\Sneak_AwareState.cpp" />
+    <ClCompile Include="..\Private\Sneak_BackState.cpp" />
     <ClCompile Include="..\Private\Sneak_ChaseState.cpp" />
     <ClCompile Include="..\Private\Sneak_DetectionField.cpp" />
     <ClCompile Include="..\Private\Sneak_IdleState.cpp" />
