@@ -32,7 +32,10 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
 	if (fProgress >= fMotionCancelProgress)
 	{
         if(m_pOwner->Is_AttackTriggerActive())
+        {
+            cout << "AttackState MotionCancel EndAttack" << endl;
             m_pOwner->End_Attack();
+        }
         if (m_bCombo)
         {
             m_iComboCount++;
@@ -89,8 +92,6 @@ void CPlayerState_Attack::Enter()
 
 void CPlayerState_Attack::Exit()
 {
-    if (m_pOwner->Is_AttackTriggerActive())
-        m_pOwner->End_Attack();
 }
 
 void CPlayerState_Attack::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

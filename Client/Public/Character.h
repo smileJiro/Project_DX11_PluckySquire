@@ -4,8 +4,8 @@
 BEGIN(Client)
 typedef struct tagCharacterStat
 {
-	_float fDamg = 0.f;
-	_float fHP = 1.f;
+	_float fDamg = 1.f;
+	_float fHP = 5.f;
 }STAT;
 class CCharacter abstract :   public CContainerObject
 {

@@ -29,40 +29,7 @@ HRESULT CRenderGroup_PostProcessing::Initialize(void* _pArg)
 
 HRESULT CRenderGroup_PostProcessing::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuffer)
 {
-    //m_pGameInstance->Begin_MRT(m_strMRTTag, m_pDSV, m_isClear);
 
-    //if (true == m_isViewportSizeChange)
-    //    Setup_Viewport(m_vViewportSize);
-
-    ///* 1. 직교투영을 위한 매트릭스 바인딩. */
-    //_pRTShader->Bind_Matrix("g_WorldMatrix", m_pGameInstance->Get_WorldMatrix_Renderer());
-    //_pRTShader->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_ViewMatrix_Renderer());
-    //_pRTShader->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_ProjMatrix_Renderer());
-
-    ///* 2. 블러 대상 렌더타겟 바인딩. */
-    //if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_SrcBlurTarget;", m_strPrevLevelRTTag)))
-    //{
-    //    if (FAILED(m_pGameInstance->End_MRT()))
-    //        return E_FAIL;
-    //    return E_FAIL;
-    //}
-
-
-    ///* 3. dx, dy 바인딩. */
-    //_float2 vTexelSize = { 1.0f / m_vViewportSize.x , 1.0f / m_vViewportSize.y };
-    //_pRTShader->Bind_RawValue("g_TexelSize", &vTexelSize, sizeof(_float2));
-
-    //// Origin Viewport 로 변경해야해.////// 
-    //if (true == m_isViewportSizeChange)
-    //    Setup_Viewport(_float2((_float)m_pGameInstance->Get_ViewportWidth(), (_float)m_pGameInstance->Get_ViewportHeight()));
-
-    //_pRTShader->Begin((_uint)m_eShaderPass);
-
-    //_pRTBuffer->Bind_BufferDesc();
-
-    //_pRTBuffer->Render();
-
-    //m_pGameInstance->End_MRT();
 
     return S_OK;
 }
@@ -76,7 +43,8 @@ HRESULT CRenderGroup_PostProcessing::Ready_BlurRenderTarget()
     /* DownSample용 RenderTarget 생성 */
     for (_uint i = 0; i < iNumRenderTargets / 2; ++i)
     {
-        _wstring strRTName = TEXT("TargetBlur_");
+        /* blur level 4 기준 : 2, 4, 8*/
+        _wstring strRTName = TEXT("Post_Blur_");
         strRTName += to_wstring(i);
         _int iDiv = pow(2, i + 1); /* 2 제곱수부터 늘어나는 */
         CRenderTarget* pDownTarget = CRenderTarget::Create(m_pDevice, m_pContext, strRTName, g_iWinSizeX / iDiv, g_iWinSizeY / iDiv, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f));
@@ -89,11 +57,14 @@ HRESULT CRenderGroup_PostProcessing::Ready_BlurRenderTarget()
 
     for (_uint i = 0; i < iNumRenderTargets / 2; ++i)
     {
-        _wstring strRTName = TEXT("TargetBlur_");
+        /* blur level 4 기준 : 4, 2, 1 */
+        _wstring strRTName = TEXT("Post_Blur_");
         strRTName += to_wstring((iNumRenderTargets /2) + i);
         _int iLevel = m_iBlurLevel - 2 - i;
         _int iDiv = pow(2, iLevel);
         CRenderTarget* pUpTarget = CRenderTarget::Create(m_pDevice, m_pContext, strRTName, g_iWinSizeX / iDiv, g_iWinSizeY / iDiv, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f));
+
+        m_BlurRenderTargets[iNumRenderTargets / 2 + i] = pUpTarget;
     }
 
 

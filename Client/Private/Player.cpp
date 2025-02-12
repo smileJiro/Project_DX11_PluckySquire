@@ -104,6 +104,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     //ShapeDesc.vHalfExtents = { 0.5f, 1.f, 0.5f };
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
+
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &CapsuleDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
@@ -232,7 +233,7 @@ HRESULT CPlayer::Ready_Components()
    FanDesc.vOffsetPosition = m_f2DAttackTriggerDesc->fOffset;
    FanDesc.isBlock = false;
    FanDesc.isTrigger = true;
-   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Fan"),
        TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_pAttack2DTriggerCom), &FanDesc)))
        return E_FAIL;
    m_pAttack2DTriggerCom->Set_Active(false);
@@ -297,6 +298,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{1,0,0,0});
 	Set_PartActive(PLAYER_PART_SWORD, false);
     m_pSword->Switch_Grip(true);
+    m_pSword->Set_AttackEnable(false);
 
 	//Part Glove
     BodyDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
@@ -662,6 +664,23 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     else
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
 
+    switch (m_ePlayerMode)
+    {
+    case Client::CPlayer::PLAYER_MODE_NORMAL:
+		UnEquip_Part(PLAYER_PART_SWORD);
+        m_pSword->Set_AttackEnable(false);
+        break;
+    case Client::CPlayer::PLAYER_MODE_SWORD:
+		Equip_Part(PLAYER_PART_SWORD);
+        m_pSword->Set_AttackEnable(true);
+        break;
+    case Client::CPlayer::PLAYER_MODE_SNEAK:
+        UnEquip_Part(PLAYER_PART_SWORD);
+        m_pSword->Set_AttackEnable(false);
+        break;
+    default:
+        break;
+    }
     Set_State(IDLE);
 
     return S_OK;

@@ -208,7 +208,13 @@ void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CBarfBug::On_Hit(CGameObject* _pHitter, _float _fDamg)
 {
-	cout << "BarfBug Get Damg" <<this<<", "<< _fDamg << endl;
+	cout << "BarfBug Get Damg" << this << ", " << _fDamg << endl;
+	m_tStat.fHP -= _fDamg;
+	if (m_tStat.fHP < 0)
+	{
+		m_tStat.fHP = 0;
+        cout << "BarfBug Dead" << endl;
+	}
 }
 
 HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
