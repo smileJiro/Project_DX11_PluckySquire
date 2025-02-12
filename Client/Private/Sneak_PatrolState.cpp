@@ -101,7 +101,7 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 	{
 		//정해진 웨이포인트가 아니면 복귀 해야함(정찰 구간 사이에 막히는 부분이 없다는 가정)
 		_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
-		_float3 vDir; XMStoreFloat3(&vDir, XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]) - m_pOwner->Get_FinalPosition());
+		_float3 vDir; XMStoreFloat3(&vDir, XMVector3Normalize(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]) - m_pOwner->Get_FinalPosition()));
 		if (m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vDir, 10.f, OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
 		{
 			Determine_NextDirection(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]), &m_vDir);

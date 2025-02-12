@@ -702,6 +702,8 @@ void CPlayer::Attack(CGameObject* _pVictim)
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
     Event_Hit(this, _pVictim, m_tStat.fDamg);
+    _float3 vRepulse; XMStoreFloat3(&vRepulse, 10.f * Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
+    static_cast<CActorObject*>(_pVictim)->Get_ActorCom()->Add_Impulse(vRepulse);
     m_AttckedObjects.insert(_pVictim);
 }
 

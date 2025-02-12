@@ -72,6 +72,7 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 	{
 		if(true == m_isRenew)
 		{
+			//방향 y값이 0이 되는게 맞나?
 			Determine_NextDirection(m_pTarget->Get_FinalPosition(), &m_vDir);
 			m_isRenew = false;
 			m_isTurn = true;

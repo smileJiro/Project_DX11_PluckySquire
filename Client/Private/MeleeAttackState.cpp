@@ -55,8 +55,12 @@ void CMeleeAttackState::State_Update(_float _fTimeDelta)
 		{
 			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
 		}
-		m_pOwner->Change_Dir();
+		else if(COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
+		{
+			m_pOwner->Change_Dir();
+		}
 		m_pOwner->Attack();
+		Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
 	}
 }
 
