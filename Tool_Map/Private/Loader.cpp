@@ -299,7 +299,7 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
     //if (FAILED(Load_Models_FromJson(LEVEL_TOOL_2D_MAP, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
     //    return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("SM_desk_split_topboard_02"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("topboard"),
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/SM_desk_split_topboard_02/SM_desk_split_topboard_02.model", matPretransform))))
         return E_FAIL;
 
@@ -307,7 +307,7 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
         return E_FAIL;
     
     //if (FAILED(Load_Models_FromJson(LEVEL_TOOL_2D_MAP, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
-    //    return E_FAIL;
+    ////    return E_FAIL;
 
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_TOOL_2D_MAP,
         TEXT("../../Client/Bin/Resources/Models/2DMapObject/"))))
@@ -379,6 +379,7 @@ HRESULT CLoader::Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _
     path = _szDirPath;
     for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
         if (entry.path().extension() == ".model2d") {
+            LOG_TYPE("2D Model Loading(" + entry.path().stem().string() + ".model)...", LOG_LOADING);
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
                 C2DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str()))))
             {
@@ -387,6 +388,7 @@ HRESULT CLoader::Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _
                 MessageBoxA(NULL, str.c_str(), "¿¡·¯", MB_OK);
                 return E_FAIL;
             }
+
         }
     }
     return S_OK;

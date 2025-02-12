@@ -62,7 +62,7 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 
 	CModelObject::MODELOBJECT_DESC NormalDesc = {};
 	NormalDesc.Build_3D_Model(LEVEL_TOOL_2D_MAP,
-		L"SM_desk_split_topboard_02",
+		L"topboard",
 		L"Prototype_Component_Shader_VtxMesh"
 		);
 	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
