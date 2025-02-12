@@ -1196,8 +1196,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     if (KEY_DOWN(KEY::TAB))
     {
         //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
-        //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
-        m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
+        m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
+        //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
+        //m_pActorCom->Set_GlobalPose(_float3(0.f, 0.35f, 0.f));
     }
 
 }

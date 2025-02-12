@@ -63,7 +63,8 @@ HRESULT CNewRenderer::Draw_RenderObject()
 {
 	for (auto& Pair : m_RenderGroups)
 	{
-		Pair.second->Render(m_pShader, m_pVIBuffer);
+		if(true == Pair.second->Is_Active())
+			Pair.second->Render(m_pShader, m_pVIBuffer);
 	}
 
 #ifdef _DEBUG
@@ -133,6 +134,15 @@ HRESULT CNewRenderer::Erase_RenderGroup(_int _iGroupID, _int _iPriorityID)
 	m_RenderGroups.erase(iter);
 
 	return S_OK;
+}
+
+void CNewRenderer::Set_Active_RenderGroup(_int _iGroupID, _int _iPriorityID, _bool _isActive)
+{
+	CRenderGroup* pRenderGroup = Find_RenderGroup(_iGroupID, _iPriorityID);
+	if (nullptr == pRenderGroup)
+		return;
+
+	pRenderGroup->Set_Active(_isActive);
 }
 
 ID3D11DepthStencilView* CNewRenderer::Find_DSV(const _wstring& _strDSVTag)

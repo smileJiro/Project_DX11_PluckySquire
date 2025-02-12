@@ -1,9 +1,12 @@
+#pragma once
 #include "stdafx.h"
 #include "Narration.h"
 #include "GameInstance.h"
 #include "UI_Manager.h"
 #include "Section_Manager.h"
 #include "Trigger_Manager.h"
+#include "CustomFont.h"
+
 
 CNarration::CNarration(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI (_pDevice, _pContext)
@@ -24,8 +27,6 @@ HRESULT CNarration::Initialize(void* _pArg)
 {
 	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
 
-	
-
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
@@ -40,12 +41,9 @@ HRESULT CNarration::Initialize(void* _pArg)
 	}
 	
 	
-
-
 	_float2 vCalScale = { 0.f, 0.f };
 	vCalScale.x = m_vOriginSize.x * RATIO_BOOK2D_X;
 	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
-
 
 
 	m_isRender = false;
@@ -58,68 +56,17 @@ HRESULT CNarration::Initialize(void* _pArg)
 
 void CNarration::Update(_float _fTimeDelta)
 {
-
-
-
-	//if (KEY_DOWN(KEY::B))
-	//{
-	//	// 이건 각 스테이지 마다 RTSIZE가 변경될 수 있다. 가변적으로 사용하여야한다.
-	//	_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
-	//	NextDialogue(vRTSize); // 다음 다이얼로그의 위치를 변경한다.
-	//
-	//}
-
+	
 }
 
 void CNarration::Late_Update(_float _fTimeDelta)
 {
-	//Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
-
-	//if (true == Uimgr->Get_DisplayDialogue() && COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
-	//{
-	//	Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
-	//}
 
 }
 
 HRESULT CNarration::Render()
 {
-	//if (true == Uimgr->Get_DisplayDialogue())
-	//{
-	//	wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
-	//
-	//
-	//	if (0 != Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].BG)
-	//	{
-	//		__super::Render(Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].BG, PASS_VTXPOSTEX::UI_POINTSAMPLE);
-	//	}
-	//	else
-	//	{
-	//		_float4 vColor = _float4(Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].Red / 255.f,
-	//								Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].Green / 255.f,
-	//								Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].Blue / 255.f,
-	//								 1.f);
-	//
-	//		if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_vColors", &vColor, sizeof(_float4))))
-	//			return E_FAIL;
-	//
-	//		__super::Render(Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].BG, PASS_VTXPOSTEX::DIALOGUE_BG_COLOR);
-	//	}
-	//
-	//
-	//
-	//	
-	//
-	//	if (Uimgr->Get_DialogueLineIndex() < Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
-	//	{
-	//		// TODO :: 나중에 바꿔야함, 해당 값은 가변적이다.
-	//		_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
-	//
-	//		DisplayText(vRTSize);
-	//	}
-	//}
-		
-
+	DisplayText(_float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y));
 	return S_OK;
 }
 
@@ -253,8 +200,6 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 								Animation.vAnimationScale.y = Anim["vAnimationScaleY"].get<_float>();
 							}
 
-							
-
 
 							NarData.LineCount = iLine;
 							++iLine;
@@ -262,8 +207,11 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 
 							NarData.lines.push_back(DialogueData);
 
+
 							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(NarData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), NarData.eCurlevelId, TEXT("Layet_UI"), &NarData)))
 								return E_FAIL;
+
+							m_NarrationDatas.push_back(NarData);
 
 							// TODO :: 여기서 이미지를 생성 시킨다.
 
@@ -281,145 +229,130 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 // 폰트 렌더 해주는 역할
 HRESULT CNarration::DisplayText(_float2 _vRTSize)
 {
-	//if (Uimgr->Get_DialogueLineIndex() >= Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
-	//	return E_FAIL;
-	//
-	//CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	//Safe_AddRef(pGameInstance);
-	//
-	//_float3 vTextPos3D = { 0.f, 0.f, 0.f };
-	//_float3 vTextPos2D = { 0.f, 0.f, 0.f };
-	//
-	//if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
-	//{
-	//	vTextPos3D = Uimgr->Get_CalDialoguePos();
-	//}
-	//else if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
-	//{
-	//	vTextPos2D = Uimgr->Get_CalDialoguePos();
-	//}
-	//
-	//const auto& currentLine = Uimgr->Get_DialogueLine(m_tDialogIndex, Uimgr->Get_DialogueLineIndex());
-	//
-	//static _wstring strDisplaytext;
-	//static _float fWaitTime = 0.0f;
-	//static _int iPreviousLineIndex = -1; 
-	//
-	//// 라인이 변경되었을 때 초기화
-	//if (iPreviousLineIndex != Uimgr->Get_DialogueLineIndex())
-	//{
-	//	strDisplaytext.clear();
-	//	fWaitTime = 0.0f;
-	//	iPreviousLineIndex = Uimgr->Get_DialogueLineIndex();
-	//	
-	//}
-	//
-	//// 하나씩 출력되게 계산
-	//_float fSpeed = currentLine.animation.speed / 1000.0f;
-	//_int iFullWord = static_cast<int>(currentLine.text.length());
-	//
-	//// 노출 시킬 글자의 수
-	//_int icurrentLength = static_cast<int>(strDisplaytext.length());
-	//
-	//if (icurrentLength < iFullWord)
-	//{
-	//	fWaitTime += fSpeed;
-	//	if (fWaitTime >= 1.0f)
-	//	{
-	//		// 현재 대화의 총 글자의 배열에서 위에서 계산 노출 시킬 글자의 수만큼 이동후 그 텍스트를 더해주자.
-	//		strDisplaytext += currentLine.text[icurrentLength];
-	//
-	//		// 글자 노출 대기 시간 초기화~
-	//		fWaitTime = 0.0f;
-	//	}
-	//}
-	//
-	//// 2D 기준
-	//_float2 vCalPos = { 0.f, 0.f };
-	//// 중점
-	//_float2 vMidPoint = { _vRTSize.x / 2.f, _vRTSize.y / 2.f };
-	//
-	//
-	//vCalPos.x = vMidPoint.x + vTextPos2D.x;
-	//vCalPos.y = vMidPoint.y - vTextPos2D.y;
-	//
-	//
-	//// 대상 이름 출력
-	//wsprintf(m_tFont, currentLine.Talker.c_str());
-	//pGameInstance->Render_Font(TEXT("Font20"), m_tFont, vCalPos, XMVectorSet(0.f, 0.f, 0.f, 1.f));
-	//
-	//
-	//vCalPos.x += _vRTSize.x * 0.03f;
-	//vCalPos.y -= +_vRTSize.y * 0.1f;
-	//
-	//// 대화 내용 출력
-	//wsprintf(m_tFont, strDisplaytext.c_str());
-	//pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vCalPos.x - 120.f, vCalPos.y + 120.f), XMVectorSet(0.f, 0.f, 0.f, 1.f));
-	//
-	//Safe_Release(pGameInstance);
-	//
-	//return S_OK;
-	//
+	// 처음 위치
+	float fx = m_NarrationDatas[0].lines[0].fpos.x;
+	float fy = m_NarrationDatas[0].lines[0].fpos.y;
 
+
+	// 들어오는 텍스트
+	//_wstring strDisplayText = TEXT("{150}옛{100}날 옛적에#{125}저트{100}라는#{110}용감한 견습 기사{100}가#있었습니다.");
+
+	_wstring strDisplayText = m_NarrationDatas[0].lines[0].strtext;
+
+	// 오직 글자만 노출 (특수기호 제거)
+	_wstring FullDisPlayText = strDisplayText;
+
+	FullDisPlayText.erase(remove_if(FullDisPlayText.begin(), FullDisPlayText.end(), [](_tchar ch)
+		{
+			return ch == L'{' || ch == L'}' || ch == L'#' || ch == L'@' || ch == L'0' || ch == L'1' || ch == L'2' || ch == L'3' || ch == L'4' || ch == L'5' || ch == L'6' || ch == L'7' || ch == L'8' || ch == L'9';
+		}), FullDisPlayText.end());
+
+
+	vector<TextTokens> tokens;
+
+	// 각각의 글자의 스케일 및 글자를 가져온다.
+	PaseTokens(strDisplayText, tokens);
+	_int	iRemainLine = { 0 };
+
+	for (int i = 0; i < tokens.size(); ++i)
+	{
+		if (tokens[i].strText == L"\n")
+		{
+			++iRemainLine;
+		}
+	}
+
+	for (const auto& token : tokens)
+	{
+		if (token.strText == L"\n")
+		{
+			fx = m_NarrationDatas[0].lines[0].fpos.x;
+			fy += m_fLineHeight;
+
+			if (iRemainLine > 0)
+			{
+				iRemainLine--;
+			}
+		}
+
+
+
+		int tokenLength = static_cast<int>(token.strText.length());
+
+		_float CalY = { 0.f };
+		
+		if (iRemainLine > tokenLength)
+		{
+
+			_float2 vTextSize = { 0.f, 0.f };
+			_vector vecSize = m_pGameInstance->Measuring(TEXT("Font40"), token.strText.c_str());
+			XMStoreFloat2(&vTextSize, vecSize);
+
+			if (1.f < token.fScale)
+			{
+				CalY -= vTextSize.y / 2.f;
+			}
+			
+			m_pGameInstance->Render_Scaling_Font(TEXT("Font40"), token.strText.c_str(), _float2(fx, fy + CalY), XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.f, _float2(0.f, 0.f), token.fScale);
+
+			//_float2 vTextSize = { 0.f, 0.f };
+			//
+			//_vector vecSize = m_pGameInstance->Measuring(TEXT("Font40"), token.strText.c_str());
+			//XMStoreFloat2(&vTextSize, vecSize);
+			fx += vTextSize.x * token.fScale * 0.98f;
+			
+		}
+		else
+		{
+			_wstring strPartial = token.strText.substr(0, iRemainLine);
+			CGameInstance* pGameInstance = CGameInstance::GetInstance();
+
+
+			_vector vecSize = m_pGameInstance->Measuring(TEXT("Font40"), token.strText.c_str());
+			_float2 vTextSize = { 0.f, 0.f };
+
+			XMStoreFloat2(&vTextSize, vecSize);
+			
+			if (1.f < token.fScale)
+			{
+				CalY -= vTextSize.y / 10.f;
+			}
+
+
+
+
+			pGameInstance->Render_Scaling_Font(TEXT("Font40"), token.strText.c_str(), _float2(fx, fy + CalY), XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.f, _float2(0, 0), token.fScale);
+
+			fx += vTextSize.x * token.fScale * 0.98f;
+			
+		}
+		//break;
+
+	}
 
 	return S_OK;
 
 }
 
+
+
+
 // 다음 다이얼로그에서 Json->Location에 따른 위치 변경
 void CNarration::NextDialogue(_float2 _RTSize)
 {
-	//_tchar _strDialogue[MAX_PATH] = {};
-	//wsprintf(_strDialogue, Uimgr->Get_DialogId());
-	//
-	//
-	//// 2D 기준
-	//if (Uimgr->Get_DialogueLineIndex() <= Uimgr->Get_Dialogue(_strDialogue)[0].lines.size())
-	//{
-	//	Uimgr->Set_DialogueLineIndex(Uimgr->Get_DialogueLineIndex() + 1);
-	//
-	//	_float2 vPos = {};
-	//	if (false == m_isRender)
-	//	{
-	//		m_isRender = true;
-	//	}
-	//	
-	//	Uimgr->Set_CalDialoguePos(_float3(vPos.x, vPos.y, 0.f));
-	//	//m_vCurPos = vPos;
-	//
-	//	//vPos.x = vPos.x + RTSIZE_BOOK2D_X * 0.5f;
-	//	//vPos.y = -vPos.y + RTSIZE_BOOK2D_Y * 0.5f;
-	//	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
-	//
-	//	if (Uimgr->Get_DialogueLineIndex() == Uimgr->Get_Dialogue(_strDialogue)[0].lines.size())
-	//	{
-	//		// 다음 대사가 없으므로 트리거를 종료 시킨다.
-	//	}
-	//}
+	
 }
 
-// 처음 다이얼로그 입장 시 위치 계산해주는 함
 
 
 
 HRESULT CNarration::Ready_Components()
 {
-	//if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
-	//	TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
-	//	return E_FAIL;
-	//
-	///* Com_VIBuffer */
-	//if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
-	//	TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-	//	return E_FAIL;
-	//
-	///* Com_Texture */
-	//if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_DialogueBG"),
-	//	TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-	//	return E_FAIL;
+	
 
 	return S_OK;
 }
+
 
 
 CNarration* CNarration::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -453,15 +386,90 @@ CGameObject* CNarration::Clone(void* _pArg)
 void CNarration::Free()
 {
 
-	//}
-
-	//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 	__super::Free();
-	
 }
 
 HRESULT CNarration::Cleanup_DeadReferences()
 {
 
 	return S_OK;
+}
+
+void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken)
+{
+	vector<TextTokens> vTokens;
+
+	size_t i = 0;
+
+	// 스케일쪽 변경 300 이면 3, 100이면 1
+	_float fCurrentSize = 1.0f;
+
+	while (i < _Text.length())
+	{
+		if (_Text[i] == L'{')
+		{
+			size_t iClosing = _Text.find(L'}', i);
+
+			if (iClosing == _wstring::npos)
+				break;
+
+			_wstring strNum = _Text.substr(i + 1, iClosing - i - 1);
+
+			_int fvalue = stoi(strNum);
+
+			// 글자 크기 결정
+			fCurrentSize = fvalue / 100.f;
+			i = iClosing + 1;
+		}
+		else if (_Text[i] == L'#')
+		{
+			vTokens.push_back({ L"\n", fCurrentSize });
+			++i;
+		}
+		else
+		{
+			size_t iNext = _Text.find_first_of(L"{#", i);
+			
+			_wstring strSub;
+
+			if (iNext == _wstring::npos)
+			{
+				strSub = _Text.substr(i);
+				
+				i = _Text.length();
+			}
+			else
+			{
+				strSub = _Text.substr(i, iNext - i);
+				i = iNext;
+			}
+
+			vTokens.push_back({ strSub, fCurrentSize });
+		}
+	}
+
+	_OutToken.resize(vTokens.size());
+
+	for (_int i = 0; i < vTokens.size(); ++i)
+	{
+		_OutToken[i].strText = vTokens[i].strText;
+		_OutToken[i].fScale = vTokens[i].fScale;
+	}
+
+}
+
+void CNarration::DrawText(SpriteBatch* spriteBatch, SpriteFont* spriteFont, const _wstring& text, float fscale, float& fX, float fY)
+{
+	//CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	//// 현재 위치를 기준으로 텍스트를 그린다.
+	//_float2 vPos = { 0.f, 0.f };
+	//pGameInstance->Render_Scaling_Font(TEXT("Font35"), text.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.f,
+	//	_float2(0, 0), fscale);
+	//
+	//
+	//// 그려진 텍스트의 가로 길이를 측정하여 x 좌표를 이동
+	//_vector sizeVec = spriteFont->MeasureString(text.c_str());
+	//_float2 textSize;
+	//XMStoreFloat2(&textSize, sizeVec);
+	//fX += textSize.x * fscale;
 }

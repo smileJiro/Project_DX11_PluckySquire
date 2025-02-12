@@ -85,6 +85,8 @@ public: /* For. NewRenderer*/
 	class CRenderGroup*	Find_RenderGroup(_int _iGroupID, _int _iPriorityID);
 	HRESULT				Add_RenderObject_New(_int _iGroupID, _int _iPriorityID, CGameObject* _pGameObject);
 	HRESULT				Erase_RenderGroup_New(_int _iGroupID, _int _iPriorityID);
+	void				Set_Active_RenderGroup_New(_int _iGroupID, _int _iPriorityID, _bool _isActive);
+
 	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, _float2 _vDSVSize);
 	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, _uint _iWidth, _uint _iHeight);
 	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, ID3D11DepthStencilView* _pDSV);
@@ -139,11 +141,17 @@ public: /* For. Font_Manager s*/
 	HRESULT				Render_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation = 0.f, const _float2& _vOrigin = _float2(0.f, 0.f));
 	HRESULT				Render_Scaling_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation = 0.f, const _float2& _vOrigin = _float2(0.f, 0.f), _float _fScale = 1.f);
 
+	// TODO :: 테스트용도 박상욱
+	_vector	Measuring(const _wstring& _strFontTag, _wstring _text);
+
+
 public: /* For. Target_Manager */
 	HRESULT				Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut = nullptr);
+	HRESULT				Add_RenderTarget(const _wstring& _strTargetTag, CRenderTarget* _pRenderTarget);
 	HRESULT				Add_RenderTarget_MSAA(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut = nullptr);
 	HRESULT				Add_MRT(const _wstring& _strMRTTag, const _wstring& _strTargetTag);
-	HRESULT				Begin_MRT(const _wstring& _strMRTTag, ID3D11DepthStencilView* _pDSV = nullptr, _bool isClear = true);	/* 지정한 RenderTargets를 셰이더에 바인딩하고 그리기 준비를 하는 */
+	HRESULT				Begin_MRT(const _wstring& _strMRTTag, ID3D11DepthStencilView* _pDSV = nullptr, _bool _isClear = true);	/* 지정한 RenderTargets를 셰이더에 바인딩하고 그리기 준비를 하는 */
+	HRESULT				Begin_MRT(const vector<CRenderTarget*>& _MRT, ID3D11DepthStencilView* _pDSV = nullptr, _bool _isClear = true); /* 외부에서 MRT를 던져주고 그걸 바인딩 */
 	HRESULT				End_MRT(); /* 렌더링을 마친 후, 기존의 BackRTV를 다시 바인딩 한다. */
 	HRESULT				Bind_RT_ShaderResource(CShader* _pShader, const _char* _pConstantName, const _wstring& _strTargetTag);	/* RenderTarget을 ShaderResource로써 바인딩하는 함수. */
 	HRESULT				Copy_RT_Resource(const _wstring& _strTargetTag, ID3D11Texture2D* _pDest);
@@ -260,6 +268,7 @@ public: /* For. D3DUtils */
 	HRESULT				CreateConstBuffer(const T_CONSTANT& _tConstantBufferData, D3D11_USAGE _eUsage, ID3D11Buffer** _ppOutConstantBuffer);
 	template<typename T_CONSTANT>
 	HRESULT				UpdateConstBuffer(const T_CONSTANT& _tConstantBufferData, ID3D11Buffer* _pConstantBuffer);
+	HRESULT				Create_DSV(_uint _iWidth, _uint _iHeight, ID3D11DepthStencilView** _ppOutDSV);
 
 public: /* For. CubeMap */
 	void				Set_CubeMap(class CCubeMap* _pCubeMap);
