@@ -36,7 +36,8 @@ void CSneak_IdleState::State_Update(_float _fTimeDelta)
 	if (nullptr != m_pTarget)
 	{
 		//몬스터 인식 범위 안에 들어오면 인식상태로 전환
-		Check_Target3D(true);
+		if (true == Check_Target3D(true))
+			return;
 
 		//플레이어가 인식되지 않았을 경우 소리가 나면 경계로 전환 
 		if (m_pOwner->IsTarget_In_Sneak_Detection())

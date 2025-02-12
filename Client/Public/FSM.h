@@ -21,6 +21,7 @@ public:
 		_float fDelayTime;
 		_float fCoolTime;
 		CMonster* pOwner;
+		WAYPOINTINDEX eWayIndex=WAYPOINTINDEX::LAST;
 		_int iCurLevel;
 	}FSMDESC;
 
@@ -66,6 +67,7 @@ private:
 	_float	m_fAttack2DRange = {};
 	_float	m_fDelayTime = {};
 	_float	m_fCoolTime = {};
+	WAYPOINTINDEX m_eWayIndex;
 
 public:
 	HRESULT CleanUp();

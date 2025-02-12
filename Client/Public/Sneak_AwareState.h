@@ -1,11 +1,11 @@
 #pragma once
-#include "State.h"
+#include "State_Sneak.h"
 
 BEGIN(Client)
 
 
 //소리를 듣고 경계하는 상태
-class CSneak_AwareState final : public CState
+class CSneak_AwareState final : public CState_Sneak
 {
 private:
 	CSneak_AwareState();

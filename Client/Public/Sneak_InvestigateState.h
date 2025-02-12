@@ -1,11 +1,11 @@
 #pragma once
-#include "State.h"
+#include "State_Sneak.h"
 
 BEGIN(Client)
 
 
 //소리가 난 위치로 이동하는 상태
-class CSneak_InvestigateState final : public CState
+class CSneak_InvestigateState final : public CState_Sneak
 {
 private:
 	CSneak_InvestigateState();
@@ -25,6 +25,8 @@ private:
 private:
 	_bool m_isTurn = { false };
 	_float3 m_vDir = {};
+	_float m_fAccTime = 0.f;
+	_bool m_isRenew = { true };
 
 public:
 	static CSneak_InvestigateState* Create(void* _pArg);

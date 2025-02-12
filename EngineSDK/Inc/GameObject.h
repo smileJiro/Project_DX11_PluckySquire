@@ -73,7 +73,7 @@ public:
 	void						Set_Scale(const _float3& _vScale)				{ m_pControllerTransform->Set_Scale(_vScale); }
 	void						Set_Scale(COORDINATE _eCoord, _float _fX, _float _fY, _float _fZ) { m_pControllerTransform->Set_Scale(_eCoord,_fX, _fY, _fZ); }
 	void						Set_Scale(COORDINATE _eCoord, const _float3& _vScale) { m_pControllerTransform->Set_Scale(_eCoord,_vScale); }
-	void						Set_Dead()										{ m_isDead = true; }
+	virtual void				Set_Dead()										{ m_isDead = true; }
 	void						Set_Alive()										{ m_isDead = false; }
 	virtual void				Set_Render(_bool _isRender)						{ m_isRender = _isRender; }
 	void						Set_Pooling(_bool _isPooling)					{ m_isPooling = _isPooling; }

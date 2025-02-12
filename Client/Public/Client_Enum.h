@@ -133,6 +133,8 @@ namespace Client
 		FREEZE_Z_TRIGGER,
 		TELEPORT_TRIGGER,
 		SECTION_CHANGE_TRIGGER,
+		DEFAULT_TRIGGER,
+
 		LAST
 	};
 
@@ -187,5 +189,11 @@ namespace Client
 		RIGHT_DOWN,
 		LEFT_DOWN,
 		E_DIR_LAST
+	};
+
+	enum class WAYPOINTINDEX
+	{
+		CHAPTER2_1,
+		LAST
 	};
 }

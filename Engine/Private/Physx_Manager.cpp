@@ -118,6 +118,7 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 		}
 
 	}
+
 	if (nullptr != m_pPhysx_EventCallBack)
 		m_pPhysx_EventCallBack->Update();
 //

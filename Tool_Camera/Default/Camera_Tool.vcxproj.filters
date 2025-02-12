@@ -76,9 +76,6 @@
     <Filter Include="03. RenderGroup">
       <UniqueIdentifier>{54621cc9-be21-4449-99a3-c0216addc0e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. RenderGroup\AfterEffect">
-      <UniqueIdentifier>{3fbe77e5-3a17-4b92-98aa-5246ab11048e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. RenderGroup\Final">
       <UniqueIdentifier>{309a5b75-ad62-44d9-992e-0d9857e3c5c1}</UniqueIdentifier>
     </Filter>
@@ -93,6 +90,54 @@
     </Filter>
     <Filter Include="02. GameObjects\Bulb\BulbLine">
       <UniqueIdentifier>{2c6b7252-8be5-47f7-a861-316a7cfa3ed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\2D">
+      <UniqueIdentifier>{a6457772-f6e6-41b7-bf57-7c5a5ab58294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\Effect">
+      <UniqueIdentifier>{3fbe77e5-3a17-4b92-98aa-5246ab11048e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\Old">
+      <UniqueIdentifier>{43a49043-3e9f-408c-aa37-dd77c1be4dfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\PBR">
+      <UniqueIdentifier>{41667798-fdb8-449f-9f99-eb6f13253f1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\Effect\Blur">
+      <UniqueIdentifier>{84c79911-84b8-4d71-957c-66594a353d7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\Effect\DownSample">
+      <UniqueIdentifier>{4c4415ea-7473-440e-be9c-33b07d38d2c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\Effect\Particle">
+      <UniqueIdentifier>{d97f799f-7b5e-4689-a094-e71bf1a930d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\Old\2D">
+      <UniqueIdentifier>{9e030e6e-d36c-463e-81e8-086eb9462326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\Old\AfterEffect">
+      <UniqueIdentifier>{85c9f182-6f7a-4cb3-a947-b1cbf48682ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\Old\Final">
+      <UniqueIdentifier>{d9d46959-ed38-4c78-9cca-9dac9bc9feb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\Old\Lights">
+      <UniqueIdentifier>{6444575f-555b-4ca1-b698-606f79834ff4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\Old\WorldPos">
+      <UniqueIdentifier>{00891b3b-bf5c-4d68-af16-9af78be55421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\PBR\Combine">
+      <UniqueIdentifier>{63f7bf40-ac52-4553-afb1-23917a79d819}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. RenderGroup\PBR\Lighting">
+      <UniqueIdentifier>{b5efa8de-c887-4760-a767-99ab82b33f5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\CubeMap">
+      <UniqueIdentifier>{df1f6647-7bb3-4674-871e-11118059c9c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\MapObject\MainTable">
+      <UniqueIdentifier>{6a3bda51-a29a-4f4c-9f8a-3673de2faf99}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -177,11 +222,8 @@
     <ClInclude Include="..\Public\RenderGroup_Lights.h">
       <Filter>03. RenderGroup\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\RenderGroup_Final.h">
-      <Filter>03. RenderGroup\Final</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\RenderGroup_AfterEffect.h">
-      <Filter>03. RenderGroup\AfterEffect</Filter>
+      <Filter>03. RenderGroup\Effect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MapObject.h">
       <Filter>02. GameObjects\MapObject</Filter>
@@ -194,6 +236,36 @@
     </ClInclude>
     <ClInclude Include="..\Public\Bulb.h">
       <Filter>02. GameObjects\Bulb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Blur.h">
+      <Filter>03. RenderGroup\Effect\Blur</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_AfterParticle.h">
+      <Filter>03. RenderGroup\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_DownSample.h">
+      <Filter>03. RenderGroup\Effect\DownSample</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Final.h">
+      <Filter>03. RenderGroup\Old\Final</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_2D.h">
+      <Filter>03. RenderGroup\Old\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_DirectLights.h">
+      <Filter>03. RenderGroup\Old\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_WorldPos.h">
+      <Filter>03. RenderGroup\Old\WorldPos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Combine.h">
+      <Filter>03. RenderGroup\PBR\Combine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Lighting.h">
+      <Filter>03. RenderGroup\PBR\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MainTable.h">
+      <Filter>02. GameObjects\MapObject\MainTable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -269,11 +341,8 @@
     <ClCompile Include="..\Private\RenderGroup_Lights.cpp">
       <Filter>03. RenderGroup\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\RenderGroup_Final.cpp">
-      <Filter>03. RenderGroup\Final</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp">
-      <Filter>03. RenderGroup\AfterEffect</Filter>
+      <Filter>03. RenderGroup\Effect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MapObject.cpp">
       <Filter>02. GameObjects\MapObject</Filter>
@@ -286,6 +355,36 @@
     </ClCompile>
     <ClCompile Include="..\Private\Bulb.cpp">
       <Filter>02. GameObjects\Bulb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Blur.cpp">
+      <Filter>03. RenderGroup\Effect\Blur</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_AfterParticle.cpp">
+      <Filter>03. RenderGroup\Effect\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_DownSample.cpp">
+      <Filter>03. RenderGroup\Effect\DownSample</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Final.cpp">
+      <Filter>03. RenderGroup\Old\Final</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_2D.cpp">
+      <Filter>03. RenderGroup\Old\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_DirectLights.cpp">
+      <Filter>03. RenderGroup\Old\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_WorldPos.cpp">
+      <Filter>03. RenderGroup\Old\WorldPos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Combine.cpp">
+      <Filter>03. RenderGroup\PBR\Combine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Lighting.cpp">
+      <Filter>03. RenderGroup\PBR\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MainTable.cpp">
+      <Filter>02. GameObjects\MapObject\MainTable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -317,10 +416,16 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshInstance.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance_Old.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">

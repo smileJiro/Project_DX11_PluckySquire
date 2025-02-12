@@ -48,6 +48,9 @@ HRESULT CTriggerObject::Initialize(void* _pArg)
     if (nullptr != ActorDesc)
     {
         ActorDesc->pOwner = nullptr;
+
+        for (auto& ShapeData : ActorDesc->ShapeDatas)
+            Safe_Delete(ShapeData.pShapeDesc);
         Safe_Delete(ActorDesc);
     }
 
@@ -74,35 +77,41 @@ HRESULT CTriggerObject::Initialize_3D_Trigger(CActor::ACTOR_DESC** _pActorDesc, 
     m_eConditionType = _pDesc->eConditionType;
     //m_eCoordiNate = _pDesc->eCoordiNate; StartCoordinate가 있는데?
 
-    _pDesc->eActorType = ACTOR_TYPE::STATIC;
+    _pDesc->eActorType = (ACTOR_TYPE)_pDesc->iActorType;;
     *_pActorDesc = new CActor::ACTOR_DESC();
 
     /* Actor의 주인 오브젝트 포인터 */
     (*_pActorDesc)->pOwner = this;
+    (*_pActorDesc)->FreezeRotation_XYZ[0] = _pDesc->FreezeRotation[0];
+    (*_pActorDesc)->FreezeRotation_XYZ[1] = _pDesc->FreezeRotation[1];
+    (*_pActorDesc)->FreezeRotation_XYZ[2] = _pDesc->FreezeRotation[2];
 
     // Static이라서 FreezeRotation, FreezePosition은 채우지 않음
 
     /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_BOX_DESC ShapeBoxDesc = {};
-    SHAPE_SPHERE_DESC ShapeSpereDesc = {};
+    SHAPE_BOX_DESC* ShapeBoxDesc;
+    SHAPE_SPHERE_DESC* ShapeSpereDesc;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA ShapeData;
 
     switch (_pDesc->eShapeType) {
     case SHAPE_TYPE::BOX:
-        ShapeBoxDesc.vHalfExtents = _pDesc->vHalfExtents;
-        ShapeData.pShapeDesc = &ShapeBoxDesc;
+        ShapeBoxDesc = new SHAPE_BOX_DESC();
+        ShapeBoxDesc->vHalfExtents = _pDesc->vHalfExtents;
+        ShapeData.pShapeDesc = ShapeBoxDesc;
         break;
     case SHAPE_TYPE::SPHERE:
-        ShapeSpereDesc.fRadius = _pDesc->fRadius;
-        ShapeData.pShapeDesc = &ShapeSpereDesc;
+        ShapeSpereDesc = new SHAPE_SPHERE_DESC();
+        ShapeSpereDesc->fRadius = _pDesc->fRadius;
+        ShapeData.pShapeDesc = ShapeSpereDesc;
         break;
     }
 
     ShapeData.eShapeType = _pDesc->eShapeType;
-    ShapeData.isTrigger = true;
+    ShapeData.isTrigger = _pDesc->isTrigger;
     ShapeData.isSceneQuery = true;
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(_pDesc->vLocalPosOffset.x, _pDesc->vLocalPosOffset.y, _pDesc->vLocalPosOffset.z));
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     (*_pActorDesc)->ShapeDatas.push_back(ShapeData);

@@ -40,7 +40,6 @@ void CEvent_Manager::Update(_float _fTimeDelta)
 
 	for (auto& pDeadObject : m_DeadObjectsList)
 	{
-		pDeadObject->Set_Dead();
 		Safe_Release(pDeadObject);
 	}
 	m_DeadObjectsList.clear();
@@ -118,6 +117,7 @@ HRESULT CEvent_Manager::Excute_DeleteObject(const EVENT& _tEvent)
 	if (nullptr == pDeleteObject)
 		return E_FAIL;
 
+	pDeleteObject->Set_Dead();
 	m_DeadObjectsList.push_back(pDeleteObject);
 	Safe_AddRef(pDeleteObject);
 

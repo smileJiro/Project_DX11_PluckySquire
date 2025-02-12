@@ -818,6 +818,14 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+	
+
 	return S_OK;
 }
 
@@ -879,6 +887,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-17.f, 6.55f, 23.f);
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.f, 0.35f, -22.f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Monster_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_1;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;

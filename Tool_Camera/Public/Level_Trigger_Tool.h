@@ -2,26 +2,16 @@
 #include "Level.h"
 
 BEGIN(Engine)
-class CGameObject;
+class CModelObject;
 END
 
 BEGIN(Camera_Tool)
 
+class CBulbLine;
+class CBulb;
+
 class CLevel_Trigger_Tool final : public CLevel
 {
-	enum TRIGGER_TYPE
-	{
-		EVENT_TRIGGER,
-		ARM_TRIGGER,
-		CUTSCENE_TRIGGER,
-		FREEZE_X_TRIGGER,
-		FREEZE_Z_TRIGGER,
-		TELEPORT_TRIGGER,
-		SECTION_CHANGE_TRIGGER,
-
-		TRIGGER_TYPE_END
-	};
-
 	enum EXIT_RETURN_MASK
 	{
 		NONE = 0x00,
@@ -30,6 +20,12 @@ class CLevel_Trigger_Tool final : public CLevel
 		UP = 0x04,
 		DOWN = 0x08,
 		RETURN_MASK_END
+	};
+
+	enum BULB_CREATETYPE {
+		CREATED_BYLINE,
+		CREATED_BYPOINT,
+		CREATETYPE_END
 	};
 
 #ifdef _DEBUG
@@ -64,9 +60,10 @@ public:
 
 public:
 	HRESULT				Ready_Lights();
+	HRESULT				Ready_CubeMap(const _wstring& _strLayerTag);
 	HRESULT				Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget);
 	HRESULT				Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut);
-	HRESULT				Ready_Layer_Map(const _wstring& _strLayerTag);
+	HRESULT				Ready_Layer_MainTable(const _wstring& _strLayerTag);
 	HRESULT				Ready_DataFiles();
 
 private:
@@ -114,14 +111,20 @@ private:
 	_bool				m_isCreateByPoint = { false };
 	_bool				m_isEditBulb = { false };
 
-	_float				m_fBulbPosOffset = {};
+	_float				m_fBulbPosOffset = { 1.f };
 
-	vector<class CBulbLine*>	m_BulbLines;
-	CBulbLine*					m_pMakingBulbLine = { nullptr };	
-	CBulbLine*					m_pCurBulbLine = { nullptr };
+	list<CBulbLine*>		m_BulbLines;
+	CBulbLine*				m_pMakingBulbLine = { nullptr };
+	pair<CBulbLine*, CModelObject*>	m_pCurBulbLine;
+	
+	list<CBulb*>			m_Bulbs;
+	CBulb*					m_pCurBulb = nullptr;
 
-	// Line
+	_uint					m_iCurBulbCreateType = {};
 
+	// Save
+	_bool					m_isTrigger = { false };
+	_bool					m_isBulb = { false };
 
 private:
 	void				Show_TriggerTool();
@@ -161,10 +164,14 @@ private:
 	void				Create_Bulb_ByLine();
 	void				Create_Bulb_ByPoint();
 	void				Edit_Bulb();
+	void				Delete_Bulb();
+	void				Set_CurBulbLine();
 
 	CGameObject*		Create_BulbPoint();
 
 	void				Set_BulbBasicInfo();
+	void				Save_BulbPosition();
+	void				Load_BulbPosition();
 
 private:
 	_float3				Quaternion_ToEuler(const _float4 _q);

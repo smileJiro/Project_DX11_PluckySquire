@@ -18,6 +18,9 @@
 #include "StateMachine.h"
 
 #include "MapObject.h"
+#include "CubeMap.h"
+#include "MainTable.h"
+#include "Bulb.h"
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -96,6 +99,15 @@ void CLoader::Show_Debug()
 HRESULT CLoader::Loading_Level_Static()
 {
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
+    /* For. Prototype_Component_Texture_BRDF_Shilick */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BRDF_Shilick"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/CubeMap/HDRI/BRDF_Shilick.dds"), 1))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Texture_TestEnv */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_TestEnv"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/Resources/Textures/CubeMap/HDRI/TestEnv/TestEnv_%d.dds"), 3, true))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("Collider를 로딩중입니다."));
     
@@ -132,13 +144,23 @@ HRESULT CLoader::Loading_Level_Static()
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
 
-    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Free_Enviroment.json", matPretransform)))
-        return E_FAIL;
+    //if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
+    //    return E_FAIL;
 
     /* For. Prototype_Component_VIBuffer_Rect */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
         CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+    /* For. Prototype_Component_VIBuffer_Cube */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
+        CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("LightbulbPickup_01"),
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/LightbulbPickup_01/LightbulbPickup_01.model", matPretransform))))
+        return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("액터를 로딩중입니다."));
     
@@ -160,6 +182,11 @@ HRESULT CLoader::Loading_Level_Static()
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
     
+    /* For. Prototype_GameObject_CubeMap */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
+        CCubeMap::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
         CModelObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -176,6 +203,16 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_GameObject_Trigger */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TriggerObject"),
         CTriggerObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_MainTable */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
+        CMainTable::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Bulb */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Bulb"),
+        CBulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -279,8 +316,10 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
-    //if (FAILED(Load_Models_FromJson(LEVEL_GAMEPLAY, MAP_3D_DEFAULT_PATH, L"Room_Free_Enviroment.json", matPretransform)))
-    //    return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TRIGGER_TOOL, TEXT("SM_desk_split_topboard_02"),
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/SM_desk_split_topboard_02/SM_desk_split_topboard_02.model", matPretransform))))
+        return E_FAIL;
+
     if (FAILED(Load_Models_FromJson(LEVEL_TRIGGER_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform)))
         return E_FAIL;
 
@@ -326,7 +365,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/alphabet_blocks_a_mesh/alphabet_blocks_a_mesh.model", matPretransform))))
         return E_FAIL;
 
-    
+
     /* For. Prototype_GameObject_MapObject */
     //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TRIGGER_TOOL, TEXT("Prototype_GameObject_SampleBook"),
     //    CSampleBook::Create(m_pDevice, m_pContext))))
@@ -334,7 +373,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
 
     Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_04_Default_Desk.mchc");
 
-    Map_Object_Create(LEVEL_STATIC, LEVEL_TRIGGER_TOOL, L"Room_Free_Enviroment.mchc");
+    //Map_Object_Create(LEVEL_STATIC, LEVEL_TRIGGER_TOOL, L"Room_Enviroment.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -594,6 +633,18 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
 
             if (pGameObject)
             {
+                _uint issksp = 0;
+                _char		szSaveskspName[MAX_PATH];
+
+
+                isTempReturn = ReadFile(hFile, &issksp, sizeof(_uint), &dwByte, nullptr);
+
+                if (1 == issksp)
+                {
+                    isTempReturn = ReadFile(hFile, &szSaveskspName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+                }
+
+
                 DWORD	dwByte(0);
                 _uint iOverrideCount = 0;
                 C3DModel::COLOR_SHADER_MODE eTextureType;
