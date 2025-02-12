@@ -77,6 +77,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	//ShapeDesc.vHalfExtents = { 0.5f, 1.f, 0.5f };
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
+
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &CapsuleDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.

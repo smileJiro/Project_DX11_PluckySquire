@@ -706,7 +706,7 @@ HRESULT CActor::Ready_Shapes(const vector<SHAPE_DATA>& _ShapeDatas)
 	PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
 	if (nullptr == pPhysics)
 		return E_FAIL;
-
+	
 	for (auto& ShapeData : _ShapeDatas)
 	{
 		Add_Shape(ShapeData);
