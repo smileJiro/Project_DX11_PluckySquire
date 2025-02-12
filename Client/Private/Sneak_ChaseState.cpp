@@ -15,6 +15,8 @@ HRESULT CSneak_ChaseState::Initialize(void* _pArg)
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
 
+	m_fDelayTime = 1.f;
+
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
@@ -26,6 +28,10 @@ HRESULT CSneak_ChaseState::Initialize(void* _pArg)
 
 void CSneak_ChaseState::State_Enter()
 {
+	m_isTurn = false;
+	m_isMove = false;
+	m_isRenew = true;
+	m_fAccTime = 0.f;
 }
 
 void CSneak_ChaseState::State_Update(_float _fTimeDelta)
@@ -35,11 +41,21 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
+	if(false == m_isRenew)
+	{
+		m_fAccTime += _fTimeDelta;
+		if (m_fDelayTime <= m_fAccTime)
+		{
+			m_fAccTime = 0.f;
+			m_isRenew = true;
+		}
+	}
+
+
 	//플레이어 한테 직선으로 와야하는데 장애물이 있는 경우 장애물을 돌아서 혹은 길을 따라 이동해야함
 
-	_vector vDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
-	_float fDis = XMVectorGetX(XMVector3Length((vDir)));	//3D상에서 y값도 더해서 거리 계산하는거 주의
-	XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_FinalPosition()));
+	_vector vDir = XMVectorSetY(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition(), 0.f);
+	_float fDis = XMVectorGetX(XMVector3Length((vDir)));
 	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
 	{
 		//공격 준비로 전환
@@ -54,13 +70,24 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 	}
 	else
 	{
-		//추적 (장애물 피해 가도록 수정해야함)
-		if (false == m_isTurn)
+		if(true == m_isRenew)
 		{
-			Determine_AvoidDirection(m_pTarget->Get_FinalPosition(), &m_vDir);
+			Determine_NextDirection(m_pTarget->Get_FinalPosition(), &m_vDir);
+			m_isRenew = false;
 			m_isTurn = true;
+			m_isMove = false;
 		}
-		else if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+
+		//추적
+		if (true == m_isTurn && false == m_isMove)
+		{
+			if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+			{
+				m_isMove = true;
+			}
+		}
+		//매프레임 회전하는거 수정해야함
+		if(true == m_isMove)
 		{
 			static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 			m_isTurn = false;

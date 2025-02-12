@@ -241,6 +241,7 @@ public: /* For. Physx_Manager*/
 	void				Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
 	_uint				Create_ShapeID();
 	_bool				RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
+	_bool			RayCast_Nearest_GroupFilter(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _int _iGroupNum, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
 	//OutActors, OutPositions에 충돌된 오브젝트와 위치를 저장.
 //충돌된 액터에 user data로 ActorObject를 넣지 않았으면 nullptr이 들어감.
 // - 2.02 김지완 추가

@@ -46,6 +46,9 @@ void CSneak_PatrolState::Set_Bound(_float3& _vPosition)
 void CSneak_PatrolState::State_Enter()
 {
 	m_fAccTime = 0.f;
+	m_isToWay = false;
+	m_isTurn = false;
+	m_isMove = false;
 }
 
 void CSneak_PatrolState::State_Update(_float _fTimeDelta)
@@ -96,11 +99,23 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 	//다음 웨이포인트 설정
 	if (false == m_isTurn)
 	{
-		Determine_Direction();
+		//정해진 웨이포인트가 아니면 복귀 해야함(정찰 구간 사이에 막히는 부분이 없다는 가정)
+		_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
+		_float3 vDir; XMStoreFloat3(&vDir, XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]) - m_pOwner->Get_FinalPosition());
+		if (m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vDir, 10.f, OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+		{
+			Determine_NextDirection(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]), &m_vDir);
+			m_isToWay = true;
+		}
+		else
+		{
+			Determine_Direction();
+		}
+
+		m_isTurn = true;
 	}
 	
-	//정해진 웨이포인트가 아니면 복귀 해야함
-	//Check_Bound(_fTimeDelta);
+	
 
 	//이동
 	Sneak_PatrolMove(_fTimeDelta, m_iDir);
@@ -151,12 +166,28 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 		//Determine_AvoidDirection(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]), &m_vDir);
 		//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 
-		if (m_pOwner->Move_To(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]), 0.1f))
+		if (true == m_isToWay)
 		{
-			m_isTurn = false;
-			m_isMove = false;
+			static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 
-			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+			if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex])))
+			{
+				m_isTurn = false;
+				m_isMove = false;
+				m_isToWay = false;
+
+				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+			}
+		}
+		else
+		{
+			if (m_pOwner->Move_To(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]), 0.1f))
+			{
+				m_isTurn = false;
+				m_isMove = false;
+
+				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+			}
 		}
 	}
 
@@ -207,7 +238,8 @@ void CSneak_PatrolState::Determine_Direction()
 		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(0.f, 3.f));
 	}
 
-	m_isTurn = true;
+	XMStoreFloat3(&m_vDir, XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]) - m_pOwner->Get_FinalPosition());
+
 }
 
 _vector CSneak_PatrolState::Set_Sneak_PatrolDirection(_int _iDir)

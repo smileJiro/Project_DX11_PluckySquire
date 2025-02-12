@@ -32,6 +32,7 @@ void CSneak_InvestigateState::State_Enter()
 	m_isPathFind = true;
 	m_fAccTime = 0.f;
 	m_isRenew = true;
+	m_isTurn = false;
 }
 
 void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
@@ -57,16 +58,19 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 	//XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_FinalPosition()));
 	XMVectorSetW(vDir, 0.f);
 	vDir = XMVector3Normalize(XMVectorSetY(vDir, 0.f));
-	
-	//플레이어 시야 들어오면 인식 전환
-	Check_Target3D(true);
 
 	//이동하다 소리가 나면 범위 내에서 가장 최근 위치로 다음 위치를 갱신
 	if (m_isRenew && m_pOwner->IsTarget_In_Sneak_Detection())
 	{
 		Set_Sneak_InvestigatePos(m_pTarget->Get_FinalPosition());
 		m_isRenew = false;
+		m_isPathFind = true;
+		m_isTurn = true;
+		m_isMove = false;
 	}
+
+	//플레이어 시야 들어오면 인식 전환
+	Check_Target3D(true);
 
 	//위치에 도착했는데 안 보이면 경계상태로 전환
 	if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_vSneakPos)))
@@ -81,24 +85,36 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 		//m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
 		Determine_NextDirection(XMLoadFloat3(&m_vSneakPos), &m_vDir);
 
-		if (false == m_isTurn)
+		//회전
+		if (true == m_isTurn && false == m_isMove)
 		{
-			Determine_NextDirection(XMLoadFloat3(&m_vSneakPos), &m_vDir);
-			m_isTurn = true;
+			if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+			{
+				m_isMove = true;
+			}
 		}
-		else if(m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+
+		//이동
+		if (true == m_isMove)
 		{
-			
 			static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
-			m_isTurn = false;
+
+			//이미 경로가 있을때
+			if (true == m_isOnWay && false == m_isPathFind)
+			{
+				//도착하면 다음 웨이포인트로 목표위치 바꿈
+				if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.5f))
+				{
+					++m_iCurWayIndex;
+					//목표 위치에 도착했으면 자유이동으로 전환
+					if (m_Ways.size() <= m_iCurWayIndex)
+					{
+						m_isOnWay = false;
+					}
+				}
+			}
 		}
-	}
-	if (false == m_isPathFind)
-	{
-		if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_iCurWayIndex].vPosition)))
-		{
-			++m_iCurWayIndex;
-		}
+
 	}
 }
 

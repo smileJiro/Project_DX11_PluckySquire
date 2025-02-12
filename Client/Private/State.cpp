@@ -97,7 +97,7 @@ _bool CState::Check_Target3D(_bool _isSneak)
 		_float3 vOutPos;
 		CActorObject* pActor = nullptr;
 
-		if (m_pGameInstance->RayCast_Nearest(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::ALERT), &vOutPos, &pActor))
+		if (m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::ALERT), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE, &vOutPos, &pActor))
 		{
 			if (OBJECT_GROUP::MAPOBJECT & static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup)
 			{
