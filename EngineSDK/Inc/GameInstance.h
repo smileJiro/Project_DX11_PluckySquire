@@ -220,6 +220,7 @@ public: /* For. GlobalFunction_Manager */
 
 	//같으면 0 / 1번 벡터가 크면 1 / 2번 벡터가 크면 2
 	_uint				Compare_VectorLength(_fvector _vVector1, _fvector _vVector2);	
+	_float				Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
 
 public: /* For. Camera_Manager */
 	CCamera*			Get_CurrentCamera();

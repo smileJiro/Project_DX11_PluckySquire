@@ -397,6 +397,9 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\06. Narration\00. NarrationAnim">
       <UniqueIdentifier>{6ae07d16-5d0c-4b03-885e-a61b2ed0258c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Bulb">
+      <UniqueIdentifier>{838a1b77-e59c-4df8-86c2-66b5c85161a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -866,6 +869,9 @@
     <ClInclude Include="..\Public\State_Sneak.h">
       <Filter>03.Components\FSM\State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Bulb.h">
+      <Filter>02.GameObjects\Bulb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1319,6 +1325,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Sneak.cpp">
       <Filter>03.Components\FSM\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bulb.cpp">
+      <Filter>02.GameObjects\Bulb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

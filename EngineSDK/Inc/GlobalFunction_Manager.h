@@ -32,8 +32,10 @@ public:
 
 	_float				Clamp_Degrees(_float _fDegrees);		//0~360도 사이로 만듦
 
-	_uint					Compare_VectorLength(_fvector _vVector1, _fvector _vVector2);		//같으면 0 / 1번 벡터가 크면 1 / 2번 벡터가 크면 2
+	_uint				Compare_VectorLength(_fvector _vVector1, _fvector _vVector2);		//같으면 0 / 1번 벡터가 크면 1 / 2번 벡터가 크면 2
 	_fvector			Rotate_Vector(_fvector _vAxis, _fvector _vVector, _float _fDegrees);		//각도 넣어서 벡터 회전
+
+	_float				Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
 
 private:
 	ID3D11Device* m_pDevice = nullptr;

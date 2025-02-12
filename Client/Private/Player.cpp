@@ -128,7 +128,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::MONSTER_PROJECTILE;
+    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
@@ -1052,9 +1052,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
         if (iCurCoord == COORDINATE_2D)
-            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter2_SKSP_05",this);
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this);
         else
-            CSection_Manager::GetInstance()->Remove_GameObject_ToSectionLayer(L"Chapter2_SKSP_05",this);
+            CSection_Manager::GetInstance()->Remove_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this);
 
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
 

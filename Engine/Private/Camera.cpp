@@ -397,17 +397,17 @@ _float CCamera::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRat
 	fRatio = _fTime->y / _fTime->x;
 
 	switch (_iRatioType) {
-	case EASE_IN:
+	case (_uint)RATIO_TYPE::EASE_IN:
 		//fRatio = (fRatio + (_float)pow((_double)fRatio, (_double)2.f)) * 0.5f;
 		fRatio = fRatio * fRatio;
 		break;
-	case EASE_OUT:
+	case (_uint)RATIO_TYPE::EASE_OUT:
 		//fRatio = 1.0f - ((1.0f - fRatio) + (_float)pow((_double)(1.0f - fRatio), 2.f)) * 0.5f;
 		fRatio = 1.0f - (1.0f - fRatio) * (1.0f - fRatio);
 		break;
-	case LERP:
+	case (_uint)RATIO_TYPE::LERP:
 		break;
-	case EASE_IN_OUT:
+	case (_uint)RATIO_TYPE::EASE_IN_OUT:
 		fRatio = fRatio * fRatio * (3 - 2 * fRatio);
 		break;
 	}

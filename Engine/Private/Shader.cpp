@@ -143,10 +143,7 @@ HRESULT CShader::Bind_Matrix(const _char* _pConstantName, const _float4x4* _pMat
     ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(_pConstantName);
     if (nullptr == pVariable)
         return E_FAIL;
-    _bool b = pVariable->IsValid();
-    if (true == pVariable->IsValid()) {
-        int a;
-    }
+
     // 해당 자료형이 무슨 자료형인지 나만안다고. >>> 그래서 캐스팅 해줘야함 (AsMatrix() 가 캐스팅 함수)
     ID3DX11EffectMatrixVariable* pMatrixVariable = pVariable->AsMatrix();
     if (nullptr == pMatrixVariable)

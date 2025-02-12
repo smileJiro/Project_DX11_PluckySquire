@@ -65,6 +65,7 @@ private:
 
 	// TargetPos로 변환한 값 저장
 	_float3						m_v2DTargetWorldPos = {};
+	_float3						m_v2DPreTargetWorldPos = {};
 
 	// Flipping
 	_float2						m_fFlippingTime = {};
@@ -87,7 +88,7 @@ private:
 	void						Flipping_Down(_float _fTimeDelta);
 	void						Look_Target(_float fTimeDelta);
 
-	_bool						Calculate_CameraPos(_float _fTimeDelta, _float3* _vCameraPos);
+	_vector						Calculate_CameraPos(_float _fTimeDelta);
 	virtual	void				Switching(_float _fTimeDelta) override;
 
 #ifdef _DEBUG

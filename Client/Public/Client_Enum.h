@@ -120,6 +120,7 @@ namespace Client
 		BOOK_MAIN_CHANGE,
 		SET_SCENEQUERYFLAG,
 		HIT,
+		GET_BULB,
 		
 		LAST,
 	};

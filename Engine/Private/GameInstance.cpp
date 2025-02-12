@@ -1176,6 +1176,11 @@ _uint CGameInstance::Compare_VectorLength(_fvector _vVector1, _fvector _vVector2
 	return m_pGlobalFunction_Manager->Compare_VectorLength(_vVector1, _vVector2);
 }
 
+_float CGameInstance::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType)
+{
+	return m_pGlobalFunction_Manager->Calculate_Ratio(_fTime, _fTimeDelta, _iRatioType);
+}
+
 CCamera* CGameInstance::Get_CurrentCamera()
 {
 	return m_pCamera_Manager->Get_CurrentCamera();

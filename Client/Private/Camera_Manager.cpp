@@ -78,7 +78,7 @@ void CCamera_Manager::Start_ZoomIn()
 	if (iZoomLevel <= CCamera::LEVEL_1)
 		return;
 
-	m_Cameras[m_eCurrentCameraType]->Start_Zoom(0.5f, (CCamera::ZOOM_LEVEL)(iZoomLevel - 1), CCamera::EASE_IN);
+	m_Cameras[m_eCurrentCameraType]->Start_Zoom(0.5f, (CCamera::ZOOM_LEVEL)(iZoomLevel - 1), RATIO_TYPE::EASE_IN);
 }
 
 void CCamera_Manager::Start_ZoomOut()
@@ -88,7 +88,7 @@ void CCamera_Manager::Start_ZoomOut()
 	if (iZoomLevel >= CCamera::LEVEL_10)
 		return;
 
-	m_Cameras[m_eCurrentCameraType]->Start_Zoom(0.5f, (CCamera::ZOOM_LEVEL)(iZoomLevel + 1), CCamera::EASE_IN);
+	m_Cameras[m_eCurrentCameraType]->Start_Zoom(0.5f, (CCamera::ZOOM_LEVEL)(iZoomLevel + 1), RATIO_TYPE::EASE_IN);
 }
 #endif // _DEBUG
 
@@ -221,7 +221,7 @@ void CCamera_Manager::Set_Freeze(_uint _iFreezeType)
 
 void CCamera_Manager::Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType)
 {
-	m_Cameras[_eCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)_iZoomLevel, (CCamera::RATIO_TYPE)_iRatioType);
+	m_Cameras[_eCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)_iZoomLevel, (RATIO_TYPE)_iRatioType);
 }
 
 void CCamera_Manager::Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, _uint _iRatioType)

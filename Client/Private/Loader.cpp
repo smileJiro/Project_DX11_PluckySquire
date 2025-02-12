@@ -11,7 +11,10 @@
 #include "Camera_2D.h"
 
 /* For. etc Bulb, PlayerItem*/
+// Trigger
+#include "TriggerObject.h"
 #include "PlayerItem.h"
+#include "Bulb.h"
 
 /* For. Main Table */
 #include "CubeMap.h"
@@ -92,9 +95,6 @@
 #include "Boss_YellowBall.h"
 #include "Boss_PurpleBall.h"
 #include "FSM_Boss.h"
-
-// Trigger
-#include "TriggerObject.h"
 
 
 // Sample
@@ -299,7 +299,11 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
         CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
+    
+    /* Bulb*/
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("LightbulbPickup_01"),
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/LightbulbPickup_01/LightbulbPickup_01.model", matPretransform))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("액터를 로딩중입니다."));
     /* For. Prototype_Component_Actor_Dynamic */
@@ -365,6 +369,11 @@ HRESULT CLoader::Loading_Level_Static()
      /* For. Prototype_GameObject_PlayerItem */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerItem"),
         CPlayerItem::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Bulb */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Bulb"),
+        CBulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     
