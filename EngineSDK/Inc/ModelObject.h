@@ -56,7 +56,7 @@ public:
 		iCurLevelID = _iLevelID;
 		iModelPrototypeLevelID_3D = _iLevelID;
 		strModelPrototypeTag_3D = _strProtoModelTag;
-		strShaderPrototypeTag_3D = _strProtoShaderTag;
+		strShaderPrototypeTag_3D = LEVEL_STATIC;
 		iShaderPass_3D = _iShaderPass;
 	}
 	#pragma endregion
