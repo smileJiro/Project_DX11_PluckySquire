@@ -33,6 +33,8 @@ public:
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other) { return; }
 
 public:
+	void		 Set_Dead() override;
+public:
 	// Get 
 	ACTOR_TYPE					Get_ActorType() const { return m_pActorCom->Get_ActorType(); }
 	CActor*							Get_ActorCom() const { return m_pActorCom; }

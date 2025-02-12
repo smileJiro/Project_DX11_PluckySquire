@@ -75,7 +75,8 @@ enum class PASS_DEFERRED
 	// deferrer pass 수정하면서 이넘 맞춰야함.
 	PBR_LIGHT_POINT,
 	PBR_LIGHT_DIRECTIONAL,
-
+	PBR_BLUR_DOWN,
+	PBR_BLUR_UP,
 	LAST
 };
 

@@ -32,6 +32,21 @@ typedef struct tagPlayerInputResult
 class CPlayer final : public CCharacter, public IAnimEventReceiver
 {
 public:
+	typedef struct ATTACK_TRIGGER_DESC_2D
+	{
+		_float fRadius;
+		_float fRadianAngle;
+		_float2 fOffset = {};
+	};
+	enum ATTACK_TYPE
+	{
+		ATTACK_TYPE_NORMAL1,
+		ATTACK_TYPE_NORMAL2,
+		ATTACK_TYPE_NORMAL3,
+		ATTACK_TYPE_SPIN,
+		ATTACK_TYPE_JUMPATTACK,
+		ATTACK_TYPE_LAST
+	};
 	enum PLAYER_MODE
 	{
 		PLAYER_MODE_NORMAL,
@@ -39,12 +54,7 @@ public:
 		PLAYER_MODE_SNEAK,
 		PLAYER_MODE_LAST
 	};
-	enum SHAPE_USE
-	{
-		SHAPE_BODY = 0,
-		SHAPE_FOOT = 1,
-		SHAPE_TRIGER =2
-	};
+
 	enum PLAYER_PART
 	{
 		PLAYER_PART_SWORD= 1,
@@ -467,7 +477,10 @@ public: /* 2D 충돌 */
 	void Set_ClamberEndPosition(_fvector _vPos) { m_vClamberEndPosition = _vPos; }
 	void Set_SwordGrip(_bool _bForehand);
 	void Set_Kinematic(_bool _bKinematic);
-	void Set_AttackTriggerActive(_bool _bOn);
+
+
+	void Start_Attack(ATTACK_TYPE _eAttackType);
+	void End_Attack();
 	void Flush_AttckedSet() { m_AttckedObjects.clear(); }
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
@@ -480,10 +493,9 @@ private:
 private:
 	HRESULT					Ready_Components();
 	HRESULT					Ready_PartObjects();
-	HRESULT					Ready_ActorDesc(CPlayer::ACTOROBJECT_DESC* _pActorDesc);
 private:
 	//Variables
-	_float m_fCenterHeight = 0.5;
+	_float m_f3DCenterYOffset = 0.5;
 	_float m_fHeadHeight = 1.0;
 	_float m_fArmHeight = 0.5f; // 벽타기 기준 높이
 	_float m_fArmLength = 0.325f;// 벽 타기 범위
@@ -514,8 +526,9 @@ private:
 	_float m_f2DJumpPower = 800.f;
 	_float m_f2DCenterYOffset= 36.f;
 	_float m_f2DInteractRange = 93.f;
-	_float m_f2DAttackRange = 93.f;
-	_float m_f2DAttackAngle = 180.f;
+	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
+	ATTACK_TRIGGER_DESC_2D m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST];// = { 93.f, 93.f, 120.f };
+	//ATTACK_TRIGGER_DESC_2D m_f2DAttackAngle[ATTACK_TYPE_LAST];// = { 110.f, 110.f,45.f };
 	_float m_f2DAirRunSpeed = 300.f;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	//Components

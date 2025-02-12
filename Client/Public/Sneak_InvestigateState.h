@@ -24,6 +24,7 @@ private:
 
 private:
 	_bool m_isTurn = { false };
+	_bool m_isMove = { false };
 	_float3 m_vDir = {};
 	_float m_fAccTime = 0.f;
 	_bool m_isRenew = { true };

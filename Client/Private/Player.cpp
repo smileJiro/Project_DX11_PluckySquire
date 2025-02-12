@@ -19,6 +19,7 @@
 #include "PlayerSword.h"    
 #include "Section_Manager.h"    
 #include "Collision_Manager.h"    
+#include "Collider_Fan.h"
 #include "Interactable.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -29,15 +30,41 @@ CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 CPlayer::CPlayer(const CPlayer& _Prototype)
     :CCharacter(_Prototype)
 {
+    for (_uint i = 0; i < ATTACK_TYPE_LAST; i++)
+    {
+		m_f2DAttackTriggerDesc[i] = _Prototype.m_f2DAttackTriggerDesc[i];
+    }
 }
 
 HRESULT CPlayer::Initialize_Prototype()
 {
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadius = 93.f;
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadianAngle = XMConvertToRadians(120.f);
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fOffset = {0, m_f2DCenterYOffset };
+
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fRadius = 93.f;
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fRadianAngle = XMConvertToRadians(120.f);
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fOffset = { 0, m_f2DCenterYOffset };
+
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fRadius = 110.f;
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fRadianAngle = XMConvertToRadians(60.f);
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fOffset = { 0, m_f2DCenterYOffset };
+
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fRadius = 110.f;
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fRadianAngle = XMConvertToRadians(360.f);
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fOffset = { 0, m_f2DCenterYOffset };
+
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadius = 93.f;
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadianAngle = XMConvertToRadians(360.f);
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = { 0, 0 };
+
     return S_OK;
 }
 
 HRESULT CPlayer::Initialize(void* _pArg)
 {
+
+
     CPlayer::CONTAINEROBJ_DESC* pDesc = static_cast<CPlayer::CONTAINEROBJ_DESC*>(_pArg);
 
     m_iCurLevelID = pDesc->iCurLevelID;
@@ -50,7 +77,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720);
     pDesc->tTransform3DDesc.fSpeedPerSec = 8.f;
-
+    
     /* 너무 길어서 함수로 묶고싶다 하시는분들은 주소값 사용하는 데이터들 동적할당 하셔야합니다. 아래처럼 지역변수로 하시면 날라가니 */
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
@@ -72,32 +99,33 @@ HRESULT CPlayer::Initialize(void* _pArg)
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC CapsuleDesc = {};
     CapsuleDesc.fRadius = m_fFootLength;
-    CapsuleDesc.fHalfHeight = m_fCenterHeight - m_fFootLength;
-	//SHAPE_BOX_DESC ShapeDesc = {};
-	//ShapeDesc.vHalfExtents = { 0.5f, 1.f, 0.5f };
+    CapsuleDesc.fHalfHeight = m_f3DCenterYOffset - m_fFootLength;
+    //SHAPE_BOX_DESC ShapeDesc = {};
+    //ShapeDesc.vHalfExtents = { 0.5f, 1.f, 0.5f };
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
+
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &CapsuleDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData.iShapeUse = SHAPE_BODY;
+    ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_fCenterHeight + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     //마찰용 박스
     SHAPE_BOX_DESC BoxDesc = {};
-	_float fHalfWidth = CapsuleDesc.fRadius * cosf(XMConvertToRadians(45.f));
+    _float fHalfWidth = CapsuleDesc.fRadius * cosf(XMConvertToRadians(45.f));
     BoxDesc.vHalfExtents = { fHalfWidth, CapsuleDesc.fRadius, fHalfWidth };
     SHAPE_DATA BoxShapeData;
     BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
     BoxShapeData.pShapeDesc = &BoxDesc;
-    XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix,XMMatrixTranslation(0.0f, BoxDesc.vHalfExtents.y, 0.0f));
-    BoxShapeData.iShapeUse = SHAPE_FOOT;
-    BoxShapeData.isTrigger = false;                    
+    XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc.vHalfExtents.y, 0.0f));
+    BoxShapeData.iShapeUse =(_uint)SHAPE_USE::SHAPE_FOOT;
+    BoxShapeData.isTrigger = false;
     BoxShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
     ActorDesc.ShapeDatas.push_back(BoxShapeData);
 
@@ -117,11 +145,11 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     //충돌 감지용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-    ShapeData.iShapeUse = SHAPE_TRIGER;
-    ShapeData.isTrigger = true;                    
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_fCenterHeight, 0)); //여기임
+    ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
+    ShapeData.isTrigger = true;
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_f3DCenterYOffset, 0)); //여기임
     SHAPE_SPHERE_DESC SphereDesc = {};
-	SphereDesc.fRadius = 2.5f;
+    SphereDesc.fRadius = 2.5f;
     ShapeData.pShapeDesc = &SphereDesc;
 
     ActorDesc.ShapeDatas.push_back(ShapeData);
@@ -132,6 +160,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
+    
 
     if (FAILED(__super::Initialize(pDesc)))
     {
@@ -166,6 +195,11 @@ HRESULT CPlayer::Ready_Components()
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
 	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenrator"), m_pAnimEventGenerator);
+    
+    tAnimEventDesc.pReceiver = this;
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_Player2DAnimEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("2DAnimEventGenrator"), m_pAnimEventGenerator);
 
    /* Test 2D Collider */
    CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
@@ -190,14 +224,17 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Body2DTrigger"), reinterpret_cast<CComponent**>(&m_pBody2DTriggerCom), &CircleDesc)))
        return E_FAIL;
 
-   CircleDesc.pOwner = this;
-   CircleDesc.fRadius = m_f2DAttackRange;
-   CircleDesc.vScale = { 1.0f, 1.0f };
-   CircleDesc.vOffsetPosition = { 0.f, m_f2DCenterYOffset };
-   CircleDesc.isBlock = false;
-   CircleDesc.isTrigger = true;
-   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-       TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_pAttack2DTriggerCom), &CircleDesc)))
+   CCollider_Fan::COLLIDER_FAN_DESC FanDesc = {};
+   FanDesc.pOwner = this;
+   FanDesc.fRadius = m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadius;
+   FanDesc.fRadianAngle = m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadianAngle;
+   FanDesc.vDirection = { 0,-1 };
+   FanDesc.vScale = { 1.0f, 1.0f };
+   FanDesc.vOffsetPosition = m_f2DAttackTriggerDesc->fOffset;
+   FanDesc.isBlock = false;
+   FanDesc.isTrigger = true;
+   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Fan"),
+       TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_pAttack2DTriggerCom), &FanDesc)))
        return E_FAIL;
    m_pAttack2DTriggerCom->Set_Active(false);
     return S_OK;
@@ -237,6 +274,7 @@ HRESULT CPlayer::Ready_PartObjects()
     }
 	//Part Sword
 	CPlayerSword::PLAYER_SWORD_DESC SwordDesc{};
+    SwordDesc.isCoordChangeEnable = true;
 	SwordDesc.pParent = this;
     SwordDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     SwordDesc.iCurLevelID = m_iCurLevelID;
@@ -260,6 +298,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{1,0,0,0});
 	Set_PartActive(PLAYER_PART_SWORD, false);
     m_pSword->Switch_Grip(true);
+    m_pSword->Set_AttackEnable(false);
 
 	//Part Glove
     BodyDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
@@ -304,6 +343,8 @@ HRESULT CPlayer::Ready_PartObjects()
     return S_OK;
 }
 
+
+
 void CPlayer::Priority_Update(_float _fTimeDelta)
 {
 
@@ -323,10 +364,9 @@ void CPlayer::Update(_float _fTimeDelta)
         if(m_pBody2DColliderCom->Is_Active())
             CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pBody2DColliderCom);
 		if (m_pBody2DTriggerCom->Is_Active())
-            CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pBody2DTriggerCom);
+            CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_TRIGGER, m_pBody2DTriggerCom);
 		if (m_pAttack2DTriggerCom->Is_Active())
 			CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pAttack2DTriggerCom);
-
     }
 
 
@@ -424,10 +464,10 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
-    case Client::CPlayer::SHAPE_BODY:
+    case Client::SHAPE_USE::SHAPE_BODY:
 
         break;
-    case Client::CPlayer::SHAPE_FOOT:
+    case Client::SHAPE_USE::SHAPE_FOOT:
         //cout << "   COntatct Enter";
 
         //TestCode
@@ -446,7 +486,7 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
     //    }
 
         break;
-	case Client::CPlayer::SHAPE_TRIGER:
+	case Client::SHAPE_USE::SHAPE_TRIGER:
 		break;
     }
 
@@ -457,9 +497,9 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 	SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
-    case Client::CPlayer::SHAPE_BODY:
+    case Client::SHAPE_USE::SHAPE_BODY:
         break;
-    case Client::CPlayer::SHAPE_FOOT:
+    case Client::SHAPE_USE::SHAPE_FOOT:
         for (auto& pxPairData : _ContactPointDatas)
         {
             _vector vMyPos = Get_FinalPosition();
@@ -474,7 +514,7 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
             return;
         }
         break;
-    case Client::CPlayer::SHAPE_TRIGER:
+    case Client::SHAPE_USE::SHAPE_TRIGER:
 
         break;
     default:
@@ -489,10 +529,10 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
-    case Client::CPlayer::SHAPE_BODY:
+    case Client::SHAPE_USE::SHAPE_BODY:
 
         break;
-    case Client::CPlayer::SHAPE_FOOT:
+    case Client::SHAPE_USE::SHAPE_FOOT:
         //cout << "   COntatct Exit";
 
          //TestCode
@@ -510,7 +550,7 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
         //    }
         //}
         break;
-    case Client::CPlayer::SHAPE_TRIGER:
+    case Client::SHAPE_USE::SHAPE_TRIGER:
         break;
     }
 
@@ -522,7 +562,7 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
-    case Client::CPlayer::SHAPE_TRIGER:
+    case Client::SHAPE_USE::SHAPE_TRIGER:
         Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
         break;
     }
@@ -531,7 +571,7 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    if (_My.pShapeUserData->iShapeUse == SHAPE_TRIGER)
+    if (SHAPE_USE::SHAPE_TRIGER ==(SHAPE_USE)_My.pShapeUserData->iShapeUse)
     {
         if (OBJECT_GROUP::INTERACTION_OBEJCT == _Other.pActorUserData->iObjectGroup)
         {
@@ -555,7 +595,7 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
-    case Client::CPlayer::SHAPE_TRIGER:
+    case Client::SHAPE_USE::SHAPE_TRIGER:
         Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
         break;
     }
@@ -563,7 +603,8 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (_pMyCollider == m_pAttack2DTriggerCom)
+    if (_pMyCollider == m_pAttack2DTriggerCom
+        && OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
     {
         Attack(_pOtherObject);
     }
@@ -583,7 +624,11 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
             }
         }
     }
-
+    else if (_pMyCollider == m_pAttack2DTriggerCom
+        && OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
+    {
+        Attack(_pOtherObject);
+    }
 }
 
 void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -619,6 +664,23 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     else
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
 
+    switch (m_ePlayerMode)
+    {
+    case Client::CPlayer::PLAYER_MODE_NORMAL:
+		UnEquip_Part(PLAYER_PART_SWORD);
+        m_pSword->Set_AttackEnable(false);
+        break;
+    case Client::CPlayer::PLAYER_MODE_SWORD:
+		Equip_Part(PLAYER_PART_SWORD);
+        m_pSword->Set_AttackEnable(true);
+        break;
+    case Client::CPlayer::PLAYER_MODE_SNEAK:
+        UnEquip_Part(PLAYER_PART_SWORD);
+        m_pSword->Set_AttackEnable(false);
+        break;
+    default:
+        break;
+    }
     Set_State(IDLE);
 
     return S_OK;
@@ -833,15 +895,15 @@ _float CPlayer::Get_AnimProgress()
 
 _bool CPlayer::Is_SwordHandling()
 {
-    return Is_SwordMode() && m_pSword->Is_Active() && (m_pSword->Is_SwordHandling());
+    return Is_SwordMode()&& (m_pSword->Is_SwordHandling());
 }
 
 _vector CPlayer::Get_CenterPosition()
 {
 	if (COORDINATE_2D == Get_CurCoord())
-		return Get_FinalPosition();
+		return Get_FinalPosition() + _vector{ 0,m_f2DCenterYOffset, 0 };
 	else
-        return Get_FinalPosition() + _vector{0,m_fCenterHeight, 0};
+        return Get_FinalPosition() + _vector{0,m_f3DCenterYOffset, 0};
 }
 
 _vector CPlayer::Get_HeadPosition()
@@ -994,25 +1056,40 @@ void CPlayer::Set_Kinematic(_bool _bKinematic)
         pDynamicActor->Set_Dynamic();
     }
 }
-void CPlayer::Set_AttackTriggerActive(_bool _bOn)
+void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 {
-    if (false == _bOn)
-        Flush_AttckedSet();
+	m_eCurAttackType = _eAttackType;
 	if (COORDINATE_2D == Get_CurCoord())
 	{
-        m_pAttack2DTriggerCom->Set_Active(_bOn);
+        m_pAttack2DTriggerCom->Set_Active(true);
+		static_cast<CCollider_Circle*>( m_pAttack2DTriggerCom)->Set_Radius(m_f2DAttackTriggerDesc[_eAttackType].fRadius);
+        m_pAttack2DTriggerCom->Set_Offset(m_f2DAttackTriggerDesc[_eAttackType].fOffset);
 	}
 	else
 	{
-		m_pSword->Set_AttackEnable(_bOn);
+		m_pSword->Set_AttackEnable(true);
 	}
-
 }
+
+void CPlayer::End_Attack()
+{
+    Flush_AttckedSet();
+    if (COORDINATE_2D == Get_CurCoord())
+    {
+        m_pAttack2DTriggerCom->Set_Active(false);
+    }
+    else
+    {
+        m_pSword->Set_AttackEnable(false);
+    }
+}
+
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 {
 	for (_int i = PLAYER_PART_SWORD; i < PLAYER_PART_LAST; ++i)
 		Set_PartActive((_uint)i, false);
-	Set_PartActive(_ePartId, true);
+    if(COORDINATE_3D == Get_CurCoord())
+	    Set_PartActive(_ePartId, true);
 }
 
 void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
@@ -1022,7 +1099,12 @@ void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 
 void CPlayer::ThrowSword()
 {
-    m_pSword->Throw(XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK)));
+	if (COORDINATE_3D == Get_CurCoord())
+        m_pSword->Throw(XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK)));
+    else
+    {
+		m_pSword->Throw(EDir_To_Vector(m_e2DDirection_E));
+    }
 
 }
 
@@ -1086,7 +1168,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 
     if (KEY_DOWN(KEY::TAB))
     {
-        m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 24.f));
+        //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
+        //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
+        m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
     }
 
 }

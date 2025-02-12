@@ -216,6 +216,7 @@
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
     <ClInclude Include="..\Public\Narration.h" />
     <ClInclude Include="..\Public\Narration_Anim.h" />
+    <ClInclude Include="..\public\RenderGroup_PostProcessing.h" />
     <ClInclude Include="..\Public\Section_2D_Narration.h" />
     <ClInclude Include="..\Public\Npc_OnlySocial.h" />
     <ClInclude Include="..\Public\PlayerItem.h" />
@@ -379,6 +380,7 @@
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
     <ClCompile Include="..\Private\Narration.cpp" />
     <ClCompile Include="..\Private\Narration_Anim.cpp" />
+    <ClCompile Include="..\private\RenderGroup_PostProcessing.cpp" />
     <ClCompile Include="..\Private\Section_2D_Narration.cpp" />
     <ClCompile Include="..\Private\NPC_OnlySocial.cpp" />
     <ClCompile Include="..\Private\PlayerItem.cpp" />

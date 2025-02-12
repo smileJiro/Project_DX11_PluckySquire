@@ -87,7 +87,7 @@ private:
 	void						Flipping_Down(_float _fTimeDelta);
 	void						Look_Target(_float fTimeDelta);
 
-	_vector						Calculate_CameraPos(_float _fTimeDelta);
+	_bool						Calculate_CameraPos(_float _fTimeDelta, _float3* _vCameraPos);
 	virtual	void				Switching(_float _fTimeDelta) override;
 
 #ifdef _DEBUG

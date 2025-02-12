@@ -706,7 +706,7 @@ HRESULT CActor::Ready_Shapes(const vector<SHAPE_DATA>& _ShapeDatas)
 	PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
 	if (nullptr == pPhysics)
 		return E_FAIL;
-
+	
 	for (auto& ShapeData : _ShapeDatas)
 	{
 		Add_Shape(ShapeData);
@@ -817,7 +817,9 @@ void CActor::Free()
 		delete m_pActor->userData;
 		m_pActor->userData = nullptr;
 		m_pOwner = nullptr;
+		m_pGameInstance->Get_Physx_Scene()->removeActor(*m_pActor);
 		m_pActor->release();
+		m_pActor = nullptr;
 	}
 	else
 	{

@@ -49,8 +49,7 @@ void CMapObject::Late_Update(_float _fTimeDelta)
     if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
     {
         if (true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.0f))
-            m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_NONBLEND, this);
-       
+            m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_GEOMETRY, this);
     }
         
     //else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
