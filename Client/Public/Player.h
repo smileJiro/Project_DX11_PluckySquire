@@ -8,6 +8,7 @@ class CCollider; // test
 class CModelObject;
 END
 BEGIN(Client)
+class CCarriableObject;
 class CStateMachine;
 enum PLAYER_INPUT
 {
@@ -459,7 +460,8 @@ public: /* 2D 충돌 */
 	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
 	_vector Get_ClamberEndPosition() { return m_vClamberEndPosition; }
 	_vector Get_WallNormal() { return m_vWallNormal; }
-	//_float Get_FootHeightThreshold() { return m_fFootHeightThreshold; }
+	_float4x4* Get_CarryingOffset3D_Ptr() { return &m_mat3DCarryingOffset; }
+	_float4x4*Get_CarryingOffset2D_Ptr() { return &m_mat2DCarryingOffset; }
 	_vector Get_RootBonePosition();
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	CController_Transform* Get_Transform() { return m_pControllerTransform; }
@@ -477,6 +479,7 @@ public: /* 2D 충돌 */
 	void Set_ClamberEndPosition(_fvector _vPos) { m_vClamberEndPosition = _vPos; }
 	void Set_SwordGrip(_bool _bForehand);
 	void Set_Kinematic(_bool _bKinematic);
+	HRESULT Set_CarryingObject(CCarriableObject* _pCarryingObject);
 
 
 	void Start_Attack(ATTACK_TYPE _eAttackType);
@@ -516,6 +519,7 @@ private:
 	_vector m_vClamberEndPosition = { 0,0,0,1 };//벽타기 끝날 위치
 	_vector m_vWallNormal= { 0,0,1,0 };//접촉한 벽의 법선
 	_vector m_v3DTargetDirection = { 0,0,-1 };
+	_float4x4 m_mat3DCarryingOffset = {};
 	PLAYER_MODE m_ePlayerMode = PLAYER_MODE_NORMAL;
 
 	//2D전용
@@ -526,6 +530,7 @@ private:
 	_float m_f2DJumpPower = 800.f;
 	_float m_f2DCenterYOffset= 36.f;
 	_float m_f2DInteractRange = 93.f;
+	_float4x4 m_mat2DCarryingOffset = {};
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
 	ATTACK_TRIGGER_DESC_2D m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST];// = { 93.f, 93.f, 120.f };
 	//ATTACK_TRIGGER_DESC_2D m_f2DAttackAngle[ATTACK_TYPE_LAST];// = { 110.f, 110.f,45.f };
@@ -543,7 +548,7 @@ private:
 	CModelObject* m_pBody = nullptr;
 	CModelObject* m_pGlove= nullptr;
 
-	CGameObject* m_pCarryingObject = nullptr;
+	CCarriableObject* m_pCarryingObject = nullptr;
 
 	set<CGameObject*> m_AttckedObjects;
 public:

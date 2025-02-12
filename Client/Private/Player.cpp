@@ -21,6 +21,7 @@
 #include "Collision_Manager.h"    
 #include "Collider_Fan.h"
 #include "Interactable.h"
+#include "CarriableObject.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -40,31 +41,31 @@ HRESULT CPlayer::Initialize_Prototype()
 {
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadius = 93.f;
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadianAngle = XMConvertToRadians(120.f);
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fOffset = {0, m_f2DCenterYOffset };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fOffset = {0.f, m_f2DCenterYOffset };
 
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fRadius = 93.f;
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fRadianAngle = XMConvertToRadians(120.f);
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fOffset = { 0, m_f2DCenterYOffset };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fOffset = { 0.f, m_f2DCenterYOffset };
 
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fRadius = 110.f;
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fRadianAngle = XMConvertToRadians(60.f);
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fOffset = { 0, m_f2DCenterYOffset };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fOffset = { 0.f, m_f2DCenterYOffset };
 
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fRadius = 110.f;
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fRadianAngle = XMConvertToRadians(360.f);
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fOffset = { 0, m_f2DCenterYOffset };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fOffset = { 0.f, m_f2DCenterYOffset };
 
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadius = 93.f;
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadianAngle = XMConvertToRadians(360.f);
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = { 0, 0 };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = { 0.f, 0.f };
+
+
 
     return S_OK;
 }
 
 HRESULT CPlayer::Initialize(void* _pArg)
 {
-
-
     CPlayer::CONTAINEROBJ_DESC* pDesc = static_cast<CPlayer::CONTAINEROBJ_DESC*>(_pArg);
 
     m_iCurLevelID = pDesc->iCurLevelID;
@@ -1056,6 +1057,32 @@ void CPlayer::Set_Kinematic(_bool _bKinematic)
         pDynamicActor->Set_Dynamic();
     }
 }
+HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
+{
+    //손 비우기
+    if (nullptr == _pCarryingObject)
+    {
+        if (nullptr != m_pCarryingObject)
+        {
+            m_pCarryingObject->Set_Carrier(nullptr);
+
+            Safe_Release(m_pCarryingObject);
+            m_pCarryingObject = nullptr;
+        }
+        return S_OK;
+    }
+    //손에 물건 들리기
+    else
+    {
+        if (Is_CarryingObject())
+            return E_FAIL;
+        m_pCarryingObject = _pCarryingObject;
+        Safe_AddRef(m_pCarryingObject);
+        m_pCarryingObject->Set_Carrier(this);
+    }
+
+    return S_OK;
+}
 void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 {
 	m_eCurAttackType = _eAttackType;
@@ -1211,5 +1238,6 @@ void CPlayer::Free()
 
 	Safe_Release(m_pStateMachine);
 	Safe_Release(m_pAnimEventGenerator);
+    Safe_Release(m_pCarryingObject);
     __super::Free();
 }
