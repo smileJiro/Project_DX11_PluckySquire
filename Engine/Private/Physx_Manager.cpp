@@ -108,8 +108,7 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 		//fetch 끝났는지 확인
 		if (m_pPxScene->fetchResults(true))
 		{
-			if (nullptr != m_pPhysx_EventCallBack)
-				m_pPhysx_EventCallBack->Update();
+
 
 #ifdef _DEBUG
 			if (true == m_isDebugRender)
@@ -122,6 +121,8 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 
 	}
 
+	if (nullptr != m_pPhysx_EventCallBack)
+		m_pPhysx_EventCallBack->Update();
 //
 //	//기존 코드
 //	m_pPxScene->simulate(1.f / 60.f);

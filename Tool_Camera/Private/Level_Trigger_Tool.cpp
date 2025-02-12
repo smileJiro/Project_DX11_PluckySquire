@@ -14,6 +14,8 @@
 #include "BulbLine.h"
 #include "Bulb.h"
 #include "Test_Terrain.h"
+#include "CubeMap.h"
+#include "MainTable.h"
 
 CLevel_Trigger_Tool::CLevel_Trigger_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
@@ -24,29 +26,34 @@ HRESULT CLevel_Trigger_Tool::Initialize()
 {
 	if (FAILED(Ready_Lights()))
 		return E_FAIL;
-
+	Ready_CubeMap(TEXT("Layer_CubeMap"));
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"), nullptr)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Map(TEXT("Layer_Terrain"))))
+	if (FAILED(Ready_Layer_MainTable(TEXT("Layer_MainTable"))))
 		return E_FAIL;
 
 	Ready_DataFiles();
 	Initialize_ListBoxName();
+
+	m_pCurBulbLine.first = nullptr;
+	m_pCurBulbLine.second = nullptr;
 
 	return S_OK;
 }
 
 void CLevel_Trigger_Tool::Update(_float _fTimeDelta)
 {
-	m_pGameInstance->Physx_Update(_fTimeDelta);
-
+	
 	Picking();
 	Show_TriggerTool();
 	Show_Info();
 	Show_SaveLoadFileWindow();
 
 	Show_BulbTool();
+
+	m_pGameInstance->Physx_Update(_fTimeDelta);
+
 }
 
 HRESULT CLevel_Trigger_Tool::Render()
@@ -81,21 +88,54 @@ HRESULT CLevel_Trigger_Tool::Render()
 
 HRESULT CLevel_Trigger_Tool::Ready_Lights()
 {
-	LIGHT_DESC LightDesc{};
+	CONST_LIGHT LightDesc{};
 
 	ZeroMemory(&LightDesc, sizeof LightDesc);
 
-	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTOINAL;
-	LightDesc.vDirection = _float4(-1.f, -1.f, 0.5f, 0.f);
-	LightDesc.vDiffuse = _float4(1.0f, 1.0f, 1.0f, 1.f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
+	LightDesc.fFallOutStart = 20.0f;
+	LightDesc.fFallOutEnd = 1000.0f;
+	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
 
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
 		return E_FAIL;
+
+	//LIGHT_DESC LightDesc{};
+
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
+
+	//LightDesc.eType = LIGHT_DESC::TYPE_DIRECTOINAL;
+	//LightDesc.vDirection = _float4(-1.f, -1.f, 0.5f, 0.f);
+	//LightDesc.vDiffuse = _float4(1.0f, 1.0f, 1.0f, 1.f);
+	//LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.f);
+	//LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }
+
+HRESULT CLevel_Trigger_Tool::Ready_CubeMap(const _wstring& _strLayerTag)
+{
+	CGameObject* pCubeMap = nullptr;
+	CCubeMap::CUBEMAP_DESC Desc;
+	Desc.iCurLevelID = LEVEL_TRIGGER_TOOL;
+	Desc.iRenderGroupID = RG_3D;
+	Desc.iPriorityID = PR3D_PRIORITY;
+	Desc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
+	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
+		LEVEL_TRIGGER_TOOL, _strLayerTag, &pCubeMap, &Desc)))
+		return E_FAIL;
+
+	m_pGameInstance->Set_CubeMap(static_cast<CCubeMap*>(pCubeMap));
+	return S_OK;
+}
+
 
 HRESULT CLevel_Trigger_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
@@ -130,8 +170,30 @@ HRESULT CLevel_Trigger_Tool::Ready_Layer_Player(const _wstring& _strLayerTag, CG
 	return S_OK;
 }
 
-HRESULT CLevel_Trigger_Tool::Ready_Layer_Map(const _wstring& _strLayerTag)
+HRESULT CLevel_Trigger_Tool::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 {
+	CModelObject::MODELOBJECT_DESC NormalDesc = {};
+	NormalDesc.strModelPrototypeTag_3D = L"SM_desk_split_topboard_02";
+	NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
+	NormalDesc.isCoordChangeEnable = false;
+	NormalDesc.iModelPrototypeLevelID_3D = LEVEL_TRIGGER_TOOL;
+	NormalDesc.eStartCoord = COORDINATE_3D;
+	CGameObject* pGameObject = nullptr;
+	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
+		LEVEL_TRIGGER_TOOL,
+		L"Layer_MapObject",
+		&pGameObject,
+		(void*)&NormalDesc);
+
+
+	// MainTable Actor
+	CMainTable::ACTOROBJECT_DESC Desc;
+	Desc.iCurLevelID = LEVEL_TRIGGER_TOOL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
+		LEVEL_TRIGGER_TOOL, _strLayerTag, &Desc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -279,6 +341,10 @@ void CLevel_Trigger_Tool::Show_SaveLoadFileWindow()
 {
 	ImGui::Begin("Save Load File");
 
+	ImGui::Checkbox("Trigger", &m_isTrigger);
+	ImGui::SameLine();
+	ImGui::Checkbox("Bulb", &m_isBulb);
+
 	ImGui::BeginChild("Files", ImVec2(400, 150), true);  // true는 border 표시
 	for (int i = 0; i < m_JsonFilePaths.size(); ++i)
 	{
@@ -307,7 +373,10 @@ void CLevel_Trigger_Tool::Show_SaveLoadFileWindow()
 			ImGui::CloseCurrentPopup();
 			m_isShowPopUp = false;
 
-			Save_TriggerData();
+			if (true == m_isTrigger && false == m_isBulb)
+				Save_TriggerData();
+			else if (true == m_isBulb && false == m_isTrigger)
+				Save_BulbPosition();
 		}
 
 		ImGui::SameLine();
@@ -322,7 +391,10 @@ void CLevel_Trigger_Tool::Show_SaveLoadFileWindow()
 	ImGui::SameLine();
 
 	if (ImGui::Button("Load")) {
-		Load_TriggerData();
+		if (true == m_isTrigger && false == m_isBulb)
+			Load_TriggerData();
+		else if (true == m_isBulb && false == m_isTrigger)
+			Load_BulbPosition();	
 	}
 
 	ImGui::End();
@@ -333,7 +405,6 @@ void CLevel_Trigger_Tool::Show_BulbTool()
 	ImGui::Begin("Bulb Tool");
 
 	Set_BulbBasicInfo();
-	//Set_TriggerInfoByType();
 
 	ImGui::NewLine();
 	ImGui::Checkbox("Create Bulb By Line", &m_isCreateByLine);
@@ -343,8 +414,8 @@ void CLevel_Trigger_Tool::Show_BulbTool()
 	ImGui::Checkbox("Edit Bulb", &m_isEditBulb);
 	
 	Show_BulbInfo();
-	//Set_CurTrigger();
-	//Delete_Trigger();
+	Set_CurBulbLine();
+	Delete_Bulb();
 
 	if (true == m_isCreateByLine && false == m_isCreateByPoint && false == m_isEditBulb) {
 		Create_Bulb_ByLine();
@@ -363,6 +434,29 @@ void CLevel_Trigger_Tool::Show_BulbTool()
 
 void CLevel_Trigger_Tool::Show_BulbInfo()
 {
+	ImGui::NewLine();
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("Cur Bulb Info");
+	ImGui::Separator();
+
+	if (nullptr != m_pCurBulbLine.first) {
+		if (CREATED_BYLINE == m_iCurBulbCreateType) {
+			_int iBulbCount = (_int)m_pCurBulbLine.first->Get_BulbCount();
+			ImGui::Text("Bulb Count: %d", iBulbCount);
+		}
+	}
+	
+	if (nullptr != m_pCurBulb) {
+		switch (m_iCurBulbCreateType) {
+		case CREATED_BYLINE:
+			ImGui::Text("Created By: LINE");
+			break;
+		case CREATED_BYPOINT:
+			ImGui::Text("Created By: POINT");
+			break;
+		}
+	}
 }
 
 void CLevel_Trigger_Tool::Show_TriggerTypeListBox()
@@ -1023,39 +1117,7 @@ void CLevel_Trigger_Tool::Picking()
 				}
 			}
 
-			pLayer = m_pGameInstance->Find_Layer(LEVEL_TRIGGER_TOOL, TEXT("Layer_Room_Environment"));
-
-			if (nullptr == pLayer)
-				return;
-
-			Objects = pLayer->Get_GameObjects();
-
-			_float fOtherDist = { 99999999.f };
-			_vector vOtherClickedPos = {};
-
-			pGameObject = nullptr;
-
-			for (auto& GameObject : Objects) {
-				CModelObject* pModelObject = dynamic_cast<CModelObject*>(GameObject);
-				_float fOtherTemp = {};
-				_bool isPicked = pModelObject->Is_PickingCursor_Model_Test(fMousePos, fOtherTemp);
-
-				if (true == isPicked) {
-					if (fOtherDist > fOtherTemp) {
-						fOtherDist = fOtherTemp;
-						vOtherClickedPos = vRayPos + (vRayDir * fOtherDist);
-					}
-					//XMStoreFloat3(&m_vPosition, vOtherClickedPos);
-					//return;
-				}
-			}
-
-			if (fOtherDist > fDist) {
-				XMStoreFloat3(&m_vPosition, vClickedPos);
-			}
-			else
-				XMStoreFloat3(&m_vPosition, vOtherClickedPos);
-
+			XMStoreFloat3(&m_vPosition, vClickedPos);
 		}
 	}
 }
@@ -1310,8 +1372,7 @@ void CLevel_Trigger_Tool::Create_Bulb_ByLine()
 					return;
 				}
 
-				pLine->second = dynamic_cast<CModelObject*>(Create_BulbPoint());
-				
+				m_pMakingBulbLine->Add_Point(dynamic_cast<CModelObject*>(Create_BulbPoint()));
 				m_BulbLines.push_back(m_pMakingBulbLine);
 				m_pMakingBulbLine = nullptr;
 			}
@@ -1330,11 +1391,160 @@ void CLevel_Trigger_Tool::Create_Bulb_ByLine()
 
 void CLevel_Trigger_Tool::Create_Bulb_ByPoint()
 {
+	if (KEY_PRESSING(KEY::CTRL)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+
+			// Create
+			CGameObject* pBulb;
+			CBulb::BULB_DESC Desc = {};
+			Desc.eStartCoord = COORDINATE_3D;
+			Desc.tTransform3DDesc.vInitialPosition = m_vPosition;
+
+			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bulb"),
+				LEVEL_TRIGGER_TOOL, TEXT("Layer_Bulb"), &pBulb, &Desc);
+
+			m_Bulbs.push_back(dynamic_cast<CBulb*>(pBulb));
+
+			Safe_AddRef(pBulb);
+
+		}
+	}
 	
 }
 
 void CLevel_Trigger_Tool::Edit_Bulb()
 {
+	if (nullptr == m_pCurBulbLine.first)
+		return;
+
+	if (KEY_PRESSING(KEY::SPACE)) {
+	
+		m_pCurBulbLine.second->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_vPosition), 1.f));
+		
+		m_pCurBulbLine.first->Edit_BulbInfo();
+	}
+}
+
+void CLevel_Trigger_Tool::Delete_Bulb()
+{
+	if (KEY_PRESSING(KEY::LSHIFT)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+
+			_float2 fMousePos = m_pGameInstance->Get_CursorPos();
+
+			CGameObject* pCube = m_pGameInstance->Get_PickingModelObjectByCursor(LEVEL_TRIGGER_TOOL, TEXT("Layer_Cube"), fMousePos);
+
+			if (nullptr != pCube) {
+				for (auto iterator = m_BulbLines.begin(); iterator != m_BulbLines.end();) {
+
+					pair<CModelObject*, CModelObject*>* pPoints = (*iterator)->Get_Line();
+
+					if (pPoints->first == pCube || pPoints->second == pCube) {
+						if (m_pCurBulbLine.first == *iterator) {
+							Safe_Release(m_pCurBulbLine.first);
+							m_pCurBulbLine.first = nullptr;
+							m_pCurBulbLine.second = nullptr;
+						}
+
+						(*iterator)->Clear();
+						Safe_Release(*iterator);
+						m_BulbLines.erase(iterator);
+
+						return;
+					}
+					else {
+						++iterator;
+					}
+				}
+			}
+
+			_vector vPos, vDir;
+			Get_RayInfo(&vPos, &vDir);
+
+			_float3 vRayPos, vRayDir;
+			XMStoreFloat3(&vRayPos, vPos);
+			XMStoreFloat3(&vRayDir, vDir);
+
+			CActorObject* pObject = nullptr;
+
+			_bool isSelected = m_pGameInstance->RayCast_Nearest(vRayPos, vRayDir, 2000.f, nullptr, &pObject);
+
+			if (true == isSelected) {
+				for (auto iterator = m_Bulbs.begin(); iterator != m_Bulbs.end();) {
+					if (*iterator == pObject) {
+						if (pObject == m_pCurBulb) {
+							Safe_Release(m_pCurBulb);
+						}
+
+						Event_DeleteObject(*iterator);
+						Safe_Release(*iterator);
+						m_Bulbs.erase(iterator);
+
+						return;
+					}
+					else {
+						++iterator;
+					}
+				}
+			}
+			
+		}
+	}
+}
+
+void CLevel_Trigger_Tool::Set_CurBulbLine()
+{
+	if (KEY_PRESSING(KEY::ALT)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+
+			_float2 fMousePos = m_pGameInstance->Get_CursorPos();
+
+			CGameObject* pCube = m_pGameInstance->Get_PickingModelObjectByCursor(LEVEL_TRIGGER_TOOL, TEXT("Layer_Cube"), fMousePos);
+
+			if (nullptr != pCube) {
+				for (auto& BulbLine : m_BulbLines) {
+
+					pair<CModelObject*, CModelObject*>* pPoints = BulbLine->Get_Line();
+
+					if (pPoints->first == pCube || pPoints->second == pCube) {
+
+						Safe_Release(m_pCurBulbLine.first);
+						m_pCurBulbLine.first = BulbLine;
+						m_pCurBulbLine.second = dynamic_cast<CModelObject*>(pCube);
+						Safe_AddRef(BulbLine);
+
+						m_iCurBulbCreateType = CREATED_BYLINE;
+						return;
+					}
+				}
+			}
+			
+			_vector vPos, vDir;
+			Get_RayInfo(&vPos, &vDir);
+
+			_float3 vRayPos, vRayDir;
+			XMStoreFloat3(&vRayPos, vPos);
+			XMStoreFloat3(&vRayDir, vDir);
+
+			CActorObject* pObject = nullptr;
+
+			_bool isSelected = m_pGameInstance->RayCast_Nearest(vRayPos, vRayDir, 2000.f, nullptr, &pObject);
+
+			if (true == isSelected) {
+				for (auto& Bulb : m_Bulbs) {
+					if (pObject == Bulb) {
+
+						Safe_Release(m_pCurBulb);
+						m_pCurBulb = Bulb;
+						Safe_AddRef(Bulb);
+
+						m_iCurBulbCreateType = CREATED_BYPOINT;
+						return;
+					}
+				}
+			}
+		}
+	}
 }
 
 CGameObject* CLevel_Trigger_Tool::Create_BulbPoint()
@@ -1389,7 +1599,91 @@ void CLevel_Trigger_Tool::Set_BulbBasicInfo()
 	ImGui::Text("Bulb PosOffset: %.2f", m_fBulbPosOffset);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##BulbPosOffset", &m_fBulbPosOffset, 0.1f);
+	ImGui::DragFloat("##BulbPosOffset", &m_fBulbPosOffset, 0.1f, 1.f, 10.f);
+}
+
+void CLevel_Trigger_Tool::Save_BulbPosition()
+{
+	json Result = json::array();
+
+	// BulbPosition
+
+	for (auto& BulbLine : m_BulbLines) {
+		list<CBulb*>* pBulbs = BulbLine->Get_Bulbs();
+
+		for (auto& Bulb : *pBulbs) {
+			json Bulb_json;
+
+			_vector vPos = Bulb->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+			Bulb_json["Bulb_Position"] = { XMVectorGetX(vPos), XMVectorGetY(vPos), XMVectorGetZ(vPos) };
+
+			Result.push_back(Bulb_json);
+		}
+	}
+
+	for (auto& Bulb : m_Bulbs) {
+		json Bulb_json;
+
+		_vector vPos = Bulb->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+		Bulb_json["Bulb_Position"] = { XMVectorGetX(vPos), XMVectorGetY(vPos), XMVectorGetZ(vPos) };
+
+		Result.push_back(Bulb_json);
+	}
+
+	_wstring wszSavePath = L"../Bin/Resources/DataFiles/TriggerData/BulbData/";
+	_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
+
+	ofstream file(wszSavePath + wszSaveName + TEXT(".json"));
+
+	if (!file.is_open())
+	{
+		MSG_BOX("파일을 저장할 수 없습니다.");
+		file.close();
+		return;
+	}
+
+	file << Result.dump(4);
+	file.close();
+
+	_wstring FullPath = wszSavePath + wszSaveName + TEXT(".json");
+	m_JsonFilePaths.push_back(m_pGameInstance->WStringToString(FullPath));
+}
+
+void CLevel_Trigger_Tool::Load_BulbPosition()
+{
+	_wstring wszLoadPath = m_pGameInstance->StringToWString(m_JsonFilePaths[m_iCurrentJsonFileIndex]);
+
+	ifstream file(wszLoadPath);
+
+	if (!file.is_open())
+	{
+		MSG_BOX("파일을 열 수 없습니다.");
+		file.close();
+		return;
+	}
+
+	json Result;
+	file >> Result;
+	file.close();
+
+	json Bulb_json;
+
+	for (auto& Bulb_json : Result) {
+		_float3 vPosition = { Bulb_json["Bulb_Position"][0].get<_float>(), Bulb_json["Bulb_Position"][1].get<_float>(), Bulb_json["Bulb_Position"][2].get<_float>() };
+	
+		// Create
+		CGameObject* pBulb;
+		CBulb::BULB_DESC Desc = {};
+		Desc.eStartCoord = COORDINATE_3D;
+		Desc.tTransform3DDesc.vInitialPosition = vPosition;
+
+		m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bulb"),
+			LEVEL_TRIGGER_TOOL, TEXT("Layer_Bulb"), &pBulb, &Desc);
+
+		m_Bulbs.push_back(dynamic_cast<CBulb*>(pBulb));
+
+		Safe_AddRef(pBulb);
+	}
 }
 
 
@@ -1431,7 +1725,13 @@ void CLevel_Trigger_Tool::Free()
 	}
 
 	Safe_Release(m_pMakingBulbLine);
-	Safe_Release(m_pCurBulbLine);
+	Safe_Release(m_pCurBulbLine.first);
+
+	for (auto& Bulb : m_Bulbs) {
+		Safe_Release(Bulb);
+	}
+
+	Safe_Release(m_pCurBulb);
 
 	__super::Free();
 }

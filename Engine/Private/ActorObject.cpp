@@ -47,6 +47,16 @@ HRESULT CActorObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewP
     return S_OK;
 }
 
+void CActorObject::Set_Dead()
+{
+    __super::Set_Dead();
+
+    if (nullptr == m_pActorCom)
+        return;
+
+    m_pActorCom->Set_PxActorDisable();
+}
+
 
 
 void CActorObject::Active_OnEnable()

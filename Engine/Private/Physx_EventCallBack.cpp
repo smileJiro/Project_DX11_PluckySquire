@@ -126,17 +126,40 @@ void CPhysx_EventCallBack::onTrigger(PxTriggerPair* pairs, PxU32 count)
 
 bool CPhysx_EventCallBack::IsOwnerObjectValid(CActorObject* pOwner)
 {
-	return pOwner != nullptr &&
-		pOwner->Is_Active() &&
-		!pOwner->Is_Dead();
+	if (pOwner == nullptr)
+		return false;
 
+	if (false == pOwner->Is_Active() || true == pOwner->Is_Dead())
+		return false;
+
+	return true;
+
+
+
+	//return pOwner != nullptr &&
+	//	pOwner->Is_Active() &&
+	//	!pOwner->Is_Dead();
 }
 void CPhysx_EventCallBack::Update()
 {
 	map<_ulonglong, pair<COLL_INFO, COLL_INFO>>::iterator iter;
 	
+
 	for (iter = m_StayTrigger.begin(); iter != m_StayTrigger.end();)
 	{
+		// Object DeadCheck
+
+		CActorObject* LeftObject = (*iter).second.first.pActorUserData->pOwner;
+		CActorObject* RightObject = (*iter).second.second.pActorUserData->pOwner;
+		if (false == IsOwnerObjectValid(LeftObject) || false == IsOwnerObjectValid(LeftObject))
+		{
+			iter = m_StayTrigger.erase(iter);
+			if (iter == m_StayTrigger.end())
+				break;
+			else 
+				continue;
+		}
+
 		_bool isEmpty = false;
 		if (nullptr == iter->second.first.pActorUserData || nullptr == iter->second.second.pActorUserData)
 		{

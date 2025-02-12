@@ -310,12 +310,6 @@
     <Filter Include="02.GameObjects\NPC\02. NPC_DJMoonBeard">
       <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Item">
-      <UniqueIdentifier>{e99d4142-b01f-4107-b0e6-76300adbb590}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Item\Manager">
-      <UniqueIdentifier>{f161f807-a9d6-422f-b0f8-628fdb80b8b3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Trigger">
       <UniqueIdentifier>{dbb54d55-f3f8-4dc6-a444-7f4d131040fd}</UniqueIdentifier>
     </Filter>
