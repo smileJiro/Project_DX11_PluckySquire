@@ -28,7 +28,7 @@ private:
 
 private:
 	vector<CRenderTarget*> m_BlurRenderTargets;
-
+	vector<ID3D11DepthStencilView*> m_DSVs;
 
 private:
 	HRESULT Ready_BlurRenderTarget();
