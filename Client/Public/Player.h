@@ -54,12 +54,7 @@ public:
 		PLAYER_MODE_SNEAK,
 		PLAYER_MODE_LAST
 	};
-	enum SHAPE_USE
-	{
-		SHAPE_BODY = 0,
-		SHAPE_FOOT = 1,
-		SHAPE_TRIGER =2
-	};
+
 	enum PLAYER_PART
 	{
 		PLAYER_PART_SWORD= 1,

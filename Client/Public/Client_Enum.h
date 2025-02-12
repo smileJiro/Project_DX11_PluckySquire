@@ -196,4 +196,11 @@ namespace Client
 		CHAPTER2_1,
 		LAST
 	};
+
+	enum class SHAPE_USE
+	{
+		SHAPE_BODY = 0,
+		SHAPE_FOOT = 1,
+		SHAPE_TRIGER = 2
+	};
 }

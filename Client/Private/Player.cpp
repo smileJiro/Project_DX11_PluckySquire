@@ -108,7 +108,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.pShapeDesc = &CapsuleDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData.iShapeUse = SHAPE_BODY;
+    ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
@@ -123,7 +123,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
     BoxShapeData.pShapeDesc = &BoxDesc;
     XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc.vHalfExtents.y, 0.0f));
-    BoxShapeData.iShapeUse = SHAPE_FOOT;
+    BoxShapeData.iShapeUse =(_uint)SHAPE_USE::SHAPE_FOOT;
     BoxShapeData.isTrigger = false;
     BoxShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
     ActorDesc.ShapeDatas.push_back(BoxShapeData);
@@ -144,7 +144,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     //충돌 감지용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-    ShapeData.iShapeUse = SHAPE_TRIGER;
+    ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
     ShapeData.isTrigger = true;
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_f3DCenterYOffset, 0)); //여기임
     SHAPE_SPHERE_DESC SphereDesc = {};
@@ -462,10 +462,10 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
-    case Client::CPlayer::SHAPE_BODY:
+    case Client::SHAPE_USE::SHAPE_BODY:
 
         break;
-    case Client::CPlayer::SHAPE_FOOT:
+    case Client::SHAPE_USE::SHAPE_FOOT:
         //cout << "   COntatct Enter";
 
         //TestCode
@@ -484,7 +484,7 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
     //    }
 
         break;
-	case Client::CPlayer::SHAPE_TRIGER:
+	case Client::SHAPE_USE::SHAPE_TRIGER:
 		break;
     }
 
@@ -495,9 +495,9 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 	SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
-    case Client::CPlayer::SHAPE_BODY:
+    case Client::SHAPE_USE::SHAPE_BODY:
         break;
-    case Client::CPlayer::SHAPE_FOOT:
+    case Client::SHAPE_USE::SHAPE_FOOT:
         for (auto& pxPairData : _ContactPointDatas)
         {
             _vector vMyPos = Get_FinalPosition();
@@ -512,7 +512,7 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
             return;
         }
         break;
-    case Client::CPlayer::SHAPE_TRIGER:
+    case Client::SHAPE_USE::SHAPE_TRIGER:
 
         break;
     default:
@@ -527,10 +527,10 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
-    case Client::CPlayer::SHAPE_BODY:
+    case Client::SHAPE_USE::SHAPE_BODY:
 
         break;
-    case Client::CPlayer::SHAPE_FOOT:
+    case Client::SHAPE_USE::SHAPE_FOOT:
         //cout << "   COntatct Exit";
 
          //TestCode
@@ -548,7 +548,7 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
         //    }
         //}
         break;
-    case Client::CPlayer::SHAPE_TRIGER:
+    case Client::SHAPE_USE::SHAPE_TRIGER:
         break;
     }
 
@@ -560,7 +560,7 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
-    case Client::CPlayer::SHAPE_TRIGER:
+    case Client::SHAPE_USE::SHAPE_TRIGER:
         Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
         break;
     }
@@ -569,7 +569,7 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    if (SHAPE_TRIGER ==_My.pShapeUserData->iShapeUse)
+    if (SHAPE_USE::SHAPE_TRIGER ==(SHAPE_USE)_My.pShapeUserData->iShapeUse)
     {
         if (OBJECT_GROUP::INTERACTION_OBEJCT == _Other.pActorUserData->iObjectGroup)
         {
@@ -593,7 +593,7 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
-    case Client::CPlayer::SHAPE_TRIGER:
+    case Client::SHAPE_USE::SHAPE_TRIGER:
         Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
         break;
     }

@@ -61,7 +61,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC ShapeDesc = {};
-    ShapeDesc.fRadius = 0.5f;
+    ShapeDesc.fRadius = 1.f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA ShapeData;
@@ -198,8 +198,12 @@ void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other
         }
         else if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
 		{
-            int a = 0;
-            cout << "Monstaer SwordEnter" << endl;
+            if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
+            {
+                int a = 0;
+                cout << "Monstaer SwordEnter" << endl;
+            }
+
         }
     }
 }
@@ -217,7 +221,11 @@ void CPlayerSword::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
     if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
     {
-        cout << "Monstaer SwordExit" << endl;
+        if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
+        {
+            int a = 0;
+            cout << "Monstaer SwordExit" << endl;
+        }
     }
 }
 
@@ -426,5 +434,6 @@ CGameObject* CPlayerSword::Clone(void* _pArg)
 
 void CPlayerSword::Free()
 {
+	Safe_Release(m_pBody2DColliderCom);
     __super::Free();
 }
