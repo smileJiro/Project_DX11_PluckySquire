@@ -202,6 +202,12 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
 #endif // _DEBUG
 
+
+
+	static _float3 vOutPos = {};
+	ImGui::Begin("PickingPos");
+	ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
+	ImGui::End();
 	if (MOUSE_DOWN(MOUSE_KEY::MB))
 	{
 		POINT pt;
@@ -241,12 +247,11 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 		XMStoreFloat3(&vOrigin, vRayPos);
 		XMStoreFloat3(&vRayDirection, vRayDir);
 
-		_float3 vOutPos = {};
+
 		CActorObject* pActorObject = {};
 		_bool isResult = false;
 
 		isResult = m_pGameInstance->RayCast_Nearest(vOrigin, vRayDirection, 1000.f, &vOutPos, &pActorObject);
-
 		int a = 0;
 	}
 

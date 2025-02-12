@@ -1270,6 +1270,11 @@ _bool CGameInstance::RayCast_Nearest(const _float3& _vOrigin, const _float3& _vR
 	return m_pPhysx_Manager->RayCast_Nearest(_vOrigin, _vRayDir, _fMaxDistance, _pOutPos, _ppOutActorObject);
 }
 
+_bool CGameInstance::RayCast_Nearest_GroupFilter(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _int _iGroupNum, _float3* _pOutPos, CActorObject** _ppOutActorObject)
+{
+	return m_pPhysx_Manager->RayCast_Nearest_GroupFilter(_vOrigin, _vRayDir, _fMaxDistance, _iGroupNum, _pOutPos, _ppOutActorObject);
+}
+
 _bool CGameInstance::RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits)
 {
 	if (nullptr == m_pPhysx_Manager)
