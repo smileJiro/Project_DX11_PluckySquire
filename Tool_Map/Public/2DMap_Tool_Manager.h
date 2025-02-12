@@ -118,6 +118,9 @@ private:
 	HRESULT				Change_RenderGroup(_float2 _fRenderTargetSize);
 	HRESULT				Clear_RenderGroup();
 
+	HRESULT				SetUp_Info_to_Model(C2DMapObjectInfo* _pModelInfo, const _wstring& _strModelPath);
+
+
 private:
 
 	_bool				Check_Import_Egnore_2DObject(const _string& _strTag);

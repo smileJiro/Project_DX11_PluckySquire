@@ -5,10 +5,15 @@
 #include "Animation2D.h"
 #include "Collider.h"
 
-C2DMapObjectInfo::C2DMapObjectInfo()
-	: m_pGameInstance(CGameInstance::GetInstance())
+C2DMapObjectInfo::C2DMapObjectInfo(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	:
+	m_pDevice(_pDevice),
+	m_pContext(_pContext),
+	m_pGameInstance(CGameInstance::GetInstance())
 {
 	Safe_AddRef(m_pGameInstance);
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
 }
 
 C2DMapObjectInfo::C2DMapObjectInfo(const C2DMapObjectInfo& Prototype)
@@ -62,11 +67,11 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson)
 				case CCollider::AABB_2D:
 					if (ColliderInfo.contains("Collider_Extent"))
 						m_fColliderExtent = { ColliderInfo["Collider_Extent"]["X"],ColliderInfo["Collider_Extent"]["Y"] };
-						break;
+					break;
 				case CCollider::CIRCLE_2D:
-						if (ColliderInfo.contains("Collider_Radius"))
-							m_fColliderRadius = ColliderInfo["Collider_Radius"];
-						break;
+					if (ColliderInfo.contains("Collider_Radius"))
+						m_fColliderRadius = ColliderInfo["Collider_Radius"];
+					break;
 				}
 			}
 		}
@@ -78,8 +83,8 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson)
 			)
 		{
 			auto SortingPropertis = _InfoJson["SortingPropertis"];
-				if (SortingPropertis.contains("Sorting_Offset_Pos"))
-					m_fSortingPosition = { SortingPropertis["Sorting_Offset_Pos"]["X"],SortingPropertis["Sorting_Offset_Pos"]["Y"] };
+			if (SortingPropertis.contains("Sorting_Offset_Pos"))
+				m_fSortingPosition = { SortingPropertis["Sorting_Offset_Pos"]["X"],SortingPropertis["Sorting_Offset_Pos"]["Y"] };
 
 		}
 	}
@@ -92,15 +97,12 @@ HRESULT C2DMapObjectInfo::Initialize(json _InfoJson)
 		{
 			m_isModelCreate = true;
 			m_pModel = static_cast<C2DModel*>(pModel);
-			m_pTexture = m_pModel->Get_Texture();
 
-			if (m_pTexture != nullptr)
+			if (SUCCEEDED(Create_PreviewModel_Texutre()) && nullptr != m_pPreviewSRV)
 			{
 				m_isToolRendering = true;
 			}
 		}
-		else
-			int a = 1;
 	}
 #endif // _DEBUG
 
@@ -131,13 +133,13 @@ HRESULT C2DMapObjectInfo::Export(json& _OutputJson)
 			_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Offset_Pos"]["Y"] = m_fColliderOffsetPos.y;
 			switch (m_eColliderType)
 			{
-				case CCollider::AABB_2D:
-					_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Extent"]["X"] = m_fColliderExtent.y;
-					_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Extent"]["Y"] = m_fColliderExtent.y;
-					break;
-				case CCollider::CIRCLE_2D:
-					_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Radius"] = m_fColliderRadius;
-					break;
+			case CCollider::AABB_2D:
+				_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Extent"]["X"] = m_fColliderExtent.y;
+				_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Extent"]["Y"] = m_fColliderExtent.y;
+				break;
+			case CCollider::CIRCLE_2D:
+				_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Radius"] = m_fColliderRadius;
+				break;
 			}
 		}
 	}
@@ -152,13 +154,13 @@ HRESULT C2DMapObjectInfo::Export(json& _OutputJson)
 
 ID3D11ShaderResourceView* C2DMapObjectInfo::Get_SRV(_float2* _pReturnSize)
 {
-	if (!m_isToolRendering || nullptr == m_pTexture)
+	if (!m_isToolRendering || nullptr == m_pPreviewSRV)
 		return nullptr;
 
 	if (nullptr != _pReturnSize)
-		*_pReturnSize = m_pTexture->Get_Size();
-	;
-	return m_pTexture->Get_SRV(0);
+		*_pReturnSize = m_fPreviewSize;
+	
+	return m_pPreviewSRV;
 }
 
 void C2DMapObjectInfo::Set_Model(C2DModel* _pModel)
@@ -167,24 +169,98 @@ void C2DMapObjectInfo::Set_Model(C2DModel* _pModel)
 	{
 		m_isModelCreate = true;
 		m_pModel = static_cast<C2DModel*>(_pModel);
-		
-		m_pTexture = _pModel->Get_Texture();
-		if (m_pTexture != nullptr)
-		{
-			const _wstring* pTextureName = m_pTexture->Get_SRVName(0);
-			if(nullptr != pTextureName)
-			m_strModelName = WstringToString(*pTextureName);
-			m_eModelType = _pModel->Get_AnimType();
+		m_eModelType = _pModel->Get_AnimType();
 
+		if (SUCCEEDED(Create_PreviewModel_Texutre()) && nullptr !=  m_pPreviewSRV)
+		{
 			m_isToolRendering = true;
 		}
 	}
 }
 
-
-C2DMapObjectInfo* C2DMapObjectInfo::Create(json _InfoJson)
+HRESULT C2DMapObjectInfo::Create_PreviewModel_Texutre()
 {
-	C2DMapObjectInfo* pInstance = new C2DMapObjectInfo();
+
+	if (nullptr == m_pModel)
+		return E_FAIL;
+
+
+	const CSpriteFrame* pTargetSprite = nullptr;
+
+	pTargetSprite = m_pModel->Get_SpriteFrame();
+
+
+
+	if (nullptr == pTargetSprite)
+		return E_FAIL;
+
+	_float2 fStartUV = pTargetSprite->Get_StartUV();
+	_float2 fEndUV = pTargetSprite->Get_EndUV();
+	CTexture* pTexture = pTargetSprite->Get_Texture();
+
+	if (nullptr == pTexture || 0 >= pTexture->Get_NumSRVs())
+		return E_FAIL;
+
+	ID3D11ShaderResourceView* pTargetSRV = pTexture->Get_SRV(0);
+
+
+	ID3D11Texture2D* pSrcTexture2D = nullptr;
+	ID3D11Resource* pResource = nullptr;
+
+	pTargetSRV->GetResource(&pResource);
+	if (nullptr == pResource)
+		return E_FAIL;
+
+	HRESULT hr = pResource->QueryInterface(__uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&pSrcTexture2D));
+
+	Safe_Release(pResource);
+
+	if (FAILED(hr) || nullptr == pSrcTexture2D)
+		return E_FAIL;
+
+	D3D11_TEXTURE2D_DESC srcDesc;
+	pSrcTexture2D->GetDesc(&srcDesc);
+
+	_uint iX = static_cast<_uint>(srcDesc.Width * fStartUV.x);
+	_uint iY = static_cast<_uint>(srcDesc.Height * fStartUV.y);
+	_uint iWidth = static_cast<_uint>((srcDesc.Width * fEndUV.x) - iX);
+	_uint iHeight = static_cast<_uint>((srcDesc.Height * fEndUV.y) - iY);
+
+	m_fPreviewSize = { (_float)iWidth,(_float)iHeight };
+
+	// 货肺款 咆胶贸 积己
+	D3D11_TEXTURE2D_DESC dstDesc = srcDesc;
+	dstDesc.Width = iWidth;
+	dstDesc.Height = iHeight;
+	dstDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	dstDesc.MiscFlags = 0;
+
+	ID3D11Texture2D* pDstTexture = nullptr;
+	m_pDevice->CreateTexture2D(&dstDesc, nullptr, &pDstTexture);
+
+	// 漂沥 康开父 汗荤
+	D3D11_BOX srcBox = { iX, iY, 0, iX + iWidth, iY + iHeight, 1 };
+	m_pContext->CopySubresourceRegion(pDstTexture, 0, 0, 0, 0, pSrcTexture2D, 0, &srcBox);
+
+	// 货肺款 SRV 积己
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Format = dstDesc.Format;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MostDetailedMip = 0;
+	srvDesc.Texture2D.MipLevels = -1;
+
+	m_pDevice->CreateShaderResourceView(pDstTexture, &srvDesc, &m_pPreviewSRV);
+
+	Safe_Release(pSrcTexture2D);
+	Safe_Release(pDstTexture);
+
+	return S_OK;
+}
+
+
+C2DMapObjectInfo* C2DMapObjectInfo::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json _InfoJson)
+{
+	C2DMapObjectInfo* pInstance = new C2DMapObjectInfo(_pDevice, _pContext);
 
 	if (FAILED(pInstance->Initialize(_InfoJson)))
 	{
@@ -195,15 +271,18 @@ C2DMapObjectInfo* C2DMapObjectInfo::Create(json _InfoJson)
 	return pInstance;
 }
 
-C2DMapObjectInfo* C2DMapObjectInfo::Create()
+C2DMapObjectInfo* C2DMapObjectInfo::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	C2DMapObjectInfo* pInstance = new C2DMapObjectInfo();
+	C2DMapObjectInfo* pInstance = new C2DMapObjectInfo(_pDevice, _pContext);
 
 	return pInstance;
 }
 
 void C2DMapObjectInfo::Free()
 {
+	Safe_Release(m_pPreviewSRV);
 	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pDevice);
+	Safe_Release(m_pContext);
 	__super::Free();
 }
