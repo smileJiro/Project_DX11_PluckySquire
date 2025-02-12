@@ -211,8 +211,6 @@ _bool CPhysx_EventCallBack::Erase_StayTrigger(_ulonglong _ID, map<_ulonglong, pa
 		return false;
 	iter = m_StayTrigger.erase(iter);
 
-	iter = m_StayTrigger.erase(iter);
-
 	if (nullptr != _pOutNextiter)
 		*_pOutNextiter = iter;
 
