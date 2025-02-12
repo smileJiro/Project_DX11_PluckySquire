@@ -43,6 +43,15 @@ HRESULT CFont_Manager::Render_Scaling_Font(const _wstring& _strFontTag, const _t
 	return pFont->Render_Scaling(_pText, _vPosition, _vColor, _fRotation, _vOrigin, _fScale);
 }
 
+_vector CFont_Manager::Measuring(const _wstring& _strFontTag, _wstring _text)
+{
+    CCustomFont* pFont = Find_Font(_strFontTag);
+
+    return pFont->Measuring(_text);
+}
+
+
+
 CCustomFont* CFont_Manager::Find_Font(const _wstring& _strFontTag)
 {
     auto	iter = m_Fonts.find(_strFontTag);

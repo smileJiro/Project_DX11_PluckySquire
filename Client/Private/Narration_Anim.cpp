@@ -59,7 +59,7 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pModelCom->Set_AnimationLoop(0, true);
+	//m_pModelCom->Set_AnimationLoop(0, true);
 	m_pModelCom->Set_Animation(0);
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_BACKGROUND);
 

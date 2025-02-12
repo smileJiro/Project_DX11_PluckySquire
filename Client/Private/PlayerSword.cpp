@@ -59,17 +59,18 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     ActorDesc.FreezePosition_XYZ[1] = true;
     ActorDesc.FreezePosition_XYZ[2] = false;
 
+
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC ShapeDesc = {};
-    ShapeDesc.fRadius = 1.f;
+    ShapeDesc.fRadius = 0.5;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData.isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixIdentity()); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.5f)); 
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas.push_back(ShapeData);
@@ -124,7 +125,10 @@ void CPlayerSword::Update(_float _fTimeDelta)
         if (m_fOutingForce < 0)
         {
             if (bOuting)
+            {
                 m_AttckedObjects.clear();
+                cout << "m_AttckedObjects clear Update" << endl;
+            }
             vDir = XMVector3Normalize(vTargetPos - vPosition);
         }
         if (COORDINATE_3D == eCoord)
@@ -200,8 +204,6 @@ void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other
 		{
             if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
             {
-                int a = 0;
-                cout << "Monstaer SwordEnter" << endl;
             }
 
         }
@@ -212,8 +214,11 @@ void CPlayerSword::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
     if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
     {
-        Attack(_Other.pActorUserData->pOwner);
-        cout << "Monstaer SwordStay" << endl;
+        if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
+        {
+            if(m_bAttackEnable)
+                Attack(_Other.pActorUserData->pOwner);
+        }
     }
 }
 
@@ -223,8 +228,6 @@ void CPlayerSword::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
     {
         if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
         {
-            int a = 0;
-            cout << "Monstaer SwordExit" << endl;
         }
     }
 }
@@ -316,6 +319,7 @@ void CPlayerSword::Set_State(SWORD_STATE _eNewState)
 void CPlayerSword::On_StateChange()
 {
     COORDINATE eCoord = Get_CurCoord();
+    cout << "SwrodState : " << m_eCurrentState << endl;
     switch (m_eCurrentState)
     {
     case Client::CPlayerSword::HANDLING:
@@ -392,8 +396,12 @@ void CPlayerSword::Attack(CGameObject* _pVictim)
 
 void CPlayerSword::Set_AttackEnable(_bool _bOn)
 {
+
 	if (false == _bOn)
+    {
+        cout << "m_AttckedObjects clear : "  << endl;
         m_AttckedObjects.clear();
+    }
     if (COORDINATE_3D == Get_CurCoord())
         m_pActorCom->Set_ShapeEnable(0, _bOn);
     else

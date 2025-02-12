@@ -141,6 +141,10 @@ public: /* For. Font_Manager s*/
 	HRESULT				Render_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation = 0.f, const _float2& _vOrigin = _float2(0.f, 0.f));
 	HRESULT				Render_Scaling_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation = 0.f, const _float2& _vOrigin = _float2(0.f, 0.f), _float _fScale = 1.f);
 
+	// TODO :: 테스트용도 박상욱
+	_vector	Measuring(const _wstring& _strFontTag, _wstring _text);
+
+
 public: /* For. Target_Manager */
 	HRESULT				Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut = nullptr);
 	HRESULT				Add_RenderTarget(const _wstring& _strTargetTag, CRenderTarget* _pRenderTarget);

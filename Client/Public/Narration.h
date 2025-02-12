@@ -1,20 +1,25 @@
 #pragma once
 #include "UI.h"
 
-BEGIN(Engine)
-class CShader;
-class CModel;
-class CVIBuffer_Collider;
-END
+//BEGIN(Engine)
+//class CShader;
+//class CModel;
+//class CVIBuffer_Collider;
+//END
 
 
 BEGIN(Client)
-
 class CNarration : public CUI
 {
 public:
+	struct TextTokens
+	{
+		_wstring    strText;
+		_float      fScale = { 1.f };
+        _float      fY = { 0.f };
+        _float      fX = { 0.f };
+	};
 
-public:
     struct NarrationAnimation
     {
         wstring strSectionid;       // 노출 시킬 섹션의 id
@@ -41,17 +46,13 @@ public:
     {
         wstring strSectionid;       // 노출 시킬 섹션의 id
         wstring strid;              // 다이얼로그 ID
-        LEVEL_ID eCurlevelId;
-        _int     LineCount;
+        LEVEL_ID eCurlevelId = { LEVEL_END };
+        _int     LineCount = { 0 };
         vector<NarrationDialogData> lines;
     };
 
 
-	//struct NarrationAnimDesc : public tagUIDesc
-	//{
-    //    NarrationData NarData;
-	//};
-    //
+
 
 
 public:
@@ -77,10 +78,14 @@ private:
     _tchar			    m_tDialogIndex[MAX_PATH] = {};
 
     NarrationData            m_NarrationData;
-    vector< NarrationData*>  m_NarrationDatas;
+    vector<NarrationData>  m_NarrationDatas;
+
+    _float                  m_fLineHeight = { 50.f };
+    _int                    m_RemainWord = { 0 };
 
 protected:
     virtual HRESULT Ready_Components() override;
+
 
 public:
     static CNarration* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -88,6 +93,9 @@ public:
     virtual void Free() override;
     HRESULT      Cleanup_DeadReferences() override;
 
-};
+private:
+    void PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken);
+    void DrawText(SpriteBatch* spriteBatch, SpriteFont* spriteFont, const _wstring& text, float fscale, float& fX, float fY);
 
+};
 END
