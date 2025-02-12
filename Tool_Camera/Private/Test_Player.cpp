@@ -83,7 +83,7 @@ HRESULT CTest_Player::Ready_PartObjects()
     BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
     BodyDesc.iRenderGroupID_3D = RG_3D;
-    BodyDesc.iPriorityID_3D = PR3D_NONBLEND;
+    BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])

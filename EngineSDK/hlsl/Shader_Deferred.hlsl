@@ -58,6 +58,8 @@ Texture2D g_BRDFTexture;
 Texture2D g_DirectLightsTexture;
 // Lighting 결과물 
 Texture2D g_LightingTexture;
+// Blur 대상 Texture2D
+Texture2D g_SrcBlurTarget;
 // etc
 Texture2D g_LightDepthTexture, g_FinalTexture;
 // Default Mtrl
@@ -80,9 +82,6 @@ static const float3 Fdielectric = 0.04f;
 //Texture2D g_EffectTexture, g_Effect_BrightnessTexture, g_Effect_Blur_XTeuxture, g_Effect_Blur_YTeuxture, g_Effect_DistortionTeuxture;
 
 // Blur 
-float g_dX = 0.0f;
-float g_dY = 0.0f;
-float g_fBloomWeight = 1.0f;
 float g_fWeights[13] =
 {
     0.0561, 0.1353, 0.278, 0.4868, 0.7261, 0.9231, 1.f, 0.9231, 0.7261, 0.4868, 0.278, 0.1353, 0.0561
@@ -523,6 +522,78 @@ PS_OUT PS_AFTER_PARTICLE(PS_IN In)
     return Out;
 }
 
+
+// Physics Blur DownSample
+PS_OUT PS_PBR_BLUR_DOWN(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float x = In.vTexcoord.x;
+    float y = In.vTexcoord.y;
+    
+    float dx = g_TexelSize.x;
+    float dy = g_TexelSize.y;
+    
+    float3 a = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - 2 * dx, y + 2 * dy)).rgb;
+    float3 b = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x, y + 2 * dy)).rgb;
+    float3 c = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + 2 * dx, y + 2 * dy)).rgb;
+
+    float3 d = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - 2 * dx, y)).rgb;
+    float3 e = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x, y)).rgb;
+    float3 f = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + 2 * dx, y)).rgb;
+
+    float3 g = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - 2 * dx, y - 2 * dy)).rgb;
+    float3 h = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x, y - 2 * dy)).rgb;
+    float3 i = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + 2 * dx, y - 2 * dy)).rgb;
+
+    float3 j = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - dx, y + dy)).rgb;
+    float3 k = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + dx, y + dy)).rgb;
+    float3 l = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - dx, y - dy)).rgb;
+    float3 m = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + dx, y - dy)).rgb;
+
+    float3 color = e * 0.125;
+    color += (a + c + g + i) * 0.03125;
+    color += (b + d + f + h) * 0.0625;
+    color += (j + k + l + m) * 0.125;
+    
+    Out.vColor = float4(color, 1.0f);
+
+    return Out;
+}
+// Physics Blur UpSample
+PS_OUT PS_PBR_BLUR_UP(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float x = In.vTexcoord.x;
+    float y = In.vTexcoord.y;
+    
+    float dx = g_TexelSize.x;
+    float dy = g_TexelSize.y;
+    
+    float3 a = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - dx, y + dy)).rgb;
+    float3 b = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x, y + dy)).rgb;
+    float3 c = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + dx, y + dy)).rgb;
+
+    float3 d = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - dx, y)).rgb;
+    float3 e = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x, y)).rgb;
+    float3 f = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + dx, y)).rgb;
+
+    float3 g = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x - dx, y - dy)).rgb;
+    float3 h = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x, y - dy)).rgb;
+    float3 i = g_SrcBlurTarget.Sample(LinearSampler_Clamp, float2(x + dx, y - dy)).rgb;
+
+    float3 color = e * 4.0;
+    color += (b + d + f + h) * 2.0;
+    color += (a + c + g + i);
+    color *= 1.0 / 16.0;
+
+    Out.vColor = float4(color, 1.0f);
+
+    return Out;
+}
+
+
 // Debug PixelShader 
 PS_OUT PS_MAIN_DEBUG(PS_IN In)
 {
@@ -532,6 +603,9 @@ PS_OUT PS_MAIN_DEBUG(PS_IN In)
 
     return Out;
 }
+
+
+
 
 technique11 DefaultTechnique
 {
@@ -655,5 +729,31 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_PBR_LIGHT_DIRECTIONAL();
+    }
+
+    pass PBR_BLUR_DOWN // 10
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_PBR_BLUR_DOWN();
+        ComputeShader = NULL;
+
+    }
+
+    pass PBR_BLUR_UP // 10
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_PBR_BLUR_UP();
+        ComputeShader = NULL;
+
     }
 }

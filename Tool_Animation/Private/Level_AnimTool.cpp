@@ -39,7 +39,6 @@ HRESULT CLevel_AnimTool::Initialize()
 
 void CLevel_AnimTool::Update(_float _fTimeDelta)
 {
-
 	ImGui::Begin("Animation Tool");
 	Update_ImportImgui();
 	Update_ExportImgui();

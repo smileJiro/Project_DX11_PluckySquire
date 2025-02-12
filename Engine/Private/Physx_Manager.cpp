@@ -99,6 +99,10 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 	//  -> m_fFixtedTimeStep을 수정하거나, 다음 프레임으로 물ㄹ ㅣ시뮬레이션을 미룸. 
 	//   -> 만약 다음 프레임으로 물리 시뮬을 미루면, 
 	//
+
+	if (nullptr != m_pPhysx_EventCallBack)
+		m_pPhysx_EventCallBack->Update();
+
 	m_fTimeAcc += _fTimeDelta;
 	if (m_fFixtedTimeStep <= m_fTimeAcc)
 	{
@@ -108,9 +112,6 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 		//fetch 끝났는지 확인
 		if (m_pPxScene->fetchResults(true))
 		{
-			if (nullptr != m_pPhysx_EventCallBack)
-				m_pPhysx_EventCallBack->Update();
-
 #ifdef _DEBUG
 			if (true == m_isDebugRender)
 			{

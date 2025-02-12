@@ -75,26 +75,16 @@ void CPhysx_EventCallBack::onTrigger(PxTriggerPair* pairs, PxU32 count)
 {
 	for (_uint i = 0; i < count; ++i)
 	{
-		if (pairs[i].flags & (PxTriggerPairFlag::eREMOVED_SHAPE_TRIGGER | PxTriggerPairFlag::eREMOVED_SHAPE_OTHER))
-			continue;
-
 		ACTOR_USERDATA* pTriggerActorUserData = static_cast<ACTOR_USERDATA*>(pairs[i].triggerActor->userData);
 		ACTOR_USERDATA* pOtherActorUserData = static_cast<ACTOR_USERDATA*>(pairs[i].otherActor->userData);
-		if (nullptr == pTriggerActorUserData || nullptr == pOtherActorUserData)
-			continue;
+
 
 		SHAPE_USERDATA* pTriggerShapeUserData = static_cast<SHAPE_USERDATA*>(pairs[i].triggerShape->userData);
 		SHAPE_USERDATA* pOtherShapeUserData = static_cast<SHAPE_USERDATA*>(pairs[i].otherShape->userData);
-		if (nullptr == pTriggerShapeUserData || nullptr == pOtherShapeUserData)
-			continue;
+
 
 		CActorObject* pTriggerOwner = pTriggerActorUserData->pOwner;
 		CActorObject* pOtherOwner = pOtherActorUserData->pOwner;
-		if (false == IsOwnerObjectValid(pTriggerOwner) || false == IsOwnerObjectValid(pOtherOwner))
-			continue;
-
-		if (false == pTriggerOwner->Get_ActorCom()->Is_Active() || false == pOtherOwner->Get_ActorCom()->Is_Active())
-			continue;
 
 		TRIGGER_ID ID = {};
 		ID.iLeft_ID = pTriggerShapeUserData->iShapeInstanceID;
@@ -108,7 +98,16 @@ void CPhysx_EventCallBack::onTrigger(PxTriggerPair* pairs, PxU32 count)
 		OtherCollInfo.pActorUserData = pOtherActorUserData;
 		OtherCollInfo.pShapeUserData = pOtherShapeUserData;
 
-		
+		if ((pairs[i].flags & (PxTriggerPairFlag::eREMOVED_SHAPE_TRIGGER | PxTriggerPairFlag::eREMOVED_SHAPE_OTHER))
+			|| false == pTriggerOwner->Get_ActorCom()->Is_Active() || false == pOtherOwner->Get_ActorCom()->Is_Active())
+		{
+			_bool isResult = Erase_StayTrigger(ID.ID);
+			if (true == isResult || PxPairFlag::eNOTIFY_TOUCH_LOST == pairs[i].status)
+				pTriggerOwner->OnTrigger_Exit(TriggerCollInfo, OtherCollInfo);
+			continue;
+
+		}
+
 		if (PxPairFlag::eNOTIFY_TOUCH_FOUND == pairs[i].status)
 		{
 			pTriggerOwner->OnTrigger_Enter(TriggerCollInfo, OtherCollInfo);
@@ -126,17 +125,40 @@ void CPhysx_EventCallBack::onTrigger(PxTriggerPair* pairs, PxU32 count)
 
 bool CPhysx_EventCallBack::IsOwnerObjectValid(CActorObject* pOwner)
 {
-	return pOwner != nullptr &&
-		pOwner->Is_Active() &&
-		!pOwner->Is_Dead();
+	if (pOwner == nullptr)
+		return false;
 
+	if (false == pOwner->Is_Active() || true == pOwner->Is_Dead())
+		return false;
+
+	return true;
+
+
+
+	//return pOwner != nullptr &&
+	//	pOwner->Is_Active() &&
+	//	!pOwner->Is_Dead();
 }
 void CPhysx_EventCallBack::Update()
 {
 	map<_ulonglong, pair<COLL_INFO, COLL_INFO>>::iterator iter;
 	
+
 	for (iter = m_StayTrigger.begin(); iter != m_StayTrigger.end();)
 	{
+		// Object DeadCheck
+
+		CActorObject* LeftObject = (*iter).second.first.pActorUserData->pOwner;
+		CActorObject* RightObject = (*iter).second.second.pActorUserData->pOwner;
+		if (false == IsOwnerObjectValid(LeftObject) || false == IsOwnerObjectValid(LeftObject))
+		{
+			iter = m_StayTrigger.erase(iter);
+			if (iter == m_StayTrigger.end())
+				break;
+			else 
+				continue;
+		}
+
 		_bool isEmpty = false;
 		if (nullptr == iter->second.first.pActorUserData || nullptr == iter->second.second.pActorUserData)
 		{
@@ -182,17 +204,20 @@ void CPhysx_EventCallBack::Add_StayTrigger(_ulonglong _ID, const COLL_INFO& _Tri
 
 	m_StayTrigger.emplace(_ID, make_pair(_TriggerInfo, _OtherInfo));
 }
-void CPhysx_EventCallBack::Erase_StayTrigger(_ulonglong _ID, map<_ulonglong, pair<COLL_INFO, COLL_INFO>>::iterator* _pOutNextiter, _bool* _isEmpty)
+_bool CPhysx_EventCallBack::Erase_StayTrigger(_ulonglong _ID, map<_ulonglong, pair<COLL_INFO, COLL_INFO>>::iterator* _pOutNextiter, _bool* _isEmpty)
 {
 	auto& iter = m_StayTrigger.find(_ID);
 	if (iter == m_StayTrigger.end())
-		return;
+		return false;
+	iter = m_StayTrigger.erase(iter);
 
 	if (nullptr != _pOutNextiter)
-		*_pOutNextiter = m_StayTrigger.erase(iter);
+		*_pOutNextiter = iter;
 
 	if (nullptr != _isEmpty)
 		*_isEmpty = m_StayTrigger.empty();
+
+	return true;
 
 }
 void CPhysx_EventCallBack::onConstraintBreak(PxConstraintInfo* constraints, PxU32 count)

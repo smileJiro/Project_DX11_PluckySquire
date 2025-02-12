@@ -24,6 +24,7 @@ public: /* 2D는 제한해야하는 Transform의 공통 함수. */
 	virtual void			RotationXYZ(const _float3& _vRadianXYZ) override		{ RotationZ(_vRadianXYZ.z); }
 	virtual void			RotationQuaternion(const _float3& _vRadianXYZ) override { RotationZ(_vRadianXYZ.z); }
 
+	void			LookDir(_fvector _vDir) ;
 
 private:
 	_float2 m_vPosition = {};

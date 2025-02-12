@@ -145,6 +145,8 @@ HRESULT CController_Transform::Bind_ShaderResource(CShader* pShader, const _char
  	return m_pTransforms[m_eCurCoord]->Bind_ShaderResource(pShader, pConstantName);
 }
 
+
+
 void CController_Transform::LookAt_3D(_fvector _vAt)
 {
 	if (COORDINATE_2D == m_eCurCoord)

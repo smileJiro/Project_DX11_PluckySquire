@@ -817,7 +817,9 @@ void CActor::Free()
 		delete m_pActor->userData;
 		m_pActor->userData = nullptr;
 		m_pOwner = nullptr;
+		m_pGameInstance->Get_Physx_Scene()->removeActor(*m_pActor);
 		m_pActor->release();
+		m_pActor = nullptr;
 	}
 	else
 	{

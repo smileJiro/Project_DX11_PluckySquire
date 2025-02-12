@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Bulb.h"
+#include "ModelObject.h"
 
 CBulbLine::CBulbLine(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -66,7 +67,7 @@ void CBulbLine::Add_Point(CModelObject* _pPoint)
     }
 }
 
-void CBulbLine::Create_Bulbs()
+void CBulbLine::Edit_BulbInfo()
 {
     _vector vFirstPos = m_Line.first->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
     _vector vSecondPos = m_Line.second->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
@@ -75,17 +76,90 @@ void CBulbLine::Create_Bulbs()
     _float fLength = XMVectorGetX(XMVector3Length(vDir));
     vDir = XMVector3Normalize(vDir);
 
-    _uint iBulbCount = (_uint)(fLength / m_fBulbPosOffset);
+    _uint iBulbCount = (_uint)(fLength / m_fBulbPosOffset) + 1;
+    _int iCreateCount = iBulbCount - (_int)m_Bulbs.size();
+
+    _uint iRePlaceCount = {};
+
+    for (auto& Bulb : m_Bulbs) {
+        _vector vCreatePos = vFirstPos + (vDir * m_fBulbPosOffset * iRePlaceCount);
+        //_vector vvv = Bulb->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+        Bulb->Get_ActorCom()->Set_GlobalPose({ XMVectorGetX(vCreatePos), XMVectorGetY(vCreatePos), XMVectorGetZ(vCreatePos) });
+        //Bulb->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCreatePos, 1.f));
+
+        iRePlaceCount++;
+    }
+
+    if (iCreateCount > 0) {
+        for (_uint i = 0; i < iCreateCount; ++i) {
+            _vector vCreatePos = vFirstPos + (vDir * m_fBulbPosOffset * iRePlaceCount);
+
+            // Create
+            CGameObject* pBulb;
+            CBulb::BULB_DESC Desc = {};
+            Desc.eStartCoord = COORDINATE_3D;
+            XMStoreFloat3(&Desc.tTransform3DDesc.vInitialPosition, vCreatePos);
+
+            m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bulb"),
+                LEVEL_TRIGGER_TOOL, TEXT("Layer_Bulb"), &pBulb, &Desc);
+
+            m_Bulbs.push_back(dynamic_cast<CBulb*>(pBulb));
+
+            Safe_AddRef(pBulb);
+
+            iRePlaceCount++;
+        }
+    }
+    else if (iCreateCount < 0) {
+        for (_uint i = 0; i < (iCreateCount * -1); ++i) {
+            Safe_Release(m_Bulbs.back());
+            Event_DeleteObject(m_Bulbs.back());
+            m_Bulbs.pop_back();
+        }
+    }
+}
+
+void CBulbLine::Clear()
+{
+    Event_DeleteObject(m_Line.first);
+    Event_DeleteObject(m_Line.second);
+
+    for (auto& Bulb : m_Bulbs) {
+        Event_DeleteObject(Bulb);
+    }
+}
+
+HRESULT CBulbLine::Create_Bulbs()
+{
+    _vector vFirstPos = m_Line.first->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+    _vector vSecondPos = m_Line.second->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+    _vector vDir = vSecondPos - vFirstPos;
+
+    _float fLength = XMVectorGetX(XMVector3Length(vDir));
+    vDir = XMVector3Normalize(vDir);
+
+    _uint iBulbCount = (_uint)(fLength / m_fBulbPosOffset) + 1;
 
     for (_uint i = 0; i < iBulbCount; ++i) {
         _vector vCreatePos = vFirstPos + (vDir * m_fBulbPosOffset * i);
 
        // Create
-    }
-}
+        CGameObject* pBulb;
+        CBulb::BULB_DESC Desc = {};
+        Desc.eStartCoord = COORDINATE_3D;
+        XMStoreFloat3(&Desc.tTransform3DDesc.vInitialPosition, vCreatePos);
 
-void CBulbLine::Create_Bulb()
-{
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bulb"),
+            LEVEL_TRIGGER_TOOL, TEXT("Layer_Bulb"), &pBulb, &Desc))) {
+            return E_FAIL;
+        }
+
+        m_Bulbs.push_back(dynamic_cast<CBulb*>(pBulb));
+        
+        Safe_AddRef(pBulb);
+    }
+
+    return S_OK;
 }
 
 CBulbLine* CBulbLine::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* pArg)

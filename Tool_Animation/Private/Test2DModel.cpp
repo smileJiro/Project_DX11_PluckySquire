@@ -32,14 +32,6 @@ HRESULT CTest2DModel::Initialize_Prototype_FromJsonFile(const _char* _szRawDataD
 				return E_FAIL;
 			}
 		}
-		//else if (".png"  == entry.path().extension() || ".dds" ==entry.path().extension() )
-		//{
-
-		//	if(FAILED(Read_TextureFIle( entry.path())))
-		//	{
-		//		return E_FAIL;
-		//	}
-		//}
 		else
 		{
 			continue;

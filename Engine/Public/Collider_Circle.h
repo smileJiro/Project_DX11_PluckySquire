@@ -2,7 +2,7 @@
 #include "Collider.h"
 BEGIN(Engine)
 class CCollider_AABB;
-class ENGINE_DLL CCollider_Circle final : public CCollider
+class ENGINE_DLL CCollider_Circle : public CCollider
 {
 public:
 	typedef struct tagColliderCircleDesc : public CCollider::COLLIDER_DESC
@@ -10,7 +10,7 @@ public:
 		_float fRadius = 0.5f;
 
 	}COLLIDER_CIRCLE_DESC;
-private:
+protected:
 	CCollider_Circle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CCollider_Circle(const CCollider_Circle& _Prototype);
 	virtual ~CCollider_Circle() = default;
@@ -35,7 +35,7 @@ private:
 
 public:
 	_float						Get_FinalRadius() const { return m_fFinalRadius; }
-
+	void							Set_Radius(_float _fRadius) { m_fRadius = _fRadius; }
 private:
 	_float						m_fRadius = 0.0f;
 	_float						m_fFinalRadius = 0.0f;
