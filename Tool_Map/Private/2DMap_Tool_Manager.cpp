@@ -57,8 +57,18 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	if (nullptr == m_pTaskManager)
 		return E_FAIL;
 
-	m_arrSelectName[SAVE_LIST] = L"Room_Enviroment";
-	Load_3D_Map(false);
+	//m_arrSelectName[SAVE_LIST] = L"Room_Enviroment";
+	//Load_3D_Map(false);
+
+	CModelObject::MODELOBJECT_DESC NormalDesc = {};
+	NormalDesc.Build_3D_Model(LEVEL_TOOL_2D_MAP,
+		L"SM_desk_split_topboard_02",
+		L"Prototype_Component_Shader_VtxMesh"
+		);
+	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
+		LEVEL_TOOL_2D_MAP,
+		L"Layer_MapObject",
+		(void*)&NormalDesc);
 
 
 	m_Egnore2DObjectrTags.push_back("InvisibleCollision");
@@ -384,15 +394,15 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 				{
 					int a = 1;
 				}
-				else 
+				else
 				{
 					m_pPickingObject = static_cast<C2DMapObject*>(pGameObject);
 					m_pPickingObject->Set_DefaultPosition(fPosition);
 					static_cast<C2DMapObject*>(m_pPickingObject)->Set_OffsetPos(m_fOffsetPos);
 				}
-			
+
 			}
-		
+
 		}
 		ImGui::Text("Model SearchKey : %s", WstringToString(strKey).c_str());
 		ImGui::Text("Model Name : %s", WstringToString(strModelName).c_str());
@@ -412,7 +422,7 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		}
 		ImGui::SameLine();
 		ImGui::Text("Position");
-		
+
 
 	}
 
@@ -494,7 +504,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 				else
 					++iter;
 			}
-			C2DMapObjectInfo* pInfo = C2DMapObjectInfo::Create();
+			C2DMapObjectInfo* pInfo = C2DMapObjectInfo::Create(m_pDevice, m_pContext);
 			pInfo->Set_SearchTag(strNumberingNewTag);
 			m_ObjectInfoLists.push_back(pInfo);
 			m_pPickingInfo = pInfo;
@@ -551,6 +561,32 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 
 			ImGui::EndPopup();
 
+		}
+		End_Draw_ColorButton();
+		Begin_Draw_ColorButton("##InportPathButtonStyle", (ImVec4)ImColor::HSV(0.6f, 1.f, 0.6f));
+
+		if (StyleButton(MINI,"Import .model2d folder"))
+		{
+			_wstring strSelectedPath = OpenDirectoryDialog(); // 폴더 다이얼로그 호출
+			if (false == strSelectedPath.empty())
+			{
+				for (const auto& entry : std::filesystem::recursive_directory_iterator(strSelectedPath))
+				{
+					if (".model2d" != entry.path().extension())
+						continue;
+
+
+					C2DMapObjectInfo* pInfo = C2DMapObjectInfo::Create(m_pDevice, m_pContext);
+					
+					if (FAILED(SetUp_Info_to_Model(pInfo, entry.path())))
+					{
+						MSG_BOX("model2d folder import faile - StyleButton(MINI,Import.model2d folder)");
+					}
+					else
+						m_ObjectInfoLists.push_back(pInfo);
+					
+				}
+			}
 		}
 		End_Draw_ColorButton();
 
@@ -661,34 +697,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 
 						if (GetOpenFileName(&ofn))
 						{
-							const string strFileName = WstringToString(Get_FileName_From_Path(szName).first);
-							const string strPath = WstringToString(szName);
-							CBase* pProtoModel = m_pGameInstance->Find_Prototype(LEVEL_TOOL_2D_MAP, StringToWstring(strFileName));
-							if (pProtoModel == nullptr)
-							{
-								CModel* pModel = C2DModel::Create(m_pDevice, m_pContext, strPath.c_str());
-
-								if (nullptr == pModel)
-								{
-									MSG_BOX("2D Model Create Failed");
-								}
-								else
-								{
-									m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, StringToWstring(strFileName.c_str()), pModel);
-									C2DModel* p2DModel = static_cast<C2DModel*>(pModel);
-									m_pPickingInfo->Set_Model(p2DModel);
-									m_pPickingInfo->Set_ModelName(strFileName.c_str());
-									m_pPickingInfo->Set_SearchTag(m_pPickingInfo->Get_ModelName());
-								}
-							}
-							else
-							{
-								m_pPickingInfo->Set_Model((C2DModel*)pProtoModel);
-								m_pPickingInfo->Set_ModelName(strFileName.c_str());
-								m_pPickingInfo->Set_SearchTag(m_pPickingInfo->Get_ModelName());
-
-							}
-
+							SetUp_Info_to_Model(m_pPickingInfo,szName);
 						}
 					}
 					ImGui::SameLine();
@@ -1795,7 +1804,7 @@ HRESULT C2DMap_Tool_Manager::Update_Model_Index()
 HRESULT C2DMap_Tool_Manager::Change_RenderGroup(_float2 _fRenderTargetSize)
 {
 
-	if(nullptr != m_p2DRenderGroup)
+	if (nullptr != m_p2DRenderGroup)
 		Clear_RenderGroup();
 
 	/* Target Book2D */
@@ -1858,11 +1867,46 @@ HRESULT C2DMap_Tool_Manager::Clear_RenderGroup()
 	return S_OK;
 }
 
+HRESULT C2DMap_Tool_Manager::SetUp_Info_to_Model(C2DMapObjectInfo* _pModelInfo, const _wstring& _strModelPath)
+{
+
+	const string strFileName = WstringToString(Get_FileName_From_Path(_strModelPath).first);
+	const string strPath = WstringToString(_strModelPath);
+	CBase* pProtoModel = m_pGameInstance->Find_Prototype(LEVEL_TOOL_2D_MAP, StringToWstring(strFileName));
+	if (pProtoModel == nullptr)
+	{
+		CModel* pModel = C2DModel::Create(m_pDevice, m_pContext, strPath.c_str());
+
+		if (nullptr == pModel)
+		{
+			MSG_BOX("2D Model Create Failed");
+		}
+		else
+		{
+			m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, StringToWstring(strFileName.c_str()), pModel);
+			C2DModel* p2DModel = static_cast<C2DModel*>(pModel);
+			_pModelInfo->Set_Model(p2DModel);
+			_pModelInfo->Set_ModelName(strFileName.c_str());
+			_pModelInfo->Set_SearchTag(_pModelInfo->Get_ModelName());
+		}
+	}
+	else
+	{
+		_pModelInfo->Set_Model((C2DModel*)pProtoModel);
+		_pModelInfo->Set_ModelName(strFileName.c_str());
+		_pModelInfo->Set_SearchTag(_pModelInfo->Get_ModelName());
+
+	}
+
+
+	return S_OK;
+}
+
 _bool C2DMap_Tool_Manager::Check_Import_Egnore_2DObject(const _string& _strTag)
 {
 	auto iter = find_if(m_Egnore2DObjectrTags.begin(), m_Egnore2DObjectrTags.end(), [&_strTag]
 	(const _string& strEgnoreObjectTag)->_bool {
-			return ContainString(_strTag,strEgnoreObjectTag);
+			return ContainString(_strTag, strEgnoreObjectTag);
 		});
 	return iter != m_Egnore2DObjectrTags.end();
 }
@@ -1881,7 +1925,7 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 	_string strTileMapName = "";
 
 	_bool	isBook = true;
-	_float2 fLevelSizePixels = {-1.f, -1.f};
+	_float2 fLevelSizePixels = { -1.f, -1.f };
 	_float2 fRenderResolution = { -1.f, -1.f };
 
 
@@ -2047,7 +2091,7 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 	if (m_p2DRenderGroup != nullptr)
 	{
 		_float2 fLgcRenderTargetSize = m_p2DRenderGroup->Get_RenderTarget_Size();
-	
+
 		if ((_int)round(fRenderResolution.x) != (_int)round(fLgcRenderTargetSize.x)
 			||
 			(_int)round(fRenderResolution.y) != (_int)round(fLgcRenderTargetSize.y))
@@ -2356,7 +2400,7 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 	{
 
 		C2DMapObject* pObject = C2DMapObject::Create(m_pDevice, m_pContext, hFile, m_ObjectInfoLists, fSize);
-		
+
 		if (nullptr != pObject)
 		{
 			Event_CreateObject(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject", pObject);
@@ -2454,7 +2498,7 @@ void C2DMap_Tool_Manager::Save_Trigger()
 			Trigger_json["Trigger_ConditionType"] = tCurEvent.uTriggerCondition;
 			Trigger_json["Fillter_MyGroup"] = 2;
 			Trigger_json["Fillter_OtherGroupMask"] = 128;
-			Collider_Json["Position"] = { XMVectorGetX(vPosition), XMVectorGetY(vPosition)};
+			Collider_Json["Position"] = { XMVectorGetX(vPosition), XMVectorGetY(vPosition) };
 			Collider_Json["Scale"] = { fScale.x, fScale.y };
 
 			//auto& Collider_Json = Trigger_json["Event_Param_Info"];
@@ -2503,7 +2547,7 @@ void C2DMap_Tool_Manager::Load_2DModelList()
 		{
 			if (ChildJson.is_object())
 			{
-				C2DMapObjectInfo* pInfo = C2DMapObjectInfo::Create(ChildJson);
+				C2DMapObjectInfo* pInfo = C2DMapObjectInfo::Create(m_pDevice, m_pContext, ChildJson);
 
 				m_ObjectInfoLists.push_back(pInfo);
 				pInfo->Set_ModelIndex(iIndex);

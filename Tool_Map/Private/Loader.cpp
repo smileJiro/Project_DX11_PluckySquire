@@ -296,9 +296,13 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
-    if (FAILED(Load_Models_FromJson(LEVEL_TOOL_2D_MAP, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
+    //if (FAILED(Load_Models_FromJson(LEVEL_TOOL_2D_MAP, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
+    //    return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("SM_desk_split_topboard_02"),
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/SM_desk_split_topboard_02/SM_desk_split_topboard_02.model", matPretransform))))
         return E_FAIL;
-    
+
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_2D_MAP,  L"../../Client/Bin/Resources/Models/3DMapObject/", matPretransform)))
         return E_FAIL;
     
@@ -535,6 +539,8 @@ HRESULT CLoader::Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath)
         string str = m_pGameInstance->WStringToString(wstr);
 
         //string str{ wstr.begin(), wstr.end() };
+
+        LOG_TYPE("2DModel Loading(" + str + ".2Dmodel)...", LOG_LOADING);
 
         wstring filename = wstring(FindFileData.cFileName);
         size_t lastDot = filename.find_last_of('.');

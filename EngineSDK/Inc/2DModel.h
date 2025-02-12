@@ -36,7 +36,7 @@ public:
 
 
 #ifdef _DEBUG
-    CSpriteFrame* Get_SpriteFrame() { return m_pNonAnimSprite; };
+    const CSpriteFrame* Get_SpriteFrame();
     CTexture* Get_Texture() {
         if (m_Textures.empty())
             return nullptr;

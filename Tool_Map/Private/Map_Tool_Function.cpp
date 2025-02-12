@@ -3,6 +3,7 @@
 #include "Event_Manager.h"
 #include "GameObject.h"
 #include <commdlg.h>
+#include <ShObjIdl.h>
 
 /* 함수 구현부 */
 namespace Map_Tool
@@ -207,13 +208,59 @@ namespace Map_Tool
 
 		if (GetOpenFileName(&ofn))
 		{
-			//SetCurrentDirectory(originalDir);
+			SetCurrentDirectory(originalDir);
 			_strReturnDirectory = szName;
 			return true;
 		}
 
 		return false;
 	}
+
+	std::wstring OpenDirectoryDialog()
+	{
+
+		CoInitialize(NULL);
+
+		IFileDialog* pfd = NULL;
+		HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd));
+
+		if (SUCCEEDED(hr)) {
+			// 폴더 선택 모드 활성화
+			DWORD dwOptions;
+			pfd->GetOptions(&dwOptions);
+			pfd->SetOptions(dwOptions | FOS_PICKFOLDERS); // 디렉토리 선택 모드
+
+			// 다이얼로그 표시
+			hr = pfd->Show(NULL);
+			if (SUCCEEDED(hr)) {
+				IShellItem* psiResult;
+				hr = pfd->GetResult(&psiResult);
+
+				if (SUCCEEDED(hr)) {
+					// 디렉토리 경로 가져오기
+					PWSTR pszFilePath = NULL;
+					psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
+
+					// 경로를 std::string으로 변환
+					std::wstring ws(pszFilePath);
+
+
+					// 메모리 해제
+					CoTaskMemFree(pszFilePath);
+					psiResult->Release();
+					pfd->Release();
+					CoUninitialize();
+
+					return pszFilePath; // 선택한 디렉토리 경로 반환
+				}
+			}
+			pfd->Release();
+		}
+
+		CoUninitialize();
+		return TEXT(""); // 취소 시 빈 문자열 반환
+	}
+
 
 }
 
