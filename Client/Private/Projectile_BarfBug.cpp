@@ -138,7 +138,12 @@ void CProjectile_BarfBug::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
             Event_Hit(this, _Other.pActorUserData->pOwner, 1.f);
             cout << "Projectile hit" << endl;
         }
+
+        Event_DeleteObject(this);
     }
+
+    //if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+    //    Event_DeleteObject(this);
 }
 
 void CProjectile_BarfBug::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -151,12 +156,16 @@ void CProjectile_BarfBug::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& 
 
 void CProjectile_BarfBug::Active_OnEnable()
 {
+    __super::Active_OnEnable();
+
 }
 
 void CProjectile_BarfBug::Active_OnDisable()
 {
     m_pControllerTransform->Set_WorldMatrix(XMMatrixIdentity());
     m_fAccTime = 0.f;
+
+    __super::Active_OnDisable();
 }
 
 HRESULT CProjectile_BarfBug::Ready_ActorDesc(void* _pArg)
@@ -196,7 +205,7 @@ HRESULT CProjectile_BarfBug::Ready_ActorDesc(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER_PROJECTILE;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;
