@@ -148,7 +148,6 @@ HRESULT CGraphic_Device::Ready_SwapChain(HWND _hWnd, _bool _isWindowed, _uint _i
 	SwapChain.OutputWindow = _hWnd;
 	SwapChain.Windowed = _isWindowed;
 	SwapChain.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-	SwapChain.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 	if (FAILED(pFactory->CreateSwapChain(m_pDevice, &SwapChain, &m_pSwapChain)))
 		return E_FAIL;
 

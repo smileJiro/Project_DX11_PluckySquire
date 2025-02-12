@@ -1,11 +1,11 @@
 #pragma once
-#include "State.h"
+#include "State_Sneak.h"
 
 BEGIN(Client)
 
 
 //공격 범위가 추적 범위보다 작고 이동값이 일정한 추적 상태
-class CSneak_ChaseState final : public CState
+class CSneak_ChaseState final : public CState_Sneak
 {
 private:
 	CSneak_ChaseState();

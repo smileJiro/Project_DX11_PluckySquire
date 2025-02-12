@@ -5,26 +5,24 @@
 /* PS ConstBuffer */ 
 cbuffer BasicPixelConstData : register(b0)
 {
-    Material_PS Material; // 32
+    Material_PS Material;       // 32
     
     int useAlbedoMap;
     int useNormalMap;
     int useAOMap;
-    int useMetallicMap; // 16
+    int useMetallicMap;         // 16
     
     int useRoughnessMap;
     int useEmissiveMap;
     int useORMHMap;
-    int invertNormalMapY; // 16
+    int invertNormalMapY;       // 16
 }
 
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 /* Bone Matrix */
 float4x4 g_BoneMatrices[256];
-Texture2D g_DiffuseTexture;
-Texture2D g_NormalTexture;
-Texture2D g_ORMHTexture;
+Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture; // PBR
 
 float g_fFarZ = 1000.f;
 int g_iFlag = 0;
@@ -88,7 +86,7 @@ VS_OUT VS_MAIN(VS_IN In)
 
 VS_OUT VS_MAIN_RENDERTARGET_UV(VS_IN In)
 {
-    VS_OUT Out = (VS_OUT) 0;
+    VS_OUT Out = (VS_OUT)0;
     matrix matWV, matWVP;
     matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matWVP = mul(matWV, g_ProjMatrix);
@@ -167,7 +165,8 @@ struct PS_OUT
 {
     float4 vDiffuse : SV_TARGET0;
     float4 vNormal : SV_TARGET1;
-    float4 vDepth : SV_TARGET2;
+    float4 vORMH : SV_TARGET2;
+    float4 vDepth : SV_TARGET3;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -176,15 +175,26 @@ PS_OUT PS_MAIN(PS_IN In)
 
     // 조명에 대한 방향벡터를 뒤집은 후, 노말벡터와의 내적을 통해,
     // shade 값을 구한다. 여기에 Ambient color 역시 더한다. 
-    vector vMtrlDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
-            
-    if (vMtrlDiffuse.a < 0.1f)
-        discard;
+    float3 vAlbedo = useAlbedoMap ? g_AlbedoTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f).rgb : Material.Albedo;
+    float3 vNormal = useNormalMap ? Get_WorldNormal(g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz, In.vNormal.xyz, In.vTangent.xyz, 0) : In.vNormal.xyz;
+    float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
     
-    Out.vDiffuse = vMtrlDiffuse;
-    Out.vNormal = float4(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
-    float fFlag = g_iFlag;
-    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, fFlag);
+    if (false == useORMHMap)
+    {
+        vORMH.r = useAOMap ? g_AOTexture.Sample(LinearSampler, In.vTexcoord).r : Material.AO;
+        vORMH.g = useRoughnessMap ? g_RoughnessTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Roughness;
+        vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
+    }
+
+    
+    Out.vDiffuse = float4(vAlbedo, 1.0f);
+    // 1,0,0
+    // 1, 0.5, 0.5 (양의 x 축)
+    // 0, 0.5, 0.5 (음의 x 축)
+    Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
+    Out.vORMH = vORMH;
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 1.0f);
+
     return Out;
 }
 
@@ -198,7 +208,7 @@ PS_OUT_LIGHTDEPTH PS_MAIN_LIGHTDEPTH(PS_IN In)
 {
     PS_OUT_LIGHTDEPTH Out = (PS_OUT_LIGHTDEPTH) 0;
     
-    float4 vMtrlDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
+    float4 vMtrlDiffuse = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord);
     
     if (vMtrlDiffuse.a < 0.01f)
         discard;

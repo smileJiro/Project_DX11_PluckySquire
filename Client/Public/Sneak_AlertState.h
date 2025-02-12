@@ -1,11 +1,11 @@
 #pragma once
-#include "State.h"
+#include "State_Sneak.h"
 
 BEGIN(Client)
 
 
 //플레이어가 시야 내에 들어와서 인식 (애니메이션 재생)
-class CSneak_AlertState final : public CState
+class CSneak_AlertState final : public CState_Sneak
 {
 private:
 	CSneak_AlertState();

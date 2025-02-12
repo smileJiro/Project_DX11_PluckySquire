@@ -51,29 +51,50 @@ namespace Camera_Tool
 
 		LAST
 	};
-
 		enum RENDERGROUP
 		{
 			RG_2D = 1000,
 			RG_3D = 2000,
 
+
+			RG_WORLDPOSMAP = 9000,
 			RG_LAST,
 		};
 
 		enum PRIORITY_3D
 		{
-			PR3D_BOOK2D = 0,
 			PR3D_PRIORITY = 10,
 			PR3D_SHADOW = 20,
-			PR3D_NONBLEND = 30,
-			PR3D_LIGHTS = 40,
-			PR3D_FINAL = 50,
-			PR3D_BLEND = 60,
-			PR3D_EFFECT = 70,
-			PR3D_AFTEREFFECT = 80,
-			PR3D_UI = 90,
+			PR3D_GEOMETRY = 30,
+			PR3D_DIRECTLIGHTS = 40,
+			PR3D_LIGHTNG = 50, // >>> ¸®Á¹ºù
+			PR3D_BLOOM = 52, // PostProcessing
+			PR3D_SSAO = 54, // PostProcessing
+			PR3D_COMBINE = 60, // ToneMapping
+			PR3D_BLEND = 70,
+			PR3D_EFFECT = 80,
+			PR3D_PARTICLE = 90,
+			PR3D_AFTERPARTICLE = 100,
+			PR3D_BLURDOWN = 110,
+			PR3D_BLUR = 120,
+			PR3D_AFTEREFFECT = 130,
+			PR3D_UI = 140,
 
 			PR3D_LAST = 999
+		};
+
+		enum TRIGGER_TYPE
+		{
+			EVENT_TRIGGER,
+			ARM_TRIGGER,
+			CUTSCENE_TRIGGER,
+			FREEZE_X_TRIGGER,
+			FREEZE_Z_TRIGGER,
+			TELEPORT_TRIGGER,
+			SECTION_CHANGE_TRIGGER,
+			DEFAULT_TRIGGER,
+
+			TRIGGER_TYPE_END
 		};
 
 #define MAP_2D_DEFAULT_PATH L"../../Client/Bin/MapSaveFiles/2D/"

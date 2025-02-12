@@ -1,9 +1,9 @@
 #pragma once
-#include "State.h"
+#include "State_Sneak.h"
 
 BEGIN(Client)
 
-class CSneak_IdleState final : public CState
+class CSneak_IdleState final : public CState_Sneak
 {
 private:
 	CSneak_IdleState();

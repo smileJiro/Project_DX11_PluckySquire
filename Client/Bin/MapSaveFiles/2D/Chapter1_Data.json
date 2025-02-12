@@ -61,5 +61,65 @@
 				"Y": 6660.0
 			}
 		}
+	},
+	{
+		"Section_Name": "Chapter2_SKSP_02",
+		"Section_File_Name": "Chapter2_SKSP_02.m2chc",
+		"Section_Type": 2,
+		"Section_Info": {
+			"RenderResolution": {
+				"X": 768.0,
+				"Y": 2048.0
+			},
+			"LevelSizePixels": {
+				"X": 1152.0,
+				"Y": 3072.0
+			}
+		}
+	},
+	{
+		"Section_Name": "Chapter2_SKSP_03",
+		"Section_File_Name": "Chapter2_SKSP_03.m2chc",
+		"Section_Type": 2,
+		"Section_Info": {
+			"RenderResolution": {
+				"X": 768.0,
+				"Y": 2048.0
+			},
+			"LevelSizePixels": {
+				"X": 1152.0,
+				"Y": 3072.0
+			}
+		}
+	},
+	{
+		"Section_Name": "Chapter2_SKSP_04",
+		"Section_File_Name": "Chapter2_SKSP_04.m2chc",
+		"Section_Type": 2,
+		"Section_Info": {
+			"RenderResolution": {
+				"X": 2800.0,
+				"Y": 768.0
+			},
+			"LevelSizePixels": {
+				"X": 4200.0,
+				"Y": 1152.0
+			}
+		}
+	},
+	{
+		"Section_Name": "Chapter2_SKSP_05",
+		"Section_File_Name": "Chapter2_SKSP_05.m2chc",
+		"Section_Type": 2,
+		"Section_Info": {
+			"RenderResolution": {
+				"X": 5832.0,
+				"Y": 768.0
+			},
+			"LevelSizePixels": {
+				"X": 5832.0,
+				"Y": 768.0
+			}
+		}
 	}
 ]

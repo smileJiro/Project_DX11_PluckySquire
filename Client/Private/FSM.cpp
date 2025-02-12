@@ -66,6 +66,7 @@ HRESULT CFSM::Initialize(void* _pArg)
 	m_fCoolTime = pDesc->fCoolTime;
 	m_pOwner = pDesc->pOwner;
 	m_iCurLevel = pDesc->iCurLevel;
+	m_eWayIndex = pDesc->eWayIndex;
 
 	return S_OK;
 }
@@ -202,8 +203,8 @@ HRESULT CFSM::Add_SneakState()
 	if (nullptr == m_pOwner)
 		return E_FAIL;
 
-	CState* pState = nullptr;
-	CState::STATEDESC Desc;
+	CState_Sneak* pState = nullptr;
+	CState_Sneak::SNEAKSTATEDESC Desc;
 	Desc.fAlertRange = m_fAlertRange;
 	Desc.fChaseRange = m_fChaseRange;
 	Desc.fAttackRange = m_fAttackRange;
@@ -211,6 +212,7 @@ HRESULT CFSM::Add_SneakState()
 	Desc.fChase2DRange = m_fChase2DRange;
 	Desc.fAttack2DRange = m_fAttack2DRange;
 	Desc.iCurLevel = m_iCurLevel;
+	Desc.eWayIndex = m_eWayIndex;
 	
 	pState = CSneak_IdleState::Create(&Desc);
 	if (nullptr == pState)
