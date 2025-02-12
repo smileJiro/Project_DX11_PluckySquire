@@ -21,6 +21,7 @@
 #include "Collision_Manager.h"    
 #include "Collider_Fan.h"
 #include "Interactable.h"
+#include "CarriableObject.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -40,31 +41,31 @@ HRESULT CPlayer::Initialize_Prototype()
 {
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadius = 93.f;
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadianAngle = XMConvertToRadians(120.f);
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fOffset = {0, m_f2DCenterYOffset };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fOffset = {0.f, m_f2DCenterYOffset };
 
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fRadius = 93.f;
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fRadianAngle = XMConvertToRadians(120.f);
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fOffset = { 0, m_f2DCenterYOffset };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fOffset = { 0.f, m_f2DCenterYOffset };
 
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fRadius = 110.f;
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fRadianAngle = XMConvertToRadians(60.f);
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fOffset = { 0, m_f2DCenterYOffset };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fOffset = { 0.f, m_f2DCenterYOffset };
 
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fRadius = 110.f;
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fRadianAngle = XMConvertToRadians(360.f);
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fOffset = { 0, m_f2DCenterYOffset };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fOffset = { 0.f, m_f2DCenterYOffset };
 
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadius = 93.f;
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadianAngle = XMConvertToRadians(360.f);
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = { 0, 0 };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = { 0.f, 0.f };
+
+
 
     return S_OK;
 }
 
 HRESULT CPlayer::Initialize(void* _pArg)
 {
-
-
     CPlayer::CONTAINEROBJ_DESC* pDesc = static_cast<CPlayer::CONTAINEROBJ_DESC*>(_pArg);
 
     m_iCurLevelID = pDesc->iCurLevelID;
@@ -104,6 +105,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     //ShapeDesc.vHalfExtents = { 0.5f, 1.f, 0.5f };
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
+
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &CapsuleDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
@@ -155,7 +157,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::MONSTER_PROJECTILE;
+    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
@@ -232,7 +234,7 @@ HRESULT CPlayer::Ready_Components()
    FanDesc.vOffsetPosition = m_f2DAttackTriggerDesc->fOffset;
    FanDesc.isBlock = false;
    FanDesc.isTrigger = true;
-   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Fan"),
        TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_pAttack2DTriggerCom), &FanDesc)))
        return E_FAIL;
    m_pAttack2DTriggerCom->Set_Active(false);
@@ -297,6 +299,7 @@ HRESULT CPlayer::Ready_PartObjects()
 	m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{1,0,0,0});
 	Set_PartActive(PLAYER_PART_SWORD, false);
     m_pSword->Switch_Grip(true);
+    m_pSword->Set_AttackEnable(false);
 
 	//Part Glove
     BodyDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
@@ -662,6 +665,23 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     else
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
 
+    switch (m_ePlayerMode)
+    {
+    case Client::CPlayer::PLAYER_MODE_NORMAL:
+		UnEquip_Part(PLAYER_PART_SWORD);
+        m_pSword->Set_AttackEnable(false);
+        break;
+    case Client::CPlayer::PLAYER_MODE_SWORD:
+		Equip_Part(PLAYER_PART_SWORD);
+        m_pSword->Set_AttackEnable(true);
+        break;
+    case Client::CPlayer::PLAYER_MODE_SNEAK:
+        UnEquip_Part(PLAYER_PART_SWORD);
+        m_pSword->Set_AttackEnable(false);
+        break;
+    default:
+        break;
+    }
     Set_State(IDLE);
 
     return S_OK;
@@ -1037,6 +1057,32 @@ void CPlayer::Set_Kinematic(_bool _bKinematic)
         pDynamicActor->Set_Dynamic();
     }
 }
+HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
+{
+    //손 비우기
+    if (nullptr == _pCarryingObject)
+    {
+        if (nullptr != m_pCarryingObject)
+        {
+            m_pCarryingObject->Set_Carrier(nullptr);
+
+            Safe_Release(m_pCarryingObject);
+            m_pCarryingObject = nullptr;
+        }
+        return S_OK;
+    }
+    //손에 물건 들리기
+    else
+    {
+        if (Is_CarryingObject())
+            return E_FAIL;
+        m_pCarryingObject = _pCarryingObject;
+        Safe_AddRef(m_pCarryingObject);
+        m_pCarryingObject->Set_Carrier(this);
+    }
+
+    return S_OK;
+}
 void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 {
 	m_eCurAttackType = _eAttackType;
@@ -1115,9 +1161,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
         if (iCurCoord == COORDINATE_2D)
-            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter2_SKSP_05",this);
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this);
         else
-            CSection_Manager::GetInstance()->Remove_GameObject_ToSectionLayer(L"Chapter2_SKSP_05",this);
+            CSection_Manager::GetInstance()->Remove_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this);
 
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
 
@@ -1149,7 +1195,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 
     if (KEY_DOWN(KEY::TAB))
     {
-        m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 24.f));
+        m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
+        //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
+        //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
+        //m_pActorCom->Set_GlobalPose(_float3(0.f, 0.35f, 0.f));
     }
 
 }
@@ -1190,5 +1239,6 @@ void CPlayer::Free()
 
 	Safe_Release(m_pStateMachine);
 	Safe_Release(m_pAnimEventGenerator);
+    Safe_Release(m_pCarryingObject);
     __super::Free();
 }

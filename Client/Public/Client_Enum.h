@@ -120,6 +120,7 @@ namespace Client
 		BOOK_MAIN_CHANGE,
 		SET_SCENEQUERYFLAG,
 		HIT,
+		GET_BULB,
 		
 		LAST,
 	};
@@ -146,6 +147,8 @@ namespace Client
 		STANDBY,
 		CHASE,
 		ATTACK,
+		HIT,
+		DEAD,
 		SNEAK_IDLE,
 		SNEAK_PATROL,
 		SNEAK_AWARE,
@@ -194,6 +197,8 @@ namespace Client
 	enum class WAYPOINTINDEX
 	{
 		CHAPTER2_1,
+		CHAPTER2_2,
+		CHAPTER2_3,
 		LAST
 	};
 

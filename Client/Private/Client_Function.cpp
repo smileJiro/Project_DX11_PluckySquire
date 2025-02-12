@@ -235,6 +235,15 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
+	void Event_Get_Bulb(_uint _iCoordinate)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::GET_BULB;
+		tEvent.Parameters.resize(1);
+		tEvent.Parameters[0] = (DWORD_PTR)_iCoordinate;
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
 
 	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID)
 	//{

@@ -39,7 +39,6 @@ public: /* For.GameInstance */
 
 	_int				Get_StaticLevelID() const { return m_iStaticLevelID; }
 
-
 public: /* For.Timer_Manager */
 	_float				Get_TimeDelta(const _wstring& _strTimerTag);
 	void				Render_FPS(const _wstring& _strTimerTag);
@@ -69,6 +68,7 @@ public: /* For. Object_Manager */
 	class CGameObject*	Get_PickingModelObjectByCursor(_uint _iLevelID, const _wstring& _strLayerTag, _float2 _fCursorPos); // 마우스 커서로 피킹체크 후 충돌 오브젝트중 가장 가까운 오브젝트 리턴.
 	class CGameObject*	Find_NearestObject_Scaled(_uint _iLevelID, const _wstring& _strLayerTag, CController_Transform* const _pTransform, CGameObject* pCurTargetObject = nullptr);
 	class CGameObject*	Get_GameObject_Ptr(_int _iLevelID, const _wstring& _strLayerTag, _int _iObjectIndex);
+
 #ifdef _DEBUG
 	map<const _wstring, class CLayer*>* Get_Layers_Ptr();
 #endif
@@ -85,6 +85,8 @@ public: /* For. NewRenderer*/
 	class CRenderGroup*	Find_RenderGroup(_int _iGroupID, _int _iPriorityID);
 	HRESULT				Add_RenderObject_New(_int _iGroupID, _int _iPriorityID, CGameObject* _pGameObject);
 	HRESULT				Erase_RenderGroup_New(_int _iGroupID, _int _iPriorityID);
+	void				Set_Active_RenderGroup_New(_int _iGroupID, _int _iPriorityID, _bool _isActive);
+
 	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, _float2 _vDSVSize);
 	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, _uint _iWidth, _uint _iHeight);
 	HRESULT				Add_DSV_ToRenderer(const _wstring _strDSVTag, ID3D11DepthStencilView* _pDSV);
@@ -96,6 +98,7 @@ public: /* For. NewRenderer*/
 	CONST_IBL			Get_GlobalIBLData() const;
 	void				Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _isUpdateConstBuffer = false);
 	HRESULT				Load_IBL(const _wstring& _strIBLJsonPath);
+	HRESULT				Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer);
 #ifdef _DEBUG
 	HRESULT				Add_DebugComponent_New(class CComponent* _pDebugCom);
 	void				Set_DebugRender_New(_bool _isBool);
@@ -139,11 +142,17 @@ public: /* For. Font_Manager s*/
 	HRESULT				Render_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation = 0.f, const _float2& _vOrigin = _float2(0.f, 0.f));
 	HRESULT				Render_Scaling_Font(const _wstring& _strFontTag, const _tchar* _pText, const _float2& _vPosition, _fvector _vColor, _float _fRotation = 0.f, const _float2& _vOrigin = _float2(0.f, 0.f), _float _fScale = 1.f);
 
+	// TODO :: 테스트용도 박상욱
+	_vector	Measuring(const _wstring& _strFontTag, _wstring _text);
+
+
 public: /* For. Target_Manager */
 	HRESULT				Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut = nullptr);
+	HRESULT				Add_RenderTarget(const _wstring& _strTargetTag, CRenderTarget* _pRenderTarget);
 	HRESULT				Add_RenderTarget_MSAA(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut = nullptr);
 	HRESULT				Add_MRT(const _wstring& _strMRTTag, const _wstring& _strTargetTag);
-	HRESULT				Begin_MRT(const _wstring& _strMRTTag, ID3D11DepthStencilView* _pDSV = nullptr, _bool isClear = true);	/* 지정한 RenderTargets를 셰이더에 바인딩하고 그리기 준비를 하는 */
+	HRESULT				Begin_MRT(const _wstring& _strMRTTag, ID3D11DepthStencilView* _pDSV = nullptr, _bool _isClear = true);	/* 지정한 RenderTargets를 셰이더에 바인딩하고 그리기 준비를 하는 */
+	HRESULT				Begin_MRT(const vector<CRenderTarget*>& _MRT, ID3D11DepthStencilView* _pDSV = nullptr, _bool _isClear = true); /* 외부에서 MRT를 던져주고 그걸 바인딩 */
 	HRESULT				End_MRT(); /* 렌더링을 마친 후, 기존의 BackRTV를 다시 바인딩 한다. */
 	HRESULT				Bind_RT_ShaderResource(CShader* _pShader, const _char* _pConstantName, const _wstring& _strTargetTag);	/* RenderTarget을 ShaderResource로써 바인딩하는 함수. */
 	HRESULT				Copy_RT_Resource(const _wstring& _strTargetTag, ID3D11Texture2D* _pDest);
@@ -220,6 +229,7 @@ public: /* For. GlobalFunction_Manager */
 
 	//같으면 0 / 1번 벡터가 크면 1 / 2번 벡터가 크면 2
 	_uint				Compare_VectorLength(_fvector _vVector1, _fvector _vVector2);	
+	_float				Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
 
 public: /* For. Camera_Manager */
 	CCamera*			Get_CurrentCamera();
@@ -241,6 +251,7 @@ public: /* For. Physx_Manager*/
 	void				Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
 	_uint				Create_ShapeID();
 	_bool				RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
+	_bool			RayCast_Nearest_GroupFilter(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _int _iGroupNum, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
 	//OutActors, OutPositions에 충돌된 오브젝트와 위치를 저장.
 //충돌된 액터에 user data로 ActorObject를 넣지 않았으면 nullptr이 들어감.
 // - 2.02 김지완 추가
@@ -259,6 +270,7 @@ public: /* For. D3DUtils */
 	HRESULT				CreateConstBuffer(const T_CONSTANT& _tConstantBufferData, D3D11_USAGE _eUsage, ID3D11Buffer** _ppOutConstantBuffer);
 	template<typename T_CONSTANT>
 	HRESULT				UpdateConstBuffer(const T_CONSTANT& _tConstantBufferData, ID3D11Buffer* _pConstantBuffer);
+	HRESULT				Create_DSV(_uint _iWidth, _uint _iHeight, ID3D11DepthStencilView** _ppOutDSV);
 
 public: /* For. CubeMap */
 	void				Set_CubeMap(class CCubeMap* _pCubeMap);

@@ -37,7 +37,7 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		m_WayPoints.push_back({ _float3(-13.3f, 6.52f, 23.25f) });
 		m_WayPoints.push_back({ _float3(-17.f, 6.55f, 23.f) });
 		m_WayPoints.push_back({ _float3(-20.f, 6.55f, 23.f) });
-		m_WayPoints.push_back({ _float3(-23.f, 6.55f, 20.5f) });
+		m_WayPoints.push_back({ _float3(-24.f, 6.55f, 21.f) });
 
 		m_WayPoints[0].Neighbors.push_back(1);
 		m_WayPoints[1].Neighbors.push_back(0);
@@ -69,40 +69,52 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		m_WayPoints[4].Neighbors.push_back(11);
 		break;
 
+	case Client::WAYPOINTINDEX::CHAPTER2_2:
+		m_WayPoints.push_back({ _float3(45.5f, 8.58f, 24.5f) });
+		m_WayPoints.push_back({ _float3(44.f, 8.58f, 22.f) });
+
+		m_WayPoints[0].Neighbors.push_back(1);
+		m_WayPoints[1].Neighbors.push_back(0);
+		break;
+
+	case Client::WAYPOINTINDEX::CHAPTER2_3:
+		m_WayPoints.push_back({ _float3(33.f, 0.35f, -4.f) });
+		break;
+
 	default:
 		break;
 	}
 
 
 	//인접 노드 간 거리 저장
-	m_Weights.emplace(make_pair(0, 1), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[1].vPosition) - XMLoadFloat3(&m_WayPoints[0].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(1, 0), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[1].vPosition) - XMLoadFloat3(&m_WayPoints[0].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(1, 2), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[2].vPosition) - XMLoadFloat3(&m_WayPoints[1].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(2, 1), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[2].vPosition) - XMLoadFloat3(&m_WayPoints[1].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(2, 3), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[3].vPosition) - XMLoadFloat3(&m_WayPoints[2].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(3, 2), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[3].vPosition) - XMLoadFloat3(&m_WayPoints[2].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(3, 4), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[4].vPosition) - XMLoadFloat3(&m_WayPoints[3].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(4, 3), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[4].vPosition) - XMLoadFloat3(&m_WayPoints[3].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(4, 5), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[5].vPosition) - XMLoadFloat3(&m_WayPoints[4].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(5, 4), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[5].vPosition) - XMLoadFloat3(&m_WayPoints[4].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(5, 6), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[6].vPosition) - XMLoadFloat3(&m_WayPoints[5].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(6, 5), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[6].vPosition) - XMLoadFloat3(&m_WayPoints[5].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(6, 7), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[7].vPosition) - XMLoadFloat3(&m_WayPoints[6].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(7, 6), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[7].vPosition) - XMLoadFloat3(&m_WayPoints[6].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(7, 8), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[8].vPosition) - XMLoadFloat3(&m_WayPoints[7].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(8, 7), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[8].vPosition) - XMLoadFloat3(&m_WayPoints[7].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(8, 9), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[9].vPosition) - XMLoadFloat3(&m_WayPoints[8].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(9, 8), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[9].vPosition) - XMLoadFloat3(&m_WayPoints[8].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(9, 5), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[9].vPosition) - XMLoadFloat3(&m_WayPoints[5].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(5, 9), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[9].vPosition) - XMLoadFloat3(&m_WayPoints[5].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(9, 10), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[10].vPosition) - XMLoadFloat3(&m_WayPoints[9].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(10, 9), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[10].vPosition) - XMLoadFloat3(&m_WayPoints[9].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(10, 11), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[11].vPosition) - XMLoadFloat3(&m_WayPoints[10].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(11, 10), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[11].vPosition) - XMLoadFloat3(&m_WayPoints[10].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(11, 3), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[11].vPosition) - XMLoadFloat3(&m_WayPoints[3].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(3, 11), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[11].vPosition) - XMLoadFloat3(&m_WayPoints[3].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(11, 4), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[11].vPosition) - XMLoadFloat3(&m_WayPoints[4].vPosition), 0.f))));
-	m_Weights.emplace(make_pair(4, 11), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[11].vPosition) - XMLoadFloat3(&m_WayPoints[4].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(0, 1), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[1].vPosition) - XMLoadFloat3(&m_WayPoints[0].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(1, 0), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[1].vPosition) - XMLoadFloat3(&m_WayPoints[0].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(1, 2), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[2].vPosition) - XMLoadFloat3(&m_WayPoints[1].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(2, 1), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[2].vPosition) - XMLoadFloat3(&m_WayPoints[1].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(2, 3), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[3].vPosition) - XMLoadFloat3(&m_WayPoints[2].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(3, 2), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[3].vPosition) - XMLoadFloat3(&m_WayPoints[2].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(3, 4), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[4].vPosition) - XMLoadFloat3(&m_WayPoints[3].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(4, 3), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[4].vPosition) - XMLoadFloat3(&m_WayPoints[3].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(4, 5), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[5].vPosition) - XMLoadFloat3(&m_WayPoints[4].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(5, 4), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[5].vPosition) - XMLoadFloat3(&m_WayPoints[4].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(5, 6), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[6].vPosition) - XMLoadFloat3(&m_WayPoints[5].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(6, 5), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[6].vPosition) - XMLoadFloat3(&m_WayPoints[5].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(6, 7), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[7].vPosition) - XMLoadFloat3(&m_WayPoints[6].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(7, 6), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[7].vPosition) - XMLoadFloat3(&m_WayPoints[6].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(7, 8), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[8].vPosition) - XMLoadFloat3(&m_WayPoints[7].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(8, 7), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[8].vPosition) - XMLoadFloat3(&m_WayPoints[7].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(8, 9), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[9].vPosition) - XMLoadFloat3(&m_WayPoints[8].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(9, 8), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[9].vPosition) - XMLoadFloat3(&m_WayPoints[8].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(9, 5), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[9].vPosition) - XMLoadFloat3(&m_WayPoints[5].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(5, 9), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[9].vPosition) - XMLoadFloat3(&m_WayPoints[5].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(9, 10), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[10].vPosition) - XMLoadFloat3(&m_WayPoints[9].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(10, 9), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[10].vPosition) - XMLoadFloat3(&m_WayPoints[9].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(10, 11), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[11].vPosition) - XMLoadFloat3(&m_WayPoints[10].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(11, 10), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[11].vPosition) - XMLoadFloat3(&m_WayPoints[10].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(11, 3), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[11].vPosition) - XMLoadFloat3(&m_WayPoints[3].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(3, 11), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[11].vPosition) - XMLoadFloat3(&m_WayPoints[3].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(11, 4), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[11].vPosition) - XMLoadFloat3(&m_WayPoints[4].vPosition), 0.f))));
+	//m_Weights.emplace(make_pair(4, 11), XMVectorGetX(XMVector3Length(XMVectorSetY(XMLoadFloat3(&m_WayPoints[11].vPosition) - XMLoadFloat3(&m_WayPoints[4].vPosition), 0.f))));
 
 	return S_OK;
 }
@@ -110,10 +122,28 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vDirection)
 {
 	_float3 vOffset = m_pOwner->Get_RayOffset();
-	_float3 vPos; XMStoreFloat3(&vPos, XMVector3Transform(XMLoadFloat3(&vOffset), m_pOwner->Get_FinalWorldMatrix()));
-	_vector vRayDir = XMVector3Normalize(XMVectorSetY(_vDestination - XMLoadFloat3(&vPos), 0.f));
+	_float3 vRayPos; XMStoreFloat3(&vRayPos, XMVector3Transform(XMLoadFloat3(&vOffset), m_pOwner->Get_FinalWorldMatrix()));
+	_vector vRayDir = XMVector3Normalize(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f));
 	_float3 vRayDirection; XMStoreFloat3(&vRayDirection, vRayDir);
+	_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
 	_vector vResult = XMVectorZero();
+
+	//자유이동시 웨이포인트 타지 않음
+	if (false == m_isOnWay)
+	{
+		//타겟 방향이 막혀있으면 웨이포인트 이동
+		if (true == m_pGameInstance->RayCast_Nearest(vRayPos, vRayDirection, 2.f))
+		{
+			m_isPathFind = true;
+		}
+		//막혀있지 않다면 타겟 방향대로 이동
+		else
+		{
+			vResult = vRayDir;
+			XMStoreFloat3(_vDirection, vResult);
+			return;
+		}
+	}
 
 	if(m_isPathFind)
 	{
@@ -207,7 +237,14 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 			m_Ways.push_back(iParent);
 		}
 
-		m_Ways.push_back(iStartIndex);
+		//시작점까지 갔다가 다음 점으로 진행하는 거리와 다음 점으로 바로 가는 거리 비교해서 시작점으로 갈지 결정
+		_vector vFromStart = XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition) - m_pOwner->Get_FinalPosition() + XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition);
+		_vector vToNext = XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - m_pOwner->Get_FinalPosition();
+		if (2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
+		{
+			m_Ways.push_back(iStartIndex);
+		}
+		
 		reverse(m_Ways.begin(), m_Ways.end());
 		m_iCurWayIndex = 0;
 		m_isOnWay = true;
@@ -219,17 +256,6 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 	{
 		vResult = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition) - XMLoadFloat3(&vPos),0.f);
 	}
-
-	//타겟 방향이 막혀있으면 웨이포인트 이동
-	//if (true == m_pGameInstance->RayCast_Nearest(vPos, vRayDirection, 2.f))
-	//{
-	//	
-	//}
-	//막혀있지 않다면 타겟 방향대로 이동
-	/*else
-	{
-		vResult = vRayDir;
-	}*/
 
 	XMStoreFloat3(_vDirection, XMVector3Normalize(vResult));
 }

@@ -246,6 +246,20 @@ void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     }
 }
 
+void CBeetle::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+    if (false == m_isSneakMode)
+        __super::OnContact_Enter(_My, _Other, _ContactPointDatas);
+}
+
+void CBeetle::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+}
+
+void CBeetle::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+}
+
 HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
 {
     CBeetle::MONSTER_DESC* pDesc = static_cast<CBeetle::MONSTER_DESC*>(_pArg);

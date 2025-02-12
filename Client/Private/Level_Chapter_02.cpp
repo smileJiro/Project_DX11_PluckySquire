@@ -108,24 +108,24 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 
 	//RayShape Test
-	CRayShape::RAYSHAPE_DESC Desc;
-	Desc.iCurLevelID = m_eLevelID;
+	//CRayShape::RAYSHAPE_DESC Desc;
+	//Desc.iCurLevelID = m_eLevelID;
 
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-28.9f, 0.32f, -16.9f);
-	Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Desc.tTransform3DDesc.vInitialPosition = _float3(-28.9f, 0.32f, -16.9f);
+	//Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	Desc.eShapeType = SHAPE_TYPE::CAPSULE;
-	Desc.fRadius = 3.f;
-	Desc.fHalfHeight = 2.f;
-	Desc.vOffsetTrans = { 0.f,Desc.fHalfHeight * 0.5f,0.f };
-	Desc.fRotAngle = 90.f;
+	//Desc.eShapeType = SHAPE_TYPE::CAPSULE;
+	//Desc.fRadius = 3.f;
+	//Desc.fHalfHeight = 2.f;
+	//Desc.vOffsetTrans = { 0.f,Desc.fHalfHeight * 0.5f,0.f };
+	//Desc.fRotAngle = 90.f;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
+	//	return E_FAIL;
 
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-23.9f, 0.32f, -16.9f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
-		return E_FAIL;
+	//Desc.tTransform3DDesc.vInitialPosition = _float3(-23.9f, 0.32f, -16.9f);
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
+	//	return E_FAIL;
 
 	/*Desc.eShapeType = SHAPE_TYPE::CAPSULE;
 	Desc.fRadius = 1.f;
@@ -202,6 +202,12 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
 #endif // _DEBUG
 
+
+
+	static _float3 vOutPos = {};
+	ImGui::Begin("PickingPos");
+	ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
+	ImGui::End();
 	if (MOUSE_DOWN(MOUSE_KEY::MB))
 	{
 		POINT pt;
@@ -241,17 +247,16 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		XMStoreFloat3(&vOrigin, vRayPos);
 		XMStoreFloat3(&vRayDirection, vRayDir);
 
-		_float3 vOutPos = {};
+
 		CActorObject* pActorObject = {};
 		_bool isResult = false;
 
 		isResult = m_pGameInstance->RayCast_Nearest(vOrigin, vRayDirection, 1000.f, &vOutPos, &pActorObject);
-
 		int a = 0;
 	}
 
 	if (KEY_DOWN(KEY::T)) {
-		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Test.json"));
+		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Trigger.json"));
 		CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	}
 
@@ -512,7 +517,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 
 	// Test(PlayerItem: Glove, Stamp)
 	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(10.f, 10.f, -10.f));
-
+	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 	return S_OK;
 }
@@ -888,10 +893,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.f, 0.35f, -22.f);
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	Monster_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_1;
+	Monster_Desc.isSneakMode = true;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Monster_Desc)))
 		return E_FAIL;
-	//
+	
+	//Monster_Desc.isSneakMode = false;
+	// 
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(8.0f, 0.35f, -19.0f);
 	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	//

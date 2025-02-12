@@ -304,13 +304,18 @@ _float CCameraArm::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _i
     fRatio = _fTime->y / _fTime->x;
 
     switch (_iRatioType) {
-    case CCamera::EASE_IN:
-        fRatio = (fRatio + (_float)pow((_double)fRatio, (_double)2.f)) * 0.5f;
+    case (_uint)RATIO_TYPE::EASE_IN:
+        //fRatio = (fRatio + (_float)pow((_double)fRatio, (_double)2.f)) * 0.5f;
+        fRatio = fRatio * fRatio;
         break;
-    case CCamera::EASE_OUT:
-        fRatio = 1.0f - ((1.0f - fRatio) + (_float)pow((_double)(1.0f - fRatio), 2.f)) * 0.5f;
+    case (_uint)RATIO_TYPE::EASE_OUT:
+        //fRatio = 1.0f - ((1.0f - fRatio) + (_float)pow((_double)(1.0f - fRatio), 2.f)) * 0.5f;
+        fRatio = 1.0f - (1.0f - fRatio) * (1.0f - fRatio);
         break;
-    case CCamera::LERP:
+    case (_uint)RATIO_TYPE::LERP:
+        break;
+    case (_uint)RATIO_TYPE::EASE_IN_OUT:
+        fRatio = fRatio * fRatio * (3 - 2 * fRatio);
         break;
     }
 
@@ -429,7 +434,7 @@ _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
 
 _bool CCameraArm::Move_To_PreArm(_float _fTimeDelta)
 {
-    _float fRatio = Calculate_Ratio(&m_fReturnTime, _fTimeDelta, CCamera::EASE_IN);
+    _float fRatio = Calculate_Ratio(&m_fReturnTime, _fTimeDelta, RATIO_TYPE::EASE_IN);
 
     if (fRatio > 1.f) {
         m_fReturnTime.y = 0.f;

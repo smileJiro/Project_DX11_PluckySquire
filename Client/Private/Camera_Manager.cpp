@@ -25,7 +25,11 @@ HRESULT CCamera_Manager::Initialize()
 
 void CCamera_Manager::Update(_float fTimeDelta)
 {
-	_int a = 0;
+#ifdef _DEBUG
+	Imgui_Dof();
+
+#endif // _DEBUG
+
 }
 
 void CCamera_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
@@ -78,7 +82,7 @@ void CCamera_Manager::Start_ZoomIn()
 	if (iZoomLevel <= CCamera::LEVEL_1)
 		return;
 
-	m_Cameras[m_eCurrentCameraType]->Start_Zoom(0.5f, (CCamera::ZOOM_LEVEL)(iZoomLevel - 1), CCamera::EASE_IN);
+	m_Cameras[m_eCurrentCameraType]->Start_Zoom(0.5f, (CCamera::ZOOM_LEVEL)(iZoomLevel - 1), RATIO_TYPE::EASE_IN);
 }
 
 void CCamera_Manager::Start_ZoomOut()
@@ -88,7 +92,45 @@ void CCamera_Manager::Start_ZoomOut()
 	if (iZoomLevel >= CCamera::LEVEL_10)
 		return;
 
-	m_Cameras[m_eCurrentCameraType]->Start_Zoom(0.5f, (CCamera::ZOOM_LEVEL)(iZoomLevel + 1), CCamera::EASE_IN);
+	m_Cameras[m_eCurrentCameraType]->Start_Zoom(0.5f, (CCamera::ZOOM_LEVEL)(iZoomLevel + 1), RATIO_TYPE::EASE_IN);
+}
+
+void CCamera_Manager::Imgui_Dof()
+{
+	if (nullptr == m_Cameras[m_eCurrentCameraType])
+		return;
+
+	ImGui::Begin("Set Dof");
+
+	CONST_DOF tDofData = m_Cameras[m_eCurrentCameraType]->Get_DofBufferData();
+	_float fFovy = m_Cameras[m_eCurrentCameraType]->Get_Fovy();
+	fFovy = XMConvertToDegrees(fFovy);
+	if (ImGui::SliderFloat("Fovy##Camera", &fFovy, 20.f, 120.f))
+	{
+		m_Cameras[m_eCurrentCameraType]->Set_Fovy(XMConvertToRadians(fFovy));
+	}
+	if (ImGui::SliderFloat("Aperture##Camera", &tDofData.fAperture, 0.95f, 50.f))
+	{
+		m_Cameras[m_eCurrentCameraType]->Set_DofBufferData(tDofData, true);
+	}
+	if (ImGui::SliderFloat("SensorHeight##Camera", &tDofData.fSensorHeight, 4.f, 50.f))
+	{
+		m_Cameras[m_eCurrentCameraType]->Set_DofBufferData(tDofData, true);
+	}
+	if (ImGui::SliderFloat("FocusDistance##Camera", &tDofData.fFocusDistance, 0.1f, 200.f))
+	{
+		m_Cameras[m_eCurrentCameraType]->Set_DofBufferData(tDofData, true);
+	}
+	if (ImGui::SliderFloat("DofBrightness##Camera", &tDofData.fDofBrightness, 0.01f, 5.f))
+	{
+		m_Cameras[m_eCurrentCameraType]->Set_DofBufferData(tDofData, true);
+	}
+	if (ImGui::SliderFloat("BaseBlurPower##Camera", &tDofData.fBaseBlurPower, 0.0f, 1.0f))
+	{
+		m_Cameras[m_eCurrentCameraType]->Set_DofBufferData(tDofData, true);
+	}
+
+	ImGui::End();
 }
 #endif // _DEBUG
 
@@ -141,9 +183,18 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInit
 			continue;
 
 		if (_iCurrentCameraType == Camera->Get_CamType())
+		{
 			Camera->Set_Active(true);
+			Camera->Compute_FocalLength();
+			Camera->Bind_DofConstBuffer();
+		}
 		else
+		{
 			Camera->Set_Active(false);
+			Camera->Compute_FocalLength();
+			Camera->Bind_DofConstBuffer();
+		}
+
 	}
 
 	switch (_iCurrentCameraType) {
@@ -221,7 +272,7 @@ void CCamera_Manager::Set_Freeze(_uint _iFreezeType)
 
 void CCamera_Manager::Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType)
 {
-	m_Cameras[_eCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)_iZoomLevel, (CCamera::RATIO_TYPE)_iRatioType);
+	m_Cameras[_eCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)_iZoomLevel, (RATIO_TYPE)_iRatioType);
 }
 
 void CCamera_Manager::Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, _uint _iRatioType)

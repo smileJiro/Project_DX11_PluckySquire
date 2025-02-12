@@ -52,10 +52,9 @@ HRESULT CCamera::Initialize(void* _pArg)
 	m_fAspect = pDesc->fAspect;
 	m_fNear = pDesc->fNear;
 	m_fFar = pDesc->fFar;
-
-
 	m_pGameInstance->Set_NearFarZ(_float2(m_fNear, m_fFar));
 
+	Ready_DofConstData(pDesc);
 	return S_OK;
 }
 
@@ -169,6 +168,18 @@ void CCamera::Compute_ProjMatrix()
 //	}
 //}
 
+void CCamera::Set_DofBufferData(const CONST_DOF& _tDofConstData, _bool _isUpdate)
+{
+	m_tConstDofData = _tDofConstData;
+
+	if(true == _isUpdate)
+	{
+		m_pGameInstance->UpdateConstBuffer(_tDofConstData, m_pConstDofBuffer);
+		m_pGameInstance->Bind_DofConstBuffer("DofConstData", m_pConstDofBuffer);
+		Compute_FocalLength();
+	}
+}
+
 void CCamera::Start_Zoom(_float _fZoomTime, ZOOM_LEVEL _eZoomLevel, RATIO_TYPE _eRatioType)
 {
 	if (true == m_isZoomOn && 2 != m_eCameraType)
@@ -237,6 +248,11 @@ void CCamera::Start_Shake_ByCount(_float _fShakeTime, _float _fShakeForce, _int 
 //	m_vShakeCycleTime.y = 0.0f;
 //}
 
+HRESULT CCamera::Bind_DofConstBuffer()
+{
+	return m_pGameInstance->Bind_DofConstBuffer("DofConstData", m_pConstDofBuffer);
+}
+
 void CCamera::End_Shake()
 {
 }
@@ -295,6 +311,8 @@ void CCamera::Action_Zoom(_float _fTimeDelta)
 	}
 
 	m_fFovy = m_pGameInstance->Lerp(m_fStartFovy, m_ZoomLevels[m_iCurZoomLevel], fRatio);
+	Compute_FocalLength();
+	Bind_DofConstBuffer();
 }
 
 void CCamera::Change_AtOffset(_float _fTimeDelta)
@@ -397,22 +415,46 @@ _float CCamera::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRat
 	fRatio = _fTime->y / _fTime->x;
 
 	switch (_iRatioType) {
-	case EASE_IN:
+	case (_uint)RATIO_TYPE::EASE_IN:
 		//fRatio = (fRatio + (_float)pow((_double)fRatio, (_double)2.f)) * 0.5f;
 		fRatio = fRatio * fRatio;
 		break;
-	case EASE_OUT:
+	case (_uint)RATIO_TYPE::EASE_OUT:
 		//fRatio = 1.0f - ((1.0f - fRatio) + (_float)pow((_double)(1.0f - fRatio), 2.f)) * 0.5f;
 		fRatio = 1.0f - (1.0f - fRatio) * (1.0f - fRatio);
 		break;
-	case LERP:
+	case (_uint)RATIO_TYPE::LERP:
 		break;
-	case EASE_IN_OUT:
+	case (_uint)RATIO_TYPE::EASE_IN_OUT:
 		fRatio = fRatio * fRatio * (3 - 2 * fRatio);
 		break;
 	}
 
 	return fRatio;
+}
+
+HRESULT CCamera::Ready_DofConstData(CAMERA_DESC* _pDesc)
+{
+	m_tConstDofData.fAperture = _pDesc->fAperture;
+	m_tConstDofData.fFocusDistance = _pDesc->fFocusDistance;
+	m_tConstDofData.fSensorHeight = _pDesc->fSensorHeight;
+	m_tConstDofData.fDofBrightness = _pDesc->fDofBrightness;
+	m_tConstDofData.fBaseBlurPower = _pDesc->fBaseBlurPower;
+	Compute_FocalLength();
+
+	if (FAILED(m_pGameInstance->CreateConstBuffer(m_tConstDofData, D3D11_USAGE_DYNAMIC, &m_pConstDofBuffer)))
+		return E_FAIL;
+
+	m_pGameInstance->Bind_DofConstBuffer("DofConstData", m_pConstDofBuffer);
+	return S_OK;
+}
+
+HRESULT CCamera::Compute_FocalLength()
+{
+	_float fFocalLength = m_tConstDofData.fSensorHeight / 2 * tanf(m_fFovy / 2);
+	m_tConstDofData.fFocalLength = fFocalLength;
+
+	return S_OK;
 }
 
 void CCamera::Free()

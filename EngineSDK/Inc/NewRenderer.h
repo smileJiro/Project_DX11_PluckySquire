@@ -24,6 +24,7 @@ public:
 	HRESULT								Add_RenderGroup(_int _iGroupID, _int _iPriorityID, CRenderGroup* _pRenderGroup);
 	CRenderGroup*						Find_RenderGroup(_int _iGroupID, _int _iPriorityID);
 	HRESULT								Erase_RenderGroup(_int _iGroupID, _int _iPriorityID);
+	void								Set_Active_RenderGroup(_int _iGroupID, _int _iPriorityID, _bool _isActive);
 public: /* DSV */
 	ID3D11DepthStencilView*				Find_DSV(const _wstring& _strDSVTag);
 	HRESULT								Add_DSV(const _wstring _strDSVTag, _float2 _vDSVSize);
@@ -31,6 +32,8 @@ public: /* DSV */
 	HRESULT								Add_DSV(const _wstring _strDSVTag, ID3D11DepthStencilView* _pDSV);
 	HRESULT								Erase_DSV(const _wstring _strDSVTag);
 
+public:/* Bind Defferd ConstBufferData */
+	HRESULT								Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer);
 public:
 	HRESULT								Load_IBL(const _wstring& _strIBLJsonPath);
 #ifdef _DEBUG

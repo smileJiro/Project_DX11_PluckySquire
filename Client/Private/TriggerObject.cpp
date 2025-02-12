@@ -112,6 +112,7 @@ HRESULT CTriggerObject::Initialize_3D_Trigger(CActor::ACTOR_DESC** _pActorDesc, 
     ShapeData.eShapeType = _pDesc->eShapeType;
     ShapeData.isTrigger = _pDesc->isTrigger;
     ShapeData.isSceneQuery = false;
+    ShapeData.iShapeUse = _pDesc->iShapeUse;
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation( _pDesc->vLocalPosOffset.x, _pDesc->vLocalPosOffset.y, _pDesc->vLocalPosOffset.z ));
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
@@ -185,6 +186,11 @@ void CTriggerObject::Resister_ExitHandler(function<void(_uint, _int, _wstring)> 
     m_ExitHandler = _Handler;
 }
 
+void CTriggerObject::Resister_EnterHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler)
+{
+    m_CollisionEnterHandler = _Handler;
+}
+
 void CTriggerObject::Resister_ExitHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler)
 {
     m_CollisionExitHandler = _Handler;
@@ -196,8 +202,11 @@ void CTriggerObject::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Oth
         if (m_EnterHandler) {
             m_EnterHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
         }
+
+        if (m_CollisionEnterHandler) {
+            m_CollisionEnterHandler(m_iTriggerType, m_iTriggerID, _My, _Other);
+        }
     }
-  
 }
 
 void CTriggerObject::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
