@@ -60,11 +60,13 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	//m_arrSelectName[SAVE_LIST] = L"Room_Enviroment";
 	//Load_3D_Map(false);
 
-	CModelObject::MODELOBJECT_DESC NormalDesc = {};
+	CMapObject::MAPOBJ_DESC NormalDesc = {};
 	NormalDesc.Build_3D_Model(LEVEL_TOOL_2D_MAP,
 		L"topboard",
 		L"Prototype_Component_Shader_VtxMesh"
 		);
+	lstrcpy(NormalDesc.szModelName, L"topboard");
+	NormalDesc.strShaderPrototypeTag_3D = LEVEL_STATIC;
 	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
 		LEVEL_TOOL_2D_MAP,
 		L"Layer_MapObject",
@@ -250,6 +252,8 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 
 	}
 
+	
+
 	ImGui::Text("Offset: %.2f, %.2f", m_fOffsetPos.x, m_fOffsetPos.y);
 	ImGui::SameLine();
 
@@ -365,6 +369,7 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		_wstring strKey = m_pPickingObject->Get_Key();
 		_wstring strModelName = m_pPickingObject->Get_ModelName();
 		_float2 fPos = m_pPickingObject->Get_DefaultPosition();
+		_float3 fScale = m_pPickingObject->Get_FinalScale();
 		//m_pPickingObject->Get_FinalPosition();
 		ImGui::SeparatorText("Object Control");
 		if (StyleButton(MINI, "Model Change"))
@@ -421,8 +426,21 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 			static_cast<C2DMapObject*>(m_pPickingObject)->Set_OffsetPos(m_fOffsetPos);
 		}
 		ImGui::SameLine();
-		ImGui::Text("Position");
 
+		ImGui::Text("Position");
+		ImGui::SetNextItemWidth(100.f);
+		if (ImGui::DragFloat("##ObjectScaleX", &fScale.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
+		{
+			m_pPickingObject->Set_Scale(fScale);
+		}
+		ImGui::SameLine();
+		ImGui::SetNextItemWidth(100.f);
+		if (ImGui::DragFloat("##ObjectScaleY", &fScale.y, 1.f, -FLT_MAX, FLT_MAX, "y:%.1f"))
+		{
+			m_pPickingObject->Set_Scale(fScale);
+		}
+		ImGui::SameLine();
+		ImGui::Text("Scale");
 
 	}
 
@@ -712,7 +730,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 					{
 						C2DMapObject::MAPOBJ_2D_DESC NormalDesc = { };
 						NormalDesc.strProtoTag = StringToWstring(m_pPickingInfo->Get_ModelName());
-						NormalDesc.fDefaultPosition = { 0.f,0.f };
+						NormalDesc.fDefaultPosition = { -m_fOffsetPos.x,m_fOffsetPos.y};
 						NormalDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
 						NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 						NormalDesc.iRenderGroupID_2D = m_p2DRenderGroup->Get_RenderGroupID();
@@ -2092,6 +2110,13 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 	{
 		_float2 fLgcRenderTargetSize = m_p2DRenderGroup->Get_RenderTarget_Size();
 
+		if (fRenderResolution.x == -1 && fRenderResolution.x == -1)
+		{
+			fRenderResolution.x = (_float)RTSIZE_BOOK2D_X;
+			fRenderResolution.y = (_float)RTSIZE_BOOK2D_Y;
+		}
+
+
 		if ((_int)round(fRenderResolution.x) != (_int)round(fLgcRenderTargetSize.x)
 			||
 			(_int)round(fRenderResolution.y) != (_int)round(fLgcRenderTargetSize.y))
@@ -2398,7 +2423,6 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 
 	for (_uint i = 0; i < iLayerCount; ++i)
 	{
-
 		C2DMapObject* pObject = C2DMapObject::Create(m_pDevice, m_pContext, hFile, m_ObjectInfoLists, fSize);
 
 		if (nullptr != pObject)
@@ -2579,6 +2603,7 @@ void C2DMap_Tool_Manager::Save_2DModelList()
 		file << Outputjson.dump(1);
 		file.close();
 	}
+	LOG_TYPE("2D Model json Export Complete!!", LOG_SAVE);
 }
 
 void C2DMap_Tool_Manager::Load_SaveFileList()
