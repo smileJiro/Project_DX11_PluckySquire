@@ -106,7 +106,7 @@ HRESULT CBulb::Initialize_2D_Object(BULB_DESC* _pDesc)
 void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
 	if (OBJECT_GROUP::PLAYER != _Other.pActorUserData->iObjectGroup || 
-		CPlayer::SHAPE_BODY !=_Other.pShapeUserData->iShapeUse)
+		SHAPE_USE::SHAPE_BODY !=_Other.pShapeUserData->iShapeUse)
 		return;
 
 	switch (_My.pShapeUserData->iShapeUse)

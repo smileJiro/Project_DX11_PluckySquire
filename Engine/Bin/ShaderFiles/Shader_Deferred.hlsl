@@ -41,7 +41,9 @@ struct DofData
     float fFocalLength; // Fovy와 FocusDistance를 기반으로 구해지는 값.
     float fDofBrightness;
     float fBaseBlurPower; // 기본 전체 블러값
+    float dummy1;
     float dummy2;
+    float3 vBlurColor;
     float dummy3;
 };
 
@@ -408,7 +410,7 @@ PS_OUT PS_MAIN_COMBINE(PS_IN In)
     //vLighting = vLighting + vPBRBlur * fCoc;
     
     fCoc = clamp(fCoc, c_DofVariable.fBaseBlurPower, 1.0f);
-    vPBRBlur *= c_DofVariable.fDofBrightness;
+    vPBRBlur *= (c_DofVariable.vBlurColor * c_DofVariable.fDofBrightness);
     vLighting = (vLighting * (1.0f - fCoc)) + (vPBRBlur * fCoc);
     
     //vLighting = vLighting + vPBRBlur;
