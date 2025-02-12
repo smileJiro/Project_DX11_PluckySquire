@@ -138,6 +138,9 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
 		return E_FAIL;
 
+
+	/* Blur RenderGroupOn */
+	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
 	return S_OK;
 }
 

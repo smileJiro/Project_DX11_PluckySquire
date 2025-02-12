@@ -17,6 +17,7 @@ public:
 	template<typename T_CONSTANT>
 	HRESULT UpdateConstBuffer(const T_CONSTANT& _tConstantBufferData, ID3D11Buffer* _pConstantBuffer);
 
+	HRESULT Create_DSV(_uint _iWidth, _uint _iHeight, ID3D11DepthStencilView** _ppOutDSV);
 private:
 	ID3D11Device*			m_pDevice = nullptr;
 	ID3D11DeviceContext*	m_pContext = nullptr;
