@@ -783,6 +783,11 @@ HRESULT CGameInstance::Render_Scaling_Font(const _wstring& _strFontTag, const _t
 	return m_pFont_Manager->Render_Scaling_Font(_strFontTag, _pText, _vPosition, _vColor, _fRotation, _vOrigin, _fScale);
 }
 
+_vector CGameInstance::Measuring(const _wstring& _strFontTag, _wstring _text)
+{
+	return m_pFont_Manager->Measuring(_strFontTag, _text);
+}
+
 HRESULT CGameInstance::Add_RenderTarget(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _ppOut)
 {
 	if (nullptr == m_pTarget_Manager)

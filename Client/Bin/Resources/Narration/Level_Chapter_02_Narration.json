@@ -8,19 +8,19 @@
 				{
 					"iduration": 1000,
 					"ispeed": 200,
-					"strtext": "{300}옛{100}날 옛적에#{175}저트{100}라는#{125}용감한 견습 기사{100}가#있었습니다.",
+					"strtext": "{150}옛{100}날 옛적에#{125}저트{100}라는#{110}용감한 견습 기사{100}가#있었습니다.",
 					"fscale": 1.5,
-					"fposX": 500.0,
-					"fposY": 500.0,
+					"fposX": 300.0,
+					"fposY": 300.0,
 					"fwaitingTime": 300.0,
 					"NarAnim": [
 						{
 							"strAnimationid": "Prototype_Component_Narration_0102_01",
 							"strSectionid": "Chapter1_P0102",
-							"fPosX": 400.0,
-							"fPosY": 400.0,
-							"vAnimationScaleX": 0.5,
-							"vAnimationScaleY": 0.5,
+							"fPosX": 650.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
 							"fwaitingTime": 450.0
 						}
 					]
