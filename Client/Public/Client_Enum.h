@@ -19,7 +19,7 @@ namespace Client
 		PR3D_GEOMETRY =			30,
 		PR3D_DIRECTLIGHTS =		40,
 		PR3D_LIGHTNG =			50, // >>> ¸®Á¹ºù
-		PR3D_BLOOM =			52, // PostProcessing
+		PR3D_POSTPROCESSING =		52, // PostProcessing
 		PR3D_SSAO =				54, // PostProcessing
 		PR3D_COMBINE =			60, // ToneMapping
 		PR3D_BLEND =			70,
@@ -85,14 +85,14 @@ namespace Client
 	{
 		NONE =						0x00,
 		PLAYER =					0x01,
-		MONSTER =					0x02,
-		MAPOBJECT =					0x04,
+		MONSTER =					0x02,//1
+		MAPOBJECT =					0x04, //2
 		INTERACTION_OBEJCT =		0x08,
-		PLAYER_PROJECTILE =			0x10,
-		PLAYER_TRIGGER =			0x10,
-		MONSTER_PROJECTILE =		0x20,
+		PLAYER_PROJECTILE =			0x10,//4
+		MONSTER_PROJECTILE =		0x20,//5
 		TRIGGER_OBJECT =		    0x40,
 		RAY_OBJECT =						0x80,
+		PLAYER_TRIGGER =			0x100,
 								 // 0x100
 								 // 0x200 
 
@@ -147,6 +147,8 @@ namespace Client
 		STANDBY,
 		CHASE,
 		ATTACK,
+		HIT,
+		DEAD,
 		SNEAK_IDLE,
 		SNEAK_PATROL,
 		SNEAK_AWARE,
@@ -195,6 +197,15 @@ namespace Client
 	enum class WAYPOINTINDEX
 	{
 		CHAPTER2_1,
+		CHAPTER2_2,
+		CHAPTER2_3,
 		LAST
+	};
+
+	enum class SHAPE_USE
+	{
+		SHAPE_BODY = 0,
+		SHAPE_FOOT = 1,
+		SHAPE_TRIGER = 2
 	};
 }

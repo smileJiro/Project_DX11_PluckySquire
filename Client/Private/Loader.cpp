@@ -196,6 +196,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         CCollider_AABB::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Fan"),
+        CCollider_Fan::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
@@ -562,6 +565,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_PlayerAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_Player2DAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Player/player2danimevts.animevt"))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_DetectionField"),
         CDetectionField::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -701,7 +707,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_player2DAnimation"),
         C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Player/player.model2D")))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_playersword2DAnimation"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/PlayerSword/player2dsword.model2D")))))
+        return E_FAIL;
     // NPC 모델
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"),
         C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/NPC_Shop/NPC_Store.model2D")))))
@@ -865,6 +873,9 @@ HRESULT CLoader::Loading_Level_Chapter_4()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_PlayerAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_Player2DAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Player/player2danimevts.animevt"))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_DetectionField"),
         CDetectionField::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -1002,13 +1013,14 @@ HRESULT CLoader::Loading_Level_Chapter_4()
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
         TEXT("../Bin/Resources/Models/2DMapObject/"))))
         return E_FAIL;
-
     /* 낱개 로딩 예시*/
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_player2DAnimation"),
         C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Player/player.model2D")))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_playersword2DAnimation"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/PlayerSword/player2dsword.model2D")))))
+        return E_FAIL;
     // NPC 모델
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"),
         C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/NPC_Shop/NPC_Store.model2D")))))
@@ -1332,8 +1344,6 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
                 break;
             }
         }
-
-        
     }
     return S_OK;
 }

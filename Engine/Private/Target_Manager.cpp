@@ -34,6 +34,16 @@ HRESULT CTarget_Manager::Add_RenderTarget(const _wstring& _strTargetTag, _uint _
     return S_OK;
 }
 
+HRESULT CTarget_Manager::Add_RenderTarget(const _wstring& _strTargetTag, CRenderTarget* _pRenderTarget)
+{
+    if (nullptr != Find_RenderTarget(_strTargetTag))
+        return E_FAIL;
+
+    m_RenderTargets.emplace(_strTargetTag, _pRenderTarget);
+    Safe_AddRef(_pRenderTarget);
+    return S_OK;
+}
+
 HRESULT CTarget_Manager::Add_RenderTarget_MSAA(const _wstring& _strTargetTag, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor, CRenderTarget** _pReturnRT)
 {
     if (nullptr != Find_RenderTarget(_strTargetTag))
@@ -113,6 +123,41 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring& _strMRTTag, ID3D11DepthStenci
 
     m_pContext->OMSetRenderTargets(iNumRenderTargets, pRenderTargets, nullptr == _pDSV ? m_pOriginalDSV : _pDSV);
     
+    return S_OK;
+}
+
+HRESULT CTarget_Manager::Begin_MRT(const vector<CRenderTarget*>& _MRT, ID3D11DepthStencilView* _pDSV, _bool _isClear)
+{
+    /* 외부에서 등록한 MRT를 그려주는 BeginMRT */
+    /* 지정한 MRT를 셰이더에 바인딩하는 함수 */
+    ID3D11ShaderResourceView* pSRV[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT] = {
+        nullptr
+    };
+
+    m_pContext->PSSetShaderResources(0, D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, pSRV);
+
+    /* 1. 현재 사용중인 BackBuffer RTV와 DSV 정보를 저장한다.  >>> 추후 다시 원상복구 하기 위해서. */
+    m_pContext->OMGetRenderTargets(1, &m_pBackRTV, &m_pOriginalDSV);
+
+    /* 2. MultiRenderTarget을 바인딩하기 위해서는 배열 형태의 데이터로 셰이더에 바인딩해야한다. 미리 배열 형태를 잡아주고 값을 채워 바인딩 할 것이다. */
+    ID3D11RenderTargetView* pRenderTargets[8] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+
+    _uint iNumRenderTargets = 0;
+    for (auto& pRenderTarget : _MRT)
+    {
+        if (true == _isClear)
+            pRenderTarget->Clear();
+
+        pRenderTargets[iNumRenderTargets++] = pRenderTarget->Get_RTV();
+    }
+
+    /* 3. MRT 를 바인딩한다. 이때 OriginDSV를 함께 바인딩한다. */
+    /* 4. 인자로 들어온 DSV가 nullptr이 아니라면, 인자로 들어온 DSV로 세팅 */
+    if (nullptr != _pDSV)
+        m_pContext->ClearDepthStencilView(_pDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+
+    m_pContext->OMSetRenderTargets(iNumRenderTargets, pRenderTargets, nullptr == _pDSV ? m_pOriginalDSV : _pDSV);
+
     return S_OK;
 }
 

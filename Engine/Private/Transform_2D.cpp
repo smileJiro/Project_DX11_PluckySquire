@@ -27,6 +27,12 @@ HRESULT CTransform_2D::Initialize(void* _pArg)
 	return S_OK;
 }
 
+void CTransform_2D::LookDir(_fvector _vDir)
+{
+	_float fRadian = atan2f(XMVectorGetY(_vDir), XMVectorGetX(_vDir));
+	Rotation(fRadian, {0,0,1});
+}
+
 CTransform_2D* CTransform_2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CTransform_2D* pInstance = new CTransform_2D(_pDevice, _pContext);

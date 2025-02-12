@@ -42,6 +42,12 @@ HRESULT CCustomFont::Render_Scaling(const _tchar* _pText, const _float2& _vPosit
 	return S_OK;
 }
 
+_vector CCustomFont::Measuring(_wstring _text)
+{
+    return m_pFont->MeasureString(_text.c_str(), true);
+
+}
+
 CCustomFont* CCustomFont::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _pFontFilePath)
 {
     CCustomFont* pInstance = new CCustomFont(_pDevice, _pContext);

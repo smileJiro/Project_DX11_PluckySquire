@@ -46,6 +46,8 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
 
+    pDesc->fHP = 5.f;
+
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 30.f;
 
@@ -69,6 +71,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
     m_pFSM->Set_PatrolBound();
 
@@ -208,7 +211,15 @@ void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CBarfBug::On_Hit(CGameObject* _pHitter, _float _fDamg)
 {
-	cout << "BarfBug Get Damg" <<this<<", "<< _fDamg << endl;
+	cout << "BarfBug Get Damg" << this << ", " << _fDamg << endl;
+	m_tStat.fHP -= _fDamg;
+	if (m_tStat.fHP < 0)
+	{
+		m_tStat.fHP = 0;
+        cout << "BarfBug Dead" << endl;
+	}
+
+    Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
 }
 
 HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -251,6 +262,14 @@ void CBarfBug::Change_Animation()
 
             case MONSTER_STATE::ATTACK:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BARF);
+                break;
+
+            case MONSTER_STATE::HIT:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DAMAGE);
+                break;
+
+            case MONSTER_STATE::DEAD:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
                 break;
 
             default:
@@ -385,6 +404,10 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             }
             break;
 
+        case DAMAGE:
+            Set_AnimChangeable(true);
+            break;
+
         default:
             break;
         }
@@ -447,6 +470,7 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 1.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
@@ -462,6 +486,7 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_FOOT;
     XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc->vHalfExtents.y, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */

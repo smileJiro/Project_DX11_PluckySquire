@@ -186,7 +186,7 @@ HRESULT CCollision_Manager::Add_Collider(const _wstring& _strSectionKey, OBJECT_
     _uint iGroupIndex = Convert_GroupID_ToIndex(_eGroupFilter);
     if (MAX_GROUPID <= iGroupIndex)
         return E_FAIL;
-
+	_pCollider->Set_CollisionGroupID(_eGroupFilter);
     (*pColliders)[iGroupIndex].push_back(_pCollider);
     Safe_AddRef(_pCollider);
     return S_OK;

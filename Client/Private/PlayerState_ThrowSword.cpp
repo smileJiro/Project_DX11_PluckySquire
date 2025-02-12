@@ -32,7 +32,25 @@ void CPlayerState_ThrowSword::Enter()
 	switch (eCoord)
 	{
 	case Engine::COORDINATE_2D:
+	{
+		F_DIRECTION eDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+		switch (eDir)
+		{
+		case Client::F_DIRECTION::LEFT:
+		case Client::F_DIRECTION::RIGHT:
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_INTO_RIGHT);
+			break;
+		case Client::F_DIRECTION::UP:
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_INTO_UP);
+			break;
+		case Client::F_DIRECTION::DOWN:
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_INTO_DOWN);
+			break;
+		default:
+			break;
+		}
 		break;
+	}
 	case Engine::COORDINATE_3D:
 	    m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SWORDTHROW_THROW_GT);
 		break;
@@ -54,4 +72,35 @@ void CPlayerState_ThrowSword::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
             m_pOwner->Set_State(CPlayer::IDLE);
         }
     }
+	else
+	{
+		F_DIRECTION eDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+		if ((_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_INTO_RIGHT == iAnimIdx
+			|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_INTO_UP == iAnimIdx
+			|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_INTO_DOWN== iAnimIdx)
+		{
+
+			switch (eDir)
+			{
+			case Client::F_DIRECTION::LEFT:
+			case Client::F_DIRECTION::RIGHT:
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_OUT_RIGHT);
+				break;
+			case Client::F_DIRECTION::UP:
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_OUT_UP);
+				break;
+			case Client::F_DIRECTION::DOWN:
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_OUT_DOWN);
+				break;
+			default:
+				break;
+			}
+		}
+		else if ((_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_OUT_RIGHT == iAnimIdx
+			|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_OUT_UP == iAnimIdx
+			|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_OUT_DOWN == iAnimIdx)
+		{
+			m_pOwner->Set_State(CPlayer::IDLE);
+		}
+	}
 }

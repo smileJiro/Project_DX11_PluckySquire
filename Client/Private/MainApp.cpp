@@ -24,6 +24,7 @@
 #include "RenderGroup_Lighting.h"
 #include "RenderGroup_AfterEffect.h"
 #include "RenderGroup_Combine.h"
+#include "RenderGroup_PostProcessing.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -53,6 +54,7 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(Ready_RenderTargets()))
 		return E_FAIL;
+
 	if (FAILED(Ready_RenderGroup()))
 		return E_FAIL;
 	
@@ -262,6 +264,21 @@ HRESULT CMainApp::Ready_RenderGroup()
 		return E_FAIL;
 	Safe_Release(pRenderGroup_Lighting);
 	pRenderGroup_Lighting = nullptr;
+	/* RG_3D, PR3D_POSTPROCESSING */
+	CRenderGroup_PostProcessing::RG_POST_DESC RG_PostDesc;
+	RG_PostDesc.iBlurLevel = 3;
+	RG_PostDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_PostDesc.iPriorityID = PR3D_POSTPROCESSING;
+	CRenderGroup_PostProcessing* pRenderGroup_Post = CRenderGroup_PostProcessing::Create(m_pDevice, m_pContext, &RG_PostDesc);
+	if (nullptr == pRenderGroup_Post)
+	{
+		MSG_BOX("Failed Create PR3D_POSTPROCESSING");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Post->Get_RenderGroupID(), pRenderGroup_Post->Get_PriorityID(), pRenderGroup_Post)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_Post);
+	pRenderGroup_Post = nullptr;
 
 	/* RG_3D, PR3D_COMBINE */
 	CRenderGroup_Combine::RG_MRT_DESC RG_CombineDesc;
@@ -279,6 +296,7 @@ HRESULT CMainApp::Ready_RenderGroup()
 		return E_FAIL;
 	Safe_Release(pRenderGroup_Combine);
 	pRenderGroup_Combine = nullptr;
+
 
 	/* RG_3D, PR3D_BLEND */
 	CRenderGroup_MRT::RG_MRT_DESC RG_BlendDesc;
@@ -443,20 +461,6 @@ HRESULT CMainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
 		return E_FAIL;
 
-#pragma region Light,Shadow(Old)
-	///* Target_Shade */ /* HDR */
-	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Shade"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
-	//	return E_FAIL;
-	//
-	///* Target_Specular */ /* HDR */
-	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Specular"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
-	//	return E_FAIL;
-
-	///* Target_LightDepth */
-	//if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_LightDepth"), g_iShadowWidth, g_iShadowHeight, DXGI_FORMAT_R32_FLOAT, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
-	//	return E_FAIL;
-
-#pragma endregion
 	/* Target_DirectLightAcc */ 
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_DirectLightAcc"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
@@ -469,6 +473,7 @@ HRESULT CMainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Combine"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
+	/* Target_EffectColor*/
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_EffectColor"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
 		return E_FAIL;
 

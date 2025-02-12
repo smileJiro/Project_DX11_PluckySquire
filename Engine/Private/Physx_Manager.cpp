@@ -99,6 +99,10 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 	//  -> m_fFixtedTimeStep을 수정하거나, 다음 프레임으로 물ㄹ ㅣ시뮬레이션을 미룸. 
 	//   -> 만약 다음 프레임으로 물리 시뮬을 미루면, 
 	//
+
+	if (nullptr != m_pPhysx_EventCallBack)
+		m_pPhysx_EventCallBack->Update();
+
 	m_fTimeAcc += _fTimeDelta;
 	if (m_fFixtedTimeStep <= m_fTimeAcc)
 	{
@@ -108,8 +112,6 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 		//fetch 끝났는지 확인
 		if (m_pPxScene->fetchResults(true))
 		{
-
-
 #ifdef _DEBUG
 			if (true == m_isDebugRender)
 			{
@@ -121,8 +123,6 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 
 	}
 
-	if (nullptr != m_pPhysx_EventCallBack)
-		m_pPhysx_EventCallBack->Update();
 //
 //	//기존 코드
 //	m_pPxScene->simulate(1.f / 60.f);
@@ -195,6 +195,42 @@ _bool CPhysx_Manager::RayCast_Nearest(const _float3& _vOrigin, const _float3& _v
 		if(nullptr != _pOutPos)
 			*_pOutPos = _float3(hit.block.position.x, hit.block.position.y, hit.block.position.z);
 
+	}
+
+	return isResult;
+}
+
+_bool CPhysx_Manager::RayCast_Nearest_GroupFilter(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _int _iGroupNum, _float3* _pOutPos, CActorObject** _ppOutActorObject)
+{
+	PxRaycastHit hitBuffer[10]; // 최대 10개까지 저장
+	PxRaycastBuffer hit(hitBuffer, 10); // 버퍼 설정
+	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
+	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
+
+	_bool isResult = m_pPxScene->raycast(vOrigin, vRayDir, _fMaxDistance, hit);
+
+	for (PxU32 i = 0; i < hit.nbTouches; i++) {
+		PxRigidActor* pActor = hit.touches[i].actor;
+		ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+
+		//지정된 그룹 제외
+		if (_iGroupNum & pActorUserData->iObjectGroup)
+		{
+			isResult = false;
+		}
+		else
+		{
+			if (nullptr != _ppOutActorObject)
+			{
+				if (nullptr != pActorUserData)
+					*_ppOutActorObject = pActorUserData->pOwner;
+			}
+			if (nullptr != _pOutPos)
+				*_pOutPos = _float3(hit.block.position.x, hit.block.position.y, hit.block.position.z);
+
+			isResult = true;
+			break;
+		}
 	}
 
 	return isResult;
