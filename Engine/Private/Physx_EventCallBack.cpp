@@ -187,9 +187,10 @@ void CPhysx_EventCallBack::Erase_StayTrigger(_ulonglong _ID, map<_ulonglong, pai
 	auto& iter = m_StayTrigger.find(_ID);
 	if (iter == m_StayTrigger.end())
 		return;
+	iter = m_StayTrigger.erase(iter);
 
 	if (nullptr != _pOutNextiter)
-		*_pOutNextiter = m_StayTrigger.erase(iter);
+		*_pOutNextiter = iter;
 
 	if (nullptr != _isEmpty)
 		*_isEmpty = m_StayTrigger.empty();
