@@ -32,7 +32,7 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
 	if (fProgress >= fMotionCancelProgress)
 	{
         if(m_pOwner->Is_AttackTriggerActive())
-            m_pOwner->Set_AttackTriggerActive(false); 
+            m_pOwner->End_Attack();
         if (m_bCombo)
         {
             m_iComboCount++;
@@ -45,7 +45,7 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
                     m_pOwner->Set_2DDirection(eNewDir);
                 }
                 Switch_To_AttackAnimation(m_iComboCount);
-                m_pOwner->Set_AttackTriggerActive(true);
+                m_pOwner->Start_Attack((CPlayer::ATTACK_TYPE)(CPlayer::ATTACK_TYPE_NORMAL1 + m_iComboCount));
             }
             m_bCombo = false;
         }
@@ -84,13 +84,13 @@ void CPlayerState_Attack::Enter()
     }
 
 	Switch_To_AttackAnimation(m_iComboCount);
-    m_pOwner->Set_AttackTriggerActive(true);
+    m_pOwner->Start_Attack(CPlayer:: ATTACK_TYPE_NORMAL1);
 }
 
 void CPlayerState_Attack::Exit()
 {
     if (m_pOwner->Is_AttackTriggerActive())
-        m_pOwner->Set_AttackTriggerActive(false);
+        m_pOwner->End_Attack();
 }
 
 void CPlayerState_Attack::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

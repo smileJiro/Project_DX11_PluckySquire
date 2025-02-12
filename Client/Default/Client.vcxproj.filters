@@ -771,7 +771,6 @@
     <ClInclude Include="..\Public\MapObjectFactory.h">
       <Filter>92.MapObjectFactory</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
     <ClInclude Include="..\Public\2DMapActionObject.h">
       <Filter>02.GameObjects\MapObject\2D</Filter>
     </ClInclude>
@@ -856,6 +855,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Section_2D_PlayMap.h">
       <Filter>04.Section\Section_2D\PlayMap_2D\00. super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpAttack.h">
+      <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1216,7 +1218,6 @@
     <ClCompile Include="..\Private\UI_JotMain.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp" />
     <ClCompile Include="..\Private\2DMapActionObject.cpp">
       <Filter>02.GameObjects\MapObject\2D</Filter>
     </ClCompile>
@@ -1301,6 +1302,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Section_2D_PlayMap.cpp">
       <Filter>04.Section\Section_2D\PlayMap_2D\00. super</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp">
+      <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

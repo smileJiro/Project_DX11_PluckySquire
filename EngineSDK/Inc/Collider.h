@@ -37,12 +37,15 @@ public:
 public:
 	// Get
 	TYPE					Get_Type() const { return m_eType; }
+	_uint						Get_CollisionGroupID() { return m_iCollisionGroupID; }
 	_uint					Get_ColliderID() const { return m_iColliderID; }
 	CGameObject*			Get_Owner() const { return m_pOwner; }
 	_float2					Get_Position() const { return m_vPosition; }
 	_bool					Is_Block() const { return m_isBlock; }
 	_bool					Is_Trigger() const { return m_isTrigger; }
 	// Set 
+	void						Set_CollisionGroupID(_uint _iGroupID) { m_iCollisionGroupID = _iGroupID; }
+	void						Set_Offset(_float2 _vOffset) { m_vOffsetPosition = _vOffset; }
 #ifdef _DEBUG
 	void					Set_DebugColor(const _float4& _vDebugColor) { m_vDebugColor = _vDebugColor; }
 #endif // _DEBUG
@@ -51,6 +54,7 @@ protected:
 	static _uint			s_iNextColliderID;
 
 protected:
+	_uint						m_iCollisionGroupID = 0;
 	_uint					m_iColliderID = 0;
 	TYPE					m_eType = TYPE::TYPE_LAST;
 	_bool					m_isTrigger = false;
