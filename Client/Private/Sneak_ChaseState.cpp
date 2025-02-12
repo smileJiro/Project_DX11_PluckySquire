@@ -63,10 +63,10 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 		return;
 	}
 
-	//추적 범위 벗어나면 가까운 웨이포인트로 복귀하고 IDLE 전환 (복귀하도록 수정해야함)
+	//추적 범위 벗어나면 가까운 정찰 웨이포인트로 복귀
 	if (fDis > Get_CurCoordRange(MONSTER_STATE::CHASE))
 	{
-		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_BACK, m_pFSM);
 	}
 	else
 	{
@@ -78,8 +78,10 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 			m_isTurn = true;
 			m_isMove = false;
 		}
+		else if (false == m_isOnWay)
+			Determine_NextDirection(m_pTarget->Get_FinalPosition(), &m_vDir);
 
-		//추적
+		//회전
 		if (true == m_isTurn && false == m_isMove)
 		{
 			if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
@@ -87,11 +89,26 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 				m_isMove = true;
 			}
 		}
-		//매프레임 회전하는거 수정해야함
-		if(true == m_isMove)
+
+		//이동
+		if (true == m_isMove)
 		{
 			static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
-			m_isTurn = false;
+
+			//이미 경로가 있을때
+			if (true == m_isOnWay && false == m_isPathFind)
+			{
+				//도착하면 다음 웨이포인트로 목표위치 바꿈
+				if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.1f))
+				{
+					++m_iCurWayIndex;
+					//목표 위치에 도착했으면 자유이동으로 전환
+					if (m_Ways.size() <= m_iCurWayIndex)
+					{
+						m_isOnWay = false;
+					}
+				}
+			}
 		}
 	}
 }
