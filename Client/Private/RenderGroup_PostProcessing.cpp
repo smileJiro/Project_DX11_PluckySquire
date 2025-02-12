@@ -36,7 +36,7 @@ HRESULT CRenderGroup_PostProcessing::Render(CShader* _pRTShader, CVIBuffer_Rect*
 
     /* 렌더 콜 한번에 여러번 그리게할거야 for 문 돌면서 renderTarget을 등록하고, srv를 다른 렌더타겟의 srv로 */
     static _int iBindMaxSizeRTs = 8;
-    static vector<CRenderTarget*> DrawMRT(iBindMaxSizeRTs);
+    static vector<CRenderTarget*> DrawMRT;
     for (int i = 0; i < m_BlurRenderTargets.size(); ++i)
     {
         // 1. Blur RenderTarget을 MRT로 만들고 바인딩.
