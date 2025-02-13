@@ -164,15 +164,6 @@ void CBarfBug::Update(_float _fTimeDelta)
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
     }
 
-    //// TestCode : еб©У
-    if (COORDINATE_2D == Get_CurCoord())
-    {
-		for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
-        {
-            m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_pColliderCom);
-        }
-    }
-
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 

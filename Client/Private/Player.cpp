@@ -84,6 +84,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720);
     pDesc->tTransform3DDesc.fSpeedPerSec = 8.f;
     
+    pDesc->iCollisionGroupID = OBJECT_GROUP::PLAYER;
     /* 너무 길어서 함수로 묶고싶다 하시는분들은 주소값 사용하는 데이터들 동적할당 하셔야합니다. 아래처럼 지역변수로 하시면 날라가니 */
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
@@ -368,17 +369,17 @@ void CPlayer::Update(_float _fTimeDelta)
     COORDINATE eCoord  =  Get_CurCoord();
     if (Is_Sneaking())
         int a = 0;
-    if (COORDINATE_2D == eCoord)
-    {
-        //// TestCode : 태웅
-        _uint iSectionKey = RG_2D + PR2D_SECTION_START;
-        if(m_pBody2DColliderCom->Is_Active())
-            m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pBody2DColliderCom);
-		if (m_pBody2DTriggerCom->Is_Active())
-            m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_TRIGGER, m_pBody2DTriggerCom);
-		if (m_pAttack2DTriggerCom->Is_Active())
-			m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pAttack2DTriggerCom);
-    }
+  //  if (COORDINATE_2D == eCoord)
+  //  {
+  //      //// TestCode : 태웅
+  //      _uint iSectionKey = RG_2D + PR2D_SECTION_START;
+  //      if(m_pBody2DColliderCom->Is_Active())
+  //          m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pBody2DColliderCom);
+		//if (m_pBody2DTriggerCom->Is_Active())
+  //          m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_TRIGGER, m_pBody2DTriggerCom);
+		//if (m_pAttack2DTriggerCom->Is_Active())
+		//	m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pAttack2DTriggerCom);
+  //  }
 
    //cout << "Sneak" << Is_Sneaking() << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */

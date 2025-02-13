@@ -49,9 +49,6 @@ void C2DMapDefaultObject::Priority_Update(_float _fTimeDelta)
 }
 void C2DMapDefaultObject::Update(_float _fTimeDelta)
 {
-    if (m_pColliderCom)
-        m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::MAPOBJECT, m_pColliderCom);
-
     __super::Update(_fTimeDelta);
 }
 

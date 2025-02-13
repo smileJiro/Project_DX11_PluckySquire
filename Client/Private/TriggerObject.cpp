@@ -146,8 +146,6 @@ HRESULT CTriggerObject::Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
 
 void CTriggerObject::Update(_float _fTimeDelta)
 {
-    if(nullptr!= m_pColliderCom)
-        m_pGameInstance->Add_Collider(m_strSectionName,TRIGGER_OBJECT, m_pColliderCom);
 
     __super::Update(_fTimeDelta);
 }

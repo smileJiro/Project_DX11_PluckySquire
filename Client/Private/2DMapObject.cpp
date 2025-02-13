@@ -47,8 +47,6 @@ void C2DMapObject::Priority_Update(_float _fTimeDelta)
 }
 void C2DMapObject::Update(_float _fTimeDelta)
 {
-    if (m_pColliderCom)
-        m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::MAPOBJECT, m_pColliderCom);
 
     __super::Update(_fTimeDelta);
 }
@@ -78,7 +76,6 @@ HRESULT C2DMapObject::Render_Shadow()
 
 HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
 {
-
     Desc->fCollider_Offset_Pos.x *= RATIO_BOOK2D_X;
     Desc->fCollider_Offset_Pos.y *= RATIO_BOOK2D_Y;
     Desc->fCollider_Offset_Pos.y *= -1.f;
@@ -115,6 +112,8 @@ HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
         AABBDesc.vScale = { 1.0f, 1.0f };
         AABBDesc.vOffsetPosition = Desc->fCollider_Offset_Pos;
         AABBDesc.isBlock = _isBlock;
+        AABBDesc.iCollisionGroupID = Desc->iCollisionGroupID;
+        
         if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
             TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
             return E_FAIL;
@@ -131,6 +130,7 @@ HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
         CircleDesc.vScale = { 1.0f, 1.0f };
         CircleDesc.vOffsetPosition = Desc->fCollider_Offset_Pos;
         CircleDesc.isBlock = _isBlock;
+        CircleDesc.iCollisionGroupID = Desc->iCollisionGroupID;
         if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
             TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &CircleDesc)))
             return E_FAIL;

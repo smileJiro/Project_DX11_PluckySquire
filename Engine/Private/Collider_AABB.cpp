@@ -58,6 +58,8 @@ void CCollider_AABB::Late_Update(_float _fTimeDelta)
         return;
 
     Update_OwnerTransform();
+
+    __super::Late_Update(_fTimeDelta); // Collision_Manager¿¡ µî·Ï
 //#ifdef _DEBUG
 //    m_pGameInstance->Add_DebugComponent(this);
 //#endif // _DEBUG
