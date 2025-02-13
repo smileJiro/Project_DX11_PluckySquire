@@ -37,80 +37,35 @@ void CPartObject::Priority_Update(_float _fTimeDelta)
 
 void CPartObject::Update(_float _fTimeDelta)
 {
-    switch (m_pControllerTransform->Get_CurCoord())
+	COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
+	_matrix matWorld = m_pControllerTransform->Get_WorldMatrix(eCurCoord);
+	if (nullptr != m_pSocketMatrix[eCurCoord])
     {
-    case Engine::COORDINATE_2D:
-        if (nullptr != m_pParentMatrices[COORDINATE_2D])
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_2D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_2D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_2D]));
-        else
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_2D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_2D));
-        break;
-    case Engine::COORDINATE_3D:
-        if(nullptr != m_pParentMatrices[COORDINATE_3D])
-        {
-            if (m_pSocketMatrix)
-            {
-                _matrix		SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
-
-           /*     for (size_t i = 0; i < 3; i++)
-                    SocketMatrix.r[i] = XMVector3Normalize(SocketMatrix.r[i]);*/
-                XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], 
-                    m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) 
-                    * SocketMatrix 
-                    * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
-
-            }
-            else
-            {
-				XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
-            }
-
-        }
-        else
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D));
-        break;
-    default:
-        break;
+        _matrix		SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix[eCurCoord]);
+             for (size_t i = 0; i < 3; i++)
+                 SocketMatrix.r[i] = XMVector3Normalize(SocketMatrix.r[i]);
+        matWorld *= SocketMatrix;
     }
-
+	if (nullptr != m_pParentMatrices[eCurCoord])
+        matWorld *= XMLoadFloat4x4(m_pParentMatrices[eCurCoord]);
+    XMStoreFloat4x4(&m_WorldMatrices[eCurCoord], matWorld);
      __super::Update(_fTimeDelta);
 }
 
 void CPartObject::Late_Update(_float _fTimeDelta)
 {
-    switch (m_pControllerTransform->Get_CurCoord())
+    COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
+    _matrix matWorld = m_pControllerTransform->Get_WorldMatrix(eCurCoord);
+    if (nullptr != m_pSocketMatrix[eCurCoord])
     {
-    case Engine::COORDINATE_2D:
-        if (nullptr != m_pParentMatrices[COORDINATE_2D])
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_2D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_2D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_2D]));
-        else
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_2D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_2D));
-        break;
-    case Engine::COORDINATE_3D:
-        if (nullptr != m_pParentMatrices[COORDINATE_3D])
-        {
-            if (m_pSocketMatrix)
-            {
-                _matrix		SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
-                for (size_t i = 0; i < 3; i++)
-                    SocketMatrix.r[i] = XMVector3Normalize(SocketMatrix.r[i]);
-                XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D],
-                    m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D)
-                    * SocketMatrix
-                    * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
-            }
-            else
-            {
-                XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
-            }
-        }
-        else
-            XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D));
-        break;
-    default:
-        break;
+        _matrix		SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix[eCurCoord]);
+             for (size_t i = 0; i < 3; i++)
+                 SocketMatrix.r[i] = XMVector3Normalize(SocketMatrix.r[i]);
+        matWorld *= SocketMatrix;
     }
-
+    if (nullptr != m_pParentMatrices[eCurCoord])
+        matWorld *= XMLoadFloat4x4(m_pParentMatrices[eCurCoord]);
+    XMStoreFloat4x4(&m_WorldMatrices[eCurCoord], matWorld);
     __super::Late_Update(_fTimeDelta);
 }
 

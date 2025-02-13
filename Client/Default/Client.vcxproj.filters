@@ -871,6 +871,16 @@
     <ClInclude Include="..\Public\CarriableObject.h">
       <Filter>02.GameObjects\Carriable</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_PickUpObject.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_ThrowObject.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dice.h">
+      <Filter>02.GameObjects\Carriable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Domino.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1333,6 +1343,16 @@
     <ClCompile Include="..\Private\CarriableObject.cpp">
       <Filter>02.GameObjects\Carriable</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_PickUpObject.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_ThrowObject.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dice.cpp">
+      <Filter>02.GameObjects\Carriable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Domino.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
