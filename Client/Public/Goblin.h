@@ -19,6 +19,34 @@ public:
 		LAST,
 	};
 
+	enum Animation2D
+	{
+		WAKE_2D,
+		ALERT_DOWN,
+		ALERT_RIGHT,
+		ALERT_UP,
+		CHASE_DOWN,
+		CHASE_RIGHT,
+		CHASE_UP,
+		DEATH_DOWN,
+		DEATH_RIGHT,
+		DEATH_UP,
+		HIT_DOWN,
+		HIT_RIGHT,
+		HIT_UP,
+		IDLE_DOWN,
+		IDLE_RIGHT,
+		IDLE_UP,
+		PATROL_DOWN,
+		PATROL_RIGHT,
+		PATROL_UP,
+		SLEEP1_V02,
+		SLEEP2_V02,
+		SLEEP1,
+		SLEEP2,
+		ANIM2D_LAST
+	};
+
 private:
 	CGoblin(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CGoblin(const CGoblin& _Prototype);
@@ -36,6 +64,11 @@ public:
 	virtual void Attack() override;
 	virtual void Change_Animation() override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
+
+public:
+	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);

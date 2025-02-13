@@ -397,6 +397,9 @@
     <Filter Include="03.Components\FSM\State\Hit">
       <UniqueIdentifier>{4983bbf5-cb92-4f92-8db8-82bb595203d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Bulb">
+      <UniqueIdentifier>{838a1b77-e59c-4df8-86c2-66b5c85161a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -880,6 +883,12 @@
     <ClInclude Include="..\Public\DeadState.h">
       <Filter>03.Components\FSM\State\Hit</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Bulb.h">
+      <Filter>02.GameObjects\Bulb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_BackState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1347,6 +1356,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\DeadState.cpp">
       <Filter>03.Components\FSM\State\Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bulb.cpp">
+      <Filter>02.GameObjects\Bulb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sneak_BackState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

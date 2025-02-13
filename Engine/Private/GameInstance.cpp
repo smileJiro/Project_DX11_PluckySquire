@@ -551,6 +551,11 @@ HRESULT CGameInstance::Load_IBL(const _wstring& _strIBLJsonPath)
 	return m_pNewRenderer->Load_IBL(_strIBLJsonPath);
 }
 
+HRESULT CGameInstance::Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer)
+{
+	return m_pNewRenderer->Bind_DofConstBuffer(_szConstBufferName, _pConstBuffer);
+}
+
 HRESULT CGameInstance::Add_DebugComponent_New(CComponent* _pDebugCom)
 {
 	if (nullptr == m_pNewRenderer)
@@ -1170,6 +1175,11 @@ _fvector CGameInstance::Rotate_Vector(_fvector _vAxis, _fvector _vVector, _float
 _uint CGameInstance::Compare_VectorLength(_fvector _vVector1, _fvector _vVector2)
 {
 	return m_pGlobalFunction_Manager->Compare_VectorLength(_vVector1, _vVector2);
+}
+
+_float CGameInstance::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType)
+{
+	return m_pGlobalFunction_Manager->Calculate_Ratio(_fTime, _fTimeDelta, _iRatioType);
 }
 
 CCamera* CGameInstance::Get_CurrentCamera()

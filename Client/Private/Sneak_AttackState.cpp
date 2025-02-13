@@ -38,7 +38,7 @@ void CSneak_AttackState::State_Update(_float _fTimeDelta)
 
 	//컷씬으로 들어가며 초기화
 	//Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
-	Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+	Event_ChangeMonsterState(MONSTER_STATE::SNEAK_BACK, m_pFSM);
 }
 
 void CSneak_AttackState::State_Exit()

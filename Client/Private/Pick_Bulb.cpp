@@ -2,6 +2,8 @@
 #include "Pick_Bulb.h"
 #include "GameInstance.h"
 
+#include "PlayerData_Manager.h"
+
 
 
 CPick_Bulb::CPick_Bulb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -70,7 +72,8 @@ HRESULT CPick_Bulb::Render()
 	{
 		__super::Render(0, PASS_VTXPOSTEX::DEFAULT);
 
-		wsprintf(m_tFont, TEXT("999"));
+		_wstring szBulbCount = to_wstring(CPlayerData_Manager::GetInstance()->Get_BulbCount());
+		wsprintf(m_tFont, szBulbCount.c_str());
 		m_pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 11.5f, g_iWinSizeY / 14.f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 	}
 	

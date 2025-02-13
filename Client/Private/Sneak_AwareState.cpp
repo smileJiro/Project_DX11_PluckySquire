@@ -53,7 +53,7 @@ void CSneak_AwareState::State_Update(_float _fTimeDelta)
 		//인식 되지 않고 소리도 안나면 idle 전환 (지금 애니메이션 재생동안은 전환 안되니까)
 		else
 		{
-			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_BACK, m_pFSM);
 		}
 	}
 }

@@ -5,10 +5,11 @@
 #include "Collider.h"
 //#include "Coll.h"
 
-
+_uint C2DMapObject::g_iTmpCount = 0;
 C2DMapObject::C2DMapObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: CModelObject(pDevice, pContext)
+	:CModelObject(pDevice, pContext)
 {
+	m_iInstanceID = INT_MAX - (g_iTmpCount++);
 }
 
 C2DMapObject::C2DMapObject(const C2DMapObject& Prototype)
@@ -182,14 +183,17 @@ HRESULT C2DMapObject::Export(HANDLE hFile)
 {
 
 	_vector vPos = Get_FinalPosition();
+	_float3 vScale = Get_FinalScale();
 
 	DWORD		dwByte(0);
 	_uint		iModelIndex = nullptr != m_pModelInfo ? m_pModelInfo->Get_ModelIndex() : 0;
 	_float2		fPos = { XMVectorGetX(vPos), XMVectorGetY(vPos) };
+	_float2		fScale = { vScale.x,vScale.y };
 	_bool		isOverride = false;
 
 	WriteFile(hFile, &iModelIndex, sizeof(_uint), &dwByte, nullptr);
 	WriteFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
+	WriteFile(hFile, &vScale, sizeof(_float2), &dwByte, nullptr);
 	WriteFile(hFile, &isOverride, sizeof(_bool), &dwByte, nullptr);
 
 	return S_OK;
@@ -204,14 +208,17 @@ HRESULT C2DMapObject::Import(HANDLE hFile, vector<C2DMapObjectInfo*>& _ModelInfo
 	DWORD		dwByte(0);
 	_uint		iModelIndex = 0;
 	_float2		fPos = { };
+	_float2		fScale = { };
 	_bool		isOverride = false;
 	ReadFile(hFile, &iModelIndex, sizeof(_uint), &dwByte, nullptr);
 	ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
+	ReadFile(hFile, &fScale, sizeof(_float2), &dwByte, nullptr);
 	ReadFile(hFile, &isOverride, sizeof(_bool), &dwByte, nullptr);
 
 	m_fDefaultPosition = fPos;
 	m_fRenderTargetSize =  _fRenderTargetSIze;
-
+	if (_ModelInfos.size() < iModelIndex)
+		return E_FAIL;
 	m_pModelInfo = _ModelInfos[iModelIndex];
 	m_strModelName = StringToWstring(_ModelInfos[iModelIndex]->Get_ModelName());
 	Desc.Build_2D_Model(
@@ -219,7 +226,7 @@ HRESULT C2DMapObject::Import(HANDLE hFile, vector<C2DMapObjectInfo*>& _ModelInfo
 		StringToWstring(m_pModelInfo->Get_ModelName()),
 		L"Prototype_Component_Shader_VtxPosTex");
 
-	Desc.Build_2D_Transform(m_fDefaultPosition);
+	Desc.Build_2D_Transform(m_fDefaultPosition,fScale);
 
 
 	if (FAILED(__super::Initialize(&Desc)))

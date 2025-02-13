@@ -31,9 +31,9 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    pDesc->fAlertRange = 3.f;
+    pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 2.f;
+    pDesc->fAttackRange = 1.f;
 
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 30.f;

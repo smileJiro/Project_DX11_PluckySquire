@@ -8,7 +8,19 @@ namespace Engine
 	class CActor;
 
 #pragma region Shader ConstantBuffer Struct
-	
+	typedef struct tagDofConstData
+	{
+		float			fSensorHeight = 24.0f;
+		float			fAperture = 2.8f; // 조리개 크기
+		float			fFocusDistance = 5.0f; // 초점 평면거리
+		float			fFocalLength = 0; // Fovy와 FocusDistance를 기반으로 구해지는 값.
+		float			fDofBrightness = 1.5f; // Fovy와 FocusDistance를 기반으로 구해지는 값.
+		float			fBaseBlurPower = 0.1f;
+		float			dummy1;
+		float			dummy2;
+		XMFLOAT3		vBlurColor = { 1.0f, 1.0f, 1.0f };
+		float			dummy3;
+	}CONST_DOF;
 	typedef struct tagGlobalIBLConstData
 	{
 		float fStrengthIBL = 1.0f;
@@ -23,11 +35,11 @@ namespace Engine
 	}CONST_IBL;
 	typedef struct tagMaterialDefault
 	{
-		XMFLOAT3	Albedo = XMFLOAT3(1.0f, 1.0f, 1.0f); // 12byte
+		XMFLOAT4	Albedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f); // 12byte
 		float		Roughness = 0.5f;					 // 16byte(o)
 		float		Metallic = 0.0f;					 // 4byte
 		float		AO = 0.7f;
-		XMFLOAT2	dummy;								 // 16byte
+		float		dummy;								 // 16byte
 	}MATERIAL_PS;
 	typedef struct tagBasicPixelConstData // 동적변화가 없는 애들위주로.
 	{

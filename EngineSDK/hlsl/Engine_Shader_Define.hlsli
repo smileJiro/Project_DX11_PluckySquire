@@ -8,11 +8,11 @@
 
 struct Material_PS
 {
-    float3 Albedo; // baseColor
+    float4 Albedo; // baseColor
     float Roughness;
     float Metallic;
     float AO;
-    float2 dummy;
+    float dummy;
 };
 
 

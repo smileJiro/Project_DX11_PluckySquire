@@ -12,6 +12,14 @@ class CPlayerData_Manager final : public CBase
 	DECLARE_SINGLETON(CPlayerData_Manager)
 
 public:
+	enum PLAYERDATA_TYPE
+	{
+		PLAYER_ITEM,
+		BULB,
+
+		PLAYERDATA_TYPE_END
+	};
+
 	enum PLAYERITEM_TYPE 
 	{
 		FLIPPING_GLOVE,
@@ -34,9 +42,10 @@ public:
 
 public:
 	HRESULT					Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos);
-	HRESULT					Spawn_Bulb(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag);
+	HRESULT					Spawn_Bulb(_uint _iPrototypeLevelID, _uint _iLevelID);
 	
 	void					Get_PlayerItem(_wstring _szItemTag);
+	void					Increase_BulbCount() { m_iBulbCount += 1; };
 
 private: 
 	CGameInstance*						m_pGameInstance = { nullptr };
@@ -45,12 +54,15 @@ private:
 
 private:
 	map<_wstring, pair<_bool, class CPlayerItem*>>	m_ItemState;
-	class CPlayerItem*						m_pCurItem = { nullptr };
+	class CPlayerItem*					m_pCurItem = { nullptr };
 
 	_uint								m_iBulbCount = {};
 
 	// 이름 저장용
 	pair<_wstring, _wstring>			m_ItemTags[ITEM_END] = {}; // first -> 구분용 이름, second -> model용 이름
+
+	//// Bulb
+	//list<class CBulb*>					m_Bulbs;
 
 private:
 	void					Set_Tags();

@@ -36,7 +36,7 @@ HRESULT CTranslation_Module::Initialize(const json& _jsonModuleInfo)
     {
         if (_jsonModuleInfo["Datas"].contains("Float"))
         {
-            for (_int i = 0; i < _jsonModuleInfo["Datas"]["Float"].size(); ++i)
+            for (_uint i = 0; i < _jsonModuleInfo["Datas"]["Float"].size(); ++i)
             {
                 m_FloatDatas.emplace(_jsonModuleInfo["Datas"]["Float"][i]["Name"], _jsonModuleInfo["Datas"]["Float"][i]["Value"]);
             }
@@ -44,7 +44,7 @@ HRESULT CTranslation_Module::Initialize(const json& _jsonModuleInfo)
 
         if (_jsonModuleInfo["Datas"].contains("Float3"))
         {
-            for (_int i = 0; i < _jsonModuleInfo["Datas"]["Float3"].size(); ++i)
+            for (_uint i = 0; i < _jsonModuleInfo["Datas"]["Float3"].size(); ++i)
             {
                 _float3 vData;
                 vData.x = _jsonModuleInfo["Datas"]["Float3"][i]["Value"][0];
@@ -149,7 +149,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
     {
         _vector vOrigin = XMLoadFloat3(&m_Float3Datas["Origin"]);
         _float fAmount = m_FloatDatas["Amount"];
-        for (_int i = 0; i < _iNumInstance; ++i)
+        for (_uint i = 0; i < _iNumInstance; ++i)
         {
 
             XMStoreFloat3((_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset),
@@ -161,7 +161,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
     case LINEAR_VELOCITY:
     {
         _float3 vAmount = m_Float3Datas["Amount"];
-        for (_int i = 0; i < _iNumInstance; ++i)
+        for (_uint i = 0; i < _iNumInstance; ++i)
         {
             *(_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset) = vAmount;
         }
@@ -169,7 +169,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
     }
     case INIT_ACCELERATION:
     {
-        for (_int i = 0; i < _iNumInstance; ++i)
+        for (_uint i = 0; i < _iNumInstance; ++i)
         {
 
             *(_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset)
@@ -182,7 +182,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
     {
         _vector vAmount = XMLoadFloat3(&m_Float3Datas["Amount"]) * _fTimeDelta;
 
-        for (_int i = 0; i < _iNumInstance; ++i)
+        for (_uint i = 0; i < _iNumInstance; ++i)
         {
 
             _float3* pAcceleration = (_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset);
@@ -194,7 +194,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
     case DRAG:
     {
         _float fAmount = m_FloatDatas["Amount"];
-        for (_int i = 0; i < _iNumInstance; ++i)
+        for (_uint i = 0; i < _iNumInstance; ++i)
         {
 
             _float3* pVelocity = (_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset);        
@@ -208,7 +208,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
         _vector vAxis = XMVector3Normalize(XMLoadFloat3(&m_Float3Datas["Axis"]));
         _float fAmount = m_FloatDatas["Amount"];
         _float fPullAmount = m_FloatDatas["Pull Amount"];
-        for (_int i = 0; i < _iNumInstance; ++i)
+        for (_uint i = 0; i < _iNumInstance; ++i)
         {
 
             _vector vDiff = XMVectorSetW(XMLoadFloat4((_float4*)(_pBuffer + (i * _iTotalSize) + _iPositionOffset)) - vOrigin, 0.f);
@@ -226,7 +226,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
     {
         _vector vOrigin = XMLoadFloat3(&m_Float3Datas["Origin"]);
         _vector vAmount = XMLoadFloat3(&m_Float3Datas["Amount"]);
-        for (_int i = 0; i < _iNumInstance; ++i)
+        for (_uint i = 0; i < _iNumInstance; ++i)
         {
 
             _float3* pAcceleration = (_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset);
@@ -242,7 +242,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
     case LIMIT_ACCELERATION:
     {
         _float fAmount = m_FloatDatas["Amount"];
-        for (_int i = 0; i < _iNumInstance; ++i)
+        for (_uint i = 0; i < _iNumInstance; ++i)
         {
 
             _float3* pAcceleration = (_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset);
@@ -259,7 +259,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
         _vector vAxis = XMVector3Normalize(XMLoadFloat3(&m_Float3Datas["Axis"]));
         _float fOffset = m_FloatDatas["Offset"];
         _float3 vRandomOffset = m_Float3Datas["Random Offset"];
-        for (_int i = 0; i < _iNumInstance; ++i)
+        for (_uint i = 0; i < _iNumInstance; ++i)
         {
 
             _float4* pPosition = (_float4*)(_pBuffer + (i * _iTotalSize) + _iPositionOffset);

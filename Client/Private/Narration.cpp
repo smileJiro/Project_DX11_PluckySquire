@@ -56,7 +56,28 @@ HRESULT CNarration::Initialize(void* _pArg)
 
 void CNarration::Update(_float _fTimeDelta)
 {
-	
+	if (m_fTextAlpha < 1.f)
+	{
+		m_fFadeTimer += _fTimeDelta;
+		m_fTextAlpha = min(m_fFadeTimer / m_fFadeDuration, 1.f);
+	}
+	else
+	{
+		// fade?in 완료 후, 다음 라인으로 전환하기 위한 대기 타이머 갱신
+		m_fDelayTimer += _fTimeDelta;
+		if (m_fDelayTimer >= m_fDelayBetweenLines)
+		{
+			// 다음 라인이 있다면 전환, 이전 라인은 그대로 1.0을 유지
+			if (m_iCurrentLine + 1 < m_NarrationDatas[0].lines.size())
+			{
+				m_iCurrentLine++; // 다음 라인으로 전환
+				// fade?in 관련 타이머 초기화
+				m_fFadeTimer = 0.f;
+				m_fDelayTimer = 0.f;
+				m_fTextAlpha = 0.f;
+			}
+		}
+	}
 }
 
 void CNarration::Late_Update(_float _fTimeDelta)
@@ -89,19 +110,13 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 			NarrationData NarData;
 
 			if (Nar.contains("strSectionid") && Nar["strSectionid"].is_string())
-			{
 				NarData.strSectionid = StringToWstring(Nar["strSectionid"].get<string>());
-			}
 
 			if (Nar.contains("strid") && Nar["strid"].is_string())
-			{
 				NarData.strid = StringToWstring(Nar["strid"].get<string>());
-			}
 
 			if (Nar.contains("CurlevelId") && Nar["CurlevelId"].is_number_integer())
-			{
 				NarData.eCurlevelId = (LEVEL_ID)Nar["CurlevelId"].get<_int>();
-			}
 
 			_int iLine = { 0 };
 
@@ -112,24 +127,19 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 					NarrationDialogData DialogueData;
 
 					if (line.contains("iduration") && line["iduration"].is_number_integer())
-					{
 						DialogueData.iduration = line["iduration"].get<_int>();
-					}
 
 					if (line.contains("ispeed") && line["ispeed"].is_number_integer())
-					{
 						DialogueData.ispeed = line["ispeed"].get<_int>();
-					}
 
 					if (line.contains("strtext") && line["strtext"].is_string())
-					{
-						DialogueData.strtext = StringToWstring(line["strtext"].get<_string>());
-					}
+						DialogueData.strtext = StringToWstring(line["strtext"].get<string>());
+
+					if (line.contains("isLeft") && line["isLeft"].is_boolean())
+						DialogueData.isLeft = line["isLeft"].get<bool>();
 
 					if (line.contains("fscale") && line["fscale"].is_number_float())
-					{
-						DialogueData.fscale = line["fscale"].get<_float>();
-					}
+						DialogueData.fscale = line["fscale"].get<float>();
 
 					if (line.contains("isLeft") && line["isLeft"].is_boolean())
 					{
@@ -137,109 +147,83 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 					}
 
 					if (line.contains("fposX") && line["fposX"].is_number_float())
-					{
-						DialogueData.fpos.x = line["fposX"].get<_float>();
-					}
+						DialogueData.fpos.x = line["fposX"].get<float>();
 
 					if (line.contains("fposY") && line["fposY"].is_number_float())
-					{
-						DialogueData.fpos.y = line["fposY"].get<_float>();
-					}
+						DialogueData.fpos.y = line["fposY"].get<float>();
 
 					if (line.contains("fwaitingTime") && line["fwaitingTime"].is_number_float())
-					{
-						DialogueData.fwaitingTime = line["fwaitingTime"].get<_float>();
-					}
+						DialogueData.fwaitingTime = line["fwaitingTime"].get<float>();
 
-					// 나레이션 관련 데이터 푸쉬백
-					//NarData.lines.push_back(DialogueData);
-
-					// 애니메이션이 있는가 없는가
-
-					_int iAnim = { 0 };
-
+					// 애니메이션 데이터 파싱 및 개별 객체 생성
 					if (line.contains("NarAnim") && line["NarAnim"].is_array())
 					{
+						_int iAnim = { 0 };
+						// line에 여러 애니메이션 정보가 있다면 각각 별도로 생성한다.
 						for (auto& Anim : line["NarAnim"])
 						{
 							NarrationAnimation Animation;
 
 							if (Anim.contains("strAnimationid") && Anim["strAnimationid"].is_string())
 							{
-								_tchar strCheck[MAX_PATH];
-								wsprintf(strCheck, TEXT("NULL"));
-								
-								if (strCheck == StringToWstring(Anim["strAnimationid"].get<_string>()))
-								{
-									// 애니메이션이 없으면 NULL로 적는다. 만약 NULL로 되어있으면 끝내버린다.
+								wstring animId = StringToWstring(Anim["strAnimationid"].get<string>());
+								if (animId == L"NULL")
 									continue;
-								}
-
-								Animation.strAnimationid = StringToWstring(Anim["strAnimationid"].get<_string>());
-
-								
+								Animation.strAnimationid = animId;
 							}
 
 							if (Anim.contains("strSectionid") && Anim["strSectionid"].is_string())
-							{
-								Animation.strSectionid = StringToWstring(Anim["strSectionid"].get<_string>());
-							}
+								Animation.strSectionid = StringToWstring(Anim["strSectionid"].get<string>());
 
 							if (Anim.contains("fPosX") && Anim["fPosX"].is_number_float())
-							{
-								Animation.vPos.x = Anim["fPosX"].get<_float>();
-							}
+								Animation.vPos.x = Anim["fPosX"].get<float>();
 
 							if (Anim.contains("fPosY") && Anim["fPosY"].is_number_float())
-							{
-								Animation.vPos.y = Anim["fPosY"].get<_float>();
-							}
+								Animation.vPos.y = Anim["fPosY"].get<float>();
 
 							if (Anim.contains("fwaitingTime") && Anim["fwaitingTime"].is_number_float())
-							{
-								Animation.fWaitingTime = Anim["fwaitingTime"].get<_float>();
-							}
+								Animation.fWaitingTime = Anim["fwaitingTime"].get<float>();
 
 							if (Anim.contains("vAnimationScaleX") && Anim["vAnimationScaleX"].is_number_float())
-							{
-								Animation.vAnimationScale.x = Anim["vAnimationScaleX"].get<_float>();
-							}
+								Animation.vAnimationScale.x = Anim["vAnimationScaleX"].get<float>();
 
 							if (Anim.contains("vAnimationScaleY") && Anim["vAnimationScaleY"].is_number_float())
-							{
-								Animation.vAnimationScale.y = Anim["vAnimationScaleY"].get<_float>();
-							}
+								Animation.vAnimationScale.y = Anim["vAnimationScaleY"].get<float>();
+
+							if (Anim.contains("AnimationIndex") && Anim["AnimationIndex"].is_number_integer())
+								Animation.iAnimationIndex = Anim["AnimationIndex"].get<_int>();
 
 
-							
-							NarData.LineCount = iLine;
-							DialogueData.NarAnim.push_back(Animation);
 
-							DialogueData.AnimCount = iAnim;
+							// 임시 대화 데이터를 생성하여 해당 애니메이션만 담는다.
+							NarrationDialogData tempDialogue = DialogueData;
+							tempDialogue.NarAnim.clear();
+							tempDialogue.NarAnim.push_back(Animation);
+
+							// 임시 나레이션 데이터를 생성하고 대화 리스트에 방금 만든 tempDialogue만 넣는다.
+							NarrationData tempData = NarData;
+							tempData.lines.clear();
+							tempDialogue.AnimationCount = iAnim;
 							++iAnim;
-							NarData.lines.push_back(DialogueData);
-							
-							
+							tempData.lines.push_back(tempDialogue);
+							// 대화 라인이 단일 객체이므로 LineCount는 0으로 설정
+							tempData.LineCount = 0;
 
-							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(NarData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), NarData.eCurlevelId, TEXT("Layet_UI"), &NarData)))
+							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tempData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), tempData.eCurlevelId, TEXT("Layet_UI"), &tempData)))
 								return E_FAIL;
 
-							m_NarrationDatas.push_back(NarData);
-
-							// TODO :: 여기서 이미지를 생성 시킨다.
-
-							
+							// 원본 DialogueData에도 해당 애니메이션 데이터를 저장(필요에 따라 사용)
+							DialogueData.NarAnim.push_back(Animation);
 						}
-						++iLine;
-						
-						
-
 					}
 
-					
-				}
+					// 애니메이션 처리 후, 완성된 대화 데이터를 NarData에 추가한다.
+					NarData.lines.push_back(DialogueData);
+				} // for each line
 			}
-		}
+
+			m_NarrationDatas.push_back(NarData);
+		} // for each Narration block
 	}
 
 	return S_OK;
@@ -248,82 +232,76 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 // 폰트 렌더 해주는 역할
 HRESULT CNarration::DisplayText(_float2 _vRTSize)
 {
-	// 처음 위치
-	float fx = m_NarrationDatas[0].lines[0].fpos.x;
-	float fy = m_NarrationDatas[0].lines[0].fpos.y;
+	if (m_NarrationDatas.empty() || m_NarrationDatas[0].lines.empty())
+		return S_OK;
 
+	// 예를 들어, 첫 번째 NarrationData의 텍스트만 사용한다고 가정합니다.
+	auto& lines = m_NarrationDatas[0].lines;
 
-	// 들어오는 텍스트
-	_wstring strDisplayText = m_NarrationDatas[0].lines[0].strtext;
-
-	// 오직 글자만 노출 (특수기호 제거)
-	_wstring FullDisPlayText = strDisplayText;
-
-	FullDisPlayText.erase(remove_if(FullDisPlayText.begin(), FullDisPlayText.end(), [](_tchar ch)
-		{
-			return ch == L'{' || ch == L'}' || ch == L'#' || ch == L'@' || ch == L'0' || ch == L'1' || ch == L'2' || ch == L'3' || ch == L'4' || ch == L'5' || ch == L'6' || ch == L'7' || ch == L'8' || ch == L'9';
-		}), FullDisPlayText.end());
-
-
-	vector<TextTokens> tokens;
-
-	// 각각의 글자의 스케일 및 글자를 가져온다.
-	PaseTokens(strDisplayText, tokens);
-	_int	iRemainLine = { 0 };
-
-	for (int i = 0; i < tokens.size(); ++i)
+	// 0번부터 m_iCurrentLine까지의 모든 라인을 렌더링 (이미 fade?in이 완료된 라인은 alpha = 1.0)
+	for (int i = 0; i <= m_iCurrentLine && i < lines.size(); i++)
 	{
-		if (tokens[i].strText == L"\n")
+		float alpha = (i < m_iCurrentLine) ? 1.f : m_fTextAlpha; // 이전 라인은 완전 불투명, 현재 라인은 fade-in 중
+		NarrationDialogData& dialogue = lines[i];
+
+		// 해당 라인의 시작 위치 (각 라인이 서로 다른 위치로 지정되어 있다고 가정)
+		float fx = { 0.f };
+		float fy = { 0.f };
+
+		if (true == dialogue.isLeft)
 		{
-			++iRemainLine;
+			fx = dialogue.fpos.x;
+			fy = dialogue.fpos.y;
 		}
-	}
-
-	for (const auto& token : tokens)
-	{
-		if (token.strText == L"\n")
+		else if (false == dialogue.isLeft)
 		{
-			fx = m_NarrationDatas[0].lines[0].fpos.x;
-			fy += m_fLineHeight;
+			fx = dialogue.fpos.x + _vRTSize.x / 2.f;
+			fy = dialogue.fpos.y;
+		}
 
-			if (iRemainLine > 0)
+		// 토큰화 처리 (텍스트 내의 제어문자들({, }, # 등)을 토큰화하여 각각 렌더링)
+		vector<TextTokens> tokens;
+		PaseTokens(dialogue.strtext, tokens);
+
+		for (const auto& token : tokens)
+		{
+			// 줄바꿈 토큰이면 줄 이동 처리
+			if (token.strText == L"\n")
 			{
-				iRemainLine--;
-			}
-		}
 
-		_int tokenLength = static_cast<int>(token.strText.length());
-		_float CalY = { 0.f };
-		
-		if (iRemainLine > tokenLength)
-		{
+				if (true == dialogue.isLeft)
+				{
+					fx = dialogue.fpos.x; // 시작 x 좌표로 복원
+					fy += m_fLineHeight;  // y 좌표 증가
+				}
+				else if (false == dialogue.isLeft)
+				{
+					fx = dialogue.fpos.x + _vRTSize.x / 2.f; // 시작 x 좌표로 복원
+					fy += m_fLineHeight;  // y 좌표 증가
+				}
+
+
+
+
+
+				continue;
+			}
+
+
+			// 토큰의 크기를 측정하고 텍스트 렌더링 (알파값 적용)
+			_vector vecSize = m_pGameInstance->Measuring(TEXT("Font40"), token.strText.c_str());
 			_float2 vTextSize = { 0.f, 0.f };
-			_vector vecSize = m_pGameInstance->Measuring(TEXT("Font54"), token.strText.c_str());
 			XMStoreFloat2(&vTextSize, vecSize);
 
-			if (1.f < token.fScale)
-			{
-				CalY -= vTextSize.y / 2.f;
-			}
-			
-			m_pGameInstance->Render_Scaling_Font(TEXT("Font54"), token.strText.c_str(), _float2(fx, fy + CalY), XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.f, _float2(0.f, 0.f), token.fScale);
-			fx += vTextSize.x * token.fScale * 0.98f;
-		}
-		else
-		{
-			_wstring strPartial = token.strText.substr(0, iRemainLine);
-			CGameInstance* pGameInstance = CGameInstance::GetInstance();
-			_vector vecSize = m_pGameInstance->Measuring(TEXT("Font54"), token.strText.c_str());
-			_float2 vTextSize = { 0.f, 0.f };
+			m_pGameInstance->Render_Scaling_Font(
+				TEXT("Font40"),
+				token.strText.c_str(),
+				_float2(fx, fy),
+				XMVectorSet(0.f, 0.f, 0.f, alpha),  // alpha 적용
+				0.f,
+				_float2(0.f, 0.f),
+				token.fScale);
 
-			XMStoreFloat2(&vTextSize, vecSize);
-			
-			if (1.f < token.fScale)
-			{
-				CalY -= vTextSize.y / 10.f;
-			}
-
-			pGameInstance->Render_Scaling_Font(TEXT("Font54"), token.strText.c_str(), _float2(fx, fy + CalY), XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.f, _float2(0, 0), token.fScale);
 			fx += vTextSize.x * token.fScale * 0.98f;
 		}
 	}
@@ -338,6 +316,13 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 void CNarration::NextDialogue(_float2 _RTSize)
 {
 	
+}
+
+CNarration_Anim* CNarration::GetAnimationObjectForLine(_int iLine)
+{
+	if (iLine < 0 || iLine >= static_cast<int>(m_vAnimObjectsByLine.size()))
+		return nullptr;
+	return m_vAnimObjectsByLine[iLine];
 }
 
 

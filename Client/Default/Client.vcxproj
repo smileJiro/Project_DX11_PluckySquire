@@ -206,6 +206,7 @@
     <ClInclude Include="..\Public\Boss_HomingBall.h" />
     <ClInclude Include="..\Public\Boss_PurpleBall.h" />
     <ClInclude Include="..\Public\Boss_YellowBall.h" />
+    <ClInclude Include="..\Public\Bulb.h" />
     <ClInclude Include="..\Public\Camera_2D.h" />
     <ClInclude Include="..\Public\Camera_CutScene.h" />
     <ClInclude Include="..\Public\CarriableObject.h" />
@@ -301,6 +302,7 @@
     <ClInclude Include="..\Public\Sneak_AlertState.h" />
     <ClInclude Include="..\Public\Sneak_AttackState.h" />
     <ClInclude Include="..\Public\Sneak_AwareState.h" />
+    <ClInclude Include="..\Public\Sneak_BackState.h" />
     <ClInclude Include="..\Public\Sneak_ChaseState.h" />
     <ClInclude Include="..\Public\Sneak_DetectionField.h" />
     <ClInclude Include="..\Public\Sneak_IdleState.h" />
@@ -374,6 +376,7 @@
     <ClCompile Include="..\Private\Boss_HomingBall.cpp" />
     <ClCompile Include="..\Private\Boss_PurpleBall.cpp" />
     <ClCompile Include="..\Private\Boss_YellowBall.cpp" />
+    <ClCompile Include="..\Private\Bulb.cpp" />
     <ClCompile Include="..\Private\Camera_2D.cpp" />
     <ClCompile Include="..\Private\Camera_CutScene.cpp" />
     <ClCompile Include="..\Private\CarriableObject.cpp" />
@@ -465,6 +468,7 @@
     <ClCompile Include="..\Private\Sneak_AlertState.cpp" />
     <ClCompile Include="..\Private\Sneak_AttackState.cpp" />
     <ClCompile Include="..\Private\Sneak_AwareState.cpp" />
+    <ClCompile Include="..\Private\Sneak_BackState.cpp" />
     <ClCompile Include="..\Private\Sneak_ChaseState.cpp" />
     <ClCompile Include="..\Private\Sneak_DetectionField.cpp" />
     <ClCompile Include="..\Private\Sneak_IdleState.cpp" />

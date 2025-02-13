@@ -99,7 +99,7 @@ HRESULT CLevel_Model_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag)
 	//Desc.iCameraType = CCamera_Manager::FREE;
 	CGameObject* pGameObject = nullptr;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),
-		LEVEL_TOOL_2D_MAP, _strLayerTag, &pGameObject, &Desc)))
+		LEVEL_TOOL_3D_MAP, _strLayerTag, &pGameObject, &Desc)))
 		return E_FAIL;
 	else
 	{

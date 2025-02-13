@@ -159,6 +159,24 @@ void C2DModel::Switch_Animation(_uint _iIdx, _bool _bReverse)
 	m_Animation2Ds[m_iCurAnimIdx]->Reset(_bReverse);
 }
 
+#ifdef _DEBUG
+
+const CSpriteFrame* C2DModel::Get_SpriteFrame()
+{
+	if (Is_AnimModel())
+	{
+		if (m_iCurAnimIdx >= (_uint)m_Animation2Ds.size() || nullptr == m_Animation2Ds[m_iCurAnimIdx])
+			return nullptr;
+		auto pAnim = m_Animation2Ds[m_iCurAnimIdx];
+		return pAnim->GetCurrentSprite();
+	}
+	else
+		return m_pNonAnimSprite; 
+}
+
+#endif // _DEBUG
+
+
 void C2DModel::To_NextAnimation()
 {
 	Switch_Animation((m_iCurAnimIdx + 1) % m_Animation2Ds.size());

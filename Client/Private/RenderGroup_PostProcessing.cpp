@@ -41,6 +41,7 @@ HRESULT CRenderGroup_PostProcessing::Render(CShader* _pRTShader, CVIBuffer_Rect*
     {
         // 1. Blur RenderTarget을 MRT로 만들고 바인딩.
         DrawMRT.push_back(m_BlurRenderTargets[i]);
+
         m_pGameInstance->Begin_MRT(DrawMRT, m_DSVs[i]);
         // 2. Change ViewportSize
         _float2 vSize = m_BlurRenderTargets[i]->Get_Size();
@@ -77,12 +78,18 @@ HRESULT CRenderGroup_PostProcessing::Render(CShader* _pRTShader, CVIBuffer_Rect*
         _pRTBuffer->Bind_BufferDesc(); /* 이거 한번만해줘도 됨*/
         _pRTBuffer->Render();
 
+        if (FAILED(m_pGameInstance->End_MRT()))
+            return E_FAIL;
+
         DrawMRT.clear();
     }
 
 
-    Setup_Viewport(_float2((_float)m_pGameInstance->Get_ViewportWidth(), (_float)m_pGameInstance->Get_ViewportHeight()));
-    m_pGameInstance->End_MRT();
+    //Setup_Viewport(_float2((_float)m_pGameInstance->Get_ViewportWidth(), (_float)m_pGameInstance->Get_ViewportHeight()));
+
+
+
+    
     return S_OK;
 }
 
@@ -117,7 +124,7 @@ HRESULT CRenderGroup_PostProcessing::Ready_BlurRenderTarget()
         CRenderTarget* pUpTarget = CRenderTarget::Create(m_pDevice, m_pContext, strRTName, g_iWinSizeX / iDiv, g_iWinSizeY / iDiv, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f));
 
         m_BlurRenderTargets[iNumRenderTargets / 2 + i] = pUpTarget;
-        m_pGameInstance->Create_DSV(g_iWinSizeX / iDiv, g_iWinSizeY / iDiv, &(m_DSVs[i]));
+        m_pGameInstance->Create_DSV(g_iWinSizeX / iDiv, g_iWinSizeY / iDiv, &(m_DSVs[iNumRenderTargets / 2 + i]));
     }
 
     if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_PBRBlurFinal"), m_BlurRenderTargets[iNumRenderTargets - 1])))

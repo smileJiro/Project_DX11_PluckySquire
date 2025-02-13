@@ -32,6 +32,8 @@ public: /* DSV */
 	HRESULT								Add_DSV(const _wstring _strDSVTag, ID3D11DepthStencilView* _pDSV);
 	HRESULT								Erase_DSV(const _wstring _strDSVTag);
 
+public:/* Bind Defferd ConstBufferData */
+	HRESULT								Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer);
 public:
 	HRESULT								Load_IBL(const _wstring& _strIBLJsonPath);
 #ifdef _DEBUG

@@ -175,7 +175,7 @@ PS_OUT PS_MAIN(PS_IN In)
 
     // 조명에 대한 방향벡터를 뒤집은 후, 노말벡터와의 내적을 통해,
     // shade 값을 구한다. 여기에 Ambient color 역시 더한다. 
-    float3 vAlbedo = useAlbedoMap ? g_AlbedoTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f).rgb : Material.Albedo;
+    float4 vAlbedo = useAlbedoMap ? g_AlbedoTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f) : Material.Albedo;
     float3 vNormal = useNormalMap ? Get_WorldNormal(g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz, In.vNormal.xyz, In.vTangent.xyz, 0) : In.vNormal.xyz;
     float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
     
@@ -186,8 +186,10 @@ PS_OUT PS_MAIN(PS_IN In)
         vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
     }
 
+    if (vAlbedo.a < 0.1f)
+        discard;
     
-    Out.vDiffuse = float4(vAlbedo, 1.0f);
+    Out.vDiffuse = vAlbedo;
     // 1,0,0
     // 1, 0.5, 0.5 (양의 x 축)
     // 0, 0.5, 0.5 (음의 x 축)

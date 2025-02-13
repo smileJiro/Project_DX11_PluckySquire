@@ -100,7 +100,7 @@ HRESULT CTask_Manager::Open_ParsingDialog(const wstring& _strLayerName)
 
 	if (GetOpenFileName(&ofn))
 	{
-		//SetCurrentDirectory(originalDir);
+		SetCurrentDirectory(originalDir);
 		const _string strFilePath = m_pGameInstance->WStringToString(szName);
 		Register_Parsing(strFilePath, _strLayerName);
 	}
@@ -347,12 +347,13 @@ HRESULT CTask_Manager::Parsing()
 				}
 
 				std::string filePathDialog = WstringToString(strMaterialPath);
-				if (strMaterialKey == "MI_ToyBricks_6")
+				if (strMaterialKey == "M_WC_09")
 				{
 					int a = 1;
 				}
 				filePathDialog += strMaterialKey;
 				filePathDialog += ".json";
+
 				std::ifstream inputFile(filePathDialog);
 				if (!inputFile.is_open())
 				{

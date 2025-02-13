@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 
 #include "PlayerItem.h"
+#include "Bulb.h"
 
 IMPLEMENT_SINGLETON(CPlayerData_Manager)
 
@@ -59,8 +60,36 @@ HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _i
 	return S_OK;
 }
 
-HRESULT CPlayerData_Manager::Spawn_Bulb(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag)
+HRESULT CPlayerData_Manager::Spawn_Bulb(_uint _iPrototypeLevelID, _uint _iLevelID)
 {
+	ifstream file(TEXT("../Bin/DataFiles/Trigger/Bulb/Bulb_Position.json"));
+
+	if (!file.is_open())
+	{
+		MSG_BOX("파일을 열 수 없습니다.");
+		file.close();
+		return E_FAIL;
+	}
+
+	json Result;
+	file >> Result;
+	file.close();
+
+	json Bulb_json;
+
+	for (auto& Bulb_json : Result) {
+		_float3 vPosition = { Bulb_json["Bulb_Position"][0].get<_float>(), Bulb_json["Bulb_Position"][1].get<_float>(), Bulb_json["Bulb_Position"][2].get<_float>() };
+
+		// Create
+		CGameObject* pBulb;
+		CBulb::BULB_DESC Desc = {};
+		Desc.eStartCoord = COORDINATE_3D;
+		Desc.tTransform3DDesc.vInitialPosition = vPosition;
+
+		m_pGameInstance->Add_GameObject_ToLayer(_iPrototypeLevelID, TEXT("Prototype_GameObject_Bulb"),
+			_iLevelID, TEXT("Layer_Bulb"), &pBulb, &Desc);
+	}
+
 	return S_OK;
 }
 
