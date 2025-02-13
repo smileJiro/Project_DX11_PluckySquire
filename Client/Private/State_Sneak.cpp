@@ -37,7 +37,7 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		m_WayPoints.push_back({ _float3(-13.3f, 6.52f, 22.75f) });
 		m_WayPoints.push_back({ _float3(-16.5f, 6.56f, 22.6f) });
 		m_WayPoints.push_back({ _float3(-20.f, 6.5f, 23.f) });
-		m_WayPoints.push_back({ _float3(-23.2f, 6.55f, 20.8f) });
+		m_WayPoints.push_back({ _float3(-23.6f, 6.55f, 21.f) });
 
 		m_WayPoints[0].Neighbors.push_back(1);
 		m_WayPoints[1].Neighbors.push_back(0);
@@ -171,7 +171,7 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 			{
 				_float3 vPosTo; XMStoreFloat3(&vPosTo, XMVector3Normalize(vPositionToPointDis));
 				//가는길에 장애물 없으면
-				if (true == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vPosTo, XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_WayPoints[Index].vPosition) - XMLoadFloat3(&vPos))), 
+				if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vPosTo, XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_WayPoints[Index].vPosition) - XMLoadFloat3(&vPos))), 
 					OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
 				{
 					XMStoreFloat3(&vPoint, vPositionToPointDis);
@@ -248,9 +248,14 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 		//시작점까지 갔다가 다음 점으로 진행하는 거리와 다음 점으로 바로 가는 거리 비교해서 시작점으로 갈지 결정
 		_vector vFromStart = XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition) - m_pOwner->Get_FinalPosition() + XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition);
 		_vector vToNext = XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - m_pOwner->Get_FinalPosition();
-		if (2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
+		_float3 vToNextDir; XMStoreFloat3(&vToNextDir, XMVector3Normalize(vToNext));
+		
+		if(false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vToNextDir, XMVectorGetX(XMVector3Length(vToNext)), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
 		{
-			m_Ways.push_back(iStartIndex);
+			if (2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
+			{
+				m_Ways.push_back(iStartIndex);
+			}
 		}
 		
 		reverse(m_Ways.begin(), m_Ways.end());
