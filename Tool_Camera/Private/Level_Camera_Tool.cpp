@@ -290,9 +290,6 @@ HRESULT CLevel_Camera_Tool::Ready_DataFiles()
 void CLevel_Camera_Tool::Show_CameraTool()
 {
 	ImGui::Begin("Camera Basic Tool");
-	
-	// Roteate
-	Rotate_Arm();
 
 	// Length
 	Change_ArmLength();
@@ -351,9 +348,7 @@ void CLevel_Camera_Tool::Show_CameraTool()
 
 	// Play Move
 	Set_MovementInfo();
-	
-	// Reset Current Arm Pos
-	Reset_CurrentArmPos();
+
 
 	ImGui::End();
 }
@@ -443,7 +438,7 @@ void CLevel_Camera_Tool::Create_Arms()
 	pTarget->Add_Arm(pArm);
 	CCamera_Manager_Tool::GetInstance()->Set_CurrentArm(pArm);
 
-	m_vResetArmPos = CCamera_Manager_Tool::GetInstance()->Get_CurrentArmVector();
+	m_vFirstResetArm = CCamera_Manager_Tool::GetInstance()->Get_CurrentArmVector();
 }
 
 void CLevel_Camera_Tool::Show_ComboBox()
@@ -512,16 +507,19 @@ void CLevel_Camera_Tool::Show_SelectedArmData()
 	ImGui::Text("Zoom Level : %d    ", pData->second->iZoomLevel + 1);
 
 	switch (pData->second->iZoomRatioType) {
-	case CCamera::EASE_IN:
+		case RATIO_TYPE::EASE_IN:
 		ImGui::Text("Ratio Type: EASE_IN       ");
 		break;
 
-	case CCamera::EASE_OUT:
+	case RATIO_TYPE::EASE_OUT:
 		ImGui::Text("Ratio Type: EASE_OUT      ");
 		break;
 
-	case CCamera::LERP:
+	case RATIO_TYPE::LERP:
 		ImGui::Text("Ratio Type: LERP          ");
+		break;
+	case RATIO_TYPE::EASE_IN_OUT:
+		ImGui::Text("Ratio Type: EASE_IN_OUT          ");
 		break;
 	}
 
@@ -530,16 +528,19 @@ void CLevel_Camera_Tool::Show_SelectedArmData()
 	ImGui::Text("AtOffset:  %.2f, %.2f, %.2f ", pData->second->vAtOffset.x, pData->second->vAtOffset.y, pData->second->vAtOffset.z);
 
 	switch (pData->second->iAtRatioType) {
-	case CCamera::EASE_IN:
+	case RATIO_TYPE::EASE_IN:
 		ImGui::Text("Ratio Type: EASE_IN       ");
 		break;
 
-	case CCamera::EASE_OUT:
+	case RATIO_TYPE::EASE_OUT:
 		ImGui::Text("Ratio Type: EASE_OUT      ");
 		break;
 
-	case CCamera::LERP:
+	case RATIO_TYPE::LERP:
 		ImGui::Text("Ratio Type: LERP          ");
+		break;
+	case RATIO_TYPE::EASE_IN_OUT:
+		ImGui::Text("Ratio Type: EASE_IN_OUT          ");
 		break;
 	}
 
@@ -623,30 +624,37 @@ void CLevel_Camera_Tool::Set_KeyFrameInfo()
 
 
 	switch (m_tKeyFrameInfo.iZoomRatioType) {
-	case CCamera::EASE_IN:
+	case RATIO_TYPE::EASE_IN:
 		ImGui::Text("Ratio Type: EASE_IN       ");
 		break;
 
-	case CCamera::EASE_OUT:
+	case RATIO_TYPE::EASE_OUT:
 		ImGui::Text("Ratio Type: EASE_OUT      ");
 		break;
 
-	case CCamera::LERP:
+	case RATIO_TYPE::LERP:
 		ImGui::Text("Ratio Type: LERP          ");
+		break;
+	case RATIO_TYPE::EASE_IN_OUT:
+		ImGui::Text("Ratio Type: EASE_IN_OUT          ");
 		break;
 	}
 
 	ImGui::SameLine();
 	if (ImGui::Button("FRAME EASE IN")) {
-		m_tKeyFrameInfo.iZoomRatioType = CCamera::EASE_IN;
+		m_tKeyFrameInfo.iZoomRatioType = RATIO_TYPE::EASE_IN;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("FRAME EASE OUT")) {
-		m_tKeyFrameInfo.iZoomRatioType = CCamera::EASE_OUT;
+		m_tKeyFrameInfo.iZoomRatioType = RATIO_TYPE::EASE_OUT;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("FRAME LERP")) {
-		m_tKeyFrameInfo.iZoomRatioType = CCamera::LERP;
+		m_tKeyFrameInfo.iZoomRatioType = RATIO_TYPE::LERP;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("FRAME EASE_IN_OUT")) {
+		m_tKeyFrameInfo.iZoomRatioType = RATIO_TYPE::EASE_IN_OUT;
 	}
 
 	ImGui::NewLine();
@@ -679,30 +687,37 @@ void CLevel_Camera_Tool::Set_KeyFrameInfo()
 	}
 
 	switch (m_tKeyFrameInfo.iAtRatioType) {
-	case CCamera::EASE_IN:
+	case RATIO_TYPE::EASE_IN:
 		ImGui::Text("Ratio Type: EASE_IN       ");
 		break;
 
-	case CCamera::EASE_OUT:
+	case RATIO_TYPE::EASE_OUT:
 		ImGui::Text("Ratio Type: EASE_OUT      ");
 		break;
 
-	case CCamera::LERP:
+	case RATIO_TYPE::LERP:
 		ImGui::Text("Ratio Type: LERP          ");
+		break;
+	case RATIO_TYPE::EASE_IN_OUT:
+		ImGui::Text("Ratio Type: EASE_IN_OUT          ");
 		break;
 	}
 
 	ImGui::SameLine();
 	if (ImGui::Button("AT EASE IN")) {
-		m_tKeyFrameInfo.iAtRatioType = CCamera::EASE_IN;
+		m_tKeyFrameInfo.iAtRatioType = RATIO_TYPE::EASE_IN;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("AT EASE OUT")) {
-		m_tKeyFrameInfo.iAtRatioType = CCamera::EASE_OUT;
+		m_tKeyFrameInfo.iAtRatioType = RATIO_TYPE::EASE_OUT;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("AT LERP")) {
-		m_tKeyFrameInfo.iAtRatioType = CCamera::LERP;
+		m_tKeyFrameInfo.iAtRatioType = RATIO_TYPE::LERP;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("AT EASE_IN_OUT")) {
+		m_tKeyFrameInfo.iAtRatioType = RATIO_TYPE::EASE_IN_OUT;
 	}
 
 	ImGui::NewLine();
@@ -772,16 +787,19 @@ void CLevel_Camera_Tool::Show_KeyFrameInfo()
 			ImGui::Text("Frame Fovy: %.2f", m_fFovys[m_pCurKeyFrame->first.iZoomLevel - 1]);
 
 		switch (m_pCurKeyFrame->first.iZoomRatioType) {
-		case CCamera::EASE_IN:
+		case RATIO_TYPE::EASE_IN:
 			ImGui::Text("Ratio Type: EASE_IN       ");
 			break;
 
-		case CCamera::EASE_OUT:
+		case RATIO_TYPE::EASE_OUT:
 			ImGui::Text("Ratio Type: EASE_OUT      ");
 			break;
 
-		case CCamera::LERP:
+		case RATIO_TYPE::LERP:
 			ImGui::Text("Ratio Type: LERP          ");
+			break;
+		case RATIO_TYPE::EASE_IN_OUT:
+			ImGui::Text("Ratio Type: EASE_IN_OUT          ");
 			break;
 		}
 		ImGui::Text("At: %.2f, %.2f, %.2f      ", m_pCurKeyFrame->first.vAtOffset.x, m_pCurKeyFrame->first.vAtOffset.y, m_pCurKeyFrame->first.vAtOffset.z);
@@ -792,16 +810,19 @@ void CLevel_Camera_Tool::Show_KeyFrameInfo()
 			ImGui::Text("Loot At: FALSE            ");
 
 		switch (m_pCurKeyFrame->first.iAtRatioType) {
-		case CCamera::EASE_IN:
+		case RATIO_TYPE::EASE_IN:
 			ImGui::Text("Ratio Type: EASE_IN       ");
 			break;
 
-		case CCamera::EASE_OUT:
+		case RATIO_TYPE::EASE_OUT:
 			ImGui::Text("Ratio Type: EASE_OUT      ");
 			break;
 
-		case CCamera::LERP:
+		case RATIO_TYPE::LERP:
 			ImGui::Text("Ratio Type: LERP          ");
+			break;
+		case RATIO_TYPE::EASE_IN_OUT:
+			ImGui::Text("Ratio Type: EASE_IN_OUT          ");
 			break;
 		}
 		ImGui::NewLine();
@@ -850,16 +871,19 @@ void CLevel_Camera_Tool::Show_KeyFrameInfo()
 						ImGui::Text("Frame Fovy: %.2f", m_fFovys[(*pKeyFrames)[i].iZoomLevel]);
 
 					switch ((*pKeyFrames)[i].iZoomRatioType) {
-					case CCamera::EASE_IN:
+					case RATIO_TYPE::EASE_IN:
 						ImGui::Text("Ratio Type: EASE_IN       ");
 						break;
 
-					case CCamera::EASE_OUT:
+					case RATIO_TYPE::EASE_OUT:
 						ImGui::Text("Ratio Type: EASE_OUT      ");
 						break;
 
-					case CCamera::LERP:
+					case RATIO_TYPE::LERP:
 						ImGui::Text("Ratio Type: LERP          ");
+						break;
+					case RATIO_TYPE::EASE_IN_OUT:
+						ImGui::Text("Ratio Type: EASE_IN_OUT          ");
 						break;
 					}
 					ImGui::Text("At: %.2f, %.2f, %.2f      ", (*pKeyFrames)[i].vAtOffset.x, (*pKeyFrames)[i].vAtOffset.y, (*pKeyFrames)[i].vAtOffset.z);
@@ -870,16 +894,19 @@ void CLevel_Camera_Tool::Show_KeyFrameInfo()
 						ImGui::Text("Loot At: FALSE            ");
 
 					switch ((*pKeyFrames)[i].iAtRatioType) {
-					case CCamera::EASE_IN:
+					case RATIO_TYPE::EASE_IN:
 						ImGui::Text("Ratio Type: EASE_IN       ");
 						break;
 
-					case CCamera::EASE_OUT:
+					case RATIO_TYPE::EASE_OUT:
 						ImGui::Text("Ratio Type: EASE_OUT      ");
 						break;
 
-					case CCamera::LERP:
+					case RATIO_TYPE::LERP:
 						ImGui::Text("Ratio Type: LERP          ");
+						break;
+					case RATIO_TYPE::EASE_IN_OUT:
+						ImGui::Text("Ratio Type: EASE_IN_OUT          ");
 						break;
 					}
 					
@@ -981,11 +1008,6 @@ void CLevel_Camera_Tool::Show_SaveLoadFileWindow()
 }
 
 
-void CLevel_Camera_Tool::Rotate_Arm()
-{
-
-}
-
 void CLevel_Camera_Tool::Change_ArmLength()
 {
 	ImGui::NewLine();
@@ -1006,6 +1028,97 @@ void CLevel_Camera_Tool::Change_ArmLength()
 	if (ImGui::Button("+ Length") || ImGui::IsItemActive()) {
 		fArmLength += m_fLengthValue;
 		CCamera_Manager_Tool::GetInstance()->Set_ArmLength(fArmLength);
+	}
+
+	// 여기서 동작
+	// ============================Desire, Reset
+	ImGui::NewLine();
+	_float3 vCurArm = CCamera_Manager_Tool::GetInstance()->Get_CurrentArmVector();
+	_float	fCurLength = CCamera_Manager_Tool::GetInstance()->Get_ArmLength();
+
+	ImGui::NewLine();
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("Set Reset, Desire Arm");
+	ImGui::Separator();
+
+	ImGui::Text("Cur Arm: %.2f, %.2f, %.2f", vCurArm.x, vCurArm.y, vCurArm.z);
+	ImGui::Text("Cur Length: %.2f", fCurLength);
+	ImGui::NewLine();
+
+	// Desire
+	ImGui::Text("Desire Arm: %.2f, %.2f, %.2f", m_vDesireArm.x, m_vDesireArm.y, m_vDesireArm.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireX", &m_vDesireArm.x);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireY", &m_vDesireArm.y);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireZ", &m_vDesireArm.z);
+
+	ImGui::Text("Desire Length: %.2f", fCurLength);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireLength", &m_fDesireLength);
+
+	if (ImGui::Button("Set_DesireArm")) {
+		m_vDesireArm = vCurArm;
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Set_DesireLength")) {
+		m_fDesireLength = fCurLength;
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Set DesireInfo")) {
+		m_tArmData.vDesireArm = m_vDesireArm;
+		m_tArmData.fLength = m_fDesireLength;
+	}
+
+	// Reset Arm
+	ImGui::NewLine();
+	ImGui::Text("Reset Arm: %.2f, %.2f, %.2f", m_vResetArm.x, m_vResetArm.y, m_vResetArm.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetX", &m_vResetArm.x);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetY", &m_vResetArm.y);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResstZ", &m_vResetArm.z);
+
+
+	ImGui::Text("Desire Length: %.2f", m_fResetLength);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireLength", &m_fDesireLength);
+
+	if (ImGui::Button("Set ResetArm")) {
+		m_vResetArm = vCurArm;
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Set ResetLength")) {
+		m_fResetLength = fCurLength;
+	}
+
+	if (ImGui::Button("Reset Arm, Length")) {
+		CCamera_Manager_Tool::GetInstance()->Reset_CurrentArm(XMLoadFloat3(&m_vResetArm), fCurLength, XMVectorSet(0.f, 3.f, 0.f, 0.f), 5);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Reset Arm, Length_BYFIRST")) {
+		CCamera_Manager_Tool::GetInstance()->Reset_CurrentArm(XMLoadFloat3(&m_vFirstResetArm), 12.f, XMVectorSet(0.f, 3.f, 0.f, 0.f), 5);
 	}
 }
 
@@ -1034,30 +1147,37 @@ void CLevel_Camera_Tool::Input_NextArm_Info()
 
 	//Type
 	switch (m_tArmData.iLengthRatioType) {
-	case CCamera::EASE_IN:
+	case RATIO_TYPE::EASE_IN:
 		ImGui::Text("Ratio Type: EASE_IN   ");
 		break;
 
-	case CCamera::EASE_OUT:
+	case RATIO_TYPE::EASE_OUT:
 		ImGui::Text("Ratio Type: EASE_OUT  ");
 		break;
 
-	case CCamera::LERP:
+	case RATIO_TYPE::LERP:
 		ImGui::Text("Ratio Type: LERP      ");
+		break;
+	case RATIO_TYPE::EASE_IN_OUT:
+		ImGui::Text("Ratio Type: EASE_IN_OUT      ");
 		break;
 	}
 
 	ImGui::SameLine();
 	if (ImGui::Button("Length EASE IN")) {
-		m_tArmData.iLengthRatioType = CCamera::EASE_IN;
+		m_tArmData.iLengthRatioType = RATIO_TYPE::EASE_IN;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Length EASE OUT")) {
-		m_tArmData.iLengthRatioType = CCamera::EASE_OUT;
+		m_tArmData.iLengthRatioType = RATIO_TYPE::EASE_OUT;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Length LERP")) {
-		m_tArmData.iLengthRatioType = CCamera::LERP;
+		m_tArmData.iLengthRatioType = RATIO_TYPE::LERP;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Length EASE_IN_OUT")) {
+		m_tArmData.iLengthRatioType = RATIO_TYPE::EASE_IN_OUT;
 	}
 
 	ImGui::Text("Move Time AxisY: %.2f    ", m_tArmData.fMoveTimeAxisY.x);
@@ -1085,6 +1205,7 @@ void CLevel_Camera_Tool::Input_NextArm_Info()
 	ImGui::SameLine();
 	ImGui::DragFloat("##Max Rotation Per Sec AxisRight", &m_tArmData.fRotationPerSecAxisRight.y, 0.1f, -360.f, 360.f);
 
+	
 	ImGui::NewLine();
 
 	// Sub Data
@@ -1157,24 +1278,6 @@ void CLevel_Camera_Tool::Set_MovementInfo()
 		CCamera_Manager_Tool::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
 		CCamera_Manager_Tool::GetInstance()->Set_NextArmData(m_ArmNames[m_iSelectedArmNum]);
 	}
-
-	
-	Reset_CurrentArmPos();
-}
-
-void CLevel_Camera_Tool::Play_Movement()
-{
-	
-}
-
-void CLevel_Camera_Tool::Reset_CurrentArmPos()
-{
-	ImGui::SameLine();
-
-	if (ImGui::Button("Rest Pos")) {
-		CCamera_Manager_Tool::GetInstance()->Reset_CurrentArm(XMLoadFloat3(&m_vResetArmPos), 12.f, XMVectorSet(0.f, 3.f, 0.f, 0.f), 5);
-		//CCamera_Manager_Tool::GetInstance()->Reset_CurrentArmPos(XMLoadFloat3(&m_vResetArmPos), 12.f);
-	}
 }
 
 void CLevel_Camera_Tool::Set_Zoom()
@@ -1198,30 +1301,38 @@ void CLevel_Camera_Tool::Set_Zoom()
 	ImGui::DragFloat("##Zoom Time", &m_fZoomTime, 0.05f, 0.f, 10.f);
 
 	switch (m_iRatioType) {
-	case CCamera::EASE_IN:
+	case RATIO_TYPE::EASE_IN:
 		ImGui::Text("Ratio Type: EASE_IN   ");
 		break;
 
-	case CCamera::EASE_OUT:
+	case RATIO_TYPE::EASE_OUT:
 		ImGui::Text("Ratio Type: EASE_OUT  ");
 		break;
 
-	case CCamera::LERP:
+	case RATIO_TYPE::LERP:
 		ImGui::Text("Ratio Type: LERP      ");
+		break;
+
+	case RATIO_TYPE::EASE_IN_OUT:
+		ImGui::Text("Ratio Type: EASE_IN_OUT      ");
 		break;
 	}
 
 	ImGui::SameLine();
 	if (ImGui::Button("EASE IN")) {
-		m_iRatioType = CCamera::EASE_IN;
+		m_iRatioType = RATIO_TYPE::EASE_IN;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("EASE OUT")) {
-		m_iRatioType = CCamera::EASE_OUT;
+		m_iRatioType = RATIO_TYPE::EASE_OUT;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("LERP")) {
-		m_iRatioType = CCamera::LERP;
+		m_iRatioType = RATIO_TYPE::LERP;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("EASE_IN_OUT")) {
+		m_iRatioType = RATIO_TYPE::EASE_IN_OUT;
 	}
 
 	ImGui::NewLine();
@@ -1264,30 +1375,38 @@ void CLevel_Camera_Tool::Set_AtOffsetInfo()
 	ImGui::DragFloat("##AtOffset Time", &m_fAtOffsetTime, 0.05f, 0.f, 10.f);
 
 	switch (m_iAtOffsetRatioType) {
-	case CCamera::EASE_IN:
+	case RATIO_TYPE::EASE_IN:
 		ImGui::Text("Ratio Type: EASE_IN       ");
 		break;
 
-	case CCamera::EASE_OUT:
+	case RATIO_TYPE::EASE_OUT:
 		ImGui::Text("Ratio Type: EASE_OUT      ");
 		break;
 
-	case CCamera::LERP:
+	case RATIO_TYPE::LERP:
 		ImGui::Text("Ratio Type: LERP          ");
+		break;
+
+	case RATIO_TYPE::EASE_IN_OUT:
+		ImGui::Text("Ratio Type: EASE_IN_OUT          ");
 		break;
 	}
 
 	ImGui::SameLine();
 	if (ImGui::Button("OFFSET EASE IN")) {
-		m_iAtOffsetRatioType = CCamera::EASE_IN;
+		m_iAtOffsetRatioType = RATIO_TYPE::EASE_IN;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("OFFSET EASE OUT")) {
-		m_iAtOffsetRatioType = CCamera::EASE_OUT;
+		m_iAtOffsetRatioType = RATIO_TYPE::EASE_OUT;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("OFFSET LERP")) {
-		m_iAtOffsetRatioType = CCamera::LERP;
+		m_iAtOffsetRatioType = RATIO_TYPE::LERP;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("OFFSET EASE_IN_OUT")) {
+		m_iAtOffsetRatioType = RATIO_TYPE::EASE_IN_OUT;
 	}
 
 	ImGui::NewLine();
@@ -1296,7 +1415,7 @@ void CLevel_Camera_Tool::Set_AtOffsetInfo()
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Reset AtOffset")) {
-		CCamera_Manager_Tool::GetInstance()->Start_Changing_AtOffset(CCamera_Manager_Tool::TARGET, 1.f, XMVectorSet(0.f, 3.f, 0.f, 0.f), CCamera::LERP);
+		CCamera_Manager_Tool::GetInstance()->Start_Changing_AtOffset(CCamera_Manager_Tool::TARGET, 1.f, XMVectorSet(0.f, 3.f, 0.f, 0.f), RATIO_TYPE::LERP);
 	}
 
 

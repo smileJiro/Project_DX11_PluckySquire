@@ -67,6 +67,8 @@ private:
 	//SUB_DATA*					m_pCurSubData = { nullptr };
 
 private:
+	void						Key_Input(_float _fTimeDelta);
+
 	void						Action_Mode(_float _fTimeDelta);
 	void						Defualt_Move(_float _fTimeDelta);
 	void						Move_To_NextArm(_float _fTimeDelta);

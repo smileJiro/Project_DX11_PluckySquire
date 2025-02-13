@@ -41,7 +41,11 @@ private:
 	SUB_DATA			m_tSubData = {};
 	_bool				m_isUseSubData = {};
 
-	_float3				m_vResetArmPos = {};
+	_float3				m_vResetArm = {};
+	_float				m_fResetLength = {};
+	_float3				m_vDesireArm = {};
+	_float				m_fDesireLength = {};
+	_float3				m_vFirstResetArm = {};
 
 	// Zoom
 	_int				m_iZoomLevel = {};
@@ -64,7 +68,7 @@ private:
 
 	_uint				m_iCycleType = {};
 
-	// CutScene
+	// ======================== CutScene
 	_bool								m_isCreatePoint = { false };
 	_bool								m_isEditPoint = { false };
 	_bool								m_isCreateSector = { false };
@@ -109,8 +113,6 @@ private:
 	// Initial Data
 	INITIAL_DATA							m_tInitialData = {};
 
-	// Trigger Tool
-
 
 private:
 	void				Show_CameraTool();
@@ -132,13 +134,10 @@ private:
 
 private:
 	// Tool
-	void				Rotate_Arm();
 	void				Change_ArmLength();
 	void				Input_NextArm_Info();
 	void				Edit_CopyArm();
 	void				Set_MovementInfo();
-	void				Play_Movement();
-	void				Reset_CurrentArmPos();
 	void				Set_Zoom();
 	void				Set_AtOffsetInfo();
 	void				Set_ShakeInfo();

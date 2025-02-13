@@ -244,7 +244,7 @@ void CCamera_CutScene::Process_Movement(_float _fTimeDelta)
 			return;
 
 		Start_Changing_AtOffset(fTimeOffset, XMLoadFloat3(&(*pKeyFrames)[iCurKeyFrameIdx + 1].vAtOffset), (*pKeyFrames)[iCurKeyFrameIdx + 1].iAtRatioType);
-		Start_Zoom(fTimeOffset, (CCamera::ZOOM_LEVEL)(*pKeyFrames)[iCurKeyFrameIdx + 1].iZoomLevel, (CCamera::RATIO_TYPE)(*pKeyFrames)[iCurKeyFrameIdx + 1].iZoomRatioType);
+		Start_Zoom(fTimeOffset, (CCamera::ZOOM_LEVEL)(*pKeyFrames)[iCurKeyFrameIdx + 1].iZoomLevel, (RATIO_TYPE)(*pKeyFrames)[iCurKeyFrameIdx + 1].iZoomRatioType);
 	}
 
 	_vector vAt = XMLoadFloat3(&m_vTargetPos) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
