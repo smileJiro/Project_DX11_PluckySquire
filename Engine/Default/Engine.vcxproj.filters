@@ -298,6 +298,9 @@
     <Filter Include="01.Utility\09.RenderTargets\MSAA">
       <UniqueIdentifier>{1043a63e-dc1b-48e6-9471-7d9ebdd66dd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03.Objects\Actor\Container\EmptyNode">
+      <UniqueIdentifier>{b5306290-0db9-45c8-bc95-a7d02da0f184}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -607,6 +610,9 @@
       <Filter>01.Utility\09.RenderTargets\MSAA</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Collider_Fan.h" />
+    <ClInclude Include="..\public\EmptyNode.h">
+      <Filter>01.Utility\03.Objects\Actor\Container\EmptyNode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -904,6 +910,9 @@
       <Filter>01.Utility\09.RenderTargets\MSAA</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Collider_Fan.cpp" />
+    <ClCompile Include="..\private\EmptyNode.cpp">
+      <Filter>01.Utility\03.Objects\Actor\Container\EmptyNode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl">
