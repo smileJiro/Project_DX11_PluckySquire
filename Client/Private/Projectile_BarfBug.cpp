@@ -92,7 +92,11 @@ void CProjectile_BarfBug::Update(_float _fTimeDelta)
     }
 
     else if (COORDINATE_3D == Get_CurCoord())
+    {
         m_pControllerTransform->Go_Straight(_fTimeDelta);
+        /*_float3 vForce; XMStoreFloat3(&vForce, Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
+        m_pActorCom->Set_LinearVelocity(XMLoadFloat3(&vForce), Get_ControllerTransform()->Get_SpeedPerSec());*/
+    }
 
     __super::Update(_fTimeDelta);
 }
@@ -159,8 +163,8 @@ void CProjectile_BarfBug::Active_OnEnable()
 {
     __super::Active_OnEnable();
     
-	if (COORDINATE_3D == Get_CurCoord())
-        m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
+	//if (COORDINATE_3D == Get_CurCoord())
+ //       m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
 }
 
 void CProjectile_BarfBug::Active_OnDisable()
@@ -168,8 +172,8 @@ void CProjectile_BarfBug::Active_OnDisable()
     m_pControllerTransform->Set_WorldMatrix(XMMatrixIdentity());
     m_fAccTime = 0.f;
 
-    if (COORDINATE_3D == Get_CurCoord())
-	    m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
+    //if (COORDINATE_3D == Get_CurCoord())
+	   // m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
     __super::Active_OnDisable();
 }
 

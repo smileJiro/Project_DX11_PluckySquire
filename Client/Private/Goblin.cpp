@@ -2,6 +2,7 @@
 #include "Goblin.h"
 #include "GameInstance.h"
 #include "FSM.h"
+#include "DetectionField.h"
 #include "ModelObject.h"
 
 CGoblin::CGoblin(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -23,11 +24,14 @@ HRESULT CGoblin::Initialize(void* _pArg)
 {
     CGoblin::MONSTER_DESC* pDesc = static_cast<CGoblin::MONSTER_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->isCoordChangeEnable = false;
+    pDesc->isCoordChangeEnable = true;
     pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+
+    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform2DDesc.fSpeedPerSec = 300.f;
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
@@ -35,6 +39,12 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->fAlert2DRange = 5.f;
     pDesc->fChase2DRange = 12.f;
     pDesc->fAttack2DRange = 2.f;
+    pDesc->fDelayTime = 1.f;
+    
+    pDesc->fHP = 5.f;
+
+    pDesc->fFOVX = 90.f;
+    pDesc->fFOVY = 30.f;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -53,8 +63,11 @@ HRESULT CGoblin::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+    m_pFSM->Set_PatrolBound();
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
@@ -79,6 +92,15 @@ HRESULT CGoblin::Initialize(void* _pArg)
 
 void CGoblin::Priority_Update(_float _fTimeDelta)
 {
+    if (true == m_isDelay)
+    {
+        m_fAccTime += _fTimeDelta;
+        if (m_fDelayTime <= m_fAccTime)
+        {
+            m_fAccTime = 0.f;
+            m_isDelay = false;
+        }
+    }
 
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
@@ -157,6 +179,24 @@ void CGoblin::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     }
 }
 
+void CGoblin::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+	if ((_uint)MONSTER_STATE::CHASE == m_iState)
+    {
+        __super::OnContact_Enter(_My, _Other, _ContactPointDatas);
+        if(OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
+            Delay_On();
+    }
+}
+
+void CGoblin::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+}
+
+void CGoblin::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+}
+
 HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
 {
     CGoblin::MONSTER_DESC* pDesc = static_cast<CGoblin::MONSTER_DESC*>(_pArg);
@@ -187,7 +227,8 @@ HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
@@ -223,6 +264,29 @@ HRESULT CGoblin::Ready_Components()
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
         return E_FAIL;
 
+#ifdef _DEBUG
+    /* Com_DebugDraw_For_Client */
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DebugDraw_For_Client"),
+        TEXT("Com_DebugDraw_For_Client"), reinterpret_cast<CComponent**>(&m_pDraw))))
+        return E_FAIL;
+#endif // _DEBUG
+
+    /* Com_DetectionField */
+    CDetectionField::DETECTIONFIELDDESC DetectionDesc;
+    DetectionDesc.fRange = m_fAlertRange;
+    DetectionDesc.fFOVX = m_fFOVX;
+    DetectionDesc.fFOVY = m_fFOVY;
+    DetectionDesc.fOffset = 0.f;
+    DetectionDesc.pOwner = this;
+    DetectionDesc.pTarget = m_pTarget;
+#ifdef _DEBUG
+    DetectionDesc.pDraw = m_pDraw;
+#endif // _DEBUG
+
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DetectionField"),
+        TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -238,13 +302,23 @@ HRESULT CGoblin::Ready_PartObjects()
     BodyDesc.strModelPrototypeTag_3D = TEXT("goblin_Rig");
 	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
 
+    BodyDesc.strModelPrototypeTag_2D = TEXT("Goblin");
+    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 
+    BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+
     BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
     BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+
+    BodyDesc.tTransform2DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_RotationPerSec();
+    BodyDesc.tTransform2DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_SpeedPerSec();
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
