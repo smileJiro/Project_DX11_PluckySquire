@@ -114,6 +114,8 @@ public:
 
 	virtual void	On_Hit(CGameObject* _pHitter, _float _fDamg);
 
+	virtual void KnockBack(CGameObject* _pHitter = nullptr) override;
+
 public:
 	virtual void Attack();
 	virtual void Turn_Animation(_bool _isCW) {};

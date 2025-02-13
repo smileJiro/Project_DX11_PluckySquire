@@ -34,7 +34,7 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->tTransform2DDesc.fSpeedPerSec = 300.f;
 
     pDesc->fAlertRange = 5.f;
-    pDesc->fChaseRange = 12.f;
+    pDesc->fChaseRange = 10.f;
     pDesc->fAttackRange = 1.f;
     pDesc->fAlert2DRange = 5.f;
     pDesc->fChase2DRange = 12.f;
@@ -381,10 +381,11 @@ HRESULT CGoblin::Ready_Components()
 
     CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
     AABBDesc.pOwner = this;
-    AABBDesc.vExtents = { 50.f, 100.f };
+    AABBDesc.vExtents = { 50.f, 50.f };
     AABBDesc.vScale = { 1.0f, 1.0f };
     AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y };
-    AABBDesc.isBlock = true; // 
+    AABBDesc.isBlock = true;
+    AABBDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
         return E_FAIL;

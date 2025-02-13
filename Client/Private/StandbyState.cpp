@@ -40,21 +40,11 @@ void CStandbyState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-
-	//if (m_isDelay || m_isCool)
-	//{
-	//	m_fAccTime += _fTimeDelta;
-	//	if (true == m_isCool && m_fCoolTime <= m_fAccTime)
-	//	{
-	//		m_isCool = false;
-	//		m_fAccTime = 0.f;
-	//	}
-	//	if (true == m_isDelay && m_fDelayTime <= m_fAccTime)
-	//	{
-	//		m_isDelay = false;
-	//		m_fAccTime = 0.f;
-	//	}
-	//}
+	if (m_pTarget->Get_CurCoord() != m_pOwner->Get_CurCoord())
+	{
+		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		return;
+	}
 	
 	_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
 	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))

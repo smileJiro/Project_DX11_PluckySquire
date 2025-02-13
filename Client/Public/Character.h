@@ -39,6 +39,8 @@ public:
 	_bool Rotate_To(_fvector _vDirection, _float _fSpeed);
 	_bool Rotate_To_Radians(_fvector _vDirection, _float _fSpeed);
 
+	virtual void KnockBack(CGameObject* _pHitter = nullptr) {};
+
 protected:
 	STAT m_tStat;
 	_vector m_vLookBefore = { 0,0,-1 };

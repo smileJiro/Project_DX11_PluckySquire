@@ -214,7 +214,6 @@
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\Public\ChaseAttackState.h" />
-    <ClInclude Include="..\public\Collision_Manager.h" />
     <ClInclude Include="..\Public\Dice.h" />
     <ClInclude Include="..\Public\Domino.h" />
     <ClInclude Include="..\Public\DeadState.h" />
@@ -391,7 +390,6 @@
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\Private\ChaseAttackState.cpp" />
-    <ClCompile Include="..\private\Collision_Manager.cpp" />
     <ClCompile Include="..\Private\Dice.cpp" />
     <ClCompile Include="..\Private\Domino.cpp" />
     <ClCompile Include="..\Private\DeadState.cpp" />
