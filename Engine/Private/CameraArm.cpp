@@ -170,13 +170,14 @@ void CCameraArm::Set_NextArmData(ARM_DATA* _pData, _int _iTriggerID)
 
     m_pNextArmData = _pData;
     m_fStartLength = m_fLength;
+    m_vStartArm = m_vArm;
 
     for (auto& PreArm : m_PreArms) {
         if (_iTriggerID == PreArm.first.iTriggerID) {
-            if (true == PreArm.second) {
+            if (true == PreArm.second) {    // Return 중이라면?
                 PreArm.second = false;
                 m_fReturnTime.y = 0.f;
-
+                
                 return;
             }
         }
@@ -189,6 +190,7 @@ void CCameraArm::Set_NextArmData(ARM_DATA* _pData, _int _iTriggerID)
     tData.iTriggerID = _iTriggerID;
 
     m_PreArms.push_back(make_pair(tData, false));
+    cout << "ㅋㅋ 씨발 왜 들어가지?" << endl;
 }
 
 void CCameraArm::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
@@ -302,11 +304,12 @@ _float CCameraArm::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _i
 
     _fTime->y += _fTimeDelta;
     fRatio = _fTime->y / _fTime->x;
+    fRatio = clamp(fRatio, 0.f, 1.f);
 
     switch (_iRatioType) {
     case (_uint)RATIO_TYPE::EASE_IN:
-        //fRatio = (fRatio + (_float)pow((_double)fRatio, (_double)2.f)) * 0.5f;
-        fRatio = fRatio * fRatio;
+        fRatio = (fRatio + (_float)pow((_double)fRatio, (_double)2.f)) * 0.5f;
+        //fRatio = fRatio * fRatio;
         break;
     case (_uint)RATIO_TYPE::EASE_OUT:
         //fRatio = 1.0f - ((1.0f - fRatio) + (_float)pow((_double)(1.0f - fRatio), 2.f)) * 0.5f;
@@ -349,7 +352,6 @@ _bool CCameraArm::Check_IsNear_ToDesireArm(_float _fTimeDelta)
 
 _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
 {
-
     _bool isNear = Check_IsNear_ToDesireArm(_fTimeDelta);
 
     if (true == isNear) {
@@ -432,11 +434,62 @@ _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
     return false;
 }
 
+_bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta)
+{
+    _vector vDot = XMVector3Dot(XMLoadFloat3(&m_vArm), XMLoadFloat3(&m_pNextArmData->vDesireArm));
+    _float fAngle = acos(XMVectorGetX(vDot));
+    _float fDegree = XMConvertToDegrees(fAngle);
+
+    if (fDegree < 3.f) {
+        m_iMovementFlags |= DONE_Y_ROTATE;
+        m_iMovementFlags |= DONE_LENGTH_MOVE;
+        m_pNextArmData->fMoveTimeAxisY.y = 0.f;
+        m_pNextArmData->fLengthTime.y = 0.f;
+        //if()
+        return true;
+    }
+
+    // 일단 Y축 회전 시간, EASE_IN으로 설정해서 하기
+    if (!(m_iMovementFlags & DONE_Y_ROTATE)) {
+        _float fRatio = m_pGameInstance->Calculate_Ratio(&m_pNextArmData->fMoveTimeAxisY, _fTimeDelta, RATIO_TYPE::EASE_IN);
+
+        if (fRatio >= 1.f) {
+
+            m_vArm = m_pNextArmData->vDesireArm;
+            m_pTransform->Set_Look(XMLoadFloat3(&m_vArm));
+            m_pNextArmData->fMoveTimeAxisY.y = 0.f;
+            m_iMovementFlags |= DONE_Y_ROTATE;
+        }
+        else {
+            _vector vArm = XMVectorLerp(XMLoadFloat3(&m_vStartArm), XMLoadFloat3(&m_pNextArmData->vDesireArm), fRatio);
+
+            XMStoreFloat3(&m_vArm, vArm);
+            m_pTransform->Set_Look(vArm);
+        }
+    }
+
+    // Length 이동
+    if (!(m_iMovementFlags & DONE_LENGTH_MOVE)) {
+
+        _float fRatio = Calculate_Ratio(&m_pNextArmData->fLengthTime, _fTimeDelta, m_pNextArmData->iLengthRatioType);
+
+        if (m_pNextArmData->fLengthTime.y >= m_pNextArmData->fLengthTime.x) {
+            m_pNextArmData->fLengthTime.y = 0.f;
+            m_iMovementFlags |= DONE_LENGTH_MOVE;
+        }
+        else {
+            m_fLength = m_pGameInstance->Lerp(m_fStartLength, m_pNextArmData->fLength, fRatio);
+        }
+    }
+
+    return false;
+}
+
 _bool CCameraArm::Move_To_PreArm(_float _fTimeDelta)
 {
     _float fRatio = Calculate_Ratio(&m_fReturnTime, _fTimeDelta, RATIO_TYPE::EASE_IN);
 
-    if (fRatio > 1.f) {
+    if (fRatio >= (1.f - EPSILON)) {
         m_fReturnTime.y = 0.f;
 
         m_vArm = m_PreArms.back().first.vPreArm;

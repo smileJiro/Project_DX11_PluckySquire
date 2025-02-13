@@ -101,6 +101,8 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		m_iCurZoomLevel = m_tInitialData.iZoomLevel;
 		m_fFovy = m_ZoomLevels[m_tInitialData.iZoomLevel];
 	}
+
+	m_fFlippingTime = { 0.5f, 0.f };
 }
 
 INITIAL_DATA CCamera_2D::Get_InitialData()
@@ -213,7 +215,7 @@ void CCamera_2D::Flipping_Up(_float _fTimeDelta)
 {
 	_float fRatio = Calculate_Ratio(&m_fFlippingTime, _fTimeDelta, EASE_IN_OUT);
 
-	if (fRatio >= 1.f) {
+	if ( fRatio >= (1.f - EPSILON)) {
 		m_fFlippingTime.y = 0.f;
 		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.968761384f, 21.5310783f, -22.8536606f, 1.f));
 	
@@ -233,17 +235,17 @@ void CCamera_2D::Flipping_Down(_float _fTimeDelta)
 {
 	_float fRatio = Calculate_Ratio(&m_fFlippingTime, _fTimeDelta, EASE_OUT);
 
-	if (fRatio >= 1.f) {
+	if ( fRatio >= (1.f - EPSILON)) {
 		m_fFlippingTime.y = 0.f;
 
-		_vector vCameraPos = Calculate_CameraPos(_fTimeDelta);
+		_vector vCameraPos = XMLoadFloat3(&m_v2DPreTargetWorldPos) + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
 
 		m_eCameraMode = DEFAULT;
 	}
 
-	_vector vCameraPos = Calculate_CameraPos(_fTimeDelta);
-
+	_vector vCameraPos = XMLoadFloat3(&m_v2DPreTargetWorldPos) + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+	
 	_vector vPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), vCameraPos, fRatio);
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vPos, 1.f));
 
@@ -290,7 +292,7 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 
 	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN);
 
-	if (fRatio > 1.f) {
+	if (fRatio >= (1.f - EPSILON)) {
 		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 		_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
@@ -306,6 +308,8 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 
 		m_InitialTime.y = 0.f;
 		m_isInitialData = false;
+
+		m_eCameraMode = DEFAULT;
 		return;
 	}
 

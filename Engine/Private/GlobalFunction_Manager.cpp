@@ -197,6 +197,7 @@ _float CGlobalFunction_Manager::Calculate_Ratio(_float2* _fTime, _float _fTimeDe
 
 	_fTime->y += _fTimeDelta;
 	fRatio = _fTime->y / _fTime->x;
+	fRatio = clamp(fRatio, 0.f, 1.f);
 
 	switch (_iRatioType) {
 	case EASE_IN:

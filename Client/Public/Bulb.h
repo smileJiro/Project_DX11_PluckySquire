@@ -16,7 +16,7 @@ public:
 
 	}BULB_DESC;
 
-	enum SHAPE_USE
+	enum BULB_SHAPE_USE
 	{
 		SHAPE_BODY,
 		SHAPE_STICKING,
