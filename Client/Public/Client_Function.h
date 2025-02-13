@@ -35,7 +35,8 @@ namespace Client
 	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID, _bool _bEnable);
 	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID, _bool _bEnable);
 	void Event_Hit(CGameObject* _pHitter,CGameObject* _pVictim ,_float _fDamg);
-	
+	void Event_Get_Bulb(_uint _iCoordinate);
+
 	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID);
 	//void Event_CameraTriggerExit(_int _iTriggerID, _bool _isReturn = true);
 

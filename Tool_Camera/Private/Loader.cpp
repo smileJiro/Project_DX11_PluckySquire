@@ -320,7 +320,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/SM_desk_split_topboard_02/SM_desk_split_topboard_02.model", matPretransform))))
         return E_FAIL;
 
-    if (FAILED(Load_Models_FromJson(LEVEL_TRIGGER_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform)))
+    if (FAILED(Load_Models_FromJson(LEVEL_TRIGGER_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform)))
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TRIGGER_TOOL,
@@ -358,12 +358,12 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
         CTest_Terrain::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TRIGGER_TOOL, TEXT("alphabet_blocks_d_mesh"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/alphabet_blocks_d_mesh/alphabet_blocks_d_mesh.model", matPretransform))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TRIGGER_TOOL, TEXT("alphabet_blocks_a_mesh"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/alphabet_blocks_a_mesh/alphabet_blocks_a_mesh.model", matPretransform))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TRIGGER_TOOL, TEXT("alphabet_blocks_d_mesh"),
+    //    C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/alphabet_blocks_d_mesh/alphabet_blocks_d_mesh.model", matPretransform))))
+    //    return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TRIGGER_TOOL, TEXT("alphabet_blocks_a_mesh"),
+    //    C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/alphabet_blocks_a_mesh/alphabet_blocks_a_mesh.model", matPretransform))))
+    //    return E_FAIL;
 
 
     /* For. Prototype_GameObject_MapObject */
@@ -371,7 +371,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
     //    CSampleBook::Create(m_pDevice, m_pContext))))
     //    return E_FAIL;
 
-    Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_04_Default_Desk.mchc");
+    Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_02_Play_Desk.mchc");
 
     //Map_Object_Create(LEVEL_STATIC, LEVEL_TRIGGER_TOOL, L"Room_Enviroment.mchc");
 

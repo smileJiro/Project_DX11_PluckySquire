@@ -191,6 +191,33 @@ _fvector CGlobalFunction_Manager::Rotate_Vector(_fvector _vAxis, _fvector _vVect
 	return XMVector3Rotate(_vVector, vQuaternion);
 }
 
+_float CGlobalFunction_Manager::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType)
+{
+	_float fRatio = {};
+
+	_fTime->y += _fTimeDelta;
+	fRatio = _fTime->y / _fTime->x;
+	fRatio = clamp(fRatio, 0.f, 1.f);
+
+	switch (_iRatioType) {
+	case EASE_IN:
+		//fRatio = (fRatio + (_float)pow((_double)fRatio, (_double)2.f)) * 0.5f;
+		fRatio = fRatio * fRatio;
+		break;
+	case EASE_OUT:
+		//fRatio = 1.0f - ((1.0f - fRatio) + (_float)pow((_double)(1.0f - fRatio), 2.f)) * 0.5f;
+		fRatio = 1.0f - (1.0f - fRatio) * (1.0f - fRatio);
+		break;
+	case LERP:
+		break;
+	case EASE_IN_OUT:
+		fRatio = fRatio * fRatio * (3 - 2 * fRatio);
+		break;
+	}
+
+	return fRatio;
+}
+
 _float2 CGlobalFunction_Manager::Get_CursorPos(HWND hWnd)
 {
 	POINT ptCursorPos;

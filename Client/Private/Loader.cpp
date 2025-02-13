@@ -11,7 +11,10 @@
 #include "Camera_2D.h"
 
 /* For. etc Bulb, PlayerItem*/
+// Trigger
+#include "TriggerObject.h"
 #include "PlayerItem.h"
+#include "Bulb.h"
 
 /* For. Main Table */
 #include "CubeMap.h"
@@ -94,9 +97,6 @@
 #include "Boss_YellowBall.h"
 #include "Boss_PurpleBall.h"
 #include "FSM_Boss.h"
-
-// Trigger
-#include "TriggerObject.h"
 
 
 // Sample
@@ -305,7 +305,11 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
         CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
+    
+    /* Bulb*/
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("LightbulbPickup_01"),
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/LightbulbPickup_01/LightbulbPickup_01.model", matPretransform))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("액터를 로딩중입니다."));
     /* For. Prototype_Component_Actor_Dynamic */
@@ -371,6 +375,11 @@ HRESULT CLoader::Loading_Level_Static()
      /* For. Prototype_GameObject_PlayerItem */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerItem"),
         CPlayerItem::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Bulb */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Bulb"),
+        CBulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     
@@ -721,6 +730,15 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         return E_FAIL;
 
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("0102_02_Narration_Model_Jot"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Narration/2DModel/0102/0102_02_Narration_Model_Jot.model2D")))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("0102_02_Narration_Model_Humgrump"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Narration/2DModel/0102/0102_02_Narration_Model_Humgrump.model2D")))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("0102_02_Narration_Model_Villager"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Narration/2DModel/0102/0102_02_Narration_Model_Villager.model2D")))))
+        return E_FAIL;
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     
@@ -1031,7 +1049,6 @@ HRESULT CLoader::Loading_Level_Chapter_4()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_playersword2DAnimation"),
         C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/PlayerSword/player2dsword.model2D")))))
         return E_FAIL;
-
     // NPC 모델
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"),
         C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/NPC_Shop/NPC_Store.model2D")))))

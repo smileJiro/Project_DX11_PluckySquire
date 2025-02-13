@@ -148,8 +148,8 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon)
 {
     CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
     _vector vDir = _vPosition - Get_FinalPosition();
-    vDir.m128_f32[1] = 0.f;
-    vDir.m128_f32[3] = 0.f;
+    //vDir.m128_f32[1] = 0.f;
+    //vDir.m128_f32[3] = 0.f;
     _float fLength = XMVectorGetX(XMVector3Length(vDir));
     if (_fEpsilon >= fLength)
     {

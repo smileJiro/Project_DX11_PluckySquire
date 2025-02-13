@@ -162,7 +162,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::MONSTER_PROJECTILE;
+    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
@@ -708,6 +708,8 @@ void CPlayer::Attack(CGameObject* _pVictim)
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
     Event_Hit(this, _pVictim, m_tStat.fDamg);
+    _float3 vRepulse; XMStoreFloat3(&vRepulse, 10.f * Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
+    static_cast<CActorObject*>(_pVictim)->Get_ActorCom()->Add_Impulse(vRepulse);
     m_AttckedObjects.insert(_pVictim);
 }
 
@@ -1196,9 +1198,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
         if (iCurCoord == COORDINATE_2D)
-            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter2_SKSP_05",this);
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this);
         else
-            CSection_Manager::GetInstance()->Remove_GameObject_ToSectionLayer(L"Chapter2_SKSP_05",this);
+            CSection_Manager::GetInstance()->Remove_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this);
 
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
 
@@ -1230,8 +1232,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 
     if (KEY_DOWN(KEY::TAB))
     {
+        m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
         //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
-        m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
+        //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
         //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
         //m_pActorCom->Set_GlobalPose(_float3(0.f, 0.35f, 0.f));
     }

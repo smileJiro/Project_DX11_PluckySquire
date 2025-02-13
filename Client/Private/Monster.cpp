@@ -34,6 +34,7 @@ HRESULT CMonster::Initialize(void* _pArg)
 	m_fFOVX = pDesc->fFOVX;
 	m_fFOVY = pDesc->fFOVY;
 	m_eWayIndex = pDesc->eWayIndex;
+	m_fHp = pDesc->fHP;
 
 	if (true == pDesc->isSneakMode)
 		m_isSneakMode = true;
@@ -87,6 +88,12 @@ HRESULT CMonster::Render()
 
 void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+	if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup && (_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse)
+	{
+		Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().fDamg);
+		_float3 vRepulse; XMStoreFloat3(&vRepulse, 10.f * XMVectorNegate(_Other.pActorUserData->pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK)));
+		_Other.pActorUserData->pOwner->Get_ActorCom()->Add_Impulse(vRepulse);
+	}
 }
 
 void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -139,6 +146,16 @@ void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 		//cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() << " : " << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << " Exit" << endl;
 		if (1436 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
 			cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() << " : " << " Exit" << endl;
+	}
+}
+
+void CMonster::On_Hit(CGameObject* _pHitter, _float _fDamg)
+{
+	m_tStat.fHP -= _fDamg;
+	if (m_tStat.fHP < 0)
+	{
+		m_tStat.fHP = 0;
+		//Event_DeleteObject(this);
 	}
 }
 
@@ -244,6 +261,7 @@ void CMonster::Active_OnEnable()
 	CActorObject::Active_OnEnable();
 
 
+	m_tStat.fHP = m_fHp;
 
 	// 2. 몬스터 할거 하고
 //	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Player"), 0);

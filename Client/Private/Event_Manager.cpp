@@ -25,6 +25,7 @@
 #include "SampleBook.h"
 
 #include "Trigger_Manager.h"
+#include "PlayerData_Manager.h"
 
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
@@ -166,6 +167,10 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_Hit(_tEvent);
 	}
 	break;
+	case Client::EVENT_TYPE::GET_BULB:
+	{
+		Execute_Get_Bulb(_tEvent);
+	}
 	break;
 	default:
 		break;
@@ -580,6 +585,21 @@ HRESULT CEvent_Manager::Execute_Hit(const EVENT& _tEvent)
 
 	pVIctim->On_Hit(pHitter, fDamg);
 	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_Get_Bulb(const EVENT& _tEvent)
+{
+	_uint iCoordinate = (_uint)_tEvent.Parameters[0];
+
+	switch (iCoordinate) {
+	case (_uint)COORDINATE::COORDINATE_2D:
+		break;
+	case (_uint)COORDINATE::COORDINATE_3D:
+		CPlayerData_Manager::GetInstance()->Increase_BulbCount();
+		break;
+	}
+
+	return E_NOTIMPL;
 }
 
 HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)

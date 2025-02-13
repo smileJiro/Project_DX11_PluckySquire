@@ -37,6 +37,7 @@ public:
 		_bool						isTrigger = { true };
 		_float3						vLocalPosOffset = {};
 		_bool						FreezeRotation[3] = { true, false, true };
+		_uint						iShapeUse = { 0 };
 	}TRIGGEROBJECT_DESC;
 
 protected:
@@ -73,12 +74,14 @@ public:
 	void						Resister_EnterHandler(function<void(_uint, _int, _wstring)> _Handler);
 	void						Resister_StayHandler(function<void(_uint, _int, _wstring)> _Handler);
 	void						Resister_ExitHandler(function<void(_uint, _int, _wstring)> _Handler);
+	void						Resister_EnterHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler);
 	void						Resister_ExitHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler);
 
 public:
 	virtual void				OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
 	virtual void				OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other) override;
 	virtual void				OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other) override;
+
 public:
 	virtual void				On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
 	virtual void				On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
@@ -101,6 +104,8 @@ protected:
 	function<void(_uint, _int, _wstring)>	m_EnterHandler;
 	function<void(_uint, _int, _wstring)>	m_StayHandler;
 	function<void(_uint, _int, _wstring)>	m_ExitHandler;
+	
+	function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)>	m_CollisionEnterHandler;
 	function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> m_CollisionExitHandler;
 
 

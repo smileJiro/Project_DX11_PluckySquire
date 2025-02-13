@@ -12,6 +12,8 @@
 #define			RATIO_BOOK2D_X	0.3333333f
 #define			RATIO_BOOK2D_Y	0.3333333f
 
+#define			EPSILON	0.0001f
+
 
 namespace Engine // Engine NameSpace를 사용하는 클래스의 기능을 호출하는 것이 아닌 상수 정의와 같은 Define은 namespace 안에 넣을 필요없다.
 {

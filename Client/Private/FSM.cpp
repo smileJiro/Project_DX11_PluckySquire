@@ -9,8 +9,11 @@
 #include "ChaseWalkState.h"
 #include "MeleeAttackState.h"
 #include "RangedAttackState.h"
+#include "HitState.h"
+#include "DeadState.h"
 #include "Sneak_IdleState.h"
 #include "Sneak_PatrolState.h"
+#include "Sneak_BackState.h"
 #include "Sneak_AlertState.h"
 #include "Sneak_AwareState.h"
 #include "Sneak_InvestigateState.h"
@@ -152,6 +155,25 @@ HRESULT CFSM::Add_State(_uint _iState)
 		pState->Set_FSM(this);
 		m_States.emplace((_uint)MONSTER_STATE::ATTACK, pState);
 		break;
+
+	case Client::MONSTER_STATE::HIT:
+		pState = CHitState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::HIT, pState);
+		break;
+
+	case Client::MONSTER_STATE::DEAD:
+		pState = CDeadState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::DEAD, pState);
+		break;
+
 	case Client::MONSTER_STATE::LAST:
 		break;
 	default:
@@ -227,6 +249,14 @@ HRESULT CFSM::Add_SneakState()
 	pState->Set_Owner(m_pOwner);
 	pState->Set_FSM(this);
 	m_States.emplace((_uint)MONSTER_STATE::SNEAK_PATROL, pState);
+	Set_PatrolBound();
+
+	pState = CSneak_BackState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::SNEAK_BACK, pState);
 	Set_PatrolBound();
 
 	pState = CSneak_AwareState::Create(&Desc);

@@ -206,6 +206,7 @@
     <ClInclude Include="..\Public\Boss_HomingBall.h" />
     <ClInclude Include="..\Public\Boss_PurpleBall.h" />
     <ClInclude Include="..\Public\Boss_YellowBall.h" />
+    <ClInclude Include="..\Public\Bulb.h" />
     <ClInclude Include="..\Public\Camera_2D.h" />
     <ClInclude Include="..\Public\Camera_CutScene.h" />
     <ClInclude Include="..\Public\CarriableObject.h" />
@@ -214,7 +215,9 @@
     <ClInclude Include="..\public\Collision_Manager.h" />
     <ClInclude Include="..\Public\Dice.h" />
     <ClInclude Include="..\Public\Domino.h" />
+    <ClInclude Include="..\Public\DeadState.h" />
     <ClInclude Include="..\Public\FloorWord.h" />
+    <ClInclude Include="..\Public\HitState.h" />
     <ClInclude Include="..\Public\Interactable.h" />
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
     <ClInclude Include="..\Public\Narration.h" />
@@ -303,6 +306,7 @@
     <ClInclude Include="..\Public\Sneak_AlertState.h" />
     <ClInclude Include="..\Public\Sneak_AttackState.h" />
     <ClInclude Include="..\Public\Sneak_AwareState.h" />
+    <ClInclude Include="..\Public\Sneak_BackState.h" />
     <ClInclude Include="..\Public\Sneak_ChaseState.h" />
     <ClInclude Include="..\Public\Sneak_DetectionField.h" />
     <ClInclude Include="..\Public\Sneak_IdleState.h" />
@@ -376,6 +380,7 @@
     <ClCompile Include="..\Private\Boss_HomingBall.cpp" />
     <ClCompile Include="..\Private\Boss_PurpleBall.cpp" />
     <ClCompile Include="..\Private\Boss_YellowBall.cpp" />
+    <ClCompile Include="..\Private\Bulb.cpp" />
     <ClCompile Include="..\Private\Camera_2D.cpp" />
     <ClCompile Include="..\Private\Camera_CutScene.cpp" />
     <ClCompile Include="..\Private\CarriableObject.cpp" />
@@ -384,7 +389,9 @@
     <ClCompile Include="..\private\Collision_Manager.cpp" />
     <ClCompile Include="..\Private\Dice.cpp" />
     <ClCompile Include="..\Private\Domino.cpp" />
+    <ClCompile Include="..\Private\DeadState.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
+    <ClCompile Include="..\Private\HitState.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
     <ClCompile Include="..\Private\Narration.cpp" />
     <ClCompile Include="..\Private\Narration_Anim.cpp" />
@@ -469,6 +476,7 @@
     <ClCompile Include="..\Private\Sneak_AlertState.cpp" />
     <ClCompile Include="..\Private\Sneak_AttackState.cpp" />
     <ClCompile Include="..\Private\Sneak_AwareState.cpp" />
+    <ClCompile Include="..\Private\Sneak_BackState.cpp" />
     <ClCompile Include="..\Private\Sneak_ChaseState.cpp" />
     <ClCompile Include="..\Private\Sneak_DetectionField.cpp" />
     <ClCompile Include="..\Private\Sneak_IdleState.cpp" />

@@ -120,6 +120,7 @@ namespace Client
 		BOOK_MAIN_CHANGE,
 		SET_SCENEQUERYFLAG,
 		HIT,
+		GET_BULB,
 		
 		LAST,
 	};
@@ -146,8 +147,11 @@ namespace Client
 		STANDBY,
 		CHASE,
 		ATTACK,
+		HIT,
+		DEAD,
 		SNEAK_IDLE,
 		SNEAK_PATROL,
+		SNEAK_BACK,
 		SNEAK_AWARE,
 		SNEAK_INVESTIGATE,
 		SNEAK_ALERT,

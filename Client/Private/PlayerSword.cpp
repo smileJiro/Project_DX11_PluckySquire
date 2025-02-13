@@ -391,6 +391,8 @@ void CPlayerSword::Attack(CGameObject* _pVictim)
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
     Event_Hit(this, _pVictim, m_pPlayer->Get_AttackDamg());
+    _float3 vRepulse; XMStoreFloat3(&vRepulse, 15.f * XMVector3Normalize(_pVictim->Get_FinalPosition() - Get_FinalPosition()));
+    static_cast<CActorObject*>(_pVictim)->Get_ActorCom()->Add_Impulse(vRepulse);
     m_AttckedObjects.insert(_pVictim);
 }
 

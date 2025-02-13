@@ -15,7 +15,7 @@ class C2DMapObjectInfo final : public CBase
 {
 
 private:
-	C2DMapObjectInfo();
+	C2DMapObjectInfo(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	C2DMapObjectInfo(const C2DMapObjectInfo& Prototype);
 	virtual ~C2DMapObjectInfo() = default;
 
@@ -56,7 +56,6 @@ public :
 	void						Set_ColliderType(_uint _eType) { m_eColliderType = _eType; };
 	
 	ID3D11ShaderResourceView*	Get_SRV(_float2* _pReturnSize = nullptr);
-	CTexture*					Get_Texture(){ return m_pTexture; }
 
 	_uint						Get_ModelIndex() { return m_iModelIndex; }
 	void						Set_ModelIndex(_uint _iIndex) { m_iModelIndex = _iIndex; }
@@ -88,11 +87,18 @@ public :
 
 	void						Set_Model(C2DModel* _pModel);
 
-private :
+	HRESULT						Create_PreviewModel_Texutre();
 
+private :
+	ID3D11Device*				m_pDevice;
+	ID3D11DeviceContext*		m_pContext;
 	CGameInstance*				m_pGameInstance = { nullptr };
+
 	Engine::C2DModel*			m_pModel = { nullptr };
-	CTexture*					m_pTexture = { nullptr };
+	ID3D11ShaderResourceView*	m_pPreviewSRV = { nullptr };
+	_float2						m_fPreviewSize = {};
+
+
 
 	_uint						m_iModelIndex = 0;
 
@@ -127,8 +133,8 @@ private :
 
 
 public:
-	static C2DMapObjectInfo* Create(json _InfoJson);
-	static C2DMapObjectInfo* Create();
+	static C2DMapObjectInfo* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json _InfoJson);
+	static C2DMapObjectInfo* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void Free() ;
 
 };

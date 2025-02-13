@@ -46,6 +46,8 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
 
+    pDesc->fHP = 5.f;
+
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 30.f;
 
@@ -69,6 +71,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
     m_pFSM->Set_PatrolBound();
 
@@ -215,6 +218,8 @@ void CBarfBug::On_Hit(CGameObject* _pHitter, _float _fDamg)
 		m_tStat.fHP = 0;
         cout << "BarfBug Dead" << endl;
 	}
+
+    Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
 }
 
 HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -257,6 +262,14 @@ void CBarfBug::Change_Animation()
 
             case MONSTER_STATE::ATTACK:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BARF);
+                break;
+
+            case MONSTER_STATE::HIT:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DAMAGE);
+                break;
+
+            case MONSTER_STATE::DEAD:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
                 break;
 
             default:
@@ -391,6 +404,10 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             }
             break;
 
+        case DAMAGE:
+            Set_AnimChangeable(true);
+            break;
+
         default:
             break;
         }
@@ -444,8 +461,8 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fHalfHeight = 0.2f;
-    ShapeDesc->fRadius = 0.7f;
+    ShapeDesc->fHalfHeight = 0.15f;
+    ShapeDesc->fRadius = 0.5f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;

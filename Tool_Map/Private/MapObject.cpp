@@ -126,7 +126,6 @@ void CMapObject::Priority_Update(_float _fTimeDelta)
 }
 void CMapObject::Update(_float _fTimeDelta)
 {
-
     if (m_eMode == MODE::PICKING)
     {
         _float4x4 fMat = {};

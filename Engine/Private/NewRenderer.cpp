@@ -196,6 +196,14 @@ HRESULT CNewRenderer::Erase_DSV(const _wstring _strDSVTag)
 	return S_OK;
 }
 
+HRESULT CNewRenderer::Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer)
+{
+	if(FAILED(m_pShader->Bind_ConstBuffer(_szConstBufferName, _pConstBuffer)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CNewRenderer::Load_IBL(const _wstring& _strIBLJsonPath)
 {
 	const std::string filePathIBL = m_pGameInstance->WStringToString(_strIBLJsonPath);

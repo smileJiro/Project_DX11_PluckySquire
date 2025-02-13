@@ -252,6 +252,9 @@
     <ClInclude Include="..\Public\RenderGroup_Combine.h">
       <Filter>96. RenderTarget</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_PostProcessing.h">
+      <Filter>96. RenderTarget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Map_Tool.ico">
@@ -386,6 +389,9 @@
       <Filter>96. RenderTarget</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_Combine.cpp">
+      <Filter>96. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_PostProcessing.cpp">
       <Filter>96. RenderTarget</Filter>
     </ClCompile>
   </ItemGroup>

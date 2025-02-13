@@ -33,7 +33,19 @@ HRESULT CRenderGroup_Combine::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBu
             return E_FAIL;
         return E_FAIL;
     }
-
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_SrcBlurTargetTexture", TEXT("Target_PBRBlurFinal"))))
+    {
+        if (FAILED(m_pGameInstance->End_MRT()))
+            return E_FAIL;
+        return E_FAIL;
+    }
+    /* 3. Dof 관련 값은 이미 NewRenderer에서 채워줬음. */
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_DepthTexture", TEXT("Target_Depth"))))
+    {
+        if (FAILED(m_pGameInstance->End_MRT()))
+            return E_FAIL;
+        return E_FAIL;
+    }
     _pRTShader->Begin((_uint)PASS_DEFERRED::COMBINE);
 
     _pRTBuffer->Bind_BufferDesc();
