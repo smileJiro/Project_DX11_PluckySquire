@@ -275,6 +275,17 @@ public: /* For. D3DUtils */
 public: /* For. CubeMap */
 	void				Set_CubeMap(class CCubeMap* _pCubeMap);
 	HRESULT				Bind_IBLTexture(CShader* _pShaderCom, const _char* _pBRDFConstName, const _char* _pSpecularConstName, const _char* _pIrradianceConstName);
+
+public: /* For. Collision_Manager */
+/* Section 등록*/
+	HRESULT					Register_Section(const _wstring& _strSectionKey);
+/* Group Filter 관리 */
+	void					Check_GroupFilter(_uint _iGroupFilterLeft, _uint _iGroupFilterRight);						 // 그룹필터를 추가
+	void					Erase_GroupFilter(_uint _iGroupFilterLeft, _uint _iGroupFilterRight);						 // 그룹필터를 삭제
+	void					Clear_GroupFilter();
+/* Group에 Collider 등록 */
+	HRESULT					Add_Collider(const _wstring& _strSectionKey, _uint _iGroupFilter, CCollider* _pCollider); // 콜라이더를 추가.
+
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;
@@ -298,6 +309,7 @@ private:
 	class CFrustum* m_pFrustum = nullptr;
 	class CD3DUtils* m_pD3DUtils = nullptr;
 	class CCubeMap* m_pCubeMap = nullptr;
+	class CCollision_Manager* m_pCollision_Manager = nullptr;
 private:
 	HWND m_hWnd = nullptr;
 	HINSTANCE m_hInstance = nullptr;

@@ -116,6 +116,7 @@ public:
 	SECTION_2D_RENDER_TYPE				Get_Section_2D_RenderType() { return m_eMySectionRenderType; }
 	SECTION_2D_PLAY_TYPE				Get_Section_2D_PlayType() { return m_eMySectionPlayType; }
 
+	_bool								Is_Rotation() { return m_isRotation; }
 
 	void								Set_WorldTexture(ID3D11Texture2D* _pTexture) 
 	{
@@ -150,6 +151,8 @@ protected:
 
 	_wstring				m_strNextPageTag = L"";
 	_wstring				m_strPrePageTag = L"";
+
+	_bool					m_isRotation = false;
 
 protected:
 	/// <summary>

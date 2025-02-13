@@ -3,7 +3,7 @@
 #include "ModelObject.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
-#include "Collision_Manager.h"
+
 #include "UI_Manager.h"
 #include "StateMachine.h"
 #include "Npc_OnlySocial.h"

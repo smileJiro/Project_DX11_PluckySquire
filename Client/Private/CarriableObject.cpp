@@ -2,7 +2,7 @@
 #include "CarriableObject.h"
 #include "Player.h"
 #include "Section_Manager.h"    
-#include "Collision_Manager.h"    
+    
 #include "Collider_Circle.h"
 #include "Actor_Dynamic.h"
 

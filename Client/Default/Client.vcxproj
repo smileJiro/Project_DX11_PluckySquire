@@ -195,6 +195,7 @@
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
     <ClInclude Include="..\Public\BirdMonster.h" />
+    <ClInclude Include="..\public\Blocker.h" />
     <ClInclude Include="..\Public\BossEnergyBallState.h" />
     <ClInclude Include="..\Public\BossHomingBallState.h" />
     <ClInclude Include="..\Public\BossIdleState.h" />
@@ -212,7 +213,6 @@
     <ClInclude Include="..\Public\CarriableObject.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
-    <ClInclude Include="..\public\Collision_Manager.h" />
     <ClInclude Include="..\Public\Dice.h" />
     <ClInclude Include="..\Public\Domino.h" />
     <ClInclude Include="..\Public\DeadState.h" />
@@ -369,6 +369,7 @@
     </ClCompile>
     <ClCompile Include="..\private\Beetle.cpp" />
     <ClCompile Include="..\Private\BirdMonster.cpp" />
+    <ClCompile Include="..\private\Blocker.cpp" />
     <ClCompile Include="..\Private\BossEnergyBallState.cpp" />
     <ClCompile Include="..\Private\BossHomingBallState.cpp" />
     <ClCompile Include="..\Private\BossIdleState.cpp" />
@@ -386,7 +387,6 @@
     <ClCompile Include="..\Private\CarriableObject.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
-    <ClCompile Include="..\private\Collision_Manager.cpp" />
     <ClCompile Include="..\Private\Dice.cpp" />
     <ClCompile Include="..\Private\Domino.cpp" />
     <ClCompile Include="..\Private\DeadState.cpp" />

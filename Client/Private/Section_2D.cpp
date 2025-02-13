@@ -48,13 +48,32 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 	if (_SectionJson.contains("Section_Default"))
 	{
 		_uint eSectionDefault = _SectionJson["Section_Default"];
+
 		Desc.Book_2D_Build(m_strName);
+
 	}
 	// Default 설정값이 없다? 
 	// Section_Info 객체 내부의 커스텀 정보 읽기.
 	else if (_SectionJson.contains("Section_Info"))
 	{
+		Desc.Book_2D_Build(m_strName);
+
 		auto SectionInfo = _SectionJson["Section_Info"];
+		if (SectionInfo.contains("Rotation"))
+		{
+			m_isRotation = SectionInfo["Rotation"];
+		}
+		if (SectionInfo.contains("RenderResolution"))
+		{
+			Desc.fRenderResolution.x = SectionInfo["RenderResolution"]["X"];
+			Desc.fRenderResolution.y = SectionInfo["RenderResolution"]["Y"];
+		}
+		if (SectionInfo.contains("LevelSizePixels"))
+		{
+			Desc.fLevelSizePixels.x = SectionInfo["LevelSizePixels"]["X"];
+			Desc.fLevelSizePixels.y = SectionInfo["LevelSizePixels"]["Y"];
+		}
+
 	}
 	else 
 	{

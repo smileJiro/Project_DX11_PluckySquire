@@ -1,0 +1,85 @@
+#include "stdafx.h"
+#include "Blocker.h"
+#include "GameInstance.h"
+
+
+CBlocker::CBlocker(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, COORDINATE _eCoord)
+    :CPartObject(_pDevice, _pContext)
+    , m_eBlockerCoord(_eCoord)
+{
+    
+}
+
+CBlocker::CBlocker(const CBlocker& _Prototype)
+    :CPartObject(_Prototype)
+    , m_eBlockerCoord(_Prototype.m_eBlockerCoord)
+{
+}
+
+HRESULT CBlocker::Initialize_Prototype()
+{
+
+	return S_OK;
+}
+
+HRESULT CBlocker::Initialize(void* _pArg)
+{
+    BLOCKER_DESC* pDesc = static_cast<BLOCKER_DESC*>(_pArg);
+    // Save
+    m_isFloor = pDesc->isFloor;
+    
+    // Add
+    pDesc->eStartCoord = m_eBlockerCoord;
+    pDesc->iCollisionGroupID = OBJECT_GROUP::BLOCKER;
+    pDesc->isCoordChangeEnable = false;
+    
+    if (FAILED(__super::Initialize(_pArg)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Component(pDesc)))
+        return E_FAIL;
+
+	return S_OK;
+}
+
+
+HRESULT CBlocker::Ready_Component(BLOCKER_DESC* _pDesc)
+{
+    if (COORDINATE_2D == m_eBlockerCoord)
+    {
+        BLOCKER2D_DESC* Desc2D = static_cast<BLOCKER2D_DESC*>(_pDesc);
+        /* Test 2D Collider */
+        CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
+        AABBDesc.pOwner = this;
+        AABBDesc.vExtents = Desc2D->vColliderExtents;
+        AABBDesc.vScale = Desc2D->vColliderScale;
+        AABBDesc.vOffsetPosition = Desc2D->vOffsetPosition;
+        AABBDesc.isBlock = true;
+        CCollider_AABB* pCollider = nullptr;
+        if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+            TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &AABBDesc)))
+            return E_FAIL;
+
+        m_p2DColliderComs.push_back(pCollider);
+    }
+    else if (COORDINATE_3D == m_eBlockerCoord)
+    {
+
+    }
+
+    return S_OK;
+}
+
+CBlocker* CBlocker::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, COORDINATE _eCoord)
+{
+	return nullptr;
+}
+
+CGameObject* CBlocker::Clone(void* _pArg)
+{
+	return nullptr;
+}
+
+void CBlocker::Free()
+{
+}
