@@ -44,7 +44,7 @@ HRESULT CSection::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint
     if (!Has_Exist_Layer(_iLayerIndex))
         return E_FAIL;
 
-    if (FAILED(m_Layers[_iLayerIndex]->Add_GameObject(_pGameObject)))
+     if (FAILED(m_Layers[_iLayerIndex]->Add_GameObject(_pGameObject)))
         return E_FAIL;
 
     _pGameObject->Set_Include_Section_Name(m_strName);

@@ -11,6 +11,7 @@ class CNPC_OnlySocial final: public CNPC, public IInteractable
 public:
 	struct NPC_ONLYSOCIAL : public tagNPCDesc
 	{
+		_wstring	strSectionid;
 		_wstring	strAnimationName;
 		_int		strCreateSection;
 		_wstring	strDialogueId;

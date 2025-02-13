@@ -29,6 +29,7 @@ public:
         _float  fWaitingTime;       // 완료 후 다음 애니메이션까지의 대기 시간
         _float2 vAnimationScale;
         _uint   iAnimationIndex;
+        _bool   isLoop;
     };
 
     struct NarrationDialogData
@@ -76,7 +77,7 @@ private:
     HRESULT     LoadFromJson(const std::wstring& filePath); // 데이터 로드
     HRESULT      DisplayText(_float2 _vRTSize); // 타이핑 되게하자.
     void        NextDialogue(_float2 _RTSize);
-    CNarration_Anim* GetAnimationObjectForLine(_int iLine);
+    vector<CNarration_Anim*> GetAnimationObjectForLine(const _uint iLine, _int AnimCount = 0);
 
 private:
     //DialogData          m_DialogData;   // 현재 다이얼로그 데이터
@@ -88,16 +89,26 @@ private:
 
     _float                  m_fLineHeight = { 70.f };
     _int                    m_RemainWord = { 0 };
+    _bool                   m_isFade = { false };
+    _bool                   m_isNarrationEnd = { false };
+
+    _bool                   m_isStartNarration = { false };
+
 
     _int m_iCurrentLine = 0;      // 현재 화면에 노출할 대화 라인 인덱스
     _float m_fTextAlpha = 0.f;      // 현재 텍스트의 알파값(0.0~1.0)
-    _float m_fFadeDuration = 3.f;  // Fadein 효과에 걸리는 시간 (초)
-    _float m_fDelayBetweenLines = 5.f; // 라인 교체 전 대기 시간 (초)
+    _float m_fFadeDuration = 2.f;  // Fadein 효과에 걸리는 시간 (초)
+    _float m_fDelayBetweenLines = 4.f; // 라인 교체 전 대기 시간 (초)
     _float m_fFadeTimer = 0.f;      // fade-in 진행 타이머
     _float m_fDelayTimer = 0.f;     // 라인 대기 타이머
     _bool  m_bAnimationStarted = false; // 현재 라인에 대해 애니메이션이 시작되었는지 여부
-    CNarration_Anim* m_pCurrentAnimObj;
-    vector<CNarration_Anim*> m_vAnimObjectsByLine;
+    vector<CNarration_Anim*> m_pCurrentAnimObj = { nullptr };
+
+    _int    m_iNarrationCount = { 0 };
+
+
+    vector<CNarration_Anim*> m_vecAnimation;
+    map<_uint, vector<CNarration_Anim*>> m_vAnimObjectsByLine;
 
 protected:
     virtual HRESULT Ready_Components() override;
