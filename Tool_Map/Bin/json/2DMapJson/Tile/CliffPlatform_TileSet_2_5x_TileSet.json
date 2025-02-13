@@ -1,0 +1,4035 @@
+[
+  {
+    "Type": "PaperTileSet",
+    "Name": "CliffPlatform_TileSet_2_5x_TileSet",
+    "Class": "UScriptClass'PaperTileSet'",
+    "Properties": {
+      "TileSize": {
+        "X": 635,
+        "Y": 225
+      },
+      "TileSheet": {
+        "ObjectName": "Texture2D'CliffPlatform_TileSet_2_5x'",
+        "ObjectPath": "/Game/Map/TileMaps/C03/CliffPlatform_TileSet_2_5x.0"
+      },
+      "WidthInTiles": 6,
+      "HeightInTiles": 18,
+      "AllocatedWidth": 6,
+      "AllocatedHeight": 18,
+      "PerTileData": [
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": 0.0,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": 0.0,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": 0.0,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -21.0,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": 3.0,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": 0.0,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 0.0,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Polygon",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 51.0,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 28.0,
+                    "Y": 0.0
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 0.0
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [
+              {
+                "ShapeType": "ESpriteShapeType::Box",
+                "Vertices": [
+                  {
+                    "X": -317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": -112.5
+                  },
+                  {
+                    "X": 317.5,
+                    "Y": 112.5
+                  },
+                  {
+                    "X": -317.5,
+                    "Y": 112.5
+                  }
+                ],
+                "BoxSize": {
+                  "X": 635.0,
+                  "Y": 225.0
+                },
+                "BoxPosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Rotation": 0.0,
+                "bNegativeWinding": false
+              }
+            ],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        },
+        {
+          "UserDataName": "None",
+          "CollisionData": {
+            "Shapes": [],
+            "GeometryType": "ESpritePolygonMode::FullyCustom",
+            "PixelsPerSubdivisionX": 32,
+            "PixelsPerSubdivisionY": 32,
+            "bAvoidVertexMerging": false,
+            "AlphaThreshold": 0.0,
+            "DetailAmount": 0.5,
+            "SimplifyEpsilon": 2.0
+          },
+          "TerrainMembership": 255,
+          "TerrainMembership[1]": 255,
+          "TerrainMembership[2]": 255,
+          "TerrainMembership[3]": 255
+        }
+      ]
+    }
+  }
+]

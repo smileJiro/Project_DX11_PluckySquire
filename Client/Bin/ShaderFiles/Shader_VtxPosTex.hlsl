@@ -62,6 +62,28 @@ VS_OUT VS_SPRITE2D(VS_IN In)
 
     return Out;
 }
+
+VS_OUT VS_SPRITE2D_ROTATE(VS_IN In)
+{
+    VS_OUT Out = (VS_OUT) 0;
+
+    matrix matWV, matWVP;
+
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+
+    Out.vPosition = mul(float4(In.vPosition, 1.f), matWVP);
+    float2 vTexcoord = clamp(In.vTexcoord, g_vSpriteStartUV, g_vSpriteEndUV);
+
+    
+
+    Out.vTexcoord.x = vTexcoord.y;
+    Out.vTexcoord.y = 1.f - vTexcoord.x;
+
+    return Out;
+}
+
+
 // (장치가 수행)Rendering PipeLine : Projection 변환 (W 나누기 연산 진행) // 
 // (장치가 수행)Rendering PipeLine : Viewport 변환 // 
 // (장치가 수행)Rendering PipeLine : Rasterization // 
@@ -272,4 +294,13 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_DIALOGUE_BG_COLOR();
     }
 
+    pass Sprite2D_ROTATE
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_SPRITE2D_ROTATE();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN();
+    }
 }
