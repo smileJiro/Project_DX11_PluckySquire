@@ -7,7 +7,7 @@
 #include "Projectile_BarfBug.h"
 #include "DetectionField.h"
 #include "Section_Manager.h"
-#include "Collision_Manager.h"
+
 
 CBarfBug::CBarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -166,7 +166,7 @@ void CBarfBug::Update(_float _fTimeDelta)
 
     //// TestCode : еб©У
     if (COORDINATE_2D == Get_CurCoord())
-        CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_pColliderCom);
+        m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_pColliderCom);
 
     __super::Update(_fTimeDelta); /* Part Object Update */
 }

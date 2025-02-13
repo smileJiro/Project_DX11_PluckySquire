@@ -4,8 +4,7 @@
 #include "Player.h"
 #include "3DModel.h"
 #include "GameInstance.h"
-#include "Section_Manager.h"    
-#include "Collision_Manager.h"    
+#include "Section_Manager.h"     
 #include "Camera_Manager.h"
 
 
@@ -109,7 +108,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
     {
         _uint iSectionKey = RG_2D + PR2D_SECTION_START;
         if (m_pBody2DColliderCom->Is_Active())
-            CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pBody2DColliderCom);
+            m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pBody2DColliderCom);
     }
     switch (m_eCurrentState)
     {

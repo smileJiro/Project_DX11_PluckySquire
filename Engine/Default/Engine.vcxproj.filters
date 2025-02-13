@@ -298,8 +298,11 @@
     <Filter Include="01.Utility\09.RenderTargets\MSAA">
       <UniqueIdentifier>{1043a63e-dc1b-48e6-9471-7d9ebdd66dd9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.Objects\Actor\Container\EmptyNode">
-      <UniqueIdentifier>{b5306290-0db9-45c8-bc95-a7d02da0f184}</UniqueIdentifier>
+    <Filter Include="93.CollisionManager">
+      <UniqueIdentifier>{abb8c4a4-1b7d-4c72-a99a-25766751cf37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04.Components\Collider\Manager">
+      <UniqueIdentifier>{3ccef1f9-814a-40bf-afd1-93e740a36ed3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -610,8 +613,8 @@
       <Filter>01.Utility\09.RenderTargets\MSAA</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Collider_Fan.h" />
-    <ClInclude Include="..\public\EmptyNode.h">
-      <Filter>01.Utility\03.Objects\Actor\Container\EmptyNode</Filter>
+    <ClInclude Include="..\Public\Collision_Manager.h">
+      <Filter>01.Utility\04.Components\Collider\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -910,8 +913,8 @@
       <Filter>01.Utility\09.RenderTargets\MSAA</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Collider_Fan.cpp" />
-    <ClCompile Include="..\private\EmptyNode.cpp">
-      <Filter>01.Utility\03.Objects\Actor\Container\EmptyNode</Filter>
+    <ClCompile Include="..\Private\Collision_Manager.cpp">
+      <Filter>01.Utility\04.Components\Collider\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

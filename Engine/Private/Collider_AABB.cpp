@@ -5,6 +5,7 @@
 #include "DebugDraw.h"
 
 
+
 CCollider_AABB::CCollider_AABB(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCollider(_pDevice, _pContext)
 {
@@ -57,7 +58,6 @@ void CCollider_AABB::Late_Update(_float _fTimeDelta)
         return;
 
     Update_OwnerTransform();
-
 //#ifdef _DEBUG
 //    m_pGameInstance->Add_DebugComponent(this);
 //#endif // _DEBUG

@@ -20,7 +20,7 @@
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "Section_Manager.h"    
-#include "Collision_Manager.h"    
+    
 #include "Collider_Fan.h"
 #include "Interactable.h"
 #include "CarriableObject.h"
@@ -369,11 +369,11 @@ void CPlayer::Update(_float _fTimeDelta)
         //// TestCode : еб©У
         _uint iSectionKey = RG_2D + PR2D_SECTION_START;
         if(m_pBody2DColliderCom->Is_Active())
-            CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pBody2DColliderCom);
+            m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pBody2DColliderCom);
 		if (m_pBody2DTriggerCom->Is_Active())
-            CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_TRIGGER, m_pBody2DTriggerCom);
+            m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_TRIGGER, m_pBody2DTriggerCom);
 		if (m_pAttack2DTriggerCom->Is_Active())
-			CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pAttack2DTriggerCom);
+			m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pAttack2DTriggerCom);
     }
 
    // cout << "Sneak" << Is_Sneaking() << endl;

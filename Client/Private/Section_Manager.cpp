@@ -5,7 +5,7 @@
 #include "Section_2D_PlayMap_Book.h"
 #include "Section_2D_PlayMap_Sksp.h"
 #include "Section_2D_Narration.h"
-#include "Collision_Manager.h"
+
 
 IMPLEMENT_SINGLETON(CSection_Manager)
 CSection_Manager::CSection_Manager()
@@ -191,7 +191,7 @@ _float2 CSection_Manager::Get_Section_RenderTarget_Size(const _wstring _strSecti
 HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 {
     // Clear_Section
-    //CCollision_Manager::GetInstance()->Register_Section();
+    //m_pGameInstance->Register_Section();
     CSection* pTargetSection = Find_Section(_strSectionKey);
 
     if (nullptr != pTargetSection)
@@ -213,7 +213,7 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
         m_pCurSection = pSection_2D;
 
         if (m_pCurSection)
-            CCollision_Manager::GetInstance()->Register_Section(m_pCurSection->Get_SectionName());
+            m_pGameInstance->Register_Section(m_pCurSection->Get_SectionName());
 
         //
         Main_Section_Active_Process(m_pCurSection->Get_SectionName());
@@ -413,7 +413,7 @@ void CSection_Manager::Clear_Sections()
         Safe_Release(Pair.second);
     m_CurLevelSections.clear();
     m_pCurSection = nullptr;
-    CCollision_Manager::GetInstance()->Clear_GroupFilter();
+    m_pGameInstance->Clear_GroupFilter();
 }
 
 HRESULT CSection_Manager::Ready_CurLevelSectionModels(const _wstring& _strJsonPath)
