@@ -16,7 +16,8 @@ public:
 		DONE_Y_ROTATE = 1,
 		DONE_RIGHT_ROTATE = 1 << 1,
 		DONE_LENGTH_MOVE = 2 << 1,
-		ALL_DONE_MOVEMENT = DONE_Y_ROTATE | DONE_RIGHT_ROTATE | DONE_LENGTH_MOVE
+		ALL_DONE_MOVEMENT = DONE_Y_ROTATE | DONE_RIGHT_ROTATE | DONE_LENGTH_MOVE,
+		ALL_DONE_MOVEMENT_VECTOR = DONE_Y_ROTATE | DONE_LENGTH_MOVE
 	};
 
 	typedef struct tagCameraArmDesc : public CTransform_3D::TRANSFORM_3D_DESC
@@ -73,6 +74,7 @@ public:
 	void				Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);	// 돌아갈지 안 돌아갈지에 따라 삭제 혹은 이동
 
 	_bool				Move_To_NextArm(_float _fTimeDelta);
+	_bool				Move_To_NextArm_ByVector(_float _fTimeDelta);
 	_bool				Move_To_PreArm(_float _fTimeDelta);						// Stack에 저장해둔 Arm으로
 
 private:

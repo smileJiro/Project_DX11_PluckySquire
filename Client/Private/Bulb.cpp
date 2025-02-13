@@ -106,12 +106,12 @@ HRESULT CBulb::Initialize_2D_Object(BULB_DESC* _pDesc)
 void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
 	if (OBJECT_GROUP::PLAYER != _Other.pActorUserData->iObjectGroup || 
-		SHAPE_USE::SHAPE_BODY !=_Other.pShapeUserData->iShapeUse)
+		(_uint)SHAPE_USE::SHAPE_BODY !=_Other.pShapeUserData->iShapeUse)
 		return;
 
 	switch (_My.pShapeUserData->iShapeUse)
 	{
-	case SHAPE_BODY:
+	case BULB_SHAPE_USE::SHAPE_BODY:
 	{
 
 		Event_Get_Bulb(COORDINATE_3D);
@@ -120,7 +120,7 @@ void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 		m_isSticking = false;
 	}
 		break;
-	case SHAPE_STICKING:
+	case BULB_SHAPE_USE::SHAPE_STICKING:
 	{
 		m_pTargetWorld = _Other.pActorUserData->pOwner->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 		m_isSticking = true;

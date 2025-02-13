@@ -198,15 +198,18 @@ void CTriggerObject::Resister_ExitHandler_ByCollision(function<void(_uint, _int,
 
 void CTriggerObject::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup) {
-        if (m_EnterHandler) {
-            m_EnterHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
-        }
+    if (OBJECT_GROUP::PLAYER != _Other.pActorUserData->iObjectGroup ||
+        (_uint)SHAPE_USE::SHAPE_BODY != _Other.pShapeUserData->iShapeUse)
+        return;
 
-        if (m_CollisionEnterHandler) {
-            m_CollisionEnterHandler(m_iTriggerType, m_iTriggerID, _My, _Other);
-        }
+    if (m_EnterHandler) {
+        m_EnterHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
+
+    if (m_CollisionEnterHandler) {
+        m_CollisionEnterHandler(m_iTriggerType, m_iTriggerID, _My, _Other);
+    }
+    
 }
 
 void CTriggerObject::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -218,6 +221,10 @@ void CTriggerObject::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Othe
 
 void CTriggerObject::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+    if (OBJECT_GROUP::PLAYER != _Other.pActorUserData->iObjectGroup ||
+        (_uint)SHAPE_USE::SHAPE_BODY != _Other.pShapeUserData->iShapeUse)
+        return;
+
     if (m_ExitHandler) {
         m_ExitHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }

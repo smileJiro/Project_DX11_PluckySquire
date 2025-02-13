@@ -142,7 +142,7 @@ void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
 	m_pCurCutScene->first.y += _fTimeDelta;
 	_float fRatio = m_pCurCutScene->first.y / m_pCurCutScene->first.x;
 
-	if (fRatio > 1.f) {
+	if (fRatio >= (1.f - EPSILON)) {
 		_uint iLastIndex = (_uint)m_pCurCutScene->second.size() - 1;
 		
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_pCurCutScene->second[iLastIndex].vPosition), 1.f));
@@ -196,7 +196,7 @@ void CCamera_CutScene::Before_CutScene(_float _fTimeDelta)
 		m_InitialTime.y += _fTimeDelta;
 		_float fRatio = m_InitialTime.y / m_InitialTime.x;
 
-		if (fRatio > 1.f) {
+		if (fRatio >= (1.f - EPSILON)) {
 			m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&tData.vPosition), 1.f));
 			m_fFovy = tData.fFovy;
 			m_InitialTime.y = 0.f;

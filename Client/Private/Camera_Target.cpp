@@ -238,7 +238,7 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 			m_fFreezeExitTime.y += _fTimeDelta;
 			_float fRatio = m_fFreezeExitTime.y / m_fFreezeExitTime.x;
 
-			if (fRatio >= 1.f) {
+			if (fRatio >= (1.f - EPSILON)) {
 				m_fFreezeExitTime.y = 0.f;
 				m_bFreezeExit = false;
 			}
@@ -263,7 +263,7 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 
 void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 {
-	if (true == m_pCurArm->Move_To_NextArm(_fTimeDelta)) {
+	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta)) {
 		m_eCameraMode = DEFAULT;
 		CTrigger_Manager::GetInstance()->On_End(m_szEventTag);
 		//return;
@@ -324,7 +324,7 @@ void CCamera_Target::Switching(_float _fTimeDelta)
 
 	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN);
 
-	if (fRatio > 1.f) {
+	if (fRatio >= (1.f - EPSILON)) {
 		_vector vTargetPos;
 		memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
 		_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
