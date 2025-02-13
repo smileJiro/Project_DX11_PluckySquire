@@ -1586,8 +1586,8 @@ HRESULT C2DMap_Tool_Manager::Setting_TileMap(const _string _strFileMapJsonName)
 					PropertiesJson["LayerName"].contains("SourceString")
 					)
 				{
-					if (!(PropertiesJson["LayerName"]["SourceString"] == "CollidingLayer" ||
-						PropertiesJson["LayerName"]["SourceString"] == "PlayableFront"
+					if (!(PropertiesJson["LayerName"]["SourceString"] == "PlayableFront" /*||
+						PropertiesJson["LayerName"]["SourceString"] == "PlayableFront"*/
 						))
 						continue;
 					if (PropertiesJson.contains("AllocatedCells")
@@ -1625,20 +1625,17 @@ HRESULT C2DMap_Tool_Manager::Setting_TileMap(const _string _strFileMapJsonName)
 
 	if (!IndexsInfos.empty())
 	{
-
-
-
-
 		C2DTile_RenderObject::TILE_RENDEROBJECT_DESC Desc = { };
-
-		Desc.iMapSizeWidth = RTSIZE_BOOK2D_X;
-		Desc.iMapSizeHeight = RTSIZE_BOOK2D_Y;
+		_float2 fSize = m_p2DRenderGroup->Get_RenderTarget_Size();
+		Desc.iMapSizeWidth = (_uint)fSize.x ;
+		Desc.iMapSizeHeight = (_uint)fSize.y ;
+		Desc.fRenderTargetSize = fSize;
 
 
 		Desc.iIndexCountX = iTileWidthInTiles;
 		Desc.iIndexCountY = iTileHeightInTiles;
-		Desc.iIndexSIzeX = RTSIZE_BOOK2D_X / iTileWidthInTiles;
-		Desc.iIndexSIzeY = RTSIZE_BOOK2D_Y / iTileHeightInTiles;
+		Desc.iIndexSIzeX = (_uint)(fSize .x / iTileWidthInTiles);
+		Desc.iIndexSIzeY = (_uint)(fSize .y / iTileHeightInTiles);
 		CGameObject* pGameObject = nullptr;
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DTile_RenderObject"),
 			LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, &Desc)))
@@ -1744,7 +1741,27 @@ HRESULT C2DMap_Tool_Manager::Setting_TileMap(const _string _strFileMapJsonName)
 				ID3D11ShaderResourceView* pSRV = { nullptr };
 
 				// image Load
-				hr = CreateDDSTextureFromFile(m_pDevice, (StringToWstring(strTexturePath) + tInfo.strTextureTag).c_str(), nullptr, &pSRV);
+
+				hr = DirectX::CreateDDSTextureFromFileEx(
+					m_pDevice,               // Direct3D 장치
+					(StringToWstring(strTexturePath) + tInfo.strTextureTag).c_str(),             // DDS 파일 경로
+					0,                       // 최대 텍스처 크기 (0은 제한 없음)
+					D3D11_USAGE_DEFAULT,     // 리소스 사용 방법
+					D3D11_BIND_SHADER_RESOURCE, // 바인딩 플래그
+					0,                       // CPU 접근 플래그
+					0,                       // 기타 플래그
+					DirectX::DDS_LOADER_FORCE_SRGB, // sRGB 강제 적용
+					nullptr,                 // 생성된 텍스처 리소스 (필요 시 포인터 제공)
+					&pSRV                    // 생성된 셰이더 리소스 뷰
+				);
+
+
+				//hr = CreateDDSTextureFromFile(m_pDevice, (StringToWstring(strTexturePath) + tInfo.strTextureTag).c_str(), nullptr, &pSRV);
+				
+				
+				
+				
+				
 				if (SUCCEEDED(hr))
 				{
 
@@ -2006,8 +2023,8 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 						reinterpret_cast<_float*>(&fScale.x)[i] = fValue;
 					}
 					fLevelSizePixels = fScale;
-					fLevelSizePixels.x *= RATIO_BOOK2D_X;
-					fLevelSizePixels.y *= RATIO_BOOK2D_Y;
+					//fLevelSizePixels.x *= RATIO_BOOK2D_X;
+					//fLevelSizePixels.y *= RATIO_BOOK2D_Y;
 				}
 				if (TargetJson.contains("RenderResolution"))
 				{
@@ -2018,8 +2035,8 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 						reinterpret_cast<_float*>(&fScale.x)[i] = fValue;
 					}
 					fRenderResolution = fScale;
-					fRenderResolution.x *= RATIO_BOOK2D_X;
-					fRenderResolution.y *= RATIO_BOOK2D_Y;
+					//fRenderResolution.x *= RATIO_BOOK2D_X;
+					//fRenderResolution.y *= RATIO_BOOK2D_Y;
 				}
 
 
@@ -2120,21 +2137,34 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 
 	if (m_p2DRenderGroup != nullptr)
 	{
+		_float2 fTargetSize = {};
+
+		if (fRenderResolution.x < fRenderResolution.y)
+		{
+			fTargetSize.x = fLevelSizePixels.x;
+			fTargetSize.y = fLevelSizePixels.y;
+		}
+		else 
+		{
+			fTargetSize.x = fRenderResolution.x;
+			fTargetSize.y = fRenderResolution.y;
+		}
+
 		_float2 fLgcRenderTargetSize = m_p2DRenderGroup->Get_RenderTarget_Size();
 
-		if (fRenderResolution.x == -1 && fRenderResolution.x == -1)
+		if (fTargetSize.x == -1 && fTargetSize.x == -1)
 		{
-			fRenderResolution.x = (_float)RTSIZE_BOOK2D_X;
-			fRenderResolution.y = (_float)RTSIZE_BOOK2D_Y;
+			fTargetSize.x = (_float)RTSIZE_BOOK2D_X;
+			fTargetSize.y = (_float)RTSIZE_BOOK2D_Y;
 		}
 
 
-		if ((_int)round(fRenderResolution.x) != (_int)round(fLgcRenderTargetSize.x)
+		if ((_int)round(fTargetSize.x) != (_int)round(fLgcRenderTargetSize.x)
 			||
-			(_int)round(fRenderResolution.y) != (_int)round(fLgcRenderTargetSize.y))
+			(_int)round(fTargetSize.y) != (_int)round(fLgcRenderTargetSize.y))
 		{
 			Clear_RenderGroup();
-			Change_RenderGroup(fRenderResolution);
+			Change_RenderGroup(fTargetSize);
 		}
 	}
 #pragma endregion

@@ -24,7 +24,8 @@ HRESULT CLevel_3D_Map_Tool::Initialize(CImguiLogger* _pLogger)
 
 	m_pGameInstance->Set_DebugRender(true);
 
-
+	/* Blur RenderGroupOn */
+	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
 	return S_OK;
 }
 
@@ -44,21 +45,8 @@ HRESULT CLevel_3D_Map_Tool::Render()
 
 HRESULT CLevel_3D_Map_Tool::Ready_Lights()
 {
-	CONST_LIGHT LightDesc{};
-
-	ZeroMemory(&LightDesc, sizeof LightDesc);
-
-	LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
-	LightDesc.fFallOutStart = 20.0f;
-	LightDesc.fFallOutEnd = 1000.0f;
-	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
-	LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
-
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
-		return E_FAIL;
-
+	m_pGameInstance->Load_Lights(TEXT("../../Client/Bin/DataFiles/DirectLights/DirectionalTest.json"));
+	m_pGameInstance->Load_IBL(TEXT("../../Client/Bin/DataFiles/IBL/DirectionalTest.json"));
 
 	return S_OK;
 }

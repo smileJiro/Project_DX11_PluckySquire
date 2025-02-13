@@ -190,7 +190,7 @@ PS_OUT PS_MAIN(PS_IN In)
         discard;
     
     Out.vDiffuse = vAlbedo;
-    // 1,0,0
+    // 1,0,0 
     // 1, 0.5, 0.5 (양의 x 축)
     // 0, 0.5, 0.5 (음의 x 축)
     Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);

@@ -39,6 +39,9 @@ HRESULT CMonster::Initialize(void* _pArg)
 	if (true == pDesc->isSneakMode)
 		m_isSneakMode = true;
 
+	// Add Desc
+	pDesc->iCollisionGroupID = OBJECT_GROUP::MONSTER;
+
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 

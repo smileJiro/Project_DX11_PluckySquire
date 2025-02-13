@@ -3,7 +3,7 @@
 #include "ModelObject.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
-#include "Collision_Manager.h"
+
 #include "UI_Manager.h"
 #include "StateMachine.h"
 #include "Npc_OnlySocial.h"
@@ -151,8 +151,6 @@ void CNPC_Social::Priority_Update(_float _fTimeDelta)
 
 void CNPC_Social::Update(_float _fTimeDelta)
 {
-	CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::INTERACTION_OBEJCT, m_pColliderCom);
-	
 	__super::Update(_fTimeDelta);
 	
 	

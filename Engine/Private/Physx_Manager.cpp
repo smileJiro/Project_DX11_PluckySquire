@@ -16,8 +16,6 @@ CPhysx_Manager::CPhysx_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 
 HRESULT CPhysx_Manager::Initialize()
 {
-
-
 	// Event CallBack Class 
 	m_pPhysx_EventCallBack = CPhysx_EventCallBack::Create();
 	if (nullptr == m_pPhysx_EventCallBack)
@@ -226,7 +224,7 @@ _bool CPhysx_Manager::RayCast_Nearest_GroupFilter(const _float3& _vOrigin, const
 					*_ppOutActorObject = pActorUserData->pOwner;
 			}
 			if (nullptr != _pOutPos)
-				*_pOutPos = _float3(hit.block.position.x, hit.block.position.y, hit.block.position.z);
+				*_pOutPos = _float3(hit.touches[i].position.x, hit.touches[i].position.y, hit.touches[i].position.z);
 
 			isResult = true;
 			break;

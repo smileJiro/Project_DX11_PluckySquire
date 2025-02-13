@@ -16,6 +16,8 @@ HRESULT CSneak_AwareState::Initialize(void* _pArg)
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
 
+	m_fCoolTime = 2.f;
+
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 		
@@ -29,8 +31,15 @@ void CSneak_AwareState::State_Enter()
 }
 
 void CSneak_AwareState::State_Update(_float _fTimeDelta)
-{	if (nullptr == m_pOwner)
+{	
+	if (nullptr == m_pOwner)
 		return;
+
+	m_fAccTime += _fTimeDelta;
+	if (m_fCoolTime <= m_fAccTime)
+	{
+		m_fAccTime = 0.f;
+	}
 	
 	if (nullptr != m_pTarget)
 	{

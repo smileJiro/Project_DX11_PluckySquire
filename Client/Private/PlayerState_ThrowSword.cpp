@@ -19,7 +19,7 @@ void CPlayerState_ThrowSword::Update(_float _fTimeDelta)
 
 	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 		m_pOwner->Set_State(CPlayer::RUN);
-	else if (tKeyResult.bInputStates[PLAYER_KEY_JUMP])
+	else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
 		m_pOwner->Set_State(CPlayer::JUMP_UP);
 	else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
 		m_pOwner->Set_State(CPlayer::ROLL);
@@ -34,6 +34,14 @@ void CPlayerState_ThrowSword::Enter()
 	case Engine::COORDINATE_2D:
 	{
 		F_DIRECTION eDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+		if (m_pOwner->Is_PlatformerMode())
+		{
+			if (F_DIRECTION::UP == eDir)
+				eDir = F_DIRECTION::RIGHT;
+			else if (F_DIRECTION::DOWN == eDir)
+				eDir = F_DIRECTION::LEFT;
+		}
+
 		switch (eDir)
 		{
 		case Client::F_DIRECTION::LEFT:
@@ -75,6 +83,13 @@ void CPlayerState_ThrowSword::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	else
 	{
 		F_DIRECTION eDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+		if (m_pOwner->Is_PlatformerMode())
+		{
+			if (F_DIRECTION::UP == eDir)
+				eDir = F_DIRECTION::RIGHT;
+			else if (F_DIRECTION::DOWN == eDir)
+				eDir = F_DIRECTION::LEFT;
+		}
 		if ((_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_INTO_RIGHT == iAnimIdx
 			|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_INTO_UP == iAnimIdx
 			|| (_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORDTHROW_INTO_DOWN== iAnimIdx)

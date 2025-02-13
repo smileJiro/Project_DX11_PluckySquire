@@ -74,9 +74,6 @@ public:
 	virtual void Turn_Animation(_bool _isCW) override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
-
-private:
-	CCollider* m_pColliderCom = nullptr;
 private:
 	virtual HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();

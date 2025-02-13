@@ -16,6 +16,7 @@ public:
 		_float2			vScale = { 1.0f, 1.0f };
 		_bool			isBlock = false;
 		_bool			isTrigger = false;
+		_uint			iCollisionGroupID = {};
 	}COLLIDER_DESC;
 protected:
 	CCollider(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -54,7 +55,7 @@ protected:
 	static _uint			s_iNextColliderID;
 
 protected:
-	_uint						m_iCollisionGroupID = 0;
+	_uint					m_iCollisionGroupID = 0;
 	_uint					m_iColliderID = 0;
 	TYPE					m_eType = TYPE::TYPE_LAST;
 	_bool					m_isTrigger = false;

@@ -63,13 +63,14 @@ public:
 public:
 	void				Load_ArmData();
 	void				Load_CutSceneData();
+	HRESULT				Load_DOF(const _wstring& _strJsonPath, _uint _iCameraType);
 
 private:
 	CGameInstance*		m_pGameInstance = { nullptr };
 
 private:
 	CCamera*			m_Cameras[CAMERA_TYPE_END];
-	_uint				m_eCurrentCameraType = { FREE };
+	_uint				m_eCurrentCameraType = { (_uint)FREE };
 
 	_int				m_iCurLevelID = {};
 

@@ -55,7 +55,7 @@ HRESULT CActor::Initialize(void* _pArg)
 		m_OffsetMatrix = pDesc->ActorOffsetMatrix;
 
 	// Add Desc
-
+	
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
@@ -203,6 +203,7 @@ HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
 		//pActor->setSolverIterationCounts(8, 4);
 		m_pActor = pActor;
 	}
+	
 
 	break;
 	default:
@@ -686,6 +687,18 @@ void CActor::Set_ShapeRayCastFlag(_bool _isRayCast)
 {
 	for (auto& pShape : m_Shapes)
 		pShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, _isRayCast);
+
+}
+
+void CActor::Set_MassLocalPos(_float3 _vPosition)
+{	//무게중심 이동
+	PxTransform newCOM(PxVec3(_vPosition.x, _vPosition.y, _vPosition.z), PxQuat(PxIdentity));
+	static_cast<PxRigidDynamic*>(m_pActor)->setCMassLocalPose(newCOM);
+}
+
+void CActor::Set_Mass(_float _vValue)
+{
+	static_cast<PxRigidDynamic*>(m_pActor)->setMass(_vValue);
 
 }
 

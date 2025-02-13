@@ -37,7 +37,7 @@ public:
 	/// </summary>
 	/// <param name="_strSectionTag">섹션 키</param>
 	/// <param name="_pGameObject">오브젝트</param>
-	HRESULT							Add_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject);
+	HRESULT							Add_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject, _uint _iLayerIndex = SECTION_2D_PLAYMAP_OBJECT);
 
 	/// <summary>
 /// 섹션 키로 해당 섹션에 해당 오브젝트를 제거한다.
@@ -127,6 +127,14 @@ public :
 		m_pCurSection->Has_NextPage(strTargetSectionTag);
 		return strTargetSectionTag;
 	}
+	const _wstring Get_Cur_Section_Key() 
+	{
+		_wstring strTargetSectionTag = L"";
+		if (nullptr == m_pCurSection)
+			return strTargetSectionTag;
+		return m_pCurSection->Get_SectionName();
+	}
+
 	const _wstring Get_Prev_Section_Key() 
 	{ 
 		_wstring strTargetSectionTag = L"";

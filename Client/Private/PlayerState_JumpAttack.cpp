@@ -86,9 +86,9 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 		{
 			if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 				m_pOwner->Set_State(CPlayer::RUN);
-			else if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
+			else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 				m_pOwner->Set_State(CPlayer::ATTACK);
-			else if (tKeyResult.bInputStates[PLAYER_KEY_JUMP])
+			else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
 				m_pOwner->Set_State(CPlayer::JUMP_UP);
 			else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
 				m_pOwner->Set_State(CPlayer::ROLL);
@@ -108,7 +108,7 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 				F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
 				if (m_eOldFDir != eFDir)
 				{
-					m_pOwner->Set_2DDirection(eNewDir);
+					m_pOwner->Set_2DDirection(To_EDirection(tKeyResult.vDir));
 					m_eOldFDir = eFDir;
 				}
 			}

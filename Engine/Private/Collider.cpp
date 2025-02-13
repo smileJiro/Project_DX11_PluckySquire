@@ -55,7 +55,7 @@ HRESULT CCollider::Initialize(void* _pArg)
     m_vScale = pDesc->vScale;
     m_isBlock = pDesc->isBlock;
     m_isTrigger = pDesc->isTrigger;
-
+    m_iCollisionGroupID = pDesc->iCollisionGroupID;
     // Add Desc 
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -69,6 +69,7 @@ void CCollider::Update(_float _fTimeDelta)
 
 void CCollider::Late_Update(_float _fTimeDelta)
 {
+    m_pGameInstance->Add_Collider(m_pOwner->Get_Include_Section_Name(), m_iCollisionGroupID, this);
 }
 
 HRESULT CCollider::Render()

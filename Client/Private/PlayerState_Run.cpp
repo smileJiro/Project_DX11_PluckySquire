@@ -39,9 +39,10 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		{
 			E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
 			F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
+			m_pOwner->Set_2DDirection(To_EDirection(tKeyResult.vDir));
+
 			if (m_eOldFDir != eFDir)
 			{
-				m_pOwner->Set_2DDirection(eNewDir);
 				Switch_RunAnimation2D(eFDir);
 				m_eOldFDir = eFDir;
 			}
@@ -58,16 +59,18 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		}
 		m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* fMoveSpeed, _fTimeDelta);
 
-		if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
+		if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
 		else if (tKeyResult.bInputStates[PLAYER_KEY_SPINATTACK])
 			m_pOwner->Set_State(CPlayer::SPINATTACK);
-		else if (tKeyResult.bInputStates[PLAYER_KEY_JUMP])
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
 			m_pOwner->Set_State(CPlayer::JUMP_UP);
 		else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
 			m_pOwner->Set_State(CPlayer::ROLL);
 		else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
 			m_pOwner->Set_State(CPlayer::THROWSWORD);
+		else	if (tKeyResult.bInputStates[PLAYER_KEY_THROWOBJECT])
+			m_pOwner->Set_State(CPlayer::THROWOBJECT);
 		return;
 	}
 	else
@@ -81,9 +84,11 @@ void CPlayerState_Run::Enter()
 {
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 
+	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+	m_bSneakBefore = tKeyResult.bInputStates[PLAYER_KEY_SNEAK];
 	if (COORDINATE_2D == eCoord)
 	{
-
+		m_bPlatformerMode = m_pOwner->Is_PlatformerMode();
 	}
 	else
 	{
@@ -111,6 +116,13 @@ void CPlayerState_Run::Switch_RunAnimation2D(F_DIRECTION _eFDir)
 {
 	_bool bSword = m_pOwner->Is_SwordHandling();
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
+	if (m_bPlatformerMode)
+	{
+		if (F_DIRECTION::UP == _eFDir)
+			_eFDir = F_DIRECTION::RIGHT;
+		else if (F_DIRECTION::DOWN == _eFDir)
+			_eFDir = F_DIRECTION::LEFT;
+	}
 	switch (_eFDir)
 	{
 	case Client::F_DIRECTION::LEFT:

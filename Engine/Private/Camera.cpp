@@ -76,6 +76,32 @@ HRESULT CCamera::Render()
 	return S_OK;
 }
 
+HRESULT CCamera::Load_DOF(const _wstring& _strJsonPath)
+{
+	const std::string filePathDOF = m_pGameInstance->WStringToString(_strJsonPath);
+	std::ifstream inputFile(filePathDOF);
+	if (!inputFile.is_open()) {
+		throw std::runtime_error("파일을 열 수 없습니다: " + filePathDOF);
+		return E_FAIL;
+	}
+	json jsonDOF;
+	inputFile >> jsonDOF;
+	m_tDofData.fAperture = jsonDOF["fAperture"];
+	m_tDofData.fSensorHeight = jsonDOF["fSensorHeight"];
+	m_tDofData.fFocusDistance = jsonDOF["fFocusDistance"];
+	m_tDofData.fDofBrightness = jsonDOF["fDofBrightness"];
+	m_tDofData.fBaseBlurPower = jsonDOF["fBaseBlurPower"];
+	m_tDofData.vBlurColor.x = jsonDOF["vBlurColor"]["x"];
+	m_tDofData.vBlurColor.y = jsonDOF["vBlurColor"]["y"];
+	m_tDofData.vBlurColor.z = jsonDOF["vBlurColor"]["z"];
+	inputFile.close();
+
+	Compute_FocalLength();
+	m_pGameInstance->UpdateConstBuffer(m_tDofData, m_pConstDofBuffer);
+	m_pGameInstance->Bind_DofConstBuffer("DofConstData", m_pConstDofBuffer);
+	return S_OK;
+}
+
 void CCamera::Compute_PipeLineMatrices()
 {
 	m_pGameInstance->Set_Transform(CPipeLine::D3DTS_VIEW, XMMatrixInverse(nullptr, m_pControllerTransform->Get_WorldMatrix()));
@@ -170,13 +196,13 @@ void CCamera::Compute_ProjMatrix()
 
 void CCamera::Set_DofBufferData(const CONST_DOF& _tDofConstData, _bool _isUpdate)
 {
-	m_tConstDofData = _tDofConstData;
+	m_tDofData = _tDofConstData;
 
 	if(true == _isUpdate)
 	{
+		Compute_FocalLength();
 		m_pGameInstance->UpdateConstBuffer(_tDofConstData, m_pConstDofBuffer);
 		m_pGameInstance->Bind_DofConstBuffer("DofConstData", m_pConstDofBuffer);
-		Compute_FocalLength();
 	}
 }
 
@@ -441,15 +467,15 @@ _float CCamera::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRat
 
 HRESULT CCamera::Ready_DofConstData(CAMERA_DESC* _pDesc)
 {
-	m_tConstDofData.fAperture = _pDesc->fAperture;
-	m_tConstDofData.fFocusDistance = _pDesc->fFocusDistance;
-	m_tConstDofData.fSensorHeight = _pDesc->fSensorHeight;
-	m_tConstDofData.fDofBrightness = _pDesc->fDofBrightness;
-	m_tConstDofData.fBaseBlurPower = _pDesc->fBaseBlurPower;
-	m_tConstDofData.vBlurColor = _pDesc->vBlurColor;
+	m_tDofData.fAperture = _pDesc->fAperture;
+	m_tDofData.fFocusDistance = _pDesc->fFocusDistance;
+	m_tDofData.fSensorHeight = _pDesc->fSensorHeight;
+	m_tDofData.fDofBrightness = _pDesc->fDofBrightness;
+	m_tDofData.fBaseBlurPower = _pDesc->fBaseBlurPower;
+	m_tDofData.vBlurColor = _pDesc->vBlurColor;
 	Compute_FocalLength();
 
-	if (FAILED(m_pGameInstance->CreateConstBuffer(m_tConstDofData, D3D11_USAGE_DYNAMIC, &m_pConstDofBuffer)))
+	if (FAILED(m_pGameInstance->CreateConstBuffer(m_tDofData, D3D11_USAGE_DYNAMIC, &m_pConstDofBuffer)))
 		return E_FAIL;
 
 	m_pGameInstance->Bind_DofConstBuffer("DofConstData", m_pConstDofBuffer);
@@ -458,14 +484,15 @@ HRESULT CCamera::Ready_DofConstData(CAMERA_DESC* _pDesc)
 
 HRESULT CCamera::Compute_FocalLength()
 {
-	_float fFocalLength = m_tConstDofData.fSensorHeight / 2 * tanf(m_fFovy / 2);
-	m_tConstDofData.fFocalLength = fFocalLength;
+	_float fFocalLength = m_tDofData.fSensorHeight / 2 * tanf(m_fFovy / 2);
+	m_tDofData.fFocalLength = fFocalLength;
 
 	return S_OK;
 }
 
 void CCamera::Free()
 {
+	Safe_Release(m_pConstDofBuffer);
 	__super::Free();
 }
 

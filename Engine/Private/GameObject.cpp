@@ -69,6 +69,13 @@ void CGameObject::Late_Update(_float _fTimeDelta)
 
 HRESULT CGameObject::Render()
 {
+#ifdef _DEBUG
+    for (auto& p2DCollider : m_p2DColliderComs)
+    {
+        p2DCollider->Render();
+    }
+#endif // _DEBUG
+
     return S_OK;
 }
 
@@ -164,9 +171,12 @@ void CGameObject::Free()
         Safe_Release(Pair.second);
     m_Components.clear();
 
+    for (auto& p2DCollider : m_p2DColliderComs)
+        Safe_Release(p2DCollider);
+    m_p2DColliderComs.clear();
+
     Safe_Release(m_pControllerTransform);
     Safe_Release(m_pRayCom);
-
 
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);

@@ -35,11 +35,11 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 		
 	}
 
-	if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
+	if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 		m_pOwner->Set_State(CPlayer::ATTACK);
 	else if (tKeyResult.bInputStates[PLAYER_KEY_SPINATTACK])
 		m_pOwner->Set_State(CPlayer::SPINATTACK);
-	else if (tKeyResult.bInputStates[PLAYER_KEY_JUMP])
+	else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
 		m_pOwner->Set_State(CPlayer::JUMP_UP);
 	else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
 		m_pOwner->Set_State(CPlayer::ROLL);
@@ -47,6 +47,8 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::THROWSWORD);
 	else	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 		m_pOwner->Set_State(CPlayer::RUN);
+	else	if (tKeyResult.bInputStates[PLAYER_KEY_THROWOBJECT])
+		m_pOwner->Set_State(CPlayer::THROWOBJECT);
 
 }
 
@@ -55,6 +57,7 @@ void CPlayerState_Idle::Enter()
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	if (COORDINATE_2D == eCoord)
 	{
+		m_bPlatformerMode = m_pOwner->Is_PlatformerMode();
 		F_DIRECTION eFDir = EDir_To_FDir( m_pOwner->Get_2DDirection());
 		Switch_IdleAnimation2D(eFDir);
 	}
@@ -74,6 +77,14 @@ void CPlayerState_Idle::Switch_IdleAnimation2D(F_DIRECTION _eFDir)
 {
 	_bool bSword = m_pOwner->Is_SwordHandling();
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
+	if (m_bPlatformerMode)
+	{
+		if (F_DIRECTION::UP == _eFDir)
+			_eFDir = F_DIRECTION::RIGHT;
+		else if (F_DIRECTION::DOWN == _eFDir)
+			_eFDir = F_DIRECTION::LEFT;
+	}
+
 	switch (_eFDir)
 	{
 	case Client::F_DIRECTION::LEFT:
@@ -111,6 +122,9 @@ void CPlayerState_Idle::Switch_IdleAnimation3D(_bool _bStealth)
 {
 	if (_bStealth)
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_STEALTH_IDLE_GT);
+	else if(m_pOwner->Is_CarryingObject())
+		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_PICKUP_IDLE_GT);
 	else
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_IDLE_01_GT);
+
 }

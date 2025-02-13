@@ -238,9 +238,6 @@
     <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props">
       <UniqueIdentifier>{d8fb4898-0a03-4df1-8323-688d11f30d1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="93.CollisionManager">
-      <UniqueIdentifier>{99840855-d6f1-4bae-b149-ef2dd3f092bd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\02. Logo_BG">
       <UniqueIdentifier>{14049d27-7f6c-4c16-b728-b01f1dbf2a00}</UniqueIdentifier>
     </Filter>
@@ -388,9 +385,6 @@
     <Filter Include="94.RenderGroups%28Custom%29\Effect\AfterEffect">
       <UniqueIdentifier>{560c6a5c-32ea-484e-a5cf-08cdc8f3c2ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="94.RenderGroups%28Custom%29\PBR\PhysicsBlur">
-      <UniqueIdentifier>{bd1f122a-17af-42d1-9d40-b60547c9cdb6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Carriable">
       <UniqueIdentifier>{0b0f1611-bbbf-455b-a49a-4b3eb34fb7d3}</UniqueIdentifier>
     </Filter>
@@ -399,6 +393,12 @@
     </Filter>
     <Filter Include="02.GameObjects\Bulb">
       <UniqueIdentifier>{838a1b77-e59c-4df8-86c2-66b5c85161a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\PBR\PostProcessing">
+      <UniqueIdentifier>{bd1f122a-17af-42d1-9d40-b60547c9cdb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Blocker">
+      <UniqueIdentifier>{492e3f5e-3de8-4f2c-854d-0644478cb21a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -680,9 +680,6 @@
     <ClInclude Include="..\Public\Logo_Props.h">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Collision_Manager.h">
-      <Filter>93.CollisionManager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Logo_BG.h">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\02. Logo_BG</Filter>
     </ClInclude>
@@ -869,7 +866,7 @@
       <Filter>94.RenderGroups%28Custom%29\Effect\AfterEffect</Filter>
     </ClInclude>
     <ClInclude Include="..\public\RenderGroup_PostProcessing.h">
-      <Filter>94.RenderGroups%28Custom%29\PBR\PhysicsBlur</Filter>
+      <Filter>94.RenderGroups%28Custom%29\PBR\PostProcessing</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_JumpAttack.h">
       <Filter>03.Components\PlayerState</Filter>
@@ -888,6 +885,19 @@
     </ClInclude>
     <ClInclude Include="..\Public\Sneak_BackState.h">
       <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_PickUpObject.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_ThrowObject.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dice.h">
+      <Filter>02.GameObjects\Carriable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Domino.h" />
+    <ClInclude Include="..\public\Blocker.h">
+      <Filter>02.GameObjects\Blocker</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1160,9 +1170,6 @@
     <ClCompile Include="..\Private\Logo_Props.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Collision_Manager.cpp">
-      <Filter>93.CollisionManager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Logo_BG.cpp">
       <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\02. Logo_BG</Filter>
     </ClCompile>
@@ -1343,7 +1350,7 @@
       <Filter>94.RenderGroups%28Custom%29\Effect\AfterEffect</Filter>
     </ClCompile>
     <ClCompile Include="..\private\RenderGroup_PostProcessing.cpp">
-      <Filter>94.RenderGroups%28Custom%29\PBR\PhysicsBlur</Filter>
+      <Filter>94.RenderGroups%28Custom%29\PBR\PostProcessing</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp">
       <Filter>03.Components\PlayerState</Filter>
@@ -1362,6 +1369,19 @@
     </ClCompile>
     <ClCompile Include="..\Private\Sneak_BackState.cpp">
       <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_PickUpObject.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_ThrowObject.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dice.cpp">
+      <Filter>02.GameObjects\Carriable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Domino.cpp" />
+    <ClCompile Include="..\private\Blocker.cpp">
+      <Filter>02.GameObjects\Blocker</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

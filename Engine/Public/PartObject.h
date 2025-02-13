@@ -32,13 +32,13 @@ public:
 	_float3					Get_FinalScale() const override; // PartObject는 최종 매트릭스에서 위치값 추출해서 리턴.
 	const _float4x4*		Get_FinalWorldMatrix_Ptr(COORDINATE _eCoord) { return &m_WorldMatrices[_eCoord]; }
 	virtual _matrix		Get_FinalWorldMatrix() override;
-	void Set_SocketMatrix(const _float4x4* _pSocketMatrix) { m_pSocketMatrix = _pSocketMatrix; }
+	void Set_SocketMatrix(COORDINATE _eCoord, const _float4x4* _pSocketMatrix) { m_pSocketMatrix[_eCoord] = _pSocketMatrix; }
 	void Set_ParentMatrix(COORDINATE _eCoord, const _float4x4* _pSocketMatrix) { m_pParentMatrices[_eCoord] = _pSocketMatrix; }
 
 protected:
-	const _float4x4*		m_pParentMatrices[COORDINATE_LAST] = {}; // 부모의 월드 행렬의 주소
 	_float4x4				m_WorldMatrices[COORDINATE_LAST] = {}; // 자기자신의 최종 행렬 
-	const _float4x4* m_pSocketMatrix = nullptr ;
+	const _float4x4*		m_pParentMatrices[COORDINATE_LAST] = {nullptr}; // 부모의 월드 행렬의 주소
+	const _float4x4* m_pSocketMatrix[COORDINATE_LAST] = { nullptr };
 public:
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override; 
