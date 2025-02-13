@@ -22,6 +22,7 @@ public:
 	virtual void Interact(CPlayer* _pUser) override;
 	virtual _bool Is_Interactable(CPlayer* _pUser) override;
 	virtual _float Get_Distance(CPlayer* _pUser) override;
+	void Set_Kinematic(_bool _bKinematic);
 public:
 	HRESULT Set_Carrier(CPlayer* _pCarrier);
 	void Throw(_fvector _vForce);
