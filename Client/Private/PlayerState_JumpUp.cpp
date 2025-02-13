@@ -61,12 +61,10 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 
 			if (m_eOldFDir != eFDir)
 			{
-				m_pOwner->Set_2DDirection(eNewDir);
+				m_pOwner->Set_2DDirection(To_EDirection(tKeyResult.vDir));
 				m_eOldFDir = eFDir;
 			}
 			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed2D, _fTimeDelta);
-
-
 		}
 	}
 }

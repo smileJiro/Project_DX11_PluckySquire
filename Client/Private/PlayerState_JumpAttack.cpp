@@ -108,7 +108,7 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 				F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
 				if (m_eOldFDir != eFDir)
 				{
-					m_pOwner->Set_2DDirection(eNewDir);
+					m_pOwner->Set_2DDirection(To_EDirection(tKeyResult.vDir));
 					m_eOldFDir = eFDir;
 				}
 			}

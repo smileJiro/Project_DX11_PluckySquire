@@ -39,7 +39,7 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		{
 			E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
 			F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
-			m_pOwner->Set_2DDirection(eNewDir);
+			m_pOwner->Set_2DDirection(To_EDirection(tKeyResult.vDir));
 
 			if (m_eOldFDir != eFDir)
 			{
@@ -85,8 +85,7 @@ void CPlayerState_Run::Enter()
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 
 	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
-	if (tKeyResult.bInputStates[PLAYER_KEY_SNEAK])
-		m_bSneakBefore = true;
+	m_bSneakBefore = tKeyResult.bInputStates[PLAYER_KEY_SNEAK];
 	if (COORDINATE_2D == eCoord)
 	{
 		m_bPlatformerMode = m_pOwner->Is_PlatformerMode();

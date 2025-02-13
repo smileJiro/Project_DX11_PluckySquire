@@ -363,7 +363,8 @@ void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
-
+    if (Is_Sneaking())
+        int a = 0;
     if (COORDINATE_2D == eCoord)
     {
         //// TestCode : 태웅
@@ -376,7 +377,7 @@ void CPlayer::Update(_float _fTimeDelta)
 			CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pAttack2DTriggerCom);
     }
 
-   // cout << "Sneak" << Is_Sneaking() << endl;
+   cout << "Sneak" << Is_Sneaking() << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     if (COORDINATE_3D == eCoord)
@@ -847,7 +848,6 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         else
             //tResult.vMoveDir += _vector{ 0.f, 1.f, 0.f,0.f };
             tResult.vDir += vUp;
-        tResult.bInputStates[PLAYER_INPUT_MOVE] = !m_bPlatformerMode;
     }
     if (KEY_PRESSING(KEY::A))
     {
@@ -856,7 +856,6 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         else
            // tResult.vMoveDir += _vector{ -1.f, 0.f, 0.f,0.f };
             tResult.vDir -= vRight;
-        tResult.bInputStates[PLAYER_INPUT_MOVE] = true;
     }
     if (KEY_PRESSING(KEY::S))
     {
@@ -865,7 +864,6 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         else
             //tResult.vMoveDir += _vector{ 0.f, -1.f, 0.f,0.f };
             tResult.vDir -= vUp;
-        tResult.bInputStates[PLAYER_INPUT_MOVE] = !m_bPlatformerMode;
     }
     if (KEY_PRESSING(KEY::D))
     {
@@ -874,18 +872,15 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         else
             //tResult.vMoveDir += _vector{ 1.f, 0.f, 0.f,0.f };
 			tResult.vDir += vRight;
-        tResult.bInputStates[PLAYER_INPUT_MOVE] = true;
     }
-    if (tResult.bInputStates[PLAYER_INPUT_MOVE])
+    tResult.vDir = XMVector3Normalize(tResult.vDir);
+    tResult.vMoveDir = tResult.vDir;
+    if (m_bPlatformerMode)
     {
-        tResult.vMoveDir = XMVector3Normalize(tResult.vDir);
-
-        if (m_bPlatformerMode)
-        {
-            //Up 방향 제거하기
-            tResult.vMoveDir = XMVector3Normalize( XMVector3Dot(tResult.vMoveDir, vUp));
-        }
+        //Up 방향 제거하기
+        tResult.vMoveDir = XMVector2Normalize(XMVectorMultiply(tResult.vMoveDir, _vector{ 1,1 } - XMVectorAbs(vUp)));
     }
+    tResult.bInputStates[PLAYER_INPUT_MOVE] =false ==  XMVector3Equal(tResult.vMoveDir, XMVectorZero());
     
     return tResult;
 }
@@ -1073,16 +1068,26 @@ void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
 {
 
     m_e2DDirection_E = _eEDir;
-	F_DIRECTION eFDir = EDir_To_FDir(m_e2DDirection_E);
-    if (F_DIRECTION::LEFT ==  eFDir)
+    switch (m_e2DDirection_E)
+    {
+    case Client::E_DIRECTION::LEFT:
+    case Client::E_DIRECTION::LEFT_UP:
+    case Client::E_DIRECTION::LEFT_DOWN:
     {
         _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
         m_pBody->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+        break;
     }
-    else if (F_DIRECTION::RIGHT == eFDir)
+    case Client::E_DIRECTION::RIGHT:
+    case Client::E_DIRECTION::RIGHT_UP:
+    case Client::E_DIRECTION::RIGHT_DOWN:
     {
         _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
         m_pBody->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+        break;
+    }
+    default:
+        break;
     }
 
     
@@ -1245,7 +1250,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         //Desc.fHalfHeight = 1.f;
         //m_pActorCom->Set_ShapeGeometry(0, PxGeometryType::eCAPSULE, &Desc);
         m_bPlatformerMode = !m_bPlatformerMode;
-        m_pControllerTransform->Rotation(XMConvertToRadians(m_bPlatformerMode ? 90 : 0), {0,0,1});
+        //m_pControllerTransform->Rotation(XMConvertToRadians(m_bPlatformerMode ? 90 : 0), {0,0,1});
     }
     if (KEY_DOWN(KEY::F2))
     {
