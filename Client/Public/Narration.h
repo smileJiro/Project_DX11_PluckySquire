@@ -111,7 +111,6 @@ public:
 
 private:
     void PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken);
-    void DrawText(SpriteBatch* spriteBatch, SpriteFont* spriteFont, const _wstring& text, float fscale, float& fX, float fY);
 
 };
 END

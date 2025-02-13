@@ -118,10 +118,10 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 			if (Nar.contains("CurlevelId") && Nar["CurlevelId"].is_number_integer())
 				NarData.eCurlevelId = (LEVEL_ID)Nar["CurlevelId"].get<_int>();
 
+			_int iLine = { 0 };
+
 			if (Nar.contains("lines") && Nar["lines"].is_array())
 			{
-
-
 				for (auto& line : Nar["lines"])
 				{
 					NarrationDialogData DialogueData;
@@ -140,6 +140,11 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 
 					if (line.contains("fscale") && line["fscale"].is_number_float())
 						DialogueData.fscale = line["fscale"].get<float>();
+
+					if (line.contains("isLeft") && line["isLeft"].is_boolean())
+					{
+						DialogueData.isLeft = line["isLeft"].get<_bool>();
+					}
 
 					if (line.contains("fposX") && line["fposX"].is_number_float())
 						DialogueData.fpos.x = line["fposX"].get<float>();
@@ -166,18 +171,25 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 									continue;
 								Animation.strAnimationid = animId;
 							}
+
 							if (Anim.contains("strSectionid") && Anim["strSectionid"].is_string())
 								Animation.strSectionid = StringToWstring(Anim["strSectionid"].get<string>());
+
 							if (Anim.contains("fPosX") && Anim["fPosX"].is_number_float())
 								Animation.vPos.x = Anim["fPosX"].get<float>();
+
 							if (Anim.contains("fPosY") && Anim["fPosY"].is_number_float())
 								Animation.vPos.y = Anim["fPosY"].get<float>();
+
 							if (Anim.contains("fwaitingTime") && Anim["fwaitingTime"].is_number_float())
 								Animation.fWaitingTime = Anim["fwaitingTime"].get<float>();
+
 							if (Anim.contains("vAnimationScaleX") && Anim["vAnimationScaleX"].is_number_float())
 								Animation.vAnimationScale.x = Anim["vAnimationScaleX"].get<float>();
+
 							if (Anim.contains("vAnimationScaleY") && Anim["vAnimationScaleY"].is_number_float())
 								Animation.vAnimationScale.y = Anim["vAnimationScaleY"].get<float>();
+
 							if (Anim.contains("AnimationIndex") && Anim["AnimationIndex"].is_number_integer())
 								Animation.iAnimationIndex = Anim["AnimationIndex"].get<_int>();
 
@@ -197,15 +209,8 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 							// 대화 라인이 단일 객체이므로 LineCount는 0으로 설정
 							tempData.LineCount = 0;
 
-							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(
-								tempData.eCurlevelId,
-								TEXT("Prototype_GameObject_Narration_Anim"),
-								tempData.eCurlevelId,
-								TEXT("Layet_UI"),
-								&tempData)))
-							{
+							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tempData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), tempData.eCurlevelId, TEXT("Layet_UI"), &tempData)))
 								return E_FAIL;
-							}
 
 							// 원본 DialogueData에도 해당 애니메이션 데이터를 저장(필요에 따라 사용)
 							DialogueData.NarAnim.push_back(Animation);
@@ -325,8 +330,6 @@ CNarration_Anim* CNarration::GetAnimationObjectForLine(_int iLine)
 
 HRESULT CNarration::Ready_Components()
 {
-	
-
 	return S_OK;
 }
 
@@ -375,7 +378,6 @@ HRESULT CNarration::Cleanup_DeadReferences()
 void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken)
 {
 	vector<TextTokens> vTokens;
-
 	size_t i = 0;
 
 	// 스케일쪽 변경 300 이면 3, 100이면 1
@@ -391,7 +393,6 @@ void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken
 				break;
 
 			_wstring strNum = _Text.substr(i + 1, iClosing - i - 1);
-
 			_int fvalue = stoi(strNum);
 
 			// 글자 크기 결정
@@ -406,13 +407,11 @@ void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken
 		else
 		{
 			size_t iNext = _Text.find_first_of(L"{#", i);
-			
 			_wstring strSub;
 
 			if (iNext == _wstring::npos)
 			{
 				strSub = _Text.substr(i);
-				
 				i = _Text.length();
 			}
 			else
@@ -420,7 +419,6 @@ void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken
 				strSub = _Text.substr(i, iNext - i);
 				i = iNext;
 			}
-
 			vTokens.push_back({ strSub, fCurrentSize });
 		}
 	}
@@ -432,21 +430,5 @@ void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken
 		_OutToken[i].strText = vTokens[i].strText;
 		_OutToken[i].fScale = vTokens[i].fScale;
 	}
-
 }
 
-void CNarration::DrawText(SpriteBatch* spriteBatch, SpriteFont* spriteFont, const _wstring& text, float fscale, float& fX, float fY)
-{
-	//CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	//// 현재 위치를 기준으로 텍스트를 그린다.
-	//_float2 vPos = { 0.f, 0.f };
-	//pGameInstance->Render_Scaling_Font(TEXT("Font35"), text.c_str(), vPos, XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.f,
-	//	_float2(0, 0), fscale);
-	//
-	//
-	//// 그려진 텍스트의 가로 길이를 측정하여 x 좌표를 이동
-	//_vector sizeVec = spriteFont->MeasureString(text.c_str());
-	//_float2 textSize;
-	//XMStoreFloat2(&textSize, sizeVec);
-	//fX += textSize.x * fscale;
-}

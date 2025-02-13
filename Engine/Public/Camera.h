@@ -28,7 +28,7 @@ public:
 		// Dof 기본값 
 		_float			fSensorHeight = 24.0f;
 		_float			fAperture = 2.8f; // 조리개 크기
-		_float			fFocusDistance = 15.0f; // 초점 평면거리
+		_float			fFocusDistance = 60.0f; // 초점 평면거리
 		_float			fDofBrightness = 1.5f;
 		_float			fBaseBlurPower = 0.1f;
 		_float3			vBlurColor = { 1.0f, 1.0f, 1.0f };

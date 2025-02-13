@@ -170,6 +170,7 @@
     <ClInclude Include="..\Public\RenderGroup_DirectLights.h" />
     <ClInclude Include="..\Public\RenderGroup_DownSample.h" />
     <ClInclude Include="..\Public\RenderGroup_Lighting.h" />
+    <ClInclude Include="..\Public\RenderGroup_PostProcessing.h" />
     <ClInclude Include="..\Public\RenderGroup_WorldPos.h" />
     <ClInclude Include="..\Public\SampleBook.h" />
     <ClInclude Include="..\Public\Sample_Skechspace.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="..\Private\RenderGroup_DirectLights.cpp" />
     <ClCompile Include="..\Private\RenderGroup_DownSample.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Lighting.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_PostProcessing.cpp" />
     <ClCompile Include="..\Private\RenderGroup_WorldPos.cpp" />
     <ClCompile Include="..\Private\SampleBook.cpp" />
     <ClCompile Include="..\Private\Sample_Skechspace.cpp" />

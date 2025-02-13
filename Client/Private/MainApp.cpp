@@ -264,6 +264,7 @@ HRESULT CMainApp::Ready_RenderGroup()
 		return E_FAIL;
 	Safe_Release(pRenderGroup_Lighting);
 	pRenderGroup_Lighting = nullptr;
+
 	/* RG_3D, PR3D_POSTPROCESSING */
 	CRenderGroup_PostProcessing::RG_POST_DESC RG_PostDesc;
 	RG_PostDesc.iBlurLevel = 3;

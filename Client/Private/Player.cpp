@@ -11,10 +11,12 @@
 #include "PlayerState_JumpUp.h"
 #include "PlayerState_JumpDown.h"
 #include "PlayerState_JumpAttack.h"
+#include "PlayerState_ThrowObject.h"
 #include "PlayerState_Roll.h"
 #include "PlayerState_Clamber.h"
 #include "PlayerState_ThrowSword.h"
 #include "PlayerState_SpinAttack.h"
+#include "PlayerState_PickUpObject.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "Section_Manager.h"    
@@ -30,6 +32,8 @@ CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 CPlayer::CPlayer(const CPlayer& _Prototype)
     :CCharacter(_Prototype)
+	, m_mat3DCarryingOffset(_Prototype.m_mat3DCarryingOffset)
+	, m_mat2DCarryingOffset(_Prototype.m_mat2DCarryingOffset)
 {
     for (_uint i = 0; i < ATTACK_TYPE_LAST; i++)
     {
@@ -60,7 +64,8 @@ HRESULT CPlayer::Initialize_Prototype()
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = { 0.f, 0.f };
 
 
-
+	XMStoreFloat4x4( &m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.f, 0.f));
+	XMStoreFloat4x4( &m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 80.f, 0.f));
     return S_OK;
 }
 
@@ -189,6 +194,7 @@ HRESULT CPlayer::Ready_Components()
     Add_Component(TEXT("StateMachine"), m_pStateMachine);
 
     Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
+    Bind_AnimEventFunc("ThrowObject", bind(&CPlayer::ThrowObject, this));
     Bind_AnimEventFunc("Attack", bind(&CPlayer::Move_Attack_3D, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
@@ -313,7 +319,7 @@ HRESULT CPlayer::Ready_PartObjects()
         return E_FAIL;
     }
     C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
-    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_GLOVE])->Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_r")); /**/
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_GLOVE])->Set_SocketMatrix(COORDINATE_3D,p3DModel->Get_BoneMatrix("j_glove_hand_r")); /**/
 	m_PartObjects[PLAYER_PART_GLOVE]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
 	Set_PartActive(PLAYER_PART_GLOVE, false);
 
@@ -503,12 +509,12 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
     case Client::SHAPE_USE::SHAPE_FOOT:
         for (auto& pxPairData : _ContactPointDatas)
         {
-            _vector vMyPos = Get_FinalPosition();
-            //천장이면 무시
-            if (pxPairData.normal.y < 0)
-                continue;
+            //_vector vMyPos = Get_FinalPosition();
+            ////천장이면 무시
+            //if (pxPairData.normal.y < 0)
+            //    continue;
             //닿은 곳의 경사가 너무 급하면 무시
-            if (pxPairData.normal.y < m_fStepSlopeThreshold)
+            if (abs(pxPairData.normal.y) < m_fStepSlopeThreshold)
                 continue;
             m_bOnGround = true;
             ////cout << "  Contact";
@@ -778,7 +784,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         //기본공격
         if (MOUSE_DOWN(MOUSE_KEY::LB))
         {
-            tResult.bInputStates[PLAYER_KEY_ATTACK] = true;
+            tResult.bInputStates[PLAYER_INPUT_ATTACK] = true;
         }
         //칼 던지기
         else if (MOUSE_DOWN(MOUSE_KEY::RB))
@@ -796,12 +802,22 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
                 tResult.bInputStates[PLAYER_KEY_SPINLAUNCH] = true;
         }
     }
-    //상호작용
-    if (KEY_DOWN(KEY::E))
-        tResult.bInputStates[PLAYER_KEY_INTERACT] = true;
+    if (Is_CarryingObject())
+    {
+        //던지기
+        if (KEY_DOWN(KEY::E))
+            tResult.bInputStates[PLAYER_KEY_THROWOBJECT] = true;
+    }
+    else
+    {
+        //상호작용
+        if (KEY_DOWN(KEY::E))
+            tResult.bInputStates[PLAYER_KEY_INTERACT] = true;
+    }
+
     //점프
     if (KEY_DOWN(KEY::SPACE))
-        tResult.bInputStates[PLAYER_KEY_JUMP] = true;
+        tResult.bInputStates[PLAYER_INPUT_JUMP] = true;
     //구르기 & 잠입
     else if (KEY_PRESSING(KEY::LSHIFT))
     {
@@ -985,6 +1001,12 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::SPINATTACK:
         m_pStateMachine->Transition_To(new CPlayerState_SpinAttack(this));
         break;
+    case Client::CPlayer::PICKUPOBJECT:
+		m_pStateMachine->Transition_To(new CPlayerState_PickUpObject(this));
+        break;
+    case Client::CPlayer::THROWOBJECT:
+		m_pStateMachine->Transition_To(new CPlayerState_ThrowObject(this));
+		break;
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -1064,12 +1086,12 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
     //손 비우기
     if (nullptr == _pCarryingObject)
     {
-        if (nullptr != m_pCarryingObject)
+        if (Is_CarryingObject())
         {
-            m_pCarryingObject->Set_Carrier(nullptr);
-
-            Safe_Release(m_pCarryingObject);
-            m_pCarryingObject = nullptr;
+			CCarriableObject* pCarriableObject = static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ]);
+            pCarriableObject->Set_Carrier(nullptr);
+            Safe_Release(m_PartObjects[PLAYER_PART_CARRYOBJ]);
+            m_PartObjects[PLAYER_PART_CARRYOBJ] = nullptr;
         }
         return S_OK;
     }
@@ -1078,9 +1100,10 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
     {
         if (Is_CarryingObject())
             return E_FAIL;
-        m_pCarryingObject = _pCarryingObject;
-        Safe_AddRef(m_pCarryingObject);
-        m_pCarryingObject->Set_Carrier(this);
+        m_PartObjects[PLAYER_PART_CARRYOBJ] = _pCarryingObject;
+        Safe_AddRef(m_PartObjects[PLAYER_PART_CARRYOBJ]);
+        static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ])->Set_Carrier(this);
+        Set_State(PICKUPOBJECT);
     }
 
     return S_OK;
@@ -1137,6 +1160,18 @@ void CPlayer::ThrowSword()
 
 }
 
+void CPlayer::ThrowObject()
+{
+	assert(Is_CarryingObject());
+
+	CCarriableObject* pObj = static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ]);
+	Set_CarryingObject(nullptr);
+
+   _vector vForce =  XMVector3Normalize(XMVectorSetY(m_pControllerTransform->Get_State(CTransform::STATE_LOOK),0.5)) *
+       (COORDINATE_3D == Get_CurCoord() ? m_f3DThrowObjectPower : m_f2DThrowObjectPower);
+	pObj->Throw(vForce);
+}
+
 
 
 void CPlayer::Key_Input(_float _fTimeDelta)
@@ -1149,7 +1184,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
         if (iCurCoord == COORDINATE_2D)
-            CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+            CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_OBJECT);
         else
             CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 
@@ -1163,7 +1198,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
         if (iCurCoord == COORDINATE_2D)
-            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this);
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this, SECTION_2D_PLAYMAP_OBJECT);
         else
             CSection_Manager::GetInstance()->Remove_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this);
 
@@ -1242,6 +1277,7 @@ void CPlayer::Free()
 
 	Safe_Release(m_pStateMachine);
 	Safe_Release(m_pAnimEventGenerator);
-    Safe_Release(m_pCarryingObject);
+    if((_int)(m_PartObjects.size() -1 )>= (_int)PLAYER_PART_CARRYOBJ)
+        Safe_Release(m_PartObjects[PLAYER_PART_CARRYOBJ]);
     __super::Free();
 }

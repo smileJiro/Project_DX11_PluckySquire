@@ -449,7 +449,7 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 
 			pGameObject->Set_Position(vNewPos);
 
-			if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(strMoveSectionName, pGameObject)))
+			if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(strMoveSectionName, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
 				return;
 		}
 	}

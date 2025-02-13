@@ -24,7 +24,8 @@ HRESULT CLevel_Model_Tool::Initialize(CImguiLogger* _pLogger)
 	m_pGameInstance->Set_DebugRender(true);
 
 
-
+	/* Blur RenderGroupOn */
+	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
 	return S_OK;
 }
 

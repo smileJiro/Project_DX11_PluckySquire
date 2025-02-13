@@ -178,6 +178,7 @@
     <ClInclude Include="..\Public\RenderGroup_Final.h" />
     <ClInclude Include="..\Public\RenderGroup_Lighting.h" />
     <ClInclude Include="..\Public\RenderGroup_Lights.h" />
+    <ClInclude Include="..\Public\RenderGroup_PostProcessing.h" />
     <ClInclude Include="..\Public\RenderGroup_WorldPos.h" />
     <ClInclude Include="..\Public\StateMachine.h" />
     <ClInclude Include="..\Public\Test_Body_Player.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="..\Private\RenderGroup_Final.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Lighting.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Lights.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_PostProcessing.cpp" />
     <ClCompile Include="..\Private\RenderGroup_WorldPos.cpp" />
     <ClCompile Include="..\Private\StateMachine.cpp" />
     <ClCompile Include="..\Private\Test_Body_Player.cpp" />

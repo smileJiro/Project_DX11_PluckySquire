@@ -39,6 +39,8 @@ HRESULT CLevel_Trigger_Tool::Initialize()
 	m_pCurBulbLine.first = nullptr;
 	m_pCurBulbLine.second = nullptr;
 
+	/* Blur RenderGroupOn */
+	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
 	return S_OK;
 }
 
