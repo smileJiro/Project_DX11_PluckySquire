@@ -1,20 +1,91 @@
 #include "stdafx.h"
 #include "PlayerState_PickUpObject.h"
+#include "Animation3D.h"
+#include "CarriableObject.h"
 
 CPlayerState_PickUpObject::CPlayerState_PickUpObject(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::PICKUPOBJECT)
 {
 }
 
+//시작 상태, 목표 상태, 애니메이션 진행도 를 이용해 보간.
 void CPlayerState_PickUpObject::Update(_float _fTimeDelta)
 {
+	COORDINATE eCOord = m_pOwner->Get_CurCoord();
+	KEYFRAME tLeftKeyFrame; 
+	KEYFRAME tRightKeyFrame;
+	_float fRatio = 0.f;
+	_float fProgress = m_pOwner->Get_AnimProgress();
+	_float fAlignStartProgress = COORDINATE_3D == eCOord ? m_f3DAlignStartProgress : m_f2DAlignStartProgress;
+	_float fAlignEndProgress = COORDINATE_3D == eCOord ? m_f3DAlignEndProgress : m_f2DAlignEndProgress;
+	_float fHeadProgress = COORDINATE_3D == eCOord ? m_f3DHeadProgress : m_f2DHeadProgress;
+	 if( fProgress >= fAlignEndProgress && fProgress < fHeadProgress )
+	{
+		fRatio = (fProgress - fAlignEndProgress) / (fHeadProgress - fAlignEndProgress);
+		tLeftKeyFrame = m_tPickupKeyFrame;
+		tRightKeyFrame = m_tCarryingKeyFrame;
+	}
+	else if(fAlignStartProgress <= fProgress   &&  fProgress < fAlignEndProgress)
+	{
+		fRatio = (fProgress - fAlignStartProgress) / (fAlignEndProgress - fAlignStartProgress);
+		tLeftKeyFrame = m_tOriginalKeyFrame;
+		tRightKeyFrame = m_tPickupKeyFrame;
+	}
+	 else if(false == m_bAligned && fProgress >= fHeadProgress)
+	{
+		Align();
+		m_bAligned = true;
+		return;
+	}
+
+	 if (false == m_bAligned)
+	 {
+		 KEYFRAME tKeyFrame = Lerp_Frame(tLeftKeyFrame, tRightKeyFrame, fRatio);
+		 _float4x4 matWorld;
+		 XMStoreFloat4x4(&matWorld, XMMatrixAffineTransformation(XMLoadFloat3(&tKeyFrame.vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&tKeyFrame.vRotation), XMVectorSetW(XMLoadFloat3(&tKeyFrame.vPosition), 1.f)));
+		 m_pCarriableObject->Set_WorldMatrix(matWorld);
+	 }
+
 }
 
 void CPlayerState_PickUpObject::Enter()
 {
-	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+	assert(m_pOwner->Is_CarryingObject());
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+	m_pCarriableObject = m_pOwner->Get_CarryingObject();
+	m_pCarriableObject->Set_Carrier(m_pOwner);
+
+	//OriginalKeyFrame
+	_matrix matOriginalOfset = m_pCarriableObject->Get_FinalWorldMatrix();
+	_matrix vPlayerWorld = m_pOwner->Get_FinalWorldMatrix();
+	matOriginalOfset *= XMMatrixInverse(nullptr, vPlayerWorld);
+	m_tOriginalKeyFrame.Set_Matrix(matOriginalOfset);
+	_float4x4 matCarriableWorld;
+	XMStoreFloat4x4(&matCarriableWorld, matOriginalOfset);
+	m_pCarriableObject->Set_WorldMatrix(matCarriableWorld);
+
+	//PickUpKeyFrame
+	_vector vTmp =  _vector{0,0,1}*m_pOwner->Get_PickupRange(eCoord);
+	vTmp = XMVectorSetY(vTmp, XMVectorGetY(vTmp) + 0.5f);
+	_matrix mat3DPickupOffset = XMMatrixTranslationFromVector(vTmp);
+	m_tPickupKeyFrame.Set_Matrix(mat3DPickupOffset);
+
+	//CarryingKeyFrame
+	_matrix matCarryingOfset = XMLoadFloat4x4( m_pOwner->Get_CarryingOffset_Ptr(eCoord));
+	m_tCarryingKeyFrame.Set_Matrix(matCarryingOfset);
+
+	m_pCarriableObject->Set_ParentMatrix(eCoord, m_pOwner->Get_ControllerTransform()->Get_WorldMatrix_Ptr(eCoord));
+
+	if (COORDINATE_3D == eCoord)
 	{
-		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_PICKUP_NEWRIG);
+		m_pCarriableObject->Set_Kinematic(true);
+		m_pOwner->Set_Kinematic(true);
+	}
+
+
+	if (COORDINATE_3D == eCoord)
+	{
+		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_PICKUP_GT);
 	}
 	else
 	{
@@ -40,13 +111,14 @@ void CPlayerState_PickUpObject::Enter()
 
 void CPlayerState_PickUpObject::Exit()
 {
+	m_pOwner->Set_Kinematic(false);
 }
 
 void CPlayerState_PickUpObject::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	if (COORDINATE_3D == _eCoord)
 	{
-		if (iAnimIdx == (_uint)CPlayer::ANIM_STATE_3D::LATCH_PICKUP_NEWRIG)
+		if (iAnimIdx == (_uint)CPlayer::ANIM_STATE_3D::LATCH_PICKUP_GT)
 		{
 			m_pOwner->Set_State(CPlayer::IDLE);
 		}
@@ -59,5 +131,18 @@ void CPlayerState_PickUpObject::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		{
 			m_pOwner->Set_State(CPlayer::IDLE);
 		}
+	}
+}
+
+void CPlayerState_PickUpObject::Align()
+{
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+	m_pCarriableObject->Set_SocketMatrix(eCoord, m_pOwner->Get_CarryingOffset_Ptr(eCoord));
+	
+	if (COORDINATE_3D == eCoord)
+	{
+		m_pCarriableObject->Set_Position(_vector{ 0,0,0 });
+		m_pCarriableObject->Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
+
 	}
 }

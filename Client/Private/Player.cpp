@@ -64,8 +64,10 @@ HRESULT CPlayer::Initialize_Prototype()
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = { 0.f, 0.f };
 
 
-	XMStoreFloat4x4( &m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.f, 0.f));
-	XMStoreFloat4x4( &m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 80.f, 0.f));
+    XMStoreFloat4x4(&m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.f, 0.f));
+    XMStoreFloat4x4(&m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 80.f, 0.f));
+
+
     return S_OK;
 }
 
@@ -149,7 +151,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     //capShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
     //ActorDesc.ShapeDatas.push_back(capShapeData);
 
-    //충돌 감지용 구 (트리거)
+    //주변 지형 감지용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
     ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
     ShapeData.isTrigger = true;
@@ -976,9 +978,17 @@ _vector CPlayer::Get_LookDirection()
 {
 	COORDINATE eCoord = Get_CurCoord();
     if (COORDINATE_2D == eCoord)
-        return EDir_To_Vector(m_e2DDirection_E);
+        return FDir_To_Vector(EDir_To_FDir( m_e2DDirection_E));
     else
         return XMVector4Normalize( m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+}
+
+_vector CPlayer::Get_LookDirection(COORDINATE _eCoord)
+{
+    if (COORDINATE_2D == _eCoord)
+        return FDir_To_Vector(EDir_To_FDir(m_e2DDirection_E));
+    else
+        return XMVector4Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
 }
 
 CPlayer::STATE CPlayer::Get_CurrentStateID()
@@ -986,9 +996,9 @@ CPlayer::STATE CPlayer::Get_CurrentStateID()
 	return m_pStateMachine->Get_CurrentState()->Get_StateID();
 }
 
-_vector CPlayer::Get_RootBonePosition()
+CCarriableObject* CPlayer::Get_CarryingObject()
 {
-    return _vector();
+    { return static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ]); }
 }
 
 
@@ -1152,7 +1162,7 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
             return E_FAIL;
         m_PartObjects[PLAYER_PART_CARRYOBJ] = _pCarryingObject;
         Safe_AddRef(m_PartObjects[PLAYER_PART_CARRYOBJ]);
-        static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ])->Set_Carrier(this);
+
         Set_State(PICKUPOBJECT);
     }
 
