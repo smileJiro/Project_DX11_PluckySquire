@@ -166,7 +166,12 @@ void CBarfBug::Update(_float _fTimeDelta)
 
     //// TestCode : еб©У
     if (COORDINATE_2D == Get_CurCoord())
-        CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_pColliderCom);
+    {
+		for (_uint i = 0; i < m_p2DColliderCom.size(); ++i)
+        {
+            CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_p2DColliderCom[i]);
+        }
+    }
 
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -185,7 +190,12 @@ HRESULT CBarfBug::Render()
         m_pDetectionField->Render();
 
     if (COORDINATE_2D == Get_CurCoord())
-        m_pColliderCom->Render();
+    {
+        for (_uint i = 0; i < m_p2DColliderCom.size(); ++i)
+        {
+            m_p2DColliderCom[i]->Render();
+        }
+    }
 #endif // _DEBUG
 
     /* Font Render */
@@ -561,7 +571,9 @@ HRESULT CBarfBug::Ready_Components()
         TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
         return E_FAIL;
 
-    /* Test 2D Collider */
+    /* 2D Collider */
+    m_p2DColliderComs.resize(1);
+
     CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
     AABBDesc.pOwner = this;
     AABBDesc.vExtents = { 50.f, 100.f };
@@ -569,7 +581,7 @@ HRESULT CBarfBug::Ready_Components()
     AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y };
     AABBDesc.isBlock = true; // 
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-        TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
         return E_FAIL;
 
     return S_OK;
@@ -636,6 +648,5 @@ CGameObject* CBarfBug::Clone(void* _pArg)
 
 void CBarfBug::Free()
 {
-    Safe_Release(m_pColliderCom);
     __super::Free();
 }
