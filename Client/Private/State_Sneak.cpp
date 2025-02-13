@@ -247,7 +247,7 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 
 		//시작점까지 갔다가 다음 점으로 진행하는 거리와 다음 점으로 바로 가는 거리 비교해서 시작점으로 갈지 결정
 		_vector vFromStart = XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition) - m_pOwner->Get_FinalPosition() + XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition);
-		_vector vToNext = XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - m_pOwner->Get_FinalPosition();
+		_vector vToNext = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - m_pOwner->Get_FinalPosition(), 0.f);
 		_float3 vToNextDir; XMStoreFloat3(&vToNextDir, XMVector3Normalize(vToNext));
 		
 		if(false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vToNextDir, XMVectorGetX(XMVector3Length(vToNext)), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
