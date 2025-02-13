@@ -4,12 +4,12 @@
 BEGIN(Client)
 
 
-//다음 동작을 결정하는 대기 상태
-class CStandbyState final : public CState
+//다음 동작에 공격이 없는 대기 상태
+class CStandbyNoneAttackState final : public CState
 {
 private:
-	CStandbyState();
-	virtual ~CStandbyState() = default;
+	CStandbyNoneAttackState();
+	virtual ~CStandbyNoneAttackState() = default;
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -25,7 +25,7 @@ private:
 	_bool m_isCool = { false };
 
 public:
-	static CStandbyState* Create(void* _pArg);
+	static CStandbyNoneAttackState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;

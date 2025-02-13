@@ -4,12 +4,12 @@
 BEGIN(Client)
 
 
-//다음 동작을 결정하는 대기 상태
-class CStandbyState final : public CState
+//공격 없이 추적으로 공격이 종료
+class CChaseAttackState final : public CState
 {
 private:
-	CStandbyState();
-	virtual ~CStandbyState() = default;
+	CChaseAttackState();
+	virtual ~CChaseAttackState() = default;
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -19,13 +19,8 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
-private:
-	_float m_fAccTime = { 0.f };
-	_bool m_isDelay = { false };
-	_bool m_isCool = { false };
-
 public:
-	static CStandbyState* Create(void* _pArg);
+	static CChaseAttackState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;

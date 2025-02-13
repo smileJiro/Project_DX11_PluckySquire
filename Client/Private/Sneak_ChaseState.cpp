@@ -103,6 +103,8 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 				if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.3f))
 				{
 					++m_iCurWayIndex;
+					m_isTurn = false;
+					m_isMove = false;
 					//목표 위치에 도착했으면 자유이동으로 전환
 					if (m_Ways.size() <= m_iCurWayIndex)
 					{

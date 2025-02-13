@@ -899,6 +899,12 @@
       <Filter>02.GameObjects\Carriable</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Domino.h" />
+    <ClInclude Include="..\Public\ChaseAttackState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StandbyNoneAttackState.h">
+      <Filter>03.Components\FSM\State\Standby</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1383,6 +1389,12 @@
       <Filter>02.GameObjects\Carriable</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Domino.cpp" />
+    <ClCompile Include="..\Private\ChaseAttackState.cpp">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StandbyNoneAttackState.cpp">
+      <Filter>03.Components\FSM\State\Standby</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

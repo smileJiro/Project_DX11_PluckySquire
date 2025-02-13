@@ -81,6 +81,10 @@ public:
 	{
 		return m_isCool;
 	}
+	_bool IsContactToTarget()
+	{
+		return m_isContactToTarget;
+	}
 
 	_float3 Get_RayOffset() const
 	{
@@ -163,6 +167,8 @@ protected:
 	_float m_fChase2DRange = { 0.f };
 	_float m_fAttack2DRange = { 0.f };
 	_bool m_isAnimChangeable = { true };
+
+	_bool m_isContactToTarget = { false };
 
 	_float m_fAccTime = { 0.f };
 	_bool m_isDelay = { false };
