@@ -31,6 +31,7 @@ public:
 		_float			fFocusDistance = 15.0f; // 초점 평면거리
 		_float			fDofBrightness = 1.5f;
 		_float			fBaseBlurPower = 0.1f;
+		_float3			vBlurColor = { 1.0f, 1.0f, 1.0f };
 	}CAMERA_DESC;
 
 protected:

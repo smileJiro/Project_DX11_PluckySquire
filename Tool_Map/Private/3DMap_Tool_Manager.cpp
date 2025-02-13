@@ -454,6 +454,9 @@ void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 				pPickingObj->Set_Operation(CMapObject::SCALE);
 
 
+			pPickingObj->Imgui_Render_ObjectInfos();
+
+
 			_bool isSksp = pPickingObj->Is_SpskMode();
 
 			if (ImGui::Checkbox("SKSP?", &isSksp))
@@ -1472,6 +1475,7 @@ void C3DMap_Tool_Manager::Load(_bool _bSelected)
 
 		strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
 
+
 		for (size_t i = 0; i < iObjectCnt; i++)
 		{
 			_char		szSaveMeshName[MAX_PATH];
@@ -1583,7 +1587,7 @@ HRESULT C3DMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos, CMapObject
 	_float2 fCursorPos = { (_float)ptMouse.x,(_float)ptMouse.y };
 	Compute_World_PickingLay(&vRayPos, &vRayDir);
 
-	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_3D_MAP, L"Layer_Environment");
+	auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_3D_MAP, L"Layer_Room_Environment");
 	if (!pLayer)
 		return E_FAIL;
 	auto List = pLayer->Get_GameObjects();
@@ -1594,7 +1598,7 @@ HRESULT C3DMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos, CMapObject
 	for_each(List.begin(), List.end(), [this, &fCursorPos, &fDist, &fNewDist, &vReturnNewPos, &vReturnPos, &pReturnObject](CGameObject* pGameObject)
 		{
 			CMapObject* pMapObject = dynamic_cast<CMapObject*>(pGameObject);
-			if (pMapObject)
+			if (L"SM_desk_split_topboard_02" == pMapObject->Get_ModelName() && nullptr != pMapObject)
 			{
 				//bool bRange = pMapObject->Check_Picking(XMLoadFloat3(&vRayPos), XMLoadFloat3(&vRayDir), &vReturnNewPos, &fNewDist);
 				_bool bRange = pMapObject->Is_PickingCursor_Model(fCursorPos, fNewDist);
@@ -1609,6 +1613,30 @@ HRESULT C3DMap_Tool_Manager::Picking_On_Terrain(_float3* fPickingPos, CMapObject
 				}
 			}
 		});
+
+	//pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_3D_MAP, L"Layer_MapObject");
+	//if (!pLayer)
+	//	return E_FAIL;
+	//List = pLayer->Get_GameObjects();
+	//for_each(List.begin(), List.end(), [this, &fCursorPos, &fDist, &fNewDist, &vReturnNewPos, &vReturnPos, &pReturnObject](CGameObject* pGameObject)
+	//	{
+	//		CMapObject* pMapObject = dynamic_cast<CMapObject*>(pGameObject);
+	//		if (nullptr != pMapObject)
+	//		{
+	//			//bool bRange = pMapObject->Check_Picking(XMLoadFloat3(&vRayPos), XMLoadFloat3(&vRayDir), &vReturnNewPos, &fNewDist);
+	//			_bool bRange = pMapObject->Is_PickingCursor_Model(fCursorPos, fNewDist);
+	//			if (bRange)
+	//			{
+	//				int a = 1;
+	//			}
+	//			if (bRange && (fNewDist < fDist || fDist == 0.f))
+	//			{
+	//				pReturnObject = pMapObject;
+	//				fDist = fNewDist;
+	//			}
+	//		}
+	//	});
+
 
 	if (pReturnObject)
 	{

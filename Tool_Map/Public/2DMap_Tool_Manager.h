@@ -88,10 +88,11 @@ private:
 
 	void				Load_String();
 
-	void				Object_Clear(_bool _bSelected = true);
+	void				Object_Clear(const _wstring& _strLayerName);
 
 	void				Save_Popup();
 	void				Save_Trigger();
+	void				Load_Trigger();
 
 	// 2D 맵, 오브젝트 출력
 	void				Save(_bool _bSelected = true);
@@ -111,12 +112,16 @@ private:
 	HRESULT				Setting_TileMap(const _string _strFileMapJsonName);
 
 	C2DMapObjectInfo*	Find_Info(const _wstring _strTag);
+	_int				Find_Event(const _string& _strTag);
 
 	HRESULT				Update_Model_Index();
 
 
 	HRESULT				Change_RenderGroup(_float2 _fRenderTargetSize);
 	HRESULT				Clear_RenderGroup();
+
+	HRESULT				SetUp_Info_to_Model(C2DMapObjectInfo* _pModelInfo, const _wstring& _strModelPath);
+
 
 private:
 

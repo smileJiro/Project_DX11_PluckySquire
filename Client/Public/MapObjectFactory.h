@@ -17,12 +17,14 @@ public:
 
 		_uint		iModelIndex = 0;
 		_float2		fPos = {};
+		_float2		fScale = {};
 		_bool		isOverride = false;
 
 		_wstring strObjectTag = L"";
 
 		ReadFile(_hFile, &iModelIndex, sizeof(_uint), &dwByte, nullptr);
 		ReadFile(_hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
+		ReadFile(_hFile, &fScale, sizeof(_float2), &dwByte, nullptr);
 		ReadFile(_hFile, &isOverride, sizeof(_bool), &dwByte, nullptr);
 
 		const auto& tInfo = CSection_Manager::GetInstance()->Get_2DModel_Info(iModelIndex);
@@ -36,7 +38,7 @@ public:
 			, L"Prototype_Component_Shader_VtxPosTex"
 			, (_uint)PASS_VTXPOSTEX::SPRITE2D
 		);
-		NormalDesc.Build_2D_Transform(fPos);
+		NormalDesc.Build_2D_Transform(fPos, fScale);
 
 		NormalDesc.isSorting = tInfo.isSorting;
 		NormalDesc.isCollider = tInfo.isCollider;

@@ -20,7 +20,10 @@ public:
 		return &m_matSpriteTransform; 
 	}
 #ifdef _DEBUG
-	CTexture* Get_Texture() { return m_pTexture; }
+	CTexture* Get_Texture() const { return m_pTexture; }
+
+	const _float2 Get_StartUV() const { return m_vSpriteStartUV; }
+	const _float2 Get_EndUV() const { return m_vSpriteEndUV; }
 #endif // _DEBUG
 
 protected:

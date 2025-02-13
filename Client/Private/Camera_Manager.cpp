@@ -121,11 +121,15 @@ void CCamera_Manager::Imgui_Dof()
 	{
 		m_Cameras[m_eCurrentCameraType]->Set_DofBufferData(tDofData, true);
 	}
-	if (ImGui::SliderFloat("DofBrightness##Camera", &tDofData.fDofBrightness, 0.01f, 5.f))
+	if (ImGui::SliderFloat("DofBrightness##Camera", &tDofData.fDofBrightness, 0.01f, 10.f))
 	{
 		m_Cameras[m_eCurrentCameraType]->Set_DofBufferData(tDofData, true);
 	}
 	if (ImGui::SliderFloat("BaseBlurPower##Camera", &tDofData.fBaseBlurPower, 0.0f, 1.0f))
+	{
+		m_Cameras[m_eCurrentCameraType]->Set_DofBufferData(tDofData, true);
+	}
+	if (ImGui::DragFloat3("BlurColor##Camera", &(tDofData.vBlurColor.x), 0.01f,0.0f, 2.0f))
 	{
 		m_Cameras[m_eCurrentCameraType]->Set_DofBufferData(tDofData, true);
 	}

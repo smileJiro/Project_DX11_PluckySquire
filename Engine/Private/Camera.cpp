@@ -446,6 +446,7 @@ HRESULT CCamera::Ready_DofConstData(CAMERA_DESC* _pDesc)
 	m_tConstDofData.fSensorHeight = _pDesc->fSensorHeight;
 	m_tConstDofData.fDofBrightness = _pDesc->fDofBrightness;
 	m_tConstDofData.fBaseBlurPower = _pDesc->fBaseBlurPower;
+	m_tConstDofData.vBlurColor = _pDesc->vBlurColor;
 	Compute_FocalLength();
 
 	if (FAILED(m_pGameInstance->CreateConstBuffer(m_tConstDofData, D3D11_USAGE_DYNAMIC, &m_pConstDofBuffer)))

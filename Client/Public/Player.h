@@ -33,12 +33,12 @@ typedef struct tagPlayerInputResult
 class CPlayer final : public CCharacter, public IAnimEventReceiver
 {
 public:
-	typedef struct ATTACK_TRIGGER_DESC_2D
+	typedef struct tagAttackTriggerDesc
 	{
 		_float fRadius;
 		_float fRadianAngle;
 		_float2 fOffset = {};
-	};
+	}ATTACK_TRIGGER_DESC_2D;
 	enum ATTACK_TYPE
 	{
 		ATTACK_TYPE_NORMAL1,

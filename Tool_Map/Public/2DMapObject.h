@@ -74,7 +74,8 @@ private:
 
 	_int			m_iRenderGroupID;
 	_int			m_iPriorityID;
-
+private:
+	static _uint				g_iTmpCount;
 public:
 	static C2DMapObject* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	static C2DMapObject* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, HANDLE _hFile, vector<C2DMapObjectInfo*>& _ModelInfos, _float2 _fRenderTargetSIze);
