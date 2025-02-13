@@ -9,7 +9,7 @@
 #include "UI_Manager.h"
 #include "Camera_Manager.h"
 #include "Section_Manager.h"
-#include "Collision_Manager.h"
+
 #include "Trigger_Manager.h"
 #include "PlayerData_Manager.h"
 
@@ -81,7 +81,6 @@ void CMainApp::Progress(_float _fTimeDelta)
 
 	m_pGameInstance->Update_Engine(_fTimeDelta);
 	CCamera_Manager::GetInstance()->Update(_fTimeDelta);
-	CCollision_Manager::GetInstance()->Update();			// 충돌 검사 수행.
 	CTrigger_Manager::GetInstance()->Update();
 
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
@@ -621,7 +620,6 @@ void CMainApp::Free()
 	CPooling_Manager::DestroyInstance();
 	CUI_Manager::DestroyInstance();
 	CSection_Manager::DestroyInstance();
-	CCollision_Manager::DestroyInstance();
 	CTrigger_Manager::DestroyInstance();
 	CPlayerData_Manager::DestroyInstance();
 

@@ -23,7 +23,7 @@ HRESULT CActorObject::Initialize(void* _pArg)
     // Desc Save 
 
     // Desc Add
-
+    
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 

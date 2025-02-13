@@ -22,10 +22,11 @@ HRESULT CMapObject::Initialize_Prototype()
 
 HRESULT CMapObject::Initialize(void* _pArg)
 {
-
     if (nullptr == _pArg)
         return E_FAIL;
 
+    MAPOBJ_DESC* pDesc = static_cast<CMapObject::MAPOBJ_DESC*>(_pArg);
+    pDesc->iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
     return __super::Initialize(_pArg);
 }
 

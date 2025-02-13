@@ -55,7 +55,7 @@ HRESULT CActor::Initialize(void* _pArg)
 		m_OffsetMatrix = pDesc->ActorOffsetMatrix;
 
 	// Add Desc
-
+	
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 

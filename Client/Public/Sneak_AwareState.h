@@ -19,6 +19,9 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
+private:
+	_float m_fAccTime = {};
+
 public:
 	static CSneak_AwareState* Create(void* _pArg);
 

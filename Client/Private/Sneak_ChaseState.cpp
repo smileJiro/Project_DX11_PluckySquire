@@ -31,6 +31,7 @@ void CSneak_ChaseState::State_Enter()
 	m_isTurn = false;
 	m_isMove = false;
 	m_isRenew = true;
+	m_isOnWay = false;
 	m_fAccTime = 0.f;
 }
 
@@ -99,7 +100,7 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 			if (true == m_isOnWay && false == m_isPathFind)
 			{
 				//도착하면 다음 웨이포인트로 목표위치 바꿈
-				if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.1f))
+				if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.3f))
 				{
 					++m_iCurWayIndex;
 					//목표 위치에 도착했으면 자유이동으로 전환

@@ -213,6 +213,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Collider_AABB.h" />
     <ClInclude Include="..\public\Collider_Circle.h" />
     <ClInclude Include="..\Public\Collider_Fan.h" />
+    <ClInclude Include="..\Public\Collision_Manager.h" />
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\public\Compute_Shader.h" />
     <ClInclude Include="..\Public\ContainerObject.h" />
@@ -323,6 +324,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Collider_AABB.cpp" />
     <ClCompile Include="..\private\Collider_Circle.cpp" />
     <ClCompile Include="..\Private\Collider_Fan.cpp" />
+    <ClCompile Include="..\Private\Collision_Manager.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\private\Compute_Shader.cpp" />
     <ClCompile Include="..\Private\ContainerObject.cpp" />
