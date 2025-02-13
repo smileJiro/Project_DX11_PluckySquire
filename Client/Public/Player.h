@@ -13,11 +13,12 @@ class CStateMachine;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
-	PLAYER_KEY_JUMP,
-	PLAYER_KEY_ATTACK,
+	PLAYER_INPUT_JUMP,
+	PLAYER_INPUT_ATTACK,
 	PLAYER_KEY_ROLL,
 	PLAYER_KEY_THROWSWORD,
 	PLAYER_KEY_INTERACT,
+	PLAYER_KEY_THROWOBJECT,
 	PLAYER_KEY_SNEAK,
 	PLAYER_KEY_SPINATTACK,
 	PLAYER_KEY_SPINCHARGING,
@@ -60,7 +61,7 @@ public:
 	{
 		PLAYER_PART_SWORD= 1,
 		PLAYER_PART_GLOVE,
-		PLAYER_PART_STAMP,
+		PLAYER_PART_CARRYOBJ,
 		PLAYER_PART_LAST
 	};
 	enum STATE
@@ -73,6 +74,8 @@ public:
 		JUMP_ATTACK,
 		ROLL,
 		THROWSWORD,
+		PICKUPOBJECT,
+		THROWOBJECT,
 		CLAMBER,
 		SPINATTACK,
 		DIE,
@@ -430,6 +433,7 @@ public: /* 2D 충돌 */
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Jump();
 	void	ThrowSword();
+	void ThrowObject();
 	PLAYER_INPUT_RESULT Player_KeyInput();
 	//Get
 	_bool Is_OnGround() {return m_bOnGround;}
@@ -437,7 +441,7 @@ public: /* 2D 충돌 */
 	_bool Is_Sneaking();
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
 	_bool Is_SwordHandling();
-	_bool Is_CarryingObject(){ return nullptr != m_pCarryingObject; }
+	_bool Is_CarryingObject(){ return nullptr != m_PartObjects[PLAYER_PART_CARRYOBJ]; }
 	_bool Is_AttackTriggerActive();
 	_float Get_UpForce();
 	_float Get_AnimProgress();
@@ -467,6 +471,7 @@ public: /* 2D 충돌 */
 	CController_Transform* Get_Transform() { return m_pControllerTransform; }
 	STATE Get_CurrentStateID();
 	PLAYER_MODE Get_PlayerMode() { return m_ePlayerMode; }
+
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -513,6 +518,7 @@ private:
 	_float m_fAirRunSpeed = 10.f;
 	_float m_f3DMoveSpeed= 10.f;
 	_float m_f3DFloorDistance = 0;
+	_float m_f3DThrowObjectPower = 10.f;
 	_bool m_bOnGround = false;
 	_bool m_bAttackTrigger = false;
 	_uint m_iSpinAttackLevel = 4;
@@ -530,6 +536,7 @@ private:
 	_float m_f2DJumpPower = 800.f;
 	_float m_f2DCenterYOffset= 36.f;
 	_float m_f2DInteractRange = 93.f;
+	_float m_f2DThrowObjectPower = 100.f;
 	_float4x4 m_mat2DCarryingOffset = {};
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
 	ATTACK_TRIGGER_DESC_2D m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST];// = { 93.f, 93.f, 120.f };
@@ -547,8 +554,6 @@ private:
 	class CPlayerSword* m_pSword = nullptr;
 	CModelObject* m_pBody = nullptr;
 	CModelObject* m_pGlove= nullptr;
-
-	CCarriableObject* m_pCarryingObject = nullptr;
 
 	set<CGameObject*> m_AttckedObjects;
 public:

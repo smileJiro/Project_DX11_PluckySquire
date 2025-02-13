@@ -58,16 +58,18 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		}
 		m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* fMoveSpeed, _fTimeDelta);
 
-		if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
+		if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
 		else if (tKeyResult.bInputStates[PLAYER_KEY_SPINATTACK])
 			m_pOwner->Set_State(CPlayer::SPINATTACK);
-		else if (tKeyResult.bInputStates[PLAYER_KEY_JUMP])
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
 			m_pOwner->Set_State(CPlayer::JUMP_UP);
 		else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
 			m_pOwner->Set_State(CPlayer::ROLL);
 		else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
 			m_pOwner->Set_State(CPlayer::THROWSWORD);
+		else	if (tKeyResult.bInputStates[PLAYER_KEY_THROWOBJECT])
+			m_pOwner->Set_State(CPlayer::THROWOBJECT);
 		return;
 	}
 	else

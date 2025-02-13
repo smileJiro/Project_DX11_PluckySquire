@@ -213,6 +213,8 @@
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\public\Collision_Manager.h" />
+    <ClInclude Include="..\Public\Dice.h" />
+    <ClInclude Include="..\Public\Domino.h" />
     <ClInclude Include="..\Public\DeadState.h" />
     <ClInclude Include="..\Public\FloorWord.h" />
     <ClInclude Include="..\Public\HitState.h" />
@@ -220,6 +222,8 @@
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
     <ClInclude Include="..\Public\Narration.h" />
     <ClInclude Include="..\Public\Narration_Anim.h" />
+    <ClInclude Include="..\Public\PlayerState_PickUpObject.h" />
+    <ClInclude Include="..\Public\PlayerState_ThrowObject.h" />
     <ClInclude Include="..\public\RenderGroup_PostProcessing.h" />
     <ClInclude Include="..\Public\Section_2D_Narration.h" />
     <ClInclude Include="..\Public\Npc_OnlySocial.h" />
@@ -383,12 +387,16 @@
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\private\Collision_Manager.cpp" />
+    <ClCompile Include="..\Private\Dice.cpp" />
+    <ClCompile Include="..\Private\Domino.cpp" />
     <ClCompile Include="..\Private\DeadState.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
     <ClCompile Include="..\Private\HitState.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
     <ClCompile Include="..\Private\Narration.cpp" />
     <ClCompile Include="..\Private\Narration_Anim.cpp" />
+    <ClCompile Include="..\Private\PlayerState_PickUpObject.cpp" />
+    <ClCompile Include="..\Private\PlayerState_ThrowObject.cpp" />
     <ClCompile Include="..\private\RenderGroup_PostProcessing.cpp" />
     <ClCompile Include="..\Private\Section_2D_Narration.cpp" />
     <ClCompile Include="..\Private\NPC_OnlySocial.cpp" />

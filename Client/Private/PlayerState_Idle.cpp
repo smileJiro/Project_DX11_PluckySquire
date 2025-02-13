@@ -35,11 +35,11 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 		
 	}
 
-	if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
+	if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 		m_pOwner->Set_State(CPlayer::ATTACK);
 	else if (tKeyResult.bInputStates[PLAYER_KEY_SPINATTACK])
 		m_pOwner->Set_State(CPlayer::SPINATTACK);
-	else if (tKeyResult.bInputStates[PLAYER_KEY_JUMP])
+	else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
 		m_pOwner->Set_State(CPlayer::JUMP_UP);
 	else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
 		m_pOwner->Set_State(CPlayer::ROLL);
@@ -47,6 +47,8 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::THROWSWORD);
 	else	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 		m_pOwner->Set_State(CPlayer::RUN);
+	else	if (tKeyResult.bInputStates[PLAYER_KEY_THROWOBJECT])
+		m_pOwner->Set_State(CPlayer::THROWOBJECT);
 
 }
 
@@ -111,6 +113,9 @@ void CPlayerState_Idle::Switch_IdleAnimation3D(_bool _bStealth)
 {
 	if (_bStealth)
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_STEALTH_IDLE_GT);
+	else if(m_pOwner->Is_CarryingObject())
+		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_PICKUP_IDLE_GT);
 	else
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_IDLE_01_GT);
+
 }
