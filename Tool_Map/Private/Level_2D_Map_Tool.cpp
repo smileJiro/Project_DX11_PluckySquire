@@ -24,6 +24,8 @@ HRESULT CLevel_2D_Map_Tool::Initialize(CImguiLogger* _pLogger)
 		return E_FAIL;
 	m_pGameInstance->Set_DebugRender(false);
 
+	/* Blur RenderGroupOn */
+	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
 	return S_OK;
 }
 
