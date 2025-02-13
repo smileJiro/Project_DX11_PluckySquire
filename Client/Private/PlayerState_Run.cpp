@@ -39,9 +39,10 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		{
 			E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
 			F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
+			m_pOwner->Set_2DDirection(eNewDir);
+
 			if (m_eOldFDir != eFDir)
 			{
-				m_pOwner->Set_2DDirection(eNewDir);
 				Switch_RunAnimation2D(eFDir);
 				m_eOldFDir = eFDir;
 			}
@@ -83,9 +84,12 @@ void CPlayerState_Run::Enter()
 {
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 
+	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+	if (tKeyResult.bInputStates[PLAYER_KEY_SNEAK])
+		m_bSneakBefore = true;
 	if (COORDINATE_2D == eCoord)
 	{
-
+		m_bPlatformerMode = m_pOwner->Is_PlatformerMode();
 	}
 	else
 	{
@@ -113,6 +117,13 @@ void CPlayerState_Run::Switch_RunAnimation2D(F_DIRECTION _eFDir)
 {
 	_bool bSword = m_pOwner->Is_SwordHandling();
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
+	if (m_bPlatformerMode)
+	{
+		if (F_DIRECTION::UP == _eFDir)
+			_eFDir = F_DIRECTION::RIGHT;
+		else if (F_DIRECTION::DOWN == _eFDir)
+			_eFDir = F_DIRECTION::LEFT;
+	}
 	switch (_eFDir)
 	{
 	case Client::F_DIRECTION::LEFT:

@@ -18,6 +18,7 @@ private:
     void Switch_IdleAnimation3D(_bool _bStealth);
 private:
     _bool m_bSneakBefore = false;
+    _bool m_bPlatformerMode = false;
 };
 
 END

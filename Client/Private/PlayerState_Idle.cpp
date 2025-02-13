@@ -57,6 +57,7 @@ void CPlayerState_Idle::Enter()
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	if (COORDINATE_2D == eCoord)
 	{
+		m_bPlatformerMode = m_pOwner->Is_PlatformerMode();
 		F_DIRECTION eFDir = EDir_To_FDir( m_pOwner->Get_2DDirection());
 		Switch_IdleAnimation2D(eFDir);
 	}
@@ -76,6 +77,14 @@ void CPlayerState_Idle::Switch_IdleAnimation2D(F_DIRECTION _eFDir)
 {
 	_bool bSword = m_pOwner->Is_SwordHandling();
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
+	if (m_bPlatformerMode)
+	{
+		if (F_DIRECTION::UP == _eFDir)
+			_eFDir = F_DIRECTION::RIGHT;
+		else if (F_DIRECTION::DOWN == _eFDir)
+			_eFDir = F_DIRECTION::LEFT;
+	}
+
 	switch (_eFDir)
 	{
 	case Client::F_DIRECTION::LEFT:

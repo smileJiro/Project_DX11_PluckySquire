@@ -127,7 +127,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
             if (bOuting)
             {
                 m_AttckedObjects.clear();
-                cout << "m_AttckedObjects clear Update" << endl;
+                //cout << "m_AttckedObjects clear Update" << endl;
             }
             vDir = XMVector3Normalize(vTargetPos - vPosition);
         }
@@ -319,7 +319,7 @@ void CPlayerSword::Set_State(SWORD_STATE _eNewState)
 void CPlayerSword::On_StateChange()
 {
     COORDINATE eCoord = Get_CurCoord();
-    cout << "SwrodState : " << m_eCurrentState << endl;
+   // cout << "SwrodState : " << m_eCurrentState << endl;
     switch (m_eCurrentState)
     {
     case Client::CPlayerSword::HANDLING:
