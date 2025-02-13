@@ -81,15 +81,16 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 	{
 		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
 		{
-			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed2D, _fTimeDelta);
 
 			E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
 			F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
+
 			if (m_eOldFDir != eFDir)
 			{
 				m_pOwner->Set_2DDirection(eNewDir);
 				m_eOldFDir = eFDir;
 			}
+			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed2D, _fTimeDelta);
 		}
 	}
 
@@ -97,6 +98,7 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 
 void CPlayerState_JumpDown::Enter()
 {
+	m_bPlatformerMode = m_pOwner->Is_PlatformerMode();
 	m_fAirRunSpeed = m_pOwner->Get_AirRunSpeed();
 	m_fAirRotateSpeed = m_pOwner->Get_AirRotationSpeed();
 	m_fAirRunSpeed2D = m_pOwner->Get_AirRunSpeed2D();

@@ -28,6 +28,7 @@ enum PLAYER_INPUT
 typedef struct tagPlayerInputResult
 {
 	_vector vMoveDir = {0,0,0};
+	_vector vDir = { 0,0,0 };
 	_bool bInputStates[PLAYER_KEY_LAST] = {false,};
 
 }PLAYER_INPUT_RESULT;
@@ -438,11 +439,12 @@ public: /* 2D 충돌 */
 	//Get
 	_bool Is_OnGround() {return m_bOnGround;}
 	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
-	_bool Is_Sneaking();
+	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
 	_bool Is_SwordHandling();
 	_bool Is_CarryingObject(){ return nullptr != m_PartObjects[PLAYER_PART_CARRYOBJ]; }
 	_bool Is_AttackTriggerActive();
+	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
 	_float Get_UpForce();
 	_float Get_AnimProgress();
 	_float Get_HeadHeight() { return m_fHeadHeight; }
@@ -538,6 +540,7 @@ private:
 	_float m_f2DInteractRange = 93.f;
 	_float m_f2DThrowObjectPower = 100.f;
 	_float4x4 m_mat2DCarryingOffset = {};
+	_bool m_bPlatformerMode = false;
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
 	ATTACK_TRIGGER_DESC_2D m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST];// = { 93.f, 93.f, 120.f };
 	//ATTACK_TRIGGER_DESC_2D m_f2DAttackAngle[ATTACK_TYPE_LAST];// = { 110.f, 110.f,45.f };
