@@ -208,6 +208,7 @@ HRESULT CPlayer::Ready_Components()
     m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_Player2DAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("2DAnimEventGenrator"), m_pAnimEventGenerator);
 
+	m_p2DColliderComs.resize(3);
    /* Test 2D Collider */
    CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
    CircleDesc.pOwner = this;
@@ -217,9 +218,9 @@ HRESULT CPlayer::Ready_Components()
    CircleDesc.isBlock = false;
    CircleDesc.isTrigger = false;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-       TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_pBody2DColliderCom), &CircleDesc)))
+       TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
        return E_FAIL; 
-
+   m_pBody2DColliderCom = m_p2DColliderComs[0];
 
    CircleDesc.pOwner = this;
    CircleDesc.fRadius = m_f2DInteractRange;
@@ -228,8 +229,9 @@ HRESULT CPlayer::Ready_Components()
    CircleDesc.isBlock = false;
    CircleDesc.isTrigger = true; 
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-       TEXT("Com_Body2DTrigger"), reinterpret_cast<CComponent**>(&m_pBody2DTriggerCom), &CircleDesc)))
+       TEXT("Com_Body2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
        return E_FAIL;
+   m_pBody2DTriggerCom = m_p2DColliderComs[1];
 
    CCollider_Fan::COLLIDER_FAN_DESC FanDesc = {};
    FanDesc.pOwner = this;
@@ -241,8 +243,9 @@ HRESULT CPlayer::Ready_Components()
    FanDesc.isBlock = false;
    FanDesc.isTrigger = true;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Fan"),
-       TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_pAttack2DTriggerCom), &FanDesc)))
+       TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &FanDesc)))
        return E_FAIL;
+   m_pAttack2DTriggerCom = m_p2DColliderComs[2];
    m_pAttack2DTriggerCom->Set_Active(false);
     return S_OK;
 }
@@ -377,7 +380,7 @@ void CPlayer::Update(_float _fTimeDelta)
 			CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pAttack2DTriggerCom);
     }
 
-   cout << "Sneak" << Is_Sneaking() << endl;
+   //cout << "Sneak" << Is_Sneaking() << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     if (COORDINATE_3D == eCoord)
