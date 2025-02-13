@@ -895,12 +895,21 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 _bool CPlayer::Is_Sneaking()
 {
     STATE eState = Get_CurrentStateID();
-    if (STATE::IDLE == eState)
-        return true;
-    else if (STATE::RUN == eState)
-        return  static_cast<CPlayerState_Run*>( m_pStateMachine->Get_CurrentState())->Is_Sneaking();
-    else
-        return false;
+    if (Is_SneakMode())
+    {
+        if (STATE::IDLE == eState
+            || STATE::JUMP_DOWN == eState)
+            return true;
+        else if (STATE::RUN == eState)
+            return  static_cast<CPlayerState_Run*>(m_pStateMachine->Get_CurrentState())->Is_Sneaking();
+        else
+            return false;
+	}
+	else
+	{
+		return false;
+	}
+
 }
 
 _bool CPlayer::Is_AttackTriggerActive()
