@@ -22,6 +22,8 @@
 #include <locale>
 #include <filesystem>
 #include <stack>
+#include <windows.h>
+#include <commdlg.h>
 
 
 #include "Client_Defines.h"

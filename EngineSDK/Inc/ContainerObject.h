@@ -35,8 +35,7 @@ public:
 public:
 	CComponent*			Find_Part_Component(_uint _iPartObjectIndex, const _wstring& _strPartComponentTag);
 	HRESULT				Add_PartObject(CGameObject* _pPartObject);
-	HRESULT				Attach_PartObject(CPartObject* _pPartObject, _uint _iPartID);
-	HRESULT				Detach_PartObject(_uint _iPartID);
+
 public:
 	// Get
 	CGameObject*		Get_PartObject(_int _iPartObjectIndex);

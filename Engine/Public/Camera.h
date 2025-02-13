@@ -28,7 +28,7 @@ public:
 		// Dof 기본값 
 		_float			fSensorHeight = 24.0f;
 		_float			fAperture = 2.8f; // 조리개 크기
-		_float			fFocusDistance = 15.0f; // 초점 평면거리
+		_float			fFocusDistance = 60.0f; // 초점 평면거리
 		_float			fDofBrightness = 1.5f;
 		_float			fBaseBlurPower = 0.1f;
 		_float3			vBlurColor = { 1.0f, 1.0f, 1.0f };
@@ -47,6 +47,8 @@ public:
 	virtual void Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render() override;
 	
+public:
+	HRESULT Load_DOF(const _wstring& _strJsonPath);
 protected:
 	void Compute_PipeLineMatrices(); // 둘다 연산
 	void Compute_ViewMatrix(); // 따로 연산
@@ -64,7 +66,7 @@ public:
 #endif
 
 	// Get
-	CONST_DOF Get_DofBufferData() const { return m_tConstDofData; }
+	CONST_DOF Get_DofBufferData() const { return m_tDofData; }
 	_uint Get_CamType() const { return m_eCameraType; }
 	_float Get_Fovy() const { return m_fFovy; }
 	_float Get_Aspect() const { return m_fAspect; }
@@ -163,7 +165,7 @@ protected: // EventTag (ex CutScene_1 ...)
 
 
 protected:
-	CONST_DOF					m_tConstDofData = {};
+	CONST_DOF					m_tDofData = {};
 	ID3D11Buffer*				m_pConstDofBuffer = nullptr;
 private:
 	HRESULT						Ready_DofConstData(CAMERA_DESC* _pDesc);

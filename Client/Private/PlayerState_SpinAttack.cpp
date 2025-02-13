@@ -26,9 +26,9 @@ void CPlayerState_SpinAttack::Update(_float _fTimeDelta)
 				return;
 			}
 		}
-		if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
+		if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
-		else if (tKeyResult.bInputStates[PLAYER_KEY_JUMP])
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
 			m_pOwner->Set_State(CPlayer::JUMP_UP);
 		else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
 			m_pOwner->Set_State(CPlayer::ROLL);

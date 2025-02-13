@@ -267,6 +267,9 @@
     <ClInclude Include="..\Public\MainTable.h">
       <Filter>02. GameObjects\MapObject\MainTable</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_PostProcessing.h">
+      <Filter>03. RenderGroup</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera_Tool.cpp">
@@ -385,6 +388,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\MainTable.cpp">
       <Filter>02. GameObjects\MapObject\MainTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_PostProcessing.cpp">
+      <Filter>03. RenderGroup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -16,8 +16,6 @@ CPhysx_Manager::CPhysx_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 
 HRESULT CPhysx_Manager::Initialize()
 {
-
-
 	// Event CallBack Class 
 	m_pPhysx_EventCallBack = CPhysx_EventCallBack::Create();
 	if (nullptr == m_pPhysx_EventCallBack)

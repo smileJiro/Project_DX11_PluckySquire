@@ -101,13 +101,13 @@ CSection* CSection_Manager::Find_Section(const _wstring& _strSectionTag)
 }
 
 
-HRESULT CSection_Manager::Add_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject)
+HRESULT CSection_Manager::Add_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject, _uint _iLayerIndex)
 {
     CSection* pSection = Find_Section(_strSectionTag);
     if (nullptr == pSection)
         return E_FAIL;
 
-    if (FAILED(pSection->Add_GameObject_ToSectionLayer(_pGameObject)))
+    if (FAILED(pSection->Add_GameObject_ToSectionLayer(_pGameObject, _iLayerIndex)))
         return E_FAIL;
 
     return S_OK;

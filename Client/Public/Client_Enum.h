@@ -194,6 +194,13 @@ namespace Client
 		LEFT_DOWN,
 		E_DIR_LAST
 	};
+	enum class T_DIRECTION
+	{
+		LEFT,
+		RIGHT,
+		NONE,
+		T_DIR_LAST
+	};
 
 	enum class WAYPOINTINDEX
 	{

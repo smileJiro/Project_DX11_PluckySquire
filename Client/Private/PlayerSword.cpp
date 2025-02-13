@@ -31,7 +31,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     m_pPlayer = pDesc->pParent;
     pDesc->pParentMatrices[COORDINATE_3D] = m_pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D);
     C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_pPlayer->Get_PartObject(CPlayer::PART_BODY))->Get_Model(COORDINATE_3D));
-    Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_attach_r"));
+    Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_glove_hand_attach_r"));
 
     pDesc->isCoordChangeEnable = true;
     pDesc->strModelPrototypeTag_3D = TEXT("latch_sword");
@@ -127,7 +127,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
             if (bOuting)
             {
                 m_AttckedObjects.clear();
-                cout << "m_AttckedObjects clear Update" << endl;
+                //cout << "m_AttckedObjects clear Update" << endl;
             }
             vDir = XMVector3Normalize(vTargetPos - vPosition);
         }
@@ -319,7 +319,7 @@ void CPlayerSword::Set_State(SWORD_STATE _eNewState)
 void CPlayerSword::On_StateChange()
 {
     COORDINATE eCoord = Get_CurCoord();
-    cout << "SwrodState : " << m_eCurrentState << endl;
+   // cout << "SwrodState : " << m_eCurrentState << endl;
     switch (m_eCurrentState)
     {
     case Client::CPlayerSword::HANDLING:
@@ -329,7 +329,7 @@ void CPlayerSword::On_StateChange()
         {
             Set_ParentMatrix(eCoord, m_pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));
             C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_pPlayer->Get_PartObject(CPlayer::PART_BODY))->Get_Model(COORDINATE_3D));
-            Set_SocketMatrix(p3DModel->Get_BoneMatrix("j_glove_hand_attach_r"));
+            Set_SocketMatrix(COORDINATE_3D,p3DModel->Get_BoneMatrix("j_glove_hand_attach_r"));
             _matrix matWorld = XMMatrixIdentity() * XMMatrixRotationY(XMConvertToRadians(180));
             m_pControllerTransform->Set_WorldMatrix(matWorld);
             static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
@@ -345,7 +345,7 @@ void CPlayerSword::On_StateChange()
     {
         if (COORDINATE_3D == eCoord)
         {
-            m_pSocketMatrix = nullptr;
+            m_pSocketMatrix [COORDINATE_3D] = nullptr;
             m_pParentMatrices[COORDINATE_3D] = nullptr;
             m_pActorCom->Update(0);
             _vector vLook = XMVectorSetY(m_pControllerTransform->Get_State(CTransform::STATE_LOOK), 0);
@@ -401,7 +401,6 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn)
 
 	if (false == _bOn)
     {
-        cout << "m_AttckedObjects clear : "  << endl;
         m_AttckedObjects.clear();
     }
     if (COORDINATE_3D == Get_CurCoord())

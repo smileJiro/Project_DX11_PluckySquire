@@ -153,6 +153,12 @@ void CRenderGroup_PostProcessing::Free()
         Safe_Release(pRenderTarget);
     }
     m_BlurRenderTargets.clear();
+    for (auto& pDSV : m_DSVs)
+    {
+        Safe_Release(pDSV);
+    }
+    m_DSVs.clear();
+
 
     __super::Free();
 }

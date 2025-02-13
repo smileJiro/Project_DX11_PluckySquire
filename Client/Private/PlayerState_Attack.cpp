@@ -16,7 +16,7 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
 {
     m_pOwner->Stop_Rotate();
     PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
-    if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
+    if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
     {
         m_bCombo = true;
     }
@@ -54,7 +54,7 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
         }
         else
         {
-            if (tKeyResult.bInputStates[PLAYER_KEY_JUMP])
+            if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
                 m_pOwner->Set_State(CPlayer::JUMP_UP);
             else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
                 m_pOwner->Set_State(CPlayer::ROLL);
