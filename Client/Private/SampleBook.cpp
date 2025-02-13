@@ -261,15 +261,11 @@ HRESULT CSampleBook::Render()
 					if(nullptr != pResourceView)
 						pShader->Bind_SRV("g_AlbedoTexture", pResourceView);
 					
-					_uint iTargetShaderPass = (_uint)PASS_VTXPOSTEX::SPRITE2D;
+					_uint iTargetShaderPass = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP;
 
 					if(pSection_2D->Is_Rotation())
 					{ 
-						std::swap(fLeftStartUV.x, fLeftStartUV.y);
-						std::swap(fLeftEndUV.x, fLeftEndUV.y);
-						std::swap(fRightStartUV.x, fRightStartUV.y);
-						std::swap(fRightEndUV.x, fRightEndUV.y);
-						iTargetShaderPass = (_uint)PASS_VTXPOSTEX::ROTATE_SPRITE2D;
+						iTargetShaderPass = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP_ROTATE;
 					}
 					
 					iShaderPass = iTargetShaderPass;
@@ -388,8 +384,8 @@ HRESULT CSampleBook::Render_WorldPosMap()
 _bool CSampleBook::Book_Action(BOOK_PAGE_ACTION _eAction)
 {
 
-	if (ACTION_LAST != m_eCurAction)
-		return false;
+	//if (ACTION_LAST != m_eCurAction)
+	//	return false;
 
 	switch (_eAction)
 	{

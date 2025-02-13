@@ -150,6 +150,51 @@ VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
     return Out;
 }
 
+
+VS_OUT VS_MAIN_RENDERTARGET_ROTATE_UV(VS_IN In)
+{
+    VS_OUT Out = (VS_OUT)0;
+    matrix matWV, matWVP;
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+
+    float BlendWeightW = 1.0 - (In.vBlendWeights.x + In.vBlendWeights.y + In.vBlendWeights.z);
+
+    matrix matBones = mul(g_BoneMatrices[In.vBlendIndicse.x], In.vBlendWeights.x) +
+        mul(g_BoneMatrices[In.vBlendIndicse.y], In.vBlendWeights.y) +
+        mul(g_BoneMatrices[In.vBlendIndicse.z], In.vBlendWeights.z) +
+        mul(g_BoneMatrices[In.vBlendIndicse.w], In.vBlendWeights.w);
+
+    vector vPosition = mul(float4(In.vPosition, 1.0), matBones);
+    vector vNormal = mul(float4(In.vNormal, 0.0), matBones);
+    vector vTangent = mul(float4(In.vTangent, 0.0), matBones);
+
+
+    float2 vUV = lerp(g_fStartUV, g_fEndUV, In.vTexcoord);
+
+    float2 vRotate;
+    vRotate.x = 1.f - vUV.y;
+    vRotate.y = vUV.x;
+
+    //if (g_fStartUV.x >= 0.5f)
+    //    vRotate.y *= 0.5f;  
+    //else 
+    //    vRotate.y = 0.5f + vRotate.y * 0.5f;
+
+    // 최종 UV 출력
+    Out.vTexcoord = vRotate;
+
+
+    Out.vPosition = mul(vPosition, matWVP);
+    Out.vNormal = normalize(mul(vNormal, g_WorldMatrix));
+    
+    Out.vWorldPos = mul(vPosition, g_WorldMatrix);
+    Out.vProjPos = Out.vPosition;
+    Out.vTangent = vTangent;
+    return Out;
+}
+
+
 // PixelShader //
 struct PS_IN
 {
@@ -303,6 +348,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_BOOKWORLDPOSMAP();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_WORLDPOSMAP();
+    }
+    
+    pass RenderTargetMappingRotatePass // 6
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN_RENDERTARGET_ROTATE_UV();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN();
     }
 
 }
