@@ -91,10 +91,10 @@ namespace Client
 		PLAYER_PROJECTILE =			0x10,//4
 		MONSTER_PROJECTILE =		0x20,//5
 		TRIGGER_OBJECT =		    0x40,
-		RAY_OBJECT =						0x80,
+		RAY_OBJECT =				0x80,
 		PLAYER_TRIGGER =			0x100,
-								 // 0x100
-								 // 0x200 
+		BLOCKER = 					0x200,		
+								 // 0x400 
 
 		LAST =						0x100000000 // == 2의 32승 (32개 이상의 그룹은 X)
 	};

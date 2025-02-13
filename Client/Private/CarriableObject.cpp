@@ -2,7 +2,7 @@
 #include "CarriableObject.h"
 #include "Player.h"
 #include "Section_Manager.h"    
-#include "Collision_Manager.h"    
+    
 #include "Collider_Circle.h"
 #include "Actor_Dynamic.h"
 
@@ -75,15 +75,6 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 		if (nullptr != m_pCarrier)
 			return E_FAIL;
 		m_pCarrier = _pCarrier;
-		Set_ParentMatrix(COORDINATE_3D, m_pCarrier->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));
-		Set_ParentMatrix(COORDINATE_2D, m_pCarrier->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_2D));
-		Set_SocketMatrix(COORDINATE_3D, m_pCarrier->Get_CarryingOffset3D_Ptr());
-		Set_SocketMatrix(COORDINATE_2D, m_pCarrier->Get_CarryingOffset2D_Ptr());
-		Set_Position(_vector{ 0,0,0 });
-		if (COORDINATE_3D == Get_CurCoord())
-		{
-			static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
-		}
 	}
 	return S_OK;
 }
@@ -144,4 +135,20 @@ _float CCarriableObject::Get_Distance(CPlayer* _pUser)
 	_vector vMyPos = Get_FinalPosition();
 	_vector vUserPos = _pUser->Get_FinalPosition();
 	return  XMVectorGetX(XMVector3Length(vMyPos - vUserPos));
+}
+
+void CCarriableObject::Set_Kinematic(_bool _bKinematic)
+{
+	CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+	if (_bKinematic)
+	{
+		pDynamicActor->Late_Update(0);
+		pDynamicActor->Set_Kinematic();
+
+	}
+	else
+	{
+		pDynamicActor->Update(0);
+		pDynamicActor->Set_Dynamic();
+	}
 }

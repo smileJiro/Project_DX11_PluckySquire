@@ -17,6 +17,7 @@ class C2DTile_RenderObject final : public CUIObject
 public :
 	typedef struct tagTIle_RenderObjectDesc : CUIObject::UIOBJECT_DESC
 	{
+		_float2	fRenderTargetSize;
 		_uint	iMapSizeWidth	= 0;
 		_uint	iMapSizeHeight	= 0;
 
@@ -73,6 +74,7 @@ private:
 	// vector Index : Tile Pos Index
 	vector<XMINT2> m_TextureIndexs;
 	
+	_float2		m_fRenderTargetSize = {};
 	_uint m_iIndexCount = 0;
 	
 	_uint m_iWidthSIze = 0;

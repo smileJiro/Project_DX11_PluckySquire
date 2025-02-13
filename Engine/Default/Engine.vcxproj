@@ -213,6 +213,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Collider_AABB.h" />
     <ClInclude Include="..\public\Collider_Circle.h" />
     <ClInclude Include="..\Public\Collider_Fan.h" />
+    <ClInclude Include="..\Public\Collision_Manager.h" />
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\public\Compute_Shader.h" />
     <ClInclude Include="..\Public\ContainerObject.h" />
@@ -228,10 +229,6 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\DebugDraw_For_Client.h" />
     <ClInclude Include="..\public\EffectModel.h" />
     <ClInclude Include="..\public\Effect_Module.h" />
-    <ClInclude Include="..\public\EmptyNode.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="..\public\Keyframe_Module.h" />
     <ClInclude Include="..\public\MeshEffect_Emitter.h" />
     <ClInclude Include="..\public\Frustum.h" />
@@ -327,6 +324,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Collider_AABB.cpp" />
     <ClCompile Include="..\private\Collider_Circle.cpp" />
     <ClCompile Include="..\Private\Collider_Fan.cpp" />
+    <ClCompile Include="..\Private\Collision_Manager.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\private\Compute_Shader.cpp" />
     <ClCompile Include="..\Private\ContainerObject.cpp" />
@@ -342,10 +340,6 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\DebugDraw_For_Client.cpp" />
     <ClCompile Include="..\private\EffectModel.cpp" />
     <ClCompile Include="..\private\Effect_Module.cpp" />
-    <ClCompile Include="..\private\EmptyNode.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\private\Keyframe_Module.cpp" />
     <ClCompile Include="..\private\MeshEffect_Emitter.cpp" />
     <ClCompile Include="..\private\Frustum.cpp" />

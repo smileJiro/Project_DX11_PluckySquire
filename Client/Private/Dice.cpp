@@ -55,6 +55,16 @@ HRESULT CDice::Initialize(void* _pArg)
     return S_OK;
 }
 
+void CDice::Update(_float _fTimeDelta)
+{
+	__super::Update(_fTimeDelta);
+}
+
+void CDice::Late_Update(_float _fTimeDelta)
+{
+	__super::Late_Update(_fTimeDelta);
+}
+
 CDice* CDice::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CDice* pInstance = new CDice(_pDevice, _pContext);

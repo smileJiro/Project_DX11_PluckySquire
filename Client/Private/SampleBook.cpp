@@ -206,27 +206,11 @@ HRESULT CSampleBook::Render()
 			case Client::CSampleBook::CUR_RIGHT:
 			case Client::CSampleBook::CUR_LEFT:
 		{
-	#pragma region uv 매핑하기. (오른쪽 왼쪽 확인)
-			if (CUR_LEFT == i || NEXT_LEFT == i)
-			{
-				if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fLeftStartUV, sizeof(_float2))))
-					return E_FAIL;
-				if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fLeftEndUV, sizeof(_float2))))
-					return E_FAIL;
-			}
-			else if(CUR_RIGHT == i || NEXT_RIGHT == i)
-			{
-				if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fRightStartUV, sizeof(_float2))))
-					return E_FAIL;
-				if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fRightEndUV, sizeof(_float2))))
-					return E_FAIL;
-			}
-			else 
-				MSG_BOX("Book Mesh Binding Error - SampleBook.cpp");
-	#pragma endregion
+
 
 	#pragma region 현재 페이지인지, 다음 페이지인지 확인하고 SRV 가져오기.
 
+			CSection* pTargetSection = nullptr;
 			ID3D11ShaderResourceView* pResourceView = nullptr;
 				switch (m_eCurAction)
 				{
@@ -236,10 +220,10 @@ HRESULT CSampleBook::Render()
 					if (!m_isAction)
 					{
 						if (CUR_LEFT == i || CUR_RIGHT == i)
-							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(SECTION_MGR->Get_Prev_Section_Key());
+							pTargetSection = SECTION_MGR->Find_Section(SECTION_MGR->Get_Prev_Section_Key());
 						else if (NEXT_LEFT == i || NEXT_RIGHT == i)
-							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget();
-						else 
+							pTargetSection = SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key());
+						else
 							MSG_BOX("Book Mesh Binding Error - SampleBook.cpp");
 						break;
 					}
@@ -251,11 +235,11 @@ HRESULT CSampleBook::Render()
 				default:
 
 					if (CUR_LEFT == i || CUR_RIGHT == i)
-						pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget();
+						pTargetSection = SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key());
 					else if (NEXT_LEFT == i || NEXT_RIGHT == i)
 					{
 						if (SECTION_MGR->Has_Next_Section())
-							pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(SECTION_MGR->Get_Next_Section_Key());
+							pTargetSection = SECTION_MGR->Find_Section(SECTION_MGR->Get_Next_Section_Key());
 						else
 							if (FAILED(pModel->Bind_Material(pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, 0)))
 								continue;
@@ -268,11 +252,46 @@ HRESULT CSampleBook::Render()
 	#pragma endregion
 
 
-				if (nullptr != pResourceView)
+				if (nullptr != pTargetSection)
 				{
-					pShader->Bind_SRV("g_AlbedoTexture", pResourceView);
-					iShaderPass = 4;
+					CSection_2D* pSection_2D = static_cast<CSection_2D*>(pTargetSection);
+
+					pResourceView =  pSection_2D->Get_SRV_FromRenderTarget();
+
+					if(nullptr != pResourceView)
+						pShader->Bind_SRV("g_AlbedoTexture", pResourceView);
+					
+					_uint iTargetShaderPass = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP;
+
+					if(pSection_2D->Is_Rotation())
+					{ 
+						iTargetShaderPass = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP_ROTATE;
+					}
+					
+					iShaderPass = iTargetShaderPass;
 				}
+
+#pragma region uv 매핑하기. (오른쪽 왼쪽 확인)
+				if (CUR_LEFT == i || NEXT_LEFT == i)
+				{
+					if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fLeftStartUV, sizeof(_float2))))
+						return E_FAIL;
+					if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fLeftEndUV, sizeof(_float2))))
+						return E_FAIL;
+				}
+				else if (CUR_RIGHT == i || NEXT_RIGHT == i)
+				{
+					if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fRightStartUV, sizeof(_float2))))
+						return E_FAIL;
+					if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fRightEndUV, sizeof(_float2))))
+						return E_FAIL;
+				}
+				else
+					MSG_BOX("Book Mesh Binding Error - SampleBook.cpp");
+#pragma endregion
+
+
+
 		}
 		break;
 		default:
@@ -365,8 +384,8 @@ HRESULT CSampleBook::Render_WorldPosMap()
 _bool CSampleBook::Book_Action(BOOK_PAGE_ACTION _eAction)
 {
 
-	if (ACTION_LAST != m_eCurAction)
-		return false;
+	//if (ACTION_LAST != m_eCurAction)
+	//	return false;
 
 	switch (_eAction)
 	{

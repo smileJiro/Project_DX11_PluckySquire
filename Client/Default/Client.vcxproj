@@ -195,6 +195,7 @@
     <ClInclude Include="..\Public\BarfBug.h" />
     <ClInclude Include="..\public\Beetle.h" />
     <ClInclude Include="..\Public\BirdMonster.h" />
+    <ClInclude Include="..\public\Blocker.h" />
     <ClInclude Include="..\Public\BossEnergyBallState.h" />
     <ClInclude Include="..\Public\BossHomingBallState.h" />
     <ClInclude Include="..\Public\BossIdleState.h" />
@@ -371,6 +372,7 @@
     </ClCompile>
     <ClCompile Include="..\private\Beetle.cpp" />
     <ClCompile Include="..\Private\BirdMonster.cpp" />
+    <ClCompile Include="..\private\Blocker.cpp" />
     <ClCompile Include="..\Private\BossEnergyBallState.cpp" />
     <ClCompile Include="..\Private\BossHomingBallState.cpp" />
     <ClCompile Include="..\Private\BossIdleState.cpp" />

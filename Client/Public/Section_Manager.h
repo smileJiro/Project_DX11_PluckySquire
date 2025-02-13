@@ -127,6 +127,14 @@ public :
 		m_pCurSection->Has_NextPage(strTargetSectionTag);
 		return strTargetSectionTag;
 	}
+	const _wstring Get_Cur_Section_Key() 
+	{
+		_wstring strTargetSectionTag = L"";
+		if (nullptr == m_pCurSection)
+			return strTargetSectionTag;
+		return m_pCurSection->Get_SectionName();
+	}
+
 	const _wstring Get_Prev_Section_Key() 
 	{ 
 		_wstring strTargetSectionTag = L"";

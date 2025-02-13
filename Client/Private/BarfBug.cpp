@@ -7,7 +7,7 @@
 #include "Projectile_BarfBug.h"
 #include "DetectionField.h"
 #include "Section_Manager.h"
-#include "Collision_Manager.h"
+
 
 CBarfBug::CBarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -162,15 +162,6 @@ void CBarfBug::Update(_float _fTimeDelta)
             CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
-    }
-
-    //// TestCode : еб©У
-    if (COORDINATE_2D == Get_CurCoord())
-    {
-		for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
-        {
-            CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_p2DColliderComs[i]);
-        }
     }
 
     __super::Update(_fTimeDelta); /* Part Object Update */
