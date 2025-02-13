@@ -15,6 +15,7 @@
 #include "RenderGroup_Lighting.h"
 #include "RenderGroup_AfterEffect.h"
 #include "RenderGroup_Combine.h"
+#include "RenderGroup_PostProcessing.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -203,6 +204,22 @@ HRESULT CMainApp::Ready_RenderGroup()
 		return E_FAIL;
 	Safe_Release(pRenderGroup_Lighting);
 	pRenderGroup_Lighting = nullptr;
+
+	/* RG_3D, PR3D_POSTPROCESSING */
+	CRenderGroup_PostProcessing::RG_POST_DESC RG_PostDesc;
+	RG_PostDesc.iBlurLevel = 2;
+	RG_PostDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_PostDesc.iPriorityID = PR3D_POSTPROCESSING;
+	CRenderGroup_PostProcessing* pRenderGroup_Post = CRenderGroup_PostProcessing::Create(m_pDevice, m_pContext, &RG_PostDesc);
+	if (nullptr == pRenderGroup_Post)
+	{
+		MSG_BOX("Failed Create PR3D_POSTPROCESSING");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Post->Get_RenderGroupID(), pRenderGroup_Post->Get_PriorityID(), pRenderGroup_Post)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_Post);
+	pRenderGroup_Post = nullptr;
 
 	/* RG_3D, PR3D_COMBINE */
 	CRenderGroup_Combine::RG_MRT_DESC RG_CombineDesc;
