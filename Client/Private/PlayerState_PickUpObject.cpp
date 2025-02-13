@@ -19,25 +19,34 @@ void CPlayerState_PickUpObject::Update(_float _fTimeDelta)
 	_float fAlignStartProgress = COORDINATE_3D == eCOord ? m_f3DAlignStartProgress : m_f2DAlignStartProgress;
 	_float fAlignEndProgress = COORDINATE_3D == eCOord ? m_f3DAlignEndProgress : m_f2DAlignEndProgress;
 	_float fHeadProgress = COORDINATE_3D == eCOord ? m_f3DHeadProgress : m_f2DHeadProgress;
-	 if( fProgress >= fAlignEndProgress && fProgress < fHeadProgress )
+
+	if (fProgress >= fHeadProgress)
+	{
+		if (false == m_bAligned)
+		{
+			Align();
+			m_bAligned = true;
+			return;
+		}
+	}
+	 if( fProgress >= fAlignEndProgress)
 	{
 		fRatio = (fProgress - fAlignEndProgress) / (fHeadProgress - fAlignEndProgress);
 		tLeftKeyFrame = m_tPickupKeyFrame;
 		tRightKeyFrame = m_tCarryingKeyFrame;
 	}
-	else if(fAlignStartProgress <= fProgress   &&  fProgress < fAlignEndProgress)
+	else if(fProgress >=fAlignStartProgress )
 	{
 		fRatio = (fProgress - fAlignStartProgress) / (fAlignEndProgress - fAlignStartProgress);
 		tLeftKeyFrame = m_tOriginalKeyFrame;
 		tRightKeyFrame = m_tPickupKeyFrame;
 	}
-	 else if(false == m_bAligned && fProgress >= fHeadProgress)
+	else
 	{
-		Align();
-		m_bAligned = true;
-		return;
+		 fRatio = 0;
+		 tLeftKeyFrame = m_tOriginalKeyFrame;
+		tRightKeyFrame = m_tOriginalKeyFrame;
 	}
-
 	 if (false == m_bAligned)
 	 {
 		 KEYFRAME tKeyFrame = Lerp_Frame(tLeftKeyFrame, tRightKeyFrame, fRatio);
@@ -45,12 +54,14 @@ void CPlayerState_PickUpObject::Update(_float _fTimeDelta)
 		 XMStoreFloat4x4(&matWorld, XMMatrixAffineTransformation(XMLoadFloat3(&tKeyFrame.vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&tKeyFrame.vRotation), XMVectorSetW(XMLoadFloat3(&tKeyFrame.vPosition), 1.f)));
 		 m_pCarriableObject->Set_WorldMatrix(matWorld);
 	 }
-
+	 _vector v = m_pCarriableObject->Get_FinalPosition();
+	 //cout << "Update: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
 
 void CPlayerState_PickUpObject::Enter()
 {
 	assert(m_pOwner->Is_CarryingObject());
+	m_pOwner->UnEquip_Part(CPlayer::PLAYER_PART_SWORD);
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	m_pCarriableObject = m_pOwner->Get_CarryingObject();
 	m_pCarriableObject->Set_Carrier(m_pOwner);
@@ -106,12 +117,17 @@ void CPlayerState_PickUpObject::Enter()
 			break;
 		}
 	}
-
+	_vector v = m_pCarriableObject->Get_FinalPosition();
+	//cout << "Enter: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
 
 void CPlayerState_PickUpObject::Exit()
 {
 	m_pOwner->Set_Kinematic(false);
+	if (m_pOwner->Is_SwordMode())
+		m_pOwner->Equip_Part(CPlayer::PLAYER_PART_SWORD);
+	_vector v = m_pCarriableObject->Get_FinalPosition();
+	//cout << "Align: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
 
 void CPlayerState_PickUpObject::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
@@ -145,4 +161,6 @@ void CPlayerState_PickUpObject::Align()
 		m_pCarriableObject->Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
 
 	}
+	_vector v = m_pCarriableObject->Get_FinalPosition();
+	//cout << "Align: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
