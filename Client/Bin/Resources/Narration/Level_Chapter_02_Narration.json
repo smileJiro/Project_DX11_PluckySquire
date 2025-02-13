@@ -18,6 +18,7 @@
 						{
 							"strAnimationid": "Prototype_Component_Narration_0102_01",
 							"AnimationIndex": 0,
+							"isLoop": false,
 							"strSectionid": "Chapter1_P0102",
 							"fPosX": 650.0,
 							"fPosY": 350.0,
@@ -33,15 +34,16 @@
 					"strtext": "{100}저트는 사악한 마법사#{110}험그럼프로부터#나라를 지켰고...",
 					"fscale": 1.5,
 					"isLeft": false,
-					"fposX": 300.0,
-					"fposY": 300.0,
+					"fposX": 500.0,
+					"fposY": 150.0,
 					"fwaitingTime": 300.0,
 					"NarAnim": [
 						{
 							"strAnimationid": "0102_02_Narration_Model_Jot",
 							"AnimationIndex": 0,
+							"isLoop": false,
 							"strSectionid": "Chapter1_P0102",
-							"fPosX": 100.0,
+							"fPosX": 200.0,
 							"fPosY": 350.0,
 							"vAnimationScaleX": -1.1,
 							"vAnimationScaleY": 1.1,
@@ -50,8 +52,9 @@
 						{
 							"strAnimationid": "0102_02_Narration_Model_Humgrump",
 							"AnimationIndex": 0,
+							"isLoop": false,
 							"strSectionid": "Chapter1_P0102",
-							"fPosX": 650.0,
+							"fPosX": 400.0,
 							"fPosY": 350.0,
 							"vAnimationScaleX": -1.1,
 							"vAnimationScaleY": 1.1,
@@ -60,9 +63,85 @@
 						{
 							"strAnimationid": "0102_02_Narration_Model_Villager",
 							"AnimationIndex": 2,
+							"isLoop": false,
 							"strSectionid": "Chapter1_P0102",
-							"fPosX": 850.0,
+							"fPosX": 1000.0,
 							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 450.0
+						}
+					]
+				}
+			]
+		},
+		{
+			"strSectionid": "Chapter1_P0304",
+			"strid": "Chapter1_P0304_Narration_01",
+			"CurlevelId": 3,
+			"lines": [
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "어느 날#잠에서 깬 저트는",
+					"fscale": 1.5,
+					"isLeft": true,
+					"fposX": 300.0,
+					"fposY": 300.0,
+					"fwaitingTime": 300.0,
+					"NarAnim": [
+						{
+							"strAnimationid": "Prototype_Component_Narration_0102_01",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 650.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 450.0
+						}
+					]
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "용감히#침대에서#나왔습니다.",
+					"fscale": 1.5,
+					"isLeft": false,
+					"fposX": 300.0,
+					"fposY": 100.0,
+					"fwaitingTime": 300.0,
+					"NarAnim": [
+						{
+							"strAnimationid": "0102_02_Narration_Model_Jot",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 200.0,
+							"fPosY": 400.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 450.0
+						},
+						{
+							"strAnimationid": "0102_02_Narration_Model_Humgrump",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 400.0,
+							"fPosY": 400.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 450.0
+						},
+						{
+							"strAnimationid": "0102_02_Narration_Model_Villager",
+							"AnimationIndex": 2,
+							"isLoop": false,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 1000.0,
+							"fPosY": 400.0,
 							"vAnimationScaleX": -1.1,
 							"vAnimationScaleY": 1.1,
 							"fwaitingTime": 450.0

@@ -20,6 +20,7 @@ public:
 public:
 
 	virtual HRESULT				Section_AddRenderGroup_Process() override;
+	virtual HRESULT						Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex) override;
 
 	// 맵 연결 생각안해놨는데, 일단 해보자.
 

@@ -67,8 +67,11 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
+	
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionid, this);
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
 
 	CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);

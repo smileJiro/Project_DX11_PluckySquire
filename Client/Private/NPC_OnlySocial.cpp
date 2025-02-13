@@ -181,6 +181,11 @@ HRESULT CNPC_OnlySocial::LoadFromJson(const std::wstring& filePath)
 				tOnlySocial.is2D = SocialNPC["is2D"].get<_bool>();
 			}
 
+			if (SocialNPC.contains("strSectionid") && SocialNPC["strSectionid"].is_string())
+			{
+				tOnlySocial.strSectionid = StringToWstring(SocialNPC["strSectionid"].get<_string>());
+			}
+
 
 			tOnlySocial.iCurLevelID = tOnlySocial.strCreateSection;
 			tOnlySocial.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
