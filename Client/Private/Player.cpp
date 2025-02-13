@@ -208,6 +208,7 @@ HRESULT CPlayer::Ready_Components()
     m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_Player2DAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("2DAnimEventGenrator"), m_pAnimEventGenerator);
 
+	m_p2DColliderComs.resize(3);
    /* Test 2D Collider */
    CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
    CircleDesc.pOwner = this;
@@ -217,9 +218,9 @@ HRESULT CPlayer::Ready_Components()
    CircleDesc.isBlock = false;
    CircleDesc.isTrigger = false;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-       TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_pBody2DColliderCom), &CircleDesc)))
+       TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
        return E_FAIL; 
-
+   m_pBody2DColliderCom = m_p2DColliderComs[0];
 
    CircleDesc.pOwner = this;
    CircleDesc.fRadius = m_f2DInteractRange;
@@ -228,8 +229,9 @@ HRESULT CPlayer::Ready_Components()
    CircleDesc.isBlock = false;
    CircleDesc.isTrigger = true; 
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-       TEXT("Com_Body2DTrigger"), reinterpret_cast<CComponent**>(&m_pBody2DTriggerCom), &CircleDesc)))
+       TEXT("Com_Body2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
        return E_FAIL;
+   m_pBody2DTriggerCom = m_p2DColliderComs[1];
 
    CCollider_Fan::COLLIDER_FAN_DESC FanDesc = {};
    FanDesc.pOwner = this;
@@ -241,8 +243,9 @@ HRESULT CPlayer::Ready_Components()
    FanDesc.isBlock = false;
    FanDesc.isTrigger = true;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Fan"),
-       TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_pAttack2DTriggerCom), &FanDesc)))
+       TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &FanDesc)))
        return E_FAIL;
+   m_pAttack2DTriggerCom = m_p2DColliderComs[2];
    m_pAttack2DTriggerCom->Set_Active(false);
     return S_OK;
 }
@@ -363,7 +366,8 @@ void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
-
+    if (Is_Sneaking())
+        int a = 0;
     if (COORDINATE_2D == eCoord)
     {
         //// TestCode : 태웅
@@ -376,7 +380,7 @@ void CPlayer::Update(_float _fTimeDelta)
 			m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pAttack2DTriggerCom);
     }
 
-   // cout << "Sneak" << Is_Sneaking() << endl;
+   //cout << "Sneak" << Is_Sneaking() << endl;
     __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     if (COORDINATE_3D == eCoord)
@@ -678,7 +682,10 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
     }
     else
+    {
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
+		m_bPlatformerMode = false;
+    }
 
     switch (m_ePlayerMode)
     {
@@ -847,7 +854,6 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         else
             //tResult.vMoveDir += _vector{ 0.f, 1.f, 0.f,0.f };
             tResult.vDir += vUp;
-        tResult.bInputStates[PLAYER_INPUT_MOVE] = !m_bPlatformerMode;
     }
     if (KEY_PRESSING(KEY::A))
     {
@@ -856,7 +862,6 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         else
            // tResult.vMoveDir += _vector{ -1.f, 0.f, 0.f,0.f };
             tResult.vDir -= vRight;
-        tResult.bInputStates[PLAYER_INPUT_MOVE] = true;
     }
     if (KEY_PRESSING(KEY::S))
     {
@@ -865,7 +870,6 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         else
             //tResult.vMoveDir += _vector{ 0.f, -1.f, 0.f,0.f };
             tResult.vDir -= vUp;
-        tResult.bInputStates[PLAYER_INPUT_MOVE] = !m_bPlatformerMode;
     }
     if (KEY_PRESSING(KEY::D))
     {
@@ -874,18 +878,15 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         else
             //tResult.vMoveDir += _vector{ 1.f, 0.f, 0.f,0.f };
 			tResult.vDir += vRight;
-        tResult.bInputStates[PLAYER_INPUT_MOVE] = true;
     }
-    if (tResult.bInputStates[PLAYER_INPUT_MOVE])
+    tResult.vDir = XMVector3Normalize(tResult.vDir);
+    tResult.vMoveDir = tResult.vDir;
+    if (m_bPlatformerMode)
     {
-        tResult.vMoveDir = XMVector3Normalize(tResult.vDir);
-
-        if (m_bPlatformerMode)
-        {
-            //Up 방향 제거하기
-            tResult.vMoveDir = XMVector3Normalize( XMVector3Dot(tResult.vMoveDir, vUp));
-        }
+        //Up 방향 제거하기
+        tResult.vMoveDir = XMVector2Normalize(XMVectorMultiply(tResult.vMoveDir, _vector{ 1,1 } - XMVectorAbs(vUp)));
     }
+    tResult.bInputStates[PLAYER_INPUT_MOVE] =false ==  XMVector3Equal(tResult.vMoveDir, XMVectorZero());
     
     return tResult;
 }
@@ -894,12 +895,21 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 _bool CPlayer::Is_Sneaking()
 {
     STATE eState = Get_CurrentStateID();
-    if (STATE::IDLE == eState)
-        return true;
-    else if (STATE::RUN == eState)
-        return  static_cast<CPlayerState_Run*>( m_pStateMachine->Get_CurrentState())->Is_Sneaking();
-    else
-        return false;
+    if (Is_SneakMode())
+    {
+        if (STATE::IDLE == eState
+            || STATE::JUMP_DOWN == eState)
+            return true;
+        else if (STATE::RUN == eState)
+            return  static_cast<CPlayerState_Run*>(m_pStateMachine->Get_CurrentState())->Is_Sneaking();
+        else
+            return false;
+	}
+	else
+	{
+		return false;
+	}
+
 }
 
 _bool CPlayer::Is_AttackTriggerActive()
@@ -1073,16 +1083,26 @@ void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
 {
 
     m_e2DDirection_E = _eEDir;
-	F_DIRECTION eFDir = EDir_To_FDir(m_e2DDirection_E);
-    if (F_DIRECTION::LEFT ==  eFDir)
+    switch (m_e2DDirection_E)
+    {
+    case Client::E_DIRECTION::LEFT:
+    case Client::E_DIRECTION::LEFT_UP:
+    case Client::E_DIRECTION::LEFT_DOWN:
     {
         _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
         m_pBody->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+        break;
     }
-    else if (F_DIRECTION::RIGHT == eFDir)
+    case Client::E_DIRECTION::RIGHT:
+    case Client::E_DIRECTION::RIGHT_UP:
+    case Client::E_DIRECTION::RIGHT_DOWN:
     {
         _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
         m_pBody->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+        break;
+    }
+    default:
+        break;
     }
 
     
@@ -1244,8 +1264,12 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         //Desc.fRadius = 1.f;
         //Desc.fHalfHeight = 1.f;
         //m_pActorCom->Set_ShapeGeometry(0, PxGeometryType::eCAPSULE, &Desc);
-        m_bPlatformerMode = !m_bPlatformerMode;
-        m_pControllerTransform->Rotation(XMConvertToRadians(m_bPlatformerMode ? 90 : 0), {0,0,1});
+		COORDINATE eCurCoord = Get_CurCoord();
+        if (COORDINATE_2D == eCurCoord)
+            m_bPlatformerMode = !m_bPlatformerMode;
+        else
+            m_bPlatformerMode = false;
+        //m_pControllerTransform->Rotation(XMConvertToRadians(m_bPlatformerMode ? 90 : 0), {0,0,1});
     }
     if (KEY_DOWN(KEY::F2))
     {

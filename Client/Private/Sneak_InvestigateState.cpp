@@ -15,7 +15,7 @@ HRESULT CSneak_InvestigateState::Initialize(void* _pArg)
 	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
-	m_fCoolTime = 2.f;
+	m_fCoolTime = 5.f;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -59,7 +59,7 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 	XMVectorSetW(vDir, 0.f);
 	vDir = XMVector3Normalize(XMVectorSetY(vDir, 0.f));
 
-	//이동하다 소리가 나면 범위 내에서 가장 최근 위치로 다음 위치를 갱신
+	//이동하다 소리가 나면 범위 내에서 가장 최근 위치로 다음 위치를 갱신 (현재 idle 상태에서도 인식이 되므로 일단 인식 안둠)
 	if (m_isRenew && m_pOwner->IsTarget_In_Sneak_Detection())
 	{
 		Set_Sneak_InvestigatePos(m_pTarget->Get_FinalPosition());
@@ -68,6 +68,15 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 		m_isTurn = true;
 		m_isMove = false;
 	}
+
+	//if (m_pOwner->IsTarget_In_Sneak_Detection())
+	//{
+	//	Set_Sneak_InvestigatePos(m_pTarget->Get_FinalPosition());
+	//	m_isRenew = false;
+	//	m_isPathFind = true;
+	//	m_isTurn = true;
+	//	m_isMove = false;
+	//}
 
 	//플레이어 시야 들어오면 인식 전환
 	if (Check_Target3D(true))
@@ -104,7 +113,7 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 			if (true == m_isOnWay && false == m_isPathFind)
 			{
 				//도착하면 다음 웨이포인트로 목표위치 바꿈
-				if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.1f))
+				if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.3f))
 				{
 					++m_iCurWayIndex;
 					//목표 위치에 도착했으면 자유이동으로 전환

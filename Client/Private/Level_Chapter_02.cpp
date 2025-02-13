@@ -119,8 +119,8 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 
 	//RayShape Test
-	//CRayShape::RAYSHAPE_DESC Desc;
-	//Desc.iCurLevelID = m_eLevelID;
+	CRayShape::RAYSHAPE_DESC Desc;
+	Desc.iCurLevelID = m_eLevelID;
 
 	//Desc.tTransform3DDesc.vInitialPosition = _float3(-28.9f, 0.32f, -16.9f);
 	//Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
@@ -138,16 +138,16 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
 	//	return E_FAIL;
 
-	/*Desc.eShapeType = SHAPE_TYPE::CAPSULE;
+	Desc.eShapeType = SHAPE_TYPE::CAPSULE;
 	Desc.fRadius = 1.f;
 	Desc.fHalfHeight = 2.f;
 	Desc.vOffsetTrans = { 0.f,Desc.fRadius,0.f };
 	Desc.fRotAngle = 0.f;
 
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-20.f, 6.36f, 20.19f);*/
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-20.f, 6.36f, 20.19f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
+		return E_FAIL;
 
 
 	/* Blur RenderGroupOn */

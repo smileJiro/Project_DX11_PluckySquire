@@ -85,6 +85,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     //m_pActorCom-> Set_ShapeEnable(0, true);
 
        /* Test 2D Collider */
+    m_p2DColliderComs.resize(1);
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
     CircleDesc.fRadius = 40.f;
@@ -93,9 +94,9 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-        TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_pBody2DColliderCom), &CircleDesc)))
+        TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
-
+	m_pBody2DColliderCom = m_p2DColliderComs[0];
     return S_OK;
 }
 
