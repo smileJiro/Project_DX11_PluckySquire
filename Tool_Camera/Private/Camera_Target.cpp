@@ -50,6 +50,8 @@ void CCamera_Target::Update(_float _fTimeDelta)
 
 void CCamera_Target::Late_Update(_float _fTimeDelta)
 {
+	Key_Input(_fTimeDelta);
+
 	Action_Mode(_fTimeDelta);
 
 	m_pArm->Get_ArmVector();
@@ -77,6 +79,29 @@ void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 	m_pTargetWorldMatrix = _pTargetWorldMatrix;
 }
 
+void CCamera_Target::Key_Input(_float _fTimeDelta)
+{
+#ifdef _DEBUG
+	_long		MouseMove = {};
+	_vector		fRotation = {};
+
+	if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
+		{
+			fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
+
+		}
+
+		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
+		{
+			fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * -0.3f);
+		}
+
+		m_pArm->Set_Rotation(fRotation);
+	}
+#endif
+}
+
 void CCamera_Target::Set_NextArmData(ARM_DATA* _pArmData, SUB_DATA* _pSubData)
 {
 	if (nullptr == _pArmData)
@@ -89,7 +114,7 @@ void CCamera_Target::Set_NextArmData(ARM_DATA* _pArmData, SUB_DATA* _pSubData)
 
 	// Sub Data ผ๖วเ
 	if (nullptr != _pSubData) {
-		Start_Zoom(_pSubData->fZoomTime, (CCamera::ZOOM_LEVEL)_pSubData->iZoomLevel, (CCamera::RATIO_TYPE)_pSubData->iZoomRatioType);
+		Start_Zoom(_pSubData->fZoomTime, (CCamera::ZOOM_LEVEL)_pSubData->iZoomLevel, (RATIO_TYPE)_pSubData->iZoomRatioType);
 		Start_Changing_AtOffset(_pSubData->fAtOffsetTime, XMLoadFloat3(&_pSubData->vAtOffset), _pSubData->iAtRatioType);
 	}
 }
@@ -120,7 +145,7 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 
 void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 {
-	if (true == m_pArm->Move_To_NextArm(_fTimeDelta)) {
+	if (true == m_pArm->Move_To_NextArm_ByVector(_fTimeDelta)) {
 		//m_pArm->Set_DesireVector();
 		m_eCameraMode = DEFAULT;
 		return;
