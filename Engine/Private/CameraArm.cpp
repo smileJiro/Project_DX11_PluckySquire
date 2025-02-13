@@ -451,7 +451,7 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta)
 
     // 일단 Y축 회전 시간, EASE_IN으로 설정해서 하기
     if (!(m_iMovementFlags & DONE_Y_ROTATE)) {
-        _float fRatio = m_pGameInstance->Calculate_Ratio(&m_pNextArmData->fMoveTimeAxisY, _fTimeDelta, RATIO_TYPE::EASE_IN);
+        _float fRatio = m_pGameInstance->Calculate_Ratio(&m_pNextArmData->fMoveTimeAxisY, _fTimeDelta, m_pNextArmData->iRotationRatioType);
 
         if (fRatio >= 1.f) {
 

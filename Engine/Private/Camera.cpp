@@ -304,7 +304,7 @@ void CCamera::Action_Zoom(_float _fTimeDelta)
 
 	_float fRatio = Calculate_Ratio(&m_fZoomTime, _fTimeDelta, m_eRatioType);
 
-	if (fRatio > 1.f) {
+	if (fRatio >= (1.f - EPSILON)) {
 		m_isZoomOn = false;
 		m_fStartFovy = 0.f;
 		m_fZoomTime.y = 0.f;
@@ -322,7 +322,7 @@ void CCamera::Change_AtOffset(_float _fTimeDelta)
 
 	_float fRatio = Calculate_Ratio(&m_fAtOffsetTime, _fTimeDelta, m_iOffsetRatioType);
 
-	if (fRatio > 1.f) {
+	if (fRatio >= (1.f - EPSILON)) {
 		m_isChangingAtOffset = false;
 		m_fAtOffsetTime.y = 0.f;
 	}
@@ -414,9 +414,6 @@ _float CCamera::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRat
 	_fTime->y += _fTimeDelta;
 	fRatio = _fTime->y / _fTime->x;
 	fRatio = clamp(fRatio, 0.f, 1.f);
-	cout << "Time: " << _fTime->y << endl;
-	cout << "fRatio: " << fRatio << endl;
-	
 
 	switch (_iRatioType) {
 	case (_uint)RATIO_TYPE::EASE_IN:
@@ -433,9 +430,6 @@ _float CCamera::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRat
 		fRatio = fRatio * fRatio * (3.f - 2.f * fRatio);
 		break;
 	}
-
-	cout << "Result fRatio: " << fRatio << endl;
-	cout << "==================" << endl;
 	return fRatio;
 }
 

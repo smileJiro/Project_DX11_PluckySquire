@@ -16,6 +16,7 @@
 #include "Layer.h"
 #include "Collider.h"
 #include "CubeMap.h"
+#include "MainTable.h"
 
 CLevel_Camera_Tool::CLevel_Camera_Tool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
@@ -33,6 +34,9 @@ HRESULT CLevel_Camera_Tool::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_MainTable(TEXT("Layer_MainTable"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
@@ -225,27 +229,6 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 {
 	/* Test Terrain */
 	CTest_Terrain::MODELOBJECT_DESC TerrainDesc{};
-
-	TerrainDesc.eStartCoord = COORDINATE_3D;
-	TerrainDesc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	TerrainDesc.isCoordChangeEnable = false;
-	TerrainDesc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-
-	TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	TerrainDesc.strModelPrototypeTag_3D = TEXT("WoodenPlatform_01");
-
-	TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-
-	TerrainDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-	TerrainDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-	TerrainDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Test_Terrain"), LEVEL_CAMERA_TOOL, _strLayerTag, &TerrainDesc)))
-		return E_FAIL;
-
-
-	/* Test Terrain */
 	TerrainDesc.eStartCoord = COORDINATE_3D;
 	TerrainDesc.iCurLevelID = LEVEL_CAMERA_TOOL;
 	TerrainDesc.isCoordChangeEnable = false;
@@ -267,6 +250,34 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 
 	return S_OK;
 }
+
+HRESULT CLevel_Camera_Tool::Ready_Layer_MainTable(const _wstring& _strLayerTag)
+{
+	CModelObject::MODELOBJECT_DESC NormalDesc = {};
+	NormalDesc.strModelPrototypeTag_3D = L"SM_desk_split_topboard_02";
+	NormalDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
+	NormalDesc.isCoordChangeEnable = false;
+	NormalDesc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	NormalDesc.eStartCoord = COORDINATE_3D;
+	CGameObject* pGameObject = nullptr;
+	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
+		LEVEL_CAMERA_TOOL,
+		L"Layer_MapObject",
+		&pGameObject,
+		(void*)&NormalDesc);
+
+
+	// MainTable Actor
+	CMainTable::ACTOROBJECT_DESC Desc;
+	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
+		LEVEL_CAMERA_TOOL, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 
 HRESULT CLevel_Camera_Tool::Ready_DataFiles()
 {
@@ -293,45 +304,21 @@ void CLevel_Camera_Tool::Show_CameraTool()
 {
 	ImGui::Begin("Camera Basic Tool");
 
+	// Play Move
+	Set_MovementInfo();
+
 	// Length
 	Change_ArmLength();
 
 	// CheckBox
 	ImGui::NewLine();
 
-	// Add CopyArm
-	Input_NextArm_Info();
 	ImGui::Checkbox("Use SubData", &m_isUseSubData);
-
-	if (ImGui::Button("Add Next Arm Info")) {
-
-		ARM_DATA* pData = new ARM_DATA();
-		*pData = m_tArmData;
-		pData->fRotationPerSecAxisY = { XMConvertToRadians(m_tArmData.fRotationPerSecAxisY.x), XMConvertToRadians(m_tArmData.fRotationPerSecAxisY.y) };
-		pData->fRotationPerSecAxisRight = { XMConvertToRadians(m_tArmData.fRotationPerSecAxisRight.x), XMConvertToRadians(m_tArmData.fRotationPerSecAxisRight.y) };
-
-		SUB_DATA* pSubData = nullptr;
-
-		if (true == m_isUseSubData) {
-			pSubData = new SUB_DATA();
-
-			pSubData->fZoomTime = m_fZoomTime;
-			pSubData->iZoomLevel = m_iZoomLevel - 1;
-			pSubData->iZoomRatioType = m_iRatioType;
-			pSubData->fAtOffsetTime = m_fAtOffsetTime;
-			pSubData->vAtOffset = { m_vNextAtOffset };
-			pSubData->iAtRatioType = { m_iAtOffsetRatioType };
-		}
-
-		CCamera_Manager_Tool::GetInstance()->Add_ArmData(m_pGameInstance->StringToWString(m_szCopyArmName), pData, pSubData);
-		CCamera_Manager_Tool::GetInstance()->Get_ArmNames(&m_ArmNames);
-	}
 
 	// Edit CopyArm
 	ImGui::SameLine();
-
-	if (ImGui::Button("Edit CopyArm")) {
-		Edit_CopyArm();
+	if (ImGui::Button("Edit Arm")) {
+		Edit_Arm();
 	}
 
 	ImGui::SameLine();
@@ -347,10 +334,6 @@ void CLevel_Camera_Tool::Show_CameraTool()
 
 	// Shake
 	Set_ShakeInfo();
-
-	// Play Move
-	Set_MovementInfo();
-
 
 	ImGui::End();
 }
@@ -429,8 +412,8 @@ void CLevel_Camera_Tool::Create_Arms()
 
 	XMStoreFloat3(&Desc.vArm, -vPlayerLook);
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	Desc.vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
-	Desc.fLength = 12.f;
+	//Desc.vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
+	Desc.fLength = 14.6;
 	Desc.wszArmTag = TEXT("Player_Arm");
 
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
@@ -439,7 +422,7 @@ void CLevel_Camera_Tool::Create_Arms()
 
 	pTarget->Add_Arm(pArm);
 	CCamera_Manager_Tool::GetInstance()->Set_CurrentArm(pArm);
-
+	CCamera_Manager_Tool::GetInstance()->Set_CurrentArmVector({ 0.0f, 0.67f, -0.74f });
 	m_vFirstResetArm = CCamera_Manager_Tool::GetInstance()->Get_CurrentArmVector();
 }
 
@@ -1032,136 +1015,124 @@ void CLevel_Camera_Tool::Change_ArmLength()
 		CCamera_Manager_Tool::GetInstance()->Set_ArmLength(fArmLength);
 	}
 
+	_int iZoomLevel = CCamera_Manager_Tool::GetInstance()->Get_ZoomLevel();
+	ImGui::Text("Cur Zoom Level : %d LEVEL   ", iZoomLevel + 1);
+	ImGui::SameLine();
+	ImGui::InputInt("##Zoom Level", &iZoomLevel);
+
+	if (iZoomLevel < 0)
+		iZoomLevel = 0;
+	ImGui::Text("Fovy: %.2f", m_fFovys[iZoomLevel]);
+	CCamera_Manager_Tool::GetInstance()->Set_ZoomLevel(iZoomLevel);
+
 	// 여기서 동작
 	// ============================Desire, Reset
-	ImGui::NewLine();
 	_float3 vCurArm = CCamera_Manager_Tool::GetInstance()->Get_CurrentArmVector();
 	_float	fCurLength = CCamera_Manager_Tool::GetInstance()->Get_ArmLength();
-
-	ImGui::NewLine();
-	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
-	ImGui::SameLine();
-	ImGui::Text("Set Reset, Desire Arm");
-	ImGui::Separator();
+	_float3 vCurAtOffset;
+	XMStoreFloat3(&vCurAtOffset, CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::TARGET)->Get_AtOffset());
 
 	ImGui::Text("Cur Arm: %.2f, %.2f, %.2f", vCurArm.x, vCurArm.y, vCurArm.z);
 	ImGui::Text("Cur Length: %.2f", fCurLength);
+	ImGui::Text("Cur AtOffset: %.2f, %.2f, %.2f", vCurAtOffset.x, vCurAtOffset.y, vCurAtOffset.z);
+
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireAtOffsetX", &vCurAtOffset.x);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireAtOffsetY", &vCurAtOffset.y);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireAtOffsetZ", &vCurAtOffset.z);
+
+	CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::TARGET)->Set_AtOffset(XMLoadFloat3(&vCurAtOffset));
 	ImGui::NewLine();
 
 	// Desire
-	ImGui::Text("Desire Arm: %.2f, %.2f, %.2f", m_vDesireArm.x, m_vDesireArm.y, m_vDesireArm.z);
+	ImGui::Text("Arm Tag Input:              ");
 	ImGui::SameLine();
-	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##DesireX", &m_vDesireArm.x);
-	ImGui::SameLine(0, 10.0f);
-
-	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##DesireY", &m_vDesireArm.y);
-	ImGui::SameLine(0, 10.0f);
-
-	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##DesireZ", &m_vDesireArm.z);
-
-	ImGui::Text("Desire Length: %.2f", fCurLength);
-	ImGui::SameLine();
-	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##DesireLength", &m_fDesireLength);
-
-	if (ImGui::Button("Set_DesireArm")) {
-		m_vDesireArm = vCurArm;
-	}
-
-	ImGui::SameLine();
-
-	if (ImGui::Button("Set_DesireLength")) {
-		m_fDesireLength = fCurLength;
-	}
-
-	ImGui::SameLine();
-
-	if (ImGui::Button("Set DesireInfo")) {
-		m_tArmData.vDesireArm = m_vDesireArm;
-		m_tArmData.fLength = m_fDesireLength;
-	}
-
-	// Reset Arm
-	ImGui::NewLine();
-	ImGui::Text("Reset Arm: %.2f, %.2f, %.2f", m_vResetArm.x, m_vResetArm.y, m_vResetArm.z);
-	ImGui::SameLine();
-	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##ResetX", &m_vResetArm.x);
-	ImGui::SameLine(0, 10.0f);
-
-	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##ResetY", &m_vResetArm.y);
-	ImGui::SameLine(0, 10.0f);
-
-	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##ResstZ", &m_vResetArm.z);
-
-
-	ImGui::Text("Desire Length: %.2f", m_fResetLength);
-	ImGui::SameLine();
-	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##DesireLength", &m_fDesireLength);
-
-	if (ImGui::Button("Set ResetArm")) {
-		m_vResetArm = vCurArm;
-	}
-
-	ImGui::SameLine();
-
-	if (ImGui::Button("Set ResetLength")) {
-		m_fResetLength = fCurLength;
-	}
-
-	if (ImGui::Button("Reset Arm, Length")) {
-		CCamera_Manager_Tool::GetInstance()->Reset_CurrentArm(XMLoadFloat3(&m_vResetArm), fCurLength, XMVectorSet(0.f, 3.f, 0.f, 0.f), 5);
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Reset Arm, Length_BYFIRST")) {
-		CCamera_Manager_Tool::GetInstance()->Reset_CurrentArm(XMLoadFloat3(&m_vFirstResetArm), 12.f, XMVectorSet(0.f, 3.f, 0.f, 0.f), 5);
-	}
-}
-
-void CLevel_Camera_Tool::Input_NextArm_Info()
-{
-	ImGui::NewLine();
-	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
-	ImGui::SameLine();
-	ImGui::Text("Add Arm");
-	ImGui::Separator();
-
-	ImGui::Text("Arm Tag Input:      ");
-	ImGui::SameLine();
-	ImGui::SetNextItemWidth(-1);
+	ImGui::SetNextItemWidth(150.f);
 	ImGui::InputText("##CopyArm Tag", m_szCopyArmName, MAX_PATH);
 
-	ImGui::Text("Length: %.2f             ", m_tArmData.fLength);
+	ImGui::Text("Desire Arm: %.2f, %.2f, %.2f", m_tArmData.vDesireArm.x, m_tArmData.vDesireArm.y, m_tArmData.vDesireArm.z);
 	ImGui::SameLine();
-	ImGui::SetNextItemWidth(-1);
-	ImGui::DragFloat("##Length Info", &m_tArmData.fLength, 0.05f, 0.f, 30.f);
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireX", &m_tArmData.vDesireArm.x);
+	ImGui::SameLine(0, 10.0f);
 
-	ImGui::Text("Length Time: %.2f        ", m_tArmData.fLengthTime.x);
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireY", &m_tArmData.vDesireArm.y);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireZ", &m_tArmData.vDesireArm.z);
+	
+	ImGui::Text("Rotation Time: %.2f         ", m_tArmData.fMoveTimeAxisY.x);
 	ImGui::SameLine();
-	ImGui::SetNextItemWidth(-1);
-	ImGui::DragFloat("##Length Time", &m_tArmData.fLengthTime.x, 0.05f, 0.f, 10.f);
+	ImGui::SetNextItemWidth(50.0f);
+	ImGui::DragFloat("##Rot Time D", &m_tArmData.fMoveTimeAxisY.x, 0.05f, 0.f, 10.f);
 
-	//Type
-	switch (m_tArmData.iLengthRatioType) {
+	switch (m_tArmData.iRotationRatioType) {
 	case RATIO_TYPE::EASE_IN:
-		ImGui::Text("Ratio Type: EASE_IN   ");
+		ImGui::Text("Ratio Type: EASE_IN         ");
 		break;
 
 	case RATIO_TYPE::EASE_OUT:
-		ImGui::Text("Ratio Type: EASE_OUT  ");
+		ImGui::Text("Ratio Type: EASE_OUT        ");
 		break;
 
 	case RATIO_TYPE::LERP:
-		ImGui::Text("Ratio Type: LERP      ");
+		ImGui::Text("Ratio Type: LERP            ");
 		break;
 	case RATIO_TYPE::EASE_IN_OUT:
-		ImGui::Text("Ratio Type: EASE_IN_OUT      ");
+		ImGui::Text("Ratio Type: EASE_IN_OUT     ");
+		break;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Rot EASE IN")) {
+		m_tArmData.iRotationRatioType = RATIO_TYPE::EASE_IN;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Rot EASE OUT")) {
+		m_tArmData.iRotationRatioType = RATIO_TYPE::EASE_OUT;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Rot LERP")) {
+		m_tArmData.iRotationRatioType = RATIO_TYPE::LERP;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Rot EASE_IN_OUT")) {
+		m_tArmData.iRotationRatioType = RATIO_TYPE::EASE_IN_OUT;
+	}
+
+	ImGui::Text("Desire Length: %.2f         ", m_tArmData.fLength);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireLength", &m_tArmData.fLength);
+
+	ImGui::Text("Length Time: %.2f           ", m_tArmData.fLengthTime.x);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);
+	ImGui::DragFloat("##DesireLength Time", &m_tArmData.fLengthTime.x, 0.05f, 0.f, 10.f);
+
+	switch (m_tArmData.iLengthRatioType) {
+	case RATIO_TYPE::EASE_IN:
+		ImGui::Text("Ratio Type: EASE_IN     ");
+		break;
+
+	case RATIO_TYPE::EASE_OUT:
+		ImGui::Text("Ratio Type: EASE_OUT    ");
+		break;
+
+	case RATIO_TYPE::LERP:
+		ImGui::Text("Ratio Type: LERP        ");
+		break;
+	case RATIO_TYPE::EASE_IN_OUT:
+		ImGui::Text("Ratio Type: EASE_IN_OUT ");
 		break;
 	}
 
@@ -1182,39 +1153,171 @@ void CLevel_Camera_Tool::Input_NextArm_Info()
 		m_tArmData.iLengthRatioType = RATIO_TYPE::EASE_IN_OUT;
 	}
 
-	ImGui::Text("Move Time AxisY: %.2f    ", m_tArmData.fMoveTimeAxisY.x);
-	ImGui::SameLine();
-	ImGui::SetNextItemWidth(-1);
-	ImGui::DragFloat("##Move Time Y", &m_tArmData.fMoveTimeAxisY.x, 0.05f, 0.f, 10.f);
+	if (ImGui::Button("Set_DesireInfo")) {
+		m_tArmData.vDesireArm = vCurArm;
+		m_tArmData.fLength = fCurLength;
+		m_vNextAtOffset = vCurAtOffset;
+	}
 
-	ImGui::Text("Move Time AxisRight: %.2f", m_tArmData.fMoveTimeAxisRight.x);
-	ImGui::SameLine();
-	ImGui::SetNextItemWidth(-1);
-	ImGui::DragFloat("##Move Time Right", &m_tArmData.fMoveTimeAxisRight.x, 0.05f, 0.f, 10.f);
-
-	
-	ImGui::Text("Min RPS AxisY: %.2f      ", m_tArmData.fRotationPerSecAxisY.x);
-	ImGui::SameLine();
-	ImGui::DragFloat("##Min Rotation Per Sec AxisY", &m_tArmData.fRotationPerSecAxisY.x, 0.1f, -360.f, 360.f);
-	ImGui::Text("Max RPS AxisY: %.2f      ", m_tArmData.fRotationPerSecAxisY.y);
-	ImGui::SameLine();
-	ImGui::DragFloat("##Max Rotation Per Sec AxisY", &m_tArmData.fRotationPerSecAxisY.y, 0.1f, -360.f, 360.f);
-
-	ImGui::Text("Min RPS AxisRight: %.2f  ", m_tArmData.fRotationPerSecAxisRight.x);
-	ImGui::SameLine();
-	ImGui::DragFloat("##Min Rotation Per Sec AxisRight", &m_tArmData.fRotationPerSecAxisRight.x, 0.1f, -360.f, 360.f);
-	ImGui::Text("Max RPS AxisRight: %.2f  ", m_tArmData.fRotationPerSecAxisRight.y);
-	ImGui::SameLine();
-	ImGui::DragFloat("##Max Rotation Per Sec AxisRight", &m_tArmData.fRotationPerSecAxisRight.y, 0.1f, -360.f, 360.f);
-
-	
+	// Reset Arm
 	ImGui::NewLine();
+	ImGui::Text("Reset Arm: %.2f, %.2f, %.2f    ", m_vResetArm.x, m_vResetArm.y, m_vResetArm.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetX", &m_vResetArm.x);
+	ImGui::SameLine(0, 10.0f);
 
-	// Sub Data
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetY", &m_vResetArm.y);
+	ImGui::SameLine(0, 10.0f);
 
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResstZ", &m_vResetArm.z);
+
+
+	ImGui::Text("Reset Length: %.2f             ", m_fResetLength);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetLength", &m_fResetLength);
+
+	ImGui::Text("Reset ResetAtOffset: %.2f, %.2f, %.2f", m_vResetAtOffset.x, m_vResetAtOffset.y, m_vResetAtOffset.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetAtOffsetX", &m_vResetAtOffset.x);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetAtOffsetY", &m_vResetAtOffset.y);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetAtOffsetZ", &m_vResetAtOffset.z);
+
+	if (ImGui::Button("Set ResetInfo")) {
+		m_vResetArm = vCurArm;
+		m_fResetLength = fCurLength;
+		m_vResetAtOffset = vCurAtOffset;
+	}
+
+	ImGui::NewLine();
+	// Add Next ArmInfo
+	if (ImGui::Button("Add Next Arm Info")) {
+
+		ARM_DATA* pData = new ARM_DATA();
+		*pData = m_tArmData;
+		pData->fRotationPerSecAxisY = { XMConvertToRadians(m_tArmData.fRotationPerSecAxisY.x), XMConvertToRadians(m_tArmData.fRotationPerSecAxisY.y) };
+		pData->fRotationPerSecAxisRight = { XMConvertToRadians(m_tArmData.fRotationPerSecAxisRight.x), XMConvertToRadians(m_tArmData.fRotationPerSecAxisRight.y) };
+
+		SUB_DATA* pSubData = nullptr;
+
+		if (true == m_isUseSubData) {
+			pSubData = new SUB_DATA();
+
+			pSubData->fZoomTime = m_fZoomTime;
+			pSubData->iZoomLevel = m_iZoomLevel - 1;
+			pSubData->iZoomRatioType = m_iRatioType;
+			pSubData->fAtOffsetTime = m_fAtOffsetTime;
+			pSubData->vAtOffset = { m_vNextAtOffset };
+			pSubData->iAtRatioType = { m_iAtOffsetRatioType };
+		}
+
+		CCamera_Manager_Tool::GetInstance()->Add_ArmData(m_pGameInstance->StringToWString(m_szCopyArmName), pData, pSubData);
+		CCamera_Manager_Tool::GetInstance()->Get_ArmNames(&m_ArmNames);
+	}
 }
 
-void CLevel_Camera_Tool::Edit_CopyArm()
+#pragma region Rotation_NotUse
+void CLevel_Camera_Tool::Input_NextArm_Info()
+{
+	//ImGui::NewLine();
+	//ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
+	//ImGui::SameLine();
+	//ImGui::Text("Add Arm");
+	//ImGui::Separator();
+
+	//ImGui::Text("Arm Tag Input:      ");
+	//ImGui::SameLine();
+	//ImGui::SetNextItemWidth(-1);
+	//ImGui::InputText("##CopyArm Tag", m_szCopyArmName, MAX_PATH);
+
+	//ImGui::Text("Length: %.2f             ", m_tArmData.fLength);
+	//ImGui::SameLine();
+	//ImGui::SetNextItemWidth(-1);
+	//ImGui::DragFloat("##Length Info", &m_tArmData.fLength, 0.05f, 0.f, 30.f);
+
+	//ImGui::Text("Length Time: %.2f        ", m_tArmData.fLengthTime.x);
+	//ImGui::SameLine();
+	//ImGui::SetNextItemWidth(-1);
+	//ImGui::DragFloat("##Length Time", &m_tArmData.fLengthTime.x, 0.05f, 0.f, 10.f);
+
+	////Type
+	//switch (m_tArmData.iLengthRatioType) {
+	//case RATIO_TYPE::EASE_IN:
+	//	ImGui::Text("Ratio Type: EASE_IN   ");
+	//	break;
+
+	//case RATIO_TYPE::EASE_OUT:
+	//	ImGui::Text("Ratio Type: EASE_OUT  ");
+	//	break;
+
+	//case RATIO_TYPE::LERP:
+	//	ImGui::Text("Ratio Type: LERP      ");
+	//	break;
+	//case RATIO_TYPE::EASE_IN_OUT:
+	//	ImGui::Text("Ratio Type: EASE_IN_OUT      ");
+	//	break;
+	//}
+
+	//ImGui::SameLine();
+	//if (ImGui::Button("Length EASE IN")) {
+	//	m_tArmData.iLengthRatioType = RATIO_TYPE::EASE_IN;
+	//}
+	//ImGui::SameLine();
+	//if (ImGui::Button("Length EASE OUT")) {
+	//	m_tArmData.iLengthRatioType = RATIO_TYPE::EASE_OUT;
+	//}
+	//ImGui::SameLine();
+	//if (ImGui::Button("Length LERP")) {
+	//	m_tArmData.iLengthRatioType = RATIO_TYPE::LERP;
+	//}
+	//ImGui::SameLine();
+	//if (ImGui::Button("Length EASE_IN_OUT")) {
+	//	m_tArmData.iLengthRatioType = RATIO_TYPE::EASE_IN_OUT;
+	//}
+
+	//ImGui::Text("Move Time AxisY: %.2f    ", m_tArmData.fMoveTimeAxisY.x);
+	//ImGui::SameLine();
+	//ImGui::SetNextItemWidth(-1);
+	//ImGui::DragFloat("##Move Time Y", &m_tArmData.fMoveTimeAxisY.x, 0.05f, 0.f, 10.f);
+
+	//ImGui::Text("Move Time AxisRight: %.2f", m_tArmData.fMoveTimeAxisRight.x);
+	//ImGui::SameLine();
+	//ImGui::SetNextItemWidth(-1);
+	//ImGui::DragFloat("##Move Time Right", &m_tArmData.fMoveTimeAxisRight.x, 0.05f, 0.f, 10.f);
+
+
+	//ImGui::Text("Min RPS AxisY: %.2f      ", m_tArmData.fRotationPerSecAxisY.x);
+	//ImGui::SameLine();
+	//ImGui::DragFloat("##Min Rotation Per Sec AxisY", &m_tArmData.fRotationPerSecAxisY.x, 0.1f, -360.f, 360.f);
+	//ImGui::Text("Max RPS AxisY: %.2f      ", m_tArmData.fRotationPerSecAxisY.y);
+	//ImGui::SameLine();
+	//ImGui::DragFloat("##Max Rotation Per Sec AxisY", &m_tArmData.fRotationPerSecAxisY.y, 0.1f, -360.f, 360.f);
+
+	//ImGui::Text("Min RPS AxisRight: %.2f  ", m_tArmData.fRotationPerSecAxisRight.x);
+	//ImGui::SameLine();
+	//ImGui::DragFloat("##Min Rotation Per Sec AxisRight", &m_tArmData.fRotationPerSecAxisRight.x, 0.1f, -360.f, 360.f);
+	//ImGui::Text("Max RPS AxisRight: %.2f  ", m_tArmData.fRotationPerSecAxisRight.y);
+	//ImGui::SameLine();
+	//ImGui::DragFloat("##Max Rotation Per Sec AxisRight", &m_tArmData.fRotationPerSecAxisRight.y, 0.1f, -360.f, 360.f);
+
+
+	//ImGui::NewLine();
+
+	// Sub Data
+}
+#pragma endregion
+
+void CLevel_Camera_Tool::Edit_Arm()
 {
 	if (m_ArmNames.size() <= 0)
 		return;
@@ -1267,18 +1370,27 @@ void CLevel_Camera_Tool::Set_MovementInfo()
 	ImGui::Text("Play Move");
 	ImGui::Separator();
 
-	if (m_ArmNames.size() <= 0)
-		return;
+	if (m_ArmNames.size() > 0) {
 
-	_string Name = m_pGameInstance->WStringToString(m_ArmNames[m_iSelectedArmNum]);
+		_string Name = m_pGameInstance->WStringToString(m_ArmNames[m_iSelectedArmNum]);
 
-	ImGui::Text("Selected Arm Name: %s", Name.c_str());
+		ImGui::Text("Selected Arm Name: %s", Name.c_str());
 
-	Show_ComboBox();
+		Show_ComboBox();
 
-	if (ImGui::Button("Play Movement")) {
-		CCamera_Manager_Tool::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
-		CCamera_Manager_Tool::GetInstance()->Set_NextArmData(m_ArmNames[m_iSelectedArmNum]);
+		if (ImGui::Button("Play Movement")) {
+			CCamera_Manager_Tool::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+			CCamera_Manager_Tool::GetInstance()->Set_NextArmData(m_ArmNames[m_iSelectedArmNum]);
+		}
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Reset Arm, Length")) {
+		CCamera_Manager_Tool::GetInstance()->Reset_CurrentArm(XMLoadFloat3(&m_vResetArm), m_fResetLength, XMLoadFloat3(&m_vResetAtOffset), 5);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Reset Arm, Length_BYFIRST")) {
+		CCamera_Manager_Tool::GetInstance()->Reset_CurrentArm(XMLoadFloat3(&m_vFirstResetArm), 12.f, XMVectorSet(0.f, 3.f, 0.f, 0.f), 5);
 	}
 }
 
@@ -1899,7 +2011,7 @@ void CLevel_Camera_Tool::Picking()
 		if (0 > fMousePos.x || g_iWinSizeX < fMousePos.x || 0 > fMousePos.y || g_iWinSizeY < fMousePos.y)
 			return;
 
-		CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_CAMERA_TOOL, TEXT("Layer_Terrain"));
+		CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_CAMERA_TOOL, TEXT("Layer_MapObject"));
 		list<CGameObject*> Objects = pLayer->Get_GameObjects();
 
 		CGameObject* pGameObject = nullptr;

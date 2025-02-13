@@ -291,10 +291,11 @@ namespace Engine
 		_uint				iLengthRatioType = {};
 
 		_float2				fMoveTimeAxisY = {};
-		_float2				fMoveTimeAxisRight = {};
-		_float2				fRotationPerSecAxisY = {};
-		_float2				fRotationPerSecAxisRight = {};
+		_float2				fMoveTimeAxisRight = {};			// 안 쓸 듯
+		_float2				fRotationPerSecAxisY = {};			// 안 쓸 듯
+		_float2				fRotationPerSecAxisRight = {};		// 안 쓸 듯
 
+		_uint				iRotationRatioType = {};
 		_float3				vDesireArm = {};		// 최종 벡터
 	} ARM_DATA;
 
