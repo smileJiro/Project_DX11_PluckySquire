@@ -119,10 +119,13 @@ void CActor_Dynamic::Set_Dynamic()
 	m_eActorType = ACTOR_TYPE::DYNAMIC;
 	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
 	PxTransform pxTransform;
-	pDynamic->getKinematicTarget(pxTransform);
+	if (pDynamic->getKinematicTarget(pxTransform))
+	{
+		pDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false); // Kinematic 
+		pDynamic->setGlobalPose(pxTransform.getNormalized());
+	}
 	
-	pDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false); // Kinematic 
-	pDynamic->setGlobalPose(pxTransform.getNormalized());
+
 }
 
 void CActor_Dynamic::Set_SleepThreshold(_float _fThreshold)
@@ -226,6 +229,7 @@ void CActor_Dynamic::Set_AngularDamping(_float _fValue)
 {
 	static_cast<PxRigidDynamic*>(m_pActor)->setAngularDamping(_fValue);
 }
+
 
 void CActor_Dynamic::Add_Force(const _float3& _vForce)
 {

@@ -139,6 +139,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 		return E_FAIL;
 
 
+
 	/* Blur RenderGroupOn */
 	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
 	return S_OK;

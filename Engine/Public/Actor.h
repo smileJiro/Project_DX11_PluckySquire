@@ -94,7 +94,8 @@ public:
 	HRESULT						Set_ShapeEnable(_int _iShapeIndex, _bool _isEnable);
 	HRESULT						Set_AllShapeEnable(_bool _isEnable);
 	void									Set_ShapeRayCastFlag(_bool _isRayCast);
-
+	void								Set_MassLocalPos(_float3 _vPosition);
+	void								Set_Mass(_float _vValue);
 protected:
 	PxRigidActor*				m_pActor = nullptr; 
 	CActorObject*				m_pOwner = nullptr;

@@ -52,9 +52,14 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::THROWSWORD);
 		return;
 	}
-	else if (tKeyResult.bInputStates[PLAYER_KEY_ATTACK])
+	else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 	{
 		m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
+		return;
+	}
+	else	if (tKeyResult.bInputStates[PLAYER_KEY_THROWOBJECT])
+	{
+		m_pOwner->Set_State(CPlayer::THROWOBJECT);
 		return;
 	}
 	if (COORDINATE_3D == eCoord)
