@@ -388,9 +388,6 @@
     <Filter Include="94.RenderGroups%28Custom%29\Effect\AfterEffect">
       <UniqueIdentifier>{560c6a5c-32ea-484e-a5cf-08cdc8f3c2ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="94.RenderGroups%28Custom%29\PBR\PhysicsBlur">
-      <UniqueIdentifier>{bd1f122a-17af-42d1-9d40-b60547c9cdb6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Carriable">
       <UniqueIdentifier>{0b0f1611-bbbf-455b-a49a-4b3eb34fb7d3}</UniqueIdentifier>
     </Filter>
@@ -399,6 +396,9 @@
     </Filter>
     <Filter Include="02.GameObjects\Bulb">
       <UniqueIdentifier>{838a1b77-e59c-4df8-86c2-66b5c85161a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\PBR\PostProcessing">
+      <UniqueIdentifier>{bd1f122a-17af-42d1-9d40-b60547c9cdb6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -869,7 +869,7 @@
       <Filter>94.RenderGroups%28Custom%29\Effect\AfterEffect</Filter>
     </ClInclude>
     <ClInclude Include="..\public\RenderGroup_PostProcessing.h">
-      <Filter>94.RenderGroups%28Custom%29\PBR\PhysicsBlur</Filter>
+      <Filter>94.RenderGroups%28Custom%29\PBR\PostProcessing</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_JumpAttack.h">
       <Filter>03.Components\PlayerState</Filter>
@@ -1353,7 +1353,7 @@
       <Filter>94.RenderGroups%28Custom%29\Effect\AfterEffect</Filter>
     </ClCompile>
     <ClCompile Include="..\private\RenderGroup_PostProcessing.cpp">
-      <Filter>94.RenderGroups%28Custom%29\PBR\PhysicsBlur</Filter>
+      <Filter>94.RenderGroups%28Custom%29\PBR\PostProcessing</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_JumpAttack.cpp">
       <Filter>03.Components\PlayerState</Filter>
