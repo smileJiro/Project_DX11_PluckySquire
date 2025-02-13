@@ -682,7 +682,10 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
     }
     else
+    {
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
+		m_bPlatformerMode = false;
+    }
 
     switch (m_ePlayerMode)
     {
@@ -1252,7 +1255,11 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         //Desc.fRadius = 1.f;
         //Desc.fHalfHeight = 1.f;
         //m_pActorCom->Set_ShapeGeometry(0, PxGeometryType::eCAPSULE, &Desc);
-        m_bPlatformerMode = !m_bPlatformerMode;
+		COORDINATE eCurCoord = Get_CurCoord();
+        if (COORDINATE_2D == eCurCoord)
+            m_bPlatformerMode = !m_bPlatformerMode;
+        else
+            m_bPlatformerMode = false;
         //m_pControllerTransform->Rotation(XMConvertToRadians(m_bPlatformerMode ? 90 : 0), {0,0,1});
     }
     if (KEY_DOWN(KEY::F2))
