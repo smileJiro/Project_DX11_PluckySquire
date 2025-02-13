@@ -166,7 +166,12 @@ void CBarfBug::Update(_float _fTimeDelta)
 
     //// TestCode : 태웅
     if (COORDINATE_2D == Get_CurCoord())
-        CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_pColliderCom);
+    {
+		for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
+        {
+            CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::MONSTER, m_p2DColliderComs[i]);
+        }
+    }
 
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -185,7 +190,12 @@ HRESULT CBarfBug::Render()
         m_pDetectionField->Render();
 
     if (COORDINATE_2D == Get_CurCoord())
-        m_pColliderCom->Render();
+    {
+        for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
+        {
+            m_p2DColliderComs[i]->Render();
+        }
+    }
 #endif // _DEBUG
 
     /* Font Render */
@@ -211,13 +221,13 @@ void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CBarfBug::On_Hit(CGameObject* _pHitter, _float _fDamg)
 {
-	cout << "BarfBug Get Damg" << this << ", " << _fDamg << endl;
-	m_tStat.fHP -= _fDamg;
-	if (m_tStat.fHP < 0)
-	{
-		m_tStat.fHP = 0;
+    cout << "BarfBug Get Damg" << this << ", " << _fDamg << endl;
+    m_tStat.fHP -= _fDamg;
+    if (m_tStat.fHP < 0)
+    {
+        m_tStat.fHP = 0;
         cout << "BarfBug Dead" << endl;
-	}
+    }
 
     Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
 }
@@ -234,9 +244,9 @@ HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosit
 
 void CBarfBug::Change_Animation()
 {
-    if(m_iState != m_iPreState)
+    if (m_iState != m_iPreState)
     {
-		if (COORDINATE_3D == Get_CurCoord())
+        if (COORDINATE_3D == Get_CurCoord())
         {
             switch (MONSTER_STATE(m_iState))
             {
@@ -350,7 +360,7 @@ void CBarfBug::Attack()
         if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
             return;
 
-        if(COORDINATE_3D == Get_CurCoord())
+        if (COORDINATE_3D == Get_CurCoord())
         {
             *pCoord = COORDINATE::COORDINATE_3D;
             vPosition.y += vScale.y * 0.5f;
@@ -387,7 +397,7 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
-    if(COORDINATE_3D == _eCoord)
+    if (COORDINATE_3D == _eCoord)
     {
         switch ((CBarfBug::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
         {
@@ -426,7 +436,7 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         case ATTACK_DOWN:
         case ATTACK_RIGHT:
         case ATTACK_UP:
-            if(false == m_isDelay)
+            if (false == m_isDelay)
             {
                 Set_AnimChangeable(true);
                 Delay_On();
@@ -442,7 +452,7 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 {
     CBarfBug::MONSTER_DESC* pDesc = static_cast<CBarfBug::MONSTER_DESC*>(_pArg);
-    
+
     pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
 
@@ -492,22 +502,22 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
- //   //맵 오브젝트가 앞에 있으면 탐지를 막기 위한 트리거
- //   SHAPE_CAPSULE_DESC* TriggerDesc = new SHAPE_CAPSULE_DESC;
- //   TriggerDesc->fHalfHeight = 0.3f;
- //   TriggerDesc->fRadius = 0.3f;
+    //   //맵 오브젝트가 앞에 있으면 탐지를 막기 위한 트리거
+    //   SHAPE_CAPSULE_DESC* TriggerDesc = new SHAPE_CAPSULE_DESC;
+    //   TriggerDesc->fHalfHeight = 0.3f;
+    //   TriggerDesc->fRadius = 0.3f;
 
- //   /* 해당 Shape의 Flag에 대한 Data 정의 */
- //   ShapeData->pShapeDesc = TriggerDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
- //   ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
- //   ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
- //   ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-	//XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, TriggerDesc->fRadius * 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    //   /* 해당 Shape의 Flag에 대한 Data 정의 */
+    //   ShapeData->pShapeDesc = TriggerDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    //   ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+    //   ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    //   ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+       //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, TriggerDesc->fRadius * 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
- //   /* 최종으로 결정 된 ShapeData를 PushBack */
- //   ActorDesc->ShapeDatas.push_back(*ShapeData);
+    //   /* 최종으로 결정 된 ShapeData를 PushBack */
+    //   ActorDesc->ShapeDatas.push_back(*ShapeData);
 
-    /* 충돌 필터에 대한 세팅 ()*/
+       /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
     ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
 
@@ -561,7 +571,9 @@ HRESULT CBarfBug::Ready_Components()
         TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
         return E_FAIL;
 
-    /* Test 2D Collider */
+    /* 2D Collider */
+    m_p2DColliderComs.resize(1);
+
     CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
     AABBDesc.pOwner = this;
     AABBDesc.vExtents = { 50.f, 100.f };
@@ -569,7 +581,7 @@ HRESULT CBarfBug::Ready_Components()
     AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y };
     AABBDesc.isBlock = true; // 
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-        TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
         return E_FAIL;
 
     return S_OK;
@@ -636,6 +648,5 @@ CGameObject* CBarfBug::Clone(void* _pArg)
 
 void CBarfBug::Free()
 {
-    Safe_Release(m_pColliderCom);
     __super::Free();
 }

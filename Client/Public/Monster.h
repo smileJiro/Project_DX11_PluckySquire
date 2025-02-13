@@ -86,6 +86,10 @@ public:
 	{
 		return m_vRayOffset;
 	}
+	_float Get_RayHalfWidth() const
+	{
+		return m_fRayHalfWidth;
+	}
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -174,6 +178,7 @@ protected:
 	_float m_fFOVY = { 0.f };
 
 	_float3 m_vRayOffset = { 0.f,0.f,0.f };
+	_float m_fRayHalfWidth = {};
 
 	//잠입 모드
 	_bool m_isSneakMode = { false };
