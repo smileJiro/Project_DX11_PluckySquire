@@ -15,9 +15,10 @@ HRESULT CLevel_Static::Initialize()
 
 void CLevel_Static::Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::ENTER))
+	if (KEY_DOWN(KEY::F1))
 		Event_LevelChange(LEVEL_LOADING, LEVEL_CAMERA_TOOL);
-
+	else if (KEY_DOWN(KEY::F2))
+		Event_LevelChange(LEVEL_LOADING, LEVEL_TRIGGER_TOOL);
 }
 
 HRESULT CLevel_Static::Render()

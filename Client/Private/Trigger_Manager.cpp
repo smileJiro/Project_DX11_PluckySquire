@@ -201,6 +201,7 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(json _TriggerJson, CTrigge
 	// Custom Data
 	_string szKey;
 	_uint iReturnMask;
+	_float3 vFreezeExitArm;
 
 	switch (_tDesc.iTriggerType) {
 	case (_uint)TRIGGER_TYPE::ARM_TRIGGER:
@@ -217,6 +218,32 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(json _TriggerJson, CTrigge
 		dynamic_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(m_pGameInstance->StringToWString(szKey), iReturnMask);
 	}
 	break;
+	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
+	{
+
+		if (_TriggerJson.contains("Freeze_X_Info")) {
+			json FreezeExit = _TriggerJson["Freeze_X_Info"]["Freeze_Exit_Arm"];
+
+			szKey = FreezeExit["CustomData_Tag"];
+			vFreezeExitArm = { FreezeExit["CustomData"][0].get<_float>(), FreezeExit["CustomData"][1].get<_float>(),FreezeExit["CustomData"][2].get<_float>() };
+		}
+
+		dynamic_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(m_pGameInstance->StringToWString(szKey), vFreezeExitArm);
+	}
+		break;
+	case (_uint)TRIGGER_TYPE::FREEZE_Z_TRIGGER:
+	{
+
+		if (_TriggerJson.contains("Freeze_Z_Info")) {
+			json FreezeExit = _TriggerJson["Freeze_Z_Info"]["Freeze_Exit_Arm"];
+
+			szKey = FreezeExit["CustomData_Tag"];
+			vFreezeExitArm = { FreezeExit["CustomData"][0].get<_float>(), FreezeExit["CustomData"][1].get<_float>(),FreezeExit["CustomData"][2].get<_float>() };
+		}
+
+		dynamic_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(m_pGameInstance->StringToWString(szKey), vFreezeExitArm);
+	}
+		break;
 	}
 
 	return S_OK;
@@ -300,19 +327,25 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
 	{
-		_pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
-			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
+		_pTrigger->Resister_EnterHandler([_pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+			
+			_float3 vFreezeExitArm = any_cast<_float3>(_pTrigger->Get_CustomData(TEXT("FreezeExitArm")));
+			
+			Event_Trigger_FreezeEnter(_iTriggerType, _iTriggerID, _szEventTag, vFreezeExitArm);
 			});
 
-		_pTrigger->Resister_ExitHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
-		Event_Trigger_Exit(_iTriggerType, _iTriggerID, _szEventTag);
+		_pTrigger->Resister_ExitHandler([_pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+			Event_Trigger_Exit(_iTriggerType, _iTriggerID, _szEventTag);
 		});
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_Z_TRIGGER:
 	{
-		_pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
-			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
+		_pTrigger->Resister_EnterHandler([_pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+
+			_float3 vFreezeExitArm = any_cast<_float3>(_pTrigger->Get_CustomData(TEXT("FreezeExitArm")));
+
+			Event_Trigger_FreezeEnter(_iTriggerType, _iTriggerID, _szEventTag, vFreezeExitArm);
 			});
 
 		_pTrigger->Resister_ExitHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {

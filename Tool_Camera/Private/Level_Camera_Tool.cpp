@@ -473,16 +473,8 @@ void CLevel_Camera_Tool::Show_SelectedArmData()
 
 	ImGui::Text("SelectedArm Length Time: %.2f        ", pData->first->fLengthTime.x);
 
-	ImGui::Text("Move Time AxisY: %.2f    ", pData->first->fMoveTimeAxisY.x);
+	ImGui::Text("Rotation Time: %.2f    ", pData->first->fMoveTimeAxisY.x);
 
-	ImGui::Text("Move Time AxisRight: %.2f", pData->first->fMoveTimeAxisRight.x);
-
-
-	ImGui::Text("Min Rotation Per Sec AixsY: %.2f        ", XMConvertToDegrees(pData->first->fRotationPerSecAxisY.x));
-	ImGui::Text("Max Rotation Per Sec AixsY: %.2f        ", XMConvertToDegrees(pData->first->fRotationPerSecAxisY.y));
-	ImGui::NewLine();
-	ImGui::Text("Min Rotation Per Sec AixsRight: %.2f        ", XMConvertToDegrees(pData->first->fRotationPerSecAxisRight.x));
-	ImGui::Text("Max Rotation Per Sec AixsRight: %.2f        ", XMConvertToDegrees(pData->first->fRotationPerSecAxisRight.y));
 
 	if (nullptr == pData->second)
 		return;
@@ -1038,15 +1030,15 @@ void CLevel_Camera_Tool::Change_ArmLength()
 
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##DesireAtOffsetX", &vCurAtOffset.x);
+	ImGui::DragFloat("##DesireAtOffsetX", &vCurAtOffset.x, 0.1f, 0.f);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##DesireAtOffsetY", &vCurAtOffset.y);
+	ImGui::DragFloat("##DesireAtOffsetY", &vCurAtOffset.y, 0.1f, 0.f);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##DesireAtOffsetZ", &vCurAtOffset.z);
+	ImGui::DragFloat("##DesireAtOffsetZ", &vCurAtOffset.z, 0.1f, 0.f);
 
 	CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::TARGET)->Set_AtOffset(XMLoadFloat3(&vCurAtOffset));
 	ImGui::NewLine();
