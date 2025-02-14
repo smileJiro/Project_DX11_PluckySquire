@@ -400,6 +400,9 @@
     <Filter Include="03.Components\Capturable">
       <UniqueIdentifier>{739f8c23-cf4e-49d6-9e83-911d341d2c5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\FallingRock">
+      <UniqueIdentifier>{37786d41-acd2-43d8-9045-cadf34912d64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -908,6 +911,7 @@
     <ClInclude Include="..\Public\Level_Chapter_Test.h">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\FallingRock.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1401,6 +1405,7 @@
     <ClCompile Include="..\Private\Level_Chapter_Test.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\FallingRock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

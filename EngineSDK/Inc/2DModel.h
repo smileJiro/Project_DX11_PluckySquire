@@ -29,9 +29,9 @@ public:
     //Set
     virtual void Set_AnimationLoop(_uint _iIdx, _bool _bIsLoop)override;
     virtual void Set_Animation(_uint _iIdx, _bool _bReverse = false)override;
-    virtual void Switch_Animation(_uint _iIdx, _bool _bReverse = false)override;
+    virtual void Switch_Animation(_uint _iIdx, _bool _bReverse = false)override; 
     virtual void To_NextAnimation()override;
-    virtual void			Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) override;
+    virtual void Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) override;
 
 
 

@@ -34,7 +34,7 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 		//ObjectPath에서 Root의 이름과 같은 폴더를 만날 때 까지 거슬러 올라감
 		//Root의 이름과 같은 폴더를 만나면 그 폴더를 기준으로 상대경로를 만들어서 Texture를 로드함.
 		filesystem::path pathCurFolderName = pathObjectPath.parent_path().filename();
-		filesystem::path pathSubPath = pathObjectPath.filename().replace_extension(".png");
+		filesystem::path pathSubPath = pathObjectPath.filename().replace_extension(".dds");
 		while (strRootFolderName != pathCurFolderName)
 		{
 			pathSubPath = pathCurFolderName / pathSubPath;
@@ -42,7 +42,7 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 			if (strParentPath._Equal("/"))
 			{
 				pathSubPath = jBakedSourceTexture["ObjectPath"].get<string>();
-				pathSubPath = pathSubPath.filename().replace_extension(".png");
+				pathSubPath = pathSubPath.filename().replace_extension(".dds");
 				break;
 			}
 			pathObjectPath = strParentPath;
@@ -59,7 +59,7 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 		{
 			for (const auto& entry : std::filesystem::recursive_directory_iterator(_RootDir))
 			{
-				if (".png" == entry.path().extension() || ".dds" == entry.path().extension())
+				if (".dds" == entry.path().extension())
 				{
 					if (entry.path().filename().string() == pathSubPath.filename().string())
 					{
@@ -137,15 +137,13 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	iStart = (_uint)(strSourceTexture.find_first_of('\'')) + 1;
 	iCount = (_uint)strSourceTexture.find_last_of('\'') - iStart;
 	strSourceTexture = strSourceTexture.substr(iStart, iCount);
-	_szDir += strSourceTexture + ".png";
+	_szDir += strSourceTexture + ".dds";
 	m_pathFinalTexturePath = _szDir;
 	ID3D11ShaderResourceView* pSRV = { nullptr };
 	HRESULT hr = DirectX::CreateWICTextureFromFile(_pDevice, _szDir.wstring().c_str(), nullptr, &pSRV);
 	if (FAILED(hr))
 	{
-		_szDir.replace_extension(".dds");
-		if(FAILED(DirectX::CreateWICTextureFromFile(_pDevice, _szDir.wstring().c_str(), nullptr, &pSRV)))
-			return E_FAIL;
+		return E_FAIL;
 	}
 	m_pTexture = CTexture::Create(_pDevice, _pContext);
 	if (nullptr == m_pTexture)
@@ -196,7 +194,7 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	szTextureName[iCount] = '\0';
 	m_pathFinalTexturePath = szDirPath;
 	m_pathFinalTexturePath /= szTextureName;      
-	m_pathFinalTexturePath += L".png";
+	m_pathFinalTexturePath += L".dds";
 	auto pairTexture = _Textures.find(szTextureName);
 	if (pairTexture == _Textures.end())
 		return E_FAIL;
