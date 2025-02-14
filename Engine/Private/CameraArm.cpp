@@ -270,10 +270,12 @@ void CCameraArm::Set_ArmVector(_vector _vArm)
     m_pTransform->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
 }
 
-void CCameraArm::Set_DesireVector()
+void CCameraArm::Set_StartInfo(_vector _vArm, _float _fLength)
 {
-    m_pNextArmData->vDesireArm = m_vArm;
+    XMStoreFloat3(&m_vStartArm, _vArm);
+    m_fStartLength = _fLength;
 }
+
 void CCameraArm::Turn_ArmX(_float fAngle)
 {
     // Right√‡

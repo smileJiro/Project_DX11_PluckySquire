@@ -62,7 +62,7 @@ public:
 	void				Set_Length(_float _fLength) { m_fLength = _fLength; }
 	void				Set_ArmTag(_wstring _wszArmTag) { m_wszArmTag = _wszArmTag; }
 	void				Set_ArmVector(_vector _vArm);
-	void				Set_DesireVector();		// 최종 벡터 저장하는용
+	void				Set_StartInfo(_vector _vArm, _float _fLength);
 public:
 	_wstring			Get_ArmTag() { return m_wszArmTag; }
 	_vector				Get_ArmVector() { return XMLoadFloat3(&m_vArm); }

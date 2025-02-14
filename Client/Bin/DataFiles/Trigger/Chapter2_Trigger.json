@@ -36,12 +36,12 @@
             "HalfExtents": [
                 16.799999237060547,
                 4.900000095367432,
-                4.099999904632568
+                7.699999809265137
             ],
             "Position": [
                 -3.4760000705718994,
                 0.3333301544189453,
-                5.245306491851807
+                8.345000267028809
             ],
             "Radius": 0.5,
             "Rotation": [
@@ -104,13 +104,50 @@
         "Collider_Info": {
             "HalfExtents": [
                 4.5,
-                5.0,
-                9.800000190734863
+                4.800000190734863,
+                10.199999809265137
             ],
             "Position": [
                 -25.115999221801758,
                 1.4500000476837158,
-                4.007999897003174
+                3.7079999446868896
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    -0.23000000417232513,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_1",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
             ],
             "Radius": 0.5,
             "Rotation": [
@@ -126,15 +163,1236 @@
             "Freeze_Exit_Arm": {
                 "CustomData": [
                     0.0,
-                    0.3400000035762787,
-                    -0.9399999976158142
+                    0.6299999952316284,
+                    -0.7799999713897705
                 ],
                 "CustomData_Tag": "FreezeExitArm"
             }
         },
         "Trigger_ConditionType": 3,
         "Trigger_Coordinate": 1,
-        "Trigger_EventTag": "Chapter2_FreezeX_1",
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                3.799999952316284,
+                1.399999976158142,
+                7.400000095367432
+            ],
+            "Position": [
+                -28.43000030517578,
+                0.33333587646484375,
+                -14.254419326782227
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_2",
+        "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                5.0,
+                2.5,
+                7.400000095367432
+            ],
+            "Position": [
+                -57.66899871826172,
+                0.33333778381347656,
+                -13.114999771118164
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.6299999952316284,
+                    -0.7799999713897705
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_3",
         "Trigger_Type": 3
     }
 ]
