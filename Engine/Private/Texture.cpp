@@ -48,8 +48,8 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 				UINT miscFlags = 0;
 				// CubeMap인 경우 해당 Flag를 추가하여 TextureFile Create
 				miscFlags |= D3D11_RESOURCE_MISC_TEXTURECUBE;
-
-				CreateDDSTextureFromFileEx(m_pDevice, szTextureFilePath, 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, miscFlags,
+				//TODO :: 만약 텍스쳐 관련 런타임에 SRV를 수정해야하는 경우, D3D11_USAGE_IMMUTABLE 를 D3D11_USAGE_DEFAULT로 변경.
+				CreateDDSTextureFromFileEx(m_pDevice, szTextureFilePath, 0, D3D11_USAGE_IMMUTABLE, D3D11_BIND_SHADER_RESOURCE, 0, miscFlags,
 										   DDS_LOADER_FLAGS(false), nullptr, &pSRV, NULL);
 
 #ifdef _DEBUG
@@ -61,11 +61,12 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 			{
 				if (true == _isSRGB)
 				{
+					//TODO :: 만약 텍스쳐 관련 런타임에 SRV를 수정해야하는 경우, D3D11_USAGE_IMMUTABLE 를 D3D11_USAGE_DEFAULT로 변경.
 					hr = DirectX::CreateDDSTextureFromFileEx(
 						m_pDevice,               // Direct3D 장치
 						szTextureFilePath,             // DDS 파일 경로
 						0,                       // 최대 텍스처 크기 (0은 제한 없음)
-						D3D11_USAGE_DEFAULT,     // 리소스 사용 방법
+						D3D11_USAGE_IMMUTABLE,     // 리소스 사용 방법
 						D3D11_BIND_SHADER_RESOURCE, // 바인딩 플래그
 						0,                       // CPU 접근 플래그
 						0,                       // 기타 플래그
@@ -90,11 +91,12 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 		{
 			if (true == _isSRGB)
 			{
+				//TODO :: 만약 텍스쳐 관련 런타임에 SRV를 수정해야하는 경우, D3D11_USAGE_IMMUTABLE 를 D3D11_USAGE_DEFAULT로 변경.
 				hr = DirectX::CreateWICTextureFromFileEx(
 					m_pDevice,                  // Direct3D 디바이스 포인터
 					szTextureFilePath,          // 텍스처 파일 경로
 					0,                          // 최대 크기 (0은 제한 없음)
-					D3D11_USAGE_DEFAULT,        // 기본 사용 방식
+					D3D11_USAGE_IMMUTABLE,        // 기본 사용 방식
 					D3D11_BIND_SHADER_RESOURCE, // 셰이더 리소스로 바인딩
 					0,                          // CPU 접근 플래그 (없음)
 					0,                          // 기타 플래그 (없음)

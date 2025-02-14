@@ -20,8 +20,8 @@ public:
 	virtual HRESULT Bind_BufferDesc();
 public:
 	// Get
-	const vector<_float3>& Get_VerticesPos() { return m_vecVerticesPos; };
-	const vector<_uint>& Get_IndexBuffer() { return m_vecIndexBuffer; }
+	//const vector<_float3>& Get_VerticesPos() { return m_vecVerticesPos; };
+	//const vector<_uint>& Get_IndexBuffer() { return m_vecIndexBuffer; }
 	_uint Get_NumIndices() { return m_iNumIndices; }
 	_uint Get_NumVertices() { return m_iNumVertices; }
 	_uint Get_NumTriangles() { return m_iNumIndices / 3; }
@@ -46,9 +46,9 @@ protected:
 	// 여기서의 Primitive도 렌더링에 필요한 최소 단위와 같은 의미로 사용된 것 같아 보인다.
 
 	// 충돌을 위한 Vertex정보.
-	vector<_float3> m_vecVerticesPos;
-	vector<_float3> m_vecVerticesNormal;
-	vector<_uint> m_vecIndexBuffer;
+	//vector<_float3> m_vecVerticesPos;
+	//vector<_float3> m_vecVerticesNormal;
+	//vector<_uint> m_vecIndexBuffer;
 protected:
 	/*해당 함수에 매개변수로 던진 Buffer에 값을 채워줌. (m_BufferDesc, m_SubResourceDesc) 의 데이터를 기반으로.*/
 	HRESULT Create_Buffer(ID3D11Buffer** _ppOut);

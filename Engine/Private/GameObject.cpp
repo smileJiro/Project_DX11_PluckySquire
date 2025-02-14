@@ -55,6 +55,7 @@ HRESULT CGameObject::Initialize(void* _pArg)
 
 void CGameObject::Priority_Update(_float _fTimeDelta)
 {
+    Priority_Update_Component(_fTimeDelta);
 }
 
 void CGameObject::Update(_float _fTimeDelta)
@@ -177,6 +178,7 @@ void CGameObject::Free()
 
     Safe_Release(m_pControllerTransform);
     Safe_Release(m_pRayCom);
+    Safe_Release(m_pGravityCom);
 
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);

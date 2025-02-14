@@ -71,7 +71,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	Ready_Layer_NPC(TEXT("Layer_NPC"));
 
 	//액터 들어가는넘.,
-	Ready_Layer_Map();
+	//Ready_Layer_Map();
 
 	/* Pooling Test */
 	Pooling_DESC Pooling_Desc;
@@ -292,20 +292,23 @@ HRESULT CLevel_Chapter_02::Render()
 
 HRESULT CLevel_Chapter_02::Ready_Lights()
 {
-	CONST_LIGHT LightDesc{};
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
 
-	ZeroMemory(&LightDesc, sizeof LightDesc);
-
-	LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
-	LightDesc.fFallOutStart = 20.0f;
-	LightDesc.fFallOutEnd = 1000.0f;
-	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
-	LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
-
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
-		return E_FAIL;
+	//CONST_LIGHT LightDesc{};
+	//
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
+	//
+	//LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
+	//LightDesc.fFallOutStart = 20.0f;
+	//LightDesc.fFallOutEnd = 1000.0f;
+	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	//LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+	//LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	//LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+	//
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
+	//	return E_FAIL;
 
 
 	return S_OK;
