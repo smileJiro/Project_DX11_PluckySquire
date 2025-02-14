@@ -229,7 +229,7 @@ HRESULT CToolSpriteFrame::Copy_Textures(const filesystem::path& _szDestPath)
 	}
 
 	filesystem::path dest = _szDestPath;
-	dest /= *m_pTexture->Get_SRVName(0) + L".png";
+	dest /= *m_pTexture->Get_SRVName(0) + L".dds";
 	filesystem::copy_file(m_pathFinalTexturePath, dest, filesystem::copy_options::overwrite_existing);
 	return S_OK;
 }

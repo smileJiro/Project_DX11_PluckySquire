@@ -25,11 +25,11 @@ public:
 	HRESULT				Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget);
 	HRESULT				Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut);
 	HRESULT				Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
+	HRESULT				Ready_Layer_MainTable(const _wstring& _strLayerTag);
 	HRESULT				Ready_DataFiles();
 
 private:
-	_float				m_fRotationValue = { 0.5f };
-	_float				m_fLengthValue = { 0.5f };
+	_float				m_fLengthValue = { 0.1f };
 
 	_char				m_szCopyArmName[MAX_PATH] = { "" };
 	_char				m_szSelectedArmName[MAX_PATH] = { "" };
@@ -42,13 +42,13 @@ private:
 	_bool				m_isUseSubData = {};
 
 	_float3				m_vResetArm = {};
+	_float3				m_vResetAtOffset = {};
 	_float				m_fResetLength = {};
-	_float3				m_vDesireArm = {};
-	_float				m_fDesireLength = {};
+//	_float3				m_vDesireArm = {};
 	_float3				m_vFirstResetArm = {};
 
 	// Zoom
-	_int				m_iZoomLevel = {};
+	_int				m_iZoomLevel = { 6 };
 	_float				m_fFovys[10] = {};
 	_uint				m_iRatioType = {};
 	_float				m_fZoomTime = {};
@@ -136,7 +136,7 @@ private:
 	// Tool
 	void				Change_ArmLength();
 	void				Input_NextArm_Info();
-	void				Edit_CopyArm();
+	void				Edit_Arm();
 	void				Set_MovementInfo();
 	void				Set_Zoom();
 	void				Set_AtOffsetInfo();

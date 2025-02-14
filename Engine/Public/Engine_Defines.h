@@ -25,6 +25,9 @@ using namespace DirectX;
 #include "DirectXTK\SpriteBatch.h" // 콜라이더 그릴때 매개변수로 들어가는 Draw Color 관련 구조체가 이 헤더에 있어서 추가함.
 #include "DirectXTK\SpriteFont.h"
 
+
+
+/* Assimp */
 #include "assimp\scene.h"
 #include "assimp\Importer.hpp"
 #include "assimp\postprocess.h"
@@ -35,6 +38,7 @@ using namespace DirectX;
 #include "imguidll\imgui_impl_win32.h"
 #include "imguidll\imgui_impl_dx11.h"
 // 코드
+
 #pragma comment(lib, "imguidll.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "dxguid.lib")
@@ -42,7 +46,9 @@ using namespace DirectX;
 #include <Windows.h>
 #include <mmsystem.h>
 #include <dsound.h>
-
+/* DirectXTex */
+#include "DirectXTex\DirectXTex.h"
+#include "DirectXTex\DirectXTex.inl"
 // 코드
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "dsound.lib")
@@ -98,9 +104,12 @@ namespace Engine
 
 	enum class PROTOTYPE { PROTO_GAMEOBJ, PROTO_COMPONENT };
 
+
+
+
+	//extern IMPORT_MODE	g_eImportMode = IMPORT_MODE::NONE_IMPORT;
 	const unsigned int g_iShadowWidth = 8192;
 	const unsigned int g_iShadowHeight = 4608;
-
 
 }
 #include <functional>

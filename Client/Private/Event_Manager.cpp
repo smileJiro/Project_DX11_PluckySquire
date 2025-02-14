@@ -137,6 +137,11 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_Trigger_Exit(_tEvent);
 	}
 	break;
+	case Client::EVENT_TYPE::TRIGGER_FREEZE_ENTER_EVENT:
+	{
+		Execute_Trigger_FreezeEnter(_tEvent);
+	}
+	break;
 	case Client::EVENT_TYPE::TRIGGER_EXIT_BYCOLLISION_EVENT:
 	{
 		Execute_Trigger_Exit_ByCollision(_tEvent);
@@ -426,12 +431,10 @@ HRESULT CEvent_Manager::Execute_Trigger_Enter(const EVENT& _tEvent)
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
 	{
-		CCamera_Manager::GetInstance()->Set_Freeze(CCamera_Target::FREEZE_X);
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_Z_TRIGGER:
 	{
-		CCamera_Manager::GetInstance()->Set_Freeze(CCamera_Target::FREEZE_Z);
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
@@ -493,12 +496,12 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit(const EVENT& _tEvent)
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
 	{
-		CCamera_Manager::GetInstance()->Set_Freeze(CCamera_Target::RESET);
+		CCamera_Manager::GetInstance()->Set_FreezeExit(CCamera_Target::FREEZE_X);
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_Z_TRIGGER:
 	{
-		CCamera_Manager::GetInstance()->Set_Freeze(CCamera_Target::RESET);
+		CCamera_Manager::GetInstance()->Set_FreezeExit(CCamera_Target::FREEZE_Z);
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
@@ -508,6 +511,35 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit(const EVENT& _tEvent)
 	}
 
 	Safe_Delete(pStr);
+
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_Trigger_FreezeEnter(const EVENT& _tEvent)
+{
+	_uint iCameraTriggerType = (_uint)_tEvent.Parameters[0];
+	_int iTriggerID = (_int)_tEvent.Parameters[1];
+	_wstring* pStr = (_wstring*)_tEvent.Parameters[2];
+	_float3* pArm = (_float3*)_tEvent.Parameters[3];
+	_vector vArm = XMLoadFloat3(pArm);
+	if (nullptr == pStr)
+		return E_FAIL;
+
+	switch (iCameraTriggerType) {
+	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
+	{
+		CCamera_Manager::GetInstance()->Set_FreezeEnter(CCamera_Target::FREEZE_X, vArm);
+	}
+	break;
+	case (_uint)TRIGGER_TYPE::FREEZE_Z_TRIGGER:
+	{
+		CCamera_Manager::GetInstance()->Set_FreezeEnter(CCamera_Target::FREEZE_Z, vArm);
+	}
+	break;
+	}
+
+	Safe_Delete(pStr);
+	Safe_Delete(pArm);
 
 	return S_OK;
 }

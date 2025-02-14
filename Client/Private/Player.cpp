@@ -24,6 +24,7 @@
 #include "Collider_Fan.h"
 #include "Interactable.h"
 #include "CarriableObject.h"
+#include "Blocker.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -63,10 +64,8 @@ HRESULT CPlayer::Initialize_Prototype()
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadianAngle = XMConvertToRadians(360.f);
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = { 0.f, 0.f };
 
-
     XMStoreFloat4x4(&m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.f, 0.f));
-    XMStoreFloat4x4(&m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 80.f, 0.f));
-
+    XMStoreFloat4x4(&m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 100.f, 0.f));
 
     return S_OK;
 }
@@ -198,7 +197,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
     BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    BodyDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_player2DAnimation");
+    BodyDesc.strModelPrototypeTag_2D = TEXT("player");
     BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
@@ -328,6 +327,7 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
        return E_FAIL; 
    m_pBody2DColliderCom = m_p2DColliderComs[0];
+   Safe_AddRef(m_pBody2DColliderCom);
 
    CircleDesc.pOwner = this;
    CircleDesc.fRadius = m_f2DInteractRange;
@@ -339,6 +339,7 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Body2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
        return E_FAIL;
    m_pBody2DTriggerCom = m_p2DColliderComs[1];
+   Safe_AddRef(m_pBody2DTriggerCom);
 
    CCollider_Fan::COLLIDER_FAN_DESC FanDesc = {};
    FanDesc.pOwner = this;
@@ -353,13 +354,31 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &FanDesc)))
        return E_FAIL;
    m_pAttack2DTriggerCom = m_p2DColliderComs[2];
+   Safe_AddRef(m_pAttack2DTriggerCom);
    m_pAttack2DTriggerCom->Set_Active(false);
+
+   /* Com_Gravity */
+   CGravity::GRAVITY_DESC GravityDesc = {};
+   GravityDesc.fGravity = 9.8f * 100.f;
+   GravityDesc.vGravityDirection = { 0.0f, -1.0f, 0.0f };
+   GravityDesc.pOwner = this;
+   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
+       TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
+       return E_FAIL;
+
     return S_OK;
 }
 
 
 void CPlayer::Priority_Update(_float _fTimeDelta)
 {
+    if (KEY_DOWN(KEY::K))
+    {
+        CGravity::STATE eCurState = m_pGravityCom->Get_CurState();
+        _int iState = eCurState;
+        iState ^= 1;
+        m_pGravityCom->Change_State((CGravity::STATE)iState);
+    }
 
     CContainerObject::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
@@ -626,6 +645,64 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+    _uint iGroupID = _pOtherCollider->Get_CollisionGroupID();
+    switch ((OBJECT_GROUP)iGroupID)
+    {
+    case Client::NONE:
+        break;
+    case Client::PLAYER:
+        break;
+    case Client::MONSTER:
+        break;
+    case Client::MAPOBJECT:
+        break;
+    case Client::INTERACTION_OBEJCT:
+        break;
+    case Client::PLAYER_PROJECTILE:
+        break;
+    case Client::MONSTER_PROJECTILE:
+        break;
+    case Client::TRIGGER_OBJECT:
+        break;
+    case Client::RAY_OBJECT:
+        break;
+    case Client::PLAYER_TRIGGER:
+        break;
+    case Client::BLOCKER:
+    {
+        if (true == _pMyCollider->Is_Trigger())
+            break;
+        if (false == static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
+            break;
+
+        /* 1. Blocker은 항상 AABB임을 가정. */
+
+        /* 2. 나의 Collider 중점 기준, AABB에 가장 가까운 점을 찾는다. */
+        _bool isResult = false;
+        _float fEpsilon = 0.01f;
+        _float2 vContactVector = {};
+        isResult = static_cast<CCollider_Circle*>(_pMyCollider)->Compute_NearestPoint_AABB(static_cast<CCollider_AABB*>(_pOtherCollider), nullptr, &vContactVector);
+        if (true == isResult)
+        {
+            /* 3. 충돌지점 벡터와 중력벡터를 내적하여 그 결과를 기반으로 Floor 인지 체크. */
+            _float3 vGravityDir = m_pGravityCom->Get_GravityDirection();
+            _float2 vGravityDirection = _float2(vGravityDir.x, vGravityDir.y);
+            _float fGdotC = XMVectorGetX(XMVector2Dot(XMLoadFloat2(&vGravityDirection), XMVector2Normalize(XMLoadFloat2(&vContactVector))));
+            if (1.0f - fEpsilon <= fGdotC)
+            {
+                /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
+                m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+            }
+        }
+        
+    }
+        break;
+    default:
+        break;
+    }
+
+
+
     if (_pMyCollider == m_pAttack2DTriggerCom
         && OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
     {
@@ -656,7 +733,42 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 
 void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    int a = 0;
+    _uint iGroupID = _pOtherCollider->Get_CollisionGroupID();
+    switch ((OBJECT_GROUP)iGroupID)
+    {
+    case Client::NONE:
+        break;
+    case Client::PLAYER:
+        break;
+    case Client::MONSTER:
+        break;
+    case Client::MAPOBJECT:
+        break;
+    case Client::INTERACTION_OBEJCT:
+        break;
+    case Client::PLAYER_PROJECTILE:
+        break;
+    case Client::MONSTER_PROJECTILE:
+        break;
+    case Client::TRIGGER_OBJECT:
+        break;
+    case Client::RAY_OBJECT:
+        break;
+    case Client::PLAYER_TRIGGER:
+        break;
+    case Client::BLOCKER:
+    {
+        if (true == _pMyCollider->Is_Trigger())
+            break;
+
+        if (static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
+            m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
+    }
+    break;
+    default:
+        break;
+    }
+
 }
 
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
@@ -1149,8 +1261,7 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
     {
         if (Is_CarryingObject())
         {
-			CCarriableObject* pCarriableObject = static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ]);
-            pCarriableObject->Set_Carrier(nullptr);
+
             Safe_Release(m_PartObjects[PLAYER_PART_CARRYOBJ]);
             m_PartObjects[PLAYER_PART_CARRYOBJ] = nullptr;
         }
@@ -1225,20 +1336,35 @@ void CPlayer::ThrowObject()
 {
 	assert(Is_CarryingObject());
 
+
+	COORDINATE eCoord = Get_CurCoord();
+    _vector vForce = { 0,0,0 };
+    if (COORDINATE_3D == eCoord)
+    {
+        vForce = XMVector3Normalize(XMVectorSetY(m_pControllerTransform->Get_State(CTransform::STATE_LOOK), 0.5)) * m_f3DThrowObjectPower;
+    }
+    else
+    {
+        vForce = XMVector2Normalize(EDir_To_Vector( Get_2DDirection())) * m_f2DThrowObjectPower;
+		vForce = XMVectorSetW(XMVectorSetZ(vForce, 0),0);
+    }
+
 	CCarriableObject* pObj = static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ]);
-	Set_CarryingObject(nullptr);
-
-   _vector vForce =  XMVector3Normalize(XMVectorSetY(m_pControllerTransform->Get_State(CTransform::STATE_LOOK),0.5)) *
-       (COORDINATE_3D == Get_CurCoord() ? m_f3DThrowObjectPower : m_f2DThrowObjectPower);
+    pObj->Set_Carrier(nullptr);
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        pObj->Set_Kinematic(false);
+    }
+    else
+    {
+        pObj->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, Get_FinalPosition());
+    }
 	pObj->Throw(vForce);
+	Set_CarryingObject(nullptr);
 }
-
-
 
 void CPlayer::Key_Input(_float _fTimeDelta)
 {
-
-
     if (KEY_DOWN(KEY::F1))
     {
         _int iCurCoord = (_int)Get_CurCoord();

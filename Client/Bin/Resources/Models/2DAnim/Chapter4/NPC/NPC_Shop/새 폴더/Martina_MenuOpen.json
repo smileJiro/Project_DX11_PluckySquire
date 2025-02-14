@@ -1,0 +1,194 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Martina_MenuOpen",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0001_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0002_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0002_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0003_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0009_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0009_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0010_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0010_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0011_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0011_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0012_X14'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0012_X14.0"
+          },
+          "FrameRun": 14
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0013_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0013_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0014_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0014_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0015_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0015_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0016_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0016_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0017_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0017_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0018_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0018_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0019_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0019_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0020_X20'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0020_X20.0"
+          },
+          "FrameRun": 20
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0021_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0021_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0022_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0022_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0023_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0023_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0024_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0024_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0025_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0025_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_MenuOpen_0026_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_MenuOpen_0026_X03.0"
+          },
+          "FrameRun": 3
+        }
+      ]
+    }
+  }
+]

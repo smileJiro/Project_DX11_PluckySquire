@@ -56,6 +56,7 @@ void CCamera_Target::Late_Update(_float fTimeDelta)
 
 	Switching(fTimeDelta);
 
+	Action_SetUp_ByMode();
 	Action_Mode(fTimeDelta);
 	__super::Compute_PipeLineMatrices();
 }
@@ -84,16 +85,21 @@ void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_D
 	m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
 }
 
-void CCamera_Target::Set_Freeze(_uint _iFreezeMask)
+void CCamera_Target::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm)
 {
-	if (RESET == _iFreezeMask) {
-		m_iFreezeMask &= _iFreezeMask;
-		m_fFreezeExitTime.y = 0.f;
-		m_bFreezeExit = true;
-		m_fFreezeExitTime.x = 1.8f;
-	}
-	else
-		m_iFreezeMask |= _iFreezeMask;
+	m_iFreezeMask |= _iFreezeMask;
+	memcpy(&m_vFreezeEnterPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+	//XMStoreFloat3(&m_vFreezeEnterPos, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+	XMStoreFloat3(&m_vFreezeExitArm, _vExitArm);
+	m_isFreezeExit = false;
+}
+
+void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask)
+{
+	m_iFreezeMask ^= _iFreezeMask;
+	m_fFreezeExitTime = {1.f, 0.f};
+	m_isFreezeExit = true;
+	m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_vFreezeExitArm)));
 }
 
 void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
@@ -161,11 +167,29 @@ _bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID
 
 	m_pCurArm->Set_NextArmData(pData->first, _iTriggerID);
 	m_szEventTag = _wszNextArmName;
-
+	m_vAtOffset = { 0.f, 1.f,0.f };
 	if (nullptr != pData->second) {
-
 		Start_Zoom(pData->second->fZoomTime, (CCamera::ZOOM_LEVEL)pData->second->iZoomLevel, (RATIO_TYPE)pData->second->iZoomRatioType);
 		Start_Changing_AtOffset(pData->second->fAtOffsetTime, XMLoadFloat3(&pData->second->vAtOffset), pData->second->iAtRatioType);
+	
+		for (auto& PreArm : m_PreSubArms) {
+			if (_iTriggerID == PreArm.first.iTriggerID) {
+				if (true == PreArm.second) {    // Return 중이라면?
+					PreArm.second = false;
+					return true;
+				}
+
+				return true;
+			}
+		}
+
+		RETURN_SUBDATA tSubData;
+
+		tSubData.iZoomLevel = m_iPreZoomLevel;
+		tSubData.vAtOffset = m_vAtOffset;
+		tSubData.iTriggerID = _iTriggerID;
+
+		m_PreSubArms.push_back(make_pair(tSubData, false));
 	}
 
 	return true;
@@ -177,6 +201,21 @@ void CCamera_Target::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 		return;
 
 	m_pCurArm->Set_PreArmDataState(_iTriggerID, _isReturn);
+
+	if (true == _isReturn) {
+		for (auto& PreArm : m_PreSubArms) {
+			if (_iTriggerID == PreArm.first.iTriggerID) {
+				Start_Zoom(m_pCurArm->Get_ReturnTime(), (ZOOM_LEVEL)(PreArm.first.iZoomLevel), EASE_IN);
+				Start_Changing_AtOffset(m_pCurArm->Get_ReturnTime(), XMLoadFloat3(&PreArm.first.vAtOffset), EASE_IN);
+			
+				PreArm.second = true; // Return 중
+			}
+		}
+	}
+	else {
+		// 안 빼고 남긴다
+		// 값을 바꾸지도 않는다
+	}
 }
 
 void CCamera_Target::Key_Input(_float _fTimeDelta)
@@ -226,24 +265,59 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 	}
 }
 
+void CCamera_Target::Action_SetUp_ByMode()
+{
+	if (m_ePreCameraMode != m_eCameraMode) {
+
+		switch (m_eCameraMode) {
+		case DEFAULT:
+			break;
+		case MOVE_TO_NEXTARM:
+		{
+			//m_iPreArmZoomLevel = m_iCurZoomLevel;
+		}
+			break;
+		case RETURN_TO_PREARM:
+		{
+			//Start_Zoom(m_pCurArm->Get_ReturnTime(), (ZOOM_LEVEL)m_iPreArmZoomLevel, EASE_IN);
+		}
+			break;
+		}
+
+		m_ePreCameraMode = m_eCameraMode;
+	}
+}
+
 void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 {
 	_vector vTargetPos;
 	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);	// 목표 위치 + Arm -> 최종 결과물
 	_vector vCurPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 
-	if (RESET == m_iFreezeMask) {
-		if (true == m_bFreezeExit) {
+	if (true == m_isFreezeExit) {
+		int a = 0;
+		m_fFreezeExitTime.y += _fTimeDelta;
+		_float fRatio = m_fFreezeExitTime.y / m_fFreezeExitTime.x;
 
-			m_fFreezeExitTime.y += _fTimeDelta;
-			_float fRatio = m_fFreezeExitTime.y / m_fFreezeExitTime.x;
-
-			if (fRatio >= (1.f - EPSILON)) {
-				m_fFreezeExitTime.y = 0.f;
-				m_bFreezeExit = false;
+		if (fRatio >= (1.f - EPSILON)) {
+			m_fFreezeExitTime.y = 0.f;
+			m_isFreezeExit = false;
+		}
+		else {
+			// Freeze X를 나왔는데 Freeze Z에 있을 때
+			if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
+				vCameraPos = XMVectorLerp(vCurPos, XMVectorSetZ(vCameraPos, XMVectorGetZ(vCurPos)), fRatio);
 			}
-			else
-				vCameraPos = XMVectorLerp(vCurPos, vCameraPos, fRatio);
+			// Freeze X를 나왔는데 Freeze Z에 있을 때
+			else if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
+				vCameraPos = XMVectorLerp(vCurPos, XMVectorSetX(vCameraPos, XMVectorGetX(vCurPos)), fRatio);
+			}
+			else if (RESET == m_iFreezeMask) {
+				//vCameraPos = XMVectorLerp(vCurPos, vCameraPos, fRatio);
+			
+				_float fZ = m_pGameInstance->Lerp(XMVectorGetZ(vCurPos), XMVectorGetZ(vCameraPos), fRatio);
+				vCameraPos = XMVectorSetZ(vCameraPos, fZ);
+			}
 		}
 	}
 	else {
@@ -257,7 +331,6 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
-	//if (RESET == (m_iFreezeMask | RESET)) 
 	Look_Target(vTargetPos, _fTimeDelta);
 }
 
@@ -266,11 +339,23 @@ void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta)) {
 		m_eCameraMode = DEFAULT;
 		CTrigger_Manager::GetInstance()->On_End(m_szEventTag);
-		//return;
+		return;
 	}
 
 	_vector vTargetPos;
 	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);
+
+	if (RESET != m_iFreezeMask) {
+		if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
+			vTargetPos = XMVectorSetX(vTargetPos, m_vFreezeEnterPos.x);
+			vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+		}
+		if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
+			vTargetPos = XMVectorSetY(vTargetPos, m_vFreezeEnterPos.y);
+			vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+		}
+	}
+
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
 	Look_Target(vTargetPos, _fTimeDelta);
@@ -289,6 +374,12 @@ void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
 	if (true == m_pCurArm->Move_To_PreArm(_fTimeDelta)) {
 		m_eCameraMode = DEFAULT;
 		//return;
+
+		m_fFovy = m_ZoomLevels[m_PreSubArms.back().first.iZoomLevel];
+		m_iCurZoomLevel = m_PreSubArms.back().first.iZoomLevel;
+		m_vAtOffset = m_PreSubArms.back().first.vAtOffset;
+		m_PreSubArms.back().second = false;
+		m_PreSubArms.pop_back();
 	}
 
 	_vector vTargetPos;

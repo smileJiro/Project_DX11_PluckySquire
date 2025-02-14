@@ -41,6 +41,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	m_iViewportHeight = EngineDesc.iViewportHeight;
 	m_iStaticLevelID = EngineDesc.iStaticLevelID;
 	m_isNewRenderer = EngineDesc.isNewRenderer;
+	m_eImportMode = (IMPORT_MODE)EngineDesc.eImportMode;
 
 	m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iViewportWidth, EngineDesc.iViewportHeight, ppDevice, ppContext);
 	if (nullptr == m_pGraphic_Device)
@@ -120,9 +121,12 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pJson_Manager)
 		return E_FAIL;
 	
-	m_pImgui_Manager = CImgui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext, _float2((_float)EngineDesc.iViewportWidth, (_float)EngineDesc.iViewportHeight));
-	if (nullptr == m_pImgui_Manager)
-		return E_FAIL;
+	if ((_uint)IMPORT_MODE::IMPORT_IMGUI & (_uint)EngineDesc.eImportMode)
+	{
+		m_pImgui_Manager = CImgui_Manager::Create(EngineDesc.hWnd, *ppDevice, *ppContext, _float2((_float)EngineDesc.iViewportWidth, (_float)EngineDesc.iViewportHeight));
+		if (nullptr == m_pImgui_Manager)
+			return E_FAIL;
+	}
 
 	m_pGlobalFunction_Manager = CGlobalFunction_Manager::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pGlobalFunction_Manager)
@@ -170,7 +174,8 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 	if (m_pNewRenderer)
 	{
 		m_pNewRenderer->Update_Imgui();
-		m_pImgui_Manager->Imgui_Debug_Render();
+		if(nullptr != m_pImgui_Manager)
+			m_pImgui_Manager->Imgui_Debug_Render();
 	}
 #endif
 

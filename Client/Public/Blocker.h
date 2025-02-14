@@ -34,6 +34,8 @@ public:
 private:
 	COORDINATE				m_eBlockerCoord = COORDINATE_LAST;
 
+public:
+	_bool					Is_Floor() const { return m_isFloor; }
 private:
 	_bool					m_isFloor = false;
 

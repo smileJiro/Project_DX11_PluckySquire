@@ -44,24 +44,24 @@ HRESULT CVIBuffer_Rect_Vertical::Initialize_Prototype()
 
 
 	// 2. SubResourceData 값을 채운다.
-	m_vecVerticesPos.reserve(m_iNumVertices);
+	//m_vecVerticesPos.reserve(m_iNumVertices);
 	VTXPOSTEX* pVertices = new VTXPOSTEX[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXPOSTEX) * m_iNumVertices);
 
 	pVertices[0].vPosition = XMFLOAT3(-0.5f, 0.0f, 0.5f);
-	m_vecVerticesPos.push_back(pVertices[0].vPosition);
+	//m_vecVerticesPos.push_back(pVertices[0].vPosition);
 	pVertices[0].vTexcoord = XMFLOAT2(0.0f, 0.0f);
 
 	pVertices[1].vPosition = XMFLOAT3(0.5f, 0.0f, 0.5f);
-	m_vecVerticesPos.push_back(pVertices[1].vPosition);
+	//m_vecVerticesPos.push_back(pVertices[1].vPosition);
 	pVertices[1].vTexcoord = XMFLOAT2(1.0f, 0.0f);
 
 	pVertices[2].vPosition = XMFLOAT3(0.5f, 0.0f, -0.5f);
-	m_vecVerticesPos.push_back(pVertices[2].vPosition);
+	//m_vecVerticesPos.push_back(pVertices[2].vPosition);
 	pVertices[2].vTexcoord = XMFLOAT2(1.0f, 1.0f);
 
 	pVertices[3].vPosition = XMFLOAT3(-0.5f, 0.0f, -0.5f);
-	m_vecVerticesPos.push_back(pVertices[3].vPosition);
+	//m_vecVerticesPos.push_back(pVertices[3].vPosition);
 	pVertices[3].vTexcoord = XMFLOAT2(0.0f, 1.0f);
 
 	ZeroMemory(&m_SubResourceDesc, sizeof(m_SubResourceDesc));
@@ -93,16 +93,16 @@ HRESULT CVIBuffer_Rect_Vertical::Initialize_Prototype()
 	pIndices[0] = 0;
 	pIndices[1] = 1;
 	pIndices[2] = 2;
-	m_vecIndexBuffer.push_back(pIndices[0]);
-	m_vecIndexBuffer.push_back(pIndices[1]);
-	m_vecIndexBuffer.push_back(pIndices[2]);
+	//m_vecIndexBuffer.push_back(pIndices[0]);
+	//m_vecIndexBuffer.push_back(pIndices[1]);
+	//m_vecIndexBuffer.push_back(pIndices[2]);
 
 	pIndices[3] = 0;
 	pIndices[4] = 2;
 	pIndices[5] = 3;
-	m_vecIndexBuffer.push_back(pIndices[3]);
-	m_vecIndexBuffer.push_back(pIndices[4]);
-	m_vecIndexBuffer.push_back(pIndices[5]);
+	//m_vecIndexBuffer.push_back(pIndices[3]);
+	//m_vecIndexBuffer.push_back(pIndices[4]);
+	//m_vecIndexBuffer.push_back(pIndices[5]);
 	ZeroMemory(&m_SubResourceDesc, sizeof(D3D11_SUBRESOURCE_DATA));
 	m_SubResourceDesc.pSysMem = pIndices;
 
