@@ -196,7 +196,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
     BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    BodyDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_player2DAnimation");
+    BodyDesc.strModelPrototypeTag_2D = TEXT("player");
     BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");

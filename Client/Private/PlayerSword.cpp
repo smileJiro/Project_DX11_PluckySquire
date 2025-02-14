@@ -34,7 +34,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
 
     pDesc->isCoordChangeEnable = true;
     pDesc->strModelPrototypeTag_3D = TEXT("latch_sword");
-    pDesc->strModelPrototypeTag_2D = TEXT("Prototype_Component_playersword2DAnimation");
+    pDesc->strModelPrototypeTag_2D = TEXT("player2dsword");
     pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;

@@ -16,7 +16,7 @@
 					"fwaitingTime": 300.0,
 					"NarAnim": [
 						{
-							"strAnimationid": "Prototype_Component_Narration_0102_01",
+							"strAnimationid": "0102_01_Narration_Model",
 							"AnimationIndex": 0,
 							"isLoop": false,
 							"strSectionid": "Chapter1_P0102",
@@ -125,7 +125,7 @@
 					"fwaitingTime": 300.0,
 					"NarAnim": [
 						{
-							"strAnimationid": "Prototype_Component_Narration_0102_01",
+							"strAnimationid": "0102_01_Narration_Model",
 							"AnimationIndex": 0,
 							"isLoop": false,
 							"strSectionid": "Chapter1_P0102",
@@ -193,7 +193,7 @@
 					"fwaitingTime": 300.0,
 					"NarAnim": [
 						{
-							"strAnimationid": "Prototype_Component_Narration_0102_01",
+							"strAnimationid": "0102_01_Narration_Model",
 							"AnimationIndex": 0,
 							"isLoop": false,
 							"strSectionid": "Chapter1_P0102",
