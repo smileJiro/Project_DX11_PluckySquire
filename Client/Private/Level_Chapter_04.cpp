@@ -425,9 +425,10 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
 
-	_float3 vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
+	_float3 vArm;
+	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.67f, -0.74f, 0.f)));
 	_float fLength = 7.f;
-	Create_Arm((_uint)COORDINATE_3D, pCamera, vRotation, fLength);
+	Create_Arm((_uint)COORDINATE_3D, pCamera, vArm, fLength);
 
 	// CutScene Camera
 	CCamera_CutScene::CAMERA_DESC CutSceneDesc{};
@@ -470,9 +471,9 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, dynamic_cast<CCamera*>(pCamera));
 
-	vRotation = { XMConvertToRadians(-79.2f), XMConvertToRadians(0.f), 0.f };
+	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
 	fLength = 12.5f;
-	Create_Arm((_uint)COORDINATE_2D, pCamera, vRotation, fLength);
+	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
 
 	// Set Cur Camera
 	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
@@ -1007,9 +1008,9 @@ void CLevel_Chapter_04::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 
 	CCameraArm::CAMERA_ARM_DESC Desc{};
 
-	XMStoreFloat3(&Desc.vArm, -vPlayerLook);
+	//XMStoreFloat3(&Desc.vArm, -vPlayerLook);
+	Desc.vArm = _vRotation;
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	Desc.vRotation = _vRotation;
 	Desc.fLength = _fLength;
 	Desc.wszArmTag = TEXT("Player_Arm");
 

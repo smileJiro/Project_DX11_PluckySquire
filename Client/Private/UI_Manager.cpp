@@ -164,6 +164,8 @@ void CUI_Manager::Pushback_Dialogue(CDialog::DialogData _DialogData)
 
 HRESULT CUI_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 {
+	Level_Logo_Exit(_iChangeLevelID, _iNextChangeLevelID);
+
 	if (_iChangeLevelID == LEVEL_LOADING)
 	{
 		m_iCurrentLevel = _iNextChangeLevelID;

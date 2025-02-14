@@ -62,7 +62,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	CGameObject* pCameraTarget = nullptr;
 	Ready_CubeMap(TEXT("Layer_CubeMap"));
 	Ready_Layer_MainTable(TEXT("Layer_MainTable"));
-	//Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
+	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
@@ -71,7 +71,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	Ready_Layer_NPC(TEXT("Layer_NPC"));
 
 	//액터 들어가는넘.,
-	//Ready_Layer_Map();
+	Ready_Layer_Map();
 
 	/* Pooling Test */
 	Pooling_DESC Pooling_Desc;
@@ -222,9 +222,9 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 	static _float3 vOutPos = {};
 	if (IS_IMPORT_IMGUI)
 	{
-		ImGui::Begin("PickingPos");
-		ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
-		ImGui::End();
+		//ImGui::Begin("PickingPos");
+		//ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
+		//ImGui::End();
 	}
 	if (MOUSE_DOWN(MOUSE_KEY::MB))
 	{
@@ -464,6 +464,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, dynamic_cast<CCamera*>(pCamera));
 
+	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
 	//vRotation = { XMConvertToRadians(-79.2f), XMConvertToRadians(0.f), 0.f };
 	fLength = 12.5f;
 	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
