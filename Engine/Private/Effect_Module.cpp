@@ -68,14 +68,14 @@ _int CEffect_Module::Update_Module(CCompute_Shader* _pCShader)
     return 0;
 }
 
-
-
 void CEffect_Module::Free()
 {
     Safe_Release(m_pGameInstance);
 
     __super::Free();
 }
+
+#ifdef _DEBUG
 
 void CEffect_Module::Tool_Module_Update()
 {
@@ -115,3 +115,5 @@ HRESULT CEffect_Module::Save_Module(json& _jsonModuleInfo)
 
     return S_OK;
 }
+
+#endif // _DEBUG

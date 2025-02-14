@@ -30,7 +30,7 @@ HRESULT CPrototype_Manager::Add_Prototype(_uint _iLevelID, const _wstring& _strP
 
     return S_OK;
 }
-
+//
 CBase* CPrototype_Manager::Clone_Prototype(Engine::PROTOTYPE _eType, _uint _iLevelID, const _wstring& _strPrototypeTag, void* _pArg)
 {
     CBase* pPrototype = Find_Prototype(_iLevelID, _strPrototypeTag);

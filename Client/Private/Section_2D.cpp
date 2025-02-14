@@ -173,25 +173,17 @@ _float2 CSection_2D::Get_RenderTarget_Size()
 	return m_pMap->Get_RenderTarget_Size();
 }
 
-const _wstring CSection_2D::Get_WorldRenderTarget_Tag()
-{
-	if (nullptr == m_pMap)
-		return L"";
-
-	return m_pMap->Get_WorldRenderTarget_Tag();
-}
-
-HRESULT CSection_2D::Register_Capcher_WorldTexture(C3DMapSkspObject* _pModel)
+HRESULT CSection_2D::Register_WorldCapture(CModelObject* _pModel)
 {
 	if (nullptr == m_pMap)
 		return E_FAIL;
 
-	return m_pMap->Register_Capcher_WorldTexture(_pModel);
+	return m_pMap->Register_WorldCapture(_pModel);
 }
 
 HRESULT CSection_2D::Ready_Map_2D(_wstring _strMapFIleName)
 {
-	m_pMap = CMap_2D::Create(m_pDevice, m_pContext, _strMapFIleName, m_fRenderResolution, m_iPriorityID);
+	m_pMap = CMap_2D::Create(m_pDevice, m_pContext, m_strName, _strMapFIleName, m_fRenderResolution, m_iPriorityID);
 	if (nullptr == m_pMap)
 		return E_FAIL;
 

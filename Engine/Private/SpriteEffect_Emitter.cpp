@@ -309,6 +309,7 @@ HRESULT CSpriteEffect_Emitter::Cleanup_DeadReferences()
 	return S_OK;
 }
 
+#ifdef _DEBUG
 void CSpriteEffect_Emitter::Tool_Setting()
 {
 }
@@ -329,6 +330,8 @@ void CSpriteEffect_Emitter::Tool_Update(_float _fTimeDelta)
 
 	ImGui::End();
 }
+
+
 
 HRESULT CSpriteEffect_Emitter::Save(json& _jsonOut)
 {
@@ -358,8 +361,6 @@ HRESULT CSpriteEffect_Emitter::Save(json& _jsonOut)
 
 	return S_OK;
 }
-
-#ifdef _DEBUG
 void CSpriteEffect_Emitter::Set_Texture(CTexture* _pTextureCom, _uint _iType)
 {
 	if (_iType >= m_Textures.size())

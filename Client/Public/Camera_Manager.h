@@ -53,8 +53,8 @@ public:
 	_bool				Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 	_bool				Set_NextCutSceneData(_wstring _wszCutSceneName);
 	void				Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);
-	void				Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm);
-	void				Set_FreezeExit(_uint _iFreezeMask);
+	void				Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _int _iTriggerID);
+	void				Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID);
 
 	void				Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType);
 	void				Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, _uint _iRatioType);

@@ -43,6 +43,7 @@ HRESULT CBlocker::Initialize(void* _pArg)
 }
 
 
+
 HRESULT CBlocker::Ready_Component(BLOCKER_DESC* _pDesc)
 {
     if (COORDINATE_2D == m_eBlockerCoord)

@@ -5,7 +5,7 @@
 
 
 BEGIN(Client)
-class CNPC_Store final: public CNPC, public virtual IInteractable
+class CNPC_Store final: public CNPC, public IInteractable
 {
 
 public:
@@ -79,10 +79,6 @@ private:
 private:
 	_bool						m_isDialoging = { false };
 	_bool						m_isOpenSate = { false };
-
-
-
-
 
 };
 

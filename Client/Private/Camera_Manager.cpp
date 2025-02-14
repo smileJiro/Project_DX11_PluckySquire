@@ -270,6 +270,7 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInit
 	{
 		if (nullptr == m_Cameras[TARGET_2D])
 			return;
+
 		CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), L"Layer_Player", 0);
 		
 		if (nullptr != pPlayer)
@@ -321,20 +322,20 @@ void CCamera_Manager::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_PreArmDataState(_iTriggerID, _isReturn);
 }
 
-void CCamera_Manager::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm)
+void CCamera_Manager::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _int _iTriggerID)
 {
 	if (nullptr == m_Cameras[TARGET])
 		return;
 
-	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_FreezeEnter(_iFreezeMask, _vExitArm);
+	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_FreezeEnter(_iFreezeMask, _vExitArm, _iTriggerID);
 }
 
-void CCamera_Manager::Set_FreezeExit(_uint _iFreezeMask)
+void CCamera_Manager::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 {
 	if (nullptr == m_Cameras[TARGET])
 		return;
 
-	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_FreezeExit(_iFreezeMask);
+	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_FreezeExit(_iFreezeMask, _iTriggerID);
 }
 
 void CCamera_Manager::Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType)

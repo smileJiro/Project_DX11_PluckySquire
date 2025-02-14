@@ -54,7 +54,7 @@ public:
 
 #ifdef _DEBUG
 	void				Render_Arm();
-
+#endif
 	_float3				Get_Rotation() { return m_vRotation; }
 	_float				Get_Length() { return m_fLength; }
 
@@ -63,8 +63,6 @@ public:
 	void				Set_ArmTag(_wstring _wszArmTag) { m_wszArmTag = _wszArmTag; }
 	void				Set_ArmVector(_vector _vArm);
 	void				Set_DesireVector();		// 최종 벡터 저장하는용
-#endif
-
 public:
 	_wstring			Get_ArmTag() { return m_wszArmTag; }
 	_vector				Get_ArmVector() { return XMLoadFloat3(&m_vArm); }
@@ -78,6 +76,7 @@ public:
 	_bool				Move_To_NextArm(_float _fTimeDelta);
 	_bool				Move_To_NextArm_ByVector(_float _fTimeDelta);
 	_bool				Move_To_PreArm(_float _fTimeDelta);						// Stack에 저장해둔 Arm으로
+	_bool				Move_To_FreezeExitArm(_float _fRatio, _fvector _vFreezeExitArm);
 
 private:
 	ID3D11Device*		m_pDevice = { nullptr };

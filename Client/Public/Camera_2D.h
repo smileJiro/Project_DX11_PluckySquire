@@ -23,6 +23,13 @@ public:
 		CAMERA_2D_MODE_END 
 	};
 
+	enum DIRECTION_TYPE
+	{
+		HORIZON,	// 가로
+		VERTICAL,	// 세로
+		TYPE_END
+	};
+
 	typedef struct tagCamera2DDesc : public CCamera::CAMERA_DESC
 	{
 		CAMERA_2D_MODE			eCameraMode = { DEFAULT };
@@ -70,6 +77,9 @@ private:
 	// Flipping
 	_float2						m_fFlippingTime = {};
 	_float3						m_vStartPos = {};
+	_float3						m_vFlippingPos = { 0.968761384f, 21.5310783f, -22.8536606f };
+	_float3						m_vFlippingPos_Height = {};
+	DIRECTION_TYPE				m_eDirectionType = { HORIZON };
 
 	// Book
 	_bool						m_isBook = { true };

@@ -168,13 +168,20 @@ void CCamera_2D::Action_SetUp_ByMode()
 		case RETURN_TO_DEFUALT:
 			break;
 		case FLIPPING_UP:
-		{
+		{	
 			XMStoreFloat3(&m_vStartPos, Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
 			m_fFlippingTime = { 0.5f, 0.f };
 		}
 			break;
 		case FLIPPING_DOWN:
 		{
+			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
+			
+			if (true == static_cast<CSection_2D*>(pSection)->Is_Rotation())
+				m_eDirectionType = HORIZON;
+			else
+				m_eDirectionType = VERTICAL;
+
 			XMStoreFloat3(&m_vStartPos, Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
 			m_fFlippingTime = { 0.5f, 0.f };
 
@@ -266,7 +273,9 @@ _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
 	/*if (true == m_isBook) {
 		vTargetPos = XMVectorSetY(vTargetPos, m_fFixedY);
 	}*/
-	
+
+	//NORMAL_DIRECTION::POSITIVE_X >>> normal 판정 enum >>> 사용시 주의 점은 반올림함수를 사용하면 안정성이 오르니 반올림 함수 사용하삼.
+
 	if(true == XMVector3Equal(XMVectorSet(0.f, 0.f, 0.f, 1.f), vTargetPos)) {
 		_vector vCurPos = XMVectorLerp(XMLoadFloat3(&m_v2DPreTargetWorldPos), XMLoadFloat3(&m_v2DTargetWorldPos), 0.05f);
 

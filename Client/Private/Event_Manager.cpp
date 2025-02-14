@@ -500,12 +500,12 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit(const EVENT& _tEvent)
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
 	{
-		CCamera_Manager::GetInstance()->Set_FreezeExit(CCamera_Target::FREEZE_X);
+		CCamera_Manager::GetInstance()->Set_FreezeExit(CCamera_Target::FREEZE_X, iTriggerID);
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_Z_TRIGGER:
 	{
-		CCamera_Manager::GetInstance()->Set_FreezeExit(CCamera_Target::FREEZE_Z);
+		CCamera_Manager::GetInstance()->Set_FreezeExit(CCamera_Target::FREEZE_Z, iTriggerID);
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
@@ -532,12 +532,12 @@ HRESULT CEvent_Manager::Execute_Trigger_FreezeEnter(const EVENT& _tEvent)
 	switch (iCameraTriggerType) {
 	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
 	{
-		CCamera_Manager::GetInstance()->Set_FreezeEnter(CCamera_Target::FREEZE_X, vArm);
+		CCamera_Manager::GetInstance()->Set_FreezeEnter(CCamera_Target::FREEZE_X, vArm, iTriggerID);
 	}
 	break;
 	case (_uint)TRIGGER_TYPE::FREEZE_Z_TRIGGER:
 	{
-		CCamera_Manager::GetInstance()->Set_FreezeEnter(CCamera_Target::FREEZE_Z, vArm);
+		CCamera_Manager::GetInstance()->Set_FreezeEnter(CCamera_Target::FREEZE_Z, vArm, iTriggerID);
 	}
 	break;
 	}
@@ -676,8 +676,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 	CPooling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CCamera_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 
-	Uimgr->Level_Logo_Exit(_iChangeLevelID, _iNextChangeLevelID);
-	Uimgr->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
+	Uimgr->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 	
 
 	return S_OK;

@@ -10,6 +10,12 @@ CRenderGroup_WorldPos::CRenderGroup_WorldPos(ID3D11Device* _pDevice, ID3D11Devic
 
 HRESULT CRenderGroup_WorldPos::Initialize(void* _pArg)
 {
+    RG_WORLDPOS_DESC* pDesc = static_cast<RG_WORLDPOS_DESC*>(_pArg);
+
+    // Save Desc
+    m_strSectionTag = pDesc->strSectionTag;
+    m_strRTTag = pDesc->strRTTag;
+
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
@@ -28,7 +34,7 @@ HRESULT CRenderGroup_WorldPos::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTB
     for (auto& pGroupObject : m_GroupObjects)
     {
         if (nullptr != pGroupObject && true == pGroupObject->Is_Render())
-            static_cast<CModelObject*>(pGroupObject)->Render_WorldPosMap();
+            static_cast<CModelObject*>(pGroupObject)->Render_WorldPosMap(m_strRTTag, m_strSectionTag);
 
         // Render 수행 후 해당 객체는 RefCount--
         Safe_Release(pGroupObject);

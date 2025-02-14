@@ -107,9 +107,7 @@ void CCameraArm::Render_Arm()
 
   //  m_pBatch->End();
 }
-#endif
 
-#ifdef _DEBUG
 HRESULT CCameraArm::Set_PrimitiveBatch()
 {
     m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
@@ -248,7 +246,6 @@ void CCameraArm::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 //   // m_pGameInstance->Set_CameraPos(vCameraPos, vTargetPos);
 //}
 
-#ifdef _DEBUG
 void CCameraArm::Set_Rotation(_vector _vRotation)
 {
     XMStoreFloat3(&m_vRotation, _vRotation);
@@ -277,10 +274,6 @@ void CCameraArm::Set_DesireVector()
 {
     m_pNextArmData->vDesireArm = m_vArm;
 }
-
-#endif // _DEBUG
-
-
 void CCameraArm::Turn_ArmX(_float fAngle)
 {
     // RightÃà
@@ -452,7 +445,7 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta)
     _vector vDot = XMVector3Dot(XMLoadFloat3(&m_vArm), XMLoadFloat3(&m_pNextArmData->vDesireArm));
     _float fAngle = acos(XMVectorGetX(vDot));
     _float fDegree = XMConvertToDegrees(fAngle);
-
+    //m_PreArms.pop_back();
     if (fDegree < 3.f) {
         m_iMovementFlags |= DONE_Y_ROTATE;
         m_iMovementFlags |= DONE_LENGTH_MOVE;
@@ -519,6 +512,19 @@ _bool CCameraArm::Move_To_PreArm(_float _fTimeDelta)
 
     XMStoreFloat3(&m_vArm, XMVector3Normalize(vArm));
     m_pTransform->Set_Look(vArm);
+
+    return false;
+}
+
+_bool CCameraArm::Move_To_FreezeExitArm(_float _fRatio, _fvector _vFreezeExitArm)
+{
+    if (_fRatio >= (1.f - EPSILON)) {
+        return true;
+    }
+
+    _vector vArm = XMVectorLerp(XMLoadFloat3(&m_vArm), _vFreezeExitArm, _fRatio);
+
+    XMStoreFloat3(&m_vArm, vArm);
 
     return false;
 }

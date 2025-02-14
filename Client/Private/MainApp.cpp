@@ -48,7 +48,11 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iViewportHeight = g_iWinSizeY;
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 	EngineDesc.isNewRenderer = true;
+#ifdef _DEBUG
 	EngineDesc.eImportMode |= IMPORT_IMGUI;
+#elif NDEBUG
+	EngineDesc.eImportMode |= NONE_IMPORT;
+#endif
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
@@ -104,9 +108,7 @@ void CMainApp::Progress(_float _fTimeDelta)
 	if (IS_IMPORT_IMGUI)
 		ImGui::RenderPlatformWindowsDefault(); 
 
-#ifdef _DEBUG
-	
-#endif // _DEBUG
+
 
 	CEvent_Manager::GetInstance()->Update(_fTimeDelta);
 }
@@ -273,7 +275,7 @@ HRESULT CMainApp::Ready_RenderGroup()
 
 	/* RG_3D, PR3D_POSTPROCESSING */
 	CRenderGroup_PostProcessing::RG_POST_DESC RG_PostDesc;
-	RG_PostDesc.iBlurLevel = 3;
+	RG_PostDesc.iBlurLevel = 2;
 	RG_PostDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RG_PostDesc.iPriorityID = PR3D_POSTPROCESSING;
 	CRenderGroup_PostProcessing* pRenderGroup_Post = CRenderGroup_PostProcessing::Create(m_pDevice, m_pContext, &RG_PostDesc);
@@ -586,6 +588,8 @@ HRESULT CMainApp::Ready_RenderTargets()
 		return E_FAIL;
 
 
+#ifdef _DEBUG
+
 	/* 위치 설정. */
 	_float fSizeX = (_float)g_iWinSizeX * 0.2f;
 	_float fSizeY = (_float)g_iWinSizeY * 0.2f;
@@ -595,6 +599,8 @@ HRESULT CMainApp::Ready_RenderTargets()
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Albedo"), fX, fY, fSizeX, fSizeY);
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Normal"), fX, fY + fSizeY * 1.0f, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_EffectAccumulate"), fX, fY, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
+
+#endif // _DEBUG
 
 
 	return S_OK;

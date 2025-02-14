@@ -2,6 +2,7 @@
 #include "Section_Manager.h"
 #include "GameInstance.h"
 
+#include "RenderGroup_WorldPos.h"
 #include "Section_2D_PlayMap_Book.h"
 #include "Section_2D_PlayMap_Sksp.h"
 #include "Section_2D_Narration.h"
@@ -28,6 +29,36 @@ HRESULT CSection_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 
     m_pContext = _pContext;
     Safe_AddRef(m_pContext);
+
+
+    /* Target_WorldPosMap_Book */
+    if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_WorldPosMap_Book"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 1.f))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_WorldPosMap_Book"), TEXT("Target_WorldPosMap_Book"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_WorldPosMap_Book"), RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y)))
+        return E_FAIL;
+
+    CRenderGroup_WorldPos::RG_WORLDPOS_DESC Desc;
+    Desc.iRenderGroupID = RG_WORLDPOSMAP;
+    Desc.iPriorityID = PRWORLD_MAINBOOK;
+    Desc.isClear = false;
+    Desc.isViewportSizeChange = true;
+    Desc.pDSV = m_pGameInstance->Find_DSV(TEXT("DSV_WorldPosMap_Book"));
+    Desc.strMRTTag = TEXT("MRT_WorldPosMap_Book");
+    Desc.strRTTag = TEXT("Target_WorldPosMap_Book");
+    Desc.strSectionTag = TEXT("");
+    Desc.vViewportSize = { RTSIZE_BOOK2D_X , RTSIZE_BOOK2D_Y };
+    CRenderGroup_WorldPos* pRenderGroup_WorldPos = CRenderGroup_WorldPos::Create(m_pDevice, m_pContext, &Desc);
+    if (nullptr == pRenderGroup_WorldPos)
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_WorldPos->Get_RenderGroupID(), pRenderGroup_WorldPos->Get_PriorityID(), pRenderGroup_WorldPos)))
+        return E_FAIL;
+    Safe_Release(pRenderGroup_WorldPos);
+
+ 
+
+
 
     return S_OK;
 }
@@ -302,7 +333,7 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_p
     _int iIndex = iPixelY * rowPitchInPixels + iPixelX;
 
     if (iWidth * iHeight <= iIndex || 0 > iIndex)
-        return XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+        return XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 
 
     _uint iDefaultIndex = iIndex * 4;
@@ -311,36 +342,36 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_p
     _float x = fData[iDefaultIndex]; // Red 채널
     _float y = fData[iDefaultIndex + 1]; // Green 채널
     _float z = fData[iDefaultIndex + 2]; // Blue 채널
-    //_float w = fData[iIndex * 4 + 3]; // Alpha 채널
+    _float w = fData[iDefaultIndex + 3]; // Alpha 채널
 
-    if (0.f == x &&
-        0.f == y &&
-        0.f == z
-        )
-    {
-        _vector vLerpPos = XMVectorLerp(XMVectorSet(
-            fData[iDefaultIndex - 4],
-            fData[iDefaultIndex - 3],
-            fData[iDefaultIndex - 2],
-            fData[iDefaultIndex - 1]
-        ),
-            XMVectorSet(
-                fData[iDefaultIndex + 4],
-                fData[iDefaultIndex + 5],
-                fData[iDefaultIndex + 6],
-                fData[iDefaultIndex + 7]
-            ), 0.5f);
+    //if (0.f == x &&
+    //    0.f == y &&
+    //    0.f == z
+    //    )
+    //{
+    //    _vector vLerpPos = XMVectorLerp(XMVectorSet(
+    //        fData[iDefaultIndex - 4],
+    //        fData[iDefaultIndex - 3],
+    //        fData[iDefaultIndex - 2],
+    //        fData[iDefaultIndex - 1]
+    //    ),
+    //        XMVectorSet(
+    //            fData[iDefaultIndex + 4],
+    //            fData[iDefaultIndex + 5],
+    //            fData[iDefaultIndex + 6],
+    //            fData[iDefaultIndex + 7]
+    //        ), 0.5f);
 
-        x = XMVectorGetX(vLerpPos);
-        y = XMVectorGetY(vLerpPos);
-        z = XMVectorGetZ(vLerpPos);
-    }
+    //    x = XMVectorGetX(vLerpPos);
+    //    y = XMVectorGetY(vLerpPos);
+    //    z = XMVectorGetZ(vLerpPos);
+    //}
 
 
     // 맵핑 해제
     m_pContext->Unmap(m_pTargetTexture, 0);
 
-    return XMVectorSet(x, y, z, 1.0f);
+    return XMVectorSet(x, y, z, w);
 }
 
 ID3D11RenderTargetView* CSection_Manager::Get_RTV_FromRenderTarget(const _wstring& _strSectionTag)
@@ -381,6 +412,15 @@ ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromTexture(const _wstring& 
         return nullptr;
 
     return pSection_2D->Get_SRV_FromTexture(_iTextureIndex);
+}
+
+HRESULT CSection_Manager::Register_WorldCapture(const _wstring& _strSectionTag, CModelObject* _pObject)
+{
+    CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(Find_Section(_strSectionTag));
+    if (nullptr == pSection_2D)
+        return E_FAIL;
+
+    return pSection_2D->Register_WorldCapture(_pObject);
 }
 
 void CSection_Manager::Main_Section_Active_Process(const _wstring& _strSectionTag)
@@ -527,9 +567,19 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
                         MSG_BOX("Failed Create CSection_2D");
                         return E_FAIL;
                     }
-
                     if (FAILED(SetActive_Section(pSection, false)))
                         return E_FAIL;
+
+
+                    if (pSection->Is_Rotation())
+                    {
+                        CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, L"Layer_Book", 0);
+
+                        if (nullptr != pGameObject)
+                        {
+                            pSection->Register_WorldCapture((CModelObject*)pGameObject);
+                        }
+                    }
                 }
                 break;
                 case Client::CSection_2D::NARRAION:
