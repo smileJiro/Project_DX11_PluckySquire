@@ -905,6 +905,9 @@
     <ClInclude Include="..\Public\StandbyNoneAttackState.h">
       <Filter>03.Components\FSM\State\Standby</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Chapter_Test.h">
+      <Filter>01.Levels\03.GamePlay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1394,6 +1397,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\StandbyNoneAttackState.cpp">
       <Filter>03.Components\FSM\State\Standby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Chapter_Test.cpp">
+      <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

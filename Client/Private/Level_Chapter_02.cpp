@@ -354,6 +354,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Map()
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_4:
+		if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
+			return E_FAIL;
+		break;
+	case Client::LEVEL_CHAPTER_TEST:
 		if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
 			return E_FAIL;
 		break;

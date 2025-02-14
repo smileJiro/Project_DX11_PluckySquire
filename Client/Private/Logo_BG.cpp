@@ -103,8 +103,8 @@ HRESULT CLogo_BG::Render()
 	
 	_wstring strMenuOverrideText[] = {
 		TEXT("Ã©ÅÍ 2 ¸ÞÀÎ ¸Ê")
-		,TEXT("Ã©ÅÍ 4 ÀÏ¹Ý ¸Ê")
-		,TEXT("Å©·¹µ÷")
+		,TEXT("Ã©ÅÍ 4 ¸ÞÀÎ ¸Ê")
+		,TEXT("Ã©ÅÍ 4 Å×½ºÆ® ¸Ê")
 		,TEXT("¹ÙÅÁÈ­¸éÀ¸·Î ³ª°¡±â")
 	};
 
@@ -236,6 +236,8 @@ void CLogo_BG::ProcesssByIndex(_int _iIndex)
 
 	case 2:
 	{
+		Uimgr->Set_LogoChangeState(false);
+		Event_LevelChange(LEVEL_LOADING, LEVEL_CHAPTER_TEST);
 	}
 	break;
 
