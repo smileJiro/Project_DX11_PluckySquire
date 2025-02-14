@@ -129,7 +129,6 @@ public:
 			return nullptr;
 		return m_pMap->Get_WorldTexture();
 	}
-	const _wstring						Get_WorldRenderTarget_Tag();
 public:
 	HRESULT					Register_WorldCapture(CModelObject* _pModel);
 
