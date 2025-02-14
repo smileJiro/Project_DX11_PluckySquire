@@ -328,9 +328,6 @@
     <Filter Include="02.GameObjects\NPC\99. Social_Npc">
       <UniqueIdentifier>{6b81b8a5-a804-493a-8b27-4ce5cfa0487c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\NPC\99. Social_Npc\00. NPC_DJMoonBeard">
-      <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="94.RenderGroups%28Custom%29\Old">
       <UniqueIdentifier>{627d460b-795c-4203-a3a0-b23870676a3a}</UniqueIdentifier>
     </Filter>
@@ -399,6 +396,9 @@
     </Filter>
     <Filter Include="02.GameObjects\Blocker">
       <UniqueIdentifier>{492e3f5e-3de8-4f2c-854d-0644478cb21a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\99. Social_Npc\00. Npc_Social">
+      <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -806,7 +806,7 @@
       <Filter>04.Section\Section_2D\Narration_2D</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NPC_Social.h">
-      <Filter>02.GameObjects\NPC\99. Social_Npc\00. NPC_DJMoonBeard</Filter>
+      <Filter>02.GameObjects\NPC\99. Social_Npc\00. Npc_Social</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Npc_OnlySocial.h">
       <Filter>02.GameObjects\NPC\99. Social_Npc</Filter>
@@ -904,6 +904,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\StandbyNoneAttackState.h">
       <Filter>03.Components\FSM\State\Standby</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Chapter_Test.h">
+      <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1296,7 +1299,7 @@
       <Filter>04.Section\Section_2D\Narration_2D</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NPC_Social.cpp">
-      <Filter>02.GameObjects\NPC\99. Social_Npc\00. NPC_DJMoonBeard</Filter>
+      <Filter>02.GameObjects\NPC\99. Social_Npc\00. Npc_Social</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NPC_OnlySocial.cpp">
       <Filter>02.GameObjects\NPC\99. Social_Npc</Filter>
@@ -1394,6 +1397,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\StandbyNoneAttackState.cpp">
       <Filter>03.Components\FSM\State\Standby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Chapter_Test.cpp">
+      <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

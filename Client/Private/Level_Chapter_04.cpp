@@ -29,6 +29,7 @@
 #include "Soldier_CrossBow.h"
 #include "Soldier_Bomb.h"
 #include "ButterGrump.h"
+#include "Blocker.h"
 
 
 #include "RayShape.h"
@@ -70,7 +71,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	Ready_Layer_UI(TEXT("Layer_UI"));
 	//Ready_Layer_Effects(TEXT("Layer_Effect"));
 	Ready_Layer_NPC(TEXT("Layer_NPC"));
-
+	Ready_Layer_Blocker2D(TEXT("Layer_Blocker2D"));
 	//액터 들어가는넘.,
 	Ready_Layer_Map();
 
@@ -91,11 +92,13 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::TRIGGER_OBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::INTERACTION_OBEJCT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
 
 
 	// 그룹필터 제거
@@ -209,9 +212,13 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 
 
 	static _float3 vOutPos = {};
-	//ImGui::Begin("PickingPos");
-	//ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
-	//ImGui::End();
+
+	if (IS_IMPORT_IMGUI)
+	{
+		ImGui::Begin("PickingPos");
+		ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
+		ImGui::End();
+	}
 	if (MOUSE_DOWN(MOUSE_KEY::MB))
 	{
 		POINT pt;
@@ -358,6 +365,10 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Map()
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_4:
+		if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
+			return E_FAIL;
+		break;
+	case Client::LEVEL_CHAPTER_TEST:
 		if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
 			return E_FAIL;
 		break;
@@ -972,6 +983,24 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Effects(const _wstring& _strLayerTag)
 	Desc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Portal.json"), m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_Blocker2D(const _wstring& _strLayerTag)
+{
+	CGameObject* pGameObject = nullptr;
+	CBlocker::BLOCKER2D_DESC Desc = {};
+	Desc.iCurLevelID = LEVEL_CHAPTER_4;
+	Desc.isFloor = true;
+	Desc.vColliderExtents = { 300.f, 100.f };
+	Desc.vColliderScale = { 1.0f, 1.0f };
+	Desc.Build_2D_Transform(_float2(0.0f, 100.f), _float2(1.0f, 1.0f));
+	if(FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Blocker2D"), LEVEL_CHAPTER_4, _strLayerTag, &pGameObject, &Desc)))
+		return E_FAIL;
+
+	if(FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
 		return E_FAIL;
 
 	return S_OK;

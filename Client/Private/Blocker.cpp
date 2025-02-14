@@ -55,6 +55,7 @@ HRESULT CBlocker::Ready_Component(BLOCKER_DESC* _pDesc)
         AABBDesc.vScale = Desc2D->vColliderScale;
         AABBDesc.vOffsetPosition = Desc2D->vOffsetPosition;
         AABBDesc.isBlock = true;
+        AABBDesc.iCollisionGroupID = m_iCollisionGroupID;
         CCollider_AABB* pCollider = nullptr;
         if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
             TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &AABBDesc)))
@@ -72,14 +73,33 @@ HRESULT CBlocker::Ready_Component(BLOCKER_DESC* _pDesc)
 
 CBlocker* CBlocker::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, COORDINATE _eCoord)
 {
-	return nullptr;
+    CBlocker* pInstance = new CBlocker(_pDevice, _pContext, _eCoord);
+
+    if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        MSG_BOX("Failed Create : CBlocker");
+        return nullptr;
+    }
+
+	return pInstance;
 }
 
 CGameObject* CBlocker::Clone(void* _pArg)
 {
-	return nullptr;
+    CBlocker* pInstance = new CBlocker(*this);
+
+    if (FAILED(pInstance->Initialize(_pArg)))
+    {
+        MSG_BOX("Failed to Cloned : CBlocker");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
 }
 
 void CBlocker::Free()
 {
+
+
+    __super::Free();
 }
