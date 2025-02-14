@@ -216,6 +216,14 @@ _float CCamera_Manager_Tool::Get_ArmLength()
 	return _float();
 }
 
+_uint CCamera_Manager_Tool::Get_ZoomLevel()
+{
+	if (nullptr == m_Cameras[TARGET])
+		return -1;
+
+	return m_Cameras[TARGET]->Get_CurrentZoomLevel();
+}
+
 _float3 CCamera_Manager_Tool::Get_CurrentArmVector()
 {
 	_float3 vArm;
@@ -244,6 +252,22 @@ void CCamera_Manager_Tool::Set_CurrentArm(CCameraArm* _pCameraArm)
 	m_pCurrentArm = _pCameraArm;
 	Safe_AddRef(m_pCurrentArm);
 
+}
+
+void CCamera_Manager_Tool::Set_CurrentArmVector(_float3 _vCurArmVector)
+{
+	if (nullptr == m_pCurrentArm)
+		return;
+
+	m_pCurrentArm->Set_ArmVector(XMLoadFloat3(&_vCurArmVector));
+}
+
+void CCamera_Manager_Tool::Set_ZoomLevel(_uint _iZoomLevel)
+{
+	if (nullptr == m_Cameras[TARGET])
+		return;
+
+	m_Cameras[TARGET]->Set_ZoomLevel(_iZoomLevel);
 }
 
 //CCameraArm* CCamera_Manager_Tool::Find_Arm(_wstring _wszArmTag)

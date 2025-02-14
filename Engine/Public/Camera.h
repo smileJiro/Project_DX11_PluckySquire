@@ -61,7 +61,7 @@ public:
 	_uint	Get_CurrentZoomLevel() { return m_iCurZoomLevel; }
 	_vector Get_AtOffset() { return XMLoadFloat3(&m_vAtOffset); }
 
-	void	Set_ZoomLevel(_uint _iZoomLevel) { m_iCurZoomLevel = _iZoomLevel; }
+	void	Set_ZoomLevel(_uint _iZoomLevel) { m_iCurZoomLevel = _iZoomLevel; m_fFovy = m_ZoomLevels[_iZoomLevel]; }
 	void	Set_AtOffset(_fvector _vAtOffset) { XMStoreFloat3(&m_vAtOffset, _vAtOffset); }
 #endif
 
