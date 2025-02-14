@@ -68,6 +68,7 @@ struct VS_WORLDOUT
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
+    float3 vWorldNormal : TEXCOORD2;
 };
 
 VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
@@ -83,7 +84,7 @@ VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
     Out.vPosition = vNDCCoord;
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(float4(In.vPosition, 1.0f), g_WorldMatrix);
-
+    Out.vWorldNormal = mul(float4(In.vNormal, 0.0f), g_WorldMatrix);
     return Out;
 }
 
@@ -215,6 +216,7 @@ struct PS_WORLDIN
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
+    float3 vWorldNormal : TEXCOORD2;
 };
 struct PS_WORLDOUT
 {
@@ -224,7 +226,27 @@ struct PS_WORLDOUT
 PS_WORLDOUT PS_WORLDPOSMAP(PS_WORLDIN In)
 {
     PS_WORLDOUT Out = (PS_WORLDOUT)0;
-    Out.vWorldPos = In.vWorldPos;
+    
+    float fNormalDirectionFlag = NONEWRITE_NORMAL;
+    // +X, -X
+    if (pow(In.vWorldNormal.x, 2) > pow(In.vWorldNormal.y, 2) && pow(In.vWorldNormal.x, 2) > pow(In.vWorldNormal.z, 2))
+    {
+        fNormalDirectionFlag = (In.vWorldNormal.x) > 0 ? POSITIVE_X : NEGATIVE_X;
+    }
+    // +Y, -Y
+    else if (pow(In.vWorldNormal.y, 2) > pow(In.vWorldNormal.x, 2) && pow(In.vWorldNormal.y, 2) > pow(In.vWorldNormal.z, 2))
+    {
+        fNormalDirectionFlag = (In.vWorldNormal.y) > 0 ? POSITIVE_Y : NEGATIVE_Y;
+    }
+    // +Z, -Z
+    else if (pow(In.vWorldNormal.z, 2) > pow(In.vWorldNormal.x, 2) && pow(In.vWorldNormal.z, 2) > pow(In.vWorldNormal.y, 2))
+    { 
+        fNormalDirectionFlag = (In.vWorldNormal.z) > 0 ? POSITIVE_Z : NEGATIVE_Z;
+    }
+
+    Out.vWorldPos.rgb = In.vWorldPos.rgb;
+    Out.vWorldPos.a = fNormalDirectionFlag;
+
     return Out;
 }
 

@@ -333,7 +333,7 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_p
     _int iIndex = iPixelY * rowPitchInPixels + iPixelX;
 
     if (iWidth * iHeight <= iIndex || 0 > iIndex)
-        return XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+        return XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 
 
     _uint iDefaultIndex = iIndex * 4;
@@ -342,36 +342,36 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_p
     _float x = fData[iDefaultIndex]; // Red 채널
     _float y = fData[iDefaultIndex + 1]; // Green 채널
     _float z = fData[iDefaultIndex + 2]; // Blue 채널
-    //_float w = fData[iIndex * 4 + 3]; // Alpha 채널
+    _float w = fData[iDefaultIndex + 3]; // Alpha 채널
 
-    if (0.f == x &&
-        0.f == y &&
-        0.f == z
-        )
-    {
-        _vector vLerpPos = XMVectorLerp(XMVectorSet(
-            fData[iDefaultIndex - 4],
-            fData[iDefaultIndex - 3],
-            fData[iDefaultIndex - 2],
-            fData[iDefaultIndex - 1]
-        ),
-            XMVectorSet(
-                fData[iDefaultIndex + 4],
-                fData[iDefaultIndex + 5],
-                fData[iDefaultIndex + 6],
-                fData[iDefaultIndex + 7]
-            ), 0.5f);
+    //if (0.f == x &&
+    //    0.f == y &&
+    //    0.f == z
+    //    )
+    //{
+    //    _vector vLerpPos = XMVectorLerp(XMVectorSet(
+    //        fData[iDefaultIndex - 4],
+    //        fData[iDefaultIndex - 3],
+    //        fData[iDefaultIndex - 2],
+    //        fData[iDefaultIndex - 1]
+    //    ),
+    //        XMVectorSet(
+    //            fData[iDefaultIndex + 4],
+    //            fData[iDefaultIndex + 5],
+    //            fData[iDefaultIndex + 6],
+    //            fData[iDefaultIndex + 7]
+    //        ), 0.5f);
 
-        x = XMVectorGetX(vLerpPos);
-        y = XMVectorGetY(vLerpPos);
-        z = XMVectorGetZ(vLerpPos);
-    }
+    //    x = XMVectorGetX(vLerpPos);
+    //    y = XMVectorGetY(vLerpPos);
+    //    z = XMVectorGetZ(vLerpPos);
+    //}
 
 
     // 맵핑 해제
     m_pContext->Unmap(m_pTargetTexture, 0);
 
-    return XMVectorSet(x, y, z, 1.0f);
+    return XMVectorSet(x, y, z, w);
 }
 
 ID3D11RenderTargetView* CSection_Manager::Get_RTV_FromRenderTarget(const _wstring& _strSectionTag)
