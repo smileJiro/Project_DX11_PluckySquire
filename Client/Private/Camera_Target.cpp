@@ -85,21 +85,33 @@ void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_D
 	m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
 }
 
-void CCamera_Target::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm)
+void CCamera_Target::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _int _iTriggerID)
 {
 	m_iFreezeMask |= _iFreezeMask;
 	memcpy(&m_vFreezeEnterPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
-	//XMStoreFloat3(&m_vFreezeEnterPos, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
-	XMStoreFloat3(&m_vFreezeExitArm, _vExitArm);
 	m_isFreezeExit = false;
+
+	_float3 vExitArm;
+	XMStoreFloat3(&vExitArm, _vExitArm);
+	m_FreezeExitArms.push_back({ vExitArm , _iTriggerID });
 }
 
-void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask)
+void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 {
 	m_iFreezeMask ^= _iFreezeMask;
 	m_fFreezeExitTime = {1.f, 0.f};
 	m_isFreezeExit = true;
-	m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_vFreezeExitArm)));
+
+	for (auto& iter = m_FreezeExitArms.begin(); iter != m_FreezeExitArms.end();) {
+		if (_iTriggerID == (*iter).second) {
+			m_vCurFreezeExitArm = (*iter).first;
+			iter = m_FreezeExitArms.erase(iter);
+		}
+		else
+			++iter;
+	}
+
+	//m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_vFreezeExitArm)));
 }
 
 void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
@@ -274,12 +286,14 @@ void CCamera_Target::Action_SetUp_ByMode()
 			break;
 		case MOVE_TO_NEXTARM:
 		{
-			//m_iPreArmZoomLevel = m_iCurZoomLevel;
+			m_fFreezeExitTime.y = 0.f;
+			m_isFreezeExit = false;
 		}
 			break;
 		case RETURN_TO_PREARM:
 		{
-			//Start_Zoom(m_pCurArm->Get_ReturnTime(), (ZOOM_LEVEL)m_iPreArmZoomLevel, EASE_IN);
+			m_fFreezeExitTime.y = 0.f;
+			m_isFreezeExit = false;
 		}
 			break;
 		}
@@ -299,26 +313,34 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 		m_fFreezeExitTime.y += _fTimeDelta;
 		_float fRatio = m_fFreezeExitTime.y / m_fFreezeExitTime.x;
 
-		if (fRatio >= (1.f - EPSILON)) {
+		if (m_pCurArm->Move_To_FreezeExitArm(fRatio, XMLoadFloat3(&m_vCurFreezeExitArm))) {
 			m_fFreezeExitTime.y = 0.f;
 			m_isFreezeExit = false;
 		}
-		else {
-			// Freeze X를 나왔는데 Freeze Z에 있을 때
-			if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
-				vCameraPos = XMVectorLerp(vCurPos, XMVectorSetZ(vCameraPos, XMVectorGetZ(vCurPos)), fRatio);
-			}
-			// Freeze X를 나왔는데 Freeze Z에 있을 때
-			else if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
-				vCameraPos = XMVectorLerp(vCurPos, XMVectorSetX(vCameraPos, XMVectorGetX(vCurPos)), fRatio);
-			}
-			else if (RESET == m_iFreezeMask) {
-				//vCameraPos = XMVectorLerp(vCurPos, vCameraPos, fRatio);
-			
-				_float fZ = m_pGameInstance->Lerp(XMVectorGetZ(vCurPos), XMVectorGetZ(vCameraPos), fRatio);
-				vCameraPos = XMVectorSetZ(vCameraPos, fZ);
-			}
-		}
+
+
+
+
+		//if (fRatio >= (1.f - EPSILON)) {
+		//	m_fFreezeExitTime.y = 0.f;
+		//	m_isFreezeExit = false;
+		//}
+		//else {
+		//	// Freeze X를 나왔는데 Freeze Z에 있을 때
+		//	//if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
+		//	//	vCameraPos = XMVectorLerp(vCurPos, XMVectorSetZ(vCameraPos, XMVectorGetZ(vCurPos)), fRatio);
+		//	//}
+		//	//// Freeze Z를 나왔는데 Freeze X에 있을 때
+		//	//else if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
+		//	//	vCameraPos = XMVectorLerp(vCurPos, XMVectorSetX(vCameraPos, XMVectorGetX(vCurPos)), fRatio);
+		//	//}
+		//	//else if (RESET == m_iFreezeMask) {
+		//	//	//vCameraPos = XMVectorLerp(vCurPos, vCameraPos, fRatio);
+		//	//
+		//	//	_float fZ = m_pGameInstance->Lerp(XMVectorGetZ(vCurPos), XMVectorGetZ(vCameraPos), fRatio);
+		//	//	vCameraPos = XMVectorSetZ(vCameraPos, fZ);
+		//	//}
+		//}
 	}
 	else {
 		if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {

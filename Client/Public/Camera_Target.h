@@ -62,8 +62,8 @@ public:
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 	void						Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);
 	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
-	void						Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm);
-	void						Set_FreezeExit(_uint _iFreezeMask);
+	void						Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _int _iTriggerID);
+	void						Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID);
 
 	void						Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
@@ -87,10 +87,13 @@ private:
 	_bool						m_isFreezeExit = { false };
 	_float2						m_fFreezeExitTime = { 0.4f, 0.f };
 	_float3						m_vFreezeEnterPos = {};
-	_float3						m_vFreezeExitArm = {};
+	
+	
+	list<pair<_float3, _uint>>	m_FreezeExitArms = {};
+	_float3						m_vCurFreezeExitArm = {};
 
 
-	_uint						m_iPreFreeze = {};
+	//_uint						m_iPreFreeze = {};
 
 	// PreArm Return
 	deque<pair<RETURN_SUBDATA, _bool>> m_PreSubArms;
