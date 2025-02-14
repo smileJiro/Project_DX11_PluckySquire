@@ -23,6 +23,7 @@
 #include "Collider_Circle.h"
 #include "Collider_AABB.h"
 #include "Collider_Fan.h"
+#include "Gravity.h"
 #include "Compute_Shader.h"
 
 /* Etc */

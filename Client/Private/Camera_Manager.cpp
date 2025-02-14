@@ -321,12 +321,20 @@ void CCamera_Manager::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_PreArmDataState(_iTriggerID, _isReturn);
 }
 
-void CCamera_Manager::Set_Freeze(_uint _iFreezeType)
+void CCamera_Manager::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm)
 {
 	if (nullptr == m_Cameras[TARGET])
 		return;
 
-	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_Freeze(_iFreezeType);
+	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_FreezeEnter(_iFreezeMask, _vExitArm);
+}
+
+void CCamera_Manager::Set_FreezeExit(_uint _iFreezeMask)
+{
+	if (nullptr == m_Cameras[TARGET])
+		return;
+
+	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_FreezeExit(_iFreezeMask);
 }
 
 void CCamera_Manager::Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType)
@@ -360,7 +368,7 @@ void CCamera_Manager::Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fSha
 
 void CCamera_Manager::Load_ArmData()
 {
-	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/Test.json";
+	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/Chapter2_ArmData.json";
 
 	ifstream file(wszLoadPath);
 

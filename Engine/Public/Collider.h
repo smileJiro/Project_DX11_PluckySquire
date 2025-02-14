@@ -2,6 +2,7 @@
 #include "Component.h"
 BEGIN(Engine)
 class CGameObject;
+class CCollider_AABB;
 class ENGINE_DLL CCollider abstract:  public CComponent
 {
 public:
@@ -35,6 +36,10 @@ public:
 	virtual _bool			Is_Collision(CCollider* _pOther) = 0;
 	virtual void			Update_OwnerTransform() = 0;
 	virtual void			Block(CCollider* _pOther) { return; }// 블록등록한 애들이 otherobject를 밀어내게 .Circle, AABB 각각 밀어내기 코드가 존재해야겠지/...
+
+public:
+	virtual _bool			Compute_NearestPoint_AABB(CCollider_AABB* _pOtherAABB, _float2* _pOutPos = nullptr, _float2* _pContactVector_NotNormalize = nullptr) { return false; }
+
 public:
 	// Get
 	TYPE					Get_Type() const { return m_eType; }

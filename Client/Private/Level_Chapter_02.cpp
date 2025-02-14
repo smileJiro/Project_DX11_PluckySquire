@@ -68,10 +68,10 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
 	//Ready_Layer_Effects(TEXT("Layer_Effect"));
-	Ready_Layer_NPC(TEXT("Layer_NPC"));
+	//Ready_Layer_NPC(TEXT("Layer_NPC"));
 
 	//액터 들어가는넘.,
-	Ready_Layer_Map();
+	//Ready_Layer_Map();
 
 	/* Pooling Test */
 	Pooling_DESC Pooling_Desc;
@@ -274,7 +274,7 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 	}
 
 	if (KEY_DOWN(KEY::T)) {
-		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Trigger.json"));
+		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger.json"));
 		CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	}
 
@@ -292,20 +292,23 @@ HRESULT CLevel_Chapter_02::Render()
 
 HRESULT CLevel_Chapter_02::Ready_Lights()
 {
-	CONST_LIGHT LightDesc{};
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
 
-	ZeroMemory(&LightDesc, sizeof LightDesc);
-
-	LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
-	LightDesc.fFallOutStart = 20.0f;
-	LightDesc.fFallOutEnd = 1000.0f;
-	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
-	LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
-
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
-		return E_FAIL;
+	//CONST_LIGHT LightDesc{};
+	//
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
+	//
+	//LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
+	//LightDesc.fFallOutStart = 20.0f;
+	//LightDesc.fFallOutEnd = 1000.0f;
+	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	//LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+	//LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	//LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+	//
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
+	//	return E_FAIL;
 
 
 	return S_OK;
@@ -419,9 +422,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
 
-	_float3 vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
-	_float fLength = 7.f;
-	Create_Arm((_uint)COORDINATE_3D, pCamera, vRotation, fLength);
+	_float3 vArm;
+	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.67f, -0.74f, 0.f)));
+	_float fLength = 14.6f;
+	Create_Arm((_uint)COORDINATE_3D, pCamera, vArm, fLength);
 
 	// CutScene Camera
 	CCamera_CutScene::CAMERA_DESC CutSceneDesc{};
@@ -464,9 +468,9 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, dynamic_cast<CCamera*>(pCamera));
 
-	vRotation = { XMConvertToRadians(-79.2f), XMConvertToRadians(0.f), 0.f };
+	//vRotation = { XMConvertToRadians(-79.2f), XMConvertToRadians(0.f), 0.f };
 	fLength = 12.5f;
-	Create_Arm((_uint)COORDINATE_2D, pCamera, vRotation, fLength);
+	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
 
 	// Set Cur Camera
 	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
@@ -983,7 +987,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-void CLevel_Chapter_02::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vRotation, _float _fLength)
+void CLevel_Chapter_02::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength)
 {
 	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0);
 	if (nullptr == pPlayer)
@@ -992,9 +996,8 @@ void CLevel_Chapter_02::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 
 	CCameraArm::CAMERA_ARM_DESC Desc{};
 
-	XMStoreFloat3(&Desc.vArm, -vPlayerLook);
+	Desc.vArm = _vArm;
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	Desc.vRotation = _vRotation;
 	Desc.fLength = _fLength;
 	Desc.wszArmTag = TEXT("Player_Arm");
 

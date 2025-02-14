@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Martina_Purchase01_0012_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 806.0,
+        "Y": 949.0
+      },
+      "BakedSourceDimension": {
+        "X": 264.0,
+        "Y": 302.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'martina-0'",
+        "ObjectPath": "/Game/Characters/Friends/Martina/Textures/martina-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 134.0,
+          "Y": 289.0,
+          "Z": 0.26098633,
+          "W": 0.2319336
+        },
+        {
+          "X": -128.0,
+          "Y": 289.0,
+          "Z": 0.19702148,
+          "W": 0.2319336
+        },
+        {
+          "X": -128.0,
+          "Y": -11.0,
+          "Z": 0.19702148,
+          "W": 0.30517578
+        },
+        {
+          "X": 134.0,
+          "Y": -11.0,
+          "Z": 0.26098633,
+          "W": 0.30517578
+        },
+        {
+          "X": 134.0,
+          "Y": 289.0,
+          "Z": 0.26098633,
+          "W": 0.2319336
+        },
+        {
+          "X": -128.0,
+          "Y": -11.0,
+          "Z": 0.19702148,
+          "W": 0.30517578
+        }
+      ]
+    }
+  }
+]

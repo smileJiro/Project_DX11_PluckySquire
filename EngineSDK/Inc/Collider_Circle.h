@@ -29,6 +29,9 @@ public:
 	void						Block_AABB(CCollider_AABB* _pOther);
 	void						Block_Circle(CCollider_Circle* _pOther);
 
+public:
+	_bool						Compute_NearestPoint_AABB(CCollider_AABB* _pOtherAABB, _float2* _pOutPos = nullptr, _float2* _pContactVector_NotNormalize = nullptr);
+	
 private:
 	_bool						Is_Collision_Circle(CCollider_Circle* _pOther);
 	_bool						Is_Collision_AABB(CCollider_AABB* _pOther);

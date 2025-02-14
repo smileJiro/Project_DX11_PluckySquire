@@ -40,13 +40,11 @@ HRESULT CNarration::Initialize(void* _pArg)
 			return E_FAIL;
 	}
 	
-	
 	_float2 vCalScale = { 0.f, 0.f };
 	vCalScale.x = m_vOriginSize.x * RATIO_BOOK2D_X;
 	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
-
-
 	m_isRender = false;
+
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 
@@ -69,7 +67,13 @@ void CNarration::Update(_float _fTimeDelta)
 		if (m_fTextAlpha < 1.f)
 		{
 			m_fFadeTimer += _fTimeDelta;
-			m_fTextAlpha = min(m_fFadeTimer / m_fFadeDuration, 1.f);
+
+			// 텍스트 알파 = 타이머 / 현재 나레이션의 현재 라인
+			//m_fTextAlpha = min(m_fFadeTimer / m_fFadeDuration, 1.f);
+			 
+			// TODO :: 박상욱
+			m_fTextAlpha = min(m_fFadeTimer / m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].fFadeDuration, 1.f);
+
 
 			if (!m_bAnimationStarted && m_fTextAlpha > 0.f)
 			{
@@ -101,15 +105,18 @@ void CNarration::Update(_float _fTimeDelta)
 			}
 
 			m_fDelayTimer += _fTimeDelta;
-			if (m_fDelayTimer >= m_fDelayBetweenLines)
+			//if (m_fDelayTimer >= m_fDelayBetweenLines)
+			//{
+
+			// TODO :: 박상욱
+
+			if (m_fDelayTimer >= m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].fFadeDuration)
 			{
-
-
 				// 다음 라인이 있다면 전환, 이전 라인은 그대로 1.0을 유지
 				if (m_iCurrentLine + 1 < m_NarrationDatas[m_iNarrationCount].lines.size())
 				{
 					m_iCurrentLine++; // 다음 라인으로 전환
-					// fade?in 관련 타이머 초기화
+					// fadein 관련 타이머 초기화
 					m_fFadeTimer = 0.f;
 					m_fDelayTimer = 0.f;
 					m_fTextAlpha = 0.f;
@@ -131,7 +138,6 @@ void CNarration::Update(_float _fTimeDelta)
 					if (m_iNarrationCount < m_NarrationDatas.size() - 1 && false == m_isFade)
 					{
 						++m_iNarrationCount;
-
 
 						m_strSectionName = m_NarrationDatas[m_iNarrationCount].strSectionid;
 						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].strSectionid, this);
@@ -157,7 +163,6 @@ void CNarration::Update(_float _fTimeDelta)
 						vPos = _float3(-692.f, -49.f, 1.f);
 						Event_Book_Main_Section_Change_Start(1, &vPos);
 						m_isNarrationEnd = false;
-
 					}
 				}
 			}
@@ -245,6 +250,17 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 
 					if (line.contains("fwaitingTime") && line["fwaitingTime"].is_number_float())
 						DialogueData.fwaitingTime = line["fwaitingTime"].get<float>();
+					/////////////////////////////////////////////////////////////////////////////////
+					if (line.contains("fLineHeight") && line["fLineHeight"].is_number_float())
+						DialogueData.fLineHieght = line["fLineHeight"].get<float>();
+					
+					if (line.contains("fFadeDuration") && line["fFadeDuration"].is_number_float())
+						DialogueData.fFadeDuration = line["fFadeDuration"].get<float>();
+					
+					if (line.contains("fDelayNextLine") && line["fDelayNextLine"].is_number_float())
+						DialogueData.fDelayNextLine = line["fDelayNextLine"].get<float>();
+
+
 
 					// 애니메이션 데이터 파싱 및 개별 객체 생성
 					vector<CNarration_Anim*> pAnimation;
@@ -289,8 +305,6 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 							if (Anim.contains("isLoop") && Anim["isLoop"].is_boolean())
 								Animation.isLoop = Anim["isLoop"].get<_bool>();
 
-
-
 							// 임시 대화 데이터를 생성하여 해당 애니메이션만 담는다.
 							NarrationDialogData tempDialogue = DialogueData;
 							tempDialogue.NarAnim.clear();
@@ -307,10 +321,6 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 
 							CGameObject* pObject;
 
-
-
-							
-
 							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tempData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), tempData.eCurlevelId, TEXT("Layet_UI"), &pObject, &tempData)))
 								return E_FAIL;
 
@@ -321,10 +331,8 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 
 							// 원본 DialogueData에도 해당 애니메이션 데이터를 저장(필요에 따라 사용)
 							DialogueData.NarAnim.push_back(Animation);
-						}
-						
+						}						
 					}
-
 					// 애니메이션 처리 후, 완성된 대화 데이터를 NarData에 추가한다.
 					m_vAnimObjectsByLine.emplace(iLine, pAnimation);
 					NarData.lines.push_back(DialogueData);
@@ -333,10 +341,8 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 				
 			}
 
-			m_NarrationDatas.push_back(NarData);
-			
-		} // for each Narration block
-
+			m_NarrationDatas.push_back(NarData);	
+		}
 	}
 
 	return S_OK;
@@ -348,7 +354,7 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 	if (m_NarrationDatas.empty() || m_NarrationDatas[m_iNarrationCount].lines.empty())
 		return S_OK;
 
-	// 예를 들어, 첫 번째 NarrationData의 텍스트만 사용한다고 가정합니다.
+	// 예를 들어, 첫 번째 NarrationData의 텍스트만 사용한다고 가정
 	auto& lines = m_NarrationDatas[m_iNarrationCount].lines;
 
 	// 0번부터 m_iCurrentLine까지의 모든 라인을 렌더링 (이미 fade?in이 완료된 라인은 alpha = 1.0)
@@ -385,12 +391,12 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 				if (true == dialogue.isLeft)
 				{
 					fx = dialogue.fpos.x; // 시작 x 좌표로 복원
-					fy += m_fLineHeight;  // y 좌표 증가
+					fy += m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].fLineHieght;  // y 좌표 증가
 				}
 				else if (false == dialogue.isLeft)
 				{
 					fx = dialogue.fpos.x + _vRTSize.x / 2.f; // 시작 x 좌표로 복원
-					fy += m_fLineHeight;  // y 좌표 증가
+					fy += m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].fLineHieght;  // y 좌표 증가
 				}
 				continue;
 			}

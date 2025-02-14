@@ -39,6 +39,7 @@ void CPlayerState_ThrowObject::Enter()
 
 void CPlayerState_ThrowObject::Exit()
 {
+	//m_pOwner->Set_CarryingObject(nullptr);
 }
 
 void CPlayerState_ThrowObject::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

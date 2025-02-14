@@ -20,8 +20,8 @@ public:
 	virtual HRESULT Bind_BufferDesc();
 public:
 	// Get
-	const vector<_float3>& Get_VerticesPos() { return m_vecVerticesPos; };
-	const vector<_uint>& Get_IndexBuffer() { return m_vecIndexBuffer; }
+	//const vector<_float3>& Get_VerticesPos() { return m_vecVerticesPos; };
+	//const vector<_uint>& Get_IndexBuffer() { return m_vecIndexBuffer; }
 	_uint Get_NumIndices() { return m_iNumIndices; }
 	_uint Get_NumVertices() { return m_iNumVertices; }
 	_uint Get_NumTriangles() { return m_iNumIndices / 3; }

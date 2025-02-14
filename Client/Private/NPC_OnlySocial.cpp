@@ -101,7 +101,7 @@ CGameObject* CNPC_OnlySocial::Clone(void* _pArg)
 
 void CNPC_OnlySocial::Free()
 {
-	Safe_Release(m_pColliderCom);
+	//Safe_Release(m_pColliderCom);
 	__super::Free();
 }
 
