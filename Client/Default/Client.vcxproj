@@ -221,6 +221,7 @@
     <ClInclude Include="..\Public\HitState.h" />
     <ClInclude Include="..\Public\Interactable.h" />
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
+    <ClInclude Include="..\Public\Level_Chapter_Test.h" />
     <ClInclude Include="..\Public\Narration.h" />
     <ClInclude Include="..\Public\Narration_Anim.h" />
     <ClInclude Include="..\Public\PlayerState_PickUpObject.h" />
@@ -396,6 +397,7 @@
     <ClCompile Include="..\Private\FloorWord.cpp" />
     <ClCompile Include="..\Private\HitState.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
+    <ClCompile Include="..\Private\Level_Chapter_Test.cpp" />
     <ClCompile Include="..\Private\Narration.cpp" />
     <ClCompile Include="..\Private\Narration_Anim.cpp" />
     <ClCompile Include="..\Private\PlayerState_PickUpObject.cpp" />
