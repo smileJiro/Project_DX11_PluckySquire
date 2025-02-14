@@ -89,6 +89,11 @@ private:
 	_float3						m_vFreezeEnterPos = {};
 	
 	
+	_bool						m_isSetStartInfo = { false };
+
+	_bool						m_isFirst = { false };
+	
+	
 	list<pair<_float3, _uint>>	m_FreezeExitArms = {};
 	_float3						m_vCurFreezeExitArm = {};
 
@@ -96,7 +101,8 @@ private:
 	//_uint						m_iPreFreeze = {};
 
 	// PreArm Return
-	deque<pair<RETURN_SUBDATA, _bool>> m_PreSubArms;
+	list<pair<RETURN_SUBDATA, _bool>> m_PreSubArms;
+	_int						m_iCurTriggerID = {};
 
 private:
 	void						Key_Input(_float _fTimeDelta);
@@ -111,6 +117,7 @@ private:
 
 	_vector						Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fTimeDelta);
 	virtual	void				Switching(_float _fTimeDelta) override;
+	void						Set_Arm_From_Freeze();
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);
