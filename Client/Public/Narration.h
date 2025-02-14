@@ -40,7 +40,10 @@ public:
 		_float fscale;              // 텍스트의 크기 변경
         _bool isLeft;                // 왼쪽인가요 오른쪽인가요? 왼쪽이면 true
         _float2 fpos;               // X의 좌표
-        _float fwaitingTime;        // 완료 후 다음 애니메이션까지의 대기 시간
+        _float fwaitingTime;        // 완료 후 다음 나레이션까지의 대기 시간
+        _float fLineHieght;         // 문장과 문장 사이의 높이
+        _float fFadeDuration;       // 페이드인이 완료될 때 까지의 시간
+        _float fDelayNextLine;      // 페이드인이 완료 된 후 다음 라인으로 넘어가기까지의 시간
 
         _int    AnimationCount = { 0 };
         vector<NarrationAnimation> NarAnim;
@@ -95,12 +98,12 @@ private:
     _bool                   m_isStartNarration = { false };
 
 
-    _int m_iCurrentLine = 0;      // 현재 화면에 노출할 대화 라인 인덱스
-    _float m_fTextAlpha = 0.f;      // 현재 텍스트의 알파값(0.0~1.0)
-    _float m_fFadeDuration = 2.f;  // Fadein 효과에 걸리는 시간 (초)
-    _float m_fDelayBetweenLines = 4.f; // 라인 교체 전 대기 시간 (초)
-    _float m_fFadeTimer = 0.f;      // fade-in 진행 타이머
-    _float m_fDelayTimer = 0.f;     // 라인 대기 타이머
+    _int m_iCurrentLine = 0;            // 현재 화면에 노출할 대화 라인 인덱스
+    _float m_fTextAlpha = 0.f;          // 현재 텍스트의 알파값(0.0~1.0)
+    _float m_fFadeDuration = 2.f;       // Fadein 효과에 걸리는 시간 (초)
+    _float m_fDelayBetweenLines = 4.f;  // 라인 교체 전 대기 시간 (초)
+    _float m_fFadeTimer = 0.f;          // fade-in 진행 타이머
+    _float m_fDelayTimer = 0.f;         // 라인 대기 타이머
     _bool  m_bAnimationStarted = false; // 현재 라인에 대해 애니메이션이 시작되었는지 여부
     vector<CNarration_Anim*> m_pCurrentAnimObj = { nullptr };
 

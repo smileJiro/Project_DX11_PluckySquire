@@ -30,6 +30,8 @@ HRESULT CNPC::Initialize(void* _pArg)
 	m_iSubIndex = pDesc->iSubIndex;
 	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
 	wsprintf(m_strDialogueIndex, pDesc->strDialogueIndex);
+	wsprintf(m_strCurSecion, pDesc->strLocateSection);
+
 	Safe_AddRef(m_pTarget);
 
 	return S_OK;
@@ -75,7 +77,7 @@ HRESULT CNPC::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 void CNPC::Throw_Dialogue()
 {
 
-	Uimgr->Set_DialogId(m_strDialogueIndex);
+	Uimgr->Set_DialogId(m_strDialogueIndex, m_strCurSecion);
 
 	_float4 vPos = {};
 
@@ -172,6 +174,8 @@ void CNPC::Free()
 	if (nullptr != m_pTarget)
 		Safe_Release(m_pTarget);
 	Safe_Release(m_pAnimEventGenerator);
-	Safe_Release(m_pColliderCom);
+
+	Safe_Release(m_p2DNpcCollider);
+
 	__super::Free();
 }

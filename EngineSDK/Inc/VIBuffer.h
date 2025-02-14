@@ -46,9 +46,9 @@ protected:
 	// 여기서의 Primitive도 렌더링에 필요한 최소 단위와 같은 의미로 사용된 것 같아 보인다.
 
 	// 충돌을 위한 Vertex정보.
-	//vector<_float3> m_vecVerticesPos;
-	//vector<_float3> m_vecVerticesNormal;
-	//vector<_uint> m_vecIndexBuffer;
+	vector<_float3> m_vecVerticesPos;
+	vector<_float3> m_vecVerticesNormal;
+	vector<_uint> m_vecIndexBuffer;
 protected:
 	/*해당 함수에 매개변수로 던진 Buffer에 값을 채워줌. (m_BufferDesc, m_SubResourceDesc) 의 데이터를 기반으로.*/
 	HRESULT Create_Buffer(ID3D11Buffer** _ppOut);

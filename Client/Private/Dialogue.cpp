@@ -503,7 +503,20 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			{
 				if (!m_isAddSectionRender)
 				{
-					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+					_tchar	strSectionID[MAX_PATH];
+					wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+					if (TEXT("NOTWORD") == strSectionID)
+					{
+						CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+					}
+					else
+					{
+						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+					}
+
+					
+					
 					m_isAddSectionRender = true;
 				}
 
@@ -537,7 +550,17 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
@@ -552,7 +575,17 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
@@ -569,7 +602,17 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
@@ -585,7 +628,17 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
@@ -601,7 +654,17 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
@@ -617,7 +680,17 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
@@ -633,7 +706,17 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
@@ -704,7 +787,17 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			{
 				if (!m_isAddSectionRender)
 				{
-					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+					_tchar	strSectionID[MAX_PATH];
+					wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+					if (TEXT("NOTWORD") == strSectionID)
+					{
+						CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+					}
+					else
+					{
+						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+					}
 					m_isAddSectionRender = true;
 				}
 
@@ -717,7 +810,17 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			{
 				if (true == m_isAddSectionRender)
 				{
-					CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+					_tchar	strSectionID[MAX_PATH];
+					wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+					if (TEXT("NOTWORD") == strSectionID)
+					{
+						CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+					}
+					else
+					{
+						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+					}
 					m_isAddSectionRender = false;
 				}
 
@@ -743,7 +846,17 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
@@ -758,7 +871,17 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
@@ -774,7 +897,17 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
@@ -790,7 +923,17 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
@@ -806,7 +949,17 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
@@ -822,7 +975,17 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
@@ -838,7 +1001,17 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (!m_isAddSectionRender)
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
 				m_isAddSectionRender = true;
 			}
 
