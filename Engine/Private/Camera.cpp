@@ -440,8 +440,8 @@ _float CCamera::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRat
 	_fTime->y += _fTimeDelta;
 	fRatio = _fTime->y / _fTime->x;
 	fRatio = clamp(fRatio, 0.f, 1.f);
-	cout << "Time: " << _fTime->y << endl;
-	cout << "fRatio: " << fRatio << endl;
+	//cout << "Time: " << _fTime->y << endl;
+	//cout << "fRatio: " << fRatio << endl;
 	
 
 	switch (_iRatioType) {
@@ -460,8 +460,8 @@ _float CCamera::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRat
 		break;
 	}
 
-	cout << "Result fRatio: " << fRatio << endl;
-	cout << "==================" << endl;
+	//cout << "Result fRatio: " << fRatio << endl;
+	//cout << "==================" << endl;
 	return fRatio;
 }
 

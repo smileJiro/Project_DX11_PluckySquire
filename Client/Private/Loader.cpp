@@ -16,6 +16,8 @@
 #include "PlayerItem.h"
 #include "Bulb.h"
 
+/* For. Blocker */
+#include "Blocker.h"
 /* For. Main Table */
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -188,8 +190,11 @@ void CLoader::Show_Debug()
 
 HRESULT CLoader::Loading_Level_Static()
 {
-
     lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
+        CGravity::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("2D 콜라이더를 로딩중입니다."));
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
@@ -493,6 +498,11 @@ HRESULT CLoader::Loading_Level_Static()
         CPopuff::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* For. Prototype_GameObject_Blocker2D */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Blocker2D"),
+        CBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
+        return E_FAIL;
+    
 
     lstrcpy(m_szLoadingText, TEXT("이펙트(을)를 로딩중입니다."));
 

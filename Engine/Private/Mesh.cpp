@@ -59,11 +59,11 @@ HRESULT CMesh::Initialize_Prototype(C3DModel::ANIM_TYPE eModelType, C3DModel* pM
 	for (size_t i = 0; i < iNumFaces; i++)
 	{
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices -1]);
+		//m_vecIndexBuffer.push_back(pIndices[iNumIndices -1]);
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices -1]);
+		//m_vecIndexBuffer.push_back(pIndices[iNumIndices -1]);
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices -1]);
+		//m_vecIndexBuffer.push_back(pIndices[iNumIndices -1]);
 
 	}
 
@@ -128,11 +128,11 @@ HRESULT CMesh::Initialize_Prototype(ifstream& inFile, _fmatrix _PreTransformMatr
 	for (size_t i = 0; i < iNumFaces; i++)
 	{
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		//m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		//m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		//m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
 
 	}
 
@@ -208,8 +208,8 @@ HRESULT CMesh::Ready_VertexBuffer_For_NonAnim(ifstream& inFile, _fmatrix PreTran
 		XMStoreFloat3(&pVertices[i].vTangent, XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vTangent), PreTransformMatrix));
 
 
-		m_vecVerticesPos.push_back(pVertices[i].vPosition);
-		m_vecVerticesNormal.push_back(pVertices[i].vNormal);
+		//m_vecVerticesPos.push_back(pVertices[i].vPosition);
+		//m_vecVerticesNormal.push_back(pVertices[i].vNormal);
 
 	}
 
@@ -251,8 +251,8 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, C3DModel* pModel)
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vNormal), sizeof(_float3));
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vTexcoord), sizeof(_float2));
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vTangent), sizeof(_float3));
-		m_vecVerticesPos.push_back(pVertices[i].vPosition);
-		m_vecVerticesNormal.push_back(pVertices[i].vNormal);
+		//m_vecVerticesPos.push_back(pVertices[i].vPosition);
+		//m_vecVerticesNormal.push_back(pVertices[i].vNormal);
 
 	}
 	inFile.read(reinterpret_cast<char*>(&m_iNumBones), sizeof(_uint));
@@ -346,11 +346,11 @@ HRESULT CMesh::Cooking(PxTriangleMeshDesc& Desc)
 
 	Desc.points.count = static_cast<PxU32>(m_iNumVertices);
 	Desc.points.stride = sizeof(_float3);
-	Desc.points.data = m_vecVerticesPos.data();
+	//Desc.points.data = m_vecVerticesPos.data();
 
 	Desc.triangles.count = static_cast<PxU32>((m_iNumIndices / 3));
 	Desc.triangles.stride = 3 * m_iIndexStride;
-	Desc.triangles.data = m_vecIndexBuffer.data();
+	//Desc.triangles.data = m_vecIndexBuffer.data();
 
 	return S_OK;
 }
@@ -360,7 +360,7 @@ HRESULT CMesh::Cooking(PxConvexMeshDesc& Desc)
 
 	Desc.points.count = static_cast<PxU32>(m_iNumVertices);
 	Desc.points.stride = sizeof(_float3);
-	Desc.points.data = m_vecVerticesPos.data();
+	//Desc.points.data = m_vecVerticesPos.data();
 	Desc.flags = PxConvexFlag::eCOMPUTE_CONVEX; 
 
 	return S_OK;

@@ -77,11 +77,11 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, const j
 	for (size_t i = 0; i < iNumFaces; i++)
 	{
 		_inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		//m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
 		_inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		//m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
 		_inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		//m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
 	}
 
 
@@ -539,8 +539,8 @@ HRESULT CVIBuffer_Mesh_Particle::Ready_VertexBuffer(ifstream& _inFile, _fmatrix 
 		XMStoreFloat3(&pVertices[i].vTangent, XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vTangent), _PreTransformMatrix));
 
 
-		m_vecVerticesPos.push_back(pVertices[i].vPosition);
-		m_vecVerticesNormal.push_back(pVertices[i].vNormal);
+		//m_vecVerticesPos.push_back(pVertices[i].vPosition);
+		//m_vecVerticesNormal.push_back(pVertices[i].vNormal);
 
 	}
 
@@ -746,11 +746,11 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, _uint _
 	for (size_t i = 0; i < iNumFaces; i++)
 	{
 		_inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		//m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
 		_inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		//m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
 		_inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		//m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
 	}
 
 
