@@ -77,6 +77,7 @@ public:
     struct DialogData
     {
         wstring id;                     // 다이얼로그 ID
+        wstring Section;                // 노출되어야할 섹션
         vector<DialogLine> lines;       // 대화 내용 목록
     };
 
@@ -108,6 +109,7 @@ private:
 	_float2             m_vDisplay3DSize = { 0.f, 0.f };
 	_float2             m_vDisplay2DSize = { 0.f, 0.f };
     _bool               m_isAddSectionRender = { false };
+    _tchar              m_strDialogSection[MAX_PATH] = {};
 
     //vector<DialogData>  m_DialogDatas;
 

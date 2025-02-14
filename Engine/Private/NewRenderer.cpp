@@ -338,6 +338,12 @@ void CNewRenderer::Free()
 	}
 	m_DSVs.clear();
 
+	for (auto& pDebugComponent : m_DebugComponents)
+	{
+		Safe_Release(pDebugComponent);
+	}
+	m_DebugComponents.clear();
+
 	Safe_Release(m_pGlobalIBLConstBuffer);
 	Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pShader);

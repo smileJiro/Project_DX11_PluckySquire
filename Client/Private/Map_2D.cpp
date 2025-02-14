@@ -18,7 +18,7 @@ CMap_2D::CMap_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CMap_2D::Initialize(const _wstring _strTextureName, _float2 _fRenderTargetSize, _int _iPriorityID)
+HRESULT CMap_2D::Initialize(const _wstring _strSectionTag, const _wstring _strTextureName,  _float2 _fRenderTargetSize, _int _iPriorityID)
 {
 	// 0. Map Data Parsing
 	// 1. CRenderTarget Create
@@ -45,6 +45,7 @@ HRESULT CMap_2D::Initialize(const _wstring _strTextureName, _float2 _fRenderTarg
 	// 어차피 같은 맵의 rt / dsv가 여러개 생성될 리 없으니, 키로 타겟매니저에 생성 요청
 	
 	/* RenderTarget Create */
+	m_strSectionTag = _strSectionTag;
 	size_t iDotIndex = _strTextureName.find_last_of(L".");
 	if (iDotIndex != _wstring::npos)
 		m_strTextureName = _strTextureName.substr(0, iDotIndex);
@@ -158,12 +159,14 @@ HRESULT CMap_2D::Register_WorldCapture(CModelObject* _pModel)
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(strWorldDSVTag, (_uint)m_fRenderTargetSize.x, (_uint)m_fRenderTargetSize.y)))
 		return E_FAIL;
-	CRenderGroup_WorldPos::RG_MRT_DESC Desc;
+	CRenderGroup_WorldPos::RG_WORLDPOS_DESC Desc;
 	Desc.iRenderGroupID = iRenderGroupID;
 	Desc.iPriorityID = iPriorityID;
 	Desc.isClear = false;
 	Desc.isViewportSizeChange = true;
 	Desc.pDSV = m_pGameInstance->Find_DSV(strWorldDSVTag);
+	Desc.strRTTag = strWorldRVTag;
+	Desc.strSectionTag = m_strSectionTag;
 	Desc.strMRTTag = strWorldMRTTag;
 	Desc.vViewportSize = { m_fRenderTargetSize.x , m_fRenderTargetSize.y };
 
@@ -218,11 +221,11 @@ ID3D11ShaderResourceView* CMap_2D::Get_SRV_FromTexture(_uint _iTextureIndex)
 	return m_pTextureCom->Get_SRV(_iTextureIndex);
 }
 
-CMap_2D* CMap_2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _wstring _strTextureName, _float2 _fRenderTargetSize, _int _iPriorityID)
+CMap_2D* CMap_2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _wstring _strSectionTag, const _wstring _strTextureName, _float2 _fRenderTargetSize, _int _iPriorityID)
 {
 	CMap_2D* pInstance = new CMap_2D(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize(_strTextureName, _fRenderTargetSize, _iPriorityID)))
+	if (FAILED(pInstance->Initialize(_strSectionTag, _strTextureName, _fRenderTargetSize, _iPriorityID)))
 	{
 		MSG_BOX("Failed Create CMap_2D");
 		Safe_Release(pInstance);

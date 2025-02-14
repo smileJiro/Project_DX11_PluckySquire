@@ -80,10 +80,6 @@ private:
 	_bool						m_isDialoging = { false };
 	_bool						m_isOpenSate = { false };
 
-
-
-
-
 };
 
 END

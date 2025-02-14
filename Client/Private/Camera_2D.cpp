@@ -168,13 +168,20 @@ void CCamera_2D::Action_SetUp_ByMode()
 		case RETURN_TO_DEFUALT:
 			break;
 		case FLIPPING_UP:
-		{
+		{	
 			XMStoreFloat3(&m_vStartPos, Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
 			m_fFlippingTime = { 0.5f, 0.f };
 		}
 			break;
 		case FLIPPING_DOWN:
 		{
+			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
+			
+			if (true == static_cast<CSection_2D*>(pSection)->Is_Rotation())
+				m_eDirectionType = HORIZON;
+			else
+				m_eDirectionType = VERTICAL;
+
 			XMStoreFloat3(&m_vStartPos, Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
 			m_fFlippingTime = { 0.5f, 0.f };
 
