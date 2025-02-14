@@ -204,7 +204,7 @@ HRESULT CNarration_Anim::Ready_Components()
 	// 모델쪽 생성하는 관련 부분 // 모델 게임레벨
 	CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, m_strAnimationId, nullptr));
 
-	if (nullptr == pComponent)
+	if (nullptr == pComponent) 
 		return E_FAIL;
 
 	m_pModelCom = static_cast<C2DModel*>(pComponent);
