@@ -131,7 +131,7 @@ public:
 	virtual void Free() override;
 
 protected:
-	CShader*		m_pShaderComs[COORDINATE_LAST] = {nullptr};
+	CShader*		m_pShaderComs[COORDINATE_LAST] = {};
 	CTexture*		m_pTextureCom = {nullptr};
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 	C2DModel*		m_pModelCom = { nullptr };

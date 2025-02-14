@@ -24,9 +24,13 @@ HRESULT CPhysx_Manager::Initialize()
 	if (FAILED(Initialize_Foundation()))
 		return E_FAIL;
 
+#ifdef _DEBUG
+
 	if (FAILED(Initialize_PVD()))
 		return E_FAIL;
-	
+
+#endif // _DEBUG
+
 	if (FAILED(Initialize_Physics()))
 		return E_FAIL;
 
@@ -51,20 +55,16 @@ HRESULT CPhysx_Manager::Initialize()
 	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f); // 충돌 형태 시각화
 	//m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 1.0f);
 
-#endif // _DEBUG
-
-	/* Debug */
+		/* Debug */
 	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 30000);
 	if (nullptr == m_pVIBufferCom)
 		return E_FAIL;
 
-#ifdef _DEBUG
-	
+
 	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../../EngineSDK/hlsl/Shader_Debug.hlsl"), VTXPOSCOLOR::Elements, VTXPOSCOLOR::iNumElements);
 	if (nullptr == m_pShader)
 		return E_FAIL;
-
-#endif
+#endif // _DEBUG
 
 
 	return S_OK;
@@ -72,24 +72,6 @@ HRESULT CPhysx_Manager::Initialize()
 
 void CPhysx_Manager::Update(_float _fTimeDelta)
 {
-//	m_pPxScene->simulate(m_fFixtedTimeStep);
-//	m_fTimeAcc -= m_fFixtedTimeStep;
-//
-//	//fetch 끝났는지 확인
-//	if (m_pPxScene->fetchResults(true))
-//	{
-//		if (nullptr != m_pPhysx_EventCallBack)
-//			m_pPhysx_EventCallBack->Update();
-//
-//#ifdef _DEBUG
-//		if (true == m_isDebugRender)
-//		{
-//			const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
-//			m_pVIBufferCom->Update_PxDebug(RenderBuffer);
-//		}
-//#endif // _DEBUG
-//	}
-
 	//m_fTImeAcc : 지난 시뮬레이션 이후로 지난 시간.
 	//m_fFixtedTimeStep : 고정된 시간 간격. 1/60초
 	//1. 지난 시뮬이후로 1/60초 이상이 지났으면 시뮬레이션 해야 함.
@@ -121,9 +103,12 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 
 	}
 
+
+//	if (nullptr != m_pPhysx_EventCallBack)
+//		m_pPhysx_EventCallBack->Update();
 //
 //	//기존 코드
-//	m_pPxScene->simulate(1.f / 60.f);
+//	m_pPxScene->simulate(_fTimeDelta);
 //
 //	if (m_pPxScene->fetchResults(true))
 //	{
@@ -359,7 +344,7 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	SceneDesc.solverType = PxSolverType::eTGS;
 	/* Create Dispatcher */
 
-	m_pPxDefaultCpuDispatcher = PxDefaultCpuDispatcherCreate(4);
+	m_pPxDefaultCpuDispatcher = PxDefaultCpuDispatcherCreate(2);
 	if (nullptr == m_pPxDefaultCpuDispatcher)
 		return E_FAIL;
 
@@ -505,7 +490,7 @@ void CPhysx_Manager::Free()
 	if (m_pTestDesk)
 	{
 		m_pTestDesk->release();
-		m_pPxScene = nullptr;
+		m_pTestDesk = nullptr;
 	}
 
 	// 2. Scene 및 Dispatcher 정리
@@ -543,11 +528,13 @@ void CPhysx_Manager::Free()
 		m_pPxPhysics = nullptr;
 	}
 
+#ifdef _DEBUG
+
 	// 5. PVD(PxVisualDebugger) 연결 해제 및 리소스 정리
 	if (m_pPxPvd)
 	{
 		m_pPxPvd->disconnect(); // PVD 연결 해제
-	
+
 		if (auto pTransport = m_pPxPvd->getTransport())
 		{
 			m_pPxPvd->release();
@@ -556,6 +543,8 @@ void CPhysx_Manager::Free()
 			pTransport = nullptr;
 		}
 	}
+#endif // _DEBUG
+
 
 	// 6. Foundation 정리
 	if (m_pPxFoundation)

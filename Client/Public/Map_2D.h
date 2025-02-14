@@ -4,10 +4,9 @@ BEGIN(Engine)
 class CRenderTarget;
 class CTexture;
 class CGameInstance;
+class CModelObject;
 END
 BEGIN(Client)
-
-class C3DMapSkspObject;
 
 
 class CMap_2D final : public CBase
@@ -37,7 +36,7 @@ public:
 	HRESULT						Create_Default_MapTexture();
 
 public:
-	HRESULT						Register_Capcher_WorldTexture(C3DMapSkspObject* _pModel);
+	HRESULT						Register_WorldCapture(CModelObject* _pModel);
 	void						Set_WorldTexture(ID3D11Texture2D* _pTexture) { m_pWorldTexture = _pTexture; }
 	ID3D11Texture2D*			Get_WorldTexture() { return m_pWorldTexture; }
 

@@ -142,7 +142,7 @@ HRESULT CMap_2D::Create_Default_MapTexture()
 	return S_OK;
 }
 
-HRESULT CMap_2D::Register_Capcher_WorldTexture(C3DMapSkspObject* _pModel)
+HRESULT CMap_2D::Register_WorldCapture(CModelObject* _pModel)
 {
 	_wstring strWorldRVTag = m_strRTKey + L"_WorldPosMap";
 	_wstring strWorldMRTTag = m_strMRTKey + L"_WorldPosMap";

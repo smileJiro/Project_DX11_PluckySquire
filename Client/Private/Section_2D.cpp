@@ -181,12 +181,12 @@ const _wstring CSection_2D::Get_WorldRenderTarget_Tag()
 	return m_pMap->Get_WorldRenderTarget_Tag();
 }
 
-HRESULT CSection_2D::Register_Capcher_WorldTexture(C3DMapSkspObject* _pModel)
+HRESULT CSection_2D::Register_WorldCapture(CModelObject* _pModel)
 {
 	if (nullptr == m_pMap)
 		return E_FAIL;
 
-	return m_pMap->Register_Capcher_WorldTexture(_pModel);
+	return m_pMap->Register_WorldCapture(_pModel);
 }
 
 HRESULT CSection_2D::Ready_Map_2D(_wstring _strMapFIleName)

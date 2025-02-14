@@ -43,6 +43,9 @@ private:
 public:
 	virtual HRESULT			Initialize_Prototype() override;
 	virtual HRESULT			Initialize(void* _pArg) override;
+	HRESULT					Init_RT_RenderPos_Capcher();
+
+public :	
 	virtual void			Priority_Update(_float _fTimeDelta) override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;

@@ -383,6 +383,15 @@ ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromTexture(const _wstring& 
     return pSection_2D->Get_SRV_FromTexture(_iTextureIndex);
 }
 
+HRESULT CSection_Manager::Register_WorldCapture(const _wstring& _strSectionTag, CModelObject* _pObject)
+{
+    CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(Find_Section(_strSectionTag));
+    if (nullptr == pSection_2D)
+        return E_FAIL;
+
+    return pSection_2D->Register_WorldCapture(_pObject);
+}
+
 void CSection_Manager::Main_Section_Active_Process(const _wstring& _strSectionTag)
 {
     CSection* pCurSection = Find_Section(_strSectionTag);
@@ -527,9 +536,19 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
                         MSG_BOX("Failed Create CSection_2D");
                         return E_FAIL;
                     }
-
                     if (FAILED(SetActive_Section(pSection, false)))
                         return E_FAIL;
+
+
+                    if (pSection->Is_Rotation())
+                    {
+                        CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, L"Layer_Book", 0);
+
+                        if (nullptr != pGameObject)
+                        {
+                            pSection->Register_WorldCapture((CModelObject*)pGameObject);
+                        }
+                    }
                 }
                 break;
                 case Client::CSection_2D::NARRAION:
