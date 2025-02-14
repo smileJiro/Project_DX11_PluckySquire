@@ -5,7 +5,7 @@ BEGIN(Client)
 typedef struct tagCharacterStat
 {
 	_float fDamg = 1.f;
-	_float fHP = 5.f;
+	_float fHP = 12.f;
 }STAT;
 class CCharacter abstract :   public CContainerObject
 {
@@ -38,6 +38,9 @@ public:
 	//속도는 degree로 줘야함 (초당), 목표 방향에 도달시 true 리턴
 	_bool Rotate_To(_fvector _vDirection, _float _fSpeed);
 	_bool Rotate_To_Radians(_fvector _vDirection, _float _fSpeed);
+
+	virtual void KnockBack(CGameObject* _pHitter = nullptr) {};
+
 protected:
 	STAT m_tStat;
 	_vector m_vLookBefore = { 0,0,-1 };

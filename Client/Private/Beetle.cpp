@@ -298,7 +298,7 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
 
     //마찰용 박스
     SHAPE_BOX_DESC* BoxDesc = new SHAPE_BOX_DESC;
-    BoxDesc->vHalfExtents = { ShapeDesc->fRadius, ShapeDesc->fRadius, ShapeDesc->fRadius+ShapeDesc->fHalfHeight };
+	BoxDesc->vHalfExtents = { ShapeDesc->fRadius - 0.1f, ShapeDesc->fRadius - 0.1f, ShapeDesc->fRadius + ShapeDesc->fHalfHeight - 0.1f };
     
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     //SHAPE_DATA* ShapeData = new SHAPE_DATA;

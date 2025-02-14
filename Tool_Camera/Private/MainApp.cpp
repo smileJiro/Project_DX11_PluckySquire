@@ -40,6 +40,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iViewportHeight = g_iWinSizeY;
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 	EngineDesc.isNewRenderer = true;
+	EngineDesc.eImportMode = IMPORT_ALL;
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
@@ -157,7 +158,8 @@ HRESULT CMainApp::Ready_RenderGroup()
 	CRenderGroup_MRT::RG_MRT_DESC RG_MRTDesc;
 	RG_MRTDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RG_MRTDesc.iPriorityID = PRIORITY_3D::PR3D_GEOMETRY;
-	RG_MRTDesc.strMRTTag = TEXT("MRT_Geometry");
+	RG_MRTDesc.strMRTTag = TEXT("
+		");
 	pRenderGroup_MRT = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_MRTDesc);
 	if (nullptr == pRenderGroup_MRT)
 	{

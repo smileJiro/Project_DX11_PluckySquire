@@ -41,6 +41,7 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
     //m_pActorCom-> Set_ShapeEnable(0, true);
 
        /* Test 2D Collider */
+	m_p2DColliderComs.resize(1);
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
     CircleDesc.fRadius = 40.f;
@@ -49,10 +50,70 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-        TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_pBody2DColliderCom), &CircleDesc)))
+        TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
-
+	m_pBody2DColliderCom = m_p2DColliderComs[0];
+	Safe_AddRef(m_pBody2DColliderCom);
     return S_OK;
+}
+
+void CCarriableObject::Update(_float _fTimeDelta)
+{
+	__super::Update(_fTimeDelta);	
+}
+
+void CCarriableObject::Late_Update(_float _fTimeDelta)
+{
+	__super::Late_Update(_fTimeDelta);
+	if (COORDINATE_2D == Get_CurCoord() && false == Is_Carrying())
+	{
+		m_f2DUpForce -= 9.8f * _fTimeDelta * 300;
+		m_f2DFloorDistance += m_f2DUpForce * _fTimeDelta;  
+		if (0 > m_f2DFloorDistance)
+		{
+			m_f2DFloorDistance = 0;
+			m_b2DOnGround = true;
+			m_bThrowing = false;
+			m_f2DUpForce = 0;
+		}
+		else if (0 == m_f2DFloorDistance)
+		{
+			m_bThrowing = false;
+			m_b2DOnGround = true;
+		}
+		else
+		{
+			m_b2DOnGround = false;
+		}
+		_vector vMyPosition = Get_FinalPosition();
+		_vector vPosition =m_v2DGroundPosition + m_v2DThrowHorizeForce * _fTimeDelta;
+		vPosition = XMVectorSetY(vPosition, XMVectorGetY(vPosition) + m_f2DFloorDistance);
+		Set_Position(vPosition);
+	}
+
+}
+
+HRESULT CCarriableObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
+{
+
+	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+		return E_FAIL;
+	if (Is_Carrying())
+	{
+		Set_Position({ 0,0,0 });
+		Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
+		Set_SocketMatrix(_eCoordinate, m_pCarrier->Get_CarryingOffset_Ptr(_eCoordinate));
+		Set_ParentMatrix(_eCoordinate, m_pCarrier->Get_ControllerTransform()->Get_WorldMatrix_Ptr(_eCoordinate));
+		if (COORDINATE_2D == _eCoordinate)
+		{
+			 
+		}
+		else
+		{
+
+		}
+	}
+	return S_OK;
 }
 
 HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
@@ -64,26 +125,15 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 		Set_SocketMatrix(COORDINATE_3D, nullptr);
 		Set_SocketMatrix(COORDINATE_2D, nullptr);
 		m_pCarrier = nullptr;
-		if(COORDINATE_3D == Get_CurCoord())
-		{
-			static_cast<CActor_Dynamic*>(m_pActorCom)->Update(0);
-			static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Dynamic();
-		}
+
 	}
 	else
 	{
 		if (nullptr != m_pCarrier)
 			return E_FAIL;
 		m_pCarrier = _pCarrier;
-		Set_ParentMatrix(COORDINATE_3D, m_pCarrier->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));
-		Set_ParentMatrix(COORDINATE_2D, m_pCarrier->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_2D));
-		Set_SocketMatrix(COORDINATE_3D, m_pCarrier->Get_CarryingOffset3D_Ptr());
-		Set_SocketMatrix(COORDINATE_2D, m_pCarrier->Get_CarryingOffset2D_Ptr());
-		Set_Position(_vector{ 0,0,0 });
-		if (COORDINATE_3D == Get_CurCoord())
-		{
-			static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
-		}
+		m_f2DFloorDistance = m_pCarrier->Get_CarryingOffset_Ptr(COORDINATE_2D)->_42;
+		m_f2DUpForce = 0.f;
 	}
 	return S_OK;
 }
@@ -95,6 +145,15 @@ void CCarriableObject::Throw(_fvector _vForce)
 		_float3 vForce;
 		XMStoreFloat3(&vForce, _vForce);
 		static_cast<CActor_Dynamic*>(m_pActorCom)->Add_Impulse(vForce);
+	}
+	else
+	{
+		m_v2DThrowHorizeForce = _vForce;
+		m_v2DGroundPosition = m_pCarrier->Get_FinalPosition();
+		m_f2DFloorDistance = m_pCarrier->Get_CarryingOffset_Ptr(COORDINATE_2D)->_42;
+		m_f2DUpForce = 0.f;
+		m_b2DOnGround = false;
+		m_bThrowing = true;
 	}
 }
 
@@ -126,6 +185,7 @@ CGameObject* CCarriableObject::Clone(void* _pArg)
 
 void CCarriableObject::Free()
 {
+	Safe_Release(m_pBody2DColliderCom);
 		__super::Free();
 }
 
@@ -144,4 +204,20 @@ _float CCarriableObject::Get_Distance(CPlayer* _pUser)
 	_vector vMyPos = Get_FinalPosition();
 	_vector vUserPos = _pUser->Get_FinalPosition();
 	return  XMVectorGetX(XMVector3Length(vMyPos - vUserPos));
+}
+
+void CCarriableObject::Set_Kinematic(_bool _bKinematic)
+{
+	CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+	if (_bKinematic)
+	{
+		pDynamicActor->Late_Update(0);
+		pDynamicActor->Set_Kinematic();
+
+	}
+	else
+	{
+		pDynamicActor->Update(0);
+		pDynamicActor->Set_Dynamic();
+	}
 }

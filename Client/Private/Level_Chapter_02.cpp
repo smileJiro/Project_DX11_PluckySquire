@@ -160,7 +160,8 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
 
-	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
+
+	/*ImGuiIO& IO = ImGui::GetIO(); (void)IO;*/
 
 	if (KEY_DOWN(KEY::NUM6))
 	{
@@ -219,9 +220,12 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 
 
 	static _float3 vOutPos = {};
-	ImGui::Begin("PickingPos");
-	ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
-	ImGui::End();
+	if (IS_IMPORT_IMGUI)
+	{
+		ImGui::Begin("PickingPos");
+		ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
+		ImGui::End();
+	}
 	if (MOUSE_DOWN(MOUSE_KEY::MB))
 	{
 		POINT pt;
@@ -279,8 +283,8 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 HRESULT CLevel_Chapter_02::Render()
 {
 #ifdef _DEBUG
-	//m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
-	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
+	m_pGameInstance->Render_FPS(TEXT("Timer_120"));
+	//SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
 #endif
 
 	return S_OK;
@@ -915,11 +919,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//	return E_FAIL;
 	
 	//Monster_Desc.isSneakMode = false;
-	// 
-	Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(8.0f, 0.35f, -19.0f);
-	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &Monster_Desc)))
+	CGoblin::MONSTER_DESC Goblin_Desc;
+	Goblin_Desc.iCurLevelID = m_eLevelID;
+	Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(-12.0f, 0.35f, -21.0f);
+	Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &Goblin_Desc)))
 		return E_FAIL;
 
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-8.0f, 0.35f, -19.0f);

@@ -213,6 +213,7 @@
     <ClInclude Include="..\Public\CarriableObject.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
+    <ClInclude Include="..\Public\ChaseAttackState.h" />
     <ClInclude Include="..\Public\Dice.h" />
     <ClInclude Include="..\Public\Domino.h" />
     <ClInclude Include="..\Public\DeadState.h" />
@@ -314,6 +315,7 @@
     <ClInclude Include="..\Public\Sneak_PatrolState.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\StandbyNoneAttackState.h" />
     <ClInclude Include="..\Public\State_Sneak.h" />
     <ClInclude Include="..\Public\Soldier_Bomb.h" />
     <ClInclude Include="..\Public\Soldier_CrossBow.h" />
@@ -387,6 +389,7 @@
     <ClCompile Include="..\Private\CarriableObject.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
+    <ClCompile Include="..\Private\ChaseAttackState.cpp" />
     <ClCompile Include="..\Private\Dice.cpp" />
     <ClCompile Include="..\Private\Domino.cpp" />
     <ClCompile Include="..\Private\DeadState.cpp" />
@@ -484,6 +487,7 @@
     <ClCompile Include="..\Private\Sneak_PatrolState.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\StandbyNoneAttackState.cpp" />
     <ClCompile Include="..\Private\State_Sneak.cpp" />
     <ClCompile Include="..\Private\Soldier_Bomb.cpp" />
     <ClCompile Include="..\Private\Soldier_CrossBow.cpp" />

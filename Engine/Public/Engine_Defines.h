@@ -104,9 +104,12 @@ namespace Engine
 
 	enum class PROTOTYPE { PROTO_GAMEOBJ, PROTO_COMPONENT };
 
+
+
+
+	//extern IMPORT_MODE	g_eImportMode = IMPORT_MODE::NONE_IMPORT;
 	const unsigned int g_iShadowWidth = 8192;
 	const unsigned int g_iShadowHeight = 4608;
-
 
 }
 #include <functional>

@@ -4,7 +4,7 @@
 BEGIN(Client)
 
 
-//다음 동작을 결정하는 경계 상태
+//다음 동작을 결정하는 대기 상태
 class CStandbyState final : public CState
 {
 private:

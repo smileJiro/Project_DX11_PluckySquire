@@ -138,6 +138,7 @@ namespace Engine
 		unsigned int	iViewportWidth;
 		unsigned int	iViewportHeight;
 		_uint			iStaticLevelID;
+		_uint			eImportMode;
 		_bool			isNewRenderer = false;
 	}ENGINE_DESC;
 
@@ -277,6 +278,14 @@ namespace Engine
 
 	typedef struct tagKeyFrame
 	{
+		void Set_Matrix(FXMMATRIX _matWorld)
+		{
+			XMVECTOR vTmpScale, vTmpRotation, vTmpPosition;
+			XMMatrixDecompose(&vTmpScale, &vTmpRotation, &vTmpPosition, _matWorld);
+			XMStoreFloat4(&vRotation, vTmpRotation);
+			XMStoreFloat3(&vPosition, vTmpPosition);
+			XMStoreFloat3(&vScale, vTmpScale);
+		}
 		float	 fTrackPosition; // 애니메이션 트랙위에서의 포지션을 정의.
 		XMFLOAT3 vScale;
 		XMFLOAT4 vRotation; // 쿼터니언을 사용하기 위해서.

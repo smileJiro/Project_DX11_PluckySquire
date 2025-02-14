@@ -1,7 +1,8 @@
 {
 	"NPC_OnlySocial": [
 		{
-			"strAnimaionName": "Prototype_Component_NPC_DJMoonBeard",
+			"strSectionid": "Chapter1_P0506",
+			"strAnimaionName": "DJ_MoonBeard",
 			"strCreateSection": 3,
 			"strDialogueId": "DJ_Moobeard_Dialogue_01",
 			"iStartAnimation": 0,

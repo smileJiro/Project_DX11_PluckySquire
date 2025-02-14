@@ -48,6 +48,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iViewportHeight = g_iWinSizeY;
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 	EngineDesc.isNewRenderer = true;
+	EngineDesc.eImportMode |= NONE_IMPORT;
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
@@ -74,10 +75,12 @@ HRESULT CMainApp::Initialize()
 
 void CMainApp::Progress(_float _fTimeDelta)
 {
-	m_pGameInstance->Start_Imgui();
+	if (IS_IMPORT_IMGUI)
+		m_pGameInstance->Start_Imgui();
 
 	m_pGameInstance->Priority_Update_Engine(_fTimeDelta);
-	Imgui_FPS(_fTimeDelta);
+	if (IS_IMPORT_IMGUI)
+		Imgui_FPS(_fTimeDelta);
 
 	m_pGameInstance->Update_Engine(_fTimeDelta);
 	CCamera_Manager::GetInstance()->Update(_fTimeDelta);
@@ -87,8 +90,9 @@ void CMainApp::Progress(_float _fTimeDelta)
 
 	// TODO :: 여기가 맞는지? >> 맞는 것 같삼.
 	CSection_Manager::GetInstance()->Section_AddRenderGroup_Process();
-	
-	m_pGameInstance->End_Imgui();
+
+	if (IS_IMPORT_IMGUI)
+		m_pGameInstance->End_Imgui();
 
 	if (FAILED(Render()))
 	{
@@ -97,7 +101,8 @@ void CMainApp::Progress(_float _fTimeDelta)
 	}
 
 	// 뷰포트 나가도 렌더되는 처리 // 
-	ImGui::RenderPlatformWindowsDefault(); 
+	if (IS_IMPORT_IMGUI)
+		ImGui::RenderPlatformWindowsDefault(); 
 
 #ifdef _DEBUG
 	
@@ -115,7 +120,9 @@ HRESULT CMainApp::Render()
 		return E_FAIL;
 
 	m_pGameInstance->Draw();
-	m_pGameInstance->Render_DrawData_Imgui();
+
+	if (IS_IMPORT_IMGUI)
+		m_pGameInstance->Render_DrawData_Imgui();
 
 	if (FAILED(m_pGameInstance->Render_End()))
 		return E_FAIL;

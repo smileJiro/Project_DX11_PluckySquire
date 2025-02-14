@@ -50,6 +50,8 @@ HRESULT CD3DUtils::Create_DSV(_uint _iWidth, _uint _iHeight, ID3D11DepthStencilV
 
 	Safe_Release(pDepthStencilTexture);
 	Safe_Release(pDSV);
+
+	return S_OK;
 }
 
 CD3DUtils* CD3DUtils::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

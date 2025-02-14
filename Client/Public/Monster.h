@@ -81,6 +81,10 @@ public:
 	{
 		return m_isCool;
 	}
+	_bool IsContactToTarget()
+	{
+		return m_isContactToTarget;
+	}
 
 	_float3 Get_RayOffset() const
 	{
@@ -109,6 +113,8 @@ public:
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
 
 	virtual void	On_Hit(CGameObject* _pHitter, _float _fDamg);
+
+	virtual void KnockBack(CGameObject* _pHitter = nullptr) override;
 
 public:
 	virtual void Attack();
@@ -163,6 +169,8 @@ protected:
 	_float m_fChase2DRange = { 0.f };
 	_float m_fAttack2DRange = { 0.f };
 	_bool m_isAnimChangeable = { true };
+
+	_bool m_isContactToTarget = { false };
 
 	_float m_fAccTime = { 0.f };
 	_bool m_isDelay = { false };

@@ -153,7 +153,7 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
 
-	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
+	//ImGuiIO& IO = ImGui::GetIO(); (void)IO;
 
 	if (KEY_DOWN(KEY::NUM6))
 	{
@@ -212,9 +212,9 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 
 
 	static _float3 vOutPos = {};
-	ImGui::Begin("PickingPos");
-	ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
-	ImGui::End();
+	//ImGui::Begin("PickingPos");
+	//ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
+	//ImGui::End();
 	if (MOUSE_DOWN(MOUSE_KEY::MB))
 	{
 		POINT pt;

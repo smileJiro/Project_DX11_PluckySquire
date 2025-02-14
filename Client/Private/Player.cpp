@@ -64,9 +64,9 @@ HRESULT CPlayer::Initialize_Prototype()
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadianAngle = XMConvertToRadians(360.f);
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = { 0.f, 0.f };
 
+    XMStoreFloat4x4(&m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.f, 0.f));
+    XMStoreFloat4x4(&m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 100.f, 0.f));
 
-	XMStoreFloat4x4( &m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.f, 0.f));
-	XMStoreFloat4x4( &m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 80.f, 0.f));
     return S_OK;
 }
 
@@ -151,7 +151,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     //capShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
     //ActorDesc.ShapeDatas.push_back(capShapeData);
 
-    //충돌 감지용 구 (트리거)
+    //주변 지형 감지용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
     ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
     ShapeData.isTrigger = true;
@@ -185,6 +185,110 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	m_ePlayerMode = PLAYER_MODE_NORMAL;
     return S_OK;
 }
+
+HRESULT CPlayer::Ready_PartObjects()
+{
+    /* Part Body */
+    CModelObject::MODELOBJECT_DESC BodyDesc{};
+
+    BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
+    BodyDesc.iCurLevelID = m_iCurLevelID;
+    BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
+
+    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    BodyDesc.strModelPrototypeTag_2D = TEXT("player");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
+    BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
+    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
+    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+    BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+    BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
+    BodyDesc.iRenderGroupID_3D = RG_3D;
+    BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
+
+    m_PartObjects[PART_BODY] = m_pBody = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"), &BodyDesc));
+    if (nullptr == m_PartObjects[PART_BODY])
+    {
+        MSG_BOX("CPlayer Body Creation Failed");
+        return E_FAIL;
+    }
+    //Part Sword
+    CPlayerSword::PLAYER_SWORD_DESC SwordDesc{};
+    SwordDesc.isCoordChangeEnable = true;
+    SwordDesc.pParent = this;
+    SwordDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
+    SwordDesc.iCurLevelID = m_iCurLevelID;
+    SwordDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
+    SwordDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+    SwordDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    SwordDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    SwordDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+    SwordDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    SwordDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
+    SwordDesc.iRenderGroupID_3D = RG_3D;
+    SwordDesc.iPriorityID_3D = PR3D_GEOMETRY;
+    SwordDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
+    SwordDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    m_PartObjects[PLAYER_PART_SWORD] = m_pSword = static_cast<CPlayerSword*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"), &SwordDesc));
+    if (nullptr == m_PartObjects[PLAYER_PART_SWORD])
+    {
+        MSG_BOX("CPlayer Sword Creation Failed");
+        return E_FAIL;
+    }
+    m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 1,0,0,0 });
+    Set_PartActive(PLAYER_PART_SWORD, false);
+    m_pSword->Switch_Grip(true);
+    m_pSword->Set_AttackEnable(false);
+
+    //Part Glove
+    BodyDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
+    BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    BodyDesc.eActorType = ACTOR_TYPE::LAST;
+    BodyDesc.pActorDesc = nullptr;
+    m_PartObjects[PLAYER_PART_GLOVE] = m_pGlove = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+    if (nullptr == m_PartObjects[PLAYER_PART_GLOVE])
+    {
+        MSG_BOX("CPlayer Glove Creation Failed");
+        return E_FAIL;
+    }
+    C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_GLOVE])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_glove_hand_r")); /**/
+    m_PartObjects[PLAYER_PART_GLOVE]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
+    Set_PartActive(PLAYER_PART_GLOVE, false);
+
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_UP, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_DOWN, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_RUN_RIGHT, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_RUN_UP, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_RUN_DOWN, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, (_uint)ANIM_STATE_3D::LATCH_PICKUP_IDLE_GT, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, (_uint)ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT, true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, (_uint)ANIM_STATE_3D::LATCH_ANIM_SPIN_ATTACK_SPIN_LOOP_GT, false);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL1, false);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL2, false);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL3, false);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL4, false);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL1, false);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL2, false);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL3, false);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL4, false);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL1, false);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL2, false);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL3, false);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL4, false);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_SPIN_ATTACK_SPIN_LOOP_GT, 0);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_SPIN_ATTACK_OUT_GT, 0);
+    return S_OK;
+}
+
 
 HRESULT CPlayer::Ready_Components()
 {
@@ -223,6 +327,7 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
        return E_FAIL; 
    m_pBody2DColliderCom = m_p2DColliderComs[0];
+   Safe_AddRef(m_pBody2DColliderCom);
 
    CircleDesc.pOwner = this;
    CircleDesc.fRadius = m_f2DInteractRange;
@@ -234,6 +339,7 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Body2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
        return E_FAIL;
    m_pBody2DTriggerCom = m_p2DColliderComs[1];
+   Safe_AddRef(m_pBody2DTriggerCom);
 
    CCollider_Fan::COLLIDER_FAN_DESC FanDesc = {};
    FanDesc.pOwner = this;
@@ -248,6 +354,7 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &FanDesc)))
        return E_FAIL;
    m_pAttack2DTriggerCom = m_p2DColliderComs[2];
+   Safe_AddRef(m_pAttack2DTriggerCom);
    m_pAttack2DTriggerCom->Set_Active(false);
 
    /* Com_Gravity */
@@ -261,110 +368,6 @@ HRESULT CPlayer::Ready_Components()
 
     return S_OK;
 }
-
-HRESULT CPlayer::Ready_PartObjects()
-{
-    /* Part Body */
-    CModelObject::MODELOBJECT_DESC BodyDesc{};
-
-    BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
-    BodyDesc.iCurLevelID = m_iCurLevelID;
-    BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
-
-    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
-    BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    BodyDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_player2DAnimation");
-    BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
-    BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
-    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-    BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
-    BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
-    BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
-    BodyDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    BodyDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
-    BodyDesc.iRenderGroupID_3D = RG_3D;
-    BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
-
-    m_PartObjects[PART_BODY] = m_pBody = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"), &BodyDesc));
-    if (nullptr == m_PartObjects[PART_BODY])
-    {
-        MSG_BOX("CPlayer Body Creation Failed");
-        return E_FAIL;
-    }
-	//Part Sword
-	CPlayerSword::PLAYER_SWORD_DESC SwordDesc{};
-    SwordDesc.isCoordChangeEnable = true;
-	SwordDesc.pParent = this;
-    SwordDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
-    SwordDesc.iCurLevelID = m_iCurLevelID;
-    SwordDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
-    SwordDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
-    SwordDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    SwordDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-    SwordDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
-    SwordDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    SwordDesc.tTransform2DDesc.fSpeedPerSec = 10.f;
-    SwordDesc.iRenderGroupID_3D = RG_3D;
-    SwordDesc.iPriorityID_3D = PR3D_GEOMETRY;
-    SwordDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
-    SwordDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-    m_PartObjects[PLAYER_PART_SWORD] = m_pSword = static_cast<CPlayerSword*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"), &SwordDesc));
-    if (nullptr == m_PartObjects[PLAYER_PART_SWORD])
-    {
-        MSG_BOX("CPlayer Sword Creation Failed");
-        return E_FAIL;
-    }
-	m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{1,0,0,0});
-	Set_PartActive(PLAYER_PART_SWORD, false);
-    m_pSword->Switch_Grip(true);
-    m_pSword->Set_AttackEnable(false);
-
-	//Part Glove
-    BodyDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
-    BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
-	BodyDesc.eActorType = ACTOR_TYPE::LAST;
-	BodyDesc.pActorDesc = nullptr;
-    m_PartObjects[PLAYER_PART_GLOVE] = m_pGlove =static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
-    if (nullptr == m_PartObjects[PLAYER_PART_GLOVE])
-    {
-        MSG_BOX("CPlayer Glove Creation Failed");
-        return E_FAIL;
-    }
-    C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
-    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_GLOVE])->Set_SocketMatrix(COORDINATE_3D,p3DModel->Get_BoneMatrix("j_glove_hand_r")); /**/
-	m_PartObjects[PLAYER_PART_GLOVE]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
-	Set_PartActive(PLAYER_PART_GLOVE, false);
-
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_UP, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_DOWN, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_RUN_RIGHT, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_RUN_UP, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_RUN_DOWN, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, (_uint)ANIM_STATE_3D::LATCH_PICKUP_IDLE_GT, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, (_uint)ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT, true);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_3D, (_uint)ANIM_STATE_3D::LATCH_ANIM_SPIN_ATTACK_SPIN_LOOP_GT, false);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL1, false);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL2, false);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL3, false);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL4, false);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL1, false);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL2, false);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL3, false);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_UP_LVL4, false);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL1, false);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL2, false);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL3, false);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL4, false);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_SPIN_ATTACK_SPIN_LOOP_GT, 0);
-    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_SPIN_ATTACK_OUT_GT, 0);
-    return S_OK;
-}
-
 
 
 void CPlayer::Priority_Update(_float _fTimeDelta)
@@ -1088,9 +1091,17 @@ _vector CPlayer::Get_LookDirection()
 {
 	COORDINATE eCoord = Get_CurCoord();
     if (COORDINATE_2D == eCoord)
-        return EDir_To_Vector(m_e2DDirection_E);
+        return FDir_To_Vector(EDir_To_FDir( m_e2DDirection_E));
     else
         return XMVector4Normalize( m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+}
+
+_vector CPlayer::Get_LookDirection(COORDINATE _eCoord)
+{
+    if (COORDINATE_2D == _eCoord)
+        return FDir_To_Vector(EDir_To_FDir(m_e2DDirection_E));
+    else
+        return XMVector4Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
 }
 
 CPlayer::STATE CPlayer::Get_CurrentStateID()
@@ -1098,9 +1109,9 @@ CPlayer::STATE CPlayer::Get_CurrentStateID()
 	return m_pStateMachine->Get_CurrentState()->Get_StateID();
 }
 
-_vector CPlayer::Get_RootBonePosition()
+CCarriableObject* CPlayer::Get_CarryingObject()
 {
-    return _vector();
+    { return static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ]); }
 }
 
 
@@ -1250,8 +1261,7 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
     {
         if (Is_CarryingObject())
         {
-			CCarriableObject* pCarriableObject = static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ]);
-            pCarriableObject->Set_Carrier(nullptr);
+
             Safe_Release(m_PartObjects[PLAYER_PART_CARRYOBJ]);
             m_PartObjects[PLAYER_PART_CARRYOBJ] = nullptr;
         }
@@ -1264,7 +1274,7 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
             return E_FAIL;
         m_PartObjects[PLAYER_PART_CARRYOBJ] = _pCarryingObject;
         Safe_AddRef(m_PartObjects[PLAYER_PART_CARRYOBJ]);
-        static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ])->Set_Carrier(this);
+
         Set_State(PICKUPOBJECT);
     }
 
@@ -1326,20 +1336,35 @@ void CPlayer::ThrowObject()
 {
 	assert(Is_CarryingObject());
 
+
+	COORDINATE eCoord = Get_CurCoord();
+    _vector vForce = { 0,0,0 };
+    if (COORDINATE_3D == eCoord)
+    {
+        vForce = XMVector3Normalize(XMVectorSetY(m_pControllerTransform->Get_State(CTransform::STATE_LOOK), 0.5)) * m_f3DThrowObjectPower;
+    }
+    else
+    {
+        vForce = XMVector2Normalize(EDir_To_Vector( Get_2DDirection())) * m_f2DThrowObjectPower;
+		vForce = XMVectorSetW(XMVectorSetZ(vForce, 0),0);
+    }
+
 	CCarriableObject* pObj = static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ]);
-	Set_CarryingObject(nullptr);
-
-   _vector vForce =  XMVector3Normalize(XMVectorSetY(m_pControllerTransform->Get_State(CTransform::STATE_LOOK),0.5)) *
-       (COORDINATE_3D == Get_CurCoord() ? m_f3DThrowObjectPower : m_f2DThrowObjectPower);
+    pObj->Set_Carrier(nullptr);
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        pObj->Set_Kinematic(false);
+    }
+    else
+    {
+        pObj->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, Get_FinalPosition());
+    }
 	pObj->Throw(vForce);
+	Set_CarryingObject(nullptr);
 }
-
-
 
 void CPlayer::Key_Input(_float _fTimeDelta)
 {
-
-
     if (KEY_DOWN(KEY::F1))
     {
         _int iCurCoord = (_int)Get_CurCoord();

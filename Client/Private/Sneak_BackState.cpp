@@ -162,7 +162,7 @@ void CSneak_BackState::Sneak_BackMove(_float _fTimeDelta, _int _iDir)
 
 				m_isTurn = false;
 				m_isMove = false;
-				m_isToWay = false;
+				m_isOnWay = false;
 
 				if (m_Ways.size() <= m_iCurWayIndex)
 				{
@@ -176,7 +176,7 @@ void CSneak_BackState::Sneak_BackMove(_float _fTimeDelta, _int _iDir)
 			{
 				m_isTurn = false;
 				m_isMove = false;
-				m_isToWay = false;
+				m_isOnWay = false;
 				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 			}
 		}

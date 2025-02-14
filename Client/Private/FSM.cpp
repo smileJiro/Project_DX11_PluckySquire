@@ -6,7 +6,9 @@
 #include "PatrolState.h"
 #include "AlertState.h"
 #include "StandbyState.h"
+#include "StandbyNoneAttackState.h"
 #include "ChaseWalkState.h"
+#include "ChaseAttackState.h"
 #include "MeleeAttackState.h"
 #include "RangedAttackState.h"
 #include "HitState.h"
@@ -190,6 +192,10 @@ HRESULT CFSM::Change_State(_uint _iState)
 	if (nullptr == m_pOwner)
 		return E_FAIL;
 
+	//이미 같은 상태면 전환 안함
+	if (m_iCurState == _iState)
+		return S_OK;
+
 	//몬스터가 애니메이션 전환 가능하지 않으면 상태 전환 안함
 	if (false == m_pOwner->Get_AnimChangeable())
 		return S_OK;
@@ -293,6 +299,74 @@ HRESULT CFSM::Add_SneakState()
 	pState->Set_Owner(m_pOwner);
 	pState->Set_FSM(this);
 	m_States.emplace((_uint)MONSTER_STATE::SNEAK_ATTACK, pState);
+
+	return S_OK;
+}
+
+HRESULT CFSM::Add_Chase_NoneAttackState()
+{
+	if (nullptr == m_pOwner)
+		return E_FAIL;
+
+	CState* pState = nullptr;
+	CState::STATEDESC Desc;
+	Desc.fAlertRange = m_fAlertRange;
+	Desc.fChaseRange = m_fChaseRange;
+	Desc.fAttackRange = m_fAttackRange;
+	Desc.fAlert2DRange = m_fAlert2DRange;
+	Desc.fChase2DRange = m_fChase2DRange;
+	Desc.fAttack2DRange = m_fAttack2DRange;
+	Desc.iCurLevel = m_iCurLevel;
+
+	pState = CIdleState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::IDLE, pState);
+
+	pState = CPatrolState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::PATROL, pState);
+	Set_PatrolBound();
+
+	pState = CAlertState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::ALERT, pState);
+
+	pState = CStandbyNoneAttackState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::STANDBY, pState);
+
+	pState = CChaseAttackState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::CHASE, pState);
+
+	pState = CHitState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::HIT, pState);
+
+	pState = CDeadState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::DEAD, pState);
 
 	return S_OK;
 }

@@ -543,7 +543,7 @@ HRESULT CLoader::Loading_Level_Logo()
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_NPC_Pip_2DAnimation"),
-		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/Pip/Pip.model2D")))))
+		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Logo/NPC/Pip/Pip.model2D")))))
 		return E_FAIL;
 
 
@@ -581,7 +581,7 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_Player2DAnimEvent"),
-        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Player/player2danimevts.animevt"))))
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Player/player2danimevts.animevt"))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_DetectionField"),
         CDetectionField::Create(m_pDevice, m_pContext))))
@@ -594,7 +594,7 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/barfBug_Rig/BarfBug_Attack.animevt"))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"),
-        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Monster/BarferBug/BarferBug2d_Attack.animevt"))))
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Monster/BarferBug/BarferBug2d_Attack.animevt"))))
         return E_FAIL;
         if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_BookPageActionEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))
@@ -714,41 +714,41 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 
 
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
-        TEXT("../Bin/Resources/Models/2DMapObject/"))))
+        TEXT("../Bin/Resources/Models/2DMapObject/Chapter2"))))
         return E_FAIL;
 
     /* 낱개 로딩 예시*/
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Player/player.model2D")))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_playersword2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/PlayerSword/player2dsword.model2D")))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("player"),
+    //    C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Chapter2/Player/player.model2D")))))
+    //    return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("player2dsword"),
+    //    C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Chapter2/PlayerSword/player2dsword.model2D")))))
+    //    return E_FAIL;
     // NPC 모델
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/NPC_Shop/NPC_Store.model2D")))))
-        return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_NPC_DJMoonBeard"),
-		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/DJ_MoonBeard/DJ_MoonBeard.model2D")))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_Narration_0102_01"),
-		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Narration/2DModel/0102/0102_01_Narration_Model.model2D")))))
-		return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_Dice2D"),
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("NPC_Store"),
+    //    C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Chapter2/NPC/NPC_Shop/NPC_Store.model2D")))))
+    //    return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("DJ_MoonBeard"),
+	//	C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Chapter2/NPC/DJ_MoonBeard/DJ_MoonBeard.model2D")))))
+	//	return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("0102_01_Narration_Model"),
+	//	C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Chapter2/Narration/0102/0102_01_Narration_Model.model2D")))))
+	//	return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("dice_pink_03"),
         C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/dice_01/dice_pink_03.dds", true))))
         return E_FAIL;
 
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("0102_02_Narration_Model_Jot"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Narration/2DModel/0102/0102_02_Narration_Model_Jot.model2D")))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("0102_02_Narration_Model_Humgrump"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Narration/2DModel/0102/0102_02_Narration_Model_Humgrump.model2D")))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("0102_02_Narration_Model_Villager"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Narration/2DModel/0102/0102_02_Narration_Model_Villager.model2D")))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("0102_02_Narration_Model_Jot"),
+    //    C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Chapter2/Narration/0102/0102_02_Narration_Model_Jot.model2D")))))
+    //    return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("0102_02_Narration_Model_Humgrump"),
+    //    C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Chapter2/Narration/0102/0102_02_Narration_Model_Humgrump.model2D")))))
+    //    return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("0102_02_Narration_Model_Villager"),
+    //    C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Chapter2/Narration/0102/0102_02_Narration_Model_Villager.model2D")))))
+    //    return E_FAIL;
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     
@@ -777,10 +777,10 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
         return E_FAIL;
 
-    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
-        TEXT("../Bin/Resources/Models/2DAnim/"))))
-        return E_FAIL;
 
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
+        TEXT("../Bin/Resources/Models/2DAnim/Chapter2/"))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
@@ -912,7 +912,7 @@ HRESULT CLoader::Loading_Level_Chapter_4()
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_Player2DAnimEvent"),
-        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Player/player2danimevts.animevt"))))
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter4/Player/player2danimevts.animevt"))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_DetectionField"),
         CDetectionField::Create(m_pDevice, m_pContext))))
@@ -925,7 +925,7 @@ HRESULT CLoader::Loading_Level_Chapter_4()
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/barfBug_Rig/BarfBug_Attack.animevt"))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"),
-        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Monster/BarferBug/BarferBug2d_Attack.animevt"))))
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter4/Monster/BarferBug/BarferBug2d_Attack.animevt"))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_BookPageActionEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))
@@ -1049,23 +1049,18 @@ HRESULT CLoader::Loading_Level_Chapter_4()
 
 
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
-        TEXT("../Bin/Resources/Models/2DMapObject/"))))
+        TEXT("../Bin/Resources/Models/2DMapObject/Chapter4/"))))
+        return E_FAIL;
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
+        TEXT("../Bin/Resources/Models/2DAnim/Chapter4/"))))
         return E_FAIL;
     /* 낱개 로딩 예시*/
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Player/player.model2D")))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_playersword2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/PlayerSword/player2dsword.model2D")))))
-        return E_FAIL;
     // NPC 모델
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/NPC_Shop/NPC_Store.model2D")))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_NPC_DJMoonBeard"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/DJ_MoonBeard/DJ_MoonBeard.model2D")))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("NPC_Store"),
+    //    C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Chapter4/NPC/NPC_Shop/NPC_Store.model2D")))))
+    //    return E_FAIL;
+
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
@@ -1086,9 +1081,7 @@ HRESULT CLoader::Loading_Level_Chapter_4()
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CHAPTER_4,
         TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
         return E_FAIL;
-    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
-        TEXT("../Bin/Resources/Models/2DAnim/"))))
-        return E_FAIL;
+
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
