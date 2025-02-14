@@ -482,6 +482,7 @@ void CPlayer::Late_Update(_float _fTimeDelta)
     }
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
     //cout << endl;
+
 }
 
 HRESULT CPlayer::Render()
@@ -721,7 +722,7 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
             PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
             if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
             {
-                IInteractable* pInteractable = static_cast<CNPC_Store*> (_pOtherObject);
+                IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
                 if (pInteractable && pInteractable->Is_Interactable(this))
                 {
                     pInteractable->Interact(this);
@@ -849,8 +850,8 @@ void CPlayer::Attack(CGameObject* _pVictim)
         return;
     Event_Hit(this, _pVictim, m_tStat.fDamg);
     CActorObject* pActor = dynamic_cast<CActorObject*>(_pVictim);
-    if(pActor)
-	    Event_AddImpulse(pActor, Get_LookDirection(), m_f3DKnockBackPower);
+    //if(pActor)
+	    //Event_AddImpulse(pActor, Get_LookDirection(), m_f3DKnockBackPower);
     m_AttckedObjects.insert(_pVictim);
 }
 
@@ -1415,7 +1416,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         if (COORDINATE_2D == eCurCoord)
             m_bPlatformerMode = !m_bPlatformerMode;
         else
+        {
             m_bPlatformerMode = false;
+            Set_Kinematic(true);
+        }
         //m_pControllerTransform->Rotation(XMConvertToRadians(m_bPlatformerMode ? 90 : 0), {0,0,1});
     }
     if (KEY_DOWN(KEY::F2))

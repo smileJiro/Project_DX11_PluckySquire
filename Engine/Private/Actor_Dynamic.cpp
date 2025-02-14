@@ -79,13 +79,14 @@ void CActor_Dynamic::Late_Update(_float _fTimeDelta)
 		_float3 vOwnerScale = m_pOwner->Get_ControllerTransform()->Get_Scale();
 
 		PxTransform DynamicTransform = static_cast<PxRigidDynamic*>(m_pActor)->getGlobalPose();
-		_matrix TranslationMatrix = XMMatrixTranslation(DynamicTransform.p.x, DynamicTransform.p.y, DynamicTransform.p.z);
 		_matrix QuatMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMVectorSet(DynamicTransform.q.x, DynamicTransform.q.y, DynamicTransform.q.z, DynamicTransform.q.w));
+		_matrix TranslationMatrix = XMMatrixTranslation(DynamicTransform.p.x, DynamicTransform.p.y, DynamicTransform.p.z);
 		_float4x4 WorldMatrix = {};
 		XMStoreFloat4x4(&WorldMatrix, QuatMatrix * TranslationMatrix);
 		m_pOwner->Set_WorldMatrix(WorldMatrix);
 
 		m_pOwner->Set_Scale(vOwnerScale);
+
 	}
 	
 #ifdef _DEBUG
