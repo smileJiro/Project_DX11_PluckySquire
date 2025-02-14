@@ -104,6 +104,7 @@ _bool CState::Check_Target3D(_bool _isSneak)
 				//플레이어가 레이 오브젝트보다 가까우면 인식(임시로 맵오브젝트 써봄)
 				if (2 == m_pGameInstance->Compare_VectorLength(vTargetDir, XMLoadFloat3(&vOutPos) - m_pOwner->Get_FinalPosition()))
 				{
+					m_pOwner->Stop_Rotate();
 					Event_ChangeMonsterState(eState, m_pFSM);
 					return true;
 				}
@@ -112,6 +113,7 @@ _bool CState::Check_Target3D(_bool _isSneak)
 		//레이 충돌 안했을 때(장애물이 없었을 때)
 		else
 		{
+			m_pOwner->Stop_Rotate();
 			Event_ChangeMonsterState(eState, m_pFSM);
 			return true;
 		}

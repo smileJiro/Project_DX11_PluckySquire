@@ -32,7 +32,7 @@ void CSneak_IdleState::State_Update(_float _fTimeDelta)
 		return;
 
 	m_fAccTime += _fTimeDelta;
-
+	//cout << "Idle" << endl;
 	if (nullptr != m_pTarget)
 	{
 		//몬스터 인식 범위 안에 들어오면 인식상태로 전환

@@ -28,14 +28,14 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->isCoordChangeEnable = false;
     pDesc->iNumPartObjects = PART_END;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(1080.f);
+    pDesc->tTransform3DDesc.fSpeedPerSec = 15.f;
 
-    pDesc->fAlertRange = 5.f;
+    pDesc->fAlertRange = 8.f;
     pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 1.f;
+    pDesc->fAttackRange = 2.f;
 
-    pDesc->fFOVX = 90.f;
+    pDesc->fFOVX = 120.f;
     pDesc->fFOVY = 30.f;
 
     pDesc->isSneakMode = true;
@@ -319,7 +319,7 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
 
     //닿은 물체의 씬 쿼리를 켜는 트리거
     SHAPE_BOX_DESC* RayBoxDesc = new SHAPE_BOX_DESC;
-	RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(pDesc->fFOVX * 0.5f) * 0.5f, 0.1f, pDesc->fAlertRange * 0.5f };
+	RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(pDesc->fFOVX * 0.5f) * 0.5f, 1.f, pDesc->fAlertRange * 0.5f };
 	//RayBoxDesc->vHalfExtents = { ShapeDesc->fRadius, 0.1f, pDesc->fAlertRange * 0.5f };
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
@@ -328,7 +328,7 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::NORESTITUTION; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-	XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y + 0.2f, RayBoxDesc->vHalfExtents.z)); // Shape의 LocalOffset을 행렬정보로 저장.
+	XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, RayBoxDesc->vHalfExtents.z)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);

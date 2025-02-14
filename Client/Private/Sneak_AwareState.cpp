@@ -40,7 +40,7 @@ void CSneak_AwareState::State_Update(_float _fTimeDelta)
 	{
 		m_fAccTime = 0.f;
 	}
-	
+	//cout << "Aware" << endl;
 	if (nullptr != m_pTarget)
 	{
 		//소리난 위치로 회전

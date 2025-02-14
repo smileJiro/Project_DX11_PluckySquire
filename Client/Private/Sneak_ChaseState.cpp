@@ -51,7 +51,7 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 			m_isRenew = true;
 		}
 	}
-
+	//cout << "Chase" << endl;
 
 	//플레이어 한테 직선으로 와야하는데 장애물이 있는 경우 장애물을 돌아서 혹은 길을 따라 이동해야함
 
@@ -59,6 +59,7 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 	_float fDis = XMVectorGetX(XMVector3Length((vDir)));
 	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
 	{
+		m_pOwner->Stop_Rotate();
 		//공격 준비로 전환
 		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ATTACK, m_pFSM);
 		return;
@@ -67,6 +68,7 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 	//추적 범위 벗어나면 가까운 정찰 웨이포인트로 복귀
 	if (fDis > Get_CurCoordRange(MONSTER_STATE::CHASE))
 	{
+		m_pOwner->Stop_Rotate();
 		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_BACK, m_pFSM);
 	}
 	else
@@ -102,6 +104,7 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 				//도착하면 다음 웨이포인트로 목표위치 바꿈
 				if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.3f))
 				{
+					m_pOwner->Stop_Rotate();
 					++m_iCurWayIndex;
 					m_isTurn = false;
 					m_isMove = false;

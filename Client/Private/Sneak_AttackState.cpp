@@ -35,14 +35,17 @@ void CSneak_AttackState::State_Update(_float _fTimeDelta)
 		return;
 	if (nullptr == m_pOwner)
 		return;
-
+	//cout << "Attack" << endl;
 	//컷씬으로 들어가며 초기화
 	//Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
-	Event_ChangeMonsterState(MONSTER_STATE::SNEAK_BACK, m_pFSM);
+	Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 }
 
 void CSneak_AttackState::State_Exit()
 {
+	_float3 vPlayerPos = { -31.f, 6.56f, 22.5f };
+	_float3 vMonsterPos = { -16.5f, 6.56f, 22.6f };
+	Event_Sneak_BeetleCaught(static_cast<CActorObject*>(m_pTarget), static_cast<CActorObject*>(m_pOwner), &vPlayerPos, &vMonsterPos);
 }
 
 CSneak_AttackState* CSneak_AttackState::Create(void* _pArg)

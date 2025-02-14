@@ -55,6 +55,8 @@ private:
 
 	HRESULT Execute_Get_Bulb(const EVENT& _tEvent);
 
+	HRESULT Execute_Sneak_BeetleCaught(const EVENT& _tEvent);
+
 private:
 	HRESULT Client_Level_Enter(_int _iChangeLevelID);
 	HRESULT Client_Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);

@@ -56,8 +56,7 @@ private:
 	_bool m_isToWay = { false };
 	_float3 m_vDir = {};
 
-	vector<_float3> m_PatrolWaypoints = {};
-	vector<_uint> m_PatrolWayIndexes = {};
+	vector<_uint> m_PatrolWays = {};
 
 public:
 	static CSneak_BackState* Create(void* _pArg);

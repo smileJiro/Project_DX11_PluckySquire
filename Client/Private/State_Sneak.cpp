@@ -27,17 +27,20 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 	{
 	case Client::WAYPOINTINDEX::CHAPTER2_1:
 		m_WayPoints.push_back({ _float3(-31.f, 6.56f, 24.f) });
-		m_WayPoints.push_back({_float3(-30.7f, 6.55f, 20.f)});
-		m_WayPoints.push_back({ _float3(-29.f, 6.55f, 18.f) });
+		m_WayPoints.push_back({_float3(-30.5f, 6.55f, 20.5f)});
+		m_WayPoints.push_back({ _float3(-29.7f, 6.55f, 18.45f) });
+		m_WayPoints.push_back({ _float3(-27.8f, 6.55f, 18.22f) });
 		m_WayPoints.push_back({ _float3(-24.f, 6.54f, 18.f) });
-		m_WayPoints.push_back({ _float3(-22.f, 6.55f, 18.f) });
-		m_WayPoints.push_back({_float3(-16.5f, 6.53f, 19.f)});
-		m_WayPoints.push_back({_float3(-12.1f, 6.51f, 19.5f)});
-		m_WayPoints.push_back({_float3(-12.3f, 6.52f, 21.f)});
-		m_WayPoints.push_back({ _float3(-13.3f, 6.52f, 22.75f) });
+		m_WayPoints.push_back({ _float3(-22.4f, 6.55f, 18.f) });
+		m_WayPoints.push_back({_float3(-18.4f, 6.53f, 18.f)});
+		m_WayPoints.push_back({_float3(-16.1f, 6.53f, 18.5f)});
+		m_WayPoints.push_back({_float3(-12.6f, 6.51f, 19.5f)});
+		m_WayPoints.push_back({_float3(-11.6f, 6.52f, 22.f)});
+		m_WayPoints.push_back({ _float3(-13.7f, 6.52f, 23.3f) });
 		m_WayPoints.push_back({ _float3(-16.5f, 6.56f, 22.6f) });
-		m_WayPoints.push_back({ _float3(-20.f, 6.5f, 23.f) });
-		m_WayPoints.push_back({ _float3(-23.6f, 6.55f, 21.f) });
+		m_WayPoints.push_back({ _float3(-20.f, 6.5f, 22.5f) });
+		m_WayPoints.push_back({ _float3(-23.6f, 6.54f, 20.5f) });
+		m_WayPoints.push_back({ _float3(-16.3f, 6.54f, 20.5f) });
 
 		m_WayPoints[0].Neighbors.push_back(1);
 		m_WayPoints[1].Neighbors.push_back(0);
@@ -57,16 +60,22 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		m_WayPoints[8].Neighbors.push_back(7);
 		m_WayPoints[8].Neighbors.push_back(9);
 		m_WayPoints[9].Neighbors.push_back(8);
-		m_WayPoints[9].Neighbors.push_back(5);
-		m_WayPoints[5].Neighbors.push_back(9);
 		m_WayPoints[9].Neighbors.push_back(10);
 		m_WayPoints[10].Neighbors.push_back(9);
 		m_WayPoints[10].Neighbors.push_back(11);
 		m_WayPoints[11].Neighbors.push_back(10);
-		m_WayPoints[11].Neighbors.push_back(3);
-		m_WayPoints[3].Neighbors.push_back(11);
-		m_WayPoints[11].Neighbors.push_back(4);
-		m_WayPoints[4].Neighbors.push_back(11);
+		m_WayPoints[11].Neighbors.push_back(12);
+		m_WayPoints[12].Neighbors.push_back(11);
+		m_WayPoints[12].Neighbors.push_back(13);
+		m_WayPoints[13].Neighbors.push_back(12);
+		m_WayPoints[13].Neighbors.push_back(4);
+		m_WayPoints[4].Neighbors.push_back(13);
+		m_WayPoints[13].Neighbors.push_back(5);
+		m_WayPoints[5].Neighbors.push_back(13);
+		m_WayPoints[14].Neighbors.push_back(7);
+		m_WayPoints[7].Neighbors.push_back(14);
+		m_WayPoints[14].Neighbors.push_back(11);
+		m_WayPoints[11].Neighbors.push_back(14);
 		break;
 
 	case Client::WAYPOINTINDEX::CHAPTER2_2:
@@ -345,6 +354,8 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 	}
 
 	XMStoreFloat3(_vDirection, XMVector3Normalize(vResult));
+	if ((*_vDirection).y > 0.f)
+		int a = 10;
 }
 
 void CState_Sneak::Determine_BackDirection(_fvector& _vDestination, _float3* _vDirection)

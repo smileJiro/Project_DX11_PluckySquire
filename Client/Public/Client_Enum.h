@@ -121,6 +121,7 @@ namespace Client
 		SET_SCENEQUERYFLAG,
 		HIT,
 		GET_BULB,
+		SNEAK_BEETLECAUGHT,
 		
 		LAST,
 	};

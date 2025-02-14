@@ -157,7 +157,7 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon)
         return true;
     }
 
-    pDynamicActor->Set_LinearVelocity(XMVector3Normalize(vDir), m_pControllerTransform->Get_SpeedPerSec()*2.f);
+    pDynamicActor->Set_LinearVelocity(XMVector3Normalize(vDir), m_pControllerTransform->Get_SpeedPerSec());
 
     return false;
 }
