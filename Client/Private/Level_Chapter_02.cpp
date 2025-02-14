@@ -62,7 +62,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	CGameObject* pCameraTarget = nullptr;
 	Ready_CubeMap(TEXT("Layer_CubeMap"));
 	Ready_Layer_MainTable(TEXT("Layer_MainTable"));
-	//Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
+	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
@@ -71,7 +71,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	//Ready_Layer_NPC(TEXT("Layer_NPC"));
 
 	//액터 들어가는넘.,
-	//Ready_Layer_Map();
+	Ready_Layer_Map();
 
 	/* Pooling Test */
 	Pooling_DESC Pooling_Desc;

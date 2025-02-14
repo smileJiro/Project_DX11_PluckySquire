@@ -441,7 +441,7 @@ public: /* 2D 충돌 */
 	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
 	_bool Is_SwordHandling();
-	_bool Is_CarryingObject(){ return nullptr != m_CarryingObject; }
+	_bool Is_CarryingObject(){ return nullptr != m_pCarryingObject; }
 	_bool Is_AttackTriggerActive();
 	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
 	_float Get_UpForce();
@@ -561,7 +561,7 @@ private:
 	class CPlayerSword* m_pSword = nullptr;
 	CModelObject* m_pBody = nullptr;
 	CModelObject* m_pGlove= nullptr;
-	CCarriableObject* m_CarryingObject = { nullptr, };
+	CCarriableObject* m_pCarryingObject = { nullptr, };
 
 	set<CGameObject*> m_AttckedObjects;
 public:

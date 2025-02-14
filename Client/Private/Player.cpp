@@ -797,14 +797,11 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 {
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
-
+    if (Is_CarryingObject())
+        m_pCarryingObject->Change_Coordinate(_eCoordinate);
     if (COORDINATE_2D == Get_CurCoord()) {
         Set_2DDirection(E_DIRECTION::DOWN);
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
-        for (auto& pPart : m_PartObjects)
-        {
-
-        }
     }
     else
     {
@@ -1122,7 +1119,7 @@ CPlayer::STATE CPlayer::Get_CurrentStateID()
 
 CCarriableObject* CPlayer::Get_CarryingObject()
 {
-    { return static_cast<CCarriableObject*>(m_CarryingObject); }
+    { return static_cast<CCarriableObject*>(m_pCarryingObject); }
 }
 
 
@@ -1273,8 +1270,8 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
         if (Is_CarryingObject())
         {
 
-            Safe_Release(m_CarryingObject);
-            m_CarryingObject = nullptr;
+            Safe_Release(m_pCarryingObject);
+            m_pCarryingObject = nullptr;
         }
         return S_OK;
     }
@@ -1283,8 +1280,8 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
     {
         if (Is_CarryingObject())
             return E_FAIL;
-        m_CarryingObject = _pCarryingObject;
-        Safe_AddRef(m_CarryingObject);
+        m_pCarryingObject = _pCarryingObject;
+        Safe_AddRef(m_pCarryingObject);
 
         Set_State(PICKUPOBJECT);
     }
@@ -1360,7 +1357,7 @@ void CPlayer::ThrowObject()
 		vForce = XMVectorSetW(XMVectorSetZ(vForce, 0),0);
     }
 
-	CCarriableObject* pObj = static_cast<CCarriableObject*>(m_CarryingObject);
+	CCarriableObject* pObj = static_cast<CCarriableObject*>(m_pCarryingObject);
     pObj->Set_Carrier(nullptr);
     if (COORDINATE_3D == Get_CurCoord())
     {
@@ -1485,6 +1482,6 @@ void CPlayer::Free()
 
 	Safe_Release(m_pStateMachine);
 	Safe_Release(m_pAnimEventGenerator);
-    Safe_Release(m_CarryingObject);
+    Safe_Release(m_pCarryingObject);
     __super::Free();
 }

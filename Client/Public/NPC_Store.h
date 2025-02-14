@@ -5,7 +5,7 @@
 
 
 BEGIN(Client)
-class CNPC_Store final: public CNPC, public virtual IInteractable
+class CNPC_Store final: public CNPC, public IInteractable
 {
 
 public:
