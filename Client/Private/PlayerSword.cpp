@@ -392,8 +392,11 @@ void CPlayerSword::Attack(CGameObject* _pVictim)
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
     Event_Hit(this, _pVictim, m_pPlayer->Get_AttackDamg());
-    _float3 vRepulse; XMStoreFloat3(&vRepulse, 15.f * XMVector3Normalize(_pVictim->Get_FinalPosition() - Get_FinalPosition()));
-    static_cast<CActorObject*>(_pVictim)->Get_ActorCom()->Add_Impulse(vRepulse);
+    CActorObject* pActor = dynamic_cast<CActorObject*>(_pVictim);
+    if (pActor)
+    {
+        Event_AddImpulse(pActor, Get_LookDirection(), m_f3DKnockBackPower);
+    }
     m_AttckedObjects.insert(_pVictim);
 }
 
@@ -414,6 +417,24 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn)
 _bool CPlayerSword::Is_AttackEnable()
 {
     return    m_bAttackEnable;
+}
+
+_vector CPlayerSword::Get_LookDirection()
+{
+
+    if(Is_Outing())
+        return m_vThrowDirection;
+    else if(Is_ComingBack())
+    {
+        _vector vPosition = Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+        _vector vTargetPos = m_pPlayer->Get_CenterPosition();
+        return  XMVector3Normalize(vTargetPos - vPosition);
+    }
+    else
+    {
+        COORDINATE eCoord = Get_CurCoord();
+		return m_pPlayer->Get_LookDirection(eCoord);
+    }
 }
 
 CPlayerSword* CPlayerSword::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

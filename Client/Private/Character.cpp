@@ -54,19 +54,6 @@ void CCharacter::Stop_Move()
     }
 }
 
-void CCharacter::Add_Impuls(_fvector _vForce)
-{
-    _float3 f3Force;
-    XMStoreFloat3(&f3Force, _vForce);
-    m_pActorCom->Add_Impulse(f3Force);
-}
-
-void CCharacter::Add_Force(_fvector _vForce)
-{
-    _float3 f3Force;
-    XMStoreFloat3(&f3Force, _vForce);
-    m_pActorCom->Add_Force(f3Force);
-}
 
 _bool CCharacter::Rotate_To(_fvector _vDirection, _float _fSpeed)
 {
@@ -143,6 +130,7 @@ _bool CCharacter::Rotate_To_Radians(_fvector _vDirection, _float _fSpeed)
         return false;
     }
 }
+
 
 _bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon)
 {

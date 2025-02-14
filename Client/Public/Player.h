@@ -522,6 +522,7 @@ private:
 	_float m_f3DFloorDistance = 0;
 	_float m_f3DThrowObjectPower = 10.f;
 	_float m_f3DPickupRange = 1.3f;
+	_float m_f3DKnockBackPower = 100.f;
 	_bool m_bOnGround = false;
 	_bool m_bAttackTrigger = false;
 	_uint m_iSpinAttackLevel = 4;
@@ -541,6 +542,7 @@ private:
 	_float m_f2DInteractRange = 93.f;
 	_float m_f2DThrowObjectPower = 100.f;
 	_float m_f2DPickupRange = 93.f;
+	_float m_f2DKnockBackPower = 100.f;
 	_float4x4 m_mat2DCarryingOffset = {};
 	_bool m_bPlatformerMode = false;
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;

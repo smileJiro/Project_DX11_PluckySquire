@@ -122,6 +122,7 @@ namespace Client
 		SET_SCENEQUERYFLAG,
 		HIT,
 		GET_BULB,
+		ADDIMPULSE,
 		
 		LAST,
 	};

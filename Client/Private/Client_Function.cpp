@@ -242,6 +242,7 @@ namespace Client
 	{
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::HIT;
+
 		tEvent.Parameters.resize(3);
 		tEvent.Parameters[0] = (DWORD_PTR)_pHitter;
 		tEvent.Parameters[1] = (DWORD_PTR)_pVictim;
@@ -255,6 +256,23 @@ namespace Client
 		tEvent.eType = EVENT_TYPE::GET_BULB;
 		tEvent.Parameters.resize(1);
 		tEvent.Parameters[0] = (DWORD_PTR)_iCoordinate;
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
+	void Event_AddImpulse(CActorObject* _pObject, _fvector _vDirection, _float _fPower)
+	{
+		Event_AddImpulse(_pObject, XMVector3Normalize(_vDirection)* _fPower);
+	}
+
+	void Event_AddImpulse(CActorObject* _pObject, _fvector _vForce)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::ADDIMPULSE;
+
+		tEvent.Parameters.resize(2);
+		_float3* fForce = new _float3{ _vForce.m128_f32[0], _vForce.m128_f32[1], _vForce.m128_f32[2] };
+		tEvent.Parameters[0] = (DWORD_PTR)_pObject;
+		tEvent.Parameters[1] = (DWORD_PTR)fForce;
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 

@@ -55,6 +55,7 @@ private:
 	HRESULT	Execute_Hit(const EVENT& _tEvent);
 
 	HRESULT Execute_Get_Bulb(const EVENT& _tEvent);
+	HRESULT Execute_AddImpulse(const EVENT& _tEvent);
 
 private:
 	HRESULT Client_Level_Enter(_int _iChangeLevelID);

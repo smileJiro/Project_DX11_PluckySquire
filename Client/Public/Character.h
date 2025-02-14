@@ -28,8 +28,7 @@ public:
 
 	void Stop_Rotate();
 	void Stop_Move();
-	void Add_Impuls(_fvector _vForce);
-	void Add_Force(_fvector _vForce);
+
 	_bool Move_To(_fvector _vPosition, _float _fEpsilon = 0.5f);
 	_bool Check_Arrival(_fvector _vPosition, _float _fEpsilon = 0.5f);
 	//캐릭터 기준 _vDir 방향을 바라보게 하는 함수. Y축으로만 회전함.
@@ -38,8 +37,6 @@ public:
 	//속도는 degree로 줘야함 (초당), 목표 방향에 도달시 true 리턴
 	_bool Rotate_To(_fvector _vDirection, _float _fSpeed);
 	_bool Rotate_To_Radians(_fvector _vDirection, _float _fSpeed);
-
-	virtual void KnockBack(CGameObject* _pHitter = nullptr) {};
 
 protected:
 	STAT m_tStat;

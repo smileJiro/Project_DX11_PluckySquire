@@ -60,6 +60,7 @@ public:
 	_bool Is_ComingBack() { return Is_Flying() && 0 > m_fOutingForce; }
 	_bool Is_Outing() { return Is_Flying() && 0 < m_fOutingForce; }
 	_bool Is_SwordHandling() { return HANDLING == m_eCurrentState; }
+	_vector Get_LookDirection();
 private:
 	_bool m_bAttackEnable = false;
 	_float m_fThrowingPower3D = 15.f;
@@ -72,6 +73,8 @@ private:
 	_float m_fCentripetalForce3D = 30.f;
 	_float m_fCentripetalForce2D = 600.f;
 	_float m_fRotationForce3D = 50.f;
+	_float m_f3DKnockBackPower = 12.f;
+	_float m_f2DKnockBackPower = 50.f;
 
 	SWORD_STATE m_eCurrentState = HANDLING;
 	SWORD_STATE m_ePastState = HANDLING;

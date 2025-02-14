@@ -636,20 +636,24 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
 
 void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+    OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
     if (_pMyCollider == m_pBody2DTriggerCom)
     {
-        PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
-        if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
+        if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
         {
-            IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
-            if (pInteractable && pInteractable->Is_Interactable(this))
+            PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
+            if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
             {
-                pInteractable->Interact(this);
+                IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
+                if (pInteractable && pInteractable->Is_Interactable(this))
+                {
+                    pInteractable->Interact(this);
+                }
             }
         }
     }
     else if (_pMyCollider == m_pAttack2DTriggerCom
-        && OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
+        && OBJECT_GROUP::MONSTER == eGroup)
     {
         Attack(_pOtherObject);
     }
@@ -732,8 +736,9 @@ void CPlayer::Attack(CGameObject* _pVictim)
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
     Event_Hit(this, _pVictim, m_tStat.fDamg);
-    _float3 vRepulse; XMStoreFloat3(&vRepulse, 10.f * Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
-    static_cast<CActorObject*>(_pVictim)->Get_ActorCom()->Add_Impulse(vRepulse);
+    CActorObject* pActor = dynamic_cast<CActorObject*>(_pVictim);
+    if(pActor)
+	    Event_AddImpulse(pActor, Get_LookDirection(), m_f3DKnockBackPower);
     m_AttckedObjects.insert(_pVictim);
 }
 

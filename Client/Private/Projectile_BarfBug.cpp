@@ -140,8 +140,9 @@ void CProjectile_BarfBug::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
         if((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
         {
             Event_Hit(this, _Other.pActorUserData->pOwner, 1.f);
-            _float3 vRepulse; XMStoreFloat3(&vRepulse, 10.f * _My.pActorUserData->pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
-            _Other.pActorUserData->pOwner->Get_ActorCom()->Add_Impulse(vRepulse);
+            _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+            XMVectorSetY(vRepulse, -1.f);
+            Event_AddImpulse(_My.pActorUserData->pOwner, vRepulse);
         }
 
         Event_DeleteObject(this);
