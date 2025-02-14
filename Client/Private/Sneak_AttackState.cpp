@@ -35,14 +35,47 @@ void CSneak_AttackState::State_Update(_float _fTimeDelta)
 		return;
 	if (nullptr == m_pOwner)
 		return;
-
+	cout << "Attack" << endl;
 	//컷씬으로 들어가며 초기화
 	//Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
-	Event_ChangeMonsterState(MONSTER_STATE::SNEAK_BACK, m_pFSM);
+	if(m_pOwner->Get_AnimChangeable())
+		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 }
 
 void CSneak_AttackState::State_Exit()
 {
+	After_Attack();
+}
+
+void CSneak_AttackState::After_Attack()
+{
+	_float3 vPlayerPos = { };
+	_float3 vMonsterPos = { };
+
+	switch (m_eWayIndex)
+	{
+	case Client::WAYPOINTINDEX::CHAPTER2_1:
+		vPlayerPos = { -31.f, 6.56f, 22.5f };
+		vMonsterPos = { -16.5f, 6.56f, 22.6f };
+		break;
+	case Client::WAYPOINTINDEX::CHAPTER2_2:
+		vPlayerPos = { 40.f, 0.35f, -7.f };
+		vMonsterPos = { 32.15f, 0.35f, 1.66f };
+		break;
+	case Client::WAYPOINTINDEX::CHAPTER2_2_2:
+		vPlayerPos = { 36.6f, 0.35f, 5.5f };
+		vMonsterPos = { 39.5f, 0.35f, 10.5f };
+		break;
+	case Client::WAYPOINTINDEX::CHAPTER2_3:
+		vPlayerPos = {  };
+		vMonsterPos = { 47.f, 0.35f, -0.5f };
+		break;
+
+	default:
+		return;
+	}
+	Event_Sneak_BeetleCaught(static_cast<CActorObject*>(m_pTarget), static_cast<CActorObject*>(m_pOwner), &vPlayerPos, &vMonsterPos);
+	Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 }
 
 CSneak_AttackState* CSneak_AttackState::Create(void* _pArg)

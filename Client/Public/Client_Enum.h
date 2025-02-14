@@ -125,6 +125,7 @@ namespace Client
 		SET_SCENEQUERYFLAG,
 		HIT,
 		GET_BULB,
+		SNEAK_BEETLECAUGHT,
 		
 		LAST,
 	};
@@ -210,6 +211,7 @@ namespace Client
 	{
 		CHAPTER2_1,
 		CHAPTER2_2,
+		CHAPTER2_2_2,
 		CHAPTER2_3,
 		LAST
 	};

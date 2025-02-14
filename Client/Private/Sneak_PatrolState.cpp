@@ -56,7 +56,7 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pOwner)
 		return;
-
+	//cout << "Patrol" << endl;
 	//일단 적용해봄
 	//if(COORDINATE_3D == m_pOwner->Get_CurCoord())
 	//{
@@ -71,7 +71,7 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 	//		return;
 	//	}
 	//}
-
+	cout << "Patrol" << endl;
 	if (true == m_isMove)
 		m_fAccTime += _fTimeDelta;
 
@@ -91,6 +91,9 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 			//플레이어가 인식되지 않았을 경우 소리가 나면 경계로 전환 
 			if (m_pOwner->IsTarget_In_Sneak_Detection())
 			{
+				m_pOwner->Stop_Rotate();
+				m_pOwner->Stop_Move();
+				m_pFSM->Set_Sneak_AwarePos(m_pOwner->Get_FinalPosition());
 				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 				return;
 			}
@@ -104,8 +107,6 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 		m_isTurn = true;
 	}
 	
-	
-
 	//이동
 	Sneak_PatrolMove(_fTimeDelta, m_iDir);
 }
@@ -120,11 +121,11 @@ void CSneak_PatrolState::State_Exit()
 
 void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 {
-	if (m_PatrolWaypoints.size() <= m_iCurWayIndex)
+	if (m_PatrolWays.size() <= m_iCurWayIndex)
 		return;
 
 
-	_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex])-m_pOwner->Get_FinalPosition());
+	_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition ) - m_pOwner->Get_FinalPosition());
 
 	//회전
 	if (true == m_isTurn && false == m_isMove)
@@ -155,8 +156,10 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 		//Determine_AvoidDirection(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]), &m_vDir);
 		//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 
-		if (m_pOwner->Move_To(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]), 0.3f))
+		if (m_pOwner->Move_To(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition), 0.3f))
 		{
+			m_pOwner->Stop_Rotate();
+			m_pOwner->Stop_Move();
 			m_isTurn = false;
 			m_isMove = false;
 
@@ -164,7 +167,6 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 		}
 	}
 
-	//웨이포인트로 이동하다가 장애물 피해야하므로 
 }
 
 void CSneak_PatrolState::Determine_Direction()
@@ -178,13 +180,13 @@ void CSneak_PatrolState::Determine_Direction()
 	{
 		++m_iCurWayIndex;
 
-		if (m_PatrolWaypoints.size() - 1 == m_iCurWayIndex)
+		if (m_PatrolWays.size() - 1 == m_iCurWayIndex)
 			m_isBack = true;
 
 		//예외처리
-		if (m_PatrolWaypoints.size()-1 < m_iCurWayIndex)
+		if (m_PatrolWays.size()-1 < m_iCurWayIndex)
 		{
-			m_iCurWayIndex = (_uint)m_PatrolWaypoints.size() - 1;
+			m_iCurWayIndex = m_PatrolWays.size() - 1;
 			m_isBack = true;
 		}
 	}
@@ -204,15 +206,16 @@ void CSneak_PatrolState::Determine_Direction()
 	}
 
 	//시간 랜덤으로 지정 (양 끝 지점만 최솟값을 크게 놓음)
-	if (0 == m_iCurWayIndex || m_PatrolWaypoints.size() - 1 == m_iCurWayIndex)
+	if (0 == m_iCurWayIndex || m_PatrolWays.size() - 1 == m_iCurWayIndex)
 		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(1.f, 3.f));
 	else
 	{
 		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(0.f, 3.f));
 	}
 
-	XMStoreFloat3(&m_vDir, XMVector3Normalize(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]) - m_pOwner->Get_FinalPosition()));
-
+	XMStoreFloat3(&m_vDir, XMVector3Normalize(XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition(),0.f)));
+	if (m_vDir.y > 0.f)
+		int a = 10;
 }
 
 _vector CSneak_PatrolState::Set_Sneak_PatrolDirection(_int _iDir)
@@ -316,20 +319,6 @@ void CSneak_PatrolState::Check_Bound(_float _fTimeDelta)
 		}
 
 		m_isBack = false;
-	}
-}
-
-void CSneak_PatrolState::Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex)
-{
-	switch (_iWayIndex)
-	{
-	case Client::WAYPOINTINDEX::CHAPTER2_1:
-		m_PatrolWaypoints.push_back({ _float3(-16.5f, 6.56f, 22.6f) });
-		m_PatrolWaypoints.push_back({ _float3(-20.f, 6.5f, 23.f) });
-		m_PatrolWaypoints.push_back({ _float3(-23.6f, 6.55f, 21.f) });
-		break;
-	default:
-		break;
 	}
 }
 

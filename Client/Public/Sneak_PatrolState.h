@@ -35,9 +35,6 @@ private:
 	void Check_Bound(_float _fTimeDelta);
 
 private:
-	void Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex);
-
-private:
 	_float m_fAccTime = { 0.f };
 	_float m_fAccDistance = { 0.f };
 	_float m_fMoveDistance = {};
@@ -54,8 +51,6 @@ private:
 	_bool m_isBack = { false };
 	_bool m_isToWay = { false };
 	_float3 m_vDir = {};
-
-	vector<_float3> m_PatrolWaypoints = {};
 
 public:
 	static CSneak_PatrolState* Create(void* _pArg);

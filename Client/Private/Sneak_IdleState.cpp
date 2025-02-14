@@ -32,7 +32,7 @@ void CSneak_IdleState::State_Update(_float _fTimeDelta)
 		return;
 
 	m_fAccTime += _fTimeDelta;
-
+	//cout << "Idle" << endl;
 	if (nullptr != m_pTarget)
 	{
 		//몬스터 인식 범위 안에 들어오면 인식상태로 전환
@@ -42,7 +42,7 @@ void CSneak_IdleState::State_Update(_float _fTimeDelta)
 		//플레이어가 인식되지 않았을 경우 소리가 나면 경계로 전환 
 		if (m_pOwner->IsTarget_In_Sneak_Detection())
 		{
-			Set_Sneak_InvestigatePos(m_pTarget->Get_FinalPosition());
+			m_pFSM->Set_Sneak_AwarePos(m_pTarget->Get_FinalPosition());
 			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 			return;
 		}

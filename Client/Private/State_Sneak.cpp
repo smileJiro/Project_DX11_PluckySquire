@@ -12,6 +12,8 @@ HRESULT CState_Sneak::Initialize(void* _pArg)
 {
 	SNEAKSTATEDESC* pDesc = static_cast<SNEAKSTATEDESC*>(_pArg);
 	
+	m_eWayIndex = pDesc->eWayIndex;
+
 	__super::Initialize(_pArg);
 
 	return S_OK;
@@ -27,17 +29,20 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 	{
 	case Client::WAYPOINTINDEX::CHAPTER2_1:
 		m_WayPoints.push_back({ _float3(-31.f, 6.56f, 24.f) });
-		m_WayPoints.push_back({_float3(-30.7f, 6.55f, 20.f)});
-		m_WayPoints.push_back({ _float3(-29.f, 6.55f, 18.f) });
+		m_WayPoints.push_back({_float3(-30.5f, 6.55f, 20.5f)});
+		m_WayPoints.push_back({ _float3(-29.7f, 6.55f, 18.45f) });
+		m_WayPoints.push_back({ _float3(-27.8f, 6.55f, 18.22f) });
 		m_WayPoints.push_back({ _float3(-24.f, 6.54f, 18.f) });
-		m_WayPoints.push_back({ _float3(-22.f, 6.55f, 18.f) });
-		m_WayPoints.push_back({_float3(-16.5f, 6.53f, 19.f)});
-		m_WayPoints.push_back({_float3(-12.1f, 6.51f, 19.5f)});
-		m_WayPoints.push_back({_float3(-12.3f, 6.52f, 21.f)});
-		m_WayPoints.push_back({ _float3(-13.3f, 6.52f, 22.75f) });
+		m_WayPoints.push_back({ _float3(-22.4f, 6.55f, 18.f) });
+		m_WayPoints.push_back({_float3(-18.4f, 6.53f, 18.f)});
+		m_WayPoints.push_back({_float3(-16.1f, 6.53f, 18.5f)});
+		m_WayPoints.push_back({_float3(-12.6f, 6.51f, 19.5f)});
+		m_WayPoints.push_back({_float3(-11.6f, 6.52f, 22.f)});
+		m_WayPoints.push_back({ _float3(-13.7f, 6.52f, 23.3f) });
 		m_WayPoints.push_back({ _float3(-16.5f, 6.56f, 22.6f) });
-		m_WayPoints.push_back({ _float3(-20.f, 6.5f, 23.f) });
-		m_WayPoints.push_back({ _float3(-23.6f, 6.55f, 21.f) });
+		m_WayPoints.push_back({ _float3(-20.f, 6.5f, 22.5f) });
+		m_WayPoints.push_back({ _float3(-23.6f, 6.54f, 20.5f) });
+		m_WayPoints.push_back({ _float3(-16.3f, 6.54f, 20.5f) });
 
 		m_WayPoints[0].Neighbors.push_back(1);
 		m_WayPoints[1].Neighbors.push_back(0);
@@ -57,20 +62,28 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		m_WayPoints[8].Neighbors.push_back(7);
 		m_WayPoints[8].Neighbors.push_back(9);
 		m_WayPoints[9].Neighbors.push_back(8);
-		m_WayPoints[9].Neighbors.push_back(5);
-		m_WayPoints[5].Neighbors.push_back(9);
 		m_WayPoints[9].Neighbors.push_back(10);
 		m_WayPoints[10].Neighbors.push_back(9);
 		m_WayPoints[10].Neighbors.push_back(11);
 		m_WayPoints[11].Neighbors.push_back(10);
-		m_WayPoints[11].Neighbors.push_back(3);
-		m_WayPoints[3].Neighbors.push_back(11);
-		m_WayPoints[11].Neighbors.push_back(4);
-		m_WayPoints[4].Neighbors.push_back(11);
+		m_WayPoints[11].Neighbors.push_back(12);
+		m_WayPoints[12].Neighbors.push_back(11);
+		m_WayPoints[12].Neighbors.push_back(13);
+		m_WayPoints[13].Neighbors.push_back(12);
+		m_WayPoints[13].Neighbors.push_back(4);
+		m_WayPoints[4].Neighbors.push_back(13);
+		m_WayPoints[13].Neighbors.push_back(5);
+		m_WayPoints[5].Neighbors.push_back(13);
+		m_WayPoints[14].Neighbors.push_back(7);
+		m_WayPoints[7].Neighbors.push_back(14);
+		m_WayPoints[14].Neighbors.push_back(11);
+		m_WayPoints[11].Neighbors.push_back(14);
 		break;
 
 	case Client::WAYPOINTINDEX::CHAPTER2_2:
-		m_WayPoints.push_back({ _float3(35.f, 0.35f, -7.3f) });
+	case Client::WAYPOINTINDEX::CHAPTER2_2_2:
+		m_WayPoints.push_back({ _float3(36.5f, 0.35f, -7.3f) });
+		m_WayPoints.push_back({ _float3(33.5f, 0.35f, -7.f) });
 		m_WayPoints.push_back({ _float3(32.5f, 0.35f, -4.5f) });
 		m_WayPoints.push_back({ _float3(30.f, 0.35f, -3.7f) });
 		m_WayPoints.push_back({ _float3(30.5f, 0.35f, -0.15f) });
@@ -108,16 +121,14 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		m_WayPoints[9].Neighbors.push_back(8);
 		m_WayPoints[9].Neighbors.push_back(10);
 		m_WayPoints[10].Neighbors.push_back(9);
-		m_WayPoints[10].Neighbors.push_back(11);
-		m_WayPoints[11].Neighbors.push_back(10);
-		m_WayPoints[9].Neighbors.push_back(12);
-		m_WayPoints[12].Neighbors.push_back(9);
+		m_WayPoints[9].Neighbors.push_back(11);
+		m_WayPoints[11].Neighbors.push_back(9);
+		m_WayPoints[11].Neighbors.push_back(12);
+		m_WayPoints[12].Neighbors.push_back(11);
 		m_WayPoints[12].Neighbors.push_back(13);
 		m_WayPoints[13].Neighbors.push_back(12);
 		m_WayPoints[13].Neighbors.push_back(14);
 		m_WayPoints[14].Neighbors.push_back(13);
-		m_WayPoints[14].Neighbors.push_back(15);
-		m_WayPoints[15].Neighbors.push_back(14);
 		break;
 
 	case Client::WAYPOINTINDEX::CHAPTER2_3:
@@ -193,6 +204,39 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 	return S_OK;
 }
 
+void CState_Sneak::Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex)
+{
+	switch (_iWayIndex)
+	{
+	case Client::WAYPOINTINDEX::CHAPTER2_1:
+		m_PatrolWays.push_back(11);
+		m_PatrolWays.push_back(12);
+		m_PatrolWays.push_back(13);
+		break;
+
+	case Client::WAYPOINTINDEX::CHAPTER2_2:
+		m_PatrolWays.push_back(1);
+		m_PatrolWays.push_back(4);
+		break;
+
+	case Client::WAYPOINTINDEX::CHAPTER2_2_2:
+		m_PatrolWays.push_back(12);
+		m_PatrolWays.push_back(13);
+		m_PatrolWays.push_back(14);
+		break;
+
+	case Client::WAYPOINTINDEX::CHAPTER2_3:
+		m_PatrolWays.push_back(1);
+		m_PatrolWays.push_back(2);
+		m_PatrolWays.push_back(3);
+		m_PatrolWays.push_back(4);
+		m_PatrolWays.push_back(5);
+		break;
+	default:
+		break;
+	}
+}
+
 void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vDirection)
 {
 	_float3 vOffset = m_pOwner->Get_RayOffset();
@@ -200,22 +244,29 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 	_vector vRayDir = XMVector3Normalize(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f));
 	_float3 vRayDirection; XMStoreFloat3(&vRayDirection, vRayDir);
 	_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
+	vOffset.x -= m_pOwner->Get_RayHalfWidth();
+	_float3 vLeftPos; XMStoreFloat3(&vLeftPos, XMVector3Transform(XMLoadFloat3(&vOffset), m_pOwner->Get_FinalWorldMatrix()));
+	vOffset.x += m_pOwner->Get_RayHalfWidth() * 2.f;
+	_float3 vRightPos; XMStoreFloat3(&vRightPos, XMVector3Transform(XMLoadFloat3(&vOffset), m_pOwner->Get_FinalWorldMatrix()));
 	_vector vResult = XMVectorZero();
+	_float fTargetDis = XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f)));
 
 	//자유이동시 웨이포인트 타지 않음
 	if (false == m_isOnWay)
 	{
-		//타겟 방향이 막혀있으면 웨이포인트 이동
-		if (true == m_pGameInstance->RayCast_Nearest_GroupFilter(vRayPos, vRayDirection, 2.f, OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
-		{
-			m_isPathFind = true;
-		}
 		//막혀있지 않다면 타겟 방향대로 이동
+		if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vRayPos, vRayDirection, XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f))), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE)
+			&& false == m_pGameInstance->RayCast_Nearest_GroupFilter(vLeftPos, vRayDirection, XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f))), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE)
+			&& false == m_pGameInstance->RayCast_Nearest_GroupFilter(vRightPos, vRayDirection, XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f))), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+		{
+			vResult = _vDestination - m_pOwner->Get_FinalPosition();
+			XMStoreFloat3(_vDirection, XMVector3Normalize(XMVectorSetY(vResult, 0.f)));
+			return;
+		}
+		//타겟 방향이 막혀있으면 웨이포인트 이동
 		else
 		{
-			vResult = _vDestination-m_pOwner->Get_FinalPosition();
-			XMStoreFloat3(_vDirection, XMVector3Normalize(vResult));
-			return;
+			m_isPathFind = true;
 		}
 	}
 
@@ -224,8 +275,8 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 		_float3 vTargetPos; XMStoreFloat3(&vTargetPos, _vDestination);
 		_float3 vDest = _float3(100.f, 0.f, 100.f); //큰 임의값 적용
 		_float3 vPoint = _float3(100.f, 0.f, 100.f); //큰 임의값 적용
-		_uint iDestIndex = 0;
-		_uint iStartIndex = 0;
+		_uint iDestIndex = -1;
+		_uint iStartIndex = -1;
 
 		//타겟 위치에 가까운 웨이포인트 찾아 목표 위치로 지정 + 현재 위치와 가까운 타겟 포인트 찾기
 		for (_uint Index = 0; Index < m_WayPoints.size(); ++Index)
@@ -236,8 +287,20 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 			
 			if (1 == m_pGameInstance->Compare_VectorLength(XMLoadFloat3(&vDest), vTargetToPointDis))
 			{
-				XMStoreFloat3(&vDest, vTargetToPointDis);
-				iDestIndex = Index;
+				_float3 WayPos = m_WayPoints[Index].vPosition;
+				_float3 DestPos = vTargetPos;
+				//바닥에 레이 닿을 수 있어 살짝 올림
+				WayPos.y += 0.1f;
+				DestPos.y = WayPos.y;
+				_float3 DestDir;
+				XMStoreFloat3(&DestDir, XMVector3Normalize(XMLoadFloat3(&DestPos) - XMLoadFloat3(&WayPos)));
+				//도착점에서 목표 위치까지 막혀있지 않은지 체크
+				if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(WayPos, DestDir, XMVectorGetX(XMVector3Length(XMLoadFloat3(&DestPos) - XMLoadFloat3(&WayPos))),
+					OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+				{
+					XMStoreFloat3(&vDest, vTargetToPointDis);
+					iDestIndex = Index;
+				}
 			}
 
 			//시작점 찾는데 시작 점을 여러개로 쓸지 보고 판단
@@ -253,6 +316,10 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 				}
 			}
 		}
+		if (-1 == iDestIndex)
+			return;
+		if (-1 == iStartIndex)
+			return;
 
 		//목표 위치로 가는 웨이포인트 경로 찾기
 		priority_queue <pair<_float, pair<_uint, _uint>>, vector<pair<_float, pair<_uint, _uint>>>, compare> PriorityQueue;	//비용, 부모 인덱스, 자기 인덱스
@@ -306,7 +373,8 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 		}
 
 		//경로없음
-		//if (OpenMap.empty());
+		if (OpenMap.empty())
+			return;
 
 
 		m_Ways.clear();
@@ -343,8 +411,14 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 	{
 		vResult = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition) - XMLoadFloat3(&vPos),0.f);
 	}
-
-	XMStoreFloat3(_vDirection, XMVector3Normalize(vResult));
+	if(0.01f < XMVectorGetX(XMVector3LengthSq(vResult)))
+	{
+		XMStoreFloat3(_vDirection, XMVector3Normalize(vResult));
+	}
+	else
+	{
+		XMStoreFloat3(_vDirection, vResult);
+	}
 }
 
 void CState_Sneak::Determine_BackDirection(_fvector& _vDestination, _float3* _vDirection)
@@ -498,11 +572,6 @@ HRESULT CState_Sneak::CleanUp()
 
 
 	return S_OK;
-}
-
-void CState_Sneak::Set_Sneak_InvestigatePos(_fvector _vPosition)
-{
-	XMStoreFloat3(&m_vSneakPos, _vPosition);
 }
 
 void CState_Sneak::Free()

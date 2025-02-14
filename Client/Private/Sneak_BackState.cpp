@@ -58,6 +58,7 @@ void CSneak_BackState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
+	cout << "Back" << endl;
 	//일단 적용해봄
 	//if(COORDINATE_3D == m_pOwner->Get_CurCoord())
 	//{
@@ -92,6 +93,7 @@ void CSneak_BackState::State_Update(_float _fTimeDelta)
 			//플레이어가 인식되지 않았을 경우 소리가 나면 경계로 전환 
 			if (m_pOwner->IsTarget_In_Sneak_Detection())
 			{
+				m_pOwner->Stop_Rotate();
 				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 				return;
 			}
@@ -107,8 +109,6 @@ void CSneak_BackState::State_Update(_float _fTimeDelta)
 		m_isTurn = true;
 	}
 	
-	
-
 	//이동
 	Sneak_BackMove(_fTimeDelta, m_iDir);
 }
@@ -158,6 +158,8 @@ void CSneak_BackState::Sneak_BackMove(_float _fTimeDelta, _int _iDir)
 		{
 			if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.3f))
 			{
+				m_pOwner->Stop_Rotate();
+				m_pOwner->Stop_Move();
 				++m_iCurWayIndex;
 
 				m_isTurn = false;
@@ -174,6 +176,8 @@ void CSneak_BackState::Sneak_BackMove(_float _fTimeDelta, _int _iDir)
 		{
 			if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_iCurWayIndex].vPosition), 0.3f))
 			{
+				m_pOwner->Stop_Rotate();
+				m_pOwner->Stop_Move();
 				m_isTurn = false;
 				m_isMove = false;
 				m_isOnWay = false;
@@ -196,13 +200,13 @@ void CSneak_BackState::Determine_Direction()
 	{
 		++m_iCurWayIndex;
 
-		if (m_PatrolWaypoints.size() - 1 == m_iCurWayIndex)
+		if (m_PatrolWays.size() - 1 == m_iCurWayIndex)
 			m_isBack = true;
 
 		//예외처리
-		if (m_PatrolWaypoints.size()-1 < m_iCurWayIndex)
+		if (m_PatrolWays.size()-1 < m_iCurWayIndex)
 		{
-			m_iCurWayIndex = (_uint)m_PatrolWaypoints.size() - 1;
+			m_iCurWayIndex = m_PatrolWays.size() - 1;
 			m_isBack = true;
 		}
 	}
@@ -222,14 +226,14 @@ void CSneak_BackState::Determine_Direction()
 	}
 
 	//시간 랜덤으로 지정 (양 끝 지점만 최솟값을 크게 놓음)
-	if (0 == m_iCurWayIndex || m_PatrolWaypoints.size() - 1 == m_iCurWayIndex)
+	if (0 == m_iCurWayIndex || m_PatrolWays.size() - 1 == m_iCurWayIndex)
 		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(1.f, 3.f));
 	else
 	{
 		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(0.f, 3.f));
 	}
 
-	XMStoreFloat3(&m_vDir, XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]) - m_pOwner->Get_FinalPosition());
+	XMStoreFloat3(&m_vDir, XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition());
 
 }
 
@@ -351,29 +355,59 @@ void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 	
 	_float3 vDest = _float3(100.f, 0.f, 100.f); //큰 임의값 적용
 	_float3 vPoint = _float3(100.f, 0.f, 100.f); //큰 임의값 적용
-	_uint iDestIndex = 0;
-	_uint iStartIndex = 0;
+	_uint iDestIndex = -1;
+	_uint iStartIndex = -1;
 
 
-	for (_uint Index = 0; Index < m_PatrolWaypoints.size(); ++Index)
+	for (_uint Index = 0; Index < m_PatrolWays.size(); ++Index)
 	{
-		_vector vPositionToPointDis = XMVectorSetY(XMLoadFloat3(&m_PatrolWaypoints[Index]) - m_pOwner->Get_FinalPosition(), 0.f);
+		_vector vPositionToPointDis = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_PatrolWays[Index]].vPosition) - m_pOwner->Get_FinalPosition(), 0.f);
 
 		if (1 == m_pGameInstance->Compare_VectorLength(XMLoadFloat3(&vDest), vPositionToPointDis))
 		{
 			XMStoreFloat3(&vDest, vPositionToPointDis);
-			iDestIndex = m_PatrolWayIndexes[Index];
+			iDestIndex = m_PatrolWays[Index];
 		}
 	}
-	_vector vDestDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - m_pOwner->Get_FinalPosition(), 0.f);
-	XMStoreFloat3(&vDest, XMVector3Normalize(vDestDir));
-	//포인트 안 찍고 갈 수 있으면 바로 저장
-	if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vDest, XMVectorGetX(vDestDir), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
-	{
-		XMStoreFloat3(&m_vDir, XMVector3Normalize(vDestDir));
-		m_iCurWayIndex = iDestIndex;
+
+	if (-1 == iDestIndex)
 		return;
+
+	//_vector vDestDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - m_pOwner->Get_FinalPosition(), 0.f);
+	_vector vTargetDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vPos), 0.f);
+	_vector vDestDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vRayPos), 0.f);
+	_vector vDestLeftDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vLeftPos), 0.f);
+	_vector vDestRightDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vRightPos), 0.f);
+	XMStoreFloat3(&vDest, XMVector3Normalize(vDestDir));
+	_float3 vDestTarget; XMStoreFloat3(&vDestTarget, XMVector3Normalize(vTargetDir));
+	_float3 vDestLeft; XMStoreFloat3(&vDestLeft, XMVector3Normalize(vDestLeftDir));
+	_float3 vDestRight; XMStoreFloat3(&vDestRight, XMVector3Normalize(vDestRightDir));
+	//포인트 안 찍고 갈 수 있으면 바로 저장
+	if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vDestTarget, XMVectorGetX(vTargetDir), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+	{
+		if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vRayPos, vDest, XMVectorGetX(vTargetDir), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+		{
+			if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vLeftPos, vDestLeft, XMVectorGetX(vTargetDir), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+			{
+				if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vRightPos, vDestRight, XMVectorGetX(vTargetDir), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+				{
+					XMStoreFloat3(&m_vDir, XMVector3Normalize(XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vPos), 0.f)));
+					m_iCurWayIndex = iDestIndex;
+					return;
+				}
+			}
+		}
 	}
+
+	vTargetDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vPos), 0.f);
+	vDestDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vRayPos), 0.f);
+	vDestLeftDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vLeftPos), 0.f);
+	vDestRightDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vRightPos), 0.f);
+	XMStoreFloat3(&vDest, XMVector3Normalize(vDestDir));
+	vDestTarget; XMStoreFloat3(&vDestTarget, XMVector3Normalize(vTargetDir));
+	vDestLeft; XMStoreFloat3(&vDestLeft, XMVector3Normalize(vDestLeftDir));
+	vDestRight; XMStoreFloat3(&vDestRight, XMVector3Normalize(vDestRightDir));
+
 
 	for (_uint Index = 0; Index < m_WayPoints.size(); ++Index)
 	{
@@ -392,6 +426,9 @@ void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 			}
 		}
 	}
+
+	if (-1 == iStartIndex)
+		return;
 
 	//목표 위치로 가는 웨이포인트 경로 찾기
 	priority_queue <pair<_float, pair<_uint, _uint>>, vector<pair<_float, pair<_uint, _uint>>>, compare> PriorityQueue;	//비용, 부모 인덱스, 자기 인덱스
@@ -445,7 +482,7 @@ void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 	}
 
 	//경로없음
-	//if (OpenMap.empty());
+	if (OpenMap.empty());
 
 
 	m_Ways.clear();
@@ -473,25 +510,6 @@ void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 	vResult = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition) - XMLoadFloat3(&vPos), 0.f);
 
 	XMStoreFloat3(_vDirection, XMVector3Normalize(vResult));
-}
-
-void CSneak_BackState::Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex)
-{
-	switch (_iWayIndex)
-	{
-	case Client::WAYPOINTINDEX::CHAPTER2_1:
-		m_PatrolWaypoints.push_back({ _float3(-16.5f, 6.56f, 22.6f) });
-		m_PatrolWaypoints.push_back({ _float3(-20.f, 6.5f, 23.f) });
-		m_PatrolWaypoints.push_back({ _float3(-23.6f, 6.55f, 21.f) });
-
-		//waypoint 상에서의 인덱스
-		m_PatrolWayIndexes.push_back(9);
-		m_PatrolWayIndexes.push_back(10);
-		m_PatrolWayIndexes.push_back(11);
-		break;
-	default:
-		break;
-	}
 }
 
 CSneak_BackState* CSneak_BackState::Create(void* _pArg)
