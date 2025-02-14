@@ -7,10 +7,32 @@
 #include "Engine_Macro.h"
 #include "MapObjectFactory.h"
 #include "Trigger_Manager.h"
+#include "Portal.h"
 
 CSection_2D_PlayMap::CSection_2D_PlayMap(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_PLAY_TYPE _ePlayType, SECTION_2D_RENDER_TYPE _eRenderType)
 	:CSection_2D(_pDevice, _pContext, _ePlayType, _eRenderType)
 {
+}
+
+void CSection_2D_PlayMap::Set_WorldTexture(ID3D11Texture2D* _pTexture)
+{
+	
+	__super::Set_WorldTexture(_pTexture);
+
+
+	CLayer* pTargetLayer = m_Layers[SECTION_2D_PLAYMAP_PORTAL];
+
+	if(nullptr != pTargetLayer)
+	{ 
+		const auto& GameObjects = pTargetLayer->Get_GameObjects();
+	
+		for_each(GameObjects.begin(), GameObjects.end(),[](CGameObject* pGameObject) {
+			CPortal* pPortal = dynamic_cast<CPortal*>(pGameObject);
+			
+			if(nullptr != pPortal)
+				pPortal->Init_Actor();
+			});
+	}
 }
 
 HRESULT CSection_2D_PlayMap::Initialize(SECTION_2D_PLAYMAP_DESC* _pDesc, _uint _iPriorityKey)
@@ -24,6 +46,8 @@ HRESULT CSection_2D_PlayMap::Import(json _SectionJson, _uint _iPriorityKey)
 {
 		if (FAILED(__super::Import(_SectionJson, _iPriorityKey)))
 			return E_FAIL;
+
+
 
 		if (_SectionJson.contains("Section_File_Name"))
 		{
@@ -74,8 +98,41 @@ HRESULT CSection_2D_PlayMap::Import(json _SectionJson, _uint _iPriorityKey)
 						eRenderLayer = SECTION_2D_PLAYMAP_BACKGROUND;
 
 					Add_GameObject_ToSectionLayer(pGameObject, eRenderLayer);
+					pGameObject->Set_Active(false);
 				}
 			}
+
+			_uint iPortalCnt = 0;
+
+			ReadFile(hFile, &iPortalCnt, sizeof(_uint), &dwByte, nullptr);
+			for (_uint i = 0;i < iPortalCnt; ++i)
+			{
+				_float2		fPos = {};
+				_float2		fScale = {};
+				ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
+				ReadFile(hFile, &fScale, sizeof(_float2), &dwByte, nullptr);
+
+				CGameObject* pGameObject = nullptr;
+
+
+				CPortal::PORTAL_DESC Desc = {};
+
+				Desc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
+				Desc.fTriggerRadius = 1.5f;
+				Desc.Build_2D_Transform(fPos, fScale);
+
+				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
+					L"Prototype_GameObject_Portal",
+					Desc.iCurLevelID,
+					L"Layer_Portal",
+					&pGameObject,
+					&Desc
+				);
+
+				if (nullptr != pGameObject)
+					Add_GameObject_ToSectionLayer(pGameObject, SECTION_2D_PLAYMAP_PORTAL);
+			}
+
 			CloseHandle(hFile);
 		}
 
@@ -95,6 +152,9 @@ HRESULT CSection_2D_PlayMap::Import(json _SectionJson, _uint _iPriorityKey)
 			this
 		);
 	}
+
+	
+
 	return S_OK;
 }
 HRESULT CSection_2D_PlayMap::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)

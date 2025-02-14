@@ -34,13 +34,18 @@ public:
 public:
 	virtual HRESULT		Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void Change_Animation();
+	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
 public:
 	virtual void			On_Hit(CGameObject* _pHitter, _float _fDamg);
 
-	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other);
-	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other);
-	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+
+	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
 
 	virtual void Active_OnEnable() override;
@@ -49,6 +54,8 @@ public:
 private:
 	_float m_fLifeTime = { 0.f };
 	_float m_fAccTime = { 0.f };
+
+	_bool m_isStop = {};
 
 private:
 	virtual HRESULT					Ready_ActorDesc(void* _pArg);

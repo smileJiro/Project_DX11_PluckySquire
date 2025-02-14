@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include "Shader.h"
+#include "GameInstance.h"
 
 
 CTexture::CTexture(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -22,11 +23,11 @@ CTexture::CTexture(const CTexture& _Prototype)
 
 HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _iNumTextures, _bool _isSRGB, _bool _isCubeMap)
 {
+
 	/* TextureFilePath 에서 확장자의 이름, %d >>> 숫자로 바꾸기, 등을 수행 후 Load 하고 m_SRVs 에 Pushback */
 	m_iNumSRVs = _iNumTextures;
 
 	_tchar szTextureFilePath[MAX_PATH] = TEXT("");
-
 	for (_uint i = 0; i < m_iNumSRVs; ++i)
 	{
 		// %d 에 i를 대입한 후, szTextureFilePath 구성.
@@ -43,14 +44,14 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 
 		if (false == lstrcmpW(szEXT, TEXT(".dds")))
 		{
-			if (_isCubeMap) 
+			if (_isCubeMap)
 			{
 				UINT miscFlags = 0;
 				// CubeMap인 경우 해당 Flag를 추가하여 TextureFile Create
 				miscFlags |= D3D11_RESOURCE_MISC_TEXTURECUBE;
 				//TODO :: 만약 텍스쳐 관련 런타임에 SRV를 수정해야하는 경우, D3D11_USAGE_IMMUTABLE 를 D3D11_USAGE_DEFAULT로 변경.
 				CreateDDSTextureFromFileEx(m_pDevice, szTextureFilePath, 0, D3D11_USAGE_IMMUTABLE, D3D11_BIND_SHADER_RESOURCE, 0, miscFlags,
-										   DDS_LOADER_FLAGS(false), nullptr, &pSRV, NULL);
+					DDS_LOADER_FLAGS(false), nullptr, &pSRV, NULL);
 
 #ifdef _DEBUG
 				D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
@@ -124,6 +125,7 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 
 HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _iNumTextures, _bool _isSRGB, _bool _isCubeMap)
 {
+
 	m_iNumSRVs = _iNumTextures;
 
 	_char szTextureFullPath[MAX_PATH] = "";

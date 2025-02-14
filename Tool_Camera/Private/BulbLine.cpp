@@ -82,7 +82,7 @@ void CBulbLine::Edit_BulbInfo()
     _uint iRePlaceCount = {};
 
     for (auto& Bulb : m_Bulbs) {
-        _vector vCreatePos = vFirstPos + (vDir * m_fBulbPosOffset * iRePlaceCount);
+        _vector vCreatePos = vFirstPos + (vDir * m_fBulbPosOffset * (_float)iRePlaceCount);
         //_vector vvv = Bulb->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
         Bulb->Get_ActorCom()->Set_GlobalPose({ XMVectorGetX(vCreatePos), XMVectorGetY(vCreatePos), XMVectorGetZ(vCreatePos) });
         //Bulb->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCreatePos, 1.f));
@@ -91,8 +91,8 @@ void CBulbLine::Edit_BulbInfo()
     }
 
     if (iCreateCount > 0) {
-        for (_uint i = 0; i < iCreateCount; ++i) {
-            _vector vCreatePos = vFirstPos + (vDir * m_fBulbPosOffset * iRePlaceCount);
+        for (_int i = 0; i < iCreateCount; ++i) {
+            _vector vCreatePos = vFirstPos + (vDir * m_fBulbPosOffset * (_float)iRePlaceCount);
 
             // Create
             CGameObject* pBulb;
@@ -111,7 +111,7 @@ void CBulbLine::Edit_BulbInfo()
         }
     }
     else if (iCreateCount < 0) {
-        for (_uint i = 0; i < (iCreateCount * -1); ++i) {
+        for (_int i = 0; i < (iCreateCount * -1); ++i) {
             Safe_Release(m_Bulbs.back());
             Event_DeleteObject(m_Bulbs.back());
             m_Bulbs.pop_back();
@@ -141,7 +141,7 @@ HRESULT CBulbLine::Create_Bulbs()
     _uint iBulbCount = (_uint)(fLength / m_fBulbPosOffset) + 1;
 
     for (_uint i = 0; i < iBulbCount; ++i) {
-        _vector vCreatePos = vFirstPos + (vDir * m_fBulbPosOffset * i);
+        _vector vCreatePos = vFirstPos + (vDir * m_fBulbPosOffset * (_float)i);
 
        // Create
         CGameObject* pBulb;

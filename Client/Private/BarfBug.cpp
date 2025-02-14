@@ -154,7 +154,7 @@ void CBarfBug::Update(_float _fTimeDelta)
     {
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
-        _float3 vNewPos = _float3(10.0f, 6.0f, 0.0f);
+        _float3 vNewPos = _float3(500.0f, 6.0f, 0.0f);
 
         if (iCurCoord == COORDINATE_2D)
             CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);

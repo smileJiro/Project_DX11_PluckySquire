@@ -177,7 +177,7 @@ HRESULT CSection_2D::Register_WorldCapture(CModelObject* _pModel)
 {
 	if (nullptr == m_pMap)
 		return E_FAIL;
-
+	m_isOverride_WorldTex = true;
 	return m_pMap->Register_WorldCapture(_pModel);
 }
 

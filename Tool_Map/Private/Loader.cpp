@@ -312,7 +312,11 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_TOOL_2D_MAP,
         TEXT("../../Client/Bin/Resources/Models/2DMapObject/"))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP,L"Portal_2D",
+        C2DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/2DAnim/Chapter2/MapObject/Portal_2D/Portal_2D.model2d"))))
+    {
+        return E_FAIL;
+    }
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 

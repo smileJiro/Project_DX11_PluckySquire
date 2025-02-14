@@ -280,6 +280,7 @@ public: /* For. CubeMap */
 public: /* For. Collision_Manager */
 /* Section 등록*/
 	HRESULT					Register_Section(const _wstring& _strSectionKey);
+	HRESULT					Unregister_Section(const _wstring& _strSectionKey);
 /* Group Filter 관리 */
 	void					Check_GroupFilter(_uint _iGroupFilterLeft, _uint _iGroupFilterRight);						 // 그룹필터를 추가
 	void					Erase_GroupFilter(_uint _iGroupFilterLeft, _uint _iGroupFilterRight);						 // 그룹필터를 삭제

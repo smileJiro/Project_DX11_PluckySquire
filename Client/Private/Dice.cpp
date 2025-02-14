@@ -22,8 +22,8 @@ HRESULT CDice::Initialize(void* _pArg)
 	DiceModelDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
 	DiceModelDesc->tTransform2DDesc.vInitialPosition = _float3(0.0f, 1.0f, 0.f);
 	DiceModelDesc->tTransform2DDesc.vInitialScaling = _float3(200.f, 200.f, 200.f);
-	DiceModelDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 1.0f, -10.f);
-	DiceModelDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//DiceModelDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 1.0f, -10.f);
+	//DiceModelDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	
 	CActor::ACTOR_DESC ActorDesc;
 	ActorDesc.pOwner = this;

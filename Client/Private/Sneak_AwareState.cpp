@@ -16,7 +16,7 @@ HRESULT CSneak_AwareState::Initialize(void* _pArg)
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
 
-	m_fCoolTime = 2.f;
+	m_fCoolTime = 1.f;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -28,19 +28,23 @@ HRESULT CSneak_AwareState::Initialize(void* _pArg)
 void CSneak_AwareState::State_Enter()
 {
 	m_pOwner->Set_AnimChangeable(false);
+	m_isConvert = false;
+	m_fAccTime = 0.f;
+	m_isRenew = false;
 }
 
 void CSneak_AwareState::State_Update(_float _fTimeDelta)
 {	
 	if (nullptr == m_pOwner)
 		return;
-
-	m_fAccTime += _fTimeDelta;
-	if (m_fCoolTime <= m_fAccTime)
+	if(false == m_isRenew)
 	{
-		m_fAccTime = 0.f;
+		m_fAccTime += _fTimeDelta;
+		if (m_fCoolTime <= m_fAccTime)
+		{
+			m_fAccTime = 0.f;
+		}
 	}
-	
 	if (nullptr != m_pTarget)
 	{
 		//소리난 위치로 회전
@@ -50,12 +54,17 @@ void CSneak_AwareState::State_Update(_float _fTimeDelta)
 		//몬스터 인식 범위 안에 들어오면 인식상태로 전환
 		if (true == Check_Target3D(true))
 			return;
+		if (m_isConvert == true)
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_INVESTIGATE, m_pFSM);
+			return;
+		}
 
 		//플레이어가 인식되지 않았는데 소리가 나면 위치 저장 후 경계추적으로 전환 
 		if (m_pOwner->IsTarget_In_Sneak_Detection())
 		{
-			Set_Sneak_InvestigatePos(m_pTarget->Get_FinalPosition());
-			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_INVESTIGATE, m_pFSM);
+			m_pFSM->Set_Sneak_InvestigatePos(m_pTarget->Get_FinalPosition());
+			m_isConvert = true;
 			return;
 		}
 
@@ -69,6 +78,11 @@ void CSneak_AwareState::State_Update(_float _fTimeDelta)
 
 void CSneak_AwareState::State_Exit()
 {
+}
+
+void CSneak_AwareState::Set_Sneak_AwarePos(_fvector _vPosition)
+{
+	XMStoreFloat3(&m_vSneakPos, _vPosition);
 }
 
 CSneak_AwareState* CSneak_AwareState::Create(void* _pArg)

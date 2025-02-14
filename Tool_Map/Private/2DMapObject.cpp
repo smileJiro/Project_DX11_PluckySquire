@@ -27,10 +27,12 @@ HRESULT C2DMapObject::Initialize(void* pArg)
 	if (nullptr == pArg)
 		return E_FAIL;
 
+
 	MAPOBJ_2D_DESC* pDesc = static_cast<MAPOBJ_2D_DESC*>(pArg);
 	m_fRenderTargetSize = pDesc->fRenderTargetSize;
 
 	_float2 fRatio = { m_fRenderTargetSize.x / DEFAULT_SIZE_BOOK2D_X, m_fRenderTargetSize.y / DEFAULT_SIZE_BOOK2D_Y };
+	_float2 fScale = { 1.f,1.f };
 	
 	m_strKey = pDesc->strProtoTag;
 	
@@ -46,7 +48,15 @@ HRESULT C2DMapObject::Initialize(void* pArg)
 
 
 	if (nullptr == pDesc->pInfo)
-		m_strModelName = L"None_Model";
+	{
+		if (L"" != pDesc->strProtoTag)
+		{
+			fScale = { pDesc->tTransform2DDesc.vInitialScaling.x ,pDesc->tTransform2DDesc.vInitialScaling.y };
+			m_strModelName = pDesc->strProtoTag;
+		}
+		else
+			m_strModelName = L"None_Model";
+	}
 	else if (pDesc->isLoad)
 		m_strModelName = m_strKey = StringToWstring(pDesc->pInfo->Get_ModelName());
 	else
@@ -57,7 +67,7 @@ HRESULT C2DMapObject::Initialize(void* pArg)
 		m_strModelName,
 		L"Prototype_Component_Shader_VtxPosTex");
 
-	pDesc->Build_2D_Transform(m_fDefaultPosition);
+	pDesc->Build_2D_Transform(m_fDefaultPosition, fScale);
 
 	m_pModelInfo = pDesc->pInfo;
 

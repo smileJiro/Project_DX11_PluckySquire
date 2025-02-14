@@ -20,8 +20,8 @@ HRESULT CDomino::Initialize(void* _pArg)
 	pModelDsc->isCoordChangeEnable = false;
 	pModelDsc->strModelPrototypeTag_3D = TEXT("Prototype_Component_Domino");
 	pModelDsc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	pModelDsc->tTransform3DDesc.vInitialPosition = _float3(3.0f, 0.651f, -10.f);
-	pModelDsc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//pModelDsc->tTransform3DDesc.vInitialPosition = _float3(3.0f, 0.651f, -10.f);
+	//pModelDsc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	CActor::ACTOR_DESC ActorDesc;
 	ActorDesc.pOwner = this;
@@ -40,7 +40,7 @@ HRESULT CDomino::Initialize(void* _pArg)
 	ShapeData.eShapeType = SHAPE_TYPE::BOX;
 	ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
 	ShapeData.isTrigger = false;
-	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc.vHalfExtents.y + 0.01, 0.f));
+	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc.vHalfExtents.y + 0.01f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 
 	SHAPE_BOX_DESC ShapeDesc2 = {};

@@ -75,7 +75,7 @@ HRESULT CLight_Manager::Load_Lights(const _wstring& _strLightsJsonPath)
 	json jsonLights;
 	inputFile >> jsonLights;
 
-	_uint iNumLights = jsonLights.size();
+	_uint iNumLights = (_uint)jsonLights.size();
 	for (_uint i = 0; i < iNumLights; ++i)
 	{
 		LIGHT_TYPE eType = jsonLights[i]["eType"];

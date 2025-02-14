@@ -164,7 +164,12 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT;
+    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | 
+                                            OBJECT_GROUP::MONSTER | 
+                                            OBJECT_GROUP::INTERACTION_OBEJCT | 
+                                            OBJECT_GROUP::MONSTER_PROJECTILE | 
+                                            OBJECT_GROUP::TRIGGER_OBJECT | 
+                                            OBJECT_GROUP::PORTAL;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
@@ -615,9 +620,14 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
     if (SHAPE_USE::SHAPE_TRIGER ==(SHAPE_USE)_My.pShapeUserData->iShapeUse)
     {
-        if (OBJECT_GROUP::INTERACTION_OBEJCT == _Other.pActorUserData->iObjectGroup)
+        if (
+            OBJECT_GROUP::INTERACTION_OBEJCT == _Other.pActorUserData->iObjectGroup
+            ||
+            //TODO :: PORTAL 예외처리. 더 좋은방법이 있으면 부탁함 0215 박예슬
+            OBJECT_GROUP::PORTAL == _Other.pActorUserData->iObjectGroup
+            )
         {
-            PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
+             PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
             if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
             {
                 IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
@@ -1385,9 +1395,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
         if (iCurCoord == COORDINATE_2D)
-            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this, SECTION_2D_PLAYMAP_OBJECT);
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter2_SKSP_05",this, SECTION_2D_PLAYMAP_OBJECT);
         else
-            CSection_Manager::GetInstance()->Remove_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this);
+            CSection_Manager::GetInstance()->Remove_GameObject_ToSectionLayer(L"Chapter2_SKSP_05",this);
 
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
 
@@ -1426,10 +1436,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 
     if (KEY_DOWN(KEY::TAB))
     {
-        m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
+        //m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
         //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
         //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
-        //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
+        m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
         //m_pActorCom->Set_GlobalPose(_float3(0.f, 0.35f, 0.f));
     }
 

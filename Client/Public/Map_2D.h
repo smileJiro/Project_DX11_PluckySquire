@@ -37,7 +37,7 @@ public:
 
 public:
 	HRESULT						Register_WorldCapture(CModelObject* _pModel);
-	void						Set_WorldTexture(ID3D11Texture2D* _pTexture) { m_pWorldTexture = _pTexture; }
+	void						Set_WorldTexture(ID3D11Texture2D* _pTexture) { Safe_Release(m_pWorldTexture); m_pWorldTexture = _pTexture; }
 	ID3D11Texture2D*			Get_WorldTexture() { return m_pWorldTexture; }
 
 public:

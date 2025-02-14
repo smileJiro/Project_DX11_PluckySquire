@@ -268,7 +268,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
 
             _float4* pPosition = (_float4*)(_pBuffer + (i * _iTotalSize) + _iPositionOffset);
             
-            XMStoreFloat4(pPosition, vAxis * fOffset * i + XMVectorSet(m_pGameInstance->Compute_Random(-vRandomOffset.x, vRandomOffset.x),
+            XMStoreFloat4(pPosition, vAxis * fOffset * (_float)i + XMVectorSet(m_pGameInstance->Compute_Random(-vRandomOffset.x, vRandomOffset.x),
                 m_pGameInstance->Compute_Random(-vRandomOffset.y, vRandomOffset.y),
                 m_pGameInstance->Compute_Random(-vRandomOffset.z, vRandomOffset.z)
                 , 1.f));

@@ -212,7 +212,7 @@ _bool CPlayerState_JumpDown::Try_Clamber()
 						PxCapsuleGeometry pxGeom;
 						m_pOwner->Get_ActorCom()->Get_Shapes()[0]->getCapsuleGeometry(pxGeom);
 						_vector vTmp = { iterHitPoint->vPosition.x, iterHitPoint->vPosition.y, iterHitPoint->vPosition.z,1 };
-						_vector vCheckPos =  XMVectorSetY(vTmp, XMVectorGetY(vTmp) + pxGeom.halfHeight + 0.1);
+						_vector vCheckPos =  XMVectorSetY(vTmp, XMVectorGetY(vTmp) + pxGeom.halfHeight + 0.1f);
 						list<CActorObject*> hitActors2;
 						if (false == m_pGameInstance->Overlap(&pxGeom,
 							vCheckPos, hitActors2))

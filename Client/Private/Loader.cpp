@@ -107,6 +107,7 @@
 #include "RayShape.h"
 #include "Dice.h"
 #include "Domino.h"
+#include "Portal.h"
 
 
 
@@ -376,6 +377,10 @@ HRESULT CLoader::Loading_Level_Static()
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"),
         CRayShape::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Portal"),
+        CPortal::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     // ============ etc Bulb, PlayerItem
@@ -1052,10 +1057,10 @@ HRESULT CLoader::Loading_Level_Chapter_4()
 
 
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
-        TEXT("../Bin/Resources/Models/2DMapObject/Chapter4/"))))
+        TEXT("../Bin/Resources/Models/2DMapObject/Chapter2/"))))
         return E_FAIL;
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
-        TEXT("../Bin/Resources/Models/2DAnim/Chapter4/"))))
+        TEXT("../Bin/Resources/Models/2DAnim/Chapter2/"))))
         return E_FAIL;
     /* 낱개 로딩 예시*/
 

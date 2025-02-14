@@ -56,6 +56,7 @@ HRESULT CRenderGroup_2D::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuffer)
     
     auto iter =    find_if(m_GroupObjects.begin(), m_GroupObjects.end(), [](CGameObject* pRightGameObject) {
         if (nullptr != dynamic_cast<C2DTile_RenderObject*>(pRightGameObject)) return true;
+        return false;
         });
 
     if (iter != m_GroupObjects.end())

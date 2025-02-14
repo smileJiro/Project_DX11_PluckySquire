@@ -125,14 +125,18 @@ void CMonster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
 	{
 		Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
-		//cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() <<" : " << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << " Enter" << endl;
-		if (1436 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
-			cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() <<" : " << " Enter" << endl;
+		//cout << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << " Enter" << endl;
+		/*if (1436 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
+			cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() <<" : " << " Enter" << endl;*/
 	}
 }
 
 void CMonster::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+	{
+		Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
+	}
 }
 
 void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -149,9 +153,19 @@ void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 	{
 		Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
 		//cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() << " : " << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << " Exit" << endl;
-		if (1436 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
-			cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() << " : " << " Exit" << endl;
 	}
+}
+
+void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+}
+
+void CMonster::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+}
+
+void CMonster::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
 }
 
 void CMonster::On_Hit(CGameObject* _pHitter, _float _fDamg)
@@ -168,10 +182,13 @@ void CMonster::On_Hit(CGameObject* _pHitter, _float _fDamg)
 
 void CMonster::KnockBack(CGameObject* _pHitter)
 {
-	_float3 vRepulse;
-	XMStoreFloat3(&vRepulse, -10.f * XMVector3Normalize(_pHitter->Get_FinalPosition() - Get_FinalPosition()));
-	vRepulse.y = -1.f;
-	Get_ActorCom()->Add_Impulse(vRepulse);
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+		_float3 vRepulse;
+		XMStoreFloat3(&vRepulse, -10.f * XMVector3Normalize(_pHitter->Get_FinalPosition() - Get_FinalPosition()));
+		vRepulse.y = -1.f;
+		Get_ActorCom()->Add_Impulse(vRepulse);
+	}
 }
 
 void CMonster::Attack()
