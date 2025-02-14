@@ -200,13 +200,8 @@ public:
 	ID3D11ShaderResourceView*		Get_SRV_FromTexture(const _wstring& _strSectionTag, _uint _iTextureIndex = 0);
 
 	// Set
-	void							Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPosMap) 
-	{ 
-		if (nullptr != m_pBookWorldPosMap)
-			Safe_Release(m_pBookWorldPosMap);
+	void							Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPosMap);
 
-		m_pBookWorldPosMap = _pBookWorldPosMap; 
-	}
 
 	_uint							Generate_WorldPos_Priority_ID() { return m_iWorldPriorityGenKey++; }
 	HRESULT							Register_WorldCapture(const _wstring& _strSectionTag, CModelObject* _pObject);

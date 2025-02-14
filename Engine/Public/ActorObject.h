@@ -47,7 +47,7 @@ protected:
 	/* Active 변경시 호출되는 함수 추가. */
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
-private:
+protected:
 	HRESULT						Ready_Components(ACTOROBJECT_DESC* _pDesc);
 
 public:

@@ -55,7 +55,7 @@ public :
 	_uint						Get_ColliderType() { return m_eColliderType; };
 	void						Set_ColliderType(_uint _eType) { m_eColliderType = _eType; };
 	
-	ID3D11ShaderResourceView*	Get_SRV(_float2* _pReturnSize = nullptr);
+	ID3D11ShaderResourceView*	Get_SRV(_float2* _pReturnSize, _float2* _pStartUV, _float2* _pEndUV);
 
 	_uint						Get_ModelIndex() { return m_iModelIndex; }
 	void						Set_ModelIndex(_uint _iIndex) { m_iModelIndex = _iIndex; }
@@ -125,6 +125,8 @@ private :
 	_float2						m_fColliderExtent = {};
 	_float						m_fColliderRadius = {};
 	
+	_float2						m_fStartUV = {};
+	_float2						m_fEndUV = {};
 	
 	_bool						m_isDelete = false; 
 	

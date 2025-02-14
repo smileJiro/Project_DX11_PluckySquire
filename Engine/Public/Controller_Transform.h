@@ -33,6 +33,14 @@ public:
 			tTransform3DDesc.matWorld = _matWorld;
 			tTransform3DDesc.isMatrix = true;
 		}
+
+		void Build_3D_Transform(_float3 _fPos, _float3 _fScale = { 1.f,1.f,1.f }, _float3 _Rotation = { 0.f,0.f,0.f })
+		{
+			tTransform3DDesc.vInitialPosition = _fPos;
+			tTransform3DDesc.vInitialScaling = _fScale;
+			tTransform3DDesc.vInitialRotation = _Rotation;
+		}
+
 #pragma endregion
 
 	}CON_TRANSFORM_DESC;

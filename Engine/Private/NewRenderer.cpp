@@ -337,12 +337,13 @@ void CNewRenderer::Free()
 		Safe_Release(Pair.second);
 	}
 	m_DSVs.clear();
-
+#ifdef _DEBUG
 	for (auto& pDebugComponent : m_DebugComponents)
 	{
 		Safe_Release(pDebugComponent);
 	}
 	m_DebugComponents.clear();
+#endif // _DEBUG
 
 	Safe_Release(m_pGlobalIBLConstBuffer);
 	Safe_Release(m_pVIBuffer);

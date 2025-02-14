@@ -199,6 +199,7 @@ namespace AnimTool
 		size_t iPos = _strKey.find("$");
 		if (iPos != string::npos)
 			return _strKey.substr(iPos + 1);
+		return "";
 	}
 
 	std::string MakeTextureKey(const filesystem::path& _path)

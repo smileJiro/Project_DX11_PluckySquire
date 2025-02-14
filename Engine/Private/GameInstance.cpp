@@ -1353,11 +1353,20 @@ HRESULT CGameInstance::Bind_IBLTexture(CShader* _pShaderCom, const _char* _pBRDF
 	return m_pCubeMap->Bind_IBLTexture(_pShaderCom, _pBRDFConstName, _pSpecularConstName, _pIrradianceConstName);
 }
 
+
 HRESULT CGameInstance::Register_Section(const _wstring& _strSectionKey)
 {
+	if (nullptr == m_pCollision_Manager)
+		return E_FAIL;
 	return m_pCollision_Manager->Register_Section(_strSectionKey);
 }
+HRESULT CGameInstance::Unregister_Section(const _wstring& _strSectionKey)
+{
+	if (nullptr == m_pCollision_Manager)
+		return E_FAIL;
+	return m_pCollision_Manager->Unregister_Section(_strSectionKey);
 
+}
 void CGameInstance::Check_GroupFilter(_uint _iGroupFilterLeft, _uint _iGroupFilterRight)
 {
 	m_pCollision_Manager->Check_GroupFilter(_iGroupFilterLeft, _iGroupFilterRight);

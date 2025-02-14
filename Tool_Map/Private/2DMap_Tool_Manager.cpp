@@ -228,6 +228,7 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		if (GetOpenFileName(&ofn))
 		{
 			Object_Clear(L"Layer_2DMapObject");
+			Object_Clear(L"Layer_Portal");
 			m_fOffsetPos = { 0.f,0.f };
 			LOG_TYPE(_wstring(L"=====  2D Map Read Start  -> ") + szName, LOG_LOAD);
 
@@ -260,15 +261,8 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 	ImGui::SetNextItemWidth(50.0f);
 	if (ImGui::DragFloat("##X", &m_fOffsetPos.x, 10.f))
 	{
-		auto Layer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject");
-		if (nullptr != Layer)
-		{
-			auto GameObjects = Layer->Get_GameObjects();
-			for (auto& pGameObject : GameObjects)
-			{
-				static_cast<C2DMapObject*>(pGameObject)->Set_OffsetPos(m_fOffsetPos);
-			}
-		}
+		Set_Layer_OffsetPos(L"Layer_2DMapObject");
+		Set_Layer_OffsetPos(L"Layer_Portal");
 	}
 
 	ImGui::SameLine(0, 10.0f);
@@ -276,15 +270,8 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 	ImGui::SetNextItemWidth(50.0f);
 	if (ImGui::DragFloat("##Y", &m_fOffsetPos.y, 10.f))
 	{
-		auto Layer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject");
-		if (nullptr != Layer)
-		{
-			auto GameObjects = Layer->Get_GameObjects();
-			for (auto& pGameObject : GameObjects)
-			{
-				static_cast<C2DMapObject*>(pGameObject)->Set_OffsetPos(m_fOffsetPos);
-			}
-		}
+		Set_Layer_OffsetPos(L"Layer_2DMapObject");
+		Set_Layer_OffsetPos(L"Layer_Portal");
 	}
 	// 1. RGB 슬라이더 (3채널)
 	ImGui::Text("RGB Color Picker:");
@@ -362,6 +349,34 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		if (nullptr != pGameObject)
 
 			pGameObject->Set_Active(!is2DMode);
+	}
+	if (ImGui::Button("Create Portal"))
+	{
+		_float2 fSize = m_pGameInstance->Get_RT_Size(m_strRTKey);
+
+		C2DMapObject::MAPOBJ_2D_DESC NormalDesc = { };
+		NormalDesc.strProtoTag = L"Portal_2D";
+		NormalDesc.fDefaultPosition = { -m_fOffsetPos.x,m_fOffsetPos.y };
+		NormalDesc.fRenderTargetSize = { (_float)fSize.x, (_float)fSize.y };
+		NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
+		NormalDesc.iRenderGroupID_2D = m_p2DRenderGroup->Get_RenderGroupID();
+		NormalDesc.iPriorityID_2D = m_p2DRenderGroup->Get_PriorityID();
+		//NormalDesc.isLoad = true;
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DMapObject"),
+			LEVEL_TOOL_2D_MAP,
+			L"Layer_Portal",
+			&pGameObject,
+			(void*)&NormalDesc)))
+		{
+			int a = 1;
+		}
+		else
+		{
+			m_pPickingObject = static_cast<C2DMapObject*>(pGameObject);
+			static_cast<C2DMapObject*>(m_pPickingObject)->Set_OffsetPos(m_fOffsetPos);
+		}
 	}
 
 	if (nullptr != m_pPickingObject)
@@ -653,7 +668,9 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 			{
 				_float2 fDefaultSize = { 128.f, 128.f };
 				_float2 fOffSize = { 128.f, 128.f };
-				auto pSRV = m_pPickingInfo->Get_SRV(&fOffSize);
+				_float2 fStartUV = { 1.f, 1.f };
+				_float2 fEndUV = { 1.f, 1.f };
+				auto pSRV = m_pPickingInfo->Get_SRV(&fOffSize, &fStartUV, &fEndUV);
 				if (nullptr != pSRV)
 				{
 					if (fOffSize.x != -1)
@@ -664,7 +681,9 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 						//fDefaultSize.y = fOffSize.y * fRatio;
 					}
 					ImGui::Image((ImTextureID)pSRV,
-						ImVec2(fDefaultSize.x, fDefaultSize.y)
+						ImVec2(fDefaultSize.x, fDefaultSize.y),
+						ImVec2(fStartUV.x, fStartUV.y),
+						ImVec2(fEndUV.x, fEndUV.y)
 					);
 				}
 				ImGui::SameLine();
@@ -795,8 +814,10 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 				{
 					_float2 fDefaultSize = { 128.f, 128.f };
 					_float2 fOffSize = { 128.f, 128.f };
+					_float2 fStartUV = { 1.f, 1.f };
+					_float2 fEndUV = { 1.f, 1.f };
 					_float fRatio = 1.f;
-					auto pSRV = m_pPickingInfo->Get_SRV(&fOffSize);
+					auto pSRV = m_pPickingInfo->Get_SRV(&fOffSize, &fStartUV, &fEndUV);
 					if (nullptr != pSRV)
 					{
 						if (fOffSize.x != -1)
@@ -808,7 +829,9 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 
 						ImVec2 imagePos = ImGui::GetCursorScreenPos();
 						ImGui::Image((ImTextureID)pSRV,
-							ImVec2(fDefaultSize.x, fDefaultSize.y)
+							ImVec2(fDefaultSize.x, fDefaultSize.y),
+							ImVec2(fStartUV.x, fStartUV.y),
+							ImVec2(fEndUV.x, fEndUV.y)
 						);
 						ImDrawList* drawList = ImGui::GetWindowDrawList();
 
@@ -911,8 +934,10 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 					{
 						_float2 fDefaultSize = { 128.f, 128.f };
 						_float2 fOffSize = { 128.f, 128.f };
+						_float2 fStartUV = { 1.f, 1.f };
+						_float2 fEndUV = { 1.f, 1.f };
 						_float fRatio = 1.f;
-						auto pSRV = m_pPickingInfo->Get_SRV(&fOffSize);
+						auto pSRV = m_pPickingInfo->Get_SRV(&fOffSize, &fStartUV, &fEndUV);
 						if (nullptr != pSRV)
 						{
 							if (fOffSize.x != -1)
@@ -925,7 +950,9 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 							ImGui::SetCursorPos(ImVec2(padding.x * 0.5f, padding.y * 0.5f));  // 좌측 20px, 위쪽 30px
 							ImVec2 imagePos = ImGui::GetCursorScreenPos();
 							ImGui::Image((ImTextureID)pSRV,
-								ImVec2(fDefaultSize.x, fDefaultSize.y)
+								ImVec2(fDefaultSize.x, fDefaultSize.y),
+								ImVec2(fStartUV.x, fStartUV.y),
+								ImVec2(fEndUV.x, fEndUV.y)
 							);
 
 							ImGui::Dummy({ padding.x * 2.f, padding.y * 0.5f });
@@ -1494,6 +1521,40 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 		if (FAILED(static_cast<C2DMapObject*>(pObject)->Export(hFile)))
 			CloseHandle(hFile);
 	}
+	
+
+	auto pLayerPortals = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_Portal");
+
+	_uint iPortalCnt = 0;
+
+
+	//5. 포탈카운트
+
+	if (nullptr != pLayerPortals)
+	{
+		auto PortalObjects = pLayerPortals->Get_GameObjects();
+		iPortalCnt = (_uint)PortalObjects.size();
+		WriteFile(hFile, &iPortalCnt, sizeof(_uint), &dwByte, nullptr);
+		for (auto& pObject : PortalObjects)
+		{
+			// 6. 위치랑 스케일만 잡아주자(기찬으니 스케일은 직접해주자.. 
+			_vector vPos = pObject->Get_FinalPosition();
+			_float3 vScale = pObject->Get_FinalScale();
+			_float2		fPos = { XMVectorGetX(vPos), XMVectorGetY(vPos) };
+			_float2		fScale = { vScale.x,vScale.y };
+
+			WriteFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
+			WriteFile(hFile, &fScale, sizeof(_float2), &dwByte, nullptr);
+
+		}
+	}
+	else 
+	{
+		//아니믄 걍 0개 저장.
+		WriteFile(hFile, &iPortalCnt, sizeof(_uint), &dwByte, nullptr);
+	}
+
+
 
 	CloseHandle(hFile);
 	// 3. 세이브 END
@@ -1511,6 +1572,18 @@ C2DMapObject* C2DMap_Tool_Manager::Picking_2DMap()
 	if (m_DefaultRenderObject->IsCursor_In(fCursorPos))
 	{
 		auto pLayerMaps = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_2DMapObject");
+		if (nullptr != pLayerMaps)
+		{
+			auto Objects = pLayerMaps->Get_GameObjects();
+
+			for (auto& pObject : Objects)
+			{
+				C2DMapObject* pMapObject = static_cast<C2DMapObject*>(pObject);
+				if (pMapObject->IsCursor_In(fCursorPos) && pMapObject != m_pPickingObject)
+					return pMapObject;
+			}
+		}
+		pLayerMaps = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_Portal");
 		if (nullptr != pLayerMaps)
 		{
 			auto Objects = pLayerMaps->Get_GameObjects();
@@ -1947,6 +2020,19 @@ HRESULT C2DMap_Tool_Manager::SetUp_Info_to_Model(C2DMapObjectInfo* _pModelInfo, 
 
 
 	return S_OK;
+}
+
+void C2DMap_Tool_Manager::Set_Layer_OffsetPos(const _wstring& _strLayerTag)
+{
+	auto Layer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, _strLayerTag);
+	if (nullptr != Layer)
+	{
+		auto GameObjects = Layer->Get_GameObjects();
+		for (auto& pGameObject : GameObjects)
+		{
+			static_cast<C2DMapObject*>(pGameObject)->Set_OffsetPos(m_fOffsetPos);
+		}
+	}
 }
 
 _bool C2DMap_Tool_Manager::Check_Import_Egnore_2DObject(const _string& _strTag)
@@ -2394,6 +2480,7 @@ void C2DMap_Tool_Manager::Load_3D_Map(_bool _bSelected)
 void C2DMap_Tool_Manager::Load(_bool _bSelected)
 {
 	Object_Clear(L"Layer_2DMapObject");
+	Object_Clear(L"Layer_Portal");
 
 	string filename = m_pGameInstance->WStringToString(m_arrSelectName[SAVE_LIST]);
 	string log = "";
@@ -2461,7 +2548,6 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 
 	ReadFile(hFile, &iLayerCount, sizeof(_uint), &dwByte, nullptr);
 
-	WriteFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
 
 	for (_uint i = 0; i < iLayerCount; ++i)
 	{
@@ -2473,6 +2559,38 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 		}
 	}
 
+
+	//5. 포탈카운트
+	_uint iPortalCnt = 0;
+	ReadFile(hFile, &iPortalCnt, sizeof(_uint), &dwByte, nullptr);
+	for (_uint i = 0; i < iPortalCnt; ++i)
+	{
+		_float2		fPos = {};
+		_float2		fScale = {};
+		ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
+		ReadFile(hFile, &fScale, sizeof(_float2), &dwByte, nullptr);
+
+		C2DMapObject::MAPOBJ_2D_DESC NormalDesc = { };
+		NormalDesc.strProtoTag = L"Portal_2D";
+		NormalDesc.fDefaultPosition = fPos;
+		NormalDesc.fRenderTargetSize = { (_float)fSize.x, (_float)fSize.y };
+		NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
+		NormalDesc.iRenderGroupID_2D = m_p2DRenderGroup->Get_RenderGroupID();
+		NormalDesc.iPriorityID_2D = m_p2DRenderGroup->Get_PriorityID();
+		NormalDesc.isLoad = false;
+
+		NormalDesc.Build_2D_Transform(fPos, fScale);
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DMapObject"),
+			LEVEL_TOOL_2D_MAP,
+			L"Layer_Portal",
+			&pGameObject,
+			(void*)&NormalDesc)))
+		{
+			int a = 1;
+		}
+	}
 
 
 

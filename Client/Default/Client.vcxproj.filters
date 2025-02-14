@@ -403,6 +403,9 @@
     <Filter Include="02.GameObjects\FallingRock">
       <UniqueIdentifier>{37786d41-acd2-43d8-9045-cadf34912d64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Portal">
+      <UniqueIdentifier>{e79f9f98-f32d-4906-84e3-b695f14a3e7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -912,6 +915,9 @@
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FallingRock.h" />
+    <ClInclude Include="..\Public\Portal.h">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1406,6 +1412,9 @@
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FallingRock.cpp" />
+    <ClCompile Include="..\Private\Portal.cpp">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

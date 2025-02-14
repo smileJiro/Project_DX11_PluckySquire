@@ -182,7 +182,16 @@ HRESULT CSection_Manager::SetActive_Section(CSection* _pSection, _bool _isActive
     {
         _pSection->Set_Active(_isActive);
         _pSection->SetActive_GameObjects(_isActive);
+
+
+        if (_isActive)
+            m_pGameInstance->Register_Section(_pSection->Get_SectionName());
+        else
+            m_pGameInstance->Unregister_Section(_pSection->Get_SectionName());
     }
+
+
+
     return S_OK;
 }
 
@@ -247,8 +256,6 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
             return E_FAIL;
         m_pCurSection = pSection_2D;
 
-        if (m_pCurSection)
-            m_pGameInstance->Register_Section(m_pCurSection->Get_SectionName());
 
         //
         Main_Section_Active_Process(m_pCurSection->Get_SectionName());
@@ -414,6 +421,29 @@ ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromTexture(const _wstring& 
     return pSection_2D->Get_SRV_FromTexture(_iTextureIndex);
 }
 
+void CSection_Manager::Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPosMap)
+{
+    if (nullptr != m_pBookWorldPosMap)
+        Safe_Release(m_pBookWorldPosMap);
+
+    m_pBookWorldPosMap = _pBookWorldPosMap;
+
+
+    for (auto& SectionPair : m_CurLevelSections)
+    {
+        if (nullptr != SectionPair.second)
+        {
+            CSection_2D* pSection2D = static_cast<CSection_2D*>(SectionPair.second);
+            if (!pSection2D->Is_Override_WorldTex())
+            {
+                pSection2D->Set_WorldTexture(m_pBookWorldPosMap);
+                Safe_AddRef(m_pBookWorldPosMap);
+            }
+        }
+    }
+
+}
+
 HRESULT CSection_Manager::Register_WorldCapture(const _wstring& _strSectionTag, CModelObject* _pObject)
 {
     CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(Find_Section(_strSectionTag));
@@ -557,6 +587,8 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 
             CSection_2D* pSection = nullptr;
 
+
+            // TODO :: SECTION CREATE
             switch (eType)
             {
                 case Client::CSection_2D::PLAYMAP:

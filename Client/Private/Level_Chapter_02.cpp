@@ -91,6 +91,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PLAYER_PROJECTILE);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
@@ -105,12 +106,36 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	//임시로 주사위 만들어 봄.
 	CModelObject::MODELOBJECT_DESC tModelDesc{};
 	tModelDesc.iCurLevelID = m_eLevelID;
-	
+	tModelDesc.Build_3D_Transform(_float3(0.0f, 1.0f, -10.f), _float3(1.f, 1.f, 1.f));
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
 		return E_FAIL;
-	 
+	tModelDesc.Build_3D_Transform(_float3(3.0f, 0.651f, -10.f), _float3(1.f, 1.f, 1.f));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
 		return E_FAIL;
+#pragma region 구경하기
+
+	tModelDesc.Build_3D_Transform(_float3(15.29f, 5.59f, 21.61f), _float3(1.f, 1.f, 1.f));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+		return E_FAIL;
+
+	tModelDesc.Build_3D_Transform(_float3(3.29f, 5.59f, 25.61f), _float3(1.f, 1.f, 1.f));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+		return E_FAIL;
+
+	tModelDesc.Build_3D_Transform(_float3(7.29f, 5.59f, 25.61f), _float3(1.f, 1.f, 1.f));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+		return E_FAIL;
+
+	tModelDesc.Build_3D_Transform(_float3(11.29f, 5.59f, 25.61f), _float3(1.f, 1.f, 1.f));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+		return E_FAIL;
+
+	tModelDesc.Build_3D_Transform(_float3(15.29f, 5.59f, 25.61f), _float3(1.f, 1.f, 1.f));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+		return E_FAIL;
+
+#pragma endregion
 
 	// 그룹필터 제거
 	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음

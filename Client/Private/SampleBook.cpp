@@ -317,13 +317,12 @@ HRESULT CSampleBook::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _ws
 		desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
 		m_pDevice->CreateTexture2D(&desc, nullptr, &pTexture);
 
-		SECTION_MGR->Set_BookWorldPosMapTexture(pTexture);
-		Safe_AddRef(pTexture);
 	}
 	else
 	{
 		CSection_2D* p2DSection = static_cast<CSection_2D*>(pSection);
 		pTexture = p2DSection->Get_WorldTexture();
+		Safe_AddRef(pTexture);
 		if (nullptr == pTexture)
 			return E_FAIL;
 
@@ -370,6 +369,15 @@ HRESULT CSampleBook::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _ws
 
 
 	m_pContext->CopyResource(pTexture, pResource);
+
+
+	if (nullptr == pSection)
+	{
+
+		SECTION_MGR->Set_BookWorldPosMapTexture(pTexture);
+		Safe_AddRef(pTexture);
+	}
+
 
 	Safe_Release(pResource);
 	Safe_Release(pTexture);

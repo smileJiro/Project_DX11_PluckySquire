@@ -116,6 +116,7 @@
     <ClInclude Include="..\Public\RenderGroup_DownSample.h">
       <Filter>RenderGroup</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Backgorund.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\TestTerrain.cpp" />
@@ -203,6 +204,7 @@
     <ClCompile Include="..\Private\RenderGroup_AfterParticle.cpp">
       <Filter>RenderGroup</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Backgorund.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tool_Animation.rc">

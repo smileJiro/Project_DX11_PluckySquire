@@ -152,13 +152,19 @@ HRESULT C2DMapObjectInfo::Export(json& _OutputJson)
 }
 
 
-ID3D11ShaderResourceView* C2DMapObjectInfo::Get_SRV(_float2* _pReturnSize)
+ID3D11ShaderResourceView* C2DMapObjectInfo::Get_SRV(_float2* _pReturnSize, _float2* _pStartUV, _float2* _pEndUV)
 {
 	if (!m_isToolRendering || nullptr == m_pPreviewSRV)
 		return nullptr;
 
 	if (nullptr != _pReturnSize)
 		*_pReturnSize = m_fPreviewSize;
+	
+	if (nullptr != _pStartUV)
+		*_pStartUV = m_fStartUV;
+	
+	if (nullptr != _pEndUV)
+		*_pEndUV = m_fEndUV;
 	
 	return m_pPreviewSRV;
 }
@@ -194,65 +200,17 @@ HRESULT C2DMapObjectInfo::Create_PreviewModel_Texutre()
 	if (nullptr == pTargetSprite)
 		return E_FAIL;
 
-	_float2 fStartUV = pTargetSprite->Get_StartUV();
-	_float2 fEndUV = pTargetSprite->Get_EndUV();
+	m_fStartUV = pTargetSprite->Get_StartUV();
+	m_fEndUV = pTargetSprite->Get_EndUV();
 	CTexture* pTexture = pTargetSprite->Get_Texture();
 
 	if (nullptr == pTexture || 0 >= pTexture->Get_NumSRVs())
 		return E_FAIL;
 
 	ID3D11ShaderResourceView* pTargetSRV = pTexture->Get_SRV(0);
-
-
-	ID3D11Texture2D* pSrcTexture2D = nullptr;
-	ID3D11Resource* pResource = nullptr;
-
-	pTargetSRV->GetResource(&pResource);
-	if (nullptr == pResource)
-		return E_FAIL;
-
-	HRESULT hr = pResource->QueryInterface(__uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&pSrcTexture2D));
-
-	Safe_Release(pResource);
-
-	if (FAILED(hr) || nullptr == pSrcTexture2D)
-		return E_FAIL;
-
-	D3D11_TEXTURE2D_DESC srcDesc;
-	pSrcTexture2D->GetDesc(&srcDesc);
-
-	_uint iX = static_cast<_uint>(srcDesc.Width * fStartUV.x);
-	_uint iY = static_cast<_uint>(srcDesc.Height * fStartUV.y);
-	_uint iWidth = static_cast<_uint>((srcDesc.Width * fEndUV.x) - iX);
-	_uint iHeight = static_cast<_uint>((srcDesc.Height * fEndUV.y) - iY);
-
-	m_fPreviewSize = { (_float)iWidth,(_float)iHeight };
-
-	// 货肺款 咆胶贸 积己
-	D3D11_TEXTURE2D_DESC dstDesc = srcDesc;
-	dstDesc.Width = iWidth;
-	dstDesc.Height = iHeight;
-	dstDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	dstDesc.MiscFlags = 0;
-
-	ID3D11Texture2D* pDstTexture = nullptr;
-	m_pDevice->CreateTexture2D(&dstDesc, nullptr, &pDstTexture);
-
-	// 漂沥 康开父 汗荤
-	D3D11_BOX srcBox = { iX, iY, 0, iX + iWidth, iY + iHeight, 1 };
-	m_pContext->CopySubresourceRegion(pDstTexture, 0, 0, 0, 0, pSrcTexture2D, 0, &srcBox);
-
-	// 货肺款 SRV 积己
-	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-	srvDesc.Format = dstDesc.Format;
-	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	srvDesc.Texture2D.MostDetailedMip = 0;
-	srvDesc.Texture2D.MipLevels = -1;
-
-	m_pDevice->CreateShaderResourceView(pDstTexture, &srvDesc, &m_pPreviewSRV);
-
-	Safe_Release(pSrcTexture2D);
-	Safe_Release(pDstTexture);
+	m_pPreviewSRV = pTargetSRV;
+	m_fPreviewSize = pTexture->Get_Size();
+	Safe_AddRef(pTargetSRV);
 
 	return S_OK;
 }
