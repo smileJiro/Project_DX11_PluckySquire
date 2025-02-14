@@ -129,24 +129,14 @@ void CMonster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 		/*if (1436 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
 			cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() <<" : " << " Enter" << endl;*/
 	}
-
-	if (1436 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
-	{
-		cout << "딱풀 Enter" << endl;
-	}
-	if (1599 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
-	{
-		cout << "블록 Enter" << endl;
-	}
-	if (1868 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
-	{
-		cout << "물감병 Enter" << endl;
-	}
 }
 
 void CMonster::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-
+	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+	{
+		Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
+	}
 }
 
 void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -163,18 +153,6 @@ void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 	{
 		Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
 		//cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() << " : " << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << " Exit" << endl;
-	}
-	if (1436 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
-	{
-		cout << "딱풀 Exit" << endl;
-	}
-	if (1599 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
-	{
-		cout << "블록 Exit" << endl;
-	}
-	if (1868 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
-	{
-		cout << "물감병 Exit" << endl;
 	}
 }
 

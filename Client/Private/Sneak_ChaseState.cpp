@@ -108,7 +108,7 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 					m_pOwner->Stop_Rotate();
 					m_pOwner->Stop_Move();
 					++m_iCurWayIndex;
-					m_isTurn = false;
+					m_isTurn = true;
 					m_isMove = false;
 					//목표 위치에 도착했으면 자유이동으로 전환
 					if (m_Ways.size() <= m_iCurWayIndex)

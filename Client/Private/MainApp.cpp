@@ -48,7 +48,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iViewportHeight = g_iWinSizeY;
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 	EngineDesc.isNewRenderer = true;
-	EngineDesc.eImportMode |= NONE_IMPORT;
+	EngineDesc.eImportMode |= IMPORT_IMGUI;
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;

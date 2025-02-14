@@ -322,20 +322,6 @@ void CSneak_PatrolState::Check_Bound(_float _fTimeDelta)
 	}
 }
 
-void CSneak_PatrolState::Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex)
-{
-	switch (_iWayIndex)
-	{
-	case Client::WAYPOINTINDEX::CHAPTER2_1:
-		m_PatrolWays.push_back(11);
-		m_PatrolWays.push_back(12);
-		m_PatrolWays.push_back(13);
-		break;
-	default:
-		break;
-	}
-}
-
 CSneak_PatrolState* CSneak_PatrolState::Create(void* _pArg)
 {
 	CSneak_PatrolState* pInstance = new CSneak_PatrolState();

@@ -144,7 +144,7 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 void CSneak_InvestigateState::State_Exit()
 {
 	m_isTurn = false;
-	m_isPathFind = false;
+	m_Ways.clear();
 }
 
 void CSneak_InvestigateState::Determine_Direction()

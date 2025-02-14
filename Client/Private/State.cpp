@@ -91,20 +91,23 @@ _bool CState::Check_Target3D(_bool _isSneak)
 	if (m_pOwner->IsTarget_In_Detection())
 	{
 		//------테스트
-		_float3 vPos; XMStoreFloat3(&vPos, XMVectorSetY(m_pOwner->Get_FinalPosition(), m_pOwner->Get_FinalPosition().m128_f32[1] + m_pOwner->Get_RayOffset().y));
-		_vector vTargetDir = m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPos);
-		_float3 vDir; XMStoreFloat3(&vDir, XMVector3Normalize(XMVectorSetY(vTargetDir, 0.f)));
+		_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
+		vPos.y += 1.f;
+		_vector vTargetDir = XMVectorSetY(m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPos), 0.f);
+		_float3 vDir; XMStoreFloat3(&vDir, XMVector3Normalize(vTargetDir));
 		_float3 vOutPos;
 		CActorObject* pActor = nullptr;
 
-		if (m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::ALERT), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE, &vOutPos, &pActor))
+		if (true == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vDir, Get_CurCoordRange(MONSTER_STATE::ALERT), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE, &vOutPos, &pActor))
 		{
 			if (OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::RAY_OBJECT & static_cast<ACTOR_USERDATA*>(pActor->Get_ActorCom()->Get_RigidActor()->userData)->iObjectGroup)
 			{
 				//플레이어가 레이 오브젝트보다 가까우면 인식(임시로 맵오브젝트 써봄)
-				if (2 == m_pGameInstance->Compare_VectorLength(vTargetDir, XMLoadFloat3(&vOutPos) - m_pOwner->Get_FinalPosition()))
+				if (2 == m_pGameInstance->Compare_VectorLength(vTargetDir, XMVectorSetY(XMLoadFloat3(&vOutPos)- XMLoadFloat3(&vPos), 0.f))
+					|| 0 == m_pGameInstance->Compare_VectorLength(vTargetDir, XMVectorSetY(XMLoadFloat3(&vOutPos) - XMLoadFloat3(&vPos), 0.f)))
 				{
 					m_pOwner->Stop_Rotate();
+					m_pOwner->Stop_Move();
 					Event_ChangeMonsterState(eState, m_pFSM);
 					return true;
 				}

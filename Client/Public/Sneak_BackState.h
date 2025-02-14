@@ -36,9 +36,6 @@ private:
 	void Determine_BackDirection(_float3* _vDirection);
 
 private:
-	void Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex);
-
-private:
 	_float m_fAccTime = { 0.f };
 	_float m_fAccDistance = { 0.f };
 	_float m_fMoveDistance = {};
@@ -55,8 +52,6 @@ private:
 	_bool m_isBack = { false };
 	_bool m_isToWay = { false };
 	_float3 m_vDir = {};
-
-	vector<_uint> m_PatrolWays = {};
 
 public:
 	static CSneak_BackState* Create(void* _pArg);

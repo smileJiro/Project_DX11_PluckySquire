@@ -31,11 +31,11 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(1080.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 15.f;
 
-    pDesc->fAlertRange = 8.f;
-    pDesc->fChaseRange = 12.f;
+    pDesc->fAlertRange = 7.f;
+    pDesc->fChaseRange = 8.f;
     pDesc->fAttackRange = 2.f;
 
-    pDesc->fFOVX = 120.f;
+    pDesc->fFOVX = 60.f;
     pDesc->fFOVY = 30.f;
 
     pDesc->isSneakMode = true;
@@ -319,7 +319,7 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
 
     //닿은 물체의 씬 쿼리를 켜는 트리거
     SHAPE_BOX_DESC* RayBoxDesc = new SHAPE_BOX_DESC;
-	RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(pDesc->fFOVX * 0.5f) * 0.5f, 1.f, pDesc->fAlertRange * 0.5f };
+    RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(XMConvertToRadians(pDesc->fFOVX * 0.5f)) * 0.5f, 1.f, pDesc->fAlertRange * 0.5f };
 	//RayBoxDesc->vHalfExtents = { ShapeDesc->fRadius, 0.1f, pDesc->fAlertRange * 0.5f };
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */

@@ -503,22 +503,6 @@ void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 	vResult = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition) - XMLoadFloat3(&vPos), 0.f);
 
 	XMStoreFloat3(_vDirection, XMVector3Normalize(vResult));
-	if ((*_vDirection).y > 0.f)
-		int a = 10;
-}
-
-void CSneak_BackState::Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex)
-{
-	switch (_iWayIndex)
-	{
-	case Client::WAYPOINTINDEX::CHAPTER2_1:
-		m_PatrolWays.push_back(11);
-		m_PatrolWays.push_back(12);
-		m_PatrolWays.push_back(13);
-		break;
-	default:
-		break;
-	}
 }
 
 CSneak_BackState* CSneak_BackState::Create(void* _pArg)

@@ -55,6 +55,7 @@ public:
 protected:
 	//잠입 모드가 아니어도 필요할 것으로 보임. 일단 잠입상태에 둠
 	HRESULT Initialize_WayPoints(WAYPOINTINDEX _eWayIndex);
+	void Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex);
 	void Determine_NextDirection(_fvector& _vDestination, _float3* _vDirection);
 	void Determine_BackDirection(_fvector& _vDestination, _float3* _vDirection);
 
@@ -63,10 +64,12 @@ public:
 
 protected:
 	_float3 m_vSneakPos = {};
-	//vector<_float3> m_WayPoints = {};
+	WAYPOINTINDEX m_eWayIndex = {};
 	vector<Node> m_WayPoints = {};
 	map<pair<_uint, _uint>, _float> m_Weights;
 	vector<_uint> m_Ways;
+
+	vector<_uint> m_PatrolWays = {};
 
 	_uint m_iCurWayIndex = 0;
 	_bool m_isOnWay = false;
