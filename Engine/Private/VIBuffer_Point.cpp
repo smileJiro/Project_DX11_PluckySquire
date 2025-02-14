@@ -44,14 +44,14 @@ HRESULT CVIBuffer_Point::Initialize_Prototype()
 
 
 	// 2. SubResourceData 값을 채운다.
-	m_vecVerticesPos.reserve(m_iNumVertices);
+	//m_vecVerticesPos.reserve(m_iNumVertices);
 	VTXPOINT* pVertices = new VTXPOINT[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXPOINT) * m_iNumVertices);
 
 	pVertices[0].vPosition = XMFLOAT3(0.f, 0.f, 0.0f);
 	pVertices[0].vSize = XMFLOAT2(1.f, 1.f);
 
-	m_vecVerticesPos.push_back(pVertices[0].vPosition);
+	//m_vecVerticesPos.push_back(pVertices[0].vPosition);
 
 	ZeroMemory(&m_SubResourceDesc, sizeof(m_SubResourceDesc));
 	m_SubResourceDesc.pSysMem = pVertices; // Buffer 생성시에는 pSysMem 만 사용한다.
@@ -80,7 +80,7 @@ HRESULT CVIBuffer_Point::Initialize_Prototype()
 	ZeroMemory(pIndices, sizeof(_ushort) * m_iNumIndices);
 
 	pIndices[0] = 0;
-	m_vecIndexBuffer.push_back(pIndices[0]);
+	//m_vecIndexBuffer.push_back(pIndices[0]);
 
 	ZeroMemory(&m_SubResourceDesc, sizeof(D3D11_SUBRESOURCE_DATA));
 	m_SubResourceDesc.pSysMem = pIndices;

@@ -16,6 +16,8 @@
 #include "PlayerItem.h"
 #include "Bulb.h"
 
+/* For. Blocker */
+#include "Blocker.h"
 /* For. Main Table */
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -188,8 +190,11 @@ void CLoader::Show_Debug()
 
 HRESULT CLoader::Loading_Level_Static()
 {
-
     lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
+        CGravity::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("2D 콜라이더를 로딩중입니다."));
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
@@ -289,10 +294,10 @@ HRESULT CLoader::Loading_Level_Static()
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
 
 
-    //if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Free_Enviroment.json", matPretransform)))
+
+    //if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
     //    return E_FAIL;
-    //
-    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
+    if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Enviroment_Small.json", matPretransform)))
         return E_FAIL;
 
 
@@ -493,6 +498,11 @@ HRESULT CLoader::Loading_Level_Static()
         CPopuff::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* For. Prototype_GameObject_Blocker2D */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Blocker2D"),
+        CBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
+        return E_FAIL;
+    
 
     lstrcpy(m_szLoadingText, TEXT("이펙트(을)를 로딩중입니다."));
 
@@ -880,7 +890,8 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"),
         CDomino::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-    Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_2, L"Room_Enviroment.mchc");
+    //Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_2, L"Room_Enviroment.mchc");
+    Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_2, L"Room_Enviroment_Small.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -1055,7 +1066,7 @@ HRESULT CLoader::Loading_Level_Chapter_4()
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 
-    if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_4, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
+    if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_4, MAP_3D_DEFAULT_PATH, L"Chapter_04_Play_Desk.json", matPretransform, true)))
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CHAPTER_4,
@@ -1171,7 +1182,340 @@ HRESULT CLoader::Loading_Level_Chapter_4()
         return E_FAIL;
 
 
-    Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_4, L"Room_Enviroment.mchc");
+    //Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_4, L"Room_Enviroment.mchc");
+    Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_4, L"Room_Enviroment_Small.mchc");
+
+    lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+    m_isFinished = true;
+
+    return S_OK;
+}
+
+HRESULT CLoader::Loading_Level_Chapter_TEST()
+{
+    lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_FSM"),
+        CFSM::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_FSM_Boss"),
+        CFSM_Boss::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_PlayerAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Player2DAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Player/player2danimevts.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_DetectionField"),
+        CDetectionField::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Sneak_DetectionField"),
+        CSneak_DetectionField::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_BarfBugAttackAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/barfBug_Rig/BarfBug_Attack.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Monster/BarferBug/BarferBug2d_Attack.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_BookPageActionEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))
+        return E_FAIL;
+
+#ifdef _DEBUG
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_DebugDraw_For_Client"),
+        CDebugDraw_For_Client::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+#endif // _DEBUG
+
+
+
+
+
+    lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_PickBulb"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Bulb_Pickup/pickup_counter_bulb_01.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_BombStamp"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Object/Stamp/Resize_BombStamp.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_StopStamp"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Object/Stamp/Resize_StopStamp.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_ArrowForStamp"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Object/Stamp/Arrow.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_HeartPoint"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/HPBar/HUD_Heart_%d.dds"), 13))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_KEYQ"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Q.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_ShopBG"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/T_Panel_BG.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_ShopDialogue"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_panel_text.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_ShopChooseBG"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/T_panel_YesNo.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_ShopBulb"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_panel_bulb.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_DialogueBG"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Dialogue/dialogue_%d.dds"), 27))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_DialoguePortrait"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Character_Icon/dialogue_icon_%d.dds"), 17))))
+        return E_FAIL;
+
+
+
+    ///// 상점 관련
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_JumpAttack0"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_jump.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_SpinAttack0"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_spin.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_SpinAttack1"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_spin_upgrade_1.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_SpinAttack2"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_spin_upgrade_2.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_SpinAttack3"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_spin_upgrade_3.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_AttackPlus1"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_sword_upgrade_1.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_AttackPlus2"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_sword_upgrade_2.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_AttackPlus3"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_sword_upgrade_3.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_ThrowAttack0"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_throw.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_ThrowAttack1"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_throw_upgrade_1.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_ThrowAttack2"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_throw_upgrade_2.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_ThrowAttack3"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_throw_upgrade_3.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_ScrollItem"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_scroll.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_ItemSelectedBG"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_panel_item_selected._testtga.dds"), 1))))
+        return E_FAIL;
+
+
+    ///// 상점 관련
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_BACK"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_backspace.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Texture_Enter"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Enter.dds"), 1))))
+        return E_FAIL;
+
+
+
+
+    lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
+
+    lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
+
+    lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
+
+
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_TEST,
+        TEXT("../Bin/Resources/Models/2DMapObject/"))))
+        return E_FAIL;
+
+    /* 낱개 로딩 예시*/
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_player2DAnimation"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Player/player.model2D")))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_playersword2DAnimation"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/PlayerSword/player2dsword.model2D")))))
+        return E_FAIL;
+    // NPC 모델
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_NPC_SHOP_2DAnimation"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/NPC_Shop/NPC_Store.model2D")))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_NPC_DJMoonBeard"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/NPC/DJ_MoonBeard/DJ_MoonBeard.model2D")))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Narration_0102_01"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Narration/2DModel/0102/0102_01_Narration_Model.model2D")))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Dice2D"),
+        C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/dice_01/dice_pink_03.dds", true))))
+        return E_FAIL;
+
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("0102_02_Narration_Model_Jot"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Narration/2DModel/0102/0102_02_Narration_Model_Jot.model2D")))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("0102_02_Narration_Model_Humgrump"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Narration/2DModel/0102/0102_02_Narration_Model_Humgrump.model2D")))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("0102_02_Narration_Model_Villager"),
+        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Narration/2DModel/0102/0102_02_Narration_Model_Villager.model2D")))))
+        return E_FAIL;
+
+    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Dice3D"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/dice_01/dice_01.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Domino"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Domino_4/Domino_4.model", matPretransform))))
+        return E_FAIL;
+    //if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_TEST, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
+    //    return E_FAIL;
+    if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_TEST, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
+        return E_FAIL;
+
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CHAPTER_TEST,
+        TEXT("../Bin/Resources/Models/3DMapObject/"), matPretransform)))
+        return E_FAIL;
+
+    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CHAPTER_TEST,
+        TEXT("../Bin/Resources/Models/3DAnim/"), matPretransform)))
+        return E_FAIL;
+
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CHAPTER_TEST,
+        TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
+        return E_FAIL;
+
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_TEST,
+        TEXT("../Bin/Resources/Models/2DAnim/"))))
+        return E_FAIL;
+
+
+    lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+    /* For. Prototype_GameObject_SampleBook */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_SampleBook"),
+        CSampleBook::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    ///////////////////////////////// UI /////////////////////////////////
+    /* For. Prototype_UIObject_Pick_Bubble */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_UIObejct_PickBubble"),
+        CPick_Bulb::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_StopStamp"),
+        CStopStamp::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_BombStamp"),
+        CBombStamp::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_ArrowForStamp"),
+        CArrowForStamp::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_ESCHeartPoint"),
+        ESC_HeartPoint::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Interaction_Book"),
+        CUI_Interaction_Book::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_ParentShopPannel"),
+        CShopPanel::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_ShopPannelBG"),
+        CShopPanel_BG::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_ShopPannelYesNo"),
+        CShopPanel_YesNo::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_ShopItem"),
+        CShopItemBG::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Interaction_Heart"),
+        CInteraction_Heart::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Dialogue"),
+        CDialog::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Dialogue_Portrait"),
+        CPortrait::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Narration"),
+        CNarration::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Narration_Anim"),
+        CNarration_Anim::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
+
+    ///////////////////////////////// UI /////////////////////////////////
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_StoreNPC"),
+        CNPC_Store::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_NPC_OnlySocial"),
+        CNPC_OnlySocial::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_NPC_Social"),
+        CNPC_Social::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    ///////////////////////////////// NPC /////////////////////////////////
+    /* Boss */
+
+    /* For. Prototype_GameObject_ButterGrump */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_ButterGrump"),
+        CButterGrump::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Boss_HomingBall"),
+        CBoss_HomingBall::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Boss_EnergyBall"),
+        CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Boss_YellowBall"),
+        CBoss_YellowBall::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Boss_PurpleBall"),
+        CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_FloorWord"),
+        CFloorWord::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_PrintFloorWord"),
+        CPrintFloorWord::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Dice"),
+        CDice::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Domino"),
+        CDomino::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_TEST, L"Room_Enviroment_Small.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -1328,7 +1672,16 @@ HRESULT CLoader::Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _
 
 HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFilePath, _fmatrix _PreTransformMatrix, _bool _isCollider)
 {
+    _string arrLevelTexts[] = {
+        "",
+        "STATIC",
+        "LOGO",
+        "CHAPTER_2",
+        "CHAPTER_4",
+        "CHATER_TEST",
+    };
     std::ifstream input_file(_szJsonFilePath);
+
 
     json jFileData;
     if (!input_file.is_open()) 
@@ -1344,7 +1697,6 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
     for (auto& j : jModelList)
 		strModelNames.insert(j.get<string>());
 
-
     std::filesystem::path path;
     path = "../Bin/Resources/Models/NonAnim/";
     string strFileName;
@@ -1353,18 +1705,34 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
     for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
         if (entry.path().extension() != ".model") continue; 
         strFileName = entry.path().filename().replace_extension().string();
-        if (strModelNames.find(strFileName) != strModelNames.end())
+        auto iter = strModelNames.find(strFileName);
+        if (iter != strModelNames.end())
         {
-            if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, StringToWstring( strFileName),
+            strModelNames.erase(iter);
+            if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, StringToWstring(strFileName),
                 C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix, _isCollider))))
                 return E_FAIL;
 			iLoadedCount++;
-			if (iLoadedCount >= iLoadCount)
-            {
+            cout <<""<< arrLevelTexts[_iLevId] << " Map Load, " << iLoadedCount << " / " << iLoadCount << "("<< (((_float)iLoadedCount / (_float)iLoadCount) * 100.f)  << "%)... " << endl;
+			
+            if (iLoadedCount >= iLoadCount)
                 break;
-            }
         }
     }
+    cout << "" << arrLevelTexts[_iLevId] << " Map Load  Complete! ";
+    
+    if (0 < (_uint)strModelNames.size())
+    {
+        cout << (_uint)strModelNames.size() << " File Missing..." << endl;
+        wcout << "확인용, 스케치스페이스는 나중에 수정" << endl;
+    }
+
+    for (_string strFIle : strModelNames)
+    {
+        cout << "Missing File : " << strFIle << endl;
+
+    }
+
     return S_OK;
 }
 

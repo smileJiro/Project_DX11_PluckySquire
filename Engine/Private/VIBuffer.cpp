@@ -11,8 +11,8 @@ CVIBuffer::CVIBuffer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     , m_iNumVertexBuffers(0)
     , m_iIndexStride(0)
     , m_iNumIndices(0)
-    , m_vecVerticesPos{}
-    , m_vecIndexBuffer{}
+    //, m_vecVerticesPos{}
+    //, m_vecIndexBuffer{}
 {
 }
 
@@ -29,8 +29,8 @@ CVIBuffer::CVIBuffer(const CVIBuffer& _Prototype)
     , m_iNumIndices(_Prototype.m_iNumIndices)
     , m_eIndexFormat(_Prototype.m_eIndexFormat)
     , m_ePrimitiveTopology(_Prototype.m_ePrimitiveTopology)
-    , m_vecVerticesPos{ _Prototype .m_vecVerticesPos }
-    , m_vecIndexBuffer{ _Prototype .m_vecIndexBuffer}
+    //, m_vecVerticesPos{ _Prototype .m_vecVerticesPos }
+    //, m_vecIndexBuffer{ _Prototype .m_vecIndexBuffer}
 {
     Safe_AddRef(m_pVB);
     Safe_AddRef(m_pIB);

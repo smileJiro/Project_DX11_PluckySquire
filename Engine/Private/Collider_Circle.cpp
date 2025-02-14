@@ -130,16 +130,15 @@ void CCollider_Circle::Block_AABB(CCollider_AABB* _pOther)
     // 내가 서클임. 밀어내는 방향만 뒤집어
     
     // 1. circle 기준 aabb 에 가장 가까운 점을 찾는다. 
-    _float2 vOtherLT = _pOther->Get_LT(); // Min
-    _float2 vOtherRB = _pOther->Get_RB(); // Max
+    // 1. Clamp를 통해 AABB에 가장 가까운 점을 찾는다.
+    _float2 vNearestPoint = {};
+    _bool isResult = Compute_NearestPoint_AABB(_pOther, &vNearestPoint);
+    if (false == isResult)
+        return;
 
     _float2 vPosition = m_vPosition;
     _float fFinalRadius = Get_FinalRadius();
 
-    // 1. Clamp를 통해 AABB에 가장 가까운 점을 찾는다.
-    _float2 vNearestPoint = {};
-    vNearestPoint.x = clamp(vPosition.x, vOtherLT.x, vOtherRB.x);
-    vNearestPoint.y = clamp(vPosition.y, vOtherRB.y, vOtherLT.y);
     // 2. circle의 중점에서부터 aabb에 가장 가까운 점까지의 거리를 구한다. (밀려나야 할 축으로도 사용가능하다 뒤집으면 )
     _vector vDiff =  XMLoadFloat2(&vNearestPoint) - XMLoadFloat2(&vPosition);
     _float fDiffLen = XMVectorGetX(XMVector2Length(vDiff));
@@ -177,6 +176,30 @@ void CCollider_Circle::Block_Circle(CCollider_Circle* _pOther)
     _pOther->Get_Owner()->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vOtherFinalPos, 1.0f));
 
     _pOther->Update_OwnerTransform();
+}
+
+_bool CCollider_Circle::Compute_NearestPoint_AABB(CCollider_AABB* _pOtherAABB, _float2* _pOutPos, _float2* _pContactVector_NotNormalize)
+{
+
+    // 1. circle 기준 aabb 에 가장 가까운 점을 찾는다. 
+    _float2 vOtherLT = _pOtherAABB->Get_LT(); // Min
+    _float2 vOtherRB = _pOtherAABB->Get_RB(); // Max
+
+    _float2 vPosition = m_vPosition;
+    _float fFinalRadius = Get_FinalRadius();
+
+    // 1. Clamp를 통해 AABB에 가장 가까운 점을 찾는다.
+    _float2 vNearestPoint = {};
+    vNearestPoint.x = clamp(vPosition.x, vOtherLT.x, vOtherRB.x);
+    vNearestPoint.y = clamp(vPosition.y, vOtherRB.y, vOtherLT.y);
+
+    if (nullptr != _pOutPos)
+        *_pOutPos = vNearestPoint;
+
+    if (nullptr != _pContactVector_NotNormalize)
+        XMStoreFloat2(_pContactVector_NotNormalize, XMLoadFloat2(&vNearestPoint) - XMLoadFloat2(&vPosition)) ;
+
+    return true;
 }
 
 _bool CCollider_Circle::Is_Collision_Circle(CCollider_Circle* _pOther)

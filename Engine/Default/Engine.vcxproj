@@ -229,6 +229,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\DebugDraw_For_Client.h" />
     <ClInclude Include="..\public\EffectModel.h" />
     <ClInclude Include="..\public\Effect_Module.h" />
+    <ClInclude Include="..\public\Gravity.h" />
     <ClInclude Include="..\public\Keyframe_Module.h" />
     <ClInclude Include="..\public\MeshEffect_Emitter.h" />
     <ClInclude Include="..\public\Frustum.h" />
@@ -340,6 +341,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\DebugDraw_For_Client.cpp" />
     <ClCompile Include="..\private\EffectModel.cpp" />
     <ClCompile Include="..\private\Effect_Module.cpp" />
+    <ClCompile Include="..\private\Gravity.cpp" />
     <ClCompile Include="..\private\Keyframe_Module.cpp" />
     <ClCompile Include="..\private\MeshEffect_Emitter.cpp" />
     <ClCompile Include="..\private\Frustum.cpp" />

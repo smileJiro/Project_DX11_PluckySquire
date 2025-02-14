@@ -66,6 +66,7 @@ namespace Client
 		LEVEL_LOGO,
 		LEVEL_CHAPTER_2,
 		LEVEL_CHAPTER_4,
+		LEVEL_CHAPTER_TEST,
 
 		LEVEL_END
 	};

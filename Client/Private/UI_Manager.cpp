@@ -155,7 +155,21 @@ CDialog::DialogLine CUI_Manager::Get_DialogueLine(const _wstring& _id, _int _Lin
 }
 
 
+void CUI_Manager::Set_DialogId(const _tchar* _id, const _tchar* strCurSection,  _bool _DisplayDialogue, _bool _DisPlayPortrait)
+{
+	wsprintf(m_tDialogId, _id); 
+	if (nullptr == strCurSection)
+	{
+		wsprintf(m_strCurrentSection, TEXT("NOTWORD"));
+	}
+	else
+	{
+		wsprintf(m_strCurrentSection, strCurSection);
+	}
 
+	m_isDisplayDialogue = _DisplayDialogue; 
+	m_isPortraitRender = _DisPlayPortrait;
+}
 
 void CUI_Manager::Pushback_Dialogue(CDialog::DialogData _DialogData)
 {

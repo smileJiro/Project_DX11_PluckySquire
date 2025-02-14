@@ -5,6 +5,7 @@ BEGIN(Engine)
 class CGameInstance;
 class CRay;
 class CCollider;
+class CGravity;
 class ENGINE_DLL CGameObject abstract : public CBase
 {
 public:
@@ -86,6 +87,7 @@ protected:
 	CGameInstance*				m_pGameInstance = nullptr;
 	CController_Transform*		m_pControllerTransform = nullptr; 
 	CRay*						m_pRayCom = nullptr;
+	CGravity*					m_pGravityCom = nullptr;
 	vector<CCollider*>			m_p2DColliderComs;
 	_wstring					m_strSectionName = L"";
 

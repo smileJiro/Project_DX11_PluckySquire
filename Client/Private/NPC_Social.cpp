@@ -171,8 +171,8 @@ void CNPC_Social::Late_Update(_float _fTimeDelta)
 HRESULT CNPC_Social::Render()
 {
 #ifdef _DEBUG
-	if(COORDINATE_2D ==Get_CurCoord())
-		m_pColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+	if (COORDINATE_2D == Get_CurCoord())
+		m_p2DNpcCollider->Render();
 #endif // _DEBUG
 
 	return S_OK;
@@ -250,15 +250,32 @@ HRESULT CNPC_Social::Ready_ActorDesc(void* _pArg)
 
 HRESULT CNPC_Social::Ready_Components()
 {
+	m_p2DColliderComs.resize(1);
 	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
 	AABBDesc.pOwner = this;
 	AABBDesc.vExtents = { m_vCollsionScale.x, m_vCollsionScale.y };
 	AABBDesc.vScale = { 1.0f, 1.0f };
 	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.5f };
-	//AABBDesc.vOffsetPosition = { 0.f, 0.f };
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-		TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+	AABBDesc.isBlock = true;
+	AABBDesc.isTrigger = false;
+	AABBDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+		TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
 		return E_FAIL;
+	
+	m_p2DNpcCollider = m_p2DColliderComs[0];
+
+	//CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
+	//AABBDesc.pOwner = this;
+	//AABBDesc.vExtents = { m_vCollsionScale.x, m_vCollsionScale.y };
+	//AABBDesc.vScale = { 1.0f, 1.0f };
+	//AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.5f };
+	//AABBDesc.isBlock = false;
+	//AABBDesc.isTrigger = false;
+	////AABBDesc.vOffsetPosition = { 0.f, 0.f };
+	//if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+	//	TEXT("Com_SocialNPC2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -343,7 +360,6 @@ CGameObject* CNPC_Social::Clone(void* _pArg)
 
 void CNPC_Social::Free()
 {
-	Safe_Release(m_pColliderCom);
 	__super::Free();
 }
 

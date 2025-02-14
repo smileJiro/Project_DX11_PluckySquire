@@ -304,6 +304,9 @@
     <Filter Include="01.Utility\04.Components\Collider\Manager">
       <UniqueIdentifier>{3ccef1f9-814a-40bf-afd1-93e740a36ed3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04.Components\Gravity">
+      <UniqueIdentifier>{4579584a-c173-4db3-9c87-aca4caf26a70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -616,6 +619,9 @@
     <ClInclude Include="..\Public\Collision_Manager.h">
       <Filter>01.Utility\04.Components\Collider\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Gravity.h">
+      <Filter>01.Utility\04.Components\Gravity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -915,6 +921,9 @@
     <ClCompile Include="..\Private\Collider_Fan.cpp" />
     <ClCompile Include="..\Private\Collision_Manager.cpp">
       <Filter>01.Utility\04.Components\Collider\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Gravity.cpp">
+      <Filter>01.Utility\04.Components\Gravity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

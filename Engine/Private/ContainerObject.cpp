@@ -35,6 +35,8 @@ HRESULT CContainerObject::Initialize(void* _pArg)
 
 void CContainerObject::Priority_Update(_float _fTimeDelta)
 {
+    __super::Priority_Update(_fTimeDelta);
+
     for (auto& pPartObj : m_PartObjects)
     {
         if (nullptr != pPartObj && true == pPartObj->Is_Active())

@@ -71,8 +71,8 @@ HRESULT CVIBuffer_Terrain::Initialize(void* _pArg)
 #pragma region VertexBuffer
     VTXNORTEX* pVertices = new VTXNORTEX[m_iNumVertices];
     ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
-    m_vecVerticesPos.clear();
-    m_vecVerticesPos.reserve(m_iNumVertices);
+    //m_vecVerticesPos.clear();
+    //m_vecVerticesPos.reserve(m_iNumVertices);
     for (_uint i = 0; i < m_iNumVerticesX; ++i)
     {
         for (_uint j = 0; j < m_iNumVerticesZ; ++j)
@@ -80,7 +80,7 @@ HRESULT CVIBuffer_Terrain::Initialize(void* _pArg)
             _uint iIndex = i * m_iNumVerticesX + j;
 
             pVertices[iIndex].vPosition = _float3(j * m_fVerticesItv, (pPixels[iIndex] & 0x000000ff) / 10.f, i * m_fVerticesItv);
-            m_vecVerticesPos.push_back(pVertices[iIndex].vPosition); // Ray 피킹을 위한 포지션 정보 저장.
+            //m_vecVerticesPos.push_back(pVertices[iIndex].vPosition); // Ray 피킹을 위한 포지션 정보 저장.
             pVertices[iIndex].vTexcoord = _float2((float)j / ((float)m_iNumVerticesX - 1.0f), -(float)i / ((float)m_iNumVerticesZ - 1.0f));
 
         }
@@ -91,8 +91,8 @@ HRESULT CVIBuffer_Terrain::Initialize(void* _pArg)
 #pragma region IndexBuffer
     _uint* pIndices = new _uint[m_iNumIndices];
     ZeroMemory(pIndices, sizeof(_uint) * m_iNumIndices);
-    m_vecIndexBuffer.clear();
-    m_vecIndexBuffer.reserve(m_iNumIndices);
+    //m_vecIndexBuffer.clear();
+    //m_vecIndexBuffer.reserve(m_iNumIndices);
     _uint iIndicesCount = 0;
 
     // 여기서 반복문의 횟수는 해당 버텍스들로 이루어진 Rect의 수이다. 
@@ -114,9 +114,9 @@ HRESULT CVIBuffer_Terrain::Initialize(void* _pArg)
             pIndices[iIndicesCount++] = iIndices[0];
             pIndices[iIndicesCount++] = iIndices[1];
             pIndices[iIndicesCount++] = iIndices[2];
-            m_vecIndexBuffer.push_back(iIndices[0]);
-            m_vecIndexBuffer.push_back(iIndices[1]);
-            m_vecIndexBuffer.push_back(iIndices[2]);
+            //m_vecIndexBuffer.push_back(iIndices[0]);
+            //m_vecIndexBuffer.push_back(iIndices[1]);
+            //m_vecIndexBuffer.push_back(iIndices[2]);
 
 
             vSrc = XMLoadFloat3(&pVertices[iIndices[1]].vPosition) - XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
@@ -132,9 +132,9 @@ HRESULT CVIBuffer_Terrain::Initialize(void* _pArg)
             pIndices[iIndicesCount++] = iIndices[0];
             pIndices[iIndicesCount++] = iIndices[2];
             pIndices[iIndicesCount++] = iIndices[3];
-            m_vecIndexBuffer.push_back(iIndices[0]);
-            m_vecIndexBuffer.push_back(iIndices[2]);
-            m_vecIndexBuffer.push_back(iIndices[3]);
+            //m_vecIndexBuffer.push_back(iIndices[0]);
+            //m_vecIndexBuffer.push_back(iIndices[2]);
+            //m_vecIndexBuffer.push_back(iIndices[3]);
 
             vSrc = XMLoadFloat3(&pVertices[iIndices[2]].vPosition) - XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
             vDst = XMLoadFloat3(&pVertices[iIndices[3]].vPosition) - XMLoadFloat3(&pVertices[iIndices[2]].vPosition);
@@ -260,8 +260,8 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Height(void* _pArg)
 
     VTXNORTEX* pVertices = new VTXNORTEX[m_iNumVertices];
     ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
-    m_vecVerticesPos.clear();
-    m_vecVerticesPos.reserve(m_iNumVertices);
+    //m_vecVerticesPos.clear();
+    //m_vecVerticesPos.reserve(m_iNumVertices);
     for (_uint i = 0; i < m_iNumVerticesX; ++i)
     {
         for (_uint j = 0; j < m_iNumVerticesZ; ++j)
@@ -269,7 +269,7 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Height(void* _pArg)
             _uint iIndex = i * m_iNumVerticesX + j;
 
             pVertices[iIndex].vPosition = _float3(j * m_fVerticesItv, (pPixels[iIndex] & 0x000000ff) / 10.f, i * m_fVerticesItv);
-            m_vecVerticesPos.push_back(pVertices[iIndex].vPosition); // Ray 피킹을 위한 포지션 정보 저장.
+            //m_vecVerticesPos.push_back(pVertices[iIndex].vPosition); // Ray 피킹을 위한 포지션 정보 저장.
             pVertices[iIndex].vTexcoord = _float2((float)j / ((float)m_iNumVerticesX - 1.0f), -(float)i / ((float)m_iNumVerticesZ - 1.0f));
 
         }
@@ -280,8 +280,8 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Height(void* _pArg)
 #pragma region IndexBuffer
     _uint* pIndices = new _uint[m_iNumIndices];
     ZeroMemory(pIndices, sizeof(_uint) * m_iNumIndices);
-    m_vecIndexBuffer.clear();
-    m_vecIndexBuffer.reserve(m_iNumIndices);
+    //m_vecIndexBuffer.clear();
+    //m_vecIndexBuffer.reserve(m_iNumIndices);
     _uint iIndicesCount = 0;
 
     // 여기서 반복문의 횟수는 해당 버텍스들로 이루어진 Rect의 수이다. 
@@ -303,9 +303,9 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Height(void* _pArg)
             pIndices[iIndicesCount++] = iIndices[0];
             pIndices[iIndicesCount++] = iIndices[1];
             pIndices[iIndicesCount++] = iIndices[2];
-            m_vecIndexBuffer.push_back(iIndices[0]);
-            m_vecIndexBuffer.push_back(iIndices[1]);
-            m_vecIndexBuffer.push_back(iIndices[2]);
+            //m_vecIndexBuffer.push_back(iIndices[0]);
+            //m_vecIndexBuffer.push_back(iIndices[1]);
+            //m_vecIndexBuffer.push_back(iIndices[2]);
 
             vSrc = XMLoadFloat3(&pVertices[iIndices[1]].vPosition) - XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
             vDst = XMLoadFloat3(&pVertices[iIndices[2]].vPosition) - XMLoadFloat3(&pVertices[iIndices[1]].vPosition);
@@ -320,9 +320,9 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Height(void* _pArg)
             pIndices[iIndicesCount++] = iIndices[0];
             pIndices[iIndicesCount++] = iIndices[2];
             pIndices[iIndicesCount++] = iIndices[3];
-            m_vecIndexBuffer.push_back(iIndices[0]);
-            m_vecIndexBuffer.push_back(iIndices[2]);
-            m_vecIndexBuffer.push_back(iIndices[3]);
+            //m_vecIndexBuffer.push_back(iIndices[0]);
+            //m_vecIndexBuffer.push_back(iIndices[2]);
+            //m_vecIndexBuffer.push_back(iIndices[3]);
 
             vSrc = XMLoadFloat3(&pVertices[iIndices[2]].vPosition) - XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
             vDst = XMLoadFloat3(&pVertices[iIndices[3]].vPosition) - XMLoadFloat3(&pVertices[iIndices[2]].vPosition);
@@ -406,8 +406,8 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Flat(void* _pArg)
 
     VTXNORTEX* pVertices = new VTXNORTEX[m_iNumVertices];
     ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
-    m_vecVerticesPos.clear();
-    m_vecVerticesPos.reserve(m_iNumVertices);
+    //m_vecVerticesPos.clear();
+    //m_vecVerticesPos.reserve(m_iNumVertices);
     for (_uint i = 0; i < m_iNumVerticesZ; ++i)
     {
         for (_uint j = 0; j < m_iNumVerticesX; ++j)
@@ -415,7 +415,7 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Flat(void* _pArg)
             _uint iIndex = i * m_iNumVerticesX + j;
 
             pVertices[iIndex].vPosition = _float3(j * m_fVerticesItv, pDesc->fHeightY, i * m_fVerticesItv);
-            m_vecVerticesPos.push_back(pVertices[iIndex].vPosition); // Ray 피킹을 위한 포지션 정보 저장.
+            //m_vecVerticesPos.push_back(pVertices[iIndex].vPosition); // Ray 피킹을 위한 포지션 정보 저장.
             pVertices[iIndex].vTexcoord = _float2((float)j / ((float)m_iNumVerticesX - 1.0f), -(float)i / ((float)m_iNumVerticesZ - 1.0f));
 
         }
@@ -426,8 +426,8 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Flat(void* _pArg)
 #pragma region IndexBuffer
     _uint* pIndices = new _uint[m_iNumIndices];
     ZeroMemory(pIndices, sizeof(_uint) * m_iNumIndices);
-    m_vecIndexBuffer.clear();
-    m_vecIndexBuffer.reserve(m_iNumIndices);
+    //m_vecIndexBuffer.clear();
+    //m_vecIndexBuffer.reserve(m_iNumIndices);
     _uint iIndicesCount = 0;
 
     // 여기서 반복문의 횟수는 해당 버텍스들로 이루어진 Rect의 수이다. 
@@ -449,9 +449,9 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Flat(void* _pArg)
             pIndices[iIndicesCount++] = iIndices[0];
             pIndices[iIndicesCount++] = iIndices[1];
             pIndices[iIndicesCount++] = iIndices[2];
-            m_vecIndexBuffer.push_back(iIndices[0]);
-            m_vecIndexBuffer.push_back(iIndices[1]);
-            m_vecIndexBuffer.push_back(iIndices[2]);
+            //m_vecIndexBuffer.push_back(iIndices[0]);
+            //m_vecIndexBuffer.push_back(iIndices[1]);
+            //m_vecIndexBuffer.push_back(iIndices[2]);
 
             vSrc = XMLoadFloat3(&pVertices[iIndices[1]].vPosition) - XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
             vDst = XMLoadFloat3(&pVertices[iIndices[2]].vPosition) - XMLoadFloat3(&pVertices[iIndices[1]].vPosition);
@@ -466,9 +466,9 @@ HRESULT CVIBuffer_Terrain::Remake_Buffer_Flat(void* _pArg)
             pIndices[iIndicesCount++] = iIndices[0];
             pIndices[iIndicesCount++] = iIndices[2];
             pIndices[iIndicesCount++] = iIndices[3];
-            m_vecIndexBuffer.push_back(iIndices[0]);
-            m_vecIndexBuffer.push_back(iIndices[2]);
-            m_vecIndexBuffer.push_back(iIndices[3]);
+            //m_vecIndexBuffer.push_back(iIndices[0]);
+            //m_vecIndexBuffer.push_back(iIndices[2]);
+            //m_vecIndexBuffer.push_back(iIndices[3]);
 
             vSrc = XMLoadFloat3(&pVertices[iIndices[2]].vPosition) - XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
             vDst = XMLoadFloat3(&pVertices[iIndices[3]].vPosition) - XMLoadFloat3(&pVertices[iIndices[2]].vPosition);
