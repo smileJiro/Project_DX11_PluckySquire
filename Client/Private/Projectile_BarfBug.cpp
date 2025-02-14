@@ -143,9 +143,10 @@ void CProjectile_BarfBug::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
             _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
             XMVectorSetY(vRepulse, -1.f);
             Event_AddImpulse(_My.pActorUserData->pOwner, vRepulse);
+            Event_DeleteObject(this);
         }
 
-        Event_DeleteObject(this);
+       
     }
 
     //if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)

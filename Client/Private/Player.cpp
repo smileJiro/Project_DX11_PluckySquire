@@ -25,6 +25,7 @@
 #include "Interactable.h"
 #include "CarriableObject.h"
 #include "Blocker.h"
+#include "NPC_Store.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -720,7 +721,7 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
             PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
             if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
             {
-                IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
+                IInteractable* pInteractable = static_cast<CNPC_Store*> (_pOtherObject);
                 if (pInteractable && pInteractable->Is_Interactable(this))
                 {
                     pInteractable->Interact(this);

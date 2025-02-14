@@ -122,8 +122,7 @@ void CPlayerState_PickUpObject::Enter()
 void CPlayerState_PickUpObject::Exit()
 {
 	m_pOwner->Set_Kinematic(false);
-	if (m_pOwner->Is_SwordMode())
-		m_pOwner->Equip_Part(CPlayer::PLAYER_PART_SWORD);
+
 	//cout << "Align: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
 
