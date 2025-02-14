@@ -63,10 +63,8 @@ HRESULT CPlayer::Initialize_Prototype()
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadianAngle = XMConvertToRadians(360.f);
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = { 0.f, 0.f };
 
-
     XMStoreFloat4x4(&m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.f, 0.f));
-    XMStoreFloat4x4(&m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 80.f, 0.f));
-
+    XMStoreFloat4x4(&m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 100.f, 0.f));
 
     return S_OK;
 }
@@ -328,6 +326,7 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
        return E_FAIL; 
    m_pBody2DColliderCom = m_p2DColliderComs[0];
+   Safe_AddRef(m_pBody2DColliderCom);
 
    CircleDesc.pOwner = this;
    CircleDesc.fRadius = m_f2DInteractRange;
@@ -339,6 +338,7 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Body2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
        return E_FAIL;
    m_pBody2DTriggerCom = m_p2DColliderComs[1];
+   Safe_AddRef(m_pBody2DTriggerCom);
 
    CCollider_Fan::COLLIDER_FAN_DESC FanDesc = {};
    FanDesc.pOwner = this;
@@ -353,6 +353,7 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &FanDesc)))
        return E_FAIL;
    m_pAttack2DTriggerCom = m_p2DColliderComs[2];
+   Safe_AddRef(m_pAttack2DTriggerCom);
    m_pAttack2DTriggerCom->Set_Active(false);
     return S_OK;
 }
@@ -1149,8 +1150,7 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
     {
         if (Is_CarryingObject())
         {
-			CCarriableObject* pCarriableObject = static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ]);
-            pCarriableObject->Set_Carrier(nullptr);
+
             Safe_Release(m_PartObjects[PLAYER_PART_CARRYOBJ]);
             m_PartObjects[PLAYER_PART_CARRYOBJ] = nullptr;
         }
@@ -1225,20 +1225,35 @@ void CPlayer::ThrowObject()
 {
 	assert(Is_CarryingObject());
 
+
+	COORDINATE eCoord = Get_CurCoord();
+    _vector vForce = { 0,0,0 };
+    if (COORDINATE_3D == eCoord)
+    {
+        vForce = XMVector3Normalize(XMVectorSetY(m_pControllerTransform->Get_State(CTransform::STATE_LOOK), 0.5)) * m_f3DThrowObjectPower;
+    }
+    else
+    {
+        vForce = XMVector2Normalize(EDir_To_Vector( Get_2DDirection())) * m_f2DThrowObjectPower;
+		vForce = XMVectorSetW(XMVectorSetZ(vForce, 0),0);
+    }
+
 	CCarriableObject* pObj = static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ]);
-	Set_CarryingObject(nullptr);
-
-   _vector vForce =  XMVector3Normalize(XMVectorSetY(m_pControllerTransform->Get_State(CTransform::STATE_LOOK),0.5)) *
-       (COORDINATE_3D == Get_CurCoord() ? m_f3DThrowObjectPower : m_f2DThrowObjectPower);
+    pObj->Set_Carrier(nullptr);
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        pObj->Set_Kinematic(false);
+    }
+    else
+    {
+        pObj->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, Get_FinalPosition());
+    }
 	pObj->Throw(vForce);
+	Set_CarryingObject(nullptr);
 }
-
-
 
 void CPlayer::Key_Input(_float _fTimeDelta)
 {
-
-
     if (KEY_DOWN(KEY::F1))
     {
         _int iCurCoord = (_int)Get_CurCoord();

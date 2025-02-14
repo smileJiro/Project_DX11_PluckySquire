@@ -21,7 +21,7 @@ HRESULT CDice::Initialize(void* _pArg)
 	DiceModelDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 	DiceModelDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
 	DiceModelDesc->tTransform2DDesc.vInitialPosition = _float3(0.0f, 1.0f, 0.f);
-	DiceModelDesc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	DiceModelDesc->tTransform2DDesc.vInitialScaling = _float3(200.f, 200.f, 200.f);
 	DiceModelDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 1.0f, -10.f);
 	DiceModelDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	
@@ -51,7 +51,6 @@ HRESULT CDice::Initialize(void* _pArg)
 		return E_FAIL;
 
 
-
     return S_OK;
 }
 
@@ -64,6 +63,12 @@ void CDice::Late_Update(_float _fTimeDelta)
 {
 	__super::Late_Update(_fTimeDelta);
 }
+
+HRESULT CDice::Render()
+{
+	return __super::Render();
+}
+
 
 CDice* CDice::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

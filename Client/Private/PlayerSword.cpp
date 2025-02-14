@@ -97,6 +97,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
         TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
 	m_pBody2DColliderCom = m_p2DColliderComs[0];
+	Safe_AddRef(m_pBody2DColliderCom);
     return S_OK;
 }
 

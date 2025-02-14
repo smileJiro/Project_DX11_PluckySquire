@@ -54,7 +54,6 @@ void CPlayerState_PickUpObject::Update(_float _fTimeDelta)
 		 XMStoreFloat4x4(&matWorld, XMMatrixAffineTransformation(XMLoadFloat3(&tKeyFrame.vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&tKeyFrame.vRotation), XMVectorSetW(XMLoadFloat3(&tKeyFrame.vPosition), 1.f)));
 		 m_pCarriableObject->Set_WorldMatrix(matWorld);
 	 }
-	 _vector v = m_pCarriableObject->Get_FinalPosition();
 	 //cout << "Update: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
 
@@ -117,7 +116,6 @@ void CPlayerState_PickUpObject::Enter()
 			break;
 		}
 	}
-	_vector v = m_pCarriableObject->Get_FinalPosition();
 	//cout << "Enter: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
 
@@ -126,7 +124,6 @@ void CPlayerState_PickUpObject::Exit()
 	m_pOwner->Set_Kinematic(false);
 	if (m_pOwner->Is_SwordMode())
 		m_pOwner->Equip_Part(CPlayer::PLAYER_PART_SWORD);
-	_vector v = m_pCarriableObject->Get_FinalPosition();
 	//cout << "Align: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
 
@@ -155,12 +152,7 @@ void CPlayerState_PickUpObject::Align()
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	m_pCarriableObject->Set_SocketMatrix(eCoord, m_pOwner->Get_CarryingOffset_Ptr(eCoord));
 	
-	if (COORDINATE_3D == eCoord)
-	{
-		m_pCarriableObject->Set_Position(_vector{ 0,0,0 });
-		m_pCarriableObject->Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
-
-	}
-	_vector v = m_pCarriableObject->Get_FinalPosition();
+	m_pCarriableObject->Set_Position(_vector{ 0,0,0 });
+	m_pCarriableObject->Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
 	//cout << "Align: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
