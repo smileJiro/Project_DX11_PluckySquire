@@ -43,6 +43,9 @@ public:
 public: 
 	HRESULT Add_DebugComponent(CComponent* pDebugCom)
 	{
+		if (false == m_isDebugRender)
+			return S_OK;
+
 		m_DebugComponents.push_back(pDebugCom);
 		Safe_AddRef(pDebugCom);
 		return S_OK;

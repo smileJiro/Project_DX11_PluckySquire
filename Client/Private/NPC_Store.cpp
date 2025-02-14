@@ -313,6 +313,7 @@ HRESULT CNPC_Store::Ready_Components()
 		return E_FAIL;
 
 	m_p2DNpcCollider = m_p2DColliderComs[0];
+	Safe_AddRef(m_p2DNpcCollider);
 
 	return S_OK;
 }

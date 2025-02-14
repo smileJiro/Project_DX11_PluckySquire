@@ -30,7 +30,6 @@ public:
 	virtual HRESULT			Initialize_Prototype() override;
 	virtual HRESULT			Initialize(void* _pArg) override;
 
-
 private:
 	COORDINATE				m_eBlockerCoord = COORDINATE_LAST;
 
