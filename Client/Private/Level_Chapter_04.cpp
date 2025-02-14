@@ -70,7 +70,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
 	//Ready_Layer_Effects(TEXT("Layer_Effect"));
-	Ready_Layer_NPC(TEXT("Layer_NPC"));
+	//Ready_Layer_NPC(TEXT("Layer_NPC"));
 	Ready_Layer_Blocker2D(TEXT("Layer_Blocker2D"));
 	//액터 들어가는넘.,
 	Ready_Layer_Map();

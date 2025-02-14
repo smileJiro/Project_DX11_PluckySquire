@@ -467,6 +467,9 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 
 			if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(strMoveSectionName, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
 				return;
+
+			CCamera* pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D);
+			static_cast<CCamera_2D*>(pCamera)->Set_Include_Section_Name(strMoveSectionName);
 		}
 	}
 }
