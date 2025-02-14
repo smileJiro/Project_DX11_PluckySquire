@@ -175,7 +175,6 @@ void CNPC::Free()
 		Safe_Release(m_pTarget);
 	Safe_Release(m_pAnimEventGenerator);
 
-	Safe_Release(m_p2DNpcCollider);
 
 	__super::Free();
 }

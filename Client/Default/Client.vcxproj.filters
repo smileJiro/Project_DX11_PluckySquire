@@ -295,9 +295,6 @@
     <Filter Include="05.Interact">
       <UniqueIdentifier>{6f7c500f-8dd0-45d5-9288-58dfccb1c72d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\NPC\02. NPC_DJMoonBeard">
-      <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Trigger">
       <UniqueIdentifier>{dbb54d55-f3f8-4dc6-a444-7f4d131040fd}</UniqueIdentifier>
     </Filter>
