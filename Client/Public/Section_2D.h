@@ -8,7 +8,6 @@ END
 
 BEGIN(Client)
 class CMap_2D;
-class C3DMapSkspObject;
 class CSection_2D abstract : public CSection
 {
 public:
@@ -132,7 +131,7 @@ public:
 	}
 	const _wstring						Get_WorldRenderTarget_Tag();
 public:
-	HRESULT					Register_Capcher_WorldTexture(C3DMapSkspObject* _pModel);
+	HRESULT					Register_WorldCapture(CModelObject* _pModel);
 
 
 protected:
