@@ -306,7 +306,7 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 		}
 
 		//경로없음
-		if (OpenMap.empty());
+		//if (OpenMap.empty());
 
 
 		m_Ways.clear();
@@ -446,7 +446,7 @@ void CState_Sneak::Determine_BackDirection(_fvector& _vDestination, _float3* _vD
 		}
 
 		//경로없음
-		if (OpenMap.empty());
+		//if (OpenMap.empty());
 
 
 		m_Ways.clear();
