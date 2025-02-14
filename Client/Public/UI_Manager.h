@@ -90,8 +90,7 @@ public:
 	void								Set_LogoIndex(_int _index) { m_iLogoIndex = _index; }
 	_bool								Get_ShopUpdate() { return m_isUpdateShopPanel; }
 	void								Set_ShopUpdate(_bool _isUpdate) { m_isUpdateShopPanel = _isUpdate; }
-	void								pushBack_ShopItem(vector<CShopItemBG*> _ItemBGs) { m_ShopItems.push_back(_ItemBGs); }
-	void								pushBack_ShopItemBGs(CShopItemBG* _pBGs) { m_pShopItemBGs.push_back(_pBGs); }
+	void								pushBack_ShopItem(vector<CShopItemBG*> _ItemBGs);
 	void								Set_ChooseItem(_int _iIndex);
 	_bool								Get_LogoChanseStage() { return m_isLogoChooseStage; }
 	void								Set_LogoChangeState(_bool _LogoChooseStage) { m_isLogoChooseStage = _LogoChooseStage; }
@@ -125,7 +124,7 @@ public:
 	_bool								Get_isMakeItem() { return m_isMakeItem; }
 	void								Set_isMakeItem(_bool _make) { m_isMakeItem = _make; }
 
-	HRESULT								Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
+	HRESULT								Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID);
 	HRESULT								Level_Logo_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
 	HRESULT								Level_Enter(_int _iChangeLevelID);
 

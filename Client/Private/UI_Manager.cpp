@@ -88,6 +88,15 @@ void CUI_Manager::Delete_ShopItems(_uint _index)
 	//}
 }
 
+void CUI_Manager::pushBack_ShopItem(vector<CShopItemBG*> _ItemBGs)
+{
+	m_ShopItems.push_back(_ItemBGs);
+
+	for (auto& pShopItemBG : _ItemBGs)
+	{
+		Safe_AddRef(pShopItemBG);
+	}
+}
 void CUI_Manager::Set_ChooseItem(_int _iIndex)
 {
 	if (-1 == _iIndex)
@@ -176,9 +185,10 @@ void CUI_Manager::Pushback_Dialogue(CDialog::DialogData _DialogData)
 	m_DialogDatas.push_back(_DialogData);
 }
 
-HRESULT CUI_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
+HRESULT CUI_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID)
 {
-	Level_Logo_Exit(_iChangeLevelID, _iNextChangeLevelID);
+	if(iCurLevelID == LEVEL_LOGO)
+		Level_Logo_Exit(_iChangeLevelID, _iNextChangeLevelID);
 
 	if (_iChangeLevelID == LEVEL_LOADING)
 	{

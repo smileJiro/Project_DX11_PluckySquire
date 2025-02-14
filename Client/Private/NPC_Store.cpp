@@ -166,10 +166,6 @@ void CNPC_Store::Late_Update(_float _fTimeDelta)
 
 HRESULT CNPC_Store::Render()
 {
-#ifdef _DEBUG
-	if (COORDINATE_2D == Get_CurCoord())
-		m_p2DColliderComs[0]->Render();
-#endif // _DEBUG
 
 	return S_OK;
 }
