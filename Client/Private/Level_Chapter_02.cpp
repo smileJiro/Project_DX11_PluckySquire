@@ -889,10 +889,9 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 {
 	CBeetle::MONSTER_DESC Beetle_Desc;
 	Beetle_Desc.iCurLevelID = m_eLevelID;
-	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-17.f, 6.55f, 23.f);
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(32.15f, 0.35f, 1.66f);
+	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-16.5f, 6.56f, 22.6f);
 	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_2;
+	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_1;
 	Beetle_Desc.isSneakMode = true;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
@@ -900,6 +899,18 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(32.15f, 0.35f, 1.66f);
 	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_2_2;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+		return E_FAIL;
+
+	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(39.5f, 0.35f, 10.5f);
+	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_2_2;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+		return E_FAIL;
+
+	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(47.f, 0.35f, -0.5f);
+	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_3;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
 		return E_FAIL;

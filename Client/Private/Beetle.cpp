@@ -387,7 +387,7 @@ HRESULT CBeetle::Ready_Components()
 
     /* Com_Sneak_DetectionField */
     CSneak_DetectionField::SNEAKDETECTIONFIELDDESC Sneak_DetectionDesc;
-	Sneak_DetectionDesc.fRadius = m_fAlertRange * 1.5f;
+    Sneak_DetectionDesc.fRadius = 10.f;
     Sneak_DetectionDesc.fOffset = 0.f;
     Sneak_DetectionDesc.pOwner = this;
     Sneak_DetectionDesc.pTarget = m_pTarget;

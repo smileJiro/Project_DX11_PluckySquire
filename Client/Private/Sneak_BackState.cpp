@@ -355,8 +355,8 @@ void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 	
 	_float3 vDest = _float3(100.f, 0.f, 100.f); //큰 임의값 적용
 	_float3 vPoint = _float3(100.f, 0.f, 100.f); //큰 임의값 적용
-	_uint iDestIndex = 0;
-	_uint iStartIndex = 0;
+	_uint iDestIndex = -1;
+	_uint iStartIndex = -1;
 
 
 	for (_uint Index = 0; Index < m_PatrolWays.size(); ++Index)
@@ -369,6 +369,10 @@ void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 			iDestIndex = m_PatrolWays[Index];
 		}
 	}
+
+	if (-1 == iDestIndex)
+		return;
+
 	//_vector vDestDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - m_pOwner->Get_FinalPosition(), 0.f);
 	_vector vTargetDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vPos), 0.f);
 	_vector vDestDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vRayPos), 0.f);
@@ -422,6 +426,9 @@ void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 			}
 		}
 	}
+
+	if (-1 == iStartIndex)
+		return;
 
 	//목표 위치로 가는 웨이포인트 경로 찾기
 	priority_queue <pair<_float, pair<_uint, _uint>>, vector<pair<_float, pair<_uint, _uint>>>, compare> PriorityQueue;	//비용, 부모 인덱스, 자기 인덱스

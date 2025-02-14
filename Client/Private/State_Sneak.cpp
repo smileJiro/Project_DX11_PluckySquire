@@ -82,7 +82,8 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 
 	case Client::WAYPOINTINDEX::CHAPTER2_2:
 	case Client::WAYPOINTINDEX::CHAPTER2_2_2:
-		m_WayPoints.push_back({ _float3(35.f, 0.35f, -7.3f) });
+		m_WayPoints.push_back({ _float3(36.5f, 0.35f, -7.3f) });
+		m_WayPoints.push_back({ _float3(33.5f, 0.35f, -7.f) });
 		m_WayPoints.push_back({ _float3(32.5f, 0.35f, -4.5f) });
 		m_WayPoints.push_back({ _float3(30.f, 0.35f, -3.7f) });
 		m_WayPoints.push_back({ _float3(30.5f, 0.35f, -0.15f) });
@@ -274,8 +275,8 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 		_float3 vTargetPos; XMStoreFloat3(&vTargetPos, _vDestination);
 		_float3 vDest = _float3(100.f, 0.f, 100.f); //큰 임의값 적용
 		_float3 vPoint = _float3(100.f, 0.f, 100.f); //큰 임의값 적용
-		_uint iDestIndex = 0;
-		_uint iStartIndex = 0;
+		_uint iDestIndex = -1;
+		_uint iStartIndex = -1;
 
 		//타겟 위치에 가까운 웨이포인트 찾아 목표 위치로 지정 + 현재 위치와 가까운 타겟 포인트 찾기
 		for (_uint Index = 0; Index < m_WayPoints.size(); ++Index)
@@ -288,12 +289,13 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 			{
 				_float3 WayPos = m_WayPoints[Index].vPosition;
 				_float3 DestPos = vTargetPos;
-				WayPos.y = 0;
-				DestPos.y = 0;
+				//바닥에 레이 닿을 수 있어 살짝 올림
+				WayPos.y += 0.1f;
+				DestPos.y = WayPos.y;
 				_float3 DestDir;
-				XMStoreFloat3(&DestDir, XMVector3Normalize(XMLoadFloat3(&WayPos) - XMLoadFloat3(&DestPos)));
+				XMStoreFloat3(&DestDir, XMVector3Normalize(XMLoadFloat3(&DestPos) - XMLoadFloat3(&WayPos)));
 				//도착점에서 목표 위치까지 막혀있지 않은지 체크
-				if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(WayPos, DestDir, XMVectorGetX(XMVector3Length(XMLoadFloat3(&WayPos) - XMLoadFloat3(&DestPos))),
+				if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(WayPos, DestDir, XMVectorGetX(XMVector3Length(XMLoadFloat3(&DestPos) - XMLoadFloat3(&WayPos))),
 					OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
 				{
 					XMStoreFloat3(&vDest, vTargetToPointDis);
@@ -314,6 +316,10 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 				}
 			}
 		}
+		if (-1 == iDestIndex)
+			return;
+		if (-1 == iStartIndex)
+			return;
 
 		//목표 위치로 가는 웨이포인트 경로 찾기
 		priority_queue <pair<_float, pair<_uint, _uint>>, vector<pair<_float, pair<_uint, _uint>>>, compare> PriorityQueue;	//비용, 부모 인덱스, 자기 인덱스
@@ -367,7 +373,8 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 		}
 
 		//경로없음
-		//if (OpenMap.empty());
+		if (OpenMap.empty())
+			return;
 
 
 		m_Ways.clear();

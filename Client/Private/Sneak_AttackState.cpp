@@ -63,8 +63,8 @@ void CSneak_AttackState::After_Attack()
 		vMonsterPos = { 32.15f, 0.35f, 1.66f };
 		break;
 	case Client::WAYPOINTINDEX::CHAPTER2_2_2:
-		vPlayerPos = { 40.f, 0.35f, -7.f };
-		vMonsterPos = { -16.3f, 6.54f, 20.5f };
+		vPlayerPos = { 36.6f, 0.35f, 5.5f };
+		vMonsterPos = { 39.5f, 0.35f, 10.5f };
 		break;
 	case Client::WAYPOINTINDEX::CHAPTER2_3:
 		vPlayerPos = {  };
