@@ -71,7 +71,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	//Ready_Layer_NPC(TEXT("Layer_NPC"));
 
 	//액터 들어가는넘.,
-	//Ready_Layer_Map();
+	Ready_Layer_Map();
 
 	/* Pooling Test */
 	Pooling_DESC Pooling_Desc;
@@ -404,7 +404,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	TargetDesc.fSmoothSpeed = 7.f;
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
-	TargetDesc.vAtOffset = _float3(0.0f, 0.5f, 0.0f);
+	TargetDesc.vAtOffset = _float3(0.0f, 1.f, 0.0f);
 	TargetDesc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE::COORDINATE_3D);
 
 	TargetDesc.fFovy = XMConvertToRadians(60.f);
