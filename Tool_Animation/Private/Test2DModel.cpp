@@ -153,19 +153,47 @@ HRESULT CTest2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		ID3D11ShaderResourceView* pSRV = { nullptr };
 		std::filesystem::path path = szDrive;
 		path += szTextureName;
-		path += ".png";
-		if (FAILED(DirectX::CreateWICTextureFromFile(m_pDevice, path.c_str(), nullptr, &pSRV)))
+		path += ".dds";
+		//HRESULT hr = DirectX::CreateDDSTextureFromFileEx(
+		//	m_pDevice,               // Direct3D 장치
+		//	path.c_str(),             // DDS 파일 경로
+		//	0,                       // 최대 텍스처 크기 (0은 제한 없음)
+		//	D3D11_USAGE_DEFAULT,     // 리소스 사용 방법
+		//	D3D11_BIND_SHADER_RESOURCE, // 바인딩 플래그
+		//	0,                       // CPU 접근 플래그
+		//	0,                       // 기타 플래그
+		//	DirectX::DDS_LOADER_FORCE_SRGB, // sRGB 강제 적용
+		//	nullptr,                 // 생성된 텍스처 리소스 (필요 시 포인터 제공)
+		//	&pSRV                    // 생성된 셰이더 리소스 뷰
+		//);
+		HRESULT hr = DirectX::CreateWICTextureFromFileEx(
+			m_pDevice,                  // Direct3D 디바이스 포인터
+			path.c_str(),            // 텍스처 파일 경로
+			0,                          // 최대 크기 (0은 제한 없음)
+			D3D11_USAGE_DEFAULT,        // 기본 사용 방식
+			D3D11_BIND_SHADER_RESOURCE, // 셰이더 리소스로 바인딩
+			0,                          // CPU 접근 플래그 (없음)
+			0,                          // 기타 플래그 (없음)
+			DirectX::WIC_LOADER_FORCE_SRGB,  // sRGB 포맷 강제 적용
+			nullptr,                    // 텍스처 리소스 (필요 없으면 nullptr)
+			&pSRV                       // 셰이더 리소스 뷰 출력
+		);
+		if (FAILED(hr))
 		{
-			path.replace_extension(".dds");
+			path.replace_extension(".png");
 			if (FAILED(DirectX::CreateWICTextureFromFile(m_pDevice, path.c_str(), nullptr, &pSRV)))
 			{
 				cout << "failed to create Textrue : " << szTextureName << endl;
+				inFile.close();
 				return E_FAIL;
 			}
 		}
 		CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext);
 		if (nullptr == pTexture)
+		{
+			inFile.close();
 			return E_FAIL;
+		}
 		pTexture->Add_Texture(pSRV, path.filename().replace_extension().wstring());
 		m_Textures.insert({ szTextureName,pTexture });
 	}
@@ -179,7 +207,10 @@ HRESULT CTest2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 		{
 			CToolAnimation2D* pAnimation = CToolAnimation2D::Create(m_pDevice, m_pContext, szDrive, inFile, m_Textures);
 			if (nullptr == pAnimation)
+			{
+				inFile.close();
 				return E_FAIL;
+			}
 			m_Animation2Ds.push_back(pAnimation);
 		}
 	}
@@ -187,7 +218,7 @@ HRESULT CTest2DModel::Initialize_Prototype(const _char* _szModel2DFilePath)
 	{
 		m_pNonAnimSprite = CToolSpriteFrame::Create(m_pDevice, m_pContext, szDrive, inFile, m_Textures);
 	}
-
+	inFile.close();
 	return S_OK;
 }
 

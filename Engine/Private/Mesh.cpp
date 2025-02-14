@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include "Bone.h"
 #include "Engine_Function.h"
+#include "GameInstance.h"
 #include "iostream"
 
 CMesh::CMesh(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -12,6 +13,7 @@ CMesh::CMesh(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 HRESULT CMesh::Initialize_Prototype(C3DModel::ANIM_TYPE eModelType, C3DModel* pModel, ifstream& inFile, _fmatrix PreTransformMatrix)
 {
+	_bool isPicking = IS_IMPORT_MESHPICKING;
 
 	inFile.read(reinterpret_cast<char*>(&m_iMaterialIndex), sizeof(_uint));
 
@@ -59,11 +61,15 @@ HRESULT CMesh::Initialize_Prototype(C3DModel::ANIM_TYPE eModelType, C3DModel* pM
 	for (size_t i = 0; i < iNumFaces; i++)
 	{
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices -1]);
+
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices -1]);
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices -1]);
+		if (isPicking)
+		{
+			m_vecIndexBuffer.push_back(pIndices[iNumIndices -3]);
+			m_vecIndexBuffer.push_back(pIndices[iNumIndices -2]);
+			m_vecIndexBuffer.push_back(pIndices[iNumIndices -1]);
+		}
 
 	}
 
@@ -82,6 +88,8 @@ HRESULT CMesh::Initialize_Prototype(C3DModel::ANIM_TYPE eModelType, C3DModel* pM
 
 HRESULT CMesh::Initialize_Prototype(ifstream& inFile, _fmatrix _PreTransformMatrix)
 {
+	_bool isPicking = IS_IMPORT_MESHPICKING;
+
 	inFile.read(reinterpret_cast<char*>(&m_iMaterialIndex), sizeof(_uint));
 
 	_uint iNameLength = 0;
@@ -128,11 +136,14 @@ HRESULT CMesh::Initialize_Prototype(ifstream& inFile, _fmatrix _PreTransformMatr
 	for (size_t i = 0; i < iNumFaces; i++)
 	{
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
 		inFile.read(reinterpret_cast<char*>(&pIndices[iNumIndices++]), sizeof(_uint));
-		m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		if (isPicking)
+		{
+			m_vecIndexBuffer.push_back(pIndices[iNumIndices - 3]);
+			m_vecIndexBuffer.push_back(pIndices[iNumIndices - 2]);
+			m_vecIndexBuffer.push_back(pIndices[iNumIndices - 1]);
+		}
 
 	}
 
@@ -180,6 +191,7 @@ void CMesh::ReSet_OffsetMarix()
 
 HRESULT CMesh::Ready_VertexBuffer_For_NonAnim(ifstream& inFile, _fmatrix PreTransformMatrix)
 {
+	_bool isPicking = IS_IMPORT_MESHPICKING;
 
 
 	m_iVertexStride = sizeof(VTXMESH);
@@ -207,9 +219,11 @@ HRESULT CMesh::Ready_VertexBuffer_For_NonAnim(ifstream& inFile, _fmatrix PreTran
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vTangent), sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vTangent, XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vTangent), PreTransformMatrix));
 
-
-		m_vecVerticesPos.push_back(pVertices[i].vPosition);
-		m_vecVerticesNormal.push_back(pVertices[i].vNormal);
+		if (isPicking)
+		{
+			m_vecVerticesPos.push_back(pVertices[i].vPosition);
+			m_vecVerticesNormal.push_back(pVertices[i].vNormal);
+		}
 
 	}
 
@@ -227,6 +241,7 @@ HRESULT CMesh::Ready_VertexBuffer_For_NonAnim(ifstream& inFile, _fmatrix PreTran
 
 HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, C3DModel* pModel)
 {
+	_bool isPicking = IS_IMPORT_MESHPICKING;
 
 
 	m_iVertexStride = sizeof(VTXANIMMESH);
@@ -251,8 +266,11 @@ HRESULT CMesh::Ready_VertexBuffer_For_Anim(ifstream& inFile, C3DModel* pModel)
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vNormal), sizeof(_float3));
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vTexcoord), sizeof(_float2));
 		inFile.read(reinterpret_cast<char*>(&pVertices[i].vTangent), sizeof(_float3));
-		m_vecVerticesPos.push_back(pVertices[i].vPosition);
-		m_vecVerticesNormal.push_back(pVertices[i].vNormal);
+		if (isPicking)
+		{
+			m_vecVerticesPos.push_back(pVertices[i].vPosition);
+			m_vecVerticesNormal.push_back(pVertices[i].vNormal);
+		}
 
 	}
 	inFile.read(reinterpret_cast<char*>(&m_iNumBones), sizeof(_uint));

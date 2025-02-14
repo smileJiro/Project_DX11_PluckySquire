@@ -1,0 +1,152 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "martina_NoMoney01_into",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0002_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0002_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0003_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0009_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0010_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0010_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0011_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0011_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0012_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0012_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0013_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0013_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0014_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0014_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0015_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0015_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0016_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0016_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0017_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0017_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0018_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0018_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0019_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0019_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'martina_NoMoney01_into_0020_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/martina_NoMoney01_into_0020_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]
