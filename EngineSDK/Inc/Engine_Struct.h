@@ -138,6 +138,7 @@ namespace Engine
 		unsigned int	iViewportWidth;
 		unsigned int	iViewportHeight;
 		_uint			iStaticLevelID;
+		_uint			eImportMode;
 		_bool			isNewRenderer = false;
 	}ENGINE_DESC;
 

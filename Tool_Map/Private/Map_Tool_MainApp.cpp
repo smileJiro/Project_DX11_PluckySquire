@@ -40,6 +40,8 @@ HRESULT CMap_Tool_MainApp::Initialize()
 	EngineDesc.iViewportHeight = g_iWinSizeY;
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 	EngineDesc.isNewRenderer = true;
+	EngineDesc.eImportMode = IMPORT_ALL;
+
 	m_pLogger = CImguiLogger::Create();
 	if (nullptr == m_pLogger)
 		return E_FAIL;

@@ -192,6 +192,10 @@ HRESULT CFSM::Change_State(_uint _iState)
 	if (nullptr == m_pOwner)
 		return E_FAIL;
 
+	//이미 같은 상태면 전환 안함
+	if (m_iCurState == _iState)
+		return S_OK;
+
 	//몬스터가 애니메이션 전환 가능하지 않으면 상태 전환 안함
 	if (false == m_pOwner->Get_AnimChangeable())
 		return S_OK;

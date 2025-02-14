@@ -160,7 +160,8 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
 
-	ImGuiIO& IO = ImGui::GetIO(); (void)IO;
+
+	/*ImGuiIO& IO = ImGui::GetIO(); (void)IO;*/
 
 	if (KEY_DOWN(KEY::NUM6))
 	{
@@ -219,9 +220,12 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 
 
 	static _float3 vOutPos = {};
-	ImGui::Begin("PickingPos");
-	ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
-	ImGui::End();
+	if (IS_IMPORT_IMGUI)
+	{
+		ImGui::Begin("PickingPos");
+		ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
+		ImGui::End();
+	}
 	if (MOUSE_DOWN(MOUSE_KEY::MB))
 	{
 		POINT pt;
@@ -279,8 +283,8 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 HRESULT CLevel_Chapter_02::Render()
 {
 #ifdef _DEBUG
-	//m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
-	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
+	m_pGameInstance->Render_FPS(TEXT("Timer_120"));
+	//SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
 #endif
 
 	return S_OK;

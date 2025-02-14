@@ -38,6 +38,7 @@ public: /* For.GameInstance */
 	HRESULT				Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID = -1);
 
 	_int				Get_StaticLevelID() const { return m_iStaticLevelID; }
+	IMPORT_MODE			Get_ImportMode() const { return m_eImportMode; }
 
 public: /* For.Timer_Manager */
 	_float				Get_TimeDelta(const _wstring& _strTimerTag);
@@ -313,6 +314,8 @@ private:
 private:
 	HWND m_hWnd = nullptr;
 	HINSTANCE m_hInstance = nullptr;
+
+	IMPORT_MODE m_eImportMode = IMPORT_ALL;
 
 	_uint m_iViewportWidth = 0;
 	_uint m_iViewportHeight = 0;

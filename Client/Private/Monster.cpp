@@ -97,9 +97,7 @@ void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 		_float3 vRepulse; XMStoreFloat3(&vRepulse, 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f)));
 		vRepulse.y = -1.f;
 		_Other.pActorUserData->pOwner->Get_ActorCom()->Add_Impulse(vRepulse);
-		XMStoreFloat3(&vRepulse, XMVectorNegate(XMLoadFloat3(&vRepulse)));
-		vRepulse.y = -1.f;
-		Get_ActorCom()->Add_Impulse(vRepulse);
+		KnockBack(_Other.pActorUserData->pOwner);
 	}
 }
 
@@ -164,7 +162,16 @@ void CMonster::On_Hit(CGameObject* _pHitter, _float _fDamg)
 		m_tStat.fHP = 0;
 		//Event_DeleteObject(this);
 	}
+	
 	Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+}
+
+void CMonster::KnockBack(CGameObject* _pHitter)
+{
+	_float3 vRepulse;
+	XMStoreFloat3(&vRepulse, -10.f * XMVector3Normalize(_pHitter->Get_FinalPosition() - Get_FinalPosition()));
+	vRepulse.y = -1.f;
+	Get_ActorCom()->Add_Impulse(vRepulse);
 }
 
 void CMonster::Attack()

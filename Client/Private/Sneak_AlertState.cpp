@@ -52,6 +52,10 @@ void CSneak_AlertState::State_Update(_float _fTimeDelta)
 			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 		}
 	}
+	else
+	{
+		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+	}
 }
 
 void CSneak_AlertState::State_Exit()

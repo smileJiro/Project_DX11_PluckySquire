@@ -36,8 +36,14 @@ void CAlertState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 	
-	_float dis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
-	if (dis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
+	if (m_pTarget->Get_CurCoord() != m_pOwner->Get_CurCoord())
+	{
+		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		return;
+	}
+
+	_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
+	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
 	{
 		if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
 		{
@@ -57,7 +63,7 @@ void CAlertState::State_Update(_float _fTimeDelta)
 		
 		return;
 	}
-	if (dis <= Get_CurCoordRange(MONSTER_STATE::CHASE))
+	if (fDis <= Get_CurCoordRange(MONSTER_STATE::CHASE))
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
 	}

@@ -37,12 +37,12 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
-    pDesc->fAlertRange = 9.f;
+    pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 10.f;
-    pDesc->fAlert2DRange = 500.f;
-    pDesc->fChase2DRange = 1500.f;
-    pDesc->fAttack2DRange = 1000.f;
+    pDesc->fAttackRange = 8.f;
+    pDesc->fAlert2DRange = 250.f;   //*50 하면 될듯?
+    pDesc->fChase2DRange = 600.f;
+    pDesc->fAttack2DRange = 400.f;
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
 
@@ -559,10 +559,11 @@ HRESULT CBarfBug::Ready_Components()
 
     CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
     AABBDesc.pOwner = this;
-    AABBDesc.vExtents = { 50.f, 100.f };
+    AABBDesc.vExtents = { 50.f, 50.f };
     AABBDesc.vScale = { 1.0f, 1.0f };
     AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y };
-    AABBDesc.isBlock = true; // 
+    AABBDesc.isBlock = true;
+    AABBDesc.iCollisionGroupID= OBJECT_GROUP::MONSTER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
         return E_FAIL;

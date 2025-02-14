@@ -34,7 +34,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
 
     pDesc->isCoordChangeEnable = true;
     pDesc->strModelPrototypeTag_3D = TEXT("latch_sword");
-    pDesc->strModelPrototypeTag_2D = TEXT("Prototype_Component_playersword2DAnimation");
+    pDesc->strModelPrototypeTag_2D = TEXT("player2dsword");
     pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
@@ -97,6 +97,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
         TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
 	m_pBody2DColliderCom = m_p2DColliderComs[0];
+	Safe_AddRef(m_pBody2DColliderCom);
     return S_OK;
 }
 
