@@ -26,7 +26,8 @@ HRESULT CCamera_Manager::Initialize()
 void CCamera_Manager::Update(_float fTimeDelta)
 {
 #ifdef _DEBUG
-	Imgui_Dof();
+	if(IS_IMPORT_IMGUI)
+		Imgui_Dof();
 
 #endif // _DEBUG
 

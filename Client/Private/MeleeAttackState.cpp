@@ -35,33 +35,16 @@ void CMeleeAttackState::State_Update(_float _fTimeDelta)
 		return;
 	if (nullptr == m_pOwner)
 		return;
-
-	_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
-	//공격 범위 벗어나고 추적 범위 내면 Chase 전환
-	if (fDis > Get_CurCoordRange(MONSTER_STATE::ATTACK) && fDis <= Get_CurCoordRange(MONSTER_STATE::CHASE))
-	{
-		Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
-		return;
-	}
-	//범위 전부를 벗어나면 Idle 전환
-	if (fDis > Get_CurCoordRange(MONSTER_STATE::CHASE))
-	{
-		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
-	}
-	else
-	{
-		//공격
-		if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
-		{
-			m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
-		}
-		else if(COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
-		{
-			m_pOwner->Change_Dir();
-		}
-		m_pOwner->Attack();
-		Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
-	}
+	//공격
+	//if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
+	//{
+	//	m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
+	//}
+	//else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
+	//{
+	//	m_pOwner->Change_Dir();
+	//}
+	Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
 }
 
 void CMeleeAttackState::State_Exit()

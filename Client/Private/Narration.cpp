@@ -56,25 +56,110 @@ HRESULT CNarration::Initialize(void* _pArg)
 
 void CNarration::Update(_float _fTimeDelta)
 {
-	if (m_fTextAlpha < 1.f)
+
+	if (KEY_DOWN(KEY::J))
 	{
-		m_fFadeTimer += _fTimeDelta;
-		m_fTextAlpha = min(m_fFadeTimer / m_fFadeDuration, 1.f);
+		m_isStartNarration = true;
 	}
-	else
+
+
+	if (true == m_isStartNarration)
 	{
-		// fade?in 완료 후, 다음 라인으로 전환하기 위한 대기 타이머 갱신
-		m_fDelayTimer += _fTimeDelta;
-		if (m_fDelayTimer >= m_fDelayBetweenLines)
+
+		if (m_fTextAlpha < 1.f)
 		{
-			// 다음 라인이 있다면 전환, 이전 라인은 그대로 1.0을 유지
-			if (m_iCurrentLine + 1 < m_NarrationDatas[0].lines.size())
+			m_fFadeTimer += _fTimeDelta;
+			m_fTextAlpha = min(m_fFadeTimer / m_fFadeDuration, 1.f);
+
+			if (!m_bAnimationStarted && m_fTextAlpha > 0.f)
 			{
-				m_iCurrentLine++; // 다음 라인으로 전환
-				// fade?in 관련 타이머 초기화
-				m_fFadeTimer = 0.f;
-				m_fDelayTimer = 0.f;
-				m_fTextAlpha = 0.f;
+				m_bAnimationStarted = true;
+				m_isFade = true;
+
+				for (int i = 0; i < m_pCurrentAnimObj.size(); ++i)
+				{
+					if (nullptr == m_pCurrentAnimObj[i])
+					{
+						GetAnimationObjectForLine(m_iCurrentLine);
+					}
+
+					if (nullptr != m_pCurrentAnimObj[i])
+					{
+						m_pCurrentAnimObj[i]->StartAnimation();
+					}
+				}
+			}
+		}
+		else
+		{
+			// fadein 완료 후, 다음 라인으로 전환하기 위한 대기 타이머 갱신
+
+			if (m_iCurrentLine == m_NarrationDatas[m_iNarrationCount].lines.size() - 1 && m_fTextAlpha >= 1.f)
+			{
+				m_isFade = false;
+				//m_fTextAlpha = 0.f;
+			}
+
+			m_fDelayTimer += _fTimeDelta;
+			if (m_fDelayTimer >= m_fDelayBetweenLines)
+			{
+
+
+				// 다음 라인이 있다면 전환, 이전 라인은 그대로 1.0을 유지
+				if (m_iCurrentLine + 1 < m_NarrationDatas[m_iNarrationCount].lines.size())
+				{
+					m_iCurrentLine++; // 다음 라인으로 전환
+					// fade?in 관련 타이머 초기화
+					m_fFadeTimer = 0.f;
+					m_fDelayTimer = 0.f;
+					m_fTextAlpha = 0.f;
+					m_bAnimationStarted = false;
+
+					//m_pCurrentAnimObj = GetAnimationObjectForLine(m_iCurrentLine);
+					GetAnimationObjectForLine(m_iCurrentLine);
+				}
+
+				if (m_iCurrentLine == m_NarrationDatas[m_iNarrationCount].lines.size() - 1)
+				{
+					if (true == m_isFade)
+					{
+						return;
+					}
+
+					_float3 vPos = _float3(0.f, 0.f, 1.f);
+
+					if (m_iNarrationCount < m_NarrationDatas.size() - 1 && false == m_isFade)
+					{
+						++m_iNarrationCount;
+
+
+						m_strSectionName = m_NarrationDatas[m_iNarrationCount].strSectionid;
+						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].strSectionid, this);
+
+						m_iCurrentLine = 0; // 다음 라인으로 전환
+						// fade?in 관련 타이머 초기화
+						m_fFadeTimer = 0.f;
+						m_fDelayTimer = 0.f;
+						m_fTextAlpha = 0.f;
+						m_bAnimationStarted = false;
+						m_isNarrationEnd = true;
+
+						//m_pCurrentAnimObj = GetAnimationObjectForLine(m_iCurrentLine);
+						GetAnimationObjectForLine(m_iCurrentLine);
+
+						Event_Book_Main_Section_Change_Start(1, &vPos);
+
+						//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);	
+
+					}
+					else if (m_iCurrentLine == m_NarrationDatas[m_iNarrationCount - 1].lines.size() - 1 && true == m_isNarrationEnd)
+					{
+						vPos = _float3(-692.f, -49.f, 1.f);
+						Event_Book_Main_Section_Change_Start(1, &vPos);
+						m_isNarrationEnd = false;
+
+					}
+				}
 			}
 		}
 	}
@@ -87,6 +172,12 @@ void CNarration::Late_Update(_float _fTimeDelta)
 
 HRESULT CNarration::Render()
 {
+	if (false == CBase::Is_Active())
+	{
+		CBase::Set_Active(true);
+	}
+
+
 	DisplayText(_float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y));
 	return S_OK;
 }
@@ -119,7 +210,7 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 				NarData.eCurlevelId = (LEVEL_ID)Nar["CurlevelId"].get<_int>();
 
 			_int iLine = { 0 };
-
+			
 			if (Nar.contains("lines") && Nar["lines"].is_array())
 			{
 				for (auto& line : Nar["lines"])
@@ -156,9 +247,11 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 						DialogueData.fwaitingTime = line["fwaitingTime"].get<float>();
 
 					// 애니메이션 데이터 파싱 및 개별 객체 생성
+					vector<CNarration_Anim*> pAnimation;
 					if (line.contains("NarAnim") && line["NarAnim"].is_array())
 					{
 						_int iAnim = { 0 };
+						
 						// line에 여러 애니메이션 정보가 있다면 각각 별도로 생성한다.
 						for (auto& Anim : line["NarAnim"])
 						{
@@ -193,6 +286,9 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 							if (Anim.contains("AnimationIndex") && Anim["AnimationIndex"].is_number_integer())
 								Animation.iAnimationIndex = Anim["AnimationIndex"].get<_int>();
 
+							if (Anim.contains("isLoop") && Anim["isLoop"].is_boolean())
+								Animation.isLoop = Anim["isLoop"].get<_bool>();
+
 
 
 							// 임시 대화 데이터를 생성하여 해당 애니메이션만 담는다.
@@ -209,21 +305,38 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 							// 대화 라인이 단일 객체이므로 LineCount는 0으로 설정
 							tempData.LineCount = 0;
 
-							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tempData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), tempData.eCurlevelId, TEXT("Layet_UI"), &tempData)))
+							CGameObject* pObject;
+
+
+
+							
+
+							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tempData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), tempData.eCurlevelId, TEXT("Layet_UI"), &pObject, &tempData)))
 								return E_FAIL;
+
+							// 생성한 애니메이션 객체 넣기
+							CNarration_Anim* pAnim;
+							pAnim = static_cast<CNarration_Anim*>(pObject);
+							pAnimation.push_back(pAnim);
 
 							// 원본 DialogueData에도 해당 애니메이션 데이터를 저장(필요에 따라 사용)
 							DialogueData.NarAnim.push_back(Animation);
 						}
+						
 					}
 
 					// 애니메이션 처리 후, 완성된 대화 데이터를 NarData에 추가한다.
+					m_vAnimObjectsByLine.emplace(iLine, pAnimation);
 					NarData.lines.push_back(DialogueData);
+					++iLine;
 				} // for each line
+				
 			}
 
 			m_NarrationDatas.push_back(NarData);
+			
 		} // for each Narration block
+
 	}
 
 	return S_OK;
@@ -232,11 +345,11 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 // 폰트 렌더 해주는 역할
 HRESULT CNarration::DisplayText(_float2 _vRTSize)
 {
-	if (m_NarrationDatas.empty() || m_NarrationDatas[0].lines.empty())
+	if (m_NarrationDatas.empty() || m_NarrationDatas[m_iNarrationCount].lines.empty())
 		return S_OK;
 
 	// 예를 들어, 첫 번째 NarrationData의 텍스트만 사용한다고 가정합니다.
-	auto& lines = m_NarrationDatas[0].lines;
+	auto& lines = m_NarrationDatas[m_iNarrationCount].lines;
 
 	// 0번부터 m_iCurrentLine까지의 모든 라인을 렌더링 (이미 fade?in이 완료된 라인은 alpha = 1.0)
 	for (int i = 0; i <= m_iCurrentLine && i < lines.size(); i++)
@@ -279,11 +392,6 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 					fx = dialogue.fpos.x + _vRTSize.x / 2.f; // 시작 x 좌표로 복원
 					fy += m_fLineHeight;  // y 좌표 증가
 				}
-
-
-
-
-
 				continue;
 			}
 
@@ -293,14 +401,8 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 			_float2 vTextSize = { 0.f, 0.f };
 			XMStoreFloat2(&vTextSize, vecSize);
 
-			m_pGameInstance->Render_Scaling_Font(
-				TEXT("Font40"),
-				token.strText.c_str(),
-				_float2(fx, fy),
-				XMVectorSet(0.f, 0.f, 0.f, alpha),  // alpha 적용
-				0.f,
-				_float2(0.f, 0.f),
-				token.fScale);
+			m_pGameInstance->Render_Scaling_Font(TEXT("Font40"), token.strText.c_str(), _float2(fx, fy), XMVectorSet(0.f, 0.f, 0.f, alpha) // alpha 적용
+				,0.f, _float2(0.f, 0.f), token.fScale);
 
 			fx += vTextSize.x * token.fScale * 0.98f;
 		}
@@ -318,11 +420,45 @@ void CNarration::NextDialogue(_float2 _RTSize)
 	
 }
 
-CNarration_Anim* CNarration::GetAnimationObjectForLine(_int iLine)
+vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine, _int AnimCount)
 {
-	if (iLine < 0 || iLine >= static_cast<int>(m_vAnimObjectsByLine.size()))
-		return nullptr;
-	return m_vAnimObjectsByLine[iLine];
+	//if (iLine < 0 || iLine >= static_cast<int>(m_vAnimObjectsByLine.size()))
+	//	return nullptr;
+	vector<CNarration_Anim*> vecCopy;
+	if (!m_pCurrentAnimObj.empty())
+	{
+		for (auto& iter : m_pCurrentAnimObj)
+		{
+			Safe_Release(iter);
+		}
+
+		m_pCurrentAnimObj.clear();
+	}
+
+	auto iter = m_vAnimObjectsByLine.find(iLine);
+
+	if (iter != m_vAnimObjectsByLine.end())
+	{
+
+			m_pCurrentAnimObj = iter->second;
+		
+			for (_int i = 0 ; i < iter->second.size(); ++i)
+			{
+				Safe_AddRef(iter->second[i]);
+			}
+
+
+	}
+
+	//for (const auto& it : vecCopy)
+	//{
+	//	m_pCurrentAnimObj.push_back(it);
+	//}
+
+
+
+
+	return m_pCurrentAnimObj;
 }
 
 
