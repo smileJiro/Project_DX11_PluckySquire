@@ -30,7 +30,7 @@ HRESULT CNPC::Initialize(void* _pArg)
 	m_iSubIndex = pDesc->iSubIndex;
 	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
 	wsprintf(m_strDialogueIndex, pDesc->strDialogueIndex);
-	wsprintf(m_strCurSecion, pDesc->strLocateSection);
+	//wsprintf(m_strCurSecion, pDesc->strLocateSection);
 
 	Safe_AddRef(m_pTarget);
 
