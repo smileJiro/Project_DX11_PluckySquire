@@ -107,9 +107,7 @@ void CCameraArm::Render_Arm()
 
   //  m_pBatch->End();
 }
-#endif
 
-#ifdef _DEBUG
 HRESULT CCameraArm::Set_PrimitiveBatch()
 {
     m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
@@ -248,7 +246,6 @@ void CCameraArm::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 //   // m_pGameInstance->Set_CameraPos(vCameraPos, vTargetPos);
 //}
 
-#ifdef _DEBUG
 void CCameraArm::Set_Rotation(_vector _vRotation)
 {
     XMStoreFloat3(&m_vRotation, _vRotation);
@@ -277,10 +274,6 @@ void CCameraArm::Set_DesireVector()
 {
     m_pNextArmData->vDesireArm = m_vArm;
 }
-
-#endif // _DEBUG
-
-
 void CCameraArm::Turn_ArmX(_float fAngle)
 {
     // Right√‡

@@ -108,7 +108,7 @@ HRESULT CLogo::Ready_Props(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag)
 						return E_FAIL;
 
 					Uimgr->pushBack_LogoPorp(static_cast<CLogo_Props*>(pLogoProp));
-					Safe_Release(pLogoProp);
+
 
 				}
 				break;
@@ -127,7 +127,7 @@ HRESULT CLogo::Ready_Props(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag)
 					return E_FAIL;
 
 				Uimgr->pushBack_LogoPorp(static_cast<CLogo_Props*>(pLogoProp));
-				Safe_Release(pLogoProp);
+
 
 			}
 			break;
@@ -146,7 +146,7 @@ HRESULT CLogo::Ready_Props(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag)
 					return E_FAIL;
 
 				Uimgr->pushBack_LogoPorp(static_cast<CLogo_Props*>(pLogoProp));
-				Safe_Release(pLogoProp);
+
 			}
 			break;
 
@@ -164,7 +164,7 @@ HRESULT CLogo::Ready_Props(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag)
 					return E_FAIL;
 
 				Uimgr->pushBack_LogoPorp(static_cast<CLogo_Props*>(pLogoProp));
-				Safe_Release(pLogoProp);
+
 			}
 			break;
 
@@ -195,7 +195,6 @@ HRESULT CLogo::Ready_Props(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag)
 					return E_FAIL;
 				Uimgr->pushBack_LogoPorp(static_cast<CLogo_Props*>(pLogoProp));
 
-				Safe_Release(pLogoProp);
 
 
 

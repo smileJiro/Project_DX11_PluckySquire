@@ -2,8 +2,12 @@
 #include "GameInstance.h"
 #include "Compute_Shader.h"
 
+#ifdef _DEBUG
+
 const _char* CTranslation_Module::g_szModuleNames[9] = { "POINT_VELOCITY", "LINEAR_VELOCITY", "INIT_ACCELERATION", "GRAVITY", "DRAG",
         "VORTEX_ACCELERATION", "POINT_ACCELERATION", "LIMIT_ACCELERATION", "POSITION_BY_NUMBER" };
+
+#endif // _DEBUG
 
 CTranslation_Module::CTranslation_Module()
     : CEffect_Module()
