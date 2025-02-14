@@ -13,14 +13,15 @@ class CStateMachine;
 class CNPC abstract : public CCharacter, public IAnimEventReceiver
 {
 public:
-	enum NPCPART { PART_BODY, PART_EFFECT, PART_WEAPON,  PART_END };
+	enum NPCPART { PART_BODY, PART_EFFECT, PART_WEAPON, PART_END };
 
 	typedef struct tagNPCDesc : public CCharacter::CHARACTER_DESC
 	{
 		_uint	iMainIndex;
 		_uint	iSubIndex = 0;
 		_tchar	strDialogueIndex[MAX_PATH];
-		
+		_tchar	strLocateSection[MAX_PATH];
+
 	}NPC_DESC;
 
 protected:
@@ -48,9 +49,9 @@ public:
 	}
 
 	void Set_2D_Direction(F_DIRECTION _eDir);
-	F_DIRECTION Get_2DDirection() 
-	{ 
-		return m_e2DDirection; 
+	F_DIRECTION Get_2DDirection()
+	{
+		return m_e2DDirection;
 	}
 
 public:
@@ -70,10 +71,10 @@ public:
 	void						Change_Dir();
 
 protected:
-	void Delay_On() 
-	{ 
+	void Delay_On()
+	{
 		m_fAccTime = 0.f;
-		m_isDelay = true; 
+		m_isDelay = true;
 	}
 	void Delay_Off()
 	{
@@ -97,7 +98,7 @@ protected:
 protected:
 	_uint			m_iState = {};
 	_uint			m_iPreState = {};
-	CGameObject*	m_pTarget = { nullptr };
+	CGameObject* m_pTarget = { nullptr };
 	_float			m_fAlertRange = { 0.f };
 	_float			m_fChaseRange = { 0.f };
 	_float			m_fAttackRange = { 0.f };
@@ -119,11 +120,12 @@ protected:
 	_bool			m_isPreCollision2D = { false };
 
 	_tchar			m_strDialogueIndex[MAX_PATH] = {};
+	_tchar			m_strCurSecion[MAX_PATH] = {};
 	_bool			m_isColPlayer = { false };
 
 	vector<CGameObject*>	m_pNpcObject;
 	CAnimEventGenerator* m_pAnimEventGenerator = { nullptr };
-	CCollider* m_pColliderCom = { nullptr };
+	CCollider* m_p2DNpcCollider = nullptr;
 	CStateMachine* m_pStateMachine = nullptr;
 
 public:

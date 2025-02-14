@@ -68,7 +68,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
 	//Ready_Layer_Effects(TEXT("Layer_Effect"));
-	Ready_Layer_NPC(TEXT("Layer_NPC"));
+	//Ready_Layer_NPC(TEXT("Layer_NPC"));
 
 	//액터 들어가는넘.,
 	Ready_Layer_Map();
@@ -354,6 +354,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Map()
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_4:
+		if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
+			return E_FAIL;
+		break;
+	case Client::LEVEL_CHAPTER_TEST:
 		if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
 			return E_FAIL;
 		break;

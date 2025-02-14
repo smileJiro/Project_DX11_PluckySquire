@@ -46,9 +46,9 @@ using namespace DirectX;
 #include <Windows.h>
 #include <mmsystem.h>
 #include <dsound.h>
-/* DirectXTex */
-#include "DirectXTex\DirectXTex.h"
-#include "DirectXTex\DirectXTex.inl"
+///* DirectXTex */
+//#include "DirectXTex\DirectXTex.h"
+//#include "DirectXTex\DirectXTex.inl"
 // ÄÚµå
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "dsound.lib")

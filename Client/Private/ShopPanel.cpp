@@ -496,7 +496,6 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 					return E_FAIL;
 
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_BG].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
-				Safe_Release(pShopPanel);
 			}
 			break;
 
@@ -514,7 +513,6 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 					return E_FAIL;
 			
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
-				Safe_Release(pShopPanel);
 			}
 			break;
 			
@@ -533,7 +531,6 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 					return E_FAIL;
 			
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
-				Safe_Release(pShopPanel);
 			}
 			break;
 			
@@ -550,7 +547,6 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 					return E_FAIL;
 			
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_BULB].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
-				Safe_Release(pShopPanel);
 			}
 			break;
 			
@@ -567,7 +563,6 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 					return E_FAIL;
 			
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
-				Safe_Release(pShopPanel);
 			
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fX = DEFAULT_SIZE_BOOK2D_X;
 				pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fY = DEFAULT_SIZE_BOOK2D_Y;
@@ -580,7 +575,6 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 					return E_FAIL;
 			
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
-				Safe_Release(pShopPanel);
 			}
 			break;
 			
@@ -597,7 +591,6 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 					return E_FAIL;
 			
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
-				Safe_Release(pShopPanel);
 			}
 			break;
 			
@@ -615,7 +608,6 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 					return E_FAIL;
 			
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
-				Safe_Release(pShopPanel);
 			
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fX = DEFAULT_SIZE_BOOK2D_X;
 				pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fY = DEFAULT_SIZE_BOOK2D_Y;
@@ -628,7 +620,6 @@ HRESULT CShopPanel::Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLa
 					return E_FAIL;
 			
 				CUI_Manager::GetInstance()->Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].iTextureCount, static_cast<CShopPanel_BG*>(pShopPanel));
-				Safe_Release(pShopPanel);
 			}
 			break;
 			//

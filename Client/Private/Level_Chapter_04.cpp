@@ -212,9 +212,13 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 
 
 	static _float3 vOutPos = {};
-	//ImGui::Begin("PickingPos");
-	//ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
-	//ImGui::End();
+
+	if (IS_IMPORT_IMGUI)
+	{
+		ImGui::Begin("PickingPos");
+		ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
+		ImGui::End();
+	}
 	if (MOUSE_DOWN(MOUSE_KEY::MB))
 	{
 		POINT pt;
@@ -361,6 +365,10 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Map()
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_4:
+		if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
+			return E_FAIL;
+		break;
+	case Client::LEVEL_CHAPTER_TEST:
 		if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
 			return E_FAIL;
 		break;
