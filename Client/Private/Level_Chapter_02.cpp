@@ -62,7 +62,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	CGameObject* pCameraTarget = nullptr;
 	Ready_CubeMap(TEXT("Layer_CubeMap"));
 	Ready_Layer_MainTable(TEXT("Layer_MainTable"));
-	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
+	//Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
@@ -274,7 +274,7 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 	}
 
 	if (KEY_DOWN(KEY::T)) {
-		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Trigger.json"));
+		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger.json"));
 		CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	}
 
@@ -418,9 +418,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
 
-	_float3 vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
-	_float fLength = 7.f;
-	Create_Arm((_uint)COORDINATE_3D, pCamera, vRotation, fLength);
+	_float3 vArm;
+	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.67f, -0.74f, 0.f)));
+	_float fLength = 14.6f;
+	Create_Arm((_uint)COORDINATE_3D, pCamera, vArm, fLength);
 
 	// CutScene Camera
 	CCamera_CutScene::CAMERA_DESC CutSceneDesc{};
@@ -463,9 +464,9 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, dynamic_cast<CCamera*>(pCamera));
 
-	vRotation = { XMConvertToRadians(-79.2f), XMConvertToRadians(0.f), 0.f };
+	//vRotation = { XMConvertToRadians(-79.2f), XMConvertToRadians(0.f), 0.f };
 	fLength = 12.5f;
-	Create_Arm((_uint)COORDINATE_2D, pCamera, vRotation, fLength);
+	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
 
 	// Set Cur Camera
 	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
@@ -982,7 +983,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-void CLevel_Chapter_02::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vRotation, _float _fLength)
+void CLevel_Chapter_02::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength)
 {
 	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0);
 	if (nullptr == pPlayer)
@@ -991,9 +992,8 @@ void CLevel_Chapter_02::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 
 	CCameraArm::CAMERA_ARM_DESC Desc{};
 
-	XMStoreFloat3(&Desc.vArm, -vPlayerLook);
+	Desc.vArm = _vArm;
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	Desc.vRotation = _vRotation;
 	Desc.fLength = _fLength;
 	Desc.wszArmTag = TEXT("Player_Arm");
 

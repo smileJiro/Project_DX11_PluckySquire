@@ -359,6 +359,14 @@ void CTest_Player::Key_Input(_float _fTimeDelta)
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
     }
 
+    if (KEY_PRESSING(KEY::I)) {
+        _vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+        m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetY(vPos, XMVectorGetY(vPos) + 0.1f));
+    }
+    if (KEY_PRESSING(KEY::K)) {
+        _vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+        m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetY(vPos, XMVectorGetY(vPos) - 0.1f));
+    }
 }
 
 

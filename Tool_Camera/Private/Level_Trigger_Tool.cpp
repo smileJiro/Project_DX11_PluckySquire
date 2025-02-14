@@ -762,6 +762,40 @@ void CLevel_Trigger_Tool::Set_TriggerInfoByType()
 			m_iExitReturnMask &= EXIT_RETURN_MASK::NONE;
 	}
 		break;
+	case TRIGGER_TYPE::FREEZE_X_TRIGGER:
+	{
+		ImGui::Text("Freeze Exit Arm: %.2f, %.2f, %.2f", m_vFreezeExitArm.x, m_vFreezeExitArm.y, m_vFreezeExitArm.z);
+
+		ImGui::SameLine();
+		ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+		ImGui::DragFloat("##FreezeExitArmX", &m_vFreezeExitArm.x, 0.1f, 0.f);
+		ImGui::SameLine(0, 10.0f);
+
+		ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+		ImGui::DragFloat("##FreezeExitArmY", &m_vFreezeExitArm.y, 0.1f, 0.f);
+		ImGui::SameLine(0, 10.0f);
+
+		ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+		ImGui::DragFloat("##FreezeExitArmZ", &m_vFreezeExitArm.z, 0.1f, 0.f);
+	}
+		break;
+	case TRIGGER_TYPE::FREEZE_Z_TRIGGER:
+	{
+		ImGui::Text("Freeze Exit Arm: %.2f, %.2f, %.2f", m_vFreezeExitArm.x, m_vFreezeExitArm.y, m_vFreezeExitArm.z);
+
+		ImGui::SameLine();
+		ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+		ImGui::DragFloat("##FreezeExitArmX", &m_vFreezeExitArm.x, 0.1f, 0.f);
+		ImGui::SameLine(0, 10.0f);
+
+		ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+		ImGui::DragFloat("##FreezeExitArmY", &m_vFreezeExitArm.y, 0.1f, 0.f);
+		ImGui::SameLine(0, 10.0f);
+
+		ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+		ImGui::DragFloat("##FreezeExitArmZ", &m_vFreezeExitArm.z, 0.1f, 0.f);
+	}
+		break;
 	}
 
 }
@@ -812,6 +846,16 @@ HRESULT CLevel_Trigger_Tool::Create_Trigger()
 			case ARM_TRIGGER:
 			{
 				dynamic_cast<CTriggerObject*>(pTrigger)->Set_CustomData(TEXT("ReturnMask"), m_iExitReturnMask);
+			}
+				break;
+			case FREEZE_X_TRIGGER:
+			{
+				dynamic_cast<CTriggerObject*>(pTrigger)->Set_CustomData(TEXT("FreezeExitArm"), m_vFreezeExitArm);
+			}
+				break;
+			case FREEZE_Z_TRIGGER:
+			{
+				dynamic_cast<CTriggerObject*>(pTrigger)->Set_CustomData(TEXT("FreezeExitArm"), m_vFreezeExitArm);
 			}
 				break;
 			}
@@ -893,6 +937,12 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 		case ARM_TRIGGER:
 			m_iExitReturnMask =  any_cast<_uint>(dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Get_CustomData(TEXT("ReturnMask")));
 			break;
+		case FREEZE_X_TRIGGER:
+			m_vFreezeExitArm = any_cast<_float3>(dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Get_CustomData(TEXT("FreezeExitArm")));
+			break;
+		case FREEZE_Z_TRIGGER:
+			m_vFreezeExitArm = any_cast<_float3>(dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Get_CustomData(TEXT("FreezeExitArm")));
+			break;
 		}
 	}
 	ImGui::SameLine();
@@ -908,6 +958,12 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 		switch (m_iTriggerType) {
 		case ARM_TRIGGER:
 			dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Set_CustomData(TEXT("ReturnMask"), m_iExitReturnMask);
+			break;
+		case FREEZE_X_TRIGGER:
+			dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Set_CustomData(TEXT("FreezeExitArm"), m_vFreezeExitArm);
+			break;
+		case FREEZE_Z_TRIGGER:
+			dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Set_CustomData(TEXT("FreezeExitArm"), m_vFreezeExitArm);
 			break;
 		}
 	}
@@ -1227,6 +1283,23 @@ void CLevel_Trigger_Tool::Save_TriggerData()
 			Trigger_json["Arm_Info"]["Exit_Return_Mask"] = { {"ReturnMask", iReturnMask} };
 		}
 			break;
+
+		case FREEZE_X_TRIGGER:
+		{
+			_float3 vFreezeExit = any_cast<_float3>(dynamic_cast<CTriggerObject*>(Trigger.second)->Get_CustomData(TEXT("FreezeExitArm")));
+
+			Trigger_json["Freeze_X_Info"]["Freeze_Exit_Arm"]["CustomData_Tag"] = "FreezeExitArm";
+			Trigger_json["Freeze_X_Info"]["Freeze_Exit_Arm"]["CustomData"] = { vFreezeExit.x, vFreezeExit.y, vFreezeExit.z };
+		}
+			break;
+		case FREEZE_Z_TRIGGER:
+		{
+			_float3 vFreezeExit = any_cast<_float3>(dynamic_cast<CTriggerObject*>(Trigger.second)->Get_CustomData(TEXT("FreezeExitArm")));
+			
+			Trigger_json["Freeze_Z_Info"]["Freeze_Exit_Arm"]["CustomData_Tag"] = "FreezeExitArm";
+			Trigger_json["Freeze_Z_Info"]["Freeze_Exit_Arm"]["CustomData"] = {vFreezeExit.x, vFreezeExit.y, vFreezeExit.z};
+		}
+			break;
 		}
 
 		Result.push_back(Trigger_json);
@@ -1303,6 +1376,7 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 		// Custom Data
 		_string szKey;
 		_uint iReturnMask;
+		_float3 vFreezeExitArm;
 
 		switch (Desc.iTriggerType) {
 		case ARM_TRIGGER:
@@ -1317,6 +1391,30 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 			}
 
 			dynamic_cast<CTriggerObject*>(pTrigger)->Set_CustomData(m_pGameInstance->StringToWString(szKey), iReturnMask);
+		}
+			break;
+		case FREEZE_X_TRIGGER:
+		{
+			if (Trigger_json.contains("Freeze_X_Info")) {
+				json FreezeExit = Trigger_json["Freeze_X_Info"]["Freeze_Exit_Arm"];
+
+				szKey = FreezeExit["CustomData_Tag"];
+				vFreezeExitArm = { FreezeExit["CustomData"][0].get<_float>(), FreezeExit["CustomData"][1].get<_float>(),FreezeExit["CustomData"][2].get<_float>() };
+			}
+			
+			dynamic_cast<CTriggerObject*>(pTrigger)->Set_CustomData(m_pGameInstance->StringToWString(szKey), vFreezeExitArm);
+		}
+			break;
+		case FREEZE_Z_TRIGGER:
+		{
+			if (Trigger_json.contains("Freeze_Z_Info")) {
+				json FreezeExit = Trigger_json["Freeze_Z_Info"]["Freeze_Exit_Arm"];
+
+				szKey = FreezeExit["CustomData_Tag"];
+				vFreezeExitArm = { FreezeExit["CustomData"][0].get<_float>(), FreezeExit["CustomData"][1].get<_float>(),FreezeExit["CustomData"][2].get<_float>() };
+			}
+
+			dynamic_cast<CTriggerObject*>(pTrigger)->Set_CustomData(m_pGameInstance->StringToWString(szKey), vFreezeExitArm);
 		}
 			break;
 		}

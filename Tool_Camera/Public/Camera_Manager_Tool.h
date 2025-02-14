@@ -63,12 +63,14 @@ public:
 	void				Reset_CurrentArm(_fvector vArm, _float fLength, _fvector _vAtOffset, _int _iZoomLevel);
 
 	_float				Get_ArmLength();
+	_uint				Get_ZoomLevel();
 	_float3				Get_CurrentArmVector();
 
 	void				Set_ArmRotation(_vector _vRotation);
 	void				Set_ArmLength(_float _fLength);
 	void				Set_CurrentArm(CCameraArm* _pCameraArm);	// Target Camera에 넣어 주는 애 받아서 함 Tool에서 Copy하기 위한 목적
-
+	void				Set_CurrentArmVector(_float3 _vCurArmVector);
+	void				Set_ZoomLevel(_uint _iZoomLevel);
 private:
 	CGameInstance*							m_pGameInstance = { nullptr };
 

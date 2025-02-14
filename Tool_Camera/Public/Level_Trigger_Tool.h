@@ -99,6 +99,8 @@ private:
 	_uint				m_iExitReturnMask = {};
 	_uint				m_iExitReturnIndex = {};		// List Box º±≈√«— Index
 
+	_float3				m_vFreezeExitArm = {};
+
 	// Save Load
 	vector<_string>		m_JsonFilePaths;
 	_int				m_iCurrentJsonFileIndex = { 0 };

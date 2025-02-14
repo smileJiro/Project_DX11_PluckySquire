@@ -241,28 +241,33 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_player2DAnimation"),
         C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/Models/2DAnim/Player/player.model2d")))))
         return E_FAIL;
+
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
-    //if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
-    //    TEXT("../../Client/Bin/Resources/TestModels/"), matPretransform)))
-    //    return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("SM_desk_split_topboard_02"),
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/SM_desk_split_topboard_02/SM_desk_split_topboard_02.model", matPretransform))))
+        return E_FAIL;
+
+    if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform)))
+        return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
-        TEXT("../../Client/Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/"), matPretransform)))
+        TEXT("../../Client/Bin/Resources/Models/3DMapObject/"), matPretransform)))
         return E_FAIL;
+
+    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
+        TEXT("../../Client/Bin/Resources/Models/3DAnim/"), matPretransform)))
+        return E_FAIL;
+
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
         TEXT("../../Client/Bin/Resources/Models/3DObject/"), matPretransform)))
         return E_FAIL;
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CAMERA_TOOL,
+        TEXT("../../Client/Bin/Resources/Models/2DAnim/"))))
+        return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("WoodenPlatform_01"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/WoodenPlatform_01/WoodenPlatform_01.model", matPretransform))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("alphabet_blocks_d_mesh"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/alphabet_blocks_d_mesh/alphabet_blocks_d_mesh.model", matPretransform))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("alphabet_blocks_a_mesh"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/alphabet_blocks_a_mesh/alphabet_blocks_a_mesh.model", matPretransform))))
-        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
@@ -295,6 +300,8 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_CutScene"),
         CCamera_CutScene::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+    Map_Object_Create(LEVEL_CAMERA_TOOL, LEVEL_CAMERA_TOOL, L"Chapter_02_Play_Desk.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

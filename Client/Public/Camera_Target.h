@@ -29,6 +29,13 @@ public:
 		FREEZE_END
 	};
 
+	typedef struct tagReturnSubData
+	{
+		_uint		iZoomLevel;
+		_int		iTriggerID = {};
+		_float3		vAtOffset;
+	}RETURN_SUBDATA;
+
 private:
 	CCamera_Target(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCamera_Target(const CCamera_Target& Prototype);
@@ -55,7 +62,8 @@ public:
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 	void						Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);
 	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
-	void						Set_Freeze(_uint _iFreezeMask);
+	void						Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm);
+	void						Set_FreezeExit(_uint _iFreezeMask);
 
 	void						Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
@@ -65,6 +73,7 @@ private:
 	_float3						m_vPreTargetPos = {};
 
 	CAMERA_MODE					m_eCameraMode = { CAMERA_MODE_END };
+	CAMERA_MODE					m_ePreCameraMode = { DEFAULT };
 	_int						m_iNextCameraMode = { -1 };
 
 	_float						m_fSmoothSpeed = {};
@@ -75,13 +84,23 @@ private:
 
 	// Freeze
 	_uint						m_iFreezeMask = {};
-	_bool						m_bFreezeExit = { false };
+	_bool						m_isFreezeExit = { false };
 	_float2						m_fFreezeExitTime = { 0.4f, 0.f };
+	_float3						m_vFreezeEnterPos = {};
+	_float3						m_vFreezeExitArm = {};
+
+
+	_uint						m_iPreFreeze = {};
+
+	// PreArm Return
+	deque<pair<RETURN_SUBDATA, _bool>> m_PreSubArms;
 
 private:
 	void						Key_Input(_float _fTimeDelta);
 
 	void						Action_Mode(_float _fTimeDelta);
+	void						Action_SetUp_ByMode();
+
 	void						Defualt_Move(_float _fTimeDelta);
 	void						Move_To_NextArm(_float _fTimeDelta);
 	void						Look_Target(_fvector _vTargetPos, _float _fTimeDelta);
