@@ -122,6 +122,7 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 				if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.5f))
 				{
 					m_pOwner->Stop_Rotate();
+					m_pOwner->Stop_Move();
 					++m_iCurWayIndex;
 					m_isTurn = true;
 					m_isMove = false;

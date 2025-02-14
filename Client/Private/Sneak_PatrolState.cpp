@@ -157,6 +157,7 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 		if (m_pOwner->Move_To(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition), 0.3f))
 		{
 			m_pOwner->Stop_Rotate();
+			m_pOwner->Stop_Move();
 			m_isTurn = false;
 			m_isMove = false;
 

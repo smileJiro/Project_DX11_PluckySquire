@@ -109,9 +109,6 @@ void CSneak_BackState::State_Update(_float _fTimeDelta)
 		m_isTurn = true;
 	}
 	
-	
-	if (m_vDir.y > 0.f)
-		cout << "Back" << endl;
 	//ÀÌµ¿
 	Sneak_BackMove(_fTimeDelta, m_iDir);
 }
@@ -162,6 +159,7 @@ void CSneak_BackState::Sneak_BackMove(_float _fTimeDelta, _int _iDir)
 			if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.3f))
 			{
 				m_pOwner->Stop_Rotate();
+				m_pOwner->Stop_Move();
 				++m_iCurWayIndex;
 
 				m_isTurn = false;
@@ -179,6 +177,7 @@ void CSneak_BackState::Sneak_BackMove(_float _fTimeDelta, _int _iDir)
 			if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_iCurWayIndex].vPosition), 0.3f))
 			{
 				m_pOwner->Stop_Rotate();
+				m_pOwner->Stop_Move();
 				m_isTurn = false;
 				m_isMove = false;
 				m_isOnWay = false;
@@ -396,14 +395,14 @@ void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 		}
 	}
 
-	_vector vTargetDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vPos), 0.f);
-	_vector vDestDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vRayPos), 0.f);
-	_vector vDestLeftDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vLeftPos), 0.f);
-	_vector vDestRightDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vRightPos), 0.f);
+	vTargetDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vPos), 0.f);
+	vDestDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vRayPos), 0.f);
+	vDestLeftDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vLeftPos), 0.f);
+	vDestRightDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - XMLoadFloat3(&vRightPos), 0.f);
 	XMStoreFloat3(&vDest, XMVector3Normalize(vDestDir));
-	_float3 vDestTarget; XMStoreFloat3(&vDestTarget, XMVector3Normalize(vTargetDir));
-	_float3 vDestLeft; XMStoreFloat3(&vDestLeft, XMVector3Normalize(vDestLeftDir));
-	_float3 vDestRight; XMStoreFloat3(&vDestRight, XMVector3Normalize(vDestRightDir));
+	vDestTarget; XMStoreFloat3(&vDestTarget, XMVector3Normalize(vTargetDir));
+	vDestLeft; XMStoreFloat3(&vDestLeft, XMVector3Normalize(vDestLeftDir));
+	vDestRight; XMStoreFloat3(&vDestRight, XMVector3Normalize(vDestRightDir));
 
 
 	for (_uint Index = 0; Index < m_WayPoints.size(); ++Index)

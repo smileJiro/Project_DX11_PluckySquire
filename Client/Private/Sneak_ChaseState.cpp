@@ -69,6 +69,7 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 	if (fDis > Get_CurCoordRange(MONSTER_STATE::CHASE))
 	{
 		m_pOwner->Stop_Rotate();
+		m_pOwner->Stop_Move();
 		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_BACK, m_pFSM);
 	}
 	else
@@ -105,6 +106,7 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 				if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.3f))
 				{
 					m_pOwner->Stop_Rotate();
+					m_pOwner->Stop_Move();
 					++m_iCurWayIndex;
 					m_isTurn = false;
 					m_isMove = false;

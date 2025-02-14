@@ -33,7 +33,7 @@ void CSneak_AlertState::State_Update(_float _fTimeDelta)
 		return;
 	if (nullptr == m_pOwner)
 		return;
-	//cout << "Alert" << endl;
+
 	if(m_pTarget->Get_CurCoord() == m_pOwner->Get_CurCoord())
 	{
 		_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());

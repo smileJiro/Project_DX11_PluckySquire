@@ -21,6 +21,7 @@ public:
 
 private:
 	_float m_fAccTime = {};
+	_bool m_isConvert = {};
 
 public:
 	static CSneak_AwareState* Create(void* _pArg);
