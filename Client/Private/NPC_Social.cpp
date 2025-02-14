@@ -172,7 +172,7 @@ HRESULT CNPC_Social::Render()
 {
 #ifdef _DEBUG
 	if (COORDINATE_2D == Get_CurCoord())
-		m_p2DNpcCollider->Render();
+		m_p2DColliderComs[0]->Render();
 #endif // _DEBUG
 
 	return S_OK;
