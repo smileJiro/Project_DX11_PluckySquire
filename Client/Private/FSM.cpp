@@ -52,6 +52,16 @@ void CFSM::Set_Sneak_StopTime(_float _fStopTime)
 	static_cast<CSneak_IdleState*>(m_States[(_uint)MONSTER_STATE::SNEAK_IDLE])->Set_Sneak_StopTime(_fStopTime);
 }
 
+void CFSM::Set_Sneak_InvestigatePos(_fvector _vPosition)
+{
+	static_cast<CSneak_InvestigateState*>(m_States[(_uint)MONSTER_STATE::SNEAK_INVESTIGATE])->Set_Sneak_InvestigatePos(_vPosition);
+}
+
+void CFSM::Set_Sneak_AwarePos(_fvector _vPosition)
+{
+	static_cast<CSneak_AwareState*>(m_States[(_uint)MONSTER_STATE::SNEAK_AWARE])->Set_Sneak_AwarePos(_vPosition);
+}
+
 HRESULT CFSM::Initialize_Prototype()
 {
 	return S_OK;

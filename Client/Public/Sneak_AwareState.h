@@ -19,9 +19,13 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
+public:
+	void	Set_Sneak_AwarePos(_fvector _vPosition);
+
 private:
 	_float m_fAccTime = {};
 	_bool m_isConvert = {};
+	_bool m_isRenew = {};
 
 public:
 	static CSneak_AwareState* Create(void* _pArg);

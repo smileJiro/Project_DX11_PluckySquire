@@ -223,7 +223,7 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 		else
 		{
 			vResult = _vDestination-m_pOwner->Get_FinalPosition();
-			XMStoreFloat3(_vDirection, XMVector3Normalize(vResult));
+			XMStoreFloat3(_vDirection, XMVector3Normalize(XMVectorSetY(vResult, 0.f)));
 			return;
 		}
 	}
@@ -509,11 +509,6 @@ HRESULT CState_Sneak::CleanUp()
 
 
 	return S_OK;
-}
-
-void CState_Sneak::Set_Sneak_InvestigatePos(_fvector _vPosition)
-{
-	XMStoreFloat3(&m_vSneakPos, _vPosition);
 }
 
 void CState_Sneak::Free()

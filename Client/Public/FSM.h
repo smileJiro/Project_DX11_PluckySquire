@@ -34,6 +34,8 @@ public:
 	//void Set_Owner(CMonster* _pOwner);
 	void Set_PatrolBound();
 	void Set_Sneak_StopTime(_float _fStopTime);
+	void	Set_Sneak_InvestigatePos(_fvector _vPosition);
+	void	Set_Sneak_AwarePos(_fvector _vPosition);
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

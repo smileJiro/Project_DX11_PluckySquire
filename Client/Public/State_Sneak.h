@@ -62,9 +62,6 @@ public:
 	virtual HRESULT CleanUp();
 
 protected:
-	void	Set_Sneak_InvestigatePos(_fvector _vPosition);
-
-protected:
 	_float3 m_vSneakPos = {};
 	//vector<_float3> m_WayPoints = {};
 	vector<Node> m_WayPoints = {};

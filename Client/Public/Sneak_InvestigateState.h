@@ -22,6 +22,9 @@ public:
 private:
 	void Determine_Direction();
 
+public:
+	void	Set_Sneak_InvestigatePos(_fvector _vPosition);
+
 private:
 	_bool m_isTurn = { false };
 	_bool m_isMove = { false };

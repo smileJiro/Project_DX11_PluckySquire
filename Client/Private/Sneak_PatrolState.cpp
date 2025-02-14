@@ -71,7 +71,7 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 	//		return;
 	//	}
 	//}
-
+	cout << "Patrol" << endl;
 	if (true == m_isMove)
 		m_fAccTime += _fTimeDelta;
 
@@ -92,6 +92,8 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 			if (m_pOwner->IsTarget_In_Sneak_Detection())
 			{
 				m_pOwner->Stop_Rotate();
+				m_pOwner->Stop_Move();
+				m_pFSM->Set_Sneak_AwarePos(m_pOwner->Get_FinalPosition());
 				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 				return;
 			}
@@ -211,7 +213,7 @@ void CSneak_PatrolState::Determine_Direction()
 		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(0.f, 3.f));
 	}
 
-	XMStoreFloat3(&m_vDir, XMVector3Normalize(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition()));
+	XMStoreFloat3(&m_vDir, XMVector3Normalize(XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition(),0.f)));
 	if (m_vDir.y > 0.f)
 		int a = 10;
 }

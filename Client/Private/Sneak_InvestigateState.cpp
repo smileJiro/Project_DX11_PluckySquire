@@ -31,8 +31,9 @@ void CSneak_InvestigateState::State_Enter()
 	//처리해야함
 	m_isPathFind = true;
 	m_fAccTime = 0.f;
-	m_isRenew = true;
+	m_isRenew = false;
 	m_isTurn = false;
+	m_iCurWayIndex = 0;
 }
 
 void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
@@ -58,6 +59,7 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 	//XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_FinalPosition()));
 	XMVectorSetW(vDir, 0.f);
 	vDir = XMVector3Normalize(XMVectorSetY(vDir, 0.f));
+	cout << "Investigate" << endl;
 
 	//이동하다 소리가 나면 범위 내에서 가장 최근 위치로 다음 위치를 갱신 (현재 idle 상태에서도 인식이 되므로 일단 인식 안둠)
 	if (m_isRenew && m_pOwner->IsTarget_In_Sneak_Detection())
@@ -86,6 +88,7 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 	if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_vSneakPos), 0.5f))
 	{
 		m_pOwner->Stop_Rotate();
+		m_pOwner->Stop_Move();
 		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 		return;
 	}
@@ -330,6 +333,11 @@ void CSneak_InvestigateState::Determine_Direction()
 
 	XMStoreFloat3(&m_vDir, vResult);
 	m_isTurn = true;
+}
+
+void CSneak_InvestigateState::Set_Sneak_InvestigatePos(_fvector _vPosition)
+{
+	XMStoreFloat3(&m_vSneakPos, _vPosition);
 }
 
 CSneak_InvestigateState* CSneak_InvestigateState::Create(void* _pArg)
