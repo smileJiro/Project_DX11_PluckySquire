@@ -5,7 +5,7 @@
 
 
 BEGIN(Engine)
-KEYFRAME Lerp_Frame(const KEYFRAME& Frame1, const KEYFRAME& Frame2, _float fRatio);
+KEYFRAME ENGINE_DLL Lerp_Frame(const KEYFRAME& Frame1, const KEYFRAME& Frame2, _float fRatio);
 
 class ENGINE_DLL CAnimation3D : public CAnimation
 {

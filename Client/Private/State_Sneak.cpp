@@ -37,7 +37,7 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		m_WayPoints.push_back({ _float3(-13.3f, 6.52f, 22.75f) });
 		m_WayPoints.push_back({ _float3(-16.5f, 6.56f, 22.6f) });
 		m_WayPoints.push_back({ _float3(-20.f, 6.5f, 23.f) });
-		m_WayPoints.push_back({ _float3(-23.2f, 6.55f, 20.8f) });
+		m_WayPoints.push_back({ _float3(-23.6f, 6.55f, 21.f) });
 
 		m_WayPoints[0].Neighbors.push_back(1);
 		m_WayPoints[1].Neighbors.push_back(0);
@@ -70,15 +70,89 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		break;
 
 	case Client::WAYPOINTINDEX::CHAPTER2_2:
-		m_WayPoints.push_back({ _float3(45.5f, 8.58f, 24.5f) });
-		m_WayPoints.push_back({ _float3(44.f, 8.58f, 22.f) });
+		m_WayPoints.push_back({ _float3(35.f, 0.35f, -7.3f) });
+		m_WayPoints.push_back({ _float3(32.5f, 0.35f, -4.5f) });
+		m_WayPoints.push_back({ _float3(30.f, 0.35f, -3.7f) });
+		m_WayPoints.push_back({ _float3(30.5f, 0.35f, -0.15f) });
+		m_WayPoints.push_back({ _float3(32.15f, 0.35f, 1.66f) });
+		m_WayPoints.push_back({ _float3(32.6f, 0.35f, 5.8f) });
+		m_WayPoints.push_back({ _float3(35.f, 0.35f, 6.37f) });
+		m_WayPoints.push_back({ _float3(37.f, 0.35f, 5.3f) });
+		m_WayPoints.push_back({ _float3(38.5f, 0.35f, 3.87f) });
+		m_WayPoints.push_back({ _float3(39.3f, 0.35f, 2.48f) });
+		m_WayPoints.push_back({ _float3(39.5f, 0.35f, -0.3f) });
+		m_WayPoints.push_back({ _float3(40.4f, 0.35f, 3.3f) });
+		m_WayPoints.push_back({ _float3(42.3f, 0.35f, 4.86f) });
+		m_WayPoints.push_back({ _float3(41.f, 0.35f, 8.f) });
+		m_WayPoints.push_back({ _float3(39.5f, 0.35f, 10.5f) });
 
 		m_WayPoints[0].Neighbors.push_back(1);
 		m_WayPoints[1].Neighbors.push_back(0);
+		m_WayPoints[1].Neighbors.push_back(2);
+		m_WayPoints[2].Neighbors.push_back(1);
+		m_WayPoints[2].Neighbors.push_back(3);
+		m_WayPoints[3].Neighbors.push_back(2);
+		m_WayPoints[3].Neighbors.push_back(4);
+		m_WayPoints[4].Neighbors.push_back(3);
+		m_WayPoints[1].Neighbors.push_back(4);
+		m_WayPoints[4].Neighbors.push_back(1);
+		m_WayPoints[4].Neighbors.push_back(5);
+		m_WayPoints[5].Neighbors.push_back(4);
+		m_WayPoints[5].Neighbors.push_back(6);
+		m_WayPoints[6].Neighbors.push_back(5);
+		m_WayPoints[6].Neighbors.push_back(7);
+		m_WayPoints[7].Neighbors.push_back(6);
+		m_WayPoints[7].Neighbors.push_back(8);
+		m_WayPoints[8].Neighbors.push_back(7);
+		m_WayPoints[8].Neighbors.push_back(9);
+		m_WayPoints[9].Neighbors.push_back(8);
+		m_WayPoints[9].Neighbors.push_back(10);
+		m_WayPoints[10].Neighbors.push_back(9);
+		m_WayPoints[10].Neighbors.push_back(11);
+		m_WayPoints[11].Neighbors.push_back(10);
+		m_WayPoints[9].Neighbors.push_back(12);
+		m_WayPoints[12].Neighbors.push_back(9);
+		m_WayPoints[12].Neighbors.push_back(13);
+		m_WayPoints[13].Neighbors.push_back(12);
+		m_WayPoints[13].Neighbors.push_back(14);
+		m_WayPoints[14].Neighbors.push_back(13);
+		m_WayPoints[14].Neighbors.push_back(15);
+		m_WayPoints[15].Neighbors.push_back(14);
 		break;
 
 	case Client::WAYPOINTINDEX::CHAPTER2_3:
-		m_WayPoints.push_back({ _float3(33.f, 0.35f, -4.f) });
+		m_WayPoints.push_back({ _float3(47.f, 0.35f, -0.5f) });
+		m_WayPoints.push_back({ _float3(47.f, 0.35f, 2.f) });
+		m_WayPoints.push_back({ _float3(49.f, 0.35f, 3.4f) });
+		m_WayPoints.push_back({ _float3(50.f, 0.35f, 5.5f) });
+		m_WayPoints.push_back({ _float3(51.5f, 0.35f, 8.f) });
+		m_WayPoints.push_back({ _float3(52.5f, 0.35f, 5.5f) });
+		m_WayPoints.push_back({ _float3(53.f, 0.35f, 2.5f) });
+		m_WayPoints.push_back({ _float3(51.5f, 0.35f, 1.f) });
+		m_WayPoints.push_back({ _float3(49.5f, 0.35f, -1.f) });
+
+		m_WayPoints[0].Neighbors.push_back(1);
+		m_WayPoints[1].Neighbors.push_back(0);
+		m_WayPoints[1].Neighbors.push_back(2);
+		m_WayPoints[2].Neighbors.push_back(1);
+		m_WayPoints[2].Neighbors.push_back(3);
+		m_WayPoints[3].Neighbors.push_back(2);
+		m_WayPoints[3].Neighbors.push_back(4);
+		m_WayPoints[4].Neighbors.push_back(3);
+		m_WayPoints[4].Neighbors.push_back(5);
+		m_WayPoints[5].Neighbors.push_back(4);
+		m_WayPoints[3].Neighbors.push_back(5);
+		m_WayPoints[5].Neighbors.push_back(3);
+		m_WayPoints[5].Neighbors.push_back(6);
+		m_WayPoints[6].Neighbors.push_back(5);
+		m_WayPoints[6].Neighbors.push_back(7);
+		m_WayPoints[7].Neighbors.push_back(6);
+		m_WayPoints[2].Neighbors.push_back(7);
+		m_WayPoints[7].Neighbors.push_back(2);
+		m_WayPoints[7].Neighbors.push_back(8);
+		m_WayPoints[8].Neighbors.push_back(7);
+		m_WayPoints[8].Neighbors.push_back(0);
+		m_WayPoints[0].Neighbors.push_back(8);
 		break;
 
 	default:
@@ -139,8 +213,8 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 		//막혀있지 않다면 타겟 방향대로 이동
 		else
 		{
-			vResult = vRayDir;
-			XMStoreFloat3(_vDirection, vResult);
+			vResult = _vDestination-m_pOwner->Get_FinalPosition();
+			XMStoreFloat3(_vDirection, XMVector3Normalize(vResult));
 			return;
 		}
 	}
@@ -171,7 +245,7 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 			{
 				_float3 vPosTo; XMStoreFloat3(&vPosTo, XMVector3Normalize(vPositionToPointDis));
 				//가는길에 장애물 없으면
-				if (true == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vPosTo, XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_WayPoints[Index].vPosition) - XMLoadFloat3(&vPos))), 
+				if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vPosTo, XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_WayPoints[Index].vPosition) - XMLoadFloat3(&vPos))), 
 					OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
 				{
 					XMStoreFloat3(&vPoint, vPositionToPointDis);
@@ -247,10 +321,15 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 
 		//시작점까지 갔다가 다음 점으로 진행하는 거리와 다음 점으로 바로 가는 거리 비교해서 시작점으로 갈지 결정
 		_vector vFromStart = XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition) - m_pOwner->Get_FinalPosition() + XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition);
-		_vector vToNext = XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - m_pOwner->Get_FinalPosition();
-		if (2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
+		_vector vToNext = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - m_pOwner->Get_FinalPosition(), 0.f);
+		_float3 vToNextDir; XMStoreFloat3(&vToNextDir, XMVector3Normalize(vToNext));
+		
+		if(false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vToNextDir, XMVectorGetX(XMVector3Length(vToNext)), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
 		{
-			m_Ways.push_back(iStartIndex);
+			if (2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
+			{
+				m_Ways.push_back(iStartIndex);
+			}
 		}
 		
 		reverse(m_Ways.begin(), m_Ways.end());

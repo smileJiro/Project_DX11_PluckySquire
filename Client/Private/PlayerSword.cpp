@@ -4,8 +4,7 @@
 #include "Player.h"
 #include "3DModel.h"
 #include "GameInstance.h"
-#include "Section_Manager.h"    
-#include "Collision_Manager.h"    
+#include "Section_Manager.h"     
 #include "Camera_Manager.h"
 
 
@@ -86,6 +85,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     //m_pActorCom-> Set_ShapeEnable(0, true);
 
        /* Test 2D Collider */
+    m_p2DColliderComs.resize(1);
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
     CircleDesc.fRadius = 40.f;
@@ -94,9 +94,9 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-        TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_pBody2DColliderCom), &CircleDesc)))
+        TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
-
+	m_pBody2DColliderCom = m_p2DColliderComs[0];
     return S_OK;
 }
 
@@ -105,12 +105,12 @@ void CPlayerSword::Update(_float _fTimeDelta)
     if (m_eCurrentState != m_ePastState)
         On_StateChange();
     COORDINATE eCoord = Get_CurCoord();
-    if (COORDINATE_2D == eCoord)
-    {
-        _uint iSectionKey = RG_2D + PR2D_SECTION_START;
-        if (m_pBody2DColliderCom->Is_Active())
-            CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pBody2DColliderCom);
-    }
+    //if (COORDINATE_2D == eCoord)
+    //{
+    //    _uint iSectionKey = RG_2D + PR2D_SECTION_START;
+    //    if (m_pBody2DColliderCom->Is_Active())
+    //        m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pBody2DColliderCom);
+    //}
     switch (m_eCurrentState)
     {
     case Client::CPlayerSword::HANDLING:
@@ -127,7 +127,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
             if (bOuting)
             {
                 m_AttckedObjects.clear();
-                cout << "m_AttckedObjects clear Update" << endl;
+                //cout << "m_AttckedObjects clear Update" << endl;
             }
             vDir = XMVector3Normalize(vTargetPos - vPosition);
         }
@@ -319,7 +319,7 @@ void CPlayerSword::Set_State(SWORD_STATE _eNewState)
 void CPlayerSword::On_StateChange()
 {
     COORDINATE eCoord = Get_CurCoord();
-    cout << "SwrodState : " << m_eCurrentState << endl;
+   // cout << "SwrodState : " << m_eCurrentState << endl;
     switch (m_eCurrentState)
     {
     case Client::CPlayerSword::HANDLING:

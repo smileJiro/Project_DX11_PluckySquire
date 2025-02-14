@@ -71,9 +71,15 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	//m_pModelCom->Set_AnimationLoop(0, true);
+	if (true == pDesc->lines[pDesc->LineCount].NarAnim[0].isLoop)
+	{
+		m_pModelCom->Set_AnimationLoop(0, true);
+	}
+	
 	m_pModelCom->Set_Animation(pDesc->lines[pDesc->LineCount].NarAnim[0].iAnimationIndex);
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_BACKGROUND);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_BACKGROUND);
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionid, this);
 
 	_float2 vPos = { 0.f, 0.f };
 
@@ -102,7 +108,12 @@ void CNarration_Anim::Priority_Update(_float _fTimeDelta)
 void CNarration_Anim::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
-	m_pModelCom->Play_Animation(_fTimeDelta, false);
+
+	if (true == m_isPlayAnimation)
+	{
+		m_pModelCom->Play_Animation(_fTimeDelta, false);
+	}
+	
 
 
 
@@ -128,6 +139,7 @@ void CNarration_Anim::Late_Update(_float _fTimeDelta)
 
 HRESULT CNarration_Anim::Render()
 {	
+
 	_matrix matLocal = *static_cast<C2DModel*>(m_pModelCom)->Get_CurrentSpriteTransform();
 	_matrix matRatioScalling = XMMatrixScaling((_float)RATIO_BOOK2D_X, (_float)RATIO_BOOK2D_Y, 1.f);
 	matLocal *= matRatioScalling;
@@ -154,9 +166,16 @@ HRESULT CNarration_Anim::Render()
 	//	return E_FAIL;
 	//__super::Render(m_pModelCom);
 
-	m_pModelCom->Render(m_pShaderComs[COORDINATE_2D], (_uint)PASS_VTXPOSTEX::SPRITE2D);
-	int a = 0;
-	//Register_RenderGroup()
+	if (m_isPlayAnimation == true)
+	{
+		
+
+		m_pModelCom->Render(m_pShaderComs[COORDINATE_2D], (_uint)PASS_VTXPOSTEX::SPRITE2D);
+		int a = 0;
+		//Register_RenderGroup()
+	}
+
+	
 
 	return S_OK;
 }
@@ -171,7 +190,7 @@ void CNarration_Anim::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CNarration_Anim::StartAnimation()
 {
-	m_pModelCom->Set_Animation(0);
+	m_isPlayAnimation = true;
 }
 
 

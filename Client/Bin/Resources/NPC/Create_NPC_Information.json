@@ -1,6 +1,7 @@
 {
 	"NPC_OnlySocial": [
 		{
+			"strSectionid": "Chapter1_P0506",
 			"strAnimaionName": "Prototype_Component_NPC_DJMoonBeard",
 			"strCreateSection": 3,
 			"strDialogueId": "DJ_Moobeard_Dialogue_01",

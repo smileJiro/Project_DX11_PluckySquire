@@ -81,10 +81,18 @@ public:
 	{
 		return m_isCool;
 	}
+	_bool IsContactToTarget()
+	{
+		return m_isContactToTarget;
+	}
 
 	_float3 Get_RayOffset() const
 	{
 		return m_vRayOffset;
+	}
+	_float Get_RayHalfWidth() const
+	{
+		return m_fRayHalfWidth;
 	}
 
 public:
@@ -160,6 +168,8 @@ protected:
 	_float m_fAttack2DRange = { 0.f };
 	_bool m_isAnimChangeable = { true };
 
+	_bool m_isContactToTarget = { false };
+
 	_float m_fAccTime = { 0.f };
 	_bool m_isDelay = { false };
 	_float m_fDelayTime = { 0.f };
@@ -174,6 +184,7 @@ protected:
 	_float m_fFOVY = { 0.f };
 
 	_float3 m_vRayOffset = { 0.f,0.f,0.f };
+	_float m_fRayHalfWidth = {};
 
 	//잠입 모드
 	_bool m_isSneakMode = { false };

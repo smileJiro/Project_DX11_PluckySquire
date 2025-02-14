@@ -134,6 +134,60 @@ void CCamera_Manager::Imgui_Dof()
 		m_Cameras[m_eCurrentCameraType]->Set_DofBufferData(tDofData, true);
 	}
 
+	// Save 
+	static char DofPathBuffer[MAX_PATH] = "../Bin/DataFiles/DOF/default.json";
+	ImGui::InputText("Save Path", DofPathBuffer, sizeof(DofPathBuffer));
+	if (ImGui::Button("Save DOF Data"))
+	{
+		json DOFJson;
+		DOFJson["fAperture"] = tDofData.fAperture;
+		DOFJson["fSensorHeight"] = tDofData.fSensorHeight;
+		DOFJson["fFocusDistance"] = tDofData.fFocusDistance;
+		DOFJson["fDofBrightness"] = tDofData.fDofBrightness;
+		DOFJson["fBaseBlurPower"] = tDofData.fBaseBlurPower;
+		DOFJson["vBlurColor"]["x"] = tDofData.vBlurColor.x;
+		DOFJson["vBlurColor"]["y"] = tDofData.vBlurColor.y;
+		DOFJson["vBlurColor"]["z"] = tDofData.vBlurColor.z;
+
+
+		std::ofstream outFile(DofPathBuffer);
+		if (false == outFile.is_open())
+		{
+			MSG_BOX("Failed IBL Data Save Path Open");
+		}
+		outFile << DOFJson.dump(4);
+		outFile.close();
+	}
+	// Load Files
+	ImGui::Separator();
+	ImGui::Separator();
+
+	if (ImGui::Button("Load DOF Data##Dof"))
+	{
+		OPENFILENAME ofn = {};
+		ZeroMemory(&ofn, sizeof(ofn));
+		_tchar szName[MAX_PATH] = {};
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = m_pGameInstance->Get_HWND();
+		ofn.lpstrFile = szName;
+		ofn.nMaxFile = sizeof(szName);
+		ofn.lpstrFilter = L".json\0*.json\0";
+		ofn.nFilterIndex = 0;
+		ofn.lpstrFileTitle = nullptr;
+		ofn.nMaxFileTitle = 0;
+		wstring strPath = std::filesystem::absolute(L"../Bin/DataFiles/DOF/").wstring();
+		ofn.lpstrInitialDir = strPath.c_str();
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+		if (GetOpenFileName(&ofn))
+		{
+			//받아온 파일입니다
+			const _wstring strFilePath = szName;
+			Load_DOF(strFilePath, m_eCurrentCameraType);
+		}
+	}
+
+
 	ImGui::End();
 }
 #endif // _DEBUG
@@ -313,7 +367,7 @@ void CCamera_Manager::Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fSha
 
 void CCamera_Manager::Load_ArmData()
 {
-	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/Test.json";
+	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/Chapter2_ArmData.json";
 
 	ifstream file(wszLoadPath);
 
@@ -414,6 +468,16 @@ void CCamera_Manager::Load_CutSceneData()
 
 		Add_CutScene(CutSceneTag, CutSceneData);
 	}
+}
+
+HRESULT CCamera_Manager::Load_DOF(const _wstring& _strJsonPath, _uint _iCameraType)
+{
+	if (nullptr == m_Cameras[_iCameraType])
+		return E_FAIL;
+
+	m_Cameras[_iCameraType]->Load_DOF(_strJsonPath);
+
+	return S_OK;
 }
 
 CCamera_Manager* CCamera_Manager::Create()

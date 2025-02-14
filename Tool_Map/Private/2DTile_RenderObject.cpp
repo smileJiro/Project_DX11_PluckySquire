@@ -44,6 +44,7 @@ HRESULT C2DTile_RenderObject::Initialize(void* pArg)
 	m_iHeightSIze = pDesc->iIndexSIzeY;
 	m_iWidthCount = pDesc->iIndexCountX;
 	m_iHeightCount = pDesc->iIndexCountY;
+	m_fRenderTargetSize = pDesc->fRenderTargetSize;
 
 	m_iIndexCount = m_iWidthCount * m_iHeightCount;
 
@@ -100,7 +101,7 @@ HRESULT C2DTile_RenderObject::Render()
 		m_fX = fPos.x;
 		m_fY = fPos.y;
 		// 타일 위치 업데이트.
-		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - RTSIZE_BOOK2D_X * 0.5f, -m_fY + RTSIZE_BOOK2D_Y * 0.5f, 0.f, 1.f));
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - m_fRenderTargetSize.x * 0.5f, -m_fY + m_fRenderTargetSize.y * 0.5f, 0.f, 1.f));
 		
 		if (FAILED(Bind_ShaderResources()))
 			return E_FAIL;

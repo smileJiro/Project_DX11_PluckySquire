@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ShopPanel.h"
 #include "UI_Manager.h"
+#include "PlayerData_Manager.h"
 
 CShopPanel::CShopPanel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI(_pDevice, _pContext)
@@ -149,7 +150,10 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 		vCalPos.x = vMiddlePoint.x + vPos.x;
 		vCalPos.y = vMiddlePoint.y - vPos.y;
 
-		wsprintf(m_tFont, TEXT("999"));
+		
+		_wstring szBulbCount = to_wstring(CPlayerData_Manager::GetInstance()->Get_BulbCount());
+		wsprintf(m_tFont, szBulbCount.c_str());
+
 		m_pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 

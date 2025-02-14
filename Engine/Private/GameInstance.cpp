@@ -19,6 +19,7 @@
 #include "Frustum.h"
 #include "CubeMap.h"
 #include "GlobalFunction_Manager.h"
+#include "Collision_Manager.h"
 
 
 #include "Physx_EventCallBack.h"
@@ -91,6 +92,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
 
+	m_pCollision_Manager = CCollision_Manager::Create();
+	if (nullptr == m_pCollision_Manager)
+		return E_FAIL;
+
 	m_pTimer_Manager = CTimer_Manager::Create();
 	if (nullptr == m_pTimer_Manager)
 		return E_FAIL;
@@ -151,10 +156,9 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	//m_pCamera_Manager->Update(fTimeDelta);
 
 
-	/* 현재는 임시적으로 Physx_Manager가 Scene Update를 돌리며 테스트 예정. 
-	추후 콜리전 매니저 설계시 scene 관리방식 변경. */
+	/* 아래부턴 Update와 LateUpdate의 사이 시점으로 본다.*/
 	m_pLevel_Manager->Update(fTimeDelta); // 현재 여기서 Physx 돌리고있음.
-
+	m_pCollision_Manager->Update();
 }
 
 void CGameInstance::Late_Update_Engine(_float fTimeDelta)
@@ -1344,6 +1348,31 @@ HRESULT CGameInstance::Bind_IBLTexture(CShader* _pShaderCom, const _char* _pBRDF
 	return m_pCubeMap->Bind_IBLTexture(_pShaderCom, _pBRDFConstName, _pSpecularConstName, _pIrradianceConstName);
 }
 
+HRESULT CGameInstance::Register_Section(const _wstring& _strSectionKey)
+{
+	return m_pCollision_Manager->Register_Section(_strSectionKey);
+}
+
+void CGameInstance::Check_GroupFilter(_uint _iGroupFilterLeft, _uint _iGroupFilterRight)
+{
+	m_pCollision_Manager->Check_GroupFilter(_iGroupFilterLeft, _iGroupFilterRight);
+}
+
+void CGameInstance::Erase_GroupFilter(_uint _iGroupFilterLeft, _uint _iGroupFilterRight)
+{
+	m_pCollision_Manager->Erase_GroupFilter(_iGroupFilterLeft, _iGroupFilterRight);
+}
+
+void CGameInstance::Clear_GroupFilter()
+{
+	m_pCollision_Manager->Clear_GroupFilter();
+}
+
+HRESULT CGameInstance::Add_Collider(const _wstring& _strSectionKey, _uint _iGroupFilter, CCollider* _pCollider)
+{
+	return m_pCollision_Manager->Add_Collider(_strSectionKey, _iGroupFilter, _pCollider);
+}
+
 HRESULT CGameInstance::Physx_Render()
 {
 	if (nullptr == m_pPhysx_Manager)
@@ -1418,6 +1447,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	else
 		Safe_Release(m_pNewRenderer);
 
+	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pPrototype_Manager);

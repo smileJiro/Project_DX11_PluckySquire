@@ -47,6 +47,7 @@ public:
 	virtual HRESULT Set_State(_uint _iState);
 
 	HRESULT Add_SneakState();
+	HRESULT Add_Chase_NoneAttackState();
 
 protected:
 	CState* m_pCurState = { nullptr };

@@ -99,5 +99,42 @@
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter2_2",
         "Trigger_Type": 1
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                4.5,
+                5.0,
+                9.800000190734863
+            ],
+            "Position": [
+                -25.115999221801758,
+                1.4500000476837158,
+                4.007999897003174
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Freeze_X_Info": {
+            "Freeze_Exit_Arm": {
+                "CustomData": [
+                    0.0,
+                    0.3400000035762787,
+                    -0.9399999976158142
+                ],
+                "CustomData_Tag": "FreezeExitArm"
+            }
+        },
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter2_FreezeX_1",
+        "Trigger_Type": 3
     }
 ]

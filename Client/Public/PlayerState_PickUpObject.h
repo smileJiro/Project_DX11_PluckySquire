@@ -1,6 +1,7 @@
 #pragma once
 #include "PlayerState.h"
 BEGIN(Client)
+class CCarriableObject;
 class CPlayerState_PickUpObject :
     public CPlayerState
 {
@@ -13,6 +14,19 @@ public:
     virtual void Exit() override;
 
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
+    void Align();
+private:
+	CCarriableObject* m_pCarriableObject = nullptr;
+    _bool m_bAligned = false;
+    _float m_f2DAlignStartProgress = 0.1f;
+    _float m_f2DAlignEndProgress = 0.2f;
+    _float m_f3DAlignStartProgress = 0.145f;
+    _float m_f3DAlignEndProgress = 0.26f;
+    _float m_f3DHeadProgress = 0.43f;
+    _float m_f2DHeadProgress = 0.43f;
+    KEYFRAME m_tOriginalKeyFrame;
+    KEYFRAME m_tPickupKeyFrame;
+    KEYFRAME m_tCarryingKeyFrame;
 };
 
 END

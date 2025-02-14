@@ -69,6 +69,8 @@ public:
 	_wstring			Get_ArmTag() { return m_wszArmTag; }
 	_vector				Get_ArmVector() { return XMLoadFloat3(&m_vArm); }
 	CTransform_3D*		Get_TransformCom() { return m_pTransform; }
+	_float				Get_ReturnTime() { return m_fReturnTime.x; }
+	_bool				Get_IsInPreArmData(_int _iTriggerID, pair<RETURN_ARMDATA, _bool>* _pPreArmData = nullptr);
 
 	void				Set_NextArmData(ARM_DATA* _pData, _int _iTriggerID);
 	void				Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);	// 돌아갈지 안 돌아갈지에 따라 삭제 혹은 이동

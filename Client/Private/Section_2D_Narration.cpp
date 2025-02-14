@@ -53,6 +53,11 @@ HRESULT CSection_2D_Narration::Section_AddRenderGroup_Process()
 
 	return S_OK;
 }
+HRESULT CSection_2D_Narration::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
+{
+	HRESULT hr = __super::Add_GameObject_ToSectionLayer(_pGameObject, _iLayerIndex);
+	return hr;
+}
 ;
 
 CSection_2D_Narration* CSection_2D_Narration::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iPriorityKey, SECTION_2D_DESC* _pDesc)

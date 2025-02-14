@@ -446,6 +446,28 @@ namespace Client
 		}
 	}
 
+	T_DIRECTION EDir_To_TDirection(E_DIRECTION _eEDir)
+	{
+		switch (_eEDir)
+		{
+		case Client::E_DIRECTION::LEFT:
+		case Client::E_DIRECTION::LEFT_UP:
+		case Client::E_DIRECTION::LEFT_DOWN:
+			return T_DIRECTION::LEFT;
+		case Client::E_DIRECTION::RIGHT:
+		case Client::E_DIRECTION::RIGHT_UP:
+		case Client::E_DIRECTION::RIGHT_DOWN:
+			return T_DIRECTION::RIGHT;
+		case Client::E_DIRECTION::UP:
+		case Client::E_DIRECTION::DOWN:
+			return T_DIRECTION::NONE;
+			break;
+		default:
+			return T_DIRECTION::T_DIR_LAST;
+			break;
+		}
+	}
+
 
 
 }

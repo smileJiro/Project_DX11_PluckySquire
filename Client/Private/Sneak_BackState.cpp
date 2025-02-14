@@ -47,7 +47,7 @@ void CSneak_BackState::Set_Bound(_float3& _vPosition)
 void CSneak_BackState::State_Enter()
 {
 	m_fAccTime = 0.f;
-	m_isToWay = false;
+	m_isOnWay = false;
 	m_isTurn = false;
 	m_isMove = false;
 	m_isPathFind = true;
@@ -74,7 +74,7 @@ void CSneak_BackState::State_Update(_float _fTimeDelta)
 	//}
 
 	if (true == m_isMove)
-		m_fAccTime += _fTimeDelta;
+	m_fAccTime += _fTimeDelta;
 
 	if (nullptr != m_pTarget)
 	{
@@ -123,8 +123,6 @@ void CSneak_BackState::State_Exit()
 
 void CSneak_BackState::Sneak_BackMove(_float _fTimeDelta, _int _iDir)
 {
-	_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex])-m_pOwner->Get_FinalPosition());
-
 	//회전
 	if (true == m_isTurn && false == m_isMove)
 	{
@@ -156,16 +154,29 @@ void CSneak_BackState::Sneak_BackMove(_float _fTimeDelta, _int _iDir)
 
 		static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 
-		if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.1f))
+		if(true == m_isOnWay)
 		{
-			++m_iCurWayIndex;
-
-			m_isTurn = false;
-			m_isMove = false;
-			m_isToWay = false;
-
-			if (m_Ways.size() <= m_iCurWayIndex)
+			if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.3f))
 			{
+				++m_iCurWayIndex;
+
+				m_isTurn = false;
+				m_isMove = false;
+				m_isOnWay = false;
+
+				if (m_Ways.size() <= m_iCurWayIndex)
+				{
+					Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+				}
+			}
+		}
+		else
+		{
+			if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_iCurWayIndex].vPosition), 0.3f))
+			{
+				m_isTurn = false;
+				m_isMove = false;
+				m_isOnWay = false;
 				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 			}
 		}
@@ -331,129 +342,135 @@ void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 	_float3 vOffset = m_pOwner->Get_RayOffset();
 	_float3 vRayPos; XMStoreFloat3(&vRayPos, XMVector3Transform(XMLoadFloat3(&vOffset), m_pOwner->Get_FinalWorldMatrix()));
 	_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
+	vOffset.x -= m_pOwner->Get_RayHalfWidth();
+	_float3 vLeftPos; XMStoreFloat3(&vLeftPos, XMVector3Transform(XMLoadFloat3(&vOffset), m_pOwner->Get_FinalWorldMatrix()));
+	vOffset.x += m_pOwner->Get_RayHalfWidth() * 2.f;
+	_float3 vRightPos; XMStoreFloat3(&vRightPos, XMVector3Transform(XMLoadFloat3(&vOffset), m_pOwner->Get_FinalWorldMatrix()));
 	_vector vResult = XMVectorZero();
 
-	if (m_isPathFind)
+	
+	_float3 vDest = _float3(100.f, 0.f, 100.f); //큰 임의값 적용
+	_float3 vPoint = _float3(100.f, 0.f, 100.f); //큰 임의값 적용
+	_uint iDestIndex = 0;
+	_uint iStartIndex = 0;
+
+
+	for (_uint Index = 0; Index < m_PatrolWaypoints.size(); ++Index)
 	{
-		_float3 vDest = _float3(100.f, 0.f, 100.f); //큰 임의값 적용
-		_float3 vPoint = _float3(100.f, 0.f, 100.f); //큰 임의값 적용
-		_uint iDestIndex = 0;
-		_uint iStartIndex = 0;
+		_vector vPositionToPointDis = XMVectorSetY(XMLoadFloat3(&m_PatrolWaypoints[Index]) - m_pOwner->Get_FinalPosition(), 0.f);
 
-		//현재 위치와 가까운 타겟 포인트 찾기
-		for (_uint Index = 0; Index < m_PatrolWaypoints.size(); ++Index)
+		if (1 == m_pGameInstance->Compare_VectorLength(XMLoadFloat3(&vDest), vPositionToPointDis))
 		{
-			_vector vPositionToPointDis = XMVectorSetY(XMLoadFloat3(&m_PatrolWaypoints[Index]) - m_pOwner->Get_FinalPosition(), 0.f);
+			XMStoreFloat3(&vDest, vPositionToPointDis);
+			iDestIndex = m_PatrolWayIndexes[Index];
+		}
+	}
+	_vector vDestDir = XMVectorSetY(XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition) - m_pOwner->Get_FinalPosition(), 0.f);
+	XMStoreFloat3(&vDest, XMVector3Normalize(vDestDir));
+	//포인트 안 찍고 갈 수 있으면 바로 저장
+	if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vDest, XMVectorGetX(vDestDir), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+	{
+		XMStoreFloat3(&m_vDir, XMVector3Normalize(vDestDir));
+		m_iCurWayIndex = iDestIndex;
+		return;
+	}
 
-			if (1 == m_pGameInstance->Compare_VectorLength(XMLoadFloat3(&vDest), vPositionToPointDis))
+	for (_uint Index = 0; Index < m_WayPoints.size(); ++Index)
+	{
+		_vector vPositionToPointDis = XMVectorSetY(XMLoadFloat3(&m_WayPoints[Index].vPosition) - XMLoadFloat3(&vPos), 0.f);
+
+		//시작점 찾는데 시작 점을 여러개로 쓸지 보고 판단
+		if (1 == m_pGameInstance->Compare_VectorLength(XMLoadFloat3(&vPoint), vPositionToPointDis))
+		{
+			_float3 vPosTo; XMStoreFloat3(&vPosTo, XMVector3Normalize(vPositionToPointDis));
+			//가는길에 장애물 없으면
+			if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vPosTo, XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_WayPoints[Index].vPosition) - XMLoadFloat3(&vPos))),
+				OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
 			{
-				XMStoreFloat3(&vDest, vPositionToPointDis);
+				XMStoreFloat3(&vPoint, vPositionToPointDis);
+				iStartIndex = Index;
 			}
 		}
+	}
 
+	//목표 위치로 가는 웨이포인트 경로 찾기
+	priority_queue <pair<_float, pair<_uint, _uint>>, vector<pair<_float, pair<_uint, _uint>>>, compare> PriorityQueue;	//비용, 부모 인덱스, 자기 인덱스
+	map<_uint, _float> OpenMap; //자기 인덱스, 비용
+	map<_uint, _uint> ClosedMap;	//자기 인덱스, 부모 인덱스
+	_float fCostFromStart = 0.f;
+	_vector StartPos = XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition);
+	_vector DestPos = XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition);
+	_float fTargetDis = XMVectorGetX(XMVector3Length(XMVectorSetY(DestPos - StartPos, 0.f))); //heuristic
+	PriorityQueue.push({ fCostFromStart + fTargetDis, {iStartIndex, iStartIndex} }); //시작 노드 부모 자신으로 설정
+	OpenMap.insert({ iStartIndex, fCostFromStart + fTargetDis });
 
-		for (_uint Index = 0; Index < m_WayPoints.size(); ++Index)
+	while (!PriorityQueue.empty())
+	{
+		_float fCost = PriorityQueue.top().first;
+		_uint iParentIndex = PriorityQueue.top().second.first;
+		_uint iIndex = PriorityQueue.top().second.second;
+		PriorityQueue.pop();
+		ClosedMap.emplace(iIndex, iParentIndex);
+		if (iDestIndex == iIndex)
+			break;
+
+		for (_uint i = 0; i < m_WayPoints[iIndex].Neighbors.size(); ++i)
 		{
-			_vector vPositionToPointDis = XMVectorSetY(XMLoadFloat3(&m_WayPoints[Index].vPosition) - XMLoadFloat3(&vPos), 0.f);
-
-			//시작점 찾는데 시작 점을 여러개로 쓸지 보고 판단
-			if (1 == m_pGameInstance->Compare_VectorLength(XMLoadFloat3(&vPoint), vPositionToPointDis))
+			_uint Neighbor = m_WayPoints[iIndex].Neighbors[i];
+			//닫힌 목록에 없을 때
+			if (ClosedMap.end() == ClosedMap.find(Neighbor))
 			{
-				_float3 vPosTo; XMStoreFloat3(&vPosTo, XMVector3Normalize(vPositionToPointDis));
-				//가는길에 장애물 없으면
-				if (true == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vPosTo, XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_WayPoints[Index].vPosition) - XMLoadFloat3(&vPos))),
-					OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+				_vector NodePos = XMLoadFloat3(&m_WayPoints[Neighbor].vPosition);
+				//비용 계산
+				fCostFromStart = XMVectorGetX(XMVector3Length(XMVectorSetY(NodePos - StartPos, 0.f)));
+				fTargetDis = XMVectorGetX(XMVector3Length(XMVectorSetY(DestPos - NodePos, 0.f)));
+
+				if (true == OpenMap.insert({ Neighbor, fCostFromStart + fTargetDis }).second)
 				{
-					XMStoreFloat3(&vPoint, vPositionToPointDis);
-					iStartIndex = Index;
+					//이웃에 부모 인덱스 저장
+					PriorityQueue.push({ fCostFromStart + fTargetDis, {iIndex, Neighbor} });
 				}
-			}
-		}
-
-		//목표 위치로 가는 웨이포인트 경로 찾기
-		priority_queue <pair<_float, pair<_uint, _uint>>, vector<pair<_float, pair<_uint, _uint>>>, compare> PriorityQueue;	//비용, 부모 인덱스, 자기 인덱스
-		map<_uint, _float> OpenMap; //자기 인덱스, 비용
-		map<_uint, _uint> ClosedMap;	//자기 인덱스, 부모 인덱스
-		_float fCostFromStart = 0.f;
-		_vector StartPos = XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition);
-		_vector DestPos = XMLoadFloat3(&m_WayPoints[iDestIndex].vPosition);
-		_float fTargetDis = XMVectorGetX(XMVector3Length(XMVectorSetY(DestPos - StartPos, 0.f))); //heuristic
-		PriorityQueue.push({ fCostFromStart + fTargetDis, {iStartIndex, iStartIndex} }); //시작 노드 부모 자신으로 설정
-		OpenMap.insert({ iStartIndex, fCostFromStart + fTargetDis });
-
-		while (!PriorityQueue.empty())
-		{
-			_float fCost = PriorityQueue.top().first;
-			_uint iParentIndex = PriorityQueue.top().second.first;
-			_uint iIndex = PriorityQueue.top().second.second;
-			PriorityQueue.pop();
-			ClosedMap.emplace(iIndex, iParentIndex);
-			if (iDestIndex == iIndex)
-				break;
-
-			for (_uint i = 0; i < m_WayPoints[iIndex].Neighbors.size(); ++i)
-			{
-				_uint Neighbor = m_WayPoints[iIndex].Neighbors[i];
-				//닫힌 목록에 없을 때
-				if (ClosedMap.end() == ClosedMap.find(Neighbor))
+				//중복이면
+				else
 				{
-					_vector NodePos = XMLoadFloat3(&m_WayPoints[Neighbor].vPosition);
-					//비용 계산
-					fCostFromStart = XMVectorGetX(XMVector3Length(XMVectorSetY(NodePos - StartPos, 0.f)));
-					fTargetDis = XMVectorGetX(XMVector3Length(XMVectorSetY(DestPos - NodePos, 0.f)));
-
-					if (true == OpenMap.insert({ Neighbor, fCostFromStart + fTargetDis }).second)
+					//비용이 더 작은 걸 저장
+					if (fCostFromStart + fTargetDis < OpenMap[Neighbor])
 					{
-						//이웃에 부모 인덱스 저장
 						PriorityQueue.push({ fCostFromStart + fTargetDis, {iIndex, Neighbor} });
-					}
-					//중복이면
-					else
-					{
-						//비용이 더 작은 걸 저장
-						if (fCostFromStart + fTargetDis < OpenMap[Neighbor])
-						{
-							PriorityQueue.push({ fCostFromStart + fTargetDis, {iIndex, Neighbor} });
-							OpenMap[Neighbor] = fCostFromStart + fTargetDis;
-						}
+						OpenMap[Neighbor] = fCostFromStart + fTargetDis;
 					}
 				}
 			}
 		}
-
-		//경로없음
-		if (OpenMap.empty());
-
-
-		m_Ways.clear();
-		_uint iParent;
-		m_Ways.push_back(iDestIndex);
-		//닫힌 목록 저장
-		for (_uint i = ClosedMap[iDestIndex]; i != iStartIndex; i = ClosedMap[iParent])
-		{
-			iParent = i;
-			m_Ways.push_back(iParent);
-		}
-
-		//시작점까지 갔다가 다음 점으로 진행하는 거리와 다음 점으로 바로 가는 거리 비교해서 시작점으로 갈지 결정
-		_vector vFromStart = XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition) - m_pOwner->Get_FinalPosition() + XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition);
-		_vector vToNext = XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - m_pOwner->Get_FinalPosition();
-		if (2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
-		{
-			m_Ways.push_back(iStartIndex);
-		}
-
-		reverse(m_Ways.begin(), m_Ways.end());
-		m_iCurWayIndex = 0;
-		m_isOnWay = true;
-		m_isPathFind = false;
-
-		vResult = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition) - XMLoadFloat3(&vPos), 0.f);
 	}
-	else
+
+	//경로없음
+	if (OpenMap.empty());
+
+
+	m_Ways.clear();
+	_uint iParent;
+	m_Ways.push_back(iDestIndex);
+	//닫힌 목록 저장
+	for (_uint i = ClosedMap[iDestIndex]; i != iStartIndex; i = ClosedMap[iParent])
 	{
-		vResult = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition) - XMLoadFloat3(&vPos), 0.f);
+		iParent = i;
+		m_Ways.push_back(iParent);
 	}
+
+	//시작점까지 갔다가 다음 점으로 진행하는 거리와 다음 점으로 바로 가는 거리 비교해서 시작점으로 갈지 결정
+	_vector vFromStart = XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition) - m_pOwner->Get_FinalPosition() + XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition);
+	_vector vToNext = XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - m_pOwner->Get_FinalPosition();
+	if (2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
+	{
+		m_Ways.push_back(iStartIndex);
+	}
+
+	reverse(m_Ways.begin(), m_Ways.end());
+	m_iCurWayIndex = 0;
+	m_isOnWay = true;
+
+	vResult = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition) - XMLoadFloat3(&vPos), 0.f);
 
 	XMStoreFloat3(_vDirection, XMVector3Normalize(vResult));
 }
@@ -463,9 +480,14 @@ void CSneak_BackState::Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex)
 	switch (_iWayIndex)
 	{
 	case Client::WAYPOINTINDEX::CHAPTER2_1:
-		m_PatrolWaypoints.push_back(_float3(-17.f, 6.55f, 23.f));
-		m_PatrolWaypoints.push_back(_float3(-20.f, 6.55f, 23.f));
-		m_PatrolWaypoints.push_back(_float3(-23.f, 6.55f, 20.5f));
+		m_PatrolWaypoints.push_back({ _float3(-16.5f, 6.56f, 22.6f) });
+		m_PatrolWaypoints.push_back({ _float3(-20.f, 6.5f, 23.f) });
+		m_PatrolWaypoints.push_back({ _float3(-23.6f, 6.55f, 21.f) });
+
+		//waypoint 상에서의 인덱스
+		m_PatrolWayIndexes.push_back(9);
+		m_PatrolWayIndexes.push_back(10);
+		m_PatrolWayIndexes.push_back(11);
 		break;
 	default:
 		break;

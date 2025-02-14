@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TriggerObject.h"
 #include "GameInstance.h"
-#include "Collision_Manager.h"
+
 
 _int CTriggerObject::g_iNextID = -1;
 
@@ -146,8 +146,6 @@ HRESULT CTriggerObject::Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
 
 void CTriggerObject::Update(_float _fTimeDelta)
 {
-    if(nullptr!= m_pColliderCom)
-        CCollision_Manager::GetInstance()->Add_Collider(m_strSectionName,TRIGGER_OBJECT, m_pColliderCom);
 
     __super::Update(_fTimeDelta);
 }

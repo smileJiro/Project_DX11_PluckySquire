@@ -86,7 +86,7 @@ protected:
 	CGameInstance*				m_pGameInstance = nullptr;
 	CController_Transform*		m_pControllerTransform = nullptr; 
 	CRay*						m_pRayCom = nullptr;
-
+	vector<CCollider*>			m_p2DColliderComs;
 	_wstring					m_strSectionName = L"";
 
 private:

@@ -28,6 +28,7 @@ enum PLAYER_INPUT
 typedef struct tagPlayerInputResult
 {
 	_vector vMoveDir = {0,0,0};
+	_vector vDir = { 0,0,0 };
 	_bool bInputStates[PLAYER_KEY_LAST] = {false,};
 
 }PLAYER_INPUT_RESULT;
@@ -438,11 +439,12 @@ public: /* 2D 충돌 */
 	//Get
 	_bool Is_OnGround() {return m_bOnGround;}
 	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
-	_bool Is_Sneaking();
+	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
 	_bool Is_SwordHandling();
 	_bool Is_CarryingObject(){ return nullptr != m_PartObjects[PLAYER_PART_CARRYOBJ]; }
 	_bool Is_AttackTriggerActive();
+	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
 	_float Get_UpForce();
 	_float Get_AnimProgress();
 	_float Get_HeadHeight() { return m_fHeadHeight; }
@@ -453,7 +455,7 @@ public: /* 2D 충돌 */
 	_float Get_AirRunSpeed() { return m_fAirRunSpeed; }
 	_float Get_AirRunSpeed2D() { return m_f2DAirRunSpeed; }
 	_float Get_MoveSpeed(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DMoveSpeed : m_f3DMoveSpeed; }
-	_float Get_AttackDamg() { return m_tStat.fDamg; }
+	_float Get_PickupRange(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DPickupRange : m_f3DPickupRange; }	_float Get_AttackDamg() { return m_tStat.fDamg; }
 	_float Get_3DFloorDistance() { return m_f3DFloorDistance; }
 	_float Get_2DFloorDistance() { return m_f2DFloorDistance; }
 	_uint Get_SpinAttackLevel() { return m_iSpinAttackLevel; }
@@ -461,16 +463,17 @@ public: /* 2D 충돌 */
 	_vector Get_CenterPosition();
 	_vector  Get_HeadPosition();
 	_vector Get_LookDirection();
+	_vector Get_LookDirection(COORDINATE _eCoord);
 	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
 	_vector Get_ClamberEndPosition() { return m_vClamberEndPosition; }
 	_vector Get_WallNormal() { return m_vWallNormal; }
-	_float4x4* Get_CarryingOffset3D_Ptr() { return &m_mat3DCarryingOffset; }
-	_float4x4*Get_CarryingOffset2D_Ptr() { return &m_mat2DCarryingOffset; }
-	_vector Get_RootBonePosition();
-	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
-	CController_Transform* Get_Transform() { return m_pControllerTransform; }
+
+	const _float4x4* Get_CarryingOffset_Ptr(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? &m_mat2DCarryingOffset : &m_mat3DCarryingOffset; }
 	STATE Get_CurrentStateID();
+	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	PLAYER_MODE Get_PlayerMode() { return m_ePlayerMode; }
+	CController_Transform* Get_Transform() { return m_pControllerTransform; }
+	CCarriableObject* Get_CarryingObject();
 
 
 	//Set
@@ -519,6 +522,7 @@ private:
 	_float m_f3DMoveSpeed= 10.f;
 	_float m_f3DFloorDistance = 0;
 	_float m_f3DThrowObjectPower = 10.f;
+	_float m_f3DPickupRange = 1.3f;
 	_bool m_bOnGround = false;
 	_bool m_bAttackTrigger = false;
 	_uint m_iSpinAttackLevel = 4;
@@ -537,7 +541,9 @@ private:
 	_float m_f2DCenterYOffset= 36.f;
 	_float m_f2DInteractRange = 93.f;
 	_float m_f2DThrowObjectPower = 100.f;
+	_float m_f2DPickupRange = 93.f;
 	_float4x4 m_mat2DCarryingOffset = {};
+	_bool m_bPlatformerMode = false;
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
 	ATTACK_TRIGGER_DESC_2D m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST];// = { 93.f, 93.f, 120.f };
 	//ATTACK_TRIGGER_DESC_2D m_f2DAttackAngle[ATTACK_TYPE_LAST];// = { 110.f, 110.f,45.f };
