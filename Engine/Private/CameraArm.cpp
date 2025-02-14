@@ -157,6 +157,18 @@ void CCameraArm::Set_WorldMatrix()
     XMStoreFloat3(&m_vArm, m_pTransform->Get_State(CTransform::STATE_LOOK));
 }
 
+_bool CCameraArm::Get_IsInPreArmData(_int _iTriggerID, pair<RETURN_ARMDATA, _bool>* _pPreArmData)
+{
+    for (auto& PreArm : m_PreArms) {
+        if (_iTriggerID == PreArm.first.iTriggerID) {
+            _pPreArmData = &PreArm;
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void CCameraArm::Set_NextArmData(ARM_DATA* _pData, _int _iTriggerID)
 {
     // 초기화
@@ -180,6 +192,8 @@ void CCameraArm::Set_NextArmData(ARM_DATA* _pData, _int _iTriggerID)
                 
                 return;
             }
+
+            return;
         }
     }
 
@@ -190,7 +204,6 @@ void CCameraArm::Set_NextArmData(ARM_DATA* _pData, _int _iTriggerID)
     tData.iTriggerID = _iTriggerID;
 
     m_PreArms.push_back(make_pair(tData, false));
-    cout << "ㅋㅋ 씨발 왜 들어가지?" << endl;
 }
 
 void CCameraArm::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
@@ -215,7 +228,7 @@ void CCameraArm::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
             if (iterator->first.iTriggerID == _iTriggerID) {
 
                 // deque에서 해당 상태 제거
-                m_PreArms.erase((iterator + 1).base());
+                //m_PreArms.erase((iterator + 1).base());
                 return;
             }
         }
@@ -451,7 +464,7 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta)
 
     // 일단 Y축 회전 시간, EASE_IN으로 설정해서 하기
     if (!(m_iMovementFlags & DONE_Y_ROTATE)) {
-        _float fRatio = m_pGameInstance->Calculate_Ratio(&m_pNextArmData->fMoveTimeAxisY, _fTimeDelta, RATIO_TYPE::EASE_IN);
+        _float fRatio = m_pGameInstance->Calculate_Ratio(&m_pNextArmData->fMoveTimeAxisY, _fTimeDelta, m_pNextArmData->iRotationRatioType);
 
         if (fRatio >= 1.f) {
 
