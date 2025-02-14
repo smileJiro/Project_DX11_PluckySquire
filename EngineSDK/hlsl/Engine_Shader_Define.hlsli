@@ -6,6 +6,12 @@
 #define TONE_UNCHARTED2 2
 #define TONE_LUMAREINHARD 3
 
+
+#define RT_RENDER_DEAFULT 0
+#define RT_RENDER_ROTATE  1
+
+
+
 struct Material_PS
 {
     float4 Albedo; // baseColor

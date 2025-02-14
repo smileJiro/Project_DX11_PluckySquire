@@ -400,6 +400,9 @@
     <Filter Include="02.GameObjects\NPC\99. Social_Npc\00. Npc_Social">
       <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Components\Capturable">
+      <UniqueIdentifier>{739f8c23-cf4e-49d6-9e83-911d341d2c5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

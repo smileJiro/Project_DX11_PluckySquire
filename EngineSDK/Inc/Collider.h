@@ -29,8 +29,13 @@ public:
 	virtual HRESULT			Initialize(void* _pArg) override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
+
+#ifdef _DEBUG
+
 	virtual HRESULT			Render();
 	virtual HRESULT			Render(_float2 _fRenderTargetSize);
+#endif // _DEBUG
+
 
 public:
 	virtual _bool			Is_Collision(CCollider* _pOther) = 0;

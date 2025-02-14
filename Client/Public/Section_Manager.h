@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CGameInstance;
+class CModelObject;
 END
 
 BEGIN(Client)
@@ -208,6 +209,7 @@ public:
 	}
 
 	_uint							Generate_WorldPos_Priority_ID() { return m_iWorldPriorityGenKey++; }
+	HRESULT							Register_WorldCapture(const _wstring& _strSectionTag, CModelObject* _pObject);
 
 
 private:

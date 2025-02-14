@@ -69,56 +69,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 
-
-/* Start World Position Map Process */
-#pragma region 1. Create RTV, MRT, DSV, RenderGroup
-	{
-		/* Target_WorldPosMap_Book */
-		if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_WorldPosMap_Book"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 1.f))))
-			return E_FAIL;
-		if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_WorldPosMap_Book"), TEXT("Target_WorldPosMap_Book"))))
-			return E_FAIL;
-		if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_WorldPosMap_Book"), RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y)))
-			return E_FAIL;
-
-		CRenderGroup_WorldPos::RG_MRT_DESC Desc;
-		Desc.iRenderGroupID = RG_WORLDPOSMAP;
-		Desc.iPriorityID = PRWORLD_MAINBOOK;
-		Desc.isClear = false;
-		Desc.isViewportSizeChange = true;
-		Desc.pDSV = m_pGameInstance->Find_DSV(TEXT("DSV_WorldPosMap_Book"));
-		Desc.strMRTTag = TEXT("MRT_WorldPosMap_Book");
-		Desc.vViewportSize = { RTSIZE_BOOK2D_X , RTSIZE_BOOK2D_Y };
-		CRenderGroup_WorldPos* pRenderGroup_WorldPos = CRenderGroup_WorldPos::Create(m_pDevice, m_pContext, &Desc);
-		if (nullptr == pRenderGroup_WorldPos)
-			return E_FAIL;
-		if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_WorldPos->Get_RenderGroupID(), pRenderGroup_WorldPos->Get_PriorityID(), pRenderGroup_WorldPos)))
-			return E_FAIL;
-		Safe_Release(pRenderGroup_WorldPos);
-	}
-#pragma endregion // 1
-
-
-#pragma region 2. Create Read Only Texture (Staging)
-	{
-		D3D11_TEXTURE2D_DESC desc = {};
-		desc.Width = RTSIZE_BOOK2D_X; // 원본 텍스처 너비
-		desc.Height = RTSIZE_BOOK2D_Y; // 원본 텍스처 높이
-		desc.MipLevels = 1;
-		desc.ArraySize = 1;
-		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // 원본 텍스처와 동일한 포맷
-		desc.SampleDesc.Count = 1;
-		desc.Usage = D3D11_USAGE_STAGING; // CPU 읽기 전용
-		desc.BindFlags = 0; // 바인딩 없음
-		desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
-		m_pDevice->CreateTexture2D(&desc, nullptr, &m_pStagingTexture);
-	}
-#pragma endregion // 2
-
-
-#pragma region 3. Only One Time Render
-	m_pGameInstance->Add_RenderObject_New(RG_WORLDPOSMAP, PRWORLD_MAINBOOK, this);
-#pragma endregion // 3
+	Init_RT_RenderPos_Capcher();
 
 	return S_OK;
 }
@@ -472,6 +423,64 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 				return;
 		}
 	}
+}
+
+HRESULT CSampleBook::Init_RT_RenderPos_Capcher()
+{
+#pragma region 1. Create RTV, MRT, DSV, RenderGroup
+	{
+		/* Target_WorldPosMap_Book */
+		if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_WorldPosMap_Book"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_WorldPosMap_Book"), TEXT("Target_WorldPosMap_Book"))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_WorldPosMap_Book"), RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y)))
+			return E_FAIL;
+
+		CRenderGroup_WorldPos::RG_MRT_DESC Desc;
+		Desc.iRenderGroupID = RG_WORLDPOSMAP;
+		Desc.iPriorityID = PRWORLD_MAINBOOK;
+		Desc.isClear = false;
+		Desc.isViewportSizeChange = true;
+		Desc.pDSV = m_pGameInstance->Find_DSV(TEXT("DSV_WorldPosMap_Book"));
+		Desc.strMRTTag = TEXT("MRT_WorldPosMap_Book");
+		Desc.vViewportSize = { RTSIZE_BOOK2D_X , RTSIZE_BOOK2D_Y };
+		CRenderGroup_WorldPos* pRenderGroup_WorldPos = CRenderGroup_WorldPos::Create(m_pDevice, m_pContext, &Desc);
+		if (nullptr == pRenderGroup_WorldPos)
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_WorldPos->Get_RenderGroupID(), pRenderGroup_WorldPos->Get_PriorityID(), pRenderGroup_WorldPos)))
+			return E_FAIL;
+		Safe_Release(pRenderGroup_WorldPos);
+	}
+#pragma endregion // 1
+
+
+#pragma region 2. Create Read Only Texture (Staging)
+	{
+		D3D11_TEXTURE2D_DESC desc = {};
+		desc.Width = RTSIZE_BOOK2D_X; // 원본 텍스처 너비
+		desc.Height = RTSIZE_BOOK2D_Y; // 원본 텍스처 높이
+		desc.MipLevels = 1;
+		desc.ArraySize = 1;
+		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // 원본 텍스처와 동일한 포맷
+		desc.SampleDesc.Count = 1;
+		desc.Usage = D3D11_USAGE_STAGING; // CPU 읽기 전용
+		desc.BindFlags = 0; // 바인딩 없음
+		desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+		m_pDevice->CreateTexture2D(&desc, nullptr, &m_pStagingTexture);
+	}
+#pragma endregion // 2
+
+
+#pragma region 3. Only One Time Render
+	m_pGameInstance->Add_RenderObject_New(RG_WORLDPOSMAP, PRWORLD_MAINBOOK, this);
+#pragma endregion // 3
+
+
+	// 따로 찍어야할 섹션을 확인후 레지스터.
+	//SECTION_MGR->Register_WorldCapture(L"TagTest", this);
+
+	return S_OK;
 }
 
 HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition)

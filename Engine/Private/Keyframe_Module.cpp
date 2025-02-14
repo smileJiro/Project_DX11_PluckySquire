@@ -1,7 +1,11 @@
 #include "Keyframe_Module.h"
 #include "Compute_Shader.h"
 
-const _char* CKeyframe_Module::g_szModuleNames[2] = {"COLOR_KEYFRAME", "SCALE_KEYFRAME"};
+#ifdef _DEBUG
+
+const _char* CKeyframe_Module::g_szModuleNames[2] = { "COLOR_KEYFRAME", "SCALE_KEYFRAME" };
+
+#endif // _DEBUG
 
 CKeyframe_Module::CKeyframe_Module(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)

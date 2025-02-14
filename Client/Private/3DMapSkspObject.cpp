@@ -39,7 +39,7 @@ HRESULT C3DMapSkspObject::Initialize(void* _pArg)
         E_FAIL;
 
 
-    p2DSection->Register_Capcher_WorldTexture(this);
+    p2DSection->Register_WorldCapture(this);
 
 
     return __super::Initialize(_pArg);
@@ -141,10 +141,7 @@ HRESULT C3DMapSkspObject::Render_WorldPosMap()
     if (nullptr == p3DModel)
         return E_FAIL;
 
-    m_pControllerModel->Render(m_pShaderComs[COORDINATE_3D], (_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
-
-#pragma endregion // 1
-
+    p3DModel->Render(m_pShaderComs[COORDINATE_3D], (_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
 
     ID3D11ShaderResourceView* pSRV = m_pGameInstance->Get_RT_SRV(p2DSection->Get_WorldRenderTarget_Tag());
     ID3D11Resource* pResource = nullptr;
