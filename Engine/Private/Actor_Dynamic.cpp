@@ -37,6 +37,8 @@ void CActor_Dynamic::Update(_float _fTimeDelta)
 	{
 		if (nullptr == m_pOwner)
 			return;
+		if (m_pOwner->Is_Dead())
+			return;
 		_matrix OwnerWorldMatrix = m_pOwner->Get_FinalWorldMatrix();
 		_vector vScale, vRotation, vTranslation;
 		XMMatrixDecompose(&vScale, &vRotation, &vTranslation, OwnerWorldMatrix);
@@ -65,7 +67,8 @@ void CActor_Dynamic::Late_Update(_float _fTimeDelta)
 	{
 		if (nullptr == m_pOwner)
 			return;
-
+		if (m_pOwner->Is_Dead())
+			return;
 		if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 			return;
 

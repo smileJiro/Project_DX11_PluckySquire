@@ -32,7 +32,7 @@ typedef struct tagPlayerInputResult
 	_bool bInputStates[PLAYER_KEY_LAST] = {false,};
 
 }PLAYER_INPUT_RESULT;
-class CPlayer final : public CCharacter, public IAnimEventReceiver
+class CPlayer final : public CCharacter, public virtual  IAnimEventReceiver
 {
 public:
 	typedef struct tagAttackTriggerDesc
@@ -62,7 +62,6 @@ public:
 	{
 		PLAYER_PART_SWORD= 1,
 		PLAYER_PART_GLOVE,
-		PLAYER_PART_CARRYOBJ,
 		PLAYER_PART_LAST
 	};
 	enum STATE
@@ -442,7 +441,7 @@ public: /* 2D 충돌 */
 	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
 	_bool Is_SwordHandling();
-	_bool Is_CarryingObject(){ return nullptr != m_PartObjects[PLAYER_PART_CARRYOBJ]; }
+	_bool Is_CarryingObject(){ return nullptr != m_CarryingObject; }
 	_bool Is_AttackTriggerActive();
 	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
 	_float Get_UpForce();
@@ -560,6 +559,7 @@ private:
 	class CPlayerSword* m_pSword = nullptr;
 	CModelObject* m_pBody = nullptr;
 	CModelObject* m_pGlove= nullptr;
+	CCarriableObject* m_CarryingObject = { nullptr, };
 
 	set<CGameObject*> m_AttckedObjects;
 public:
