@@ -43,12 +43,15 @@ private:
 public:
 	virtual HRESULT			Initialize_Prototype() override;
 	virtual HRESULT			Initialize(void* _pArg) override;
+	HRESULT					Init_RT_RenderPos_Capcher();
+
+public :	
 	virtual void			Priority_Update(_float _fTimeDelta) override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 	virtual HRESULT			Render_Shadow() override;
-	virtual HRESULT			Render_WorldPosMap() override;
+	virtual HRESULT			Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag) override;
 
 	_bool					Book_Action(BOOK_PAGE_ACTION _eAction);
 	void					PageAction_End(COORDINATE _eCoord, _uint iAnimIdx);
@@ -61,7 +64,6 @@ public:
 private :
 	CAnimEventGenerator*	m_pAnimEventGenerator = { nullptr };
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
-	ID3D11Texture2D*		m_pStagingTexture = nullptr;
 	_float3					m_fNextPos = {};
 	_bool					m_isAction = { false };
 

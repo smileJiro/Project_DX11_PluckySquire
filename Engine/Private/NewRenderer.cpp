@@ -230,6 +230,7 @@ HRESULT CNewRenderer::Load_IBL(const _wstring& _strIBLJsonPath)
 	return S_OK;
 }
 
+#ifdef _DEBUG
 void CNewRenderer::Update_Imgui()
 {
 	for (auto& Pair : m_RenderGroups)
@@ -237,6 +238,9 @@ void CNewRenderer::Update_Imgui()
 		Pair.second->Update_Imgui();
 	}
 }
+#endif // _DEBUG
+
+
 
 void CNewRenderer::Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _isUpdateConstBuffer)
 {
@@ -248,6 +252,8 @@ void CNewRenderer::Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _is
 		m_pShader->Bind_ConstBuffer("GlobalIBLConstData", m_pGlobalIBLConstBuffer);
 	}
 }
+
+#ifdef _DEBUG
 
 HRESULT CNewRenderer::Render_Debug()
 {
@@ -263,6 +269,8 @@ HRESULT CNewRenderer::Render_Debug()
 
 	return S_OK;
 }
+
+#endif // _DEBUG
 
 HRESULT CNewRenderer::Ready_DepthStencilView(const _wstring _strDSVTag, _uint _iWidth, _uint _iHeight)
 {
@@ -329,6 +337,12 @@ void CNewRenderer::Free()
 		Safe_Release(Pair.second);
 	}
 	m_DSVs.clear();
+
+	for (auto& pDebugComponent : m_DebugComponents)
+	{
+		Safe_Release(pDebugComponent);
+	}
+	m_DebugComponents.clear();
 
 	Safe_Release(m_pGlobalIBLConstBuffer);
 	Safe_Release(m_pVIBuffer);

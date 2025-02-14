@@ -128,6 +128,10 @@ protected:
 	CCollider* m_p2DNpcCollider = nullptr;
 	CStateMachine* m_pStateMachine = nullptr;
 
+
+	
+
+
 public:
 	HRESULT Cleanup_DeadReferences() override;
 	virtual void Active_OnEnable() override;

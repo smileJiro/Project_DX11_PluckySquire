@@ -456,7 +456,7 @@ void CGameInstance::Set_DebugRender(_bool _isBool)
 
 	return m_pRenderer->Set_DebugRender(_isBool);
 }
-
+#endif // _DEBUG
 HRESULT CGameInstance::Add_RenderGroup(_int _iGroupID, _int _iPriorityID, CRenderGroup* _pRenderGroup)
 {
 	if (nullptr == m_pNewRenderer)
@@ -565,6 +565,8 @@ HRESULT CGameInstance::Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D
 	return m_pNewRenderer->Bind_DofConstBuffer(_szConstBufferName, _pConstBuffer);
 }
 
+#ifdef _DEBUG
+
 HRESULT CGameInstance::Add_DebugComponent_New(CComponent* _pDebugCom)
 {
 	if (nullptr == m_pNewRenderer)
@@ -582,8 +584,6 @@ void CGameInstance::Set_DebugRender_New(_bool _isBool)
 }
 
 #endif // _DEBUG
-
-
 
 const KEY_STATE& CGameInstance::GetKeyState(KEY _eKEY)
 {

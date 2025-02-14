@@ -263,8 +263,12 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 
 	if (true == _ShapeData.isSceneQuery)
 		ShapeFlags |= PxShapeFlag::eSCENE_QUERY_SHAPE;
-	if(true == _ShapeData.isVisual)
+
+#ifdef _DEBUG
+	if (true == _ShapeData.isVisual)
 		ShapeFlags |= PxShapeFlag::eVISUALIZATION;
+#endif // _DEBUG
+
 
 
 	PxMaterial* pShapeMaterial = m_pGameInstance->Get_Material(_ShapeData.eMaterial);

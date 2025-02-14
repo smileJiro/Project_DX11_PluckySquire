@@ -217,6 +217,7 @@
     <ClInclude Include="..\Public\Dice.h" />
     <ClInclude Include="..\Public\Domino.h" />
     <ClInclude Include="..\Public\DeadState.h" />
+    <ClInclude Include="..\public\FallingRock.h" />
     <ClInclude Include="..\Public\FloorWord.h" />
     <ClInclude Include="..\Public\HitState.h" />
     <ClInclude Include="..\Public\Interactable.h" />
@@ -394,6 +395,7 @@
     <ClCompile Include="..\Private\Dice.cpp" />
     <ClCompile Include="..\Private\Domino.cpp" />
     <ClCompile Include="..\Private\DeadState.cpp" />
+    <ClCompile Include="..\private\FallingRock.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
     <ClCompile Include="..\Private\HitState.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />

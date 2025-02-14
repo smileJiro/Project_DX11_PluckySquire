@@ -69,56 +69,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 
-
-/* Start World Position Map Process */
-#pragma region 1. Create RTV, MRT, DSV, RenderGroup
-	{
-		/* Target_WorldPosMap_Book */
-		if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_WorldPosMap_Book"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 1.f))))
-			return E_FAIL;
-		if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_WorldPosMap_Book"), TEXT("Target_WorldPosMap_Book"))))
-			return E_FAIL;
-		if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_WorldPosMap_Book"), RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y)))
-			return E_FAIL;
-
-		CRenderGroup_WorldPos::RG_MRT_DESC Desc;
-		Desc.iRenderGroupID = RG_WORLDPOSMAP;
-		Desc.iPriorityID = PRWORLD_MAINBOOK;
-		Desc.isClear = false;
-		Desc.isViewportSizeChange = true;
-		Desc.pDSV = m_pGameInstance->Find_DSV(TEXT("DSV_WorldPosMap_Book"));
-		Desc.strMRTTag = TEXT("MRT_WorldPosMap_Book");
-		Desc.vViewportSize = { RTSIZE_BOOK2D_X , RTSIZE_BOOK2D_Y };
-		CRenderGroup_WorldPos* pRenderGroup_WorldPos = CRenderGroup_WorldPos::Create(m_pDevice, m_pContext, &Desc);
-		if (nullptr == pRenderGroup_WorldPos)
-			return E_FAIL;
-		if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_WorldPos->Get_RenderGroupID(), pRenderGroup_WorldPos->Get_PriorityID(), pRenderGroup_WorldPos)))
-			return E_FAIL;
-		Safe_Release(pRenderGroup_WorldPos);
-	}
-#pragma endregion // 1
-
-
-#pragma region 2. Create Read Only Texture (Staging)
-	{
-		D3D11_TEXTURE2D_DESC desc = {};
-		desc.Width = RTSIZE_BOOK2D_X; // 원본 텍스처 너비
-		desc.Height = RTSIZE_BOOK2D_Y; // 원본 텍스처 높이
-		desc.MipLevels = 1;
-		desc.ArraySize = 1;
-		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // 원본 텍스처와 동일한 포맷
-		desc.SampleDesc.Count = 1;
-		desc.Usage = D3D11_USAGE_STAGING; // CPU 읽기 전용
-		desc.BindFlags = 0; // 바인딩 없음
-		desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
-		m_pDevice->CreateTexture2D(&desc, nullptr, &m_pStagingTexture);
-	}
-#pragma endregion // 2
-
-
-#pragma region 3. Only One Time Render
-	m_pGameInstance->Add_RenderObject_New(RG_WORLDPOSMAP, PRWORLD_MAINBOOK, this);
-#pragma endregion // 3
+	Init_RT_RenderPos_Capcher();
 
 	return S_OK;
 }
@@ -190,7 +141,8 @@ HRESULT CSampleBook::Render()
 
 	for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
 	{
-		_uint iShaderPass = 0;
+		_uint iRotateFlag = 0;
+		_uint iShaderPass = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP;
 		auto pMesh = pModel->Get_Mesh(i);
 		_uint iMaterialIndex = pMesh->Get_MaterialIndex();
 
@@ -251,7 +203,6 @@ HRESULT CSampleBook::Render()
 				}
 	#pragma endregion
 
-
 				if (nullptr != pTargetSection)
 				{
 					CSection_2D* pSection_2D = static_cast<CSection_2D*>(pTargetSection);
@@ -261,14 +212,9 @@ HRESULT CSampleBook::Render()
 					if(nullptr != pResourceView)
 						pShader->Bind_SRV("g_AlbedoTexture", pResourceView);
 					
-					_uint iTargetShaderPass = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP;
 
 					if(pSection_2D->Is_Rotation())
-					{ 
-						iTargetShaderPass = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP_ROTATE;
-					}
-					
-					iShaderPass = iTargetShaderPass;
+						iRotateFlag = 1;
 				}
 
 #pragma region uv 매핑하기. (오른쪽 왼쪽 확인)
@@ -326,6 +272,8 @@ HRESULT CSampleBook::Render()
 		if (FAILED(pModel->Bind_Matrices(pShader, "g_BoneMatrices", i)))
 			return E_FAIL;
 
+		m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iRotateFlag, sizeof(_uint));
+
 		pShader->Begin(iShaderPass);
 
 		pMesh->Bind_BufferDesc();
@@ -340,9 +288,53 @@ HRESULT CSampleBook::Render_Shadow()
 	return S_OK;
 }
 
-HRESULT CSampleBook::Render_WorldPosMap()
+HRESULT CSampleBook::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag)
 {
 #pragma region 1. 책의 메인 페이지 좌, 우 메쉬를 찾아서 렌더.
+
+	CSection* pSection = SECTION_MGR->Find_Section(_strSectionTag);
+	ID3D11Resource* pResource = nullptr;
+	
+	ID3D11ShaderResourceView* pSRV = m_pGameInstance->Get_RT_SRV(_strCopyRTTag);
+	pSRV->GetResource(&pResource);
+	
+	
+	ID3D11Texture2D* pTexture = nullptr;
+
+	_uint iRotateFlag = 0;
+
+	if (nullptr == pSection)
+	{
+		D3D11_TEXTURE2D_DESC desc = {};
+		desc.Width = RTSIZE_BOOK2D_X; // 원본 텍스처 너비
+		desc.Height = RTSIZE_BOOK2D_Y; // 원본 텍스처 높이
+		desc.MipLevels = 1;
+		desc.ArraySize = 1;
+		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // 원본 텍스처와 동일한 포맷
+		desc.SampleDesc.Count = 1;
+		desc.Usage = D3D11_USAGE_STAGING; // CPU 읽기 전용
+		desc.BindFlags = 0; // 바인딩 없음
+		desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+		m_pDevice->CreateTexture2D(&desc, nullptr, &pTexture);
+
+		SECTION_MGR->Set_BookWorldPosMapTexture(pTexture);
+		Safe_AddRef(pTexture);
+	}
+	else
+	{
+		CSection_2D* p2DSection = static_cast<CSection_2D*>(pSection);
+		pTexture = p2DSection->Get_WorldTexture();
+		if (nullptr == pTexture)
+			return E_FAIL;
+
+		if (p2DSection->Is_Rotation())
+			iRotateFlag = 1;
+	}
+
+
+
+
+
 	if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
 		return E_FAIL;
 
@@ -353,31 +345,36 @@ HRESULT CSampleBook::Render_WorldPosMap()
 	CMesh* pLeftMesh = p3DModel->Get_Mesh(CUR_LEFT);
 	CMesh* pRightMesh = p3DModel->Get_Mesh(CUR_RIGHT);
 
+
 	_float2 vStartCoord = { 0.0f, 0.0f };
+	_float2 vEndCoord = { 0.5f, 1.f };
 	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vStartCoord, sizeof(_float2));
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iRotateFlag, sizeof(_uint));
+
 	p3DModel->Bind_Matrices(m_pShaderComs[COORDINATE_3D], "g_BoneMatrices", CUR_LEFT);
 	m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXANIMMESH::WORLDPOSMAP_BOOK);
 	pLeftMesh->Bind_BufferDesc();
 	pLeftMesh->Render();
 
 	vStartCoord = { 0.5f, 0.0f };
+	vEndCoord = { 1.f, 1.f };
 	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vStartCoord, sizeof(_float2));
 	p3DModel->Bind_Matrices(m_pShaderComs[COORDINATE_3D], "g_BoneMatrices", CUR_RIGHT);
 	m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXANIMMESH::WORLDPOSMAP_BOOK);
 	pRightMesh->Bind_BufferDesc();
 	pRightMesh->Render();
-#pragma endregion // 1
-
 
 #pragma region 2. 읽기 전용 텍스쳐에 WorldMapPos를 복사.
-	ID3D11ShaderResourceView* pSRV = m_pGameInstance->Get_RT_SRV(TEXT("Target_WorldPosMap_Book"));
-	ID3D11Resource* pResource = nullptr;
-	pSRV->GetResource(&pResource);
-	m_pContext->CopyResource(m_pStagingTexture, pResource);
-	Safe_Release(pResource);
-#pragma endregion // 2
 
-	CSection_Manager::GetInstance()->Set_BookWorldPosMapTexture(m_pStagingTexture);
+
+	m_pContext->CopyResource(pTexture, pResource);
+
+	Safe_Release(pResource);
+	Safe_Release(pTexture);
+
+#pragma endregion // 2
     return S_OK;
 }
 
@@ -477,6 +474,16 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 	}
 }
 
+HRESULT CSampleBook::Init_RT_RenderPos_Capcher()
+{
+	m_pGameInstance->Add_RenderObject_New(RG_WORLDPOSMAP, PRWORLD_MAINBOOK, this);
+
+	// 따로 찍어야할 섹션을 확인후 레지스터.
+	SECTION_MGR->Register_WorldCapture(L"Chapter2_P0102", this);
+
+	return S_OK;
+}
+
 HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition)
 {
 	if (Book_Action(_eAction))
@@ -516,7 +523,5 @@ CGameObject* CSampleBook::Clone(void* _pArg)
 
 void CSampleBook::Free()
 {
-	Safe_Release(m_pStagingTexture);
-
 	__super::Free();
 }

@@ -63,6 +63,8 @@ void CCollider_Circle::Late_Update(_float _fTimeDelta)
 
 }
 
+#ifdef _DEBUG
+
 HRESULT CCollider_Circle::Render(_float2 _fRenderTargetSize)
 {
     m_pEffect->SetWorld(XMMatrixIdentity());
@@ -82,6 +84,8 @@ HRESULT CCollider_Circle::Render(_float2 _fRenderTargetSize)
 
     return S_OK;
 }
+#endif // _DEBUG
+
 
 _bool CCollider_Circle::Is_Collision(CCollider* _pOther)
 {

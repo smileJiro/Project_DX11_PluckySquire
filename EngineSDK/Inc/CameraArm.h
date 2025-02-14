@@ -54,7 +54,7 @@ public:
 
 #ifdef _DEBUG
 	void				Render_Arm();
-
+#endif
 	_float3				Get_Rotation() { return m_vRotation; }
 	_float				Get_Length() { return m_fLength; }
 
@@ -63,8 +63,6 @@ public:
 	void				Set_ArmTag(_wstring _wszArmTag) { m_wszArmTag = _wszArmTag; }
 	void				Set_ArmVector(_vector _vArm);
 	void				Set_DesireVector();		// 최종 벡터 저장하는용
-#endif
-
 public:
 	_wstring			Get_ArmTag() { return m_wszArmTag; }
 	_vector				Get_ArmVector() { return XMLoadFloat3(&m_vArm); }

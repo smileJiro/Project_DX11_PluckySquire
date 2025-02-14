@@ -171,8 +171,8 @@ void CNPC_Social::Late_Update(_float _fTimeDelta)
 HRESULT CNPC_Social::Render()
 {
 #ifdef _DEBUG
-	if (COORDINATE_2D == Get_CurCoord())
-		m_p2DNpcCollider->Render();
+	//if (COORDINATE_2D == Get_CurCoord())
+	//	m_p2DNpcCollider->Render();
 #endif // _DEBUG
 
 	return S_OK;
@@ -264,6 +264,8 @@ HRESULT CNPC_Social::Ready_Components()
 		return E_FAIL;
 	
 	m_p2DNpcCollider = m_p2DColliderComs[0];
+	Safe_AddRef(m_p2DNpcCollider);
+
 
 	//CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
 	//AABBDesc.pOwner = this;

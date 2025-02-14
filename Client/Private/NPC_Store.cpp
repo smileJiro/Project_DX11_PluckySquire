@@ -166,10 +166,6 @@ void CNPC_Store::Late_Update(_float _fTimeDelta)
 
 HRESULT CNPC_Store::Render()
 {
-#ifdef _DEBUG
-	//if(COORDINATE_2D ==Get_CurCoord())
-	//	m_p2DNpcCollider->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
-#endif // _DEBUG
 
 	return S_OK;
 }
@@ -317,6 +313,7 @@ HRESULT CNPC_Store::Ready_Components()
 		return E_FAIL;
 
 	m_p2DNpcCollider = m_p2DColliderComs[0];
+	Safe_AddRef(m_p2DNpcCollider);
 
 	return S_OK;
 }

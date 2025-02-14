@@ -2,6 +2,7 @@
 	"dialogs": [
 		{
 			"id": "dialog_01",
+			"Section": "Chapter1_P0506",
 			"lines": [
 				{
 					"Portrait": 2,
@@ -119,6 +120,7 @@
 		},
 		{
 			"id": "DJ_Moobeard_Dialogue_01",
+			"Section": "Chapter1_P0506",
 			"lines": [
 				{
 					"Portrait": 7,

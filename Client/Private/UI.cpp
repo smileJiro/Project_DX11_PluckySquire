@@ -170,20 +170,14 @@ void CUI::Change_BookScale_ForShop(_float2 _vRTSize)
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)_vRTSize.x, (_float)_vRTSize.y, 0.0f, 1.0f));
 }
 
-
-
-
-
-
 void CUI::Free()
 {
 	Safe_Release(m_pModelCom);
+
 	Safe_Release(m_pShaderComs[COORDINATE_2D]);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);
 
 	__super::Free();
-
-
 
 }

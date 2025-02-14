@@ -126,6 +126,8 @@ HRESULT CGameObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPo
     if (FAILED(m_pControllerTransform->Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
 
+    for (auto& pCollider : m_p2DColliderComs)
+        pCollider->Set_Active(!(_int)_eCoordinate);
     return S_OK;
 }
 

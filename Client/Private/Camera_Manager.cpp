@@ -270,6 +270,7 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInit
 	{
 		if (nullptr == m_Cameras[TARGET_2D])
 			return;
+
 		CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), L"Layer_Player", 0);
 		
 		if (nullptr != pPlayer)

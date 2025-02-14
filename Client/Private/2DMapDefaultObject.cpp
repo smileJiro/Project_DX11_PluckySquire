@@ -61,8 +61,8 @@ HRESULT C2DMapDefaultObject::Render()
 {
     HRESULT hr = __super::Render();
 #ifdef _DEBUG
-    if (m_pColliderCom)
-        m_pColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+    //if (m_pColliderCom)
+    //    m_pColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
 #endif // _DEBUG
 
 
