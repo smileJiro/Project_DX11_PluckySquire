@@ -50,11 +50,14 @@ private:
 	vector<CDialog::DialogData>			m_DialogDatas;
 	
 	_tchar								m_tDialogId[MAX_PATH] = {};
+	_tchar								m_strCurrentSection[MAX_PATH] = {};
 	_int								m_iCurrnetLineIndex = { 0 };
 	_bool								m_isPortraitRender = { false };
 	_bool								m_isDisplayDialogue = { false };
 	_bool								m_isDialogueFinishShopPanel = { false };
 	_float4								m_vDialoguePos = { 0.f, 0.f, 0.f, 1.f };
+
+
 	_float3								m_vCalDialoguePos = { 0.f, 0.f, 0.f };
 	_float2								m_vShopPos = { 0.f, 0.f };
 
@@ -107,9 +110,9 @@ public:
 	vector<CLogo_Props*>				Get_LogoProps() { return m_LogoProps; }
 	void								pushBack_LogoPorp(CLogo_Props* _props) { m_LogoProps.push_back(_props); Safe_AddRef(_props); }
 	
-	_tchar*								Get_DialogId() { 
-		return m_tDialogId; }
-	void								Set_DialogId(const _tchar* _id, _bool _DisplayDialogue = true, _bool _DisPlayPortrait = true) { wsprintf(m_tDialogId, _id); m_isDisplayDialogue = _DisplayDialogue; m_isPortraitRender = _DisPlayPortrait; }
+	_tchar*								Get_DialogId() { return m_tDialogId; }
+	_tchar*								Get_strSectionID() { return m_strCurrentSection; }
+	void								Set_DialogId(const _tchar* _id, const _tchar* _strCurSection = nullptr, _bool _DisplayDialogue = true, _bool _DisPlayPortrait = true);
 
 	_int								Get_DialogueLineIndex() { return m_iCurrnetLineIndex; }
 	void								Set_DialogueLineIndex(_int _index) { m_iCurrnetLineIndex = _index; }

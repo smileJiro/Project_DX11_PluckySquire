@@ -77,14 +77,14 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 	}
 	
 	m_pModelCom->Set_Animation(pDesc->lines[pDesc->LineCount].NarAnim[0].iAnimationIndex);
-	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_BACKGROUND);
 
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_BACKGROUND);
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionid, this);
 
 	_float2 vPos = { 0.f, 0.f };
 
 	vPos = m_vPos;
-
 	vPos.x = vPos.x - vRTSize.x / 2.f;
 	vPos.y = -vPos.y + vRTSize.y / 2.f;
 
