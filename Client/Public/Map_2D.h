@@ -16,7 +16,7 @@ private:
 	virtual ~CMap_2D() = default;
 
 public:
-	HRESULT	Initialize(const _wstring _strTextureName, _float2 _fRenderTargetSize, _int _iPriorityID);
+	HRESULT	Initialize(const _wstring _strSectionTag, const _wstring _strTextureName, _float2 _fRenderTargetSize, _int _iPriorityID);
 
 private: /* 외부 요청을 통해 Register할지, 생성시점에 무조건 Register 할지, 그냥 Section채로 그릴지 Renderer 작업하면서 생각 필요. */
 	// 1. RenderTarget을 Target_Manager에 등록하는 기능.(DSV는 어떻게할지 생각해보자.) (x)
@@ -51,9 +51,6 @@ public:
 	const _float2&				Get_RenderTarget_Size() { return m_fRenderTargetSize; }
 
 
-	const _wstring				Get_WorldRenderTarget_Tag() { return m_strWorldRTKey; }
-
-
 private:
 	ID3D11Device*				m_pDevice = nullptr;
 	ID3D11DeviceContext*		m_pContext = nullptr;
@@ -69,6 +66,7 @@ private:
 	ID3D11Texture2D*			m_pWorldTexture = nullptr;
 
 
+	_wstring					m_strSectionTag;
 	_wstring					m_strTextureName;
 	_wstring					m_strRTKey;
 	_wstring					m_strDSVKey;
@@ -81,7 +79,7 @@ private:
 	_int						m_iPriorityID = 0;
 	_float2						m_fRenderTargetSize = {};
 public:
-	static CMap_2D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _wstring _strTextureName, _float2 _fRenderTargetSize, _int _iPriorityID);
+	static CMap_2D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _wstring _strSectionTag, const _wstring _strTextureName, _float2 _fRenderTargetSize, _int _iPriorityID);
 	void Free() override;
 };
 END

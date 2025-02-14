@@ -124,7 +124,7 @@ HRESULT C3DMapSkspObject::Render_Shadow()
     return __super::Render_Shadow();
 }
 
-HRESULT C3DMapSkspObject::Render_WorldPosMap()
+HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag)
 {
 
     CSection* pSection = SECTION_MGR->Find_Section(m_strRenderSectionTag);
@@ -143,7 +143,7 @@ HRESULT C3DMapSkspObject::Render_WorldPosMap()
 
     p3DModel->Render(m_pShaderComs[COORDINATE_3D], (_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
 
-    ID3D11ShaderResourceView* pSRV = m_pGameInstance->Get_RT_SRV(p2DSection->Get_WorldRenderTarget_Tag());
+    ID3D11ShaderResourceView* pSRV = m_pGameInstance->Get_RT_SRV(_strCopyRTTag);
     ID3D11Resource* pResource = nullptr;
     pSRV->GetResource(&pResource);
     m_pContext->CopyResource(pTexture, pResource);

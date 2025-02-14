@@ -64,7 +64,7 @@ void CModelObject::Late_Update(_float _fTimeDelta)
     __super::Late_Update(_fTimeDelta);
 }
 
-HRESULT CModelObject::Render_WorldPosMap()
+HRESULT CModelObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag)
 {
     //m_pGameInstance->Render_Begin();
     //// 1. 자기 자신에 해당하는 RT 및 MRT를 생성한다. 이때 사이즈는 자기 자신이 추후 바인딩 할 Section RTV와 동일해야한다. 
