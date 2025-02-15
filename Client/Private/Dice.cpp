@@ -44,8 +44,8 @@ HRESULT CDice::Initialize(void* _pArg)
 	ShapeData.isTrigger = false;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
-	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
-	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER| OBJECT_GROUP::INTERACTION_OBEJCT;
+	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER_TRIGGER | OBJECT_GROUP::INTERACTION_OBEJCT;
 	DiceModelDesc->pActorDesc = &ActorDesc;
 	DiceModelDesc->eActorType = ACTOR_TYPE::KINEMATIC;
 	if (FAILED(__super::Initialize(DiceModelDesc)))

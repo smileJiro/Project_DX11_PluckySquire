@@ -522,7 +522,13 @@ void CActor::Setup_SimulationFiltering(_uint _iMyGroup, _uint _iOtherGroupMask, 
 
 	for (auto& pShape : pShapes)
 	{
-		pShape->setSimulationFilterData(FilterData);
+		PxFilterData ShapeFilterData = pShape->getSimulationFilterData();
+		if(0 == ShapeFilterData.word0 || 0 == ShapeFilterData.word1)
+			pShape->setSimulationFilterData(FilterData);
+		else
+		{
+			int a = 0;
+		}
 	}
 
 	if (true == _isRunTime)

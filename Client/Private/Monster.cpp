@@ -40,7 +40,7 @@ HRESULT CMonster::Initialize(void* _pArg)
 		m_isSneakMode = true;
 
 	// Add Desc
-	pDesc->iCollisionGroupID = OBJECT_GROUP::MONSTER;
+	pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER;
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;

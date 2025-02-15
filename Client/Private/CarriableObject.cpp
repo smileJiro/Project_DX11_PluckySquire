@@ -36,6 +36,7 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 
     pDesc->iRenderGroupID_3D = RG_3D;
     pDesc->iPriorityID_3D = PR3D_GEOMETRY;
+	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 
 	pDesc->pActorDesc->pOwner = this;
     if (FAILED(__super::Initialize(pDesc)))

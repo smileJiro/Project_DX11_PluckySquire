@@ -29,7 +29,8 @@ HRESULT CPortal::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PORTAL_PART_LAST;
     pDesc->eStartCoord = COORDINATE_2D;
     pDesc->isCoordChangeEnable = true;
-    m_fTriggerRadius = pDesc->fTriggerRadius;
+    pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+    m_fTriggerRadius = 0.1;// pDesc->fTriggerRadius;
 
     // Actor Object는 차후에, ReadyObject 를 따로 불러 생성.
     if (FAILED(__super::Initialize(_pArg)))
@@ -98,7 +99,7 @@ HRESULT CPortal::Init_Actor()
     ShapeData.pShapeDesc = &ShapeSpereDesc;
 
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-    ShapeData.isTrigger = true;
+    ShapeData.isTrigger = false;
     ShapeData.isSceneQuery = false;
     ShapeData.iShapeUse = true;
     
@@ -108,7 +109,7 @@ HRESULT CPortal::Init_Actor()
 
     /* 충돌 필터에 대한 세팅 ()*/
     
-    ActorDesc.tFilterData.MyGroup = m_iCollisionGroupID = OBJECT_GROUP::PORTAL;
+    ActorDesc.tFilterData.MyGroup = m_iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
     ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_TRIGGER;
 
     ActorObjectDesc.pActorDesc = &ActorDesc;
@@ -132,7 +133,7 @@ HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
     CircleDesc.fRadius = _pDesc->fTriggerRadius;
     CircleDesc.vScale = { 1.0f, 1.0f };
     CircleDesc.isBlock = false;
-    CircleDesc.iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &CircleDesc)))
         return E_FAIL;
@@ -180,17 +181,27 @@ void CPortal::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
     // 인터렉트 '오브젝트' 라서, 트리거로 설정하면 애초에 저쪽에 걸리지가 않는구나...
    //그럼 인터렉팅은 2D만 쓰고, 별도로 구현해야 하는건가?
     //너무 불합리한 구조인데, 개선이 필요하지 않을까?(무형의 객체도 '인터렉트' 할 필요는 있지않나 싶고.)
+    // 
+    //김지완 답변 -> Interactable 상속받는 애들은 이거 해줄 필요 없어요. 플레이어가 불러주는 거에요.
+    //오브젝트 그룹은 INTERACTION_OBEJCT로 설정하면,
+    // 플레이어가 알아서 주변의 INTERACTION_OBEJCT 그룹의 오브젝트를 찾고 Interact 함수를 불러줍니다.
+    // 그리고 3D나 2D나 충돌체가 있어야 합니다. 플레이어가 감지할 수 있게. 
+    // 충돌체가 점 수준으로 작은 충돌체여도 괜찮습니다. 어차피 감지 범위는 플레이어의 Trigger 충돌체에 의해서 정해집니다.
+    // 3D충돌할 Shape은 Trigger가 false여야 플레이어의 Trigger Shape랑  충돌할 수 있기 때문에 
+    // Trigger = flase로 해주셔야 합니다.
+    // 무형의 객체도 충돌체만 달아주면 Interact 할 수 있습니다.
+    //해당 내용은 가이드에 추가해 놓을게요.
 
-    if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
-    {
-        CPlayer* pPlayer = static_cast<CPlayer*>(_Other.pActorUserData->pOwner);
-        PLAYER_INPUT_RESULT tKeyResult = pPlayer->Player_KeyInput();
-        if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
-        {
-            if(pPlayer->Get_CurCoord() == COORDINATE_3D)
-               Interact(pPlayer);
-        }
-    }
+    //if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
+    //{
+    //    CPlayer* pPlayer = static_cast<CPlayer*>(_Other.pActorUserData->pOwner);
+    //    PLAYER_INPUT_RESULT tKeyResult = pPlayer->Player_KeyInput();
+    //    if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
+    //    {
+    //        if(pPlayer->Get_CurCoord() == COORDINATE_3D)
+    //           Interact(pPlayer);
+    //    }
+    //}
 
 }
 
