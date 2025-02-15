@@ -11,6 +11,7 @@
 #include "Texture.h"
 #include "Ray.h"
 #include "3DModel.h"
+#include "2DModel.h"
 #include "Mesh.h"
 #include "Actor_Dynamic.h"
 #include "Actor_Static.h"

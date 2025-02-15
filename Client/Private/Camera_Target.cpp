@@ -348,9 +348,6 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 		}
 	}
 
-	cout << "CameraPos: " << XMVectorGetX(vCameraPos) << ", " << XMVectorGetY(vCameraPos) << ", " << XMVectorGetZ(vCameraPos) << endl;
-	cout << "Arm: " << XMVectorGetX(m_pCurArm->Get_ArmVector()) << ", " << XMVectorGetY(m_pCurArm->Get_ArmVector()) << ", " << XMVectorGetZ(m_pCurArm->Get_ArmVector()) << endl;
-
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
 	Look_Target(vTargetPos, _fTimeDelta);
@@ -391,10 +388,6 @@ void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 			vCameraPos = vFixedPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 		}
 	}
-
-	cout << "=========ÇöÀç Turn Áß" << endl;
-	cout << "CameraPos: " << XMVectorGetX(vCameraPos) << ", " << XMVectorGetY(vCameraPos) << ", " << XMVectorGetZ(vCameraPos) << endl;
-	cout << "Arm: " << XMVectorGetX(m_pCurArm->Get_ArmVector()) << ", " << XMVectorGetY(m_pCurArm->Get_ArmVector()) << ", " << XMVectorGetZ(m_pCurArm->Get_ArmVector()) << endl;
 
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 

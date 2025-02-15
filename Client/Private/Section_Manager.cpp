@@ -315,7 +315,8 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_p
 {
     // 맵핑하여 데이터 접근
     D3D11_MAPPED_SUBRESOURCE mappedResource;
-    m_pContext->Map(m_pTargetTexture, 0, D3D11_MAP_READ, 0, &mappedResource);
+    if(FAILED(m_pContext->Map(m_pTargetTexture, 0, D3D11_MAP_READ, 0, &mappedResource)))
+        return _vector();
 
     // 2D Transform 위치를 픽셀 좌표계로 변환. 해당 텍스쳐의 가로 세로 사이즈를 알아야함.
     _int iWidth = mappedResource.RowPitch / sizeof(_float) / 4;

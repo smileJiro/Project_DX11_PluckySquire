@@ -35,6 +35,7 @@
 
 #include "2DMapObject.h"
 #include "3DMapObject.h"
+#include "FallingRock.h"
 
 
 //#include "UI.h"
@@ -58,29 +59,78 @@ CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext
 HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 {
 	m_eLevelID = _eLevelID;
-	Ready_Lights();
+	if (FAILED(Ready_Lights()))
+	{
+		MSG_BOX(" Failed Ready_Lights (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	CGameObject* pCameraTarget = nullptr;
-	Ready_CubeMap(TEXT("Layer_CubeMap"));
-	Ready_Layer_MainTable(TEXT("Layer_MainTable"));
-	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
-	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
-	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
-	Ready_Layer_Monster(TEXT("Layer_Monster"));
-	Ready_Layer_UI(TEXT("Layer_UI"));
-	//Ready_Layer_Effects(TEXT("Layer_Effect"));
-	Ready_Layer_NPC(TEXT("Layer_NPC"));
+	if (FAILED(Ready_CubeMap(TEXT("Layer_CubeMap"))))
+	{
+		MSG_BOX(" Failed Ready_CubeMap (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_MainTable(TEXT("Layer_MainTable"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_MainTable (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_TestTerrain (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget)))
+	{
+		MSG_BOX(" Failed Ready_Layer_Player (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget)))
+	{
+		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_UI (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_NPC(TEXT("Layer_NPC"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_NPC (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_FallingRock(TEXT("Layer_FallingRock"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_FallingRock (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	//if (FAILED(Ready_Layer_Effects(TEXT("Layer_Effect"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Effects (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 
 	//액터 들어가는넘.,
-	Ready_Layer_Map();
-
-	/* Pooling Test */
-	Pooling_DESC Pooling_Desc;
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle");
-	CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
-	pDesc->iCurLevelID = m_eLevelID;
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
+	if (FAILED(Ready_Layer_Map()))
+	{
+		MSG_BOX(" Failed Ready_Layer_Map (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	
+	///* Pooling Test */
+	//Pooling_DESC Pooling_Desc;
+	//Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	//Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+	//Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle");
+	//CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
+	//pDesc->iCurLevelID = m_eLevelID;
+	//CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
 
 	/* Collision Test */
 
@@ -278,6 +328,7 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	}
 
+
 }
 
 HRESULT CLevel_Chapter_02::Render()
@@ -328,6 +379,7 @@ HRESULT CLevel_Chapter_02::Ready_CubeMap(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	m_pGameInstance->Set_CubeMap(static_cast<CCubeMap*>(pCubeMap));
+
 	return S_OK;
 }
 
@@ -983,6 +1035,25 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects(const _wstring& _strLayerTag)
 	Desc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Portal.json"), m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_FallingRock(const _wstring& _strLayerTag)
+{
+	CFallingRock::FALLINGROCK_DESC Desc = {};
+	Desc.eStartCoord = COORDINATE_2D;
+	Desc.fFallDownEndY = RTSIZE_BOOK2D_Y * 0.5f - 50.f;
+	Desc.iCurLevelID = LEVEL_CHAPTER_2;
+	Desc.isDeepCopyConstBuffer = true;
+	Desc.Build_2D_Transform(_float2(0.0f, 500.f));
+
+	CGameObject* pGameObject = nullptr;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_FallingRock"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject , &Desc)))
+		return E_FAIL;
+
+	if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
 		return E_FAIL;
 
 	return S_OK;

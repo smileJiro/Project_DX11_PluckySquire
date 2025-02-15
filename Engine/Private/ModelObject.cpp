@@ -45,6 +45,7 @@ HRESULT CModelObject::Initialize(void* _pArg)
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
+ 
     return S_OK;
 }
 
@@ -55,7 +56,7 @@ void CModelObject::Priority_Update(_float _fTimeDelta)
 
 void CModelObject::Late_Update(_float _fTimeDelta)
 {
-    if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
+    if (COORDINATE_3D == Get_CurCoord())
     {
         m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
     }
@@ -265,7 +266,6 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
     {
     case Engine::COORDINATE_2D:
     {
-
         /* Com_Shader_2D */
         if (FAILED(Add_Component(iStaticLevelID, _pDesc->strShaderPrototypeTag_2D,
             TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
