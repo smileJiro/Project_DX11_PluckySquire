@@ -26,7 +26,7 @@ HRESULT CFallingRock::Initialize(void* _pArg)
 	m_fFallDownEndY = pDesc->fFallDownEndY;
 	
 	// Add Desc
-	pDesc->iCollisionGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
+	pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
 
 	/* 2D */
 	pDesc->Build_2D_Model(pDesc->iCurLevelID, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"), (_uint)PASS_VTXPOSTEX::SPRITE2D, true);
