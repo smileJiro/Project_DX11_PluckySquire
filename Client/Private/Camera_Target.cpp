@@ -346,10 +346,10 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 			vCameraPos = XMVectorLerp(vCurPos, XMVectorSetX(vCameraPos, XMVectorGetX(vCurPos)), fRatio);
 		}
 		else if (RESET == m_iFreezeMask) {
-			vCameraPos = XMVectorLerp(vCurPos, vCameraPos, fRatio);
+			//vCameraPos = XMVectorLerp(vCurPos, vCameraPos, fRatio);
 		
-			/*_float fZ = m_pGameInstance->Lerp(XMVectorGetZ(vCurPos), XMVectorGetZ(vCameraPos), fRatio);
-			vCameraPos = XMVectorSetZ(vCameraPos, fZ);*/
+			_float fZ = m_pGameInstance->Lerp(XMVectorGetZ(vCurPos), XMVectorGetZ(vCameraPos), fRatio);
+			vCameraPos = XMVectorSetZ(vCameraPos, fZ);
 		}
 	}
 	else {

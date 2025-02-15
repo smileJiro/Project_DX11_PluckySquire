@@ -46,6 +46,7 @@ private:
 	HRESULT	Execute_Trigger_Stay(const EVENT& _tEvent);
 	HRESULT	Execute_Trigger_Exit(const EVENT& _tEvent);
 	HRESULT	Execute_Trigger_FreezeEnter(const EVENT& _tEvent);
+	HRESULT	Execute_Trigger_LookAtEnter(const EVENT& _tEvent);
 	HRESULT	Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent);
 	
 	HRESULT	Execute_Book_Main_Section_Change_Start(const EVENT& _tEvent);

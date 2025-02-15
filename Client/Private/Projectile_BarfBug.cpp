@@ -35,7 +35,7 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    pDesc->iCollisionGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
+    pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
 
     pDesc->fLifeTime = 5.f;
     m_fLifeTime = pDesc->fLifeTime;

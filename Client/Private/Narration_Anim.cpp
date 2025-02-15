@@ -25,43 +25,49 @@ HRESULT CNarration_Anim::Initialize_Prototype()
 
 HRESULT CNarration_Anim::Initialize(void* _pArg)
 {
-	// TODO :: 해당 RT는 가변적이므로 추후 수정해야한다.
 	_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 
-
+	// Narration에서 전달한 데이터를 pDesc로 사용
 	CNarration::NarrationData* pDesc = static_cast<CNarration::NarrationData*>(_pArg);
 
+	// 애니메이션 인덱스가 올바르게 초기화되어 있다고 가정 (아직 초기화되지 않았다면 default 0 할당)
+	// pDesc->AnimIndex = 0;  // 필요 시 명시적으로 초기화
 
-	//pDesc->eStartCoord = COORDINATE_2D;
-	//pDesc->isCoordChangeEnable = false;
+	// m_iCurLevelID 설정 (양쪽 모두 동일하게)
+
+	if (!pDesc || pDesc->lines.empty() || pDesc->lines[0].NarAnim.empty()) return E_FAIL;
+
+	// 디버깅 로그 추가
+	std::wcout << L"Initializing animation with ID: "
+		<< pDesc->lines[0].NarAnim[pDesc->AnimIndex].strAnimationid << std::endl;
+
+
+
 
 	m_iCurLevelID = pDesc->iCurLevelID = pDesc->eCurlevelId;
 
-	if (0 < pDesc->lines[pDesc->LineCount].NarAnim.size())
+	if (0 < pDesc->lines[0].NarAnim.size())
 	{
-		m_strAnimationId = pDesc->lines[pDesc->LineCount].NarAnim[pDesc->AnimIndex].strAnimationid;
+		m_strAnimationId = pDesc->lines[0].NarAnim[pDesc->AnimIndex].strAnimationid;
 
-		if (true == pDesc->lines[pDesc->LineCount].isLeft)
+		if (pDesc->lines[0].isLeft)
 		{
-			pDesc->fX = m_vPos.x = pDesc->lines[pDesc->LineCount].NarAnim[0].vPos.x;
-			pDesc->fY = m_vPos.y = pDesc->lines[pDesc->LineCount].NarAnim[0].vPos.y;
+			// 항상 0번 인덱스로 접근 (각 tempData는 단일 대화 정보를 가짐)
+			pDesc->fX = m_vPos.x = pDesc->lines[0].NarAnim[pDesc->AnimIndex].vPos.x;
+			pDesc->fY = m_vPos.y = pDesc->lines[0].NarAnim[pDesc->AnimIndex].vPos.y;
 		}
-		else if (false == pDesc->lines[pDesc->LineCount].isLeft)
+		else
 		{
-			pDesc->fX = m_vPos.x = pDesc->lines[pDesc->LineCount].NarAnim[pDesc->AnimIndex].vPos.x + vRTSize.x / 2.f;
-			pDesc->fY = m_vPos.y = pDesc->lines[pDesc->LineCount].NarAnim[pDesc->AnimIndex].vPos.y;
+			_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+			pDesc->fX = m_vPos.x = pDesc->lines[0].NarAnim[pDesc->AnimIndex].vPos.x + vRTSize.x / 2.f;
+			pDesc->fY = m_vPos.y = pDesc->lines[0].NarAnim[pDesc->AnimIndex].vPos.y;
 		}
 
-
-
-		pDesc->fSizeX = m_fAnimationScale.x = pDesc->lines[pDesc->LineCount].NarAnim[0].vAnimationScale.x;
-		pDesc->fSizeY = m_fAnimationScale.y = pDesc->lines[pDesc->LineCount].NarAnim[0].vAnimationScale.y;
-
-
+		pDesc->fSizeX = m_fAnimationScale.x = pDesc->lines[0].NarAnim[pDesc->AnimIndex].vAnimationScale.x;
+		pDesc->fSizeY = m_fAnimationScale.y = pDesc->lines[0].NarAnim[pDesc->AnimIndex].vAnimationScale.y;
 	}
 
 	m_fWaitingTime = pDesc->lines[pDesc->LineCount].fwaitingTime;
-
 
 	m_isRender = true;
 
@@ -71,32 +77,25 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	if (true == pDesc->lines[pDesc->LineCount].NarAnim[0].isLoop)
+	// 루프 설정도 동일하게 pDesc->AnimIndex의 데이터로 처리
+	if (pDesc->lines[pDesc->LineCount].NarAnim[pDesc->AnimIndex].isLoop)
 	{
 		m_pModelCom->Set_AnimationLoop(0, true);
 	}
-	
-	m_pModelCom->Set_Animation(pDesc->lines[pDesc->LineCount].NarAnim[0].iAnimationIndex);
 
+	// pDesc->AnimIndex를 기반으로 애니메이션 인덱스를 적용
+	m_pModelCom->Set_Animation(pDesc->lines[pDesc->LineCount].NarAnim[pDesc->AnimIndex].iAnimationIndex);
 
-	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_BACKGROUND);
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionid, this);
 
-	_float2 vPos = { 0.f, 0.f };
-
-	vPos = m_vPos;
+	// 2D 렌더링용 좌표 변환
+	_float2 vPos = m_vPos;
 	vPos.x = vPos.x - vRTSize.x / 2.f;
 	vPos.y = -vPos.y + vRTSize.y / 2.f;
-
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
 	m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_vOriginSize.x, m_vOriginSize.y, 1.f));
-	//m_pControllerTransform->Set_Scale(m_fAnimationScale.x, m_fAnimationScale.y, 1.f);
-
-	//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.f, 0.f, 0.f, 1.f));
-
 
 	return S_OK;
-
 }
 
 
@@ -139,6 +138,12 @@ void CNarration_Anim::Late_Update(_float _fTimeDelta)
 
 HRESULT CNarration_Anim::Render()
 {	
+	if (false == CBase::Is_Active())
+	{
+		CBase::Set_Active(true);
+	}
+
+	
 
 	_matrix matLocal = *static_cast<C2DModel*>(m_pModelCom)->Get_CurrentSpriteTransform();
 	_matrix matRatioScalling = XMMatrixScaling((_float)RATIO_BOOK2D_X, (_float)RATIO_BOOK2D_Y, 1.f);
@@ -190,6 +195,11 @@ void CNarration_Anim::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CNarration_Anim::StartAnimation()
 {
+	if (false == this->CBase::Is_Active())
+	{
+		CBase::Set_Active(true);
+	}
+
 	m_isPlayAnimation = true;
 }
 

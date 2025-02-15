@@ -1,0 +1,38 @@
+[
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Position": [
+                6.505685806274414,
+                0.33333587646484375,
+                -3.1824536323547363
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Enable_LookAt_Info": {
+            "Exit_LookAt_Mask": {
+                "ExitLookAtMask": 2
+            },
+            "Is_LookAt": {
+                "CustomData": true,
+                "CustomData_Tag": "IsLookAt"
+            }
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "AAA",
+        "Trigger_Type": 8
+    }
+]
