@@ -806,6 +806,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         if (COORDINATE_2D == _eCoordinate)
         {
             m_pCarryingObject->Set_Include_Section_Name(m_strSectionName);
+            m_pAttack2DTriggerCom->Set_Active(false);
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCarryingObject);
         }
         else
