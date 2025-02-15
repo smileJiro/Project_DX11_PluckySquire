@@ -28,6 +28,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tool_Animation", "Tool_Anim
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Default\Client.vcxproj", "{1E6EBBA7-120A-40F6-BEA7-13E0E4F9E224}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FA872AED-9F1F-4848-8F7C-78CF765EE10B} = {FA872AED-9F1F-4848-8F7C-78CF765EE10B}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

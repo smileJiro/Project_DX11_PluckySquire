@@ -798,10 +798,24 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
     if (Is_CarryingObject())
+    {
         m_pCarryingObject->Change_Coordinate(_eCoordinate);
-    if (COORDINATE_2D == Get_CurCoord()) {
+        if (COORDINATE_2D == _eCoordinate)
+        {
+            m_pCarryingObject->Set_Include_Section_Name(m_strSectionName);
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCarryingObject);
+        }
+        else
+        {
+            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pCarryingObject);
+        }
+
+    }
+    if (COORDINATE_2D == _eCoordinate)
+    {
         Set_2DDirection(E_DIRECTION::DOWN);
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
+
     }
     else
     {
@@ -1358,7 +1372,6 @@ void CPlayer::ThrowObject()
     }
 
 	CCarriableObject* pObj = static_cast<CCarriableObject*>(m_pCarryingObject);
-    pObj->Set_Carrier(nullptr);
     if (COORDINATE_3D == Get_CurCoord())
     {
         pObj->Set_Kinematic(false);
@@ -1368,6 +1381,7 @@ void CPlayer::ThrowObject()
         pObj->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, Get_FinalPosition());
     }
 	pObj->Throw(vForce);
+    pObj->Set_Carrier(nullptr);
 	Set_CarryingObject(nullptr);
 }
 
@@ -1395,7 +1409,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         if (iCurCoord == COORDINATE_2D)
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this, SECTION_2D_PLAYMAP_OBJECT);
         else
-            CSection_Manager::GetInstance()->Remove_GameObject_ToSectionLayer(L"Chapter2_SKSP_01",this);
+            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(L"Chapter2_SKSP_01",this);
 
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
 

@@ -39,35 +39,42 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 
 		return;
 	}
-
+	_bool bCarrying = m_pOwner->Is_CarryingObject();
 	// 이하 공중일 때
+	if (false == bCarrying)
+	{
 
-	if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
-	{
-		m_pOwner->Set_State(CPlayer::ROLL);
-		return;
+		if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
+		{
+			m_pOwner->Set_State(CPlayer::ROLL);
+			return;
+		}
+		else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
+		{
+			m_pOwner->Set_State(CPlayer::THROWSWORD);
+			return;
+		}
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
+		{
+			m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
+			return;
+		}
+
 	}
-	else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
+	else
 	{
-		m_pOwner->Set_State(CPlayer::THROWSWORD);
-		return;
-	}
-	else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
-	{
-		m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
-		return;
-	}
-	else	if (tKeyResult.bInputStates[PLAYER_KEY_THROWOBJECT])
-	{
-		m_pOwner->Set_State(CPlayer::THROWOBJECT);
-		return;
+		if (tKeyResult.bInputStates[PLAYER_KEY_THROWOBJECT])
+		{
+			m_pOwner->Set_State(CPlayer::THROWOBJECT);
+			return;
+		}
 	}
 	if (COORDINATE_3D == eCoord)
 	{
 		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
 		{
 			//기어오르기 체크
-			if (Try_Clamber())
+			if (false == bCarrying && Try_Clamber())
 				return;
 
 			//공중 무빙
@@ -197,6 +204,7 @@ _bool CPlayerState_JumpDown::Try_Clamber()
 			auto& iterHitPoint = raycasthits.begin();
 			for (auto& pActor : hitActors)
 			{
+				if(OBJECT_GROUP::MAPOBJECT ==  pActor->Get_CollisionGroupID())
 				if (iterHitPoint->vNormal.y < fSlopeThreshold)
 				{
 					iterHitPoint++;

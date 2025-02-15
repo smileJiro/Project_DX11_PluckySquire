@@ -108,15 +108,33 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
 		return E_FAIL;
-	 
+	_float fDominoXPosition = 14.47f;
+	_float fDominoYPosition = 1.61f;
+	_float fDominoZPosition = 24.3f;
+	_float fDominoXPositionStep = -3.5f;
+	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
+	tModelDesc.tTransform3DDesc.vInitialScaling = _float3(1.5f, 1.5f, 1.5f);
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino4");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
 		return E_FAIL;
-
+	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino2");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+		return E_FAIL;
+	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+	tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino3");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+		return E_FAIL;
+	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+		return E_FAIL;
 	// 그룹필터 제거
 	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
 	//m_pGameInstance->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	//m_pGameInstance->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
-
+	
 
 	//RayShape Test
 	CRayShape::RAYSHAPE_DESC Desc;
@@ -222,9 +240,9 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 	static _float3 vOutPos = {};
 	if (IS_IMPORT_IMGUI)
 	{
-		//ImGui::Begin("PickingPos");
-		//ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
-		//ImGui::End();
+		ImGui::Begin("PickingPos");
+		ImGui::InputFloat3("PickingPos##Pick", &vOutPos.x, "%.2f");
+		ImGui::End();
 	}
 	if (MOUSE_DOWN(MOUSE_KEY::MB))
 	{

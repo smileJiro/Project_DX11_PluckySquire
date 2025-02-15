@@ -79,7 +79,7 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
                     ShapeCookingDesc.isLoad = true;
                     ShapeCookingDesc.isSave = false;
                     ShapeData.eShapeType = SHAPE_TYPE::COOKING;
-                    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
+                    ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
                     ShapeData.pShapeDesc = &ShapeCookingDesc;
                     ShapeData.isTrigger = false;
                     _float3 fScale =

@@ -520,7 +520,7 @@ private:
 	_float m_fAirRunSpeed = 10.f;
 	_float m_f3DMoveSpeed= 10.f;
 	_float m_f3DFloorDistance = 0;
-	_float m_f3DThrowObjectPower = 10.f;
+	_float m_f3DThrowObjectPower = 20.f;
 	_float m_f3DPickupRange = 1.3f;
 	_float m_f3DKnockBackPower = 100.f;
 	_bool m_bOnGround = false;

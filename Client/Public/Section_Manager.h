@@ -45,7 +45,7 @@ public:
 /// </summary>
 /// <param name="_strSectionTag">섹션 키</param>
 /// <param name="_pGameObject">오브젝트</param>
-	HRESULT							Remove_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject);
+	HRESULT							Remove_GameObject_FromSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject);
 	
 	/// <summary>
 	/// 활성화된 섹션에 오브젝트를 집어넣는다.
