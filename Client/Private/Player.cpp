@@ -45,25 +45,20 @@ CPlayer::CPlayer(const CPlayer& _Prototype)
 
 HRESULT CPlayer::Initialize_Prototype()
 {
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadius = 93.f;
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadianAngle = XMConvertToRadians(120.f);
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fOffset = {0.f, m_f2DCenterYOffset };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadius = 90.f;
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fOffset = 50.f;
 
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fRadius = 93.f;
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fRadianAngle = XMConvertToRadians(120.f);
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fOffset = { 0.f, m_f2DCenterYOffset };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fRadius = 90.f;
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fOffset = 50.f;
 
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fRadius = 110.f;
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fRadianAngle = XMConvertToRadians(60.f);
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fOffset = { 0.f, m_f2DCenterYOffset };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fRadius = 50.f;
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fOffset = 80.f;
 
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fRadius = 110.f;
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fRadianAngle = XMConvertToRadians(360.f);
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fOffset = { 0.f, m_f2DCenterYOffset };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fOffset = 0.f;
 
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadius = 93.f;
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadianAngle = XMConvertToRadians(360.f);
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = { 0.f, 0.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = 30.f;
 
     XMStoreFloat4x4(&m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.f, 0.f));
     XMStoreFloat4x4(&m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 100.f, 0.f));
@@ -120,7 +115,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT ; // Actor가 충돌을 감지할 그룹
+	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::BLOCKER; // Actor가 충돌을 감지할 그룹
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
@@ -138,23 +133,35 @@ HRESULT CPlayer::Initialize(void* _pArg)
     BoxShapeData.isTrigger = false;
     BoxShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
     BoxShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    BoxShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT; // Actor가 충돌을 감지할 그룹
+    BoxShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::BLOCKER; // Actor가 충돌을 감지할 그룹
     ActorDesc.ShapeDatas.push_back(BoxShapeData);
 
     //주변 지형 감지용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
     ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
     ShapeData.isTrigger = true;
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_f3DCenterYOffset, 0)); //여기임
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_f3DCenterYOffset, 0));
     SHAPE_SPHERE_DESC SphereDesc = {};
     SphereDesc.fRadius = 2.5f;
     ShapeData.pShapeDesc = &SphereDesc;
-    ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT;
+    ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
+    ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER;
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
+    //상호작용 구 (트리거)
+    ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
+    ShapeData.iShapeUse = (_uint)PLAYER_SHAPE_USE::INTERACTION;
+    ShapeData.isTrigger = true;
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_f3DCenterYOffset, m_f3DInteractLookOffset));
+    SphereDesc.fRadius = m_f3DInteractRadius;
+    ShapeData.pShapeDesc = &SphereDesc;
+    ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
+    ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::BLOCKER;
+    ActorDesc.ShapeDatas.push_back(ShapeData);
+
+
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT;
+    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT| OBJECT_GROUP::BLOCKER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
@@ -333,17 +340,15 @@ HRESULT CPlayer::Ready_Components()
    m_pBody2DTriggerCom = m_p2DColliderComs[1];
    Safe_AddRef(m_pBody2DTriggerCom);
 
-   CCollider_Fan::COLLIDER_FAN_DESC FanDesc = {};
-   FanDesc.pOwner = this;
-   FanDesc.fRadius = m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadius;
-   FanDesc.fRadianAngle = m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadianAngle;
-   FanDesc.vDirection = { 0,-1 };
-   FanDesc.vScale = { 1.0f, 1.0f };
-   FanDesc.vOffsetPosition = m_f2DAttackTriggerDesc->fOffset;
-   FanDesc.isBlock = false;
-   FanDesc.isTrigger = true;
-   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Fan"),
-       TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &FanDesc)))
+   CircleDesc.pOwner = this;
+   CircleDesc.fRadius = m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadius;
+   CircleDesc.vScale = { 1.0f, 1.0f };
+   CircleDesc.vOffsetPosition = { 0.f,0.f };
+   CircleDesc.isBlock = false;
+   CircleDesc.isTrigger = true;
+   CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_TRIGGER;
+   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+       TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &CircleDesc)))
        return E_FAIL;
    m_pAttack2DTriggerCom = m_p2DColliderComs[2];
    Safe_AddRef(m_pAttack2DTriggerCom);
@@ -380,8 +385,6 @@ void CPlayer::Update(_float _fTimeDelta)
 {
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
-    if (Is_Sneaking())
-        int a = 0;
   //  if (COORDINATE_2D == eCoord)
   //  {
   //      //// TestCode : 태웅
@@ -606,15 +609,13 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_CollisionGroupID();
-    if (SHAPE_USE::SHAPE_TRIGER ==(SHAPE_USE)_My.pShapeUserData->iShapeUse)
+    if (PLAYER_SHAPE_USE::INTERACTION ==(PLAYER_SHAPE_USE)_My.pShapeUserData->iShapeUse)
     {
+        OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_CollisionGroupID();
         if (
             OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup
             //||
             //TODO :: PORTAL 예외처리. 더 좋은방법이 있으면 부탁함 0215 박예슬
-            // -> PORTAL대신 INTERACTION_OBJECT로 하면 안되나요?
-            // 만약 충돌체의 그룹 ID가 PORTAL이여야만 한다면, 게임 오브젝트의 GROUP을 사용할 수도 있습니다.
             //BJECT_GROUP::PORTAL == eOtehrGroup
             )
         {
@@ -1248,6 +1249,9 @@ void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
     default:
         break;
     }
+    _vector vTmpDir = EDir_To_Vector(m_e2DDirection_E);
+    _vector  vDir = vTmpDir * m_f2DInteractOffset;
+    m_pBody2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir) + m_f2DCenterYOffset});
 
     
 }
@@ -1267,7 +1271,6 @@ void CPlayer::Set_Kinematic(_bool _bKinematic)
     {
         pDynamicActor->Late_Update(0);
         pDynamicActor->Set_Kinematic();
-
     }
 	else
     {
@@ -1307,8 +1310,10 @@ void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 	if (COORDINATE_2D == Get_CurCoord())
 	{
         m_pAttack2DTriggerCom->Set_Active(true);
-		static_cast<CCollider_Circle*>( m_pAttack2DTriggerCom)->Set_Radius(m_f2DAttackTriggerDesc[_eAttackType].fRadius);
-        m_pAttack2DTriggerCom->Set_Offset(m_f2DAttackTriggerDesc[_eAttackType].fOffset);
+        _vector vTmpDir = EDir_To_Vector(m_e2DDirection_E);
+        _vector  vDir = vTmpDir * m_f2DAttackTriggerDesc[m_eCurAttackType].fOffset;
+		vDir = XMVectorSetY(vDir, XMVectorGetY(vDir) + m_f2DCenterYOffset);
+        m_pAttack2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir)});
 	}
 	else
 	{

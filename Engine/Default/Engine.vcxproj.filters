@@ -615,12 +615,14 @@
     <ClInclude Include="..\public\RenderTarget_MSAA.h">
       <Filter>01.Utility\09.RenderTargets\MSAA</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Collider_Fan.h" />
     <ClInclude Include="..\Public\Collision_Manager.h">
       <Filter>01.Utility\04.Components\Collider\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Gravity.h">
       <Filter>01.Utility\04.Components\Gravity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Collider_Fan.h">
+      <Filter>01.Utility\04.Components\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -918,12 +920,14 @@
     <ClCompile Include="..\private\RenderTarget_MSAA.cpp">
       <Filter>01.Utility\09.RenderTargets\MSAA</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Collider_Fan.cpp" />
     <ClCompile Include="..\Private\Collision_Manager.cpp">
       <Filter>01.Utility\04.Components\Collider\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Gravity.cpp">
       <Filter>01.Utility\04.Components\Gravity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collider_Fan.cpp">
+      <Filter>01.Utility\04.Components\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -212,6 +212,7 @@ void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CBarfBug::On_Hit(CGameObject* _pHitter, _float _fDamg)
 {
+    cout << "Barfbug hit" << endl;
     __super::On_Hit(_pHitter, _fDamg);
 }
 
