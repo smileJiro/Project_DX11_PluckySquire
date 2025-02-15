@@ -116,7 +116,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	//	assert(nullptr);
 	//}
 		//액터 들어가는넘.,
-	if (FAILED(Ready_Layer_Domino()))
+	if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
 		assert(nullptr);
