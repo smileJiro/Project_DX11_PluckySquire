@@ -116,11 +116,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	//	assert(nullptr);
 	//}
 		//액터 들어가는넘.,
-	if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
-	{
-		MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 
 	//액터 들어가는넘.,
 	if (FAILED(Ready_Layer_Map()))
@@ -1096,6 +1096,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_FallingRock(const _wstring& _strLayerTag)
 
 	if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
 		return E_FAIL;
+	
+
 
 	return S_OK;
 }

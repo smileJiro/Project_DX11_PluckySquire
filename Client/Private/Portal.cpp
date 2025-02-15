@@ -138,8 +138,7 @@ HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &CircleDesc)))
         return E_FAIL;
 
-    if(nullptr != pCollider)
-        m_p2DColliderComs.push_back(pCollider);
+    m_p2DColliderComs.push_back(pCollider);
 
     return S_OK;
 }
@@ -294,5 +293,6 @@ CGameObject* CPortal::Clone(void* _pArg)
 
 void CPortal::Free()
 {
+    Safe_Release(m_pColliderCom);
     __super::Free();
 }

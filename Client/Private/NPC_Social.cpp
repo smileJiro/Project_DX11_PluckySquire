@@ -362,6 +362,7 @@ CGameObject* CNPC_Social::Clone(void* _pArg)
 
 void CNPC_Social::Free()
 {
+
 	__super::Free();
 }
 
