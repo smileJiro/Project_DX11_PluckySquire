@@ -11,6 +11,14 @@
 #define RT_RENDER_ROTATE  1
 
 
+/* Normal Enum Flag */
+#define NONEWRITE_NORMAL -1
+#define POSITIVE_X 0 
+#define NEGATIVE_X 1 
+#define POSITIVE_Y 2 
+#define NEGATIVE_Y 3 
+#define POSITIVE_Z 4 
+#define NEGATIVE_Z 5 
 
 struct Material_PS
 {

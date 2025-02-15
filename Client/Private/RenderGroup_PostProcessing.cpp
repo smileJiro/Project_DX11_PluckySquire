@@ -48,8 +48,8 @@ HRESULT CRenderGroup_PostProcessing::Render(CShader* _pRTShader, CVIBuffer_Rect*
         Setup_Viewport(vSize);
         // 3. Bind TexelSize 
         _float2 vTexelSize = {};
-        vTexelSize.x = 1.0 / vSize.x;
-        vTexelSize.y = 1.0 / vSize.y;
+        vTexelSize.x = 1.f / vSize.x;
+        vTexelSize.y = 1.f / vSize.y;
         _pRTShader->Bind_RawValue("g_TexelSize", &vTexelSize, sizeof(_float2));
 
         // 4. 다운 샘플링 할 SRV Bind 
@@ -105,7 +105,7 @@ HRESULT CRenderGroup_PostProcessing::Ready_BlurRenderTarget()
         /* blur level 4 기준 : 2, 4, 8*/
         _wstring strRTName = TEXT("Post_Blur_");
         strRTName += to_wstring(i);
-        _int iDiv = pow(2, i + 1); /* 2 제곱수부터 늘어나는 */
+        _int iDiv = (_int)pow(2, i + 1); /* 2 제곱수부터 늘어나는 */
         CRenderTarget* pDownTarget = CRenderTarget::Create(m_pDevice, m_pContext, strRTName, g_iWinSizeX / iDiv, g_iWinSizeY / iDiv, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f));
         assert(pDownTarget);
 
@@ -120,7 +120,7 @@ HRESULT CRenderGroup_PostProcessing::Ready_BlurRenderTarget()
         _wstring strRTName = TEXT("Post_Blur_");
         strRTName += to_wstring((iNumRenderTargets /2) + i);
         _int iLevel = m_iBlurLevel - 2 - i;
-        _int iDiv = pow(2, iLevel);
+        _int iDiv = (_int)pow(2, iLevel);
         CRenderTarget* pUpTarget = CRenderTarget::Create(m_pDevice, m_pContext, strRTName, g_iWinSizeX / iDiv, g_iWinSizeY / iDiv, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f));
 
         m_BlurRenderTargets[iNumRenderTargets / 2 + i] = pUpTarget;

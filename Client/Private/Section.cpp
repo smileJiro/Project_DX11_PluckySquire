@@ -32,6 +32,7 @@ HRESULT CSection::Initialize(SECTION_DESC* pDesc)
         return E_FAIL;
     }
 
+    Set_Active(false);
 
     return S_OK;
 }
@@ -48,6 +49,7 @@ HRESULT CSection::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint
         return E_FAIL;
 
     _pGameObject->Set_Include_Section_Name(m_strName);
+    _pGameObject->Set_Active(Is_Active());
     return S_OK;
 }
 

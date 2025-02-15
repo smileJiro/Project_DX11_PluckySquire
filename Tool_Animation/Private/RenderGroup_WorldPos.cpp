@@ -28,7 +28,7 @@ HRESULT CRenderGroup_WorldPos::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTB
     //for (auto& pGroupObject : m_GroupObjects)
     //{
     //    if (nullptr != pGroupObject && true == pGroupObject->Is_Render())
-    //        static_cast<CModelObject*>(pGroupObject)->Render_WorldPosMap(m_strRTTag, m_strSectionTag);
+    //        static_cast<CModelObject*>(pGroupObject)->Render_WorldPosMap();
 
     //    // Render 수행 후 해당 객체는 RefCount--
     //    Safe_Release(pGroupObject);

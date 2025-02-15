@@ -121,7 +121,7 @@ private:
 	HRESULT				Clear_RenderGroup();
 
 	HRESULT				SetUp_Info_to_Model(C2DMapObjectInfo* _pModelInfo, const _wstring& _strModelPath);
-
+	void				Set_Layer_OffsetPos(const _wstring& _strLayerTag);
 
 private:
 

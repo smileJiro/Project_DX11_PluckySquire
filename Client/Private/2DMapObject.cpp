@@ -59,10 +59,10 @@ void C2DMapObject::Late_Update(_float _fTimeDelta)
 HRESULT C2DMapObject::Render()
 {
     HRESULT hr = __super::Render();
-#ifdef _DEBUG
-    if(m_pColliderCom)
-        m_pColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
-#endif // _DEBUG
+//#ifdef _DEBUG
+//    if(m_pColliderCom)
+//        m_pColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+//#endif // _DEBUG
 
 
 
@@ -85,6 +85,7 @@ HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
 
     C2DModel* p2DModel = static_cast<C2DModel*>(pModel);
     const _matrix* matLocal = p2DModel->Get_CurrentSpriteTransform();
+    CCollider* pCollider = nullptr;
 
     if (nullptr != matLocal)
     {
@@ -115,7 +116,7 @@ HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
         AABBDesc.iCollisionGroupID = Desc->iCollisionGroupID;
         
         if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-            TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+            TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &AABBDesc)))
             return E_FAIL;
     }
     else if (CCollider::CIRCLE_2D == Desc->eColliderType)
@@ -132,7 +133,7 @@ HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
         CircleDesc.isBlock = _isBlock;
         CircleDesc.iCollisionGroupID = Desc->iCollisionGroupID;
         if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-            TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &CircleDesc)))
+            TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &CircleDesc)))
             return E_FAIL;
     }
 
@@ -141,6 +142,5 @@ HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
 
 void C2DMapObject::Free()
 {
-    Safe_Release(m_pColliderCom);
     __super::Free();
 }

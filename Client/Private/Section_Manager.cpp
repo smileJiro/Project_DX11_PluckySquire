@@ -182,7 +182,16 @@ HRESULT CSection_Manager::SetActive_Section(CSection* _pSection, _bool _isActive
     {
         _pSection->Set_Active(_isActive);
         _pSection->SetActive_GameObjects(_isActive);
+
+
+        if (_isActive)
+            m_pGameInstance->Register_Section(_pSection->Get_SectionName());
+        else
+            m_pGameInstance->Unregister_Section(_pSection->Get_SectionName());
     }
+
+
+
     return S_OK;
 }
 
@@ -247,8 +256,6 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
             return E_FAIL;
         m_pCurSection = pSection_2D;
 
-        if (m_pCurSection)
-            m_pGameInstance->Register_Section(m_pCurSection->Get_SectionName());
 
         //
         Main_Section_Active_Process(m_pCurSection->Get_SectionName());
@@ -333,7 +340,7 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_p
     _int iIndex = iPixelY * rowPitchInPixels + iPixelX;
 
     if (iWidth * iHeight <= iIndex || 0 > iIndex)
-        return XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+        return XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 
 
     _uint iDefaultIndex = iIndex * 4;
@@ -342,36 +349,36 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_p
     _float x = fData[iDefaultIndex]; // Red 채널
     _float y = fData[iDefaultIndex + 1]; // Green 채널
     _float z = fData[iDefaultIndex + 2]; // Blue 채널
-    //_float w = fData[iIndex * 4 + 3]; // Alpha 채널
+    _float w = fData[iDefaultIndex + 3]; // Alpha 채널
 
-    if (0.f == x &&
-        0.f == y &&
-        0.f == z
-        )
-    {
-        _vector vLerpPos = XMVectorLerp(XMVectorSet(
-            fData[iDefaultIndex - 4],
-            fData[iDefaultIndex - 3],
-            fData[iDefaultIndex - 2],
-            fData[iDefaultIndex - 1]
-        ),
-            XMVectorSet(
-                fData[iDefaultIndex + 4],
-                fData[iDefaultIndex + 5],
-                fData[iDefaultIndex + 6],
-                fData[iDefaultIndex + 7]
-            ), 0.5f);
+    //if (0.f == x &&
+    //    0.f == y &&
+    //    0.f == z
+    //    )
+    //{
+    //    _vector vLerpPos = XMVectorLerp(XMVectorSet(
+    //        fData[iDefaultIndex - 4],
+    //        fData[iDefaultIndex - 3],
+    //        fData[iDefaultIndex - 2],
+    //        fData[iDefaultIndex - 1]
+    //    ),
+    //        XMVectorSet(
+    //            fData[iDefaultIndex + 4],
+    //            fData[iDefaultIndex + 5],
+    //            fData[iDefaultIndex + 6],
+    //            fData[iDefaultIndex + 7]
+    //        ), 0.5f);
 
-        x = XMVectorGetX(vLerpPos);
-        y = XMVectorGetY(vLerpPos);
-        z = XMVectorGetZ(vLerpPos);
-    }
+    //    x = XMVectorGetX(vLerpPos);
+    //    y = XMVectorGetY(vLerpPos);
+    //    z = XMVectorGetZ(vLerpPos);
+    //}
 
 
     // 맵핑 해제
     m_pContext->Unmap(m_pTargetTexture, 0);
 
-    return XMVectorSet(x, y, z, 1.0f);
+    return XMVectorSet(x, y, z, w);
 }
 
 ID3D11RenderTargetView* CSection_Manager::Get_RTV_FromRenderTarget(const _wstring& _strSectionTag)
@@ -412,6 +419,29 @@ ID3D11ShaderResourceView* CSection_Manager::Get_SRV_FromTexture(const _wstring& 
         return nullptr;
 
     return pSection_2D->Get_SRV_FromTexture(_iTextureIndex);
+}
+
+void CSection_Manager::Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPosMap)
+{
+    if (nullptr != m_pBookWorldPosMap)
+        Safe_Release(m_pBookWorldPosMap);
+
+    m_pBookWorldPosMap = _pBookWorldPosMap;
+
+
+    for (auto& SectionPair : m_CurLevelSections)
+    {
+        if (nullptr != SectionPair.second)
+        {
+            CSection_2D* pSection2D = static_cast<CSection_2D*>(SectionPair.second);
+            if (!pSection2D->Is_Override_WorldTex())
+            {
+                pSection2D->Set_WorldTexture(m_pBookWorldPosMap);
+                Safe_AddRef(m_pBookWorldPosMap);
+            }
+        }
+    }
+
 }
 
 HRESULT CSection_Manager::Register_WorldCapture(const _wstring& _strSectionTag, CModelObject* _pObject)
@@ -557,6 +587,8 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 
             CSection_2D* pSection = nullptr;
 
+
+            // TODO :: SECTION CREATE
             switch (eType)
             {
                 case Client::CSection_2D::PLAYMAP:

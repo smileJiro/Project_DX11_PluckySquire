@@ -28,6 +28,7 @@ public:
 
 	void Stop_Rotate();
 	void Stop_Move();
+	void Stop_MoveXZ();
 
 	_bool Move_To(_fvector _vPosition, _float _fEpsilon = 0.5f);
 	_bool Check_Arrival(_fvector _vPosition, _float _fEpsilon = 0.5f);

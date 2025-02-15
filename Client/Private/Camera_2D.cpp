@@ -273,7 +273,9 @@ _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
 	/*if (true == m_isBook) {
 		vTargetPos = XMVectorSetY(vTargetPos, m_fFixedY);
 	}*/
-	
+
+	//NORMAL_DIRECTION::POSITIVE_X >>> normal 판정 enum >>> 사용시 주의 점은 반올림함수를 사용하면 안정성이 오르니 반올림 함수 사용하삼.
+
 	if(true == XMVector3Equal(XMVectorSet(0.f, 0.f, 0.f, 1.f), vTargetPos)) {
 		_vector vCurPos = XMVectorLerp(XMLoadFloat3(&m_v2DPreTargetWorldPos), XMLoadFloat3(&m_v2DTargetWorldPos), 0.05f);
 

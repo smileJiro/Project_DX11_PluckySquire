@@ -38,7 +38,7 @@ HRESULT CDomino::Initialize(void* _pArg)
 	ShapeData.eShapeType = SHAPE_TYPE::BOX;
 	ShapeData.eMaterial = ACTOR_MATERIAL::DOMINO;
 	ShapeData.isTrigger = false;
-	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc.vHalfExtents.y + 0.01, 0.f));
+	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc.vHalfExtents.y + 0.01f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 
 	SHAPE_BOX_DESC ShapeDesc2 = {};

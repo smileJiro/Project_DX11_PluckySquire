@@ -276,6 +276,25 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
+	void Event_Sneak_BeetleCaught(CActorObject* _pPlayer, CActorObject* _pMonster, _float3* _vPlayerPos, _float3* _vMonsterPos)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::SNEAK_BEETLECAUGHT;
+		tEvent.Parameters.resize(4);
+		tEvent.Parameters[0] = (DWORD_PTR)_pPlayer;
+		tEvent.Parameters[1] = (DWORD_PTR)_pMonster;
+
+		if (nullptr == _vPlayerPos || nullptr == _vMonsterPos)
+			return;
+
+		_float3* vPlayerPos = new _float3(*_vPlayerPos);
+		_float3* vMonsterPos = new _float3(*_vMonsterPos);
+
+		tEvent.Parameters[2] = (DWORD_PTR)vPlayerPos;
+		tEvent.Parameters[3] = (DWORD_PTR)vMonsterPos;
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
 
 	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID)
 	//{

@@ -183,6 +183,12 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_AddImpulse(_tEvent);
 	}
 	break;
+	case Client::EVENT_TYPE::SNEAK_BEETLECAUGHT:
+	{
+		Execute_Sneak_BeetleCaught(_tEvent);
+	}
+	break;
+
 	default:
 		break;
 	}
@@ -649,6 +655,22 @@ HRESULT CEvent_Manager::Execute_AddImpulse(const EVENT& _tEvent)
 	_vector vForce = XMLoadFloat3( (_float3*)_tEvent.Parameters[1]);
 
 	pCharacter->Add_Impuls(vForce);
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_Sneak_BeetleCaught(const EVENT& _tEvent)
+{
+	CActorObject* pPlayer = (CActorObject*)(_tEvent.Parameters[0]);
+	CActorObject* pMonster = (CActorObject*)(_tEvent.Parameters[1]);
+	_float3* vPlayerPos= (_float3*)(_tEvent.Parameters[2]);
+	_float3* vMonsterPos= (_float3*)(_tEvent.Parameters[3]);
+
+	pPlayer->Get_ActorCom()->Set_GlobalPose(*vPlayerPos);
+	pMonster->Get_ActorCom()->Set_GlobalPose(*vMonsterPos);
+
+	Safe_Delete(vPlayerPos);
+	Safe_Delete(vMonsterPos);
+
 	return S_OK;
 }
 

@@ -45,6 +45,25 @@ void CCharacter::Stop_Move()
         if (COORDINATE_3D == Get_CurCoord())
         {
             CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+  
+            _float fYVelocity = XMVectorGetY(pDynamicActor->Get_LinearVelocity());
+            pDynamicActor->Set_LinearVelocity(_vector{ 0,fYVelocity,0 });
+        }
+        else
+        {
+
+        }
+    }
+}
+
+void CCharacter::Stop_MoveXZ()
+{
+    ACTOR_TYPE eActorType = Get_ActorType();
+    if (ACTOR_TYPE::DYNAMIC == eActorType)
+    {
+        if (COORDINATE_3D == Get_CurCoord())
+        {
+            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
             pDynamicActor->Set_LinearVelocity(_vector{ 0,0,0,0 });
         }
         else
@@ -145,7 +164,7 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon)
         return true;
     }
 
-    pDynamicActor->Set_LinearVelocity(XMVector3Normalize(vDir), m_pControllerTransform->Get_SpeedPerSec()*2.f);
+    pDynamicActor->Set_LinearVelocity(XMVector3Normalize(vDir), m_pControllerTransform->Get_SpeedPerSec());
 
     return false;
 }

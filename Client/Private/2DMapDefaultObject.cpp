@@ -60,11 +60,6 @@ void C2DMapDefaultObject::Late_Update(_float _fTimeDelta)
 HRESULT C2DMapDefaultObject::Render()
 {
     HRESULT hr = __super::Render();
-#ifdef _DEBUG
-    //if (m_pColliderCom)
-    //    m_pColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
-#endif // _DEBUG
-
 
 
     return hr;
@@ -104,6 +99,5 @@ CGameObject* C2DMapDefaultObject::Clone(void* _pArg)
 
 void C2DMapDefaultObject::Free()
 {
-    Safe_Release(m_pColliderCom);
     __super::Free();
 }

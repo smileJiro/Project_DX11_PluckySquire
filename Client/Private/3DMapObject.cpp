@@ -98,7 +98,7 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
         }
     #pragma endregion
 
-    // PartObject Initialize를 건너뛰고, 작업한다. 
+    // ModelObject Initialize를 건너뛰고, 작업한다. 
     if (FAILED(CPartObject::Initialize(_pArg)))
         return E_FAIL;
 

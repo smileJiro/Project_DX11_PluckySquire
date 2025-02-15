@@ -18,8 +18,8 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 
 	json& jSpriteSize = jProperties["BakedSourceDimension"];
 
-	_uint iStart;
-	_uint iCount;
+	//_uint iStart;
+	//_uint iCount;
 	json& jBakedSourceTexture = jProperties["BakedSourceTexture"];
 
 	//string strTextureName = jBakedSourceTexture["ObjectName"];

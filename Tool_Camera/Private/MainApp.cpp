@@ -158,8 +158,7 @@ HRESULT CMainApp::Ready_RenderGroup()
 	CRenderGroup_MRT::RG_MRT_DESC RG_MRTDesc;
 	RG_MRTDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RG_MRTDesc.iPriorityID = PRIORITY_3D::PR3D_GEOMETRY;
-	RG_MRTDesc.strMRTTag = TEXT("
-		");
+	RG_MRTDesc.strMRTTag = TEXT("MRT_Geometry");
 	pRenderGroup_MRT = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_MRTDesc);
 	if (nullptr == pRenderGroup_MRT)
 	{
