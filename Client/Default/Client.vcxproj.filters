@@ -927,6 +927,10 @@
     <ClInclude Include="..\Public\Portal.h">
       <Filter>02.GameObjects\Portal</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Domino.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Die.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1407,7 +1411,6 @@
     <ClCompile Include="..\Private\Dice.cpp">
       <Filter>02.GameObjects\Carriable</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Domino.cpp" />
     <ClCompile Include="..\private\Blocker.cpp">
       <Filter>02.GameObjects\Blocker</Filter>
     </ClCompile>
@@ -1424,6 +1427,10 @@
     <ClCompile Include="..\Private\Portal.cpp">
       <Filter>02.GameObjects\Portal</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Domino.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Die.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

@@ -225,6 +225,7 @@
     <ClInclude Include="..\Public\Level_Chapter_Test.h" />
     <ClInclude Include="..\Public\Narration.h" />
     <ClInclude Include="..\Public\Narration_Anim.h" />
+    <ClInclude Include="..\Public\PlayerState_Die.h" />
     <ClInclude Include="..\Public\PlayerState_PickUpObject.h" />
     <ClInclude Include="..\Public\PlayerState_ThrowObject.h" />
     <ClInclude Include="..\Public\Portal.h" />
@@ -403,6 +404,7 @@
     <ClCompile Include="..\Private\Level_Chapter_Test.cpp" />
     <ClCompile Include="..\Private\Narration.cpp" />
     <ClCompile Include="..\Private\Narration_Anim.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Die.cpp" />
     <ClCompile Include="..\Private\PlayerState_PickUpObject.cpp" />
     <ClCompile Include="..\Private\PlayerState_ThrowObject.cpp" />
     <ClCompile Include="..\Private\Portal.cpp" />

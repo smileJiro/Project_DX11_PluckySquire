@@ -14,11 +14,12 @@ public:
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 
 private:
-    _float m_fJumpAttackRisingForce = 6.f;
+    _float m_fJumpAttackRisingForce = 1.5f;
     _bool m_bRising = true;
-    _float m_f3DLandAnimHeightThreshold = 2.6f;
+    _float m_f3DLandAnimHeightThreshold = 1.0f;
     _float m_f2DLandAnimHeightThreshold = 1.5f;
-    _bool m_fLandAnimed= false;
+    _bool m_bLandAnimed= false;
+    _bool m_bGrounded= false;
 
     _float m_fAirRunSpeed2D = 300.f;
     F_DIRECTION m_eOldFDir = F_DIRECTION::F_DIR_LAST;

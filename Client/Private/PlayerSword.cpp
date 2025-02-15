@@ -21,6 +21,14 @@ CPlayerSword::CPlayerSword(const CPlayerSword& _Prototype)
     , m_eCurrentState(HANDLING)
     , m_ePastState(HANDLING)
 {
+
+}
+
+HRESULT CPlayerSword::Initialize_Prototype()
+{
+
+
+    return S_OK;
 }
 
 HRESULT CPlayerSword::Initialize(void* _pArg)
@@ -59,19 +67,27 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     ActorDesc.FreezePosition_XYZ[2] = false;
 
 
-    /* 사용하려는 Shape의 형태를 정의 */
+    //일반 공격용 트리거
     SHAPE_SPHERE_DESC ShapeDesc = {};
-    ShapeDesc.fRadius = 0.5;
-
-    /* 해당 Shape의 Flag에 대한 Data 정의 */
+    ShapeDesc.fRadius = m_f3DNormalAttackRange;
     SHAPE_DATA ShapeData;
-    ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData.eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData.isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.5f)); 
+    ShapeData.pShapeDesc = &ShapeDesc;       
+    ShapeData.eShapeType = SHAPE_TYPE::SPHERE;  
+    ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;  
+	ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
+    ShapeData.isTrigger = true;                    
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, m_f3DNormalAttackZOffset));
+    ActorDesc.ShapeDatas.push_back(ShapeData);
 
-    /* 최종으로 결정 된 ShapeData를 PushBack */
+    //점프 공격용 트리거
+    SHAPE_SPHERE_DESC ShapeDesc2 = {};
+    ShapeDesc2.fRadius = m_f3DJumpAttackRange;
+    ShapeData.pShapeDesc = &ShapeDesc2;
+    ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
+    ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
+    ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
+    ShapeData.isTrigger = true;
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, m_f3DJumpAttackZOffset));
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
@@ -127,7 +143,8 @@ void CPlayerSword::Update(_float _fTimeDelta)
         {
             if (bOuting)
             {
-                m_AttckedObjects.clear();
+                Set_AttackEnable(false);
+                Set_AttackEnable(true);
                 //cout << "m_AttckedObjects clear Update" << endl;
             }
             vDir = XMVector3Normalize(vTargetPos - vPosition);
@@ -160,7 +177,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
     default:
         break;
     }
-
+    //cout << m_pActorCom->Get_Shapes()[0]->getActor() << endl;
 
     __super::Update(_fTimeDelta);
 }
@@ -206,7 +223,6 @@ void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other
             if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
             {
             }
-
         }
     }
 }
@@ -398,21 +414,37 @@ void CPlayerSword::Attack(CGameObject* _pVictim)
         Event_AddImpulse(pActor, Get_LookDirection(), m_f3DKnockBackPower);
     }
     m_AttckedObjects.insert(_pVictim);
+	Safe_AddRef(_pVictim);
 }
 
-void CPlayerSword::Set_AttackEnable(_bool _bOn)
+void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackType)
 {
-
-	if (false == _bOn)
+	COORDINATE eCoord = Get_CurCoord();
+    m_bAttackEnable = _bOn;
+    if (COORDINATE_3D == eCoord)
+    {
+        _uint iShapeCount = m_pActorCom->Get_Shapes().size();
+        for (_uint i = 0; i < iShapeCount; i++)
+            m_pActorCom->Set_ShapeEnable(i, false);
+    }
+    if (false == _bOn)
     {
         m_AttckedObjects.clear();
+        for (CGameObject* pObj : m_AttckedObjects)
+			Safe_Release(pObj);
+        if (COORDINATE_2D == eCoord)
+            m_pBody2DColliderCom->Set_Active(false);
     }
-    if (COORDINATE_3D == Get_CurCoord())
-        m_pActorCom->Set_ShapeEnable(0, _bOn);
     else
-        m_pBody2DColliderCom->Set_Active(_bOn);
-    m_bAttackEnable = _bOn;
+    {
+        if (COORDINATE_3D == eCoord)
+            m_pActorCom->Set_ShapeEnable(CPlayer::ATTACK_TYPE::ATTACK_TYPE_JUMPATTACK == _eAttackType ? 1 : 0, true);
+        else
+            m_pBody2DColliderCom->Set_Active(true);
+    }
+
 }
+
 
 _bool CPlayerSword::Is_AttackEnable()
 {
@@ -466,5 +498,9 @@ CGameObject* CPlayerSword::Clone(void* _pArg)
 void CPlayerSword::Free()
 {
 	Safe_Release(m_pBody2DColliderCom);
+    for (CGameObject* pObj : m_AttckedObjects)
+    {
+        Safe_Release(pObj);
+    }
     __super::Free();
 }
