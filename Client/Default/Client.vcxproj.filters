@@ -388,6 +388,12 @@
     <Filter Include="02.GameObjects\Bulb">
       <UniqueIdentifier>{838a1b77-e59c-4df8-86c2-66b5c85161a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Effect">
+      <UniqueIdentifier>{52430178-d5fc-45bf-89e5-81afb2c935cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Effect\Manager">
+      <UniqueIdentifier>{8e6fe075-fc28-45f2-bc17-c0061f9c983e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="94.RenderGroups%28Custom%29\PBR\PostProcessing">
       <UniqueIdentifier>{bd1f122a-17af-42d1-9d40-b60547c9cdb6}</UniqueIdentifier>
     </Filter>
@@ -402,6 +408,9 @@
     </Filter>
     <Filter Include="02.GameObjects\FallingRock">
       <UniqueIdentifier>{37786d41-acd2-43d8-9045-cadf34912d64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Portal">
+      <UniqueIdentifier>{e79f9f98-f32d-4906-84e3-b695f14a3e7c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -898,7 +907,6 @@
     <ClInclude Include="..\Public\Dice.h">
       <Filter>02.GameObjects\Carriable</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Domino.h" />
     <ClInclude Include="..\public\Blocker.h">
       <Filter>02.GameObjects\Blocker</Filter>
     </ClInclude>
@@ -911,8 +919,12 @@
     <ClInclude Include="..\Public\Level_Chapter_Test.h">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\FallingRock.h">
-      <Filter>02.GameObjects\FallingRock</Filter>
+    <ClInclude Include="..\public\FallingRock.h" />
+    <ClInclude Include="..\Public\Portal.h">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Domino.h">
+      <Filter>02.GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1394,7 +1406,6 @@
     <ClCompile Include="..\Private\Dice.cpp">
       <Filter>02.GameObjects\Carriable</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Domino.cpp" />
     <ClCompile Include="..\private\Blocker.cpp">
       <Filter>02.GameObjects\Blocker</Filter>
     </ClCompile>
@@ -1407,8 +1418,12 @@
     <ClCompile Include="..\Private\Level_Chapter_Test.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\FallingRock.cpp">
-      <Filter>02.GameObjects\FallingRock</Filter>
+    <ClCompile Include="..\private\FallingRock.cpp" />
+    <ClCompile Include="..\Private\Portal.cpp">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Domino.cpp">
+      <Filter>02.GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

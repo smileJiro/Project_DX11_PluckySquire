@@ -223,6 +223,7 @@ _bool CCollider_Circle::Is_Collision_AABB(CCollider_AABB* _pOther)
 
     // 1. Clamp를 통해 AABB에 가장 가까운 점을 찾는다.
     _float2 vNearestPoint = {};
+    // TODO :: 챕터 2 5번째 스페이스 탔을때 오류 뜸 
     vNearestPoint.x = clamp(m_vPosition.x, vLT.x, vRB.x); 
     vNearestPoint.y = clamp(m_vPosition.y, vRB.y, vLT.y);
 

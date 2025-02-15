@@ -3,6 +3,7 @@
 #include "ModelObject.h"
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
+#include "Section_Manager.h"
 
 CProjectile_BarfBug::CProjectile_BarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice, _pContext)
@@ -34,6 +35,7 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 
+    pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
 
     pDesc->fLifeTime = 5.f;
     m_fLifeTime = pDesc->fLifeTime;
@@ -54,6 +56,7 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
     pModelObject->Set_AnimationLoop(COORDINATE_2D, PROJECTILE, true);
 
+    pModelObject->Register_OnAnimEndCallBack(bind(&CProjectile_BarfBug::Animation_End, this, placeholders::_1, placeholders::_2));
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
@@ -119,13 +122,32 @@ HRESULT CProjectile_BarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3*
         return E_FAIL;
 
     if (COORDINATE_2D == Get_CurCoord())
+    {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(PROJECTILE);
+
+        CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+    }
+    else
+        CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 
     return S_OK;
 }
 
 void CProjectile_BarfBug::Change_Animation()
 {
+}
+
+void CProjectile_BarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+    switch (pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+    {
+    case PROJECTILESPLAT:
+        Event_DeleteObject(this);
+        break;
+    default:
+        break;
+    }
 }
 
 void CProjectile_BarfBug::On_Hit(CGameObject* _pHitter, _float _fDamg)
@@ -140,11 +162,13 @@ void CProjectile_BarfBug::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
         if((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
         {
             Event_Hit(this, _Other.pActorUserData->pOwner, 1.f);
-            _float3 vRepulse; XMStoreFloat3(&vRepulse, 10.f * _My.pActorUserData->pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
-            _Other.pActorUserData->pOwner->Get_ActorCom()->Add_Impulse(vRepulse);
+            _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+            XMVectorSetY(vRepulse, -1.f);
+            Event_AddImpulse(_My.pActorUserData->pOwner, vRepulse);
+            Event_DeleteObject(this);
         }
 
-        Event_DeleteObject(this);
+       
     }
 
     //if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
@@ -159,10 +183,29 @@ void CProjectile_BarfBug::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& 
 {
 }
 
+void CProjectile_BarfBug::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+    {
+        Event_Hit(this, _pOtherObject, 1.f);
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PROJECTILESPLAT);
+        m_isStop = false;
+    }
+}
+
+void CProjectile_BarfBug::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+}
+
+void CProjectile_BarfBug::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+}
+
 void CProjectile_BarfBug::Active_OnEnable()
 {
     __super::Active_OnEnable();
-    
+ 
+    m_isStop = false;
 	//if (COORDINATE_3D == Get_CurCoord())
  //       m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
 }
@@ -228,6 +271,20 @@ HRESULT CProjectile_BarfBug::Ready_ActorDesc(void* _pArg)
 
 HRESULT CProjectile_BarfBug::Ready_Components()
 {
+    /* 2D Collider */
+    m_p2DColliderComs.resize(1);
+
+    CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
+    AABBDesc.pOwner = this;
+    AABBDesc.vExtents = { 50.f, 50.f };
+    AABBDesc.vScale = { 1.0f, 1.0f };
+    AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y };
+    AABBDesc.isBlock = true;
+    AABBDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
+        return E_FAIL;
+
     return S_OK;
 }
 

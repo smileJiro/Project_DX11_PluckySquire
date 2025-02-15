@@ -57,8 +57,6 @@ protected:
 	HRESULT							Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock);
 
 protected:
-	CCollider*						m_pColliderCom = { nullptr };
-
 
 	_bool							m_isActive = false;
 	_bool							m_isCollider = false;

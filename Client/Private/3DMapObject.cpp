@@ -79,7 +79,7 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
                     ShapeCookingDesc.isLoad = true;
                     ShapeCookingDesc.isSave = false;
                     ShapeData.eShapeType = SHAPE_TYPE::COOKING;
-                    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
+                    ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
                     ShapeData.pShapeDesc = &ShapeCookingDesc;
                     ShapeData.isTrigger = false;
                     _float3 fScale =
@@ -92,13 +92,13 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
                     pDesc->pActorDesc = &ActorDesc;
 
                     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
-                    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT;
+                    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER | OBJECT_GROUP::BLOCKER;
                 }
             }
         }
     #pragma endregion
 
-    // PartObject Initialize를 건너뛰고, 작업한다. 
+    // ModelObject Initialize를 건너뛰고, 작업한다. 
     if (FAILED(CPartObject::Initialize(_pArg)))
         return E_FAIL;
 

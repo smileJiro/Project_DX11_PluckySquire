@@ -31,8 +31,9 @@ void CSneak_InvestigateState::State_Enter()
 	//처리해야함
 	m_isPathFind = true;
 	m_fAccTime = 0.f;
-	m_isRenew = true;
+	m_isRenew = false;
 	m_isTurn = false;
+	m_iCurWayIndex = 0;
 }
 
 void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
@@ -51,13 +52,14 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 			m_isRenew = true;
 		}
 	}
-
+	//cout << "Investigate" << endl;
 
 	_vector vDir = XMLoadFloat3(&m_vSneakPos) - m_pOwner->Get_FinalPosition();
 	_float fDis = XMVectorGetX(XMVector3Length((vDir)));	//3D상에서 y값도 더해서 거리 계산하는거 주의
 	//XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_FinalPosition()));
 	XMVectorSetW(vDir, 0.f);
 	vDir = XMVector3Normalize(XMVectorSetY(vDir, 0.f));
+	//cout << "Investigate" << endl;
 
 	//이동하다 소리가 나면 범위 내에서 가장 최근 위치로 다음 위치를 갱신 (현재 idle 상태에서도 인식이 되므로 일단 인식 안둠)
 	if (m_isRenew && m_pOwner->IsTarget_In_Sneak_Detection())
@@ -85,6 +87,8 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 	//위치에 도착했는데 안 보이면 경계상태로 전환
 	if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_vSneakPos), 0.5f))
 	{
+		m_pOwner->Stop_Rotate();
+		m_pOwner->Stop_Move();
 		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 		return;
 	}
@@ -96,13 +100,18 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 		Determine_NextDirection(XMLoadFloat3(&m_vSneakPos), &m_vDir);
 
 		//회전
-		if (true == m_isTurn && false == m_isMove)
+		if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+		{
+			m_isMove = true;
+		}
+
+		/*if (true == m_isTurn && false == m_isMove)
 		{
 			if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 			{
 				m_isMove = true;
 			}
-		}
+		}*/
 
 		//이동
 		if (true == m_isMove)
@@ -115,8 +124,10 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 				//도착하면 다음 웨이포인트로 목표위치 바꿈
 				if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition), 0.5f))
 				{
+					m_pOwner->Stop_Rotate();
+					m_pOwner->Stop_Move();
 					++m_iCurWayIndex;
-					m_isTurn = false;
+					m_isTurn = true;
 					m_isMove = false;
 					//목표 위치에 도착했으면 자유이동으로 전환
 					if (m_Ways.size() <= m_iCurWayIndex)
@@ -133,7 +144,7 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 void CSneak_InvestigateState::State_Exit()
 {
 	m_isTurn = false;
-	m_isPathFind = false;
+	m_Ways.clear();
 }
 
 void CSneak_InvestigateState::Determine_Direction()
@@ -322,6 +333,11 @@ void CSneak_InvestigateState::Determine_Direction()
 
 	XMStoreFloat3(&m_vDir, vResult);
 	m_isTurn = true;
+}
+
+void CSneak_InvestigateState::Set_Sneak_InvestigatePos(_fvector _vPosition)
+{
+	XMStoreFloat3(&m_vSneakPos, _vPosition);
 }
 
 CSneak_InvestigateState* CSneak_InvestigateState::Create(void* _pArg)

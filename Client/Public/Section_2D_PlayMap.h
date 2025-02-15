@@ -22,6 +22,9 @@ protected:
 	CSection_2D_PlayMap(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_PLAY_TYPE _ePlayType, SECTION_2D_RENDER_TYPE _eRenderType);
 	virtual ~CSection_2D_PlayMap() = default;
 
+
+	virtual void						Set_WorldTexture(ID3D11Texture2D* _pTexture) override;
+
 public:
 	HRESULT										Initialize(SECTION_2D_PLAYMAP_DESC* _pDesc, _uint _iPriorityKey);
 	virtual HRESULT								Import(json _SectionJson, _uint _iPriorityKey);

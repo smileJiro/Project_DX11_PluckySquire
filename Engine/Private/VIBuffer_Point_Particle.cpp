@@ -302,7 +302,7 @@ void CVIBuffer_Point_Particle::Begin_Update(_float _fTimeDelta)
 
 void CVIBuffer_Point_Particle::Spawn_Burst(_float _fTimeDelta, const _float4x4* _pSpawnMatrix)
 {
-	for (_int i = 0; i < m_iNumInstances; i++)
+	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
 		m_pUpdateVertices[i] = m_pInstanceVertices[i];
 		m_pUpdateVertices[i].vLifeTime.y = 0.f;
@@ -310,7 +310,7 @@ void CVIBuffer_Point_Particle::Spawn_Burst(_float _fTimeDelta, const _float4x4* 
 		if (_pSpawnMatrix)
 		{
 			_matrix matSpawn = XMLoadFloat4x4(_pSpawnMatrix);
-			for (_int i = 0; i < 3; ++i)
+			for (_uint i = 0; i < 3; ++i)
 				matSpawn.r[i] = XMVector3Normalize(matSpawn.r[i]);
 
 			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight), matSpawn));
@@ -347,7 +347,7 @@ void CVIBuffer_Point_Particle::Spawn_Rate(_float _fTimeDelta, _float _fSpawnRate
 		if (_pSpawnMatrix)
 		{
 			_matrix matSpawn = XMLoadFloat4x4(_pSpawnMatrix);
-			for (_int i = 0; i < 3; ++i)
+			for (_uint i = 0; i < 3; ++i)
 				matSpawn.r[i] = XMVector3Normalize(matSpawn.r[i]);
 
 			XMStoreFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight, XMVector3TransformNormal(XMLoadFloat4(&m_pUpdateVertices[m_iSpawnIndex].vRight), matSpawn));
@@ -363,7 +363,7 @@ void CVIBuffer_Point_Particle::Spawn_Rate(_float _fTimeDelta, _float _fSpawnRate
 
 void CVIBuffer_Point_Particle::Update_Buffer(_float _fTimeDelta, _bool _isPooling)
 {
-	for (_int i = 0; i < m_iNumInstances; i++)
+	for (_uint i = 0; i < m_iNumInstances; i++)
 	{
 		if (0.f < m_pUpdateVertices[i].vLifeTime.y)
 		{

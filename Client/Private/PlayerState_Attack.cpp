@@ -43,9 +43,13 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
             {
                 if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
                 {
-                    E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
-                    F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
-                    m_pOwner->Set_2DDirection(To_EDirection(tKeyResult.vDir));
+                    if (COORDINATE_2D == eCoord)
+                    {
+                        E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
+                        F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
+                        m_pOwner->Set_2DDirection(To_EDirection(tKeyResult.vDir));
+                    }
+
                 }
                 Switch_To_AttackAnimation(m_iComboCount);
                 m_pOwner->Start_Attack((CPlayer::ATTACK_TYPE)(CPlayer::ATTACK_TYPE_NORMAL1 + m_iComboCount));

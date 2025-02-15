@@ -10,6 +10,7 @@ END
 BEGIN(Client)
 class CCarriableObject;
 class CStateMachine;
+class IInteractable;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -32,14 +33,17 @@ typedef struct tagPlayerInputResult
 	_bool bInputStates[PLAYER_KEY_LAST] = {false,};
 
 }PLAYER_INPUT_RESULT;
-class CPlayer final : public CCharacter, public IAnimEventReceiver
+class CPlayer final : public CCharacter, public virtual  IAnimEventReceiver
 {
 public:
+	enum PLAYER_SHAPE_USE
+	{
+		INTERACTION = SHAPE_USE::SHAPE_USE_LAST,
+	};
 	typedef struct tagAttackTriggerDesc
 	{
 		_float fRadius;
-		_float fRadianAngle;
-		_float2 fOffset = {};
+		_float fOffset = {};
 	}ATTACK_TRIGGER_DESC_2D;
 	enum ATTACK_TYPE
 	{
@@ -62,7 +66,6 @@ public:
 	{
 		PLAYER_PART_SWORD= 1,
 		PLAYER_PART_GLOVE,
-		PLAYER_PART_CARRYOBJ,
 		PLAYER_PART_LAST
 	};
 	enum STATE
@@ -442,9 +445,10 @@ public: /* 2D 충돌 */
 	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
 	_bool Is_SwordHandling();
-	_bool Is_CarryingObject(){ return nullptr != m_PartObjects[PLAYER_PART_CARRYOBJ]; }
+	_bool Is_CarryingObject(){ return nullptr != m_pCarryingObject; }
 	_bool Is_AttackTriggerActive();
 	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
+	_bool Has_InteractObject() { return nullptr != m_pInteractableObject; }
 	_float Get_UpForce();
 	_float Get_AnimProgress();
 	_float Get_HeadHeight() { return m_fHeadHeight; }
@@ -507,6 +511,8 @@ private:
 private:
 	//Variables
 	_float m_f3DCenterYOffset = 0.5;
+	_float m_f3DInteractLookOffset = 0.65;
+	_float m_f3DInteractRadius = 1.0;
 	_float m_fHeadHeight = 1.0;
 	_float m_fArmHeight = 0.5f; // 벽타기 기준 높이
 	_float m_fArmLength = 0.325f;// 벽 타기 범위
@@ -521,8 +527,9 @@ private:
 	_float m_fAirRunSpeed = 10.f;
 	_float m_f3DMoveSpeed= 10.f;
 	_float m_f3DFloorDistance = 0;
-	_float m_f3DThrowObjectPower = 10.f;
+	_float m_f3DThrowObjectPower = 20.f;
 	_float m_f3DPickupRange = 1.3f;
+	_float m_f3DKnockBackPower = 100.f;
 	_bool m_bOnGround = false;
 	_bool m_bAttackTrigger = false;
 	_uint m_iSpinAttackLevel = 4;
@@ -542,6 +549,8 @@ private:
 	_float m_f2DInteractRange = 93.f;
 	_float m_f2DThrowObjectPower = 100.f;
 	_float m_f2DPickupRange = 93.f;
+	_float m_f2DKnockBackPower = 100.f;
+	_float m_f2DInteractOffset = 100.f;
 	_float4x4 m_mat2DCarryingOffset = {};
 	_bool m_bPlatformerMode = false;
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
@@ -561,7 +570,10 @@ private:
 	CModelObject* m_pBody = nullptr;
 	CModelObject* m_pGlove= nullptr;
 
+	//기타 관계된 오브젝트
+	CCarriableObject* m_pCarryingObject = { nullptr, };
 	set<CGameObject*> m_AttckedObjects;
+	IInteractable* m_pInteractableObject = nullptr;
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

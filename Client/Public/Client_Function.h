@@ -12,6 +12,7 @@ END
 BEGIN(Client)
 class CFSM;
 class CFSM_Boss;
+class CCharacter;
 END
 
 namespace Client
@@ -29,6 +30,7 @@ namespace Client
 	void Event_Trigger_Stay(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag);
 	void Event_Trigger_Exit(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag);
 	void Event_Trigger_FreezeEnter(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag, _float3 _vFreezeExitArm);
+	void Event_Trigger_LookAtEnter(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag, _bool	_isEnableLookAt);
 	void Event_Trigger_Exit_ByCollision(_uint _iTriggerType, _int _iTriggerID, _bool _isReturn = true);
 	void Event_Book_Main_Section_Change_Start(_uint _iPageDirection, _float3* _fNextPosition);
 	void Event_Book_Main_Section_Change_End(const _wstring& _strSectionTag);
@@ -37,17 +39,14 @@ namespace Client
 	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID, _bool _bEnable);
 	void Event_Hit(CGameObject* _pHitter,CGameObject* _pVictim ,_float _fDamg);
 	void Event_Get_Bulb(_uint _iCoordinate);
+	void Event_AddImpulse(CActorObject* _pObject,  _fvector _vDirection, _float _fPower);
+	void Event_AddImpulse(CActorObject* _pObject,  _fvector _vForce);
+	void Event_Sneak_BeetleCaught(CActorObject* _pPlayer, CActorObject* _pMonster, _float3* _vPlayerPosx, _float3* _vMonsterPos);
 
 	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID);
 	//void Event_CameraTriggerExit(_int _iTriggerID, _bool _isReturn = true);
 
 	//void Event_Book_Section_Change_Start(const _tchar* _strNextSectionKey, );
-
-
-
-
-
-
 
 	std::wstring StringToWstring(const std::string& _strUTF8);
 	std::string WstringToString(const std::wstring& wstr); 

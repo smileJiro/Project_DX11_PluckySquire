@@ -26,7 +26,6 @@ public:
 		SKSP,
 		SECTION_2D_PLAY_TYPE_LAST
 	};
-	// 섹션 내부 렌더그룹.
 
 public:
 	typedef struct tagSection2DDesc : public CSection::SECTION_DESC
@@ -116,10 +115,11 @@ public:
 	SECTION_2D_PLAY_TYPE				Get_Section_2D_PlayType() { return m_eMySectionPlayType; }
 
 	_bool								Is_Rotation() { return m_isRotation; }
+	_bool								Is_Override_WorldTex() { return m_isOverride_WorldTex; }
 
-	void								Set_WorldTexture(ID3D11Texture2D* _pTexture) 
+	virtual void						Set_WorldTexture(ID3D11Texture2D* _pTexture) 
 	{
-		if (nullptr != m_pMap)
+		if (nullptr == m_pMap)
 			return ;
 		return m_pMap->Set_WorldTexture(_pTexture);
 	}
@@ -151,6 +151,7 @@ protected:
 	_wstring				m_strPrePageTag = L"";
 
 	_bool					m_isRotation = false;
+	_bool					m_isOverride_WorldTex = false;
 
 protected:
 	/// <summary>

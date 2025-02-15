@@ -79,10 +79,6 @@ void CLevel_Camera_Tool::Update(_float _fTimeDelta)
 		CCamera_Manager_Tool::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
-	// Chagne To Trigger Tool
-	if (KEY_DOWN(KEY::ENTER))
-		Event_LevelChange(LEVEL_LOADING, LEVEL_TRIGGER_TOOL);
-
 	Show_CameraTool();
 	Show_CutSceneTool(_fTimeDelta);
 	Show_ArmInfo();
@@ -413,7 +409,7 @@ void CLevel_Camera_Tool::Create_Arms()
 	XMStoreFloat3(&Desc.vArm, -vPlayerLook);
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
 	//Desc.vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
-	Desc.fLength = 14.6;
+	Desc.fLength = 14.6f;
 	Desc.wszArmTag = TEXT("Player_Arm");
 
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
@@ -1016,7 +1012,7 @@ void CLevel_Camera_Tool::Change_ArmLength()
 		iZoomLevel = 0;
 	ImGui::Text("Fovy: %.2f", m_fFovys[iZoomLevel]);
 	CCamera_Manager_Tool::GetInstance()->Set_ZoomLevel(iZoomLevel);
-
+	m_iZoomLevel = iZoomLevel + 1;
 	// 여기서 동작
 	// ============================Desire, Reset
 	_float3 vCurArm = CCamera_Manager_Tool::GetInstance()->Get_CurrentArmVector();

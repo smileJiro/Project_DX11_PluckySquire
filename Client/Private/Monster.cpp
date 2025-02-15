@@ -40,7 +40,7 @@ HRESULT CMonster::Initialize(void* _pArg)
 		m_isSneakMode = true;
 
 	// Add Desc
-	pDesc->iCollisionGroupID = OBJECT_GROUP::MONSTER;
+	pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER;
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
@@ -94,10 +94,9 @@ void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 	if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup && (_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse)
 	{
 		Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().fDamg);
-		_float3 vRepulse; XMStoreFloat3(&vRepulse, 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f)));
-		vRepulse.y = -1.f;
-		_Other.pActorUserData->pOwner->Get_ActorCom()->Add_Impulse(vRepulse);
-		KnockBack(_Other.pActorUserData->pOwner);
+		_vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+		XMVectorSetY( vRepulse , -1.f);
+		Event_AddImpulse(_Other.pActorUserData->pOwner, vRepulse);
 	}
 }
 
@@ -125,14 +124,18 @@ void CMonster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
 	{
 		Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
-		//cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() <<" : " << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << " Enter" << endl;
-		if (1436 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
-			cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() <<" : " << " Enter" << endl;
+		//cout << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << " Enter" << endl;
+		/*if (1436 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
+			cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() <<" : " << " Enter" << endl;*/
 	}
 }
 
 void CMonster::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+	{
+		Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
+	}
 }
 
 void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -149,9 +152,19 @@ void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 	{
 		Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
 		//cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() << " : " << _Other.pActorUserData->pOwner->Get_GameObjectInstanceID() << " Exit" << endl;
-		if (1436 == _Other.pActorUserData->pOwner->Get_GameObjectInstanceID())
-			cout << (_int)_Other.pActorUserData->pOwner->Get_ActorType() << " : " << " Exit" << endl;
 	}
+}
+
+void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+}
+
+void CMonster::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+}
+
+void CMonster::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
 }
 
 void CMonster::On_Hit(CGameObject* _pHitter, _float _fDamg)
@@ -164,14 +177,6 @@ void CMonster::On_Hit(CGameObject* _pHitter, _float _fDamg)
 	}
 	
 	Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
-}
-
-void CMonster::KnockBack(CGameObject* _pHitter)
-{
-	_float3 vRepulse;
-	XMStoreFloat3(&vRepulse, -10.f * XMVector3Normalize(_pHitter->Get_FinalPosition() - Get_FinalPosition()));
-	vRepulse.y = -1.f;
-	Get_ActorCom()->Add_Impulse(vRepulse);
 }
 
 void CMonster::Attack()

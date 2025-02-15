@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Dice.h"
+#include "Section_Manager.h"
 
 CDice::CDice(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCarriableObject(_pDevice, _pContext)
@@ -22,8 +23,8 @@ HRESULT CDice::Initialize(void* _pArg)
 	DiceModelDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
 	DiceModelDesc->tTransform2DDesc.vInitialPosition = _float3(0.0f, 1.0f, 0.f);
 	DiceModelDesc->tTransform2DDesc.vInitialScaling = _float3(200.f, 200.f, 200.f);
-	DiceModelDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 1.0f, -10.f);
-	DiceModelDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//DiceModelDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 1.0f, -10.f);
+	//DiceModelDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	
 	CActor::ACTOR_DESC ActorDesc;
 	ActorDesc.pOwner = this;
@@ -43,14 +44,14 @@ HRESULT CDice::Initialize(void* _pArg)
 	ShapeData.isTrigger = false;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
-	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
-	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER| OBJECT_GROUP::INTERACTION_OBEJCT;
+	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::BLOCKER;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER_TRIGGER | OBJECT_GROUP::BLOCKER;
 	DiceModelDesc->pActorDesc = &ActorDesc;
 	DiceModelDesc->eActorType = ACTOR_TYPE::DYNAMIC;
 	if (FAILED(__super::Initialize(DiceModelDesc)))
 		return E_FAIL;
 
-
+	m_pActorCom->Set_Mass(1.5f);
     return S_OK;
 }
 

@@ -429,6 +429,9 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		case Engine::ACTOR_MATERIAL::NORESTITUTION: // 노반발력
 			vMaterialDesc = { 0.7f, 0.8f,0.f };
 			break;
+		case Engine::ACTOR_MATERIAL::DOMINO: // 도미노용
+			vMaterialDesc = { 0.5f, 0.6f,0.f };
+			break;
 		default:
 			break;
 		}

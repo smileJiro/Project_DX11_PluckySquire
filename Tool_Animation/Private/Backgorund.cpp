@@ -33,6 +33,7 @@ HRESULT CBackgorund::Render()
 	CShader* pShader = m_pShaderComs[eCoord];
 	_uint iShaderPass = m_iShaderPasses[eCoord];
 	m_pControllerModel->Render(pShader, iShaderPass);
+	return S_OK;
 }
 
 HRESULT CBackgorund::Bind_ShaderResources_WVP()

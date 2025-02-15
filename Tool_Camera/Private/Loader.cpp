@@ -239,7 +239,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/Models/2DAnim/Player/player.model2d")))))
+        C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/Models/2DAnim/Chapter2/Player/player.model2d")))))
         return E_FAIL;
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
@@ -265,7 +265,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         TEXT("../../Client/Bin/Resources/Models/3DObject/"), matPretransform)))
         return E_FAIL;
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CAMERA_TOOL,
-        TEXT("../../Client/Bin/Resources/Models/2DAnim/"))))
+        TEXT("../../Client/Bin/Resources/Models/2DAnim/Chapter2/"))))
         return E_FAIL;
 
 
@@ -343,9 +343,9 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TRIGGER_TOOL,
         TEXT("../../Client/Bin/Resources/Models/3DObject/"), matPretransform)))
         return E_FAIL;
-    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_TRIGGER_TOOL,
-        TEXT("../../Client/Bin/Resources/Models/2DAnim/"))))
-        return E_FAIL;
+    //if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_TRIGGER_TOOL,
+    //    TEXT("../../Client/Bin/Resources/Models/2DAnim/"))))
+    //    return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));

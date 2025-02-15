@@ -29,7 +29,7 @@ public:
 
 public:
 	pair<CModelObject*, CModelObject*>* Get_Line() { return &m_Line; }
-	_uint				Get_BulbCount() { return m_Bulbs.size(); }
+	_uint				Get_BulbCount() { return (_uint)m_Bulbs.size(); }
 	list<class CBulb*>* Get_Bulbs() { return &m_Bulbs; }
 	
 	void				Set_BulbPosOffset(_float _fBulbPosOffset) { m_fBulbPosOffset = _fBulbPosOffset; }

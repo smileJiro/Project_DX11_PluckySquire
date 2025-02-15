@@ -177,6 +177,20 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
+	void Event_Trigger_LookAtEnter(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag, _bool _isEnableLookAt)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::TRIGGER_LOOKAT_ENTER_EVENT;
+		tEvent.Parameters.resize(4);
+
+		tEvent.Parameters[0] = (DWORD_PTR)_iTriggerType;
+		tEvent.Parameters[1] = (DWORD_PTR)_iTriggerID;
+		tEvent.Parameters[2] = (DWORD_PTR)new _wstring(_szEventTag);
+		tEvent.Parameters[3] = (DWORD_PTR)_isEnableLookAt;
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
 	void Event_Trigger_Exit_ByCollision(_uint _iTriggerType, _int _iTriggerID, _bool _isReturn)
 	{
 		EVENT tEvent;
@@ -242,6 +256,7 @@ namespace Client
 	{
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::HIT;
+
 		tEvent.Parameters.resize(3);
 		tEvent.Parameters[0] = (DWORD_PTR)_pHitter;
 		tEvent.Parameters[1] = (DWORD_PTR)_pVictim;
@@ -255,6 +270,42 @@ namespace Client
 		tEvent.eType = EVENT_TYPE::GET_BULB;
 		tEvent.Parameters.resize(1);
 		tEvent.Parameters[0] = (DWORD_PTR)_iCoordinate;
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
+	void Event_AddImpulse(CActorObject* _pObject, _fvector _vDirection, _float _fPower)
+	{
+		Event_AddImpulse(_pObject, XMVector3Normalize(_vDirection)* _fPower);
+	}
+
+	void Event_AddImpulse(CActorObject* _pObject, _fvector _vForce)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::ADDIMPULSE;
+
+		tEvent.Parameters.resize(2);
+		_float3* fForce = new _float3{ _vForce.m128_f32[0], _vForce.m128_f32[1], _vForce.m128_f32[2] };
+		tEvent.Parameters[0] = (DWORD_PTR)_pObject;
+		tEvent.Parameters[1] = (DWORD_PTR)fForce;
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
+	void Event_Sneak_BeetleCaught(CActorObject* _pPlayer, CActorObject* _pMonster, _float3* _vPlayerPos, _float3* _vMonsterPos)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::SNEAK_BEETLECAUGHT;
+		tEvent.Parameters.resize(4);
+		tEvent.Parameters[0] = (DWORD_PTR)_pPlayer;
+		tEvent.Parameters[1] = (DWORD_PTR)_pMonster;
+
+		if (nullptr == _vPlayerPos || nullptr == _vMonsterPos)
+			return;
+
+		_float3* vPlayerPos = new _float3(*_vPlayerPos);
+		_float3* vMonsterPos = new _float3(*_vMonsterPos);
+
+		tEvent.Parameters[2] = (DWORD_PTR)vPlayerPos;
+		tEvent.Parameters[3] = (DWORD_PTR)vMonsterPos;
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 

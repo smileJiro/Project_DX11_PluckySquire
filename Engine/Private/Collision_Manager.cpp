@@ -138,6 +138,19 @@ HRESULT CCollision_Manager::Register_Section(const _wstring& _strSectionKey)
     return S_OK;
 }
 
+HRESULT CCollision_Manager::Unregister_Section(const _wstring& _strSectionKey)
+{
+    auto iter = m_Colliders.find(_strSectionKey);
+
+    if (iter != m_Colliders.end())
+        m_Colliders.erase(iter);
+//#ifdef _DEBUG
+//    else
+//        wcout << L"2D 컬리전 그룹에서 없는 섹션 삭제 요청.(오류 아님, 확인용) - [" << _strSectionKey <<"]" << endl;
+//#endif // _DEBUG
+    return S_OK;
+}
+
 void CCollision_Manager::Check_GroupFilter(_uint _iGroupIDLeft, _uint _iGroupIDRight)
 {
     // 이미 비트연산자 전용 데이터야

@@ -101,6 +101,11 @@ private:
 
 	_float3				m_vFreezeExitArm = {};
 
+	// Not LookAt
+	_bool				m_isEnterLookAtMask = {};		
+	_uint				m_iExitLookAtMask = {};			// 나갈 때 True로 할 곳들	
+	_uint				m_iExitLookAtIndex = {};		// List Box 선택한 Index
+
 	// Save Load
 	vector<_string>		m_JsonFilePaths;
 	_int				m_iCurrentJsonFileIndex = { 0 };
@@ -143,6 +148,7 @@ private:
 	void				Show_MyObjectGroup();
 	void				Show_OtherGroup();
 	void				Show_ExitReturnMaskListBox();			// Camera Trigger
+	void				Show_ExitLookAtMaskListBox();			// Camera Trigger
 
 	void				Set_TriggerBasicInfo();
 	void				Set_TriggerInfoByType();

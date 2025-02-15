@@ -72,7 +72,6 @@ void CPlayerState_PickUpObject::Enter()
 	m_tOriginalKeyFrame.Set_Matrix(matOriginalOfset);
 	_float4x4 matCarriableWorld;
 	XMStoreFloat4x4(&matCarriableWorld, matOriginalOfset);
-	m_pCarriableObject->Set_WorldMatrix(matCarriableWorld);
 
 	//PickUpKeyFrame
 	_vector vTmp =  _vector{0,0,1}*m_pOwner->Get_PickupRange(eCoord);
@@ -84,7 +83,6 @@ void CPlayerState_PickUpObject::Enter()
 	_matrix matCarryingOfset = XMLoadFloat4x4( m_pOwner->Get_CarryingOffset_Ptr(eCoord));
 	m_tCarryingKeyFrame.Set_Matrix(matCarryingOfset);
 
-	m_pCarriableObject->Set_ParentMatrix(eCoord, m_pOwner->Get_ControllerTransform()->Get_WorldMatrix_Ptr(eCoord));
 
 	if (COORDINATE_3D == eCoord)
 	{
@@ -92,6 +90,8 @@ void CPlayerState_PickUpObject::Enter()
 		m_pOwner->Set_Kinematic(true);
 	}
 
+	m_pCarriableObject->Set_ParentMatrix(eCoord, m_pOwner->Get_ControllerTransform()->Get_WorldMatrix_Ptr(eCoord));
+	m_pCarriableObject->Set_WorldMatrix(matCarriableWorld);
 
 	if (COORDINATE_3D == eCoord)
 	{
@@ -122,8 +122,7 @@ void CPlayerState_PickUpObject::Enter()
 void CPlayerState_PickUpObject::Exit()
 {
 	m_pOwner->Set_Kinematic(false);
-	if (m_pOwner->Is_SwordMode())
-		m_pOwner->Equip_Part(CPlayer::PLAYER_PART_SWORD);
+
 	//cout << "Align: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
 
