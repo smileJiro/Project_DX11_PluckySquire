@@ -87,16 +87,10 @@ private:
 	_bool						m_isFreezeExit = { false };
 	_float2						m_fFreezeExitTime = { 0.4f, 0.f };
 	_float3						m_vFreezeEnterPos = {};
-	
-	
-	_bool						m_isSetStartInfo = { false };
 
-	_bool						m_isFirst = { false };
-	
 	
 	list<pair<_float3, _uint>>	m_FreezeExitArms = {};
 	_float3						m_vCurFreezeExitArm = {};
-
 
 	//_uint						m_iPreFreeze = {};
 
