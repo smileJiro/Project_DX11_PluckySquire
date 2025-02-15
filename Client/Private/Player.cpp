@@ -153,6 +153,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT;
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
+    ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
+    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT;
+
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
     
