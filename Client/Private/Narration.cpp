@@ -30,7 +30,6 @@ HRESULT CNarration::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 	
@@ -79,6 +78,22 @@ void CNarration::Update(_float _fTimeDelta)
 
 	if (true == m_isStartNarration)
 	{
+		if (true == m_isWaitingNextPage)
+		{
+			m_fWaitingNextPageTime += _fTimeDelta;
+
+			if (m_fWaitingNextPageTime <= 1.5f)
+				return;
+			else
+			{
+				m_fWaitingNextPageTime = 0.f;
+				m_isWaitingNextPage = false;
+				GetAnimationObjectForLine(m_iCurrentLine, 0);
+				m_fWaitingTime = 0.f;
+				m_fWaitingNextPageTime = 0.f;
+			}
+		}
+
 		Update_Narration(_fTimeDelta);
 	}
 		
@@ -96,7 +111,7 @@ HRESULT CNarration::Render()
 		CBase::Set_Active(true);
 	}
 
-
+	// TODO :: 해당 부분은 가변적이다 추후 변경해야한다.
 	DisplayText(_float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y));
 	return S_OK;
 }
@@ -169,7 +184,7 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 
 					if (line.contains("fwaitingTime") && line["fwaitingTime"].is_number_float())
 						DialogueData.fwaitingTime = line["fwaitingTime"].get<float>();
-					/////////////////////////////////////////////////////////////////////////////////
+
 					if (line.contains("fLineHeight") && line["fLineHeight"].is_number_float())
 						DialogueData.fLineHieght = line["fLineHeight"].get<float>();
 
@@ -184,8 +199,6 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 						DialogueData.isFinishedThisLine = line["isFinishedThisLine"].get<_bool>();
 
 					}
-
-
 
 					// 애니메이션 데이터 파싱 및 개별 객체 생성
 					vector<CNarration_Anim*> pAnimation;
@@ -256,7 +269,6 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 							CNarration_Anim* pAnim;
 							pAnim = static_cast<CNarration_Anim*>(pObject);
 
-
 							// TODO :: 누수 잡는 중
 							pAnimation.push_back(pAnim);
 							//Safe_AddRef(pAnim);
@@ -275,11 +287,9 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 						Safe_AddRef(pAnimation[i]);
 					}
 
-					//Safe_AddRef(pAnimation[iLine]);
-
 					NarData.lines.push_back(DialogueData);
 					++iLine;
-				} // for each line
+				}
 
 			}
 
@@ -293,6 +303,11 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 // 폰트 렌더 해주는 역할
 HRESULT CNarration::DisplayText(_float2 _vRTSize)
 {
+	if (true == m_isWaitingNextPage)
+	{
+		return S_OK;
+	}
+
 	if (m_NarrationDatas.empty() || m_NarrationDatas[m_iNarrationCount].lines.empty())
 		return S_OK;
 
@@ -301,9 +316,6 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 
 	// 이쪽이 문제다...
 	// 0번부터 m_iCurrentLine까지의 모든 라인을 렌더링 (이미 fade-in이 완료된 라인은 alpha = 1.0)
-
-	// TODO :: 테스트용
-
 
 	for (int i = m_DisPlayTextLine; i <= m_iCurrentLine && i < lines.size(); i++)
 	{
@@ -364,15 +376,6 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 	return S_OK;
 }
 
-
-
-
-// 다음 다이얼로그에서 Json->Location에 따른 위치 변경
-void CNarration::NextDialogue(_float2 _RTSize)
-{
-	
-}
-
 vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine, _int AnimCount)
 {
 	for (auto& iter : m_pCurrentAnimObj)
@@ -407,8 +410,6 @@ vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine
 	}
 
 	return m_pCurrentAnimObj;
-
-
 }
 
 void CNarration::Set_NarrationByStrid(const _wstring& strTargetID)
@@ -454,43 +455,38 @@ vector<CNarration_Anim*> CNarration::CreateAnimationObjectsForLine(_uint iLine)
 // 애니메이션 객체를 생성해 주는 로직 (m_pGameInstance->Add_GameObject_ToLayer 호출 등)
 // 예시)
 _int iAnim = 0;
-for (auto& animInfo : dialogueData.NarAnim)
-{
-	// tempData 구성 (대화 라인은 단일 데이터임)
-	NarrationData tempData = m_NarrationDatas[m_iNarrationCount];
-	tempData.lines.clear();
-
-	// tempDialogue에 애니메이션 정보만 넣음
-	NarrationDialogData tempDialogue = dialogueData;
-	tempDialogue.NarAnim.clear();
-
-	tempDialogue.NarAnim.push_back(animInfo);
-	tempDialogue.AnimationCount = iAnim;
-	++iAnim;
-
-	tempData.lines.push_back(tempDialogue);
-
-	// 대화 라인은 단일 객체이므로 LineCount는 0로 설정
-	tempData.LineCount = 0;
-	tempData.AnimIndex = 0;
-
-	CGameObject* pObject = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(
-		tempData.eCurlevelId,
-		TEXT("Prototype_GameObject_Narration_Anim"),
-		tempData.eCurlevelId,
-		TEXT("Layer_UI"),
-		&pObject,
-		&tempData)))
+	for (auto& animInfo : dialogueData.NarAnim)
 	{
-		continue;
+		// tempData 구성 (대화 라인은 단일 데이터임)
+		NarrationData tempData = m_NarrationDatas[m_iNarrationCount];
+		tempData.lines.clear();
+
+		// tempDialogue에 애니메이션 정보만 넣음
+		NarrationDialogData tempDialogue = dialogueData;
+		tempDialogue.NarAnim.clear();
+
+		tempDialogue.NarAnim.push_back(animInfo);
+		tempDialogue.AnimationCount = iAnim;
+		++iAnim;
+
+		tempData.lines.push_back(tempDialogue);
+
+		// 대화 라인은 단일 객체이므로 LineCount는 0로 설정
+		tempData.LineCount = 0;
+		tempData.AnimIndex = 0;
+
+		CGameObject* pObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tempData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), tempData.eCurlevelId, TEXT("Layer_UI"), &pObject, &tempData)))
+		{
+			continue;
+		}
+
+		CNarration_Anim* pAnim = static_cast<CNarration_Anim*>(pObject);
+		newAnims.push_back(pAnim);
+		Safe_AddRef(pAnim);
 	}
 
-	CNarration_Anim* pAnim = static_cast<CNarration_Anim*>(pObject);
-	newAnims.push_back(pAnim);
-	Safe_AddRef(pAnim);
-}
-return newAnims;
+	return newAnims;
 }
 
 void CNarration::Update_Narration(_float _fTimeDelta)
@@ -518,6 +514,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 				{
 					m_pCurrentAnimObj[i]->StartAnimation();
 				}
+						
 			}
 		}
 	}
@@ -581,10 +578,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						m_fDelayTimer = 0.f;
 						m_fTextAlpha = 0.f;
 						m_bAnimationStarted = false;
-
 						m_isWaitingPrint = true;
-
-
 
 						// TODO :: 테스트용도
 						m_DisPlayTextLine = m_iCurrentLine;
@@ -593,9 +587,8 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						Event_Book_Main_Section_Change_Start(1, &vPos);
 						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].NarAnim[0].strSectionid, this);
 
-
-						//m_vAnimObjectsByLine.erase(m_iCurrentLine);
-						GetAnimationObjectForLine(m_iCurrentLine, 0);
+						m_fWaitingTime += _fTimeDelta;
+						m_isWaitingNextPage = true;
 					}
 				}
 				else
@@ -631,12 +624,6 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						}
 					}
 					m_vAnimObjectsByLine.clear();
-
-
-					// TODO :: 테스트용도
-					
-
-
 				}
 				// 어라? 나레이션 내에 다음 라인이 있네요? 다시 업데이트 쳐줍시다.
 				else if (m_iCurrentLine < m_NarrationDatas[m_iNarrationCount].lines.size() - 1)
