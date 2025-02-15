@@ -71,6 +71,8 @@ void CNarration::Update(_float _fTimeDelta)
 					animObj->CBase::Set_Active(true);
 
 				animObj->StartAnimation();
+
+				m_DisPlayTextLine = 0;
 			}
 		}
 	}
@@ -297,8 +299,13 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 	// 예를 들어, 첫 번째 NarrationData의 텍스트만 사용한다고 가정
 	auto& lines = m_NarrationDatas[m_iNarrationCount].lines;
 
+	// 이쪽이 문제다...
 	// 0번부터 m_iCurrentLine까지의 모든 라인을 렌더링 (이미 fade-in이 완료된 라인은 alpha = 1.0)
-	for (int i = 0; i <= m_iCurrentLine && i < lines.size(); i++)
+
+	// TODO :: 테스트용
+
+
+	for (int i = m_DisPlayTextLine; i <= m_iCurrentLine && i < lines.size(); i++)
 	{
 
 		// 이전 라인은 완전 불투명, 현재 라인은 fade-in 중
@@ -576,6 +583,11 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						m_bAnimationStarted = false;
 
 						m_isWaitingPrint = true;
+
+
+
+						// TODO :: 테스트용도
+						m_DisPlayTextLine = m_iCurrentLine;
 						
 						_float3 vPos = _float3(0.f, 0.f, 1.f);
 						Event_Book_Main_Section_Change_Start(1, &vPos);
@@ -619,6 +631,10 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						}
 					}
 					m_vAnimObjectsByLine.clear();
+
+
+					// TODO :: 테스트용도
+					
 
 
 				}

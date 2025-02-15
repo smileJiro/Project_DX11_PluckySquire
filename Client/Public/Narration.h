@@ -128,6 +128,8 @@ private:
     //************ 테스트용
     _bool       m_isTest = { false };
 
+    _uint       m_DisPlayTextLine = { 0 };
+
 
 
 protected:
