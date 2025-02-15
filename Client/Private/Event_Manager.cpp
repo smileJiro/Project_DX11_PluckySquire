@@ -148,6 +148,11 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_Trigger_Exit_ByCollision(_tEvent);
 	}
 	break;
+	case Client::EVENT_TYPE::TRIGGER_LOOKAT_ENTER_EVENT:
+	{
+		Execute_Trigger_LookAtEnter(_tEvent);
+	}
+	break;
 	case Client::EVENT_TYPE::BOOK_MAIN_SECTION_CHANGE_ACTION_START:
 	{
 		Execute_Book_Main_Section_Change_Start(_tEvent);
@@ -553,6 +558,26 @@ HRESULT CEvent_Manager::Execute_Trigger_FreezeEnter(const EVENT& _tEvent)
 	return S_OK;
 }
 
+HRESULT CEvent_Manager::Execute_Trigger_LookAtEnter(const EVENT& _tEvent)
+{
+	_uint iTriggerType = (_uint)_tEvent.Parameters[0];;
+	_int iTriggerID = (_int)_tEvent.Parameters[1];
+	_wstring* pStr = (_wstring*)_tEvent.Parameters[2];
+	_bool isEnableLookAt = (_bool)_tEvent.Parameters[3];
+
+	switch (iTriggerType) {
+	case (_uint)TRIGGER_TYPE::ENABLE_LOOKAT_TRIGGER:
+	{
+		CCamera* pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET);
+		static_cast<CCamera_Target*>(pCamera)->Set_EnableLookAt(isEnableLookAt);
+	}
+
+	break;
+	}
+
+	return S_OK;
+}
+
 HRESULT CEvent_Manager::Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent)
 {
 	_uint iTriggerType = (_uint)_tEvent.Parameters[0];;
@@ -569,6 +594,13 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent)
 	}
 
 		break;
+	case (_uint)TRIGGER_TYPE::ENABLE_LOOKAT_TRIGGER:
+	{
+		CCamera* pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET);
+		static_cast<CCamera_Target*>(pCamera)->Set_EnableLookAt(isReturn);
+	}
+
+	break;
 	}
 
 	return S_OK;

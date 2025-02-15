@@ -177,6 +177,20 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
+	void Event_Trigger_LookAtEnter(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag, _bool _isEnableLookAt)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::TRIGGER_LOOKAT_ENTER_EVENT;
+		tEvent.Parameters.resize(4);
+
+		tEvent.Parameters[0] = (DWORD_PTR)_iTriggerType;
+		tEvent.Parameters[1] = (DWORD_PTR)_iTriggerID;
+		tEvent.Parameters[2] = (DWORD_PTR)new _wstring(_szEventTag);
+		tEvent.Parameters[3] = (DWORD_PTR)_isEnableLookAt;
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
 	void Event_Trigger_Exit_ByCollision(_uint _iTriggerType, _int _iTriggerID, _bool _isReturn)
 	{
 		EVENT tEvent;
