@@ -244,6 +244,28 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(json _TriggerJson, CTrigge
 		dynamic_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(m_pGameInstance->StringToWString(szKey), vFreezeExitArm);
 	}
 		break;
+
+	case (_uint)TRIGGER_TYPE::ENABLE_LOOKAT_TRIGGER:
+	{
+		if (_TriggerJson.contains("Enable_LookAt_Info")) {
+			json isLook = _TriggerJson["Enable_LookAt_Info"]["Is_LookAt"];
+
+			szKey = isLook["CustomData_Tag"];
+			_bool iEnterLookAtMask = isLook["CustomData"];
+
+			dynamic_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(m_pGameInstance->StringToWString(szKey), iEnterLookAtMask);
+
+			json ExitLookAt = _TriggerJson["Enable_LookAt_Info"]["Exit_LookAt_Mask"];
+			_uint iExitLookAtMask;
+			for (auto& [key, value] : ExitLookAt.items()) {
+				szKey = key;
+				iExitLookAtMask = value;
+			}
+
+			dynamic_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(m_pGameInstance->StringToWString(szKey), iExitLookAtMask);
+		}
+	}
+		break;
 	}
 
 	return S_OK;
@@ -371,6 +393,32 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	{
 		_pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
+			});
+	}
+		break;
+	case (_uint)TRIGGER_TYPE::ENABLE_LOOKAT_TRIGGER:
+	{
+		_pTrigger->Resister_EnterHandler([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+
+			_bool iReturnMask = any_cast<_uint>(_pTrigger->Get_CustomData(TEXT("IsLookAt")));
+			Event_Trigger_LookAtEnter(_iTriggerType, _iTriggerID, _szEventTag, iReturnMask);
+
+			});
+
+		_pTrigger->Resister_ExitHandler_ByCollision([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, const COLL_INFO& _My, const COLL_INFO& _Other) {
+
+			_vector vOtherPos = _Other.pActorUserData->pOwner->Get_ControllerTransform()->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+			_vector vPos = _My.pActorUserData->pOwner->Get_ControllerTransform()->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+
+			PxBoxGeometry Box;
+			_My.pActorUserData->pOwner->Get_ActorCom()->Get_Shapes()[0]->getBoxGeometry(Box);
+
+			_uint iExitDir = this->Calculate_ExitDir(vPos, vOtherPos, Box);
+			_uint iExitLookAtMask = any_cast<_uint>(_pTrigger->Get_CustomData(TEXT("ExitLookAtMask")));
+
+			_bool isEnableLookAt = iExitLookAtMask & iExitDir;
+
+			Event_Trigger_Exit_ByCollision(_iTriggerType, _iTriggerID, iExitLookAtMask);
 			});
 	}
 		break;

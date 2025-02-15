@@ -336,6 +336,28 @@ void CLevel_Trigger_Tool::Show_CurTriggerInfo()
 		}
 	}
 		break;
+	case TRIGGER_TYPE::ENABLE_LOOKAT_TRIGGER:
+	{
+		_bool	isLookAt = (any_cast<_bool>(dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Get_CustomData(TEXT("IsLookAt"))));
+		if (true == isLookAt)
+			ImGui::Text("Loot Target: TRUE             ");
+		else
+			ImGui::Text("Loot Target: FALSE            ");
+
+		// Exit Return
+		ImGui::Text("Exit Enable LookAt Type:"); 
+		for (auto& ExitLookAtTag : m_ExitReturnTags) {
+			if (ExitLookAtTag.first == (any_cast<_uint>(dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Get_CustomData(TEXT("ExitLookAtMask"))) & ExitLookAtTag.first)) {
+				if (0x00 == ExitLookAtTag.first)
+					continue;
+
+				_string Name = m_pGameInstance->WStringToString(ExitLookAtTag.second);
+				ImGui::Text("%s | ", Name.c_str());
+				ImGui::SameLine();
+			}
+		}
+	}
+		break;
 	}
 }
 
@@ -932,7 +954,8 @@ HRESULT CLevel_Trigger_Tool::Create_Trigger()
 				break;
 			case ENABLE_LOOKAT_TRIGGER:
 			{
-
+				dynamic_cast<CTriggerObject*>(pTrigger)->Set_CustomData(TEXT("IsLookAt"), m_isEnterLookAtMask);
+				dynamic_cast<CTriggerObject*>(pTrigger)->Set_CustomData(TEXT("ExitLookAtMask"), m_iExitLookAtMask);
 			}
 				break;
 			}
@@ -1020,6 +1043,10 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 		case FREEZE_Z_TRIGGER:
 			m_vFreezeExitArm = any_cast<_float3>(dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Get_CustomData(TEXT("FreezeExitArm")));
 			break;
+		case ENABLE_LOOKAT_TRIGGER:			
+			m_isEnterLookAtMask = any_cast<_bool>(dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Get_CustomData(TEXT("IsLookAt")));
+			m_iExitLookAtMask = any_cast<_uint>(dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Get_CustomData(TEXT("ExitLookAtMask")));
+			break;
 		}
 	}
 	ImGui::SameLine();
@@ -1041,6 +1068,10 @@ void CLevel_Trigger_Tool::Edit_Trigger()
 			break;
 		case FREEZE_Z_TRIGGER:
 			dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Set_CustomData(TEXT("FreezeExitArm"), m_vFreezeExitArm);
+			break;
+		case ENABLE_LOOKAT_TRIGGER:
+			dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Set_CustomData(TEXT("IsLookAt"), m_isEnterLookAtMask);
+			dynamic_cast<CTriggerObject*>(m_pCurTrigger->second)->Set_CustomData(TEXT("ExitLookAtMask"), m_iExitLookAtMask);
 			break;
 		}
 	}
@@ -1380,6 +1411,17 @@ void CLevel_Trigger_Tool::Save_TriggerData()
 			Trigger_json["Freeze_Z_Info"]["Freeze_Exit_Arm"]["CustomData"] = {vFreezeExit.x, vFreezeExit.y, vFreezeExit.z};
 		}
 			break;
+		case ENABLE_LOOKAT_TRIGGER: 
+		{
+			_bool isEnterLookAt = any_cast<_bool>(dynamic_cast<CTriggerObject*>(Trigger.second)->Get_CustomData(TEXT("IsLookAt")));
+
+			Trigger_json["Enable_LookAt_Info"]["Is_LookAt"]["CustomData_Tag"] = "IsLookAt";
+			Trigger_json["Enable_LookAt_Info"]["Is_LookAt"]["CustomData"] = isEnterLookAt;
+
+			_uint iExitLookAtMask = any_cast<_uint>(dynamic_cast<CTriggerObject*>(Trigger.second)->Get_CustomData(TEXT("ExitLookAtMask")));
+			Trigger_json["Enable_LookAt_Info"]["Exit_LookAt_Mask"] = { {"ExitLookAtMask", iExitLookAtMask} };
+		}
+			break;
 		}
 
 		Result.push_back(Trigger_json);
@@ -1457,6 +1499,8 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 		_string szKey;
 		_uint iReturnMask;
 		_float3 vFreezeExitArm;
+		_bool iEnterLookAtMask;
+		_uint iExitLookAtMask;
 
 		switch (Desc.iTriggerType) {
 		case ARM_TRIGGER:
@@ -1495,6 +1539,27 @@ void CLevel_Trigger_Tool::Load_TriggerData()
 			}
 
 			dynamic_cast<CTriggerObject*>(pTrigger)->Set_CustomData(m_pGameInstance->StringToWString(szKey), vFreezeExitArm);
+		}
+			break;
+		case ENABLE_LOOKAT_TRIGGER:
+		{
+
+			if (Trigger_json.contains("Enable_LookAt_Info")) {
+				json isLook = Trigger_json["Enable_LookAt_Info"]["Is_LookAt"];
+
+				szKey = isLook["CustomData_Tag"];
+				iEnterLookAtMask = isLook["CustomData"];
+
+				dynamic_cast<CTriggerObject*>(pTrigger)->Set_CustomData(m_pGameInstance->StringToWString(szKey), iEnterLookAtMask);
+
+				json ExitLookAt = Trigger_json["Enable_LookAt_Info"]["Exit_LookAt_Mask"];
+				for (auto& [key, value] : ExitLookAt.items()) {
+					szKey = key;
+					iExitLookAtMask = value;
+				}
+
+				dynamic_cast<CTriggerObject*>(pTrigger)->Set_CustomData(m_pGameInstance->StringToWString(szKey), iExitLookAtMask);
+			}
 		}
 			break;
 		}
