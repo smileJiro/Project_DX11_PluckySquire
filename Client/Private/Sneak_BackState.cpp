@@ -58,7 +58,7 @@ void CSneak_BackState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	cout << "Back" << endl;
+	//cout << "Back" << endl;
 	//일단 적용해봄
 	//if(COORDINATE_3D == m_pOwner->Get_CurCoord())
 	//{

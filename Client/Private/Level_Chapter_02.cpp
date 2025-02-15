@@ -93,16 +93,12 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
-
-	
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::PLAYER_PROJECTILE);
-
 
 
 	// 그룹필터 제거
@@ -996,7 +992,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	//임시로 주사위 만들어 봄.
 	CModelObject::MODELOBJECT_DESC tModelDesc{};
 	tModelDesc.iCurLevelID = m_eLevelID;
-	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.2f, 21.5f);
+	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.5f, 21.5f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
 		return E_FAIL;
 	_float fDominoXPosition = 14.47f;
