@@ -1,6 +1,6 @@
 #pragma once
 #include "ModelObject.h"
-
+#include "Player.h"
 BEGIN(Engine)
 class CCollider;
 END
@@ -30,6 +30,8 @@ private:
 	virtual ~CPlayerSword() = default;
 
 public:
+
+	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* _pArg) override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
@@ -53,7 +55,7 @@ public:
 	void On_StateChange();
 	void Attack(CGameObject* _pVictim);
 	//Set
-	void Set_AttackEnable(_bool _bOn);
+	void Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackType = CPlayer::ATTACK_TYPE::ATTACK_TYPE_NORMAL1);
 	//Get
 	_bool Is_AttackEnable();
 	_bool Is_Flying() { return FLYING == m_eCurrentState; }
@@ -75,6 +77,11 @@ private:
 	_float m_fRotationForce3D = 50.f;
 	_float m_f3DKnockBackPower = 12.f;
 	_float m_f2DKnockBackPower = 50.f;
+
+	_float m_f3DNormalAttackRange = 0.5f;
+	_float m_f3DNormalAttackZOffset = 0.5f;
+	_float m_f3DJumpAttackRange = 1.5f;
+	_float m_f3DJumpAttackZOffset = 0.0f;
 
 	SWORD_STATE m_eCurrentState = HANDLING;
 	SWORD_STATE m_ePastState = HANDLING;

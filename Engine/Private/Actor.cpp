@@ -669,8 +669,16 @@ HRESULT CActor::Set_ShapeEnable(_int _iShapeIndex, _bool _isEnable)
 	if (nullptr == m_Shapes[_iShapeIndex])
 		return E_FAIL;
 
+	//ÀÌ¹Ì ÀåÂøµÅÀÖ°Å³ª ÀåÂøÇØÁ¦µÈ °æ¿ì 
+	if ((nullptr == m_Shapes[_iShapeIndex]->getActor() && false == _isEnable)
+		|| (nullptr != m_Shapes[_iShapeIndex]->getActor() && true == _isEnable))
+		return E_FAIL;
+
 	if (true == _isEnable)
+	{
+		cout << "_iShapeIndex " << _iShapeIndex << endl;
 		m_pActor->attachShape(*m_Shapes[_iShapeIndex]);
+	}
 	else
 		m_pActor->detachShape(*m_Shapes[_iShapeIndex]);
 	return S_OK;

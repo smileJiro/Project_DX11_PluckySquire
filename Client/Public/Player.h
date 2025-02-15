@@ -44,7 +44,7 @@ public:
 	{
 		_float fRadius;
 		_float fOffset = {};
-	}ATTACK_TRIGGER_DESC_2D;
+	}ATTACK_TRIGGER_DESC;
 	enum ATTACK_TYPE
 	{
 		ATTACK_TYPE_NORMAL1,
@@ -554,13 +554,12 @@ private:
 	_float4x4 m_mat2DCarryingOffset = {};
 	_bool m_bPlatformerMode = false;
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
-	ATTACK_TRIGGER_DESC_2D m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST];// = { 93.f, 93.f, 120.f };
+	ATTACK_TRIGGER_DESC m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST];// = { 93.f, 93.f, 120.f };
 	//ATTACK_TRIGGER_DESC_2D m_f2DAttackAngle[ATTACK_TYPE_LAST];// = { 110.f, 110.f,45.f };
 	_float m_f2DAirRunSpeed = 300.f;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	//Components
 	CStateMachine* m_pStateMachine = nullptr;
-	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;
 	CCollider* m_pBody2DTriggerCom = nullptr;
 	CCollider* m_pAttack2DTriggerCom = nullptr;
