@@ -185,6 +185,38 @@ void CUI_Manager::Pushback_Dialogue(CDialog::DialogData _DialogData)
 	m_DialogDatas.push_back(_DialogData);
 }
 
+void CUI_Manager::Test_Update(_float _fTimedelta)
+{
+	if (KEY_DOWN(KEY::J) && 0 <= m_iTextIndex)
+	{
+		switch (m_iTextIndex)
+		{
+		case 0:
+		{
+			Uimgr->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
+			++m_iTextIndex;
+		}
+		break;
+
+		case 1:
+		{
+			Uimgr->Set_PlayNarration(TEXT("Chapter1_P0506_Narration_01"));
+		}
+		break;
+
+		}
+
+		
+	}
+
+
+			
+
+
+
+
+}
+
 HRESULT CUI_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID)
 {
 	if(iCurLevelID == LEVEL_LOGO)
@@ -218,6 +250,7 @@ HRESULT CUI_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iN
 
 	Uimgr->Set_isMakeItem(false);
 
+	Safe_Release(m_pNarration);
 
 
 	return S_OK;
@@ -281,6 +314,9 @@ void CUI_Manager::Free()
 	vector<CDialog::DialogData>().swap(m_DialogDatas);
 
 	Safe_Release(m_pGameInstance);
+
+	Safe_Release(m_pNarration);
+
 	__super::Free();
 }
 

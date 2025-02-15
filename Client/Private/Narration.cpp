@@ -45,9 +45,6 @@ HRESULT CNarration::Initialize(void* _pArg)
 	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
 	m_isRender = false;
 
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
-
 	return S_OK;
 }
 
@@ -55,119 +52,34 @@ HRESULT CNarration::Initialize(void* _pArg)
 void CNarration::Update(_float _fTimeDelta)
 {
 
-	if (KEY_DOWN(KEY::J))
+	if (false == m_isPlayNarration && true == Uimgr->Get_PlayNarration())
 	{
+		m_isPlayNarration = true;
+		std::wstring targetNarrationID = Uimgr->Get_strNarrationID();
+		Set_NarrationByStrid(targetNarrationID);
 		m_isStartNarration = true;
-	}
 
+		if (m_isStartNarration)
+			GetAnimationObjectForLine(m_iCurrentLine);
+
+		// 새로운 나레이션의 첫 라인에 연결된 애니메이션 시작
+		for (auto& animObj : m_pCurrentAnimObj)
+		{
+			if (animObj)
+			{
+				if (false == animObj->CBase::Is_Active())
+					animObj->CBase::Set_Active(true);
+
+				animObj->StartAnimation();
+			}
+		}
+	}
 
 	if (true == m_isStartNarration)
 	{
-
-		if (m_fTextAlpha < 1.f)
-		{
-			m_fFadeTimer += _fTimeDelta;
-
-			// 텍스트 알파 = 타이머 / 현재 나레이션의 현재 라인
-			//m_fTextAlpha = min(m_fFadeTimer / m_fFadeDuration, 1.f);
-			 
-			// TODO :: 박상욱
-			m_fTextAlpha = min(m_fFadeTimer / m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].fFadeDuration, 1.f);
-
-
-			if (!m_bAnimationStarted && m_fTextAlpha > 0.f)
-			{
-				m_bAnimationStarted = true;
-				m_isFade = true;
-
-				for (int i = 0; i < m_pCurrentAnimObj.size(); ++i)
-				{
-					if (nullptr == m_pCurrentAnimObj[i])
-					{
-						GetAnimationObjectForLine(m_iCurrentLine);
-					}
-
-					if (nullptr != m_pCurrentAnimObj[i])
-					{
-						m_pCurrentAnimObj[i]->StartAnimation();
-					}
-				}
-			}
-		}
-		else
-		{
-			// fadein 완료 후, 다음 라인으로 전환하기 위한 대기 타이머 갱신
-
-			if (m_iCurrentLine == m_NarrationDatas[m_iNarrationCount].lines.size() - 1 && m_fTextAlpha >= 1.f)
-			{
-				m_isFade = false;
-				//m_fTextAlpha = 0.f;
-			}
-
-			m_fDelayTimer += _fTimeDelta;
-			//if (m_fDelayTimer >= m_fDelayBetweenLines)
-			//{
-
-			// TODO :: 박상욱
-
-			if (m_fDelayTimer >= m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].fFadeDuration)
-			{
-				// 다음 라인이 있다면 전환, 이전 라인은 그대로 1.0을 유지
-				if (m_iCurrentLine + 1 < m_NarrationDatas[m_iNarrationCount].lines.size())
-				{
-					m_iCurrentLine++; // 다음 라인으로 전환
-					// fadein 관련 타이머 초기화
-					m_fFadeTimer = 0.f;
-					m_fDelayTimer = 0.f;
-					m_fTextAlpha = 0.f;
-					m_bAnimationStarted = false;
-
-					//m_pCurrentAnimObj = GetAnimationObjectForLine(m_iCurrentLine);
-					GetAnimationObjectForLine(m_iCurrentLine);
-				}
-
-				if (m_iCurrentLine == m_NarrationDatas[m_iNarrationCount].lines.size() - 1)
-				{
-					if (true == m_isFade)
-					{
-						return;
-					}
-
-					_float3 vPos = _float3(0.f, 0.f, 1.f);
-
-					if (m_iNarrationCount < m_NarrationDatas.size() - 1 && false == m_isFade)
-					{
-						++m_iNarrationCount;
-
-						m_strSectionName = m_NarrationDatas[m_iNarrationCount].strSectionid;
-						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].strSectionid, this);
-
-						m_iCurrentLine = 0; // 다음 라인으로 전환
-						// fade?in 관련 타이머 초기화
-						m_fFadeTimer = 0.f;
-						m_fDelayTimer = 0.f;
-						m_fTextAlpha = 0.f;
-						m_bAnimationStarted = false;
-						m_isNarrationEnd = true;
-
-						//m_pCurrentAnimObj = GetAnimationObjectForLine(m_iCurrentLine);
-						GetAnimationObjectForLine(m_iCurrentLine);
-
-						Event_Book_Main_Section_Change_Start(1, &vPos);
-
-						//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);	
-
-					}
-					else if (m_iCurrentLine == m_NarrationDatas[m_iNarrationCount - 1].lines.size() - 1 && true == m_isNarrationEnd)
-					{
-						vPos = _float3(-692.f, -49.f, 1.f);
-						Event_Book_Main_Section_Change_Start(1, &vPos);
-						m_isNarrationEnd = false;
-					}
-				}
-			}
-		}
+		Update_Narration(_fTimeDelta);
 	}
+		
 }
 
 void CNarration::Late_Update(_float _fTimeDelta)
@@ -201,6 +113,8 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 
 	if (doc.contains("Narration") && doc["Narration"].is_array())
 	{
+		_int iTurnoverPage = 0;
+
 		for (auto& Nar : doc["Narration"])
 		{
 			NarrationData NarData;
@@ -214,8 +128,11 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 			if (Nar.contains("CurlevelId") && Nar["CurlevelId"].is_number_integer())
 				NarData.eCurlevelId = (LEVEL_ID)Nar["CurlevelId"].get<_int>();
 
+			if (Nar.contains("bTerminal") && Nar["bTerminal"].is_boolean())
+				NarData.bTerminal = Nar["bTerminal"].get<bool>();
+
 			_int iLine = { 0 };
-			
+
 			if (Nar.contains("lines") && Nar["lines"].is_array())
 			{
 				for (auto& line : Nar["lines"])
@@ -253,12 +170,18 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 					/////////////////////////////////////////////////////////////////////////////////
 					if (line.contains("fLineHeight") && line["fLineHeight"].is_number_float())
 						DialogueData.fLineHieght = line["fLineHeight"].get<float>();
-					
+
 					if (line.contains("fFadeDuration") && line["fFadeDuration"].is_number_float())
 						DialogueData.fFadeDuration = line["fFadeDuration"].get<float>();
-					
+
 					if (line.contains("fDelayNextLine") && line["fDelayNextLine"].is_number_float())
 						DialogueData.fDelayNextLine = line["fDelayNextLine"].get<float>();
+
+					if (line.contains("isFinishedThisLine") && line["isFinishedThisLine"].is_boolean())
+					{
+						DialogueData.isFinishedThisLine = line["isFinishedThisLine"].get<_bool>();
+
+					}
 
 
 
@@ -267,7 +190,7 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 					if (line.contains("NarAnim") && line["NarAnim"].is_array())
 					{
 						_int iAnim = { 0 };
-						
+
 						// line에 여러 애니메이션 정보가 있다면 각각 별도로 생성한다.
 						for (auto& Anim : line["NarAnim"])
 						{
@@ -303,7 +226,10 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 								Animation.iAnimationIndex = Anim["AnimationIndex"].get<_int>();
 
 							if (Anim.contains("isLoop") && Anim["isLoop"].is_boolean())
+							{
 								Animation.isLoop = Anim["isLoop"].get<_bool>();
+							}
+								
 
 							// 임시 대화 데이터를 생성하여 해당 애니메이션만 담는다.
 							NarrationDialogData tempDialogue = DialogueData;
@@ -321,27 +247,41 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 
 							CGameObject* pObject;
 
-							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tempData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), tempData.eCurlevelId, TEXT("Layet_UI"), &pObject, &tempData)))
+							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tempData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), tempData.eCurlevelId, TEXT("Layer_UI"), &pObject, &tempData)))
 								return E_FAIL;
 
 							// 생성한 애니메이션 객체 넣기
 							CNarration_Anim* pAnim;
 							pAnim = static_cast<CNarration_Anim*>(pObject);
+
+
+							// TODO :: 누수 잡는 중
 							pAnimation.push_back(pAnim);
+							//Safe_AddRef(pAnim);
 
 							// 원본 DialogueData에도 해당 애니메이션 데이터를 저장(필요에 따라 사용)
 							DialogueData.NarAnim.push_back(Animation);
-						}						
+						}
 					}
 					// 애니메이션 처리 후, 완성된 대화 데이터를 NarData에 추가한다.
+					
+					// TODO :: 누수 잡는 중
 					m_vAnimObjectsByLine.emplace(iLine, pAnimation);
+
+					for (_int i = 0; i < pAnimation.size(); ++i)
+					{
+						Safe_AddRef(pAnimation[i]);
+					}
+
+					//Safe_AddRef(pAnimation[iLine]);
+
 					NarData.lines.push_back(DialogueData);
 					++iLine;
 				} // for each line
-				
+
 			}
 
-			m_NarrationDatas.push_back(NarData);	
+			m_NarrationDatas.push_back(NarData);
 		}
 	}
 
@@ -360,7 +300,9 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 	// 0번부터 m_iCurrentLine까지의 모든 라인을 렌더링 (이미 fade-in이 완료된 라인은 alpha = 1.0)
 	for (int i = 0; i <= m_iCurrentLine && i < lines.size(); i++)
 	{
-		float alpha = (i < m_iCurrentLine) ? 1.f : m_fTextAlpha; // 이전 라인은 완전 불투명, 현재 라인은 fade-in 중
+
+		// 이전 라인은 완전 불투명, 현재 라인은 fade-in 중
+		float alpha = (i < m_iCurrentLine) ? 1.f : m_fTextAlpha; 
 		NarrationDialogData& dialogue = lines[i];
 
 		// 해당 라인의 시작 위치
@@ -387,20 +329,18 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 			// 줄바꿈 토큰이면 줄 이동 처리
 			if (token.strText == L"\n")
 			{
-
-				if (true == dialogue.isLeft)
+				if (dialogue.isLeft)
 				{
-					fx = dialogue.fpos.x; // 시작 x 좌표로 복원
-					fy += m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].fLineHieght;  // y 좌표 증가
+					fx = dialogue.fpos.x; // 시작 x 좌표 복원
+					fy += dialogue.fLineHieght; // 각 라인의 고유 fLineHeight 사용
 				}
-				else if (false == dialogue.isLeft)
+				else // 오른쪽 텍스트의 경우
 				{
-					fx = dialogue.fpos.x + _vRTSize.x / 2.f; // 시작 x 좌표로 복원
-					fy += m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].fLineHieght;  // y 좌표 증가
+					fx = dialogue.fpos.x + _vRTSize.x / 2.f; // 시작 x 좌표 복원
+					fy += dialogue.fLineHieght; // 각 라인의 고유 fLineHeight 사용
 				}
 				continue;
 			}
-
 
 			// 토큰의 크기를 측정하고 텍스트 렌더링 (알파값 적용)
 			_vector vecSize = m_pGameInstance->Measuring(TEXT("Font40"), token.strText.c_str());
@@ -428,43 +368,286 @@ void CNarration::NextDialogue(_float2 _RTSize)
 
 vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine, _int AnimCount)
 {
-	//if (iLine < 0 || iLine >= static_cast<int>(m_vAnimObjectsByLine.size()))
-	//	return nullptr;
-	vector<CNarration_Anim*> vecCopy;
-	if (!m_pCurrentAnimObj.empty())
+	for (auto& iter : m_pCurrentAnimObj)
 	{
-		for (auto& iter : m_pCurrentAnimObj)
-		{
-			Safe_Release(iter);
-		}
+		Safe_Release(iter);
+	}
+	m_pCurrentAnimObj.clear();
 
-		m_pCurrentAnimObj.clear();
+	// 현재 iLine(대화 라인)에 해당하는 애니메이션 객체가 매핑되어 있지 않다면 새로 생성
+	auto iter = m_vAnimObjectsByLine.find(iLine);
+	if (iter == m_vAnimObjectsByLine.end())
+	{
+		vector<CNarration_Anim*> newAnims = CreateAnimationObjectsForLine(iLine);
+		m_vAnimObjectsByLine[iLine] = newAnims;
+		iter = m_vAnimObjectsByLine.find(iLine);
 	}
 
-	auto iter = m_vAnimObjectsByLine.find(iLine);
-
+	// 찾은 결과로 m_pCurrentAnimObj를 갱신합니다.
 	if (iter != m_vAnimObjectsByLine.end())
 	{
+		m_pCurrentAnimObj = iter->second;
 
-			m_pCurrentAnimObj = iter->second;
-		
-			for (_int i = 0 ; i < iter->second.size(); ++i)
-			{
-				Safe_AddRef(iter->second[i]);
-			}
-
-
+		for (auto& animObj : m_pCurrentAnimObj)
+		{
+			Safe_AddRef(animObj);
+		}
 	}
 
-	//for (const auto& it : vecCopy)
-	//{
-	//	m_pCurrentAnimObj.push_back(it);
-	//}
-
-
-
+	for (int i = 0; i < m_pCurrentAnimObj.size(); ++i)
+	{
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[iLine].NarAnim[i].strSectionid, m_pCurrentAnimObj[i]);
+	}
 
 	return m_pCurrentAnimObj;
+
+
+}
+
+void CNarration::Set_NarrationByStrid(const _wstring& strTargetID)
+{
+	for (size_t i = 0; i < m_NarrationDatas.size(); ++i)
+	{
+		if (m_NarrationDatas[i].strid == strTargetID)
+		{
+			m_iNarrationCount = static_cast<_int>(i);
+			m_iCurrentLine = 0; // 새로운 나레이션의 첫 라인부터 시작
+
+			// 애니메이션 및 페이드인 관련 변수를 초기화
+			m_fTextAlpha = 0.f;
+			m_fFadeTimer = 0.f;
+			m_fDelayTimer = 0.f;
+			m_bAnimationStarted = false;
+			m_isFade = false;
+			m_isNarrationEnd = false;
+
+			// 기존 애니메이션 객체도 초기화 (필요 시)
+
+			for (auto& iter : m_pCurrentAnimObj)
+			{
+				Safe_Release(iter);
+			}
+
+			m_pCurrentAnimObj.clear();
+
+			break;
+		}
+	}
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].NarAnim[0].strSectionid, this);
+}
+
+vector<CNarration_Anim*> CNarration::CreateAnimationObjectsForLine(_uint iLine)
+{
+	vector<CNarration_Anim*> newAnims;
+	// 현재 나레이션 데이터에서 iLine에 해당하는 DialogueData의 애니메이션 정보를 가져옴
+	NarrationDialogData dialogueData = m_NarrationDatas[m_iNarrationCount].lines[iLine];
+
+// dialogueData의 NarAnim 배열에 있는 각 애니메이션 정보를 토대로
+// 애니메이션 객체를 생성해 주는 로직 (m_pGameInstance->Add_GameObject_ToLayer 호출 등)
+// 예시)
+_int iAnim = 0;
+for (auto& animInfo : dialogueData.NarAnim)
+{
+	// tempData 구성 (대화 라인은 단일 데이터임)
+	NarrationData tempData = m_NarrationDatas[m_iNarrationCount];
+	tempData.lines.clear();
+
+	// tempDialogue에 애니메이션 정보만 넣음
+	NarrationDialogData tempDialogue = dialogueData;
+	tempDialogue.NarAnim.clear();
+
+	tempDialogue.NarAnim.push_back(animInfo);
+	tempDialogue.AnimationCount = iAnim;
+	++iAnim;
+
+	tempData.lines.push_back(tempDialogue);
+
+	// 대화 라인은 단일 객체이므로 LineCount는 0로 설정
+	tempData.LineCount = 0;
+	tempData.AnimIndex = 0;
+
+	CGameObject* pObject = nullptr;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(
+		tempData.eCurlevelId,
+		TEXT("Prototype_GameObject_Narration_Anim"),
+		tempData.eCurlevelId,
+		TEXT("Layer_UI"),
+		&pObject,
+		&tempData)))
+	{
+		continue;
+	}
+
+	CNarration_Anim* pAnim = static_cast<CNarration_Anim*>(pObject);
+	newAnims.push_back(pAnim);
+	Safe_AddRef(pAnim);
+}
+return newAnims;
+}
+
+void CNarration::Update_Narration(_float _fTimeDelta)
+{
+	// 페이드인 진행중일 경우
+	if (m_fTextAlpha < 1.f)
+	{
+		m_fFadeTimer += _fTimeDelta;
+		m_fTextAlpha = min(m_fFadeTimer / m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].fFadeDuration, 1.f);
+
+		if (!m_bAnimationStarted && m_fTextAlpha > 0.f)
+		{
+			m_bAnimationStarted = true;
+			m_isFade = true;
+
+			// 처음 진행 되는 경우
+			for (int i = 0; i < m_pCurrentAnimObj.size(); ++i)
+			{
+				if (nullptr == m_pCurrentAnimObj[i])
+				{
+					GetAnimationObjectForLine(m_iCurrentLine);
+				}
+				// 애니메이션 시작해
+				if (nullptr != m_pCurrentAnimObj[i])
+				{
+					m_pCurrentAnimObj[i]->StartAnimation();
+				}
+			}
+		}
+	}
+	// 페이드인이 1 이상되어서 더이상 페이드 하면 안되는 경우
+	else if (1.f <= m_fTextAlpha)
+	{
+		// fade-in 완료 후, 대기 타이머 갱신
+		// 현재 라인이 나레이션의 최대 라인수와 같고 알파값이 1이상인 경우
+		if (m_iCurrentLine == m_NarrationDatas[m_iNarrationCount].lines.size() - 1 && m_fTextAlpha >= 1.f)
+		{
+			// 페이드 상태가 아니다.
+			m_isFade = false;
+		}
+
+		// fDelayNextLine 값을 사용하여 다음 단계로 전환
+		// 딜레이만큼 대기 하고 다음 라인으로 이동한다.
+		m_fDelayTimer += _fTimeDelta;
+
+		//현재 딜레이가 요청한 딜레이보다 크다. 입장하자.
+		if (m_fDelayTimer >= m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].fDelayNextLine)
+		{
+			// 나레이션 내에 다음 라인이 존재하면 입장
+			if (m_iCurrentLine < m_NarrationDatas[m_iNarrationCount].lines.size() - 1)
+			{
+				if (false == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isFinishedThisLine)
+				{
+					++m_iCurrentLine;
+					m_fFadeTimer = 0.f;
+					m_fDelayTimer = 0.f;
+					m_fTextAlpha = 0.f;
+					m_bAnimationStarted = false;
+					GetAnimationObjectForLine(m_iCurrentLine, 0);
+				}
+
+				// 이 나레이션에서 장을 넘겨야하면 넘기자. isfinishedthisLine은 다음장으로 넘긴다.
+				else if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isFinishedThisLine)
+				{
+					if (false == m_isNextLineReady)
+					{
+						m_isNextLineReady = true;
+						
+
+						m_isWaitingPrint = true;
+						//GetAnimationObjectForLine(m_iCurrentLine, 0);
+					}
+
+					m_fWaitingTime += _fTimeDelta;
+					if (m_fWaitingTime >= m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].fwaitingTime)
+					{
+						// 대기시간 후 false
+						m_isWaitingPrint = false;
+						m_isNextLineReady = false;
+					}
+
+					if (false == m_isWaitingPrint)
+					{
+						// 대기시간이 완료되었다.
+						// 다음 장으로 이동하자.
+						++m_iCurrentLine;
+						m_fFadeTimer = 0.f;
+						m_fDelayTimer = 0.f;
+						m_fTextAlpha = 0.f;
+						m_bAnimationStarted = false;
+
+						m_isWaitingPrint = true;
+						
+						_float3 vPos = _float3(0.f, 0.f, 1.f);
+						Event_Book_Main_Section_Change_Start(1, &vPos);
+						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].NarAnim[0].strSectionid, this);
+
+
+						//m_vAnimObjectsByLine.erase(m_iCurrentLine);
+						GetAnimationObjectForLine(m_iCurrentLine, 0);
+					}
+				}
+				else
+				{
+					GetAnimationObjectForLine(m_iCurrentLine, 0);
+				}
+			}
+			else // 나레이션 내에 다음 라인이 없나요?
+			{
+				// 현재 나레이션이 종료 상태인지, 즉 bTerminal이 true이면 호출 및 종료 처리
+				_float3 vPos = _float3(0.f, 0.f, 1.f);
+				if (m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isFinishedThisLine)
+				{
+					Event_Book_Main_Section_Change_Start(1, &vPos);
+					m_isStartNarration = false;
+					m_isNarrationEnd = true;
+					m_isPlayNarration = false;
+					Uimgr->Set_TurnoffPlayNarration(false);
+
+					// TODO :: 누수 잡는 중
+					
+					for (auto iter : m_pCurrentAnimObj)
+					{
+						Safe_Release(iter);
+					}
+					m_pCurrentAnimObj.clear();
+
+					for (auto iter : m_vAnimObjectsByLine)
+					{
+						for (_int i = 0; i < iter.second.size(); ++i)
+						{
+							Safe_Release(iter.second[i]);
+						}
+					}
+					m_vAnimObjectsByLine.clear();
+
+
+				}
+				// 어라? 나레이션 내에 다음 라인이 있네요? 다시 업데이트 쳐줍시다.
+				else if (m_iCurrentLine < m_NarrationDatas[m_iNarrationCount].lines.size() - 1)
+				{
+					++m_iNarrationCount;
+					m_strSectionName = m_NarrationDatas[m_iNarrationCount].strSectionid;
+					m_iCurrentLine = 0;
+					m_fFadeTimer = 0.f;
+					m_fDelayTimer = 0.f;
+					m_fTextAlpha = 0.f;
+					m_bAnimationStarted = false;
+					m_isNarrationEnd = true;
+
+
+					//m_vAnimObjectsByLine.erase(m_iCurrentLine);
+					GetAnimationObjectForLine(m_iCurrentLine, 0);
+
+					// 그런데 그 라인이 다음으로 넘기는 라인인가요?
+					if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isFinishedThisLine)
+					{
+						Event_Book_Main_Section_Change_Start(1, &vPos);
+						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].NarAnim[0].strSectionid, this);
+					}
+				}
+			}
+		}
+	}
 }
 
 
@@ -507,6 +690,21 @@ CGameObject* CNarration::Clone(void* _pArg)
 
 void CNarration::Free()
 {
+	// TODO :: 누수 잡는 중
+	for (auto iter : m_pCurrentAnimObj)
+	{
+		Safe_Release(iter);
+	}
+	m_pCurrentAnimObj.clear();
+
+	for (auto iter : m_vAnimObjectsByLine)
+	{
+		for (_int i = 0; i < iter.second.size(); ++i)
+		{
+			Safe_Release(iter.second[i]);
+		}
+	}
+	m_vAnimObjectsByLine.clear();
 
 	__super::Free();
 }

@@ -45,6 +45,8 @@ public:
         _float fFadeDuration;       // 페이드인이 완료될 때 까지의 시간
         _float fDelayNextLine;      // 페이드인이 완료 된 후 다음 라인으로 넘어가기까지의 시간
 
+        _bool   isFinishedThisLine = { false };
+
         _int    AnimationCount = { 0 };
         vector<NarrationAnimation> NarAnim;
 
@@ -56,6 +58,7 @@ public:
         wstring strid;              // 다이얼로그 ID
         LEVEL_ID eCurlevelId = { LEVEL_END };
         _int     LineCount = { 0 };
+        _bool    bTerminal = false;
         _int        AnimIndex = { 0 };
         vector<NarrationDialogData> lines;
     };
@@ -81,6 +84,9 @@ private:
     HRESULT      DisplayText(_float2 _vRTSize); // 타이핑 되게하자.
     void        NextDialogue(_float2 _RTSize);
     vector<CNarration_Anim*> GetAnimationObjectForLine(const _uint iLine, _int AnimCount = 0);
+    void        Set_NarrationByStrid(const _wstring& strTargetID);
+    vector<CNarration_Anim*> CreateAnimationObjectsForLine(_uint iLine);
+    void        Update_Narration(_float _fTimeDelta);
 
 private:
     //DialogData          m_DialogData;   // 현재 다이얼로그 데이터
@@ -96,6 +102,11 @@ private:
     _bool                   m_isNarrationEnd = { false };
 
     _bool                   m_isStartNarration = { false };
+    _float                  m_fWaitingTime = { 0.f };
+    _bool                   m_isWaitingPrint = { false };
+    _bool                   m_isNextLineReady = { false };
+    _bool                   m_isPlayNarration = { false };
+
 
 
     _int m_iCurrentLine = 0;            // 현재 화면에 노출할 대화 라인 인덱스
@@ -112,6 +123,12 @@ private:
 
     vector<CNarration_Anim*> m_vecAnimation;
     map<_uint, vector<CNarration_Anim*>> m_vAnimObjectsByLine;
+
+
+    //************ 테스트용
+    _bool       m_isTest = { false };
+
+
 
 protected:
     virtual HRESULT Ready_Components() override;
