@@ -184,6 +184,7 @@ CGameObject* CCarriableObject::Clone(void* _pArg)
 void CCarriableObject::Free()
 {
 	Safe_Release(m_pBody2DColliderCom);
+
 		__super::Free();
 }
 

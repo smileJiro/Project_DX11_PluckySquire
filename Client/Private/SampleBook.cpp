@@ -531,5 +531,6 @@ CGameObject* CSampleBook::Clone(void* _pArg)
 
 void CSampleBook::Free()
 {
+	Safe_Release(m_pAnimEventGenerator);
 	__super::Free();
 }

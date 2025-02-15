@@ -923,7 +923,6 @@
     <ClInclude Include="..\Public\Level_Chapter_Test.h">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\FallingRock.h" />
     <ClInclude Include="..\Public\Portal.h">
       <Filter>02.GameObjects\Portal</Filter>
     </ClInclude>
@@ -931,6 +930,9 @@
       <Filter>02.GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Die.h" />
+    <ClInclude Include="..\public\FallingRock.h">
+      <Filter>02.GameObjects\FallingRock</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1423,7 +1425,6 @@
     <ClCompile Include="..\Private\Level_Chapter_Test.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\FallingRock.cpp" />
     <ClCompile Include="..\Private\Portal.cpp">
       <Filter>02.GameObjects\Portal</Filter>
     </ClCompile>
@@ -1431,6 +1432,9 @@
       <Filter>02.GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Die.cpp" />
+    <ClCompile Include="..\private\FallingRock.cpp">
+      <Filter>02.GameObjects\FallingRock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
