@@ -236,7 +236,7 @@ void CPortal::Interact(CPlayer* _pUser)
     if (iCurCoord == COORDINATE_2D)
         SECTION_MGR->Add_GameObject_ToSectionLayer(m_strSectionName, _pUser, SECTION_2D_PLAYMAP_OBJECT);
     else
-        SECTION_MGR->Remove_GameObject_ToSectionLayer(m_strSectionName, _pUser);
+        SECTION_MGR->Remove_GameObject_FromSectionLayer(m_strSectionName, _pUser);
 
     Event_Change_Coordinate(_pUser, (COORDINATE)iCurCoord, &vNewPos);
 }

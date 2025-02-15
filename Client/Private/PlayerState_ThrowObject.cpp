@@ -40,6 +40,8 @@ void CPlayerState_ThrowObject::Enter()
 void CPlayerState_ThrowObject::Exit()
 {
 	//m_pOwner->Set_CarryingObject(nullptr);
+	if (m_pOwner ->Is_SwordMode())
+		m_pOwner->Equip_Part(CPlayer::PLAYER_PART_SWORD);
 }
 
 void CPlayerState_ThrowObject::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

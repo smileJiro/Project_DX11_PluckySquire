@@ -234,8 +234,9 @@ void CGoblin::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
         if ((_uint)MONSTER_STATE::ATTACK == m_iState)
         {
             Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().fDamg);
-            _float3 vRepulse; XMStoreFloat3(&vRepulse, 10.f * XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
-            _Other.pActorUserData->pOwner->Get_ActorCom()->Add_Impulse(vRepulse);
+            _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+            XMVectorSetY(vRepulse, -1.f);
+            Event_AddImpulse(_My.pActorUserData->pOwner, vRepulse);
             Attack();
             Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
         }

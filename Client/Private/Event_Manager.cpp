@@ -178,6 +178,11 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_Get_Bulb(_tEvent);
 	}
 	break;
+	case Client::EVENT_TYPE::ADDIMPULSE :
+	{
+		Execute_AddImpulse(_tEvent);
+	}
+	break;
 	case Client::EVENT_TYPE::SNEAK_BEETLECAUGHT:
 	{
 		Execute_Sneak_BeetleCaught(_tEvent);
@@ -641,7 +646,16 @@ HRESULT CEvent_Manager::Execute_Get_Bulb(const EVENT& _tEvent)
 		break;
 	}
 
-	return E_NOTIMPL;
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_AddImpulse(const EVENT& _tEvent)
+{
+	CActorObject* pCharacter = (CActorObject*)_tEvent.Parameters[0];
+	_vector vForce = XMLoadFloat3( (_float3*)_tEvent.Parameters[1]);
+
+	pCharacter->Add_Impuls(vForce);
+	return S_OK;
 }
 
 HRESULT CEvent_Manager::Execute_Sneak_BeetleCaught(const EVENT& _tEvent)

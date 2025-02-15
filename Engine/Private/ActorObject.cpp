@@ -47,6 +47,20 @@ HRESULT CActorObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewP
     return S_OK;
 }
 
+void CActorObject::Add_Impuls(_fvector _vForce)
+{
+    _float3 f3Force;
+    XMStoreFloat3(&f3Force, _vForce);
+    m_pActorCom->Add_Impulse(f3Force);
+}
+
+void CActorObject::Add_Force(_fvector _vForce)
+{
+    _float3 f3Force;
+    XMStoreFloat3(&f3Force, _vForce);
+    m_pActorCom->Add_Force(f3Force);
+}
+
 void CActorObject::Set_Dead()
 {
     __super::Set_Dead();

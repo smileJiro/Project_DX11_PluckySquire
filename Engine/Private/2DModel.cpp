@@ -61,23 +61,16 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath, _bool _b
 		szTextureName[iLength] = '\0';
 		if (m_Textures.find(szTextureName) != m_Textures.end())
 			continue;
-		//ID3D11ShaderResourceView* pSRV = { nullptr };
 		std::filesystem::path path = szDrive;
 		path += szTextureName;
 		path += ".dds";
 		CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, path.c_str(), 1, true);
 		if (nullptr == pTexture)
 		{
-			//path.replace_extension(".png");
-			//CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, path.c_str(), 1, true);
-			//if (nullptr == pTexture)
-			//{
-				inFile.close();
-				cout << "Failed Create Texture : " << path << endl;
-				return E_FAIL;
-			//}
+			inFile.close();
+			cout << "Failed Create Texture : " << path << endl;
+			return E_FAIL;
 		}
-		//pTexture->Add_Texture(pSRV, path.filename().replace_extension().wstring());
 		m_Textures.insert({ szTextureName,pTexture });
 	}
 	inFile.read(reinterpret_cast<char*>(&m_eAnimType), sizeof(_uint));

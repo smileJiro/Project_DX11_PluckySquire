@@ -25,6 +25,7 @@
 #include "Interactable.h"
 #include "CarriableObject.h"
 #include "Blocker.h"
+#include "NPC_Store.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -486,6 +487,7 @@ void CPlayer::Late_Update(_float _fTimeDelta)
     }
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
     //cout << endl;
+
 }
 
 HRESULT CPlayer::Render()
@@ -722,20 +724,24 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
 
 void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+    OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
     if (_pMyCollider == m_pBody2DTriggerCom)
     {
-        PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
-        if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
+        if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
         {
-            IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
-            if (pInteractable && pInteractable->Is_Interactable(this))
+            PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
+            if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
             {
-                pInteractable->Interact(this);
+                IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
+                if (pInteractable && pInteractable->Is_Interactable(this))
+                {
+                    pInteractable->Interact(this);
+                }
             }
         }
     }
     else if (_pMyCollider == m_pAttack2DTriggerCom
-        && OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
+        && OBJECT_GROUP::MONSTER == eGroup)
     {
         Attack(_pOtherObject);
     }
@@ -801,10 +807,25 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 {
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
+    if (Is_CarryingObject())
+    {
+        m_pCarryingObject->Change_Coordinate(_eCoordinate);
+        if (COORDINATE_2D == _eCoordinate)
+        {
+            m_pCarryingObject->Set_Include_Section_Name(m_strSectionName);
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCarryingObject);
+        }
+        else
+        {
+            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pCarryingObject);
+        }
 
-    if (COORDINATE_2D == Get_CurCoord()) {
+    }
+    if (COORDINATE_2D == _eCoordinate)
+    {
         Set_2DDirection(E_DIRECTION::DOWN);
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
+
     }
     else
     {
@@ -849,8 +870,9 @@ void CPlayer::Attack(CGameObject* _pVictim)
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
     Event_Hit(this, _pVictim, m_tStat.fDamg);
-    _float3 vRepulse; XMStoreFloat3(&vRepulse, 10.f * Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
-    static_cast<CActorObject*>(_pVictim)->Get_ActorCom()->Add_Impulse(vRepulse);
+    CActorObject* pActor = dynamic_cast<CActorObject*>(_pVictim);
+    //if(pActor)
+	    //Event_AddImpulse(pActor, Get_LookDirection(), m_f3DKnockBackPower);
     m_AttckedObjects.insert(_pVictim);
 }
 
@@ -1121,7 +1143,7 @@ CPlayer::STATE CPlayer::Get_CurrentStateID()
 
 CCarriableObject* CPlayer::Get_CarryingObject()
 {
-    { return static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ]); }
+    { return static_cast<CCarriableObject*>(m_pCarryingObject); }
 }
 
 
@@ -1272,8 +1294,8 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
         if (Is_CarryingObject())
         {
 
-            Safe_Release(m_PartObjects[PLAYER_PART_CARRYOBJ]);
-            m_PartObjects[PLAYER_PART_CARRYOBJ] = nullptr;
+            Safe_Release(m_pCarryingObject);
+            m_pCarryingObject = nullptr;
         }
         return S_OK;
     }
@@ -1282,8 +1304,8 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
     {
         if (Is_CarryingObject())
             return E_FAIL;
-        m_PartObjects[PLAYER_PART_CARRYOBJ] = _pCarryingObject;
-        Safe_AddRef(m_PartObjects[PLAYER_PART_CARRYOBJ]);
+        m_pCarryingObject = _pCarryingObject;
+        Safe_AddRef(m_pCarryingObject);
 
         Set_State(PICKUPOBJECT);
     }
@@ -1359,8 +1381,7 @@ void CPlayer::ThrowObject()
 		vForce = XMVectorSetW(XMVectorSetZ(vForce, 0),0);
     }
 
-	CCarriableObject* pObj = static_cast<CCarriableObject*>(m_PartObjects[PLAYER_PART_CARRYOBJ]);
-    pObj->Set_Carrier(nullptr);
+	CCarriableObject* pObj = static_cast<CCarriableObject*>(m_pCarryingObject);
     if (COORDINATE_3D == Get_CurCoord())
     {
         pObj->Set_Kinematic(false);
@@ -1370,6 +1391,7 @@ void CPlayer::ThrowObject()
         pObj->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, Get_FinalPosition());
     }
 	pObj->Throw(vForce);
+    pObj->Set_Carrier(nullptr);
 	Set_CarryingObject(nullptr);
 }
 
@@ -1397,7 +1419,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         if (iCurCoord == COORDINATE_2D)
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter2_SKSP_05",this, SECTION_2D_PLAYMAP_OBJECT);
         else
-            CSection_Manager::GetInstance()->Remove_GameObject_ToSectionLayer(L"Chapter2_SKSP_05",this);
+            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(L"Chapter2_SKSP_05",this);
 
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
 
@@ -1415,7 +1437,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         if (COORDINATE_2D == eCurCoord)
             m_bPlatformerMode = !m_bPlatformerMode;
         else
+        {
             m_bPlatformerMode = false;
+            Set_Kinematic(false == m_pActorCom->Is_Kinematic());
+        }
         //m_pControllerTransform->Rotation(XMConvertToRadians(m_bPlatformerMode ? 90 : 0), {0,0,1});
     }
     if (KEY_DOWN(KEY::F2))
@@ -1481,7 +1506,6 @@ void CPlayer::Free()
 
 	Safe_Release(m_pStateMachine);
 	Safe_Release(m_pAnimEventGenerator);
-    if((_int)(m_PartObjects.size() -1 )>= (_int)PLAYER_PART_CARRYOBJ)
-        Safe_Release(m_PartObjects[PLAYER_PART_CARRYOBJ]);
+    Safe_Release(m_pCarryingObject);
     __super::Free();
 }

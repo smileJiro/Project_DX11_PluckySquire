@@ -18,10 +18,8 @@ HRESULT CDomino::Initialize(void* _pArg)
 
 	CModelObject::MODELOBJECT_DESC* pModelDsc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
 	pModelDsc->isCoordChangeEnable = false;
-	pModelDsc->strModelPrototypeTag_3D = TEXT("Prototype_Component_Domino");
 	pModelDsc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	//pModelDsc->tTransform3DDesc.vInitialPosition = _float3(3.0f, 0.651f, -10.f);
-	//pModelDsc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
 
 	CActor::ACTOR_DESC ActorDesc;
 	ActorDesc.pOwner = this;
@@ -34,19 +32,19 @@ HRESULT CDomino::Initialize(void* _pArg)
 	ActorDesc.FreezePosition_XYZ[2] = false;
 
 	SHAPE_BOX_DESC ShapeDesc = {};
-	ShapeDesc.vHalfExtents = { 0.125f,1.65f ,0.7f };
+	ShapeDesc.vHalfExtents = { 0.18f,2.45f ,1.15f };
 	SHAPE_DATA ShapeData;
 	ShapeData.pShapeDesc = &ShapeDesc;
 	ShapeData.eShapeType = SHAPE_TYPE::BOX;
-	ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
+	ShapeData.eMaterial = ACTOR_MATERIAL::DOMINO;
 	ShapeData.isTrigger = false;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc.vHalfExtents.y + 0.01f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 
 	SHAPE_BOX_DESC ShapeDesc2 = {};
-	ShapeDesc2.vHalfExtents = { 0.3f,0.11f ,0.7f };
+	ShapeDesc2.vHalfExtents = { 0.43f,0.12f ,1.15f };
 	ShapeData.pShapeDesc = &ShapeDesc2;
-	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.15f, ShapeDesc2.vHalfExtents.y, 0.f));
+	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.24f, ShapeDesc2.vHalfExtents.y + 0.01, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
@@ -56,8 +54,9 @@ HRESULT CDomino::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pModelDsc)))
 		return E_FAIL;
 
-	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_MassLocalPos({ 0.f,0.3f,0.f });
-	m_pActorCom->Set_Mass(23.f);
+	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(_vector{0,1,0},XMConvertToRadians(180));
+	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_MassLocalPos({ 0.0f,0.5f,0.f });
+	m_pActorCom->Set_Mass(50.f);
     return S_OK;
 }
 
