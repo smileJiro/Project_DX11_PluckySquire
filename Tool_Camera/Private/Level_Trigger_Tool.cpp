@@ -593,6 +593,34 @@ void CLevel_Trigger_Tool::Show_ExitReturnMaskListBox()
 	}
 }
 
+void CLevel_Trigger_Tool::Show_ExitLookAtMaskListBox()
+{
+	ImGui::NewLine();
+	ImGui::SetNextItemWidth(120.0f);
+
+	if (m_ExitReturnTags.size() <= 0)
+		return;
+
+	_string Name = m_pGameInstance->WStringToString(m_ExitReturnTags[m_iExitLookAtIndex].second);
+
+	if (ImGui::BeginCombo("##ExitLookAt", Name.c_str())) {
+		for (_int i = 0; i < m_ExitReturnTags.size(); ++i) {
+			_bool bSelected = (m_iExitLookAtIndex == i);
+
+			if (ImGui::Selectable(m_pGameInstance->WStringToString(m_ExitReturnTags[i].second).c_str(), bSelected)) {
+				m_iExitLookAtIndex = i;
+
+				m_iExitLookAtMask |= m_ExitReturnTags[m_iExitLookAtIndex].first;
+			}
+
+			if (bSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+
+		ImGui::EndCombo();
+	}
+}
+
 void CLevel_Trigger_Tool::Set_TriggerBasicInfo()
 {
 	ImGui::NewLine();
@@ -796,6 +824,50 @@ void CLevel_Trigger_Tool::Set_TriggerInfoByType()
 		ImGui::DragFloat("##FreezeExitArmZ", &m_vFreezeExitArm.z, 0.1f, 0.f);
 	}
 		break;
+	case TRIGGER_TYPE::ENABLE_LOOKAT_TRIGGER:
+	{
+		// CameraTrigger Type
+		ImGui::Text("Enable LookAt Trigger Tag");
+
+		// Enter LookAt
+		if (true == m_isEnterLookAtMask)
+			ImGui::Text("Loot Target: TRUE             ");
+		else
+			ImGui::Text("Loot Target: FALSE            ");
+
+		ImGui::SameLine();
+		if (ImGui::Button("LOOKAT TRUE")) {
+			m_isEnterLookAtMask = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("LOOKAT FALSE")) {
+			m_isEnterLookAtMask = false;
+		}
+
+		// Exit LookAt Mask
+		ImGui::Text("Exit Look Type:");
+		if (m_iExitLookAtIndex <= m_ExitReturnTags.size() - 1) {
+			ImGui::SameLine();
+
+			for (auto& LookAtTag : m_ExitReturnTags) {
+				if (LookAtTag.first == (m_iExitLookAtMask & LookAtTag.first)) {
+					if (0x00 == LookAtTag.first)
+						continue;
+
+					_string Name = m_pGameInstance->WStringToString(LookAtTag.second);
+					ImGui::Text("%s || ", Name.c_str());
+					ImGui::SameLine();
+				}
+			}
+		}
+
+		Show_ExitLookAtMaskListBox();
+
+		ImGui::SameLine();
+		if (ImGui::Button("Clear Exit LookAt Type"))
+			m_iExitLookAtMask &= EXIT_RETURN_MASK::NONE;
+	}
+		break;
 	}
 
 }
@@ -856,6 +928,11 @@ HRESULT CLevel_Trigger_Tool::Create_Trigger()
 			case FREEZE_Z_TRIGGER:
 			{
 				dynamic_cast<CTriggerObject*>(pTrigger)->Set_CustomData(TEXT("FreezeExitArm"), m_vFreezeExitArm);
+			}
+				break;
+			case ENABLE_LOOKAT_TRIGGER:
+			{
+
 			}
 				break;
 			}
@@ -1048,6 +1125,9 @@ void CLevel_Trigger_Tool::Initialize_ListBoxName()
 			break;
 		case TRIGGER_TYPE::EVENT_TRIGGER:
 			wszTagName = TEXT("EVENT_TRIGGER");
+			break;
+		case TRIGGER_TYPE::ENABLE_LOOKAT_TRIGGER:
+			wszTagName = TEXT("ENABLE_LOOKAT_TRIGGER");
 			break;
 		}
 

@@ -456,9 +456,6 @@ _float CCamera::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRat
 		fRatio = fRatio * fRatio * (3.f - 2.f * fRatio);
 		break;
 	}
-
-	cout << "Result fRatio: " << fRatio << endl;
-	cout << "==================" << endl;
 	return fRatio;
 }
 

@@ -116,7 +116,7 @@ void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 			m_pCurArm->Set_Length(fLength);
 			m_pCurArm->Set_StartInfo(XMVector3Normalize(vDir), fLength);
 
-			m_isFreezeExit = false;
+			m_isFreezeExit = true;
 			m_fFreezeExitTime.y = 0.f;
 		}
 		else
@@ -346,10 +346,10 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 			vCameraPos = XMVectorLerp(vCurPos, XMVectorSetX(vCameraPos, XMVectorGetX(vCurPos)), fRatio);
 		}
 		else if (RESET == m_iFreezeMask) {
-			//vCameraPos = XMVectorLerp(vCurPos, vCameraPos, fRatio);
+			vCameraPos = XMVectorLerp(vCurPos, vCameraPos, fRatio);
 		
-			_float fZ = m_pGameInstance->Lerp(XMVectorGetZ(vCurPos), XMVectorGetZ(vCameraPos), fRatio);
-			vCameraPos = XMVectorSetZ(vCameraPos, fZ);
+			/*_float fZ = m_pGameInstance->Lerp(XMVectorGetZ(vCurPos), XMVectorGetZ(vCameraPos), fRatio);
+			vCameraPos = XMVectorSetZ(vCameraPos, fZ);*/
 		}
 	}
 	else {
