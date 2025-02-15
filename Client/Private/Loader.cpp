@@ -762,8 +762,17 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_Dice3D"),
         C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/dice_01/dice_01.model", matPretransform))))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_Domino"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Domino4"),
         C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Domino_4/Domino_4.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Domino3"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Domino_3/Domino_3.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Domino2"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Domino_2/Domino_2.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Domino1"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Domino_1/Domino_1.model", matPretransform))))
         return E_FAIL;
     //if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_2, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
     //    return E_FAIL;

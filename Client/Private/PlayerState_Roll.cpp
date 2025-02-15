@@ -62,6 +62,10 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 			_float fSpeed = fMaxSpeed - (fMaxSpeed - fMinSpeed) * fRatio;
 			m_pOwner->Move((m_vDirection)*fSpeed, _fTimeDelta);
 		}
+		else
+		{
+			m_pOwner->Stop_Move();
+		}
 	}
 	
 	

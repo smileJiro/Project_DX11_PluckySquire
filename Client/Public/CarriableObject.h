@@ -1,11 +1,12 @@
 #pragma once
 #include "ModelObject.h"
+#include "AnimEventReceiver.h"
 #include "Interactable.h"
 
 BEGIN(Client)
 class CPlayer;
 class CCarriableObject :
-	public CModelObject, public IInteractable
+	public CModelObject, public IAnimEventReceiver, public IInteractable
 {
 protected:
 	explicit CCarriableObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

@@ -28,14 +28,13 @@ public:
 	HRESULT					Ready_Layer_NPC(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppOut = nullptr);
 	HRESULT					Ready_Layer_Effects(const _wstring& _strLayerTag);
-
+	HRESULT					Ready_Layer_Domino(const _wstring& _strLayerTag);
 private:
 	void					Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength);
 
 	HRESULT Map_Object_Create(_wstring _strFileName);
 
 	LEVEL_ID				m_eLevelID;
-
 public:
 	static CLevel_Chapter_02* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eLevelID);
 	virtual void			Free() override;

@@ -116,7 +116,7 @@ void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 			m_pCurArm->Set_Length(fLength);
 			m_pCurArm->Set_StartInfo(XMVector3Normalize(vDir), fLength);
 
-			m_isFreezeExit = false;
+			m_isFreezeExit = true;
 			m_fFreezeExitTime.y = 0.f;
 		}
 		else

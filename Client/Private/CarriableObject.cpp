@@ -5,6 +5,8 @@
     
 #include "Collider_Circle.h"
 #include "Actor_Dynamic.h"
+#include "Controller_Model.h"
+#include "Model.h"
 
 CCarriableObject::CCarriableObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -34,6 +36,7 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 
     pDesc->iRenderGroupID_3D = RG_3D;
     pDesc->iPriorityID_3D = PR3D_GEOMETRY;
+	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 
 	pDesc->pActorDesc->pOwner = this;
     if (FAILED(__super::Initialize(pDesc)))
@@ -104,14 +107,9 @@ HRESULT CCarriableObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _p
 		Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
 		Set_SocketMatrix(_eCoordinate, m_pCarrier->Get_CarryingOffset_Ptr(_eCoordinate));
 		Set_ParentMatrix(_eCoordinate, m_pCarrier->Get_ControllerTransform()->Get_WorldMatrix_Ptr(_eCoordinate));
-		if (COORDINATE_2D == _eCoordinate)
-		{
-			 
-		}
-		else
-		{
-
-		}
+		
+		m_pControllerModel->Get_Model(COORDINATE_3D)->Set_Active(COORDINATE_3D == _eCoordinate);
+		m_pControllerModel->Get_Model(COORDINATE_2D)->Set_Active(COORDINATE_2D == _eCoordinate);
 	}
 	return S_OK;
 }
@@ -211,7 +209,6 @@ void CCarriableObject::Set_Kinematic(_bool _bKinematic)
 	CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 	if (_bKinematic)
 	{
-		pDynamicActor->Late_Update(0);
 		pDynamicActor->Set_Kinematic();
 
 	}
@@ -219,5 +216,6 @@ void CCarriableObject::Set_Kinematic(_bool _bKinematic)
 	{
 		pDynamicActor->Update(0);
 		pDynamicActor->Set_Dynamic();
+		pDynamicActor->Late_Update(0);
 	}
 }

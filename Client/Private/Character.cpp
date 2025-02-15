@@ -45,6 +45,25 @@ void CCharacter::Stop_Move()
         if (COORDINATE_3D == Get_CurCoord())
         {
             CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+  
+            _float fYVelocity = XMVectorGetY(pDynamicActor->Get_LinearVelocity());
+            pDynamicActor->Set_LinearVelocity(_vector{ 0,fYVelocity,0 });
+        }
+        else
+        {
+
+        }
+    }
+}
+
+void CCharacter::Stop_MoveXZ()
+{
+    ACTOR_TYPE eActorType = Get_ActorType();
+    if (ACTOR_TYPE::DYNAMIC == eActorType)
+    {
+        if (COORDINATE_3D == Get_CurCoord())
+        {
+            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
             pDynamicActor->Set_LinearVelocity(_vector{ 0,0,0,0 });
         }
         else
@@ -54,19 +73,6 @@ void CCharacter::Stop_Move()
     }
 }
 
-void CCharacter::Add_Impuls(_fvector _vForce)
-{
-    _float3 f3Force;
-    XMStoreFloat3(&f3Force, _vForce);
-    m_pActorCom->Add_Impulse(f3Force);
-}
-
-void CCharacter::Add_Force(_fvector _vForce)
-{
-    _float3 f3Force;
-    XMStoreFloat3(&f3Force, _vForce);
-    m_pActorCom->Add_Force(f3Force);
-}
 
 _bool CCharacter::Rotate_To(_fvector _vDirection, _float _fSpeed)
 {
@@ -143,6 +149,7 @@ _bool CCharacter::Rotate_To_Radians(_fvector _vDirection, _float _fSpeed)
         return false;
     }
 }
+
 
 _bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon)
 {

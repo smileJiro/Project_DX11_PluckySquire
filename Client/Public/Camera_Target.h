@@ -64,6 +64,7 @@ public:
 	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
 	void						Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _int _iTriggerID);
 	void						Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID);
+	void						Set_EnableLookAt(_bool _isEnableLookAt) { m_isEnableLookAt = _isEnableLookAt; }
 
 	void						Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
@@ -87,16 +88,12 @@ private:
 	_bool						m_isFreezeExit = { false };
 	_float2						m_fFreezeExitTime = { 0.4f, 0.f };
 	_float3						m_vFreezeEnterPos = {};
-	
-	
-	_bool						m_isSetStartInfo = { false };
 
-	_bool						m_isFirst = { false };
-	
+	// LookAt
+	_bool						m_isEnableLookAt = { true };
 	
 	list<pair<_float3, _uint>>	m_FreezeExitArms = {};
 	_float3						m_vCurFreezeExitArm = {};
-
 
 	//_uint						m_iPreFreeze = {};
 

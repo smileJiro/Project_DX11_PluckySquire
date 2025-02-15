@@ -113,7 +113,7 @@ HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
         AABBDesc.vScale = { 1.0f, 1.0f };
         AABBDesc.vOffsetPosition = Desc->fCollider_Offset_Pos;
         AABBDesc.isBlock = _isBlock;
-        AABBDesc.iCollisionGroupID = Desc->iCollisionGroupID;
+        AABBDesc.iCollisionGroupID = Desc->iObjectGroupID;
         
         if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
             TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &AABBDesc)))
@@ -131,7 +131,7 @@ HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
         CircleDesc.vScale = { 1.0f, 1.0f };
         CircleDesc.vOffsetPosition = Desc->fCollider_Offset_Pos;
         CircleDesc.isBlock = _isBlock;
-        CircleDesc.iCollisionGroupID = Desc->iCollisionGroupID;
+        CircleDesc.iCollisionGroupID = Desc->iObjectGroupID;
         if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
             TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &CircleDesc)))
             return E_FAIL;

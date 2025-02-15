@@ -149,7 +149,7 @@ HRESULT CSection_Manager::Add_GameObject_ToSectionLayer(const _wstring& _strSect
 }
 
 
-HRESULT CSection_Manager::Remove_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject)
+HRESULT CSection_Manager::Remove_GameObject_FromSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject)
 {
     CSection* pSection = Find_Section(_strSectionTag);
     if (nullptr == pSection)

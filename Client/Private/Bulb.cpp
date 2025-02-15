@@ -105,7 +105,7 @@ HRESULT CBulb::Initialize_2D_Object(BULB_DESC* _pDesc)
 
 void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-	if (OBJECT_GROUP::PLAYER != _Other.pActorUserData->iObjectGroup || 
+	if (OBJECT_GROUP::PLAYER != _Other.pActorUserData->pOwner->Get_CollisionGroupID() || 
 		(_uint)SHAPE_USE::SHAPE_BODY !=_Other.pShapeUserData->iShapeUse)
 		return;
 

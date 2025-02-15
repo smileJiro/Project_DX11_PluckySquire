@@ -105,10 +105,8 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		m_WayPoints[2].Neighbors.push_back(1);
 		m_WayPoints[2].Neighbors.push_back(3);
 		m_WayPoints[3].Neighbors.push_back(2);
-		m_WayPoints[3].Neighbors.push_back(4);
-		m_WayPoints[4].Neighbors.push_back(3);
-		m_WayPoints[1].Neighbors.push_back(4);
-		m_WayPoints[4].Neighbors.push_back(1);
+		m_WayPoints[2].Neighbors.push_back(5);
+		m_WayPoints[5].Neighbors.push_back(2);
 		m_WayPoints[4].Neighbors.push_back(5);
 		m_WayPoints[5].Neighbors.push_back(4);
 		m_WayPoints[5].Neighbors.push_back(6);
@@ -121,14 +119,16 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		m_WayPoints[9].Neighbors.push_back(8);
 		m_WayPoints[9].Neighbors.push_back(10);
 		m_WayPoints[10].Neighbors.push_back(9);
-		m_WayPoints[9].Neighbors.push_back(11);
-		m_WayPoints[11].Neighbors.push_back(9);
-		m_WayPoints[11].Neighbors.push_back(12);
-		m_WayPoints[12].Neighbors.push_back(11);
+		m_WayPoints[10].Neighbors.push_back(11);
+		m_WayPoints[11].Neighbors.push_back(10);
+		m_WayPoints[10].Neighbors.push_back(12);
+		m_WayPoints[12].Neighbors.push_back(10);
 		m_WayPoints[12].Neighbors.push_back(13);
 		m_WayPoints[13].Neighbors.push_back(12);
 		m_WayPoints[13].Neighbors.push_back(14);
 		m_WayPoints[14].Neighbors.push_back(13);
+		m_WayPoints[14].Neighbors.push_back(15);
+		m_WayPoints[15].Neighbors.push_back(14);
 		break;
 
 	case Client::WAYPOINTINDEX::CHAPTER2_3:

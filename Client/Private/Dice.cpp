@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Dice.h"
+#include "Section_Manager.h"
 
 CDice::CDice(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCarriableObject(_pDevice, _pContext)
@@ -43,14 +44,14 @@ HRESULT CDice::Initialize(void* _pArg)
 	ShapeData.isTrigger = false;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
-	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
-	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER| OBJECT_GROUP::INTERACTION_OBEJCT;
+	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER_TRIGGER | OBJECT_GROUP::INTERACTION_OBEJCT;
 	DiceModelDesc->pActorDesc = &ActorDesc;
-	DiceModelDesc->eActorType = ACTOR_TYPE::DYNAMIC;
+	DiceModelDesc->eActorType = ACTOR_TYPE::KINEMATIC;
 	if (FAILED(__super::Initialize(DiceModelDesc)))
 		return E_FAIL;
 
-
+	//m_pActorCom->Set_Mass(1.5f);
     return S_OK;
 }
 

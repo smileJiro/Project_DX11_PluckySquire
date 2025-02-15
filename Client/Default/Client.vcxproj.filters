@@ -388,6 +388,12 @@
     <Filter Include="02.GameObjects\Bulb">
       <UniqueIdentifier>{838a1b77-e59c-4df8-86c2-66b5c85161a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Effect">
+      <UniqueIdentifier>{52430178-d5fc-45bf-89e5-81afb2c935cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Effect\Manager">
+      <UniqueIdentifier>{8e6fe075-fc28-45f2-bc17-c0061f9c983e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="94.RenderGroups%28Custom%29\PBR\PostProcessing">
       <UniqueIdentifier>{bd1f122a-17af-42d1-9d40-b60547c9cdb6}</UniqueIdentifier>
     </Filter>
@@ -892,6 +898,9 @@
     <ClInclude Include="..\Public\Sneak_BackState.h">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Effect_Manager.h">
+      <Filter>02.GameObjects\Effect\Manager</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\PlayerState_PickUpObject.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
@@ -1388,6 +1397,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Sneak_BackState.cpp">
       <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_Manager.cpp">
+      <Filter>02.GameObjects\Effect\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_PickUpObject.cpp">
       <Filter>03.Components\PlayerState</Filter>
