@@ -52,14 +52,13 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 			m_isRenew = true;
 		}
 	}
-	//cout << "Investigate" << endl;
 
 	_vector vDir = XMLoadFloat3(&m_vSneakPos) - m_pOwner->Get_FinalPosition();
 	_float fDis = XMVectorGetX(XMVector3Length((vDir)));	//3D상에서 y값도 더해서 거리 계산하는거 주의
 	//XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_FinalPosition()));
 	XMVectorSetW(vDir, 0.f);
 	vDir = XMVector3Normalize(XMVectorSetY(vDir, 0.f));
-	cout << "Investigate" << endl;
+	//cout << "Investigate" << endl;
 
 	//이동하다 소리가 나면 범위 내에서 가장 최근 위치로 다음 위치를 갱신 (현재 idle 상태에서도 인식이 되므로 일단 인식 안둠)
 	if (m_isRenew && m_pOwner->IsTarget_In_Sneak_Detection())

@@ -4,6 +4,7 @@
 #include "FSM.h"
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
+#include "Section_Manager.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -187,6 +188,11 @@ HRESULT CMonster::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosit
 {
 	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
 		return E_FAIL;
+
+	if (COORDINATE_2D == _eCoordinate)
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	else
+		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 
 	if (COORDINATE_2D == Get_CurCoord())
 		Set_2D_Direction(F_DIRECTION::DOWN);

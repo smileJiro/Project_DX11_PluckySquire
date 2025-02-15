@@ -27,6 +27,9 @@ HRESULT CAlertState::Initialize(void* _pArg)
 void CAlertState::State_Enter()
 {
 	m_pOwner->Set_AnimChangeable(false);
+
+	if (nullptr != m_pOwner && nullptr != m_pTarget)
+		m_pOwner->Change_Dir();
 }
 
 void CAlertState::State_Update(_float _fTimeDelta)
@@ -58,8 +61,11 @@ void CAlertState::State_Update(_float _fTimeDelta)
 			if (false == m_isTurn)
 				Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
 		}
-		else
+		else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
+		{
+
 			Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
+		}
 		
 		return;
 	}
