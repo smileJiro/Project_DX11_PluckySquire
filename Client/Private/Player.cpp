@@ -1439,7 +1439,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         else
         {
             m_bPlatformerMode = false;
-            Set_Kinematic(true);
+            Set_Kinematic(false == m_pActorCom->Is_Kinematic());
         }
         //m_pControllerTransform->Rotation(XMConvertToRadians(m_bPlatformerMode ? 90 : 0), {0,0,1});
     }

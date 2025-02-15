@@ -67,6 +67,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
+	Ready_Layer_Domino(TEXT("Layer_Domino"));
 	//Ready_Layer_Effects(TEXT("Layer_Effect"));
 	//Ready_Layer_NPC(TEXT("Layer_NPC"));
 
@@ -103,34 +104,6 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::PLAYER_PROJECTILE);
 
 
-	//임시로 주사위 만들어 봄.
-	CModelObject::MODELOBJECT_DESC tModelDesc{};
-	tModelDesc.iCurLevelID = m_eLevelID;
-	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.2f, 21.5f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
-		return E_FAIL;
-	_float fDominoXPosition = 14.47f;
-	_float fDominoYPosition = 1.61f;
-	_float fDominoZPosition = 24.3f;
-	_float fDominoXPositionStep = -3.5f;
-	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
-	tModelDesc.tTransform3DDesc.vInitialScaling = _float3(1.5f, 1.5f, 1.5f);
-	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino4");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
-		return E_FAIL;
-	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino2");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
-		return E_FAIL;
-	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-	tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001;
-	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino3");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
-		return E_FAIL;
-	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
-		return E_FAIL;
 
 	// 그룹필터 제거
 	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
@@ -1014,6 +987,40 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Portal.json"), m_eLevelID, _strLayerTag, &Desc)))
 		return E_FAIL;
 
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
+{
+
+	//임시로 주사위 만들어 봄.
+	CModelObject::MODELOBJECT_DESC tModelDesc{};
+	tModelDesc.iCurLevelID = m_eLevelID;
+	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.2f, 21.5f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+		return E_FAIL;
+	_float fDominoXPosition = 14.47f;
+	_float fDominoYPosition = 1.61f;
+	_float fDominoZPosition = 24.3f;
+	_float fDominoXPositionStep = -3.5f;
+	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
+	tModelDesc.tTransform3DDesc.vInitialScaling = _float3(1.5f, 1.5f, 1.5f);
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino4");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+		return E_FAIL;
+	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino2");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+		return E_FAIL;
+	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+	tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino3");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+		return E_FAIL;
+	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+		return E_FAIL;
 	return S_OK;
 }
 
