@@ -29,11 +29,11 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
 	{
         m_pOwner->Move(EDir_To_Vector( m_pOwner->Get_2DDirection())  *m_f2DForwardSpeed, _fTimeDelta);
 	}
+    //cout << "combo : "<< m_iComboCount << " / Progress : " << fProgress << endl;
 	if (fProgress >= fMotionCancelProgress)
 	{
         if(m_pOwner->Is_AttackTriggerActive())
         {
-            cout << "AttackState MotionCancel EndAttack" << endl;
             m_pOwner->End_Attack();
         }
         if (m_bCombo)
@@ -53,6 +53,7 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
                 }
                 Switch_To_AttackAnimation(m_iComboCount);
                 m_pOwner->Start_Attack((CPlayer::ATTACK_TYPE)(CPlayer::ATTACK_TYPE_NORMAL1 + m_iComboCount));
+
             }
             m_bCombo = false;
         }

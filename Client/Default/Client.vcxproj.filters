@@ -926,6 +926,7 @@
     <ClInclude Include="..\Public\Domino.h">
       <Filter>02.GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Die.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1425,6 +1426,7 @@
     <ClCompile Include="..\Private\Domino.cpp">
       <Filter>02.GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Die.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

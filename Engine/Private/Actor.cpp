@@ -673,7 +673,6 @@ HRESULT CActor::Set_ShapeEnable(_int _iShapeIndex, _bool _isEnable)
 		m_pActor->attachShape(*m_Shapes[_iShapeIndex]);
 	else
 		m_pActor->detachShape(*m_Shapes[_iShapeIndex]);
-
 	return S_OK;
 }
 

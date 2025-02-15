@@ -22,7 +22,7 @@ private:
 	_float m_f2DForwardStartProgress = 0.1f;
 	_float m_f2DForwardEndProgress = 0.25f;
 
-    _float m_f3DMotionCancelProgress = 0.3f;
+    _float m_f3DMotionCancelProgress = 0.35f;
     _float m_f2DMotionCancelProgress = 0.5f;
 };
 

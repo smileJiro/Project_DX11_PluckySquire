@@ -58,7 +58,7 @@ HRESULT CPlayer::Initialize_Prototype()
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fOffset = 0.f;
 
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadius = 93.f;
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = 30.f;
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = 50.f;
 
     XMStoreFloat4x4(&m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.f, 0.f));
     XMStoreFloat4x4(&m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 100.f, 0.f));
@@ -1251,7 +1251,7 @@ void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
     }
     _vector vTmpDir = EDir_To_Vector(m_e2DDirection_E);
     _vector  vDir = vTmpDir * m_f2DInteractOffset;
-    m_pBody2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir) + m_f2DCenterYOffset});
+    m_pBody2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir) +  m_f2DCenterYOffset});
 
     
 }
@@ -1312,7 +1312,12 @@ void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
         m_pAttack2DTriggerCom->Set_Active(true);
         _vector vTmpDir = EDir_To_Vector(m_e2DDirection_E);
         _vector  vDir = vTmpDir * m_f2DAttackTriggerDesc[m_eCurAttackType].fOffset;
-		vDir = XMVectorSetY(vDir, XMVectorGetY(vDir) + m_f2DCenterYOffset);
+        if(ATTACK_TYPE_JUMPATTACK != m_eCurAttackType)
+		    vDir = XMVectorSetY(vDir, XMVectorGetY(vDir) + m_f2DCenterYOffset);
+        else if( F_DIRECTION::DOWN == EDir_To_FDir( m_e2DDirection_E))
+        {
+            vDir = XMVectorSetY(vDir, XMVectorGetY(vDir) + m_f2DCenterYOffset);
+        }
         m_pAttack2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir)});
 	}
 	else

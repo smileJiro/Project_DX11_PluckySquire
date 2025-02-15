@@ -61,7 +61,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC ShapeDesc = {};
-    ShapeDesc.fRadius = 0.5;
+    ShapeDesc.fRadius = 1.f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA ShapeData;
@@ -160,7 +160,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
     default:
         break;
     }
-
+    //cout << m_pActorCom->Get_Shapes()[0]->getActor() << endl;
 
     __super::Update(_fTimeDelta);
 }
