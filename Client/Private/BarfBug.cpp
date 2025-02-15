@@ -32,7 +32,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 50.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
@@ -40,8 +40,8 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
     pDesc->fAttackRange = 8.f;
-    pDesc->fAlert2DRange = 250.f;   //*50 하면 될듯?
-    pDesc->fChase2DRange = 600.f;
+    pDesc->fAlert2DRange = 300.f;   //*50 하면 될듯?
+    pDesc->fChase2DRange = 800.f;
     pDesc->fAttack2DRange = 400.f;
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
@@ -404,8 +404,9 @@ void CBarfBug::Attack()
                 break;
             }
 
-            _float fAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition));
-            XMStoreFloat4(&vRotation, XMQuaternionRotationRollPitchYaw(0.f, 0.f, XMConvertToRadians(fAngle)));
+            _float fAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition));
+            fAngle=Restrict_2DRangeAttack_Angle(fAngle);
+            XMStoreFloat4(&vRotation, XMQuaternionRotationAxis(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMConvertToRadians(fAngle)));
 
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), pCoord, &vPosition, &vRotation);
         }

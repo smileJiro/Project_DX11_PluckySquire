@@ -30,7 +30,7 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PART_LAST;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 200.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 300.f;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
@@ -85,6 +85,11 @@ void CProjectile_BarfBug::Update(_float _fTimeDelta)
         Event_DeleteObject(this);
     }
 
+    if (true == Is_Dead())
+    {
+        int a = 10;
+    }
+
 	if (COORDINATE_2D == Get_CurCoord())
     {
         if(false == m_isStop)
@@ -128,7 +133,7 @@ HRESULT CProjectile_BarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3*
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
 
-    if (COORDINATE_2D == Get_CurCoord())
+    if (COORDINATE_2D == _eCoordinate)
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(PROJECTILE);
 
@@ -226,6 +231,8 @@ void CProjectile_BarfBug::Active_OnDisable()
     m_fAccTime = 0.f;
     m_isStop = false;
 
+    CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+
     //if (COORDINATE_3D == Get_CurCoord())
 	   // m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
     __super::Active_OnDisable();
@@ -287,9 +294,9 @@ HRESULT CProjectile_BarfBug::Ready_Components()
 
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
-    CircleDesc.fRadius = 10.f;
+    CircleDesc.fRadius = 30.f;
     CircleDesc.vScale = { 1.0f, 1.0f };
-    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
+    CircleDesc.vOffsetPosition = { 0.f, 0.f };
     CircleDesc.isBlock = false;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
