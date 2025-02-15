@@ -97,7 +97,7 @@ void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 		Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().fDamg);
 		_vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
 		XMVectorSetY( vRepulse , -1.f);
-		Event_AddImpulse(_Other.pActorUserData->pOwner, vRepulse);
+		Event_KnockBack(_Other.pActorUserData->pOwner, vRepulse);
 	}
 }
 

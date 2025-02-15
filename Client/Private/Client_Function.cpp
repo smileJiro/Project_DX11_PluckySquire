@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Actor.h"
 #include "Actor_Dynamic.h"
+#include "Character.h"
 
 /* 함수 구현부 */
 namespace Client
@@ -273,19 +274,19 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
-	void Event_AddImpulse(CActorObject* _pObject, _fvector _vDirection, _float _fPower)
+	void Event_KnockBack(CActorObject* _pObject, _fvector _vDirection, _float _fPower)
 	{
-		Event_AddImpulse(_pObject, XMVector3Normalize(_vDirection)* _fPower);
+		Event_KnockBack(_pObject, XMVector3Normalize(_vDirection) * _fPower);
 	}
 
-	void Event_AddImpulse(CActorObject* _pObject, _fvector _vForce)
+	void Event_KnockBack(CActorObject* _pObject, _fvector _vForce)
 	{
 		EVENT tEvent;
-		tEvent.eType = EVENT_TYPE::ADDIMPULSE;
+		tEvent.eType = EVENT_TYPE::KNOCKBACK;
 
 		tEvent.Parameters.resize(2);
 		_float3* fForce = new _float3{ _vForce.m128_f32[0], _vForce.m128_f32[1], _vForce.m128_f32[2] };
-		tEvent.Parameters[0] = (DWORD_PTR)_pObject;
+		tEvent.Parameters[0] = (DWORD_PTR)static_cast<CCharacter*>(_pObject);
 		tEvent.Parameters[1] = (DWORD_PTR)fForce;
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}

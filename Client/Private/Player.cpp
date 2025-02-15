@@ -865,7 +865,7 @@ void CPlayer::Attack(CGameObject* _pVictim)
     Event_Hit(this, _pVictim, m_tStat.fDamg);
     CActorObject* pActor = dynamic_cast<CActorObject*>(_pVictim);
     //if(pActor)
-	    //Event_AddImpulse(pActor, Get_LookDirection(), m_f3DKnockBackPower);
+	    //Event_KnockBack(pActor, Get_LookDirection(), m_f3DKnockBackPower);
     m_AttckedObjects.insert(_pVictim);
 }
 

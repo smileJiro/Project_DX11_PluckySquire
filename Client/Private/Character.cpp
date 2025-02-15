@@ -150,6 +150,18 @@ _bool CCharacter::Rotate_To_Radians(_fvector _vDirection, _float _fSpeed)
     }
 }
 
+void CCharacter::KnockBack(_fvector _vForce)
+{
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        Add_Impuls(_vForce);
+    }
+    else if (COORDINATE_2D == Get_CurCoord())
+    {
+
+    }
+}
+
 
 _bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon)
 {
