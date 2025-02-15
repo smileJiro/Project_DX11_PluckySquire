@@ -898,9 +898,6 @@
     <ClInclude Include="..\Public\Sneak_BackState.h">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Effect_Manager.h">
-      <Filter>02.GameObjects\Effect\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\PlayerState_PickUpObject.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
@@ -910,7 +907,6 @@
     <ClInclude Include="..\Public\Dice.h">
       <Filter>02.GameObjects\Carriable</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Domino.h" />
     <ClInclude Include="..\public\Blocker.h">
       <Filter>02.GameObjects\Blocker</Filter>
     </ClInclude>
@@ -926,6 +922,9 @@
     <ClInclude Include="..\public\FallingRock.h" />
     <ClInclude Include="..\Public\Portal.h">
       <Filter>02.GameObjects\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Domino.h">
+      <Filter>02.GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1398,9 +1397,6 @@
     <ClCompile Include="..\Private\Sneak_BackState.cpp">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Effect_Manager.cpp">
-      <Filter>02.GameObjects\Effect\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\PlayerState_PickUpObject.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
@@ -1410,7 +1406,6 @@
     <ClCompile Include="..\Private\Dice.cpp">
       <Filter>02.GameObjects\Carriable</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Domino.cpp" />
     <ClCompile Include="..\private\Blocker.cpp">
       <Filter>02.GameObjects\Blocker</Filter>
     </ClCompile>
@@ -1426,6 +1421,9 @@
     <ClCompile Include="..\private\FallingRock.cpp" />
     <ClCompile Include="..\Private\Portal.cpp">
       <Filter>02.GameObjects\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Domino.cpp">
+      <Filter>02.GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
