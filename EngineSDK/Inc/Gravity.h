@@ -38,9 +38,13 @@ public:
 	// Get
 	STATE						Get_CurState() const { return m_eCurState; }
 	const _float3&				Get_GravityDirection() const { return m_vDirection; }
+	_float						Get_Gravity() const { return m_fGravity; }
+	_float						Get_GravityAcc() const { return m_fGravityAcc; }
+
 	// Set
 	void						Set_GravityDirection(const _float3& _vDirection) { m_vDirection = _vDirection; }
 	void						Set_Gravity(_float _fGravity) { m_fGravity = _fGravity; }
+	void						Set_GravityAcc(_float _fGravityAcc) { m_fGravityAcc = _fGravityAcc; }
 private:
 	CGameObject*				m_pOwner = nullptr;
 	STATE						m_ePreState = STATE::STATE_LAST;

@@ -47,7 +47,7 @@ namespace Engine
 
 		int			useAlbedoMap = 0;
 		int			useNormalMap = 0;
-		int			useAOMap = 0;
+		int			useAOMap = 0; // 12
 		int			useMetallicMap = 0;		// 16Byte
 
 		int			useRoughnessMap = 0;
