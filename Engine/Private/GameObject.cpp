@@ -42,7 +42,7 @@ HRESULT CGameObject::Initialize(void* _pArg)
         // BackGroundDesc(최하위 상속객체) 로 생성하여 모든 Data를 포함. >>> 모든 값을 채운 후, 이를 계속 upcasting하며, 원하는 데이터 만을 취한다.
         GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(_pArg);
         m_iCurLevelID = pDesc->iCurLevelID;
-		m_iCollisionGroupID = pDesc->iCollisionGroupID;
+		m_iObjectGroupID = pDesc->iObjectGroupID;
     }
 
     /* Create Controller Transform */

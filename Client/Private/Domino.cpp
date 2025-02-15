@@ -19,7 +19,7 @@ HRESULT CDomino::Initialize(void* _pArg)
 	CModelObject::MODELOBJECT_DESC* pModelDsc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
 	pModelDsc->isCoordChangeEnable = false;
 	pModelDsc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-
+	pModelDsc->iObjectGroupID = OBJECT_GROUP::MAPOBJECT;
 
 	CActor::ACTOR_DESC ActorDesc;
 	ActorDesc.pOwner = this;

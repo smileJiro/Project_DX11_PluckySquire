@@ -96,7 +96,7 @@ namespace Client
 		RAY_OBJECT =				0x80,
 		PLAYER_TRIGGER =			0x100,
 		BLOCKER = 					0x200,		
-		PORTAL = 					0x400,		
+		
 								 // 0x800 
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬

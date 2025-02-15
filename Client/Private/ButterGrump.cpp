@@ -105,24 +105,24 @@ void CButterGrump::Update(_float _fTimeDelta)
 {
 #ifdef _DEBUG
 
-    if ((KEY_DOWN(KEY::NUMPAD7)))
-    {
-        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH01);
-        Set_AnimChangeable(true);
-        m_pBossFSM->Change_State((_uint)BOSS_STATE::SCENE);
-    }
-    if ((KEY_DOWN(KEY::NUMPAD8)))
-    {
-        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(EXPLOSION_INTO);
-        Set_AnimChangeable(true);
-        m_pBossFSM->Change_State((_uint)BOSS_STATE::SCENE);
-    }
-    if ((KEY_DOWN(KEY::NUMPAD9)))
-    {
-        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(TRANSITION_PHASE2);
-        Set_AnimChangeable(true);
-        m_pBossFSM->Change_State((_uint)BOSS_STATE::SCENE);
-    }
+    //if ((KEY_DOWN(KEY::NUMPAD7)))
+    //{
+    //    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH01);
+    //    Set_AnimChangeable(true);
+    //    m_pBossFSM->Change_State((_uint)BOSS_STATE::SCENE);
+    //}
+    //if ((KEY_DOWN(KEY::NUMPAD8)))
+    //{
+    //    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(EXPLOSION_INTO);
+    //    Set_AnimChangeable(true);
+    //    m_pBossFSM->Change_State((_uint)BOSS_STATE::SCENE);
+    //}
+    //if ((KEY_DOWN(KEY::NUMPAD9)))
+    //{
+    //    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(TRANSITION_PHASE2);
+    //    Set_AnimChangeable(true);
+    //    m_pBossFSM->Change_State((_uint)BOSS_STATE::SCENE);
+    //}
 
 #endif // _DEBUG
 

@@ -26,7 +26,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
         return E_FAIL;
 
     MAPOBJ_DESC* pDesc = static_cast<CMapObject::MAPOBJ_DESC*>(_pArg);
-    pDesc->iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
+    pDesc->iObjectGroupID = OBJECT_GROUP::MAPOBJECT;
     return __super::Initialize(_pArg);
 }
 

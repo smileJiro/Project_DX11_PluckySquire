@@ -30,7 +30,7 @@ HRESULT CBlocker::Initialize(void* _pArg)
     
     // Add
     pDesc->eStartCoord = m_eBlockerCoord;
-    pDesc->iCollisionGroupID = OBJECT_GROUP::BLOCKER;
+    pDesc->iObjectGroupID = OBJECT_GROUP::BLOCKER;
     pDesc->isCoordChangeEnable = false;
     
     if (FAILED(__super::Initialize(_pArg)))
@@ -56,7 +56,7 @@ HRESULT CBlocker::Ready_Component(BLOCKER_DESC* _pDesc)
         AABBDesc.vScale = Desc2D->vColliderScale;
         AABBDesc.vOffsetPosition = Desc2D->vOffsetPosition;
         AABBDesc.isBlock = true;
-        AABBDesc.iCollisionGroupID = m_iCollisionGroupID;
+        AABBDesc.iCollisionGroupID = m_iObjectGroupID;
         CCollider_AABB* pCollider = nullptr;
         if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
             TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &AABBDesc)))
