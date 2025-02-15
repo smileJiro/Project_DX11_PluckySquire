@@ -687,6 +687,7 @@ HRESULT CEvent_Manager::Execute_AddImpulse(const EVENT& _tEvent)
 	_vector vForce = XMLoadFloat3( (_float3*)_tEvent.Parameters[1]);
 
 	pCharacter->Add_Impuls(vForce);
+	delete (_float3*)_tEvent.Parameters[1];
 	return S_OK;
 }
 

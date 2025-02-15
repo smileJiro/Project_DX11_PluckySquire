@@ -925,6 +925,7 @@
     <ClInclude Include="..\Public\Domino.h">
       <Filter>02.GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Die.h" />
     <ClInclude Include="..\public\FallingRock.h">
       <Filter>02.GameObjects\FallingRock</Filter>
     </ClInclude>
@@ -1426,6 +1427,7 @@
     <ClCompile Include="..\Private\Domino.cpp">
       <Filter>02.GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Die.cpp" />
     <ClCompile Include="..\private\FallingRock.cpp">
       <Filter>02.GameObjects\FallingRock</Filter>
     </ClCompile>

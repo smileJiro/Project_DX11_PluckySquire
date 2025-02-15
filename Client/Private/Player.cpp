@@ -26,7 +26,6 @@
 #include "CarriableObject.h"
 #include "Blocker.h"
 #include "NPC_Store.h"
-
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
 {
@@ -58,7 +57,7 @@ HRESULT CPlayer::Initialize_Prototype()
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fOffset = 0.f;
 
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadius = 93.f;
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = 30.f;
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = 50.f;
 
     XMStoreFloat4x4(&m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.f, 0.f));
     XMStoreFloat4x4(&m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 100.f, 0.f));
@@ -210,6 +209,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
 
     m_PartObjects[PART_BODY] = m_pBody = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"), &BodyDesc));
+	Safe_AddRef(m_pBody);
     if (nullptr == m_PartObjects[PART_BODY])
     {
         MSG_BOX("CPlayer Body Creation Failed");
@@ -233,6 +233,7 @@ HRESULT CPlayer::Ready_PartObjects()
     SwordDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     SwordDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
     m_PartObjects[PLAYER_PART_SWORD] = m_pSword = static_cast<CPlayerSword*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"), &SwordDesc));
+    Safe_AddRef(m_pSword);
     if (nullptr == m_PartObjects[PLAYER_PART_SWORD])
     {
         MSG_BOX("CPlayer Sword Creation Failed");
@@ -249,6 +250,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.eActorType = ACTOR_TYPE::LAST;
     BodyDesc.pActorDesc = nullptr;
     m_PartObjects[PLAYER_PART_GLOVE] = m_pGlove = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+	Safe_AddRef(m_pGlove);
     if (nullptr == m_PartObjects[PLAYER_PART_GLOVE])
     {
         MSG_BOX("CPlayer Glove Creation Failed");
@@ -295,6 +297,7 @@ HRESULT CPlayer::Ready_Components()
     m_pStateMachine = static_cast<CStateMachine*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"), &tStateMachineDesc));
     m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
     Add_Component(TEXT("StateMachine"), m_pStateMachine);
+    Safe_AddRef(m_pStateMachine);
 
     Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
     Bind_AnimEventFunc("ThrowObject", bind(&CPlayer::ThrowObject, this));
@@ -303,13 +306,13 @@ HRESULT CPlayer::Ready_Components()
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
-	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
-    Add_Component(TEXT("AnimEventGenrator"), m_pAnimEventGenerator);
+	CAnimEventGenerator* pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("AnimEventGenrator"), pAnimEventGenerator);
     
     tAnimEventDesc.pReceiver = this;
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
-    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_Player2DAnimEvent"), &tAnimEventDesc));
-    Add_Component(TEXT("2DAnimEventGenrator"), m_pAnimEventGenerator);
+    pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_Player2DAnimEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("2DAnimEventGenrator"), pAnimEventGenerator);
 
 	m_p2DColliderComs.resize(3);
    /* Test 2D Collider */
@@ -1251,7 +1254,7 @@ void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
     }
     _vector vTmpDir = EDir_To_Vector(m_e2DDirection_E);
     _vector  vDir = vTmpDir * m_f2DInteractOffset;
-    m_pBody2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir) + m_f2DCenterYOffset});
+    m_pBody2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir) +  m_f2DCenterYOffset});
 
     
 }
@@ -1312,12 +1315,17 @@ void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
         m_pAttack2DTriggerCom->Set_Active(true);
         _vector vTmpDir = EDir_To_Vector(m_e2DDirection_E);
         _vector  vDir = vTmpDir * m_f2DAttackTriggerDesc[m_eCurAttackType].fOffset;
-		vDir = XMVectorSetY(vDir, XMVectorGetY(vDir) + m_f2DCenterYOffset);
+        if(ATTACK_TYPE_JUMPATTACK != m_eCurAttackType)
+		    vDir = XMVectorSetY(vDir, XMVectorGetY(vDir) + m_f2DCenterYOffset);
+        else if( F_DIRECTION::DOWN == EDir_To_FDir( m_e2DDirection_E))
+        {
+            vDir = XMVectorSetY(vDir, XMVectorGetY(vDir) + m_f2DCenterYOffset);
+        }
         m_pAttack2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir)});
 	}
 	else
 	{
-		m_pSword->Set_AttackEnable(true);
+		m_pSword->Set_AttackEnable(true, _eAttackType);
 	}
 }
 
@@ -1498,8 +1506,12 @@ void CPlayer::Free()
     Safe_Release(m_pBody2DTriggerCom);
     Safe_Release(m_pAttack2DTriggerCom);
 
+	Safe_Release(m_pSword);
+	Safe_Release(m_pBody);
+	Safe_Release(m_pGlove);
+
 	Safe_Release(m_pStateMachine);
-	Safe_Release(m_pAnimEventGenerator);
     Safe_Release(m_pCarryingObject);
+
     __super::Free();
 }
