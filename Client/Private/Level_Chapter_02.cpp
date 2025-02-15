@@ -146,6 +146,10 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 void CLevel_Chapter_02::Update(_float _fTimeDelta)
 {
+	// TODO :: 나중 제거, 테스트용도 - 박상욱
+	Uimgr->Test_Update(_fTimeDelta);
+
+
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
 
@@ -839,13 +843,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+	CGameObject* pGameObject;
 
 
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
 		return E_FAIL;
 
-	
+	Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
 
 	return S_OK;
 }
