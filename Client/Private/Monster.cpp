@@ -4,6 +4,7 @@
 #include "FSM.h"
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
+#include "Section_Manager.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -96,7 +97,7 @@ void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 		Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().fDamg);
 		_vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
 		XMVectorSetY( vRepulse , -1.f);
-		Event_AddImpulse(_Other.pActorUserData->pOwner, vRepulse);
+		Event_KnockBack(_Other.pActorUserData->pOwner, vRepulse);
 	}
 }
 
@@ -188,6 +189,11 @@ HRESULT CMonster::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosit
 	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
 		return E_FAIL;
 
+	if (COORDINATE_2D == _eCoordinate)
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	else
+		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+
 	if (COORDINATE_2D == Get_CurCoord())
 		Set_2D_Direction(F_DIRECTION::DOWN);
 
@@ -235,8 +241,46 @@ _bool CMonster::IsTarget_In_Sneak_Detection()
 	return m_pSneak_DetectionField->IsTarget_In_SneakDetection();
 }
 
+_float CMonster::Restrict_2DRangeAttack_Angle(_float _fDegrees)
+{
+	_float fDegrees = _fDegrees;
+	switch (Get_2DDirection())
+	{
+	case F_DIRECTION::LEFT:
+		if (fDegrees > 330.f || fDegrees <= 90.f)
+			fDegrees = 330.f;
+		else if (fDegrees < 210.f && fDegrees > 90.f)
+			fDegrees = 210.f;
+		break;
+	case F_DIRECTION::RIGHT:
+		if (fDegrees < 30.f || fDegrees>270.f)
+			fDegrees = 30.f;
+		else if (fDegrees > 150.f && fDegrees <= 270.f)
+			fDegrees = 150.f;
+		break;
+	case F_DIRECTION::UP:
+		if (fDegrees < 300.f && fDegrees>180.f)
+			fDegrees = 300.f;
+		else if (fDegrees > 60.f && fDegrees <= 180.f)
+			fDegrees = 60.f;
+		break;
+	case F_DIRECTION::DOWN:
+		if (fDegrees > 240.f && fDegrees< 360.f)
+			fDegrees = 240.f;
+		else if (fDegrees < 120.f && fDegrees >= 0.f)
+			fDegrees = 120.f;
+		break;
+	default:
+		break;
+	}
+	return fDegrees;
+}
+
 void CMonster::Set_2D_Direction(F_DIRECTION _eDir)
 {
+	if (_eDir == m_e2DDirection)
+		return;
+
 	m_e2DDirection = _eDir;
 	if (F_DIRECTION::LEFT == m_e2DDirection)
 	{

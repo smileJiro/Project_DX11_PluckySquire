@@ -19,7 +19,7 @@ HRESULT CPatrolState::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_fPatrolOffset = 7.f;
-	m_fPatrol2DOffset = m_fPatrolOffset * 100.f;
+	m_fPatrol2DOffset = m_fPatrolOffset * 50.f;
 	m_iPrevDir = -1;
 	m_iDir = -1;
 	m_eDir = F_DIRECTION::F_DIR_LAST;
@@ -127,7 +127,7 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 	/*순찰 이동 로직*/
 	//랜덤으로 방향 설정
 	
-	if (false == m_isTurn)
+	if (false == m_isTurn && false == m_isMove)
 	{
 		Determine_Direction();
 	}
@@ -143,7 +143,9 @@ void CPatrolState::State_Exit()
 {
 	m_fAccTime = 0.f;
 	m_fAccDistance = 0.f;
+	m_fMoveDistance = 0.f;
 	m_isTurn = false;
+	m_isMove = false;
 }
 
 void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
@@ -205,7 +207,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 			switch (m_eDir)
 			{
 			case Client::F_DIRECTION::LEFT:
-				m_pOwner->Get_ControllerTransform()->Go_Left(_fTimeDelta);
+				m_pOwner->Get_ControllerTransform()->Go_Right(_fTimeDelta);
 				break;
 
 			case Client::F_DIRECTION::RIGHT:
@@ -266,7 +268,9 @@ void CPatrolState::Determine_Direction()
 		if (m_iDir != m_iPrevDir || 0 > m_iPrevDir)	//직전에 갔던 방향은 가지 않음
 		{
 			m_iPrevDir = m_iDir;
+
 			m_fMoveDistance = m_pGameInstance->Compute_Random(0.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+			
 			m_isTurn = true;
 			break;
 		}
@@ -330,9 +334,9 @@ _vector CPatrolState::Set_PatrolDirection(_int _iDir)
 		switch (_iDir)
 		{
 		case 0:
-			vDir = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-			m_eDir = F_DIRECTION::UP;
-			//cout << "상" << endl;
+			vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
+			m_eDir = F_DIRECTION::LEFT;
+			//cout << "좌" << endl;
 			break;
 		case 1:
 			vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
@@ -340,14 +344,14 @@ _vector CPatrolState::Set_PatrolDirection(_int _iDir)
 			//cout << "우" << endl;
 			break;
 		case 2:
+			vDir = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+			m_eDir = F_DIRECTION::UP;
+			//cout << "상" << endl;
+			break;
+		case 3:
 			vDir = XMVectorSet(0.f, -1.f, 0.f, 0.f);
 			m_eDir = F_DIRECTION::DOWN;
 			//cout << "하" << endl;
-			break;
-		case 3:
-			vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
-			m_eDir = F_DIRECTION::LEFT;
-			//cout << "좌" << endl;
 			break;
 		default:
 			break;

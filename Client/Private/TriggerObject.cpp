@@ -140,7 +140,10 @@ HRESULT CTriggerObject::Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
     AABBDesc.vOffsetPosition = { 0.f, 0.f };
     if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
-        return E_FAIL;
+        return E_FAIL;/* Add_ref */
+
+    m_p2DColliderComs.push_back(m_pColliderCom);
+    Safe_AddRef(m_pColliderCom); 
     return S_OK;
 }
 
