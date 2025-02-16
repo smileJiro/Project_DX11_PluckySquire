@@ -36,6 +36,66 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	ARM_DATA* tDefualtData = new ARM_DATA();
+	tDefualtData->fLength = 12.5f;
+	tDefualtData->fLengthTime = { 0.5f, 0.f };
+	tDefualtData->iLengthRatioType = EASE_IN_OUT;
+
+	tDefualtData->fMoveTimeAxisY = { 0.5f, 0.f };
+
+	tDefualtData->iRotationRatioType = EASE_IN_OUT;
+	tDefualtData->vDesireArm = { 0.f, 0.981f, -0.191f };
+
+	Add_ArmData(TEXT("Default"), tDefualtData, nullptr);
+
+	ARM_DATA* tBookHorizonData = new ARM_DATA();
+	tBookHorizonData->fLength = 12.5f;
+	tBookHorizonData->fLengthTime = { 0.5f, 0.f };
+	tBookHorizonData->iLengthRatioType = EASE_IN_OUT;
+
+	tBookHorizonData->fMoveTimeAxisY = { 0.5f, 0.f };
+
+	tBookHorizonData->iRotationRatioType = EASE_IN_OUT;
+	tBookHorizonData->vDesireArm = { 0.f, 0.981f, -0.191f };
+
+	Add_ArmData(TEXT("Book_Horizon"), tBookHorizonData, nullptr);
+
+	ARM_DATA* tBookVerticalData = new ARM_DATA();
+	tBookVerticalData->fLength = 12.5f;
+	tBookVerticalData->fLengthTime = { 0.5f, 0.f };
+	tBookVerticalData->iLengthRatioType = EASE_IN_OUT;
+
+	tBookVerticalData->fMoveTimeAxisY = { 0.5f, 0.f };
+
+	tBookVerticalData->iRotationRatioType = EASE_IN_OUT;
+	tBookVerticalData->vDesireArm = { 0.191f, 0.981, 0.f };
+
+	Add_ArmData(TEXT("Book_Vertical"), tBookVerticalData, nullptr);
+
+	ARM_DATA* tArmData = new ARM_DATA();
+	tArmData->fLength = 22.259f;
+	tArmData->fLengthTime = { 0.5f, 0.f};
+	tArmData->iLengthRatioType = EASE_IN_OUT;
+
+	tArmData->fMoveTimeAxisY = { 0.5f, 0.f };
+
+	tArmData->iRotationRatioType = EASE_IN_OUT;
+	tArmData->vDesireArm = { 0.f, 0.981f, -0.191f };
+	
+	Add_ArmData(TEXT("BookFlipping_Horizon"), tArmData, nullptr);
+
+	ARM_DATA* tArmVerticalData = new ARM_DATA();
+	tArmVerticalData->fLength = 22.259f;
+	tArmVerticalData->fLengthTime = { 0.5f, 0.f };
+	tArmVerticalData->iLengthRatioType = EASE_IN_OUT;
+
+	tArmVerticalData->fMoveTimeAxisY = { 0.5f, 0.f };
+
+	tArmVerticalData->iRotationRatioType = EASE_IN_OUT;
+	tArmVerticalData->vDesireArm = { 0.191f, 0.981, 0.f };
+
+	Add_ArmData(TEXT("BookFliping_Vertical"), tArmVerticalData, nullptr);
+
 	return S_OK;
 }
 
@@ -49,6 +109,7 @@ void CCamera_2D::Update(_float fTimeDelta)
 
 void CCamera_2D::Late_Update(_float fTimeDelta)
 {
+	m_fTrackingTime = 0.2f;
 #ifdef _DEBUG
 	Key_Input(fTimeDelta);
 #endif
@@ -66,6 +127,30 @@ void CCamera_2D::Add_CurArm(CCameraArm* _pCameraArm)
 		return;
 
 	m_pCurArm = _pCameraArm;
+}
+
+void CCamera_2D::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData)
+{
+	if (nullptr != Find_ArmData(_wszArmTag))
+		return;
+
+	m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
+}
+
+_bool CCamera_2D::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
+{
+	pair<ARM_DATA*, SUB_DATA*>* pData = Find_ArmData(_wszNextArmName);
+
+	if (nullptr == pData)
+		return false;
+
+	if (nullptr == m_pCurArm)
+		return false;
+
+	m_pCurArm->Set_NextArmData(pData->first, _iTriggerID);
+	m_szEventTag = _wszNextArmName;
+
+	return _bool();
 }
 
 void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
@@ -101,8 +186,6 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		m_iCurZoomLevel = m_tInitialData.iZoomLevel;
 		m_fFovy = m_ZoomLevels[m_tInitialData.iZoomLevel];
 	}
-
-	m_fFlippingTime = { 0.5f, 0.f };
 }
 
 INITIAL_DATA CCamera_2D::Get_InitialData()
@@ -124,6 +207,22 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 {
 	if (true == m_isInitialData)
 		return;
+
+	// Target 위치 구하기
+	switch (m_eTargetCoordinate) {
+	case (_uint)COORDINATE_2D:
+	{
+		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+		XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
+	}
+		break;
+	case (_uint)COORDINATE_3D:
+	{
+		memcpy(&m_v2DTargetWorldPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+	}
+		break;
+	}
+
 
 	Action_Zoom(_fTimeDelta);
 	Action_Shake(_fTimeDelta);
@@ -169,26 +268,39 @@ void CCamera_2D::Action_SetUp_ByMode()
 			break;
 		case FLIPPING_UP:
 		{	
-			XMStoreFloat3(&m_vStartPos, Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
-			m_fFlippingTime = { 0.5f, 0.f };
+			if (VERTICAL == m_eDirectionType) {
+				m_eDirectionType = HORIZON;
+			}
+			
+			Set_NextArmData(TEXT("BookFlipping_Horizon"), 0);
+			
+			CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Book"), 0);
+			m_pTargetWorldMatrix = pBook->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+			m_eTargetCoordinate = COORDINATE_3D;
 		}
 			break;
 		case FLIPPING_DOWN:
 		{
 			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
 			
-			if (true == static_cast<CSection_2D*>(pSection)->Is_Rotation())
-				m_eDirectionType = HORIZON;
-			else
-				m_eDirectionType = VERTICAL;
+			if (true == static_cast<CSection_2D*>(pSection)->Is_Rotation()) {
+				if (HORIZON == m_eDirectionType) {
+					m_eDirectionType = VERTICAL;
+					Set_NextArmData(TEXT("Book_Vertical"), 0);
+				}
+			}
+			else {
+				Set_NextArmData(TEXT("Book_Horizon"), 0);
+			}
 
-			XMStoreFloat3(&m_vStartPos, Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
-			m_fFlippingTime = { 0.5f, 0.f };
+			CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
+			m_pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+			m_eTargetCoordinate = COORDINATE_2D;
 
 			// 어디 볼지는 지금은 무조건 player 위치인데 위치랑 카메라가 못 가는 곳에 따라서
 			// 조정이 필요함
-			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
-			XMStoreFloat3(&m_v2DPreTargetWorldPos, vTargetPos);
+		/*	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+			XMStoreFloat3(&m_v2DPreTargetWorldPos, vTargetPos);*/
 		}
 			break;
 		}
@@ -199,6 +311,7 @@ void CCamera_2D::Action_SetUp_ByMode()
 
 void CCamera_2D::Defualt_Move(_float _fTimeDelta)
 {
+	
 	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
 
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
@@ -208,6 +321,15 @@ void CCamera_2D::Defualt_Move(_float _fTimeDelta)
 
 void CCamera_2D::Move_To_DesirePos(_float _fTimeDelta)
 {
+	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta, true)) {
+		m_eCameraMode = DEFAULT;
+	}
+
+	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
+
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
+
+	Look_Target(_fTimeDelta);
 }
 
 void CCamera_2D::Move_To_Shop(_float _fTimeDelta)
@@ -219,19 +341,17 @@ void CCamera_2D::Return_To_Default(_float _fTimeDelta)
 }
 
 void CCamera_2D::Flipping_Up(_float _fTimeDelta)
-{
-	_float fRatio = Calculate_Ratio(&m_fFlippingTime, _fTimeDelta, EASE_IN_OUT);
-
-	if ( fRatio >= (1.f - EPSILON)) {
-		m_fFlippingTime.y = 0.f;
-		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.968761384f, 21.5310783f, -22.8536606f, 1.f));
-	
+{	
+	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta, true)) {
 		m_eCameraMode = FLIPPING_PAUSE;
+
+		//return;
 	}
 
-	_vector vPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), XMVectorSet(0.968761384f, 21.5310783f, -22.8536606f, 1.f), fRatio);
+	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
 
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
+	Look_Target(_fTimeDelta);
 }
 
 void CCamera_2D::Flipping_Pause(_float _fTimeDelta)
@@ -240,22 +360,16 @@ void CCamera_2D::Flipping_Pause(_float _fTimeDelta)
 
 void CCamera_2D::Flipping_Down(_float _fTimeDelta)
 {
-	_float fRatio = Calculate_Ratio(&m_fFlippingTime, _fTimeDelta, EASE_OUT);
-
-	if ( fRatio >= (1.f - EPSILON)) {
-		m_fFlippingTime.y = 0.f;
-
-		_vector vCameraPos = XMLoadFloat3(&m_v2DPreTargetWorldPos) + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
-		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
-
+	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta, true)) {
 		m_eCameraMode = DEFAULT;
+
+		//return;
 	}
 
-	_vector vCameraPos = XMLoadFloat3(&m_v2DPreTargetWorldPos) + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
-	
-	_vector vPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), vCameraPos, fRatio);
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vPos, 1.f));
+	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
 
+	Look_Target(_fTimeDelta);
 }
 
 void CCamera_2D::Look_Target(_float fTimeDelta)
@@ -263,12 +377,23 @@ void CCamera_2D::Look_Target(_float fTimeDelta)
 	_vector vTargetPos = XMVectorSetW(XMLoadFloat3(&m_v2DPreTargetWorldPos), 1.f);
 
 	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 }
 
 _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
-{
-	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+{	
+
+	_vector vDistance = XMLoadFloat3(&m_v2DTargetWorldPos) - XMLoadFloat3(&m_v2DPreTargetWorldPos);
+	_float fSpeed = XMVectorGetX(XMVector3Length(vDistance)) / m_fTrackingTime;
+
+	_vector vCurPos = XMLoadFloat3(&m_v2DPreTargetWorldPos) + (XMVector3Normalize(vDistance) * fSpeed * _fTimeDelta);
+
+	_vector vCameraPos = vCurPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+
+	XMStoreFloat3(&m_v2DPreTargetWorldPos, vCurPos);
+
+	return vCameraPos;
 	
 	/*if (true == m_isBook) {
 		vTargetPos = XMVectorSetY(vTargetPos, m_fFixedY);
@@ -276,22 +401,20 @@ _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
 
 	//NORMAL_DIRECTION::POSITIVE_X >>> normal 판정 enum >>> 사용시 주의 점은 반올림함수를 사용하면 안정성이 오르니 반올림 함수 사용하삼.
 
-	if(true == XMVector3Equal(XMVectorSet(0.f, 0.f, 0.f, 1.f), vTargetPos)) {
-		_vector vCurPos = XMVectorLerp(XMLoadFloat3(&m_v2DPreTargetWorldPos), XMLoadFloat3(&m_v2DTargetWorldPos), 0.05f);
+	//if(true == XMVector3Equal(XMVectorSet(0.f, 0.f, 0.f, 1.f), vTargetPos)) {
+	//	_vector vCurPos = XMVectorLerp(XMLoadFloat3(&m_v2DPreTargetWorldPos), XMLoadFloat3(&m_v2DTargetWorldPos), 0.05f);
 
-		_vector vCameraPos = vCurPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
-		XMStoreFloat3(&m_v2DPreTargetWorldPos, vCurPos);
-		
-		return vCameraPos;
-	}
+	//	_vector vCameraPos = vCurPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+	//	XMStoreFloat3(&m_v2DPreTargetWorldPos, vCurPos);
+	//	
+	//	return vCameraPos;
+	//}
 
-	_vector vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_v2DPreTargetWorldPos), 1.f), vTargetPos, 0.05f);
+	//_vector vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_v2DPreTargetWorldPos), 1.f), vTargetPos, 0.05f);
 
-	_vector vCameraPos = vCurPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
-	XMStoreFloat3(&m_v2DPreTargetWorldPos, vCurPos);
-	XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
-
-	return vCameraPos;
+	//_vector vCameraPos = vCurPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+	//XMStoreFloat3(&m_v2DPreTargetWorldPos, vCurPos);
+	//XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 }
 
 void CCamera_2D::Switching(_float _fTimeDelta)
@@ -338,6 +461,22 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 	// Zoom Level
 	_float fFovy = m_pGameInstance->Lerp(m_ZoomLevels[m_tInitialData.iZoomLevel], m_ZoomLevels[m_iCurZoomLevel], fRatio);
 	m_fFovy = fFovy;
+}
+
+void CCamera_2D::Flipping_Rotation(_float _fRatio)
+{
+
+
+}
+
+pair<ARM_DATA*, SUB_DATA*>* CCamera_2D::Find_ArmData(_wstring _wszArmTag)
+{
+	auto iter = m_ArmDatas.find(_wszArmTag);
+
+	if (iter == m_ArmDatas.end())
+		return nullptr;
+
+	return &(iter->second);
 }
 
 #ifdef _DEBUG
@@ -416,6 +555,12 @@ CGameObject* CCamera_2D::Clone(void* pArg)
 
 void CCamera_2D::Free()
 {
+	for (auto& ArmData : m_ArmDatas) {
+		Safe_Delete(ArmData.second.first);
+		Safe_Delete(ArmData.second.second);
+	}
+	m_ArmDatas.clear();
+
 	Safe_Release(m_pCurArm);
 
 	__super::Free();

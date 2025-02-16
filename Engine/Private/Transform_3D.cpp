@@ -48,7 +48,7 @@ _bool CTransform_3D::MoveToTarget(_fvector _vTargetPos, _float _fTimeDelta)
     return false;
 }
 
-void CTransform_3D::LookAt(_fvector _vAt)
+void CTransform_3D::LookAt(_fvector _vAt, _fvector _vAxis, _float _fAngle)
 {
     // 0. Scale 정보를 가져온다.
     _float3 vScale = Get_Scale();
@@ -58,6 +58,39 @@ void CTransform_3D::LookAt(_fvector _vAt)
     _vector vLook = _vAt - vPos;
     _vector vRight = XMVector3Cross(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), vLook);
     _vector vUp = XMVector3Cross(vLook, vRight);
+
+    _matrix RotationMatrix = XMMatrixRotationAxis(_vAxis, _fAngle);
+
+    vRight = XMVector3TransformNormal(XMVector3Normalize(vRight), RotationMatrix);
+    vUp = XMVector3TransformNormal(XMVector3Normalize(vUp), RotationMatrix);
+    vLook = XMVector3TransformNormal(XMVector3Normalize(vLook), RotationMatrix);
+
+    // 2. 정규화 * Scale 후 값 세팅
+    Set_State(STATE::STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);
+    Set_State(STATE::STATE_UP, XMVector3Normalize(vUp) * vScale.y);
+    Set_State(STATE::STATE_LOOK, XMVector3Normalize(vLook) * vScale.z);
+}
+
+void CTransform_3D::LookAt(_fvector _vAt, _float _fAngle)
+{
+    // 0. Scale 정보를 가져온다.
+    _float3 vScale = Get_Scale();
+
+    // 1. 타겟의 위치와 나의 위치를 기반으로 Look Vector를 구한다.
+    _vector vPos = Get_State(STATE::STATE_POSITION);
+    _vector vLook = _vAt - vPos;
+    _vector vRight = XMVector3Cross(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), vLook);
+    _vector vUp = XMVector3Cross(vLook, vRight);
+
+    _matrix RotationMatrix = XMMatrixRotationAxis(vLook, _fAngle);
+
+    vRight = XMVector3TransformNormal(XMVector3Normalize(vRight), RotationMatrix);
+    vUp = XMVector3TransformNormal(XMVector3Normalize(vUp), RotationMatrix);
+    //vLook = XMVector3TransformNormal(XMVector3Normalize(vLook), RotationMatrix);
+
+    // 직교화
+    vRight = XMVector3Normalize(XMVector3Cross(vUp, vLook));
+    vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
 
     // 2. 정규화 * Scale 후 값 세팅
     Set_State(STATE::STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);

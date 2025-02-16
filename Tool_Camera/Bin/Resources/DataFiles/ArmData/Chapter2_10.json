@@ -1,0 +1,92 @@
+[
+    {
+        "Arm_Data": {
+            "Arm_Length": 10.709983825683594,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                0.0,
+                0.0
+            ],
+            "Desire_Arm": [
+                -0.8542547225952148,
+                0.5198327898979187,
+                0.004568024538457394
+            ]
+        },
+        "Arm_Tag": "Chapter2_10",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                2.5,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 0.0,
+            "Use_SubData": true,
+            "Zoom_Level": 2,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 0.0
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 11.399988174438477,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.5,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.5,
+                0.0
+            ],
+            "Desire_Arm": [
+                -0.003989881370216608,
+                0.6534308195114136,
+                -0.7569758892059326
+            ]
+        },
+        "Arm_Tag": "Chapter2_6",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                0.5,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 1.5,
+            "Use_SubData": true,
+            "Zoom_Level": 2,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 1.5
+        }
+    }
+]

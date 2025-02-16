@@ -965,6 +965,9 @@
     <ClInclude Include="..\Public\NPC_Thrash.h">
       <Filter>02.GameObjects\NPC\02. NPC_Companion\01. Thrash</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Zippy.h">
+      <Filter>02.GameObjects\Monster\Zippy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1484,6 +1487,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\NPC_Thrash.cpp">
       <Filter>02.GameObjects\NPC\02. NPC_Companion\01. Thrash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zippy.cpp">
+      <Filter>02.GameObjects\Monster\Zippy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -359,6 +359,7 @@
     <ClInclude Include="..\Public\UI.h" />
     <ClInclude Include="..\Public\UI_JotMain.h" />
     <ClInclude Include="..\public\UI_Manager.h" />
+    <ClInclude Include="..\Public\Zippy.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Client_Etc.h" />
     <ClInclude Include="PlayerState_PlatformJumpAttack.h" />
@@ -543,6 +544,7 @@
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\UI_JotMain.cpp" />
     <ClCompile Include="..\private\UI_Manager.cpp" />
+    <ClCompile Include="..\Private\Zippy.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="PlayerState_PlatformJumpAttack.cpp" />
     <ClCompile Include="stdafx.cpp">
