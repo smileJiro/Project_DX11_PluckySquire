@@ -44,7 +44,8 @@ public:
 	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-
+	virtual void Active_OnEnable() override;
+	virtual void Active_OnDisable() override;
 
 	virtual HRESULT	 Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
@@ -65,15 +66,15 @@ public:
 	_vector Get_LookDirection();
 private:
 	_bool m_bAttackEnable = false;
-	_float m_fThrowingPower3D = 15.f;
-	_float m_fThrowingPower2D = 700.f;
+	_float m_fThrowingPower3D = 30.f;
+	_float m_fThrowingPower2D = 1200.f;
 	_vector m_vThrowDirection = {};
 	_vector m_vStuckDirection = {};
 	//¹ÛÀ¸·Î ³ª°¡·Á´Â Èû
 	_float m_fOutingForce = 1.f;
 	//²ø¾îµéÀÌ´Â Èû
 	_float m_fCentripetalForce3D = 30.f;
-	_float m_fCentripetalForce2D = 600.f;
+	_float m_fCentripetalForce2D = 1000.f;
 	_float m_fRotationForce3D = 50.f;
 	_float m_f3DKnockBackPower = 12.f;
 	_float m_f2DKnockBackPower = 50.f;

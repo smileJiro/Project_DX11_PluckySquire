@@ -212,10 +212,10 @@ void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, con
     __super::OnContact_Exit(_My, _Other, _ContactPointDatas);
 }
 
-void CBarfBug::On_Hit(CGameObject* _pHitter, _float _fDamg)
+void CBarfBug::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
     cout << "Barfbug hit" << endl;
-    __super::On_Hit(_pHitter, _fDamg);
+    __super::On_Hit(_pHitter, _iDamg);
 }
 
 HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -622,7 +622,7 @@ HRESULT CBarfBug::Ready_Components()
     CircleDesc.fRadius = 50.f;
     CircleDesc.vScale = { 1.0f, 1.0f };
     CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius-10.f };
-    CircleDesc.isBlock = true;
+    CircleDesc.isBlock = false;
     CircleDesc.iCollisionGroupID= OBJECT_GROUP::MONSTER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))

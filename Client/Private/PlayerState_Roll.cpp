@@ -40,12 +40,12 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 			m_pOwner->Set_State(CPlayer::JUMP_UP);
 			return;
 		}
-		else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
 		{
 			m_pOwner->Set_State(CPlayer::ROLL);
 			return;
 		}
-		else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
 		{
 			m_pOwner->Set_State(CPlayer::THROWSWORD);
 			return;

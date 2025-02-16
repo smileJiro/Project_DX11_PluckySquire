@@ -24,6 +24,10 @@ private:
 
     _float m_f3DMotionCancelProgress = 0.35f;
     _float m_f2DMotionCancelProgress = 0.5f;
+
+    //PlatformerMode 에서 사용
+	_float m_f2DRisingForce = 200.f;
+    _bool m_bRised = false;
 };
 
 END

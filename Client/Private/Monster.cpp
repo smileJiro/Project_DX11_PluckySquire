@@ -94,10 +94,10 @@ void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 {
 	if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup && (_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse)
 	{
-		Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().fDamg);
+		Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().iDamg);
 		_vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
 		XMVectorSetY( vRepulse , -1.f);
-		Event_KnockBack(_Other.pActorUserData->pOwner, vRepulse);
+		Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), vRepulse);
 	}
 }
 
@@ -158,6 +158,11 @@ void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+	if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+	{
+		Event_Hit(this, _pOtherObject, Get_Stat().iDamg);
+		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 300.f);
+	}
 }
 
 void CMonster::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -168,16 +173,17 @@ void CMonster::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCo
 {
 }
 
-void CMonster::On_Hit(CGameObject* _pHitter, _float _fDamg)
+void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
-	m_tStat.fHP -= _fDamg;
-	if (m_tStat.fHP < 0)
+	m_tStat.iHP -= _iDamg;
+	if (m_tStat.iHP < 0)
 	{
-		m_tStat.fHP = 0;
-		//Event_DeleteObject(this);
+		m_tStat.iHP = 0;
 	}
-	
-	Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+	if (0 == m_tStat.iHP)
+		Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
+	else
+		Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
 }
 
 void CMonster::Attack()
@@ -325,7 +331,7 @@ void CMonster::Active_OnEnable()
 	CActorObject::Active_OnEnable();
 
 
-	m_tStat.fHP = m_fHp;
+	m_tStat.iHP = m_fHp;
 
 	// 2. 몬스터 할거 하고
 //	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Player"), 0);

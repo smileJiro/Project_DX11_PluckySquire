@@ -17,6 +17,7 @@
 #include "PlayerState_ThrowSword.h"
 #include "PlayerState_SpinAttack.h"
 #include "PlayerState_PickUpObject.h"
+#include "PlayerState_Die.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "Section_Manager.h"    
@@ -349,7 +350,7 @@ HRESULT CPlayer::Ready_Components()
    CircleDesc.vOffsetPosition = { 0.f,0.f };
    CircleDesc.isBlock = false;
    CircleDesc.isTrigger = true;
-   CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_TRIGGER;
+   CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
        TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &CircleDesc)))
        return E_FAIL;
@@ -359,13 +360,13 @@ HRESULT CPlayer::Ready_Components()
 
    /* Com_Gravity */
    CGravity::GRAVITY_DESC GravityDesc = {};
-   GravityDesc.fGravity = 9.8f * 100.f;
+   GravityDesc.fGravity = 9.8f * 150.f;
    GravityDesc.vGravityDirection = { 0.0f, -1.0f, 0.0f };
    GravityDesc.pOwner = this;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
        TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
        return E_FAIL;
-
+   Safe_AddRef(m_pGravityCom);
     return S_OK;
 }
 
@@ -411,8 +412,6 @@ void CPlayer::Update(_float _fTimeDelta)
             m_bOnGround = false;
         }
     }
-
-
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
@@ -428,7 +427,7 @@ void CPlayer::Late_Update(_float _fTimeDelta)
         }
         else
         {
-            m_f2DUpForce -= 9.8f * _fTimeDelta * 300;
+            m_f2DUpForce -= 9.8f * _fTimeDelta * 180;
 
             m_f2DFloorDistance += m_f2DUpForce * _fTimeDelta;
             if (0 > m_f2DFloorDistance)
@@ -616,21 +615,14 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
     {
         OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_CollisionGroupID();
         if (
-            OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup
-            //||
-            //TODO :: PORTAL 예외처리. 더 좋은방법이 있으면 부탁함 0215 박예슬
-            //BJECT_GROUP::PORTAL == eOtehrGroup
-            )
+            OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup)
         {
-             PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
-            if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
+            IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
+            if (Check_ReplaceInteractObject(pInteractable))
             {
-                IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
-                if (pInteractable && pInteractable->Is_Interactable(this))
-                {
-                    pInteractable->Interact(this);
-                }
+				m_pInteractableObject = pInteractable;
             }
+
         }
     }
 
@@ -697,6 +689,7 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
             {
                 /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
                 m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+
             }
         }
         
@@ -706,13 +699,6 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
         break;
     }
 
-
-
-    if (_pMyCollider == m_pAttack2DTriggerCom
-        && OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
-    {
-        Attack(_pOtherObject);
-    }
 }
 
 void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -722,14 +708,10 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
     {
         if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
         {
-            PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
-            if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
+            IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
+            if (Check_ReplaceInteractObject(pInteractable))
             {
-                IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
-                if (pInteractable && pInteractable->Is_Interactable(this))
-                {
-                    pInteractable->Interact(this);
-                }
+                m_pInteractableObject = pInteractable;
             }
         }
     }
@@ -785,14 +767,18 @@ void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	m_pStateMachine->Get_CurrentState()->On_AnimEnd(_eCoord, iAnimIdx);
 }
 
-void CPlayer::On_Hit(CGameObject* _pHitter, _float _fDamg)
+void CPlayer::On_Hit(CGameObject* _pHitter, _int _fDamg)
 {
     //cout << " Player Get Damg" << _fDamg << endl;
-    m_tStat.fHP -= _fDamg;
-    if (m_tStat.fHP < 0)
+    m_tStat.iHP -= _fDamg;
+	COORDINATE eCoord = Get_CurCoord();
+	CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == eCoord) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
+    CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.2f, 20, CCamera::SHAKE_XY);
+    if (m_tStat.iHP <= 0)
     {
-        m_tStat.fHP = 0;
-        Set_State(DIE);
+        m_tStat.iHP = 0;
+        if(STATE::DIE != Get_CurrentStateID())
+            Set_State(DIE);
     }
 }
 
@@ -814,11 +800,11 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         }
 
     }
+    End_Attack();
     if (COORDINATE_2D == _eCoordinate)
     {
         Set_2DDirection(E_DIRECTION::DOWN);
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
-
     }
     else
     {
@@ -862,10 +848,10 @@ void CPlayer::Attack(CGameObject* _pVictim)
 {
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
-    Event_Hit(this, _pVictim, m_tStat.fDamg);
-    CActorObject* pActor = dynamic_cast<CActorObject*>(_pVictim);
-    //if(pActor)
-	    //Event_KnockBack(pActor, Get_LookDirection(), m_f3DKnockBackPower);
+    Event_Hit(this, _pVictim, m_tStat.iDamg);
+    CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
+    if(pCharacter)
+	    Event_KnockBack(pCharacter, Get_LookDirection(), m_f2DKnockBackPower);
     m_AttckedObjects.insert(_pVictim);
 }
 
@@ -916,7 +902,15 @@ void CPlayer::Jump()
 
     if (COORDINATE_2D == eCoord)
     {
-        m_f2DUpForce = m_f2DJumpPower;
+        if (m_bPlatformerMode)
+        {
+			m_pGravityCom->Set_GravityAcc(-m_f2DPlatformerJumpPower);
+         
+            m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
+        }
+        else
+            m_f2DUpForce = m_f2DJumpPower;
+
     }
     else
     {
@@ -934,7 +928,14 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
 	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
-
+	if (STATE::DIE == Get_CurrentStateID())
+    {
+        if (KEY_DOWN(KEY::ENTER))
+        {
+			tResult.bInputStates[PLAYER_INPUT_REVIVE] = true;
+        }
+        return tResult;
+    }
     if (Is_SwordHandling())
     {
         //기본공격
@@ -945,30 +946,30 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         //칼 던지기
         else if (MOUSE_DOWN(MOUSE_KEY::RB))
         {
-            tResult.bInputStates[PLAYER_KEY_THROWSWORD] = true;
+            tResult.bInputStates[PLAYER_INPUT_THROWSWORD] = true;
         }
         else if (Is_OnGround())
         {
             KEY_STATE eKeyState = m_pGameInstance->GetKeyState(KEY::Q);
             if (KEY_STATE::DOWN == eKeyState)
-			    tResult.bInputStates[PLAYER_KEY_SPINATTACK] = true;
+			    tResult.bInputStates[PLAYER_INPUT_SPINATTACK] = true;
             else if (KEY_STATE::PRESSING == eKeyState)
-                tResult.bInputStates[PLAYER_KEY_SPINCHARGING] = true;
+                tResult.bInputStates[PLAYER_INPUT_SPINCHARGING] = true;
             else if (KEY_STATE::UP == eKeyState)
-                tResult.bInputStates[PLAYER_KEY_SPINLAUNCH] = true;
+                tResult.bInputStates[PLAYER_INPUT_SPINLAUNCH] = true;
         }
     }
     if (Is_CarryingObject())
     {
         //던지기
         if (KEY_DOWN(KEY::E))
-            tResult.bInputStates[PLAYER_KEY_THROWOBJECT] = true;
+            tResult.bInputStates[PLAYER_INPUT_THROWOBJECT] = true;
     }
     else
     {
         //상호작용
-        if (KEY_DOWN(KEY::E))
-            tResult.bInputStates[PLAYER_KEY_INTERACT] = true;
+        if (KEY_PRESSING(KEY::E))
+            tResult.bInputStates[PLAYER_INPUT_INTERACT] = true;
     }
 
     //점프
@@ -978,9 +979,9 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     else if (KEY_PRESSING(KEY::LSHIFT))
     {
         if (Is_SneakMode())
-            tResult.bInputStates[PLAYER_KEY_SNEAK] = true;
+            tResult.bInputStates[PLAYER_INPUT_SNEAK] = true;
         else
-            tResult.bInputStates[PLAYER_KEY_ROLL] = true;
+            tResult.bInputStates[PLAYER_INPUT_ROLL] = true;
     }
 
     COORDINATE eCoord = Get_CurCoord();
@@ -1031,6 +1032,74 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     return tResult;
 }
 
+void CPlayer::Revive()
+{
+	m_tStat.iHP = m_tStat.iMaxHP;
+	Set_State(IDLE);
+}
+
+_bool CPlayer::Check_ReplaceInteractObject(IInteractable* _pObj)
+{
+    if(nullptr == _pObj)
+		return false;
+    if(nullptr == m_pInteractableObject)
+		return true;
+    if (false == _pObj->Is_Interactable(this))
+        return false;
+    if (m_pInteractableObject == _pObj)
+        return false;
+	COORDINATE eCoord = Get_CurCoord();
+    if (m_pInteractableObject->Get_Distance(eCoord, this) > _pObj->Get_Distance(eCoord, this))
+        return true;
+    return false;
+}
+
+void CPlayer::Try_Interact(_float _fTimeDelta)
+{
+    if (nullptr == m_pInteractableObject)
+        return;
+
+    if(m_pInteractableObject->Is_ChargeComplete())
+    {
+        m_pInteractableObject->End_Charge();
+        m_pInteractableObject->Interact(this);
+    }
+    else
+		m_pInteractableObject->Charge(_fTimeDelta);
+}
+
+void CPlayer::End_Interact()
+{
+    if (nullptr == m_pInteractableObject)
+        return;
+    m_pInteractableObject->End_Charge();
+}
+
+void CPlayer::Set_CollidersActive(_bool _bOn)
+{
+	m_pBody2DColliderCom->Set_Active(_bOn);
+	m_pBody2DTriggerCom->Set_Active(_bOn);
+	m_pAttack2DTriggerCom->Set_Active(_bOn);
+
+    for (_uint i = 0; i < PLAYER_SHAPE_USE_LAST; i++)
+    {
+	    m_pActorCom->Set_ShapeEnable(i,_bOn);
+    }
+}
+
+
+_bool CPlayer::Is_OnGround()
+{
+    if (Is_PlatformerMode())
+    {
+        return CGravity::STATE::STATE_FLOOR == m_pGravityCom->Get_CurState();
+
+    }
+    else
+    {
+        return m_bOnGround; 
+    }
+}
 
 _bool CPlayer::Is_Sneaking()
 {
@@ -1072,7 +1141,10 @@ _float CPlayer::Get_UpForce()
 
     if (COORDINATE_2D == eCoord)
     {
-        return m_f2DUpForce;
+        if (Is_PlatformerMode())
+            return -m_pGravityCom->Get_GravityAcc();
+        else
+            return m_f2DUpForce;
     }
     else
     {
@@ -1127,6 +1199,11 @@ _vector CPlayer::Get_LookDirection(COORDINATE _eCoord)
         return FDir_To_Vector(EDir_To_FDir(m_e2DDirection_E));
     else
         return XMVector4Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+}
+
+_vector CPlayer::Get_BodyPosition()
+{
+    return m_pBody->Get_FinalPosition(); 
 }
 
 CPlayer::STATE CPlayer::Get_CurrentStateID()
@@ -1194,6 +1271,10 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::THROWOBJECT:
 		m_pStateMachine->Transition_To(new CPlayerState_ThrowObject(this));
 		break;
+    case Client::CPlayer::DIE:
+		m_pStateMachine->Transition_To(new CPlayerState_Die(this));
+		break;
+
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -1280,6 +1361,28 @@ void CPlayer::Set_Kinematic(_bool _bKinematic)
         pDynamicActor->Update(0);
         pDynamicActor->Set_Dynamic();
     }
+}
+void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
+{
+    m_bPlatformerMode = _bPlatformerMode;
+}
+void CPlayer::Set_Upforce(_float _fForce)
+{
+    if (COORDINATE_2D == Get_CurCoord())
+    {
+        if (Is_PlatformerMode())
+            m_pGravityCom->Set_GravityAcc(_fForce);
+        else
+            m_f2DUpForce = _fForce;
+    }
+    else
+    {
+        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+        _vector vVelocity = pDynamicActor->Get_LinearVelocity();
+
+        pDynamicActor->Set_LinearVelocity(XMVectorSetY(vVelocity, _fForce));
+    }
+
 }
 HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
 {
@@ -1397,6 +1500,24 @@ void CPlayer::ThrowObject()
 	Set_CarryingObject(nullptr);
 }
 
+void CPlayer::Add_Upforce(_float _fForce)
+{
+    if (COORDINATE_2D == Get_CurCoord())
+    {
+        if(Is_PlatformerMode())
+			m_pGravityCom->Set_GravityAcc(m_pGravityCom->Get_GravityAcc() - _fForce);
+		else
+			m_f2DUpForce += _fForce;
+	}
+	else
+	{
+		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+		_vector vVelocity = pDynamicActor->Get_LinearVelocity();
+		pDynamicActor->Add_Impulse(_float3{ 0, _fForce ,0 });
+    }
+
+}
+
 void CPlayer::Key_Input(_float _fTimeDelta)
 {
     if (KEY_DOWN(KEY::F1))
@@ -1505,12 +1626,13 @@ void CPlayer::Free()
     Safe_Release(m_pBody2DColliderCom);
     Safe_Release(m_pBody2DTriggerCom);
     Safe_Release(m_pAttack2DTriggerCom);
+	Safe_Release(m_pStateMachine);
+    Safe_Release(m_pGravityCom);
 
 	Safe_Release(m_pSword);
 	Safe_Release(m_pBody);
 	Safe_Release(m_pGlove);
 
-	Safe_Release(m_pStateMachine);
     Safe_Release(m_pCarryingObject);
 
     __super::Free();

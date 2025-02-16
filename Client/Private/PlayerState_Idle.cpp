@@ -26,7 +26,7 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 		}
 
 
-		_bool bSneak = tKeyResult.bInputStates[PLAYER_KEY_SNEAK];
+		_bool bSneak = tKeyResult.bInputStates[PLAYER_INPUT_SNEAK];
 		if (bSneak != m_bSneakBefore)
 		{
 			Switch_IdleAnimation3D(bSneak);
@@ -34,21 +34,28 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 		}
 		
 	}
+	if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
+		m_pOwner->Try_Interact(_fTimeDelta);
+	else
+	{
+		m_pOwner->End_Interact();
 
-	if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
-		m_pOwner->Set_State(CPlayer::ATTACK);
-	else if (tKeyResult.bInputStates[PLAYER_KEY_SPINATTACK])
-		m_pOwner->Set_State(CPlayer::SPINATTACK);
-	else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
-		m_pOwner->Set_State(CPlayer::JUMP_UP);
-	else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
-		m_pOwner->Set_State(CPlayer::ROLL);
-	else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
-		m_pOwner->Set_State(CPlayer::THROWSWORD);
-	else	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
-		m_pOwner->Set_State(CPlayer::RUN);
-	else	if (tKeyResult.bInputStates[PLAYER_KEY_THROWOBJECT])
-		m_pOwner->Set_State(CPlayer::THROWOBJECT);
+		if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
+			m_pOwner->Set_State(CPlayer::ATTACK);
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_SPINATTACK])
+			m_pOwner->Set_State(CPlayer::SPINATTACK);
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
+			m_pOwner->Set_State(CPlayer::JUMP_UP);
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
+			m_pOwner->Set_State(CPlayer::ROLL);
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
+			m_pOwner->Set_State(CPlayer::THROWSWORD);
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
+			m_pOwner->Set_State(CPlayer::RUN);
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
+			m_pOwner->Set_State(CPlayer::THROWOBJECT);
+	}
+
 
 }
 
@@ -65,7 +72,7 @@ void CPlayerState_Idle::Enter()
 	{
 		m_pOwner->Stop_Move();
 		 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
-		Switch_IdleAnimation3D(tKeyResult.bInputStates[PLAYER_KEY_SNEAK]);
+		Switch_IdleAnimation3D(tKeyResult.bInputStates[PLAYER_INPUT_SNEAK]);
 	}
 }
 

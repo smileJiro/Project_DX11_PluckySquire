@@ -27,7 +27,17 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
 	if (COORDINATE_2D == eCoord &&
         fProgress >= m_f2DForwardStartProgress && fProgress <= m_f2DForwardEndProgress)
 	{
-        m_pOwner->Move(EDir_To_Vector( m_pOwner->Get_2DDirection())  *m_f2DForwardSpeed, _fTimeDelta);
+
+        if (m_pOwner->Is_PlatformerMode() && false == m_pOwner->Is_OnGround())
+        {
+            if (false == m_bRised )
+            {
+                m_pOwner->Add_Upforce(m_f2DRisingForce);
+                m_bRised = true;
+            }
+        }
+        else
+            m_pOwner->Move(EDir_To_Vector( m_pOwner->Get_2DDirection())  *m_f2DForwardSpeed, _fTimeDelta);
 	}
     //cout << "combo : "<< m_iComboCount << " / Progress : " << fProgress << endl;
 	if (fProgress >= fMotionCancelProgress)
@@ -45,6 +55,7 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
                 {
                     if (COORDINATE_2D == eCoord)
                     {
+ 
                         E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
                         F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
                         m_pOwner->Set_2DDirection(To_EDirection(tKeyResult.vDir));
@@ -61,9 +72,9 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
         {
             if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
                 m_pOwner->Set_State(CPlayer::JUMP_UP);
-            else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
+            else if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
                 m_pOwner->Set_State(CPlayer::ROLL);
-            else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
+            else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
                 m_pOwner->Set_State(CPlayer::THROWSWORD);
 
         }
@@ -103,6 +114,7 @@ void CPlayerState_Attack::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	m_iComboCount = 0;
 	m_bCombo = false;
+    m_bRised = false;
 	m_pOwner->Set_State(CPlayer::IDLE);
 }
 
