@@ -22,12 +22,12 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 
 	 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
 	 
-	if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
+	if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
 	{
 		m_pOwner->Set_State(CPlayer::ROLL);
 		return;
 	}
-	else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
+	else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
 	{
 		m_pOwner->Set_State(CPlayer::THROWSWORD);
 		return;
@@ -40,7 +40,7 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 			m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
 		return;
 	}
-	else	if (tKeyResult.bInputStates[PLAYER_KEY_THROWOBJECT])
+	else	if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
 	{
 		m_pOwner->Set_State(CPlayer::THROWOBJECT);
 		return;

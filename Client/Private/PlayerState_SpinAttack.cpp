@@ -14,7 +14,7 @@ void CPlayerState_SpinAttack::Update(_float _fTimeDelta)
 	if (SPIN_CHARGING == m_eSpinState)
 	{
 		if(false == m_bLaunchInput)
-			m_bLaunchInput = tKeyResult.bInputStates[PLAYER_KEY_SPINLAUNCH];
+			m_bLaunchInput = tKeyResult.bInputStates[PLAYER_INPUT_SPINLAUNCH];
 		_float fProgress = m_pOwner->Get_AnimProgress();
 		_float fLaunchableProgress = eCoord == COORDINATE_2D ? m_fLaunchableProgress2D : m_fLaunchableProgress3D;
 		//기 다 모았으면
@@ -30,9 +30,9 @@ void CPlayerState_SpinAttack::Update(_float _fTimeDelta)
 			m_pOwner->Set_State(CPlayer::ATTACK);
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
 			m_pOwner->Set_State(CPlayer::JUMP_UP);
-		else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
 			m_pOwner->Set_State(CPlayer::ROLL);
-		else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
 			m_pOwner->Set_State(CPlayer::THROWSWORD);
 	}
 	//돌기

@@ -72,9 +72,9 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
         {
             if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
                 m_pOwner->Set_State(CPlayer::JUMP_UP);
-            else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
+            else if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
                 m_pOwner->Set_State(CPlayer::ROLL);
-            else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
+            else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
                 m_pOwner->Set_State(CPlayer::THROWSWORD);
 
         }

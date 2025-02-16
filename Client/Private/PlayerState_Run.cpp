@@ -30,7 +30,7 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 	}
 
 	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
-	_bool bSneak = tKeyResult.bInputStates[PLAYER_KEY_SNEAK];
+	_bool bSneak = tKeyResult.bInputStates[PLAYER_INPUT_SNEAK];
 	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 	{
 		_float fMoveSpeed = m_pOwner->Get_MoveSpeed(eCoord);;
@@ -61,15 +61,15 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 
 		if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
-		else if (tKeyResult.bInputStates[PLAYER_KEY_SPINATTACK])
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_SPINATTACK])
 			m_pOwner->Set_State(CPlayer::SPINATTACK);
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
 			m_pOwner->Set_State(CPlayer::JUMP_UP);
-		else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
 			m_pOwner->Set_State(CPlayer::ROLL);
-		else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
 			m_pOwner->Set_State(CPlayer::THROWSWORD);
-		else	if (tKeyResult.bInputStates[PLAYER_KEY_THROWOBJECT])
+		else	if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
 			m_pOwner->Set_State(CPlayer::THROWOBJECT);
 		return;
 	}
@@ -85,7 +85,7 @@ void CPlayerState_Run::Enter()
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 
 	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
-	m_bSneakBefore = tKeyResult.bInputStates[PLAYER_KEY_SNEAK];
+	m_bSneakBefore = tKeyResult.bInputStates[PLAYER_INPUT_SNEAK];
 	if (COORDINATE_2D == eCoord)
 	{
 		m_bPlatformerMode = m_pOwner->Is_PlatformerMode();
@@ -93,7 +93,7 @@ void CPlayerState_Run::Enter()
 	else
 	{
 		 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
-		Switch_RunAnimation3D(tKeyResult.bInputStates[PLAYER_KEY_SNEAK]);
+		Switch_RunAnimation3D(tKeyResult.bInputStates[PLAYER_INPUT_SNEAK]);
 	}
 
 }

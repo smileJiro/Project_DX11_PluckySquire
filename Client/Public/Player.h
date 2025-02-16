@@ -16,21 +16,22 @@ enum PLAYER_INPUT
 	PLAYER_INPUT_MOVE,
 	PLAYER_INPUT_JUMP,
 	PLAYER_INPUT_ATTACK,
-	PLAYER_KEY_ROLL,
-	PLAYER_KEY_THROWSWORD,
-	PLAYER_KEY_INTERACT,
-	PLAYER_KEY_THROWOBJECT,
-	PLAYER_KEY_SNEAK,
-	PLAYER_KEY_SPINATTACK,
-	PLAYER_KEY_SPINCHARGING,
-	PLAYER_KEY_SPINLAUNCH,
-	PLAYER_KEY_LAST
+	PLAYER_INPUT_ROLL,
+	PLAYER_INPUT_THROWSWORD,
+	PLAYER_INPUT_INTERACT,
+	PLAYER_INPUT_THROWOBJECT,
+	PLAYER_INPUT_SNEAK,
+	PLAYER_INPUT_SPINATTACK,
+	PLAYER_INPUT_SPINCHARGING,
+	PLAYER_INPUT_SPINLAUNCH,
+	PLAYER_INPUT_REVIVE,
+	PLAYER_INPUT_LAST
 };
 typedef struct tagPlayerInputResult
 {
 	_vector vMoveDir = {0,0,0};
 	_vector vDir = { 0,0,0 };
-	_bool bInputStates[PLAYER_KEY_LAST] = {false,};
+	_bool bInputStates[PLAYER_INPUT_LAST] = {false,};
 
 }PLAYER_INPUT_RESULT;
 class CPlayer final : public CCharacter, public virtual  IAnimEventReceiver
@@ -418,19 +419,19 @@ public:
 	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
-	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other);
-	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other);
-	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
+	virtual void On_Hit(CGameObject* _pHitter, _int _fDamg) override;
+	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
-public: /* 2D 面倒 */
-	void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
-	void						On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
-	void						On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+public:
+	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
-	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-	virtual void		On_Hit(CGameObject* _pHitter, _float _fDamg) override;
-	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void Move_Attack_3D();
 	void Attack(CGameObject* _pVictim);
 	void Move(_fvector _vForce, _float _fTimeDelta);
@@ -440,6 +441,8 @@ public: /* 2D 面倒 */
 	void ThrowObject();
 	void Add_Upforce(_float _fForce);
 	PLAYER_INPUT_RESULT Player_KeyInput();
+	void Revive();
+
 	//Get
 	_bool Is_OnGround() {return m_bOnGround;}
 	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
@@ -460,7 +463,7 @@ public: /* 2D 面倒 */
 	_float Get_AirRunSpeed() { return m_fAirRunSpeed; }
 	_float Get_AirRunSpeed2D() { return m_f2DAirRunSpeed; }
 	_float Get_MoveSpeed(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DMoveSpeed : m_f3DMoveSpeed; }
-	_float Get_PickupRange(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DPickupRange : m_f3DPickupRange; }	_float Get_AttackDamg() { return m_tStat.fDamg; }
+	_float Get_PickupRange(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DPickupRange : m_f3DPickupRange; }	_float Get_AttackDamg() { return m_tStat.iDamg; }
 	_float Get_3DFloorDistance() { return m_f3DFloorDistance; }
 	_float Get_2DFloorDistance() { return m_f2DFloorDistance; }
 	_uint Get_SpinAttackLevel() { return m_iSpinAttackLevel; }
@@ -472,6 +475,7 @@ public: /* 2D 面倒 */
 	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
 	_vector Get_ClamberEndPosition() { return m_vClamberEndPosition; }
 	_vector Get_WallNormal() { return m_vWallNormal; }
+	_vector Get_BodyPosition() { return m_pBody->Get_FinalPosition(); }
 
 	const _float4x4* Get_CarryingOffset_Ptr(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? &m_mat2DCarryingOffset : &m_mat3DCarryingOffset; }
 	STATE Get_CurrentStateID();
