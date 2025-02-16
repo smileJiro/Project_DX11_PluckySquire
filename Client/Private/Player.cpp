@@ -23,7 +23,8 @@
 #include "PlayerState_ExitPortal.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
-#include "Section_Manager.h"    
+#include "Section_Manager.h"
+#include "UI_Manager.h"
     
 #include "Collider_Fan.h"
 #include "Interactable.h"
@@ -789,6 +790,8 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _fDamg)
 	COORDINATE eCoord = Get_CurCoord();
 	CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == eCoord) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
     CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.2f, 20, CCamera::SHAKE_XY);
+    Uimgr->Set_PlayerOnHit(true);
+
     if (m_tStat.iHP <= 0)
     {
         m_tStat.iHP = 0;

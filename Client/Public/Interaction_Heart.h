@@ -25,8 +25,10 @@ public:
 	virtual HRESULT			Render() override;
 
 private:
-	_int					m_PlayerHP = { 4 };
+	_int					m_PlayerHP = { 0 };
+	_int					m_PrePlayerHP = { 0 };
 	_vector					m_vPlayerPos = {};
+	_float					m_fRenderTime = { 0.f };
 
 protected:
 	virtual HRESULT			Ready_Components() override;
@@ -39,6 +41,7 @@ public:
 
 private:
 	void					Cal_HeartPos();
+	void					Cal_RenderTime(_float _fTimeDelta, _int _iPlayerHP);
 
 };
 

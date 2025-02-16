@@ -225,6 +225,9 @@
     <ClInclude Include="..\Public\Level_Chapter_Test.h" />
     <ClInclude Include="..\Public\Narration.h" />
     <ClInclude Include="..\Public\Narration_Anim.h" />
+    <ClInclude Include="..\Public\Npc_Companion.h" />
+    <ClInclude Include="..\Public\NPC_Thrash.h" />
+    <ClInclude Include="..\Public\NPC_Violet.h" />
     <ClInclude Include="..\Public\PlayerState_Die.h" />
     <ClInclude Include="..\Public\PlayerState_ExitPortal.h" />
     <ClInclude Include="..\Public\PlayerState_IntoPortal.h" />
@@ -359,6 +362,7 @@
     <ClInclude Include="..\Public\UI.h" />
     <ClInclude Include="..\Public\UI_JotMain.h" />
     <ClInclude Include="..\public\UI_Manager.h" />
+    <ClInclude Include="..\Public\Zippy.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Client_Etc.h" />
     <ClInclude Include="PlayerState_PlatformJumpAttack.h" />
@@ -409,6 +413,9 @@
     <ClCompile Include="..\Private\Level_Chapter_Test.cpp" />
     <ClCompile Include="..\Private\Narration.cpp" />
     <ClCompile Include="..\Private\Narration_Anim.cpp" />
+    <ClCompile Include="..\Private\Npc_Companion.cpp" />
+    <ClCompile Include="..\Private\NPC_Thrash.cpp" />
+    <ClCompile Include="..\Private\NPC_Violet.cpp" />
     <ClCompile Include="..\Private\PlayerState_Die.cpp" />
     <ClCompile Include="..\Private\PlayerState_ExitPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_IntoPortal.cpp" />
@@ -543,6 +550,7 @@
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\UI_JotMain.cpp" />
     <ClCompile Include="..\private\UI_Manager.cpp" />
+    <ClCompile Include="..\Private\Zippy.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="PlayerState_PlatformJumpAttack.cpp" />
     <ClCompile Include="stdafx.cpp">

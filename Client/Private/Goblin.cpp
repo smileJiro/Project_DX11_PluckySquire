@@ -31,7 +31,7 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 200.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 10.f;

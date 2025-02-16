@@ -35,7 +35,7 @@ HRESULT CMonster::Initialize(void* _pArg)
 	m_fFOVX = pDesc->fFOVX;
 	m_fFOVY = pDesc->fFOVY;
 	m_eWayIndex = pDesc->eWayIndex;
-	m_fHp = pDesc->fHP;
+	m_iHp = pDesc->fHP;
 
 	if (true == pDesc->isSneakMode)
 		m_isSneakMode = true;
@@ -96,7 +96,7 @@ void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 	{
 		Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().iDamg);
 		_vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
-		XMVectorSetY( vRepulse , -1.f);
+		//XMVectorSetY( vRepulse , -1.f);
 		Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), vRepulse);
 	}
 }
@@ -180,10 +180,16 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg)
 	{
 		m_tStat.iHP = 0;
 	}
-	if (0 == m_tStat.iHP)
+	if (0 <= m_tStat.iHP)
+	{
+		Set_AnimChangeable(true);
 		Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
+	}
 	else
+	{
+		Set_AnimChangeable(true);
 		Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+	}
 }
 
 void CMonster::Attack()
@@ -331,7 +337,7 @@ void CMonster::Active_OnEnable()
 	CActorObject::Active_OnEnable();
 
 
-	m_tStat.iHP = m_fHp;
+	m_tStat.iHP = m_iHp;
 
 	// 2. 몬스터 할거 하고
 //	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Player"), 0);

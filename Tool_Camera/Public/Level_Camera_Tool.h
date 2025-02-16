@@ -68,6 +68,9 @@ private:
 
 	_uint				m_iCycleType = {};
 
+	// LookAt
+	_bool				m_isNotLookAt = { true };
+
 	// ======================== CutScene
 	_bool								m_isCreatePoint = { false };
 	_bool								m_isEditPoint = { false };

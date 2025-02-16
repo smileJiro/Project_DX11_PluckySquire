@@ -4,15 +4,10 @@
 BEGIN(Client)
 class CNarration_Anim final: public CUI
 {
-public:
-
-
 private:
 	CNarration_Anim(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CNarration_Anim(const CNarration_Anim& _Prototype);
 	virtual ~CNarration_Anim() = default;
-
-
 
 public:
 	virtual HRESULT				Initialize_Prototype();								// 프로토 타입 전용 Initialize
@@ -22,15 +17,11 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta);
 	virtual HRESULT				Render();
 
-
-
-
 protected:
-	virtual HRESULT Ready_Components() override;
-
+	virtual HRESULT				Ready_Components() override;
 
 public:
-	static CNarration_Anim*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CNarration_Anim*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*		Clone(void* _pArg) override; // Clone() 프로토 타입이나 객체의 복사시 사용된다.
 	virtual void				Free() override;
 	virtual HRESULT				Cleanup_DeadReferences() override; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
@@ -39,8 +30,6 @@ public:
 
 private:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-
-
 
 private:
 	_wstring					m_strSectionId = {};

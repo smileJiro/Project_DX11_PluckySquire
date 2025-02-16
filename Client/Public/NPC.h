@@ -19,8 +19,8 @@ public:
 	{
 		_uint	iMainIndex;
 		_uint	iSubIndex = 0;
-		_tchar	strDialogueIndex[MAX_PATH];
-		_tchar	strLocateSection[MAX_PATH];
+		_tchar	strDialogueIndex[MAX_PATH] = L"";
+		_tchar	strLocateSection[MAX_PATH] = L"";
 
 	}NPC_DESC;
 
@@ -96,37 +96,37 @@ protected:
 
 
 protected:
-	_uint			m_iState = {};
-	_uint			m_iPreState = {};
-	CGameObject* m_pTarget = { nullptr };
-	_float			m_fAlertRange = { 0.f };
-	_float			m_fChaseRange = { 0.f };
-	_float			m_fAttackRange = { 0.f };
-	_bool			m_isAnimChangeable = { true };
+	_uint					m_iState = {};
+	_uint					m_iPreState = {};
+	CGameObject*			m_pTarget = { nullptr };
+	_float					m_fAlertRange = { 0.f };
+	_float					m_fChaseRange = { 0.f };
+	_float					m_fAttackRange = { 0.f };
+	_bool					m_isAnimChangeable = { true };
 
-	_float			m_fAccTime = { 0.f };
-	_bool			m_isDelay = { false };
-	_float			m_fDelayTime = { 0.f };
-	_bool			m_isCool = { false };
-	_float			m_fCoolTime = { 0.f };
-	_uint			m_iAttackCount = { 0 };
+	_float					m_fAccTime = { 0.f };
+	_bool					m_isDelay = { false };
+	_float					m_fDelayTime = { 0.f };
+	_bool					m_isCool = { false };
+	_float					m_fCoolTime = { 0.f };
+	_uint					m_iAttackCount = { 0 };
 
-	F_DIRECTION		m_e2DDirection = { F_DIRECTION::F_DIR_LAST };
+	F_DIRECTION				m_e2DDirection = { F_DIRECTION::F_DIR_LAST };
 
-	_uint			m_iMainIndex = { 0 };
-	_uint			m_iSubIndex = { 0 };
-	_bool			m_isColision = { false };
-	_bool			m_isCollision2D = { false };
-	_bool			m_isPreCollision2D = { false };
+	_uint					m_iMainIndex = { 0 };
+	_uint					m_iSubIndex = { 0 };
+	_bool					m_isColision = { false };
+	_bool					m_isCollision2D = { false };
+	_bool					m_isPreCollision2D = { false };
 
-	_tchar			m_strDialogueIndex[MAX_PATH] = {};
-	_tchar			m_strCurSecion[MAX_PATH] = {};
-	_bool			m_isColPlayer = { false };
+	_tchar					m_strDialogueIndex[MAX_PATH] = {};
+	_tchar					m_strCurSecion[MAX_PATH] = {};
+	_bool					m_isColPlayer = { false };
 
 	vector<CGameObject*>	m_pNpcObject;
-	CAnimEventGenerator* m_pAnimEventGenerator = { nullptr };
-	CCollider* m_p2DNpcCollider = nullptr;
-	CStateMachine* m_pStateMachine = nullptr;
+	CAnimEventGenerator*	m_pAnimEventGenerator = { nullptr };
+	CCollider*				m_p2DNpcCollider = nullptr;
+	CStateMachine*			m_pStateMachine = nullptr;
 
 
 	
