@@ -414,6 +414,23 @@ namespace Client
 
 	}
 
+	E_DIRECTION FDir_To_EDir(F_DIRECTION _eFDir)
+	{
+		switch (_eFDir)
+		{
+		case Client::F_DIRECTION::LEFT:
+			return E_DIRECTION::LEFT;
+		case Client::F_DIRECTION::RIGHT:
+			return E_DIRECTION::RIGHT;
+		case Client::F_DIRECTION::UP:
+			return E_DIRECTION::UP;
+		case Client::F_DIRECTION::DOWN:
+			return E_DIRECTION::DOWN;
+		default:
+			break;
+		}
+	}
+
 	E_DIRECTION To_EDirection(_vector _vDir)
 	{
 		_float fSlope = _vDir.m128_f32[1] / _vDir.m128_f32[0];

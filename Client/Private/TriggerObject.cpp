@@ -138,6 +138,7 @@ HRESULT CTriggerObject::Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
     AABBDesc.vExtents = { 1.f, 1.f };
     AABBDesc.vScale = { 1.f, 1.f };
     AABBDesc.vOffsetPosition = { 0.f, 0.f };
+    AABBDesc.iCollisionGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
     if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &AABBDesc)))
         return E_FAIL;/* Add_ref */

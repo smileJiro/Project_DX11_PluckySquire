@@ -229,7 +229,10 @@
     <ClInclude Include="..\Public\NPC_Thrash.h" />
     <ClInclude Include="..\Public\NPC_Violet.h" />
     <ClInclude Include="..\Public\PlayerState_Die.h" />
+    <ClInclude Include="..\Public\PlayerState_ExitPortal.h" />
+    <ClInclude Include="..\Public\PlayerState_IntoPortal.h" />
     <ClInclude Include="..\Public\PlayerState_PickUpObject.h" />
+    <ClInclude Include="..\Public\PlayerState_StartPortal.h" />
     <ClInclude Include="..\Public\PlayerState_ThrowObject.h" />
     <ClInclude Include="..\Public\Portal.h" />
     <ClInclude Include="..\public\RenderGroup_PostProcessing.h" />
@@ -414,7 +417,10 @@
     <ClCompile Include="..\Private\NPC_Thrash.cpp" />
     <ClCompile Include="..\Private\NPC_Violet.cpp" />
     <ClCompile Include="..\Private\PlayerState_Die.cpp" />
+    <ClCompile Include="..\Private\PlayerState_ExitPortal.cpp" />
+    <ClCompile Include="..\Private\PlayerState_IntoPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_PickUpObject.cpp" />
+    <ClCompile Include="..\Private\PlayerState_StartPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_ThrowObject.cpp" />
     <ClCompile Include="..\Private\Portal.cpp" />
     <ClCompile Include="..\private\RenderGroup_PostProcessing.cpp" />

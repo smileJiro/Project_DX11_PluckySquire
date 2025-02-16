@@ -115,6 +115,41 @@ HRESULT CActor_Dynamic::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNe
 	return S_OK;
 }
 
+void CActor_Dynamic::Start_ParabolicTo(_vector _vPosition, _float _fLaunchRadianAngle, _float _fGravityMag)
+{
+	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
+	//거리 구하기
+	PxTransform pxTransform = pDynamic->getGlobalPose();
+	PxVec3 pxPos = pxTransform.p;
+	PxVec3 pxTargetPos = PxVec3(XMVectorGetX(_vPosition), XMVectorGetY(_vPosition), XMVectorGetZ(_vPosition));
+	PxVec3 pxDiff = pxTargetPos - pxPos;
+	_float fDistanceXZ = sqrtf(pxDiff.x * pxDiff.x + pxDiff.z * pxDiff.z);
+	_float fDistanceY = pxDiff.y;
+
+	//도달 가능한 곳인지 확인. 도달 불가능한 곳이면 그냥 리턴
+	_float fDenominator = fDistanceXZ * tanf(_fLaunchRadianAngle) - fDistanceY;
+	if (fDenominator <= 0)
+	{
+		return;
+	}
+	//초기 속도 구하기 (포물선 공식). 초기 속도가 음수이면 뭔가 잘못된 것임. 그냥 리턴
+	_float fV0_squared = (_fGravityMag * fDistanceXZ * fDistanceXZ) / (2.0f * cosf(_fLaunchRadianAngle) * cosf(_fLaunchRadianAngle) * fDenominator);
+	if (fV0_squared < 0.0f) 
+		return ;
+	_float fV0 =  sqrtf(fV0_squared);
+
+	//수평 방향 구하기.
+	PxVec3 pxHorizontalDirection = { pxDiff.x, 0, pxDiff.z};
+	pxHorizontalDirection.normalize();
+
+	//최종 수평 속도는 초기 속도 * cos(발사각)
+	PxVec3 pxVelocity = fV0* cosf(_fLaunchRadianAngle) * pxHorizontalDirection;
+	//최종 수직 속도는 초기 속도 * sin(발사각)
+	pxVelocity.y = fV0 * sinf(_fLaunchRadianAngle);
+
+	pDynamic->setLinearVelocity(pxVelocity, m_isActive);
+}
+
 void CActor_Dynamic::Set_Kinematic()
 {
 	m_eActorType = ACTOR_TYPE::KINEMATIC;

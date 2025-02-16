@@ -21,6 +21,7 @@
 #include "CubeMap.h"
 #include "MainTable.h"
 #include "FallingRock.h"
+#include "Spawner.h"
 
 
 /* For. UI*/
@@ -342,6 +343,10 @@ HRESULT CLoader::Loading_Level_Static()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"),
+        CSpawner::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     /* For. Prototype_GameObject_CubeMap */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),

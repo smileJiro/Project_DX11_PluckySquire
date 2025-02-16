@@ -24,6 +24,7 @@ public:
 	PxScene*					Get_Scene() const { return m_pPxScene; }
 	PxMaterial*					Get_Material(ACTOR_MATERIAL _eType) const {	return m_pPxMaterial[(_uint)_eType]; }
 	_uint						Create_ShapeID() { return m_iShapeInstanceID++; };
+	_float						Get_Gravity();
 private:
 	ID3D11Device*				m_pDevice = nullptr;
 	ID3D11DeviceContext*		m_pContext = nullptr;

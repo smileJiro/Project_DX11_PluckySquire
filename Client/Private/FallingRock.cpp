@@ -257,7 +257,7 @@ void CFallingRock::State_Change_Bound_3D()
 
 	/* 2. Actor에 힘을 줘야함. */
 	_float3 vForce = {};
-	XMStoreFloat3(&vForce, XMVector3Normalize(XMVectorSet(0.0f, 0.8f, -1.0f, 0.0f)) * 30.f);
+	XMStoreFloat3(&vForce, XMVector3Normalize(XMVectorSet(0.0f, 0.8f, -1.0f, 0.0f)) * m_fForce3D);
 	m_pActorCom->Add_Impulse(vForce);
 }
 
@@ -339,7 +339,10 @@ void CFallingRock::Action_Bound_3D(_float _fTimeDelta)
 	m_fDeadTime.y += _fTimeDelta;
 	if (m_fDeadTime.x <= m_fDeadTime.y)
 	{
+		m_fDeadTime.y = 0.0f;
 		Event_DeleteObject(this); /* 풀링객체면 알아서 Layer에서 Delete 하지않고, Active만 False 처리한다. */
+		m_eCurState = STATE::STATE_FALLDOWN;
+		State_Change();
 	}
 }
 
@@ -377,6 +380,26 @@ HRESULT CFallingRock::Ready_Components(FALLINGROCK_DESC* _pDesc)
 
 
 	return S_OK;
+}
+
+void CFallingRock::Active_OnEnable()
+{
+	m_eCurState = STATE::STATE_FALLDOWN;
+	_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+	m_vShadowYDesc.y = XMVectorGetY(vPos);
+
+	__super::Active_OnEnable();
+}
+
+void CFallingRock::Active_OnDisable()
+{
+	if (false == m_isDead)
+	{
+		Event_DeleteObject(this);
+		return;
+	}
+
+	__super::Active_OnDisable();
 }
 
 CFallingRock* CFallingRock::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

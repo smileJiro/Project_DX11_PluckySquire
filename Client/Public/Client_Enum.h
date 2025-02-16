@@ -80,6 +80,7 @@ namespace Client
 		SECTION_2D_PLAYMAP_TRIGGER,
 		SECTION_2D_PLAYMAP_UI,
 		SECTION_2D_PLAYMAP_RENDERGROUP_LAST,
+		SECTION_2D_PLAYMAP_SPAWNER,
 	};
 
 	// 비트연산자를 통해 SimulationFilter를 설정해야해서 enum으로 하겠음. enum class는 비트연산자 쓰려면 형변환많이하고 번거로워서.

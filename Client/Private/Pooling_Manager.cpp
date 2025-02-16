@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
+#include "Section_Manager.h"
 
 IMPLEMENT_SINGLETON(CPooling_Manager)
 CPooling_Manager::CPooling_Manager()
@@ -61,7 +62,7 @@ HRESULT CPooling_Manager::Register_PoolingObject(const _wstring& _strPoolingTag,
 
 	CGameObject* pGameObject = nullptr;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tPoolingDesc.iPrototypeLevelID, tPoolingDesc.strPrototypeTag, m_iCurLevelID, tPoolingDesc.strLayerTag, &pGameObject, _pDesc)))
-		return E_FAIL;
+		return E_FAIL; 
 
 	vector<CGameObject*> PullingObjects;
 	PullingObjects.push_back(pGameObject);
@@ -72,96 +73,116 @@ HRESULT CPooling_Manager::Register_PoolingObject(const _wstring& _strPoolingTag,
 	m_PoolingObjects.emplace(_strPoolingTag, PullingObjects);
 
 	/* Object Descs  */
-	
 	m_ObjectsDescs.insert(std::make_pair(_strPoolingTag, std::make_pair(tPoolingDesc, _pDesc)));
 
 	
 	return S_OK;
 }
 
-HRESULT CPooling_Manager::Create_Objects(const _wstring& _strPoolingTag, _uint iNumPoolingObjects, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling)
+//HRESULT CPooling_Manager::Create_Objects(const _wstring& _strPoolingTag, _uint iNumPoolingObjects, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling)
+//{
+//	for(_uint i = 0; i < iNumPoolingObjects; ++i)
+//	{
+//		if (FAILED(Create_Object(_strPoolingTag, _pPosition, _pRotation, _pScaling)))
+//			return E_FAIL;
+//	}
+//
+//	return S_OK;
+//}
+//
+//HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling)
+//{
+//	vector<CGameObject*>* pGameObjects = Find_PoolingObjects(_strPoolingTag);
+//
+//	if (nullptr == pGameObjects)
+//		return E_FAIL;
+//
+//
+//	for (auto& pGameObject : *pGameObjects)
+//	{
+//		if (false == pGameObject->Is_Active())
+//		{
+//			if (nullptr != _pScaling)
+//				pGameObject->Set_Scale(*_pScaling);
+//			if (nullptr != _pRotation)
+//				pGameObject->Get_ControllerTransform()->RotationQuaternionW(*_pRotation);
+//			if (nullptr != _pPosition)
+//				pGameObject->Set_Position(XMLoadFloat3(_pPosition));
+//
+//			pGameObject->Set_Active(true);
+//			pGameObject->Set_Alive();
+//
+//			/* 오브젝트 삭제시 Section에서 제거되었으니, 다시 Active 활성화 시 자기 자신의 Section에 추가하자. */
+//			pair<Pooling_DESC, CGameObject::GAMEOBJECT_DESC*>* pPair = Find_PoolingDesc(_strPoolingTag);
+//			if(false == pPair->first.strSectionKey.empty())
+//				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pPair->first.strSectionKey, pGameObject, pPair->first.eSection2DRenderGroup);
+//			return S_OK;
+//		}
+//
+//	}
+//
+//	if (FAILED(Pooling_Objects(_strPoolingTag, 5)))
+//		return E_FAIL;
+//
+//	if (FAILED(Create_Object(_strPoolingTag, _pPosition, _pRotation, _pScaling)))
+//		return E_FAIL;
+//
+//	return S_OK;
+//}
+
+HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINATE eCoordinate, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling)
 {
-	for(_uint i = 0; i < iNumPoolingObjects; ++i)
+	vector<CGameObject*>* pGameObjects = Find_PoolingObjects(_strPoolingTag);
+
+	if (nullptr == pGameObjects)
+		return E_FAIL;
+
+	for (auto& pGameObject : *pGameObjects)
 	{
-		if (FAILED(Create_Object(_strPoolingTag, _pPosition, _pRotation, _pScaling)))
+		if (false == pGameObject->Is_Active())
+		{
+			pGameObject->Set_Alive();
+			pGameObject->Set_Active(true);
+
+			pGameObject->Change_Coordinate(eCoordinate);
+
+			if (nullptr != _pScaling)
+				pGameObject->Set_Scale(*_pScaling);
+			if (nullptr != _pRotation)
+				pGameObject->Get_ControllerTransform()->RotationQuaternionW(*_pRotation);
+			if (nullptr != _pPosition)
+				pGameObject->Set_Position(XMLoadFloat3(_pPosition));
+
+
+			if (COORDINATE_2D == eCoordinate)
+			{
+				/* 오브젝트 삭제시 Section에서 제거되었으니, 다시 Active 활성화 시 자기 자신의 Section에 추가하자. */
+				pair<Pooling_DESC, CGameObject::GAMEOBJECT_DESC*>* pPair = Find_PoolingDesc(_strPoolingTag);
+				if (false == pPair->first.strSectionKey.empty())
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pPair->first.strSectionKey, pGameObject, pPair->first.eSection2DRenderGroup);// Event 처리로 해야해 
+			}
+
+			return S_OK;
+		}
+
+	}
+
+	if (FAILED(Pooling_Objects(_strPoolingTag, 5)))
+		return E_FAIL;
+
+	if (FAILED(Create_Object(_strPoolingTag, eCoordinate, _pPosition, _pRotation, _pScaling)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CPooling_Manager::Create_Objects(const _wstring& _strPoolingTag, _uint iNumPoolingObjects, COORDINATE eCoordinate, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling)
+{
+	for (_uint i = 0; i < iNumPoolingObjects; ++i)
+	{
+		if (FAILED(Create_Object(_strPoolingTag, eCoordinate, _pPosition, _pRotation, _pScaling)))
 			return E_FAIL;
 	}
-
-	return S_OK;
-}
-
-HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling)
-{
-	vector<CGameObject*>* pGameObjects = Find_PoolingObjects(_strPoolingTag);
-
-	if (nullptr == pGameObjects)
-		return E_FAIL;
-
-
-	for (auto& pGameObject : *pGameObjects)
-	{
-		if (false == pGameObject->Is_Active())
-		{
-			if (nullptr != _pScaling)
-				pGameObject->Set_Scale(*_pScaling);
-			if (nullptr != _pRotation)
-				pGameObject->Get_ControllerTransform()->RotationQuaternionW(*_pRotation);
-			if (nullptr != _pPosition)
-				pGameObject->Set_Position(XMLoadFloat3(_pPosition));
-
-			pGameObject->Set_Active(true);
-			pGameObject->Set_Alive();
-
-			return S_OK;
-		}
-
-	}
-
-	if (FAILED(Pooling_Objects(_strPoolingTag, 5)))
-		return E_FAIL;
-
-	if (FAILED(Create_Object(_strPoolingTag, _pPosition, _pRotation, _pScaling)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINATE* eCoordinate, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling)
-{
-	vector<CGameObject*>* pGameObjects = Find_PoolingObjects(_strPoolingTag);
-
-	if (nullptr == pGameObjects)
-		return E_FAIL;
-
-	for (auto& pGameObject : *pGameObjects)
-	{
-		if (false == pGameObject->Is_Active())
-		{
-			if (nullptr != eCoordinate)
-				pGameObject->Change_Coordinate(*eCoordinate);
-
-			if (nullptr != _pScaling)
-				pGameObject->Set_Scale(*_pScaling);
-			if (nullptr != _pRotation)
-				pGameObject->Get_ControllerTransform()->RotationQuaternionW(*_pRotation);
-			if (nullptr != _pPosition)
-				pGameObject->Set_Position(XMLoadFloat3(_pPosition));
-
-			pGameObject->Set_Active(true);
-			pGameObject->Set_Alive();
-
-			return S_OK;
-		}
-
-	}
-
-	if (FAILED(Pooling_Objects(_strPoolingTag, 5)))
-		return E_FAIL;
-
-	if (FAILED(Create_Object(_strPoolingTag, _pPosition, _pRotation, _pScaling)))
-		return E_FAIL;
-
-	return S_OK;
 }
 
 HRESULT CPooling_Manager::Pooling_Objects(const _wstring& _strPoolingTag, _uint _iNumPoolingObjects)
@@ -217,7 +238,7 @@ void CPooling_Manager::Free()
 
 	for (auto& iter : m_ObjectsDescs)
 	{
-		delete iter.second.second;
+		Safe_Delete(iter.second.second);
 	}
 	m_ObjectsDescs.clear();
 

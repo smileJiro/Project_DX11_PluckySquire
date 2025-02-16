@@ -37,7 +37,7 @@ public:
 	virtual HRESULT			Render() override;
 
 	HRESULT					Init_Actor();
-
+	void					Use_Portal(CPlayer* _pUser);
 private:
 	HRESULT					Ready_Components(PORTAL_DESC* _pDesc);
 	HRESULT					Ready_PartObjects(PORTAL_DESC* _pDesc);
@@ -47,10 +47,12 @@ public:
 	virtual void				OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other) override;
 	HRESULT					Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition) override;
 
+	virtual void			Interact(CPlayer* _pUser);
+	virtual _bool			Is_Interactable(CPlayer* _pUser);
+	virtual _float			Get_Distance(COORDINATE _eCoord, CPlayer* _pUser);
+
 protected:
-	virtual void	Interact(CPlayer* _pUser);
-	virtual _bool	Is_Interactable(CPlayer* _pUser);
-	virtual _float	Get_Distance(COORDINATE _eCoord, CPlayer* _pUser);
+	virtual void	On_Touched(CPlayer* _pPlayer);
 
 private :
 	CCollider* m_pColliderCom = { nullptr };
