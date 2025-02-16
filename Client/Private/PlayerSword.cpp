@@ -408,10 +408,10 @@ void CPlayerSword::Attack(CGameObject* _pVictim)
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
     Event_Hit(this, _pVictim, m_pPlayer->Get_AttackDamg());
-    CActorObject* pActor = dynamic_cast<CActorObject*>(_pVictim);
-    if (pActor)
+    CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
+    if (pCharacter)
     {
-        Event_KnockBack(pActor, Get_LookDirection(), m_f3DKnockBackPower);
+        Event_KnockBack(pCharacter, Get_LookDirection(), m_f3DKnockBackPower);
     }
     m_AttckedObjects.insert(_pVictim);
 	Safe_AddRef(_pVictim);

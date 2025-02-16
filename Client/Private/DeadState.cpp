@@ -24,7 +24,6 @@ HRESULT CDeadState::Initialize(void* _pArg)
 
 void CDeadState::State_Enter()
 {
-	//m_fAccTime = 0.f;
 	m_pOwner->Set_AnimChangeable(false);
 }
 
@@ -33,19 +32,15 @@ void CDeadState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	/*m_fAccTime += _fTimeDelta;
-	
-	if (m_fDelayTime <= m_fAccTime)
+	if (true == m_pOwner->Get_AnimChangeable())
 	{
-		Event_ChangeMonsterState(MONSTER_STATE::PATROL, m_pFSM);
-	}*/
-
-	Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		Event_DeleteObject(m_pOwner);
+		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+	}
 }
 
 void CDeadState::State_Exit()
 {
-	m_fAccTime = 0.f;
 }
 
 CDeadState* CDeadState::Create(void* _pArg)
