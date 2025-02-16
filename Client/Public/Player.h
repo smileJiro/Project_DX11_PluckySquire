@@ -454,6 +454,7 @@ public:
 	void Start_Portal(CPortal* _pPortal);
 	void JumpTo_Portal(CPortal* _pPortal);
 	void Set_PlayingAnim(_bool _bPlaying);
+	void Start_Invinciblity();
 
 	//Get
 	_bool Is_OnGround();
@@ -491,7 +492,6 @@ public:
 	_vector Get_BodyPosition();
 	IInteractable* Get_InteractableObject() { return m_pInteractableObject; }
 	CPortal* Get_CurrentPortal() { return m_pPortal; }
-
 	const _float4x4* Get_CarryingOffset_Ptr(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? &m_mat2DCarryingOffset : &m_mat3DCarryingOffset; }
 	STATE Get_CurrentStateID();
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
@@ -514,7 +514,6 @@ public:
 	void Set_PlatformerMode(_bool _bPlatformerMode);
 	void Set_Upforce(_float _fForce);
 	HRESULT Set_CarryingObject(CCarriableObject* _pCarryingObject);
-	void Set_CollidersActive(_bool _bOn);
 
 	void Start_Attack(ATTACK_TYPE _eAttackType);
 	void End_Attack();
@@ -552,6 +551,7 @@ private:
 	_float m_f3DThrowObjectPower = 20.f;
 	_float m_f3DPickupRange = 1.3f;
 	_float m_f3DKnockBackPower = 100.f;
+
 	_bool m_bOnGround = false;
 	_bool m_bAttackTrigger = false;
 	_uint m_iSpinAttackLevel = 4;
@@ -560,6 +560,8 @@ private:
 	_vector m_v3DTargetDirection = { 0,0,-1 };
 	_float4x4 m_mat3DCarryingOffset = {};
 	PLAYER_MODE m_ePlayerMode = PLAYER_MODE_NORMAL;
+
+
 
 	//2DÀü¿ë
 	_float m_f2DAttackForwardSpeed = 700.f;
@@ -575,6 +577,11 @@ private:
 	_float m_f2DKnockBackPower = 100.f;
 	_float m_f2DInteractOffset = 100.f;
 	_float4x4 m_mat2DCarryingOffset = {};
+
+
+	_float m_fInvincibleTIme = 0.5f;
+	_float m_fInvincibleTImeAcc = 0.f;
+	_bool m_bInvincible = false;
 	_bool m_bPlatformerMode = false;
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
 	ATTACK_TRIGGER_DESC m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST];// = { 93.f, 93.f, 120.f };

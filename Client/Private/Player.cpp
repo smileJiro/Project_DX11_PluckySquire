@@ -407,6 +407,17 @@ void CPlayer::Update(_float _fTimeDelta)
   //  }
 
    //cout << "Sneak" << Is_Sneaking() << endl;
+	if (m_bInvincible)
+	{
+        m_fInvincibleTImeAcc += _fTimeDelta;
+		if (m_fInvincibleTIme <= m_fInvincibleTImeAcc)
+		{
+			m_bInvincible = false;
+            m_pActorCom->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
+			m_pBody2DColliderCom->Set_Active(true);
+            m_fInvincibleTImeAcc = 0;
+		}
+	}
     __super::Update(_fTimeDelta); /* Part Object Update */
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
     if (COORDINATE_3D == eCoord)
@@ -847,7 +858,8 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     default:
         break;
     }
-    Set_State(EXIT_PORTAL);
+    if(m_pPortal)
+        Set_State(EXIT_PORTAL);
 
     return S_OK;
 }
@@ -1119,17 +1131,12 @@ void CPlayer::Set_PlayingAnim(_bool _bPlaying)
     m_pBody->Set_PlayingAnim(_bPlaying);
 }
 
-
-void CPlayer::Set_CollidersActive(_bool _bOn)
+void CPlayer::Start_Invinciblity()
 {
-	m_pBody2DColliderCom->Set_Active(_bOn);
-	m_pBody2DTriggerCom->Set_Active(_bOn);
-	m_pAttack2DTriggerCom->Set_Active(_bOn);
-
-    for (_uint i = 0; i < PLAYER_SHAPE_USE_LAST; i++)
-    {
-	    m_pActorCom->Set_ShapeEnable(i,_bOn);
-    }
+	m_bInvincible = true;
+	m_fInvincibleTImeAcc = 0;
+    m_pActorCom->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
+	m_pBody2DColliderCom->Set_Active(false);
 }
 
 
@@ -1138,7 +1145,6 @@ _bool CPlayer::Is_OnGround()
     if (Is_PlatformerMode())
     {
         return CGravity::STATE::STATE_FLOOR == m_pGravityCom->Get_CurState();
-
     }
     else
     {
