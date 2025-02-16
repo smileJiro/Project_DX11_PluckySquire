@@ -360,7 +360,7 @@ HRESULT CPlayer::Ready_Components()
 
    /* Com_Gravity */
    CGravity::GRAVITY_DESC GravityDesc = {};
-   GravityDesc.fGravity = 9.8f * 100.f;
+   GravityDesc.fGravity = 9.8f * 150.f;
    GravityDesc.vGravityDirection = { 0.0f, -1.0f, 0.0f };
    GravityDesc.pOwner = this;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
@@ -429,7 +429,7 @@ void CPlayer::Late_Update(_float _fTimeDelta)
         }
         else
         {
-            m_f2DUpForce -= 9.8f * _fTimeDelta * 300;
+            m_f2DUpForce -= 9.8f * _fTimeDelta * 180;
 
             m_f2DFloorDistance += m_f2DUpForce * _fTimeDelta;
             if (0 > m_f2DFloorDistance)
@@ -698,6 +698,7 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
             {
                 /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
                 m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+
             }
         }
         
@@ -866,8 +867,8 @@ void CPlayer::Attack(CGameObject* _pVictim)
         return;
     Event_Hit(this, _pVictim, m_tStat.iDamg);
     CActorObject* pActor = dynamic_cast<CActorObject*>(_pVictim);
-    //if(pActor)
-	    //Event_KnockBack(pActor, Get_LookDirection(), m_f3DKnockBackPower);
+    if(pActor) 
+	    Event_KnockBack(pActor, Get_LookDirection(), m_f2DKnockBackPower);
     m_AttckedObjects.insert(_pVictim);
 }
 
@@ -920,7 +921,8 @@ void CPlayer::Jump()
     {
         if (m_bPlatformerMode)
         {
-			m_pGravityCom->Set_GravityAcc(-m_f2DJumpPower);
+			m_pGravityCom->Set_GravityAcc(-m_f2DPlatformerJumpPower);
+         
             m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
         }
         else
@@ -1054,6 +1056,19 @@ void CPlayer::Revive()
 }
 
 
+_bool CPlayer::Is_OnGround()
+{
+    if (Is_PlatformerMode())
+    {
+        return CGravity::STATE::STATE_FLOOR == m_pGravityCom->Get_CurState();
+
+    }
+    else
+    {
+        return m_bOnGround; 
+    }
+}
+
 _bool CPlayer::Is_Sneaking()
 {
     STATE eState = Get_CurrentStateID();
@@ -1094,7 +1109,10 @@ _float CPlayer::Get_UpForce()
 
     if (COORDINATE_2D == eCoord)
     {
-        return m_f2DUpForce;
+        if (Is_PlatformerMode())
+            return -m_pGravityCom->Get_GravityAcc();
+        else
+            return m_f2DUpForce;
     }
     else
     {
@@ -1315,6 +1333,24 @@ void CPlayer::Set_Kinematic(_bool _bKinematic)
 void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
 {
     m_bPlatformerMode = _bPlatformerMode;
+}
+void CPlayer::Set_Upforce(_float _fForce)
+{
+    if (COORDINATE_2D == Get_CurCoord())
+    {
+        if (Is_PlatformerMode())
+            m_pGravityCom->Set_GravityAcc(_fForce);
+        else
+            m_f2DUpForce = _fForce;
+    }
+    else
+    {
+        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+        _vector vVelocity = pDynamicActor->Get_LinearVelocity();
+
+        pDynamicActor->Set_LinearVelocity(XMVectorSetY(vVelocity, _fForce));
+    }
+
 }
 HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
 {

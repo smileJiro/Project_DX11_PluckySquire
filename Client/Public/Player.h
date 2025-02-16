@@ -444,7 +444,7 @@ public:
 	void Revive();
 
 	//Get
-	_bool Is_OnGround() {return m_bOnGround;}
+	_bool Is_OnGround();
 	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
 	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
@@ -497,6 +497,7 @@ public:
 	void Set_SwordGrip(_bool _bForehand);
 	void Set_Kinematic(_bool _bKinematic);
 	void Set_PlatformerMode(_bool _bPlatformerMode);
+	void Set_Upforce(_float _fForce);
 	HRESULT Set_CarryingObject(CCarriableObject* _pCarryingObject);
 
 
@@ -550,7 +551,8 @@ private:
 	_float m_f2DUpForce = 0;
 	_float m_f2DFloorDistance = 0;
 	_float m_f2DMoveSpeed= 400.f;
-	_float m_f2DJumpPower = 800.f;
+	_float m_f2DJumpPower = 600.f;
+	_float m_f2DPlatformerJumpPower = 650.f;
 	_float m_f2DCenterYOffset= 36.f;
 	_float m_f2DInteractRange = 93.f;
 	_float m_f2DThrowObjectPower = 100.f;
