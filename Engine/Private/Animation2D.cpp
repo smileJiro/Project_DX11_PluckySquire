@@ -18,7 +18,8 @@ CSpriteFrame::CSpriteFrame(const CSpriteFrame& _Prototype)
 	, m_fPixelsPerUnrealUnit(_Prototype.m_fPixelsPerUnrealUnit)
 	, m_matSpriteTransform(_Prototype.m_matSpriteTransform)
 {
-
+	Safe_AddRef(m_pTexture);
+	int a = 0;
 }
 CSpriteFrame::~CSpriteFrame()
 {
@@ -48,17 +49,19 @@ HRESULT CSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 	_inFile.read(reinterpret_cast<char*>(&m_matSpriteTransform), sizeof(_matrix));
 	return S_OK;
 }
-HRESULT CSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szTexturePath)
+HRESULT CSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szTextureKey, map<string, CTexture*>& _Textures)
 {
 	m_vSpriteStartUV = { 0.f,0.f };
 	m_vSpriteEndUV = { 1.f,1.f };
 	m_fPixelsPerUnrealUnit = 1.0f;
-	m_pTexture = CTexture::Create(_pDevice, _pContext, szTexturePath);
+	m_pTexture = _Textures[szTextureKey];
+	Safe_AddRef(m_pTexture);
 	if (nullptr == m_pTexture)
 		return E_FAIL;
 	m_matSpriteTransform = XMMatrixIdentity();
 	return S_OK;
 }
+
 //39.8, 47.0
 HRESULT CSpriteFrame::Bind_ShaderResource(CShader* _pShader)
 {
@@ -85,11 +88,11 @@ CSpriteFrame* CSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* 
 
 	return pInstance;
 }
-CSpriteFrame* CSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szTexturePath)
+CSpriteFrame* CSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szTextureKey, map<string, CTexture*>& _Textures)
 {
 	CSpriteFrame* pInstance = new CSpriteFrame();
 
-	if (FAILED(pInstance->Initialize(_pDevice, _pContext, szTexturePath)))
+	if (FAILED(pInstance->Initialize(_pDevice, _pContext, szTextureKey, _Textures)))
 	{
 		MSG_BOX("SpriteFrame Create Failed");
 		Safe_Release(pInstance);
@@ -97,6 +100,7 @@ CSpriteFrame* CSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* 
 
 	return pInstance;
 }
+
 CSpriteFrame* CSpriteFrame::Clone()
 {
 	return new CSpriteFrame(*this);

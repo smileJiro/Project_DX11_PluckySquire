@@ -339,14 +339,7 @@ void CFallingRock::Action_Bound_3D(_float _fTimeDelta)
 	m_fDeadTime.y += _fTimeDelta;
 	if (m_fDeadTime.x <= m_fDeadTime.y)
 	{
-		if (true == m_isPooling)
-		{
-			Event_SetActive(this, false);
-		}
-		else
-		{
-			Event_DeleteObject(this);
-		}
+		Event_DeleteObject(this); /* 풀링객체면 알아서 Layer에서 Delete 하지않고, Active만 False 처리한다. */
 	}
 }
 
