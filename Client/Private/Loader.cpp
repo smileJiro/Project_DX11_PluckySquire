@@ -89,6 +89,7 @@
 #include "JumpBug.h"
 #include "Goblin.h"
 #include "Rat.h"
+#include "Zippy.h"
 #include "BirdMonster.h"
 #include "Soldier_Spear.h"
 #include "Soldier_CrossBow.h"
@@ -892,6 +893,15 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 		CNPC_Thrash::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
+
+
+    /* Monster */
+
+    /* For. Prototype_GameObject_Zippy */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"),
+        CZippy::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     /* Boss */
 
     /* For. Prototype_GameObject_ButterGrump */

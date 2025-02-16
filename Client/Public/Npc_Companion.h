@@ -14,6 +14,11 @@ public:
 		 // 위치
 		// 대기 애니메이션
 		// 추가?
+		// 이름?
+		// 넣는 순서?
+		
+
+
 	}COMPANIONDESC;
 
 
@@ -51,6 +56,21 @@ protected:
 	virtual	void				Interact(CPlayer* _pUser) {};
 	virtual	_bool				Is_Interactable(CPlayer* _pUser) { return false; };
 	virtual	_float				Get_Distance(COORDINATE _eCOord, CPlayer* _pUser) { return 0.f; };
+	void						Set_TargetObject(_int _index);
+	
+	void						Set_PlayerObject(CNPC_Companion* _Desc, CPlayer* _Target) 
+	{
+		_Desc->m_pTargetObject = reinterpret_cast<CGameObject*>(_Target);
+		Safe_AddRef(_Target);
+	};
+	
+	void						Set_NPCObject(CNPC_Companion* _Desc, CNPC_Companion* _Target) 
+	{ 
+		_Desc->m_pTargetObject = _Target; 
+		Safe_AddRef(_Target);
+	};
+	
+	CGameObject*				Get_TargetObject() { return m_pTargetObject; };
 
 	virtual	HRESULT				Ready_ActorDesc(void* _pArg) { return S_OK; };
 	virtual	HRESULT				Ready_Components() { return S_OK; };
@@ -69,6 +89,7 @@ public:
 
 
 protected:
+	CGameObject*				m_pTargetObject = { nullptr };
 	_bool						m_isDelay = { false };
 	_float						m_fAccTime = { 0.f };
 	_bool						m_isMove = { false };
@@ -77,6 +98,7 @@ protected:
 	_float						m_fPlayerDistance = { 0.f };
 	_float2						m_PrePlayerPos = { 0.f, 0.f };
 	_float2						m_CurPlayerPos = { 0.f, 0.f };
+	_float2						m_vPreNPCPos = { 0.f ,0.f };
 
 private:
 	vector<CNPC_Companion*>		m_vecCompanionNpc = {};

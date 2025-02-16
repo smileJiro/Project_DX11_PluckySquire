@@ -55,6 +55,8 @@ HRESULT CNPC_Companion::Child_Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
+	m_isRender = false;
+
 	return S_OK;
 }
 
@@ -71,7 +73,8 @@ void CNPC_Companion::Update(_float _fTimeDelta)
 {
 	for (auto& Child : m_vecCompanionNpc)
 	{
-		Child->Child_Update(_fTimeDelta);
+		if (true == Child->Is_Render())
+			Child->Child_Update(_fTimeDelta);
 	}
 
 	__super::Update(_fTimeDelta);
@@ -86,7 +89,8 @@ void CNPC_Companion::Late_Update(_float _fTimeDelta)
 {
 	for (auto& Child : m_vecCompanionNpc)
 	{
-		Child->Child_LateUpdate(_fTimeDelta);
+		if (true == Child->Is_Render())
+			Child->Child_LateUpdate(_fTimeDelta);
 	}
 
 	__super::Late_Update(_fTimeDelta);
@@ -99,7 +103,7 @@ void CNPC_Companion::Child_LateUpdate(_float _fTimeDelta)
 
 _float CNPC_Companion::Cal_PlayerDistance()
 {
-	m_fPlayerDistance = m_pControllerTransform->Compute_Distance(m_pTarget->Get_FinalPosition());
+	m_fPlayerDistance = m_pControllerTransform->Compute_Distance(m_pTargetObject->Get_FinalPosition());
 	return m_fPlayerDistance;
 }
 
@@ -143,6 +147,7 @@ _bool CNPC_Companion::Trace_Player(_float2 _vPlayerPos, _float2 vNPCPos)
 
 }
 
+
 void CNPC_Companion::Delay_On()
 {
 	m_fAccTime = 0.f;
@@ -183,6 +188,7 @@ HRESULT CNPC_Companion::Ready_Companion(const _wstring& _strLayerName, void* _pA
 	m_vecCompanionNpc.push_back(static_cast<CNPC_Violet*>(pGameObject));
 	Safe_AddRef(pGameObject);
 
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_NPC_Companion_Thrash"), CompanionDesc.iCurLevelID, _strLayerName, &pGameObject, &CompanionDesc)))
 		return E_FAIL;
 
@@ -190,8 +196,39 @@ HRESULT CNPC_Companion::Ready_Companion(const _wstring& _strLayerName, void* _pA
 	Safe_AddRef(pGameObject);
 
 
+
+	for (_int i = 0; i < m_vecCompanionNpc.size(); ++i)
+	{
+		Set_TargetObject(i);
+	}
+
+
 	return S_OK;
 }
+
+void CNPC_Companion::Set_TargetObject(_int _index)
+{
+	if (0 == m_vecCompanionNpc.size())
+		return;
+
+	// 첫번째다? 플레이어를 따라가자.
+	if (0 == _index)
+	{
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pTarget);
+
+		Set_PlayerObject(m_vecCompanionNpc[_index], pPlayer);
+	} 
+
+	// 두번째 세번째다?
+	// 이전놈을 데리고 와야한다.
+	else if (1 <= _index)
+	{
+		auto iter = m_vecCompanionNpc[_index - 1];
+		Set_NPCObject(m_vecCompanionNpc[_index], iter);
+	}
+}
+
+
 
 
 
@@ -238,6 +275,14 @@ CGameObject* CNPC_Companion::Clone(void* _pArg)
 void CNPC_Companion::Free()
 {
 	//Safe_Release(m_pColliderCom);
+	Safe_Release(m_pTargetObject);
+
+	for (auto iter : m_vecCompanionNpc)
+	{
+		Safe_Release(iter);
+	}
+	m_vecCompanionNpc.clear();
+
 	__super::Free();
 }
 

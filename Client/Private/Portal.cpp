@@ -124,6 +124,42 @@ HRESULT CPortal::Init_Actor()
     return hr;
 }
 
+void CPortal::Use_Portal(CPlayer* _pUser)
+{
+    _vector vPos = Get_ControllerTransform()[COORDINATE_2D].Get_State(CTransform::STATE_POSITION);
+
+    _vector v3DPos = SECTION_MGR->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { XMVectorGetX(vPos),XMVectorGetY(vPos) });
+
+    _int iCurCoord = (_int)_pUser->Get_CurCoord();
+    (_int)iCurCoord ^= 1;
+    _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
+
+    //if (FAILED(Change_Coordinate((COORDINATE)iCurCoord, nullptr)))
+    //{
+    //    MSG_BOX("Portal Logic Check - CPotal::Interact");
+    //    return;
+    //}
+
+    switch (iCurCoord)
+    {
+    case COORDINATE_2D:
+        XMStoreFloat3(&vNewPos, vPos);
+        break;
+    case COORDINATE_3D:
+        XMStoreFloat3(&vNewPos, v3DPos);
+        break;
+    default:
+        break;
+    }
+
+    if (iCurCoord == COORDINATE_2D)
+        SECTION_MGR->Add_GameObject_ToSectionLayer(m_strSectionName, _pUser, SECTION_2D_PLAYMAP_OBJECT);
+    else
+        SECTION_MGR->Remove_GameObject_FromSectionLayer(m_strSectionName, _pUser);
+
+    Event_Change_Coordinate(_pUser, (COORDINATE)iCurCoord, &vNewPos);
+}
+
 HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
 { 
     CCollider* pCollider = nullptr;
@@ -176,32 +212,6 @@ void CPortal::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPortal::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-
-    // 인터렉트 '오브젝트' 라서, 트리거로 설정하면 애초에 저쪽에 걸리지가 않는구나...
-   //그럼 인터렉팅은 2D만 쓰고, 별도로 구현해야 하는건가?
-    //너무 불합리한 구조인데, 개선이 필요하지 않을까?(무형의 객체도 '인터렉트' 할 필요는 있지않나 싶고.)
-    // 
-    //김지완 답변 -> Interactable 상속받는 애들은 이거 해줄 필요 없어요. 플레이어가 불러주는 거에요.
-    //오브젝트 그룹은 INTERACTION_OBEJCT로 설정하면,
-    // 플레이어가 알아서 주변의 INTERACTION_OBEJCT 그룹의 오브젝트를 찾고 Interact 함수를 불러줍니다.
-    // 그리고 3D나 2D나 충돌체가 있어야 합니다. 플레이어가 감지할 수 있게. 
-    // 충돌체가 점 수준으로 작은 충돌체여도 괜찮습니다. 어차피 감지 범위는 플레이어의 Trigger 충돌체에 의해서 정해집니다.
-    // 3D충돌할 Shape은 Trigger가 false여야 플레이어의 Trigger Shape랑  충돌할 수 있기 때문에 
-    // Trigger = flase로 해주셔야 합니다.
-    // 무형의 객체도 충돌체만 달아주면 Interact 할 수 있습니다.
-    //해당 내용은 가이드에 추가해 놓을게요.
-
-    //if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
-    //{
-    //    CPlayer* pPlayer = static_cast<CPlayer*>(_Other.pActorUserData->pOwner);
-    //    PLAYER_INPUT_RESULT tKeyResult = pPlayer->Player_KeyInput();
-    //    if (tKeyResult.bInputStates[PLAYER_KEY_INTERACT])
-    //    {
-    //        if(pPlayer->Get_CurCoord() == COORDINATE_3D)
-    //           Interact(pPlayer);
-    //    }
-    //}
-
 }
 
 HRESULT CPortal::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -213,42 +223,7 @@ HRESULT CPortal::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 
 void CPortal::Interact(CPlayer* _pUser)
 {
-
-    _vector vPos = Get_ControllerTransform()[COORDINATE_2D].Get_State(CTransform::STATE_POSITION);
-
-    _vector v3DPos = SECTION_MGR->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { XMVectorGetX(vPos),XMVectorGetY(vPos) });
-
-    
-
-
-    _int iCurCoord = (_int)_pUser->Get_CurCoord();
-    (_int)iCurCoord ^= 1;
-    _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
-    
-    //if (FAILED(Change_Coordinate((COORDINATE)iCurCoord, nullptr)))
-    //{
-    //    MSG_BOX("Portal Logic Check - CPotal::Interact");
-    //    return;
-    //}
-
-    switch (iCurCoord)
-    {
-    case COORDINATE_2D:
-        XMStoreFloat3(&vNewPos, vPos);
-        break;
-    case COORDINATE_3D:
-        XMStoreFloat3(&vNewPos, v3DPos);
-        break;
-    default:
-        break;
-    }
-
-    if (iCurCoord == COORDINATE_2D)
-        SECTION_MGR->Add_GameObject_ToSectionLayer(m_strSectionName, _pUser, SECTION_2D_PLAYMAP_OBJECT);
-    else
-        SECTION_MGR->Remove_GameObject_FromSectionLayer(m_strSectionName, _pUser);
-
-    Event_Change_Coordinate(_pUser, (COORDINATE)iCurCoord, &vNewPos);
+	_pUser->JumpTo_Portal(this);
 }
 
 _bool CPortal::Is_Interactable(CPlayer* _pUser)
@@ -261,6 +236,11 @@ _float CPortal::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
     return XMVector3Length(m_pControllerTransform->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)
         - _pUser->Get_ControllerTransform()->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
 
+}
+
+void CPortal::On_Touched(CPlayer* _pPlayer)
+{
+	_pPlayer->Start_Portal(this);
 }
 
 CPortal* CPortal::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

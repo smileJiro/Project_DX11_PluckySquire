@@ -141,6 +141,11 @@ HRESULT CPhysx_Manager::Render()
 	return S_OK;
 }
 
+_float CPhysx_Manager::Get_Gravity()
+{
+	return m_pPxScene->getGravity().magnitude();
+}
+
 void CPhysx_Manager::Add_ShapeUserData(SHAPE_USERDATA* _pUserData)
 {
 	m_pShapeUserDatas.push_back(_pUserData);

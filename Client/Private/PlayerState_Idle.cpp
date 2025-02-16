@@ -35,7 +35,7 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 		
 	}
 	if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
-		m_pOwner->Try_Interact(_fTimeDelta);
+		m_pOwner->Try_Interact(m_pOwner->Get_InteractableObject(), _fTimeDelta);
 	else
 	{
 		m_pOwner->End_Interact();

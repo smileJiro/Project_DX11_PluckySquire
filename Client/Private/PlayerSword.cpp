@@ -446,9 +446,9 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
     }
     if (false == _bOn)
     {
-        m_AttckedObjects.clear();
         for (CGameObject* pObj : m_AttckedObjects)
 			Safe_Release(pObj);
+        m_AttckedObjects.clear();
         if (COORDINATE_2D == eCoord)
             m_pBody2DColliderCom->Set_Active(false);
     }

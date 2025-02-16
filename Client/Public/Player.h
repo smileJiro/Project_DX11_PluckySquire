@@ -11,6 +11,7 @@ BEGIN(Client)
 class CCarriableObject;
 class CStateMachine;
 class IInteractable;
+class CPortal;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -85,6 +86,10 @@ public:
 		CLAMBER,
 		SPINATTACK,
 		DIE,
+		START_PORTAL,
+		JUMPTO_PORTAL,
+		EXIT_PORTAL,
+		ELECTRIC,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -423,9 +428,9 @@ public:
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
-	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
 	virtual void On_Hit(CGameObject* _pHitter, _int _fDamg) override;
 	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
@@ -444,9 +449,11 @@ public:
 	PLAYER_INPUT_RESULT Player_KeyInput();
 	void Revive();
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
-	void Try_Interact(_float _fTimeDelta);
+	_bool Try_Interact(IInteractable* _pInteractable , _float _fTimeDelta);
 	void End_Interact();
-
+	void Start_Portal(CPortal* _pPortal);
+	void JumpTo_Portal(CPortal* _pPortal);
+	void Set_PlayingAnim(_bool _bPlaying);
 
 	//Get
 	_bool Is_OnGround();
@@ -457,6 +464,7 @@ public:
 	_bool Is_CarryingObject(){ return nullptr != m_pCarryingObject; }
 	_bool Is_AttackTriggerActive();
 	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
+	_bool Is_PlayingAnim();
 	_bool Has_InteractObject() { return nullptr != m_pInteractableObject; }
 	_float Get_UpForce();
 	_float Get_AnimProgress();
@@ -481,6 +489,8 @@ public:
 	_vector Get_ClamberEndPosition() { return m_vClamberEndPosition; }
 	_vector Get_WallNormal() { return m_vWallNormal; }
 	_vector Get_BodyPosition();
+	IInteractable* Get_InteractableObject() { return m_pInteractableObject; }
+	CPortal* Get_CurrentPortal() { return m_pPortal; }
 
 	const _float4x4* Get_CarryingOffset_Ptr(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? &m_mat2DCarryingOffset : &m_mat3DCarryingOffset; }
 	STATE Get_CurrentStateID();
@@ -586,6 +596,7 @@ private:
 	CCarriableObject* m_pCarryingObject = { nullptr, };
 	set<CGameObject*> m_AttckedObjects;
 	IInteractable* m_pInteractableObject = nullptr;
+	CPortal* m_pPortal= nullptr;
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

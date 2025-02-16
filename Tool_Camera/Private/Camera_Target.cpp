@@ -184,12 +184,17 @@ void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 
 void CCamera_Target::Look_Target(_float _fTimeDelta)
 {
-	_vector vTargetPos = XMLoadFloat4x4(m_pTargetWorldMatrix).r[TARGET_POS];
-	
-	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
-	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
+	if (true == m_isLookAt) {
+		_vector vTargetPos = XMLoadFloat4x4(m_pTargetWorldMatrix).r[TARGET_POS];
 
-	XMStoreFloat3(&m_vTargetPos, vAt);
+		_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+		m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
+
+		XMStoreFloat3(&m_vTargetPos, vAt);
+	}
+	else {
+
+	}
 }
 
 _vector CCamera_Target::Calculate_CameraPos()

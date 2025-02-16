@@ -11,7 +11,13 @@ class CNPC_Violet final : public CNPC_Companion
 public:
 	enum ANIMATION
 	{
+		ANIM_UP,
+		ANIM_DOWN,
+		ANIM_LEFT,
+		ANIM_RIGHT,
 
+		ANIM_IDLE,
+		ANIM_END
 	};
 
 
@@ -162,8 +168,8 @@ public:
 	virtual HRESULT				Initialize_Prototype();								// 프로토 타입 전용 Initialize
 	virtual HRESULT				Initialize(void* _pArg);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
 	virtual void				Priority_Update(_float _fTimeDelta);				// 특정개체에 대한 참조가 빈번한 객체들이나, 등등의 우선 업데이트 되어야하는 녀석들.
-	virtual void				Update(_float _fTimeDelta) {};
-	virtual void				Late_Update(_float _fTimeDelta) {};
+	virtual void				Update(_float _fTimeDelta) { return; };
+	virtual void				Late_Update(_float _fTimeDelta) { return; };
 	virtual HRESULT				Render();
 
 public:
@@ -189,12 +195,16 @@ public:
 	virtual CGameObject*		Clone(void* _pArg) override; // Clone() 프로토 타입이나 객체의 복사시 사용된다.
 	virtual void				Free() override;
 	virtual HRESULT				Cleanup_DeadReferences() override; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
+	void						Trace(_float _fTimeDelta);
 
 private:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	void						ChangeState_Panel();
+	void						For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos);
 
 private:
+	CNPC_Violet::ANIMATION		m_eAnimationType = { ANIM_END };
+	_float						m_fIdleWaitTime = { 0.f };
 
 };
 
