@@ -475,7 +475,7 @@ public:
 	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
 	_vector Get_ClamberEndPosition() { return m_vClamberEndPosition; }
 	_vector Get_WallNormal() { return m_vWallNormal; }
-	_vector Get_BodyPosition() { return m_pBody->Get_FinalPosition(); }
+	_vector Get_BodyPosition();
 
 	const _float4x4* Get_CarryingOffset_Ptr(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? &m_mat2DCarryingOffset : &m_mat3DCarryingOffset; }
 	STATE Get_CurrentStateID();

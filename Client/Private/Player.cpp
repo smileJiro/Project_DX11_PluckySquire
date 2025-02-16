@@ -1151,6 +1151,11 @@ _vector CPlayer::Get_LookDirection(COORDINATE _eCoord)
         return XMVector4Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
 }
 
+_vector CPlayer::Get_BodyPosition()
+{
+    return m_pBody->Get_FinalPosition(); 
+}
+
 CPlayer::STATE CPlayer::Get_CurrentStateID()
 {
 	return m_pStateMachine->Get_CurrentState()->Get_StateID();
