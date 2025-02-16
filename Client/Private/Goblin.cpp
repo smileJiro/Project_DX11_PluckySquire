@@ -236,7 +236,7 @@ void CGoblin::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
             Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().fDamg);
             _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
             XMVectorSetY(vRepulse, -1.f);
-            Event_AddImpulse(_My.pActorUserData->pOwner, vRepulse);
+            Event_KnockBack(_My.pActorUserData->pOwner, vRepulse);
             Attack();
             Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
         }
@@ -249,6 +249,33 @@ void CGoblin::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CGoblin::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+}
+
+void CGoblin::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+    {
+        if ((_uint)MONSTER_STATE::CHASE == m_iState)
+        {
+            Attack();
+            m_isContactToTarget = true;
+        }
+    }
+}
+
+void CGoblin::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+}
+
+void CGoblin::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+    {
+        if (true == m_isContactToTarget)
+        {
+            m_isContactToTarget = false;
+        }
+    }
 }
 
 void CGoblin::On_Hit(CGameObject* _pHitter, _float _fDamg)
@@ -380,15 +407,15 @@ HRESULT CGoblin::Ready_Components()
     /* 2D Collider */
     m_p2DColliderComs.resize(1);
 
-    CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
-    AABBDesc.pOwner = this;
-    AABBDesc.vExtents = { 50.f, 50.f };
-    AABBDesc.vScale = { 1.0f, 1.0f };
-    AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y };
-    AABBDesc.isBlock = true;
-    AABBDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
-    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
+    CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+    CircleDesc.pOwner = this;
+    CircleDesc.fRadius = { 50.f };
+    CircleDesc.vScale = { 1.0f, 1.0f };
+    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
+    CircleDesc.isBlock = true;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
 
     return S_OK;

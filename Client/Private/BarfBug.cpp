@@ -32,16 +32,16 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 300.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
     pDesc->fAttackRange = 8.f;
-    pDesc->fAlert2DRange = 250.f;   //*50 하면 될듯?
-    pDesc->fChase2DRange = 600.f;
+    pDesc->fAlert2DRange = 300.f;   //*50 하면 될듯?
+    pDesc->fChase2DRange = 800.f;
     pDesc->fAttack2DRange = 400.f;
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
@@ -150,19 +150,21 @@ void CBarfBug::Priority_Update(_float _fTimeDelta)
 
 void CBarfBug::Update(_float _fTimeDelta)
 {
+#ifdef _DEBUG
     if (KEY_DOWN(KEY::F5))
     {
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
-        _float3 vNewPos = _float3(500.0f, 6.0f, 0.0f);
+        _float3 vNewPos;
 
         if (iCurCoord == COORDINATE_2D)
-            CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
-        else 
-            CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+            vNewPos = _float3(500.f, 6.f, 0.f);
+        else
+            vNewPos = _float3(-10.0f, 0.35f, -23.0f);
 
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
     }
+#endif // _DEBUG
 
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -303,6 +305,15 @@ void CBarfBug::Change_Animation()
                     eAnim = ALERT_RIGHT;
                 break;
 
+            case MONSTER_STATE::STANDBY:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = IDLE_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = IDLE_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = IDLE_RIGHT;
+                break;
+
             case MONSTER_STATE::CHASE:
                 if (F_DIRECTION::UP == m_e2DDirection)
                     eAnim = WALK_UP;
@@ -319,6 +330,24 @@ void CBarfBug::Change_Animation()
                     eAnim = ATTACK_DOWN;
                 else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
                     eAnim = ATTACK_RIGHT;
+                break;
+
+            case MONSTER_STATE::HIT:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = HIT_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = HIT_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = HIT_RIGHT;
+                break;
+
+            case MONSTER_STATE::DEAD:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = DEATH_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = DEATH_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = DEATH_RIGHT;
                 break;
 
             default:
@@ -353,8 +382,32 @@ void CBarfBug::Attack()
         else if (COORDINATE_2D == Get_CurCoord())
         {
             *pCoord = COORDINATE::COORDINATE_2D;
-            _float fAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_FinalPosition() - Get_FinalPosition());
-            XMStoreFloat4(&vRotation, XMQuaternionRotationRollPitchYaw(0.f, 0.f, XMConvertToRadians(fAngle)));
+
+            //공격 위치 맞추기
+            switch (Get_2DDirection())
+            {
+            case Client::F_DIRECTION::LEFT:
+                vPosition.x -= 50.f;
+                vPosition.y += 20.f;
+                break;
+            case Client::F_DIRECTION::RIGHT:
+                vPosition.x += 50.f;
+                vPosition.y += 40.f;
+                break;
+            case Client::F_DIRECTION::UP:
+                vPosition.y += 70.f;
+                break;
+            case Client::F_DIRECTION::DOWN:
+                vPosition.y -= 30.f;
+                break;
+            default:
+                break;
+            }
+
+            _float fAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition));
+            fAngle=Restrict_2DRangeAttack_Angle(fAngle);
+            XMStoreFloat4(&vRotation, XMQuaternionRotationAxis(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMConvertToRadians(fAngle)));
+
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), pCoord, &vPosition, &vRotation);
         }
         ++m_iAttackCount;
@@ -425,6 +478,12 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
                 Set_AnimChangeable(true);
                 Delay_On();
             }
+            break;
+
+        case HIT_DOWN:
+        case HIT_RIGHT:
+        case HIT_UP:
+            Set_AnimChangeable(true);
             break;
 
         default:
@@ -558,15 +617,15 @@ HRESULT CBarfBug::Ready_Components()
     /* 2D Collider */
     m_p2DColliderComs.resize(1);
 
-    CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
-    AABBDesc.pOwner = this;
-    AABBDesc.vExtents = { 50.f, 50.f };
-    AABBDesc.vScale = { 1.0f, 1.0f };
-    AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y };
-    AABBDesc.isBlock = true;
-    AABBDesc.iCollisionGroupID= OBJECT_GROUP::MONSTER;
-    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
+    CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+    CircleDesc.pOwner = this;
+    CircleDesc.fRadius = 50.f;
+    CircleDesc.vScale = { 1.0f, 1.0f };
+    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius-10.f };
+    CircleDesc.isBlock = true;
+    CircleDesc.iCollisionGroupID= OBJECT_GROUP::MONSTER;
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
 
     return S_OK;

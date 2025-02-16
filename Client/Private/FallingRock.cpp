@@ -262,7 +262,7 @@ HRESULT CFallingRock::Ready_Components(FALLINGROCK_DESC* _pDesc)
 {
 	/* Com_Gravity */
 	CGravity::GRAVITY_DESC GravityDesc = {};
-	GravityDesc.fGravity = 9.8f * 400.f;
+	GravityDesc.fGravity = 9.8f * 300.f;
 	GravityDesc.vGravityDirection = { 0.0f, -1.0f, 0.0f };
 	GravityDesc.pOwner = this;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),

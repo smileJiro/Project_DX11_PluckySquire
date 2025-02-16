@@ -19,8 +19,8 @@ public:
 	virtual HRESULT			Initialize(void* _pArg);
 
 public: /* 2D는 제한해야하는 Transform의 공통 함수. */
-	virtual _bool			Go_Straight(_float _fTimeDelta) override				{ MSG_BOX("Failed 2D Go_Straight"); return false; }
-	virtual _bool			Go_Backward(_float _fTimeDelta) override				{ MSG_BOX("Failed 2D Go_Backward"); return false; }
+	virtual _bool			Go_Straight(_float _fTimeDelta) override;
+	virtual _bool			Go_Backward(_float _fTimeDelta) override;
 	virtual void			RotationXYZ(const _float3& _vRadianXYZ) override		{ RotationZ(_vRadianXYZ.z); }
 	virtual void			RotationQuaternion(const _float3& _vRadianXYZ) override { RotationZ(_vRadianXYZ.z); }
 

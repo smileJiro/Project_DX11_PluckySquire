@@ -52,7 +52,6 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 			m_isRenew = true;
 		}
 	}
-	//cout << "Investigate" << endl;
 
 	_vector vDir = XMLoadFloat3(&m_vSneakPos) - m_pOwner->Get_FinalPosition();
 	_float fDis = XMVectorGetX(XMVector3Length((vDir)));	//3D상에서 y값도 더해서 거리 계산하는거 주의
