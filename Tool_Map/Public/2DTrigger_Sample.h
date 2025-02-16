@@ -5,11 +5,20 @@ BEGIN(Map_Tool)
 
 class C2DTrigger_Sample final : public CGameObject
 {
+public :
+	enum TIRGGER_COLOR_MODE
+	{
+		DEFAULT_COLOR,
+		PICKING_COLOR,
+		LAST
+	};
+
 public:
 
 	typedef struct tag2DTrigger_SampleDesc : public CGameObject::GAMEOBJECT_DESC
 	{
-		int _tmp = 1;
+		_float4 fDebugColor = { 0.0f, 1.0f, 0.0f, 1.0f };
+		_float2 fRenderTargetSize = { };
 	}TRIGGER_2D_DESC;
 
 private:
@@ -25,12 +34,20 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
+	void					Change_Color(TIRGGER_COLOR_MODE _eMode);
+
 	_string					Get_TriggerKey() { return m_strTriggerKey; }
 	void					Set_TriggerKey(_string _strTriggerKey) { m_strTriggerKey = _strTriggerKey; }
 
+
+
+	_bool					Is_Floor() { return m_isFloor; }
+	void					Set_Floor(_bool _isFloor) { m_isFloor = _isFloor; }
 private:
 	_float4x4				m_matWorld;
 	_string					m_strTriggerKey;
+	_float2					m_fRenderTargetSize = {};
+	_bool					m_isFloor = false;
 private:
 	class CCollider*		m_pColliderCom = nullptr;
 
