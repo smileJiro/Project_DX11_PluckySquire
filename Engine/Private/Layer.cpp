@@ -78,7 +78,6 @@ void CLayer::Late_Update(_float fTimeDelta)
                 /* 일반적인 오브젝트인 경우 */
                 Safe_Release((*iter));
                 iter = m_GameObjects.erase(iter);
-                // 레퍼런스카운트? 어디서 AddRef를 해주지? 
             }
             
         }

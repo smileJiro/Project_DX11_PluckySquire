@@ -412,8 +412,6 @@ void CPlayer::Update(_float _fTimeDelta)
             m_bOnGround = false;
         }
     }
-
-
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
@@ -851,9 +849,9 @@ void CPlayer::Attack(CGameObject* _pVictim)
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
     Event_Hit(this, _pVictim, m_tStat.iDamg);
-    CActorObject* pActor = dynamic_cast<CActorObject*>(_pVictim);
-    if(pActor) 
-	    Event_KnockBack(pActor, Get_LookDirection(), m_f2DKnockBackPower);
+    CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
+    if(pCharacter)
+	    Event_KnockBack(pCharacter, Get_LookDirection(), m_f2DKnockBackPower);
     m_AttckedObjects.insert(_pVictim);
 }
 
@@ -970,7 +968,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     else
     {
         //상호작용
-        if (KEY_DOWN(KEY::E))
+        if (KEY_PRESSING(KEY::E))
             tResult.bInputStates[PLAYER_INPUT_INTERACT] = true;
     }
 
@@ -1056,9 +1054,25 @@ _bool CPlayer::Check_ReplaceInteractObject(IInteractable* _pObj)
     return false;
 }
 
-void CPlayer::Interact()
+void CPlayer::Try_Interact(_float _fTimeDelta)
 {
-    m_pInteractableObject->Interact(this);
+    if (nullptr == m_pInteractableObject)
+        return;
+
+    if(m_pInteractableObject->Is_ChargeComplete())
+    {
+        m_pInteractableObject->End_Charge();
+        m_pInteractableObject->Interact(this);
+    }
+    else
+		m_pInteractableObject->Charge(_fTimeDelta);
+}
+
+void CPlayer::End_Interact()
+{
+    if (nullptr == m_pInteractableObject)
+        return;
+    m_pInteractableObject->End_Charge();
 }
 
 void CPlayer::Set_CollidersActive(_bool _bOn)

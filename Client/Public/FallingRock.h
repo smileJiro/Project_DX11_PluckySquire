@@ -30,6 +30,11 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
+public:
+	virtual void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	virtual void						On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	virtual void						On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+
 private:
 	STATE					m_ePreState = STATE::STATE_LAST;
 	STATE					m_eCurState = STATE::STATE_LAST;
@@ -44,7 +49,7 @@ private: /* Bound */
 private: /* Coord3D Change */
 	_float					m_fCoordChangePosY = -200.f;
 	_float					m_fForce3D = 20.f;
-
+	_float2					m_fDeadTime = { 3.0f, 0.0f };
 private:/* Shadow Position Data : 설계미스로 좀 별로인 방식 채택함 참고하지말 것*/
 	C2DModel*				m_p2DShadowModelCom = nullptr;
 	_float3					m_vShadowYDesc = {}; // x: StartY, y : CurrentY, z : TargetY

@@ -24,7 +24,6 @@ HRESULT CHitState::Initialize(void* _pArg)
 
 void CHitState::State_Enter()
 {
-	//m_fAccTime = 0.f;
 	m_pOwner->Set_AnimChangeable(false);
 }
 
@@ -33,19 +32,12 @@ void CHitState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	/*m_fAccTime += _fTimeDelta;
-	
-	if (m_fDelayTime <= m_fAccTime)
-	{
-		Event_ChangeMonsterState(MONSTER_STATE::PATROL, m_pFSM);
-	}*/
-
-	Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
+	if(true == m_pOwner->Get_AnimChangeable())
+		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 }
 
 void CHitState::State_Exit()
 {
-	m_fAccTime = 0.f;
 }
 
 CHitState* CHitState::Create(void* _pArg)

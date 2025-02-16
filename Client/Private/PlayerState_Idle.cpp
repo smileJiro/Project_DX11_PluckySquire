@@ -34,23 +34,29 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 		}
 		
 	}
+	if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
+		m_pOwner->Try_Interact(_fTimeDelta);
+	else
+	{
+		m_pOwner->End_Interact();
 
-	if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
-		m_pOwner->Set_State(CPlayer::ATTACK);
-	else if (tKeyResult.bInputStates[PLAYER_INPUT_SPINATTACK])
-		m_pOwner->Set_State(CPlayer::SPINATTACK);
-	else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
-		m_pOwner->Set_State(CPlayer::JUMP_UP);
-	else if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
-		m_pOwner->Set_State(CPlayer::ROLL);
-	else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
-		m_pOwner->Set_State(CPlayer::THROWSWORD);
-	else if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
-		m_pOwner->Set_State(CPlayer::RUN);
-	else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
-		m_pOwner->Set_State(CPlayer::THROWOBJECT);
-	else if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
-		m_pOwner->Interact();
+		if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
+			m_pOwner->Set_State(CPlayer::ATTACK);
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_SPINATTACK])
+			m_pOwner->Set_State(CPlayer::SPINATTACK);
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
+			m_pOwner->Set_State(CPlayer::JUMP_UP);
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
+			m_pOwner->Set_State(CPlayer::ROLL);
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
+			m_pOwner->Set_State(CPlayer::THROWSWORD);
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
+			m_pOwner->Set_State(CPlayer::RUN);
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
+			m_pOwner->Set_State(CPlayer::THROWOBJECT);
+	}
+
+
 }
 
 void CPlayerState_Idle::Enter()

@@ -24,7 +24,7 @@ public:
 	void		SetActive_GameObjects(_bool _isActive);
 	void		Clear_GameObjects();
 	template <typename Comparator>
-	void	Sort_Objects(Comparator _funcCompair)
+	void		Sort_Objects(Comparator _funcCompair)
 	{
 		m_GameObjects.sort(_funcCompair);
 	}

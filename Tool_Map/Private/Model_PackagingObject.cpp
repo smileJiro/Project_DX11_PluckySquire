@@ -237,19 +237,21 @@ HRESULT CModel_PackagingObject::Import_Animations(ifstream& _inFile)
 
 HRESULT CModel_PackagingObject::Export_Bone(ofstream& _OutFile, _uint iParentBoneIndex)
 {
-	BONE tBone = {};
+	//BONE tBone = m_Bones[iParentBoneIndex];
+	for (auto& tBone : m_Bones)
+	{
+		_OutFile.write((char*)&tBone.iNameSize, sizeof(_uint));
+		_OutFile.write((char*)&tBone.szName, tBone.iNameSize);
+		_OutFile.write(reinterpret_cast<char*>(&tBone.matTransformation), sizeof(_float4x4));
+		_OutFile.write(reinterpret_cast<char*>(&tBone.iNumChildren), sizeof(_uint));
+	}
+	//tBone.
+	////m_Bones.push_back(tBone);
+	//iParentBoneIndex = (_uint)m_Bones.size() - 1;
 
-	_OutFile.write((char*)&tBone.iNameSize, sizeof(_uint));
-	_OutFile.write((char*)&tBone.szName, tBone.iNameSize);
-	_OutFile.write(reinterpret_cast<char*>(&tBone.matTransformation), sizeof(_float4x4));
-	_OutFile.write(reinterpret_cast<char*>(&tBone.iNumChildren), sizeof(_uint));
 
-	m_Bones.push_back(tBone);
-	iParentBoneIndex = (_uint)m_Bones.size() - 1;
-
-
-	for (_uint i = 0; i < tBone.iNumChildren; ++i)
-		Export_Bone(_OutFile, iParentBoneIndex);
+	//for (_uint i = 0; i < tBone.iNumChildren; ++i)
+	//	Export_Bone(_OutFile, iParentBoneIndex);
 
 	return S_OK;
 }
@@ -363,9 +365,9 @@ HRESULT CModel_PackagingObject::Export_Animations(ofstream& _OutFile)
 		_OutFile.write((char*)&tAnim.szName, tAnim.iNameSize);
 
 		_double dValue = 0.0;
-		_OutFile.write(reinterpret_cast<char*>(&dValue), sizeof(double));
+		_OutFile.write(reinterpret_cast<char*>(&dValue), sizeof(_double));
 		tAnim.fDuration = (_float)dValue;
-		_OutFile.write(reinterpret_cast<char*>(&dValue), sizeof(double));
+		_OutFile.write(reinterpret_cast<char*>(&dValue), sizeof(_double));
 		tAnim.fTickPerSecond = (_float)dValue;
 		//Loop - 1.26 김지완이 추가함
 		_OutFile.write(reinterpret_cast<char*>(&tAnim.bLoop), sizeof(_bool));

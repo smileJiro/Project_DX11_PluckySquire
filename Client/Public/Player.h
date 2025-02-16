@@ -444,7 +444,8 @@ public:
 	PLAYER_INPUT_RESULT Player_KeyInput();
 	void Revive();
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
-	void Interact();
+	void Try_Interact(_float _fTimeDelta);
+	void End_Interact();
 
 
 	//Get

@@ -39,8 +39,8 @@ namespace Client
 	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID, _bool _bEnable);
 	void Event_Hit(CGameObject* _pHitter,CGameObject* _pVictim ,_float _fDamg);
 	void Event_Get_Bulb(_uint _iCoordinate);
-	void Event_KnockBack(CActorObject* _pObject,  _fvector _vDirection, _float _fPower);
-	void Event_KnockBack(CActorObject* _pObject,  _fvector _vForce);
+	void Event_KnockBack(CCharacter* _pObject,  _fvector _vDirection, _float _fPower);
+	void Event_KnockBack(CCharacter* _pObject,  _fvector _vForce);
 	void Event_Sneak_BeetleCaught(CActorObject* _pPlayer, CActorObject* _pMonster, _float3* _vPlayerPosx, _float3* _vMonsterPos);
 
 	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID);
