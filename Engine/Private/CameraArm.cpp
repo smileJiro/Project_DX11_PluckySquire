@@ -442,19 +442,22 @@ _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
     return false;
 }
 
-_bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta)
+_bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
 {
     _vector vDot = XMVector3Dot(XMLoadFloat3(&m_vArm), XMLoadFloat3(&m_pNextArmData->vDesireArm));
     _float fAngle = acos(XMVectorGetX(vDot));
     _float fDegree = XMConvertToDegrees(fAngle);
     //m_PreArms.pop_back();
-    if (fDegree < 3.f) {
-        m_iMovementFlags |= DONE_Y_ROTATE;
-        m_iMovementFlags |= DONE_LENGTH_MOVE;
-        m_pNextArmData->fMoveTimeAxisY.y = 0.f;
-        m_pNextArmData->fLengthTime.y = 0.f;
-        //if()
-        return true;
+  
+    if (false == _isBook) {
+        if (fDegree < 3.f) {
+            m_iMovementFlags |= DONE_Y_ROTATE;
+            m_iMovementFlags |= DONE_LENGTH_MOVE;
+            m_pNextArmData->fMoveTimeAxisY.y = 0.f;
+            m_pNextArmData->fLengthTime.y = 0.f;
+            //if()
+            return true;
+        }
     }
 
     // 일단 Y축 회전 시간, EASE_IN으로 설정해서 하기
@@ -483,11 +486,21 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta)
 
         if (m_pNextArmData->fLengthTime.y >= m_pNextArmData->fLengthTime.x) {
             m_pNextArmData->fLengthTime.y = 0.f;
+            m_fLength = m_pNextArmData->fLength;
             m_iMovementFlags |= DONE_LENGTH_MOVE;
         }
         else {
             m_fLength = m_pGameInstance->Lerp(m_fStartLength, m_pNextArmData->fLength, fRatio);
         }
+    }
+
+    if ((ALL_DONE_MOVEMENT_VECTOR == (m_iMovementFlags & ALL_DONE_MOVEMENT_VECTOR))) {
+        m_iMovementFlags = RESET_FLAG;
+        m_fRotationValue = 1.f;
+        m_pNextArmData->fMoveTimeAxisY.y = 0.f;
+        m_pNextArmData->fMoveTimeAxisRight.y = 0.f;
+
+        return true;
     }
 
     return false;

@@ -400,7 +400,7 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	{
 		_pTrigger->Resister_EnterHandler([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 
-			_bool iReturnMask = any_cast<_uint>(_pTrigger->Get_CustomData(TEXT("IsLookAt")));
+			_bool iReturnMask = any_cast<_bool>(_pTrigger->Get_CustomData(TEXT("IsLookAt")));
 			Event_Trigger_LookAtEnter(_iTriggerType, _iTriggerID, _szEventTag, iReturnMask);
 
 			});
@@ -418,7 +418,7 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 
 			_bool isEnableLookAt = iExitLookAtMask & iExitDir;
 
-			Event_Trigger_Exit_ByCollision(_iTriggerType, _iTriggerID, iExitLookAtMask);
+			Event_Trigger_Exit_ByCollision(_iTriggerType, _iTriggerID, isEnableLookAt);
 			});
 	}
 		break;
