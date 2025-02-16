@@ -226,7 +226,10 @@
     <ClInclude Include="..\Public\Narration.h" />
     <ClInclude Include="..\Public\Narration_Anim.h" />
     <ClInclude Include="..\Public\PlayerState_Die.h" />
+    <ClInclude Include="..\Public\PlayerState_ExitPortal.h" />
+    <ClInclude Include="..\Public\PlayerState_IntoPortal.h" />
     <ClInclude Include="..\Public\PlayerState_PickUpObject.h" />
+    <ClInclude Include="..\Public\PlayerState_StartPortal.h" />
     <ClInclude Include="..\Public\PlayerState_ThrowObject.h" />
     <ClInclude Include="..\Public\Portal.h" />
     <ClInclude Include="..\public\RenderGroup_PostProcessing.h" />
@@ -407,7 +410,10 @@
     <ClCompile Include="..\Private\Narration.cpp" />
     <ClCompile Include="..\Private\Narration_Anim.cpp" />
     <ClCompile Include="..\Private\PlayerState_Die.cpp" />
+    <ClCompile Include="..\Private\PlayerState_ExitPortal.cpp" />
+    <ClCompile Include="..\Private\PlayerState_IntoPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_PickUpObject.cpp" />
+    <ClCompile Include="..\Private\PlayerState_StartPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_ThrowObject.cpp" />
     <ClCompile Include="..\Private\Portal.cpp" />
     <ClCompile Include="..\private\RenderGroup_PostProcessing.cpp" />

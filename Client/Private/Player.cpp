@@ -18,6 +18,9 @@
 #include "PlayerState_SpinAttack.h"
 #include "PlayerState_PickUpObject.h"
 #include "PlayerState_Die.h"
+#include "PlayerState_StartPortal.h"
+#include "PlayerState_IntoPortal.h"
+#include "PlayerState_ExitPortal.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "Section_Manager.h"    
@@ -27,6 +30,7 @@
 #include "CarriableObject.h"
 #include "Blocker.h"
 #include "NPC_Store.h"
+#include "Portal.h"
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
 {
@@ -145,7 +149,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SphereDesc.fRadius = 2.5f;
     ShapeData.pShapeDesc = &SphereDesc;
     ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
-    ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER;
+    ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::INTERACTION_OBEJCT;
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     //상호작용 구 (트리거)
@@ -412,6 +416,7 @@ void CPlayer::Update(_float _fTimeDelta)
             m_bOnGround = false;
         }
     }
+    m_pInteractableObject = nullptr;
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
@@ -501,6 +506,7 @@ HRESULT CPlayer::Render()
 
 void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+	m_pStateMachine->Get_CurrentState()->OnContact_Enter(_My, _Other, _ContactPointDatas);
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
@@ -534,6 +540,7 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+	m_pStateMachine->Get_CurrentState()->OnContact_Stay(_My, _Other, _ContactPointDatas);
 	SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
@@ -565,7 +572,7 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 
 void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
- 
+	m_pStateMachine->Get_CurrentState()->OnContact_Exit(_My, _Other, _ContactPointDatas);
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
@@ -599,6 +606,7 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 
 void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+	m_pStateMachine->Get_CurrentState()->OnTrigger_Enter(_My, _Other);
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
@@ -611,6 +619,7 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+	m_pStateMachine->Get_CurrentState()->OnTrigger_Stay(_My, _Other);
     if (PLAYER_SHAPE_USE::INTERACTION ==(PLAYER_SHAPE_USE)_My.pShapeUserData->iShapeUse)
     {
         OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_CollisionGroupID();
@@ -621,6 +630,7 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
             if (Check_ReplaceInteractObject(pInteractable))
             {
 				m_pInteractableObject = pInteractable;
+                m_pPortal = dynamic_cast<CPortal*>(m_pInteractableObject);
             }
 
         }
@@ -631,6 +641,7 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+	m_pStateMachine->Get_CurrentState()->OnTrigger_Exit(_My, _Other);
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
     {
@@ -642,6 +653,7 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+	m_pStateMachine->Get_CurrentState()->On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
     _uint iGroupID = _pOtherCollider->Get_CollisionGroupID();
     switch ((OBJECT_GROUP)iGroupID)
     {
@@ -703,6 +715,7 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
 
 void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+	m_pStateMachine->Get_CurrentState()->On_Collision2D_Stay(_pMyCollider, _pOtherCollider, _pOtherObject);
     OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherObject->Get_CollisionGroupID();
     if (_pMyCollider == m_pBody2DTriggerCom)
     {
@@ -712,6 +725,7 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
             if (Check_ReplaceInteractObject(pInteractable))
             {
                 m_pInteractableObject = pInteractable;
+                m_pPortal = dynamic_cast<CPortal*>(m_pInteractableObject);
             }
         }
     }
@@ -724,6 +738,7 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 
 void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+	m_pStateMachine->Get_CurrentState()->On_Collision2D_Exit(_pMyCollider, _pOtherCollider, _pOtherObject);
     _uint iGroupID = _pOtherCollider->Get_CollisionGroupID();
     switch ((OBJECT_GROUP)iGroupID)
     {
@@ -829,7 +844,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     default:
         break;
     }
-    Set_State(IDLE);
+    Set_State(EXIT_PORTAL);
 
     return S_OK;
 }
@@ -1054,26 +1069,53 @@ _bool CPlayer::Check_ReplaceInteractObject(IInteractable* _pObj)
     return false;
 }
 
-void CPlayer::Try_Interact(_float _fTimeDelta)
+_bool CPlayer::Try_Interact(IInteractable* _pInteractable, _float _fTimeDelta)
 {
-    if (nullptr == m_pInteractableObject)
-        return;
+    if (nullptr == _pInteractable)
+        return false;
 
-    if(m_pInteractableObject->Is_ChargeComplete())
+
+    if (0 == _pInteractable->Get_ChargeProgress())
     {
-        m_pInteractableObject->End_Charge();
-        m_pInteractableObject->Interact(this);
+
+    }
+    if (_pInteractable->Is_ChargeCompleted())
+    {
+        _pInteractable->End_Charge(this);
+        _pInteractable->Interact(this);
+        return true;
     }
     else
-		m_pInteractableObject->Charge(_fTimeDelta);
+    {
+        _pInteractable->Charge(this, _fTimeDelta);
+        return false;
+    }
+
+
 }
 
 void CPlayer::End_Interact()
 {
     if (nullptr == m_pInteractableObject)
         return;
-    m_pInteractableObject->End_Charge();
+    m_pInteractableObject->End_Charge(this);
 }
+
+void CPlayer::Start_Portal(CPortal* _pPortal)
+{
+    Set_State(START_PORTAL);
+}
+
+void CPlayer::JumpTo_Portal(CPortal* _pPortal)
+{
+	Set_State(JUMPTO_PORTAL);
+}
+
+void CPlayer::Set_PlayingAnim(_bool _bPlaying)
+{
+    m_pBody->Set_PlayingAnim(_bPlaying);
+}
+
 
 void CPlayer::Set_CollidersActive(_bool _bOn)
 {
@@ -1133,6 +1175,11 @@ _bool CPlayer::Is_AttackTriggerActive()
     {
         return m_pSword->Is_AttackEnable();
     }
+}
+
+_bool CPlayer::Is_PlayingAnim()
+{
+    return m_pBody->Is_PlayingAnim();
 }
 
 _float CPlayer::Get_UpForce()
@@ -1273,6 +1320,15 @@ void CPlayer::Set_State(STATE _eState)
 		break;
     case Client::CPlayer::DIE:
 		m_pStateMachine->Transition_To(new CPlayerState_Die(this));
+		break;
+    case Client::CPlayer::START_PORTAL:
+		m_pStateMachine->Transition_To(new CPlayerState_StartPortal(this));
+		break;
+    case Client::CPlayer::JUMPTO_PORTAL:
+        m_pStateMachine->Transition_To(new CPlayerState_JumpToPortal(this));
+		break;
+    case Client::CPlayer::EXIT_PORTAL:
+        m_pStateMachine->Transition_To(new CPlayerState_ExitPortal(this));
 		break;
 
     case Client::CPlayer::STATE_LAST:
@@ -1576,8 +1632,13 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         Event_DeleteObject(this);
     }
-    if (KEY_DOWN(KEY::M))
+    if (KEY_DOWN(KEY::Z))
     {
+        COORDINATE eCoord =Get_CurCoord();
+        if (COORDINATE_3D == eCoord)
+        {
+            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+        }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 
     }

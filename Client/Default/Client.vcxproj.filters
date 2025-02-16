@@ -944,6 +944,11 @@
     <ClInclude Include="..\public\Spawner.h">
       <Filter>91.Spawner</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_StartPortal.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_IntoPortal.h" />
+    <ClInclude Include="..\Public\PlayerState_ExitPortal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1455,6 +1460,11 @@
     <ClCompile Include="..\private\Spawner.cpp">
       <Filter>91.Spawner</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_StartPortal.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_IntoPortal.cpp" />
+    <ClCompile Include="..\Private\PlayerState_ExitPortal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

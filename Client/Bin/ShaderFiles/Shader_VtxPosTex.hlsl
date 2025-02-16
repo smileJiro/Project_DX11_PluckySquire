@@ -57,10 +57,12 @@ VS_OUT VS_SPRITE2D(VS_IN In)
     matWVP = mul(matWV, g_ProjMatrix);
 
     Out.vPosition = mul(float4(In.vPosition, 1.f), matWVP);
+    
+
     Out.vTexcoord = clamp(In.vTexcoord, g_vSpriteStartUV, g_vSpriteEndUV);
-
-
-    return Out;
+    Out.vTexcoord = clamp(Out.vTexcoord, float2(0, 0),float2(1, 1));
+    return
+Out;
 }
 
 
@@ -163,8 +165,11 @@ PS_OUT PS_DIALOGUE_BG_COLOR(PS_IN In)
 PS_OUT PS_MIX_COLOR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-
     Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
+    if (In.vTexcoord.x > 0)
+        discard;
+    if (In.vTexcoord.y > 0)
+        discard;
 
 
     if (Out.vColor.a < 0.01f || g_vColors.w < 0.2f)
