@@ -56,13 +56,18 @@ private:
 		vector<pair<_string, _uint>> SRVNames[aiTextureType_UNKNOWN];
 
 	}MATERIAL;
-
+	typedef struct  TransformKeyframe : public KEYFRAME
+	{
+		_float3		vScale;
+		_float4		vRotation;
+		_float3		vPosition;
+	}TRANSFORM_KEYFRAME;
 	typedef struct tagPackagingChannel
 	{
 		_uint			iBoneNameSize;
 		_char			szBoneName[MAX_PATH];
 		_uint			iNumKeyFrames;
-		vector<KEYFRAME> KeyFrames;
+		vector<TRANSFORM_KEYFRAME> KeyFrames;
 
 	}CHANNEL;
 
