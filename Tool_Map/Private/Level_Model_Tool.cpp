@@ -105,8 +105,8 @@ HRESULT CLevel_Model_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag)
 	else
 	{
 		pGameObject->Get_ControllerTransform()->Set_SpeedPerSec(100.f);
-		pGameObject->Late_Update(1.f);
-		pGameObject->Set_Active(false);
+		//pGameObject->Late_Update(1.f);
+		//pGameObject->Set_Active(false);
 	}
 	return S_OK;
 }

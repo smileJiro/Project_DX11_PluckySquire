@@ -30,14 +30,27 @@ HRESULT CMapObject::Initialize(void* _pArg)
     m_strModelName = pDesc->szModelName;
     m_matWorld = pDesc->tTransform3DDesc.matWorld;
 
-    pDesc->eStartCoord = COORDINATE_3D;
-    //pDesc->iCurLevelID = LEVEL_TOOL_3D_MAP;
-    pDesc->isCoordChangeEnable = false;
-    //pDesc->iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MAP;
-    pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    pDesc->strModelPrototypeTag_3D = m_strModelName;
+    CBase* pBase = m_pGameInstance->Find_Prototype(pDesc->iModelPrototypeLevelID_3D, m_strModelName);
 
-    pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    if (nullptr == pBase)
+        return E_FAIL;
+
+    if (static_cast<CModel*>(pBase)->Is_AnimModel())
+    {
+        pDesc->iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
+        pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
+    }
+    else
+    {
+
+        pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+        pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+    }
+
+    pDesc->eStartCoord = COORDINATE_3D;
+    pDesc->isCoordChangeEnable = false;
+    
+    pDesc->strModelPrototypeTag_3D = m_strModelName;
 
     pDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     pDesc->tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
@@ -116,7 +129,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
     //    Set_WorldMatrix(m_matWorld);
 
     //}
-
+    m_pControllerModel->Get_Model(COORDINATE_3D);
     return S_OK;
 }
 
@@ -147,7 +160,7 @@ void CMapObject::Update(_float _fTimeDelta)
     }
 
     /* Update Parent Matrix */
-    CPartObject::Update(_fTimeDelta);
+    CModelObject::Update(_fTimeDelta);
 }
 
 void CMapObject::Late_Update(_float _fTimeDelta)
@@ -193,9 +206,15 @@ HRESULT CMapObject::Render_Shadow()
 
 HRESULT CMapObject::Render_Preview(_float4x4* _ViewMat, _float4x4* _ProjMat)
 {
-
-    CPartObject::Update(0.f);
-    CPartObject::Late_Update(0.f);
+    if (m_pControllerModel->Get_Model(COORDINATE_3D)->Is_AnimModel())
+    {
+        m_pControllerModel->Play_Animation(0.f,m_bReverseAnimation);
+    }
+    else
+    {
+        CMapObject::Update(0.f);
+        CMapObject::Late_Update(0.f);
+    }
 
     if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ViewMatrix", _ViewMat)))
         return E_FAIL;
