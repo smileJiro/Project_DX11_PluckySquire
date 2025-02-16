@@ -179,7 +179,7 @@ protected:
 
 	virtual void				Interact(CPlayer* _pUser);
 	virtual _bool				Is_Interactable(CPlayer* _pUser);
-	virtual _float				Get_Distance(CPlayer* _pUser);
+	virtual _float				Get_Distance(COORDINATE _eCOord, CPlayer* _pUser) override;
 
 	virtual void				Child_Update(_float _fTimeDelta);
 	virtual void				Child_LateUpdate(_float _fTimeDelta);
