@@ -59,7 +59,6 @@ void CInteraction_Heart::Update(_float _fTimeDelta)
 		Cal_RenderTime(_fTimeDelta, m_PlayerHP);
 
 	}
-	
 
 	__super::Update(_fTimeDelta);
 

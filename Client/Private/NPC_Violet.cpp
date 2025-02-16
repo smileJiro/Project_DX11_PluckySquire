@@ -78,16 +78,6 @@ HRESULT CNPC_Violet::Initialize(void* _pArg)
 
 void CNPC_Violet::Priority_Update(_float _fTimeDelta)
 {
-	if (true == m_isDelay)
-	{
-		m_fAccTime += _fTimeDelta;
-
-		if (m_fDelayTime <= m_fAccTime)
-		{
-			Delay_Off();
-		}
-	}
-
 	__super::Priority_Update(_fTimeDelta);
 }
 
@@ -136,6 +126,120 @@ void CNPC_Violet::ChangeState_Panel()
 
 }
 
+void CNPC_Violet::For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos)
+{
+	_vector CurPos = XMVectorSet(_vNpcPos.x, _vNpcPos.y, 0.f, 1.f);
+	_vector PrePos = XMVectorSet(m_vPreNPCPos.x, m_vPreNPCPos.y, 0.f, 1.f);
+
+	// 어? 너 지금 이전 거리가 달라졌네  그러면 이동한거야 / 애니메이션 변경시키자구
+	if (0.f < XMVectorGetX(XMVector3Length(CurPos - PrePos)))
+	{
+
+		if (0.f < fabs(m_vPreNPCPos.x - _vNpcPos.x) && 0.f < fabs(m_vPreNPCPos.y - _vNpcPos.y))
+		{
+			if (5.f < fabs(m_vPreNPCPos.y - _vNpcPos.y))
+			{
+				//위로 올라간다.
+
+				//(1.f > m_vPreNPCPos.y - _NPCPos.y)
+
+
+				if (1.f > m_vPreNPCPos.y - _vNpcPos.y)
+				{
+					// 위로 간다.
+					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Up);
+					m_eAnimationType = ANIM_UP;
+					m_fIdleWaitTime = 0.f;
+				}
+				else if (1.f < m_vPreNPCPos.y - _vNpcPos.y)
+				{
+					// 아래로간다.
+					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Down);
+					m_eAnimationType = ANIM_DOWN;
+					m_fIdleWaitTime = 0.f;
+				}
+
+
+			}
+			else if (0.f <= fabs(m_vPreNPCPos.x - _vNpcPos.x))
+			{
+				// 양옆으로 이동한다.
+
+				if (1.f < m_vPreNPCPos.x - _vNpcPos.x)
+				{
+					// 좌측으로 이동한다.
+					_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+					m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
+					m_eAnimationType = ANIM_LEFT;
+					m_fIdleWaitTime = 0.f;
+				}
+				else if (-1.f >= m_vPreNPCPos.x - _vNpcPos.x)
+				{
+					// 우측으로 이동한다.
+					_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+					m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
+					m_eAnimationType = ANIM_RIGHT;
+					m_fIdleWaitTime = 0.f;
+				}
+
+			}
+		}
+
+		//y로만 이동한거야?
+		m_vPreNPCPos = _vNpcPos;
+	}
+	else
+	{
+		if (ANIM_UP != m_eAnimationType && ANIM_DOWN != m_eAnimationType)
+			m_fIdleWaitTime += _fTimeDelta;
+
+		if (ANIM_IDLE != m_eAnimationType && 3.f <= m_fIdleWaitTime)
+		{
+			m_eAnimationType = ANIM_IDLE;
+		}
+
+		switch (m_eAnimationType)
+		{
+		case ANIM_UP:
+		{
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_up);
+
+		}
+		break;
+
+		case ANIM_DOWN:
+		{
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_down);
+		}
+		break;
+
+		case ANIM_LEFT:
+		{
+			_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+			m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_right);
+		}
+		break;
+
+		case ANIM_RIGHT:
+		{
+			_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+			m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_right);
+		}
+		break;
+
+		case ANIM_IDLE:
+		{
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_down);
+		}
+		break;
+		}
+	}
+}
+
 void CNPC_Violet::Interact(CPlayer* _pUser)
 {
 	
@@ -170,11 +274,20 @@ void CNPC_Violet::Trace(_float _fTimeDelta)
 	}
 
 	// TODO :: 테스트 코드
-	if (m_isMove)
-	{
-		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
-		Delay_On();
-	}
+	
+	//if (true == m_isMove && )
+
+	//_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+	//m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+	
+
+	///////////// 애니메이션 변경 관련 ////////////////
+	For_MoveAnimationChange(_fTimeDelta, _NPCPos);
+	
+
+	
+	
+
 }
 
 HRESULT CNPC_Violet::Ready_ActorDesc(void* _pArg)
