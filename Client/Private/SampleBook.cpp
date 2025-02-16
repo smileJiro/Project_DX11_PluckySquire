@@ -373,7 +373,6 @@ HRESULT CSampleBook::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _ws
 
 	if (nullptr == pSection)
 	{
-
 		SECTION_MGR->Set_BookWorldPosMapTexture(pTexture);
 		Safe_AddRef(pTexture);
 	}

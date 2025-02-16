@@ -412,9 +412,6 @@
     <Filter Include="02.GameObjects\Portal">
       <UniqueIdentifier>{e79f9f98-f32d-4906-84e3-b695f14a3e7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\FallingRock\Spawner">
-      <UniqueIdentifier>{1f67cf75-cef0-4131-b916-13848a92cd75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="91.Spawner">
       <UniqueIdentifier>{f227d0db-bb5f-4e46-9832-cfc28c44d73e}</UniqueIdentifier>
     </Filter>

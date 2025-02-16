@@ -198,7 +198,7 @@ void CButterGrump::Attack()
         vPosition.y += m_pGameInstance->Compute_Random(-5.f, 5.f);
         vPosition.z += m_pGameInstance->Compute_Random(-5.f, 5.f);
         //XMQuaternionMultiply(XMLoadFloat4(&vRotation), )
-        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_EnergyBall"), &vPosition, &vRotation);
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_EnergyBall"), COORDINATE_3D,  &vPosition, &vRotation);
 
         break;
     }
@@ -211,7 +211,7 @@ void CButterGrump::Attack()
         XMStoreFloat4(&vRotation, Rot);
         vPosition.y += vScale.y * 0.5f;
 
-        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_HomingBall"), &vPosition, &vRotation);
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_HomingBall"), COORDINATE_3D, &vPosition, &vRotation);
 
         break;
     }
@@ -232,7 +232,7 @@ void CButterGrump::Attack()
             XMStoreFloat4(&vRot, Rot);
             /*vPos.x += 2.f * Array[i];
             vPos.y += 2.f * Array2[i];*/
-            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_YellowBall"), &vPos, &vRot);
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_YellowBall"), COORDINATE_3D, &vPos, &vRot);
         }
 
         break;
@@ -254,7 +254,7 @@ void CButterGrump::Attack()
             XMStoreFloat4(&vRot, Rot);
             /*vPos.x += 2.f * Array[i];
             vPos.y += 2.f * Array2[i];*/
-            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_PurpleBall"), &vPos, &vRot);
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_PurpleBall"),COORDINATE_3D ,&vPos, &vRot);
         }
         break;
     }
