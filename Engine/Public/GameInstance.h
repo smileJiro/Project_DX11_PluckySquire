@@ -247,6 +247,7 @@ public: /* For. Physx_Manager*/
 	HRESULT				Physx_Render();
 	PxPhysics*			Get_Physics() const;
 	PxCooking*			Get_Cooking() const;
+	_float				Get_Gravity();
 	PxScene*			Get_Physx_Scene() const;
 	PxMaterial*			Get_Material(ACTOR_MATERIAL _eType) const;
 	void				Add_ShapeUserData(SHAPE_USERDATA* _pUserData);

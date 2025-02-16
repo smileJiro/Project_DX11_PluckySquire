@@ -98,6 +98,7 @@ protected:
 	_float						m_fPlayerDistance = { 0.f };
 	_float2						m_PrePlayerPos = { 0.f, 0.f };
 	_float2						m_CurPlayerPos = { 0.f, 0.f };
+	_float2						m_vPreNPCPos = { 0.f ,0.f };
 
 private:
 	vector<CNPC_Companion*>		m_vecCompanionNpc = {};

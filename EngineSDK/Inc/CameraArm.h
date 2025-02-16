@@ -74,7 +74,7 @@ public:
 	void				Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);	// 돌아갈지 안 돌아갈지에 따라 삭제 혹은 이동
 
 	_bool				Move_To_NextArm(_float _fTimeDelta);
-	_bool				Move_To_NextArm_ByVector(_float _fTimeDelta);
+	_bool				Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook = false);
 	_bool				Move_To_PreArm(_float _fTimeDelta);						// Stack에 저장해둔 Arm으로
 	_bool				Move_To_FreezeExitArm(_float _fRatio, _fvector _vFreezeExitArm);
 

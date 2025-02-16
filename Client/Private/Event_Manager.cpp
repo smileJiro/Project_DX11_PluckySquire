@@ -63,7 +63,7 @@ void CEvent_Manager::Update(_float _fTimeDelta)
 	
 	for (auto& pDeadObject : m_DeadObjectsList)
 	{
-		SECTION_MGR->Remove_GameObject_FromSectionLayer(pDeadObject->Get_Include_Section_Name(), pDeadObject);
+		SECTION_MGR->Remove_GameObject_FromSectionLayer(pDeadObject->Get_Include_Section_Name(), pDeadObject); /* Delete Event 호출 시, 섹션에서 제거 */
 		Safe_Release(pDeadObject);
 	}
 	m_DeadObjectsList.clear();

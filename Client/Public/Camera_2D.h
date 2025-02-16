@@ -36,7 +36,7 @@ public:
 		_float3					vAtOffset = { 0.f, 0.f, 0.f };
 		_float					fSmoothSpeed = {};
 
-		const _float4x4* pTargetWorldMatrix = { nullptr };
+		const _float4x4*				pTargetWorldMatrix = { nullptr };
 	}CAMERA_2D_DESC;
 
 private:
@@ -59,31 +59,34 @@ public:
 
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
+	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
+
+	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
 
 private:
-	const _float4x4*			m_pTargetWorldMatrix = { nullptr };
+	const _float4x4* 			m_pTargetWorldMatrix = { nullptr };
 	CAMERA_2D_MODE				m_eCameraMode = { CAMERA_2D_MODE_END };
 	CAMERA_2D_MODE				m_ePreCameraMode = { DEFAULT };
 	CCameraArm*					m_pCurArm = { nullptr };
+	COORDINATE					m_eTargetCoordinate = { COORDINATE_2D };
 
 	_float						m_fSmoothSpeed = {};
 
 	// TargetPos로 변환한 값 저장
 	_float3						m_v2DTargetWorldPos = {};
 	_float3						m_v2DPreTargetWorldPos = {};
-
-	// Flipping
-	_float2						m_fFlippingTime = {};
-	_float3						m_vStartPos = {};
-	_float3						m_vFlippingPos = { 0.968761384f, 21.5310783f, -22.8536606f };
-	_float3						m_vFlippingPos_Height = {};
+	_float						m_fTrackingTime = { 0.5f };
+	
 	DIRECTION_TYPE				m_eDirectionType = { HORIZON };
 
 	// Book
 	_bool						m_isBook = { true };
 	_float						m_fFixedY = {};
+
+	// Arm
+	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>	m_ArmDatas;
 
 private:
 	void						Action_Mode(_float _fTimeDelta);
@@ -100,6 +103,10 @@ private:
 
 	_vector						Calculate_CameraPos(_float _fTimeDelta);
 	virtual	void				Switching(_float _fTimeDelta) override;
+	void						Flipping_Rotation(_float _fRatio);
+
+private:
+	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);
 
 #ifdef _DEBUG
 	void						Key_Input(_float _fTimeDelta);

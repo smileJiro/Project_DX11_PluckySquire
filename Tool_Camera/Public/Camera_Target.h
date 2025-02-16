@@ -46,6 +46,10 @@ public:
 	void						Set_CameraMode(_uint _iCameraMode, _int _iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = _iNextCameraMode; }
 	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 
+	void						Set_LookAt(_bool _isLookAt) 
+	{
+		m_isLookAt = _isLookAt; 
+	}
 public:
 	void						Set_NextArmData(ARM_DATA* _pArmData, SUB_DATA* _pSubData);		// Event 처리 하면 사라지고 바로 Arm에 넣을 수도
 
@@ -62,6 +66,8 @@ private:
 
 	// TargetPos
 	_float3						m_vTargetPos = {};
+
+	_bool						m_isLookAt = { true };
 
 	//// Sub Data
 	//SUB_DATA*					m_pCurSubData = { nullptr };

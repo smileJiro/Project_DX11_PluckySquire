@@ -126,6 +126,19 @@ void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 	//m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_vFreezeExitArm)));
 }
 
+void CCamera_Target::Set_EnableLookAt(_bool _isEnableLookAt)
+{
+	if (true == _isEnableLookAt && false == m_isEnableLookAt) {
+		// false이다가 m_isExitLookAt으로 돌아간 것
+		m_isExitLookAt = true;
+		m_fLookTime.y = 0.f;
+		XMStoreFloat3(&m_vStartLookVector, m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+		//m_vStartLookVector = 
+	}
+
+	m_isEnableLookAt = _isEnableLookAt;
+}
+
 void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 {
 	m_pTargetWorldMatrix = _pTargetWorldMatrix;
@@ -404,8 +417,32 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 {
 	//_vector vTargetPos = XMLoadFloat4x4(m_pTargetWorldMatrix).r[TARGET_POS];
 
-	_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
-	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
+	if ((true == m_isEnableLookAt) && (false == m_isExitLookAt)) {
+		_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+		m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
+	}
+	else if((true == m_isEnableLookAt) && (true == m_isExitLookAt)){
+		// LookAt 보간
+
+		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fLookTime, fTimeDelta, EASE_IN_OUT);
+
+		if (fRatio >= (1.f - EPSILON)) {
+			_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+			m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
+
+			m_isExitLookAt = false;
+			m_fLookTime.y = 0.f;
+			return;
+		}
+
+		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+		_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+		_vector vDir = XMVector3Normalize(vAt - vPos);
+
+		_vector vLook = XMVectorLerp(XMLoadFloat3(&m_vStartLookVector), vDir, fRatio);
+
+		m_pControllerTransform->Get_Transform()->Set_Look(vLook);
+	}
 }
 
 void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)

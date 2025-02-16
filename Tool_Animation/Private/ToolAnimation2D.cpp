@@ -99,8 +99,8 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	m_fPixelsPerUnrealUnit = jProperties["PixelsPerUnrealUnit"];
 
 	json& jBakedRenderData = jProperties["BakedRenderData"];
-	m_vSpriteStartUV = { 1,1 };
-	m_vSpriteEndUV = { 0,0 };
+	m_vSpriteStartUV = { 1.f,1.f };
+	m_vSpriteEndUV = { 0.f,0.f };
 	_float fMinX = D3D11_FLOAT32_MAX, fMinY = D3D11_FLOAT32_MAX;
 	_float fMaxX = -D3D11_FLOAT32_MAX, fMaxY = -D3D11_FLOAT32_MAX;
 	for (json& j : jBakedRenderData)

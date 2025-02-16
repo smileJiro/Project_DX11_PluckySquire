@@ -16,7 +16,7 @@ public:
 	void						Late_Update(_float _fTimeDelta)  override;
 public:
 	HRESULT						Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
-
+	void						Start_ParabolicTo(_vector _vPosition, _float _fLaunchRadianAngle,  _float _fGravityMag = 9.81f*3.f);
 
 public:
 	//Get

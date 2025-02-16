@@ -412,9 +412,6 @@
     <Filter Include="02.GameObjects\Portal">
       <UniqueIdentifier>{e79f9f98-f32d-4906-84e3-b695f14a3e7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\FallingRock\Spawner">
-      <UniqueIdentifier>{1f67cf75-cef0-4131-b916-13848a92cd75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="91.Spawner">
       <UniqueIdentifier>{f227d0db-bb5f-4e46-9832-cfc28c44d73e}</UniqueIdentifier>
     </Filter>
@@ -970,8 +967,15 @@
     <ClInclude Include="..\Public\NPC_Thrash.h">
       <Filter>02.GameObjects\NPC\02. NPC_Companion\01. Thrash</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Zippy.h">
-      <Filter>02.GameObjects\Monster\Zippy</Filter>
+    <ClInclude Include="..\Public\PlayerState_StartPortal.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zippy.h" />
+    <ClInclude Include="..\Public\PlayerState_ExitPortal.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_IntoPortal.h">
+      <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\public\RayShape.h">
       <Filter>02.GameObjects\RayShape</Filter>
@@ -1495,8 +1499,15 @@
     <ClCompile Include="..\Private\NPC_Thrash.cpp">
       <Filter>02.GameObjects\NPC\02. NPC_Companion\01. Thrash</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Zippy.cpp">
-      <Filter>02.GameObjects\Monster\Zippy</Filter>
+    <ClCompile Include="..\Private\PlayerState_StartPortal.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zippy.cpp" />
+    <ClCompile Include="..\Private\PlayerState_ExitPortal.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_IntoPortal.cpp">
+      <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\private\RayShape.cpp">
       <Filter>02.GameObjects\RayShape</Filter>

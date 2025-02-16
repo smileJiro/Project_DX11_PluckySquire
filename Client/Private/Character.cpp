@@ -189,8 +189,7 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon)
     _vector vDir = _vPosition - Get_FinalPosition();
     vDir.m128_f32[1] = 0.f;
     vDir.m128_f32[3] = 0.f;
-    _float fLength = XMVectorGetX(XMVector3Length(vDir));
-    if (_fEpsilon >= fLength)
+    if (Check_Arrival(_vPosition, _fEpsilon))
     {
         pDynamicActor->Set_LinearVelocity(_vector{ 0,0,0,0 });
         return true;
@@ -204,8 +203,17 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon)
 _bool CCharacter::Check_Arrival(_fvector _vPosition, _float _fEpsilon)
 {
     _vector vDir = _vPosition - Get_FinalPosition();
-    vDir.m128_f32[1] = 0.f;
-    vDir.m128_f32[3] = 0.f;
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+        vDir.m128_f32[1] = 0.f;
+        vDir.m128_f32[3] = 0.f;
+	}
+    else
+    {
+        vDir.m128_f32[2] = 0.f;
+        vDir.m128_f32[3] = 0.f;
+    }
+
     _float fLength = XMVectorGetX(XMVector3Length(vDir));
     if (_fEpsilon >= fLength)
     {

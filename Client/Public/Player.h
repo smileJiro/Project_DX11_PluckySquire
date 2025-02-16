@@ -11,6 +11,7 @@ BEGIN(Client)
 class CCarriableObject;
 class CStateMachine;
 class IInteractable;
+class CPortal;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -85,6 +86,10 @@ public:
 		CLAMBER,
 		SPINATTACK,
 		DIE,
+		START_PORTAL,
+		JUMPTO_PORTAL,
+		EXIT_PORTAL,
+		ELECTRIC,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -423,9 +428,9 @@ public:
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
-	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
 	virtual void On_Hit(CGameObject* _pHitter, _int _fDamg) override;
 	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
@@ -444,9 +449,12 @@ public:
 	PLAYER_INPUT_RESULT Player_KeyInput();
 	void Revive();
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
-	void Try_Interact(_float _fTimeDelta);
+	_bool Try_Interact(IInteractable* _pInteractable , _float _fTimeDelta);
 	void End_Interact();
-
+	void Start_Portal(CPortal* _pPortal);
+	void JumpTo_Portal(CPortal* _pPortal);
+	void Set_PlayingAnim(_bool _bPlaying);
+	void Start_Invinciblity();
 
 	//Get
 	_bool Is_OnGround();
@@ -457,6 +465,7 @@ public:
 	_bool Is_CarryingObject(){ return nullptr != m_pCarryingObject; }
 	_bool Is_AttackTriggerActive();
 	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
+	_bool Is_PlayingAnim();
 	_bool Has_InteractObject() { return nullptr != m_pInteractableObject; }
 	_float Get_UpForce();
 	_float Get_AnimProgress();
@@ -481,7 +490,8 @@ public:
 	_vector Get_ClamberEndPosition() { return m_vClamberEndPosition; }
 	_vector Get_WallNormal() { return m_vWallNormal; }
 	_vector Get_BodyPosition();
-
+	IInteractable* Get_InteractableObject() { return m_pInteractableObject; }
+	CPortal* Get_CurrentPortal() { return m_pPortal; }
 	const _float4x4* Get_CarryingOffset_Ptr(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? &m_mat2DCarryingOffset : &m_mat3DCarryingOffset; }
 	STATE Get_CurrentStateID();
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
@@ -504,7 +514,6 @@ public:
 	void Set_PlatformerMode(_bool _bPlatformerMode);
 	void Set_Upforce(_float _fForce);
 	HRESULT Set_CarryingObject(CCarriableObject* _pCarryingObject);
-	void Set_CollidersActive(_bool _bOn);
 
 	void Start_Attack(ATTACK_TYPE _eAttackType);
 	void End_Attack();
@@ -534,14 +543,15 @@ private:
 	_float m_fStepSlopeThreshold = 0.1f;
 	_float m_f3DLandAnimHeightThreshold= 0.6f;
 	//_float m_fFootHeightThreshold = 0.1f;
-	_float m_f3DJumpPower = 9.5f;
+	_float m_f3DJumpPower = 10.5f;
 	_float m_fAirRotateSpeed = 40.f;
-	_float m_fAirRunSpeed = 10.f;
-	_float m_f3DMoveSpeed= 10.f;
+	_float m_fAirRunSpeed = 6.f;
+	_float m_f3DMoveSpeed= 6.f;
 	_float m_f3DFloorDistance = 0;
 	_float m_f3DThrowObjectPower = 20.f;
 	_float m_f3DPickupRange = 1.3f;
 	_float m_f3DKnockBackPower = 100.f;
+
 	_bool m_bOnGround = false;
 	_bool m_bAttackTrigger = false;
 	_uint m_iSpinAttackLevel = 4;
@@ -550,6 +560,8 @@ private:
 	_vector m_v3DTargetDirection = { 0,0,-1 };
 	_float4x4 m_mat3DCarryingOffset = {};
 	PLAYER_MODE m_ePlayerMode = PLAYER_MODE_NORMAL;
+
+
 
 	//2DÀü¿ë
 	_float m_f2DAttackForwardSpeed = 700.f;
@@ -565,6 +577,11 @@ private:
 	_float m_f2DKnockBackPower = 100.f;
 	_float m_f2DInteractOffset = 100.f;
 	_float4x4 m_mat2DCarryingOffset = {};
+
+
+	_float m_fInvincibleTIme = 0.5f;
+	_float m_fInvincibleTImeAcc = 0.f;
+	_bool m_bInvincible = false;
 	_bool m_bPlatformerMode = false;
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
 	ATTACK_TRIGGER_DESC m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST];// = { 93.f, 93.f, 120.f };
@@ -586,6 +603,7 @@ private:
 	CCarriableObject* m_pCarryingObject = { nullptr, };
 	set<CGameObject*> m_AttckedObjects;
 	IInteractable* m_pInteractableObject = nullptr;
+	CPortal* m_pPortal= nullptr;
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;
