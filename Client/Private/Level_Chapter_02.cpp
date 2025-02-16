@@ -112,11 +112,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_NPC (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_FallingRock(TEXT("Layer_FallingRock"))))
-	{
-		MSG_BOX(" Failed Ready_Layer_FallingRock (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
+
 
 	//if (FAILED(Ready_Layer_Spawner(TEXT("Layer_Spawner"))))
 	//{
@@ -425,7 +421,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 	pFallingRockDesc->eStartCoord = COORDINATE_2D;
 	pFallingRockDesc->fFallDownEndY = RTSIZE_BOOK2D_Y * 0.5f - 50.f;
 	pFallingRockDesc->iCurLevelID = LEVEL_CHAPTER_2;
-	pFallingRockDesc->isDeepCopyConstBuffer = true;
+	pFallingRockDesc->isDeepCopyConstBuffer = false;
 	pFallingRockDesc->Build_2D_Transform(_float2(0.0f, 500.f));
 
 	/* Pooling Desc */
