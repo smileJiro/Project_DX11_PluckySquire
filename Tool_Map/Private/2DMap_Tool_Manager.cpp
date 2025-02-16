@@ -127,6 +127,7 @@ void C2DMap_Tool_Manager::Update_Imgui_Logic()
 	SaveLoad_Imgui();
 	TriggerSetting_Imgui();
 	TriggerEvent_Imgui();
+	BlockerSetting_Imgui();
 }
 
 
@@ -141,6 +142,8 @@ void C2DMap_Tool_Manager::Input_Logic()
 
 		if (((ImGui::IsKeyDown(ImGuiKey_LeftAlt) || ImGui::IsKeyDown(ImGuiKey_RightAlt)) && ImGui::IsKeyPressed(ImGuiKey_MouseLeft)))
 		{
+			_float2 fSize = m_DefaultRenderObject->Get_Texture_Size();
+
 			C2DTrigger_Sample::TRIGGER_2D_DESC TriggerDesc = {};
 			TriggerDesc.tTransform2DDesc.vInitialPosition = { 0.f,0.f,1.f };
 			TriggerDesc.tTransform2DDesc.vInitialScaling = { 100.f,100.f,1.f };
@@ -148,6 +151,7 @@ void C2DMap_Tool_Manager::Input_Logic()
 			TriggerDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 			TriggerDesc.eStartCoord = COORDINATE_2D;
 			TriggerDesc.isCoordChangeEnable = false;
+			TriggerDesc.fRenderTargetSize = fSize;
 
 
 			CGameObject* pGameObject = nullptr;
@@ -198,7 +202,7 @@ void C2DMap_Tool_Manager::Input_Logic()
 
 void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 {
-	ImGui::Begin("Map");
+	ImGui::Begin("Map & Map Object Control");
 	static _float4 fColor = { 1.0f, 0.0f, 1.0f, 1.0f }; // 초기 색상 (RGBA)
 
 	if (ImGui::Button("Import 2D .umap file"))
@@ -1032,7 +1036,7 @@ void C2DMap_Tool_Manager::SaveLoad_Imgui(_bool _bLock)
 	//ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	//ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-	ImGui::Begin("Save & Load");
+	ImGui::Begin("Map Save & Load");
 	{
 		ImGui::SeparatorText("Save File List");
 		if (ImGui::BeginListBox("##Save File List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
@@ -1415,6 +1419,138 @@ void C2DMap_Tool_Manager::TriggerEvent_Imgui(_bool bLock)
 	ImGui::End();
 }
 
+void C2DMap_Tool_Manager::BlockerSetting_Imgui(_bool bLock)
+{
+	ImGui::Begin("Blocker");
+	{
+		ImGui::SeparatorText("Blocker List");
+		if (ImGui::BeginListBox("##Blocker List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+		{
+			auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_Blocker");
+			if (pLayer)
+			{
+				auto& BlockerList = pLayer->Get_GameObjects();
+				_uint iLoop = 0;
+
+				for_each(BlockerList.begin(), BlockerList.end(), [this, &iLoop](CGameObject* pGameObject) {
+					_wstring wstrName = pGameObject->Get_Name();
+					_string strName = WstringToString(pGameObject->Get_Name());
+					C2DTrigger_Sample* pBlockerObject = static_cast<C2DTrigger_Sample*>(pGameObject);
+					if (pBlockerObject)
+					{
+						if (ImGui::Selectable(strName.c_str(), wstrName == m_arrSelectName[BLOCKER_LIST])) {
+							if (wstrName != m_arrSelectName[BLOCKER_LIST])
+							{
+								if (m_pPickingBlocker)
+									m_pPickingBlocker->Change_Color(C2DTrigger_Sample::DEFAULT_COLOR);
+								m_arrSelectName[BLOCKER_LIST] = wstrName;
+								m_pPickingBlocker = pBlockerObject;
+								m_pPickingBlocker->Change_Color(C2DTrigger_Sample::PICKING_COLOR);
+							}
+						}
+					}
+					iLoop++;
+					});
+			}
+
+			ImGui::EndListBox();
+		}
+
+
+
+		Begin_Draw_ColorButton("##CreateBlockerStyle", (ImVec4(0.21f, 0.66f, 0.33f, 1.f)));
+		if (!bLock && ImGui::Button("Create Blocker", ImVec2(-FLT_MIN, 1.7f * ImGui::GetTextLineHeightWithSpacing())))
+		{
+			_float2 fSize = m_DefaultRenderObject->Get_Texture_Size();
+
+			C2DTrigger_Sample::TRIGGER_2D_DESC TriggerDesc = {};
+			TriggerDesc.tTransform2DDesc.vInitialPosition = { 0.f,0.f,1.f };
+			TriggerDesc.tTransform2DDesc.vInitialScaling = { 100.f,100.f,1.f };
+			//TriggerDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
+			TriggerDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
+			TriggerDesc.eStartCoord = COORDINATE_2D;
+			TriggerDesc.isCoordChangeEnable = false;
+			TriggerDesc.fRenderTargetSize = fSize;
+
+
+			CGameObject* pGameObject = nullptr;
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DTrigger"),
+				LEVEL_TOOL_2D_MAP,
+				L"Layer_Blocker",
+				&pGameObject,
+				(void*)&TriggerDesc)))
+			{
+				//_string strNotExistTextureMessage = WstringToString(_wstring(L"2D Texture Info not Exist ->") + NormalDesc.strProtoTag);
+				//LOG_TYPE(strNotExistTextureMessage, LOG_ERROR);
+				//NotExistTextures.push_back(strNotExistTextureMessage);
+			}
+			else 
+			{
+				_wstring strNewName = L"Blocker_";
+				strNewName += std::to_wstring(pGameObject->Get_GameObjectInstanceID());
+				pGameObject->Set_Name(strNewName);
+				if (m_pPickingBlocker)
+					m_pPickingBlocker->Change_Color(C2DTrigger_Sample::DEFAULT_COLOR);
+				m_arrSelectName[BLOCKER_LIST] = strNewName;
+				m_pPickingBlocker = static_cast<C2DTrigger_Sample*>(pGameObject);
+				m_pPickingBlocker->Change_Color(C2DTrigger_Sample::PICKING_COLOR);
+			}
+		}
+		End_Draw_ColorButton();
+		Begin_Draw_ColorButton("##CreateBlockerStyle", (ImVec4(1.f, 0.32f, 0.45f, 1.f)));
+		if (!bLock && ImGui::Button("Remove Blocker", ImVec2(-FLT_MIN, 1.7f * ImGui::GetTextLineHeightWithSpacing())))
+		{
+			if (nullptr != m_pPickingBlocker)
+			{
+				Event_DeleteObject(m_pPickingBlocker);
+				m_pPickingBlocker = nullptr;
+			}
+		}
+		End_Draw_ColorButton();
+
+		if (nullptr != m_pPickingBlocker)
+		{
+			_bool	isFloor = m_pPickingBlocker->Is_Floor();
+			_vector vPos = m_pPickingBlocker->Get_FinalPosition();
+			_float2 fPos = { XMVectorGetX(vPos),XMVectorGetY(vPos) };
+			_float3 fScale = m_pPickingBlocker->Get_FinalScale();
+			ImGui::SetNextItemWidth(100.f);
+			if (ImGui::DragFloat("##BlockerPosX", &fPos.x, 1.f, -FLT_MAX, FLT_MAX, "x:%.1f"))
+			{
+				vPos = XMVectorSetX(vPos, fPos.x);
+				m_pPickingBlocker->Set_Position(vPos);
+
+			}
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.f);
+			if (ImGui::DragFloat("##BlockerPosY", &fPos.y, 1.f, -FLT_MAX, FLT_MAX, "y:%.1f"))
+			{
+				vPos = XMVectorSetY(vPos, fPos.y);
+				m_pPickingBlocker->Set_Position(vPos);
+			}
+			ImGui::SameLine();
+			ImGui::Text("Blocker Position");
+
+			ImGui::SetNextItemWidth(100.f);
+			if (ImGui::DragFloat("##BlockerScaleX", &fScale.x, 1.f, 0.f, FLT_MAX, "x:%.1f"))
+				m_pPickingBlocker->Set_Scale(fScale);
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.f);
+			if (ImGui::DragFloat("##BlockerScaleY", &fScale.y, 0.1f, 0.01f, FLT_MAX, "y:%.1f"))
+				m_pPickingBlocker->Set_Scale(fScale);
+			ImGui::SameLine();
+			ImGui::Text("Blocker Scale");
+
+			ImGui::Text("Floor?");
+			ImGui::SameLine();
+			if (ImGui::Checkbox("##isStatic", &isFloor))
+				m_pPickingBlocker->Set_Floor(isFloor);
+		}
+	}
+
+	ImGui::End();
+}
+
 
 void C2DMap_Tool_Manager::Save(_bool _bSelected)
 {
@@ -1554,6 +1690,37 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 		WriteFile(hFile, &iPortalCnt, sizeof(_uint), &dwByte, nullptr);
 	}
 
+	auto pLayerBlockers = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_Blocker");
+
+	_uint iBlockerCnt = 0;
+
+
+	//6. 블로커카운트
+
+	if (nullptr != pLayerBlockers)
+	{
+		auto BlockerObjects = pLayerBlockers->Get_GameObjects();
+		iBlockerCnt = (_uint)BlockerObjects.size();
+		WriteFile(hFile, &iBlockerCnt, sizeof(_uint), &dwByte, nullptr);
+		for (auto& pObject : BlockerObjects)
+		{
+
+			_vector		vPos = pObject->Get_FinalPosition();
+			_float3		vScale = pObject->Get_FinalScale();
+			_float2		fPos = { XMVectorGetX(vPos), XMVectorGetY(vPos) };
+			_float2		fScale = { vScale.x,vScale.y };
+			_bool		isFloor = static_cast<C2DTrigger_Sample*>(pObject)->Is_Floor();
+
+			WriteFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
+			WriteFile(hFile, &fScale, sizeof(_float2), &dwByte, nullptr);
+			WriteFile(hFile, &isFloor, sizeof(_bool), &dwByte, nullptr);
+		}
+	}
+	else
+	{
+		//아니믄 걍 0개 저장.
+		WriteFile(hFile, &iBlockerCnt, sizeof(_uint), &dwByte, nullptr);
+	}
 
 
 	CloseHandle(hFile);
@@ -2481,6 +2648,12 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 {
 	Object_Clear(L"Layer_2DMapObject");
 	Object_Clear(L"Layer_Portal");
+	Object_Clear(L"Layer_Blocker");
+
+	m_pPickingObject = nullptr;
+	m_pPickingTrigger = nullptr;
+	m_pPickingBlocker = nullptr;
+
 
 	string filename = m_pGameInstance->WStringToString(m_arrSelectName[SAVE_LIST]);
 	string log = "";
@@ -2573,7 +2746,7 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 		C2DMapObject::MAPOBJ_2D_DESC NormalDesc = { };
 		NormalDesc.strProtoTag = L"Portal_2D";
 		NormalDesc.fDefaultPosition = fPos;
-		NormalDesc.fRenderTargetSize = { (_float)fSize.x, (_float)fSize.y };
+		NormalDesc.fRenderTargetSize = fSize;
 		NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 		NormalDesc.iRenderGroupID_2D = m_p2DRenderGroup->Get_RenderGroupID();
 		NormalDesc.iPriorityID_2D = m_p2DRenderGroup->Get_PriorityID();
@@ -2592,6 +2765,45 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 		}
 	}
 
+	//6. 블로커
+	_uint iBlockerCnt = 0;
+	ReadFile(hFile, &iBlockerCnt, sizeof(_uint), &dwByte, nullptr);
+	for (_uint i = 0; i < iBlockerCnt; ++i)
+	{
+		_float2		fPos = {};
+		_float2		fScale = {};
+		_bool		isFloor = false;
+		ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
+		ReadFile(hFile, &fScale, sizeof(_float2), &dwByte, nullptr);
+		ReadFile(hFile, &isFloor, sizeof(_bool), &dwByte, nullptr);
+
+		C2DTrigger_Sample::TRIGGER_2D_DESC NormalDesc = { };
+		NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
+		NormalDesc.eStartCoord = COORDINATE_2D;
+		NormalDesc.isCoordChangeEnable = false;
+		NormalDesc.fRenderTargetSize = fSize;
+
+		NormalDesc.Build_2D_Transform(fPos, fScale);
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DTrigger"),
+			LEVEL_TOOL_2D_MAP,
+			L"Layer_Blocker",
+			&pGameObject,
+			(void*)&NormalDesc)))
+		{
+			int a = 1;
+		}
+		else 
+		{
+			C2DTrigger_Sample* pBlocker = static_cast<C2DTrigger_Sample*>(pGameObject);
+			_wstring strNewName = L"Blocker_";
+			strNewName += std::to_wstring(pGameObject->Get_GameObjectInstanceID());
+			pBlocker->Set_Name(strNewName);
+			pBlocker->Change_Color(C2DTrigger_Sample::DEFAULT_COLOR);
+			pBlocker->Set_Floor(isFloor);
+		}
+	}
 
 
 
@@ -2606,7 +2818,6 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 void C2DMap_Tool_Manager::Object_Clear(const _wstring& _strLayerName)
 {
 	LOG_TYPE("Object Clear", LOG_DELETE);
-	m_pPickingObject = nullptr;
 	CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, _strLayerName);
 	if (pLayer != nullptr)
 	{
@@ -2731,6 +2942,7 @@ void C2DMap_Tool_Manager::Load_Trigger()
 
 	if (GetOpenFileName(&ofn))
 	{
+		m_pPickingTrigger = nullptr;
 		Object_Clear(L"Layer_Trigger");
 		m_fOffsetPos = { 0.f,0.f };
 		LOG_TYPE(_wstring(L"=====  2D Trigger Read Start  -> ") + szName, LOG_LOAD);
@@ -2768,11 +2980,13 @@ void C2DMap_Tool_Manager::Load_Trigger()
 			auto& Collider_Json = TriggerJson["Collider_Info"];
 			_float2 fPos = { Collider_Json["Position"][0].get<_float>(),  Collider_Json["Position"][1].get<_float>() };
 			_float2 fScale = { Collider_Json["Scale"][0].get<_float>(),  Collider_Json["Scale"][1].get<_float>() };
+			_float2 fSize = m_DefaultRenderObject->Get_Texture_Size();
 
 			C2DTrigger_Sample::TRIGGER_2D_DESC TriggerDesc = {};
 			TriggerDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 			TriggerDesc.eStartCoord = COORDINATE_2D;
 			TriggerDesc.isCoordChangeEnable = false;
+			TriggerDesc.fRenderTargetSize = fSize;
 			TriggerDesc.Build_2D_Transform(fPos, fScale);
 
 			CGameObject* pGameObject = nullptr;

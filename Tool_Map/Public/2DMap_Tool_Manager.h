@@ -37,6 +37,7 @@ private :
 		SELECT_MAP,
 		SAVE_LIST,
 		TRIGGER_LIST,
+		BLOCKER_LIST,
 		TRIGGER_EVENT_LIST,
 		LIST_END
 	};
@@ -77,6 +78,7 @@ private:
 	void				SaveLoad_Imgui(_bool _isLock = false);
 	void				TriggerSetting_Imgui(_bool bLock = false);
 	void				TriggerEvent_Imgui(_bool bLock = false);
+	void				BlockerSetting_Imgui(_bool bLock = false);
 #pragma endregion
 
 #pragma region Object Tool Method
@@ -147,6 +149,7 @@ private:
 	C2DMapObjectInfo*				m_pPickingInfo = nullptr;
 	C2DMapObject*					m_pPickingObject = nullptr;
 	class C2DTrigger_Sample*		m_pPickingTrigger = nullptr;
+	class C2DTrigger_Sample*		m_pPickingBlocker = nullptr;
 	
 	_wstring						m_strMapBinaryPath = L"../../Client/Bin/MapSaveFiles/2D/";
 	_char							m_szSaveFileName[MAX_PATH];
