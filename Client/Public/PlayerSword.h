@@ -44,7 +44,8 @@ public:
 	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-
+	virtual void Active_OnEnable() override;
+	virtual void Active_OnDisable() override;
 
 	virtual HRESULT	 Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
@@ -65,7 +66,7 @@ public:
 	_vector Get_LookDirection();
 private:
 	_bool m_bAttackEnable = false;
-	_float m_fThrowingPower3D = 15.f;
+	_float m_fThrowingPower3D = 30.f;
 	_float m_fThrowingPower2D = 1200.f;
 	_vector m_vThrowDirection = {};
 	_vector m_vStuckDirection = {};

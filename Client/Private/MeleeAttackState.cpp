@@ -44,7 +44,9 @@ void CMeleeAttackState::State_Update(_float _fTimeDelta)
 	//{
 	//	m_pOwner->Change_Dir();
 	//}
-	Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
+
+	if (true == m_pOwner->Get_AnimChangeable())
+		Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
 }
 
 void CMeleeAttackState::State_Exit()

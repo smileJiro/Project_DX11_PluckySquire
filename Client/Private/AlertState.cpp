@@ -26,7 +26,10 @@ HRESULT CAlertState::Initialize(void* _pArg)
 
 void CAlertState::State_Enter()
 {
-	m_pOwner->Set_AnimChangeable(false);
+	if(true == m_pOwner->Has_StateAnim(MONSTER_STATE::ALERT))
+	{
+		m_pOwner->Set_AnimChangeable(false);
+	}
 
 	if (nullptr != m_pOwner && nullptr != m_pTarget)
 		m_pOwner->Change_Dir();

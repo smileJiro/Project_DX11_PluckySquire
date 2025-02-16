@@ -29,9 +29,11 @@ public:
 	HRESULT					Ready_Layer_UI(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_NPC(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppOut = nullptr);
+	HRESULT					Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut = nullptr);
 	HRESULT					Ready_Layer_Effects(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Domino(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_FallingRock(const _wstring& _strLayerTag);
+	HRESULT					Ready_Layer_RayShape(const _wstring& _strLayerTag);
 private:
 	void					Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength);
 

@@ -147,7 +147,7 @@ HRESULT CController_Transform::Bind_ShaderResource(CShader* pShader, const _char
 
 
 
-void CController_Transform::LookAt_3D(_fvector _vAt)
+void CController_Transform::LookAt_3D(_fvector _vAt, _fvector _vAxis, _float _fAngle)
 {
 	if (COORDINATE_2D == m_eCurCoord)
 		return;
@@ -155,7 +155,18 @@ void CController_Transform::LookAt_3D(_fvector _vAt)
 	if (nullptr == m_pTransforms[m_eCurCoord])
 		return;
 
-	static_cast<CTransform_3D*>(m_pTransforms[m_eCurCoord])->LookAt(_vAt);
+	static_cast<CTransform_3D*>(m_pTransforms[m_eCurCoord])->LookAt(_vAt, _vAxis, _fAngle);
+}
+
+void CController_Transform::LookAt_3D(_fvector _vAt, _float _fAngle)
+{
+	if (COORDINATE_2D == m_eCurCoord)
+		return;
+
+	if (nullptr == m_pTransforms[m_eCurCoord])
+		return;
+
+	static_cast<CTransform_3D*>(m_pTransforms[m_eCurCoord])->LookAt(_vAt, _fAngle);
 }
 
 _bool CController_Transform::MoveToTarget(_fvector _vTargetPos, _float _fTimeDelta)

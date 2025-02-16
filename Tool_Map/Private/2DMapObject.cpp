@@ -31,7 +31,10 @@ HRESULT C2DMapObject::Initialize(void* pArg)
 	MAPOBJ_2D_DESC* pDesc = static_cast<MAPOBJ_2D_DESC*>(pArg);
 	m_fRenderTargetSize = pDesc->fRenderTargetSize;
 
-	_float2 fRatio = { m_fRenderTargetSize.x / DEFAULT_SIZE_BOOK2D_X, m_fRenderTargetSize.y / DEFAULT_SIZE_BOOK2D_Y };
+	//_float2 fRatio = { m_fRenderTargetSize.x / DEFAULT_SIZE_BOOK2D_X,
+	//	m_fRenderTargetSize.y / DEFAULT_SIZE_BOOK2D_Y };
+	_float2 fRatio = { (_float)RATIO_BOOK2D_X,
+		(_float)RATIO_BOOK2D_Y };
 	_float2 fScale = { 1.f,1.f };
 	
 	m_strKey = pDesc->strProtoTag;
@@ -102,7 +105,7 @@ HRESULT C2DMapObject::Render()
 	HRESULT hr = __super::Render();
 #ifdef _DEBUG
 	if (m_pColliderCom)
-		m_pColliderCom->Render();
+		m_pColliderCom->Render(m_fRenderTargetSize);
 #endif // _DEBUG
 
 	return hr;

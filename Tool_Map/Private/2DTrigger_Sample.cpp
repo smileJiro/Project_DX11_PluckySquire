@@ -29,6 +29,9 @@ HRESULT C2DTrigger_Sample::Initialize(void* _pArg)
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
+
+    TRIGGER_2D_DESC* pDesc = static_cast<TRIGGER_2D_DESC*>(_pArg);
+    m_fRenderTargetSize = pDesc->fRenderTargetSize;
     CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
     AABBDesc.pOwner = this;
     AABBDesc.vExtents = { 1.f, 1.f };
@@ -37,7 +40,7 @@ HRESULT C2DTrigger_Sample::Initialize(void* _pArg)
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
         return E_FAIL;
-    
+    m_pColliderCom->Set_DebugColor(pDesc->fDebugColor);
 
     XMStoreFloat4x4(&m_matWorld,Get_WorldMatrix());
 
@@ -70,12 +73,33 @@ HRESULT C2DTrigger_Sample::Render()
 {
 
 #ifdef _DEBUG
-    m_pColliderCom->Render();
+    m_pColliderCom->Render(m_fRenderTargetSize);
 #endif // _DEBUG
 
 
     CGameObject::Render();
     return S_OK;
+}
+
+void C2DTrigger_Sample::Change_Color(TIRGGER_COLOR_MODE _eMode)
+{
+    if (m_pColliderCom)
+    {
+        switch (_eMode)
+        {
+        case Map_Tool::C2DTrigger_Sample::DEFAULT_COLOR:
+            m_pColliderCom->Set_DebugColor({0.f,0.f,1.f,1.f});
+            break;
+        case Map_Tool::C2DTrigger_Sample::PICKING_COLOR:
+            m_pColliderCom->Set_DebugColor({1.f,0.f,0.f,1.f});
+
+            break;
+        case Map_Tool::C2DTrigger_Sample::LAST:
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 

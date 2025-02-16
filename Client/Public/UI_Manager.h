@@ -44,6 +44,7 @@ private:
 	_bool								m_isConfirmStore = { false };
 	_bool								m_isUpdateShopPanel = { true };
 	_bool								m_isLogoChooseStage = { true };
+	_bool								m_isOnHitPlayer = { false };
 
 	_int								m_iPreIndex = { 0 };
 	_int								m_iSettingPanelIndex = { 0 };
@@ -74,6 +75,8 @@ public:
 	void								Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
 	CPlayer*							Get_Player() { return m_pPlayer; }
 	void								Set_Player(CPlayer* _Player) { m_pPlayer = _Player; Safe_AddRef(_Player); }
+	_bool								Get_PlayerOnHit() { return m_isOnHitPlayer; }
+	void								Set_PlayerOnHit(_bool _Hit) { m_isOnHitPlayer = _Hit; }
 	void								Emplace_SettingPanels(_uint _ePanel, CSettingPanelBG* _pPanel);
 	void								Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG* _pPanel);
 	void								Delete_ShopItems(_uint _index);

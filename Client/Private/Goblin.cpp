@@ -31,7 +31,7 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 200.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 10.f;
@@ -402,9 +402,9 @@ void CGoblin::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
     }
 }
 
-void CGoblin::On_Hit(CGameObject* _pHitter, _float _fDamg)
+void CGoblin::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
-    __super::On_Hit(_pHitter, _fDamg);
+    __super::On_Hit(_pHitter, _iDamg);
 }
 
 HRESULT CGoblin::Ready_ActorDesc(void* _pArg)

@@ -1013,6 +1013,12 @@ void CLevel_Camera_Tool::Change_ArmLength()
 	ImGui::Text("Fovy: %.2f", m_fFovys[iZoomLevel]);
 	CCamera_Manager_Tool::GetInstance()->Set_ZoomLevel(iZoomLevel);
 	m_iZoomLevel = iZoomLevel + 1;
+
+	if (ImGui::Checkbox("Not LookAt", &m_isNotLookAt)) {
+		CCamera* pTarget = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::TARGET);
+		static_cast<CCamera_Target*>(pTarget)->Set_LookAt(!m_isNotLookAt);
+	}
+
 	// 여기서 동작
 	// ============================Desire, Reset
 	_float3 vCurArm = CCamera_Manager_Tool::GetInstance()->Get_CurrentArmVector();

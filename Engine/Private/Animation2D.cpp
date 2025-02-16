@@ -19,7 +19,6 @@ CSpriteFrame::CSpriteFrame(const CSpriteFrame& _Prototype)
 	, m_matSpriteTransform(_Prototype.m_matSpriteTransform)
 {
 	Safe_AddRef(m_pTexture);
-	int a = 0;
 }
 CSpriteFrame::~CSpriteFrame()
 {

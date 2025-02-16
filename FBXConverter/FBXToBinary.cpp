@@ -257,7 +257,7 @@ HRESULT CFbxToBinary::Write_Animation(const aiAnimation* pAIAnim, ofstream& outF
 		_float4			vRotation;
 		for (size_t i = 0; i < m_iNumKeyFrames; i++)
 		{
-			TRANSFORM_KEYFRAME		KeyFrame = {};
+			KEYFRAME		KeyFrame = {};
 
 			if (i < pAIChannel->mNumScalingKeys)
 			{
@@ -282,7 +282,7 @@ HRESULT CFbxToBinary::Write_Animation(const aiAnimation* pAIAnim, ofstream& outF
 			KeyFrame.vRotation = vRotation;
 			KeyFrame.vPosition = vPosition;
 
-			outFile.write(reinterpret_cast<const char*>(&KeyFrame), sizeof(TRANSFORM_KEYFRAME));
+			outFile.write(reinterpret_cast<const char*>(&KeyFrame), sizeof(KEYFRAME));
 
 		}
 

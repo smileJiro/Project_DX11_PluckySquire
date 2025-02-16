@@ -29,7 +29,9 @@ public:
 	_bool				MoveToTarget(_fvector _vTargetPos, _float _fTimeDelta);
 
 public:
-	void				LookAt(_fvector _vAt); // 타겟의 위치쪽으로 바라보는 (회전하는)
+	void				LookAt(_fvector _vAt, _fvector _vAxis = { 0.f, 1.f, 0.f, 0.f }, _float _fAngle = 0.f); // 타겟의 위치쪽으로 바라보는 (회전하는)
+	void				LookAt(_fvector _vAt, _float _fAngle);	// Look을 기준으로 회전한다
+
 	void				Update_AutoRotationY(_float _fTimeDelta);
 
 public:

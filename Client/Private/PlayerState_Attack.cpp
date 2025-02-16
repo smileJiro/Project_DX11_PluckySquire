@@ -28,9 +28,9 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
         fProgress >= m_f2DForwardStartProgress && fProgress <= m_f2DForwardEndProgress)
 	{
 
-        if (m_pOwner->Is_PlatformerMode() )
+        if (m_pOwner->Is_PlatformerMode() && false == m_pOwner->Is_OnGround())
         {
-            if (false == m_bRised && false == m_pOwner->Is_OnGround())
+            if (false == m_bRised )
             {
                 m_pOwner->Add_Upforce(m_f2DRisingForce);
                 m_bRised = true;

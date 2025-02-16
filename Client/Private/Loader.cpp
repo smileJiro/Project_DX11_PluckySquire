@@ -55,6 +55,9 @@
 #include "NPC_Store.h"
 #include "NPC_Social.h"
 #include "Npc_OnlySocial.h"
+#include "Npc_Companion.h"
+#include "NPC_Violet.h"
+#include "NPC_Thrash.h"
 
 
 
@@ -87,6 +90,7 @@
 #include "JumpBug.h"
 #include "Goblin.h"
 #include "Rat.h"
+#include "Zippy.h"
 #include "BirdMonster.h"
 #include "Soldier_Spear.h"
 #include "Soldier_CrossBow.h"
@@ -884,7 +888,25 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_NPC_Social"),
 		CNPC_Social::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_NPC_Companion"),
+		CNPC_Companion::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_NPC_Companion_Violet"),
+		CNPC_Violet::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_NPC_Companion_Thrash"),
+		CNPC_Thrash::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
+
+
+    /* Monster */
+
+    /* For. Prototype_GameObject_Zippy */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"),
+        CZippy::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     /* Boss */
 
     /* For. Prototype_GameObject_ButterGrump */

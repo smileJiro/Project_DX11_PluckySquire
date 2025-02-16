@@ -117,12 +117,15 @@ public:
 	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
-	virtual void	On_Hit(CGameObject* _pHitter, _float _fDamg);
+	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg);
 
 
 public:
 	virtual void Attack();
 	virtual void Turn_Animation(_bool _isCW) {};
+
+	//해당 상태의 애니메이션이 존재하는 지 확인(상태 전용 애니메이션이 없는 경우 false)
+	virtual _bool Has_StateAnim(MONSTER_STATE _eState = MONSTER_STATE::LAST) { return true; }
 
 public:
 	virtual void				Change_Animation() {};
@@ -184,7 +187,7 @@ protected:
 	_float m_fCoolTime = { 0.f };
 	_uint	 m_iAttackCount = { 0 };
 
-	_float m_fHp = { 0 };
+	_int m_iHp = { 0 };
 
 	//시야각
 	_float m_fFOVX = { 0.f };

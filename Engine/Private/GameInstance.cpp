@@ -1245,6 +1245,14 @@ PxCooking* CGameInstance::Get_Cooking() const
 	return m_pPhysx_Manager->Get_Cooking();
 }
 
+_float CGameInstance::Get_Gravity()
+{
+	if (nullptr == m_pPhysx_Manager)
+		return 0.f;
+
+	return m_pPhysx_Manager->Get_Gravity();
+}
+
 PxScene* CGameInstance::Get_Physx_Scene() const
 {
 	if (nullptr == m_pPhysx_Manager)

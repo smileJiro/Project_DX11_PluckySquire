@@ -326,9 +326,10 @@ _bool CNPC_Social::Is_Interactable(CPlayer* _pUser)
 	return true;
 }
 
-_float CNPC_Social::Get_Distance(CPlayer* _pUser)
+_float CNPC_Social::Get_Distance(COORDINATE _eCOord, CPlayer* _pUser)
 {
-	return XMVector3Length(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION) - _pUser->Get_FinalPosition()).m128_f32[0];
+	return XMVector3Length(m_pControllerTransform->Get_Transform(_eCOord)->Get_State(CTransform::STATE_POSITION)
+		- _pUser->Get_ControllerTransform()->Get_Transform(_eCOord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
 }
 
 

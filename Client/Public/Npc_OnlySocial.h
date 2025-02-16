@@ -59,7 +59,7 @@ private:
 protected:
 	virtual void Interact(CPlayer* _pUser) {};
 	virtual _bool Is_Interactable(CPlayer* _pUser) { return false; };
-	virtual _float Get_Distance(CPlayer* _pUser) { return 0.f; };
+	virtual _float Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) { return 0.f; };
 
 	virtual HRESULT Ready_ActorDesc(void* _pArg) { return S_OK; };
 	virtual HRESULT Ready_Components() { return S_OK; };

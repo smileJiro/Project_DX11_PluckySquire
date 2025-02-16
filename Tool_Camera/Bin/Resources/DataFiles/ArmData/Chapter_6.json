@@ -1,0 +1,172 @@
+[
+    {
+        "Arm_Data": {
+            "Arm_Length": 11.399988174438477,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.5,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.5,
+                0.0
+            ],
+            "Desire_Arm": [
+                -0.003989881370216608,
+                0.6534308195114136,
+                -0.7569758892059326
+            ]
+        },
+        "Arm_Tag": "Chapter2_6",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                0.5,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 1.5,
+            "Use_SubData": true,
+            "Zoom_Level": 2,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 1.5
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 13.799997329711914,
+            "Arm_Length_RatioType": 3,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                0.14376689493656158,
+                0.7125593423843384,
+                -0.6867238283157349
+            ]
+        },
+        "Arm_Tag": "Chapter2_7",
+        "Sub_Data": {
+            "Use_SubData": false
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 12.662421226501465,
+            "Arm_Length_RatioType": 3,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                0.009808989241719246,
+                0.6657052636146545,
+                -0.7461502552032471
+            ]
+        },
+        "Arm_Tag": "Chapter2_8",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                0.5,
+                0.0
+            ],
+            "AtOffset_RatioType": 3,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 4,
+            "Zoom_RatioType": 3,
+            "Zoom_Time": 1.2000000476837158
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 14.919790267944336,
+            "Arm_Length_RatioType": 3,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                0.12139972299337387,
+                0.6584705710411072,
+                -0.7427502870559692
+            ]
+        },
+        "Arm_Tag": "Chapter2_9",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                3.0,
+                0.0
+            ],
+            "AtOffset_RatioType": 3,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 3,
+            "Zoom_RatioType": 3,
+            "Zoom_Time": 1.2000000476837158
+        }
+    }
+]

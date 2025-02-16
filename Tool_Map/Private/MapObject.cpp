@@ -129,7 +129,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
     //    Set_WorldMatrix(m_matWorld);
 
     //}
-    m_pControllerModel->Get_Model(COORDINATE_3D);
+    Set_PlayingAnim(false);
     return S_OK;
 }
 

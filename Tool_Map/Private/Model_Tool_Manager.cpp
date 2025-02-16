@@ -170,6 +170,21 @@ void CModel_Tool_Manager::Model_Collider_Imgui(_bool _bLock)
 
 								Safe_Release(m_pPreviewObject);
 
+								CBase* pCheck = m_pGameInstance->Find_Prototype(LEVEL_TOOL_3D_MODEL,m_arrSelectName[SELECT_MODEL]);
+
+								if (nullptr == pCheck)
+								{
+
+									XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+									if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_3D_MODEL, PairFileInfo.first,
+										C3DModel::Create(m_pDevice, m_pContext, WstringToString(PairFileInfo.second).c_str(), matPretransform))))
+									{
+										LOG_TYPE("Model Preview Failed", LOG_ERROR);
+										return;
+									}
+								}
+
 								CMapObject::MAPOBJ_DESC NormalDesc = {};
 								lstrcpy(NormalDesc.szModelName, m_arrSelectName[SELECT_MODEL].c_str());
 								NormalDesc.eCreateType = CMapObject::OBJ_CREATE;

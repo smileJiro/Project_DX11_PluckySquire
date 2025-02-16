@@ -18,6 +18,7 @@
 #include "TestTerrain.h"
 #include "Beetle.h"
 #include "BarfBug.h"
+#include "Zippy.h"
 #include "Projectile_BarfBug.h"
 #include "JumpBug.h"
 #include "BirdMonster.h"
@@ -96,6 +97,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
+	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_UI (Level_Chapter_02::Initialize)");
@@ -136,6 +142,14 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Map (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
+	if (FAILED(Ready_Layer_RayShape(TEXT("Layer_RayShape"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_RayShape (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+
+	/* Collision Test */
+
 	
 
 	///* Pooling Test */
@@ -169,38 +183,6 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
 	//m_pGameInstance->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	//m_pGameInstance->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
-	
-
-	//RayShape Test
-	CRayShape::RAYSHAPE_DESC Desc;
-	Desc.iCurLevelID = m_eLevelID;
-
-	//Desc.tTransform3DDesc.vInitialPosition = _float3(-28.9f, 0.32f, -16.9f);
-	//Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	//Desc.eShapeType = SHAPE_TYPE::CAPSULE;
-	//Desc.fRadius = 3.f;
-	//Desc.fHalfHeight = 2.f;
-	//Desc.vOffsetTrans = { 0.f,Desc.fHalfHeight * 0.5f,0.f };
-	//Desc.fRotAngle = 90.f;
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
-	//	return E_FAIL;
-
-	//Desc.tTransform3DDesc.vInitialPosition = _float3(-23.9f, 0.32f, -16.9f);
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
-	//	return E_FAIL;
-
-	Desc.eShapeType = SHAPE_TYPE::CAPSULE;
-	Desc.fRadius = 1.f;
-	Desc.fHalfHeight = 2.f;
-	Desc.vOffsetTrans = { 0.f,Desc.fRadius,0.f };
-	Desc.fRotAngle = 0.f;
-
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-20.f, 6.36f, 20.19f);
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
-		return E_FAIL;
 
 
 	/* Blur RenderGroupOn */
@@ -1006,6 +988,16 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_OnlySocial"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
+	
+
+	wsprintf(NPCDesc.strDialogueIndex, L"");
+	NPCDesc.iCurLevelID = m_eLevelID;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_Companion"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -1067,6 +1059,14 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &Goblin_Desc)))
 		return E_FAIL;
 
+	CZippy::MONSTER_DESC Zippy_Desc;
+	Zippy_Desc.iCurLevelID = m_eLevelID;
+	Zippy_Desc.tTransform2DDesc.vInitialPosition = _float3(220.0f, 0.f, 0.f);
+	Zippy_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"), m_eLevelID, _strLayerTag, &Zippy_Desc)))
+		return E_FAIL;
+
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-8.0f, 0.35f, -19.0f);
 	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	//CGameObject* pGameObject = nullptr;
@@ -1089,10 +1089,15 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, _strLayerTag, &Boss_Desc)))
 		//	return E_FAIL;
 
-			/*  Projectile  */
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut)
+{
+	/*  Projectile  */
 	Pooling_DESC Pooling_Desc;
 	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+	Pooling_Desc.strLayerTag = _strLayerTag;
 	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
 
 	CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
@@ -1170,6 +1175,26 @@ HRESULT CLevel_Chapter_02::Ready_Layer_FallingRock(const _wstring& _strLayerTag)
 	//
 	//if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
 	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_RayShape(const _wstring& _strLayerTag)
+{
+	//몬스터 장애물 감지용 RayShape
+	CRayShape::RAYSHAPE_DESC Desc;
+	Desc.iCurLevelID = m_eLevelID;
+
+	Desc.eShapeType = SHAPE_TYPE::CAPSULE;
+	Desc.fRadius = 1.f;
+	Desc.fHalfHeight = 2.f;
+	Desc.vOffsetTrans = { 0.f,Desc.fRadius,0.f };
+	Desc.fRotAngle = 0.f;
+
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-20.f, 6.36f, 20.19f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

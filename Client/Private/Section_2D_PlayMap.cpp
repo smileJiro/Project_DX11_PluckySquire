@@ -8,6 +8,7 @@
 #include "MapObjectFactory.h"
 #include "Trigger_Manager.h"
 #include "Portal.h"
+#include "Blocker.h"
 
 CSection_2D_PlayMap::CSection_2D_PlayMap(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_PLAY_TYPE _ePlayType, SECTION_2D_RENDER_TYPE _eRenderType)
 	:CSection_2D(_pDevice, _pContext, _ePlayType, _eRenderType)
@@ -118,7 +119,7 @@ HRESULT CSection_2D_PlayMap::Import(json _SectionJson, _uint _iPriorityKey)
 				CPortal::PORTAL_DESC Desc = {};
 
 				Desc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
-				Desc.fTriggerRadius = 1.5f;
+				Desc.fTriggerRadius = 0.45f;
 				Desc.Build_2D_Transform(fPos, fScale);
 
 				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
@@ -133,8 +134,37 @@ HRESULT CSection_2D_PlayMap::Import(json _SectionJson, _uint _iPriorityKey)
 					Add_GameObject_ToSectionLayer(pGameObject, SECTION_2D_PLAYMAP_PORTAL);
 			}
 
+			//6. ºí·ÎÄ¿
+			_uint iBlockerCnt = 0;
+			ReadFile(hFile, &iBlockerCnt, sizeof(_uint), &dwByte, nullptr);
+			for (_uint i = 0; i < iBlockerCnt; ++i)
+			{
+				_float2		fPos = {};
+				_float2		fScale = {};
+				_bool		isFloor = {};
+				ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
+				ReadFile(hFile, &fScale, sizeof(_float2), &dwByte, nullptr);
+				ReadFile(hFile, &isFloor, sizeof(_bool), &dwByte, nullptr);
+
+				CGameObject* pGameObject = nullptr;
+				CBlocker::BLOCKER2D_DESC Desc = {};
+				Desc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
+				Desc.isFloor = isFloor;
+				Desc.vColliderExtents = { 1.f, 1.f };
+				Desc.vColliderScale = { 1.f, 1.f };
+				Desc.Build_2D_Transform(fPos, fScale);
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, 
+					TEXT("Prototype_GameObject_Blocker2D"), Desc.iCurLevelID, L"Layer_Blocker", &pGameObject, &Desc)))
+					return E_FAIL;
+
+
+				if (nullptr != pGameObject)
+					Add_GameObject_ToSectionLayer(pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+			}
+
 			CloseHandle(hFile);
 		}
+
 
 
 

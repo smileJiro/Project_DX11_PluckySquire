@@ -28,7 +28,7 @@ HRESULT CNPC::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_iMainIndex = pDesc->iMainIndex;
-	m_iSubIndex = pDesc->iSubIndex;
+	m_iSubIndex = pDesc->iSubIndex; 
 	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
 	wsprintf(m_strDialogueIndex, pDesc->strDialogueIndex);
 	//wsprintf(m_strCurSecion, pDesc->strLocateSection);

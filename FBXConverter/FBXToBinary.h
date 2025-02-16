@@ -1,15 +1,20 @@
 #pragma once
 
-typedef struct Keyframe
+typedef struct tagKeyFrame
 {
-	_float			fTrackPosition = { 0 };
+	void Set_Matrix(FXMMATRIX _matWorld)
+	{
+		XMVECTOR vTmpScale, vTmpRotation, vTmpPosition;
+		XMMatrixDecompose(&vTmpScale, &vTmpRotation, &vTmpPosition, _matWorld);
+		XMStoreFloat4(&vRotation, vTmpRotation);
+		XMStoreFloat3(&vPosition, vTmpPosition);
+		XMStoreFloat3(&vScale, vTmpScale);
+	}
+	float	 fTrackPosition; // 애니메이션 트랙위에서의 포지션을 정의.
+	XMFLOAT3 vScale;
+	XMFLOAT4 vRotation; // 쿼터니언을 사용하기 위해서.
+	XMFLOAT3 vPosition;
 }KEYFRAME;
-typedef struct  TransformKeyframe : public KEYFRAME
-{
-	_float3		vScale;
-	_float4		vRotation;
-	_float3		vPosition;
-}TRANSFORM_KEYFRAME;
 
 //typedef struct TransformKeyframe : public KEYFRAME
 //{
