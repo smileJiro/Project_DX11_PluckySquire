@@ -161,7 +161,7 @@ void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherC
 	if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
 	{
 		Event_Hit(this, _pOtherObject, Get_Stat().fDamg);
-		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 100.f);
+		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 300.f);
 	}
 }
 

@@ -21,13 +21,14 @@ void CCharacter::Update(_float _fTimeDelta)
 
 void CCharacter::Late_Update(_float _fTimeDelta)
 {
+    cout << m_fKnockBackForce << endl;
     if (true == m_isKnockBack)
     {
         _vector vKnockBack = XMLoadFloat3(&m_vKnockBackDirection);
         vKnockBack *= m_fKnockBackForce * _fTimeDelta;
         m_fKnockBackAccTime += _fTimeDelta;
         m_fKnockBackForce = (1 - m_fKnockBackAccTime) * m_fKnockBackForce;
-        Get_ControllerTransform()->Go_Direction(vKnockBack, _fTimeDelta);
+        Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, Get_FinalPosition() + vKnockBack);
 		if (0.1f >= m_fKnockBackForce)
         {
             m_fKnockBackForce = 0.f;

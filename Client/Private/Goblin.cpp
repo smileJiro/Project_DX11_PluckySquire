@@ -31,14 +31,14 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 300.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 200.f;
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 10.f;
     pDesc->fAttackRange = 1.f;
-    pDesc->fAlert2DRange = 5.f;
-    pDesc->fChase2DRange = 12.f;
-    pDesc->fAttack2DRange = 2.f;
+    pDesc->fAlert2DRange = 300.f;
+    pDesc->fChase2DRange = 600.f;
+    pDesc->fAttack2DRange = 100.f;
     pDesc->fDelayTime = 3.f;
     
     pDesc->fHP = 5.f;
@@ -67,6 +67,17 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, PATROL, true);
+
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_DOWN, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_RIGHT, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_UP, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL_DOWN, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL_RIGHT, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL_UP, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_DOWN, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_RIGHT, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_UP, true);
+
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CGoblin::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -100,6 +111,22 @@ void CGoblin::Priority_Update(_float _fTimeDelta)
 
 void CGoblin::Update(_float _fTimeDelta)
 {
+#ifdef _DEBUG
+    if (KEY_DOWN(KEY::F5))
+    {
+        _int iCurCoord = (_int)Get_CurCoord();
+        (_int)iCurCoord ^= 1;
+        _float3 vNewPos;
+
+        if (iCurCoord == COORDINATE_2D)
+            vNewPos = _float3(300.f, 6.f, 0.f);
+        else
+            vNewPos = _float3(-10.0f, 0.35f, -23.0f);
+
+        Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
+    }
+#endif // _DEBUG
+
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
@@ -138,40 +165,111 @@ void CGoblin::Attack()
 
 void CGoblin::Change_Animation()
 {
-    if(m_iState != m_iPreState)
+    if (m_iState != m_iPreState)
     {
-        switch (MONSTER_STATE(m_iState))
+        if (COORDINATE_3D == Get_CurCoord())
         {
-        case MONSTER_STATE::IDLE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
-            break;
+            switch (MONSTER_STATE(m_iState))
+            {
+            case MONSTER_STATE::IDLE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+                break;
 
-        case MONSTER_STATE::PATROL:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PATROL);
-            break;
+            case MONSTER_STATE::PATROL:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PATROL);
+                break;
 
-        case MONSTER_STATE::ALERT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
-            break;
+            case MONSTER_STATE::ALERT:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
+                break;
 
-        case MONSTER_STATE::CHASE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
-            break;
+            case MONSTER_STATE::CHASE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
+                break;
 
-        case MONSTER_STATE::STANDBY:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
-            break;
+            case MONSTER_STATE::STANDBY:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+                break;
 
-        case MONSTER_STATE::HIT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT);
-            break;
+            case MONSTER_STATE::HIT:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT);
+                break;
 
-        case MONSTER_STATE::DEAD:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH);
-            break;
+            case MONSTER_STATE::DEAD:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH);
+                break;
 
-        default:
-            break;
+            default:
+                break;
+            }
+        }
+
+        else if (COORDINATE_2D == Get_CurCoord())
+        {
+            CGoblin::Animation2D eAnim = ANIM2D_LAST;
+            switch (MONSTER_STATE(m_iState))
+            {
+            case Client::MONSTER_STATE::IDLE:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = IDLE_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = IDLE_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = IDLE_RIGHT;
+                break;
+            case Client::MONSTER_STATE::PATROL:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = PATROL_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = PATROL_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = PATROL_RIGHT;
+                break;
+            case Client::MONSTER_STATE::ALERT:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = ALERT_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = ALERT_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = ALERT_RIGHT;
+                break;
+            case Client::MONSTER_STATE::STANDBY:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = IDLE_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = IDLE_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = IDLE_RIGHT;
+                break;
+            case Client::MONSTER_STATE::CHASE:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = CHASE_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = CHASE_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = CHASE_RIGHT;
+                break;
+            case Client::MONSTER_STATE::HIT:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = HIT_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = HIT_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = HIT_RIGHT;
+                break;
+            case Client::MONSTER_STATE::DEAD:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = DEATH_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = DEATH_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = DEATH_RIGHT;
+                break;
+            default:
+                break;
+            }
+
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(eAnim);
         }
     }
 }
@@ -179,22 +277,46 @@ void CGoblin::Change_Animation()
 void CGoblin::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-    switch ((CGoblin::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+    if(COORDINATE_3D == Get_CurCoord())
     {
-    case ALERT:
-        Set_AnimChangeable(true);
-        break;
+        switch ((CGoblin::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        {
+        case ALERT:
+            Set_AnimChangeable(true);
+            break;
 
-    case HIT:
-        pModelObject->Switch_Animation(WAKE);
-        break;
+        case HIT:
+            pModelObject->Switch_Animation(WAKE);
+            break;
 
-    case WAKE:
-        Set_AnimChangeable(true);
-        break;
+        case WAKE:
+            Set_AnimChangeable(true);
+            break;
 
-    default:
-        break;
+        default:
+            break;
+        }
+    }
+
+    else if (COORDINATE_2D == Get_CurCoord())
+    {
+        switch ((CGoblin::Animation2D)pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+        {
+        case ALERT_DOWN:
+        case ALERT_RIGHT:
+        case ALERT_UP:
+            Set_AnimChangeable(true);
+            break;
+
+        case HIT_DOWN:
+        case HIT_RIGHT:
+        case HIT_UP:
+            Set_AnimChangeable(true);
+            break;
+
+        default:
+            break;
+        }
     }
 }
 
@@ -411,7 +533,7 @@ HRESULT CGoblin::Ready_Components()
 
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
-    CircleDesc.fRadius = { 50.f };
+    CircleDesc.fRadius = { 40.f };
     CircleDesc.vScale = { 1.0f, 1.0f };
     CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
     CircleDesc.isBlock = true;

@@ -30,7 +30,7 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PART_LAST;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 300.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 400.f;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
