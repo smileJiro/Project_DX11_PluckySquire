@@ -231,8 +231,11 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 
 		if (GetOpenFileName(&ofn))
 		{
+			m_pPickingObject = nullptr;
+			m_pPickingBlocker = nullptr;
 			Object_Clear(L"Layer_2DMapObject");
 			Object_Clear(L"Layer_Portal");
+			Object_Clear(L"Layer_Blocker");
 			m_fOffsetPos = { 0.f,0.f };
 			LOG_TYPE(_wstring(L"=====  2D Map Read Start  -> ") + szName, LOG_LOAD);
 
@@ -779,7 +782,13 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 
 					}
 					End_Draw_ColorButton();
-
+					ImGui::SameLine();
+					Begin_Draw_ColorButton("##Reset_Style", ImVec4(0.f, 0.69f, 0.72f, 1.f));
+					if (StyleButton(MINI, "Reset SearchTag"))
+					{
+						m_pPickingInfo->Set_SearchTag(m_pPickingInfo->Get_ModelName());
+					}
+					End_Draw_ColorButton();
 
 				}
 
@@ -1579,6 +1588,9 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 
 
 	// 2. 저장 파일 경로 및 네이밍 무결성 검사 & 핸들 오픈 
+
+	for (_uint i = 0 ; i < (_uint)m_ObjectInfoLists.size(); ++i)
+		m_ObjectInfoLists[i]->Set_ModelIndex(i);
 
 
 	if (!Path_String_Validation_Check(filename))
@@ -2387,12 +2399,12 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 
 
 	CRenderGroup_2D* pTargetRenderGroup = nullptr;
+	_float2 fTargetSize = {};
 
 	if (m_p2DRenderGroup != nullptr)
 	{
-		_float2 fTargetSize = {};
 
-		if (fRenderResolution.x < fRenderResolution.y)
+		if (fRenderResolution.x < fRenderResolution.y || fRenderResolution.x == -1.f)
 		{
 			fTargetSize.x = fLevelSizePixels.x;
 			fTargetSize.y = fLevelSizePixels.y;
@@ -2409,6 +2421,11 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 		{
 			fTargetSize.x = (_float)RTSIZE_BOOK2D_X;
 			fTargetSize.y = (_float)RTSIZE_BOOK2D_Y;
+		}
+		else 
+		{
+			fTargetSize.x *= (_float)RATIO_BOOK2D_X;
+			fTargetSize.y *= (_float)RATIO_BOOK2D_Y;
 		}
 
 
@@ -2487,13 +2504,14 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 		{
 			C2DMapObject::MAPOBJ_2D_DESC NormalDesc = {};
 			NormalDesc.strProtoTag = StringToWstring(Pair.first);
-			NormalDesc.fDefaultPosition.x = Pair.second.x;
+			NormalDesc.fDefaultPosition.x = Pair.second.x ;
 			NormalDesc.fDefaultPosition.y = Pair.second.y;
-			NormalDesc.fRenderTargetSize = { (_float)fRenderResolution.x, (_float)fRenderResolution.y };
+			NormalDesc.fRenderTargetSize = { (_float)fTargetSize.x, (_float)fTargetSize.y };
 			NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 			NormalDesc.pInfo = Find_Info(NormalDesc.strProtoTag);
 			NormalDesc.iRenderGroupID_2D = m_p2DRenderGroup->Get_RenderGroupID();
 			NormalDesc.iPriorityID_2D = m_p2DRenderGroup->Get_PriorityID();
+			NormalDesc.isLoad = true;
 
 			CGameObject* pGameObject = nullptr;
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DMapObject"),
