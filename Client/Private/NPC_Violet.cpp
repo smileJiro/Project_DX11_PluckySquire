@@ -94,8 +94,6 @@ void CNPC_Violet::Priority_Update(_float _fTimeDelta)
 void CNPC_Violet::Child_Update(_float _fTimeDelta)
 {
 	Trace(_fTimeDelta);
-
-
 	__super::Child_Update(_fTimeDelta);
 }
 
