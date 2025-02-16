@@ -40,6 +40,7 @@ public:
 	enum PLAYER_SHAPE_USE
 	{
 		INTERACTION = SHAPE_USE::SHAPE_USE_LAST,
+		PLAYER_SHAPE_USE_LAST
 	};
 	typedef struct tagAttackTriggerDesc
 	{
@@ -442,6 +443,9 @@ public:
 	void Add_Upforce(_float _fForce);
 	PLAYER_INPUT_RESULT Player_KeyInput();
 	void Revive();
+	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
+	void Interact();
+
 
 	//Get
 	_bool Is_OnGround();
@@ -499,7 +503,7 @@ public:
 	void Set_PlatformerMode(_bool _bPlatformerMode);
 	void Set_Upforce(_float _fForce);
 	HRESULT Set_CarryingObject(CCarriableObject* _pCarryingObject);
-
+	void Set_CollidersActive(_bool _bOn);
 
 	void Start_Attack(ATTACK_TYPE _eAttackType);
 	void End_Attack();

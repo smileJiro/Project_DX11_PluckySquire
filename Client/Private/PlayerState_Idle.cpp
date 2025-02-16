@@ -45,11 +45,12 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::ROLL);
 	else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
 		m_pOwner->Set_State(CPlayer::THROWSWORD);
-	else	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
+	else if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 		m_pOwner->Set_State(CPlayer::RUN);
-	else	if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
+	else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
 		m_pOwner->Set_State(CPlayer::THROWOBJECT);
-
+	else if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
+		m_pOwner->Interact();
 }
 
 void CPlayerState_Idle::Enter()

@@ -168,9 +168,9 @@ void CMonster::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCo
 {
 }
 
-void CMonster::On_Hit(CGameObject* _pHitter, _float _fDamg)
+void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
-	m_tStat.iHP -= _fDamg;
+	m_tStat.iHP -= _iDamg;
 	if (m_tStat.iHP < 0)
 	{
 		m_tStat.iHP = 0;

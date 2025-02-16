@@ -278,9 +278,9 @@ void CGoblin::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
     }
 }
 
-void CGoblin::On_Hit(CGameObject* _pHitter, _float _fDamg)
+void CGoblin::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
-    __super::On_Hit(_pHitter, _fDamg);
+    __super::On_Hit(_pHitter, _iDamg);
 }
 
 HRESULT CGoblin::Ready_ActorDesc(void* _pArg)

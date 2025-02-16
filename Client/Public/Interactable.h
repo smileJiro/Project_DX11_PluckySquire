@@ -13,7 +13,7 @@ public:
 	virtual _bool Is_Interactable(CPlayer* _pUser)abstract;
 	//사용자와의 거리를 반환하는 함수. 
 	//플레이어가 가장 가까운 상호작용 가능한 오브젝트를 찾기 위해 사용됨.
-	virtual _float Get_Distance(CPlayer* _pUser)abstract;
+	virtual _float Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)abstract;
 };
 
 //예시  코드 : 상호작용하면 사망하는 NPC~

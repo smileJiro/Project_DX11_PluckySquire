@@ -256,7 +256,7 @@ _bool CPortal::Is_Interactable(CPlayer* _pUser)
     return true;
 }
 
-_float CPortal::Get_Distance(CPlayer* _pUser)
+_float CPortal::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 {
     _vector vMyPos = Get_FinalPosition();
     _vector vUserPos = _pUser->Get_FinalPosition();

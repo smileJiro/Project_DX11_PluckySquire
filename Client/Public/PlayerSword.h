@@ -65,7 +65,7 @@ public:
 	_vector Get_LookDirection();
 private:
 	_bool m_bAttackEnable = false;
-	_float m_fThrowingPower3D = 15.f;
+	_float m_fThrowingPower3D = 30.f;
 	_float m_fThrowingPower2D = 1200.f;
 	_vector m_vThrowDirection = {};
 	_vector m_vStuckDirection = {};

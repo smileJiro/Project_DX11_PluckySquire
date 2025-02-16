@@ -18,7 +18,7 @@ CSpriteFrame::CSpriteFrame(const CSpriteFrame& _Prototype)
 	, m_fPixelsPerUnrealUnit(_Prototype.m_fPixelsPerUnrealUnit)
 	, m_matSpriteTransform(_Prototype.m_matSpriteTransform)
 {
-
+	Safe_AddRef(m_pTexture);
 }
 CSpriteFrame::~CSpriteFrame()
 {

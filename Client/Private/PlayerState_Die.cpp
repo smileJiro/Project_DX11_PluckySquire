@@ -23,10 +23,14 @@ void CPlayerState_Die::Enter()
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_DEATH_DOWN);
 	else
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_DIE_GT);
+
+	m_pOwner->Set_CollidersActive(false);
 }
 
 void CPlayerState_Die::Exit()
 {
+	m_pOwner->Set_CollidersActive(true);
+	m_pOwner->End_Attack();
 }
 
 void CPlayerState_Die::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
