@@ -935,6 +935,12 @@
     <ClInclude Include="..\public\FallingRock.h">
       <Filter>02.GameObjects\FallingRock</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Die.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState_PlatformJumpAttack.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\Spawner.h">
       <Filter>91.Spawner</Filter>
     </ClInclude>
@@ -1439,6 +1445,12 @@
     <ClCompile Include="..\Private\PlayerState_Die.cpp" />
     <ClCompile Include="..\private\FallingRock.cpp">
       <Filter>02.GameObjects\FallingRock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Die.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerState_PlatformJumpAttack.cpp">
+      <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Spawner.cpp">
       <Filter>91.Spawner</Filter>

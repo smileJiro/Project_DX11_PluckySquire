@@ -66,14 +66,14 @@ public:
 private:
 	_bool m_bAttackEnable = false;
 	_float m_fThrowingPower3D = 15.f;
-	_float m_fThrowingPower2D = 700.f;
+	_float m_fThrowingPower2D = 1200.f;
 	_vector m_vThrowDirection = {};
 	_vector m_vStuckDirection = {};
 	//밖으로 나가려는 힘
 	_float m_fOutingForce = 1.f;
 	//끌어들이는 힘
 	_float m_fCentripetalForce3D = 30.f;
-	_float m_fCentripetalForce2D = 600.f;
+	_float m_fCentripetalForce2D = 1000.f;
 	_float m_fRotationForce3D = 50.f;
 	_float m_f3DKnockBackPower = 12.f;
 	_float m_f2DKnockBackPower = 50.f;
