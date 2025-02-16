@@ -21,7 +21,6 @@ void CCharacter::Update(_float _fTimeDelta)
 
 void CCharacter::Late_Update(_float _fTimeDelta)
 {
-    cout << m_fKnockBackForce << endl;
     if (true == m_isKnockBack)
     {
         _vector vKnockBack = XMLoadFloat3(&m_vKnockBackDirection);

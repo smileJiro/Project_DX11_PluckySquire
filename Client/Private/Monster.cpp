@@ -160,7 +160,7 @@ void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherC
 {
 	if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
 	{
-		Event_Hit(this, _pOtherObject, Get_Stat().fDamg);
+		Event_Hit(this, _pOtherObject, Get_Stat().iDamg);
 		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 300.f);
 	}
 }
@@ -179,10 +179,11 @@ void CMonster::On_Hit(CGameObject* _pHitter, _float _fDamg)
 	if (m_tStat.iHP < 0)
 	{
 		m_tStat.iHP = 0;
-		//Event_DeleteObject(this);
 	}
-	
-	Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+	if (0 == m_tStat.iHP)
+		Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
+	else
+		Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
 }
 
 void CMonster::Attack()

@@ -350,7 +350,7 @@ HRESULT CPlayer::Ready_Components()
    CircleDesc.vOffsetPosition = { 0.f,0.f };
    CircleDesc.isBlock = false;
    CircleDesc.isTrigger = true;
-   CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_TRIGGER;
+   CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
        TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &CircleDesc)))
        return E_FAIL;
@@ -863,9 +863,9 @@ void CPlayer::Attack(CGameObject* _pVictim)
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
     Event_Hit(this, _pVictim, m_tStat.iDamg);
-    CActorObject* pActor = dynamic_cast<CActorObject*>(_pVictim);
-    //if(pActor)
-	    //Event_KnockBack(pActor, Get_LookDirection(), m_f3DKnockBackPower);
+    CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
+    if(pCharacter)
+	    Event_KnockBack(pCharacter, Get_LookDirection(), m_f2DKnockBackPower);
     m_AttckedObjects.insert(_pVictim);
 }
 

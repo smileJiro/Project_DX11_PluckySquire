@@ -536,7 +536,7 @@ HRESULT CGoblin::Ready_Components()
     CircleDesc.fRadius = { 40.f };
     CircleDesc.vScale = { 1.0f, 1.0f };
     CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
-    CircleDesc.isBlock = true;
+    CircleDesc.isBlock = false;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
