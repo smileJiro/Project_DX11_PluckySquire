@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"
 #include "Camera_Manager.h"
+#include "Blocker.h"
 
 CFallingRock::CFallingRock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -124,6 +125,76 @@ HRESULT CFallingRock::Render()
 	return S_OK;
 }
 
+void CFallingRock::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	_uint iGroupID = _pOtherCollider->Get_CollisionGroupID();
+	switch ((OBJECT_GROUP)iGroupID)
+	{
+	case Client::NONE:
+		break;
+	case Client::PLAYER:
+		CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.1f, 0.2f, 20, CCamera::SHAKE_Y);
+		Event_Hit(this, _pOtherObject, 1.0f);
+		break;
+	case Client::MONSTER:
+		break;
+	case Client::MAPOBJECT:
+		break;
+	case Client::INTERACTION_OBEJCT:
+		break;
+	case Client::PLAYER_PROJECTILE:
+		break;
+	case Client::MONSTER_PROJECTILE:
+		break;
+	case Client::TRIGGER_OBJECT:
+		break;
+	case Client::RAY_OBJECT:
+		break;
+	case Client::PLAYER_TRIGGER:
+		break;
+	case Client::BLOCKER:
+	{
+		if (true == _pMyCollider->Is_Trigger())
+			break;
+		if (false == static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
+			break;
+
+		/* 1. Blocker은 항상 AABB임을 가정. */
+
+		/* 2. 나의 Collider 중점 기준, AABB에 가장 가까운 점을 찾는다. */
+		_bool isResult = false;
+		_float fEpsilon = 0.01f;
+		_float2 vContactVector = {};
+		isResult = static_cast<CCollider_Circle*>(_pMyCollider)->Compute_NearestPoint_AABB(static_cast<CCollider_AABB*>(_pOtherCollider), nullptr, &vContactVector);
+		if (true == isResult)
+		{
+			/* 3. 충돌지점 벡터와 중력벡터를 내적하여 그 결과를 기반으로 Floor 인지 체크. */
+			_float3 vGravityDir = m_pGravityCom->Get_GravityDirection();
+			_float2 vGravityDirection = _float2(vGravityDir.x, vGravityDir.y);
+			_float fGdotC = XMVectorGetX(XMVector2Dot(XMLoadFloat2(&vGravityDirection), XMVector2Normalize(XMLoadFloat2(&vContactVector))));
+			if (1.0f - fEpsilon <= fGdotC)
+			{
+				/* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
+				m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+			}
+		}
+
+	}
+	break;
+	default:
+		break;
+	}
+
+}
+
+void CFallingRock::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+}
+
+void CFallingRock::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+}
+
 void CFallingRock::State_Change()
 {
 	if (m_ePreState == m_eCurState)
@@ -213,7 +284,10 @@ void CFallingRock::Action_FallDown(_float _fTimeDelta)
 	/* 중력컴포넌트가 알아서 할거야. Y 체크만하자. */
 
 	if (m_fFallDownEndY >= XMVectorGetY(Get_FinalPosition()))
+	{
 		m_eCurState = STATE::STATE_BOUND_2D;
+		CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.1f, 0.2f, 20, CCamera::SHAKE_Y);
+	}
 
 	_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 	m_vShadowYDesc.y = XMVectorGetY(vPos);
@@ -273,11 +347,26 @@ HRESULT CFallingRock::Ready_Components(FALLINGROCK_DESC* _pDesc)
 		TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
 		return E_FAIL;
 
-
+	/* 발밑 그림자 전용 Model2D */
 	CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Model2D_FallingRockShadow"), nullptr));
 	if (nullptr == pComponent)
 		return E_FAIL;
 	m_p2DShadowModelCom = static_cast<C2DModel*>(pComponent);
+
+
+	m_p2DColliderComs.resize(1);
+	/* Test 2D Collider */
+	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+	CircleDesc.pOwner = this;
+	CircleDesc.fRadius = 20.f;
+	CircleDesc.vScale = { 1.0f, 1.0f };
+	CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius * 0.5f };
+	CircleDesc.isBlock = true;
+	CircleDesc.isTrigger = false;
+	CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
+		return E_FAIL;
 
 
 	return S_OK;

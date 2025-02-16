@@ -8,9 +8,10 @@ BEGIN(Client)
 
 typedef struct tagPoolingData
 {
-	_int iPrototypeLevelID;
+	_int iPrototypeLevelID = -1;
 	_wstring strPrototypeTag;
 	_wstring strLayerTag;
+
 }Pooling_DESC;
 
 class CPooling_Manager final : public CBase
@@ -32,6 +33,8 @@ public:
 	HRESULT					Create_Objects(const _wstring& _strPoolingTag, _uint iNumPoolingObjects, _float3* _pPosition = nullptr, _float4* _pRotation = nullptr, _float3* _pScaling = nullptr);
 	HRESULT					Create_Object(const _wstring& _strPoolingTag, _float3* _pPosition = nullptr, _float4* _pRotation = nullptr, _float3* _pScaling = nullptr);
 	HRESULT					Create_Object(const _wstring& _strPoolingTag, COORDINATE* eCoordinate = nullptr, _float3* _pPosition = nullptr, _float4* _pRotation = nullptr, _float3* _pScaling = nullptr);
+
+private:
 	HRESULT					Pooling_Objects(const _wstring& _strPoolingTag, _uint _iNumPoolingObjects);
 
 private:

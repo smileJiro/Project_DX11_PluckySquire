@@ -412,11 +412,11 @@
     <Filter Include="02.GameObjects\Portal">
       <UniqueIdentifier>{e79f9f98-f32d-4906-84e3-b695f14a3e7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Monster\Zippy">
-      <UniqueIdentifier>{75591c2f-ff10-4b4c-8103-714e77736eda}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\FallingRock\Spawner">
       <UniqueIdentifier>{1f67cf75-cef0-4131-b916-13848a92cd75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="91.Spawner">
+      <UniqueIdentifier>{f227d0db-bb5f-4e46-9832-cfc28c44d73e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -913,7 +913,6 @@
     <ClInclude Include="..\Public\Dice.h">
       <Filter>02.GameObjects\Carriable</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Domino.h" />
     <ClInclude Include="..\public\Blocker.h">
       <Filter>02.GameObjects\Blocker</Filter>
     </ClInclude>
@@ -935,6 +934,9 @@
     <ClInclude Include="..\Public\PlayerState_Die.h" />
     <ClInclude Include="..\public\FallingRock.h">
       <Filter>02.GameObjects\FallingRock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Spawner.h">
+      <Filter>91.Spawner</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1437,6 +1439,9 @@
     <ClCompile Include="..\Private\PlayerState_Die.cpp" />
     <ClCompile Include="..\private\FallingRock.cpp">
       <Filter>02.GameObjects\FallingRock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Spawner.cpp">
+      <Filter>91.Spawner</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -319,6 +319,7 @@
     <ClInclude Include="..\Public\Sneak_PatrolState.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\public\Spawner.h" />
     <ClInclude Include="..\Public\StandbyNoneAttackState.h" />
     <ClInclude Include="..\Public\State_Sneak.h" />
     <ClInclude Include="..\Public\Soldier_Bomb.h" />
@@ -495,6 +496,7 @@
     <ClCompile Include="..\Private\Sneak_PatrolState.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\private\Spawner.cpp" />
     <ClCompile Include="..\Private\StandbyNoneAttackState.cpp" />
     <ClCompile Include="..\Private\State_Sneak.cpp" />
     <ClCompile Include="..\Private\Soldier_Bomb.cpp" />
