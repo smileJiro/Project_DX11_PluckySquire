@@ -64,7 +64,7 @@ protected:
 
 	virtual void				Interact(CPlayer* _pUser);
 	virtual _bool				Is_Interactable(CPlayer* _pUser);
-	virtual _float				Get_Distance(CPlayer* _pUser);
+	virtual _float				Get_Distance(COORDINATE _eCoord, CPlayer* _pUser);
 
 public:
 	static CNPC_Store*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

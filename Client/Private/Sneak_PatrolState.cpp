@@ -71,7 +71,7 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 	//		return;
 	//	}
 	//}
-	cout << "Patrol" << endl;
+	//cout << "Patrol" << endl;
 	if (true == m_isMove)
 		m_fAccTime += _fTimeDelta;
 

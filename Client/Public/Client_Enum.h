@@ -86,17 +86,17 @@ namespace Client
 	enum OBJECT_GROUP // 아래 GROUP은 예시임. 편한대로 사용하시면 됨.
 	{
 		NONE =						0x00,
-		PLAYER =					0x01,
-		MONSTER =					0x02,//1
-		MAPOBJECT =					0x04, //2
-		INTERACTION_OBEJCT =		0x08,
-		PLAYER_PROJECTILE =			0x10,//4
+		PLAYER =					0x01,//0  (플레이어 몸통)
+		PLAYER_TRIGGER =			0x02,//1  (플레이어의 상호작용 트리거, 주변 물체 감지 트리거)
+		MONSTER =					0x04,//2
+		MAPOBJECT =					0x08, //3
+		PLAYER_PROJECTILE =			0x10,//4  (플레이어의 공격체)
 		MONSTER_PROJECTILE =		0x20,//5
-		TRIGGER_OBJECT =		    0x40,
-		RAY_OBJECT =				0x80,
-		PLAYER_TRIGGER =			0x100,
-		BLOCKER = 					0x200,		
-		
+		TRIGGER_OBJECT =		    0x40,//6  (카메라 트리거, 전구 등에서 씀)
+		RAY_OBJECT =				0x80,//7
+		INTERACTION_OBEJCT =		0x100,//8 (상호작용 하려면 GameObject의 Group으로 설정해야 함)
+		BLOCKER = 					0x200,	//9	(현재 2D 플랫포머에서 중력 컴포넌트랑 연계중. 3D에서 플레이어 몸통이랑 블락중)
+		//PORTAL =					0x400, 일단 필요 없어져서 지웠어요 - 김지완 -
 								 // 0x800 
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬
@@ -126,7 +126,7 @@ namespace Client
 		SET_SCENEQUERYFLAG,
 		HIT,
 		GET_BULB,
-		ADDIMPULSE,
+		KNOCKBACK,
 		SNEAK_BEETLECAUGHT,
 		
 		LAST,
@@ -223,6 +223,7 @@ namespace Client
 	{
 		SHAPE_BODY = 0,
 		SHAPE_FOOT = 1,
-		SHAPE_TRIGER = 2
+		SHAPE_TRIGER = 2,
+		SHAPE_USE_LAST
 	};
 }

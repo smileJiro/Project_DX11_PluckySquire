@@ -511,38 +511,6 @@ void CCamera_2D::Key_Input(_float _fTimeDelta)
 	//	m_pCurArm->Set_Length(fLength + 0.5f);
 	//}
 
-	//if (KEY_DOWN(KEY::G)){
-	//	CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Book"), 0);
-	//	m_pTargetWorldMatrix = pBook->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-	//	m_eTargetCoordinate = COORDINATE_3D;
-	//}
-	//if (KEY_DOWN(KEY::R)) {
-	//		CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
-	//		m_pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-	//		m_eTargetCoordinate = COORDINATE_2D;
-	//}
-	//if (KEY_DOWN(KEY::F)) {
-	///*	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
-	//	m_pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-	//	m_eTargetCoordinate = COORDINATE_2D;*/
-
-	//	//Set_NextArmData(TEXT("Book_Vertical"), 0);
-	//	//Set_NextArmData(TEXT("BookFliiping_Vertical"), 0);
-	//	Set_NextArmData(TEXT("BookFliping_Vertical"), 0);
-	//	//
-	//	m_eCameraMode = MOVE_TO_DESIREPOS;
-	//}
-	//if (KEY_DOWN(KEY::H)) {
-	//	/*	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
-	//		m_pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-	//		m_eTargetCoordinate = COORDINATE_2D;*/
-
-	//	Set_NextArmData(TEXT("Book_Horizon"), 0);
-	//	//
-
-	//	m_eCameraMode = MOVE_TO_DESIREPOS;
-	//}
-
 	//if (KEY_DOWN(KEY::LEFT)) {  // y
 	//	m_vAtOffset.y -= 0.5f;
 	//}

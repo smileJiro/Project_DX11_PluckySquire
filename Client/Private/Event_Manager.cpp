@@ -8,6 +8,7 @@
 #include "Level_Chapter_02.h"
 #include "Level_Chapter_04.h"
 #include "Level_Chapter_Test.h"
+#include "Section_Manager.h"
 #include "Layer.h"
 
 #include "Pooling_Manager.h"
@@ -62,6 +63,7 @@ void CEvent_Manager::Update(_float _fTimeDelta)
 	
 	for (auto& pDeadObject : m_DeadObjectsList)
 	{
+		SECTION_MGR->Remove_GameObject_FromSectionLayer(pDeadObject->Get_Include_Section_Name(), pDeadObject);
 		Safe_Release(pDeadObject);
 	}
 	m_DeadObjectsList.clear();
@@ -183,9 +185,9 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_Get_Bulb(_tEvent);
 	}
 	break;
-	case Client::EVENT_TYPE::ADDIMPULSE :
+	case Client::EVENT_TYPE::KNOCKBACK :
 	{
-		Execute_AddImpulse(_tEvent);
+		Execute_KnockBack(_tEvent);
 	}
 	break;
 	case Client::EVENT_TYPE::SNEAK_BEETLECAUGHT:
@@ -681,12 +683,13 @@ HRESULT CEvent_Manager::Execute_Get_Bulb(const EVENT& _tEvent)
 	return S_OK;
 }
 
-HRESULT CEvent_Manager::Execute_AddImpulse(const EVENT& _tEvent)
+HRESULT CEvent_Manager::Execute_KnockBack(const EVENT& _tEvent)
 {
-	CActorObject* pCharacter = (CActorObject*)_tEvent.Parameters[0];
+	CCharacter* pCharacter = (CCharacter*)_tEvent.Parameters[0];
 	_vector vForce = XMLoadFloat3( (_float3*)_tEvent.Parameters[1]);
 
-	pCharacter->Add_Impuls(vForce);
+	pCharacter->KnockBack(vForce);
+	delete (_float3*)_tEvent.Parameters[1];
 	return S_OK;
 }
 

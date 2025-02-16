@@ -5,6 +5,7 @@
 #include "ShopItemBG.h"
 #include "Dialogue.h"
 #include "Logo_Props.h"
+#include "Narration.h"
 
 
 BEGIN(Client)
@@ -22,6 +23,7 @@ private:
 	CGameInstance* m_pGameInstance;
 	STAMP								m_eStampIndex = { STAMP_STOP };
 	CPlayer* m_pPlayer = { nullptr };
+	
 
 	map<_uint, CSettingPanelBG*>		m_pSettingPanels;
 	map<_uint, CShopPanel_BG*>			m_pShopPanels;
@@ -31,6 +33,9 @@ private:
 	vector<vector<CShopItemBG*>>		m_ShopItems;
 	vector<CLogo_Props*>				m_LogoProps;
 
+	CNarration*							m_pNarration = { nullptr };
+	_tchar								m_strNarrationID[MAX_PATH];
+	_bool								m_isPlayerNarration = { false };
 
 
 	_bool								m_isMakeItem = { false };
@@ -39,6 +44,7 @@ private:
 	_bool								m_isConfirmStore = { false };
 	_bool								m_isUpdateShopPanel = { true };
 	_bool								m_isLogoChooseStage = { true };
+	_bool								m_isOnHitPlayer = { false };
 
 	_int								m_iPreIndex = { 0 };
 	_int								m_iSettingPanelIndex = { 0 };
@@ -61,14 +67,16 @@ private:
 	_float3								m_vCalDialoguePos = { 0.f, 0.f, 0.f };
 	_float2								m_vShopPos = { 0.f, 0.f };
 
-
-
+	/******** 테스트 ********/
+	_uint								m_iTextIndex = { 0 };
 
 public:
 	STAMP								Get_StampIndex() { return m_eStampIndex; }
 	void								Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
 	CPlayer*							Get_Player() { return m_pPlayer; }
 	void								Set_Player(CPlayer* _Player) { m_pPlayer = _Player; Safe_AddRef(_Player); }
+	_bool								Get_PlayerOnHit() { return m_isOnHitPlayer; }
+	void								Set_PlayerOnHit(_bool _Hit) { m_isOnHitPlayer = _Hit; }
 	void								Emplace_SettingPanels(_uint _ePanel, CSettingPanelBG* _pPanel);
 	void								Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG* _pPanel);
 	void								Delete_ShopItems(_uint _index);
@@ -123,6 +131,24 @@ public:
 
 	_bool								Get_isMakeItem() { return m_isMakeItem; }
 	void								Set_isMakeItem(_bool _make) { m_isMakeItem = _make; }
+
+
+	void								Set_Narration(CNarration* _Narration) { m_pNarration = _Narration; Safe_AddRef(_Narration); }
+	CNarration*							Get_Narration() { return m_pNarration; }
+	void								Set_PlayNarration(const _wstring& _strid) { m_pNarration->CBase::Set_Active(true); wsprintf(m_strNarrationID, _strid.c_str()); m_isPlayerNarration = true; }
+	_tchar*								Get_strNarrationID() { return m_strNarrationID; }
+	_bool								Get_PlayNarration() { return m_isPlayerNarration; }
+	void								Set_TurnoffPlayNarration(_bool _Turnoff) { m_isPlayerNarration = _Turnoff; }
+
+
+
+	/************ 테스트용도 **********************/
+	void								Test_Update(_float _fTimedelta);
+	_uint								Get_TestDiaglogIndex() { return m_iTextIndex; }
+	void								Set_TestDialogIndex() { ++m_iTextIndex; }
+
+
+
 
 	HRESULT								Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID);
 	HRESULT								Level_Logo_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);

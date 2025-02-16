@@ -124,7 +124,7 @@ HRESULT CModel_PackagingObject::Import_Meshes(ifstream& _inFile)
 			tMesh.BoneInfos.resize(tMesh.iNumBones);
 			for (_uint curMeshBoneIdx = 0; curMeshBoneIdx < tMesh.iNumBones; curMeshBoneIdx++)
 			{
-				ANIMBONE& tAnimBone = tMesh.BoneInfos[i];
+				ANIMBONE& tAnimBone = tMesh.BoneInfos[curMeshBoneIdx];
 				_inFile.read(reinterpret_cast<char*>(&tAnimBone.iNameSize), sizeof(_uint));
 				_inFile.read(tAnimBone.szName, tAnimBone.iNameSize);
 				_inFile.read(reinterpret_cast<char*>(&tAnimBone.matOffset), sizeof(_float4x4));
@@ -237,19 +237,21 @@ HRESULT CModel_PackagingObject::Import_Animations(ifstream& _inFile)
 
 HRESULT CModel_PackagingObject::Export_Bone(ofstream& _OutFile, _uint iParentBoneIndex)
 {
-	BONE tBone = {};
+	//BONE tBone = m_Bones[iParentBoneIndex];
+	for (auto& tBone : m_Bones)
+	{
+		_OutFile.write((char*)&tBone.iNameSize, sizeof(_uint));
+		_OutFile.write((char*)&tBone.szName, tBone.iNameSize);
+		_OutFile.write(reinterpret_cast<char*>(&tBone.matTransformation), sizeof(_float4x4));
+		_OutFile.write(reinterpret_cast<char*>(&tBone.iNumChildren), sizeof(_uint));
+	}
+	//tBone.
+	////m_Bones.push_back(tBone);
+	//iParentBoneIndex = (_uint)m_Bones.size() - 1;
 
-	_OutFile.write((char*)&tBone.iNameSize, sizeof(_uint));
-	_OutFile.write((char*)&tBone.szName, tBone.iNameSize);
-	_OutFile.write(reinterpret_cast<char*>(&tBone.matTransformation), sizeof(_float4x4));
-	_OutFile.write(reinterpret_cast<char*>(&tBone.iNumChildren), sizeof(_uint));
 
-	m_Bones.push_back(tBone);
-	iParentBoneIndex = (_uint)m_Bones.size() - 1;
-
-
-	for (_uint i = 0; i < tBone.iNumChildren; ++i)
-		Export_Bone(_OutFile, iParentBoneIndex);
+	//for (_uint i = 0; i < tBone.iNumChildren; ++i)
+	//	Export_Bone(_OutFile, iParentBoneIndex);
 
 	return S_OK;
 }
@@ -297,13 +299,13 @@ HRESULT CModel_PackagingObject::Export_Meshes(ofstream& _OutFile)
 			tMesh.BoneInfos.resize(tMesh.iNumBones);
 			for (_uint curMeshBoneIdx = 0; curMeshBoneIdx < tMesh.iNumBones; curMeshBoneIdx++)
 			{
-				ANIMBONE& tAnimBone = tMesh.BoneInfos[i];
+				ANIMBONE& tAnimBone = tMesh.BoneInfos[curMeshBoneIdx];
 				_OutFile.write(reinterpret_cast<char*>(&tAnimBone.iNameSize), sizeof(_uint));
 				_OutFile.write(tAnimBone.szName, tAnimBone.iNameSize);
 				_OutFile.write(reinterpret_cast<char*>(&tAnimBone.matOffset), sizeof(_float4x4));
 
 				_OutFile.write(reinterpret_cast<char*>(&tAnimBone.iNumVertices), sizeof(_uint));
-				tAnimBone.BoneInfos.resize(tAnimBone.iNumVertices);
+				//tAnimBone.BoneInfos.resize(tAnimBone.iNumVertices);
 				for (_uint curBoneVertex = 0; curBoneVertex < tAnimBone.iNumVertices; curBoneVertex++)
 				{
 					_OutFile.write(reinterpret_cast<char*>(&tAnimBone.BoneInfos[curBoneVertex].first), sizeof(_uint));
@@ -363,10 +365,10 @@ HRESULT CModel_PackagingObject::Export_Animations(ofstream& _OutFile)
 		_OutFile.write((char*)&tAnim.szName, tAnim.iNameSize);
 
 		_double dValue = 0.0;
-		_OutFile.write(reinterpret_cast<char*>(&dValue), sizeof(double));
-		tAnim.fDuration = (_float)dValue;
-		_OutFile.write(reinterpret_cast<char*>(&dValue), sizeof(double));
-		tAnim.fTickPerSecond = (_float)dValue;
+		dValue = tAnim.fDuration;
+		_OutFile.write(reinterpret_cast<char*>(&dValue), sizeof(_double));
+		dValue = tAnim.fTickPerSecond;
+		_OutFile.write(reinterpret_cast<char*>(&dValue), sizeof(_double));
 		//Loop - 1.26 김지완이 추가함
 		_OutFile.write(reinterpret_cast<char*>(&tAnim.bLoop), sizeof(_bool));
 		//SpeedMagnifier- 1.26 김지완이 추가함

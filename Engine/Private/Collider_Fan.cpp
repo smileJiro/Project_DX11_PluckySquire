@@ -10,6 +10,20 @@ CCollider_Fan::CCollider_Fan(const CCollider_Fan& _Prototype)
 {
 }
 
+
+HRESULT CCollider_Fan::Initialize(void* _pArg)
+{
+    COLLIDER_FAN_DESC* pDesc = static_cast<COLLIDER_FAN_DESC*>(_pArg);
+    m_fRadianAngle = pDesc->fRadianAngle;
+    m_vDirection = pDesc->vDirection;
+    // Add Desc 
+    if (FAILED(__super::Initialize(_pArg)))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+
 _bool CCollider_Fan::Is_Collision(CCollider* _pOther)
 {
     if (__super::Is_Collision(_pOther))
@@ -21,6 +35,10 @@ _bool CCollider_Fan::Is_Collision(CCollider* _pOther)
 			return true;
     }
 	return false;
+}
+void CCollider_Fan::Late_Update(_float _fTimeDelta)
+{
+	__super::Late_Update(_fTimeDelta);
 }
 
 void CCollider_Fan::Update_OwnerTransform()

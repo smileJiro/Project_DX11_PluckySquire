@@ -17,8 +17,6 @@ CSection_Manager::CSection_Manager()
 
 HRESULT CSection_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-
-
     if (nullptr == _pDevice)
         return E_FAIL;
     if (nullptr == _pContext)
@@ -322,7 +320,8 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_p
 {
     // 맵핑하여 데이터 접근
     D3D11_MAPPED_SUBRESOURCE mappedResource;
-    m_pContext->Map(m_pTargetTexture, 0, D3D11_MAP_READ, 0, &mappedResource);
+    if(FAILED(m_pContext->Map(m_pTargetTexture, 0, D3D11_MAP_READ, 0, &mappedResource)))
+        return _vector();
 
     // 2D Transform 위치를 픽셀 좌표계로 변환. 해당 텍스쳐의 가로 세로 사이즈를 알아야함.
     _int iWidth = mappedResource.RowPitch / sizeof(_float) / 4;
@@ -579,9 +578,12 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
         _uint iIndex = 0;
         for (auto ChildJson : ChapterJson)
         {
-            
+            _bool isStart = false;
+
             if (!ChildJson.contains("Section_Type"))
                 continue;
+            if (ChildJson.contains("Section_Start"))
+                isStart = true;
             CSection_2D::SECTION_2D_PLAY_TYPE eType = ChildJson["Section_Type"];
 
 
@@ -650,7 +652,7 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
             m_iPriorityGenKey += 10;
 
 
-            if (m_CurLevelSections.empty())
+            if (m_CurLevelSections.empty() || isStart)
                 strStartSectionKey = pSection->Get_SectionName();
             m_CurLevelSections.try_emplace(pSection->Get_SectionName(), pSection);
             

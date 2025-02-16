@@ -16,9 +16,9 @@ public:
 private:
 	_vector m_vDirection;
     _float m_f3DForwardSpeedMax = 16.f;
-    _float m_f2DForwardSpeedMax = 550.f;
+    _float m_f2DForwardSpeedMax = 700.f;
     _float m_f3DForwardSpeedMin = 16.f;
-    _float m_f2DForwardSpeedMin = 0.f;
+    _float m_f2DForwardSpeedMin = 700.f;
     _float m_f3DForwardStartProgress = 0.f;
     _float m_f3DForwardEndProgress = 0.5f;
     _float m_f2DForwardStartProgress = 0.f;

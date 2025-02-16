@@ -30,7 +30,7 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PART_LAST;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 1000.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 400.f;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
@@ -85,13 +85,15 @@ void CProjectile_BarfBug::Update(_float _fTimeDelta)
         Event_DeleteObject(this);
     }
 
+    if (true == Is_Dead())
+    {
+        int a = 10;
+    }
+
 	if (COORDINATE_2D == Get_CurCoord())
     {
-        _vector vPos = m_pControllerTransform->Get_State(CTransform::STATE::STATE_POSITION);
-        _vector vLook = m_pControllerTransform->Get_State(CTransform::STATE::STATE_UP);
-        _vector vFinalPos = vPos + XMVector3Normalize(vLook) * m_pControllerTransform->Get_SpeedPerSec() * _fTimeDelta;
-
-        m_pControllerTransform->Set_State(CTransform::STATE::STATE_POSITION, vFinalPos);
+        if(false == m_isStop)
+            m_pControllerTransform->Go_Up(_fTimeDelta);
     }
 
     else if (COORDINATE_3D == Get_CurCoord())
@@ -112,6 +114,16 @@ void CProjectile_BarfBug::Late_Update(_float _fTimeDelta)
 
 HRESULT CProjectile_BarfBug::Render()
 {
+#ifdef _DEBUG
+    if (COORDINATE_2D == Get_CurCoord())
+    {
+        for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
+        {
+            m_p2DColliderComs[i]->Render();
+        }
+    }
+#endif // _DEBUG
+
     __super::Render();
     return S_OK;
 }
@@ -121,7 +133,7 @@ HRESULT CProjectile_BarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3*
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
 
-    if (COORDINATE_2D == Get_CurCoord())
+    if (COORDINATE_2D == _eCoordinate)
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(PROJECTILE);
 
@@ -139,14 +151,17 @@ void CProjectile_BarfBug::Change_Animation()
 
 void CProjectile_BarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
-    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-    switch (pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+	if (COORDINATE_2D == _eCoord)
     {
-    case PROJECTILESPLAT:
-        Event_DeleteObject(this);
-        break;
-    default:
-        break;
+        CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+        switch (pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+        {
+        case PROJECTILESPLAT:
+            Event_DeleteObject(this);
+            break;
+        default:
+            break;
+        }
     }
 }
 
@@ -164,11 +179,10 @@ void CProjectile_BarfBug::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
             Event_Hit(this, _Other.pActorUserData->pOwner, 1.f);
             _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
             XMVectorSetY(vRepulse, -1.f);
-            Event_AddImpulse(_My.pActorUserData->pOwner, vRepulse);
+            Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
             Event_DeleteObject(this);
         }
 
-       
     }
 
     //if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
@@ -189,7 +203,7 @@ void CProjectile_BarfBug::On_Collision2D_Enter(CCollider* _pMyCollider, CCollide
     {
         Event_Hit(this, _pOtherObject, 1.f);
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PROJECTILESPLAT);
-        m_isStop = false;
+        m_isStop = true;
     }
 }
 
@@ -214,6 +228,9 @@ void CProjectile_BarfBug::Active_OnDisable()
 {
     m_pControllerTransform->Set_WorldMatrix(XMMatrixIdentity());
     m_fAccTime = 0.f;
+    m_isStop = false;
+
+    CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 
     //if (COORDINATE_3D == Get_CurCoord())
 	   // m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
@@ -274,15 +291,15 @@ HRESULT CProjectile_BarfBug::Ready_Components()
     /* 2D Collider */
     m_p2DColliderComs.resize(1);
 
-    CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
-    AABBDesc.pOwner = this;
-    AABBDesc.vExtents = { 50.f, 50.f };
-    AABBDesc.vScale = { 1.0f, 1.0f };
-    AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y };
-    AABBDesc.isBlock = true;
-    AABBDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
-    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
+    CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+    CircleDesc.pOwner = this;
+    CircleDesc.fRadius = 30.f;
+    CircleDesc.vScale = { 1.0f, 1.0f };
+    CircleDesc.vOffsetPosition = { 0.f, 0.f };
+    CircleDesc.isBlock = false;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
 
     return S_OK;

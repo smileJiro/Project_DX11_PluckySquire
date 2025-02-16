@@ -26,7 +26,7 @@ HRESULT CInteraction_Heart::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	m_isRender = true;
+	m_isRender = false;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -45,9 +45,19 @@ void CInteraction_Heart::Update(_float _fTimeDelta)
 {
 	// 캐릭터를 따라다니는 하트 // 타격받았을때만 노출되게 변경해야한다.
 
-	if (true == m_isRender)
+	if (true == Uimgr->Get_PlayerOnHit())
 	{
+		m_PlayerHP = Uimgr->Get_Player()->Get_Stat().iHP;
+
+		if (m_PrePlayerHP != m_PlayerHP)
+		{
+			m_isRender = true;
+			m_PrePlayerHP = m_PlayerHP;
+		}
+
 		Cal_HeartPos();
+		Cal_RenderTime(_fTimeDelta, m_PlayerHP);
+
 	}
 	
 
@@ -142,7 +152,9 @@ void CInteraction_Heart::Cal_HeartPos()
 		// TODO :: 해당 부분은 가변적이다. 추후 변경해야한다.
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 
-		_float2 vPlayerPos = _float2(Uimgr->Get_Player()->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0], Uimgr->Get_Player()->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
+		
+
+		_float2 vPlayerPos = _float2(Uimgr->Get_Player()->Get_BodyPosition().m128_f32[0], Uimgr->Get_Player()->Get_BodyPosition().m128_f32[1]);
 
 		_float2 vCalPos = { 0.f, 0.f };
 
@@ -150,6 +162,18 @@ void CInteraction_Heart::Cal_HeartPos()
 		vCalPos.y = vPlayerPos.y + RTSize.y * 0.175f;
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f));
+	}
+}
+
+void CInteraction_Heart::Cal_RenderTime(_float _fTimeDelta, _int _iPlayerHP)
+{
+	m_fRenderTime += _fTimeDelta;
+
+	if (m_fRenderTime >= 3.f)
+	{
+		m_isRender = false;
+		m_fRenderTime = 0.f;
+		Uimgr->Set_PlayerOnHit(false);
 	}
 }
 

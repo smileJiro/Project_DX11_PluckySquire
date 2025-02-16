@@ -44,26 +44,29 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 	if (false == bCarrying)
 	{
 
-		if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
+		if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
 		{
 			m_pOwner->Set_State(CPlayer::ROLL);
 			return;
 		}
-		else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
 		{
 			m_pOwner->Set_State(CPlayer::THROWSWORD);
 			return;
 		}
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 		{
-			m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
+			if (m_pOwner->Is_PlatformerMode())
+				m_pOwner->Set_State(CPlayer::ATTACK);
+			else
+				m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
 			return;
 		}
 
 	}
 	else
 	{
-		if (tKeyResult.bInputStates[PLAYER_KEY_THROWOBJECT])
+		if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
 		{
 			m_pOwner->Set_State(CPlayer::THROWOBJECT);
 			return;

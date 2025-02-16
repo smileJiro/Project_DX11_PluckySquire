@@ -74,7 +74,11 @@ public:
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other);
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
 
-	virtual void On_Hit(CGameObject* _pHitter, _float _fDamg) override;
+	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+
+	virtual void On_Hit(CGameObject* _pHitter, _int _iDamg) override;
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);

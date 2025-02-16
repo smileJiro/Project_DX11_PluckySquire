@@ -102,7 +102,7 @@ HRESULT C2DMapObject::Render()
 	HRESULT hr = __super::Render();
 #ifdef _DEBUG
 	if (m_pColliderCom)
-		m_pColliderCom->Render();
+		m_pColliderCom->Render(m_fRenderTargetSize);
 #endif // _DEBUG
 
 	return hr;

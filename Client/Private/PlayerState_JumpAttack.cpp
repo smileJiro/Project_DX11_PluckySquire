@@ -17,6 +17,7 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 	//떨어지기 시작
 	if (m_bRising && 0 > fUpForce)
 	{
+		m_pOwner->Add_Impuls(_vector{ 0.f,-7.5f,0.f });
 		if (COORDINATE_2D == eCoord)
 		{
 			switch (eDir)
@@ -47,12 +48,21 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 	_float fLandAnimHeightThreshold = eCoord == COORDINATE_2D ? m_f2DLandAnimHeightThreshold : m_f3DLandAnimHeightThreshold;
 	if (COORDINATE_3D == eCoord)
 	{
+		if (false == m_bGrounded && bGround)
+		{
+			m_bGrounded = true;
+			m_pOwner->Start_Attack(CPlayer::ATTACK_TYPE_JUMPATTACK);
+			return;
+
+		}
 		if (0 > fUpForce && fFloorDistance >= 0 && fFloorDistance <= fLandAnimHeightThreshold)
 		{
-			if (false == m_fLandAnimed)
+
+			if (false == m_bLandAnimed)
 			{
-				m_fLandAnimed = true;
+				m_bLandAnimed = true;
 				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMPATTACK_LAND_GT_EDIT);
+
 				return;
 			}
 		}
@@ -61,9 +71,11 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 	{
 		if (bGround)
 		{
-			if (false == m_fLandAnimed)
+
+			if (false == m_bLandAnimed)
 			{
-				m_fLandAnimed = true;
+ 				m_pOwner->Start_Attack(CPlayer::ATTACK_TYPE_JUMPATTACK);
+				m_bLandAnimed = true;
 				switch (eDir)
 				{
 				case Client::F_DIRECTION::LEFT:
@@ -82,19 +94,33 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 	}
 	if (bGround)
 	{
-		if (COORDINATE_3D == eCoord && fProgress >= fMotionCancelProgress)
+		m_bGrounded = true;
+		if (fProgress >= fMotionCancelProgress)
 		{
-			if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
-				m_pOwner->Set_State(CPlayer::RUN);
-			else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
-				m_pOwner->Set_State(CPlayer::ATTACK);
-			else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
-				m_pOwner->Set_State(CPlayer::JUMP_UP);
-			else if (tKeyResult.bInputStates[PLAYER_KEY_ROLL])
-				m_pOwner->Set_State(CPlayer::ROLL);
-			else if (tKeyResult.bInputStates[PLAYER_KEY_THROWSWORD])
-				m_pOwner->Set_State(CPlayer::THROWSWORD);
+
+			if (COORDINATE_3D == eCoord)
+			{
+				if (m_pOwner->Is_AttackTriggerActive())
+				{
+					m_pOwner->End_Attack();
+				}
+
+				if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
+					m_pOwner->Set_State(CPlayer::RUN);
+				else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
+					m_pOwner->Set_State(CPlayer::ATTACK);
+				else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
+					m_pOwner->Set_State(CPlayer::JUMP_UP);
+				else if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
+					m_pOwner->Set_State(CPlayer::ROLL);
+				else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
+					m_pOwner->Set_State(CPlayer::THROWSWORD);
+
+
+			}
 		}
+
+
 	}
 	else
 	{
@@ -151,6 +177,10 @@ void CPlayerState_JumpAttack::Exit()
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	if (COORDINATE_2D == eCoord)
 	{
+		if (m_pOwner->Is_AttackTriggerActive())
+		{
+			m_pOwner->End_Attack();
+		}
 	}
 	else
 	{

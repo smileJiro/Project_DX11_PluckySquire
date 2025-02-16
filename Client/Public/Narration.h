@@ -45,6 +45,7 @@ public:
         _float fFadeDuration;       // 페이드인이 완료될 때 까지의 시간
         _float fDelayNextLine;      // 페이드인이 완료 된 후 다음 라인으로 넘어가기까지의 시간
 
+        _bool   isFinishedThisLine = { false };
         _int    AnimationCount = { 0 };
         vector<NarrationAnimation> NarAnim;
 
@@ -56,13 +57,10 @@ public:
         wstring strid;              // 다이얼로그 ID
         LEVEL_ID eCurlevelId = { LEVEL_END };
         _int     LineCount = { 0 };
+        _bool    bTerminal = false;
         _int        AnimIndex = { 0 };
         vector<NarrationDialogData> lines;
     };
-
-
-
-
 
 public:
     explicit CNarration(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -72,59 +70,59 @@ public:
 public:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
-    virtual void Update(_float fTimeDelta) override;
-    virtual void Late_Update(_float _fTimeDelta);
+    virtual void    Update(_float fTimeDelta) override;
+    virtual void    Late_Update(_float _fTimeDelta);
     virtual HRESULT Render() override;
 
 private:
-    HRESULT     LoadFromJson(const std::wstring& filePath); // 데이터 로드
-    HRESULT      DisplayText(_float2 _vRTSize); // 타이핑 되게하자.
-    void        NextDialogue(_float2 _RTSize);
-    vector<CNarration_Anim*> GetAnimationObjectForLine(const _uint iLine, _int AnimCount = 0);
+    HRESULT                     LoadFromJson(const std::wstring& filePath); // 데이터 로드
+    HRESULT                     DisplayText(_float2 _vRTSize); // 타이핑 되게하자.
+    void                        NextDialogue(_float2 _RTSize);
+    vector<CNarration_Anim*>    GetAnimationObjectForLine(const _uint iLine, _int AnimCount = 0);
+    void                        Set_NarrationByStrid(const _wstring& strTargetID);
+    vector<CNarration_Anim*>    CreateAnimationObjectsForLine(_uint iLine);
+    void                        Update_Narration(_float _fTimeDelta);
+    void                        PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken);
 
 private:
-    //DialogData          m_DialogData;   // 현재 다이얼로그 데이터
-    _int                m_iCurrentLineIndex = 0; // 현재 출력 중인 라인의 인덱스 (id)
-    _tchar			    m_tDialogIndex[MAX_PATH] = {};
+    _int                                    m_iCurrentLineIndex = 0;          // 현재 출력 중인 라인의 인덱스 (id)
+    _tchar			                        m_tDialogIndex[MAX_PATH] = {};
+	_float                                  m_fLineHeight = { 70.f };
+	_int                                    m_RemainWord = { 0 };
+	_bool                                   m_isFade = { false };
+	_bool                                   m_isNarrationEnd = { false };
+	_bool                                   m_isStartNarration = { false };
+	_float                                  m_fWaitingTime = { 0.f };
+	_bool                                   m_isWaitingPrint = { false };
+	_bool                                   m_isNextLineReady = { false };
+	_bool                                   m_isPlayNarration = { false };
+	_int                                    m_iCurrentLine = { 0 };          // 현재 화면에 노출할 대화 라인 인덱스
+	_float                                  m_fTextAlpha = { 0.f };          // 현재 텍스트의 알파값(0.0~1.0)
+	_float                                  m_fFadeDuration = { 2.f };       // Fadein 효과에 걸리는 시간 (초)
+	_float                                  m_fDelayBetweenLines = { 4.f };  // 라인 교체 전 대기 시간 (초)
+	_float                                  m_fFadeTimer = { 0.f };          // fade-in 진행 타이머
+	_float                                  m_fDelayTimer = { 0.f };         // 라인 대기 타이머
+	_bool                                   m_bAnimationStarted = { false }; // 현재 라인에 대해 애니메이션이 시작되었는지 여부
+	_int                                    m_iNarrationCount = { 0 };
+	_bool                                   m_isWaitingNextPage = { false };
+	_float                                  m_fWaitingNextPageTime = { 0.f };
+	_uint                                   m_DisPlayTextLine = { 0 };
 
-    NarrationData            m_NarrationData;
-    vector<NarrationData>  m_NarrationDatas;
-
-    _float                  m_fLineHeight = { 70.f };
-    _int                    m_RemainWord = { 0 };
-    _bool                   m_isFade = { false };
-    _bool                   m_isNarrationEnd = { false };
-
-    _bool                   m_isStartNarration = { false };
-
-
-    _int m_iCurrentLine = 0;            // 현재 화면에 노출할 대화 라인 인덱스
-    _float m_fTextAlpha = 0.f;          // 현재 텍스트의 알파값(0.0~1.0)
-    _float m_fFadeDuration = 2.f;       // Fadein 효과에 걸리는 시간 (초)
-    _float m_fDelayBetweenLines = 4.f;  // 라인 교체 전 대기 시간 (초)
-    _float m_fFadeTimer = 0.f;          // fade-in 진행 타이머
-    _float m_fDelayTimer = 0.f;         // 라인 대기 타이머
-    _bool  m_bAnimationStarted = false; // 현재 라인에 대해 애니메이션이 시작되었는지 여부
-    vector<CNarration_Anim*> m_pCurrentAnimObj = { nullptr };
-
-    _int    m_iNarrationCount = { 0 };
-
-
-    vector<CNarration_Anim*> m_vecAnimation;
-    map<_uint, vector<CNarration_Anim*>> m_vAnimObjectsByLine;
+	NarrationData                           m_NarrationData;
+	vector<NarrationData>                   m_NarrationDatas;
+    vector<CNarration_Anim*>                m_vecAnimation;
+    vector<CNarration_Anim*>                m_pCurrentAnimObj = { nullptr };
+    map<_uint, vector<CNarration_Anim*>>    m_vAnimObjectsByLine;
 
 protected:
-    virtual HRESULT Ready_Components() override;
-
+    virtual HRESULT         Ready_Components() override;
 
 public:
-    static CNarration* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-    virtual CGameObject* Clone(void* pArg) override;
-    virtual void Free() override;
-    HRESULT      Cleanup_DeadReferences() override;
+    static CNarration*      Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+    virtual CGameObject*    Clone(void* pArg) override;
+    virtual void            Free() override;
+    HRESULT                 Cleanup_DeadReferences() override;
 
-private:
-    void PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken);
 
 };
 END

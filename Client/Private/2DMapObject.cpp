@@ -118,6 +118,7 @@ HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
         if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
             TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &AABBDesc)))
             return E_FAIL;
+        m_p2DColliderComs.push_back(pCollider);
     }
     else if (CCollider::CIRCLE_2D == Desc->eColliderType)
     {
@@ -134,7 +135,9 @@ HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
         CircleDesc.iCollisionGroupID = Desc->iObjectGroupID;
         if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
             TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &CircleDesc)))
-            return E_FAIL;
+            return E_FAIL; /* Add Component 내부에선 Add_Ref() 수행하니 콜라이더에 넣거나 사용안할거면 Safe_release() 해야함유 >> 태웅*/
+
+        m_p2DColliderComs.push_back(pCollider);
     }
 
     return S_OK;

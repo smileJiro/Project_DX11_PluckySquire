@@ -33,6 +33,28 @@ void CTransform_2D::LookDir(_fvector _vDir)
 	Rotation(fRadian, {0,0,1});
 }
 
+_bool CTransform_2D::Go_Straight(_float _fTimeDelta)
+{
+	_vector vPos = Get_State(STATE::STATE_POSITION);
+	_vector vLook = Get_State(STATE::STATE_UP);
+	_vector vFinalPos = vPos + XMVector3Normalize(vLook) * m_fSpeedPerSec * _fTimeDelta;
+
+	Set_State(STATE::STATE_POSITION, vFinalPos);
+
+	return true;
+}
+
+_bool CTransform_2D::Go_Backward(_float _fTimeDelta)
+{
+	_vector vPos = Get_State(STATE::STATE_POSITION);
+	_vector vLook = Get_State(STATE::STATE_UP);
+	_vector vFinalPos = vPos - XMVector3Normalize(vLook) * m_fSpeedPerSec * _fTimeDelta;
+
+	Set_State(STATE::STATE_POSITION, vFinalPos);
+
+	return true;
+}
+
 CTransform_2D* CTransform_2D::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CTransform_2D* pInstance = new CTransform_2D(_pDevice, _pContext);

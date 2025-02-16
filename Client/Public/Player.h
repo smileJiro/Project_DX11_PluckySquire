@@ -10,37 +10,43 @@ END
 BEGIN(Client)
 class CCarriableObject;
 class CStateMachine;
+class IInteractable;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
 	PLAYER_INPUT_JUMP,
 	PLAYER_INPUT_ATTACK,
-	PLAYER_KEY_ROLL,
-	PLAYER_KEY_THROWSWORD,
-	PLAYER_KEY_INTERACT,
-	PLAYER_KEY_THROWOBJECT,
-	PLAYER_KEY_SNEAK,
-	PLAYER_KEY_SPINATTACK,
-	PLAYER_KEY_SPINCHARGING,
-	PLAYER_KEY_SPINLAUNCH,
-	PLAYER_KEY_LAST
+	PLAYER_INPUT_ROLL,
+	PLAYER_INPUT_THROWSWORD,
+	PLAYER_INPUT_INTERACT,
+	PLAYER_INPUT_THROWOBJECT,
+	PLAYER_INPUT_SNEAK,
+	PLAYER_INPUT_SPINATTACK,
+	PLAYER_INPUT_SPINCHARGING,
+	PLAYER_INPUT_SPINLAUNCH,
+	PLAYER_INPUT_REVIVE,
+	PLAYER_INPUT_LAST
 };
 typedef struct tagPlayerInputResult
 {
 	_vector vMoveDir = {0,0,0};
 	_vector vDir = { 0,0,0 };
-	_bool bInputStates[PLAYER_KEY_LAST] = {false,};
+	_bool bInputStates[PLAYER_INPUT_LAST] = {false,};
 
 }PLAYER_INPUT_RESULT;
 class CPlayer final : public CCharacter, public virtual  IAnimEventReceiver
 {
 public:
+	enum PLAYER_SHAPE_USE
+	{
+		INTERACTION = SHAPE_USE::SHAPE_USE_LAST,
+		PLAYER_SHAPE_USE_LAST
+	};
 	typedef struct tagAttackTriggerDesc
 	{
 		_float fRadius;
-		_float fRadianAngle;
-		_float2 fOffset = {};
-	}ATTACK_TRIGGER_DESC_2D;
+		_float fOffset = {};
+	}ATTACK_TRIGGER_DESC;
 	enum ATTACK_TYPE
 	{
 		ATTACK_TYPE_NORMAL1,
@@ -414,19 +420,19 @@ public:
 	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
-	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other);
-	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other);
-	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
+	virtual void On_Hit(CGameObject* _pHitter, _int _fDamg) override;
+	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
-public: /* 2D 충돌 */
-	void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
-	void						On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
-	void						On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+public:
+	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
-	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-	virtual void		On_Hit(CGameObject* _pHitter, _float _fDamg) override;
-	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void Move_Attack_3D();
 	void Attack(CGameObject* _pVictim);
 	void Move(_fvector _vForce, _float _fTimeDelta);
@@ -434,9 +440,16 @@ public: /* 2D 충돌 */
 	void Jump();
 	void	ThrowSword();
 	void ThrowObject();
+	void Add_Upforce(_float _fForce);
 	PLAYER_INPUT_RESULT Player_KeyInput();
+	void Revive();
+	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
+	void Try_Interact(_float _fTimeDelta);
+	void End_Interact();
+
+
 	//Get
-	_bool Is_OnGround() {return m_bOnGround;}
+	_bool Is_OnGround();
 	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
 	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
@@ -444,6 +457,7 @@ public: /* 2D 충돌 */
 	_bool Is_CarryingObject(){ return nullptr != m_pCarryingObject; }
 	_bool Is_AttackTriggerActive();
 	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
+	_bool Has_InteractObject() { return nullptr != m_pInteractableObject; }
 	_float Get_UpForce();
 	_float Get_AnimProgress();
 	_float Get_HeadHeight() { return m_fHeadHeight; }
@@ -454,7 +468,7 @@ public: /* 2D 충돌 */
 	_float Get_AirRunSpeed() { return m_fAirRunSpeed; }
 	_float Get_AirRunSpeed2D() { return m_f2DAirRunSpeed; }
 	_float Get_MoveSpeed(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DMoveSpeed : m_f3DMoveSpeed; }
-	_float Get_PickupRange(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DPickupRange : m_f3DPickupRange; }	_float Get_AttackDamg() { return m_tStat.fDamg; }
+	_float Get_PickupRange(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DPickupRange : m_f3DPickupRange; }	_float Get_AttackDamg() { return m_tStat.iDamg; }
 	_float Get_3DFloorDistance() { return m_f3DFloorDistance; }
 	_float Get_2DFloorDistance() { return m_f2DFloorDistance; }
 	_uint Get_SpinAttackLevel() { return m_iSpinAttackLevel; }
@@ -466,6 +480,7 @@ public: /* 2D 충돌 */
 	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
 	_vector Get_ClamberEndPosition() { return m_vClamberEndPosition; }
 	_vector Get_WallNormal() { return m_vWallNormal; }
+	_vector Get_BodyPosition();
 
 	const _float4x4* Get_CarryingOffset_Ptr(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? &m_mat2DCarryingOffset : &m_mat3DCarryingOffset; }
 	STATE Get_CurrentStateID();
@@ -486,8 +501,10 @@ public: /* 2D 충돌 */
 	void Set_ClamberEndPosition(_fvector _vPos) { m_vClamberEndPosition = _vPos; }
 	void Set_SwordGrip(_bool _bForehand);
 	void Set_Kinematic(_bool _bKinematic);
+	void Set_PlatformerMode(_bool _bPlatformerMode);
+	void Set_Upforce(_float _fForce);
 	HRESULT Set_CarryingObject(CCarriableObject* _pCarryingObject);
-
+	void Set_CollidersActive(_bool _bOn);
 
 	void Start_Attack(ATTACK_TYPE _eAttackType);
 	void End_Attack();
@@ -506,6 +523,8 @@ private:
 private:
 	//Variables
 	_float m_f3DCenterYOffset = 0.5;
+	_float m_f3DInteractLookOffset = 0.65;
+	_float m_f3DInteractRadius = 1.0;
 	_float m_fHeadHeight = 1.0;
 	_float m_fArmHeight = 0.5f; // 벽타기 기준 높이
 	_float m_fArmLength = 0.325f;// 벽 타기 범위
@@ -515,7 +534,7 @@ private:
 	_float m_fStepSlopeThreshold = 0.1f;
 	_float m_f3DLandAnimHeightThreshold= 0.6f;
 	//_float m_fFootHeightThreshold = 0.1f;
-	_float m_f3DJumpPower = 11.f;
+	_float m_f3DJumpPower = 9.5f;
 	_float m_fAirRotateSpeed = 40.f;
 	_float m_fAirRunSpeed = 10.f;
 	_float m_f3DMoveSpeed= 10.f;
@@ -537,22 +556,23 @@ private:
 	_float m_f2DUpForce = 0;
 	_float m_f2DFloorDistance = 0;
 	_float m_f2DMoveSpeed= 400.f;
-	_float m_f2DJumpPower = 800.f;
+	_float m_f2DJumpPower = 600.f;
+	_float m_f2DPlatformerJumpPower = 650.f;
 	_float m_f2DCenterYOffset= 36.f;
 	_float m_f2DInteractRange = 93.f;
 	_float m_f2DThrowObjectPower = 100.f;
 	_float m_f2DPickupRange = 93.f;
 	_float m_f2DKnockBackPower = 100.f;
+	_float m_f2DInteractOffset = 100.f;
 	_float4x4 m_mat2DCarryingOffset = {};
 	_bool m_bPlatformerMode = false;
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
-	ATTACK_TRIGGER_DESC_2D m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST];// = { 93.f, 93.f, 120.f };
+	ATTACK_TRIGGER_DESC m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST];// = { 93.f, 93.f, 120.f };
 	//ATTACK_TRIGGER_DESC_2D m_f2DAttackAngle[ATTACK_TYPE_LAST];// = { 110.f, 110.f,45.f };
 	_float m_f2DAirRunSpeed = 300.f;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
 	//Components
 	CStateMachine* m_pStateMachine = nullptr;
-	CAnimEventGenerator* m_pAnimEventGenerator = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;
 	CCollider* m_pBody2DTriggerCom = nullptr;
 	CCollider* m_pAttack2DTriggerCom = nullptr;
@@ -561,9 +581,11 @@ private:
 	class CPlayerSword* m_pSword = nullptr;
 	CModelObject* m_pBody = nullptr;
 	CModelObject* m_pGlove= nullptr;
-	CCarriableObject* m_pCarryingObject = { nullptr, };
 
+	//기타 관계된 오브젝트
+	CCarriableObject* m_pCarryingObject = { nullptr, };
 	set<CGameObject*> m_AttckedObjects;
+	IInteractable* m_pInteractableObject = nullptr;
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

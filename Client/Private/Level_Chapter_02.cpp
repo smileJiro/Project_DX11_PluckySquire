@@ -18,6 +18,7 @@
 #include "TestTerrain.h"
 #include "Beetle.h"
 #include "BarfBug.h"
+#include "Zippy.h"
 #include "Projectile_BarfBug.h"
 #include "JumpBug.h"
 #include "BirdMonster.h"
@@ -35,6 +36,7 @@
 
 #include "2DMapObject.h"
 #include "3DMapObject.h"
+#include "FallingRock.h"
 
 
 //#include "UI.h"
@@ -58,30 +60,85 @@ CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext
 HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 {
 	m_eLevelID = _eLevelID;
-	Ready_Lights();
+	if (FAILED(Ready_Lights()))
+	{
+		MSG_BOX(" Failed Ready_Lights (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	CGameObject* pCameraTarget = nullptr;
-	Ready_CubeMap(TEXT("Layer_CubeMap"));
-	Ready_Layer_MainTable(TEXT("Layer_MainTable"));
-	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
-	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
-	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
-	// Ready_Layer_Monster(TEXT("Layer_Monster"));
-	Ready_Layer_UI(TEXT("Layer_UI"));
-	Ready_Layer_Domino(TEXT("Layer_Domino"));
-	//Ready_Layer_Effects(TEXT("Layer_Effect"));
-	Ready_Layer_NPC(TEXT("Layer_NPC"));
+	if (FAILED(Ready_CubeMap(TEXT("Layer_CubeMap"))))
+	{
+		MSG_BOX(" Failed Ready_CubeMap (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_MainTable(TEXT("Layer_MainTable"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_MainTable (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_TestTerrain (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget)))
+	{
+		MSG_BOX(" Failed Ready_Layer_Player (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget)))
+	{
+		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_UI (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_NPC(TEXT("Layer_NPC"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_NPC (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_FallingRock(TEXT("Layer_FallingRock"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_FallingRock (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	//if (FAILED(Ready_Layer_Effects(TEXT("Layer_Effect"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Effects (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
+		//액터 들어가는넘.,
+	//if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 
 	//액터 들어가는넘.,
-	Ready_Layer_Map();
-
-	/* Pooling Test */
-	Pooling_DESC Pooling_Desc;
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle");
-	CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
-	pDesc->iCurLevelID = m_eLevelID;
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
+	if (FAILED(Ready_Layer_Map()))
+	{
+		MSG_BOX(" Failed Ready_Layer_Map (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_RayShape(TEXT("Layer_RayShape"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_RayShape (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 
 	/* Collision Test */
 
@@ -93,54 +150,18 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
 
-	
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::PLAYER_PROJECTILE);
-
-
 
 	// 그룹필터 제거
 	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
 	//m_pGameInstance->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	//m_pGameInstance->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
-	
-
-	//RayShape Test
-	CRayShape::RAYSHAPE_DESC Desc;
-	Desc.iCurLevelID = m_eLevelID;
-
-	//Desc.tTransform3DDesc.vInitialPosition = _float3(-28.9f, 0.32f, -16.9f);
-	//Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	//Desc.eShapeType = SHAPE_TYPE::CAPSULE;
-	//Desc.fRadius = 3.f;
-	//Desc.fHalfHeight = 2.f;
-	//Desc.vOffsetTrans = { 0.f,Desc.fHalfHeight * 0.5f,0.f };
-	//Desc.fRotAngle = 90.f;
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
-	//	return E_FAIL;
-
-	//Desc.tTransform3DDesc.vInitialPosition = _float3(-23.9f, 0.32f, -16.9f);
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
-	//	return E_FAIL;
-
-	Desc.eShapeType = SHAPE_TYPE::CAPSULE;
-	Desc.fRadius = 1.f;
-	Desc.fHalfHeight = 2.f;
-	Desc.vOffsetTrans = { 0.f,Desc.fRadius,0.f };
-	Desc.fRotAngle = 0.f;
-
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-20.f, 6.36f, 20.19f);
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
-		return E_FAIL;
 
 
 	/* Blur RenderGroupOn */
@@ -150,6 +171,10 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 void CLevel_Chapter_02::Update(_float _fTimeDelta)
 {
+	// TODO :: 나중 제거, 테스트용도 - 박상욱
+	Uimgr->Test_Update(_fTimeDelta);
+
+
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
 
@@ -271,6 +296,15 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	}
 
+	if (KEY_DOWN(KEY::Y))
+	{
+		if (FAILED(Ready_Layer_FallingRock(TEXT("Layer_FallingRock"))))
+		{
+			MSG_BOX(" Failed Ready_Layer_FallingRock (Level_Chapter_02::Initialize)");
+			assert(nullptr);
+		}
+	}
+
 }
 
 HRESULT CLevel_Chapter_02::Render()
@@ -321,6 +355,7 @@ HRESULT CLevel_Chapter_02::Ready_CubeMap(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	m_pGameInstance->Set_CubeMap(static_cast<CCubeMap*>(pCubeMap));
+
 	return S_OK;
 }
 
@@ -843,13 +878,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+	CGameObject* pGameObject;
 
 
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
 		return E_FAIL;
 
-	
+	Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
 
 	return S_OK;
 }
@@ -875,39 +910,49 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_OnlySocial"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
+	
+
+	wsprintf(NPCDesc.strDialogueIndex, L"");
+	NPCDesc.iCurLevelID = m_eLevelID;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_Companion"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
 
 HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
 {
-	CBeetle::MONSTER_DESC Beetle_Desc;
-	Beetle_Desc.iCurLevelID = m_eLevelID;
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-16.5f, 6.56f, 22.6f);
-	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_1;
-	Beetle_Desc.isSneakMode = true;
+	//CBeetle::MONSTER_DESC Beetle_Desc;
+	//Beetle_Desc.iCurLevelID = m_eLevelID;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-16.5f, 6.56f, 22.6f);
+	//Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_1;
+	//Beetle_Desc.isSneakMode = true;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	//	return E_FAIL;
 
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(32.15f, 0.35f, 1.66f);
-	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_2_2;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(32.15f, 0.35f, 1.66f);
+	//Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_2_2;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	//	return E_FAIL;
 
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(39.5f, 0.35f, 10.5f);
-	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_2_2;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(39.5f, 0.35f, 10.5f);
+	//Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_2_2;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	//	return E_FAIL;
 
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(47.f, 0.35f, -0.5f);
-	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_3;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(47.f, 0.35f, -0.5f);
+	//Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_3;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	//	return E_FAIL;
 
 	CBarfBug::MONSTER_DESC Monster_Desc;
 	Monster_Desc.iCurLevelID = m_eLevelID;
@@ -928,13 +973,21 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &Monster_Desc)))
 	//	return E_FAIL;
 	
-	//CGoblin::MONSTER_DESC Goblin_Desc;
-	//Goblin_Desc.iCurLevelID = m_eLevelID;
-	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(-12.0f, 0.35f, -21.0f);
-	//Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &Goblin_Desc)))
-	//	return E_FAIL;
+	CGoblin::MONSTER_DESC Goblin_Desc;
+	Goblin_Desc.iCurLevelID = m_eLevelID;
+	Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(-12.0f, 0.35f, -21.0f);
+	Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &Goblin_Desc)))
+		return E_FAIL;
+
+	CZippy::MONSTER_DESC Zippy_Desc;
+	Zippy_Desc.iCurLevelID = m_eLevelID;
+	Zippy_Desc.tTransform2DDesc.vInitialPosition = _float3(220.0f, 0.f, 0.f);
+	Zippy_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"), m_eLevelID, _strLayerTag, &Zippy_Desc)))
+		return E_FAIL;
 
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-8.0f, 0.35f, -19.0f);
 	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
@@ -958,10 +1011,15 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, _strLayerTag, &Boss_Desc)))
 		//	return E_FAIL;
 
-			/*  Projectile  */
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut)
+{
+	/*  Projectile  */
 	Pooling_DESC Pooling_Desc;
 	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+	Pooling_Desc.strLayerTag = _strLayerTag;
 	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
 
 	CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
@@ -996,7 +1054,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	//임시로 주사위 만들어 봄.
 	CModelObject::MODELOBJECT_DESC tModelDesc{};
 	tModelDesc.iCurLevelID = m_eLevelID;
-	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.2f, 21.5f);
+	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.5f, 21.5f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
 		return E_FAIL;
 	_float fDominoXPosition = 14.47f;
@@ -1021,6 +1079,45 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
 		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_FallingRock(const _wstring& _strLayerTag)
+{
+	CFallingRock::FALLINGROCK_DESC Desc = {};
+	Desc.eStartCoord = COORDINATE_2D;
+	Desc.fFallDownEndY = RTSIZE_BOOK2D_Y * 0.5f - 50.f;
+	Desc.iCurLevelID = LEVEL_CHAPTER_2;
+	Desc.isDeepCopyConstBuffer = true;
+	Desc.Build_2D_Transform(_float2(0.0f, 500.f));
+
+	CGameObject* pGameObject = nullptr;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_FallingRock"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject , &Desc)))
+		return E_FAIL;
+
+	if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_RayShape(const _wstring& _strLayerTag)
+{
+	//몬스터 장애물 감지용 RayShape
+	CRayShape::RAYSHAPE_DESC Desc;
+	Desc.iCurLevelID = m_eLevelID;
+
+	Desc.eShapeType = SHAPE_TYPE::CAPSULE;
+	Desc.fRadius = 1.f;
+	Desc.fHalfHeight = 2.f;
+	Desc.vOffsetTrans = { 0.f,Desc.fRadius,0.f };
+	Desc.fRotAngle = 0.f;
+
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-20.f, 6.36f, 20.19f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

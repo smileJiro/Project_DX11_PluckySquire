@@ -1,6 +1,6 @@
 #pragma once
 #include "ModelObject.h"
-
+#include "Player.h"
 BEGIN(Engine)
 class CCollider;
 END
@@ -30,6 +30,8 @@ private:
 	virtual ~CPlayerSword() = default;
 
 public:
+
+	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* _pArg) override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
@@ -42,7 +44,8 @@ public:
 	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-
+	virtual void Active_OnEnable() override;
+	virtual void Active_OnDisable() override;
 
 	virtual HRESULT	 Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
@@ -53,7 +56,7 @@ public:
 	void On_StateChange();
 	void Attack(CGameObject* _pVictim);
 	//Set
-	void Set_AttackEnable(_bool _bOn);
+	void Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackType = CPlayer::ATTACK_TYPE::ATTACK_TYPE_NORMAL1);
 	//Get
 	_bool Is_AttackEnable();
 	_bool Is_Flying() { return FLYING == m_eCurrentState; }
@@ -63,18 +66,23 @@ public:
 	_vector Get_LookDirection();
 private:
 	_bool m_bAttackEnable = false;
-	_float m_fThrowingPower3D = 15.f;
-	_float m_fThrowingPower2D = 700.f;
+	_float m_fThrowingPower3D = 30.f;
+	_float m_fThrowingPower2D = 1200.f;
 	_vector m_vThrowDirection = {};
 	_vector m_vStuckDirection = {};
 	//¹ÛÀ¸·Î ³ª°¡·Á´Â Èû
 	_float m_fOutingForce = 1.f;
 	//²ø¾îµéÀÌ´Â Èû
 	_float m_fCentripetalForce3D = 30.f;
-	_float m_fCentripetalForce2D = 600.f;
+	_float m_fCentripetalForce2D = 1000.f;
 	_float m_fRotationForce3D = 50.f;
 	_float m_f3DKnockBackPower = 12.f;
 	_float m_f2DKnockBackPower = 50.f;
+
+	_float m_f3DNormalAttackRange = 0.5f;
+	_float m_f3DNormalAttackZOffset = 0.5f;
+	_float m_f3DJumpAttackRange = 1.5f;
+	_float m_f3DJumpAttackZOffset = 0.0f;
 
 	SWORD_STATE m_eCurrentState = HANDLING;
 	SWORD_STATE m_ePastState = HANDLING;

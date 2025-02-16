@@ -15,10 +15,6 @@ HRESULT CToolBone::Initialize(ifstream& _inFile, _int iParentBoneIndex)
 	//cout << m_szName << endl;
 
 	_inFile.read(reinterpret_cast<char*>(&m_TransformationMatrix), sizeof(_float4x4));
-	//cout << m_TransformationMatrix._11 << " " << m_TransformationMatrix._12 << " " << m_TransformationMatrix._13 << " " << m_TransformationMatrix._14 << endl;
-	//cout << m_TransformationMatrix._21 << " " << m_TransformationMatrix._22 << " " << m_TransformationMatrix._23 << " " << m_TransformationMatrix._24 << endl;
-	//cout << m_TransformationMatrix._31 << " " << m_TransformationMatrix._32 << " " << m_TransformationMatrix._33 << " " << m_TransformationMatrix._34 << endl;
-	//cout << m_TransformationMatrix._41 << " " << m_TransformationMatrix._42 << " " << m_TransformationMatrix._43 << " " << m_TransformationMatrix._44 << endl;
 	XMStoreFloat4x4(&m_TransformationMatrix, XMMatrixTranspose(XMLoadFloat4x4(&m_TransformationMatrix)));
 	XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMMatrixIdentity());
 

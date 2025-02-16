@@ -25,10 +25,22 @@ C2DModel::C2DModel(const C2DModel& _Prototype)
 
 HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath, _bool _bNoJson)
 {
+
+
 	if (_bNoJson)
 	{
 		m_eAnimType = NONANIM;
-		m_pNonAnimSprite = CSpriteFrame::Create(m_pDevice, m_pContext, _szModel2DFilePath);
+		filesystem::path path = (_szModel2DFilePath);
+		CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, _szModel2DFilePath, 1, true);
+		if (nullptr == pTexture)
+		{
+			cout << "Failed Create Texture : " << _szModel2DFilePath << endl;
+			return E_FAIL;
+		}
+		string strTextureKey = path.filename().replace_extension().string().c_str();
+		m_Textures.insert({ strTextureKey,pTexture});
+
+		m_pNonAnimSprite = CSpriteFrame::Create(m_pDevice, m_pContext, strTextureKey.c_str(), m_Textures);
 		if (nullptr == m_pNonAnimSprite)
 		{
 			return E_FAIL;
@@ -110,10 +122,10 @@ HRESULT C2DModel::Initialize(void* _pDesc)
 	if (FAILED(__super::Initialize(_pDesc)))
 		return E_FAIL;
 
-    /* Com_VIBuffer */
+	/* Com_VIBuffer */
 	m_pVIBufferCom = static_cast<CVIBuffer_Rect*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_VIBuffer_Rect"), nullptr));
-    if (nullptr == m_pVIBufferCom)
-        return E_FAIL;
+	if (nullptr == m_pVIBufferCom)
+		return E_FAIL;
 
 
 	return S_OK;

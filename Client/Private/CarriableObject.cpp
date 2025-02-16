@@ -184,6 +184,7 @@ CGameObject* CCarriableObject::Clone(void* _pArg)
 void CCarriableObject::Free()
 {
 	Safe_Release(m_pBody2DColliderCom);
+
 		__super::Free();
 }
 
@@ -197,11 +198,10 @@ _bool CCarriableObject::Is_Interactable(CPlayer* _pUser)
 	return false == _pUser->Is_CarryingObject();
 }
 
-_float CCarriableObject::Get_Distance(CPlayer* _pUser)
+_float CCarriableObject::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 {
-	_vector vMyPos = Get_FinalPosition();
-	_vector vUserPos = _pUser->Get_FinalPosition();
-	return  XMVectorGetX(XMVector3Length(vMyPos - vUserPos));
+	return XMVector3Length(m_pControllerTransform->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)
+		- _pUser->Get_ControllerTransform()->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
 }
 
 void CCarriableObject::Set_Kinematic(_bool _bKinematic)

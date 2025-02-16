@@ -30,8 +30,8 @@ HRESULT CPortal::Initialize(void* _pArg)
     pDesc->eStartCoord = COORDINATE_2D;
     pDesc->isCoordChangeEnable = true;
     pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
-    m_fTriggerRadius = 0.1;// pDesc->fTriggerRadius;
-
+    m_fTriggerRadius =  pDesc->fTriggerRadius;
+    m_fInteractChargeTime = 1.f;
     // Actor Object는 차후에, ReadyObject 를 따로 불러 생성.
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -138,8 +138,7 @@ HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &CircleDesc)))
         return E_FAIL;
 
-    if(nullptr != pCollider)
-        m_p2DColliderComs.push_back(pCollider);
+    m_p2DColliderComs.push_back(pCollider);
 
     return S_OK;
 }
@@ -257,11 +256,11 @@ _bool CPortal::Is_Interactable(CPlayer* _pUser)
     return true;
 }
 
-_float CPortal::Get_Distance(CPlayer* _pUser)
+_float CPortal::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 {
-    _vector vMyPos = Get_FinalPosition();
-    _vector vUserPos = _pUser->Get_FinalPosition();
-    return  XMVectorGetX(XMVector3Length(vMyPos - vUserPos));
+    return XMVector3Length(m_pControllerTransform->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)
+        - _pUser->Get_ControllerTransform()->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
+
 }
 
 CPortal* CPortal::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -294,5 +293,6 @@ CGameObject* CPortal::Clone(void* _pArg)
 
 void CPortal::Free()
 {
+    Safe_Release(m_pColliderCom);
     __super::Free();
 }

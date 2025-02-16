@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "FSM.h"
 #include "UI_Manager.h"
+#include "StateMachine.h"
 
 CNPC::CNPC(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -27,7 +28,7 @@ HRESULT CNPC::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_iMainIndex = pDesc->iMainIndex;
-	m_iSubIndex = pDesc->iSubIndex;
+	m_iSubIndex = pDesc->iSubIndex; 
 	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
 	wsprintf(m_strDialogueIndex, pDesc->strDialogueIndex);
 	//wsprintf(m_strCurSecion, pDesc->strLocateSection);
@@ -171,9 +172,18 @@ void CNPC::Active_OnDisable()
 
 void CNPC::Free()
 {
+	for (auto& pGameObject : m_pNpcObject) // ÅÂ¿õ Ãß°¡
+		Safe_Release(pGameObject);
+	m_pNpcObject.clear();
+
 	if (nullptr != m_pTarget)
 		Safe_Release(m_pTarget);
+
 	Safe_Release(m_pAnimEventGenerator);
+
+	Safe_Release(m_p2DNpcCollider); // ÅÂ¿õ Ãß°¡
+	Safe_Release(m_pStateMachine); // ÅÂ¿õ Ãß°¡
+
 
 
 	__super::Free();
