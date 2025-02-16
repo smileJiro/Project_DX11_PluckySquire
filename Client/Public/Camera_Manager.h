@@ -76,8 +76,9 @@ private:
 	_int				m_iCurLevelID = {};
 
 private:
-	void				Add_ArmData(_wstring wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
+	void				Add_ArmData(_uint _iCameraType, _wstring wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
 	void				Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA>> _CutSceneData);
+	void				Load_ArmData(_uint _iCameraType, _wstring _szFilePath);
 
 public:
 	static CCamera_Manager* Create();

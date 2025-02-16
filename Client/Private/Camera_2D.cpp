@@ -36,65 +36,65 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	ARM_DATA* tDefualtData = new ARM_DATA();
-	tDefualtData->fLength = 12.5f;
-	tDefualtData->fLengthTime = { 0.5f, 0.f };
-	tDefualtData->iLengthRatioType = EASE_IN_OUT;
+	//ARM_DATA* tDefualtData = new ARM_DATA();
+	//tDefualtData->fLength = 12.5f;
+	//tDefualtData->fLengthTime = { 0.5f, 0.f };
+	//tDefualtData->iLengthRatioType = EASE_IN_OUT;
 
-	tDefualtData->fMoveTimeAxisY = { 0.5f, 0.f };
+	//tDefualtData->fMoveTimeAxisY = { 0.5f, 0.f };
 
-	tDefualtData->iRotationRatioType = EASE_IN_OUT;
-	tDefualtData->vDesireArm = { 0.f, 0.981f, -0.191f };
+	//tDefualtData->iRotationRatioType = EASE_IN_OUT;
+	//tDefualtData->vDesireArm = { 0.f, 0.981f, -0.191f };
 
-	Add_ArmData(TEXT("Default"), tDefualtData, nullptr);
+	//Add_ArmData(TEXT("Default"), tDefualtData, nullptr);
 
-	ARM_DATA* tBookHorizonData = new ARM_DATA();
-	tBookHorizonData->fLength = 12.5f;
-	tBookHorizonData->fLengthTime = { 0.5f, 0.f };
-	tBookHorizonData->iLengthRatioType = EASE_IN_OUT;
+	//ARM_DATA* tBookHorizonData = new ARM_DATA();
+	//tBookHorizonData->fLength = 12.5f;
+	//tBookHorizonData->fLengthTime = { 0.5f, 0.f };
+	//tBookHorizonData->iLengthRatioType = EASE_IN_OUT;
 
-	tBookHorizonData->fMoveTimeAxisY = { 0.5f, 0.f };
+	//tBookHorizonData->fMoveTimeAxisY = { 0.5f, 0.f };
 
-	tBookHorizonData->iRotationRatioType = EASE_IN_OUT;
-	tBookHorizonData->vDesireArm = { 0.f, 0.981f, -0.191f };
+	//tBookHorizonData->iRotationRatioType = EASE_IN_OUT;
+	//tBookHorizonData->vDesireArm = { 0.f, 0.981f, -0.191f };
 
-	Add_ArmData(TEXT("Book_Horizon"), tBookHorizonData, nullptr);
+	//Add_ArmData(TEXT("Book_Horizon"), tBookHorizonData, nullptr);
 
-	ARM_DATA* tBookVerticalData = new ARM_DATA();
-	tBookVerticalData->fLength = 12.5f;
-	tBookVerticalData->fLengthTime = { 0.5f, 0.f };
-	tBookVerticalData->iLengthRatioType = EASE_IN_OUT;
+	//ARM_DATA* tBookVerticalData = new ARM_DATA();
+	//tBookVerticalData->fLength = 12.5f;
+	//tBookVerticalData->fLengthTime = { 0.5f, 0.f };
+	//tBookVerticalData->iLengthRatioType = EASE_IN_OUT;
 
-	tBookVerticalData->fMoveTimeAxisY = { 0.5f, 0.f };
+	//tBookVerticalData->fMoveTimeAxisY = { 0.5f, 0.f };
 
-	tBookVerticalData->iRotationRatioType = EASE_IN_OUT;
-	tBookVerticalData->vDesireArm = { 0.191f, 0.981, 0.f };
+	//tBookVerticalData->iRotationRatioType = EASE_IN_OUT;
+	//tBookVerticalData->vDesireArm = { 0.191f, 0.981, 0.f };
 
-	Add_ArmData(TEXT("Book_Vertical"), tBookVerticalData, nullptr);
+	//Add_ArmData(TEXT("Book_Vertical"), tBookVerticalData, nullptr);
 
-	ARM_DATA* tArmData = new ARM_DATA();
-	tArmData->fLength = 22.259f;
-	tArmData->fLengthTime = { 0.5f, 0.f};
-	tArmData->iLengthRatioType = EASE_IN_OUT;
+	//ARM_DATA* tArmData = new ARM_DATA();
+	//tArmData->fLength = 22.259f;
+	//tArmData->fLengthTime = { 0.5f, 0.f};
+	//tArmData->iLengthRatioType = EASE_IN_OUT;
 
-	tArmData->fMoveTimeAxisY = { 0.5f, 0.f };
+	//tArmData->fMoveTimeAxisY = { 0.5f, 0.f };
 
-	tArmData->iRotationRatioType = EASE_IN_OUT;
-	tArmData->vDesireArm = { 0.f, 0.981f, -0.191f };
-	
-	Add_ArmData(TEXT("BookFlipping_Horizon"), tArmData, nullptr);
+	//tArmData->iRotationRatioType = EASE_IN_OUT;
+	//tArmData->vDesireArm = { 0.f, 0.981f, -0.191f };
+	//
+	//Add_ArmData(TEXT("BookFlipping_Horizon"), tArmData, nullptr);
 
-	ARM_DATA* tArmVerticalData = new ARM_DATA();
-	tArmVerticalData->fLength = 22.259f;
-	tArmVerticalData->fLengthTime = { 0.5f, 0.f };
-	tArmVerticalData->iLengthRatioType = EASE_IN_OUT;
+	//ARM_DATA* tArmVerticalData = new ARM_DATA();
+	//tArmVerticalData->fLength = 22.259f;
+	//tArmVerticalData->fLengthTime = { 0.5f, 0.f };
+	//tArmVerticalData->iLengthRatioType = EASE_IN_OUT;
 
-	tArmVerticalData->fMoveTimeAxisY = { 0.5f, 0.f };
+	//tArmVerticalData->fMoveTimeAxisY = { 0.5f, 0.f };
 
-	tArmVerticalData->iRotationRatioType = EASE_IN_OUT;
-	tArmVerticalData->vDesireArm = { 0.191f, 0.981, 0.f };
+	//tArmVerticalData->iRotationRatioType = EASE_IN_OUT;
+	//tArmVerticalData->vDesireArm = { 0.191f, 0.981, 0.f };
 
-	Add_ArmData(TEXT("BookFliping_Vertical"), tArmVerticalData, nullptr);
+	//Add_ArmData(TEXT("BookFliping_Vertical"), tArmVerticalData, nullptr);
 
 	return S_OK;
 }
@@ -109,7 +109,7 @@ void CCamera_2D::Update(_float fTimeDelta)
 
 void CCamera_2D::Late_Update(_float fTimeDelta)
 {
-	m_fTrackingTime = 0.2f;
+	//m_fTrackingTime = 0.2f;
 #ifdef _DEBUG
 	Key_Input(fTimeDelta);
 #endif
@@ -157,6 +157,43 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 {
 	if (nullptr == m_pCurArm)
 		return;
+
+	// Sketch Space 면에 따라서 Arm 바꿔 주기
+	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+	
+	m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
+	pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+
+	switch ((_int)m_eCurSpaceDir) {
+	case (_int)NORMAL_DIRECTION::POSITIVE_X:
+	{
+		pData = Find_ArmData(TEXT("Default_Positive_X"));
+		m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+	}
+		break;
+	case (_int)NORMAL_DIRECTION::NEGATIVE_X:
+	{
+		pData = Find_ArmData(TEXT("Default_Negative_X"));
+		m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+	}
+		break;
+	case (_int)NORMAL_DIRECTION::POSITIVE_Y:
+	{
+		pData = Find_ArmData(TEXT("Default_Positive_Y"));
+		m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+	}
+		break;
+	case (_int)NORMAL_DIRECTION::NEGATIVE_Y:
+		break;
+	case (_int)NORMAL_DIRECTION::POSITIVE_Z:
+		break;
+	case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
+	{
+		pData = Find_ArmData(TEXT("Default_Positive_Y"));
+		m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+	}
+		break;
+	}
 
 	// Initial Data가 없어서 TargetPos + vArm * Length로 초기 위치를 바로 잡아주기
 	if (nullptr == _pInitialData) {
@@ -207,22 +244,6 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 {
 	if (true == m_isInitialData)
 		return;
-
-	// Target 위치 구하기
-	switch (m_eTargetCoordinate) {
-	case (_uint)COORDINATE_2D:
-	{
-		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
-		XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
-	}
-		break;
-	case (_uint)COORDINATE_3D:
-	{
-		memcpy(&m_v2DTargetWorldPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
-	}
-		break;
-	}
-
 
 	Action_Zoom(_fTimeDelta);
 	Action_Shake(_fTimeDelta);
@@ -311,7 +332,6 @@ void CCamera_2D::Action_SetUp_ByMode()
 
 void CCamera_2D::Defualt_Move(_float _fTimeDelta)
 {
-	
 	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
 
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
@@ -383,6 +403,21 @@ void CCamera_2D::Look_Target(_float fTimeDelta)
 
 _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
 {	
+	// Target 위치 구하기
+	//switch (m_eTargetCoordinate) {
+	//case (_uint)COORDINATE_2D:
+	//{
+	//	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+	//	XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
+	//	m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
+	//}
+	//break;
+	//case (_uint)COORDINATE_3D:
+	//{
+	//	memcpy(&m_v2DTargetWorldPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+	//}
+	//break;
+	//}
 
 	_vector vDistance = XMLoadFloat3(&m_v2DTargetWorldPos) - XMLoadFloat3(&m_v2DPreTargetWorldPos);
 	_float fSpeed = XMVectorGetX(XMVector3Length(vDistance)) / m_fTrackingTime;
@@ -401,7 +436,7 @@ _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
 
 	//NORMAL_DIRECTION::POSITIVE_X >>> normal 판정 enum >>> 사용시 주의 점은 반올림함수를 사용하면 안정성이 오르니 반올림 함수 사용하삼.
 
-	//if(true == XMVector3Equal(XMVectorSet(0.f, 0.f, 0.f, 1.f), vTargetPos)) {
+	//if(true == XMVector3Equal(XMVectorSet(0.f, 0.f, 0.f, 0.f), XMLoadFloat3(&m_v2DTargetWorldPos))) {
 	//	_vector vCurPos = XMVectorLerp(XMLoadFloat3(&m_v2DPreTargetWorldPos), XMLoadFloat3(&m_v2DTargetWorldPos), 0.05f);
 
 	//	_vector vCameraPos = vCurPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
@@ -447,6 +482,9 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 
 	// Pos
 	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+
+
+
 	_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 	_vector vResulPos = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vPosition), vCameraPos, fRatio);
 
@@ -463,10 +501,27 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 	m_fFovy = fFovy;
 }
 
-void CCamera_2D::Flipping_Rotation(_float _fRatio)
+void CCamera_2D::Find_TargetPos()
 {
+	// Target 위치 구하기
+	switch (m_eTargetCoordinate) {
+	case (_uint)COORDINATE_2D:
+	{
+		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+		XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 
+		if (m_eCurSpaceDir != (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)))) {
 
+			m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
+		}
+	}
+	break;
+	case (_uint)COORDINATE_3D:
+	{
+		memcpy(&m_v2DTargetWorldPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+	}
+	break;
+	}
 }
 
 pair<ARM_DATA*, SUB_DATA*>* CCamera_2D::Find_ArmData(_wstring _wszArmTag)

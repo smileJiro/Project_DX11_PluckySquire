@@ -88,6 +88,9 @@ private:
 	// Arm
 	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>	m_ArmDatas;
 
+	// Sketch Space
+	NORMAL_DIRECTION			m_eCurSpaceDir = { NORMAL_DIRECTION::NONEWRITE_NORMAL };
+
 private:
 	void						Action_Mode(_float _fTimeDelta);
 	void						Action_SetUp_ByMode();
@@ -103,7 +106,7 @@ private:
 
 	_vector						Calculate_CameraPos(_float _fTimeDelta);
 	virtual	void				Switching(_float _fTimeDelta) override;
-	void						Flipping_Rotation(_float _fRatio);
+	void						Find_TargetPos();
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);
