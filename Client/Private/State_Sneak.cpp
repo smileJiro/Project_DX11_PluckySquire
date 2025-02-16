@@ -41,7 +41,7 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		m_WayPoints.push_back({ _float3(-13.7f, 6.52f, 23.3f) });
 		m_WayPoints.push_back({ _float3(-16.5f, 6.56f, 22.6f) });
 		m_WayPoints.push_back({ _float3(-20.f, 6.5f, 22.5f) });
-		m_WayPoints.push_back({ _float3(-23.6f, 6.54f, 20.5f) });
+		m_WayPoints.push_back({ _float3(-23.6f, 6.55f, 21.22f) });
 		m_WayPoints.push_back({ _float3(-16.3f, 6.54f, 20.5f) });
 
 		m_WayPoints[0].Neighbors.push_back(1);
@@ -248,6 +248,10 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 	_float3 vLeftPos; XMStoreFloat3(&vLeftPos, XMVector3Transform(XMLoadFloat3(&vOffset), m_pOwner->Get_FinalWorldMatrix()));
 	vOffset.x += m_pOwner->Get_RayHalfWidth() * 2.f;
 	_float3 vRightPos; XMStoreFloat3(&vRightPos, XMVector3Transform(XMLoadFloat3(&vOffset), m_pOwner->Get_FinalWorldMatrix()));
+	_vector vLeftRayDir = XMVector3Normalize(XMVectorSetY(_vDestination - XMLoadFloat3(&vLeftPos), 0.f));
+	_vector vRightRayDir = XMVector3Normalize(XMVectorSetY(_vDestination - XMLoadFloat3(&vRightPos), 0.f));
+	_float3 vLeftRayDirection; XMStoreFloat3(&vLeftRayDirection, vLeftRayDir);
+	_float3 vRightRayDirection; XMStoreFloat3(&vRightRayDirection, vRightRayDir);
 	_vector vResult = XMVectorZero();
 	_float fTargetDis = XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f)));
 
@@ -255,9 +259,18 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 	if (false == m_isOnWay)
 	{
 		//막혀있지 않다면 타겟 방향대로 이동
+		//if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vRayPos, vRayDirection, XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f))), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE)
+		//	&& false == m_pGameInstance->RayCast_Nearest_GroupFilter(vLeftPos, vRayDirection, XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f))), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE)
+		//	&& false == m_pGameInstance->RayCast_Nearest_GroupFilter(vRightPos, vRayDirection, XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f))), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+		//{
+		//	vResult = _vDestination - m_pOwner->Get_FinalPosition();
+		//	XMStoreFloat3(_vDirection, XMVector3Normalize(XMVectorSetY(vResult, 0.f)));
+		//	return;
+		//}
+		 
 		if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vRayPos, vRayDirection, XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f))), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE)
-			&& false == m_pGameInstance->RayCast_Nearest_GroupFilter(vLeftPos, vRayDirection, XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f))), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE)
-			&& false == m_pGameInstance->RayCast_Nearest_GroupFilter(vRightPos, vRayDirection, XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f))), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+			&& false == m_pGameInstance->RayCast_Nearest_GroupFilter(vLeftPos, vLeftRayDirection, XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vLeftPos), 0.f))), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE)
+			&& false == m_pGameInstance->RayCast_Nearest_GroupFilter(vRightPos, vRightRayDirection, XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRightPos), 0.f))), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
 		{
 			vResult = _vDestination - m_pOwner->Get_FinalPosition();
 			XMStoreFloat3(_vDirection, XMVector3Normalize(XMVectorSetY(vResult, 0.f)));
@@ -316,10 +329,13 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 				}
 			}
 		}
-		if (-1 == iDestIndex)
+
+		//예외처리
+		if (-1 == iDestIndex || -1 == iStartIndex || iDestIndex == iStartIndex)
+		{
+			XMStoreFloat3(_vDirection, XMVectorSet(0.f, 0.f, 0.f, 0.f));
 			return;
-		if (-1 == iStartIndex)
-			return;
+		}
 
 		//목표 위치로 가는 웨이포인트 경로 찾기
 		priority_queue <pair<_float, pair<_uint, _uint>>, vector<pair<_float, pair<_uint, _uint>>>, compare> PriorityQueue;	//비용, 부모 인덱스, 자기 인덱스
