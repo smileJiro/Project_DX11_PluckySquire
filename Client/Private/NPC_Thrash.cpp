@@ -93,29 +93,7 @@ void CNPC_Thrash::Priority_Update(_float _fTimeDelta)
 
 void CNPC_Thrash::Child_Update(_float _fTimeDelta)
 {
-	_float2 vPlayerPos = _float2(
-		m_pTarget->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
-		m_pTarget->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
-
-	_float2 _NPCPos = _float2(
-		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
-		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
-
-	Cal_PlayerDistance();
-
-	if (COORDINATE_2D == m_pTarget->Get_CurCoord())
-	{
-		m_isMove = Trace_Player(vPlayerPos, _NPCPos);
-	}
-
-	// TODO :: 테스트 코드
-	if (m_isMove)
-	{
-		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_run_right);
-		Delay_On();
-	}
-
-
+	Trace(_fTimeDelta);
 	__super::Child_Update(_fTimeDelta);
 }
 
@@ -147,6 +125,42 @@ void CNPC_Thrash::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOthe
 }
 
 
+
+void CNPC_Thrash::Trace(_float _fTimeDelta)
+{
+
+	// 안에 있는 개수가 0개냐?
+	// 너가 1번에 있냐?
+	// 1번에 있으면 값을 가져와야한다.
+	// 무슨 값을? 이 전 NPC의 값을
+
+	_float2 vTestPos = _float2(
+		m_pTargetObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
+		m_pTargetObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
+
+	// 너 밖에없어? 그러면 PlayerPos로 기준점을 잡는다.
+	//_float2 _vTargetPos = _float2(
+	//	m_pTarget->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
+	//	m_pTarget->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
+
+	_float2 _NPCPos = _float2(
+		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
+		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
+
+	Cal_PlayerDistance();
+
+	if (COORDINATE_2D == m_pTarget->Get_CurCoord())
+	{
+		m_isMove = Trace_Player(vTestPos, _NPCPos);
+	}
+
+	// TODO :: 테스트 코드
+	if (m_isMove)
+	{
+		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_run_right);
+		Delay_On();
+	}
+}
 
 void CNPC_Thrash::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {

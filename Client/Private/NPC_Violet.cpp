@@ -93,27 +93,7 @@ void CNPC_Violet::Priority_Update(_float _fTimeDelta)
 
 void CNPC_Violet::Child_Update(_float _fTimeDelta)
 {
-	_float2 vPlayerPos = _float2(
-		m_pTarget->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
-		m_pTarget->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
-
-	_float2 _NPCPos = _float2(
-		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
-		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
-
-	Cal_PlayerDistance();
-
-	if (COORDINATE_2D == m_pTarget->Get_CurCoord())
-	{
-		m_isMove = Trace_Player(vPlayerPos, _NPCPos);
-	}
-
-	// TODO :: 테스트 코드
-	if (m_isMove)
-	{
-		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
-		Delay_On();
-	}
+	Trace(_fTimeDelta);
 
 
 	__super::Child_Update(_fTimeDelta);
@@ -173,6 +153,35 @@ _float CNPC_Violet::Get_Distance(COORDINATE _eCOord, CPlayer* _pUser)
 	return XMVector3Length(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION) - _pUser->Get_FinalPosition()).m128_f32[0];
 }
 
+void CNPC_Violet::Trace(_float _fTimeDelta)
+{
+
+	_float2 vTestPos = _float2(
+		m_pTargetObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
+		m_pTargetObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
+
+	//_float2 vPlayerPos = _float2(
+	//	m_pTarget->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
+	//	m_pTarget->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
+
+	_float2 _NPCPos = _float2(
+		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
+		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
+
+	Cal_PlayerDistance();
+
+	if (COORDINATE_2D == m_pTarget->Get_CurCoord())
+	{
+		m_isMove = Trace_Player(vTestPos, _NPCPos);
+	}
+
+	// TODO :: 테스트 코드
+	if (m_isMove)
+	{
+		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
+		Delay_On();
+	}
+}
 
 
 
@@ -324,3 +333,4 @@ HRESULT CNPC_Violet::Cleanup_DeadReferences()
 {
 	return S_OK;
 }
+
