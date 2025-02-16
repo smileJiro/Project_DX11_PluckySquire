@@ -124,6 +124,9 @@ public:
 	virtual void Attack();
 	virtual void Turn_Animation(_bool _isCW) {};
 
+	//해당 상태의 애니메이션이 존재하는 지 확인(상태 전용 애니메이션이 없는 경우 false)
+	virtual _bool Has_StateAnim(MONSTER_STATE _eState = MONSTER_STATE::LAST) { return true; }
+
 public:
 	virtual void				Change_Animation() {};
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
@@ -184,7 +187,7 @@ protected:
 	_float m_fCoolTime = { 0.f };
 	_uint	 m_iAttackCount = { 0 };
 
-	_float m_fHp = { 0 };
+	_int m_iHp = { 0 };
 
 	//시야각
 	_float m_fFOVX = { 0.f };
