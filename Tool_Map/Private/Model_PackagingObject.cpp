@@ -124,7 +124,7 @@ HRESULT CModel_PackagingObject::Import_Meshes(ifstream& _inFile)
 			tMesh.BoneInfos.resize(tMesh.iNumBones);
 			for (_uint curMeshBoneIdx = 0; curMeshBoneIdx < tMesh.iNumBones; curMeshBoneIdx++)
 			{
-				ANIMBONE& tAnimBone = tMesh.BoneInfos[i];
+				ANIMBONE& tAnimBone = tMesh.BoneInfos[curMeshBoneIdx];
 				_inFile.read(reinterpret_cast<char*>(&tAnimBone.iNameSize), sizeof(_uint));
 				_inFile.read(tAnimBone.szName, tAnimBone.iNameSize);
 				_inFile.read(reinterpret_cast<char*>(&tAnimBone.matOffset), sizeof(_float4x4));
@@ -299,13 +299,13 @@ HRESULT CModel_PackagingObject::Export_Meshes(ofstream& _OutFile)
 			tMesh.BoneInfos.resize(tMesh.iNumBones);
 			for (_uint curMeshBoneIdx = 0; curMeshBoneIdx < tMesh.iNumBones; curMeshBoneIdx++)
 			{
-				ANIMBONE& tAnimBone = tMesh.BoneInfos[i];
+				ANIMBONE& tAnimBone = tMesh.BoneInfos[curMeshBoneIdx];
 				_OutFile.write(reinterpret_cast<char*>(&tAnimBone.iNameSize), sizeof(_uint));
 				_OutFile.write(tAnimBone.szName, tAnimBone.iNameSize);
 				_OutFile.write(reinterpret_cast<char*>(&tAnimBone.matOffset), sizeof(_float4x4));
 
 				_OutFile.write(reinterpret_cast<char*>(&tAnimBone.iNumVertices), sizeof(_uint));
-				tAnimBone.BoneInfos.resize(tAnimBone.iNumVertices);
+				//tAnimBone.BoneInfos.resize(tAnimBone.iNumVertices);
 				for (_uint curBoneVertex = 0; curBoneVertex < tAnimBone.iNumVertices; curBoneVertex++)
 				{
 					_OutFile.write(reinterpret_cast<char*>(&tAnimBone.BoneInfos[curBoneVertex].first), sizeof(_uint));
@@ -365,10 +365,10 @@ HRESULT CModel_PackagingObject::Export_Animations(ofstream& _OutFile)
 		_OutFile.write((char*)&tAnim.szName, tAnim.iNameSize);
 
 		_double dValue = 0.0;
+		dValue = tAnim.fDuration;
 		_OutFile.write(reinterpret_cast<char*>(&dValue), sizeof(_double));
-		tAnim.fDuration = (_float)dValue;
+		dValue = tAnim.fTickPerSecond;
 		_OutFile.write(reinterpret_cast<char*>(&dValue), sizeof(_double));
-		tAnim.fTickPerSecond = (_float)dValue;
 		//Loop - 1.26 김지완이 추가함
 		_OutFile.write(reinterpret_cast<char*>(&tAnim.bLoop), sizeof(_bool));
 		//SpeedMagnifier- 1.26 김지완이 추가함

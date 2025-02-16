@@ -257,9 +257,9 @@ HRESULT CLoader::Loading_Level_3D_Model_Tool()
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
-    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_3D_MODEL,
-        TEXT("../../Client/Bin/Resources/Models"), matPretransform)))
-        return E_FAIL;
+    //if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_3D_MODEL,
+    //    TEXT("../../Client/Bin/Resources/Models"), matPretransform)))
+    //    return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));

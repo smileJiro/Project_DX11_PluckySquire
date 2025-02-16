@@ -63,6 +63,7 @@ private:
 		_char			szBoneName[MAX_PATH];
 		_uint			iNumKeyFrames;
 		vector<KEYFRAME> KeyFrames;
+
 	}CHANNEL;
 
 	typedef struct tagPackagingAnimation
