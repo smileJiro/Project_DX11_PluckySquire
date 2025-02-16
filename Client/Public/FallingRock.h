@@ -49,7 +49,7 @@ private: /* Bound */
 private: /* Coord3D Change */
 	_float					m_fCoordChangePosY = -200.f;
 	_float					m_fForce3D = 20.f;
-
+	_float2					m_fDeadTime = { 3.0f, 0.0f };
 private:/* Shadow Position Data : 설계미스로 좀 별로인 방식 채택함 참고하지말 것*/
 	C2DModel*				m_p2DShadowModelCom = nullptr;
 	_float3					m_vShadowYDesc = {}; // x: StartY, y : CurrentY, z : TargetY
