@@ -333,7 +333,21 @@ void CFallingRock::Action_Bound_2D(_float _fTimeDelta)
 
 void CFallingRock::Action_Bound_3D(_float _fTimeDelta)
 {
-	int a = 0;
+	if (true == m_isDead)
+		return;
+
+	m_fDeadTime.y += _fTimeDelta;
+	if (m_fDeadTime.x <= m_fDeadTime.y)
+	{
+		if (true == m_isPooling)
+		{
+			Event_SetActive(this, false);
+		}
+		else
+		{
+			Event_DeleteObject(this);
+		}
+	}
 }
 
 HRESULT CFallingRock::Ready_Components(FALLINGROCK_DESC* _pDesc)
