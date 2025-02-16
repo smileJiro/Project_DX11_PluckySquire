@@ -19,7 +19,6 @@ public:
     //_bool Foot_On();
 
 private:
-	_float m_fSpeed = 7.f;
     _float m_fRotateSpeed = 1080.f;
 	_float m_fSneakSpeed = 3.0f;
 	_bool m_bSneakBefore = false;
