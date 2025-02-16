@@ -360,7 +360,7 @@ HRESULT CPlayer::Ready_Components()
 
    /* Com_Gravity */
    CGravity::GRAVITY_DESC GravityDesc = {};
-   GravityDesc.fGravity = 9.8f * 100.f;
+   GravityDesc.fGravity = 9.8f * 150.f;
    GravityDesc.vGravityDirection = { 0.0f, -1.0f, 0.0f };
    GravityDesc.pOwner = this;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
@@ -427,7 +427,7 @@ void CPlayer::Late_Update(_float _fTimeDelta)
         }
         else
         {
-            m_f2DUpForce -= 9.8f * _fTimeDelta * 300;
+            m_f2DUpForce -= 9.8f * _fTimeDelta * 180;
 
             m_f2DFloorDistance += m_f2DUpForce * _fTimeDelta;
             if (0 > m_f2DFloorDistance)
@@ -615,21 +615,14 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
     {
         OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_CollisionGroupID();
         if (
-            OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup
-            //||
-            //TODO :: PORTAL 예외처리. 더 좋은방법이 있으면 부탁함 0215 박예슬
-            //BJECT_GROUP::PORTAL == eOtehrGroup
-            )
+            OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup)
         {
-             PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
-            if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
+            IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
+            if (Check_ReplaceInteractObject(pInteractable))
             {
-                IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
-                if (pInteractable && pInteractable->Is_Interactable(this))
-                {
-                    pInteractable->Interact(this);
-                }
+				m_pInteractableObject = pInteractable;
             }
+
         }
     }
 
@@ -696,6 +689,7 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
             {
                 /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
                 m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+
             }
         }
         
@@ -705,13 +699,6 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
         break;
     }
 
-
-
-    if (_pMyCollider == m_pAttack2DTriggerCom
-        && OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
-    {
-        Attack(_pOtherObject);
-    }
 }
 
 void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -721,14 +708,10 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
     {
         if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
         {
-            PLAYER_INPUT_RESULT tKeyResult = Player_KeyInput();
-            if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
+            IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
+            if (Check_ReplaceInteractObject(pInteractable))
             {
-                IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
-                if (pInteractable && pInteractable->Is_Interactable(this))
-                {
-                    pInteractable->Interact(this);
-                }
+                m_pInteractableObject = pInteractable;
             }
         }
     }
@@ -788,6 +771,9 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _fDamg)
 {
     //cout << " Player Get Damg" << _fDamg << endl;
     m_tStat.iHP -= _fDamg;
+	COORDINATE eCoord = Get_CurCoord();
+	CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == eCoord) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
+    CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.2f, 20, CCamera::SHAKE_XY);
     if (m_tStat.iHP <= 0)
     {
         m_tStat.iHP = 0;
@@ -918,7 +904,8 @@ void CPlayer::Jump()
     {
         if (m_bPlatformerMode)
         {
-			m_pGravityCom->Set_GravityAcc(-m_f2DJumpPower);
+			m_pGravityCom->Set_GravityAcc(-m_f2DPlatformerJumpPower);
+         
             m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
         }
         else
@@ -981,7 +968,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     else
     {
         //상호작용
-        if (KEY_DOWN(KEY::E))
+        if (KEY_PRESSING(KEY::E))
             tResult.bInputStates[PLAYER_INPUT_INTERACT] = true;
     }
 
@@ -1051,6 +1038,68 @@ void CPlayer::Revive()
 	Set_State(IDLE);
 }
 
+_bool CPlayer::Check_ReplaceInteractObject(IInteractable* _pObj)
+{
+    if(nullptr == _pObj)
+		return false;
+    if(nullptr == m_pInteractableObject)
+		return true;
+    if (false == _pObj->Is_Interactable(this))
+        return false;
+    if (m_pInteractableObject == _pObj)
+        return false;
+	COORDINATE eCoord = Get_CurCoord();
+    if (m_pInteractableObject->Get_Distance(eCoord, this) > _pObj->Get_Distance(eCoord, this))
+        return true;
+    return false;
+}
+
+void CPlayer::Try_Interact(_float _fTimeDelta)
+{
+    if (nullptr == m_pInteractableObject)
+        return;
+
+    if(m_pInteractableObject->Is_ChargeComplete())
+    {
+        m_pInteractableObject->End_Charge();
+        m_pInteractableObject->Interact(this);
+    }
+    else
+		m_pInteractableObject->Charge(_fTimeDelta);
+}
+
+void CPlayer::End_Interact()
+{
+    if (nullptr == m_pInteractableObject)
+        return;
+    m_pInteractableObject->End_Charge();
+}
+
+void CPlayer::Set_CollidersActive(_bool _bOn)
+{
+	m_pBody2DColliderCom->Set_Active(_bOn);
+	m_pBody2DTriggerCom->Set_Active(_bOn);
+	m_pAttack2DTriggerCom->Set_Active(_bOn);
+
+    for (_uint i = 0; i < PLAYER_SHAPE_USE_LAST; i++)
+    {
+	    m_pActorCom->Set_ShapeEnable(i,_bOn);
+    }
+}
+
+
+_bool CPlayer::Is_OnGround()
+{
+    if (Is_PlatformerMode())
+    {
+        return CGravity::STATE::STATE_FLOOR == m_pGravityCom->Get_CurState();
+
+    }
+    else
+    {
+        return m_bOnGround; 
+    }
+}
 
 _bool CPlayer::Is_Sneaking()
 {
@@ -1092,7 +1141,10 @@ _float CPlayer::Get_UpForce()
 
     if (COORDINATE_2D == eCoord)
     {
-        return m_f2DUpForce;
+        if (Is_PlatformerMode())
+            return -m_pGravityCom->Get_GravityAcc();
+        else
+            return m_f2DUpForce;
     }
     else
     {
@@ -1313,6 +1365,24 @@ void CPlayer::Set_Kinematic(_bool _bKinematic)
 void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
 {
     m_bPlatformerMode = _bPlatformerMode;
+}
+void CPlayer::Set_Upforce(_float _fForce)
+{
+    if (COORDINATE_2D == Get_CurCoord())
+    {
+        if (Is_PlatformerMode())
+            m_pGravityCom->Set_GravityAcc(_fForce);
+        else
+            m_f2DUpForce = _fForce;
+    }
+    else
+    {
+        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+        _vector vVelocity = pDynamicActor->Get_LinearVelocity();
+
+        pDynamicActor->Set_LinearVelocity(XMVectorSetY(vVelocity, _fForce));
+    }
+
 }
 HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
 {

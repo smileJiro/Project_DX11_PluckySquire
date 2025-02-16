@@ -418,6 +418,18 @@
     <Filter Include="91.Spawner">
       <UniqueIdentifier>{f227d0db-bb5f-4e46-9832-cfc28c44d73e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\NPC\02. NPC_Companion">
+      <UniqueIdentifier>{8156295f-338e-4ac7-a2d8-ed0aa6a6f549}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\02. NPC_Companion\00. Violet">
+      <UniqueIdentifier>{e8abfee9-834c-48ba-aa79-4c9b579d1c65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\02. NPC_Companion\01. Thrash">
+      <UniqueIdentifier>{64672d7e-65d5-4674-9dce-b09d18618063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\02. NPC_Companion\02. Pip">
+      <UniqueIdentifier>{3a078132-37b3-461a-b997-688baebef6d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -944,6 +956,15 @@
     <ClInclude Include="..\public\Spawner.h">
       <Filter>91.Spawner</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Npc_Companion.h">
+      <Filter>02.GameObjects\NPC\02. NPC_Companion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPC_Violet.h">
+      <Filter>02.GameObjects\NPC\02. NPC_Companion\00. Violet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPC_Thrash.h">
+      <Filter>02.GameObjects\NPC\02. NPC_Companion\01. Thrash</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1454,6 +1475,15 @@
     </ClCompile>
     <ClCompile Include="..\private\Spawner.cpp">
       <Filter>91.Spawner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Npc_Companion.cpp">
+      <Filter>02.GameObjects\NPC\02. NPC_Companion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPC_Violet.cpp">
+      <Filter>02.GameObjects\NPC\02. NPC_Companion\00. Violet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPC_Thrash.cpp">
+      <Filter>02.GameObjects\NPC\02. NPC_Companion\01. Thrash</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

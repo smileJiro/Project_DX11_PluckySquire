@@ -286,6 +286,23 @@ void CPlayerSword::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOth
 {
 }
 
+void CPlayerSword::Active_OnEnable()
+{
+    COORDINATE eCoord = Get_CurCoord();
+    if (COORDINATE_2D == eCoord)
+    {
+		m_pBody2DColliderCom->Set_Active(true);
+    }
+    else
+    {
+		m_pBody2DColliderCom->Set_Active(false);
+    }
+}
+
+void CPlayerSword::Active_OnDisable()
+{
+}
+
 HRESULT CPlayerSword::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))

@@ -31,7 +31,7 @@ HRESULT CPortal::Initialize(void* _pArg)
     pDesc->isCoordChangeEnable = true;
     pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
     m_fTriggerRadius =  pDesc->fTriggerRadius;
-
+    m_fInteractChargeTime = 1.f;
     // Actor Object는 차후에, ReadyObject 를 따로 불러 생성.
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -256,11 +256,11 @@ _bool CPortal::Is_Interactable(CPlayer* _pUser)
     return true;
 }
 
-_float CPortal::Get_Distance(CPlayer* _pUser)
+_float CPortal::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 {
-    _vector vMyPos = Get_FinalPosition();
-    _vector vUserPos = _pUser->Get_FinalPosition();
-    return  XMVectorGetX(XMVector3Length(vMyPos - vUserPos));
+    return XMVector3Length(m_pControllerTransform->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)
+        - _pUser->Get_ControllerTransform()->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
+
 }
 
 CPortal* CPortal::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
