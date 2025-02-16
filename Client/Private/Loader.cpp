@@ -608,6 +608,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Monster/BarferBug/BarferBug2d_Attack.animevt"))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_ZippyAttackAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Monster/Zippy/Zippy_Attack.animevt"))))
+        return E_FAIL;
         if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_BookPageActionEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))
         return E_FAIL;

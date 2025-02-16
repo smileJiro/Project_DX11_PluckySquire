@@ -215,14 +215,14 @@ void CState_Sneak::Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex)
 		break;
 
 	case Client::WAYPOINTINDEX::CHAPTER2_2:
-		m_PatrolWays.push_back(1);
-		m_PatrolWays.push_back(4);
+		m_PatrolWays.push_back(2);
+		m_PatrolWays.push_back(5);
 		break;
 
 	case Client::WAYPOINTINDEX::CHAPTER2_2_2:
-		m_PatrolWays.push_back(12);
 		m_PatrolWays.push_back(13);
 		m_PatrolWays.push_back(14);
+		m_PatrolWays.push_back(15);
 		break;
 
 	case Client::WAYPOINTINDEX::CHAPTER2_3:
