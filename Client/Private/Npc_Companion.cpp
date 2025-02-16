@@ -55,6 +55,8 @@ HRESULT CNPC_Companion::Child_Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
+	m_isRender = false;
+
 	return S_OK;
 }
 
@@ -71,7 +73,8 @@ void CNPC_Companion::Update(_float _fTimeDelta)
 {
 	for (auto& Child : m_vecCompanionNpc)
 	{
-		Child->Child_Update(_fTimeDelta);
+		if (true == Child->Is_Render())
+			Child->Child_Update(_fTimeDelta);
 	}
 
 	__super::Update(_fTimeDelta);
@@ -86,7 +89,8 @@ void CNPC_Companion::Late_Update(_float _fTimeDelta)
 {
 	for (auto& Child : m_vecCompanionNpc)
 	{
-		Child->Child_LateUpdate(_fTimeDelta);
+		if (true == Child->Is_Render())
+			Child->Child_LateUpdate(_fTimeDelta);
 	}
 
 	__super::Late_Update(_fTimeDelta);
