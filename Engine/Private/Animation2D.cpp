@@ -42,6 +42,7 @@ HRESULT CSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 	if (pairTexture == _Textures.end())
 		return E_FAIL;
 	m_pTexture = pairTexture->second;
+	Safe_AddRef(m_pTexture);
 	if (nullptr == m_pTexture)
 		return E_FAIL;
 	_inFile.read(reinterpret_cast<char*>(&m_matSpriteTransform), sizeof(_matrix));
@@ -102,6 +103,7 @@ CSpriteFrame* CSpriteFrame::Clone()
 }
 void CSpriteFrame::Free()
 {
+	Safe_Release(m_pTexture);
 	__super::Free();
 }
 

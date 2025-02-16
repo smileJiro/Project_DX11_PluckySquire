@@ -17,8 +17,6 @@ CSection_Manager::CSection_Manager()
 
 HRESULT CSection_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-
-
     if (nullptr == _pDevice)
         return E_FAIL;
     if (nullptr == _pContext)
