@@ -118,7 +118,6 @@ HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
         if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
             TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &AABBDesc)))
             return E_FAIL;
-
         m_p2DColliderComs.push_back(pCollider);
     }
     else if (CCollider::CIRCLE_2D == Desc->eColliderType)
