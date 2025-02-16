@@ -30,7 +30,7 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PART_LAST;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 300.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 400.f;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
@@ -179,11 +179,10 @@ void CProjectile_BarfBug::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
             Event_Hit(this, _Other.pActorUserData->pOwner, 1.f);
             _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
             XMVectorSetY(vRepulse, -1.f);
-            Event_KnockBack(_My.pActorUserData->pOwner, vRepulse);
+            Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
             Event_DeleteObject(this);
         }
 
-       
     }
 
     //if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
