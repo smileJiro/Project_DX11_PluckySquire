@@ -69,7 +69,7 @@ public:
 	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
-	virtual void On_Hit(CGameObject* _pHitter, _float _fDamg) override;
+	virtual void On_Hit(CGameObject* _pHitter, _int _iDamg) override;
 
 	virtual _bool Has_StateAnim(MONSTER_STATE _eState = MONSTER_STATE::LAST) override;
 
