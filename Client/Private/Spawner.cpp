@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Spawner.h"
 #include "GameInstance.h"
+#include "Pooling_Manager.h"
+#include "FallingRock.h"
 
 CSpawner::CSpawner(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
@@ -8,6 +10,7 @@ CSpawner::CSpawner(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 HRESULT CSpawner::Initialize(SPAWNER_DESC* _pDesc)
 {
+	m_eCurLevelID = _pDesc->eCurLevelID;
 	m_pObjecClonetDesc = _pDesc->pObjectCloneDesc;
 	m_vSpawnCycleTime.x = _pDesc->fSpawnCycleTime;
 	m_iOneClycleSpawnCount = _pDesc->iOneClycleSpawnCount;
@@ -15,18 +18,13 @@ HRESULT CSpawner::Initialize(SPAWNER_DESC* _pDesc)
 
 	if (true == m_isPooling)
 	{
+		m_strPoolingTag = _pDesc->strPoolingTag;
 		/* 풀링 객체 등록 */
-
-		///* Pooling Test */
-		//Pooling_DESC Pooling_Desc;
-		//Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-		//Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-		//Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle");
-		//CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
-		//pDesc->iCurLevelID = m_eLevelID;
-		//CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
-
+		CPooling_Manager::GetInstance()->Register_PoolingObject(m_strPoolingTag,
+																_pDesc->tPoolingDesc,
+																static_cast<CGameObject::GAMEOBJECT_DESC*>(_pDesc->pObjectCloneDesc));
 	}
+
     return S_OK;
 }
 
