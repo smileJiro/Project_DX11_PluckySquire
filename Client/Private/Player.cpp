@@ -946,7 +946,8 @@ void CPlayer::Jump()
     {
         CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
         _vector vVelocity = pDynamicActor->Get_LinearVelocity();
-        pDynamicActor->Add_Impulse(_float3{ 0, m_f3DMoveSpeed ,0 });
+        pDynamicActor->Set_LinearVelocity(vVelocity*0.5f);
+        pDynamicActor->Add_Impulse(_float3{ 0, m_f3DJumpPower ,0 });
         //pDynamicActor->Set_LinearDamping(2);
     }
 }
