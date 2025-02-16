@@ -225,6 +225,9 @@
     <ClInclude Include="..\Public\Level_Chapter_Test.h" />
     <ClInclude Include="..\Public\Narration.h" />
     <ClInclude Include="..\Public\Narration_Anim.h" />
+    <ClInclude Include="..\Public\Npc_Companion.h" />
+    <ClInclude Include="..\Public\NPC_Thrash.h" />
+    <ClInclude Include="..\Public\NPC_Violet.h" />
     <ClInclude Include="..\Public\PlayerState_Die.h" />
     <ClInclude Include="..\Public\PlayerState_PickUpObject.h" />
     <ClInclude Include="..\Public\PlayerState_ThrowObject.h" />
@@ -319,6 +322,7 @@
     <ClInclude Include="..\Public\Sneak_PatrolState.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\public\Spawner.h" />
     <ClInclude Include="..\Public\StandbyNoneAttackState.h" />
     <ClInclude Include="..\Public\State_Sneak.h" />
     <ClInclude Include="..\Public\Soldier_Bomb.h" />
@@ -406,6 +410,9 @@
     <ClCompile Include="..\Private\Level_Chapter_Test.cpp" />
     <ClCompile Include="..\Private\Narration.cpp" />
     <ClCompile Include="..\Private\Narration_Anim.cpp" />
+    <ClCompile Include="..\Private\Npc_Companion.cpp" />
+    <ClCompile Include="..\Private\NPC_Thrash.cpp" />
+    <ClCompile Include="..\Private\NPC_Violet.cpp" />
     <ClCompile Include="..\Private\PlayerState_Die.cpp" />
     <ClCompile Include="..\Private\PlayerState_PickUpObject.cpp" />
     <ClCompile Include="..\Private\PlayerState_ThrowObject.cpp" />
@@ -497,6 +504,7 @@
     <ClCompile Include="..\Private\Sneak_PatrolState.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\private\Spawner.cpp" />
     <ClCompile Include="..\Private\StandbyNoneAttackState.cpp" />
     <ClCompile Include="..\Private\State_Sneak.cpp" />
     <ClCompile Include="..\Private\Soldier_Bomb.cpp" />

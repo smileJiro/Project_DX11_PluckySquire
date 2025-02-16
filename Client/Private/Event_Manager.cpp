@@ -8,6 +8,7 @@
 #include "Level_Chapter_02.h"
 #include "Level_Chapter_04.h"
 #include "Level_Chapter_Test.h"
+#include "Section_Manager.h"
 #include "Layer.h"
 
 #include "Pooling_Manager.h"
@@ -62,6 +63,7 @@ void CEvent_Manager::Update(_float _fTimeDelta)
 	
 	for (auto& pDeadObject : m_DeadObjectsList)
 	{
+		SECTION_MGR->Remove_GameObject_FromSectionLayer(pDeadObject->Get_Include_Section_Name(), pDeadObject);
 		Safe_Release(pDeadObject);
 	}
 	m_DeadObjectsList.clear();

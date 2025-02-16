@@ -50,7 +50,7 @@ public:
 protected:
 	virtual void	Interact(CPlayer* _pUser);
 	virtual _bool	Is_Interactable(CPlayer* _pUser);
-	virtual _float	Get_Distance(CPlayer* _pUser);
+	virtual _float	Get_Distance(COORDINATE _eCoord, CPlayer* _pUser);
 
 private :
 	CCollider* m_pColliderCom = { nullptr };

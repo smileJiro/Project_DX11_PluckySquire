@@ -365,12 +365,12 @@ void CCamera_2D::Key_Input(_float _fTimeDelta)
 
 	_float fLength = m_pCurArm->Get_Length();
 
-	if (KEY_DOWN(KEY::F)) {
-		m_pCurArm->Set_Length(fLength - 0.5f);
-	}
-	if (KEY_DOWN(KEY::G)){
-		m_pCurArm->Set_Length(fLength + 0.5f);
-	}
+	//if (KEY_DOWN(KEY::F)) {
+	//	m_pCurArm->Set_Length(fLength - 0.5f);
+	//}
+	//if (KEY_DOWN(KEY::G)){
+	//	m_pCurArm->Set_Length(fLength + 0.5f);
+	//}
 
 	//if (KEY_DOWN(KEY::LEFT)) {  // y
 	//	m_vAtOffset.y -= 0.5f;

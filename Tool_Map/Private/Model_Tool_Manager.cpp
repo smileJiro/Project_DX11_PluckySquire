@@ -170,6 +170,21 @@ void CModel_Tool_Manager::Model_Collider_Imgui(_bool _bLock)
 
 								Safe_Release(m_pPreviewObject);
 
+								CBase* pCheck = m_pGameInstance->Find_Prototype(LEVEL_TOOL_3D_MODEL,m_arrSelectName[SELECT_MODEL]);
+
+								if (nullptr == pCheck)
+								{
+
+									XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+									if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_3D_MODEL, PairFileInfo.first,
+										C3DModel::Create(m_pDevice, m_pContext, WstringToString(PairFileInfo.second).c_str(), matPretransform))))
+									{
+										LOG_TYPE("Model Preview Failed", LOG_ERROR);
+										return;
+									}
+								}
+
 								CMapObject::MAPOBJ_DESC NormalDesc = {};
 								lstrcpy(NormalDesc.szModelName, m_arrSelectName[SELECT_MODEL].c_str());
 								NormalDesc.eCreateType = CMapObject::OBJ_CREATE;
@@ -424,6 +439,16 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 				GetCurrentDirectory(MAX_PATH, originalDir);
 				_wstring strModelPath = L"../../Client/Bin/resources/Models/NonAnim/";
 
+				auto iter = find_if(m_ObjectFileLists.begin(), m_ObjectFileLists.end(), [pTargetObj](pair<_wstring,_wstring> ModelPair) {
+					return ModelPair.first == pTargetObj->Get_ModelName();
+					});
+
+				if (iter != m_ObjectFileLists.end())
+				{
+					strModelPath = iter->second;
+				}
+
+
 				OPENFILENAME ofn = {};
 				ZeroMemory(&ofn, sizeof(ofn));
 				_tchar szName[MAX_PATH] = {};
@@ -547,6 +572,15 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 							_tchar originalDir[MAX_PATH];
 							GetCurrentDirectory(MAX_PATH, originalDir);
 							_wstring strModelPath = L"../../Client/Bin/resources/Models/NonAnim/";
+
+							auto iter = find_if(m_ObjectFileLists.begin(), m_ObjectFileLists.end(), [pTargetObj](pair<_wstring, _wstring> ModelPair) {
+								return ModelPair.first == pTargetObj->Get_ModelName();
+								});
+
+							if (iter != m_ObjectFileLists.end())
+							{
+								strModelPath = iter->second;
+							}
 
 							OPENFILENAME ofn = {};
 							ZeroMemory(&ofn, sizeof(ofn));
@@ -843,7 +877,7 @@ void CModel_Tool_Manager::Load_ModelList()
 	m_ObjectFileLists.clear();
 	_wstring strPath
 		= STATIC_3D_MODEL_FILE_PATH;
-	strPath += L"NonAnim";
+	//strPath += L"NonAnim";
 
 	for (const auto& entry : ::recursive_directory_iterator(strPath))
 	{
@@ -855,7 +889,14 @@ void CModel_Tool_Manager::Load_ModelList()
 				{
 					_wstring strName = file.path().stem().wstring();
 					_wstring strPath = file.path().wstring();
-					m_ObjectFileLists.push_back(make_pair(strName, strPath));
+
+					auto iter = find_if(m_ObjectFileLists.begin(), m_ObjectFileLists.end(), [&strName](const pair<_wstring, _wstring>& PairFileInfo)
+						->_bool {
+							return PairFileInfo.first == strName;
+						});
+
+					if(iter == m_ObjectFileLists.end())
+						m_ObjectFileLists.push_back(make_pair(strName, strPath));
 				}
 			}
 		}

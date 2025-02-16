@@ -174,7 +174,7 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
     /* For. Prototype_Component_Shader_VtxAnimMesh */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
-        CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
+        CShader::Create(m_pDevice, m_pContext, TEXT("../../Client/Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl"), VTXANIMMESH::Elements, VTXANIMMESH::iNumElements))))
         return E_FAIL;
     /* For. Prototype_Component_Shader_VtxCube */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCube"),
@@ -257,9 +257,9 @@ HRESULT CLoader::Loading_Level_3D_Model_Tool()
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
-    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_3D_MODEL,
-        TEXT("../../Client/Bin/Resources/Models"), matPretransform)))
-        return E_FAIL;
+    //if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_3D_MODEL,
+    //    TEXT("../../Client/Bin/Resources/Models"), matPretransform)))
+    //    return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));

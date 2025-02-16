@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ESC_HeartPoint.h"
+#include "UI_Manager.h"
 
 
 
@@ -58,7 +59,7 @@ void ESC_HeartPoint::Late_Update(_float _fTimeDelta)
 HRESULT ESC_HeartPoint::Render()
 {
 	if (true == m_isRender)
-		__super::Render(m_PlayerHP);
+		__super::Render(Uimgr->Get_Player()->Get_Stat().iHP);
 
 	return S_OK;
 }

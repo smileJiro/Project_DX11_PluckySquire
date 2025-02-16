@@ -214,7 +214,6 @@ _bool C3DModel::Play_Animation(_float fTimeDelta, _bool bReverse)
 			m_iPrevAnimIndex = m_iCurrentAnimIndex;
 	}
 
-
 	//뼈들의 합성변환행렬을 갱신
 	for (auto& pBone : m_Bones)
 		pBone->Update_CombinedTransformationMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));

@@ -26,7 +26,7 @@ public:
 	// IInteractable을(를) 통해 상속됨
 	virtual void Interact(CPlayer* _pUser) override;
 	virtual _bool Is_Interactable(CPlayer* _pUser) override;
-	virtual _float Get_Distance(CPlayer* _pUser) override;
+	virtual _float Get_Distance(COORDINATE _eCOord, CPlayer* _pUser) override;
 public:
 	_bool Is_Carrying() { return nullptr != m_pCarrier; }
 	HRESULT Set_Carrier(CPlayer* _pCarrier);

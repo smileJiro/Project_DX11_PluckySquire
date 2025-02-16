@@ -52,13 +52,6 @@ void CObject_Manager::Late_Update(_float _fTimeDelta)
         for (auto& Pair : m_pLayers[i])
         {
             Pair.second->Late_Update(_fTimeDelta);
-                
-            // Is_Dead 인지 체크하고 List에서 삭제. 이때 Safe_Release가 아닌. 렌더러에 들어가는거 주의. 렌더러에 들어갈때 Add_Ref() 하고있어.
-            // Is_Dead 이면 해당 레이어에서 삭제처리.
-            // 이벤트 매니저에서는 해당 객체를 Set_Dead()만 해준다. 
-            // 다음프레임 전부 업데이트하고, Late Update 까지 돌린 후, Is_Dead()라면, 객체를 소멸시킨다. 
-            // DeadList 자체가 필요가 없다. 
-            // Layer Class 의 Late_Update() 마친 후 객체 삭제.
         }
     }
 }
