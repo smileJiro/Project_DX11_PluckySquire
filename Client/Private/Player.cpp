@@ -365,7 +365,7 @@ HRESULT CPlayer::Ready_Components()
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
        TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
        return E_FAIL;
-
+   Safe_AddRef(m_pGravityCom);
     return S_OK;
 }
 
@@ -806,7 +806,6 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         if (COORDINATE_2D == _eCoordinate)
         {
             m_pCarryingObject->Set_Include_Section_Name(m_strSectionName);
-            m_pAttack2DTriggerCom->Set_Active(false);
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCarryingObject);
         }
         else
@@ -815,11 +814,11 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         }
 
     }
+    End_Attack();
     if (COORDINATE_2D == _eCoordinate)
     {
         Set_2DDirection(E_DIRECTION::DOWN);
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
-
     }
     else
     {
@@ -917,7 +916,14 @@ void CPlayer::Jump()
 
     if (COORDINATE_2D == eCoord)
     {
-        m_f2DUpForce = m_f2DJumpPower;
+        if (m_bPlatformerMode)
+        {
+			m_pGravityCom->Set_GravityAcc(-m_f2DJumpPower);
+            m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
+        }
+        else
+            m_f2DUpForce = m_f2DJumpPower;
+
     }
     else
     {
@@ -1282,6 +1288,10 @@ void CPlayer::Set_Kinematic(_bool _bKinematic)
         pDynamicActor->Set_Dynamic();
     }
 }
+void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
+{
+    m_bPlatformerMode = _bPlatformerMode;
+}
 HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
 {
     //손 비우기
@@ -1398,6 +1408,24 @@ void CPlayer::ThrowObject()
 	Set_CarryingObject(nullptr);
 }
 
+void CPlayer::Add_Upforce(_float _fForce)
+{
+    if (COORDINATE_2D == Get_CurCoord())
+    {
+        if(Is_PlatformerMode())
+			m_pGravityCom->Set_GravityAcc(m_pGravityCom->Get_GravityAcc() - _fForce);
+		else
+			m_f2DUpForce += _fForce;
+	}
+	else
+	{
+		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+		_vector vVelocity = pDynamicActor->Get_LinearVelocity();
+		pDynamicActor->Add_Impulse(_float3{ 0, _fForce ,0 });
+    }
+
+}
+
 void CPlayer::Key_Input(_float _fTimeDelta)
 {
     if (KEY_DOWN(KEY::F1))
@@ -1506,12 +1534,13 @@ void CPlayer::Free()
     Safe_Release(m_pBody2DColliderCom);
     Safe_Release(m_pBody2DTriggerCom);
     Safe_Release(m_pAttack2DTriggerCom);
+	Safe_Release(m_pStateMachine);
+    Safe_Release(m_pGravityCom);
 
 	Safe_Release(m_pSword);
 	Safe_Release(m_pBody);
 	Safe_Release(m_pGlove);
 
-	Safe_Release(m_pStateMachine);
     Safe_Release(m_pCarryingObject);
 
     __super::Free();

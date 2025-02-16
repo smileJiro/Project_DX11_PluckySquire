@@ -34,7 +34,10 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 	}
 	else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 	{
-		m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
+		if (m_pOwner->Is_PlatformerMode())
+			m_pOwner->Set_State(CPlayer::ATTACK);
+		else
+			m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
 		return;
 	}
 	else	if (tKeyResult.bInputStates[PLAYER_KEY_THROWOBJECT])

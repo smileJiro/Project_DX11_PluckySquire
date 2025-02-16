@@ -438,6 +438,7 @@ public: /* 2D 충돌 */
 	void Jump();
 	void	ThrowSword();
 	void ThrowObject();
+	void Add_Upforce(_float _fForce);
 	PLAYER_INPUT_RESULT Player_KeyInput();
 	//Get
 	_bool Is_OnGround() {return m_bOnGround;}
@@ -491,6 +492,7 @@ public: /* 2D 충돌 */
 	void Set_ClamberEndPosition(_fvector _vPos) { m_vClamberEndPosition = _vPos; }
 	void Set_SwordGrip(_bool _bForehand);
 	void Set_Kinematic(_bool _bKinematic);
+	void Set_PlatformerMode(_bool _bPlatformerMode);
 	HRESULT Set_CarryingObject(CCarriableObject* _pCarryingObject);
 
 
