@@ -2200,5 +2200,67 @@
   "SearchTag": "tome_roof_01_stairs_Sprite",
   "Sorting": false,
   "TextureName": "tome_roof_01_stairs_Sprite"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 0
+  },
+  "BackGround": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 138.0,
+     "Y": 138.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 0.0
+    }
+   },
+   "ColliderType": 1
+  },
+  "ModelType": 0,
+  "SearchTag": "cliff_platform_cracked_01_Sprite",
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 0.0
+   }
+  },
+  "TextureName": "cliff_platform_cracked_01_Sprite"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 0
+  },
+  "BackGround": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 57.0,
+     "Y": 57.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 0.0
+    }
+   },
+   "ColliderType": 1
+  },
+  "ModelType": 0,
+  "SearchTag": "cliff_platform_spikes_long_Sprite",
+  "Sorting": true,
+  "SortingPropertis": {
+   "Sorting_Offset_Pos": {
+    "X": 0.0,
+    "Y": 0.0
+   }
+  },
+  "TextureName": "cliff_platform_spikes_long_Sprite"
  }
 ]

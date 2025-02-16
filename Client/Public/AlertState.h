@@ -19,9 +19,6 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
-private:
-	_bool m_isTurn = { false };
-
 public:
 	static CAlertState* Create(void* _pArg);
 

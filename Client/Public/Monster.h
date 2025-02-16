@@ -130,6 +130,7 @@ public:
 	void						Change_Dir();
 	_bool						IsTarget_In_Detection();
 	_bool						IsTarget_In_Sneak_Detection();
+	_float					Restrict_2DRangeAttack_Angle(_float _fDegrees);
 
 protected:
 	void Delay_On() 

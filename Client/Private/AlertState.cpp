@@ -27,6 +27,9 @@ HRESULT CAlertState::Initialize(void* _pArg)
 void CAlertState::State_Enter()
 {
 	m_pOwner->Set_AnimChangeable(false);
+
+	if (nullptr != m_pOwner && nullptr != m_pTarget)
+		m_pOwner->Change_Dir();
 }
 
 void CAlertState::State_Update(_float _fTimeDelta)
@@ -47,19 +50,21 @@ void CAlertState::State_Update(_float _fTimeDelta)
 	{
 		if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
 		{
-			//굳이 멤버변수로 써야하나
-			m_isTurn = true;
+			_bool isTurn = true;
 			_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
 
 			//다 돌았으면 회전 애니메이션 재생 안하도록
 			if (true == m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
-				m_isTurn = false;
+				isTurn = false;
 
-			if (false == m_isTurn)
+			if (false == isTurn)
 				Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
 		}
-		else
+		else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
+		{
+
 			Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
+		}
 		
 		return;
 	}
