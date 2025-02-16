@@ -13,6 +13,17 @@ CPlayerState_JumpToPortal::CPlayerState_JumpToPortal(CPlayer* _pOwner)
 
 void CPlayerState_JumpToPortal::Update(_float _fTimeDelta)
 {
+    if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+    {
+        _float fProgress = m_pOwner->Get_AnimProgress();
+        if (false == m_bPortaled && fProgress >= 0.86f)
+        {
+            m_pPortal->Use_Portal(m_pOwner);
+            m_bPortaled = true;
+            return;
+        }
+    }
+
 }
 
 void CPlayerState_JumpToPortal::Enter()
