@@ -156,13 +156,9 @@ _float CNPC_Violet::Get_Distance(COORDINATE _eCOord, CPlayer* _pUser)
 void CNPC_Violet::Trace(_float _fTimeDelta)
 {
 
-	_float2 vTestPos = _float2(
+	_float2 vTargetObjectPos = _float2(
 		m_pTargetObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
 		m_pTargetObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
-
-	//_float2 vPlayerPos = _float2(
-	//	m_pTarget->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
-	//	m_pTarget->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
 
 	_float2 _NPCPos = _float2(
 		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
@@ -172,7 +168,7 @@ void CNPC_Violet::Trace(_float _fTimeDelta)
 
 	if (COORDINATE_2D == m_pTarget->Get_CurCoord())
 	{
-		m_isMove = Trace_Player(vTestPos, _NPCPos);
+		m_isMove = Trace_Player(vTargetObjectPos, _NPCPos);
 	}
 
 	// TODO :: 테스트 코드
@@ -182,10 +178,6 @@ void CNPC_Violet::Trace(_float _fTimeDelta)
 		Delay_On();
 	}
 }
-
-
-
-
 
 HRESULT CNPC_Violet::Ready_ActorDesc(void* _pArg)
 {

@@ -134,7 +134,7 @@ void CNPC_Thrash::Trace(_float _fTimeDelta)
 	// 1번에 있으면 값을 가져와야한다.
 	// 무슨 값을? 이 전 NPC의 값을
 
-	_float2 vTestPos = _float2(
+	_float2 vTargetObjectPos = _float2(
 		m_pTargetObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
 		m_pTargetObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
 
@@ -151,7 +151,7 @@ void CNPC_Thrash::Trace(_float _fTimeDelta)
 
 	if (COORDINATE_2D == m_pTarget->Get_CurCoord())
 	{
-		m_isMove = Trace_Player(vTestPos, _NPCPos);
+		m_isMove = Trace_Player(vTargetObjectPos, _NPCPos);
 	}
 
 	// TODO :: 테스트 코드
