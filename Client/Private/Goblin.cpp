@@ -236,7 +236,7 @@ void CGoblin::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
             Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().fDamg);
             _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
             XMVectorSetY(vRepulse, -1.f);
-            Event_KnockBack(_My.pActorUserData->pOwner, vRepulse);
+            Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
             Attack();
             Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
         }
@@ -261,6 +261,8 @@ void CGoblin::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
             m_isContactToTarget = true;
         }
     }
+
+    __super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
 }
 
 void CGoblin::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)

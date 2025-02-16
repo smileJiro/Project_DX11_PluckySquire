@@ -97,7 +97,7 @@ void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 		Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().fDamg);
 		_vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
 		XMVectorSetY( vRepulse , -1.f);
-		Event_KnockBack(_Other.pActorUserData->pOwner, vRepulse);
+		Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), vRepulse);
 	}
 }
 
@@ -158,6 +158,11 @@ void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+	if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+	{
+		Event_Hit(this, _pOtherObject, Get_Stat().fDamg);
+		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 100.f);
+	}
 }
 
 void CMonster::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)

@@ -21,6 +21,21 @@ void CCharacter::Update(_float _fTimeDelta)
 
 void CCharacter::Late_Update(_float _fTimeDelta)
 {
+    if (true == m_isKnockBack)
+    {
+        _vector vKnockBack = XMLoadFloat3(&m_vKnockBackDirection);
+        vKnockBack *= m_fKnockBackForce * _fTimeDelta;
+        m_fKnockBackAccTime += _fTimeDelta;
+        m_fKnockBackForce = (1 - m_fKnockBackAccTime) * m_fKnockBackForce;
+        Get_ControllerTransform()->Go_Direction(vKnockBack, _fTimeDelta);
+		if (0.1f >= m_fKnockBackForce)
+        {
+            m_fKnockBackForce = 0.f;
+            m_fKnockBackAccTime = 0.f;
+            m_isKnockBack = false;
+        }
+    }
+
 	__super::Late_Update(_fTimeDelta);
 }
 
@@ -158,7 +173,12 @@ void CCharacter::KnockBack(_fvector _vForce)
     }
     else if (COORDINATE_2D == Get_CurCoord())
     {
-
+        if(false == m_isKnockBack)
+        {
+            m_fKnockBackForce=XMVectorGetX(XMVector3Length(_vForce));
+            XMStoreFloat3(&m_vKnockBackDirection, XMVector3Normalize(_vForce));
+            m_isKnockBack = true;
+        }
     }
 }
 

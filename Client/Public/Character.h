@@ -44,6 +44,12 @@ public:
 protected:
 	STAT m_tStat;
 	_vector m_vLookBefore = { 0,0,-1 };
+
+	_float3 m_vKnockBackDirection = {};
+	_bool	m_isKnockBack = {};
+	_float m_fKnockBackForce = {};
+	_float m_fKnockBackAccTime = {};
+
 public:	
 	virtual void Free() override;
 };

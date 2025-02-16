@@ -412,7 +412,7 @@ void CPlayer::Update(_float _fTimeDelta)
         }
     }
 
-
+    cout << "Player HP : " << Get_Stat().fHP << endl;
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
