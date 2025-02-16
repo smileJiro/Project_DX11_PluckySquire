@@ -17,8 +17,6 @@ CSection_Manager::CSection_Manager()
 
 HRESULT CSection_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-
-
     if (nullptr == _pDevice)
         return E_FAIL;
     if (nullptr == _pContext)
@@ -580,9 +578,12 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
         _uint iIndex = 0;
         for (auto ChildJson : ChapterJson)
         {
-            
+            _bool isStart = false;
+
             if (!ChildJson.contains("Section_Type"))
                 continue;
+            if (ChildJson.contains("Section_Start"))
+                isStart = true;
             CSection_2D::SECTION_2D_PLAY_TYPE eType = ChildJson["Section_Type"];
 
 
@@ -651,7 +652,7 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
             m_iPriorityGenKey += 10;
 
 
-            if (m_CurLevelSections.empty())
+            if (m_CurLevelSections.empty() || isStart)
                 strStartSectionKey = pSection->Get_SectionName();
             m_CurLevelSections.try_emplace(pSection->Get_SectionName(), pSection);
             

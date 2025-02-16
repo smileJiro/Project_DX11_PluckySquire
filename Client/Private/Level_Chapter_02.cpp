@@ -326,6 +326,14 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	}
 
+	if (KEY_DOWN(KEY::Y))
+	{
+		if (FAILED(Ready_Layer_FallingRock(TEXT("Layer_FallingRock"))))
+		{
+			MSG_BOX(" Failed Ready_Layer_FallingRock (Level_Chapter_02::Initialize)");
+			assert(nullptr);
+		}
+	}
 
 }
 

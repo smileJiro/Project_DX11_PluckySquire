@@ -88,7 +88,6 @@ public:
 	virtual void				On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
 
 protected:
-	class CCollider*			m_pColliderCom = { nullptr };
 	SHAPE_TYPE					m_eShapeType = { SHAPE_TYPE::LAST };
 	_uint						m_iTriggerType;
 

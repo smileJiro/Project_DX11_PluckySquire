@@ -61,8 +61,6 @@ HRESULT CTriggerObject::Initialize(void* _pArg)
 HRESULT CTriggerObject::Render()
 {
 #ifdef _DEBUG
-    if(m_pColliderCom)
-        return m_pColliderCom->Render();
 #endif // _DEBUG
     return S_OK;
 }
@@ -130,6 +128,8 @@ HRESULT CTriggerObject::Initialize_3D_Trigger(CActor::ACTOR_DESC** _pActorDesc, 
 
 HRESULT CTriggerObject::Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
 {
+    CCollider* pCollider = nullptr;
+
     m_iTriggerType = _pDesc->iTriggerType;
     m_szEventTag = _pDesc->szEventTag;
     m_eConditionType = _pDesc->eConditionType;
@@ -139,11 +139,10 @@ HRESULT CTriggerObject::Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
     AABBDesc.vScale = { 1.f, 1.f };
     AABBDesc.vOffsetPosition = { 0.f, 0.f };
     if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_Collider_AABB"),
-        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &AABBDesc)))
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &AABBDesc)))
         return E_FAIL;/* Add_ref */
 
-    m_p2DColliderComs.push_back(m_pColliderCom);
-    Safe_AddRef(m_pColliderCom); 
+    m_p2DColliderComs.push_back(pCollider);
     return S_OK;
 }
 
@@ -283,7 +282,5 @@ CGameObject* CTriggerObject::Clone(void* _pArg)
 
 void CTriggerObject::Free()
 {
-
-    Safe_Release(m_pColliderCom);
     __super::Free();
 }

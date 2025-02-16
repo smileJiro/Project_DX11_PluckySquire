@@ -2,6 +2,7 @@
 #include "FallingRock.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "Camera_Manager.h"
 
 CFallingRock::CFallingRock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -241,6 +242,9 @@ void CFallingRock::Action_Bound_2D(_float _fTimeDelta)
 		m_pGravityCom->Set_GravityAcc(0.0f);
 		/* 2. 다시 점프 */
 		m_vJumpTime.y = 0.0f;
+
+		/* 3. 카메라 셰이크 */
+		CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.1f, 0.01f, 30, CCamera::SHAKE_XY);
 	}
 	else
 	{
