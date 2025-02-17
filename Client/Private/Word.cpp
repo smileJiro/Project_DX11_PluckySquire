@@ -48,6 +48,7 @@ HRESULT CWord::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition
 
 	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
 		return E_FAIL;
+	return S_OK;
 
 }
 
