@@ -39,6 +39,7 @@
 #include "3DMapObject.h"
 #include "FallingRock.h"
 #include "Spawner.h"
+#include "CollapseBlock.h"
 
 
 //#include "UI.h"
@@ -108,11 +109,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_UI (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	//if (FAILED(Ready_Layer_NPC(TEXT("Layer_NPC"))))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_NPC (Level_Chapter_02::Initialize)");
-	//	assert(nullptr);
-	//}
+	if (FAILED(Ready_Layer_NPC(TEXT("Layer_NPC"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_NPC (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 
 
 	if (FAILED(Ready_Layer_Spawner(TEXT("Layer_Spawner"))))
@@ -145,7 +146,18 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-	/* Collision Test */
+	/* Test CollapseBlock */
+	{
+		CCollapseBlock::MAPOBJ_DESC CollapseBlockDesc{};
+		CollapseBlockDesc.Build_2D_Model(LEVEL_CHAPTER_2, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"));
+		CollapseBlockDesc.Build_2D_Transform(_float2(-100.f, -300.f));
+		CollapseBlockDesc.eStartCoord = COORDINATE_2D;
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_CollapseBlock"), m_eLevelID, TEXT("Layer_CollapseBlock"), &pGameObject, &CollapseBlockDesc)))
+			return E_FAIL;
+
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
+	}
 
 	
 
@@ -920,17 +932,24 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	pDesc.fY = 0.f;// 전체 사이즈 / RTSIZE 끝으로 변경
 	pDesc.fSizeX = 2328.f * 0.8f;
 	pDesc.fSizeY = 504.f * 0.8f;
+	CGameObject* pDialogueObject;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDialogueObject, &pDesc)))
 		return E_FAIL;
+
+	Uimgr->Set_Dialogue(static_cast<CDialog*>(pDialogueObject));
+
+
 
 	pDesc.fX = DEFAULT_SIZE_BOOK2D_X / RATIO_BOOK2D_X;
 	pDesc.fY = DEFAULT_SIZE_BOOK2D_Y / RATIO_BOOK2D_Y;
 	pDesc.fSizeX = 512.f * 0.8f;
 	pDesc.fSizeY = 512.f * 0.8f;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dialogue_Portrait"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dialogue_Portrait"), pDesc.iCurLevelID, _strLayerTag, &pDialogueObject, &pDesc)))
 		return E_FAIL;
+
+	Uimgr->Get_pDialogue()->Set_Portrait(static_cast<CPortrait*>(pDialogueObject));
 
 	/* 테스트 용 */
 	/* (0.0) ~ MAXSIZE 기준으로 fX, fY 를 설정하여야합니다. */
@@ -968,21 +987,22 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 {
 	CNPC::NPC_DESC NPCDesc;
 
-	NPCDesc.iCurLevelID = m_eLevelID;
-	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	NPCDesc.iMainIndex = 0;
-	NPCDesc.iSubIndex = 0;
-	wsprintf(NPCDesc.strDialogueIndex, TEXT("dialog_01"));
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
-		return E_FAIL;
+	//NPCDesc.iCurLevelID = m_eLevelID;
+	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//NPCDesc.iMainIndex = 0;
+	//NPCDesc.iSubIndex = 0;
+	//wsprintf(NPCDesc.strDialogueIndex, TEXT("dialog_01"));
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+	//	return E_FAIL;
 
 	NPCDesc.iCurLevelID = m_eLevelID;
 	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
 	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iNumPartObjects = 3.f;
 	NPCDesc.iMainIndex = 0;
 	NPCDesc.iSubIndex = 0;
-	wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
+	//wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_OnlySocial"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
 	

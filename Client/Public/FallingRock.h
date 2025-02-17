@@ -9,13 +9,16 @@ BEGIN(Client)
 class CFallingRock final : public CModelObject
 {
 public:
+	enum STATE { STATE_FALLDOWN, STATE_BOUND_2D, STATE_BOUND_3D, STATE_COL_BOUND, STATE_LAST };
+	enum COLBOUND2D { COLBOUND_LEFT, COLBOUND_RIGHT, COLBOUND_LAST };
+
+public:
 	typedef struct tagFallingRockDesc : CModelObject::MODELOBJECT_DESC
 	{
 		_float fFallDownEndY = {};
+		_bool isColBound = false;
+		COLBOUND2D eColBoundDirection = COLBOUND_LEFT;
 	}FALLINGROCK_DESC;
-
-public:
-	enum STATE { STATE_FALLDOWN, STATE_BOUND_2D, STATE_BOUND_3D, STATE_LAST };
 
 private:
 	CFallingRock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -50,22 +53,28 @@ private: /* Coord3D Change */
 	_float					m_fCoordChangePosY = -200.f;
 	_float					m_fForce3D = 7.5f;
 	_float2					m_fDeadTime = { 3.0f, 0.0f };
+
 private:/* Shadow Position Data : 설계미스로 좀 별로인 방식 채택함 참고하지말 것*/
 	C2DModel*				m_p2DShadowModelCom = nullptr;
 	_float3					m_vShadowYDesc = {}; // x: StartY, y : CurrentY, z : TargetY
+
+private: /* Col_Scroll_Bound */
+
+	_float2					m_vColBoundDirection = {}; /* 좌우 대각 이동 */
 
 private:
 	void					State_Change();
 	void					State_Change_FallDown();
 	void					State_Change_Bound_2D();
 	void					State_Change_Bound_3D();
-
+	void					State_Change_ColBound_2D();/* 점프 방향을 가진다, Blocker 클래스와의 충돌을 기반으로 점프를 하는 것. */
 private:
 	void					Action_State(_float _fTimeDelta);
 	void					Action_FallDown(_float _fTimeDelta);
 	void					Action_Bound_2D(_float _fTimeDelta);
 	void					Action_Bound_3D(_float _fTimeDelta);
-	
+	void					Action_ColBound_2D(_float _fTimeDelta);
+
 private:
 	HRESULT					Ready_Components(FALLINGROCK_DESC* _pDesc);
 

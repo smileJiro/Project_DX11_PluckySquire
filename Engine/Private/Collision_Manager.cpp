@@ -106,6 +106,10 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
                         pRightObject->On_Collision2D_Enter(pRightCollider, pLeftCollider, pLeftObject);
                         iter->second = true; // 이전 프레임정보를 업데이트
 
+                        if (true == pLeftCollider->Is_Block() && false == pRightCollider->Is_Trigger())
+                            pLeftCollider->Block(pRightCollider);
+                        else if (true == pRightCollider->Is_Block() && false == pLeftCollider->Is_Trigger())
+                            pRightCollider->Block(pLeftCollider);
                     }
                 }
             }

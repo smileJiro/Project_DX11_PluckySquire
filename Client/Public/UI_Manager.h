@@ -8,6 +8,7 @@
 #include "Narration.h"
 
 
+
 BEGIN(Client)
 class CUI_Manager final : public CBase
 {
@@ -23,6 +24,7 @@ private:
 	CGameInstance* m_pGameInstance;
 	STAMP								m_eStampIndex = { STAMP_STOP };
 	CPlayer* m_pPlayer = { nullptr };
+	CDialog* m_pDiagloue = { nullptr };
 	
 
 	map<_uint, CSettingPanelBG*>		m_pSettingPanels;
@@ -75,6 +77,8 @@ public:
 	void								Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
 	CPlayer*							Get_Player() { return m_pPlayer; }
 	void								Set_Player(CPlayer* _Player) { m_pPlayer = _Player; Safe_AddRef(_Player); }
+	void								Set_Dialogue(CDialog* _Dialogue) { m_pDiagloue = _Dialogue; Safe_AddRef(_Dialogue); }
+	CDialog*							Get_pDialogue() { return m_pDiagloue; }
 	_bool								Get_PlayerOnHit() { return m_isOnHitPlayer; }
 	void								Set_PlayerOnHit(_bool _Hit) { m_isOnHitPlayer = _Hit; }
 	void								Emplace_SettingPanels(_uint _ePanel, CSettingPanelBG* _pPanel);
