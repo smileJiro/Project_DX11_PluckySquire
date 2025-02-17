@@ -623,6 +623,8 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
     switch (eShapeUse)
     {
     case Client::SHAPE_USE::SHAPE_TRIGER:
+        if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+            return;
         Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
         break;
     }
@@ -658,6 +660,8 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
     switch (eShapeUse)
     {
     case Client::SHAPE_USE::SHAPE_TRIGER:
+        if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+            return;
         Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
         break;
     }
@@ -994,6 +998,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     }
     if (Is_CarryingObject())
     {
+        //상호작용 오브젝트가 범위 안에 있으면 상호작용, 아니면 던지기
+
         //던지기
         if (KEY_DOWN(KEY::E))
             tResult.bInputStates[PLAYER_INPUT_THROWOBJECT] = true;
