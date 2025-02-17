@@ -1000,6 +1000,11 @@
     <ClInclude Include="..\Public\WordPrinter.h">
       <Filter>02.GameObjects\Word</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CollapseBlock.h" />
+    <ClInclude Include="..\Public\PlayerState_LaydownObject.h" />
+    <ClInclude Include="..\Public\Effect_Manager.h">
+      <Filter>02.GameObjects\Effect\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1548,6 +1553,11 @@
     </ClCompile>
     <ClCompile Include="..\Private\WordPrinter.cpp">
       <Filter>02.GameObjects\Word</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CollapseBlock.cpp" />
+    <ClCompile Include="..\Private\PlayerState_LaydownObject.cpp" />
+    <ClCompile Include="..\Private\Effect_Manager.cpp">
+      <Filter>02.GameObjects\Effect\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

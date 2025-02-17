@@ -74,7 +74,14 @@ void CSpriteEffect_Emitter::Update(_float _fTimeDelta)
 
 void CSpriteEffect_Emitter::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+	if (ABSOLUTE_WORLD == m_eSpawnPosition)
+	{
+		if (m_pSpawnMatrix)
+			XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pSpawnMatrix));
+
+		//else
+			//XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D));
+	}
 
 	if (m_isActive && m_iAccLoop)
 		m_pGameInstance->Add_RenderObject_New(s_iRG_3D, s_iRGP_PARTICLE, this);
@@ -111,7 +118,10 @@ void CSpriteEffect_Emitter::Reset()
 
 void CSpriteEffect_Emitter::Update_Emitter(_float _fTimeDelta)
 {
-	// TODO:
+
+	if (STOP_SPAWN == m_eNowEvent)
+		Set_Active(false);
+
 	for (auto& pModule : m_Modules)
 	{
 		CEffect_Module::DATA_APPLY eData = pModule->Get_ApplyType();
@@ -139,16 +149,16 @@ void CSpriteEffect_Emitter::Update_Emitter(_float _fTimeDelta)
 
 HRESULT CSpriteEffect_Emitter::Bind_ShaderResources()
 {
-	if (RELATIVE_POSITION == m_eSpawnPosition)
-	{
+	//if (RELATIVE_WORLD == m_eSpawnPosition)
+	//{
 		if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
 			return E_FAIL;
-	}
-	else if (ABSOLUTE_POSITION == m_eSpawnPosition)
-	{
-		if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-			return E_FAIL;
-	}
+	//}
+	//else if (ABSOLUTE_WORLD == m_eSpawnPosition)
+	//{
+		//if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+		//	return E_FAIL;
+	//}
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW))))
 		return E_FAIL;
@@ -187,7 +197,24 @@ HRESULT CSpriteEffect_Emitter::Bind_ShaderValue_ByPass()
 			return E_FAIL;
 		if (FAILED(Bind_Float("ColorTest", "g_RGBTest")))
 			return E_FAIL;
+		if (FAILED(Bind_Float4("ColorIntensity", "g_vColorIntensity")))
+			return E_FAIL;
 		break;
+	}
+	case BLOOM_DEFAULT:
+	{
+		if (FAILED(Bind_Texture(DIFFUSE, "g_DiffuseTexture")))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
+			return E_FAIL;
+		if (FAILED(Bind_Float("AlphaTest", "g_AlphaTest")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("ColorTest", "g_RGBTest")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("BloomThreshold", "g_fBloomThreshold")))
+			return E_FAIL;
+		if (FAILED(Bind_Float4("ColorIntensity", "g_vColorIntensity")))
+			return E_FAIL;
 	}
 	}
 
@@ -394,7 +421,7 @@ void CSpriteEffect_Emitter::Tool_SetEffect()
 		if (ImGui::TreeNode("Pass"))
 		{
 
-			const _char* items[] = { "Default", "Dissolve", "Bloom", "Bloom_Dissolve" };
+			const _char* items[] = { "Default", "Bloom"};
 			static _int item_selected_idx = 0;
 			const char* combo_preview_value = items[item_selected_idx];
 

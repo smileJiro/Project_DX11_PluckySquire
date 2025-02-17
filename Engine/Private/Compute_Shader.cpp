@@ -10,11 +10,13 @@ CCompute_Shader::CCompute_Shader(const CCompute_Shader& _Prototype)
     //, m_ComputeShaders(_Prototype.m_ComputeShaders)
     , m_pEffect(_Prototype.m_pEffect)
     , m_iNumLayouts(_Prototype.m_iNumLayouts)
+    , m_pEventQuery(_Prototype.m_pEventQuery)
 {
     //for (auto& Pair : m_ComputeShaders)
     //    Safe_AddRef(Pair.second);
 
     Safe_AddRef(m_pEffect);
+    Safe_AddRef(m_pEventQuery);
 }
 
 HRESULT CCompute_Shader::Initialize_Prototype(const _tchar* _pShaderFilePath)
@@ -65,11 +67,19 @@ HRESULT CCompute_Shader::Initialize_Prototype(const _tchar* _pShaderFilePath)
     pTechnique->GetDesc(&TechniqueDesc);
     m_iNumLayouts = TechniqueDesc.Passes;
 
+
+    D3D11_QUERY_DESC queryDesc = {};
+    queryDesc.Query = D3D11_QUERY_EVENT;
+    queryDesc.MiscFlags = 0;
+    m_pDevice->CreateQuery(&queryDesc, &m_pEventQuery);
+
     return S_OK;
 }
 
 HRESULT CCompute_Shader::Initialize(void* _pArg)
 {
+
+
     return S_OK;
 }
 
@@ -94,6 +104,19 @@ HRESULT CCompute_Shader::Bind_Matrix(const _char* _pConstantName, const _float4x
         return E_FAIL;
 
     return pMatrixVariable->SetMatrix(reinterpret_cast<const _float*>(_pMatrix));
+}
+
+HRESULT CCompute_Shader::Bind_SRV(const _char* _pConstantName, ID3D11ShaderResourceView* _pSRV)
+{
+    ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(_pConstantName);
+    if (nullptr == pVariable)
+        return E_FAIL;
+
+    ID3DX11EffectShaderResourceVariable* pSRVVariable = pVariable->AsShaderResource();
+    if (nullptr == pSRVVariable)
+        return E_FAIL;
+
+    return pSRVVariable->SetResource(_pSRV);
 }
 
 HRESULT CCompute_Shader::Set_SRVs(ID3D11ShaderResourceView** _ppSRVs, _uint _iCount, _uint _iStartSlot)
@@ -145,14 +168,22 @@ HRESULT CCompute_Shader::Begin(_uint _iPassIndex)
 }
 
 HRESULT CCompute_Shader::Compute(_uint _iThreadGroupCountX, _uint _iThreadGroupCountY, _uint _iThreadGroupCountZ)
-{
-    
+{    
+
     m_pContext->Dispatch(_iThreadGroupCountX, _iThreadGroupCountY, _iThreadGroupCountZ);
+
+
+
     return S_OK;
 }
 
 HRESULT CCompute_Shader::End_Compute()
 {
+    while (S_FALSE == m_pContext->GetData(m_pEventQuery, nullptr, 0, 0)) {
+    
+    }
+    m_pContext->End(m_pEventQuery);
+
     ID3D11ShaderResourceView* nullSRV[6] =
     {
         0
@@ -200,6 +231,7 @@ void CCompute_Shader::Free()
     //    Safe_Release(Pair.second);
 
     Safe_Release(m_pEffect);
+    Safe_Release(m_pEventQuery);
 
     __super::Free();
 }

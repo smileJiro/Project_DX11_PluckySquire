@@ -119,7 +119,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../EngineSDK/Lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(Configuration)\Engine.libEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(Configuration)\Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -154,14 +154,18 @@
     <ClInclude Include="..\public\ETool_RenderGroup_AfterEffect.h" />
     <ClInclude Include="..\public\ETool_RenderGroup_AfterParticle.h" />
     <ClInclude Include="..\public\ETool_RenderGroup_Final.h" />
-    <ClInclude Include="..\public\ETool_RenderGroup_Lights.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\public\Level_EffectTool.h" />
     <ClInclude Include="..\public\Level_EffectLoading.h" />
+    <ClInclude Include="..\public\Magic_Hand.h" />
+    <ClInclude Include="..\public\Magic_Hand_Body.h" />
     <ClInclude Include="..\public\MainEffectTool.h" />
     <ClInclude Include="..\public\Object_Background.h" />
     <ClInclude Include="..\Public\RenderGroup_Blur.h" />
+    <ClInclude Include="..\Public\RenderGroup_Combine.h" />
+    <ClInclude Include="..\Public\RenderGroup_DirectLights.h" />
     <ClInclude Include="..\public\RenderGroup_DownSample.h" />
+    <ClInclude Include="..\Public\RenderGroup_Lighting.h" />
     <ClInclude Include="..\public\SkyBox.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
@@ -175,14 +179,18 @@
     <ClCompile Include="..\private\ETool_RenderGroup_AfterEffect.cpp" />
     <ClCompile Include="..\private\ETool_RenderGroup_AfterParticle.cpp" />
     <ClCompile Include="..\private\ETool_RenderGroup_Final.cpp" />
-    <ClCompile Include="..\private\ETool_RenderGroup_Lights.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\private\Level_EffectTool.cpp" />
     <ClCompile Include="..\private\Level_EffectLoading.cpp" />
+    <ClCompile Include="..\private\Magic_Hand.cpp" />
+    <ClCompile Include="..\private\Magic_Hand_Body.cpp" />
     <ClCompile Include="..\private\MainEffectTool.cpp" />
     <ClCompile Include="..\private\Object_Background.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Blur.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Combine.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_DirectLights.cpp" />
     <ClCompile Include="..\private\RenderGroup_DownSample.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_Lighting.cpp" />
     <ClCompile Include="..\private\SkyBox.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

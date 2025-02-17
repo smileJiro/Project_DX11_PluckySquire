@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Player.h"
+#include "Effect_Manager.h"
 
 CBulb::CBulb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CTriggerObject(_pDevice, _pContext)
@@ -118,6 +119,9 @@ void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 		Event_DeleteObject(this);
 		static_cast<CActor_Dynamic*>(m_pActorCom)->Set_LinearVelocity(XMVectorZero());
 		m_isSticking = false;
+
+		CEffect_Manager::GetInstance()->Active_Effect(TEXT("Bulb"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+
 	}
 		break;
 	case BULB_SHAPE_USE::SHAPE_STICKING:

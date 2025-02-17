@@ -177,6 +177,33 @@ HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 	return S_OK;
 }
 
+HRESULT C3DModel::Render_Default(CShader* _pShader, _uint _iShaderPass)
+{
+	/* Material Binding을 하지 않는 Rendering, Texture Binding은 밖에서 해야합니다.*/
+	/* Mesh 단위 렌더. */
+	for (_uint i = 0; i < m_iNumMeshes; ++i)
+	{
+		_uint iMaterialIndex = m_Meshes[i]->Get_MaterialIndex();
+
+		/* Bind Bone Matrices */
+		if (Is_AnimModel())
+		{
+			if (FAILED(Bind_Matrices(_pShader, "g_BoneMatrices", i)))
+				return E_FAIL;
+		}
+
+
+		/* Shader Pass */
+		_pShader->Begin(_iShaderPass);
+
+		/* Bind Mesh Vertex Buffer */
+		m_Meshes[i]->Bind_BufferDesc();
+		m_Meshes[i]->Render();
+	}
+
+	return S_OK;
+}
+
 
 
 HRESULT C3DModel::Bind_Matrices(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex)

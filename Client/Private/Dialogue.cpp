@@ -185,6 +185,17 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 			{
 				dialogData.Section = StringToWstring(dialog["Section"].get<string>());
 			}
+			
+			// Dialog가 끝날 시 실행될 이벤트(트리거) 태그, 필요하지 않으면 내용이 없습니다.
+			if (dialog.contains("TriggerTag"))
+			{
+				dialogData.wstrTriggerTag = StringToWstring(dialog["TriggerTag"]);
+			}
+
+			if (dialog.contains("TriggerID"))
+			{
+				dialogData.iTriggerID = dialog["TriggerID"];
+			}
 
 			// 대상 + 대화 + BG + 배경 + 타이핑 효과
 			if (dialog.contains("lines") && dialog["lines"].is_array())
@@ -855,6 +866,13 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			m_pPortrait->Set_AddSectionRender(false);
 			CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 			CTrigger_Manager::GetInstance()->On_End(Uimgr->Get_DialogId());
+			//// Event가 있을 경우;
+			if (-1 != Uimgr->Get_Dialogue(_strDialogue)[0].iTriggerID)
+			{
+				DialogData Data = Uimgr->Get_Dialogue(_strDialogue)[0];
+				CTrigger_Manager::GetInstance()->Resister_TriggerEvent(Data.wstrTriggerTag.c_str(),
+					Data.iTriggerID);
+			}
 			Uimgr->Set_DisplayDialogue(false);
 			Uimgr->Set_PortraitRender(false);
 			Uimgr->Set_DialogueLineIndex(0);

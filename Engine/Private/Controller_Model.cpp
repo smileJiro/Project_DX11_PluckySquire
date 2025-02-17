@@ -82,6 +82,11 @@ HRESULT CController_Model::Render(CShader* _Shader, _uint _iShaderPass)
     return 	m_ModelComs[m_eCurCoord]->Render(_Shader, _iShaderPass);
 }
 
+HRESULT CController_Model::Render_Default(CShader* _pShader, _uint _iShaderPass)
+{
+    return m_ModelComs[m_eCurCoord]->Render_Default(_pShader, _iShaderPass);
+}
+
 
 HRESULT CController_Model::Change_Coordinate(COORDINATE _eCoordinate)
 {

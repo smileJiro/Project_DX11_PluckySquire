@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CCollider;
+class CEffect_System;
 END
 
 BEGIN(Client)
@@ -51,12 +52,15 @@ public:
 	virtual _bool			Is_Interactable(CPlayer* _pUser);
 	virtual _float			Get_Distance(COORDINATE _eCoord, CPlayer* _pUser);
 
+	virtual void Active_OnDisable() override;
+	virtual void Active_OnEnable() override;
+
 protected:
 	virtual void	On_Touched(CPlayer* _pPlayer);
 
 private :
 	CCollider* m_pColliderCom = { nullptr };
-
+	CEffect_System* m_pEffectSystem = { nullptr };
 	_float	   m_fTriggerRadius = {};
 
 
