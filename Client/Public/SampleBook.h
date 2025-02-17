@@ -19,10 +19,16 @@ public:
 		ACTION_LAST
 	};
 
+	enum BOOK_ANIM_ACTION
+	{
+		NONEANIM_ACTION = 0, 
+		MAGICDUST_ANIM_ACTION = 5,
+	};
 
 	enum BOOK_ANIMATION
 	{
 		IDLE = 0 ,
+		MAGICDUST = 5,
 		ACTION = 8,
 		ANIMATION_LAST
 	};
@@ -71,10 +77,12 @@ public :
 
 public:						
 	HRESULT					Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition);
-
+	void					Execute_AnimEvent(_uint _iAnimIndex);
 private :
 	CAnimEventGenerator*	m_pAnimEventGenerator = { nullptr };
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
+	BOOK_ANIM_ACTION		m_eAnimAction = NONEANIM_ACTION;
+	_float					m_fAccAnimTime = 0.f;
 	_float3					m_fNextPos = {};
 	_bool					m_isAction = { false };
 	_bool					m_isPlayerAround= { false };

@@ -28,7 +28,10 @@ HRESULT CMapObject::Initialize(void* _pArg)
 {
     MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
     m_strModelName = pDesc->szModelName;
-    m_matWorld = pDesc->tTransform3DDesc.matWorld;
+    if (pDesc->eCreateType == CMapObject::OBJ_CREATE)
+        XMStoreFloat4x4(&m_matWorld,XMMatrixIdentity());
+    else
+        m_matWorld = pDesc->tTransform3DDesc.matWorld;
 
     CBase* pBase = m_pGameInstance->Find_Prototype(pDesc->iModelPrototypeLevelID_3D, m_strModelName);
 
@@ -75,11 +78,12 @@ HRESULT CMapObject::Initialize(void* _pArg)
     SHAPE_COOKING_DESC ShapeCookingDesc = {};
     ShapeCookingDesc.isLoad = true;
     ShapeCookingDesc.isSave = false;
-    //ShapeCookingDesc.strFilePath = WstringToString(STATIC_3D_MODEL_FILE_PATH);
-    //ShapeCookingDesc.strFilePath += "3DCollider/";
-    //ShapeCookingDesc.strFilePath += WstringToString(m_strModelName);
-    //ShapeCookingDesc.strFilePath += ".modelColl";
+    ShapeCookingDesc.strFilePath = WstringToString(STATIC_3D_MODEL_FILE_PATH);
+    ShapeCookingDesc.strFilePath += "3DCollider/";
+    ShapeCookingDesc.strFilePath += WstringToString(m_strModelName);
+    ShapeCookingDesc.strFilePath += ".modelColl";
     SHAPE_DATA ShapeData;
+    ShapeData.isVisual = true;
     ShapeData.eShapeType = SHAPE_TYPE::COOKING;
     ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; 
     ShapeData.pShapeDesc = &ShapeCookingDesc;
@@ -111,7 +115,6 @@ HRESULT CMapObject::Initialize(void* _pArg)
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
-
 
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;

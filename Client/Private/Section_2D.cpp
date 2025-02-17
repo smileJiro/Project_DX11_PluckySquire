@@ -6,6 +6,7 @@
 #include "Section_Manager.h"
 #include "Engine_Macro.h"
 #include "Trigger_Manager.h"
+#include "2DMapWordObject.h"
 
 CSection_2D::CSection_2D(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_PLAY_TYPE _ePlayType, SECTION_2D_RENDER_TYPE _eRenderType)
 	:	m_eMySectionPlayType(_ePlayType),
@@ -72,6 +73,10 @@ HRESULT CSection_2D::Import(json _SectionJson, _uint _iPriorityKey)
 		{
 			Desc.fLevelSizePixels.x = SectionInfo["LevelSizePixels"]["X"];
 			Desc.fLevelSizePixels.y = SectionInfo["LevelSizePixels"]["Y"];
+		}
+		if (SectionInfo.contains("Camera_Zoom_Ratio"))
+		{
+			m_fCameraRatio = (_float)SectionInfo["Camera_Zoom_Ratio"];
 		}
 
 	}
@@ -171,6 +176,26 @@ _float2 CSection_2D::Get_RenderTarget_Size()
 		return _float2(-1,-1);
 
 	return m_pMap->Get_RenderTarget_Size();
+}
+
+HRESULT CSection_2D::Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType)
+{
+
+	CLayer* pTargetLayer = m_Layers[SECTION_2D_PLAYMAP_OBJECT];
+
+	if (nullptr != pTargetLayer)
+	{
+		const auto& GameObjects = pTargetLayer->Get_GameObjects();
+
+		for_each(GameObjects.begin(), GameObjects.end(), [&_iControllerIndex ,&_iContainerIndex,&_iWordType](CGameObject* pGameObject) {
+			C2DMapWordObject* pWordObj = dynamic_cast<C2DMapWordObject*>(pGameObject);
+
+			if (nullptr != pWordObj)
+				pWordObj->Action_Execute(_iControllerIndex, _iContainerIndex, _iWordType);
+			});
+	}
+
+	return S_OK;
 }
 
 HRESULT CSection_2D::Register_WorldCapture(CModelObject* _pModel)

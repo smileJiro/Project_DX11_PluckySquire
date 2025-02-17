@@ -180,6 +180,25 @@ void CSampleBook::Update(_float _fTimeDelta)
 			}
 		}
 
+		/*
+		* 임시, 민용추가
+		* 현재 Anim (책 넘기는 애니메이션 제외!) 이 끝나면 IDLE Animation으로 가게했음
+		*/
+		if (NONEANIM_ACTION != m_eAnimAction)
+		{
+			m_fAccAnimTime += _fTimeDelta;
+			
+			// 어쩔수없는하드코딩..
+			if (MAGICDUST_ANIM_ACTION == m_eAnimAction && 6.7f <= m_fAccAnimTime)
+			{
+				m_fAccAnimTime = 0.f;
+				m_eAnimAction = NONEANIM_ACTION;
+				Set_Animation(IDLE);
+			}
+			//if (false == Is_PlayingAnim())
+		}
+
+
 	__super::Update(_fTimeDelta);
 
 }
@@ -630,6 +649,13 @@ HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPos
 			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
 	}
 	return S_OK;
+}
+
+void CSampleBook::Execute_AnimEvent(_uint _iAnimIndex)
+{
+	m_eAnimAction = (BOOK_ANIM_ACTION)_iAnimIndex;
+	Set_ReverseAnimation(false);
+	Set_Animation(_iAnimIndex);
 }
 
 CSampleBook* CSampleBook::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

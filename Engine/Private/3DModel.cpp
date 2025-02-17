@@ -109,7 +109,7 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 			file.read(m_arrCookingColliderData, m_iCookingColliderDataLength);
 
 			m_isCookingCollider = _isCookingCollider;
-
+			file.close();
 		}
 	}
 	return S_OK;
