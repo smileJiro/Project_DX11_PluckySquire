@@ -49,16 +49,14 @@ HRESULT CGoblin_SideScroller::Initialize(void* _pArg)
         return E_FAIL;
 
     m_pFSM->Add_State((_uint)MONSTER_STATE::SIDESCROLL_PATROL);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::SIDESCROLL_HIT);
     m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
     m_pFSM->Set_State((_uint)MONSTER_STATE::SIDESCROLL_PATROL);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL, true);
 
-    pModelObject->Set_Animation(IDLE);
+    pModelObject->Set_Animation(PATROL);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CGoblin_SideScroller::Animation_End, this, placeholders::_1, placeholders::_2));
 
@@ -108,99 +106,31 @@ void CGoblin_SideScroller::Change_Animation()
     if (COORDINATE_3D == Get_CurCoord())
         return;
 
-  //  if (m_iState != m_iPreState)
-  //  {
-		//CGoblin_SideScroller::Animation2D eAnim = ANIM2D_LAST;
-		//switch (MONSTER_STATE(m_iState))
-		//{
-		//case Client::MONSTER_STATE::IDLE:
-  //      case Client::MONSTER_STATE::PATROL:
-  //      case Client::MONSTER_STATE::STANDBY:
-  //      case Client::MONSTER_STATE::CHASE:
-  //          if (true == m_isElectric)
-  //          {
-  //              if (F_DIRECTION::UP == m_e2DDirection)
-  //                  eAnim = ELEC_UP;
-  //              else if (F_DIRECTION::DOWN == m_e2DDirection)
-  //                  eAnim = ELEC_DOWN;
-  //              else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
-  //                  eAnim = ELEC_RIGHT;
-  //          }
-  //          else if (false == m_isElectric)
-  //          {
-  //              if (F_DIRECTION::UP == m_e2DDirection)
-  //                  eAnim = IDLE_UP;
-  //              else if (F_DIRECTION::DOWN == m_e2DDirection)
-  //                  eAnim = IDLE_DOWN;
-  //              else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
-  //                  eAnim = IDLE_RIGHT;
-  //          }
-		//	break;
-		//case Client::MONSTER_STATE::ATTACK:
-  //      {
-  //          if (true == m_isElectric)
-  //              return;
+    if (m_iState != m_iPreState)
+    {
+		CGoblin_SideScroller::Animation2D eAnim = ANIM2D_LAST;
+		switch (MONSTER_STATE(m_iState))
+		{
+        case Client::MONSTER_STATE::PATROL:
+            eAnim = PATROL;
+			break;
 
-  //          //대시 중일 때는 다음 대시로
-  //          _uint iNum;
-  //          if (true == m_isDash)
-  //              iNum = 2;
-  //          else
-  //               iNum = (_uint)ceil(m_pGameInstance->Compute_Random(0.f, 2.f));
+		case Client::MONSTER_STATE::HIT:
+				eAnim = HIT;
+			break;
 
-  //          switch (iNum)
-  //          {
-  //          case 1:
-  //              if (F_DIRECTION::UP == m_e2DDirection)
-  //                  eAnim = ELEC_IN_UP;
-  //              else if (F_DIRECTION::DOWN == m_e2DDirection)
-  //                  eAnim = ELEC_IN_DOWN;
-  //              else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
-  //                  eAnim = ELEC_IN_RIGHT;
-  //              m_isElectric = true;
-  //              break;
-  //          case 2:
-  //              if (F_DIRECTION::UP == m_e2DDirection)
-  //                  eAnim = DASH_IN_UP;
-  //              else if (F_DIRECTION::DOWN == m_e2DDirection)
-  //                  eAnim = DASH_IN_DOWN;
-  //              else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
-  //                  eAnim = DASH_IN_RIGHT;
-  //              m_isDash = true;
-  //              break;
+		case Client::MONSTER_STATE::DEAD:
+				eAnim = DEATH;
+			break;
+		default:
+			break;
+		}
 
-  //          default:
-  //              break;
-  //          }
-  //      }
-  //      break;
+        if (ANIM2D_LAST == eAnim)
+            return;
 
-		//case Client::MONSTER_STATE::HIT:
-		//	if (F_DIRECTION::UP == m_e2DDirection)
-		//		eAnim = HIT_UP;
-		//	else if (F_DIRECTION::DOWN == m_e2DDirection)
-		//		eAnim = HIT_DOWN;
-		//	else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
-		//		eAnim = HIT_RIGHT;
-		//	break;
-
-		//case Client::MONSTER_STATE::DEAD:
-		//	if (F_DIRECTION::UP == m_e2DDirection)
-		//		eAnim = DIE_UP;
-		//	else if (F_DIRECTION::DOWN == m_e2DDirection)
-		//		eAnim = DIE_DOWN;
-		//	else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
-		//		eAnim = DIE_RIGHT;
-		//	break;
-		//default:
-		//	break;
-		//}
-
-  //      if (ANIM2D_LAST == eAnim)
-  //          return;
-
-		//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(eAnim);
-  //  }
+		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(eAnim);
+    }
 }
 
 void CGoblin_SideScroller::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
@@ -208,74 +138,32 @@ void CGoblin_SideScroller::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     if (COORDINATE_3D == Get_CurCoord())
         return;
 
-    //CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
-    //switch ((CGoblin_SideScroller::Animation2D)pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
-    //{
-    //case DASH_IN_DOWN:
-    //    pModelObject->Switch_Animation(DASH_DOWN);
-    //    break;
-    //case DASH_IN_RIGHT:
-    //    pModelObject->Switch_Animation(DASH_RIGHT);
-    //    break;
-    //case DASH_IN_UP:
-    //    pModelObject->Switch_Animation(DASH_UP);
-    //    break;
+    switch ((CGoblin_SideScroller::Animation2D)pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+    {
+    case HIT:
+        Set_AnimChangeable(true);
+        break;
 
-    //case ELEC_IN_DOWN:
-    //    pModelObject->Switch_Animation(ELEC_DOWN);
-    //    break;
-    //case ELEC_IN_RIGHT:
-    //    pModelObject->Switch_Animation(ELEC_RIGHT);
-    //    break;
-    //case ELEC_IN_UP:
-    //    pModelObject->Switch_Animation(ELEC_UP);
-    //    break;
+    case DEATH:
+        Set_AnimChangeable(true);
+        //풀링에 넣을 시 변경
+        //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 
-    //case ELEC_DOWN:
-    //case ELEC_RIGHT:
-    //case ELEC_UP:
-    //    Set_AnimChangeable(true);
-    //    break;
+        Event_DeleteObject(this);
+        break;
 
-
-    //case DASH_OUT_DOWN:
-    //case DASH_OUT_RIGHT:
-    //case DASH_OUT_UP:
-    //    Set_AnimChangeable(true);
-    //    break;
-
-    //case ELEC_OUT_DOWN:
-    //case ELEC_OUT_RIGHT:
-    //case ELEC_OUT_UP:
-    //    Set_AnimChangeable(true);
-    //    break;
-
-    //case HIT_DOWN:
-    //case HIT_RIGHT:
-    //case HIT_UP:
-    //    Set_AnimChangeable(true);
-    //    break;
-
-    //case DIE_DOWN:
-    //case DIE_RIGHT:
-    //case DIE_UP:
-    //    Set_AnimChangeable(true);
-    //    //풀링에 넣을 시 변경
-    //    //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
-
-    //    Event_DeleteObject(this);
-    //    break;
-
-    //default:
-    //    break;
-    //}
+    default:
+        break;
+    }
 }
 
 void CGoblin_SideScroller::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
     {
+        int a = 10;
     }
 
 	if (OBJECT_GROUP::BLOCKER & _pOtherCollider->Get_CollisionGroupID())
@@ -312,11 +200,12 @@ void CGoblin_SideScroller::On_Collision2D_Enter(CCollider* _pMyCollider, CCollid
 
 void CGoblin_SideScroller::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+    int a = 10;
 }
 
 void CGoblin_SideScroller::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
     {
         if (true == m_isContactToTarget)
         {
@@ -326,10 +215,29 @@ void CGoblin_SideScroller::On_Collision2D_Exit(CCollider* _pMyCollider, CCollide
 
     if (OBJECT_GROUP::BLOCKER & _pOtherCollider->Get_CollisionGroupID())
     {
-        if(F_DIRECTION::RIGHT==Get_2DDirection())
-            Set_2D_Direction(F_DIRECTION::LEFT);
-        else if (F_DIRECTION::LEFT == Get_2DDirection())
+        CCollider_AABB* pOtherCol = static_cast<CCollider_AABB*>(_pOtherCollider);
+        _float2 fLT = pOtherCol->Get_LT();
+        _float2 fRB = pOtherCol->Get_RB();
+        _float3 vPos;  XMStoreFloat3(&vPos, Get_FinalPosition());
+
+        //왼쪽 끝이고 왼쪽 방향으로 가고 있었으면
+        if (fLT.x >= vPos.x && XMVector3Equal(Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT), XMVectorSet(0.f, -1.f, 0.f, 0.f)))
+        {
+            Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(fLT.x, vPos.y, 0.f, 1.f));
             Set_2D_Direction(F_DIRECTION::RIGHT);
+        }
+
+        //오른쪽 끝이고 오른쪽 방향으로 가고 있었으면
+        if (fRB.x <= vPos.x && XMVector3Equal(Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT), XMVectorSet(0.f, 1.f, 0.f, 0.f)))
+        {
+            Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(fRB.x, vPos.y, 0.f, 1.f));
+            Set_2D_Direction(F_DIRECTION::LEFT);
+        }
+
+        //if(F_DIRECTION::RIGHT==Get_2DDirection())
+        //    Set_2D_Direction(F_DIRECTION::LEFT);
+        //else if (F_DIRECTION::LEFT == Get_2DDirection())
+        //    Set_2D_Direction(F_DIRECTION::RIGHT);
     }
 }
 
@@ -361,10 +269,10 @@ HRESULT CGoblin_SideScroller::Ready_Components()
 
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
-    CircleDesc.fRadius = { 40.f };
+    CircleDesc.fRadius = { 50.f };
     CircleDesc.vScale = { 1.0f, 1.0f };
     CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
-    CircleDesc.isBlock = false;
+    CircleDesc.isBlock = true;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
@@ -378,6 +286,8 @@ HRESULT CGoblin_SideScroller::Ready_Components()
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
         TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
         return E_FAIL;
+
+    m_pGravityCom->Set_Active(true);
 
     return S_OK;
 }

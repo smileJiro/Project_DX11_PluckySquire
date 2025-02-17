@@ -1016,6 +1016,9 @@
     <ClInclude Include="..\Public\SideScroll_PatrolState.h">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\SideScroll_HitState.h">
+      <Filter>03.Components\FSM\State\Hit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1571,6 +1574,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\SideScroll_PatrolState.cpp">
       <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SideScroll_HitState.cpp">
+      <Filter>03.Components\FSM\State\Hit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

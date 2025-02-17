@@ -1102,7 +1102,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	CGoblin_SideScroller::MONSTER_DESC Goblin_SideScroller_Desc;
 	Goblin_SideScroller_Desc.iCurLevelID = m_eLevelID;
 	Goblin_SideScroller_Desc.eStartCoord = COORDINATE_2D;
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-90.0f, -485.f, 0.f);
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-640.0f, 1360.f, 0.f);
 	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))

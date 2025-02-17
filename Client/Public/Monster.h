@@ -119,6 +119,9 @@ public:
 
 	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg);
 
+	public:
+		virtual void			Set_Include_Section_Name(const _wstring _strIncludeSectionName) override;
+
 
 public:
 	virtual void Attack();

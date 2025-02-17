@@ -22,6 +22,7 @@
 #include "Sneak_ChaseState.h"
 #include "Sneak_AttackState.h"
 #include "SideScroll_PatrolState.h"
+#include "SideScroll_HitState.h"
 
 CFSM::CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
@@ -194,6 +195,15 @@ HRESULT CFSM::Add_State(_uint _iState)
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
 		m_States.emplace((_uint)MONSTER_STATE::SIDESCROLL_PATROL, pState);
+		break;
+
+	case Client::MONSTER_STATE::SIDESCROLL_HIT:
+		pState = CSideScroll_HitState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::SIDESCROLL_HIT, pState);
 		break;
 
 	case Client::MONSTER_STATE::LAST:

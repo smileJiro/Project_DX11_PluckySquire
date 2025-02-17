@@ -317,6 +317,7 @@
     <ClInclude Include="..\Public\PlayerState_Attack.h" />
     <ClInclude Include="..\Public\ShopPanel_BG.h" />
     <ClInclude Include="..\Public\ShopPanel_YesNo.h" />
+    <ClInclude Include="..\Public\SideScroll_HitState.h" />
     <ClInclude Include="..\Public\SideScroll_PatrolState.h" />
     <ClInclude Include="..\Public\Sneak_AlertState.h" />
     <ClInclude Include="..\Public\Sneak_AttackState.h" />
@@ -510,6 +511,7 @@
     <ClCompile Include="..\Private\PlayerState_Attack.cpp" />
     <ClCompile Include="..\Private\ShopPanel_BG.cpp" />
     <ClCompile Include="..\Private\ShopPanel_YesNo.cpp" />
+    <ClCompile Include="..\Private\SideScroll_HitState.cpp" />
     <ClCompile Include="..\Private\SideScroll_PatrolState.cpp" />
     <ClCompile Include="..\Private\Sneak_AlertState.cpp" />
     <ClCompile Include="..\Private\Sneak_AttackState.cpp" />

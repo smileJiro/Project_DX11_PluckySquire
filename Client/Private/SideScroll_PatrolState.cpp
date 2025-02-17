@@ -37,7 +37,7 @@ void CSideScroll_PatrolState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	m_pOwner->Get_ControllerTransform()->Go_Right(_fTimeDelta);
+	//m_pOwner->Get_ControllerTransform()->Go_Right(_fTimeDelta);
 }
 
 void CSideScroll_PatrolState::State_Exit()

@@ -167,6 +167,7 @@ namespace Client
 		SNEAK_CHASE,
 		SNEAK_ATTACK,
 		SIDESCROLL_PATROL,
+		SIDESCROLL_HIT,
 
 		LAST,
 	};

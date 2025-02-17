@@ -195,6 +195,10 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg)
 	}
 }
 
+void CMonster::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
+{
+}
+
 void CMonster::Attack()
 {
 }
