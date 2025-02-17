@@ -15,7 +15,7 @@ protected:
     virtual ~C2DModel() = default;
 public:
     virtual HRESULT			Initialize_Prototype(const _char* _szModel2DFilePath, _bool _bNoJson = false);
-    HRESULT			Initialize(void* _pDesc);
+    HRESULT			        Initialize(void* _pDesc);
 
     virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass)override;
     virtual _bool			Play_Animation(_float _fTimeDelta, _bool _vReverse)override;
@@ -23,6 +23,8 @@ public:
     virtual _uint Get_AnimCount() override;
 	virtual _uint Get_CurrentAnimIndex() override { return m_iCurAnimIdx; }
     virtual _float Get_CurrentAnimProgeress() override;
+    virtual _float Get_AnimationTime(_uint iAnimIndex) override;
+    virtual _float Get_AnimationTime() override;
     virtual CAnimation* Get_Animation(_uint iAnimIndex) override;
     const _matrix* Get_CurrentSpriteTransform();
 

@@ -27,6 +27,8 @@ public:
 	virtual _uint Get_AnimCount() abstract;
 	virtual _uint Get_CurrentAnimIndex() abstract;
 	virtual _float Get_CurrentAnimProgeress() abstract;
+	virtual _float Get_AnimationTime(_uint iAnimIndex) abstract;
+	virtual _float Get_AnimationTime() abstract;
 	virtual CAnimation* Get_Animation(_uint iAnimIndex) abstract;
 	_bool Is_ReversingAnimation() { return m_bReverseAnimation; }
 	ANIM_TYPE Get_AnimType() { return m_eAnimType; }

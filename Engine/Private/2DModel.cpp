@@ -300,6 +300,16 @@ _float C2DModel::Get_CurrentAnimProgeress()
 	return m_Animation2Ds[m_iCurAnimIdx]->Get_Progress();
 }
 
+_float C2DModel::Get_AnimationTime(_uint iAnimIndex)
+{
+	return m_Animation2Ds[iAnimIndex]->Get_AnimationTime();
+}
+
+_float C2DModel::Get_AnimationTime()
+{
+	return m_Animation2Ds[m_iCurAnimIdx]->Get_AnimationTime();
+}
+
 CAnimation* C2DModel::Get_Animation(_uint iAnimIndex)
 {
 	if (iAnimIndex >= m_Animation2Ds.size())
