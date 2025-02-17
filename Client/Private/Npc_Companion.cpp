@@ -74,9 +74,10 @@ void CNPC_Companion::Update(_float _fTimeDelta)
 	for (auto& Child : m_vecCompanionNpc)
 	{
 		if (true == Child->Is_Render())
+		{
 			Child->Child_Update(_fTimeDelta);
+		}	
 	}
-
 	__super::Update(_fTimeDelta);
 }
 

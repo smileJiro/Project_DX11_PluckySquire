@@ -48,6 +48,9 @@ HRESULT CNPC_Thrash::Initialize(void* _pArg)
 	//if (FAILED(Ready_ActorDesc(pDesc)))
 	//	return E_FAIL;
 
+	wsprintf(m_strDialogueIndex, pDesc->strDialogueIndex);
+	wsprintf(m_strCurSecion, TEXT("Chapter1_P0708"));
+
 	if (FAILED(__super::Child_Initialize(pDesc)))
 		return E_FAIL;
 
@@ -58,7 +61,7 @@ HRESULT CNPC_Thrash::Initialize(void* _pArg)
 		return E_FAIL;
 
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), this, SECTION_2D_PLAYMAP_OBJECT);
 
 	CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 	pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, Thrash_C06_Idle01, true);
@@ -71,7 +74,7 @@ HRESULT CNPC_Thrash::Initialize(void* _pArg)
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Thrash::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(0.f, 0.f, 0.f, 1.f));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(226.3f, -2313.1f, 0.f, 1.f));
 	
 	return S_OK;
 }
@@ -93,7 +96,10 @@ void CNPC_Thrash::Priority_Update(_float _fTimeDelta)
 
 void CNPC_Thrash::Child_Update(_float _fTimeDelta)
 {
-	Trace(_fTimeDelta);
+	if (m_isTrace)
+		Trace(_fTimeDelta);
+	else
+		Welcome_Jot(_fTimeDelta);
 	__super::Child_Update(_fTimeDelta);
 }
 
@@ -170,6 +176,14 @@ void CNPC_Thrash::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 void CNPC_Thrash::ChangeState_Panel()
 {
 
+}
+
+void CNPC_Thrash::For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos)
+{
+}
+
+void CNPC_Thrash::Welcome_Jot(_float _fTimeDelta)
+{
 }
 
 void CNPC_Thrash::Interact(CPlayer* _pUser)
