@@ -1000,6 +1000,9 @@
     <ClInclude Include="..\Public\WordPrinter.h">
       <Filter>02.GameObjects\Word</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CollapseBlock.h" />
+    <ClInclude Include="..\Public\PlayerState_LaydownObject.h" />
+    <ClInclude Include="..\Public\PlayerState_TurnBook.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1549,6 +1552,9 @@
     <ClCompile Include="..\Private\WordPrinter.cpp">
       <Filter>02.GameObjects\Word</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\CollapseBlock.cpp" />
+    <ClCompile Include="..\Private\PlayerState_LaydownObject.cpp" />
+    <ClCompile Include="..\Private\PlayerState_TurnBook.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

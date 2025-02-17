@@ -216,6 +216,7 @@ void CCarriableObject::Free()
 void CCarriableObject::Interact(CPlayer* _pUser)
 {
 	_pUser->Set_CarryingObject(this);
+
 }
 
 _bool CCarriableObject::Is_Interactable(CPlayer* _pUser)
