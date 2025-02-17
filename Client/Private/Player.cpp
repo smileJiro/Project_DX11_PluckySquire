@@ -1661,7 +1661,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         COORDINATE eCoord =Get_CurCoord();
         if (COORDINATE_3D == eCoord)
         {
-            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -58.f, 0.358914316f, 16.f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
         }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 
