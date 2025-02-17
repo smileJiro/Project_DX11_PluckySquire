@@ -48,6 +48,10 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	pDesc->iRenderGroupID_3D = RG_3D;
 	pDesc->iPriorityID_3D = PR3D_GEOMETRY;
 
+
+
+
+
 	__super::Initialize(_pArg);
 	Set_AnimationLoop(COORDINATE_3D, 0, true);
 	Set_AnimationLoop(COORDINATE_3D, 8, false);

@@ -12,6 +12,7 @@ class CCarriableObject;
 class CStateMachine;
 class IInteractable;
 class CPortal;
+class CSampleBook;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -615,6 +616,7 @@ private:
 	set<CGameObject*> m_AttckedObjects;
 	IInteractable* m_pInteractableObject = nullptr;
 	CPortal* m_pPortal= nullptr;
+	CSampleBook* m_pBook = nullptr;
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

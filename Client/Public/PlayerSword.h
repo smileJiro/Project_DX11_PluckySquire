@@ -12,7 +12,8 @@ public:
 	enum SWORD_STATE
 	{
 		HANDLING,
-		FLYING,
+		OUTING,
+		RETRIEVING,
 		STUCK,
 		SWORD_STATE_LAST
 	};
@@ -59,26 +60,29 @@ public:
 	void Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackType = CPlayer::ATTACK_TYPE::ATTACK_TYPE_NORMAL1);
 	//Get
 	_bool Is_AttackEnable();
-	_bool Is_Flying() { return FLYING == m_eCurrentState; }
-	_bool Is_ComingBack() { return Is_Flying() && 0 > m_fOutingForce; }
-	_bool Is_Outing() { return Is_Flying() && 0 < m_fOutingForce; }
+	_bool Is_Flying() { return OUTING == m_eCurrentState || RETRIEVING == m_eCurrentState; }
+	_bool Is_ComingBack() { return RETRIEVING == m_eCurrentState;}
+	_bool Is_Outing() { return OUTING == m_eCurrentState; }
 	_bool Is_SwordHandling() { return HANDLING == m_eCurrentState; }
 	_vector Get_LookDirection();
 private:
 	_bool m_bAttackEnable = false;
-	_float m_fThrowingPower3D = 30.f;
-	_float m_fThrowingPower2D = 1200.f;
-	_vector m_vThrowDirection = {};
-	_vector m_vStuckDirection = {};
-	//밖으로 나가려는 힘
-	_float m_fOutingForce = 1.f;
-	//끌어들이는 힘
-	_float m_fCentripetalForce3D = 30.f;
-	_float m_fCentripetalForce2D = 1000.f;
-	_float m_fRotationForce3D = 50.f;
 	_float m_f3DKnockBackPower = 12.f;
 	_float m_f2DKnockBackPower = 50.f;
+	set<CGameObject*> m_AttckedObjects;
 
+	//칼 던지기 관련
+	_float m_fOutingTime = 0.7f;
+	_float m_fFlyingTimeAcc = 0.f;
+	_vector m_vThrowDirection = {};
+	_vector m_vStuckDirection = {};
+	_float m_fFlyingSpeed3D = 30.f;
+	_float m_fFlyingSpeed2D = 1200.f;
+	_float m_fRetriveRange3D = 0.5f;
+	_float m_fRetriveRange2D = 30.f;
+	_float m_fRotationForce3D = 1000.f;
+
+	//일반 공격 관련
 	_float m_f3DNormalAttackRange = 0.5f;
 	_float m_f3DNormalAttackZOffset = 0.5f;
 	_float m_f3DJumpAttackRange = 1.5f;
@@ -90,7 +94,6 @@ private:
 	class CPlayer* m_pPlayer = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;
 
-	set<CGameObject*> m_AttckedObjects;
 public:
 	static CPlayerSword* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
