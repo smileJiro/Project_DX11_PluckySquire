@@ -56,7 +56,7 @@ HRESULT CSection_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 
  
     m_pWordGameGenerator = CWordGame_Generator::Create(m_pDevice, m_pContext);
-    if (m_pWordGameGenerator != nullptr)
+    if (m_pWordGameGenerator == nullptr)
         return E_FAIL;
 
     return S_OK;

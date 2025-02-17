@@ -62,11 +62,16 @@
   {
     "Trigger_EventTag": "MagicDust",
     "Actions": [
-      {
-        "ActionTag": "MagicDust",
-        "EventTag": "Honey_Bee_Benny_01",
-        "Is_Sequence": false
-      }
+        {
+            "ActionTag": "MagicDust",
+            "EventTag": "Honey_Bee_Benny_01",
+            "Is_Sequence": false
+        },
+        {
+            "ActionTag": "MagicDust_Book",
+            "EventTag": "none",
+            "Is_Sequence": false
+        }
     ]
   }
 ]
