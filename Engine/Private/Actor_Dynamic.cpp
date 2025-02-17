@@ -84,7 +84,6 @@ void CActor_Dynamic::Late_Update(_float _fTimeDelta)
 		_float4x4 WorldMatrix = {};
 		XMStoreFloat4x4(&WorldMatrix, QuatMatrix * TranslationMatrix);
 		m_pOwner->Set_WorldMatrix(WorldMatrix);
-
 		m_pOwner->Set_Scale(vOwnerScale);
 
 	}

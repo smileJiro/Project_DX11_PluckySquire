@@ -19,12 +19,13 @@ public:
 	void Set_SpeedMagnifier(_float _fMag) { m_fSpeedMagnifier = _fMag; }
     void Set_Loop(_bool bIsLoop) { m_bLoop = bIsLoop; }
     virtual void Reset(_bool _bReverse = false);
+    virtual _float Get_AnimationTime() abstract;
 
     virtual void RegisterAnimEvent(ANIM_EVENT* _pAnimEvent) { m_AnimEvents.push_back(_pAnimEvent); }
 protected:
     _float m_fSpeedMagnifier = 1.f;
     _bool m_bLoop = false;
-private:
+protected:
     vector< ANIM_EVENT*> m_AnimEvents;
 };
 

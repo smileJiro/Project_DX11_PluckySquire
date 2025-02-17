@@ -274,7 +274,7 @@ _uint C3DModel::Get_BoneIndex(const _char* pBoneName) const
 
 float C3DModel::Get_AnimTime()
 {
-	return m_Animations[m_iCurrentAnimIndex]->Get_AnimTime();
+	return m_Animations[m_iCurrentAnimIndex]->Get_AnimDuration();
 }
 
 _uint C3DModel::Get_AnimIndex()
@@ -298,6 +298,16 @@ _float C3DModel::Get_AnimationProgress(_uint iAnimIdx)
 		return m_Animations[m_iCurrentAnimIndex]->Get_Progress();
 	else
 		return 0;
+}
+
+_float C3DModel::Get_AnimationTime(_uint iAnimIndex)
+{
+	return m_Animations[iAnimIndex]->Get_AnimationTime();
+}
+
+_float C3DModel::Get_AnimationTime()
+{
+	return m_Animations[m_iCurrentAnimIndex]->Get_AnimationTime();
 }
 
 const _float4x4* C3DModel::Get_BoneMatrix(const _char* pBoneName) const

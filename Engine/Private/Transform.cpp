@@ -287,18 +287,18 @@ void CTransform::Set_Scale(_float _fX, _float _fY, _float _fZ)
 {
     // WorldMatrix의 각 행의 Length를 fX,fY,fZ 의 값으로 바꿔주면 된다.
 
-    Set_State(STATE::STATE_RIGHT, XMVector3Normalize(Get_State(STATE::STATE_RIGHT)) * _fX);
-    Set_State(STATE::STATE_UP, XMVector3Normalize(Get_State(STATE::STATE_UP)) * _fY);
-    Set_State(STATE::STATE_LOOK, XMVector3Normalize(Get_State(STATE::STATE_LOOK)) * _fZ);
+    Set_State(STATE::STATE_RIGHT, ( XMVector3Normalize(Get_State(STATE::STATE_RIGHT))) * _fX);
+    Set_State(STATE::STATE_UP, (XMVector3Normalize(Get_State(STATE::STATE_UP))) * _fY);
+    Set_State(STATE::STATE_LOOK, (XMVector3Normalize(Get_State(STATE::STATE_LOOK))) * _fZ);
 }
 
 void CTransform::Set_Scale(const _float3& _vScale)
 {
     // WorldMatrix의 각 행의 Length를 fX,fY,fZ 의 값으로 바꿔주면 된다.
 
-    Set_State(STATE::STATE_RIGHT, XMVector3Normalize(Get_State(STATE::STATE_RIGHT)) * _vScale.x);
-    Set_State(STATE::STATE_UP, XMVector3Normalize(Get_State(STATE::STATE_UP)) * _vScale.y);
-    Set_State(STATE::STATE_LOOK, XMVector3Normalize(Get_State(STATE::STATE_LOOK)) * _vScale.z);
+    Set_State(STATE::STATE_RIGHT, (XMVector3Normalize(Get_State(STATE::STATE_RIGHT))) * _vScale.x);
+    Set_State(STATE::STATE_UP, (XMVector3Normalize(Get_State(STATE::STATE_UP))) * _vScale.y);
+    Set_State(STATE::STATE_LOOK, (XMVector3Normalize(Get_State(STATE::STATE_LOOK))) * _vScale.z);
 }
 
 

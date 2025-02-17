@@ -93,28 +93,28 @@ void CCarriableObject::Late_Update(_float _fTimeDelta)
 	}
 	if (COORDINATE_2D == Get_CurCoord() && false == Is_Carrying())
 	{
-		m_f2DUpForce -= 9.8f * _fTimeDelta * 300;\
-		m_f2DFloorDistance += m_f2DUpForce * _fTimeDelta;  
-		if (0 > m_f2DFloorDistance)
-		{
-			m_f2DFloorDistance = 0;
-			m_b2DOnGround = true;
-			m_bThrowing = false;
-			m_f2DUpForce = 0;
-		}
-		else if (0 == m_f2DFloorDistance)
-		{
-			m_bThrowing = false;
-			m_b2DOnGround = true;
-		}
-		else
-		{
-			m_b2DOnGround = false;
-		}
-		_vector vMyPosition = Get_FinalPosition();
-		_vector vPosition =m_v2DGroundPosition + m_v2DThrowHorizeForce * _fTimeDelta;
-		vPosition = XMVectorSetY(vPosition, XMVectorGetY(vPosition) + m_f2DFloorDistance);
-		Set_Position(vPosition);
+		//m_f2DUpForce -= 9.8f * _fTimeDelta * 300;\
+		//m_f2DFloorDistance += m_f2DUpForce * _fTimeDelta;  
+		//if (0 > m_f2DFloorDistance)
+		//{
+		//	m_f2DFloorDistance = 0;
+		//	m_b2DOnGround = true;
+		//	m_bThrowing = false;
+		//	m_f2DUpForce = 0;
+		//}
+		//else if (0 == m_f2DFloorDistance)
+		//{
+		//	m_bThrowing = false;
+		//	m_b2DOnGround = true;
+		//}
+		//else
+		//{
+		//	m_b2DOnGround = false;
+		//}
+		//_vector vMyPosition = Get_FinalPosition();
+		//_vector vPosition =m_v2DGroundPosition + m_v2DThrowHorizeForce * _fTimeDelta;
+		//vPosition = XMVectorSetY(vPosition, XMVectorGetY(vPosition) + m_f2DFloorDistance);
+		//Set_Position(vPosition);
 	}
 
 }

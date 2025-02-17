@@ -19,6 +19,7 @@ public:
 	const _matrix* Get_Transform() const { 
 		return &m_matSpriteTransform; 
 	}
+
 #ifdef _DEBUG
 	CTexture* Get_Texture() const { return m_pTexture; }
 
@@ -56,9 +57,9 @@ public:
 	const CSpriteFrame* GetCurrentSprite() { return m_SpriteFrames[m_iCurrentFrame].first; }
 	const _matrix* Get_CurrentSpriteTransform() ;
 	virtual _float	Get_Progress() override;
+	virtual _float Get_AnimationTime() override;
 
 	virtual void Set_Progress(_float _fProgerss)override;
-
 protected:
 	_uint Get_AccumulativeSubFrameCount(_uint _iFrameIndex);
 

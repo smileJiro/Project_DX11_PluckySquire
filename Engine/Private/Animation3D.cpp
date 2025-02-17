@@ -144,7 +144,13 @@ void CAnimation3D::Get_CurrentFrame(map<_uint,KEYFRAME>* pOutKeyFrames) const
 
 _float CAnimation3D::Get_Progress()
 {
+	
 	return m_fCurrentTrackPosition / m_fDuration;
+}
+
+_float CAnimation3D::Get_AnimationTime()
+{
+	return m_fDuration / m_fSpeedMagnifier / m_fTickPerSecond;
 }
 
 bool CAnimation3D::Is_AnimChangeable()
