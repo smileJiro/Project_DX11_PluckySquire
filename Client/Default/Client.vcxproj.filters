@@ -986,6 +986,15 @@
     <ClInclude Include="..\Public\Word.h">
       <Filter>02.GameObjects\Word</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Word_Controller.h">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Word_Container.h">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WordGame_Generator.h">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1519,6 +1528,15 @@
       <Filter>02.GameObjects\RayShape</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Word.cpp">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Word_Controller.cpp">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Word_Container.cpp">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WordGame_Generator.cpp">
       <Filter>02.GameObjects\Word</Filter>
     </ClCompile>
   </ItemGroup>
