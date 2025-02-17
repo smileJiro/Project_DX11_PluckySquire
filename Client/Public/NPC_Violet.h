@@ -9,6 +9,16 @@ class CNPC_Violet final : public CNPC_Companion
 {
 
 public:
+	enum ACTION
+	{
+		ACTION_WAIT,
+		ACTION_IDLE,
+		ACTION_MOVE,
+		ACTION_DIALOG,
+		ACTION_TRACE,
+		ACTION_END
+	};
+
 	enum ANIMATION
 	{
 		ANIM_UP,
@@ -201,10 +211,14 @@ private:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	void						ChangeState_Panel();
 	void						For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos);
+	void						Welcome_Jot(_float _fTimeDelta);
 
 private:
+	CNPC_Violet::ACTION			m_eActionType = { ACTION_END };
 	CNPC_Violet::ANIMATION		m_eAnimationType = { ANIM_END };
 	_float						m_fIdleWaitTime = { 0.f };
+	_float						m_fWelcomeWaitTime = { 0.f };
+	_bool						m_isDialoging = { false };
 
 };
 
