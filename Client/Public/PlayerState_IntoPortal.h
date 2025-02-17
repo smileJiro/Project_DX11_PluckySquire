@@ -21,6 +21,7 @@ private:
     _bool m_bPortaled = false;
 	_vector m_vPortalPos = {};
 	_float m_f3DDistanceThreshold = 0.5f;
+    _float m_f3DJumpRadianMin =XMConvertToRadians(45.f);
 };
 
 END
