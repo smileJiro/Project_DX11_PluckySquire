@@ -219,6 +219,7 @@
     <ClInclude Include="..\Public\DeadState.h" />
     <ClInclude Include="..\public\FallingRock.h" />
     <ClInclude Include="..\Public\FloorWord.h" />
+    <ClInclude Include="..\Public\Goblin_SideScroller.h" />
     <ClInclude Include="..\Public\HitState.h" />
     <ClInclude Include="..\Public\Interactable.h" />
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
@@ -314,6 +315,7 @@
     <ClInclude Include="..\Public\PlayerState_Attack.h" />
     <ClInclude Include="..\Public\ShopPanel_BG.h" />
     <ClInclude Include="..\Public\ShopPanel_YesNo.h" />
+    <ClInclude Include="..\Public\SideScroll_PatrolState.h" />
     <ClInclude Include="..\Public\Sneak_AlertState.h" />
     <ClInclude Include="..\Public\Sneak_AttackState.h" />
     <ClInclude Include="..\Public\Sneak_AwareState.h" />
@@ -412,6 +414,7 @@
     <ClCompile Include="..\Private\DeadState.cpp" />
     <ClCompile Include="..\private\FallingRock.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
+    <ClCompile Include="..\Private\Goblin_SideScroller.cpp" />
     <ClCompile Include="..\Private\HitState.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_Test.cpp" />
@@ -503,6 +506,7 @@
     <ClCompile Include="..\Private\PlayerState_Attack.cpp" />
     <ClCompile Include="..\Private\ShopPanel_BG.cpp" />
     <ClCompile Include="..\Private\ShopPanel_YesNo.cpp" />
+    <ClCompile Include="..\Private\SideScroll_PatrolState.cpp" />
     <ClCompile Include="..\Private\Sneak_AlertState.cpp" />
     <ClCompile Include="..\Private\Sneak_AttackState.cpp" />
     <ClCompile Include="..\Private\Sneak_AwareState.cpp" />

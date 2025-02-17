@@ -436,6 +436,9 @@
     <Filter Include="02.GameObjects\Word">
       <UniqueIdentifier>{70b6f4d5-168b-46b5-849c-cb56b4c3621c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Goblin\SideScroller">
+      <UniqueIdentifier>{bb25a362-20c0-499e-bcaa-7458299e35d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -997,6 +1000,12 @@
     <ClInclude Include="..\Public\WordGame_Generator.h">
       <Filter>02.GameObjects\Word</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Goblin_SideScroller.h">
+      <Filter>02.GameObjects\Monster\Goblin\SideScroller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SideScroll_PatrolState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1542,6 +1551,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Zippy.cpp">
       <Filter>02.GameObjects\Monster\Zippy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Goblin_SideScroller.cpp">
+      <Filter>02.GameObjects\Monster\Goblin\SideScroller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SideScroll_PatrolState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

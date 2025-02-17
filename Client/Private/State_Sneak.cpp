@@ -132,7 +132,7 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		break;
 
 	case Client::WAYPOINTINDEX::CHAPTER2_3:
-		m_WayPoints.push_back({ _float3(47.f, 0.35f, -0.5f) });
+		m_WayPoints.push_back({ _float3(46.f, 0.35f, -0.5f) });
 		m_WayPoints.push_back({ _float3(47.f, 0.35f, 2.f) });
 		m_WayPoints.push_back({ _float3(49.f, 0.35f, 3.4f) });
 		m_WayPoints.push_back({ _float3(50.f, 0.35f, 5.5f) });

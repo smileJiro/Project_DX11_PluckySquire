@@ -166,6 +166,7 @@ namespace Client
 		SNEAK_ALERT,
 		SNEAK_CHASE,
 		SNEAK_ATTACK,
+		SIDESCROLL_PATROL,
 
 		LAST,
 	};
@@ -226,5 +227,13 @@ namespace Client
 		SHAPE_FOOT = 1,
 		SHAPE_TRIGER = 2,
 		SHAPE_USE_LAST
+	};
+
+	enum class MONSTER_TYPE
+	{
+		BARFBUG,
+		GOBLIN,
+		ZIPPY,
+		LAST
 	};
 }

@@ -23,7 +23,7 @@ HRESULT CGoblin::Initialize_Prototype()
 HRESULT CGoblin::Initialize(void* _pArg)
 {
     CGoblin::MONSTER_DESC* pDesc = static_cast<CGoblin::MONSTER_DESC*>(_pArg);
-    pDesc->eStartCoord = COORDINATE_3D;
+    //pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = true;
     pDesc->iNumPartObjects = PART_END;
 
@@ -31,7 +31,7 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 80.f;
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 10.f;
