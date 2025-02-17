@@ -178,7 +178,7 @@ void CModel_Tool_Manager::Model_Collider_Imgui(_bool _bLock)
 									XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 									if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_3D_MODEL, PairFileInfo.first,
-										C3DModel::Create(m_pDevice, m_pContext, WstringToString(PairFileInfo.second).c_str(), matPretransform))))
+										C3DModel::Create(m_pDevice, m_pContext, WstringToString(PairFileInfo.second).c_str(), matPretransform, true))))
 									{
 										LOG_TYPE("Model Preview Failed", LOG_ERROR);
 										return;

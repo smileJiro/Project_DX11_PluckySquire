@@ -80,6 +80,7 @@
 #include "StateMachine.h"
 #include "2DMapDefaultObject.h"
 #include "2DMapActionObject.h"
+#include "2DMapWordObject.h"
 #include "3DMapDefaultObject.h"
 #include "3DMapSkspObject.h"
 #include "MapObjectFactory.h"
@@ -118,6 +119,7 @@
 #include "Dice.h"
 #include "Domino.h"
 #include "Portal.h"
+#include "Word.h"
 
 
 
@@ -440,13 +442,19 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMapObject"),
         C2DMapDefaultObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-    
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMap_ActionObject"),
         C2DMapActionObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMap_WordObject"),
+        C2DMapWordObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),
         C3DMapDefaultObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+            
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Word"),
+        CWord::Create(m_pDevice, m_pContext))))
         return E_FAIL;
         
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMap_SkspObject"),
@@ -1339,6 +1347,9 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Monster/BarferBug/BarferBug2d_Attack.animevt"))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_ZippyAttackAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Monster/Zippy/Zippy_Attack.animevt"))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_BookPageActionEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))
         return E_FAIL;
@@ -1451,27 +1462,59 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
+
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 
-
+    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_TEST,
         TEXT("../Bin/Resources/Models/2DMapObject/Chapter4"))))
         return E_FAIL;
+
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_TEST,
+        TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
+        return E_FAIL;
+
+    /* 낱개 로딩 예시*/
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Model2D_FallingRock"),
+        C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/FallingRock/FallingRock.model2D", false))))
+        return E_FAIL;
+
+    matPretransform = XMMatrixScaling(1 / 160.0f, 1 / 160.0f, 1 / 160.0f);
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Model3D_FallingRock"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Rock_03/Rock_03.model", matPretransform))))
+        return E_FAIL;
+    matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("dice_pink_03"),
         C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/dice_01/dice_pink_03.dds", true))))
         return E_FAIL;
 
-    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Model2D_FallingRockShadow"),
+        C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DNonAnim/FallingRockShadow/FallingRockShadow.dds", true))))
+        return E_FAIL;
+
+
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Dice3D"),
         C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/dice_01/dice_01.model", matPretransform))))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Domino"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Model_Domino4"),
         C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Domino_4/Domino_4.model", matPretransform))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Model_Domino3"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Domino_3/Domino_3.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Model_Domino2"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Domino_2/Domino_2.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Model_Domino1"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Domino_1/Domino_1.model", matPretransform))))
+        return E_FAIL;
+    //if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_TEST, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
+    //    return E_FAIL;
     if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_TEST, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
         return E_FAIL;
 
@@ -1491,11 +1534,7 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
 
 
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_TEST,
-        TEXT("../Bin/Resources/Models/2DAnim/Chapter4/"))))
-        return E_FAIL;
-
-    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_TEST,
-        TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
+        TEXT("../Bin/Resources/Models/2DAnim/Chapter2/"))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
@@ -1504,6 +1543,7 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_SampleBook"),
         CSampleBook::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
 
     ///////////////////////////////// UI /////////////////////////////////
     /* For. Prototype_UIObject_Pick_Bubble */
@@ -1567,7 +1607,30 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_NPC_Social"),
         CNPC_Social::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_NPC_Companion"),
+        CNPC_Companion::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_NPC_Companion_Violet"),
+        CNPC_Violet::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_NPC_Companion_Thrash"),
+        CNPC_Thrash::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
+
+
+    /* Monster */
+
+    /* For. Prototype_GameObject_Goblin_SideScroller */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"),
+        CGoblin_SideScroller::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Zippy */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"),
+        CZippy::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     /* Boss */
 
     /* For. Prototype_GameObject_ButterGrump */
@@ -1600,12 +1663,26 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
         CPrintFloorWord::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* 상호작용 오브젝트 */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Dice"),
         CDice::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_Domino"),
         CDomino::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+    /* Etc */
+
+    /* For. Prototype_GameObject_FallingRock */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_FallingRock"),
+        CFallingRock::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_CollapseBlock */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_CollapseBlock"),
+        CCollapseBlock::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     //Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_TEST, L"Room_Enviroment.mchc");
     Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_TEST, L"Room_Enviroment_Small.mchc");
 

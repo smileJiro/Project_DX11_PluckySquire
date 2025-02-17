@@ -17,7 +17,7 @@ public :
 	HRESULT Initialize();
 
 public :
-	ID3D11ShaderResourceView* Print_Word(const _string& _strWordText, _float2 _fSize);
+	ID3D11ShaderResourceView* Print_Word(const _wstring& _strWordText, _float2 _fSize);
 
 
 

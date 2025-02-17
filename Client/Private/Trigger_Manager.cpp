@@ -479,7 +479,8 @@ void CTrigger_Manager::Resister_Trigger_Action()
 		CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
 		};
 
-	m_Actions[TEXT("MagicDust")] = [this](_wstring _wszEventTag) {
+	m_Actions[TEXT("MagicDust")] = [this](_wstring _wszEventTag) 
+	{
 		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust2"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
 		};
 
@@ -487,14 +488,14 @@ void CTrigger_Manager::Resister_Trigger_Action()
 		static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
 		};
 
-	m_Actions[TEXT("Create_EventExecuter")] = [this](_wstring _wszEventTag) 
-	{
-		CGameEventExecuter::EVENT_EXECUTER_DESC Desc = {};
-		Desc.strEventTag = _wszEventTag;
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_GameEventExecuter"),
-			m_pGameInstance->Get_CurLevelID(), L"Layer_Event_Executer", &Desc)))
-			return;
-	};
+	//m_Actions[TEXT("Create_EventExecuter")] = [this](_wstring _wszEventTag) 
+	//{
+	//	CGameEventExecuter::EVENT_EXECUTER_DESC Desc = {};
+	//	Desc.strEventTag = _wszEventTag;
+	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_GameEventExecuter"),
+	//		m_pGameInstance->Get_CurLevelID(), L"Layer_Event_Executer", &Desc)))
+	//		return;
+	//};
 
 
 }

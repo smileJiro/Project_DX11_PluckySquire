@@ -17,16 +17,7 @@ class CWord final :
 	// 활성화된 단어는 캐리어블. 본인이 직접 렌더해야 한다.
 	// 비활성화 된 단어는 Container에 수납되며, 본인의 텍스트를 대신 렌더해 준다.
 
-public :
-	typedef struct tagWordDesc : CCarriableObject::CARRIABLE_DESC
-	{
-		ID3D11ShaderResourceView*	pSRV;                                               
-		_float2						fSize;
-		_wstring					strText;
-
-	}WORD_DESC;
-
-public :
+public:
 	enum WORD_TYPE
 	{
 		WORD_FULL,
@@ -34,8 +25,19 @@ public :
 		WORD_SMALL,
 		WORD_CLOSE,
 		WORD_OPEN,
+		WORD_EMPTY,
 		WORD_LAST,
 	};
+
+public :
+	typedef struct tagWordDesc : CCarriableObject::CARRIABLE_DESC
+	{
+		WORD_TYPE					eType;
+		ID3D11ShaderResourceView*	pSRV;                                               
+		_float2						fSize;
+		_wstring					strText;
+
+	}WORD_DESC;
 
 
 protected:
@@ -61,6 +63,7 @@ public:
 
 public :
 	_wstring Get_Text() { return m_strText; }
+	WORD_TYPE Get_WordType() { return m_eWordType; }
 
 public :
 	HRESULT Ready_Components();
