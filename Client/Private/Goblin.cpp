@@ -323,6 +323,16 @@ void CGoblin::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             Set_AnimChangeable(true);
             break;
 
+        case DEATH_DOWN:
+        case DEATH_RIGHT:
+        case DEATH_UP:
+            Set_AnimChangeable(true);
+            //풀링에 넣을 시 변경
+            //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+
+            Event_DeleteObject(this);
+            break;
+
         default:
             break;
         }
@@ -364,7 +374,7 @@ void CGoblin::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
     {
         if ((_uint)MONSTER_STATE::ATTACK == m_iState)
         {
-            Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().iDamg);
+            Event_Hit(this, _Other.pActorUserData->pOwner, (_float)Get_Stat().iDamg);
             _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
             XMVectorSetY(vRepulse, -1.f);
             Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
