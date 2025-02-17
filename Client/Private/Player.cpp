@@ -994,6 +994,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     }
     if (Is_CarryingObject())
     {
+        //상호작용 오브젝트가 범위 안에 있으면 상호작용, 아니면 던지기
+
         //던지기
         if (KEY_DOWN(KEY::E))
             tResult.bInputStates[PLAYER_INPUT_THROWOBJECT] = true;

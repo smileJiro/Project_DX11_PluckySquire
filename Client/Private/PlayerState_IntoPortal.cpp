@@ -13,15 +13,27 @@ CPlayerState_JumpToPortal::CPlayerState_JumpToPortal(CPlayer* _pOwner)
 
 void CPlayerState_JumpToPortal::Update(_float _fTimeDelta)
 {
-    if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+    if (m_bPortaled)
+        return;
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+    if (COORDINATE_2D == eCoord)
     {
         _float fProgress = m_pOwner->Get_AnimProgress();
-        if (false == m_bPortaled && fProgress >= 0.86f)
+        if (fProgress >= 0.86f)
         {
             m_pPortal->Use_Portal(m_pOwner);
             m_bPortaled = true;
             return;
         }
+	}
+    else
+    {
+        if(m_pPortal->Get_Distance(eCoord, m_pOwner) <= m_f3DDistanceThreshold)
+		{
+			m_pPortal->Use_Portal(m_pOwner);
+			m_bPortaled = true;
+			return;
+		}
     }
 
 }
@@ -31,10 +43,10 @@ void CPlayerState_JumpToPortal::Enter()
 	m_pPortal = (m_pOwner->Get_CurrentPortal());
     assert(m_pPortal);
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-    _vector vPortalPos = m_pPortal->Get_ControllerTransform()->Get_Transform(eCoord)->Get_State(CTransform::STATE_POSITION);
+    m_vPortalPos = m_pPortal->Get_ControllerTransform()->Get_Transform(eCoord)->Get_State(CTransform::STATE_POSITION);
     if (COORDINATE_3D == eCoord)
     {
-        static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(vPortalPos, XMConvertToRadians(45.f));
+        static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(m_vPortalPos, XMConvertToRadians(45.f));
 	}
     else
     {
@@ -61,18 +73,21 @@ void CPlayerState_JumpToPortal::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CPlayerState_JumpToPortal::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
-    switch (eShapeUse)
-    {
-    case Client::SHAPE_USE::SHAPE_TRIGER:
-    {
-        if (m_pPortal == _Other.pActorUserData->pOwner)
-        {
-            m_pPortal->Use_Portal(m_pOwner);
-        }
-        break;
-    }
-    }
+    //if (m_bPortaled)
+    //    return;
+    //SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
+    //switch (eShapeUse)
+    //{
+    //case Client::SHAPE_USE::SHAPE_TRIGER:
+    //{
+    //    if (m_pPortal == _Other.pActorUserData->pOwner)
+    //    {
+    //        m_pPortal->Use_Portal(m_pOwner);
+    //        m_bPortaled = true;
+    //    }
+    //    break;
+    //}
+    //}
 }
 
 
