@@ -551,7 +551,6 @@ private:
 	_float m_fGroundRotateSpeed = 360.f;
 	_float m_fStepSlopeThreshold = 0.1f;
 	_float m_f3DLandAnimHeightThreshold= 0.6f;
-	//_float m_fFootHeightThreshold = 0.1f;
 	_float m_f3DJumpPower = 10.5f;
 	_float m_fAirRotateSpeed = 40.f;
 	_float m_fAirRunSpeed = 6.f;
