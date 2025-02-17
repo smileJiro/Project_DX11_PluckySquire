@@ -46,7 +46,7 @@ void CPlayerState_JumpToPortal::Enter()
     m_vPortalPos = m_pPortal->Get_ControllerTransform()->Get_Transform(eCoord)->Get_State(CTransform::STATE_POSITION);
     if (COORDINATE_3D == eCoord)
     {
-        static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(m_vPortalPos, XMConvertToRadians(45.f));
+        static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(m_vPortalPos, XMConvertToRadians(70.f));
 	}
     else
     {

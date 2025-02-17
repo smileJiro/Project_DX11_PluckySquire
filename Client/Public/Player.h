@@ -570,7 +570,7 @@ private:
 	_float m_f2DUpForce = 0.f;
 	_float m_f2DFloorDistance = 0.f;
 	_float m_f2DMoveSpeed= 400.f;
-	_float m_f2DJumpPower = 700.f;
+	_float m_f2DJumpPower = 900.f;
 	_float m_f2DPlatformerJumpPower = 650.f;
 	_float m_f2DCenterYOffset= 36.f;
 	_float m_f2DInteractRange = 93.f;
