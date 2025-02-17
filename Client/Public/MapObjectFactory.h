@@ -3,6 +3,7 @@
 #include <type_traits>
 #include "MapObject.h"
 #include "2DMapObject.h"
+#include "2DMapActionObject.h"
 #include "3DMapObject.h"
 #include "GameInstance.h"
 #include "GameInstance.h"
@@ -54,17 +55,47 @@ public:
 		NormalDesc.fCollider_Extent = tInfo.fCollider_Extent;
 		NormalDesc.fCollider_Radius = tInfo.fCollider_Radius;
 		
+		LEVEL_ID eObjectCloneLevel = LEVEL_STATIC;
+
 		if (!NormalDesc.isActive)
 			strObjectTag = L"Prototype_GameObject_2DMapObject";
 		else
-			//strObjectTag = L"Prototype_GameObject_2DMapObject";
-			strObjectTag = L"Prototype_GameObject_2DMap_ActionObject";
+		{
+			switch (NormalDesc.eActiveType)
+			{
+				case C2DMapActionObject::ACTIVE_TYPE_DROPBLOCK:
+					strObjectTag = L"Prototype_GameObject_CollapseBlock";
+					eObjectCloneLevel = LEVEL_CHAPTER_2;
+					break;
+				default:
+					strObjectTag = L"Prototype_GameObject_2DMap_ActionObject";
+					break;
+			}
 		
+		}
+			//strObjectTag = L"Prototype_GameObject_2DMapObject";
+		//
+		///* Test CollapseBlock */
+		//{
+		//	CCollapseBlock::MAPOBJ_DESC CollapseBlockDesc{};
+		//	CollapseBlockDesc.Build_2D_Model(LEVEL_CHAPTER_2, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"));
+		//	CollapseBlockDesc.Build_2D_Transform(_float2(-100.f, -300.f));
+		//	CollapseBlockDesc.eStartCoord = COORDINATE_2D;
+		//	CGameObject* pGameObject = nullptr;
+		//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_CollapseBlock"), m_eLevelID, TEXT("Layer_CollapseBlock"), &pGameObject, &CollapseBlockDesc)))
+		//		return E_FAIL;
+
+		//	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
+		//}
+
+
 		CBase* pBase = _pGameInstance->
 			Clone_Prototype(
 					PROTOTYPE::PROTO_GAMEOBJ,
-					LEVEL_STATIC,
+					eObjectCloneLevel,
 					strObjectTag, reinterpret_cast<void*>(&NormalDesc));
+
+
 		return (T*)pBase;
 	}
 

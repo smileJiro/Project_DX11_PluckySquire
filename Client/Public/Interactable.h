@@ -1,11 +1,18 @@
 #pragma once
 #include "Base.h"
+#include "Key_Manager.h"
+
 BEGIN(Client)
 class CPlayer;
 class IInteractable 
 {
 public:
-
+	enum INTERACT_TYPE
+	{
+		NORMAL,
+		CHARGE,
+		INTERACT_TYPE_LAST
+	};
 public:
 	//상호작용 성공했을 때 호출됨.
 	//상호작용 시 동작할 내용을 구현
@@ -19,6 +26,8 @@ public:
 
 	_bool Is_ChargeCompleted() { return m_fInteractChargeTimeAcc >= m_fInteractChargeTime; }
 	_float Get_ChargeProgress() { return m_fInteractChargeTimeAcc / m_fInteractChargeTime; }
+	KEY Get_InteractKey() { return m_eInteractKey; }	
+	INTERACT_TYPE Get_InteractType() { return m_eInteractType; }
 
 	void Charge(CPlayer* _pPlayer, _float _fTimeDelta) 
 	{
@@ -40,6 +49,9 @@ protected:
 	_float m_fInteractChargeTimeAcc = 0.0f;
 	//차징하는 데 걸리는 시간. 차징 타입이 아니면 0으로 두기.
 	_float m_fInteractChargeTime = 0.0f;
+
+	INTERACT_TYPE m_eInteractType = INTERACT_TYPE::NORMAL;
+	KEY m_eInteractKey = KEY::E;
 };
 
 //예시  코드 : 상호작용하면 사망하는 NPC~

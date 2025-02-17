@@ -1451,7 +1451,7 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
 
 
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_TEST,
-        TEXT("../Bin/Resources/Models/2DMapObject/Chapter2"))))
+        TEXT("../Bin/Resources/Models/2DMapObject/Chapter4"))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("dice_pink_03"),
@@ -1485,7 +1485,11 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
 
 
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_TEST,
-        TEXT("../Bin/Resources/Models/2DAnim/Chapter2/"))))
+        TEXT("../Bin/Resources/Models/2DAnim/Chapter4/"))))
+        return E_FAIL;
+
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_TEST,
+        TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));

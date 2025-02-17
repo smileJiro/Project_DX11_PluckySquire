@@ -32,6 +32,7 @@ HRESULT CPortal::Initialize(void* _pArg)
     pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
     m_fTriggerRadius =  pDesc->fTriggerRadius;
     m_fInteractChargeTime = 0.6f;
+    m_eInteractType = INTERACT_TYPE::CHARGE;
     // Actor Object는 차후에, ReadyObject 를 따로 불러 생성.
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -231,7 +232,7 @@ HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
     /* Test 2D Collider */
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
-    CircleDesc.fRadius = _pDesc->fTriggerRadius;
+    CircleDesc.fRadius = 100.f;
     CircleDesc.vScale = { 1.0f, 1.0f };
     CircleDesc.isBlock = false;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;

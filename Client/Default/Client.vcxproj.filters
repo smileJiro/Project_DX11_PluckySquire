@@ -1005,6 +1005,11 @@
     <ClInclude Include="..\Public\Effect_Manager.h">
       <Filter>02.GameObjects\Effect\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CollapseBlock.h" />
+    <ClInclude Include="..\Public\PlayerState_LaydownObject.h" />
+    <ClInclude Include="..\Public\2DMapWordObject.h">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1558,6 +1563,11 @@
     <ClCompile Include="..\Private\PlayerState_LaydownObject.cpp" />
     <ClCompile Include="..\Private\Effect_Manager.cpp">
       <Filter>02.GameObjects\Effect\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CollapseBlock.cpp" />
+    <ClCompile Include="..\Private\PlayerState_LaydownObject.cpp" />
+    <ClCompile Include="..\Private\2DMapWordObject.cpp">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

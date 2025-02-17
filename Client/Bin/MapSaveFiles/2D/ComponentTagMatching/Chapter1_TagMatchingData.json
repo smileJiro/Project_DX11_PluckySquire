@@ -2113,23 +2113,10 @@
  {
   "Active": true,
   "ActivePropertis": {
-   "ActiveType": 0
+   "ActiveType": 5
   },
   "BackGround": false,
-  "Collider": true,
-  "ColliderPropertis": {
-   "ColliderInfo": {
-    "Collider_Extent": {
-     "X": 138.0,
-     "Y": 138.0
-    },
-    "Collider_Offset_Pos": {
-     "X": 0.0,
-     "Y": 0.0
-    }
-   },
-   "ColliderType": 1
-  },
+  "Collider": false,
   "ModelType": 0,
   "SearchTag": "cliff_platform_cracked_01_Sprite",
   "Sorting": true,

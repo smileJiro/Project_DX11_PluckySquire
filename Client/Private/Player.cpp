@@ -1067,22 +1067,29 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         }
     }
 	_bool bCarrying = Is_CarryingObject();
-    if (bCarrying)
+    //포탈은 떨어져도 발동할 수 있어야 함. 
+    _bool bHasInteractable = Has_InteractObject();
+    if (bHasInteractable)
     {
-        //상호작용 오브젝트가 범위 안에 있으면 상호작용, 아니면 던지기
-        if (Has_InteractObject())
+        IInteractable* pInteractable =  Get_InteractableObject();
+        IInteractable::INTERACT_TYPE eInteractType = pInteractable->Get_InteractType();
+        KEY eInteractKey = pInteractable->Get_InteractKey();
+        if (IInteractable::INTERACT_TYPE::CHARGE == eInteractType)
         {
-            if (KEY_PRESSING(KEY::E))
+            if (KEY_PRESSING(eInteractKey))
                 tResult.bInputStates[PLAYER_INPUT_INTERACT] = true;
         }
-        else if (KEY_DOWN(KEY::E))
-            tResult.bInputStates[PLAYER_INPUT_THROWOBJECT] = true;
+        else if (IInteractable::INTERACT_TYPE::NORMAL == eInteractType)
+        {
+            if (KEY_DOWN(eInteractKey))
+                tResult.bInputStates[PLAYER_INPUT_INTERACT] = true;
+        }
     }
-    else
+    else if (bCarrying)
     {
-        //상호작용
-        if (KEY_PRESSING(KEY::E))
-            tResult.bInputStates[PLAYER_INPUT_INTERACT] = true;
+         //상호작용 오브젝트가 범위 안에 있으면 상호작용, 아니면 던지기
+        if (KEY_DOWN(KEY::E))
+            tResult.bInputStates[PLAYER_INPUT_THROWOBJECT] = true;
     }
 
     //점프

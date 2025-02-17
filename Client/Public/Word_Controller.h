@@ -13,10 +13,6 @@ class CWord_Controller final : public CContainerObject
 		WORD_PART_LAST
 	};
 public:
-	typedef struct tagWordControllerDesc : public CContainerObject::CONTAINEROBJ_DESC
-	{
-
-	}WORD_CONTROLLER_DESC;
 private:
 	CWord_Controller(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CWord_Controller(const CWord_Controller& _Prototype);
@@ -33,8 +29,15 @@ public :
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
+	HRESULT					Update_Text();
 
-protected:
+private:
+	_uint					m_iContainerIndex = 0;
+	_uint					m_iWordCount = {};
+
+	_wstring				m_strOriginText;
+	_wstring				m_strRenderText;
+	_float2					m_fRenderSize;
 
 
 public:

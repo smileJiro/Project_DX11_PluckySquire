@@ -539,8 +539,8 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_TestTerrain(const _wstring& _strLayerTa
 		return E_FAIL;
 
 	// Test(PlayerItem: Glove, Stamp)
-	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(10.f, 10.f, -10.f));
-	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(10.f, 10.f, -10.f));
+	//CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 	return S_OK;
 }
