@@ -15,7 +15,7 @@ HRESULT CSneak_InvestigateState::Initialize(void* _pArg)
 	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
-	m_fCoolTime = 5.f;
+	m_fCoolTime = 3.f;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -58,7 +58,7 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 	//XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_FinalPosition()));
 	XMVectorSetW(vDir, 0.f);
 	vDir = XMVector3Normalize(XMVectorSetY(vDir, 0.f));
-	//cout << "Investigate" << endl;
+	cout << "Investigate" << endl;
 
 	//이동하다 소리가 나면 범위 내에서 가장 최근 위치로 다음 위치를 갱신 (현재 idle 상태에서도 인식이 되므로 일단 인식 안둠)
 	if (m_isRenew && m_pOwner->IsTarget_In_Sneak_Detection())
@@ -81,7 +81,11 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 
 	//플레이어 시야 들어오면 인식 전환
 	if (Check_Target3D(true))
+	{
+		m_pOwner->Stop_Rotate();
+		m_pOwner->Stop_Move();
 		return;
+	}
 
 	//위치에 도착했는데 안 보이면 경계상태로 전환
 	if (m_pOwner->Check_Arrival(XMLoadFloat3(&m_vSneakPos), 0.5f))
@@ -98,11 +102,31 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 		//m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
 		Determine_NextDirection(XMLoadFloat3(&m_vSneakPos), &m_vDir);
 
+		//예외처리
+		if (XMVector3Equal(XMLoadFloat3(&m_vDir), XMVectorZero()))
+		{
+			m_pOwner->Stop_Rotate();
+			m_pOwner->Stop_Move();
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
+			return;
+		}
+
 		//회전
 		if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 		{
 			m_isMove = true;
+			m_pOwner->Change_Animation();
 		}
+		else
+		{
+			_bool isCW = true;
+			_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vDir)));
+			if (fResult < 0)
+				isCW = false;
+
+			m_pOwner->Turn_Animation(isCW);
+		}
+
 
 		/*if (true == m_isTurn && false == m_isMove)
 		{

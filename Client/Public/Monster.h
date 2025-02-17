@@ -187,8 +187,6 @@ protected:
 	_float m_fCoolTime = { 0.f };
 	_uint	 m_iAttackCount = { 0 };
 
-	_int m_iHp = { 0 };
-
 	//½Ã¾ß°¢
 	_float m_fFOVX = { 0.f };
 	_float m_fFOVY = { 0.f };

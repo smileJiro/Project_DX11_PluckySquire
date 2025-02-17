@@ -946,7 +946,8 @@ void CPlayer::Jump()
     {
         CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
         _vector vVelocity = pDynamicActor->Get_LinearVelocity();
-        pDynamicActor->Add_Impulse(_float3{ 0, m_f3DMoveSpeed ,0 });
+        pDynamicActor->Set_LinearVelocity(vVelocity*0.5f);
+        pDynamicActor->Add_Impulse(_float3{ 0, m_f3DJumpPower ,0 });
         //pDynamicActor->Set_LinearDamping(2);
     }
 }
@@ -1654,10 +1655,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 
     if (KEY_DOWN(KEY::H))
     {
-        m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
+        //m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
         //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
         //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
-        //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
+        m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
         //m_pActorCom->Set_GlobalPose(_float3(0.f, 0.35f, 0.f));
     }
 
