@@ -92,7 +92,6 @@ private:
 	virtual void Active_OnDisable();
 
 public:
-	//static CSection* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_DESC* pDesc);
 	void Free() override;
 };
 

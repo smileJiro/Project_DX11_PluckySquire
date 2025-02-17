@@ -2,6 +2,9 @@
 #include "Word_Controller.h"
 #include "Word.h"
 #include "FloorWord.h"
+#include "Section_Manager.h"
+#include "Word_Container.h"
+#include <regex>
 
 CWord_Controller::CWord_Controller(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice,_pContext)
@@ -25,11 +28,11 @@ HRESULT CWord_Controller::Initialize(void* _pArg)
 
 HRESULT CWord_Controller::Import(json _ControllerJson)
 {
-	_uint iContainerIndex = _ControllerJson["Container_Index"];
-
+	// 컨테이너 인덱스. 
+	m_iContainerIndex = _ControllerJson["Container_Index"];
+	// 풀 텍스트
 	_string strText = _ControllerJson["Text"];
-
-	CWord::WORD_TYPE eType = _ControllerJson["Init_Word_Type"];
+	m_strOriginText = StringToWstring(strText);
 
 	_float2 fPos = { _ControllerJson["Position"][0].get<_float>(),  
 		_ControllerJson["Position"][1].get<_float>() };
@@ -37,26 +40,56 @@ HRESULT CWord_Controller::Import(json _ControllerJson)
 	_float2 fScale = { _ControllerJson["Scale"][0].get<_float>(),  
 		_ControllerJson["Scale"][1].get<_float>() };
 
-	
+	CContainerObject::CONTAINEROBJ_DESC Desc = {};
+	Desc.Build_2D_Transform(fPos, fScale);
 
 
+#pragma region 정규식 처리된 단어 확인.
 
-	if (_ControllerJson.contains("Init_Word_Type"))
-	{
-		for (auto& iIndex : _ControllerJson["Init_Word_Type"])
-		{
-			if (iIndex.is_number())
-			{
-				_uint _iIndex = iIndex;
-			}
-		}
-	}
+	wregex pattern(L"(##(\d+)(.*?)##\1)");
 
+	auto words_begin = std::wsregex_iterator(m_strOriginText.begin(), m_strOriginText.end(), pattern);
+	auto words_end = std::wsregex_iterator();
 
-	return S_OK;
-#pragma region 워드 확인
+	_uint iCount = (_uint)std::distance(words_begin, words_end);
 
 #pragma endregion
+
+#pragma region 워드 확인
+
+	// 문자 갯수만큼 파트 컨테이너 초기화 생성
+	m_PartObjects.resize(iCount);
+	for (size_t i = 0; i < iCount; i++)
+		m_PartObjects[i] = CWord_Container::Create(m_pDevice, m_pContext);
+
+	// 초기화 갯수만큼 워드 삽입
+	if (_ControllerJson.contains("Init_Word_Type"))
+	{
+		_uint iIndex = 0;
+		for (auto& Index : _ControllerJson["Init_Word_Type"])
+		{
+			if (Index.is_number())
+			{
+
+				//CWord::WORD_TYPE eType = _ControllerJson["Init_Word_Type"];
+
+				_uint iWordIndex = Index;
+				auto pGenerator = SECTION_MGR->Get_Word_Generator();
+				CWord* pWord = pGenerator->Find_Word(iWordIndex);
+
+				static_cast<CWord_Container*>(m_PartObjects[iIndex])->Set_Word(pWord);
+			}
+			iIndex++;
+		}
+	}
+	// 문자
+
+#pragma endregion
+
+	if (FAILED(Update_Text()))
+		return E_FAIL;
+
+	return S_OK;
 
 }
 
@@ -77,7 +110,48 @@ void CWord_Controller::Late_Update(_float _fTimeDelta)
 
 HRESULT CWord_Controller::Render()
 {
-	return __super::Render();;
+	m_pGameInstance->Render_Font(L"Font28", m_strRenderText.c_str(), { 0.f,0.f },
+		XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	return __super::Render();
+}
+
+HRESULT CWord_Controller::Update_Text()
+{
+	wregex pattern(L"(##(\d+)(.*?)##\1)");
+
+	auto words_begin = std::wsregex_iterator(m_strOriginText.begin(), m_strOriginText.end(), pattern);
+	auto words_end = std::wsregex_iterator();
+
+
+	_wstring strNewTex = L"";
+	_uint iLastPos = 0;
+	_int iLoopIndex = 0;
+
+	for (std::wsregex_iterator i = words_begin; i != words_end; ++i)
+	{
+		std::wsmatch match = *i;
+
+		strNewTex += m_strOriginText.substr(iLastPos, match.position() - iLastPos);
+
+		if (iLoopIndex < m_PartObjects.size())
+		{
+			CWord* pWord = static_cast<CWord_Container*>(m_PartObjects[iLoopIndex])->Get_Word();
+			if (nullptr == pWord)
+				strNewTex += L"__";
+			else
+				strNewTex += pWord->Get_Text();
+			iLoopIndex++;
+		}
+		else
+		{
+			strNewTex += L"__";
+		}
+		iLastPos = match.position() + match.length();
+	}
+	_vector vScale = m_pGameInstance->Measuring(L"Font28", m_strRenderText);
+	m_fRenderSize = { XMVectorGetX(vScale), XMVectorGetY(vScale) };
+
+	return S_OK;
 }
 
 CWord_Controller* CWord_Controller::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json _ControllerJson)
