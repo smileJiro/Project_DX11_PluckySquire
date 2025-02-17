@@ -526,8 +526,6 @@ public:
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
 private:
-
-
 	void					Key_Input(_float _fTimeDelta);
 
 private:
