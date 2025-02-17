@@ -996,7 +996,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
                 tResult.bInputStates[PLAYER_INPUT_SPINLAUNCH] = true;
         }
     }
-    if (Is_CarryingObject())
+	_bool bCarrying = Is_CarryingObject();
+    if (bCarrying)
     {
         //상호작용 오브젝트가 범위 안에 있으면 상호작용, 아니면 던지기
         if (Has_InteractObject())
@@ -1018,7 +1019,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     if (KEY_DOWN(KEY::SPACE))
         tResult.bInputStates[PLAYER_INPUT_JUMP] = true;
     //구르기 & 잠입
-    else if (KEY_PRESSING(KEY::LSHIFT))
+    else if (false == bCarrying && KEY_PRESSING(KEY::LSHIFT))
     {
         if (Is_SneakMode())
             tResult.bInputStates[PLAYER_INPUT_SNEAK] = true;
@@ -1293,7 +1294,17 @@ CPlayer::STATE CPlayer::Get_CurrentStateID()
 
 CCarriableObject* CPlayer::Get_CarryingObject()
 {
-    { return static_cast<CCarriableObject*>(m_pCarryingObject); }
+    { return (m_pCarryingObject); }
+}
+
+const _float4x4* CPlayer::Get_BodyWorldMatrix_Ptr() const
+{
+    return m_pBody->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+}
+
+const _float4x4* CPlayer::Get_BodyWorldMatrix_Ptr(COORDINATE eCoord) const
+{
+    return m_pBody->Get_ControllerTransform()->Get_Transform(eCoord)->Get_WorldMatrix_Ptr();
 }
 
 

@@ -78,11 +78,12 @@ void CPlayerState_PickUpObject::Enter()
 	vTmp = XMVectorSetY(vTmp, XMVectorGetY(vTmp) + 0.5f);
 	_matrix mat3DPickupOffset = XMMatrixTranslationFromVector(vTmp);
 	m_tPickupKeyFrame.Set_Matrix(mat3DPickupOffset);
+	m_tPickupKeyFrame.vScale = m_tOriginalKeyFrame.vScale;
 
 	//CarryingKeyFrame
 	_matrix matCarryingOfset = XMLoadFloat4x4( m_pOwner->Get_CarryingOffset_Ptr(eCoord));
 	m_tCarryingKeyFrame.Set_Matrix(matCarryingOfset);
-
+	m_tCarryingKeyFrame.vScale = m_tOriginalKeyFrame.vScale;
 
 	if (COORDINATE_3D == eCoord)
 	{
@@ -90,7 +91,10 @@ void CPlayerState_PickUpObject::Enter()
 		m_pOwner->Set_Kinematic(true);
 	}
 
-	m_pCarriableObject->Set_ParentMatrix(eCoord, m_pOwner->Get_ControllerTransform()->Get_WorldMatrix_Ptr(eCoord));
+	m_pCarriableObject->Set_ParentMatrix(COORDINATE_3D, m_pOwner->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));
+	m_pCarriableObject->Set_ParentMatrix(COORDINATE_2D, m_pOwner->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_2D));
+	m_pCarriableObject->Set_ParentBodyMatrix(COORDINATE_3D, m_pOwner->Get_BodyWorldMatrix_Ptr(COORDINATE_3D));
+	m_pCarriableObject->Set_ParentBodyMatrix(COORDINATE_2D, m_pOwner->Get_BodyWorldMatrix_Ptr(COORDINATE_2D));
 	m_pCarriableObject->Set_WorldMatrix(matCarriableWorld);
 
 	if (COORDINATE_3D == eCoord)
@@ -148,8 +152,8 @@ void CPlayerState_PickUpObject::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CPlayerState_PickUpObject::Align()
 {
-	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-	m_pCarriableObject->Set_SocketMatrix(eCoord, m_pOwner->Get_CarryingOffset_Ptr(eCoord));
+	m_pCarriableObject->Set_SocketMatrix(COORDINATE_2D, m_pOwner->Get_CarryingOffset_Ptr(COORDINATE_2D));
+	m_pCarriableObject->Set_SocketMatrix(COORDINATE_3D, m_pOwner->Get_CarryingOffset_Ptr(COORDINATE_3D));
 	
 	m_pCarriableObject->Set_Position(_vector{ 0,0,0 });
 	m_pCarriableObject->Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
