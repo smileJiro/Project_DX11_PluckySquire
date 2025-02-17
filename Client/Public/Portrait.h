@@ -1,6 +1,5 @@
 #pragma once
 #include "UI.h"
-#include "Dialogue.h"
 
 BEGIN(Engine)
 class CShader;
@@ -10,7 +9,6 @@ END
 
 
 BEGIN(Client)
-
 class CPortrait : public CUI
 {
 public:
@@ -41,6 +39,7 @@ public:
     };
 
 
+
     explicit CPortrait(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
     explicit CPortrait(const CPortrait& Prototype);
     virtual ~CPortrait() = default;
@@ -55,6 +54,7 @@ public:
 private:
     HRESULT     DisplayPortrait();
     void        ChangePosition(_bool _isRender, _float2 _RTSize);
+
 
 private:
     //DialogData          m_DialogData;   // 현재 다이얼로그 데이터
@@ -75,9 +75,11 @@ public:
     virtual void Free() override;
     HRESULT      Cleanup_DeadReferences() override;
 
+    void        Set_AddSectionRender(_bool _OnOff) { m_isAddSectionRender = _OnOff; }
+
 private:
     PORT        m_ePortrait;
-    CDialog::PORTRAITNAME    m_ePortraitFace;
+    PORT    m_ePortraitFace;
     _tchar			    m_tDialogIndex[MAX_PATH] = {};
     _bool               m_isAddSectionRender = { false };
     _bool               m_isDialoging = { false };

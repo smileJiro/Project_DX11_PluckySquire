@@ -193,12 +193,12 @@
 			"Section": "Chapter1_P0910",
 			"lines": [
 				{
-					"Portrait": 0,
+					"Portrait": 14,
 					"Talker": "꿀벌 베니",
 					"BG": 0,
 					"location": 8,
 					"is2D": true,
-					"isPortrait": false,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -209,12 +209,12 @@
 					"Blue": 81
 				},
 				{
-					"Portrait": 0,
+					"Portrait": 3,
 					"Talker": "찍찍이",
 					"BG": 15,
 					"location": 8,
 					"is2D": true,
-					"isPortrait": false,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -225,12 +225,12 @@
 					"Blue": 234
 				},
 				{
-					"Portrait": 0,
+					"Portrait": 3,
 					"Talker": "찍찍이",
 					"BG": 15,
 					"location": 8,
 					"is2D": true,
-					"isPortrait": false,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -241,12 +241,12 @@
 					"Blue": 234
 				},
 				{
-					"Portrait": 0,
+					"Portrait": 3,
 					"Talker": "찍찍이",
 					"BG": 15,
 					"location": 8,
 					"is2D": true,
-					"isPortrait": false,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -257,12 +257,12 @@
 					"Blue": 234
 				},
 				{
-					"Portrait": 0,
+					"Portrait": 14,
 					"Talker": "꿀벌 베니",
 					"BG": 0,
 					"location": 8,
 					"is2D": true,
-					"isPortrait": false,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -273,12 +273,12 @@
 					"Blue": 81
 				},
 				{
-					"Portrait": 0,
+					"Portrait": 14,
 					"Talker": "꿀벌 베니",
 					"BG": 0,
 					"location": 8,
 					"is2D": true,
-					"isPortrait": false,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -287,6 +287,506 @@
 					"Red": 255,
 					"Green": 175,
 					"Blue": 81
+				}
+			]
+		},
+		{
+			"id": "C01_Humgrump_01",
+			"Section": "Chapter2_P1314",
+			"lines": [
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "아!",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "용감한 견습 기사께서 오셨군.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "기다리고 있었다!",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이렇게 책의 탑까지 찾아와 주다니 매우 기쁘군.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이 험그럼프가 여기서 뭘 하고 있는지 궁금하겠지?",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이 오래된 탑에 오면",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "뭔가 재밌는게 있을 거라는 예감이 들었거든.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그런데 정말로 재밌는게 있긴 있더군...",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "어떤 책 말이야!",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "아주 비밀스러운 방에 숨겨져 있었지...",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "왜냐면 이건 아주... 뭐랄까... 특별한.. 책이거든.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이 아주 특별한 책의 제목은 바로...",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "견습 기사 모험기다!!",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그래, 그 책이다. 네 녀석의 이야기지.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이 몸, 그리고 이 한심한 나라의 백성들도 등장하고..",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "우리가 살아온 이야기, 그 자체인 거다.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그런데 말이다, 사실 우리가 사는 이 모조 왕국은",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "... 이야기 책의 배경일 뿐이었어!",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "못 믿겠다고? 장담하지... 사실이다.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그리고 내 손에 있는건 그 이야기책의 사본이지.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "책 속의 책이라고 해야하나?",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "내용도 읽어 봤다... 아주 재밌더군.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "네가 그 꼬마 마녀와 함께 왕국을 탐험하고...",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "산악 트롤과 만나 이 몸이 있는 이곳까지의 이야기지.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "나는 지금부터 일어날 일을 미리 읽었다.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 5,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 255.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "우리는 곧 싸울 거다. 바로 여기, 탑 꼭대기에서.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
 				}
 			]
 		},

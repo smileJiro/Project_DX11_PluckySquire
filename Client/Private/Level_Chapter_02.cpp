@@ -39,6 +39,7 @@
 #include "3DMapObject.h"
 #include "FallingRock.h"
 #include "Spawner.h"
+#include "CollapseBlock.h"
 
 
 //#include "UI.h"
@@ -145,7 +146,18 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-	/* Collision Test */
+	/* Test CollapseBlock */
+	{
+		CCollapseBlock::MAPOBJ_DESC CollapseBlockDesc{};
+		CollapseBlockDesc.Build_2D_Model(LEVEL_CHAPTER_2, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"));
+		CollapseBlockDesc.Build_2D_Transform(_float2(-100.f, -300.f));
+		CollapseBlockDesc.eStartCoord = COORDINATE_2D;
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_CollapseBlock"), m_eLevelID, TEXT("Layer_CollapseBlock"), &pGameObject, &CollapseBlockDesc)))
+			return E_FAIL;
+
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
+	}
 
 	
 
@@ -934,8 +946,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	pDesc.fSizeX = 512.f * 0.8f;
 	pDesc.fSizeY = 512.f * 0.8f;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dialogue_Portrait"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dialogue_Portrait"), pDesc.iCurLevelID, _strLayerTag, &pDialogueObject, &pDesc)))
 		return E_FAIL;
+
+	Uimgr->Get_pDialogue()->Set_Portrait(static_cast<CPortrait*>(pDialogueObject));
 
 	/* 테스트 용 */
 	/* (0.0) ~ MAXSIZE 기준으로 fX, fY 를 설정하여야합니다. */
