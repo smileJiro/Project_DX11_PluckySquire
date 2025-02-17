@@ -54,7 +54,6 @@ void CPlayerState_PickUpObject::Update(_float _fTimeDelta)
 		 XMStoreFloat4x4(&matWorld, XMMatrixAffineTransformation(XMLoadFloat3(&tKeyFrame.vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&tKeyFrame.vRotation), XMVectorSetW(XMLoadFloat3(&tKeyFrame.vPosition), 1.f)));
 		 m_pCarriableObject->Set_WorldMatrix(matWorld);
 	 }
-	 //cout << "Update: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
 
 void CPlayerState_PickUpObject::Enter()
@@ -74,8 +73,16 @@ void CPlayerState_PickUpObject::Enter()
 	XMStoreFloat4x4(&matCarriableWorld, matOriginalOfset);
 
 	//PickUpKeyFrame
-	_vector vTmp =  _vector{0,0,1}*m_pOwner->Get_PickupRange(eCoord);
-	vTmp = XMVectorSetY(vTmp, XMVectorGetY(vTmp) + 0.5f);
+	_vector vTmp;
+	if(COORDINATE_3D == eCoord)
+	{
+		vTmp = _vector{ 0,0,1 }*m_pOwner->Get_PickupRange(eCoord);
+		vTmp = XMVectorSetY(vTmp, XMVectorGetY(vTmp) + 0.5f);
+	}
+	else
+	{
+		vTmp = m_pOwner->Get_LookDirection(COORDINATE_2D) * m_pOwner->Get_PickupRange(eCoord);
+	}
 	_matrix mat3DPickupOffset = XMMatrixTranslationFromVector(vTmp);
 	m_tPickupKeyFrame.Set_Matrix(mat3DPickupOffset);
 	m_tPickupKeyFrame.vScale = m_tOriginalKeyFrame.vScale;

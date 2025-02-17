@@ -89,10 +89,11 @@ void CCarriableObject::Late_Update(_float _fTimeDelta)
 		matWorld.r[3] += matBody.r[3];
 		matWorld.r[3].m128_f32[3] = 1.f;
 		XMStoreFloat4x4(&m_WorldMatrices[eCurCoord], matWorld);
+		//cout << "Position : " << matWorld.r[3].m128_f32[0] << ", "<< matWorld.r[3].m128_f32[1] << ", " << matWorld.r[3].m128_f32[2] << endl;
 	}
 	if (COORDINATE_2D == Get_CurCoord() && false == Is_Carrying())
 	{
-		m_f2DUpForce -= 9.8f * _fTimeDelta * 300;
+		m_f2DUpForce -= 9.8f * _fTimeDelta * 300;\
 		m_f2DFloorDistance += m_f2DUpForce * _fTimeDelta;  
 		if (0 > m_f2DFloorDistance)
 		{
