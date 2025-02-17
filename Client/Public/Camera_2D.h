@@ -15,6 +15,7 @@ public:
 	{ 
 		DEFAULT, 
 		MOVE_TO_DESIREPOS, 
+		MOVE_TO_NEXTARM, 
 		MOVE_TO_SHOP, 
 		RETURN_TO_DEFUALT, 
 		FLIPPING_UP,
@@ -77,6 +78,8 @@ private:
 	// TargetPos로 변환한 값 저장
 	_float3						m_v2DTargetWorldPos = {};
 	_float3						m_v2DPreTargetWorldPos = {};
+	_float3						m_v2DFixedPos = {};
+
 	_float						m_fTrackingTime = { 0.5f };
 	
 	DIRECTION_TYPE				m_eDirectionType = { HORIZON };
@@ -96,6 +99,7 @@ private:
 	void						Action_SetUp_ByMode();
 
 	void						Defualt_Move(_float _fTimeDelta);
+	void						Move_To_NextArm(_float _fTimeDelta);
 	void						Move_To_DesirePos(_float _fTimeDelta);
 	void						Move_To_Shop(_float _fTimeDelta);
 	void						Return_To_Default(_float _fTimeDelta);
