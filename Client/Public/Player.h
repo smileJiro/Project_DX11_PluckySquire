@@ -533,13 +533,13 @@ private:
 	HRESULT					Ready_PartObjects();
 private:
 	//Variables
-	_float m_f3DCenterYOffset = 0.5;
-	_float m_f3DInteractLookOffset = 0.65;
-	_float m_f3DInteractRadius = 1.0;
-	_float m_fHeadHeight = 1.0;
+	_float m_f3DCenterYOffset = 0.5f;
+	_float m_f3DInteractLookOffset = 0.65f;
+	_float m_f3DInteractRadius = 1.0f;
+	_float m_fHeadHeight = 1.0f;
 	_float m_fArmHeight = 0.5f; // 벽타기 기준 높이
 	_float m_fArmLength = 0.325f;// 벽 타기 범위
-	_float m_fFootLength = 0.25;
+	_float m_fFootLength = 0.25f;
 	_float m_fAttackForwardingForce = 12.f;
 	_float m_fGroundRotateSpeed = 360.f;
 	_float m_fStepSlopeThreshold = 0.1f;
@@ -557,9 +557,9 @@ private:
 	_bool m_bOnGround = false;
 	_bool m_bAttackTrigger = false;
 	_uint m_iSpinAttackLevel = 4;
-	_vector m_vClamberEndPosition = { 0,0,0,1 };//벽타기 끝날 위치
-	_vector m_vWallNormal= { 0,0,1,0 };//접촉한 벽의 법선
-	_vector m_v3DTargetDirection = { 0,0,-1 };
+	_vector m_vClamberEndPosition = { 0.f,0.f,0.f,1.f };//벽타기 끝날 위치
+	_vector m_vWallNormal= { 0.f,0.f,1.f,0.f };//접촉한 벽의 법선
+	_vector m_v3DTargetDirection = { 0.f,0.f,-1.f };
 	_float4x4 m_mat3DCarryingOffset = {};
 	PLAYER_MODE m_ePlayerMode = PLAYER_MODE_NORMAL;
 
@@ -570,7 +570,7 @@ private:
 	_float m_f2DUpForce = 0;
 	_float m_f2DFloorDistance = 0;
 	_float m_f2DMoveSpeed= 400.f;
-	_float m_f2DJumpPower = 600.f;
+	_float m_f2DJumpPower = 700.f;
 	_float m_f2DPlatformerJumpPower = 650.f;
 	_float m_f2DCenterYOffset= 36.f;
 	_float m_f2DInteractRange = 93.f;

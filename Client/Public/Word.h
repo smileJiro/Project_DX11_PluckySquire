@@ -5,9 +5,19 @@
 
 BEGIN(Client)
 class CPlayer;
-class CWord :
+class CWord final :
 	public CCarriableObject, public IAnimEventReceiver, public IInteractable
 {
+	enum WORD_TYPE
+	{
+		WORD_FULL,
+		WORD_BIG,
+		WORD_SMALL,
+		WORD_CLOSE,
+		WORD_OPEN,
+		WORD_END,
+	};
+
 	//typedef struct tagWordDesc : public CCarriableObject::DESC
 	//{
 

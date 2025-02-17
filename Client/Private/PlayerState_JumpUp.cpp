@@ -22,28 +22,37 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 
 	 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
 	 
-	if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
+	if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
 	{
-		m_pOwner->Set_State(CPlayer::ROLL);
+		m_pOwner->Try_Interact(m_pOwner->Get_InteractableObject(), _fTimeDelta);
 		return;
 	}
-	else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
+	else
 	{
-		m_pOwner->Set_State(CPlayer::THROWSWORD);
-		return;
-	}
-	else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
-	{
-		if (m_pOwner->Is_PlatformerMode())
-			m_pOwner->Set_State(CPlayer::ATTACK);
-		else
-			m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
-		return;
-	}
-	else	if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
-	{
-		m_pOwner->Set_State(CPlayer::THROWOBJECT);
-		return;
+		m_pOwner->End_Interact();
+		if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
+		{
+			m_pOwner->Set_State(CPlayer::ROLL);
+			return;
+		}
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
+		{
+			m_pOwner->Set_State(CPlayer::THROWSWORD);
+			return;
+		}
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
+		{
+			if (m_pOwner->Is_PlatformerMode())
+				m_pOwner->Set_State(CPlayer::ATTACK);
+			else
+				m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
+			return;
+		}
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
+		{
+			m_pOwner->Set_State(CPlayer::THROWOBJECT);
+			return;
+		}
 	}
 	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
