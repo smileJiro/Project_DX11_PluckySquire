@@ -56,7 +56,7 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pOwner)
 		return;
-	cout << "Patrol" << endl;
+	//cout << "Patrol" << endl;
 	//일단 적용해봄
 	//if(COORDINATE_3D == m_pOwner->Get_CurCoord())
 	//{

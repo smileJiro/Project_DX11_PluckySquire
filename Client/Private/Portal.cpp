@@ -31,7 +31,7 @@ HRESULT CPortal::Initialize(void* _pArg)
     pDesc->isCoordChangeEnable = true;
     pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
     m_fTriggerRadius =  pDesc->fTriggerRadius;
-    m_fInteractChargeTime = 0.f;
+    m_fInteractChargeTime = 0.0f;
     // Actor Object는 차후에, ReadyObject 를 따로 불러 생성.
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;

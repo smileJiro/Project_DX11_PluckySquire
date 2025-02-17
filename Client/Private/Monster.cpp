@@ -174,12 +174,16 @@ void CMonster::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCo
 
 void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
+	if ((_uint)MONSTER_STATE::DEAD == m_iState)
+		return;
+
 	m_tStat.iHP -= _iDamg;
 	if (m_tStat.iHP < 0)
 	{
 		m_tStat.iHP = 0;
 	}
-	if (0 <= m_tStat.iHP)
+	cout << m_tStat.iHP << endl;
+	if (0 >= m_tStat.iHP)
 	{
 		Set_AnimChangeable(true);
 		Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
@@ -362,6 +366,8 @@ void CMonster::Active_OnDisable()
 	m_isCool = { false };
 	m_fCoolTime = { 0.f };
 	m_iAttackCount = { 0 };
+
+	Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 
 	// 2. PxActor 비활성화 
 	CActorObject::Active_OnDisable();

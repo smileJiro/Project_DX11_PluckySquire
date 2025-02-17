@@ -623,6 +623,8 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
     switch (eShapeUse)
     {
     case Client::SHAPE_USE::SHAPE_TRIGER:
+        if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+            return;
         Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
         break;
     }
@@ -658,6 +660,8 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
     switch (eShapeUse)
     {
     case Client::SHAPE_USE::SHAPE_TRIGER:
+        if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+            return;
         Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
         break;
     }
