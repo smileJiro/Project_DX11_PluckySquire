@@ -24,14 +24,14 @@ CKeyframe_Module::CKeyframe_Module(const CKeyframe_Module& _Prototype)
     , m_KeyCurrentIndicies(_Prototype.m_KeyCurrentIndicies)
     , m_pDevice(_Prototype.m_pDevice)
     , m_pContext(_Prototype.m_pContext)
-    //, m_pKeyframeDataTexture(_Prototype.m_pKeyframeDataTexture)
-    //, m_pSRVKeyframeDatas(_Prototype.m_pSRVKeyframeDatas)
+    , m_pKeyframeDataTexture(_Prototype.m_pKeyframeDataTexture)
+    , m_pSRVKeyframeDatas(_Prototype.m_pSRVKeyframeDatas)
 {    
     Safe_AddRef(m_pDevice);
     Safe_AddRef(m_pContext);
 
-    //Safe_AddRef(m_pSRVKeyframeDatas);
-    //Safe_AddRef(m_pKeyframeDataTexture);
+    Safe_AddRef(m_pSRVKeyframeDatas);
+    Safe_AddRef(m_pKeyframeDataTexture);
 }
 
 HRESULT CKeyframe_Module::Initialize(const json& _jsonModuleInfo, _int _iNumInstance)
@@ -39,7 +39,7 @@ HRESULT CKeyframe_Module::Initialize(const json& _jsonModuleInfo, _int _iNumInst
 	if (FAILED(__super::Initialize(_jsonModuleInfo)))
 		return E_FAIL;
 
-    //_float4* pKeyFrameDatas = new _float4[128];
+    _float4* pKeyFrameDatas = new _float4[128];
     if (_jsonModuleInfo.contains("Keyframe"))
     {
         for (_int i = 0; i < _jsonModuleInfo["Keyframe"].size(); ++i)
@@ -57,22 +57,22 @@ HRESULT CKeyframe_Module::Initialize(const json& _jsonModuleInfo, _int _iNumInst
         }
     }
 
-    //for (_uint i = 0; i < (_uint)m_Keyframes.size() - 1; ++i)
-    //{
-    //    _uint iFirst = clamp(_uint(m_Keyframes[i] * 128.f), 0U, 127U);
-    //    _uint iSecond = clamp(_uint(m_Keyframes[i + 1] * 128.f), 0U, 127U);
+    for (_uint i = 0; i < (_uint)m_Keyframes.size() - 1; ++i)
+    {
+        _uint iFirst = clamp(_uint(m_Keyframes[i] * 128.f), 0U, 127U);
+        _uint iSecond = clamp(_uint(m_Keyframes[i + 1] * 128.f), 0U, 127U);
 
-    //    for (_uint j = iFirst; j < iSecond; ++j)
-    //    {
-    //        _float fCurTime = (_float)j / (_float)128.f;
-    //        _float fRatio = (fCurTime - m_Keyframes[i]) / (m_Keyframes[i + 1] - m_Keyframes[i]);
-    //        _float4 vKeyframe;
+        for (_uint j = iFirst; j < iSecond; ++j)
+        {
+            _float fCurTime = (_float)j / (_float)128.f;
+            _float fRatio = (fCurTime - m_Keyframes[i]) / (m_Keyframes[i + 1] - m_Keyframes[i]);
+            _float4 vKeyframe;
 
-    //        XMStoreFloat4(&vKeyframe, XMVectorLerp(XMLoadFloat4(&m_KeyframeDatas[i]), XMLoadFloat4(&m_KeyframeDatas[i + 1]), fRatio));
-    //               
-    //        pKeyFrameDatas[j] = vKeyframe;
-    //    }
-    //}
+            XMStoreFloat4(&vKeyframe, XMVectorLerp(XMLoadFloat4(&m_KeyframeDatas[i]), XMLoadFloat4(&m_KeyframeDatas[i + 1]), fRatio));
+                   
+            pKeyFrameDatas[j] = vKeyframe;
+        }
+    }
 
 
     if (_jsonModuleInfo.contains("Module"))
@@ -87,59 +87,59 @@ HRESULT CKeyframe_Module::Initialize(const json& _jsonModuleInfo, _int _iNumInst
     
 
 #pragma region SRV
-    //m_pKeyframeDataTexture = { nullptr };
 
-    //D3D11_TEXTURE2D_DESC	TextureDesc{};
+   D3D11_TEXTURE2D_DESC	TextureDesc{};
 
-    //TextureDesc.Width = 128;
-    //TextureDesc.Height = 16;
-    //TextureDesc.MipLevels = 1;
-    //TextureDesc.ArraySize = 1;
-    //TextureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+   TextureDesc.Width = 128;
+   TextureDesc.Height = 16;
+   TextureDesc.MipLevels = 1;
+   TextureDesc.ArraySize = 1;
+   TextureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 
-    //TextureDesc.SampleDesc.Quality = 0;
-    //TextureDesc.SampleDesc.Count = 1;
+   TextureDesc.SampleDesc.Quality = 0;
+   TextureDesc.SampleDesc.Count = 1;
 
-    //TextureDesc.Usage = D3D11_USAGE_DEFAULT;
-    //TextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-    //TextureDesc.CPUAccessFlags = 0;
-    //TextureDesc.MiscFlags = 0;
+   TextureDesc.Usage = D3D11_USAGE_DEFAULT;
+   TextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+   TextureDesc.CPUAccessFlags = 0;
+   TextureDesc.MiscFlags = 0;
 
-    //_float4* pPixel = new _float4[128 * 16];
-    //ZeroMemory(pPixel, sizeof(_float4) * 128 * 16);
+   _float4* pPixel = new _float4[128 * 16];
+   ZeroMemory(pPixel, sizeof(_float4) * 128 * 16);
 
-    //for (size_t i = 0; i < 16; i++)
-    //{
-    //    for (size_t j = 0; j < 128; j++)
-    //    {
-    //        _uint		iIndex = i * 128 + j;
+   for (size_t i = 0; i < 16; i++)
+   {
+       for (size_t j = 0; j < 128; j++)
+       {
+           _uint		iIndex = i * 128 + j;
 
-    //        pPixel[iIndex] = pKeyFrameDatas[j];
-    //    }
-    //}
+           pPixel[iIndex] = pKeyFrameDatas[j];
+       }
+       pPixel[i * 128 + 127] = pPixel[i * 128 + 126];
+   }
 
-    //D3D11_SUBRESOURCE_DATA		InitialData{};
+   D3D11_SUBRESOURCE_DATA		InitialData{};
 
-    //InitialData.pSysMem = pPixel;
-    //InitialData.SysMemPitch = 128 * sizeof(_float4);
+   InitialData.pSysMem = pPixel;
+   InitialData.SysMemPitch = 128 * sizeof(_float4);
 
-    //if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, &InitialData, &m_pKeyframeDataTexture)))
-    //    return E_FAIL;
+   if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, &InitialData, &m_pKeyframeDataTexture)))
+       return E_FAIL;
 
-    //Safe_Delete_Array(pPixel);
-    //Safe_Delete_Array(pKeyFrameDatas);
+   Safe_Delete_Array(pPixel);
+   Safe_Delete_Array(pKeyFrameDatas);
 
-    //// D3D11_SHADER_RESOURCE_VIEW_DESC 설정 (기본적인 2D 텍스처)
-    //D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-    //srvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-    //srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-    //srvDesc.Texture2D.MostDetailedMip = 0;
-    //srvDesc.Texture2D.MipLevels = 1;
+   // D3D11_SHADER_RESOURCE_VIEW_DESC 설정 (기본적인 2D 텍스처)
+   D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+   srvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+   srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+   srvDesc.Texture2D.MostDetailedMip = 0;
+   srvDesc.Texture2D.MipLevels = 1;
 
-    //// SRV 생성
-    //HRESULT hr = m_pDevice->CreateShaderResourceView(m_pKeyframeDataTexture, nullptr, &m_pSRVKeyframeDatas);
-    //if (FAILED(hr))
-    //    return E_FAIL;
+   // SRV 생성
+   HRESULT hr = m_pDevice->CreateShaderResourceView(m_pKeyframeDataTexture, nullptr, &m_pSRVKeyframeDatas);
+   if (FAILED(hr))
+       return E_FAIL;
  
 #pragma endregion SRV
 
@@ -218,6 +218,8 @@ void CKeyframe_Module::Update_ScaleKeyframe(_float _fCurTime, _float4* _pRight, 
     {
         _float fRatio = (_fCurTime - m_Keyframes[iCurrentIndex]) / (m_Keyframes[iCurrentIndex + 1] - m_Keyframes[iCurrentIndex]);
         _vector vScale = XMVectorLerp(XMLoadFloat4(&m_KeyframeDatas[iCurrentIndex]), XMLoadFloat4(&m_KeyframeDatas[iCurrentIndex + 1]), fRatio);
+
+
 
         XMStoreFloat4(_pRight, XMVector3Normalize(XMLoadFloat4(_pRight)) * XMVectorGetX(vScale));
         XMStoreFloat4(_pUp, XMVector3Normalize(XMLoadFloat4(_pUp)) * XMVectorGetY(vScale));
@@ -334,17 +336,18 @@ _int CKeyframe_Module::Update_Module(CCompute_Shader* _pCShader)
     if (1 >= m_Keyframes.size())
         return -1;
 
+    _pCShader->Bind_SRV("g_KeyframeTexture", m_pSRVKeyframeDatas);
+
     switch (m_eModuleName)
     {
     case COLOR_KEYFRAME:
     {      
-        //_pCShader->Set_SRVs(&m_pSRVKeyframeDatas, 1, 2);
-        return -1;
+        return 12;
         break;
     }
     case SCALE_KEYFRAME:
     {
-        return -1;
+        return 13;
         break;
     }
 
@@ -377,8 +380,8 @@ void CKeyframe_Module::Free()
     Safe_Release(m_pDevice);
     Safe_Release(m_pContext);
 
-    //Safe_Release(m_pSRVKeyframeDatas);
-    //Safe_Release(m_pKeyframeDataTexture);
+    Safe_Release(m_pSRVKeyframeDatas);
+    Safe_Release(m_pKeyframeDataTexture);
 
     m_KeyframeDatas.clear();
     m_Keyframes.clear();
@@ -410,6 +413,7 @@ HRESULT CKeyframe_Module::Initialize(MODULE_NAME _eModuleName, _int _iNumInstanc
         m_eApplyTo = SCALE;
         break;
     }
+
     default:
         break;
     }
@@ -484,7 +488,96 @@ void CKeyframe_Module::Tool_Module_Update()
         m_isChanged = true;
     }
 
-   
+    if (m_isChanged)
+    {
+        Safe_Release(m_pKeyframeDataTexture);
+        Safe_Release(m_pSRVKeyframeDatas);
+        _float4* pKeyFrameDatas = new _float4[128];
+
+        for (_uint i = 0; i < (_uint)m_Keyframes.size() - 1; ++i)
+        {
+            _uint iFirst = clamp(_uint(m_Keyframes[i] * 128.f), 0U, 127U);
+            _uint iSecond = clamp(_uint(m_Keyframes[i + 1] * 128.f), 0U, 127U);
+
+            for (_uint j = iFirst; j < iSecond; ++j)
+            {
+                _float fCurTime = (_float)j / (_float)128.f;
+                _float fRatio = (fCurTime - m_Keyframes[i]) / (m_Keyframes[i + 1] - m_Keyframes[i]);
+                _float4 vKeyframe;
+
+                XMStoreFloat4(&vKeyframe, XMVectorLerp(XMLoadFloat4(&m_KeyframeDatas[i]), XMLoadFloat4(&m_KeyframeDatas[i + 1]), fRatio));
+
+                pKeyFrameDatas[j] = vKeyframe;
+            }
+        }
+
+        D3D11_TEXTURE2D_DESC	TextureDesc{};
+
+        TextureDesc.Width = 128;
+        TextureDesc.Height = 16;
+        TextureDesc.MipLevels = 1;
+        TextureDesc.ArraySize = 1;
+        TextureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+
+        TextureDesc.SampleDesc.Quality = 0;
+        TextureDesc.SampleDesc.Count = 1;
+
+        TextureDesc.Usage = D3D11_USAGE_DEFAULT;
+        TextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+        TextureDesc.CPUAccessFlags = 0;
+        TextureDesc.MiscFlags = 0;
+
+        _float4* pPixel = new _float4[128 * 16];
+        ZeroMemory(pPixel, sizeof(_float4) * 128 * 16);
+
+        for (size_t i = 0; i < 16; i++)
+        {
+            for (size_t j = 0; j < 128; j++)
+            {
+                _uint		iIndex = i * 128 + j;
+
+                pPixel[iIndex] = pKeyFrameDatas[j];
+            }
+            pPixel[i * 128 + 127] = pPixel[i * 128 + 126];
+        }
+
+        D3D11_SUBRESOURCE_DATA		InitialData{};
+
+        InitialData.pSysMem = pPixel;
+        InitialData.SysMemPitch = 128 * sizeof(_float4);
+
+        if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, &InitialData, &m_pKeyframeDataTexture)))
+            MSG_BOX("실패");
+
+
+        Safe_Delete_Array(pPixel);
+        Safe_Delete_Array(pKeyFrameDatas);
+
+        // D3D11_SHADER_RESOURCE_VIEW_DESC 설정 (기본적인 2D 텍스처)
+        D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+        srvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+        srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+        srvDesc.Texture2D.MostDetailedMip = 0;
+        srvDesc.Texture2D.MipLevels = 1;
+
+        // SRV 생성
+        HRESULT hr = m_pDevice->CreateShaderResourceView(m_pKeyframeDataTexture, nullptr, &m_pSRVKeyframeDatas);
+        if (FAILED(hr))
+            MSG_BOX("실패");
+
+    }
+
+    if (ImGui::TreeNode("Image"))
+    {
+        ImVec2 imageSize(256, 32); // 이미지 크기 설정
+        if (nullptr != m_pSRVKeyframeDatas)
+        {
+            ImGui::Image((ImTextureID)m_pSRVKeyframeDatas, imageSize);
+        }
+        ImGui::TreePop();
+    }
+
+
 
 }
 

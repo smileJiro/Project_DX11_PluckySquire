@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "GameInstance.h"
 #include "Level_EffectTool.h"
-
+#include "CubeMap.h"
 #include "SpriteEffect_Emitter.h"
 #include "ModelObject.h"
+#include "ContainerObject.h"
 #include "3DModel.h"
 
 CLevel_EffectTool::CLevel_EffectTool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -46,18 +47,23 @@ HRESULT CLevel_EffectTool::Render()
 
 HRESULT CLevel_EffectTool::Ready_Lights()
 {
-	LIGHT_DESC LightDesc{};
+	CONST_LIGHT LightDesc{};
 
 	ZeroMemory(&LightDesc, sizeof LightDesc);
 
-	LightDesc.eType = LIGHT_DESC::TYPE_DIRECTOINAL;
-	LightDesc.vDirection = _float4(0.f, 1.f, 1.5f, 0.f);
-	LightDesc.vDiffuse = _float4(1.0f, 1.0f, 1.0f, 1.f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
+	LightDesc.fFallOutStart = 20.0f;
+	LightDesc.fFallOutEnd = 1000.0f;
+	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
+	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
 
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
 		return E_FAIL;
+
+
+	return S_OK;
 
 
 	return S_OK;
@@ -106,7 +112,7 @@ HRESULT CLevel_EffectTool::Ready_Layer_Effect(const _wstring& _strLayerTag)
 
 	/*CEffect_System* pOut;
 
-	CEffect_System::PARTICLE_SYSTEM_DESC Desc = {};
+	CEffect_System::EFFECT_SYSTEM_DESC Desc = {};
 
 	Desc.eStartCoord = COORDINATE_3D;
 	Desc.iCurLevelID = LEVEL_TOOL;
@@ -182,6 +188,20 @@ HRESULT CLevel_EffectTool::Ready_SkyBox(const _wstring& _strLayerTag)
 		LEVEL_TOOL, _strLayerTag, &Desc)))
 		return E_FAIL;
 
+	CGameObject* pCubeMap = nullptr;
+	CCubeMap::CUBEMAP_DESC CubeMapDesc;
+	CubeMapDesc.iCurLevelID = LEVEL_TOOL;
+	CubeMapDesc.iRenderGroupID = RG_3D;
+	CubeMapDesc.iPriorityID = PR3D_PRIORITY;
+	CubeMapDesc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
+	CubeMapDesc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
+		LEVEL_TOOL, _strLayerTag, &pCubeMap, &CubeMapDesc)))
+		return E_FAIL;
+
+	m_pGameInstance->Set_CubeMap(static_cast<CCubeMap*>(pCubeMap));
+	return S_OK;
+
 	return S_OK;
 }
 
@@ -196,7 +216,7 @@ HRESULT CLevel_EffectTool::Ready_Layer_Model(const _wstring& _strLayerTag)
 	Desc.strModelPrototypeTag_3D = L"Prototype_Model_Player";
 	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
 	Desc.iShaderPass_3D = 0;
-	Desc.iPriorityID_3D = PR3D_NONBLEND;
+	Desc.iPriorityID_3D = PR3D_GEOMETRY;
 	Desc.iRenderGroupID_3D = RG_3D;
 	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
 
@@ -206,6 +226,55 @@ HRESULT CLevel_EffectTool::Ready_Layer_Model(const _wstring& _strLayerTag)
 
 	pOut->Set_Active(false);
 	m_ModelObjects.push_back(pOut);
+
+
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_TOOL;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL;
+	Desc.strModelPrototypeTag_3D = L"Prototype_Model_Book";
+	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	Desc.iShaderPass_3D = 0;
+	Desc.iPriorityID_3D = PR3D_GEOMETRY;
+	Desc.iRenderGroupID_3D = RG_3D;
+	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_ModelObject"),
+		LEVEL_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+		return E_FAIL;
+
+	pOut->Set_Active(false);
+	m_ModelObjects.push_back(pOut);
+
+
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_TOOL;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL;
+	Desc.strModelPrototypeTag_3D = L"Prototype_Model_MagicHand";
+	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	Desc.iShaderPass_3D = 6;
+	Desc.iPriorityID_3D = PR3D_BLEND;
+	Desc.iRenderGroupID_3D = RG_3D;
+	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL, TEXT("Prototype_GameObject_MagicHandBody"),
+		LEVEL_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+		return E_FAIL;
+
+	pOut->Set_Active(false);
+	m_ModelObjects.push_back(pOut);
+
+	//
+
+	CContainerObject::CONTAINEROBJ_DESC ContainerDesc = {};
+	ContainerDesc.eStartCoord = COORDINATE_3D;
+	ContainerDesc.iCurLevelID = LEVEL_TOOL;
+	ContainerDesc.iNumPartObjects = 2;
+	ContainerDesc.isCoordChangeEnable = false;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL, TEXT("Prototype_GameObject_MagicHand"),
+		LEVEL_TOOL, _strLayerTag, &ContainerDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -246,6 +315,7 @@ void CLevel_EffectTool::Tool_System_List()
 					}
 					m_pNowItem = m_ParticleSystems[iNowIndex];
 					m_pNowItem->Set_Active(true);
+					m_pNowItem->Active_Effect(true, 0);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -506,17 +576,17 @@ void CLevel_EffectTool::Tool_Texture()
 
 			if (m_pNowItem)
 			{
-				if (ImGui::Button("Alpha/Diffuse"))
+				if (ImGui::Button("Texture0 Set"))
 				{
 					m_pNowItem->Set_Texture(m_pEffectTexture, 0);
 				}
 				ImGui::SameLine();
-				if (ImGui::Button("Mask/Normal"))
+				if (ImGui::Button("Texture1 Set"))
 				{
 					m_pNowItem->Set_Texture(m_pEffectTexture, 1);
 				}
 				ImGui::SameLine();
-				if (ImGui::Button("Noise"))
+				if (ImGui::Button("Texture2 Set"))
 				{
 					m_pNowItem->Set_Texture(m_pEffectTexture, 2);
 				}
@@ -598,8 +668,11 @@ void CLevel_EffectTool::Tool_ControlModel(_float _fTimeDelta)
 			_float fTime = static_cast<C3DModel*>(pModel->Get_Model(COORDINATE_3D))->Get_AnimTime();
 			ImGui::Text("Current Anim Time : %.4f", fTime);
 			
-			_float4x4 matIdentity;
-			XMStoreFloat4x4(&matIdentity, XMMatrixIdentity());
+			static _float fTimeScale = 1.f;
+			if (ImGui::DragFloat("LifeTime", &fTimeScale, 0.01f))
+			{
+				m_pGameInstance->Set_TimeScale(fTimeScale, TEXT("Timer_Default"));
+			}
 
 			static _bool isLoop = { true };
 			if (ImGui::RadioButton("Loop", isLoop))
@@ -610,31 +683,35 @@ void CLevel_EffectTool::Tool_ControlModel(_float _fTimeDelta)
 			static _int iAnim = { 0 };
 			ImGui::InputInt("Anim Index", &iAnim);
 
+			static _int iReset = { 0 };
+			ImGui::InputInt("Event ID", &iReset);
+
 			if (ImGui::Button("Reset All"))
 			{
-				pModel->Set_WorldMatrix(matIdentity);
 				pModel->Set_AnimationLoop(COORDINATE_3D, iAnim, isLoop);
 				pModel->Set_Animation(iAnim);
 				if (m_pNowItem)
 				{
-					m_pNowItem->Tool_Reset(0);
+					m_pNowItem->Tool_Reset(iReset);
 				}
 			}
 
-			static _float fSpeed = { 0.f };
-			ImGui::DragFloat("Speed", &fSpeed);
-			ImGui::PushButtonRepeat(true);
-			if (ImGui::Button("Reset All and Speed"))
+			static _char szInputBoneName[MAX_PATH] = "";
+			
+			ImGui::InputText("Bone Name", szInputBoneName, MAX_PATH);
+
+			if (ImGui::Button("Connect to Bone"))
 			{
-				pModel->Get_ControllerTransform()->Go_Straight(_fTimeDelta * fSpeed);
-				pModel->Set_AnimationLoop(COORDINATE_3D, iAnim, isLoop);
-				pModel->Set_Animation(iAnim);
-				if (m_pNowItem)
-				{
-					m_pNowItem->Tool_Reset(0);
-				}
+				m_pNowItem->Set_SpawnMatrix(static_cast<C3DModel*>(pModel->Get_Model(COORDINATE_3D))->Get_BoneMatrix(szInputBoneName));
 			}
-			ImGui::PopButtonRepeat();
+
+			if (ImGui::Button("Detach Effect"))
+			{
+				m_pNowItem->Set_SpawnMatrix(nullptr);
+			}
+
+
+		
 			ImGui::End();
 			break;
 		}
@@ -695,7 +772,7 @@ HRESULT CLevel_EffectTool::Save_All()
 HRESULT CLevel_EffectTool::Load_All(const _char* _szPath)
 {
 	CEffect_System* pOut;
-	CEffect_System::PARTICLE_SYSTEM_DESC Desc = {};
+	CEffect_System::EFFECT_SYSTEM_DESC Desc = {};
 
 	Desc.eStartCoord = COORDINATE_3D;
 	Desc.iCurLevelID = LEVEL_TOOL;

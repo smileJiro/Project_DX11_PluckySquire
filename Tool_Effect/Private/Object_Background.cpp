@@ -25,8 +25,11 @@ HRESULT CObject_Background::Initialize(void* _pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-    m_pControllerTransform->Set_Scale(_float3(10.f, 10.f, 1.f));
-    m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(0.f, 0.f, 5.f, 1.f));
+    m_pControllerTransform->Set_Scale(_float3(100.f, 100.f, 100.f));
+    //m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(0.f, 0.f, 5.f, 1.f));
+
+
+    m_vColor = _float4(0.7f, 0.7f, 0.f, 1.f);
 
     return S_OK;
 }
@@ -37,6 +40,16 @@ void CObject_Background::Priority_Update(_float _fTimeDelta)
 
 void CObject_Background::Update(_float _fTimeDelta)
 {
+    ImGui::Begin("Background Color");
+
+    if (ImGui::DragFloat4("Background Color", (_float*)&m_vColor, 0.01f))
+    {
+        
+    }
+
+    ImGui::End();
+
+    m_pControllerTransform->Set_State(CTransform::STATE_POSITION, *m_pGameInstance->Get_CamPosition());
 }
 
 void CObject_Background::Late_Update(_float _fTimeDelta)
@@ -50,7 +63,7 @@ HRESULT CObject_Background::Render()
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
 
-    if (FAILED(m_pShaderCom->Begin(0)))
+    if (FAILED(m_pShaderCom->Begin(1)))
         return E_FAIL;
 
     if (FAILED(m_pBufferCom->Bind_BufferDesc()))
@@ -73,17 +86,19 @@ HRESULT CObject_Background::Bind_ShaderResources()
     if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ))))
         return E_FAIL;
 
+    if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
+        return E_FAIL;
 
     return S_OK;
 }
 
 HRESULT CObject_Background::Ready_Components()
 {
-    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"), 
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCube2"), 
         TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
         return E_FAIL;
 
-    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
         TEXT("Com_Buffer"), reinterpret_cast<CComponent**>(&m_pBufferCom))))
         return E_FAIL;
 

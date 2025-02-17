@@ -962,23 +962,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 HRESULT CLevel_Chapter_04::Ready_Layer_Effects(const _wstring& _strLayerTag)
 {
-	CEmitter::SetID_2D(RG_2D);
-	CEmitter::SetID_3D(RG_3D);
-	CEmitter::SetID_Particle(PR3D_EFFECT);
-
-	CEffect_System::PARTICLE_SYSTEM_DESC Desc = {};
-
-	Desc.eStartCoord = COORDINATE_3D;
-	Desc.iCurLevelID = m_eLevelID;
-	Desc.isCoordChangeEnable = false;
-	Desc.iSpriteShaderLevel = LEVEL_STATIC;
-	Desc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
-	Desc.iModelShaderLevel = LEVEL_STATIC;
-	Desc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Portal.json"), m_eLevelID, _strLayerTag, &Desc)))
-		return E_FAIL;
-
 	return S_OK;
 }
 

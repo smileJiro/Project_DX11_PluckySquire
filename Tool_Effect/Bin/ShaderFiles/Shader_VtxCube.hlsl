@@ -1,6 +1,7 @@
 #include "../../../EngineSDK/hlsl/Engine_Shader_Define.hlsli"
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
+float4 g_vColor;
 
 TextureCube g_DiffuseTexture;
 /* 구조체 */
@@ -56,6 +57,15 @@ PS_OUT PS_MAIN(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_COLOR(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    Out.vColor = g_vColor;
+    Out.vColor.xyz = Out.vColor.xyz * (In.vTexcoord.z + 0.5f);
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
 	/* 우리가 수행해야할 정점, 픽셀 셰이더의 진입점 함수를 지정한다. */
@@ -68,6 +78,19 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
+        ComputeShader = NULL;
+
+    }
+
+    pass Color
+    {
+        SetRasterizerState(RS_Cull_Front);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_COLOR();
         ComputeShader = NULL;
 
     }

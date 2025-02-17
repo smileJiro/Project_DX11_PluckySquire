@@ -1,3 +1,5 @@
+
+
 #include "MeshEffect_Emitter.h"
 #include "EffectModel.h"
 #include "GameInstance.h"
@@ -102,7 +104,14 @@ void CMeshEffect_Emitter::Update(_float _fTimeDelta)
 
 void CMeshEffect_Emitter::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+	if (ABSOLUTE_WORLD == m_eSpawnPosition)
+	{
+		if (m_pSpawnMatrix)
+			XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pSpawnMatrix));
+
+		//else
+			//XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D));
+	}
 
 	if (m_isActive && m_iAccLoop)
 		m_pGameInstance->Add_RenderObject_New(s_iRG_3D, s_iRGP_EFFECT, this);
@@ -141,6 +150,9 @@ void CMeshEffect_Emitter::Reset()
 
 void CMeshEffect_Emitter::Update_Emitter(_float _fTimeDelta)
 {
+	if (STOP_SPAWN == m_eNowEvent)
+		Set_Active(false);
+
 	if (nullptr == m_pEffectModelCom)
 		return;
 
@@ -158,8 +170,7 @@ void CMeshEffect_Emitter::Update_Emitter(_float _fTimeDelta)
 
 			else if (CEffect_Module::DATA_APPLY::SCALE == eData)
 			{
-				const _float4x4* pWorldMatrix = m_pControllerTransform->Get_WorldMatrix_Ptr();
-				pModule->Update_ScaleKeyframe(m_fAccTime, ((_float4*)(pWorldMatrix)), ((_float4*)(pWorldMatrix) + 1), ((_float4*)(pWorldMatrix) + 2));
+				pModule->Update_ScaleKeyframe(m_fAccTime, ((_float4*)(&m_WorldMatrices[COORDINATE_3D])), ((_float4*)(&m_WorldMatrices[COORDINATE_3D])+1), ((_float4*)(&m_WorldMatrices[COORDINATE_3D]) + 2));
 			}
 		}
 		else if (CEffect_Module::MODULE_TYPE::MODULE_TRANSLATION == eType)
@@ -171,16 +182,12 @@ void CMeshEffect_Emitter::Update_Emitter(_float _fTimeDelta)
 
 HRESULT CMeshEffect_Emitter::Bind_ShaderResources()
 {
-	if (RELATIVE_POSITION == m_eSpawnPosition)
-	{
+	//if (RELATIVE_WORLD == m_eSpawnPosition)
+	//{
 		if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
 			return E_FAIL;
-	}
-	else if (ABSOLUTE_POSITION == m_eSpawnPosition)
-	{
-		if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-			return E_FAIL;
-	}
+	//}
+
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW))))
 		return E_FAIL;
@@ -198,13 +205,14 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderResources()
 
 HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 {
+
 	switch (m_iShaderPass)
 	{
 	case DEFAULT:
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
 			return E_FAIL;
 		break;
-	case DISSOLVE:
+	case DEFAULT_DISSOLVE:
 	{
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
 			return E_FAIL;
@@ -213,13 +221,12 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_fTimeAcc", &m_fAccTime, sizeof(_float))))
 			return E_FAIL;
 
-		if (FAILED(Bind_Texture(ALPHA, "g_AlphaTexture")))
-			return E_FAIL;
-		if (FAILED(Bind_Texture(MASK, "g_MaskTexture")))
-			return E_FAIL;
-		if (FAILED(Bind_Texture(NOISE, "g_NoiseTexture")))
-			return E_FAIL;
+		Bind_Texture(ALPHA, "g_AlphaTexture");
+		Bind_Texture(MASK, "g_MaskTexture");
+		Bind_Texture(NOISE, "g_NoiseTexture");
 
+		if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
+			return E_FAIL;
 		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
@@ -253,11 +260,12 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 			return E_FAIL;
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
 			return E_FAIL;
-		if (FAILED(Bind_Texture(ALPHA, "g_AlphaTexture")))
-			return E_FAIL;
-		if (FAILED(Bind_Texture(MASK, "g_MaskTexture")))
-			return E_FAIL;
 
+		Bind_Texture(ALPHA, "g_AlphaTexture");
+		Bind_Texture(MASK, "g_MaskTexture");
+
+		if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
+			return E_FAIL;
 		if (FAILED(Bind_Float("AlphaTest", "g_fAlphaTest")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("ColorTest", "g_fColorTest")))
@@ -278,13 +286,14 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 			return E_FAIL;
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
 			return E_FAIL;
-		if (FAILED(Bind_Texture(ALPHA, "g_AlphaTexture")))
-			return E_FAIL;
-		if (FAILED(Bind_Texture(MASK, "g_MaskTexture")))
-			return E_FAIL;
-		if (FAILED(Bind_Texture(NOISE, "g_NoiseTexture")))
-			return E_FAIL;
 
+		Bind_Texture(ALPHA, "g_AlphaTexture");
+		Bind_Texture(MASK, "g_MaskTexture");
+		Bind_Texture(NOISE, "g_NoiseTexture");
+
+
+		if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
+			return E_FAIL;
 		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
@@ -303,6 +312,59 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 		if (FAILED(Bind_Float4("NoiseUVScale", "g_NoiseUVScale")))
 			return E_FAIL;
 
+		break;
+	}
+	case BLOOM_DISSOLVE_BILLBOARD:
+	{
+		_float4 vLook;
+		XMStoreFloat4(&vLook, m_pGameInstance->Get_TransformInverseMatrix(CPipeLine::D3DTS_VIEW).r[2]);
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_vLook", &vLook, sizeof(_float4))))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_fTimeAcc", &m_fAccTime, sizeof(_float))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
+			return E_FAIL;
+
+		Bind_Texture(ALPHA, "g_AlphaTexture");
+		Bind_Texture(MASK, "g_MaskTexture");
+		Bind_Texture(NOISE, "g_NoiseTexture");
+
+		if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("AlphaTest", "g_fAlphaTest")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("ColorTest", "g_fColorTest")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("BloomThreshold", "g_fBloomThreshold")))
+			return E_FAIL;
+
+		if (FAILED(Bind_Float4("AlphaUVScale", "g_AlphaUVScale")))
+			return E_FAIL;
+		if (FAILED(Bind_Float4("MaskUVScale", "g_MaskUVScale")))
+			return E_FAIL;
+		if (FAILED(Bind_Float4("NoiseUVScale", "g_NoiseUVScale")))
+			return E_FAIL;
+
+		break;
+	}
+	case DISTORTION:
+	{
+		_float4 vLook;
+		XMStoreFloat4(&vLook, m_pGameInstance->Get_TransformInverseMatrix(CPipeLine::D3DTS_VIEW).r[2]);
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_vLook", &vLook, sizeof(_float4))))
+			return E_FAIL;
+
+		Bind_Texture(NOISE, "g_NoiseTexture");
+
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
+			return E_FAIL;
+		if (FAILED(Bind_Float4("NoiseUVScale", "g_NoiseUVScale")))
+			return E_FAIL;
 		break;
 	}
 
@@ -502,7 +564,7 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 		if (ImGui::TreeNode("Pass"))
 		{
 
-			const _char* items[] = { "Default", "Dissolve", "Bloom", "Bloom_Dissolve" };
+			const _char* items[] = { "Default", "Dissolve", "Bloom", "Bloom_Dissolve", "Bloom_Dissolve_BillBoard", "Distortion"};
 			static _int item_selected_idx = 0;
 			const char* combo_preview_value = items[item_selected_idx];
 
@@ -715,6 +777,31 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 				}
 				ImGui::TreePop();
 			}
+
+			if (ImGui::TreeNode("DIFFUSE"))
+			{
+				if (nullptr != m_Textures[DIFFUSE])
+				{
+					ImVec2 imageSize(300, 300); // 이미지 크기 설정
+					ID3D11ShaderResourceView* pSelectImage = m_Textures[DIFFUSE]->Get_SRV(0);
+					if (nullptr != pSelectImage)
+					{
+						ImGui::Image((ImTextureID)pSelectImage, imageSize);
+					}
+
+					ImGui::Text(WSTRINGTOSTRING(*m_Textures[DIFFUSE]->Get_SRVName(0)).c_str());
+
+
+					if (ImGui::Button("Delete"))
+					{
+						Safe_Release(m_Textures[DIFFUSE]);
+					}
+				}
+				ImGui::TreePop();
+			}
+
+			
+
 			ImGui::TreePop();
 
 		}

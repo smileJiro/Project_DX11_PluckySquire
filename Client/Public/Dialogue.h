@@ -82,6 +82,8 @@ public:
 
     struct DialogData
     {
+        _int    iTriggerID = -1;
+        wstring wstrTriggerTag;
         wstring id;                     // 다이얼로그 ID
         wstring Section;                // 노출되어야할 섹션
         vector<DialogLine> lines;       // 대화 내용 목록

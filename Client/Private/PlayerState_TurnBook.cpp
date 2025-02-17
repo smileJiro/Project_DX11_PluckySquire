@@ -18,7 +18,8 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 			m_eTurnState = TURN_STATE::TURN_LEFT;
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_TURN_LEFT);
 		}
-		Event_Book_Main_Section_Change_Start(1,&vDefaultPos);
+		if(CSampleBook::BOOK_PAGE_ACTION::ACTION_LAST == m_pBook->Get_ActionType())
+			Event_Book_Main_Section_Change_Start(1,&vDefaultPos);
 	}
 	else if (tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_RIGHT])
 	{
@@ -27,7 +28,8 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 			m_eTurnState = TURN_STATE::TURN_RIGHT;
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_TURN_RIGHT);
 		}
-		Event_Book_Main_Section_Change_Start(1, &vDefaultPos);
+		if (CSampleBook::BOOK_PAGE_ACTION::ACTION_LAST == m_pBook->Get_ActionType())
+			Event_Book_Main_Section_Change_Start(0, &vDefaultPos);
 	}
 	else if (tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_END])
 	{

@@ -39,8 +39,8 @@ public:
 
 public:
 	HRESULT Initialize(MODULE_NAME eType, const _string& _strTypeName);
-	void	Tool_Module_Update();
-	HRESULT	Save_Module(json& _jsonModuleInfo);
+	virtual void	Tool_Module_Update() override;
+	virtual HRESULT	Save_Module(json& _jsonModuleInfo) override;
 
 public:
 	static const _char* g_szModuleNames[9];
