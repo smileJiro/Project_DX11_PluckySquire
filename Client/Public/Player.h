@@ -531,6 +531,9 @@ private:
 private:
 	HRESULT					Ready_Components();
 	HRESULT					Ready_PartObjects();
+
+public:
+	virtual void			Set_Include_Section_Name(const _wstring _strIncludeSectionName);
 private:
 	//Variables
 	_float m_f3DCenterYOffset = 0.5f;
@@ -570,8 +573,8 @@ private:
 	_float m_f2DUpForce = 0.f;
 	_float m_f2DFloorDistance = 0.f;
 	_float m_f2DMoveSpeed= 400.f;
-	_float m_f2DJumpPower = 900.f;
-	_float m_f2DPlatformerJumpPower = 650.f;
+	_float m_f2DJumpPower = 600.f;
+	_float m_f2DPlatformerJumpPower = 900.f;
 	_float m_f2DCenterYOffset= 36.f;
 	_float m_f2DInteractRange = 93.f;
 	_float m_f2DThrowObjectPower = 100.f;
@@ -579,8 +582,9 @@ private:
 	_float m_f2DKnockBackPower = 700.f;
 	_float m_f2DInteractOffset = 100.f;
 	_float4x4 m_mat2DCarryingOffset = {};
-
-
+	/* еб©У */
+	_float m_f2DColliderBodyRadius = 20.f;
+	/* еб©У */
 	_float m_fInvincibleTIme = 0.5f;
 	_float m_fInvincibleTImeAcc = 0.f;
 	_bool m_bInvincible = false;
