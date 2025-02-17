@@ -229,9 +229,6 @@
     <Filter Include="94.RenderGroups%28Custom%29">
       <UniqueIdentifier>{c595985d-5f7d-4dc1-ab8b-866af8cedab7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\NPC\00. NPC_Store">
-      <UniqueIdentifier>{a27943b2-2eef-4b1a-b1a1-44b51bd7431f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\UI\00. GamePlay\04. Dialogue\00. Portrait">
       <UniqueIdentifier>{59efe45f-490f-4395-b910-e2dc25f6fc99}</UniqueIdentifier>
     </Filter>
@@ -280,9 +277,6 @@
     <Filter Include="03.Components\Sneak_DetectionField">
       <UniqueIdentifier>{f6c42eee-acf8-4f6c-9743-0655c7697d90}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\NPC\01. LogoNpc">
-      <UniqueIdentifier>{c35edf72-37bc-40ea-bfb7-3cbd9b2d2e29}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation">
       <UniqueIdentifier>{ea4268ec-e206-417e-ae3b-254a0e2ac7a9}</UniqueIdentifier>
     </Filter>
@@ -321,9 +315,6 @@
     </Filter>
     <Filter Include="94.RenderGroups%28Custom%29\Effect\Blur">
       <UniqueIdentifier>{6ed673f2-7181-4cc7-b13c-1a65650eabf7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\NPC\99. Social_Npc">
-      <UniqueIdentifier>{6b81b8a5-a804-493a-8b27-4ce5cfa0487c}</UniqueIdentifier>
     </Filter>
     <Filter Include="94.RenderGroups%28Custom%29\Old">
       <UniqueIdentifier>{627d460b-795c-4203-a3a0-b23870676a3a}</UniqueIdentifier>
@@ -400,9 +391,6 @@
     <Filter Include="02.GameObjects\Blocker">
       <UniqueIdentifier>{492e3f5e-3de8-4f2c-854d-0644478cb21a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\NPC\99. Social_Npc\00. Npc_Social">
-      <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.Components\Capturable">
       <UniqueIdentifier>{739f8c23-cf4e-49d6-9e83-911d341d2c5b}</UniqueIdentifier>
     </Filter>
@@ -414,6 +402,27 @@
     </Filter>
     <Filter Include="91.Spawner">
       <UniqueIdentifier>{f227d0db-bb5f-4e46-9832-cfc28c44d73e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Zippy">
+      <UniqueIdentifier>{ea01adb5-d0d5-4ea5-8351-b64e3da3caba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\RayShape">
+      <UniqueIdentifier>{c32a3738-591f-4b01-99c1-a7a13f7f789c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Word">
+      <UniqueIdentifier>{70b6f4d5-168b-46b5-849c-cb56b4c3621c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\00. Interactable_Npc">
+      <UniqueIdentifier>{e1ad79f2-7280-4686-a70e-f5f2957177bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\00. Interactable_Npc\00. NPC_Store">
+      <UniqueIdentifier>{a27943b2-2eef-4b1a-b1a1-44b51bd7431f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\01. Social_Npc">
+      <UniqueIdentifier>{6b81b8a5-a804-493a-8b27-4ce5cfa0487c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\01. Social_Npc\00. Npc_Social">
+      <UniqueIdentifier>{79a65d02-e29c-4da4-ba74-c358499ea73b}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\NPC\02. NPC_Companion">
       <UniqueIdentifier>{8156295f-338e-4ac7-a2d8-ed0aa6a6f549}</UniqueIdentifier>
@@ -427,14 +436,8 @@
     <Filter Include="02.GameObjects\NPC\02. NPC_Companion\02. Pip">
       <UniqueIdentifier>{3a078132-37b3-461a-b997-688baebef6d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Monster\Zippy">
-      <UniqueIdentifier>{ea01adb5-d0d5-4ea5-8351-b64e3da3caba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\RayShape">
-      <UniqueIdentifier>{c32a3738-591f-4b01-99c1-a7a13f7f789c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Word">
-      <UniqueIdentifier>{70b6f4d5-168b-46b5-849c-cb56b4c3621c}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\UI\03. Logo\01. LogoNpc">
+      <UniqueIdentifier>{c35edf72-37bc-40ea-bfb7-3cbd9b2d2e29}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -705,7 +708,7 @@
       <Filter>94.RenderGroups%28Custom%29\Old\2D</Filter>
     </ClInclude>
     <ClInclude Include="..\public\NPC_Store.h">
-      <Filter>02.GameObjects\NPC\00. NPC_Store</Filter>
+      <Filter>02.GameObjects\NPC\00. Interactable_Npc\00. NPC_Store</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NPC.h">
       <Filter>02.GameObjects\NPC</Filter>
@@ -792,7 +795,7 @@
       <Filter>03.Components\Sneak_DetectionField</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Npc_Logo.h">
-      <Filter>02.GameObjects\NPC\01. LogoNpc</Filter>
+      <Filter>02.GameObjects\UI\03. Logo\01. LogoNpc</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MapObject.h">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
@@ -841,10 +844,10 @@
       <Filter>04.Section\Section_2D\Narration_2D</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NPC_Social.h">
-      <Filter>02.GameObjects\NPC\99. Social_Npc\00. Npc_Social</Filter>
+      <Filter>02.GameObjects\NPC\01. Social_Npc\00. Npc_Social</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Npc_OnlySocial.h">
-      <Filter>02.GameObjects\NPC\99. Social_Npc</Filter>
+      <Filter>02.GameObjects\NPC\01. Social_Npc</Filter>
     </ClInclude>
     <ClInclude Include="..\public\RenderGroup_AfterParticle.h">
       <Filter>94.RenderGroups%28Custom%29\Effect\Particle</Filter>
@@ -1258,7 +1261,7 @@
       <Filter>94.RenderGroups%28Custom%29\Old\2D</Filter>
     </ClCompile>
     <ClCompile Include="..\private\NPC_Store.cpp">
-      <Filter>02.GameObjects\NPC\00. NPC_Store</Filter>
+      <Filter>02.GameObjects\NPC\00. Interactable_Npc\00. NPC_Store</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NPC.cpp">
       <Filter>02.GameObjects\NPC</Filter>
@@ -1342,7 +1345,7 @@
       <Filter>03.Components\Sneak_DetectionField</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Npc_Logo.cpp">
-      <Filter>02.GameObjects\NPC\01. LogoNpc</Filter>
+      <Filter>02.GameObjects\UI\03. Logo\01. LogoNpc</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MapObject.cpp">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
@@ -1388,10 +1391,10 @@
       <Filter>04.Section\Section_2D\Narration_2D</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NPC_Social.cpp">
-      <Filter>02.GameObjects\NPC\99. Social_Npc\00. Npc_Social</Filter>
+      <Filter>02.GameObjects\NPC\01. Social_Npc\00. Npc_Social</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NPC_OnlySocial.cpp">
-      <Filter>02.GameObjects\NPC\99. Social_Npc</Filter>
+      <Filter>02.GameObjects\NPC\01. Social_Npc</Filter>
     </ClCompile>
     <ClCompile Include="..\private\RenderGroup_AfterParticle.cpp">
       <Filter>94.RenderGroups%28Custom%29\Effect\Particle</Filter>
