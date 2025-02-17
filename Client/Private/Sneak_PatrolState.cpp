@@ -56,7 +56,7 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pOwner)
 		return;
-	//cout << "Patrol" << endl;
+	cout << "Patrol" << endl;
 	//일단 적용해봄
 	//if(COORDINATE_3D == m_pOwner->Get_CurCoord())
 	//{
@@ -85,6 +85,8 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 			//적 발견 시 ALERT 전환
 			if (Check_Target3D(true))
 			{
+				m_pOwner->Stop_Rotate();
+				m_pOwner->Stop_Move();
 				return;
 			}
 
@@ -124,8 +126,16 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 	if (m_PatrolWays.size() <= m_iCurWayIndex)
 		return;
 
+	_vector vDir = XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition();
+	if (0.1f >= XMVectorGetX(XMVector3Length(vDir)))
+	{
+		m_pOwner->Stop_Rotate();
+		m_pOwner->Stop_Move();
+		m_isTurn = false;
+		m_isMove = false;
 
-	_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition ) - m_pOwner->Get_FinalPosition());
+		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+	}
 
 	//회전
 	if (true == m_isTurn && false == m_isMove)
@@ -213,7 +223,8 @@ void CSneak_PatrolState::Determine_Direction()
 		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(0.f, 3.f));
 	}
 
-	XMStoreFloat3(&m_vDir, XMVector3Normalize(XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition(),0.f)));
+	//XMStoreFloat3(&m_vDir, XMVector3Normalize(XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition(),0.f)));
+	XMStoreFloat3(&m_vDir, XMVector3Normalize(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition()));
 	if (m_vDir.y > 0.f)
 		int a = 10;
 }

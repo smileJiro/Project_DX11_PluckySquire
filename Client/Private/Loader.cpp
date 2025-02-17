@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "CriticalSectionGuard.h"
+#include "Sound_Manager.h"
 
 /* For. Camera*/
 #include "Camera_Free.h"
@@ -613,6 +614,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Monster/BarferBug/BarferBug2d_Attack.animevt"))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_ZippyAttackAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Monster/Zippy/Zippy_Attack.animevt"))))
+        return E_FAIL;
         if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_BookPageActionEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))
         return E_FAIL;
@@ -724,6 +728,24 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
+
+    m_pGameInstance->Load_SFX(TEXT("P0102_01_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C0102/P0102_01_01.wav"));
+
+    m_pGameInstance->Load_SFX(TEXT("P0102_02_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C0102/P0102_02_01.wav"));
+    m_pGameInstance->Load_SFX(TEXT("P0102_02_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C0102/P0102_02_02.wav"));
+
+    m_pGameInstance->Load_SFX(TEXT("P0304_01_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C0102/P0304_01_01.wav"));
+    m_pGameInstance->Load_SFX(TEXT("P0304_01_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C0102/P0304_01_02.wav"));
+
+    m_pGameInstance->Load_SFX(TEXT("P0304_02_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C0102/P0304_02_01.wav"));
+
+    m_pGameInstance->Load_SFX(TEXT("P1112_01_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1112/P1112_01_01.wav"));
+    m_pGameInstance->Load_SFX(TEXT("P1112_01_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1112/P1112_01_02.wav"));
+
+    m_pGameInstance->Load_SFX(TEXT("P1920_01_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1920/P1920_01_01.wav"));
+    m_pGameInstance->Load_SFX(TEXT("P1920_01_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1920/P1920_01_02.wav"));
+    m_pGameInstance->Load_SFX(TEXT("P1920_02_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1920/P1920_02_01.wav"));
+
 
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
 

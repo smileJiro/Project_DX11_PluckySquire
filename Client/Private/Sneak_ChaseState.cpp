@@ -15,7 +15,7 @@ HRESULT CSneak_ChaseState::Initialize(void* _pArg)
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
 
-	m_fDelayTime = 1.f;
+	m_fDelayTime = 0.2f;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -51,7 +51,7 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 			m_isRenew = true;
 		}
 	}
-	//cout << "Chase" << endl;
+	cout << "Chase" << endl;
 
 	//플레이어 한테 직선으로 와야하는데 장애물이 있는 경우 장애물을 돌아서 혹은 길을 따라 이동해야함
 
@@ -60,6 +60,7 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
 	{
 		m_pOwner->Stop_Rotate();
+		m_pOwner->Stop_Move();
 		//공격 준비로 전환
 		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ATTACK, m_pFSM);
 		return;
@@ -85,12 +86,31 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 		else if (false == m_isOnWay)
 			Determine_NextDirection(m_pTarget->Get_FinalPosition(), &m_vDir);
 
+		//예외처리
+		if (XMVector3Equal(XMLoadFloat3(&m_vDir), XMVectorZero()))
+		{
+			m_pOwner->Stop_Rotate();
+			m_pOwner->Stop_Move();
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
+			return;
+		}
+
 		//회전
 		if (true == m_isTurn && false == m_isMove)
 		{
 			if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 			{
 				m_isMove = true;
+				m_pOwner->Change_Animation();
+			}
+			else
+			{
+				_bool isCW = true;
+				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vDir)));
+				if (fResult < 0)
+					isCW = false;
+
+				m_pOwner->Turn_Animation(isCW);
 			}
 		}
 

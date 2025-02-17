@@ -215,7 +215,8 @@ HRESULT CFSM::Change_State(_uint _iState)
 
 	Set_State(_iState);
 
-	m_pOwner->Change_Animation();
+	if(true == m_pOwner->Has_StateAnim((MONSTER_STATE)_iState))
+		m_pOwner->Change_Animation();
 
 	return S_OK;
 }
