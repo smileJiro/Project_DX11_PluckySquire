@@ -54,25 +54,46 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
     CircleDesc.vOffsetPosition = { 0.f, 0.f };
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;
+	CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
 	m_pBody2DColliderCom = m_p2DColliderComs[0];
 	Safe_AddRef(m_pBody2DColliderCom);
+
     return S_OK;
 }
 
 void CCarriableObject::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);	
+	COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
+	if (nullptr != m_pParentBodyMatrices[eCurCoord])
+	{
+		_matrix matWorld = XMLoadFloat4x4(&m_WorldMatrices[eCurCoord]);
+		_matrix matBody= XMLoadFloat4x4(m_pParentBodyMatrices[eCurCoord]);
+		matWorld.r[3] += matBody.r[3];
+		matWorld.r[3].m128_f32[3] = 1.f;
+		XMStoreFloat4x4(&m_WorldMatrices[eCurCoord], matWorld);
+	}
 }
 
 void CCarriableObject::Late_Update(_float _fTimeDelta)
 {
 	__super::Late_Update(_fTimeDelta);
+	COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
+	if(nullptr != m_pParentBodyMatrices[eCurCoord])
+	{
+		_matrix matWorld = XMLoadFloat4x4(&m_WorldMatrices[eCurCoord]);
+		_matrix matBody = XMLoadFloat4x4(m_pParentBodyMatrices[eCurCoord]);
+		matWorld.r[3] += matBody.r[3];
+		matWorld.r[3].m128_f32[3] = 1.f;
+		XMStoreFloat4x4(&m_WorldMatrices[eCurCoord], matWorld);
+		//cout << "Position : " << matWorld.r[3].m128_f32[0] << ", "<< matWorld.r[3].m128_f32[1] << ", " << matWorld.r[3].m128_f32[2] << endl;
+	}
 	if (COORDINATE_2D == Get_CurCoord() && false == Is_Carrying())
 	{
-		m_f2DUpForce -= 9.8f * _fTimeDelta * 300;
+		m_f2DUpForce -= 9.8f * _fTimeDelta * 300;\
 		m_f2DFloorDistance += m_f2DUpForce * _fTimeDelta;  
 		if (0 > m_f2DFloorDistance)
 		{
@@ -124,6 +145,8 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 		Set_ParentMatrix(COORDINATE_2D, nullptr);
 		Set_SocketMatrix(COORDINATE_3D, nullptr);
 		Set_SocketMatrix(COORDINATE_2D, nullptr);
+		Set_ParentBodyMatrix(COORDINATE_3D, nullptr);
+		Set_ParentBodyMatrix(COORDINATE_2D, nullptr);
 		m_pCarrier = nullptr;
 
 	}

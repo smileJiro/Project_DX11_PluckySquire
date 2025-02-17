@@ -54,6 +54,7 @@ void CGravity::State_Change()
         m_fGravityAcc = 0.0f;
         break;
     case Engine::CGravity::STATE_FALLDOWN:
+        //m_fGravityAcc = 0.0f;
         break;
     default:
         break;

@@ -231,6 +231,7 @@
     <ClInclude Include="..\Public\PlayerState_Die.h" />
     <ClInclude Include="..\Public\PlayerState_ExitPortal.h" />
     <ClInclude Include="..\Public\PlayerState_IntoPortal.h" />
+    <ClInclude Include="..\Public\PlayerState_LaydownObject.h" />
     <ClInclude Include="..\Public\PlayerState_PickUpObject.h" />
     <ClInclude Include="..\Public\PlayerState_StartPortal.h" />
     <ClInclude Include="..\Public\PlayerState_ThrowObject.h" />
@@ -423,6 +424,7 @@
     <ClCompile Include="..\Private\PlayerState_Die.cpp" />
     <ClCompile Include="..\Private\PlayerState_ExitPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_IntoPortal.cpp" />
+    <ClCompile Include="..\Private\PlayerState_LaydownObject.cpp" />
     <ClCompile Include="..\Private\PlayerState_PickUpObject.cpp" />
     <ClCompile Include="..\Private\PlayerState_StartPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_ThrowObject.cpp" />
