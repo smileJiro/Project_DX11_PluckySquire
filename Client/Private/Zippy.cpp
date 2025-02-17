@@ -28,11 +28,11 @@ HRESULT CZippy::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 50.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
     pDesc->fAlert2DRange = 300.f;
     pDesc->fChase2DRange = 600.f;
-    pDesc->fAttack2DRange = 200.f;
+    pDesc->fAttack2DRange = 300.f;
     pDesc->fDelayTime = 2.f;
     
     pDesc->fHP = 5.f;
@@ -73,6 +73,13 @@ HRESULT CZippy::Initialize(void* _pArg)
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CZippy::Animation_End, this, placeholders::_1, placeholders::_2));
 
+    /* Com_AnimEventGenerator */
+    CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+    tAnimEventDesc.pReceiver = this;
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_ZippyAttackAnimEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
+
     CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
     return S_OK;
@@ -89,13 +96,16 @@ void CZippy::Priority_Update(_float _fTimeDelta)
             m_isDelay = false;
         }
     }
-    //공격받으면 풀려야함
+    //priority에서 처리하는게 맞는지 고민
     if (true == m_isElectric)
     {
         m_fAccElecTime += _fTimeDelta;
         if (m_fElecTime <= m_fAccElecTime)
         {
             m_fAccElecTime = 0.f;
+            Set_AnimChangeable(false);
+
+            Attack_End();
             m_isElectric = false;
         }
     }
@@ -124,7 +134,7 @@ void CZippy::Update(_float _fTimeDelta)
                 m_isDash = false;
             }
             else
-                Attack();
+                Change_Animation();
         }
     }
 
@@ -265,6 +275,9 @@ void CZippy::Change_Animation()
 			break;
 		}
 
+        if (ANIM2D_LAST == eAnim)
+            return;
+
 		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(eAnim);
     }
 }
@@ -296,6 +309,12 @@ void CZippy::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
     case ELEC_IN_UP:
         pModelObject->Switch_Animation(ELEC_UP);
+        break;
+
+    case ELEC_DOWN:
+    case ELEC_RIGHT:
+    case ELEC_UP:
+        Set_AnimChangeable(true);
         break;
 
 

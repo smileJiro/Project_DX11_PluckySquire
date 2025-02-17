@@ -54,17 +54,18 @@ void CSneak_AwareState::State_Update(_float _fTimeDelta)
 		//몬스터 인식 범위 안에 들어오면 인식상태로 전환
 		if (true == Check_Target3D(true))
 			return;
-		if (m_isConvert == true)
-		{
-			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_INVESTIGATE, m_pFSM);
-			return;
-		}
+		//if (m_isConvert == true)
+		//{
+		//	Event_ChangeMonsterState(MONSTER_STATE::SNEAK_INVESTIGATE, m_pFSM);
+		//	return;
+		//}
 
 		//플레이어가 인식되지 않았는데 소리가 나면 위치 저장 후 경계추적으로 전환 
 		if (m_pOwner->IsTarget_In_Sneak_Detection())
 		{
 			m_pFSM->Set_Sneak_InvestigatePos(m_pTarget->Get_FinalPosition());
-			m_isConvert = true;
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_INVESTIGATE, m_pFSM);
+			//m_isConvert = true;
 			return;
 		}
 

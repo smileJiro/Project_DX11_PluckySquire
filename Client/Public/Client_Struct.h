@@ -8,5 +8,7 @@ namespace Client
 		_wstring strPrototypeTag;
 		_wstring strLayerTag;
 
+		_wstring strSectionKey;
+		SECTION_PLAYMAP_2D_RENDERGROUP eSection2DRenderGroup;
 	}Pooling_DESC;
 }

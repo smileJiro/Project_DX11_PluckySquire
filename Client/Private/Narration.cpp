@@ -165,6 +165,9 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 					if (line.contains("strtext") && line["strtext"].is_string())
 						DialogueData.strtext = StringToWstring(line["strtext"].get<string>());
 
+					if (line.contains("strSFX") && line["strSFX"].is_string())
+						DialogueData.strSFX = StringToWstring(line["strSFX"].get<string>());
+
 					if (line.contains("isLeft") && line["isLeft"].is_boolean())
 						DialogueData.isLeft = line["isLeft"].get<bool>();
 
@@ -408,6 +411,8 @@ vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine
 	{
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[iLine].NarAnim[i].strSectionid, m_pCurrentAnimObj[i]);
 	}
+
+	m_pGameInstance->Start_SFX_Delay(m_NarrationDatas[m_iNarrationCount].lines[iLine].strSFX, 0.f, 50.f, false);
 
 	return m_pCurrentAnimObj;
 }

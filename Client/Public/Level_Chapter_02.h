@@ -5,6 +5,7 @@ class CGameObject;
 END
 
 BEGIN(Client)
+class CSpawner;
 class CLevel_Chapter_02 final : public CLevel
 {
 private:
@@ -21,6 +22,7 @@ public:
 	HRESULT					Ready_CubeMap(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_MainTable(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Map();
+	HRESULT					Ready_Layer_Spawner(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget);
 	HRESULT					Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut);
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
@@ -38,6 +40,11 @@ private:
 	HRESULT Map_Object_Create(_wstring _strFileName);
 
 	LEVEL_ID				m_eLevelID;
+
+private:
+	CSpawner* m_pTestSpawner1 = nullptr;
+	CSpawner* m_pTestSpawner2 = nullptr;
+	CSpawner* m_pTestSpawner3 = nullptr;
 public:
 	static CLevel_Chapter_02* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eLevelID);
 	virtual void			Free() override;

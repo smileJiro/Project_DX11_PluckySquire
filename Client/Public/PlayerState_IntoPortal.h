@@ -18,6 +18,7 @@ public:
     virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 private:
     CPortal* m_pPortal = nullptr;
+    _bool m_bPortaled = false;
 };
 
 END

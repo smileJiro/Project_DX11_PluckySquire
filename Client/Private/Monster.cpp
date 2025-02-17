@@ -35,7 +35,6 @@ HRESULT CMonster::Initialize(void* _pArg)
 	m_fFOVX = pDesc->fFOVX;
 	m_fFOVY = pDesc->fFOVY;
 	m_eWayIndex = pDesc->eWayIndex;
-	m_iHp = pDesc->fHP;
 
 	if (true == pDesc->isSneakMode)
 		m_isSneakMode = true;
@@ -337,7 +336,7 @@ void CMonster::Active_OnEnable()
 	CActorObject::Active_OnEnable();
 
 
-	m_tStat.iHP = m_iHp;
+	m_tStat.iHP = m_tStat.iMaxHP;
 
 	// 2. 몬스터 할거 하고
 //	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Player"), 0);

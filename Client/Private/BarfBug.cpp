@@ -46,11 +46,11 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->fDelayTime = 1.f;
     pDesc->fCoolTime = 3.f;
 
-    pDesc->fHP = 5.f;
-
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 30.f;
 
+    m_tStat.iHP = 5;
+    m_tStat.iMaxHP = 5;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -368,21 +368,18 @@ void CBarfBug::Attack()
     {
         _float3 vScale, vPosition;
         _float4 vRotation;
-        COORDINATE* pCoord = new COORDINATE;
+        COORDINATE eCoord = Get_CurCoord();
 
         if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
             return;
 
-        if (COORDINATE_3D == Get_CurCoord())
+        if (COORDINATE_3D == eCoord)
         {
-            *pCoord = COORDINATE::COORDINATE_3D;
             vPosition.y += vScale.y * 0.5f;
-            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), pCoord, &vPosition, &vRotation);
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), eCoord, &vPosition, &vRotation);
         }
-        else if (COORDINATE_2D == Get_CurCoord())
+        else if (COORDINATE_2D == eCoord)
         {
-            *pCoord = COORDINATE::COORDINATE_2D;
-
             //공격 위치 맞추기
             switch (Get_2DDirection())
             {
@@ -408,11 +405,10 @@ void CBarfBug::Attack()
             fAngle=Restrict_2DRangeAttack_Angle(fAngle);
             XMStoreFloat4(&vRotation, XMQuaternionRotationAxis(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMConvertToRadians(fAngle)));
 
-            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), pCoord, &vPosition, &vRotation);
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), eCoord, &vPosition, &vRotation);
         }
         ++m_iAttackCount;
 
-        Safe_Delete(pCoord);
     }
 }
 

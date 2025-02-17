@@ -40,11 +40,12 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->fChase2DRange = 600.f;
     pDesc->fAttack2DRange = 100.f;
     pDesc->fDelayTime = 3.f;
-    
-    pDesc->fHP = 5.f;
 
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 30.f;
+
+    m_tStat.iHP = 5;
+    m_tStat.iMaxHP = 5;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
