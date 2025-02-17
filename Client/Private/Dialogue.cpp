@@ -105,13 +105,7 @@ void CDialog::Late_Update(_float _fTimeDelta)
 		{
 			m_pPortrait->CBase::Set_Active(true);
 		}
-			
-
-
 	}
-
-
-
 }
 
 HRESULT CDialog::Render()
