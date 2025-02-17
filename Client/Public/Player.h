@@ -12,6 +12,7 @@ class CCarriableObject;
 class CStateMachine;
 class IInteractable;
 class CPortal;
+class CSampleBook;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -529,8 +530,6 @@ public:
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
 private:
-
-
 	void					Key_Input(_float _fTimeDelta);
 
 private:
@@ -552,7 +551,6 @@ private:
 	_float m_fGroundRotateSpeed = 360.f;
 	_float m_fStepSlopeThreshold = 0.1f;
 	_float m_f3DLandAnimHeightThreshold= 0.6f;
-	//_float m_fFootHeightThreshold = 0.1f;
 	_float m_f3DJumpPower = 10.5f;
 	_float m_fAirRotateSpeed = 40.f;
 	_float m_fAirRunSpeed = 6.f;
@@ -615,6 +613,7 @@ private:
 	set<CGameObject*> m_AttckedObjects;
 	IInteractable* m_pInteractableObject = nullptr;
 	CPortal* m_pPortal= nullptr;
+	CSampleBook* m_pBook = nullptr;
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

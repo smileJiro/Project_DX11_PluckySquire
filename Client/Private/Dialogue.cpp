@@ -852,14 +852,25 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		if (Uimgr->Get_DialogueLineIndex() == Uimgr->Get_Dialogue(_strDialogue)[0].lines.size())
 		{
 			// 다음 대사가 없으므로 트리거를 종료 시킨다.
+			// AddSection 을 다음 다이얼로그를 위해 false를 시킨다.
 			m_pPortrait->Set_AddSectionRender(false);
+
+			// 불필요한 렌더 제거를 위해 렌더 그룹에서 제거한다.
 			CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+			
+			// 트리거로 햇을수도 있으므로 트리거에게 종료했다고 보내준다.
 			CTrigger_Manager::GetInstance()->On_End(Uimgr->Get_DialogId());
+
+			// 다음 다이얼로그를 위해 false를 시킨다.
 			Uimgr->Set_DisplayDialogue(false);
 			Uimgr->Set_PortraitRender(false);
 			Uimgr->Set_DialogueLineIndex(0);
 			m_isFirstRefresh = false;
+
+			// 다이얼로그 끝나고 상점을 닫기 위해 해당 다이얼로그가 상점 관련인지 확인한다.
 			isOpenPanel(_strDialogue);
+
+
 		}
 	}
 }

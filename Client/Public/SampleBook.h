@@ -1,6 +1,7 @@
 #pragma once
 #include "ModelObject.h"
 #include "AnimEventReceiver.h"
+#include "Interactable.h"
 
 BEGIN(Engine)
 class CAnimEventGenerator;
@@ -45,6 +46,14 @@ public:
 	virtual HRESULT			Initialize(void* _pArg) override;
 	HRESULT					Init_RT_RenderPos_Capcher();
 
+
+public:
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+
+public:
+
 public :	
 	virtual void			Priority_Update(_float _fTimeDelta) override;
 	virtual void			Update(_float _fTimeDelta) override;
@@ -66,11 +75,14 @@ private :
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
 	_float3					m_fNextPos = {};
 	_bool					m_isAction = { false };
-
+	_bool					m_isPlayerAround= { false };
 public:
 	static CSampleBook* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void			Free() override;
+
+
+
 
 };
 
