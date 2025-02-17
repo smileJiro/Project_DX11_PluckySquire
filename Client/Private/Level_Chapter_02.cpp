@@ -108,11 +108,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_UI (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_NPC(TEXT("Layer_NPC"))))
-	{
-		MSG_BOX(" Failed Ready_Layer_NPC (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_NPC(TEXT("Layer_NPC"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_NPC (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 
 
 	if (FAILED(Ready_Layer_Spawner(TEXT("Layer_Spawner"))))
