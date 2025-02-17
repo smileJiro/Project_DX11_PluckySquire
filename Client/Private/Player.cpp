@@ -623,6 +623,8 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
     switch (eShapeUse)
     {
     case Client::SHAPE_USE::SHAPE_TRIGER:
+        if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+            return;
         Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
         break;
     }
@@ -634,7 +636,7 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 	m_pStateMachine->Get_CurrentState()->OnTrigger_Stay(_My, _Other);
     if (PLAYER_SHAPE_USE::INTERACTION ==(PLAYER_SHAPE_USE)_My.pShapeUserData->iShapeUse)
     {
-        OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_CollisionGroupID();
+        OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_ObjectGroupID();
         if (
             OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup)
         {
@@ -658,6 +660,8 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
     switch (eShapeUse)
     {
     case Client::SHAPE_USE::SHAPE_TRIGER:
+        if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+            return;
         Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
         break;
     }
@@ -728,7 +732,7 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
 void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 	m_pStateMachine->Get_CurrentState()->On_Collision2D_Stay(_pMyCollider, _pOtherCollider, _pOtherObject);
-    OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherObject->Get_CollisionGroupID();
+    OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
     if (_pMyCollider == m_pBody2DTriggerCom)
     {
         if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
@@ -880,8 +884,10 @@ void CPlayer::Attack(CGameObject* _pVictim)
         return;
     Event_Hit(this, _pVictim, m_tStat.iDamg);
     CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
-    if(pCharacter)
-	    Event_KnockBack(pCharacter, Get_LookDirection(), m_f2DKnockBackPower);
+    if (pCharacter)
+    {
+        Event_KnockBack(pCharacter, Get_LookDirection(), COORDINATE_2D == Get_CurCoord() ? m_f2DKnockBackPower : m_f3DKnockBackPower);
+    }
     m_AttckedObjects.insert(_pVictim);
 }
 
@@ -992,6 +998,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     }
     if (Is_CarryingObject())
     {
+        //상호작용 오브젝트가 범위 안에 있으면 상호작용, 아니면 던지기
+
         //던지기
         if (KEY_DOWN(KEY::E))
             tResult.bInputStates[PLAYER_INPUT_THROWOBJECT] = true;
@@ -1256,6 +1264,16 @@ _vector CPlayer::Get_LookDirection(COORDINATE _eCoord)
         return FDir_To_Vector(EDir_To_FDir(m_e2DDirection_E));
     else
         return XMVector4Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+}
+
+_vector CPlayer::Get_2DELookDirection()
+{
+    return _vector();
+}
+
+_vector CPlayer::Get_2DFLookDirection()
+{
+    return _vector();
 }
 
 _vector CPlayer::Get_BodyPosition()

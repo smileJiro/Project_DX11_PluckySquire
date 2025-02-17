@@ -486,6 +486,8 @@ public:
 	_vector  Get_HeadPosition();
 	_vector Get_LookDirection();
 	_vector Get_LookDirection(COORDINATE _eCoord);
+	_vector Get_2DELookDirection();
+	_vector Get_2DFLookDirection();
 	_vector Get_3DTargetDirection() { return m_v3DTargetDirection; }
 	_vector Get_ClamberEndPosition() { return m_vClamberEndPosition; }
 	_vector Get_WallNormal() { return m_vWallNormal; }
@@ -550,7 +552,7 @@ private:
 	_float m_f3DFloorDistance = 0;
 	_float m_f3DThrowObjectPower = 20.f;
 	_float m_f3DPickupRange = 1.3f;
-	_float m_f3DKnockBackPower = 100.f;
+	_float m_f3DKnockBackPower = 10.f;
 
 	_bool m_bOnGround = false;
 	_bool m_bAttackTrigger = false;
@@ -574,7 +576,7 @@ private:
 	_float m_f2DInteractRange = 93.f;
 	_float m_f2DThrowObjectPower = 100.f;
 	_float m_f2DPickupRange = 93.f;
-	_float m_f2DKnockBackPower = 100.f;
+	_float m_f2DKnockBackPower = 700.f;
 	_float m_f2DInteractOffset = 100.f;
 	_float4x4 m_mat2DCarryingOffset = {};
 
@@ -600,7 +602,7 @@ private:
 	CModelObject* m_pGlove= nullptr;
 
 	//기타 관계된 오브젝트
-	CCarriableObject* m_pCarryingObject = { nullptr, };
+	CCarriableObject* m_pCarryingObject = { nullptr};
 	set<CGameObject*> m_AttckedObjects;
 	IInteractable* m_pInteractableObject = nullptr;
 	CPortal* m_pPortal= nullptr;

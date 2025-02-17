@@ -72,6 +72,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
     m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
     m_pFSM->Set_PatrolBound();
 
@@ -449,6 +450,14 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
         case DAMAGE:
             Set_AnimChangeable(true);
+            break;
+
+        case DIE:
+            Set_AnimChangeable(true);
+            //풀링에 넣을 시 변경
+            //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+
+            Event_DeleteObject(this);
             break;
 
         default:

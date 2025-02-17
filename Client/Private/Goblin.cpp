@@ -27,10 +27,10 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->isCoordChangeEnable = true;
     pDesc->iNumPartObjects = PART_END;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
-    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
     pDesc->fAlertRange = 5.f;
@@ -294,6 +294,14 @@ void CGoblin::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             Set_AnimChangeable(true);
             break;
 
+        case DEATH:
+            Set_AnimChangeable(true);
+            //풀링에 넣을 시 변경
+            //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+
+            Event_DeleteObject(this);
+            break;
+
         default:
             break;
         }
@@ -376,7 +384,7 @@ void CGoblin::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CGoblin::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
     {
         if ((_uint)MONSTER_STATE::CHASE == m_iState)
         {
@@ -394,7 +402,7 @@ void CGoblin::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 
 void CGoblin::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
     {
         if (true == m_isContactToTarget)
         {
