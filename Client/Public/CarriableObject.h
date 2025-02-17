@@ -8,6 +8,21 @@ class CPlayer;
 class CCarriableObject :
 	public CModelObject, public IAnimEventReceiver, public IInteractable
 {
+public:
+	enum CARRIABLE_OBJ_ID
+	{
+		DIEC,
+		WORD,
+		KEY,
+		JUMP_PADDLE,
+		BOX,
+		CARRIABLE_ID_LAST
+	};
+
+	typedef struct tagCarriableDesc : public CModelObject::MODELOBJECT_DESC
+	{
+		CARRIABLE_OBJ_ID eCrriableObjId = CARRIABLE_OBJ_ID::CARRIABLE_ID_LAST;
+	}CARRIABLE_DESC;
 protected:
 	explicit CCarriableObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	explicit CCarriableObject(const CCarriableObject& _Prototype);
@@ -27,6 +42,7 @@ public:
 	virtual void Interact(CPlayer* _pUser) override;
 	virtual _bool Is_Interactable(CPlayer* _pUser) override;
 	virtual _float Get_Distance(COORDINATE _eCOord, CPlayer* _pUser) override;
+	CARRIABLE_OBJ_ID Get_CarriableObjId() const { return m_eCarriableId; }
 public:
 	_bool Is_Carrying() { return nullptr != m_pCarrier; }
 	HRESULT Set_Carrier(CPlayer* _pCarrier);
@@ -44,6 +60,8 @@ private:
 
 	//½ÇÇè¿ë
 	_float m_fRestitution = 0.5f;
+
+	CARRIABLE_OBJ_ID m_eCarriableId = CARRIABLE_OBJ_ID::CARRIABLE_ID_LAST;
 public:
 	static CCarriableObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
