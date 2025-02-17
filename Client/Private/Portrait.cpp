@@ -70,7 +70,7 @@ void CPortrait::Late_Update(_float _fTimeDelta)
 		if (!m_isAddSectionRender)
 		{
 			wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 
 
 			m_isAddSectionRender = true;
@@ -146,7 +146,7 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 			if (!m_isAddSectionRender)
 			{
 				wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 				//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				m_isAddSectionRender = true;
 			}

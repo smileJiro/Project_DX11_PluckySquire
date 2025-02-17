@@ -12,6 +12,57 @@
 			"CollisionScaleX": 70.0,
 			"CollisionScaleY": 70.0,
 			"is2D": true
+		},
+		{
+			"strSectionid": "Chapter1_P0910",
+			"strAnimaionName": "Benny_Bee",
+			"strCreateSection": 3,
+			"strDialogueId": "Honey_Bee_Benny_01",
+			"iStartAnimation": 0,
+			"vPositionX": 615.0,
+			"vPositionY": -139.0,
+			"vPositionZ": 0.0,
+			"CollisionScaleX": 70.0,
+			"CollisionScaleY": 70.0,
+			"is2D": true
+		},
+		{
+			"strSectionid": "Chapter2_P1314",
+			"strAnimaionName": "C01_Humgrump",
+			"strCreateSection": 3,
+			"strDialogueId": "DJ_Moobeard_Dialogue_01",
+			"iStartAnimation": 0,
+			"vPositionX": 616.0,
+			"vPositionY": -29.0,
+			"vPositionZ": 0.0,
+			"CollisionScaleX": 70.0,
+			"CollisionScaleY": 70.0,
+			"is2D": true
+		},
+		{
+			"strSectionid": "Chapter2_P1314",
+			"strAnimaionName": "Spear_Trooper",
+			"strCreateSection": 3,
+			"iStartAnimation": 0,
+			"vPositionX": 616.0,
+			"vPositionY": -29.0,
+			"vPositionZ": 0.0,
+			"CollisionScaleX": 70.0,
+			"CollisionScaleY": 70.0,
+			"is2D": true
+		},
+		{
+			"strSectionid": "Chapter2_P1314",
+			"strAnimaionName": "Spear_Trooper",
+			"strCreateSection": 3,
+			"strDialogueId": "",
+			"iStartAnimation": 0,
+			"vPositionX": 616.0,
+			"vPositionY": -29.0,
+			"vPositionZ": 0.0,
+			"CollisionScaleX": 70.0,
+			"CollisionScaleY": 70.0,
+			"is2D": true
 		}
 	]
 }

@@ -43,10 +43,14 @@ void CPlayerState_JumpToPortal::Enter()
 	m_pPortal = (m_pOwner->Get_CurrentPortal());
     assert(m_pPortal);
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-    m_vPortalPos = m_pPortal->Get_ControllerTransform()->Get_Transform(eCoord)->Get_State(CTransform::STATE_POSITION);
+        m_vPortalPos = m_pPortal->Get_ControllerTransform()->Get_Transform(eCoord)->Get_State(CTransform::STATE_POSITION);
+    _float fYDIff   = XMVectorGetY(m_vPortalPos) - XMVectorGetY(m_pOwner->Get_FinalPosition());
+	_float fXZDiff = XMVectorGetX(XMVector3Length(XMVectorSetY(m_vPortalPos, 0.f) - XMVectorSetY(m_pOwner->Get_FinalPosition(), 0.f)));
+	_float fYRadian = max(m_f3DJumpRadianMin, atan2f(fYDIff, fXZDiff)) + XMConvertToRadians(10.f);
+
     if (COORDINATE_3D == eCoord)
     {
-        static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(m_vPortalPos, XMConvertToRadians(45.f));
+        static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(m_vPortalPos, fYRadian);
 	}
     else
     {

@@ -83,6 +83,7 @@ public:
 		THROWSWORD,
 		PICKUPOBJECT,
 		THROWOBJECT,
+		LAYDOWNOBJECT,
 		CLAMBER,
 		SPINATTACK,
 		DIE,
@@ -499,8 +500,9 @@ public:
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	PLAYER_MODE Get_PlayerMode() { return m_ePlayerMode; }
 	CController_Transform* Get_Transform() { return m_pControllerTransform; }
-	CCarriableObject* Get_CarryingObject();
-
+	CCarriableObject* Get_CarryingObject();;
+	const _float4x4* Get_BodyWorldMatrix_Ptr() const;
+	const _float4x4* Get_BodyWorldMatrix_Ptr(COORDINATE eCoord) const;
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);

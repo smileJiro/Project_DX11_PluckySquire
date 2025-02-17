@@ -189,6 +189,108 @@
 			]
 		},
 		{
+			"id": "Honey_Bee_Benny_01",
+			"Section": "Chapter1_P0910",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "꿀벌 베니",
+					"BG": 0,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "여긴 어쩐 일이야?",
+					"Red": 255,
+					"Green": 175,
+					"Blue": 81
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"BG": 15,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "달수염 할아버지가 보내서 왔어!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"BG": 15,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "혹시 밀랍 남는거 있으면 좀 줄래?",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"BG": 15,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "달수염 할아버지가 꼭 필요하대!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "꿀벌 베니",
+					"BG": 0,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "당연하지, 친구. 여기 있어.",
+					"Red": 255,
+					"Green": 175,
+					"Blue": 81
+				},
+				{
+					"Portrait": 0,
+					"Talker": "꿀벌 베니",
+					"BG": 0,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "마법사 할배한테 안부 전해 줘.",
+					"Red": 255,
+					"Green": 175,
+					"Blue": 81
+				}
+			]
+		},
+		{
 			"id": "Event_Dialogue_01",
 			"lines": [
 				{

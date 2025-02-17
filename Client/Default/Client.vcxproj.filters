@@ -997,6 +997,7 @@
     <ClInclude Include="..\Public\WordGame_Generator.h">
       <Filter>02.GameObjects\Word</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_LaydownObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1543,6 +1544,7 @@
     <ClCompile Include="..\Private\Zippy.cpp">
       <Filter>02.GameObjects\Monster\Zippy</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_LaydownObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

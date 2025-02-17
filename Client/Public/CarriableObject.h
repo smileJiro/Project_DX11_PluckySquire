@@ -48,6 +48,8 @@ public:
 	HRESULT Set_Carrier(CPlayer* _pCarrier);
 	void Throw(_fvector _vForce);
 	void Set_Kinematic(_bool _bKinematic);
+	void Set_ParentBodyMatrix(COORDINATE _eCoord, const _float4x4* _pBodyMatrix) { m_pParentBodyMatrices[_eCoord] = _pBodyMatrix; }
+
 private:
 	CPlayer* m_pCarrier = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;
@@ -57,6 +59,8 @@ private:
 	_float m_f2DUpForce = 0.f;
 	_bool m_b2DOnGround= false;
 	_bool m_bThrowing = false;
+
+	const _float4x4* m_pParentBodyMatrices[COORDINATE_LAST] = { nullptr }; // 부모의 월드 행렬의 주소
 
 	//실험용
 	_float m_fRestitution = 0.5f;
