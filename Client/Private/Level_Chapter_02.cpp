@@ -1150,7 +1150,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-	tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001;
+	tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001f;
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino3");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
