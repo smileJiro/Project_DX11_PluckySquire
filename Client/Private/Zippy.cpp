@@ -60,6 +60,7 @@ HRESULT CZippy::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
     m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
     m_pFSM->Set_PatrolBound();
 
@@ -263,6 +264,7 @@ void CZippy::Change_Animation()
 			else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
 				eAnim = HIT_RIGHT;
 			break;
+
 		case Client::MONSTER_STATE::DEAD:
 			if (F_DIRECTION::UP == m_e2DDirection)
 				eAnim = DIE_UP;
@@ -334,6 +336,16 @@ void CZippy::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     case HIT_RIGHT:
     case HIT_UP:
         Set_AnimChangeable(true);
+        break;
+
+    case DIE_DOWN:
+    case DIE_RIGHT:
+    case DIE_UP:
+        Set_AnimChangeable(true);
+        //풀링에 넣을 시 변경
+        //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+
+        Event_DeleteObject(this);
         break;
 
     default:

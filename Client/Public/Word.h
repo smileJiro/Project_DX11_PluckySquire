@@ -6,7 +6,7 @@
 BEGIN(Client)
 class CPlayer;
 class CWord final :
-	public CCarriableObject, public IAnimEventReceiver, public IInteractable
+	public CCarriableObject
 {
 	enum WORD_TYPE
 	{

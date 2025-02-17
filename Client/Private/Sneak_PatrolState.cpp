@@ -196,7 +196,7 @@ void CSneak_PatrolState::Determine_Direction()
 		//예외처리
 		if (m_PatrolWays.size()-1 < m_iCurWayIndex)
 		{
-			m_iCurWayIndex = m_PatrolWays.size() - 1;
+			m_iCurWayIndex = (_int)m_PatrolWays.size() - 1;
 			m_isBack = true;
 		}
 	}
