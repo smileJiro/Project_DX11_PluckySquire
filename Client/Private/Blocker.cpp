@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Blocker.h"
 #include "GameInstance.h"
+#include "Section_Manager.h"
 
 
 CBlocker::CBlocker(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, COORDINATE _eCoord)
@@ -40,6 +41,18 @@ HRESULT CBlocker::Initialize(void* _pArg)
         return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CBlocker::Render()
+{
+    #ifdef _DEBUG
+    for (auto& p2DCollider : m_p2DColliderComs)
+    {
+        p2DCollider->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+    }
+#endif // _DEBUG
+
+    return E_NOTIMPL;
 }
 
 

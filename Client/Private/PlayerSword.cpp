@@ -424,11 +424,11 @@ void CPlayerSword::Attack(CGameObject* _pVictim)
 {
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
-    Event_Hit(this, _pVictim, m_pPlayer->Get_AttackDamg());
+    Event_Hit(this, _pVictim, (_float)m_pPlayer->Get_AttackDamg());
     CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
     if (pCharacter)
     {
-        Event_KnockBack(pCharacter, Get_LookDirection(), m_f3DKnockBackPower);
+        Event_KnockBack(pCharacter, Get_LookDirection(), COORDINATE_2D == Get_CurCoord() ? m_f2DKnockBackPower : m_f3DKnockBackPower);
     }
     m_AttckedObjects.insert(_pVictim);
 	Safe_AddRef(_pVictim);
@@ -440,7 +440,7 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
     m_bAttackEnable = _bOn;
     if (COORDINATE_3D == eCoord)
     {
-        _uint iShapeCount = m_pActorCom->Get_Shapes().size();
+        _uint iShapeCount = (_uint)m_pActorCom->Get_Shapes().size();
         for (_uint i = 0; i < iShapeCount; i++)
             m_pActorCom->Set_ShapeEnable(i, false);
     }

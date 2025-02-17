@@ -199,7 +199,7 @@ void CProjectile_BarfBug::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& 
 
 void CProjectile_BarfBug::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
     {
         Event_Hit(this, _pOtherObject, 1.f);
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PROJECTILESPLAT);

@@ -157,7 +157,7 @@ void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+	if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
 	{
 		Event_Hit(this, _pOtherObject, Get_Stat().iDamg);
 		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 300.f);
@@ -174,12 +174,16 @@ void CMonster::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCo
 
 void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
+	if ((_uint)MONSTER_STATE::DEAD == m_iState)
+		return;
+
 	m_tStat.iHP -= _iDamg;
 	if (m_tStat.iHP < 0)
 	{
 		m_tStat.iHP = 0;
 	}
-	if (0 <= m_tStat.iHP)
+	cout << m_tStat.iHP << endl;
+	if (0 >= m_tStat.iHP)
 	{
 		Set_AnimChangeable(true);
 		Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
@@ -362,6 +366,8 @@ void CMonster::Active_OnDisable()
 	m_isCool = { false };
 	m_fCoolTime = { 0.f };
 	m_iAttackCount = { 0 };
+
+	Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 
 	// 2. PxActor 비활성화 
 	CActorObject::Active_OnDisable();

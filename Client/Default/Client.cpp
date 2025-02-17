@@ -37,7 +37,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     freopen_s(&file, "CONIN$", "r", stdin);    // stdin을 콘솔에 연결
 #endif
     // Memory Leak // 
-    //_CrtSetBreakAlloc(8224282);
+    //_CrtSetBreakAlloc(13280408);
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 

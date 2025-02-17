@@ -85,6 +85,9 @@ void CGravity::Action_FallDown(_float _fTimeDelta)
 {
     m_fGravityAcc += m_fGravity * _fTimeDelta;
 
+    if (m_fMaxGravityAcc <= m_fGravityAcc)
+        m_fGravityAcc = m_fMaxGravityAcc;
+
     _vector vForce = XMLoadFloat3(&m_vDirection) * m_fGravityAcc;
     _vector vOwnerPos = m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
     vOwnerPos += vForce * _fTimeDelta;

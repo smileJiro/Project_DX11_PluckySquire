@@ -4,9 +4,9 @@
 BEGIN(Client)
 typedef struct tagCharacterStat
 {
-	_int iDamg = 1.f;
-	_int iHP = 12.f;
-	_int iMaxHP = 12.f;
+	_int iDamg = 1;
+	_int iHP = 12;
+	_int iMaxHP = 12;
 }STAT;
 class CCharacter abstract :   public CContainerObject
 {

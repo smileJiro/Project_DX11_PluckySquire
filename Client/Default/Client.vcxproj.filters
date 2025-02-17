@@ -433,6 +433,9 @@
     <Filter Include="02.GameObjects\RayShape">
       <UniqueIdentifier>{c32a3738-591f-4b01-99c1-a7a13f7f789c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Word">
+      <UniqueIdentifier>{70b6f4d5-168b-46b5-849c-cb56b4c3621c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -970,7 +973,6 @@
     <ClInclude Include="..\Public\PlayerState_StartPortal.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Zippy.h" />
     <ClInclude Include="..\Public\PlayerState_ExitPortal.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
@@ -979,6 +981,21 @@
     </ClInclude>
     <ClInclude Include="..\public\RayShape.h">
       <Filter>02.GameObjects\RayShape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Word.h">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zippy.h">
+      <Filter>02.GameObjects\Monster\Zippy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Word_Controller.h">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Word_Container.h">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WordGame_Generator.h">
+      <Filter>02.GameObjects\Word</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1502,7 +1519,6 @@
     <ClCompile Include="..\Private\PlayerState_StartPortal.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Zippy.cpp" />
     <ClCompile Include="..\Private\PlayerState_ExitPortal.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
@@ -1511,6 +1527,21 @@
     </ClCompile>
     <ClCompile Include="..\private\RayShape.cpp">
       <Filter>02.GameObjects\RayShape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Word.cpp">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Word_Controller.cpp">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Word_Container.cpp">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WordGame_Generator.cpp">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zippy.cpp">
+      <Filter>02.GameObjects\Monster\Zippy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -43,25 +43,35 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 	// 이하 공중일 때
 	if (false == bCarrying)
 	{
+		if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
+		{
+			m_pOwner->Try_Interact(m_pOwner->Get_InteractableObject(), _fTimeDelta);
+			return;
+		}
+		else
+		{
+			m_pOwner->End_Interact();
+			if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
+			{
+				m_pOwner->Set_State(CPlayer::ROLL);
+				return;
+			}
+			else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
+			{
+				m_pOwner->Set_State(CPlayer::THROWSWORD);
+				return;
+			}
+			else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
+			{
+				if (m_pOwner->Is_PlatformerMode())
+					m_pOwner->Set_State(CPlayer::ATTACK);
+				else
+					m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
+				return;
+			}
+		}
 
-		if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
-		{
-			m_pOwner->Set_State(CPlayer::ROLL);
-			return;
-		}
-		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
-		{
-			m_pOwner->Set_State(CPlayer::THROWSWORD);
-			return;
-		}
-		else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
-		{
-			if (m_pOwner->Is_PlatformerMode())
-				m_pOwner->Set_State(CPlayer::ATTACK);
-			else
-				m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
-			return;
-		}
+
 
 	}
 	else
@@ -207,7 +217,7 @@ _bool CPlayerState_JumpDown::Try_Clamber()
 			auto& iterHitPoint = raycasthits.begin();
 			for (auto& pActor : hitActors)
 			{
-				if(OBJECT_GROUP::MAPOBJECT ==  pActor->Get_CollisionGroupID())
+				if(OBJECT_GROUP::MAPOBJECT ==  pActor->Get_ObjectGroupID())
 				if (iterHitPoint->vNormal.y < fSlopeThreshold)
 				{
 					iterHitPoint++;

@@ -27,10 +27,10 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->isCoordChangeEnable = true;
     pDesc->iNumPartObjects = PART_END;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
-    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
     pDesc->fAlertRange = 5.f;
@@ -294,6 +294,14 @@ void CGoblin::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             Set_AnimChangeable(true);
             break;
 
+        case DEATH:
+            Set_AnimChangeable(true);
+            //풀링에 넣을 시 변경
+            //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+
+            Event_DeleteObject(this);
+            break;
+
         default:
             break;
         }
@@ -313,6 +321,16 @@ void CGoblin::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         case HIT_RIGHT:
         case HIT_UP:
             Set_AnimChangeable(true);
+            break;
+
+        case DEATH_DOWN:
+        case DEATH_RIGHT:
+        case DEATH_UP:
+            Set_AnimChangeable(true);
+            //풀링에 넣을 시 변경
+            //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+
+            Event_DeleteObject(this);
             break;
 
         default:
@@ -356,7 +374,7 @@ void CGoblin::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
     {
         if ((_uint)MONSTER_STATE::ATTACK == m_iState)
         {
-            Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().iDamg);
+            Event_Hit(this, _Other.pActorUserData->pOwner, (_float)Get_Stat().iDamg);
             _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
             XMVectorSetY(vRepulse, -1.f);
             Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
@@ -376,7 +394,7 @@ void CGoblin::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CGoblin::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
     {
         if ((_uint)MONSTER_STATE::CHASE == m_iState)
         {
@@ -394,7 +412,7 @@ void CGoblin::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 
 void CGoblin::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
     {
         if (true == m_isContactToTarget)
         {

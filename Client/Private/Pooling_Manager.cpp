@@ -2,6 +2,7 @@
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "FallingRock.h"
 
 IMPLEMENT_SINGLETON(CPooling_Manager)
 CPooling_Manager::CPooling_Manager()
@@ -191,6 +192,7 @@ HRESULT CPooling_Manager::Pooling_Objects(const _wstring& _strPoolingTag, _uint 
 	if (nullptr == pPair)
 		return E_FAIL;
 
+	CFallingRock::FALLINGROCK_DESC* pTestDesc = dynamic_cast<CFallingRock::FALLINGROCK_DESC*>(pPair->second);
 	CGameObject* pGameObject = nullptr;
 
 	for (_uint i = 0; i < _iNumPoolingObjects; ++i)

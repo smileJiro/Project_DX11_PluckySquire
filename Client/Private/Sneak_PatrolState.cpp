@@ -56,7 +56,7 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pOwner)
 		return;
-	cout << "Patrol" << endl;
+	//cout << "Patrol" << endl;
 	//일단 적용해봄
 	//if(COORDINATE_3D == m_pOwner->Get_CurCoord())
 	//{
@@ -196,7 +196,7 @@ void CSneak_PatrolState::Determine_Direction()
 		//예외처리
 		if (m_PatrolWays.size()-1 < m_iCurWayIndex)
 		{
-			m_iCurWayIndex = m_PatrolWays.size() - 1;
+			m_iCurWayIndex = (_int)m_PatrolWays.size() - 1;
 			m_isBack = true;
 		}
 	}
