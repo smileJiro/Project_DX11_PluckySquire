@@ -205,12 +205,23 @@ void CCamera_Manager::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
 	Safe_AddRef(m_Cameras[_iCurrentCameraType]);
 }
 
-void CCamera_Manager::Add_ArmData(_wstring wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData)
+void CCamera_Manager::Add_ArmData(_uint _iCameraType, _wstring wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData)
 {
-	if (nullptr == m_Cameras[TARGET])
+	if (nullptr == m_Cameras[_iCameraType])
 		return;
 
-	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Add_ArmData(wszArmTag, _pArmData, _pSubData);
+	switch (_iCameraType) {
+	case TARGET:
+	{
+		dynamic_cast<CCamera_Target*>(m_Cameras[_iCameraType])->Add_ArmData(wszArmTag, _pArmData, _pSubData);
+	}
+		break;
+	case TARGET_2D:
+	{
+		dynamic_cast<CCamera_2D*>(m_Cameras[_iCameraType])->Add_ArmData(wszArmTag, _pArmData, _pSubData);
+	}
+		break;
+	}
 }
 
 void CCamera_Manager::Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA>> _CutSceneData)
@@ -219,6 +230,61 @@ void CCamera_Manager::Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vecto
 		return;
 
 	dynamic_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Add_CutScene(_wszCutSceneTag, _CutSceneData);
+}
+
+void CCamera_Manager::Load_ArmData(_uint _iCameraType, _wstring _szFilePath)
+{
+	ifstream file(_szFilePath);
+
+	if (!file.is_open())
+	{
+		MSG_BOX("파일을 열 수 없습니다.");
+		file.close();
+		return;
+	}
+
+	json Result;
+	file >> Result;
+	file.close();
+
+	json Trigger_json;
+
+	for (auto& Trigger_json : Result) {
+
+		_string szArmTag = Trigger_json["Arm_Tag"];
+
+		// Arm Data
+		ARM_DATA* tArmData = new ARM_DATA();
+
+		tArmData->fLength = Trigger_json["Arm_Data"]["Arm_Length"];
+		tArmData->fLengthTime = { Trigger_json["Arm_Data"]["Arm_Time"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_Time"][1].get<_float>() };
+		tArmData->iLengthRatioType = Trigger_json["Arm_Data"]["Arm_Length_RatioType"];
+
+		tArmData->fMoveTimeAxisY = { Trigger_json["Arm_Data"]["Arm_MoveTime_AxisY"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_MoveTime_AxisY"][1].get<_float>() };
+		tArmData->fMoveTimeAxisRight = { Trigger_json["Arm_Data"]["Arm_MoveTime_AxisRight"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_MoveTime_AxisRight"][1].get<_float>() };
+		tArmData->fRotationPerSecAxisY = { Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisY"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisY"][1].get<_float>() };
+		tArmData->fRotationPerSecAxisRight = { Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisRight"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisRight"][1].get<_float>() };
+
+		tArmData->vDesireArm = { Trigger_json["Arm_Data"]["Desire_Arm"][0].get<_float>(), Trigger_json["Arm_Data"]["Desire_Arm"][1].get<_float>(), Trigger_json["Arm_Data"]["Desire_Arm"][2].get<_float>() };
+
+		// Sub Data
+		_bool IsUseSubData = Trigger_json["Sub_Data"]["Use_SubData"];
+		SUB_DATA* pSubData = nullptr;
+
+		if (true == IsUseSubData) {
+			pSubData = new SUB_DATA();
+
+			pSubData->fZoomTime = Trigger_json["Sub_Data"]["Zoom_Time"];
+			pSubData->iZoomLevel = Trigger_json["Sub_Data"]["Zoom_Level"];
+			pSubData->iZoomRatioType = Trigger_json["Sub_Data"]["Zoom_RatioType"];
+
+			pSubData->fAtOffsetTime = Trigger_json["Sub_Data"]["AtOffset_Time"];
+			pSubData->vAtOffset = { Trigger_json["Sub_Data"]["AtOffset"][0].get<_float>(), Trigger_json["Sub_Data"]["AtOffset"][1].get<_float>(), Trigger_json["Sub_Data"]["AtOffset"][2].get<_float>() };
+			pSubData->iAtRatioType = Trigger_json["Sub_Data"]["AtOffset_RatioType"];
+		}
+
+		CCamera_Manager::GetInstance()->Add_ArmData(_iCameraType, m_pGameInstance->StringToWString(szArmTag), tArmData, pSubData);
+	}
 }
 
 void CCamera_Manager::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
@@ -370,58 +436,10 @@ void CCamera_Manager::Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fSha
 void CCamera_Manager::Load_ArmData()
 {
 	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/Chapter2_ArmData.json";
+	Load_ArmData(TARGET, wszLoadPath);
 
-	ifstream file(wszLoadPath);
-
-	if (!file.is_open())
-	{
-		MSG_BOX("파일을 열 수 없습니다.");
-		file.close();
-		return;
-	}
-
-	json Result;
-	file >> Result;
-	file.close();
-
-	json Trigger_json;
-
-	for (auto& Trigger_json : Result) {
-
-		_string szArmTag = Trigger_json["Arm_Tag"];
-
-		// Arm Data
-		ARM_DATA* tArmData = new ARM_DATA();
-
-		tArmData->fLength = Trigger_json["Arm_Data"]["Arm_Length"];
-		tArmData->fLengthTime = { Trigger_json["Arm_Data"]["Arm_Time"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_Time"][1].get<_float>() };
-		tArmData->iLengthRatioType = Trigger_json["Arm_Data"]["Arm_Length_RatioType"];
-
-		tArmData->fMoveTimeAxisY = { Trigger_json["Arm_Data"]["Arm_MoveTime_AxisY"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_MoveTime_AxisY"][1].get<_float>() };
-		tArmData->fMoveTimeAxisRight = { Trigger_json["Arm_Data"]["Arm_MoveTime_AxisRight"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_MoveTime_AxisRight"][1].get<_float>() };
-		tArmData->fRotationPerSecAxisY = { Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisY"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisY"][1].get<_float>() };
-		tArmData->fRotationPerSecAxisRight = { Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisRight"][0].get<_float>(), Trigger_json["Arm_Data"]["Arm_RotationPerSec_AxisRight"][1].get<_float>() };
-
-		tArmData->vDesireArm = { Trigger_json["Arm_Data"]["Desire_Arm"][0].get<_float>(), Trigger_json["Arm_Data"]["Desire_Arm"][1].get<_float>(), Trigger_json["Arm_Data"]["Desire_Arm"][2].get<_float>() };
-
-		// Sub Data
-		_bool IsUseSubData = Trigger_json["Sub_Data"]["Use_SubData"];
-		SUB_DATA* pSubData = nullptr;
-
-		if (true == IsUseSubData) {
-			pSubData = new SUB_DATA();
-
-			pSubData->fZoomTime = Trigger_json["Sub_Data"]["Zoom_Time"];
-			pSubData->iZoomLevel = Trigger_json["Sub_Data"]["Zoom_Level"];
-			pSubData->iZoomRatioType = Trigger_json["Sub_Data"]["Zoom_RatioType"];
-
-			pSubData->fAtOffsetTime = Trigger_json["Sub_Data"]["AtOffset_Time"];
-			pSubData->vAtOffset = { Trigger_json["Sub_Data"]["AtOffset"][0].get<_float>(), Trigger_json["Sub_Data"]["AtOffset"][1].get<_float>(), Trigger_json["Sub_Data"]["AtOffset"][2].get<_float>() };
-			pSubData->iAtRatioType = Trigger_json["Sub_Data"]["AtOffset_RatioType"];
-		}
-
-		CCamera_Manager::GetInstance()->Add_ArmData(m_pGameInstance->StringToWString(szArmTag), tArmData, pSubData);
-	}
+	wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/Chapter2_SketchSpace_ArmData.json";
+	Load_ArmData(TARGET_2D, wszLoadPath);
 }
 
 void CCamera_Manager::Load_CutSceneData()

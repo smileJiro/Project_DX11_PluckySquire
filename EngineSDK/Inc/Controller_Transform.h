@@ -10,6 +10,7 @@ class ENGINE_DLL CController_Transform final : public CBase
 public:
 	typedef struct tagControllerTransformDesc
 	{
+		virtual ~tagControllerTransformDesc() {}
 		// 2D, 3D 좌표계 여부 enum
 		COORDINATE							eStartCoord = COORDINATE_LAST;
 		// 좌표계 변환 가능 여부

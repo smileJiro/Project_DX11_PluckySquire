@@ -207,7 +207,7 @@ _bool CPlayerState_JumpDown::Try_Clamber()
 			auto& iterHitPoint = raycasthits.begin();
 			for (auto& pActor : hitActors)
 			{
-				if(OBJECT_GROUP::MAPOBJECT ==  pActor->Get_CollisionGroupID())
+				if(OBJECT_GROUP::MAPOBJECT ==  pActor->Get_ObjectGroupID())
 				if (iterHitPoint->vNormal.y < fSlopeThreshold)
 				{
 					iterHitPoint++;

@@ -62,10 +62,10 @@ public:
 	_bool						Is_Dead() const									{ return m_isDead; }
 	_bool						Is_Render() const								{ return m_isRender; }
 	_bool						Is_Pooling() const								{ return m_isPooling; }
-	_int							Get_CurLevelID() const							{ return m_iCurLevelID; }
+	_int						Get_CurLevelID() const							{ return m_iCurLevelID; }
 	_uint						Get_GameObjectInstanceID() const				{ return m_iInstanceID; }
-	const _wstring&	Get_Include_Section_Name()						{ return m_strSectionName; }
-	_uint						Get_CollisionGroupID() const { return m_iObjectGroupID; }
+	const _wstring&				Get_Include_Section_Name()						{ return m_strSectionName; }
+	_uint						Get_ObjectGroupID() const { return m_iObjectGroupID; }
 	// Set
 	void						Set_Name(const _wstring& _strName)				{ m_strName = _strName; }
 	void						Set_WorldMatrix(_float4x4 _WorldMatrix)			{ m_pControllerTransform->Set_WorldMatrix(_WorldMatrix); }

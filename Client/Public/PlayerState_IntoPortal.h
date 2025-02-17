@@ -19,6 +19,8 @@ public:
 private:
     CPortal* m_pPortal = nullptr;
     _bool m_bPortaled = false;
+	_vector m_vPortalPos = {};
+	_float m_f3DDistanceThreshold = 0.5f;
 };
 
 END
