@@ -187,6 +187,7 @@
     <ClInclude Include="..\Public\2DMapActionObject.h" />
     <ClInclude Include="..\Public\2DMapDefaultObject.h" />
     <ClInclude Include="..\Public\2DMapObject.h" />
+    <ClInclude Include="..\Public\2DMapWordObject.h" />
     <ClInclude Include="..\Public\3DMapDefaultObject.h" />
     <ClInclude Include="..\Public\3DMapObject.h" />
     <ClInclude Include="..\Public\3DMapSkspObject.h" />
@@ -218,6 +219,7 @@
     <ClInclude Include="..\Public\Dice.h" />
     <ClInclude Include="..\Public\Domino.h" />
     <ClInclude Include="..\Public\DeadState.h" />
+    <ClInclude Include="..\Public\Effect_Manager.h" />
     <ClInclude Include="..\public\FallingRock.h" />
     <ClInclude Include="..\Public\FloorWord.h" />
     <ClInclude Include="..\Public\Goblin_SideScroller.h" />
@@ -237,6 +239,7 @@
     <ClInclude Include="..\Public\PlayerState_PickUpObject.h" />
     <ClInclude Include="..\Public\PlayerState_StartPortal.h" />
     <ClInclude Include="..\Public\PlayerState_ThrowObject.h" />
+    <ClInclude Include="..\Public\PlayerState_TurnBook.h" />
     <ClInclude Include="..\Public\Portal.h" />
     <ClInclude Include="..\public\RenderGroup_PostProcessing.h" />
     <ClInclude Include="..\Public\Section_2D_Narration.h" />
@@ -384,6 +387,7 @@
     <ClCompile Include="..\Private\2DMapActionObject.cpp" />
     <ClCompile Include="..\Private\2DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\2DMapObject.cpp" />
+    <ClCompile Include="..\Private\2DMapWordObject.cpp" />
     <ClCompile Include="..\Private\3DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\3DMapObject.cpp" />
     <ClCompile Include="..\Private\3DMapSkspObject.cpp" />
@@ -417,6 +421,7 @@
     <ClCompile Include="..\Private\Dice.cpp" />
     <ClCompile Include="..\Private\Domino.cpp" />
     <ClCompile Include="..\Private\DeadState.cpp" />
+    <ClCompile Include="..\Private\Effect_Manager.cpp" />
     <ClCompile Include="..\private\FallingRock.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
     <ClCompile Include="..\Private\Goblin_SideScroller.cpp" />
@@ -435,6 +440,7 @@
     <ClCompile Include="..\Private\PlayerState_PickUpObject.cpp" />
     <ClCompile Include="..\Private\PlayerState_StartPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_ThrowObject.cpp" />
+    <ClCompile Include="..\Private\PlayerState_TurnBook.cpp" />
     <ClCompile Include="..\Private\Portal.cpp" />
     <ClCompile Include="..\private\RenderGroup_PostProcessing.cpp" />
     <ClCompile Include="..\Private\Section_2D_Narration.cpp" />

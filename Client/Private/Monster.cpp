@@ -5,6 +5,7 @@
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
 #include "Section_Manager.h"
+#include "Effect_Manager.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -192,6 +193,8 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg)
 	{
 		Set_AnimChangeable(true);
 		Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+		if (COORDINATE_3D == Get_CurCoord())
+			CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
 	}
 }
 

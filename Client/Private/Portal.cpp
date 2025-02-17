@@ -32,6 +32,7 @@ HRESULT CPortal::Initialize(void* _pArg)
     pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
     m_fTriggerRadius =  pDesc->fTriggerRadius;
     m_fInteractChargeTime = 0.6f;
+    m_eInteractType = INTERACT_TYPE::CHARGE;
     // Actor Object는 차후에, ReadyObject 를 따로 불러 생성.
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -119,7 +120,72 @@ HRESULT CPortal::Init_Actor()
         Active_OnEnable();
 
     Change_Coordinate(COORDINATE_2D, nullptr);
+    // 포탈 생성.
+    m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_WorldMatrix_Ptr();
 
+    CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
+    EffectDesc.eStartCoord = COORDINATE_3D;
+    EffectDesc.isCoordChangeEnable = false;
+    EffectDesc.iSpriteShaderLevel = LEVEL_STATIC;
+    EffectDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+
+    EffectDesc.iModelShaderLevel = LEVEL_STATIC;
+    EffectDesc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
+
+    EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
+    EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+
+    EffectDesc.iSingleSpriteShaderLevel = LEVEL_STATIC;
+    EffectDesc.szSingleSpriteShaderTags = L"Prototype_Component_Shader_VtxPoint";
+    EffectDesc.iSingleSpriteBufferLevel = LEVEL_STATIC;
+    EffectDesc.szSingleSpriteBufferTags = L"Prototype_Component_VIBuffer_Point";
+
+    EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+    EffectDesc.szMeshComputeShaderTag = L"Prototype_Component_Compute_Shader_MeshInstance";
+
+    m_pEffectSystem = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Portal.json"), &EffectDesc));
+    if (nullptr == m_pEffectSystem)
+        return E_FAIL;
+
+    _matrix WorldMatrix = XMMatrixIdentity();
+    switch ((NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(f3DPosition))))
+    {
+    case NORMAL_DIRECTION::POSITIVE_X:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(-90.f));
+        break;
+    }
+    case NORMAL_DIRECTION::NEGATIVE_X:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(90.f));
+        break;
+    }
+    case NORMAL_DIRECTION::POSITIVE_Y:
+    {
+        break;
+    }
+    case NORMAL_DIRECTION::NEGATIVE_Y:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(180.f));
+        break;
+    }
+    case NORMAL_DIRECTION::POSITIVE_Z:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(90.f));
+        break;
+    }
+    case NORMAL_DIRECTION::NEGATIVE_Z:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(-90.f));
+        break;
+    }
+    }
+    WorldMatrix.r[3] = f3DPosition;
+
+    m_pEffectSystem->Set_EffectMatrix(WorldMatrix);
+    m_PartObjects[PORTAL_PART_3D] = m_pEffectSystem;
+
+    Safe_AddRef(m_pEffectSystem);
 
     return hr;
 }
@@ -166,7 +232,7 @@ HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
     /* Test 2D Collider */
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
-    CircleDesc.fRadius = _pDesc->fTriggerRadius;
+    CircleDesc.fRadius = 100.f;
     CircleDesc.vScale = { 1.0f, 1.0f };
     CircleDesc.isBlock = false;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
@@ -238,6 +304,20 @@ _float CPortal::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 
 }
 
+void CPortal::Active_OnEnable()
+{
+    __super::Active_OnEnable();
+    if (m_pEffectSystem)
+        m_pEffectSystem->Active_All(true);
+}
+
+void CPortal::Active_OnDisable()
+{
+    __super::Active_OnEnable();
+    if (m_pEffectSystem)
+        m_pEffectSystem->Inactive_All();
+}
+
 void CPortal::On_Touched(CPlayer* _pPlayer)
 {
 	_pPlayer->Start_Portal(this);
@@ -274,5 +354,6 @@ CGameObject* CPortal::Clone(void* _pArg)
 void CPortal::Free()
 {
     Safe_Release(m_pColliderCom);
+    Safe_Release(m_pEffectSystem);
     __super::Free();
 }

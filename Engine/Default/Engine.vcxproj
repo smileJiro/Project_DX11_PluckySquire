@@ -293,6 +293,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Transform_2D.h" />
     <ClInclude Include="..\Public\Transform_3D.h" />
     <ClInclude Include="..\Public\UIObject.h" />
+    <ClInclude Include="..\Public\UV_Module.h" />
     <ClInclude Include="..\Public\VIBuffer.h" />
     <ClInclude Include="..\public\VIBuffer_Cell.h" />
     <ClInclude Include="..\public\VIBuffer_Cube.h" />
@@ -400,6 +401,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Transform_2D.cpp" />
     <ClCompile Include="..\Private\Transform_3D.cpp" />
     <ClCompile Include="..\Private\UIObject.cpp" />
+    <ClCompile Include="..\Private\UV_Module.cpp" />
     <ClCompile Include="..\Private\VIBuffer.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cell.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cube.cpp" />

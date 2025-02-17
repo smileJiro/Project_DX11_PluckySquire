@@ -111,6 +111,7 @@ void CVIBuffer_Instance::Begin_Compute(CCompute_Shader* _pCShader)
 void CVIBuffer_Instance::Compute(CCompute_Shader* _pCShader)
 {
 	_pCShader->Compute((_uint)(ceil(m_iNumInstances / 256.f)), 1, 1);
+	Begin_Compute(_pCShader);
 }
 
 
@@ -1210,12 +1211,12 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 		{
 		case SPHERE:
 		{
-			if (ImGui::SliderFloat("Radius", &m_ShapeDatas["Sphere_Radius"], -100.f, 100.f))
+			if (ImGui::DragFloat("Radius", &m_ShapeDatas["Sphere_Radius"], 0.1f))
 			{
 				m_isToolChanged = true;
 			}
 
-			if (ImGui::SliderFloat("Surface", &m_ShapeDatas["Sphere_Surface"], 0.f, 1.f))
+			if (ImGui::DragFloat("Surface", &m_ShapeDatas["Sphere_Surface"], 0.1f))
 			{
 				m_isToolChanged = true;
 			}
@@ -1243,15 +1244,15 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 		}
 		case CYLINDER:
 		{
-			if (ImGui::SliderFloat("Radius", &m_ShapeDatas["Cylinder_Radius"], -100.f, 100.f))
+			if (ImGui::DragFloat("Radius", &m_ShapeDatas["Cylinder_Radius"], 0.1f))
 			{
 				m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("Height", &m_ShapeDatas["Cylinder_Height"], -100.f, 100.f))
+			if (ImGui::DragFloat("Height", &m_ShapeDatas["Cylinder_Height"], 0.1f))
 			{
 				m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("Mid Point", &m_ShapeDatas["MidPoint"], -20.f, 20.f))
+			if (ImGui::DragFloat("Mid Point", &m_ShapeDatas["MidPoint"], 0.1f))
 			{
 				m_isToolChanged = true;
 			}
@@ -1281,27 +1282,27 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 		}
 		case BOX:
 		{
-			if (ImGui::SliderFloat("Width", &m_ShapeDatas["Width"], -100.f, 100.f))
+			if (ImGui::DragFloat("Width", &m_ShapeDatas["Width"], 0.1f))
 			{
 				m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("Height", &m_ShapeDatas["Height"], -100.f, 100.f))
+			if (ImGui::DragFloat("Height", &m_ShapeDatas["Height"], 0.1f))
 			{
 				m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("Depth", &m_ShapeDatas["Depth"], -100.f, 100.f))
+			if (ImGui::DragFloat("Depth", &m_ShapeDatas["Depth"], 0.1f))
 			{
 				m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("MidX", &m_ShapeDatas["MidX"], -20.f, 20.f))
+			if (ImGui::DragFloat("MidX", &m_ShapeDatas["MidX"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("MidY", &m_ShapeDatas["MidY"], -20.f, 20.f))
+			if (ImGui::DragFloat("MidY", &m_ShapeDatas["MidY"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("MidZ", &m_ShapeDatas["MidZ"], -20.f, 20.f))
+			if (ImGui::DragFloat("MidZ", &m_ShapeDatas["MidZ"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
@@ -1328,7 +1329,7 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 
 			if (isSurface)
 			{
-				if (ImGui::SliderFloat("Surface", &m_ShapeDatas["Box_Surface"], -100.f, 100.f))
+				if (ImGui::DragFloat("Surface", &m_ShapeDatas["Box_Surface"], 0.1f))
 				{
 						m_isToolChanged = true;
 				}
@@ -1377,19 +1378,19 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 		}
 		case TORUS:
 		{
-			if (ImGui::SliderFloat("Large_Radius", &m_ShapeDatas["LargeRadius"], -100.f, 100.f))
+			if (ImGui::DragFloat("Large_Radius", &m_ShapeDatas["LargeRadius"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("Handle_Radius", &m_ShapeDatas["HandleRadius"], -100.f, 100.f))
+			if (ImGui::DragFloat("Handle_Radius", &m_ShapeDatas["HandleRadius"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("U_Distribution", &m_ShapeDatas["U_Distribution"], 0.f, 1.f))
+			if (ImGui::DragFloat("U_Distribution", &m_ShapeDatas["U_Distribution"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("V_Distribution", &m_ShapeDatas["V_Distribution"], 0.f, 1.f))
+			if (ImGui::DragFloat("V_Distribution", &m_ShapeDatas["V_Distribution"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
@@ -1427,15 +1428,15 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 		}
 		case RING:
 		{
-			if (ImGui::SliderFloat("Radius", &m_ShapeDatas["Ring_Radius"], -100.f, 100.f))
+			if (ImGui::DragFloat("Radius", &m_ShapeDatas["Ring_Radius"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("Coverage", &m_ShapeDatas["Coverage"], 0.f, 1.f))
+			if (ImGui::DragFloat("Coverage", &m_ShapeDatas["Coverage"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("Ring_Distribution", &m_ShapeDatas["Ring_Distribution"], 0.f, 1.f))
+			if (ImGui::DragFloat("Ring_Distribution", &m_ShapeDatas["Ring_Distribution"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
@@ -1467,23 +1468,23 @@ void CVIBuffer_Instance::Tool_Adjust_Shape()
 
 		case CONE:
 		{
-			if (ImGui::SliderFloat("Length", &m_ShapeDatas["Length"], -100.f, 100.f))
+			if (ImGui::DragFloat("Length", &m_ShapeDatas["Length"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("Outer_Angle", &m_ShapeDatas["Outer_Angle"], -360.f, 360.f))
+			if (ImGui::DragFloat("Outer_Angle", &m_ShapeDatas["Outer_Angle"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("Inner_Angle", &m_ShapeDatas["Inner_Angle"], -360.f, 360.f))
+			if (ImGui::DragFloat("Inner_Angle", &m_ShapeDatas["Inner_Angle"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("Radial_Angle", &m_ShapeDatas["Radial_Angle"], -360.f, 360.f))
+			if (ImGui::DragFloat("Radial_Angle", &m_ShapeDatas["Radial_Angle"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}
-			if (ImGui::SliderFloat("Surface", &m_ShapeDatas["Cone_Surface"], 0.f, 1.f))
+			if (ImGui::DragFloat("Surface", &m_ShapeDatas["Cone_Surface"], 0.1f))
 			{
 					m_isToolChanged = true;
 			}

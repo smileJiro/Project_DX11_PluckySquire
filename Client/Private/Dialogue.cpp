@@ -185,6 +185,17 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 			{
 				dialogData.Section = StringToWstring(dialog["Section"].get<string>());
 			}
+			
+			// Dialog가 끝날 시 실행될 이벤트(트리거) 태그, 필요하지 않으면 내용이 없습니다.
+			if (dialog.contains("TriggerTag"))
+			{
+				dialogData.wstrTriggerTag = StringToWstring(dialog["TriggerTag"]);
+			}
+
+			if (dialog.contains("TriggerID"))
+			{
+				dialogData.iTriggerID = dialog["TriggerID"];
+			}
 
 			// 대상 + 대화 + BG + 배경 + 타이핑 효과
 			if (dialog.contains("lines") && dialog["lines"].is_array())
@@ -852,14 +863,32 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		if (Uimgr->Get_DialogueLineIndex() == Uimgr->Get_Dialogue(_strDialogue)[0].lines.size())
 		{
 			// 다음 대사가 없으므로 트리거를 종료 시킨다.
+			// AddSection 을 다음 다이얼로그를 위해 false를 시킨다.
 			m_pPortrait->Set_AddSectionRender(false);
+
+			// 불필요한 렌더 제거를 위해 렌더 그룹에서 제거한다.
 			CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+			
+			// 트리거로 햇을수도 있으므로 트리거에게 종료했다고 보내준다.
 			CTrigger_Manager::GetInstance()->On_End(Uimgr->Get_DialogId());
+			//// Event가 있을 경우;
+			if (-1 != Uimgr->Get_Dialogue(_strDialogue)[0].iTriggerID)
+			{
+				DialogData Data = Uimgr->Get_Dialogue(_strDialogue)[0];
+				CTrigger_Manager::GetInstance()->Resister_TriggerEvent(Data.wstrTriggerTag.c_str(),
+					Data.iTriggerID);
+			}
+
+			// 다음 다이얼로그를 위해 false를 시킨다.
 			Uimgr->Set_DisplayDialogue(false);
 			Uimgr->Set_PortraitRender(false);
 			Uimgr->Set_DialogueLineIndex(0);
 			m_isFirstRefresh = false;
+
+			// 다이얼로그 끝나고 상점을 닫기 위해 해당 다이얼로그가 상점 관련인지 확인한다.
 			isOpenPanel(_strDialogue);
+
+
 		}
 	}
 }

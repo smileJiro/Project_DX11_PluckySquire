@@ -34,7 +34,7 @@ HRESULT CNPC_Violet::Initialize(void* _pArg)
 	pDesc->iNumPartObjects = PART_END;
 
 	pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	m_f2DSpeed = pDesc->tTransform2DDesc.fSpeedPerSec = 300.f;
+	m_f2DSpeed = pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	m_f3DSpeed = pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
@@ -43,6 +43,12 @@ HRESULT CNPC_Violet::Initialize(void* _pArg)
 	m_iMainIndex = pDesc->iMainIndex;
 	m_iSubIndex = pDesc->iSubIndex;
 	m_fDelayTime = 0.1f;
+
+	m_eActionType = ACTION_WAIT;
+
+	//m_strCurSecion = pDesc->cursection
+
+	
 
 
 	//if (FAILED(Ready_ActorDesc(pDesc)))
@@ -58,10 +64,15 @@ HRESULT CNPC_Violet::Initialize(void* _pArg)
 		return E_FAIL;
 
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), this, SECTION_2D_PLAYMAP_OBJECT);
 
 	CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 	pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, Violet_idle_down, true);
+
+	pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, Violet_Run_Down, true);
+	pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, Violet_Run_Right, true);
+	pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, Violet_Run_Up, true);
+	//pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, Violet_idle_down, true);
 	pModelObject->Set_Animation(ANIM_2D::Violet_idle_down);
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
@@ -71,7 +82,7 @@ HRESULT CNPC_Violet::Initialize(void* _pArg)
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Violet::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(0.f, 0.f, 0.f, 1.f));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(990.f, -36.5f, 0.f, 1.f));
 	
 	return S_OK;
 }
@@ -83,7 +94,11 @@ void CNPC_Violet::Priority_Update(_float _fTimeDelta)
 
 void CNPC_Violet::Child_Update(_float _fTimeDelta)
 {
-	Trace(_fTimeDelta);
+	if (m_isTrace)
+		Trace(_fTimeDelta);
+	else
+		Welcome_Jot(_fTimeDelta);
+
 	__super::Child_Update(_fTimeDelta);
 }
 
@@ -134,6 +149,7 @@ void CNPC_Violet::For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos)
 	// 어? 너 지금 이전 거리가 달라졌네  그러면 이동한거야 / 애니메이션 변경시키자구
 	if (0.f < XMVectorGetX(XMVector3Length(CurPos - PrePos)))
 	{
+		CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
 		if (0.f < fabs(m_vPreNPCPos.x - _vNpcPos.x) && 0.f < fabs(m_vPreNPCPos.y - _vNpcPos.y))
 		{
@@ -147,6 +163,7 @@ void CNPC_Violet::For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos)
 				if (1.f > m_vPreNPCPos.y - _vNpcPos.y)
 				{
 					// 위로 간다.
+					if ( Violet_Run_Up != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
 					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Up);
 					m_eAnimationType = ANIM_UP;
 					m_fIdleWaitTime = 0.f;
@@ -154,7 +171,8 @@ void CNPC_Violet::For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos)
 				else if (1.f < m_vPreNPCPos.y - _vNpcPos.y)
 				{
 					// 아래로간다.
-					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Down);
+					if (Violet_Run_Down != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+						static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Down);
 					m_eAnimationType = ANIM_DOWN;
 					m_fIdleWaitTime = 0.f;
 				}
@@ -168,19 +186,28 @@ void CNPC_Violet::For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos)
 				if (1.f < m_vPreNPCPos.x - _vNpcPos.x)
 				{
 					// 좌측으로 이동한다.
-					_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-					m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
-					m_eAnimationType = ANIM_LEFT;
+					if (Violet_Run_Right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+					{
+						_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+						m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+						static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
+						m_eAnimationType = ANIM_LEFT;
+					}
+
+
 					m_fIdleWaitTime = 0.f;
 				}
 				else if (-1.f >= m_vPreNPCPos.x - _vNpcPos.x)
 				{
 					// 우측으로 이동한다.
-					_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-					m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
-					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
-					m_eAnimationType = ANIM_RIGHT;
+					if (Violet_Run_Right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+					{
+						_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+						m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+						static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
+						m_eAnimationType = ANIM_RIGHT;
+					}
+
 					m_fIdleWaitTime = 0.f;
 				}
 
@@ -192,6 +219,8 @@ void CNPC_Violet::For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos)
 	}
 	else
 	{
+		CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
 		if (ANIM_UP != m_eAnimationType && ANIM_DOWN != m_eAnimationType)
 			m_fIdleWaitTime += _fTimeDelta;
 
@@ -204,30 +233,39 @@ void CNPC_Violet::For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos)
 		{
 		case ANIM_UP:
 		{
-			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_up);
+			if (Violet_idle_up != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_up);
 
 		}
 		break;
 
 		case ANIM_DOWN:
 		{
-			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_down);
+			if (Violet_idle_down != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_down);
 		}
 		break;
 
 		case ANIM_LEFT:
 		{
-			_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-			m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_right);
+			if (Violet_idle_right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+			{
+				_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+				m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_right);
+			}
+			
 		}
 		break;
 
 		case ANIM_RIGHT:
 		{
-			_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-			m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
-			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_right);
+			if (Violet_idle_right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+			{
+				_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+				m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_right);
+			}
 		}
 		break;
 
@@ -236,6 +274,73 @@ void CNPC_Violet::For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos)
 			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_down);
 		}
 		break;
+		}
+	}
+}
+
+void CNPC_Violet::Welcome_Jot(_float _fTimeDelta)
+{
+	if (true == m_isTrace)
+		return;
+
+	// 트레이스 상태가 아니다.
+
+	// 플레이어의 섹션하고 나와의 섹션이 동일하면 시작하자.
+	if (CSection_Manager::GetInstance()->Is_CurSection(Uimgr->Get_Player()))
+	{
+		// 캐릭터 입장 후 잠시 대기!
+		if (m_eActionType == ACTION_WAIT)
+		{
+			m_fWelcomeWaitTime += _fTimeDelta;
+
+			if (5.f < m_fWelcomeWaitTime)
+			{
+				m_eActionType = ACTION_MOVE;
+			}
+			else
+				return;
+		}
+
+		// 캐릭터로 향해 뚜벅뚜벅 걸어온다.
+		//m_eActionType = ACTION_MOVE;
+
+		if (ACTION_MOVE == m_eActionType)
+		{
+			_float4 vPlayerPos = _float4(Uimgr->Get_Player()->Get_FinalPosition().m128_f32[0], Uimgr->Get_Player()->Get_FinalPosition().m128_f32[1], 0.f, 1.f);
+			_float4 vVioletPos = _float4(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0], m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1], 0.f, 1.f);
+			_float4 vCalPos = _float4(vVioletPos.x - vPlayerPos.x, vVioletPos.y - vPlayerPos.y, 0.f, 1.f);
+			_float	fDistance = XMVectorGetX(XMVector3Length(XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f)));
+
+			if (200.f <= fDistance)
+			{
+				// 걸어간다.
+				vVioletPos.x -= m_f2DSpeed * _fTimeDelta;
+				m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, _float4(vVioletPos.x, vVioletPos.y, 0.f, 1.f));
+			}
+			else
+			{
+				// 일정 거리까지 오면 다이얼로그 시작한다.
+				m_eActionType = ACTION_DIALOG;
+				//Throw_Dialogue();
+
+				// 멈추고 다이얼로그를 시작한다.
+			}
+		}
+		else if (ACTION_DIALOG == m_eActionType)
+		{
+			// 다이얼로그가 끝났나?
+			// 다이얼로그가 끝났는지 계속 체크한다.
+			//if ()
+			//{
+			//
+			//}
+			//else
+			//{
+			//	// trace true로해서 따라다니게 한다.
+			//	// 다이얼로그가 끝났으면 trace를 이제 true로해서 따라 다니게 한다.
+			//	m_eActionType = ACTION_TRACE;
+			//	m_isTrace = true;
+			//}
 		}
 	}
 }

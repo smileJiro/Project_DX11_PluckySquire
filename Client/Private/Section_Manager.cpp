@@ -55,8 +55,9 @@ HRESULT CSection_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
     Safe_Release(pRenderGroup_WorldPos);
 
  
-
-
+    m_pWordGameGenerator = CWordGame_Generator::Create(m_pDevice, m_pContext);
+    if (m_pWordGameGenerator != nullptr)
+        return E_FAIL;
 
     return S_OK;
 }
@@ -99,7 +100,7 @@ HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
         isSectionLoading = true;
         break;
     case Client::LEVEL_CHAPTER_TEST:
-        strJsonPath = L"Chapter1";
+        strJsonPath = L"Chapter2";
         isSectionLoading = true;
         break;
     default:
@@ -316,11 +317,11 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransfor
     return Get_WorldPosition_FromWorldPosMap(m_pBookWorldPosMap, _v2DTransformPosition);
 }
 
-_vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_pTargetTexture, _float2 _v2DTransformPosition)
+_vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* _pTargetTexture, _float2 _v2DTransformPosition)
 {
     // 맵핑하여 데이터 접근
     D3D11_MAPPED_SUBRESOURCE mappedResource;
-    if(FAILED(m_pContext->Map(m_pTargetTexture, 0, D3D11_MAP_READ, 0, &mappedResource)))
+    if(FAILED(m_pContext->Map(_pTargetTexture, 0, D3D11_MAP_READ, 0, &mappedResource)))
         return _vector();
 
     // 2D Transform 위치를 픽셀 좌표계로 변환. 해당 텍스쳐의 가로 세로 사이즈를 알아야함.
@@ -375,7 +376,7 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_p
 
 
     // 맵핑 해제
-    m_pContext->Unmap(m_pTargetTexture, 0);
+    m_pContext->Unmap(_pTargetTexture, 0);
 
     return XMVectorSet(x, y, z, w);
 }

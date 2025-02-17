@@ -24,6 +24,7 @@ HRESULT CWordGame_Generator::Initialize()
 	m_pWordPrinter = CWordPrinter::Create(m_pDevice,m_pContext);
 	if (nullptr == m_pWordPrinter)
 		return E_FAIL;
+	return S_OK;
 }
 
 HRESULT CWordGame_Generator::Load_WordTexture(const _wstring& _strJsonPath)
@@ -189,5 +190,6 @@ void CWordGame_Generator::Free()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pWordPrinter);
 	__super::Free();
 }

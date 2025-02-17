@@ -81,6 +81,20 @@ void CPlayerState_Roll::Enter()
     {
 		F_DIRECTION eFDir = EDir_To_FDir( m_pOwner->Get_2DDirection());
 		m_vDirection = EDir_To_Vector(m_pOwner->Get_2DDirection());
+		if (m_pOwner->Is_PlatformerMode())
+		{
+			if (F_DIRECTION::UP == eFDir)
+			{
+				eFDir = F_DIRECTION::RIGHT;
+				m_vDirection = _vector{ 1,0,0 };
+			}
+			else if (F_DIRECTION::DOWN == eFDir)
+			{
+				eFDir = F_DIRECTION::LEFT;
+				m_vDirection = _vector{ -1,0,0 };
+			}
+
+		}
         switch (eFDir)
         {
         case Client::F_DIRECTION::LEFT:

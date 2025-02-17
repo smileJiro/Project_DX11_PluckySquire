@@ -163,6 +163,13 @@ void CPlayerState_JumpDown::Switch_To_JumpDownAnimation()
 	if (COORDINATE_2D == eCoord)
 	{
 		F_DIRECTION eDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+		if (m_bPlatformerMode)
+		{
+			if (F_DIRECTION::UP == eDir)
+				eDir = F_DIRECTION::RIGHT;
+			else if (F_DIRECTION::DOWN == eDir)
+				eDir = F_DIRECTION::LEFT;
+		}
 		switch (eDir)
 		{
 		case Client::F_DIRECTION::LEFT:

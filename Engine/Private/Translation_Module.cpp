@@ -157,7 +157,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
         {
 
             XMStoreFloat3((_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset),
-                XMLoadFloat4((_float4*)(_pBuffer + (i * _iTotalSize) + _iPositionOffset)) - vOrigin * fAmount);
+                (XMLoadFloat4((_float4*)(_pBuffer + (i * _iTotalSize) + _iPositionOffset)) - vOrigin) * fAmount);
         }
         
         break;
@@ -175,9 +175,7 @@ void CTranslation_Module::Update_Translations(_float _fTimeDelta, _float* _pBuff
     {
         for (_uint i = 0; i < _iNumInstance; ++i)
         {
-
-            *(_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset)
-                = *(_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset);
+           XMStoreFloat3((_float3*)(_pBuffer + (i * _iTotalSize) + _iAccelerationOffset), XMLoadFloat3((_float3*)(_pBuffer + (i * _iTotalSize) + _iVelocityOffset)) * m_FloatDatas["Amount"]);
         }
 
         break;
@@ -307,6 +305,7 @@ _int CTranslation_Module::Update_Module(CCompute_Shader* _pCShader)
     }
     case INIT_ACCELERATION:
     {
+        _pCShader->Bind_RawValue("g_fAmount", &m_FloatDatas["Amount"], sizeof(_float));
         return 6;
 
         break;

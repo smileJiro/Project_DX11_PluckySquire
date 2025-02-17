@@ -191,6 +191,8 @@
 		{
 			"id": "Honey_Bee_Benny_01",
 			"Section": "Chapter1_P0910",
+			"TriggerTag": "MagicDust",
+			"TriggerID": 999,
 			"lines": [
 				{
 					"Portrait": 14,

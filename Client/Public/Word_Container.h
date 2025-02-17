@@ -1,15 +1,15 @@
 #pragma once
 
-#include "ContainerObject.h"
+#include "PartObject.h"
 #include "MapObject.h"
 #include "Word.h"
 
 BEGIN(Client)
 
-class CWord_Container final : public CModelObject
+class CWord_Container final : public CPartObject, public IInteractable
 {
 public:
-	typedef struct tagWord_ContainerDesc : public CContainerObject::CONTAINEROBJ_DESC
+	typedef struct tagWord_ContainerDesc : public CPartObject::PARTOBJECT_DESC
 	{
 
 	}WORD_CONTAINER_DESC;
@@ -27,15 +27,32 @@ public:
 	virtual HRESULT			Render() override;
 
 
+	// IInteractable을(를) 통해 상속됨
+public:
+	virtual void			Interact(CPlayer* _pUser) override;
+	virtual _bool			Is_Interactable(CPlayer* _pUser) override;
+	virtual _float			Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) override;
+
+public:
+	CWord*	Get_Word() { return m_pMyWord; };
+	void	Set_Word(CWord* _pWord);
+	void	Pop_Word();
+
+
+
+
 protected:
 
 private:
-	CWord* m_pMyWord = nullptr;
+	CWord*		m_pMyWord = nullptr;
+	
+
 
 public:
 	static CWord_Container* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CGameObject*			Clone(void* _pArg) override;
 	void					Free() override;
+
 };
 
 END

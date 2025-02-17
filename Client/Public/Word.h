@@ -13,12 +13,16 @@ class CPlayer;
 class CWord final :
 	public CCarriableObject
 {
+
+	// 활성화된 단어는 캐리어블. 본인이 직접 렌더해야 한다.
+	// 비활성화 된 단어는 Container에 수납되며, 본인의 텍스트를 대신 렌더해 준다.
+
 public :
 	typedef struct tagWordDesc : CCarriableObject::CARRIABLE_DESC
 	{
-		ID3D11ShaderResourceView* pSRV;
-		_float2					fSize;
-		_wstring				strText;
+		ID3D11ShaderResourceView*	pSRV;                                               
+		_float2						fSize;
+		_wstring					strText;
 
 	}WORD_DESC;
 
@@ -30,8 +34,9 @@ public :
 		WORD_SMALL,
 		WORD_CLOSE,
 		WORD_OPEN,
-		WORD_END,
+		WORD_LAST,
 	};
+
 
 protected:
 	explicit CWord(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -48,22 +53,30 @@ public:
 	virtual HRESULT		Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
 public:
-	virtual void Interact(CPlayer* _pUser) override;
-	virtual _bool Is_Interactable(CPlayer* _pUser) override;
-	virtual _float Get_Distance(COORDINATE _eCOord, CPlayer* _pUser) override;
+	virtual void		Interact(CPlayer* _pUser) override;
+	virtual _bool		Is_Interactable(CPlayer* _pUser) override;
+	virtual _float		Get_Distance(COORDINATE _eCOord, CPlayer* _pUser) override;
+
+
+
+public :
+	_wstring Get_Text() { return m_strText; }
 
 public :
 	HRESULT Ready_Components();
 private :
 	CVIBuffer_Rect*				m_pViBufferCom = {};
 	ID3D11ShaderResourceView*	m_pWordTexture;
+
+	WORD_TYPE					m_eWordType;
+
 	_wstring					m_strText;
 	_float2						m_fSize;
 
 
 public:
 	static	CWord*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	virtual CGameObject* Clone(void* _pArg) override;
+	virtual CGameObject*	Clone(void* _pArg) override;
 	virtual void			Free() override;
 
 };

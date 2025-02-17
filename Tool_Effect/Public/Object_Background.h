@@ -29,6 +29,8 @@ private:
 	CShader*			m_pShaderCom = { nullptr };
 	CVIBuffer_Rect*		m_pBufferCom = { nullptr };
 
+	_float4				m_vColor = { 1.f, 1.f, 1.f, 1.f };
+
 private:
 	HRESULT Bind_ShaderResources();
 	HRESULT Ready_Components();

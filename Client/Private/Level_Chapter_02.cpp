@@ -11,6 +11,7 @@
 #include "Section_Manager.h"
 #include "Trigger_Manager.h"
 #include "PlayerData_Manager.h"
+#include "Effect_Manager.h"
 
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -123,11 +124,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 	
-	//if (FAILED(Ready_Layer_Effects(TEXT("Layer_Effect"))))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_Effects (Level_Chapter_02::Initialize)");
-	//	assert(nullptr);
-	//}
+	if (FAILED(Ready_Layer_Effects(TEXT("Layer_Effect"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Effects (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 		//액터 들어가는넘.,
 	if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
 	{
@@ -147,18 +148,18 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-	/* Test CollapseBlock */
-	{
-		CCollapseBlock::MAPOBJ_DESC CollapseBlockDesc{};
-		CollapseBlockDesc.Build_2D_Model(LEVEL_CHAPTER_2, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"));
-		CollapseBlockDesc.Build_2D_Transform(_float2(-100.f, -300.f));
-		CollapseBlockDesc.eStartCoord = COORDINATE_2D;
-		CGameObject* pGameObject = nullptr;
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_CollapseBlock"), m_eLevelID, TEXT("Layer_CollapseBlock"), &pGameObject, &CollapseBlockDesc)))
-			return E_FAIL;
+	///* Test CollapseBlock */
+	//{
+	//	CCollapseBlock::MAPOBJ_DESC CollapseBlockDesc{};
+	//	CollapseBlockDesc.Build_2D_Model(LEVEL_CHAPTER_2, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"));
+	//	CollapseBlockDesc.Build_2D_Transform(_float2(-100.f, -300.f));
+	//	CollapseBlockDesc.eStartCoord = COORDINATE_2D;
+	//	CGameObject* pGameObject = nullptr;
+	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_CollapseBlock"), m_eLevelID, TEXT("Layer_CollapseBlock"), &pGameObject, &CollapseBlockDesc)))
+	//		return E_FAIL;
 
-		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
-	}
+	//	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
+	//}
 
 	
 
@@ -1216,18 +1217,84 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster_Projectile(const _wstring& _strLa
 
 HRESULT CLevel_Chapter_02::Ready_Layer_Effects(const _wstring& _strLayerTag)
 {
-	CEffect_System::PARTICLE_SYSTEM_DESC Desc = {};
+	CEffect_System::EFFECT_SYSTEM_DESC Desc = {};
 
 	Desc.eStartCoord = COORDINATE_3D;
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.isCoordChangeEnable = false;
 	Desc.iSpriteShaderLevel = LEVEL_STATIC;
 	Desc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+
 	Desc.iModelShaderLevel = LEVEL_STATIC;
 	Desc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Portal.json"), m_eLevelID, _strLayerTag, &Desc)))
+	Desc.iEffectShaderLevel = LEVEL_STATIC;
+	Desc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+
+	Desc.iSingleSpriteShaderLevel = LEVEL_STATIC;
+	Desc.szSingleSpriteShaderTags = L"Prototype_Component_Shader_VtxPoint";
+	Desc.iSingleSpriteBufferLevel = LEVEL_STATIC;
+	Desc.szSingleSpriteBufferTags = L"Prototype_Component_VIBuffer_Point";
+
+	Desc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+	Desc.szMeshComputeShaderTag = L"Prototype_Component_Compute_Shader_MeshInstance";
+
+	CGameObject* pOut = nullptr;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Bulb.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
 		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Bulb.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Bulb.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("MonsterHit.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("MonsterHit.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("MonsterHit.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("MonsterDead.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("MonsterDead.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("MonsterDead.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("RockOut.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("RockOut.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("RockOut.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("RockOut.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Book_MagicDust.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
 
 	return S_OK;
 }

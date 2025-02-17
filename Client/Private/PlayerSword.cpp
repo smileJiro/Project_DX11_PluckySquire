@@ -132,22 +132,15 @@ void CPlayerSword::Update(_float _fTimeDelta)
     {
     case Client::CPlayerSword::HANDLING:
         break;
-    case Client::CPlayerSword::FLYING:
+    case Client::CPlayerSword::OUTING:
     {
-        _bool bOuting = m_fOutingForce > 0;
-        m_fOutingForce -= (COORDINATE_3D == eCoord ? m_fCentripetalForce3D : m_fCentripetalForce2D) * _fTimeDelta;
-        _vector vDir = m_vThrowDirection;
-        _vector vPosition = Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
-        _vector vTargetPos = m_pPlayer->Get_CenterPosition();
-        if (m_fOutingForce < 0)
+        m_fFlyingTimeAcc += _fTimeDelta;
+        if (m_fFlyingTimeAcc > m_fOutingTime) // Outing ³¡.
         {
-            if (bOuting)
-            {
-                Set_AttackEnable(false);
-                Set_AttackEnable(true);
-                //cout << "m_AttckedObjects clear Update" << endl;
-            }
-            vDir = XMVector3Normalize(vTargetPos - vPosition);
+            Set_AttackEnable(false);
+            Set_AttackEnable(true);
+            Set_State(RETRIEVING);
+            break;
         }
         if (COORDINATE_3D == eCoord)
         {
@@ -155,21 +148,47 @@ void CPlayerSword::Update(_float _fTimeDelta)
 
             _float3 vAngularVelocity = { 0, -m_fRotationForce3D, 0 };
             m_pActorCom->Set_AngularVelocity(vAngularVelocity);
-            XMVectorSetY(vTargetPos, XMVectorGetY(vTargetPos) + 0.5f);
-            pDynamicActor->Set_LinearVelocity(vDir * abs(m_fOutingForce));
+            pDynamicActor->Set_LinearVelocity(m_vThrowDirection * m_fFlyingSpeed3D);
         }
         else
         {
-            m_pControllerTransform->Go_Direction(vDir, abs(m_fOutingForce), _fTimeDelta);
+            m_pControllerTransform->Go_Direction(m_vThrowDirection, abs(m_fFlyingSpeed2D), _fTimeDelta);
         }
 
+        break;
+    }
+    case Client::CPlayerSword::RETRIEVING:
+    {
+		_vector vMyPos = Get_FinalPosition();
+		_vector vTargetPos = m_pPlayer->Get_CenterPosition();
+        _vector vDiff = vTargetPos - vMyPos;
+		_vector vDir = XMVector3Normalize(vDiff);
+		_float fDistance = XMVectorGetX(XMVector3Length(vDiff));
+        if (COORDINATE_3D == eCoord)
+        {
+            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+
+            _float3 vAngularVelocity = { 0, -m_fRotationForce3D, 0 };
+            m_pActorCom->Set_AngularVelocity(vAngularVelocity);
+            pDynamicActor->Set_LinearVelocity(vDir * m_fFlyingSpeed3D);
+        }
+        else
+        {
+            m_pControllerTransform->Go_Direction(vDir, abs(m_fFlyingSpeed2D), _fTimeDelta);
+        }
+
+		_float fRetriveRange = (COORDINATE_3D == eCoord) ? m_fRetriveRange3D : m_fRetriveRange2D;
+		if (fDistance < fRetriveRange)
+		{
+			Set_State(HANDLING);
+		}
         break;
     }
     case Client::CPlayerSword::STUCK:
     {
         if (MOUSE_DOWN(MOUSE_KEY::RB))
         {
-            Set_State(FLYING);
+            Set_State(RETRIEVING);
         }
 
         break;
@@ -202,18 +221,18 @@ void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other
 {
     if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
     {
-        if (Is_Flying() && Is_ComingBack())
-        {
-            Set_State(HANDLING);
-        }
+        //if (Is_ComingBack())
+        //{
+        //    Set_State(HANDLING);
+        //}
     }
     else
     {
-        if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
+        if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup || OBJECT_GROUP::BLOCKER == _Other.pActorUserData->iObjectGroup)
         {
-            if (Is_Flying() && Is_Outing())
+            if (Is_Outing())
             {
-                m_fOutingForce = 0;
+                m_fFlyingTimeAcc = 0;
                 m_vStuckDirection = XMVectorSetW(XMVector3Normalize(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition()), 0);
                 Set_State(STUCK);
             }
@@ -254,18 +273,18 @@ void CPlayerSword::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOt
 	OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
     if (OBJECT_GROUP::PLAYER == eGroup)
     {
-        if (Is_ComingBack())
-        {
-            Set_State(HANDLING);
-        }
+        //if (Is_ComingBack())
+        //{
+        //    Set_State(HANDLING);
+        //}
     }
     else
     {
-        if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup || OBJECT_GROUP::MAPOBJECT == eGroup)
+        if (OBJECT_GROUP::MAPOBJECT == eGroup || OBJECT_GROUP::BLOCKER == eGroup)
         {
             if ( Is_Outing())
             {
-                m_fOutingForce = 0;
+                m_fFlyingTimeAcc = 0;
                 m_vStuckDirection = XMVectorSetW(XMVector3Normalize(_pOtherObject->Get_FinalPosition() - Get_FinalPosition()), 0);
                 Set_State(STUCK);
             }
@@ -323,10 +342,10 @@ HRESULT CPlayerSword::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewP
 void CPlayerSword::Throw(_fvector _vDirection)
 {
     COORDINATE eCoord = m_pPlayer->Get_CurCoord();
-    m_fOutingForce = COORDINATE_3D == eCoord ? m_fThrowingPower3D : m_fThrowingPower2D;
+    m_fFlyingTimeAcc = 0;
 
     m_vThrowDirection = _vDirection;
-    Set_State(FLYING);
+    Set_State(OUTING);
     if (COORDINATE_2D == eCoord)
     {
         Set_Position(m_pPlayer->Get_CenterPosition());
@@ -358,7 +377,7 @@ void CPlayerSword::On_StateChange()
     {
     case Client::CPlayerSword::HANDLING:
     {
-        m_fOutingForce = 0.f;
+        m_fFlyingTimeAcc = 0.f;
         if (COORDINATE_3D == eCoord)
         {
             Set_ParentMatrix(eCoord, m_pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));
@@ -375,7 +394,8 @@ void CPlayerSword::On_StateChange()
         Set_AttackEnable(false);
         break;
     }
-    case Client::CPlayerSword::FLYING:
+    case Client::CPlayerSword::OUTING:
+    case Client::CPlayerSword::RETRIEVING:
     {
         if (COORDINATE_3D == eCoord)
         {
