@@ -54,7 +54,7 @@ void CNarration::Update(_float _fTimeDelta)
 	if (false == m_isPlayNarration && true == Uimgr->Get_PlayNarration())
 	{
 		m_isPlayNarration = true;
-		std::wstring targetNarrationID = Uimgr->Get_strNarrationID();
+		_wstring targetNarrationID = Uimgr->Get_strNarrationID();
 		Set_NarrationByStrid(targetNarrationID);
 		m_isStartNarration = true;
 
@@ -116,7 +116,7 @@ HRESULT CNarration::Render()
 	return S_OK;
 }
 
-HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
+HRESULT CNarration::LoadFromJson(const wstring& filePath)
 {
 	if (GetFileAttributes(filePath.c_str()) == INVALID_FILE_ATTRIBUTES)
 	{
