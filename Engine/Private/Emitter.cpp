@@ -3,6 +3,7 @@
 #include "Effect_Module.h"
 #include "Keyframe_Module.h"
 #include "Translation_Module.h"
+#include "UV_Module.h"
 
 #include "GameInstance.h"
 
@@ -10,11 +11,12 @@ _int			CEmitter::s_iRG_3D = 0;
 _int			CEmitter::s_iRG_2D = 0;
 _int			CEmitter::s_iRGP_PARTICLE = 0;
 _int			CEmitter::s_iRGP_EFFECT = 0;
+_float4x4		CEmitter::s_IdentityMatrix = _float4x4(1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f);
 
 CEmitter::CEmitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CPartObject(_pDevice, _pContext)
 {
-	XMStoreFloat4x4(&m_LoadMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_SpawnMatrix, XMMatrixIdentity());
 }
 
 CEmitter::CEmitter(const CEmitter& _Prototype)
@@ -29,7 +31,7 @@ CEmitter::CEmitter(const CEmitter& _Prototype)
 	, m_fSpawnDelayTime(_Prototype.m_fSpawnDelayTime)
 	, m_fAccTime(_Prototype.m_fAccTime)
 	, m_iLoopTime(_Prototype.m_iLoopTime)
-	, m_LoadMatrix(_Prototype.m_LoadMatrix)
+	, m_SpawnMatrix(_Prototype.m_SpawnMatrix)
 	, m_FloatDatas(_Prototype.m_FloatDatas)
 	, m_Float2Datas(_Prototype.m_Float2Datas)
 	, m_Float4Datas(_Prototype.m_Float4Datas)
@@ -65,7 +67,7 @@ HRESULT CEmitter::Initialize_Prototype(const json& _jsonInfo)
 	{
 		for (_int i = 0; i < 16; ++i)
 		{
-			*((_float*)(&m_LoadMatrix) + i) = _jsonInfo["Transform"][i];			
+			*((_float*)(&m_SpawnMatrix) + i) = _jsonInfo["Transform"][i];			
 		}
 	}
 
@@ -81,6 +83,8 @@ HRESULT CEmitter::Initialize_Prototype(const json& _jsonInfo)
 				pOutModule = CKeyframe_Module::Create(m_pDevice, m_pContext, _jsonInfo["Modules"][i], 1);
 			if (CEffect_Module::MODULE_TRANSLATION == eType)
 				pOutModule = CTranslation_Module::Create(_jsonInfo["Modules"][i]);
+			if (CEffect_Module::MODULE_UV == eType)
+				pOutModule = CUV_Module::Create(_jsonInfo["Modules"][i]);
 
 			if (nullptr != pOutModule)
 			{
@@ -145,14 +149,16 @@ HRESULT CEmitter::Initialize(void* _pArg)
 
 	pDesc->eStartCoord = COORDINATE_3D;
 	pDesc->isCoordChangeEnable = false;
-
+	
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
-	m_pControllerTransform->Set_WorldMatrix(XMLoadFloat4x4(&m_LoadMatrix));
+	m_pControllerTransform->Set_WorldMatrix(XMLoadFloat4x4(&m_SpawnMatrix));
 
 	if (FAILED(Ready_Components(pDesc)))
 		return E_FAIL;
+
+	Set_Active(false);
 
 	return S_OK;
 }
@@ -169,16 +175,18 @@ void CEmitter::Update(_float _fTimeDelta)
 		{
 			++m_iAccLoop;
 			m_fAccTime = 0.f;
+
+			Set_Matrix();
 		}
 		if (0 < m_iAccLoop)
 		{
-			if (m_fActiveTime <= m_fAccTime)
+			if (m_fActiveTime <= m_fAccTime && m_iAccLoop <= m_iLoopTime)
 			{
 				++m_iAccLoop;
 
 				if (m_iAccLoop >= m_iLoopTime)
 				{
-					m_fInactiveDelayTime = 10.f;
+					m_fInactiveDelayTime = m_fActiveTime;
 					m_eNowEvent = STOP_SPAWN;
 				}
 				else if (0 != m_iLoopTime)
@@ -207,8 +215,6 @@ void CEmitter::Update(_float _fTimeDelta)
 
 void CEmitter::Late_Update(_float _fTimeDelta)
 {
-	if (m_isActive)
-		__super::Late_Update(_fTimeDelta);
 
 }
 
@@ -232,6 +238,24 @@ void CEmitter::Active_OnDisable()
 	m_fInactiveDelayTime = D3D11_FLOAT32_MAX;
 
 	m_eNowEvent = NO_EVENT;
+
+}
+
+void CEmitter::Set_Matrix()
+{
+	_matrix SpawnMatrix = {};
+	if (nullptr != m_pSpawnMatrix)
+	{
+		SpawnMatrix = XMLoadFloat4x4(m_pSpawnMatrix);
+		SpawnMatrix.r[0] = XMVector3Normalize(SpawnMatrix.r[0]);
+		SpawnMatrix.r[1] = XMVector3Normalize(SpawnMatrix.r[1]);
+		SpawnMatrix.r[2] = XMVector3Normalize(SpawnMatrix.r[2]);
+	}
+	else 
+		SpawnMatrix = XMMatrixIdentity();
+
+
+	XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]) * SpawnMatrix);
 
 }
 
@@ -347,11 +371,6 @@ void CEmitter::Tool_Update(_float fTimeDelta)
 			ImGui::DragFloat("Spawn Rate", &m_FloatDatas["SpawnRate"], 1.f, 10.f);			
 		}
 
-		if (BURST_SPAWN == m_eSpawnType)
-		{
-			m_FloatDatas["SpawnRate"] = 0.f;
-		}
-
 		ImGui::TreePop();
 	}
 
@@ -390,6 +409,7 @@ void CEmitter::Tool_Update(_float fTimeDelta)
 	if (ImGui::InputFloat("Time", &m_fActiveTime))
 		m_isToolChanged = true;
 	
+	ImGui::SameLine();
 	if (ImGui::Button("Infinite Time"))
 	{
 		m_fActiveTime = D3D11_FLOAT32_MAX;
@@ -400,7 +420,7 @@ void CEmitter::Tool_Update(_float fTimeDelta)
 		m_isToolChanged = true;
 	if (ImGui::InputInt("Loop Count", (_int*)&m_iLoopTime))
 		m_isToolChanged = true;
-
+	ImGui::SameLine();
 	if (ImGui::Button("Infinite Loop"))
 	{
 		m_iLoopTime = UINT32_MAX;

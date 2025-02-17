@@ -889,7 +889,7 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-17.f, 6.55f, 23.f);
 	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.f, 0.35f, -22.f);
 	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_1;
+	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_1;
 	Beetle_Desc.isSneakMode = true;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
@@ -968,18 +968,7 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 
 HRESULT CLevel_Chapter_Test::Ready_Layer_Effects(const _wstring& _strLayerTag)
 {
-	CEffect_System::PARTICLE_SYSTEM_DESC Desc = {};
 
-	Desc.eStartCoord = COORDINATE_3D;
-	Desc.iCurLevelID = m_eLevelID;
-	Desc.isCoordChangeEnable = false;
-	Desc.iSpriteShaderLevel = LEVEL_STATIC;
-	Desc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
-	Desc.iModelShaderLevel = LEVEL_STATIC;
-	Desc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Portal.json"), m_eLevelID, _strLayerTag, &Desc)))
-		return E_FAIL;
 
 	return S_OK;
 }

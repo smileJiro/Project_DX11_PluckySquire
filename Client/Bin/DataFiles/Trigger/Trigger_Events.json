@@ -44,7 +44,7 @@
       }
     ]
   },
-    {
+  {
     "Trigger_EventTag": "P0809_MonsterSpawnProcess",
     "Actions": [
       {
@@ -56,6 +56,16 @@
         "ActionTag": "Create_EventExecuter",
         "EventTag": "P0809_Monster_Spawn",
         "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "MagicDust",
+    "Actions": [
+      {
+        "ActionTag": "MagicDust",
+        "EventTag": "Honey_Bee_Benny_01",
+        "Is_Sequence": false
       }
     ]
   }

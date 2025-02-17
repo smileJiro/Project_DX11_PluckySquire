@@ -23,7 +23,7 @@ HRESULT CGoblin::Initialize_Prototype()
 HRESULT CGoblin::Initialize(void* _pArg)
 {
     CGoblin::MONSTER_DESC* pDesc = static_cast<CGoblin::MONSTER_DESC*>(_pArg);
-    pDesc->eStartCoord = COORDINATE_3D;
+    //pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = true;
     pDesc->iNumPartObjects = PART_END;
 
@@ -31,7 +31,7 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 80.f;
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 10.f;
@@ -394,7 +394,7 @@ void CGoblin::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CGoblin::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
     {
         if ((_uint)MONSTER_STATE::CHASE == m_iState)
         {
@@ -412,7 +412,7 @@ void CGoblin::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 
 void CGoblin::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
     {
         if (true == m_isContactToTarget)
         {

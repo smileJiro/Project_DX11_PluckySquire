@@ -49,7 +49,7 @@ void CSkyBox::Late_Update(_float _fTimeDelta)
 {
     m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(m_pGameInstance->Get_CamPosition()));
     
-    m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_PRIORITY, this);
+    m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BLEND, this);
     //m_pGameInstance->Add_RenderObject(CRenderer::RG_PRIORITY, this);
 }
 
@@ -70,7 +70,7 @@ HRESULT CSkyBox::Render()
 HRESULT CSkyBox::Ready_Components()
 {
     /* Com_Shader */
-    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCube"),
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCube2"),
         TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
         return E_FAIL;
 

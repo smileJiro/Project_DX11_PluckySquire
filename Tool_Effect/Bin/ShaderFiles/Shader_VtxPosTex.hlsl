@@ -5,7 +5,7 @@ float4x4 g_ViewMatrix;
 float4x4 g_ProjMatrix;
 
 Texture2D g_Texture;
-
+float4 g_vColor;
 /* ±¸Á¶Ã¼ */
 struct VS_IN
 {
@@ -59,7 +59,7 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = float4(1.f, 0.f, 0.f, 1.f);    
+    Out.vColor = g_vColor;    
    
     
     return Out;

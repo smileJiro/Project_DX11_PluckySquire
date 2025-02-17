@@ -21,7 +21,8 @@ public:
 		_float fDelayTime;
 		_float fCoolTime;
 		CMonster* pOwner;
-		WAYPOINTINDEX eWayIndex=WAYPOINTINDEX::LAST;
+		SNEAKWAYPOINTINDEX eWayIndex=SNEAKWAYPOINTINDEX::LAST;
+		SIDESCROLL_PATROLBOUND eSideScroll_Bound = SIDESCROLL_PATROLBOUND::LAST;
 		_int iCurLevel;
 	}FSMDESC;
 
@@ -36,6 +37,7 @@ public:
 	void Set_Sneak_StopTime(_float _fStopTime);
 	void	Set_Sneak_InvestigatePos(_fvector _vPosition);
 	void	Set_Sneak_AwarePos(_fvector _vPosition);
+	void Set_SideScroll_PatrolBound();
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -70,7 +72,8 @@ private:
 	_float	m_fAttack2DRange = {};
 	_float	m_fDelayTime = {};
 	_float	m_fCoolTime = {};
-	WAYPOINTINDEX m_eWayIndex;
+	SNEAKWAYPOINTINDEX m_eWayIndex;
+	SIDESCROLL_PATROLBOUND m_eSideScroll_Bound;
 
 public:
 	HRESULT CleanUp();

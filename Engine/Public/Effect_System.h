@@ -25,7 +25,7 @@ public:
 
 		//vector<_uint> EmitterShaderLevels;
 		//vector<const _tchar*> ShaderTags;
-	} PARTICLE_SYSTEM_DESC;
+	} EFFECT_SYSTEM_DESC;
 
 private:
 	CEffect_System(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -43,10 +43,22 @@ public:
 	virtual HRESULT				Render() override;
 
 public:
-	void						Active_Effect(_bool _isActive, _bool _isReset = true, _uint _iEventID = 0);
-	void						Stop_Spawn(_float _fDelayTime, _uint _iEventID = 0);
+	void						Active_Effect(_bool _isReset = true, _uint _iEffectID = 0);
+	void						Active_All(_bool _isReset = true);
+	void						Stop_Spawn(_float _fDelayTime = 0.f, _uint _iEffectID = 0);
+	void						Stop_SpawnAll(_float _fDelayTime = 0.f);
+	void						Inactive_Effect(_uint _iEffectID = 0);
+	void						Inactive_All();
+
+public:
+	void						Set_SpawnMatrix(const _float4x4* _pSpawnMatrix);
+	void						Set_EffectPosition(_fvector _vPosition);
+	void						Set_EffectMatrix(_matrix _WorldMatrix);
+
 private:
 	vector<class CEmitter*> m_Emitters;
+
+	const _float4x4*			m_pSpawnMatrix = { nullptr };
 
 public:
 	static	CEffect_System* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _tchar* _szFilePath);
@@ -72,12 +84,12 @@ private:
 	_int						m_iInputNumInstances = { 0 };
 	_uint						m_iToolEventID = { 0 };
 	_float						m_fToolAccTime = { 0.f };
-	_float						m_fToolRepeatTime = { 100.f };
+	_float						m_fToolRepeatTime = { 5.f };
 	_float						m_fDebugTimeScale = { 1.f };
 private:
 	void						Tool_ShowList();
 	void						Tool_InputText();
-
+	void						Tool_Transform();
 public:
 	static	CEffect_System* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext); /* 툴전용의 파티클 생성 코드입니다, 어떤 Emitter도 만들지 않습니다.*/
 

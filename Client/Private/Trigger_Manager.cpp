@@ -11,7 +11,7 @@
 #include "UI_Manager.h"
 #include "PlayerData_Manager.h"
 #include "GameEventExecuter.h"
-
+#include "Effect_Manager.h"
 
 IMPLEMENT_SINGLETON(CTrigger_Manager)
 
@@ -476,6 +476,10 @@ void CTrigger_Manager::Resister_Trigger_Action()
 
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) {
 		CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
+		};
+
+	m_Actions[TEXT("MagicDust")] = [this](_wstring _wszEventTag) {
+		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust2"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
 		};
 	m_Actions[TEXT("Create_EventExecuter")] = [this](_wstring _wszEventTag) 
 	{

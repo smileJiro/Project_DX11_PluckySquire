@@ -9,6 +9,7 @@ struct Sprite_Particle
     float3 vVelocity : TEXCOORD3;
     float3 vAcceleration : TEXCOORD4;
     float fAlive : TEXCOORD5;
+    float fRandom : TEXCOORD6;
 };
 
 struct Keyframe
@@ -24,20 +25,23 @@ struct KeyframeData
 
 RWStructuredBuffer<Sprite_Particle> Particles : register(u0);
 StructuredBuffer<Sprite_Particle> InitialParticle : register(t0);
-Texture2D<float4> KeyframeTexture : register(t2);
 
+Texture2D g_KeyframeTexture;
 float g_fAmount;
 float g_Pull;
 float3 g_vOrigin;
 float3 g_vAxis;
 float3 g_vAmount;
+float g_Rate;
+float g_fCount;
 
-float g_Pos1, g_Pos2;
-float4 g_Data1, g_Data2;
 
+float2 g_Count;
+float2 g_Size;
 
 float g_fTimeDelta;
 float4x4 g_SpawnMatrix;
+float4x4 g_WorldMatrix;
 float g_fAbsolute;
 float g_fKill;
 
@@ -48,15 +52,14 @@ void CS_Update(int3 dispatchThreadID : SV_DispatchThreadID)
 {
     Particles[dispatchThreadID.x].vLifeTime.y += g_fTimeDelta;
     
-    // kill or revive
-    float fLifeOn = step(0.f, Particles[dispatchThreadID.x].vLifeTime.y);
+  
     // y가 크면 -> 0의 크기
-    float fDead = step(Particles[dispatchThreadID.x].vLifeTime.x, Particles[dispatchThreadID.x].vLifeTime.y) * fLifeOn;    
+    float fDead = step(Particles[dispatchThreadID.x].vLifeTime.x, Particles[dispatchThreadID.x].vLifeTime.y);
      
     
     //  revive
-    Particles[dispatchThreadID.x].vLifeTime.y = Particles[dispatchThreadID.x].vLifeTime.y * (1.f - fDead)
-    + min(InitialParticle[dispatchThreadID.x].vLifeTime.y, g_fKill) * fDead;
+    Particles[dispatchThreadID.x].vLifeTime.y = Particles[dispatchThreadID.x].vLifeTime.y * (1.f - fDead) 
+    - fDead * ((60.f / g_Rate) * g_fCount) + fDead * Particles[dispatchThreadID.x].vLifeTime.x;
     Particles[dispatchThreadID.x].fAlive = Particles[dispatchThreadID.x].fAlive * (1.f - fDead)
     + InitialParticle[dispatchThreadID.x].fAlive * fDead; 
         
@@ -72,32 +75,67 @@ void CS_Update(int3 dispatchThreadID : SV_DispatchThreadID)
 [numthreads(256, 1, 1)]
 void CS_Spawn(int3 dispatchThreadID : SV_DispatchThreadID)
 { 
-    // LifeTime 더하기
-    
+    // LifeTime 더하기    
     //// y가 0보다 크게된 시기가 되면 Spawn.
-    float fSpawnOn = step(0.f, Particles[dispatchThreadID.x].vLifeTime.y) * (1 - Particles[dispatchThreadID.x].fAlive);
+    float fSpawnOn = step(0.f, Particles[dispatchThreadID.x].vLifeTime.y) * (1.f - Particles[dispatchThreadID.x].fAlive);
+
+    float4x4 SpawnMatrix = g_SpawnMatrix * g_fAbsolute;
+    SpawnMatrix[0].xyz = normalize(g_SpawnMatrix[0].xyz);
+    SpawnMatrix[1].xyz = normalize(g_SpawnMatrix[1].xyz);
+    SpawnMatrix[2].xyz = normalize(g_SpawnMatrix[2].xyz);
+    SpawnMatrix[3] = g_SpawnMatrix[3];
+        
+    float4 vTranslate = mul(mul(InitialParticle[dispatchThreadID.x].InstancingMatrix[3], g_WorldMatrix), SpawnMatrix);
+    //float4 vTranslate = mul(InitialParticle[dispatchThreadID.x].InstancingMatrix[3], mul(g_WorldMatrix, SpawnMatrix));
+    
+    float4x4 AbsoluteMatrix = mul(mul(InitialParticle[dispatchThreadID.x].InstancingMatrix, g_WorldMatrix), SpawnMatrix);
+    //float4x4 AbsoluteMatrix = InitialParticle[dispatchThreadID.x].InstancingMatrix * g_WorldMatrix * SpawnMatrix;
+    AbsoluteMatrix[3] = vTranslate;
     
     
-    Particles[dispatchThreadID.x].InstancingMatrix = Particles[dispatchThreadID.x].InstancingMatrix * (1.f - fSpawnOn)
-    + (InitialParticle[dispatchThreadID.x].InstancingMatrix * (1.f - g_fAbsolute) + g_SpawnMatrix * g_fAbsolute) * fSpawnOn;
-    Particles[dispatchThreadID.x].fAlive = max(Particles[dispatchThreadID.x].fAlive, fSpawnOn);
-    Particles[dispatchThreadID.x].vColor = Particles[dispatchThreadID.x].vColor * (1.f - fSpawnOn)
+   // Particles[dispatchThreadID.x].InstancingMatrix 
+   // = mul(Particles[dispatchThreadID.x].InstancingMatrix, (1.f - fSpawnOn))
+   // + mul(InitialParticle[dispatchThreadID.x].InstancingMatrix, (1.f - g_fAbsolute)) +
+   // mul(AbsoluteMatrix, g_fAbsolute * fSpawnOn);
+    
+        Particles[dispatchThreadID.x].InstancingMatrix 
+    = Particles[dispatchThreadID.x].InstancingMatrix * (1.f - fSpawnOn)
+    + (InitialParticle[dispatchThreadID.x].InstancingMatrix * (1.f - g_fAbsolute) +
+    AbsoluteMatrix * g_fAbsolute) * fSpawnOn;
+        Particles[dispatchThreadID.x].fAlive = max(Particles[dispatchThreadID.x].fAlive, fSpawnOn);
+        Particles[dispatchThreadID.x].vColor = Particles[dispatchThreadID.x].vColor * (1.f - fSpawnOn)
     + InitialParticle[dispatchThreadID.x].vColor * fSpawnOn;
-    Particles[dispatchThreadID.x].vTexcoord = Particles[dispatchThreadID.x].vTexcoord * (1.f - fSpawnOn)
+        Particles[dispatchThreadID.x].vTexcoord = Particles[dispatchThreadID.x].vTexcoord * (1.f - fSpawnOn)
     + InitialParticle[dispatchThreadID.x].vTexcoord * fSpawnOn;
-    Particles[dispatchThreadID.x].vVelocity = Particles[dispatchThreadID.x].vVelocity * (1.f - fSpawnOn)
+        Particles[dispatchThreadID.x].vVelocity = Particles[dispatchThreadID.x].vVelocity * (1.f - fSpawnOn)
     + InitialParticle[dispatchThreadID.x].vVelocity * fSpawnOn;
-    Particles[dispatchThreadID.x].vAcceleration = Particles[dispatchThreadID.x].vAcceleration * (1.f - fSpawnOn)
+        Particles[dispatchThreadID.x].vAcceleration = Particles[dispatchThreadID.x].vAcceleration * (1.f - fSpawnOn)
     + InitialParticle[dispatchThreadID.x].vAcceleration * fSpawnOn;
     
-}
+    }
 
 [numthreads(256, 1, 1)]
 void CS_Burst(int3 dispatchThreadID : SV_DispatchThreadID)
 {
+    float4x4 SpawnMatrix = g_SpawnMatrix * g_fAbsolute;
+    SpawnMatrix[0].xyz = normalize(g_SpawnMatrix[0].xyz);
+    SpawnMatrix[1].xyz = normalize(g_SpawnMatrix[1].xyz);
+    SpawnMatrix[2].xyz = normalize(g_SpawnMatrix[2].xyz);
+    SpawnMatrix[3] = g_SpawnMatrix[3];
     
-    Particles[dispatchThreadID.x].InstancingMatrix = InitialParticle[dispatchThreadID.x].InstancingMatrix * (1.f - g_fAbsolute)
-    + g_SpawnMatrix * g_fAbsolute;
+    //float4 vTranslate = mul(InitialParticle[dispatchThreadID.x].InstancingMatrix[3], mul(g_WorldMatrix, g_SpawnMatrix));
+    //// y가 0보다 크게된 시기가 되면 Spawn.
+    float4 vTranslate = mul(mul(InitialParticle[dispatchThreadID.x].InstancingMatrix[3], g_WorldMatrix), SpawnMatrix);
+    float4x4 AbsoluteMatrix = mul(mul(InitialParticle[dispatchThreadID.x].InstancingMatrix, g_WorldMatrix), SpawnMatrix);
+
+    //float4 vTranslate = mul(InitialParticle[dispatchThreadID.x].InstancingMatrix[3], mul(g_WorldMatrix, SpawnMatrix));
+    //float4x4 AbsoluteMatrix = InitialParticle[dispatchThreadID.x].InstancingMatrix * g_WorldMatrix * SpawnMatrix;
+    AbsoluteMatrix[3] = vTranslate;
+    
+    Particles[dispatchThreadID.x].InstancingMatrix 
+    = InitialParticle[dispatchThreadID.x].InstancingMatrix * (1.f - g_fAbsolute) +
+    AbsoluteMatrix * g_fAbsolute;
+
     Particles[dispatchThreadID.x].fAlive = 1.f;
     Particles[dispatchThreadID.x].vLifeTime.y = 0.f;
     Particles[dispatchThreadID.x].vColor = InitialParticle[dispatchThreadID.x].vColor;
@@ -124,7 +162,7 @@ void CS_Reset(int3 dispatchThreadID : SV_DispatchThreadID)
 [numthreads(256, 1, 1)]
 void CS_POINTVELOCITY(int3 dispatchThreadID : SV_DispatchThreadID)
 {
-    Particles[dispatchThreadID.x].vVelocity = Particles[dispatchThreadID.x].InstancingMatrix[3].xyz - g_vOrigin * g_fAmount;
+    Particles[dispatchThreadID.x].vVelocity = (Particles[dispatchThreadID.x].InstancingMatrix[3].xyz - g_vOrigin) * g_fAmount;
 }
 
 [numthreads(256, 1, 1)]
@@ -136,7 +174,7 @@ void CS_LINEARVELOCITY(int3 dispatchThreadID : SV_DispatchThreadID)
 [numthreads(256, 1, 1)]
 void CS_INIT_ACCELERATION(int3 dispatchThreadID : SV_DispatchThreadID)
 {
-    Particles[dispatchThreadID.x].vAcceleration = Particles[dispatchThreadID.x].vVelocity;
+    Particles[dispatchThreadID.x].vAcceleration = Particles[dispatchThreadID.x].vVelocity * g_fAmount;
 }
 
 [numthreads(256, 1, 1)]
@@ -189,10 +227,79 @@ void CS_COLORKEYFRAME(int3 dispatchThreadID : SV_DispatchThreadID)
     
     //float fRatio = (Particles[dispatchThreadID.x].vLifeTime.y - g_Pos1) / (g_Pos2 - g_Pos1) * fBetween;
     float fNormalizeTime = clamp(Particles[dispatchThreadID.x].vLifeTime.y / Particles[dispatchThreadID.x].vLifeTime.x, 0.f, 1.f);
-    Particles[dispatchThreadID.x].vColor = KeyframeTexture.SampleLevel(LinearSampler, float2(fNormalizeTime, 0.5f), 0);
+    Particles[dispatchThreadID.x].vColor = g_KeyframeTexture.SampleLevel(LinearSampler_Clamp, float2(fNormalizeTime + 0.01f, 0.5f), 0) 
+    * InitialParticle[dispatchThreadID.x].vColor;
 
 }
 
+
+[numthreads(256, 1, 1)]
+void CS_SCALEKEYFRAME(int3 dispatchThreadID : SV_DispatchThreadID)
+{
+    //// pos1이 크면 Before = 1
+    //float fBefore = step(Particles[dispatchThreadID.x].vLifeTime.y, g_Pos1) * step(Particles[dispatchThreadID.x].vLifeTime.y, g_Pos2);
+    //// lifetime이 pos2 보다 크면 after = 1
+    //float fAfter = step(g_Pos2, Particles[dispatchThreadID.x].vLifeTime.y) * step(g_Pos1, Particles[dispatchThreadID.x].vLifeTime.y);
+    //float fBetween = step(g_Pos1, Particles[dispatchThreadID.x].vLifeTime.y) * step(Particles[dispatchThreadID.x].vLifeTime.y, g_Pos2);
+    
+    //float fRatio = (Particles[dispatchThreadID.x].vLifeTime.y - g_Pos1) / (g_Pos2 - g_Pos1) * fBetween;
+    //float fNormalizeTime = clamp(Particles[dispatchThreadID.x].vLifeTime.y / Particles[dispatchThreadID.x].vLifeTime.x, 0.f, 1.f);
+    //float4 vScale = g_KeyframeTexture.SampleLevel(LinearSampler_Clamp, float2(fNormalizeTime + 0.01f, 0.5f), 0);
+    
+    //float3 vRight = normalize(Particles[dispatchThreadID.x].InstancingMatrix[0].xyz);
+    //float3 vUp = normalize(Particles[dispatchThreadID.x].InstancingMatrix[1].xyz);
+    //float3 vLook = normalize(Particles[dispatchThreadID.x].InstancingMatrix[2].xyz);
+    
+    //float fAlive = Particles[dispatchThreadID.x].fAlive;
+
+    //Particles[dispatchThreadID.x].InstancingMatrix[0] = float4(vRight.xyz * clamp(vScale.x, 0.001f, 100.f), 0.f) * fAlive
+    //+ Particles[dispatchThreadID.x].InstancingMatrix[0] * (1.f - fAlive);
+    //Particles[dispatchThreadID.x].InstancingMatrix[1] = float4(vUp.xyz * clamp(vScale.y, 0.001f, 100.f), 0.f) * fAlive
+    //+ Particles[dispatchThreadID.x].InstancingMatrix[1] * (1.f - fAlive);
+    //Particles[dispatchThreadID.x].InstancingMatrix[2] = float4(vLook.xyz * clamp(vScale.z, 0.001f, 100.f), 0.f) * fAlive
+    //+ Particles[dispatchThreadID.x].InstancingMatrix[2] * (1.f - fAlive);
+    
+    float fNormalizeTime = clamp(Particles[dispatchThreadID.x].vLifeTime.y / Particles[dispatchThreadID.x].vLifeTime.x, 0.f, 1.f);
+    float4 vScale = g_KeyframeTexture.SampleLevel(LinearSampler_Clamp, float2(fNormalizeTime + 0.01f, 0.5f), 0);
+    
+    float3 vRight = normalize(Particles[dispatchThreadID.x].InstancingMatrix[0].xyz) * length(InitialParticle[dispatchThreadID.x].InstancingMatrix[0].xyz) /* * Particles[dispatchThreadID.x].fAlive*/;
+    float3 vUp = normalize(Particles[dispatchThreadID.x].InstancingMatrix[1].xyz) * length(InitialParticle[dispatchThreadID.x].InstancingMatrix[1].xyz) /** Particles[dispatchThreadID.x].fAlive*/;
+    float3 vLook = normalize(Particles[dispatchThreadID.x].InstancingMatrix[2].xyz) * length(InitialParticle[dispatchThreadID.x].InstancingMatrix[2].xyz) /** Particles[dispatchThreadID.x].fAlive*/;
+    
+    float fAlive = Particles[dispatchThreadID.x].fAlive;
+    
+    Particles[dispatchThreadID.x].InstancingMatrix[0] = float4(vRight.xyz * clamp(vScale.x, 0.001f, 100.f), 0.f);
+    Particles[dispatchThreadID.x].InstancingMatrix[1] = float4(vUp.xyz * clamp(vScale.y, 0.001f, 100.f), 0.f);
+    Particles[dispatchThreadID.x].InstancingMatrix[2] = float4(vLook.xyz * clamp(vScale.z, 0.001f, 100.f), 0.f);
+    
+}
+
+[numthreads(256, 1, 1)]
+void CS_UVANIM(int3 dispatchThreadID : SV_DispatchThreadID)
+{
+    float fNormalizeTime = clamp(Particles[dispatchThreadID.x].vLifeTime.y / Particles[dispatchThreadID.x].vLifeTime.x, 0.f, 1.f);
+    
+    float fIndex = (fNormalizeTime) * g_Count.x * g_Count.y;
+    fIndex = floor(fIndex);
+    
+    float fIndexY = floor((fIndex + 0.01f) / g_Count.x);
+    float fIndexX = fIndex - fIndexY * g_Count.x;
+
+    Particles[dispatchThreadID.x].vTexcoord = float4(fIndexX * g_Size.x, fIndexY * g_Size.y, (fIndexX + 1) * g_Size.x, (fIndexY + 1) * g_Size.y);
+    
+    //float fNormalizeTime = clamp(Particles[dispatchThreadID.x].vLifeTime.y / Particles[dispatchThreadID.x].vLifeTime.x, 0.f, 1.f);
+    //float fIndexTime = fNormalizeTime + Particles[dispatchThreadID.x].fRandom;
+    //float fExceed = step(1.f, fIndexTime);
+    
+    //float fIndex = (fIndexTime - 1.f * fExceed) * g_Count.x * g_Count.y;
+    //fIndex = floor(fIndex);
+    
+    //float fIndexY = floor((fIndex + 0.01f) / g_Count.x);
+    //float fIndexX = fIndex - fIndexY * g_Count.x;
+    
+    //Particles[dispatchThreadID.x].vTexcoord = float4(fIndexX * g_Size.x, fIndexY * g_Size.y, (fIndexX + 1) * g_Size.x, (fIndexY + 1) * g_Size.y);
+    
+}
 
 
 
@@ -301,5 +408,20 @@ technique11 DefaultTechnique
         ComputeShader = compile cs_5_0 CS_COLORKEYFRAME();
     }
 
+    pass ScaleKeyframe // 13
+    {
+        VertexShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = NULL;
+        ComputeShader = compile cs_5_0 CS_SCALEKEYFRAME();
+    }
+
+    pass UVANIM // 14
+    {
+        VertexShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = NULL;
+        ComputeShader = compile cs_5_0 CS_UVANIM();
+    }
 
 }

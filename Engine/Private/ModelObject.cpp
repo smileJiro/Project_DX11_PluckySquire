@@ -376,6 +376,11 @@ void CModelObject::Set_PlayingAnim(_bool _bPlaying)
     m_bPlayingAnim = _bPlaying;
 }
 
+_bool CModelObject::Is_DuringAnimation()
+{
+    return m_pControllerModel->Get_Model(Get_CurCoord())->Is_DuringAnimation();
+}
+
 void CModelObject::Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)
 {
     if (m_pControllerModel)
