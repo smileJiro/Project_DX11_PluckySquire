@@ -25,7 +25,11 @@ HRESULT CWord::Render()
 
 HRESULT CWord::Initialize(void* _pArg)
 {
-	CModelObject::MODELOBJECT_DESC* pDesc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
+	WORD_DESC* pDesc = static_cast<WORD_DESC*>(_pArg);
+
+	m_pWordTexture = pDesc->pSRV;
+	m_fSize = pDesc->fSize;
+
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -52,36 +56,13 @@ HRESULT CWord::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition
 
 }
 
-CWord* CWord::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+
+HRESULT CWord::Ready_Components()
 {
-	CWord* pInstance = new CWord(_pDevice, _pContext);
-
-	if (FAILED(pInstance->Initialize_Prototype()))
-	{
-		MSG_BOX("Failed to Created : Word");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
+	return S_OK;
 }
 
-CGameObject* CWord::Clone(void* _pArg)
-{
-	CWord* pInstance = new CWord(*this);
 
-	if (FAILED(pInstance->Initialize(_pArg)))
-	{
-		MSG_BOX("Failed to Cloned : Word");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-
-void CWord::Free()
-{
-	__super::Free();
-}
 
 void CWord::Interact(CPlayer* _pUser)
 {
@@ -97,4 +78,39 @@ _float CWord::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 {
 	return XMVector3Length(m_pControllerTransform->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)
 		- _pUser->Get_ControllerTransform()->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
+}
+
+
+
+CWord* CWord::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+{
+	CWord* pInstance = new CWord(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Created CWord Failed");
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CGameObject* CWord::Clone(void* _pArg)
+{
+	CWord* pInstance = new CWord(*this);
+
+	if (FAILED(pInstance->Initialize(_pArg)))
+	{
+		MSG_BOX("Clone CWord Failed");
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+void CWord::Free()
+{
+	__super::Free();
 }

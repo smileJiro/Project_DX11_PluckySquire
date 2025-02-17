@@ -487,6 +487,8 @@ HRESULT CSampleBook::Init_RT_RenderPos_Capcher()
 
 	// 따로 찍어야할 섹션을 확인후 레지스터.
 	SECTION_MGR->Register_WorldCapture(L"Chapter2_P0102", this);
+	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0102", this);
+	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0304", this);
 
 	return S_OK;
 }

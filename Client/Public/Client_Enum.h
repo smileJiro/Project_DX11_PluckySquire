@@ -39,6 +39,7 @@ namespace Client
 	{
 		// 전처리 그룹
 		PR2D_PRIORITY =			0,
+		PR2D_WORD =				1,
 		PR2D_SECTION_START =	10,
 		// 10 ~ 970 
 		//-> 섹션 유동생성 발급

@@ -997,6 +997,9 @@
     <ClInclude Include="..\Public\WordGame_Generator.h">
       <Filter>02.GameObjects\Word</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\WordPrinter.h">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1542,6 +1545,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Zippy.cpp">
       <Filter>02.GameObjects\Monster\Zippy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WordPrinter.cpp">
+      <Filter>02.GameObjects\Word</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

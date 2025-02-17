@@ -50,10 +50,10 @@
 	},
 	{
 		"Section_Name": "Chapter2_P0102",
-		"Section_Start": true,
 		"Section_File_Name": "Chapter2_P0102.m2chc",
 		"Section_Type": 0,
 		"Section_Info": {
+			"Camera_Zoom_Ratio" : 2.0,
 			"Rotation": true,
 			"RenderResolution": {
 				"X": 1440.0,
@@ -71,6 +71,7 @@
 		"Section_Name": "Chapter2_P0304",
 		"Section_File_Name": "Chapter2_P0304.m2chc",
 		"Section_Type": 0,
+		"Section_Start": true,
 		"Section_Default": 0,
 		"Section_Info": {
 			"Next_Page_Tag": "Chapter2_P0708",
