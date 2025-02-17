@@ -428,7 +428,7 @@ void CPlayerSword::Attack(CGameObject* _pVictim)
     CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
     if (pCharacter)
     {
-        Event_KnockBack(pCharacter, Get_LookDirection(), m_f3DKnockBackPower);
+        Event_KnockBack(pCharacter, Get_LookDirection(), COORDINATE_2D == Get_CurCoord() ? m_f2DKnockBackPower : m_f3DKnockBackPower);
     }
     m_AttckedObjects.insert(_pVictim);
 	Safe_AddRef(_pVictim);

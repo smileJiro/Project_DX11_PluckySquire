@@ -368,7 +368,7 @@ void CZippy::Attack_End()
 
 void CZippy::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
     {
         if (true == m_isElectric)
         {
@@ -385,7 +385,7 @@ void CZippy::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherColl
 
 void CZippy::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
     {
         if (true == m_isContactToTarget)
         {

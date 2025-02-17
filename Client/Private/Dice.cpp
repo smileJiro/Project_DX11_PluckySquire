@@ -15,10 +15,13 @@ CDice::CDice(const CDice& _Prototype)
 
 HRESULT CDice::Initialize(void* _pArg)
 {
-	CModelObject::MODELOBJECT_DESC* DiceModelDesc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
+	CARRIABLE_DESC* DiceModelDesc = static_cast<CARRIABLE_DESC*>(_pArg);
+	DiceModelDesc->eCrriableObjId = CARRIABLE_OBJ_ID::DIEC;
 	DiceModelDesc->isCoordChangeEnable = true;
-	DiceModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Component_Dice3D");
+	DiceModelDesc->iModelPrototypeLevelID_3D = DiceModelDesc->iCurLevelID;
+	DiceModelDesc->iModelPrototypeLevelID_2D = DiceModelDesc->iCurLevelID;
 	DiceModelDesc->strModelPrototypeTag_2D = TEXT("dice_pink_03");
+	DiceModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Component_Dice3D");
 	DiceModelDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 	DiceModelDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
 	DiceModelDesc->tTransform2DDesc.vInitialPosition = _float3(0.0f, 1.0f, 0.f);

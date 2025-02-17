@@ -395,7 +395,12 @@ void CFallingRock::Active_OnDisable()
 {
 	if (false == m_isDead)
 	{
-		Event_DeleteObject(this);
+		/* 해당 객체가 isDead 상태가 아닌데, Active False 처리가 되었다? >>> 이는 섹션매니저에서 책장넘기며 비활성 시킨 경우. */
+		Event_DeleteObject(this); /* 이때는 정말로 DeleteObject를 호출하면, 섹션매니저에서 제거된다(이벤트매니저 참고) 
+		그래서 섹션매니저가 책장 넘기기하며 falling rock을 비활성시키는 경우, 그냥 섹션에서 제거한다. 그래야 다시 
+		이전장으로 돌아와 돌덩이가 생성되야할때 기존 돌덩이들이 깔끔하게 사라져서 잔버그가 없음. */
+		/* 다른방법으로는 시작위치를 저장해두고 해당 위치로 이동시키는 방법도있지만, 2D로 변경도해야하고 위치도 잡아야하고해서
+		이 방식으로 처리 후 추후 문제가 생기면 바꿔보자. */
 		return;
 	}
 

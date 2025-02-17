@@ -32,6 +32,7 @@
 
 
 #include "RayShape.h"
+#include "CarriableObject.h"
 
 
 #include "2DMapObject.h"
@@ -114,11 +115,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	}
 
 
-	//if (FAILED(Ready_Layer_Spawner(TEXT("Layer_Spawner"))))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_Spawner (Level_Chapter_02::Initialize)");
-	//	assert(nullptr);
-	//}
+	if (FAILED(Ready_Layer_Spawner(TEXT("Layer_Spawner"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Spawner (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	
 	//if (FAILED(Ready_Layer_Effects(TEXT("Layer_Effect"))))
 	//{
@@ -126,11 +127,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	//	assert(nullptr);
 	//}
 		//액터 들어가는넘.,
-	//if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
-	//	assert(nullptr);
-	//}
+	if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 
 	//액터 들어가는넘.,
 	if (FAILED(Ready_Layer_Map()))
@@ -421,7 +422,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 	pFallingRockDesc->eStartCoord = COORDINATE_2D;
 	pFallingRockDesc->fFallDownEndY = RTSIZE_BOOK2D_Y * 0.5f - 50.f;
 	pFallingRockDesc->iCurLevelID = LEVEL_CHAPTER_2;
-	pFallingRockDesc->isDeepCopyConstBuffer = false;
+	pFallingRockDesc->isDeepCopyConstBuffer = true;
 	pFallingRockDesc->Build_2D_Transform(_float2(0.0f, 500.f));
 
 	/* Pooling Desc */
@@ -448,7 +449,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 	CGameObject* pGameObject = nullptr;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
 		return E_FAIL;
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_SPAWNER);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
 
 	pGameObject = nullptr;
 	SpawnerDesc.fSpawnCycleTime = 4.0f;
@@ -456,13 +457,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
 		return E_FAIL;
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_SPAWNER);
-
+	
 	pGameObject = nullptr;
 	SpawnerDesc.fSpawnCycleTime = 7.0f;
 	SpawnerDesc.vSpawnPosition = _float3(550.0f, 1000.f, 0.0f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
 		return E_FAIL;
-
+	
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_SPAWNER);
 	
 
@@ -1126,11 +1127,15 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 {
 
 	//임시로 주사위 만들어 봄.
-	CModelObject::MODELOBJECT_DESC tModelDesc{};
-	tModelDesc.iCurLevelID = m_eLevelID;
-	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.5f, 21.5f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+	CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
+	tCarriableDesc.eStartCoord = COORDINATE_3D;
+	tCarriableDesc.iCurLevelID = m_eLevelID;
+	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.5f, 21.5f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
 		return E_FAIL;
+	CModelObject::MODELOBJECT_DESC tModelDesc{};
+	tModelDesc.eStartCoord = COORDINATE_3D;
+	tModelDesc.iCurLevelID = m_eLevelID;
 	_float fDominoXPosition = 14.47f;
 	_float fDominoYPosition = 1.61f;
 	_float fDominoZPosition = 24.3f;
@@ -1138,20 +1143,20 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
 	tModelDesc.tTransform3DDesc.vInitialScaling = _float3(1.5f, 1.5f, 1.5f);
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino4");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino2");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 	tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001;
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino3");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 	return S_OK;
 }

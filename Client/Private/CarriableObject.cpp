@@ -25,7 +25,9 @@ HRESULT CCarriableObject::Render()
 
 HRESULT CCarriableObject::Initialize(void* _pArg)
 {
-	CModelObject::MODELOBJECT_DESC* pDesc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
+	CARRIABLE_DESC* pDesc = static_cast<CARRIABLE_DESC*>(_pArg);
+
+	m_eCarriableId = pDesc->eCrriableObjId;
 
     pDesc->eStartCoord  = COORDINATE_3D;
     pDesc->iModelPrototypeLevelID_2D = pDesc->iCurLevelID;
