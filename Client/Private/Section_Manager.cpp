@@ -376,7 +376,7 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* _pT
 
 
     // ¸ÊÇÎ ÇØÁ¦
-    m_pContext->Unmap(m_pTargetTexture, 0);
+    m_pContext->Unmap(_pTargetTexture, 0);
 
     return XMVectorSet(x, y, z, w);
 }
