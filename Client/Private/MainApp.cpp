@@ -53,7 +53,7 @@ HRESULT CMainApp::Initialize()
 #elif NDEBUG
 	EngineDesc.eImportMode |= NONE_IMPORT;
 #endif
-
+	
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 

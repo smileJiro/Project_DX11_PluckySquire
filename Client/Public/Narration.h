@@ -37,6 +37,7 @@ public:
 		_int iduration = 1000;      // 지속 시간
 		_int ispeed;                // 다음 폰트 노출 시간
 		_wstring strtext;           // 텍스트의 내용
+        _wstring strSFX;            // 노출 시킬 나레이션 사운드
 		_float fscale;              // 텍스트의 크기 변경
         _bool isLeft;                // 왼쪽인가요 오른쪽인가요? 왼쪽이면 true
         _float2 fpos;               // X의 좌표

@@ -16,13 +16,13 @@ BEGIN(Client)
 class CSpawner : public CGameObject
 {
 public:
-	typedef struct tagSpawnerDesc : CGameObject::GAMEOBJECT_DESC
+	typedef struct tagSpawnerDesc : CController_Transform::CON_TRANSFORM_DESC
 	{
 		/* Add To Layer Data */
 		LEVEL_ID eCurLevelID;
 		LEVEL_ID eGameObjectPrototypeLevelID;
 		_wstring strLayerTag;
-		CGameObject::GAMEOBJECT_DESC* pObjectCloneDesc; /* 동적할당한 데이터로 desc을 채워야한다. */
+		CController_Transform::CON_TRANSFORM_DESC* pObjectCloneDesc; /* 동적할당한 데이터로 desc을 채워야한다. */
 
 		/* Spawner Data */
 		_float fSpawnCycleTime;
@@ -51,7 +51,7 @@ private: /* Add To Layer Data */
 	LEVEL_ID m_eCurLevelID = LEVEL_ID::LEVEL_END;
 	LEVEL_ID m_eGameObjectPrototypeLevelID = LEVEL_ID::LEVEL_END;
 	_wstring m_strLayerTag;
-	CGameObject::GAMEOBJECT_DESC m_tObjectCloneDesc;
+	CController_Transform::CON_TRANSFORM_DESC* m_pObjectCloneDesc = nullptr;
 
 private: /* Spawner Data */
 	_float3 m_vSpawnPostion = {};
@@ -59,7 +59,7 @@ private: /* Spawner Data */
 	_uint m_iOneClycleSpawnCount = 0;
 
 private: /* Pooling Data */
-	_bool m_isPooling = false;
+	_bool m_isPooling = true;
 	COORDINATE m_ePoolingObjectStartCoord = COORDINATE_LAST;
 	_wstring m_strPoolingTag;
 

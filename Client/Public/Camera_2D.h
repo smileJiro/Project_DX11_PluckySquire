@@ -15,6 +15,7 @@ public:
 	{ 
 		DEFAULT, 
 		MOVE_TO_DESIREPOS, 
+		MOVE_TO_NEXTARM, 
 		MOVE_TO_SHOP, 
 		RETURN_TO_DEFUALT, 
 		FLIPPING_UP,
@@ -77,6 +78,8 @@ private:
 	// TargetPos로 변환한 값 저장
 	_float3						m_v2DTargetWorldPos = {};
 	_float3						m_v2DPreTargetWorldPos = {};
+	_float3						m_v2DFixedPos = {};
+
 	_float						m_fTrackingTime = { 0.5f };
 	
 	DIRECTION_TYPE				m_eDirectionType = { HORIZON };
@@ -88,11 +91,15 @@ private:
 	// Arm
 	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>	m_ArmDatas;
 
+	// Sketch Space
+	NORMAL_DIRECTION			m_eCurSpaceDir = { NORMAL_DIRECTION::NONEWRITE_NORMAL };
+
 private:
 	void						Action_Mode(_float _fTimeDelta);
 	void						Action_SetUp_ByMode();
 
 	void						Defualt_Move(_float _fTimeDelta);
+	void						Move_To_NextArm(_float _fTimeDelta);
 	void						Move_To_DesirePos(_float _fTimeDelta);
 	void						Move_To_Shop(_float _fTimeDelta);
 	void						Return_To_Default(_float _fTimeDelta);
@@ -103,7 +110,7 @@ private:
 
 	_vector						Calculate_CameraPos(_float _fTimeDelta);
 	virtual	void				Switching(_float _fTimeDelta) override;
-	void						Flipping_Rotation(_float _fRatio);
+	void						Find_TargetPos();
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);

@@ -11,7 +11,6 @@ BEGIN(Client)
 class CPrintFloorWord : public CFloorWord
 {
 
-
 protected:
 	explicit CPrintFloorWord(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	explicit CPrintFloorWord(const CPrintFloorWord& _Prototype);

@@ -40,6 +40,8 @@ void CPatrolState::Set_Bound(_float3& _vPosition)
 
 	XMStoreFloat3(&m_tPatrolBound.vMin, vResult - vOffset);
 	XMStoreFloat3(&m_tPatrolBound.vMax, vResult + vOffset);
+
+	m_isBound = true;
 }
 
 
@@ -132,8 +134,11 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 		Determine_Direction();
 	}
 	
-	//다음 위치가 구역을 벗어나는지 체크 후 벗어나면 정지 후 반대방향으로 진행
-	Check_Bound(_fTimeDelta);
+	if(true == m_isBound)
+	{
+		//다음 위치가 구역을 벗어나는지 체크 후 벗어나면 정지 후 반대방향으로 진행
+		Check_Bound(_fTimeDelta);
+	}
 
 	//이동
 	PatrolMove(_fTimeDelta, m_iDir);
