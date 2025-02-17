@@ -919,9 +919,14 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	pDesc.fY = 0.f;// 전체 사이즈 / RTSIZE 끝으로 변경
 	pDesc.fSizeX = 2328.f * 0.8f;
 	pDesc.fSizeY = 504.f * 0.8f;
+	CGameObject* pDialogueObject;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDialogueObject, &pDesc)))
 		return E_FAIL;
+
+	Uimgr->Set_Dialogue(static_cast<CDialog*>(pDialogueObject));
+
+
 
 	pDesc.fX = DEFAULT_SIZE_BOOK2D_X / RATIO_BOOK2D_X;
 	pDesc.fY = DEFAULT_SIZE_BOOK2D_Y / RATIO_BOOK2D_Y;

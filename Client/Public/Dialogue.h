@@ -22,6 +22,7 @@ public:
         LOC_LEFTHIGH,
         LOC_RIGHTHIGH,
         LOC_RIGHDOWN,
+        LOC_VERYMIDHIGH,
         LOC_END };
 
     enum PORTRAITNAME

@@ -75,6 +75,7 @@ private:
 	_float3			m_vPosition = { 0.f, 0.f, 0.f };
 	_float2			m_vCollsionScale = { 0.f, 0.f };
 	_bool			m_is2D = true;
+	_bool			m_isThrow = { false };
 	
 
 
