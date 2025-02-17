@@ -448,6 +448,8 @@ void CTrigger_Manager::Resister_Trigger_Action()
 	m_Actions[TEXT("MagicDust")] = [this](_wstring _wszEventTag) {
 		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust2"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
 		};
+
+	m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_"), 0);
 }
 
 _uint CTrigger_Manager::Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box)

@@ -608,6 +608,10 @@ HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPos
 	return S_OK;
 }
 
+void CSampleBook::Execute_Event()
+{
+}
+
 CSampleBook* CSampleBook::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CSampleBook* pInstance = new CSampleBook(_pDevice, _pContext);
