@@ -69,6 +69,9 @@ HRESULT CFallingRock::Initialize(void* _pArg)
 	if (FAILED(Ready_Components(pDesc)))
 		return E_FAIL;
 
+	//if(pDesc->isColBound)
+	//	_bool isColBound = false;
+	//COLBOUND2D eColBoundDirection = COLBOUND_LEFT;
 	m_pControllerModel->Switch_Animation(STATE_FALLDOWN);
 
 	m_vShadowYDesc.y = XMVectorGetY(Get_ControllerTransform()->Get_State(CTransform_2D::STATE_POSITION));

@@ -436,6 +436,9 @@
     <Filter Include="02.GameObjects\Word">
       <UniqueIdentifier>{70b6f4d5-168b-46b5-849c-cb56b4c3621c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\MapObject\2D\CollapseBlock">
+      <UniqueIdentifier>{6164888c-c8b5-4c7b-bbf6-a823b3348449}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -998,6 +1001,9 @@
       <Filter>02.GameObjects\Word</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_LaydownObject.h" />
+    <ClInclude Include="..\public\CollapseBlock.h">
+      <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1545,6 +1551,9 @@
       <Filter>02.GameObjects\Monster\Zippy</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_LaydownObject.cpp" />
+    <ClCompile Include="..\private\CollapseBlock.cpp">
+      <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

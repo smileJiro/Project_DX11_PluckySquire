@@ -302,7 +302,10 @@ void CPlayer::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
     __super::Set_Include_Section_Name(_strIncludeSectionName);
 
     if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
+    {
+        Set_Position(XMVectorSet(0.0f, 2800.f, 0.0f, 0.0f));
         Set_PlatformerMode(true);
+    }
     else
         Set_PlatformerMode(false);
 }
@@ -386,6 +389,7 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
        return E_FAIL;
    Safe_AddRef(m_pGravityCom);
+   m_pGravityCom->Set_Active(false);
     return S_OK;
 }
 
@@ -1531,13 +1535,20 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
     if (true == _bPlatformerMode)
     {
         Event_SetActive(m_pGravityCom, true);
+        m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
         CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
 
         pCollider->Set_Radius(m_f2DColliderBodyRadius * 2.f);
         pCollider->Set_Offset(_float2(0.0f, m_f2DColliderBodyRadius * 2.0f * 0.7f));
     }
     else
+    {
         Event_SetActive(m_pGravityCom, false);
+        m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+        CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
+        pCollider->Set_Radius(m_f2DColliderBodyRadius);
+        pCollider->Set_Offset(_float2(0.0f, m_f2DColliderBodyRadius * 0.5f));
+    }
 }
 void CPlayer::Set_Upforce(_float _fForce)
 {

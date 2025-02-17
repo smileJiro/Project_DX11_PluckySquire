@@ -41,10 +41,6 @@ private:
 
 	LEVEL_ID				m_eLevelID;
 
-private:
-	CSpawner* m_pTestSpawner1 = nullptr;
-	CSpawner* m_pTestSpawner2 = nullptr;
-	CSpawner* m_pTestSpawner3 = nullptr;
 public:
 	static CLevel_Chapter_02* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eLevelID);
 	virtual void			Free() override;
