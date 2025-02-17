@@ -187,6 +187,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
 
 
 	// 그룹필터 제거
@@ -1026,26 +1027,26 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	Beetle_Desc.iCurLevelID = m_eLevelID;
 	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-16.5f, 6.56f, 22.6f);
 	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_1;
+	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_1;
 	Beetle_Desc.isSneakMode = true;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
 		return E_FAIL;
 
 	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(32.15f, 0.35f, 1.66f);
-	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_2;
+	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_2;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
 		return E_FAIL;
 
 	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(39.5f, 0.35f, 10.5f);
-	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_2_2;
+	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_2_2;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
 		return E_FAIL;
 
 	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(46.f, 0.35f, -0.5f);
-	Beetle_Desc.eWayIndex = WAYPOINTINDEX::CHAPTER2_3;
+	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_3;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
 		return E_FAIL;
@@ -1077,7 +1078,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -10.f);
 	Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &Goblin_Desc)))
 		return E_FAIL;
 
 	
@@ -1099,17 +1100,60 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
 
 
-	CGoblin_SideScroller::MONSTER_DESC Goblin_SideScroller_Desc;
+	CGoblin_SideScroller::SIDESCROLLDESC Goblin_SideScroller_Desc;
 	Goblin_SideScroller_Desc.iCurLevelID = m_eLevelID;
 	Goblin_SideScroller_Desc.eStartCoord = COORDINATE_2D;
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-640.0f, 1360.f, 0.f);
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(210.0f, 1203.f, 0.f); //  150   480
 	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_1;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
 
+
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(400.0f, 1203.f, 0.f); //  150   480
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_1;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
+
+
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-400.0f, 211.1f, 0.f); //  -500   -320
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_2;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
+
+
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-247.0f, -1086.f, 0.f); //  -400   -130
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_3;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
+
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-600.0f, -1244.f, 0.f); //  -650   -520
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_4;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
+
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-600.0f, -1695.f, 0.f); //  -650   -440
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_5;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
 
 
 	CZippy::MONSTER_DESC Zippy_Desc;

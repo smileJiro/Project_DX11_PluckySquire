@@ -9,10 +9,8 @@ class CSideScroll_PatrolState final : public CState
 {
 public:
 	typedef struct tagPatrolBound {
-		_float3 vMin;
-		_float3 vMax;
-		_float fMinDis;
-		_float fMaxDis;
+		_float fMinX;
+		_float fMaxX;
 	}PATROLBOUND;
 
 private:
@@ -21,6 +19,7 @@ private:
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
+	void Initialize_SideScroll_PatrolBound(SIDESCROLL_PATROLBOUND _eSideScroll_Bound);
 
 public:
 	virtual void State_Enter() override;

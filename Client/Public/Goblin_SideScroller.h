@@ -21,6 +21,11 @@ public:
 		ANIM2D_LAST
 	};
 
+	typedef struct tagSideScroll_Desc : public CMonster::MONSTER_DESC
+	{
+		SIDESCROLL_PATROLBOUND eSideScroll_Bound;
+	}SIDESCROLLDESC;
+
 private:
 	CGoblin_SideScroller(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CGoblin_SideScroller(const CGoblin_SideScroller& _Prototype);
@@ -46,9 +51,15 @@ public:
 
 	virtual void On_Hit(CGameObject* _pHitter, _int _iDamg) override;
 
+public:
+	virtual void			Set_Include_Section_Name(const _wstring _strIncludeSectionName) override;
+
 private:
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
+
+private:
+	SIDESCROLL_PATROLBOUND m_eSideScroll_Bound = {};
 
 public:
 	static CGoblin_SideScroller* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

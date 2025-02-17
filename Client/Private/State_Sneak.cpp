@@ -19,15 +19,15 @@ HRESULT CState_Sneak::Initialize(void* _pArg)
 	return S_OK;
 }
 
-HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
+HRESULT CState_Sneak::Initialize_WayPoints(SNEAKWAYPOINTINDEX _eWayIndex)
 {
-	if (WAYPOINTINDEX::LAST == _eWayIndex)
+	if (SNEAKWAYPOINTINDEX::LAST == _eWayIndex)
 		return S_OK;
 
 	//웨이포인트 세팅
 	switch (_eWayIndex)
 	{
-	case Client::WAYPOINTINDEX::CHAPTER2_1:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_1:
 		m_WayPoints.push_back({ _float3(-31.f, 6.56f, 24.f) });
 		m_WayPoints.push_back({_float3(-30.5f, 6.55f, 20.5f)});
 		m_WayPoints.push_back({ _float3(-29.7f, 6.55f, 18.45f) });
@@ -80,8 +80,8 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		m_WayPoints[11].Neighbors.push_back(14);
 		break;
 
-	case Client::WAYPOINTINDEX::CHAPTER2_2:
-	case Client::WAYPOINTINDEX::CHAPTER2_2_2:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_2:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_2_2:
 		m_WayPoints.push_back({ _float3(36.5f, 0.35f, -7.3f) });
 		m_WayPoints.push_back({ _float3(33.5f, 0.35f, -7.f) });
 		m_WayPoints.push_back({ _float3(32.5f, 0.35f, -4.5f) });
@@ -131,7 +131,7 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 		m_WayPoints[15].Neighbors.push_back(14);
 		break;
 
-	case Client::WAYPOINTINDEX::CHAPTER2_3:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_3:
 		m_WayPoints.push_back({ _float3(46.f, 0.35f, -0.5f) });
 		m_WayPoints.push_back({ _float3(47.f, 0.35f, 2.f) });
 		m_WayPoints.push_back({ _float3(49.f, 0.35f, 3.4f) });
@@ -204,28 +204,28 @@ HRESULT CState_Sneak::Initialize_WayPoints(WAYPOINTINDEX _eWayIndex)
 	return S_OK;
 }
 
-void CState_Sneak::Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex)
+void CState_Sneak::Initialize_PatrolPoints(SNEAKWAYPOINTINDEX _iWayIndex)
 {
 	switch (_iWayIndex)
 	{
-	case Client::WAYPOINTINDEX::CHAPTER2_1:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_1:
 		m_PatrolWays.push_back(11);
 		m_PatrolWays.push_back(12);
 		m_PatrolWays.push_back(13);
 		break;
 
-	case Client::WAYPOINTINDEX::CHAPTER2_2:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_2:
 		m_PatrolWays.push_back(2);
 		m_PatrolWays.push_back(5);
 		break;
 
-	case Client::WAYPOINTINDEX::CHAPTER2_2_2:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_2_2:
 		m_PatrolWays.push_back(13);
 		m_PatrolWays.push_back(14);
 		m_PatrolWays.push_back(15);
 		break;
 
-	case Client::WAYPOINTINDEX::CHAPTER2_3:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_3:
 		m_PatrolWays.push_back(1);
 		m_PatrolWays.push_back(2);
 		m_PatrolWays.push_back(3);

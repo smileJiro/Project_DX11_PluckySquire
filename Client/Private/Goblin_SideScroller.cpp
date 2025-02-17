@@ -23,7 +23,7 @@ HRESULT CGoblin_SideScroller::Initialize_Prototype()
 
 HRESULT CGoblin_SideScroller::Initialize(void* _pArg)
 {
-    CGoblin_SideScroller::MONSTER_DESC* pDesc = static_cast<CGoblin_SideScroller::MONSTER_DESC*>(_pArg);
+    CGoblin_SideScroller::SIDESCROLLDESC* pDesc = static_cast<CGoblin_SideScroller::SIDESCROLLDESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_2D;
     pDesc->isCoordChangeEnable = false;
     pDesc->iNumPartObjects = PART_END;
@@ -31,13 +31,15 @@ HRESULT CGoblin_SideScroller::Initialize(void* _pArg)
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
+    m_eSideScroll_Bound = pDesc->eSideScroll_Bound;
+
     //pDesc->fAlert2DRange = 300.f;
     //pDesc->fChase2DRange = 600.f;
     //pDesc->fAttack2DRange = 300.f;
     //pDesc->fDelayTime = 2.f;
 
-    m_tStat.iHP = 2;
-    m_tStat.iMaxHP = 2;
+    m_tStat.iHP = 1;
+    m_tStat.iMaxHP = 1;
 
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
@@ -163,15 +165,26 @@ void CGoblin_SideScroller::On_Collision2D_Enter(CCollider* _pMyCollider, CCollid
 {
     if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
     {
-        int a = 10;
     }
 
 	if (OBJECT_GROUP::BLOCKER & _pOtherCollider->Get_CollisionGroupID())
     {
         /*if (true == _pMyCollider->Is_Trigger())
             break;*/
+        //CGravity::STATE eGravityState = m_pGravityCom->Get_CurState();
         if (true == static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
         {
+           /* if (eGravityState == CGravity::STATE_FLOOR)
+            {
+                F_DIRECTION eDir = Get_2DDirection();
+
+                if(F_DIRECTION::RIGHT== eDir)
+                    Set_2D_Direction(F_DIRECTION::LEFT);
+                else if (F_DIRECTION::LEFT == eDir)
+                    Set_2D_Direction(F_DIRECTION::RIGHT);
+            }*/
+
+
             /* 1. Blocker은 항상 AABB임을 가정. */
 
             /* 2. 나의 Collider 중점 기준, AABB에 가장 가까운 점을 찾는다. */
@@ -193,6 +206,7 @@ void CGoblin_SideScroller::On_Collision2D_Enter(CCollider* _pMyCollider, CCollid
                 }
             }
         }
+
     }
 
     __super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
@@ -200,7 +214,6 @@ void CGoblin_SideScroller::On_Collision2D_Enter(CCollider* _pMyCollider, CCollid
 
 void CGoblin_SideScroller::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    int a = 10;
 }
 
 void CGoblin_SideScroller::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -213,26 +226,36 @@ void CGoblin_SideScroller::On_Collision2D_Exit(CCollider* _pMyCollider, CCollide
         }
     }
 
-    if (OBJECT_GROUP::BLOCKER & _pOtherCollider->Get_CollisionGroupID())
+    if (OBJECT_GROUP::BLOCKER  ==  _pOtherCollider->Get_CollisionGroupID())
     {
-        CCollider_AABB* pOtherCol = static_cast<CCollider_AABB*>(_pOtherCollider);
-        _float2 fLT = pOtherCol->Get_LT();
-        _float2 fRB = pOtherCol->Get_RB();
-        _float3 vPos;  XMStoreFloat3(&vPos, Get_FinalPosition());
+        //CCollider_AABB* pOtherCol = static_cast<CCollider_AABB*>(_pOtherCollider);
+        //_float2 fLT = pOtherCol->Get_LT();
+        //_float2 fRB = pOtherCol->Get_RB();
+        //_float3 vPos;  XMStoreFloat3(&vPos, Get_FinalPosition());
 
-        //왼쪽 끝이고 왼쪽 방향으로 가고 있었으면
-        if (fLT.x >= vPos.x && XMVector3Equal(Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT), XMVectorSet(0.f, -1.f, 0.f, 0.f)))
-        {
-            Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(fLT.x, vPos.y, 0.f, 1.f));
-            Set_2D_Direction(F_DIRECTION::RIGHT);
-        }
 
-        //오른쪽 끝이고 오른쪽 방향으로 가고 있었으면
-        if (fRB.x <= vPos.x && XMVector3Equal(Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT), XMVectorSet(0.f, 1.f, 0.f, 0.f)))
-        {
-            Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(fRB.x, vPos.y, 0.f, 1.f));
-            Set_2D_Direction(F_DIRECTION::LEFT);
-        }
+        //m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+        //F_DIRECTION eDir = Get_2DDirection();
+        ////Set_2D_Direction(eDir);
+        //
+        ////왼쪽 끝이고 왼쪽 방향으로 가고 있었으면
+        //_float fEpsilon = 0.1f;
+        //_float fOffsetX = 30.f;
+        //_float2 vBound_LR = { fLT.x + fOffsetX , fRB.x - fOffsetX };
+        ////if(false == static_cast<CBlocker*> (_pOtherObject)->Is_Floor())
+        //if (vBound_LR.x >= vPos.x /*&& XMVector3Equal(Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT), XMVectorSet(0.f, -1.f, 0.f, 0.f))*/)
+        //{
+        //    Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vBound_LR.x + fEpsilon, fLT.y, 0.f, 1.f));
+        //    Set_2D_Direction(F_DIRECTION::RIGHT);
+        //    m_p2DColliderComs[0]->Update_OwnerTransform();
+        //}
+        ////오른쪽 끝이고 오른쪽 방향으로 가고 있었으면
+        //else if (vBound_LR.y <= vPos.x /*&& XMVector3Equal(Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT), XMVectorSet(0.f, 1.f, 0.f, 0.f)*/)
+        //{
+        //    Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vBound_LR.y - fEpsilon, fLT.y, 0.f, 1.f));
+        //    Set_2D_Direction(F_DIRECTION::LEFT);
+        //    m_p2DColliderComs[0]->Update_OwnerTransform();
+        //}
 
         //if(F_DIRECTION::RIGHT==Get_2DDirection())
         //    Set_2D_Direction(F_DIRECTION::LEFT);
@@ -244,6 +267,16 @@ void CGoblin_SideScroller::On_Collision2D_Exit(CCollider* _pMyCollider, CCollide
 void CGoblin_SideScroller::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
     __super::On_Hit(_pHitter, _iDamg);
+}
+
+void CGoblin_SideScroller::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
+{
+    __super::Set_Include_Section_Name(_strIncludeSectionName);
+
+    //if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
+    //{
+    //    Set_Position(XMVectorSet(-640.0f, 1360.f, 0.f, 0.f));
+    //}
 }
 
 HRESULT CGoblin_SideScroller::Ready_Components()
@@ -259,6 +292,7 @@ HRESULT CGoblin_SideScroller::Ready_Components()
     FSMDesc.pOwner = this;
     FSMDesc.iCurLevel = m_iCurLevelID;
     FSMDesc.isMelee = true;
+    FSMDesc.eSideScroll_Bound = m_eSideScroll_Bound;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
@@ -269,9 +303,9 @@ HRESULT CGoblin_SideScroller::Ready_Components()
 
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
-    CircleDesc.fRadius = { 50.f };
+    CircleDesc.fRadius = { 20.f };
     CircleDesc.vScale = { 1.0f, 1.0f };
-    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
+    CircleDesc.vOffsetPosition = { 0.f, 0.f };
     CircleDesc.isBlock = true;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),

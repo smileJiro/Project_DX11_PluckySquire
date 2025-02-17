@@ -30,7 +30,7 @@ public:
 		_float fFOVX;
 		_float fFOVY;
 		_bool isSneakMode = false;
-		WAYPOINTINDEX eWayIndex = WAYPOINTINDEX::LAST;
+		SNEAKWAYPOINTINDEX eWayIndex = SNEAKWAYPOINTINDEX::LAST;
 	}MONSTER_DESC;
 
 protected:
@@ -119,9 +119,6 @@ public:
 
 	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg);
 
-	public:
-		virtual void			Set_Include_Section_Name(const _wstring _strIncludeSectionName) override;
-
 
 public:
 	virtual void Attack();
@@ -201,7 +198,7 @@ protected:
 	_bool m_isSneakMode = { false };
 
 	//Àå¾Ö¹° Å½Áö
-	WAYPOINTINDEX m_eWayIndex;
+	SNEAKWAYPOINTINDEX m_eWayIndex;
 
 	_bool m_isDetect_Block = { false };
 	_uint m_iDetect_Block_Count = { 0 };

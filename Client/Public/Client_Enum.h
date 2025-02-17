@@ -215,12 +215,22 @@ namespace Client
 		T_DIR_LAST
 	};
 
-	enum class WAYPOINTINDEX
+	enum class SNEAKWAYPOINTINDEX
 	{
 		CHAPTER2_1,
 		CHAPTER2_2,
 		CHAPTER2_2_2,
 		CHAPTER2_3,
+		LAST
+	};
+
+	enum class SIDESCROLL_PATROLBOUND
+	{
+		CHAPTER2_1_1,
+		CHAPTER2_1_2,
+		CHAPTER2_1_3,
+		CHAPTER2_1_4,
+		CHAPTER2_1_5,
 		LAST
 	};
 
