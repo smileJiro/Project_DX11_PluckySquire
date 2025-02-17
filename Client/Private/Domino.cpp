@@ -21,6 +21,8 @@ HRESULT CDomino::Initialize(void* _pArg)
 	pModelDsc->iModelPrototypeLevelID_3D = pModelDsc->iCurLevelID;
 	pModelDsc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 	pModelDsc->iObjectGroupID = OBJECT_GROUP::MAPOBJECT;
+	pModelDsc->iRenderGroupID_3D = RG_3D;
+	pModelDsc->iPriorityID_3D = PR3D_GEOMETRY;
 
 	CActor::ACTOR_DESC ActorDesc;
 	ActorDesc.pOwner = this;
@@ -55,10 +57,20 @@ HRESULT CDomino::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pModelDsc)))
 		return E_FAIL;
 
-	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(_vector{0,1,0},XMConvertToRadians(180));
+	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(_vector{0.f,1.f,0.f},XMConvertToRadians(180.f));
 	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_MassLocalPos({ 0.0f,0.5f,0.f });
 	m_pActorCom->Set_Mass(50.f);
     return S_OK;
+}
+
+void CDomino::Late_Update(_float _fTimeDelta)
+{
+	__super::Late_Update(_fTimeDelta);
+}
+
+HRESULT CDomino::Render()
+{
+	return __super::Render();
 }
 
 CDomino* CDomino::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

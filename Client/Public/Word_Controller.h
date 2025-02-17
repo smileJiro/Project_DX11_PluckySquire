@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ContainerObject.h"
-#include "MapObject.h"
 
 BEGIN(Client)
 
@@ -26,6 +25,9 @@ private:
 public:
 	virtual HRESULT			Initialize_Prototype();
 	virtual HRESULT			Initialize(void* _pArg);
+
+public :
+	virtual HRESULT			Import(json _COntrollerJson);
 	virtual void			Priority_Update(_float _fTimeDelta) override;
 	virtual void			Update(_float fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
@@ -34,12 +36,9 @@ public:
 
 protected:
 
-private:
-	vector<CMapObject*> m_WordMapObjects = {};
-
 
 public:
-	static CWord_Controller* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CWord_Controller* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json _ControllerJson);
 	CGameObject* Clone(void* _pArg) override;
 	void					Free() override;
 };

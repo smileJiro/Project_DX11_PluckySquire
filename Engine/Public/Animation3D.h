@@ -21,10 +21,11 @@ public:
 
 	virtual void Reset(_bool _bReverse = false)override;
 
-	float Get_AnimTime() { return m_fDuration; }
+	float Get_AnimDuration() { return m_fDuration; }
 	void Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFrames) const;
 	void Get_CurrentFrame(map<_uint, KEYFRAME>* pOutKeyFrames) const;
 	virtual _float Get_Progress() override;
+	virtual _float Get_AnimationTime() override;
 	bool Is_AnimChangeable();
 
 	virtual void Set_Progress(_float _fProgerss)override;

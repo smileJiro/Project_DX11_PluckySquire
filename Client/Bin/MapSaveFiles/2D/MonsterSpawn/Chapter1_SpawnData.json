@@ -1,0 +1,21 @@
+[
+	{
+		"Section_Name": "Chapter1_P0708",
+		"Spawn_Data": [
+			{
+				"Monster_Type": 0,
+				"Monster_Pos": [
+					420.0,
+					60.0
+				]
+			},
+			{
+				"Monster_Type": 0,
+				"Monster_Pos": [
+					-120.0,
+					-10.0
+				]
+			}
+		]
+	}
+]

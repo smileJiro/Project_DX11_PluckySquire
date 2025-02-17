@@ -12,6 +12,7 @@
 #include "PlayerState_JumpDown.h"
 #include "PlayerState_JumpAttack.h"
 #include "PlayerState_ThrowObject.h"
+#include "PlayerState_LaydownObject.h"
 #include "PlayerState_Roll.h"
 #include "PlayerState_Clamber.h"
 #include "PlayerState_ThrowSword.h"
@@ -1308,6 +1309,11 @@ _bool CPlayer::Is_SwordHandling()
     return Is_SwordMode()&& (m_pSword->Is_SwordHandling());
 }
 
+_float CPlayer::Get_AnimationTIme()
+{
+    return m_pBody->Get_Model(Get_CurCoord())->Get_AnimationTime();
+}
+
 _vector CPlayer::Get_CenterPosition()
 {
 	if (COORDINATE_2D == Get_CurCoord())
@@ -1430,6 +1436,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::THROWOBJECT:
 		m_pStateMachine->Transition_To(new CPlayerState_ThrowObject(this));
+		break;
+    case Client::CPlayer::LAYDOWNOBJECT:
+		m_pStateMachine->Transition_To(new CPlayerState_LaydownObject(this));
 		break;
     case Client::CPlayer::DIE:
 		m_pStateMachine->Transition_To(new CPlayerState_Die(this));
@@ -1671,7 +1680,7 @@ void CPlayer::ThrowObject()
         vForce = XMVector2Normalize(EDir_To_Vector( Get_2DDirection())) * m_f2DThrowObjectPower;
 		vForce = XMVectorSetW(XMVectorSetZ(vForce, 0),0);
     }
-
+    
 	CCarriableObject* pObj = static_cast<CCarriableObject*>(m_pCarryingObject);
     if (COORDINATE_3D == Get_CurCoord())
     {

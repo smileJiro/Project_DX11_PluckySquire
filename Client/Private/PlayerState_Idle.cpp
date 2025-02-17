@@ -53,7 +53,7 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 			m_pOwner->Set_State(CPlayer::RUN);
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
-			m_pOwner->Set_State(CPlayer::THROWOBJECT);
+			m_pOwner->Set_State(CPlayer::LAYDOWNOBJECT);
 	}
 
 

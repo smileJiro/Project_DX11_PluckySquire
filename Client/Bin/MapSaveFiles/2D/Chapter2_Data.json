@@ -1,119 +1,36 @@
 [
 	{
-		"Section_Name": "Chapter1_P0102",
-		"Section_Type": 1,
-		"Section_Default": 0,
-		"Section_Info": {
-			"Section_TextureName": "Chapter1_P0102_BackGround",
-			"Next_Page_Tag": "Chapter1_P0304"
-		}
-	},
-	{
-		"Section_Name": "Chapter1_P0304",
-		"Section_Type": 1,
-		"Section_Default": 0,
-		"Section_Info": {
-			"Section_TextureName": "Chapter1_P0304_BackGround",
-			"Next_Page_Tag": "Chapter1_P0506",
-			"Pre_Page_Tag": "Chapter1_P0102"
-		}
-	},
-	{
-		"Section_Name": "Chapter1_P0506",
-		"Section_File_Name": "Chapter1_P0506.m2chc",
-		"Section_Type": 0,
-		"Section_Default": 0,
-		"Section_Info": {
-			"Next_Page_Tag": "Chapter1_P0708",
-			"Pre_Page_Tag": "Chapter1_P0304"
-		}
-	},
-	{
-		"Section_Name": "Chapter1_P0708",
-		"Section_File_Name": "Chapter1_P0708.m2chc",
-		"Section_Type": 0,
-		"Section_Default": 0,
-		"Section_Info": {
-			"Next_Page_Tag": "Chapter1_P0910",
-			"Pre_Page_Tag": "Chapter1_P0506"
-		}
-	},
-	{
-		"Section_Name": "Chapter1_P0910",
-		"Section_File_Name": "Chapter1_P0910.m2chc",
-		"Section_Type": 0,
-		"Section_Default": 0,
-		"Section_Info": {
-			"Next_Page_Tag": "Chapter2_P0102",
-			"Pre_Page_Tag": "Chapter1_P0708"
-		}
-	},
-	{
-		"Section_Name": "Chapter2_P0102",
-		"Section_File_Name": "Chapter2_P0102.m2chc",
+		"Section_Name": "Chapter4_P0102",
+		"Section_File_Name": "Chapter4_P0102.m2chc",
 		"Section_Type": 0,
 		"Section_Info": {
-			"Rotation": true,
+			"Camera_Zoom_Ratio" : 2.0,
 			"RenderResolution": {
-				"X": 1440.0,
-				"Y": 5120.0
+				"X": 5119.0,
+				"Y": 1439.0
 			},
 			"LevelSizePixels": {
-				"X": 1440.0,
-				"Y": 5120.0
+				"X": 5119.0,
+				"Y": 1439.0
 			},
-			"Next_Page_Tag": "Chapter2_P0304",
-			"Pre_Page_Tag": "Chapter1_P0708"
-		}
-	},
-
-	{
-		"Section_Name": "Chapter2_P0304",
-		"Section_File_Name": "Chapter2_P0304.m2chc",
-		"Section_Type": 0,
-		"Section_Default": 0,
-		"Section_Info": {
-			"Next_Page_Tag": "Chapter2_P0708",
-			"Pre_Page_Tag": "Chapter2_P0102"
+			"Next_Page_Tag": "Chapter4_P0304"
 		}
 	},
 	{
-		"Section_Name": "Chapter2_P0708",
-		"Section_File_Name": "Chapter2_P0708.m2chc",
+		"Section_Name": "Chapter4_P0304",
+		"Section_File_Name": "Chapter4_P0304.m2chc",
 		"Section_Type": 0,
-		"Section_Default": 0,
 		"Section_Info": {
-			"Next_Page_Tag": "Chapter2_P0910",
-			"Pre_Page_Tag": "Chapter2_P0304"
-		}
-	},
-	{
-		"Section_Name": "Chapter2_P0910",
-		"Section_File_Name": "Chapter2_P0910.m2chc",
-		"Section_Type": 0,
-		"Section_Default": 0,
-		"Section_Info": {
-			"Next_Page_Tag": "Chapter2_P1112",
-			"Pre_Page_Tag": "Chapter2_P0708"
-		}
-	},
-	{
-		"Section_Name": "Chapter2_P1112",
-		"Section_File_Name": "Chapter2_P1112.m2chc",
-		"Section_Type": 0,
-		"Section_Default": 0,
-		"Section_Info": {
-			"Next_Page_Tag": "Chapter2_P1314",
-			"Pre_Page_Tag": "Chapter2_P0910"
-		}
-	},
-	{
-		"Section_Name": "Chapter2_P1314",
-		"Section_File_Name": "Chapter2_P1314.m2chc",
-		"Section_Type": 0,
-		"Section_Default": 0,
-		"Section_Info": {
-			"Pre_Page_Tag": "Chapter2_P1112"
+			"Camera_Zoom_Ratio": 1.5,
+			"RenderResolution": {
+				"X": 3839.0,
+				"Y": 1079.0
+			},
+			"LevelSizePixels": {
+				"X": 3839.0,
+				"Y": 1079.0
+			},
+			"Pre_Page_Tag": "Chapter4_P0102"
 		}
 	}
 ]
