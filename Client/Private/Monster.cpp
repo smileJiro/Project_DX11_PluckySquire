@@ -158,7 +158,7 @@ void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
+	if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
 	{
 		Event_Hit(this, _pOtherObject, Get_Stat().iDamg);
 		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 300.f);

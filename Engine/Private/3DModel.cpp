@@ -229,23 +229,25 @@ HRESULT C3DModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, 
 _bool C3DModel::Play_Animation(_float fTimeDelta, _bool bReverse)
 {
 	m_bReverseAnimation = bReverse;
-	_bool bReturn = false;
+	_bool bAnimEnd = false;
 	//뼈들의 변환행렬을 갱신
 	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
 	{
-		bReturn = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta,bReverse);
+		bAnimEnd = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta,bReverse);
+		m_bDuringAnimation = (false == bAnimEnd);
 	}
 	else
 	{
 		if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame, bReverse))
 			m_iPrevAnimIndex = m_iCurrentAnimIndex;
+		m_bDuringAnimation = true;
 	}
 
 	//뼈들의 합성변환행렬을 갱신
 	for (auto& pBone : m_Bones)
 		pBone->Update_CombinedTransformationMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
 
- 	return bReturn;
+ 	return bAnimEnd;
 }
 
 HRESULT C3DModel::Bind_Material_PixelConstBuffer(_uint _iMaterialIndex, CShader* _pShader)

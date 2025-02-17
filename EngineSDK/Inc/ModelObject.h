@@ -106,7 +106,7 @@ public:
 	void					Set_PlayingAnim(_bool _bPlaying);
 	void					Set_ReverseAnimation(_bool _bReverse) { m_bReverseAnimation = _bReverse; }
 	_bool					Is_ReverseAnimation() { return m_bReverseAnimation; }
-
+	_bool					Is_DuringAnimation();
 	void					Change_RenderGroup(COORDINATE _eCoord, _uint _iGroupKey, _uint _iPriorityKey)
 	{ 
 		if (COORDINATE_2D == _eCoord)

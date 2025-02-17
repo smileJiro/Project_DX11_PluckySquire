@@ -51,7 +51,7 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 			m_isRenew = true;
 		}
 	}
-	cout << "Chase" << endl;
+	//cout << "Chase" << endl;
 
 	//플레이어 한테 직선으로 와야하는데 장애물이 있는 경우 장애물을 돌아서 혹은 길을 따라 이동해야함
 

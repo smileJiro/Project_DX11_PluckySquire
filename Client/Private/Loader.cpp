@@ -100,6 +100,7 @@
 #include "Soldier_Bomb.h"
 #include "Popuff.h"
 #include "Monster_Body.h"
+#include "Goblin_SideScroller.h"
 
 /* For. Boss */
 #include "ButterGrump.h"
@@ -942,6 +943,11 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 
 
     /* Monster */
+
+    /* For. Prototype_GameObject_Goblin_SideScroller */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"),
+        CGoblin_SideScroller::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     /* For. Prototype_GameObject_Zippy */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"),

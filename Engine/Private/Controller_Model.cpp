@@ -97,12 +97,18 @@ HRESULT CController_Model::Change_Coordinate(COORDINATE _eCoordinate)
 
 void CController_Model::Play_Animation(_float fTimeDelta, _bool _bReverse)
 {
-	if (m_ModelComs[m_eCurCoord] && m_ModelComs[m_eCurCoord]->Is_AnimModel())
+	if (m_ModelComs[m_eCurCoord])
     {
-         if(m_ModelComs[m_eCurCoord]->Play_Animation(fTimeDelta, _bReverse))
+        if (m_ModelComs[m_eCurCoord]->Is_AnimModel())
         {
-            Invoke_OnAnimEndCallBack(m_eCurCoord, m_ModelComs[m_eCurCoord]->Get_CurrentAnimIndex());
+            if (m_ModelComs[m_eCurCoord]->Play_Animation(fTimeDelta, _bReverse))
+            {
+                Invoke_OnAnimEndCallBack(m_eCurCoord, m_ModelComs[m_eCurCoord]->Get_CurrentAnimIndex());
+            }
         }
+        else
+            m_ModelComs[m_eCurCoord]->Set_DuringAnimation(false);
+
     }
 }
 

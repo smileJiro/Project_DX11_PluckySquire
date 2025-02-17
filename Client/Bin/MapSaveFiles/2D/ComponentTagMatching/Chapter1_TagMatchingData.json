@@ -1803,20 +1803,7 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": true,
-  "ColliderPropertis": {
-   "ColliderInfo": {
-    "Collider_Extent": {
-     "X": 115.0,
-     "Y": 115.0
-    },
-    "Collider_Offset_Pos": {
-     "X": 0.0,
-     "Y": 0.0
-    }
-   },
-   "ColliderType": 1
-  },
+  "Collider": false,
   "ModelType": 0,
   "SearchTag": "Decal_Book_Night",
   "Sorting": true,

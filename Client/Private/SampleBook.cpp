@@ -47,7 +47,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 
 	pDesc->iRenderGroupID_3D = RG_3D;
 	pDesc->iPriorityID_3D = PR3D_GEOMETRY;
-
+	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 
 	CActor::ACTOR_DESC ActorDesc;
 	pDesc->eActorType = ACTOR_TYPE::STATIC;
@@ -83,7 +83,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 
 	//책위에는 없고 주변에 플레이어가 있는지 감지하기
 	SHAPE_BOX_DESC BoxDesc2 = {};
-	BoxDesc2.vHalfExtents = { 20.8f, 0.3f, 6.6f };
+	BoxDesc2.vHalfExtents = { 21.8f, 0.3f, 7.6f };
 	SHAPE_DATA ShapeData2;
 	ShapeData2.pShapeDesc = &BoxDesc2;          
 	ShapeData2.eShapeType = SHAPE_TYPE::BOX;
@@ -127,13 +127,15 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 
 	Init_RT_RenderPos_Capcher();
 
+	m_fInteractChargeTime = 0.0f;
+	m_eInteractType = INTERACT_TYPE::NORMAL;
+	m_eInteractKey = KEY::Q;
+
 	return S_OK;
 }
 
 void CSampleBook::Priority_Update(_float _fTimeDelta)
 {
-	
-
 	__super::Priority_Update(_fTimeDelta);
 }
 
@@ -499,8 +501,10 @@ void CSampleBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 			//	Event_Book_Main_Section_Change(SECTION_MGR->Get_Prev_Section_Key()->c_str());
 			SECTION_MGR->Change_Prev_Section();
 		}
-		
-		Event_Book_Main_Change(CCamera_Manager::GetInstance()->Get_CameraType());
+		if (CCamera_Manager::CAMERA_TYPE::TARGET_2D == CCamera_Manager::GetInstance()->Get_CameraType())
+		{
+			Event_Book_Main_Change(CCamera_Manager::GetInstance()->Get_CameraType());
+		}
 
 		Set_Animation(0);
 		m_eCurAction = ACTION_LAST;
@@ -547,8 +551,11 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 				if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(strMoveSectionName, pCarryingObj, SECTION_2D_PLAYMAP_OBJECT)))
 					return;
 			}
-			CCamera* pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D);
-			static_cast<CCamera_2D*>(pCamera)->Set_Include_Section_Name(strMoveSectionName);
+			if (CCamera_Manager::CAMERA_TYPE::TARGET_2D == CCamera_Manager::GetInstance()->Get_CameraType())
+			{
+				CCamera* pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D);
+				static_cast<CCamera_2D*>(pCamera)->Set_Include_Section_Name(strMoveSectionName);
+			}
 		}
 	}
 }
@@ -571,7 +578,8 @@ void CSampleBook::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 	switch (eShapeUse)
 	{
 	case Client::SHAPE_USE::SHAPE_TRIGER:
-		if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
+		if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup
+			&& (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
 		{
 			m_isPlayerAround = true;
 		}
@@ -589,12 +597,27 @@ void CSampleBook::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 	switch (eShapeUse)
 	{
 	case Client::SHAPE_USE::SHAPE_TRIGER:
-		if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
+		if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup
+			&& (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
 		{
 			m_isPlayerAround = false;
 		}
 		break;
 	}
+}
+void CSampleBook::Interact(CPlayer* _pUser)
+{
+	_pUser->Set_State(CPlayer::TURN_BOOK);
+}
+
+_bool CSampleBook::Is_Interactable(CPlayer* _pUser)
+{
+	return m_isPlayerAround && (false == _pUser->Is_CarryingObject());
+}
+
+_float CSampleBook::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
+{
+	return 9999.f;
 }
 
 HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition)
@@ -603,7 +626,8 @@ HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPos
 	{
 		m_fNextPos = _fNextPosition;
 		m_isAction = true;
-		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
+		if(CCamera_Manager::CAMERA_TYPE::TARGET_2D == CCamera_Manager::GetInstance()->Get_CameraType())
+			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
 	}
 	return S_OK;
 }
@@ -643,4 +667,5 @@ void CSampleBook::Free()
 	Safe_Release(m_pAnimEventGenerator);
 	__super::Free();
 }
+
 

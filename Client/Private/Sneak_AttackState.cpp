@@ -35,7 +35,7 @@ void CSneak_AttackState::State_Update(_float _fTimeDelta)
 		return;
 	if (nullptr == m_pOwner)
 		return;
-	cout << "Attack" << endl;
+	//cout << "Attack" << endl;
 	//컷씬으로 들어가며 초기화
 	//Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
 	if(m_pOwner->Get_AnimChangeable())
@@ -54,20 +54,20 @@ void CSneak_AttackState::After_Attack()
 
 	switch (m_eWayIndex)
 	{
-	case Client::WAYPOINTINDEX::CHAPTER2_1:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_1:
 		vPlayerPos = { -31.f, 6.56f, 22.5f };
 		vMonsterPos = { -16.5f, 6.56f, 22.6f };
 		break;
-	case Client::WAYPOINTINDEX::CHAPTER2_2:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_2:
 		vPlayerPos = { 40.f, 0.35f, -7.f };
 		vMonsterPos = { 32.15f, 0.35f, 1.66f };
 		break;
-	case Client::WAYPOINTINDEX::CHAPTER2_2_2:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_2_2:
 		vPlayerPos = { 36.6f, 0.35f, 5.5f };
 		vMonsterPos = { 39.5f, 0.35f, 10.5f };
 		break;
-	case Client::WAYPOINTINDEX::CHAPTER2_3:
-		vPlayerPos = {  };
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_3:
+		vPlayerPos = { 43.f, 0.35f, -0.5f };
 		vMonsterPos = { 47.f, 0.35f, -0.5f };
 		break;
 

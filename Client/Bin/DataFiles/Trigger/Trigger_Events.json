@@ -19,39 +19,54 @@
       }
     ]
   },
-    {
-        "Trigger_EventTag": "Get_Flipping_Glove",
-        "Actions": [
-            {
-                "ActionTag": "Camera_Arm_Move",
-                "EventTag": "A",
-                "Is_Sequence": true
-            },
-            {
-                "ActionTag": "Get_PlayerItem",
-                "EventTag": "Flipping_Glove",
-                "Is_Sequence": true
-            },
-            {
-                "ActionTag": "Dialogue",
-                "EventTag": "Event_Dialogue_01",
-                "Is_Sequence": true
-            },
-            {
-                "ActionTag": "Camera_Arm_Return",
-                "EventTag": "A",
-                "Is_Sequence": false
-            }
-        ]
-    },
-    {
-        "Trigger_EventTag": "MagicDust",
-        "Actions": [
-            {
-                "ActionTag": "MagicDust",
-                "EventTag": "Honey_Bee_Benny_01",
-                "Is_Sequence": false
-            }
-        ]
-    }
+  {
+    "Trigger_EventTag": "Get_Flipping_Glove",
+    "Actions": [
+      {
+        "ActionTag": "Camera_Arm_Move",
+        "EventTag": "A",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Get_PlayerItem",
+        "EventTag": "Flipping_Glove",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Dialogue",
+        "EventTag": "Event_Dialogue_01",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Camera_Arm_Return",
+        "EventTag": "A",
+        "Is_Sequence": false
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "P0809_MonsterSpawnProcess",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "P0809_Spawn_LightningBolt",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "P0809_Monster_Spawn",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "MagicDust",
+    "Actions": [
+      {
+        "ActionTag": "MagicDust",
+        "EventTag": "Honey_Bee_Benny_01",
+        "Is_Sequence": false
+      }
+    ]
+  }
 ]

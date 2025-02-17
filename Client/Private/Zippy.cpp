@@ -34,15 +34,13 @@ HRESULT CZippy::Initialize(void* _pArg)
     pDesc->fChase2DRange = 600.f;
     pDesc->fAttack2DRange = 300.f;
     pDesc->fDelayTime = 2.f;
-    
-    pDesc->fHP = 5.f;
-
-    pDesc->fFOVX = 90.f;
-    pDesc->fFOVY = 30.f;
 
     m_fSpeed = pDesc->tTransform2DDesc.fSpeedPerSec;
-    m_fDashDistance = 100.f;
+    m_fDashDistance = 200.f;
     m_fElecTime = 5.f;
+
+    m_tStat.iHP = 5;
+    m_tStat.iMaxHP = 5;
 
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
@@ -70,6 +68,10 @@ HRESULT CZippy::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_RIGHT, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_UP, true);
 
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, DASH_DOWN, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, DASH_RIGHT, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, DASH_UP, true);
+
     pModelObject->Set_Animation(IDLE_DOWN);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CZippy::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -80,8 +82,6 @@ HRESULT CZippy::Initialize(void* _pArg)
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
     m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_ZippyAttackAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
-
-    CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
     return S_OK;
 }
@@ -135,7 +135,7 @@ void CZippy::Update(_float _fTimeDelta)
                 m_isDash = false;
             }
             else
-                Change_Animation();
+                Attack();
         }
     }
 
@@ -170,8 +170,9 @@ void CZippy::Attack()
 {
     if (true == m_isDash)
     {
-        Get_ControllerTransform()->Set_SpeedPerSec(m_fSpeed * 4.f); //속도 임시
+        Get_ControllerTransform()->Set_SpeedPerSec(m_fSpeed * 6.f); //속도 임시
         XMStoreFloat3(&m_vDashDirection, XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()));
+        return;
     }
 
     if (true == m_isElectric)
@@ -387,6 +388,10 @@ void CZippy::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCol
             //플레이어 setstate 부르기
             Event_Hit(this, _pOtherObject, Get_Stat().iDamg);
             m_isElectric = false;
+        }
+        else
+        {
+            __super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
         }
     }
 }

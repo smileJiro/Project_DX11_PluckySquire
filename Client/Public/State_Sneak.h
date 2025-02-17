@@ -15,7 +15,7 @@ class CState_Sneak abstract : public CState
 public:
 	typedef struct tagStateSneakDesc : STATEDESC
 	{
-		WAYPOINTINDEX eWayIndex = WAYPOINTINDEX::LAST;
+		SNEAKWAYPOINTINDEX eWayIndex = SNEAKWAYPOINTINDEX::LAST;
 	}SNEAKSTATEDESC;
 
 	struct Node
@@ -54,8 +54,8 @@ public:
 
 protected:
 	//잠입 모드가 아니어도 필요할 것으로 보임. 일단 잠입상태에 둠
-	HRESULT Initialize_WayPoints(WAYPOINTINDEX _eWayIndex);
-	void Initialize_PatrolPoints(WAYPOINTINDEX _iWayIndex);
+	HRESULT Initialize_WayPoints(SNEAKWAYPOINTINDEX _eWayIndex);
+	void Initialize_PatrolPoints(SNEAKWAYPOINTINDEX _iWayIndex);
 	void Determine_NextDirection(_fvector& _vDestination, _float3* _vDirection);
 	void Determine_BackDirection(_fvector& _vDestination, _float3* _vDirection);
 
@@ -64,7 +64,7 @@ public:
 
 protected:
 	_float3 m_vSneakPos = {};
-	WAYPOINTINDEX m_eWayIndex = {};
+	SNEAKWAYPOINTINDEX m_eWayIndex = {};
 	vector<Node> m_WayPoints = {};
 	map<pair<_uint, _uint>, _float> m_Weights;
 	vector<_uint> m_Ways;

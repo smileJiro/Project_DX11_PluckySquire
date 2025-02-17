@@ -22,6 +22,7 @@
 #include "PlayerState_StartPortal.h"
 #include "PlayerState_IntoPortal.h"
 #include "PlayerState_ExitPortal.h"
+#include "PlayerState_TurnBook.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "Section_Manager.h"
@@ -294,6 +295,9 @@ HRESULT CPlayer::Ready_PartObjects()
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_RIGHT_LVL4, false);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_SPIN_ATTACK_SPIN_LOOP_GT, 0);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_SPIN_ATTACK_OUT_GT, 0);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_TURN_LEFT, 0.35f);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_TURN_RIGHT, 0.35f);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_TURN_MID, 0.178f);
     return S_OK;
 }
 
@@ -1043,6 +1047,33 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         }
         return tResult;
     }
+    _bool bIsTurningBook = CPlayer::TURN_BOOK == m_pStateMachine->Get_CurrentState()->Get_StateID();
+
+    if (bIsTurningBook)
+    {
+        if (KEY_PRESSING(KEY::A))
+        {
+			tResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT] = true;
+        }
+        else if (KEY_PRESSING(KEY::D))
+        {
+			tResult.bInputStates[PLAYER_INPUT_TURNBOOK_RIGHT] = true;
+        }
+        else
+        {
+            if (MOUSE_DOWN(MOUSE_KEY::LB)
+                || MOUSE_DOWN(MOUSE_KEY::RB)
+                || KEY_DOWN(KEY::SPACE)
+                || KEY_DOWN(KEY::LSHIFT))
+            {
+                tResult.bInputStates[PLAYER_INPUT_TURNBOOK_END] = true;
+            }
+        }
+
+
+        return tResult;
+    }
+
     if (Is_SwordHandling())
     {
         //기본공격
@@ -1106,6 +1137,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 
     COORDINATE eCoord = Get_CurCoord();
     //이동
+
 	_vector vRight = XMVector3Normalize( m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
 	_vector vUp = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_UP));
     if (KEY_PRESSING(KEY::W))
@@ -1459,6 +1491,9 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::EXIT_PORTAL:
         m_pStateMachine->Transition_To(new CPlayerState_ExitPortal(this));
 		break;
+    case Client::CPlayer::TURN_BOOK:
+        m_pStateMachine->Transition_To(new CPlayerState_TurnBook(this));
+		break;
 
     case Client::CPlayer::STATE_LAST:
         break;
@@ -1794,11 +1829,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 
     if (KEY_DOWN(KEY::H))
     {
-        //m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
+        m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
         //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
         //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
-        m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
-        //m_pActorCom->Set_GlobalPose(_float3(0.f, 0.35f, 0.f));
+        //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
     }
 
 }
