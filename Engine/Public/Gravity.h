@@ -53,7 +53,7 @@ private:
 	_float3						m_vDirection = {};
 	_float						m_fGravity = 9.8f; // 중력가속도
 	_float						m_fGravityAcc = 0.0f;
-
+	_float						m_fMaxGravityAcc = 9.8f * 300.f;
 public:
 	static CGravity*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CComponent*					Clone(void* _pArg) override;
