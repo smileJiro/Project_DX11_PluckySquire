@@ -12,6 +12,7 @@
 #include "PlayerState_JumpDown.h"
 #include "PlayerState_JumpAttack.h"
 #include "PlayerState_ThrowObject.h"
+#include "PlayerState_LaydownObject.h"
 #include "PlayerState_Roll.h"
 #include "PlayerState_Clamber.h"
 #include "PlayerState_ThrowSword.h"
@@ -302,7 +303,10 @@ void CPlayer::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
     __super::Set_Include_Section_Name(_strIncludeSectionName);
 
     if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
+    {
+        Set_Position(XMVectorSet(0.0f, 2800.f, 0.0f, 0.0f));
         Set_PlatformerMode(true);
+    }
     else
         Set_PlatformerMode(false);
 }
@@ -385,7 +389,8 @@ HRESULT CPlayer::Ready_Components()
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
        TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
        return E_FAIL;
-   Safe_AddRef(m_pGravityCom);
+   //Safe_AddRef(m_pGravityCom);
+   m_pGravityCom->Set_Active(false);
     return S_OK;
 }
 
@@ -1304,6 +1309,11 @@ _bool CPlayer::Is_SwordHandling()
     return Is_SwordMode()&& (m_pSword->Is_SwordHandling());
 }
 
+_float CPlayer::Get_AnimationTIme()
+{
+    return m_pBody->Get_Model(Get_CurCoord())->Get_AnimationTime();
+}
+
 _vector CPlayer::Get_CenterPosition()
 {
 	if (COORDINATE_2D == Get_CurCoord())
@@ -1427,6 +1437,9 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::THROWOBJECT:
 		m_pStateMachine->Transition_To(new CPlayerState_ThrowObject(this));
 		break;
+    case Client::CPlayer::LAYDOWNOBJECT:
+		m_pStateMachine->Transition_To(new CPlayerState_LaydownObject(this));
+		break;
     case Client::CPlayer::DIE:
 		m_pStateMachine->Transition_To(new CPlayerState_Die(this));
 		break;
@@ -1533,13 +1546,20 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
     if (true == _bPlatformerMode)
     {
         Event_SetActive(m_pGravityCom, true);
+        m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
         CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
 
         pCollider->Set_Radius(m_f2DColliderBodyRadius * 2.f);
         pCollider->Set_Offset(_float2(0.0f, m_f2DColliderBodyRadius * 2.0f * 0.7f));
     }
     else
+    {
         Event_SetActive(m_pGravityCom, false);
+        m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+        CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
+        pCollider->Set_Radius(m_f2DColliderBodyRadius);
+        pCollider->Set_Offset(_float2(0.0f, m_f2DColliderBodyRadius * 0.5f));
+    }
 }
 void CPlayer::Set_Upforce(_float _fForce)
 {
@@ -1660,7 +1680,7 @@ void CPlayer::ThrowObject()
         vForce = XMVector2Normalize(EDir_To_Vector( Get_2DDirection())) * m_f2DThrowObjectPower;
 		vForce = XMVectorSetW(XMVectorSetZ(vForce, 0),0);
     }
-
+    
 	CCarriableObject* pObj = static_cast<CCarriableObject*>(m_pCarryingObject);
     if (COORDINATE_3D == Get_CurCoord())
     {

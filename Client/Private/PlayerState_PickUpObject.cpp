@@ -132,8 +132,11 @@ void CPlayerState_PickUpObject::Enter()
 
 void CPlayerState_PickUpObject::Exit()
 {
-	m_pOwner->Set_Kinematic(false);
 
+	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+	{
+		m_pOwner->Set_Kinematic(false);
+	}
 	//cout << "Align: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
 

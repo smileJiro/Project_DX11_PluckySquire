@@ -26,6 +26,8 @@ HRESULT CDice::Initialize(void* _pArg)
 	DiceModelDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
 	DiceModelDesc->tTransform2DDesc.vInitialPosition = _float3(0.0f, 1.0f, 0.f);
 	DiceModelDesc->tTransform2DDesc.vInitialScaling = _float3(200.f, 200.f, 200.f);
+	DiceModelDesc->iRenderGroupID_3D = RG_3D;
+	DiceModelDesc->iPriorityID_3D = PR3D_GEOMETRY;
 	//DiceModelDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 1.0f, -10.f);
 	//DiceModelDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	
@@ -48,7 +50,7 @@ HRESULT CDice::Initialize(void* _pArg)
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::BLOCKER;
-	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER_TRIGGER | OBJECT_GROUP::BLOCKER;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER_TRIGGER | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER;
 	DiceModelDesc->pActorDesc = &ActorDesc;
 	DiceModelDesc->eActorType = ACTOR_TYPE::DYNAMIC;
 	if (FAILED(__super::Initialize(DiceModelDesc)))

@@ -12,17 +12,19 @@
 #include "Camera_2D.h"
 
 /* For. etc Bulb, PlayerItem*/
-// Trigger
-#include "TriggerObject.h"
-#include "PlayerItem.h"
-#include "Bulb.h"
-
-
 #include "Blocker.h"
 #include "CubeMap.h"
 #include "MainTable.h"
 #include "FallingRock.h"
 #include "Spawner.h"
+#include "CollapseBlock.h"
+
+
+// Trigger
+#include "TriggerObject.h"
+#include "PlayerItem.h"
+#include "Bulb.h"
+
 
 
 /* For. UI*/
@@ -115,6 +117,7 @@
 #include "Dice.h"
 #include "Domino.h"
 #include "Portal.h"
+
 
 
 
@@ -755,6 +758,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
         TEXT("../Bin/Resources/Models/2DMapObject/Chapter2"))))
         return E_FAIL;
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
+        TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
+        return E_FAIL;
 
     /* 낱개 로딩 예시*/
 
@@ -847,6 +853,7 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_SampleBook"),
         CSampleBook::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
 
     ///////////////////////////////// UI /////////////////////////////////
     /* For. Prototype_UIObject_Pick_Bubble */
@@ -970,11 +977,16 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         return E_FAIL;
 
     /* Etc */
+
     /* For. Prototype_GameObject_FallingRock */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_FallingRock"),
         CFallingRock::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* For. Prototype_GameObject_CollapseBlock */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_CollapseBlock"),
+        CCollapseBlock::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     //Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_2, L"Room_Enviroment.mchc");
     Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_2, L"Room_Enviroment_Small.mchc");
@@ -1136,10 +1148,13 @@ HRESULT CLoader::Loading_Level_Chapter_4()
 
 
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
-        TEXT("../Bin/Resources/Models/2DMapObject/Chapter2/"))))
+        TEXT("../Bin/Resources/Models/2DMapObject/Chapter4/"))))
         return E_FAIL;
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
         TEXT("../Bin/Resources/Models/2DAnim/Chapter2/"))))
+        return E_FAIL;
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
+        TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
         return E_FAIL;
     /* 낱개 로딩 예시*/
 

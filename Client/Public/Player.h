@@ -481,6 +481,7 @@ public:
 	_float Get_PickupRange(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DPickupRange : m_f3DPickupRange; }	_int Get_AttackDamg() { return m_tStat.iDamg; }
 	_float Get_3DFloorDistance() { return m_f3DFloorDistance; }
 	_float Get_2DFloorDistance() { return m_f2DFloorDistance; }
+	_float Get_AnimationTIme();
 	_uint Get_SpinAttackLevel() { return m_iSpinAttackLevel; }
 	_float Get_2DAttackForwardingSpeed() { return m_f2DAttackForwardSpeed; }
 	_vector Get_CenterPosition();
@@ -503,6 +504,8 @@ public:
 	CCarriableObject* Get_CarryingObject();;
 	const _float4x4* Get_BodyWorldMatrix_Ptr() const;
 	const _float4x4* Get_BodyWorldMatrix_Ptr(COORDINATE eCoord) const;
+	CModelObject* Get_Body() { return m_pBody; }
+
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -526,8 +529,6 @@ public:
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
 private:
-
-
 	void					Key_Input(_float _fTimeDelta);
 
 private:

@@ -63,6 +63,7 @@ HRESULT CBlocker::Ready_Component(BLOCKER_DESC* _pDesc)
     {
         BLOCKER2D_DESC* Desc2D = static_cast<BLOCKER2D_DESC*>(_pDesc);
         /* Test 2D Collider */
+        m_p2DColliderComs.resize(1);
         CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
         AABBDesc.pOwner = this;
         AABBDesc.vExtents = Desc2D->vColliderExtents;
@@ -72,10 +73,9 @@ HRESULT CBlocker::Ready_Component(BLOCKER_DESC* _pDesc)
         AABBDesc.iCollisionGroupID = OBJECT_GROUP::BLOCKER;
         CCollider_AABB* pCollider = nullptr;
         if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-            TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &AABBDesc)))
+            TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
             return E_FAIL;
 
-        m_p2DColliderComs.push_back(pCollider);
     }
     else if (COORDINATE_3D == m_eBlockerCoord)
     {

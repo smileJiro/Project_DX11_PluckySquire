@@ -75,6 +75,7 @@ HRESULT CSpriteFrame::Bind_ShaderResource(CShader* _pShader)
 	return S_OK;
 }
 
+
 CSpriteFrame* CSpriteFrame::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures)
 {
 	CSpriteFrame* pInstance = new CSpriteFrame();
@@ -174,6 +175,7 @@ HRESULT CAnimation2D::Bind_ShaderResource(CShader* _pShader)
 
 _bool CAnimation2D::Play_Animation(_float _fTimeDelta, _bool _bReverse)
 {
+	
 	if (m_fCurrentFrameTime >= (1 / m_fFramesPerSecond))
 	{
 		m_fCurrentFrameTime = 0;
@@ -181,7 +183,11 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta, _bool _bReverse)
 		if (m_iCurrentSubFrame >= m_SpriteFrames[m_iCurrentFrame].second)
 		{
 			m_iCurrentSubFrame = 0;
-			m_iCurrentFrame++;
+			if(_bReverse)
+				m_iCurrentFrame--;
+			else
+				m_iCurrentFrame++;
+
 		}
 	}
 	//마지막 프레임 +1 일떄 
@@ -199,8 +205,10 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta, _bool _bReverse)
 			return true;
 		}
 	}
-		
+
 	m_fCurrentFrameTime += _fTimeDelta * m_fSpeedMagnifier;
+
+
 	return false;
 }
 
@@ -226,6 +234,11 @@ _float CAnimation2D::Get_Progress()
 	return fProgerss;
 }
 
+_float CAnimation2D::Get_AnimationTime()
+{
+	return (_int)Get_AccumulativeSubFrameCount(m_iFrameCount - 1) / m_fFramesPerSecond / m_fSpeedMagnifier;
+}
+
 void CAnimation2D::Set_Progress(_float _fProgerss)
 {
 	_int iTotalSubFrameCount = (_int)Get_AccumulativeSubFrameCount(m_iFrameCount-1);
@@ -244,6 +257,8 @@ void CAnimation2D::Set_Progress(_float _fProgerss)
 		iTargetSubFrame -= iFrameRun;
 	}
 }
+
+
 
 _uint CAnimation2D::Get_AccumulativeSubFrameCount(_uint _iFrameIndex)
 {
