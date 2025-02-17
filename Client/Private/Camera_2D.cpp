@@ -128,7 +128,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		break;
 	case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
 	{
-		pData = Find_ArmData(TEXT("Default_Positive_Y"));
+		pData = Find_ArmData(TEXT("Default_Negative_Z"));
 		m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
 	}
 		break;
@@ -453,7 +453,7 @@ void CCamera_2D::Find_TargetPos()
 
 		if (m_eCurSpaceDir != (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)))) {
 
-			switch ((_int)m_eCurSpaceDir) {
+			switch (((_int)roundf(XMVectorGetW(vTargetPos)))) {
 			case (_int)NORMAL_DIRECTION::POSITIVE_X:
 			{
 				Set_NextArmData(TEXT("Default_Positive_X"), 0);
@@ -475,11 +475,12 @@ void CCamera_2D::Find_TargetPos()
 				break;
 			case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
 			{
-				Set_NextArmData(TEXT("Default_Positive_Y"), 0);
+				Set_NextArmData(TEXT("Default_Negative_Z"), 0);
 			}
 			break;
 			}
 
+			m_eCameraMode = MOVE_TO_NEXTARM;
 			m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
 		}
 	}

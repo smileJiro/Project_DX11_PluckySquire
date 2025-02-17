@@ -623,6 +623,8 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
     switch (eShapeUse)
     {
     case Client::SHAPE_USE::SHAPE_TRIGER:
+        if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+            return;
         Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
         break;
     }
@@ -658,6 +660,8 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
     switch (eShapeUse)
     {
     case Client::SHAPE_USE::SHAPE_TRIGER:
+        if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+            return;
         Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
         break;
     }
@@ -995,9 +999,12 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     if (Is_CarryingObject())
     {
         //상호작용 오브젝트가 범위 안에 있으면 상호작용, 아니면 던지기
-
-        //던지기
-        if (KEY_DOWN(KEY::E))
+        if (Has_InteractObject())
+        {
+            if (KEY_PRESSING(KEY::E))
+                tResult.bInputStates[PLAYER_INPUT_INTERACT] = true;
+        }
+        else if (KEY_DOWN(KEY::E))
             tResult.bInputStates[PLAYER_INPUT_THROWOBJECT] = true;
     }
     else
@@ -1077,12 +1084,14 @@ _bool CPlayer::Check_ReplaceInteractObject(IInteractable* _pObj)
 {
     if(nullptr == _pObj)
 		return false;
-    if(nullptr == m_pInteractableObject)
-		return true;
     if (false == _pObj->Is_Interactable(this))
         return false;
     if (m_pInteractableObject == _pObj)
         return false;
+    if (m_pCarryingObject ==_pObj )
+        return false;
+    if(nullptr == m_pInteractableObject)
+		return true;
 	COORDINATE eCoord = Get_CurCoord();
     if (m_pInteractableObject->Get_Distance(eCoord, this) > _pObj->Get_Distance(eCoord, this))
         return true;
@@ -1661,7 +1670,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         COORDINATE eCoord =Get_CurCoord();
         if (COORDINATE_3D == eCoord)
         {
-            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -58.f, 0.358914316f, 16.f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //근처 포탈
+            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //도미노
+            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 15.f, 6.5f, 21.5f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
         }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 

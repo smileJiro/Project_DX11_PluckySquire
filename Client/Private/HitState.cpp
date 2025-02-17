@@ -16,8 +16,6 @@ HRESULT CHitState::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	m_fDelayTime = 3.f;
-
 	return S_OK;
 }
 
@@ -33,7 +31,7 @@ void CHitState::State_Update(_float _fTimeDelta)
 		return;
 
 	if(true == m_pOwner->Get_AnimChangeable())
-		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
 }
 
 void CHitState::State_Exit()

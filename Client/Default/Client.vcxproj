@@ -363,6 +363,9 @@
     <ClInclude Include="..\Public\UI_JotMain.h" />
     <ClInclude Include="..\public\UI_Manager.h" />
     <ClInclude Include="..\Public\Word.h" />
+    <ClInclude Include="..\Public\WordGame_Generator.h" />
+    <ClInclude Include="..\Public\Word_Container.h" />
+    <ClInclude Include="..\Public\Word_Controller.h" />
     <ClInclude Include="..\Public\Zippy.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Client_Etc.h" />
@@ -552,6 +555,9 @@
     <ClCompile Include="..\Private\UI_JotMain.cpp" />
     <ClCompile Include="..\private\UI_Manager.cpp" />
     <ClCompile Include="..\Private\Word.cpp" />
+    <ClCompile Include="..\Private\WordGame_Generator.cpp" />
+    <ClCompile Include="..\Private\Word_Container.cpp" />
+    <ClCompile Include="..\Private\Word_Controller.cpp" />
     <ClCompile Include="..\Private\Zippy.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="PlayerState_PlatformJumpAttack.cpp" />
