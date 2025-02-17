@@ -55,7 +55,7 @@ HRESULT CNPC_Companion::Child_Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	m_isRender = false;
+	m_isRender = true;
 
 	return S_OK;
 }
