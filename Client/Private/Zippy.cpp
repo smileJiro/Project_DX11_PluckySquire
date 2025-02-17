@@ -81,6 +81,7 @@ HRESULT CZippy::Initialize(void* _pArg)
     m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_ZippyAttackAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
+    //CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
     CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
     return S_OK;
