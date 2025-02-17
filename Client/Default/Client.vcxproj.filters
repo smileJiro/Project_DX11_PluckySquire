@@ -433,6 +433,9 @@
     <Filter Include="02.GameObjects\RayShape">
       <UniqueIdentifier>{c32a3738-591f-4b01-99c1-a7a13f7f789c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Word">
+      <UniqueIdentifier>{70b6f4d5-168b-46b5-849c-cb56b4c3621c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -980,6 +983,9 @@
     <ClInclude Include="..\public\RayShape.h">
       <Filter>02.GameObjects\RayShape</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Word.h">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1511,6 +1517,9 @@
     </ClCompile>
     <ClCompile Include="..\private\RayShape.cpp">
       <Filter>02.GameObjects\RayShape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Word.cpp">
+      <Filter>02.GameObjects\Word</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
