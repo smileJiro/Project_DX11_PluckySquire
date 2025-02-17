@@ -2,6 +2,7 @@
 #include "Spawner.h"
 #include "GameInstance.h"
 #include "Pooling_Manager.h"
+#include "FallingRock.h"
 
 
 CSpawner::CSpawner(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -30,7 +31,7 @@ HRESULT CSpawner::Initialize(void* _pArg)
 	m_eCurLevelID = pDesc->eCurLevelID;
 	m_eGameObjectPrototypeLevelID = pDesc->eGameObjectPrototypeLevelID;
 	m_strLayerTag = pDesc->strLayerTag;
-	m_tObjectCloneDesc = *pDesc->pObjectCloneDesc;
+	m_pObjectCloneDesc = pDesc->pObjectCloneDesc;
 	 
 	/* Spawner Data */
 	m_vSpawnCycleTime.x = pDesc->fSpawnCycleTime;
@@ -66,6 +67,7 @@ HRESULT CSpawner::Initialize(void* _pArg)
 
 void CSpawner::Update(_float _fTimeDelta)
 {
+
 	m_vSpawnCycleTime.y += _fTimeDelta;
 	if (m_vSpawnCycleTime.x <= m_vSpawnCycleTime.y)
 	{
@@ -82,9 +84,10 @@ HRESULT CSpawner::Spawn_Object()
 	}
 	else
 	{
-		if(FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eGameObjectPrototypeLevelID, m_strLayerTag, m_eCurLevelID, m_strLayerTag, &m_tObjectCloneDesc)))
+		if(FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eGameObjectPrototypeLevelID, m_strLayerTag, m_eCurLevelID, m_strLayerTag, m_pObjectCloneDesc)))
 			return E_FAIL;
 	}
+
     return S_OK;
 }
 
@@ -110,7 +113,8 @@ CSpawner* CSpawner::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 
 void CSpawner::Free()
 {
-
+	if (false == m_isPooling)
+		Safe_Delete(m_pObjectCloneDesc);
 	__super::Free();
 }
 

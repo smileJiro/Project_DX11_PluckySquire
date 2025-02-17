@@ -114,11 +114,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	}
 
 
-	//if (FAILED(Ready_Layer_Spawner(TEXT("Layer_Spawner"))))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_Spawner (Level_Chapter_02::Initialize)");
-	//	assert(nullptr);
-	//}
+	if (FAILED(Ready_Layer_Spawner(TEXT("Layer_Spawner"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Spawner (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	
 	//if (FAILED(Ready_Layer_Effects(TEXT("Layer_Effect"))))
 	//{
@@ -421,7 +421,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 	pFallingRockDesc->eStartCoord = COORDINATE_2D;
 	pFallingRockDesc->fFallDownEndY = RTSIZE_BOOK2D_Y * 0.5f - 50.f;
 	pFallingRockDesc->iCurLevelID = LEVEL_CHAPTER_2;
-	pFallingRockDesc->isDeepCopyConstBuffer = false;
+	pFallingRockDesc->isDeepCopyConstBuffer = true;
 	pFallingRockDesc->Build_2D_Transform(_float2(0.0f, 500.f));
 
 	/* Pooling Desc */
@@ -448,7 +448,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 	CGameObject* pGameObject = nullptr;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
 		return E_FAIL;
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_SPAWNER);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
 
 	pGameObject = nullptr;
 	SpawnerDesc.fSpawnCycleTime = 4.0f;
@@ -456,13 +456,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
 		return E_FAIL;
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_SPAWNER);
-
+	
 	pGameObject = nullptr;
 	SpawnerDesc.fSpawnCycleTime = 7.0f;
 	SpawnerDesc.vSpawnPosition = _float3(550.0f, 1000.f, 0.0f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
 		return E_FAIL;
-
+	
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_SPAWNER);
 	
 
