@@ -1002,7 +1002,13 @@
     </ClInclude>
     <ClInclude Include="..\public\CollapseBlock.h" />
     <ClInclude Include="..\Public\PlayerState_LaydownObject.h" />
+<<<<<<< HEAD
     <ClInclude Include="..\Public\PlayerState_TurnBook.h" />
+=======
+    <ClInclude Include="..\Public\2DMapWordObject.h">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClInclude>
+>>>>>>> 62c004e1000203f9ceba8ada30f7ea1c5b333d00
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1554,7 +1560,13 @@
     </ClCompile>
     <ClCompile Include="..\private\CollapseBlock.cpp" />
     <ClCompile Include="..\Private\PlayerState_LaydownObject.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="..\Private\PlayerState_TurnBook.cpp" />
+=======
+    <ClCompile Include="..\Private\2DMapWordObject.cpp">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClCompile>
+>>>>>>> 62c004e1000203f9ceba8ada30f7ea1c5b333d00
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

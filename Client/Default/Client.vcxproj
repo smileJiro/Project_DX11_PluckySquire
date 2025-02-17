@@ -187,6 +187,7 @@
     <ClInclude Include="..\Public\2DMapActionObject.h" />
     <ClInclude Include="..\Public\2DMapDefaultObject.h" />
     <ClInclude Include="..\Public\2DMapObject.h" />
+    <ClInclude Include="..\Public\2DMapWordObject.h" />
     <ClInclude Include="..\Public\3DMapDefaultObject.h" />
     <ClInclude Include="..\Public\3DMapObject.h" />
     <ClInclude Include="..\Public\3DMapSkspObject.h" />
@@ -382,6 +383,7 @@
     <ClCompile Include="..\Private\2DMapActionObject.cpp" />
     <ClCompile Include="..\Private\2DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\2DMapObject.cpp" />
+    <ClCompile Include="..\Private\2DMapWordObject.cpp" />
     <ClCompile Include="..\Private\3DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\3DMapObject.cpp" />
     <ClCompile Include="..\Private\3DMapSkspObject.cpp" />

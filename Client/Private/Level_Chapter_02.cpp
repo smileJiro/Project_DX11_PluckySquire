@@ -146,18 +146,18 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-	/* Test CollapseBlock */
-	{
-		CCollapseBlock::MAPOBJ_DESC CollapseBlockDesc{};
-		CollapseBlockDesc.Build_2D_Model(LEVEL_CHAPTER_2, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"));
-		CollapseBlockDesc.Build_2D_Transform(_float2(-100.f, -300.f));
-		CollapseBlockDesc.eStartCoord = COORDINATE_2D;
-		CGameObject* pGameObject = nullptr;
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_CollapseBlock"), m_eLevelID, TEXT("Layer_CollapseBlock"), &pGameObject, &CollapseBlockDesc)))
-			return E_FAIL;
+	///* Test CollapseBlock */
+	//{
+	//	CCollapseBlock::MAPOBJ_DESC CollapseBlockDesc{};
+	//	CollapseBlockDesc.Build_2D_Model(LEVEL_CHAPTER_2, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"));
+	//	CollapseBlockDesc.Build_2D_Transform(_float2(-100.f, -300.f));
+	//	CollapseBlockDesc.eStartCoord = COORDINATE_2D;
+	//	CGameObject* pGameObject = nullptr;
+	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_CollapseBlock"), m_eLevelID, TEXT("Layer_CollapseBlock"), &pGameObject, &CollapseBlockDesc)))
+	//		return E_FAIL;
 
-		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
-	}
+	//	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
+	//}
 
 	
 
