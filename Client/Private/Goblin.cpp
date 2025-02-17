@@ -376,7 +376,7 @@ void CGoblin::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CGoblin::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
     {
         if ((_uint)MONSTER_STATE::CHASE == m_iState)
         {
@@ -394,7 +394,7 @@ void CGoblin::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 
 void CGoblin::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_CollisionGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
     {
         if (true == m_isContactToTarget)
         {

@@ -32,6 +32,7 @@
 
 
 #include "RayShape.h"
+#include "CarriableObject.h"
 
 
 #include "2DMapObject.h"
@@ -126,11 +127,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	//	assert(nullptr);
 	//}
 		//액터 들어가는넘.,
-	//if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
-	//	assert(nullptr);
-	//}
+	if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 
 	//액터 들어가는넘.,
 	if (FAILED(Ready_Layer_Map()))
@@ -1126,11 +1127,15 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 {
 
 	//임시로 주사위 만들어 봄.
-	CModelObject::MODELOBJECT_DESC tModelDesc{};
-	tModelDesc.iCurLevelID = m_eLevelID;
-	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.5f, 21.5f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+	CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
+	tCarriableDesc.eStartCoord = COORDINATE_3D;
+	tCarriableDesc.iCurLevelID = m_eLevelID;
+	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.5f, 21.5f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
 		return E_FAIL;
+	CModelObject::MODELOBJECT_DESC tModelDesc{};
+	tModelDesc.eStartCoord = COORDINATE_3D;
+	tModelDesc.iCurLevelID = m_eLevelID;
 	_float fDominoXPosition = 14.47f;
 	_float fDominoYPosition = 1.61f;
 	_float fDominoZPosition = 24.3f;
@@ -1138,20 +1143,20 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
 	tModelDesc.tTransform3DDesc.vInitialScaling = _float3(1.5f, 1.5f, 1.5f);
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino4");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino2");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 	tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001;
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino3");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Test"), &tModelDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 	return S_OK;
 }
