@@ -49,10 +49,45 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	pDesc->iPriorityID_3D = PR3D_GEOMETRY;
 
 
+	CActor::ACTOR_DESC ActorDesc;
+	pDesc->eActorType = ACTOR_TYPE::STATIC;
 
 
+	/* Actor의 주인 오브젝트 포인터 */
+	ActorDesc.pOwner = this;
 
-	__super::Initialize(_pArg);
+	/* Actor의 회전축을 고정하는 파라미터 */
+	ActorDesc.FreezeRotation_XYZ[0] = true;
+	ActorDesc.FreezeRotation_XYZ[1] = true;
+	ActorDesc.FreezeRotation_XYZ[2] = true;
+
+	/* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
+	ActorDesc.FreezePosition_XYZ[0] = false;
+	ActorDesc.FreezePosition_XYZ[1] = false;
+	ActorDesc.FreezePosition_XYZ[2] = false;
+
+	/* 사용하려는 Shape의 형태를 정의 */
+	SHAPE_BOX_DESC BoxDesc = {};
+	BoxDesc.vHalfExtents = { 19.8f, 0.77f, 5.6f };
+
+	// 플레이어 몸통.
+	SHAPE_DATA ShapeData;
+	ShapeData.pShapeDesc = &BoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+	ShapeData.eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
+	ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
+	ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
+	ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixIdentity()); // Shape의 LocalOffset을 행렬정보로 저장.
+
+	/* 최종으로 결정 된 ShapeData를 PushBack */
+	ActorDesc.ShapeDatas.push_back(ShapeData);
+	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::PLAYER;
+
+	/* Actor Component Finished */
+	pDesc->pActorDesc = &ActorDesc;
+
+	__super::Initialize(pDesc);
 	Set_AnimationLoop(COORDINATE_3D, 0, true);
 	Set_AnimationLoop(COORDINATE_3D, 8, false);
 	Set_AnimationLoop(COORDINATE_3D, 9, true);
@@ -503,6 +538,8 @@ HRESULT CSampleBook::Init_RT_RenderPos_Capcher()
 
 	// 따로 찍어야할 섹션을 확인후 레지스터.
 	SECTION_MGR->Register_WorldCapture(L"Chapter2_P0102", this);
+	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0102", this);
+	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0304", this);
 
 	return S_OK;
 }

@@ -389,7 +389,7 @@ HRESULT CPlayer::Ready_Components()
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
        TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
        return E_FAIL;
-   Safe_AddRef(m_pGravityCom);
+   //Safe_AddRef(m_pGravityCom);
    m_pGravityCom->Set_Active(false);
     return S_OK;
 }

@@ -39,6 +39,7 @@ namespace Client
 	{
 		// 전처리 그룹
 		PR2D_PRIORITY =			0,
+		PR2D_WORD =				1,
 		PR2D_SECTION_START =	10,
 		// 10 ~ 970 
 		//-> 섹션 유동생성 발급
@@ -97,7 +98,8 @@ namespace Client
 		RAY_OBJECT =				0x80,//7
 		INTERACTION_OBEJCT =		0x100,//8 (상호작용 하려면 GameObject의 Group으로 설정해야 함)
 		BLOCKER = 					0x200,	//9	(현재 2D 플랫포머에서 중력 컴포넌트랑 연계중. 3D에서 플레이어 몸통이랑 블락중)
-		//PORTAL =					0x400, 일단 필요 없어져서 지웠어요 - 김지완 -
+		BOOK_3D =					0x400,
+		//PORTAL =					0x800, 일단 필요 없어져서 지웠어요 - 김지완 -
 								 // 0x1000 
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬

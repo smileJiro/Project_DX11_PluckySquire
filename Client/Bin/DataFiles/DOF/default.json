@@ -1,9 +1,9 @@
 {
-    "fAperture": 4.058000087738037,
+    "fAperture": 2.799999952316284,
     "fBaseBlurPower": 0.10000000149011612,
     "fDofBrightness": 1.5,
     "fFocusDistance": 60.0,
-    "fSensorHeight": 25.415000915527344,
+    "fSensorHeight": 24.0,
     "vBlurColor": {
         "x": 1.0,
         "y": 1.0,
