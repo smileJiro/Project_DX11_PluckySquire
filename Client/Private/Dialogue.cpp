@@ -1248,6 +1248,21 @@ void CDialog::isOpenPanel(_tchar* _DialogId)
 
 }
 
+// 프로토 타입 이후 수정 예정, 하드코딩
+void CDialog::isCloseDialogueForTalket(_tchar* _DialogId)
+{
+	_tchar NpcName[MAX_PATH] = {};
+	_tchar strSrcName[MAX_PATH] = {};
+	wsprintf(NpcName, Uimgr->Get_Dialogue(_DialogId)[0].lines[0].Talker.c_str());
+
+	wsprintf(strSrcName, TEXT("바이올렛"));
+
+	if (0 == wcscmp(NpcName, strSrcName))
+	{
+
+	}
+}
+
 
 
 

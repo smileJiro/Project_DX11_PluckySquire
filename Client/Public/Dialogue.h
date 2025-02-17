@@ -112,6 +112,9 @@ private:
     void        FirstCalPos(_float2 _RTSize);
     void        isOpenPanel(_tchar* _DialogId);
 
+    // 추후 수정 (프로토 타입용..)
+    void        isCloseDialogueForTalket(_tchar* _DialogId);
+
 private:
     DialogData          m_DialogData;   // 현재 다이얼로그 데이터
     _int                m_iCurrentLineIndex = 0; // 현재 출력 중인 라인의 인덱스 (id)

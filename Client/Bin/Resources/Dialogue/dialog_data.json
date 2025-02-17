@@ -793,6 +793,156 @@
 			]
 		},
 		{
+			"id": "Welcom_Jot_With_Violet_01",
+			"Section": "Chapter1_P0708",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "?????",
+					"BG": 13,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "우와아아아! 어서와 저트!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "오래만엔 보니 엄청 반갑다! 있잖아...",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "방금 일어난일 험그럼프가 만든게 분명해!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그런데 이번에 쓴 마법은 뭔가 특이해...",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "마법서에선 험그럼프는 책의 탑에 있다고 해.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "얼른 거기로 가서 이상한 일을 하지 못하게 막자!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "우리 용감한 견습 기사가 싸우는 모습을 보게 되다니..",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "나 너무 신나...!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이얍! 맛이 어떠냐! 그럼 앞장서, 저트!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
 			"id": "Event_Dialogue_01",
 			"lines": [
 				{
