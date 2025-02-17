@@ -491,6 +491,16 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             Set_AnimChangeable(true);
             break;
 
+        case DEATH_DOWN:
+        case DEATH_RIGHT:
+        case DEATH_UP:
+            Set_AnimChangeable(true);
+            //풀링에 넣을 시 변경
+            //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+
+            Event_DeleteObject(this);
+            break;
+
         default:
             break;
         }
