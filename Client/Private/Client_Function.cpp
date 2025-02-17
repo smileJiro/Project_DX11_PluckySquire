@@ -429,6 +429,8 @@ namespace Client
 		default:
 			break;
 		}
+
+		return E_DIRECTION::E_DIR_LAST;
 	}
 
 	E_DIRECTION To_EDirection(_vector _vDir)
