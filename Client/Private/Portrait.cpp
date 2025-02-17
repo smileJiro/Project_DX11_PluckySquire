@@ -44,7 +44,7 @@ HRESULT CPortrait::Initialize(void* _pArg)
 	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
 	m_vDisplay2DSize = vCalScale;
 	m_pControllerTransform->Set_Scale(m_vDisplay2DSize.x, m_vDisplay2DSize.y, 1.f);
-
+	m_isAddSectionRender = false;
 	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 
 	return S_OK;
@@ -69,8 +69,10 @@ void CPortrait::Late_Update(_float _fTimeDelta)
 	{
 		if (!m_isAddSectionRender)
 		{
+
+
 			wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 
 
 			m_isAddSectionRender = true;
@@ -99,7 +101,7 @@ HRESULT CPortrait::Render()
 			return E_FAIL;
 
 		wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
-		m_ePortraitFace = (CDialog::PORTRAITNAME)Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].portrait;
+		m_ePortraitFace = (PORT)Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].portrait;
 
 
 		/* 추후 진행에따라 변경을 해야한다. */
@@ -134,22 +136,23 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_Scale(m_vDisplay3DSize.x, m_vDisplay3DSize.y, 1.f);
 	}
 
+	//if (!m_isAddSectionRender)
+	//{
+	//
+	//	wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
+	//	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
+	//	Get_Transform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vTexPos.x, vTexPos.y, 0.f, 1.f));
+	//	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+	//	m_isAddSectionRender = true;
+	//}
+
 	switch (currentLine.location)
 	{
 	case CDialog::LOC_MIDDOWN:  // 가운데 아래
 	{
-
-
-
 		if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 		{
-			if (!m_isAddSectionRender)
-			{
-				wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
-				//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
-				m_isAddSectionRender = true;
-			}
+			
 
 			vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
 			vTexPos.y = vTexPos.y;
@@ -171,28 +174,6 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 			return;
 
 		}
-
-
-
-
-
-		// 3D 세팅
-		//if (3D)
-		//{
-		//	_float2 vPos = { 0.f, 0.f };
-		//
-		//	vPos = _float2(g_iWinSizeX / 4.1f, g_iWinSizeY - g_iWinSizeY / 3.25f);
-		//}
-		//vTextPos = _float2(g_iWinSizeX / 4.1f, g_iWinSizeY - g_iWinSizeY / 3.25f);
-
-		//2D 
-	//else
-	//{
-		//vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
-		//vTexPos.y = vTexPos.y;
-	//
-	// }
-		
 	}
 	break;
 
@@ -244,8 +225,28 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 		vTexPos.y = vTexPos.y;
 	}
 	break;
+	case CDialog::LOC_VERYMIDHIGH: // 가운데 우측
+	{
+		vTexPos.x = vTexPos.x - _RTSize.x * 0.12f;
+		vTexPos.y = vTexPos.y;
 	}
+	break;
+	}
+
+
+	if (!m_isAddSectionRender)
+	{
+		wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
+		Get_Transform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vTexPos.x, vTexPos.y, 0.f, 1.f));
+		//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+		m_isAddSectionRender = true;
+	}
+
 	Get_Transform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vTexPos.x, vTexPos.y, 0.f, 1.f));
+
+
+
 }
 
 HRESULT CPortrait::Ready_Components()

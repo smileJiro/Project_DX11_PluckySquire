@@ -42,11 +42,32 @@ void CPick_Bulb::Priority_Update(_float _fTimeDelta)
 
 void CPick_Bulb::Update(_float _fTimeDelta)
 {
+	m_iCurBulbCount = CPlayerData_Manager::GetInstance()->Get_BulbCount();
+
+	if (m_iPreBulbCount != m_iCurBulbCount)
+	{
+		m_fAmountTime = 0.f;
+		m_isRender = true;
+		m_iPreBulbCount = m_iCurBulbCount;
+	}
+
+	if (m_isRender)
+	{
+		m_fAmountTime += _fTimeDelta;
+
+		if (3.f < m_fAmountTime)
+		{
+			m_isRender = false;
+		}
+	}
+
+
 }
 
 void CPick_Bulb::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+	if (m_isRender)
+		__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CPick_Bulb::Render()

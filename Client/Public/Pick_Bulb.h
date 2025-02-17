@@ -33,5 +33,11 @@ public:
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override;
 
+
+private:
+	_int					m_iPreBulbCount = { 0 };
+	_int					m_iCurBulbCount = { 0 };
+	_float					m_fAmountTime = { 0.f };
+
 };
 

@@ -410,6 +410,8 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 void CPlayer::Update(_float _fTimeDelta)
 {
+   // cout << "X : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[0] << " Y : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[1] << endl;
+
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
   //  if (COORDINATE_2D == eCoord)
