@@ -32,7 +32,7 @@ HRESULT CWordPrinter::Initialize()
 	return S_OK;
 }
 
-ID3D11ShaderResourceView* CWordPrinter::Print_Word(const _string& _strWordText, _float2 _fSize)
+ID3D11ShaderResourceView* CWordPrinter::Print_Word(const _wstring& _strWordText, _float2 _fSize)
 {
 	ID3D11Texture2D*		pTexture2D = nullptr;
 	ID3D11RenderTargetView* pRenderTarget = nullptr;
@@ -76,7 +76,7 @@ ID3D11ShaderResourceView* CWordPrinter::Print_Word(const _string& _strWordText, 
 
 #pragma region ±×¸®±â
 
-	m_pGameInstance->Render_Font(L"Font28", StringToWstring(_strWordText).c_str(), { 0.f,0.f },
+	m_pGameInstance->Render_Font(L"Font28", _strWordText.c_str(), { 0.f,0.f },
 		XMVectorSet(0.f, 0.f, 0.f, 1.f));
 
 #pragma endregion

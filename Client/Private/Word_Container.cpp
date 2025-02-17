@@ -1,5 +1,18 @@
 #include "stdafx.h"
 #include "Word_Container.h"
+#include "Section_Manager.h"
+#include "Player.h"
+
+CWord_Container::CWord_Container(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	:CPartObject(_pDevice,_pContext)
+{
+}
+
+CWord_Container::CWord_Container(const CWord_Container& _Prototype)
+	:CPartObject(_Prototype)
+
+{
+}
 
 HRESULT CWord_Container::Initialize_Prototype()
 {
@@ -35,20 +48,56 @@ HRESULT CWord_Container::Render()
 
 CWord_Container* CWord_Container::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	return nullptr;
+	CWord_Container* pInstance = new CWord_Container(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Created CWord_Container Failed");
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
 }
 
 CGameObject* CWord_Container::Clone(void* _pArg)
 {
-	return nullptr;
+	CWord_Container* pInstance = new CWord_Container(*this);
+
+	if (FAILED(pInstance->Initialize(_pArg)))
+	{
+		MSG_BOX("Clone CWord_Container Failed");
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
 }
 
 void CWord_Container::Free()
 {
+	__super::Free();
 }
 
 void CWord_Container::Interact(CPlayer* _pUser)
 {
+	if (_pUser->Is_CarryingObject())
+	{
+		//CCarriableObject* pObj =  _pUser->Get_CarryingObject();
+		//CWord* pWord = dynamic_cast<CWord*>(pObj);
+		//if (nullptr != pWord)
+		//{
+		//	Set_Word(pWord);
+		//}
+	}
+	else 
+	{
+		if (nullptr != m_pMyWord)
+		{
+			Pop_Word();
+			_pUser->Set_CarryingObject(m_pMyWord);
+		}
+	}
 }
 
 _bool CWord_Container::Is_Interactable(CPlayer* _pUser)
@@ -69,10 +118,13 @@ void CWord_Container::Set_Word(CWord* _pWord)
 	// 단어를 섹션에서 제거한다.
 	// 단어를 비활성화한다.
 	if (nullptr != m_pMyWord)
-	{
 		Pop_Word();
-		m_pMyWord = _pWord;
-	}
+
+	m_pMyWord = _pWord;
+
+	SECTION_MGR->Word_Action_To_Section(m_strSectionName, m_iControllerIndex, m_iContainerIndex, m_pMyWord->Get_WordType());
+	SECTION_MGR->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pMyWord);
+	m_pMyWord->Set_Active(false);
 }
 
 void CWord_Container::Pop_Word()
@@ -82,6 +134,7 @@ void CWord_Container::Pop_Word()
 	if (nullptr != m_pMyWord)
 	{
 		m_pMyWord->Set_Active(true);
+		SECTION_MGR->Add_GameObject_ToSectionLayer(m_strSectionName, m_pMyWord, SECTION_2D_PLAYMAP_WORD);
 		m_pMyWord = nullptr;
 	}
 }

@@ -30,7 +30,8 @@ HRESULT CLevel_Model_Tool::Initialize(CImguiLogger* _pLogger)
 }
 
 void CLevel_Model_Tool::Update(_float _fTimeDelta)
-{
+{	// 피직스 업데이트 
+	m_pGameInstance->Physx_Update(_fTimeDelta);
 	m_pToolManager->Update_Tool();
 }
 

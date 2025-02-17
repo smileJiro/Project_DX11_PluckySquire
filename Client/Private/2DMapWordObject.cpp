@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "2DMapWordObject.h"
 #include "GameInstance.h"
+#include "Section_Manager.h"
 
 
 C2DMapWordObject::C2DMapWordObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -36,19 +37,59 @@ HRESULT C2DMapWordObject::Initialize(void* _pArg)
     _float2 fScale = { WordObjectJson["Scale"][0].get<_float>(),
         WordObjectJson["Scale"][1].get<_float>() };
 
+    pDesc->Build_2D_Transform(fPos, fScale);
+
+    if(WordObjectJson.contains("Image_Tag_List") 
+        && WordObjectJson["Image_Tag_List"].is_array())
+    {
+        _uint iModelCount = (_uint)WordObjectJson["Image_Tag_List"].size();
+        m_ModelNames.reserve(iModelCount);
+        for (auto& ImageTagJson : WordObjectJson["Image_Tag_List"])
+        {
+            if (ImageTagJson.contains("ImagePath"))
+            {
+                _string strText = ImageTagJson["ImagePath"];
+                m_ModelNames.push_back(StringToWstring(strText));
+            }
+        }
+
+        if (!m_ModelNames.empty())
+        {
+            pDesc->Build_2D_Model(SECTION_MGR->Get_SectionLeveID(),
+                m_ModelNames[0],
+                TEXT("Prototype_Component_Shader_VtxPosTex")
+                );
+        }
+    }
 
 
-    if(WordObjectJson.contains("Image_Tag_List") && WordObjectJson["Image_Tag_List"].is_array())
-    {}
-    if(WordObjectJson.contains(""))
-    {}    
-    if(WordObjectJson.contains(""))
-    {}    
-    if(WordObjectJson.contains(""))
-    {}
+    if (WordObjectJson.contains("Word_Action_List")
+        && WordObjectJson["Word_Action_List"].is_array())
+    {
+        for (auto& WordActionJson : WordObjectJson["Word_Action_List"])
+        {
+            WORD_ACTION tAction = {};
+            if (WordActionJson.contains("Controller_Index"))
+                tAction.iControllerIndex = WordActionJson["Controller_Index"];
+            if (WordActionJson.contains("Container_Index"))
+                tAction.iContainerIndex = WordActionJson["Container_Index"];
+
+            if (WordActionJson.contains("Word_Type"))
+                tAction.iWordType = WordActionJson["Word_Type"];
+
+            if (WordActionJson.contains("Action_Type"))
+                tAction.eAction = WordActionJson["Action_Type"];
+            
+            if (WordActionJson.contains("Param"))
+                tAction.anyParam = WordActionJson["Param"];
+                //if(WordActionJson["Param"].is_boolean())
+
+            m_Actions.push_back(tAction);
+        }
+    }
 
 
-    return S_OK;
+    return __super::Initialize(pDesc);
 }
 
 void C2DMapWordObject::Priority_Update(_float _fTimeDelta)
@@ -68,7 +109,6 @@ void C2DMapWordObject::Late_Update(_float _fTimeDelta)
 
 HRESULT C2DMapWordObject::Render()
 {
-  
     return __super::Render();
 }
 
@@ -77,9 +117,9 @@ HRESULT C2DMapWordObject::Render_Shadow()
     return S_OK;
 }
 
-HRESULT C2DMapWordObject::Action_Execute(_uint _iContainerIndex, _uint iWordIndex)
+HRESULT C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
 {
-    auto pAction = Find_Action(_iContainerIndex, iWordIndex);
+    auto pAction = Find_Action(_iControllerIndex, _iContainerIndex, _iWordIndex);
 
     if (nullptr != pAction)
     {
@@ -96,6 +136,7 @@ HRESULT C2DMapWordObject::Action_Execute(_uint _iContainerIndex, _uint iWordInde
             _bool isActive = any_cast<_bool>(pAction->anyParam);
             Set_Active(isActive);
         }
+        break;
         default:
             break;
         }
@@ -104,11 +145,14 @@ HRESULT C2DMapWordObject::Action_Execute(_uint _iContainerIndex, _uint iWordInde
     return S_OK;
 }
 
-const C2DMapWordObject::WORD_ACTION* C2DMapWordObject::Find_Action(_uint _iContainerIndex, _uint _iWordIndex)
+const C2DMapWordObject::WORD_ACTION* C2DMapWordObject::Find_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
 {
-    auto iter = find_if(m_Actions.begin(), m_Actions.end(), [&_iContainerIndex, &_iWordIndex]
+    auto iter = find_if(m_Actions.begin(), m_Actions.end(), [&_iControllerIndex ,&_iContainerIndex, &_iWordIndex]
     (WORD_ACTION& tAction)->_bool {
-            return tAction.iContainerIndex == _iContainerIndex && tAction.iWordType == _iWordIndex;
+            return tAction.iControllerIndex == _iControllerIndex
+                && tAction.iContainerIndex == _iWordIndex
+                && tAction.iWordType == _iWordIndex;
+                
         });
 
     if (m_Actions.end() != iter)
@@ -117,6 +161,14 @@ const C2DMapWordObject::WORD_ACTION* C2DMapWordObject::Find_Action(_uint _iConta
     }
 
     return nullptr;
+}
+
+void C2DMapWordObject::Active_OnEnable()
+{
+}
+
+void C2DMapWordObject::Active_OnDisable()
+{
 }
 
 

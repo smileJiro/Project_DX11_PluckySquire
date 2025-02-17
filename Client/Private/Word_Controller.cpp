@@ -26,10 +26,10 @@ HRESULT CWord_Controller::Initialize(void* _pArg)
 	return __super::Initialize(_pArg);
 }
 
-HRESULT CWord_Controller::Import(json _ControllerJson)
+HRESULT CWord_Controller::Import(CSection_2D* _pSection, json _ControllerJson)
 {
-	// 컨테이너 인덱스. 
-	m_iContainerIndex = _ControllerJson["Container_Index"];
+	// 컨트롤러  인덱스. 
+	m_iControllerIndex = _ControllerJson["Controller_Index"];
 	// 풀 텍스트
 	_string strText = _ControllerJson["Text"];
 	m_strOriginText = StringToWstring(strText);
@@ -46,7 +46,7 @@ HRESULT CWord_Controller::Import(json _ControllerJson)
 
 #pragma region 정규식 처리된 단어 확인.
 
-	wregex pattern(L"(##(\\d+)(.*?)##\\1)");
+	wregex pattern(L"##");
 
 	auto words_begin = std::wsregex_iterator(m_strOriginText.begin(), m_strOriginText.end(), pattern);
 	auto words_end = std::wsregex_iterator();
@@ -59,8 +59,16 @@ HRESULT CWord_Controller::Import(json _ControllerJson)
 
 	// 문자 갯수만큼 파트 컨테이너 초기화 생성
 	m_PartObjects.resize(iCount);
-	for (size_t i = 0; i < iCount; i++)
+	for (_uint i = 0; i < iCount; i++)
+	{
 		m_PartObjects[i] = CWord_Container::Create(m_pDevice, m_pContext);
+		if (nullptr != m_PartObjects[i])
+		{
+			m_PartObjects[i]->Set_Include_Section_Name(_pSection->Get_SectionName());
+			static_cast<CWord_Container*>(m_PartObjects[i])->Set_ControllerIndex(m_iControllerIndex);
+			static_cast<CWord_Container*>(m_PartObjects[i])->Set_ContainerIndex(i);
+		}
+	}
 
 	// 초기화 갯수만큼 워드 삽입
 	if (_ControllerJson.contains("Init_Word_Type"))
@@ -117,7 +125,7 @@ HRESULT CWord_Controller::Render()
 
 HRESULT CWord_Controller::Update_Text()
 {
-	wregex pattern(L"(##(\\d+)(.*?)##\\1)");
+	wregex pattern(L"##");
 
 	auto words_begin = std::wsregex_iterator(m_strOriginText.begin(), m_strOriginText.end(), pattern);
 	auto words_end = std::wsregex_iterator();
@@ -154,11 +162,20 @@ HRESULT CWord_Controller::Update_Text()
 	return S_OK;
 }
 
-CWord_Controller* CWord_Controller::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json _ControllerJson)
+void CWord_Controller::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
+{
+	for (auto pController : m_PartObjects)
+	{
+		if(nullptr != pController)
+			pController->Set_Include_Section_Name(_strIncludeSectionName);
+	}
+}
+
+CWord_Controller* CWord_Controller::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CSection_2D* _pSection, json _ControllerJson)
 {
 	CWord_Controller* pInstance = new CWord_Controller(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Import(_ControllerJson)))
+	if (FAILED(pInstance->Import(_pSection, _ControllerJson)))
 	{
 		MSG_BOX("Failed to Load : CWord_Controller");
 		Safe_Release(pInstance);

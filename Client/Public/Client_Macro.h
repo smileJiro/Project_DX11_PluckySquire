@@ -11,6 +11,7 @@ namespace Client
 
 #define MAP_2D_DEFAULT_PATH L"../Bin/MapSaveFiles/2D/"
 #define MAP_3D_DEFAULT_PATH L"../Bin/MapSaveFiles/3D/"
+#define MINIGAME_WORD_PATH L"../Bin/DataFiles/Minigame/Word/"
 
 #define Uimgr CUI_Manager::GetInstance()
 #define SECTION_MGR CSection_Manager::GetInstance()
