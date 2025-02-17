@@ -56,8 +56,9 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 		return E_FAIL;
 
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0506"), this);
 
 	CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 

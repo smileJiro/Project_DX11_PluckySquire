@@ -1,5 +1,6 @@
 #pragma once
 #include "UI.h"
+#include "Portrait.h"
 
 BEGIN(Engine)
 class CShader;
@@ -9,6 +10,8 @@ END
 
 
 BEGIN(Client)
+
+class CPortrait;
 
 class CDialog : public CUI
 {
@@ -22,6 +25,7 @@ public:
         LOC_LEFTHIGH,
         LOC_RIGHTHIGH,
         LOC_RIGHDOWN,
+        LOC_VERYMIDHIGH,
         LOC_END };
 
     enum PORTRAITNAME
@@ -68,6 +72,8 @@ public:
 
         _bool is2D;
         _bool isPortrait;
+
+        _float3 vFontColor = _float3(0.f, 0.f, 0.f);
         
         LOC  location = LOC_MIDHIGH;    // 위치 설정
         PORTRAITNAME portrait = PORTRAITNAME_DEFAULT;
@@ -93,6 +99,10 @@ public:
     virtual void Late_Update(_float _fTimeDelta);
     virtual HRESULT Render() override;
 
+public:
+    CPortrait* Get_Portrait() { return m_pPortrait; }
+    void        Set_Portrait(CPortrait* _Portrait) { m_pPortrait = _Portrait; Safe_AddRef(_Portrait); }
+
 private:
     HRESULT     LoadFromJson(const std::wstring& filePath); // 데이터 로드
     HRESULT      DisplayText(_float2 _vRTSize); // 타이핑 되게하자.
@@ -110,6 +120,10 @@ private:
 	_float2             m_vDisplay2DSize = { 0.f, 0.f };
     _bool               m_isAddSectionRender = { false };
     _tchar              m_strDialogSection[MAX_PATH] = {};
+
+    _float3             m_vFontColor = _float3{ 0.f, 0.f, 0.f };
+
+    CPortrait*          m_pPortrait = { nullptr };
 
     //vector<DialogData>  m_DialogDatas;
 

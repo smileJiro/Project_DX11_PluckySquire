@@ -78,7 +78,7 @@ public:
 	void						Set_Alive()										{ m_isDead = false; }
 	virtual void				Set_Render(_bool _isRender)						{ m_isRender = _isRender; }
 	void						Set_Pooling(_bool _isPooling)					{ m_isPooling = _isPooling; }
-	void						Set_Include_Section_Name(const _wstring _strIncludeSectionName) { m_strSectionName = _strIncludeSectionName; }
+	virtual void				Set_Include_Section_Name(const _wstring _strIncludeSectionName) { m_strSectionName = _strIncludeSectionName; }
 	void						Init_Include_Section_Name()						{ m_strSectionName = L""; }
 	
 protected:

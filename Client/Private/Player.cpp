@@ -185,6 +185,8 @@ HRESULT CPlayer::Initialize(void* _pArg)
         return E_FAIL;
      
 	m_ePlayerMode = PLAYER_MODE_NORMAL;
+
+    Set_PlatformerMode(false);
     return S_OK;
 }
 
@@ -294,6 +296,20 @@ HRESULT CPlayer::Ready_PartObjects()
     return S_OK;
 }
 
+void CPlayer::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
+{
+    /* 태웅 : */
+    __super::Set_Include_Section_Name(_strIncludeSectionName);
+
+    if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
+    {
+        Set_Position(XMVectorSet(0.0f, 2800.f, 0.0f, 0.0f));
+        Set_PlatformerMode(true);
+    }
+    else
+        Set_PlatformerMode(false);
+}
+
 
 HRESULT CPlayer::Ready_Components()
 {
@@ -325,8 +341,9 @@ HRESULT CPlayer::Ready_Components()
    CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
    CircleDesc.pOwner = this;
    CircleDesc.fRadius = 20.f;
+   m_f2DColliderBodyRadius = CircleDesc.fRadius;
    CircleDesc.vScale = { 1.0f, 1.0f };
-   CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius*0.5f };
+   CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius * 0.5f };
    CircleDesc.isBlock = false;
    CircleDesc.isTrigger = false;
    CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER;
@@ -365,13 +382,14 @@ HRESULT CPlayer::Ready_Components()
 
    /* Com_Gravity */
    CGravity::GRAVITY_DESC GravityDesc = {};
-   GravityDesc.fGravity = 9.8f * 150.f;
+   GravityDesc.fGravity = 9.8f * 290.f;
    GravityDesc.vGravityDirection = { 0.0f, -1.0f, 0.0f };
    GravityDesc.pOwner = this;
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
        TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
        return E_FAIL;
    Safe_AddRef(m_pGravityCom);
+   m_pGravityCom->Set_Active(false);
     return S_OK;
 }
 
@@ -392,6 +410,8 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 void CPlayer::Update(_float _fTimeDelta)
 {
+   // cout << "X : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[0] << " Y : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[1] << endl;
+
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
   //  if (COORDINATE_2D == eCoord)
@@ -504,11 +524,13 @@ HRESULT CPlayer::Render()
 
 #ifdef _DEBUG
     if(m_pBody2DColliderCom->Is_Active())
-        m_pBody2DColliderCom->Render();
+        m_pBody2DColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
     if(m_pBody2DTriggerCom->Is_Active())
-        m_pBody2DTriggerCom->Render();
+        m_pBody2DTriggerCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
     if (m_pAttack2DTriggerCom->Is_Active())
-        m_pAttack2DTriggerCom->Render();
+        m_pAttack2DTriggerCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+
+
 #endif // _DEBUG
 
     /* Font Render */
@@ -717,7 +739,15 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
             {
                 /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
                 m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+                //Set_State(STATE::IDLE);
 
+            }
+            else if(-1.0f + fEpsilon >= fGdotC)
+            {
+                m_pGravityCom->Set_GravityAcc(0.0f);
+                if (STATE::ROLL == Get_CurrentStateID())
+                    break;
+                Set_State(STATE::JUMP_DOWN);
             }
         }
         
@@ -743,6 +773,43 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
                 m_pInteractableObject = pInteractable;
                 m_pPortal = dynamic_cast<CPortal*>(m_pInteractableObject);
             }
+        }
+        
+        if (OBJECT_GROUP::BLOCKER == eGroup)
+        {
+            if (true == _pMyCollider->Is_Trigger())
+            {
+
+            }
+            else if (false == static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
+            {
+
+            }
+            else
+            {
+                /* 1. Blocker은 항상 AABB임을 가정. */
+
+                /* 2. 나의 Collider 중점 기준, AABB에 가장 가까운 점을 찾는다. */
+                _bool isResult = false;
+                _float fEpsilon = 0.01f;
+                _float2 vContactVector = {};
+                isResult = static_cast<CCollider_Circle*>(_pMyCollider)->Compute_NearestPoint_AABB(static_cast<CCollider_AABB*>(_pOtherCollider), nullptr, &vContactVector);
+                if (true == isResult)
+                {
+                    /* 3. 충돌지점 벡터와 중력벡터를 내적하여 그 결과를 기반으로 Floor 인지 체크. */
+                    _float3 vGravityDir = m_pGravityCom->Get_GravityDirection();
+                    _float2 vGravityDirection = _float2(vGravityDir.x, vGravityDir.y);
+                    _float fGdotC = XMVectorGetX(XMVector2Dot(XMLoadFloat2(&vGravityDirection), XMVector2Normalize(XMLoadFloat2(&vContactVector))));
+                    if (1.0f - fEpsilon <= fGdotC)
+                    {
+                        /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
+                       
+                        m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+
+                    }
+                }
+            }
+           
         }
     }
     else if (_pMyCollider == m_pAttack2DTriggerCom
@@ -784,7 +851,9 @@ void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
             break;
 
         if (static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
+        {
             m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
+        }
     }
     break;
     default:
@@ -940,7 +1009,7 @@ void CPlayer::Jump()
     {
         if (m_bPlatformerMode)
         {
-			m_pGravityCom->Set_GravityAcc(-m_f2DPlatformerJumpPower);
+			m_pGravityCom->Set_GravityAcc(-m_f2DPlatformerJumpPower * 1.2f);
          
             m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
         }
@@ -996,7 +1065,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
                 tResult.bInputStates[PLAYER_INPUT_SPINLAUNCH] = true;
         }
     }
-    if (Is_CarryingObject())
+	_bool bCarrying = Is_CarryingObject();
+    if (bCarrying)
     {
         //상호작용 오브젝트가 범위 안에 있으면 상호작용, 아니면 던지기
         if (Has_InteractObject())
@@ -1018,7 +1088,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     if (KEY_DOWN(KEY::SPACE))
         tResult.bInputStates[PLAYER_INPUT_JUMP] = true;
     //구르기 & 잠입
-    else if (KEY_PRESSING(KEY::LSHIFT))
+    else if (false == bCarrying && KEY_PRESSING(KEY::LSHIFT))
     {
         if (Is_SneakMode())
             tResult.bInputStates[PLAYER_INPUT_SNEAK] = true;
@@ -1293,7 +1363,17 @@ CPlayer::STATE CPlayer::Get_CurrentStateID()
 
 CCarriableObject* CPlayer::Get_CarryingObject()
 {
-    { return static_cast<CCarriableObject*>(m_pCarryingObject); }
+    { return (m_pCarryingObject); }
+}
+
+const _float4x4* CPlayer::Get_BodyWorldMatrix_Ptr() const
+{
+    return m_pBody->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+}
+
+const _float4x4* CPlayer::Get_BodyWorldMatrix_Ptr(COORDINATE eCoord) const
+{
+    return m_pBody->Get_ControllerTransform()->Get_Transform(eCoord)->Get_WorldMatrix_Ptr();
 }
 
 
@@ -1454,6 +1534,23 @@ void CPlayer::Set_Kinematic(_bool _bKinematic)
 void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
 {
     m_bPlatformerMode = _bPlatformerMode;
+    if (true == _bPlatformerMode)
+    {
+        Event_SetActive(m_pGravityCom, true);
+        m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
+        CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
+
+        pCollider->Set_Radius(m_f2DColliderBodyRadius * 2.f);
+        pCollider->Set_Offset(_float2(0.0f, m_f2DColliderBodyRadius * 2.0f * 0.7f));
+    }
+    else
+    {
+        Event_SetActive(m_pGravityCom, false);
+        m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+        CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
+        pCollider->Set_Radius(m_f2DColliderBodyRadius);
+        pCollider->Set_Offset(_float2(0.0f, m_f2DColliderBodyRadius * 0.5f));
+    }
 }
 void CPlayer::Set_Upforce(_float _fForce)
 {
@@ -1647,10 +1744,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         //m_pActorCom->Set_ShapeGeometry(0, PxGeometryType::eCAPSULE, &Desc);
 		COORDINATE eCurCoord = Get_CurCoord();
         if (COORDINATE_2D == eCurCoord)
-            m_bPlatformerMode = !m_bPlatformerMode;
+            Set_PlatformerMode(!m_bPlatformerMode);
         else
         {
-            m_bPlatformerMode = false;
+            Set_PlatformerMode(false);
             Set_Kinematic(false == m_pActorCom->Is_Kinematic());
         }
         //m_pControllerTransform->Rotation(XMConvertToRadians(m_bPlatformerMode ? 90 : 0), {0,0,1});

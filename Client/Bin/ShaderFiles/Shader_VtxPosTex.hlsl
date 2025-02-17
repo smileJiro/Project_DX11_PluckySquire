@@ -149,7 +149,7 @@ PS_OUT PS_DIALOGUE_BG_COLOR(PS_IN In)
     
     Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
     
-    if (1.f == Out.vColor.r && 1.f == Out.vColor.g && 1.f == Out.vColor.b)
+    if (0.99f <= Out.vColor.r && 0.99f <= Out.vColor.g && 0.99f <= Out.vColor.b)
     {
         Out.vColor.rgb = g_vColors.rgb;
     }
