@@ -48,7 +48,7 @@ HRESULT CDialog::Initialize(void* _pArg)
 
 	m_isRender = false;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 	m_isAddSectionRender = true;
 
 	return S_OK;
@@ -88,6 +88,17 @@ void CDialog::Late_Update(_float _fTimeDelta)
 	if (true == Uimgr->Get_DisplayDialogue() && COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 		Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
+	}
+
+	if (true == Uimgr->Get_DisplayDialogue() && false == m_isFirstRefresh)
+	{
+		wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
+
+		if (false == Uimgr->Get_pDialogue())
+		{
+			Uimgr->Get_pDialogue()->CBase::Set_Active(true);
+		}
 	}
 
 }
@@ -459,6 +470,19 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 	}
 	break;
+	case LOC_VERYMIDHIGH: // 가운데 우측
+	{
+		_float2 vPos = { 0.f , 0.f };
+
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+
+
+		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+	}
+	
+
+	break;
 	}
 
 	// 2D 기준
@@ -499,6 +523,10 @@ void CDialog::NextDialogue(_float2 _RTSize)
 	_tchar _strDialogue[MAX_PATH] = {};
 	wsprintf(_strDialogue, Uimgr->Get_DialogId());
 
+	if (L"" == _strDialogue)
+	{
+		return;
+	}
 
 	// 2D 기준
 	if (Uimgr->Get_DialogueLineIndex() <= Uimgr->Get_Dialogue(_strDialogue)[0].lines.size())
@@ -531,7 +559,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 					else
 					{
 						wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this), SECTION_2D_PLAYMAP_UI;
 
 						//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 					}
@@ -581,7 +609,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 					//Section_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -608,7 +636,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -637,7 +665,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -665,7 +693,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -693,7 +721,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -721,7 +749,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -749,7 +777,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -762,6 +790,34 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			vPos.y -= _RTSize.y * 0.14f;
 		}
 		break;
+
+		case LOC_VERYMIDHIGH:
+		{
+			if (!m_isAddSectionRender)
+			{
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI
+					);
+					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
+				m_isAddSectionRender = true;
+			}
+
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
+
+			vPos.y += _RTSize.y * 0.38f;
+		}
+
 
 		}
 
@@ -833,7 +889,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 					else
 					{
 						wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 						//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 					}
 					m_isAddSectionRender = true;
@@ -858,7 +914,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 					else
 					{
 						wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 						//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 					}
 					m_isAddSectionRender = false;
@@ -896,7 +952,8 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI
+					);
 					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -923,7 +980,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -951,7 +1008,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -979,7 +1036,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -1007,7 +1064,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -1035,7 +1092,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -1063,7 +1120,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 				else
 				{
 					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
 					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 				}
 				m_isAddSectionRender = true;
@@ -1076,7 +1133,35 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			vPos.y -= _RTSize.y * 0.14f;
 		}
 		break;
+		case LOC_VERYMIDHIGH:
+		{
+			if (!m_isAddSectionRender)
+			{
+				_tchar	strSectionID[MAX_PATH];
+				wsprintf(strSectionID, Uimgr->Get_strSectionID());
+
+				if (TEXT("NOTWORD") == strSectionID)
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+				}
+				else
+				{
+					wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI
+					);
+					//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
+				}
+				m_isAddSectionRender = true;
+			}
+
+			vPos.x = Uimgr->Get_DialoguePos().x;
+			vPos.y = Uimgr->Get_DialoguePos().y;
+
+			vPos.y += _RTSize.y * 0.38f;
 		}
+		break;
+		}
+
 
 		Uimgr->Set_CalDialoguePos(_float3(vPos.x, vPos.y, 0.f));
 		m_vCurPos = vPos;

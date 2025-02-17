@@ -41,6 +41,7 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	m_iStartAnimation = pDesc->iStartAnimation;
 	m_vPosition = _float3(pDesc->vPositionX, pDesc->vPositionY, pDesc->vPositionZ);
 	m_vCollsionScale = _float2(pDesc->CollsionScaleX, pDesc->CollsionScaleY);
+	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable = true;
@@ -53,6 +54,8 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 	m_iMainIndex = pDesc->iMainIndex;
 	m_iSubIndex = pDesc->iSubIndex;
+
+	wsprintf(m_strCurSecion, pDesc->strSectionid.c_str());
 	
 
 	//if (FAILED(Ready_ActorDesc(pDesc)))
@@ -69,7 +72,9 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 
 	
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionid, this);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionid, this, SECTION_2D_PLAYMAP_OBJECT);
+
+	wsprintf(m_strCurSecion, pDesc->strSectionid.c_str());
 
 	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
@@ -158,10 +163,17 @@ void CNPC_Social::Update(_float _fTimeDelta)
 
 void CNPC_Social::Late_Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::E) && true == m_isColPlayer)
+	if (false == m_isThrow && true == m_isColPlayer)
 	{
 		Throw_Dialogue();
+		m_isThrow = true;
 	}
+	
+	if (false == m_isColPlayer && true == m_isThrow)
+	{
+		m_isThrow = false;
+	}
+
 
 	__super::Late_Update(_fTimeDelta);
 
@@ -256,7 +268,7 @@ HRESULT CNPC_Social::Ready_Components()
 	AABBDesc.vExtents = { m_vCollsionScale.x, m_vCollsionScale.y };
 	AABBDesc.vScale = { 1.0f, 1.0f };
 	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.5f };
-	AABBDesc.isBlock = true;
+	AABBDesc.isBlock = false;
 	AABBDesc.isTrigger = false;
 	AABBDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
