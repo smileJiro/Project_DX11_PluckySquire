@@ -514,7 +514,7 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 {
 	CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, L"Layer_Player", 0);
 
-	if (nullptr != pGameObject)
+	if (nullptr != pGameObject && COORDINATE_2D ==  pGameObject->Get_CurCoord())
 	{
 		_wstring strMoveSectionName = L"";
 		if (FAILED(SECTION_MGR->Remove_GameObject_ToCurSectionLayer(pGameObject)))
