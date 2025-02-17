@@ -221,6 +221,7 @@
     <ClInclude Include="..\Public\DeadState.h" />
     <ClInclude Include="..\public\FallingRock.h" />
     <ClInclude Include="..\Public\FloorWord.h" />
+    <ClInclude Include="..\Public\GameEventExecuter.h" />
     <ClInclude Include="..\Public\HitState.h" />
     <ClInclude Include="..\Public\Interactable.h" />
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
@@ -418,6 +419,7 @@
     <ClCompile Include="..\Private\DeadState.cpp" />
     <ClCompile Include="..\private\FallingRock.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
+    <ClCompile Include="..\Private\GameEventExecuter.cpp" />
     <ClCompile Include="..\Private\HitState.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_Test.cpp" />

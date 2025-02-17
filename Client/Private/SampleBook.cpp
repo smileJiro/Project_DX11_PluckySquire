@@ -499,8 +499,10 @@ void CSampleBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 			//	Event_Book_Main_Section_Change(SECTION_MGR->Get_Prev_Section_Key()->c_str());
 			SECTION_MGR->Change_Prev_Section();
 		}
-		
-		Event_Book_Main_Change(CCamera_Manager::GetInstance()->Get_CameraType());
+		if (CCamera_Manager::CAMERA_TYPE::TARGET_2D == CCamera_Manager::GetInstance()->Get_CameraType())
+		{
+			Event_Book_Main_Change(CCamera_Manager::GetInstance()->Get_CameraType());
+		}
 
 		Set_Animation(0);
 		m_eCurAction = ACTION_LAST;
@@ -547,8 +549,11 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 				if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(strMoveSectionName, pCarryingObj, SECTION_2D_PLAYMAP_OBJECT)))
 					return;
 			}
-			CCamera* pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D);
-			static_cast<CCamera_2D*>(pCamera)->Set_Include_Section_Name(strMoveSectionName);
+			if (CCamera_Manager::CAMERA_TYPE::TARGET_2D == CCamera_Manager::GetInstance()->Get_CameraType())
+			{
+				CCamera* pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D);
+				static_cast<CCamera_2D*>(pCamera)->Set_Include_Section_Name(strMoveSectionName);
+			}
 		}
 	}
 }
@@ -603,7 +608,8 @@ HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPos
 	{
 		m_fNextPos = _fNextPosition;
 		m_isAction = true;
-		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
+		if(CCamera_Manager::CAMERA_TYPE::TARGET_2D == CCamera_Manager::GetInstance()->Get_CameraType())
+			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::FLIPPING_UP);
 	}
 	return S_OK;
 }

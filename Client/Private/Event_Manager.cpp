@@ -664,7 +664,7 @@ HRESULT CEvent_Manager::Execute_Hit(const EVENT& _tEvent)
 	if (nullptr == pHitter || nullptr == pVIctim)
 		return E_FAIL;
 
-	pVIctim->On_Hit(pHitter, (_float)fDamg);
+	pVIctim->On_Hit(pHitter, (_int)fDamg);
 	return S_OK;
 }
 

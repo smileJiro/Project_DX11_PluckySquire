@@ -10,7 +10,7 @@ BEGIN(Client)
 
 class C2DMapWordObject final : public C2DMapObject
 {
-	enum WORD_ACTION
+	enum WORD_ACTION_TYPE
 	{
 		IMAGE_CHANGE,
 		WORD_OBJECT_ACTIVE,
@@ -18,20 +18,20 @@ class C2DMapWordObject final : public C2DMapObject
 	};
 
 public :
-	typedef struct tagWordAction
+	typedef struct tagWordAction : C2DMapObject::MAPOBJ_DESC
 	{
-		_uint iContainerIndex;
-		_uint iWordType;
-		WORD_ACTION eAction;
-		//ANY		tParam;
-	};
+		_uint				iContainerIndex;
+		_uint				iWordType;
+		WORD_ACTION_TYPE	eAction;
+		any					anyParam;
+	} WORD_ACTION;
 
 public :
 	typedef struct tag2DWordObjectDesc : public C2DMapObject::MAPOBJ_DESC
 	{
+		json WordObjectJson;
 
-
-	};
+	}WORD_OBJECT_DESC;
 private:
 	C2DMapWordObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	C2DMapWordObject(const C2DMapWordObject& _Prototype);
@@ -46,11 +46,14 @@ public:
 	virtual HRESULT					Render() override;
 	virtual HRESULT					Render_Shadow() override;
 
+	virtual HRESULT					Action_Execute(_uint _iContainerIndex, _uint iWordIndex);
+	const WORD_ACTION*				Find_Action(_uint _iContainerIndex, _uint iWordIndex);
 
 private :
-	_wstring			m_strWordObjectTag;
-	_uint				m_iModelIndex;
-	vector <C2DModel*>	m_Models;
+	_wstring				m_strWordObjectTag;
+	_uint					m_iModelIndex;
+	vector <C2DModel*>		m_Models;
+	vector <WORD_ACTION>	m_Actions;
 
 	
 

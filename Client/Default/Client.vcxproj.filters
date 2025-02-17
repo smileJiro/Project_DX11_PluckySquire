@@ -436,6 +436,9 @@
     <Filter Include="02.GameObjects\Word">
       <UniqueIdentifier>{70b6f4d5-168b-46b5-849c-cb56b4c3621c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\GameEventExecuter">
+      <UniqueIdentifier>{9289d312-d786-419b-81a3-be64a79c7793}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1005,6 +1008,9 @@
     <ClInclude Include="..\Public\2DMapWordObject.h">
       <Filter>02.GameObjects\MapObject\2D</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\GameEventExecuter.h">
+      <Filter>02.GameObjects\GameEventExecuter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1558,6 +1564,9 @@
     <ClCompile Include="..\Private\PlayerState_LaydownObject.cpp" />
     <ClCompile Include="..\Private\2DMapWordObject.cpp">
       <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameEventExecuter.cpp">
+      <Filter>02.GameObjects\GameEventExecuter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
