@@ -100,7 +100,7 @@ HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
         isSectionLoading = true;
         break;
     case Client::LEVEL_CHAPTER_TEST:
-        strJsonPath = L"Chapter1";
+        strJsonPath = L"Chapter2";
         isSectionLoading = true;
         break;
     default:

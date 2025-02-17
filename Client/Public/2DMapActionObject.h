@@ -9,7 +9,6 @@ class C2DMapActionObject final : public C2DMapObject
 public :
 	enum MAPOBJ_2D_ACTION_TYPE
 	{
-		
 		ACTIVE_TYPE_BREAKABLE,
 		ACTIVE_TYPE_PATROL,
 		ACTIVE_TYPE_ATTACKABLE,

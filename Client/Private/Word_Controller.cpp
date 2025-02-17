@@ -46,7 +46,7 @@ HRESULT CWord_Controller::Import(json _ControllerJson)
 
 #pragma region 정규식 처리된 단어 확인.
 
-	wregex pattern(L"(##(\d+)(.*?)##\1)");
+	wregex pattern(L"(##(\\d+)(.*?)##\\1)");
 
 	auto words_begin = std::wsregex_iterator(m_strOriginText.begin(), m_strOriginText.end(), pattern);
 	auto words_end = std::wsregex_iterator();
@@ -117,7 +117,7 @@ HRESULT CWord_Controller::Render()
 
 HRESULT CWord_Controller::Update_Text()
 {
-	wregex pattern(L"(##(\d+)(.*?)##\1)");
+	wregex pattern(L"(##(\\d+)(.*?)##\\1)");
 
 	auto words_begin = std::wsregex_iterator(m_strOriginText.begin(), m_strOriginText.end(), pattern);
 	auto words_end = std::wsregex_iterator();
@@ -146,7 +146,7 @@ HRESULT CWord_Controller::Update_Text()
 		{
 			strNewTex += L"__";
 		}
-		iLastPos = match.position() + match.length();
+		iLastPos = (_uint)match.position() + (_uint)match.length();
 	}
 	_vector vScale = m_pGameInstance->Measuring(L"Font28", m_strRenderText);
 	m_fRenderSize = { XMVectorGetX(vScale), XMVectorGetY(vScale) };

@@ -152,24 +152,31 @@ void CSampleBook::Update(_float _fTimeDelta)
 
 	}
 
-	if (CCamera_2D::FLIPPING_PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()) {
 		if ((ACTION_LAST != m_eCurAction) && true == m_isAction) {
 
-			if (m_eCurAction == NEXT)
+			CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), L"Layer_Player", 0);
+			if (nullptr == pGameObject
+				||
+				pGameObject->Get_CurCoord() == COORDINATE_3D
+				||
+				CCamera_2D::FLIPPING_PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()
+				)
 			{
-				Set_ReverseAnimation(false);
-				Set_Animation(8);
-			}
+				if (m_eCurAction == NEXT)
+				{
+					Set_ReverseAnimation(false);
+					Set_Animation(8);
+				}
 
-			if (m_eCurAction == PREVIOUS)
-			{
-				Set_ReverseAnimation(true);
-				Set_Animation(8);
-			}
+				if (m_eCurAction == PREVIOUS)
+				{
+					Set_ReverseAnimation(true);
+					Set_Animation(8);
+				}
 
-			m_isAction = false;
+				m_isAction = false;
+			}
 		}
-	}
 
 	__super::Update(_fTimeDelta);
 
