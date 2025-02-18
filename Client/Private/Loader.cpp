@@ -18,6 +18,7 @@
 #include "FallingRock.h"
 #include "Spawner.h"
 #include "CollapseBlock.h"
+#include "Word_Container.h"
 
 
 // Trigger
@@ -75,6 +76,7 @@
 #include "2DModel.h"
 #include "3DModel.h"
 #include "Controller_Model.h"
+#include "GameEventExecuter.h"
 #include "FSM.h"
 #include "set"
 #include "StateMachine.h"
@@ -86,6 +88,7 @@
 #include "MapObjectFactory.h"
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
+#include "LightningBolt.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -362,7 +365,6 @@ HRESULT CLoader::Loading_Level_Static()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"),
         CSpawner::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -370,6 +372,11 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_GameObject_CubeMap */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
         CCubeMap::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    
+    /* For. Prototype_GameObject_CubeMap */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_GameEventExecuter"),
+        CGameEventExecuter::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_MainTable */
@@ -410,6 +417,10 @@ HRESULT CLoader::Loading_Level_Static()
     
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Portal"),
         CPortal::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+     
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Word_Container"),
+        CWord_Container::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     // ============ etc Bulb, PlayerItem
@@ -540,6 +551,12 @@ HRESULT CLoader::Loading_Level_Static()
         CPopuff::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* For. Prototype_GameObject_LightningBolt */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_LightningBolt"),
+        CLightningBolt::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
     /* For. Prototype_GameObject_Blocker2D */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Blocker2D"),
         CBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
@@ -640,6 +657,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_ZippyAttackAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Monster/Zippy/Zippy_Attack.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_LightningBoltAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/MapObject/LightningBolt/LightningBolt.animevt"))))
         return E_FAIL;
         if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_BookPageActionEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))
@@ -948,7 +968,6 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 		CNPC_Thrash::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
-
 
     /* Monster */
 

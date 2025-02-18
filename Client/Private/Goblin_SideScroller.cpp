@@ -299,7 +299,7 @@ HRESULT CGoblin_SideScroller::Ready_Components()
         return E_FAIL;
 
     /* 2D Collider */
-    m_p2DColliderComs.resize(1);
+    m_p2DColliderComs.resize(2);
 
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
@@ -310,6 +310,17 @@ HRESULT CGoblin_SideScroller::Ready_Components()
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
+        return E_FAIL;
+
+
+    CircleDesc.fRadius = { 5.f };
+    CircleDesc.vScale = { 1.0f, 1.0f };
+    CircleDesc.vOffsetPosition = { 0.f, 20.f };
+    CircleDesc.isBlock = false;
+    CircleDesc.isTrigger = true;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+        TEXT("Com_ColliderHead"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
         return E_FAIL;
 
     /* Com_Gravity */

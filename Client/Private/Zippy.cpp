@@ -4,6 +4,7 @@
 #include "FSM.h"
 #include "ModelObject.h"
 #include "Section_Manager.h"
+#include "Player.h"
 
 CZippy::CZippy(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -170,7 +171,7 @@ void CZippy::Attack()
 {
     if (true == m_isDash)
     {
-        Get_ControllerTransform()->Set_SpeedPerSec(m_fSpeed * 6.f); //속도 임시
+        Get_ControllerTransform()->Set_SpeedPerSec(m_fSpeed * 10.f); //속도 임시
         XMStoreFloat3(&m_vDashDirection, XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()));
         return;
     }
@@ -386,6 +387,7 @@ void CZippy::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCol
         if (true == m_isElectric)
         {
             //플레이어 setstate 부르기
+            static_cast<CPlayer*>(_pOtherObject)->Set_State(CPlayer::ELECTRIC);
             Event_Hit(this, _pOtherObject, Get_Stat().iDamg);
             m_isElectric = false;
         }
