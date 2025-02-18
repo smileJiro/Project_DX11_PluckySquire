@@ -602,6 +602,9 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 
 						m_fWaitingTime += _fTimeDelta;
 						m_isWaitingNextPage = true;
+
+					
+
 					}
 				}
 				else
@@ -619,6 +622,14 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						Event_Book_Main_Section_Change_Start(1, &vPos);
 					else
 						Event_Book_Main_Section_Change_Start(0, &vPos);
+
+
+					/* 하드코딩 */
+					// Chapter1_P1112_Narration_01
+					if (m_NarrationDatas[m_iNarrationCount].strid == TEXT("Chapter1_P1112_Narration_01"))
+					{
+						Uimgr->Set_VioletMeet(true);
+					}
 
 
 					m_isStartNarration = false;
@@ -642,6 +653,8 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						}
 					}
 					m_vAnimObjectsByLine.clear();
+
+
 				}
 				// 어라? 나레이션 내에 다음 라인이 있네요? 다시 업데이트 쳐줍시다.
 				else if (m_iCurrentLine < m_NarrationDatas[m_iNarrationCount].lines.size() - 1)

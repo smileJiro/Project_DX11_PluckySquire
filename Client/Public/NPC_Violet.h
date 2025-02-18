@@ -9,6 +9,13 @@ class CNPC_Violet final : public CNPC_Companion
 {
 
 public:
+	enum RENDER
+	{
+		VIOLET_RENDER,
+		VIOLET_NOTRENDER,
+		VIOLETRENDER_END
+	};
+
 	enum ACTION
 	{
 		ACTION_WAIT,
@@ -206,6 +213,7 @@ public:
 	virtual void				Free() override;
 	virtual HRESULT				Cleanup_DeadReferences() override; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
 	void						Trace(_float _fTimeDelta);
+	CNPC_Violet::RENDER			Get_RenderType() { return m_eRenderType; }
 
 private:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
@@ -216,6 +224,7 @@ private:
 private:
 	CNPC_Violet::ACTION			m_eActionType = { ACTION_END };
 	CNPC_Violet::ANIMATION		m_eAnimationType = { ANIM_END };
+	CNPC_Violet::RENDER			m_eRenderType = { VIOLETRENDER_END };
 	_float						m_fIdleWaitTime = { 0.f };
 	_float						m_fWelcomeWaitTime = { 0.f };
 	_bool						m_isDialoging = { false };

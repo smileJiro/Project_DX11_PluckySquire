@@ -1017,7 +1017,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\2DMapWordObject.h" />
     <ClInclude Include="..\public\CollapseBlock.h" />
-    <ClInclude Include="..\Public\Effect_Manager.h" />
     <ClInclude Include="..\Public\Goblin_SideScroller.h" />
     <ClInclude Include="..\Public\LightningBolt.h" />
     <ClInclude Include="..\Public\PlayerState_Evict.h" />
@@ -1045,8 +1044,8 @@
     </ClInclude>
     <ClInclude Include="..\Public\Magic_Hand_Body.h">
       <Filter>02.GameObjects\MagicHand</Filter>
-	</ClInclude>
-	<ClInclude Include="..\Public\LightningBolt.h">
+    </ClInclude>
+    <ClInclude Include="..\Public\LightningBolt.h">
       <Filter>02.GameObjects\Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Evict.h">
@@ -1055,6 +1054,12 @@
     <ClInclude Include="..\Public\PlayerState_TurnBook.h" />
     <ClInclude Include="..\Public\SideScroll_HitState.h" />
     <ClInclude Include="..\Public\SideScroll_PatrolState.h" />
+    <ClInclude Include="..\Public\Effect_Manager.h">
+      <Filter>02.GameObjects\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect2D.h">
+      <Filter>02.GameObjects\Effect2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1606,7 +1611,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
     <ClCompile Include="..\private\CollapseBlock.cpp" />
-    <ClCompile Include="..\Private\Effect_Manager.cpp" />
     <ClCompile Include="..\Private\Goblin_SideScroller.cpp" />
     <ClCompile Include="..\Private\GameEventExecuter.cpp" />
     <ClCompile Include="..\Private\LightningBolt.cpp" />
@@ -1648,6 +1652,12 @@
     <ClCompile Include="..\Private\PlayerState_TurnBook.cpp" />
     <ClCompile Include="..\Private\SideScroll_HitState.cpp" />
     <ClCompile Include="..\Private\SideScroll_PatrolState.cpp" />
+    <ClCompile Include="..\private\Effect2D.cpp">
+      <Filter>02.GameObjects\Effect2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Manager.cpp">
+      <Filter>02.GameObjects\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

@@ -84,6 +84,9 @@ protected:
 	_bool						Trace_Player(_float2 _vPlayerPos, _float2 vNPCPos);
 	void						Delay_On();
 	void						Delay_Off();
+	_bool						is_LookOut() { return m_isLookOut; }
+	_bool						is_Trace() { return m_isTrace; }
+
 
 public:
 
@@ -100,6 +103,7 @@ protected:
 	_float2						m_PrePlayerPos = { 0.f, 0.f };
 	_float2						m_CurPlayerPos = { 0.f, 0.f };
 	_float2						m_vPreNPCPos = { 0.f ,0.f };
+	_bool						m_isLookOut = { false };
 
 
 private:

@@ -45,6 +45,7 @@ HRESULT CNPC_Thrash::Initialize(void* _pArg)
 	m_fDelayTime = 0.1f;
 
 	m_eActionType = ACTION_WAIT;
+	m_eMoving = MOVING_PRE;
 
 
 	//if (FAILED(Ready_ActorDesc(pDesc)))
@@ -52,6 +53,8 @@ HRESULT CNPC_Thrash::Initialize(void* _pArg)
 
 	wsprintf(m_strDialogueIndex, pDesc->strDialogueIndex);
 	wsprintf(m_strCurSecion, TEXT("Chapter2_P0102"));
+
+	m_strName = TEXT("Thrash");
 
 	if (FAILED(__super::Child_Initialize(pDesc)))
 		return E_FAIL;
@@ -190,6 +193,8 @@ void CNPC_Thrash::Welcome_Jot(_float _fTimeDelta)
 	if (m_isTrace)
 		return;
 
+	m_isLookOut = true;
+
 	// 안쫓고있어요 만나게하자.
 	if (TEXT("Chapter2_P0102") == CSection_Manager::GetInstance()->Get_Cur_Section_Key())
 	{
@@ -242,10 +247,12 @@ void CNPC_Thrash::Welcome_Jot(_float _fTimeDelta)
 		}
 		else if (ACTION_DIALOG == m_eActionType)
 		{
-			if (false == Uimgr->Get_DisplayDialogue())
+			if (MOVING_PRE == m_eMoving && false == Uimgr->Get_DisplayDialogue())
 			{
 
-
+				_float3 vNextPos = _float3(-783.f, 161.f, 0.f);
+				Event_Book_Main_Section_Change_Start(1, &vNextPos);
+				m_eMoving = MOVING_DIA;
 
 				// 다이얼로그 한개 더띄운다.
 				// 다이얼로그가 끝났으면 trace를 이제 true로해서 따라 다니게 한다.
@@ -254,6 +261,22 @@ void CNPC_Thrash::Welcome_Jot(_float _fTimeDelta)
 				//
 				//m_isTrace = true;
 			}
+			else if (MOVING_DIA == m_eMoving)
+			{
+				// 다이얼로그를 띄운다.
+// 				//
+				// str 값을 바꾼 후
+				m_eMoving = MOVING_CUR;
+			}
+			else if (MOVING_CUR == m_eMoving)
+			{
+				if (false == Uimgr->Get_DisplayDialogue())
+				{
+					m_eActionType = ACTION_TRACE;
+					m_isTrace = true;
+				}
+			}
+			
 		}
 	}
 }

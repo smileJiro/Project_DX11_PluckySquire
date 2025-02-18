@@ -184,17 +184,19 @@ void CSampleBook::Update(_float _fTimeDelta)
 		* 임시, 민용추가
 		* 현재 Anim (책 넘기는 애니메이션 제외!) 이 끝나면 IDLE Animation으로 가게했음
 		*/
-		if (NONEANIM_ACTION != m_eAnimAction)
+		if (ANIM_ACTION_NONE != m_eAnimAction)
 		{
 			m_fAccAnimTime += _fTimeDelta;
 			
 			// 어쩔수없는하드코딩..
-			if (MAGICDUST_ANIM_ACTION == m_eAnimAction && 6.7f <= m_fAccAnimTime)
+			if (ANIM_ACTION_MAGICDUST == m_eAnimAction && 6.7f <= m_fAccAnimTime)
 			{
 				m_fAccAnimTime = 0.f;
-				m_eAnimAction = NONEANIM_ACTION;
+				m_eAnimAction = ANIM_ACTION_NONE;
 				Set_Animation(IDLE);
 			}
+
+			// 닫힌 애니메이션 ? 
 			//if (false == Is_PlayingAnim())
 		}
 

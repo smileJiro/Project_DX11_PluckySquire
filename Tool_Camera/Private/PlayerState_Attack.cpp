@@ -13,10 +13,10 @@ CPlayerState_Attack::CPlayerState_Attack(CTest_Player* _pOwner)
 
 void CPlayerState_Attack::Update(_float _fTimeDelta)
 {
-	if (MOUSE_DOWN(MOUSE_KEY::LB))
-	{
-		m_bCombo = true;
-	}
+	//if (MOUSE_DOWN(MOUSE_KEY::LB))
+	//{
+	//	m_bCombo = true;
+	//}
 }
 
 void CPlayerState_Attack::Enter()

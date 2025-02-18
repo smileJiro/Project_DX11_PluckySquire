@@ -30,10 +30,11 @@ public:
 
 	struct FLOORTEXT
 	{
-		float fPosX;
-		float fPosY;
-		wstring strText;
-		Highlight tHightLight;
+		_wstring strSection;	// 노출할 섹션
+		float fPosX;			// X
+		float fPosY;			// Y
+		wstring strText;		// 노출할 텍스쳐
+		Highlight tHightLight;	// 하이라이트 인데 미사용
 
 	};
 

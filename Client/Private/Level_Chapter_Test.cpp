@@ -35,6 +35,7 @@
 
 #include "2DMapObject.h"
 #include "3DMapObject.h"
+#include "Effect2D.h"
 
 
 //#include "UI.h"
@@ -67,6 +68,7 @@ HRESULT CLevel_Chapter_Test::Initialize(LEVEL_ID _eLevelID)
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
+	Ready_Layer_Effect2D(TEXT("Layer_Effect2D"));
 	//Ready_Layer_Effects(TEXT("Layer_Effect"));
 	//Ready_Layer_NPC(TEXT("Layer_NPC"));
 
@@ -964,6 +966,22 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 HRESULT CLevel_Chapter_Test::Ready_Layer_Effects(const _wstring& _strLayerTag)
 {
 
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_Test::Ready_Layer_Effect2D(const _wstring& _strLayerTag)
+{
+	CEffect2D::EFFECT2D_DESC EffectDesc = {};
+	EffectDesc.iCurLevelID = LEVEL_CHAPTER_TEST;
+	EffectDesc.iModelPrototypeLevelID_2D = LEVEL_CHAPTER_TEST;
+	EffectDesc.strModelPrototypeTag_2D = TEXT("Prototype_Model2D_FallingRock");
+	CGameObject* pGameObject = nullptr;
+
+	if(FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Effect2D"), LEVEL_CHAPTER_TEST, _strLayerTag, &pGameObject, &EffectDesc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_EFFECT);
 
 	return S_OK;
 }

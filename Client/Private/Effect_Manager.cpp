@@ -29,6 +29,17 @@ void CEffect_Manager::Update_Manager()
 	}
 }
 
+void CEffect_Manager::Level_Exit()
+{
+	m_UpdateSystems.clear();
+
+	for (auto& Pair : m_EffectSystems)
+		Safe_Release(Pair.second);
+
+
+	m_EffectSystems.clear();
+}
+
 HRESULT CEffect_Manager::Add_Effect(CEffect_System* _pEffectSystem, _bool _isInitialActive)
 {
 	if (nullptr == _pEffectSystem)

@@ -82,6 +82,8 @@ public:
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
+	virtual void				Change_Target(const _float4x4* _pTargetMatrix) { m_pTargetWorldMatrix = _pTargetMatrix; }
+	virtual void				Change_Target(CGameObject* _pTarget);
 
 private:
 	const _float4x4* 			m_pTargetWorldMatrix = { nullptr };
@@ -97,7 +99,7 @@ private:
 	_float3						m_v2DPreTargetWorldPos = {};
 	_float3						m_v2DFixedPos = {};
 
-	_float						m_fTrackingTime = { 0.5f };
+	_float2						m_fTrackingTime = { 0.5f, 0.f };
 	
 	DIRECTION_TYPE				m_eDirectionType = { HORIZON };
 
@@ -117,6 +119,8 @@ private:
 	MAGNIFICATION_TYPE			m_eMagnificationType = {};
 
 	_uint						m_iPlayType = {};
+
+	_bool						m_isChangeTarget = { false };
 
 private:
 	void						Action_Mode(_float _fTimeDelta);
@@ -138,6 +142,7 @@ private:
 	void						Calculate_Book_Scroll();					
 	void						Check_MagnificationType();
 	void						Clamp_FixedPos();
+	void						Check_TargetChange();
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);

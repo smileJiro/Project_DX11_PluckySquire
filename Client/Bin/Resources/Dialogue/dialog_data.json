@@ -1002,6 +1002,43 @@
 					"Blue": 234
 				}
 			]
+		},
+		{
+			"id": "Gauntlet_Acquire_01",
+			"lines": [
+				{
+					"Portrait": 16,
+					"Talker": "",
+					"BG": 9,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "저트가 넘기기 건틀릿을 찾았습니다!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 16,
+					"Talker": "",
+					"BG": 9,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이제 이야기 책을 조종할 수 있습니다!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
 		}
 	]
 }

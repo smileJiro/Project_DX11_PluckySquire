@@ -148,6 +148,7 @@ HRESULT CFloorWord::Load_Json(const wstring& filePath, const _wstring& _strLayer
 		FLOORTEXT tFloorText;
 		CGameObject* pGameObject;
 
+		tFloorText.strSection = StringToWstring(text["strSection"]);
 		tFloorText.fPosX = text["PosX"].get<_float>();
 		tFloorText.fPosY = text["PosY"].get<_float>();
 		tFloorText.strText = StringToWstring(text["Text"]);
