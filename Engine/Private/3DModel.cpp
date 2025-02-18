@@ -230,18 +230,24 @@ _bool C3DModel::Play_Animation(_float fTimeDelta, _bool bReverse)
 {
 	m_bReverseAnimation = bReverse;
 	_bool bAnimEnd = false;
+
+
+
 	//뼈들의 변환행렬을 갱신
 	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
 	{
 		bAnimEnd = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta,bReverse);
 		m_bDuringAnimation = (false == bAnimEnd);
 	}
+	//else	if (m_Animations[m_iCurrentAnimIndex]->Get_AnimTransitionTime() == 0)
+	//	m_iPrevAnimIndex = m_iCurrentAnimIndex;
 	else
 	{
 		if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame, bReverse))
 			m_iPrevAnimIndex = m_iCurrentAnimIndex;
 		m_bDuringAnimation = true;
 	}
+
 
 	//뼈들의 합성변환행렬을 갱신
 	for (auto& pBone : m_Bones)
@@ -421,6 +427,9 @@ void C3DModel::Switch_Animation(_uint iIdx, _bool _bReverse)
 	m_mapAnimTransLeftFrame.clear();
 	m_Animations[m_iCurrentAnimIndex]->Reset(_bReverse);
 	m_Animations[m_iPrevAnimIndex]->Get_CurrentFrame(&m_mapAnimTransLeftFrame);
+	m_mapAnimTransLeftFrame[1].vPosition.x =0.f;
+	m_mapAnimTransLeftFrame[1].vPosition.z =0.f;
+
 }
 
 void C3DModel::To_NextAnimation()

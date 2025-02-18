@@ -12,9 +12,19 @@ CPlayerBody::CPlayerBody(const CPlayerBody& _Prototype)
 {
 }
 
+void CPlayerBody::Update(_float _fTimeDelta)
+{
+    __super::Update(_fTimeDelta);
+}
+
+void CPlayerBody::Late_Update(_float _fTimeDelta)
+{
+    __super::Late_Update(_fTimeDelta);
+}
+
 HRESULT CPlayerBody::Render()
 {
-    return __super::Render();
+  return __super::Render();
 }
 
 CModelObject* CPlayerBody::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
