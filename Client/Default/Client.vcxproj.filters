@@ -1038,7 +1038,8 @@
     </ClInclude>
     <ClInclude Include="..\Public\Magic_Hand_Body.h">
       <Filter>02.GameObjects\MagicHand</Filter>
-    <ClInclude Include="..\Public\LightningBolt.h">
+	</ClInclude>
+	<ClInclude Include="..\Public\LightningBolt.h">
       <Filter>02.GameObjects\Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Evict.h">
