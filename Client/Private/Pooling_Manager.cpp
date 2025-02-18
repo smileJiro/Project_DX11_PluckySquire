@@ -144,7 +144,6 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINA
 		{
 			pGameObject->Set_Alive();
 			pGameObject->Set_Active(true);
-
 			pGameObject->Change_Coordinate(eCoordinate);
 
 			if (nullptr != _pScaling)
@@ -197,7 +196,7 @@ HRESULT CPooling_Manager::Pooling_Objects(const _wstring& _strPoolingTag, _uint 
 	if (nullptr == pPair)
 		return E_FAIL;
 
-	CFallingRock::FALLINGROCK_DESC* pTestDesc = dynamic_cast<CFallingRock::FALLINGROCK_DESC*>(pPair->second);
+	//CFallingRock::FALLINGROCK_DESC* pTestDesc = dynamic_cast<CFallingRock::FALLINGROCK_DESC*>(pPair->second);
 	CGameObject* pGameObject = nullptr;
 
 	for (_uint i = 0; i < _iNumPoolingObjects; ++i)

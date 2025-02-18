@@ -7,6 +7,9 @@ CWordPrinter::CWordPrinter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 	,m_pContext(_pContex)
 	,m_pGameInstance(CGameInstance::GetInstance())
 {
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
+	Safe_AddRef(m_pGameInstance);
 }
 
 

@@ -4,6 +4,7 @@
 BEGIN(Engine)
 class CGameObject;
 class CCutScene_Sector;
+class CModelObject;
 END
 
 BEGIN(Camera_Tool)
@@ -117,6 +118,13 @@ private:
 	INITIAL_DATA							m_tInitialData = {};
 
 
+	// CutScene Model...
+private:
+	vector<CModelObject*>					m_ModelObjects;
+
+	_bool m_isSetAt = { false };
+	_float3 m_vInitialLookAt = {};
+
 private:
 	void				Show_CameraTool();
 	void				Show_CutSceneTool(_float fTimeDelta);
@@ -127,6 +135,7 @@ private:
 	void				Show_ComboBox();
 	void				Show_SelectedArmData();
 	void				Show_CameraZoomInfo();
+	void				Show_AnimModel(_float _fTimeDelta);
 
 	//CutScene
 	void				Show_KeyFrameInfo();
@@ -154,6 +163,8 @@ private:
 	void				Edit_KeyFrame();
 	void				Delete_KeyFrame();
 	void				Set_CurrentKeyFrame();
+
+	void				Set_CameraInfo();
 
 	void				Create_Sector();
 	void				Edit_Sector();

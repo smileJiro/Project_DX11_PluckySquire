@@ -133,7 +133,7 @@
       {
         "Word_Object_Tag": "door",
         "Position": [
-          -1702.0,
+          -1782.0,
           -21.0
         ],
         "Scale": [
@@ -162,8 +162,100 @@
             "Word_Type": 4,
             "Action_Type": 0,
             "Param": 1
+          },
+          {
+            "Controller_Index": 3,
+            "Container_Index": 0,
+            "Word_Type": 3,
+            "Action_Type": 3,
+            "Param": -1782.0
+          },
+          {
+            "Controller_Index": 3,
+            "Container_Index": 0,
+            "Word_Type": 4,
+            "Action_Type": 3,
+            "Param": -1882.0
           }
         ]
+      },
+      {
+        "Word_Object_Tag": "LargeBarfBug",
+        "Position": [
+          -0.0,
+          350.0
+        ],
+        "Scale": [
+          1.0,
+          1.0
+        ],
+        "Image_Tag_List": [
+          {
+            "ImagePath": "LargeBarfbug"
+          }
+        ],
+        "Word_Action_List": [
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 1,
+            "Action_Type": 2,
+            "Param": 2
+          },
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 2,
+            "Action_Type": 2,
+            "Param": 3
+          }
+        ]
+      },
+	        {
+        "Word_Object_Tag": "tinyfrog",
+        "Position": [
+          -420.0,
+          308.0
+        ],
+        "Scale": [
+          1.0,
+          1.0
+        ],
+        "Image_Tag_List": [
+          {
+            "ImagePath": "tinyfrog"
+          }
+        ],
+            "Word_Action_List": [
+              {
+                "Controller_Index": 2,
+                "Container_Index": 0,
+                "Word_Type": 0,
+                "Action_Type": 2,
+                "Param": 2
+              },
+              {
+                "Controller_Index": 2,
+                "Container_Index": 0,
+                "Word_Type": 1,
+                "Action_Type": 2,
+                "Param": 0
+              },
+              {
+                "Controller_Index": 2,
+                "Container_Index": 0,
+                "Word_Type": 2,
+                "Action_Type": 2,
+                "Param": 4
+              },
+              {
+                "Controller_Index": 2,
+                "Container_Index": 0,
+                "Word_Type": 5,
+                "Action_Type": 2,
+                "Param": 1
+              }
+            ]
       }
     ]
   },

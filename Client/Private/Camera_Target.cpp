@@ -58,7 +58,8 @@ void CCamera_Target::Late_Update(_float fTimeDelta)
 
 	Action_SetUp_ByMode();
 	Action_Mode(fTimeDelta);
-	__super::Compute_PipeLineMatrices();
+
+	__super::Late_Update(fTimeDelta);
 }
 
 #ifdef _DEBUG
@@ -257,6 +258,15 @@ void CCamera_Target::Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex
 		}
 			break;
 		}
+	}
+	else {
+		m_pCurArm->Set_ArmVector(XMVectorSet(0.f, 0.67f, -0.74f, 0.f));
+		m_pCurArm->Set_Length(7.f);
+		m_iCurZoomLevel = { 5 };
+		m_fFovy = { m_ZoomLevels[5] };
+		m_vAtOffset = { 0.f, 0.f, 0.f };
+
+		return;
 	}
 
 	m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));

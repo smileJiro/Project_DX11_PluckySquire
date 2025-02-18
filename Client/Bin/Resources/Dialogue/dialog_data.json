@@ -191,7 +191,7 @@
 		{
 			"id": "Honey_Bee_Benny_01",
 			"Section": "Chapter1_P0910",
-			"TriggerTag": "MagicDust",
+			"TriggerTag": "Active_MagicDust",
 			"TriggerID": 999,
 			"lines": [
 				{
@@ -295,6 +295,8 @@
 		{
 			"id": "C01_Humgrump_01",
 			"Section": "Chapter2_P1314",
+			"TriggerTag": "Get_Out_Jot",
+			"TriggerID": 998,
 			"lines": [
 				{
 					"Portrait": 5,
@@ -995,6 +997,43 @@
 						"speed": 350
 					},
 					"text": "이벤트 트리거 테스트2입니다.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "Gauntlet_Acquire_01",
+			"lines": [
+				{
+					"Portrait": 16,
+					"Talker": "",
+					"BG": 9,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "저트가 넘기기 건틀릿을 찾았습니다!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 16,
+					"Talker": "",
+					"BG": 9,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이제 이야기 책을 조종할 수 있습니다!",
 					"Red": 161,
 					"Green": 210,
 					"Blue": 234

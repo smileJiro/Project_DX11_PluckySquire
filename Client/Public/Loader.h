@@ -45,8 +45,11 @@ private:
 	HRESULT Loading_Level_Chapter_2();
 	HRESULT Loading_Level_Chapter_4();
 
+private: /* Sound */
+	HRESULT Loading_BGM_PathFind(const _wstring& strDirectoryPath);
+	HRESULT Loading_SFX_PathFind(const _wstring& strDirectoryPath);
 
-
+private:
 	HRESULT Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix);
 	HRESULT Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath);
 	// 경로에 있는 3D 모델파일을 전부 불러온다.

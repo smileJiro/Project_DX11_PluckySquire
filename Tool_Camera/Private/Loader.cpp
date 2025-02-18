@@ -22,6 +22,8 @@
 #include "MainTable.h"
 #include "Bulb.h"
 
+#include "SampleBook.h"
+
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
     , m_pContext(_pContext)
@@ -248,6 +250,18 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/SM_desk_split_topboard_02/SM_desk_split_topboard_02.model", matPretransform))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Model_Book"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../../Tool_Effect/Bin/Resources/Models/3DAnim/book/book.model"
+                ), matPretransform))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Model_MagicHand"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../../Tool_Effect/Bin/Resources/Models/3DAnim/magic_hand_model/magic_hand_model.model"
+                ), matPretransform))))
+        return E_FAIL;
+
     if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform)))
         return E_FAIL;
 
@@ -299,6 +313,11 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
     /* For. Prototype_GameObject_Camera_CutScene */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_CutScene"),
         CCamera_CutScene::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_SampleBook */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_SampleBook"),
+        CSampleBook::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     Map_Object_Create(LEVEL_CAMERA_TOOL, LEVEL_CAMERA_TOOL, L"Chapter_02_Play_Desk.mchc");

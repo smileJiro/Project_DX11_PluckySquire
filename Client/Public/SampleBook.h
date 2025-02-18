@@ -21,8 +21,9 @@ public:
 
 	enum BOOK_ANIM_ACTION
 	{
-		NONEANIM_ACTION = 0, 
-		MAGICDUST_ANIM_ACTION = 5,
+		ANIM_ACTION_NONE = 0, 
+		ANIM_ACTION_MAGICDUST = 5,
+		ANIM_ACTION_CLOSEBYHAND = 12,
 	};
 
 	enum BOOK_ANIMATION
@@ -81,7 +82,7 @@ public:
 private :
 	CAnimEventGenerator*	m_pAnimEventGenerator = { nullptr };
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
-	BOOK_ANIM_ACTION		m_eAnimAction = NONEANIM_ACTION;
+	BOOK_ANIM_ACTION		m_eAnimAction = ANIM_ACTION_NONE;
 	_float					m_fAccAnimTime = 0.f;
 	_float3					m_fNextPos = {};
 	_bool					m_isAction = { false };

@@ -28,6 +28,8 @@ HRESULT CWord::Initialize(void* _pArg)
 
 
 
+	m_iRenderGroupID_3D = RG_3D;
+	m_iPriorityID_3D = PR3D_GEOMETRY;
 
 
 
@@ -48,9 +50,8 @@ HRESULT CWord::Initialize(void* _pArg)
 	ActorDesc.FreezePosition_XYZ[0] = false;
 	ActorDesc.FreezePosition_XYZ[1] = false;
 	ActorDesc.FreezePosition_XYZ[2] = false;
-
 	SHAPE_BOX_DESC ShapeDesc = {};
-	ShapeDesc.vHalfExtents = { 0.5f,0.1f ,0.5f };
+	ShapeDesc.vHalfExtents = { 0.3f,0.3f,0.3f };
 	SHAPE_DATA ShapeData;
 	ShapeData.pShapeDesc = &ShapeDesc;
 	ShapeData.eShapeType = SHAPE_TYPE::BOX;
@@ -59,7 +60,8 @@ HRESULT CWord::Initialize(void* _pArg)
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::BLOCKER;
-	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER_TRIGGER | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER_TRIGGER | 
+		OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER;
 	pDesc->pActorDesc = &ActorDesc;
 	pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
 
@@ -73,7 +75,7 @@ HRESULT CWord::Initialize(void* _pArg)
 	m_p2DColliderComs.resize(1);
 	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
 	CircleDesc.pOwner = this;
-	CircleDesc.fRadius = 40.f;
+	CircleDesc.fRadius = 1.f;
 	CircleDesc.vScale = { 1.0f, 1.0f };
 	CircleDesc.vOffsetPosition = { 0.f, 0.f };
 	CircleDesc.isBlock = false;
@@ -89,7 +91,8 @@ HRESULT CWord::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-
+	m_pControllerTransform->Get_Transform(COORDINATE_3D)->Rotation(XMConvertToRadians(90.f), XMVectorSet(1.f, 0.f, 0.f, 0.f));
+	m_pControllerTransform->Get_Transform(COORDINATE_3D)->Set_Scale({ 0.7f,0.3f,0.7f });
 
 	return S_OK;
 }
@@ -97,8 +100,8 @@ HRESULT CWord::Initialize(void* _pArg)
 
 HRESULT CWord::Render()
 {
-	COORDINATE eCurCoord = Get_CurCoord();
-	
+	COORDINATE eCurCoord = Get_CurCoord();/*
+	_matrix = XMMatrixScaling(m_fSize.x, m_fSize.y, 1.f);*/
 	
 	if (FAILED(m_pShaderComs[eCurCoord]->Bind_Matrix("g_WorldMatrix", Get_FinalWorldMatrix_Ptr(eCurCoord))))
 		return E_FAIL;
@@ -141,6 +144,8 @@ HRESULT CWord::Render()
 
 void CWord::Update(_float _fTimeDelta)
 {
+	m_pControllerTransform->Get_Transform(COORDINATE_3D)->Rotation(XMConvertToRadians(90.f), XMVectorSet(1.f, 0.f, 0.f, 0.f));
+
 	__super::Update(_fTimeDelta);
 }
 
@@ -152,8 +157,17 @@ void CWord::Late_Update(_float _fTimeDelta)
 
 HRESULT CWord::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
+	if (Is_Carrying())
+	{
+		Set_Position({ 0,0,0 });
+		Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
+		Set_SocketMatrix(_eCoordinate, m_pCarrier->Get_CarryingOffset_Ptr(_eCoordinate));
+		Set_ParentMatrix(_eCoordinate, m_pCarrier->Get_ControllerTransform()->Get_WorldMatrix_Ptr(_eCoordinate));
 
-	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+		//m_pControllerModel->Get_Model(COORDINATE_3D)->Set_Active(COORDINATE_3D == _eCoordinate);
+		//m_pControllerModel->Get_Model(COORDINATE_2D)->Set_Active(COORDINATE_2D == _eCoordinate);
+	}
+	if (FAILED(CActorObject::Change_Coordinate(_eCoordinate, _pNewPosition)))
 		return E_FAIL;
 	return S_OK;
 
@@ -162,7 +176,6 @@ HRESULT CWord::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition
 
 HRESULT CWord::Ready_Components()
 {
-
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
 		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
 		return E_FAIL;
@@ -176,6 +189,8 @@ HRESULT CWord::Ready_Components()
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
 		TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
+
+	return S_OK;
 }
 
 

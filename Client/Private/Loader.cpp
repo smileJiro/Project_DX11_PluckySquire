@@ -123,7 +123,9 @@
 #include "Domino.h"
 #include "Portal.h"
 #include "Word.h"
-
+#include "Magic_Hand.h"
+#include "Magic_Hand_Body.h"
+#include "Effect2D.h"
 
 
 
@@ -365,6 +367,14 @@ HRESULT CLoader::Loading_Level_Static()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+    /* For. Prototype_GameObject_Effect2D */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Effect2D"),
+        CEffect2D::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    
+
+     /* For. Prototype_GameObject_Spawner */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"),
         CSpawner::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -1033,6 +1043,23 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         CCollapseBlock::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* For. Magic_Hand, Magic_Hand_Body*/
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_MagicHand"),
+        CMagic_Hand::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_MagicHandBody"),
+        CMagic_Hand_Body::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_MagicHand"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../Bin/Resources/Models/FX/magic_hand_model/magic_hand_model.model"
+                ), matPretransform))))
+        return E_FAIL;
+
     //Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_2, L"Room_Enviroment.mchc");
     Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_2, L"Room_Enviroment_Small.mchc");
 
@@ -1333,6 +1360,50 @@ HRESULT CLoader::Loading_Level_Chapter_4()
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
+
+    return S_OK;
+}
+
+HRESULT CLoader::Loading_BGM_PathFind(const _wstring& strDirectoryPath)
+{
+    for (const auto& entry : std::filesystem::directory_iterator(strDirectoryPath))
+    {
+        if (entry.is_regular_file())
+        {
+            // 전체 경로
+            _string strFullPath = entry.path().generic_string();
+            _string strPrototypeTag;
+            _string strFileName = entry.path().stem().generic_string();
+            strPrototypeTag = strFileName;
+            _wstring wstrPrototypeTag = m_pGameInstance->StringToWString(strPrototypeTag);
+            _wstring wstrFullPath = m_pGameInstance->StringToWString(strFullPath);
+
+            if (FAILED(LOAD_BGM(wstrPrototypeTag, wstrFullPath)))
+                return E_FAIL;
+        }
+    }
+
+    return S_OK;
+}
+
+HRESULT CLoader::Loading_SFX_PathFind(const _wstring& strDirectoryPath)
+{
+    for (const auto& entry : std::filesystem::directory_iterator(strDirectoryPath))
+    {
+        if (entry.is_regular_file())
+        {
+            // 전체 경로
+            _string strFullPath = entry.path().generic_string();
+            _string strPrototypeTag;
+            _string strFileName = entry.path().stem().generic_string();
+            strPrototypeTag = strFileName;
+            _wstring wstrPrototypeTag = m_pGameInstance->StringToWString(strPrototypeTag);
+            _wstring wstrFullPath = m_pGameInstance->StringToWString(strFullPath);
+
+            if (FAILED(LOAD_SFX(wstrPrototypeTag, wstrFullPath)))
+                return E_FAIL;
+        }
+    }
 
     return S_OK;
 }
@@ -1701,6 +1772,8 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_CollapseBlock"),
         CCollapseBlock::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+
+
 
     //Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_TEST, L"Room_Enviroment.mchc");
     Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_TEST, L"Room_Enviroment_Small.mchc");
