@@ -80,9 +80,10 @@ namespace Client
 		SECTION_2D_PLAYMAP_WORD,
 		SECTION_2D_PLAYMAP_OBJECT,
 		SECTION_2D_PLAYMAP_TRIGGER,
+		SECTION_2D_PLAYMAP_EFFECT,
 		SECTION_2D_PLAYMAP_UI,
-		SECTION_2D_PLAYMAP_RENDERGROUP_LAST,
 		SECTION_2D_PLAYMAP_SPAWNER,
+		SECTION_2D_PLAYMAP_RENDERGROUP_LAST,
 	};
 
 	// 비트연산자를 통해 SimulationFilter를 설정해야해서 enum으로 하겠음. enum class는 비트연산자 쓰려면 형변환많이하고 번거로워서.
@@ -101,10 +102,9 @@ namespace Client
 		BLOCKER = 					0x200,	//9	(현재 2D 플랫포머에서 중력 컴포넌트랑 연계중. 3D에서 플레이어 몸통이랑 블락중)
 		BOOK_3D =					0x400,
 		WORD_GAME =					0x800,
-		//PORTAL =					0x1600, 일단 필요 없어져서 지웠어요 - 김지완 -
 		FALLINGROCK_BASIC =			0x1000,
-		//PORTAL =					0x800, 일단 필요 없어져서 지웠어요 - 김지완 -
-								 // 0x1000 
+		EFFECT2D =					0x2000,
+
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬
 	};
