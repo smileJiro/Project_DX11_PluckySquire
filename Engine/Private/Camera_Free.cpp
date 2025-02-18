@@ -64,7 +64,7 @@ void CCamera_Free::Update(_float fTimeDelta)
 
 void CCamera_Free::Late_Update(_float fTimeDelta)
 {
-	__super::Compute_PipeLineMatrices();
+	__super::Late_Update(fTimeDelta);
 }
 
 INITIAL_DATA CCamera_Free::Get_InitialData()

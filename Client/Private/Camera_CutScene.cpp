@@ -55,7 +55,7 @@ void CCamera_CutScene::Late_Update(_float _fTimeDelta)
 	Action_Shake(_fTimeDelta);
 	Change_AtOffset(_fTimeDelta);
 
-	__super::Compute_PipeLineMatrices();
+	__super::Late_Update(_fTimeDelta);
 }
 
 _bool CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName)

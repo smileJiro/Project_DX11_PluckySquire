@@ -39,9 +39,11 @@ public:
 	virtual void			On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
 
 private:
+	void					Change_Bound_Direction(COLBOUND2D _eDirection);
+private:
 	STATE					m_ePreState = STATE::STATE_LAST;
-	STATE					m_eCurState = STATE::STATE_FALLDOWN;
-
+	STATE					m_eCurState = STATE::STATE_LAST;
+\
 private: /* FallDown */
 	_float					m_fFallDownEndY;
 
@@ -59,8 +61,12 @@ private:/* Shadow Position Data : 설계미스로 좀 별로인 방식 채택함 참고하지말 것
 	_float3					m_vShadowYDesc = {}; // x: StartY, y : CurrentY, z : TargetY
 
 private: /* Col_Scroll_Bound */
-
+	_bool					m_isColBound = true;
+	COLBOUND2D				m_eOriginDirection = {};
+	COLBOUND2D				m_eColBoundDirection = COLBOUND2D::COLBOUND_LAST;
 	_float2					m_vColBoundDirection = {}; /* 좌우 대각 이동 */
+	_float2					m_vDecrease = { 9.8f * 15.f,  0.0f }; // 
+	_float2					m_vLifeTimeAcc = { 7.0f, 0.0f };
 
 private:
 	void					State_Change();
