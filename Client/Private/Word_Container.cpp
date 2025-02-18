@@ -2,6 +2,7 @@
 #include "Word_Container.h"
 #include "Section_Manager.h"
 #include "Player.h"
+#include "Collider.h"
 
 CWord_Container::CWord_Container(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CPartObject(_pDevice,_pContext)
@@ -31,17 +32,18 @@ void CWord_Container::Priority_Update(_float _fTimeDelta)
 
 void CWord_Container::Update(_float _fTimeDelta)
 {
-	__super::Update(_fTimeDelta);
+
+	//__super::Update(_fTimeDelta);
 }
 
 void CWord_Container::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+	//__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CWord_Container::Render()
 {
-	__super::Render();
+	//__super::Render();
 	return S_OK;
 
 }
@@ -110,6 +112,19 @@ _float CWord_Container::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 	return _float();
 }
 
+void CWord_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+
+	if (_pOtherCollider->Get_CollisionGroupID() == OBJECT_GROUP::PLAYER_PROJECTILE)
+	{
+		if (m_pMyWord != nullptr)
+		{
+			Pop_Word();
+		}
+	}
+
+}
+
 void CWord_Container::Set_Word(CWord* _pWord)
 {
 	// 있는 단어가 있으면, 뺀다.
@@ -135,6 +150,12 @@ void CWord_Container::Pop_Word()
 	{
 		m_pMyWord->Set_Active(true);
 		SECTION_MGR->Add_GameObject_ToSectionLayer(m_strSectionName, m_pMyWord, SECTION_2D_PLAYMAP_WORD);
-		m_pMyWord = nullptr;
+		
+		
+		_vector vPos = Get_FinalPosition();
+		vPos = XMVectorSetX(vPos, XMVectorGetX(vPos) + 10.f);
+		vPos = XMVectorSetY(vPos, XMVectorGetY(vPos) - 10.f);
+		//m_pMyWord->Set_Position()
+		//m_pMyWord = nullptr;
 	}
 }

@@ -75,6 +75,7 @@ HRESULT CWordGame_Generator::Load_Word(const _wstring& _strJsonPath)
 			Desc.fSize = fTargetSize;
 			Desc.pSRV = pSRV;
 			Desc.eType = (CWord::WORD_TYPE)iLoop;
+			Desc.strText = wstrWord;
 
 			CBase* pBase = m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC,
 				L"Prototype_GameObject_Word",
@@ -106,7 +107,7 @@ HRESULT CWordGame_Generator::Clear_Word()
 
 CWord* CWordGame_Generator::Find_Word(_uint _iWordIndex)
 {
-	if (0 >= _iWordIndex || m_Words.size() <= _iWordIndex)
+	if (0 > _iWordIndex || m_Words.size() <= _iWordIndex)
 		return nullptr;
 
 
@@ -163,7 +164,7 @@ HRESULT CWordGame_Generator::WordGame_Generate(CSection_2D* _pSection, const _ws
 				for (auto& Container: ChildJson["Controller_List"])
 				{
 					CWord_Controller* pContainer = CWord_Controller::Create(m_pDevice, m_pContext, _pSection, Container);
-					if (nullptr != pContainer)
+					if (nullptr == pContainer)
 						return E_FAIL;
 					else
 					{

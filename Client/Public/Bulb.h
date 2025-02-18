@@ -22,6 +22,15 @@ public:
 		SHAPE_STICKING,
 	};
 
+	enum BULB_STATE
+	{
+		NONE,
+		BULB_UP = 1,
+		BULB_DOWN = 2,
+		BULB_ALL = 3,
+		BULB_STATE_END
+	};
+
 private:
 	explicit CBulb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	explicit CBulb(const CBulb& _Prototype);
@@ -50,6 +59,10 @@ private:
 
 	_bool					m_isSticking = { false };
 	_float					m_fMin = 1.5f;
+
+	// Time
+	_float2					m_fBulbTime = { 0.8f, 0.f };
+	BULB_STATE				m_eBulbState = { BULB_UP };
 
 private:
 	HRESULT					Ready_Components(BULB_DESC* _pArg);

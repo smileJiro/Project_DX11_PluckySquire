@@ -68,6 +68,7 @@ public:
 
 	void						Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
+	void						Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex); // Portal 나갈 때 Data 초기화하기 
 
 private:
 	const _float4x4*			m_pTargetWorldMatrix = { nullptr };
@@ -86,7 +87,7 @@ private:
 	// Freeze
 	_uint						m_iFreezeMask = {};
 	_bool						m_isFreezeExit = { false };
-	_float2						m_fFreezeExitTime = { 0.4f, 0.f };
+	_float2						m_fFreezeExitTime = { 0.8f, 0.f };
 	_float3						m_vFreezeEnterPos = {};
 
 	// LookAt

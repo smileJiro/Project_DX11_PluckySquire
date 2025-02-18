@@ -32,6 +32,7 @@ public :
 	virtual HRESULT			Render() override;
 
 	HRESULT					Update_Text();
+	HRESULT Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID) override;
 
 
 	virtual void			Set_Include_Section_Name(const _wstring _strIncludeSectionName) override;

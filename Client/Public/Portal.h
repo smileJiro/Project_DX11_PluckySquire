@@ -21,7 +21,8 @@ class CPortal final : public CContainerObject, public virtual IInteractable
 public :
 	typedef struct tagPortalDESC : public CContainerObject::CONTAINEROBJ_DESC
 	{
-		_float fTriggerRadius;
+		_float	fTriggerRadius;
+		_uint	iPortalIndex = {};
 
 	}PORTAL_DESC;
 private:
@@ -59,9 +60,11 @@ protected:
 	virtual void	On_Touched(CPlayer* _pPlayer);
 
 private :
-	CCollider* m_pColliderCom = { nullptr };
+	CCollider*	m_pColliderCom = { nullptr };
+
+	_float		m_fTriggerRadius = {};
+	_uint		m_iPortalIndex = {};
 	CEffect_System* m_pEffectSystem = { nullptr };
-	_float	   m_fTriggerRadius = {};
 
 
 public:

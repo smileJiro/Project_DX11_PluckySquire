@@ -5,6 +5,9 @@
 #include "Section_Manager.h"
 #include "Player.h"
 
+#include "Camera_Manager.h"
+#include "Camera_Target.h"
+
 CPortal::CPortal(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CContainerObject(_pDevice, _pContext)
 {
@@ -33,6 +36,7 @@ HRESULT CPortal::Initialize(void* _pArg)
     m_fTriggerRadius =  pDesc->fTriggerRadius;
     m_fInteractChargeTime = 0.6f;
     m_eInteractType = INTERACT_TYPE::CHARGE;
+    m_iPortalIndex =  pDesc->iPortalIndex;
     // Actor Object는 차후에, ReadyObject 를 따로 불러 생성.
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -291,6 +295,10 @@ HRESULT CPortal::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 
 void CPortal::Interact(CPlayer* _pUser)
 {
+    if (COORDINATE_2D == _pUser->Get_CurCoord()) {
+        static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET))->Set_InitialData(m_strSectionName, m_iPortalIndex);
+    }
+
 	_pUser->JumpTo_Portal(this);
 }
 

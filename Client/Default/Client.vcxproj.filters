@@ -1032,6 +1032,7 @@
     </ClInclude>
     <ClInclude Include="..\Public\LightningBolt.h">
       <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Evict.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
