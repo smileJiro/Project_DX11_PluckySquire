@@ -81,8 +81,13 @@ HRESULT C2DMapWordObject::Initialize(void* _pArg)
                 tAction.eAction = WordActionJson["Action_Type"];
             
             if (WordActionJson.contains("Param"))
-                tAction.anyParam = WordActionJson["Param"];
-                //if(WordActionJson["Param"].is_boolean())
+            {
+                if(WordActionJson["Param"].is_boolean())
+                    tAction.anyParam = (_bool)WordActionJson["Param"];
+                if(WordActionJson["Param"].is_number())
+                    tAction.anyParam = (_uint)WordActionJson["Param"];
+            
+            }
 
             m_Actions.push_back(tAction);
         }
@@ -134,7 +139,8 @@ HRESULT C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContai
         case WORD_OBJECT_ACTIVE:
         {
             _bool isActive = any_cast<_bool>(pAction->anyParam);
-            Set_Active(isActive);
+            m_IsWordActive = isActive;
+            Set_Active(m_IsWordActive);
         }
         break;
         default:
@@ -150,7 +156,7 @@ const C2DMapWordObject::WORD_ACTION* C2DMapWordObject::Find_Action(_uint _iContr
     auto iter = find_if(m_Actions.begin(), m_Actions.end(), [&_iControllerIndex ,&_iContainerIndex, &_iWordIndex]
     (WORD_ACTION& tAction)->_bool {
             return tAction.iControllerIndex == _iControllerIndex
-                && tAction.iContainerIndex == _iWordIndex
+                && tAction.iContainerIndex == _iContainerIndex
                 && tAction.iWordType == _iWordIndex;
                 
         });
@@ -165,10 +171,14 @@ const C2DMapWordObject::WORD_ACTION* C2DMapWordObject::Find_Action(_uint _iContr
 
 void C2DMapWordObject::Active_OnEnable()
 {
+    if (m_IsWordActive != true)
+        Set_Active(m_IsWordActive);
 }
 
 void C2DMapWordObject::Active_OnDisable()
 {
+    if (m_IsWordActive != false)
+        Set_Active(m_IsWordActive);
 }
 
 

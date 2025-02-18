@@ -272,6 +272,11 @@ void CActor_Dynamic::Set_AngularDamping(_float _fValue)
 	static_cast<PxRigidDynamic*>(m_pActor)->setAngularDamping(_fValue);
 }
 
+void CActor_Dynamic::Set_Gravity(_bool _isGravity)
+{
+	static_cast<PxRigidDynamic*>(m_pActor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !_isGravity);
+}
+
 
 void CActor_Dynamic::Add_Force(const _float3& _vForce)
 {

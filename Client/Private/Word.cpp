@@ -7,6 +7,9 @@
 #include "Actor_Dynamic.h"
 #include "Controller_Model.h"
 #include "Model.h"
+#include "Shader.h"
+#include "VIBuffer_Rect.h"
+#include "GameInstance.h"
 
 CWord::CWord(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CCarriableObject(_pDevice, _pContext)
@@ -18,11 +21,6 @@ CWord::CWord(const CWord& _Prototype)
 {
 }
 
-HRESULT CWord::Render()
-{
-	return __super::Render();
-}
-
 HRESULT CWord::Initialize(void* _pArg)
 {
 	WORD_DESC* pDesc = static_cast<WORD_DESC*>(_pArg);
@@ -30,8 +28,11 @@ HRESULT CWord::Initialize(void* _pArg)
 	m_pWordTexture = pDesc->pSRV;
 	m_fSize = pDesc->fSize;
 	m_eWordType = pDesc->eType;
+	m_strText = pDesc->strText;
 
-
+	pDesc->Build_2D_Transform({ 0.f,0.f }, m_fSize);
+	pDesc->eStartCoord = COORDINATE_2D;
+	pDesc->isCoordChangeEnable = true;
 	CActor::ACTOR_DESC ActorDesc;
 	ActorDesc.pOwner = this;
 	ActorDesc.FreezeRotation_XYZ[0] = false;
@@ -60,8 +61,58 @@ HRESULT CWord::Initialize(void* _pArg)
 
 	if (FAILED(CActorObject::Initialize(pDesc)))
 		return E_FAIL;
+	
+	
+
+
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
+	
 	return S_OK;
 }
+
+
+HRESULT CWord::Render()
+{
+	COORDINATE eCurCoord = Get_CurCoord();
+
+
+	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[eCurCoord], "g_WorldMatrix")))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderComs[eCurCoord]->Bind_SRV("g_DiffuseTexture", m_pWordTexture)))
+		return E_FAIL;
+
+	switch (eCurCoord)
+	{
+	case Engine::COORDINATE_2D:
+	{
+		m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
+	}
+	break;
+	case Engine::COORDINATE_3D:
+	{
+		if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ViewMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW))))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ProjMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ))))
+			return E_FAIL;
+
+		m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
+
+	}
+	break;
+	}
+
+
+	m_pVIBufferCom->Bind_BufferDesc();
+	m_pVIBufferCom->Render();
+
+	return S_OK;
+}
+
+
 
 void CWord::Update(_float _fTimeDelta)
 {
@@ -86,7 +137,20 @@ HRESULT CWord::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition
 
 HRESULT CWord::Ready_Components()
 {
-	return S_OK;
+
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
+		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
+		return E_FAIL;
+
+
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
+		TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_3D]))))
+		return E_FAIL;
+
+	/* Com_VIBuffer */
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+		TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+		return E_FAIL;
 }
 
 
@@ -139,5 +203,6 @@ CGameObject* CWord::Clone(void* _pArg)
 
 void CWord::Free()
 {
+	Safe_Release(m_pVIBufferCom);
 	__super::Free();
 }

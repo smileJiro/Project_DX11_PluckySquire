@@ -18,6 +18,7 @@
 #include "FallingRock.h"
 #include "Spawner.h"
 #include "CollapseBlock.h"
+#include "Word_Container.h"
 
 
 // Trigger
@@ -75,6 +76,7 @@
 #include "2DModel.h"
 #include "3DModel.h"
 #include "Controller_Model.h"
+#include "GameEventExecuter.h"
 #include "FSM.h"
 #include "set"
 #include "StateMachine.h"
@@ -363,7 +365,6 @@ HRESULT CLoader::Loading_Level_Static()
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
-
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"),
         CSpawner::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -371,6 +372,11 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_GameObject_CubeMap */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
         CCubeMap::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    
+    /* For. Prototype_GameObject_CubeMap */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_GameEventExecuter"),
+        CGameEventExecuter::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_MainTable */
@@ -411,6 +417,10 @@ HRESULT CLoader::Loading_Level_Static()
     
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Portal"),
         CPortal::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+     
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Word_Container"),
+        CWord_Container::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     // ============ etc Bulb, PlayerItem

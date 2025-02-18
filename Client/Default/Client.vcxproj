@@ -234,6 +234,7 @@
     <ClInclude Include="..\Public\NPC_Thrash.h" />
     <ClInclude Include="..\Public\NPC_Violet.h" />
     <ClInclude Include="..\Public\PlayerState_Die.h" />
+    <ClInclude Include="..\Public\PlayerState_Evict.h" />
     <ClInclude Include="..\Public\PlayerState_ExitPortal.h" />
     <ClInclude Include="..\Public\PlayerState_IntoPortal.h" />
     <ClInclude Include="..\Public\PlayerState_LaydownObject.h" />
@@ -437,6 +438,7 @@
     <ClCompile Include="..\Private\NPC_Thrash.cpp" />
     <ClCompile Include="..\Private\NPC_Violet.cpp" />
     <ClCompile Include="..\Private\PlayerState_Die.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Evict.cpp" />
     <ClCompile Include="..\Private\PlayerState_ExitPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_IntoPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_LaydownObject.cpp" />
