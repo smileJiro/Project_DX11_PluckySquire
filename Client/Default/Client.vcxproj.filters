@@ -1057,6 +1057,9 @@
     <ClInclude Include="..\Public\Effect_Manager.h">
       <Filter>02.GameObjects\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Effect2D.h">
+      <Filter>02.GameObjects\Effect2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1649,6 +1652,9 @@
     <ClCompile Include="..\Private\PlayerState_TurnBook.cpp" />
     <ClCompile Include="..\Private\SideScroll_HitState.cpp" />
     <ClCompile Include="..\Private\SideScroll_PatrolState.cpp" />
+    <ClCompile Include="..\private\Effect2D.cpp">
+      <Filter>02.GameObjects\Effect2D</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\Effect_Manager.cpp">
       <Filter>02.GameObjects\Effect</Filter>
     </ClCompile>
