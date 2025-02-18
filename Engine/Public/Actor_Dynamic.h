@@ -35,6 +35,7 @@ public:
 	virtual void				Set_Rotation(_fvector _vLook);
 	virtual void				Set_LinearDamping(_float _fValue);
 	virtual void				Set_AngularDamping(_float _fValue);
+	void						Set_Gravity(_bool _isGravity);
 
 	virtual void				Add_Force(const _float3& _vForce);// 일반적인 힘
 	virtual void				Add_Impulse(const _float3& _vForce); // 강한 힘

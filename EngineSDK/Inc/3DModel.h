@@ -77,12 +77,12 @@ public:
 public:
 	vector<CMesh*>&			Get_Meshs() { return m_Meshes; }
 	vector<CMaterial*>&		Get_Materials() { return m_Materials; }
-	vector<CBone*>&			Get_Bones() { return m_Bones; }
 
 	//vector<CAnimation*>&	Get_Animations() { return m_Animations; }
 #endif // _DEBUG
 public :
-
+	_float4x4					Get_PreTransformMatrix() { return m_PreTransformMatrix; }
+	vector<CBone*>&				Get_Bones() { return m_Bones; }
 	void						Binding_TextureIndex(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex) { m_arrTextureBindingIndex[_iMaterialIndex][_eTextureType] = _iIndex; }
 	_uint						Get_TextureIndex(_uint _eTextureType, _uint _iMaterialIndex) { return m_arrTextureBindingIndex[_iMaterialIndex][_eTextureType]; }
 

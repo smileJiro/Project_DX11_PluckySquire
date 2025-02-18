@@ -96,6 +96,7 @@ public:
 		EXIT_PORTAL,
 		ELECTRIC,
 		TURN_BOOK,
+		EVICT,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -510,6 +511,7 @@ public:
 	const _float4x4* Get_BodyWorldMatrix_Ptr() const;
 	const _float4x4* Get_BodyWorldMatrix_Ptr(COORDINATE eCoord) const;
 	CModelObject* Get_Body() { return m_pBody; }
+	_vector Get_RootBonePosition();
 
 
 	//Set
