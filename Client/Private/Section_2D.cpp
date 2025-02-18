@@ -181,7 +181,7 @@ _float2 CSection_2D::Get_RenderTarget_Size()
 HRESULT CSection_2D::Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType)
 {
 
-	CLayer* pTargetLayer = m_Layers[SECTION_2D_PLAYMAP_OBJECT];
+	CLayer* pTargetLayer = m_Layers[SECTION_2D_PLAYMAP_WORDOBJ];
 
 	if (nullptr != pTargetLayer)
 	{

@@ -462,6 +462,14 @@ HRESULT CSampleBook::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _ws
 		SECTION_MGR->Set_BookWorldPosMapTexture(pTexture);
 		Safe_AddRef(pTexture);
 	}
+	else 
+	{
+		CSection_2D* p2DSection = static_cast<CSection_2D*>(pSection);
+		Safe_AddRef(pTexture);
+		p2DSection->Set_WorldTexture(pTexture);
+		//어차피 똑같은건데... 코드 분리하기 좀 늦은거같아서 그냥 똑같은거 한번 넣어서 포탈 생성 타게 만듬.
+											   // 그를 위한 Safe_Addref(내부에서 한번 릴리즈 해주니까.) 
+	}
 
 
 	Safe_Release(pResource);

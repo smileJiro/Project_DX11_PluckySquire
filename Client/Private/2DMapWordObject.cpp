@@ -89,13 +89,47 @@ HRESULT C2DMapWordObject::Initialize(void* _pArg)
                 if(WordActionJson["Param"].is_number_float())
                     tAction.anyParam = (_float)WordActionJson["Param"];
             }
-
             m_Actions.push_back(tAction);
         }
     }
 
 
-    return __super::Initialize(pDesc);
+
+
+
+    HRESULT hr =__super::Initialize(pDesc);
+
+
+
+    if (WordObjectJson.contains("Collider_Info"))
+    {
+        if (WordObjectJson["Collider_Info"].contains("Collider_Extent"))
+        {
+            _float2 fExtent = { WordObjectJson["Collider_Info"]["Collider_Extent"][0].get<_float>(),
+            WordObjectJson["Collider_Info"]["Collider_Extent"][1].get<_float>() };
+
+
+
+            /* Test 2D Collider */
+            m_p2DColliderComs.resize(1);
+            CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
+            AABBDesc.pOwner = this;
+            AABBDesc.vExtents = fExtent;
+            AABBDesc.vScale = {1.f,1.f};
+            AABBDesc.vOffsetPosition = {0.f,0.f};
+            AABBDesc.isBlock = true;
+            AABBDesc.iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
+            CCollider_AABB* pCollider = nullptr;
+            if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+                TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
+                return E_FAIL;
+
+        }
+    
+    }
+
+
+
 }
 
 void C2DMapWordObject::Priority_Update(_float _fTimeDelta)
@@ -115,6 +149,10 @@ void C2DMapWordObject::Late_Update(_float _fTimeDelta)
 
 HRESULT C2DMapWordObject::Render()
 {
+#ifdef _DEBUG
+    if (!m_p2DColliderComs.empty())
+        m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+#endif // _DEBUG
     return __super::Render();
 }
 
@@ -146,7 +184,7 @@ HRESULT C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContai
                 {
                     _bool isActive = any_cast<_bool>(tAction.anyParam);
                     m_IsWordActive = isActive;
-                    Set_Active(m_IsWordActive);
+                    Set_Render(m_IsWordActive);
                 }
                 break;
                 case ANIMATION_CHANGE:
@@ -168,6 +206,13 @@ HRESULT C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContai
                     _float fPostionY = any_cast<_float>(tAction.anyParam);
                     _vector vOriginalPosition = Get_FinalPosition();
                     Set_Position(XMVectorSetY(vOriginalPosition, fPostionY));
+                }
+                break;                
+                case COLLIDER_ACTIVE:
+                {
+                    _bool isActive = any_cast<_bool>(tAction.anyParam);
+                    if (!m_p2DColliderComs.empty() && nullptr != m_p2DColliderComs[0])
+                        m_p2DColliderComs[0]->Set_Active(isActive);
                 }
                 break;
                 default:
