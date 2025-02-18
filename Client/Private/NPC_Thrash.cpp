@@ -86,16 +86,6 @@ HRESULT CNPC_Thrash::Initialize(void* _pArg)
 
 void CNPC_Thrash::Priority_Update(_float _fTimeDelta)
 {
-	if (true == m_isDelay)
-	{
-		m_fAccTime += _fTimeDelta;
-
-		if (m_fDelayTime <= m_fAccTime)
-		{
-			Delay_Off();
-		}
-	}
-
 	__super::Priority_Update(_fTimeDelta);
 }
 
@@ -105,12 +95,19 @@ void CNPC_Thrash::Child_Update(_float _fTimeDelta)
 		Trace(_fTimeDelta);
 	else
 		Welcome_Jot(_fTimeDelta);
+
 	__super::Child_Update(_fTimeDelta);
 }
 
 void CNPC_Thrash::Child_LateUpdate(_float _fTimeDelta)
 {
 	__super::Child_LateUpdate(_fTimeDelta);
+
+	if (TEXT("Chapter2_P0102") != CSection_Manager::GetInstance()->Get_Cur_Section_Key())
+	{
+		m_isRender = true;
+		//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CSection_Manager::GetInstance()->Get_Cur_Section_Key(), this, SECTION_2D_PLAYMAP_OBJECT);
+	}
 }
 
 
@@ -166,11 +163,12 @@ void CNPC_Thrash::Trace(_float _fTimeDelta)
 	}
 
 	// TODO :: 테스트 코드
-	if (m_isMove)
-	{
-		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_run_right);
-		Delay_On();
-	}
+	For_MoveAnimationChange(_fTimeDelta, _NPCPos);
+	//if (m_isMove)
+	//{
+	//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_run_right);
+	//	Delay_On();
+	//}
 }
 
 void CNPC_Thrash::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
@@ -178,13 +176,146 @@ void CNPC_Thrash::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 }
 
-void CNPC_Thrash::ChangeState_Panel()
+void CNPC_Thrash::ChangeState_Panel(_float _fTimeDelta, _float2 _vNpcPos)
 {
-
+	
 }
 
 void CNPC_Thrash::For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos)
 {
+	_vector CurPos = XMVectorSet(_vNpcPos.x, _vNpcPos.y, 0.f, 1.f);
+	_vector PrePos = XMVectorSet(m_vPreNPCPos.x, m_vPreNPCPos.y, 0.f, 1.f);
+
+	// 어? 너 지금 이전 거리가 달라졌네  그러면 이동한거야 / 애니메이션 변경시키자구
+	if (0.f < XMVectorGetX(XMVector3Length(CurPos - PrePos)))
+	{
+		CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+		if (0.f < fabs(m_vPreNPCPos.x - _vNpcPos.x) && 0.f < fabs(m_vPreNPCPos.y - _vNpcPos.y))
+		{
+			if (5.f < fabs(m_vPreNPCPos.y - _vNpcPos.y))
+			{
+				//위로 올라간다.
+
+				//(1.f > m_vPreNPCPos.y - _NPCPos.y)
+
+
+				if (1.f > m_vPreNPCPos.y - _vNpcPos.y)
+				{
+					// 위로 간다.
+					if (Thrash_run_up != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+						static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_run_up);
+					m_eAnimationType = ANIM_UP;
+					m_fIdleWaitTime = 0.f;
+				}
+				else if (1.f < m_vPreNPCPos.y - _vNpcPos.y)
+				{
+					// 아래로간다.
+					if (Thrash_run_down != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+						static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_run_down);
+					m_eAnimationType = ANIM_DOWN;
+					m_fIdleWaitTime = 0.f;
+				}
+
+
+			}
+			else if (0.f <= fabs(m_vPreNPCPos.x - _vNpcPos.x))
+			{
+				// 양옆으로 이동한다.
+
+				if (1.f < m_vPreNPCPos.x - _vNpcPos.x)
+				{
+					// 좌측으로 이동한다.
+					if (Thrash_run_right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+					{
+						_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+						m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+						static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_run_right);
+						m_eAnimationType = ANIM_LEFT;
+					}
+
+
+					m_fIdleWaitTime = 0.f;
+				}
+				else if (-1.f >= m_vPreNPCPos.x - _vNpcPos.x)
+				{
+					// 우측으로 이동한다.
+					if (Thrash_run_right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+					{
+						_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+						m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+						static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_run_right);
+						m_eAnimationType = ANIM_RIGHT;
+					}
+
+					m_fIdleWaitTime = 0.f;
+				}
+
+			}
+		}
+
+		//y로만 이동한거야?
+		m_vPreNPCPos = _vNpcPos;
+	}
+	else
+	{
+		CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+		if (ANIM_UP != m_eAnimationType && ANIM_DOWN != m_eAnimationType)
+			m_fIdleWaitTime += _fTimeDelta;
+
+		if (ANIM_IDLE != m_eAnimationType && 3.f <= m_fIdleWaitTime)
+		{
+			m_eAnimationType = ANIM_IDLE;
+		}
+
+		switch (m_eAnimationType)
+		{
+		case ANIM_UP:
+		{
+			if (Thrash_idle_up != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_idle_up);
+
+		}
+		break;
+
+		case ANIM_DOWN:
+		{
+			if (Thrash_idle_down != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_idle_down);
+		}
+		break;
+
+		case ANIM_LEFT:
+		{
+			if (Thrash_idle_right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+			{
+				_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+				m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_idle_right);
+			}
+
+		}
+		break;
+
+		case ANIM_RIGHT:
+		{
+			if (Thrash_idle_right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+			{
+				_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+				m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_idle_right);
+			}
+		}
+		break;
+
+		case ANIM_IDLE:
+		{
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_idle_down);
+		}
+		break;
+		}
+	}
 }
 
 void CNPC_Thrash::Welcome_Jot(_float _fTimeDelta)
@@ -230,7 +361,7 @@ void CNPC_Thrash::Welcome_Jot(_float _fTimeDelta)
 			_float fCheckY = fabs(vPlayerPos.y - vThrashPos.y);
 
 			// 플레이어와 쓰레시의 높이가 1 이하 이면 다이얼로그를 시작한다.
-			if (1.f >= fCheckY)
+			if (15.f >= fCheckY)
 			{
 				m_eActionType = ACTION_DIALOG;
 
@@ -253,6 +384,9 @@ void CNPC_Thrash::Welcome_Jot(_float _fTimeDelta)
 				_float3 vNextPos = _float3(-783.f, 161.f, 0.f);
 				Event_Book_Main_Section_Change_Start(1, &vNextPos);
 				m_eMoving = MOVING_DIA;
+				
+				
+
 
 				// 다이얼로그 한개 더띄운다.
 				// 다이얼로그가 끝났으면 trace를 이제 true로해서 따라 다니게 한다.
@@ -263,9 +397,6 @@ void CNPC_Thrash::Welcome_Jot(_float _fTimeDelta)
 			}
 			else if (MOVING_DIA == m_eMoving)
 			{
-				// 다이얼로그를 띄운다.
-// 				//
-				// str 값을 바꾼 후
 				m_eMoving = MOVING_CUR;
 			}
 			else if (MOVING_CUR == m_eMoving)
@@ -280,6 +411,8 @@ void CNPC_Thrash::Welcome_Jot(_float _fTimeDelta)
 		}
 	}
 }
+
+
 
 void CNPC_Thrash::Interact(CPlayer* _pUser)
 {

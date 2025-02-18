@@ -203,9 +203,10 @@ public:
 private:
 	void						Trace(_float _fTimeDelta);
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-	void						ChangeState_Panel();
+	void						ChangeState_Panel(_float _fTimeDelta, _float2 _vNpcPos);
 	void						For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos);
 	void						Welcome_Jot(_float _fTimeDelta);
+	void						Rock_Dialogue(_float _fTimeDelta);
 
 private:
 	CNPC_Thrash::ACTION			m_eActionType = { ACTION_END };
@@ -214,6 +215,9 @@ private:
 	_float						m_fIdleWaitTime = { 0.f };
 	_float						m_fWelcomeWaitTime = { 0.f };
 	_bool						m_isDialoging = { false };
+
+	_float						m_fNextDialogWait = { 0.f };
+	_bool						m_isNextDialog = { false };
 };
 
 END

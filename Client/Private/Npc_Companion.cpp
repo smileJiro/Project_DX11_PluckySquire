@@ -90,17 +90,22 @@ void CNPC_Companion::Update(_float _fTimeDelta)
 
 					if (CNPC_Violet::VIOLET_NOTRENDER == static_cast<CNPC_Violet*>(m_vecCompanionNpc[i])->Get_RenderType())
 					{
-						return;
+						 
+
+						continue;
 					}
 
-					CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
-					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
+					//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
+
+					if (false == CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
+						CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
 				}
 
-				else if (TEXT("Violet") != m_vecCompanionNpc[i]->Get_Name())
+				else 
 				{
-					CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
-					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
+					//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
+					if (false == CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
+						CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
 				}
 			}
 		}
