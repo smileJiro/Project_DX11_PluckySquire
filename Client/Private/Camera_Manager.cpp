@@ -25,6 +25,15 @@ HRESULT CCamera_Manager::Initialize()
 
 void CCamera_Manager::Update(_float fTimeDelta)
 {
+	if (KEY_DOWN(KEY::G))
+	{
+		Start_FadeIn(2.5f);
+	}
+	if (KEY_DOWN(KEY::H))
+	{
+		Start_FadeOut(1.5f);
+	}
+
 #ifdef _DEBUG
 	if(IS_IMPORT_IMGUI)
 		Imgui_Dof();
@@ -431,6 +440,16 @@ void CCamera_Manager::Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fSha
 		return;
 
 	m_Cameras[_eCameraType]->Start_Shake_ByCount(_fShakeTime, _fShakeForce, _iShakeCount, (CCamera::SHAKE_TYPE)_iShakeType, _fDelayTime);
+}
+
+void CCamera_Manager::Start_FadeIn(_float _fFadeTime)
+{
+	m_Cameras[m_eCurrentCameraType]->Start_PostProcessing_Fade(CCamera::FADE_IN, _fFadeTime);
+}
+
+void CCamera_Manager::Start_FadeOut(_float _fFadeTime)
+{
+	m_Cameras[m_eCurrentCameraType]->Start_PostProcessing_Fade(CCamera::FADE_OUT, _fFadeTime);
 }
 
 void CCamera_Manager::Load_ArmData()

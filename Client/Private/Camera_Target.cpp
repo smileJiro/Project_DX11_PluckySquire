@@ -58,7 +58,8 @@ void CCamera_Target::Late_Update(_float fTimeDelta)
 	
 	Action_SetUp_ByMode();
 	Action_Mode(fTimeDelta);
-	__super::Compute_PipeLineMatrices();
+
+	__super::Late_Update(fTimeDelta);
 }
 
 #ifdef _DEBUG

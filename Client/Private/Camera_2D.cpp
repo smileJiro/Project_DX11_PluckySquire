@@ -57,7 +57,7 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 	Action_SetUp_ByMode();
 	Action_Mode(fTimeDelta);
 
-	__super::Compute_PipeLineMatrices();
+	__super::Late_Update(fTimeDelta);
 }
 
 void CCamera_2D::Add_CurArm(CCameraArm* _pCameraArm)

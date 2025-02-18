@@ -32,6 +32,7 @@ struct DirectLightData
     float4 vAmbient; // 주변광 (16byte)
     float4 vSpecular; // 정반사광 (16byte)
 };
+
 /* DofData */ 
 struct DofData
 {
@@ -39,10 +40,12 @@ struct DofData
     float fAperture; // 조리개 크기
     float fFocusDistance; // 초점 평면거리
     float fFocalLength; // Fovy와 FocusDistance를 기반으로 구해지는 값.
+    
     float fDofBrightness;
     float fBaseBlurPower; // 기본 전체 블러값
-    float dummy1;
+    float fFadeRatio; // FadeIn, FadeOut Ratio
     float dummy2;
+    
     float3 vBlurColor;
     float dummy3;
 };
@@ -434,6 +437,7 @@ PS_OUT PS_MAIN_COMBINE(PS_IN In)
 
     
     Out.vColor = float4(vLighting, 1.0f);
+    //Out.vColor.rgb *= c_DofVariable.fFadeRatio;
     return Out;
 }
 
@@ -537,6 +541,7 @@ PS_OUT PS_AFTER_EFFECT(PS_IN In)
     vFinal.rgb = vFinal.rgb + vBloomColor.rgb;
     
     
+    vFinal.rgb *= c_DofVariable.fFadeRatio;
     Out.vColor = vFinal;
     
         

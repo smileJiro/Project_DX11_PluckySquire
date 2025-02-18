@@ -39,7 +39,7 @@ private: /* Shake Parameters */
 	_float2							m_vShakeOffset = {};	/* 랜덤 값으로 카메라 셰이크처럼 좌표 흔들기. */
 
 private: /* Drop Parameters */
-	_float2							m_vDropTime = { 4.0f, 0.0f };
+	_float2							m_vDropTime = { 3.0f, 0.0f };
 
 private: /* 상태 변경 루틴 */
 	void							State_Change();
