@@ -963,6 +963,60 @@
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 1,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "리듬이 아주 괜찮더라고.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "Violet_Rock_01",
+			"Section": "Chapter2_P0304",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "저 바위좀 봐... 공중에서 사라지고 있어!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "완전 이상한데...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
 				}
 			]
 		},
