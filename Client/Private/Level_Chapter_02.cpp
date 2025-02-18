@@ -97,16 +97,16 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
-	//	assert(nullptr);
-	//}
-	//if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_02::Initialize)");
-	//	assert(nullptr);
-	//}
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_UI (Level_Chapter_02::Initialize)");
@@ -1153,32 +1153,46 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		return E_FAIL;
 	
 
+	//Pooling_DESC Pooling_Desc;
+	//Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	//Pooling_Desc.strLayerTag = _strLayerTag;
+	//Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Goblin");
+	//Pooling_Desc.eSection2DRenderGroup = SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT;
+
+
 	CGoblin::MONSTER_DESC Goblin_Desc;
 	Goblin_Desc.iCurLevelID = m_eLevelID;
 	Goblin_Desc.eStartCoord = COORDINATE_2D;
-	Goblin_Desc.tTransform2DDesc.vInitialPosition = _float3(-700.0f, -30.f, 0.f);
-	Goblin_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
-
-
 	Goblin_Desc.tTransform2DDesc.vInitialPosition = _float3(460.0f, 100.f, 0.f);
+	Goblin_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
 		return E_FAIL;
 
-
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
 
+	Goblin_Desc.iCurLevelID = m_eLevelID;
+	Goblin_Desc.eStartCoord = COORDINATE_2D;
 	Goblin_Desc.tTransform2DDesc.vInitialPosition = _float3(700.0f, 20.f, 0.f);
+	Goblin_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, & Goblin_Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
+	
+	//CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Goblin"), Pooling_Desc, pGoblin_Desc);
+
+	////CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
+
+	//_float3 vPos = { 460.0f, 100.f, 0.f };
+	//_wstring strSectionKey = TEXT("Chapter1_P0708");
+
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Goblin"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+
+	//vPos = { 700.0f, 20.f, 0.f };
+
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Goblin"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
 
 
 	CGoblin_SideScroller::SIDESCROLLDESC Goblin_SideScroller_Desc;
@@ -1235,7 +1249,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
 
 	Pooling_DESC Pooling_Desc;
 	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
