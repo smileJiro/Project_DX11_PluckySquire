@@ -436,6 +436,9 @@ HRESULT CPhysx_Manager::Initialize_Material()
 			break;
 		case Engine::ACTOR_MATERIAL::DOMINO: // 도미노용
 			vMaterialDesc = { 0.5f, 0.6f,0.f };
+			break;			
+		case Engine::ACTOR_MATERIAL::CHARACTER_FOOT: // 캐릭터 구형 마찰
+			vMaterialDesc = { 8.f, 8.f,0.f };
 			break;
 		default:
 			break;

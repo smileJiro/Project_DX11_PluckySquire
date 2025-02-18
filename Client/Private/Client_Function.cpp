@@ -538,8 +538,39 @@ namespace Client
 			break;
 		}
 	}
+							// bush_night_sdfdsf			// bush -> true buu -> false
+	_bool ContainString(const _string _strSourceText, const _string _strDestText)
+	{
+		return string::npos != _strSourceText.find(_strDestText);
+	}
+
+	_bool ContainWstring(const _wstring _strSourceText, const _wstring _strDestText)
+	{
+		return string::npos != _strSourceText.find(_strDestText);
+	}
+
+	_float2 Convert_Pos_ToWindow(_float2 _fProjPos, _float2 _fRenderTargetSize)
+	{
+		_float2 vCalPos = { 0.f, 0.f };
+		_float2 vMidPoint = { _fRenderTargetSize.x * 0.5f, _fRenderTargetSize.y * 0.5f };
+
+		vCalPos.x = _fProjPos.x + vMidPoint.x;
+		vCalPos.y = -_fProjPos.y + vMidPoint.y;
+
+		return vCalPos;
+	}
+	_float2 Convert_Pos_ToProj(_float2 _fWindowPos, _float2 _fRenderTargetSize)
+	{
+
+		_float2 vCalPos = { 0.f, 0.f };
+		_float2 vMidPoint = { _fRenderTargetSize.x * 0.5f, _fRenderTargetSize.y * 0.5f };
 
 
+		vCalPos.x = _fWindowPos.x - vMidPoint.x;
+		vCalPos.y = -_fWindowPos.y + vMidPoint.y;
+
+		return vCalPos;
+	}
 
 }
 

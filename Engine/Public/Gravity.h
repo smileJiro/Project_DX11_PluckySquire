@@ -10,6 +10,7 @@ public:
 		CGameObject* pOwner = nullptr;
 		_float3 vGravityDirection = { 0.0f, -1.0f, 0.0f };
 		_float fGravity = 9.8f;
+		_float fMaxGravityAcc = 1000.f;
 	}GRAVITY_DESC;
 public:
 	enum STATE { STATE_FLOOR, STATE_FALLDOWN ,STATE_LAST };
@@ -45,6 +46,7 @@ public:
 	void						Set_GravityDirection(const _float3& _vDirection) { m_vDirection = _vDirection; }
 	void						Set_Gravity(_float _fGravity) { m_fGravity = _fGravity; }
 	void						Set_GravityAcc(_float _fGravityAcc) { m_fGravityAcc = _fGravityAcc; }
+	void						Set_GravityOffset(_float _fGravityOffset) { m_fGravityOffset = _fGravityOffset; }
 private:
 	CGameObject*				m_pOwner = nullptr;
 	STATE						m_ePreState = STATE::STATE_LAST;
@@ -54,6 +56,7 @@ private:
 	_float						m_fGravity = 9.8f; // 중력가속도
 	_float						m_fGravityAcc = 0.0f;
 	_float						m_fMaxGravityAcc = 1000.f;
+	_float						m_fGravityOffset = {};
 public:
 	static CGravity*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CComponent*					Clone(void* _pArg) override;

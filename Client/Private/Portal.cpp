@@ -66,9 +66,12 @@ void CPortal::Late_Update(_float _fTimeDelta)
 
 HRESULT CPortal::Render()
 {
-    if(m_pActorCom)
+#ifdef _DEBUG
+    if (m_pActorCom)
         m_pActorCom->Render();
-	return __super::Render();
+#endif // _DEBUG
+
+    return __super::Render();
 }
 
 HRESULT CPortal::Init_Actor()
@@ -194,11 +197,13 @@ HRESULT CPortal::Init_Actor()
     return hr;
 }
 
-void CPortal::Use_Portal(CPlayer* _pUser)
+void CPortal::Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal)
 {
     _vector vPos = Get_ControllerTransform()[COORDINATE_2D].Get_State(CTransform::STATE_POSITION);
 
     _vector v3DPos = SECTION_MGR->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { XMVectorGetX(vPos),XMVectorGetY(vPos) });
+
+    *_pOutNormal = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW( v3DPos))); /* 추후 노말을 기준으로 힘의 방향을 결정해도 돼*/
 
     _int iCurCoord = (_int)_pUser->Get_CurCoord();
     (_int)iCurCoord ^= 1;

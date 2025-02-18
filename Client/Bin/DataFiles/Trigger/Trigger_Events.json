@@ -45,33 +45,43 @@
     ]
   },
   {
-    "Trigger_EventTag": "P0809_MonsterSpawnProcess",
+    "Trigger_EventTag": "C02P0910_MonsterSpawnProcess",
     "Actions": [
       {
         "ActionTag": "Create_EventExecuter",
-        "EventTag": "P0809_Spawn_LightningBolt",
+        "EventTag": "C02P0910_Spawn_LightningBolt",
         "Is_Sequence": true
       },
       {
         "ActionTag": "Create_EventExecuter",
-        "EventTag": "P0809_Monster_Spawn",
+        "EventTag": "C02P0910_Monster_Spawn",
         "Is_Sequence": true
       }
     ]
   },
-  {
-    "Trigger_EventTag": "MagicDust",
-    "Actions": [
-        {
-            "ActionTag": "MagicDust",
-            "EventTag": "Honey_Bee_Benny_01",
-            "Is_Sequence": false
-        },
-        {
-            "ActionTag": "MagicDust_Book",
-            "EventTag": "none",
-            "Is_Sequence": false
-        }
-    ]
-  }
+    {
+        "Trigger_EventTag": "Active_MagicDust",
+        "Actions": [
+            {
+                "ActionTag": "Active_MagicDust",
+                "EventTag": "Honey_Bee_Benny_01",
+                "Is_Sequence": false
+            },
+            {
+                "ActionTag": "Active_BookMagicDust",
+                "EventTag": "none",
+                "Is_Sequence": false
+            }
+        ]
+    },
+    {
+        "Trigger_EventTag": "Get_Out_Jot",
+        "Actions": [
+            {
+                "ActionTag": "Active_MagicHand",
+                "EventTag": "C01_Humgrump_01",
+                "Is_Sequence": false
+            }
+        ]
+    }
 ]

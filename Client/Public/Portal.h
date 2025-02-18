@@ -39,7 +39,7 @@ public:
 	virtual HRESULT			Render() override;
 
 	HRESULT					Init_Actor();
-	void					Use_Portal(CPlayer* _pUser);
+	void					Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal);
 private:
 	HRESULT					Ready_Components(PORTAL_DESC* _pDesc);
 	HRESULT					Ready_PartObjects(PORTAL_DESC* _pDesc);

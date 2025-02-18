@@ -59,8 +59,8 @@ public :
 
 
 private :
-	void C020708_Bolt_Spawn(_float _fTimeDelta);
-	void C020708_Monster_Spawn(_float _fTimeDelta);
+	void C020910_Bolt_Spawn(_float _fTimeDelta);
+	void C020910_Monster_Spawn(_float _fTimeDelta);
 
 
 

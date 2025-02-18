@@ -131,7 +131,7 @@ HRESULT CPooling_Manager::Register_PoolingObject(const _wstring& _strPoolingTag,
 //	return S_OK;
 //}
 
-HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINATE eCoordinate, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling)
+HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINATE eCoordinate, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling, const _wstring* _pSectionKey)
 {
 	vector<CGameObject*>* pGameObjects = Find_PoolingObjects(_strPoolingTag);
 
@@ -144,7 +144,6 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINA
 		{
 			pGameObject->Set_Alive();
 			pGameObject->Set_Active(true);
-
 			pGameObject->Change_Coordinate(eCoordinate);
 
 			if (nullptr != _pScaling)
@@ -159,8 +158,13 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINA
 			{
 				/* 오브젝트 삭제시 Section에서 제거되었으니, 다시 Active 활성화 시 자기 자신의 Section에 추가하자. */
 				pair<Pooling_DESC, CGameObject::GAMEOBJECT_DESC*>* pPair = Find_PoolingDesc(_strPoolingTag);
-				if (false == pPair->first.strSectionKey.empty())
-					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pPair->first.strSectionKey, pGameObject, pPair->first.eSection2DRenderGroup);// Event 처리로 해야해 
+
+				if (nullptr != _pSectionKey)
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(*_pSectionKey, pGameObject, pPair->first.eSection2DRenderGroup); // Event 처리로 해야해 
+				else if (false == pPair->first.strSectionKey.empty())
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pPair->first.strSectionKey, pGameObject, pPair->first.eSection2DRenderGroup);
+				}
 			}
 
 			return S_OK;
@@ -177,11 +181,11 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINA
 	return S_OK;
 }
 
-HRESULT CPooling_Manager::Create_Objects(const _wstring& _strPoolingTag, _uint iNumPoolingObjects, COORDINATE eCoordinate, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling)
+HRESULT CPooling_Manager::Create_Objects(const _wstring& _strPoolingTag, _uint iNumPoolingObjects, COORDINATE eCoordinate, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling, const _wstring* _pSectionKey)
 {
 	for (_uint i = 0; i < iNumPoolingObjects; ++i)
 	{
-		if (FAILED(Create_Object(_strPoolingTag, eCoordinate, _pPosition, _pRotation, _pScaling)))
+		if (FAILED(Create_Object(_strPoolingTag, eCoordinate, _pPosition, _pRotation, _pScaling, _pSectionKey)))
 			return E_FAIL;
 	}
 }
@@ -192,7 +196,7 @@ HRESULT CPooling_Manager::Pooling_Objects(const _wstring& _strPoolingTag, _uint 
 	if (nullptr == pPair)
 		return E_FAIL;
 
-	CFallingRock::FALLINGROCK_DESC* pTestDesc = dynamic_cast<CFallingRock::FALLINGROCK_DESC*>(pPair->second);
+	//CFallingRock::FALLINGROCK_DESC* pTestDesc = dynamic_cast<CFallingRock::FALLINGROCK_DESC*>(pPair->second);
 	CGameObject* pGameObject = nullptr;
 
 	for (_uint i = 0; i < _iNumPoolingObjects; ++i)

@@ -31,7 +31,7 @@ HRESULT CInteraction_Heart::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 
 	return S_OK;
 }
@@ -53,6 +53,10 @@ void CInteraction_Heart::Update(_float _fTimeDelta)
 		{
 			m_isRender = true;
 			m_PrePlayerHP = m_PlayerHP;
+
+			if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+
 		}
 
 		Cal_HeartPos();
@@ -173,6 +177,7 @@ void CInteraction_Heart::Cal_RenderTime(_float _fTimeDelta, _int _iPlayerHP)
 		m_isRender = false;
 		m_fRenderTime = 0.f;
 		Uimgr->Set_PlayerOnHit(false);
+		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 	}
 }
 

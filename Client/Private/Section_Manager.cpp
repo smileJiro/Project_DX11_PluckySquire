@@ -55,9 +55,9 @@ HRESULT CSection_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	Safe_Release(pRenderGroup_WorldPos);
 
 
-	//m_pWordGameGenerator = CWordGame_Generator::Create(m_pDevice, m_pContext);
-	//if (m_pWordGameGenerator == nullptr)
-	//	return E_FAIL;
+	m_pWordGameGenerator = CWordGame_Generator::Create(m_pDevice, m_pContext);
+	if (m_pWordGameGenerator == nullptr)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -110,11 +110,11 @@ HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
 	if (isSectionLoading)
 	{
 
-		//if (nullptr != m_pWordGameGenerator)
-		//{
-		//	if (FAILED(m_pWordGameGenerator->Load_Word(strJsonPath + strWordJsonName)))
-		//		return E_FAIL;
-		//}
+		if (nullptr != m_pWordGameGenerator)
+		{
+			if (FAILED(m_pWordGameGenerator->Load_Word(strJsonPath + strWordJsonName)))
+				return E_FAIL;
+		}
 		if (FAILED(Ready_CurLevelSectionModels(strJsonPath + strModelInfoJsonName)))
 			return E_FAIL;
 
@@ -679,7 +679,7 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 				strStartSectionKey = pSection->Get_SectionName();
 			m_CurLevelSections.try_emplace(pSection->Get_SectionName(), pSection);
 
-	/*		if (nullptr != pSection && ChildJson.contains("Minigame_Info"))
+			if (nullptr != pSection && ChildJson.contains("Minigame_Info"))
 			{
 				auto& MiniGameJson = ChildJson["Minigame_Info"];
 
@@ -698,7 +698,7 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 						m_pWordGameGenerator->WordGame_Generate(pSection, StringToWstring(strName));
 					}
 				}
-			}*/
+			}
 
 			iIndex++;
 		}
@@ -715,6 +715,7 @@ void CSection_Manager::Free()
 	Clear_Sections();
 
 	Safe_Release(m_pBookWorldPosMap);
+	Safe_Release(m_pWordGameGenerator);
 
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pContext);

@@ -191,7 +191,7 @@
 		{
 			"id": "Honey_Bee_Benny_01",
 			"Section": "Chapter1_P0910",
-			"TriggerTag": "MagicDust",
+			"TriggerTag": "Active_MagicDust",
 			"TriggerID": 999,
 			"lines": [
 				{
@@ -295,6 +295,8 @@
 		{
 			"id": "C01_Humgrump_01",
 			"Section": "Chapter2_P1314",
+			"TriggerTag": "Get_Out_Jot",
+			"TriggerID": 998,
 			"lines": [
 				{
 					"Portrait": 5,
@@ -943,6 +945,28 @@
 			]
 		},
 		{
+			"id": "Welcom_Jot_With_Thrash_01",
+			"Section": "Chapter2_P0102",
+			"lines": [
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 1,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "너희 잘 내려오더라!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
 			"id": "Event_Dialogue_01",
 			"lines": [
 				{
@@ -956,7 +980,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "이벤트 트리거 테스트입니다.",
+					"text": "너희 잘 내려오더라!",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0

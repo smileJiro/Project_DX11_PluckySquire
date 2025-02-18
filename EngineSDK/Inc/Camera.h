@@ -7,7 +7,7 @@ class ENGINE_DLL CCamera abstract : public CGameObject
 public:
 	enum ZOOM_LEVEL { LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7, LEVEL_8, LEVEL_9, LEVEL_10, ZOOM_LAST,};
 	enum SHAKE_TYPE { SHAKE_XY, SHAKE_X, SHAKE_Y, SHAKE_LAST };
-
+	enum FADE_TYPE { FADE_IN, FADE_OUT, FADE_LAST };
 public:
 	typedef struct tagCameraDesc : public CGameObject::GAMEOBJECT_DESC
 	{
@@ -49,6 +49,7 @@ public:
 	
 public:
 	HRESULT Load_DOF(const _wstring& _strJsonPath);
+
 protected:
 	void Compute_PipeLineMatrices(); // 둘다 연산
 	void Compute_ViewMatrix(); // 따로 연산
@@ -110,7 +111,7 @@ public:
 	void		Start_Changing_AtOffset(_float _fAtOffsetTime, _vector _vNextAtOffset, _uint _iRatioType);
 	void		Start_Shake_ByTime(_float _fShakeTime, _float _fShakeForce, _float _fShakeCycleTime = 0.05f, SHAKE_TYPE _ShakeType = SHAKE_TYPE::SHAKE_XY, _float _fDelayTime = 0.f);
 	void		Start_Shake_ByCount(_float _fShakeTime, _float _fShakeForce, _int _iShakeCount, SHAKE_TYPE _ShakeType = SHAKE_TYPE::SHAKE_XY, _float _fDelayTime = 0.f);
-
+	void		Start_PostProcessing_Fade(FADE_TYPE _eFadeType, _float _fFadeTime = 1.0f);
 public:/* Dof 값 조절 후 Bind_DofBuffer() 호출 시 적용 */
 	HRESULT		Compute_FocalLength();
 	HRESULT		Bind_DofConstBuffer();
@@ -122,7 +123,7 @@ protected:
 	void		Action_Zoom(_float _fTimeDelta);
 	void		Change_AtOffset(_float _fTimeDelta);
 	void		Action_Shake(_float _fTimeDelta);
-
+	void		Action_PostProcessing_Fade(_float _fTimeDelta);
 	_float		Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
 
 	virtual void		Switching(_float _fTimeDelta) {};
@@ -168,6 +169,12 @@ protected: // EventTag (ex CutScene_1 ...)
 protected:
 	CONST_DOF					m_tDofData = {};
 	ID3D11Buffer*				m_pConstDofBuffer = nullptr;
+	_bool						m_isBindConstBuffer = false;
+
+protected:
+	FADE_TYPE					m_eFadeType = FADE_TYPE::FADE_LAST;
+	_float2						m_vFadeTime = { 1.0f, 0.0f };
+
 private:
 	HRESULT						Ready_DofConstData(CAMERA_DESC* _pDesc);
 
