@@ -17,6 +17,7 @@ public:
 private:
     CPortal* m_pPortal = nullptr;
     _float m_f3DJumpDistance = 3.f;
+    NORMAL_DIRECTION m_ePortalNormal;
 };
 
 END

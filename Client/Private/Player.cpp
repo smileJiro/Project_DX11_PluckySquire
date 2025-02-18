@@ -190,6 +190,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	m_ePlayerMode = PLAYER_MODE_NORMAL;
 
     Set_PlatformerMode(false);
+
+    static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_FOOT, false);
+
     return S_OK;
 }
 
