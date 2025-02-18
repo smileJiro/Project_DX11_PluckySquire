@@ -538,7 +538,16 @@ namespace Client
 			break;
 		}
 	}
+							// bush_night_sdfdsf			// bush -> true buu -> false
+	_bool ContainString(const _string _strSourceText, const _string _strDestText)
+	{
+		return string::npos != _strSourceText.find(_strDestText);
+	}
 
+	_bool ContainWstring(const _wstring _strSourceText, const _wstring _strDestText)
+	{
+		return string::npos != _strSourceText.find(_strDestText);
+	}
 
 	_float2 Convert_Pos_ToWindow(_float2 _fProjPos, _float2 _fRenderTargetSize)
 	{

@@ -29,6 +29,8 @@
 #include "Trigger_Manager.h"
 #include "PlayerData_Manager.h"
 
+#include "Effect_Manager.h"
+
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
 CEvent_Manager::CEvent_Manager()
@@ -724,6 +726,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 	CSection_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CCamera_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
+	CEffect_Manager::GetInstance()->Level_Exit();
 
 	Uimgr->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 	

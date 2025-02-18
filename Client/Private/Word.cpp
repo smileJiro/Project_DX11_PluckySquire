@@ -68,7 +68,7 @@ HRESULT CWord::Initialize(void* _pArg)
 	m_p2DColliderComs.resize(1);
 	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
 	CircleDesc.pOwner = this;
-	CircleDesc.fRadius = 40.f;
+	CircleDesc.fRadius = 1.f;
 	CircleDesc.vScale = { 1.0f, 1.0f };
 	CircleDesc.vOffsetPosition = { 0.f, 0.f };
 	CircleDesc.isBlock = false;
@@ -92,8 +92,8 @@ HRESULT CWord::Initialize(void* _pArg)
 
 HRESULT CWord::Render()
 {
-	COORDINATE eCurCoord = Get_CurCoord();
-	
+	COORDINATE eCurCoord = Get_CurCoord();/*
+	_matrix = XMMatrixScaling(m_fSize.x, m_fSize.y, 1.f);*/
 	
 	if (FAILED(m_pShaderComs[eCurCoord]->Bind_Matrix("g_WorldMatrix", Get_FinalWorldMatrix_Ptr(eCurCoord))))
 		return E_FAIL;

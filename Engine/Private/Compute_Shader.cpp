@@ -179,10 +179,10 @@ HRESULT CCompute_Shader::Compute(_uint _iThreadGroupCountX, _uint _iThreadGroupC
 
 HRESULT CCompute_Shader::End_Compute()
 {
-    while (S_FALSE == m_pContext->GetData(m_pEventQuery, nullptr, 0, 0)) {
+   /* while (S_FALSE == m_pContext->GetData(m_pEventQuery, nullptr, 0, 0)) {
     
     }
-    m_pContext->End(m_pEventQuery);
+    m_pContext->End(m_pEventQuery);*/
 
     ID3D11ShaderResourceView* nullSRV[6] =
     {

@@ -11,8 +11,6 @@
 #include "Camera_CutScene.h"
 #include "Camera_Manager_Tool.h"
 
-#include "ModelObject.h"
-
 #include "Layer.h"
 #include "Collider.h"
 #include "CubeMap.h"
@@ -79,11 +77,13 @@ void CLevel_Camera_Tool::Update(_float _fTimeDelta)
 		CCamera_Manager_Tool::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
-	Show_CameraTool();
+	//Show_CameraTool();
 	Show_CutSceneTool(_fTimeDelta);
-	Show_ArmInfo();
+	//Show_ArmInfo();
 	Show_CutSceneInfo();
 	Show_SaveLoadFileWindow();
+
+	Show_AnimModel(_fTimeDelta);
 }
 
 HRESULT CLevel_Camera_Tool::Render()
@@ -244,6 +244,78 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 	Safe_AddRef(m_pSimulationCube);
 	m_pSimulationCube->Set_Active(false);
 
+	//CModelObject::MODELOBJECT_DESC Desc = {};
+	//Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_SampleBook"),
+	//	LEVEL_CAMERA_TOOL, L"Layer_Book", &Desc)))
+	//	return E_FAIL;
+
+
+	CModelObject* pOut = { nullptr };
+	CModelObject::MODELOBJECT_DESC Desc = {};
+
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	Desc.strModelPrototypeTag_3D = L"Prototype_Model_Book";
+	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	Desc.iShaderPass_3D = 0;
+	Desc.iPriorityID_3D = PR3D_GEOMETRY;
+	Desc.iRenderGroupID_3D = RG_3D;
+	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+	Desc.tTransform3DDesc.vInitialPosition = { 2.f,0.f,-17.3f };
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+		LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+		return E_FAIL;
+
+	pOut->Set_Active(false);
+	m_ModelObjects.push_back(pOut);
+
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	Desc.isCoordChangeEnable = false;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	Desc.strModelPrototypeTag_3D = L"Prototype_Model_MagicHand";
+	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	Desc.iShaderPass_3D = 0;
+	Desc.iPriorityID_3D = PR3D_BLEND;
+	Desc.iRenderGroupID_3D = RG_3D;
+	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+	Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 1.17f, -21.02f };
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+		LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+		return E_FAIL;
+
+	pOut->Set_Active(false);
+	m_ModelObjects.push_back(pOut);
+
+	// Player
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	Desc.isCoordChangeEnable = false;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	Desc.strModelPrototypeTag_3D = L"Latch_SkelMesh_NewRig";
+	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	Desc.iShaderPass_3D = 0;
+	Desc.iPriorityID_3D = PR3D_BLEND;
+	Desc.iRenderGroupID_3D = RG_3D;
+	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+	Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 1.17f, -21.02f };
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+		LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+		return E_FAIL;
+
+	pOut->Set_Active(false);
+	m_ModelObjects.push_back(pOut);
+
 	return S_OK;
 }
 
@@ -341,6 +413,7 @@ void CLevel_Camera_Tool::Show_CutSceneTool(_float fTimeDelta)
 	Picking();
 
 	Set_KeyFrameInfo();
+	Set_CameraInfo();
 
 	ImGui::Checkbox("Create Point", &m_isCreatePoint);
 
@@ -545,6 +618,49 @@ void CLevel_Camera_Tool::Show_CameraZoomInfo()
 
 	ImGui::Text("Cur Fovy: %.2f", fFovy);
 
+}
+
+void CLevel_Camera_Tool::Show_AnimModel(_float _fTimeDelta)
+{
+	ImGui::Begin("Control Model");
+
+	static _int iModelIndex = {};
+	ImGui::InputInt("Model Index: %d", &iModelIndex);
+
+	if (iModelIndex > m_ModelObjects.size() || iModelIndex < -1)
+		return;
+
+	//C3DModel* 
+	_float fTime =  static_cast<C3DModel*>(m_ModelObjects[iModelIndex]->Get_Model(COORDINATE_3D))->Get_AnimTime();
+	ImGui::Text("Current Anim Time : %.4f", fTime);
+
+	static _float fTimeScale = 1.f;
+	if (ImGui::DragFloat("LifeTime", &fTimeScale, 0.01f))
+	{
+		m_pGameInstance->Set_TimeScale(fTimeScale, TEXT("Timer_Default"));
+	}
+
+
+	static _bool isLoop = { true };
+	if (ImGui::RadioButton("Loop", isLoop))
+	{
+		isLoop = !isLoop;
+	}
+
+	static _int iAnim = { 0 };
+	ImGui::InputInt("Anim Index", &iAnim);
+
+	static _int iReset = { 0 };
+	ImGui::InputInt("Event ID", &iReset);
+
+	if (ImGui::Button("Reset All"))
+	{
+		/*pModel->Set_AnimationLoop(COORDINATE_3D, iAnim, isLoop);
+		pModel->Set_Animation(iAnim);*/
+
+	}
+
+	ImGui::End();
 }
 
 void CLevel_Camera_Tool::Set_KeyFrameInfo()
@@ -1810,6 +1926,54 @@ void CLevel_Camera_Tool::Set_CurrentKeyFrame()
 	}
 }
 
+void CLevel_Camera_Tool::Set_CameraInfo()
+{
+	ImGui::NewLine();
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("Camera Info");
+	ImGui::Separator();
+
+	// Camera Á¤º¸
+	CCamera* pCamera = CCamera_Manager_Tool::GetInstance()->Get_Camera(CCamera_Manager_Tool::FREE);
+	_vector vPos = pCamera->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+
+	ImGui::Text("Pos: % .2f, % .2f, % 2.f", XMVectorGetX(vPos), XMVectorGetY(vPos), XMVectorGetZ(vPos));
+	if (ImGui::Button("Move To Clicked Pos")) {
+		pCamera->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_tKeyFrameInfo.vPosition), 1.f));
+	}
+
+
+	ImGui::NewLine();
+
+	ImGui::Text("Zoom Level(+1 X): %d", pCamera->Get_CurrentZoomLevel());
+	ImGui::SameLine();
+	ImGui::InputInt("##Zoom Level", &m_iZoomLevel);
+	pCamera->Set_ZoomLevel(m_iZoomLevel);
+	ImGui::Text("Fovy: %.2f", XMConvertToDegrees(pCamera->Get_Fovy()));
+
+	ImGui::NewLine();
+
+	ImGui::Text("Get Cur Camera LookAt");
+	
+	_vector vLook = pCamera->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
+	_vector vAt = vPos + vLook;
+
+	ImGui::Text("vAt(vPos + vLook): %.2f, %.2f, %.2f", XMVectorGetX(vAt), XMVectorGetY(vAt), XMVectorGetZ(vAt));
+	ImGui::SameLine();
+	if (ImGui::Button("Set Cur At To Dummy")) {
+		XMStoreFloat3(&m_vInitialLookAt, vAt);
+	}
+
+	ImGui::NewLine();
+	ImGui::Text("Fixed LookAt: %.2f, %.2f, %.2f", m_vInitialLookAt.x, m_vInitialLookAt.y, m_vInitialLookAt.z);
+	
+	_vector vNewLook = XMVector3Normalize(XMLoadFloat3(&m_vInitialLookAt) - vPos);
+	XMStoreFloat3(&m_vNextAtOffset, vNewLook - vLook);
+
+	ImGui::Text("AtOffset: %.2f, %.2f, %.2f", m_vNextAtOffset.x, m_vNextAtOffset.y, m_vNextAtOffset.z);
+}
+
 void CLevel_Camera_Tool::Create_Sector()
 {
 	if (KEY_PRESSING(KEY::CTRL)) {
@@ -1994,50 +2158,52 @@ void CLevel_Camera_Tool::Edit_Sector()
 
 void CLevel_Camera_Tool::Picking()
 {
-	if (MOUSE_DOWN(MOUSE_KEY::LB)) {
-		_vector vRayPos, vRayDir;
+	if (KEY_PRESSING(KEY::CTRL)) {
+		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+			_vector vRayPos, vRayDir;
 
-		Get_RayInfo(&vRayPos, &vRayDir);
+			Get_RayInfo(&vRayPos, &vRayDir);
 
-		_float2 fMousePos = m_pGameInstance->Get_CursorPos();
-		_float fDist = {};
+			_float2 fMousePos = m_pGameInstance->Get_CursorPos();
+			_float fDist = {};
 
-		if (0 > fMousePos.x || g_iWinSizeX < fMousePos.x || 0 > fMousePos.y || g_iWinSizeY < fMousePos.y)
-			return;
+			if (0 > fMousePos.x || g_iWinSizeX < fMousePos.x || 0 > fMousePos.y || g_iWinSizeY < fMousePos.y)
+				return;
 
-		CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_CAMERA_TOOL, TEXT("Layer_MapObject"));
-		list<CGameObject*> Objects = pLayer->Get_GameObjects();
+			CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_CAMERA_TOOL, TEXT("Layer_MapObject"));
+			list<CGameObject*> Objects = pLayer->Get_GameObjects();
 
-		CGameObject* pGameObject = nullptr;
+			CGameObject* pGameObject = nullptr;
 
-		for (auto& GameObject : Objects) {
-			CModelObject* pModelObject = dynamic_cast<CModelObject*>(GameObject);
-			_bool isPicked = pModelObject->Is_PickingCursor_Model_Test(fMousePos, fDist);
+			for (auto& GameObject : Objects) {
+				CModelObject* pModelObject = dynamic_cast<CModelObject*>(GameObject);
+				_bool isPicked = pModelObject->Is_PickingCursor_Model_Test(fMousePos, fDist);
 
-			if (true == isPicked) {
-				_vector vClickedPos = vRayPos + (vRayDir * fDist);
+				if (true == isPicked) {
+					_vector vClickedPos = vRayPos + (vRayDir * fDist);
 
-				XMStoreFloat3(&m_tKeyFrameInfo.vPosition, vClickedPos);
+					XMStoreFloat3(&m_tKeyFrameInfo.vPosition, vClickedPos);
+				}
 			}
-		}
 
-		pLayer = m_pGameInstance->Find_Layer(LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"));
+			pLayer = m_pGameInstance->Find_Layer(LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"));
 
-		if (nullptr == pLayer)
-			return;
+			if (nullptr == pLayer)
+				return;
 
-		Objects = pLayer->Get_GameObjects();
+			Objects = pLayer->Get_GameObjects();
 
-		pGameObject = nullptr;
+			pGameObject = nullptr;
 
-		for (auto& GameObject : Objects) {
-			CModelObject* pModelObject = dynamic_cast<CModelObject*>(GameObject);
-			_bool isPicked = pModelObject->Is_PickingCursor_Model_Test(fMousePos, fDist);
+			for (auto& GameObject : Objects) {
+				CModelObject* pModelObject = dynamic_cast<CModelObject*>(GameObject);
+				_bool isPicked = pModelObject->Is_PickingCursor_Model_Test(fMousePos, fDist);
 
-			if (true == isPicked) {
-				_vector vClickedPos = vRayPos + (vRayDir * fDist);
+				if (true == isPicked) {
+					_vector vClickedPos = vRayPos + (vRayDir * fDist);
 
-				XMStoreFloat3(&m_tKeyFrameInfo.vPosition, vClickedPos);
+					XMStoreFloat3(&m_tKeyFrameInfo.vPosition, vClickedPos);
+				}
 			}
 		}
 	}

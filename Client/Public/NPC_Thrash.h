@@ -30,6 +30,14 @@ public:
 		ANIM_END
 	};
 
+	enum MOVING
+	{
+		MOVING_PRE,
+		MOVING_CUR,
+		MOVING_DIA,
+		MOVING_END
+	};
+
 
 	enum ANIM_2D
 	{
@@ -202,6 +210,7 @@ private:
 private:
 	CNPC_Thrash::ACTION			m_eActionType = { ACTION_END };
 	CNPC_Thrash::ANIMATION		m_eAnimationType = { ANIM_END };
+	CNPC_Thrash::MOVING			m_eMoving = { MOVING_END };
 	_float						m_fIdleWaitTime = { 0.f };
 	_float						m_fWelcomeWaitTime = { 0.f };
 	_bool						m_isDialoging = { false };

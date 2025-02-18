@@ -50,7 +50,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 	EngineDesc.isNewRenderer = true;
 #ifdef _DEBUG
-	EngineDesc.eImportMode |= IMPORT_IMGUI;
+	EngineDesc.eImportMode |= NONE_IMPORT; // IMPORT_IMGUI
 #elif NDEBUG
 	EngineDesc.eImportMode |= NONE_IMPORT;
 #endif

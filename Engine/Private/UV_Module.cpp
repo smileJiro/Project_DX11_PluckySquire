@@ -2,9 +2,9 @@
 #include "GameInstance.h"
 #include "Compute_Shader.h"
 
-
+#ifdef _DEBUG
 const _char* CUV_Module::g_szModuleNames[1] = {"UV_ANIM"};
-
+#endif
 CUV_Module::CUV_Module()
     : CEffect_Module()
 {

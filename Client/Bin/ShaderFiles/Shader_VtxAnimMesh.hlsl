@@ -18,6 +18,24 @@ cbuffer BasicPixelConstData : register(b0)
     int invertNormalMapY;       // 16
 }
 
+
+struct Fresnel
+{
+    float4 vColor;
+    
+    float fExp;
+    float fBaseReflect;
+    float fStrength;
+    float fDummy;
+};
+
+cbuffer MultiFresnels : register(b1)
+{
+    Fresnel InnerFresnel;
+    Fresnel OuterFresnel;
+}
+
+
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 /* Bone Matrix */
@@ -279,6 +297,45 @@ PS_WORLDOUT PS_WORLDPOSMAP(PS_WORLDIN In)
     return Out;
 }
 
+
+struct PS_COLOR
+{
+    float4 vColor : SV_TARGET0;
+};
+
+float Compute_Fresnel(float3 vNormal, float3 vViewDir, float fBaseReflect, float fExponent, float fStrength)
+{
+    float fNDotV = saturate(dot(vNormal, vViewDir));
+    
+    float fFresnelFactor = fBaseReflect + (1.f - fBaseReflect) * pow(1 - fNDotV, fExponent);
+    
+    return saturate(fFresnelFactor * fStrength);
+}
+
+float3 g_fBrightness = float3(0.2126, 0.7152, 0.0722);
+float g_fBloomThreshold;
+
+PS_COLOR PS_FRESNEL(PS_IN In)
+{
+    PS_COLOR Out = (PS_COLOR) 0;
+    
+    float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
+    float fLength = length(vViewDirection);
+    vViewDirection = normalize(vViewDirection);
+    
+    float InnerValue = Compute_Fresnel(-In.vNormal.xyz, vViewDirection, InnerFresnel.fBaseReflect, InnerFresnel.fExp, InnerFresnel.fStrength);
+    float OuterValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OuterFresnel.fBaseReflect, OuterFresnel.fExp, OuterFresnel.fStrength);
+    
+    Out.vColor = (InnerFresnel.vColor * InnerValue + OuterValue * OuterFresnel.vColor)
+    * fLength;
+    Out.vColor.a = 1.f;
+
+ 
+    //Out.vBloom = float4(Out.vColor.rgb * fBrightness, Out.vColor.a * fBrightness);
+    
+    return Out;
+}
+
 // technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
 // pass : technique에 포함된 하위 개념으로 개별 렌더링 작업에 대한 구체적인 설정을 정의한다.
 // https://www.notion.so/15-Shader-Keyword-technique11-pass-10eb1e26c8a8807aad86fb2de6738a1a // 컨트롤 클릭
@@ -346,4 +403,13 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_WORLDPOSMAP();
     }
     
+    pass Fresnel // 6
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_FRESNEL();
+    }
 }

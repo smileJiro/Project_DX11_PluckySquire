@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Jot_HandEvict_Hand_0003_X01",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": -20.0,
+              "Y": 0.0,
+              "Z": 13.5
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 262.0,
+            "Y": 10.0,
+            "Z": 381.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "DE874D9F4B308E36FBF5A19A14408E38"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Jot_HandEvict_Hand_0003_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1899.0,
+        "Y": 3478.0
+      },
+      "BakedSourceDimension": {
+        "X": 264.0,
+        "Y": 383.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'jot_hand_evict_0'",
+        "ObjectPath": "/Game/Characters/Player/Hand_Evict/Textures/jot_hand_evict_0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Jot_HandEvict_Hand_0003_X01:BodySetup_1'",
+        "ObjectPath": "/Game/Characters/Player/Hand_Evict/Frames/Jot_HandEvict_Hand_0003_X01.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 111.0,
+          "Y": 204.0,
+          "Z": 0.52783203,
+          "W": 0.84936523
+        },
+        {
+          "X": -151.0,
+          "Y": 204.0,
+          "Z": 0.4638672,
+          "W": 0.84936523
+        },
+        {
+          "X": -151.0,
+          "Y": -177.0,
+          "Z": 0.4638672,
+          "W": 0.9423828
+        },
+        {
+          "X": 111.0,
+          "Y": -177.0,
+          "Z": 0.52783203,
+          "W": 0.9423828
+        },
+        {
+          "X": 111.0,
+          "Y": 204.0,
+          "Z": 0.52783203,
+          "W": 0.84936523
+        },
+        {
+          "X": -151.0,
+          "Y": -177.0,
+          "Z": 0.4638672,
+          "W": 0.9423828
+        }
+      ]
+    }
+  }
+]
