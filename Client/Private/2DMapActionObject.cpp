@@ -126,13 +126,14 @@ void C2DMapActionObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
     {
     case Client::C2DMapActionObject::ACTIVE_TYPE_BREAKABLE:
     {
-        //if (L"풀" == m_strModelPrototypeTag[COORDINATE_2D])
-        //{
-        //    if (PLAYER_PROJECTILE & _pOtherCollider->Get_CollisionGroupID())
-        //    {
-        //        //애니메이션 재생
-        //    }
-        //}
+        if (true == ContainWstring(m_strModelPrototypeTag[COORDINATE_2D], L"bush"))
+        {
+            if (PLAYER_PROJECTILE & _pOtherCollider->Get_CollisionGroupID())
+            {
+                //삭제하고 이펙트 애니메이션 재생
+                int a = 10;
+            }
+        }
     }
         break;
     case Client::C2DMapActionObject::ACTIVE_TYPE_PATROL:

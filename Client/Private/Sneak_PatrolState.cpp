@@ -217,7 +217,7 @@ void CSneak_PatrolState::Determine_Direction()
 
 	//시간 랜덤으로 지정 (양 끝 지점만 최솟값을 크게 놓음)
 	if (0 == m_iCurWayIndex || m_PatrolWays.size() - 1 == m_iCurWayIndex)
-		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(1.f, 3.f));
+		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(1.5f, 3.f));
 	else
 	{
 		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(0.f, 3.f));

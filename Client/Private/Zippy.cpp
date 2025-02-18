@@ -73,6 +73,10 @@ HRESULT CZippy::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, DASH_RIGHT, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, DASH_UP, true);
 
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, ELEC_DOWN, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, ELEC_RIGHT, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, ELEC_UP, true);
+
     pModelObject->Set_Animation(IDLE_DOWN);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CZippy::Animation_End, this, placeholders::_1, placeholders::_2));
