@@ -1211,7 +1211,7 @@ void C2DMap_Tool_Manager::TriggerSetting_Imgui(_bool bLock)
 
 
 		Begin_Draw_ColorButton("Clear_All_ObjectStyle", (ImVec4)ImColor::HSV(0.0f, 0.6f, 0.6f));
-		if (!bLock && ImGui::Button("Clear All Trigger", ImVec2(-FLT_MIN, 1.7f * ImGui::GetTextLineHeightWithSpacing())))
+		if (!bLock && ImGui::Button("Delete Trigger", ImVec2(-FLT_MIN, 1.7f * ImGui::GetTextLineHeightWithSpacing())))
 		{
 			ImGui::OpenPopup("Clear_Popup");
 		}
@@ -1223,7 +1223,11 @@ void C2DMap_Tool_Manager::TriggerSetting_Imgui(_bool bLock)
 			Begin_Draw_ColorButton("OK_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
 			if (ImGui::Button("OK"))
 			{
-				//m_TriggerEvents.clear();
+				if (m_pPickingTrigger) 
+				{
+					Event_DeleteObject(m_pPickingTrigger);
+					m_pPickingTrigger = nullptr;
+				}
 
 				ImGui::CloseCurrentPopup();
 			}
@@ -1316,8 +1320,8 @@ void C2DMap_Tool_Manager::TriggerEvent_Imgui(_bool bLock)
 		string m_strConditionNames[] = { "Collision Enter",
 											"Collision",
 											"Collision Exit", };
-		string m_strEventNames[] = { "Object Spawn",
-										"CutScene Event",
+		string m_strEventNames[] = { "CutScene Event",
+									"Object Spawn",
 										"Map_Change",
 										"Popup_UI",
 		};

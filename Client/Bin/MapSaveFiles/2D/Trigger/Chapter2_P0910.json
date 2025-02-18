@@ -1,0 +1,20 @@
+[
+    {
+        "Collider_Info": {
+            "Position": [
+                -68.0,
+                -242.0
+            ],
+            "Scale": [
+                500.0,
+                30.0
+            ]
+        },
+        "Fillter_MyGroup": 2,
+        "Fillter_OtherGroupMask": 128,
+        "Trigger_ConditionType": 0,
+        "Trigger_Coordinate": 0,
+        "Trigger_EventTag": "P0809_MonsterSpawnProcess",
+        "Trigger_Type": 0
+    }
+]

@@ -100,7 +100,8 @@ namespace Client
 		INTERACTION_OBEJCT =		0x100,//8 (상호작용 하려면 GameObject의 Group으로 설정해야 함)
 		BLOCKER = 					0x200,	//9	(현재 2D 플랫포머에서 중력 컴포넌트랑 연계중. 3D에서 플레이어 몸통이랑 블락중)
 		BOOK_3D =					0x400,
-		//PORTAL =					0x800, 일단 필요 없어져서 지웠어요 - 김지완 -
+		WORD_GAME =					0x800,
+		//PORTAL =					0x1600, 일단 필요 없어져서 지웠어요 - 김지완 -
 								 // 0x1000 
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬
