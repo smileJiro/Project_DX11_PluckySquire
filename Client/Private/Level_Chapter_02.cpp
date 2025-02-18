@@ -12,6 +12,7 @@
 #include "Trigger_Manager.h"
 #include "PlayerData_Manager.h"
 #include "Effect_Manager.h"
+#include "Effect2D_Manager.h"
 
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -128,6 +129,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	if (FAILED(Ready_Layer_Effects(TEXT("Layer_Effect"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Effects (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Effects2D(TEXT("Layer_Effect2D"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Effects2D (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
 
@@ -1394,6 +1400,28 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Book_MagicDust.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
 		return E_FAIL;
 	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
+{
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("LightningBolt"), LEVEL_CHAPTER_2, 2);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Jump_Dust"), LEVEL_CHAPTER_2, 1);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Death_Burst"), LEVEL_CHAPTER_2, 3);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX1"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX2"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX3"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX4"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX5"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words1"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words2"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words4"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words5"), LEVEL_CHAPTER_2, 3);
+
 
 	return S_OK;
 }

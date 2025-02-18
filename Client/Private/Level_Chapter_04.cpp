@@ -103,42 +103,6 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	//m_pGameInstance->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 
 
-	//RayShape Test
-	CRayShape::RAYSHAPE_DESC Desc;
-	Desc.iCurLevelID = m_eLevelID;
-
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-28.9f, 0.32f, -16.9f);
-	Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	Desc.eShapeType = SHAPE_TYPE::CAPSULE;
-	Desc.fRadius = 3.f;
-	Desc.fHalfHeight = 2.f;
-	Desc.vOffsetTrans = { 0.f,Desc.fHalfHeight * 0.5f,0.f };
-	Desc.fRotAngle = 90.f;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
-		return E_FAIL;
-
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-23.9f, 0.32f, -16.9f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
-		return E_FAIL;
-
-
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-28.9f, 0.32f, -16.9f);
-	Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	Desc.eShapeType = SHAPE_TYPE::CAPSULE;
-	Desc.fRadius = 1.f;
-	Desc.fHalfHeight = 2.f;
-	Desc.vOffsetTrans = { 0.f,Desc.fRadius,0.f };
-	Desc.fRotAngle = 0.f;
-
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-20.f, 6.36f, 20.19f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, TEXT("Layer_Terrain"), &Desc)))
-		return E_FAIL;
-
-
-
 	/* Blur RenderGroupOn */
 	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
 	return S_OK;

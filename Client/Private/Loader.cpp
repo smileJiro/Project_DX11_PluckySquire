@@ -813,6 +813,10 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
         return E_FAIL;
 
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
+        TEXT("../Bin/Resources/Models/2D_FX"))))
+        return E_FAIL;
+
     /* 낱개 로딩 예시*/
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model2D_FallingRock"),

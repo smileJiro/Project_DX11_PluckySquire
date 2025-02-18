@@ -725,6 +725,18 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
     case Client::PLAYER:
         break;
     case Client::MONSTER:
+        if (OBJECT_GROUP::PLAYER & _pMyCollider->Get_CollisionGroupID())
+        {
+			if (true == Is_PlatformerMode() && STATE::JUMP_DOWN == Get_CurrentStateID())
+            {
+                _float fAngle = atan2f(_pOtherObject->Get_FinalPosition().m128_f32[1] - Get_FinalPosition().m128_f32[1], _pOtherObject->Get_FinalPosition().m128_f32[0] - Get_FinalPosition().m128_f32[0]);
+                fAngle = XMConvertToDegrees(fAngle);
+                if (fAngle >= -135.f && fAngle <= -45.f)
+                {
+                    Attack(_pOtherObject);
+                }
+            }  
+        }
         break;
     case Client::MAPOBJECT:
         break;
