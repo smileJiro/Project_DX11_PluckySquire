@@ -32,6 +32,17 @@
 				"defaultSize": 30,
 				"highlightSize": 40
 			}
+		},
+		{
+			"strSection": "Chapter2_P0708",
+			"PosX": 0,
+			"PosY": 46,
+			"Text": "공기 중에\n이상한 찌릿함이\n감돌았습니다.",
+			"highlight": {
+				"substring": "",
+				"defaultSize": 30,
+				"highlightSize": 40
+			}
 		}
 	]
 }
