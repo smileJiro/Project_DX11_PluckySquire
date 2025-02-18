@@ -34,6 +34,7 @@ public:
 	HRESULT					Ready_Layer_Domino(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_FallingRock(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_RayShape(const _wstring& _strLayerTag);
+	HRESULT					Ready_Layer_Hand(const _wstring& _strLayerTag);
 private:
 	void					Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength);
 

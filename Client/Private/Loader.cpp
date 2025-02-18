@@ -120,7 +120,8 @@
 #include "Domino.h"
 #include "Portal.h"
 #include "Word.h"
-
+#include "Magic_Hand.h"
+#include "Magic_Hand_Body.h"
 
 
 
@@ -1012,6 +1013,23 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     /* For. Prototype_GameObject_CollapseBlock */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_CollapseBlock"),
         CCollapseBlock::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Magic_Hand, Magic_Hand_Body*/
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_MagicHand"),
+        CMagic_Hand::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_MagicHandBody"),
+        CMagic_Hand_Body::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_MagicHand"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../Bin/Resources/Models/FX/magic_hand_model/magic_hand_model.model"
+                ), matPretransform))))
         return E_FAIL;
 
     //Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_2, L"Room_Enviroment.mchc");

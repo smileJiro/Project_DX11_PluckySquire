@@ -442,6 +442,9 @@
     <Filter Include="02.GameObjects\Monster\Goblin\SideScroller">
       <UniqueIdentifier>{bb25a362-20c0-499e-bcaa-7458299e35d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\MagicHand">
+      <UniqueIdentifier>{82851eaa-0ed2-49ad-bf4e-59076021e212}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1030,8 +1033,11 @@
     <ClInclude Include="..\Public\SideScroll_HitState.h">
       <Filter>03.Components\FSM\State\Hit</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\GameEventExecuter.h">
-      <Filter>02.GameObjects\GameEventExecuter</Filter>
+    <ClInclude Include="..\Public\Magic_Hand.h">
+      <Filter>02.GameObjects\MagicHand</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Magic_Hand_Body.h">
+      <Filter>02.GameObjects\MagicHand</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1608,6 +1614,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\SideScroll_HitState.cpp">
       <Filter>03.Components\FSM\State\Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Magic_Hand.cpp">
+      <Filter>02.GameObjects\MagicHand</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Magic_Hand_Body.cpp">
+      <Filter>02.GameObjects\MagicHand</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

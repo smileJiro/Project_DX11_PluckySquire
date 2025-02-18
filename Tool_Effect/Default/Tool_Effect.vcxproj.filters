@@ -58,8 +58,8 @@
     <Filter Include="11. RenderGroups\AfterEffect">
       <UniqueIdentifier>{08c27ed1-4257-4f37-a6e3-bd38fd17dd09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\Magic_hand">
-      <UniqueIdentifier>{01d521b2-ca90-4400-a2a4-19721e2eff5e}</UniqueIdentifier>
+    <Filter Include="02. GameObject\MagicHand">
+      <UniqueIdentifier>{75aed7e2-10c4-4354-ae06-e4f1f1c5493e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -130,9 +130,11 @@
       <Filter>11. RenderGroups\Light</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Magic_Hand_Body.h">
-      <Filter>02. GameObject\Magic_hand</Filter>
+      <Filter>02. GameObject\MagicHand</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Magic_Hand.h" />
+    <ClInclude Include="..\public\Magic_Hand.h">
+      <Filter>02. GameObject\MagicHand</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -202,10 +204,12 @@
     <ClCompile Include="..\Private\RenderGroup_DirectLights.cpp">
       <Filter>11. RenderGroups\Light</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Magic_Hand_Body.cpp">
-      <Filter>02. GameObject\Magic_hand</Filter>
+    <ClCompile Include="..\private\Magic_Hand.cpp">
+      <Filter>02. GameObject\MagicHand</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Magic_Hand.cpp" />
+    <ClCompile Include="..\private\Magic_Hand_Body.cpp">
+      <Filter>02. GameObject\MagicHand</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">

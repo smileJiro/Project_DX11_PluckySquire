@@ -187,11 +187,17 @@ void CParticle_Sprite_Emitter::Update_Emitter(_float _fTimeDelta)
                 fAbsolute = 1.f;
                 if (m_pSpawnMatrix)
                 {
-                    m_pComputeShader->Bind_Matrix("g_SpawnMatrix", m_pSpawnMatrix);
+                    _float4x4 WorldMatrix;
+                    _matrix SocketMatrix = XMLoadFloat4x4(m_pSpawnMatrix);
+                    for (_int i = 0; i < 3; ++i)
+                        SocketMatrix.r[i] = XMVector3Normalize(SocketMatrix.r[i]);
+                    XMStoreFloat4x4(&WorldMatrix, SocketMatrix * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
+
+                    m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &WorldMatrix);
                 }
                 else
                 {
-                    m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &s_IdentityMatrix);
+                    m_pComputeShader->Bind_Matrix("g_SpawnMatrix", m_pParentMatrices[COORDINATE_3D]);
                 }
                 m_pComputeShader->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
             }
@@ -211,14 +217,19 @@ void CParticle_Sprite_Emitter::Update_Emitter(_float _fTimeDelta)
             else if (ABSOLUTE_WORLD == m_eSpawnPosition)
             {
                 fAbsolute = 1.f;
-                //m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &m_WorldMatrices[COORDINATE_3D]);
                 if (m_pSpawnMatrix)
                 {
-                    m_pComputeShader->Bind_Matrix("g_SpawnMatrix", m_pSpawnMatrix);
+                    _float4x4 WorldMatrix;
+                    _matrix SocketMatrix = XMLoadFloat4x4(m_pSpawnMatrix);
+                    for (_int i = 0; i < 3; ++i)
+                        SocketMatrix.r[i] = XMVector3Normalize(SocketMatrix.r[i]);
+                    XMStoreFloat4x4(&WorldMatrix, SocketMatrix * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
+
+                    m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &WorldMatrix);
                 }
                 else
                 {
-                    m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &s_IdentityMatrix);
+                    m_pComputeShader->Bind_Matrix("g_SpawnMatrix", m_pParentMatrices[COORDINATE_3D]);
                 }
                 m_pComputeShader->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
             }

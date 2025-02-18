@@ -307,7 +307,7 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 	break;
 	case Engine::SHAPE_TYPE::COOKING:
 	{
-		//ShapeFlags &= ~PxShapeFlag::eVISUALIZATION; // 쿠킹 전용 쉐잎은렌더 데이터 생성 x 
+		ShapeFlags &= ~PxShapeFlag::eVISUALIZATION; // 쿠킹 전용 쉐잎은렌더 데이터 생성 x 
 
 		SHAPE_COOKING_DESC* pDesc = static_cast<SHAPE_COOKING_DESC*>(_ShapeData.pShapeDesc);
 
