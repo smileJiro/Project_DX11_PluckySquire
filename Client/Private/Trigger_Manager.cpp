@@ -10,7 +10,9 @@
 
 #include "UI_Manager.h"
 #include "PlayerData_Manager.h"
-
+#include "GameEventExecuter.h"
+#include "Effect_Manager.h"
+#include "SampleBook.h"
 
 IMPLEMENT_SINGLETON(CTrigger_Manager)
 
@@ -33,14 +35,46 @@ HRESULT CTrigger_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	Safe_AddRef(m_pContext);
 
 	Resister_Trigger_Action();
-
+	Mapping_ExecuterTag();
     return S_OK;
+
 }
 
 
 void CTrigger_Manager::Update()
 {
 	Execute_Trigger_Event();
+}
+
+HRESULT CTrigger_Manager::Mapping_ExecuterTag()
+{
+	m_EventExecuterTags.resize(EVENT_EXECUTER_ACTION_TYPE_LAST);
+
+	m_EventExecuterTags[C02P0910_LIGHTNING_BOLT_SPAWN] = L"C02P0910_Spawn_LightningBolt";
+	m_EventExecuterTags[C02P0910_MONSTER_SPAWN] = L"C02P0910_Monster_Spawn";
+
+	return S_OK;
+}
+
+CTrigger_Manager::EVENT_EXECUTER_ACTION_TYPE CTrigger_Manager::Find_ExecuterAction(const _wstring& _strTag)
+{
+	_uint iIndex = EVENT_EXECUTER_ACTION_TYPE_LAST;
+	_uint iCount = 0;
+	auto iter = find_if(m_EventExecuterTags.begin(), m_EventExecuterTags.end(), [&iCount, &_strTag](const _wstring& _strMappingTag) {
+		
+		if (_strMappingTag == _strTag)
+			return true;
+		else 
+		{
+			iCount++;
+			return false;
+		}
+		});
+
+	if (m_EventExecuterTags.end() != iter)
+		iIndex = iCount;
+
+	return (EVENT_EXECUTER_ACTION_TYPE)iIndex;
 }
 
 HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath, CSection* _pSection)
@@ -384,6 +418,7 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 			{
 				Event_Book_Main_Section_Change_Start(1,&fNextPosition);
 			}
+			else
 			{
 				Event_Book_Main_Section_Change_Start(0, &fNextPosition);
 			}
@@ -444,6 +479,26 @@ void CTrigger_Manager::Resister_Trigger_Action()
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) {
 		CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
 		};
+
+	m_Actions[TEXT("MagicDust")] = [this](_wstring _wszEventTag) 
+	{
+		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust2"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
+		};
+
+	m_Actions[TEXT("MagicDust_Book")] = [this](_wstring _wszEventTag) {
+		static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
+		};
+
+	m_Actions[TEXT("Create_EventExecuter")] = [this](_wstring _wszEventTag) 
+	{
+		CGameEventExecuter::EVENT_EXECUTER_DESC Desc = {};
+		Desc.strEventTag = _wszEventTag;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_GameEventExecuter"),
+			m_pGameInstance->Get_CurLevelID(), L"Layer_Event_Executer", &Desc)))
+			return;
+	};
+
+
 }
 
 _uint CTrigger_Manager::Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box)

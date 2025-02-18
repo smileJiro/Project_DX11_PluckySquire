@@ -34,6 +34,15 @@ BEGIN(Client)
 class CSection;
 class CTrigger_Manager final : public CBase
 {
+public :
+	enum EVENT_EXECUTER_ACTION_TYPE
+	{
+		C02P0910_LIGHTNING_BOLT_SPAWN,
+		C02P0910_MONSTER_SPAWN,
+		EVENT_EXECUTER_ACTION_TYPE_LAST
+	};
+
+
 	DECLARE_SINGLETON(CTrigger_Manager)
 
 public:
@@ -63,6 +72,11 @@ public:
 	HRESULT						Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	void						Update();
 
+
+	HRESULT						Mapping_ExecuterTag();
+	EVENT_EXECUTER_ACTION_TYPE	Find_ExecuterAction(const _wstring& _strTag);
+
+
 public:
 	HRESULT						Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath, CSection* _pSection = nullptr);
 	HRESULT						Load_TriggerEvents(_wstring _szFilePath);
@@ -83,6 +97,10 @@ private :
 	HRESULT						After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc, CSection* _pSection);
 #pragma endregion
 
+	
+
+
+
 private:
 	CGameInstance*				m_pGameInstance = nullptr;
 	ID3D11Device*				m_pDevice = nullptr;
@@ -93,10 +111,10 @@ private:
 	unordered_map<_wstring, queue<ACTION>>				m_TriggerEvents;
 	unordered_map<_wstring, function<void(_wstring)>>	m_Actions;
 	queue<ACTION>										m_CurTriggerEvent = {};
+	vector<_wstring>									m_EventExecuterTags;
 
 	_int												m_iTriggerID = {};
 	_bool												m_isEventEnd = { false };
-
 private:
 	void						Resister_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger);
 	void						Resister_Trigger_Action();

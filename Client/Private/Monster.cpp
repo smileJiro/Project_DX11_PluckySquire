@@ -5,6 +5,7 @@
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
 #include "Section_Manager.h"
+#include "Effect_Manager.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -157,7 +158,7 @@ void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
+	if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
 	{
 		Event_Hit(this, _pOtherObject, Get_Stat().iDamg);
 		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 300.f);
@@ -192,6 +193,8 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg)
 	{
 		Set_AnimChangeable(true);
 		Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+		if (COORDINATE_3D == Get_CurCoord())
+			CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
 	}
 }
 

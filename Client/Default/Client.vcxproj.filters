@@ -436,6 +436,12 @@
     <Filter Include="02.GameObjects\Word">
       <UniqueIdentifier>{70b6f4d5-168b-46b5-849c-cb56b4c3621c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\GameEventExecuter">
+      <UniqueIdentifier>{9289d312-d786-419b-81a3-be64a79c7793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Goblin\SideScroller">
+      <UniqueIdentifier>{bb25a362-20c0-499e-bcaa-7458299e35d0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\MapObject\2D\CollapseBlock">
       <UniqueIdentifier>{bc967a83-da57-4805-acf3-3646f7201944}</UniqueIdentifier>
     </Filter>
@@ -1003,10 +1009,6 @@
     <ClInclude Include="..\Public\WordPrinter.h">
       <Filter>02.GameObjects\Word</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_LaydownObject.h" />
-    <ClInclude Include="..\public\CollapseBlock.h">
-      <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1555,10 +1557,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\WordPrinter.cpp">
       <Filter>02.GameObjects\Word</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_LaydownObject.cpp" />
-    <ClCompile Include="..\private\CollapseBlock.cpp">
-      <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

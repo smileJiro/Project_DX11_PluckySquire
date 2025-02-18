@@ -40,17 +40,13 @@ private:
 	// UV 정보
 	// 모든 Atlas는 위에서 아래, 좌에서 우로 향한다는 가정.
 	// 모든 Texture의 크기는 같다는 가정
-	_bool			  m_isAnim = { false };
-	_bool			  m_isRandomUV = { false };
-	_float			  m_fAnimTime = { 0.f };
-	_float			  m_fStartIndex = { 0.f };
-	_float			  m_fAnimCount = { 1.f };
+	_float			  m_fUVCount = { 1.f };
 	_float2			  m_vUVPerAnim = { 1.f, 1.f };
 
 
 
 private:
-	void			  Set_UV(_Out_ _float4* _pOutUV, _float _fIndex);
+	void			  Set_UV(_Out_ _float4* _pOutUV, _float _fUVCount);
 	void			  Set_Position(_int _iIndex);
 	void			  Set_Instance(_int _iIndex, _float _fSpawnRate);
 

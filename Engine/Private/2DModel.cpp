@@ -252,8 +252,12 @@ _bool C2DModel::Play_Animation(_float _fTimeDelta, _bool _bReverse)
 	m_bReverseAnimation = _bReverse;
 	if (Is_AnimModel())
 	{
-		return m_Animation2Ds[m_iCurAnimIdx]->Play_Animation(_fTimeDelta, _bReverse);
+		_bool bAnimEnd = m_Animation2Ds[m_iCurAnimIdx]->Play_Animation(_fTimeDelta, _bReverse);
+		m_bDuringAnimation = (false == bAnimEnd);
+		return bAnimEnd;
 	}
+	else
+		m_bDuringAnimation = false;
 	return false;
 }
 

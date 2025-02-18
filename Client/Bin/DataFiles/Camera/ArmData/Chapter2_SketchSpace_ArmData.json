@@ -8,7 +8,7 @@
         0.0
       ],
       "Arm_MoveTime_AxisY": [
-        1.0,
+        0.8,
         0.0
       ],
       "Arm_RotationPerSec_AxisRight": [
@@ -20,7 +20,7 @@
         0.0
       ],
       "Arm_Time": [
-        1.0,
+        0.8,
         0.0
       ],
       "Desire_Arm": [
@@ -43,7 +43,7 @@
         0.0
       ],
       "Arm_MoveTime_AxisY": [
-        1.0,
+        0.8,
         0.0
       ],
       "Arm_RotationPerSec_AxisRight": [
@@ -55,13 +55,83 @@
         0.0
       ],
       "Arm_Time": [
-        1.0,
+        0.8,
+        0.0
+      ],
+      "Desire_Arm": [
+        -0.191,
+        0.981,
+        0.0
+      ]
+    },
+    "Arm_Tag": "Default_Positive_Y_Left",
+    "Sub_Data": {
+      "Use_SubData": false
+    }
+  },
+  {
+    "Arm_Data": {
+      "Arm_Length": 12.5,
+      "Arm_Length_RatioType": 3,
+      "Arm_MoveTime_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_MoveTime_AxisY": [
+        0.8,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisY": [
+        0.0,
+        0.0
+      ],
+      "Arm_Time": [
+        0.8,
+        0.0
+      ],
+      "Desire_Arm": [
+        0.191,
+        0.981,
+        0.0
+      ]
+    },
+    "Arm_Tag": "Default_Positive_Y_Right",
+    "Sub_Data": {
+      "Use_SubData": false
+    }
+  },
+  {
+    "Arm_Data": {
+      "Arm_Length": 12.5,
+      "Arm_Length_RatioType": 3,
+      "Arm_MoveTime_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_MoveTime_AxisY": [
+        0.8,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisY": [
+        0.0,
+        0.0
+      ],
+      "Arm_Time": [
+        0.8,
         0.0
       ],
       "Desire_Arm": [
         0.0,
-        0.755,
-        -0.656
+        0.630,
+        -0.777
       ]
     },
     "Arm_Tag": "Default_Negative_Z",
@@ -78,7 +148,7 @@
         0.0
       ],
       "Arm_MoveTime_AxisY": [
-        1.0,
+        0.8,
         0.0
       ],
       "Arm_RotationPerSec_AxisRight": [
@@ -90,13 +160,13 @@
         0.0
       ],
       "Arm_Time": [
-        1.0,
+        0.8,
         0.0
       ],
       "Desire_Arm": [
-        0.191,
-        0.981,
-        -0.0
+        0.499,
+        0.630,
+        -0.595
       ]
     },
     "Arm_Tag": "Default_Positive_X",
@@ -113,7 +183,7 @@
         0.0
       ],
       "Arm_MoveTime_AxisY": [
-        1.0,
+        0.8,
         0.0
       ],
       "Arm_RotationPerSec_AxisRight": [
@@ -125,12 +195,12 @@
         0.0
       ],
       "Arm_Time": [
-        1.0,
+        0.8,
         0.0
       ],
       "Desire_Arm": [
-        -0.191,
-        0.981,
+        -0.777,
+        0.630,
         0.0
       ]
     },

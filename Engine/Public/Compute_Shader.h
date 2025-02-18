@@ -17,6 +17,7 @@ public:
 public:
 	HRESULT Bind_RawValue(const _char* _pConstantName, const void* _pData, _uint _iLength);
 	HRESULT Bind_Matrix(const _char* _pConstantName, const _float4x4* _pMatrix);
+	HRESULT Bind_SRV(const _char* _pConstantName, ID3D11ShaderResourceView* _pSRV);
 
 	HRESULT Set_SRVs(ID3D11ShaderResourceView** _ppSRVs, _uint _iCount, _uint _iStartSlot = 0);
 	HRESULT Set_UAVs(ID3D11UnorderedAccessView** _ppUAVs, _uint _iCount, _uint _iStartSlot = 0);
@@ -27,6 +28,7 @@ public:
 
 private:
 	ID3DX11Effect* m_pEffect = { nullptr };
+	ID3D11Query* m_pEventQuery = { nullptr };
 	_uint			m_iNumLayouts = { 0 }; // NumLayouts == NumPasses
 	//map<_string, ID3D11ComputeShader*> m_ComputeShaders;
 

@@ -117,6 +117,13 @@ public:
 	_bool								Is_Rotation() { return m_isRotation; }
 	_bool								Is_Override_WorldTex() { return m_isOverride_WorldTex; }
 
+	HRESULT								Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType);
+
+
+	_float								Get_CameraRatio() { return m_fCameraRatio;  }
+
+
+
 	virtual void						Set_WorldTexture(ID3D11Texture2D* _pTexture) 
 	{
 		if (nullptr == m_pMap)
@@ -152,6 +159,9 @@ protected:
 
 	_bool					m_isRotation = false;
 	_bool					m_isOverride_WorldTex = false;
+
+
+	_float					m_fCameraRatio = 1.f;
 
 protected:
 	/// <summary>

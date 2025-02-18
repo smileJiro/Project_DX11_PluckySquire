@@ -55,7 +55,7 @@ void CCamera_Target::Late_Update(_float fTimeDelta)
 	Key_Input(fTimeDelta);
 
 	Switching(fTimeDelta);
-	
+
 	Action_SetUp_ByMode();
 	Action_Mode(fTimeDelta);
 
@@ -101,7 +101,7 @@ void CCamera_Target::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _in
 void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 {
 	m_iFreezeMask ^= _iFreezeMask;
-	m_fFreezeExitTime = {1.f, 0.f};
+	m_fFreezeExitTime = { 1.f, 0.f };
 	m_isFreezeExit = true;
 
 	for (auto& iter = m_FreezeExitArms.begin(); iter != m_FreezeExitArms.end();) {
@@ -172,9 +172,99 @@ void CCamera_Target::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&m_tInitialData.vAt), 1.f));
 
 		// 초기 Zoom Level 설정
-		m_iCurZoomLevel = m_tInitialData.iZoomLevel;
+		//m_iCurZoomLevel = m_tInitialData.iZoomLevel;
 		m_fFovy = m_ZoomLevels[m_tInitialData.iZoomLevel];
 	}
+}
+
+void CCamera_Target::Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex)
+{
+	// 2D에서 3D로 갈 때 Section Tag? Portal에 따라서 나갈 때 3D Target 카메라의 초기값 정해 주기 
+	// ㅈㄴ 하드코딩 나중에 수정
+
+	m_isEnableLookAt = true;
+	m_isFreezeExit = false;
+
+	pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+
+	if (TEXT("Chapter2_SKSP_01") == _szSectionTag) {
+		switch (_iPortalIndex) {
+		case 0:
+		{
+			pData = Find_ArmData(TEXT("Chapter2_Portal1_Start"));
+		}
+			
+			break;
+		case 1:
+		{
+			pData = Find_ArmData(TEXT("Chapter2_Portal1_End"));
+		}
+			break;
+		}
+	}
+	else if (TEXT("Chapter2_SKSP_02") == _szSectionTag) {
+		switch (_iPortalIndex) {
+		case 0:
+		{
+			pData = Find_ArmData(TEXT("Chapter2_Portal2_Start"));
+		}
+			break;
+		case 1:
+		{
+			pData = Find_ArmData(TEXT("Chapter2_Portal2_End"));
+		}
+			break;
+		}
+	}
+	else if (TEXT("Chapter2_SKSP_03") == _szSectionTag) {
+		switch (_iPortalIndex) {
+		case 0:
+		{
+			pData = Find_ArmData(TEXT("Chapter2_Portal3_Start"));
+			m_vFreezeEnterPos = { 11.9279337f, 7.85533524f, 24.1609268f };
+		}
+			break;
+		case 1:
+		{
+			pData = Find_ArmData(TEXT("Chapter2_Portal3_End"));
+		}
+			break;
+		}
+	}
+	else if (TEXT("Chapter2_SKSP_04") == _szSectionTag) {
+		switch (_iPortalIndex) {
+		case 0:
+		{
+			pData = Find_ArmData(TEXT("Chapter2_Portal4_Start"));
+		}
+			break;
+		case 1:
+		{
+			pData = Find_ArmData(TEXT("Chapter2_Portal4_End"));
+		}
+			break;
+		}
+	}
+	else if (TEXT("Chapter2_SKSP_05") == _szSectionTag) {
+		switch (_iPortalIndex) {
+		case 0:
+		{
+			pData = Find_ArmData(TEXT("Chapter2_Portal5_Start"));
+		}
+			break;
+		case 1:
+		{
+			pData = Find_ArmData(TEXT("Chapter2_Portal5_End"));
+		}
+			break;
+		}
+	}
+
+	m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+	m_pCurArm->Set_Length(pData->first->fLength);
+	m_iCurZoomLevel = { pData->second->iZoomLevel };
+	m_fFovy = { m_ZoomLevels[pData->second->iZoomLevel] };
+	m_vAtOffset = { pData->second->vAtOffset };
 }
 
 INITIAL_DATA CCamera_Target::Get_InitialData()
@@ -189,6 +279,14 @@ INITIAL_DATA CCamera_Target::Get_InitialData()
 	XMStoreFloat3(&tData.vAt, vAt);
 
 	tData.iZoomLevel = m_iCurZoomLevel;
+
+	if (false == m_isEnableLookAt) {
+		_vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
+		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+		_vector vResultAt = vPos + vLook;
+		XMStoreFloat3(&tData.vAt, vResultAt);
+		
+	}
 
 	return tData;
 }
@@ -211,7 +309,7 @@ _bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID
 	if (nullptr != pData->second) {
 		Start_Zoom(pData->second->fZoomTime, (CCamera::ZOOM_LEVEL)pData->second->iZoomLevel, (RATIO_TYPE)pData->second->iZoomRatioType);
 		Start_Changing_AtOffset(pData->second->fAtOffsetTime, XMLoadFloat3(&pData->second->vAtOffset), pData->second->iAtRatioType);
-	
+
 		for (auto& PreArm : m_PreSubArms) {
 			if (_iTriggerID == PreArm.first.iTriggerID) {
 				if (true == PreArm.second) {    // Return 중이라면?
@@ -249,7 +347,7 @@ void CCamera_Target::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 			if (_iTriggerID == PreArm.first.iTriggerID) {
 				Start_Zoom(m_pCurArm->Get_ReturnTime(), (ZOOM_LEVEL)(PreArm.first.iZoomLevel), EASE_IN);
 				Start_Changing_AtOffset(m_pCurArm->Get_ReturnTime(), XMLoadFloat3(&PreArm.first.vAtOffset), EASE_IN);
-				
+
 				PreArm.second = true; // Return 중
 			}
 		}
@@ -272,7 +370,7 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
 		{
 			fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
-			
+
 		}
 
 		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
@@ -320,12 +418,12 @@ void CCamera_Target::Action_SetUp_ByMode()
 		{
 
 		}
-			break;
+		break;
 		case RETURN_TO_PREARM:
 		{
 
 		}
-			break;
+		break;
 		}
 
 		m_ePreCameraMode = m_eCameraMode;
@@ -335,6 +433,7 @@ void CCamera_Target::Action_SetUp_ByMode()
 void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 {
 	_float fRatio;
+	
 	if (true == m_isFreezeExit) {
 
 		m_fFreezeExitTime.y += _fTimeDelta;
@@ -361,7 +460,7 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 		}
 		else if (RESET == m_iFreezeMask) {
 			//vCameraPos = XMVectorLerp(vCurPos, vCameraPos, fRatio);
-		
+
 			_float fZ = m_pGameInstance->Lerp(XMVectorGetZ(vCurPos), XMVectorGetZ(vCameraPos), fRatio);
 			vCameraPos = XMVectorSetZ(vCameraPos, fZ);
 		}
@@ -388,7 +487,7 @@ void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta)) {
 		m_eCameraMode = DEFAULT;
 		CTrigger_Manager::GetInstance()->On_End(m_szEventTag);
-		
+
 		//if(RESET != m_iFreezeMask)
 		//	m_pCurArm->Set_ArmVector(XMLoadFloat3(&m_vCurFreezeExitArm));
 
@@ -422,7 +521,7 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 		_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 		m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 	}
-	else if((true == m_isEnableLookAt) && (true == m_isExitLookAt)){
+	else if ((true == m_isEnableLookAt) && (true == m_isExitLookAt)) {
 		// LookAt 보간
 
 		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fLookTime, fTimeDelta, EASE_IN_OUT);
@@ -469,7 +568,7 @@ void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
 
 	_vector vTargetPos;
 	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);
-	
+
 	if (RESET != m_iFreezeMask) {
 		if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
 			_vector vFixedPos = XMVectorSetX(vTargetPos, m_vFreezeEnterPos.x);
@@ -490,9 +589,9 @@ _vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fT
 {
 	_vector vTargetPos;
 	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
-   
+
 	_vector vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f), vTargetPos, m_fSmoothSpeed * _fTimeDelta);
-    
+
 	if (nullptr != _pLerpTargetPos)
 		*_pLerpTargetPos = vCurPos;
 
@@ -527,15 +626,18 @@ void CCamera_Target::Switching(_float _fTimeDelta)
 
 		m_InitialTime.y = 0.f;
 		m_isInitialData = false;
+
+		// ㅋㅋ 시발 이거 나중에 어떻게든 해 봐 고쳐
+		m_isFreezeExit = false;
 		return;
 	}
-	
+
 	// Pos
 	_vector vTargetPos;
 	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
 	_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 	_vector vResulPos = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vPosition), vCameraPos, fRatio);
-	
+
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vResulPos, 1.f));
 
 	// LookAt
@@ -560,7 +662,7 @@ void CCamera_Target::Set_Arm_From_Freeze()
 		m_pCurArm->Set_ArmVector(XMVector3Normalize(vDir));
 		m_pCurArm->Set_Length(fLength);
 		m_pCurArm->Set_StartInfo(XMVector3Normalize(vDir), fLength);
-		
+
 		m_isFreezeExit = false;
 		m_fFreezeExitTime.y = 0.f;
 	}

@@ -106,7 +106,7 @@ private:
 
 	// Return
 	deque<pair<RETURN_ARMDATA, _bool>> m_PreArms;		// Return Data, 현재 Return 중인지 아닌지 Check
-	_float2				m_fReturnTime = { 1.f, 0.f };
+	_float2				m_fReturnTime = { 0.8f, 0.f };
 	_int				m_iCurTriggerID = {};
 
 	// Line

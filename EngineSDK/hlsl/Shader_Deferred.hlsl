@@ -97,7 +97,7 @@ float g_fExposure = 1.0f;
 Texture2D g_AccumulateTexture, g_RevealageTexture;
 
 // Effect Texture
-Texture2D g_EffectColorTexture, g_BloomTexture, g_BloomTexture2;
+Texture2D g_EffectColorTexture, g_BloomTexture, g_BloomTexture2, g_DistortionTexture;
 
 static const float3 Fdielectric = 0.04f;
 //Texture2D g_EffectTexture, g_Effect_BrightnessTexture, g_Effect_Blur_XTeuxture, g_Effect_Blur_YTeuxture, g_Effect_DistortionTeuxture;
@@ -525,21 +525,27 @@ PS_OUT PS_AFTER_EFFECT(PS_IN In)
 {   
     PS_OUT Out = (PS_OUT) 0;
     
-    vector vFinal = g_FinalTexture.Sample(LinearSampler, In.vTexcoord);
-    vector vColor = g_EffectColorTexture.Sample(LinearSampler, In.vTexcoord);
-    vector vBloom1 = g_BloomTexture.Sample(LinearSampler, In.vTexcoord);    
-    vector vBloom2 = g_BloomTexture2.Sample(LinearSampler, In.vTexcoord);    
-   
-    vector vAccum = g_AccumulateTexture.Sample(LinearSampler, In.vTexcoord);
-    float fRevealage = g_RevealageTexture.Sample(LinearSampler, In.vTexcoord).r;
+    float2 vDistortion = g_DistortionTexture.Sample(LinearSampler, In.vTexcoord);
+    //vDistortion.x -= step(0.f, vDistortion.x) * 0.5f;
+    //vDistortion.y -= step(0.f, vDistortion.y) * 0.5f;    
     
-    vector vBloomColor = vBloom1 * 0.5f + vBloom2 * 0.5f;
+    //vector vFinal = g_FinalTexture.Sample(LinearSampler_Clamp, In.vTexcoord + vDistortion  * float2(In.vTexcoord.x - 0.5f, In.vTexcoord.y - 0.5f));
+    vector vFinal = g_FinalTexture.Sample(LinearSampler_Clamp, In.vTexcoord + vDistortion * float2(In.vTexcoord.x - 0.5f, In.vTexcoord.y - 0.5f));
+    //vector vColor = g_EffectColorTexture.Sample(LinearSampler_Clamp, In.vTexcoord + vDistortion  * float2(In.vTexcoord.x - 0.5f, In.vTexcoord.y - 0.5f));
+    vector vColor = g_EffectColorTexture.Sample(LinearSampler_Clamp, In.vTexcoord + vDistortion * float2(In.vTexcoord.x - 0.5f, In.vTexcoord.y - 0.5f));
+    vector vBloom1 = g_BloomTexture.Sample(LinearSampler_Clamp, In.vTexcoord + vDistortion * float2(In.vTexcoord.x - 0.5f, In.vTexcoord.y - 0.5f));
+    vector vBloom2 = g_BloomTexture2.Sample(LinearSampler_Clamp, In.vTexcoord + vDistortion * float2(In.vTexcoord.x - 0.5f, In.vTexcoord.y - 0.5f));
+    
+    vector vAccum = g_AccumulateTexture.Sample(LinearSampler_Clamp, In.vTexcoord + vDistortion * float2(In.vTexcoord.x - 0.5f, In.vTexcoord.y - 0.5f));
+    float fRevealage = g_RevealageTexture.Sample(LinearSampler_Clamp, In.vTexcoord + vDistortion * float2(In.vTexcoord.x - 0.5f, In.vTexcoord.y - 0.5f)).r;
+    
+    vector vBloomColor = vBloom1 * 0.5f + vBloom2 * 0.2f;
     vector vParticle = float4(vAccum.rgb / max(0.001, vAccum.a), fRevealage);
     
     vFinal.rgb = vFinal.rgb * (1 - vColor.a) + vColor.rgb * vColor.a;
     vFinal.rgb = vFinal.rgb * fRevealage + vParticle.rgb * (1 - fRevealage);
     vFinal.rgb = vFinal.rgb + vBloomColor.rgb;
-    
+
     
     vFinal.rgb *= c_DofVariable.fFadeRatio;
     Out.vColor = vFinal;

@@ -109,7 +109,7 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 			file.read(m_arrCookingColliderData, m_iCookingColliderDataLength);
 
 			m_isCookingCollider = _isCookingCollider;
-
+			file.close();
 		}
 	}
 	return S_OK;
@@ -177,6 +177,33 @@ HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 	return S_OK;
 }
 
+HRESULT C3DModel::Render_Default(CShader* _pShader, _uint _iShaderPass)
+{
+	/* Material Binding을 하지 않는 Rendering, Texture Binding은 밖에서 해야합니다.*/
+	/* Mesh 단위 렌더. */
+	for (_uint i = 0; i < m_iNumMeshes; ++i)
+	{
+		_uint iMaterialIndex = m_Meshes[i]->Get_MaterialIndex();
+
+		/* Bind Bone Matrices */
+		if (Is_AnimModel())
+		{
+			if (FAILED(Bind_Matrices(_pShader, "g_BoneMatrices", i)))
+				return E_FAIL;
+		}
+
+
+		/* Shader Pass */
+		_pShader->Begin(_iShaderPass);
+
+		/* Bind Mesh Vertex Buffer */
+		m_Meshes[i]->Bind_BufferDesc();
+		m_Meshes[i]->Render();
+	}
+
+	return S_OK;
+}
+
 
 
 HRESULT C3DModel::Bind_Matrices(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex)
@@ -202,23 +229,31 @@ HRESULT C3DModel::Bind_Material(CShader* _pShader, const _char* _pConstantName, 
 _bool C3DModel::Play_Animation(_float fTimeDelta, _bool bReverse)
 {
 	m_bReverseAnimation = bReverse;
-	_bool bReturn = false;
+	_bool bAnimEnd = false;
+
+
+
 	//뼈들의 변환행렬을 갱신
 	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
 	{
-		bReturn = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta,bReverse);
+		bAnimEnd = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta,bReverse);
+		m_bDuringAnimation = (false == bAnimEnd);
 	}
+	//else	if (m_Animations[m_iCurrentAnimIndex]->Get_AnimTransitionTime() == 0)
+	//	m_iPrevAnimIndex = m_iCurrentAnimIndex;
 	else
 	{
 		if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame, bReverse))
 			m_iPrevAnimIndex = m_iCurrentAnimIndex;
+		m_bDuringAnimation = true;
 	}
+
 
 	//뼈들의 합성변환행렬을 갱신
 	for (auto& pBone : m_Bones)
 		pBone->Update_CombinedTransformationMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
 
- 	return bReturn;
+ 	return bAnimEnd;
 }
 
 HRESULT C3DModel::Bind_Material_PixelConstBuffer(_uint _iMaterialIndex, CShader* _pShader)
@@ -392,6 +427,9 @@ void C3DModel::Switch_Animation(_uint iIdx, _bool _bReverse)
 	m_mapAnimTransLeftFrame.clear();
 	m_Animations[m_iCurrentAnimIndex]->Reset(_bReverse);
 	m_Animations[m_iPrevAnimIndex]->Get_CurrentFrame(&m_mapAnimTransLeftFrame);
+	m_mapAnimTransLeftFrame[1].vPosition.x =0.f;
+	m_mapAnimTransLeftFrame[1].vPosition.z =0.f;
+
 }
 
 void C3DModel::To_NextAnimation()

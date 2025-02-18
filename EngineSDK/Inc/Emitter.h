@@ -13,7 +13,7 @@ class ENGINE_DLL CEmitter : public CPartObject
 public:
 	enum EFFECT_TYPE { SINGLE_SPRITE, MESH, SPRITE, EFFECT, NONE };
 	enum SPAWN_TYPE { SPAWN_RATE, BURST_SPAWN };
-	enum SPAWN_POSITION { RELATIVE_POSITION, ABSOLUTE_POSITION };
+	enum SPAWN_POSITION { RELATIVE_WORLD, ABSOLUTE_WORLD,  };
 	enum POOLING_TYPE {KILL, REVIVE};
 	enum EMITTER_EVENT_TYPE { STOP_SPAWN, NO_EVENT, };
 
@@ -46,6 +46,7 @@ public:
 public:
 	virtual	void				Reset() = 0; 
 	void						Stop_Spawn(_float _fDelayTime)	{ m_fAccEventTime = 0.f; m_fInactiveDelayTime = _fDelayTime; m_eNowEvent = STOP_SPAWN; }
+	void						Set_SpawnMatrix(const _float4x4* _pSpawnMatrix) { m_pSpawnMatrix = _pSpawnMatrix; }
 
 public:
 	const EFFECT_TYPE			Get_Type() const { return m_eEffectType; }
@@ -57,7 +58,7 @@ protected:
 	static _int			s_iRGP_EFFECT;
 	static _int			s_iRGP_PARTICLE;
 
-
+	static _float4x4	s_IdentityMatrix;
 
 protected:
 	class CShader* m_pShaderCom = { nullptr };			
@@ -66,7 +67,7 @@ protected:
 protected:
 	EFFECT_TYPE		m_eEffectType = { NONE };								// Sprite or Mesh?
 	SPAWN_TYPE		m_eSpawnType = { SPAWN_RATE };							// Spawn Type
-	SPAWN_POSITION	m_eSpawnPosition = { RELATIVE_POSITION };				// System에 따라 위치가 결정? World 좌표 그대로로 설정? 여부
+	SPAWN_POSITION	m_eSpawnPosition = { RELATIVE_WORLD };				// System에 따라 위치가 결정? World 좌표 그대로로 설정? 여부
 	POOLING_TYPE	m_ePooling = { KILL };									// 재사용 여부
 	EMITTER_EVENT_TYPE m_eNowEvent = {NO_EVENT};
 	_uint			m_iShaderPass = 0;					// Particle 설정 여부에 따라서 Pass도 바뀐다.
@@ -83,8 +84,9 @@ protected:
 
 	_uint			m_iLoopTime = { 1 };				// 루프 횟수
 	_uint			m_iAccLoop = { 0 };					// Delay가 지나면 ++, 
-	_float4x4		m_LoadMatrix;
 
+	const _float4x4* m_pSpawnMatrix = { nullptr };
+	_float4x4		 m_SpawnMatrix;
 	vector<class CEffect_Module*> m_Modules;
 
 protected:
@@ -97,6 +99,8 @@ protected:
 	virtual void Active_OnDisable() override;
 
 	virtual void Update_Emitter(_float _fTimeDelta) = 0;
+
+	void Set_Matrix();
 
 protected:
 	virtual HRESULT Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc);
@@ -136,8 +140,8 @@ NLOHMANN_JSON_SERIALIZE_ENUM(CEmitter::SPAWN_TYPE, {
 	});
 
 NLOHMANN_JSON_SERIALIZE_ENUM(CEmitter::SPAWN_POSITION, {
-	{CEmitter::SPAWN_POSITION::RELATIVE_POSITION, "RELATIVE_POSITION"},
-	{CEmitter::SPAWN_POSITION::ABSOLUTE_POSITION, "ABSOLUTE_POSITION"},
+	{CEmitter::SPAWN_POSITION::RELATIVE_WORLD, "RELATIVE_WORLD"},
+	{CEmitter::SPAWN_POSITION::ABSOLUTE_WORLD, "ABSOLUTE_WORLD"},
 	});
 
 NLOHMANN_JSON_SERIALIZE_ENUM(CEmitter::POOLING_TYPE, {

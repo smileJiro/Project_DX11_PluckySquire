@@ -894,6 +894,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	CBarfBug::MONSTER_DESC Monster_Desc;
 	Monster_Desc.iCurLevelID = m_eLevelID;
+	Monster_Desc.eStartCoord = COORDINATE_3D;
 
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-10.0f, 0.35f, -23.0f);
 	////Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(-20.0f, 0.35f, -17.0f);
@@ -920,6 +921,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(8.0f, 0.35f, -19.0f);
 	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	// Goblin_Desc.eStartCoord = COORDINATE_3D;
 	//
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &Monster_Desc)))
 	//	return E_FAIL;
@@ -962,23 +964,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 HRESULT CLevel_Chapter_04::Ready_Layer_Effects(const _wstring& _strLayerTag)
 {
-	CEmitter::SetID_2D(RG_2D);
-	CEmitter::SetID_3D(RG_3D);
-	CEmitter::SetID_Particle(PR3D_EFFECT);
-
-	CEffect_System::PARTICLE_SYSTEM_DESC Desc = {};
-
-	Desc.eStartCoord = COORDINATE_3D;
-	Desc.iCurLevelID = m_eLevelID;
-	Desc.isCoordChangeEnable = false;
-	Desc.iSpriteShaderLevel = LEVEL_STATIC;
-	Desc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
-	Desc.iModelShaderLevel = LEVEL_STATIC;
-	Desc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Portal.json"), m_eLevelID, _strLayerTag, &Desc)))
-		return E_FAIL;
-
 	return S_OK;
 }
 

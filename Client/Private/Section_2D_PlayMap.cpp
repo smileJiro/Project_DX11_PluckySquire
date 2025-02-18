@@ -120,6 +120,7 @@ HRESULT CSection_2D_PlayMap::Import(json _SectionJson, _uint _iPriorityKey)
 
 				Desc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
 				Desc.fTriggerRadius = 2.45f;
+				Desc.iPortalIndex = i;
 				Desc.Build_2D_Transform(fPos, fScale);
 
 				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,

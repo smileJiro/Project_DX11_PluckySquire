@@ -31,6 +31,23 @@ public:
 		TYPE_END
 	};
 
+	enum FREEZE_TYPE
+	{
+		NONE,
+		FREEZE_X,
+		FREEZE_Z,
+		FREEZE_TYPE_END
+	};
+
+	enum MAGNIFICATION_TYPE
+	{
+		HORIZON_NON_SCALE,
+		HORIZON_SCALE,
+		VERTICAL_NONE_SCALE,
+		VERTICAL_SCALE,
+		MAGNIFICATION_END
+	};
+
 	typedef struct tagCamera2DDesc : public CCamera::CAMERA_DESC
 	{
 		CAMERA_2D_MODE			eCameraMode = { DEFAULT };
@@ -94,6 +111,13 @@ private:
 	// Sketch Space
 	NORMAL_DIRECTION			m_eCurSpaceDir = { NORMAL_DIRECTION::NONEWRITE_NORMAL };
 
+	// 카메라 위치 고정
+	_float2						m_fBasicRatio[MAGNIFICATION_END] = {};	// 렌더 타겟의 어느 정도 비율로 고정할 것인지 결정, 기본적으로 해야 함
+	_uint						m_iFreezeMask = { NONE };
+	MAGNIFICATION_TYPE			m_eMagnificationType = {};
+
+	_uint						m_iPlayType = {};
+
 private:
 	void						Action_Mode(_float _fTimeDelta);
 	void						Action_SetUp_ByMode();
@@ -111,6 +135,9 @@ private:
 	_vector						Calculate_CameraPos(_float _fTimeDelta);
 	virtual	void				Switching(_float _fTimeDelta) override;
 	void						Find_TargetPos();
+	void						Calculate_Book_Scroll();					
+	void						Check_MagnificationType();
+	void						Clamp_FixedPos();
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);

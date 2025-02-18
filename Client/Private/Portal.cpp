@@ -5,6 +5,9 @@
 #include "Section_Manager.h"
 #include "Player.h"
 
+#include "Camera_Manager.h"
+#include "Camera_Target.h"
+
 CPortal::CPortal(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CContainerObject(_pDevice, _pContext)
 {
@@ -33,6 +36,7 @@ HRESULT CPortal::Initialize(void* _pArg)
     m_fTriggerRadius =  pDesc->fTriggerRadius;
     m_fInteractChargeTime = 0.6f;
     m_eInteractType = INTERACT_TYPE::CHARGE;
+    m_iPortalIndex =  pDesc->iPortalIndex;
     // Actor Object는 차후에, ReadyObject 를 따로 불러 생성.
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -120,16 +124,83 @@ HRESULT CPortal::Init_Actor()
         Active_OnEnable();
 
     Change_Coordinate(COORDINATE_2D, nullptr);
+    // 포탈 생성.
+    m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_WorldMatrix_Ptr();
 
+    CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
+    EffectDesc.eStartCoord = COORDINATE_3D;
+    EffectDesc.isCoordChangeEnable = false;
+    EffectDesc.iSpriteShaderLevel = LEVEL_STATIC;
+    EffectDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+
+    EffectDesc.iModelShaderLevel = LEVEL_STATIC;
+    EffectDesc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
+
+    EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
+    EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+
+    EffectDesc.iSingleSpriteShaderLevel = LEVEL_STATIC;
+    EffectDesc.szSingleSpriteShaderTags = L"Prototype_Component_Shader_VtxPoint";
+    EffectDesc.iSingleSpriteBufferLevel = LEVEL_STATIC;
+    EffectDesc.szSingleSpriteBufferTags = L"Prototype_Component_VIBuffer_Point";
+
+    EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+    EffectDesc.szMeshComputeShaderTag = L"Prototype_Component_Compute_Shader_MeshInstance";
+
+    m_pEffectSystem = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Portal.json"), &EffectDesc));
+    if (nullptr == m_pEffectSystem)
+        return E_FAIL;
+
+    _matrix WorldMatrix = XMMatrixIdentity();
+    switch ((NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(f3DPosition))))
+    {
+    case NORMAL_DIRECTION::POSITIVE_X:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(-90.f));
+        break;
+    }
+    case NORMAL_DIRECTION::NEGATIVE_X:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(90.f));
+        break;
+    }
+    case NORMAL_DIRECTION::POSITIVE_Y:
+    {
+        break;
+    }
+    case NORMAL_DIRECTION::NEGATIVE_Y:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(180.f));
+        break;
+    }
+    case NORMAL_DIRECTION::POSITIVE_Z:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(90.f));
+        break;
+    }
+    case NORMAL_DIRECTION::NEGATIVE_Z:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(-90.f));
+        break;
+    }
+    }
+    WorldMatrix.r[3] = f3DPosition;
+
+    m_pEffectSystem->Set_EffectMatrix(WorldMatrix);
+    m_PartObjects[PORTAL_PART_3D] = m_pEffectSystem;
+
+    Safe_AddRef(m_pEffectSystem);
 
     return hr;
 }
 
-void CPortal::Use_Portal(CPlayer* _pUser)
+void CPortal::Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal)
 {
     _vector vPos = Get_ControllerTransform()[COORDINATE_2D].Get_State(CTransform::STATE_POSITION);
 
     _vector v3DPos = SECTION_MGR->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { XMVectorGetX(vPos),XMVectorGetY(vPos) });
+
+    *_pOutNormal = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW( v3DPos))); /* 추후 노말을 기준으로 힘의 방향을 결정해도 돼*/
 
     _int iCurCoord = (_int)_pUser->Get_CurCoord();
     (_int)iCurCoord ^= 1;
@@ -224,6 +295,10 @@ HRESULT CPortal::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 
 void CPortal::Interact(CPlayer* _pUser)
 {
+    if (COORDINATE_2D == _pUser->Get_CurCoord()) {
+        static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET))->Set_InitialData(m_strSectionName, m_iPortalIndex);
+    }
+
 	_pUser->JumpTo_Portal(this);
 }
 
@@ -237,6 +312,20 @@ _float CPortal::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
     return XMVector3Length(m_pControllerTransform->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)
         - _pUser->Get_ControllerTransform()->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
 
+}
+
+void CPortal::Active_OnEnable()
+{
+    __super::Active_OnEnable();
+    if (m_pEffectSystem)
+        m_pEffectSystem->Active_All(true);
+}
+
+void CPortal::Active_OnDisable()
+{
+    __super::Active_OnEnable();
+    if (m_pEffectSystem)
+        m_pEffectSystem->Inactive_All();
 }
 
 void CPortal::On_Touched(CPlayer* _pPlayer)
@@ -275,5 +364,6 @@ CGameObject* CPortal::Clone(void* _pArg)
 void CPortal::Free()
 {
     Safe_Release(m_pColliderCom);
+    Safe_Release(m_pEffectSystem);
     __super::Free();
 }

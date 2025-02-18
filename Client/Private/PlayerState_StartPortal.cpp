@@ -14,7 +14,7 @@ void CPlayerState_StartPortal::Update(_float _fTimeDelta)
 	if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
 	{
 		_vector vPlayerPos = m_pOwner->Get_FinalPosition();
-		if(false == m_pOwner->Check_Arrival(m_vTargetPos,COORDINATE_2D== eCoord ? 5.f : 0.5f))
+		if(false == m_pOwner->Check_Arrival(m_vTargetPos,COORDINATE_2D== eCoord ? 10.f : 0.5f))
 			m_pOwner->Move(XMVector3Normalize(m_vTargetPos - vPlayerPos)
 				* (COORDINATE_2D == eCoord ? m_f2DMoveSpeed : m_f3DMoveSpeed), _fTimeDelta);
 

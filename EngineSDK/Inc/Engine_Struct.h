@@ -250,6 +250,8 @@ namespace Engine
 		XMFLOAT3		vVelocity;
 		XMFLOAT3		vAcceleration;
 		float			fAlive;
+		float			fRandom;
+
 	}VTXPOINTINSTANCE;
 
 
@@ -265,7 +267,7 @@ namespace Engine
 
 	typedef struct ENGINE_DLL tagPointParticle
 	{
-		static const unsigned int iNumElements = { 12 };		// Position + Size + VTXPOINTINSTANCE
+		static const unsigned int iNumElements = { 13 };		// Position + Size + VTXPOINTINSTANCE
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
 	}VTXPOINTPARTICLE;
 
@@ -364,6 +366,7 @@ namespace Engine
 	{
 		_float3				vPosition = {};
 		_float3				vAt = {};
+		_float				fLength = {};
 		_uint				iZoomLevel = {};
 
 		_float				fInitialTime = {};

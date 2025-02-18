@@ -82,6 +82,8 @@ public:
 
     struct DialogData
     {
+        _int    iTriggerID = -1;
+        wstring wstrTriggerTag;
         wstring id;                     // 다이얼로그 ID
         wstring Section;                // 노출되어야할 섹션
         vector<DialogLine> lines;       // 대화 내용 목록
@@ -109,6 +111,9 @@ private:
     void        NextDialogue(_float2 _RTSize);
     void        FirstCalPos(_float2 _RTSize);
     void        isOpenPanel(_tchar* _DialogId);
+
+    // 추후 수정 (프로토 타입용..)
+    void        isCloseDialogueForTalket(_tchar* _DialogId);
 
 private:
     DialogData          m_DialogData;   // 현재 다이얼로그 데이터

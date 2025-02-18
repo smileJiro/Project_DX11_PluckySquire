@@ -34,7 +34,7 @@ HRESULT CNPC_Violet::Initialize(void* _pArg)
 	pDesc->iNumPartObjects = PART_END;
 
 	pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	m_f2DSpeed = pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
+	m_f2DSpeed = pDesc->tTransform2DDesc.fSpeedPerSec = 200.f;
 
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	m_f3DSpeed = pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
@@ -47,8 +47,10 @@ HRESULT CNPC_Violet::Initialize(void* _pArg)
 	m_eActionType = ACTION_WAIT;
 
 	//m_strCurSecion = pDesc->cursection
-
 	
+	wsprintf(m_strDialogueIndex, pDesc->strDialogueIndex);
+	wsprintf(m_strCurSecion, TEXT("Chapter1_P0708"));
+	 
 
 
 	//if (FAILED(Ready_ActorDesc(pDesc)))
@@ -133,7 +135,18 @@ void CNPC_Violet::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOthe
 
 void CNPC_Violet::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
-	
+	if (iAnimIdx != m_iPreState)
+	{
+		switch (ANIM_2D(iAnimIdx))
+		{
+		case ANIM_2D::Violet_idle_down:
+		{
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_down);
+		}
+
+		break;
+		}
+	}
 }
 
 void CNPC_Violet::ChangeState_Panel()
@@ -286,11 +299,15 @@ void CNPC_Violet::Welcome_Jot(_float _fTimeDelta)
 	// 트레이스 상태가 아니다.
 
 	// 플레이어의 섹션하고 나와의 섹션이 동일하면 시작하자.
-	if (CSection_Manager::GetInstance()->Is_CurSection(Uimgr->Get_Player()))
+	//if (CSection_Manager::GetInstance()->SetActive_Section(TEXT("Chapter1_P0708")))
+	if (TEXT("Chapter1_P0708") == CSection_Manager::GetInstance()->Get_Cur_Section_Key())
 	{
 		// 캐릭터 입장 후 잠시 대기!
 		if (m_eActionType == ACTION_WAIT)
 		{
+			if (Violet_idle_down != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_down);
+
 			m_fWelcomeWaitTime += _fTimeDelta;
 
 			if (5.f < m_fWelcomeWaitTime)
@@ -306,6 +323,15 @@ void CNPC_Violet::Welcome_Jot(_float _fTimeDelta)
 
 		if (ACTION_MOVE == m_eActionType)
 		{
+			if (Violet_Run_Right != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+			{
+				_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+				m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
+				m_eAnimationType = ANIM_LEFT;
+			}
+
+
 			_float4 vPlayerPos = _float4(Uimgr->Get_Player()->Get_FinalPosition().m128_f32[0], Uimgr->Get_Player()->Get_FinalPosition().m128_f32[1], 0.f, 1.f);
 			_float4 vVioletPos = _float4(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0], m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1], 0.f, 1.f);
 			_float4 vCalPos = _float4(vVioletPos.x - vPlayerPos.x, vVioletPos.y - vPlayerPos.y, 0.f, 1.f);
@@ -319,28 +345,34 @@ void CNPC_Violet::Welcome_Jot(_float _fTimeDelta)
 			}
 			else
 			{
+
 				// 일정 거리까지 오면 다이얼로그 시작한다.
 				m_eActionType = ACTION_DIALOG;
-				//Throw_Dialogue();
+
+				if (Violet_Talk01_Right != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+				{
+					_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+					m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Talk01_Right);
+					m_eAnimationType = ANIM_LEFT;
+				}
+
+				Throw_Dialogue();
 
 				// 멈추고 다이얼로그를 시작한다.
 			}
 		}
 		else if (ACTION_DIALOG == m_eActionType)
 		{
+
 			// 다이얼로그가 끝났나?
 			// 다이얼로그가 끝났는지 계속 체크한다.
-			//if ()
-			//{
-			//
-			//}
-			//else
-			//{
-			//	// trace true로해서 따라다니게 한다.
-			//	// 다이얼로그가 끝났으면 trace를 이제 true로해서 따라 다니게 한다.
-			//	m_eActionType = ACTION_TRACE;
-			//	m_isTrace = true;
-			//}
+			if (false == Uimgr->Get_DisplayDialogue())
+			{
+				// 다이얼로그가 끝났으면 trace를 이제 true로해서 따라 다니게 한다.
+				m_eActionType = ACTION_TRACE;
+				m_isTrace = true;
+			}
 		}
 	}
 }

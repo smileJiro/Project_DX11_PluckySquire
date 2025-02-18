@@ -205,16 +205,19 @@ void CParticle_Mesh_Emitter::Update_Emitter(_float _fTimeDelta)
 			if (SPAWN_RATE == m_eSpawnType)
 			{
 				_float fAbsolute;
-				if (RELATIVE_POSITION == m_eSpawnPosition)
+				if (RELATIVE_WORLD == m_eSpawnPosition)
 				{
 					fAbsolute = 0.f;
 					m_pComputeShader->Bind_RawValue("g_fAbsolute", &fAbsolute, sizeof(_float));
 				}
-				else if (ABSOLUTE_POSITION == m_eSpawnPosition)
+				else if (ABSOLUTE_WORLD == m_eSpawnPosition)
 				{
 					fAbsolute = 1.f;
 					m_pComputeShader->Bind_RawValue("g_fAbsolute", &fAbsolute, sizeof(_float));
-					m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &m_WorldMatrices[COORDINATE_3D]);
+					if (m_pSpawnMatrix)
+						m_pComputeShader->Bind_Matrix("g_SpawnMatrix", m_pSpawnMatrix);
+					else
+						m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &s_IdentityMatrix);
 				}
 				m_pComputeShader->Begin(1);
 
@@ -222,16 +225,19 @@ void CParticle_Mesh_Emitter::Update_Emitter(_float _fTimeDelta)
 			else if (BURST_SPAWN == m_eSpawnType)
 			{
 				_float fAbsolute;
-				if (RELATIVE_POSITION == m_eSpawnPosition)
+				if (RELATIVE_WORLD == m_eSpawnPosition)
 				{
 					fAbsolute = 0.f;
 					m_pComputeShader->Bind_RawValue("g_fAbsolute", &fAbsolute, sizeof(_float));
 				}
-				else if (ABSOLUTE_POSITION == m_eSpawnPosition)
+				else if (ABSOLUTE_WORLD == m_eSpawnPosition)
 				{
 					fAbsolute = 1.f;
 					m_pComputeShader->Bind_RawValue("g_fAbsolute", &fAbsolute, sizeof(_float));
-					m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &m_WorldMatrices[COORDINATE_3D]);
+					if (m_pSpawnMatrix)
+						m_pComputeShader->Bind_Matrix("g_SpawnMatrix", m_pSpawnMatrix);
+					else
+						m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &s_IdentityMatrix);
 				}
 				m_pComputeShader->Begin(2);
 
@@ -261,18 +267,18 @@ void CParticle_Mesh_Emitter::Update_Emitter(_float _fTimeDelta)
 //{
 //	if (SPAWN_RATE == m_eSpawnType)
 //	{
-//		if (RELATIVE_POSITION == m_eSpawnPosition)
+//		if (RELATIVE_WORLD == m_eSpawnPosition)
 //			m_ParticleMeshes[i]->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"], nullptr);
-//		else if (ABSOLUTE_POSITION == m_eSpawnPosition)
+//		else if (ABSOLUTE_WORLD == m_eSpawnPosition)
 //			m_ParticleMeshes[i]->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"],
 //				&m_WorldMatrices[COORDINATE_3D]);
 //
 //	}
 //	else if (BURST_SPAWN == m_eSpawnType)
 //	{
-//		if (RELATIVE_POSITION == m_eSpawnPosition)
+//		if (RELATIVE_WORLD == m_eSpawnPosition)
 //			m_ParticleMeshes[i]->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"], nullptr);
-//		else if (ABSOLUTE_POSITION == m_eSpawnPosition)
+//		else if (ABSOLUTE_WORLD == m_eSpawnPosition)
 //			m_ParticleMeshes[i]->Spawn_Rate(_fTimeDelta, m_FloatDatas["SpawnRate"],
 //				&m_WorldMatrices[COORDINATE_3D]);
 //
@@ -323,14 +329,14 @@ void CParticle_Mesh_Emitter::Update_Emitter(_float _fTimeDelta)
 
 HRESULT CParticle_Mesh_Emitter::Bind_ShaderResources()
 {
-	if (RELATIVE_POSITION == m_eSpawnPosition)
+	if (RELATIVE_WORLD == m_eSpawnPosition)
 	{
 		if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
 			return E_FAIL;
 	}
-	else if (ABSOLUTE_POSITION == m_eSpawnPosition)
+	else if (ABSOLUTE_WORLD == m_eSpawnPosition)
 	{
-		if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &s_IdentityMatrix)))
 			return E_FAIL;
 	}
 

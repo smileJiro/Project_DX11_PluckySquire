@@ -82,6 +82,7 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
                     ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
                     ShapeData.pShapeDesc = &ShapeCookingDesc;
                     ShapeData.isTrigger = false;
+                    ShapeData.isVisual = false;
                     _float3 fScale =
                         _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&pDesc->tTransform3DDesc.matWorld.m[0]))),
                             XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&pDesc->tTransform3DDesc.matWorld.m[1]))),

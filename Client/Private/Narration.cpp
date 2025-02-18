@@ -54,7 +54,7 @@ void CNarration::Update(_float _fTimeDelta)
 	if (false == m_isPlayNarration && true == Uimgr->Get_PlayNarration())
 	{
 		m_isPlayNarration = true;
-		std::wstring targetNarrationID = Uimgr->Get_strNarrationID();
+		_wstring targetNarrationID = Uimgr->Get_strNarrationID();
 		Set_NarrationByStrid(targetNarrationID);
 		m_isStartNarration = true;
 
@@ -64,15 +64,15 @@ void CNarration::Update(_float _fTimeDelta)
 		// 새로운 나레이션의 첫 라인에 연결된 애니메이션 시작
 		for (auto& animObj : m_pCurrentAnimObj)
 		{
-			if (animObj)
-			{
+			//if (animObj)
+			//{
 				if (false == animObj->CBase::Is_Active())
 					animObj->CBase::Set_Active(true);
 
 				animObj->StartAnimation();
 
 				m_DisPlayTextLine = 0;
-			}
+			//}
 		}
 	}
 
@@ -116,7 +116,7 @@ HRESULT CNarration::Render()
 	return S_OK;
 }
 
-HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
+HRESULT CNarration::LoadFromJson(const wstring& filePath)
 {
 	if (GetFileAttributes(filePath.c_str()) == INVALID_FILE_ATTRIBUTES)
 	{
@@ -202,6 +202,9 @@ HRESULT CNarration::LoadFromJson(const std::wstring& filePath)
 						DialogueData.isFinishedThisLine = line["isFinishedThisLine"].get<_bool>();
 
 					}
+
+					if (line.contains("isDirTurn") && line["isDirTurn"].is_boolean())
+						DialogueData.isDirTurn = line["isDirTurn"].get<_bool>();
 
 					// 애니메이션 데이터 파싱 및 개별 객체 생성
 					vector<CNarration_Anim*> pAnimation;
@@ -589,7 +592,12 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						m_DisPlayTextLine = m_iCurrentLine;
 						
 						_float3 vPos = _float3(0.f, 0.f, 1.f);
-						Event_Book_Main_Section_Change_Start(1, &vPos);
+						if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
+							Event_Book_Main_Section_Change_Start(1, &vPos);
+						else
+							Event_Book_Main_Section_Change_Start(0, &vPos);
+
+
 						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].NarAnim[0].strSectionid, this);
 
 						m_fWaitingTime += _fTimeDelta;
@@ -607,7 +615,12 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 				_float3 vPos = _float3(0.f, 0.f, 1.f);
 				if (m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isFinishedThisLine)
 				{
-					Event_Book_Main_Section_Change_Start(1, &vPos);
+					if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
+						Event_Book_Main_Section_Change_Start(1, &vPos);
+					else
+						Event_Book_Main_Section_Change_Start(0, &vPos);
+
+
 					m_isStartNarration = false;
 					m_isNarrationEnd = true;
 					m_isPlayNarration = false;
@@ -649,7 +662,12 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					// 그런데 그 라인이 다음으로 넘기는 라인인가요?
 					if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isFinishedThisLine)
 					{
-						Event_Book_Main_Section_Change_Start(1, &vPos);
+						if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
+							Event_Book_Main_Section_Change_Start(1, &vPos);
+						else
+							Event_Book_Main_Section_Change_Start(0, &vPos);
+
+
 						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].NarAnim[0].strSectionid, this);
 					}
 				}

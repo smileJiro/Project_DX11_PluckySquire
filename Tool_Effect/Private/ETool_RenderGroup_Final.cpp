@@ -19,6 +19,7 @@ HRESULT CETool_RenderGroup_Final::Render(CShader* _pRTShader, CVIBuffer_Rect* _p
 {
     if (FAILED(m_pGameInstance->Begin_MRT(m_strMRTTag, m_pDSV, m_isClear))) 
         return E_FAIL;
+
     _pRTShader->Bind_Matrix("g_WorldMatrix", m_pGameInstance->Get_WorldMatrix_Renderer());
     _pRTShader->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_ViewMatrix_Renderer());
     _pRTShader->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_ProjMatrix_Renderer());
@@ -29,7 +30,7 @@ HRESULT CETool_RenderGroup_Final::Render(CShader* _pRTShader, CVIBuffer_Rect* _p
     _pRTShader->Bind_Matrix("g_LightViewMatrix", m_pGameInstance->Get_Shadow_Transform_Ptr(CShadow::D3DTS_VIEW));
     _pRTShader->Bind_Matrix("g_LightProjMatrix", m_pGameInstance->Get_Shadow_Transform_Ptr(CShadow::D3DTS_PROJ));
 
-    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_DiffuseTexture", TEXT("Target_Diffuse"))))
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_Albedo", TEXT("Target_Diffuse"))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_ShadeTexture", TEXT("Target_Shade"))))
@@ -44,7 +45,7 @@ HRESULT CETool_RenderGroup_Final::Render(CShader* _pRTShader, CVIBuffer_Rect* _p
     if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_DepthTexture", TEXT("Target_Depth"))))
         return E_FAIL;
 
-    _pRTShader->Begin((_uint)PASS_DEFERRED::FINAL);
+    _pRTShader->Begin((_uint)PASS_DEFERRED::COMBINE);
 
     _pRTBuffer->Bind_BufferDesc();
 

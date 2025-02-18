@@ -125,7 +125,8 @@ public:
 	_tchar*								Get_strSectionID() { return m_strCurrentSection; }
 	void								Set_DialogId(const _tchar* _id, const _tchar* _strCurSection = nullptr, _bool _DisplayDialogue = true, _bool _DisPlayPortrait = true);
 
-	_int								Get_DialogueLineIndex() { return m_iCurrnetLineIndex; }
+	_int								Get_DialogueLineIndex() { return 
+		m_iCurrnetLineIndex; }
 	void								Set_DialogueLineIndex(_int _index) { m_iCurrnetLineIndex = _index; }
 
 	_bool								Get_PortraitRender() { return m_isPortraitRender; }

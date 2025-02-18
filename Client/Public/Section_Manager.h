@@ -236,10 +236,11 @@ public:
 	void							Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPosMap);
 
 #pragma endregion
-#pragma region ≥π∏ª ∆€¡Ò
+
+	#pragma region ≥π∏ª ∆€¡Ò
 public :
 	CWordGame_Generator* Get_Word_Generator() { return m_pWordGameGenerator; }
-
+	HRESULT				Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType);
 #pragma endregion
 
 

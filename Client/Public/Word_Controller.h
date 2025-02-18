@@ -4,6 +4,8 @@
 
 BEGIN(Client)
 
+class CSection_2D;
+
 class CWord_Controller final : public CContainerObject
 {
 	enum PORTAL_PART
@@ -23,16 +25,20 @@ public:
 	virtual HRESULT			Initialize(void* _pArg);
 
 public :
-	virtual HRESULT			Import(json _COntrollerJson);
+	virtual HRESULT			Import(CSection_2D* _pSection, json _ControllerJson);
 	virtual void			Priority_Update(_float _fTimeDelta) override;
 	virtual void			Update(_float fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
 	HRESULT					Update_Text();
+	HRESULT					Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID) override;
+
+	vector<_float2>			Get_PatternPositions(_float2 _fProjPos, _float2 _fWindowInPos);
+	virtual void			Set_Include_Section_Name(const _wstring _strIncludeSectionName) override;
 
 private:
-	_uint					m_iContainerIndex = 0;
+	_uint					m_iControllerIndex = 0;
 	_uint					m_iWordCount = {};
 
 	_wstring				m_strOriginText;
@@ -41,7 +47,7 @@ private:
 
 
 public:
-	static CWord_Controller* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, json _ControllerJson);
+	static CWord_Controller* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CSection_2D* _pSection, json _ControllerJson);
 	CGameObject* Clone(void* _pArg) override;
 	void					Free() override;
 };

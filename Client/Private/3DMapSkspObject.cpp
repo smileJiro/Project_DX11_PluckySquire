@@ -57,7 +57,7 @@ void C3DMapSkspObject::Late_Update(_float _fTimeDelta)
     }
     else
     {
-        //SECTION_MGR->SetActive_Section(m_strRenderSectionTag, false);
+        SECTION_MGR->SetActive_Section(m_strRenderSectionTag, false);
     }
 }
 

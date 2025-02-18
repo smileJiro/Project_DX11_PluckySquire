@@ -71,7 +71,7 @@ void CPartObject::Late_Update(_float _fTimeDelta)
 
 HRESULT CPartObject::Render()
 {
-    __super::Render();
+    //__super::Render();
     return S_OK;
 }
 

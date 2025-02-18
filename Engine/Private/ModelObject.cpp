@@ -208,14 +208,16 @@ void CModelObject::Register_OnAnimEndCallBack( const function<void(COORDINATE,_u
 
 void CModelObject::Update(_float _fTimeDelta)
 {
-    if(m_bPlayingAnim)
-        m_pControllerModel->Play_Animation(_fTimeDelta, m_bReverseAnimation);
-    else
+    if (m_pControllerModel)
     {
-        if (true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 0.0f))
-            m_pControllerModel->Play_Animation(0, m_bReverseAnimation);
+        if(m_bPlayingAnim)
+            m_pControllerModel->Play_Animation(_fTimeDelta, m_bReverseAnimation);
+        else
+        {
+            if (true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 0.0f))
+                m_pControllerModel->Play_Animation(0, m_bReverseAnimation);
+        }
     }
-       
 
 	__super::Update(_fTimeDelta);
 }
@@ -374,6 +376,11 @@ _uint CModelObject::Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex)
 void CModelObject::Set_PlayingAnim(_bool _bPlaying)
 {
     m_bPlayingAnim = _bPlaying;
+}
+
+_bool CModelObject::Is_DuringAnimation()
+{
+    return m_pControllerModel->Get_Model(Get_CurCoord())->Is_DuringAnimation();
 }
 
 void CModelObject::Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)

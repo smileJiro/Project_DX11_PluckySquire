@@ -58,4 +58,13 @@ namespace Client
 	_vector EDir_To_Vector(E_DIRECTION _eFDir);
 	F_DIRECTION EDir_To_FDir(E_DIRECTION _eEDir);
 	T_DIRECTION EDir_To_TDirection(E_DIRECTION _eEDir);
+
+	
+
+	_bool ContainString(const _string _strSourceText, const _string _strDestText);
+	_bool ContainWstring(const _wstring _strSourceText, const _wstring _strDestText);
+
+	_float2		Convert_Pos_ToWindow(_float2 _fProjPos, _float2 _fRenderTargetSize);
+	_float2		Convert_Pos_ToProj(_float2 _fWindowPos, _float2 _fRenderTargetSize);
+
 }

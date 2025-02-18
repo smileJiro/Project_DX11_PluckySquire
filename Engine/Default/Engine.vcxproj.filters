@@ -621,6 +621,9 @@
     <ClInclude Include="..\Public\Collider_Fan.h">
       <Filter>01.Utility\04.Components\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UV_Module.h">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -925,6 +928,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Collider_Fan.cpp">
       <Filter>01.Utility\04.Components\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UV_Module.cpp">
+      <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

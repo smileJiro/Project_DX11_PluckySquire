@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CCollider;
+class CEffect_System;
 END
 
 BEGIN(Client)
@@ -20,7 +21,8 @@ class CPortal final : public CContainerObject, public virtual IInteractable
 public :
 	typedef struct tagPortalDESC : public CContainerObject::CONTAINEROBJ_DESC
 	{
-		_float fTriggerRadius;
+		_float	fTriggerRadius;
+		_uint	iPortalIndex = {};
 
 	}PORTAL_DESC;
 private:
@@ -37,7 +39,7 @@ public:
 	virtual HRESULT			Render() override;
 
 	HRESULT					Init_Actor();
-	void					Use_Portal(CPlayer* _pUser);
+	void					Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal);
 private:
 	HRESULT					Ready_Components(PORTAL_DESC* _pDesc);
 	HRESULT					Ready_PartObjects(PORTAL_DESC* _pDesc);
@@ -51,13 +53,18 @@ public:
 	virtual _bool			Is_Interactable(CPlayer* _pUser);
 	virtual _float			Get_Distance(COORDINATE _eCoord, CPlayer* _pUser);
 
+	virtual void Active_OnDisable() override;
+	virtual void Active_OnEnable() override;
+
 protected:
 	virtual void	On_Touched(CPlayer* _pPlayer);
 
 private :
-	CCollider* m_pColliderCom = { nullptr };
+	CCollider*	m_pColliderCom = { nullptr };
 
-	_float	   m_fTriggerRadius = {};
+	_float		m_fTriggerRadius = {};
+	_uint		m_iPortalIndex = {};
+	CEffect_System* m_pEffectSystem = { nullptr };
 
 
 public:

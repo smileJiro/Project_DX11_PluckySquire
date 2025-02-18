@@ -43,5 +43,35 @@
         "Is_Sequence": false
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "C02P0910_MonsterSpawnProcess",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "C02P0910_Spawn_LightningBolt",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "C02P0910_Monster_Spawn",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "MagicDust",
+    "Actions": [
+        {
+            "ActionTag": "MagicDust",
+            "EventTag": "Honey_Bee_Benny_01",
+            "Is_Sequence": false
+        },
+        {
+            "ActionTag": "MagicDust_Book",
+            "EventTag": "none",
+            "Is_Sequence": false
+        }
+    ]
   }
 ]

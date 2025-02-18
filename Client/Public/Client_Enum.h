@@ -77,6 +77,7 @@ namespace Client
 	{
 		SECTION_2D_PLAYMAP_BACKGROUND,
 		SECTION_2D_PLAYMAP_PORTAL,
+		SECTION_2D_PLAYMAP_WORD,
 		SECTION_2D_PLAYMAP_OBJECT,
 		SECTION_2D_PLAYMAP_TRIGGER,
 		SECTION_2D_PLAYMAP_UI,
@@ -99,7 +100,9 @@ namespace Client
 		INTERACTION_OBEJCT =		0x100,//8 (상호작용 하려면 GameObject의 Group으로 설정해야 함)
 		BLOCKER = 					0x200,	//9	(현재 2D 플랫포머에서 중력 컴포넌트랑 연계중. 3D에서 플레이어 몸통이랑 블락중)
 		BOOK_3D =					0x400,
-		FALLINGROCK_BASIC =			0x800,
+		WORD_GAME =					0x800,
+		//PORTAL =					0x1600, 일단 필요 없어져서 지웠어요 - 김지완 -
+		FALLINGROCK_BASIC =			0x1000,
 		//PORTAL =					0x800, 일단 필요 없어져서 지웠어요 - 김지완 -
 								 // 0x1000 
 
@@ -169,6 +172,8 @@ namespace Client
 		SNEAK_ALERT,
 		SNEAK_CHASE,
 		SNEAK_ATTACK,
+		SIDESCROLL_PATROL,
+		SIDESCROLL_HIT,
 
 		LAST,
 	};
@@ -214,12 +219,22 @@ namespace Client
 		T_DIR_LAST
 	};
 
-	enum class WAYPOINTINDEX
+	enum class SNEAKWAYPOINTINDEX
 	{
 		CHAPTER2_1,
 		CHAPTER2_2,
 		CHAPTER2_2_2,
 		CHAPTER2_3,
+		LAST
+	};
+
+	enum class SIDESCROLL_PATROLBOUND
+	{
+		CHAPTER2_1_1,
+		CHAPTER2_1_2,
+		CHAPTER2_1_3,
+		CHAPTER2_1_4,
+		CHAPTER2_1_5,
 		LAST
 	};
 
@@ -229,5 +244,13 @@ namespace Client
 		SHAPE_FOOT = 1,
 		SHAPE_TRIGER = 2,
 		SHAPE_USE_LAST
+	};
+
+	enum class MONSTER_TYPE
+	{
+		BARFBUG,
+		GOBLIN,
+		ZIPPY,
+		LAST
 	};
 }

@@ -4,6 +4,7 @@
 #include "Section_Manager.h"
 #include "Camera_Manager.h"
 #include "Blocker.h"
+#include "Effect_Manager.h"
 #include "Character.h"
 
 CFallingRock::CFallingRock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -321,6 +322,10 @@ void CFallingRock::State_Change_Bound_3D()
 	_float3 vForce = {};
 	XMStoreFloat3(&vForce, XMVector3Normalize(XMVectorSet(0.0f, 0.8f, -1.0f, 0.0f)) * m_fForce3D);
 	m_pActorCom->Add_Impulse(vForce);
+
+	// Effect
+	CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("RockOut"), true, XMLoadFloat4(&v3DWorldPos));
+
 }
 
 void CFallingRock::State_Change_ColBound_2D()

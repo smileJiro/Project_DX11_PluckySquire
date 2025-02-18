@@ -20,6 +20,7 @@
 		"Section_Name": "Chapter4_P0304",
 		"Section_File_Name": "Chapter4_P0304.m2chc",
 		"Section_Type": 0,
+		"Section_Start": true,
 		"Section_Info": {
 			"Camera_Zoom_Ratio": 1.5,
 			"RenderResolution": {
@@ -31,6 +32,11 @@
 				"Y": 1079.0
 			},
 			"Pre_Page_Tag": "Chapter4_P0102"
+		},
+		"Minigame_Info" : 
+		{
+			"Minigame_Type" : "Word",
+			"Minigame_Name" : "WordGame_01"
 		}
 	}
 ]

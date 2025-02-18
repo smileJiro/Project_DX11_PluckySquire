@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Player.h"
+#include "Effect_Manager.h"
 
 CBulb::CBulb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CTriggerObject(_pDevice, _pContext)
@@ -40,6 +41,8 @@ HRESULT CBulb::Initialize(void* _pArg)
 		Add_Shape();
 		static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(45.f));
 	}
+
+	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Gravity(false);
 
 	return S_OK;
 }
@@ -118,6 +121,9 @@ void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 		Event_DeleteObject(this);
 		static_cast<CActor_Dynamic*>(m_pActorCom)->Set_LinearVelocity(XMVectorZero());
 		m_isSticking = false;
+
+		CEffect_Manager::GetInstance()->Active_Effect(TEXT("Bulb"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+
 	}
 		break;
 	case BULB_SHAPE_USE::SHAPE_STICKING:
@@ -167,11 +173,36 @@ void CBulb::Default_Move(_float _fTimeDelta)
 	if (true == m_isSticking)
 		return;
 
-	_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-	
-	if (XMVectorGetY(vPos) < m_fMin) {	
-		static_cast<CActor_Dynamic*>(m_pActorCom)->Add_Impulse({ 0.f, 0.6f, 0.f });
+	m_fBulbTime.y += _fTimeDelta;
+	_float fRatio = m_fBulbTime.y / m_fBulbTime.x;
+	if (fRatio >= (1.f - EPSILON)) {
+		m_eBulbState = (BULB_STATE)(m_eBulbState ^ BULB_ALL);
+		m_fBulbTime.y = 0.f;
+		return;
 	}
+
+	switch (m_eBulbState) {
+	case BULB_UP:
+	{
+		m_pActorCom->Set_LinearVelocity(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.35f);
+	}
+		break;
+	case BULB_DOWN:
+	{
+		m_pActorCom->Set_LinearVelocity(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.35f);
+
+	}
+		break;
+	}
+	
+
+
+
+	//_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+	//
+	//if (XMVectorGetY(vPos) < m_fMin) {	
+	//	static_cast<CActor_Dynamic*>(m_pActorCom)->Add_Impulse({ 0.f, 0.6f, 0.f });
+	//}
 }
 
 HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)

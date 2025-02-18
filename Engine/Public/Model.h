@@ -15,6 +15,7 @@ protected:
 	virtual ~CModel() = default;
 public:
 	virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass)abstract;
+	virtual HRESULT			Render_Default(CShader* _pShader, _uint _iShaderPass) { return S_OK; }
 	virtual _bool Play_Animation(_float fTimeDelta, _bool bReverse = false) {return false;}
 	virtual void To_NextAnimation()abstract;
 
@@ -22,6 +23,7 @@ public:
 	virtual void Set_Animation(_uint iIdx, _bool _bReverse = false) abstract;
 	virtual void Switch_Animation(_uint iIdx, _bool _bReverse = false) abstract;
 	virtual void Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) abstract;
+	void Set_DuringAnimation(_bool _bDuringAnim) { m_bDuringAnimation = _bDuringAnim; }
 	void Set_AnimEventGenerator(CAnimEventGenerator* _pAnimEventGenerator);
 
 	virtual _uint Get_AnimCount() abstract;
@@ -30,7 +32,9 @@ public:
 	virtual _float Get_AnimationTime(_uint iAnimIndex) abstract;
 	virtual _float Get_AnimationTime() abstract;
 	virtual CAnimation* Get_Animation(_uint iAnimIndex) abstract;
+		
 	_bool Is_ReversingAnimation() { return m_bReverseAnimation; }
+	_bool Is_DuringAnimation() { return m_bDuringAnimation; }
 	ANIM_TYPE Get_AnimType() { return m_eAnimType; }
 
 
@@ -38,6 +42,8 @@ public:
 protected:
 	ANIM_TYPE				m_eAnimType = ANIM_TYPE::LAST;
 	_bool m_bReverseAnimation = false;
+	_bool m_bDuringAnimation = false;
+
 public:
 	virtual void Free() override;
 };

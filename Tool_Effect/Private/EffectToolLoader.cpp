@@ -6,6 +6,8 @@
 
 #include "Effect_Reference.h"
 #include "ModelObject.h"
+#include "Magic_Hand_Body.h"
+#include "Magic_Hand.h"
 
 CEffectToolLoader::CEffectToolLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -76,18 +78,6 @@ void CEffectToolLoader::Show_Debug()
 
 HRESULT CEffectToolLoader::Loading_Level_Tool()
 {
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_Temp"),
-    //    CParticle_Sprite_Emitter::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestEffect.json")))))
-    //    return E_FAIL;
-
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_Temp"),
-    //    CEffect_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestParticleSystem.json")))))
-    //    return E_FAIL;
-
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_MeshEffect_Temp"),
-    //    CEffect_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/TestMesh.json")))))
-    //    return E_FAIL;
-
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_ForNew"),
         CEffect_System::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -101,17 +91,48 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
         return E_FAIL;
 
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_MagicHandBody"),
+        CMagic_Hand_Body::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_MagicHand"),
+        CMagic_Hand::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_Player"),
         C3DModel::Create(m_pDevice, m_pContext, 
             ("../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/Latch_SkelMesh_NewRig.model"
-            ), matPretransform, false))))
+            ), matPretransform))))
+        return E_FAIL;
+
+    matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_Book"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../Bin/Resources/Models/3DAnim/book/book.model"
+                ), matPretransform))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_MagicHand"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../Bin/Resources/Models/3DAnim/magic_hand_model/magic_hand_model.model"
+                ), matPretransform))))
+        return E_FAIL;
+
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_MagicHand"),
+        CEffect_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/BookOut.json")))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
+
+
+
 
     return S_OK;
 }

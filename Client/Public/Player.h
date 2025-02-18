@@ -27,6 +27,9 @@ enum PLAYER_INPUT
 	PLAYER_INPUT_SPINCHARGING,
 	PLAYER_INPUT_SPINLAUNCH,
 	PLAYER_INPUT_REVIVE,
+	PLAYER_INPUT_TURNBOOK_LEFT,
+	PLAYER_INPUT_TURNBOOK_RIGHT,
+	PLAYER_INPUT_TURNBOOK_END,
 	PLAYER_INPUT_LAST
 };
 typedef struct tagPlayerInputResult
@@ -92,6 +95,8 @@ public:
 		JUMPTO_PORTAL,
 		EXIT_PORTAL,
 		ELECTRIC,
+		TURN_BOOK,
+		EVICT,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -506,7 +511,8 @@ public:
 	const _float4x4* Get_BodyWorldMatrix_Ptr() const;
 	const _float4x4* Get_BodyWorldMatrix_Ptr(COORDINATE eCoord) const;
 	CModelObject* Get_Body() { return m_pBody; }
-
+	_vector Get_RootBonePosition();
+	NORMAL_DIRECTION Get_PortalNormal() { return m_e3DPortalNormal; }
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -522,6 +528,7 @@ public:
 	void Set_PlatformerMode(_bool _bPlatformerMode);
 	void Set_Upforce(_float _fForce);
 	HRESULT Set_CarryingObject(CCarriableObject* _pCarryingObject);
+	NORMAL_DIRECTION Set_PortalNormal(NORMAL_DIRECTION _eNormal) { return m_e3DPortalNormal = _eNormal; }
 
 	void Start_Attack(ATTACK_TYPE _eAttackType);
 	void End_Attack();
@@ -568,7 +575,7 @@ private:
 	_vector m_v3DTargetDirection = { 0.f,0.f,-1.f };
 	_float4x4 m_mat3DCarryingOffset = {};
 	PLAYER_MODE m_ePlayerMode = PLAYER_MODE_NORMAL;
-
+	NORMAL_DIRECTION m_e3DPortalNormal= NORMAL_DIRECTION::LAST;
 
 
 	//2DÀü¿ë
