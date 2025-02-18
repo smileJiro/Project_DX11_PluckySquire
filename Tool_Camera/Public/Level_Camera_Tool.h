@@ -124,6 +124,7 @@ private:
 
 	_bool m_isSetAt = { false };
 	_float3 m_vInitialLookAt = {};
+	_float3 m_vCameraPos = {};
 
 private:
 	void				Show_CameraTool();

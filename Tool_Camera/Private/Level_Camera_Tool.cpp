@@ -270,7 +270,7 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 		LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
 		return E_FAIL;
 
-	pOut->Set_Active(false);
+	//pOut->Set_Active(false);
 	m_ModelObjects.push_back(pOut);
 
 	Desc.eStartCoord = COORDINATE_3D;
@@ -291,7 +291,7 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 		LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
 		return E_FAIL;
 
-	pOut->Set_Active(false);
+	//pOut->Set_Active(false);
 	m_ModelObjects.push_back(pOut);
 
 	// Player
@@ -307,13 +307,13 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 	Desc.iRenderGroupID_3D = RG_3D;
 	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
 	Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 1.17f, -21.02f };
-
+	Desc.tTransform3DDesc.vInitialRotation = { 0.f, XMConvertToRadians(180.f), 0.f };
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
 		LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
 		return E_FAIL;
 
-	pOut->Set_Active(false);
+	//pOut->Set_Active(false);
 	m_ModelObjects.push_back(pOut);
 
 	return S_OK;
@@ -627,7 +627,7 @@ void CLevel_Camera_Tool::Show_AnimModel(_float _fTimeDelta)
 	static _int iModelIndex = {};
 	ImGui::InputInt("Model Index: %d", &iModelIndex);
 
-	if (iModelIndex > m_ModelObjects.size() || iModelIndex < -1)
+	if (iModelIndex >= m_ModelObjects.size() || iModelIndex < -1)
 		return;
 
 	//C3DModel* 
@@ -655,8 +655,8 @@ void CLevel_Camera_Tool::Show_AnimModel(_float _fTimeDelta)
 
 	if (ImGui::Button("Reset All"))
 	{
-		/*pModel->Set_AnimationLoop(COORDINATE_3D, iAnim, isLoop);
-		pModel->Set_Animation(iAnim);*/
+		m_ModelObjects[iModelIndex]->Set_AnimationLoop(COORDINATE_3D, iAnim, isLoop);
+		m_ModelObjects[iModelIndex]->Set_Animation(iAnim);
 
 	}
 
@@ -670,15 +670,15 @@ void CLevel_Camera_Tool::Set_KeyFrameInfo()
 	ImGui::Text("Position: %.2f, %.2f, %.2f", m_tKeyFrameInfo.vPosition.x, m_tKeyFrameInfo.vPosition.y, m_tKeyFrameInfo.vPosition.z);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFramePosX", &m_tKeyFrameInfo.vPosition.x, 0.1f);
+	ImGui::DragFloat("##KeyFramePosX", &m_tKeyFrameInfo.vPosition.x, 0.03f);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFramePosY", &m_tKeyFrameInfo.vPosition.y, 0.1f);
+	ImGui::DragFloat("##KeyFramePosY", &m_tKeyFrameInfo.vPosition.y, 0.03f);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFramePosZ", &m_tKeyFrameInfo.vPosition.z, 0.1f);
+	ImGui::DragFloat("##KeyFramePosZ", &m_tKeyFrameInfo.vPosition.z, 0.03f);
 
 	ImGui::SameLine();
 	ImGui::Checkbox("Maintain Pos", &m_isMaintainOriginPos);
@@ -1939,10 +1939,29 @@ void CLevel_Camera_Tool::Set_CameraInfo()
 	_vector vPos = pCamera->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
 
 	ImGui::Text("Pos: % .2f, % .2f, % 2.f", XMVectorGetX(vPos), XMVectorGetY(vPos), XMVectorGetZ(vPos));
+	ImGui::SameLine(0, 10.0f);
 	if (ImGui::Button("Move To Clicked Pos")) {
 		pCamera->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_tKeyFrameInfo.vPosition), 1.f));
 	}
 
+	ImGui::Text("Input Position: %.2f, %.2f, %.2f", m_vCameraPos.x, m_vCameraPos.y, m_vCameraPos.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InputPosX", &m_vCameraPos.x, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InputPosY", &m_vCameraPos.y, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InputPosZ", &m_vCameraPos.z, 0.1f);
+
+	ImGui::SameLine(0, 10.0f);
+	if (ImGui::Button("Move To Input Pos")) {
+		pCamera->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_vCameraPos), 1.f));
+	}
+	
 
 	ImGui::NewLine();
 

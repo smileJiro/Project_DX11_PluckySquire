@@ -4,6 +4,8 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"
 #include "Trigger_Manager.h"
+#include "SampleBook.h"
+#include "Effect_Manager.h"
 
 CCamera_2D::CCamera_2D(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera{ pDevice, pContext }
@@ -83,6 +85,12 @@ void CCamera_2D::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA*
 		return;
 
 	m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
+}
+
+void CCamera_2D::Add_CustomArm(ARM_DATA _tArmData)
+{
+	m_CustomArmData = _tArmData;
+	m_pCurArm->Set_StartInfo(m_pCurArm->Get_ArmVector(), m_pCurArm->Get_Length());
 }
 
 _bool CCamera_2D::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
@@ -233,8 +241,8 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	case MOVE_TO_DESIREPOS:
 		Move_To_DesirePos(_fTimeDelta);
 		break;
-	case MOVE_TO_SHOP:
-		Move_To_Shop(_fTimeDelta);
+	case MOVE_TO_CUSTOMARM:
+		Move_To_CustomArm(_fTimeDelta);
 		break;
 	case RETURN_TO_DEFUALT:
 		Return_To_Default(_fTimeDelta);
@@ -262,7 +270,7 @@ void CCamera_2D::Action_SetUp_ByMode()
 			break;
 		case MOVE_TO_DESIREPOS:
 			break;
-		case MOVE_TO_SHOP:
+		case MOVE_TO_CUSTOMARM:
 			break;
 		case RETURN_TO_DEFUALT:
 			break;
@@ -344,9 +352,19 @@ void CCamera_2D::Move_To_DesirePos(_float _fTimeDelta)
 
 }
 
-void CCamera_2D::Move_To_Shop(_float _fTimeDelta)
+void CCamera_2D::Move_To_CustomArm(_float _fTimeDelta)
 {
+	if (true == m_pCurArm->Move_To_CustomArm(&m_CustomArmData, _fTimeDelta)) {
+		m_eCameraMode = DEFAULT;
+	}
+
+	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
+
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
+
+	Look_Target(_fTimeDelta);
 }
+
 
 void CCamera_2D::Return_To_Default(_float _fTimeDelta)
 {
@@ -678,10 +696,31 @@ void CCamera_2D::Key_Input(_float _fTimeDelta)
 		
 		Change_Target(pBook);
 	}
-	if (KEY_DOWN(KEY::F)) {
-		CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
+	//if (KEY_DOWN(KEY::F)) {
+	//	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
 
-		Change_Target(pPlayer);
+	//	Change_Target(pPlayer);
+	//}
+
+	//m_vAtOffset = { 0.f, 0.f, 0.f };
+	if (KEY_DOWN(KEY::F)) {
+		
+
+		ARM_DATA tData = {};
+		tData.fMoveTimeAxisRight = { 5.f, 0.f };
+		tData.fRotationPerSecAxisRight = { XMConvertToRadians(-10.f), XMConvertToRadians(-1.f) };
+		tData.iRotationRatioType = EASE_IN_OUT;
+		tData.fLength = 20.f;
+		tData.fLengthTime = { 5.f, 0.f };
+		tData.iLengthRatioType = EASE_OUT;
+
+		Add_CustomArm(tData);
+		m_eCameraMode = MOVE_TO_CUSTOMARM;
+
+		static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
+		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
+		Start_Shake_ByCount(0.2f, 0.1f, 10, SHAKE_XY);
+		Start_Changing_AtOffset(3.f, XMVectorSet(-0.7f, 2.f, 0.f, 0.f), EASE_IN_OUT);
 	}
 }
 #endif

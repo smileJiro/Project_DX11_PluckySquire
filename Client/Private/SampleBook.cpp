@@ -182,7 +182,7 @@ void CSampleBook::Update(_float _fTimeDelta)
 
 		/*
 		* 임시, 민용추가
-		* 현재 Anim (책 넘기는 애니메이션 제외!) 이 끝나면 IDLE Animation으로 가게했음
+		* 현재 Anim (책 넘기는 애니메이션 제외!)이 끝 나면 IDLE Animation으로 가게했음
 		*/
 		if (ANIM_ACTION_NONE != m_eAnimAction)
 		{

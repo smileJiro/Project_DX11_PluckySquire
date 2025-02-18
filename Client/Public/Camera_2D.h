@@ -16,7 +16,7 @@ public:
 		DEFAULT, 
 		MOVE_TO_DESIREPOS, 
 		MOVE_TO_NEXTARM, 
-		MOVE_TO_SHOP, 
+		MOVE_TO_CUSTOMARM, 
 		RETURN_TO_DEFUALT, 
 		FLIPPING_UP,
 		FLIPPING_PAUSE,
@@ -73,11 +73,12 @@ public:
 	_uint						Get_CameraMode() { return m_eCameraMode; }
 	virtual INITIAL_DATA		Get_InitialData() override;
 
-	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_2D_MODE)_iCameraMode; }
+	void						Set_CameraMode(_uint _iCameraMode) { m_eCameraMode = (CAMERA_2D_MODE)_iCameraMode; }
 
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
 	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
+	void						Add_CustomArm(ARM_DATA _tArmData);
 
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 
@@ -122,6 +123,9 @@ private:
 
 	_bool						m_isChangeTarget = { false };
 
+	// CustomArm
+	ARM_DATA					m_CustomArmData = {};
+
 private:
 	void						Action_Mode(_float _fTimeDelta);
 	void						Action_SetUp_ByMode();
@@ -129,7 +133,7 @@ private:
 	void						Defualt_Move(_float _fTimeDelta);
 	void						Move_To_NextArm(_float _fTimeDelta);
 	void						Move_To_DesirePos(_float _fTimeDelta);
-	void						Move_To_Shop(_float _fTimeDelta);
+	void						Move_To_CustomArm(_float _fTimeDelta);
 	void						Return_To_Default(_float _fTimeDelta);
 	void						Flipping_Up(_float _fTimeDelta);
 	void						Flipping_Pause(_float _fTimeDelta);

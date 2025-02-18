@@ -89,15 +89,15 @@ HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
 
     if (nullptr != matLocal)
     {
-        _float2 fSibalOffset;
-        fSibalOffset.x = (*matLocal).r[3].m128_f32[0] * RATIO_BOOK2D_X;
-        fSibalOffset.y = (*matLocal).r[3].m128_f32[1] * RATIO_BOOK2D_Y;
+        _float2 fOffset;
+        fOffset.x = (*matLocal).r[3].m128_f32[0] * RATIO_BOOK2D_X;
+        fOffset.y = (*matLocal).r[3].m128_f32[1] * RATIO_BOOK2D_Y;
 
         //_matrix matPos = XMMatrixTranslation(Desc->fCollider_Offset_Pos.x, Desc->fCollider_Offset_Pos.y, 1.f);
         //matPos *= *matLocal;
 
-        Desc->fCollider_Offset_Pos.x += fSibalOffset.x;
-        Desc->fCollider_Offset_Pos.y += fSibalOffset.y;
+        Desc->fCollider_Offset_Pos.x += fOffset.x;
+        Desc->fCollider_Offset_Pos.y += fOffset.y;
     }
 
     if (CCollider::AABB_2D == Desc->eColliderType)

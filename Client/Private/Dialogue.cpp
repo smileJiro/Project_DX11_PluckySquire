@@ -957,7 +957,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			if (-1 != Uimgr->Get_Dialogue(_strDialogue)[0].iTriggerID)
 			{
 				DialogData Data = Uimgr->Get_Dialogue(_strDialogue)[0];
-				CTrigger_Manager::GetInstance()->Resister_TriggerEvent(Data.wstrTriggerTag.c_str(),
+				CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_BookMagic"),
 					Data.iTriggerID);
 			}
 
