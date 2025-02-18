@@ -205,7 +205,6 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	m_ePlayerMode = PLAYER_MODE_NORMAL;
 
     Set_PlatformerMode(false);
-    m_pActorCom->Set_Mass(0.1f);
 
 
     return S_OK;
