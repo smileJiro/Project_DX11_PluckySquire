@@ -4,6 +4,7 @@
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "Player.h"
 
 CLightningBolt::CLightningBolt(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice, _pContext)
@@ -50,14 +51,12 @@ HRESULT CLightningBolt::Initialize(void* _pArg)
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CLightningBolt::Animation_End, this, placeholders::_1, placeholders::_2));
 
-    /* Actor Desc 채울 때 쓴 데이터 할당해제 */
-
-    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
-    {
-        Safe_Delete(pDesc->pActorDesc->ShapeDatas[i].pShapeDesc);
-    }
-
-    Safe_Delete(pDesc->pActorDesc);
+    /* Com_AnimEventGenerator */
+    CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+    tAnimEventDesc.pReceiver = this;
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_LightningBoltAnimEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 	return S_OK;
 }
@@ -124,8 +123,6 @@ HRESULT CLightningBolt::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNe
 
         CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
     }
-    else
-        CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 
     return S_OK;
 }
@@ -141,10 +138,20 @@ void CLightningBolt::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
         switch (pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
         {
+        case LIGHTNING_DISC:
+            m_p2DColliderComs[0]->Set_Active(false);
+            break;
+
         default:
             break;
         }
     }
+}
+
+void CLightningBolt::Lightning()
+{
+    //콜라이더 켜기
+    m_p2DColliderComs[0]->Set_Active(true);
 }
 
 void CLightningBolt::On_Hit(CGameObject* _pHitter, _float _fDamg)
@@ -156,15 +163,6 @@ void CLightningBolt::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Oth
 {
     if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
     {
-        if((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
-        {
-            Event_Hit(this, _Other.pActorUserData->pOwner, 1.f);
-            _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
-            XMVectorSetY(vRepulse, -1.f);
-            Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
-            Event_DeleteObject(this);
-        }
-
     }
 
     //if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
@@ -183,7 +181,12 @@ void CLightningBolt::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _p
 {
     if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
     {
-        Event_Hit(this, _pOtherObject, 1.f);
+        if (LIGHTNING_DISC == static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+        {
+            static_cast<CPlayer*>(_pOtherObject)->Set_State(CPlayer::ELECTRIC);
+            Event_Hit(this, _pOtherObject, 1.f);
+        }
+        
         m_isStop = true;
     }
 }
@@ -234,6 +237,8 @@ HRESULT CLightningBolt::Ready_Components()
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
 
+    m_p2DColliderComs[0]->Set_Active(false);
+
     return S_OK;
 }
 
@@ -246,7 +251,7 @@ HRESULT CLightningBolt::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-    BodyDesc.strModelPrototypeTag_2D = TEXT("barferbug_projectile");
+    BodyDesc.strModelPrototypeTag_2D = TEXT("LightningBolt");
     BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
     BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
 

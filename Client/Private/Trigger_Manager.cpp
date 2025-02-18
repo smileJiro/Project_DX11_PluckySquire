@@ -49,8 +49,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 {
 	m_EventExecuterTags.resize(EVENT_EXECUTER_ACTION_TYPE_LAST);
 
-	m_EventExecuterTags[C02P0708_LIGHTNING_BOLT_SPAWN] = L"C02P0708_Spawn_LightningBolt";
-	m_EventExecuterTags[C02P0708_MONSTER_SPAWN] = L"C02P0708_Monster_Spawn";
+	m_EventExecuterTags[C02P0910_LIGHTNING_BOLT_SPAWN] = L"C02P0910_Spawn_LightningBolt";
+	m_EventExecuterTags[C02P0910_MONSTER_SPAWN] = L"C02P0910_Monster_Spawn";
 
 	return S_OK;
 }
