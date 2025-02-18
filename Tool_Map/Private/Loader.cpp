@@ -506,7 +506,7 @@ HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _sz
             LOG_TYPE("Model Loading(" + entry.path().stem().string() + ".model)...", LOG_LOADING);
 
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
-                C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
+                C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix, true))))
                 return E_FAIL;
         }
     }

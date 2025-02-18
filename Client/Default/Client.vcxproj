@@ -227,6 +227,7 @@
     <ClInclude Include="..\Public\Interactable.h" />
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
     <ClInclude Include="..\Public\Level_Chapter_Test.h" />
+    <ClInclude Include="..\Public\LightningBolt.h" />
     <ClInclude Include="..\Public\Narration.h" />
     <ClInclude Include="..\Public\Narration_Anim.h" />
     <ClInclude Include="..\Public\Npc_Companion.h" />
@@ -430,6 +431,7 @@
     <ClCompile Include="..\Private\HitState.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_Test.cpp" />
+    <ClCompile Include="..\Private\LightningBolt.cpp" />
     <ClCompile Include="..\Private\Narration.cpp" />
     <ClCompile Include="..\Private\Narration_Anim.cpp" />
     <ClCompile Include="..\Private\Npc_Companion.cpp" />

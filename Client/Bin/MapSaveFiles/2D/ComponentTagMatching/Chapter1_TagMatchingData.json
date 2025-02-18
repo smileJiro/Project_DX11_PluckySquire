@@ -762,8 +762,8 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": -38.0,
-     "Y": -38.0
+     "X": 38.0,
+     "Y": 38.0
     },
     "Collider_Offset_Pos": {
      "X": 11.0,

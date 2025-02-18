@@ -6,6 +6,7 @@
 #include "RenderGroup_MRT.h"
 #include "WordPrinter.h"
 #include "Section_Manager.h"
+#include "2DMapWordObject.h"
 
 CWordGame_Generator::CWordGame_Generator(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -27,41 +28,55 @@ HRESULT CWordGame_Generator::Initialize()
 	return S_OK;
 }
 
-HRESULT CWordGame_Generator::Load_WordTexture(const _wstring& _strJsonPath)
+HRESULT CWordGame_Generator::Load_Word(const _wstring& _strJsonPath)
 {
-	std::string filePathDialog = WstringToString(_strJsonPath);
+	Clear_Word();
+
+	_wstring strChapterPath = MINIGAME_WORD_PATH;
+	strChapterPath += _strJsonPath + L".json";
+	if (!filesystem::exists(strChapterPath))
+	{ 
+		return S_OK;
+	}
+
+
+	std::string filePathDialog = WstringToString(strChapterPath);
 	std::ifstream inputFile(filePathDialog);
 	json jsonDialogs;
-	inputFile >> jsonDialogs;
 
 	if (!inputFile.is_open()) 
 		return E_FAIL;
+
+	inputFile >> jsonDialogs;
 
 	if (jsonDialogs.is_array())
 	{
 		_uint iWordCount = (_uint)jsonDialogs.size();
 		m_Words.resize(iWordCount);
+		_uint iLoop = 0;
 		for (auto& ChildJson : jsonDialogs)
 		{
 			_string strWord = ChildJson["Word_Name"];
+			_wstring wstrWord = StringToWstring(strWord);
 			_uint   iIndex=  ChildJson["Word_Index"];
 
-			_vector vScale = m_pGameInstance->Measuring(L"Font28", StringToWstring(strWord));
+			_vector vScale = m_pGameInstance->Measuring(L"Font28", wstrWord);
 			_float2 fTargetSize = { XMVectorGetX(vScale), XMVectorGetY(vScale) };
 
 
-			ID3D11ShaderResourceView* pSRV = m_pWordPrinter->Print_Word(strWord, fTargetSize);
+			ID3D11ShaderResourceView* pSRV = m_pWordPrinter->Print_Word(wstrWord, fTargetSize);
 
 
-			if (0 >= iIndex || iWordCount <= iIndex)
+			if (0 > iIndex || iWordCount <= iIndex)
 				return E_FAIL;
 
 			CWord::WORD_DESC Desc = {};
 
 			Desc.fSize = fTargetSize;
 			Desc.pSRV = pSRV;
+			Desc.eType = (CWord::WORD_TYPE)iLoop;
 
-			CBase* pBase = m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, SECTION_MGR->Get_SectionLeveID(),
+			CBase* pBase = m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC,
 				L"Prototype_GameObject_Word",
 				&Desc
 				);
@@ -73,14 +88,14 @@ HRESULT CWordGame_Generator::Load_WordTexture(const _wstring& _strJsonPath)
 			}
 			else 
 				m_Words[iIndex] = static_cast<CWord*>(pBase);
-
+			iLoop++;
 		}
 	}
 
 	return S_OK;
 }
 
-HRESULT CWordGame_Generator::Clear_WordTexture()
+HRESULT CWordGame_Generator::Clear_Word()
 {
 	for (auto pWord : m_Words)
 		Safe_Release(pWord);
@@ -100,11 +115,15 @@ CWord* CWordGame_Generator::Find_Word(_uint _iWordIndex)
 
 HRESULT CWordGame_Generator::WordGame_Generate(CSection_2D* _pSection, const _wstring& _strJsonPath)
 {
-
-	std::string filePathDialog = WstringToString(_strJsonPath);
+	_wstring strChapterPath = MINIGAME_WORD_PATH;
+	strChapterPath += _strJsonPath + L".json";
+	std::string filePathDialog = WstringToString(strChapterPath);
 	std::ifstream inputFile(filePathDialog);
 	json jsonDialogs;
 	inputFile >> jsonDialogs;
+
+	LEVEL_ID eCurLevelID = (LEVEL_ID)SECTION_MGR->Get_SectionLeveID();
+
 	if (!inputFile.is_open()) {
 		return E_FAIL;
 	}
@@ -112,25 +131,6 @@ HRESULT CWordGame_Generator::WordGame_Generate(CSection_2D* _pSection, const _ws
 	{
 		for (auto& ChildJson : jsonDialogs)
 		{
-			//문장 생성.
-			if(
-				ChildJson.contains("Container_List") &&
-				ChildJson["Container_List"].is_array())			
-			{
-				for (auto& Container: ChildJson["Container_List"])
-				{
-					CWord_Controller* pContainer = CWord_Controller::Create(m_pDevice, m_pContext, Container);
-					if (nullptr != pContainer)
-						return E_FAIL;
-					else
-					{
-						_pSection->Add_GameObject_ToSectionLayer(pContainer, SECTION_2D_PLAYMAP_OBJECT);
-						Event_CreateObject(LEVEL_CHAPTER_2,
-							L"Layer_2DWordObject",
-							pContainer);
-					}
-				}
-			}
 			// 오브젝트 생성
 			if (
 				ChildJson.contains("Word_Object_List") &&
@@ -138,31 +138,39 @@ HRESULT CWordGame_Generator::WordGame_Generate(CSection_2D* _pSection, const _ws
 			{
 				for (auto& WordObject : ChildJson["Word_Object_List"])
 				{
-					_string strText = WordObject["Word_Object_Tag"];
-					_float2 fPos = { WordObject["Position"][0].get<_float>(),  WordObject["Position"][1].get<_float>() };
-					_float2 fScale = { WordObject["Scale"][0].get<_float>(),  WordObject["Scale"][1].get<_float>() };
+					C2DMapWordObject::WORD_OBJECT_DESC Desc = {};
+					Desc.WordObjectJson = WordObject;
 
+					CGameObject* pGameObject = nullptr;
 
-					if (
-						WordObject.contains("Image_Tag_List") &&
-						WordObject["Image_Tag_List"].is_array())
+					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, 
+						TEXT("Prototype_GameObject_2DMap_WordObject"),
+						eCurLevelID, L"Layer_2DMapWordObject", &pGameObject, &Desc)))
+						return E_FAIL;
+					if (nullptr != pGameObject)
 					{
-						for (auto& Image : ChildJson["Image_Tag_List"])
-						{
-							_string strPath = Image["ImagePath"];
-						}
+						_pSection->Add_GameObject_ToSectionLayer(pGameObject, SECTION_2D_PLAYMAP_OBJECT);
 					}
-					if (
-						WordObject.contains("Word_Action_List") &&
-						WordObject["Word_Action_List"].is_array())
+
+				}
+			}
+
+			//문장 생성.
+			if(
+				ChildJson.contains("Controller_List") &&
+				ChildJson["Controller_List"].is_array())			
+			{
+				for (auto& Container: ChildJson["Controller_List"])
+				{
+					CWord_Controller* pContainer = CWord_Controller::Create(m_pDevice, m_pContext, _pSection, Container);
+					if (nullptr != pContainer)
+						return E_FAIL;
+					else
 					{
-						for (auto& WordAction : ChildJson["Word_Action_List"])
-						{
-							_uint iContainerIndex = WordAction["Container_Index"];
-							CWord::WORD_TYPE eType = WordAction["Word_Type"]; 
-							_string strActionType = WordAction["Action_Type"];
-							_bool isParam = WordAction["Param"];
-						}
+						_pSection->Add_GameObject_ToSectionLayer(pContainer, SECTION_2D_PLAYMAP_OBJECT);
+						Event_CreateObject(eCurLevelID,
+							L"Layer_Word",
+							pContainer);
 					}
 				}
 			}

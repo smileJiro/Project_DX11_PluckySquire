@@ -1030,6 +1030,8 @@
     <ClInclude Include="..\Public\SideScroll_HitState.h">
       <Filter>03.Components\FSM\State\Hit</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\LightningBolt.h">
+      <Filter>02.GameObjects\Monster</Filter>
     <ClInclude Include="..\Public\PlayerState_Evict.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
@@ -1608,6 +1610,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\SideScroll_HitState.cpp">
       <Filter>03.Components\FSM\State\Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\LightningBolt.cpp">
+      <Filter>02.GameObjects\Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Evict.cpp">
       <Filter>03.Components\PlayerState</Filter>

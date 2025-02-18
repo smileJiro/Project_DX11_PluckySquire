@@ -920,6 +920,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//
 	//Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(8.0f, 0.35f, -19.0f);
 	//Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	// Goblin_Desc.eStartCoord = COORDINATE_3D;
 	//
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &Monster_Desc)))
 	//	return E_FAIL;

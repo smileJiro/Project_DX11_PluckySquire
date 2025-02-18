@@ -74,9 +74,10 @@ void CNPC_Companion::Update(_float _fTimeDelta)
 	for (auto& Child : m_vecCompanionNpc)
 	{
 		if (true == Child->Is_Render())
+		{
 			Child->Child_Update(_fTimeDelta);
+		}	
 	}
-
 	__super::Update(_fTimeDelta);
 }
 
@@ -173,6 +174,7 @@ HRESULT CNPC_Companion::Ready_Companion(const _wstring& _strLayerName, void* _pA
 	CompanionDesc.iMainIndex = 0;
 	CompanionDesc.iSubIndex = 0;
 	CompanionDesc.iCurLevelID = m_iCurLevelID;
+	wsprintf(CompanionDesc.strDialogueIndex, TEXT("Welcom_Jot_With_Violet_01"));
 
 	// 이걸 써야하나???
 // 	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Companion"), 0);

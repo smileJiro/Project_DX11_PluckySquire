@@ -868,9 +868,6 @@ void CDialog::NextDialogue(_float2 _RTSize)
 
 			// 불필요한 렌더 제거를 위해 렌더 그룹에서 제거한다.
 			CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
-			
-			// 트리거로 햇을수도 있으므로 트리거에게 종료했다고 보내준다.
-			CTrigger_Manager::GetInstance()->On_End(Uimgr->Get_DialogId());
 			//// Event가 있을 경우;
 			if (-1 != Uimgr->Get_Dialogue(_strDialogue)[0].iTriggerID)
 			{
@@ -878,6 +875,9 @@ void CDialog::NextDialogue(_float2 _RTSize)
 				CTrigger_Manager::GetInstance()->Resister_TriggerEvent(Data.wstrTriggerTag.c_str(),
 					Data.iTriggerID);
 			}
+			// 트리거로 햇을수도 있으므로 트리거에게 종료했다고 보내준다.
+			CTrigger_Manager::GetInstance()->On_End(Uimgr->Get_DialogId());
+
 
 			// 다음 다이얼로그를 위해 false를 시킨다.
 			Uimgr->Set_DisplayDialogue(false);
@@ -1246,6 +1246,21 @@ void CDialog::isOpenPanel(_tchar* _DialogId)
 	}
 
 
+}
+
+// 프로토 타입 이후 수정 예정, 하드코딩
+void CDialog::isCloseDialogueForTalket(_tchar* _DialogId)
+{
+	_tchar NpcName[MAX_PATH] = {};
+	_tchar strSrcName[MAX_PATH] = {};
+	wsprintf(NpcName, Uimgr->Get_Dialogue(_DialogId)[0].lines[0].Talker.c_str());
+
+	wsprintf(strSrcName, TEXT("바이올렛"));
+
+	if (0 == wcscmp(NpcName, strSrcName))
+	{
+
+	}
 }
 
 

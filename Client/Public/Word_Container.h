@@ -11,7 +11,7 @@ class CWord_Container final : public CPartObject, public IInteractable
 public:
 	typedef struct tagWord_ContainerDesc : public CPartObject::PARTOBJECT_DESC
 	{
-
+		_uint iContainerIndex;
 	}WORD_CONTAINER_DESC;
 private:
 	CWord_Container(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -37,15 +37,14 @@ public:
 	CWord*	Get_Word() { return m_pMyWord; };
 	void	Set_Word(CWord* _pWord);
 	void	Pop_Word();
-
-
-
-
-protected:
+	
+	void	Set_ControllerIndex(_uint _iIndex) { m_iControllerIndex = _iIndex; }
+	void	Set_ContainerIndex(_uint _iIndex) { m_iContainerIndex = _iIndex; }
 
 private:
+	_uint		m_iControllerIndex = {};
+	_uint		m_iContainerIndex = {};
 	CWord*		m_pMyWord = nullptr;
-	
 
 
 public:

@@ -18,8 +18,9 @@ class C2DMapWordObject final : public C2DMapObject
 	};
 
 public :
-	typedef struct tagWordAction : C2DMapObject::MAPOBJ_DESC
+	typedef struct tagWordAction
 	{
+		_uint				iControllerIndex;
 		_uint				iContainerIndex;
 		_uint				iWordType;
 		WORD_ACTION_TYPE	eAction;
@@ -46,18 +47,19 @@ public:
 	virtual HRESULT					Render() override;
 	virtual HRESULT					Render_Shadow() override;
 
-	virtual HRESULT					Action_Execute(_uint _iContainerIndex, _uint iWordIndex);
-	const WORD_ACTION*				Find_Action(_uint _iContainerIndex, _uint iWordIndex);
-
+	virtual HRESULT					Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
+	const WORD_ACTION*				Find_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
+	virtual void Active_OnEnable();
+	virtual void Active_OnDisable();
 private :
 	_wstring				m_strWordObjectTag;
 	_uint					m_iModelIndex;
-	vector <C2DModel*>		m_Models;
+	vector <_wstring>		m_ModelNames;
 	vector <WORD_ACTION>	m_Actions;
 
 	
 
-
+	_bool					m_IsWordActive = true;
 
 
 public:
