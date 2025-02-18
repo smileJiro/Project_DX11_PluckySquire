@@ -86,6 +86,7 @@
 #include "MapObjectFactory.h"
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
+#include "LunchBox.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -844,6 +845,7 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Domino1"),
         C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Domino_1/Domino_1.model", matPretransform))))
         return E_FAIL;
+
     //if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_2, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
     //    return E_FAIL;
     if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_2, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform, true)))
@@ -854,7 +856,6 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         return E_FAIL;
 
     matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
-
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CHAPTER_2,
         TEXT("../Bin/Resources/Models/3DAnim/"), matPretransform)))
         return E_FAIL;
@@ -1001,7 +1002,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"),
         CDomino::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_LunchBox"),
+        CLunchBox::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     /* Etc */
 
     /* For. Prototype_GameObject_FallingRock */

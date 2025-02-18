@@ -24,6 +24,7 @@
 #include "PlayerState_ExitPortal.h"
 #include "PlayerState_TurnBook.h"
 #include "PlayerState_Evict.h"
+#include "PlayerState_LunchBox.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "Section_Manager.h"
@@ -167,21 +168,22 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_SPHERE_DESC SphereDesc = {};
     SphereDesc.fRadius = 2.5f;
     ShapeData.pShapeDesc = &SphereDesc;
+    ShapeData.iShapeUse =(_uint) SHAPE_USE::SHAPE_TRIGER;
     ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
     ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::INTERACTION_OBEJCT;
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     //상호작용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-    ShapeData.iShapeUse = (_uint)PLAYER_SHAPE_USE::INTERACTION;
     ShapeData.isTrigger = true;
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_f3DCenterYOffset, m_f3DInteractLookOffset));
     SphereDesc.fRadius = m_f3DInteractRadius;
     ShapeData.pShapeDesc = &SphereDesc;
+    ShapeData.iShapeUse = (_uint)PLAYER_SHAPE_USE::INTERACTION;
     ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
-    ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::BLOCKER;
+    ShapeData.FilterData.OtherGroupMask =OBJECT_GROUP::INTERACTION_OBEJCT;
     ActorDesc.ShapeDatas.push_back(ShapeData);
-
+    
 
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
     ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT| OBJECT_GROUP::BLOCKER;
@@ -684,8 +686,7 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
     if (PLAYER_SHAPE_USE::INTERACTION ==(PLAYER_SHAPE_USE)_My.pShapeUserData->iShapeUse)
     {
         OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_ObjectGroupID();
-        if (
-            OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup)
+        if (OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup)
         {
             IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
             if (Check_ReplaceInteractObject(pInteractable))
@@ -1532,6 +1533,9 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::EVICT:
         m_pStateMachine->Transition_To(new CPlayerState_Evict(this));
         break;
+    case Client::CPlayer::LUNCHBOX:
+        m_pStateMachine->Transition_To(new CPlayerState_LunchBox(this));
+        break;
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -1856,9 +1860,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         if (COORDINATE_3D == eCoord)
         {
             //근처 포탈
-            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //도미노0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
-            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
         }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 

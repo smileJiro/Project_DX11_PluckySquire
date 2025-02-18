@@ -1036,6 +1036,10 @@
     <ClInclude Include="..\Public\PlayerState_Evict.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\LunchBox.h" />
+    <ClInclude Include="..\Public\PlayerState_LunchBox.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1616,6 +1620,10 @@
       <Filter>02.GameObjects\Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Evict.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\LunchBox.cpp" />
+    <ClCompile Include="..\Private\PlayerState_LunchBox.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
