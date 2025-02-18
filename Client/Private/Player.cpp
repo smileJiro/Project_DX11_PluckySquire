@@ -23,6 +23,7 @@
 #include "PlayerState_IntoPortal.h"
 #include "PlayerState_ExitPortal.h"
 #include "PlayerState_TurnBook.h"
+#include "PlayerState_Evict.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "Section_Manager.h"
@@ -143,6 +144,21 @@ HRESULT CPlayer::Initialize(void* _pArg)
     BoxShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::BLOCKER; // Actor가 충돌을 감지할 그룹
     ActorDesc.ShapeDatas.push_back(BoxShapeData);
 
+    //마찰용 
+    //SHAPE_SPHERE_DESC SphereFootDesc = {};
+    //SphereFootDesc.fRadius = m_fFootLength + 0.1f;
+    //SHAPE_DATA SphereShapeData;
+    //SphereShapeData.eShapeType = SHAPE_TYPE::SPHERE;
+    //SphereShapeData.pShapeDesc = &SphereFootDesc;
+    //XMStoreFloat4x4(&SphereShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, SphereFootDesc.fRadius, 0.0f));
+    //SphereShapeData.iShapeUse =(_uint)SHAPE_USE::SHAPE_FOOT;
+    //SphereShapeData.isTrigger = false;
+    //SphereShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT;
+    //SphereShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
+    //SphereShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::BLOCKER; // Actor가 충돌을 감지할 그룹
+    //ActorDesc.ShapeDatas.push_back(SphereShapeData);
+
+
     //주변 지형 감지용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
     ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
@@ -189,6 +205,8 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	m_ePlayerMode = PLAYER_MODE_NORMAL;
 
     Set_PlatformerMode(false);
+
+
     return S_OK;
 }
 
@@ -298,6 +316,8 @@ HRESULT CPlayer::Ready_PartObjects()
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_TURN_LEFT, 0.35f);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_TURN_RIGHT, 0.35f);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_TURN_MID, 0.178f);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_IDLE_NERVOUS_01_GT, 0.f);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_BOOKOUT_01_GT, 0.f);
     return S_OK;
 }
 
@@ -1421,6 +1441,21 @@ const _float4x4* CPlayer::Get_BodyWorldMatrix_Ptr(COORDINATE eCoord) const
     return m_pBody->Get_ControllerTransform()->Get_Transform(eCoord)->Get_WorldMatrix_Ptr();
 }
 
+_vector CPlayer::Get_RootBonePosition()
+{
+    _float4x4 matRootBone =*static_cast<C3DModel*>( m_pBody->Get_Model(COORDINATE_3D))->Get_BoneMatrix("j_pelvis");
+    _vector vPos = { matRootBone._41, matRootBone._42, matRootBone._43 };
+    _vector vDirection = XMVector3Normalize(vPos);
+	_float fDistance = XMVectorGetX( XMVector3Length(vPos ));
+    _vector vLook = Get_LookDirection(COORDINATE_3D);
+	vDirection.m128_f32[0] = vLook.m128_f32[0];
+	vDirection.m128_f32[2] = vLook.m128_f32[2];
+	vPos = vDirection * fDistance;
+    vPos += Get_FinalPosition();
+    return vPos;
+
+}
+
 
 
 
@@ -1494,7 +1529,9 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::TURN_BOOK:
         m_pStateMachine->Transition_To(new CPlayerState_TurnBook(this));
 		break;
-
+    case Client::CPlayer::EVICT:
+        m_pStateMachine->Transition_To(new CPlayerState_Evict(this));
+        break;
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -1820,8 +1857,8 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         {
             //근처 포탈
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
-            //도미노
-            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 15.f, 6.5f, 21.5f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //도미노0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
+            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
         }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 
@@ -1834,7 +1871,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
         //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
     }
-
+    if (KEY_DOWN(KEY::J))
+    {
+        Set_State(CPlayer::EVICT);
+    }
 }
 
 

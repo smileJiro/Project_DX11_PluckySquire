@@ -31,6 +31,7 @@
 #include "Soldier_Bomb.h"
 #include "ButterGrump.h"
 #include "Goblin_SideScroller.h"
+#include "LightningBolt.h"
 
 
 #include "RayShape.h"
@@ -129,7 +130,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Effects (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-		//액터 들어가는넘.,
+
 	if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
@@ -661,8 +662,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	// Test(PlayerItem: Glove, Stamp)
-	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(10.f, 10.f, -10.f));
-	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(10.f, 10.f, -10.f));
+	//CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 	return S_OK;
 }
@@ -1166,6 +1167,19 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0910"), pObject);
+
+
+	//CLightningBolt::LIGHTNINGBOLT_DESC LightningBolt_Desc;
+	//LightningBolt_Desc.iCurLevelID = m_eLevelID;
+	//LightningBolt_Desc.tTransform2DDesc.vInitialPosition = _float3(500.0f, 10.f, 0.f);
+	//LightningBolt_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_LightningBolt"), m_eLevelID, _strLayerTag, &pObject, &LightningBolt_Desc)))
+	//	return E_FAIL;
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0910"), pObject);
+
+
 
 	Zippy_Desc.tTransform2DDesc.vInitialPosition = _float3(-450.0f, -30.f, 0.f);
 

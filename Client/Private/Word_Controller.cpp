@@ -42,7 +42,7 @@ HRESULT CWord_Controller::Import(CSection_2D* _pSection, json _ControllerJson)
 
 	CContainerObject::CONTAINEROBJ_DESC Desc = {};
 	Desc.Build_2D_Transform(fPos, fScale);
-
+	Desc.eStartCoord = COORDINATE_2D;
 
 #pragma region 정규식 처리된 단어 확인.
 
@@ -96,6 +96,8 @@ HRESULT CWord_Controller::Import(CSection_2D* _pSection, json _ControllerJson)
 
 	if (FAILED(Update_Text()))
 		return E_FAIL;
+	if (FAILED(__super::Initialize(&Desc)))
+		return E_FAIL;
 
 	return S_OK;
 
@@ -118,7 +120,18 @@ void CWord_Controller::Late_Update(_float _fTimeDelta)
 
 HRESULT CWord_Controller::Render()
 {
-	m_pGameInstance->Render_Font(L"Font28", m_strRenderText.c_str(), { 0.f,0.f },
+	_vector vPosition = Get_FinalPosition();
+	_float2 fPos = { XMVectorGetX(vPosition),XMVectorGetY(vPosition) };
+
+	_float2 fSize = SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName);
+	_float2 fScale = SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName);
+
+	fPos = Convert_Pos_ToWindow(fPos, fSize);
+	fPos.x -= m_fRenderSize.x * 0.5f;
+	fPos.y -= m_fRenderSize.y * 0.5f;
+
+
+	m_pGameInstance->Render_Font(L"Font28", m_strRenderText.c_str(), fPos,
 		XMVectorSet(0.f, 0.f, 0.f, 1.f));
 	return __super::Render();
 }
@@ -156,14 +169,22 @@ HRESULT CWord_Controller::Update_Text()
 		}
 		iLastPos = (_uint)match.position() + (_uint)match.length();
 	}
+	strNewTex += m_strOriginText.substr(iLastPos);
+
+	m_strRenderText = strNewTex;
 	_vector vScale = m_pGameInstance->Measuring(L"Font28", m_strRenderText);
 	m_fRenderSize = { XMVectorGetX(vScale), XMVectorGetY(vScale) };
-
 	return S_OK;
+}
+
+HRESULT CWord_Controller::Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID)
+{
+	return m_pGameInstance->Add_RenderObject_New(_iGroupId, _iPriorityID, this); // Collider2D Render 및 debug관련 렌더를 container에서 수행.
 }
 
 void CWord_Controller::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
 {
+	__super::Set_Include_Section_Name(_strIncludeSectionName);
 	for (auto pController : m_PartObjects)
 	{
 		if(nullptr != pController)

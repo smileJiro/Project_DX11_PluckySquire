@@ -32,8 +32,8 @@ public:
 	virtual void			Interact(CPlayer* _pUser) override;
 	virtual _bool			Is_Interactable(CPlayer* _pUser) override;
 	virtual _float			Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) override;
-
-public:
+	virtual void			On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
+	
 	CWord*	Get_Word() { return m_pMyWord; };
 	void	Set_Word(CWord* _pWord);
 	void	Pop_Word();

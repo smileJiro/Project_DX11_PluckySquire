@@ -21,7 +21,8 @@ public:
 
 	virtual void Reset(_bool _bReverse = false)override;
 
-	float Get_AnimDuration() { return m_fDuration; }
+	_float Get_AnimDuration() { return m_fDuration; }
+	_float Get_AnimTransitionTime() { return m_fAnimTransitionTime; }
 	void Get_Frame(_float fTrackPos, map<_uint, KEYFRAME>* pOutKeyFrames) const;
 	void Get_CurrentFrame(map<_uint, KEYFRAME>* pOutKeyFrames) const;
 	virtual _float Get_Progress() override;

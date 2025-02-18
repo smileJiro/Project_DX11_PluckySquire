@@ -30,8 +30,10 @@ HRESULT CWord::Initialize(void* _pArg)
 	m_pWordTexture = pDesc->pSRV;
 	m_fSize = pDesc->fSize;
 	m_eWordType = pDesc->eType;
+	m_strText = pDesc->strText;
 
-
+	pDesc->Build_2D_Transform({ 0.f,0.f });
+	pDesc->eStartCoord = COORDINATE_2D;
 	CActor::ACTOR_DESC ActorDesc;
 	ActorDesc.pOwner = this;
 	ActorDesc.FreezeRotation_XYZ[0] = false;
