@@ -142,6 +142,9 @@
     <Filter Include="02. GameObjects\SampleBook">
       <UniqueIdentifier>{7649f605-da1e-4467-9ebc-b13f1a97bc97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObjects\MagicHand">
+      <UniqueIdentifier>{ee5d60bf-caf9-4d79-83a3-e78aec230e2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera_Tool.h">

@@ -916,11 +916,11 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			if (-1 != Uimgr->Get_Dialogue(_strDialogue)[0].iTriggerID)
 			{
 				DialogData Data = Uimgr->Get_Dialogue(_strDialogue)[0];
-				CTrigger_Manager::GetInstance()->Resister_TriggerEvent(Data.wstrTriggerTag.c_str(),
+				CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_BookMagic"),
 					Data.iTriggerID);
 			}
 			// 트리거로 햇을수도 있으므로 트리거에게 종료했다고 보내준다.
-			CTrigger_Manager::GetInstance()->On_End(Uimgr->Get_DialogId());
+			//CTrigger_Manager::GetInstance()->On_End(Uimgr->Get_DialogId());
 
 
 			// 다음 다이얼로그를 위해 false를 시킨다.

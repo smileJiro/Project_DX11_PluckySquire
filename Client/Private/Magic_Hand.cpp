@@ -48,7 +48,7 @@ void CMagic_Hand::Update(_float _fTimeDelta)
         return;
 
 #ifdef _DEBUG
-    ImGui::Begin("Hand");
+ /*   ImGui::Begin("Hand");
 
     if (ImGui::Button("Replay All"))
     {
@@ -56,7 +56,7 @@ void CMagic_Hand::Update(_float _fTimeDelta)
         m_pEffectSystem->Active_All(true);
     }
 
-    ImGui::End();
+    ImGui::End();*/
 #endif
     __super::Update(_fTimeDelta);
 }
