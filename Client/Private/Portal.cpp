@@ -66,9 +66,12 @@ void CPortal::Late_Update(_float _fTimeDelta)
 
 HRESULT CPortal::Render()
 {
-    if(m_pActorCom)
+#ifdef _DEBUG
+    if (m_pActorCom)
         m_pActorCom->Render();
-	return __super::Render();
+#endif // _DEBUG
+
+    return __super::Render();
 }
 
 HRESULT CPortal::Init_Actor()

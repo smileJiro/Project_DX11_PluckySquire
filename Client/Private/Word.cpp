@@ -25,11 +25,18 @@ HRESULT CWord::Initialize(void* _pArg)
 {
 	WORD_DESC* pDesc = static_cast<WORD_DESC*>(_pArg);
 
+
+
+
+
+
+
 	m_pWordTexture = pDesc->pSRV;
 	m_fSize = pDesc->fSize;
 	m_eWordType = pDesc->eType;
 	m_strText = pDesc->strText;
-
+	m_fSize.x *= 0.9f;
+	m_fSize.y *= 0.9f;
 	pDesc->Build_2D_Transform({ 0.f,0.f }, m_fSize);
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable = true;
@@ -56,29 +63,44 @@ HRESULT CWord::Initialize(void* _pArg)
 	pDesc->pActorDesc = &ActorDesc;
 	pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
 
+	m_eCarriableId = WORD;
 
-
+	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 
 	if (FAILED(CActorObject::Initialize(pDesc)))
 		return E_FAIL;
-	
-	
+
+	m_p2DColliderComs.resize(1);
+	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+	CircleDesc.pOwner = this;
+	CircleDesc.fRadius = 1.f;
+	CircleDesc.vScale = { 1.0f, 1.0f };
+	CircleDesc.vOffsetPosition = { 0.f, 0.f };
+	CircleDesc.isBlock = false;
+	CircleDesc.isTrigger = true;
+	CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+		TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
+		return E_FAIL;
+	m_pBody2DColliderCom = m_p2DColliderComs[0];
+	Safe_AddRef(m_pBody2DColliderCom);
 
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	
+
+
 	return S_OK;
 }
 
 
 HRESULT CWord::Render()
 {
-	COORDINATE eCurCoord = Get_CurCoord();
-
-
-	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[eCurCoord], "g_WorldMatrix")))
+	COORDINATE eCurCoord = Get_CurCoord();/*
+	_matrix = XMMatrixScaling(m_fSize.x, m_fSize.y, 1.f);*/
+	
+	if (FAILED(m_pShaderComs[eCurCoord]->Bind_Matrix("g_WorldMatrix", Get_FinalWorldMatrix_Ptr(eCurCoord))))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderComs[eCurCoord]->Bind_SRV("g_DiffuseTexture", m_pWordTexture)))
@@ -108,7 +130,10 @@ HRESULT CWord::Render()
 
 	m_pVIBufferCom->Bind_BufferDesc();
 	m_pVIBufferCom->Render();
-
+#ifdef _DEBUG
+	if(!m_p2DColliderComs.empty())
+		m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+#endif // _DEBUG
 	return S_OK;
 }
 

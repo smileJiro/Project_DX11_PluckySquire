@@ -50,7 +50,7 @@ public:
 	void Set_Kinematic(_bool _bKinematic);
 	void Set_ParentBodyMatrix(COORDINATE _eCoord, const _float4x4* _pBodyMatrix) { m_pParentBodyMatrices[_eCoord] = _pBodyMatrix; }
 
-private:
+protected:
 	CPlayer* m_pCarrier = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;
 	_float m_f2DFloorDistance = 0;

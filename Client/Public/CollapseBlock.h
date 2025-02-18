@@ -33,13 +33,13 @@ private: /* Origin Position */
 	_float2							m_vOriginPostion = {};	/* Shake 시작 시, OriginPosition 저장 후, OriginPos + ShakeOffset 으로 최종 위치 결정. */
 
 private: /* Shake Parameters */
-	_float2							m_vShakeTime = { 1.0f, 0.0f };	/* 중력 컴포넌트를 켜는 시간 이면서, 부들부들 거리는 시간. */
+	_float2							m_vShakeTime = { 0.75f, 0.0f };	/* 중력 컴포넌트를 켜는 시간 이면서, 부들부들 거리는 시간. */
 	_float2							m_vShakeCycleTime = { 0.02f, 0.0f };	/* 중력 컴포넌트를 켜는 시간 이면서, 부들부들 거리는 시간. */
 	_float2							m_vShakeStrength = { 10.0f, 5.0f};
 	_float2							m_vShakeOffset = {};	/* 랜덤 값으로 카메라 셰이크처럼 좌표 흔들기. */
 
 private: /* Drop Parameters */
-	_float2							m_vDropTime = { 4.0f, 0.0f };
+	_float2							m_vDropTime = { 3.0f, 0.0f };
 
 private: /* 상태 변경 루틴 */
 	void							State_Change();

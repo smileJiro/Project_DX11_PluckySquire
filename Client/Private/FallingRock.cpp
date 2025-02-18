@@ -5,6 +5,7 @@
 #include "Camera_Manager.h"
 #include "Blocker.h"
 #include "Effect_Manager.h"
+#include "Character.h"
 
 CFallingRock::CFallingRock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -27,9 +28,11 @@ HRESULT CFallingRock::Initialize(void* _pArg)
 	FALLINGROCK_DESC* pDesc = static_cast<FALLINGROCK_DESC*>(_pArg);
 	// Save Desc
 	m_fFallDownEndY = pDesc->fFallDownEndY;
-	
+	m_isColBound = pDesc->isColBound;
+	m_eOriginDirection = pDesc->eColBoundDirection;
 	// Add Desc
 	pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
+		
 
 	/* 2D */
 	pDesc->Build_2D_Model(pDesc->iCurLevelID, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"), (_uint)PASS_VTXPOSTEX::SPRITE2D, true);
@@ -39,7 +42,7 @@ HRESULT CFallingRock::Initialize(void* _pArg)
 	pDesc->iPriorityID_3D = PR3D_GEOMETRY;
 	pDesc->vMaterialDefaultColor = { 1.0f, 1.0f, 1.0f , 1.0f };
 	pDesc->fFrustumCullingRange = 3.0f;
-	pDesc->Build_3D_Model(pDesc->iCurLevelID, TEXT("Prototype_Model3D_FallingRock"), TEXT("Prototype_Component_Shader_VtxMesh"),(_uint)PASS_VTXMESH::DEFAULT, true);
+	pDesc->Build_3D_Model(pDesc->iCurLevelID, TEXT("Prototype_Model3D_FallingRock"), TEXT("Prototype_Component_Shader_VtxMesh"), (_uint)PASS_VTXMESH::DEFAULT, true);
 
 	pDesc->eStartCoord = COORDINATE_2D; // 여기서 세팅해줘야함.
 
@@ -52,8 +55,8 @@ HRESULT CFallingRock::Initialize(void* _pArg)
 	ActorDesc.FreezeRotation_XYZ[0] = false;
 	ActorDesc.FreezeRotation_XYZ[1] = false;
 	ActorDesc.FreezeRotation_XYZ[2] = false;
-	
-	
+
+
 	SHAPE_SPHERE_DESC SphereDesc{};
 	SphereDesc.fRadius = 1.0f;
 
@@ -70,12 +73,21 @@ HRESULT CFallingRock::Initialize(void* _pArg)
 	if (FAILED(Ready_Components(pDesc)))
 		return E_FAIL;
 
-	//if(pDesc->isColBound)
-	//	_bool isColBound = false;
-	//COLBOUND2D eColBoundDirection = COLBOUND_LEFT;
-	m_pControllerModel->Switch_Animation(STATE_FALLDOWN);
+	if (true == m_isColBound)
+	{
+		Change_Bound_Direction(pDesc->eColBoundDirection);
 
-	m_vShadowYDesc.y = XMVectorGetY(Get_ControllerTransform()->Get_State(CTransform_2D::STATE_POSITION));
+		m_pControllerModel->Switch_Animation(STATE_BOUND_2D);
+		m_eCurState = STATE::STATE_COL_BOUND;
+		m_fJumpForcePerSec = 750.f;
+	}
+	else
+	{
+		m_pControllerModel->Switch_Animation(STATE_FALLDOWN);
+		m_eCurState = STATE::STATE_FALLDOWN;
+		m_vShadowYDesc.y = XMVectorGetY(Get_ControllerTransform()->Get_State(CTransform_2D::STATE_POSITION));
+	}
+	
 
 	m_pActorCom->Set_MassLocalPos(_float3(0.0f,0.8f, 0.0f));
 	return S_OK;
@@ -83,14 +95,6 @@ HRESULT CFallingRock::Initialize(void* _pArg)
 
 void CFallingRock::Priority_Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::G))
-	{
-		m_eCurState = STATE::STATE_FALLDOWN;
-	}
-	if (KEY_DOWN(KEY::H))
-	{
-		m_eCurState = STATE::STATE_BOUND_2D;
-	}
 
 	__super::Priority_Update(_fTimeDelta);
 }
@@ -111,7 +115,7 @@ void CFallingRock::Late_Update(_float _fTimeDelta)
 
 HRESULT CFallingRock::Render()
 {
-	if (COORDINATE_2D == Get_CurCoord())
+	if (false == m_isColBound)
 	{
 		/* 2D 상태일때에는 그림자 렌더를 먼저하고, */
 		_vector vPos = Get_ControllerTransform()->Get_State(CTransform_2D::STATE_POSITION);
@@ -139,6 +143,7 @@ void CFallingRock::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOt
 	case Client::PLAYER:
 		CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.1f, 0.2f, 20, CCamera::SHAKE_Y);
 		Event_Hit(this, _pOtherObject, 1.0f);
+		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVectorSet(m_vColBoundDirection.x * 600.f, m_vColBoundDirection.y * 500.f, 0.0f, 0.0f));
 		break;
 	case Client::MONSTER:
 		break;
@@ -160,29 +165,56 @@ void CFallingRock::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOt
 	{
 		if (true == _pMyCollider->Is_Trigger())
 			break;
-		if (false == static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
-			break;
 
-		/* 1. Blocker은 항상 AABB임을 가정. */
+		if (true == static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
+		{
+			/* 1. Blocker은 항상 AABB임을 가정. */
 
 		/* 2. 나의 Collider 중점 기준, AABB에 가장 가까운 점을 찾는다. */
-		_bool isResult = false;
-		_float fEpsilon = 0.01f;
-		_float2 vContactVector = {};
-		isResult = static_cast<CCollider_Circle*>(_pMyCollider)->Compute_NearestPoint_AABB(static_cast<CCollider_AABB*>(_pOtherCollider), nullptr, &vContactVector);
-		if (true == isResult)
-		{
-			/* 3. 충돌지점 벡터와 중력벡터를 내적하여 그 결과를 기반으로 Floor 인지 체크. */
-			_float3 vGravityDir = m_pGravityCom->Get_GravityDirection();
-			_float2 vGravityDirection = _float2(vGravityDir.x, vGravityDir.y);
-			_float fGdotC = XMVectorGetX(XMVector2Dot(XMLoadFloat2(&vGravityDirection), XMVector2Normalize(XMLoadFloat2(&vContactVector))));
-			if (1.0f - fEpsilon <= fGdotC)
+			_bool isResult = false;
+			_float fEpsilon = 0.01f;
+			_float2 vContactVector = {};
+			isResult = static_cast<CCollider_Circle*>(_pMyCollider)->Compute_NearestPoint_AABB(static_cast<CCollider_AABB*>(_pOtherCollider), nullptr, &vContactVector);
+			if (true == isResult)
 			{
-				/* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
-				m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+				/* 3. 충돌지점 벡터와 중력벡터를 내적하여 그 결과를 기반으로 Floor 인지 체크. */
+				_float3 vGravityDir = m_pGravityCom->Get_GravityDirection();
+				_float2 vGravityDirection = _float2(vGravityDir.x, vGravityDir.y);
+				_float fGdotC = XMVectorGetX(XMVector2Dot(XMLoadFloat2(&vGravityDirection), XMVector2Normalize(XMLoadFloat2(&vContactVector))));
+				if (1.0f - fEpsilon <= fGdotC)
+				{
+					/* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
+					if (m_isColBound)
+					{
+						m_pGravityCom->Set_GravityAcc(100.0f);
+						m_eCurState = STATE::STATE_COL_BOUND;
+
+					}
+					else
+					{
+						m_pGravityCom->Set_GravityAcc(0.0f);
+
+					}
+				}
 			}
 		}
-
+		else
+		{
+			if (COLBOUND_LEFT == m_eColBoundDirection)
+			{
+				Change_Bound_Direction(COLBOUND_RIGHT);
+			}
+			else
+			{
+				Change_Bound_Direction(COLBOUND_LEFT);
+			}
+			
+			//Event_DeleteObject(this);
+		}
+		
+		// 충돌시마다 감소
+		m_vDecrease.y += m_vDecrease.x;
+		m_pGravityCom->Set_GravityOffset(m_vDecrease.y);
 	}
 	break;
 	default:
@@ -197,6 +229,30 @@ void CFallingRock::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOth
 
 void CFallingRock::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+}
+
+void CFallingRock::Change_Bound_Direction(COLBOUND2D _eDirection)
+{
+	if (m_eColBoundDirection == _eDirection)
+		return;
+
+	m_eColBoundDirection = _eDirection;
+	switch (m_eColBoundDirection)
+	{
+	case Client::CFallingRock::COLBOUND_LEFT:
+	{
+		XMStoreFloat2(&m_vColBoundDirection, XMVector2Normalize(XMVectorSet(-1.0f, 1.7f, 0.0f, 0.0f)));
+	}
+		break;
+	case Client::CFallingRock::COLBOUND_RIGHT:
+	{
+		XMStoreFloat2(&m_vColBoundDirection, XMVector2Normalize(XMVectorSet(1.0f, 1.7f, 0.0f, 0.0f)));
+	}
+		break;
+	default:
+		break;
+	}
+
 }
 
 void CFallingRock::State_Change()
@@ -214,6 +270,9 @@ void CFallingRock::State_Change()
 		break;
 	case Client::CFallingRock::STATE_BOUND_3D:
 		State_Change_Bound_3D();
+		break;
+	case Client::CFallingRock::STATE_COL_BOUND:
+		State_Change_ColBound_2D();
 		break;
 	default:
 		break;
@@ -269,6 +328,20 @@ void CFallingRock::State_Change_Bound_3D()
 
 }
 
+void CFallingRock::State_Change_ColBound_2D()
+{
+	/* 1. 중력을 초기화 */
+	m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
+	m_pGravityCom->Set_GravityAcc(0.0f);
+	/* 2. 점프 시작. */
+	m_pControllerModel->Switch_Animation(STATE::STATE_BOUND_2D);
+	m_vLifeTimeAcc.y = 0.0f;
+	
+	Change_Bound_Direction(m_eOriginDirection);
+	m_vDecrease.y = 0.0f;
+	m_pGravityCom->Set_GravityOffset(0.0f);
+}
+
 void CFallingRock::Action_State(_float _fTimeDelta)
 {
 	switch (m_eCurState)
@@ -281,6 +354,9 @@ void CFallingRock::Action_State(_float _fTimeDelta)
 		break;
 	case Client::CFallingRock::STATE_BOUND_3D:
 		Action_Bound_3D(_fTimeDelta);
+		break;
+	case Client::CFallingRock::STATE_COL_BOUND:
+		Action_ColBound_2D(_fTimeDelta);
 		break;
 	default:
 		break;
@@ -354,11 +430,35 @@ void CFallingRock::Action_Bound_3D(_float _fTimeDelta)
 	}
 }
 
+void CFallingRock::Action_ColBound_2D(_float _fTimeDelta)
+{
+	m_vLifeTimeAcc.y += _fTimeDelta;
+	
+	if (m_vLifeTimeAcc.x <= m_vLifeTimeAcc.y)
+	{
+		m_vLifeTimeAcc.y = 0.0f;
+		m_eCurState = STATE::STATE_LAST;
+		Event_DeleteObject(this);
+		State_Change();
+	}
+	else
+	{
+		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+		vPos += XMLoadFloat2(&m_vColBoundDirection) * m_fJumpForcePerSec * _fTimeDelta;
+		Set_Position(vPos);
+	}
+
+}
+
 HRESULT CFallingRock::Ready_Components(FALLINGROCK_DESC* _pDesc)
 {
 	/* Com_Gravity */
 	CGravity::GRAVITY_DESC GravityDesc = {};
-	GravityDesc.fGravity = 9.8f * 300.f;
+	if(false == m_isColBound)
+		GravityDesc.fGravity = 9.8f * 300.f;
+	else
+		GravityDesc.fGravity = 9.8f * 150.f;
+
 	GravityDesc.vGravityDirection = { 0.0f, -1.0f, 0.0f };
 	GravityDesc.pOwner = this;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
@@ -366,11 +466,13 @@ HRESULT CFallingRock::Ready_Components(FALLINGROCK_DESC* _pDesc)
 		return E_FAIL;
 
 	/* 발밑 그림자 전용 Model2D */
-	CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Model2D_FallingRockShadow"), nullptr));
-	if (nullptr == pComponent)
-		return E_FAIL;
-	m_p2DShadowModelCom = static_cast<C2DModel*>(pComponent);
-
+	if (false == m_isColBound)
+	{
+		CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Model2D_FallingRockShadow"), nullptr));
+		if (nullptr == pComponent)
+			return E_FAIL;
+		m_p2DShadowModelCom = static_cast<C2DModel*>(pComponent);
+	}
 
 	m_p2DColliderComs.resize(1);
 	/* Test 2D Collider */
@@ -379,9 +481,17 @@ HRESULT CFallingRock::Ready_Components(FALLINGROCK_DESC* _pDesc)
 	CircleDesc.fRadius = 20.f;
 	CircleDesc.vScale = { 1.0f, 1.0f };
 	CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius * 0.5f };
-	CircleDesc.isBlock = true;
+	if(false == m_isColBound)
+	{
+		CircleDesc.isBlock = true;
+		CircleDesc.iCollisionGroupID = OBJECT_GROUP::FALLINGROCK_BASIC;
+	}
+	else
+	{
+		CircleDesc.isBlock = false;
+		CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
+	}
 	CircleDesc.isTrigger = false;
-	CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
 		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
 		return E_FAIL;
@@ -392,26 +502,25 @@ HRESULT CFallingRock::Ready_Components(FALLINGROCK_DESC* _pDesc)
 
 void CFallingRock::Active_OnEnable()
 {
-	m_eCurState = STATE::STATE_FALLDOWN;
-	_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-	m_vShadowYDesc.y = XMVectorGetY(vPos);
+	if (false == m_isColBound)
+	{
+		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+		m_vShadowYDesc.y = XMVectorGetY(vPos);
+		m_eCurState = STATE::STATE_FALLDOWN;
 
-	__super::Active_OnEnable();
+		__super::Active_OnEnable();
+	}
+	else
+	{
+		m_eCurState = STATE::STATE_COL_BOUND;
+	}
+
+
+
 }
 
 void CFallingRock::Active_OnDisable()
 {
-	if (false == m_isDead)
-	{
-		/* 해당 객체가 isDead 상태가 아닌데, Active False 처리가 되었다? >>> 이는 섹션매니저에서 책장넘기며 비활성 시킨 경우. */
-		Event_DeleteObject(this); /* 이때는 정말로 DeleteObject를 호출하면, 섹션매니저에서 제거된다(이벤트매니저 참고) 
-		그래서 섹션매니저가 책장 넘기기하며 falling rock을 비활성시키는 경우, 그냥 섹션에서 제거한다. 그래야 다시 
-		이전장으로 돌아와 돌덩이가 생성되야할때 기존 돌덩이들이 깔끔하게 사라져서 잔버그가 없음. */
-		/* 다른방법으로는 시작위치를 저장해두고 해당 위치로 이동시키는 방법도있지만, 2D로 변경도해야하고 위치도 잡아야하고해서
-		이 방식으로 처리 후 추후 문제가 생기면 바꿔보자. */
-		return;
-	}
-
 	__super::Active_OnDisable();
 }
 

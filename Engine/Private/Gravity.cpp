@@ -23,6 +23,7 @@ HRESULT CGravity::Initialize(void* _pArg)
     m_pOwner = pDesc->pOwner;
     m_fGravity = pDesc->fGravity;
     m_vDirection = pDesc->vGravityDirection;
+    m_fMaxGravityAcc = pDesc->fMaxGravityAcc;
     XMStoreFloat3(&m_vDirection, XMVector3Normalize(XMLoadFloat3(&m_vDirection)));
 
     return S_OK;
@@ -84,7 +85,7 @@ void CGravity::Action_Floor(_float _fTimeDelta)
 
 void CGravity::Action_FallDown(_float _fTimeDelta)
 {
-    m_fGravityAcc += m_fGravity * _fTimeDelta;
+    m_fGravityAcc += (m_fGravity + m_fGravityOffset) * _fTimeDelta;
 
     if (m_fMaxGravityAcc <= m_fGravityAcc)
         m_fGravityAcc = m_fMaxGravityAcc;

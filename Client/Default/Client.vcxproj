@@ -219,6 +219,7 @@
     <ClInclude Include="..\Public\Dice.h" />
     <ClInclude Include="..\Public\Domino.h" />
     <ClInclude Include="..\Public\DeadState.h" />
+    <ClInclude Include="..\public\Effect2D.h" />
     <ClInclude Include="..\Public\Effect_Manager.h" />
     <ClInclude Include="..\public\FallingRock.h" />
     <ClInclude Include="..\Public\FloorWord.h" />
@@ -227,6 +228,8 @@
     <ClInclude Include="..\Public\Interactable.h" />
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
     <ClInclude Include="..\Public\Level_Chapter_Test.h" />
+    <ClInclude Include="..\Public\Magic_Hand.h" />
+    <ClInclude Include="..\Public\Magic_Hand_Body.h" />
     <ClInclude Include="..\Public\LightningBolt.h" />
     <ClInclude Include="..\Public\Narration.h" />
     <ClInclude Include="..\Public\Narration_Anim.h" />
@@ -423,6 +426,7 @@
     <ClCompile Include="..\Private\Dice.cpp" />
     <ClCompile Include="..\Private\Domino.cpp" />
     <ClCompile Include="..\Private\DeadState.cpp" />
+    <ClCompile Include="..\private\Effect2D.cpp" />
     <ClCompile Include="..\Private\Effect_Manager.cpp" />
     <ClCompile Include="..\private\FallingRock.cpp" />
     <ClCompile Include="..\Private\FloorWord.cpp" />
@@ -431,6 +435,8 @@
     <ClCompile Include="..\Private\HitState.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_Test.cpp" />
+    <ClCompile Include="..\Private\Magic_Hand.cpp" />
+    <ClCompile Include="..\Private\Magic_Hand_Body.cpp" />
     <ClCompile Include="..\Private\LightningBolt.cpp" />
     <ClCompile Include="..\Private\Narration.cpp" />
     <ClCompile Include="..\Private\Narration_Anim.cpp" />

@@ -28,6 +28,7 @@ HRESULT CWord_Container::Initialize_Prototype()
 HRESULT CWord_Container::Initialize(void* _pArg)
 {
 	WORD_CONTAINER_DESC* pDesc = static_cast<WORD_CONTAINER_DESC*>(_pArg);
+	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable= false;
 
@@ -116,12 +117,15 @@ void CWord_Container::Interact(CPlayer* _pUser)
 {
 	if (_pUser->Is_CarryingObject())
 	{
-		//CCarriableObject* pObj =  _pUser->Get_CarryingObject();
-		//CWord* pWord = dynamic_cast<CWord*>(pObj);
-		//if (nullptr != pWord)
-		//{
-		//	Set_Word(pWord);
-		//}
+		CCarriableObject* pObj =  _pUser->Get_CarryingObject();
+		CWord* pWord = dynamic_cast<CWord*>(pObj);
+		if (nullptr != pWord)
+		{
+			Set_Word(pWord);
+			m_pOnwer->Update_Text();
+			_pUser->Set_CarryingObject(nullptr);
+			pWord->Set_Carrier(nullptr);
+		}
 	}
 	else 
 	{
@@ -135,12 +139,13 @@ void CWord_Container::Interact(CPlayer* _pUser)
 
 _bool CWord_Container::Is_Interactable(CPlayer* _pUser)
 {
-	return true;
+	return _pUser->Is_CarryingObject();
 }
 
 _float CWord_Container::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 {
-	return _float();
+	return XMVector3Length(m_pControllerTransform->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)
+		- _pUser->Get_ControllerTransform()->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
 }
 
 void CWord_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
