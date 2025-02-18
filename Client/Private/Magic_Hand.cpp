@@ -4,6 +4,8 @@
 
 #include "Magic_Hand_Body.h"
 #include "Effect_System.h"
+#include "Player.h"
+#include "SampleBook.h"
 
 CMagic_Hand::CMagic_Hand(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CContainerObject(_pDevice, _pContext)
@@ -37,14 +39,14 @@ HRESULT CMagic_Hand::Initialize(void* _pArg)
 
 void CMagic_Hand::Priority_Update(_float _fTimeDelta)
 {
-    if (false == m_isTrigger)
+    if (false == m_isStart)
         return;
     __super::Priority_Update(_fTimeDelta);
 }
 
 void CMagic_Hand::Update(_float _fTimeDelta)
 {
-    if (false == m_isTrigger)
+    if (false == m_isStart)
         return;
 
 #ifdef _DEBUG
@@ -59,11 +61,44 @@ void CMagic_Hand::Update(_float _fTimeDelta)
     ImGui::End();*/
 #endif
     __super::Update(_fTimeDelta);
+    
+    // 특정위치보다 아래로 가면, 플레이어 애니메이션 재생(매끄러운 연결을 위해서 존재합니다.)
+    if (false == m_isCaught && COORDINATE_2D == m_pMagicHandbody->Get_CurCoord() && -120.f >= XMVectorGetY(m_pMagicHandbody->Get_FinalPosition()))
+    {
+        //m_pMagicHandbody->Set_Active(false);
+
+        CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Player"), 0));
+        if (nullptr != pPlayer)
+            pPlayer->Set_State(CPlayer::EVICT);
+        m_isCaught = true;
+        //m_pMagicHandbody->Change_Coordinate(COORDINATE_3D);
+    }    
+
+    // 특정위치 보다 아래로 가면, 손 모델의 Update를 막습니다. 
+    if (m_isCaught && m_pMagicHandbody->Is_Active() && -195.f >= XMVectorGetY(m_pMagicHandbody->Get_FinalPosition()))
+    {
+        m_pMagicHandbody->Set_Active(false);
+        m_pMagicHandbody->Change_Coordinate(COORDINATE_3D);
+    }
+
+    // 책 닫기 실행
+    if (m_isReadyFlip)
+    {
+        m_fFlipDelayTime += _fTimeDelta;
+
+        if (5.53f <= m_fFlipDelayTime)
+        {
+            CSampleBook* pSampleBook = static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0));
+            if (nullptr != pSampleBook)
+                pSampleBook->Execute_AnimEvent(CSampleBook::ANIM_ACTION_CLOSEBYHAND);
+            m_isReadyFlip = false;
+        }
+    }
 }
 
 void CMagic_Hand::Late_Update(_float _fTimeDelta)
 {
-    if (false == m_isTrigger)
+    if (false == m_isStart)
         return;
 
     __super::Late_Update(_fTimeDelta);
@@ -73,6 +108,16 @@ void CMagic_Hand::Late_Update(_float _fTimeDelta)
 HRESULT CMagic_Hand::Render()
 {
     return S_OK;
+}
+
+void CMagic_Hand::Show_3DHand()
+{
+    m_pEffectSystem->Active_All(true);
+    m_pMagicHandbody->Change_Coordinate(COORDINATE_3D);
+    m_pMagicHandbody->Set_Active(true);
+    
+    m_fFlipDelayTime = 0.f;
+    m_isReadyFlip = true;
 }
 
 HRESULT CMagic_Hand::Ready_PartObjects()
@@ -122,8 +167,10 @@ HRESULT CMagic_Hand::Ready_PartObjects()
     EffectDesc.szMeshComputeShaderTag = L"Prototype_Component_Compute_Shader_MeshInstance";
     // Level 바꿔야함
     m_PartObjects[MAGICHAND_EFFECT] = m_pEffectSystem = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("BookOut.json"), &EffectDesc));
-    m_pEffectSystem->Set_Position(XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
+    m_pEffectSystem->Set_Position(XMVectorSet(2.92f, 0.f, -21.0f, 1.f));
     m_pEffectSystem->Set_SpawnMatrix(pMatrix);
+
+    Safe_AddRef(m_pEffectSystem);
 
     return S_OK;
 }
@@ -157,6 +204,7 @@ CGameObject* CMagic_Hand::Clone(void* _pArg)
 void CMagic_Hand::Free()
 {
     Safe_Release(m_pMagicHandbody);
+    Safe_Release(m_pEffectSystem);
    
     __super::Free();
 }

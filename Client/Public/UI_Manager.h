@@ -53,6 +53,8 @@ private:
 	_int								m_iLogoIndex = { 0 };
 	_bool								m_isStoreYesORNo = { true };
 
+	_bool								m_isQIcon = { false };
+
 	_int								m_iCurrentLevel = { -1 };
 
 	vector<CDialog::DialogData>			m_DialogDatas;
@@ -71,6 +73,7 @@ private:
 
 	/******** Å×½ºÆ® ********/
 	_uint								m_iTextIndex = { 0 };
+	_bool								m_isVioletMeet = { false };
 
 public:
 	STAMP								Get_StampIndex() { return m_eStampIndex; }
@@ -107,6 +110,9 @@ public:
 	_bool								Get_LogoChanseStage() { return m_isLogoChooseStage; }
 	void								Set_LogoChangeState(_bool _LogoChooseStage) { m_isLogoChooseStage = _LogoChooseStage; }
 
+	_bool								Get_isQIcon() { return m_isQIcon; }
+	void								Set_isQIcon(_bool _is) { m_isQIcon = _is; }
+
 	vector<CDialog::DialogData>			Get_Dialogue(const _wstring& _id);
 	CDialog::DialogLine					Get_DialogueLine(const _wstring& _id, _int _LineIndex);
 	_float4								Get_DialoguePos() { return m_vDialoguePos; }
@@ -140,6 +146,8 @@ public:
 
 	void								Set_Narration(CNarration* _Narration) { m_pNarration = _Narration; Safe_AddRef(_Narration); }
 	CNarration*							Get_Narration() { return m_pNarration; }
+	void								Set_VioletMeet(_bool _meet) { m_isVioletMeet = _meet; }
+	_bool								Get_VioletMeet() { return m_isVioletMeet; }
 	void								Set_PlayNarration(const _wstring& _strid) { m_pNarration->CBase::Set_Active(true); wsprintf(m_strNarrationID, _strid.c_str()); m_isPlayerNarration = true; }
 	_tchar*								Get_strNarrationID() { return m_strNarrationID; }
 	_bool								Get_PlayNarration() { return m_isPlayerNarration; }

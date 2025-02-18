@@ -491,7 +491,7 @@ void CTrigger_Manager::Resister_Trigger_Action()
 		static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
 		};
 	m_Actions[TEXT("Active_MagicHand")] = [this](_wstring _wszEventTag) {
-		static_cast<CMagic_Hand*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_MagicHand"), 0))->Set_Trigger(true);
+		static_cast<CMagic_Hand*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_MagicHand"), 0))->Set_Start(true);
 		};
 	m_Actions[TEXT("Create_EventExecuter")] = [this](_wstring _wszEventTag) 
 	{

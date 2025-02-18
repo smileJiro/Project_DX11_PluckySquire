@@ -124,6 +124,10 @@ public:
 
 
 
+	void								Set_NextPageTag(const _wstring _strNextTag) {m_strNextPageTag = _strNextTag;}
+	void								Set_PrevPageTag(const _wstring _strPrevTag) {m_strPrePageTag = _strPrevTag;}
+
+
 	virtual void						Set_WorldTexture(ID3D11Texture2D* _pTexture) 
 	{
 		if (nullptr == m_pMap)

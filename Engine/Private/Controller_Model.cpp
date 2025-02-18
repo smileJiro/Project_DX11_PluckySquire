@@ -155,6 +155,15 @@ void CController_Model::To_NextAnimation()
     m_ModelComs[m_eCurCoord]->To_NextAnimation();
 }
 
+HRESULT CController_Model::Change_Model(COORDINATE _eCoord, _uint _eProtoLevel, const _wstring _strModelTag)
+{
+    Safe_Release(m_ModelComs[_eCoord]);
+
+    CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT,_eProtoLevel, _strModelTag,nullptr));
+    m_ModelComs[_eCoord] = static_cast<CModel*>(pComponent);
+    return S_OK;
+}
+
 
 CController_Model* CController_Model::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CON_MODEL_DESC* _pDesc)
 {

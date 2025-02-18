@@ -6,6 +6,8 @@
 #include "3DModel.h"
 #include "Animation3D.h"
 #include "Bone.h"
+#include "GameInstance.h"
+#include "Magic_Hand.h"
 
 CPlayerState_Evict::CPlayerState_Evict(CPlayer* _pOwner)
 	: CPlayerState(_pOwner,CPlayer::EVICT)
@@ -28,7 +30,12 @@ void CPlayerState_Evict::Update(_float _fTimeDelta)
 			m_pOwner->Change_Coordinate(COORDINATE_3D, (_float3*)&v3DWorldPos);
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_BOOKOUT_01_GT);
 			m_pOwner->LookDirectionXZ_Kinematic(_vector{0,0,-1});
-			m_eCurState = BOOKOUT;
+			m_eCurState = BOOKOUT;	
+			
+			// 손 다시 3D로 실행
+			CMagic_Hand* pMagicHand = static_cast<CMagic_Hand*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_MagicHand"), 0));
+			if (nullptr != pMagicHand)
+				pMagicHand->Show_3DHand();
 		}
 	}
 	else if (BOOKOUT == m_eCurState)
@@ -83,6 +90,9 @@ void CPlayerState_Evict::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 				pBone->Update_CombinedTransformationMatrix(Bones, XMLoadFloat4x4(&p3DModel->Get_PreTransformMatrix()));
 
 			m_pOwner->Set_Kinematic(false);
+
+
+			
 		}
 		else if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_IDLE_NERVOUS_01_GT == iAnimIdx)
 		{
