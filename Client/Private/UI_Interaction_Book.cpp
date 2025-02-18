@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "UI_Manager.h"
 
+#include "Interactable.h"
+
 
 
 CUI_Interaction_Book::CUI_Interaction_Book(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -50,6 +52,34 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 	}
 	
 	
+	IInteractable* pInterActable = Uimgr->Get_Player()->Get_InteractableObject();
+	KEY Key;
+
+	if (nullptr == pInterActable)
+	{
+		return;
+	}
+	else
+	{
+		Key = pInterActable->Get_InteractKey();
+	}
+	
+	if (Key == KEY::Q)
+	{
+		m_isRender = true;
+	}
+	else if(Key != KEY::Q)
+	{
+		m_isRender = false;
+	}
+	
+	
+
+		// 반환 값이 널이 아니다.
+		//interactable get_interactkey() 
+		// 
+		
+		// 이 키가 Q다
 
 	
 }

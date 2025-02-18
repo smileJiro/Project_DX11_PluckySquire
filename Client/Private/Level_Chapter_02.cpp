@@ -693,35 +693,35 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 #pragma endregion PickBubble UI
 
 #pragma region STAMP UI
-	pDesc.fX = g_iWinSizeX / 20.f;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
-
-	// 원래 크기
-	pDesc.fSizeX = 96.f;
-	pDesc.fSizeY = 148.f;
-
-	//작게  크기
-	//pDesc.fSizeX = 48.f;
-	//pDesc.fSizeY = 74.f;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StopStamp"), m_eLevelID, _strLayerTag, &pDesc)))
-		return E_FAIL;
-
-	pDesc.fX = g_iWinSizeX / 7.5f;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
-	pDesc.fSizeX = 72.f;
-	pDesc.fSizeY = 111.f;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BombStamp"), m_eLevelID, _strLayerTag, &pDesc)))
-		return E_FAIL;
-
-	pDesc.fX = g_iWinSizeX / 10.8f;
-	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20.f;
-	pDesc.fSizeX = 42.f;
-	pDesc.fSizeY = 27.f;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ArrowForStamp"), m_eLevelID, _strLayerTag, &pDesc)))
-		return E_FAIL;
+	//pDesc.fX = g_iWinSizeX / 20.f;
+	//pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
+	//
+	//// 원래 크기
+	//pDesc.fSizeX = 96.f;
+	//pDesc.fSizeY = 148.f;
+	//
+	////작게  크기
+	////pDesc.fSizeX = 48.f;
+	////pDesc.fSizeY = 74.f;
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StopStamp"), m_eLevelID, _strLayerTag, &pDesc)))
+	//	return E_FAIL;
+	//
+	//pDesc.fX = g_iWinSizeX / 7.5f;
+	//pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
+	//pDesc.fSizeX = 72.f;
+	//pDesc.fSizeY = 111.f;
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BombStamp"), m_eLevelID, _strLayerTag, &pDesc)))
+	//	return E_FAIL;
+	//
+	//pDesc.fX = g_iWinSizeX / 10.8f;
+	//pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20.f;
+	//pDesc.fSizeX = 42.f;
+	//pDesc.fSizeY = 27.f;
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ArrowForStamp"), m_eLevelID, _strLayerTag, &pDesc)))
+	//	return E_FAIL;
 #pragma endregion STAMP UI
 
 #pragma region InterAction UI

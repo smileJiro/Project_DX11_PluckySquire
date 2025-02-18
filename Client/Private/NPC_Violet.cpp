@@ -45,11 +45,16 @@ HRESULT CNPC_Violet::Initialize(void* _pArg)
 	m_fDelayTime = 0.1f;
 
 	m_eActionType = ACTION_WAIT;
+	m_eRenderType = VIOLET_RENDER;
 
 	//m_strCurSecion = pDesc->cursection
 	
+	 
+
 	wsprintf(m_strDialogueIndex, pDesc->strDialogueIndex);
 	wsprintf(m_strCurSecion, TEXT("Chapter1_P0708"));
+
+	m_strName = TEXT("Violet");
 	 
 
 
@@ -96,17 +101,51 @@ void CNPC_Violet::Priority_Update(_float _fTimeDelta)
 
 void CNPC_Violet::Child_Update(_float _fTimeDelta)
 {
-	if (m_isTrace)
-		Trace(_fTimeDelta);
-	else
-		Welcome_Jot(_fTimeDelta);
+	m_isLookOut = Uimgr->Get_VioletMeet();
 
-	__super::Child_Update(_fTimeDelta);
+	if (true == m_isLookOut)
+	{
+		if (m_isTrace)
+		{
+			Trace(_fTimeDelta);
+		}
+		else
+		{
+			if (true == Uimgr->Get_VioletMeet())
+				Welcome_Jot(_fTimeDelta);
+		}
+		__super::Child_Update(_fTimeDelta);
+	}
+	
 }
 
 void CNPC_Violet::Child_LateUpdate(_float _fTimeDelta)
 {
-	__super::Child_LateUpdate(_fTimeDelta);
+	if (m_isLookOut == true)
+	{
+		__super::Child_LateUpdate(_fTimeDelta);
+
+		if (VIOLET_RENDER == m_eRenderType && TEXT("Chapter2_P0102") == CSection_Manager::GetInstance()->Get_Cur_Section_Key())
+		{
+			m_eRenderType = VIOLET_NOTRENDER;
+			
+			m_isRender = false;
+
+			CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+
+		}
+		else if (VIOLET_NOTRENDER == m_eRenderType && TEXT("Chapter2_P0102") != CSection_Manager::GetInstance()->Get_Cur_Section_Key())
+		{
+			m_eRenderType = VIOLET_RENDER;
+			
+			m_isRender = true;
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CSection_Manager::GetInstance()->Get_Cur_Section_Key(), this, SECTION_2D_PLAYMAP_OBJECT);
+		}
+	}
+		
+
+
+		
 }
 
 
@@ -296,6 +335,7 @@ void CNPC_Violet::Welcome_Jot(_float _fTimeDelta)
 	if (true == m_isTrace)
 		return;
 
+	m_isLookOut = true;
 	// 트레이스 상태가 아니다.
 
 	// 플레이어의 섹션하고 나와의 섹션이 동일하면 시작하자.
@@ -394,6 +434,7 @@ _float CNPC_Violet::Get_Distance(COORDINATE _eCOord, CPlayer* _pUser)
 
 void CNPC_Violet::Trace(_float _fTimeDelta)
 {
+	
 
 	_float2 vTargetObjectPos = _float2(
 		m_pTargetObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
