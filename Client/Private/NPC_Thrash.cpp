@@ -44,12 +44,14 @@ HRESULT CNPC_Thrash::Initialize(void* _pArg)
 	m_iSubIndex = pDesc->iSubIndex;
 	m_fDelayTime = 0.1f;
 
+	m_eActionType = ACTION_WAIT;
+
 
 	//if (FAILED(Ready_ActorDesc(pDesc)))
 	//	return E_FAIL;
 
 	wsprintf(m_strDialogueIndex, pDesc->strDialogueIndex);
-	wsprintf(m_strCurSecion, TEXT("Chapter1_P0708"));
+	wsprintf(m_strCurSecion, TEXT("Chapter2_P0102"));
 
 	if (FAILED(__super::Child_Initialize(pDesc)))
 		return E_FAIL;
@@ -117,7 +119,7 @@ HRESULT CNPC_Thrash::Render()
 
 void CNPC_Thrash::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	
+
 }
 
 void CNPC_Thrash::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -170,7 +172,7 @@ void CNPC_Thrash::Trace(_float _fTimeDelta)
 
 void CNPC_Thrash::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
-	
+
 }
 
 void CNPC_Thrash::ChangeState_Panel()
@@ -184,6 +186,76 @@ void CNPC_Thrash::For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos)
 
 void CNPC_Thrash::Welcome_Jot(_float _fTimeDelta)
 {
+	// 쫓고 있는 중인가요?
+	if (m_isTrace)
+		return;
+
+	// 안쫓고있어요 만나게하자.
+	if (TEXT("Chapter2_P0102") == CSection_Manager::GetInstance()->Get_Cur_Section_Key())
+	{
+		if (ACTION_WAIT == m_eActionType)
+		{
+			if (Thrash_C06_Idle01 != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+			{
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_C06_Idle01);
+			}
+
+			m_fWelcomeWaitTime += _fTimeDelta;
+
+			if (5.f <= m_fWelcomeWaitTime)
+			{
+				m_eActionType = ACTION_MOVE;
+			}
+			else
+				return;
+		}
+		else if (ACTION_MOVE == m_eActionType)
+		{
+			if (Thrash_idle_right != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+			{
+				_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+				m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_idle_right);
+				m_eAnimationType = ANIM_LEFT;
+			}
+
+			_float4 vPlayerPos = _float4(Uimgr->Get_Player()->Get_FinalPosition().m128_f32[0], Uimgr->Get_Player()->Get_FinalPosition().m128_f32[1], 0.f, 1.f);
+			_float4 vThrashPos = _float4(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0], m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1], 0.f, 1.f);
+
+			_float fCheckY = fabs(vPlayerPos.y - vThrashPos.y);
+
+			// 플레이어와 쓰레시의 높이가 1 이하 이면 다이얼로그를 시작한다.
+			if (1.f >= fCheckY)
+			{
+				m_eActionType = ACTION_DIALOG;
+
+				if (Thrash_talk01_right != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+				{
+					_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+					m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_talk01_right);
+					m_eAnimationType = ANIM_LEFT;
+				}
+
+				Throw_Dialogue();
+			}
+		}
+		else if (ACTION_DIALOG == m_eActionType)
+		{
+			if (false == Uimgr->Get_DisplayDialogue())
+			{
+
+
+
+				// 다이얼로그 한개 더띄운다.
+				// 다이얼로그가 끝났으면 trace를 이제 true로해서 따라 다니게 한다.
+				//m_eActionType = ACTION_TRACE;
+				//
+				//
+				//m_isTrace = true;
+			}
+		}
+	}
 }
 
 void CNPC_Thrash::Interact(CPlayer* _pUser)

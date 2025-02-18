@@ -88,6 +88,7 @@
 #include "MapObjectFactory.h"
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
+#include "LightningBolt.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -550,6 +551,12 @@ HRESULT CLoader::Loading_Level_Static()
         CPopuff::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* For. Prototype_GameObject_LightningBolt */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_LightningBolt"),
+        CLightningBolt::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
     /* For. Prototype_GameObject_Blocker2D */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Blocker2D"),
         CBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
@@ -650,6 +657,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_ZippyAttackAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Monster/Zippy/Zippy_Attack.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_LightningBoltAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/MapObject/LightningBolt/LightningBolt.animevt"))))
         return E_FAIL;
         if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_BookPageActionEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))
@@ -958,7 +968,6 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 		CNPC_Thrash::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
-
 
     /* Monster */
 
