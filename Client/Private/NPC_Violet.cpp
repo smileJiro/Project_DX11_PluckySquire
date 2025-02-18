@@ -365,26 +365,14 @@ void CNPC_Violet::Welcome_Jot(_float _fTimeDelta)
 		else if (ACTION_DIALOG == m_eActionType)
 		{
 
-
+			// 다이얼로그가 끝났나?
+			// 다이얼로그가 끝났는지 계속 체크한다.
 			if (false == Uimgr->Get_DisplayDialogue())
 			{
+				// 다이얼로그가 끝났으면 trace를 이제 true로해서 따라 다니게 한다.
 				m_eActionType = ACTION_TRACE;
 				m_isTrace = true;
 			}
-
-			// 다이얼로그가 끝났나?
-			// 다이얼로그가 끝났는지 계속 체크한다.
-			//if ()
-			//{
-			//
-			//}
-			//else
-			//{
-			//	// trace true로해서 따라다니게 한다.
-			//	// 다이얼로그가 끝났으면 trace를 이제 true로해서 따라 다니게 한다.
-			//	m_eActionType = ACTION_TRACE;
-			//	m_isTrace = true;
-			//}
 		}
 	}
 }

@@ -1038,6 +1038,11 @@
     </ClInclude>
     <ClInclude Include="..\Public\Magic_Hand_Body.h">
       <Filter>02.GameObjects\MagicHand</Filter>
+    <ClInclude Include="..\Public\LightningBolt.h">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Evict.h">
+      <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1620,6 +1625,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Magic_Hand_Body.cpp">
       <Filter>02.GameObjects\MagicHand</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\LightningBolt.cpp">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Evict.cpp">
+      <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

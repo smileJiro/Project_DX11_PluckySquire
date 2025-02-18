@@ -26,6 +26,7 @@ CActor::CActor(const CActor& _Prototype)
 
 HRESULT CActor::Initialize_Prototype()
 {
+	
 #ifdef _DEBUG
 	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
 	m_pEffect = new BasicEffect(m_pDevice);

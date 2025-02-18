@@ -45,8 +45,8 @@ ID3D11ShaderResourceView* CWordPrinter::Print_Word(const _wstring& _strWordText,
 	_float4	fClearColor = { 0.f,0.f,0.f,0.f };
 	D3D11_TEXTURE2D_DESC	TextureDesc = m_tSampleRenderTargetDesc;
 
-	m_tSampleRenderTargetDesc.Width = (_uint)_fSize.x;
-	m_tSampleRenderTargetDesc.Height = (_uint)_fSize.y;
+	TextureDesc.Width = (_uint)_fSize.x;
+	TextureDesc.Height = (_uint)_fSize.y;
 
 	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, nullptr, &pTexture2D)))
 		return nullptr;

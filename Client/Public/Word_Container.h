@@ -5,13 +5,19 @@
 #include "Word.h"
 
 BEGIN(Client)
+class CWord_Controller;
+
 
 class CWord_Container final : public CPartObject, public IInteractable
 {
 public:
 	typedef struct tagWord_ContainerDesc : public CPartObject::PARTOBJECT_DESC
 	{
+		_wstring strInitSectionName;
+		_uint iControllerIndex;
 		_uint iContainerIndex;
+		_float2 fOffsetPos = {0.f,0.f};
+		CWord_Controller* pOnwer;
 	}WORD_CONTAINER_DESC;
 private:
 	CWord_Container(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -32,8 +38,8 @@ public:
 	virtual void			Interact(CPlayer* _pUser) override;
 	virtual _bool			Is_Interactable(CPlayer* _pUser) override;
 	virtual _float			Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) override;
-
-public:
+	virtual void			On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
+	
 	CWord*	Get_Word() { return m_pMyWord; };
 	void	Set_Word(CWord* _pWord);
 	void	Pop_Word();
@@ -42,11 +48,10 @@ public:
 	void	Set_ContainerIndex(_uint _iIndex) { m_iContainerIndex = _iIndex; }
 
 private:
-	_uint		m_iControllerIndex = {};
-	_uint		m_iContainerIndex = {};
-	CWord*		m_pMyWord = nullptr;
-
-
+	_uint				m_iControllerIndex = {};
+	_uint				m_iContainerIndex = {};
+	CWord*				m_pMyWord = nullptr;
+	CWord_Controller*	m_pOnwer;
 public:
 	static CWord_Container* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CGameObject*			Clone(void* _pArg) override;

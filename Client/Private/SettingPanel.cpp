@@ -2,6 +2,7 @@
 #include "SettingPanel.h"
 #include "UI_Manager.h"
 #include "SettingPanelBG.h"
+#include "PlayerData_Manager.h"
 
 CSettingPanel::CSettingPanel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI(_pDevice, _pContext)
@@ -262,6 +263,19 @@ void CSettingPanel::Menu_Text()
 			wsprintf(m_tFont, TEXT("Á¾·á"));
 			m_pGameInstance->Render_Font(TEXT("Font40"), m_tFont, _float2(g_iWinSizeX / 2.f - 50.f, g_iWinSizeY / 1.7f), XMVectorSet(0.f, 0.f, 0.f, 1.f));
 		}
+
+		_wstring szBulbCount = to_wstring(CPlayerData_Manager::GetInstance()->Get_BulbCount());
+		wsprintf(m_tFont, szBulbCount.c_str());
+
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 15.f - 2.5f, g_iWinSizeY / 15.f), XMVectorSet(1.f, 1.f, 1.f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 15.f + 2.5f, g_iWinSizeY / 15.f), XMVectorSet(1.f, 1.f, 1.f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 15.f, g_iWinSizeY / 15.f - 2.5f), XMVectorSet(1.f, 1.f, 1.f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 15.f, g_iWinSizeY / 15.f + 2.5f), XMVectorSet(1.f, 1.f, 1.f, 1.0f));
+
+
+		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 15.f, g_iWinSizeY / 15.f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+		
+
 	}
 }
 

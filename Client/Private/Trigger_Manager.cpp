@@ -36,8 +36,9 @@ HRESULT CTrigger_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	Safe_AddRef(m_pContext);
 
 	Resister_Trigger_Action();
-
+	Mapping_ExecuterTag();
     return S_OK;
+
 }
 
 
@@ -50,8 +51,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 {
 	m_EventExecuterTags.resize(EVENT_EXECUTER_ACTION_TYPE_LAST);
 
-	m_EventExecuterTags[C02P0708_LIGHTNING_BOLT_SPAWN] = L"C02P0708_Spawn_LightningBolt";
-	m_EventExecuterTags[C02P0708_MONSTER_SPAWN] = L"C02P0708_Monster_Spawn";
+	m_EventExecuterTags[C02P0910_LIGHTNING_BOLT_SPAWN] = L"C02P0910_Spawn_LightningBolt";
+	m_EventExecuterTags[C02P0910_MONSTER_SPAWN] = L"C02P0910_Monster_Spawn";
 
 	return S_OK;
 }
@@ -488,20 +489,17 @@ void CTrigger_Manager::Resister_Trigger_Action()
 	m_Actions[TEXT("Active_BookMagicDust")] = [this](_wstring _wszEventTag) {
 		static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
 		};
-
 	m_Actions[TEXT("Active_MagicHand")] = [this](_wstring _wszEventTag) {
 		static_cast<CMagic_Hand*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_MagicHand"), 0))->Set_Trigger(true);
 		};
-
-
-	//m_Actions[TEXT("Create_EventExecuter")] = [this](_wstring _wszEventTag) 
-	//{
-		//CGameEventExecuter::EVENT_EXECUTER_DESC Desc = {};
-	//	Desc.strEventTag = _wszEventTag;
-	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_GameEventExecuter"),
-	//		m_pGameInstance->Get_CurLevelID(), L"Layer_Event_Executer", &Desc)))
-	//		return;
-	//};
+	m_Actions[TEXT("Create_EventExecuter")] = [this](_wstring _wszEventTag) 
+	{
+		CGameEventExecuter::EVENT_EXECUTER_DESC Desc = {};
+		Desc.strEventTag = _wszEventTag;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_GameEventExecuter"),
+			m_pGameInstance->Get_CurLevelID(), L"Layer_Event_Executer", &Desc)))
+			return;
+	};
 
 
 }
