@@ -17,6 +17,7 @@ class C2DMapWordObject final : public C2DMapObject
 		ANIMATION_CHANGE,
 		POSITION_CHANGE_X,
 		POSITION_CHANGE_Y,
+		COLLIDER_ACTIVE,
 		WORD_ACTION_LAST
 	};
 
