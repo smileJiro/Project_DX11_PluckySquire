@@ -27,6 +27,7 @@ HRESULT CWord_Container::Initialize_Prototype()
 
 HRESULT CWord_Container::Initialize(void* _pArg)
 {
+	m_iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 	WORD_CONTAINER_DESC* pDesc = static_cast<WORD_CONTAINER_DESC*>(_pArg);
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable= false;

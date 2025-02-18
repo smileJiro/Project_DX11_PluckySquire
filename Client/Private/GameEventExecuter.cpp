@@ -24,8 +24,8 @@ HRESULT CGameEventExecuter::Initialize(void* _pArg)
 
     m_iEventExcuterAction =
         CTrigger_Manager::GetInstance()->Find_ExecuterAction(pDesc->strEventTag);
-
-    if (m_iEventExcuterAction != -1 ||
+    m_strEventTag = pDesc->strEventTag;
+    if (m_iEventExcuterAction == -1 ||
         m_iEventExcuterAction == CTrigger_Manager::EVENT_EXECUTER_ACTION_TYPE_LAST)
         return E_FAIL;
 
@@ -40,7 +40,7 @@ HRESULT CGameEventExecuter::Initialize(void* _pArg)
         // 이펙트를 생성하고 다음 이벤트 실행시간 맞추게 시간 타이머 설정.
         // C020910_Bolt_Spawn에서 시간이 지나면 다음 이벤트 실행(On_End 전달 & Executer 삭제)
         //Event_2DEffectCreate(EFFECT_LIGHTNINGBOLST, _float2(10.f,10.f), SECTION_MGR->Get_Cur_Section_Key())
-        //m_fMaxTimer = 3.f;
+        m_fMaxTimer = 3.f;
         break;
     case Client::CTrigger_Manager::C02P0910_MONSTER_SPAWN:
         break;
@@ -59,16 +59,19 @@ void CGameEventExecuter::Priority_Update(_float _fTimeDelta)
 
 void CGameEventExecuter::Update(_float _fTimeDelta)
 {
-    switch ((CTrigger_Manager::EVENT_EXECUTER_ACTION_TYPE)m_iEventExcuterAction)
+    if (!Is_Dead())
     {
-    case Client::CTrigger_Manager::C02P0910_LIGHTNING_BOLT_SPAWN:
-        C020910_Bolt_Spawn(_fTimeDelta);
-        break;
-    case Client::CTrigger_Manager::C02P0910_MONSTER_SPAWN:
-        C020910_Monster_Spawn(_fTimeDelta);
-        break;
-    default:
-        break;
+        switch ((CTrigger_Manager::EVENT_EXECUTER_ACTION_TYPE)m_iEventExcuterAction)
+        {
+        case Client::CTrigger_Manager::C02P0910_LIGHTNING_BOLT_SPAWN:
+            C020910_Bolt_Spawn(_fTimeDelta);
+            break;
+        case Client::CTrigger_Manager::C02P0910_MONSTER_SPAWN:
+            C020910_Monster_Spawn(_fTimeDelta);
+            break;
+        default:
+            break;
+        }
     }
 
 }
@@ -90,7 +93,7 @@ void CGameEventExecuter::C020910_Bolt_Spawn(_float _fTimeDelta)
 
     m_fTimer += _fTimeDelta;
 
-    if (m_fMaxTimer > m_fTimer)
+    if (m_fMaxTimer < m_fTimer)
         GameEvent_End();
 }
 
@@ -102,13 +105,18 @@ void CGameEventExecuter::C020910_Monster_Spawn(_float _fTimeDelta)
 
     vPos={ -450.0f, -30.f, 0.f };
     CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Zippy"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+
+    GameEvent_End();
 }
 
 
 void CGameEventExecuter::GameEvent_End()
 {
-    CTrigger_Manager::GetInstance()->On_End(m_strEventTag);
-    Event_DeleteObject(this);
+    if (!Is_Dead())
+    {
+        CTrigger_Manager::GetInstance()->On_End(m_strEventTag);
+        Event_DeleteObject(this);
+    }
 }
 
 

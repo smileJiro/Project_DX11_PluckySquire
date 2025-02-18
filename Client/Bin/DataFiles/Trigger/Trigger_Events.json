@@ -45,16 +45,16 @@
     ]
   },
   {
-    "Trigger_EventTag": "P0910_MonsterSpawnProcess",
+    "Trigger_EventTag": "C02P0910_MonsterSpawnProcess",
     "Actions": [
       {
         "ActionTag": "Create_EventExecuter",
-        "EventTag": "P0910_Spawn_LightningBolt",
+        "EventTag": "C02P0910_Spawn_LightningBolt",
         "Is_Sequence": true
       },
       {
         "ActionTag": "Create_EventExecuter",
-        "EventTag": "P0910_Monster_Spawn",
+        "EventTag": "C02P0910_Monster_Spawn",
         "Is_Sequence": true
       }
     ]

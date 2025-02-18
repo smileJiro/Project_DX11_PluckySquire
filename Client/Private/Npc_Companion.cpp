@@ -190,7 +190,7 @@ HRESULT CNPC_Companion::Ready_Companion(const _wstring& _strLayerName, void* _pA
 	m_vecCompanionNpc.push_back(static_cast<CNPC_Violet*>(pGameObject));
 	Safe_AddRef(pGameObject);
 
-
+	wsprintf(CompanionDesc.strDialogueIndex, TEXT("Welcom_Jot_With_Thrash_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_NPC_Companion_Thrash"), CompanionDesc.iCurLevelID, _strLayerName, &pGameObject, &CompanionDesc)))
 		return E_FAIL;
 

@@ -715,6 +715,7 @@ void CSection_Manager::Free()
 	Clear_Sections();
 
 	Safe_Release(m_pBookWorldPosMap);
+	Safe_Release(m_pWordGameGenerator);
 
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pContext);
