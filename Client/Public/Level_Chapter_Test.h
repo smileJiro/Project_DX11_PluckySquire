@@ -36,6 +36,8 @@ private:
 
 	LEVEL_ID				m_eLevelID;
 
+private:
+	class CEffect2D*		m_pTestEffect = nullptr;
 public:
 	static CLevel_Chapter_Test* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eLevelID);
 	virtual void			Free() override;

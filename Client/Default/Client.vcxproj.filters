@@ -451,6 +451,9 @@
     <Filter Include="02.GameObjects\MagicHand">
       <UniqueIdentifier>{82851eaa-0ed2-49ad-bf4e-59076021e212}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Effect2D\Manager">
+      <UniqueIdentifier>{9174dc7d-17af-46a0-a543-0b036795d0e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1045,8 +1048,8 @@
     </ClInclude>
     <ClInclude Include="..\Public\Magic_Hand_Body.h">
       <Filter>02.GameObjects\MagicHand</Filter>
-	</ClInclude>
-	<ClInclude Include="..\Public\LightningBolt.h">
+    </ClInclude>
+    <ClInclude Include="..\Public\LightningBolt.h">
       <Filter>02.GameObjects\Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Evict.h">
@@ -1057,6 +1060,9 @@
     <ClInclude Include="..\Public\SideScroll_PatrolState.h" />
     <ClInclude Include="..\public\Effect2D.h">
       <Filter>02.GameObjects\Effect2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect2D_Manager.h">
+      <Filter>02.GameObjects\Effect2D\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1653,6 +1659,9 @@
     <ClCompile Include="..\Private\SideScroll_PatrolState.cpp" />
     <ClCompile Include="..\private\Effect2D.cpp">
       <Filter>02.GameObjects\Effect2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect2D_Manager.cpp">
+      <Filter>02.GameObjects\Effect2D\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
