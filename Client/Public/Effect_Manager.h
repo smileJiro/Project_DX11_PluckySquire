@@ -19,6 +19,7 @@ private:
 
 public:
 	void					Update_Manager();
+	void					Level_Exit();
 public:
 	HRESULT					Add_Effect(class CEffect_System* _pEffectSystem, _bool _isInitialActive = false);
 

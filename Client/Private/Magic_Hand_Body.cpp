@@ -23,7 +23,7 @@ HRESULT CMagic_Hand_Body::Initialize(void* _pArg)
 {
     MODELOBJECT_DESC* pDesc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
     pDesc->Build_2D_Model(pDesc->iCurLevelID, TEXT("MagicHand"), TEXT("Prototype_Component_Shader_VtxPosTex"), (_uint)PASS_VTXPOSTEX::SPRITE2D, true);
-
+    pDesc->tTransform2DDesc.fSpeedPerSec = 400.f;
     pDesc->eStartCoord = COORDINATE_2D; 
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -31,7 +31,8 @@ HRESULT CMagic_Hand_Body::Initialize(void* _pArg)
     CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P1314"), this);
 
 
-    m_pControllerTransform->Get_Transform(COORDINATE_3D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
+    m_pControllerTransform->Get_Transform(COORDINATE_3D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(2.92f, 0.f, -21.0f, 1.f));
+    m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(70.f, 45.f, 0.f, 1.f));
 
     m_tFresnels.tInner.vColor = _float4(0.01f, 0.058f, 0.028f, 1.0f);
     m_tFresnels.tInner.fExp = 0.f;
@@ -114,7 +115,11 @@ void CMagic_Hand_Body::Update(_float _fTimeDelta)
 
     //ImGui::End();
     //if (m_isTrigger)
-    m_pControllerTransform->Go_Down(_fTimeDelta);
+
+    if (COORDINATE_2D == Get_CurCoord())
+    {
+        m_pControllerTransform->Go_Down(_fTimeDelta);
+    }
 
 
     __super::Update(_fTimeDelta);
@@ -154,7 +159,9 @@ HRESULT CMagic_Hand_Body::Bind_ShaderResources()
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4));
     }
 
-    //m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fBloomThreshold", &m_fBloomThreshold, sizeof(_float));
+
+
+    \
 
     return S_OK;
 }
