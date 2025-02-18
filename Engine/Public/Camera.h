@@ -90,6 +90,7 @@ public:
 
 public:
 	virtual void	Change_Target(const _float4x4* _pTargetWorldMatrix) {};
+	virtual void	Change_Target(CGameObject* _pTarget) {};
 	virtual void	Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) {};
 	virtual INITIAL_DATA Get_InitialData() { return INITIAL_DATA(); };
 

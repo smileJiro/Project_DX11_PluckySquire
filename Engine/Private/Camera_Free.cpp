@@ -124,15 +124,49 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
 	}
 
+	//_long		MouseMove = {};
+
+
+	//if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+	//	if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
+	//	{
+	//		m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, XMVectorSet(0.f, 1.f, 0.f, 0.f));
+	//	}
+
+	//	if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
+	//	{
+	//		m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
+	//	}
+	//}
+
 	_long		MouseMove = {};
 
+	if (KEY_PRESSING(KEY::CTRL)) {
+		if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+			if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
+			{
+				m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
+			}
+		}
+	}
+	else if (KEY_PRESSING(KEY::LSHIFT)) {
 
-	if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+		//if (KEY_PRESSING(KEY::LSHIFT))
+		//	return;
+		if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+			if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
+			{
+				m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, XMVectorSet(0.f, 1.f, 0.f, 0.f));
+			}
+		}
+	}
+	else if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+
 		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
 		{
 			m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, XMVectorSet(0.f, 1.f, 0.f, 0.f));
-		}
 
+		}
 		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
 		{
 			m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
