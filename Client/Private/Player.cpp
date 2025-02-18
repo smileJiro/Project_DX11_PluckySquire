@@ -1629,7 +1629,7 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
         CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
 
         pCollider->Set_Radius(m_f2DColliderBodyRadius * 2.f);
-        pCollider->Set_Offset(_float2(0.0f, m_f2DColliderBodyRadius * 2.0f * 0.7f));
+        pCollider->Set_Offset(_float2(0.0f, m_f2DColliderBodyRadius * 2.0f * 1.0f));
     }
     else
     {

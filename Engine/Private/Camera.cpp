@@ -64,11 +64,20 @@ void CCamera::Priority_Update(_float _fTimeDelta)
 
 void CCamera::Update(_float _fTimeDelta)
 {
-	
 }
 
 void CCamera::Late_Update(_float _fTimeDelta)
 {
+	Action_PostProcessing_Fade(_fTimeDelta);
+
+	if (true == m_isBindConstBuffer)
+	{
+		m_isBindConstBuffer = false;
+		m_pGameInstance->UpdateConstBuffer(m_tDofData, m_pConstDofBuffer);
+		Bind_DofConstBuffer();
+	}
+
+	Compute_PipeLineMatrices();
 }
 
 HRESULT CCamera::Render()
@@ -258,6 +267,18 @@ void CCamera::Start_Shake_ByCount(_float _fShakeTime, _float _fShakeForce, _int 
 	m_fDelayTime = { _fDelayTime, 0.f };
 }
 
+void CCamera::Start_PostProcessing_Fade(FADE_TYPE _eFadeType, _float _fFadeTime)
+{
+	if (FADE_TYPE::FADE_LAST != m_eFadeType)
+		return;
+
+	if (FADE_TYPE::FADE_LAST <= _eFadeType)
+		return;
+
+	m_eFadeType = _eFadeType;
+	m_vFadeTime.x = _fFadeTime;
+}
+
 //void CCamera::Start_Shake(SHAKE_TYPE _eType, _float _fShakeTime, _int _iShakeCount, _float _fPower)
 //{
 //	if (true == m_isShake)
@@ -401,6 +422,54 @@ void CCamera::Action_Shake(_float _fTimeDelta)
 	}
 }
 
+void CCamera::Action_PostProcessing_Fade(_float _fTimeDelta)
+{
+	switch (m_eFadeType)
+	{
+	case Engine::CCamera::FADE_IN:
+	{
+		/*	FadeIn : 밝아지는 거*/
+		/* fFadeRatio = m_vFadeTime.y / m_vFadeTime.x; */
+		m_vFadeTime.y += _fTimeDelta;
+
+		if (m_vFadeTime.x < m_vFadeTime.y)
+		{
+			m_vFadeTime.y = 0.0f;
+			m_eFadeType = FADE_LAST;
+			m_tDofData.fFadeRatio = 1.0f;
+		}
+		else
+		{
+			m_tDofData.fFadeRatio = m_vFadeTime.y / m_vFadeTime.x;
+		}
+		m_isBindConstBuffer = true; // 해당 데이터가 true이면, 이번프레임 dof를 업데이트 
+	}
+		break;
+	case Engine::CCamera::FADE_OUT:
+	{
+		m_vFadeTime.y += _fTimeDelta;
+
+		if (m_vFadeTime.x < m_vFadeTime.y)
+		{
+			m_vFadeTime.y = 0.0f;
+			m_tDofData.fFadeRatio = 0.0f;
+			m_eFadeType = FADE_LAST;
+		}
+		else
+		{
+			m_tDofData.fFadeRatio = (1.0f - m_vFadeTime.y) / m_vFadeTime.x;
+		}
+		m_isBindConstBuffer = true; // 해당 데이터가 true이면, 이번프레임 dof를 업데이트
+	}
+		break;
+	case Engine::CCamera::FADE_LAST:
+
+		break;
+	default:
+		break;
+	}
+}
+
 //void CCamera::Action_Shake(_float _fTimeDelta)
 //{
 //	if (false == m_isShake)
@@ -467,6 +536,7 @@ HRESULT CCamera::Ready_DofConstData(CAMERA_DESC* _pDesc)
 	m_tDofData.fDofBrightness = _pDesc->fDofBrightness;
 	m_tDofData.fBaseBlurPower = _pDesc->fBaseBlurPower;
 	m_tDofData.vBlurColor = _pDesc->vBlurColor;
+	m_tDofData.fFadeRatio = 1.0f;
 	Compute_FocalLength();
 
 	if (FAILED(m_pGameInstance->CreateConstBuffer(m_tDofData, D3D11_USAGE_DYNAMIC, &m_pConstDofBuffer)))

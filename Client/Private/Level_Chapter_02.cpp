@@ -182,6 +182,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FALLINGROCK_BASIC);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
@@ -190,6 +191,10 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
+
+
+	/* 돌덩이 */
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::BLOCKER);
 
 
 	// 그룹필터 제거
@@ -439,57 +444,137 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Map()
 
 HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 {
+	{/* 돌덩이 맵 */
+		/* Falling Rock*/
+		CFallingRock::FALLINGROCK_DESC* pFallingRockDesc = new CFallingRock::FALLINGROCK_DESC; /* struct 구조체를 복사하면 가장 좋겠지만 desc 구조체 clone 구현이 좀 애매해서 현재 */
+		pFallingRockDesc->eStartCoord = COORDINATE_2D;
+		pFallingRockDesc->fFallDownEndY = RTSIZE_BOOK2D_Y * 0.5f - 50.f;
+		pFallingRockDesc->iCurLevelID = LEVEL_CHAPTER_2;
+		pFallingRockDesc->isDeepCopyConstBuffer = false;
+		pFallingRockDesc->Build_2D_Transform(_float2(0.0f, 500.f));
+
+		/* Pooling Desc */
+		Pooling_DESC tPooling_Desc; /* 삭제처리하자 */
+		tPooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_TRIGGER;
+		tPooling_Desc.iPrototypeLevelID = LEVEL_CHAPTER_2;
+		tPooling_Desc.strLayerTag = TEXT("Layer_FallingRock");
+		tPooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_FallingRock");
+		tPooling_Desc.strSectionKey = TEXT("Chapter2_P0304");
+
+		CSpawner::SPAWNER_DESC SpawnerDesc;
+		SpawnerDesc.pObjectCloneDesc = pFallingRockDesc;
+		SpawnerDesc.tPoolingDesc = tPooling_Desc;
+		SpawnerDesc.eCurLevelID = LEVEL_CHAPTER_2;
+		SpawnerDesc.eGameObjectPrototypeLevelID = LEVEL_CHAPTER_2;
+		SpawnerDesc.fSpawnCycleTime = 5.0f;
+		SpawnerDesc.iOneClycleSpawnCount = 1;
+		SpawnerDesc.vSpawnPosition = _float3(0.0f, 500.f, 0.0f);
+		SpawnerDesc.isPooling = true;
+		SpawnerDesc.strPoolingTag = TEXT("Pooling_FallingRock");
+		SpawnerDesc.ePoolingObjectStartCoord = COORDINATE_2D;
+		SpawnerDesc.strLayerTag = TEXT("Layer_FallingRock");
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
+			return E_FAIL;
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+
+		pGameObject = nullptr;
+		SpawnerDesc.fSpawnCycleTime = 4.0f;
+		SpawnerDesc.vSpawnPosition = _float3(400.0f, 700.f, 0.0f);
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
+			return E_FAIL;
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+
+		pGameObject = nullptr;
+		SpawnerDesc.fSpawnCycleTime = 7.0f;
+		SpawnerDesc.vSpawnPosition = _float3(550.0f, 1000.f, 0.0f);
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
+			return E_FAIL;
+
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+	} /* 돌덩이 맵 */
+	
+
+
+	{ /* 종 스크롤 맵 좌측방향 돌덩이 */
+	
+		/* Falling Rock*/
+		CFallingRock::FALLINGROCK_DESC* pFallingRockDesc = new CFallingRock::FALLINGROCK_DESC; /* struct 구조체를 복사하면 가장 좋겠지만 desc 구조체 clone 구현이 좀 애매해서 현재 */
+		pFallingRockDesc->eStartCoord = COORDINATE_2D;
+		pFallingRockDesc->iCurLevelID = LEVEL_CHAPTER_2;
+		pFallingRockDesc->isDeepCopyConstBuffer = false;
+		pFallingRockDesc->Build_2D_Transform(_float2(600.0f, -350.0f));
+		pFallingRockDesc->isColBound = true;
+		pFallingRockDesc->eColBoundDirection = CFallingRock::COLBOUND_LEFT;
+	
+		/* Pooling Desc */
+		Pooling_DESC tPooling_Desc; /* 삭제처리하자 */
+		tPooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_TRIGGER;
+		tPooling_Desc.iPrototypeLevelID = LEVEL_CHAPTER_2;
+		tPooling_Desc.strLayerTag = TEXT("Layer_FallingRock_Left");
+		tPooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_FallingRock");
+		tPooling_Desc.strSectionKey = TEXT("Chapter2_P0102");
+	
+		CSpawner::SPAWNER_DESC SpawnerDesc;
+		SpawnerDesc.pObjectCloneDesc = pFallingRockDesc;
+		SpawnerDesc.tPoolingDesc = tPooling_Desc;
+		SpawnerDesc.eCurLevelID = LEVEL_CHAPTER_2;
+		SpawnerDesc.eGameObjectPrototypeLevelID = LEVEL_CHAPTER_2;
+		SpawnerDesc.fSpawnCycleTime = 5.0f;
+		SpawnerDesc.iOneClycleSpawnCount = 1;
+		SpawnerDesc.vSpawnPosition = _float3(600.0f, -350.0f, 0.0f);
+		SpawnerDesc.isPooling = true;
+		SpawnerDesc.strPoolingTag = TEXT("Pooling_FallingRock_Left");
+		SpawnerDesc.ePoolingObjectStartCoord = COORDINATE_2D;
+		SpawnerDesc.strLayerTag = TEXT("Layer_FallingRock_Left");
+	
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
+			return E_FAIL;
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+	
+	} /* 종 스크롤 맵 좌측방향 돌덩이 */
+	
+	{ /* 종 스크롤 맵 우측방향 돌덩이 */
+	
 	/* Falling Rock*/
-	CFallingRock::FALLINGROCK_DESC* pFallingRockDesc = new CFallingRock::FALLINGROCK_DESC; /* struct 구조체를 복사하면 가장 좋겠지만 desc 구조체 clone 구현이 좀 애매해서 현재 */
-	pFallingRockDesc->eStartCoord = COORDINATE_2D;
-	pFallingRockDesc->fFallDownEndY = RTSIZE_BOOK2D_Y * 0.5f - 50.f;
-	pFallingRockDesc->iCurLevelID = LEVEL_CHAPTER_2;
-	pFallingRockDesc->isDeepCopyConstBuffer = true;
-	pFallingRockDesc->Build_2D_Transform(_float2(0.0f, 500.f));
-
-	/* Pooling Desc */
-	Pooling_DESC tPooling_Desc; /* 삭제처리하자 */
-	tPooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
-	tPooling_Desc.iPrototypeLevelID = LEVEL_CHAPTER_2;
-	tPooling_Desc.strLayerTag = TEXT("Layer_FallingRock");
-	tPooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_FallingRock");
-	tPooling_Desc.strSectionKey = TEXT("Chapter2_P0304");
-
-	CSpawner::SPAWNER_DESC SpawnerDesc;
-	SpawnerDesc.pObjectCloneDesc = pFallingRockDesc;
-	SpawnerDesc.tPoolingDesc = tPooling_Desc;
-	SpawnerDesc.eCurLevelID = LEVEL_CHAPTER_2;
-	SpawnerDesc.eGameObjectPrototypeLevelID = LEVEL_CHAPTER_2;
-	SpawnerDesc.fSpawnCycleTime = 5.0f;
-	SpawnerDesc.iOneClycleSpawnCount = 1;
-	SpawnerDesc.vSpawnPosition = _float3(0.0f, 500.f, 0.0f);
-	SpawnerDesc.isPooling = true;
-	SpawnerDesc.strPoolingTag = TEXT("Pooling_FallingRock");
-	SpawnerDesc.ePoolingObjectStartCoord = COORDINATE_2D;
-	SpawnerDesc.strLayerTag = TEXT("Layer_FallingRock");
-
-	CGameObject* pGameObject = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
-		return E_FAIL;
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
-
-	pGameObject = nullptr;
-	SpawnerDesc.fSpawnCycleTime = 4.0f;
-	SpawnerDesc.vSpawnPosition = _float3(400.0f, 700.f, 0.0f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
-		return E_FAIL;
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_SPAWNER);
+		CFallingRock::FALLINGROCK_DESC* pFallingRockDesc = new CFallingRock::FALLINGROCK_DESC; /* struct 구조체를 복사하면 가장 좋겠지만 desc 구조체 clone 구현이 좀 애매해서 현재 */
+		pFallingRockDesc->eStartCoord = COORDINATE_2D;
+		pFallingRockDesc->iCurLevelID = LEVEL_CHAPTER_2;
+		pFallingRockDesc->isDeepCopyConstBuffer = false;
+		pFallingRockDesc->Build_2D_Transform(_float2(-700.0f, 1350.0f));
+		pFallingRockDesc->isColBound = true;
+		pFallingRockDesc->eColBoundDirection = CFallingRock::COLBOUND_RIGHT;
 	
-	pGameObject = nullptr;
-	SpawnerDesc.fSpawnCycleTime = 7.0f;
-	SpawnerDesc.vSpawnPosition = _float3(550.0f, 1000.f, 0.0f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
-		return E_FAIL;
+		/* Pooling Desc */
+		Pooling_DESC tPooling_Desc; /* 삭제처리하자 */
+		tPooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_TRIGGER;
+		tPooling_Desc.iPrototypeLevelID = LEVEL_CHAPTER_2;
+		tPooling_Desc.strLayerTag = TEXT("Layer_FallingRock_Right");
+		tPooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_FallingRock");
+		tPooling_Desc.strSectionKey = TEXT("Chapter2_P0102");
 	
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_SPAWNER);
+		CSpawner::SPAWNER_DESC SpawnerDesc;
+		SpawnerDesc.pObjectCloneDesc = pFallingRockDesc;
+		SpawnerDesc.tPoolingDesc = tPooling_Desc;
+		SpawnerDesc.eCurLevelID = LEVEL_CHAPTER_2;
+		SpawnerDesc.eGameObjectPrototypeLevelID = LEVEL_CHAPTER_2;
+		SpawnerDesc.fSpawnCycleTime = 5.0f;
+		SpawnerDesc.iOneClycleSpawnCount = 1;
+		SpawnerDesc.vSpawnPosition = _float3(-700.0f, 1350.0f, 0.0f);
+		SpawnerDesc.isPooling = true;
+		SpawnerDesc.strPoolingTag = TEXT("Pooling_FallingRock_Right");
+		SpawnerDesc.ePoolingObjectStartCoord = COORDINATE_2D;
+		SpawnerDesc.strLayerTag = TEXT("Layer_FallingRock_Right");
 	
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
+			return E_FAIL;
 
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
 	
+	} /* 종 스크롤 맵 우측방향 돌덩이 */
 
 
 	return S_OK;

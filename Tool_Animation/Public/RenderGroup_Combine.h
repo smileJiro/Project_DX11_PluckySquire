@@ -16,6 +16,8 @@ public:
 	virtual void				Update_Imgui();
 #endif // _DEBUG
 
+private:
+	_float2 m_vFadeTime = { 1.0f, 0.0f };
 public:
 	static CRenderGroup_Combine* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pArg);
 	void Free() override;

@@ -102,6 +102,8 @@ namespace Client
 		BOOK_3D =					0x400,
 		WORD_GAME =					0x800,
 		//PORTAL =					0x1600, 일단 필요 없어져서 지웠어요 - 김지완 -
+		FALLINGROCK_BASIC =			0x1000,
+		//PORTAL =					0x800, 일단 필요 없어져서 지웠어요 - 김지완 -
 								 // 0x1000 
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬

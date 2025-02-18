@@ -442,6 +442,9 @@
     <Filter Include="02.GameObjects\Monster\Goblin\SideScroller">
       <UniqueIdentifier>{bb25a362-20c0-499e-bcaa-7458299e35d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\MapObject\2D\CollapseBlock">
+      <UniqueIdentifier>{bc967a83-da57-4805-acf3-3646f7201944}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1006,36 +1009,6 @@
     <ClInclude Include="..\Public\WordPrinter.h">
       <Filter>02.GameObjects\Word</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CollapseBlock.h" />
-    <ClInclude Include="..\Public\Effect_Manager.h">
-      <Filter>02.GameObjects\Effect\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\CollapseBlock.h" />
-    <ClInclude Include="..\Public\PlayerState_LaydownObject.h" />
-    <ClInclude Include="..\Public\2DMapWordObject.h">
-      <Filter>02.GameObjects\MapObject\2D</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_LaydownObject.h">
-      <Filter>03.Components\PlayerState</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_TurnBook.h">
-      <Filter>03.Components\PlayerState</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Goblin_SideScroller.h">
-      <Filter>02.GameObjects\Monster\Goblin\SideScroller</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\SideScroll_PatrolState.h">
-      <Filter>03.Components\FSM\State\Patrol</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\SideScroll_HitState.h">
-      <Filter>03.Components\FSM\State\Hit</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\LightningBolt.h">
-      <Filter>02.GameObjects\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_Evict.h">
-      <Filter>03.Components\PlayerState</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1584,39 +1557,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\WordPrinter.cpp">
       <Filter>02.GameObjects\Word</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\CollapseBlock.cpp" />
-    <ClCompile Include="..\Private\Effect_Manager.cpp">
-      <Filter>02.GameObjects\Effect\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\CollapseBlock.cpp" />
-    <ClCompile Include="..\Private\PlayerState_LaydownObject.cpp" />
-    <ClCompile Include="..\Private\2DMapWordObject.cpp">
-      <Filter>02.GameObjects\MapObject\2D</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\GameEventExecuter.cpp">
-      <Filter>02.GameObjects\GameEventExecuter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_LaydownObject.cpp">
-      <Filter>03.Components\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_TurnBook.cpp">
-      <Filter>03.Components\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Goblin_SideScroller.cpp">
-      <Filter>02.GameObjects\Monster\Goblin\SideScroller</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\SideScroll_PatrolState.cpp">
-      <Filter>03.Components\FSM\State\Patrol</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\SideScroll_HitState.cpp">
-      <Filter>03.Components\FSM\State\Hit</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\LightningBolt.cpp">
-      <Filter>02.GameObjects\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_Evict.cpp">
-      <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
