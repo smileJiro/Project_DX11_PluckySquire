@@ -126,7 +126,7 @@ void C2DMapActionObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
     {
     case Client::C2DMapActionObject::ACTIVE_TYPE_BREAKABLE:
     {
-        //if (L"Ǯ" == Get_Model(COORDINATE_2D))
+        //if (L"Ǯ" == m_strModelPrototypeTag[COORDINATE_2D])
         //{
         //    if (PLAYER_PROJECTILE & _pOtherCollider->Get_CollisionGroupID())
         //    {
