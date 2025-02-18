@@ -245,6 +245,7 @@
     <ClInclude Include="..\Public\PlayerState_ThrowObject.h" />
     <ClInclude Include="..\Public\PlayerState_TurnBook.h" />
     <ClInclude Include="..\Public\Portal.h" />
+    <ClInclude Include="..\Public\RabbitLunch.h" />
     <ClInclude Include="..\public\RenderGroup_PostProcessing.h" />
     <ClInclude Include="..\Public\Section_2D_Narration.h" />
     <ClInclude Include="..\Public\Npc_OnlySocial.h" />
@@ -451,6 +452,7 @@
     <ClCompile Include="..\Private\PlayerState_ThrowObject.cpp" />
     <ClCompile Include="..\Private\PlayerState_TurnBook.cpp" />
     <ClCompile Include="..\Private\Portal.cpp" />
+    <ClCompile Include="..\Private\RabbitLunch.cpp" />
     <ClCompile Include="..\private\RenderGroup_PostProcessing.cpp" />
     <ClCompile Include="..\Private\Section_2D_Narration.cpp" />
     <ClCompile Include="..\Private\NPC_OnlySocial.cpp" />

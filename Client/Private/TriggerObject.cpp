@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "TriggerObject.h"
 #include "GameInstance.h"
+#include "Section_Manager.h"
 
 
 _int CTriggerObject::g_iNextID = -1;
@@ -61,6 +62,14 @@ HRESULT CTriggerObject::Initialize(void* _pArg)
 HRESULT CTriggerObject::Render()
 {
 #ifdef _DEBUG
+    if (!m_p2DColliderComs.empty())
+    {
+        for (auto Trigger : m_p2DColliderComs)
+        {
+            if(nullptr != Trigger)
+                Trigger->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+        }
+    }
 #endif // _DEBUG
     return S_OK;
 }

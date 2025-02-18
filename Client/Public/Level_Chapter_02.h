@@ -32,6 +32,7 @@ public:
 	HRESULT					Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut = nullptr);
 	HRESULT					Ready_Layer_Effects(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Domino(const _wstring& _strLayerTag);
+	HRESULT					Ready_Layer_LunchBox(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_FallingRock(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_RayShape(const _wstring& _strLayerTag);
 private:

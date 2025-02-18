@@ -3,7 +3,7 @@
 #include "Client_Defines.h"
 
 BEGIN(Client)
-class CLightningBolt final : public CContainerObject
+class CLightningBolt final : public CContainerObject, public IAnimEventReceiver
 {
 public:
 	typedef struct tagLightningBolt_Desc : public CContainerObject::CONTAINEROBJ_DESC
@@ -13,6 +13,10 @@ public:
 
 	enum Animation2D
 	{
+		CRAWLER_01_END_LIGHTNING_CRAWLER01_END,
+		CRAWLER_01_LOOP_LIGHTNING_CRAWLER01_LOOP,
+		CRAWLER_02_END_LIGHTNING_CRAWLER02_END,
+		CRAWLER_02_LOOP_LIGHTNING_CRAWLER02DOWN,
 		LIGHTNING_BOLT,
 		LIGHTNING_DISC,
 		ANIM2D_LAST,
@@ -35,6 +39,7 @@ public:
 	virtual HRESULT		Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void Change_Animation();
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
+	void Lightning();
 
 public:
 	virtual void			On_Hit(CGameObject* _pHitter, _float _fDamg);
@@ -56,6 +61,8 @@ private:
 	_float m_fAccTime = { 0.f };
 
 	_bool m_isStop = {};
+
+	CAnimEventGenerator* m_pAnimEventGenerator = { nullptr };
 
 private:
 	virtual HRESULT					Ready_Components();

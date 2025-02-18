@@ -3,6 +3,8 @@
 #include "Section_Manager.h"
 #include "Player.h"
 #include "Collider.h"
+#include "Collider_Circle.h"
+#include "Word_Controller.h"
 
 CWord_Container::CWord_Container(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CPartObject(_pDevice,_pContext)
@@ -17,12 +19,41 @@ CWord_Container::CWord_Container(const CWord_Container& _Prototype)
 
 HRESULT CWord_Container::Initialize_Prototype()
 {
+
+
+
 	return __super::Initialize_Prototype();
 }
 
 HRESULT CWord_Container::Initialize(void* _pArg)
 {
-	return __super::Initialize(_pArg);
+	m_iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+	WORD_CONTAINER_DESC* pDesc = static_cast<WORD_CONTAINER_DESC*>(_pArg);
+	pDesc->eStartCoord = COORDINATE_2D;
+	pDesc->isCoordChangeEnable= false;
+
+	HRESULT hr = __super::Initialize(_pArg);
+
+	m_iContainerIndex = pDesc->iContainerIndex;
+	m_iControllerIndex = pDesc->iControllerIndex;
+	m_pOnwer = pDesc->pOnwer;
+
+
+	m_p2DColliderComs.resize(1);
+	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+	CircleDesc.pOwner = this;
+	CircleDesc.fRadius = 40.f;
+	CircleDesc.vScale = { 1.0f, 1.0f };
+	CircleDesc.vOffsetPosition = { 0.f, 0.f };
+	CircleDesc.isBlock = false;
+	CircleDesc.isTrigger = true;
+	CircleDesc.iCollisionGroupID = OBJECT_GROUP::WORD_GAME;
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+		TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
+		return E_FAIL;
+
+
+	return hr;
 }
 
 void CWord_Container::Priority_Update(_float _fTimeDelta)
@@ -32,18 +63,19 @@ void CWord_Container::Priority_Update(_float _fTimeDelta)
 
 void CWord_Container::Update(_float _fTimeDelta)
 {
-
-	//__super::Update(_fTimeDelta);
+	__super::Update(_fTimeDelta);
 }
 
 void CWord_Container::Late_Update(_float _fTimeDelta)
 {
-	//__super::Late_Update(_fTimeDelta);
+	__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CWord_Container::Render()
 {
-	//__super::Render();
+	#ifdef _DEBUG
+		m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+	#endif // _DEBUG
 	return S_OK;
 
 }
@@ -104,7 +136,7 @@ void CWord_Container::Interact(CPlayer* _pUser)
 
 _bool CWord_Container::Is_Interactable(CPlayer* _pUser)
 {
-	return _bool();
+	return true;
 }
 
 _float CWord_Container::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
@@ -114,12 +146,13 @@ _float CWord_Container::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 
 void CWord_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-
 	if (_pOtherCollider->Get_CollisionGroupID() == OBJECT_GROUP::PLAYER_PROJECTILE)
 	{
 		if (m_pMyWord != nullptr)
 		{
 			Pop_Word();
+		
+			m_pOnwer->Update_Text();
 		}
 	}
 
@@ -155,7 +188,7 @@ void CWord_Container::Pop_Word()
 		_vector vPos = Get_FinalPosition();
 		vPos = XMVectorSetX(vPos, XMVectorGetX(vPos) + 10.f);
 		vPos = XMVectorSetY(vPos, XMVectorGetY(vPos) - 10.f);
-		//m_pMyWord->Set_Position()
-		//m_pMyWord = nullptr;
+		m_pMyWord->Set_Position(vPos);
+		m_pMyWord = nullptr;
 	}
 }

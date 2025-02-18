@@ -86,7 +86,9 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 	// pDesc->AnimIndex를 기반으로 애니메이션 인덱스를 적용
 	m_pModelCom->Set_Animation(pDesc->lines[pDesc->LineCount].NarAnim[pDesc->AnimIndex].iAnimationIndex);
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionid, this);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->lines[pDesc->LineCount].NarAnim[pDesc->AnimIndex].strSectionid, this);
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionid, this);
 
 	// 2D 렌더링용 좌표 변환
 	_float2 vPos = m_vPos;

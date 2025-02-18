@@ -81,7 +81,6 @@ HRESULT CLunchBox::Initialize(void* _pArg)
     XMStoreFloat4x4(&ShapeData2.LocalOffsetMatrix, XMMatrixTranslation(0.f, ShapeDesc.vHalfExtents.y*2, ShapeDesc.vHalfExtents.z));
     ActorDesc.ShapeDatas.push_back(ShapeData2);
 
-
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
     ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER;
 
@@ -94,6 +93,9 @@ HRESULT CLunchBox::Initialize(void* _pArg)
 
 	//Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0.f,1.f,0.f,0.f });
     Set_PlayingAnim(false);
+    
+    m_vInteractionPointOffset = { 0.f, -ShapeDesc.vHalfExtents.z , -ShapeDesc.vHalfExtents.y *2.f - 0.7f};
+
 	return S_OK;
 }
 

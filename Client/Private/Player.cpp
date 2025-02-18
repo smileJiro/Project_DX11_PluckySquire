@@ -29,6 +29,7 @@
 #include "PlayerSword.h"    
 #include "Section_Manager.h"
 #include "UI_Manager.h"
+
     
 #include "Collider_Fan.h"
 #include "Interactable.h"
@@ -475,6 +476,7 @@ void CPlayer::Update(_float _fTimeDelta)
             m_bOnGround = false;
         }
     }
+    
     m_pInteractableObject = nullptr;
 }
 
@@ -1095,7 +1097,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         return tResult;
     }
 
-    if (Is_SwordHandling())
+	_bool bCarrying = Is_CarryingObject();
+    if (false == bCarrying && Is_SwordHandling())
     {
         //기본공격
         if (MOUSE_DOWN(MOUSE_KEY::LB))
@@ -1118,7 +1121,6 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
                 tResult.bInputStates[PLAYER_INPUT_SPINLAUNCH] = true;
         }
     }
-	_bool bCarrying = Is_CarryingObject();
     //포탈은 떨어져도 발동할 수 있어야 함. 
     _bool bHasInteractable = Has_InteractObject();
     if (bHasInteractable)
@@ -1860,9 +1862,11 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         if (COORDINATE_3D == eCoord)
         {
             //근처 포탈
-            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
-            //도미노0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
-            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+           // static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //포탈 4 0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
+            //도미노 { 6.99342966, 5.58722591, 21.8827782 }
+            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+
         }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 

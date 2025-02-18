@@ -47,8 +47,8 @@ HRESULT CDice::Initialize(void* _pArg)
 	ShapeData.eShapeType = SHAPE_TYPE::BOX;
 	ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
 	ShapeData.isTrigger = false;
-	ShapeData.FilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER;
+	ShapeData.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
+	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 
@@ -65,14 +65,14 @@ HRESULT CDice::Initialize(void* _pArg)
 	ActorDesc.ShapeDatas.push_back(ShapeData2);
 
 
-	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::BLOCKER;
+	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
 	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER;
 	DiceModelDesc->pActorDesc = &ActorDesc;
 	DiceModelDesc->eActorType = ACTOR_TYPE::DYNAMIC;
 	if (FAILED(__super::Initialize(DiceModelDesc)))
 		return E_FAIL;
 
-	m_pActorCom->Set_Mass(1.5f);
+
     return S_OK;
 }
 

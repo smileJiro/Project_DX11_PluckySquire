@@ -27,8 +27,10 @@ public:
 	virtual _float Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) override;
 	virtual void	On_Touched(CPlayer* _pPlayer) override;
 
+	_float3 Get_InteractionPoint() { return m_vInteractionPointOffset; }
 private:
 	_bool m_bPlayerInRange = false;
+	_float3 m_vInteractionPointOffset;
 public:
 	static CLunchBox* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

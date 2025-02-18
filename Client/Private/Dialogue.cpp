@@ -146,9 +146,10 @@ HRESULT CDialog::Render()
 		if (Uimgr->Get_DialogueLineIndex() < Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
 		{
 			// TODO :: 나중에 바꿔야함, 해당 값은 가변적이다.
-			_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
-
+			//_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+			_float2 vRTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
 			m_vFontColor = Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].vFontColor;
+
 
 			DisplayText(vRTSize);
 		}
@@ -299,10 +300,19 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 // 폰트 렌더 해주는 역할
 HRESULT CDialog::DisplayText(_float2 _vRTSize)
 {
+	// 가로가 기나요? 세로가 기나요?
+	_bool isColumn = { false };
+
+	if (_vRTSize.x < _vRTSize.y)
+	{
+		// 세로가 더 길어요!!
+		isColumn = true;
+	}
+
+
+
 	if (Uimgr->Get_DialogueLineIndex() >= Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines.size())
 		return E_FAIL;
-
-	
 
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -421,13 +431,24 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 
 	case LOC_MIDHIGH:   // 가운데 위에
 	{
+
+
 		_float2 vPos = { 0.f , 0.f };
+		if (false == isColumn)
+		{
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.1f;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.3f;
+			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+		}
+		else if (true == isColumn)
+		{
 
-		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
-		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.135f;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.012f;
+			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 
-
-		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+		
+		}
 	}
 	break;
 	//
@@ -520,25 +541,48 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	// 2D 기준
 	_float2 vCalPos = { 0.f, 0.f };
 	// 중점
-	_float2 vMidPoint = { _vRTSize.x / 2.f, _vRTSize.y / 2.f };
-
-
-	vCalPos.x = vMidPoint.x + vTextPos2D.x;
-	vCalPos.y = vMidPoint.y - vTextPos2D.y;
-
-
-	// 대상 이름 출력
-	wsprintf(m_tFont, currentLine.Talker.c_str());
-	pGameInstance->Render_Font(TEXT("Font20"), m_tFont, vCalPos, XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 	
 
-	vCalPos.x += _vRTSize.x * 0.03f;
-	vCalPos.y -= +_vRTSize.y * 0.1f;
-
-	// 대화 내용 출력
-	wsprintf(m_tFont, strDisplaytext.c_str());
-	pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vCalPos.x - 120.f, vCalPos.y + 120.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 	
+
+	if (isColumn == false)
+	{
+		_float2 vMidPoint = { _vRTSize.x / 2.f, _vRTSize.y / 2.f };
+
+		vCalPos.x = vMidPoint.x + vTextPos2D.x;
+		vCalPos.y = vMidPoint.y - vTextPos2D.y;
+
+		// 대상 이름 출력
+		wsprintf(m_tFont, currentLine.Talker.c_str());
+		pGameInstance->Render_Font(TEXT("Font20"), m_tFont, vCalPos, XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+
+
+		vCalPos.x += _vRTSize.x * 0.03f;
+		vCalPos.y -= +_vRTSize.y * 0.1f;
+
+		// 대화 내용 출력
+		wsprintf(m_tFont, strDisplaytext.c_str());
+		pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vCalPos.x - 120.f, vCalPos.y + 120.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+
+	}
+	else if (isColumn == true)
+	{
+		_float2 vMidPoint = { _vRTSize.x / 2.f, _vRTSize.y / 2.f };
+		vCalPos.x = vMidPoint.x + vTextPos2D.x;
+		vCalPos.y = vMidPoint.y - vTextPos2D.y;
+
+		wsprintf(m_tFont, currentLine.Talker.c_str());
+		pGameInstance->Render_Font(TEXT("Font20"), m_tFont, vCalPos, XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+
+
+		//vCalPos.x += _vRTSize.x * 0.03f;
+		//vCalPos.y += +_vRTSize.y * 0.1f;
+
+		// 대화 내용 출력
+		wsprintf(m_tFont, strDisplaytext.c_str());
+		pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vCalPos.x - 50.f, vCalPos.y + 50.f) , XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+	}
+
 	Safe_Release(pGameInstance);
 
 	return S_OK;
