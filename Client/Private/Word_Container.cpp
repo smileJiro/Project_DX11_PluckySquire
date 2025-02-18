@@ -27,8 +27,8 @@ HRESULT CWord_Container::Initialize_Prototype()
 
 HRESULT CWord_Container::Initialize(void* _pArg)
 {
-	m_iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 	WORD_CONTAINER_DESC* pDesc = static_cast<WORD_CONTAINER_DESC*>(_pArg);
+	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable= false;
 
@@ -141,7 +141,8 @@ _bool CWord_Container::Is_Interactable(CPlayer* _pUser)
 
 _float CWord_Container::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 {
-	return _float();
+	return XMVector3Length(m_pControllerTransform->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)
+		- _pUser->Get_ControllerTransform()->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
 }
 
 void CWord_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
