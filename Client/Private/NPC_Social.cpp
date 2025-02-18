@@ -268,7 +268,7 @@ HRESULT CNPC_Social::Ready_Components()
 	AABBDesc.vExtents = { m_vCollsionScale.x, m_vCollsionScale.y };
 	AABBDesc.vScale = { 1.0f, 1.0f };
 	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.5f };
-	AABBDesc.isBlock = false;
+	AABBDesc.isBlock = true;
 	AABBDesc.isTrigger = false;
 	AABBDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
