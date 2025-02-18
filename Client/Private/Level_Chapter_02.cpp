@@ -148,6 +148,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_RayShape (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
+	if (FAILED(Ready_Layer_Hand(TEXT("Layer_MagicHand"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_MagicHand (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 
 	///* Test CollapseBlock */
 	//{
@@ -1516,6 +1521,21 @@ HRESULT CLevel_Chapter_02::Ready_Layer_RayShape(const _wstring& _strLayerTag)
 	Desc.tTransform3DDesc.vInitialPosition = _float3(42.f, 0.35f, 2.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_RayShape"), m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Hand(const _wstring& _strLayerTag)
+{
+	CContainerObject::CONTAINEROBJ_DESC ContainerDesc = {};
+	ContainerDesc.eStartCoord = COORDINATE_3D;
+	ContainerDesc.iCurLevelID = m_eLevelID;;
+	ContainerDesc.iNumPartObjects = 2;
+	ContainerDesc.isCoordChangeEnable = false;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_MagicHand"),
+		m_eLevelID, _strLayerTag, &ContainerDesc)))
 		return E_FAIL;
 
 	return S_OK;

@@ -68,6 +68,7 @@ public:
 	/// </summary>
 	/// <param name="_strSectionTag">섹션 키</param>
 	/// <param name="_isActive">활성화 여부</param>
+/// 
 	HRESULT							SetActive_Section(CSection* _pSection, _bool _isActive);
 	HRESULT							SetActive_Section(const _wstring& _strSectionTag, _bool _isActive);
 

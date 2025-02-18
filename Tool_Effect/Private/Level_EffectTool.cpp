@@ -243,6 +243,7 @@ HRESULT CLevel_EffectTool::Ready_Layer_Model(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	pOut->Set_Active(false);
+	pOut->Set_Position(XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
 	m_ModelObjects.push_back(pOut);
 
 
@@ -262,6 +263,7 @@ HRESULT CLevel_EffectTool::Ready_Layer_Model(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	pOut->Set_Active(false);
+	pOut->Set_Position(XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
 	m_ModelObjects.push_back(pOut);
 
 	//

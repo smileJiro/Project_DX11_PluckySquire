@@ -255,7 +255,7 @@ void CEmitter::Set_Matrix()
 		SpawnMatrix = XMMatrixIdentity();
 
 
-	XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]) * SpawnMatrix);
+	XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * SpawnMatrix * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
 
 }
 
