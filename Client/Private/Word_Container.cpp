@@ -117,12 +117,15 @@ void CWord_Container::Interact(CPlayer* _pUser)
 {
 	if (_pUser->Is_CarryingObject())
 	{
-		//CCarriableObject* pObj =  _pUser->Get_CarryingObject();
-		//CWord* pWord = dynamic_cast<CWord*>(pObj);
-		//if (nullptr != pWord)
-		//{
-		//	Set_Word(pWord);
-		//}
+		CCarriableObject* pObj =  _pUser->Get_CarryingObject();
+		CWord* pWord = dynamic_cast<CWord*>(pObj);
+		if (nullptr != pWord)
+		{
+			Set_Word(pWord);
+			m_pOnwer->Update_Text();
+			_pUser->Set_CarryingObject(nullptr);
+			pWord->Set_Carrier(nullptr);
+		}
 	}
 	else 
 	{
@@ -136,7 +139,7 @@ void CWord_Container::Interact(CPlayer* _pUser)
 
 _bool CWord_Container::Is_Interactable(CPlayer* _pUser)
 {
-	return true;
+	return _pUser->Is_CarryingObject();
 }
 
 _float CWord_Container::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
