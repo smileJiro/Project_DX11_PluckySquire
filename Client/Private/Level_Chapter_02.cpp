@@ -31,6 +31,7 @@
 #include "Soldier_Bomb.h"
 #include "ButterGrump.h"
 #include "Goblin_SideScroller.h"
+#include "LightningBolt.h"
 
 
 #include "RayShape.h"
@@ -1166,6 +1167,19 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0910"), pObject);
+
+
+	//CLightningBolt::LIGHTNINGBOLT_DESC LightningBolt_Desc;
+	//LightningBolt_Desc.iCurLevelID = m_eLevelID;
+	//LightningBolt_Desc.tTransform2DDesc.vInitialPosition = _float3(500.0f, 10.f, 0.f);
+	//LightningBolt_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_LightningBolt"), m_eLevelID, _strLayerTag, &pObject, &LightningBolt_Desc)))
+	//	return E_FAIL;
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0910"), pObject);
+
+
 
 	Zippy_Desc.tTransform2DDesc.vInitialPosition = _float3(-450.0f, -30.f, 0.f);
 

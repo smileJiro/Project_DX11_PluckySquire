@@ -1030,8 +1030,8 @@
     <ClInclude Include="..\Public\SideScroll_HitState.h">
       <Filter>03.Components\FSM\State\Hit</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\GameEventExecuter.h">
-      <Filter>02.GameObjects\GameEventExecuter</Filter>
+    <ClInclude Include="..\Public\LightningBolt.h">
+      <Filter>02.GameObjects\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1608,6 +1608,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\SideScroll_HitState.cpp">
       <Filter>03.Components\FSM\State\Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\LightningBolt.cpp">
+      <Filter>02.GameObjects\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
