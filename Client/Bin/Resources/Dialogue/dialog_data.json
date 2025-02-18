@@ -967,6 +967,28 @@
 			]
 		},
 		{
+			"id": "Hungry_Rabbit_01",
+			"Section": "Chapter2_SKSP_01",
+			"lines": [
+				{
+					"Portrait": 1,
+					"Talker": "배고픈 토끼",
+					"BG": 2,
+					"location": 3,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "배고파요...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
 			"id": "Event_Dialogue_01",
 			"lines": [
 				{
