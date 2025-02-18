@@ -18,6 +18,24 @@ cbuffer BasicPixelConstData : register(b0)
     int invertNormalMapY;       // 16
 }
 
+
+struct Fresnel
+{
+    float4 vColor;
+    
+    float fExp;
+    float fBaseReflect;
+    float fStrength;
+    float fDummy;
+};
+
+cbuffer MultiFresnels : register(b1)
+{
+    Fresnel InnerFresnel;
+    Fresnel OuterFresnel;
+}
+
+
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 /* Bone Matrix */
@@ -102,9 +120,19 @@ VS_OUT VS_MAIN_RENDERTARGET_UV(VS_IN In)
     vector vNormal = mul(float4(In.vNormal, 0.0), matBones);
     vector vTangent = mul(float4(In.vTangent, 0.0), matBones);
 
+    float2 vUV = lerp(g_fStartUV, g_fEndUV, In.vTexcoord);
+
+    if (g_iFlag == RT_RENDER_ROTATE)
+    {
+        float2 vRotate;
+        vRotate.x = 1.f - vUV.y;
+        vRotate.y = vUV.x;
+        vUV = vRotate;
+    }
+
     Out.vPosition = mul(vPosition, matWVP);
     Out.vNormal = normalize(mul(vNormal, g_WorldMatrix));
-    Out.vTexcoord = lerp(g_fStartUV, g_fEndUV, In.vTexcoord);
+    Out.vTexcoord = vUV;
     Out.vWorldPos = mul(vPosition, g_WorldMatrix);
     Out.vProjPos = Out.vPosition;
     Out.vTangent = vTangent;
@@ -116,6 +144,7 @@ struct VS_WORLDOUT
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
+    float3 vWorldNormal : TEXCOORD2;
 };
 
 VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
@@ -137,16 +166,25 @@ VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
     vector vTangent = mul(float4(In.vTangent, 0.0), matBones);
     
     // uv를 를 직접 position으로 사용
-    float4 vNDCCoord = float4(In.vTexcoord.xy, 0.0f, 1.0f);
+
+    float4 vNDCCoord = float4(In.vTexcoord, 0.0f, 1.0f);
     vNDCCoord.x *= 0.5f;
     vNDCCoord.x += g_fStartUV.x;
+
+    if (g_iFlag == RT_RENDER_ROTATE)
+    {
+        float temp = vNDCCoord.x;
+        vNDCCoord.x = 1.f - vNDCCoord.y;
+        vNDCCoord.y = temp;
+    }
+
     vNDCCoord = float4(vNDCCoord.xy * 2.0f - 1.0f, 0.0f, 1.0f);
     vNDCCoord.y *= -1.0f;
     
     Out.vPosition = vNDCCoord;
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(vPosition, g_WorldMatrix);
-
+    Out.vWorldNormal = normalize(mul(vNormal, g_WorldMatrix));
     return Out;
 }
 
@@ -175,7 +213,7 @@ PS_OUT PS_MAIN(PS_IN In)
 
     // 조명에 대한 방향벡터를 뒤집은 후, 노말벡터와의 내적을 통해,
     // shade 값을 구한다. 여기에 Ambient color 역시 더한다. 
-    float3 vAlbedo = useAlbedoMap ? g_AlbedoTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f).rgb : Material.Albedo;
+    float4 vAlbedo = useAlbedoMap ? g_AlbedoTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f) : Material.Albedo;
     float3 vNormal = useNormalMap ? Get_WorldNormal(g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz, In.vNormal.xyz, In.vTangent.xyz, 0) : In.vNormal.xyz;
     float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
     
@@ -186,9 +224,11 @@ PS_OUT PS_MAIN(PS_IN In)
         vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
     }
 
+    if (vAlbedo.a < 0.1f)
+        discard;
     
-    Out.vDiffuse = float4(vAlbedo, 1.0f);
-    // 1,0,0
+    Out.vDiffuse = vAlbedo;
+    // 1,0,0 
     // 1, 0.5, 0.5 (양의 x 축)
     // 0, 0.5, 0.5 (음의 x 축)
     Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
@@ -223,6 +263,7 @@ struct PS_WORLDIN
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
+    float3 vWorldNormal : TEXCOORD2;
 };
 struct PS_WORLDOUT
 {
@@ -232,7 +273,66 @@ struct PS_WORLDOUT
 PS_WORLDOUT PS_WORLDPOSMAP(PS_WORLDIN In)
 {
     PS_WORLDOUT Out = (PS_WORLDOUT) 0;
+    
+    float fNormalDirectionFlag = NONEWRITE_NORMAL;
+    // +X, -X
+    if (pow(In.vWorldNormal.x, 2) > pow(In.vWorldNormal.y, 2) && pow(In.vWorldNormal.x, 2) > pow(In.vWorldNormal.z, 2))
+    {
+        fNormalDirectionFlag = (In.vWorldNormal.x) > 0 ? POSITIVE_X : NEGATIVE_X;
+    }
+    // +Y, -Y
+    else if (pow(In.vWorldNormal.y, 2) > pow(In.vWorldNormal.x, 2) && pow(In.vWorldNormal.y, 2) > pow(In.vWorldNormal.z, 2))
+    {
+        fNormalDirectionFlag = (In.vWorldNormal.y) > 0 ? POSITIVE_Y : NEGATIVE_Y;
+    }
+    // +Z, -Z
+    else if (pow(In.vWorldNormal.z, 2) > pow(In.vWorldNormal.x, 2) && pow(In.vWorldNormal.z, 2) > pow(In.vWorldNormal.y, 2))
+    {
+        fNormalDirectionFlag = (In.vWorldNormal.z) > 0 ? POSITIVE_Z : NEGATIVE_Z;
+    }
+
+    
     Out.vWorldPos = In.vWorldPos;
+    Out.vWorldPos.a = fNormalDirectionFlag;
+    return Out;
+}
+
+
+struct PS_COLOR
+{
+    float4 vColor : SV_TARGET0;
+};
+
+float Compute_Fresnel(float3 vNormal, float3 vViewDir, float fBaseReflect, float fExponent, float fStrength)
+{
+    float fNDotV = saturate(dot(vNormal, vViewDir));
+    
+    float fFresnelFactor = fBaseReflect + (1.f - fBaseReflect) * pow(1 - fNDotV, fExponent);
+    
+    return saturate(fFresnelFactor * fStrength);
+}
+
+float3 g_fBrightness = float3(0.2126, 0.7152, 0.0722);
+float g_fBloomThreshold;
+
+PS_COLOR PS_FRESNEL(PS_IN In)
+{
+    PS_COLOR Out = (PS_COLOR) 0;
+    
+    float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
+    float fLength = length(vViewDirection);
+    vViewDirection = normalize(vViewDirection);
+    
+    float InnerValue = Compute_Fresnel(-In.vNormal.xyz, vViewDirection, InnerFresnel.fBaseReflect, InnerFresnel.fExp, InnerFresnel.fStrength);
+    float OuterValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OuterFresnel.fBaseReflect, OuterFresnel.fExp, OuterFresnel.fStrength);
+    
+    Out.vColor = (InnerFresnel.vColor * InnerValue + OuterValue * OuterFresnel.vColor)
+    * fLength;
+    Out.vColor.a = 1.f;
+
+ 
+    //Out.vBloom = float4(Out.vColor.rgb * fBrightness, Out.vColor.a * fBrightness);
+    
     return Out;
 }
 
@@ -302,5 +402,14 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_WORLDPOSMAP();
     }
-
+    
+    pass Fresnel // 6
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_FRESNEL();
+    }
 }

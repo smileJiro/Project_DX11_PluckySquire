@@ -75,6 +75,7 @@ public:
 
 	_bool				Move_To_NextArm(_float _fTimeDelta);
 	_bool				Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook = false);
+	_bool				Move_To_CustomArm(ARM_DATA* _pCustomData, _float _fTimeDelta);
 	_bool				Move_To_PreArm(_float _fTimeDelta);						// Stack에 저장해둔 Arm으로
 	_bool				Move_To_FreezeExitArm(_float _fRatio, _fvector _vFreezeExitArm);
 

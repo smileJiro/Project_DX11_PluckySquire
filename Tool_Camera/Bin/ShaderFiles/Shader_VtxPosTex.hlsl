@@ -57,11 +57,15 @@ VS_OUT VS_SPRITE2D(VS_IN In)
     matWVP = mul(matWV, g_ProjMatrix);
 
     Out.vPosition = mul(float4(In.vPosition, 1.f), matWVP);
+    
+
     Out.vTexcoord = clamp(In.vTexcoord, g_vSpriteStartUV, g_vSpriteEndUV);
-
-
-    return Out;
+    Out.vTexcoord = clamp(Out.vTexcoord, float2(0, 0),float2(1, 1));
+    return
+Out;
 }
+
+
 // (장치가 수행)Rendering PipeLine : Projection 변환 (W 나누기 연산 진행) // 
 // (장치가 수행)Rendering PipeLine : Viewport 변환 // 
 // (장치가 수행)Rendering PipeLine : Rasterization // 
@@ -145,7 +149,7 @@ PS_OUT PS_DIALOGUE_BG_COLOR(PS_IN In)
     
     Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
     
-    if (1.f == Out.vColor.r && 1.f == Out.vColor.g && 1.f == Out.vColor.b)
+    if (0.99f <= Out.vColor.r && 0.99f <= Out.vColor.g && 0.99f <= Out.vColor.b)
     {
         Out.vColor.rgb = g_vColors.rgb;
     }
@@ -161,9 +165,7 @@ PS_OUT PS_DIALOGUE_BG_COLOR(PS_IN In)
 PS_OUT PS_MIX_COLOR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-
     Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
-
 
     if (Out.vColor.a < 0.01f || g_vColors.w < 0.2f)
         discard;
@@ -182,7 +184,7 @@ PS_OUT PS_MIX_COLOR(PS_IN In)
 technique11 DefaultTechnique
 {
 	/* 우리가 수행해야할 정점, 픽셀 셰이더의 진입점 함수를 지정한다. */
-    pass DefaultPass
+    pass DefaultPass //0
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -192,7 +194,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass AlphaBlendPass
+    pass AlphaBlendPass  // 1
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -202,7 +204,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass AlphaBlendZwriteNonePass
+    pass AlphaBlendZwriteNonePass  // 2 
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_WriteNone, 0);
@@ -212,7 +214,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass ColorAlpha
+    pass ColorAlpha  // 3
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -222,7 +224,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_COLOR();
     }
 
-    pass Sprite2D
+    pass Sprite2D  // 4
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_None, 0);
@@ -232,7 +234,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass UI_POINTSAMPLE
+    pass UI_POINTSAMPLE  // 5
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_None, 0);
@@ -242,7 +244,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_UIPOINTSAMPLE();
     }
 
-    pass UI_ALPHA
+    pass UI_ALPHA  // 6
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_None, 0);
@@ -252,7 +254,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_UIALPHA();
     }
     
-    pass MAPOBJECT_MIXCOLOR
+    pass MAPOBJECT_MIXCOLOR  // 7 
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_None, 0);
@@ -262,7 +264,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MIX_COLOR();
     }
 
-    pass DIALOGUE_BG_COLOR
+    pass DIALOGUE_BG_COLOR  // 8
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_None, 0);
@@ -271,5 +273,4 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_DIALOGUE_BG_COLOR();
     }
-
 }

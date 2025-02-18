@@ -27,10 +27,14 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
-	void					Set_Trigger(_bool _isTrigger) { m_isTrigger = _isTrigger; }
+	void					Set_Start(_bool _isStart) { m_isStart = _isStart; }
+	void					Show_3DHand();
 
 private:
-	_bool					m_isTrigger = { false };
+	_bool					m_isStart = { false };
+	_bool					m_isCaught = { false };
+	_bool					m_isReadyFlip = { false };
+	_float					m_fFlipDelayTime = 0.f;
 
 
 private:

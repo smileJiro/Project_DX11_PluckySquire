@@ -156,7 +156,7 @@ HRESULT CWordGame_Generator::WordGame_Generate(CSection_2D* _pSection, const _ws
 						return E_FAIL;
 					if (nullptr != pGameObject)
 					{
-						_pSection->Add_GameObject_ToSectionLayer(pGameObject, SECTION_2D_PLAYMAP_OBJECT);
+						_pSection->Add_GameObject_ToSectionLayer(pGameObject, SECTION_2D_PLAYMAP_WORDOBJ);
 					}
 
 				}
@@ -174,7 +174,7 @@ HRESULT CWordGame_Generator::WordGame_Generate(CSection_2D* _pSection, const _ws
 						return E_FAIL;
 					else
 					{
-						_pSection->Add_GameObject_ToSectionLayer(pContainer, SECTION_2D_PLAYMAP_OBJECT);
+						_pSection->Add_GameObject_ToSectionLayer(pContainer, SECTION_2D_PLAYMAP_WORDCONTROLLER);
 						Event_CreateObject(eCurLevelID,
 							L"Layer_Word",
 							pContainer);

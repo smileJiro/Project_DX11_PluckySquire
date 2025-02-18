@@ -27,7 +27,7 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->isCoordChangeEnable = true;
     pDesc->iNumPartObjects = PART_END;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);

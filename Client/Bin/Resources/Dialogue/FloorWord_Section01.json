@@ -1,6 +1,7 @@
 {
 	"Texts": [
 		{
+			"strSection": "Chapter1_P0506",
 			"PosX": 996,
 			"PosY": -3,
 			"Text": "숲으로 가는 입구가\n부르고 있습니다...",
@@ -11,6 +12,7 @@
 			}
 		},
 		{
+			"strSection": "Chapter1_P0506",
 			"PosX": 0,
 			"PosY": 0,
 			"Text": "마당에서 떠들석한\n소리가 났어요.",
@@ -19,6 +21,28 @@
 				"defaultSize": 30,
 				"highlightSize": 40
 			}
+		},
+		{
+			"strSection": "Chapter1_P0708",
+			"PosX": 270,
+			"PosY": -3,
+			"Text": "앞에는 고블린이\n있었어요",
+			"highlight": {
+				"substring": "",
+				"defaultSize": 30,
+				"highlightSize": 40
+			}
+		},
+		{
+			"strSection": "Chapter2_P0708",
+			"PosX": 0,
+			"PosY": 46,
+			"Text": "공기 중에\n이상한 찌릿함이\n감돌았습니다.",
+			"highlight": {
+				"substring": "",
+				"defaultSize": 30,
+				"highlightSize": 40
+			}
 		}
 	]
-}0
+}

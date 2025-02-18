@@ -1,0 +1,22 @@
+{
+    "CutScene": [],
+    "KeyFrame": [
+        {
+            "AtOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "At_RatioType": 3,
+            "Is_LookTarget": true,
+            "Position": [
+                2.8647139072418213,
+                13.304444313049316,
+                -19.695343017578125
+            ],
+            "TimeStamp": 0.30000001192092896,
+            "Zoom_Level": 6,
+            "Zoom_RatioType": 3
+        }
+    ]
+}

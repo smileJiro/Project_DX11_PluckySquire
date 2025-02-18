@@ -52,6 +52,12 @@ public: /* 2D, 3D */
 	void Set_Animation(_uint iIdx, _bool _bReverse = false);
 	void Switch_Animation(_uint iIdx, _bool _bReverse = false);
 	void To_NextAnimation();
+
+	HRESULT			Change_Model(COORDINATE _eCoord, _uint _eProtoLevel, const _wstring _strModelTag);
+
+
+
+
 public:
 	HRESULT Binding_TextureIndex_To_3D(_uint _iIndex, _uint _eTextureType = aiTextureType_DIFFUSE, _uint _iMaterialIndex = 0);
 	_uint Get_TextureIndex_To_3D(_uint _eTextureType = aiTextureType_DIFFUSE , _uint _iMaterialIndex = 0);
