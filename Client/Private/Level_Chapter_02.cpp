@@ -93,21 +93,21 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-	{
-		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
-	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
-	{
-		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
-	if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
-	{
-		MSG_BOX(" Failed Ready_Layer_UI (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
+	//if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
+	//if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_UI (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 	//if (FAILED(Ready_Layer_NPC(TEXT("Layer_NPC"))))
 	//{
 	//	MSG_BOX(" Failed Ready_Layer_NPC (Level_Chapter_02::Initialize)");
@@ -646,8 +646,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	// Test(PlayerItem: Glove, Stamp)
-	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(10.f, 10.f, -10.f));
-	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(10.f, 10.f, -10.f));
+	//CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 	return S_OK;
 }

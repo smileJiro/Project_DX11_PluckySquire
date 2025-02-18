@@ -1672,8 +1672,8 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         {
             //근처 포탈
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
-            //도미노
-            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 15.f, 6.5f, 21.5f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //도미노0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
+            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
         }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 

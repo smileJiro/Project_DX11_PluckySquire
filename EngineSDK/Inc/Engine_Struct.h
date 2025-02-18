@@ -356,6 +356,7 @@ namespace Engine
 	{
 		_float3				vPosition = {};
 		_float3				vAt = {};
+		_float				fLength = {};
 		_uint				iZoomLevel = {};
 
 		_float				fInitialTime = {};
