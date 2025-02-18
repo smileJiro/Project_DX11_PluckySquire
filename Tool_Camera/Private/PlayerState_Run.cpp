@@ -15,11 +15,11 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 {
 	COORDINATE eCoord =  m_pOwner->Get_CurCoord();
 
-	if (MOUSE_DOWN(MOUSE_KEY::LB))
-	{
-		m_pOwner->Set_State(CTest_Player::ATTACK);
-		return;
-	}
+	//if (MOUSE_DOWN(MOUSE_KEY::LB))
+	//{
+	//	m_pOwner->Set_State(CTest_Player::ATTACK);
+	//	return;
+	//}
 
 
 
