@@ -1,6 +1,7 @@
 #pragma once
 #include "Base.h"
 #include "Section_2D.h"
+#include "WordGame_Generator.h"
 
 BEGIN(Engine)
 class CGameInstance;
@@ -26,6 +27,8 @@ public:
 	HRESULT							Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);	// Clear Current Level Section;
 	HRESULT							Level_Enter(_int _iChangeLevelID);	// Create Next Level Section;
 
+	#pragma region 섹션 기본 함수 
+
 public:
 	/// <summary>
 	/// 섹션 키로 섹션 객체를 직접 찾는다.
@@ -41,10 +44,10 @@ public:
 	HRESULT							Add_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject, _uint _iLayerIndex = SECTION_2D_PLAYMAP_OBJECT);
 
 	/// <summary>
-/// 섹션 키로 해당 섹션에 해당 오브젝트를 제거한다.
-/// </summary>
-/// <param name="_strSectionTag">섹션 키</param>
-/// <param name="_pGameObject">오브젝트</param>
+	/// 섹션 키로 해당 섹션에 해당 오브젝트를 제거한다.
+	/// </summary>
+	/// <param name="_strSectionTag">섹션 키</param>
+	/// <param name="_pGameObject">오브젝트</param>
 	HRESULT							Remove_GameObject_FromSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject);
 	
 	/// <summary>
@@ -76,12 +79,14 @@ public:
 	/// <summary>
 	/// 해당 섹션의 렌더타겟 사이즈를 가져온다.
 	/// </summary>
-	/// <param name="_strSectionTag">섹션 키</param>
+	/// <param name="_strSectionTag">섹션 태그</param>
 	_float2							Get_Section_RenderTarget_Size(const _wstring _strSectionKey);
 
-public :
-#pragma region 	활성화 섹션 관련 함수.
+#pragma endregion
 
+	#pragma region 	활성화 섹션 관련 함수
+
+public :
 	/// <summary>
 	/// 해당 섹션으로 책 활성화 섹션을 변경한다..
 	/// </summary>
@@ -171,14 +176,42 @@ public :
 
 #pragma endregion
 
+	#pragma region 월드맵 좌표변환 관련 함수 
 public:
-	// 간접사용 *(추후 통합)
+	/// <summary>
+	/// 해당 태그의 섹션의 월드맵을 통해, 2D 좌표를 3D 좌표로 변환한다.
+	/// </summary>
+	/// <param name="_strSectionTag">섹션 태그</param>
+	/// <param name="_v2DTransformPosition">2D 좌표</param>
 	_vector Get_WorldPosition_FromWorldPosMap(const _wstring& _strSectionTag,  _float2 _v2DTransformPosition);
+	/// <summary>
+	/// 현재 책의 메인섹션 기준으로 2D 좌표를 3D 좌표로 변환한다.
+	/// </summary>
+	/// <param name="_v2DTransformPosition">2D 좌표</param>
 	_vector Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransformPosition);
-	
-	// 실사용
-	_vector Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* m_pTargetTexture, _float2 _v2DTransformPosition);
-public:
+
+	/// <summary>
+	/// 월드맵으로 2D 좌표를 3D 좌표로 변환한다. 
+	/// </summary>
+	/// <param name="_pTargetTexture">월드맵 텍스쳐</param>
+	/// <param name="_v2DTransformPosition">2D 좌표</param>
+	_vector Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* _pTargetTexture, _float2 _v2DTransformPosition);
+
+
+	/// <summary>
+	/// 월드맵 Priority ID를 발급한다.
+	/// </summary>
+	_uint							Generate_WorldPos_Priority_ID() { return m_iWorldPriorityGenKey++; }
+
+	/// <summary>
+	/// 해당하는 태그의 섹션 2D 맵에, 해당 모델의 uv를 통해 월드맵을 캡쳐하도록 요청한다.
+	/// </summary>
+	HRESULT							Register_WorldCapture(const _wstring& _strSectionTag, CModelObject* _pObject);
+
+
+#pragma endregion
+
+	#pragma region 섹션 관련 Get / Set
 	// Get
 	_int							Get_SectionLeveID() { return m_iCurLevelID; }
 	/// <summary>
@@ -202,9 +235,13 @@ public:
 	// Set
 	void							Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPosMap);
 
+#pragma endregion
 
-	_uint							Generate_WorldPos_Priority_ID() { return m_iWorldPriorityGenKey++; }
-	HRESULT							Register_WorldCapture(const _wstring& _strSectionTag, CModelObject* _pObject);
+	#pragma region 낱말 퍼즐
+public :
+	CWordGame_Generator* Get_Word_Generator() { return m_pWordGameGenerator; }
+	HRESULT				Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType);
+#pragma endregion
 
 
 private:
@@ -214,32 +251,46 @@ private:
 	/// <param name="_strSectionTag">기준 활성화 섹션 키</param>
 	void							Main_Section_Active_Process(const _wstring& _strSectionTag);
 
+	/// <summary>
+	/// 현재 섹션을 전부 클리어.
+	/// </summary>
+	void							Clear_Sections();
+
+	/// <summary>
+	/// json을 통해 섹션을 로드해 온다.
+	/// </summary>
+	/// <param name="_strJsonPath">json 경로</param>
+	HRESULT							Ready_CurLevelSections(const _wstring& _strJsonPath);
+
 private:
 	ID3D11Device*					m_pDevice = nullptr;
 	ID3D11DeviceContext*			m_pContext = nullptr;
 	CGameInstance*					m_pGameInstance = nullptr;
-private:
-	
-	// 발급할 Prority Key Start 지점.
-	_uint							m_iPriorityGenKey = PR2D_SECTION_START;
-	_uint							m_iWorldPriorityGenKey = PRWORLD_SKETCH_START;
+
 	// 전체 섹션 목록
 	map<_wstring, CSection*>		m_CurLevelSections;
 
 	// 현재 레벨 
 	LEVEL_ID						m_iCurLevelID = LEVEL_END;
-	
+
 	// 현재 책에서 재생중인 섹션
 	CSection_2D*					m_pCurSection = nullptr;
 
-private: 
+	// 낱말퍼즐 발급 클래스
+	CWordGame_Generator*			m_pWordGameGenerator = nullptr;
+	
+	// 메인 책 월드맵 
 	ID3D11Texture2D*				m_pBookWorldPosMap = nullptr; // 더 좋은 위치가 있다면 추후 스케치 스페이스까지 추가하고 변경해주삼.(02.06 태웅)
-																  // 없는듯
-#pragma region 임시, 2D모델 Info
+							
 
+	// 발급할 Prority Key Start 지점.
+	_uint							m_iPriorityGenKey = PR2D_SECTION_START;
+	_uint							m_iWorldPriorityGenKey = PRWORLD_SKETCH_START;
 
+	// 없는듯
+
+	#pragma region 2D모델 Info 관련 
 HRESULT Ready_CurLevelSectionModels(const _wstring& _strJsonPath);
-
 public :
 	typedef struct tag2DModelInfo
 	{
@@ -265,9 +316,6 @@ public:
 #pragma endregion
 
 
-private:
-	void							Clear_Sections();
-	HRESULT							Ready_CurLevelSections(const _wstring& _strJsonPath);
 public:
 	void Free() override;
 };

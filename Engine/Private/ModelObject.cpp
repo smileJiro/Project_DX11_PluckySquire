@@ -233,6 +233,16 @@ CModel* CModelObject::Get_Model(COORDINATE _eCoord)
     return m_pControllerModel->Get_Model(_eCoord);
 }
 
+_float CModelObject::Get_AnimationTime(_uint iAnimIndex)
+{
+    return m_pControllerModel->Get_Model(Get_CurCoord())->Get_AnimationTime(iAnimIndex);
+}
+
+_float CModelObject::Get_AnimationTime()
+{
+    return m_pControllerModel->Get_Model(Get_CurCoord())->Get_AnimationTime();    
+}
+
 void CModelObject::Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop)
 {
     m_pControllerModel->Set_AnimationLoop(_eCoord,iIdx, bIsLoop);
@@ -364,6 +374,11 @@ _uint CModelObject::Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex)
 void CModelObject::Set_PlayingAnim(_bool _bPlaying)
 {
     m_bPlayingAnim = _bPlaying;
+}
+
+_bool CModelObject::Is_DuringAnimation()
+{
+    return m_pControllerModel->Get_Model(Get_CurCoord())->Is_DuringAnimation();
 }
 
 void CModelObject::Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)

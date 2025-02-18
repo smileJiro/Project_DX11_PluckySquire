@@ -34,6 +34,8 @@ public:
 	HRESULT			Initialize(CON_MODEL_DESC* _pDesc);
 
 	HRESULT			Render(CShader* _Shader, _uint _iShaderPass);
+	HRESULT			Render_Default(CShader* _pShader, _uint _iShaderPass);	// Material Binding을 하지 않는 Rendering, 따로 Bind를 해야합니다.
+
 public:
 	HRESULT			Change_Coordinate(COORDINATE _eCoordinate);
 

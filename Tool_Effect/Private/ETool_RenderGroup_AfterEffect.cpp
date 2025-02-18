@@ -22,7 +22,7 @@ HRESULT CETool_RenderGroup_AfterEffect::Render(CShader* _pRTShader, CVIBuffer_Re
     _pRTShader->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_ViewMatrix_Renderer());
     _pRTShader->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_ProjMatrix_Renderer());
 
-    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_FinalTexture", TEXT("Target_Final"))))
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_FinalTexture", TEXT("Target_Combine"))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_EffectColorTexture", TEXT("Target_EffectColor"))))
@@ -38,6 +38,9 @@ HRESULT CETool_RenderGroup_AfterEffect::Render(CShader* _pRTShader, CVIBuffer_Re
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_BloomTexture2", TEXT("Target_DownBlur2"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_DistortionTexture", TEXT("Target_Distortion"))))
         return E_FAIL;
 
 

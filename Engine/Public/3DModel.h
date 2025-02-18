@@ -37,7 +37,7 @@ public:
 	virtual HRESULT			Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCollider);
 	virtual HRESULT			Initialize(void* _pArg) override;
 	virtual HRESULT			Render(CShader* _pShader, _uint _iShaderPass) override;
-
+	virtual HRESULT			Render_Default(CShader* _pShader, _uint _iShaderPass) override;
 public:
 	HRESULT					Bind_Material(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex = 0);
 	HRESULT					Bind_Matrices(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex);
@@ -53,6 +53,8 @@ public:
 	_uint					Get_AnimIndex();
 	virtual CAnimation* Get_Animation(_uint iAnimIndex) override;
 	_float					Get_AnimationProgress(_uint iAnimIdx);
+	virtual _float			Get_AnimationTime(_uint iAnimIndex) override;
+	virtual _float			Get_AnimationTime() override;
 
 	const _float4x4*		Get_BoneMatrix(const _char* pBoneName) const;
 	class CBone*			Get_Bone(const _char* pBoneName) const;
@@ -75,12 +77,12 @@ public:
 public:
 	vector<CMesh*>&			Get_Meshs() { return m_Meshes; }
 	vector<CMaterial*>&		Get_Materials() { return m_Materials; }
-	vector<CBone*>&			Get_Bones() { return m_Bones; }
 
 	//vector<CAnimation*>&	Get_Animations() { return m_Animations; }
 #endif // _DEBUG
 public :
-
+	_float4x4					Get_PreTransformMatrix() { return m_PreTransformMatrix; }
+	vector<CBone*>&				Get_Bones() { return m_Bones; }
 	void						Binding_TextureIndex(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex) { m_arrTextureBindingIndex[_iMaterialIndex][_eTextureType] = _iIndex; }
 	_uint						Get_TextureIndex(_uint _eTextureType, _uint _iMaterialIndex) { return m_arrTextureBindingIndex[_iMaterialIndex][_eTextureType]; }
 

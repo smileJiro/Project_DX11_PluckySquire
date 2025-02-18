@@ -13,11 +13,7 @@ CVIBuffer_Point_Particle::CVIBuffer_Point_Particle(ID3D11Device* _pDevice, ID3D1
 CVIBuffer_Point_Particle::CVIBuffer_Point_Particle(const CVIBuffer_Point_Particle& _Prototype)
 	: CVIBuffer_Instance(_Prototype)
 	, m_pInstanceVertices(_Prototype.m_pInstanceVertices)
-	, m_isAnim(_Prototype.m_isAnim)
-	, m_isRandomUV(_Prototype.m_isRandomUV)
-	, m_fStartIndex(_Prototype.m_fStartIndex)
-	, m_fAnimTime(_Prototype.m_fAnimTime)
-	, m_fAnimCount(_Prototype.m_fAnimCount)
+	, m_fUVCount(_Prototype.m_fUVCount)
 	, m_vUVPerAnim(_Prototype.m_vUVPerAnim)
 {
 }
@@ -133,17 +129,10 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(const json& _jsonBufferIn
 	if (false == _jsonBufferInfo.contains("UVSet"))
 		return E_FAIL;
 
-	m_isAnim = _jsonBufferInfo["UVSet"]["Anim"];
-	m_isRandomUV = _jsonBufferInfo["UVSet"]["Random"];
 	m_vUVPerAnim.x = _jsonBufferInfo["UVSet"]["UV"][0];
 	m_vUVPerAnim.y = _jsonBufferInfo["UVSet"]["UV"][1];
-	m_fStartIndex = _jsonBufferInfo["UVSet"]["Start"];
-	m_fAnimCount = _jsonBufferInfo["UVSet"]["Count"];
+	m_fUVCount = _jsonBufferInfo["UVSet"]["Count"];
 
-	if (m_isAnim && false == _jsonBufferInfo["UVSet"].contains("Time"))
-	{
-		m_fAnimTime = _jsonBufferInfo["UVSet"]["Time"];
-	}
 
 	// Shape Data 설정
 	if (FAILED(Set_ShapeData(_jsonBufferInfo)))
@@ -176,14 +165,14 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Module(CEffect_Module* _pModule)
 	{
 		if (CEffect_Module::DATA_APPLY::COLOR == eData)
 		{
-			_pModule->Update_ColorKeyframe((_float*)m_pInstanceVertices, m_iNumInstances, 18, 16, 33);
+			_pModule->Update_ColorKeyframe((_float*)m_pInstanceVertices, m_iNumInstances, 18, 16, 34);
 		}
 	}
 	else if (CEffect_Module::MODULE_TYPE::MODULE_TRANSLATION == eType)
 	{
 		if (CEffect_Module::DATA_APPLY::TRANSLATION == eData)
 		{
-			_pModule->Update_Translations(0.f, (_float*)m_pInstanceVertices, m_iNumInstances, 12, 26, 29, 16, 33);
+			_pModule->Update_Translations(0.f, (_float*)m_pInstanceVertices, m_iNumInstances, 12, 26, 29, 16, 34);
 		}
 	}
 
@@ -462,12 +451,14 @@ HRESULT CVIBuffer_Point_Particle::Render_BySRV()
 }
 
 
-void CVIBuffer_Point_Particle::Set_UV(_Out_ _float4* _pOutUV, _float _fIndex)
+void CVIBuffer_Point_Particle::Set_UV(_Out_ _float4* _pOutUV, _float _fUVCount)
 {
 	if (nullptr == _pOutUV)
 		return;
 
-	_float fLeft = m_vUVPerAnim.x * (_fIndex);
+	_float fIndex = floor(m_pGameInstance->Compute_Random(0.f, _fUVCount));
+
+	_float fLeft = m_vUVPerAnim.x * (fIndex);
 	_float fTop = m_vUVPerAnim.y * (_int)(fLeft / 1.f);
 	
 	fLeft = fLeft - (_int)fLeft;
@@ -539,6 +530,8 @@ void CVIBuffer_Point_Particle::Set_Position(_int _iIndex)
 
 void CVIBuffer_Point_Particle::Set_Instance(_int _iIndex, _float _fSpawnRate)
 {
+	m_pInstanceVertices[_iIndex].fRandom = m_pGameInstance->Compute_Random_Normal();
+
 	_float3 vScale = Compute_ScaleValue();
 	_float3 vRotation = Compute_RotationValue();
 	_matrix matRotation = XMMatrixRotationQuaternion(XMQuaternionRotationRollPitchYaw(XMConvertToRadians(vRotation.x), XMConvertToRadians(vRotation.y), XMConvertToRadians(vRotation.z)));
@@ -557,15 +550,8 @@ void CVIBuffer_Point_Particle::Set_Instance(_int _iIndex, _float _fSpawnRate)
 	);
 
 	// UV Logic 설정
-	if (m_isRandomUV)
-	{
-
-	}
-	else
-	{
-		Set_UV(&m_pInstanceVertices[_iIndex].vUV, 0);
-	}
-
+	Set_UV(&m_pInstanceVertices[_iIndex].vUV, m_fUVCount);
+	
 	m_pInstanceVertices[_iIndex].fAlive = 0.f;
 
 	m_pInstanceVertices[_iIndex].vColor = Compute_ColorValue();
@@ -650,7 +636,7 @@ void CVIBuffer_Point_Particle::Tool_Reset_Buffers(_float _fSpawnRate, class CCom
 	for (_int i = 0; i < _Modules.size(); ++i)
 	{
 		if (_Modules[i]->Is_Init())
-			_Modules[i]->Update_Translations(0.f, (_float*)m_pInstanceVertices, m_iNumInstances, 12, 26, 29, 16, 33);
+			_Modules[i]->Update_Translations(0.f, (_float*)m_pInstanceVertices, m_iNumInstances, 12, 26, 29, 16, 34);
 	}
 
 	D3D11_BUFFER_DESC BufferDesc = {};
@@ -710,8 +696,23 @@ void CVIBuffer_Point_Particle::Tool_Reset_Buffers(_float _fSpawnRate, class CCom
 
 void CVIBuffer_Point_Particle::Tool_Update(_float _fTimeDelta)
 {
-	Tool_Adjust_Shape();
 	Tool_Adjust_DefaultData();
+	Tool_Adjust_Shape();
+
+	if (ImGui::TreeNode("UV"))
+	{
+		if (ImGui::InputFloat("UV Count", &m_fUVCount, 1.f))
+		{
+			m_isToolChanged = true;
+		}
+
+		if (ImGui::InputFloat2("UV Size", (_float*)(&m_vUVPerAnim)))
+		{
+			m_isToolChanged = true;
+		}
+
+		ImGui::TreePop();
+	}
 
 
 }
@@ -722,11 +723,7 @@ HRESULT CVIBuffer_Point_Particle::Save_Buffer(json& _jsonBufferInfo)
 	if (FAILED(__super::Save_Buffer(_jsonBufferInfo)))
 		return E_FAIL;
 
-	_jsonBufferInfo["UVSet"]["Anim"] = m_isAnim;
-	_jsonBufferInfo["UVSet"]["Random"] = m_isRandomUV;
-	_jsonBufferInfo["UVSet"]["Count"] = m_fAnimCount;
-	_jsonBufferInfo["UVSet"]["Start"] = m_fStartIndex;
-	_jsonBufferInfo["UVSet"]["Time"] = m_fAnimTime;
+	_jsonBufferInfo["UVSet"]["Count"] = m_fUVCount;
 
 	_jsonBufferInfo["UVSet"]["UV"].push_back(m_vUVPerAnim.x);
 	_jsonBufferInfo["UVSet"]["UV"].push_back(m_vUVPerAnim.y);

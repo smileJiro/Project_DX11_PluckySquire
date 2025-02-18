@@ -31,6 +31,9 @@ HRESULT CLevel_3D_Map_Tool::Initialize(CImguiLogger* _pLogger)
 
 void CLevel_3D_Map_Tool::Update(_float _fTimeDelta)
 {
+
+	// 피직스 업데이트 
+	m_pGameInstance->Physx_Update(_fTimeDelta);
 	m_pToolManager->Update_Tool();
 }
 

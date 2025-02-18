@@ -248,6 +248,8 @@ namespace Engine
 		XMFLOAT3		vVelocity;
 		XMFLOAT3		vAcceleration;
 		float			fAlive;
+		float			fRandom;
+
 	}VTXPOINTINSTANCE;
 
 
@@ -263,7 +265,7 @@ namespace Engine
 
 	typedef struct ENGINE_DLL tagPointParticle
 	{
-		static const unsigned int iNumElements = { 12 };		// Position + Size + VTXPOINTINSTANCE
+		static const unsigned int iNumElements = { 13 };		// Position + Size + VTXPOINTINSTANCE
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
 	}VTXPOINTPARTICLE;
 
@@ -285,6 +287,12 @@ namespace Engine
 			XMStoreFloat4(&vRotation, vTmpRotation);
 			XMStoreFloat3(&vPosition, vTmpPosition);
 			XMStoreFloat3(&vScale, vTmpScale);
+		}
+		XMFLOAT4X4 Get_Matrix()
+		{
+			XMFLOAT4X4 matWorld;
+			XMStoreFloat4x4(&matWorld, XMMatrixAffineTransformation(XMLoadFloat3(&vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&vRotation), XMVectorSetW(XMLoadFloat3(&vPosition), 1.f)));
+			return matWorld;
 		}
 		float	 fTrackPosition; // 애니메이션 트랙위에서의 포지션을 정의.
 		XMFLOAT3 vScale;

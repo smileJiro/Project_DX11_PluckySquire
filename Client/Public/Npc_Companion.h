@@ -90,6 +90,7 @@ public:
 
 protected:
 	CGameObject*				m_pTargetObject = { nullptr };
+	_bool						m_isTrace = { false };
 	_bool						m_isDelay = { false };
 	_float						m_fAccTime = { 0.f };
 	_bool						m_isMove = { false };
@@ -99,6 +100,7 @@ protected:
 	_float2						m_PrePlayerPos = { 0.f, 0.f };
 	_float2						m_CurPlayerPos = { 0.f, 0.f };
 	_float2						m_vPreNPCPos = { 0.f ,0.f };
+
 
 private:
 	vector<CNPC_Companion*>		m_vecCompanionNpc = {};

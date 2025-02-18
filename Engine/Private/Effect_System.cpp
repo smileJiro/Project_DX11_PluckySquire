@@ -15,6 +15,7 @@ CEffect_System::CEffect_System(const CEffect_System& _Prototype)
 	: CPartObject(_Prototype)
 #ifdef _DEBUG
 	, m_strFilePath(_Prototype.m_strFilePath)
+	, m_fToolRepeatTime(_Prototype.m_fToolRepeatTime)
 #endif // _DEBUG
 
 {
@@ -24,6 +25,7 @@ CEffect_System::CEffect_System(const CEffect_System& _Prototype)
 // 파티클 시스템이 Prototype 시점에 모든 Emitter을 다 불러옵니다.
 HRESULT CEffect_System::Initialize_Prototype(const _tchar* _szFilePath)
 {
+
 	json jsonEffectInfo;
 	if (FAILED(m_pGameInstance->Load_Json(_szFilePath, &jsonEffectInfo)))
 		return E_FAIL;
@@ -34,6 +36,7 @@ HRESULT CEffect_System::Initialize_Prototype(const _tchar* _szFilePath)
 	}
 	_string strName = jsonEffectInfo["Name"];
 	m_strName = STRINGTOWSTRING(strName);
+
 
 	// 갖고있는 Emitter 정보를 불러들입니다.
 	for (_int i = 0; i < jsonEffectInfo["Emitters"].size(); ++i)
@@ -80,6 +83,11 @@ HRESULT CEffect_System::Initialize_Prototype(const _tchar* _szFilePath)
 	}
 
 #ifdef _DEBUG
+	if (jsonEffectInfo.contains("ToolLoopTime"))
+	{
+		m_fToolRepeatTime = jsonEffectInfo["ToolLoopTime"];
+	}
+
 	m_strFilePath = WSTRINGTOSTRING(_szFilePath);
 #endif
 
@@ -99,7 +107,7 @@ HRESULT CEffect_System::Initialize(void* _pArg, const CEffect_System* _pPrototyp
 	if (nullptr == _pArg)
 		return E_FAIL;
 
-	PARTICLE_SYSTEM_DESC* pDesc = static_cast<PARTICLE_SYSTEM_DESC*>(_pArg);
+	EFFECT_SYSTEM_DESC* pDesc = static_cast<EFFECT_SYSTEM_DESC*>(_pArg);
 
 	// TODO: Particle Coordinate는 2D도 해야할까 ? 
 	pDesc->eStartCoord = COORDINATE_3D;
@@ -174,8 +182,6 @@ HRESULT CEffect_System::Initialize(void* _pArg, const CEffect_System* _pPrototyp
 
 	}
 
-
-
 	return S_OK;
 }
 
@@ -202,12 +208,20 @@ void CEffect_System::Priority_Update(_float _fTimeDelta)
 
 void CEffect_System::Update(_float _fTimeDelta)
 {
+	_bool isActive = false;
 	for (auto& pEmitter : m_Emitters)
+	{
 #ifdef _DEBUG
 		pEmitter->Update(_fTimeDelta * m_fDebugTimeScale);
 #elif NDEBUG
 		pEmitter->Update(_fTimeDelta);
 #endif
+
+		if (pEmitter->Is_Active())
+			isActive = true;
+	}
+	if (false == isActive)
+		Set_Active(false);
 
 }
 
@@ -230,29 +244,96 @@ HRESULT CEffect_System::Render()
 	return S_OK;
 }
 
-void CEffect_System::Active_Effect(_bool _isActive, _bool _isReset, _uint _iEventID)
+void CEffect_System::Active_Effect(_bool _isReset, _uint _iEffectID)
 {
 	for (auto& pEmitter : m_Emitters)
 	{
-		if (_iEventID == pEmitter->Get_EventID())
+		if (_iEffectID == pEmitter->Get_EventID())
 		{
-			pEmitter->Set_Active(_isActive);
+			pEmitter->Set_Active(true);
 
 			if (_isReset)
 				pEmitter->Reset();
 		}
 	}
+	Set_Active(true);
 }
 
-void CEffect_System::Stop_Spawn(_float _fDelayTime, _uint _iEventID)
+void CEffect_System::Active_All(_bool _isReset)
+{
+	for (auto& pEmitter : m_Emitters)
+	{		
+		pEmitter->Set_Active(true);
+
+		if (_isReset)
+			pEmitter->Reset();
+		
+	}
+	Set_Active(true);
+}
+
+void CEffect_System::Stop_Spawn(_float _fDelayTime, _uint _iEffectID)
 {
 	for (auto& pEmitter : m_Emitters)
 	{
-		if (_iEventID == pEmitter->Get_EventID())
+		if (_iEffectID == pEmitter->Get_EventID() && pEmitter->Is_Active())
 		{
 			pEmitter->Stop_Spawn(_fDelayTime);
 		}
 	}
+}
+
+void CEffect_System::Stop_SpawnAll(_float _fDelayTime)
+{
+	for (auto& pEmitter : m_Emitters)
+	{
+		if (pEmitter->Is_Active())
+		{
+			pEmitter->Stop_Spawn(_fDelayTime);
+		}
+	}
+}
+
+void CEffect_System::Inactive_Effect(_uint _iEffectID)
+{
+	for (auto& pEmitter : m_Emitters)
+	{
+		if (_iEffectID == pEmitter->Get_EventID() && pEmitter->Is_Active())
+		{
+			pEmitter->Set_Active(false);
+
+		}
+	}
+}
+
+void CEffect_System::Inactive_All()
+{
+	for (auto& pEmitter : m_Emitters)
+	{
+		if (pEmitter->Is_Active())
+		{
+			pEmitter->Set_Active(false);
+
+		}
+	}
+}
+
+void CEffect_System::Set_SpawnMatrix(const _float4x4* _pSpawnMatrix)
+{
+	m_pSpawnMatrix = _pSpawnMatrix;
+
+	for (auto& pEmitter : m_Emitters)
+		pEmitter->Set_SpawnMatrix(_pSpawnMatrix);
+}
+
+void CEffect_System::Set_EffectPosition(_fvector _vPosition)
+{
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _vPosition);
+}
+
+void CEffect_System::Set_EffectMatrix(_matrix _WorldMatrix)
+{
+	m_pControllerTransform->Set_WorldMatrix(_WorldMatrix);
 }
 
 
@@ -460,6 +541,27 @@ void CEffect_System::Tool_InputText()
 
 }
 
+void CEffect_System::Tool_Transform()
+{
+	static _float3 vRot = { 0.f, 0.f, 0.f };
+	static _float3 vPosition = { 0.f, 0.f, 0.f };
+	static _float4x4 Mat = {1.0f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f};
+
+	if (ImGui::InputFloat3("Debugging Rotation", (_float*)&vRot))
+	{
+		XMStoreFloat4x4(&Mat, XMMatrixRotationRollPitchYaw(vRot.x, vRot.y, vRot.z));
+
+			if (m_pNowItem)
+				m_pNowItem->Set_SpawnMatrix(&Mat);
+	}
+	if (ImGui::InputFloat3("Debugging Position", (_float*)&vPosition))
+	{
+		Mat._41 = vPosition.x;
+		Mat._42 = vPosition.y;
+		Mat._43 = vPosition.z;
+	}
+}
+
 void CEffect_System::Tool_Update(_float _fTimeDelta)
 {
 
@@ -474,6 +576,7 @@ void CEffect_System::Tool_Update(_float _fTimeDelta)
 	
 	Tool_InputText();
 	Tool_ShowList();
+	Tool_Transform();
 	
 	if (m_pNowItem)
 	{
@@ -499,6 +602,7 @@ void CEffect_System::Tool_Reset(_uint _iEvent)
 		}
 
 	}
+	Set_Active(true);
 	m_fToolAccTime = 0.f;
 }
 void CEffect_System::Set_Texture(CTexture* _pTextureCom, _uint _iType)
@@ -507,7 +611,7 @@ void CEffect_System::Set_Texture(CTexture* _pTextureCom, _uint _iType)
 	{
 		if (CEmitter::SPRITE == m_pNowItem->Get_Type())
 		{
-			static_cast<CParticle_Sprite_Emitter*>(m_pNowItem)->Set_Texture(_pTextureCom);
+			static_cast<CParticle_Sprite_Emitter*>(m_pNowItem)->Set_Texture(_pTextureCom, _iType);
 		}
 
 		else if (CEmitter::EFFECT == m_pNowItem->Get_Type())
@@ -532,6 +636,7 @@ HRESULT CEffect_System::Save_File()
 
 		jsonRoot["Name"] = WSTRINGTOSTRING(m_strName).c_str();
 
+		jsonRoot["ToolLoopTime"] = m_fToolRepeatTime;
 		
 		for (auto& pEmitter : m_Emitters)
 		{

@@ -166,6 +166,11 @@ CDialog::DialogLine CUI_Manager::Get_DialogueLine(const _wstring& _id, _int _Lin
 
 void CUI_Manager::Set_DialogId(const _tchar* _id, const _tchar* strCurSection,  _bool _DisplayDialogue, _bool _DisPlayPortrait)
 {
+	if (false == m_pDiagloue->CBase::Is_Active())
+	{
+		m_pDiagloue->CBase::Set_Active(true);
+	}
+
 	wsprintf(m_tDialogId, _id); 
 	if (nullptr == strCurSection)
 	{
@@ -219,6 +224,9 @@ void CUI_Manager::Test_Update(_float _fTimedelta)
 
 HRESULT CUI_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID)
 {
+	Safe_Release(m_pPlayer);
+	Safe_Release(m_pDiagloue);
+
 	if(iCurLevelID == LEVEL_LOGO)
 		Level_Logo_Exit(_iChangeLevelID, _iNextChangeLevelID);
 
@@ -283,6 +291,7 @@ void CUI_Manager::Free()
 {
 	
 	Safe_Release(m_pPlayer);
+	Safe_Release(m_pDiagloue);
 
 	for (auto iter : m_pSettingPanels)
 	{

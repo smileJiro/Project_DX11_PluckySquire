@@ -104,13 +104,13 @@ bool CAnimation3D::Update_TransformationMatrices(const vector<class CBone*>& Bon
 }
 bool CAnimation3D::Update_AnimTransition(const vector<class CBone*>& Bones, _float fTimeDelta, const map<_uint, KEYFRAME>& mapAnimTransLeftFrame, _bool _bReverse)
 {
+	m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta * m_fSpeedMagnifier;
 	float _fAnimTransitionTrackPos = m_fAnimTransitionTime * m_fTickPerSecond;
-	if (m_fCurrentTrackPosition >= _fAnimTransitionTrackPos)
+	if (m_fCurrentTrackPosition > _fAnimTransitionTrackPos)
 	{
 		Reset(_bReverse);
 		return true;
 	}
-	m_fCurrentTrackPosition += m_fTickPerSecond * fTimeDelta * m_fSpeedMagnifier;
 
 	_float			fRatio = m_fCurrentTrackPosition / _fAnimTransitionTrackPos;
 	KEYFRAME tFrame;
@@ -144,7 +144,13 @@ void CAnimation3D::Get_CurrentFrame(map<_uint,KEYFRAME>* pOutKeyFrames) const
 
 _float CAnimation3D::Get_Progress()
 {
+	
 	return m_fCurrentTrackPosition / m_fDuration;
+}
+
+_float CAnimation3D::Get_AnimationTime()
+{
+	return m_fDuration / m_fSpeedMagnifier / m_fTickPerSecond;
 }
 
 bool CAnimation3D::Is_AnimChangeable()

@@ -4,6 +4,7 @@
 #include "Section_Manager.h"
 #include "Camera_Manager.h"
 #include "Blocker.h"
+#include "Effect_Manager.h"
 
 CFallingRock::CFallingRock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -69,6 +70,9 @@ HRESULT CFallingRock::Initialize(void* _pArg)
 	if (FAILED(Ready_Components(pDesc)))
 		return E_FAIL;
 
+	//if(pDesc->isColBound)
+	//	_bool isColBound = false;
+	//COLBOUND2D eColBoundDirection = COLBOUND_LEFT;
 	m_pControllerModel->Switch_Animation(STATE_FALLDOWN);
 
 	m_vShadowYDesc.y = XMVectorGetY(Get_ControllerTransform()->Get_State(CTransform_2D::STATE_POSITION));
@@ -259,6 +263,10 @@ void CFallingRock::State_Change_Bound_3D()
 	_float3 vForce = {};
 	XMStoreFloat3(&vForce, XMVector3Normalize(XMVectorSet(0.0f, 0.8f, -1.0f, 0.0f)) * m_fForce3D);
 	m_pActorCom->Add_Impulse(vForce);
+
+	// Effect
+	CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("RockOut"), true, XMLoadFloat4(&v3DWorldPos));
+
 }
 
 void CFallingRock::Action_State(_float _fTimeDelta)

@@ -12,6 +12,7 @@ class CCarriableObject;
 class CStateMachine;
 class IInteractable;
 class CPortal;
+class CSampleBook;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -26,6 +27,9 @@ enum PLAYER_INPUT
 	PLAYER_INPUT_SPINCHARGING,
 	PLAYER_INPUT_SPINLAUNCH,
 	PLAYER_INPUT_REVIVE,
+	PLAYER_INPUT_TURNBOOK_LEFT,
+	PLAYER_INPUT_TURNBOOK_RIGHT,
+	PLAYER_INPUT_TURNBOOK_END,
 	PLAYER_INPUT_LAST
 };
 typedef struct tagPlayerInputResult
@@ -83,6 +87,7 @@ public:
 		THROWSWORD,
 		PICKUPOBJECT,
 		THROWOBJECT,
+		LAYDOWNOBJECT,
 		CLAMBER,
 		SPINATTACK,
 		DIE,
@@ -90,6 +95,8 @@ public:
 		JUMPTO_PORTAL,
 		EXIT_PORTAL,
 		ELECTRIC,
+		TURN_BOOK,
+		EVICT,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -480,6 +487,7 @@ public:
 	_float Get_PickupRange(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DPickupRange : m_f3DPickupRange; }	_int Get_AttackDamg() { return m_tStat.iDamg; }
 	_float Get_3DFloorDistance() { return m_f3DFloorDistance; }
 	_float Get_2DFloorDistance() { return m_f2DFloorDistance; }
+	_float Get_AnimationTIme();
 	_uint Get_SpinAttackLevel() { return m_iSpinAttackLevel; }
 	_float Get_2DAttackForwardingSpeed() { return m_f2DAttackForwardSpeed; }
 	_vector Get_CenterPosition();
@@ -499,7 +507,11 @@ public:
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	PLAYER_MODE Get_PlayerMode() { return m_ePlayerMode; }
 	CController_Transform* Get_Transform() { return m_pControllerTransform; }
-	CCarriableObject* Get_CarryingObject();
+	CCarriableObject* Get_CarryingObject();;
+	const _float4x4* Get_BodyWorldMatrix_Ptr() const;
+	const _float4x4* Get_BodyWorldMatrix_Ptr(COORDINATE eCoord) const;
+	CModelObject* Get_Body() { return m_pBody; }
+	_vector Get_RootBonePosition();
 
 
 	//Set
@@ -524,13 +536,14 @@ public:
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
 private:
-
-
 	void					Key_Input(_float _fTimeDelta);
 
 private:
 	HRESULT					Ready_Components();
 	HRESULT					Ready_PartObjects();
+
+public:
+	virtual void			Set_Include_Section_Name(const _wstring _strIncludeSectionName);
 private:
 	//Variables
 	_float m_f3DCenterYOffset = 0.5f;
@@ -544,7 +557,6 @@ private:
 	_float m_fGroundRotateSpeed = 360.f;
 	_float m_fStepSlopeThreshold = 0.1f;
 	_float m_f3DLandAnimHeightThreshold= 0.6f;
-	//_float m_fFootHeightThreshold = 0.1f;
 	_float m_f3DJumpPower = 10.5f;
 	_float m_fAirRotateSpeed = 40.f;
 	_float m_fAirRunSpeed = 6.f;
@@ -570,8 +582,8 @@ private:
 	_float m_f2DUpForce = 0.f;
 	_float m_f2DFloorDistance = 0.f;
 	_float m_f2DMoveSpeed= 400.f;
-	_float m_f2DJumpPower = 900.f;
-	_float m_f2DPlatformerJumpPower = 650.f;
+	_float m_f2DJumpPower = 600.f;
+	_float m_f2DPlatformerJumpPower = 900.f;
 	_float m_f2DCenterYOffset= 36.f;
 	_float m_f2DInteractRange = 93.f;
 	_float m_f2DThrowObjectPower = 100.f;
@@ -579,8 +591,9 @@ private:
 	_float m_f2DKnockBackPower = 700.f;
 	_float m_f2DInteractOffset = 100.f;
 	_float4x4 m_mat2DCarryingOffset = {};
-
-
+	/* еб©У */
+	_float m_f2DColliderBodyRadius = 20.f;
+	/* еб©У */
 	_float m_fInvincibleTIme = 0.5f;
 	_float m_fInvincibleTImeAcc = 0.f;
 	_bool m_bInvincible = false;
@@ -606,6 +619,7 @@ private:
 	set<CGameObject*> m_AttckedObjects;
 	IInteractable* m_pInteractableObject = nullptr;
 	CPortal* m_pPortal= nullptr;
+	CSampleBook* m_pBook = nullptr;
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

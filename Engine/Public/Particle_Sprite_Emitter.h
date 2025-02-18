@@ -8,7 +8,11 @@ class ENGINE_DLL CParticle_Sprite_Emitter : public CEmitter
 {
 public:
 	enum EFFECT_SHADERPASS { DEFAULT, DEFAULT_BLOOM, 
-		ROTATION_BILLBOARD, ROTATION_BILLBOARD_BLOOM, VELOCITY_BILLBOARD, VELOCITY_BILLBOARD_BLOOM};
+		ROTATION_BILLBOARD, ROTATION_BILLBOARD_BLOOM,
+		VELOCITY_BILLBOARD, VELOCITY_BILLBOARD_BLOOM,
+		SUBCOLORBLOOM,		DEFAULT_DISSOLVE, VELOCITY_BILLBOARD_SUBCOLORBLOOM
+	
+	};
 
 private:
 	CParticle_Sprite_Emitter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -29,7 +33,8 @@ public:
 
 private:
 	class CVIBuffer_Point_Particle* m_pParticleBufferCom = { nullptr };
-	class CTexture*					m_pTextureCom = { nullptr };
+	class CTexture*					m_pMaskTextureCom = { nullptr };
+	class CTexture*					m_pDissolveTextureCom = { nullptr };
 
 private:
 	//_float							m_fAlphaDiscard = { 0.f };
@@ -59,7 +64,7 @@ public:
 	virtual void				Tool_Update(_float _fTimeDelta) override;
 	virtual HRESULT				Save(json& _jsonOut);
 public:
-	void						Set_Texture(class CTexture* _pTextureCom);
+	void						Set_Texture(class CTexture* _pTextureCom, _uint _iTextureIndex);
 
 public:
 	// DEBUG용 처음 만든 Sprite
@@ -74,10 +79,13 @@ BEGIN(Engine)
 NLOHMANN_JSON_SERIALIZE_ENUM(CParticle_Sprite_Emitter::EFFECT_SHADERPASS, {
 {CParticle_Sprite_Emitter::EFFECT_SHADERPASS::DEFAULT, "DEFAULT"},
 {CParticle_Sprite_Emitter::EFFECT_SHADERPASS::DEFAULT_BLOOM, "DEFAULT_BLOOM"},
+{CParticle_Sprite_Emitter::EFFECT_SHADERPASS::SUBCOLORBLOOM, "SUBCOLOR_BLOOM"},
+{CParticle_Sprite_Emitter::EFFECT_SHADERPASS::VELOCITY_BILLBOARD_SUBCOLORBLOOM, "VELOCITY_BILLBOARD_SUBCOLORBLOOM"},
 {CParticle_Sprite_Emitter::EFFECT_SHADERPASS::ROTATION_BILLBOARD, "ROTATION_BILLBOARD"},
 {CParticle_Sprite_Emitter::EFFECT_SHADERPASS::ROTATION_BILLBOARD_BLOOM, "ROTATION_BILLBOARD_BLOOM"},
 {CParticle_Sprite_Emitter::EFFECT_SHADERPASS::VELOCITY_BILLBOARD, "VELOCITY_BILLBOARD"},
 {CParticle_Sprite_Emitter::EFFECT_SHADERPASS::VELOCITY_BILLBOARD_BLOOM, "VELOCITY_BILLBOARD_BLOOM"},
+{CParticle_Sprite_Emitter::EFFECT_SHADERPASS::DEFAULT_DISSOLVE, "DEFAULT_DISSOLVE"},
 
 	});
 END

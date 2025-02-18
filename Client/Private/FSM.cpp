@@ -21,6 +21,8 @@
 #include "Sneak_InvestigateState.h"
 #include "Sneak_ChaseState.h"
 #include "Sneak_AttackState.h"
+#include "SideScroll_PatrolState.h"
+#include "SideScroll_HitState.h"
 
 CFSM::CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
@@ -62,6 +64,11 @@ void CFSM::Set_Sneak_AwarePos(_fvector _vPosition)
 	static_cast<CSneak_AwareState*>(m_States[(_uint)MONSTER_STATE::SNEAK_AWARE])->Set_Sneak_AwarePos(_vPosition);
 }
 
+void CFSM::Set_SideScroll_PatrolBound()
+{
+	static_cast<CSideScroll_PatrolState*>(m_States[(_uint)MONSTER_STATE::SIDESCROLL_PATROL])->Initialize_SideScroll_PatrolBound(m_eSideScroll_Bound);
+}
+
 HRESULT CFSM::Initialize_Prototype()
 {
 	return S_OK;
@@ -82,6 +89,7 @@ HRESULT CFSM::Initialize(void* _pArg)
 	m_pOwner = pDesc->pOwner;
 	m_iCurLevel = pDesc->iCurLevel;
 	m_eWayIndex = pDesc->eWayIndex;
+	m_eSideScroll_Bound = pDesc->eSideScroll_Bound;
 
 	return S_OK;
 }
@@ -184,6 +192,25 @@ HRESULT CFSM::Add_State(_uint _iState)
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
 		m_States.emplace((_uint)MONSTER_STATE::DEAD, pState);
+		break;
+
+	case Client::MONSTER_STATE::SIDESCROLL_PATROL:
+		pState = CSideScroll_PatrolState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::SIDESCROLL_PATROL, pState);
+		Set_SideScroll_PatrolBound();
+		break;
+
+	case Client::MONSTER_STATE::SIDESCROLL_HIT:
+		pState = CSideScroll_HitState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::SIDESCROLL_HIT, pState);
 		break;
 
 	case Client::MONSTER_STATE::LAST:

@@ -25,9 +25,40 @@ HRESULT CWord::Render()
 
 HRESULT CWord::Initialize(void* _pArg)
 {
-	CModelObject::MODELOBJECT_DESC* pDesc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
+	WORD_DESC* pDesc = static_cast<WORD_DESC*>(_pArg);
 
-	if (FAILED(__super::Initialize(pDesc)))
+	m_pWordTexture = pDesc->pSRV;
+	m_fSize = pDesc->fSize;
+	m_eWordType = pDesc->eType;
+
+
+	CActor::ACTOR_DESC ActorDesc;
+	ActorDesc.pOwner = this;
+	ActorDesc.FreezeRotation_XYZ[0] = false;
+	ActorDesc.FreezeRotation_XYZ[1] = false;
+	ActorDesc.FreezeRotation_XYZ[2] = false;
+	ActorDesc.FreezePosition_XYZ[0] = false;
+	ActorDesc.FreezePosition_XYZ[1] = false;
+	ActorDesc.FreezePosition_XYZ[2] = false;
+
+	SHAPE_BOX_DESC ShapeDesc = {};
+	ShapeDesc.vHalfExtents = { 0.5f,0.1f ,0.5f };
+	SHAPE_DATA ShapeData;
+	ShapeData.pShapeDesc = &ShapeDesc;
+	ShapeData.eShapeType = SHAPE_TYPE::BOX;
+	ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
+	ShapeData.isTrigger = false;
+	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
+	ActorDesc.ShapeDatas.push_back(ShapeData);
+	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::BLOCKER;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER_TRIGGER | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER;
+	pDesc->pActorDesc = &ActorDesc;
+	pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
+
+
+
+
+	if (FAILED(CActorObject::Initialize(pDesc)))
 		return E_FAIL;
 	return S_OK;
 }
@@ -52,36 +83,13 @@ HRESULT CWord::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition
 
 }
 
-CWord* CWord::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+
+HRESULT CWord::Ready_Components()
 {
-	CWord* pInstance = new CWord(_pDevice, _pContext);
-
-	if (FAILED(pInstance->Initialize_Prototype()))
-	{
-		MSG_BOX("Failed to Created : Word");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
+	return S_OK;
 }
 
-CGameObject* CWord::Clone(void* _pArg)
-{
-	CWord* pInstance = new CWord(*this);
 
-	if (FAILED(pInstance->Initialize(_pArg)))
-	{
-		MSG_BOX("Failed to Cloned : Word");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-
-void CWord::Free()
-{
-	__super::Free();
-}
 
 void CWord::Interact(CPlayer* _pUser)
 {
@@ -97,4 +105,39 @@ _float CWord::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 {
 	return XMVector3Length(m_pControllerTransform->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)
 		- _pUser->Get_ControllerTransform()->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
+}
+
+
+
+CWord* CWord::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+{
+	CWord* pInstance = new CWord(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Created CWord Failed");
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CGameObject* CWord::Clone(void* _pArg)
+{
+	CWord* pInstance = new CWord(*this);
+
+	if (FAILED(pInstance->Initialize(_pArg)))
+	{
+		MSG_BOX("Clone CWord Failed");
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+void CWord::Free()
+{
+	__super::Free();
 }

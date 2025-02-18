@@ -10,13 +10,14 @@ Texture2D g_ShaderMaterial_0, g_ShaderMaterial_1, g_ShaderMaterial_2, g_ShaderMa
 Texture2D g_ShaderMaterial_5, g_ShaderMaterial_6, g_ShaderMaterial_7, g_ShaderMaterial_8, g_ShaderMaterial_9;
 float g_fFarZ = 1000.f;
 int g_iFlag = 0;
-
+float4 g_vLook;
 
 float g_fAlphaTest, g_fColorTest;
+float g_fAlpha;
 
-Texture2D g_AlphaTexture, g_MaskTexture, g_NoiseTexture;
-float4 g_AlphaUVScale, g_MaskUVScale, g_NoiseUVScale;
-
+Texture2D g_AlphaTexture, g_MaskTexture, g_NoiseTexture, g_DissolveTexture;
+float4 g_AlphaUVScale, g_MaskUVScale, g_NoiseUVScale, g_DissolveUVScale;
+float4 g_EdgeColor;
 
 // Shader Value 
 float g_fTimeAcc = 0.0f;
@@ -65,24 +66,6 @@ struct VS_OUT
     float4 vTangent : TEXCOORD3;
 };
 
-VS_OUT VS_MAIN(VS_IN In)
-{
-    VS_OUT Out = (VS_OUT) 0;
-    matrix matWV, matWVP;
-
-    matWV = mul(g_WorldMatrix, g_ViewMatrix);
-    matWVP = mul(matWV, g_ProjMatrix);
-    
-    Out.vPosition = mul(float4(In.vPosition, 1.0), matWVP);
-    Out.vNormal = normalize(mul(float4(In.vNormal, 0), g_WorldMatrix));
-    Out.vTexcoord = In.vTexcoord;
-    Out.vWorldPos = mul(Out.vPosition, g_WorldMatrix);
-    Out.vProjPos = Out.vPosition; // w 나누기를 수행하지 않은 0 ~ far 사이의 z 값이 보존되어있는 position
-    return Out;
-
-}
-
-
 // PixelShader //
 struct PS_IN
 {
@@ -108,6 +91,55 @@ struct PS_COLOR
 
 
 
+VS_OUT VS_MAIN(VS_IN In)
+{
+    VS_OUT Out = (VS_OUT) 0;
+    matrix matWV, matWVP;
+
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+    
+    Out.vPosition = mul(float4(In.vPosition, 1.0), matWVP);
+    Out.vNormal = normalize(mul(float4(In.vNormal, 0), g_WorldMatrix));
+    Out.vTexcoord = In.vTexcoord;
+    Out.vWorldPos = mul(Out.vPosition, g_WorldMatrix);
+    Out.vProjPos = Out.vPosition; // w 나누기를 수행하지 않은 0 ~ far 사이의 z 값이 보존되어있는 position
+    return Out;
+
+}
+
+VS_OUT VS_BILLBOARD(VS_IN In)
+{
+    VS_OUT Out = (VS_OUT) 0;
+    matrix matWV, matWVP, matVP;
+
+    vector vLookDir = normalize(g_vLook);
+    float3 vRightDir = normalize(cross(float3(0.f, 1.0f, 0.f), vLookDir.xyz));
+    float3 vUpDir = normalize(cross(vLookDir.xyz, vRightDir));
+
+    float4x4 NewWorld = g_WorldMatrix;
+    
+    NewWorld[0] = length(g_WorldMatrix[0]) * float4(vRightDir, 0.f);
+    NewWorld[1] = length(g_WorldMatrix[1]) * float4(vUpDir, 0.f);
+    NewWorld[2] = length(g_WorldMatrix[2]) * float4(vLookDir.xyz, 0.f);
+    NewWorld[3] = g_WorldMatrix[3];
+    
+    matWV = mul(NewWorld, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);    
+
+    
+    Out.vPosition = mul(float4(In.vPosition, 1.0), matWVP);
+    Out.vPosition = mul(float4(In.vPosition, 1.0), matWVP);
+    Out.vTexcoord = In.vTexcoord;
+    Out.vProjPos = Out.vPosition; // w 나누기를 수행하지 않은 0 ~ far 사이의 z 값이 보존되어있는 position
+    return Out;
+
+}
+
+
+
+
+
 
 PS_COLOR PS_MAIN(PS_IN In)
 {
@@ -130,7 +162,7 @@ PS_COLOR PS_DISSOLVE(PS_IN In)
     float fMaskAlpha = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
     + float2(g_MaskUVScale.z, g_MaskUVScale.w) * g_fTimeAcc).r;
     
-    fAlpha = fMaskAlpha * fAlpha;
+    fAlpha = fMaskAlpha * fAlpha + g_fAlpha;
     
     float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y))
     + float2(g_NoiseUVScale.z, g_NoiseUVScale.w) * g_fTimeAcc).r;
@@ -172,13 +204,13 @@ PS_BRIGHTCOLOR PS_BLOOM(PS_IN In)
     float fMaskAlpha = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
     + float2(g_MaskUVScale.z, g_MaskUVScale.w) * g_fTimeAcc).r;
     
-    fAlpha = fMaskAlpha * fAlpha;
+    fAlpha = fMaskAlpha * fAlpha + g_fAlpha;
     
     float3 vColor = g_vColor;
     fAlpha = g_vColor.a * fAlpha;
 
     float fLuminance = dot(vColor.rgb, g_fBrightness);
-    float fBrightness = max(fLuminance - g_fBloomThreshold, 0.0) / (1.0 - g_fBloomThreshold);
+    float fBrightness = max(fLuminance - g_fBloomThreshold, 0.0) / (length(vColor.rgb) * 0.33f - g_fBloomThreshold);
     
     Out.vDiffuse.rgb = vColor;
     Out.vDiffuse.a = fAlpha;
@@ -203,7 +235,7 @@ PS_BRIGHTCOLOR PS_BLOOMDISSOLVE(PS_IN In)
     float fMaskAlpha = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
     + float2(g_MaskUVScale.z, g_MaskUVScale.w) * g_fTimeAcc).r;
     
-    fAlpha = fMaskAlpha * fAlpha;
+    fAlpha = fMaskAlpha * fAlpha + g_fAlpha;
     
     float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y))
     + float2(g_NoiseUVScale.z, g_NoiseUVScale.w) * g_fTimeAcc).r;
@@ -216,7 +248,7 @@ PS_BRIGHTCOLOR PS_BLOOMDISSOLVE(PS_IN In)
     fAlpha = g_vColor.a * fAlpha * fDissolveFactor;
 
     float fLuminance = dot(vColor.rgb, g_fBrightness);
-    float fBrightness = max(fLuminance - g_fBloomThreshold, 0.0) / (1.0 - g_fBloomThreshold);
+    float fBrightness = max(fLuminance - g_fBloomThreshold, 0.0) / (length(vColor.rgb) - g_fBloomThreshold);
     
     Out.vDiffuse.rgb = vColor;
     Out.vDiffuse.a = fAlpha;
@@ -228,6 +260,18 @@ PS_BRIGHTCOLOR PS_BLOOMDISSOLVE(PS_IN In)
     if (length(vColor) < g_fColorTest)
         discard;
     
+    
+    return Out;
+}
+
+
+PS_OUT PS_DISTORTION(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    Out.vDistortion = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * float2(g_NoiseUVScale.x, g_NoiseUVScale.y)).xy - float2(0.5f, 0.5f);
+    Out.vDistortion *= -2.f * g_vColor.a;
+    //Out.vDiffuse = float4(1.f, 1.f, 1.f, 1.f);
     
     return Out;
 }
@@ -285,7 +329,30 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_BLOOMDISSOLVE();
         ComputeShader = NULL;
+    }
 
+    pass BLOOMDISSOLVEBILLBOARD // 4
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_BILLBOARD();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_BLOOMDISSOLVE();
+        ComputeShader = NULL;
+    }
+
+    pass DISTORTION // 5
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_DISTORTION();
+        ComputeShader = NULL;
     }
 
 }

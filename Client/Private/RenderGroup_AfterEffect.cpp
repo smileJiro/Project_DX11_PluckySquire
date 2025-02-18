@@ -40,6 +40,9 @@ HRESULT CRenderGroup_AfterEffect::Render(CShader* _pRTShader, CVIBuffer_Rect* _p
     if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_BloomTexture2", TEXT("Target_DownBlur2"))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_DistortionTexture", TEXT("Target_Distortion"))))
+        return E_FAIL;
+
     _pRTShader->Begin((_uint)PASS_DEFERRED::AFTER_EFFECT);
 
     _pRTBuffer->Bind_BufferDesc();

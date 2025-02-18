@@ -34,6 +34,8 @@ private:
 	vector<_float>			m_Keyframes;
 	vector<_float4>			m_KeyframeDatas;
 	vector<_uint>			m_KeyCurrentIndicies;
+	ID3D11Texture2D*		m_pKeyframeDataTexture = { nullptr };
+	ID3D11ShaderResourceView* m_pSRVKeyframeDatas = { nullptr };
 
 public:
 	static CKeyframe_Module* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const json& _jsonModuleInfo, _int _iNumInstance);
