@@ -14,6 +14,9 @@ class C2DMapWordObject final : public C2DMapObject
 	{
 		IMAGE_CHANGE,
 		WORD_OBJECT_ACTIVE,
+		ANIMATION_CHANGE,
+		POSITION_CHANGE_X,
+		POSITION_CHANGE_Y,
 		WORD_ACTION_LAST
 	};
 
@@ -53,7 +56,7 @@ public:
 	virtual void Active_OnDisable();
 private :
 	_wstring				m_strWordObjectTag;
-	_uint					m_iModelIndex;
+	_uint					m_iModelIndex = 0 ;
 	vector <_wstring>		m_ModelNames;
 	vector <WORD_ACTION>	m_Actions;
 

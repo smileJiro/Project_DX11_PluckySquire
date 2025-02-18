@@ -86,7 +86,8 @@ HRESULT C2DMapWordObject::Initialize(void* _pArg)
                     tAction.anyParam = (_bool)WordActionJson["Param"];
                 if(WordActionJson["Param"].is_number())
                     tAction.anyParam = (_uint)WordActionJson["Param"];
-            
+                if(WordActionJson["Param"].is_number_float())
+                    tAction.anyParam = (_float)WordActionJson["Param"];
             }
 
             m_Actions.push_back(tAction);
@@ -124,30 +125,57 @@ HRESULT C2DMapWordObject::Render_Shadow()
 
 HRESULT C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
 {
-    auto pAction = Find_Action(_iControllerIndex, _iContainerIndex, _iWordIndex);
+    for_each(m_Actions.begin(), m_Actions.end(), [this, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]
+    (WORD_ACTION& tAction){
+            if (tAction.iControllerIndex == _iControllerIndex
+                && tAction.iContainerIndex == _iContainerIndex
+                && tAction.iWordType == _iWordIndex)
+            {
+                switch (tAction.eAction)
+                {
+                case IMAGE_CHANGE:
+                {
+                    _uint iImageIndex = any_cast<_uint>(tAction.anyParam);
 
-    if (nullptr != pAction)
-    {
-        switch (pAction->eAction)
-        {
-        case IMAGE_CHANGE: 
-        {
-            _uint iImageIndex = any_cast<_uint>(pAction->anyParam);
-            m_iModelIndex = iImageIndex;
-        }
-            break;
-        case WORD_OBJECT_ACTIVE:
-        {
-            _bool isActive = any_cast<_bool>(pAction->anyParam);
-            m_IsWordActive = isActive;
-            Set_Active(m_IsWordActive);
-        }
-        break;
-        default:
-            break;
-        }
-    
-    }
+                    if (m_iModelIndex != iImageIndex)
+                        m_pControllerModel->Change_Model(COORDINATE_2D, SECTION_MGR->Get_SectionLeveID(), m_ModelNames[iImageIndex]);
+                    m_iModelIndex = iImageIndex;
+                }
+                break;
+                case WORD_OBJECT_ACTIVE:
+                {
+                    _bool isActive = any_cast<_bool>(tAction.anyParam);
+                    m_IsWordActive = isActive;
+                    Set_Active(m_IsWordActive);
+                }
+                break;
+                case ANIMATION_CHANGE:
+                {
+                    _uint iAnimIndex = any_cast<_uint>(tAction.anyParam);
+                    Set_AnimationLoop(COORDINATE_2D, iAnimIndex, true);
+                    Set_Animation(iAnimIndex);
+                }
+                break;
+                case POSITION_CHANGE_X:
+                {
+                    _float fPostionX = any_cast<_float>(tAction.anyParam);
+                    _vector vOriginalPosition = Get_FinalPosition();
+                    Set_Position(XMVectorSetX(vOriginalPosition, fPostionX));
+                }
+                break;
+                case POSITION_CHANGE_Y:
+                {
+                    _float fPostionY = any_cast<_float>(tAction.anyParam);
+                    _vector vOriginalPosition = Get_FinalPosition();
+                    Set_Position(XMVectorSetY(vOriginalPosition, fPostionY));
+                }
+                break;
+                default:
+                    break;
+                }
+            
+            }
+        });
     return S_OK;
 }
 

@@ -26,6 +26,13 @@ HRESULT CWord::Initialize(void* _pArg)
 	WORD_DESC* pDesc = static_cast<WORD_DESC*>(_pArg);
 
 
+
+
+	m_iRenderGroupID_3D = RG_3D;
+	m_iPriorityID_3D = PR3D_GEOMETRY;
+
+
+
 	m_pWordTexture = pDesc->pSRV;
 	m_fSize = pDesc->fSize;
 	m_eWordType = pDesc->eType;
@@ -43,9 +50,8 @@ HRESULT CWord::Initialize(void* _pArg)
 	ActorDesc.FreezePosition_XYZ[0] = false;
 	ActorDesc.FreezePosition_XYZ[1] = false;
 	ActorDesc.FreezePosition_XYZ[2] = false;
-
 	SHAPE_BOX_DESC ShapeDesc = {};
-	ShapeDesc.vHalfExtents = { 0.5f,0.1f ,0.5f };
+	ShapeDesc.vHalfExtents = { 0.3f,0.3f,0.3f };
 	SHAPE_DATA ShapeData;
 	ShapeData.pShapeDesc = &ShapeDesc;
 	ShapeData.eShapeType = SHAPE_TYPE::BOX;
@@ -53,6 +59,20 @@ HRESULT CWord::Initialize(void* _pArg)
 	ShapeData.isTrigger = false;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
+
+	SHAPE_SPHERE_DESC ShapeDesc2 = {};
+	ShapeDesc2.fRadius = 0.25f;
+	SHAPE_DATA ShapeData2;
+	ShapeData2.pShapeDesc = &ShapeDesc2;
+	ShapeData2.eShapeType = SHAPE_TYPE::SPHERE;
+	ShapeData2.eMaterial = ACTOR_MATERIAL::DEFAULT;
+	ShapeData2.isTrigger = false;
+	ShapeData2.FilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
+	ShapeData2.FilterData.OtherGroupMask = OBJECT_GROUP::PLAYER_TRIGGER;
+	XMStoreFloat4x4(&ShapeData2.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
+	ActorDesc.ShapeDatas.push_back(ShapeData2);
+
+
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
 	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER_TRIGGER | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
 	pDesc->pActorDesc = &ActorDesc;
@@ -84,7 +104,8 @@ HRESULT CWord::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-
+	m_pControllerTransform->Get_Transform(COORDINATE_3D)->Rotation(XMConvertToRadians(90.f), XMVectorSet(1.f, 0.f, 0.f, 0.f));
+	m_pControllerTransform->Get_Transform(COORDINATE_3D)->Set_Scale({ 0.7f,0.3f,0.7f });
 
 	return S_OK;
 }
@@ -136,6 +157,8 @@ HRESULT CWord::Render()
 
 void CWord::Update(_float _fTimeDelta)
 {
+	m_pControllerTransform->Get_Transform(COORDINATE_3D)->Rotation(XMConvertToRadians(90.f), XMVectorSet(1.f, 0.f, 0.f, 0.f));
+
 	__super::Update(_fTimeDelta);
 }
 
@@ -147,8 +170,17 @@ void CWord::Late_Update(_float _fTimeDelta)
 
 HRESULT CWord::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
+	if (Is_Carrying())
+	{
+		Set_Position({ 0,0,0 });
+		Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
+		Set_SocketMatrix(_eCoordinate, m_pCarrier->Get_CarryingOffset_Ptr(_eCoordinate));
+		Set_ParentMatrix(_eCoordinate, m_pCarrier->Get_ControllerTransform()->Get_WorldMatrix_Ptr(_eCoordinate));
 
-	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+		//m_pControllerModel->Get_Model(COORDINATE_3D)->Set_Active(COORDINATE_3D == _eCoordinate);
+		//m_pControllerModel->Get_Model(COORDINATE_2D)->Set_Active(COORDINATE_2D == _eCoordinate);
+	}
+	if (FAILED(CActorObject::Change_Coordinate(_eCoordinate, _pNewPosition)))
 		return E_FAIL;
 	return S_OK;
 
@@ -157,7 +189,6 @@ HRESULT CWord::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition
 
 HRESULT CWord::Ready_Components()
 {
-
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
 		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
 		return E_FAIL;
@@ -171,6 +202,8 @@ HRESULT CWord::Ready_Components()
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
 		TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
+
+	return S_OK;
 }
 
 
