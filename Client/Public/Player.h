@@ -45,6 +45,7 @@ public:
 	enum PLAYER_SHAPE_USE
 	{
 		INTERACTION = SHAPE_USE::SHAPE_USE_LAST,
+		BODYGUARD,
 		PLAYER_SHAPE_USE_LAST
 	};
 	typedef struct tagAttackTriggerDesc

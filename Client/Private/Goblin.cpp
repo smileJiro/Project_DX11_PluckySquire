@@ -350,16 +350,25 @@ void CGoblin::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CGoblin::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-    __super::OnContact_Enter(_My, _Other, _ContactPointDatas);
 
-    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup && (_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse)
+    if ((_uint)MONSTER_STATE::CHASE == m_iState)
     {
-        if ((_uint)MONSTER_STATE::CHASE == m_iState)
+        if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
         {
-            Attack();
-            m_isContactToTarget = true;
+            if ((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse
+                && (_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse)
+            {
+                Attack();
+                m_isContactToTarget = true;
+
+            }
         }
     }
+    else 
+    {
+        __super::OnContact_Enter(_My, _Other, _ContactPointDatas);
+    }
+
 }
 
 void CGoblin::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)

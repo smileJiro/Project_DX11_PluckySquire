@@ -182,28 +182,30 @@ HRESULT CNpc_Rabbit::Render()
 
 void CNpc_Rabbit::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	//여기서 당근이면 먹는다.
-	OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
-	if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
-	{
-		CRabbitLunch* pRabbitLunch = dynamic_cast<CRabbitLunch*> (_pOtherObject);
-		if (pRabbitLunch &&  pRabbitLunch->Is_Carrot())
-		{
-			if (false == pRabbitLunch->Is_Carrying())
-			{
-				//당근이다
-				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(sketchspace_rabbit_eatCarrot);
-			}
 
-
-		}
-		
-	}
 }
 
 void CNpc_Rabbit::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	int a = 0;
+	if(false == m_isLunch)
+	{
+		//여기서 당근이면 먹는다.
+		OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
+		if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
+		{
+			CRabbitLunch* pRabbitLunch = dynamic_cast<CRabbitLunch*> (_pOtherObject);
+			if (pRabbitLunch && pRabbitLunch->Is_Carrot())
+			{
+				if (false == pRabbitLunch->Is_Carrying())
+				{
+					//당근이다
+					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(sketchspace_rabbit_eatCarrot);
+					m_isLunch = true;
+				}
+			}
+
+		}
+	}
 }
 
 void CNpc_Rabbit::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -354,7 +356,7 @@ HRESULT CNpc_Rabbit::Ready_Components()
 	CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius * 0.5f };
 	CircleDesc.isBlock = false;
 	CircleDesc.isTrigger = false;
-	CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+	CircleDesc.iCollisionGroupID = OBJECT_GROUP::NPC_EVENT;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
 		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
 		return E_FAIL;
