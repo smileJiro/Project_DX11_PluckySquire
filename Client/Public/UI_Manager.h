@@ -75,6 +75,11 @@ private:
 	_uint								m_iTextIndex = { 0 };
 	_bool								m_isVioletMeet = { false };
 
+
+	_bool								m_isTest = { false };
+
+	
+
 public:
 	STAMP								Get_StampIndex() { return m_eStampIndex; }
 	void								Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
