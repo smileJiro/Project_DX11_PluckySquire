@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Effect2D_Manager.h"
 #include "Section_Manager.h"
+#include "Pooling_Manager.h"
 
 
 C2DMapActionObject::C2DMapActionObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -173,6 +174,11 @@ HRESULT C2DMapActionObject::Render()
         break;
     }
 
+#ifdef _DEBUG
+    if (!m_p2DColliderComs.empty())
+        m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+#endif // _DEBUG
+
     return __super::Render();
 }
 
@@ -219,6 +225,14 @@ void C2DMapActionObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
                 strFXTag = L"bushburst_dust";
                 strFXTag += to_wstring((_int)ceil(m_pGameInstance->Compute_Random(0.f, 2.f)));
                 CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+
+                //확률로 전구 생성
+                if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+                {
+                    _float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+                    _wstring strCurSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+                    CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_2DBulb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strCurSection);
+                }
             }
         }
     }

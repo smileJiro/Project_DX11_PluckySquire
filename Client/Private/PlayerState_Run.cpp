@@ -65,6 +65,9 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		{
 			if (false == bSneak)
 				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_footsteps_generic-") + to_wstring(rand() % 20), 20.f);
+			else
+				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_footsteps_sneak-") + to_wstring(rand() % 20), 20.f);
+
 			m_fAccSoundDelay = 0.f;
 		}
 

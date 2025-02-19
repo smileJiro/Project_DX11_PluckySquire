@@ -201,7 +201,7 @@ void CGoblin::Change_Animation()
 
             case MONSTER_STATE::DEAD:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH);
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 50.f);
+                m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 0.2f, 50.f);
                 break;
 
             default:

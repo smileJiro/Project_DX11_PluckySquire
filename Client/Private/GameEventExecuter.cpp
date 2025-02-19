@@ -212,7 +212,12 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
 		}
 		m_fTimer += _fTimeDelta;
 
-
+		if (m_fTimer > 2.8f && !m_isLight)
+		{
+			m_isLight = true;
+			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night.json"));
+			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/chapter2_N.json"));
+		}
 
 		if (m_fTimer > 4.5f) {
 			m_isStart = false;
@@ -300,7 +305,7 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
 			m_isStart = true;
 		}
 
-		if (m_fTimer > 1.5f)
+		if (m_fTimer > 0.6f)
 		{
 			CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(SECTION_MGR->Get_SectionLeveID(), L"Layer_Player", 0);
 			

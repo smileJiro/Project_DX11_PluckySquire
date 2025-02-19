@@ -109,6 +109,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     CircleDesc.vOffsetPosition = { 0.f, 0.f };
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
@@ -235,6 +236,8 @@ void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other
                 m_fFlyingTimeAcc = 0;
                 m_vStuckDirection = XMVectorSetW(XMVector3Normalize(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition()), 0);
                 Set_State(STUCK);
+
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_stick-") + to_wstring(rand() % 3), 30.f);
             }
         }
         else if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
@@ -400,6 +403,7 @@ void CPlayerSword::Throw(_fvector _vDirection)
         Set_Position(m_pPlayer->Get_CenterPosition());
         Set_Active(true);
 		m_pControllerModel->Get_Model(COORDINATE_2D)->Set_Animation(2);
+        
     }
 }
 
@@ -440,6 +444,9 @@ void CPlayerSword::On_StateChange()
         {
              Set_Active(false);
         }
+
+        m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_catch-") + to_wstring(rand() % 2), 50.f);
+
         Set_AttackEnable(false);
         break;
     }
@@ -454,6 +461,7 @@ void CPlayerSword::On_StateChange()
             _vector vLook = XMVectorSetY(m_pControllerTransform->Get_State(CTransform::STATE_LOOK), 0);
             static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Dynamic();
             static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(vLook);
+            m_pBody2DColliderCom->Set_Active(true);
         }
         else
         {
