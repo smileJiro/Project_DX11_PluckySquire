@@ -677,6 +677,7 @@ HRESULT CEvent_Manager::Execute_Get_Bulb(const EVENT& _tEvent)
 
 	switch (iCoordinate) {
 	case (_uint)COORDINATE::COORDINATE_2D:
+		CPlayerData_Manager::GetInstance()->Increase_BulbCount();
 		break;
 	case (_uint)COORDINATE::COORDINATE_3D:
 		CPlayerData_Manager::GetInstance()->Increase_BulbCount();
