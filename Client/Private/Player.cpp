@@ -439,7 +439,7 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 void CPlayer::Update(_float _fTimeDelta)
 {
-    cout << "X : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[0] << " Y : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[1] << endl;
+    //cout << "X : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[0] << " Y : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[1] << endl;
 
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
@@ -912,11 +912,10 @@ void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CPlayer::On_Hit(CGameObject* _pHitter, _int _fDamg)
 {
-    //cout << " Player Get Damg" << _fDamg << endl;
     m_tStat.iHP -= _fDamg;
+    cout << " Player HP" << m_tStat.iHP << endl;
 	COORDINATE eCoord = Get_CurCoord();
-	CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == eCoord) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
-    CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.2f, 20, CCamera::SHAKE_XY);
+
     Uimgr->Set_PlayerOnHit(true);
 
     if (m_tStat.iHP <= 0)
@@ -995,6 +994,9 @@ void CPlayer::Attack(CGameObject* _pVictim)
 {
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
+
+    CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == Get_CurCoord()) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
+    CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.2f, 20, CCamera::SHAKE_XY);
     Event_Hit(this, _pVictim, m_tStat.iDamg);
     CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
     if (pCharacter)
