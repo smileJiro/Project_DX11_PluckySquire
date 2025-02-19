@@ -15,6 +15,9 @@ public :
 		ACTIVE_TYPE_DIALOG,
 		ACTIVE_TYPE_MODEL_CLOSE,
 		ACTIVE_TYPE_DROPBLOCK,
+		ACTIVE_TYPE_DYNAMIC_BACKGROUND,
+		ACTIVE_TYPE_DAMEGED,
+		ACTIVE_TYPE_ACTIONANIM,
 		ACTIVE_TYPE_LAST
 	};
 private:
@@ -31,6 +34,13 @@ public:
 	virtual HRESULT					Render() override;
 	virtual HRESULT					Render_Shadow() override;
 
+
+	MAPOBJ_2D_ACTION_TYPE			Get_ActionType() { return m_eType; }
+
+	void							Ready_Action();
+
+
+
 public:
 	virtual void					On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void					On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
@@ -41,6 +51,7 @@ private :
 	MAPOBJ_2D_ACTION_TYPE			m_eType;
 
 	_bool							m_isFadeOut = false;
+	_bool							m_isAction = false;
 	_float							m_fAlpha = 1.f;
 	_float							m_fFadeOutSecond = 0.3f;
 public:

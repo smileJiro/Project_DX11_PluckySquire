@@ -1194,11 +1194,11 @@ void C2DMap_Tool_Manager::TriggerSetting_Imgui(_bool bLock)
 					if (pTriggerObject)
 					{
 						if (ImGui::Selectable(strName.c_str(), wstrName == m_arrSelectName[TRIGGER_LIST])) {
-							if (wstrName != m_arrSelectName[TRIGGER_LIST])
-							{
+							//if (wstrName != m_arrSelectName[TRIGGER_LIST])
+							//{
 								m_arrSelectName[TRIGGER_LIST] = wstrName;
 								m_pPickingTrigger = pTriggerObject;
-							}
+							//}
 						}
 					}
 					iLoop++;

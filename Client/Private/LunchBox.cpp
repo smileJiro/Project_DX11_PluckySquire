@@ -295,5 +295,9 @@ void CLunchBox::LunchBoxOpen()
         return;
     pDynamicActor->Add_Impuls(XMVectorSetZ(vForce, XMVectorGetZ(vForce) + m_pGameInstance->Compute_Random(-fForceRange * 0.5f, fForceRange * 0.5f)));
 
-    
+
+    m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_C2DESK_drop_carrot"), 0.05f, 40.f);
+    m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_C2DESK_drop_carrot"), 0.07f,20.f);
+    m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_C2DESK_drop_carrot"), 0.1f, 40.f);
+    m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_C2DESK_drop_carrot"), 0.13f, 30.f);
 }

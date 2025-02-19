@@ -16,6 +16,8 @@ HRESULT CLevel_Logo::Initialize()
 {
 	Ready_Layer_UI(TEXT("Layer_UI"));
 
+	// BGM ½ÃÀÛ
+	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_UIMUSIC_FULL_LOOP"), 20.f);
  	return S_OK;
 }
 
@@ -94,5 +96,7 @@ CLevel_Logo* CLevel_Logo::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 
 void CLevel_Logo::Free()
 {
+	m_pGameInstance->End_BGM();
+
 	__super::Free();
 }

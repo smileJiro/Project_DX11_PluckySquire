@@ -68,7 +68,7 @@ HRESULT CEffect2D_Manager::Register_EffectPool(const _wstring& _strEffectModelTa
 	}
 
 	m_EffectPools.emplace(_strEffectModelTag, EffectPool);
-
+	return S_OK;
 }
 
 HRESULT CEffect2D_Manager::Remove_EffectPool(const _wstring& _strEffectModelTag)
