@@ -133,6 +133,22 @@
 						"duration": 1000,
 						"speed": 350
 					},
+					"text": "아, 저트 왔구나!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
 					"text": "이 사운드 어떠냐, 저트?!",
 					"Red": 161,
 					"Green": 210,
@@ -165,7 +181,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "달수염 특급 열차, 출발합니다!",
+					"text": "간단한 부탁 하나만 하자꾸나...",
 					"Red": 161,
 					"Green": 210,
 					"Blue": 234
@@ -181,7 +197,55 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "목적지는... 댄스 시티!",
+					"text": "밀랍!, 밀랍이 많이 필요해",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "음반을 더 많이 찍어야 하거든?!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "벌꿀 봉우리에 있는 꿀벌 베니한테서",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "밀랍 좀 얻어다 주렴",
 					"Red": 161,
 					"Green": 210,
 					"Blue": 234
