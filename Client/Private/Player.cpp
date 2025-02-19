@@ -821,15 +821,9 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
             if (Check_ReplaceInteractObject(pInteractable))
             {
                 m_pInteractableObject = pInteractable;
-       /*         STATE eStat = m_pStateMachine->Get_CurrentState()->Get_StateID();
-                if(STATE::START_PORTAL != eStat
-                    && STATE::JUMPTO_PORTAL!= eStat
-                    && STATE::EXIT_PORTAL != eStat)
-                {
-					cout << "Sate : " << eStat << endl;
-              
-                }*/
+                STATE eStat = m_pStateMachine->Get_CurrentState()->Get_StateID();
                 m_pPortal = dynamic_cast<CPortal*>(m_pInteractableObject);
+               
             }
         }
         
