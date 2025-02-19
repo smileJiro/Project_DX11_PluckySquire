@@ -52,7 +52,7 @@ public:
 	_float3						Get_ArmRotation();
 #endif
 public:
-	_uint						Get_CameraMode() { return m_eCameraMode; }
+	virtual _uint				Get_CameraMode() { return m_eCameraMode; }
 	virtual INITIAL_DATA		Get_InitialData() override;
 
 public:

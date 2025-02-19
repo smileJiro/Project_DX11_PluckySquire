@@ -51,7 +51,7 @@ HRESULT CGameEventExecuter::Initialize(void* _pArg)
         // 이펙트를 생성하고 다음 이벤트 실행시간 맞추게 시간 타이머 설정.
         // C020910_Bolt_Spawn에서 시간이 지나면 다음 이벤트 실행(On_End 전달 & Executer 삭제)
         //Event_2DEffectCreate(EFFECT_LIGHTNINGBOLST, _float2(10.f,10.f), SECTION_MGR->Get_Cur_Section_Key())
-        m_fMaxTimer = 1.f;
+        m_fMaxTimer = 1.5f;
         break;
     case Client::CTrigger_Manager::C02P0910_MONSTER_SPAWN:
         break;
@@ -83,6 +83,9 @@ void CGameEventExecuter::Update(_float _fTimeDelta)
         case Client::CTrigger_Manager::CHAPTER2_BOOKMAGIC:
             Chapter2_BookMagic(_fTimeDelta);
             break;
+        case Client::CTrigger_Manager::CHAPTER2_INTRO:
+            Chapter2_Intro(_fTimeDelta);
+            break;
         default:
             break;
         }
@@ -96,19 +99,22 @@ void CGameEventExecuter::Late_Update(_float _fTimeDelta)
 
 void CGameEventExecuter::C020910_Bolt_Spawn(_float _fTimeDelta)
 {
-    //_float3 vPos = { 500.0f, 10.f, 0.f };
-    _wstring strSectionKey = TEXT("Chapter2_P0910");
-    //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
-    //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	if (0.f == m_fTimer)
+    {
+        //_float3 vPos = { 500.0f, 10.f, 0.f };
+        _wstring strSectionKey = TEXT("Chapter2_P0910");
+        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
 
-    //vPos = { -450.0f, -30.f, 0.f };
-    //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
-    //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
-    CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(500.f, 10.f, 0.0f), 0.f, 4);
-    CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(500.f, 10.f, 0.0f), 0.f, 5);
+        //vPos = { -450.0f, -30.f, 0.f };
+        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(500.f, 10.f, 0.0f), 0.f, 4);
+        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(500.f, 10.f, 0.0f), 0.f, 5);
 
-    CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 4);
-    CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 5);
+        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 4);
+        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 5);
+    }
 
 
     m_fTimer += _fTimeDelta;
@@ -177,6 +183,10 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
             m_isStart = true;
         }
 
+        if (m_fTimer >= 5.8f && m_fTimer - _fTimeDelta <= 5.8f) {
+            static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D))->Start_Shake_ByCount(0.2f, 0.1f, 10, CCamera::SHAKE_XY);
+        }
+
         if (m_fTimer >= 6.5f) {
             m_isStart = false;
             m_iStep++;
@@ -184,12 +194,11 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
         }
     }
     else if (2 == m_iStep) {
-        m_fTimer += _fTimeDelta;
-
         if (false == m_isStart) {
             CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
             pCamera->Set_NextArmData(TEXT("Book_Horizon"), 0);
             pCamera->Start_Changing_AtOffset(0.5f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);
+            pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_NEXTARM);
 
             CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
             CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Change_Target(pPlayer);
@@ -197,19 +206,22 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
             m_isStart = true;
         }
 
-        if (m_fTimer >= 1.3f) {
+        if (CCamera_2D::DEFAULT == CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Get_CameraMode()) {
+            //CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+            //pCamera->Set_NextArmData(TEXT("Book_Horizon"), 0);
             m_isStart = false;
             m_iStep++;
             m_fTimer = 0.f;
         }
-       
     }
     else if (3 == m_iStep) {
         m_fTimer += _fTimeDelta;
 
-        // 돌 떨어지기?
-        
-        if (m_fTimer >= 3.f) {
+        if (m_fTimer >= 1.f) {
+            // 돌 떨어지기?
+           
+        }
+       if (m_fTimer >= 3.f) {
             m_isStart = false;
             m_iStep++;
             m_fTimer = 0.f;
@@ -219,22 +231,55 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
         m_fTimer += _fTimeDelta;
 
         // 책장 넘기기
-        // 
-        _float3 vPos = { 0.f, 0.f, 1.f };
+        if (false == m_isStart) {
+            _float3 vPos = { 0.f, 0.f, 1.f };
 
-        Event_Book_Main_Section_Change_Start(1, &vPos);
-     /*   CSection* pSection = SECTION_MGR->Find_Section(L"Chapter1_P0708");
-        if (nullptr != pSection)
-            static_cast<CSection_2D*>(pSection)->Set_NextPageTag(L"Chapter2_P0102");*/
+            Event_Book_Main_Section_Change_Start(1, &vPos);
+            CSection* pSection = SECTION_MGR->Find_Section(L"Chapter1_P0708");
+            if (nullptr != pSection)
+                static_cast<CSection_2D*>(pSection)->Set_NextPageTag(L"Chapter2_P0102");
+            
+            m_isStart = true;
+        }
+        
 
     }
     else if (5 == m_iStep) {
         m_fTimer += _fTimeDelta;
 
-        CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
+        //CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
     }
     else
         GameEvent_End();
+}
+
+void CGameEventExecuter::Chapter2_Intro(_float _fTimeDelta)
+{
+    if (0 == m_iStep) {
+
+        m_fTimer += _fTimeDelta;
+
+        if (false == m_isStart) {
+            CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+            pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 5.f);
+            pCamera->Set_Data(XMVectorSet(-0.670150876f, 0.506217539f, -0.542809010f, 0.f), 46.20f, XMVectorSet(-15.f, 5.f, 0.f, 0.f));
+            pCamera->Set_NextArmData(TEXT("Book_Horizon"), 0);
+            pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_NEXTARM);
+
+            m_isStart = true;
+        }
+
+        if (7.f >= m_fTimer) {
+            m_isStart = false;
+            m_iStep++;
+            m_fTimer = 0.f;
+        }
+    }
+    else if (1 == m_iStep) {
+        CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
+
+        GameEvent_End();
+    }
 }
 
 

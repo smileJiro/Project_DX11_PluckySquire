@@ -70,10 +70,12 @@ public:
 	virtual void				Late_Update(_float fTimeDelta) override;
 
 public:
-	_uint						Get_CameraMode() { return m_eCameraMode; }
+	virtual _uint				Get_CameraMode() { return m_eCameraMode; }
 	virtual INITIAL_DATA		Get_InitialData() override;
 
 	void						Set_CameraMode(_uint _iCameraMode) { m_eCameraMode = (CAMERA_2D_MODE)_iCameraMode; }
+	void						Set_InitilData(INITIAL_DATA _tData) {};
+	void						Set_Data(_fvector _vArm, _float _fLength, _fvector _vOffset);
 
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
@@ -100,6 +102,9 @@ private:
 	_float3						m_v2DPreTargetWorldPos = {};
 	_float3						m_v2DFixedPos = {};
 
+	// 이전 2D 좌표계 저장, 000일 때를 구하기 위해서
+	_float2						m_v2DdMatrixPos = {};
+
 	_float2						m_fTrackingTime = { 0.5f, 0.f };
 	
 	DIRECTION_TYPE				m_eDirectionType = { HORIZON };
@@ -125,6 +130,9 @@ private:
 
 	// CustomArm
 	ARM_DATA					m_CustomArmData = {};
+
+	_bool						m_is = { false };
+	_float						m_a = {};
 
 private:
 	void						Action_Mode(_float _fTimeDelta);

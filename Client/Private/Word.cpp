@@ -59,9 +59,22 @@ HRESULT CWord::Initialize(void* _pArg)
 	ShapeData.isTrigger = false;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
-	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::BLOCKER;
-	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER_TRIGGER | 
-		OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER;
+
+	SHAPE_SPHERE_DESC ShapeDesc2 = {};
+	ShapeDesc2.fRadius = 0.25f;
+	SHAPE_DATA ShapeData2;
+	ShapeData2.pShapeDesc = &ShapeDesc2;
+	ShapeData2.eShapeType = SHAPE_TYPE::SPHERE;
+	ShapeData2.eMaterial = ACTOR_MATERIAL::DEFAULT;
+	ShapeData2.isTrigger = false;
+	ShapeData2.FilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
+	ShapeData2.FilterData.OtherGroupMask = OBJECT_GROUP::PLAYER_TRIGGER;
+	XMStoreFloat4x4(&ShapeData2.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
+	ActorDesc.ShapeDatas.push_back(ShapeData2);
+
+
+	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER_TRIGGER | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
 	pDesc->pActorDesc = &ActorDesc;
 	pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
 

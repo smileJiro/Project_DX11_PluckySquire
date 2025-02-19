@@ -33,6 +33,7 @@
 #include "ButterGrump.h"
 #include "Goblin_SideScroller.h"
 #include "LightningBolt.h"
+#include "RabbitLunch.h"
 
 
 #include "RayShape.h"
@@ -142,7 +143,12 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-
+	//도시락
+	if (FAILED(Ready_Layer_LunchBox(TEXT("Layer_LunchBox"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_LunchBox (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	//액터 들어가는넘.,
 	if (FAILED(Ready_Layer_Map()))
 	{
@@ -360,6 +366,11 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		_float3 vPos = _float3(500.0f, 10.f, 0.f);
 		_wstring dd = TEXT("Chapter2_P0910");
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &dd);
+	}
+
+	if (KEY_DOWN(KEY::F)) {
+		CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_Intro"),
+			50);
 	}
 }
 
@@ -1419,6 +1430,11 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Jump_Dust"), LEVEL_CHAPTER_2, 1);
 
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves1"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves2"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust1"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust2"), LEVEL_CHAPTER_2, 3);
+
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Death_Burst"), LEVEL_CHAPTER_2, 3);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX1"), LEVEL_CHAPTER_2, 3);
@@ -1470,6 +1486,17 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_LunchBox(const _wstring& _strLayerTag)
+{
+	CModelObject::MODELOBJECT_DESC tModelDesc{};
+	tModelDesc.iCurLevelID = m_eLevelID;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_LunchBox"), m_eLevelID, _strLayerTag, &tModelDesc)))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 

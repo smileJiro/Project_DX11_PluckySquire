@@ -16,6 +16,8 @@ public:
 		KEY,
 		JUMP_PADDLE,
 		BOX,
+		CARROT,
+		GRAPE,
 		CARRIABLE_ID_LAST
 	};
 
@@ -59,6 +61,9 @@ protected:
 	_float m_f2DUpForce = 0.f;
 	_bool m_b2DOnGround= false;
 	_bool m_bThrowing = false;
+
+	_float m_fHeadUpHeight3D = 2.0f;
+	_float m_fHeadUpHeight2D = 100.0f;
 
 	const _float4x4* m_pParentBodyMatrices[COORDINATE_LAST] = { nullptr }; // 부모의 월드 행렬의 주소
 
