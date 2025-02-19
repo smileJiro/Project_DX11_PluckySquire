@@ -367,6 +367,11 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		_wstring dd = TEXT("Chapter2_P0910");
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &dd);
 	}
+
+	if (KEY_DOWN(KEY::F)) {
+		CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_Intro"),
+			50);
+	}
 }
 
 HRESULT CLevel_Chapter_02::Render()
