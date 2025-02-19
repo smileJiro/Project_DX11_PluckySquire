@@ -140,5 +140,5 @@ void C2DTrigger_Sample::Free()
 
 HRESULT C2DTrigger_Sample::Cleanup_DeadReferences()
 {
-    return E_NOTIMPL;
+    return S_OK;
 }

@@ -65,7 +65,7 @@ private: /* Col_Scroll_Bound */
 	COLBOUND2D				m_eOriginDirection = {};
 	COLBOUND2D				m_eColBoundDirection = COLBOUND2D::COLBOUND_LAST;
 	_float2					m_vColBoundDirection = {}; /* 좌우 대각 이동 */
-	_float2					m_vDecrease = { 9.8f * 15.f,  0.0f }; // 
+	_float2					m_vDecrease = { 9.8f * 18.f,  0.0f }; // 
 	_float2					m_vLifeTimeAcc = { 7.0f, 0.0f };
 
 private:

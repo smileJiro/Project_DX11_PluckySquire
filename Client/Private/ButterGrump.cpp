@@ -315,7 +315,7 @@ void CButterGrump::Play_Intro()
 
 HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
 {
-    return E_NOTIMPL;
+    return S_OK;
 }
 
 HRESULT CButterGrump::Ready_Components()
