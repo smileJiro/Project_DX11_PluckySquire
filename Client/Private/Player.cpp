@@ -331,11 +331,17 @@ void CPlayer::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
 {
     /* еб©У : */
     __super::Set_Include_Section_Name(_strIncludeSectionName);
-
+    for (auto& i : m_PartObjects)
+    {
+		if(nullptr == i)
+			continue;
+		i->Set_Include_Section_Name(_strIncludeSectionName);
+    }
     if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
     {
         Set_Position(XMVectorSet(0.0f, 2800.f, 0.0f, 0.0f));
         Set_PlatformerMode(true);
+
     }
     else
         Set_PlatformerMode(false);
