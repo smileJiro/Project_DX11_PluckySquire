@@ -13,6 +13,7 @@
 #include "Trigger_Manager.h"
 #include "PlayerData_Manager.h"
 #include "Effect_Manager.h"
+#include "Effect2D_Manager.h"
 
 
 #include "RenderGroup_MRT.h"
@@ -50,7 +51,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 	EngineDesc.isNewRenderer = true;
 #ifdef _DEBUG
-	EngineDesc.eImportMode |= NONE_IMPORT; // IMPORT_IMGUI
+	EngineDesc.eImportMode |= NONE_IMPORT; // NONE_IMPORT
 #elif NDEBUG
 	EngineDesc.eImportMode |= NONE_IMPORT;
 #endif
@@ -170,6 +171,8 @@ HRESULT CMainApp::Initialize_Client_Manager()
 	if (FAILED(CTrigger_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 	if (FAILED(CPlayerData_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+		return E_FAIL;
+	if (FAILED(CEffect2D_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 
 	return S_OK;
@@ -634,6 +637,7 @@ void CMainApp::Free()
 	Safe_Release(m_pGameInstance);
 
 	/* Client Singleton Delete */ 
+	CEffect2D_Manager::DestroyInstance();
 	CEvent_Manager::DestroyInstance();
 	CCamera_Manager::DestroyInstance();
 	CPooling_Manager::DestroyInstance();

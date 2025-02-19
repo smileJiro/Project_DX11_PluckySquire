@@ -6,6 +6,7 @@
 #include "Sneak_DetectionField.h"
 #include "Section_Manager.h"
 #include "Effect_Manager.h"
+#include "Effect2D_Manager.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -195,6 +196,30 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg)
 		Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
 		if (COORDINATE_3D == Get_CurCoord())
 			CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+
+		else if (COORDINATE_2D == Get_CurCoord())
+		{
+			_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
+			matFX.r[0] = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+			switch ((_uint)ceil(m_pGameInstance->Compute_Random(0.f, 4.f)))
+			{
+			case 1:
+				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words1"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+				break;
+
+			case 2:
+				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words2"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+				break;
+
+			case 3:
+				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words4"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+				break;
+
+			case 4:
+				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words5"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+				break;
+			}
+		}
 	}
 }
 
@@ -371,6 +396,7 @@ void CMonster::Active_OnDisable()
 	m_iAttackCount = { 0 };
 
 	Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+	
 
 	// 2. PxActor 비활성화 
 	CActorObject::Active_OnDisable();

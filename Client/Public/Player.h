@@ -97,6 +97,7 @@ public:
 		ELECTRIC,
 		TURN_BOOK,
 		EVICT,
+		LUNCHBOX,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D

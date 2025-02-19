@@ -220,6 +220,7 @@ private:
 	void						ChangeState_Panel();
 	void						For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos);
 	void						Welcome_Jot(_float _fTimeDelta);
+	void						Rock_Dialog(_float _fTimeDelta);
 
 private:
 	CNPC_Violet::ACTION			m_eActionType = { ACTION_END };
@@ -228,6 +229,7 @@ private:
 	_float						m_fIdleWaitTime = { 0.f };
 	_float						m_fWelcomeWaitTime = { 0.f };
 	_bool						m_isDialoging = { false };
+	_bool						m_isDialogRock = { false };
 
 };
 

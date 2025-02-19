@@ -96,7 +96,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	ActorDesc.ShapeDatas.push_back(ShapeData2);
 
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
-	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::PLAYER;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::DYNAMIC_OBJECT;
 
 	/* Actor Component Finished */
 	pDesc->pActorDesc = &ActorDesc;

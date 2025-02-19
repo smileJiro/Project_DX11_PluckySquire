@@ -384,13 +384,14 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 
 vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine, _int AnimCount)
 {
+	// 기존 애니메이션 객체 해제
 	for (auto& iter : m_pCurrentAnimObj)
 	{
 		Safe_Release(iter);
 	}
 	m_pCurrentAnimObj.clear();
 
-	// 현재 iLine(대화 라인)에 해당하는 애니메이션 객체가 매핑되어 있지 않다면 새로 생성
+	// 현재 iLine에 해당하는 애니메이션 객체 가져오기
 	auto iter = m_vAnimObjectsByLine.find(iLine);
 	if (iter == m_vAnimObjectsByLine.end())
 	{
@@ -399,7 +400,6 @@ vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine
 		iter = m_vAnimObjectsByLine.find(iLine);
 	}
 
-	// 찾은 결과로 m_pCurrentAnimObj를 갱신합니다.
 	if (iter != m_vAnimObjectsByLine.end())
 	{
 		m_pCurrentAnimObj = iter->second;
@@ -410,9 +410,17 @@ vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine
 		}
 	}
 
-	for (int i = 0; i < m_pCurrentAnimObj.size(); ++i)
+	// NarAnim과 동기화하여 섹션 레이어에 추가
+	size_t ianimCount = m_NarrationDatas[m_iNarrationCount].lines[iLine].NarAnim.size();
+	size_t icurrentAnimCount = m_pCurrentAnimObj.size();
+	size_t iloopCount = min(ianimCount, icurrentAnimCount);
+
+	for (size_t i = 0; i < iloopCount; ++i)
 	{
-		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[iLine].NarAnim[i].strSectionid, m_pCurrentAnimObj[i]);
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(
+			m_NarrationDatas[m_iNarrationCount].lines[iLine].NarAnim[i].strSectionid,
+			m_pCurrentAnimObj[i]
+		);
 	}
 
 	m_pGameInstance->Start_SFX_Delay(m_NarrationDatas[m_iNarrationCount].lines[iLine].strSFX, 0.f, 50.f, false);

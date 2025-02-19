@@ -5,6 +5,7 @@
 #include "ModelObject.h"
 #include "Section_Manager.h"
 #include "Player.h"
+#include "Effect2D_Manager.h"
 
 CZippy::CZippy(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -350,7 +351,7 @@ void CZippy::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         Set_AnimChangeable(true);
         //풀링에 넣을 시 변경
         //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
-
+        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
         Event_DeleteObject(this);
         break;
 
@@ -419,7 +420,8 @@ void CZippy::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherColl
 
 void CZippy::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
-    __super::On_Hit(_pHitter, _iDamg);
+	if (false == m_isElectric)
+        __super::On_Hit(_pHitter, _iDamg);
 }
 
 _bool CZippy::Has_StateAnim(MONSTER_STATE _eState)
