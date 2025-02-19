@@ -121,11 +121,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	}
 
 
-	//if (FAILED(Ready_Layer_Spawner(TEXT("Layer_Spawner"))))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_Spawner (Level_Chapter_02::Initialize)");
-	//	assert(nullptr);
-	//}
+	if (FAILED(Ready_Layer_Spawner(TEXT("Layer_Spawner"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Spawner (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	
 	if (FAILED(Ready_Layer_Effects(TEXT("Layer_Effect"))))
 	{
@@ -393,6 +393,7 @@ HRESULT CLevel_Chapter_02::Render()
 
 HRESULT CLevel_Chapter_02::Ready_Lights()
 {
+	// 이게, 일반
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
 	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
 
