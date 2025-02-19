@@ -21,6 +21,7 @@ public:
 		FLIPPING_UP,
 		FLIPPING_PAUSE,
 		FLIPPING_DOWN,
+		NARRATION,
 		CAMERA_2D_MODE_END 
 	};
 
@@ -131,9 +132,6 @@ private:
 	// CustomArm
 	ARM_DATA					m_CustomArmData = {};
 
-	_bool						m_is = { false };
-	_float						m_a = {};
-
 private:
 	void						Action_Mode(_float _fTimeDelta);
 	void						Action_SetUp_ByMode();
@@ -146,6 +144,7 @@ private:
 	void						Flipping_Up(_float _fTimeDelta);
 	void						Flipping_Pause(_float _fTimeDelta);
 	void						Flipping_Down(_float _fTimeDelta);
+	void						Play_Narration(_float _fTimeDelta);
 	void						Look_Target(_float fTimeDelta);
 
 	_vector						Calculate_CameraPos(_float _fTimeDelta);

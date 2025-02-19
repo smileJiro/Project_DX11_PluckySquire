@@ -1897,10 +1897,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     //    //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
     //    //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
     //}
-    if (KEY_DOWN(KEY::J))
-    {
-        Set_State(CPlayer::EVICT);
-    }
+    //if (KEY_DOWN(KEY::J))
+    //{
+    //    Set_State(CPlayer::EVICT);
+    //}
 }
 
 

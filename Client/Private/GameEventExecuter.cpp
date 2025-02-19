@@ -238,13 +238,23 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
             
             m_isStart = true;
         }
+
+        if (m_fTimer > 3.f) {
+            m_isStart = false;
+            m_iStep++;
+            m_fTimer = 0.f;
+        }
         
 
     }
     else if (5 == m_iStep) {
         m_fTimer += _fTimeDelta;
 
-        //CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
+        if (false == m_isStart) {
+            CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
+
+            m_isStart = true;
+        }
     }
     else
         GameEvent_End();

@@ -231,10 +231,6 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 		CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	}
 
-	if (KEY_DOWN(KEY::J)) {
-		CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
-	}
-
 }
 
 HRESULT CLevel_Chapter_04::Render()
