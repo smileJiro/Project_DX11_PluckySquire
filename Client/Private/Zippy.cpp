@@ -391,7 +391,6 @@ void CZippy::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCol
     {
         if (true == m_isElectric)
         {
-            //플레이어 setstate 부르기
             static_cast<CPlayer*>(_pOtherObject)->Set_State(CPlayer::ELECTRIC);
             Event_Hit(this, _pOtherObject, Get_Stat().iDamg);
             m_isElectric = false;
