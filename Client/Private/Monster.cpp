@@ -93,7 +93,9 @@ HRESULT CMonster::Render()
 
 void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup && (_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse)
+	if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup 
+		&&(_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse
+		&& (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
 	{
 		Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().iDamg);
 		_vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));

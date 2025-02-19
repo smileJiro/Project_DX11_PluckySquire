@@ -105,6 +105,15 @@ _bool CCollider_Circle::Is_Collision(CCollider* _pOther)
     return isResult;
 }
 
+_bool CCollider_Circle::Is_ContainsPoint(_float2 _vPosition)
+{
+
+    _float fDistance = XMVector2Length(XMLoadFloat2(&_vPosition)-XMLoadFloat2(&m_vPosition)).m128_f32[0];
+
+    return fDistance < m_fFinalRadius;
+}
+
+
 void CCollider_Circle::Update_OwnerTransform()
 {
     _vector vOwnerPos = m_pOwner->Get_FinalPosition();
