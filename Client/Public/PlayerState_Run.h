@@ -25,6 +25,7 @@ private:
     _bool m_bPlatformerMode = false;
     F_DIRECTION m_eOldFDir = F_DIRECTION::F_DIR_LAST;
 	//_float m_fFootHitPointY = 0.f;
+    _float  m_fAccSoundDelay = 0.f;
 };
 
 END

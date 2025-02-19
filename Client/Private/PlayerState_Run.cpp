@@ -59,6 +59,15 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		}
 		m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* fMoveSpeed, _fTimeDelta);
 
+		// 걷는 사운드 재생
+		m_fAccSoundDelay += _fTimeDelta;
+		if (0.3f <= m_fAccSoundDelay)
+		{
+			if (false == bSneak)
+				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_footsteps_generic-") + to_wstring(rand() % 20), 20.f);
+			m_fAccSoundDelay = 0.f;
+		}
+
 		if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_SPINATTACK])
@@ -78,6 +87,8 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;
 	}
+
+		
 }
 
 void CPlayerState_Run::Enter()
@@ -96,6 +107,7 @@ void CPlayerState_Run::Enter()
 		Switch_RunAnimation3D(tKeyResult.bInputStates[PLAYER_INPUT_SNEAK]);
 	}
 
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_footsteps_generic-") + to_wstring(rand() % 20), 20.f);
 }
 
 void CPlayerState_Run::Exit()
@@ -109,6 +121,8 @@ void CPlayerState_Run::Exit()
 	{
 		m_pOwner->Stop_Rotate();
 	}
+
+	m_fAccSoundDelay = 0.f;
 
 }
 

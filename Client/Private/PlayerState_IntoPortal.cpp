@@ -4,6 +4,7 @@
 #include "Portal.h" 
 #include "Player.h"
 #include "Actor_Dynamic.h"
+#include "GameInstance.h"
 
 CPlayerState_JumpToPortal::CPlayerState_JumpToPortal(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::JUMPTO_PORTAL)
@@ -60,6 +61,8 @@ void CPlayerState_JumpToPortal::Enter()
     {
 
     }
+
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_jot_vocal_portal_jump-") + to_wstring(rand() % 7), 0.15f, 50.f);
 }
 
 void CPlayerState_JumpToPortal::Exit()

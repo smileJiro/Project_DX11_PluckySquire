@@ -297,6 +297,7 @@ void CPlayerSword::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOth
 {
     if (OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
     {
+        m_pGameInstance->Start_SFX(_wstring(L"A_Sfx_Sword_Impact_Body_") + to_wstring(rand() % 3), 50.f);
         Attack(_pOtherObject);
     }
 }
