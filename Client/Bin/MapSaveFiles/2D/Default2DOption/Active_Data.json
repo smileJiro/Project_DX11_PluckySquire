@@ -16,5 +16,14 @@
   },  
   {
     "ActiveName": "ActiveType_DropBlock"
+  },
+  {
+    "ActiveName": "ActiveType_DynamicBackground"
+  },
+  {
+    "ActiveName": "ActiveType_Dameged"
+  },
+  {
+    "ActiveName": "ActiveType_Action_Anim"
   }
 ]

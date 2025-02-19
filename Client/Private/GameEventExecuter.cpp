@@ -13,12 +13,14 @@
 #include "UI_Manager.h"
 #include "Effect_Manager.h"
 #include "Section_2D.h"
+#include "MapObject.h"
+#include "2DMapActionObject.h"
 
 CGameEventExecuter::CGameEventExecuter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameObject(_pDevice, _pContext)
-    , m_pGameInstance(CGameInstance::GetInstance())
+	, m_pGameInstance(CGameInstance::GetInstance())
 {
-    Safe_AddRef(m_pGameInstance);
+	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CGameEventExecuter::Initialize_Prototype()
@@ -31,16 +33,16 @@ HRESULT CGameEventExecuter::Initialize_Prototype()
 
 HRESULT CGameEventExecuter::Initialize(void* _pArg)
 {
-    EVENT_EXECUTER_DESC* pDesc = static_cast<EVENT_EXECUTER_DESC*>(_pArg);
+	EVENT_EXECUTER_DESC* pDesc = static_cast<EVENT_EXECUTER_DESC*>(_pArg);
 
-    m_iEventExcuterAction =
-        CTrigger_Manager::GetInstance()->Find_ExecuterAction(pDesc->strEventTag);
-    m_strEventTag = pDesc->strEventTag;
-    if (m_iEventExcuterAction == -1 ||
-        m_iEventExcuterAction == CTrigger_Manager::EVENT_EXECUTER_ACTION_TYPE_LAST)
-        return E_FAIL;
+	m_iEventExcuterAction =
+		CTrigger_Manager::GetInstance()->Find_ExecuterAction(pDesc->strEventTag);
+	m_strEventTag = pDesc->strEventTag;
+	if (m_iEventExcuterAction == -1 ||
+		m_iEventExcuterAction == CTrigger_Manager::EVENT_EXECUTER_ACTION_TYPE_LAST)
+		return E_FAIL;
 
-    
+
 
     // 초기 설정 
     switch ((CTrigger_Manager::EVENT_EXECUTER_ACTION_TYPE)m_iEventExcuterAction)
@@ -120,122 +122,208 @@ void CGameEventExecuter::C020910_Bolt_Spawn(_float _fTimeDelta)
     }
 
 
-    m_fTimer += _fTimeDelta;
+	m_fTimer += _fTimeDelta;
 
-    if (m_fMaxTimer < m_fTimer)
-        GameEvent_End();
+	if (m_fMaxTimer < m_fTimer)
+		GameEvent_End();
 }
 
 void CGameEventExecuter::C020910_Monster_Spawn(_float _fTimeDelta)
 {
-    _float3 vPos={ 500.0f, 10.f, 0.f };
-    _wstring strSectionKey = TEXT("Chapter2_P0910");
-    CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Zippy"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	_float3 vPos = { 500.0f, 10.f, 0.f };
+	_wstring strSectionKey = TEXT("Chapter2_P0910");
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Zippy"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
 
-    vPos={ -450.0f, -30.f, 0.f };
-    CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Zippy"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	vPos = { -450.0f, -30.f, 0.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Zippy"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
 
-    GameEvent_End();
+	GameEvent_End();
 }
 
 void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
 {
-    // 책 중앙으로 카메라 이동
-    if (0 == m_iStep) {
-        
-        m_fTimer += _fTimeDelta;
+	// 책 중앙으로 카메라 이동
+	if (0 == m_iStep) {
 
-        if (false == m_isStart) {
-            CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Book"), 0);
-            CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Change_Target(pBook);
-        
-            m_isStart = true;
-        }
+		m_fTimer += _fTimeDelta;
 
-        if (m_fTimer > 1.5f) {
-            m_isStart = false;
-            m_iStep++;
-            m_fTimer = 0.f;
-        }
-    }
-    // 하늘 어두워지기?
-    // 
-    // 책 발작, 이펙트 추가
-    else if (1 == m_iStep) {
-        m_fTimer += _fTimeDelta;
+		if (false == m_isStart) {
+			CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Book"), 0);
+			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Change_Target(pBook);
 
-        if (false == m_isStart) {
-            static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
-            CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
-            CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
-            pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_CUSTOMARM);
+			m_isStart = true;
+		}
 
-            ARM_DATA tData = {};
-            tData.fMoveTimeAxisRight = { 5.f, 0.f };
-            tData.fRotationPerSecAxisRight = { XMConvertToRadians(-10.f), XMConvertToRadians(-1.f) };
-            tData.iRotationRatioType = EASE_IN_OUT;
-            tData.fLength = 20.f;
-            tData.fLengthTime = { 5.f, 0.f };
-            tData.iLengthRatioType = EASE_OUT;
+		//if (m_fTimer > 1.5f) {
+		m_isStart = false;
+		m_iStep++;
+		m_fTimer = 0.f;
+		//}
+	}
+	// 하늘 어두워지기?
+	// 
+	// 책 발작, 이펙트 추가
+	// 어두워지기
+	else if (1 == m_iStep)
+	{
+		if (!m_isStart)
+		{
+			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key()));
 
-            pCamera->Add_CustomArm(tData);
- 
-            pCamera->Start_Shake_ByCount(0.2f, 0.1f, 10, CCamera::SHAKE_XY);
-            pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(-0.7f, 2.f, 0.f, 0.f), EASE_IN_OUT);
 
-            m_isStart = true;
-        }
+			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_BACKGROUND);
 
-        if (m_fTimer >= 5.8f && m_fTimer - _fTimeDelta <= 5.8f) {
-            static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D))->Start_Shake_ByCount(0.2f, 0.1f, 10, CCamera::SHAKE_XY);
-        }
+			const auto& Objects = pLayer->Get_GameObjects();
 
-        if (m_fTimer >= 6.5f) {
-            m_isStart = false;
-            m_iStep++;
-            m_fTimer = 0.f;
-        }
-    }
-    else if (2 == m_iStep) {
-        if (false == m_isStart) {
-            CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
-            pCamera->Set_NextArmData(TEXT("Book_Horizon"), 0);
-            pCamera->Start_Changing_AtOffset(0.5f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);
-            pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_NEXTARM);
+			for_each(Objects.begin(), Objects.end(), [](CGameObject* pGameObject) {
+				auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
 
-            CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
-            CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Change_Target(pPlayer);
-            
-            m_isStart = true;
-        }
+				if (nullptr != pActionObj)
+				{
+					if (C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND == pActionObj->Get_ActionType())
+						pActionObj->Ready_Action();
+				}
+				});
+			m_isStart = true;
+		}
+		m_fTimer += _fTimeDelta;
 
-        if (CCamera_2D::DEFAULT == CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Get_CameraMode()) {
-            //CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
-            //pCamera->Set_NextArmData(TEXT("Book_Horizon"), 0);
-            m_isStart = false;
-            m_iStep++;
-            m_fTimer = 0.f;
-        }
-    }
-    else if (3 == m_iStep) {
-        m_fTimer += _fTimeDelta;
 
-        if (m_fTimer >= 1.f) {
-            // 돌 떨어지기?
-           
-        }
-       if (m_fTimer >= 3.f) {
-            m_isStart = false;
-            m_iStep++;
-            m_fTimer = 0.f;
-        }
-    }
-    else if (4 == m_iStep) {
-        m_fTimer += _fTimeDelta;
+		if (m_fTimer > 2.2f) {
+			m_isStart = false;
+			m_iStep++;
+			m_fTimer = 0.f;
+		}
+	}
+	// 이펙트
+	else if (2 == m_iStep)
+	{
+		if (!m_isStart)
+		{
+			// 딜탐, 인덱스, 루프, 라이프타임 
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"beam", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-236.f, 217.f, 0.f), 2.8f, 0,true,999.f);// 빔쏘는거
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"EffectBack", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 181.4f, 0.f), 0.f, 0); // 백 시작
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"EffectBack", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 181.4f, 0.f), 0.8f, 1, true, 999.f); //백 루프
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 179.4f, 0.f), 0.f, 0);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 179.4f, 0.f), 1.8f, 1, false, 999.f);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.0f, 0, false);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.6f, 1, true, 999.f);
 
-        // 책장 넘기기
-        if (false == m_isStart) {
-            _float3 vPos = { 0.f, 0.f, 1.f };
+
+			m_isStart = true;
+		}
+		m_fTimer += _fTimeDelta;
+
+
+
+		if (m_fTimer > 4.5f) {
+			m_isStart = false;
+			m_iStep++;
+			m_fTimer = 0.f;
+		}
+	}
+	else if (3 == m_iStep) {
+		m_fTimer += _fTimeDelta;
+
+		if (false == m_isStart) {
+			static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
+			CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
+			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+			pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_CUSTOMARM);
+
+			ARM_DATA tData = {};
+			tData.fMoveTimeAxisRight = { 5.f, 0.f };
+			tData.fRotationPerSecAxisRight = { XMConvertToRadians(-10.f), XMConvertToRadians(-1.f) };
+			tData.iRotationRatioType = EASE_IN_OUT;
+			tData.fLength = 20.f;
+			tData.fLengthTime = { 5.f, 0.f };
+			tData.iLengthRatioType = EASE_OUT;
+
+			pCamera->Add_CustomArm(tData);
+
+			pCamera->Start_Shake_ByCount(0.2f, 0.1f, 10, CCamera::SHAKE_XY);
+			pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(-0.7f, 2.f, 0.f, 0.f), EASE_IN_OUT);
+
+			m_isStart = true;
+		}
+
+		if (m_fTimer >= 5.8f && m_fTimer - _fTimeDelta <= 5.8f) {
+			static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D))->Start_Shake_ByCount(0.2f, 0.1f, 10, CCamera::SHAKE_XY);
+		}
+
+		if (m_fTimer >= 6.5f) {
+			m_isStart = false;
+			m_iStep++;
+			m_fTimer = 0.f;
+		}
+	}
+	else if (4 == m_iStep) {
+		if (false == m_isStart) {
+			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+			pCamera->Set_NextArmData(TEXT("Book_Horizon"), 0);
+			pCamera->Start_Changing_AtOffset(0.5f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);
+			pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_NEXTARM);
+
+			CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
+			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Change_Target(pPlayer);
+
+			m_isStart = true;
+		}
+
+		if (CCamera_2D::DEFAULT == CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Get_CameraMode()) {
+			//CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+			//pCamera->Set_NextArmData(TEXT("Book_Horizon"), 0);
+			m_isStart = false;
+			m_iStep++;
+			m_fTimer = 0.f;
+		}
+	}
+	else if (5 == m_iStep) {
+		m_fTimer += _fTimeDelta;
+		if (!m_isStart)
+		{
+			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key()));
+
+
+			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT);
+
+			const auto& Objects = pLayer->Get_GameObjects();
+
+			for_each(Objects.begin(), Objects.end(), [](CGameObject* pGameObject) {
+				auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
+
+				if (nullptr != pActionObj)
+				{
+					if (C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM == pActionObj->Get_ActionType())
+						pActionObj->Ready_Action();
+				}
+				});
+			m_isStart = true;
+		}
+
+		if (m_fTimer > 1.5f)
+		{
+			CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(SECTION_MGR->Get_SectionLeveID(), L"Layer_Player", 0);
+
+			//플레이어 떨궈 
+		 /*   static_cast<CPlayer*>(pGameObject)->();*/
+
+
+		}
+
+
+		if (m_fTimer > 3.f) {
+			m_isStart = false;
+			m_iStep++;
+			m_fTimer = 0.f;
+		}
+	}
+	else if (6 == m_iStep) {
+		m_fTimer += _fTimeDelta;
+
+		// 책장 넘기기
+		if (false == m_isStart) {
+			_float3 vPos = { 0.f, 0.f, 1.f };
 
             Event_Book_Main_Section_Change_Start(1, &vPos);
             CSection* pSection = SECTION_MGR->Find_Section(L"Chapter1_P0708");
@@ -268,9 +356,9 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
 
 void CGameEventExecuter::Chapter2_Intro(_float _fTimeDelta)
 {
-    if (0 == m_iStep) {
+	if (0 == m_iStep) {
 
-        m_fTimer += _fTimeDelta;
+		m_fTimer += _fTimeDelta;
 
         if (false == m_isStart) {
             CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
@@ -280,8 +368,8 @@ void CGameEventExecuter::Chapter2_Intro(_float _fTimeDelta)
             pCamera->Start_Changing_AtOffset(5.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);
             pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_NEXTARM);
 
-            m_isStart = true;
-        }
+			m_isStart = true;
+		}
 
         if (m_fTimer >= 7.f) {
             m_isStart = false;
@@ -378,48 +466,48 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
 
 void CGameEventExecuter::GameEvent_End()
 {
-    if (!Is_Dead())
-    {
-        CTrigger_Manager::GetInstance()->On_End(m_strEventTag);
-        Event_DeleteObject(this);
-    }
+	if (!Is_Dead())
+	{
+		CTrigger_Manager::GetInstance()->On_End(m_strEventTag);
+		Event_DeleteObject(this);
+	}
 }
 
 
 
 CGameEventExecuter* CGameEventExecuter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    CGameEventExecuter* pInstance = new CGameEventExecuter(_pDevice, _pContext);
+	CGameEventExecuter* pInstance = new CGameEventExecuter(_pDevice, _pContext);
 
-    if (FAILED(pInstance->Initialize_Prototype()))
-    {
-        MSG_BOX("Failed to Created : CGameEventExecuter");
-        Safe_Release(pInstance);
-    }
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : CGameEventExecuter");
+		Safe_Release(pInstance);
+	}
 
-    return pInstance;
+	return pInstance;
 }
 
 CGameObject* CGameEventExecuter::Clone(void* _pArg)
 {
-    CGameEventExecuter* pInstance = new CGameEventExecuter(*this);
-    if (FAILED(pInstance->Initialize(_pArg)))
-    {
-        MSG_BOX("Failed to Cloned : CGameEventExecuter");
-        Safe_Release(pInstance);
-    }
+	CGameEventExecuter* pInstance = new CGameEventExecuter(*this);
+	if (FAILED(pInstance->Initialize(_pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CGameEventExecuter");
+		Safe_Release(pInstance);
+	}
 
-    return pInstance;
+	return pInstance;
 }
 
 void CGameEventExecuter::Free()
 {
-    __super::Free();
+	__super::Free();
 }
 
 
 HRESULT CGameEventExecuter::Cleanup_DeadReferences()
 {
-    Safe_Release(m_pGameInstance);
+	Safe_Release(m_pGameInstance);
 	return S_OK;
 }

@@ -30,7 +30,13 @@ public: /* Effect를 생성 */
 	HRESULT								Pooling_Effects(const _wstring& _strEffectModelTag, _uint _iNumInitialPoolingEffects);
 
 public: /* Effect를 재생 */
-	HRESULT								Play_Effect(const _wstring& _strEffectModelTag, const _wstring& _strSectionKey, _fmatrix _2DWorldMatrix, _float _fDelayTime = 0.0f, _uint _iAnimIndex = 0, _bool _isLoop = false, _float _fLifeTime = 0.0f);
+	HRESULT								Play_Effect(const _wstring& _strEffectModelTag, 
+		const _wstring& _strSectionKey, 
+		_fmatrix _2DWorldMatrix, 
+		_float _fDelayTime = 0.0f, 
+		_uint _iAnimIndex = 0, 
+		_bool _isLoop = false, 
+		_float _fLifeTime = 0.0f);
 
 private:
 	CGameInstance*						m_pGameInstance = nullptr;
