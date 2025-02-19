@@ -147,19 +147,19 @@ HRESULT CPlayer::Initialize(void* _pArg)
     BoxShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::BLOCKER; // Actor가 충돌을 감지할 그룹
     ActorDesc.ShapeDatas.push_back(BoxShapeData);
 
-    //마찰용 
-    //SHAPE_SPHERE_DESC SphereFootDesc = {};
-    //SphereFootDesc.fRadius = m_fFootLength + 0.1f;
-    //SHAPE_DATA SphereShapeData;
-    //SphereShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-    //SphereShapeData.pShapeDesc = &SphereFootDesc;
-    //XMStoreFloat4x4(&SphereShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, SphereFootDesc.fRadius, 0.0f));
-    //SphereShapeData.iShapeUse =(_uint)SHAPE_USE::SHAPE_FOOT;
-    //SphereShapeData.isTrigger = false;
-    //SphereShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT;
-    //SphereShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    //SphereShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::BLOCKER; // Actor가 충돌을 감지할 그룹
-    //ActorDesc.ShapeDatas.push_back(SphereShapeData);
+    //공격시 몸통 가드
+    SHAPE_SPHERE_DESC tGuardShapeDesc= {};
+	tGuardShapeDesc.fRadius = 0.5f;
+    SHAPE_DATA BodyGuardShapeData;
+    BodyGuardShapeData.eShapeType = SHAPE_TYPE::SPHERE;
+    BodyGuardShapeData.pShapeDesc = &tGuardShapeDesc;
+    XMStoreFloat4x4(&BodyGuardShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, tGuardShapeDesc.fRadius, 0.0f));
+    BodyGuardShapeData.iShapeUse = (_uint)PLAYER_SHAPE_USE::BODYGUARD;
+    BodyGuardShapeData.isTrigger = false;
+    BodyGuardShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
+    BodyGuardShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
+    BodyGuardShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::BLOCKER; // Actor가 충돌을 감지할 그룹
+    ActorDesc.ShapeDatas.push_back(BodyGuardShapeData);
 
 
     //주변 지형 감지용 구 (트리거)
@@ -210,7 +210,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     Set_PlatformerMode(false);
 
-
+	m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD,false);
     return S_OK;
 }
 
@@ -1729,6 +1729,7 @@ void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 	}
 	else
 	{
+        m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD, true);
 		m_pSword->Set_AttackEnable(true, _eAttackType);
 	}
 }
@@ -1742,6 +1743,7 @@ void CPlayer::End_Attack()
     }
     else
     {
+        m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD, false);
         m_pSword->Set_AttackEnable(false);
     }
 }
