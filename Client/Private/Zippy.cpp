@@ -44,6 +44,8 @@ HRESULT CZippy::Initialize(void* _pArg)
     m_tStat.iHP = 5;
     m_tStat.iMaxHP = 5;
 
+    m_isPooling = true;
+
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
@@ -419,8 +421,8 @@ void CZippy::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherColl
 
 void CZippy::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
-	if (false == m_isElectric)
-        __super::On_Hit(_pHitter, _iDamg);
+	if (false == m_isDash)
+      __super::On_Hit(_pHitter, _iDamg);
 }
 
 _bool CZippy::Has_StateAnim(MONSTER_STATE _eState)

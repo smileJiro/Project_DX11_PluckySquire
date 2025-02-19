@@ -129,7 +129,7 @@ HRESULT CTriggerObject::Initialize_3D_Trigger(CActor::ACTOR_DESC** _pActorDesc, 
 HRESULT CTriggerObject::Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
 {
     CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
-    AABBDesc.pOwner = this;
+    AABBDesc    .pOwner = this;
     AABBDesc.vExtents = { 1.f, 1.f };
     AABBDesc.vScale = { 1.f, 1.f };
     AABBDesc.vOffsetPosition = { 0.f, 0.f };

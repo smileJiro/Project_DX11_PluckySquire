@@ -352,6 +352,10 @@ HRESULT CLoader::Loading_Level_Static()
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/LightbulbPickup_01/LightbulbPickup_01.model", matPretransform))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Model2D_Bulb"),
+        C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DNonAnim/bulb/pickup_bulb_01.dds", true))))
+        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("액터를 로딩중입니다."));
     /* For. Prototype_Component_Actor_Dynamic */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Actor_Dynamic"),

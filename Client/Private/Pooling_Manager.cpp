@@ -188,6 +188,8 @@ HRESULT CPooling_Manager::Create_Objects(const _wstring& _strPoolingTag, _uint i
 		if (FAILED(Create_Object(_strPoolingTag, eCoordinate, _pPosition, _pRotation, _pScaling, _pSectionKey)))
 			return E_FAIL;
 	}
+
+	return S_OK;
 }
 
 HRESULT CPooling_Manager::Pooling_Objects(const _wstring& _strPoolingTag, _uint _iNumPoolingObjects)
