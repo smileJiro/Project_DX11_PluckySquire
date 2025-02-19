@@ -106,7 +106,7 @@ void CGameEventExecuter::Late_Update(_float _fTimeDelta)
 
 void CGameEventExecuter::C020910_Bolt_Spawn(_float _fTimeDelta)
 {
-	if (0.f == m_fTimer && true == m_isSpawn)
+	if (0.f == m_fTimer && false == m_isSpawn)
     {
         //_float3 vPos = { 500.0f, 10.f, 0.f };
         _wstring strSectionKey = TEXT("Chapter2_P0910");
@@ -121,6 +121,8 @@ void CGameEventExecuter::C020910_Bolt_Spawn(_float _fTimeDelta)
 
         CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 4);
         CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 5);
+		m_isSpawn = true;
+
     }
 
 
