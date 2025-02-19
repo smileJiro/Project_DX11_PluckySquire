@@ -5,6 +5,8 @@
 #include "ModelObject.h"
 #include "Section_Manager.h"
 #include "Blocker.h"
+#include "Effect2D_Manager.h"
+#include "Player.h"
 
 CGoblin_SideScroller::CGoblin_SideScroller(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -152,6 +154,7 @@ void CGoblin_SideScroller::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         Set_AnimChangeable(true);
         //풀링에 넣을 시 변경
         //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
 
         Event_DeleteObject(this);
         break;
@@ -165,6 +168,9 @@ void CGoblin_SideScroller::On_Collision2D_Enter(CCollider* _pMyCollider, CCollid
 {
     if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
     {
+        //일단 처리
+        if (CPlayer::STATE::JUMP_DOWN != static_cast<CPlayer*>(_pOtherObject)->Get_CurrentStateID())
+            __super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
     }
 
 	if (OBJECT_GROUP::BLOCKER & _pOtherCollider->Get_CollisionGroupID())
@@ -209,7 +215,6 @@ void CGoblin_SideScroller::On_Collision2D_Enter(CCollider* _pMyCollider, CCollid
 
     }
 
-    __super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
 }
 
 void CGoblin_SideScroller::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
