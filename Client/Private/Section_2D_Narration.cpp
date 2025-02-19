@@ -7,6 +7,7 @@
 #include "Engine_Macro.h"
 #include "MapObjectFactory.h"
 #include "Trigger_Manager.h"
+#include <Player.h>
 
 CSection_2D_Narration::CSection_2D_Narration(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSection_2D(_pDevice, _pContext, NARRAION, SECTION_2D_BOOK)
@@ -56,6 +57,22 @@ HRESULT CSection_2D_Narration::Section_AddRenderGroup_Process()
 HRESULT CSection_2D_Narration::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
 {
 	HRESULT hr = __super::Add_GameObject_ToSectionLayer(_pGameObject, _iLayerIndex);
+
+	
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(_pGameObject);
+	// TODO:: 추후 개선 오버라이드 2개
+	if (nullptr != pPlayer)
+		pPlayer->Set_Render(false);
+
+	return hr;
+}
+HRESULT CSection_2D_Narration::Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject)
+{
+	HRESULT hr = __super::Remove_GameObject_ToSectionLayer(_pGameObject);
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(_pGameObject);
+
+	if (nullptr != pPlayer)
+		pPlayer->Set_Render(true);
 	return hr;
 }
 ;

@@ -192,6 +192,9 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg)
 		Set_AnimChangeable(true);
 		m_p2DColliderComs[0]->Set_Active(false);
 		Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
+
+		if (COORDINATE_3D == Get_CurCoord())
+			CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
 	}
 	else
 	{
