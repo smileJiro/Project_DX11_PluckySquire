@@ -593,7 +593,7 @@ private:
 	_float m_f2DThrowObjectPower = 100.f;
 	_float m_f2DPickupRange = 93.f;
 	_float m_f2DKnockBackPower = 700.f;
-	_float m_f2DInteractOffset = 100.f;
+	_float m_f2DInteractOffset = 40.f;
 	_float4x4 m_mat2DCarryingOffset = {};
 	/* еб©У */
 	_float m_f2DColliderBodyRadius = 20.f;
