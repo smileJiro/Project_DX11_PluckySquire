@@ -129,7 +129,7 @@ HRESULT C2DMapWordObject::Initialize(void* _pArg)
     }
 
 
-
+    return hr;
 }
 
 void C2DMapWordObject::Priority_Update(_float _fTimeDelta)
