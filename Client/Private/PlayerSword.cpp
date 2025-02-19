@@ -236,6 +236,8 @@ void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other
                 m_fFlyingTimeAcc = 0;
                 m_vStuckDirection = XMVectorSetW(XMVector3Normalize(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition()), 0);
                 Set_State(STUCK);
+
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_stick-") + to_wstring(rand() % 3), 30.f);
             }
         }
         else if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
@@ -442,6 +444,9 @@ void CPlayerSword::On_StateChange()
         {
              Set_Active(false);
         }
+
+        m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_catch-") + to_wstring(rand() % 2), 50.f);
+
         Set_AttackEnable(false);
         break;
     }

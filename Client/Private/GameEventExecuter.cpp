@@ -14,6 +14,7 @@
 #include "Effect_Manager.h"
 #include "Section_2D.h"
 #include "MapObject.h"
+#include "Camera_Target.h"
 #include "2DMapActionObject.h"
 
 CGameEventExecuter::CGameEventExecuter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -416,20 +417,20 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
         CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
        
         if (COORDINATE_3D == pPlayer->Get_CurCoord()) {
-            CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
-            pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_CUSTOMARM);
+			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+            pCamera->Set_CameraMode(CCamera_Target::MOVE_TO_CUSTOMARM);
 
             ARM_DATA tData = {};
-            tData.fMoveTimeAxisRight = { 5.f, 0.f };
+            tData.fMoveTimeAxisRight = { 3.f, 0.f };
             tData.fRotationPerSecAxisRight = { XMConvertToRadians(-15.f), XMConvertToRadians(-1.f) };
             tData.iRotationRatioType = EASE_IN_OUT;
-            tData.fLength = 40.f;
-            tData.fLengthTime = { 5.f, 0.f };
+            tData.fLength = 20.f;
+            tData.fLengthTime = { 3.f, 0.f };
             tData.iLengthRatioType = EASE_OUT;
 
             pCamera->Add_CustomArm(tData);
 
-            pCamera->Start_Changing_AtOffset(5.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
+            pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
 
             m_fTimer = 0.f;
             m_iStep++;
@@ -439,16 +440,6 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
     else if (1 == m_iStep) {
 
         m_fTimer += _fTimeDelta;
-
-        if (m_fTimer >= 2.f && m_fTimer - _fTimeDelta <= 2.f) {
-            CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
-            pCamera->Start_Changing_AtOffset(2.f, XMVectorSet(-6.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
-        }
-
-        if (m_fTimer >= 4.f && m_fTimer - _fTimeDelta <= 4.f) {
-            CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
-            pCamera->Start_Changing_AtOffset(2.f, XMVectorSet(6.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
-        }
 
         CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
         
@@ -466,7 +457,10 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
 
         if (m_fTimer >= 1.6f) {
 
-            CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, false);
+			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+			pCamera->Set_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+			pCamera->Set_NextArmData(TEXT("Default"), 12);
+
             CCamera_Manager::GetInstance()->Start_FadeIn(1.5f);
 
             GameEvent_End();

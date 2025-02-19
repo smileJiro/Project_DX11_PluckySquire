@@ -345,6 +345,15 @@ void CPlayer::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
     }
     else
         Set_PlatformerMode(false);
+
+    if (TEXT("Chapter2_P1314") == _strIncludeSectionName)
+    {
+        static_cast<CCollider_Circle*>(m_pBody2DTriggerCom)->Set_Radius(9999.f);
+    }
+    else
+    {
+        static_cast<CCollider_Circle*>(m_pBody2DTriggerCom)->Set_Radius(m_f2DInteractRange);
+    }
 }
 
 
