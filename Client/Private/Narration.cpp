@@ -653,10 +653,6 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 
 						m_fWaitingTime += _fTimeDelta;
 						m_isWaitingNextPage = true;
-						
-
-					
-
 					}
 				}
 				else
