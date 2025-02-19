@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PlayerState_ThrowObject.h"
+#include "GameInstance.h"
 
 CPlayerState_ThrowObject::CPlayerState_ThrowObject(CPlayer* _pOwner)
 	: CPlayerState(_pOwner, CPlayer::THROWOBJECT)
@@ -35,6 +36,9 @@ void CPlayerState_ThrowObject::Enter()
 			break;
 		}
 	}
+
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_Throw-") + to_wstring(rand() % 6), 50.f);
+
 }
 
 void CPlayerState_ThrowObject::Exit()
