@@ -18,8 +18,9 @@
     "Trigger_Type": 6,
     "MapTrigger_Info": {
       "Next_Position": [
-        0.0,
-        -300.0
+	  
+		60.81, 
+		-243.16
       ]
     }
   },
