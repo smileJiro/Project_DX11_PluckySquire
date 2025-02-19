@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PlayerState_LunchBox.h"
 #include "LunchBox.h"
+#include "GameInstance.h"
 
 CPlayerState_LunchBox::CPlayerState_LunchBox(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::LUNCHBOX)
@@ -47,6 +48,9 @@ void CPlayerState_LunchBox::Update(_float _fTimeDelta)
 			if (m_pOwner->Try_Interact(m_pLunchBox, _fTimeDelta))
 			{
 				m_eCurState = LUNCHBOX_STATE_LAST;
+				m_pGameInstance->End_SFX(_wstring(L"A_sfx_C2DESK_pull_lunchbox_lid"));
+				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_C2DESK_lunchbox_open"), 50.f);
+
 				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_LUNCHBOX_BACKFLIP_GT);
 				m_pLunchBox->Set_PlayingAnim(true);
 				Event_KnockBack(m_pOwner, -m_vLook * m_fKnockBackPow);
@@ -76,6 +80,8 @@ void CPlayerState_LunchBox::Enter()
 	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_LUNCHBOX_POSE_01_LOOP_GT);
 	m_pOwner->LookDirectionXZ_Dynamic(m_vLook);
 	m_eCurState = LUNCHBOX_STATE_IDLE;
+
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_C2DESK_pull_lunchbox_lid"), 50.f);
 }
 
 void CPlayerState_LunchBox::Exit()

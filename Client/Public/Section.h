@@ -30,7 +30,7 @@ public:
 public: /* Object Layer와의 상호 작용 */
 	// 1. Section Layer에 Object를 추가하는 기능. (o)
 	virtual HRESULT Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex = 0);
-	HRESULT Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject);
+	virtual HRESULT Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject);
 
 public: // 왜 private?
 	// 2. Section Layer에 Object의 Active를 변경하는 기능. (o)
