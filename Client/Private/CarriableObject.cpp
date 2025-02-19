@@ -49,7 +49,7 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 	m_p2DColliderComs.resize(1);
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
-    CircleDesc.fRadius = 1.f;
+    CircleDesc.fRadius = 0.33f;
     CircleDesc.vScale = { 1.0f, 1.0f };
     CircleDesc.vOffsetPosition = { 0.f, 0.f };
     CircleDesc.isBlock = false;
