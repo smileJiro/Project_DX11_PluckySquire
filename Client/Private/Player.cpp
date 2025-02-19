@@ -1728,6 +1728,7 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
 void CPlayer::Set_GravityCompOn(_bool _bOn)
 {
 	m_pGravityCom->Set_Active(_bOn);
+    m_pGravityCom->Change_State(_bOn ?  CGravity::STATE_FALLDOWN : CGravity::STATE_FLOOR);
 }
 void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 {

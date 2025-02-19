@@ -299,7 +299,7 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
 			m_isStart = true;
 		}
 
-		if (m_fTimer > 1.5f)
+		if (m_fTimer > 0.6f)
 		{
 			CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(SECTION_MGR->Get_SectionLeveID(), L"Layer_Player", 0);
 			
