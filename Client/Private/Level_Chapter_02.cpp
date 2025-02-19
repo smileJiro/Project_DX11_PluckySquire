@@ -38,6 +38,7 @@
 
 #include "RayShape.h"
 #include "CarriableObject.h"
+#include "Bulb.h"
 
 
 #include "2DMapObject.h"
@@ -776,7 +777,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 
 
 	//TODO :: SAMPLE
-
 	CModelObject::MODELOBJECT_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
 
@@ -787,6 +787,21 @@ HRESULT CLevel_Chapter_02::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	// Test(PlayerItem: Glove, Stamp)
 	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 6.273f, -19.097f));
 	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+
+
+	//Pooling_DESC Pooling_Desc;
+	//Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	//Pooling_Desc.strLayerTag = _strLayerTag;
+	//Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Bulb");
+	//Pooling_Desc.eSection2DRenderGroup = SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT;
+
+	//CBulb::BULB_DESC* pBulbDesc = new CBulb::BULB_DESC;
+	//pBulbDesc->eStartCoord = COORDINATE_2D;
+	//pBulbDesc->iCurLevelID = m_eLevelID;
+	//pBulbDesc->tTransform2DDesc.vInitialScaling = { 1.f,1.f,1.f };
+	//pBulbDesc->iObjectGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
+
+	//CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_2DBulb"), Pooling_Desc, pBulbDesc);
 
 	return S_OK;
 }
@@ -1161,7 +1176,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	CBeetle::MONSTER_DESC Beetle_Desc;
 	Beetle_Desc.iCurLevelID = m_eLevelID;
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-16.5f, 6.56f, 22.6f);
+	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 6.56f, 22.6f);
 	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_1;
 	Beetle_Desc.isSneakMode = true;
@@ -1293,7 +1308,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	CZippy::MONSTER_DESC* pZippy_Desc = new CZippy::MONSTER_DESC;
 	pZippy_Desc->iCurLevelID = m_eLevelID;
-	//pZippy_Desc->tTransform2DDesc.vInitialPosition = _float3(500.0f, 10.f, 0.f);
 	pZippy_Desc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Zippy"), Pooling_Desc, pZippy_Desc);

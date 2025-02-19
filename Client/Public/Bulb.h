@@ -50,9 +50,11 @@ public:
 
 	virtual void			OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
 
+	virtual void				On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
+
 private:
-	CShader*				m_pShaderCom = { nullptr };
-	C3DModel*				m_pModelCom = { nullptr };
+	CShader*				m_pShaderCom[COORDINATE_LAST] = {nullptr};
+	C3DModel*				m_pModelCom[COORDINATE_LAST] = { nullptr };
 
 private:
 	const _float4x4*		m_pTargetWorld = { nullptr };

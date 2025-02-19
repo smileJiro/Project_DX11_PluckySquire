@@ -9,7 +9,7 @@ BEGIN(Client)
 class CCamera_Target  : public CCamera
 {
 public:
-	enum CAMERA_MODE { DEFAULT, MOVE_TO_NEXTARM, RETURN_TO_PREARM, RETURN_TO_DEFUALT, CAMERA_MODE_END };
+	enum CAMERA_MODE { DEFAULT, MOVE_TO_NEXTARM, RETURN_TO_PREARM, RETURN_TO_DEFUALT, MOVE_TO_CUSTOMARM,  CAMERA_MODE_END };
 	enum TARGET_STATE { TARGET_RIGHT, TARGET_UP, TARGET_LOOK, TARGET_POS, TARGET_STATE_END };
 
 	typedef struct tagCameraTargetDesc : public CCamera::CAMERA_DESC
@@ -58,7 +58,8 @@ public:
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
 	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
-	
+	void						Add_CustomArm(ARM_DATA _tArmData);
+
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 	void						Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);
 	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
@@ -70,6 +71,7 @@ public:
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
 	void						Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex); // Portal 나갈 때 Data 초기화하기 
 
+	void						Calculate_Player(); // 임시
 private:
 	const _float4x4*			m_pTargetWorldMatrix = { nullptr };
 	_float3						m_vPreTargetPos = {};
@@ -105,6 +107,10 @@ private:
 	list<pair<RETURN_SUBDATA, _bool>> m_PreSubArms;
 	_int						m_iCurTriggerID = {};
 
+
+	// CustomArm
+	ARM_DATA					m_CustomArmData = {};
+
 private:
 	void						Key_Input(_float _fTimeDelta);
 
@@ -115,6 +121,7 @@ private:
 	void						Move_To_NextArm(_float _fTimeDelta);
 	void						Look_Target(_fvector _vTargetPos, _float _fTimeDelta);
 	void						Move_To_PreArm(_float _fTimeDelta);
+	void						Move_To_CustomArm(_float _fTimeDelta);
 
 	_vector						Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fTimeDelta);
 	virtual	void				Switching(_float _fTimeDelta) override;
