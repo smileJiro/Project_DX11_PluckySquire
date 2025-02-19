@@ -821,6 +821,6 @@ void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken
 
 _bool CNarration::isLeftRight()
 {
-	return true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isLeft;
+	return m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isLeft;
 }
 
