@@ -457,7 +457,7 @@ HRESULT CFallingRock::Ready_Components(FALLINGROCK_DESC* _pDesc)
 	if(false == m_isColBound)
 		GravityDesc.fGravity = 9.8f * 300.f;
 	else
-		GravityDesc.fGravity = 9.8f * 150.f;
+		GravityDesc.fGravity = 9.8f * 170.f;
 
 	GravityDesc.vGravityDirection = { 0.0f, -1.0f, 0.0f };
 	GravityDesc.pOwner = this;
