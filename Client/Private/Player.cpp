@@ -737,9 +737,10 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
             {
                 _float fAngle = atan2f(_pOtherObject->Get_FinalPosition().m128_f32[1] - Get_FinalPosition().m128_f32[1], _pOtherObject->Get_FinalPosition().m128_f32[0] - Get_FinalPosition().m128_f32[0]);
                 fAngle = XMConvertToDegrees(fAngle);
-                if (fAngle >= -135.f && fAngle <= -45.f)
+                if (fAngle >= -150.f && fAngle <= -30.f)
                 {
                     Attack(_pOtherObject);
+                    Event_KnockBack(this, XMVectorSet(0.f, 1.f, 0.f, 0.f), m_f2DKnockBackPower);
                 }
             }  
         }
