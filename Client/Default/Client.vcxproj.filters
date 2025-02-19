@@ -1077,6 +1077,7 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\RabbitLunch.h" />
+    <ClInclude Include="..\Public\PlayerState_Electric.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1686,6 +1687,7 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\RabbitLunch.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Electric.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

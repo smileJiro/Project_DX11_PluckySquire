@@ -30,7 +30,8 @@ public:
 	virtual void		Update(_float _fTimeDelta) override;
 	virtual void		Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render() override;
-
+	LUNCH_TYPE Get_LunchType() { return m_eLunchType; }
+	_bool Is_Carrot();
 private:
 	LUNCH_TYPE m_eLunchType = LUNCH_TYPE::LUNCH_TYPE_LAST;
 public:

@@ -164,6 +164,13 @@ HRESULT CRabbitLunch::Render()
 	return __super::Render();
 }
 
+_bool CRabbitLunch::Is_Carrot()
+{
+	return CARROT_1 == m_eLunchType
+		|| CARROT_2 == m_eLunchType
+		|| CARROT_3 == m_eLunchType;
+}
+
 CRabbitLunch* CRabbitLunch::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CRabbitLunch* pInstance = new CRabbitLunch(_pDevice, _pContext);
