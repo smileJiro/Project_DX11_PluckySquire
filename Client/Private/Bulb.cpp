@@ -29,6 +29,9 @@ HRESULT CBulb::Initialize(void* _pArg)
 	if (COORDINATE_3D == pDesc->eStartCoord)
 		Initialize_3D_Object(pDesc);
 
+	if (COORDINATE_2D == pDesc->eStartCoord)
+		Initialize_2D_Object(pDesc);
+
 	if (FAILED(__super::Initialize(pDesc))) {
 		MSG_BOX("Bulb Initialize Falied");
 		return E_FAIL;
@@ -40,9 +43,10 @@ HRESULT CBulb::Initialize(void* _pArg)
 	if (COORDINATE_3D == pDesc->eStartCoord) {
 		Add_Shape();
 		static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(45.f));
+	
+		static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Gravity(false);
 	}
 
-	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Gravity(false);
 
 	return S_OK;
 }
@@ -72,7 +76,15 @@ HRESULT CBulb::Render()
 	if (FAILED(Bind_ShaderResources_WVP()))
 		return E_FAIL;
 
-	m_pModelCom->Render(m_pShaderCom, (_uint)PASS_VTXMESH::DEFAULT);
+	if(COORDINATE_3D==Get_CurCoord())
+	{
+		m_pModelCom[COORDINATE_3D]->Render(m_pShaderCom[COORDINATE_3D], (_uint)PASS_VTXMESH::DEFAULT);
+	}
+
+	else if (COORDINATE_2D == Get_CurCoord())
+	{
+		m_pModelCom[COORDINATE_2D]->Render(m_pShaderCom[COORDINATE_2D], (_uint)PASS_VTXPOSTEX::SPRITE2D);
+	}
 
 	return __super::Render();
 }
@@ -103,6 +115,9 @@ HRESULT CBulb::Initialize_3D_Object(BULB_DESC* _pDesc)
 
 HRESULT CBulb::Initialize_2D_Object(BULB_DESC* _pDesc)
 {
+	_pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+	_pDesc->tTransform2DDesc.fSpeedPerSec = 10.f;
+
 	return S_OK;
 }
 
@@ -135,6 +150,12 @@ void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 	}
 		break;
 	}
+}
+
+void CBulb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	Event_Get_Bulb(COORDINATE_2D);
+	Event_DeleteObject(this);
 }
 
 void CBulb::Add_Shape()
@@ -186,13 +207,18 @@ void CBulb::Default_Move(_float _fTimeDelta)
 	switch (m_eBulbState) {
 	case BULB_UP:
 	{
-		m_pActorCom->Set_LinearVelocity(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.35f);
+		if (COORDINATE_3D == Get_CurCoord())
+			m_pActorCom->Set_LinearVelocity(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.35f);
+		else if (COORDINATE_2D == Get_CurCoord())
+			Get_ControllerTransform()->Go_Up(_fTimeDelta);
 	}
 		break;
 	case BULB_DOWN:
 	{
-		m_pActorCom->Set_LinearVelocity(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.35f);
-
+		if (COORDINATE_3D == Get_CurCoord())
+			m_pActorCom->Set_LinearVelocity(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.35f);
+		else if (COORDINATE_2D == Get_CurCoord())
+			Get_ControllerTransform()->Go_Down(_fTimeDelta);
 	}
 		break;
 	}
@@ -209,31 +235,49 @@ void CBulb::Default_Move(_float _fTimeDelta)
 
 HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)
 {
-	// Shader
-	if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_Shader_VtxMesh"),
-		TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-		return E_FAIL;
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+		// Shader
+		if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_Shader_VtxMesh"),
+			TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderCom[COORDINATE_3D]))))
+			return E_FAIL;
 
-	// Model
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("LightbulbPickup_01"),
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
-		return E_FAIL;
+		// Model
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("LightbulbPickup_01"),
+			TEXT("Com_Model_3D"), reinterpret_cast<CComponent**>(&m_pModelCom[COORDINATE_3D]))))
+			return E_FAIL;
+	}
+
+	else if (COORDINATE_2D == Get_CurCoord())
+	{
+		// Shader
+		if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_Shader_VtxPosTex"),
+			TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderCom[COORDINATE_2D]))))
+			return E_FAIL;
+
+		// Model
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Model2D_Bulb"),
+			TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pModelCom[COORDINATE_2D]))))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
 
 HRESULT CBulb::Bind_ShaderResources_WVP()
 {
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
+	COORDINATE eCoord = Get_CurCoord();
+
+	if (FAILED(m_pShaderCom[eCoord]->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
 		return E_FAIL;
 
 	_float4x4 ViewMat = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
 	_float4x4 ProjMat = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
 
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &ViewMat)))
+	if (FAILED(m_pShaderCom[eCoord]->Bind_Matrix("g_ViewMatrix", &ViewMat)))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &ProjMat)))
+	if (FAILED(m_pShaderCom[eCoord]->Bind_Matrix("g_ProjMatrix", &ProjMat)))
 		return E_FAIL;
 
 	return S_OK;
@@ -267,8 +311,10 @@ CGameObject* CBulb::Clone(void* _pArg)
 
 void CBulb::Free()
 {
-	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pModelCom);
+	Safe_Release(m_pShaderCom[COORDINATE_2D]);
+	Safe_Release(m_pShaderCom[COORDINATE_3D]);
+	Safe_Release(m_pModelCom[COORDINATE_2D]);
+	Safe_Release(m_pModelCom[COORDINATE_3D]);
 
 	__super::Free();
 }

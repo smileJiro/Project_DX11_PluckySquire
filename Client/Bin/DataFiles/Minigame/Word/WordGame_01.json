@@ -108,12 +108,6 @@
           1.0,
           1.0
         ],
-        "Collider_Info": {
-          "Collider_Extent": [
-            200.0,
-            100.0
-          ]
-        },
         "Image_Tag_List": [
           {
             "ImagePath": "C04_0506_water_04_png"
@@ -133,20 +127,6 @@
             "Word_Type": 5,
             "Action_Type": 1,
             "Param": false
-          },
-          {
-            "Controller_Index": 4,
-            "Container_Index": 0,
-            "Word_Type": 0,
-            "Action_Type": 6,
-            "Param": false
-          },
-          {
-            "Controller_Index": 4,
-            "Container_Index": 0,
-            "Word_Type": 5,
-            "Action_Type": 6,
-            "Param": true
           }
         ]
       },

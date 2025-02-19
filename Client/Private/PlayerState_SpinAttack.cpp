@@ -24,6 +24,7 @@ void CPlayerState_SpinAttack::Update(_float _fTimeDelta)
 			if (m_bLaunchInput)
 			{
 				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_spin_attack-") + to_wstring(rand() % 5), 50.f);
+				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_spin-") + to_wstring(rand() % 5), 50.f);
 
 				Set_SpinState(SPIN_SPINNING);
 				return;

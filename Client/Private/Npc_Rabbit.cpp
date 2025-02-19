@@ -215,6 +215,8 @@ void CNpc_Rabbit::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOthe
 
 					Event_DeleteObject(_pOtherObject);
 
+					m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C2DESK_rabbit_eats_carrot"), 0.2f, 50.f);
+
 					//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(_pOtherObject);
 
 				}
@@ -238,6 +240,7 @@ void CNpc_Rabbit::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		switch (ANIM_2D(iAnimIdx))
 		{
 		case ANIM_2D::sketchspace_rabbit_eatCarrot:
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C2DESK_rabbit_jump"), 0.1f, 50.f);
 			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(sketchspace_rabbit_jump);
 			break;
 		

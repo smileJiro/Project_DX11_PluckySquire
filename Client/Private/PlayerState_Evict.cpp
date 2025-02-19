@@ -9,6 +9,9 @@
 #include "GameInstance.h"
 #include "Magic_Hand.h"
 
+#include "Camera_Manager.h"
+#include "Camera_Target.h"
+
 CPlayerState_Evict::CPlayerState_Evict(CPlayer* _pOwner)
 	: CPlayerState(_pOwner,CPlayer::EVICT)
 {
@@ -89,6 +92,10 @@ void CPlayerState_Evict::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 				->Update_TransformationMatrices(Bones,0);
 			for (auto& pBone : Bones)
 				pBone->Update_CombinedTransformationMatrix(Bones, XMLoadFloat4x4(&p3DModel->Get_PreTransformMatrix()));
+
+
+			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+			pCamera->Calculate_Player();
 
 			m_pOwner->Set_Kinematic(false);
 

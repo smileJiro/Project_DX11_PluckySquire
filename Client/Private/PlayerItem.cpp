@@ -73,7 +73,6 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(45.f));
 	//m_pActorCom->Set_AngularVelocity({ 0.f, 0.f, XMConvertToRadians(45.f) });
 
-
 	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Gravity(false);
 	return S_OK;
 }

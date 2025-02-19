@@ -14,6 +14,7 @@
 #include "Effect_Manager.h"
 #include "Section_2D.h"
 #include "MapObject.h"
+#include "Camera_Target.h"
 #include "2DMapActionObject.h"
 
 CGameEventExecuter::CGameEventExecuter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -54,6 +55,7 @@ HRESULT CGameEventExecuter::Initialize(void* _pArg)
         // C020910_Bolt_Spawn에서 시간이 지나면 다음 이벤트 실행(On_End 전달 & Executer 삭제)
         //Event_2DEffectCreate(EFFECT_LIGHTNINGBOLST, _float2(10.f,10.f), SECTION_MGR->Get_Cur_Section_Key())
         m_fMaxTimer = 1.5f;
+		m_isSpawn = false;
         break;
     case Client::CTrigger_Manager::C02P0910_MONSTER_SPAWN:
         break;
@@ -104,7 +106,7 @@ void CGameEventExecuter::Late_Update(_float _fTimeDelta)
 
 void CGameEventExecuter::C020910_Bolt_Spawn(_float _fTimeDelta)
 {
-	if (0.f == m_fTimer)
+	if (0.f == m_fTimer && true == m_isSpawn)
     {
         //_float3 vPos = { 500.0f, 10.f, 0.f };
         _wstring strSectionKey = TEXT("Chapter2_P0910");
@@ -211,7 +213,7 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
 		}
 		m_fTimer += _fTimeDelta;
 
-		if (m_fTimer > 2.8f && !m_isLight)
+		if (m_fTimer > 3.0f && !m_isLight)
 		{
 			m_isLight = true;
 			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night.json"));
@@ -354,7 +356,8 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
     }
     else if (7 == m_iStep) {
         m_fTimer += _fTimeDelta;
-
+		m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
+		m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
         if (false == m_isStart) {
             CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
 
@@ -406,7 +409,8 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
     if (0 == m_iStep) {
 
         m_fTimer += _fTimeDelta;
-
+		m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night.json"));
+		m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/chapter2_N.json"));
         if (false == m_isStart) {
             static_cast<CMagic_Hand*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_MagicHand"), 0))->Set_Start(true);
        
@@ -416,20 +420,20 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
         CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
        
         if (COORDINATE_3D == pPlayer->Get_CurCoord()) {
-            CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
-            pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_CUSTOMARM);
+			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+            pCamera->Set_CameraMode(CCamera_Target::MOVE_TO_CUSTOMARM);
 
             ARM_DATA tData = {};
-            tData.fMoveTimeAxisRight = { 5.f, 0.f };
+            tData.fMoveTimeAxisRight = { 3.f, 0.f };
             tData.fRotationPerSecAxisRight = { XMConvertToRadians(-15.f), XMConvertToRadians(-1.f) };
             tData.iRotationRatioType = EASE_IN_OUT;
-            tData.fLength = 40.f;
-            tData.fLengthTime = { 5.f, 0.f };
+            tData.fLength = 20.f;
+            tData.fLengthTime = { 3.f, 0.f };
             tData.iLengthRatioType = EASE_OUT;
 
             pCamera->Add_CustomArm(tData);
 
-            pCamera->Start_Changing_AtOffset(5.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
+            pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
 
             m_fTimer = 0.f;
             m_iStep++;
@@ -439,16 +443,6 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
     else if (1 == m_iStep) {
 
         m_fTimer += _fTimeDelta;
-
-        if (m_fTimer >= 2.f && m_fTimer - _fTimeDelta <= 2.f) {
-            CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
-            pCamera->Start_Changing_AtOffset(2.f, XMVectorSet(-6.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
-        }
-
-        if (m_fTimer >= 4.f && m_fTimer - _fTimeDelta <= 4.f) {
-            CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
-            pCamera->Start_Changing_AtOffset(2.f, XMVectorSet(6.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
-        }
 
         CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
         
@@ -466,7 +460,10 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
 
         if (m_fTimer >= 1.6f) {
 
-            CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, false);
+			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+			pCamera->Set_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+			pCamera->Set_NextArmData(TEXT("Default"), 12);
+
             CCamera_Manager::GetInstance()->Start_FadeIn(1.5f);
 
             GameEvent_End();

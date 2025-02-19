@@ -5,7 +5,7 @@
       {
         "ActionTag": "Dialogue",
         "EventTag": "Event_Dialogue_01",
-        "Is_Sequence": true
+        "Is_Sequence": false
       }
     ]
   },
@@ -13,24 +13,14 @@
     "Trigger_EventTag": "Get_Flipping_Glove",
     "Actions": [
       {
-        "ActionTag": "Camera_Arm_Move",
-        "EventTag": "A",
-        "Is_Sequence": true
-      },
-      {
         "ActionTag": "Get_PlayerItem",
         "EventTag": "Flipping_Glove",
         "Is_Sequence": true
       },
       {
         "ActionTag": "Dialogue",
-        "EventTag": "Event_Dialogue_01",
+        "EventTag": "Gauntlet_Acquire_01",
         "Is_Sequence": true
-      },
-      {
-        "ActionTag": "Camera_Arm_Return",
-        "EventTag": "A",
-        "Is_Sequence": false
       }
     ]
   },
