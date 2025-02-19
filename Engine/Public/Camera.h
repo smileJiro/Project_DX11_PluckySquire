@@ -94,6 +94,7 @@ public:
 	virtual void	Change_Target(CGameObject* _pTarget) {};
 	virtual void	Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) {};
 	virtual INITIAL_DATA Get_InitialData() { return INITIAL_DATA(); };
+	virtual _uint	Get_CameraMode() { return _uint(); }
 
 protected:
 	/* 뷰, 투영 행렬을 구성하는 기능 */
