@@ -55,6 +55,7 @@ HRESULT CGameEventExecuter::Initialize(void* _pArg)
         // C020910_Bolt_Spawn에서 시간이 지나면 다음 이벤트 실행(On_End 전달 & Executer 삭제)
         //Event_2DEffectCreate(EFFECT_LIGHTNINGBOLST, _float2(10.f,10.f), SECTION_MGR->Get_Cur_Section_Key())
         m_fMaxTimer = 1.5f;
+		m_isSpawn = false;
         break;
     case Client::CTrigger_Manager::C02P0910_MONSTER_SPAWN:
         break;
@@ -105,7 +106,7 @@ void CGameEventExecuter::Late_Update(_float _fTimeDelta)
 
 void CGameEventExecuter::C020910_Bolt_Spawn(_float _fTimeDelta)
 {
-	if (0.f == m_fTimer)
+	if (0.f == m_fTimer && true == m_isSpawn)
     {
         //_float3 vPos = { 500.0f, 10.f, 0.f };
         _wstring strSectionKey = TEXT("Chapter2_P0910");
