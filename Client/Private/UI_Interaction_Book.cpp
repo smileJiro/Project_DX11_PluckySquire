@@ -53,14 +53,14 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 	}
 	
 	
-	//if (true == Uimgr->Get_isQIcon())
-	//{
-	//	m_isRender = true;
-	//}
-	//else
-	//{
-	//	m_isRender = false;
-	//}
+	if (true == Uimgr->Get_isQIcon())
+	{
+		m_isRender = true;
+	}
+	else
+	{
+		m_isRender = false;
+	}
 	
 	
 
