@@ -3,19 +3,9 @@
     "Trigger_EventTag": "Event_Test",
     "Actions": [
       {
-        "ActionTag": "Camera_Arm_Move",
-        "EventTag": "A",
-        "Is_Sequence": true
-      },
-      {
         "ActionTag": "Dialogue",
         "EventTag": "Event_Dialogue_01",
         "Is_Sequence": true
-      },
-      {
-        "ActionTag": "Camera_Arm_Return",
-        "EventTag": "A",
-        "Is_Sequence": false
       }
     ]
   },
@@ -93,5 +83,25 @@
                   "Is_Sequence": true
               }
           ]
-      }
+     },
+    {
+        "Trigger_EventTag": "Chapter2_Intro",
+        "Actions": [
+              {
+                  "ActionTag": "Create_EventExecuter",
+                  "EventTag": "Chapter2_Intro",
+                  "Is_Sequence": true
+              }
+          ]
+     },
+    {
+        "Trigger_EventTag": "Chapter2_Humgrump",
+        "Actions": [
+              {
+                  "ActionTag": "Create_EventExecuter",
+                  "EventTag": "Chapter2_Humgrump",
+                  "Is_Sequence": true
+              }
+          ]
+     }
 ]

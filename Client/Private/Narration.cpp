@@ -43,6 +43,7 @@ HRESULT CNarration::Initialize(void* _pArg)
 	vCalScale.x = m_vOriginSize.x * RATIO_BOOK2D_X;
 	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
 	m_isRender = false;
+	m_isLeftRight = true;
 
 	return S_OK;
 }
@@ -50,7 +51,6 @@ HRESULT CNarration::Initialize(void* _pArg)
 
 void CNarration::Update(_float _fTimeDelta)
 {
-
 	if (false == m_isPlayNarration && true == Uimgr->Get_PlayNarration())
 	{
 		m_isPlayNarration = true;
@@ -384,13 +384,14 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 
 vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine, _int AnimCount)
 {
+	// 기존 애니메이션 객체 해제
 	for (auto& iter : m_pCurrentAnimObj)
 	{
 		Safe_Release(iter);
 	}
 	m_pCurrentAnimObj.clear();
 
-	// 현재 iLine(대화 라인)에 해당하는 애니메이션 객체가 매핑되어 있지 않다면 새로 생성
+	// 현재 iLine에 해당하는 애니메이션 객체 가져오기
 	auto iter = m_vAnimObjectsByLine.find(iLine);
 	if (iter == m_vAnimObjectsByLine.end())
 	{
@@ -399,7 +400,6 @@ vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine
 		iter = m_vAnimObjectsByLine.find(iLine);
 	}
 
-	// 찾은 결과로 m_pCurrentAnimObj를 갱신합니다.
 	if (iter != m_vAnimObjectsByLine.end())
 	{
 		m_pCurrentAnimObj = iter->second;
@@ -410,9 +410,17 @@ vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine
 		}
 	}
 
-	for (int i = 0; i < m_pCurrentAnimObj.size(); ++i)
+	// NarAnim과 동기화하여 섹션 레이어에 추가
+	size_t ianimCount = m_NarrationDatas[m_iNarrationCount].lines[iLine].NarAnim.size();
+	size_t icurrentAnimCount = m_pCurrentAnimObj.size();
+	size_t iloopCount = min(ianimCount, icurrentAnimCount);
+
+	for (size_t i = 0; i < iloopCount; ++i)
 	{
-		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[iLine].NarAnim[i].strSectionid, m_pCurrentAnimObj[i]);
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(
+			m_NarrationDatas[m_iNarrationCount].lines[iLine].NarAnim[i].strSectionid,
+			m_pCurrentAnimObj[i]
+		);
 	}
 
 	m_pGameInstance->Start_SFX_Delay(m_NarrationDatas[m_iNarrationCount].lines[iLine].strSFX, 0.f, 50.f, false);
@@ -452,6 +460,7 @@ void CNarration::Set_NarrationByStrid(const _wstring& strTargetID)
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].NarAnim[0].strSectionid, this);
 }
+
 
 vector<CNarration_Anim*> CNarration::CreateAnimationObjectsForLine(_uint iLine)
 {
@@ -515,7 +524,9 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 			{
 				if (nullptr == m_pCurrentAnimObj[i])
 				{
+					m_isLeftRight = true;
 					GetAnimationObjectForLine(m_iCurrentLine);
+					
 				}
 				// 애니메이션 시작해
 				if (nullptr != m_pCurrentAnimObj[i])
@@ -555,6 +566,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					m_fTextAlpha = 0.f;
 					m_bAnimationStarted = false;
 					GetAnimationObjectForLine(m_iCurrentLine, 0);
+					m_isLeftRight = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isLeft;
 				}
 
 				// 이 나레이션에서 장을 넘겨야하면 넘기자. isfinishedthisLine은 다음장으로 넘긴다.
@@ -582,6 +594,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						// 대기시간이 완료되었다.
 						// 다음 장으로 이동하자.
 						++m_iCurrentLine;
+						m_isLeftRight = true;
 						m_fFadeTimer = 0.f;
 						m_fDelayTimer = 0.f;
 						m_fTextAlpha = 0.f;
@@ -602,6 +615,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 
 						m_fWaitingTime += _fTimeDelta;
 						m_isWaitingNextPage = true;
+						
 
 					
 
@@ -610,6 +624,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 				else
 				{
 					GetAnimationObjectForLine(m_iCurrentLine, 0);
+					m_isLeftRight = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isLeft;
 				}
 			}
 			else // 나레이션 내에 다음 라인이 없나요?
@@ -654,6 +669,8 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					}
 					m_vAnimObjectsByLine.clear();
 
+					m_isLeftRight = true;
+
 
 				}
 				// 어라? 나레이션 내에 다음 라인이 있네요? 다시 업데이트 쳐줍시다.
@@ -671,6 +688,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 
 					//m_vAnimObjectsByLine.erase(m_iCurrentLine);
 					GetAnimationObjectForLine(m_iCurrentLine, 0);
+					m_isLeftRight = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isLeft;
 
 					// 그런데 그 라인이 다음으로 넘기는 라인인가요?
 					if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isFinishedThisLine)
@@ -809,5 +827,10 @@ void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken
 		_OutToken[i].strText = vTokens[i].strText;
 		_OutToken[i].fScale = vTokens[i].fScale;
 	}
+}
+
+_bool CNarration::isLeftRight()
+{
+	return m_isLeftRight;
 }
 

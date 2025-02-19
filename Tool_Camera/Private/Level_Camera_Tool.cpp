@@ -77,10 +77,10 @@ void CLevel_Camera_Tool::Update(_float _fTimeDelta)
 		CCamera_Manager_Tool::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
-	//Show_CameraTool();
-	Show_CutSceneTool(_fTimeDelta);
-	//Show_ArmInfo();
-	Show_CutSceneInfo();
+	Show_CameraTool();
+	//Show_CutSceneTool(_fTimeDelta);
+	Show_ArmInfo();
+	//Show_CutSceneInfo();
 	Show_SaveLoadFileWindow();
 
 	Show_AnimModel(_fTimeDelta);

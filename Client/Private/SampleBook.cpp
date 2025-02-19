@@ -96,7 +96,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	ActorDesc.ShapeDatas.push_back(ShapeData2);
 
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
-	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::PLAYER;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::DYNAMIC_OBJECT;
 
 	/* Actor Component Finished */
 	pDesc->pActorDesc = &ActorDesc;
@@ -146,11 +146,14 @@ void CSampleBook::Update(_float _fTimeDelta)
 	if (KEY_DOWN(KEY::M))
 	{
 		Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
+		m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_page_turn-") + to_wstring(rand() % 6), 0.5f, 50.f);
 
 	}
 	if (KEY_DOWN(KEY::N))
 	{
 		Event_Book_Main_Section_Change_Start(0, &fDefaultPos);
+		m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_page_turn-") + to_wstring(rand() % 6), 0.5f, 50.f);
+
 
 	}
 

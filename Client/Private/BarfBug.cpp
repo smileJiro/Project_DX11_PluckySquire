@@ -7,6 +7,7 @@
 #include "Projectile_BarfBug.h"
 #include "DetectionField.h"
 #include "Section_Manager.h"
+#include "Effect2D_Manager.h"
 
 
 CBarfBug::CBarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -151,19 +152,19 @@ void CBarfBug::Priority_Update(_float _fTimeDelta)
 void CBarfBug::Update(_float _fTimeDelta)
 {
 #ifdef _DEBUG
-    if (KEY_DOWN(KEY::F5))
-    {
-        _int iCurCoord = (_int)Get_CurCoord();
-        (_int)iCurCoord ^= 1;
-        _float3 vNewPos;
+    //if (KEY_DOWN(KEY::F5))
+    //{
+    //    _int iCurCoord = (_int)Get_CurCoord();
+    //    (_int)iCurCoord ^= 1;
+    //    _float3 vNewPos;
 
-        if (iCurCoord == COORDINATE_2D)
-            vNewPos = _float3(500.f, 6.f, 0.f);
-        else
-            vNewPos = _float3(-10.0f, 0.35f, -23.0f);
+    //    if (iCurCoord == COORDINATE_2D)
+    //        vNewPos = _float3(500.f, 6.f, 0.f);
+    //    else
+    //        vNewPos = _float3(-10.0f, 0.35f, -23.0f);
 
-        Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
-    }
+    //    Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
+    //}
 #endif // _DEBUG
 
     __super::Update(_fTimeDelta); /* Part Object Update */
@@ -214,8 +215,10 @@ void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CBarfBug::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
-    cout << "Barfbug hit" << endl;
+    //cout << "Barfbug hit" << endl;
     __super::On_Hit(_pHitter, _iDamg);
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit__barferbug_") + to_wstring(rand() % 4), 50.f);
 }
 
 HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -245,6 +248,7 @@ void CBarfBug::Change_Animation()
                 break;
 
             case MONSTER_STATE::ALERT:
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_alert_") + to_wstring(rand() % 8), 50.f);
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
                 break;
 
@@ -257,6 +261,7 @@ void CBarfBug::Change_Animation()
                 break;
 
             case MONSTER_STATE::ATTACK:
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_") + to_wstring(rand() % 2), 50.f);
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BARF);
                 break;
 
@@ -265,6 +270,7 @@ void CBarfBug::Change_Animation()
                 break;
 
             case MONSTER_STATE::DEAD:
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_death_") + to_wstring(rand() % 4), 50.f);
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
                 break;
 
@@ -406,6 +412,7 @@ void CBarfBug::Attack()
             XMStoreFloat4(&vRotation, XMQuaternionRotationAxis(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMConvertToRadians(fAngle)));
 
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), eCoord, &vPosition, &vRotation);
+
         }
         ++m_iAttackCount;
 
@@ -496,6 +503,8 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             Set_AnimChangeable(true);
             //풀링에 넣을 시 변경
             //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+
+            CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
 
             Event_DeleteObject(this);
             break;

@@ -62,6 +62,7 @@
 #include "Npc_Companion.h"
 #include "NPC_Violet.h"
 #include "NPC_Thrash.h"
+#include "Npc_Rabbit.h"
 
 
 
@@ -71,6 +72,7 @@
 #include "PlayerBody.h"
 #include "PlayerSword.h"
 #include "TestTerrain.h"
+#include "RabbitLunch.h"
 
 
 #include "2DModel.h"
@@ -89,6 +91,7 @@
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
 #include "LightningBolt.h"
+#include "LunchBox.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -477,7 +480,7 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Word"),
         CWord::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-        
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMap_SkspObject"),
         C3DMapSkspObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -578,6 +581,12 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/"))))
         return E_FAIL;
 
+    if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Common"))))
+        return E_FAIL;
+
+    if (FAILED(Loading_BGM_PathFind(TEXT("../Bin/Sounds/BGM"))))
+        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
 
@@ -671,10 +680,12 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_LightningBoltAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/MapObject/LightningBolt/LightningBolt.animevt"))))
         return E_FAIL;
-        if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_BookPageActionEvent"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_BookPageActionEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_LunchBoxAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Lunch_Box_Rig_GT/LunchBoxAnimEvt.animevt"))))
+        return E_FAIL;
     #ifdef _DEBUG
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_DebugDraw_For_Client"),
         CDebugDraw_For_Client::Create(m_pDevice, m_pContext))))
@@ -813,6 +824,10 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
         return E_FAIL;
 
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
+        TEXT("../Bin/Resources/Models/2D_FX"))))
+        return E_FAIL;
+
     /* 낱개 로딩 예시*/
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model2D_FallingRock"),
@@ -844,9 +859,16 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/dice_01/dice_pink_03.dds", true))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("sketchspace_rabbit_carrot"),
+        C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Carrots_Carrot_01/sketchspace_rabbit_carrot.dds", true))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Grape_Green"),
+        C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Grapes_Grape_01/Grape_Green.dds", true))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model2D_FallingRockShadow"),
         C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DNonAnim/FallingRockShadow/FallingRockShadow.dds", true))))
         return E_FAIL;
+
     //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("0102_02_Narration_Model_Jot"),
     //    C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Chapter2/Narration/0102/0102_02_Narration_Model_Jot.model2D")))))
     //    return E_FAIL;
@@ -874,6 +896,24 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Domino1"),
         C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Domino_1/Domino_1.model", matPretransform))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Carrot_01"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Carrots_Carrot_01/Carrots_Carrot_01.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Carrot_02"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Carrots_Carrot_02/Carrots_Carrot_02.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Carrot_03"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Carrots_Carrot_03/Carrots_Carrot_03.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Grape_01"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Grapes_Grape_01/Grapes_Grape_01.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Grape_02"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Grapes_Grape_02/Grapes_Grape_02.model", matPretransform))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Grape_03"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Grapes_Grape_03/Grapes_Grape_03.model", matPretransform))))
+        return E_FAIL;
     //if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_2, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
     //    return E_FAIL;
     if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_2, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform, true)))
@@ -884,7 +924,6 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         return E_FAIL;
 
     matPretransform *= XMMatrixRotationAxis(_vector{0,1,0,0},XMConvertToRadians(180));
-
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CHAPTER_2,
         TEXT("../Bin/Resources/Models/3DAnim/"), matPretransform)))
         return E_FAIL;
@@ -977,6 +1016,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_NPC_Companion_Thrash"),
 		CNPC_Thrash::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_NPC_Rabbit"),
+        CNpc_Rabbit::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
 
     /* Monster */
@@ -1030,7 +1072,13 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"),
         CDomino::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_LunchBox"),
+        CLunchBox::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"),
+        CRabbitLunch::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     /* Etc */
 
     /* For. Prototype_GameObject_FallingRock */
@@ -1228,6 +1276,11 @@ HRESULT CLoader::Loading_Level_Chapter_4()
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
         TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
         return E_FAIL;
+
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
+        TEXT("../Bin/Resources/Models/2D_FX"))))
+        return E_FAIL;
+
     /* 낱개 로딩 예시*/
 
     // NPC 모델
@@ -1308,7 +1361,6 @@ HRESULT CLoader::Loading_Level_Chapter_4()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_Dialogue_Portrait"),
         CPortrait::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
 
 
     ///////////////////////////////// UI /////////////////////////////////

@@ -190,6 +190,11 @@ void CUI_Manager::Pushback_Dialogue(CDialog::DialogData _DialogData)
 	m_DialogDatas.push_back(_DialogData);
 }
 
+_bool CUI_Manager::isLeft_Right()
+{
+	return m_pNarration->isLeftRight();
+}
+
 void CUI_Manager::Test_Update(_float _fTimedelta)
 {
 	if (KEY_DOWN(KEY::U) && 0 <= m_iTextIndex)
@@ -197,8 +202,10 @@ void CUI_Manager::Test_Update(_float _fTimedelta)
 		switch (m_iTextIndex)
 		{
 		case 0:
+
 		{
 			Uimgr->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
+			
 			++m_iTextIndex;
 		}
 		break;
@@ -206,6 +213,7 @@ void CUI_Manager::Test_Update(_float _fTimedelta)
 		case 1:
 		{
 			Uimgr->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
+			
 			++m_iTextIndex;
 		}
 		break;

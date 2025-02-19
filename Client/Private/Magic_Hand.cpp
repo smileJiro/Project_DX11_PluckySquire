@@ -49,17 +49,17 @@ void CMagic_Hand::Update(_float _fTimeDelta)
     if (false == m_isStart)
         return;
 
-#ifdef _DEBUG
- /*   ImGui::Begin("Hand");
-
-    if (ImGui::Button("Replay All"))
-    {
-        m_pMagicHandbody->Set_Animation(0);
-        m_pEffectSystem->Active_All(true);
-    }
-
-    ImGui::End();*/
-#endif
+//#ifdef _DEBUG
+//    ImGui::Begin("Hand");
+//
+//    if (ImGui::Button("Replay All"))
+//    {
+//        m_pMagicHandbody->Set_Animation(0);
+//        m_pEffectSystem->Active_All(true);
+//    }
+//
+//    ImGui::End();
+//#endif
     __super::Update(_fTimeDelta);
     
     // 특정위치보다 아래로 가면, 플레이어 애니메이션 재생(매끄러운 연결을 위해서 존재합니다.)
@@ -118,6 +118,14 @@ void CMagic_Hand::Show_3DHand()
     
     m_fFlipDelayTime = 0.f;
     m_isReadyFlip = true;
+
+    m_pGameInstance->End_BGM();
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_C2DESK_ejected_desk_part"), 50.f);
+
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Base"), 8.f, 25.f, true);
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 8.f, 25.f, true);
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 8.f, 25.f, true);
+
 }
 
 HRESULT CMagic_Hand::Ready_PartObjects()

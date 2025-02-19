@@ -15,6 +15,7 @@ float g_fPixelsPerUnrealUnit;
 
 // Color
 float4 g_vColors;
+int g_iFlag = 0;
 float g_fOpaque;
 
 
@@ -169,7 +170,12 @@ PS_OUT PS_MIX_COLOR(PS_IN In)
 
     if (Out.vColor.a < 0.01f || g_vColors.w < 0.2f)
         discard;
-
+    if (g_iFlag == 1)
+    {
+        Out.vColor.r *= g_vColors.r;
+        Out.vColor.g *= g_vColors.g;
+        Out.vColor.b *= g_vColors.b;
+    }
     Out.vColor.a = g_vColors.w;
 
     //Out.vColor = saturate(mul(Out.vColor,float4(g_vColors.x, g_vColors.y, g_vColors.z, g_vColors.w)));

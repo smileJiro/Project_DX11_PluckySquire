@@ -36,6 +36,7 @@ void CPlayerState_Evict::Update(_float _fTimeDelta)
 			CMagic_Hand* pMagicHand = static_cast<CMagic_Hand*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_MagicHand"), 0));
 			if (nullptr != pMagicHand)
 				pMagicHand->Show_3DHand();
+
 		}
 	}
 	else if (BOOKOUT == m_eCurState)

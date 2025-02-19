@@ -122,7 +122,7 @@ public:
 
 	_float								Get_CameraRatio() { return m_fCameraRatio;  }
 
-
+	CLayer*								Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP _eType) { return m_Layers[_eType]; }
 
 	void								Set_NextPageTag(const _wstring _strNextTag) {m_strNextPageTag = _strNextTag;}
 	void								Set_PrevPageTag(const _wstring _strPrevTag) {m_strPrePageTag = _strPrevTag;}

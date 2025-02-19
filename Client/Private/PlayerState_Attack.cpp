@@ -65,6 +65,7 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
                 Switch_To_AttackAnimation(m_iComboCount);
                 m_pOwner->Start_Attack((CPlayer::ATTACK_TYPE)(CPlayer::ATTACK_TYPE_NORMAL1 + m_iComboCount));
 
+
             }
             m_bCombo = false;
         }
@@ -198,4 +199,22 @@ void CPlayerState_Attack::Switch_To_AttackAnimation(_uint iComboCount)
             break;
         }
     }
+
+    if (0 == m_iComboCount)
+    {
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_small_efforts-") + to_wstring(rand() % 5), 0.15f, 25.f);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_sword_swing-") + to_wstring(rand() % 5), 0.15f, 40.f);
+    }
+    else if (1 == m_iComboCount)
+    {
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_small_efforts-") + to_wstring(rand() % 5), 0.15f, 25.f);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_sword_strike2-") + to_wstring(rand() % 6), 0.15f, 40.f);
+    }
+    else if (2 == m_iComboCount)
+    {
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_jot_vocal_finalblow-") + to_wstring(rand() % 16), 0.15f, 25.f);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_sword_strike3-") + to_wstring(rand() % 6), 0.15f, 40.f);
+
+    }
+
 }

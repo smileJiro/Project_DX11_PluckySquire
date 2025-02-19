@@ -12,6 +12,7 @@
 #include "Trigger_Manager.h"
 #include "PlayerData_Manager.h"
 #include "Effect_Manager.h"
+#include "Effect2D_Manager.h"
 
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -32,6 +33,7 @@
 #include "ButterGrump.h"
 #include "Goblin_SideScroller.h"
 #include "LightningBolt.h"
+#include "RabbitLunch.h"
 
 
 #include "RayShape.h"
@@ -130,13 +132,23 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Effects (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
+	if (FAILED(Ready_Layer_Effects2D(TEXT("Layer_Effect2D"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Effects2D (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 
 	if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-
+	//도시락
+	if (FAILED(Ready_Layer_LunchBox(TEXT("Layer_LunchBox"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_LunchBox (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	//액터 들어가는넘.,
 	if (FAILED(Ready_Layer_Map()))
 	{
@@ -192,6 +204,9 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
+
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::NPC_EVENT, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
+
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
@@ -215,6 +230,10 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	// Trigger
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger.json"));
 	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
+
+	// BGM 시작
+	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
+
 
 	return S_OK;
 }
@@ -354,6 +373,11 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		_float3 vPos = _float3(500.0f, 10.f, 0.f);
 		_wstring dd = TEXT("Chapter2_P0910");
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &dd);
+	}
+
+	if (KEY_DOWN(KEY::F)) {
+		CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_Intro"),
+			50);
 	}
 }
 
@@ -1117,6 +1141,15 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_Companion"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
 
+	wsprintf(NPCDesc.strDialogueIndex, L"Hungry_Rabbit_01");
+	NPCDesc.iCurLevelID = m_eLevelID;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_Rabbit"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -1398,6 +1431,38 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_Chapter_02::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
+{
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("LightningBolt"), LEVEL_CHAPTER_2, 2);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Jump_Dust"), LEVEL_CHAPTER_2, 1);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves1"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves2"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust1"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust2"), LEVEL_CHAPTER_2, 3);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Death_Burst"), LEVEL_CHAPTER_2, 3);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX1"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX2"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX3"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX4"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX5"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words1"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words2"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words4"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words5"), LEVEL_CHAPTER_2, 3);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("beam"), LEVEL_CHAPTER_2, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("EffectBack"), LEVEL_CHAPTER_2, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("hum"), LEVEL_CHAPTER_2, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("storm"), LEVEL_CHAPTER_2, 1);
+
+
+	return S_OK;
+}
+
 HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 {
 
@@ -1433,6 +1498,40 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
+
+
+	//2번째 도미노
+	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(48.73f, 2.61f, -5.02f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
+		return E_FAIL;
+
+	fDominoXPosition = 64.5f;
+	fDominoYPosition = 0.25;
+	fDominoZPosition = -0.54f;
+	fDominoXPositionStep = -3.5f;
+	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+		return E_FAIL;
+
+
+	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino3");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+		return E_FAIL;
+
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_LunchBox(const _wstring& _strLayerTag)
+{
+	CModelObject::MODELOBJECT_DESC tModelDesc{};
+	tModelDesc.iCurLevelID = m_eLevelID;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_LunchBox"), m_eLevelID, _strLayerTag, &tModelDesc)))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
@@ -1614,6 +1713,7 @@ CLevel_Chapter_02* CLevel_Chapter_02::Create(ID3D11Device* _pDevice, ID3D11Devic
 }
 void CLevel_Chapter_02::Free()
 {
+	m_pGameInstance->End_BGM();
 
 	__super::Free();
 }
