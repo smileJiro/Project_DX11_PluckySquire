@@ -448,7 +448,10 @@
   "TextureName": "frog_green_idle_01"
  },
  {
-  "Active": false,
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 6
+  },
   "BackGround": true,
   "Collider": false,
   "ModelType": 1,
@@ -520,8 +523,11 @@
   "TextureName": "honey_peaks_platform_02"
  },
  {
-  "Active": false,
-  "BackGround": false,
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 6
+  },
+  "BackGround": true,
   "Collider": false,
   "ModelType": 1,
   "SearchTag": "tome_tower_01",
@@ -2118,7 +2124,7 @@
  {
   "Active": true,
   "ActivePropertis": {
-   "ActiveType": 0
+   "ActiveType": 7
   },
   "BackGround": false,
   "Collider": true,
@@ -2624,5 +2630,17 @@
   "SearchTag": "C04_0506_wall_04_png",
   "Sorting": false,
   "TextureName": "C04_0506_wall_04_png"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 8
+  },
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "BrackBlock",
+  "Sorting": false,
+  "TextureName": "BrackBlock"
  }
 ]
