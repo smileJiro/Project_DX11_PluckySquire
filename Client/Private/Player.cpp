@@ -901,12 +901,17 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _fDamg)
     CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.2f, 20, CCamera::SHAKE_XY);
     Uimgr->Set_PlayerOnHit(true);
 
+
+
     if (m_tStat.iHP <= 0)
     {
         m_tStat.iHP = 0;
         if(STATE::DIE != Get_CurrentStateID())
             Set_State(DIE);
     }
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_takedamage-") + to_wstring(rand() % 13), 25.f);
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_lose_health_") + to_wstring(rand() % 3), 40.f);
 }
 
 HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)

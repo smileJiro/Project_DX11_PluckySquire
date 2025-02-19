@@ -138,6 +138,7 @@ void CBeetle::Change_Animation()
             break;
 
         case MONSTER_STATE::ALERT:
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_beetle_alert-") + to_wstring(rand() % 5), 50.f);
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
             break;
 
@@ -168,7 +169,7 @@ void CBeetle::Change_Animation()
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WAIT2);
                 break;
             }
-            
+            //m_pGameInstance->Start_SFX(_wstring(L"A_sfx_beetle_idle-") + to_wstring(rand() % 8), 50.f);
             break;
         }
 
@@ -193,6 +194,7 @@ void CBeetle::Change_Animation()
             break;
 
         case MONSTER_STATE::SNEAK_ATTACK:
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_beetle_attack-") + to_wstring(rand() % 4), 50.f);
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CAUGHT);
             break;
 

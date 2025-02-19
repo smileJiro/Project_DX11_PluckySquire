@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PlayerState_SpinAttack.h"
+#include "GameInstance.h"
 
 CPlayerState_SpinAttack::CPlayerState_SpinAttack(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::SPINATTACK)
@@ -22,6 +23,8 @@ void CPlayerState_SpinAttack::Update(_float _fTimeDelta)
 		{
 			if (m_bLaunchInput)
 			{
+				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_spin_attack-") + to_wstring(rand() % 5), 50.f);
+
 				Set_SpinState(SPIN_SPINNING);
 				return;
 			}
@@ -56,6 +59,9 @@ void CPlayerState_SpinAttack::Enter()
 	m_iSpinAttackLevel = (_int)m_pOwner->Get_SpinAttackLevel();
 	m_eFDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
 	Set_SpinState(SPIN_CHARGING);
+
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_spin_powerup-") + to_wstring(rand() % 5), 50.f);
+
 
 }
 
@@ -105,6 +111,8 @@ void CPlayerState_SpinAttack::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		}
 
 	}
+
+
 }
 
 void CPlayerState_SpinAttack::Set_SpinState(SPIN_STATE _eNewState)

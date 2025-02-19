@@ -123,6 +123,8 @@ void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 		m_isSticking = false;
 
 		CEffect_Manager::GetInstance()->Active_Effect(TEXT("Bulb"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+		m_pGameInstance->Start_SFX(_wstring(L"A_sfx_pickup_lightbulb-") + to_wstring(rand() % 4), 50.f);
+		m_pGameInstance->Start_SFX(_wstring(L"A_sfx_lightbulb_addv2-") + to_wstring(rand() % 8), 20.f);
 
 	}
 		break;

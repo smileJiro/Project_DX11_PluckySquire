@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PlayerState_JumpAttack.h"
 #include "Player.h"
+#include "GameInstance.h"
 
 CPlayerState_JumpAttack::CPlayerState_JumpAttack(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::JUMP_ATTACK)
@@ -50,6 +51,8 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 	{
 		if (false == m_bGrounded && bGround)
 		{
+			m_pGameInstance->Start_SFX(TEXT("A_sfx_jump_attack_land-") + to_wstring(rand() % 3), 50.f);
+
 			m_bGrounded = true;
 			m_pOwner->Start_Attack(CPlayer::ATTACK_TYPE_JUMPATTACK);
 			return;
@@ -74,6 +77,9 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 
 			if (false == m_bLandAnimed)
 			{
+				m_pGameInstance->Start_SFX(TEXT("A_sfx_jump_attack_land-") + to_wstring(rand() % 3), 50.f);
+
+
  				m_pOwner->Start_Attack(CPlayer::ATTACK_TYPE_JUMPATTACK);
 				m_bLandAnimed = true;
 				switch (eDir)
@@ -169,7 +175,9 @@ void CPlayerState_JumpAttack::Enter()
 		m_pOwner->Set_SwordGrip(false);
 		m_pOwner->Add_Impuls(_vector{0,m_fJumpAttackRisingForce ,0});
 	}
-	
+
+	m_pGameInstance->Start_SFX(TEXT("A_sfx_jump_attack_start-") + to_wstring(rand() % 3), 50.f);
+
 }
 
 void CPlayerState_JumpAttack::Exit()
@@ -186,6 +194,7 @@ void CPlayerState_JumpAttack::Exit()
 	{
 		m_pOwner->Set_SwordGrip(true);
 	}
+
 }
 
 void CPlayerState_JumpAttack::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

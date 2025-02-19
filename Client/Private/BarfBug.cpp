@@ -214,8 +214,10 @@ void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CBarfBug::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
-    cout << "Barfbug hit" << endl;
+    //cout << "Barfbug hit" << endl;
     __super::On_Hit(_pHitter, _iDamg);
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit__barferbug_") + to_wstring(rand() % 4), 50.f);
 }
 
 HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -245,6 +247,7 @@ void CBarfBug::Change_Animation()
                 break;
 
             case MONSTER_STATE::ALERT:
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_alert_") + to_wstring(rand() % 8), 50.f);
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
                 break;
 
@@ -257,6 +260,7 @@ void CBarfBug::Change_Animation()
                 break;
 
             case MONSTER_STATE::ATTACK:
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_") + to_wstring(rand() % 2), 50.f);
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BARF);
                 break;
 
@@ -265,6 +269,7 @@ void CBarfBug::Change_Animation()
                 break;
 
             case MONSTER_STATE::DEAD:
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_death_") + to_wstring(rand() % 4), 50.f);
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
                 break;
 
@@ -406,6 +411,7 @@ void CBarfBug::Attack()
             XMStoreFloat4(&vRotation, XMQuaternionRotationAxis(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMConvertToRadians(fAngle)));
 
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), eCoord, &vPosition, &vRotation);
+
         }
         ++m_iAttackCount;
 
