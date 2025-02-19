@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "LunchBox.h"
 #include "Player.h"
+#include "AnimEventGenerator.h"
+#include "AnimEventReceiver.h"
+#include "GameInstance.h"
+#include "RabbitLunch.h"
 
 CLunchBox::CLunchBox(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -63,7 +67,7 @@ HRESULT CLunchBox::Initialize(void* _pArg)
     ShapeData.isTrigger = false;
     ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     ShapeData.FilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
-    ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER;
+    ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc.vHalfExtents.y, 0.f));
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
@@ -95,6 +99,17 @@ HRESULT CLunchBox::Initialize(void* _pArg)
     Set_PlayingAnim(false);
     
     m_vInteractionPointOffset = { 0.f, -ShapeDesc.vHalfExtents.z , -ShapeDesc.vHalfExtents.y *2.f - 0.7f};
+
+
+
+    Bind_AnimEventFunc("LunchBoxOpen", bind(&CLunchBox::LunchBoxOpen, this));
+
+    CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+    tAnimEventDesc.pReceiver = this;
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(this)->Get_Model(COORDINATE_3D);
+    CAnimEventGenerator* pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_LunchBoxAnimEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("AnimEventGenrator"), pAnimEventGenerator);
+
 
 	return S_OK;
 }
@@ -186,7 +201,7 @@ void CLunchBox::Interact(CPlayer* _pUser)
 
 _bool CLunchBox::Is_Interactable(CPlayer* _pUser)
 {
-    return m_bPlayerInRange;
+    return m_bPlayerInRange && false == m_bOpened && false == _pUser->Is_CarryingObject();
 }
 
 _float CLunchBox::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
@@ -198,4 +213,48 @@ _float CLunchBox::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 void CLunchBox::On_Touched(CPlayer* _pPlayer)
 {
     _pPlayer->Set_State(CPlayer::LUNCHBOX);
+}
+
+void CLunchBox::LunchBoxOpen()
+{
+    _float3 vBoxPos;
+    XMStoreFloat3(&vBoxPos, Get_FinalPosition());
+	vBoxPos.z += m_vInteractionPointOffset.z - 1.2f;
+	CRabbitLunch::RABBITLUNCH_DESC tRabbitLunchDesc{};
+    //  도시락 위치 : pDesc->tTransform3DDesc.vInitialPosition = _float3(-34.5f, 3.40f, -7.8f);
+	tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::CARROT_1;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos ;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += 2.5f;
+    tRabbitLunchDesc.iCurLevelID = m_iCurLevelID;
+    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_iCurLevelID, TEXT("Layer_LunchBox"), &tRabbitLunchDesc)))
+        return ;
+	tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::CARROT_2;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += -2.5f;
+    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_iCurLevelID, TEXT("Layer_LunchBox"), &tRabbitLunchDesc)))
+        return ;
+	tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::CARROT_3;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += -1.f;
+    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_iCurLevelID, TEXT("Layer_LunchBox"), &tRabbitLunchDesc)))
+        return ;
+    tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::GRAPE_1;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += 1.f;
+    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_iCurLevelID, TEXT("Layer_LunchBox"), &tRabbitLunchDesc)))
+        return;
+    tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::GRAPE_2;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += -2.5f;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += 1.f;
+    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_iCurLevelID, TEXT("Layer_LunchBox"), &tRabbitLunchDesc)))
+        return;
+    tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::GRAPE_3;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += 2.5f;
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += 1.f;
+    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_iCurLevelID, TEXT("Layer_LunchBox"), &tRabbitLunchDesc)))
+        return;
+
+    
 }

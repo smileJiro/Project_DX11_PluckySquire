@@ -32,6 +32,7 @@
 #include "ButterGrump.h"
 #include "Goblin_SideScroller.h"
 #include "LightningBolt.h"
+#include "RabbitLunch.h"
 
 
 #include "RayShape.h"
@@ -1492,21 +1493,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_LunchBox(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_LunchBox"), m_eLevelID, _strLayerTag, &tModelDesc)))
 		return E_FAIL;
 
-	//  도시락 위치 : pDesc->tTransform3DDesc.vInitialPosition = _float3(-34.5f, 3.40f, -7.8f);
-	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Carrot_01");
-	tModelDesc.strModelPrototypeTag_2D = TEXT("sketchspace_rabbit_carrot");
 
-	tModelDesc.tTransform3DDesc.vInitialPosition = { 0.f, 10.f, 0.f };
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_eLevelID, _strLayerTag, &tModelDesc)))
-		return E_FAIL;
-	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Carrot_02");
-	tModelDesc.tTransform3DDesc.vInitialPosition = { 0.f, 11.f, 0.f };
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_eLevelID, _strLayerTag, &tModelDesc)))
-		return E_FAIL;
-	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Carrot_03");
-	tModelDesc.tTransform3DDesc.vInitialPosition = { 0.f, 12.f, 0.f };
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_eLevelID, _strLayerTag, &tModelDesc)))
-		return E_FAIL;
 	return S_OK;
 }
 
