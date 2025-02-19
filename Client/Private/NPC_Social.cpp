@@ -55,6 +55,8 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	m_iMainIndex = pDesc->iMainIndex;
 	m_iSubIndex = pDesc->iSubIndex;
 
+	m_iPreState = 3;
+
 	wsprintf(m_strCurSecion, pDesc->strSectionid.c_str());
 	
 
@@ -157,7 +159,14 @@ void CNPC_Social::Priority_Update(_float _fTimeDelta)
 void CNPC_Social::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
-	
+
+	if (m_strDialogueID == TEXT("C01_Humgrump_01"))
+	{
+		if (true == m_isPlayDisplay && false == Uimgr->Get_DisplayDialogue())
+		{
+			//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation()
+		}
+	}
 	
 }
 
@@ -167,6 +176,7 @@ void CNPC_Social::Late_Update(_float _fTimeDelta)
 	{
 		Throw_Dialogue();
 		m_isThrow = true;
+		m_isPlayDisplay = true;
 	}
 	
 	if (false == m_isColPlayer && true == m_isThrow)
@@ -206,7 +216,28 @@ void CNPC_Social::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOthe
 
 void CNPC_Social::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
-	
+	if (m_strDialogueID == TEXT("C01_Humgrump_01"))
+	{
+		if (iAnimIdx != m_iPreState)
+		{
+			switch (iAnimIdx)
+			{
+			case 0:
+			{
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(20);
+			}
+			break;
+
+			case 20:
+			{
+
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(21);
+			}
+			break;
+			}
+
+		}
+	}
 }
 
 

@@ -12,6 +12,7 @@ private:
 public:
 	virtual HRESULT				Initialize_Prototype();								// 프로토 타입 전용 Initialize
 	virtual HRESULT				Initialize(void* _pArg);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
+	virtual HRESULT				Initial2ize(void* _pArg);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
 
 public:
 	static CMainTable*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
