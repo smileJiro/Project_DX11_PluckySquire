@@ -78,6 +78,7 @@ private:
 	_bool						m_isDialoging = { false };
 	_bool						m_isOpenSate = { false };
 	_bool						m_isLunch = false;
+	_bool						m_isChangePos = { false };
 };
 
 END

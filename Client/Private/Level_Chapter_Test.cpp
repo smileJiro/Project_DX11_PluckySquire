@@ -160,7 +160,7 @@ void CLevel_Chapter_Test::Update(_float _fTimeDelta)
 		_float fX = m_pGameInstance->Compute_Random(-100.f, 100.f);
 		_float fY = m_pGameInstance->Compute_Random(-100.f, 100.f);
 		_float fRandomDelay = m_pGameInstance->Compute_Random(0.0f, 5.f);
-		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Prototype_Model2D_FallingRock"), TEXT("Chapter4_P0304"), XMMatrixTranslation(fX, fY, 0.0f), fRandomDelay, 0, false, 10.0f);
+		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Prototype_Model2D_FallingRock"), TEXT("Chapter4_P0304"), XMMatrixTranslation(fX, fY, 0.0f), fRandomDelay, 0, false, 0.0f);
 		//m_pTestEffect->Play_Effect(TEXT("Chapter4_P0304"), XMMatrixRotationZ(XMConvertToRadians(60.f)), 2.f, 0, true, 10.f);
 	}
 	// 피직스 업데이트 

@@ -118,6 +118,8 @@ private:
     vector<CNarration_Anim*>                m_pCurrentAnimObj = { nullptr };
     map<_uint, vector<CNarration_Anim*>>    m_vAnimObjectsByLine;
 
+    _bool                                   m_isLeftRight; // 카메라를 위한 레프트 라이트
+
 protected:
     virtual HRESULT         Ready_Components() override;
 

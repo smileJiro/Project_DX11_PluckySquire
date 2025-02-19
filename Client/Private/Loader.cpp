@@ -584,6 +584,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Common"))))
         return E_FAIL;
 
+    if (FAILED(Loading_BGM_PathFind(TEXT("../Bin/Sounds/BGM"))))
+        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
 

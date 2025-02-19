@@ -2,6 +2,7 @@
 #include "UI_Interaction_Book.h"
 #include "GameInstance.h"
 #include "UI_Manager.h"
+#include "PlayerData_Manager.h"
 
 #include "Interactable.h"
 
@@ -53,7 +54,7 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 	}
 	
 	
-	if (true == Uimgr->Get_isQIcon())
+	if (true == Uimgr->Get_isQIcon() && CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
 	{
 		m_isRender = true;
 	}

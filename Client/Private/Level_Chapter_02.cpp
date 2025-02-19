@@ -231,6 +231,14 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger.json"));
 	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 
+	// BGM ½ÃÀÛ
+	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
+
+
+
+	CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_Intro"),
+		50);
+
 	return S_OK;
 }
 
@@ -371,10 +379,6 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &dd);
 	}
 
-	if (KEY_DOWN(KEY::F)) {
-		CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_Intro"),
-			50);
-	}
 }
 
 HRESULT CLevel_Chapter_02::Render()
@@ -709,12 +713,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	fLength = 12.5f;
 	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
 
-	// Set Cur Camera
-	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
-
 	// Load CutSceneData, ArmData
 	CCamera_Manager::GetInstance()->Load_CutSceneData();
 	CCamera_Manager::GetInstance()->Load_ArmData();
+
 
 	return S_OK;
 }
@@ -737,9 +739,12 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	if (nullptr == Uimgr->Get_Player())
 	{
 		CUI_Manager::GetInstance()->Set_Player(pPlayer);
-
 	}
+	_int iCurCoord = (COORDINATE_2D);
+	_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 
+	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 
 	return S_OK;
@@ -1450,6 +1455,11 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words4"), LEVEL_CHAPTER_2, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words5"), LEVEL_CHAPTER_2, 3);
 
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("beam"), LEVEL_CHAPTER_2, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("EffectBack"), LEVEL_CHAPTER_2, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("hum"), LEVEL_CHAPTER_2, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("storm"), LEVEL_CHAPTER_2, 1);
+
 
 	return S_OK;
 }
@@ -1704,6 +1714,7 @@ CLevel_Chapter_02* CLevel_Chapter_02::Create(ID3D11Device* _pDevice, ID3D11Devic
 }
 void CLevel_Chapter_02::Free()
 {
+	m_pGameInstance->End_BGM();
 
 	__super::Free();
 }

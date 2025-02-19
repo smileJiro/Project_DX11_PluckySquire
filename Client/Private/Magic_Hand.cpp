@@ -118,6 +118,14 @@ void CMagic_Hand::Show_3DHand()
     
     m_fFlipDelayTime = 0.f;
     m_isReadyFlip = true;
+
+    m_pGameInstance->End_BGM();
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_C2DESK_ejected_desk_part"), 50.f);
+
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Base"), 8.f, 25.f, true);
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 8.f, 25.f, true);
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 8.f, 25.f, true);
+
 }
 
 HRESULT CMagic_Hand::Ready_PartObjects()

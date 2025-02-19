@@ -1,0 +1,52 @@
+[
+    {
+        "Collider_Info": {
+            "Position": [
+                -4.0,
+                372.0
+            ],
+            "Scale": [
+                62.0,
+                30.0
+            ]
+        },
+        "Fillter_MyGroup": 2,
+        "Fillter_OtherGroupMask": 128,
+        "Trigger_ConditionType": 0,
+        "Trigger_Coordinate": 0,
+        "Trigger_EventTag": "BookSectionChange_Next",
+        "Trigger_Type": 0,
+		"MapTrigger_Info" :
+		{
+			"Next_Position": [
+                0.0,
+                -300.0
+            ]
+		}
+    },
+    {
+        "Collider_Info": {
+            "Position": [
+                -5.0,
+                -375.0
+            ],
+            "Scale": [
+                62.0,
+                30.0
+            ]
+        },
+        "Fillter_MyGroup": 2,
+        "Fillter_OtherGroupMask": 128,
+        "Trigger_ConditionType": 0,
+        "Trigger_Coordinate": 0,
+        "Trigger_EventTag": "BookSectionChange_Prev",
+        "Trigger_Type": 0,
+		"MapTrigger_Info" :
+		{
+			"Next_Position": [
+                1200.0,
+                -27.0
+            ]
+		}
+    }
+]

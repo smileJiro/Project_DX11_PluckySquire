@@ -64,11 +64,11 @@ void CEffect2D::Priority_Update(_float _fTimeDelta)
 		}
 		return;
 	}
+	m_vLifeTime.y += _fTimeDelta;
 
 	/* Play Time */
 	if (true == m_isLoop)
 	{
-		m_vLifeTime.y += _fTimeDelta;
 		if (m_vLifeTime.x <= m_vLifeTime.y)
 		{
 			m_vLifeTime.y = 0.0f;
@@ -154,8 +154,12 @@ void CEffect2D::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
 {
 	if (m_iCurAnimIndex == _iAnimIdx && false == m_isLoop)
 	{
-		Event_DeleteObject(this);
-		CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(Get_Include_Section_Name(), this);
+		if (m_vLifeTime.x <= m_vLifeTime.y)
+		{
+			m_vLifeTime.y = 0.0f;
+			Event_DeleteObject(this);
+			CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(Get_Include_Section_Name(), this);
+		}
 	}
 }
 

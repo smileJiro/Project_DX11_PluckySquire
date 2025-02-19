@@ -148,7 +148,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Render()
 	Imgui_Debug_IBLGlobalVariable();
 	Imgui_Debug_Lights();
 
-
+	
 	HWND hWnd = GetFocus();
 	auto& io = ImGui::GetIO();
 	if (nullptr != hWnd && !io.WantCaptureKeyboard)
@@ -453,10 +453,10 @@ HRESULT CImgui_Manager::Imgui_Debug_IBLGlobalVariable()
 	ImGui::Begin("IBL_GlobalVariable");
 	CONST_IBL tConstIBLData = m_pGameInstance->Get_GlobalIBLData();
 
-	ImGui::SliderFloat("StrengthIBL", &tConstIBLData.fStrengthIBL, 0.0f, 10.0f);
+	ImGui::SliderFloat("StrengthIBL", &tConstIBLData.fStrengthIBL, 0.0f, 10.0f, "%.4f");
 	ImGui::SliderInt("SpecularBaseMipLevel", &tConstIBLData.iSpecularBaseMipLevel, 0, 10);
-	ImGui::SliderFloat("RoughnessToMipFactor", &tConstIBLData.fRoughnessToMipFactor, 0.0f, 20.0f);
-	ImGui::SliderFloat("HDRMaxLuminance", &tConstIBLData.fHDRMaxLuminance, 0.5f, 50.0f);
+	ImGui::SliderFloat("RoughnessToMipFactor", &tConstIBLData.fRoughnessToMipFactor, 0.0f, 20.0f, "%.4f");
+	ImGui::SliderFloat("HDRMaxLuminance", &tConstIBLData.fHDRMaxLuminance, 0.5f, 50.0f, "%.4f");
 
 	int iSelectedFlag = tConstIBLData.iToneMappingFlag;
 	if (ImGui::RadioButton("TONE_LINEAR", iSelectedFlag == 0))
@@ -469,8 +469,8 @@ HRESULT CImgui_Manager::Imgui_Debug_IBLGlobalVariable()
 		iSelectedFlag = 3; // Flag 1 ¼±ÅÃ
 	tConstIBLData.iToneMappingFlag = iSelectedFlag;
 
-	ImGui::SliderFloat("Exposure", &tConstIBLData.fExposure, 0.1f, 10.0f);
-	ImGui::SliderFloat("Gamma", &tConstIBLData.fGamma, 0.1f, 5.0f);
+	ImGui::SliderFloat("Exposure", &tConstIBLData.fExposure, 0.1f, 10.0f, "%.4f");
+	ImGui::SliderFloat("Gamma", &tConstIBLData.fGamma, 0.1f, 5.0f, "%.4f");
 
 
 	m_pGameInstance->Set_GlobalIBLData(tConstIBLData, true);
@@ -605,24 +605,24 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 		}
-		if (ImGui::DragFloat3("Radiance##Light", &tConstLightData.vRadiance.x, 0.1f, 0.f, 500.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
+		if (ImGui::DragFloat3("Radiance##Light", &tConstLightData.vRadiance.x, 0.1f, 0.f, 500.f, "%.3f", ImGuiSliderFlags_AlwaysClamp))
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 		}
-		if (ImGui::DragFloat3("Diffuse##Light", &tConstLightData.vDiffuse.x, 0.05f, 0.f, 100.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
+		if (ImGui::DragFloat3("Diffuse##Light", &tConstLightData.vDiffuse.x, 0.05f, 0.f, 100.f, "%.3f", ImGuiSliderFlags_AlwaysClamp))
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 		}
-		if (ImGui::DragFloat3("Ambient##Light", &tConstLightData.vAmbient.x, 0.05f, 0.f, 100.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
+		if (ImGui::DragFloat3("Ambient##Light", &tConstLightData.vAmbient.x, 0.05f, 0.f, 100.f, "%.3f", ImGuiSliderFlags_AlwaysClamp))
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 		}
-		if (ImGui::DragFloat3("Specular##Light", &tConstLightData.vSpecular.x, 0.05f, 0.f, 100.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
+		if (ImGui::DragFloat3("Specular##Light", &tConstLightData.vSpecular.x, 0.05f, 0.f, 100.f, "%.3f", ImGuiSliderFlags_AlwaysClamp))
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 		}
 
-		if (ImGui::SliderFloat("FallOutStart##Light", &tConstLightData.fFallOutStart, 0.0f, tConstLightData.fFallOutEnd, "%.2f"))
+		if (ImGui::SliderFloat("FallOutStart##Light", &tConstLightData.fFallOutStart, 0.0f, tConstLightData.fFallOutEnd, "%.3f"))
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 		};
@@ -630,7 +630,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 		};
-		if (ImGui::SliderFloat("SpotPower##Light", &tConstLightData.fSpotPower, 0.0f, 10.f, "%.2f"))
+		if (ImGui::SliderFloat("SpotPower##Light", &tConstLightData.fSpotPower, 0.0f, 10.f, "%.3f"))
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 		};
