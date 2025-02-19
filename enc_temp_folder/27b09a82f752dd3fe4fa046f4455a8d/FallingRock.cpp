@@ -142,7 +142,7 @@ void CFallingRock::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOt
 		break;
 	case Client::PLAYER:
 		CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.1f, 0.2f, 20, CCamera::SHAKE_Y);
-		Event_Hit(this, _pOtherObject, 1);
+		Event_Hit(this, _pOtherObject, 1.0f);
 		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVectorSet(m_vColBoundDirection.x * 600.f, m_vColBoundDirection.y * 500.f, 0.0f, 0.0f));
 		break;
 	case Client::MONSTER:

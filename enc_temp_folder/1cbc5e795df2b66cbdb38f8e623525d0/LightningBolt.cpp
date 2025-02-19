@@ -184,7 +184,7 @@ void CLightningBolt::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _p
         if (LIGHTNING_DISC == static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
         {
             static_cast<CPlayer*>(_pOtherObject)->Set_State(CPlayer::ELECTRIC);
-            Event_Hit(this, _pOtherObject, 1);
+            Event_Hit(this, _pOtherObject, 1.f);
         }
         
         m_isStop = true;

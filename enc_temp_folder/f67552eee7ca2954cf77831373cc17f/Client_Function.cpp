@@ -253,7 +253,7 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
-	void Event_Hit(CGameObject* _pHitter, CGameObject* _pVictim, _int _iDamg)
+	void Event_Hit(CGameObject* _pHitter, CGameObject* _pVictim, _float _fDamg)
 	{
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::HIT;
@@ -261,7 +261,7 @@ namespace Client
 		tEvent.Parameters.resize(3);
 		tEvent.Parameters[0] = (DWORD_PTR)_pHitter;
 		tEvent.Parameters[1] = (DWORD_PTR)_pVictim;
-		tEvent.Parameters[2] = (DWORD_PTR)_iDamg;
+		tEvent.Parameters[2] = (DWORD_PTR)_fDamg;
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 

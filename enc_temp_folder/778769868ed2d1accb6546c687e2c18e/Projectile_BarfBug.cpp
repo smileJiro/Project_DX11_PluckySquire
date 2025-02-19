@@ -176,7 +176,7 @@ void CProjectile_BarfBug::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
     {
         if((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
         {
-            Event_Hit(this, _Other.pActorUserData->pOwner, 1);
+            Event_Hit(this, _Other.pActorUserData->pOwner, 1.f);
             _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
             XMVectorSetY(vRepulse, -1.f);
             Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
@@ -201,7 +201,7 @@ void CProjectile_BarfBug::On_Collision2D_Enter(CCollider* _pMyCollider, CCollide
 {
     if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
     {
-        Event_Hit(this, _pOtherObject, 1);
+        Event_Hit(this, _pOtherObject, 1.f);
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PROJECTILESPLAT);
         m_isStop = true;
     }
