@@ -950,6 +950,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     {
         Set_2DDirection(E_DIRECTION::DOWN);
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
+        Set_Mode(PLAYER_MODE::PLAYER_MODE_SWORD);
     }
     else
     {

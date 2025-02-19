@@ -221,78 +221,79 @@ void CLunchBox::LunchBoxOpen()
     _float3 vBoxPos;
     XMStoreFloat3(&vBoxPos, Get_FinalPosition());
 	vBoxPos.z += m_vInteractionPointOffset.z - 1.2f;
-
+    _float fXPosRange = 6.5f;
+    _float fYPosRange = 3.f;
+    _float fForceRange = 15.f;
+    _vector vForce{ 0.f,0.f,-10.0f };
 	CRabbitLunch::RABBITLUNCH_DESC tRabbitLunchDesc{};
     //  도시락 위치 : pDesc->tTransform3DDesc.vInitialPosition = _float3(-34.5f, 3.40f, -7.8f);
 	tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::CARROT_1;
     tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos ;
-    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-2.5f, 2.5f);
-    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-1.5f, 1.5f);
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-fXPosRange*0.5f, fXPosRange * 0.5f);
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-fYPosRange*0.5f, fYPosRange*0.5f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.y += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.x += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.z += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     tRabbitLunchDesc.iCurLevelID = m_iCurLevelID;
-    _vector vForce{ 0.f,0.f,-10.0f };
     CActorObject* pDynamicActor;
     if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_iCurLevelID, TEXT("Layer_LunchBox"), (CGameObject**)&pDynamicActor ,& tRabbitLunchDesc)))
         return ;
-    pDynamicActor->Add_Impuls(XMVectorSetZ( vForce, m_pGameInstance->Compute_Random(-2.5f, 2.5f)));
+    pDynamicActor->Add_Impuls(XMVectorSetZ( vForce, XMVectorGetZ( vForce) +m_pGameInstance->Compute_Random(-fForceRange*0.5f, fForceRange * 0.5f)));
 
 	tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::CARROT_2;
     tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos;
-    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-2.5f,2.5f);
-    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-1.5f, 1.5f);
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-fXPosRange * 0.5f, fXPosRange * 0.5f);
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-fYPosRange * 0.5f, fYPosRange * 0.5f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.y += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.x += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.z += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_iCurLevelID, TEXT("Layer_LunchBox"), (CGameObject**)&pDynamicActor ,&tRabbitLunchDesc)))
         return ;
-    pDynamicActor->Add_Impuls(XMVectorSetZ(vForce, m_pGameInstance->Compute_Random(-2.5f, 2.5f)));
+    pDynamicActor->Add_Impuls(XMVectorSetZ(vForce, XMVectorGetZ(vForce) + m_pGameInstance->Compute_Random(-fForceRange * 0.5f, fForceRange * 0.5f)));
 
 	tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::CARROT_3;
     tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos;
-    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-2.5f, 2.5f);
-    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-1.5f, 1.5f);
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-fXPosRange * 0.5f, fXPosRange * 0.5f);
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-fYPosRange * 0.5f, fYPosRange * 0.5f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.y += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.x += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.z += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_iCurLevelID, TEXT("Layer_LunchBox"), (CGameObject**)&pDynamicActor, &tRabbitLunchDesc)))
         return ;
-    pDynamicActor->Add_Impuls(XMVectorSetZ(vForce, m_pGameInstance->Compute_Random(-2.5f, 2.5f)));
+    pDynamicActor->Add_Impuls(XMVectorSetZ(vForce, XMVectorGetZ(vForce) + m_pGameInstance->Compute_Random(-fForceRange * 0.5f, fForceRange * 0.5f)));
 
     tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::GRAPE_1;
     tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos;
-    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-2.5f, 2.5f);
-    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-1.5f, 1.5f);
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-fXPosRange * 0.5f, fXPosRange * 0.5f);
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-fYPosRange * 0.5f, fYPosRange * 0.5f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.y += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.x += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.z += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_iCurLevelID, TEXT("Layer_LunchBox"), (CGameObject**)&pDynamicActor, &tRabbitLunchDesc)))
         return;
-    pDynamicActor->Add_Impuls(XMVectorSetZ(vForce, m_pGameInstance->Compute_Random(-2.5f, 2.5f)));
+    pDynamicActor->Add_Impuls(XMVectorSetZ(vForce, XMVectorGetZ(vForce) + m_pGameInstance->Compute_Random(-fForceRange * 0.5f, fForceRange * 0.5f)));
 
     tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::GRAPE_2;
     tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos;
-    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += -2.5f;
-    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-2.5f, 2.5f);
-    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-1.5f, 1.5f);
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-fXPosRange*0.5f, fXPosRange * 0.5f);
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-fYPosRange*0.5f, fYPosRange*0.5f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.y += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.x += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.z += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_iCurLevelID, TEXT("Layer_LunchBox"), (CGameObject**)&pDynamicActor, &tRabbitLunchDesc)))
         return;
-    pDynamicActor->Add_Impuls(XMVectorSetZ(vForce, m_pGameInstance->Compute_Random(-2.5f, 2.5f)));
+    pDynamicActor->Add_Impuls(XMVectorSetZ(vForce, XMVectorGetZ(vForce) + m_pGameInstance->Compute_Random(-fForceRange * 0.5f, fForceRange * 0.5f)));
 
     tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::GRAPE_3;
     tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos;
-    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-2.5f, 2.5f);
-    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-1.5f, 1.5f);
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-fXPosRange * 0.5f, fXPosRange * 0.5f);
+    tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-fYPosRange * 0.5f, fYPosRange * 0.5f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.y += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.x += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialRotation.z += m_pGameInstance->Compute_Random(-3.14f, 3.14f);
     if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_RabbitLunch"), m_iCurLevelID, TEXT("Layer_LunchBox"), (CGameObject**)&pDynamicActor, &tRabbitLunchDesc)))
         return;
-    pDynamicActor->Add_Impuls(XMVectorSetZ(vForce, m_pGameInstance->Compute_Random(-2.5f, 2.5f)));
+    pDynamicActor->Add_Impuls(XMVectorSetZ(vForce, XMVectorGetZ(vForce) + m_pGameInstance->Compute_Random(-fForceRange * 0.5f, fForceRange * 0.5f)));
 
     
 }
