@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "RabbitLunch.h"
+#include "GameInstance.h"
 
 CRabbitLunch::CRabbitLunch(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CCarriableObject(_pDevice, _pContext)
@@ -146,6 +147,8 @@ HRESULT CRabbitLunch::Initialize(void* _pArg)
 		|| CARROT_2 == m_eLunchType
 		|| CARROT_3 == m_eLunchType)
 		m_pActorCom->Set_MassLocalPos({0.f,0.9f,0.f});
+
+
 	return S_OK;
 }
 
