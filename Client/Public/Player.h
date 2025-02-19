@@ -531,6 +531,7 @@ public:
 	void Set_Upforce(_float _fForce);
 	HRESULT Set_CarryingObject(CCarriableObject* _pCarryingObject);
 	NORMAL_DIRECTION Set_PortalNormal(NORMAL_DIRECTION _eNormal) { return m_e3DPortalNormal = _eNormal; }
+	void Set_GravityCompOn(_bool _bOn);
 
 	void Start_Attack(ATTACK_TYPE _eAttackType);
 	void End_Attack();

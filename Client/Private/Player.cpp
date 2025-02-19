@@ -817,9 +817,18 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
         if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
         {
             IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
+			if (nullptr != pInteractable && static_cast<CCollider_Circle*>( _pMyCollider)->Is_ContainsPoint(_pOtherCollider->Get_Position()))
             if (Check_ReplaceInteractObject(pInteractable))
             {
                 m_pInteractableObject = pInteractable;
+       /*         STATE eStat = m_pStateMachine->Get_CurrentState()->Get_StateID();
+                if(STATE::START_PORTAL != eStat
+                    && STATE::JUMPTO_PORTAL!= eStat
+                    && STATE::EXIT_PORTAL != eStat)
+                {
+					cout << "Sate : " << eStat << endl;
+              
+                }*/
                 m_pPortal = dynamic_cast<CPortal*>(m_pInteractableObject);
             }
         }
@@ -1721,6 +1730,10 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
     }
 
     return S_OK;
+}
+void CPlayer::Set_GravityCompOn(_bool _bOn)
+{
+	m_pGravityCom->Set_Active(_bOn);
 }
 void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 {
