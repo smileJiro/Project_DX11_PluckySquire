@@ -88,7 +88,7 @@ HRESULT CSection::Add_RenderGroup_GameObjects()
     {
         auto& Objects = m_Layers[i]->Get_GameObjects();
         for_each(Objects.begin(), Objects.end(), [&](CGameObject* pGameObject) {
-            if(pGameObject->Is_Active())
+            if(pGameObject->Is_Active() && pGameObject->Is_Render())
                 pGameObject->Register_RenderGroup(m_iGroupID, m_iPriorityID);
             });
     }

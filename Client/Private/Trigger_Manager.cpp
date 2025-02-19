@@ -418,6 +418,7 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	case (_uint)TRIGGER_TYPE::SECTION_CHANGE_TRIGGER:
 		_pTrigger->Resister_EnterHandler([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 			_float3 fNextPosition = any_cast<_float3>(_pTrigger->Get_CustomData(TEXT("Next_Position")));
+
 			if (_wstring::npos != _szEventTag.rfind(L"Next"))
 			{
 				Event_Book_Main_Section_Change_Start(1,&fNextPosition);
@@ -426,6 +427,9 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 			{
 				Event_Book_Main_Section_Change_Start(0, &fNextPosition);
 			}
+
+
+
 			});
 		break;
 	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
