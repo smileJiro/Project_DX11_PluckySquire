@@ -68,6 +68,7 @@ struct VS_WORLDOUT
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
+    float3 vWorldNormal : TEXCOORD2;
 };
 
 VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
@@ -83,7 +84,7 @@ VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
     Out.vPosition = vNDCCoord;
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(float4(In.vPosition, 1.0f), g_WorldMatrix);
-
+    Out.vWorldNormal = mul(float4(In.vNormal, 0.0f), g_WorldMatrix);
     return Out;
 }
 
@@ -111,7 +112,7 @@ PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    float3 vAlbedo = useAlbedoMap ? g_AlbedoTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f).rgb : Material.Albedo;
+    float4 vAlbedo = useAlbedoMap ? g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord) : Material.Albedo;
     float3 vNormal = useNormalMap ? Get_WorldNormal(g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz, In.vNormal.xyz, In.vTangent.xyz, 0) : In.vNormal.xyz;
     float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
     if (false == useORMHMap)
@@ -120,7 +121,11 @@ PS_OUT PS_MAIN(PS_IN In)
         vORMH.g = useRoughnessMap ? g_RoughnessTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Roughness;
         vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
     }
-    Out.vDiffuse = float4(vAlbedo, 1.0f);
+    
+    if (vAlbedo.a < 0.01f)
+        discard;
+    
+    Out.vDiffuse = vAlbedo;
     // 1,0,0
     // 1, 0.5, 0.5 (양의 x 축)
     // 0, 0.5, 0.5 (음의 x 축)
@@ -211,6 +216,7 @@ struct PS_WORLDIN
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
+    float3 vWorldNormal : TEXCOORD2;
 };
 struct PS_WORLDOUT
 {
@@ -220,7 +226,27 @@ struct PS_WORLDOUT
 PS_WORLDOUT PS_WORLDPOSMAP(PS_WORLDIN In)
 {
     PS_WORLDOUT Out = (PS_WORLDOUT)0;
-    Out.vWorldPos = In.vWorldPos;
+    
+    float fNormalDirectionFlag = NONEWRITE_NORMAL;
+    // +X, -X
+    if (pow(In.vWorldNormal.x, 2) > pow(In.vWorldNormal.y, 2) && pow(In.vWorldNormal.x, 2) > pow(In.vWorldNormal.z, 2))
+    {
+        fNormalDirectionFlag = (In.vWorldNormal.x) > 0 ? POSITIVE_X : NEGATIVE_X;
+    }
+    // +Y, -Y
+    else if (pow(In.vWorldNormal.y, 2) > pow(In.vWorldNormal.x, 2) && pow(In.vWorldNormal.y, 2) > pow(In.vWorldNormal.z, 2))
+    {
+        fNormalDirectionFlag = (In.vWorldNormal.y) > 0 ? POSITIVE_Y : NEGATIVE_Y;
+    }
+    // +Z, -Z
+    else if (pow(In.vWorldNormal.z, 2) > pow(In.vWorldNormal.x, 2) && pow(In.vWorldNormal.z, 2) > pow(In.vWorldNormal.y, 2))
+    { 
+        fNormalDirectionFlag = (In.vWorldNormal.z) > 0 ? POSITIVE_Z : NEGATIVE_Z;
+    }
+
+    Out.vWorldPos.rgb = In.vWorldPos.rgb;
+    Out.vWorldPos.a = fNormalDirectionFlag;
+
     return Out;
 }
 

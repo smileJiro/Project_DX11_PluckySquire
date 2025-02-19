@@ -24,10 +24,13 @@
 #include "PlayerState_ExitPortal.h"
 #include "PlayerState_TurnBook.h"
 #include "PlayerState_Evict.h"
+#include "PlayerState_LunchBox.h"
+#include "PlayerState_Electric.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "Section_Manager.h"
 #include "UI_Manager.h"
+
     
 #include "Collider_Fan.h"
 #include "Interactable.h"
@@ -68,7 +71,7 @@ HRESULT CPlayer::Initialize_Prototype()
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadius = 93.f;
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = 50.f;
 
-    XMStoreFloat4x4(&m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.f, 0.f));
+    XMStoreFloat4x4(&m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.0f, 0.f));
     XMStoreFloat4x4(&m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 100.f, 0.f));
 
     return S_OK;
@@ -123,7 +126,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::BLOCKER; // Actor가 충돌을 감지할 그룹
+	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
@@ -167,21 +170,22 @@ HRESULT CPlayer::Initialize(void* _pArg)
     SHAPE_SPHERE_DESC SphereDesc = {};
     SphereDesc.fRadius = 2.5f;
     ShapeData.pShapeDesc = &SphereDesc;
+    ShapeData.iShapeUse =(_uint) SHAPE_USE::SHAPE_TRIGER;
     ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
     ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::INTERACTION_OBEJCT;
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     //상호작용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-    ShapeData.iShapeUse = (_uint)PLAYER_SHAPE_USE::INTERACTION;
     ShapeData.isTrigger = true;
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_f3DCenterYOffset, m_f3DInteractLookOffset));
     SphereDesc.fRadius = m_f3DInteractRadius;
     ShapeData.pShapeDesc = &SphereDesc;
+    ShapeData.iShapeUse = (_uint)PLAYER_SHAPE_USE::INTERACTION;
     ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
-    ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::BLOCKER;
+    ShapeData.FilterData.OtherGroupMask =OBJECT_GROUP::INTERACTION_OBEJCT;
     ActorDesc.ShapeDatas.push_back(ShapeData);
-
+    
 
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
     ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT| OBJECT_GROUP::BLOCKER;
@@ -435,7 +439,7 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 void CPlayer::Update(_float _fTimeDelta)
 {
-   // cout << "X : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[0] << " Y : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[1] << endl;
+    //cout << "X : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[0] << " Y : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[1] << endl;
 
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
@@ -473,6 +477,9 @@ void CPlayer::Update(_float _fTimeDelta)
             m_bOnGround = false;
         }
     }
+    
+    CUI_Manager::GetInstance()->Set_isQIcon((nullptr != m_pInteractableObject) 
+        && KEY::Q == m_pInteractableObject->Get_InteractKey());
     m_pInteractableObject = nullptr;
 }
 
@@ -684,8 +691,7 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
     if (PLAYER_SHAPE_USE::INTERACTION ==(PLAYER_SHAPE_USE)_My.pShapeUserData->iShapeUse)
     {
         OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_ObjectGroupID();
-        if (
-            OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup)
+        if (OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup)
         {
             IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
             if (Check_ReplaceInteractObject(pInteractable))
@@ -725,6 +731,18 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
     case Client::PLAYER:
         break;
     case Client::MONSTER:
+        if (OBJECT_GROUP::PLAYER & _pMyCollider->Get_CollisionGroupID())
+        {
+			if (true == Is_PlatformerMode() && STATE::JUMP_DOWN == Get_CurrentStateID())
+            {
+                _float fAngle = atan2f(_pOtherObject->Get_FinalPosition().m128_f32[1] - Get_FinalPosition().m128_f32[1], _pOtherObject->Get_FinalPosition().m128_f32[0] - Get_FinalPosition().m128_f32[0]);
+                fAngle = XMConvertToDegrees(fAngle);
+                if (fAngle >= -135.f && fAngle <= -45.f)
+                {
+                    Attack(_pOtherObject);
+                }
+            }  
+        }
         break;
     case Client::MAPOBJECT:
         break;
@@ -894,11 +912,10 @@ void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CPlayer::On_Hit(CGameObject* _pHitter, _int _fDamg)
 {
-    //cout << " Player Get Damg" << _fDamg << endl;
     m_tStat.iHP -= _fDamg;
+    cout << " Player HP" << m_tStat.iHP << endl;
 	COORDINATE eCoord = Get_CurCoord();
-	CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == eCoord) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
-    CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.2f, 20, CCamera::SHAKE_XY);
+
     Uimgr->Set_PlayerOnHit(true);
 
 
@@ -937,6 +954,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     {
         Set_2DDirection(E_DIRECTION::DOWN);
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
+        Set_Mode(PLAYER_MODE::PLAYER_MODE_SWORD);
     }
     else
     {
@@ -981,6 +999,9 @@ void CPlayer::Attack(CGameObject* _pVictim)
 {
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
+
+    CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == Get_CurCoord()) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
+    CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.2f, 20, CCamera::SHAKE_XY);
     Event_Hit(this, _pVictim, m_tStat.iDamg);
     CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
     if (pCharacter)
@@ -1099,7 +1120,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         return tResult;
     }
 
-    if (Is_SwordHandling())
+	_bool bCarrying = Is_CarryingObject();
+    if (false == bCarrying && Is_SwordHandling())
     {
         //기본공격
         if (MOUSE_DOWN(MOUSE_KEY::LB))
@@ -1122,7 +1144,6 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
                 tResult.bInputStates[PLAYER_INPUT_SPINLAUNCH] = true;
         }
     }
-	_bool bCarrying = Is_CarryingObject();
     //포탈은 떨어져도 발동할 수 있어야 함. 
     _bool bHasInteractable = Has_InteractObject();
     if (bHasInteractable)
@@ -1537,6 +1558,12 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::EVICT:
         m_pStateMachine->Transition_To(new CPlayerState_Evict(this));
         break;
+    case Client::CPlayer::LUNCHBOX:
+        m_pStateMachine->Transition_To(new CPlayerState_LunchBox(this));
+        break;
+    case Client::CPlayer::ELECTRIC:
+        m_pStateMachine->Transition_To(new CPlayerState_Electric(this));
+        break;
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -1861,21 +1888,23 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         if (COORDINATE_3D == eCoord)
         {
             //근처 포탈
-            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
-            //도미노0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
-            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //포탈 4 0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
+            //도미노 { 6.99342966, 5.58722591, 21.8827782 }
+            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+
         }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 
     }
 
-    if (KEY_DOWN(KEY::H))
-    {
-        m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
-        //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
-        //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
-        //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
-    }
+    //if (KEY_DOWN(KEY::H))
+    //{
+    //    m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
+    //    //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
+    //    //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
+    //    //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
+    //}
     if (KEY_DOWN(KEY::J))
     {
         Set_State(CPlayer::EVICT);

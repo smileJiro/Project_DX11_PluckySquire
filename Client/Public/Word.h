@@ -60,7 +60,6 @@ public:
 	virtual _float		Get_Distance(COORDINATE _eCOord, CPlayer* _pUser) override;
 
 
-
 public :
 	_wstring Get_Text() { return m_strText; }
 	WORD_TYPE Get_WordType() { return m_eWordType; }

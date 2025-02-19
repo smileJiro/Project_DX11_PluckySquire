@@ -83,5 +83,25 @@
                 "Is_Sequence": false
             }
         ]
-    }
+    },
+    {
+        "Trigger_EventTag": "Chapter2_BookMagic",
+        "Actions": [
+              {
+                  "ActionTag": "Create_EventExecuter",
+                  "EventTag": "Chapter2_BookMagic",
+                  "Is_Sequence": true
+              }
+          ]
+     },
+    {
+        "Trigger_EventTag": "Chapter2_Intro",
+        "Actions": [
+              {
+                  "ActionTag": "Create_EventExecuter",
+                  "EventTag": "Chapter2_Intro",
+                  "Is_Sequence": true
+              }
+          ]
+      }
 ]

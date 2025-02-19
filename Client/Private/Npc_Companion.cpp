@@ -55,7 +55,7 @@ HRESULT CNPC_Companion::Child_Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	m_isRender = true;
+	m_isRender = false;
 
 	return S_OK;
 }
@@ -71,18 +71,54 @@ void CNPC_Companion::Priority_Update(_float _fTimeDelta)
 
 void CNPC_Companion::Update(_float _fTimeDelta)
 {
-	for (auto& Child : m_vecCompanionNpc)
+
+	for (int i = 0; i < m_vecCompanionNpc.size(); ++i)
 	{
-		if (true == Child->Is_Render())
+		m_vecCompanionNpc[i]->Child_Update(_fTimeDelta);
+
+		if (true == m_vecCompanionNpc[i]->is_Trace())
 		{
-			Child->Child_Update(_fTimeDelta);
-		}	
+
+			auto PlayerSection = CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player());
+			auto NpcSection = CSection_Manager::GetInstance()->Get_SectionKey(m_vecCompanionNpc[i]);
+
+			if (PlayerSection != NpcSection)
+			{
+
+				if (TEXT("Violet") == m_vecCompanionNpc[i]->Get_Name())
+				{
+
+					if (CNPC_Violet::VIOLET_NOTRENDER == static_cast<CNPC_Violet*>(m_vecCompanionNpc[i])->Get_RenderType())
+					{
+						 
+
+						continue;
+					}
+
+					//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
+
+					if (false == CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
+						CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
+				}
+
+				else 
+				{
+					//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
+					if (false == CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
+						CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
+				}
+			}
+		}
 	}
+
 	__super::Update(_fTimeDelta);
 }
 
 void CNPC_Companion::Child_Update(_float _fTimeDelta)
 {
+	//for (auto& Child : m_vecCompanionNpc)
+	//	Child->Child_Update(_fTimeDelta);
+
 	__super::Update(_fTimeDelta);
 }
 
@@ -90,9 +126,11 @@ void CNPC_Companion::Late_Update(_float _fTimeDelta)
 {
 	for (auto& Child : m_vecCompanionNpc)
 	{
-		if (true == Child->Is_Render())
+		if (true == Child->is_LookOut())
 			Child->Child_LateUpdate(_fTimeDelta);
 	}
+
+
 
 	__super::Late_Update(_fTimeDelta);
 }
@@ -113,6 +151,13 @@ _bool CNPC_Companion::Trace_Player(_float2 _vPlayerPos, _float2 vNPCPos)
 	
 	if (120.f >= m_fPlayerDistance)
 	{
+		
+
+		return false;
+	}
+	else if (500.f <= m_fPlayerDistance)
+	{
+		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, _float4(_vPlayerPos.x + 5.f, _vPlayerPos.y + 5.f, 0.f, 1.f));
 		return false;
 	}
 

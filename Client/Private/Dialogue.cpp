@@ -150,6 +150,7 @@ HRESULT CDialog::Render()
 			_float2 vRTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
 			m_vFontColor = Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].vFontColor;
 
+			//vRTSize = _float2(2680.f, 4440.f);
 
 			DisplayText(vRTSize);
 		}
@@ -466,25 +467,63 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	
 	case LOC_MIDRIGHT: // 가운데 우측
 	{
+		//_float2 vPos = { 0.f , 0.f };
+		//
+		//vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
+		//vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+		//
+		//
+		//vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+
+
 		_float2 vPos = { 0.f , 0.f };
+		if (false == isColumn)
+		{
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.1f;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.3f;
+			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+		}
+		else if (true == isColumn)
+		{
 
-		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
-		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.135f;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.012f;
+			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 
 
-		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+
+			wsprintf(m_tFont, currentLine.Talker.c_str());
+			pGameInstance->Render_Font(TEXT("Font20"), m_tFont, _float2(vTextPos2D.x, vTextPos2D.y), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+
+
+			//vCalPos.x += _vRTSize.x * 0.03f;
+			//vCalPos.y += +_vRTSize.y * 0.1f;
+
+			// 대화 내용 출력
+			wsprintf(m_tFont, strDisplaytext.c_str());
+			pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vTextPos2D.x - 50.f, vTextPos2D.y + 50.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+			Safe_Release(pGameInstance);
+			return S_OK;
+		
+		}
+
+		
+		
 	}
 	break;
 
 	case LOC_LEFTDOWN: // 가운데 우측
 	{
 		_float2 vPos = { 0.f , 0.f };
-
+		
 		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
 		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
-
-
+		
+		
 		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+		
+		
+
 	}
 	break;
 
@@ -599,7 +638,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 	_tchar _strDialogue[MAX_PATH] = {};
 	wsprintf(_strDialogue, Uimgr->Get_DialogId());
 
-	if (L"" == _strDialogue)
+	if (wcslen(_strDialogue) == 0)
 	{
 		return;
 	}
@@ -918,7 +957,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			if (-1 != Uimgr->Get_Dialogue(_strDialogue)[0].iTriggerID)
 			{
 				DialogData Data = Uimgr->Get_Dialogue(_strDialogue)[0];
-				CTrigger_Manager::GetInstance()->Resister_TriggerEvent(Data.wstrTriggerTag.c_str(),
+				CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_BookMagic"),
 					Data.iTriggerID);
 			}
 

@@ -7,7 +7,6 @@
 #include "VIBuffer_Terrain.h"
 #include "VIBuffer_Cube.h"
 #include "VIBuffer_Point_Particle.h"
-#include "Controller_Transform.h"
 #include "Texture.h"
 #include "Ray.h"
 #include "3DModel.h"
@@ -26,12 +25,14 @@
 #include "Collider_Fan.h"
 #include "Gravity.h"
 #include "Compute_Shader.h"
-
-/* Etc */
 #include "Transform_2D.h"
 #include "Transform_3D.h"
+
+/* Etc */
 #include "CustomFont.h"
 #include "RenderTarget.h"
+#include "Controller_Transform.h"
+#include "Controller_Model.h"
 
 /* Camera */
 #include "Camera_Free.h"

@@ -140,7 +140,7 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 	//}
 
 	_long		MouseMove = {};
-
+	m_fMouseSensor = 0.02f;
 	if (KEY_PRESSING(KEY::CTRL)) {
 		if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
 			if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))

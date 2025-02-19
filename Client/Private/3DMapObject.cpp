@@ -93,7 +93,7 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
                     pDesc->pActorDesc = &ActorDesc;
 
                     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
-                    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER | OBJECT_GROUP::BLOCKER;
+                    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER | OBJECT_GROUP::DYNAMIC_OBJECT;
                 }
             }
         }

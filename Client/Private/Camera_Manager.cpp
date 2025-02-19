@@ -302,7 +302,7 @@ void CCamera_Manager::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
 		dynamic_cast<CCamera_Target*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode, _iNextMode);
 	}
 	else if (TARGET_2D == m_eCurrentCameraType) {
-		dynamic_cast<CCamera_2D*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode, _iNextMode);
+		dynamic_cast<CCamera_2D*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode);
 	}
 		return;
 }

@@ -61,6 +61,7 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 	m_pBody2DColliderCom = m_p2DColliderComs[0];
 	Safe_AddRef(m_pBody2DColliderCom);
 
+	m_pActorCom->Set_Mass(1.5f);
     return S_OK;
 }
 

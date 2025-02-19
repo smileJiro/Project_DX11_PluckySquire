@@ -96,7 +96,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	ActorDesc.ShapeDatas.push_back(ShapeData2);
 
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
-	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::PLAYER;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::DYNAMIC_OBJECT;
 
 	/* Actor Component Finished */
 	pDesc->pActorDesc = &ActorDesc;
@@ -185,7 +185,7 @@ void CSampleBook::Update(_float _fTimeDelta)
 
 		/*
 		* 임시, 민용추가
-		* 현재 Anim (책 넘기는 애니메이션 제외!) 이 끝나면 IDLE Animation으로 가게했음
+		* 현재 Anim (책 넘기는 애니메이션 제외!)이 끝 나면 IDLE Animation으로 가게했음
 		*/
 		if (ANIM_ACTION_NONE != m_eAnimAction)
 		{
@@ -464,6 +464,14 @@ HRESULT CSampleBook::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _ws
 	{
 		SECTION_MGR->Set_BookWorldPosMapTexture(pTexture);
 		Safe_AddRef(pTexture);
+	}
+	else 
+	{
+		CSection_2D* p2DSection = static_cast<CSection_2D*>(pSection);
+		Safe_AddRef(pTexture);
+		p2DSection->Set_WorldTexture(pTexture);
+		//어차피 똑같은건데... 코드 분리하기 좀 늦은거같아서 그냥 똑같은거 한번 넣어서 포탈 생성 타게 만듬.
+											   // 그를 위한 Safe_Addref(내부에서 한번 릴리즈 해주니까.) 
 	}
 
 

@@ -16,7 +16,7 @@ public:
 		DEFAULT, 
 		MOVE_TO_DESIREPOS, 
 		MOVE_TO_NEXTARM, 
-		MOVE_TO_SHOP, 
+		MOVE_TO_CUSTOMARM, 
 		RETURN_TO_DEFUALT, 
 		FLIPPING_UP,
 		FLIPPING_PAUSE,
@@ -70,14 +70,17 @@ public:
 	virtual void				Late_Update(_float fTimeDelta) override;
 
 public:
-	_uint						Get_CameraMode() { return m_eCameraMode; }
+	virtual _uint				Get_CameraMode() { return m_eCameraMode; }
 	virtual INITIAL_DATA		Get_InitialData() override;
 
-	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_2D_MODE)_iCameraMode; }
+	void						Set_CameraMode(_uint _iCameraMode) { m_eCameraMode = (CAMERA_2D_MODE)_iCameraMode; }
+	void						Set_InitilData(INITIAL_DATA _tData) {};
+	void						Set_Data(_fvector _vArm, _float _fLength, _fvector _vOffset);
 
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
 	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
+	void						Add_CustomArm(ARM_DATA _tArmData);
 
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 
@@ -98,6 +101,9 @@ private:
 	_float3						m_v2DTargetWorldPos = {};
 	_float3						m_v2DPreTargetWorldPos = {};
 	_float3						m_v2DFixedPos = {};
+
+	// 이전 2D 좌표계 저장, 000일 때를 구하기 위해서
+	_float2						m_v2DdMatrixPos = {};
 
 	_float2						m_fTrackingTime = { 0.5f, 0.f };
 	
@@ -122,6 +128,12 @@ private:
 
 	_bool						m_isChangeTarget = { false };
 
+	// CustomArm
+	ARM_DATA					m_CustomArmData = {};
+
+	_bool						m_is = { false };
+	_float						m_a = {};
+
 private:
 	void						Action_Mode(_float _fTimeDelta);
 	void						Action_SetUp_ByMode();
@@ -129,7 +141,7 @@ private:
 	void						Defualt_Move(_float _fTimeDelta);
 	void						Move_To_NextArm(_float _fTimeDelta);
 	void						Move_To_DesirePos(_float _fTimeDelta);
-	void						Move_To_Shop(_float _fTimeDelta);
+	void						Move_To_CustomArm(_float _fTimeDelta);
 	void						Return_To_Default(_float _fTimeDelta);
 	void						Flipping_Up(_float _fTimeDelta);
 	void						Flipping_Pause(_float _fTimeDelta);

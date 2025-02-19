@@ -11,6 +11,7 @@
 #include "Section_Manager.h"
 #include "Trigger_Manager.h"
 #include "PlayerData_Manager.h"
+#include "Effect2D_Manager.h"
 
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -75,15 +76,6 @@ HRESULT CLevel_Chapter_Test::Initialize(LEVEL_ID _eLevelID)
 	//액터 들어가는넘.,
 	Ready_Layer_Map();
 
-	/* Pooling Test */
-	Pooling_DESC Pooling_Desc;
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle");
-	CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
-	pDesc->iCurLevelID = m_eLevelID;
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
-
 	/* Collision Test */
 
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
@@ -97,7 +89,7 @@ HRESULT CLevel_Chapter_Test::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::WORD_GAME);
-	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
@@ -163,6 +155,14 @@ HRESULT CLevel_Chapter_Test::Initialize(LEVEL_ID _eLevelID)
 
 void CLevel_Chapter_Test::Update(_float _fTimeDelta)
 {
+	if (KEY_DOWN(KEY::U))
+	{
+		_float fX = m_pGameInstance->Compute_Random(-100.f, 100.f);
+		_float fY = m_pGameInstance->Compute_Random(-100.f, 100.f);
+		_float fRandomDelay = m_pGameInstance->Compute_Random(0.0f, 5.f);
+		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Prototype_Model2D_FallingRock"), TEXT("Chapter4_P0304"), XMMatrixTranslation(fX, fY, 0.0f), fRandomDelay, 0, false, 10.0f);
+		//m_pTestEffect->Play_Effect(TEXT("Chapter4_P0304"), XMMatrixRotationZ(XMConvertToRadians(60.f)), 2.f, 0, true, 10.f);
+	}
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
 
@@ -981,7 +981,10 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Effects(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_Test::Ready_Layer_Effect2D(const _wstring& _strLayerTag)
 {
-	CEffect2D::EFFECT2D_DESC EffectDesc = {};
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Prototype_Model2D_FallingRock"), LEVEL_CHAPTER_TEST, 3);
+
+
+	/*CEffect2D::EFFECT2D_DESC EffectDesc = {};
 	EffectDesc.iCurLevelID = LEVEL_CHAPTER_TEST;
 	EffectDesc.iModelPrototypeLevelID_2D = LEVEL_CHAPTER_TEST;
 	EffectDesc.strModelPrototypeTag_2D = TEXT("Prototype_Model2D_FallingRock");
@@ -990,7 +993,9 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Effect2D(const _wstring& _strLayerTag)
 	if(FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Effect2D"), LEVEL_CHAPTER_TEST, _strLayerTag, &pGameObject, &EffectDesc)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_EFFECT);
+	m_pTestEffect = static_cast<CEffect2D*>(pGameObject);
+	Safe_AddRef(m_pTestEffect);
+	m_pTestEffect->Set_Active(false);*/
 
 	return S_OK;
 }
@@ -1095,5 +1100,6 @@ CLevel_Chapter_Test* CLevel_Chapter_Test::Create(ID3D11Device* _pDevice, ID3D11D
 }
 void CLevel_Chapter_Test::Free()
 {
+	Safe_Release(m_pTestEffect);
 	__super::Free();
 }

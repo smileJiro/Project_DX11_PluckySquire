@@ -38,7 +38,7 @@ HRESULT CPrintFloorWord::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSection, this, SECTION_2D_PLAYMAP_BACKGROUND);
 
 	return S_OK;
 }
@@ -77,19 +77,13 @@ HRESULT CPrintFloorWord::Render()
 	_float2 vMidPoint = { RTSIZE_BOOK2D_X / 2.f, RTSIZE_BOOK2D_Y / 2.f };
 
 
+	vMidPoint = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()).x / 2,
+		CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()).y/ 2);
 	vCalPos.x = vMidPoint.x + m_vRenderPos.x;
 	vCalPos.y = vMidPoint.y - m_vRenderPos.y;
 
 
 	m_pGameInstance->Render_Font(TEXT("Font28"), m_tFloorWord, vCalPos, XMVectorSet(0.f, 0.f, 0.f, m_fAmount));
-
-
-
-
-	/* 테스트 용도 */
-
-	m_pGameInstance->Render_Font(TEXT("Font28"), TEXT("앞에는         이\n      있었어요"), _float2(300.f, 300.f), XMVectorSet(0.f, 0.f, 0.f, m_fAmount));
-	m_pGameInstance->Render_Font(TEXT("Font35"), TEXT("      고블린"), _float2(300.f, 290.f), XMVectorSet(0.f, 0.f, 0.f, m_fAmount));
 
 	return S_OK;
 }

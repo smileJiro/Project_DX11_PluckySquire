@@ -71,6 +71,7 @@ void CLayer::Late_Update(_float fTimeDelta)
             {
                 /* 풀링등록된 오브젝트인 경우 */
                 (*iter)->Set_Active(false); // 이벤트 처리 안해도 어짜피 LateUpdate까진 돌리니까. 렌더까지 될 것임.
+                (*iter)->Set_Alive();
                 ++iter;
             }
             else

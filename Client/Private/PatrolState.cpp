@@ -18,8 +18,8 @@ HRESULT CPatrolState::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	m_fPatrolOffset = 7.f;
-	m_fPatrol2DOffset = 200.f;
+	m_fPatrolOffset = 5.f;
+	m_fPatrol2DOffset = 150.f;
 	m_iPrevDir = -1;
 	m_iDir = -1;
 	m_eDir = F_DIRECTION::F_DIR_LAST;

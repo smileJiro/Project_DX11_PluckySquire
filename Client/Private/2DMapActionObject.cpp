@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "2DMapActionObject.h"
 #include "GameInstance.h"
+#include "Effect2D_Manager.h"
+#include "Section_Manager.h"
 
 
 C2DMapActionObject::C2DMapActionObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -126,13 +128,23 @@ void C2DMapActionObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
     {
     case Client::C2DMapActionObject::ACTIVE_TYPE_BREAKABLE:
     {
-        //if (L"풀" == Get_Model(COORDINATE_2D))
-        //{
-        //    if (PLAYER_PROJECTILE & _pOtherCollider->Get_CollisionGroupID())
-        //    {
-        //        //애니메이션 재생
-        //    }
-        //}
+        if (true == ContainWstring(m_strModelPrototypeTag[COORDINATE_2D], L"bush"))
+        {
+            if (PLAYER_PROJECTILE & _pOtherCollider->Get_CollisionGroupID())
+            {
+                //삭제하고 이펙트 애니메이션 재생
+                Event_DeleteObject(this);
+                _matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
+
+                _wstring strFXTag = L"bushburst_leaves";
+                strFXTag += to_wstring((_int)ceil(m_pGameInstance->Compute_Random(0.f, 2.f)));
+                CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+
+                strFXTag = L"bushburst_dust";
+                strFXTag += to_wstring((_int)ceil(m_pGameInstance->Compute_Random(0.f, 2.f)));
+                CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+            }
+        }
     }
         break;
     case Client::C2DMapActionObject::ACTIVE_TYPE_PATROL:

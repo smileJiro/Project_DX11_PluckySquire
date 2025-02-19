@@ -77,6 +77,8 @@ namespace Client
 	{
 		SECTION_2D_PLAYMAP_BACKGROUND,
 		SECTION_2D_PLAYMAP_PORTAL,
+		SECTION_2D_PLAYMAP_WORDCONTROLLER,
+		SECTION_2D_PLAYMAP_WORDOBJ,
 		SECTION_2D_PLAYMAP_WORD,
 		SECTION_2D_PLAYMAP_OBJECT,
 		SECTION_2D_PLAYMAP_TRIGGER,
@@ -104,7 +106,7 @@ namespace Client
 		WORD_GAME =					0x800,
 		FALLINGROCK_BASIC =			0x1000,
 		EFFECT2D =					0x2000,
-
+		DYNAMIC_OBJECT =			0x4000,	//맵에 있는 다이나믹 오브젝트(주사위, WORD, 당근 등 사용중) 
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬
 	};

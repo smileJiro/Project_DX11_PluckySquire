@@ -65,9 +65,8 @@ void CPlayerState_ExitPortal::Enter()
 
 			break;
 		}
-		_float fFOrce = 5.f;
 		m_pOwner->LookDirectionXZ_Dynamic(vImpulse);
-		m_pOwner->Add_Impuls(vImpulse * fFOrce/*m_f3DJumpDistance*/);
+		m_pOwner->Add_Impuls(vImpulse * m_f3DJumpDistance);
 		//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(vTargetPos, XMConvertToRadians(45.f));
 	}
 	else

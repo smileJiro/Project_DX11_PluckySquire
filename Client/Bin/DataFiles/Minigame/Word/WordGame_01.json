@@ -108,6 +108,12 @@
           1.0,
           1.0
         ],
+        "Collider_Info": {
+          "Collider_Extent": [
+            200.0,
+            100.0
+          ]
+        },
         "Image_Tag_List": [
           {
             "ImagePath": "C04_0506_water_04_png"
@@ -127,19 +133,39 @@
             "Word_Type": 5,
             "Action_Type": 1,
             "Param": false
+          },
+          {
+            "Controller_Index": 4,
+            "Container_Index": 0,
+            "Word_Type": 0,
+            "Action_Type": 6,
+            "Param": false
+          },
+          {
+            "Controller_Index": 4,
+            "Container_Index": 0,
+            "Word_Type": 5,
+            "Action_Type": 6,
+            "Param": true
           }
         ]
       },
       {
         "Word_Object_Tag": "door",
         "Position": [
-          -1702.0,
+          -1782.0,
           -21.0
         ],
         "Scale": [
           1.0,
           1.0
         ],
+        "Collider_Info": {
+          "Collider_Extent": [
+            200.0,
+            100.0
+          ]
+        },
         "Image_Tag_List": [
           {
             "ImagePath": "C04_0506_gate_1_png"
@@ -162,8 +188,134 @@
             "Word_Type": 4,
             "Action_Type": 0,
             "Param": 1
+          },
+          {
+            "Controller_Index": 3,
+            "Container_Index": 0,
+            "Word_Type": 3,
+            "Action_Type": 3,
+            "Param": -1782.0
+          },
+          {
+            "Controller_Index": 3,
+            "Container_Index": 0,
+            "Word_Type": 4,
+            "Action_Type": 3,
+            "Param": -1882.0
+          },
+          {
+            "Controller_Index": 3,
+            "Container_Index": 0,
+            "Word_Type": 3,
+            "Action_Type": 5,
+            "Param": true
+          },
+          {
+            "Controller_Index": 3,
+            "Container_Index": 0,
+            "Word_Type": 4,
+            "Action_Type": 5,
+            "Param": false
           }
         ]
+      },
+      {
+        "Word_Object_Tag": "LargeBarfBug",
+        "Position": [
+          -0.0,
+          350.0
+        ],
+        "Scale": [
+          1.0,
+          1.0
+        ],
+        "Collider_Info": {
+          "Collider_Extent": [
+            300.0,
+            100.0
+          ]
+        },
+        "Image_Tag_List": [
+          {
+            "ImagePath": "LargeBarfbug"
+          }
+        ],
+        "Word_Action_List": [
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 1,
+            "Action_Type": 2,
+            "Param": 2
+          },
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 2,
+            "Action_Type": 2,
+            "Param": 3
+          },
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 1,
+            "Action_Type": 5,
+            "Param": true
+          },
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 2,
+            "Action_Type": 5,
+            "Param": false
+          }
+        ]
+      },
+	        {
+        "Word_Object_Tag": "tinyfrog",
+        "Position": [
+          -420.0,
+          308.0
+        ],
+        "Scale": [
+          1.0,
+          1.0
+        ],
+        "Image_Tag_List": [
+          {
+            "ImagePath": "tinyfrog"
+          }
+        ],
+            "Word_Action_List": [
+              {
+                "Controller_Index": 2,
+                "Container_Index": 0,
+                "Word_Type": 0,
+                "Action_Type": 2,
+                "Param": 2
+              },
+              {
+                "Controller_Index": 2,
+                "Container_Index": 0,
+                "Word_Type": 1,
+                "Action_Type": 2,
+                "Param": 0
+              },
+              {
+                "Controller_Index": 2,
+                "Container_Index": 0,
+                "Word_Type": 2,
+                "Action_Type": 2,
+                "Param": 4
+              },
+              {
+                "Controller_Index": 2,
+                "Container_Index": 0,
+                "Word_Type": 5,
+                "Action_Type": 2,
+                "Param": 1
+              }
+            ]
       }
     ]
   },
@@ -210,7 +362,7 @@
       },
       {
         "Controller_Index": 3,
-        "Text": "녹슨 문은 ##\n모습이었습니다",
+        "Text": "녹슨 문이 ##\n 있습니다.",
         "Init_Word_Type": [ 3 ],
         "Position": [
           -1800.0,
@@ -236,10 +388,10 @@
       },
       {
         "Controller_Index": 5,
-        "Text": "저트는 ##\n격자 안을\n들여다보았습니다",
+        "Text": "쥬신은\n언제나\n##\n있습니다",
         "Init_Word_Type": [ 4 ],
         "Position": [
-          1528.0,
+          1250.0,
           79.0
         ],
         "Scale": [

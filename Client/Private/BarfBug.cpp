@@ -7,6 +7,7 @@
 #include "Projectile_BarfBug.h"
 #include "DetectionField.h"
 #include "Section_Manager.h"
+#include "Effect2D_Manager.h"
 
 
 CBarfBug::CBarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -502,6 +503,8 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             Set_AnimChangeable(true);
             //풀링에 넣을 시 변경
             //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+
+            CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
 
             Event_DeleteObject(this);
             break;
