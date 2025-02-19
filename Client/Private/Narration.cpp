@@ -622,12 +622,12 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 							//}
 							else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0708"))
 							{
-								vPos = _float3(30.0f, 2322.f, 0.0f);
+								vPos = _float3(0.0f, -293.f, 0.0f);
 							}
-							else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0506"))
-							{
-								vPos = _float3(0.0f, -333.f, 0.0f);
-							}
+							//else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0708"))
+							//{
+							//	vPos = _float3(0.0f, -293.f, 0.0f);
+							//}
 
 							Event_Book_Main_Section_Change_Start(1, &vPos);
 
@@ -683,12 +683,12 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						//}
 						else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0708"))
 						{
-							vPos = _float3(30.0f, 2322.f, 0.0f);
-						}
-						else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0506"))
-						{
 							vPos = _float3(0.0f, -333.f, 0.0f);
 						}
+						//else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0506"))
+						//{
+						//	vPos = _float3(0.0f, -333.f, 0.0f);
+						//}
 
 						Event_Book_Main_Section_Change_Start(1, &vPos);
 
