@@ -352,7 +352,7 @@ void CPlayer::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
     }
     else
     {
-        static_cast<CCollider_Circle*>(m_pBody2DTriggerCom)->Set_Radius(m_f2DInteractRange);
+       static_cast<CCollider_Circle*>(m_pBody2DTriggerCom)->Set_Radius(m_f2DInteractRange);
     }
 }
 
