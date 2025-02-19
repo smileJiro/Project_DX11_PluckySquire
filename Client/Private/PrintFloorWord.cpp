@@ -50,10 +50,11 @@ void CPrintFloorWord::Priority_Update(_float _fTimeDelta)
 void CPrintFloorWord::Update(_float _fTimeDelta)
 {
 	_float fThisPosX = m_vRenderPos.x;
+	_float fThisPosY = m_vRenderPos.y;
 	_float fPlayerPosX = Uimgr->Get_Player()->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0];
-
+	_float fPlayerPosY = Uimgr->Get_Player()->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1];
 	
-	if (250.f > fabs(fThisPosX - fPlayerPosX) && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	if (250.f > fabs(fThisPosX - fPlayerPosX) && 250.f > fabs(fThisPosY - fPlayerPosY) &&COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 		m_isFadeIn = true;
 	}
