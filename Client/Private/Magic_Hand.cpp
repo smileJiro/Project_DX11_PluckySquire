@@ -49,17 +49,17 @@ void CMagic_Hand::Update(_float _fTimeDelta)
     if (false == m_isStart)
         return;
 
-#ifdef _DEBUG
- /*   ImGui::Begin("Hand");
-
-    if (ImGui::Button("Replay All"))
-    {
-        m_pMagicHandbody->Set_Animation(0);
-        m_pEffectSystem->Active_All(true);
-    }
-
-    ImGui::End();*/
-#endif
+//#ifdef _DEBUG
+//    ImGui::Begin("Hand");
+//
+//    if (ImGui::Button("Replay All"))
+//    {
+//        m_pMagicHandbody->Set_Animation(0);
+//        m_pEffectSystem->Active_All(true);
+//    }
+//
+//    ImGui::End();
+//#endif
     __super::Update(_fTimeDelta);
     
     // 특정위치보다 아래로 가면, 플레이어 애니메이션 재생(매끄러운 연결을 위해서 존재합니다.)

@@ -183,6 +183,7 @@ void CGoblin::Change_Animation()
                 break;
 
             case MONSTER_STATE::ALERT:
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_alert_") + to_wstring(rand() % 8), 50.f);
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
                 break;
 
@@ -200,6 +201,7 @@ void CGoblin::Change_Animation()
 
             case MONSTER_STATE::DEAD:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 50.f);
                 break;
 
             default:
@@ -235,6 +237,8 @@ void CGoblin::Change_Animation()
                     eAnim = ALERT_DOWN;
                 else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
                     eAnim = ALERT_RIGHT;
+
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_alert_") + to_wstring(rand() % 8), 30.f);
                 break;
             case Client::MONSTER_STATE::STANDBY:
                 if (F_DIRECTION::UP == m_e2DDirection)
@@ -267,6 +271,7 @@ void CGoblin::Change_Animation()
                     eAnim = DEATH_DOWN;
                 else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
                     eAnim = DEATH_RIGHT;
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 50.f);                
                 break;
             default:
                 break;
@@ -428,6 +433,8 @@ void CGoblin::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
 void CGoblin::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
     __super::On_Hit(_pHitter, _iDamg);
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_hit_") + to_wstring(rand() % 5), 50.f);
 }
 
 HRESULT CGoblin::Ready_ActorDesc(void* _pArg)

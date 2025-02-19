@@ -90,6 +90,9 @@ void CPlayerState_JumpUp::Enter()
 	m_pOwner->LookDirectionXZ_Dynamic(m_pOwner->Get_3DTargetDirection());
 	m_pOwner->Jump();
 	Switch_JumpAnimation();
+
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_jump-") + to_wstring(rand() % 12), 50.f);
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_jump-") + to_wstring(rand() % 6), 20.f);
 }
 
 void CPlayerState_JumpUp::Exit()
