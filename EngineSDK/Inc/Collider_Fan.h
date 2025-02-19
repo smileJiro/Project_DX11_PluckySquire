@@ -19,6 +19,7 @@ public:
 	//원 충돌을 먼저 적용 후, 상대 콜라이더의 중점이 부채꼴 안이면 충돌
 	virtual HRESULT Initialize(void* _pArg)override;
     virtual _bool	Is_Collision(CCollider* _pOther) override;
+	virtual _bool	Is_ContainsPoint(_float2 _vPosition) override;
 	virtual void Late_Update(_float _fTimeDelta)override;
 	virtual void	 Update_OwnerTransform() override;
 

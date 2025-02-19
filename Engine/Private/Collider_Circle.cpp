@@ -107,7 +107,6 @@ _bool CCollider_Circle::Is_Collision(CCollider* _pOther)
 
 _bool CCollider_Circle::Is_ContainsPoint(_float2 _vPosition)
 {
-
     _float fDistance = XMVector2Length(XMLoadFloat2(&_vPosition)-XMLoadFloat2(&m_vPosition)).m128_f32[0];
 
     return fDistance < m_fFinalRadius;

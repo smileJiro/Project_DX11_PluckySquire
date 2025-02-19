@@ -36,6 +36,10 @@ _bool CCollider_Fan::Is_Collision(CCollider* _pOther)
     }
 	return false;
 }
+_bool CCollider_Fan::Is_ContainsPoint(_float2 _vPosition)
+{
+    return false;
+}
 void CCollider_Fan::Late_Update(_float _fTimeDelta)
 {
 	__super::Late_Update(_fTimeDelta);
