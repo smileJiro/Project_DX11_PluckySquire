@@ -184,7 +184,7 @@ HRESULT C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContai
                 {
                     _bool isActive = any_cast<_bool>(tAction.anyParam);
                     m_IsWordActive = isActive;
-                    Set_Render(m_IsWordActive);
+                    Set_Active(m_IsWordActive);
                 }
                 break;
                 case ANIMATION_CHANGE:
