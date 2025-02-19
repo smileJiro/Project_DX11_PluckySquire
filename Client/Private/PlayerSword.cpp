@@ -109,6 +109,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     CircleDesc.vOffsetPosition = { 0.f, 0.f };
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
@@ -400,6 +401,7 @@ void CPlayerSword::Throw(_fvector _vDirection)
         Set_Position(m_pPlayer->Get_CenterPosition());
         Set_Active(true);
 		m_pControllerModel->Get_Model(COORDINATE_2D)->Set_Animation(2);
+        
     }
 }
 
@@ -454,6 +456,7 @@ void CPlayerSword::On_StateChange()
             _vector vLook = XMVectorSetY(m_pControllerTransform->Get_State(CTransform::STATE_LOOK), 0);
             static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Dynamic();
             static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(vLook);
+            m_pBody2DColliderCom->Set_Active(true);
         }
         else
         {

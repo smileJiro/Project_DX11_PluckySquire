@@ -80,6 +80,7 @@ private:
 
 	_uint		m_iStep = 0;
 	_bool		m_isStart = { false };
+	_bool		m_isLight = { false };
 
 	_int		m_iEventExcuterAction = -1;
 
