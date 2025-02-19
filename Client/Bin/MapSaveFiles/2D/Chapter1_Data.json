@@ -1,7 +1,6 @@
 [
 	{
 		"Section_Name": "Chapter1_P0102",
-		"Section_Start": true,
 		"Section_Type": 1,
 		"Section_Default": 0,
 		"Section_Info": {
@@ -110,6 +109,7 @@
 	{
 		"Section_Name": "Chapter2_P0910",
 		"Section_File_Name": "Chapter2_P0910.m2chc",
+		"Section_Start": true,
 		"Section_Type": 0,
 		"Section_Default": 0,
 		"Section_Info": {

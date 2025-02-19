@@ -52,6 +52,7 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 
 void CCamera_2D::Priority_Update(_float fTimeDelta)
 {
+	//m_fA = { m_pTargetWorldMatrix->_41,  m_pTargetWorldMatrix->_42 };
 }
 
 void CCamera_2D::Update(_float fTimeDelta)
@@ -69,6 +70,14 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 	Action_Mode(fTimeDelta);
 
 	__super::Late_Update(fTimeDelta);
+}
+
+void CCamera_2D::Set_Data(_fvector _vArm, _float _fLength, _fvector _vOffset)
+{
+	m_pCurArm->Set_ArmVector(_vArm);
+	m_pCurArm->Set_Length(_fLength);
+	m_pCurArm->Set_StartInfo(_vArm, _fLength);
+	XMStoreFloat3(&m_vAtOffset, _vOffset);
 }
 
 void CCamera_2D::Add_CurArm(CCameraArm* _pCameraArm)
@@ -493,10 +502,11 @@ void CCamera_2D::Find_TargetPos()
 	case (_uint)COORDINATE_2D:
 	{
 		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
-		XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
+		
 
-		if (!XMVector3Equal(XMLoadFloat3(&m_v2DTargetWorldPos), XMVectorZero())) {
-			m_v2DFixedPos = m_v2DTargetWorldPos;
+		if (!XMVector3Equal(vTargetPos, XMVectorZero())) {
+			XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
+			m_v2DdMatrixPos = { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 };
 			// Clamp_FixedPos();  // 이동 가능한 최소 범위로 제한
 		}
 		else
@@ -555,6 +565,7 @@ void CCamera_2D::Calculate_Book_Scroll()
 
 	_float2 fSectionSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(m_strSectionName);
 
+#pragma region Freeze 처리 1
 	// Freeze 처리
 	//_float2 vTargetUV = { m_pTargetWorldMatrix->_41 + (fSectionSize.x * 0.5f), -(m_pTargetWorldMatrix->_42 - (fSectionSize.y * 0.5f)) };
 
@@ -574,12 +585,38 @@ void CCamera_2D::Calculate_Book_Scroll()
 	//if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
 	//	m_v2DTargetWorldPos.z = m_v2DFixedPos.z;
 	//}
+#pragma endregion
 
-	_float2 vTargetUV = { m_pTargetWorldMatrix->_41 + (fSectionSize.x * 0.5f), -(m_pTargetWorldMatrix->_42 - (fSectionSize.y * 0.5f)) };
-	//_float f = fSectionSize.x * m_fBasicRatio[m_eMagnificationType].x;
-	//_float ff = fSectionSize.x * (1.f - m_fBasicRatio[m_eMagnificationType].x);
-	//_float fff = fSectionSize.y * m_fBasicRatio[m_eMagnificationType].y;
-	//_float ffff = fSectionSize.y * (1.f - m_fBasicRatio[m_eMagnificationType].y);
+	//_float2 vSectionWorld = { fSectionSize.x - (fSectionSize.x * 0.5f), -fSectionSize.y + (fSectionSize.y * 0.5f) };
+
+	//if (m_v2DdMatrixPos.x <= (vSectionWorld.x * m_fBasicRatio[m_eMagnificationType].x)) {
+	//	m_v2DdMatrixPos.x = vSectionWorld.x * m_fBasicRatio[m_eMagnificationType].x;
+	//}
+	//else if (m_v2DdMatrixPos.x >= (vSectionWorld.x * (1.f - m_fBasicRatio[m_eMagnificationType].x))) {
+	//	m_v2DdMatrixPos.x = vSectionWorld.x * (1.f - m_fBasicRatio[m_eMagnificationType].x);
+	//}
+
+	//if (m_v2DdMatrixPos.y <= (vSectionWorld.y * m_fBasicRatio[m_eMagnificationType].y)) {
+	//	m_v2DdMatrixPos.y = vSectionWorld.y * m_fBasicRatio[m_eMagnificationType].y;
+	//}
+	//else if (m_v2DdMatrixPos.y >= (vSectionWorld.y * (1.f - m_fBasicRatio[m_eMagnificationType].y))) {
+	//	m_v2DdMatrixPos.y = vSectionWorld.y * (1.f - m_fBasicRatio[m_eMagnificationType].y);
+	//}
+
+
+	//if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
+	//	m_v2DdMatrixPos.x = fSectionSize.x * 0.5f;
+	//}
+	//if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
+	//	m_v2DdMatrixPos.y = fSectionSize.y * 0.5f;
+	//}
+
+
+
+
+
+	_float2 vTargetUV = { m_v2DdMatrixPos.x + (fSectionSize.x * 0.5f), -(m_v2DdMatrixPos.y - (fSectionSize.y * 0.5f)) };
+
 
 	if (vTargetUV.x <= (fSectionSize.x * m_fBasicRatio[m_eMagnificationType].x)) {
 		vTargetUV.x = fSectionSize.x * m_fBasicRatio[m_eMagnificationType].x;
@@ -588,10 +625,10 @@ void CCamera_2D::Calculate_Book_Scroll()
 		vTargetUV.x = fSectionSize.x * (1.f - m_fBasicRatio[m_eMagnificationType].x);
 	}
 	
-	if (vTargetUV.y <= (fSectionSize.y * m_fBasicRatio[m_eMagnificationType].y)) {
+	if (vTargetUV.y >= (fSectionSize.y * m_fBasicRatio[m_eMagnificationType].y)) {
 		vTargetUV.y = fSectionSize.y * m_fBasicRatio[m_eMagnificationType].y;
 	}
-	else if (vTargetUV.y >= (fSectionSize.y * (1.f - m_fBasicRatio[m_eMagnificationType].y))) {
+	else if (vTargetUV.y <= (fSectionSize.y * (1.f - m_fBasicRatio[m_eMagnificationType].y))) {
 		vTargetUV.y = fSectionSize.y * (1.f - m_fBasicRatio[m_eMagnificationType].y);
 	}
 
@@ -691,11 +728,11 @@ void CCamera_2D::Key_Input(_float _fTimeDelta)
 {
 	//_float fLength = m_pCurArm->Get_Length();
 
-	if (KEY_DOWN(KEY::G)) {
+	/*if (KEY_DOWN(KEY::G)) {
 		CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Book"), 0);
 		
 		Change_Target(pBook);
-	}
+	}*/
 	//if (KEY_DOWN(KEY::F)) {
 	//	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
 
@@ -703,25 +740,42 @@ void CCamera_2D::Key_Input(_float _fTimeDelta)
 	//}
 
 	//m_vAtOffset = { 0.f, 0.f, 0.f };
-	if (KEY_DOWN(KEY::F)) {
-		
+	//if (KEY_DOWN(KEY::F)) {
+	//	
 
-		ARM_DATA tData = {};
-		tData.fMoveTimeAxisRight = { 5.f, 0.f };
-		tData.fRotationPerSecAxisRight = { XMConvertToRadians(-10.f), XMConvertToRadians(-1.f) };
-		tData.iRotationRatioType = EASE_IN_OUT;
-		tData.fLength = 20.f;
-		tData.fLengthTime = { 5.f, 0.f };
-		tData.iLengthRatioType = EASE_OUT;
+	//	ARM_DATA tData = {};
+	//	tData.fMoveTimeAxisRight = { 5.f, 0.f };
+	//	tData.fRotationPerSecAxisRight = { XMConvertToRadians(-10.f), XMConvertToRadians(-1.f) };
+	//	tData.iRotationRatioType = EASE_IN_OUT;
+	//	tData.fLength = 20.f;
+	//	tData.fLengthTime = { 5.f, 0.f };
+	//	tData.iLengthRatioType = EASE_OUT;
 
-		Add_CustomArm(tData);
-		m_eCameraMode = MOVE_TO_CUSTOMARM;
+	//	Add_CustomArm(tData);
+	//	m_eCameraMode = MOVE_TO_CUSTOMARM;
 
-		static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
-		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
-		Start_Shake_ByCount(0.2f, 0.1f, 10, SHAKE_XY);
-		Start_Changing_AtOffset(3.f, XMVectorSet(-0.7f, 2.f, 0.f, 0.f), EASE_IN_OUT);
-	}
+	//	static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
+	//	CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
+	//	Start_Shake_ByCount(0.2f, 0.1f, 10, SHAKE_XY);
+	//	Start_Changing_AtOffset(3.f, XMVectorSet(-0.7f, 2.f, 0.f, 0.f), EASE_IN_OUT);
+
+	//	m_is = true;
+	//}
+
+	//if (true == m_is) {
+	//	m_a += _fTimeDelta;
+
+	//	
+
+	//	if (m_a > 5.8f) {
+	//		Start_Shake_ByCount(0.2f, 0.1f, 10, SHAKE_XY);
+	//		m_is = false;
+	//		m_a = 0.f;
+	//	}
+	///*	else if (m_a > 1.7f) {
+	//		Start_Shake_ByCount(0.2f, 0.05f, 5, SHAKE_XY);
+	//	}*/
+	//}
 }
 #endif
 

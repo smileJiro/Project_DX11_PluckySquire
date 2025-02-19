@@ -677,7 +677,6 @@ HRESULT CActor::Set_ShapeEnable(_int _iShapeIndex, _bool _isEnable)
 
 	if (true == _isEnable)
 	{
-		cout << "_iShapeIndex " << _iShapeIndex << endl;
 		m_pActor->attachShape(*m_Shapes[_iShapeIndex]);
 	}
 	else

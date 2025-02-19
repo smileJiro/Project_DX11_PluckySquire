@@ -62,6 +62,7 @@ private :
 	void C020910_Bolt_Spawn(_float _fTimeDelta);
 	void C020910_Monster_Spawn(_float _fTimeDelta);
 	void Chapter2_BookMagic(_float _fTimeDelta);
+	void Chapter2_Intro(_float _fTimeDelta);
 
 
 	virtual void					GameEvent_End();
