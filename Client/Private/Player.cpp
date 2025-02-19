@@ -30,6 +30,7 @@
 #include "PlayerSword.h"    
 #include "Section_Manager.h"
 #include "UI_Manager.h"
+#include "Effect2D_Manager.h"
 
     
 #include "Collider_Fan.h"
@@ -740,7 +741,10 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
                 if (fAngle >= -150.f && fAngle <= -30.f)
                 {
                     Attack(_pOtherObject);
-                    Event_KnockBack(this, XMVectorSet(0.f, 1.f, 0.f, 0.f), m_f2DKnockBackPower);
+                    Event_KnockBack(this, XMVectorSet(0.f, 1.f, 0.f, 0.f), 2000.f);
+
+                    //Effect
+                    CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_FX1"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
                 }
             }  
         }
