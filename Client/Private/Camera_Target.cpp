@@ -86,6 +86,12 @@ void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_D
 	m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
 }
 
+void CCamera_Target::Add_CustomArm(ARM_DATA _tArmData)
+{
+	m_CustomArmData = _tArmData;
+	m_pCurArm->Set_StartInfo(m_pCurArm->Get_ArmVector(), m_pCurArm->Get_Length());
+}
+
 void CCamera_Target::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _int _iTriggerID)
 {
 	m_iFreezeMask |= _iFreezeMask;
@@ -259,6 +265,9 @@ void CCamera_Target::Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex
 			break;
 		}
 	}
+	else if (TEXT("Chapter2_P1314") == _szSectionTag) {
+		pData = Find_ArmData(TEXT("Book_Horizon"));
+	}
 	else {
 		m_pCurArm->Set_ArmVector(XMVectorSet(0.f, 0.67f, -0.74f, 0.f));
 		m_pCurArm->Set_Length(7.f);
@@ -274,6 +283,21 @@ void CCamera_Target::Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex
 	m_iCurZoomLevel = { pData->second->iZoomLevel };
 	m_fFovy = { m_ZoomLevels[pData->second->iZoomLevel] };
 	m_vAtOffset = { pData->second->vAtOffset };
+}
+
+void CCamera_Target::Calculate_Player()
+{
+	_float3 PlayerPos = {};
+	memcpy(&PlayerPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+	_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+	_vector vDir = vPos - XMLoadFloat3(&PlayerPos);
+	_float fLength = XMVectorGetX(XMVector3Length(vDir));
+
+	m_pCurArm->Set_ArmVector(XMVector3Normalize(vDir));
+	m_pCurArm->Set_Length(fLength);
+	m_pCurArm->Set_StartInfo(XMVector3Normalize(vDir), fLength);
+
+	memcpy(&m_vPreTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
 }
 
 INITIAL_DATA CCamera_Target::Get_InitialData()
@@ -411,6 +435,9 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 	case RETURN_TO_PREARM:
 		Move_To_PreArm(_fTimeDelta);
 		break;
+	case MOVE_TO_CUSTOMARM:
+		Move_To_CustomArm(_fTimeDelta);
+		break;
 	case RETURN_TO_DEFUALT:
 		break;
 	}
@@ -453,6 +480,7 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 			m_isFreezeExit = false;
 		}
 	}
+
 
 	_vector vTargetPos;
 	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);	// 목표 위치 + Arm -> 최종 결과물
@@ -590,6 +618,20 @@ void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
 	}
 
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
+
+	Look_Target(vTargetPos, _fTimeDelta);
+}
+
+void CCamera_Target::Move_To_CustomArm(_float _fTimeDelta)
+{
+	if (true == m_pCurArm->Move_To_CustomArm(&m_CustomArmData, _fTimeDelta)) {
+		m_eCameraMode = DEFAULT;
+	}
+
+	_vector vTargetPos;
+	_vector vCamerPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);
+
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
 
 	Look_Target(vTargetPos, _fTimeDelta);
 }
