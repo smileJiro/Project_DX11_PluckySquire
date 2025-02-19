@@ -204,7 +204,12 @@ void CUI_Manager::Test_Update(_float _fTimedelta)
 		case 0:
 
 		{
-			Uimgr->Set_PlayNarration(TEXT("Chapter2_P0506_Narration_01"));
+			if (m_isTest == false)
+			{
+				Uimgr->Set_PlayNarration(TEXT("Chapter2_P0506_Narration_01"));
+				m_isTest = true;
+			}
+			
 			//Uimgr->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
 			
 			++m_iTextIndex;

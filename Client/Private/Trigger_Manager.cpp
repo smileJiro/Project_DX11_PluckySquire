@@ -481,7 +481,7 @@ void CTrigger_Manager::Resister_Trigger_Action()
 		};
 
 	m_Actions[TEXT("Dialogue")] = [this](_wstring _wszEventTag) {
-		Uimgr->Set_DialogId(TEXT("Event_Dialogue_01"));
+		Uimgr->Set_DialogId(TEXT("Gauntlet_Acquire_01"));
 		};
 
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) {
