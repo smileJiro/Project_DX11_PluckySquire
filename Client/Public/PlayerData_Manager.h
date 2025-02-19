@@ -39,6 +39,7 @@ public:
 
 public:
 	_uint					Get_BulbCount() { return m_iBulbCount; }
+	_bool					Is_Own(PLAYERITEM_TYPE _eItemType);
 
 public:
 	HRESULT					Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos);
@@ -60,9 +61,6 @@ private:
 
 	// 이름 저장용
 	pair<_wstring, _wstring>			m_ItemTags[ITEM_END] = {}; // first -> 구분용 이름, second -> model용 이름
-
-	//// Bulb
-	//list<class CBulb*>					m_Bulbs;
 
 private:
 	void					Set_Tags();

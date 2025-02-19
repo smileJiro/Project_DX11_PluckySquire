@@ -75,6 +75,7 @@ public:
     virtual void    Update(_float fTimeDelta) override;
     virtual void    Late_Update(_float _fTimeDelta);
     virtual HRESULT Render() override;
+    _bool                       isLeftRight();
 
 private:
     HRESULT                     LoadFromJson(const std::wstring& filePath); // 데이터 로드
@@ -85,6 +86,7 @@ private:
     vector<CNarration_Anim*>    CreateAnimationObjectsForLine(_uint iLine);
     void                        Update_Narration(_float _fTimeDelta);
     void                        PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken);
+
 
 private:
     _int                                    m_iCurrentLineIndex = 0;          // 현재 출력 중인 라인의 인덱스 (id)

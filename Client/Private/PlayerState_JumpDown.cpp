@@ -33,6 +33,8 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 
 			if (COORDINATE_3D == eCoord)
 				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_LAND_02_GT);
+
+			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_land-") + to_wstring(rand() % 10), 30.f);
 		}
 		else
 			m_pOwner->Set_State(CPlayer::IDLE);

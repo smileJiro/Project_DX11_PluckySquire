@@ -2,7 +2,7 @@
 #include "PlayerState_ExitPortal.h"
 #include "Portal.h"
 #include "Actor_Dynamic.h"
-
+#include "GameInstance.h"
 
 CPlayerState_ExitPortal::CPlayerState_ExitPortal(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::EXIT_PORTAL)
@@ -65,9 +65,8 @@ void CPlayerState_ExitPortal::Enter()
 
 			break;
 		}
-		_float fFOrce = 5.f;
 		m_pOwner->LookDirectionXZ_Dynamic(vImpulse);
-		m_pOwner->Add_Impuls(vImpulse * fFOrce/*m_f3DJumpDistance*/);
+		m_pOwner->Add_Impuls(vImpulse * m_f3DJumpDistance);
 		//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(vTargetPos, XMConvertToRadians(45.f));
 	}
 	else
@@ -91,6 +90,8 @@ void CPlayerState_ExitPortal::Enter()
 			break;
 		}
 	}
+
+
 }
 //ÇÃ·¹ÀÌ¾î Á×À¸¸é ¶³¾îÁü
 

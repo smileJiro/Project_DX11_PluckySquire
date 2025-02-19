@@ -51,7 +51,7 @@ HRESULT CGameEventExecuter::Initialize(void* _pArg)
         // 이펙트를 생성하고 다음 이벤트 실행시간 맞추게 시간 타이머 설정.
         // C020910_Bolt_Spawn에서 시간이 지나면 다음 이벤트 실행(On_End 전달 & Executer 삭제)
         //Event_2DEffectCreate(EFFECT_LIGHTNINGBOLST, _float2(10.f,10.f), SECTION_MGR->Get_Cur_Section_Key())
-        m_fMaxTimer = 1.f;
+        m_fMaxTimer = 1.5f;
         break;
     case Client::CTrigger_Manager::C02P0910_MONSTER_SPAWN:
         break;
@@ -99,19 +99,22 @@ void CGameEventExecuter::Late_Update(_float _fTimeDelta)
 
 void CGameEventExecuter::C020910_Bolt_Spawn(_float _fTimeDelta)
 {
-    //_float3 vPos = { 500.0f, 10.f, 0.f };
-    _wstring strSectionKey = TEXT("Chapter2_P0910");
-    //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
-    //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	if (0.f == m_fTimer)
+    {
+        //_float3 vPos = { 500.0f, 10.f, 0.f };
+        _wstring strSectionKey = TEXT("Chapter2_P0910");
+        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
 
-    //vPos = { -450.0f, -30.f, 0.f };
-    //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
-    //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
-    CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(500.f, 10.f, 0.0f), 0.f, 4);
-    CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(500.f, 10.f, 0.0f), 0.f, 5);
+        //vPos = { -450.0f, -30.f, 0.f };
+        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(500.f, 10.f, 0.0f), 0.f, 4);
+        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(500.f, 10.f, 0.0f), 0.f, 5);
 
-    CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 4);
-    CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 5);
+        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 4);
+        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 5);
+    }
 
 
     m_fTimer += _fTimeDelta;
@@ -268,9 +271,9 @@ void CGameEventExecuter::Chapter2_Intro(_float _fTimeDelta)
 
         if (false == m_isStart) {
             CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
-            pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 5.f);
+            pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 2.f);
             pCamera->Set_Data(XMVectorSet(-0.670150876f, 0.506217539f, -0.542809010f, 0.f), 46.20f, XMVectorSet(-15.f, 5.f, 0.f, 0.f));
-            pCamera->Set_NextArmData(TEXT("Book_Horizon"), 0);
+            pCamera->Set_NextArmData(TEXT("Intro"), 0);
             pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_NEXTARM);
 
             m_isStart = true;

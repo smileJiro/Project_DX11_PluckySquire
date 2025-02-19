@@ -204,6 +204,10 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
+	// 토깽이 NPC를 위해  Interaction & interaction 그룹을 만든다.
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::INTERACTION_OBEJCT);
+
+
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
@@ -1429,6 +1433,11 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("LightningBolt"), LEVEL_CHAPTER_2, 2);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Jump_Dust"), LEVEL_CHAPTER_2, 1);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves1"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves2"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust1"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust2"), LEVEL_CHAPTER_2, 3);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Death_Burst"), LEVEL_CHAPTER_2, 3);
 
