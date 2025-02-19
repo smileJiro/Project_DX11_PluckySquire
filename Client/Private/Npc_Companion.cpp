@@ -128,10 +128,11 @@ void CNPC_Companion::Late_Update(_float _fTimeDelta)
 	for (auto& Child : m_vecCompanionNpc)
 	{
 		if (true == Child->is_LookOut())
+		{
 			Child->Child_LateUpdate(_fTimeDelta);
+		}
+			
 	}
-
-
 
 	__super::Late_Update(_fTimeDelta);
 }

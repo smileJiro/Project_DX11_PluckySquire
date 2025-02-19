@@ -605,10 +605,48 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						m_DisPlayTextLine = m_iCurrentLine;
 						
 						_float3 vPos = _float3(0.f, 0.f, 1.f);
+						//if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
+						//	Event_Book_Main_Section_Change_Start(1, &vPos);
+						//else
+						//	Event_Book_Main_Section_Change_Start(0, &vPos);
+
 						if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
+						{
+							if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter1_P0506"))
+							{
+								vPos = _float3(-693.f, -35.5f, 0.0f);
+							}
+							//else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter1_P0506"))
+							//{
+							//
+							//}
+							else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0708"))
+							{
+								vPos = _float3(30.0f, 2322.f, 0.0f);
+							}
+							else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0506"))
+							{
+								vPos = _float3(0.0f, -333.f, 0.0f);
+							}
+
 							Event_Book_Main_Section_Change_Start(1, &vPos);
+
+						}
 						else
+						{
+							if (CSection_Manager::GetInstance()->Get_Prev_Section_Key() == (TEXT("Chapter1_P0708")))
+							{
+								vPos = _float3(-932.f, -79.1f, 0.0f);
+							}
+
+
 							Event_Book_Main_Section_Change_Start(0, &vPos);
+
+							// 이전일경우
+							//이전 섹션의 키를 받아온다.
+							// 넘어갈 대상의 페이지를 가져온다.
+							// 넘어가는 패턴 -> 
+						}
 
 
 						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].NarAnim[0].strSectionid, this);
@@ -634,9 +672,39 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 				if (m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isFinishedThisLine)
 				{
 					if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
+					{
+						if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter1_P0506"))
+						{
+							vPos = _float3(-693.f, -35.5f, 0.0f);
+						}
+						//else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter1_P0506"))
+						//{
+						//
+						//}
+						else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0708"))
+						{
+							vPos = _float3(30.0f, 2322.f, 0.0f);
+						}
+
 						Event_Book_Main_Section_Change_Start(1, &vPos);
+						
+					}
 					else
+					{
+						if (CSection_Manager::GetInstance()->Get_Prev_Section_Key() == (TEXT("Chapter1_P0708")))
+						{
+							vPos = _float3(-932.f, -79.1f, 0.0f);
+						}
+
+
 						Event_Book_Main_Section_Change_Start(0, &vPos);
+
+						// 이전일경우
+						//이전 섹션의 키를 받아온다.
+						// 넘어갈 대상의 페이지를 가져온다.
+						// 넘어가는 패턴 -> 
+					}
+						
 
 
 					/* 하드코딩 */
@@ -693,10 +761,45 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					// 그런데 그 라인이 다음으로 넘기는 라인인가요?
 					if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isFinishedThisLine)
 					{
+						//if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
+						//	Event_Book_Main_Section_Change_Start(1, &vPos);
+						//else
+						//	Event_Book_Main_Section_Change_Start(0, &vPos);
+
 						if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
+						{
+							if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter1_P0506"))
+							{
+								vPos = _float3(-693.f, -35.5f, 0.0f);
+							}
+							//else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter1_P0506"))
+							//{
+							//
+							//}
+							else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0708"))
+							{
+								vPos = _float3(30.0f, 2322.f, 0.0f);
+							}
+
 							Event_Book_Main_Section_Change_Start(1, &vPos);
+
+						}
 						else
+						{
+							if (CSection_Manager::GetInstance()->Get_Prev_Section_Key() == (TEXT("Chapter1_P0708")))
+							{
+								vPos = _float3(-932.f, -79.1f, 0.0f);
+							}
+
+
 							Event_Book_Main_Section_Change_Start(0, &vPos);
+
+							// 이전일경우
+							//이전 섹션의 키를 받아온다.
+							// 넘어갈 대상의 페이지를 가져온다.
+							// 넘어가는 패턴 -> 
+						}
+
 
 
 						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].NarAnim[0].strSectionid, this);
