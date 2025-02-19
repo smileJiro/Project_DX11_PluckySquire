@@ -51,8 +51,8 @@
                 },
                 "Scale": {
                     "Arg1": [
-                        6.0,
-                        6.0,
+                        15.0,
+                        15.0,
                         1.0
                     ],
                     "Arg2": [
@@ -261,13 +261,13 @@
                 },
                 "Scale": {
                     "Arg1": [
-                        1.5,
-                        1.5,
+                        4.5,
+                        4.5,
                         1.0
                     ],
                     "Arg2": [
-                        1.7999999523162842,
-                        1.7999999523162842,
+                        6.0,
+                        6.0,
                         1.0
                     ],
                     "SetType": "RANDOMLINEAR"
@@ -289,8 +289,8 @@
                         1.0
                     ],
                     "Shape": "SPHERE",
-                    "Sphere_Radius": 0.4000000059604645,
-                    "Sphere_Surface": 0.6000000238418579
+                    "Sphere_Radius": 1.0,
+                    "Sphere_Surface": 0.8500000238418579
                 },
                 "UVSet": {
                     "Count": 4.0,
@@ -383,7 +383,7 @@
                         "Float": [
                             {
                                 "Name": "Amount",
-                                "Value": 1.5
+                                "Value": 1.0
                             }
                         ],
                         "Float3": [
@@ -400,21 +400,6 @@
                     "Init": false,
                     "Module": "POINT_VELOCITY",
                     "Order": 1,
-                    "Type": "MODULE_TRANSLATION"
-                },
-                {
-                    "Apply": "TRANSLATION",
-                    "Datas": {
-                        "Float": [
-                            {
-                                "Name": "Amount",
-                                "Value": 0.0
-                            }
-                        ]
-                    },
-                    "Init": true,
-                    "Module": "INIT_ACCELERATION",
-                    "Order": 3,
                     "Type": "MODULE_TRANSLATION"
                 },
                 {
@@ -438,7 +423,7 @@
                 }
             ],
             "Pooling": "KILL",
-            "ShaderPass": "SUBCOLOR_BLOOM",
+            "ShaderPass": "VELOCITY_BILLBOARD_SUBCOLORBLOOM",
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "BURST_SPAWN",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Dust2x2_01_2.dds",
@@ -514,8 +499,8 @@
                 },
                 "Scale": {
                     "Arg1": [
-                        1.399999976158142,
-                        1.399999976158142,
+                        3.0,
+                        3.0,
                         1.0
                     ],
                     "Arg2": [
@@ -560,11 +545,11 @@
                 },
                 {
                     "Name": "ColorScale",
-                    "Value": 0.30000001192092896
+                    "Value": 0.800000011920929
                 },
                 {
                     "Name": "MaskBrightness",
-                    "Value": 0.5
+                    "Value": 0.20000000298023224
                 },
                 {
                     "Name": "RGBTest",
@@ -727,13 +712,13 @@
                 },
                 "Scale": {
                     "Arg1": [
-                        0.20000000298023224,
-                        0.20000000298023224,
+                        0.6000000238418579,
+                        0.6000000238418579,
                         1.0
                     ],
                     "Arg2": [
-                        0.5,
-                        0.5,
+                        1.100000023841858,
+                        1.100000023841858,
                         1.0
                     ],
                     "SetType": "RANDOMLINEAR"
@@ -755,8 +740,8 @@
                         1.0
                     ],
                     "Shape": "SPHERE",
-                    "Sphere_Radius": 0.5,
-                    "Sphere_Surface": 0.20000000298023224
+                    "Sphere_Radius": 0.800000011920929,
+                    "Sphere_Surface": 0.800000011920929
                 },
                 "UVSet": {
                     "Count": 1.0,
@@ -775,7 +760,7 @@
                 },
                 {
                     "Name": "ColorScale",
-                    "Value": 1.0
+                    "Value": 0.800000011920929
                 },
                 {
                     "Name": "MaskBrightness",
@@ -897,7 +882,7 @@
                         "Float": [
                             {
                                 "Name": "Amount",
-                                "Value": 1.0
+                                "Value": 1.5
                             }
                         ],
                         "Float3": [
@@ -945,5 +930,5 @@
         }
     ],
     "Name": "MonsterDead",
-    "ToolLoopTime": 1.0
+    "ToolLoopTime": 2.0
 }
