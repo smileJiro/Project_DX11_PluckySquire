@@ -662,12 +662,12 @@ HRESULT CEvent_Manager::Execute_Hit(const EVENT& _tEvent)
 {
 	CGameObject* pHitter = (CGameObject*)_tEvent.Parameters[0];
 	CGameObject* pVIctim = (CGameObject*)_tEvent.Parameters[1];
-	_float fDamg = (_float)_tEvent.Parameters[2];
+	_int iDamg = _tEvent.Parameters[2];
 
 	if (nullptr == pHitter || nullptr == pVIctim)
 		return E_FAIL;
 
-	pVIctim->On_Hit(pHitter, (_int)fDamg);
+	pVIctim->On_Hit(pHitter, iDamg);
 	return S_OK;
 }
 

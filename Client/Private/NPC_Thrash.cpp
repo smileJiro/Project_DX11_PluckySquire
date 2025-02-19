@@ -34,7 +34,7 @@ HRESULT CNPC_Thrash::Initialize(void* _pArg)
 	pDesc->iNumPartObjects = PART_END;
 
 	pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	m_f2DSpeed = pDesc->tTransform2DDesc.fSpeedPerSec = 300.f;
+	m_f2DSpeed = pDesc->tTransform2DDesc.fSpeedPerSec = 190.f;
 
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	m_f3DSpeed = pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;

@@ -234,10 +234,6 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 		CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	}
 
-	if (KEY_DOWN(KEY::J)) {
-		CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
-	}
-
 }
 
 HRESULT CLevel_Chapter_04::Render()
@@ -851,36 +847,36 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	BarfBug_Desc.iCurLevelID = m_eLevelID;
 	BarfBug_Desc.eStartCoord = COORDINATE_2D;
 
-	BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(-1000.0f, 150.f, 0.f);
-	BarfBug_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(-1000.0f, 150.f, 0.f);
+	BarfBug_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter4_P0304"), pObject);
 
-	BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(-650.0f, -75.f, 0.f);
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(-650.0f, -75.f, 0.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter4_P0304"), pObject);
 
-	BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(400.0f, 180.f, 0.f);
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(400.0f, 180.f, 0.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter4_P0304"), pObject);
 
-	BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(900.0f, 200.f, 0.f);
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(900.0f, 200.f, 0.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter4_P0304"), pObject);
 
-	BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(600.0f, -50.f, 0.f);
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(600.0f, -50.f, 0.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
 		return E_FAIL;

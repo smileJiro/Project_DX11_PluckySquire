@@ -25,14 +25,14 @@ HRESULT CCamera_Manager::Initialize()
 
 void CCamera_Manager::Update(_float fTimeDelta)
 {
-	if (KEY_DOWN(KEY::G))
+	/*if (KEY_DOWN(KEY::G))
 	{
 		Start_FadeIn(2.5f);
 	}
 	if (KEY_DOWN(KEY::H))
 	{
 		Start_FadeOut(1.5f);
-	}
+	}*/
 
 #ifdef _DEBUG
 	if(IS_IMPORT_IMGUI)

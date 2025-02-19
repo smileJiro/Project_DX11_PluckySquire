@@ -25,32 +25,32 @@ HRESULT CRabbitLunch::Initialize(void* _pArg)
 	case Client::CRabbitLunch::CARROT_1:
 		pModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Model_Carrot_01");
 		pModelDesc->strModelPrototypeTag_2D = TEXT("sketchspace_rabbit_carrot");
-		pModelDesc->tTransform2DDesc.vInitialScaling = _float3(450.f, 200.f, 200.f);
+		pModelDesc->tTransform2DDesc.vInitialScaling = _float3(420.f, 156.f, 1.f);
 		break;
 	case Client::CRabbitLunch::CARROT_2:
 		pModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Model_Carrot_02");
 		pModelDesc->strModelPrototypeTag_2D = TEXT("sketchspace_rabbit_carrot");
-		pModelDesc->tTransform2DDesc.vInitialScaling = _float3(450.f, 200.f, 200.f);
+		pModelDesc->tTransform2DDesc.vInitialScaling = _float3(420.f, 156.f, 1.f);
 		break;
 	case Client::CRabbitLunch::CARROT_3:
 		pModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Model_Carrot_03");
 		pModelDesc->strModelPrototypeTag_2D = TEXT("sketchspace_rabbit_carrot");
-		pModelDesc->tTransform2DDesc.vInitialScaling = _float3(450.f, 200.f, 200.f);
+		pModelDesc->tTransform2DDesc.vInitialScaling = _float3(420.f, 156.f, 1.f);
 		break;
 	case Client::CRabbitLunch::GRAPE_1:
 		pModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Model_Grape_01");
 		pModelDesc->strModelPrototypeTag_2D = TEXT("Grape_Green");
-		pModelDesc->tTransform2DDesc.vInitialScaling = _float3(600.f, 600.f, 600.f);
+		pModelDesc->tTransform2DDesc.vInitialScaling = _float3(512.f, 512.f, 1.f);
 		break;
 	case Client::CRabbitLunch::GRAPE_2:
 		pModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Model_Grape_02");
 		pModelDesc->strModelPrototypeTag_2D = TEXT("Grape_Green");
-		pModelDesc->tTransform2DDesc.vInitialScaling = _float3(600.f, 600.f, 600.f);
+		pModelDesc->tTransform2DDesc.vInitialScaling = _float3(512.f, 512.f, 1.f);
 		break;
 	case Client::CRabbitLunch::GRAPE_3:
 		pModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Model_Grape_03");
 		pModelDesc->strModelPrototypeTag_2D = TEXT("Grape_Green");
-		pModelDesc->tTransform2DDesc.vInitialScaling = _float3(600.f, 600.f, 600.f);
+		pModelDesc->tTransform2DDesc.vInitialScaling = _float3(512.f, 512.f, 1.f);
 		break;
 	case Client::CRabbitLunch::LUNCH_TYPE_LAST:
 	default:

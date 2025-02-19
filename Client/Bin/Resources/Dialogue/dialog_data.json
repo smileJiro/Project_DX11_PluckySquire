@@ -191,7 +191,7 @@
 		{
 			"id": "Honey_Bee_Benny_01",
 			"Section": "Chapter1_P0910",
-			"TriggerTag": "Active_MagicDust",
+			"TriggerTag": "Chapter2_BookMagic",
 			"TriggerID": 999,
 			"lines": [
 				{
@@ -247,7 +247,7 @@
 		{
 			"id": "C01_Humgrump_01",
 			"Section": "Chapter2_P1314",
-			"TriggerTag": "Get_Out_Jot",
+			"TriggerTag": "Chapter2_Humgrump",
 			"TriggerID": 998,
 			"lines": [
 				{
