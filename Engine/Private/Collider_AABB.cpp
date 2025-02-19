@@ -115,6 +115,12 @@ _bool CCollider_AABB::Is_Collision(CCollider* _pOther)
     return isResult;
 }
 
+_bool CCollider_AABB::Is_ContainsPoint(_float2 _vPosition)
+{
+	return m_vPosition.x - m_vFinalExtents.x <= _vPosition.x && m_vPosition.x + m_vFinalExtents.x >= _vPosition.x &&
+		m_vPosition.y - m_vFinalExtents.y <= _vPosition.y && m_vPosition.y + m_vFinalExtents.y >= _vPosition.y;
+}
+
 void CCollider_AABB::Block(CCollider* _pOther)
 {
     switch (_pOther->Get_Type())

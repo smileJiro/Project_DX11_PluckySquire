@@ -29,7 +29,7 @@ public:
 
 public:
 	_bool						Is_Collision(CCollider* _pOther) override;
-	_bool						Is_ContainsPoint(_float2 _vPosition) ;
+	virtual _bool				Is_ContainsPoint(_float2 _vPosition) override;
 	void						Update_OwnerTransform() override;
 	void						Block(CCollider* _pOther);
 	void						Block_AABB(CCollider_AABB* _pOther);
