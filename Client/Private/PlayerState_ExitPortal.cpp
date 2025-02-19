@@ -2,7 +2,7 @@
 #include "PlayerState_ExitPortal.h"
 #include "Portal.h"
 #include "Actor_Dynamic.h"
-
+#include "GameInstance.h"
 
 CPlayerState_ExitPortal::CPlayerState_ExitPortal(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::EXIT_PORTAL)
@@ -90,6 +90,8 @@ void CPlayerState_ExitPortal::Enter()
 			break;
 		}
 	}
+
+
 }
 //ÇÃ·¹ÀÌ¾î Á×À¸¸é ¶³¾îÁü
 

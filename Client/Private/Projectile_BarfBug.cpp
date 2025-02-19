@@ -181,6 +181,8 @@ void CProjectile_BarfBug::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
             XMVectorSetY(vRepulse, -1.f);
             Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
             Event_DeleteObject(this);
+
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_impact_") + to_wstring(rand() % 2), 50.f);
         }
 
     }
@@ -204,6 +206,7 @@ void CProjectile_BarfBug::On_Collision2D_Enter(CCollider* _pMyCollider, CCollide
         Event_Hit(this, _pOtherObject, 1.f);
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PROJECTILESPLAT);
         m_isStop = true;
+
     }
 }
 

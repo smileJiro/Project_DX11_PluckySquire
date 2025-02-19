@@ -141,11 +141,18 @@ void CNpc_Rabbit::Update(_float _fTimeDelta)
 {
 	//Interact(Uimgr->Get_Player());
 	__super::Update(_fTimeDelta);
+
+
+	
+
+
 }
 
 void CNpc_Rabbit::Late_Update(_float _fTimeDelta)
 {
 	__super::Late_Update(_fTimeDelta);
+
+
 
 	//CGameObject* pPlayer;
 
@@ -155,10 +162,10 @@ void CNpc_Rabbit::Late_Update(_float _fTimeDelta)
 	//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_MenuOpen);
 	//}
 	//
-	if (/*KEY_DOWN(KEY::E) && */true == m_isColPlayer && false == m_isDialoging)
+	if (true == m_isColPlayer)
 	{
-		m_isDialoging = true;
-		Throw_Dialogue();
+	//	m_isDialoging = true;
+	//	Throw_Dialogue();
 	//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
 	}
 	//
@@ -182,7 +189,13 @@ void CNpc_Rabbit::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOth
 		CRabbitLunch* pRabbitLunch = dynamic_cast<CRabbitLunch*> (_pOtherObject);
 		if (pRabbitLunch &&  pRabbitLunch->Is_Carrot())
 		{
-			//당근이다
+			if (false == pRabbitLunch->Is_Carrying())
+			{
+				//당근이다
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(sketchspace_rabbit_eatCarrot);
+			}
+
+
 		}
 		
 	}
@@ -204,35 +217,35 @@ void CNpc_Rabbit::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	if (iAnimIdx != m_iPreState)
 	{
-		//switch (ANIM_2D(iAnimIdx))
-		//{
-		//case ANIM_2D::Martina_MenuExit_Into:
-		//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
-		//	break;
-		//
-		//case ANIM_2D::Martina_MenuOpen:
-		//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
-		//	break;
-		//
-		//case ANIM_2D::Martina_Puschase01:
-		//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
-		//	break;
-		//
-		//case ANIM_2D::Martina_NoMoney01_into:
-		//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
-		//	break;
-		//
-		//case ANIM_2D::Martina_talk:
-		//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
-		//	break;
-		//
-		//case ANIM_2D::Martina_idle01:
-		//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
-		//	break;
-		//
-		//default:
-		//	break;
-		//}
+		switch (ANIM_2D(iAnimIdx))
+		{
+		case ANIM_2D::sketchspace_rabbit_eatCarrot:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(sketchspace_rabbit_jump);
+			break;
+		
+		case ANIM_2D::sketchspace_rabbit_jump:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(sketchspace_rabbit_idle);
+			break;
+		
+			//case ANIM_2D::Martina_Puschase01:
+			//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			//	break;
+			//
+			//case ANIM_2D::Martina_NoMoney01_into:
+			//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			//	break;
+			//
+			//case ANIM_2D::Martina_talk:
+			//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			//	break;
+			//
+			//case ANIM_2D::Martina_idle01:
+			//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			//	break;
+		
+		default:
+			break;
+		}
 	}
 }
 
@@ -251,6 +264,11 @@ void CNpc_Rabbit::Interact(CPlayer* _pUser)
 
 _bool CNpc_Rabbit::Is_Interactable(CPlayer* _pUser)
 {
+	if (true == Uimgr->Get_Player()->Is_CarryingObject())
+	{
+		return false;
+	}
+
 	return true;
 }
 

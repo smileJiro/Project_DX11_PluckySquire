@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PlayerState_StartPortal.h"
 #include "Portal.h"
+#include "GameInstance.h"
 
 CPlayerState_StartPortal::CPlayerState_StartPortal(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::START_PORTAL)
@@ -75,6 +76,9 @@ void CPlayerState_StartPortal::Enter()
 			break;
 		}
 	}
+
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_start_entering_portal-") + to_wstring(rand() % 5), 50.f);
+
 }
 
 void CPlayerState_StartPortal::Exit()
