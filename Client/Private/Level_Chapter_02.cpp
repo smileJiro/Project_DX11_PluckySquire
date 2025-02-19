@@ -235,6 +235,10 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
 
 
+
+	CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_Intro"),
+		50);
+
 	return S_OK;
 }
 
@@ -375,10 +379,6 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &dd);
 	}
 
-	if (KEY_DOWN(KEY::F)) {
-		CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_Intro"),
-			50);
-	}
 }
 
 HRESULT CLevel_Chapter_02::Render()
@@ -713,12 +713,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	fLength = 12.5f;
 	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
 
-	// Set Cur Camera
-	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
-
 	// Load CutSceneData, ArmData
 	CCamera_Manager::GetInstance()->Load_CutSceneData();
 	CCamera_Manager::GetInstance()->Load_ArmData();
+
 
 	return S_OK;
 }
@@ -741,9 +739,12 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	if (nullptr == Uimgr->Get_Player())
 	{
 		CUI_Manager::GetInstance()->Set_Player(pPlayer);
-
 	}
+	_int iCurCoord = (COORDINATE_2D);
+	_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 
+	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 
 	return S_OK;

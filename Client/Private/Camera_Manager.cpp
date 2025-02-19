@@ -6,6 +6,7 @@
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
 #include "Camera_2D.h"
+#include "Section_Manager.h"
 
 IMPLEMENT_SINGLETON(CCamera_Manager)
 
@@ -346,7 +347,7 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInit
 		if (nullptr == m_Cameras[TARGET_2D])
 			return;
 
-		CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), L"Layer_Player", 0);
+		CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(SECTION_MGR->Get_SectionLeveID(), L"Layer_Player", 0);
 		
 		if (nullptr != pPlayer)
 			static_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Set_Include_Section_Name(pPlayer->Get_Include_Section_Name());
