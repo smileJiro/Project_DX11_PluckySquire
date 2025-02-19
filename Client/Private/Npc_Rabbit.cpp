@@ -6,6 +6,7 @@
 
 #include "UI_Manager.h"
 #include "StateMachine.h"
+#include "RabbitLunch.h"
 
 
 
@@ -174,7 +175,17 @@ HRESULT CNpc_Rabbit::Render()
 
 void CNpc_Rabbit::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	
+	//여기서 당근이면 먹는다.
+	OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
+	if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
+	{
+		CRabbitLunch* pRabbitLunch = dynamic_cast<CRabbitLunch*> (_pOtherObject);
+		if (pRabbitLunch &&  pRabbitLunch->Is_Carrot())
+		{
+			//당근이다
+		}
+		
+	}
 }
 
 void CNpc_Rabbit::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -302,7 +313,7 @@ HRESULT CNpc_Rabbit::Ready_ActorDesc(void* _pArg)
 
 HRESULT CNpc_Rabbit::Ready_Components()
 {
-	m_p2DColliderComs.resize(1);
+	m_p2DColliderComs.resize(2);
 
 	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
 	AABBDesc.pOwner = this;
@@ -314,9 +325,21 @@ HRESULT CNpc_Rabbit::Ready_Components()
 	AABBDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"), TEXT("Com_Collider_Test"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
 		return E_FAIL;
-
 	m_p2DNpcCollider = m_p2DColliderComs[0];
 	Safe_AddRef(m_p2DNpcCollider);
+
+
+	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+	CircleDesc.pOwner = this;
+	CircleDesc.fRadius = 100.f;
+	CircleDesc.vScale = { 1.0f, 1.0f };
+	CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius * 0.5f };
+	CircleDesc.isBlock = false;
+	CircleDesc.isTrigger = false;
+	CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

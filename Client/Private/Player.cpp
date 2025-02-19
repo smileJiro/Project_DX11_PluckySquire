@@ -25,6 +25,7 @@
 #include "PlayerState_TurnBook.h"
 #include "PlayerState_Evict.h"
 #include "PlayerState_LunchBox.h"
+#include "PlayerState_Electric.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "Section_Manager.h"
@@ -1551,6 +1552,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::LUNCHBOX:
         m_pStateMachine->Transition_To(new CPlayerState_LunchBox(this));
+        break;
+    case Client::CPlayer::ELECTRIC:
+        m_pStateMachine->Transition_To(new CPlayerState_Electric(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;
