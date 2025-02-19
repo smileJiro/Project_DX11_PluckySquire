@@ -1177,7 +1177,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	CBeetle::MONSTER_DESC Beetle_Desc;
 	Beetle_Desc.iCurLevelID = m_eLevelID;
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-16.5f, 6.56f, 22.6f);
+	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 6.56f, 22.6f);
 	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_1;
 	Beetle_Desc.isSneakMode = true;
@@ -1309,7 +1309,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	CZippy::MONSTER_DESC* pZippy_Desc = new CZippy::MONSTER_DESC;
 	pZippy_Desc->iCurLevelID = m_eLevelID;
-	//pZippy_Desc->tTransform2DDesc.vInitialPosition = _float3(500.0f, 10.f, 0.f);
 	pZippy_Desc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Zippy"), Pooling_Desc, pZippy_Desc);

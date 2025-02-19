@@ -67,6 +67,8 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
 
     Safe_Delete(pDesc->pActorDesc);
 
+    m_isPooling = true;
+
 	return S_OK;
 }
 
