@@ -82,6 +82,8 @@ private:
 	_bool		m_isStart = { false };
 	_bool		m_isLight = { false };
 
+	_bool m_isSpawn = { false };
+
 	_int		m_iEventExcuterAction = -1;
 
 public:

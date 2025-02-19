@@ -8,6 +8,7 @@
 #include "MapObjectFactory.h"
 #include "Trigger_Manager.h"
 #include <Player.h>
+#include <NPC.h>
 
 CSection_2D_Narration::CSection_2D_Narration(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSection_2D(_pDevice, _pContext, NARRAION, SECTION_2D_BOOK)
@@ -63,6 +64,11 @@ HRESULT CSection_2D_Narration::Add_GameObject_ToSectionLayer(CGameObject* _pGame
 	// TODO:: 추후 개선 오버라이드 2개
 	if (nullptr != pPlayer)
 		pPlayer->Set_Render(false);
+		
+	CNPC* pNPC = dynamic_cast<CNPC*>(_pGameObject);
+	// TODO:: 추후 개선 오버라이드 2개
+	if (nullptr != pNPC)
+		pNPC->Set_Render(false);
 
 	return hr;
 }
@@ -73,6 +79,11 @@ HRESULT CSection_2D_Narration::Remove_GameObject_ToSectionLayer(CGameObject* _pG
 
 	if (nullptr != pPlayer)
 		pPlayer->Set_Render(true);
+
+	CNPC* pNPC = dynamic_cast<CNPC*>(_pGameObject);
+	// TODO:: 추후 개선 오버라이드 2개
+	if (nullptr != pNPC)
+		pNPC->Set_Render(true);
 	return hr;
 }
 ;
