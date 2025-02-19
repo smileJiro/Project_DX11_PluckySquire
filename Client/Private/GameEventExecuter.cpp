@@ -241,13 +241,23 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
             
             m_isStart = true;
         }
+
+        if (m_fTimer > 3.f) {
+            m_isStart = false;
+            m_iStep++;
+            m_fTimer = 0.f;
+        }
         
 
     }
     else if (5 == m_iStep) {
         m_fTimer += _fTimeDelta;
 
-        //CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
+        if (false == m_isStart) {
+            CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
+
+            m_isStart = true;
+        }
     }
     else
         GameEvent_End();
@@ -261,9 +271,9 @@ void CGameEventExecuter::Chapter2_Intro(_float _fTimeDelta)
 
         if (false == m_isStart) {
             CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
-            pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 5.f);
+            pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 2.f);
             pCamera->Set_Data(XMVectorSet(-0.670150876f, 0.506217539f, -0.542809010f, 0.f), 46.20f, XMVectorSet(-15.f, 5.f, 0.f, 0.f));
-            pCamera->Set_NextArmData(TEXT("Book_Horizon"), 0);
+            pCamera->Set_NextArmData(TEXT("Intro"), 0);
             pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_NEXTARM);
 
             m_isStart = true;
