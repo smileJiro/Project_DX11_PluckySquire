@@ -133,6 +133,22 @@
 						"duration": 1000,
 						"speed": 350
 					},
+					"text": "아, 저트 왔구나!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
 					"text": "이 사운드 어떠냐, 저트?!",
 					"Red": 161,
 					"Green": 210,
