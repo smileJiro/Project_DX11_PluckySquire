@@ -506,6 +506,79 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
     return false;
 }
 
+_bool CCameraArm::Move_To_CustomArm(ARM_DATA* _pCustomData, _float _fTimeDelta)
+{
+    // Y축 회전
+    if (!(m_iMovementFlags & DONE_Y_ROTATE)) { // 안 끝났을 때
+
+        _pCustomData->fMoveTimeAxisY.y += _fTimeDelta;
+        _float fRatio = _pCustomData->fMoveTimeAxisY.y / _pCustomData->fMoveTimeAxisY.x;
+
+        if (_pCustomData->fMoveTimeAxisY.y >= _pCustomData->fMoveTimeAxisY.x) {
+            _pCustomData->fMoveTimeAxisY.y = 0.f;
+            m_iMovementFlags |= DONE_Y_ROTATE;
+        }
+        else {
+            _float fRotationPerSec = m_pGameInstance->Lerp(_pCustomData->fRotationPerSecAxisY.x, _pCustomData->fRotationPerSecAxisY.y, fRatio);
+            fRotationPerSec *= m_fRotationValue;
+            m_pTransform->Set_RotationPerSec(fRotationPerSec);
+
+            m_pTransform->Turn(_fTimeDelta, XMVectorSet(0.0f, 1.f, 0.f, 0.f));
+
+            _vector vLook = m_pTransform->Get_State(CTransform::STATE_LOOK);
+            XMStoreFloat3(&m_vArm, vLook);
+        }
+    }
+
+    // Right 축 회전
+    if (!(m_iMovementFlags & DONE_RIGHT_ROTATE)) {
+
+        _pCustomData->fMoveTimeAxisRight.y += _fTimeDelta;
+        _float fRatio = _pCustomData->fMoveTimeAxisRight.y / _pCustomData->fMoveTimeAxisRight.x;
+
+        if (_pCustomData->fMoveTimeAxisRight.y >= _pCustomData->fMoveTimeAxisRight.x) {
+            _pCustomData->fMoveTimeAxisRight.y = 0.f;
+            m_iMovementFlags |= DONE_RIGHT_ROTATE;
+        }
+        else {
+            _float fRotationPerSec = m_pGameInstance->Lerp(_pCustomData->fRotationPerSecAxisRight.x, _pCustomData->fRotationPerSecAxisRight.y, fRatio);
+            fRotationPerSec *= m_fRotationValue;
+            m_pTransform->Set_RotationPerSec(fRotationPerSec);
+
+            _vector vCross = XMVector3Cross(XMLoadFloat3(&m_vArm), XMVectorSet(0.f, 1.f, 0.f, 0.f));
+
+            m_pTransform->Turn(_fTimeDelta, vCross);
+
+            _vector vLook = m_pTransform->Get_State(CTransform::STATE_LOOK);
+            XMStoreFloat3(&m_vArm, vLook);
+        }
+    }
+
+    // Length 이동
+    if (!(m_iMovementFlags & DONE_LENGTH_MOVE)) {
+
+        _float fRatio = Calculate_Ratio(&_pCustomData->fLengthTime, _fTimeDelta, _pCustomData->iLengthRatioType);
+
+        if (_pCustomData->fLengthTime.y >= _pCustomData->fLengthTime.x) {
+            _pCustomData->fLengthTime.y = 0.f;
+            m_iMovementFlags |= DONE_LENGTH_MOVE;
+        }
+        else {
+            m_fLength = m_pGameInstance->Lerp(m_fStartLength, _pCustomData->fLength, fRatio);
+        }
+    }
+
+    if ((ALL_DONE_MOVEMENT == (m_iMovementFlags & ALL_DONE_MOVEMENT))) {
+        m_iMovementFlags = RESET_FLAG;
+        _pCustomData->fMoveTimeAxisY.y = 0.f;
+        _pCustomData->fMoveTimeAxisRight.y = 0.f;
+
+        return true;
+    }
+
+    return false;
+}
+
 _bool CCameraArm::Move_To_PreArm(_float _fTimeDelta)
 {
     _float fRatio = Calculate_Ratio(&m_fReturnTime, _fTimeDelta, RATIO_TYPE::EASE_IN);

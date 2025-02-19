@@ -61,19 +61,23 @@ public :
 private :
 	void C020910_Bolt_Spawn(_float _fTimeDelta);
 	void C020910_Monster_Spawn(_float _fTimeDelta);
-
-
-
+	void Chapter2_BookMagic(_float _fTimeDelta);
 
 
 	virtual void					GameEvent_End();
 
-private :
+private:
+	CGameInstance* m_pGameInstance = nullptr;
+
+private:
 	_float		m_fMaxTimer = 0.f;
 	_float		m_fTimer = 0.f;
 	_wstring	m_strEventTag;
 	_wstring	m_strActionTag;
 	_bool		m_IsSequence;
+
+	_uint		m_iStep = 0;
+	_bool		m_isStart = { false };
 
 	_int		m_iEventExcuterAction = -1;
 

@@ -77,6 +77,8 @@ HRESULT CPrintFloorWord::Render()
 	_float2 vMidPoint = { RTSIZE_BOOK2D_X / 2.f, RTSIZE_BOOK2D_Y / 2.f };
 
 
+	vMidPoint = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()).x / 2,
+		CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()).y/ 2);
 	vCalPos.x = vMidPoint.x + m_vRenderPos.x;
 	vCalPos.y = vMidPoint.y - m_vRenderPos.y;
 

@@ -87,6 +87,7 @@ HRESULT CState_Sneak::Initialize_WayPoints(SNEAKWAYPOINTINDEX _eWayIndex)
 		m_WayPoints.push_back({ _float3(32.5f, 0.35f, -4.5f) });
 		m_WayPoints.push_back({ _float3(30.f, 0.35f, -3.7f) });
 		m_WayPoints.push_back({ _float3(30.5f, 0.35f, -0.15f) });
+		//m_WayPoints.push_back({ _float3(32.5f, 0.35f, -3.5f) });
 		m_WayPoints.push_back({ _float3(32.15f, 0.35f, 1.66f) });
 		m_WayPoints.push_back({ _float3(32.6f, 0.35f, 5.8f) });
 		m_WayPoints.push_back({ _float3(35.f, 0.35f, 6.37f) });

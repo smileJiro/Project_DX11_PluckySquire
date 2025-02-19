@@ -28,6 +28,7 @@
 
 #include "Trigger_Manager.h"
 #include "PlayerData_Manager.h"
+#include "Effect2D_Manager.h"
 
 #include "Effect_Manager.h"
 
@@ -715,7 +716,7 @@ HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 {
 	CSection_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
-	
+	CEffect2D_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	return S_OK;
 }
 
@@ -728,6 +729,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 	CCamera_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CEffect_Manager::GetInstance()->Level_Exit();
 
+	CEffect2D_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	Uimgr->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 	
 

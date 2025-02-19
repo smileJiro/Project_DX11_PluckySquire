@@ -197,8 +197,10 @@ void CUI_Manager::Test_Update(_float _fTimedelta)
 		switch (m_iTextIndex)
 		{
 		case 0:
+
 		{
 			Uimgr->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
+			
 			++m_iTextIndex;
 		}
 		break;
@@ -206,6 +208,7 @@ void CUI_Manager::Test_Update(_float _fTimedelta)
 		case 1:
 		{
 			Uimgr->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
+			
 			++m_iTextIndex;
 		}
 		break;

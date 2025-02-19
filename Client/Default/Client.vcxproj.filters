@@ -451,6 +451,12 @@
     <Filter Include="02.GameObjects\MagicHand">
       <UniqueIdentifier>{82851eaa-0ed2-49ad-bf4e-59076021e212}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Effect2D\Manager">
+      <UniqueIdentifier>{9174dc7d-17af-46a0-a543-0b036795d0e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\03. Rabbit_Npc">
+      <UniqueIdentifier>{36bed9b8-0f43-4b6f-8f4e-437082f831dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1060,6 +1066,12 @@
     <ClInclude Include="..\public\Effect2D.h">
       <Filter>02.GameObjects\Effect2D</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Effect2D_Manager.h">
+      <Filter>02.GameObjects\Effect2D\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_Rabbit.h">
+      <Filter>02.GameObjects\NPC\03. Rabbit_Npc</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\LunchBox.h" />
     <ClInclude Include="..\Public\PlayerState_LunchBox.h">
       <Filter>03.Components\PlayerState</Filter>
@@ -1662,6 +1674,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Manager.cpp">
       <Filter>02.GameObjects\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect2D_Manager.cpp">
+      <Filter>02.GameObjects\Effect2D\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Npc_Rabbit.cpp">
+      <Filter>02.GameObjects\NPC\03. Rabbit_Npc</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\LunchBox.cpp" />
     <ClCompile Include="..\Private\PlayerState_LunchBox.cpp">

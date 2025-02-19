@@ -438,7 +438,7 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 void CPlayer::Update(_float _fTimeDelta)
 {
-   // cout << "X : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[0] << " Y : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[1] << endl;
+    cout << "X : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[0] << " Y : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[1] << endl;
 
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
@@ -477,6 +477,8 @@ void CPlayer::Update(_float _fTimeDelta)
         }
     }
     
+    CUI_Manager::GetInstance()->Set_isQIcon((nullptr != m_pInteractableObject) 
+        && KEY::Q == m_pInteractableObject->Get_InteractKey());
     m_pInteractableObject = nullptr;
 }
 
@@ -728,6 +730,18 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
     case Client::PLAYER:
         break;
     case Client::MONSTER:
+        if (OBJECT_GROUP::PLAYER & _pMyCollider->Get_CollisionGroupID())
+        {
+			if (true == Is_PlatformerMode() && STATE::JUMP_DOWN == Get_CurrentStateID())
+            {
+                _float fAngle = atan2f(_pOtherObject->Get_FinalPosition().m128_f32[1] - Get_FinalPosition().m128_f32[1], _pOtherObject->Get_FinalPosition().m128_f32[0] - Get_FinalPosition().m128_f32[0]);
+                fAngle = XMConvertToDegrees(fAngle);
+                if (fAngle >= -135.f && fAngle <= -45.f)
+                {
+                    Attack(_pOtherObject);
+                }
+            }  
+        }
         break;
     case Client::MAPOBJECT:
         break;
@@ -1872,13 +1886,13 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 
     }
 
-    if (KEY_DOWN(KEY::H))
-    {
-        m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
-        //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
-        //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
-        //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
-    }
+    //if (KEY_DOWN(KEY::H))
+    //{
+    //    m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
+    //    //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
+    //    //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
+    //    //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
+    //}
     if (KEY_DOWN(KEY::J))
     {
         Set_State(CPlayer::EVICT);

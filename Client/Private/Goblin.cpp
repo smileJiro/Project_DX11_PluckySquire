@@ -4,6 +4,8 @@
 #include "FSM.h"
 #include "DetectionField.h"
 #include "ModelObject.h"
+#include "Effect2D_Manager.h"
+#include "Section_Manager.h"
 
 CGoblin::CGoblin(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -27,7 +29,7 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->isCoordChangeEnable = true;
     pDesc->iNumPartObjects = PART_END;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
@@ -329,6 +331,8 @@ void CGoblin::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             Set_AnimChangeable(true);
             //풀링에 넣을 시 변경
             //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+
+            CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
 
             Event_DeleteObject(this);
             break;

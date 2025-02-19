@@ -62,6 +62,7 @@
 #include "Npc_Companion.h"
 #include "NPC_Violet.h"
 #include "NPC_Thrash.h"
+#include "Npc_Rabbit.h"
 
 
 
@@ -817,6 +818,10 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
         return E_FAIL;
 
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
+        TEXT("../Bin/Resources/Models/2D_FX"))))
+        return E_FAIL;
+
     /* 낱개 로딩 예시*/
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model2D_FallingRock"),
@@ -1005,6 +1010,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_NPC_Companion_Thrash"),
 		CNPC_Thrash::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_NPC_Rabbit"),
+        CNpc_Rabbit::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     ///////////////////////////////// NPC /////////////////////////////////
 
     /* Monster */
