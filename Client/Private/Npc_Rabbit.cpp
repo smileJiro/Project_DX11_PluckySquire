@@ -140,11 +140,18 @@ void CNpc_Rabbit::Update(_float _fTimeDelta)
 {
 	//Interact(Uimgr->Get_Player());
 	__super::Update(_fTimeDelta);
+
+
+	
+
+
 }
 
 void CNpc_Rabbit::Late_Update(_float _fTimeDelta)
 {
 	__super::Late_Update(_fTimeDelta);
+
+
 
 	//CGameObject* pPlayer;
 
@@ -154,10 +161,10 @@ void CNpc_Rabbit::Late_Update(_float _fTimeDelta)
 	//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_MenuOpen);
 	//}
 	//
-	if (/*KEY_DOWN(KEY::E) && */true == m_isColPlayer && false == m_isDialoging)
+	if (true == m_isColPlayer)
 	{
-		m_isDialoging = true;
-		Throw_Dialogue();
+	//	m_isDialoging = true;
+	//	Throw_Dialogue();
 	//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
 	}
 	//
