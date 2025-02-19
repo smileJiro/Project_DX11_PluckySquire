@@ -358,11 +358,11 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
     }
     else if (7 == m_iStep) {
         m_fTimer += _fTimeDelta;
-		m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
-		m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
+
         if (false == m_isStart) {
             CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
-
+			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
+			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
             m_isStart = true;
         }
     }
@@ -411,11 +411,11 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
     if (0 == m_iStep) {
 
         m_fTimer += _fTimeDelta;
-		m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night.json"));
-		m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/chapter2_N.json"));
         if (false == m_isStart) {
             static_cast<CMagic_Hand*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_MagicHand"), 0))->Set_Start(true);
-       
+
+			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night.json"));
+			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/chapter2_N.json"));
             m_isStart = true;
         }
 
