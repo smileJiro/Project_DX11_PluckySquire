@@ -2,6 +2,7 @@
 #include "UI_Interaction_Book.h"
 #include "GameInstance.h"
 #include "UI_Manager.h"
+#include "PlayerData_Manager.h"
 
 #include "Interactable.h"
 
