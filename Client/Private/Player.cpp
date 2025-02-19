@@ -147,20 +147,6 @@ HRESULT CPlayer::Initialize(void* _pArg)
     BoxShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::BLOCKER; // Actor가 충돌을 감지할 그룹
     ActorDesc.ShapeDatas.push_back(BoxShapeData);
 
-    //공격시 몸통 가드
-    SHAPE_SPHERE_DESC tGuardShapeDesc= {};
-	tGuardShapeDesc.fRadius = 0.5f;
-    SHAPE_DATA BodyGuardShapeData;
-    BodyGuardShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-    BodyGuardShapeData.pShapeDesc = &tGuardShapeDesc;
-    XMStoreFloat4x4(&BodyGuardShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, tGuardShapeDesc.fRadius, 0.0f));
-    BodyGuardShapeData.iShapeUse = (_uint)PLAYER_SHAPE_USE::BODYGUARD;
-    BodyGuardShapeData.isTrigger = false;
-    BodyGuardShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
-    BodyGuardShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    BodyGuardShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::BLOCKER; // Actor가 충돌을 감지할 그룹
-    ActorDesc.ShapeDatas.push_back(BodyGuardShapeData);
-
 
     //주변 지형 감지용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
@@ -186,6 +172,21 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.FilterData.OtherGroupMask =OBJECT_GROUP::INTERACTION_OBEJCT;
     ActorDesc.ShapeDatas.push_back(ShapeData);
     
+    //공격시 몸통 가드
+    SHAPE_SPHERE_DESC tGuardShapeDesc = {};
+    tGuardShapeDesc.fRadius = 0.7f;
+    SHAPE_DATA BodyGuardShapeData;
+    BodyGuardShapeData.eShapeType = SHAPE_TYPE::SPHERE;
+    BodyGuardShapeData.pShapeDesc = &tGuardShapeDesc;
+    XMStoreFloat4x4(&BodyGuardShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.f, tGuardShapeDesc.fRadius, 0.0f));
+    BodyGuardShapeData.iShapeUse = (_uint)PLAYER_SHAPE_USE::BODYGUARD;
+    BodyGuardShapeData.isTrigger = false;
+    BodyGuardShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
+    BodyGuardShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
+    BodyGuardShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER; // Actor가 충돌을 감지할 그룹
+    ActorDesc.ShapeDatas.push_back(BodyGuardShapeData);
+
+
 
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
     ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT| OBJECT_GROUP::BLOCKER;
@@ -996,7 +997,7 @@ void CPlayer::Attack(CGameObject* _pVictim)
         return;
 
     CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == Get_CurCoord()) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
-    CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.2f, 20, CCamera::SHAKE_XY);
+    CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.1f, 20, CCamera::SHAKE_XY);
     Event_Hit(this, _pVictim, m_tStat.iDamg);
     CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
     if (pCharacter)
