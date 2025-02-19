@@ -30,7 +30,7 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+    pDesc->tTransform3DDesc.fSpeedPerSec = 4.f;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 80.f;
@@ -115,19 +115,19 @@ void CGoblin::Priority_Update(_float _fTimeDelta)
 void CGoblin::Update(_float _fTimeDelta)
 {
 #ifdef _DEBUG
-    if (KEY_DOWN(KEY::F5))
-    {
-        _int iCurCoord = (_int)Get_CurCoord();
-        (_int)iCurCoord ^= 1;
-        _float3 vNewPos;
+    //if (KEY_DOWN(KEY::F5))
+    //{
+    //    _int iCurCoord = (_int)Get_CurCoord();
+    //    (_int)iCurCoord ^= 1;
+    //    _float3 vNewPos;
 
-        if (iCurCoord == COORDINATE_2D)
-            vNewPos = _float3(300.f, 6.f, 0.f);
-        else
-            vNewPos = _float3(-10.0f, 0.35f, -23.0f);
+    //    if (iCurCoord == COORDINATE_2D)
+    //        vNewPos = _float3(300.f, 6.f, 0.f);
+    //    else
+    //        vNewPos = _float3(-10.0f, 0.35f, -23.0f);
 
-        Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
-    }
+    //    Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
+    //}
 #endif // _DEBUG
 
     __super::Update(_fTimeDelta); /* Part Object Update */
@@ -498,20 +498,20 @@ HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
     //공격용 구
-    /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_SPHERE_DESC* AttackShapeDesc = new SHAPE_SPHERE_DESC;
-    AttackShapeDesc->fRadius = 0.6f;
+    ///* 사용하려는 Shape의 형태를 정의 */
+    //SHAPE_SPHERE_DESC* AttackShapeDesc = new SHAPE_SPHERE_DESC;
+    //AttackShapeDesc->fRadius = 0.6f;
 
-    /* 해당 Shape의 Flag에 대한 Data 정의 */
-    ShapeData->pShapeDesc = AttackShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-    ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, AttackShapeDesc->fRadius + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    ///* 해당 Shape의 Flag에 대한 Data 정의 */
+    //ShapeData->pShapeDesc = AttackShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    //ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
+    //ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    //ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    //ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
+    //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, AttackShapeDesc->fRadius + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
-    /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc->ShapeDatas.push_back(*ShapeData);
+    ///* 최종으로 결정 된 ShapeData를 PushBack */
+    //ActorDesc->ShapeDatas.push_back(*ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;

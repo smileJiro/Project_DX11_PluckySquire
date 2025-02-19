@@ -30,6 +30,7 @@
 #include "PlayerSword.h"    
 #include "Section_Manager.h"
 #include "UI_Manager.h"
+#include "Effect2D_Manager.h"
 
     
 #include "Collider_Fan.h"
@@ -738,9 +739,13 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
             {
                 _float fAngle = atan2f(_pOtherObject->Get_FinalPosition().m128_f32[1] - Get_FinalPosition().m128_f32[1], _pOtherObject->Get_FinalPosition().m128_f32[0] - Get_FinalPosition().m128_f32[0]);
                 fAngle = XMConvertToDegrees(fAngle);
-                if (fAngle >= -135.f && fAngle <= -45.f)
+                if (fAngle >= -150.f && fAngle <= -30.f)
                 {
                     Attack(_pOtherObject);
+                    Event_KnockBack(this, XMVectorSet(0.f, 1.f, 0.f, 0.f), 2000.f);
+
+                    //Effect
+                    CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_FX1"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
                 }
             }  
         }
