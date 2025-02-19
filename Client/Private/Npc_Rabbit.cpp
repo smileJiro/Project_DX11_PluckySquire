@@ -45,6 +45,8 @@ HRESULT CNpc_Rabbit::Initialize(void* _pArg)
 	
 	wsprintf(m_strDialogueIndex, pDesc->strDialogueIndex);
 
+	
+
 	//if (FAILED(Ready_ActorDesc(pDesc)))
 	//	return E_FAIL;
 
@@ -140,10 +142,18 @@ void CNpc_Rabbit::Priority_Update(_float _fTimeDelta)
 void CNpc_Rabbit::Update(_float _fTimeDelta)
 {
 	//Interact(Uimgr->Get_Player());
+
+
+
+
+	//if (false == m_isChangePos && sketchspace_rabbit_idle == static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+	//{
+	//	
+	//}
+
 	__super::Update(_fTimeDelta);
 
 
-	
 
 
 }
@@ -200,7 +210,13 @@ void CNpc_Rabbit::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOthe
 				{
 					//당근이다
 					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(sketchspace_rabbit_eatCarrot);
+					m_iPreState = sketchspace_rabbit_idle_hungry;
 					m_isLunch = true;
+
+					Event_DeleteObject(_pOtherObject);
+
+					//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(_pOtherObject);
+
 				}
 			}
 
@@ -226,7 +242,11 @@ void CNpc_Rabbit::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 			break;
 		
 		case ANIM_2D::sketchspace_rabbit_jump:
+		{
+			m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, _float4(-175.f, -620.f, 0.f, 1.f));
 			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(sketchspace_rabbit_idle);
+		}
+			
 			break;
 		
 			//case ANIM_2D::Martina_Puschase01:
