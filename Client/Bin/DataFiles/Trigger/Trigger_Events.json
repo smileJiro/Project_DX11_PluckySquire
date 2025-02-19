@@ -103,5 +103,15 @@
                   "Is_Sequence": true
               }
           ]
-      }
+     },
+    {
+        "Trigger_EventTag": "Chapter2_Humgrump",
+        "Actions": [
+              {
+                  "ActionTag": "Create_EventExecuter",
+                  "EventTag": "Chapter2_Humgrump",
+                  "Is_Sequence": true
+              }
+          ]
+     }
 ]

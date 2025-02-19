@@ -86,6 +86,9 @@ void CGameEventExecuter::Update(_float _fTimeDelta)
         case Client::CTrigger_Manager::CHAPTER2_INTRO:
             Chapter2_Intro(_fTimeDelta);
             break;
+        case Client::CTrigger_Manager::CHAPTER2_HUMGRUMP:
+            Chapter2_Humgrump(_fTimeDelta);
+            break;
         default:
             break;
         }
@@ -274,21 +277,101 @@ void CGameEventExecuter::Chapter2_Intro(_float _fTimeDelta)
             pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 2.f);
             pCamera->Set_Data(XMVectorSet(-0.670150876f, 0.506217539f, -0.542809010f, 0.f), 46.20f, XMVectorSet(-15.f, 5.f, 0.f, 0.f));
             pCamera->Set_NextArmData(TEXT("Intro"), 0);
+            pCamera->Start_Changing_AtOffset(5.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);
             pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_NEXTARM);
 
             m_isStart = true;
         }
 
-        if (7.f >= m_fTimer) {
+        if (m_fTimer >= 7.f) {
             m_isStart = false;
             m_iStep++;
             m_fTimer = 0.f;
         }
     }
     else if (1 == m_iStep) {
-        CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
-
+        if (false == m_isStart) {
+            CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
+            m_isStart = true;
+            m_iStep++;
+        }
+        
+    }
+    else {
         GameEvent_End();
+    }
+}
+
+void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
+{
+    if (0 == m_iStep) {
+
+        m_fTimer += _fTimeDelta;
+
+        if (false == m_isStart) {
+            static_cast<CMagic_Hand*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_MagicHand"), 0))->Set_Start(true);
+       
+            m_isStart = true;
+        }
+
+        CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
+       
+        if (COORDINATE_3D == pPlayer->Get_CurCoord()) {
+            CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+            pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_CUSTOMARM);
+
+            ARM_DATA tData = {};
+            tData.fMoveTimeAxisRight = { 5.f, 0.f };
+            tData.fRotationPerSecAxisRight = { XMConvertToRadians(-15.f), XMConvertToRadians(-1.f) };
+            tData.iRotationRatioType = EASE_IN_OUT;
+            tData.fLength = 40.f;
+            tData.fLengthTime = { 5.f, 0.f };
+            tData.iLengthRatioType = EASE_OUT;
+
+            pCamera->Add_CustomArm(tData);
+
+            pCamera->Start_Changing_AtOffset(5.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
+
+            m_fTimer = 0.f;
+            m_iStep++;
+            m_isStart = false;
+        }
+    }
+    else if (1 == m_iStep) {
+
+        m_fTimer += _fTimeDelta;
+
+        if (m_fTimer >= 2.f && m_fTimer - _fTimeDelta <= 2.f) {
+            CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+            pCamera->Start_Changing_AtOffset(2.f, XMVectorSet(-6.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
+        }
+
+        if (m_fTimer >= 4.f && m_fTimer - _fTimeDelta <= 4.f) {
+            CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+            pCamera->Start_Changing_AtOffset(2.f, XMVectorSet(6.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
+        }
+
+        CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
+        
+        if (CPlayer::IDLE == static_cast<CPlayer*>(pPlayer)->Get_CurrentStateID()) {
+            CCamera_Manager::GetInstance()->Start_FadeOut(1.5f);
+
+            m_iStep++;
+            m_isStart = false;
+            m_fTimer = 0.f;
+        }
+
+    }
+    else if (2 == m_iStep) {
+        m_fTimer += _fTimeDelta;
+
+        if (m_fTimer >= 1.6f) {
+
+            CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, false);
+            CCamera_Manager::GetInstance()->Start_FadeIn(1.5f);
+
+            GameEvent_End();
+        }
     }
 }
 
