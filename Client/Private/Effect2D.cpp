@@ -126,6 +126,8 @@ HRESULT CEffect2D::Play_Effect(const _wstring& _strSectionKey, _fmatrix _2DWorld
 	Set_AnimationLoop(COORDINATE_2D, m_iCurAnimIndex, m_isLoop);
 	Event_SetActive(this, true);
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(_strSectionKey, this, SECTION_2D_PLAYMAP_EFFECT);
+
+	return S_OK;
 }
 //
 //HRESULT CEffect2D::Play_Effect(const _wstring& _strSectionKey, _fvector _vPos, _uint _iAnimIndex, _float _fDelayTime, _bool _isLoop, _float2 _vScale, _float _fRadianZ)

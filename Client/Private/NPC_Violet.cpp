@@ -345,6 +345,9 @@ void CNPC_Violet::Welcome_Jot(_float _fTimeDelta)
 	//if (CSection_Manager::GetInstance()->SetActive_Section(TEXT("Chapter1_P0708")))
 	if (TEXT("Chapter1_P0708") == CSection_Manager::GetInstance()->Get_Cur_Section_Key())
 	{
+
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+
 		// 캐릭터 입장 후 잠시 대기!
 		if (m_eActionType == ACTION_WAIT)
 		{

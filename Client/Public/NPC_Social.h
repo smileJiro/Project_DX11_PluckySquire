@@ -77,6 +77,7 @@ private:
 	_bool			m_is2D = true;
 	_bool			m_isThrow = { false };
 	
+	_bool			m_isPlayDisplay = { false };
 
 
 
