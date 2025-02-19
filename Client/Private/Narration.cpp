@@ -50,7 +50,6 @@ HRESULT CNarration::Initialize(void* _pArg)
 
 void CNarration::Update(_float _fTimeDelta)
 {
-
 	if (false == m_isPlayNarration && true == Uimgr->Get_PlayNarration())
 	{
 		m_isPlayNarration = true;
@@ -461,6 +460,7 @@ void CNarration::Set_NarrationByStrid(const _wstring& strTargetID)
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].NarAnim[0].strSectionid, this);
 }
 
+
 vector<CNarration_Anim*> CNarration::CreateAnimationObjectsForLine(_uint iLine)
 {
 	vector<CNarration_Anim*> newAnims;
@@ -817,5 +817,10 @@ void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken
 		_OutToken[i].strText = vTokens[i].strText;
 		_OutToken[i].fScale = vTokens[i].fScale;
 	}
+}
+
+_bool CNarration::isLeftRight()
+{
+	return true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isLeft;
 }
 

@@ -153,6 +153,9 @@ public:
 	_bool								Get_PlayNarration() { return m_isPlayerNarration; }
 	void								Set_TurnoffPlayNarration(_bool _Turnoff) { m_isPlayerNarration = _Turnoff; }
 
+	_bool								isLeft_Right();
+
+
 
 
 	/************ 테스트용도 **********************/

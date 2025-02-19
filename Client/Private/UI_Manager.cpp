@@ -190,6 +190,11 @@ void CUI_Manager::Pushback_Dialogue(CDialog::DialogData _DialogData)
 	m_DialogDatas.push_back(_DialogData);
 }
 
+_bool CUI_Manager::isLeft_Right()
+{
+	return m_pNarration->isLeftRight();
+}
+
 void CUI_Manager::Test_Update(_float _fTimedelta)
 {
 	if (KEY_DOWN(KEY::U) && 0 <= m_iTextIndex)
