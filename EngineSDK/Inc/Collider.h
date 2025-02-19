@@ -39,6 +39,7 @@ public:
 
 public:
 	virtual _bool			Is_Collision(CCollider* _pOther) = 0;
+	virtual _bool			Is_ContainsPoint(_float2 _vPosition) = 0;
 	virtual void			Update_OwnerTransform() = 0;
 	virtual void			Block(CCollider* _pOther) { return; }// 블록등록한 애들이 otherobject를 밀어내게 .Circle, AABB 각각 밀어내기 코드가 존재해야겠지/...
 

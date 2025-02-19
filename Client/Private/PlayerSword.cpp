@@ -280,16 +280,6 @@ void CPlayerSword::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOt
     }
     else
     {
-        if (OBJECT_GROUP::MAPOBJECT == eGroup || OBJECT_GROUP::BLOCKER == eGroup)
-        {
-            if ( Is_Outing())
-            {
-                m_fFlyingTimeAcc = 0;
-                m_vStuckDirection = XMVectorSetW(XMVector3Normalize(_pOtherObject->Get_FinalPosition() - Get_FinalPosition()), 0);
-                Set_State(STUCK);
-            }
-        }
-    
     }
 }
 
@@ -300,6 +290,64 @@ void CPlayerSword::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOth
         m_pGameInstance->Start_SFX(_wstring(L"A_Sfx_Sword_Impact_Body_") + to_wstring(rand() % 3), 50.f);
         Attack(_pOtherObject);
     }
+    
+    OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
+    if (OBJECT_GROUP::MAPOBJECT == eGroup || OBJECT_GROUP::BLOCKER == eGroup)
+    {
+        if (Is_Outing())
+        {
+            m_fFlyingTimeAcc = 0;
+            _float2 vMyPos = (_pMyCollider->Get_Position());
+            _float2 vOtherPos = (_pOtherCollider->Get_Position());
+            if (_pOtherCollider->Is_ContainsPoint(vMyPos))
+            {
+                CCollider::TYPE eType = _pOtherCollider->Get_Type();
+                if (CCollider::TYPE::AABB_2D == eType)
+                {
+                    _float2 vLT = static_cast<CCollider_AABB*>(_pOtherCollider)->Get_LT();
+                    _float2 vRB = static_cast<CCollider_AABB*>(_pOtherCollider)->Get_RB();
+                    _float2 vMin = { vLT.x, vRB.y }, vMax = { vRB.x, vLT.y };
+                    _float fDiagSlope1 = (vMax.y - vMin.y) / (vMax.x - vMin.x);
+                    _float fDiagSlope2 = -fDiagSlope1;
+                    _float fCollisionSlope = (vOtherPos.y - vMyPos.y) / (vOtherPos.x - vMyPos.x);
+                    m_vStuckPosition = XMVectorClamp(XMLoadFloat2(&vMyPos), XMLoadFloat2(&vMin), XMLoadFloat2(&vMax));
+                    m_vStuckPosition = XMVectorSetW(m_vStuckPosition, 1);
+                    m_vStuckPosition = XMVectorSetZ(m_vStuckPosition, 0);
+                    //謝辦醱給
+                    if (abs(fCollisionSlope) < abs(fDiagSlope1))
+                    {
+                        //謝
+                        if (vMyPos.x < vOtherPos.x)
+                            m_vStuckDirection = _vector{ 1.f,0.f,0.f,0.f };
+                        //辦
+                        else
+                            m_vStuckDirection = _vector{ -1.f,0.f,0.f,0.f };
+                    }
+                    //鼻ж 醱給
+                    else
+                    {
+                        //鼻
+                        if (vMyPos.y > vOtherPos.y)
+                            m_vStuckDirection = _vector{ 0.f,-1.f,0.f,0.f };
+                        //辦
+                        else
+                            m_vStuckDirection = _vector{ 0.f,1.f,0.f,0.f };
+                    }
+                }
+                else if (CCollider::TYPE::CIRCLE_2D == eType)
+                {
+                    _float fRadius = static_cast<CCollider_Circle*>(_pOtherCollider)->Get_FinalRadius();
+                    m_vStuckDirection = XMVectorSetW(XMVector3Normalize(XMLoadFloat2(&vOtherPos) - XMLoadFloat2(&vMyPos)), 0);
+                    m_vStuckPosition = XMLoadFloat2(&vOtherPos) - m_vStuckDirection * fRadius;
+                    m_vStuckPosition = XMVectorSetW(m_vStuckPosition, 1);
+                    m_vStuckPosition = XMVectorSetZ(m_vStuckPosition, 0);
+                }
+                Set_State(STUCK);
+            }
+
+        }
+    }
+
 }
 
 void CPlayerSword::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -430,6 +478,7 @@ void CPlayerSword::On_StateChange()
         {
             Switch_Animation(0);
             static_cast<CTransform_2D*>(m_pControllerTransform->Get_Transform())->LookDir(m_vStuckDirection);
+            Set_Position(m_vStuckPosition);
 
         }
         Set_AttackEnable(false);
