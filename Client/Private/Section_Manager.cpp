@@ -327,6 +327,8 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(_float2 _v2DTransfor
 
 _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* _pTargetTexture, _float2 _v2DTransformPosition)
 {
+	if (nullptr == _pTargetTexture)
+		return _vector();
 	// 맵핑하여 데이터 접근
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	if (FAILED(m_pContext->Map(_pTargetTexture, 0, D3D11_MAP_READ, 0, &mappedResource)))

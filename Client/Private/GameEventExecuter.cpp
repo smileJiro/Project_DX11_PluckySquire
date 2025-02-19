@@ -153,12 +153,9 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
 
 			m_isStart = true;
 		}
-
-		//if (m_fTimer > 1.5f) {
 		m_isStart = false;
 		m_iStep++;
 		m_fTimer = 0.f;
-		//}
 	}
 	// ÇÏ´Ã ¾îµÎ¿öÁö±â?
 	// 
@@ -278,6 +275,7 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
 			m_fTimer = 0.f;
 		}
 	}
+	// ¹Ù´Ú ºÎ¼­Áö°í, ÇÃ·¹ÀÌ¾î ¶³±¸´Â°Å. 
 	else if (5 == m_iStep) {
 		m_fTimer += _fTimeDelta;
 		if (!m_isStart)
@@ -304,12 +302,22 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
 		if (m_fTimer > 1.5f)
 		{
 			CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(SECTION_MGR->Get_SectionLeveID(), L"Layer_Player", 0);
-
+			
 			//ÇÃ·¹ÀÌ¾î ¶³±Å 
-		 /*   static_cast<CPlayer*>(pGameObject)->();*/
+			static_cast<CPlayer*>(pGameObject)->Set_GravityCompOn(true);
 
 
 		}
+
+		if (m_fTimer > 2.2f)
+		{
+			CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(SECTION_MGR->Get_SectionLeveID(), L"Layer_Player", 0);
+
+			//ÇÃ·¹ÀÌ¾î ¶³±Å 
+			static_cast<CPlayer*>(pGameObject)->Set_GravityCompOn(false);
+			pGameObject->Set_Render(false);
+		}
+
 
 
 		if (m_fTimer > 3.f) {
@@ -338,10 +346,8 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
             m_iStep++;
             m_fTimer = 0.f;
         }
-        
-
     }
-    else if (5 == m_iStep) {
+    else if (7 == m_iStep) {
         m_fTimer += _fTimeDelta;
 
         if (false == m_isStart) {

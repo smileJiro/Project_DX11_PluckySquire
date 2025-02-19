@@ -124,87 +124,92 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 	if (nullptr == m_pCurArm)
 		return;
 
+	m_pGameInstance->Get_CurLevelID();
+
 	// Sketch Space 면에 따라서 Arm 바꿔 주기
-	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+	if (CSection_Manager::GetInstance()->is_WordPos_Capcher()) 
+	{
+		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 	
-	m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
-	pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+		m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
+		pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
 
-	switch ((_int)m_eCurSpaceDir) {
-	case (_int)NORMAL_DIRECTION::NONEWRITE_NORMAL:
-	{
-	}
-	break;
-	case (_int)NORMAL_DIRECTION::POSITIVE_X:
-	{
-		pData = Find_ArmData(TEXT("Default_Positive_X"));
-		m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
-	}
+		switch ((_int)m_eCurSpaceDir) {
+		case (_int)NORMAL_DIRECTION::NONEWRITE_NORMAL:
+		{
+		}
 		break;
-	case (_int)NORMAL_DIRECTION::NEGATIVE_X:
-	{
-		pData = Find_ArmData(TEXT("Default_Negative_X"));
-		m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+		case (_int)NORMAL_DIRECTION::POSITIVE_X:
+		{
+			pData = Find_ArmData(TEXT("Default_Positive_X"));
+			m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+		}
+			break;
+		case (_int)NORMAL_DIRECTION::NEGATIVE_X:
+		{
+			pData = Find_ArmData(TEXT("Default_Negative_X"));
+			m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+		}
+			break;
+		case (_int)NORMAL_DIRECTION::POSITIVE_Y:
+		{
+			pData = Find_ArmData(TEXT("Default_Positive_Y"));
+			m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+		}
+			break;
+		case (_int)NORMAL_DIRECTION::NEGATIVE_Y:
+			break;
+		case (_int)NORMAL_DIRECTION::POSITIVE_Z:
+			break;
+		case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
+		{
+			pData = Find_ArmData(TEXT("Default_Negative_Z"));
+			m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+		}
+			break;
+		}
+
+		// Initial Data가 없어서 TargetPos + vArm * Length로 초기 위치를 바로 잡아주기
+		if (nullptr == _pInitialData) {
+			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+			_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+			XMStoreFloat3(&m_v2DPreTargetWorldPos, vTargetPos);
+			XMStoreFloat3(&m_v2DFixedPos, vTargetPos);
+
+			m_fFixedY = XMVectorGetY(vTargetPos);
+
+			Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
+
+			Look_Target(0.f);
+		}
+		// 초기 위치부터 다음위치까지 Lerp를 해야 함
+		else {
+			m_tInitialData = *_pInitialData;
+			m_isInitialData = true;
+			m_InitialTime = { _pInitialData->fInitialTime, 0.f };
+
+			// 초기 위치 설정
+			m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_tInitialData.vPosition), 1.f));
+
+			// 초기 보는 곳 설정
+			m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&m_tInitialData.vAt), 1.f));
+
+			// 초기 Zoom Level 설정
+			m_iCurZoomLevel = m_tInitialData.iZoomLevel;
+			m_fFovy = m_ZoomLevels[m_tInitialData.iZoomLevel];
+		}
+
+		
+		// Book일 경우
+		CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
+
+		if (CSection_2D::SECTION_2D_BOOK == static_cast<CSection_2D*>(pSection)->Get_Section_2D_RenderType()) {
+			m_isBook = true;
+		}
+		else
+			m_isBook = false;
+
 	}
-		break;
-	case (_int)NORMAL_DIRECTION::POSITIVE_Y:
-	{
-		pData = Find_ArmData(TEXT("Default_Positive_Y"));
-		m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
-	}
-		break;
-	case (_int)NORMAL_DIRECTION::NEGATIVE_Y:
-		break;
-	case (_int)NORMAL_DIRECTION::POSITIVE_Z:
-		break;
-	case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
-	{
-		pData = Find_ArmData(TEXT("Default_Negative_Z"));
-		m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
-	}
-		break;
-	}
-
-	// Initial Data가 없어서 TargetPos + vArm * Length로 초기 위치를 바로 잡아주기
-	if (nullptr == _pInitialData) {
-		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
-		_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
-		XMStoreFloat3(&m_v2DPreTargetWorldPos, vTargetPos);
-		XMStoreFloat3(&m_v2DFixedPos, vTargetPos);
-
-		m_fFixedY = XMVectorGetY(vTargetPos);
-
-		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
-
-		Look_Target(0.f);
-	}
-	// 초기 위치부터 다음위치까지 Lerp를 해야 함
-	else {
-		m_tInitialData = *_pInitialData;
-		m_isInitialData = true;
-		m_InitialTime = { _pInitialData->fInitialTime, 0.f };
-
-		// 초기 위치 설정
-		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_tInitialData.vPosition), 1.f));
-
-		// 초기 보는 곳 설정
-		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&m_tInitialData.vAt), 1.f));
-
-		// 초기 Zoom Level 설정
-		m_iCurZoomLevel = m_tInitialData.iZoomLevel;
-		m_fFovy = m_ZoomLevels[m_tInitialData.iZoomLevel];
-	}
-
-	
-	// Book일 경우
-	CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
-
-	if (CSection_2D::SECTION_2D_BOOK == static_cast<CSection_2D*>(pSection)->Get_Section_2D_RenderType()) {
-		m_isBook = true;
-	}
-	else
-		m_isBook = false;
-
 	Check_MagnificationType();
 }
 
