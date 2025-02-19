@@ -33,6 +33,7 @@
 #include "ButterGrump.h"
 #include "Goblin_SideScroller.h"
 #include "LightningBolt.h"
+#include "RabbitLunch.h"
 
 
 #include "RayShape.h"
@@ -142,7 +143,12 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-
+	//도시락
+	if (FAILED(Ready_Layer_LunchBox(TEXT("Layer_LunchBox"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_LunchBox (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	//액터 들어가는넘.,
 	if (FAILED(Ready_Layer_Map()))
 	{
@@ -1470,6 +1476,17 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_LunchBox(const _wstring& _strLayerTag)
+{
+	CModelObject::MODELOBJECT_DESC tModelDesc{};
+	tModelDesc.iCurLevelID = m_eLevelID;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_LunchBox"), m_eLevelID, _strLayerTag, &tModelDesc)))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 

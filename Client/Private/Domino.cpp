@@ -20,7 +20,7 @@ HRESULT CDomino::Initialize(void* _pArg)
 	pModelDsc->isCoordChangeEnable = false;
 	pModelDsc->iModelPrototypeLevelID_3D = pModelDsc->iCurLevelID;
 	pModelDsc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	pModelDsc->iObjectGroupID = OBJECT_GROUP::MAPOBJECT;
+	pModelDsc->iObjectGroupID = OBJECT_GROUP::DYNAMIC_OBJECT;
 	pModelDsc->iRenderGroupID_3D = RG_3D;
 	pModelDsc->iPriorityID_3D = PR3D_GEOMETRY;
 
@@ -50,8 +50,8 @@ HRESULT CDomino::Initialize(void* _pArg)
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.24f, ShapeDesc2.vHalfExtents.y + 0.01, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 
-	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::BLOCKER;
-	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER | OBJECT_GROUP::MAPOBJECT;
+	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT;
 	pModelDsc->pActorDesc = &ActorDesc;
 	pModelDsc->eActorType = ACTOR_TYPE::DYNAMIC;
 	if (FAILED(__super::Initialize(pModelDsc)))

@@ -1072,6 +1072,11 @@
     <ClInclude Include="..\Public\Npc_Rabbit.h">
       <Filter>02.GameObjects\NPC\03. Rabbit_Npc</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\LunchBox.h" />
+    <ClInclude Include="..\Public\PlayerState_LunchBox.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RabbitLunch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1676,6 +1681,11 @@
     <ClCompile Include="..\Private\Npc_Rabbit.cpp">
       <Filter>02.GameObjects\NPC\03. Rabbit_Npc</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\LunchBox.cpp" />
+    <ClCompile Include="..\Private\PlayerState_LunchBox.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RabbitLunch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
