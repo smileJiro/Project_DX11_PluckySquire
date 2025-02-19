@@ -131,6 +131,9 @@ void CPlayerState_Roll::Enter()
 		m_pOwner->Stop_Rotate();
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_DODGE_GT);
     }
+
+	//if (static_cast<CPlayer*>(m_pOwner)->Is_OnGround())
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_roll-") + to_wstring(rand() % 7), 20.f);
 }
 
 void CPlayerState_Roll::Exit()

@@ -30,7 +30,7 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+    pDesc->tTransform3DDesc.fSpeedPerSec = 4.f;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 80.f;
@@ -115,19 +115,19 @@ void CGoblin::Priority_Update(_float _fTimeDelta)
 void CGoblin::Update(_float _fTimeDelta)
 {
 #ifdef _DEBUG
-    if (KEY_DOWN(KEY::F5))
-    {
-        _int iCurCoord = (_int)Get_CurCoord();
-        (_int)iCurCoord ^= 1;
-        _float3 vNewPos;
+    //if (KEY_DOWN(KEY::F5))
+    //{
+    //    _int iCurCoord = (_int)Get_CurCoord();
+    //    (_int)iCurCoord ^= 1;
+    //    _float3 vNewPos;
 
-        if (iCurCoord == COORDINATE_2D)
-            vNewPos = _float3(300.f, 6.f, 0.f);
-        else
-            vNewPos = _float3(-10.0f, 0.35f, -23.0f);
+    //    if (iCurCoord == COORDINATE_2D)
+    //        vNewPos = _float3(300.f, 6.f, 0.f);
+    //    else
+    //        vNewPos = _float3(-10.0f, 0.35f, -23.0f);
 
-        Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
-    }
+    //    Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
+    //}
 #endif // _DEBUG
 
     __super::Update(_fTimeDelta); /* Part Object Update */
@@ -183,6 +183,7 @@ void CGoblin::Change_Animation()
                 break;
 
             case MONSTER_STATE::ALERT:
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_alert_") + to_wstring(rand() % 8), 50.f);
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
                 break;
 
@@ -200,6 +201,7 @@ void CGoblin::Change_Animation()
 
             case MONSTER_STATE::DEAD:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 50.f);
                 break;
 
             default:
@@ -235,6 +237,8 @@ void CGoblin::Change_Animation()
                     eAnim = ALERT_DOWN;
                 else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
                     eAnim = ALERT_RIGHT;
+
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_alert_") + to_wstring(rand() % 8), 30.f);
                 break;
             case Client::MONSTER_STATE::STANDBY:
                 if (F_DIRECTION::UP == m_e2DDirection)
@@ -267,6 +271,7 @@ void CGoblin::Change_Animation()
                     eAnim = DEATH_DOWN;
                 else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
                     eAnim = DEATH_RIGHT;
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 50.f);                
                 break;
             default:
                 break;
@@ -345,16 +350,25 @@ void CGoblin::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CGoblin::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-    __super::OnContact_Enter(_My, _Other, _ContactPointDatas);
 
-    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup && (_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse)
+    if ((_uint)MONSTER_STATE::CHASE == m_iState)
     {
-        if ((_uint)MONSTER_STATE::CHASE == m_iState)
+        if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
         {
-            Attack();
-            m_isContactToTarget = true;
+            if ((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse
+                && (_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse)
+            {
+                Attack();
+                m_isContactToTarget = true;
+
+            }
         }
     }
+    else 
+    {
+        __super::OnContact_Enter(_My, _Other, _ContactPointDatas);
+    }
+
 }
 
 void CGoblin::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -428,6 +442,8 @@ void CGoblin::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
 void CGoblin::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
     __super::On_Hit(_pHitter, _iDamg);
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_hit_") + to_wstring(rand() % 5), 50.f);
 }
 
 HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
@@ -482,20 +498,20 @@ HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
     //공격용 구
-    /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_SPHERE_DESC* AttackShapeDesc = new SHAPE_SPHERE_DESC;
-    AttackShapeDesc->fRadius = 0.6f;
+    ///* 사용하려는 Shape의 형태를 정의 */
+    //SHAPE_SPHERE_DESC* AttackShapeDesc = new SHAPE_SPHERE_DESC;
+    //AttackShapeDesc->fRadius = 0.6f;
 
-    /* 해당 Shape의 Flag에 대한 Data 정의 */
-    ShapeData->pShapeDesc = AttackShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-    ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, AttackShapeDesc->fRadius + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    ///* 해당 Shape의 Flag에 대한 Data 정의 */
+    //ShapeData->pShapeDesc = AttackShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    //ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
+    //ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    //ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    //ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
+    //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, AttackShapeDesc->fRadius + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
-    /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc->ShapeDatas.push_back(*ShapeData);
+    ///* 최종으로 결정 된 ShapeData를 PushBack */
+    //ActorDesc->ShapeDatas.push_back(*ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;

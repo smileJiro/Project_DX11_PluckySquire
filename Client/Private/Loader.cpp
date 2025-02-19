@@ -581,6 +581,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/"))))
         return E_FAIL;
 
+    if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Common"))))
+        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
 
@@ -1270,6 +1273,11 @@ HRESULT CLoader::Loading_Level_Chapter_4()
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
         TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
         return E_FAIL;
+
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
+        TEXT("../Bin/Resources/Models/2D_FX"))))
+        return E_FAIL;
+
     /* 낱개 로딩 예시*/
 
     // NPC 모델

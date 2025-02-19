@@ -204,6 +204,9 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
+
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::NPC_EVENT, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
+
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
@@ -1430,6 +1433,11 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Jump_Dust"), LEVEL_CHAPTER_2, 1);
 
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves1"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves2"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust1"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust2"), LEVEL_CHAPTER_2, 3);
+
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Death_Burst"), LEVEL_CHAPTER_2, 3);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX1"), LEVEL_CHAPTER_2, 3);
@@ -1486,6 +1494,29 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
+
+
+	//2번째 도미노
+	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(48.73f, 2.61f, -5.02f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
+		return E_FAIL;
+
+	fDominoXPosition = 64.5f;
+	fDominoYPosition = 0.25;
+	fDominoZPosition = -0.54f;
+	fDominoXPositionStep = -3.5f;
+	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+		return E_FAIL;
+
+
+	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino3");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 

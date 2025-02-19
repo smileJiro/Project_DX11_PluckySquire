@@ -74,6 +74,7 @@ void CNPC_Companion::Update(_float _fTimeDelta)
 
 	for (int i = 0; i < m_vecCompanionNpc.size(); ++i)
 	{
+
 		m_vecCompanionNpc[i]->Child_Update(_fTimeDelta);
 
 		if (true == m_vecCompanionNpc[i]->is_Trace())

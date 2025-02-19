@@ -10,6 +10,7 @@
 #include "Camera_2D.h"
 #include "Section_Manager.h"
 #include "Effect_Manager.h"
+#include "Effect2D_Manager.h"
 
 #include "Trigger_Manager.h"
 #include "PlayerData_Manager.h"
@@ -72,6 +73,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
 	Ready_Layer_Effects(TEXT("Layer_Effect"));
+	Ready_Layer_Effects2D(TEXT("Layer_Effect2D"));
 	//Ready_Layer_NPC(TEXT("Layer_NPC"));
 	Ready_Layer_Blocker2D(TEXT("Layer_Blocker2D"));
 	//액터 들어가는넘.,
@@ -94,6 +96,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
 
@@ -229,10 +232,6 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	if (KEY_DOWN(KEY::T)) {
 		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger.json"));
 		CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
-	}
-
-	if (KEY_DOWN(KEY::J)) {
-		CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 	}
 
 }
@@ -848,36 +847,36 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	BarfBug_Desc.iCurLevelID = m_eLevelID;
 	BarfBug_Desc.eStartCoord = COORDINATE_2D;
 
-	BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(-1000.0f, 150.f, 0.f);
-	BarfBug_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(-1000.0f, 150.f, 0.f);
+	BarfBug_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter4_P0304"), pObject);
 
-	BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(-650.0f, -75.f, 0.f);
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(-650.0f, -75.f, 0.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter4_P0304"), pObject);
 
-	BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(400.0f, 180.f, 0.f);
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(400.0f, 180.f, 0.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter4_P0304"), pObject);
 
-	BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(900.0f, 200.f, 0.f);
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(900.0f, 200.f, 0.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter4_P0304"), pObject);
 
-	BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(600.0f, -50.f, 0.f);
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(600.0f, -50.f, 0.f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
 		return E_FAIL;
@@ -1026,6 +1025,30 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Effects(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("RockOut.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
 		return E_FAIL;
 	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));*/
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
+{
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Jump_Dust"), LEVEL_CHAPTER_4, 1);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves1"), LEVEL_CHAPTER_4, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves2"), LEVEL_CHAPTER_4, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust1"), LEVEL_CHAPTER_4, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust2"), LEVEL_CHAPTER_4, 3);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Death_Burst"), LEVEL_CHAPTER_4, 3);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX1"), LEVEL_CHAPTER_4, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX2"), LEVEL_CHAPTER_4, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX3"), LEVEL_CHAPTER_4, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX4"), LEVEL_CHAPTER_4, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX5"), LEVEL_CHAPTER_4, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words1"), LEVEL_CHAPTER_4, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words2"), LEVEL_CHAPTER_4, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words4"), LEVEL_CHAPTER_4, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words5"), LEVEL_CHAPTER_4, 3);
 
 	return S_OK;
 }

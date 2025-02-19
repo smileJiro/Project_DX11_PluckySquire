@@ -191,7 +191,7 @@
 		{
 			"id": "Honey_Bee_Benny_01",
 			"Section": "Chapter1_P0910",
-			"TriggerTag": "Active_MagicDust",
+			"TriggerTag": "Chapter2_BookMagic",
 			"TriggerID": 999,
 			"lines": [
 				{
@@ -205,58 +205,10 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "여긴 어쩐 일이야?",
+					"text": "여긴 어쩐 일이야? 밀랍이 필요한거야?",
 					"Red": 255,
 					"Green": 175,
 					"Blue": 81
-				},
-				{
-					"Portrait": 3,
-					"Talker": "찍찍이",
-					"BG": 15,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "달수염 할아버지가 보내서 왔어!",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 3,
-					"Talker": "찍찍이",
-					"BG": 15,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "혹시 밀랍 남는거 있으면 좀 줄래?",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 3,
-					"Talker": "찍찍이",
-					"BG": 15,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "달수염 할아버지가 꼭 필요하대!",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
 				},
 				{
 					"Portrait": 14,
@@ -269,7 +221,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "당연하지, 친구. 여기 있어.",
+					"text": "자, 여기 밀랍이야, 친구. 여기 있어.",
 					"Red": 255,
 					"Green": 175,
 					"Blue": 81
@@ -295,7 +247,7 @@
 		{
 			"id": "C01_Humgrump_01",
 			"Section": "Chapter2_P1314",
-			"TriggerTag": "Get_Out_Jot",
+			"TriggerTag": "Chapter2_Humgrump",
 			"TriggerID": 998,
 			"lines": [
 				{

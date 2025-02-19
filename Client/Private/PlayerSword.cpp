@@ -297,6 +297,7 @@ void CPlayerSword::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOth
 {
     if (OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
     {
+        m_pGameInstance->Start_SFX(_wstring(L"A_Sfx_Sword_Impact_Body_") + to_wstring(rand() % 3), 50.f);
         Attack(_pOtherObject);
     }
 }
@@ -444,7 +445,9 @@ void CPlayerSword::Attack(CGameObject* _pVictim)
 {
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
         return;
-    Event_Hit(this, _pVictim, (_float)m_pPlayer->Get_AttackDamg());
+    CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == Get_CurCoord()) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
+    CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.2f, 20, CCamera::SHAKE_XY);
+    Event_Hit(this, _pVictim, m_pPlayer->Get_AttackDamg());
     CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
     if (pCharacter)
     {
