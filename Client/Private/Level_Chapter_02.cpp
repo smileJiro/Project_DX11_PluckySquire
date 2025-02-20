@@ -121,7 +121,6 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-
 	if (FAILED(Ready_Layer_Spawner(TEXT("Layer_Spawner"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Spawner (Level_Chapter_02::Initialize)");

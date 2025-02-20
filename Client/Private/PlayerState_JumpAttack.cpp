@@ -79,7 +79,6 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 			{
 				m_pGameInstance->Start_SFX(TEXT("A_sfx_jump_attack_land-") + to_wstring(rand() % 3), 50.f);
 
-
  				m_pOwner->Start_Attack(CPlayer::ATTACK_TYPE_JUMPATTACK);
 				m_bLandAnimed = true;
 				switch (eDir)
