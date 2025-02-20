@@ -223,12 +223,12 @@ void CCamera_Manager::Add_ArmData(_uint _iCameraType, _wstring wszArmTag, ARM_DA
 	switch (_iCameraType) {
 	case TARGET:
 	{
-		dynamic_cast<CCamera_Target*>(m_Cameras[_iCameraType])->Add_ArmData(wszArmTag, _pArmData, _pSubData);
+		static_cast<CCamera_Target*>(m_Cameras[_iCameraType])->Add_ArmData(wszArmTag, _pArmData, _pSubData);
 	}
 		break;
 	case TARGET_2D:
 	{
-		dynamic_cast<CCamera_2D*>(m_Cameras[_iCameraType])->Add_ArmData(wszArmTag, _pArmData, _pSubData);
+		static_cast<CCamera_2D*>(m_Cameras[_iCameraType])->Add_ArmData(wszArmTag, _pArmData, _pSubData);
 	}
 		break;
 	}
@@ -239,7 +239,7 @@ void CCamera_Manager::Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vecto
 	if (nullptr == m_Cameras[CUTSCENE])
 		return;
 
-	dynamic_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Add_CutScene(_wszCutSceneTag, _CutSceneData);
+	static_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Add_CutScene(_wszCutSceneTag, _CutSceneData);
 }
 
 void CCamera_Manager::Load_ArmData(_uint _iCameraType, _wstring _szFilePath)
@@ -300,10 +300,10 @@ void CCamera_Manager::Load_ArmData(_uint _iCameraType, _wstring _szFilePath)
 void CCamera_Manager::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
 {
 	if (TARGET == m_eCurrentCameraType) {
-		dynamic_cast<CCamera_Target*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode, _iNextMode);
+		static_cast<CCamera_Target*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode, _iNextMode);
 	}
 	else if (TARGET_2D == m_eCurrentCameraType) {
-		dynamic_cast<CCamera_2D*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode);
+		static_cast<CCamera_2D*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode);
 	}
 		return;
 }
@@ -371,7 +371,7 @@ void CCamera_Manager::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
 	if (nullptr == m_Cameras[TARGET] || TARGET != m_eCurrentCameraType)
 		return;
 
-	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Change_Target(_pTargetWorldMatrix);
+	static_cast<CCamera_Target*>(m_Cameras[TARGET])->Change_Target(_pTargetWorldMatrix);
 }
 
 _bool CCamera_Manager::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
@@ -379,7 +379,7 @@ _bool CCamera_Manager::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerI
 	if (nullptr == m_Cameras[TARGET])
 		return false;
 
-	return dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(_wszNextArmName, _iTriggerID);
+	return static_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(_wszNextArmName, _iTriggerID);
 }
 
 _bool CCamera_Manager::Set_NextCutSceneData(_wstring _wszCutSceneName)
@@ -387,7 +387,7 @@ _bool CCamera_Manager::Set_NextCutSceneData(_wstring _wszCutSceneName)
 	if (nullptr == m_Cameras[CUTSCENE])
 		return false;
 
-	return dynamic_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Set_NextCutScene(_wszCutSceneName);
+	return static_cast<CCamera_CutScene*>(m_Cameras[CUTSCENE])->Set_NextCutScene(_wszCutSceneName);
 }
 
 void CCamera_Manager::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
@@ -395,7 +395,7 @@ void CCamera_Manager::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 	if (nullptr == m_Cameras[TARGET])
 		return;
 
-	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_PreArmDataState(_iTriggerID, _isReturn);
+	static_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_PreArmDataState(_iTriggerID, _isReturn);
 }
 
 void CCamera_Manager::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _int _iTriggerID)
@@ -403,7 +403,7 @@ void CCamera_Manager::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _i
 	if (nullptr == m_Cameras[TARGET])
 		return;
 
-	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_FreezeEnter(_iFreezeMask, _vExitArm, _iTriggerID);
+	static_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_FreezeEnter(_iFreezeMask, _vExitArm, _iTriggerID);
 }
 
 void CCamera_Manager::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
@@ -411,7 +411,7 @@ void CCamera_Manager::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 	if (nullptr == m_Cameras[TARGET])
 		return;
 
-	dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_FreezeExit(_iFreezeMask, _iTriggerID);
+	static_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_FreezeExit(_iFreezeMask, _iTriggerID);
 }
 
 void CCamera_Manager::Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType)

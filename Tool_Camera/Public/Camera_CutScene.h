@@ -77,7 +77,6 @@ private:
 	void						Initialize_CameraInfo(INITIAL_DATA* _pTargetPos);
 
 	void						Save_Data();
-	void						Save_BinaryData();
 
 public:
 	static CCamera_CutScene*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

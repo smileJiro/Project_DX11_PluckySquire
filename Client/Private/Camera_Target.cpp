@@ -62,13 +62,26 @@ void CCamera_Target::Late_Update(_float fTimeDelta)
 	__super::Late_Update(fTimeDelta);
 }
 
-#ifdef _DEBUG
-_float3 CCamera_Target::Get_ArmRotation()
+#pragma region  Tool¿ë
+pair<ARM_DATA*, SUB_DATA*>* CCamera_Target::Get_ArmData(_wstring _wszArmName)
 {
-	return m_pCurArm->Get_Rotation();
-}
-#endif
+	pair<ARM_DATA*, SUB_DATA*>* pData = Find_ArmData(_wszArmName);
 
+	if (nullptr == pData)
+		return nullptr;
+
+	return pData;
+}
+
+void CCamera_Target::Get_ArmNames(vector<_wstring>* _vecArmNames)
+{
+	_vecArmNames->clear();
+
+	for (auto& ArmName : m_ArmDatas) {
+		_vecArmNames->push_back(ArmName.first);
+	}
+}
+#pragma endregion
 
 void CCamera_Target::Add_CurArm(CCameraArm* _pCameraArm)
 {
@@ -80,10 +93,12 @@ void CCamera_Target::Add_CurArm(CCameraArm* _pCameraArm)
 
 void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData)
 {
-	if (nullptr != Find_ArmData(_wszArmTag))
-		return;
-
-	m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
+	if (nullptr == Find_ArmData(_wszArmTag))
+		m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
+	else {
+		Safe_Delete(_pArmData);
+		Safe_Delete(_pSubData);
+	}
 }
 
 void CCamera_Target::Add_CustomArm(ARM_DATA _tArmData)
@@ -552,8 +567,11 @@ void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 
 void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 {
+	// Tool¿ë
+	if (false == m_isLookAt)
+		return;
 	//_vector vTargetPos = XMLoadFloat4x4(m_pTargetWorldMatrix).r[TARGET_POS];
-
+	
 	if ((true == m_isEnableLookAt) && (false == m_isExitLookAt)) {
 		_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 		m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));

@@ -69,6 +69,9 @@ namespace Client
 		LEVEL_CHAPTER_4,
 		LEVEL_CHAPTER_TEST,
 
+
+		LEVEL_CAMERA_TOOL,
+
 		LEVEL_END
 	};
 
