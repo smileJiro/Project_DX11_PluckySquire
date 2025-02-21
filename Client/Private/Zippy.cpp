@@ -44,8 +44,6 @@ HRESULT CZippy::Initialize(void* _pArg)
     m_tStat.iHP = 5;
     m_tStat.iMaxHP = 5;
 
-    m_isPooling = true;
-
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 

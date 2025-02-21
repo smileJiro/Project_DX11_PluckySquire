@@ -4,11 +4,11 @@
 #include "2DMapObject.h"
 #include "Map_2D.h"
 #include "Section_Manager.h"
-#include "Engine_Macro.h"
 #include "MapObjectFactory.h"
 #include "Trigger_Manager.h"
-#include <Player.h>
-#include <NPC.h>
+#include "Player.h"
+#include "NPC.h"
+
 
 CSection_2D_Narration::CSection_2D_Narration(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSection_2D(_pDevice, _pContext, NARRAION, SECTION_2D_BOOK)
@@ -45,6 +45,8 @@ HRESULT CSection_2D_Narration::Import(json _SectionJson, _uint _iPriorityKey)
 #pragma endregion
 	return S_OK;
 }
+
+
 HRESULT CSection_2D_Narration::Section_AddRenderGroup_Process()
 {
 	if (FAILED(Copy_DefaultMap_ToRenderTarget()))

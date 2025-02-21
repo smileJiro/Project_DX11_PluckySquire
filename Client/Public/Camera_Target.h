@@ -48,12 +48,21 @@ public:
 	virtual void				Update(_float fTimeDelta) override;
 	virtual void				Late_Update(_float fTimeDelta) override;
 
-#ifdef _DEBUG
-	_float3						Get_ArmRotation();
-#endif
 public:
 	virtual _uint				Get_CameraMode() { return m_eCameraMode; }
 	virtual INITIAL_DATA		Get_InitialData() override;
+	CCameraArm*					Get_Arm() { return m_pCurArm; }
+
+#pragma region Tool¿ë
+	void						Set_LookAt(_bool _isLookAt)
+	{
+		m_isLookAt = _isLookAt;
+	}
+	pair<ARM_DATA*, SUB_DATA*>* Get_ArmData(_wstring _wszArmName);
+	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>* Get_ArmDatas() { return &m_ArmDatas; };
+	void						Get_ArmNames(vector<_wstring>* _vecArmNames);
+#pragma endregion
+
 
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
@@ -107,9 +116,13 @@ private:
 	list<pair<RETURN_SUBDATA, _bool>> m_PreSubArms;
 	_int						m_iCurTriggerID = {};
 
-
 	// CustomArm
 	ARM_DATA					m_CustomArmData = {};
+
+#pragma region Tool¿ë
+	_bool						m_isLookAt = { true };
+#pragma endregion
+
 
 private:
 	void						Key_Input(_float _fTimeDelta);
