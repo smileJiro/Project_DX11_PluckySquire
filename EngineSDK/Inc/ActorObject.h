@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Actor.h"
+#include "Physx_ContactModifyCallback.h"
 BEGIN(Engine)
 class ENGINE_DLL CActorObject abstract : public CGameObject
 {
@@ -32,6 +33,7 @@ public:
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other) { return; }
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other) { return; }
 
+	virtual void OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts) { return; }
 
 	void Add_Impuls(_fvector _vForce);
 	void Add_Force(_fvector _vForce);

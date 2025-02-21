@@ -1,6 +1,7 @@
 #include "Physx_Manager.h"
 #include "GameInstance.h"
 #include "Physx_EventCallBack.h"
+#include "Physx_ContactModifyCallback.h"
 
 _uint CPhysx_Manager::m_iShapeInstanceID = 0;
 
@@ -19,6 +20,9 @@ HRESULT CPhysx_Manager::Initialize()
 	// Event CallBack Class 
 	m_pPhysx_EventCallBack = CPhysx_EventCallBack::Create();
 	if (nullptr == m_pPhysx_EventCallBack)
+		return E_FAIL;
+	m_pPhysx_ContactModifyCallback = CPhysx_ContactModifyCallback::Create();
+	if (nullptr == m_pPhysx_ContactModifyCallback)
 		return E_FAIL;
 
 	if (FAILED(Initialize_Foundation()))
@@ -364,6 +368,8 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	SceneDesc.filterShader = TWFilterShader;//TWFilterShader; //PxDefaultSimulationFilterShader;//; // 일단 기본값으로 생성 해보자.
 	SceneDesc.simulationEventCallback = m_pPhysx_EventCallBack; // 일단 기본값으로 생성 해보자.
 	SceneDesc.broadPhaseType = PxBroadPhaseType::eMBP;
+	SceneDesc.contactModifyCallback = m_pPhysx_ContactModifyCallback;
+	SceneDesc.flags |= PxSceneFlag::eENABLE_PCM;
 
 	/* Create Scene */
 	m_pPxScene = m_pPxPhysics->createScene(SceneDesc);
@@ -438,7 +444,7 @@ HRESULT CPhysx_Manager::Initialize_Material()
 			vMaterialDesc = { 0.5f, 0.6f,0.f };
 			break;			
 		case Engine::ACTOR_MATERIAL::CHARACTER_FOOT: // 캐릭터 구형 마찰
-			vMaterialDesc = { 8.f, 8.f,0.f };
+			vMaterialDesc = { 2.f, 2.f,0.f };
 			break;
 		default:
 			break;
@@ -566,6 +572,7 @@ void CPhysx_Manager::Free()
 
 	// 게임 및 DirectX 리소스 해제
 	Safe_Release(m_pPhysx_EventCallBack);
+	Safe_Release(m_pPhysx_ContactModifyCallback);
 	Safe_Release(m_pShader);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pGameInstance);

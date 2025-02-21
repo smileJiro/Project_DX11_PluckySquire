@@ -6,6 +6,7 @@ class CVIBuffer_PxDebug;
 class CShader;
 class CGameObject;
 class CPhysx_EventCallBack;
+class CPhysx_ContactModifyCallback;
 class CPhysx_Manager final : public CBase
 {
 private:
@@ -57,7 +58,7 @@ private:
 
 private: /* Event CallBack Class */
 	CPhysx_EventCallBack*		m_pPhysx_EventCallBack = nullptr;
-
+	CPhysx_ContactModifyCallback* m_pPhysx_ContactModifyCallback = nullptr;
 public:
 	void Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
 	void Delete_ShapeUserData();

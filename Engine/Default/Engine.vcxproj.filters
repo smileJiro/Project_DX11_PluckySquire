@@ -630,6 +630,9 @@
     <ClInclude Include="..\public\VIBuffer_Trail.h">
       <Filter>01.Utility\04.Components\VIBuffer\Trail</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Physx_ContactModifyCallback.h">
+      <Filter>00.System\03.Physx\EventCallBack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -940,6 +943,9 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Trail.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Physx_ContactModifyCallback.cpp">
+      <Filter>00.System\03.Physx\EventCallBack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

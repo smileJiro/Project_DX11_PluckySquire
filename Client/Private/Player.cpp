@@ -111,7 +111,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ActorDesc.FreezePosition_XYZ[0] = false;
     ActorDesc.FreezePosition_XYZ[1] = false;
     ActorDesc.FreezePosition_XYZ[2] = false;
-
+    
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC CapsuleDesc = {};
     CapsuleDesc.fRadius = m_fFootLength;
@@ -119,34 +119,35 @@ HRESULT CPlayer::Initialize(void* _pArg)
     //SHAPE_BOX_DESC ShapeDesc = {};
     //ShapeDesc.vHalfExtents = { 0.5f, 1.f, 0.5f };
 
+    ActorDesc.ShapeDatas.resize(PLAYER_SHAPE_USE::PLAYER_SHAPE_USE_LAST);
     // 플레이어 몸통.
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &CapsuleDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
 	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset /*+ 0.1f*/, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc.ShapeDatas.push_back(ShapeData);
+    ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
 
     //마찰용 박스
-    SHAPE_BOX_DESC BoxDesc = {};
-    _float fHalfWidth = CapsuleDesc.fRadius * cosf(XMConvertToRadians(45.f));
-    BoxDesc.vHalfExtents = { fHalfWidth, CapsuleDesc.fRadius, fHalfWidth };
-    SHAPE_DATA BoxShapeData;
-    BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
-    BoxShapeData.pShapeDesc = &BoxDesc;
-    XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc.vHalfExtents.y, 0.0f));
-    BoxShapeData.iShapeUse =(_uint)SHAPE_USE::SHAPE_FOOT;
-    BoxShapeData.isTrigger = false;
-    BoxShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
-    BoxShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    BoxShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
-    ActorDesc.ShapeDatas.push_back(BoxShapeData);
+    //SHAPE_BOX_DESC BoxDesc = {};
+    //_float fHalfWidth = CapsuleDesc.fRadius * cosf(XMConvertToRadians(45.f));
+    //BoxDesc.vHalfExtents = { fHalfWidth, CapsuleDesc.fRadius, fHalfWidth };
+    //SHAPE_DATA BoxShapeData;
+    //BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
+    //BoxShapeData.pShapeDesc = &BoxDesc;
+    //XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc.vHalfExtents.y, 0.0f));
+    //BoxShapeData.iShapeUse =(_uint)SHAPE_USE::SHAPE_FOOT;
+    //BoxShapeData.isTrigger = false;
+    //BoxShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
+    //BoxShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
+    //BoxShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
+    //ActorDesc.ShapeDatas.push_back(BoxShapeData);
 
 
     //주변 지형 감지용 구 (트리거)
@@ -160,7 +161,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.iShapeUse =(_uint) SHAPE_USE::SHAPE_TRIGER;
     ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
     ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::INTERACTION_OBEJCT;
-    ActorDesc.ShapeDatas.push_back(ShapeData);
+    ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
 
     //상호작용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
@@ -171,7 +172,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.iShapeUse = (_uint)PLAYER_SHAPE_USE::INTERACTION;
     ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
     ShapeData.FilterData.OtherGroupMask =OBJECT_GROUP::INTERACTION_OBEJCT;
-    ActorDesc.ShapeDatas.push_back(ShapeData);
+    ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
     
     //공격시 몸통 가드
     SHAPE_SPHERE_DESC tGuardShapeDesc = {};
@@ -185,7 +186,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     BodyGuardShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
     BodyGuardShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
     BodyGuardShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER; // Actor가 충돌을 감지할 그룹
-    ActorDesc.ShapeDatas.push_back(BodyGuardShapeData);
+    ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
 
 
 
@@ -629,8 +630,6 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
     switch (eShapeUse)
     {
     case Client::SHAPE_USE::SHAPE_BODY:
-        break;
-    case Client::SHAPE_USE::SHAPE_FOOT:
         for (auto& pxPairData : _ContactPointDatas)
         {
             //_vector vMyPos = Get_FinalPosition();
@@ -644,6 +643,9 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
             ////cout << "  Contact";
             return;
         }
+        break;
+    case Client::SHAPE_USE::SHAPE_FOOT:
+
         break;
     case Client::SHAPE_USE::SHAPE_TRIGER:
 
@@ -686,6 +688,37 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
     }
 
 
+}
+
+void CPlayer::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts)
+{
+    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
+    switch (eShapeUse)
+    {
+    case Client::SHAPE_USE::SHAPE_BODY:
+    {
+		_uint iContactCount = _ModifiableContacts.Get_ContactCount();
+        for (_uint i = 0; i < iContactCount; i++)
+        {
+            //벽이면?
+            if (abs(XMVectorGetY( _ModifiableContacts.Get_Normal(i))) < m_fStepSlopeThreshold)
+            {
+				_ModifiableContacts.Set_DynamicFriction(i, 0.0f);
+				_ModifiableContacts.Set_StaticFriction(i, 0.0f);
+                continue;
+            }
+        }
+        break;
+    }
+    case Client::SHAPE_USE::SHAPE_FOOT:
+        break;
+    case Client::SHAPE_USE::SHAPE_TRIGER:
+        break;
+    case Client::SHAPE_USE::SHAPE_USE_LAST:
+        break;
+    default:
+        break;
+    }
 }
 
 void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -935,19 +968,18 @@ void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	m_pStateMachine->Get_CurrentState()->On_AnimEnd(_eCoord, iAnimIdx);
 }
 
-void CPlayer::On_Hit(CGameObject* _pHitter, _int _fDamg)
+void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg)
 {
     if (m_bInvincible)
     {
         cout << "no damg" << endl;
         return;
     }
-    m_tStat.iHP -= _fDamg;
+    m_tStat.iHP -= _iDamg;
     cout << " Player HP" << m_tStat.iHP << endl;
 	COORDINATE eCoord = Get_CurCoord();
 
     Uimgr->Set_PlayerOnHit(true);
-
     Start_Invinciblity();
 
     if (m_tStat.iHP <= 0)
