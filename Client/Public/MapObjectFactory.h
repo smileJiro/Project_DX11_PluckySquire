@@ -6,7 +6,6 @@
 #include "2DMapActionObject.h"
 #include "3DMapObject.h"
 #include "GameInstance.h"
-#include "GameInstance.h"
 
 BEGIN(Client)
 class CMapObjectFactory {
