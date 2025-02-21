@@ -38,7 +38,7 @@ HRESULT CMainApp::Initialize()
 {
 	// MainApp Init
 	// 1. 윈도우 해상도에 대한 정보를 생성하고, 이를 통해 장치를 초기화한다.
-	// 2. Level을 생성하고 초기화한다.
+	// 2. Level을 생성하고 초기화한다.\
 
 	ENGINE_DESC EngineDesc{};
 
