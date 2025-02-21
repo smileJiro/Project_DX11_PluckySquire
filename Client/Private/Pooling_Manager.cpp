@@ -69,6 +69,7 @@ HRESULT CPooling_Manager::Register_PoolingObject(const _wstring& _strPoolingTag,
 	PullingObjects.push_back(pGameObject);
 	Safe_AddRef(pGameObject);
 	pGameObject->Set_Active(false);
+	pGameObject->Set_Pooling(true);
 	
 	/* Pulling Objects */
 	m_PoolingObjects.emplace(_strPoolingTag, PullingObjects);
@@ -251,8 +252,8 @@ void CPooling_Manager::Free()
 	m_ObjectsDescs.clear();
 
 	Safe_Release(m_pGameInstance);
-	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
 
 	__super::Free();
 }

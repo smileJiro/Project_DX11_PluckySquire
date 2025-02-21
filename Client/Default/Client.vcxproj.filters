@@ -460,6 +460,12 @@
     <Filter Include="02.GameObjects\LunchBox">
       <UniqueIdentifier>{a9f39f66-4d1c-40ca-94ea-01e148f44ea0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\04. Camera_Tool">
+      <UniqueIdentifier>{8c5b4074-1d5b-49b2-9553-52c162d6caba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Camera\CutScene\Tool">
+      <UniqueIdentifier>{336b0df6-6e3c-41ca-affe-4c78e0786cf4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -697,9 +703,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\AlertState.h">
       <Filter>03.Components\FSM\State\Alert</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Camera_CutScene.h">
-      <Filter>02.GameObjects\Camera\CutScene</Filter>
     </ClInclude>
     <ClInclude Include="..\public\RenderGroup_DirectLights.h">
       <Filter>94.RenderGroups%28Custom%29\PBR\DirectLights</Filter>
@@ -1025,7 +1028,6 @@
       <Filter>02.GameObjects\Word</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\2DMapWordObject.h" />
-    <ClInclude Include="..\public\CollapseBlock.h" />
     <ClInclude Include="..\Public\Goblin_SideScroller.h" />
     <ClInclude Include="..\Public\LightningBolt.h" />
     <ClInclude Include="..\Public\PlayerState_Evict.h" />
@@ -1086,6 +1088,18 @@
     </ClInclude>
     <ClInclude Include="..\Public\RabbitLunch.h">
       <Filter>02.GameObjects\LunchBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_CutScene.h">
+      <Filter>02.GameObjects\Camera\CutScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Camera_Tool_Client.h">
+      <Filter>01.Levels\04. Camera_Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_CutScene_Save.h">
+      <Filter>02.GameObjects\Camera\CutScene\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CollapseBlock.h">
+      <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1637,7 +1651,6 @@
       <Filter>02.GameObjects\Word</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
-    <ClCompile Include="..\private\CollapseBlock.cpp" />
     <ClCompile Include="..\Private\Goblin_SideScroller.cpp" />
     <ClCompile Include="..\Private\GameEventExecuter.cpp" />
     <ClCompile Include="..\Private\LightningBolt.cpp" />
@@ -1702,6 +1715,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\RabbitLunch.cpp">
       <Filter>02.GameObjects\LunchBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_CutScene_Save.cpp">
+      <Filter>02.GameObjects\Camera\CutScene\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Camera_Tool_Client.cpp">
+      <Filter>01.Levels\04. Camera_Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CollapseBlock.cpp">
+      <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

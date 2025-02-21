@@ -630,12 +630,6 @@ CMainApp* CMainApp::Create()
 
 void CMainApp::Free()
 {
-	__super::Free();
-
-	Safe_Release(m_pDevice);
-	Safe_Release(m_pContext);
-	Safe_Release(m_pGameInstance);
-
 	/* Client Singleton Delete */ 
 	CEffect2D_Manager::DestroyInstance();
 	CEvent_Manager::DestroyInstance();
@@ -647,7 +641,14 @@ void CMainApp::Free()
 	CPlayerData_Manager::DestroyInstance();
 	CEffect_Manager::DestroyInstance();
 
+	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pDevice);
+	Safe_Release(m_pContext);
+
 	/* GameInstance Release*/
 	CGameInstance::Release_Engine();
+	__super::Free();
+
+
 }
 

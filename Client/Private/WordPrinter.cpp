@@ -116,9 +116,9 @@ CWordPrinter* CWordPrinter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* 
 void CWordPrinter::Free()
 {
 
-	Safe_Release(m_pDevice);
-	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
 
 
 	__super::Free();
