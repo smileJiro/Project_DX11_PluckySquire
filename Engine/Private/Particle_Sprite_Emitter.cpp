@@ -32,22 +32,46 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
     if (FAILED(__super::Initialize_Prototype(_jsonInfo)))
         return E_FAIL;
 
+    // Mask Texture
     if (false == _jsonInfo.contains("Texture"))
         return E_FAIL;
+
     _string strTexturePath = _jsonInfo["Texture"];
 
-    m_pMaskTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
-
-
-    if (_jsonInfo.contains("DissolveTexture"))
+    if (m_pGameInstance->Find_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath)))
     {
-        strTexturePath = _jsonInfo["DissolveTexture"];
-        m_pDissolveTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
+        m_pMaskTextureCom = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_pGameInstance->Get_StaticLevelID(),
+            STRINGTOWSTRING(strTexturePath), nullptr));
     }
+    else
+    {
+        m_pMaskTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
+        m_pGameInstance->Add_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath), m_pMaskTextureCom);
 
+    }
 
     if (nullptr == m_pMaskTextureCom)
         return E_FAIL;
+
+    // Dissolve Texture ?
+    if (_jsonInfo.contains("DissolveTexture"))
+    {
+        strTexturePath = _jsonInfo["DissolveTexture"];
+
+        if (m_pGameInstance->Find_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath)))
+        {
+            m_pDissolveTextureCom = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_pGameInstance->Get_StaticLevelID(),
+                STRINGTOWSTRING(strTexturePath), nullptr));
+        }
+        else
+        {
+            m_pDissolveTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
+            m_pGameInstance->Add_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath), m_pDissolveTextureCom);
+
+        }
+    }
+
+
 
 #ifdef  _DEBUG
     m_pMaskTextureCom->Add_SRVName(STRINGTOWSTRING(_jsonInfo["Texture"]));
@@ -75,6 +99,9 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
 
         m_pParticleBufferCom->Initialize_Module(pModule);
     }
+
+    if (FAILED(m_pParticleBufferCom->Initialize_Buffers()))
+        return E_FAIL;
 
     return S_OK;
 }

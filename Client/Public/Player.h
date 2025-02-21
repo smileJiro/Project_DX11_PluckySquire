@@ -598,7 +598,7 @@ private:
 	/* еб©У */
 	_float m_f2DColliderBodyRadius = 20.f;
 	/* еб©У */
-	_float m_fInvincibleTIme = 0.5f;
+	_float m_fInvincibleTIme = 1.5f;
 	_float m_fInvincibleTImeAcc = 0.f;
 	_bool m_bInvincible = false;
 	_bool m_bPlatformerMode = false;

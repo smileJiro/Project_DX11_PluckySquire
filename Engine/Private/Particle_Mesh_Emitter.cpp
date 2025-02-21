@@ -100,6 +100,17 @@ HRESULT CParticle_Mesh_Emitter::Initialize_Prototype(const json& _jsonInfo)
 		m_iShaderPass = eShaderPass;
 	}
 
+	// Initial Buffer
+	for (auto pModule : m_Modules)
+	{
+		if (false == pModule->Is_Init())
+			continue;
+
+		m_ParticleMeshes[0]->Initialize_Module(pModule);
+	}
+
+	if (FAILED(m_ParticleMeshes[0]->Initialize_Buffers()))
+		return E_FAIL;
 
 	return S_OK;
 }

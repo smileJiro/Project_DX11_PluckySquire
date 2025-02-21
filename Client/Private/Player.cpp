@@ -476,11 +476,12 @@ void CPlayer::Update(_float _fTimeDelta)
 	if (m_bInvincible)
 	{
         m_fInvincibleTImeAcc += _fTimeDelta;
+        
 		if (m_fInvincibleTIme <= m_fInvincibleTImeAcc)
 		{
 			m_bInvincible = false;
-            m_pActorCom->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
-			m_pBody2DColliderCom->Set_Active(true);
+            //m_pActorCom->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
+			//m_pBody2DColliderCom->Set_Active(true);
             m_fInvincibleTImeAcc = 0;
 		}
 	}
@@ -936,13 +937,18 @@ void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CPlayer::On_Hit(CGameObject* _pHitter, _int _fDamg)
 {
+    if (m_bInvincible)
+    {
+        cout << "no damg" << endl;
+        return;
+    }
     m_tStat.iHP -= _fDamg;
     cout << " Player HP" << m_tStat.iHP << endl;
 	COORDINATE eCoord = Get_CurCoord();
 
     Uimgr->Set_PlayerOnHit(true);
 
-
+    Start_Invinciblity();
 
     if (m_tStat.iHP <= 0)
     {
@@ -1329,8 +1335,8 @@ void CPlayer::Start_Invinciblity()
 {
 	m_bInvincible = true;
 	m_fInvincibleTImeAcc = 0;
-    m_pActorCom->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
-	m_pBody2DColliderCom->Set_Active(false);
+    //m_pActorCom->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
+	//m_pBody2DColliderCom->Set_Active(false);
 }
 
 

@@ -17,6 +17,24 @@ cbuffer BasicPixelConstData : register(b0)
     int invertNormalMapY; // 16
 }
 
+struct Fresnel
+{
+    float4 vColor;
+    
+    float fExp;
+    float fBaseReflect;
+    float fStrength;
+    float fDummy;
+};
+
+cbuffer MultiFresnels : register(b1)
+{
+    Fresnel InnerFresnel;
+    Fresnel OuterFresnel;
+}
+
+
+
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture; // PBR
@@ -62,6 +80,7 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vTangent = In.vTangent;
     return Out;
 }
+
 
 struct VS_WORLDOUT
 {
@@ -250,6 +269,49 @@ PS_WORLDOUT PS_WORLDPOSMAP(PS_WORLDIN In)
     return Out;
 }
 
+float Compute_Fresnel(float3 vNormal, float3 vViewDir, float fBaseReflect, float fExponent, float fStrength)
+{
+    float fNDotV = saturate(dot(vNormal, vViewDir));
+    
+    float fFresnelFactor = fBaseReflect + (1.f - fBaseReflect) * pow(1 - fNDotV, fExponent);
+    
+    return saturate(fFresnelFactor * fStrength);
+}
+
+struct PS_DIFFUSE
+{
+    float4 vColor : SV_TARGET0;
+};
+
+PS_DIFFUSE PS_FRESNEL(PS_IN In)
+{
+    PS_DIFFUSE Out = (PS_DIFFUSE) 0;
+    
+    float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
+    float fLength = length(vViewDirection);
+    vViewDirection = normalize(vViewDirection);    
+    
+    float InnerValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, InnerFresnel.fBaseReflect, InnerFresnel.fExp, InnerFresnel.fStrength);
+    float OuterValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OuterFresnel.fBaseReflect, OuterFresnel.fExp, OuterFresnel.fStrength);
+    
+    Out.vColor = (InnerFresnel.vColor * (1.f - InnerValue) + OuterValue * OuterFresnel.vColor);
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN2(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    float4 vAlbedo = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord);
+    float3 vNormal = g_NormalTexture.Sample(LinearSampler, In.vTexcoord);
+   
+    Out.vDiffuse = vAlbedo;
+    Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 0.f);
+
+    return Out;
+}
 
 technique11 DefaultTechnique
 {
@@ -326,6 +388,26 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_BOOKWORLDPOSMAP();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_WORLDPOSMAP();
+    }
+
+    pass Fresnel // 7
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_FRESNEL();
+    }
+
+    pass Defaultpass2 // 8
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN2();
     }
 
 }

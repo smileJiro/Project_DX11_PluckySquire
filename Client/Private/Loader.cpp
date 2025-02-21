@@ -2282,7 +2282,7 @@ void CLoader::Free()
     // 크리티컬 섹션을 삭제한다.
     DeleteCriticalSection(&m_Critical_Section);
 
+    Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);
-    Safe_Release(m_pGameInstance);
 }
