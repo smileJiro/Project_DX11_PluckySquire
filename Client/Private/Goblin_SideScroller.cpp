@@ -269,9 +269,9 @@ void CGoblin_SideScroller::On_Collision2D_Exit(CCollider* _pMyCollider, CCollide
     }
 }
 
-void CGoblin_SideScroller::On_Hit(CGameObject* _pHitter, _int _iDamg)
+void CGoblin_SideScroller::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
-    __super::On_Hit(_pHitter, _iDamg);
+    __super::On_Hit(_pHitter, _iDamg, _vForce);
 }
 
 void CGoblin_SideScroller::Set_Include_Section_Name(const _wstring _strIncludeSectionName)

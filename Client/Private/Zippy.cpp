@@ -392,7 +392,7 @@ void CZippy::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCol
         if (true == m_isElectric)
         {
             static_cast<CPlayer*>(_pOtherObject)->Set_State(CPlayer::ELECTRIC);
-            Event_Hit(this, _pOtherObject, Get_Stat().iDamg);
+            Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), Get_Stat().iDamg, XMVectorZero());
             m_isElectric = false;
         }
         else
@@ -417,10 +417,10 @@ void CZippy::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherColl
     }
 }
 
-void CZippy::On_Hit(CGameObject* _pHitter, _int _iDamg)
+void CZippy::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
 	if (false == m_isDash)
-      __super::On_Hit(_pHitter, _iDamg);
+      __super::On_Hit(_pHitter, _iDamg, _vForce);
 }
 
 _bool CZippy::Has_StateAnim(MONSTER_STATE _eState)

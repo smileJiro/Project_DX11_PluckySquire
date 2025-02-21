@@ -253,15 +253,24 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
-	void Event_Hit(CGameObject* _pHitter, CGameObject* _pVictim, _int _iDamg)
+	void Event_Hit(CGameObject* _pHitter, CCharacter* _pVictim, _int _iDamg, _fvector _vKnockBackDirection, _float _fKnockBackPower)
+	{
+		Event_Hit(_pHitter, _pVictim, _iDamg, XMVector3Normalize(_vKnockBackDirection) * _fKnockBackPower);
+	}
+
+	void Event_Hit(CGameObject* _pHitter, CCharacter* _pVictim, _int _iDamg, _fvector _vKnockBackForce)
 	{
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::HIT;
 
-		tEvent.Parameters.resize(3);
+		tEvent.Parameters.resize(4);
 		tEvent.Parameters[0] = (DWORD_PTR)_pHitter;
 		tEvent.Parameters[1] = (DWORD_PTR)_pVictim;
 		tEvent.Parameters[2] = (DWORD_PTR)_iDamg;
+
+		_float3* vForce = new _float3{ _vKnockBackForce.m128_f32[0], _vKnockBackForce.m128_f32[1], _vKnockBackForce.m128_f32[2] };
+		tEvent.Parameters[3] = (DWORD_PTR)vForce;
+
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
