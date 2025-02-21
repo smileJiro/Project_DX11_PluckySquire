@@ -191,7 +191,7 @@ void CPlayerItem::Action_Getting(_float _fTimeDelta)
 			m_isFinishWait = false;
 
 			CTrigger_Manager::GetInstance()->On_End(m_szItemTag);
-			m_iItemMode = ITEM_MODE::DEFAULT;
+			m_iItemMode = ITEM_MODE::DISAPPEAR;
 		}
 
 		_float fScale = m_pGameInstance->Lerp(0.3f, m_fOriginScale, fRatio);
@@ -202,6 +202,7 @@ void CPlayerItem::Action_Getting(_float _fTimeDelta)
 void CPlayerItem::Action_Disappear(_float _fTimeDelta)
 {
 	// 마지막에? 사실 뭐 딱히 할 필요는 없음
+	this->Set_Active(false);
 	m_isStop = false; 
 }
 

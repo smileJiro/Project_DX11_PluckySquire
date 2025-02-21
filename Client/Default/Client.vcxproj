@@ -212,9 +212,11 @@
     <ClInclude Include="..\Public\Camera_2D.h" />
     <ClInclude Include="..\Public\Camera_CutScene.h" />
     <ClInclude Include="..\Public\CarriableObject.h" />
+    <ClInclude Include="..\Public\Camera_CutScene_Save.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\Public\ChaseAttackState.h" />
+    <ClInclude Include="..\Public\Level_Camera_Tool_Client.h" />
     <ClInclude Include="..\public\CollapseBlock.h" />
     <ClInclude Include="..\Public\Dice.h" />
     <ClInclude Include="..\Public\Domino.h" />
@@ -425,9 +427,11 @@
     <ClCompile Include="..\Private\Camera_2D.cpp" />
     <ClCompile Include="..\Private\Camera_CutScene.cpp" />
     <ClCompile Include="..\Private\CarriableObject.cpp" />
+    <ClCompile Include="..\Private\Camera_CutScene_Save.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\Private\ChaseAttackState.cpp" />
+    <ClCompile Include="..\Private\Level_Camera_Tool_Client.cpp" />
     <ClCompile Include="..\private\CollapseBlock.cpp" />
     <ClCompile Include="..\Private\Dice.cpp" />
     <ClCompile Include="..\Private\Domino.cpp" />

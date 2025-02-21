@@ -194,6 +194,9 @@ HRESULT CLoader::Loading()
         hr = Loading_Level_Chapter_TEST();
         break;
 
+    case Client::LEVEL_CAMERA_TOOL:
+        hr = Loading_Level_Camera_Tool();
+        break;
     }
     
     CoUninitialize();
@@ -1413,6 +1416,134 @@ HRESULT CLoader::Loading_Level_Chapter_4()
 
     //Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_4, L"Room_Enviroment.mchc");
     Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_4, L"Room_Enviroment_Small.mchc");
+
+    lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+    m_isFinished = true;
+
+    return S_OK;
+}
+
+HRESULT CLoader::Loading_Level_Camera_Tool()
+{
+    lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_FSM"),
+        CFSM::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_FSM_Boss"),
+        CFSM_Boss::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_PlayerAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_Player2DAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Player/player2danimevts.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_DetectionField"),
+        CDetectionField::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_Sneak_DetectionField"),
+        CSneak_DetectionField::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_BarfBugAttackAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/barfBug_Rig/BarfBug_Attack.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Monster/BarferBug/BarferBug2d_Attack.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_BookPageActionEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))
+        return E_FAIL;
+
+#ifdef _DEBUG
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_DebugDraw_For_Client"),
+        CDebugDraw_For_Client::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+#endif // _DEBUG
+
+
+
+    lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
+
+    lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
+
+    lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
+
+    lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
+
+    XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CAMERA_TOOL,
+        TEXT("../Bin/Resources/Models/2DMapObject/Chapter2"))))
+        return E_FAIL;
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CAMERA_TOOL,
+        TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
+        return E_FAIL;
+
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CAMERA_TOOL,
+        TEXT("../Bin/Resources/Models/2D_FX"))))
+        return E_FAIL;
+
+    if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform, true)))
+        return E_FAIL;
+
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
+        TEXT("../Bin/Resources/Models/3DMapObject/"), matPretransform)))
+        return E_FAIL;
+
+    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
+        TEXT("../Bin/Resources/Models/3DAnim/"), matPretransform)))
+        return E_FAIL;
+
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
+        TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
+        return E_FAIL;
+
+
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CAMERA_TOOL,
+        TEXT("../Bin/Resources/Models/2DAnim/Chapter2/"))))
+        return E_FAIL;
+
+    lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+    /* For. Prototype_GameObject_SampleBook */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_SampleBook"),
+        CSampleBook::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+
+    /* For. Magic_Hand, Magic_Hand_Body*/
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_MagicHand"),
+        CMagic_Hand::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_MagicHandBody"),
+        CMagic_Hand_Body::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Camera_CutScene */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_CutScene_Save"),
+        CCamera_CutScene::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Model_Book"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../../Tool_Effect/Bin/Resources/Models/3DAnim/book/book.model"
+                ), matPretransform))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Model_MagicHand"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../Bin/Resources/Models/FX/magic_hand_model/magic_hand_model.model"
+                ), matPretransform))))
+        return E_FAIL;
+
+    //Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_2, L"Room_Enviroment.mchc");
+    Map_Object_Create(LEVEL_STATIC, LEVEL_CAMERA_TOOL, L"Room_Enviroment_Small.mchc");
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

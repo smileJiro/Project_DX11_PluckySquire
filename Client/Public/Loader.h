@@ -44,6 +44,7 @@ private:
 	HRESULT Loading_Level_Chapter_TEST();
 	HRESULT Loading_Level_Chapter_2();
 	HRESULT Loading_Level_Chapter_4();
+	HRESULT Loading_Level_Camera_Tool();
 
 private: /* Sound */
 	HRESULT Loading_BGM_PathFind(const _wstring& strDirectoryPath);

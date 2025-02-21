@@ -38,8 +38,6 @@ private:
 	// Target
 	_float3										m_vTargetPos = {};
 
-	// Finish
-
 private:
 	void						Play_CutScene(_float _fTimeDelta);
 	void						Change_Sector();
