@@ -67,6 +67,10 @@ public:
 	_bool RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits);
 	_bool Overlap(SHAPE_TYPE	_eShapeType, SHAPE_DESC* _pShape, _fvector _vPos, list<CActorObject*>& _OutActors);
 	_bool Overlap(PxGeometry* pxGeom, _fvector _vPos, list<CActorObject*>& _OutActors);
+	//가장 먼저 충돌된 물체만 검출
+	_bool SingleSweep(PxGeometry* pxGeom, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, CActorObject** _ppOutActor, RAYCASTHIT* _pOutHit);
+	//모든(최대 10개) 충돌된 물체 검출
+	_bool MultiSweep(PxGeometry* pxGeom, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits);
 
 private: /* SHAPE_USERDATA : 메모리 해제용 */
 	vector<SHAPE_USERDATA*> m_pShapeUserDatas;

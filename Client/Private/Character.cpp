@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Character.h" 
 #include "Actor_Dynamic.h"
+#include "GameInstance.h"
 
 CCharacter::CCharacter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice, _pContext)
@@ -13,10 +14,21 @@ CCharacter::CCharacter(const CCharacter& _Prototype)
 {
 }
 
+HRESULT CCharacter::Initialize(void* _pArg)
+{
+	CHARACTER_DESC* pDesc = static_cast<CHARACTER_DESC*>(_pArg);
+	m_fStepSlopeThreshold = pDesc->_fStepSlopeThreshold;
+
+	if (FAILED(__super::Initialize(_pArg)))
+		return E_FAIL;
+    return S_OK;
+}
+
 void CCharacter::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
-  
+    //여기는 파트 오브젝트까지 전부 업데이트 끝난 상황.
+    //m_pGameInstance->sweep
 }
 
 void CCharacter::Late_Update(_float _fTimeDelta)
@@ -40,6 +52,37 @@ void CCharacter::Late_Update(_float _fTimeDelta)
     }
 
 	__super::Late_Update(_fTimeDelta);
+}
+
+void CCharacter::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts)
+{
+    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
+    switch (eShapeUse)
+    {
+    case Client::SHAPE_USE::SHAPE_BODY:
+    {
+        _uint iContactCount = _ModifiableContacts.Get_ContactCount();
+        for (_uint i = 0; i < iContactCount; i++)
+        {
+            //벽이면?
+            if (abs(XMVectorGetY(_ModifiableContacts.Get_Normal(i))) < m_fStepSlopeThreshold)
+            {
+                _ModifiableContacts.Set_DynamicFriction(i, 0.0f);
+                _ModifiableContacts.Set_StaticFriction(i, 0.0f);
+                continue;
+            }
+        }
+        break;
+    }
+    case Client::SHAPE_USE::SHAPE_FOOT:
+        break;
+    case Client::SHAPE_USE::SHAPE_TRIGER:
+        break;
+    case Client::SHAPE_USE::SHAPE_USE_LAST:
+        break;
+    default:
+        break;
+    }
 }
 
 void CCharacter::Stop_Rotate()

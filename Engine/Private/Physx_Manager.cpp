@@ -309,6 +309,58 @@ _bool CPhysx_Manager::Overlap(PxGeometry* _pxGeom, _fvector _vPos, list<CActorOb
 	return isResult;
 }
 
+_bool CPhysx_Manager::SingleSweep(PxGeometry* pxGeom, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, CActorObject** _ppOutActor, RAYCASTHIT* _pOutHit)
+{
+	PxSweepBuffer hitResult;
+	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
+	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
+	PxTransform pxPose(vOrigin, PxQuat(PxIdentity));
+
+	_bool hasHit = m_pPxScene->sweep(
+		*pxGeom, pxPose, vRayDir, _fDistance,hitResult
+	);
+	
+	const PxSweepHit& tHit = hitResult.getAnyHit(0);
+	PxRigidActor* pActor = tHit.actor;
+	ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+	_ppOutActor = nullptr != pActorUserData ? &pActorUserData->pOwner : nullptr;
+	_pOutHit->vNormal = _float3{ tHit.normal.x,tHit.normal.y,tHit.normal.z };
+	_pOutHit->vPosition = _float3{ tHit.position.x,tHit.position.y, tHit.position.z };
+
+	return hasHit;
+}
+
+_bool CPhysx_Manager::MultiSweep(PxGeometry* pxGeom, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits)
+{
+	PxSweepHit pxhits[10];
+	PxSweepBuffer pxSweepBuffer(pxhits, 10);
+	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
+	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
+	PxTransform pxPose(vOrigin, PxQuat(PxIdentity));
+
+	_bool hasHit = m_pPxScene->sweep(
+		*pxGeom, pxPose, vRayDir, _fDistance,pxSweepBuffer
+	);
+
+	if (hasHit) {
+		_uint numHits = pxSweepBuffer.getNbAnyHits(); // 충돌 개수
+
+		for (_uint i = 0; i < numHits; i++) {
+			PxRigidActor* pActor = pxSweepBuffer.touches[i].actor;
+			ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+
+			_OutActors.push_back(nullptr != pActorUserData ? pActorUserData->pOwner : nullptr);
+
+			_OutRaycastHits.push_back({ _float3{ pxSweepBuffer.touches[i].position.x, pxSweepBuffer.touches[i].position.y, pxSweepBuffer.touches[i].position.z }
+			, _float3{pxSweepBuffer.touches[i].normal.x,pxSweepBuffer.touches[i].normal.y,pxSweepBuffer.touches[i].normal.z} });
+		}
+	}
+	return hasHit;
+}
+
+
+
+
 HRESULT CPhysx_Manager::Initialize_Foundation()
 {
 	/* Create PxFoundation */

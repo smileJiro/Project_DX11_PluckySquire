@@ -13,7 +13,7 @@ class CCharacter abstract :   public CContainerObject
 public:
 	typedef struct tagCharacterDesc : public CContainerObject::CONTAINEROBJ_DESC
 	{
-		
+		_float _fStepSlopeThreshold = 0.1f;
 	}CHARACTER_DESC;
 
 protected:
@@ -22,10 +22,15 @@ protected:
 	virtual ~CCharacter() = default;
 
 public:
+	virtual HRESULT			Initialize(void* _pArg) override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
+
+	virtual void OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts)override;
+
 public:
 	STAT& Get_Stat() { return m_tStat; }
+	_float Get_StepSlopeThreshold() { return m_fStepSlopeThreshold; }
 
 	void Stop_Rotate();
 	void Stop_Move();
@@ -50,6 +55,7 @@ protected:
 	_bool	m_isKnockBack = {};
 	_float m_fKnockBackForce = {};
 	_float m_fKnockBackAccTime = {};
+	_float m_fStepSlopeThreshold = 0.1f;
 
 public:	
 	virtual void Free() override;

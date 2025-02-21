@@ -434,7 +434,6 @@ public:
 	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
-	virtual void OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts)override;
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
@@ -480,7 +479,7 @@ public:
 	_float Get_UpForce();
 	_float Get_AnimProgress();
 	_float Get_HeadHeight() { return m_fHeadHeight; }
-	_float Get_StepSlopeThreshold() { return m_fStepSlopeThreshold; }
+
 	_float Get_ArmHeight() { return m_fArmHeight; }
 	_float Get_ArmLength() { return m_fArmLength; }
 	_float Get_AirRotationSpeed() { return m_fAirRotateSpeed; }
@@ -560,7 +559,7 @@ private:
 	_float m_fFootLength = 0.25f;
 	_float m_fAttackForwardingForce = 12.f;
 	_float m_fGroundRotateSpeed = 360.f;
-	_float m_fStepSlopeThreshold = 0.1f;
+
 	_float m_f3DLandAnimHeightThreshold= 0.6f;
 	_float m_f3DJumpPower = 10.5f;
 	_float m_fAirRotateSpeed = 40.f;

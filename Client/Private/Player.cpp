@@ -457,23 +457,10 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 void CPlayer::Update(_float _fTimeDelta)
 {
-    //cout << "X : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[0] << " Y : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[1] << endl;
 
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
-  //  if (COORDINATE_2D == eCoord)
-  //  {
-  //      //// TestCode : 태웅
-  //      _uint iSectionKey = RG_2D + PR2D_SECTION_START;
-  //      if(m_pBody2DColliderCom->Is_Active())
-  //          m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pBody2DColliderCom);
-		//if (m_pBody2DTriggerCom->Is_Active())
-  //          m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_TRIGGER, m_pBody2DTriggerCom);
-		//if (m_pAttack2DTriggerCom->Is_Active())
-		//	m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pAttack2DTriggerCom);
-  //  }
 
-   //cout << "Sneak" << Is_Sneaking() << endl;
 	if (m_bInvincible)
 	{
         m_fInvincibleTImeAcc += _fTimeDelta;
@@ -481,8 +468,6 @@ void CPlayer::Update(_float _fTimeDelta)
 		if (m_fInvincibleTIme <= m_fInvincibleTImeAcc)
 		{
 			m_bInvincible = false;
-            //m_pActorCom->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
-			//m_pBody2DColliderCom->Set_Active(true);
             m_fInvincibleTImeAcc = 0;
 		}
 	}
@@ -599,22 +584,6 @@ void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
         break;
     case Client::SHAPE_USE::SHAPE_FOOT:
-        //cout << "   COntatct Enter";
-
-        //TestCode
-    //    for (auto& pxPairData : _ContactPointDatas)
-    //    {
-    //        if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
-    //        {
-    //            //경사로 벽인지 판단하는데, 낮은 높이애들만 할 것이므로 안씀
-    //            //if (abs(pxPairData.normal.y) < m_fFootSlopeThreshold)
-    //            //높이가 한계점 이하이면
-				//if (Get_FinalPosition().m128_f32[1] < pxPairData.position.y && pxPairData.position.y - m_fFootHeightThreshold <= Get_FinalPosition().m128_f32[1])
-    //            {
-    //                Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
-    //            }
-    //        }
-    //    }
 
         break;
 	case Client::SHAPE_USE::SHAPE_TRIGER:
@@ -632,15 +601,10 @@ void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
     case Client::SHAPE_USE::SHAPE_BODY:
         for (auto& pxPairData : _ContactPointDatas)
         {
-            //_vector vMyPos = Get_FinalPosition();
-            ////천장이면 무시
-            //if (pxPairData.normal.y < 0)
-            //    continue;
-            //닿은 곳의 경사가 너무 급하면 무시
+			//경사가 너ㅏ무 급하면 무시
             if (abs(pxPairData.normal.y) < m_fStepSlopeThreshold)
                 continue;
             m_bOnGround = true;
-            ////cout << "  Contact";
             return;
         }
         break;
@@ -690,36 +654,7 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 
 }
 
-void CPlayer::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts)
-{
-    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
-    switch (eShapeUse)
-    {
-    case Client::SHAPE_USE::SHAPE_BODY:
-    {
-		_uint iContactCount = _ModifiableContacts.Get_ContactCount();
-        for (_uint i = 0; i < iContactCount; i++)
-        {
-            //벽이면?
-            if (abs(XMVectorGetY( _ModifiableContacts.Get_Normal(i))) < m_fStepSlopeThreshold)
-            {
-				_ModifiableContacts.Set_DynamicFriction(i, 0.0f);
-				_ModifiableContacts.Set_StaticFriction(i, 0.0f);
-                continue;
-            }
-        }
-        break;
-    }
-    case Client::SHAPE_USE::SHAPE_FOOT:
-        break;
-    case Client::SHAPE_USE::SHAPE_TRIGER:
-        break;
-    case Client::SHAPE_USE::SHAPE_USE_LAST:
-        break;
-    default:
-        break;
-    }
-}
+
 
 void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
