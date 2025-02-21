@@ -35,6 +35,9 @@ public:
 		_float2					fRenderResolution;
 		_float2					fLevelSizePixels;
 
+		_bool					isImport;
+		json					SectionJson;
+
 		void Book_2D_Build(const _wstring _strBookSectionName)
 		{
 			strSectionName = _strBookSectionName;
@@ -55,14 +58,14 @@ public:
 	/// </summary>
 	/// <param name="_pDesc">SECTION_2D_DESC, nullptr은 처리 불가능</param>
 	/// <param name="_iPriorityKey">PriorityKey</param>
-	virtual HRESULT						Initialize(SECTION_2D_DESC* _pDesc, _uint _iPriorityKey);
+	virtual HRESULT						Initialize(void* _pDesc);
 
 	/// <summary>
 	/// <paramref name="_SectionJson"/>으로부터 Section_2D의 공통정보를 불러온 뒤 각 객체 Initialize를 순서대로 호출한다.
 	/// </summary>
 	/// <param name="_SectionJson">Ref : Client/Bin/MapSaveFiles/2D/Chapter1_Data.json 참조</param>
 	/// <param name="_iPriorityKey">PriorityKey</param>
-	virtual HRESULT						Import(json _SectionJson, _uint _iPriorityKey);
+	virtual HRESULT						Import(void* _pDesc);
 
 public:
 	/// <summary>
