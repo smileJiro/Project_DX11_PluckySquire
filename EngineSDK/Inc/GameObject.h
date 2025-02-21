@@ -34,7 +34,7 @@ public:
 	virtual void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
 	virtual void						On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
 	virtual void						On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
-	virtual void						On_Hit(CGameObject* _pHitter, _int _fDamg) { return; }
+	virtual void						On_Hit(CGameObject* _pHitter, _int _fDamg, _fvector _vForce) { return; }
 protected:/* Component Update */
 	void						Priority_Update_Component(_float _fTimeDelta);
 	void						Update_Component(_float _fTimeDelta);

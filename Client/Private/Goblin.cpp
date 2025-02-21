@@ -4,6 +4,7 @@
 #include "FSM.h"
 #include "DetectionField.h"
 #include "ModelObject.h"
+#include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
 #include "Section_Manager.h"
 
@@ -305,7 +306,7 @@ void CGoblin::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             Set_AnimChangeable(true);
             //풀링에 넣을 시 변경
             //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
-
+            CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
             Event_DeleteObject(this);
             break;
 
@@ -439,9 +440,9 @@ void CGoblin::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
     }
 }
 
-void CGoblin::On_Hit(CGameObject* _pHitter, _int _iDamg)
+void CGoblin::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
-    __super::On_Hit(_pHitter, _iDamg);
+    __super::On_Hit(_pHitter, _iDamg, _vForce);
 
     m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_hit_") + to_wstring(rand() % 5), 50.f);
 }

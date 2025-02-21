@@ -417,10 +417,10 @@ void CZippy::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherColl
     }
 }
 
-void CZippy::On_Hit(CGameObject* _pHitter, _int _iDamg)
+void CZippy::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
 	if (false == m_isDash)
-      __super::On_Hit(_pHitter, _iDamg);
+      __super::On_Hit(_pHitter, _iDamg, _vForce);
 }
 
 _bool CZippy::Has_StateAnim(MONSTER_STATE _eState)

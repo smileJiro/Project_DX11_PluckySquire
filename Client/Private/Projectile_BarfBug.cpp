@@ -165,7 +165,7 @@ void CProjectile_BarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     }
 }
 
-void CProjectile_BarfBug::On_Hit(CGameObject* _pHitter, _float _fDamg)
+void CProjectile_BarfBug::On_Hit(CGameObject* _pHitter, _float _fDamg, _fvector _vForce)
 {
 
 }

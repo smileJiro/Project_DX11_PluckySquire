@@ -672,12 +672,7 @@ HRESULT CEvent_Manager::Execute_Hit(const EVENT& _tEvent)
 	if (nullptr == pHitter || nullptr == pVictim)
 		return E_FAIL;
 
-	pVictim->On_Hit(pHitter, iDamg);
-
-	if (false == XMVector3Equal(vForce, XMVectorZero()))
-	{
-		pVictim->KnockBack(vForce);
-	}
+	pVictim->On_Hit(pHitter, iDamg, vForce);
 
 	delete ((_float3*)_tEvent.Parameters[3]);
 	return S_OK;

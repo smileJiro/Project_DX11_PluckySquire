@@ -154,7 +154,7 @@ void CLightningBolt::Lightning()
     m_p2DColliderComs[0]->Set_Active(true);
 }
 
-void CLightningBolt::On_Hit(CGameObject* _pHitter, _float _fDamg)
+void CLightningBolt::On_Hit(CGameObject* _pHitter, _float _fDamg, _fvector _vForce)
 {
 
 }

@@ -935,7 +935,7 @@ void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	m_pStateMachine->Get_CurrentState()->On_AnimEnd(_eCoord, iAnimIdx);
 }
 
-void CPlayer::On_Hit(CGameObject* _pHitter, _int _fDamg)
+void CPlayer::On_Hit(CGameObject* _pHitter, _int _fDamg, _fvector _vForce)
 {
     if (m_bInvincible)
     {

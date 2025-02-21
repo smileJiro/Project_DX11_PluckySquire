@@ -7,6 +7,7 @@
 #include "Projectile_BarfBug.h"
 #include "DetectionField.h"
 #include "Section_Manager.h"
+#include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
 
 
@@ -213,10 +214,10 @@ void CBarfBug::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, con
     __super::OnContact_Exit(_My, _Other, _ContactPointDatas);
 }
 
-void CBarfBug::On_Hit(CGameObject* _pHitter, _int _iDamg)
+void CBarfBug::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
     //cout << "Barfbug hit" << endl;
-    __super::On_Hit(_pHitter, _iDamg);
+    __super::On_Hit(_pHitter, _iDamg, _vForce);
 
     m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit__barferbug_") + to_wstring(rand() % 4), 50.f);
 }
@@ -462,7 +463,7 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             Set_AnimChangeable(true);
             //풀링에 넣을 시 변경
             //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
-
+            CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
             Event_DeleteObject(this);
             break;
 
