@@ -12,11 +12,17 @@ CBulb::CBulb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 CBulb::CBulb(const CBulb& _Prototype)
 	: CTriggerObject(_Prototype)
+	, m_pFresnelBuffer(_Prototype.m_pFresnelBuffer)
+	, m_tFresnelInfo(_Prototype.m_tFresnelInfo)
 {
+	Safe_AddRef(m_pFresnelBuffer);
 }
 
 HRESULT CBulb::Initialize_Prototype()
 {
+	if (FAILED(Ready_Buffer()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -27,7 +33,10 @@ HRESULT CBulb::Initialize(void* _pArg)
 	pDesc->isCoordChangeEnable = false;
 
 	if (COORDINATE_3D == pDesc->eStartCoord)
+	{
 		Initialize_3D_Object(pDesc);
+
+	}
 
 	if (COORDINATE_2D == pDesc->eStartCoord)
 		Initialize_2D_Object(pDesc);
@@ -40,7 +49,8 @@ HRESULT CBulb::Initialize(void* _pArg)
 	if (FAILED(Ready_Components(pDesc)))
 		return E_FAIL;
 
-	if (COORDINATE_3D == pDesc->eStartCoord) {
+	if (COORDINATE_3D == pDesc->eStartCoord) 
+	{
 		Add_Shape();
 		static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(45.f));
 	
@@ -66,27 +76,151 @@ void CBulb::Update(_float _fTimeDelta)
 
 void CBulb::Late_Update(_float _fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_GEOMETRY, this);
+	if (COORDINATE_3D == Get_CurCoord() && m_pGameInstance->isIn_Frustum_InWorldSpace(m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 1.f))
+	{
+		//ImGui::Begin("Magic Hand Fresenel");
+
+		//if (ImGui::TreeNode("Inner"))
+		//{
+		//	if (ImGui::DragFloat4("Color", (_float*)(&m_tFresnelInfo.vColor), 0.01f))
+		//	{
+		//		m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
+		//	}
+
+		//	if (ImGui::DragFloat("Exp", &m_tFresnelInfo.fExp, 1.f))
+		//	{
+		//		m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
+		//	}
+
+		//	if (ImGui::DragFloat("BaseReflect", &m_tFresnelInfo.fBaseReflect, 0.01f))
+		//	{
+		//		m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
+		//	}
+
+		//	if (ImGui::DragFloat("Strength", &m_tFresnelInfo.fStrength, 0.01f))
+		//	{
+		//		m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
+		//	}
+
+		//	ImGui::TreePop();
+		//}
+
+		//ImGui::End();
+
+	/*	if (ImGui::TreeNode("Inner"))
+	{
+	    if (ImGui::DragFloat4("Color", (_float*)(&m_tFresnelInfo.tInner.vColor), 0.01f))
+	    {
+	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
+	    }
+
+	    if (ImGui::DragFloat("Exp", &m_tFresnelInfo.tInner.fExp, 0.01f))
+	    {
+	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
+	    }
+
+	    if (ImGui::DragFloat("BaseReflect", &m_tFresnelInfo.tInner.fBaseReflect, 0.01f))
+	    {
+	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
+	    }
+
+	    if (ImGui::DragFloat("Strength", &m_tFresnelInfo.tInner.fStrength, 0.01f))
+	    {
+	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
+	    }
+
+	    ImGui::TreePop();
+	}
+
+
+	if (ImGui::TreeNode("Outer"))
+	{
+	    if (ImGui::DragFloat4("Color", (_float*)(&m_tFresnelInfo.tOuter.vColor), 0.01f))
+	    {
+	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
+	    }
+
+	    if (ImGui::DragFloat("Exp", &m_tFresnelInfo.tOuter.fExp, 0.01f))
+	    {
+	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
+	    }
+
+	    if (ImGui::DragFloat("BaseReflect", &m_tFresnelInfo.tOuter.fBaseReflect, 0.01f))
+	    {
+	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
+	    }
+
+	    if (ImGui::DragFloat("Strength", &m_tFresnelInfo.tOuter.fStrength, 0.01f))
+	    {
+	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
+	    }
+
+	    ImGui::TreePop();
+	}*/
+
+		m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BLEND, this);
+	}
 
 	__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CBulb::Render()
 {
-	if (FAILED(Bind_ShaderResources_WVP()))
+	if (FAILED(Bind_ShaderResources_WVP(Get_CurCoord())))
 		return E_FAIL;
 
-	if(COORDINATE_3D==Get_CurCoord())
+	if (COORDINATE_3D == Get_CurCoord())
 	{
-		m_pModelCom[COORDINATE_3D]->Render(m_pShaderCom[COORDINATE_3D], (_uint)PASS_VTXMESH::DEFAULT);
+		{
+			CMesh* pMesh = m_p3DModelCom->Get_Mesh(0);
+
+			if (FAILED(m_p3DModelCom->Bind_Material(m_p3DShaderCom, "g_AlbedoTexture", 0, aiTextureType_DIFFUSE, 0)))
+				return E_FAIL;
+			if (FAILED(m_p3DModelCom->Bind_Material(m_p3DShaderCom, "g_NormalTexture", 0, aiTextureType_NORMALS, 0)))
+				return E_FAIL;
+			/*_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
+			m_p3DShaderCom->Bind_RawValue("g_vDefaultDiffuseColor", &vColor, sizeof(_float4));*/
+			
+			if (FAILED(m_p3DShaderCom->Begin(8)))
+				return E_FAIL;
+		
+			if (FAILED(pMesh->Bind_BufferDesc()))
+				return E_FAIL;
+
+			if (FAILED(pMesh->Render()))
+				return E_FAIL;
+
+		}
+
+		{
+			CMesh* pMesh = m_p3DModelCom->Get_Mesh(1);
+
+			m_p3DShaderCom->Bind_ConstBuffer("MultiFresnels", m_pFresnelBuffer);
+			m_p3DShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4));
+			
+			
+			if (FAILED(m_p3DShaderCom->Begin((_uint)PASS_VTXMESH::FRESNEL)))
+				return E_FAIL;
+
+			if (FAILED(pMesh->Bind_BufferDesc()))
+				return E_FAIL;
+
+			if (FAILED(pMesh->Render()))
+				return E_FAIL;
+	
+		}		
+
+
+		//m_p3DModelCom->Render(m_p3DShaderCom, (_uint)PASS_VTXMESH::DEFAULT);
 	}
 
-	else if (COORDINATE_2D == Get_CurCoord())
-	{
-		m_pModelCom[COORDINATE_2D]->Render(m_pShaderCom[COORDINATE_2D], (_uint)PASS_VTXPOSTEX::SPRITE2D);
-	}
+	//else if (COORDINATE_2D == Get_CurCoord())
+	//{
+	//	m_pModelCom[COORDINATE_2D]->Render(m_pShaderCom[COORDINATE_2D], (_uint)PASS_VTXPOSTEX::SPRITE2D);
+	//}
 
-	return __super::Render();
+
+	return S_OK;
 }
 
 HRESULT CBulb::Initialize_3D_Object(BULB_DESC* _pDesc)
@@ -239,46 +373,72 @@ HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)
 	{
 		// Shader
 		if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_Shader_VtxMesh"),
-			TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_pShaderCom[COORDINATE_3D]))))
+			TEXT("Com_Shader_3D"), reinterpret_cast<CComponent**>(&m_p3DShaderCom))))
 			return E_FAIL;
 
 		// Model
 		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("LightbulbPickup_01"),
-			TEXT("Com_Model_3D"), reinterpret_cast<CComponent**>(&m_pModelCom[COORDINATE_3D]))))
+			TEXT("Com_Model_3D"), reinterpret_cast<CComponent**>(&m_p3DModelCom))))
 			return E_FAIL;
 	}
 
-	else if (COORDINATE_2D == Get_CurCoord())
-	{
-		// Shader
-		if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_Shader_VtxPosTex"),
-			TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderCom[COORDINATE_2D]))))
-			return E_FAIL;
+	//else if (COORDINATE_2D == Get_CurCoord())
+	//{
+	//	// Shader
+	//	if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_Shader_VtxPosTex"),
+	//		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderCom[COORDINATE_2D]))))
+	//		return E_FAIL;
 
-		// Model
-		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Model2D_Bulb"),
-			TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pModelCom[COORDINATE_2D]))))
-			return E_FAIL;
-	}
+	//	// Model
+	//	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Model2D_Bulb"),
+	//		TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pModelCom[COORDINATE_2D]))))
+	//		return E_FAIL;
+	//}
 
 	return S_OK;
 }
 
-HRESULT CBulb::Bind_ShaderResources_WVP()
+HRESULT CBulb::Ready_Buffer()
 {
-	COORDINATE eCoord = Get_CurCoord();
+	//m_tFresnelInfo.vColor = _float4(0.01f, 0.058f, 0.028f, 1.0f);
+	//m_tFresnelInfo.fExp = 0.f;
+	//m_tFresnelInfo.fBaseReflect = 1.2f;
+	//m_tFresnelInfo.fStrength = 0.43f;
 
-	if (FAILED(m_pShaderCom[eCoord]->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
-		return E_FAIL;
+	//m_pGameInstance->CreateConstBuffer(m_tFresnelInfo, D3D11_USAGE_DYNAMIC, &m_pFresnelBuffer);
 
-	_float4x4 ViewMat = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
-	_float4x4 ProjMat = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+	m_tFresnelInfo.tInner.vColor = _float4(0.83f, 0.44f, 0.f, 0.49f);
+	m_tFresnelInfo.tInner.fExp = 2.f;
+	m_tFresnelInfo.tInner.fBaseReflect = 0.14f;
+	m_tFresnelInfo.tInner.fStrength = 0.45f;
 
-	if (FAILED(m_pShaderCom[eCoord]->Bind_Matrix("g_ViewMatrix", &ViewMat)))
-		return E_FAIL;
+	m_tFresnelInfo.tOuter.vColor = _float4(0.85f, 0.56f, 0.17f, 0.28f);
+	m_tFresnelInfo.tOuter.fExp = 0.1f;
+	m_tFresnelInfo.tOuter.fBaseReflect = 3.63f;
+	m_tFresnelInfo.tOuter.fStrength = 0.54f;
 
-	if (FAILED(m_pShaderCom[eCoord]->Bind_Matrix("g_ProjMatrix", &ProjMat)))
-		return E_FAIL;
+	m_pGameInstance->CreateConstBuffer(m_tFresnelInfo, D3D11_USAGE_DYNAMIC, &m_pFresnelBuffer);
+
+	return S_OK;
+}
+
+HRESULT CBulb::Bind_ShaderResources_WVP(COORDINATE eCoordinate)
+{
+	if (COORDINATE_3D == eCoordinate)
+	{
+		if (FAILED(m_p3DShaderCom->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
+			return E_FAIL;
+
+		_float4x4 ViewMat = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
+		_float4x4 ProjMat = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+
+		if (FAILED(m_p3DShaderCom->Bind_Matrix("g_ViewMatrix", &ViewMat)))
+			return E_FAIL;
+
+		if (FAILED(m_p3DShaderCom->Bind_Matrix("g_ProjMatrix", &ProjMat)))
+			return E_FAIL;
+	}
+
 
 	return S_OK;
 }
@@ -311,10 +471,12 @@ CGameObject* CBulb::Clone(void* _pArg)
 
 void CBulb::Free()
 {
-	Safe_Release(m_pShaderCom[COORDINATE_2D]);
-	Safe_Release(m_pShaderCom[COORDINATE_3D]);
-	Safe_Release(m_pModelCom[COORDINATE_2D]);
-	Safe_Release(m_pModelCom[COORDINATE_3D]);
+	//Safe_Release(m_pShaderCom[COORDINATE_2D]);
+	Safe_Release(m_p3DModelCom);
+	//Safe_Release(m_pModelCom[COORDINATE_2D]);
+	Safe_Release(m_p3DShaderCom);
+
+	Safe_Release(m_pFresnelBuffer);
 
 	__super::Free();
 }

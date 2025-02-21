@@ -13,6 +13,7 @@ private:
 public:
 	HRESULT Initialize_Prototype(ifstream& _inFile, const json& _jsonBufferInfo, _fmatrix _PreTransformMatrix, _float _fSpawnRate);
 	virtual HRESULT	Initialize_Module(class CEffect_Module* _pModule) override;
+	virtual HRESULT Initialize_Buffers() override;
 
 	virtual HRESULT Initialize(void* _pArg) override;
 	virtual void	Begin_Update(_float _fTimeDelta) override;

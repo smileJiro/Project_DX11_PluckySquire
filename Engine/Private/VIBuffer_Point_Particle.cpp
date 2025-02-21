@@ -151,6 +151,25 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Prototype(const json& _jsonBufferIn
 #pragma endregion
 
 
+	// Initial Buffer
+	/*ZeroMemory(&BufferDesc, sizeof D3D11_BUFFER_DESC);
+	m_pBuffer->GetDesc(&BufferDesc);
+
+	m_pBufferInitial = nullptr;
+	HRESULT hr = m_pDevice->CreateBuffer(&BufferDesc, nullptr, &m_pBufferInitial);
+	if (FAILED(hr))
+		return hr;
+	m_pContext->CopyResource(m_pBufferInitial, m_pBuffer);
+
+	// Initial SRV
+	ZeroMemory(&SRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	SRVDesc.Buffer.NumElements = m_iNumInstances;
+
+	hr = m_pDevice->CreateShaderResourceView(m_pBufferInitial, &SRVDesc, &m_pSRVInitial);
+	if (FAILED(hr))
+		return E_FAIL;*/
 
 
 	return S_OK;
@@ -180,6 +199,38 @@ HRESULT CVIBuffer_Point_Particle::Initialize_Module(CEffect_Module* _pModule)
 	return S_OK;
 }
 
+HRESULT CVIBuffer_Point_Particle::Initialize_Buffers()
+{
+	// Initial Buffer
+	D3D11_BUFFER_DESC BufferDesc = {};
+	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};
+
+	ZeroMemory(&BufferDesc, sizeof D3D11_BUFFER_DESC);
+	BufferDesc.ByteWidth = m_iNumInstances * m_iInstanceStride;
+	BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	BufferDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;   // Vertex Shader
+	BufferDesc.StructureByteStride = m_iInstanceStride;
+	BufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+
+	D3D11_SUBRESOURCE_DATA BufferData = {};
+	ZeroMemory(&BufferData, sizeof D3D11_SUBRESOURCE_DATA);
+	BufferData.pSysMem = m_pInstanceVertices;
+	if (FAILED(m_pDevice->CreateBuffer(&BufferDesc, &BufferData, &m_pBufferInitial)))
+		return E_FAIL;
+
+	// Initial SRV
+	ZeroMemory(&SRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	SRVDesc.Buffer.NumElements = m_iNumInstances;
+
+	HRESULT hr = m_pDevice->CreateShaderResourceView(m_pBufferInitial, &SRVDesc, &m_pSRVInitial);
+	if (FAILED(hr))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 
 
 HRESULT CVIBuffer_Point_Particle::Initialize(void* _pArg)
@@ -196,13 +247,15 @@ HRESULT CVIBuffer_Point_Particle::Initialize(void* _pArg)
 		D3D11_BIND_SHADER_RESOURCE;   // Vertex Shader
 	BufferDesc.StructureByteStride = m_iInstanceStride;
 	BufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
-
+	
+	// Update Buffer
 	D3D11_SUBRESOURCE_DATA BufferData = {};
 	ZeroMemory(&BufferData, sizeof D3D11_SUBRESOURCE_DATA);
 	BufferData.pSysMem = m_pInstanceVertices;
 	if (FAILED(m_pDevice->CreateBuffer(&BufferDesc, &BufferData, &m_pBuffer)))
 		return E_FAIL;
 
+	// UAV
 	D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc = {};
 	ZeroMemory(&UAVDesc, sizeof D3D11_UNORDERED_ACCESS_VIEW_DESC);
 	UAVDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -211,6 +264,7 @@ HRESULT CVIBuffer_Point_Particle::Initialize(void* _pArg)
 	if (FAILED(m_pDevice->CreateUnorderedAccessView(m_pBuffer, &UAVDesc, &m_pUAV)))
 		return E_FAIL;
 
+	// UAV -> SRV
 	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};
 	ZeroMemory(&SRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
 	SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -220,23 +274,26 @@ HRESULT CVIBuffer_Point_Particle::Initialize(void* _pArg)
 	if (FAILED(m_pDevice->CreateShaderResourceView(m_pBuffer, &SRVDesc, &m_pSRV)))
 		return E_FAIL;
 
-	ZeroMemory(&BufferDesc, sizeof D3D11_BUFFER_DESC);
-	m_pBuffer->GetDesc(&BufferDesc);
+	//// Initial Buffer
+	//ZeroMemory(&BufferDesc, sizeof D3D11_BUFFER_DESC);
+	//m_pBuffer->GetDesc(&BufferDesc);
 
-	m_pBufferInitial = nullptr;
-	HRESULT hr = m_pDevice->CreateBuffer(&BufferDesc, nullptr, &m_pBufferInitial);
-	if (FAILED(hr))
-		return hr;
-	m_pContext->CopyResource(m_pBufferInitial, m_pBuffer);
+	//m_pBufferInitial = nullptr;
+	//HRESULT hr = m_pDevice->CreateBuffer(&BufferDesc, nullptr, &m_pBufferInitial);
+	//if (FAILED(hr))
+	//	return hr;
+	//m_pContext->CopyResource(m_pBufferInitial, m_pBuffer);
 
-	ZeroMemory(&SRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
-	SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
-	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
-	SRVDesc.Buffer.NumElements = m_iNumInstances;
+	//// Initial SRV
+	//ZeroMemory(&SRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	//SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
+	//SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	//SRVDesc.Buffer.NumElements = m_iNumInstances;
 
-	hr = m_pDevice->CreateShaderResourceView(m_pBufferInitial, &SRVDesc, &m_pSRVInitial);
-	if (FAILED(hr))
-		return E_FAIL;
+	//hr = m_pDevice->CreateShaderResourceView(m_pBufferInitial, &SRVDesc, &m_pSRVInitial);
+	//if (FAILED(hr))
+	//	return E_FAIL;
+
 
 
 

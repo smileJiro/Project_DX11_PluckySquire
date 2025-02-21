@@ -20,6 +20,7 @@ public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* _pArg);
 	virtual HRESULT	Initialize_Module(class CEffect_Module* _pModule) = 0;
+	virtual HRESULT Initialize_Buffers() = 0;
 
 	virtual void	Begin_Update(_float _fTimeDelta) = 0;
 	virtual void	Spawn_Burst(_float _fTimeDelta, const _float4x4* _pSpawnMatrix) = 0;
@@ -58,11 +59,11 @@ protected:
 	_uint						m_iInstanceStride = {};				// Instance Buffer 자료형의 크기
 
 	ID3D11Buffer*				m_pBuffer = { nullptr };
-	ID3D11Buffer*				m_pBufferInitial = { nullptr };
 	ID3D11UnorderedAccessView*	m_pUAV = { nullptr };
-	ID3D11ShaderResourceView*	m_pSRVInitial = { nullptr };
 	ID3D11ShaderResourceView*	m_pSRV = { nullptr };
 
+	ID3D11Buffer*				m_pBufferInitial = { nullptr };
+	ID3D11ShaderResourceView*	m_pSRVInitial = { nullptr };
 
 
 protected:

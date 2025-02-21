@@ -408,14 +408,23 @@ HRESULT CMeshEffect_Emitter::Load_TextureInfo(const json& _jsonInfo)
 		for (_int i = 0; i < _jsonInfo["Textures"].size(); ++i)
 		{
 			TEXTURE_TYPE eType = _jsonInfo["Textures"][i]["Type"];
-			_string str = _jsonInfo["Textures"][i]["Path"];
+			_string strPath = _jsonInfo["Textures"][i]["Path"];
 
-			CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, str.c_str());
-			if (nullptr != pTexture)
-				m_Textures[eType] = pTexture;
+			if (m_pGameInstance->Find_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strPath)))
+			{
+				m_Textures[eType] = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_pGameInstance->Get_StaticLevelID(),
+					STRINGTOWSTRING(strPath), nullptr));
+			}
+			else
+			{
+				CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, strPath.c_str());
+				if (nullptr != pTexture)
+					m_Textures[eType] = pTexture;
 
+				m_pGameInstance->Add_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strPath), pTexture);
+			}
 #ifdef _DEBUG
-			m_Textures[eType]->Add_SRVName(STRINGTOWSTRING(str));
+			m_Textures[eType]->Add_SRVName(STRINGTOWSTRING(strPath));
 #endif
 		}
 	}

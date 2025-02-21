@@ -134,7 +134,7 @@ HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 
 		if (FAILED(Bind_Material(_pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_DIFFUSE])))
 		{
-			//continue;
+			int a = 0;
 		}
 
 		if (FAILED(Bind_Material(_pShader, "g_NormalTexture", i, aiTextureType_NORMALS, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_NORMALS])))

@@ -29,7 +29,12 @@ CVIBuffer_Instance::CVIBuffer_Instance(const CVIBuffer_Instance& _Prototype)
 	, m_vShapeScale(_Prototype.m_vShapeScale)
 	, m_vShapeRotation(_Prototype.m_vShapeRotation)
 	, m_vShapePosition(_Prototype.m_vShapePosition)
+
+	, m_pBufferInitial(_Prototype.m_pBufferInitial)
+	, m_pSRVInitial(_Prototype.m_pSRVInitial)
 {
+	Safe_AddRef(m_pBufferInitial);
+	Safe_AddRef(m_pSRVInitial);
 }
 
 HRESULT CVIBuffer_Instance::Initialize_Prototype()
