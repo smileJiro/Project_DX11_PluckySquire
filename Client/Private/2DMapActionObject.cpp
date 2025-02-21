@@ -4,6 +4,7 @@
 #include "Effect2D_Manager.h"
 #include "Section_Manager.h"
 #include "Pooling_Manager.h"
+#include "Character.h"
 
 
 C2DMapActionObject::C2DMapActionObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -245,7 +246,7 @@ void C2DMapActionObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
         break;
     case Client::C2DMapActionObject::ACTIVE_TYPE_DAMEGED:
     {
-        Event_Hit(this, _pOtherObject,1);
+        Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, XMVectorZero());
     }
         break;
     case Client::C2DMapActionObject::ACTIVE_TYPE_MODEL_CLOSE:

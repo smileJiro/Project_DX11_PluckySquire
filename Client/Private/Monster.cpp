@@ -97,10 +97,10 @@ void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 		&&(_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse
 		&& (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
 	{
-		Event_Hit(this, _Other.pActorUserData->pOwner, Get_Stat().iDamg);
 		_vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+		Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), Get_Stat().iDamg, vRepulse);
 		//XMVectorSetY( vRepulse , -1.f);
-		Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), vRepulse);
+		//Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), vRepulse);
 	}
 }
 
@@ -163,8 +163,7 @@ void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherC
 {
 	if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
 	{
-		Event_Hit(this, _pOtherObject, Get_Stat().iDamg);
-		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 300.f);
+		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), Get_Stat().iDamg, XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 300.f);
 	}
 }
 
@@ -200,6 +199,8 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg)
 	{
 		Set_AnimChangeable(true);
 		Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+
+		//Effect
 		if (COORDINATE_3D == Get_CurCoord())
 			CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
 

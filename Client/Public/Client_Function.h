@@ -37,7 +37,8 @@ namespace Client
 	void Event_Book_Main_Change(_uint _iCameraType);
 	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID, _bool _bEnable);
 	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID, _bool _bEnable);
-	void Event_Hit(CGameObject* _pHitter,CGameObject* _pVictim ,_int _iDamg);
+	void Event_Hit(CGameObject* _pHitter,CCharacter* _pVictim ,_int _iDamg, _fvector _vKnockBackDirection, _float _fKnockBackPower);
+	void Event_Hit(CGameObject* _pHitter, CCharacter* _pVictim ,_int _iDamg, _fvector _vKnockBackForce);
 	void Event_Get_Bulb(_uint _iCoordinate);
 	void Event_KnockBack(CCharacter* _pObject,  _fvector _vDirection, _float _fPower);
 	void Event_KnockBack(CCharacter* _pObject,  _fvector _vForce);

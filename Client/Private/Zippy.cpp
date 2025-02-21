@@ -392,7 +392,7 @@ void CZippy::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCol
         if (true == m_isElectric)
         {
             static_cast<CPlayer*>(_pOtherObject)->Set_State(CPlayer::ELECTRIC);
-            Event_Hit(this, _pOtherObject, Get_Stat().iDamg);
+            Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), Get_Stat().iDamg, XMVectorZero());
             m_isElectric = false;
         }
         else

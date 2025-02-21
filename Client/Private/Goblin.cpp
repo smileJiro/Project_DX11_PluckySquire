@@ -392,10 +392,10 @@ void CGoblin::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
     {
         if ((_uint)MONSTER_STATE::ATTACK == m_iState)
         {
-            Event_Hit(this, _Other.pActorUserData->pOwner, (_float)Get_Stat().iDamg);
             _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
             XMVectorSetY(vRepulse, -1.f);
-            Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
+            Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), (_float)Get_Stat().iDamg, vRepulse);
+            //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
             Attack();
             Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
         }
