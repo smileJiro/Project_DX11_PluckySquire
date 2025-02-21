@@ -13,10 +13,10 @@ class CSection abstract: public CBase
 public:
 	typedef struct tagSectionDesc
 	{
-		_int	 iLayerGroupCount = 1;
-		_wstring strSectionName;
-		_uint iGroupID = RG_2D;
-		_uint iPriorityID = 0;
+		_int		iLayerGroupCount = 1;
+		_wstring	strSectionName;
+		_uint		iGroupID = RG_2D;
+		_uint		iPriorityID = 0;
 	}SECTION_DESC;
 
 protected:
