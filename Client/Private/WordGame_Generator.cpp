@@ -9,11 +9,10 @@
 #include "2DMapWordObject.h"
 
 CWordGame_Generator::CWordGame_Generator(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:
-	m_pDevice(_pDevice),
-	m_pContext(_pContext),
-	m_pGameInstance(CGameInstance::GetInstance()),
-	CBase()
+	:CBase()
+	,m_pDevice(_pDevice)
+	,m_pContext(_pContext)
+	,m_pGameInstance(CGameInstance::GetInstance())
 {
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
@@ -202,9 +201,9 @@ CWordGame_Generator* CWordGame_Generator::Create(ID3D11Device* _pDevice, ID3D11D
 
 void CWordGame_Generator::Free()
 {
-	Safe_Release(m_pDevice);
-	Safe_Release(m_pContext);
-	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pWordPrinter);
+	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
 	__super::Free();
 }

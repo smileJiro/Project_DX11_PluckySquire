@@ -251,8 +251,8 @@ void CPooling_Manager::Free()
 	m_ObjectsDescs.clear();
 
 	Safe_Release(m_pGameInstance);
-	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
 
 	__super::Free();
 }

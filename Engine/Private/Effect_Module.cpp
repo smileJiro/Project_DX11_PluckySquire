@@ -1,6 +1,7 @@
 #include "Effect_Module.h"
 #include "GameInstance.h"
 
+static int iCount = 0;
 CEffect_Module::CEffect_Module()
     : m_pGameInstance(CGameInstance::GetInstance())
 {
@@ -71,6 +72,7 @@ _int CEffect_Module::Update_Module(CCompute_Shader* _pCShader)
 void CEffect_Module::Free()
 {
     Safe_Release(m_pGameInstance);
+    --iCount;
 
     __super::Free();
 }
@@ -100,8 +102,6 @@ void CEffect_Module::Tool_Module_Update()
         m_isInit = !m_isInit;
         m_isChanged = true;
     }
-
-
 
 }
 

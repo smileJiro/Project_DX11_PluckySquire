@@ -506,9 +506,6 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 			return S_OK;
 		
 		}
-
-		
-		
 	}
 	break;
 
