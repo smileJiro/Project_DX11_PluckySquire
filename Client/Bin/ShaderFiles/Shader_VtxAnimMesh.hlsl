@@ -312,8 +312,6 @@ float Compute_Fresnel(float3 vNormal, float3 vViewDir, float fBaseReflect, float
     return saturate(fFresnelFactor * fStrength);
 }
 
-float3 g_fBrightness = float3(0.2126, 0.7152, 0.0722);
-float g_fBloomThreshold;
 
 PS_COLOR PS_FRESNEL(PS_IN In)
 {

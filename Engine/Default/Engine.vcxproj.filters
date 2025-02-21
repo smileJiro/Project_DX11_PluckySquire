@@ -304,6 +304,9 @@
     <Filter Include="01.Utility\04.Components\Gravity">
       <UniqueIdentifier>{4579584a-c173-4db3-9c87-aca4caf26a70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Trail">
+      <UniqueIdentifier>{80bc18ca-0ba5-40d8-9fb2-4b33013b0e51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -624,6 +627,9 @@
     <ClInclude Include="..\Public\UV_Module.h">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Trail.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Trail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -931,6 +937,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UV_Module.cpp">
       <Filter>01.Utility\03.Objects\Effect\Emitter\Module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Trail.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Trail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

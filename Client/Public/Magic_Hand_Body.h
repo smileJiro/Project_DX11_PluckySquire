@@ -1,26 +1,15 @@
 #pragma once
 #include "ModelObject.h"
 
-typedef struct tagFresnel
-{
-	_float4 vColor = { 1.f, 1.f, 1.f, 1.f };
 
-	_float	fExp = 2.f;
-	_float	fBaseReflect = 1.0f;
-	_float	fStrength = 1.0f;
-	_float	fDummy;
-
-} FRESNEL_INFO;
-
-typedef struct tagFresnels
-{
-	FRESNEL_INFO tInner;
-	FRESNEL_INFO tOuter;
-} MULTI_FRESNEL_INFO;
 
 class CMagic_Hand_Body : public CModelObject
 {
-
+	typedef struct tagFresnels
+	{
+		FRESNEL_INFO tInner;
+		FRESNEL_INFO tOuter;
+	} MULTI_FRESNEL_INFO;
 private:
 	CMagic_Hand_Body(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CMagic_Hand_Body(const CMagic_Hand_Body& _Prototype);

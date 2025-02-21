@@ -160,9 +160,6 @@ HRESULT CMagic_Hand_Body::Bind_ShaderResources()
     }
 
 
-
-    \
-
     return S_OK;
 }
 

@@ -305,6 +305,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\VIBuffer_Point.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect_Vertical.h" />
     <ClInclude Include="..\public\VIBuffer_Terrain.h" />
+    <ClInclude Include="..\public\VIBuffer_Trail.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\2DModel.cpp" />
@@ -413,6 +414,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\VIBuffer_Point.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect_Vertical.cpp" />
     <ClCompile Include="..\private\VIBuffer_Terrain.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Trail.cpp" />
     <ClCompile Include="..\Public\Engine_Struct.cpp" />
   </ItemGroup>
   <ItemGroup>

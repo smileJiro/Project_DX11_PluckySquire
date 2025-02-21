@@ -10,7 +10,13 @@ END
 BEGIN(Client)
 class CBulb  final : public CTriggerObject
 {
-public:
+	typedef struct tagFresnels
+	{
+		FRESNEL_INFO tInner;
+		FRESNEL_INFO tOuter;
+	} MULTI_FRESNEL_INFO;
+
+public:	
 	typedef struct tagBulbDesc : public CTriggerObject::TRIGGEROBJECT_DESC
 	{
 
@@ -30,6 +36,7 @@ public:
 		BULB_ALL = 3,
 		BULB_STATE_END
 	};
+
 
 private:
 	explicit CBulb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -53,8 +60,14 @@ public:
 	virtual void				On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 
 private:
-	CShader*				m_pShaderCom[COORDINATE_LAST] = {nullptr};
-	C3DModel*				m_pModelCom[COORDINATE_LAST] = { nullptr };
+	//CShader*				m_pShaderCom[COORDINATE_LAST] = {nullptr};
+	//CModel*				m_pModelCom[COORDINATE_LAST] = { nullptr };
+
+	C3DModel*				m_p3DModelCom = { nullptr };
+	CShader*				m_p3DShaderCom = { nullptr };
+	ID3D11Buffer*			m_pFresnelBuffer = { nullptr };
+
+	MULTI_FRESNEL_INFO			m_tFresnelInfo;
 
 private:
 	const _float4x4*		m_pTargetWorld = { nullptr };
@@ -68,7 +81,8 @@ private:
 
 private:
 	HRESULT					Ready_Components(BULB_DESC* _pArg);
-	HRESULT					Bind_ShaderResources_WVP();
+	HRESULT					Ready_Buffer(); // Initialize_Prototype에서 준비,
+	HRESULT					Bind_ShaderResources_WVP(COORDINATE eCoordinate);
 
 	void					Add_Shape();
 	void					Sticking(_float _fTimeDelta);
@@ -78,5 +92,7 @@ public:
 	static CBulb*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;
 	virtual void			Free() override;
+
+
 };
 END

@@ -139,7 +139,7 @@ HRESULT CMagic_Hand::Ready_PartObjects()
     Desc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     Desc.strModelPrototypeTag_3D = L"Prototype_Model_MagicHand";
     Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
-    Desc.iShaderPass_3D = 6;
+    Desc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::FRESNELS;
     Desc.iPriorityID_3D = PR3D_BLEND;
     Desc.iRenderGroupID_3D = RG_3D;
     Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
