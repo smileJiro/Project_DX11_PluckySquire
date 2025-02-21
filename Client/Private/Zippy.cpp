@@ -312,19 +312,22 @@ void CZippy::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
     case ELEC_IN_DOWN:
         pModelObject->Switch_Animation(ELEC_DOWN);
+        Set_AnimChangeable(true);
         break;
     case ELEC_IN_RIGHT:
         pModelObject->Switch_Animation(ELEC_RIGHT);
+        Set_AnimChangeable(true);
         break;
     case ELEC_IN_UP:
         pModelObject->Switch_Animation(ELEC_UP);
-        break;
-
-    case ELEC_DOWN:
-    case ELEC_RIGHT:
-    case ELEC_UP:
         Set_AnimChangeable(true);
         break;
+
+    //case ELEC_DOWN:
+    //case ELEC_RIGHT:
+    //case ELEC_UP:
+    //    Set_AnimChangeable(true);
+    //    break;
 
 
     case DASH_OUT_DOWN:
@@ -394,6 +397,8 @@ void CZippy::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCol
             static_cast<CPlayer*>(_pOtherObject)->Set_State(CPlayer::ELECTRIC);
             Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), Get_Stat().iDamg, XMVectorZero());
             m_isElectric = false;
+            Change_Animation();
+            m_fAccElecTime = 0.f;
         }
         else
         {
@@ -419,8 +424,13 @@ void CZippy::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherColl
 
 void CZippy::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
-	if (false == m_isDash)
-      __super::On_Hit(_pHitter, _iDamg, _vForce);
+    if (true == m_isDash)
+    {
+        //대시 중일 때는 대시를 풀었다가 다시 대시공격하도록
+        m_fAccDistance = 0.f;
+        Attack();
+    }
+    __super::On_Hit(_pHitter, _iDamg, _vForce);
 }
 
 _bool CZippy::Has_StateAnim(MONSTER_STATE _eState)

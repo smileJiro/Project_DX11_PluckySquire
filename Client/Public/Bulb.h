@@ -5,6 +5,7 @@ BEGIN(Engine)
 class CGameObject;
 class CShader;
 class C3DModel;
+class C2DModel;
 END
 
 BEGIN(Client)
@@ -64,7 +65,9 @@ private:
 	//CModel*				m_pModelCom[COORDINATE_LAST] = { nullptr };
 
 	C3DModel*				m_p3DModelCom = { nullptr };
+	C2DModel*				m_p2DModelCom = { nullptr };
 	CShader*				m_p3DShaderCom = { nullptr };
+	CShader*				m_p2DShaderCom = { nullptr };
 	ID3D11Buffer*			m_pFresnelBuffer = { nullptr };
 
 	MULTI_FRESNEL_INFO			m_tFresnelInfo;
