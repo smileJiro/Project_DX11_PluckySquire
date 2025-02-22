@@ -96,7 +96,6 @@ void CMainApp::Progress(_float _fTimeDelta)
 
 	// TODO :: 여기가 맞는지? >> 맞는 것 같삼.
 	CSection_Manager::GetInstance()->Section_AddRenderGroup_Process();
-
 	if (IS_IMPORT_IMGUI)
 		m_pGameInstance->End_Imgui();
 

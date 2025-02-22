@@ -25,6 +25,7 @@ public:
 	PxMaterial*					Get_Material(ACTOR_MATERIAL _eType) const {	return m_pPxMaterial[(_uint)_eType]; }
 	_uint						Create_ShapeID() { return m_iShapeInstanceID++; };
 	_float						Get_Gravity();
+	_uint						Get_NumThreads() const { return m_iNumThreads; }
 private:
 	ID3D11Device*				m_pDevice = nullptr;
 	ID3D11DeviceContext*		m_pContext = nullptr;
@@ -46,7 +47,7 @@ private: /* Visual Debugger */
 	PxPvd*						m_pPxPvd = nullptr;
 
 private: /* iNumThreads */
-	static constexpr _uint		s_iNumThreads = 4;
+	_uint		m_iNumThreads = 4;
 
 private:
 	PxDefaultAllocator			m_Allocator = {};

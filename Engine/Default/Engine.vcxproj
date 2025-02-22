@@ -238,6 +238,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\Particle_Mesh_Emitter.h" />
     <ClInclude Include="..\public\SpriteEffect_Emitter.h" />
     <ClInclude Include="..\public\RenderTarget_MSAA.h" />
+    <ClInclude Include="..\public\ThreadPool.h" />
     <ClInclude Include="..\public\Translation_Module.h" />
     <ClInclude Include="..\public\Effect_System.h" />
     <ClInclude Include="..\public\Particle_Sprite_Emitter.h" />
@@ -352,6 +353,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp" />
     <ClCompile Include="..\private\RenderTarget_MSAA.cpp" />
     <ClCompile Include="..\private\SpriteEffect_Emitter.cpp" />
+    <ClCompile Include="..\private\ThreadPool.cpp" />
     <ClCompile Include="..\private\Translation_Module.cpp" />
     <ClCompile Include="..\private\Effect_System.cpp" />
     <ClCompile Include="..\private\Particle_Sprite_Emitter.cpp" />

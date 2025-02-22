@@ -21,11 +21,11 @@
 #include "GlobalFunction_Manager.h"
 #include "Collision_Manager.h"
 
-
 #include "Physx_EventCallBack.h"
 #include "Layer.h"
 #include "ModelObject.h"
 #include "ContainerObject.h"
+
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -49,6 +49,14 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 
 	m_pPhysx_Manager = CPhysx_Manager::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pPhysx_Manager)
+		return E_FAIL;
+
+	_uint iNumThreads = m_pPhysx_Manager->Get_NumThreads();
+	unsigned int numCores = std::thread::hardware_concurrency();
+	std::cout << "Logical cores: " << numCores << std::endl;
+	_uint iNumThreadPoolSize = numCores - iNumThreads;
+	m_pThreadPool = CThreadPool::Create(iNumThreadPoolSize);
+	if (nullptr == m_pThreadPool)
 		return E_FAIL;
 
 	m_pD3DUtils = CD3DUtils::Create(*ppDevice, *ppContext);
@@ -162,6 +170,8 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	/* 아래부턴 Update와 LateUpdate의 사이 시점으로 본다.*/
 	m_pLevel_Manager->Update(fTimeDelta); // 현재 여기서 Physx 돌리고있음.
+
+
 	m_pCollision_Manager->Update();
 }
 
@@ -195,7 +205,9 @@ HRESULT CGameInstance::Draw()
 	if (false == m_isNewRenderer)
 		m_pRenderer->Draw_RenderObject();
 	else
+	{
 		m_pNewRenderer->Draw_RenderObject();
+	}
 
 
 	m_pLevel_Manager->Render();
@@ -1475,6 +1487,7 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pPrototype_Manager);
 	Safe_Release(m_pCubeMap);
 	Safe_Release(m_pPhysx_Manager);
+	Safe_Release(m_pThreadPool);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pGraphic_Device);
 

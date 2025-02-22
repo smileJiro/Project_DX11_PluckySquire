@@ -76,89 +76,9 @@ void CBulb::Update(_float _fTimeDelta)
 
 void CBulb::Late_Update(_float _fTimeDelta)
 {
-	if (COORDINATE_3D == Get_CurCoord() && m_pGameInstance->isIn_Frustum_InWorldSpace(m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 1.f))
+	if (COORDINATE_3D == Get_CurCoord() && false == m_isFrustumCulling)
 	{
-		//ImGui::Begin("Magic Hand Fresenel");
-
-		//if (ImGui::TreeNode("Inner"))
-		//{
-		//	if (ImGui::DragFloat4("Color", (_float*)(&m_tFresnelInfo.vColor), 0.01f))
-		//	{
-		//		m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
-		//	}
-
-		//	if (ImGui::DragFloat("Exp", &m_tFresnelInfo.fExp, 1.f))
-		//	{
-		//		m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
-		//	}
-
-		//	if (ImGui::DragFloat("BaseReflect", &m_tFresnelInfo.fBaseReflect, 0.01f))
-		//	{
-		//		m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
-		//	}
-
-		//	if (ImGui::DragFloat("Strength", &m_tFresnelInfo.fStrength, 0.01f))
-		//	{
-		//		m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
-		//	}
-
-		//	ImGui::TreePop();
-		//}
-
-		//ImGui::End();
-
-	/*	if (ImGui::TreeNode("Inner"))
-	{
-	    if (ImGui::DragFloat4("Color", (_float*)(&m_tFresnelInfo.tInner.vColor), 0.01f))
-	    {
-	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
-	    }
-
-	    if (ImGui::DragFloat("Exp", &m_tFresnelInfo.tInner.fExp, 0.01f))
-	    {
-	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
-	    }
-
-	    if (ImGui::DragFloat("BaseReflect", &m_tFresnelInfo.tInner.fBaseReflect, 0.01f))
-	    {
-	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
-	    }
-
-	    if (ImGui::DragFloat("Strength", &m_tFresnelInfo.tInner.fStrength, 0.01f))
-	    {
-	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
-	    }
-
-	    ImGui::TreePop();
-	}
-
-
-	if (ImGui::TreeNode("Outer"))
-	{
-	    if (ImGui::DragFloat4("Color", (_float*)(&m_tFresnelInfo.tOuter.vColor), 0.01f))
-	    {
-	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
-	    }
-
-	    if (ImGui::DragFloat("Exp", &m_tFresnelInfo.tOuter.fExp, 0.01f))
-	    {
-	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
-	    }
-
-	    if (ImGui::DragFloat("BaseReflect", &m_tFresnelInfo.tOuter.fBaseReflect, 0.01f))
-	    {
-	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
-	    }
-
-	    if (ImGui::DragFloat("Strength", &m_tFresnelInfo.tOuter.fStrength, 0.01f))
-	    {
-	        m_pGameInstance->UpdateConstBuffer(m_tFresnelInfo, m_pFresnelBuffer);
-	    }
-
-	    ImGui::TreePop();
-	}*/
-
-		m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BLEND, this);
+		//m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BLEND, this);
 	}
 
 	__super::Late_Update(_fTimeDelta);
