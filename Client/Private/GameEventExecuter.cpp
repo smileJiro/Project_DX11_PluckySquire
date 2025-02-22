@@ -360,7 +360,7 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
         m_fTimer += _fTimeDelta;
 
         if (false == m_isStart) {
-            CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
+            //CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
 			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
 			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
             m_isStart = true;
@@ -395,7 +395,7 @@ void CGameEventExecuter::Chapter2_Intro(_float _fTimeDelta)
     }
     else if (1 == m_iStep) {
         if (false == m_isStart) {
-            CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
+            //CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
             m_isStart = true;
             m_iStep++;
         }
@@ -512,12 +512,13 @@ CGameObject* CGameEventExecuter::Clone(void* _pArg)
 
 void CGameEventExecuter::Free()
 {
+	Safe_Release(m_pGameInstance);
 	__super::Free();
 }
 
 
 HRESULT CGameEventExecuter::Cleanup_DeadReferences()
 {
-	Safe_Release(m_pGameInstance);
+
 	return S_OK;
 }

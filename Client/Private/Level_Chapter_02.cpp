@@ -237,8 +237,8 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 
 
-	CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_Intro"),
-		50);
+	//CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_Intro"),
+	//	50);
 
 	return S_OK;
 }

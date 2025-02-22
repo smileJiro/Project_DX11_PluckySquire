@@ -51,6 +51,7 @@ HRESULT CSection::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint
 
     _pGameObject->Set_Include_Section_Name(m_strName);
     _pGameObject->Set_Active(Is_Active());
+    Safe_AddRef(_pGameObject);
     return S_OK; 
 }
 
@@ -60,7 +61,7 @@ HRESULT CSection::Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject)
         return E_FAIL;
 
     auto pLayer = Get_Include_Layer(_pGameObject);
-    
+    Safe_Release(_pGameObject);
     if (nullptr != pLayer)
         return pLayer->Remove_GameObject(_pGameObject);
     else
@@ -119,9 +120,22 @@ void CSection::Clear_GameObjects(_bool _isAllClear, _uint _iLayerIndex)
     /* 해당 함수는 Pooling 객체 여부 고려하지 않음. 무조건 삭제 */
     if (_isAllClear)
         for (_uint i = 0; i < m_iLayerGroupCount; i++)
+        {
+            auto GameObjects = m_Layers[i]->Get_GameObjects();
+
+            for (auto& pGameObject : GameObjects)
+                Safe_Release(pGameObject);
             m_Layers[i]->Clear_GameObjects();
+        }
     else
+    {
+        auto GameObjects = m_Layers[_iLayerIndex]->Get_GameObjects();
+
+        for (auto& pGameObject : GameObjects)
+            Safe_Release(pGameObject);
+
         m_Layers[_iLayerIndex]->Clear_GameObjects();
+    }
 
 }
 
@@ -160,21 +174,19 @@ void CSection::Active_OnDisable()
     SetActive_GameObjects(false);
 }
 
-//CSection* CSection::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_DESC* pDesc)
-//{
-//    CSection* pInstance = new CSection(_pDevice, _pContext);
-//    if (FAILED(pInstance->Initialize(pDesc)))
-//    {
-//        MSG_BOX("Failed Create CSection Class");
-//        Safe_Release(pInstance);
-//    }
-//    return pInstance;
-//}
 
 void CSection::Free()
 {
     for (_uint i = 0; i < m_iLayerGroupCount; i++)
+    {
+        auto GameObjects = m_Layers[i]->Get_GameObjects();
+        
+        for (auto pGameObject : GameObjects)
+            Safe_Release(pGameObject);
+
         Safe_Release(m_Layers[i]);
+    }
+    
 
     Safe_Delete_Array(m_Layers);
 
