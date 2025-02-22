@@ -95,6 +95,10 @@ private:
 	class CPlayer* m_pPlayer = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;
 
+	// Trail È¿°ú
+	class CSword_Trail* m_pTrailEffect = { nullptr };
+	_float				m_fGenerateEffectTime = 0.f;
+
 public:
 	static CPlayerSword* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

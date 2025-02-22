@@ -291,7 +291,7 @@ HRESULT CEvent_Manager::Execute_LevelChange(const EVENT& _tEvent)
 		pChangeLevel = CLevel_Chapter_Test::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
 		break;
 	case Client::LEVEL_CAMERA_TOOL:
-		pChangeLevel = CLevel_Camera_Tool_Client::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+		//pChangeLevel = CLevel_Camera_Tool_Client::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
 		break;
 	default:
 		break;

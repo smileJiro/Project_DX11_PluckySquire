@@ -1099,6 +1099,9 @@
     <ClInclude Include="..\Public\Camera_CutScene_Save.h">
       <Filter>02.GameObjects\Camera\CutScene\Tool</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Sword_Trail.h">
+      <Filter>02.GameObjects\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1721,6 +1724,9 @@
     <ClCompile Include="..\Private\Level_Camera_Tool_Client.cpp">
       <Filter>01.Levels\04. Camera_Tool</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Sword_Trail.cpp">
+      <Filter>02.GameObjects\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1770,6 +1776,9 @@
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_PBRPractice.hlsl">
       <Filter>97.ShaderFiles\PBR</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Trail.hlsl">
+      <Filter>97.ShaderFiles\Effect</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

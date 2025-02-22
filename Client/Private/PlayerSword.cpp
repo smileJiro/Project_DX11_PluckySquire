@@ -6,7 +6,7 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"     
 #include "Camera_Manager.h"
-
+#include "Sword_Trail.h"
 
 CPlayerSword::CPlayerSword(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -115,6 +115,18 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
         return E_FAIL;
 	m_pBody2DColliderCom = m_p2DColliderComs[0];
 	Safe_AddRef(m_pBody2DColliderCom);
+
+    // Trail Effect
+    CPartObject::PARTOBJECT_DESC SwordTrailDesc = {};
+    SwordTrailDesc.eStartCoord = COORDINATE_3D;
+    SwordTrailDesc.iCurLevelID = m_iCurLevelID;
+    SwordTrailDesc.isCoordChangeEnable = false;
+    SwordTrailDesc.pParentMatrices[COORDINATE_3D] = &m_WorldMatrices[COORDINATE_3D];
+    m_pTrailEffect = static_cast<CSword_Trail*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_SwordTrail"), &SwordTrailDesc));
+
+    if (nullptr == m_pTrailEffect)
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -200,11 +212,29 @@ void CPlayerSword::Update(_float _fTimeDelta)
     //cout << m_pActorCom->Get_Shapes()[0]->getActor() << endl;
 
     __super::Update(_fTimeDelta);
+
+    // 
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        m_pTrailEffect->Update(_fTimeDelta);
+        if (m_bAttackEnable)
+        {
+            m_fGenerateEffectTime += _fTimeDelta;
+            if (0.001f <= m_fGenerateEffectTime)
+            {
+                m_pTrailEffect->Add_Point(XMVectorSet(0.f, 0.f, 0.55f, 1.f));
+                m_fGenerateEffectTime = 0.f;
+            }
+        }
+    }
 }
 
 void CPlayerSword::Late_Update(_float _fTimeDelta)
 {
     __super::Late_Update(_fTimeDelta);
+
+    if (COORDINATE_3D == Get_CurCoord())
+        m_pTrailEffect->Late_Update(_fTimeDelta);
 }
 
 HRESULT CPlayerSword::Render()
@@ -594,6 +624,7 @@ CGameObject* CPlayerSword::Clone(void* _pArg)
 
 void CPlayerSword::Free()
 {
+    Safe_Release(m_pTrailEffect);
 	Safe_Release(m_pBody2DColliderCom);
     for (CGameObject* pObj : m_AttckedObjects)
     {
