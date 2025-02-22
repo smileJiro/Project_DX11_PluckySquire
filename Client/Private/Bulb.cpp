@@ -4,6 +4,8 @@
 #include "GameInstance.h"
 #include "Player.h"
 #include "Effect_Manager.h"
+#include "Effect2D_Manager.h"
+#include "Section_Manager.h"
 
 CBulb::CBulb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CTriggerObject(_pDevice, _pContext)
@@ -217,6 +219,7 @@ HRESULT CBulb::Render()
 	else if (COORDINATE_2D == Get_CurCoord())
 	{
 		m_p2DModelCom->Render(m_p2DShaderCom, (_uint)PASS_VTXPOSTEX::SPRITE2D);
+		__super::Render();
 	}
 
 
@@ -288,10 +291,26 @@ void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CBulb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
+	if(true == _pMyCollider->Is_Trigger())
 	{
-		Event_Get_Bulb(COORDINATE_2D);
-		Event_DeleteObject(this);
+		if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
+		{
+			if (BULB_2DCOLLIDER_USE::BULB == _pMyCollider->Get_ColliderUse())
+
+			{
+				Event_Get_Bulb(COORDINATE_2D);
+
+				//Effect
+				//CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("health_pickup_small"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
+				
+				Event_DeleteObject(this);
+			}
+			if (BULB_2DCOLLIDER_USE::BULB_STICKING == _pMyCollider->Get_ColliderUse())
+			{
+				m_pTargetWorld = _pOtherObject->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+				m_isSticking = true;
+			}
+		}
 	}
 }
 
@@ -320,12 +339,25 @@ void CBulb::Sticking(_float _fTimeDelta)
 	_vector vTargetPos;
 	memcpy(&vTargetPos, m_pTargetWorld->m[3], sizeof(_float4));
 	
-	vTargetPos = XMVectorSetY(vTargetPos, XMVectorGetY(vTargetPos) + 0.6f);
-	_vector vPos = Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+	if(COORDINATE_3D == Get_CurCoord())
+	{
+		vTargetPos = XMVectorSetY(vTargetPos, XMVectorGetY(vTargetPos) + 0.6f);
+		_vector vPos = Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
 
-	vPos = XMVectorLerp(vPos, vTargetPos, 0.3f);
+		vPos = XMVectorLerp(vPos, vTargetPos, 0.3f);
 
-	Get_ActorCom()->Set_GlobalPose({ XMVectorGetX(vPos), XMVectorGetY(vPos), XMVectorGetZ(vPos) });
+		Get_ActorCom()->Set_GlobalPose({ XMVectorGetX(vPos), XMVectorGetY(vPos), XMVectorGetZ(vPos) });
+	}
+	
+	else if (COORDINATE_2D == Get_CurCoord())
+	{
+		_vector vPos = Get_FinalPosition();
+
+		vPos = XMVectorLerp(vPos, vTargetPos, 0.3f);
+
+		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vPos);
+	}
+
 }
 
 void CBulb::Default_Move(_float _fTimeDelta)
@@ -370,6 +402,20 @@ void CBulb::Default_Move(_float _fTimeDelta)
 	//}
 }
 
+void CBulb::Active_OnEnable()
+{
+	__super::Active_OnEnable();
+
+
+}
+
+void CBulb::Active_OnDisable()
+{
+	m_isSticking = false;
+
+	__super::Active_OnDisable();
+}
+
 HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)
 {
 	if (COORDINATE_3D == Get_CurCoord())
@@ -396,6 +442,43 @@ HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)
 		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Model2D_Bulb"),
 			TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_p2DModelCom))))
 			return E_FAIL;
+
+		//2D Collider
+		_float fScaleX = Get_ControllerTransform()->Get_Scale().x;
+		_float fScaleY = Get_ControllerTransform()->Get_Scale().y;
+
+		CCollider* pCollider = nullptr;
+
+		CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+		CircleDesc.pOwner = this;
+		CircleDesc.fRadius = 20.f;
+		CircleDesc.vScale = { 1.f/ fScaleX, 1.f/ fScaleY };
+		CircleDesc.vOffsetPosition = { 0.f, 0.f };
+		CircleDesc.isBlock = false;
+		CircleDesc.isTrigger = true;
+		CircleDesc.iCollisionGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
+		CircleDesc.iColliderUse = (_uint)BULB;
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+			TEXT("Com_2DBulbCollider"), reinterpret_cast<CComponent**>(&pCollider), &CircleDesc)))
+			return E_FAIL;
+
+		m_p2DColliderComs.push_back(pCollider);
+
+		pCollider = nullptr;
+		CircleDesc = {};
+		CircleDesc.pOwner = this;
+		CircleDesc.fRadius = 100.f;
+		CircleDesc.vScale = { 1.f / fScaleX, 1.f / fScaleY };
+		CircleDesc.vOffsetPosition = { 0.f, 0.f };
+		CircleDesc.isBlock = false;
+		CircleDesc.isTrigger = true;
+		CircleDesc.iCollisionGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
+		CircleDesc.iColliderUse = (_uint)BULB_STICKING;
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+			TEXT("Com_2DBulbStickingCollider"), reinterpret_cast<CComponent**>(&pCollider), &CircleDesc)))
+			return E_FAIL;
+
+		m_p2DColliderComs.push_back(pCollider);
 	}
 
 	return S_OK;
@@ -443,16 +526,15 @@ HRESULT CBulb::Bind_ShaderResources_WVP(COORDINATE eCoordinate)
 	}
 	else if (COORDINATE_2D == eCoordinate)
 	{
-		if (FAILED(m_p2DShaderCom->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
-			return E_FAIL;
+		_matrix matLocal = *m_p2DModelCom->Get_CurrentSpriteTransform();
+		_matrix matRatioScalling = XMMatrixScaling((_float)RATIO_BOOK2D_X, (_float)RATIO_BOOK2D_Y, 1.f);
+		matLocal *= matRatioScalling;
 
-		_float4x4 ViewMat = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
-		_float4x4 ProjMat = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+		_matrix matWorld = matLocal * XMLoadFloat4x4(m_pControllerTransform->Get_WorldMatrix_Ptr());
 
-		if (FAILED(m_p2DShaderCom->Bind_Matrix("g_ViewMatrix", &ViewMat)))
-			return E_FAIL;
-
-		if (FAILED(m_p2DShaderCom->Bind_Matrix("g_ProjMatrix", &ProjMat)))
+		_float4x4 matWorld4x4;
+		XMStoreFloat4x4(&matWorld4x4, matWorld);
+		if (FAILED(m_p2DShaderCom->Bind_Matrix("g_WorldMatrix", &matWorld4x4)))
 			return E_FAIL;
 	}
 
