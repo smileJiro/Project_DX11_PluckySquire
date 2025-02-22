@@ -30,7 +30,7 @@ HRESULT CRat::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 10.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
     pDesc->fAlertRange = 0.f;
     pDesc->fChaseRange = 0.f;
@@ -60,9 +60,17 @@ HRESULT CRat::Initialize(void* _pArg)
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
-    //pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
-    //pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, RUN, true);
-    //pModelObject->Set_Animation(IDLE);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, RUN, true);
+
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_DOWN, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_RIGHT, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_UP, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, RUN_DOWN, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, RUN_RIGHT, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, RUN_UP, true);
+
+    pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CRat::Animation_End, this, placeholders::_1, placeholders::_2));
 
@@ -99,7 +107,13 @@ HRESULT CRat::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-
+    if (COORDINATE_2D == Get_CurCoord())
+    {
+        for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
+        {
+            m_p2DColliderComs[i]->Render();
+        }
+    }
 #endif // _DEBUG
 
     /* Font Render */
@@ -111,26 +125,74 @@ void CRat::Change_Animation()
 {
     if(m_iState != m_iPreState)
     {
-        switch (MONSTER_STATE(m_iState))
+        if(COORDINATE_3D == Get_CurCoord())
         {
-        case MONSTER_STATE::IDLE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
-            break;
+            switch (MONSTER_STATE(m_iState))
+            {
+            case MONSTER_STATE::IDLE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+                break;
 
-        case MONSTER_STATE::PATROL:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RUN);
-            break;
+            case MONSTER_STATE::PATROL:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RUN);
+                break;
 
-        case MONSTER_STATE::HIT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT);
-            break;
+            case MONSTER_STATE::HIT:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT);
+                break;
 
-        case MONSTER_STATE::DEAD:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
-            break;
+            case MONSTER_STATE::DEAD:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
+                break;
 
-        default:
-            break;
+            default:
+                break;
+            }
+        }
+
+        else if (COORDINATE_2D == Get_CurCoord())
+        {
+            CRat::Animation2D eAnim = ANIM2D_LAST;
+            switch (MONSTER_STATE(m_iState))
+            {
+            case Client::MONSTER_STATE::IDLE:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = IDLE_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = IDLE_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = IDLE_RIGHT;
+                break;
+            case Client::MONSTER_STATE::PATROL:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = RUN_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = RUN_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = RUN_RIGHT;
+                break;
+
+            case Client::MONSTER_STATE::HIT:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = HIT_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = HIT_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = HIT_RIGHT;
+                break;
+            case Client::MONSTER_STATE::DEAD:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = DIE_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = DIE_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = DIE_RIGHT;
+                break;
+            default:
+                break;
+            }
+
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(eAnim);
         }
     }
 }
@@ -138,23 +200,51 @@ void CRat::Change_Animation()
 void CRat::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-    switch ((CRat::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+    if(COORDINATE_3D == Get_CurCoord())
     {
-    case HIT:
-        Set_AnimChangeable(true);
-        break;
+        switch ((CRat::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        {
+        case HIT_DOWN:
+        case HIT_UP:
+        case HIT_RIGHT:
+            Set_AnimChangeable(true);
+            break;
 
-    case DIE:
-        Set_AnimChangeable(true);
+        case DIE_DOWN:
+        case DIE_UP:
+        case DIE_RIGHT:
+            Set_AnimChangeable(true);
 
-        CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
-        Event_DeleteObject(this);
+            CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+            Event_DeleteObject(this);
 
-        break;
+            break;
 
 
-    default:
-        break;
+        default:
+            break;
+        }
+    }
+
+    else  if (COORDINATE_2D == Get_CurCoord())
+    {
+        switch ((CRat::Animation2D)pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+        {
+        case HIT:
+            Set_AnimChangeable(true);
+            break;
+
+        case DIE:
+            Set_AnimChangeable(true);
+
+            Event_DeleteObject(this);
+
+            break;
+
+
+        default:
+            break;
+        }
     }
 }
 
@@ -194,7 +284,7 @@ HRESULT CRat::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fHalfHeight = 0.5f;
+    ShapeDesc->fHalfHeight = 0.4f;
     ShapeDesc->fRadius = 0.5f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
@@ -204,7 +294,7 @@ HRESULT CRat::Ready_ActorDesc(void* _pArg)
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
@@ -237,6 +327,20 @@ HRESULT CRat::Ready_Components()
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
+        return E_FAIL;
+
+    /* 2D Collider */
+    m_p2DColliderComs.resize(1);
+
+    CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+    CircleDesc.pOwner = this;
+    CircleDesc.fRadius = 30.f;
+    CircleDesc.vScale = { 1.0f, 1.0f };
+    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius - 10.f };
+    CircleDesc.isBlock = false;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
 
     return S_OK;
