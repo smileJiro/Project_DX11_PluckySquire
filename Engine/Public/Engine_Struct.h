@@ -37,11 +37,14 @@ namespace Engine
 	}CONST_IBL;
 	typedef struct tagMaterialDefault
 	{
-		XMFLOAT4	Albedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f); // 12byte
-		float		Roughness = 0.5f;					 // 16byte(o)
-		float		Metallic = 0.0f;					 // 4byte
+		XMFLOAT4	Albedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);		   // 16byte
+
+		float		Roughness = 0.5f;					 
+		float		Metallic = 0.0f;					 
 		float		AO = 0.7f;
-		float		dummy;								 // 16byte
+		float		dummy;												// 16byte
+
+		XMFLOAT4	MultipleAlbedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);	// 16byte
 	}MATERIAL_PS;
 	typedef struct tagBasicPixelConstData // 동적변화가 없는 애들위주로.
 	{

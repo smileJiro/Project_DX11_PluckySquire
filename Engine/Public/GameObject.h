@@ -29,7 +29,8 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta);
 	virtual HRESULT				Render();
 	virtual HRESULT				Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID);
-
+public:
+	virtual void				Check_FrustumCulling() { return; }
 public:
 	virtual void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
 	virtual void						On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
@@ -102,6 +103,7 @@ protected:
 	_bool						m_isDead = false;
 	_bool						m_isRender = true;
 	_bool						m_isPooling = false;
+	_bool						m_isFrustumCulling = false;
 protected:
 	map<const _wstring, CComponent*> m_Components;
 

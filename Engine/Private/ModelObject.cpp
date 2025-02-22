@@ -58,7 +58,8 @@ void CModelObject::Late_Update(_float _fTimeDelta)
 {
     if (COORDINATE_3D == Get_CurCoord())
     {
-        m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
+        if (false == m_isFrustumCulling)
+            m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
     }
 
     /* Update Parent Matrix */
@@ -206,15 +207,27 @@ void CModelObject::Register_OnAnimEndCallBack( const function<void(COORDINATE,_u
 	m_pControllerModel->Register_OnAnimEndCallBack(fCallback);
 }
 
+void CModelObject::Check_FrustumCulling()
+{
+    if (COORDINATE_3D == Get_CurCoord())
+        m_isFrustumCulling = !m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 10.f);
+    else
+        m_isFrustumCulling = false;
+}
+
 void CModelObject::Update(_float _fTimeDelta)
 {
+
     if (m_pControllerModel)
     {
         if(m_bPlayingAnim)
-            m_pControllerModel->Play_Animation(_fTimeDelta, m_bReverseAnimation);
+        {
+            if (false == m_isFrustumCulling)
+                m_pControllerModel->Play_Animation(_fTimeDelta, m_bReverseAnimation);
+        }
         else
         {
-            if (true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 0.0f))
+            if (false == m_isFrustumCulling)
                 m_pControllerModel->Play_Animation(0, m_bReverseAnimation);
         }
     }

@@ -6,6 +6,7 @@
 
 BEGIN(Engine)
 class CComponent;
+class CGameInstance;
 class ENGINE_DLL CLayer final : public CBase
 {
 private:
@@ -32,6 +33,8 @@ public:
 	// Get
 	const list<class CGameObject*>& Get_GameObjects() { return m_GameObjects; }
 	CGameObject* Get_GameObject_Ptr(_int _iObjectIndex);
+private:
+	CGameInstance* m_pGameInstance = nullptr;
 private:
 	list<class CGameObject*>			m_GameObjects{};
 

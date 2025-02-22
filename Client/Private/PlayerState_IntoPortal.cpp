@@ -55,6 +55,7 @@ void CPlayerState_JumpToPortal::Enter()
     if (COORDINATE_3D == eCoord)
     {
         static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_FOOT,false);
+        static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY,false);
         static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(m_vPortalPos, fYRadian);
 	}
     else

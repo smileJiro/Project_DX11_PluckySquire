@@ -49,6 +49,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     pDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     pDesc->tTransform2DDesc.vInitialPosition = _float3(0.0f, 1.0f, 0.0f);
     pDesc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+    pDesc->iObjectGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
 
     pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
     CActor::ACTOR_DESC ActorDesc;

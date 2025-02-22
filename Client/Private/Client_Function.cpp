@@ -59,6 +59,20 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
+	void Event_ChangeMapObject(_uint iCurlevelID, _wstring _strFileName, _wstring _strMapObjectLayerTag, _bool _useThreadPool)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::CHANGE_MAPOBJECT;
+		tEvent.Parameters.resize(4); // NumParameters
+
+		tEvent.Parameters[0] = (DWORD_PTR)iCurlevelID;
+		tEvent.Parameters[1] = (DWORD_PTR)new _wstring(_strFileName);
+		tEvent.Parameters[2] = (DWORD_PTR)new _wstring(_strMapObjectLayerTag);
+		tEvent.Parameters[3] = (DWORD_PTR)_useThreadPool;
+		
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
 	void Event_Setup_SimulationFilter(Engine::CActor* _pActor, _uint _MyGroup, _uint _OtherGroupMask)
 	{
 		EVENT tEvent;
@@ -244,6 +258,9 @@ namespace Client
 
 	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID,_bool _bEnable)
 	{
+		if (true == _pActor->Is_Dead())
+			return;
+
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::SET_SCENEQUERYFLAG;
 		tEvent.Parameters.resize(3);
