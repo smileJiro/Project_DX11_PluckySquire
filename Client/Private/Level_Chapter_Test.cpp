@@ -889,23 +889,6 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
 {
-	CBeetle::MONSTER_DESC Beetle_Desc;
-	Beetle_Desc.iCurLevelID = m_eLevelID;
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-17.f, 6.55f, 23.f);
-	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.f, 0.35f, -22.f);
-	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_1;
-	Beetle_Desc.isSneakMode = true;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
-
-	//Monster_Desc.tTransform3DDesc.vPosition = _float3(10.0f, 1.0f, 10.0f);
-	//Monster_Desc.tTransform3DDesc.vScaling = _float3(1.f, 1.f, 1.f);
-
-	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Monster_Desc)))
-		return E_FAIL;*/
-
 	//CBarfBug::MONSTER_DESC Monster_Desc;
 	//Monster_Desc.iCurLevelID = m_eLevelID;
 
@@ -957,6 +940,24 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 
 		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, _strLayerTag, &Boss_Desc)))
 		//	return E_FAIL;
+
+	//CJumpBug::MONSTER_DESC JumpBug_Desc;
+	//JumpBug_Desc.iCurLevelID = m_eLevelID;
+	//JumpBug_Desc.eStartCoord = COORDINATE_3D;
+	//JumpBug_Desc.tTransform3DDesc.vInitialPosition = _float3(-12.0f, 0.35f, -21.0f);
+	//JumpBug_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_JumpBug"), m_eLevelID, _strLayerTag, &JumpBug_Desc)))
+	//	return E_FAIL;
+
+	CRat::MONSTER_DESC Rat_Desc;
+	Rat_Desc.iCurLevelID = m_eLevelID;
+	Rat_Desc.eStartCoord = COORDINATE_3D;
+	Rat_Desc.tTransform3DDesc.vInitialPosition = _float3(-12.0f, 0.35f, -21.0f);
+	Rat_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"), m_eLevelID, _strLayerTag, &Rat_Desc)))
+		return E_FAIL;
 
 			/*  Projectile  */
 	Pooling_DESC Pooling_Desc;

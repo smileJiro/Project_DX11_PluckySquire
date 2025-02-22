@@ -1769,6 +1769,14 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
         C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DNonAnim/FallingRockShadow/FallingRockShadow.dds", true))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("JumpBug"),
+        C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter4/Monster/JumpBug/JumpBug.model2d"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Rat"),
+        C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Monster/Rat/Rat.model2d"))))
+        return E_FAIL;
+
 
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Dice3D"),
@@ -1808,9 +1816,6 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
 
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_TEST,
         TEXT("../Bin/Resources/Models/2DAnim/Chapter2/"))))
-        return E_FAIL;
-    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_TEST,
-        TEXT("../Bin/Resources/Models/2DAnim/Chapter4/"))))
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));

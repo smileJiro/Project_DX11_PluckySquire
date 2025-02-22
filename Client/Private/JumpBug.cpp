@@ -27,6 +27,8 @@ HRESULT CJumpBug::Initialize(void* _pArg)
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+    pDesc->tTransform2DDesc.fSpeedPerSec = 10.f;
 
     pDesc->fAlertRange = 0.f;
     pDesc->fChaseRange = 0.f;
@@ -48,11 +50,7 @@ HRESULT CJumpBug::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Add_Neutral_State();
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
@@ -114,6 +112,18 @@ void CJumpBug::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
             break;
 
+        case MONSTER_STATE::PATROL:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(JUMP_UP);
+            break;
+
+        case MONSTER_STATE::HIT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT);
+            break;
+
+        case MONSTER_STATE::DEAD:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
+            break;
+
         default:
             break;
         }
@@ -122,24 +132,42 @@ void CJumpBug::Change_Animation()
 
 void CJumpBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
-    /*CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
     switch ((CJumpBug::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
     {
-    case ALERT:
-        Set_AnimChangeable(true);
-        break;
-        
-    case ATTACKSTRIKE:
-        pModelObject->Switch_Animation(ATTACKRECOVERY);
+    case JUMP_UP:
+        pModelObject->Switch_Animation(JUMP_DOWN);
         break;
 
-    case ATTACKRECOVERY:
-        pModelObject->Switch_Animation(ATTACKSTRIKE);
+    case JUMP_DOWN:
+        Set_AnimChangeable(true);
+        break;
+
+    case HIT:
+        Set_AnimChangeable(true);
+        break;
+
+    case DIE:
+        Set_AnimChangeable(true);
         break;
 
     default:
         break;
-    }*/
+    }
+}
+
+void CJumpBug::Turn_Animation(_bool _isCW)
+{
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+    _uint AnimIdx;
+    if (true == _isCW)
+        AnimIdx = TURN_RIGHT;
+    else
+        AnimIdx = TURN_LEFT;
+
+    if (AnimIdx != pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(AnimIdx);
 }
 
 HRESULT CJumpBug::Ready_ActorDesc(void* _pArg)

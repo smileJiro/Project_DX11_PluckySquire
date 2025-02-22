@@ -1101,6 +1101,12 @@
     <ClInclude Include="..\public\CollapseBlock.h">
       <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Neutral_IdleState.h">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Neutral_PatrolState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1724,6 +1730,12 @@
     </ClCompile>
     <ClCompile Include="..\private\CollapseBlock.cpp">
       <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Neutral_IdleState.cpp">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Neutral_PatrolState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

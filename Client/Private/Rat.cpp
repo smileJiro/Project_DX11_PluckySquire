@@ -22,12 +22,14 @@ HRESULT CRat::Initialize_Prototype()
 HRESULT CRat::Initialize(void* _pArg)
 {
     CRat::MONSTER_DESC* pDesc = static_cast<CRat::MONSTER_DESC*>(_pArg);
-    pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->isCoordChangeEnable = false;
+    pDesc->isCoordChangeEnable = true;
     pDesc->iNumPartObjects = PART_END;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+
+    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+    pDesc->tTransform2DDesc.fSpeedPerSec = 10.f;
 
     pDesc->fAlertRange = 0.f;
     pDesc->fChaseRange = 0.f;
@@ -49,11 +51,7 @@ HRESULT CRat::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Add_Neutral_State();
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
@@ -107,7 +105,7 @@ HRESULT CRat::Render()
 
 void CRat::Change_Animation()
 {
-    /*if(m_iState != m_iPreState)
+    if(m_iState != m_iPreState)
     {
         switch (MONSTER_STATE(m_iState))
         {
@@ -115,44 +113,55 @@ void CRat::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
             break;
 
-        case MONSTER_STATE::ALERT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
-            break;
-
-        case MONSTER_STATE::CHASE:
+        case MONSTER_STATE::PATROL:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RUN);
             break;
 
-        case MONSTER_STATE::ATTACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACKSTRIKE);
+        case MONSTER_STATE::HIT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT);
+            break;
+
+        case MONSTER_STATE::DEAD:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
             break;
 
         default:
             break;
         }
-    }*/
+    }
 }
 
 void CRat::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
-    /*CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
     switch ((CRat::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
     {
-    case ALERT:
+    case HIT:
         Set_AnimChangeable(true);
         break;
-        
-    case ATTACKSTRIKE:
-        pModelObject->Switch_Animation(ATTACKRECOVERY);
+
+    case DIE:
+        Set_AnimChangeable(true);
         break;
 
-    case ATTACKRECOVERY:
-        pModelObject->Switch_Animation(ATTACKSTRIKE);
-        break;
 
     default:
         break;
-    }*/
+    }
+}
+
+void CRat::Turn_Animation(_bool _isCW)
+{
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+    _uint AnimIdx;
+    if (true == _isCW)
+        AnimIdx = TURN_RIGHT;
+    else
+        AnimIdx = TURN_LEFT;
+
+    if (AnimIdx != pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(AnimIdx);
 }
 
 HRESULT CRat::Ready_ActorDesc(void* _pArg)
@@ -236,12 +245,16 @@ HRESULT CRat::Ready_PartObjects()
     BodyDesc.strModelPrototypeTag_3D = TEXT("Rat_Rig");
 	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
 
+    BodyDesc.strModelPrototypeTag_2D = TEXT("Rat");
+    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-    BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
-    BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+    BodyDesc.tTransform2DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_RotationPerSec();
+    BodyDesc.tTransform2DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_SpeedPerSec();
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
