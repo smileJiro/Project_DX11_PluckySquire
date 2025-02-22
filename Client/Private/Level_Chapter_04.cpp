@@ -32,6 +32,7 @@
 #include "Soldier_Bomb.h"
 #include "ButterGrump.h"
 #include "Blocker.h"
+#include "Bulb.h"
 
 
 #include "RayShape.h"
@@ -516,6 +517,22 @@ HRESULT CLevel_Chapter_04::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 	// Test(PlayerItem: Glove, Stamp)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(10.f, 10.f, -10.f));
 	//CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+
+
+	//2D Bulb
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = _strLayerTag;
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Bulb");
+	Pooling_Desc.eSection2DRenderGroup = SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT;
+
+	CBulb::BULB_DESC* pBulbDesc = new CBulb::BULB_DESC;
+	pBulbDesc->eStartCoord = COORDINATE_2D;
+	pBulbDesc->iCurLevelID = m_eLevelID;
+	pBulbDesc->tTransform2DDesc.vInitialScaling = { 256.f,256.f,1.f };
+	pBulbDesc->iObjectGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_2DBulb"), Pooling_Desc, pBulbDesc);
 
 	return S_OK;
 }

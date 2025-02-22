@@ -22,11 +22,10 @@ HRESULT CJumpBug::Initialize_Prototype()
 HRESULT CJumpBug::Initialize(void* _pArg)
 {
     CJumpBug::MONSTER_DESC* pDesc = static_cast<CJumpBug::MONSTER_DESC*>(_pArg);
-    pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->isCoordChangeEnable = false;
+    pDesc->isCoordChangeEnable = true;
     pDesc->iNumPartObjects = PART_END;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->fAlertRange = 0.f;
@@ -223,14 +222,22 @@ HRESULT CJumpBug::Ready_PartObjects()
 
     BodyDesc.strModelPrototypeTag_3D = TEXT("jumpBug_Rig");
 	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    BodyDesc.strModelPrototypeTag_2D = TEXT("JumpBug");
+    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 
+    BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+
     BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
     BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+    BodyDesc.tTransform2DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_RotationPerSec();
+    BodyDesc.tTransform2DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_SpeedPerSec();
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
