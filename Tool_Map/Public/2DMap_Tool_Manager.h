@@ -33,7 +33,8 @@ class C2DMap_Tool_Manager final : public CBase
 private :
 	enum LIST_TYPE
 	{
-		MODEL_LIST,
+		MODEL_2D_LIST,
+		MODEL_3D_LIST,
 		SELECT_MAP,
 		SAVE_LIST,
 		TRIGGER_LIST,
@@ -108,7 +109,7 @@ private:
 
 
 	C2DMapObject*		Picking_2DMap();
-
+	void				Change_Proto_Mesh();
 #pragma endregion
 
 	HRESULT				Setting_TileMap(const _string _strFileMapJsonName);
@@ -152,6 +153,7 @@ private:
 	class C2DTrigger_Sample*		m_pPickingBlocker = nullptr;
 	
 	_wstring						m_strMapBinaryPath = L"../../Client/Bin/MapSaveFiles/2D/";
+	_wstring						m_strMapMeshPath = L"../../Client/Bin/Resources/Models/3DMapObject/";
 	_char							m_szSaveFileName[MAX_PATH];
 
 	
