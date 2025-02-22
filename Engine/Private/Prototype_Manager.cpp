@@ -23,8 +23,15 @@ HRESULT CPrototype_Manager::Initialize(_uint _iNumLevels, _uint _iExcludeLevelID
 HRESULT CPrototype_Manager::Add_Prototype(_uint _iLevelID, const _wstring& _strPrototypeTag, CBase* _pPrototype)
 {
     // 레벨 인덱스가 맥스 인덱스보다 크거나, 이미 있는 Prototype인 경우, 오류로 본다.
-    if (_iLevelID >= m_iNumLevels || nullptr != Find_Prototype(_iLevelID, _strPrototypeTag))
+    if (_iLevelID >= m_iNumLevels)
         return E_FAIL;
+    if (nullptr != Find_Prototype(_iLevelID, _strPrototypeTag))
+    {
+        /* 만약 같은 키값의 오브젝트가 들어왔다면, */
+        /* Safe_Release 수행하고 return s_ok */
+        Safe_Release(_pPrototype);
+        return S_OK;
+    }
 
     m_pPrototypes[_iLevelID].emplace(_strPrototypeTag, _pPrototype);
 
