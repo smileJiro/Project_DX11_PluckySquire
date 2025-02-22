@@ -24,7 +24,6 @@ HRESULT CSample_Skechspace::Initialize_Prototype()
 
 HRESULT CSample_Skechspace::Initialize(void* _pArg)
 {
-
     SAMPLE_SKSP_DESC* pDesc = static_cast<SAMPLE_SKSP_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;

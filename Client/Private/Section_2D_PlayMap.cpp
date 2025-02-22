@@ -36,23 +36,25 @@ void CSection_2D_PlayMap::Set_WorldTexture(ID3D11Texture2D* _pTexture)
 	}
 }
 
-HRESULT CSection_2D_PlayMap::Initialize(SECTION_2D_PLAYMAP_DESC* _pDesc, _uint _iPriorityKey)
+HRESULT CSection_2D_PlayMap::Initialize(void* _pDesc)
 {
-	if (FAILED(__super::Initialize(_pDesc, _iPriorityKey)))
+	if (FAILED(__super::Initialize(_pDesc)))
 		return E_FAIL;
+	
+	if (FAILED(Ready_Objects(_pDesc)))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
-HRESULT CSection_2D_PlayMap::Import(json _SectionJson, _uint _iPriorityKey)
+HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 {
-		if (FAILED(__super::Import(_SectionJson, _iPriorityKey)))
-			return E_FAIL;
+	SECTION_2D_DESC* pDesc = static_cast<SECTION_2D_DESC*>(_pDesc);
 
-
-
-		if (_SectionJson.contains("Section_File_Name"))
+		if (pDesc->SectionJson.contains("Section_File_Name"))
 		{
-			_string strFileName = _SectionJson["Section_File_Name"];
+			_string strFileName = pDesc->SectionJson["Section_File_Name"];
 
 			_wstring strSectionPath = MAP_2D_DEFAULT_PATH;
 			strSectionPath += StringToWstring(strFileName);
@@ -73,10 +75,7 @@ HRESULT CSection_2D_PlayMap::Import(json _SectionJson, _uint _iPriorityKey)
 			_char		szSaveMapName[MAX_PATH];
 
 			ReadFile(hFile, &szSaveMapName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-			_wstring strMapName = StringToWstring(szSaveMapName);
-
-			if (FAILED(Ready_Map_2D(strMapName)))
-				return E_FAIL;
+			pDesc->strMapName = StringToWstring(szSaveMapName);
 
 			ReadFile(hFile, &iObjectCount, sizeof(_uint), &dwByte, nullptr);
 

@@ -604,6 +604,10 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/"))))
         return E_FAIL;
 
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_STATIC,
+        TEXT("../Bin/Resources/Models/2D_FX"))))
+        return E_FAIL;
+
     if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Common"))))
         return E_FAIL;
 
@@ -845,10 +849,6 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         return E_FAIL;
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
         TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
-        return E_FAIL;
-
-    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
-        TEXT("../Bin/Resources/Models/2D_FX"))))
         return E_FAIL;
 
     /* 낱개 로딩 예시*/
@@ -1298,10 +1298,6 @@ HRESULT CLoader::Loading_Level_Chapter_4()
         return E_FAIL;
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
         TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
-        return E_FAIL;
-
-    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
-        TEXT("../Bin/Resources/Models/2D_FX"))))
         return E_FAIL;
 
     /* 낱개 로딩 예시*/
@@ -2102,7 +2098,7 @@ HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _sz
 
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
                 C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
-            {
+            {   
                 string str = "Failed to Create 3DModel";
                 str += entry.path().filename().replace_extension().string();
                 MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
@@ -2298,7 +2294,7 @@ void CLoader::Free()
     // 크리티컬 섹션을 삭제한다.
     DeleteCriticalSection(&m_Critical_Section);
 
+    Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);
-    Safe_Release(m_pGameInstance);
 }

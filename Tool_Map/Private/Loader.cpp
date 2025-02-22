@@ -303,8 +303,8 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/SM_desk_split_topboard_02/SM_desk_split_topboard_02.model", matPretransform))))
         return E_FAIL;
 
-    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_2D_MAP,  L"../../Client/Bin/Resources/Models/3DMapObject/", matPretransform)))
-        return E_FAIL;
+    //if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TOOL_2D_MAP,  L"../../Client/Bin/Resources/Models/3DMapObject/", matPretransform)))
+    //    return E_FAIL;
     
     //if (FAILED(Load_Models_FromJson(LEVEL_TOOL_2D_MAP, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
     ////    return E_FAIL;

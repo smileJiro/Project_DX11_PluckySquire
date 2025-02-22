@@ -134,12 +134,12 @@ void CPlayerData_Manager::Set_Tags()
 
 void CPlayerData_Manager::Free()
 {
-	Safe_Release(m_pDevice);
-	Safe_Release(m_pContext);
-	Safe_Release(m_pGameInstance);
-
 	for (auto& PlayerItem : m_ItemState)
 		Safe_Release(PlayerItem.second.second);
+
+	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
 
 	__super::Free();
 }

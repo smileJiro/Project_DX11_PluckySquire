@@ -26,8 +26,8 @@ protected:
 	virtual void						Set_WorldTexture(ID3D11Texture2D* _pTexture) override;
 
 public:
-	HRESULT										Initialize(SECTION_2D_PLAYMAP_DESC* _pDesc, _uint _iPriorityKey);
-	virtual HRESULT								Import(json _SectionJson, _uint _iPriorityKey);
+	virtual HRESULT						Initialize(void* _pDesc);
+	virtual HRESULT						Ready_Objects(void* _pDesc);
 
 public:
 	virtual HRESULT						Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex) override;

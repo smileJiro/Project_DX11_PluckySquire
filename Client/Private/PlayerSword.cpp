@@ -534,7 +534,7 @@ void CPlayerSword::Attack(CGameObject* _pVictim)
         return;
     CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == Get_CurCoord()) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
     CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.2f, 20, CCamera::SHAKE_XY);
-    Event_Hit(this, _pVictim, m_pPlayer->Get_AttackDamg());
+    Event_Hit(this, static_cast<CCharacter*>(_pVictim), m_pPlayer->Get_AttackDamg(),XMVectorZero());
     CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
     if (pCharacter)
     {

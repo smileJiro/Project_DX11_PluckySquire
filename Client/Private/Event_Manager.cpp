@@ -665,13 +665,16 @@ HRESULT CEvent_Manager::Execute_Book_Main_Change(const EVENT& _tEvent)
 HRESULT CEvent_Manager::Execute_Hit(const EVENT& _tEvent)
 {
 	CGameObject* pHitter = (CGameObject*)_tEvent.Parameters[0];
-	CGameObject* pVIctim = (CGameObject*)_tEvent.Parameters[1];
+	CCharacter* pVictim = (CCharacter*)_tEvent.Parameters[1];
 	_int iDamg = _tEvent.Parameters[2];
+	_vector vForce = XMLoadFloat3((_float3*)_tEvent.Parameters[3]);
 
-	if (nullptr == pHitter || nullptr == pVIctim)
+	if (nullptr == pHitter || nullptr == pVictim)
 		return E_FAIL;
 
-	pVIctim->On_Hit(pHitter, iDamg);
+	pVictim->On_Hit(pHitter, iDamg, vForce);
+
+	delete ((_float3*)_tEvent.Parameters[3]);
 	return S_OK;
 }
 
@@ -746,9 +749,9 @@ void CEvent_Manager::Free()
 	for (auto& pDeadObject : m_DeadObjectsList)
 		Safe_Release(pDeadObject);
 
-	Safe_Release(m_pDevice);
-	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
+	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
 
 	__super::Free();
 }

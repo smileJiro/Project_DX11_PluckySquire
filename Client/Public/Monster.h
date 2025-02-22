@@ -117,7 +117,7 @@ public:
 	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
-	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg);
+	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
 
 
 public:

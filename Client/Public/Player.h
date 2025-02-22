@@ -441,7 +441,7 @@ public:
 	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
-	virtual void On_Hit(CGameObject* _pHitter, _int _fDamg) override;
+	virtual void On_Hit(CGameObject* _pHitter, _int _fDamg, _fvector _vForce) override;
 	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
 public:
@@ -598,7 +598,7 @@ private:
 	/* еб©У */
 	_float m_f2DColliderBodyRadius = 20.f;
 	/* еб©У */
-	_float m_fInvincibleTIme = 0.5f;
+	_float m_fInvincibleTIme = 1.5f;
 	_float m_fInvincibleTImeAcc = 0.f;
 	_bool m_bInvincible = false;
 	_bool m_bPlatformerMode = false;

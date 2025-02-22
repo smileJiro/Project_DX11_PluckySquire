@@ -79,7 +79,10 @@ void CGameEventExecuter::Update(_float _fTimeDelta)
         switch ((CTrigger_Manager::EVENT_EXECUTER_ACTION_TYPE)m_iEventExcuterAction)
         {
         case Client::CTrigger_Manager::C02P0910_LIGHTNING_BOLT_SPAWN:
-            C020910_Bolt_Spawn(_fTimeDelta);
+			if(false == m_isSpawn)
+			{
+				C020910_Bolt_Spawn(_fTimeDelta);
+			}
             break;
         case Client::CTrigger_Manager::C02P0910_MONSTER_SPAWN:
             C020910_Monster_Spawn(_fTimeDelta);
@@ -106,30 +109,28 @@ void CGameEventExecuter::Late_Update(_float _fTimeDelta)
 
 void CGameEventExecuter::C020910_Bolt_Spawn(_float _fTimeDelta)
 {
-	if (0.f == m_fTimer && false == m_isSpawn)
-    {
-        //_float3 vPos = { 500.0f, 10.f, 0.f };
-        _wstring strSectionKey = TEXT("Chapter2_P0910");
-        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
-        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	//_float3 vPos = { 500.0f, 10.f, 0.f };
+	_wstring strSectionKey = TEXT("Chapter2_P0910");
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
 
-        //vPos = { -450.0f, -30.f, 0.f };
-        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
-        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
-        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(500.f, 10.f, 0.0f), 0.f, 4);
-        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(500.f, 10.f, 0.0f), 0.f, 5);
+	//vPos = { -450.0f, -30.f, 0.f };
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(500.f, 10.f, 0.0f), 0.f, 4);
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(500.f, 10.f, 0.0f), 0.f, 5);
 
-        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 4);
-        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 5);
-		m_isSpawn = true;
-
-    }
-
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 4);
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("LightningBolt"), strSectionKey, XMMatrixTranslation(-450.f, -30.f, 0.0f), 0.f, 5);
 
 	m_fTimer += _fTimeDelta;
 
-	if (m_fMaxTimer < m_fTimer)
+	if (m_fMaxTimer <= m_fTimer)
+	{
+		m_fTimer = 0.f;
+		m_isSpawn = true;
 		GameEvent_End();
+	}
 }
 
 void CGameEventExecuter::C020910_Monster_Spawn(_float _fTimeDelta)
@@ -360,7 +361,7 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
         m_fTimer += _fTimeDelta;
 
         if (false == m_isStart) {
-            CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
+            //CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
 			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
 			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
             m_isStart = true;
@@ -395,7 +396,7 @@ void CGameEventExecuter::Chapter2_Intro(_float _fTimeDelta)
     }
     else if (1 == m_iStep) {
         if (false == m_isStart) {
-            CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
+            //CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
             m_isStart = true;
             m_iStep++;
         }
@@ -512,12 +513,13 @@ CGameObject* CGameEventExecuter::Clone(void* _pArg)
 
 void CGameEventExecuter::Free()
 {
+	Safe_Release(m_pGameInstance);
 	__super::Free();
 }
 
 
 HRESULT CGameEventExecuter::Cleanup_DeadReferences()
 {
-	Safe_Release(m_pGameInstance);
+
 	return S_OK;
 }

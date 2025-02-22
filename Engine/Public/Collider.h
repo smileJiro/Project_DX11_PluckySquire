@@ -18,6 +18,7 @@ public:
 		_bool			isBlock = false;
 		_bool			isTrigger = false;
 		_uint			iCollisionGroupID = {};
+		_uint			iColliderUse = { 0 };
 	}COLLIDER_DESC;
 protected:
 	CCollider(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -51,6 +52,7 @@ public:
 	TYPE					Get_Type() const { return m_eType; }
 	_uint						Get_CollisionGroupID() { return m_iCollisionGroupID; }
 	_uint					Get_ColliderID() const { return m_iColliderID; }
+	_uint					Get_ColliderUse() const { return m_iColliderUse; }
 	CGameObject*			Get_Owner() const { return m_pOwner; }
 	_float2					Get_Position() const { return m_vPosition; }
 	_bool					Is_Block() const { return m_isBlock; }
@@ -68,6 +70,7 @@ protected:
 protected:
 	_uint					m_iCollisionGroupID = 0;
 	_uint					m_iColliderID = 0;
+	_uint					m_iColliderUse = 0;
 	TYPE					m_eType = TYPE::TYPE_LAST;
 	_bool					m_isTrigger = false;
 	_bool					m_isBlock = false;
