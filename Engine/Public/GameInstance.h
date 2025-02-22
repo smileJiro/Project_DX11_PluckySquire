@@ -254,7 +254,7 @@ public: /* For. Physx_Manager*/
 	void				Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
 	_uint				Create_ShapeID();
 	_bool				RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
-	_bool			RayCast_Nearest_GroupFilter(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _int _iGroupNum, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
+	_bool				RayCast_Nearest_GroupFilter(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _int _iGroupNum, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
 	//OutActors, OutPositions에 충돌된 오브젝트와 위치를 저장.
 //충돌된 액터에 user data로 ActorObject를 넣지 않았으면 nullptr이 들어감.
 // - 2.02 김지완 추가
@@ -263,6 +263,11 @@ public: /* For. Physx_Manager*/
 	// - 2.11 김지완 추가
 	_bool Overlap(SHAPE_TYPE	_eShapeType, SHAPE_DESC* _pShape, _fvector _vPos, list<CActorObject*>& _OutActors);
 	_bool Overlap(PxGeometry* pxGeom, _fvector _vPos, list<CActorObject*>& _OutActors);
+	//가장 먼저 충돌된 물체만 검출
+	_bool SingleSweep(PxGeometry* pxGeom, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, CActorObject** _ppOutActor, RAYCASTHIT* _pOutHit);
+	//모든(최대 10개) 충돌된 물체 검출
+	_bool MultiSweep(PxGeometry* pxGeom, const _float4x4& _matShpeOffsetMatrix,const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits);
+
 
 	void				Set_Physx_DebugRender(_bool _isDebugRender);
 public: /* For. Frustum */

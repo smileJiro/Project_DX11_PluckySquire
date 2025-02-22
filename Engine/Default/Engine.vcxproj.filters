@@ -636,6 +636,9 @@
     <ClInclude Include="..\public\ThreadPool.h">
       <Filter>00.System\04.ThreadPool</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Physx_ContactModifyCallback.h">
+      <Filter>00.System\03.Physx\EventCallBack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -949,6 +952,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ThreadPool.cpp">
       <Filter>00.System\04.ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Physx_ContactModifyCallback.cpp">
+      <Filter>00.System\03.Physx\EventCallBack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

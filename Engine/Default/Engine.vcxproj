@@ -236,6 +236,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\NewRenderer.h" />
     <ClInclude Include="..\public\Emitter.h" />
     <ClInclude Include="..\Public\Particle_Mesh_Emitter.h" />
+    <ClInclude Include="..\Public\Physx_ContactModifyCallback.h" />
     <ClInclude Include="..\public\SpriteEffect_Emitter.h" />
     <ClInclude Include="..\public\RenderTarget_MSAA.h" />
     <ClInclude Include="..\public\ThreadPool.h" />
@@ -351,6 +352,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\NewRenderer.cpp" />
     <ClCompile Include="..\private\Emitter.cpp" />
     <ClCompile Include="..\Private\Particle_Mesh_Emitter.cpp" />
+    <ClCompile Include="..\Private\Physx_ContactModifyCallback.cpp" />
     <ClCompile Include="..\private\RenderTarget_MSAA.cpp" />
     <ClCompile Include="..\private\SpriteEffect_Emitter.cpp" />
     <ClCompile Include="..\private\ThreadPool.cpp" />

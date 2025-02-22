@@ -81,7 +81,7 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 			m_pOwner->Set_State(CPlayer::ROLL);
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
 			m_pOwner->Set_State(CPlayer::THROWSWORD);
-		else	if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
 			m_pOwner->Set_State(CPlayer::THROWOBJECT);
 		return;
 	}

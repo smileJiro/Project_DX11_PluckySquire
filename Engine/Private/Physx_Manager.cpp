@@ -1,6 +1,7 @@
 #include "Physx_Manager.h"
 #include "GameInstance.h"
 #include "Physx_EventCallBack.h"
+#include "Physx_ContactModifyCallback.h"
 
 _uint CPhysx_Manager::m_iShapeInstanceID = 0;
 
@@ -19,6 +20,9 @@ HRESULT CPhysx_Manager::Initialize()
 	// Event CallBack Class 
 	m_pPhysx_EventCallBack = CPhysx_EventCallBack::Create();
 	if (nullptr == m_pPhysx_EventCallBack)
+		return E_FAIL;
+	m_pPhysx_ContactModifyCallback = CPhysx_ContactModifyCallback::Create();
+	if (nullptr == m_pPhysx_ContactModifyCallback)
 		return E_FAIL;
 
 	if (FAILED(Initialize_Foundation()))
@@ -305,6 +309,68 @@ _bool CPhysx_Manager::Overlap(PxGeometry* _pxGeom, _fvector _vPos, list<CActorOb
 	return isResult;
 }
 
+_bool CPhysx_Manager::SingleSweep(PxGeometry* pxGeom, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, CActorObject** _ppOutActor, RAYCASTHIT* _pOutHit)
+{
+	PxSweepBuffer hitResult;
+	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
+	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
+	PxTransform pxPose(vOrigin, PxQuat(PxIdentity));
+
+	_bool hasHit = m_pPxScene->sweep(
+		*pxGeom, pxPose, vRayDir, _fDistance,hitResult
+	);
+	
+	const PxSweepHit& tHit = hitResult.getAnyHit(0);
+	PxRigidActor* pActor = tHit.actor;
+	ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+	_ppOutActor = nullptr != pActorUserData ? &pActorUserData->pOwner : nullptr;
+	_pOutHit->vNormal = _float3{ tHit.normal.x,tHit.normal.y,tHit.normal.z };
+	_pOutHit->vPosition = _float3{ tHit.position.x,tHit.position.y, tHit.position.z };
+
+	return hasHit;
+}
+
+_bool CPhysx_Manager::MultiSweep(PxGeometry* pxGeom, const _float4x4& _matShpeOffsetMatrix,const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits)
+{
+	PxSweepHit pxhits[10];
+	memset(&pxhits, 0, sizeof(PxSweepHit)*10);
+	PxSweepBuffer pxSweepBuffer(pxhits, 10);
+	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
+	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
+	_float3 vScale;
+	_float4 vQuat;
+	_float3 vPosition;
+	if (false == m_pGameInstance->MatrixDecompose(&vScale, &vQuat, &vPosition, XMLoadFloat4x4(&_matShpeOffsetMatrix)))
+		return E_FAIL;
+	vOrigin.x += vPosition.x;
+	vOrigin.y += vPosition.y;
+	vOrigin.z += vPosition.z;
+	PxTransform pxPose(vOrigin, PxQuat(vQuat.x, vQuat.y, vQuat.z, vQuat.w));
+
+	_bool hasHit = m_pPxScene->sweep(
+		*pxGeom, pxPose, vRayDir.getNormalized(), _fDistance, pxSweepBuffer,
+		PxHitFlag::ePOSITION | PxHitFlag::eNORMAL
+	);
+
+	if (hasHit) {
+		_uint numHits = pxSweepBuffer.getNbAnyHits(); // 충돌 개수
+
+		for (_uint i = 0; i < numHits; i++) {
+			PxRigidActor* pActor = pxSweepBuffer.touches[i].actor;
+			ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+
+			_OutActors.push_back(nullptr != pActorUserData ? pActorUserData->pOwner : nullptr);
+
+			_OutRaycastHits.push_back({ _float3{ pxSweepBuffer.touches[i].position.x, pxSweepBuffer.touches[i].position.y, pxSweepBuffer.touches[i].position.z }
+			, _float3{pxSweepBuffer.touches[i].normal.x,pxSweepBuffer.touches[i].normal.y,pxSweepBuffer.touches[i].normal.z} });
+		}
+	}
+	return hasHit;
+}
+
+
+
+
 HRESULT CPhysx_Manager::Initialize_Foundation()
 {
 	/* Create PxFoundation */
@@ -368,6 +434,8 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	SceneDesc.filterShader = TWFilterShader;//TWFilterShader; //PxDefaultSimulationFilterShader;//; // 일단 기본값으로 생성 해보자.
 	SceneDesc.simulationEventCallback = m_pPhysx_EventCallBack; // 일단 기본값으로 생성 해보자.
 	SceneDesc.broadPhaseType = PxBroadPhaseType::eMBP;
+	SceneDesc.contactModifyCallback = m_pPhysx_ContactModifyCallback;
+	SceneDesc.flags |= PxSceneFlag::eENABLE_PCM;
 
 	/* Create Scene */
 	m_pPxScene = m_pPxPhysics->createScene(SceneDesc);
@@ -442,7 +510,7 @@ HRESULT CPhysx_Manager::Initialize_Material()
 			vMaterialDesc = { 0.5f, 0.6f,0.f };
 			break;			
 		case Engine::ACTOR_MATERIAL::CHARACTER_FOOT: // 캐릭터 구형 마찰
-			vMaterialDesc = { 8.f, 8.f,0.f };
+			vMaterialDesc = { 2.f, 2.f,0.f };
 			break;
 		default:
 			break;
@@ -570,6 +638,7 @@ void CPhysx_Manager::Free()
 
 	// 게임 및 DirectX 리소스 해제
 	Safe_Release(m_pPhysx_EventCallBack);
+	Safe_Release(m_pPhysx_ContactModifyCallback);
 	Safe_Release(m_pShader);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pGameInstance);
