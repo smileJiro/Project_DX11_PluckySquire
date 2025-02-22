@@ -265,7 +265,7 @@ public: /* For. Physx_Manager*/
 	//가장 먼저 충돌된 물체만 검출
 	_bool SingleSweep(PxGeometry* pxGeom, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, CActorObject** _ppOutActor, RAYCASTHIT* _pOutHit);
 	//모든(최대 10개) 충돌된 물체 검출
-	_bool MultiSweep(PxGeometry* pxGeom, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits);
+	_bool MultiSweep(PxGeometry* pxGeom, const _float4x4& _matShpeOffsetMatrix,const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits);
 
 
 	void				Set_Physx_DebugRender(_bool _isDebugRender);

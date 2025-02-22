@@ -330,16 +330,26 @@ _bool CPhysx_Manager::SingleSweep(PxGeometry* pxGeom, const _float3& _vOrigin, c
 	return hasHit;
 }
 
-_bool CPhysx_Manager::MultiSweep(PxGeometry* pxGeom, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits)
+_bool CPhysx_Manager::MultiSweep(PxGeometry* pxGeom, const _float4x4& _matShpeOffsetMatrix,const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits)
 {
 	PxSweepHit pxhits[10];
+	memset(&pxhits, 0, sizeof(PxSweepHit)*10);
 	PxSweepBuffer pxSweepBuffer(pxhits, 10);
 	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
 	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
-	PxTransform pxPose(vOrigin, PxQuat(PxIdentity));
+	_float3 vScale;
+	_float4 vQuat;
+	_float3 vPosition;
+	if (false == m_pGameInstance->MatrixDecompose(&vScale, &vQuat, &vPosition, XMLoadFloat4x4(&_matShpeOffsetMatrix)))
+		return E_FAIL;
+	vOrigin.x += vPosition.x;
+	vOrigin.y += vPosition.y;
+	vOrigin.z += vPosition.z;
+	PxTransform pxPose(vOrigin, PxQuat(vQuat.x, vQuat.y, vQuat.z, vQuat.w));
 
 	_bool hasHit = m_pPxScene->sweep(
-		*pxGeom, pxPose, vRayDir, _fDistance,pxSweepBuffer
+		*pxGeom, pxPose, vRayDir.getNormalized(), _fDistance, pxSweepBuffer,
+		PxHitFlag::ePOSITION | PxHitFlag::eNORMAL
 	);
 
 	if (hasHit) {

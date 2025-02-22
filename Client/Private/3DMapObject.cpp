@@ -28,7 +28,7 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
     if (nullptr == _pArg)
         return E_FAIL;
 
-
+    pDesc->iObjectGroupID = OBJECT_GROUP::MAPOBJECT;
     m_isCulling = pDesc->isCulling;
     #pragma region CModelObject::Initialize(pArg); 재구현부
         // Save 

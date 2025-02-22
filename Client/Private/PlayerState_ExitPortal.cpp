@@ -32,6 +32,7 @@ void CPlayerState_ExitPortal::Enter()
 	if (COORDINATE_3D == eCoord)
 	{
 		static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_FOOT, true);
+		static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
 		m_ePortalNormal = m_pOwner->Get_PortalNormal();
 		_vector vDir = m_pOwner->Get_LookDirection(COORDINATE_2D);
 		vDir = XMVectorSetZ(vDir, XMVectorGetY(vDir));
