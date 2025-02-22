@@ -5,6 +5,7 @@
 BEGIN(Engine)
 class CGameInstance;
 class CGameObject;
+class CActorObject;
 END
 
 BEGIN(Client)
@@ -34,6 +35,7 @@ private:
 	HRESULT Execute_DeleteObject(const EVENT& _tEvent);
 	HRESULT Execute_LevelChange(const EVENT& _tEvent);
 	HRESULT Execute_SetActive(const EVENT& _tEvent);
+	HRESULT Execute_ChangeMapObject(const EVENT& _tEvent);
 	HRESULT Execute_Setup_SimulationFilter(const EVENT& _tEvent);
 	HRESULT Execute_Change_Coordinate(const EVENT& _tEvent);
 	HRESULT Execute_Set_Kinematic(const EVENT& _tEvent);
@@ -64,6 +66,11 @@ private:
 	HRESULT Client_Level_Enter(_int _iChangeLevelID);
 	HRESULT Client_Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
 
+
+private:
+	void MapObjectCreate_End();
+	HRESULT	Map_Object_Create(const _wstring& _strFileName, _uint _iCurLevelID);
+
 private:
 	CGameInstance* m_pGameInstance = nullptr;
 	vector<CGameObject*> m_DeadObjectsList;
@@ -73,6 +80,9 @@ private:
 	ID3D11Device* m_pDevice = nullptr;
 	ID3D11DeviceContext* m_pContext = nullptr;
 
+private:
+	vector<CActorObject*> m_ThreadCreateMapObjects;
+	_bool m_isCreateFinished = false;
 public:
 	virtual void Free() override;
 };

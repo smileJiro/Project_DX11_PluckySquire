@@ -31,6 +31,7 @@ HRESULT CNPC_OnlySocial::Initialize(void* _pArg)
 {
 	CNPC_OnlySocial::NPC_DESC* pDesc = static_cast<CNPC_OnlySocial::NPC_DESC*>(_pArg);
 
+	pDesc->eStartCoord = COORDINATE_2D;
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 

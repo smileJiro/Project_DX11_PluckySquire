@@ -126,6 +126,13 @@ namespace Engine
 #include <typeinfo>
 #include <stack>
 #include <any>
+
+#include <chrono>
+#include <condition_variable>
+#include <cstdio>
+#include <future>
+#include <mutex>
+#include <thread>
 using namespace std;
 
 #include "Engine_Typedef.h"

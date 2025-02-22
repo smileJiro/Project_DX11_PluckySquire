@@ -32,6 +32,7 @@ void CObject_Manager::Priority_Update(_float _fTimeDelta)
             Pair.second->Priority_Update(_fTimeDelta);
         }
     }
+
 }
 
 void CObject_Manager::Update(_float _fTimeDelta)
@@ -40,7 +41,7 @@ void CObject_Manager::Update(_float _fTimeDelta)
     {
         for (auto& Pair : m_pLayers[i])
         {
-            Pair.second->Update(_fTimeDelta);                
+            Pair.second->Update(_fTimeDelta);            
         }
     }
 }
