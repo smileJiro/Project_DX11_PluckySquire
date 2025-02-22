@@ -173,47 +173,47 @@ HRESULT CBulb::Render()
 
 	if (COORDINATE_3D == Get_CurCoord())
 	{
-		{
-			CMesh* pMesh = m_p3DModelCom->Get_Mesh(0);
+		//{
+		//	CMesh* pMesh = m_p3DModelCom->Get_Mesh(0);
 
-			if (FAILED(m_p3DModelCom->Bind_Material(m_p3DShaderCom, "g_AlbedoTexture", 0, aiTextureType_DIFFUSE, 0)))
-				return E_FAIL;
-			if (FAILED(m_p3DModelCom->Bind_Material(m_p3DShaderCom, "g_NormalTexture", 0, aiTextureType_NORMALS, 0)))
-				return E_FAIL;
-			/*_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
-			m_p3DShaderCom->Bind_RawValue("g_vDefaultDiffuseColor", &vColor, sizeof(_float4));*/
-			
-			if (FAILED(m_p3DShaderCom->Begin(8)))
-				return E_FAIL;
-		
-			if (FAILED(pMesh->Bind_BufferDesc()))
-				return E_FAIL;
+		//	if (FAILED(m_p3DModelCom->Bind_Material(m_p3DShaderCom, "g_AlbedoTexture", 0, aiTextureType_DIFFUSE, 0)))
+		//		return E_FAIL;
+		//	if (FAILED(m_p3DModelCom->Bind_Material(m_p3DShaderCom, "g_NormalTexture", 0, aiTextureType_NORMALS, 0)))
+		//		return E_FAIL;
+		//	/*_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
+		//	m_p3DShaderCom->Bind_RawValue("g_vDefaultDiffuseColor", &vColor, sizeof(_float4));*/
+		//	
+		//	if (FAILED(m_p3DShaderCom->Begin(8)))
+		//		return E_FAIL;
+		//
+		//	if (FAILED(pMesh->Bind_BufferDesc()))
+		//		return E_FAIL;
 
-			if (FAILED(pMesh->Render()))
-				return E_FAIL;
+		//	if (FAILED(pMesh->Render()))
+		//		return E_FAIL;
 
-		}
+		//}
 
-		{
-			CMesh* pMesh = m_p3DModelCom->Get_Mesh(1);
+		//{
+		//	CMesh* pMesh = m_p3DModelCom->Get_Mesh(1);
 
-			m_p3DShaderCom->Bind_ConstBuffer("MultiFresnels", m_pFresnelBuffer);
-			m_p3DShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4));
-			
-			
-			if (FAILED(m_p3DShaderCom->Begin((_uint)PASS_VTXMESH::FRESNEL)))
-				return E_FAIL;
+		//	m_p3DShaderCom->Bind_ConstBuffer("MultiFresnels", m_pFresnelBuffer);
+		//	m_p3DShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4));
+		//	
+		//	
+		//	if (FAILED(m_p3DShaderCom->Begin((_uint)PASS_VTXMESH::FRESNEL)))
+		//		return E_FAIL;
 
-			if (FAILED(pMesh->Bind_BufferDesc()))
-				return E_FAIL;
+		//	if (FAILED(pMesh->Bind_BufferDesc()))
+		//		return E_FAIL;
 
-			if (FAILED(pMesh->Render()))
-				return E_FAIL;
+		//	if (FAILED(pMesh->Render()))
+		//		return E_FAIL;
 	
-		}		
+		//}		
 
 
-		//m_p3DModelCom->Render(m_p3DShaderCom, (_uint)PASS_VTXMESH::DEFAULT);
+		m_p3DModelCom->Render(m_p3DShaderCom, (_uint)PASS_VTXMESH::DEFAULT);
 	}
 
 	else if (COORDINATE_2D == Get_CurCoord())

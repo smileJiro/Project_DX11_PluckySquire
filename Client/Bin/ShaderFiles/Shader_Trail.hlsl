@@ -52,8 +52,8 @@ struct PS_OUT
 {
     float4 vAccumulate : SV_TARGET0;
     float vRevealage : SV_TARGET1;
+    float4 vBright : SV_TARGET2;
 };
-
 
 
 
@@ -151,57 +151,26 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
         OutStream.RestartStrip();
 
     }
-    
-    //{
-    //    Out[0].vPosition = float4(In[0].vPosition.xyz - vRight.xyz + vHeight.xyz, 1.f);
-    //    Out[0].vPosition = mul(Out[0].vPosition, matVP);
-    //    Out[0].vProjPos = Out[0].vPosition;
-    //    Out[0].vTexcoord = float2(In[0].vTexcoord.x + 1.f / (float) (g_iCount), 0.f);
-    
-    //    Out[1].vPosition = float4(In[0].vPosition.xyz + vRight.xyz + vHeight.xyz, 1.f);
-    //    Out[1].vPosition = mul(Out[1].vPosition, matVP);
-    //    Out[1].vProjPos = Out[1].vPosition;
-    //    Out[1].vTexcoord = float2(In[0].vTexcoord.x, 0.f);
-    
-    //    Out[2].vPosition = float4(In[0].vPosition.xyz + vRight.xyz - vHeight.xyz, 1.f);
-    //    Out[2].vPosition = mul(Out[2].vPosition, matVP);
-    //    Out[2].vProjPos = Out[2].vPosition;
-    //    Out[2].vTexcoord = float2(In[0].vTexcoord.x, 1.f);
-    
-    //    Out[3].vPosition = float4(In[0].vPosition.xyz - vRight.xyz - vHeight.xyz, 1.f);
-    //    Out[3].vPosition = mul(Out[3].vPosition, matVP);
-    //    Out[3].vProjPos = Out[3].vPosition;
-    //    Out[3].vTexcoord = float2(In[0].vTexcoord.x + 1.f / (float) (g_iCount), 1.f);
-       
-    //    OutStream.Append(Out[0]);
-    //    OutStream.Append(Out[1]);
-    //    OutStream.Append(Out[2]);
-    //    OutStream.RestartStrip();
-
-    //    OutStream.Append(Out[0]);
-    //    OutStream.Append(Out[2]);
-    //    OutStream.Append(Out[3]);
-    //    OutStream.RestartStrip();
-        
-    //}
-    
-
 }
 
-
-
-
+float3 g_fBrightness = float3(0.2126, 0.7152, 0.0722);
+float g_fBloomThreshold = 0.1f;
 /* PixelShader */
-PS_OUT
-    PS_MAIN_DEFAULT(PS_IN In)
+PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    float4 vColor = g_Texture.Sample(LinearSampler_Clamp, float2(1.f - In.vTexcoord.x, In.vTexcoord.y));
-    //float4 vColor = float4(1.f, 1.f, 1.f, 1.f);
+    float4 vColor = g_vColor;
+    float4 vMask = g_Texture.Sample(LinearSampler_Clamp, float2(1.f - In.vTexcoord.x, In.vTexcoord.y));
+    
+    vColor.rgb = vColor.rgb * vMask.r;
+    vColor.a = vColor.a * vMask.a * vMask.r;
+;    //float4 vColor = float4(1.f, 1.f, 1.f, 1.f);
     //vColor.a = 1.f;
     //vColor.a *= In.vTexcoord.x;
-    
+      
+    float fLuminance = dot(vColor.rgb, g_fBrightness);
+    float fBrightness = max(fLuminance - g_fBloomThreshold, 0.0) / ((length(vColor.rgb) * 0.33f - g_fBloomThreshold));
 
     float fWeight = clamp(10.f / (1e-5 + pow(In.vProjPos.w / 10.f, 3.0f) + pow(In.vProjPos / 200.f, 6.f)), 1e-2, 3e3);
     fWeight = fWeight * max(min(1.0, max(max(vColor.r, vColor.g), vColor.b) * vColor.a), vColor.a);
@@ -209,7 +178,8 @@ PS_OUT
     Out.vAccumulate.rgb = vColor.rgb * vColor.a * fWeight;
     Out.vAccumulate.a = vColor.a * fWeight;
     Out.vRevealage.r = vColor.a /** clamp(log(0.6f + vColor.a), 0.25f, 0.6f)*/;
-    
+    Out.vBright = Out.vAccumulate * fBrightness;
+
     
     return Out;
 }

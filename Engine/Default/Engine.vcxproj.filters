@@ -307,6 +307,9 @@
     <Filter Include="01.Utility\04.Components\VIBuffer\Trail">
       <UniqueIdentifier>{80bc18ca-0ba5-40d8-9fb2-4b33013b0e51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Ribbon%28Beam%29">
+      <UniqueIdentifier>{42eedbef-e8ba-4ee3-8257-f750bcd3138d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -630,6 +633,9 @@
     <ClInclude Include="..\public\VIBuffer_Trail.h">
       <Filter>01.Utility\04.Components\VIBuffer\Trail</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Ribbon.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Ribbon%28Beam%29</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -940,6 +946,9 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Trail.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Ribbon.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Ribbon%28Beam%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

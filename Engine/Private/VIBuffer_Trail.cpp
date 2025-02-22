@@ -7,11 +7,7 @@ CVIBuffer_Trail::CVIBuffer_Trail(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 
 CVIBuffer_Trail::CVIBuffer_Trail(const CVIBuffer_Trail& _Prototype)
 	: CVIBuffer(_Prototype)
-	, m_iTriangleCount(_Prototype.m_iTriangleCount)
 {
-	//m_pVertices = new VTXTRAIL[m_iNumVertices];
-	//
-	//memcpy(m_pVertices, _Prototype.m_pVertices, sizeof(VTXTRAIL) * m_iNumVertices);
 }
 
 
@@ -26,7 +22,6 @@ HRESULT CVIBuffer_Trail::Initialize_Prototype(_uint _iMaxVertexCount)
 	m_iVertexStride = sizeof(VTXTRAIL);
 	m_iNumVertices = _iMaxVertexCount;
 
-	m_iTriangleCount = m_iNumVertices - 2;
 	m_iIndexStride = sizeof(_uint);
 	//m_iNumIndices = m_iTriangleCount * 3;
 	m_iNumIndices = m_iNumVertices;
@@ -85,12 +80,6 @@ HRESULT CVIBuffer_Trail::Initialize_Prototype(_uint _iMaxVertexCount)
 
 HRESULT CVIBuffer_Trail::Initialize(void* _pArg)
 {
-	if (nullptr != _pArg)
-	{
-		TRAILBUFFER_DESC* pDesc = static_cast<TRAILBUFFER_DESC*>(_pArg);
-		m_fDisappearTime = pDesc->fDisappearTime;
-	}
-
 #pragma region VERTEX_BUFFER
 
 	// 1. BufferDesc 값을 채운다.
@@ -105,29 +94,19 @@ HRESULT CVIBuffer_Trail::Initialize(void* _pArg)
 
 
 	// 2. SubResourceData 값을 채운다.
-	m_pVertices = new VTXTRAIL[m_iNumVertices];
-	ZeroMemory(m_pVertices, sizeof(VTXTRAIL) * m_iNumVertices);
-
-
-	// TEST
-	// 
-	//m_fOffsetTexcoord = 0.5f / _float(m_iNumVertices + 1.f);
-	//m_fTexcoordPerIndex = m_fOffsetTexcoord * 2.f;
-	//for (_uint i = 0; i < m_iNumVertices; ++i)
-	//{
-	//	_float fAngle = XMConvertToRadians(i / 32.f * 270.f);
-	//	m_pVertices[i].vPosition = _float3(5.f * cosf(fAngle), 5.f * sinf(fAngle), 0.f);
-	//	//m_pVertices[i].vPosition = _float3(i * -1.f, 0.f, 0.f);
-	//}
+	VTXTRAIL* pVertices = new VTXTRAIL[m_iNumVertices];
+	ZeroMemory(pVertices, sizeof(VTXTRAIL) * m_iNumVertices);
 
 	
 	ZeroMemory(&m_SubResourceDesc, sizeof(m_SubResourceDesc));
-	m_SubResourceDesc.pSysMem = m_pVertices; // Buffer 생성시에는 pSysMem 만 사용한다.
+	m_SubResourceDesc.pSysMem = pVertices; // Buffer 생성시에는 pSysMem 만 사용한다.
 
 	// 3. Buffer를 생성한다.
 	// m_pVertices는 지워주지 않음.
 	if (FAILED(CVIBuffer::Create_Buffer(&m_pVB)))
 		return E_FAIL;
+
+	Safe_Delete_Array(pVertices);
 
 	// 4. Buffer -> SRV 생성
 	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};
@@ -143,72 +122,72 @@ HRESULT CVIBuffer_Trail::Initialize(void* _pArg)
 	return S_OK;
 }
 
-void CVIBuffer_Trail::Update(_float _fTimeDelta)
-{
-	m_fAccTime += _fTimeDelta;
-
-	// 정점 두개 삭제.
-	if (m_fDisappearTime <= m_fAccTime)
-	{
-		//if (0 <= m_iCurVertexCount)
-		//{
-		//	D3D11_MAPPED_SUBRESOURCE		SubResource{};
-		//	m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-		//	VTXTRAIL* pVertices = static_cast<VTXTRAIL*>(SubResource.pData);
-
-		//	// 걍 싹 다 지워!!
-		//	if (4 >= m_iCurVertexCount)
-		//	{
-		//		for (_uint i = 0; i < m_iCurVertexCount; ++i)
-		//		{
-		//			pVertices[i].fLifeTime = 0.f;
-		//		}
-
-		//		m_iCurVertexCount = 0;
-		//	}
-		//	else
-		//	{
-		//		for (_uint i = 0; i < m_iCurVertexCount - 2; i += 2)
-		//		{
-		//			pVertices[i].vPosition = pVertices[i + 2].vPosition;
-		//			pVertices[i + 1].vPosition = pVertices[i + 3].vPosition;
-		//		}
-
-		//		pVertices[m_iCurVertexCount - 2].fLifeTime = 0.f;
-		//		pVertices[m_iCurVertexCount - 1].fLifeTime = 0.f;
-		//		m_iCurVertexCount -= 2;
-		//	}	
-
-		//	m_pContext->Unmap(m_pVB, 0);
-		//}
-
-		if (0 < m_iCurVertexCount)
-		{
-			D3D11_MAPPED_SUBRESOURCE		SubResource{};
-			m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-			VTXTRAIL* pVertices = static_cast<VTXTRAIL*>(SubResource.pData);
-			
-			if (1 < m_iCurVertexCount)
-			{
-				for (_uint i = 0; i < m_iCurVertexCount - 1; ++i)
-				{
-					pVertices[i].vPosition = pVertices[i + 1].vPosition;
-				}
-			}
-			else
-			{
-				pVertices[0].vPosition = _float3(0.f, 0.f, 0.f);
-			}		
-
-
-			m_pContext->Unmap(m_pVB, 0);
-			m_iCurVertexCount -= 1;
-		}
-
-		m_fAccTime = 0.f;
-	}
-
-}
+//void CVIBuffer_Trail::Update(_float _fTimeDelta)
+//{
+//	m_fAccTime += _fTimeDelta;
+//
+//	// 정점 삭제.
+//	if (m_fDisappearTime <= m_fAccTime)
+//	{
+//		//if (0 <= m_iCurVertexCount)
+//		//{
+//		//	D3D11_MAPPED_SUBRESOURCE		SubResource{};
+//		//	m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+//		//	VTXTRAIL* pVertices = static_cast<VTXTRAIL*>(SubResource.pData);
+//
+//		//	// 걍 싹 다 지워!!
+//		//	if (4 >= m_iCurVertexCount)
+//		//	{
+//		//		for (_uint i = 0; i < m_iCurVertexCount; ++i)
+//		//		{
+//		//			pVertices[i].fLifeTime = 0.f;
+//		//		}
+//
+//		//		m_iCurVertexCount = 0;
+//		//	}
+//		//	else
+//		//	{
+//		//		for (_uint i = 0; i < m_iCurVertexCount - 2; i += 2)
+//		//		{
+//		//			pVertices[i].vPosition = pVertices[i + 2].vPosition;
+//		//			pVertices[i + 1].vPosition = pVertices[i + 3].vPosition;
+//		//		}
+//
+//		//		pVertices[m_iCurVertexCount - 2].fLifeTime = 0.f;
+//		//		pVertices[m_iCurVertexCount - 1].fLifeTime = 0.f;
+//		//		m_iCurVertexCount -= 2;
+//		//	}	
+//
+//		//	m_pContext->Unmap(m_pVB, 0);
+//		//}
+//
+//		if (0 < m_iCurVertexCount)
+//		{
+//			D3D11_MAPPED_SUBRESOURCE		SubResource{};
+//			m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+//			VTXTRAIL* pVertices = static_cast<VTXTRAIL*>(SubResource.pData);
+//			
+//			if (1 < m_iCurVertexCount)
+//			{
+//				for (_uint i = 0; i < m_iCurVertexCount - 1; ++i)
+//				{
+//					pVertices[i].vPosition = pVertices[i + 1].vPosition;
+//				}
+//			}
+//			else
+//			{
+//				pVertices[0].vPosition = _float3(0.f, 0.f, 0.f);
+//			}		
+//
+//
+//			m_pContext->Unmap(m_pVB, 0);
+//			m_iCurVertexCount -= 1;
+//		}
+//
+//		m_fAccTime = 0.f;
+//	}
+//
+//}
 
 HRESULT CVIBuffer_Trail::Bind_BufferDesc()
 {
@@ -220,7 +199,6 @@ HRESULT CVIBuffer_Trail::Bind_BufferDesc()
 
 HRESULT CVIBuffer_Trail::Render()
 {
-	// TEST
 	m_pContext->Draw(_uint(m_iCurVertexCount), 0);
 
 	ID3D11ShaderResourceView* nullSRV[6] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
@@ -229,7 +207,7 @@ HRESULT CVIBuffer_Trail::Render()
 	return S_OK;
 }
 
-void CVIBuffer_Trail::Update_Point(const _float4x4* _pWorldMatrix, _fvector _vPosition)
+void CVIBuffer_Trail::Add_Point(const _float4x4* _pWorldMatrix, _fvector _vPosition)
 {
 	if (nullptr == _pWorldMatrix)
 		return;
@@ -253,8 +231,43 @@ void CVIBuffer_Trail::Update_Point(const _float4x4* _pWorldMatrix, _fvector _vPo
 
 		m_iCurVertexCount += 1;
 	}
+	// 최대 수에 해당할 경우
+	else
+	{
+		for (_uint i = 0; i < m_iCurVertexCount - 1; ++i)
+		{
+			pVertices[i].vPosition = pVertices[i + 1].vPosition;
+		}
+		pVertices[m_iCurVertexCount].vPosition = vTranslate;
+	}
 
 	m_pContext->Unmap(m_pVB, 0);
+}
+
+void CVIBuffer_Trail::Delete_Point()
+{
+	if (0 < m_iCurVertexCount)
+	{
+		D3D11_MAPPED_SUBRESOURCE		SubResource{};
+		m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+		VTXTRAIL* pVertices = static_cast<VTXTRAIL*>(SubResource.pData);
+		
+		if (1 < m_iCurVertexCount)
+		{
+			for (_uint i = 0; i < m_iCurVertexCount - 1; ++i)
+			{
+				pVertices[i].vPosition = pVertices[i + 1].vPosition;
+			}
+		}
+		else
+		{
+			pVertices[0].vPosition = _float3(0.f, 0.f, 0.f);
+		}		
+	
+		m_pContext->Unmap(m_pVB, 0);
+	
+		m_iCurVertexCount -= 1;
+	}
 }
 
 
@@ -286,7 +299,6 @@ CComponent* CVIBuffer_Trail::Clone(void* _pArg)
 
 void CVIBuffer_Trail::Free()
 {
-	Safe_Delete_Array(m_pVertices);
 	Safe_Release(m_pBufferSRV);
 
 	__super::Free();

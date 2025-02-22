@@ -1028,6 +1028,7 @@
       <Filter>02.GameObjects\Word</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\2DMapWordObject.h" />
+    <ClInclude Include="..\public\CollapseBlock.h" />
     <ClInclude Include="..\Public\Goblin_SideScroller.h" />
     <ClInclude Include="..\Public\LightningBolt.h" />
     <ClInclude Include="..\Public\PlayerState_Evict.h" />
@@ -1062,9 +1063,6 @@
     <ClInclude Include="..\Public\PlayerState_TurnBook.h" />
     <ClInclude Include="..\Public\SideScroll_HitState.h" />
     <ClInclude Include="..\Public\SideScroll_PatrolState.h" />
-    <ClInclude Include="..\Public\Effect_Manager.h">
-      <Filter>02.GameObjects\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Effect2D.h">
       <Filter>02.GameObjects\Effect2D</Filter>
     </ClInclude>
@@ -1098,11 +1096,11 @@
     <ClInclude Include="..\Public\Camera_CutScene_Save.h">
       <Filter>02.GameObjects\Camera\CutScene\Tool</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Sword_Trail.h">
-      <Filter>02.GameObjects\Player</Filter>
+    <ClInclude Include="..\public\Effect_Trail.h">
+      <Filter>02.GameObjects\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CollapseBlock.h">
-      <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
+    <ClInclude Include="..\Public\Effect_Manager.h">
+      <Filter>02.GameObjects\Effect\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1654,6 +1652,7 @@
       <Filter>02.GameObjects\Word</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
+    <ClCompile Include="..\private\CollapseBlock.cpp" />
     <ClCompile Include="..\Private\Goblin_SideScroller.cpp" />
     <ClCompile Include="..\Private\GameEventExecuter.cpp" />
     <ClCompile Include="..\Private\LightningBolt.cpp" />
@@ -1695,9 +1694,6 @@
     <ClCompile Include="..\private\Effect2D.cpp">
       <Filter>02.GameObjects\Effect2D</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Effect_Manager.cpp">
-      <Filter>02.GameObjects\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Effect2D_Manager.cpp">
       <Filter>02.GameObjects\Effect2D\Manager</Filter>
     </ClCompile>
@@ -1725,11 +1721,11 @@
     <ClCompile Include="..\Private\Level_Camera_Tool_Client.cpp">
       <Filter>01.Levels\04. Camera_Tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CollapseBlock.cpp">
-      <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
+    <ClCompile Include="..\private\Effect_Trail.cpp">
+      <Filter>02.GameObjects\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Sword_Trail.cpp">
-      <Filter>02.GameObjects\Player</Filter>
+    <ClCompile Include="..\Private\Effect_Manager.cpp">
+      <Filter>02.GameObjects\Effect\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

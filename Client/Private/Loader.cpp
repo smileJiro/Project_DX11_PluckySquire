@@ -129,7 +129,7 @@
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
-#include "Sword_Trail.h"
+#include "Effect_Trail.h"
 
 
 
@@ -357,7 +357,7 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     /* For. Prototype_Component_Trail*/
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_SwordTrail"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Trail32"),
         CVIBuffer_Trail::Create(m_pDevice, m_pContext, 32))))
         return E_FAIL;
     
@@ -594,8 +594,8 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     /* For. Prototype_GameObject_SwordTrail */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_SwordTrail"),
-        CSword_Trail::Create(m_pDevice, m_pContext))))
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_EffectTrail"),
+        CEffect_Trail::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     
 

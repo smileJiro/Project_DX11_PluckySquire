@@ -44,7 +44,7 @@ void CTestTrail::Update(_float _fTimeDelta)
 
     //if (0.2f <= m_fAccTime)
     //{
-    //    m_pBufferCom->Update_Point(m_pControllerTransform->Get_WorldMatrix_Ptr(), XMVectorSet(0.f, 0.5f, 0.f, 1.f), XMVectorSet(0.f, -0.5f, 0.f, 1.f));
+    //    m_pBufferCom->Add_Point(m_pControllerTransform->Get_WorldMatrix_Ptr(), XMVectorSet(0.f, 0.5f, 0.f, 1.f), XMVectorSet(0.f, -0.5f, 0.f, 1.f));
     //
     //    m_fAccTime = 0.f;
     //}

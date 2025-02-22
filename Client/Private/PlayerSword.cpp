@@ -6,7 +6,7 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"     
 #include "Camera_Manager.h"
-#include "Sword_Trail.h"
+#include "Effect_Trail.h"
 
 CPlayerSword::CPlayerSword(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -116,13 +116,21 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
 	m_pBody2DColliderCom = m_p2DColliderComs[0];
 	Safe_AddRef(m_pBody2DColliderCom);
 
-    // Trail Effect
-    CPartObject::PARTOBJECT_DESC SwordTrailDesc = {};
+    // Trail Effect 생성
+    CEffect_Trail::EFFECTTRAIL_DESC SwordTrailDesc = {};
     SwordTrailDesc.eStartCoord = COORDINATE_3D;
     SwordTrailDesc.iCurLevelID = m_iCurLevelID;
     SwordTrailDesc.isCoordChangeEnable = false;
     SwordTrailDesc.pParentMatrices[COORDINATE_3D] = &m_WorldMatrices[COORDINATE_3D];
-    m_pTrailEffect = static_cast<CSword_Trail*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_SwordTrail"), &SwordTrailDesc));
+    SwordTrailDesc.fLength = 1.f;
+    SwordTrailDesc.vAddPoint = _float3(-0.05f, 0.f, 0.88f);
+    SwordTrailDesc.vColor = _float4(0.62f, 0.82f, 1.33f, 0.85f);
+    SwordTrailDesc.szTextureTag = L"Prototype_Component_Texture_Trail";
+    SwordTrailDesc.szBufferTag = L"Prototype_Component_VIBuffer_Trail32";
+    SwordTrailDesc.fAddTime = 0.001f;
+    SwordTrailDesc.fDeleteTime = 0.024f;
+
+    m_pTrailEffect = static_cast<CEffect_Trail*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_EffectTrail"), &SwordTrailDesc));
 
     if (nullptr == m_pTrailEffect)
         return E_FAIL;
@@ -213,19 +221,10 @@ void CPlayerSword::Update(_float _fTimeDelta)
 
     __super::Update(_fTimeDelta);
 
-    // 
+    // Trail Effect 정점 갱신
     if (COORDINATE_3D == Get_CurCoord())
     {
         m_pTrailEffect->Update(_fTimeDelta);
-        if (m_bAttackEnable)
-        {
-            m_fGenerateEffectTime += _fTimeDelta;
-            if (0.001f <= m_fGenerateEffectTime)
-            {
-                m_pTrailEffect->Add_Point(XMVectorSet(0.f, 0.f, 0.55f, 1.f));
-                m_fGenerateEffectTime = 0.f;
-            }
-        }
     }
 }
 
@@ -553,6 +552,12 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
         _uint iShapeCount = (_uint)m_pActorCom->Get_Shapes().size();
         for (_uint i = 0; i < iShapeCount; i++)
             m_pActorCom->Set_ShapeEnable(i, false);
+
+        m_pTrailEffect->Set_AddUpdate(_bOn);
+        if (false == _bOn)
+        {
+            m_pTrailEffect->Delete_Delay(0.5f);
+        }
     }
     if (false == _bOn)
     {
