@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Actor.h"
+#include "Physx_ContactModifyCallback.h"
 BEGIN(Engine)
 class ENGINE_DLL CActorObject abstract : public CGameObject
 {
@@ -8,7 +9,8 @@ public:
 	typedef struct tagActorObjectDesc : public CGameObject::GAMEOBJECT_DESC
 	{
 		ACTOR_TYPE			eActorType = ACTOR_TYPE::LAST;
-		CActor::ACTOR_DESC* pActorDesc;
+		_bool				isAddActorToScene = true;
+		CActor::ACTOR_DESC* pActorDesc = nullptr;
 	}ACTOROBJECT_DESC;
 
 protected:
@@ -19,7 +21,10 @@ protected:
 public:
 	virtual HRESULT				Initialize_Prototype();								// 프로토 타입 전용 Initialize
 	virtual HRESULT				Initialize(void* _pArg);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
-
+public:/* Actor를 Scene에 추가 혹은 제거 */
+	void Add_ActorToScene();
+	void Remove_ActorFromScene();
+	_bool Is_ActorInScene();
 public:
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	
@@ -32,6 +37,7 @@ public:
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other) { return; }
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other) { return; }
 
+	virtual void OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts) { return; }
 
 	void Add_Impuls(_fvector _vForce);
 	void Add_Force(_fvector _vForce);

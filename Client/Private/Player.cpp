@@ -31,7 +31,6 @@
 #include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
-
     
 #include "Collider_Fan.h"
 #include "Interactable.h"
@@ -39,6 +38,7 @@
 #include "Blocker.h"
 #include "NPC_Store.h"
 #include "Portal.h"
+
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
 {
@@ -80,9 +80,11 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* _pArg)
 {
-    CPlayer::CONTAINEROBJ_DESC* pDesc = static_cast<CPlayer::CONTAINEROBJ_DESC*>(_pArg);
+    CPlayer::CHARACTER_DESC* pDesc = static_cast<CPlayer::CHARACTER_DESC*>(_pArg);
 
     m_iCurLevelID = pDesc->iCurLevelID;
+	pDesc->_fStepHeightThreshold = 0.2f;
+	pDesc->_fStepSlopeThreshold = 0.45f;
 
     pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
     pDesc->eStartCoord = COORDINATE_3D;
@@ -111,7 +113,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ActorDesc.FreezePosition_XYZ[0] = false;
     ActorDesc.FreezePosition_XYZ[1] = false;
     ActorDesc.FreezePosition_XYZ[2] = false;
-
+    
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC CapsuleDesc = {};
     CapsuleDesc.fRadius = m_fFootLength;
@@ -119,34 +121,35 @@ HRESULT CPlayer::Initialize(void* _pArg)
     //SHAPE_BOX_DESC ShapeDesc = {};
     //ShapeDesc.vHalfExtents = { 0.5f, 1.f, 0.5f };
 
+    ActorDesc.ShapeDatas.resize(PLAYER_SHAPE_USE::PLAYER_SHAPE_USE_LAST);
     // 플레이어 몸통.
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &CapsuleDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
 	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset /*+ 0.1f*/, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc.ShapeDatas.push_back(ShapeData);
+    ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
 
     //마찰용 박스
-    SHAPE_BOX_DESC BoxDesc = {};
-    _float fHalfWidth = CapsuleDesc.fRadius * cosf(XMConvertToRadians(45.f));
-    BoxDesc.vHalfExtents = { fHalfWidth, CapsuleDesc.fRadius, fHalfWidth };
-    SHAPE_DATA BoxShapeData;
-    BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
-    BoxShapeData.pShapeDesc = &BoxDesc;
-    XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc.vHalfExtents.y, 0.0f));
-    BoxShapeData.iShapeUse =(_uint)SHAPE_USE::SHAPE_FOOT;
-    BoxShapeData.isTrigger = false;
-    BoxShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
-    BoxShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    BoxShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
-    ActorDesc.ShapeDatas.push_back(BoxShapeData);
+    //SHAPE_BOX_DESC BoxDesc = {};
+    //_float fHalfWidth = CapsuleDesc.fRadius * cosf(XMConvertToRadians(45.f));
+    //BoxDesc.vHalfExtents = { fHalfWidth, CapsuleDesc.fRadius, fHalfWidth };
+    //SHAPE_DATA BoxShapeData;
+    //BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
+    //BoxShapeData.pShapeDesc = &BoxDesc;
+    //XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc.vHalfExtents.y, 0.0f));
+    //BoxShapeData.iShapeUse =(_uint)SHAPE_USE::SHAPE_FOOT;
+    //BoxShapeData.isTrigger = false;
+    //BoxShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
+    //BoxShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
+    //BoxShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
+    //ActorDesc.ShapeDatas.push_back(BoxShapeData);
 
 
     //주변 지형 감지용 구 (트리거)
@@ -160,7 +163,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.iShapeUse =(_uint) SHAPE_USE::SHAPE_TRIGER;
     ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
     ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::INTERACTION_OBEJCT;
-    ActorDesc.ShapeDatas.push_back(ShapeData);
+    ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
 
     //상호작용 구 (트리거)
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
@@ -171,7 +174,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ShapeData.iShapeUse = (_uint)PLAYER_SHAPE_USE::INTERACTION;
     ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
     ShapeData.FilterData.OtherGroupMask =OBJECT_GROUP::INTERACTION_OBEJCT;
-    ActorDesc.ShapeDatas.push_back(ShapeData);
+    ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
     
     //공격시 몸통 가드
     SHAPE_SPHERE_DESC tGuardShapeDesc = {};
@@ -185,7 +188,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     BodyGuardShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
     BodyGuardShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
     BodyGuardShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER; // Actor가 충돌을 감지할 그룹
-    ActorDesc.ShapeDatas.push_back(BodyGuardShapeData);
+    ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
 
 
 
@@ -450,29 +453,16 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
         m_pGravityCom->Change_State((CGravity::STATE)iState);
     }
 
-    CContainerObject::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
+    __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
 
 void CPlayer::Update(_float _fTimeDelta)
 {
-    //cout << "X : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[0] << " Y : " << m_pControllerTransform->Get_Transform()->Get_State(CTransform::STATE_POSITION).m128_f32[1] << endl;
 
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
-  //  if (COORDINATE_2D == eCoord)
-  //  {
-  //      //// TestCode : 태웅
-  //      _uint iSectionKey = RG_2D + PR2D_SECTION_START;
-  //      if(m_pBody2DColliderCom->Is_Active())
-  //          m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER, m_pBody2DColliderCom);
-		//if (m_pBody2DTriggerCom->Is_Active())
-  //          m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_TRIGGER, m_pBody2DTriggerCom);
-		//if (m_pAttack2DTriggerCom->Is_Active())
-		//	m_pGameInstance->Add_Collider(m_strSectionName, OBJECT_GROUP::PLAYER_PROJECTILE, m_pAttack2DTriggerCom);
-  //  }
 
-   //cout << "Sneak" << Is_Sneaking() << endl;
 	if (m_bInvincible)
 	{
         m_fInvincibleTImeAcc += _fTimeDelta;
@@ -480,90 +470,24 @@ void CPlayer::Update(_float _fTimeDelta)
 		if (m_fInvincibleTIme <= m_fInvincibleTImeAcc)
 		{
 			m_bInvincible = false;
-            //m_pActorCom->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
-			//m_pBody2DColliderCom->Set_Active(true);
             m_fInvincibleTImeAcc = 0;
 		}
 	}
     __super::Update(_fTimeDelta); /* Part Object Update */
-    m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-    if (COORDINATE_3D == eCoord)
-    {
-        _bool bSleep = static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Sleeping();
-        if (false == bSleep)
-        {
-            m_bOnGround = false;
-        }
-    }
-    
+
     CUI_Manager::GetInstance()->Set_isQIcon((nullptr != m_pInteractableObject) 
         && KEY::Q == m_pInteractableObject->Get_InteractKey());
     m_pInteractableObject = nullptr;
+
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
 
 void CPlayer::Late_Update(_float _fTimeDelta)
-{
-    COORDINATE eCoord = Get_CurCoord();
-    if (COORDINATE_2D == eCoord)
-    {
-        if (m_bPlatformerMode)
-        {
-
-        }
-        else
-        {
-            m_f2DUpForce -= 9.8f * _fTimeDelta * 180;
-
-            m_f2DFloorDistance += m_f2DUpForce * _fTimeDelta;
-            if (0 > m_f2DFloorDistance)
-            {
-                m_f2DFloorDistance = 0;
-                m_bOnGround = true;
-                m_f2DUpForce = 0;
-            }
-            else if (0 == m_f2DFloorDistance)
-                m_bOnGround = true;
-            else
-                m_bOnGround = false;
-            // cout << "Upforce :" << m_f2DUpForce << " Height : " << m_f2DHeight << endl;
-            _vector vUp = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_UP));
-            m_pBody->Set_Position(vUp * m_f2DFloorDistance);
-        }
-
-    }
-    else
-    {
-		_vector vPlayerPos = Get_FinalPosition();
-        _float3 vOrigin;
-        XMStoreFloat3(&vOrigin, vPlayerPos);
-        _float3 vRayDir = { 0,-1,0 };
-        list<CActorObject*> hitActors;
-        list<RAYCASTHIT> raycasthits;
-        _float fFloorHeihgt = -1;
-        if (m_pGameInstance->RayCast(vOrigin, vRayDir, 100, hitActors, raycasthits))
-        {
-            //닿은 것들 중에서 가장 높은 것을 찾기
-            auto& iterHitPoint = raycasthits.begin();
-            for (auto& pActor : hitActors)
-            {
-                if ( pActor != this )//맵과 닿음.
-				{
-					if (iterHitPoint->vNormal.y > m_fStepSlopeThreshold)//닿은 곳의 경사가 너무 급하지 않으면
-					{
-						fFloorHeihgt = max(fFloorHeihgt, iterHitPoint->vPosition.y);
-					}
-                }
-                iterHitPoint++;
-            }
-        }
-		if (fFloorHeihgt > -1)
-		    m_f3DFloorDistance = XMVectorGetY(vPlayerPos) - fFloorHeihgt;
-        else
-			m_f3DFloorDistance = -1;
-    }
+{            // cout << "Upforce :" << m_f2DUpForce << " Height : " << m_f2DHeight << endl;
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
+    _vector vUp = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_UP));
+    m_pBody->Set_Position(vUp * m_f2DFloorDistance);
     //cout << endl;
 
 }
@@ -590,106 +514,33 @@ HRESULT CPlayer::Render()
 
 void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+    __super::OnContact_Enter(_My, _Other, _ContactPointDatas);
 	m_pStateMachine->Get_CurrentState()->OnContact_Enter(_My, _Other, _ContactPointDatas);
-    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
-    switch (eShapeUse)
-    {
-    case Client::SHAPE_USE::SHAPE_BODY:
 
-        break;
-    case Client::SHAPE_USE::SHAPE_FOOT:
-        //cout << "   COntatct Enter";
-
-        //TestCode
-    //    for (auto& pxPairData : _ContactPointDatas)
-    //    {
-    //        if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
-    //        {
-    //            //경사로 벽인지 판단하는데, 낮은 높이애들만 할 것이므로 안씀
-    //            //if (abs(pxPairData.normal.y) < m_fFootSlopeThreshold)
-    //            //높이가 한계점 이하이면
-				//if (Get_FinalPosition().m128_f32[1] < pxPairData.position.y && pxPairData.position.y - m_fFootHeightThreshold <= Get_FinalPosition().m128_f32[1])
-    //            {
-    //                Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
-    //            }
-    //        }
-    //    }
-
-        break;
-	case Client::SHAPE_USE::SHAPE_TRIGER:
-		break;
-    }
 
 }
 
 void CPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+    __super::OnContact_Stay(_My, _Other, _ContactPointDatas);
 	m_pStateMachine->Get_CurrentState()->OnContact_Stay(_My, _Other, _ContactPointDatas);
-	SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
-    switch (eShapeUse)
-    {
-    case Client::SHAPE_USE::SHAPE_BODY:
-        break;
-    case Client::SHAPE_USE::SHAPE_FOOT:
-        for (auto& pxPairData : _ContactPointDatas)
-        {
-            //_vector vMyPos = Get_FinalPosition();
-            ////천장이면 무시
-            //if (pxPairData.normal.y < 0)
-            //    continue;
-            //닿은 곳의 경사가 너무 급하면 무시
-            if (abs(pxPairData.normal.y) < m_fStepSlopeThreshold)
-                continue;
-            m_bOnGround = true;
-            ////cout << "  Contact";
-            return;
-        }
-        break;
-    case Client::SHAPE_USE::SHAPE_TRIGER:
-
-        break;
-    default:
-        break;
-    }
 
 }
 
 void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+    __super::OnContact_Exit(_My, _Other, _ContactPointDatas);
 	m_pStateMachine->Get_CurrentState()->OnContact_Exit(_My, _Other, _ContactPointDatas);
-    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
-    switch (eShapeUse)
-    {
-    case Client::SHAPE_USE::SHAPE_BODY:
 
-        break;
-    case Client::SHAPE_USE::SHAPE_FOOT:
-        //cout << "   COntatct Exit";
-
-         //TestCode
-        //for (auto& pxPairData : _ContactPointDatas)
-        //{
-        //    if (OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup)
-        //    {
-        //        //경사로 벽인지 판단하는데, 낮은 높이애들만 할 것이므로 안씀
-        //        //if (abs(pxPairData.normal.y) < m_fFootSlopeThreshold)
-        //        //높이가 한계점 이하이면
-        //        if (!(Get_FinalPosition().m128_f32[1] < pxPairData.position.y && pxPairData.position.y - m_fFootHeightThreshold <= Get_FinalPosition().m128_f32[1]))
-        //        {
-        //            Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
-        //        }
-        //    }
-        //}
-        break;
-    case Client::SHAPE_USE::SHAPE_TRIGER:
-        break;
-    }
 
 
 }
 
+
+
 void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+    __super::OnTrigger_Enter(_My, _Other);
 	m_pStateMachine->Get_CurrentState()->OnTrigger_Enter(_My, _Other);
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
@@ -700,11 +551,11 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
         Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
         break;
     }
-
 }
 
 void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+    __super::OnTrigger_Stay(_My, _Other);
 	m_pStateMachine->Get_CurrentState()->OnTrigger_Stay(_My, _Other);
     if (PLAYER_SHAPE_USE::INTERACTION ==(PLAYER_SHAPE_USE)_My.pShapeUserData->iShapeUse)
     {
@@ -726,6 +577,7 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+    __super::OnTrigger_Exit(_My, _Other);
 	m_pStateMachine->Get_CurrentState()->OnTrigger_Exit(_My, _Other);
     SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
     switch (eShapeUse)
@@ -740,6 +592,7 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+    __super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
 	m_pStateMachine->Get_CurrentState()->On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
     _uint iGroupID = _pOtherCollider->Get_CollisionGroupID();
     switch ((OBJECT_GROUP)iGroupID)
@@ -827,6 +680,7 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
 
 void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+    __super::On_Collision2D_Stay(_pMyCollider, _pOtherCollider, _pOtherObject);
 	m_pStateMachine->Get_CurrentState()->On_Collision2D_Stay(_pMyCollider, _pOtherCollider, _pOtherObject);
     OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
     if (_pMyCollider == m_pBody2DTriggerCom)
@@ -890,6 +744,7 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 
 void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+    __super::On_Collision2D_Exit(_pMyCollider, _pOtherCollider, _pOtherObject);
 	m_pStateMachine->Get_CurrentState()->On_Collision2D_Exit(_pMyCollider, _pOtherCollider, _pOtherObject);
     _uint iGroupID = _pOtherCollider->Get_CollisionGroupID();
     switch ((OBJECT_GROUP)iGroupID)
@@ -936,14 +791,14 @@ void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	m_pStateMachine->Get_CurrentState()->On_AnimEnd(_eCoord, iAnimIdx);
 }
 
-void CPlayer::On_Hit(CGameObject* _pHitter, _int _fDamg, _fvector _vForce)
+void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
     if (m_bInvincible)
     {
         cout << "no damg" << endl;
         return;
     }
-    m_tStat.iHP -= _fDamg;
+    m_tStat.iHP -= _iDamg;
     cout << " Player HP" << m_tStat.iHP << endl;
 	COORDINATE eCoord = Get_CurCoord();
 
@@ -988,7 +843,6 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     {
         Set_2DDirection(E_DIRECTION::DOWN);
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
-        Set_Mode(PLAYER_MODE::PLAYER_MODE_SWORD);
     }
     else
     {
@@ -1000,19 +854,17 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     {
     case Client::CPlayer::PLAYER_MODE_NORMAL:
 		UnEquip_Part(PLAYER_PART_SWORD);
-        m_pSword->Set_AttackEnable(false);
         break;
     case Client::CPlayer::PLAYER_MODE_SWORD:
 		Equip_Part(PLAYER_PART_SWORD);
-        m_pSword->Set_AttackEnable(true);
         break;
     case Client::CPlayer::PLAYER_MODE_SNEAK:
         UnEquip_Part(PLAYER_PART_SWORD);
-        m_pSword->Set_AttackEnable(false);
         break;
     default:
         break;
     }
+    m_pSword->Set_AttackEnable(false);
     if(m_pPortal)
         Set_State(EXIT_PORTAL);
 
@@ -1045,24 +897,6 @@ void CPlayer::Attack(CGameObject* _pVictim)
     m_AttckedObjects.insert(_pVictim);
 }
 
-void CPlayer::Move(_fvector _vForce, _float _fTimeDelta)
-{
-    ACTOR_TYPE eActorType = Get_ActorType();
-
-    if (COORDINATE_3D == Get_CurCoord())
-    {
-        m_v3DTargetDirection = XMVector4Normalize(_vForce);
-        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-        _vector vVeclocity = _vForce /** m_tStat[COORDINATE_3D].fMoveSpeed*/  /** fDot*/;
-
-        vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
-        pDynamicActor->Set_LinearVelocity(vVeclocity);
-    }
-    else
-    {
-        m_pControllerTransform->Go_Direction(_vForce, XMVectorGetX( XMVector3Length(_vForce)), _fTimeDelta);
-    }
-}
 
 void CPlayer::Move_Forward(_float fVelocity, _float _fTimeDelta)
 {
@@ -1108,7 +942,7 @@ void CPlayer::Jump()
         _vector vVelocity = pDynamicActor->Get_LinearVelocity();
         pDynamicActor->Set_LinearVelocity(vVelocity*0.5f);
         pDynamicActor->Add_Impulse(_float3{ 0, m_f3DJumpPower ,0 });
-        //pDynamicActor->Set_LinearDamping(2);
+
     }
 }
 
@@ -1344,18 +1178,6 @@ void CPlayer::Start_Invinciblity()
 }
 
 
-_bool CPlayer::Is_OnGround()
-{
-    if (Is_PlatformerMode())
-    {
-        return CGravity::STATE::STATE_FLOOR == m_pGravityCom->Get_CurState();
-    }
-    else
-    {
-        return m_bOnGround; 
-    }
-}
-
 _bool CPlayer::Is_Sneaking()
 {
     STATE eState = Get_CurrentStateID();
@@ -1532,6 +1354,7 @@ void CPlayer::Set_Animation(_uint _iAnimIndex)
 
 void CPlayer::Set_State(STATE _eState)
 {
+    cout << "eState: " << _eState << endl;
     //_uint iAnimIdx;
     switch (_eState)
     {
@@ -1932,9 +1755,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //포탈 4 0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
             //도미노 { 6.99342966, 5.58722591, 21.8827782 }
-            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //주사위 2 (48.73f, 2.61f, -5.02f);
-            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 48.73f, 2.61f, -5.02f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 48.73f, 2.61f, -5.02f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
         }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 

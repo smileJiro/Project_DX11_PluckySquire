@@ -70,8 +70,8 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
 	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
 	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
-	Ready_Layer_Monster(TEXT("Layer_Monster"));
-	Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"));
+	//Ready_Layer_Monster(TEXT("Layer_Monster"));
+	//Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
 	Ready_Layer_Effects(TEXT("Layer_Effect"));
 	Ready_Layer_Effects2D(TEXT("Layer_Effect2D"));
@@ -459,7 +459,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 {
 	CGameObject** pGameObject = nullptr;
 
-	CPlayer::CONTAINEROBJ_DESC Desc;
+	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
 

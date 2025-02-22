@@ -488,7 +488,7 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Player(const _wstring& _strLayerTag, CG
 {
 	CGameObject** pGameObject = nullptr;
 
-	CPlayer::CONTAINEROBJ_DESC Desc;
+	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
 

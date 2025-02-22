@@ -23,7 +23,7 @@ HRESULT CActorObject::Initialize(void* _pArg)
     // Desc Save 
 
     // Desc Add
-    
+
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
@@ -32,6 +32,36 @@ HRESULT CActorObject::Initialize(void* _pArg)
 
 
     return S_OK;
+}
+
+void CActorObject::Add_ActorToScene()
+{
+    if (nullptr == m_pActorCom)
+        return;
+
+    if (true == m_pActorCom->Is_ActorInScene())
+        return;
+
+    m_pActorCom->Add_ActorToScene();
+}
+
+void CActorObject::Remove_ActorFromScene()
+{
+    if (nullptr == m_pActorCom)
+        return;
+
+    if (false == m_pActorCom->Is_ActorInScene())
+        return;
+
+    m_pActorCom->Remove_ActorFromScene();
+}
+
+_bool CActorObject::Is_ActorInScene()
+{
+    if (nullptr == m_pActorCom)
+        return false;
+
+    return m_pActorCom->Is_ActorInScene();
 }
 
 HRESULT CActorObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -92,6 +122,10 @@ HRESULT CActorObject::Ready_Components(ACTOROBJECT_DESC* _pDesc)
     _int iStaticLevelID = m_pGameInstance->Get_StaticLevelID();
     
     /* Com_Actor */
+    if (nullptr == _pDesc->pActorDesc)
+        return S_OK;
+
+    _pDesc->pActorDesc->isAddActorToScene = _pDesc->isAddActorToScene;
     switch (_pDesc->eActorType)
     {
     case Engine::ACTOR_TYPE::STATIC:

@@ -100,11 +100,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-	{
-		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_02::Initialize)");
@@ -245,6 +245,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 void CLevel_Chapter_02::Update(_float _fTimeDelta)
 {
+	if (KEY_DOWN(KEY::T))
+	{
+		//Event_ChangeMapObject(LEVEL_CHAPTER_2, TEXT("Chapter_04_Default_Desk.mchc"), TEXT("Layer_MapObject"), true);
+	}
+
 	// TODO :: 나중 제거, 테스트용도 - 박상욱
 	Uimgr->Test_Update(_fTimeDelta);
 
@@ -727,7 +732,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 {
 	CGameObject** pGameObject = nullptr;
 
-	CPlayer::CONTAINEROBJ_DESC Desc;
+	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
 
