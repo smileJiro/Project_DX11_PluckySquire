@@ -284,6 +284,12 @@ void CLevel_Chapter_Test::Update(_float _fTimeDelta)
 		CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	}
 
+	if(KEY_DOWN(KEY::NUM9))
+	{
+		_float3 vPos = { -20.0f, 0.35f, -21.0f };
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Rat"), COORDINATE_3D, &vPos);
+	}
+
 }
 
 HRESULT CLevel_Chapter_Test::Render()
@@ -950,19 +956,29 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_JumpBug"), m_eLevelID, _strLayerTag, &JumpBug_Desc)))
 	//	return E_FAIL;
 
-	CRat::MONSTER_DESC Rat_Desc;
-	Rat_Desc.iCurLevelID = m_eLevelID;
-	Rat_Desc.eStartCoord = COORDINATE_3D;
-	Rat_Desc.tTransform3DDesc.vInitialPosition = _float3(-12.0f, 0.35f, -21.0f);
-	Rat_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"), m_eLevelID, _strLayerTag, &Rat_Desc)))
-		return E_FAIL;
-
-			/*  Projectile  */
 	Pooling_DESC Pooling_Desc;
 	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
 	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Rat");
+
+	CRat::MONSTER_DESC* Rat_Desc = new CRat::MONSTER_DESC;
+	Rat_Desc->iCurLevelID = m_eLevelID;
+	//Rat_Desc->eStartCoord = COORDINATE_3D;
+	//Rat_Desc->tTransform3DDesc.vInitialPosition = _float3(-20.0f, 0.35f, -21.0f);
+	//Rat_Desc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"), m_eLevelID, _strLayerTag, Rat_Desc)))
+	//	return E_FAIL;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Rat"), Pooling_Desc, Rat_Desc);
+
+	_float3 vPos = { -20.0f, 0.35f, -21.0f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Rat"), COORDINATE_3D, &vPos);
+
+	/*  Projectile  */
+	Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
 	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
 
 	CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
