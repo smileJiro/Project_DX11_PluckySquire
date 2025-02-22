@@ -214,10 +214,10 @@ HRESULT CBulb::Render()
 		//m_p3DModelCom->Render(m_p3DShaderCom, (_uint)PASS_VTXMESH::DEFAULT);
 	}
 
-	//else if (COORDINATE_2D == Get_CurCoord())
-	//{
-	//	m_pModelCom[COORDINATE_2D]->Render(m_pShaderCom[COORDINATE_2D], (_uint)PASS_VTXPOSTEX::SPRITE2D);
-	//}
+	else if (COORDINATE_2D == Get_CurCoord())
+	{
+		m_p2DModelCom->Render(m_p2DShaderCom, (_uint)PASS_VTXPOSTEX::SPRITE2D);
+	}
 
 
 	return S_OK;
@@ -288,8 +288,11 @@ void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CBulb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	Event_Get_Bulb(COORDINATE_2D);
-	Event_DeleteObject(this);
+	if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
+	{
+		Event_Get_Bulb(COORDINATE_2D);
+		Event_DeleteObject(this);
+	}
 }
 
 void CBulb::Add_Shape()
@@ -382,18 +385,18 @@ HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)
 			return E_FAIL;
 	}
 
-	//else if (COORDINATE_2D == Get_CurCoord())
-	//{
-	//	// Shader
-	//	if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_Shader_VtxPosTex"),
-	//		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderCom[COORDINATE_2D]))))
-	//		return E_FAIL;
+	else if (COORDINATE_2D == Get_CurCoord())
+	{
+		// Shader
+		if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Component_Shader_VtxPosTex"),
+			TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_p2DShaderCom))))
+			return E_FAIL;
 
-	//	// Model
-	//	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Model2D_Bulb"),
-	//		TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pModelCom[COORDINATE_2D]))))
-	//		return E_FAIL;
-	//}
+		// Model
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Model2D_Bulb"),
+			TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_p2DModelCom))))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -438,7 +441,20 @@ HRESULT CBulb::Bind_ShaderResources_WVP(COORDINATE eCoordinate)
 		if (FAILED(m_p3DShaderCom->Bind_Matrix("g_ProjMatrix", &ProjMat)))
 			return E_FAIL;
 	}
+	else if (COORDINATE_2D == eCoordinate)
+	{
+		if (FAILED(m_p2DShaderCom->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
+			return E_FAIL;
 
+		_float4x4 ViewMat = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
+		_float4x4 ProjMat = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+
+		if (FAILED(m_p2DShaderCom->Bind_Matrix("g_ViewMatrix", &ViewMat)))
+			return E_FAIL;
+
+		if (FAILED(m_p2DShaderCom->Bind_Matrix("g_ProjMatrix", &ProjMat)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -471,9 +487,9 @@ CGameObject* CBulb::Clone(void* _pArg)
 
 void CBulb::Free()
 {
-	//Safe_Release(m_pShaderCom[COORDINATE_2D]);
+	Safe_Release(m_p2DModelCom);
 	Safe_Release(m_p3DModelCom);
-	//Safe_Release(m_pModelCom[COORDINATE_2D]);
+	Safe_Release(m_p2DShaderCom);
 	Safe_Release(m_p3DShaderCom);
 
 	Safe_Release(m_pFresnelBuffer);

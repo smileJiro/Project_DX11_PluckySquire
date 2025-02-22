@@ -755,9 +755,10 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
             {
                 _float fAngle = atan2f(_pOtherObject->Get_FinalPosition().m128_f32[1] - Get_FinalPosition().m128_f32[1], _pOtherObject->Get_FinalPosition().m128_f32[0] - Get_FinalPosition().m128_f32[0]);
                 fAngle = XMConvertToDegrees(fAngle);
-                if (fAngle >= -150.f && fAngle <= -30.f)
+                if (fAngle >= -170.f && fAngle <= -10.f)
                 {
                     Attack(_pOtherObject);
+                    //¹âÀº ÈÄ ÇÃ·¹ÀÌ¾î ¶ç¿ì±â
                     Event_KnockBack(this, XMVectorSet(0.f, 1.f, 0.f, 0.f), 2000.f);
 
                     //Effect
@@ -948,14 +949,17 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _fDamg, _fvector _vForce)
 
     Uimgr->Set_PlayerOnHit(true);
 
-    Start_Invinciblity();
-
     if (m_tStat.iHP <= 0)
     {
         m_tStat.iHP = 0;
-        if(STATE::DIE != Get_CurrentStateID())
+        if (STATE::DIE != Get_CurrentStateID())
             Set_State(DIE);
+        return;
     }
+
+    KnockBack(_vForce);
+
+    Start_Invinciblity();
 
     m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_takedamage-") + to_wstring(rand() % 13), 25.f);
     m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_lose_health_") + to_wstring(rand() % 3), 40.f);
@@ -1032,8 +1036,8 @@ void CPlayer::Attack(CGameObject* _pVictim)
 
     CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == Get_CurCoord()) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
     CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.1f, 20, CCamera::SHAKE_XY);
-    Event_Hit(this, static_cast<CCharacter*>(_pVictim), m_tStat.iDamg, XMVectorZero());
     CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
+    Event_Hit(this, pCharacter, m_tStat.iDamg, XMVectorZero());
     if (pCharacter)
     {
         Event_KnockBack(pCharacter, Get_LookDirection(), COORDINATE_2D == Get_CurCoord() ? m_f2DKnockBackPower : m_f3DKnockBackPower);
