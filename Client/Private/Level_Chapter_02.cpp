@@ -57,6 +57,7 @@
 #include "MapObjectFactory.h"
 
 #include "NPC.h"
+#include "Loader.h"
 
 
 CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -247,6 +248,7 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::T))
 	{
+		//CLoader::Create(m_pDevice, m_pContext, LEVEL_CHAPTER_4);
 		//Event_ChangeMapObject(LEVEL_CHAPTER_2, TEXT("Chapter_04_Default_Desk.mchc"), TEXT("Layer_MapObject"), true);
 	}
 

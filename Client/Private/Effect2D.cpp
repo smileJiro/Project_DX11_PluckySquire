@@ -107,7 +107,7 @@ HRESULT CEffect2D::Render()
 	return S_OK;
 }
 
-HRESULT CEffect2D::Play_Effect(const _wstring& _strSectionKey, _fmatrix _2DWorldMatrix, _float _fDelayTime, _uint _iAnimIndex, _bool _isLoop, _float _fLifeTime)
+HRESULT CEffect2D::Play_Effect(const _wstring& _strSectionKey, _fmatrix _2DWorldMatrix, _float _fDelayTime, _uint _iAnimIndex, _bool _isLoop, _float _fLifeTime, _uint _iSectionLayerGroup)
 {
 	if (true == _strSectionKey.empty())
 		return E_FAIL;
@@ -125,7 +125,7 @@ HRESULT CEffect2D::Play_Effect(const _wstring& _strSectionKey, _fmatrix _2DWorld
 
 	Set_AnimationLoop(COORDINATE_2D, m_iCurAnimIndex, m_isLoop);
 	Event_SetActive(this, true);
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(_strSectionKey, this, SECTION_2D_PLAYMAP_EFFECT);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(_strSectionKey, this, _iSectionLayerGroup);
 
 	return S_OK;
 }
