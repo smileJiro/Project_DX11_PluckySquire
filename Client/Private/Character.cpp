@@ -315,6 +315,9 @@ _bool CCharacter::Rotate_To_Radians(_fvector _vDirection, _float _fSpeed)
 
 void CCharacter::KnockBack(_fvector _vForce)
 {
+    if (true == XMVector3Equal(_vForce, XMVectorZero()))
+        return;
+
     if (COORDINATE_3D == Get_CurCoord())
     {
         //속도 0으로 만들고 넉백

@@ -444,6 +444,8 @@ _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
 
 _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
 {
+    if (nullptr == m_pNextArmData)
+        return false;
     _vector vDot = XMVector3Dot(XMLoadFloat3(&m_vArm), XMLoadFloat3(&m_pNextArmData->vDesireArm));
     _float fAngle = acos(XMVectorGetX(vDot));
     _float fDegree = XMConvertToDegrees(fAngle);

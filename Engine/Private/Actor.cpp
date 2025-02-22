@@ -75,8 +75,11 @@ HRESULT CActor::Initialize(void* _pArg)
 	Setup_SimulationFiltering(pDesc->tFilterData.MyGroup, pDesc->tFilterData.OtherGroupMask, false);
 
 	// Scene에 등록. (추후 곧바로 등록하지 않고 싶다면, 별도의 Desc 변수를 추가할 예정.)
-	PxScene* pScene = m_pGameInstance->Get_Physx_Scene();
-	pScene->addActor(*m_pActor);
+
+	if (true == pDesc->isAddActorToScene)
+	{
+		Add_ActorToScene();
+	}
 
 
 	return S_OK;
@@ -160,6 +163,23 @@ HRESULT CActor::Render()
 
 	m_pBatch->End();
 	return S_OK;
+}
+void CActor::Add_ActorToScene()
+{
+	PxScene* pScene = m_pGameInstance->Get_Physx_Scene();
+	pScene->addActor(*m_pActor);
+}
+void CActor::Remove_ActorFromScene()
+{
+	PxScene* pScene = m_pGameInstance->Get_Physx_Scene();
+	pScene->removeActor(*m_pActor);
+}
+_bool CActor::Is_ActorInScene()
+{
+	if (nullptr == m_pActor->getScene())
+		return false;
+
+	return true;
 }
 #endif // _DEBUG
 

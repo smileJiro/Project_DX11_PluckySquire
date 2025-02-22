@@ -36,7 +36,7 @@ namespace Map_Tool
 	// Compnent'Name' -> Name
 	_string	OutName(const _string _strName);
 	_bool Open_Dialog(const _wstring _strDefaultDirectory, const _wstring _strFilter, wstring& _strReturnDirectory);
-	std::wstring OpenDirectoryDialog();
+	std::wstring OpenDirectoryDialog(const _wstring& _strRelativePath);
 
 
 }

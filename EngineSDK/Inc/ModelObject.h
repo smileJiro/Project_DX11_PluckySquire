@@ -86,7 +86,7 @@ public:
 	_bool Is_PickingCursor_Model_Test(_float2 _fCursorPos, _float& _fDst);
 	//const _float4x4* Find_BoneMatrix(const _char* _pBoneName) const;
 	void Register_OnAnimEndCallBack(const function<void(COORDINATE,_uint)>& fCallback);
-
+	virtual void Check_FrustumCulling();
 public:
 	// Get
 	_uint					Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
@@ -136,6 +136,7 @@ protected:
 	_uint					m_iPriorityID_3D = 0;
 	_bool					m_bPlayingAnim = true;	
 	_bool					m_bReverseAnimation = false;
+
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 

@@ -42,7 +42,7 @@ public:
 	void Lightning();
 
 public:
-	virtual void			On_Hit(CGameObject* _pHitter, _float _fDamg);
+	virtual void			On_Hit(CGameObject* _pHitter, _float _fDamg, _fvector _vForce);
 
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;

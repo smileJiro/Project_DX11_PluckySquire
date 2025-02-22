@@ -5,6 +5,7 @@ BEGIN(Engine)
 class CGameObject;
 class CShader;
 class C3DModel;
+class C2DModel;
 END
 
 BEGIN(Client)
@@ -26,6 +27,13 @@ public:
 	{
 		SHAPE_BODY,
 		SHAPE_STICKING,
+	};
+
+	enum BULB_2DCOLLIDER_USE
+	{
+		TRIGGER_2D,
+		BULB,
+		BULB_STICKING,
 	};
 
 	enum BULB_STATE
@@ -64,7 +72,9 @@ private:
 	//CModel*				m_pModelCom[COORDINATE_LAST] = { nullptr };
 
 	C3DModel*				m_p3DModelCom = { nullptr };
+	C2DModel*				m_p2DModelCom = { nullptr };
 	CShader*				m_p3DShaderCom = { nullptr };
+	CShader*				m_p2DShaderCom = { nullptr };
 	ID3D11Buffer*			m_pFresnelBuffer = { nullptr };
 
 	MULTI_FRESNEL_INFO			m_tFresnelInfo;
@@ -87,6 +97,9 @@ private:
 	void					Add_Shape();
 	void					Sticking(_float _fTimeDelta);
 	void					Default_Move(_float _fTimeDelta);
+
+	virtual void Active_OnEnable() override;
+	virtual void Active_OnDisable() override;
 
 public:
 	static CBulb*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

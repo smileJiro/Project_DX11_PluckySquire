@@ -124,7 +124,7 @@ void C3DMapObject::Late_Update(_float _fTimeDelta)
     CGameObject::Late_Update_Component(_fTimeDelta);
 
         /* Add Render Group */
-        if (!m_isCulling || true == m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 10.0f))
+        if (false == m_isCulling || false == m_isFrustumCulling)
         {
             Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
             //if(nullptr != m_pActorCom)

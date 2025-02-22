@@ -76,6 +76,7 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	m_Egnore2DObjectrTags.push_back("InvisibleCollision");
 	m_Egnore2DObjectrTags.push_back("Event");
 	m_Egnore2DObjectrTags.push_back("Goblin");
+	m_Egnore2DObjectrTags.push_back("ActionNode");
 
 	CGameObject* pGameObject = nullptr;
 
@@ -83,21 +84,11 @@ HRESULT C2DMap_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 		LEVEL_TOOL_2D_MAP, L"Layer_Default", &pGameObject, nullptr)))
 		return E_FAIL;
 	if (nullptr != pGameObject)
-	{
 		m_DefaultRenderObject = static_cast<C2DDefault_RenderObject*>(pGameObject);
-	}
 
+	m_arrSelectName[MODEL_3D_LIST] = L"Desk_C02_Sketchspace_5832x768_01";
+	Change_Proto_Mesh();
 
-	CSample_Skechspace::SAMPLE_SKSP_DESC Desc = {};
-
-	Desc.iCurLevelID = LEVEL_TOOL_2D_MAP;
-	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL_2D_MAP;
-	Desc.isPreview = false;
-	Desc.strModelPrototypeTag_3D = TEXT("Desk_C02_Sketchspace_5832x768_01");
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_Sample_Skechspace"),
-		LEVEL_TOOL_2D_MAP, L"Layer_Sksp", &pGameObject, &Desc)))
-		return E_FAIL;
 
 	Change_RenderGroup(_float2((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y));
 
@@ -180,6 +171,12 @@ void C2DMap_Tool_Manager::Input_Logic()
 
 				pGameObject->Set_Active(!is2DMode);
 		}
+
+	}
+
+
+	if (nullptr != hWnd)
+	{
 		if (ImGui::IsKeyPressed(ImGuiKey_Delete) && nullptr != m_DefaultRenderObject && m_DefaultRenderObject->Is_2DMode())
 		{
 			if (nullptr != m_pPickingObject)
@@ -188,12 +185,6 @@ void C2DMap_Tool_Manager::Input_Logic()
 				m_pPickingObject = nullptr;
 			}
 		}
-	}
-
-
-	if (nullptr != hWnd && !io.WantCaptureMouse)
-	{
-
 
 	}
 
@@ -205,158 +196,268 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 	ImGui::Begin("Map & Map Object Control");
 	static _float4 fColor = { 1.0f, 0.0f, 1.0f, 1.0f }; // 초기 색상 (RGBA)
 
-	if (ImGui::Button("Import 2D .umap file"))
-	{
-		_tchar originalDir[MAX_PATH];
-		GetCurrentDirectory(MAX_PATH, originalDir);
 
-		_wstring strModelPath = L"../Bin/json/2DMapJson/";
+	#pragma region _Button - Import 2D .umap file 
+			Begin_Draw_ColorButton("##Import 2D .umap file", ImVec4(0.83f, 0.34f, 0.83f, 1.f));
+			if (StyleButton(MINI, "Import 2D .umap file"))
+			{
+				_tchar originalDir[MAX_PATH];
+				GetCurrentDirectory(MAX_PATH, originalDir);
 
-		OPENFILENAME ofn = {};
-		_tchar szName[MAX_PATH] = {};
-		ofn.lStructSize = sizeof(OPENFILENAME);
-		ofn.hwndOwner = g_hWnd;
-		ofn.lpstrFile = szName;
-		ofn.nMaxFile = sizeof(szName);
-		ofn.lpstrFilter = L".json\0*.json\0";
-		ofn.nFilterIndex = 0;
-		ofn.lpstrFileTitle = nullptr;
-		ofn.nMaxFileTitle = 0;
-		wstring strPath = strModelPath;
-		if (GetFullPathName(strModelPath.c_str(), MAX_PATH, originalDir, NULL))
-			ofn.lpstrInitialDir = originalDir;
-		else
-			ofn.lpstrInitialDir = strModelPath.c_str();
-		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+				_wstring strModelPath = L"../Bin/json/2DMapJson/";
 
-		if (GetOpenFileName(&ofn))
-		{
-			m_pPickingObject = nullptr;
-			m_pPickingBlocker = nullptr;
-			Object_Clear(L"Layer_2DMapObject");
-			Object_Clear(L"Layer_Portal");
-			Object_Clear(L"Layer_Blocker");
-			m_fOffsetPos = { 0.f,0.f };
-			LOG_TYPE(_wstring(L"=====  2D Map Read Start  -> ") + szName, LOG_LOAD);
+				OPENFILENAME ofn = {};
+				_tchar szName[MAX_PATH] = {};
+				ofn.lStructSize = sizeof(OPENFILENAME);
+				ofn.hwndOwner = g_hWnd;
+				ofn.lpstrFile = szName;
+				ofn.nMaxFile = sizeof(szName);
+				ofn.lpstrFilter = L".json\0*.json\0";
+				ofn.nFilterIndex = 0;
+				ofn.lpstrFileTitle = nullptr;
+				ofn.nMaxFileTitle = 0;
+				wstring strPath = strModelPath;
+				if (GetFullPathName(strModelPath.c_str(), MAX_PATH, originalDir, NULL))
+					ofn.lpstrInitialDir = originalDir;
+				else
+					ofn.lpstrInitialDir = strModelPath.c_str();
+				ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 
-			//const std::string filePathDialog = "../Bin/json/2DMapJson/C01_P1718.json";
-			//const std::string filePathDialog = "../Bin/json/2DMapJson/C01_P1112.json";
-			const std::string filePathDialog = WstringToString(szName);
-			const string strFileName = WstringToString(Get_FileName_From_Path(StringToWstring(filePathDialog)).first);
-			std::ifstream inputFile(filePathDialog);
-			if (!inputFile.is_open()) {
-				throw std::runtime_error("json Error :  " + filePathDialog);
-				return;
+				if (GetOpenFileName(&ofn))
+				{
+					m_pPickingObject = nullptr;
+					m_pPickingBlocker = nullptr;
+					Object_Clear(L"Layer_2DMapObject");
+					Object_Clear(L"Layer_Portal");
+					Object_Clear(L"Layer_Blocker");
+					m_fOffsetPos = { 0.f,0.f };
+					LOG_TYPE(_wstring(L"=====  2D Map Read Start  -> ") + szName, LOG_LOAD);
+
+					//const std::string filePathDialog = "../Bin/json/2DMapJson/C01_P1718.json";
+					//const std::string filePathDialog = "../Bin/json/2DMapJson/C01_P1112.json";
+					const std::string filePathDialog = WstringToString(szName);
+					const string strFileName = WstringToString(Get_FileName_From_Path(StringToWstring(filePathDialog)).first);
+					std::ifstream inputFile(filePathDialog);
+					if (!inputFile.is_open()) {
+						throw std::runtime_error("json Error :  " + filePathDialog);
+						return;
+					}
+
+					json jsonDialogs;
+					inputFile >> jsonDialogs;
+
+					Import(strFileName, jsonDialogs, &fColor);
+
+					inputFile.close();
+
+				}
+
 			}
+			End_Draw_ColorButton();
+		#pragma endregion
 
-			json jsonDialogs;
-			inputFile >> jsonDialogs;
-
-			Import(strFileName, jsonDialogs, &fColor);
-
-			inputFile.close();
-
-		}
-
-	}
-
-	
-
-	ImGui::Text("Offset: %.2f, %.2f", m_fOffsetPos.x, m_fOffsetPos.y);
 	ImGui::SameLine();
 
-	ImGui::SetNextItemWidth(50.0f);
-	if (ImGui::DragFloat("##X", &m_fOffsetPos.x, 10.f))
-	{
-		Set_Layer_OffsetPos(L"Layer_2DMapObject");
-		Set_Layer_OffsetPos(L"Layer_Portal");
-	}
-
-	ImGui::SameLine(0, 10.0f);
-
-	ImGui::SetNextItemWidth(50.0f);
-	if (ImGui::DragFloat("##Y", &m_fOffsetPos.y, 10.f))
-	{
-		Set_Layer_OffsetPos(L"Layer_2DMapObject");
-		Set_Layer_OffsetPos(L"Layer_Portal");
-	}
-	// 1. RGB 슬라이더 (3채널)
-	ImGui::Text("RGB Color Picker:");
-	if (ImGui::ColorEdit3("Color (RGB)", &fColor.x))
-		m_DefaultRenderObject->Set_Color(fColor);
-	if (ImGui::Button("Out 2D Map Texture"))
-	{
-
-		_tchar originalDir[MAX_PATH];
-		GetCurrentDirectory(MAX_PATH, originalDir);
-
-		_wstring strModelPath = L"../../Client/Bin/Resources/Textures/Map";
-
-		OPENFILENAME ofn = {};
-		_tchar szName[MAX_PATH] = L"NewFile.dds";
-		ofn.lStructSize = sizeof(OPENFILENAME);
-		ofn.hwndOwner = g_hWnd;
-		ofn.lpstrFile = szName;
-		ofn.nMaxFile = sizeof(szName);
-		ofn.lpstrFilter = L".dds\0*.dds\0";
-		ofn.nFilterIndex = 0;
-		ofn.lpstrFileTitle = nullptr;
-		ofn.nMaxFileTitle = 0;
-		wstring strPath = strModelPath;
-		ofn.lpstrInitialDir = strPath.c_str();
-		ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT;
-		if (GetSaveFileName(&ofn))
-		{
-			Event_Capcher(szName);
-		}
-	}
-	if (ImGui::Button("In 2D Map Texture"))
-	{
-		_tchar originalDir[MAX_PATH];
-		GetCurrentDirectory(MAX_PATH, originalDir);
-		_wstring strModelPath = L"../../Client/Bin/Resources/Textures/Map/";
-
-		OPENFILENAME ofn = {};
-		ZeroMemory(&ofn, sizeof(ofn));
-		_tchar szName[MAX_PATH] = {};
-		ofn.lStructSize = sizeof(OPENFILENAME);
-		ofn.hwndOwner = g_hWnd;
-		ofn.lpstrFile = szName;
-		ofn.nMaxFile = sizeof(szName);
-		ofn.lpstrFilter = L".dds\0*.dds\0";
-		ofn.nFilterIndex = 0;
-		ofn.lpstrFileTitle = nullptr;
-		ofn.nMaxFileTitle = 0;
-		if (GetFullPathName(strModelPath.c_str(), MAX_PATH, originalDir, NULL))
-			ofn.lpstrInitialDir = originalDir;
-		else
-			ofn.lpstrInitialDir = strModelPath.c_str();
-		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
-
-		if (GetOpenFileName(&ofn))
-		{
-			_wstring strPath = szName;
-
-			auto& Pair = Get_FileName_From_Path(strPath);
-
-
-			m_DefaultRenderObject->Set_Texture_Mode(WstringToString(Pair.first + L"." + Pair.second));
-			_float2 fSize = m_DefaultRenderObject->Get_Texture_Size();
-
-			if (fSize.x != -1.f)
+	#pragma region _Button - Clear 2D Map Object
+	
+			Begin_Draw_ColorButton("##ClearMapObjStyle", ImVec4(0.82f, 0.13f, 0.13f, 1.f));
+			if (StartPopupButton(IMGUI_MAPTOOL_BUTTON_STYLE_TYPE::MINI, "Clear 2D Map Object"))
 			{
-				Change_RenderGroup(fSize);
+				ImGui::Text("Really?");
+	
+				Begin_Draw_ColorButton("OK_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
+				if (ImGui::Button("OK"))
+				{
+					Object_Clear(L"Layer_2DMapObject");
+					ImGui::CloseCurrentPopup();
+				}
+				End_Draw_ColorButton();
+				ImGui::SameLine();
+				Begin_Draw_ColorButton("NO_Style", (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+				if (ImGui::Button("NO"))
+				{
+					ImGui::CloseCurrentPopup();
+				}
+				End_Draw_ColorButton();
+	
+				ImGui::EndPopup();
+	
 			}
-		}
-	}
-	if (ImGui::Button("SampleBook Mode Toggle"))
-	{
-		_bool is2DMode = m_DefaultRenderObject->Toggle_Mode();
-		CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_TOOL_2D_MAP, L"Layer_Camera", 0);
-		if (nullptr != pGameObject)
+			End_Draw_ColorButton();
+		#pragma endregion
 
-			pGameObject->Set_Active(!is2DMode);
-	}
+	#pragma region _Button - Out 2D Map Texture
+
+				Begin_Draw_ColorButton("##Out 2D Map Texture", (ImVec4)ImColor::HSV(0.6f, 1.f, 0.6f));
+				if (StyleButton(MINI, "Out 2D Map Texture"))
+				{
+
+					_tchar originalDir[MAX_PATH];
+					GetCurrentDirectory(MAX_PATH, originalDir);
+
+					_wstring strModelPath = L"../../Client/Bin/Resources/Textures/Map";
+
+					OPENFILENAME ofn = {};
+					_tchar szName[MAX_PATH] = L"NewFile.dds";
+					ofn.lStructSize = sizeof(OPENFILENAME);
+					ofn.hwndOwner = g_hWnd;
+					ofn.lpstrFile = szName;
+					ofn.nMaxFile = sizeof(szName);
+					ofn.lpstrFilter = L".dds\0*.dds\0";
+					ofn.nFilterIndex = 0;
+					ofn.lpstrFileTitle = nullptr;
+					ofn.nMaxFileTitle = 0;
+					wstring strPath = strModelPath;
+					if (GetFullPathName(strModelPath.c_str(), MAX_PATH, originalDir, NULL))
+						ofn.lpstrInitialDir = originalDir;
+					else
+						ofn.lpstrInitialDir = strModelPath.c_str();
+					ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT;
+					if (GetSaveFileName(&ofn))
+					{
+						Event_Capcher(szName);
+					}
+				}
+				End_Draw_ColorButton();
+
+		#pragma endregion
+
+	ImGui::SameLine();
+
+	#pragma region _Button - In 2D Map Texture
+
+				Begin_Draw_ColorButton("##In 2D Map Texture", (ImVec4)ImColor::HSV(0.6f, 1.f, 0.6f));
+				if (StyleButton(MINI, "In 2D Map Texture"))
+				{
+					_tchar originalDir[MAX_PATH];
+					GetCurrentDirectory(MAX_PATH, originalDir);
+					_wstring strModelPath = L"../../Client/Bin/Resources/Textures/Map/";
+
+					OPENFILENAME ofn = {};
+					ZeroMemory(&ofn, sizeof(ofn));
+					_tchar szName[MAX_PATH] = {};
+					ofn.lStructSize = sizeof(OPENFILENAME);
+					ofn.hwndOwner = g_hWnd;
+					ofn.lpstrFile = szName;
+					ofn.nMaxFile = sizeof(szName);
+					ofn.lpstrFilter = L".dds\0*.dds\0";
+					ofn.nFilterIndex = 0;
+					ofn.lpstrFileTitle = nullptr;
+					ofn.nMaxFileTitle = 0;
+					if (GetFullPathName(strModelPath.c_str(), MAX_PATH, originalDir, NULL))
+						ofn.lpstrInitialDir = originalDir;
+					else
+						ofn.lpstrInitialDir = strModelPath.c_str();
+					ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+					if (GetOpenFileName(&ofn))
+					{
+						_wstring strPath = szName;
+
+						auto& Pair = Get_FileName_From_Path(strPath);
+
+
+						m_DefaultRenderObject->Set_Texture_Mode(WstringToString(Pair.first + L"." + Pair.second));
+						_float2 fSize = m_DefaultRenderObject->Get_Texture_Size();
+
+						if (fSize.x != -1.f)
+						{
+							Change_RenderGroup(fSize);
+						}
+					}
+				}
+				End_Draw_ColorButton();
+
+		#pragma endregion
+
+
+	#pragma region _FloatSlider - 2D Map Object Position Offset Setting 
+
+			ImGui::Text("Offset: %.2f, %.2f", m_fOffsetPos.x, m_fOffsetPos.y);
+			ImGui::SameLine();
+
+			ImGui::SetNextItemWidth(80.0f);
+			if (ImGui::DragFloat("##X", &m_fOffsetPos.x, 10.f))
+			{
+				Set_Layer_OffsetPos(L"Layer_2DMapObject");
+				Set_Layer_OffsetPos(L"Layer_Portal");
+			}
+
+			ImGui::SameLine(0, 10.0f);
+
+			ImGui::SetNextItemWidth(80.0f);
+			if (ImGui::DragFloat("##Y", &m_fOffsetPos.y, 10.f))
+			{
+				Set_Layer_OffsetPos(L"Layer_2DMapObject");
+				Set_Layer_OffsetPos(L"Layer_Portal");
+			}
+
+		#pragma endregion
+
+	#pragma region _ColorPicker - Background Color Setting
+
+			if (ImGui::ColorEdit3("Color (RGB)", &fColor.x))
+				m_DefaultRenderObject->Set_Color(fColor);
+
+		#pragma endregion
+
+	#pragma region _Button - Albedo Binding Mode Toggle
+
+		Begin_Draw_ColorButton("##Albedo Binding Mode Toggle", ImVec4(0.8f, 0.48f, 0.f, 1.f));
+		if (StyleButton(MINI, "Albedo Binding Mode Toggle"))
+		{
+			_bool is2DMode = m_DefaultRenderObject->Toggle_Mode();
+			CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(LEVEL_TOOL_2D_MAP, L"Layer_Camera", 0);
+			if (nullptr != pGameObject)
+
+				pGameObject->Set_Active(!is2DMode);
+		}
+		End_Draw_ColorButton();
+
+	#pragma endregion
+	
+	ImGui::SameLine();
+
+	#pragma region _Button - Change Binding Mesh
+
+		Begin_Draw_ColorButton("##Change Binding Mesh", ImVec4(0.8f, 0.48f, 0.f, 1.f));
+		if (StartPopupButton(MINI, "Change Binding Mesh"))
+		{
+			vector<_string> BindingMeshes;
+			for (const auto& entry : ::recursive_directory_iterator(m_strMapMeshPath))
+			{
+				if (entry.path().extension() == ".model")
+				{
+					_string strKey = entry.path().stem().string();
+					BindingMeshes.push_back(strKey);
+				}
+			}
+
+			_string strSelectMeshName = WSTRINGTOSTRING(m_arrSelectName[MODEL_3D_LIST]);
+			if (ImGui::BeginListBox("##MeshList", ImVec2(400.f, 6 * ImGui::GetTextLineHeightWithSpacing())))
+			{
+				for (auto& strMeshName : BindingMeshes )
+				{
+
+					if (ImGui::Selectable(strMeshName.c_str(), strSelectMeshName == strMeshName))
+					{
+						if (strSelectMeshName != strMeshName)
+							m_arrSelectName[MODEL_3D_LIST] = StringToWstring(strMeshName);
+					}
+				}
+				ImGui::EndListBox();
+			}
+			if (StyleButton(MINI, "Change Mesh"))
+			{
+				Change_Proto_Mesh();
+			}
+
+			ImGui::EndPopup();
+		}
+		End_Draw_ColorButton();
+
+	#pragma endregion
+
 	if (ImGui::Button("Create Portal"))
 	{
 		_float2 fSize = m_pGameInstance->Get_RT_Size(m_strRTKey);
@@ -506,20 +607,20 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 			for (auto& pInfo : filteredItems) {
 				_char szName[MAX_PATH] = {};
 				_string strSearchTag = pInfo->Get_SearchTag();
-				_bool isCurTag = StringToWstring(strSearchTag) == m_arrSelectName[MODEL_LIST];
+				_bool isCurTag = StringToWstring(strSearchTag) == m_arrSelectName[MODEL_2D_LIST];
 				if (strSearchTag == "")
 					strSearchTag = "empty";
 				if (ImGui::Selectable(strSearchTag.c_str(), isCurTag))
 				{
 					if (isCurTag)
 					{
-						m_arrSelectName[MODEL_LIST] = L"";
+						m_arrSelectName[MODEL_2D_LIST] = L"";
 						m_pPickingInfo = nullptr;
 					}
 					else
 					{
 						wstring filename = StringToWstring(strSearchTag);
-						m_arrSelectName[MODEL_LIST] = filename;
+						m_arrSelectName[MODEL_2D_LIST] = filename;
 						m_pPickingInfo = pInfo;
 					}
 				}
@@ -548,7 +649,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 			pInfo->Set_SearchTag(strNumberingNewTag);
 			m_ObjectInfoLists.push_back(pInfo);
 			m_pPickingInfo = pInfo;
-			m_arrSelectName[MODEL_LIST] = StringToWstring(strNumberingNewTag);
+			m_arrSelectName[MODEL_2D_LIST] = StringToWstring(strNumberingNewTag);
 		}
 		End_Draw_ColorButton();
 
@@ -607,7 +708,7 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 
 		if (StyleButton(MINI,"Import .model2d folder"))
 		{
-			_wstring strSelectedPath = OpenDirectoryDialog(); // 폴더 다이얼로그 호출
+			_wstring strSelectedPath = OpenDirectoryDialog(L"../../Client/Bin/Resources/Models/2DMapObject/"); // 폴더 다이얼로그 호출
 			if (false == strSelectedPath.empty())
 			{
 				for (const auto& entry : std::filesystem::recursive_directory_iterator(strSelectedPath))
@@ -754,14 +855,19 @@ void C2DMap_Tool_Manager::Model_Edit_Imgui(_bool _bLock)
 					Begin_Draw_ColorButton("Object_Create_Style", (ImVec4(0.32f, 0.56f, 0.f, 1.f)));
 					if (StyleButton(MINI, "Object Create"))
 					{
+
+						_float2 fSize = m_p2DRenderGroup->Get_RenderTarget_Size();
+
+
 						C2DMapObject::MAPOBJ_2D_DESC NormalDesc = { };
 						NormalDesc.strProtoTag = StringToWstring(m_pPickingInfo->Get_ModelName());
 						NormalDesc.fDefaultPosition = { -m_fOffsetPos.x,m_fOffsetPos.y};
-						NormalDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
+						NormalDesc.fRenderTargetSize = fSize;
 						NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 						NormalDesc.iRenderGroupID_2D = m_p2DRenderGroup->Get_RenderGroupID();
 						NormalDesc.iPriorityID_2D = m_p2DRenderGroup->Get_PriorityID();
 						NormalDesc.pInfo = m_pPickingInfo;
+						NormalDesc.isLoad = false;
 
 
 						CGameObject* pGameObject = nullptr;
@@ -1474,12 +1580,12 @@ void C2DMap_Tool_Manager::BlockerSetting_Imgui(_bool bLock)
 		Begin_Draw_ColorButton("##CreateBlockerStyle", (ImVec4(0.21f, 0.66f, 0.33f, 1.f)));
 		if (!bLock && ImGui::Button("Create Blocker", ImVec2(-FLT_MIN, 1.7f * ImGui::GetTextLineHeightWithSpacing())))
 		{
-			_float2 fSize = m_DefaultRenderObject->Get_Texture_Size();
+			_float2 fSize = m_p2DRenderGroup->Get_RenderTarget_Size();
 
 			C2DTrigger_Sample::TRIGGER_2D_DESC TriggerDesc = {};
 			TriggerDesc.tTransform2DDesc.vInitialPosition = { 0.f,0.f,1.f };
 			TriggerDesc.tTransform2DDesc.vInitialScaling = { 100.f,100.f,1.f };
-			//TriggerDesc.fRenderTargetSize = { (_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y };
+			TriggerDesc.fRenderTargetSize = fSize;
 			TriggerDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
 			TriggerDesc.eStartCoord = COORDINATE_2D;
 			TriggerDesc.isCoordChangeEnable = false;
@@ -1782,6 +1888,43 @@ C2DMapObject* C2DMap_Tool_Manager::Picking_2DMap()
 	}
 
 	return nullptr;
+}
+
+void C2DMap_Tool_Manager::Change_Proto_Mesh()
+{
+
+	Object_Clear(L"Layer_Sksp");
+	CGameObject* pGameObject = nullptr;
+
+	CBase* pCheck = m_pGameInstance->Find_Prototype(LEVEL_TOOL_2D_MAP,
+		m_arrSelectName[MODEL_3D_LIST]);
+	if (nullptr == pCheck)
+	{
+		_wstring strFilePath = m_strMapMeshPath + m_arrSelectName[MODEL_3D_LIST] + L"/";
+		strFilePath += m_arrSelectName[MODEL_3D_LIST] + L".model";
+		XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, 
+			m_arrSelectName[MODEL_3D_LIST],
+			C3DModel::Create(m_pDevice, m_pContext, 
+			WstringToString(strFilePath).c_str(), matPretransform, true))))
+		{
+			LOG_TYPE("Model Proto Failed", LOG_ERROR);
+			return;
+		}
+	}
+
+
+	CSample_Skechspace::SAMPLE_SKSP_DESC Desc = {};
+
+	Desc.iCurLevelID = LEVEL_TOOL_2D_MAP;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL_2D_MAP;
+	Desc.isPreview = false;
+	Desc.strModelPrototypeTag_3D = m_arrSelectName[MODEL_3D_LIST];
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_Sample_Skechspace"),
+		LEVEL_TOOL_2D_MAP, L"Layer_Sksp", &pGameObject, &Desc)))
+		return;
 }
 
 HRESULT C2DMap_Tool_Manager::Setting_TileMap(const _string _strFileMapJsonName)

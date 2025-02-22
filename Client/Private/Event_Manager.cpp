@@ -32,6 +32,8 @@
 #include "Effect2D_Manager.h"
 
 #include "Effect_Manager.h"
+#include "3DMapObject.h"
+#include "MapObjectFactory.h"
 
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
@@ -58,6 +60,17 @@ HRESULT CEvent_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* 
 
 void CEvent_Manager::Update(_float _fTimeDelta)
 {
+	if (true == m_isCreateFinished)
+	{
+		m_isCreateFinished = false;
+		/* 쓰레드에서 모든 맵오브젝트 로드가 끝이났다면 이때 AddActorTOScene*/
+		for (auto& pActorObject : m_ThreadCreateMapObjects)
+		{
+			pActorObject->Add_ActorToScene();
+			Safe_Release(pActorObject);
+		}
+		m_ThreadCreateMapObjects.clear();
+	}
 	for (auto& Pair : m_DelayActiveList)
 	{
 		Pair.first->Set_Active(Pair.second);
@@ -199,7 +212,11 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_Sneak_BeetleCaught(_tEvent);
 	}
 	break;
-
+	case Client::EVENT_TYPE::CHANGE_MAPOBJECT:
+	{
+		Execute_ChangeMapObject(_tEvent);
+	}
+	break;
 	default:
 		break;
 	}
@@ -337,6 +354,52 @@ HRESULT CEvent_Manager::Execute_SetActive(const EVENT& _tEvent)
 	}
 	else
 		pBase->Set_Active(isActive);
+
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_ChangeMapObject(const EVENT& _tEvent)
+{
+	_uint iCurLevelID = (_uint)(_tEvent.Parameters[0]);
+	_wstring* pMapObjectFilePath = (_wstring*)(_tEvent.Parameters[1]);
+	_wstring* pMapObjectLayerTag = (_wstring*)(_tEvent.Parameters[2]);
+	_bool useThread = (_bool)(_tEvent.Parameters[2]);
+
+	/* 현재 맵오브젝트를 전부 삭제 */
+	CLayer* pLayer = m_pGameInstance->Find_Layer(iCurLevelID, (*pMapObjectLayerTag));
+	if (nullptr == pLayer)
+	{
+		Safe_Delete(pMapObjectFilePath);
+		Safe_Delete(pMapObjectLayerTag);
+		return E_FAIL;
+	}
+
+	m_isCreateFinished = false;
+	for (auto& pGameObject : pLayer->Get_GameObjects())
+	{
+		pGameObject->Set_Dead();
+		m_DeadObjectsList.push_back(pGameObject);
+		Safe_AddRef(pGameObject);
+	}
+	
+
+	/* 쓰레드 풀을 통해 새로운 오브젝트를 로드 */
+	m_pGameInstance->Get_ThreadPool()->EnqueueJob([this, iCurLevelID, pMapObjectFilePath, pMapObjectLayerTag]()
+		{
+			HRESULT iResult = E_FAIL;
+			iResult = Map_Object_Create(*pMapObjectFilePath, iCurLevelID);
+
+			if (S_OK == iResult)
+			{
+				MapObjectCreate_End();
+				//Safe_Delete(pMapObjectFilePath);
+				//Safe_Delete(pMapObjectLayerTag);
+			}
+			/* 모든 맵오브젝트 로드가 끝이났다면, */
+			/* 오브젝트 레이어를 순회하며 */
+		});
+
+
 
 	return S_OK;
 }
@@ -665,13 +728,16 @@ HRESULT CEvent_Manager::Execute_Book_Main_Change(const EVENT& _tEvent)
 HRESULT CEvent_Manager::Execute_Hit(const EVENT& _tEvent)
 {
 	CGameObject* pHitter = (CGameObject*)_tEvent.Parameters[0];
-	CGameObject* pVIctim = (CGameObject*)_tEvent.Parameters[1];
+	CCharacter* pVictim = (CCharacter*)_tEvent.Parameters[1];
 	_int iDamg = _tEvent.Parameters[2];
+	_vector vForce = XMLoadFloat3((_float3*)_tEvent.Parameters[3]);
 
-	if (nullptr == pHitter || nullptr == pVIctim)
+	if (nullptr == pHitter || nullptr == pVictim)
 		return E_FAIL;
 
-	pVIctim->On_Hit(pHitter, iDamg);
+	pVictim->On_Hit(pHitter, iDamg, vForce);
+
+	delete ((_float3*)_tEvent.Parameters[3]);
 	return S_OK;
 }
 
@@ -738,6 +804,80 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 	Uimgr->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 	
 
+	return S_OK;
+}
+
+void CEvent_Manager::MapObjectCreate_End()
+{
+	m_isCreateFinished = true;
+
+}
+
+HRESULT CEvent_Manager::Map_Object_Create(const _wstring& _strFileName, _uint _iCurLevelID)
+{
+	wstring strFileName = _strFileName;
+
+	_wstring strFullFilePath = MAP_3D_DEFAULT_PATH + strFileName;
+
+	HANDLE	hFile = CreateFile(strFullFilePath.c_str(),
+		GENERIC_READ,
+		NULL,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		return E_FAIL;
+	}
+	_uint iCount = 0;
+
+	DWORD	dwByte(0);
+	_uint iLayerCount = 0;
+	_int isTempReturn = 0;
+	isTempReturn = ReadFile(hFile, &iLayerCount, sizeof(_uint), &dwByte, nullptr);
+
+	for (_uint i = 0; i < iLayerCount; i++)
+	{
+		_uint		iObjectCnt = 0;
+		_char		szLayerTag[MAX_PATH];
+		_string		strLayerTag;
+		_wstring		wstrLayerTag;
+
+
+
+		isTempReturn = ReadFile(hFile, &szLayerTag, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+		isTempReturn = ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
+		strLayerTag = szLayerTag;
+		wstrLayerTag = m_pGameInstance->StringToWString(strLayerTag);
+
+		m_ThreadCreateMapObjects.reserve(iObjectCnt);
+		for (size_t i = 0; i < iObjectCnt; i++)
+		{
+			if (i == 694)
+			{
+				int a = 1;
+
+			}
+
+			C3DMapObject* pGameObject =
+				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
+					(LEVEL_ID)_iCurLevelID,
+					m_pGameInstance,
+					hFile, true, false);
+
+			if (nullptr != pGameObject)
+			{
+				m_pGameInstance->Add_GameObject_ToLayer(_iCurLevelID, wstrLayerTag.c_str(), pGameObject);
+				// 쓰레드를 통해 생성된 맵오브젝트들을 별도 저장. 
+				m_ThreadCreateMapObjects.push_back(static_cast<CActorObject*>(pGameObject));
+				Safe_AddRef(m_ThreadCreateMapObjects[i]);
+			}
+
+
+		}
+	}
+	CloseHandle(hFile);
 	return S_OK;
 }
 

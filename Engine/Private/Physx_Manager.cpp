@@ -415,7 +415,11 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	SceneDesc.solverType = PxSolverType::eTGS;
 	/* Create Dispatcher */
 
-	m_pPxDefaultCpuDispatcher = PxDefaultCpuDispatcherCreate(2);
+	// 논리적 CPU 코어 수 확인
+	unsigned int numCores = std::thread::hardware_concurrency();
+	std::cout << "Logical cores: " << numCores << std::endl;
+	m_iNumThreads = numCores / 2;
+	m_pPxDefaultCpuDispatcher = PxDefaultCpuDispatcherCreate(m_iNumThreads);
 	if (nullptr == m_pPxDefaultCpuDispatcher)
 		return E_FAIL;
 

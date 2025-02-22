@@ -623,7 +623,11 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 			{
 			case Client::CSection_2D::PLAYMAP:
 			{
-				pSection = CSection_2D_PlayMap_Book::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
+				CSection_2D_PlayMap_Book::SECTION_2D_PLAYMAP_DESC Desc = {};
+				Desc.isImport = true;
+				Desc.iPriorityID = m_iPriorityGenKey;
+				Desc.SectionJson = ChildJson;
+				pSection = CSection_2D_PlayMap_Book::Create(m_pDevice, m_pContext, &Desc);
 				if (nullptr == pSection)
 				{
 					MSG_BOX("Failed Create CSection_2D");
@@ -646,8 +650,12 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 			break;
 			case Client::CSection_2D::NARRAION:
 			{
+				CSection_2D_Narration::SECTION_2D_NARRATION_DESC Desc = {};
+				Desc.isImport = true;
+				Desc.iPriorityID = m_iPriorityGenKey;
+				Desc.SectionJson = ChildJson;
 				// TODO :: 상욱님 나레이션 섹션 생성 코드 작성 , pSection에 넣어야함.
-				pSection = CSection_2D_Narration::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
+				pSection = CSection_2D_Narration::Create(m_pDevice, m_pContext, &Desc);
 				if (nullptr == pSection)
 				{
 					MSG_BOX("Failed Create CNarration_2D");
@@ -660,7 +668,11 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 			break;
 			case Client::CSection_2D::SKSP:
 			{
-				pSection = CSection_2D_PlayMap_Sksp::Create(m_pDevice, m_pContext, m_iPriorityGenKey, ChildJson);
+				CSection_2D_PlayMap_Sksp::SECTION_2D_DESC Desc = {};
+				Desc.isImport = true;
+				Desc.iPriorityID = m_iPriorityGenKey;
+				Desc.SectionJson = ChildJson;
+				pSection = CSection_2D_PlayMap_Sksp::Create(m_pDevice, m_pContext, &Desc);
 				if (nullptr == pSection)
 				{
 					MSG_BOX("Failed Create CSection_2D_PlayMap_Sksp");
@@ -677,10 +689,6 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 				return E_FAIL;
 			}
 			}
-
-
-
-
 
 			m_iPriorityGenKey += 10;
 

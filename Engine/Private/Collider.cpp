@@ -56,6 +56,7 @@ HRESULT CCollider::Initialize(void* _pArg)
     m_isBlock = pDesc->isBlock;
     m_isTrigger = pDesc->isTrigger;
     m_iCollisionGroupID = pDesc->iCollisionGroupID;
+    m_iColliderUse = pDesc->iColliderUse;
     // Add Desc 
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;

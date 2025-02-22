@@ -13,11 +13,11 @@ CSection_2D_PlayMap_Book::CSection_2D_PlayMap_Book(ID3D11Device* _pDevice, ID3D1
 {
 }
 
-CSection_2D_PlayMap_Book* CSection_2D_PlayMap_Book::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iPriorityKey, json _SectionJson)
+CSection_2D_PlayMap_Book* CSection_2D_PlayMap_Book::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pDesc)
 {
 	CSection_2D_PlayMap_Book* pInstance = new CSection_2D_PlayMap_Book(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Import(_SectionJson, _iPriorityKey)))
+	if (FAILED(pInstance->Initialize(_pDesc)))
 	{
 		MSG_BOX("Failed Create CSection_2D_PlayMap_Book");
 		Safe_Release(pInstance);

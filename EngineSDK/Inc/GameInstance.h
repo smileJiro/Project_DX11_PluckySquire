@@ -6,6 +6,7 @@
 #include "PipeLine.h"
 #include "Shadow.h"
 #include "D3DUtils.h"
+#include "ThreadPool.h"
 
 BEGIN(Engine)
 
@@ -294,6 +295,8 @@ public: /* For. Collision_Manager */
 /* Group에 Collider 등록 */
 	HRESULT					Add_Collider(const _wstring& _strSectionKey, _uint _iGroupFilter, CCollider* _pCollider); // 콜라이더를 추가.
 
+public: /* For. ThreadPool */
+	class CThreadPool*		Get_ThreadPool() { return m_pThreadPool; }
 private:
 	class CGraphic_Device* m_pGraphic_Device = nullptr;
 	class CTimer_Manager* m_pTimer_Manager = nullptr;
@@ -318,6 +321,7 @@ private:
 	class CD3DUtils* m_pD3DUtils = nullptr;
 	class CCubeMap* m_pCubeMap = nullptr;
 	class CCollision_Manager* m_pCollision_Manager = nullptr;
+	class CThreadPool* m_pThreadPool = nullptr;
 private:
 	HWND m_hWnd = nullptr;
 	HINSTANCE m_hInstance = nullptr;
