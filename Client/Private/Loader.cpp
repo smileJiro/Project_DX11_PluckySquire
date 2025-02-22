@@ -2085,7 +2085,7 @@ HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _sz
 
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
                 C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
-            {
+            {   
                 string str = "Failed to Create 3DModel";
                 str += entry.path().filename().replace_extension().string();
                 MessageBoxA(NULL, str.c_str(), "¿¡·¯", MB_OK);

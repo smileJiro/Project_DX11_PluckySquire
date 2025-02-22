@@ -61,9 +61,11 @@ HRESULT CSection::Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject)
         return E_FAIL;
 
     auto pLayer = Get_Include_Layer(_pGameObject);
-    Safe_Release(_pGameObject);
-    if (nullptr != pLayer)
+    if (nullptr != pLayer) 
+    {
+        Safe_Release(_pGameObject);
         return pLayer->Remove_GameObject(_pGameObject);
+    }
     else
         return E_FAIL;
 }
