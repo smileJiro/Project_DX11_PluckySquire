@@ -167,6 +167,7 @@
     <ClInclude Include="..\public\RenderGroup_DownSample.h" />
     <ClInclude Include="..\Public\RenderGroup_Lighting.h" />
     <ClInclude Include="..\public\SkyBox.h" />
+    <ClInclude Include="..\public\TestTrail.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="..\private\RenderGroup_DownSample.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Lighting.cpp" />
     <ClCompile Include="..\private\SkyBox.cpp" />
+    <ClCompile Include="..\private\TestTrail.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -208,6 +210,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_CS_Mesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_CS_Sprite.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Trail.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshInstance.hlsl" />

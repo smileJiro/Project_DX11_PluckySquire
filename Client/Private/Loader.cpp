@@ -129,6 +129,7 @@
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
+#include "Effect_Trail.h"
 
 
 
@@ -280,7 +281,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG_Borderline"),
         CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/New_T_bg_border.dds"), 1))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Trail"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Trail_03.dds"), 1))))
+        return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
@@ -321,6 +324,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPoint"),
         CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPoint.hlsl"), VTXPOINT::Elements, VTXPOINT::iNumElements))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Trail"),
+        CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Trail.hlsl"), VTXTRAIL::Elements, VTXTRAIL::iNumElements))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Compute_Shader_MeshInstance"),
         CCompute_Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_CS_Mesh.hlsl")))))
         return E_FAIL;
@@ -348,6 +354,11 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_Component_VIBuffer_Cube */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
         CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Trail*/
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Trail32"),
+        CVIBuffer_Trail::Create(m_pDevice, m_pContext, 32))))
         return E_FAIL;
     
     /* Bulb*/
@@ -580,6 +591,11 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_GameObject_Blocker2D */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Blocker2D"),
         CBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_SwordTrail */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_EffectTrail"),
+        CEffect_Trail::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     
 
