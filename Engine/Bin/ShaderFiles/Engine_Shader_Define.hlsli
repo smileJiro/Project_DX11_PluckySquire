@@ -23,10 +23,13 @@
 struct Material_PS
 {
     float4 Albedo; // baseColor
+    
     float Roughness;
     float Metallic;
     float AO;
     float dummy;
+    
+    float4 MultipleAlbedo;
 };
 
 

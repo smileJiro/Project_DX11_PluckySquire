@@ -918,9 +918,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Grapes_Grape_03/Grapes_Grape_03.model", matPretransform))))
         return E_FAIL;
 
-    /* 중복 키값도 Prototype_Manager에서 쳐내개 변경했음. 이제 중복 키값 로드해도 멈추지않음. */
-    if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_2, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
-        return E_FAIL;
+    ///* 중복 키값도 Prototype_Manager에서 쳐내개 변경했음. 이제 중복 키값 로드해도 멈추지않음. */
+    //if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_2, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
+    //    return E_FAIL;
     if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_2, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform, true)))
         return E_FAIL;
 
