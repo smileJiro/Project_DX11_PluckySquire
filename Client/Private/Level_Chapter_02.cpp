@@ -245,6 +245,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 void CLevel_Chapter_02::Update(_float _fTimeDelta)
 {
+	if (KEY_DOWN(KEY::T))
+	{
+		//Event_ChangeMapObject(LEVEL_CHAPTER_2, TEXT("Chapter_04_Default_Desk.mchc"), TEXT("Layer_MapObject"), true);
+	}
+
 	// TODO :: 나중 제거, 테스트용도 - 박상욱
 	Uimgr->Test_Update(_fTimeDelta);
 

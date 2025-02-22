@@ -2,7 +2,7 @@
 #include "Base.h"
 
 BEGIN(Engine)
-class CThreadPool final : public CBase
+class ENGINE_DLL CThreadPool final : public CBase
 {
 private:
 	CThreadPool(size_t _iNumThreads);

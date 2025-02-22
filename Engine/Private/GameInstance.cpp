@@ -55,7 +55,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	unsigned int numCores = std::thread::hardware_concurrency();
 	std::cout << "Logical cores: " << numCores << std::endl;
 	_uint iNumThreadPoolSize = numCores - iNumThreads;
-	m_pThreadPool = CThreadPool::Create(iNumThreadPoolSize);
+	m_pThreadPool = CThreadPool::Create(numCores);
 	if (nullptr == m_pThreadPool)
 		return E_FAIL;
 
@@ -351,6 +351,7 @@ HRESULT CGameInstance::Add_Prototype(_uint _iLevelID, const _wstring& _strProtot
 {
 	if (nullptr == m_pPrototype_Manager)
 		return E_FAIL;
+
 	return m_pPrototype_Manager->Add_Prototype(_iLevelID, _strPrototypeTag, _pPrototype);
 }
 
