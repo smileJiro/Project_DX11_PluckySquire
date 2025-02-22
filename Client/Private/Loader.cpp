@@ -588,6 +588,10 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/"))))
         return E_FAIL;
 
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_STATIC,
+        TEXT("../Bin/Resources/Models/2D_FX"))))
+        return E_FAIL;
+
     if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Common"))))
         return E_FAIL;
 
@@ -829,10 +833,6 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         return E_FAIL;
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
         TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
-        return E_FAIL;
-
-    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
-        TEXT("../Bin/Resources/Models/2D_FX"))))
         return E_FAIL;
 
     /* 낱개 로딩 예시*/
@@ -1282,10 +1282,6 @@ HRESULT CLoader::Loading_Level_Chapter_4()
         return E_FAIL;
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
         TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
-        return E_FAIL;
-
-    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
-        TEXT("../Bin/Resources/Models/2D_FX"))))
         return E_FAIL;
 
     /* 낱개 로딩 예시*/
