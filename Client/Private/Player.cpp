@@ -902,10 +902,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         break;
     }
     m_pSword->Set_AttackEnable(false);
-    if (m_pPortal)
-        Set_State(EXIT_PORTAL);
-    else
-        Set_State(IDLE);
+
 
     return S_OK;
 }
@@ -1391,7 +1388,7 @@ void CPlayer::Set_Animation(_uint _iAnimIndex)
 
 void CPlayer::Set_State(STATE _eState)
 {
-    cout << "eState: " << _eState << endl;
+    //cout << "eState: " << _eState << endl;
     //_uint iAnimIdx;
     switch (_eState)
     {

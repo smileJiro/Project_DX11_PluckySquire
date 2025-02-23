@@ -61,15 +61,14 @@ void CPortrait::Update(_float _fTimeDelta)
 
 void CPortrait::Late_Update(_float _fTimeDelta)
 {
-	if (true == Uimgr->Get_DisplayDialogue() && COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	if (true == Uimgr->Get_DisplayDialogue() && false == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 	{
 		Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
 	}
-	else if (true == Uimgr->Get_DisplayDialogue() && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	else if (true == Uimgr->Get_DisplayDialogue() && true == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 	{
 		if (!m_isAddSectionRender)
 		{
-
 
 			wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
 			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
@@ -127,11 +126,11 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 
 	const auto& currentLine = Uimgr->Get_DialogueLine(m_tDialogIndex, Uimgr->Get_DialogueLineIndex());
 
-	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	if (true == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 	{
 		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_Scale(m_vDisplay2DSize.x, m_vDisplay2DSize.y, 1.f);
 	}
-	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	else if (false == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 	{
 		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_Scale(m_vDisplay3DSize.x, m_vDisplay3DSize.y, 1.f);
 	}
@@ -150,7 +149,7 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 	{
 	case CDialog::LOC_MIDDOWN:  // 가운데 아래
 	{
-		if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+		if (true == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 		{
 			
 
@@ -159,7 +158,7 @@ void CPortrait::ChangePosition(_bool _isRender, _float2 _RTSize)
 
 			//vPos.y -= _RTSize.y * 0.13f;
 		}
-		else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+		else if (false == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 		{
 			if (true == m_isAddSectionRender)
 			{
