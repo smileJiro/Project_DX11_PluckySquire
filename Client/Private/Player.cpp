@@ -475,6 +475,7 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
        return E_FAIL;
    //Safe_AddRef(m_pGravityCom);
+   
    m_pGravityCom->Set_Active(false);
     return S_OK;
 }
@@ -523,8 +524,20 @@ void CPlayer::Update(_float _fTimeDelta)
 void CPlayer::Late_Update(_float _fTimeDelta)
 {            // cout << "Upforce :" << m_f2DUpForce << " Height : " << m_f2DHeight << endl;
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
-    _vector vUp = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_UP));
-    m_pBody->Set_Position(vUp * m_f2DFloorDistance);
+    if (COORDINATE_2D == Get_CurCoord())
+    {
+        if (Is_PlatformerMode())
+        {
+
+
+        }
+        else
+        {
+            _vector vUp = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_UP));
+            m_pBody->Set_Position(vUp * m_f2DFloorDistance);
+        }
+    }
+
     //cout << endl;
 
 }
@@ -678,34 +691,40 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
         if (false == static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
             break;
 
-        /* 1. Blocker은 항상 AABB임을 가정. */
-
-        /* 2. 나의 Collider 중점 기준, AABB에 가장 가까운 점을 찾는다. */
-        _bool isResult = false;
-        _float fEpsilon = 0.01f;
-        _float2 vContactVector = {};
-        isResult = static_cast<CCollider_Circle*>(_pMyCollider)->Compute_NearestPoint_AABB(static_cast<CCollider_AABB*>(_pOtherCollider), nullptr, &vContactVector);
-        if (true == isResult)
+        if (true == Is_PlatformerMode())
         {
-            /* 3. 충돌지점 벡터와 중력벡터를 내적하여 그 결과를 기반으로 Floor 인지 체크. */
-            _float3 vGravityDir = m_pGravityCom->Get_GravityDirection();
-            _float2 vGravityDirection = _float2(vGravityDir.x, vGravityDir.y);
-            _float fGdotC = XMVectorGetX(XMVector2Dot(XMLoadFloat2(&vGravityDirection), XMVector2Normalize(XMLoadFloat2(&vContactVector))));
-            if (1.0f - fEpsilon <= fGdotC)
-            {
-                /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
-                m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
-                //Set_State(STATE::IDLE);
+            /* 1. Blocker은 항상 AABB임을 가정. */
 
-            }
-            else if(-1.0f + fEpsilon >= fGdotC)
+                   /* 2. 나의 Collider 중점 기준, AABB에 가장 가까운 점을 찾는다. */
+            _bool isResult = false;
+            _float fEpsilon = 0.01f;
+            _float2 vContactVector = {};
+            isResult = static_cast<CCollider_Circle*>(_pMyCollider)->Compute_NearestPoint_AABB(static_cast<CCollider_AABB*>(_pOtherCollider), nullptr, &vContactVector);
+            if (true == isResult)
             {
-                m_pGravityCom->Set_GravityAcc(0.0f);
-                if (STATE::ROLL == Get_CurrentStateID())
-                    break;
-                Set_State(STATE::JUMP_DOWN);
+                /* 3. 충돌지점 벡터와 중력벡터를 내적하여 그 결과를 기반으로 Floor 인지 체크. */
+                _float3 vGravityDir = m_pGravityCom->Get_GravityDirection();
+                _float2 vGravityDirection = _float2(vGravityDir.x, vGravityDir.y);
+                _float fGdotC = XMVectorGetX(XMVector2Dot(XMLoadFloat2(&vGravityDirection), XMVector2Normalize(XMLoadFloat2(&vContactVector))));
+                if (1.0f - fEpsilon <= fGdotC)
+                {
+                    /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
+                    m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+                    //Set_State(STATE::IDLE);
+                    m_f2DUpForce = 0.f;
+
+                }
+                else if (-1.0f + fEpsilon >= fGdotC)
+                {
+                    m_pGravityCom->Set_GravityAcc(0.0f);
+                    if (STATE::ROLL == Get_CurrentStateID())
+                        break;
+                    Set_State(STATE::JUMP_DOWN);
+                    m_f2DUpForce = 0.f;
+                }
             }
         }
+       
         
     }
         break;
@@ -903,7 +922,6 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     }
     m_pSword->Set_AttackEnable(false);
 
-
     return S_OK;
 }
 
@@ -962,9 +980,8 @@ void CPlayer::Jump()
     {
         if (m_bPlatformerMode)
         {
-			m_pGravityCom->Set_GravityAcc(-m_f2DPlatformerJumpPower * 1.2f);
-         
             m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
+            m_f2DUpForce = m_f2DPlatformerJumpPower;
         }
         else
             m_f2DUpForce = m_f2DJumpPower;
@@ -1548,6 +1565,7 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
     if (true == _bPlatformerMode)
     {
         Event_SetActive(m_pGravityCom, true);
+        m_pGravityCom->Set_Active(false);
         m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
         CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
 
@@ -1557,6 +1575,7 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
     else
     {
         Event_SetActive(m_pGravityCom, false);
+        m_pGravityCom->Set_Active(true);
         m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
         CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
         pCollider->Set_Radius(m_f2DColliderBodyRadius);

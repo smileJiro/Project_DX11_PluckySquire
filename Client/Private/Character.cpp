@@ -28,12 +28,14 @@ HRESULT CCharacter::Initialize(void* _pArg)
 
 void CCharacter::Priority_Update(_float _fTimeDelta)
 {
+
+    __super::Priority_Update(_fTimeDelta);
     COORDINATE eCoord = Get_CurCoord();
     if (COORDINATE_2D == eCoord)
     {
         if (m_bPlatformerMode)
         {
-
+            Move(_vector{ 0.f,1.f,0.f } *m_f2DUpForce, _fTimeDelta);
         }
         else
         {
@@ -72,7 +74,6 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
         }
         //경사가 너ㅏ무 급하면 무시
     }
-    
 }
 
 void CCharacter::Update(_float _fTimeDelta)
@@ -496,9 +497,18 @@ void CCharacter::Move(_fvector _vForce, _float _fTimeDelta)
         _vector vVeclocity = _vForce /** m_tStat[COORDINATE_3D].fMoveSpeed*/  /** fDot*/;
 
         vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
-		if (Is_OnGround())
-            vVeclocity = StepAssist(vVeclocity,_fTimeDelta);
-        pDynamicActor->Set_LinearVelocity(vVeclocity);
+
+        if (pDynamicActor->Is_Dynamic())
+        {
+            if (Is_OnGround())
+                vVeclocity = StepAssist(vVeclocity, _fTimeDelta);
+            pDynamicActor->Set_LinearVelocity(vVeclocity);
+        }
+        else
+        {
+            m_pControllerTransform->Go_Direction(_vForce,_fTimeDelta);
+        }
+
 
     }
     else

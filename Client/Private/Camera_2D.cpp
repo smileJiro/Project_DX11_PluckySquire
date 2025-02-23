@@ -77,7 +77,6 @@ void CCamera_2D::Set_Data(_fvector _vArm, _float _fLength, _fvector _vOffset)
 {
 	m_pCurArm->Set_ArmVector(_vArm);
 	m_pCurArm->Set_Length(_fLength);
-	m_pCurArm->Set_StartInfo(_vArm, _fLength);
 	XMStoreFloat3(&m_vAtOffset, _vOffset);
 }
 
@@ -100,7 +99,6 @@ void CCamera_2D::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA*
 void CCamera_2D::Add_CustomArm(ARM_DATA _tArmData)
 {
 	m_CustomArmData = _tArmData;
-	m_pCurArm->Set_StartInfo(m_pCurArm->Get_ArmVector(), m_pCurArm->Get_Length());
 }
 
 _bool CCamera_2D::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
@@ -217,7 +215,7 @@ void CCamera_2D::Change_Target(CGameObject* _pTarget)
 {
 	m_pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 	m_eTargetCoordinate = _pTarget->Get_CurCoord();
-	m_isChangeTarget = true;
+	m_isTargetChanged = true;
 }
 
 INITIAL_DATA CCamera_2D::Get_InitialData()
@@ -579,7 +577,7 @@ void CCamera_2D::Find_TargetPos()
 			_float2 fSectionSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(m_strSectionName);
 			_float2 vPos = { };
 
-			_bool isLeft = Uimgr->isLeft_Right();	// true¸é left
+			_bool isLeft = true;//Uimgr->isLeft_Right();	// true¸é left
 
 			if (true == isLeft) 
 				vPos = { fSectionSize.x * 0.25f, fSectionSize.y * 0.5f };
@@ -742,7 +740,7 @@ void CCamera_2D::Clamp_FixedPos()
 
 void CCamera_2D::Check_TargetChange()
 {
-	if (false == m_isChangeTarget)
+	if (false == m_isTargetChanged)
 		return;
 
 	_vector vDistance = XMLoadFloat3(&m_v2DTargetWorldPos) - XMLoadFloat3(&m_v2DPreTargetWorldPos);
@@ -750,7 +748,7 @@ void CCamera_2D::Check_TargetChange()
 
 	if (fDistanceLength < EPSILON) {
 		CTrigger_Manager::GetInstance()->On_End(TEXT("2D_Camera_Change_Target"));
-		m_isChangeTarget = false;
+		m_isTargetChanged = false;
 	}
 }
 

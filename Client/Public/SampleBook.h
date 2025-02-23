@@ -58,7 +58,7 @@ public:
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
-
+	virtual void Check_FrustumCulling() { m_isFrustumCulling = false; }// 항상 컬링하지않음. };
 public:
 	void Interact(CPlayer* _pUser) override;
 	_bool Is_Interactable(CPlayer* _pUser) override;

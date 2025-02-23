@@ -551,12 +551,12 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 	if (nullptr != pGameObject && COORDINATE_2D ==  pGameObject->Get_CurCoord())
 	{
 		_wstring strMoveSectionName = L"";
-		if (FAILED(SECTION_MGR->Remove_GameObject_ToCurSectionLayer(pGameObject)))
+		if (FAILED(SECTION_MGR->Remove_GameObject_FromSectionLayer(pGameObject->Get_Include_Section_Name(),pGameObject)))
 			return;
 		CCarriableObject* pCarryingObj = static_cast<CPlayer*>(pGameObject)->Get_CarryingObject();
 		if (pCarryingObj)
 		{
-			if (FAILED(SECTION_MGR->Remove_GameObject_ToCurSectionLayer(pCarryingObj)))
+			if (FAILED(SECTION_MGR->Remove_GameObject_FromSectionLayer(pCarryingObj->Get_Include_Section_Name(), pCarryingObj)))
 				return;
 		}
 		if (NEXT == m_eCurAction)

@@ -36,6 +36,12 @@ public:
 		_float3		vAtOffset;
 	}RETURN_SUBDATA;
 
+	typedef struct tagFreezeExitData
+	{
+		_float3		vFreezeExitArm = {};
+		_float		fFreezeExitLength = {};
+	}FREEZE_EXITDATA;
+
 private:
 	CCamera_Target(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCamera_Target(const CCamera_Target& Prototype);
@@ -84,6 +90,8 @@ public:
 private:
 	const _float4x4*			m_pTargetWorldMatrix = { nullptr };
 	_float3						m_vPreTargetPos = {};
+	_float3						m_vFreezeOffset = {};
+	_float3						m_vPreFreezeOffset = {};
 
 	CAMERA_MODE					m_eCameraMode = { CAMERA_MODE_END };
 	CAMERA_MODE					m_ePreCameraMode = { DEFAULT };
@@ -98,6 +106,7 @@ private:
 	// Freeze
 	_uint						m_iFreezeMask = {};
 	_bool						m_isFreezeExit = { false };
+	_bool						m_isFreezeExitReturn = { false };	// Freeze Exit Arm으로 돌아가기
 	_float2						m_fFreezeExitTime = { 0.8f, 0.f };
 	_float3						m_vFreezeEnterPos = {};
 
@@ -105,12 +114,9 @@ private:
 	_bool						m_isEnableLookAt = { true };
 	_bool						m_isExitLookAt = { false };
 	_float2						m_fLookTime = {0.4f, 0.f };
-	_float3						m_vStartLookVector = {};
 	
-	list<pair<_float3, _uint>>	m_FreezeExitArms = {};
-	_float3						m_vCurFreezeExitArm = {};
-
-	//_uint						m_iPreFreeze = {};
+	list<pair<FREEZE_EXITDATA, _uint>>	m_FreezeExitDatas = {};
+	FREEZE_EXITDATA				m_vCurFreezeExitData = {};
 
 	// PreArm Return
 	list<pair<RETURN_SUBDATA, _bool>> m_PreSubArms;
@@ -132,13 +138,14 @@ private:
 
 	void						Defualt_Move(_float _fTimeDelta);
 	void						Move_To_NextArm(_float _fTimeDelta);
-	void						Look_Target(_fvector _vTargetPos, _float _fTimeDelta);
 	void						Move_To_PreArm(_float _fTimeDelta);
 	void						Move_To_CustomArm(_float _fTimeDelta);
+	void						Look_Target(_fvector _vTargetPos, _float _fTimeDelta);
 
 	_vector						Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fTimeDelta);
+	void						Calculate_FreezeOffset(_vector* _pTargetPos);
 	virtual	void				Switching(_float _fTimeDelta) override;
-	void						Set_Arm_From_Freeze();
+	void						Change_FreezeOffset(_float _fTimeDelta);
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);

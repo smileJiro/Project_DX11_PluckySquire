@@ -14,6 +14,11 @@ void CPlayerState_ExitPortal::Update(_float _fTimeDelta)
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	if (COORDINATE_3D == eCoord)
 	{
+		if(false == m_bWaitFirstFrame)
+		{
+			m_bWaitFirstFrame = true;
+			return;
+		}
 		if (m_pOwner->Is_OnGround() && -0.f > m_pOwner->Get_UpForce())
 			m_pOwner->Set_State(CPlayer::IDLE);
 	}
@@ -31,14 +36,8 @@ void CPlayerState_ExitPortal::Enter()
 
 	if (COORDINATE_3D == eCoord)
 	{
-		static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_FOOT, true);
 		static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
 		m_ePortalNormal = m_pOwner->Get_PortalNormal();
-		_vector vDir = m_pOwner->Get_LookDirection(COORDINATE_2D);
-		vDir = XMVectorSetZ(vDir, XMVectorGetY(vDir));
-		vDir = XMVectorSetY(vDir, 0);
-		m_pOwner->LookDirectionXZ_Dynamic(vDir);
-		_vector vTargetPos = vPortalPos + vDir * m_f3DJumpDistance;
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_BOOK_JUMP_FALL_FRONT_NEWRIG);
 
 		_vector vImpulse = { 0.f,0.f,0.f,0.f };
@@ -67,6 +66,9 @@ void CPlayerState_ExitPortal::Enter()
 			break;
 		}
 		m_pOwner->LookDirectionXZ_Dynamic(vImpulse);
+		_float3 vPos;
+		XMStoreFloat3(&vPos, vPortalPos + vImpulse * 0.5f);
+		m_pOwner->Get_ActorCom()->Set_GlobalPose(vPos);
 		m_pOwner->Add_Impuls(vImpulse * m_f3DJumpDistance);
 		//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(vTargetPos, XMConvertToRadians(45.f));
 	}
