@@ -92,7 +92,7 @@ HRESULT CMonster::Render()
 	{
 		for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
 		{
-			m_p2DColliderComs[i]->Render();
+			m_p2DColliderComs[i]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(Get_Include_Section_Name()));
 		}
 	}
 #endif // _DEBUG
