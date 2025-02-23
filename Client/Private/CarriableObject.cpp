@@ -102,6 +102,7 @@ void CCarriableObject::Late_Update(_float _fTimeDelta)
 	}
 	if (COORDINATE_2D == Get_CurCoord() && false == Is_Carrying())
 	{
+		m_vThrowSocketOffset2D = m_matHeadUpMatrix[COORDINATE_2D];
 		
 	}
 
@@ -150,6 +151,10 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 
 void CCarriableObject::Throw(_fvector _vForce)
 {
+	Set_ParentMatrix(COORDINATE_2D, nullptr);
+	Set_ParentMatrix(COORDINATE_3D, nullptr);
+	Set_SocketMatrix(COORDINATE_3D, nullptr);
+	Set_SocketMatrix(COORDINATE_2D, nullptr);
 	if (COORDINATE_3D == Get_CurCoord())
 	{
 		_float3 vForce;
@@ -158,7 +163,7 @@ void CCarriableObject::Throw(_fvector _vForce)
 	}
 	else
 	{
-
+		Set_SocketMatrix(COORDINATE_2D, &m_vThrowSocketOffset2D);
 	}
 }
 

@@ -1406,6 +1406,7 @@ HRESULT CGameInstance::Unregister_Section(const _wstring& _strSectionKey)
 {
 	if (nullptr == m_pCollision_Manager)
 		return E_FAIL;
+
 	return m_pCollision_Manager->Unregister_Section(_strSectionKey);
 
 }
@@ -1512,24 +1513,6 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pThreadPool);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pGraphic_Device);
-
-	HMODULE dxgiDebugModule = LoadLibraryEx(L"dxgidebug.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
-	if (dxgiDebugModule)
-	{
-		typedef HRESULT(WINAPI* DXGIGetDebugInterface)(REFIID, void**);
-		DXGIGetDebugInterface dxgiGetDebugInterface = (DXGIGetDebugInterface)GetProcAddress(dxgiDebugModule, "DXGIGetDebugInterface");
-
-		if (dxgiGetDebugInterface)
-		{
-			IDXGIDebug* pDXGIDebug = nullptr;
-			if (SUCCEEDED(dxgiGetDebugInterface(__uuidof(IDXGIDebug), (void**)&pDXGIDebug)))
-			{
-				pDXGIDebug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_DETAIL);
-				pDXGIDebug->Release();
-			}
-		}
-		FreeLibrary(dxgiDebugModule);
-	}
 
 	// Base Free 호출.
 	__super::Free();

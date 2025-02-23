@@ -185,6 +185,18 @@ void CUI_Manager::Set_DialogId(const _tchar* _id, const _tchar* strCurSection,  
 	m_isPortraitRender = _DisPlayPortrait;
 }
 
+void CUI_Manager::Set_DialogEnd()
+{
+	//Uimgr->Set_DisplayDialogue(false);
+	//Uimgr->Set_PortraitRender(false);
+	//Uimgr->Set_DialogueLineIndex(0);
+
+	m_isDisplayDialogue = false;
+	m_isPortraitRender = false;
+	m_iCurrnetLineIndex = 0;
+	wsprintf(m_strCurrentSection, L"");
+}
+
 void CUI_Manager::Pushback_Dialogue(CDialog::DialogData _DialogData)
 {
 	m_DialogDatas.push_back(_DialogData);

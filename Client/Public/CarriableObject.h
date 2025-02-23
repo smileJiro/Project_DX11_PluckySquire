@@ -20,14 +20,7 @@ public:
 		GRAPE,
 		CARRIABLE_ID_LAST
 	};
-	enum CARRIABLE_STATE
-	{
-		CARRIABLE_IDLE,
-		CARRIABLE_CARRIED,
-		CARRIABLE_THROWN,
-		CARRIABLE_LAYDOWN,
-		CARRIABLE_STATE_LAST
-	};
+
 	typedef struct tagCarriableDesc : public CModelObject::MODELOBJECT_DESC
 	{
 		CARRIABLE_OBJ_ID eCrriableObjId = CARRIABLE_OBJ_ID::CARRIABLE_ID_LAST;
@@ -62,12 +55,18 @@ public:
 	void Set_Kinematic(_bool _bKinematic);
 	void Set_ParentBodyMatrix(COORDINATE _eCoord, const _float4x4* _pBodyMatrix) { m_pParentBodyMatrices[_eCoord] = _pBodyMatrix; }
 	const _float4x4& Get_HeadUpMatrix(COORDINATE _eCoord) { return m_matHeadUpMatrix[_eCoord]; };
+
 protected:
 	CPlayer* m_pCarrier = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;
 	const _float4x4* m_pParentBodyMatrices[COORDINATE_LAST] = { nullptr }; // 부모의 월드 행렬의 주소
 
 	_float4x4 m_matHeadUpMatrix[COORDINATE_LAST];
+
+
+	//THROW
+	//공중에 떠 있기 위한 가상의 Socket 
+	_float4x4 m_vThrowSocketOffset2D;
 
 	//실험용
 	_float m_fRestitution = 0.5f;
