@@ -178,7 +178,7 @@ void CLayer::Cleanup_DeadReferences()
 }
 
 void CLayer::Clear_GameObjects()
-{
+ {
     for (auto& pGameObject : m_GameObjects)
         Safe_Release(pGameObject);
 
