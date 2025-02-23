@@ -31,7 +31,7 @@ public:
 	void			Block(CCollider* _pOther);
 	void			Block_AABB(CCollider_AABB* _pOther);
 	void			Block_Circle(CCollider_Circle* _pOther);
-
+	void			Set_Extents(_float2 _vExtents) { m_vExtents = _vExtents; }
 public:
 	void			Update_OwnerTransform() override;
 
