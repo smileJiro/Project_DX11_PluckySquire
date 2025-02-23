@@ -44,7 +44,7 @@ public:
 
 public:
 	void		Set_AddUpdate(_bool _isAddUpdate) { m_isAddUpdate = _isAddUpdate; }
-	void		Set_DeleteUpdate(_bool _isDeleteUpdate) { m_isDeleteUpdate = _isDeleteUpdate; }
+	//void		Set_DeleteUpdate(_bool _isDeleteUpdate) { m_isDeleteUpdate = _isDeleteUpdate; }
 
 private:
 	CShader* m_pShaderCom = { nullptr };
@@ -53,13 +53,13 @@ private:
 	
 private:
 	_bool  m_isAddUpdate = { true }; // 정점 더하는(갱신하는) 기능
-	_bool  m_isDeleteUpdate = { true }; // 정점 
+	//_bool  m_isDeleteUpdate = { true }; // 정점 
 
 private:
 	_float m_fAccAddTime = 0.f;
 	_float m_fAddTime = 0.002f;
-	_float m_fAccDeleteTime = 0.f;
-	_float m_fDeleteTime = 0.019f;
+	//_float m_fAccDeleteTime = 0.f;
+	//_float m_fDeleteTime = 0.019f;
 	
 	_float m_fDeleteAllDelay = D3D11_FLOAT32_MAX;
 

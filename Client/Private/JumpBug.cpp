@@ -32,7 +32,7 @@ HRESULT CJumpBug::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 10.f;
+    pDesc->tTransform2DDesc.fSpeedPerSec = 30.f;
 
     pDesc->fAlertRange = 0.f;
     pDesc->fChaseRange = 0.f;
@@ -62,11 +62,28 @@ HRESULT CJumpBug::Initialize(void* _pArg)
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
-    //pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
-    //pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, RUN, true);
-    //pModelObject->Set_Animation(IDLE);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
+
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_DOWN, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_RIGHT, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_UP, true);
+
+    pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CJumpBug::Animation_End, this, placeholders::_1, placeholders::_2));
+
+    //Bind_AnimEventFunc("Monster_Move", bind(&CJumpBug::Monster_Move, this));
+
+    ///* Com_AnimEventGenerator */
+    //CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+    //tAnimEventDesc.pReceiver = this;
+    //tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
+    //m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_JumpBugJumpEvent"), &tAnimEventDesc));
+    //Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
+
+    //tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
+    //m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_BarfBug2DAttackAnimEvent"), &tAnimEventDesc));
+    //Add_Component(TEXT("2DAnimEventGenerator"), m_pAnimEventGenerator);
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
@@ -309,10 +326,13 @@ void CJumpBug::Monster_Move(_fvector _vDirection)
 {
     if (COORDINATE_3D == Get_CurCoord())
     {
+        //_float3 vForce = { 0.f,2000.f,0.f };
+        //Get_ActorCom()->Add_Force(vForce);
+
         if (true == m_isJump)
         {
             _vector vDirection = _vDirection + XMVectorSet(0.f, 1.f, 0.f, 0.f);
-            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(vDirection), Get_ControllerTransform()->Get_SpeedPerSec());
+            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(vDirection), Get_ControllerTransform()->Get_SpeedPerSec()*10.f);
         }
         else
         {
@@ -390,6 +410,20 @@ HRESULT CJumpBug::Ready_Components()
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
+        return E_FAIL;
+
+    /* 2D Collider */
+    m_p2DColliderComs.resize(1);
+
+    CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+    CircleDesc.pOwner = this;
+    CircleDesc.fRadius = 30.f;
+    CircleDesc.vScale = { 1.0f, 1.0f };
+    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius - 10.f };
+    CircleDesc.isBlock = false;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
 
     return S_OK;

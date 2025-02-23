@@ -218,38 +218,33 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 			return E_FAIL;
 
 
-		if (FAILED(m_pShaderCom->Bind_RawValue("g_fTimeAcc", &m_fAccTime, sizeof(_float))))
-			return E_FAIL;
+		//if (FAILED(m_pShaderCom->Bind_RawValue("g_fTimeAcc", &m_fAccTime, sizeof(_float))))
+		//	return E_FAIL;
 
-		Bind_Texture(ALPHA, "g_AlphaTexture");
+		//Bind_Texture(ALPHA, "g_AlphaTexture");
 		Bind_Texture(MASK, "g_MaskTexture");
 		Bind_Texture(NOISE, "g_NoiseTexture");
 
-		if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
-			return E_FAIL;
+		//if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
+		//	return E_FAIL;
 		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("AlphaTest", "g_fAlphaTest")))
 			return E_FAIL;
-		if (FAILED(Bind_Float("ColorTest", "g_fColorTest")))
-			return E_FAIL;
+		//if (FAILED(Bind_Float("ColorTest", "g_fColorTest")))
+		//	return E_FAIL;
 
-
-		if (FAILED(Bind_Float4("AlphaUVScale", "g_AlphaUVScale")))
+		if (FAILED(Bind_Float4("DissolveEdgeColor", "g_vEdgeColor")))
 			return E_FAIL;
+		//if (FAILED(Bind_Float4("AlphaUVScale", "g_AlphaUVScale")))
+		//	return E_FAIL;
 		if (FAILED(Bind_Float4("MaskUVScale", "g_MaskUVScale")))
 			return E_FAIL;
 		if (FAILED(Bind_Float4("NoiseUVScale", "g_NoiseUVScale")))
 			return E_FAIL;
 
-		//if (FAILED(Bind_Float2("AlphaUVScale", "g_AlphaUVScale")))
-		//	return E_FAIL;
-		//if (FAILED(Bind_Float2("MaskUVScale", "g_MaskUVScale")))
-		//	return E_FAIL;
-		//if (FAILED(Bind_Float2("NoiseUVScale", "g_NoiseUVScale")))
-		//	return E_FAIL;
 
 		break;
 	}
@@ -365,6 +360,42 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 			return E_FAIL;
 		if (FAILED(Bind_Float4("NoiseUVScale", "g_NoiseUVScale")))
 			return E_FAIL;
+		break;
+	}
+	case SUB_DISSOLVE:
+	{
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
+			return E_FAIL;
+
+
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_fTimeAcc", &m_fAccTime, sizeof(_float))))
+			return E_FAIL;
+
+		Bind_Texture(MASK, "g_MaskTexture");
+		Bind_Texture(NOISE, "g_NoiseTexture");
+		Bind_Texture(SECOND, "g_SecondTexture");
+
+		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("AlphaTest", "g_fAlphaTest")))
+			return E_FAIL;
+
+		if (FAILED(Bind_Float("BloomThreshold", "g_fBloomThreshold")))
+			return E_FAIL;
+
+		if (FAILED(Bind_Float4("DissolveEdgeColor", "g_vEdgeColor")))
+			return E_FAIL;
+
+		if (FAILED(Bind_Float4("MaskUVScale", "g_MaskUVScale")))
+			return E_FAIL;
+		if (FAILED(Bind_Float4("NoiseUVScale", "g_NoiseUVScale")))
+			return E_FAIL;
+		if (FAILED(Bind_Float4("SubUVScale", "g_SubUVScale")))
+			return E_FAIL;
+
+
 		break;
 	}
 
@@ -573,7 +604,7 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 		if (ImGui::TreeNode("Pass"))
 		{
 
-			const _char* items[] = { "Default", "Dissolve", "Bloom", "Bloom_Dissolve", "Bloom_Dissolve_BillBoard", "Distortion"};
+			const _char* items[] = { "Default", "Dissolve", "Bloom", "Bloom_Dissolve", "Bloom_Dissolve_BillBoard", "Distortion", "Sub_Dissolve"};
 			static _int item_selected_idx = 0;
 			const char* combo_preview_value = items[item_selected_idx];
 
@@ -787,23 +818,23 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 				ImGui::TreePop();
 			}
 
-			if (ImGui::TreeNode("DIFFUSE"))
+			if (ImGui::TreeNode("Sub_Texture"))
 			{
-				if (nullptr != m_Textures[DIFFUSE])
+				if (nullptr != m_Textures[SECOND])
 				{
 					ImVec2 imageSize(300, 300); // 이미지 크기 설정
-					ID3D11ShaderResourceView* pSelectImage = m_Textures[DIFFUSE]->Get_SRV(0);
+					ID3D11ShaderResourceView* pSelectImage = m_Textures[SECOND]->Get_SRV(0);
 					if (nullptr != pSelectImage)
 					{
 						ImGui::Image((ImTextureID)pSelectImage, imageSize);
 					}
 
-					ImGui::Text(WSTRINGTOSTRING(*m_Textures[DIFFUSE]->Get_SRVName(0)).c_str());
+					ImGui::Text(WSTRINGTOSTRING(*m_Textures[SECOND]->Get_SRVName(0)).c_str());
 
 
 					if (ImGui::Button("Delete"))
 					{
-						Safe_Release(m_Textures[DIFFUSE]);
+						Safe_Release(m_Textures[SECOND]);
 					}
 				}
 				ImGui::TreePop();

@@ -14,6 +14,7 @@ struct VS_IN
 {
     float3 vPosition : POSITION;
     float2 vTexcoord : TEXCOORD0;
+    float2 vLifeTime : TEXCOORD1;
 };
 
 struct VS_OUT

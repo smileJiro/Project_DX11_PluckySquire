@@ -448,9 +448,9 @@ void CPlayerSword::Throw(_fvector _vDirection)
 void CPlayerSword::Switch_Grip(_bool _bForehand)
 {
     if (_bForehand)
-        m_pControllerTransform->Rotation(XMConvertToRadians(180.f), _vector{ 0.f,1.f,0.f,0.f });
-    else
         m_pControllerTransform->Rotation(XMConvertToRadians(0.f), _vector{ 0.f,1.f,0.f,0.f });
+    else
+        m_pControllerTransform->Rotation(XMConvertToRadians(180.f), _vector{ 0.f,1.f,0.f,0.f });
 }
 
 void CPlayerSword::Set_State(SWORD_STATE _eNewState)

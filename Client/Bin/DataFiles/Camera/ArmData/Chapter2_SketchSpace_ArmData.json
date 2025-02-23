@@ -8,7 +8,7 @@
         0.0
       ],
       "Arm_MoveTime_AxisY": [
-        0.8,
+        1.0,
         0.0
       ],
       "Arm_RotationPerSec_AxisRight": [
@@ -20,7 +20,7 @@
         0.0
       ],
       "Arm_Time": [
-        0.8,
+        1.0,
         0.0
       ],
       "Desire_Arm": [
@@ -43,7 +43,7 @@
         0.0
       ],
       "Arm_MoveTime_AxisY": [
-        0.8,
+        1.0,
         0.0
       ],
       "Arm_RotationPerSec_AxisRight": [
@@ -55,7 +55,7 @@
         0.0
       ],
       "Arm_Time": [
-        0.8,
+        1.0,
         0.0
       ],
       "Desire_Arm": [
@@ -78,7 +78,7 @@
         0.0
       ],
       "Arm_MoveTime_AxisY": [
-        0.8,
+        1.0,
         0.0
       ],
       "Arm_RotationPerSec_AxisRight": [
@@ -90,7 +90,7 @@
         0.0
       ],
       "Arm_Time": [
-        0.8,
+        1.0,
         0.0
       ],
       "Desire_Arm": [
@@ -113,7 +113,7 @@
         0.0
       ],
       "Arm_MoveTime_AxisY": [
-        0.8,
+        1.0,
         0.0
       ],
       "Arm_RotationPerSec_AxisRight": [
@@ -125,7 +125,7 @@
         0.0
       ],
       "Arm_Time": [
-        0.8,
+        1.0,
         0.0
       ],
       "Desire_Arm": [
@@ -148,7 +148,7 @@
         0.0
       ],
       "Arm_MoveTime_AxisY": [
-        0.8,
+        1.0,
         0.0
       ],
       "Arm_RotationPerSec_AxisRight": [
@@ -160,7 +160,7 @@
         0.0
       ],
       "Arm_Time": [
-        0.8,
+        1.0,
         0.0
       ],
       "Desire_Arm": [
@@ -183,7 +183,7 @@
         0.0
       ],
       "Arm_MoveTime_AxisY": [
-        0.8,
+        1.0,
         0.0
       ],
       "Arm_RotationPerSec_AxisRight": [
@@ -195,7 +195,7 @@
         0.0
       ],
       "Arm_Time": [
-        0.8,
+        1.0,
         0.0
       ],
       "Desire_Arm": [

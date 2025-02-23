@@ -1,0 +1,130 @@
+{
+    "Emitters": [
+        {
+            "Color": [
+                0.7599999904632568,
+                0.8100000023841858,
+                0.5799999833106995,
+                1.2999999523162842
+            ],
+            "DelayTime": 0.0,
+            "Event": 0,
+            "Float": [
+                {
+                    "Name": "AlphaTest",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "BloomThreshold",
+                    "Value": 0.9049999713897705
+                },
+                {
+                    "Name": "DissolveEdge",
+                    "Value": 1.0
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": 0.699999988079071
+                }
+            ],
+            "Float4": [
+                {
+                    "Name": "DissolveEdgeColor",
+                    "Value": [
+                        0.0,
+                        1.0,
+                        0.5,
+                        0.5299999713897705
+                    ]
+                },
+                {
+                    "Name": "MaskUVScale",
+                    "Value": [
+                        2.0,
+                        4.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "SubUVScale",
+                    "Value": [
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "LoopTime": 1,
+            "Model": "../Bin/Resources/Models/FX/S_FX_PLY_SwordThrow_Trail_01.model",
+            "Pooling": "KILL",
+            "PreTransform": [
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "ShaderPass": "SUB_DISSOLVE",
+            "SpawnPosition": "RELATIVE_WORLD",
+            "SpawnType": "SPAWN_RATE",
+            "Textures": [
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Trail_04.dds",
+                    "Type": "MASK"
+                },
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_06.dds",
+                    "Type": "NOISE"
+                },
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_01.dds",
+                    "Type": "SECOND"
+                }
+            ],
+            "Time": 5.0,
+            "Transform": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Type": "EFFECT"
+        }
+    ],
+    "Name": "SwordThrowTrail",
+    "ToolLoopTime": 2.0
+}

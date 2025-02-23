@@ -34,7 +34,7 @@ HRESULT CEffect_Trail::Initialize(void* _pArg)
     m_vAddPoint = pDesc->vAddPoint;
     m_vColor = pDesc->vColor;
     m_fAddTime = pDesc->fAddTime;
-    m_fDeleteTime = pDesc->fDeleteTime;
+    //m_fDeleteTime = pDesc->fDeleteTime;
 
     return S_OK;
 }
@@ -63,24 +63,24 @@ void CEffect_Trail::Update(_float _fTimeDelta)
 
         if (m_fAddTime <= m_fAccAddTime)
         {
-            m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], XMVectorSetW(XMLoadFloat3(&m_vAddPoint), 1.f));
+            m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], XMVectorSetW(XMLoadFloat3(&m_vAddPoint), 1.f), 0.25f);
 
             m_fAccAddTime = 0.f;
         }
     }
     
     // 마지막 정점을 삭제합니다.
-    if (m_isDeleteUpdate)
-    {
-        m_fAccDeleteTime += _fTimeDelta;
-
-        if (m_fDeleteTime <= m_fAccDeleteTime)
-        {
-            m_pBufferCom->Delete_Point();
-
-            m_fAccDeleteTime = 0.f;
-        }
-    }
+    //if (m_isDeleteUpdate)
+    //{
+    //    m_fAccDeleteTime += _fTimeDelta;
+    //
+    //    if (m_fDeleteTime <= m_fAccDeleteTime)
+    //    {
+    //        m_pBufferCom->Delete_Point();
+    //
+    //        m_fAccDeleteTime = 0.f;
+    //    }
+    //}
     
     m_fDeleteAllDelay -= _fTimeDelta;
 
@@ -115,12 +115,12 @@ HRESULT CEffect_Trail::Render()
 
 void CEffect_Trail::Add_Point(_fvector _vPosition)
 {    
-    m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], _vPosition);
+    m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], _vPosition, 0.25f);
 }
 
 void CEffect_Trail::Add_Point()
 {
-    m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], XMVectorSetW(XMLoadFloat3(&m_vAddPoint), 1.f));
+    m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], XMVectorSetW(XMLoadFloat3(&m_vAddPoint), 1.f), 0.25f);
 }
 
 void CEffect_Trail::Delete_Effect()
