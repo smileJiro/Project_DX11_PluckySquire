@@ -689,34 +689,39 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
         if (false == static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
             break;
 
-        /* 1. Blocker은 항상 AABB임을 가정. */
-
-        /* 2. 나의 Collider 중점 기준, AABB에 가장 가까운 점을 찾는다. */
-        _bool isResult = false;
-        _float fEpsilon = 0.01f;
-        _float2 vContactVector = {};
-        isResult = static_cast<CCollider_Circle*>(_pMyCollider)->Compute_NearestPoint_AABB(static_cast<CCollider_AABB*>(_pOtherCollider), nullptr, &vContactVector);
-        if (true == isResult)
+        if (true == Is_PlatformerMode())
         {
-            /* 3. 충돌지점 벡터와 중력벡터를 내적하여 그 결과를 기반으로 Floor 인지 체크. */
-            _float3 vGravityDir = m_pGravityCom->Get_GravityDirection();
-            _float2 vGravityDirection = _float2(vGravityDir.x, vGravityDir.y);
-            _float fGdotC = XMVectorGetX(XMVector2Dot(XMLoadFloat2(&vGravityDirection), XMVector2Normalize(XMLoadFloat2(&vContactVector))));
-            if (1.0f - fEpsilon <= fGdotC)
-            {
-                /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
-                m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
-                //Set_State(STATE::IDLE);
+            /* 1. Blocker은 항상 AABB임을 가정. */
 
-            }
-            else if(-1.0f + fEpsilon >= fGdotC)
+                   /* 2. 나의 Collider 중점 기준, AABB에 가장 가까운 점을 찾는다. */
+            _bool isResult = false;
+            _float fEpsilon = 0.01f;
+            _float2 vContactVector = {};
+            isResult = static_cast<CCollider_Circle*>(_pMyCollider)->Compute_NearestPoint_AABB(static_cast<CCollider_AABB*>(_pOtherCollider), nullptr, &vContactVector);
+            if (true == isResult)
             {
-                m_pGravityCom->Set_GravityAcc(0.0f);
-                if (STATE::ROLL == Get_CurrentStateID())
-                    break;
-                Set_State(STATE::JUMP_DOWN);
+                /* 3. 충돌지점 벡터와 중력벡터를 내적하여 그 결과를 기반으로 Floor 인지 체크. */
+                _float3 vGravityDir = m_pGravityCom->Get_GravityDirection();
+                _float2 vGravityDirection = _float2(vGravityDir.x, vGravityDir.y);
+                _float fGdotC = XMVectorGetX(XMVector2Dot(XMLoadFloat2(&vGravityDirection), XMVector2Normalize(XMLoadFloat2(&vContactVector))));
+                if (1.0f - fEpsilon <= fGdotC)
+                {
+                    /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
+                    m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+                    //Set_State(STATE::IDLE);
+
+                }
+                else if (-1.0f + fEpsilon >= fGdotC)
+                {
+                    m_pGravityCom->Set_GravityAcc(0.0f);
+                    if (STATE::ROLL == Get_CurrentStateID())
+                        break;
+                    Set_State(STATE::JUMP_DOWN);
+                    m_f2DUpForce = 0.f;
+                }
             }
         }
+       
         
     }
         break;

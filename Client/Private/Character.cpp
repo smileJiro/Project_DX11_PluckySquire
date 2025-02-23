@@ -28,6 +28,8 @@ HRESULT CCharacter::Initialize(void* _pArg)
 
 void CCharacter::Priority_Update(_float _fTimeDelta)
 {
+
+    __super::Priority_Update(_fTimeDelta);
     COORDINATE eCoord = Get_CurCoord();
     if (COORDINATE_2D == eCoord)
     {
@@ -76,7 +78,6 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
         }
         //경사가 너ㅏ무 급하면 무시
     }
-    __super::Priority_Update(_fTimeDelta);
 }
 
 void CCharacter::Update(_float _fTimeDelta)
