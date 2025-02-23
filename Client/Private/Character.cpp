@@ -497,9 +497,18 @@ void CCharacter::Move(_fvector _vForce, _float _fTimeDelta)
         _vector vVeclocity = _vForce /** m_tStat[COORDINATE_3D].fMoveSpeed*/  /** fDot*/;
 
         vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
-		if (Is_OnGround())
-            vVeclocity = StepAssist(vVeclocity,_fTimeDelta);
-        pDynamicActor->Set_LinearVelocity(vVeclocity);
+
+        if (pDynamicActor->Is_Dynamic())
+        {
+            if (Is_OnGround())
+                vVeclocity = StepAssist(vVeclocity, _fTimeDelta);
+            pDynamicActor->Set_LinearVelocity(vVeclocity);
+        }
+        else
+        {
+            m_pControllerTransform->Go_Direction(_vForce,_fTimeDelta);
+        }
+
 
     }
     else
