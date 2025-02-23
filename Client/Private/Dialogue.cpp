@@ -57,17 +57,13 @@ HRESULT CDialog::Initialize(void* _pArg)
 
 void CDialog::Update(_float _fTimeDelta)
 {
-
-
-
-	if (KEY_DOWN(KEY::B))
+	// 다이얼로그가 활성화된 경우에만 B 키 입력 처리
+	if (Uimgr->Get_DisplayDialogue() && KEY_DOWN(KEY::B))
 	{
-		// 이건 각 스테이지 마다 RTSIZE가 변경될 수 있다. 가변적으로 사용하여야한다.
 		_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 		NextDialogue(vRTSize); // 다음 다이얼로그의 위치를 변경한다.
-
-		//CTrigger_Manager::GetInstance()->On_End(Uimgr->Get_DialogId());
 	}
+	
 
 
 	// 다이얼로그 변경 시 이용 스위치이나 뭘듯 해야할듯
@@ -631,6 +627,9 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 // 다음 다이얼로그에서 Json->Location에 따른 위치 변경
 void CDialog::NextDialogue(_float2 _RTSize)
 {
+	if (!Uimgr->Get_DisplayDialogue())
+		return;
+
 	_tchar _strDialogue[MAX_PATH] = {};
 	wsprintf(_strDialogue, Uimgr->Get_DialogId());
 
