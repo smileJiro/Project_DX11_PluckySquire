@@ -79,8 +79,6 @@ public:
 	virtual HRESULT	Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag);
 	virtual HRESULT	Render() override;
 	virtual HRESULT Render_Shadow() { return S_OK; }
-	virtual HRESULT			Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag);
-	virtual HRESULT			Render() override;
 	virtual HRESULT			Render_PlayerDepth();
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
