@@ -81,41 +81,6 @@
   },
   {
     "Arm_Data": {
-      "Arm_Length": 14.762917518615723,
-      "Arm_Length_RatioType": 0,
-      "Arm_MoveTime_AxisRight": [
-        0.0,
-        0.0
-      ],
-      "Arm_MoveTime_AxisY": [
-        1.0,
-        0.0
-      ],
-      "Arm_RotationPerSec_AxisRight": [
-        0.0,
-        0.0
-      ],
-      "Arm_RotationPerSec_AxisY": [
-        0.0,
-        0.0
-      ],
-      "Arm_Time": [
-        1.0,
-        0.0
-      ],
-      "Desire_Arm": [
-        -0.424554,
-        0.696816,
-        -0.578101
-      ]
-    },
-    "Arm_Tag": "Chapter2_3",
-    "Sub_Data": {
-      "Use_SubData": false
-    }
-  },
-  {
-    "Arm_Data": {
       "Arm_Length": 13.199995040893555,
       "Arm_Length_RatioType": 0,
       "Arm_MoveTime_AxisRight": [
