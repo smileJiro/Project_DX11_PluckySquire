@@ -37,9 +37,6 @@
     <Filter Include="02. GameObject\Background">
       <UniqueIdentifier>{60781b0e-2411-4e7c-bd8d-07e6a0d9e431}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\Reference">
-      <UniqueIdentifier>{cd8609bc-3c16-4028-922f-3f2ae35dcd2a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\Skybox">
       <UniqueIdentifier>{37b46d4a-b50f-45dc-aa04-c719262e0d5d}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,9 @@
     </Filter>
     <Filter Include="02. GameObject\MagicHand">
       <UniqueIdentifier>{75aed7e2-10c4-4354-ae06-e4f1f1c5493e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\Etc">
+      <UniqueIdentifier>{1d1c0e3d-5ea4-4f4f-a289-ac95b8b4d61e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,9 +99,6 @@
     <ClInclude Include="..\public\Object_Background.h">
       <Filter>02. GameObject\Background</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Effect_Reference.h">
-      <Filter>02. GameObject\Reference</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\SkyBox.h">
       <Filter>02. GameObject\Skybox</Filter>
     </ClInclude>
@@ -134,6 +131,12 @@
     </ClInclude>
     <ClInclude Include="..\public\Magic_Hand.h">
       <Filter>02. GameObject\MagicHand</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_Reference.h">
+      <Filter>02. GameObject\Etc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TestTrail.h">
+      <Filter>02. GameObject\Etc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -174,9 +177,6 @@
     <ClCompile Include="..\private\Object_Background.cpp">
       <Filter>02. GameObject\Background</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Effect_Reference.cpp">
-      <Filter>02. GameObject\Reference</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\SkyBox.cpp">
       <Filter>02. GameObject\Skybox</Filter>
     </ClCompile>
@@ -210,6 +210,12 @@
     <ClCompile Include="..\private\Magic_Hand_Body.cpp">
       <Filter>02. GameObject\MagicHand</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Effect_Reference.cpp">
+      <Filter>02. GameObject\Etc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TestTrail.cpp">
+      <Filter>02. GameObject\Etc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
@@ -237,6 +243,9 @@
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_CS_Mesh.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Trail.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

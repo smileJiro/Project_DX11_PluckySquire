@@ -93,47 +93,47 @@ HRESULT CBulb::Render()
 
 	if (COORDINATE_3D == Get_CurCoord())
 	{
-		{
-			CMesh* pMesh = m_p3DModelCom->Get_Mesh(0);
+		//{
+		//	CMesh* pMesh = m_p3DModelCom->Get_Mesh(0);
 
-			if (FAILED(m_p3DModelCom->Bind_Material(m_p3DShaderCom, "g_AlbedoTexture", 0, aiTextureType_DIFFUSE, 0)))
-				return E_FAIL;
-			if (FAILED(m_p3DModelCom->Bind_Material(m_p3DShaderCom, "g_NormalTexture", 0, aiTextureType_NORMALS, 0)))
-				return E_FAIL;
-			/*_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
-			m_p3DShaderCom->Bind_RawValue("g_vDefaultDiffuseColor", &vColor, sizeof(_float4));*/
-			
-			if (FAILED(m_p3DShaderCom->Begin(8)))
-				return E_FAIL;
-		
-			if (FAILED(pMesh->Bind_BufferDesc()))
-				return E_FAIL;
+		//	if (FAILED(m_p3DModelCom->Bind_Material(m_p3DShaderCom, "g_AlbedoTexture", 0, aiTextureType_DIFFUSE, 0)))
+		//		return E_FAIL;
+		//	if (FAILED(m_p3DModelCom->Bind_Material(m_p3DShaderCom, "g_NormalTexture", 0, aiTextureType_NORMALS, 0)))
+		//		return E_FAIL;
+		//	/*_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
+		//	m_p3DShaderCom->Bind_RawValue("g_vDefaultDiffuseColor", &vColor, sizeof(_float4));*/
+		//	
+		//	if (FAILED(m_p3DShaderCom->Begin(8)))
+		//		return E_FAIL;
+		//
+		//	if (FAILED(pMesh->Bind_BufferDesc()))
+		//		return E_FAIL;
 
-			if (FAILED(pMesh->Render()))
-				return E_FAIL;
+		//	if (FAILED(pMesh->Render()))
+		//		return E_FAIL;
 
-		}
+		//}
 
-		{
-			CMesh* pMesh = m_p3DModelCom->Get_Mesh(1);
+		//{
+		//	CMesh* pMesh = m_p3DModelCom->Get_Mesh(1);
 
-			m_p3DShaderCom->Bind_ConstBuffer("MultiFresnels", m_pFresnelBuffer);
-			m_p3DShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4));
-			
-			
-			if (FAILED(m_p3DShaderCom->Begin((_uint)PASS_VTXMESH::FRESNEL)))
-				return E_FAIL;
+		//	m_p3DShaderCom->Bind_ConstBuffer("MultiFresnels", m_pFresnelBuffer);
+		//	m_p3DShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4));
+		//	
+		//	
+		//	if (FAILED(m_p3DShaderCom->Begin((_uint)PASS_VTXMESH::FRESNEL)))
+		//		return E_FAIL;
 
-			if (FAILED(pMesh->Bind_BufferDesc()))
-				return E_FAIL;
+		//	if (FAILED(pMesh->Bind_BufferDesc()))
+		//		return E_FAIL;
 
-			if (FAILED(pMesh->Render()))
-				return E_FAIL;
+		//	if (FAILED(pMesh->Render()))
+		//		return E_FAIL;
 	
-		}		
+		//}		
 
 
-		//m_p3DModelCom->Render(m_p3DShaderCom, (_uint)PASS_VTXMESH::DEFAULT);
+		m_p3DModelCom->Render(m_p3DShaderCom, (_uint)PASS_VTXMESH::DEFAULT);
 	}
 
 	else if (COORDINATE_2D == Get_CurCoord())
@@ -221,7 +221,11 @@ void CBulb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColl
 				Event_Get_Bulb(COORDINATE_2D);
 
 				//Effect
-				//CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("health_pickup_small"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
+				_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
+				matFX.r[0] = XMVector3Normalize(matFX.r[0]);
+				matFX.r[1] = XMVector3Normalize(matFX.r[1]);
+				matFX.r[2] = XMVector3Normalize(matFX.r[2]);
+				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("health_pickup_small"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
 				
 				Event_DeleteObject(this);
 			}

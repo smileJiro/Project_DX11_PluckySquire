@@ -23,6 +23,8 @@
 #include "Sneak_AttackState.h"
 #include "SideScroll_PatrolState.h"
 #include "SideScroll_HitState.h"
+#include "Neutral_IdleState.h"
+#include "Neutral_PatrolState.h"
 
 CFSM::CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
@@ -391,6 +393,53 @@ HRESULT CFSM::Add_Chase_NoneAttackState()
 	pState->Set_Owner(m_pOwner);
 	pState->Set_FSM(this);
 	m_States.emplace((_uint)MONSTER_STATE::CHASE, pState);
+
+	pState = CHitState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::HIT, pState);
+
+	pState = CDeadState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::DEAD, pState);
+
+	return S_OK;
+}
+
+HRESULT CFSM::Add_Neutral_State()
+{
+	if (nullptr == m_pOwner)
+		return E_FAIL;
+
+	CState* pState = nullptr;
+	CState::STATEDESC Desc;
+	Desc.fAlertRange = m_fAlertRange;
+	Desc.fChaseRange = m_fChaseRange;
+	Desc.fAttackRange = m_fAttackRange;
+	Desc.fAlert2DRange = m_fAlert2DRange;
+	Desc.fChase2DRange = m_fChase2DRange;
+	Desc.fAttack2DRange = m_fAttack2DRange;
+	Desc.iCurLevel = m_iCurLevel;
+
+	pState = CNeutral_IdleState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::IDLE, pState);
+
+	pState = CNeutral_PatrolState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::PATROL, pState);
+	Set_PatrolBound();
 
 	pState = CHitState::Create(&Desc);
 	if (nullptr == pState)

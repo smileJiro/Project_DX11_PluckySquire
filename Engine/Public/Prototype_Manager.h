@@ -7,6 +7,7 @@
 #include "VIBuffer_Terrain.h"
 #include "VIBuffer_Cube.h"
 #include "VIBuffer_Point_Particle.h"
+#include "VIBuffer_Trail.h"
 #include "Texture.h"
 #include "Ray.h"
 #include "3DModel.h"

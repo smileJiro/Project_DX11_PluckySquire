@@ -190,7 +190,6 @@ VS_OUT VS_SRV_MAIN(uint iVertexID : SV_VertexID)
     
     Out.vVelocity = normalize(mul(float4(Particles[iVertexID].vVelocity, 0.f), g_WorldMatrix)) * fScaleVelocity;
     Out.fRandom = Particles[iVertexID].fRandom;
-    
     return Out;
 }
 
@@ -223,6 +222,8 @@ VS_ROUT VS_SRV_RMAIN(uint iVertexID : SV_VertexID)
     //+ g_fAbsolute * Particles[iVertexID].InstancingMatrix._21_22_23_24;
     Out.vUp = mul(Particles[iVertexID].InstancingMatrix._21_22_23_24, g_WorldMatrix);
     Out.fRandom = Particles[iVertexID].fRandom;
+    
+
 
     return Out;
 }
@@ -291,7 +292,7 @@ VS_ROUT VS_RMAIN(VS_IN In)
     Out.vVelocity = In.vVelocity;
     Out.vUp = mul((In.InstancingMatrix._21_22_23_24), g_WorldMatrix);
     Out.fRandom = In.fRandom;
-
+    
     //VS_ROUT Out = (VS_ROUT) 0;
   
     //Out.vPosition = float4(In.vPosition, 1.f);
@@ -312,7 +313,6 @@ VS_ROUT VS_RMAIN(VS_IN In)
 void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
 {
     GS_OUT Out[4]; /* Output으로 내보낼 타입의 구조체 4개를 선언. 즉, 4개의 정점을 구성하고, 6개의 OutStream으로 내보낸다. */
-    
     /* Camera World Position을 기반으로 현재 Shader에 들어온 Vertex를 중점으로하는 4각형을 찍을 것이다. */
     /* 주의 : 사각형 기준으로 정점을 찍지만, 카메라가 바라보는 방향기준으로 시계방향으로 정점을 찍어야한다. */
     //vector vLookDir = g_vCamPosition - In[0].vPosition;
@@ -476,6 +476,7 @@ void GS_NEWBILLBOARD(point GS_RIN In[1], inout TriangleStream<GS_OUT> OutStream)
     OutStream.Append(Out[2]);
     OutStream.Append(Out[3]);
     OutStream.RestartStrip();
+
 }
 
 [maxvertexcount(6)]

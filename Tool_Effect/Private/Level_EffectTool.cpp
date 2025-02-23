@@ -176,6 +176,11 @@ HRESULT CLevel_EffectTool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 		LEVEL_TOOL, _strLayerTag, &Desc)))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL, TEXT("Prototype_GameObject_TestTrail"),
+		LEVEL_TOOL, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 

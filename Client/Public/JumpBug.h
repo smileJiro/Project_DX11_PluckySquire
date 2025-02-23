@@ -16,6 +16,29 @@ public:
 		LAST,
 	};
 
+	enum Animation2D
+	{
+		DIE_DOWN,
+		DIE_RIGHT,
+		DIE_UP,
+		HIT_DOWN,
+		HIT_RIGHT,
+		HIT_UP,
+		IDLE_DOWN,
+		IDLE_RIGHT,
+		IDLE_UP,
+		JUMP_FALL_DOWN,
+		JUMP_FALL_RIGHT,
+		JUMP_FALL_UP,
+		JUMP_LAND_DOWN,
+		JUMP_LAND_RIGHT,
+		JUMP_LAND_UP,
+		JUMP_RISE_DOWN,
+		JUMP_RISE_RIGHT,
+		JUMP_RISE_UP,
+		ANIM2D_LAST,
+	};
+
 private:
 	CJumpBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CJumpBug(const CJumpBug& _Prototype);
@@ -32,6 +55,8 @@ public:
 public:
 	virtual void Change_Animation() override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
+
+	virtual void Turn_Animation(_bool _isCW) override;
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
