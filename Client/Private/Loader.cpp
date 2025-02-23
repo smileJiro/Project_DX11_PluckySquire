@@ -225,7 +225,12 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
         CGravity::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_PlayerAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Player2DAnimEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Static/Player/player2danimevts.animevt"))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("2D 콜라이더를 로딩중입니다."));
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
@@ -337,9 +342,14 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_STATIC,
+        TEXT("../Bin/Resources/Models/2DAnim/Static/"))))
+        return E_FAIL;
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_STATIC,
+        TEXT("../Bin/Resources/Models/3DPlayerPart/"), matPretransform)))
+        return E_FAIL;
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
-
 
 
     //if (FAILED(Load_Models_FromJson(LEVEL_STATIC, MAP_3D_DEFAULT_PATH, L"Room_Enviroment.json", matPretransform)))
@@ -461,12 +471,12 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerItem"),
         CPlayerItem::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
-    /* For. Prototype_GameObject_Bulb */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Bulb"),
+ if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Bulb"),
         CBulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* For. Prototype_GameObject_Bulb */
+   
     
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ParentSettingPanel"), CSettingPanel::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -684,12 +694,7 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_FSM_Boss"),
         CFSM_Boss::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_PlayerAnimEvent"),
-        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_Player2DAnimEvent"),
-        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Player/player2danimevts.animevt"))))
-        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_DetectionField"),
         CDetectionField::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -951,9 +956,7 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         TEXT("../Bin/Resources/Models/3DAnim/"), matPretransform)))
         return E_FAIL;
     
-    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CHAPTER_2,
-        TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
-        return E_FAIL;
+ 
 
 
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
@@ -1150,12 +1153,7 @@ HRESULT CLoader::Loading_Level_Chapter_4()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_FSM_Boss"),
         CFSM_Boss::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_PlayerAnimEvent"),
-        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_Player2DAnimEvent"),
-        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Player/player2danimevts.animevt"))))
-        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_Component_DetectionField"),
         CDetectionField::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -1324,9 +1322,6 @@ HRESULT CLoader::Loading_Level_Chapter_4()
         TEXT("../Bin/Resources/Models/3DAnim/"), matPretransform)))
         return E_FAIL;
 
-    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CHAPTER_4,
-        TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
-        return E_FAIL;
 
 
 
@@ -1450,12 +1445,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_FSM_Boss"),
         CFSM_Boss::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_PlayerAnimEvent"),
-        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_Player2DAnimEvent"),
-        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Player/player2danimevts.animevt"))))
-        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_DetectionField"),
         CDetectionField::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -1513,9 +1503,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         TEXT("../Bin/Resources/Models/3DAnim/"), matPretransform)))
         return E_FAIL;
 
-    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
-        TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
-        return E_FAIL;
+
 
 
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CAMERA_TOOL,
@@ -1627,12 +1615,7 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_FSM_Boss"),
         CFSM_Boss::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_PlayerAnimEvent"),
-        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/aaa.animevt"))))
-        return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Player2DAnimEvent"),
-        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Player/player2danimevts.animevt"))))
-        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_DetectionField"),
         CDetectionField::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -1834,11 +1817,6 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CHAPTER_TEST,
         TEXT("../Bin/Resources/Models/3DAnim/"), matPretransform)))
         return E_FAIL;
-
-    if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CHAPTER_TEST,
-        TEXT("../Bin/Resources/Models/3DObject/"), matPretransform)))
-        return E_FAIL;
-
 
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_TEST,
         TEXT("../Bin/Resources/Models/2DAnim/Chapter2/"))))

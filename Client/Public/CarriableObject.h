@@ -66,8 +66,9 @@ protected:
 
 	//THROW
 	//공중에 떠 있기 위한 가상의 Socket 
-	_float4x4 m_vThrowSocketOffset2D;
-
+	_float m_fFloorDistance = 0.f;
+	_vector m_vThrowForce2D = { 0.f,0.f,0.f };
+	_float m_fDownForce = 0.f;
 	//실험용
 	_float m_fRestitution = 0.5f;
 

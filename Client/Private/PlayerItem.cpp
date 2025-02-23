@@ -126,7 +126,7 @@ HRESULT CPlayerItem::Ready_Components(PLAYERITEM_DESC* _pArg)
 		return E_FAIL;
 
 	// Model
-	if (FAILED(Add_Component(_pArg->iCurLevelID, m_szModelTag,
+	if (FAILED(Add_Component(LEVEL_STATIC, m_szModelTag,
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
