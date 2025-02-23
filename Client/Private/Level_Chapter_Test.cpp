@@ -279,10 +279,10 @@ void CLevel_Chapter_Test::Update(_float _fTimeDelta)
 		int a = 0;
 	}
 
-	if (KEY_DOWN(KEY::T)) {
-		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Trigger.json"));
-		CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
-	}
+	//if (KEY_DOWN(KEY::T)) {
+	//	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Trigger.json"));
+	//	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
+	//}
 
 }
 

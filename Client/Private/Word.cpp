@@ -256,6 +256,7 @@ CGameObject* CWord::Clone(void* _pArg)
 
 void CWord::Free()
 {
+	Safe_Release(m_pWordTexture);
 	Safe_Release(m_pVIBufferCom);
 	__super::Free();
 }
