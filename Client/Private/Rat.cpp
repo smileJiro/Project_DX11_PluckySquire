@@ -398,15 +398,6 @@ HRESULT CRat::Ready_PartObjects()
     return S_OK;
 }
 
-void CRat::Active_OnEnable()
-{
-    m_pFSM->Set_PatrolBound();
-}
-
-void CRat::Active_OnDisable()
-{
-}
-
 CRat* CRat::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
     CRat* pInstance = new CRat(_pDevice, _pContext);
