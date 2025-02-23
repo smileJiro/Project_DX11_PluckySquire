@@ -46,10 +46,6 @@ HRESULT CCameraArm::Initialize(void* pArg)
 
     Set_WorldMatrix();
 
-#ifdef _DEBUG
-    Set_PrimitiveBatch();
-#endif // _DEBUG
-
   /*  Turn_ArmX(m_vRotation.x);
     Turn_ArmY(m_vRotation.y);*/
 
@@ -58,10 +54,6 @@ HRESULT CCameraArm::Initialize(void* pArg)
 
 HRESULT CCameraArm::Initialize_Clone()
 {
-#ifdef _DEBUG
-    Set_PrimitiveBatch();
-#endif // _DEBUG
-
     return S_OK;
 }
 
@@ -71,71 +63,11 @@ void CCameraArm::Priority_Update(_float fTimeDelta)
 
 void CCameraArm::Update(_float fTimeDelta)
 {
-    //Set_CameraPos(fTimeDelta);
 }
 
 void CCameraArm::Late_Update(_float fTimeDelta)
 {
 }
-
-#ifdef _DEBUG
-void CCameraArm::Render_Arm()
-{
-  //  m_pEffect->SetWorld(XMMatrixIdentity());
-  //  m_pEffect->SetView(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW));
-  //  m_pEffect->SetProjection(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ));
-
-  //  m_pEffect->Apply(m_pContext);
-
-  //  m_pContext->OMSetDepthStencilState(m_pDepthStencilState, 0);
-  //  m_pContext->IASetInputLayout(m_pInputLayout);
-
-  //  m_pBatch->Begin();
-
-  //  _vector vTargetPos;
-
-  ////  memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
-  //  vTargetPos = vTargetPos; // +XMLoadFloat3(&m_vPosOffset);
-
-  //  _vector vCameraPos = vTargetPos + (m_fLength * XMLoadFloat3(&m_vArm));
-  //  _vector vColor = {};
-
-  //  m_pBatch->DrawLine(
-  //      VertexPositionColor(vTargetPos, vColor),  // 시작점, 빨간색
-  //      VertexPositionColor(vCameraPos, vColor)     // 끝점, 빨간색
-  //  );
-
-  //  m_pBatch->End();
-}
-
-HRESULT CCameraArm::Set_PrimitiveBatch()
-{
-    m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
-    m_pEffect = new BasicEffect(m_pDevice);
-
-    // DepthStencilState 생성
-    D3D11_DEPTH_STENCIL_DESC depthDesc;
-    ZeroMemory(&depthDesc, sizeof(depthDesc));
-    depthDesc.DepthEnable = TRUE;
-    depthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-    depthDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
-    if (FAILED(m_pDevice->CreateDepthStencilState(&depthDesc, &m_pDepthStencilState)))
-        return E_FAIL;
-
-    const void* pShaderByteCode = nullptr;
-    size_t iShaderByteCodeLength = 0;
-
-    /* m_pEffect 쉐이더의 옵션 자체를 Color 타입으로 변경해주어야 정상적인 동작을 한다. (기본 값은 Texture )*/
-    m_pEffect->SetVertexColorEnabled(true);
-    m_pEffect->GetVertexShaderBytecode(&pShaderByteCode, &iShaderByteCodeLength);
-
-    if (FAILED(m_pDevice->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, pShaderByteCode, iShaderByteCodeLength, &m_pInputLayout)))
-        return E_FAIL;
-
-    return S_OK;
-}
-#endif
 
 void CCameraArm::Set_WorldMatrix()
 {
@@ -179,8 +111,6 @@ void CCameraArm::Set_NextArmData(ARM_DATA* _pData, _int _iTriggerID)
     m_iMovementFlags = RESET_FLAG;
 
     m_pNextArmData = _pData;
-    m_fStartLength = m_fLength;
-    m_vStartArm = m_vArm;
 
     for (auto& PreArm : m_PreArms) {
         if (_iTriggerID == PreArm.first.iTriggerID) {
@@ -211,8 +141,6 @@ void CCameraArm::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
             // Trigger ID와 Exit 조건 일치 확인
             if (iterator->first.iTriggerID == _iTriggerID) {
 
-                m_vStartArm = m_vArm;
-                m_fStartLength = m_fLength;
                 m_iCurTriggerID = _iTriggerID;
                 iterator->second = true;        // Return 중이란 의미
                 return;
@@ -233,19 +161,6 @@ void CCameraArm::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
     }
 }
 
-//_vector CCameraArm::Calculate_CameraPos(_float fTimeDelta)
-//{
-//    _vector vTargetPos;
-//
-//    memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
-//    vTargetPos = vTargetPos; // +XMLoadFloat3(&m_vPosOffset);
-//
-//    _vector vCameraPos = vTargetPos + (m_fLength * XMLoadFloat3(&m_vArm));
-//
-//    return vCameraPos;
-//   // m_pGameInstance->Set_CameraPos(vCameraPos, vTargetPos);
-//}
-
 void CCameraArm::Set_Rotation(_vector _vRotation)
 {
     XMStoreFloat3(&m_vRotation, _vRotation);
@@ -259,7 +174,7 @@ void CCameraArm::Set_Rotation(_vector _vRotation)
 
 void CCameraArm::Set_ArmVector(_vector _vArm)
 {
-    XMStoreFloat3(&m_vArm, _vArm);
+    XMStoreFloat3(&m_vArm, XMVector3Normalize(_vArm));
 
     _vector vLook = XMLoadFloat3(&m_vArm);
     _vector vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
@@ -268,12 +183,6 @@ void CCameraArm::Set_ArmVector(_vector _vArm)
     m_pTransform->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight));
     m_pTransform->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
     m_pTransform->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
-}
-
-void CCameraArm::Set_StartInfo(_vector _vArm, _float _fLength)
-{
-    XMStoreFloat3(&m_vStartArm, _vArm);
-    m_fStartLength = _fLength;
 }
 
 void CCameraArm::Turn_ArmX(_float fAngle)
@@ -346,18 +255,11 @@ _bool CCameraArm::Check_IsNear_ToDesireArm(_float _fTimeDelta)
 
         return true;
     }
-    //else if(XMConvertToDegrees(fAngle) < 10.f) {
-
-    //    if()
-
-    //    m_fRotationValue = m_pGameInstance->Lerp(m_fRotationValue, 0.1f, 0.1f);
-  
-    //    return false;
-    //}
 
     return false;
 }
 
+#pragma region 폐기
 _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
 {
     _bool isNear = Check_IsNear_ToDesireArm(_fTimeDelta);
@@ -372,7 +274,7 @@ _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
 
     // Y축 회전
     if (!(m_iMovementFlags & DONE_Y_ROTATE)) { // 안 끝났을 때
-       
+
         m_pNextArmData->fMoveTimeAxisY.y += _fTimeDelta;
         _float fRatio = m_pNextArmData->fMoveTimeAxisY.y / m_pNextArmData->fMoveTimeAxisY.x;
 
@@ -415,7 +317,7 @@ _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
             XMStoreFloat3(&m_vArm, vLook);
         }
     }
-    
+
     // Length 이동
     if (!(m_iMovementFlags & DONE_LENGTH_MOVE)) {
 
@@ -426,7 +328,7 @@ _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
             m_iMovementFlags |= DONE_LENGTH_MOVE;
         }
         else {
-            m_fLength = m_pGameInstance->Lerp(m_fStartLength, m_pNextArmData->fLength, fRatio);
+            m_fLength = m_pGameInstance->Lerp(m_fLength, m_pNextArmData->fLength, fRatio);
         }
     }
 
@@ -441,6 +343,7 @@ _bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
 
     return false;
 }
+#pragma endregion
 
 _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
 {
@@ -457,7 +360,7 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
             m_iMovementFlags |= DONE_LENGTH_MOVE;
             m_pNextArmData->fMoveTimeAxisY.y = 0.f;
             m_pNextArmData->fLengthTime.y = 0.f;
-            //if()
+      
             return true;
         }
     }
@@ -466,7 +369,7 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
     if (!(m_iMovementFlags & DONE_Y_ROTATE)) {
         _float fRatio = m_pGameInstance->Calculate_Ratio(&m_pNextArmData->fMoveTimeAxisY, _fTimeDelta, m_pNextArmData->iRotationRatioType);
 
-        if (fRatio >= 1.f) {
+        if (fRatio >= (1.f - EPSILON)) {
 
             m_vArm = m_pNextArmData->vDesireArm;
             m_pTransform->Set_Look(XMLoadFloat3(&m_vArm));
@@ -474,7 +377,15 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
             m_iMovementFlags |= DONE_Y_ROTATE;
         }
         else {
-            _vector vArm = XMVectorLerp(XMLoadFloat3(&m_vStartArm), XMLoadFloat3(&m_pNextArmData->vDesireArm), fRatio);
+
+            if (true == XMVector3Equal(XMLoadFloat3(&m_vArm), XMLoadFloat3(&m_pNextArmData->vDesireArm))) {
+                m_vArm = m_pNextArmData->vDesireArm;
+                m_pTransform->Set_Look(XMLoadFloat3(&m_vArm));
+                m_pNextArmData->fMoveTimeAxisY.y = 0.f;
+                m_iMovementFlags |= DONE_Y_ROTATE;
+            }
+
+            _vector vArm = XMVectorLerp(XMLoadFloat3(&m_vArm), XMLoadFloat3(&m_pNextArmData->vDesireArm), fRatio);
 
             XMStoreFloat3(&m_vArm, vArm);
             m_pTransform->Set_Look(vArm);
@@ -492,7 +403,14 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
             m_iMovementFlags |= DONE_LENGTH_MOVE;
         }
         else {
-            m_fLength = m_pGameInstance->Lerp(m_fStartLength, m_pNextArmData->fLength, fRatio);
+
+            if (abs(m_fLength - m_pNextArmData->fLength) < EPSILON) {
+                m_pNextArmData->fLengthTime.y = 0.f;
+                m_fLength = m_pNextArmData->fLength;
+                m_iMovementFlags |= DONE_LENGTH_MOVE;
+            }
+            
+            m_fLength = m_pGameInstance->Lerp(m_fLength, m_pNextArmData->fLength, fRatio);
         }
     }
 
@@ -500,7 +418,7 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
         m_iMovementFlags = RESET_FLAG;
         m_fRotationValue = 1.f;
         m_pNextArmData->fMoveTimeAxisY.y = 0.f;
-        m_pNextArmData->fMoveTimeAxisRight.y = 0.f;
+        m_pNextArmData->fLengthTime.y = 0.f;
 
         return true;
     }
@@ -566,7 +484,7 @@ _bool CCameraArm::Move_To_CustomArm(ARM_DATA* _pCustomData, _float _fTimeDelta)
             m_iMovementFlags |= DONE_LENGTH_MOVE;
         }
         else {
-            m_fLength = m_pGameInstance->Lerp(m_fStartLength, _pCustomData->fLength, fRatio);
+            m_fLength = m_pGameInstance->Lerp(m_fLength, _pCustomData->fLength, fRatio);
         }
     }
 
@@ -574,6 +492,7 @@ _bool CCameraArm::Move_To_CustomArm(ARM_DATA* _pCustomData, _float _fTimeDelta)
         m_iMovementFlags = RESET_FLAG;
         _pCustomData->fMoveTimeAxisY.y = 0.f;
         _pCustomData->fMoveTimeAxisRight.y = 0.f;
+        _pCustomData->fLengthTime.y = 0.f;
 
         return true;
     }
@@ -597,8 +516,8 @@ _bool CCameraArm::Move_To_PreArm(_float _fTimeDelta)
         return true;
     }
 
-    _vector vArm = XMVector3Normalize(XMVectorLerp(XMLoadFloat3(&m_vStartArm), XMLoadFloat3(&m_PreArms.back().first.vPreArm), fRatio));
-    m_fLength = m_pGameInstance->Lerp(m_fStartLength, m_PreArms.back().first.fPreLength, fRatio);
+    _vector vArm = XMVector3Normalize(XMVectorLerp(XMLoadFloat3(&m_vArm), XMLoadFloat3(&m_PreArms.back().first.vPreArm), fRatio));
+    m_fLength = m_pGameInstance->Lerp(m_fLength, m_PreArms.back().first.fPreLength, fRatio);
 
     XMStoreFloat3(&m_vArm, XMVector3Normalize(vArm));
     m_pTransform->Set_Look(vArm);
@@ -606,15 +525,20 @@ _bool CCameraArm::Move_To_PreArm(_float _fTimeDelta)
     return false;
 }
 
-_bool CCameraArm::Move_To_FreezeExitArm(_float _fRatio, _fvector _vFreezeExitArm)
+_bool CCameraArm::Move_To_FreezeExitArm(_float _fRatio, _fvector _vFreezeExitArm, _float _fFreezeExitLength)
 {
     if (_fRatio >= (1.f - EPSILON)) {
+        XMStoreFloat3(&m_vArm, XMVector3Normalize(_vFreezeExitArm));
+        m_pTransform->Set_Look(XMLoadFloat3(&m_vArm));
+       // m_fLength = _fFreezeExitLength;
         return true;
     }
 
     _vector vArm = XMVectorLerp(XMLoadFloat3(&m_vArm), _vFreezeExitArm, _fRatio);
-
-    XMStoreFloat3(&m_vArm, vArm);
+    // m_fLength = m_pGameInstance->Lerp(m_fLength, _fFreezeExitLength, _fRatio);
+    // Length는 아직 하지 말아 보기
+    XMStoreFloat3(&m_vArm, XMVector3Normalize(vArm));
+    m_pTransform->Set_Look(vArm);
 
     return false;
 }
@@ -651,13 +575,6 @@ void CCameraArm::Free()
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);
-#ifdef _DEBUG
-    Safe_Delete(m_pBatch);
-    Safe_Delete(m_pEffect);
-
-    Safe_Release(m_pInputLayout);
-    Safe_Release(m_pDepthStencilState);
-#endif
 
     __super::Free();
 }

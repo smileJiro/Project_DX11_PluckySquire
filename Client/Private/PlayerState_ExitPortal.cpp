@@ -14,6 +14,11 @@ void CPlayerState_ExitPortal::Update(_float _fTimeDelta)
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	if (COORDINATE_3D == eCoord)
 	{
+		if(false == m_bWaitFirstFrame)
+		{
+			m_bWaitFirstFrame = true;
+			return;
+		}
 		if (m_pOwner->Is_OnGround() && -0.f > m_pOwner->Get_UpForce())
 			m_pOwner->Set_State(CPlayer::IDLE);
 	}

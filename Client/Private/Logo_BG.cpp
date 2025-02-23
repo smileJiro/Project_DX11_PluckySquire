@@ -49,7 +49,7 @@ void CLogo_BG::Update(_float _fTimeDelta)
 
 		if (KEY_DOWN(KEY::DOWN))
 		{
-			if (3 > iIndex)
+			if (4 > iIndex)
 			{
 				iIndex += 1;
 				CUI_Manager::GetInstance()->Set_LogoIndex(iIndex);
@@ -108,6 +108,7 @@ HRESULT CLogo_BG::Render()
 		TEXT("Ã©ÅÍ 2 ¸ÞÀÎ ¸Ê")
 		,TEXT("Ã©ÅÍ 4 ¸ÞÀÎ ¸Ê")
 		,TEXT("Ã©ÅÍ 4 Å×½ºÆ® ¸Ê")
+		,TEXT("Ä«¸Þ¶ó Åø")
 		,TEXT("¹ÙÅÁÈ­¸éÀ¸·Î ³ª°¡±â")
 	};
 
@@ -243,8 +244,13 @@ void CLogo_BG::ProcesssByIndex(_int _iIndex)
 		Event_LevelChange(LEVEL_LOADING, LEVEL_CHAPTER_TEST);
 	}
 	break;
-
 	case 3:
+	{
+		Uimgr->Set_LogoChangeState(false);
+		Event_LevelChange(LEVEL_LOADING, LEVEL_CAMERA_TOOL);
+	}
+	break;
+	case 4:
 	{
 		DestroyWindow(g_hWnd);
 	}
