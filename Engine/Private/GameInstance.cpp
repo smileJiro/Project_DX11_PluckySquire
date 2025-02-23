@@ -578,6 +578,11 @@ HRESULT CGameInstance::Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D
 	return m_pNewRenderer->Bind_DofConstBuffer(_szConstBufferName, _pConstBuffer);
 }
 
+void CGameInstance::Set_PlayerHideColor(const _float3 _vHideColor, _bool _isUpdate)
+{
+	return m_pNewRenderer->Set_PlayerHideColor(_vHideColor, _isUpdate);
+}
+
 #ifdef _DEBUG
 
 HRESULT CGameInstance::Add_DebugComponent_New(CComponent* _pDebugCom)
@@ -1508,7 +1513,23 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pGraphic_Device);
 
+	HMODULE dxgiDebugModule = LoadLibraryEx(L"dxgidebug.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
+	if (dxgiDebugModule)
+	{
+		typedef HRESULT(WINAPI* DXGIGetDebugInterface)(REFIID, void**);
+		DXGIGetDebugInterface dxgiGetDebugInterface = (DXGIGetDebugInterface)GetProcAddress(dxgiDebugModule, "DXGIGetDebugInterface");
 
+		if (dxgiGetDebugInterface)
+		{
+			IDXGIDebug* pDXGIDebug = nullptr;
+			if (SUCCEEDED(dxgiGetDebugInterface(__uuidof(IDXGIDebug), (void**)&pDXGIDebug)))
+			{
+				pDXGIDebug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_DETAIL);
+				pDXGIDebug->Release();
+			}
+		}
+		FreeLibrary(dxgiDebugModule);
+	}
 
 	// Base Free 호출.
 	__super::Free();

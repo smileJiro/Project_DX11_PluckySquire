@@ -201,9 +201,14 @@ CWordGame_Generator* CWordGame_Generator::Create(ID3D11Device* _pDevice, ID3D11D
 
 void CWordGame_Generator::Free()
 {
+	for (auto& word : m_Words)
+		Safe_Release(word);
+
 	Safe_Release(m_pWordPrinter);
+
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
+
 	__super::Free();
 }

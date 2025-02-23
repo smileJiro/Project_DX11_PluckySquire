@@ -46,6 +46,14 @@ HRESULT CRenderGroup_Combine::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBu
             return E_FAIL;
         return E_FAIL;
     }
+    /* 물체 뒤에 숨은 플레이어를 표현하기 위해 추가된 렌더타겟 */
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_PlayerDepthTexture", TEXT("Target_PlayerDepth"))))
+    {
+        if (FAILED(m_pGameInstance->End_MRT()))
+            return E_FAIL;
+        return E_FAIL;
+    }
+    
     _pRTShader->Begin((_uint)PASS_DEFERRED::COMBINE);
 
     _pRTBuffer->Bind_BufferDesc();

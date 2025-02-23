@@ -466,6 +466,9 @@
     <Filter Include="02.GameObjects\Camera\CutScene\Tool">
       <UniqueIdentifier>{336b0df6-6e3c-41ca-affe-4c78e0786cf4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\PlayerDepth">
+      <UniqueIdentifier>{b263af58-9c83-43ee-860d-3b6690c15ff8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1102,6 +1105,21 @@
     <ClInclude Include="..\Public\Effect_Manager.h">
       <Filter>02.GameObjects\Effect\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Neutral_IdleState.h">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Neutral_PatrolState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Neutral_Patrol_JumpState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Shadow2D.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_PlayerDepth.h">
+      <Filter>94.RenderGroups%28Custom%29\PlayerDepth</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1726,6 +1744,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Manager.cpp">
       <Filter>02.GameObjects\Effect\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Neutral_IdleState.cpp">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Neutral_PatrolState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Neutral_Patrol_JumpState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Shadow2D.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_PlayerDepth.cpp">
+      <Filter>94.RenderGroups%28Custom%29\PlayerDepth</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

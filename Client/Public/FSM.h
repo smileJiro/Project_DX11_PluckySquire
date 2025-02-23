@@ -21,7 +21,7 @@ public:
 		_float fDelayTime;
 		_float fCoolTime;
 		CMonster* pOwner;
-		SNEAKWAYPOINTINDEX eWayIndex=SNEAKWAYPOINTINDEX::LAST;
+		SNEAKWAYPOINTINDEX eWayIndex = SNEAKWAYPOINTINDEX::LAST;
 		SIDESCROLL_PATROLBOUND eSideScroll_Bound = SIDESCROLL_PATROLBOUND::LAST;
 		_int iCurLevel;
 	}FSMDESC;
@@ -39,6 +39,14 @@ public:
 	void	Set_Sneak_AwarePos(_fvector _vPosition);
 	void Set_SideScroll_PatrolBound();
 
+	_bool Has_State(MONSTER_STATE _eState)
+	{
+		if (m_States.end() != m_States.find((_uint)_eState))
+			return true;
+		else
+			return false;
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -52,6 +60,7 @@ public:
 
 	HRESULT Add_SneakState();
 	HRESULT Add_Chase_NoneAttackState();
+	HRESULT Add_Neutral_State();
 
 protected:
 	CState* m_pCurState = { nullptr };

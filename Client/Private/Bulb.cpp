@@ -221,7 +221,11 @@ void CBulb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColl
 				Event_Get_Bulb(COORDINATE_2D);
 
 				//Effect
-				//CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("health_pickup_small"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
+				_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
+				matFX.r[0] = XMVector3Normalize(matFX.r[0]);
+				matFX.r[1] = XMVector3Normalize(matFX.r[1]);
+				matFX.r[2] = XMVector3Normalize(matFX.r[2]);
+				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("health_pickup_small"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
 				
 				Event_DeleteObject(this);
 			}

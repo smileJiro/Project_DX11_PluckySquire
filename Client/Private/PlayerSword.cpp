@@ -231,6 +231,12 @@ void CPlayerSword::Update(_float _fTimeDelta)
 
 void CPlayerSword::Late_Update(_float _fTimeDelta)
 {
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        if (false == m_isFrustumCulling)
+            m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, PR3D_PLAYERDEPTH, this);
+    }
+
     __super::Late_Update(_fTimeDelta);
 
     if (COORDINATE_3D == Get_CurCoord())
@@ -534,12 +540,9 @@ void CPlayerSword::Attack(CGameObject* _pVictim)
         return;
     CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == Get_CurCoord()) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
     CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.2f, 20, CCamera::SHAKE_XY);
-    Event_Hit(this, static_cast<CCharacter*>(_pVictim), m_pPlayer->Get_AttackDamg(),XMVectorZero());
-    CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
-    if (pCharacter)
-    {
-        Event_KnockBack(pCharacter, Get_LookDirection(), COORDINATE_2D == Get_CurCoord() ? m_f2DKnockBackPower : m_f3DKnockBackPower);
-    }
+    _vector vKnockBackForce = Get_LookDirection() * (COORDINATE_2D == Get_CurCoord() ? m_f2DKnockBackPower : m_f3DKnockBackPower);
+    Event_Hit(this, static_cast<CCharacter*>(_pVictim), m_pPlayer->Get_AttackDamg(), vKnockBackForce);
+
     m_AttckedObjects.insert(_pVictim);
 	Safe_AddRef(_pVictim);
 }

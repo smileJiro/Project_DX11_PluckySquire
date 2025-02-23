@@ -87,6 +87,15 @@ void CMonster::Late_Update(_float _fTimeDelta)
 HRESULT CMonster::Render()
 {
 
+#ifdef _DEBUG
+	if (COORDINATE_2D == Get_CurCoord())
+	{
+		for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
+		{
+			m_p2DColliderComs[i]->Render();
+		}
+	}
+#endif // _DEBUG
 
 	return S_OK;
 }
@@ -236,6 +245,10 @@ void CMonster::Attack()
 {
 }
 
+void CMonster::Monster_Move(_fvector _vDirection)
+{
+}
+
 HRESULT CMonster::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
 	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
@@ -376,9 +389,8 @@ void CMonster::Active_OnEnable()
 	// 1. PxActor 활성화 (활성화 시점에는 먼저 켜고)
 	CActorObject::Active_OnEnable();
 
-
+	m_pControllerTransform->Set_WorldMatrix(XMMatrixIdentity());
 	m_tStat.iHP = m_tStat.iMaxHP;
-	//m_p2DColliderComs[0]->Set_Active(true);
 
 	// 2. 몬스터 할거 하고
 //	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Player"), 0);

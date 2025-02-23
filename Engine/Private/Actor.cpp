@@ -291,7 +291,7 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 #endif // _DEBUG
 
 	/* 태웅 02.19 조명설치하려는데 잘안되서 */
-	ShapeFlags &= ~PxShapeFlag::eVISUALIZATION;
+	//ShapeFlags &= ~PxShapeFlag::eVISUALIZATION;
 
 	PxMaterial* pShapeMaterial = m_pGameInstance->Get_Material(_ShapeData.eMaterial);
 
