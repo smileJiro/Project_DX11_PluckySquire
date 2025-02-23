@@ -33,7 +33,11 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
     {
         if (m_bPlatformerMode)
         {
-
+            m_f2DUpForce -= 9.8f * _fTimeDelta * 180;
+            if (m_f2DUpForce <= 0)
+            {
+                m_f2DUpForce = 0;
+            }
         }
         else
         {
@@ -72,7 +76,7 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
         }
         //경사가 너ㅏ무 급하면 무시
     }
-    
+    __super::Priority_Update(_fTimeDelta);
 }
 
 void CCharacter::Update(_float _fTimeDelta)
