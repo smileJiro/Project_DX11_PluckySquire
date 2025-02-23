@@ -84,7 +84,6 @@ void CDialog::Update(_float _fTimeDelta)
 void CDialog::Late_Update(_float _fTimeDelta)
 {
 	//Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
-
 	if (true == Uimgr->Get_DisplayDialogue() && false == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 	{
 		Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
@@ -671,7 +670,15 @@ void CDialog::NextDialogue(_float2 _RTSize)
 					else
 					{
 						wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this), SECTION_2D_PLAYMAP_UI;
+
+						if (true == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
+						{
+							CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
+						}
+						else if (false == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
+						{
+							Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
+						}
 
 						//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 					}
@@ -688,11 +695,11 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			}
 			else if (false == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 			{
-				if (true == m_isAddSectionRender)
-				{
-					CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
-					m_isAddSectionRender = false;
-				}
+				//if (true == m_isAddSectionRender)
+				//{
+				//	CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+				//	m_isAddSectionRender = false;
+				//}
 
 				vPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY - g_iWinSizeY / 8.f);
 				Uimgr->Set_CalDialoguePos(_float3(vPos.x, vPos.y, 0.f));
@@ -940,6 +947,11 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		//vPos.y = -vPos.y + RTSIZE_BOOK2D_Y * 0.5f;
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
 
+
+		///////////////////////////////////////
+		// 다이얼로그가 종료되었을경우 처리해주자. //
+		///////////////////////////////////////
+
 		if (Uimgr->Get_DialogueLineIndex() == Uimgr->Get_Dialogue(_strDialogue)[0].lines.size())
 		{
 			// 다음 대사가 없으므로 트리거를 종료 시킨다.
@@ -960,9 +972,12 @@ void CDialog::NextDialogue(_float2 _RTSize)
 
 
 			// 다음 다이얼로그를 위해 false를 시킨다.
-			Uimgr->Set_DisplayDialogue(false);
-			Uimgr->Set_PortraitRender(false);
-			Uimgr->Set_DialogueLineIndex(0);
+			//Uimgr->Set_DisplayDialogue(false);
+			//Uimgr->Set_PortraitRender(false);
+			//Uimgr->Set_DialogueLineIndex(0);
+			
+			Uimgr->Set_DialogEnd();
+			
 			m_isFirstRefresh = false;
 
 			// 다이얼로그 끝나고 상점을 닫기 위해 해당 다이얼로그가 상점 관련인지 확인한다.
@@ -1040,23 +1055,23 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			}
 			else if (false == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 			{
-				if (true == m_isAddSectionRender)
-				{
+				//if (true == m_isAddSectionRender)
+				//{
 					_tchar	strSectionID[MAX_PATH];
-					wsprintf(strSectionID, Uimgr->Get_strSectionID());
 
-					if (TEXT("NOTWORD") == strSectionID)
-					{
-						CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
-					}
-					else
-					{
-						wstring CurrentDialog(Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].Section);
-						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CurrentDialog, this, SECTION_2D_PLAYMAP_UI);
-						//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
-					}
-					m_isAddSectionRender = false;
-				}
+					//if (TEXT("NOTWORD") == strSectionID)
+					//{
+					//	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+					//}
+					//else
+					//{
+					m_strSectionName = L"";
+					
+					CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+						Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
+					//}
+				//	m_isAddSectionRender = false;
+				//}
 
 				vPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY - g_iWinSizeY / 8.f);
 				Uimgr->Set_CalDialoguePos(_float3(vPos.x, vPos.y, 0.f));
