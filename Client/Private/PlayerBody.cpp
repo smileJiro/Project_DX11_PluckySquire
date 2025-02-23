@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "GameInstance.h"
 #include "PlayerBody.h"
 
 CPlayerBody::CPlayerBody(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -19,12 +20,21 @@ void CPlayerBody::Update(_float _fTimeDelta)
 
 void CPlayerBody::Late_Update(_float _fTimeDelta)
 {
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        if (false == m_isFrustumCulling)
+            m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, PR3D_PLAYERDEPTH, this);
+    }
+
     __super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CPlayerBody::Render()
 {
-  return __super::Render();
+    if (FAILED(__super::Render()))
+        return E_FAIL;
+
+    return S_OK;
 }
 
 CModelObject* CPlayerBody::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

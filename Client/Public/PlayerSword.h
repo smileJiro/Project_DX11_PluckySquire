@@ -25,17 +25,17 @@ public:
 		_float fRotationForce = 50.f;
 		class CPlayer* pParent = nullptr;
 	}PLAYER_SWORD_DESC;
+
 private:
 	CPlayerSword(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CPlayerSword(const CPlayerSword& _Prototype);
 	virtual ~CPlayerSword() = default;
 
 public:
-
 	virtual HRESULT	Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* _pArg) override;
-	virtual void			Update(_float _fTimeDelta) override;
-	virtual void			Late_Update(_float _fTimeDelta) override;
+	virtual void	Update(_float _fTimeDelta) override;
+	virtual void	Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT	Render() override;
 
 

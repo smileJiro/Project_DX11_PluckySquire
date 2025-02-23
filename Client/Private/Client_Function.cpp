@@ -265,6 +265,7 @@ namespace Client
 		tEvent.eType = EVENT_TYPE::SET_SCENEQUERYFLAG;
 		tEvent.Parameters.resize(3);
 		tEvent.Parameters[0] = (DWORD_PTR)_pActor;
+		Safe_AddRef(_pActor);
 		tEvent.Parameters[1] = (DWORD_PTR)_iShapeID;
 		tEvent.Parameters[2] = (DWORD_PTR)_bEnable;
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
