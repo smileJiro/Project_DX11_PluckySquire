@@ -217,6 +217,7 @@
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ButterGrump.h" />
     <ClInclude Include="..\Public\ChaseAttackState.h" />
+    <ClInclude Include="..\Public\Cube.h" />
     <ClInclude Include="..\Public\Level_Camera_Tool_Client.h" />
     <ClInclude Include="..\public\CollapseBlock.h" />
     <ClInclude Include="..\Public\Dice.h" />
@@ -438,6 +439,7 @@
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ButterGrump.cpp" />
     <ClCompile Include="..\Private\ChaseAttackState.cpp" />
+    <ClCompile Include="..\Private\Cube.cpp" />
     <ClCompile Include="..\Private\Level_Camera_Tool_Client.cpp" />
     <ClCompile Include="..\private\CollapseBlock.cpp" />
     <ClCompile Include="..\Private\Dice.cpp" />

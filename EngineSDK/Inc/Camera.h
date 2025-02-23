@@ -139,11 +139,9 @@ protected: /* Zoom */
 	_uint		m_iCurZoomLevel = LEVEL_6;
 
 	_float2		m_fZoomTime = {};
-	_float		m_fStartFovy = {};
 
 protected: // Change AtOffset
 	_float3						m_vAtOffset = {};
-	_float3						m_vStartAtOffset = {};
 	_float3						m_vNextAtOffset = {};
 	_bool						m_isChangingAtOffset = { false };
 	_float2						m_fAtOffsetTime = {};
@@ -158,6 +156,10 @@ protected: /* Shake */
 	_float						m_fShakeForce = {};
 	_float3						m_vShakeOffset = {};
 
+protected: /*Target Change*/
+	_bool						m_isTargetChanged = { false };
+	_float2						m_fTargetChangingTime = { 1.f, 0.f };
+
 protected: // Initial
 	INITIAL_DATA				m_tInitialData = {};
 	_bool						m_isInitialData = { false };
@@ -165,7 +167,6 @@ protected: // Initial
 
 protected: // EventTag (ex CutScene_1 ...)
 	_wstring					m_szEventTag = {};
-
 
 protected:
 	CONST_DOF					m_tDofData = {};

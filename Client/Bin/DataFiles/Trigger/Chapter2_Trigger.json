@@ -125,9 +125,9 @@
     "Freeze_X_Info": {
       "Freeze_Exit_Arm": {
         "CustomData": [
-          0.0,
-          0.3400000035762787,
-          -0.9399999976158142
+          -0.51296254,
+          0.33971286,
+          -0.78833027
         ],
         "CustomData_Tag": "FreezeExitArm"
       }

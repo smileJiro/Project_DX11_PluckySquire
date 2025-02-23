@@ -224,7 +224,6 @@ void CCamera::Start_Zoom(_float _fZoomTime, ZOOM_LEVEL _eZoomLevel, RATIO_TYPE _
 	m_fZoomTime = { _fZoomTime, 0.f };
 	m_iPreZoomLevel = m_iCurZoomLevel;
 	m_iCurZoomLevel = _eZoomLevel;
-	m_fStartFovy = m_fFovy;
 	m_eRatioType = _eRatioType;
 }
 
@@ -237,8 +236,6 @@ void CCamera::Start_Changing_AtOffset(_float _fAtOffsetTime, _vector _vNextAtOff
 	m_fAtOffsetTime = { _fAtOffsetTime, 0.f };
 	m_iOffsetRatioType = _iRatioType;
 	XMStoreFloat3(&m_vNextAtOffset, _vNextAtOffset);
-	m_vStartAtOffset = m_vAtOffset;
-	
 }
 
 void CCamera::Start_Shake_ByTime(_float _fShakeTime, _float _fShakeForce, _float _fShakeCycleTime, SHAKE_TYPE _ShakeType, _float _fDelayTime)
@@ -353,11 +350,10 @@ void CCamera::Action_Zoom(_float _fTimeDelta)
 
 	if (fRatio >= (1.f - EPSILON)) {
 		m_isZoomOn = false;
-		m_fStartFovy = 0.f;
 		m_fZoomTime.y = 0.f;
 	}
 
-	m_fFovy = m_pGameInstance->Lerp(m_fStartFovy, m_ZoomLevels[m_iCurZoomLevel], fRatio);
+	m_fFovy = m_pGameInstance->Lerp(m_fFovy, m_ZoomLevels[m_iCurZoomLevel], fRatio);
 	Compute_FocalLength();
 	Bind_DofConstBuffer();
 }
@@ -374,7 +370,7 @@ void CCamera::Change_AtOffset(_float _fTimeDelta)
 		m_fAtOffsetTime.y = 0.f;
 	}
 
-	_vector vAtOffset = XMVectorLerp(XMLoadFloat3(&m_vStartAtOffset), XMLoadFloat3(&m_vNextAtOffset), fRatio);
+	_vector vAtOffset = XMVectorLerp(XMLoadFloat3(&m_vAtOffset), XMLoadFloat3(&m_vNextAtOffset), fRatio);
 
 	XMStoreFloat3(&m_vAtOffset, vAtOffset);
 }
