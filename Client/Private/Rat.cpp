@@ -4,6 +4,9 @@
 #include "FSM.h"
 #include "ModelObject.h"
 #include "Effect_Manager.h"
+#include "Effect2D_Manager.h"
+#include "Section_Manager.h"
+#include "Pooling_Manager.h"
 
 CRat::CRat(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -55,9 +58,6 @@ HRESULT CRat::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pFSM->Add_Neutral_State();
-    m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
-
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
@@ -69,6 +69,9 @@ HRESULT CRat::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, RUN_DOWN, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, RUN_RIGHT, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, RUN_UP, true);
+
+    m_pFSM->Add_Neutral_State();
+    m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
     pModelObject->Set_Animation(IDLE);
 
@@ -107,13 +110,7 @@ HRESULT CRat::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-    if (COORDINATE_2D == Get_CurCoord())
-    {
-        for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
-        {
-            m_p2DColliderComs[i]->Render();
-        }
-    }
+    __super::Render();
 #endif // _DEBUG
 
     /* Font Render */
@@ -204,15 +201,11 @@ void CRat::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     {
         switch ((CRat::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
         {
-        case HIT_DOWN:
-        case HIT_UP:
-        case HIT_RIGHT:
+        case HIT:
             Set_AnimChangeable(true);
             break;
 
-        case DIE_DOWN:
-        case DIE_UP:
-        case DIE_RIGHT:
+        case DIE:
             Set_AnimChangeable(true);
 
             CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
@@ -230,12 +223,26 @@ void CRat::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     {
         switch ((CRat::Animation2D)pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
         {
-        case HIT:
+        case HIT_DOWN:
+        case HIT_UP:
+        case HIT_RIGHT:
             Set_AnimChangeable(true);
             break;
 
-        case DIE:
+        case DIE_DOWN:
+        case DIE_UP:
+        case DIE_RIGHT:
             Set_AnimChangeable(true);
+
+            CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
+
+            //확률로 전구 생성
+            if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+            {
+                _float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+                _wstring strCurSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+                CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_2DBulb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strCurSection);
+            }
 
             Event_DeleteObject(this);
 
@@ -246,6 +253,21 @@ void CRat::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             break;
         }
     }
+}
+
+HRESULT CRat::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
+{
+    if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+        return E_FAIL;
+
+    if (COORDINATE_2D == _eCoordinate)
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Animation2D::IDLE_DOWN);
+    else
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Animation::IDLE);
+
+    m_pFSM->Set_PatrolBound();
+
+    return S_OK;
 }
 
 void CRat::Turn_Animation(_bool _isCW)

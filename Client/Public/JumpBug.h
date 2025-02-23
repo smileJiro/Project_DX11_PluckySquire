@@ -56,7 +56,14 @@ public:
 	virtual void Change_Animation() override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
+	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
+
 	virtual void Turn_Animation(_bool _isCW) override;
+
+	virtual void Monster_Move(_fvector _vDirection) override;
+
+private:
+	_bool m_isJump = { false };
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);

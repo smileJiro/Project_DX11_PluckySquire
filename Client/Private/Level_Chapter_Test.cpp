@@ -93,6 +93,7 @@ HRESULT CLevel_Chapter_Test::Initialize(LEVEL_ID _eLevelID)
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
 
@@ -967,10 +968,10 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Rat"), Pooling_Desc, Rat_Desc);
 
-	_float3 vPos = { -20.0f, 0.35f, -21.0f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Rat"), COORDINATE_3D, &vPos);
+	//_float3 vPos = { -20.0f, 0.35f, -21.0f };
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Rat"), COORDINATE_3D, &vPos);
 
-	vPos = { -700.0f, -60.f, 0.f };
+	_float3 vPos = { -700.0f, -60.f, 0.f };
 	_wstring strSectionKey = TEXT("CHAPTER4_P0304");
 	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Rat"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
 

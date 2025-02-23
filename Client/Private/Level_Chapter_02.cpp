@@ -116,6 +116,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_UI (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
+	if (FAILED(Ready_Layer_Item(TEXT("Layer_Item"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Item (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	if (FAILED(Ready_Layer_NPC(TEXT("Layer_NPC"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_NPC (Level_Chapter_02::Initialize)");
@@ -791,27 +796,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
 
-	// Test(PlayerItem: Glove, Stamp)
-	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 6.273f, -19.097f));
-	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
-
-
-
-	//2D Bulb
-	Pooling_DESC Pooling_Desc;
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = _strLayerTag;
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Bulb");
-	Pooling_Desc.eSection2DRenderGroup = SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT;
-
-	CBulb::BULB_DESC* pBulbDesc = new CBulb::BULB_DESC;
-	pBulbDesc->eStartCoord = COORDINATE_2D;
-	pBulbDesc->iCurLevelID = m_eLevelID;
-	pBulbDesc->tTransform2DDesc.vInitialScaling = { 256.f,256.f,1.f };
-	pBulbDesc->iObjectGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
-
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_2DBulb"), Pooling_Desc, pBulbDesc);
-
 	return S_OK;
 }
 
@@ -1130,6 +1114,41 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Item(const _wstring& _strLayerTag)
+{
+	// Test(PlayerItem: Glove, Stamp)
+	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 6.273f, -19.097f));
+	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+
+
+
+	//3D Bulb
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = _strLayerTag;
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Bulb");
+	Pooling_Desc.eSection2DRenderGroup = SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT;
+
+	CBulb::BULB_DESC* pBulbDesc = new CBulb::BULB_DESC;
+	pBulbDesc->eStartCoord = COORDINATE_3D;
+	pBulbDesc->iCurLevelID = m_eLevelID;
+	pBulbDesc->tTransform2DDesc.vInitialScaling = { 1.f,1.f,1.f };
+	pBulbDesc->iObjectGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Bulb"), Pooling_Desc, pBulbDesc);
+
+	//2D Bulb
+	CBulb::BULB_DESC* p2DBulbDesc = new CBulb::BULB_DESC;
+	p2DBulbDesc->eStartCoord = COORDINATE_2D;
+	p2DBulbDesc->iCurLevelID = m_eLevelID;
+	p2DBulbDesc->tTransform2DDesc.vInitialScaling = { 256.f,256.f,1.f };
+	p2DBulbDesc->iObjectGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_2DBulb"), Pooling_Desc, p2DBulbDesc);
 
 	return S_OK;
 }
