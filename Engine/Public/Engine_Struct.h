@@ -37,11 +37,14 @@ namespace Engine
 	}CONST_IBL;
 	typedef struct tagMaterialDefault
 	{
-		XMFLOAT4	Albedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f); // 12byte
-		float		Roughness = 0.5f;					 // 16byte(o)
-		float		Metallic = 0.0f;					 // 4byte
+		XMFLOAT4	Albedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);		   // 16byte
+
+		float		Roughness = 0.5f;					 
+		float		Metallic = 0.0f;					 
 		float		AO = 0.7f;
-		float		dummy;								 // 16byte
+		float		dummy;												// 16byte
+
+		XMFLOAT4	MultipleAlbedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);	// 16byte
 	}MATERIAL_PS;
 	typedef struct tagBasicPixelConstData // 동적변화가 없는 애들위주로.
 	{
@@ -167,6 +170,16 @@ namespace Engine
 		static const unsigned int					iNumElements = { 2 };
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
 	}VTXPOSTEX;
+
+	typedef struct ENGINE_DLL tagVtxTrail
+	{
+
+		XMFLOAT3		vPosition;
+		XMFLOAT2		vTexcoord;
+
+		static const unsigned int					iNumElements = { 2 };
+		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
+	}VTXTRAIL;
 
 	typedef struct ENGINE_DLL tagVtxPosition_Color
 	{

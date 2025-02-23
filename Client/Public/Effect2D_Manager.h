@@ -36,7 +36,8 @@ public: /* Effect¸¦ Àç»ý */
 		_float _fDelayTime = 0.0f, 
 		_uint _iAnimIndex = 0, 
 		_bool _isLoop = false, 
-		_float _fLifeTime = 0.0f);
+		_float _fLifeTime = 0.0f,
+		_uint _iSectionLayerGroup = SECTION_2D_PLAYMAP_EFFECT);
 
 private:
 	CGameInstance*						m_pGameInstance = nullptr;

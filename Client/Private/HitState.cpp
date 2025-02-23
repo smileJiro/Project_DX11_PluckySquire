@@ -31,7 +31,16 @@ void CHitState::State_Update(_float _fTimeDelta)
 		return;
 
 	if(true == m_pOwner->Get_AnimChangeable())
-		Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
+	{
+		if(m_pFSM->Has_State(MONSTER_STATE::CHASE))
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::CHASE, m_pFSM);
+		}
+		else
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		}
+	}
 }
 
 void CHitState::State_Exit()

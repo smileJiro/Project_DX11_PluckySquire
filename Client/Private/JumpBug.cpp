@@ -22,12 +22,13 @@ HRESULT CJumpBug::Initialize_Prototype()
 HRESULT CJumpBug::Initialize(void* _pArg)
 {
     CJumpBug::MONSTER_DESC* pDesc = static_cast<CJumpBug::MONSTER_DESC*>(_pArg);
-    pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->isCoordChangeEnable = false;
+    pDesc->isCoordChangeEnable = true;
     pDesc->iNumPartObjects = PART_END;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+    pDesc->tTransform2DDesc.fSpeedPerSec = 10.f;
 
     pDesc->fAlertRange = 0.f;
     pDesc->fChaseRange = 0.f;
@@ -35,6 +36,9 @@ HRESULT CJumpBug::Initialize(void* _pArg)
     pDesc->fAlert2DRange = 0.f;
     pDesc->fChase2DRange = 0.f;
     pDesc->fAttack2DRange = 0.f;
+
+    m_tStat.iHP = 5;
+    m_tStat.iMaxHP = 5;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -49,11 +53,7 @@ HRESULT CJumpBug::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Add_Neutral_State();
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
@@ -115,6 +115,18 @@ void CJumpBug::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
             break;
 
+        case MONSTER_STATE::PATROL:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(JUMP_UP);
+            break;
+
+        case MONSTER_STATE::HIT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT);
+            break;
+
+        case MONSTER_STATE::DEAD:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
+            break;
+
         default:
             break;
         }
@@ -123,24 +135,42 @@ void CJumpBug::Change_Animation()
 
 void CJumpBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
-    /*CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
     switch ((CJumpBug::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
     {
-    case ALERT:
-        Set_AnimChangeable(true);
-        break;
-        
-    case ATTACKSTRIKE:
-        pModelObject->Switch_Animation(ATTACKRECOVERY);
+    case JUMP_UP:
+        pModelObject->Switch_Animation(JUMP_DOWN);
         break;
 
-    case ATTACKRECOVERY:
-        pModelObject->Switch_Animation(ATTACKSTRIKE);
+    case JUMP_DOWN:
+        Set_AnimChangeable(true);
+        break;
+
+    case HIT:
+        Set_AnimChangeable(true);
+        break;
+
+    case DIE:
+        Set_AnimChangeable(true);
         break;
 
     default:
         break;
-    }*/
+    }
+}
+
+void CJumpBug::Turn_Animation(_bool _isCW)
+{
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+    _uint AnimIdx;
+    if (true == _isCW)
+        AnimIdx = TURN_RIGHT;
+    else
+        AnimIdx = TURN_LEFT;
+
+    if (AnimIdx != pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(AnimIdx);
 }
 
 HRESULT CJumpBug::Ready_ActorDesc(void* _pArg)
@@ -174,6 +204,7 @@ HRESULT CJumpBug::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
@@ -223,14 +254,22 @@ HRESULT CJumpBug::Ready_PartObjects()
 
     BodyDesc.strModelPrototypeTag_3D = TEXT("jumpBug_Rig");
 	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    BodyDesc.strModelPrototypeTag_2D = TEXT("JumpBug");
+    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 
+    BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+
     BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
     BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+    BodyDesc.tTransform2DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_RotationPerSec();
+    BodyDesc.tTransform2DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_SpeedPerSec();
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])

@@ -376,9 +376,8 @@ void CMonster::Active_OnEnable()
 	// 1. PxActor 활성화 (활성화 시점에는 먼저 켜고)
 	CActorObject::Active_OnEnable();
 
-
+	m_pControllerTransform->Set_WorldMatrix(XMMatrixIdentity());
 	m_tStat.iHP = m_tStat.iMaxHP;
-	//m_p2DColliderComs[0]->Set_Active(true);
 
 	// 2. 몬스터 할거 하고
 //	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Player"), 0);

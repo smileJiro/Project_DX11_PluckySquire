@@ -25,7 +25,7 @@ public:
 	virtual HRESULT			Render() override;
 
 public: /* Effect 재생 */
-	HRESULT					Play_Effect(const _wstring& _strSectionKey, _fmatrix _2DWorldMatrix, _float _fDelayTime = 0.0f, _uint _iAnimIndex = 0, _bool _isLoop = false, _float _fLifeTime = 0.0f);
+	HRESULT					Play_Effect(const _wstring& _strSectionKey, _fmatrix _2DWorldMatrix, _float _fDelayTime = 0.0f, _uint _iAnimIndex = 0, _bool _isLoop = false, _float _fLifeTime = 0.0f, _uint _iSectionLayerGroup = SECTION_2D_PLAYMAP_EFFECT);
 	//HRESULT					Play_Effect(const _wstring& _strSectionKey, _fvector _vPos, _uint _EffectAnimIndex = 0, _float _fDelayTime = 0.0f, _bool _isLoop = false,  // 구현은 했으나 테스트는 못했음.
 	//									 _float2 _vScale = { 1.0f, 1.0f }, _float _fRadianZ = 0.0f);																	   // 구현은 했으나 테스트는 못했음.
 private:

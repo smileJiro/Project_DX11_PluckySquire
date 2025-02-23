@@ -216,15 +216,15 @@ void C2DMapActionObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
             if (PLAYER_PROJECTILE & _pOtherCollider->Get_CollisionGroupID())
             {
                 //이펙트 애니메이션 재생
-                //_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
+                _matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
 
-                //_wstring strFXTag = L"bushburst_leaves";
-                //strFXTag += to_wstring((_int)ceil(m_pGameInstance->Compute_Random(0.f, 2.f)));
-                //CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+                _wstring strFXTag = L"bushburst_leaves";
+                strFXTag += to_wstring((_int)ceil(m_pGameInstance->Compute_Random(0.f, 2.f)));
+                CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
 
-                //strFXTag = L"bushburst_dust";
-                //strFXTag += to_wstring((_int)ceil(m_pGameInstance->Compute_Random(0.f, 2.f)));
-                //CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+                strFXTag = L"bushburst_dust";
+                strFXTag += to_wstring((_int)ceil(m_pGameInstance->Compute_Random(0.f, 2.f)));
+                CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
 
 
                 //확률로 전구 생성
