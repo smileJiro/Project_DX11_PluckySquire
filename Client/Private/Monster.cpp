@@ -389,7 +389,7 @@ void CMonster::Active_OnEnable()
 	// 1. PxActor 활성화 (활성화 시점에는 먼저 켜고)
 	CActorObject::Active_OnEnable();
 
-	m_pControllerTransform->Set_WorldMatrix(XMMatrixIdentity());
+	//m_pControllerTransform->Set_WorldMatrix(XMMatrixIdentity());
 	m_tStat.iHP = m_tStat.iMaxHP;
 
 	// 2. 몬스터 할거 하고
