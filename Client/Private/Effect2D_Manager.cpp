@@ -81,8 +81,9 @@ HRESULT CEffect2D_Manager::Remove_EffectPool(const _wstring& _strEffectModelTag)
 	{
 		Safe_Release(pEffect);
 	}
+	(*pEffectPool).clear();
 
-	return E_FAIL;
+	return S_OK;
 }
 
 vector<CEffect2D*>* CEffect2D_Manager::Find_EffectPool(const _wstring& _strEffectModelTag)

@@ -14,11 +14,14 @@ void CPlayerState_StartPortal::Update(_float _fTimeDelta)
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
 	{
-		_vector vPlayerPos = m_pOwner->Get_FinalPosition();
-		if(false == m_pOwner->Check_Arrival(m_vTargetPos,COORDINATE_2D== eCoord ? 10.f : 0.5f))
-			m_pOwner->Move(XMVector3Normalize(m_vTargetPos - vPlayerPos)
-				* (COORDINATE_2D == eCoord ? m_f2DMoveSpeed : m_f3DMoveSpeed), _fTimeDelta);
+		if (COORDINATE_2D == eCoord)
+		{
+			_vector vPlayerPos = m_pOwner->Get_FinalPosition();
+			if (false == m_pOwner->Check_Arrival(m_vTargetPos, COORDINATE_2D == eCoord ? 10.f : 0.5f))
+				m_pOwner->Move(XMVector3Normalize(m_vTargetPos - vPlayerPos)
+					* m_f2DMoveSpeed, _fTimeDelta);
 
+		}
 		if (m_pOwner->Try_Interact( m_pPortal,_fTimeDelta))
 			return;
 	}

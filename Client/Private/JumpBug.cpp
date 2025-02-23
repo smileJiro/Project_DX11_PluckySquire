@@ -3,6 +3,10 @@
 #include "GameInstance.h"
 #include "FSM.h"
 #include "ModelObject.h"
+#include "Effect_Manager.h"
+#include "Effect2D_Manager.h"
+#include "Pooling_Manager.h"
+#include "Section_Manager.h"
 
 CJumpBug::CJumpBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -97,7 +101,7 @@ HRESULT CJumpBug::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-
+    __super::Render();
 #endif // _DEBUG
 
     /* Font Render */
@@ -109,26 +113,76 @@ void CJumpBug::Change_Animation()
 {
     if(m_iState != m_iPreState)
     {
-        switch (MONSTER_STATE(m_iState))
+        if (COORDINATE_3D == Get_CurCoord())
         {
-        case MONSTER_STATE::IDLE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
-            break;
+            switch (MONSTER_STATE(m_iState))
+            {
+            case MONSTER_STATE::IDLE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+                break;
 
-        case MONSTER_STATE::PATROL:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(JUMP_UP);
-            break;
+            case MONSTER_STATE::PATROL:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(JUMP_UP);
+                m_isJump = true;
+                break;
 
-        case MONSTER_STATE::HIT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT);
-            break;
+            case MONSTER_STATE::HIT:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT);
+                break;
 
-        case MONSTER_STATE::DEAD:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
-            break;
+            case MONSTER_STATE::DEAD:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
+                break;
 
-        default:
-            break;
+            default:
+                break;
+            }
+        }
+
+        else if (COORDINATE_2D == Get_CurCoord())
+        {
+            CJumpBug::Animation2D eAnim = ANIM2D_LAST;
+            switch (MONSTER_STATE(m_iState))
+            {
+            case Client::MONSTER_STATE::IDLE:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = IDLE_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = IDLE_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = IDLE_RIGHT;
+                break;
+            case Client::MONSTER_STATE::PATROL:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = JUMP_RISE_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = JUMP_RISE_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = JUMP_RISE_RIGHT;
+                m_isJump = true;
+                break;
+
+            case Client::MONSTER_STATE::HIT:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = HIT_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = HIT_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = HIT_RIGHT;
+                break;
+            case Client::MONSTER_STATE::DEAD:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = DIE_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = DIE_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = DIE_RIGHT;
+                break;
+            default:
+                break;
+            }
+
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(eAnim);
         }
     }
 }
@@ -136,27 +190,105 @@ void CJumpBug::Change_Animation()
 void CJumpBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-    switch ((CJumpBug::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+    if(COORDINATE_3D == Get_CurCoord())
     {
-    case JUMP_UP:
-        pModelObject->Switch_Animation(JUMP_DOWN);
-        break;
+        switch ((CJumpBug::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        {
+        case JUMP_UP:
+            pModelObject->Switch_Animation(JUMP_DOWN);
+            m_isJump = false;
+            break;
 
-    case JUMP_DOWN:
-        Set_AnimChangeable(true);
-        break;
+        case JUMP_DOWN:
+            //Set_AnimChangeable(true);
+            break;
 
-    case HIT:
-        Set_AnimChangeable(true);
-        break;
+        case HIT:
+            Set_AnimChangeable(true);
+            break;
 
-    case DIE:
-        Set_AnimChangeable(true);
-        break;
+        case DIE:
+            Set_AnimChangeable(true);
+            break;
 
-    default:
-        break;
+        default:
+            break;
+        }
     }
+
+    else  if (COORDINATE_2D == Get_CurCoord())
+    {
+        switch ((CJumpBug::Animation2D)pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+        {
+        case JUMP_RISE_DOWN:
+            pModelObject->Switch_Animation(JUMP_FALL_DOWN);
+            m_isJump = false;
+            break;
+        case JUMP_RISE_RIGHT:
+            pModelObject->Switch_Animation(JUMP_FALL_RIGHT);
+            m_isJump = false;
+            break;
+        case JUMP_RISE_UP:
+            pModelObject->Switch_Animation(JUMP_FALL_UP);
+            m_isJump = false;
+            break;
+
+        case JUMP_FALL_DOWN:
+            pModelObject->Switch_Animation(JUMP_LAND_DOWN);
+            break;
+        case JUMP_FALL_RIGHT:
+            pModelObject->Switch_Animation(JUMP_LAND_RIGHT);
+            break;
+        case JUMP_FALL_UP:
+            pModelObject->Switch_Animation(JUMP_LAND_UP);
+            break;
+            
+
+        case HIT_DOWN:
+        case HIT_UP:
+        case HIT_RIGHT:
+            Set_AnimChangeable(true);
+            break;
+
+        case DIE_DOWN:
+        case DIE_UP:
+        case DIE_RIGHT:
+            Set_AnimChangeable(true);
+
+            CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
+
+            //확률로 전구 생성
+            if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+            {
+                _float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+                _wstring strCurSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+                CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_2DBulb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strCurSection);
+            }
+
+            Event_DeleteObject(this);
+
+            break;
+
+
+        default:
+            break;
+        }
+    }
+}
+
+HRESULT CJumpBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
+{
+    if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+        return E_FAIL;
+
+    if (COORDINATE_2D == _eCoordinate)
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Animation2D::IDLE_DOWN);
+    else
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Animation::IDLE);
+
+    m_pFSM->Set_PatrolBound();
+
+    return S_OK;
 }
 
 void CJumpBug::Turn_Animation(_bool _isCW)
@@ -171,6 +303,27 @@ void CJumpBug::Turn_Animation(_bool _isCW)
 
     if (AnimIdx != pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(AnimIdx);
+}
+
+void CJumpBug::Monster_Move(_fvector _vDirection)
+{
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        if (true == m_isJump)
+        {
+            _vector vDirection = _vDirection + XMVectorSet(0.f, 1.f, 0.f, 0.f);
+            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(vDirection), Get_ControllerTransform()->Get_SpeedPerSec());
+        }
+        else
+        {
+            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(_vDirection), Get_ControllerTransform()->Get_SpeedPerSec());
+        }
+    }
+
+    else if (COORDINATE_2D == Get_CurCoord())
+    {
+
+    }
 }
 
 HRESULT CJumpBug::Ready_ActorDesc(void* _pArg)

@@ -87,6 +87,15 @@ void CMonster::Late_Update(_float _fTimeDelta)
 HRESULT CMonster::Render()
 {
 
+#ifdef _DEBUG
+	if (COORDINATE_2D == Get_CurCoord())
+	{
+		for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
+		{
+			m_p2DColliderComs[i]->Render();
+		}
+	}
+#endif // _DEBUG
 
 	return S_OK;
 }
@@ -233,6 +242,10 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 }
 
 void CMonster::Attack()
+{
+}
+
+void CMonster::Monster_Move(_fvector _vDirection)
 {
 }
 

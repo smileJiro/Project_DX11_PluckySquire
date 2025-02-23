@@ -25,6 +25,7 @@ public:
 	HRESULT					Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut);
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_UI(const _wstring& _strLayerTag);
+	HRESULT					Ready_Layer_Item(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_NPC(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppOut = nullptr);
 	HRESULT					Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut = nullptr);

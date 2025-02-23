@@ -75,12 +75,17 @@ private: /* 직교 투영으로 그리기 위한 */
 private:
 	map<_int, CRenderGroup*>			m_RenderGroups;
 
+	/* Shader Const Data */
 public:
 	CONST_IBL Get_GlobalIBLData() const { return m_tGlobalIBLData; }
 	void Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _isUpdateConstBuffer = false);
+	void Set_PlayerHideColor(const _float3 _vHideColor, _bool _isUpdate = false);
 private:
 	CONST_IBL							m_tGlobalIBLData = {};
 	ID3D11Buffer*						m_pGlobalIBLConstBuffer = nullptr;
+
+private:
+	_float3								m_vPlayerHideColor = { 1.0f, 0.24f, 0.4666f };
 
 #ifdef _DEBUG
 private:

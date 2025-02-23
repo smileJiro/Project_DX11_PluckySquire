@@ -577,7 +577,7 @@ void CCamera_2D::Find_TargetPos()
 			_float2 fSectionSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(m_strSectionName);
 			_float2 vPos = { };
 
-			_bool isLeft = Uimgr->isLeft_Right();	// true¸é left
+			_bool isLeft = true;//Uimgr->isLeft_Right();	// true¸é left
 
 			if (true == isLeft) 
 				vPos = { fSectionSize.x * 0.25f, fSectionSize.y * 0.5f };

@@ -104,6 +104,25 @@ HRESULT CModelObject::Render()
     return S_OK;
 }
 
+HRESULT CModelObject::Render_PlayerDepth()
+{
+    COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+    if (COORDINATE_3D == eCoord)
+    {
+        if (FAILED(Bind_ShaderResources_WVP()))
+            return E_FAIL;
+
+        CShader* pShader = m_pShaderComs[COORDINATE_3D];
+        if(m_pControllerModel->Get_Model(COORDINATE_3D)->Is_AnimModel())
+            m_pControllerModel->Render(pShader, (_uint)PASS_VTXANIMMESH::PLAYERDEPTH);
+        else
+            m_pControllerModel->Render(pShader, (_uint)PASS_VTXMESH::PLAYERDEPTH);
+    }
+
+
+    return S_OK;
+}
+
 _bool CModelObject::Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst)
 {
     // 예외처리

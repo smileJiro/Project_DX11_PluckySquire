@@ -24,6 +24,9 @@ public:
 	typedef struct tagCarriableDesc : public CModelObject::MODELOBJECT_DESC
 	{
 		CARRIABLE_OBJ_ID eCrriableObjId = CARRIABLE_OBJ_ID::CARRIABLE_ID_LAST;
+		_float3 vHeadUpRoolPitchYaw3D = { 0.f,1.f,0.f };
+		_float3 vHeadUpOffset3D = { 0.f,1.f,0.f };
+		_float fHeadUpHeight2D = 100.0f;
 	}CARRIABLE_DESC;
 protected:
 	explicit CCarriableObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -51,21 +54,19 @@ public:
 	void Throw(_fvector _vForce);
 	void Set_Kinematic(_bool _bKinematic);
 	void Set_ParentBodyMatrix(COORDINATE _eCoord, const _float4x4* _pBodyMatrix) { m_pParentBodyMatrices[_eCoord] = _pBodyMatrix; }
+	const _float4x4& Get_HeadUpMatrix(COORDINATE _eCoord) { return m_matHeadUpMatrix[_eCoord]; };
 
 protected:
 	CPlayer* m_pCarrier = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;
-	_float m_f2DFloorDistance = 0;
-	_vector m_v2DThrowHorizeForce = { 0.f, 0.f };
-	_vector m_v2DGroundPosition = { 0.f, 0.f };
-	_float m_f2DUpForce = 0.f;
-	_bool m_b2DOnGround= false;
-	_bool m_bThrowing = false;
-
-	_float m_fHeadUpHeight3D = 2.0f;
-	_float m_fHeadUpHeight2D = 100.0f;
-
 	const _float4x4* m_pParentBodyMatrices[COORDINATE_LAST] = { nullptr }; // 부모의 월드 행렬의 주소
+
+	_float4x4 m_matHeadUpMatrix[COORDINATE_LAST];
+
+
+	//THROW
+	//공중에 떠 있기 위한 가상의 Socket 
+	_float4x4 m_vThrowSocketOffset2D;
 
 	//실험용
 	_float m_fRestitution = 0.5f;

@@ -382,7 +382,8 @@ HRESULT CEvent_Manager::Execute_ChangeMapObject(const EVENT& _tEvent)
 		Safe_AddRef(pGameObject);
 	}
 	
-
+	m_pMapObjectFilePath = pMapObjectFilePath;
+	m_pMapObjectLayerTag = pMapObjectLayerTag;
 	/* 쓰레드 풀을 통해 새로운 오브젝트를 로드 */
 	m_pGameInstance->Get_ThreadPool()->EnqueueJob([this, iCurLevelID, pMapObjectFilePath, pMapObjectLayerTag]()
 		{
@@ -392,8 +393,8 @@ HRESULT CEvent_Manager::Execute_ChangeMapObject(const EVENT& _tEvent)
 			if (S_OK == iResult)
 			{
 				MapObjectCreate_End();
-				//Safe_Delete(pMapObjectFilePath);
-				//Safe_Delete(pMapObjectLayerTag);
+				Safe_Delete(m_pMapObjectFilePath);
+				Safe_Delete(m_pMapObjectLayerTag);
 			}
 			/* 모든 맵오브젝트 로드가 끝이났다면, */
 			/* 오브젝트 레이어를 순회하며 */
@@ -684,6 +685,8 @@ HRESULT CEvent_Manager::Execute_SetSceneQueryFlag(const EVENT& _tEvent)
 	_uint iShapeID = (_uint)_tEvent.Parameters[1];
 	_bool bEnable = (_bool)_tEvent.Parameters[2];
 	pActor->Get_ActorCom()->Get_Shapes()[iShapeID]->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, bEnable);
+
+	Safe_Release(pActor);
 	return S_OK;
 }
 
@@ -761,9 +764,9 @@ HRESULT CEvent_Manager::Execute_KnockBack(const EVENT& _tEvent)
 {
 	CCharacter* pCharacter = (CCharacter*)_tEvent.Parameters[0];
 	_vector vForce = XMLoadFloat3( (_float3*)_tEvent.Parameters[1]);
-
 	pCharacter->KnockBack(vForce);
 	delete (_float3*)_tEvent.Parameters[1];
+	Safe_Release(pCharacter);
 	return S_OK;
 }
 

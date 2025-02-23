@@ -87,13 +87,7 @@ HRESULT CGoblin_SideScroller::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-    if (COORDINATE_2D == Get_CurCoord())
-    {
-        for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
-        {
-            m_p2DColliderComs[i]->Render();
-        }
-    }
+    __super::Render();
 #endif
 
     /* Font Render */

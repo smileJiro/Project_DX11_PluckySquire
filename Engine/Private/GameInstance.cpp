@@ -578,6 +578,11 @@ HRESULT CGameInstance::Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D
 	return m_pNewRenderer->Bind_DofConstBuffer(_szConstBufferName, _pConstBuffer);
 }
 
+void CGameInstance::Set_PlayerHideColor(const _float3 _vHideColor, _bool _isUpdate)
+{
+	return m_pNewRenderer->Set_PlayerHideColor(_vHideColor, _isUpdate);
+}
+
 #ifdef _DEBUG
 
 HRESULT CGameInstance::Add_DebugComponent_New(CComponent* _pDebugCom)
@@ -1401,6 +1406,7 @@ HRESULT CGameInstance::Unregister_Section(const _wstring& _strSectionKey)
 {
 	if (nullptr == m_pCollision_Manager)
 		return E_FAIL;
+
 	return m_pCollision_Manager->Unregister_Section(_strSectionKey);
 
 }
@@ -1507,8 +1513,6 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pThreadPool);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pGraphic_Device);
-
-
 
 	// Base Free 호출.
 	__super::Free();
