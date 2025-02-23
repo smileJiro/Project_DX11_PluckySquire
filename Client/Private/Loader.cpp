@@ -10,6 +10,8 @@
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
 #include "Camera_2D.h"
+#include "Ray.h"
+#include "Cube.h"
 
 /* For. etc Bulb, PlayerItem*/
 #include "Blocker.h"
@@ -1436,6 +1438,11 @@ HRESULT CLoader::Loading_Level_Chapter_4()
 HRESULT CLoader::Loading_Level_Camera_Tool()
 {
     lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_Ray"),
+        CRay::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_FSM"),
         CFSM::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -1516,6 +1523,11 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+    /* For. Prototype_GameObject_Cube */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Cube"),
+        CCube::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     /* For. Prototype_GameObject_SampleBook */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_SampleBook"),
