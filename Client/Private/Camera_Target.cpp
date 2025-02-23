@@ -158,7 +158,7 @@ void CCamera_Target::Set_EnableLookAt(_bool _isEnableLookAt)
 		// false이다가 m_isExitLookAt으로 돌아간 것
 		m_isExitLookAt = true;
 		m_fLookTime.y = 0.f;
-		//m_vStartLookVector = 
+		XMStoreFloat3(&m_vStartLookVector, m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
 	}
 
 	m_isEnableLookAt = _isEnableLookAt;
@@ -543,9 +543,8 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 		_vector vAt = _vTargetPos + vFreezeOffset + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 		_vector vDir = XMVector3Normalize(vAt - vPos);
-		_vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
 
-		vLook = XMVectorLerp(vLook, vDir, fRatio);
+		_vector vLook = XMVectorLerp(XMLoadFloat3(&m_vStartLookVector), vDir, fRatio);
 
 		m_pControllerTransform->Get_Transform()->Set_Look(vLook);
 	}

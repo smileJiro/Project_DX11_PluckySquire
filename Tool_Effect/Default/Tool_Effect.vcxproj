@@ -167,7 +167,7 @@
     <ClInclude Include="..\public\RenderGroup_DownSample.h" />
     <ClInclude Include="..\Public\RenderGroup_Lighting.h" />
     <ClInclude Include="..\public\SkyBox.h" />
-    <ClInclude Include="..\public\TestTrail.h" />
+    <ClInclude Include="..\public\TestBeam.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
@@ -193,7 +193,7 @@
     <ClCompile Include="..\private\RenderGroup_DownSample.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Lighting.cpp" />
     <ClCompile Include="..\private\SkyBox.cpp" />
-    <ClCompile Include="..\private\TestTrail.cpp" />
+    <ClCompile Include="..\private\TestBeam.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -217,6 +217,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPoint.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxBeam.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bin\DataFiles\Effects\Dodge.json" />

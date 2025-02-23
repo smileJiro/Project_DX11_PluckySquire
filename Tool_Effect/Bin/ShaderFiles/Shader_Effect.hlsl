@@ -15,8 +15,8 @@ float4 g_vLook;
 float g_fAlphaTest, g_fColorTest;
 float g_fAlpha;
 
-Texture2D g_AlphaTexture, g_MaskTexture, g_NoiseTexture, g_DissolveTexture;
-float4 g_AlphaUVScale, g_MaskUVScale, g_NoiseUVScale, g_DissolveUVScale;
+Texture2D g_AlphaTexture, g_MaskTexture, g_NoiseTexture, g_DissolveTexture, g_SecondTexture;
+float4 g_AlphaUVScale, g_MaskUVScale, g_NoiseUVScale, g_DissolveUVScale, g_SubUVScale;
 float4 g_EdgeColor;
 
 // Shader Value 
@@ -136,11 +136,6 @@ VS_OUT VS_BILLBOARD(VS_IN In)
 
 }
 
-
-
-
-
-
 PS_COLOR PS_MAIN(PS_IN In)
 {
     PS_COLOR Out = (PS_COLOR) 0;
@@ -151,37 +146,34 @@ PS_COLOR PS_MAIN(PS_IN In)
 }
 
 float g_fDissolveThreshold, g_fDissolveEdgeWidth, g_fDissolveEdgeIntensity, g_fDissolveFactor;
-float4 g_vDissolveColor;
+float4 g_vEdgeColor;
 
 PS_COLOR PS_DISSOLVE(PS_IN In)
 {
     PS_COLOR Out = (PS_COLOR) 0;
+
+    float fMask = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
+    + float2(g_MaskUVScale.z, g_MaskUVScale.w)).r;
     
-    float fAlpha = g_AlphaTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_AlphaUVScale.x, g_AlphaUVScale.y))
-    + float2(g_AlphaUVScale.z, g_AlphaUVScale.w) * g_fTimeAcc).r;
-    float fMaskAlpha = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
-    + float2(g_MaskUVScale.z, g_MaskUVScale.w) * g_fTimeAcc).r;
-    
-    fAlpha = fMaskAlpha * fAlpha + g_fAlpha;
+    float4 vColor = g_vColor;
+    vColor.a *= fMask;
     
     float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y))
-    + float2(g_NoiseUVScale.z, g_NoiseUVScale.w) * g_fTimeAcc).r;
+    + float2(g_NoiseUVScale.z, g_NoiseUVScale.w)).r;
     
-    float fDissolveFactor = smoothstep(g_fTimeAcc * g_fDissolveFactor - g_fDissolveEdgeWidth, g_fTimeAcc * g_fDissolveFactor + g_fDissolveEdgeWidth, fDissolve); //float fDissolveFactor = step(g_fTimeAcc * g_fDissolveFactor, fDissolve);
-    if (fDissolveFactor < 0.05)
+    float fDissolveThreshold = g_fDissolveFactor; //clamp(g_fTimeAcc * g_fDissolveFactor, 0.f, 1.f);
+    float fDissolveMask = step(fDissolveThreshold, fDissolve);
+    
+    float fEdgeMask = smoothstep(fDissolveThreshold - g_fDissolveEdgeWidth, fDissolveThreshold, fDissolve);
+    
+    vColor.a = vColor.a * fEdgeMask;
+    vColor.rgb = lerp(g_vEdgeColor.rgb, vColor.rgb, fEdgeMask);
+    
+    if (g_fAlphaTest > vColor.a)
         discard;
     
-    float3 vColor = g_vColor.rgb;
-    fAlpha = g_vColor.a * fAlpha * fDissolveFactor;
-    
-    if (fAlpha < g_fAlphaTest)
-        discard;
-    if (length(vColor) < g_fColorTest)
-        discard;
-
-       
-    Out.vDiffuse.rgb = vColor;
-    Out.vDiffuse.a = fAlpha;
+    Out.vDiffuse = vColor;
+   
     
     return Out;
 }
@@ -194,6 +186,47 @@ struct PS_BRIGHTCOLOR
 
 float g_fBloomThreshold;
 float3 g_fBrightness = float3(0.2126, 0.7152, 0.0722);
+
+PS_BRIGHTCOLOR PS_SUBDISSOLVE(PS_IN In)
+{
+    PS_BRIGHTCOLOR Out = (PS_BRIGHTCOLOR) 0;
+
+    
+    float fMask = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
+    + float2(g_MaskUVScale.z, g_MaskUVScale.w)).r;
+    float fSub = g_SecondTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_SubUVScale.x, g_SubUVScale.y))
+    + float2(g_SubUVScale.z, g_SubUVScale.w)).r;
+    
+    float4 vColor = g_vColor;
+    vColor.a = vColor.a * fMask * fSub;
+    
+    float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y))
+    + float2(g_NoiseUVScale.z, g_NoiseUVScale.w)).r;
+    
+    float fDissolveThreshold = g_fDissolveFactor; //clamp(g_fTimeAcc * g_fDissolveFactor, 0.f, 1.f);
+    float fDissolveMask = step(fDissolveThreshold, fDissolve);
+    
+    float fEdgeMask = smoothstep(fDissolveThreshold - g_fDissolveEdgeWidth, fDissolveThreshold, fDissolve);
+    
+    vColor.rgb = lerp(g_vEdgeColor.rgb, vColor.rgb, fEdgeMask);
+    vColor.a = vColor.a * fEdgeMask;
+    
+    float fLuminance = dot(vColor.rgb, g_fBrightness);
+    float fBrightness = max(fLuminance - g_fBloomThreshold, 0.0) / (length(vColor.rgb) * 0.33f - g_fBloomThreshold);
+
+    
+    if (g_fAlphaTest > vColor.a)
+        discard;
+    
+    Out.vDiffuse = vColor;
+    Out.vBloom = vColor * fBrightness;
+    
+    return Out;
+}
+
+
+
+
 
 PS_BRIGHTCOLOR PS_BLOOM(PS_IN In)
 {
@@ -352,6 +385,18 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_DISTORTION();
+        ComputeShader = NULL;
+    }
+
+    pass SUB_DISSOLVE
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_SUBDISSOLVE();
         ComputeShader = NULL;
     }
 
