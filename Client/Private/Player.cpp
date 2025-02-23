@@ -33,6 +33,7 @@
 #include "Effect2D_Manager.h"
     
 #include "Collider_Fan.h"
+#include "Collider_AABB.h"
 #include "Interactable.h"
 #include "CarriableObject.h"
 #include "Blocker.h"
@@ -46,34 +47,68 @@ CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 CPlayer::CPlayer(const CPlayer& _Prototype)
     :CCharacter(_Prototype)
-	, m_mat3DCarryingOffset(_Prototype.m_mat3DCarryingOffset)
-	, m_mat2DCarryingOffset(_Prototype.m_mat2DCarryingOffset)
+
 {
     for (_uint i = 0; i < ATTACK_TYPE_LAST; i++)
     {
-		m_f2DAttackTriggerDesc[i] = _Prototype.m_f2DAttackTriggerDesc[i];
+        for (_uint j = 0; j < (_uint)F_DIRECTION::F_DIR_LAST; j++)
+        {
+    		m_f2DAttackTriggerDesc[i][j] = _Prototype.m_f2DAttackTriggerDesc[i][j];
+        }
     }
 }
 
 HRESULT CPlayer::Initialize_Prototype()
 {
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadius = 90.f;
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fOffset = 50.f;
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1][(_uint)F_DIRECTION::DOWN].vExtents = { 100.f, 60.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, 0.f};
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1][(_uint)F_DIRECTION::UP].vExtents = { 100.f, 60.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1][(_uint)F_DIRECTION::UP].vOffset = { 0.f, 65.f  };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1][(_uint)F_DIRECTION::RIGHT].vExtents = { 55.5f, 86.5f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1][(_uint)F_DIRECTION::RIGHT].vOffset = { 40.f, m_f2DCenterYOffset};
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1][(_uint)F_DIRECTION::LEFT].vExtents = { 55.5f, 86.5f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1][(_uint)F_DIRECTION::LEFT].vOffset = { -40.f,m_f2DCenterYOffset };
 
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fRadius = 90.f;
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2].fOffset = 50.f;
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2][(_uint)F_DIRECTION::DOWN].vExtents = { 100.f, 60.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, 0.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2][(_uint)F_DIRECTION::UP].vExtents = { 100.f, 60.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2][(_uint)F_DIRECTION::UP].vOffset = { 0.f, 65.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2][(_uint)F_DIRECTION::RIGHT].vExtents = { 55.5f, 86.5f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2][(_uint)F_DIRECTION::RIGHT].vOffset = { 40.f, m_f2DCenterYOffset };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2][(_uint)F_DIRECTION::LEFT].vExtents = { 55.5f, 86.5f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2][(_uint)F_DIRECTION::LEFT].vOffset = { -40.f,m_f2DCenterYOffset };
 
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fRadius = 50.f;
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3].fOffset = 80.f;
+    
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::DOWN].vExtents = { 70.f, 70.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, -45.f  };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::UP].vExtents = { 70.f, 70.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::UP].vOffset = { 0.f, 150.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::RIGHT].vExtents = { 70.f, 70.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::RIGHT].vOffset = { 80.f, 0.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::LEFT].vExtents = { 70.f, 70.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::LEFT].vOffset = { -80.f,0.f };
 
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fRadius = 110.f;
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN].fOffset = 0.f;
 
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fRadius = 93.f;
-    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK].fOffset = 50.f;
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vExtents = { 211.f, 211.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, m_f2DCenterYOffset };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::UP].vExtents = { 211.f, 211.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::UP].vOffset = { 0.f, m_f2DCenterYOffset};
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::RIGHT].vExtents = { 211.f, 211.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::RIGHT].vOffset = { 0.f, m_f2DCenterYOffset};
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vExtents = { 211.f, 211.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vOffset = { 0.f, m_f2DCenterYOffset };
 
-    XMStoreFloat4x4(&m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.0f, 0.f));
-    XMStoreFloat4x4(&m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 100.f, 0.f));
+                           
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::DOWN].vExtents = { 146.5f, 74.5f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, -20.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::UP].vExtents = { 146.5f, 74.5f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::UP].vOffset = { 0.f, 60.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::RIGHT].vExtents = { 146.5f, 74.5f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::RIGHT].vOffset = { 50.f, 0.f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::LEFT].vExtents = { 146.5f, 74.5f };
+    m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::LEFT].vOffset = { -50.f, 0.f };
+
+
 
     return S_OK;
 }
@@ -178,7 +213,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     
     //공격시 몸통 가드
     SHAPE_SPHERE_DESC tGuardShapeDesc = {};
-    tGuardShapeDesc.fRadius = 0.7f;
+    tGuardShapeDesc.fRadius = 0.5f;
     SHAPE_DATA BodyGuardShapeData;
     BodyGuardShapeData.eShapeType = SHAPE_TYPE::SPHERE;
     BodyGuardShapeData.pShapeDesc = &tGuardShapeDesc;
@@ -216,6 +251,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     Set_PlatformerMode(false);
 
 	m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD,false);
+    Set_State(CPlayer::IDLE);
     return S_OK;
 }
 
@@ -415,15 +451,16 @@ HRESULT CPlayer::Ready_Components()
    m_pBody2DTriggerCom = m_p2DColliderComs[1];
    Safe_AddRef(m_pBody2DTriggerCom);
 
-   CircleDesc.pOwner = this;
-   CircleDesc.fRadius = m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1].fRadius;
-   CircleDesc.vScale = { 1.0f, 1.0f };
-   CircleDesc.vOffsetPosition = { 0.f,0.f };
-   CircleDesc.isBlock = false;
-   CircleDesc.isTrigger = true;
-   CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
-   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-       TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &CircleDesc)))
+   CCollider_AABB::COLLIDER_AABB_DESC BoxDesc = {};
+   BoxDesc.pOwner = this;
+   BoxDesc.vExtents = m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1][(_uint)F_DIRECTION::DOWN].vExtents;
+   BoxDesc.vScale = { 1.0f, 1.0f };
+   BoxDesc.vOffsetPosition = { 0.f,0.f };
+   BoxDesc.isBlock = false;
+   BoxDesc.isTrigger = true;
+   BoxDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
+   if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+       TEXT("Com_Attack2DTrigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &BoxDesc)))
        return E_FAIL;
    m_pAttack2DTriggerCom = m_p2DColliderComs[2];
    Safe_AddRef(m_pAttack2DTriggerCom);
@@ -499,8 +536,8 @@ HRESULT CPlayer::Render()
 #ifdef _DEBUG
     if(m_pBody2DColliderCom->Is_Active())
         m_pBody2DColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
-    if(m_pBody2DTriggerCom->Is_Active())
-        m_pBody2DTriggerCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+    //if(m_pBody2DTriggerCom->Is_Active())
+    //    m_pBody2DTriggerCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
     if (m_pAttack2DTriggerCom->Is_Active())
         m_pAttack2DTriggerCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
 
@@ -865,8 +902,10 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         break;
     }
     m_pSword->Set_AttackEnable(false);
-    if(m_pPortal)
+    if (m_pPortal)
         Set_State(EXIT_PORTAL);
+    else
+        Set_State(IDLE);
 
     return S_OK;
 }
@@ -889,11 +928,9 @@ void CPlayer::Attack(CGameObject* _pVictim)
     CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == Get_CurCoord()) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
     CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.1f, 20, CCamera::SHAKE_XY);
     CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
-    Event_Hit(this, pCharacter, m_tStat.iDamg, XMVectorZero());
-    if (pCharacter)
-    {
-        Event_KnockBack(pCharacter, Get_LookDirection(), COORDINATE_2D == Get_CurCoord() ? m_f2DKnockBackPower : m_f3DKnockBackPower);
-    }
+    _vector vKnockBackForce = Get_LookDirection() * (COORDINATE_2D == Get_CurCoord() ? m_f2DKnockBackPower : m_f3DKnockBackPower);
+    Event_Hit(this, pCharacter, m_tStat.iDamg, vKnockBackForce);
+
     m_AttckedObjects.insert(_pVictim);
 }
 
@@ -1584,15 +1621,12 @@ void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 	if (COORDINATE_2D == Get_CurCoord())
 	{
         m_pAttack2DTriggerCom->Set_Active(true);
-        _vector vTmpDir = EDir_To_Vector(m_e2DDirection_E);
-        _vector  vDir = vTmpDir * m_f2DAttackTriggerDesc[m_eCurAttackType].fOffset;
-        if(ATTACK_TYPE_JUMPATTACK != m_eCurAttackType)
-		    vDir = XMVectorSetY(vDir, XMVectorGetY(vDir) + m_f2DCenterYOffset);
-        else if( F_DIRECTION::DOWN == EDir_To_FDir( m_e2DDirection_E))
-        {
-            vDir = XMVectorSetY(vDir, XMVectorGetY(vDir) + m_f2DCenterYOffset);
-        }
-        m_pAttack2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir)});
+        F_DIRECTION eFDir = EDir_To_FDir(m_e2DDirection_E);
+        const ATTACK_TRIGGER_DESC& tDsc = m_f2DAttackTriggerDesc[m_eCurAttackType][(_uint)eFDir];
+        CCollider_AABB* pAttackTrigger =static_cast<CCollider_AABB*>(m_pAttack2DTriggerCom);
+        pAttackTrigger->Set_Extents(tDsc.vExtents);
+		pAttackTrigger->Set_Offset(tDsc.vOffset);
+
 	}
 	else
 	{

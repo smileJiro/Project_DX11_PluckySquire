@@ -25,8 +25,6 @@ C2DModel::C2DModel(const C2DModel& _Prototype)
 
 HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath, _bool _bNoJson)
 {
-
-
 	if (_bNoJson)
 	{
 		m_eAnimType = NONANIM;

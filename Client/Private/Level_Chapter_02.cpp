@@ -1506,6 +1506,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("hum"), LEVEL_CHAPTER_2, 1);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("storm"), LEVEL_CHAPTER_2, 1);
 
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Player2dJumpAttackFX"), LEVEL_STATIC, 1);
 
 	return S_OK;
 }

@@ -1,8 +1,6 @@
 #include "GameObject.h"
 #include "GameInstance.h"
 
-
-
 _uint CGameObject::g_iInstanceIDCount = 0;
 CGameObject::CGameObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -80,8 +78,11 @@ HRESULT CGameObject::Render()
     return S_OK;
 }
 
+
+
 HRESULT CGameObject::Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID)
 {
+
     return m_pGameInstance->Add_RenderObject_New(_iGroupId, _iPriorityID, this);
 }
 

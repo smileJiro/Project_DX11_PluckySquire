@@ -50,8 +50,8 @@ public:
 	};
 	typedef struct tagAttackTriggerDesc
 	{
-		_float fRadius;
-		_float fOffset = {};
+		_float2 vExtents = {100.f,100.f};
+		_float2 vOffset = {0.f,0.f};
 	}ATTACK_TRIGGER_DESC;
 	enum ATTACK_TYPE
 	{
@@ -504,7 +504,6 @@ public:
 	_vector Get_BodyPosition();
 	IInteractable* Get_InteractableObject() { return m_pInteractableObject; }
 	CPortal* Get_CurrentPortal() { return m_pPortal; }
-	const _float4x4* Get_CarryingOffset_Ptr(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? &m_mat2DCarryingOffset : &m_mat3DCarryingOffset; }
 	STATE Get_CurrentStateID();
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	PLAYER_MODE Get_PlayerMode() { return m_ePlayerMode; }
@@ -515,6 +514,7 @@ public:
 	CModelObject* Get_Body() { return m_pBody; }
 	_vector Get_RootBonePosition();
 	NORMAL_DIRECTION Get_PortalNormal() { return m_e3DPortalNormal; }
+	const ATTACK_TRIGGER_DESC& Get_AttackTriggerDesc(ATTACK_TYPE _eAttackType, F_DIRECTION _eFDir) {return m_f2DAttackTriggerDesc[_eAttackType][(_uint)_eFDir];}
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -594,7 +594,7 @@ private:
 	_float m_f2DPickupRange = 93.f;
 	_float m_f2DKnockBackPower = 700.f;
 	_float m_f2DInteractOffset = 40.f;
-	_float4x4 m_mat2DCarryingOffset = {};
+
 	/* еб©У */
 	_float m_f2DColliderBodyRadius = 20.f;
 	/* еб©У */
@@ -603,7 +603,7 @@ private:
 	_bool m_bInvincible = false;
 
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
-	ATTACK_TRIGGER_DESC m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST];// = { 93.f, 93.f, 120.f };
+	ATTACK_TRIGGER_DESC m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST][(_uint)F_DIRECTION::F_DIR_LAST];// = { 93.f, 93.f, 120.f };
 	//ATTACK_TRIGGER_DESC_2D m_f2DAttackAngle[ATTACK_TYPE_LAST];// = { 110.f, 110.f,45.f };
 	_float m_f2DAirRunSpeed = 300.f;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;

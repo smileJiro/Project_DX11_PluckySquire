@@ -34,7 +34,7 @@ public:
 
 public:
 	CComponent*			Find_Part_Component(_uint _iPartObjectIndex, const _wstring& _strPartComponentTag);
-	HRESULT				Add_PartObject(CGameObject* _pPartObject);
+	HRESULT				Add_PartObject(CPartObject* _pPartObject);
 
 public:
 	// Get
@@ -44,15 +44,11 @@ public:
 			return 0;
 		return (_int)m_PartObjects.size();
 	}
-	_bool Is_PartActive(_uint _iPartID) {
-		if (m_PartObjects[_iPartID] == nullptr)
-			return false;
-		return m_PartObjects[_iPartID]->Is_Active();
-	}
+	_bool Is_PartActive(_uint _iPartID);
 	//Set
 	void				Set_PartActive(_uint _iPartID, _bool _bValue);
 protected:
-	vector<CGameObject*> m_PartObjects;
+	vector<CPartObject*> m_PartObjects;
 
 public:
 	void Free() override;

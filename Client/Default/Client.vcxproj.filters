@@ -1111,6 +1111,9 @@
     <ClInclude Include="..\Public\Neutral_Patrol_JumpState.h">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Shadow2D.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1744,6 +1747,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Neutral_Patrol_JumpState.cpp">
       <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Shadow2D.cpp">
+      <Filter>02.GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
