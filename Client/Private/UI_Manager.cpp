@@ -90,6 +90,7 @@ void CUI_Manager::Delete_ShopItems(_uint _index)
 
 void CUI_Manager::pushBack_ShopItem(vector<CShopItemBG*> _ItemBGs)
 {
+
 	m_ShopItems.push_back(_ItemBGs);
 
 	for (auto& pShopItemBG : _ItemBGs)
@@ -134,7 +135,6 @@ vector<CDialog::DialogData> CUI_Manager::Get_Dialogue(const _wstring& _id)
 			return dialog.id == _id; 
 		});
 
-
 	if (iter != m_DialogDatas.end())
 	{
 		return { *iter };
@@ -166,6 +166,9 @@ CDialog::DialogLine CUI_Manager::Get_DialogueLine(const _wstring& _id, _int _Lin
 
 void CUI_Manager::Set_DialogId(const _tchar* _id, const _tchar* strCurSection,  _bool _DisplayDialogue, _bool _DisPlayPortrait)
 {
+	if (nullptr == m_pDiagloue)
+		return;
+
 	if (false == m_pDiagloue->CBase::Is_Active())
 	{
 		m_pDiagloue->CBase::Set_Active(true);
@@ -204,6 +207,8 @@ void CUI_Manager::Pushback_Dialogue(CDialog::DialogData _DialogData)
 
 _bool CUI_Manager::isLeft_Right()
 {
+	assert(m_pNarration);
+
 	return m_pNarration->isLeftRight();
 }
 

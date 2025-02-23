@@ -133,7 +133,6 @@ void CNPC_Companion::Late_Update(_float _fTimeDelta)
 		}
 			
 	}
-
 	__super::Late_Update(_fTimeDelta);
 }
 
@@ -150,11 +149,8 @@ _float CNPC_Companion::Cal_PlayerDistance()
 
 _bool CNPC_Companion::Trace_Player(_float2 _vPlayerPos, _float2 vNPCPos)
 {
-	
 	if (120.f >= m_fPlayerDistance)
 	{
-		
-
 		return false;
 	}
 	else if (500.f <= m_fPlayerDistance)
