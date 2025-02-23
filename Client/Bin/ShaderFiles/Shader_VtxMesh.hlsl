@@ -144,7 +144,7 @@ PS_OUT PS_MAIN(PS_IN In)
     if (vAlbedo.a < 0.01f)
         discard;
     
-    Out.vDiffuse = vAlbedo;
+    Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
     // 1,0,0
     // 1, 0.5, 0.5 (양의 x 축)
     // 0, 0.5, 0.5 (음의 x 축)
@@ -227,6 +227,19 @@ PS_OUT PS_TEST_PROJECTILE(PS_IN In)
     float fFlag = g_iFlag;
     Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, fFlag);
     
+    return Out;
+}
+
+struct PS_PLAYERDEPTHOUT
+{
+    float fPlayerDepth : SV_TARGET0;
+};
+
+PS_PLAYERDEPTHOUT PS_PLAYERDEPTH(PS_IN In)
+{
+    PS_PLAYERDEPTHOUT Out = (PS_PLAYERDEPTHOUT) 0;
+
+    Out.fPlayerDepth = In.vProjPos.w / g_fFarZ;
     return Out;
 }
 
@@ -410,6 +423,15 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN2();
     }
 
+    pass PlayerDepth // 9
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_PLAYERDEPTH();
+    }
 }
 
 /* 빛이 들어와서 맞고 튕긴 반사벡터와 이 픽셀을 바라보는 시선 벡터가 이루는 각이 180일때 최대 밝기 */

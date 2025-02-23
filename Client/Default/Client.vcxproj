@@ -240,6 +240,7 @@
     <ClInclude Include="..\Public\Narration_Anim.h" />
     <ClInclude Include="..\Public\Neutral_IdleState.h" />
     <ClInclude Include="..\Public\Neutral_PatrolState.h" />
+    <ClInclude Include="..\Public\Neutral_Patrol_JumpState.h" />
     <ClInclude Include="..\Public\Npc_Companion.h" />
     <ClInclude Include="..\Public\Npc_Rabbit.h" />
     <ClInclude Include="..\Public\NPC_Thrash.h" />
@@ -257,6 +258,7 @@
     <ClInclude Include="..\Public\PlayerState_TurnBook.h" />
     <ClInclude Include="..\Public\Portal.h" />
     <ClInclude Include="..\Public\RabbitLunch.h" />
+    <ClInclude Include="..\Public\RenderGroup_PlayerDepth.h" />
     <ClInclude Include="..\public\RenderGroup_PostProcessing.h" />
     <ClInclude Include="..\Public\Section_2D_Narration.h" />
     <ClInclude Include="..\Public\Npc_OnlySocial.h" />
@@ -459,6 +461,7 @@
     <ClCompile Include="..\Private\Narration_Anim.cpp" />
     <ClCompile Include="..\Private\Neutral_IdleState.cpp" />
     <ClCompile Include="..\Private\Neutral_PatrolState.cpp" />
+    <ClCompile Include="..\Private\Neutral_Patrol_JumpState.cpp" />
     <ClCompile Include="..\Private\Npc_Companion.cpp" />
     <ClCompile Include="..\Private\Npc_Rabbit.cpp" />
     <ClCompile Include="..\Private\NPC_Thrash.cpp" />
@@ -476,6 +479,7 @@
     <ClCompile Include="..\Private\PlayerState_TurnBook.cpp" />
     <ClCompile Include="..\Private\Portal.cpp" />
     <ClCompile Include="..\Private\RabbitLunch.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_PlayerDepth.cpp" />
     <ClCompile Include="..\private\RenderGroup_PostProcessing.cpp" />
     <ClCompile Include="..\Private\Section_2D_Narration.cpp" />
     <ClCompile Include="..\Private\NPC_OnlySocial.cpp" />

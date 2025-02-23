@@ -118,6 +118,28 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 
 HRESULT C3DModel::Initialize(void* _pArg)
 {
+	C3DModel::MODEL3D_DESC* pDesc = static_cast<C3DModel::MODEL3D_DESC*>(_pArg);
+	if (nullptr == pDesc)
+		return S_OK;
+
+	vector<CMaterial*> NewMaterials;
+	NewMaterials.resize(m_Materials.size());
+	if (true == pDesc->isDeepCopyConstBuffer)
+	{
+		/* 만약 deep copy 대상이라면 복사생성자에서 얕은복사했던거 릴리즈하고 다시 머티리얼 생성 */
+		for (auto& pMaterial : m_Materials)
+		{
+			/* 1. 기존 머티리얼을 복사하여(constbuffer만 깊은복사) */
+			CMaterial* pNewMaterial = pMaterial->Clone_DeepCopyConstBuffer();
+			/* 2. 새로만든 머티리얼 벡터에 추가 */
+			NewMaterials.push_back(pNewMaterial);
+			/* 3. 기존 머티리얼 삭제 */
+			Safe_Release(pMaterial);
+			pMaterial = nullptr;
+		}
+		m_Materials.clear();
+		m_Materials = NewMaterials;
+	}
 
 	return S_OK;
 }
@@ -445,6 +467,71 @@ void C3DModel::Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag)
 		return;
 	}
 	m_Animations[iAnimIndex]->Set_SpeedMagnifier(_fMag);
+}
+
+const CONST_PS C3DModel::Get_MaterialConstBuffer_PixelConstBuffer(_uint _iMaterialIndex) const
+{
+	return m_Materials[_iMaterialIndex]->Get_PixelConstBuffer();
+}
+
+const _float4& C3DModel::Get_MaterialConstBuffer_Albedo(_uint _iMaterialIndex) const
+{
+	return m_Materials[_iMaterialIndex]->Get_Albedo();
+}
+
+float C3DModel::Get_MaterialConstBuffer_Roughness(_uint _iMaterialIndex) const
+{
+	return m_Materials[_iMaterialIndex]->Get_Roughness();
+}
+
+float C3DModel::Get_MaterialConstBuffer_Metallic(_uint _iMaterialIndex) const
+{
+	return m_Materials[_iMaterialIndex]->Get_Metallic();
+}
+
+float C3DModel::Get_MaterialConstBuffer_AO(_uint _iMaterialIndex) const
+{
+	return m_Materials[_iMaterialIndex]->Get_AO();	
+}
+
+const _float4& C3DModel::Get_MaterialConstBuffer_MultipleAlbedo(_uint _iMaterialIndex) const
+{
+	return m_Materials[_iMaterialIndex]->Get_MultipleAlbedo();
+}
+
+void C3DModel::Set_MaterialConstBuffer_PixelConstBuffer(_uint _iMaterialIndex, const CONST_PS& _tPixelConstData, _bool _isUpdate)
+{
+	m_Materials[_iMaterialIndex]->Set_PixelConstBuffer(_tPixelConstData, _isUpdate);
+}
+
+void C3DModel::Set_MaterialConstBuffer_UseAlbedoMap(_uint _iMaterialIndex, _bool _useAlbedoMap, _bool _isUpdate)
+{
+	m_Materials[_iMaterialIndex]->Use_AlbedoMap(_useAlbedoMap, _isUpdate);
+}
+
+void C3DModel::Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, const _float4& _vAlbedoColor, _bool _isUpdate)
+{
+	m_Materials[_iMaterialIndex]->Set_Albedo(_vAlbedoColor, _isUpdate);
+}
+
+void C3DModel::Set_MaterialConstBuffer_MutipleAlbedo(_uint _iMaterialIndex, const _float4& _vMultipleAlbedoColor, _bool _isUpdate)
+{
+	m_Materials[_iMaterialIndex]->Set_MultipleAlbedo(_vMultipleAlbedoColor, _isUpdate);
+}
+
+void C3DModel::Set_MaterialConstBuffer_Roughness(_uint _iMaterialIndex, _float _fRoughness, _bool _isUpdate)
+{
+	m_Materials[_iMaterialIndex]->Set_Roughness(_fRoughness, _isUpdate);
+}
+
+void C3DModel::Set_MaterialConstBuffer_Metallic(_uint _iMaterialIndex, _float _fMetallic, _bool _isUpdate)
+{
+	m_Materials[_iMaterialIndex]->Set_Metallic(_fMetallic, _isUpdate);
+}
+
+void C3DModel::Set_MaterialConstBuffer_AO(_uint _iMaterialIndex, _float _fAO, _bool _isUpdate)
+{
+	m_Materials[_iMaterialIndex]->Set_AO(_fAO, _isUpdate);
 }
 
 _uint C3DModel::Get_AnimCount()

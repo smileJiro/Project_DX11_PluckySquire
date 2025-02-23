@@ -120,6 +120,62 @@ HRESULT CMaterial::Bind_PixelConstBuffer(CShader* _pShader)
 	return _pShader->Bind_ConstBuffer("BasicPixelConstData", m_pPixeConstBuffer);
 }
 
+void CMaterial::Set_PixelConstBuffer(const CONST_PS& _tPixelConstData, _bool _isUpdate)
+{
+	m_tPixelConstData = _tPixelConstData;
+
+	if (true == _isUpdate)
+		Update_PixelConstBuffer();
+}
+
+void CMaterial::Use_AlbedoMap(_bool _useAlbedoMap, _bool _isUpdate)
+{
+	m_tPixelConstData.useAlbedoMap = _useAlbedoMap;
+
+	if (true == _isUpdate)
+		Update_PixelConstBuffer();
+}
+
+void CMaterial::Set_Albedo(const _float4& _vAlbedo, _bool _isUpdate)
+{
+	m_tPixelConstData.Material.Albedo = _vAlbedo;
+
+	if (true == _isUpdate)
+		Update_PixelConstBuffer();
+}
+
+void CMaterial::Set_Roughness(_float _fRoughness, _bool _isUpdate)
+{
+	m_tPixelConstData.Material.Roughness = _fRoughness;
+
+	if (true == _isUpdate)
+		Update_PixelConstBuffer();
+}
+
+void CMaterial::Set_Metallic(_float _fMetallic, _bool _isUpdate)
+{
+	m_tPixelConstData.Material.Metallic = _fMetallic;
+
+	if (true == _isUpdate)
+		Update_PixelConstBuffer();
+}
+
+void CMaterial::Set_AO(_float _fAO, _bool _isUpdate)
+{
+	m_tPixelConstData.Material.AO = _fAO;
+
+	if (true == _isUpdate)
+		Update_PixelConstBuffer();
+}
+
+void CMaterial::Set_MultipleAlbedo(const _float4& _vMutipleAlbedo, _bool _isUpdate)
+{
+	m_tPixelConstData.Material.MultipleAlbedo = _vMutipleAlbedo;
+	
+	if (true == _isUpdate)
+		Update_PixelConstBuffer();
+}
+
 HRESULT CMaterial::Ready_PixelConstBuffer()
 {
 	for (_uint i = 0; i < aiTextureType_UNKNOWN; ++i)
@@ -206,6 +262,16 @@ void CMaterial::Free()
 		Safe_Release(m_MaterialTextures[i]);
 
 	__super::Free();
+}
+
+CMaterial* CMaterial::Clone_DeepCopyConstBuffer()
+{
+	CMaterial* pInstance = new CMaterial(*this); // 텍스쳐들 얕은복사하고, 
+
+	if (FAILED(pInstance->Ready_PixelConstBuffer()))
+		return nullptr;
+
+	return pInstance;
 }
 
 CComponent* CMaterial::Clone(void* pArg)
