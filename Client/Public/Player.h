@@ -587,7 +587,7 @@ private:
 
 	_float m_f2DMoveSpeed= 400.f;
 	_float m_f2DJumpPower = 600.f;
-	_float m_f2DPlatformerJumpPower = 1900.f;
+	_float m_f2DPlatformerJumpPower = 900.f;
 	_float m_f2DCenterYOffset= 36.f;
 	_float m_f2DInteractRange = 93.f;
 	_float m_f2DThrowObjectPower = 100.f;

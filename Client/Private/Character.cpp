@@ -35,11 +35,7 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
     {
         if (m_bPlatformerMode)
         {
-            m_f2DUpForce -= 9.8f * _fTimeDelta * 180;
-            if (m_f2DUpForce <= 0)
-            {
-                m_f2DUpForce = 0;
-            }
+
         }
         else
         {
