@@ -91,7 +91,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, TURN_LEFT, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, TURN_RIGHT, true);
 
-    pModelObject->Set_Animation(Animation::IDLE);
+    //pModelObject->Set_Animation(Animation::IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CBarfBug::Animation_End, this, placeholders::_1, placeholders::_2));
 
@@ -184,13 +184,7 @@ HRESULT CBarfBug::Render()
     if (COORDINATE_3D == Get_CurCoord())
         m_pDetectionField->Render();
 
-    if (COORDINATE_2D == Get_CurCoord())
-    {
-        for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
-        {
-            m_p2DColliderComs[i]->Render();
-        }
-    }
+    __super::Render();
 #endif // _DEBUG
 
     /* Font Render */
@@ -226,6 +220,11 @@ HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosit
 {
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
+
+    if (COORDINATE_2D == _eCoordinate)
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Animation2D::IDLE_DOWN);
+    else
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Animation::IDLE);
 
     m_pFSM->Set_PatrolBound();
 
@@ -461,9 +460,16 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
         case DIE:
             Set_AnimChangeable(true);
-            //풀링에 넣을 시 변경
-            //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+
             CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+
+            //확률로 전구 생성
+            if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+            {
+                _float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+                CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bulb"), COORDINATE_3D, &vPos);
+            }
+
             Event_DeleteObject(this);
             break;
 
@@ -506,6 +512,14 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 
             CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
+
+            //확률로 전구 생성
+            if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+            {
+                _float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+                _wstring strCurSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+                CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_2DBulb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strCurSection);
+            }
 
             Event_DeleteObject(this);
             break;

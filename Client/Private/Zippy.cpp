@@ -6,6 +6,7 @@
 #include "Section_Manager.h"
 #include "Player.h"
 #include "Effect2D_Manager.h"
+#include "Pooling_Manager.h"
 
 CZippy::CZippy(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -158,13 +159,7 @@ HRESULT CZippy::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-    if (COORDINATE_2D == Get_CurCoord())
-    {
-        for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
-        {
-            m_p2DColliderComs[i]->Render();
-        }
-    }
+    __super::Render();
 #endif
 
     /* Font Render */
@@ -355,6 +350,15 @@ void CZippy::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         //풀링에 넣을 시 변경
         //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
         CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
+       
+        //확률로 전구 생성
+        if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+        {
+            _float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+            _wstring strCurSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_2DBulb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strCurSection);
+        }
+        
         Event_DeleteObject(this);
         break;
 

@@ -122,6 +122,7 @@ public:
 
 public:
 	virtual void Attack();
+	virtual void Monster_Move(_fvector _vDirection);
 	virtual void Turn_Animation(_bool _isCW) {};
 
 	//해당 상태의 애니메이션이 존재하는 지 확인(상태 전용 애니메이션이 없는 경우 false)
