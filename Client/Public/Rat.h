@@ -16,6 +16,25 @@ public:
 		LAST,
 	};
 
+	enum Animation2D
+	{
+		DIE_DOWN,
+		DIE_RIGHT,
+		DIE_UP,
+		HIT_DOWN,
+		HIT_RIGHT,
+		HIT_UP,
+		IDLE_DOWN,
+		IDLE_RIGHT,
+		IDLE_UP,
+		RUN_DOWN,
+		RUN_RIGHT,
+		RUN_UP,
+		SLEEP_2D,
+		WAKE,
+		ANIM2D_LAST,
+	};
+
 private:
 	CRat(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CRat(const CRat& _Prototype);
@@ -32,6 +51,8 @@ public:
 public:
 	virtual void Change_Animation() override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
+
+	virtual void Turn_Animation(_bool _isCW) override;
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);

@@ -2,6 +2,7 @@
 #include "PlayerState_JumpAttack.h"
 #include "Player.h"
 #include "GameInstance.h"
+#include "Effect2D_Manager.h"
 
 CPlayerState_JumpAttack::CPlayerState_JumpAttack(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::JUMP_ATTACK)
@@ -78,6 +79,12 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 			if (false == m_bLandAnimed)
 			{
 				m_pGameInstance->Start_SFX(TEXT("A_sfx_jump_attack_land-") + to_wstring(rand() % 3), 50.f);
+
+				_float2 vAttackTriggerOffset = m_pOwner->Get_AttackTriggerDesc(CPlayer::ATTACK_TYPE_JUMPATTACK, eDir).vOffset;
+				_vector vtmp = m_pOwner->Get_FinalPosition();
+				vAttackTriggerOffset.x += vtmp.m128_f32[0];
+				vAttackTriggerOffset.y += vtmp.m128_f32[1];
+				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Player2dJumpAttackFX"), m_pOwner->Get_Include_Section_Name(), XMMatrixTranslation(vAttackTriggerOffset.x, vAttackTriggerOffset.y, 1.f), 0.f, 0, false, 0.f, SECTION_2D_PLAYMAP_BACKGROUND);
 
  				m_pOwner->Start_Attack(CPlayer::ATTACK_TYPE_JUMPATTACK);
 				m_bLandAnimed = true;

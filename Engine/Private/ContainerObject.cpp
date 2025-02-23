@@ -117,7 +117,7 @@ CComponent* CContainerObject::Find_Part_Component(_uint _iPartObjectIndex, const
     return m_PartObjects[_iPartObjectIndex]->Find_Component(_strPartComponentTag);
 }
 
-HRESULT CContainerObject::Add_PartObject(CGameObject* _pPartObject)
+HRESULT CContainerObject::Add_PartObject(CPartObject* _pPartObject)
 {
     /* 이 객체를 구성하기위한 부품(몸, 헤드, 무기, 이펙트, 사운드) 객체들 */
     if (nullptr == _pPartObject)
@@ -126,6 +126,13 @@ HRESULT CContainerObject::Add_PartObject(CGameObject* _pPartObject)
     m_PartObjects.push_back(_pPartObject);
 
     return S_OK;
+}
+
+_bool CContainerObject::Is_PartActive(_uint _iPartID)
+{
+    if (m_PartObjects[_iPartID] == nullptr)
+        return false;
+    return m_PartObjects[_iPartID]->Is_Active();
 }
 
 void CContainerObject::Set_PartActive(_uint _iPartID, _bool _bValue)

@@ -68,7 +68,7 @@ public :
 	HRESULT Ready_Components();
 private :
 	CVIBuffer_Rect*				m_pVIBufferCom = {};
-	ID3D11ShaderResourceView*	m_pWordTexture;
+	ID3D11ShaderResourceView*	m_pWordTexture = {};
 
 	WORD_TYPE					m_eWordType;
 

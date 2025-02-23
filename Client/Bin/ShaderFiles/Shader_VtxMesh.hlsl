@@ -312,16 +312,16 @@ PS_DIFFUSE PS_FRESNEL(PS_IN In)
     return Out;
 }
 
-PS_OUT PS_MAIN2(PS_IN In)
+PS_DIFFUSE PS_MAIN2(PS_IN In)
 {
-    PS_OUT Out = (PS_OUT) 0;
+    PS_DIFFUSE Out = (PS_DIFFUSE) 0;
 
     float4 vAlbedo = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord);
     float3 vNormal = g_NormalTexture.Sample(LinearSampler, In.vTexcoord);
    
-    Out.vDiffuse = vAlbedo;
-    Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
-    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 0.f);
+    Out.vColor = vAlbedo;
+    //Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
+    //Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 0.f);
 
     return Out;
 }

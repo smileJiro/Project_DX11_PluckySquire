@@ -6,7 +6,7 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"     
 #include "Camera_Manager.h"
-
+#include "Effect_Trail.h"
 
 CPlayerSword::CPlayerSword(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -116,6 +116,26 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
         return E_FAIL;
 	m_pBody2DColliderCom = m_p2DColliderComs[0];
 	Safe_AddRef(m_pBody2DColliderCom);
+
+    // Trail Effect 생성
+    CEffect_Trail::EFFECTTRAIL_DESC SwordTrailDesc = {};
+    SwordTrailDesc.eStartCoord = COORDINATE_3D;
+    SwordTrailDesc.iCurLevelID = m_iCurLevelID;
+    SwordTrailDesc.isCoordChangeEnable = false;
+    SwordTrailDesc.pParentMatrices[COORDINATE_3D] = &m_WorldMatrices[COORDINATE_3D];
+    SwordTrailDesc.fLength = 1.f;
+    SwordTrailDesc.vAddPoint = _float3(-0.05f, 0.f, 0.88f);
+    SwordTrailDesc.vColor = _float4(0.62f, 0.82f, 1.33f, 0.85f);
+    SwordTrailDesc.szTextureTag = L"Prototype_Component_Texture_Trail";
+    SwordTrailDesc.szBufferTag = L"Prototype_Component_VIBuffer_Trail32";
+    SwordTrailDesc.fAddTime = 0.001f;
+    SwordTrailDesc.fDeleteTime = 0.024f;
+
+    m_pTrailEffect = static_cast<CEffect_Trail*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_EffectTrail"), &SwordTrailDesc));
+
+    if (nullptr == m_pTrailEffect)
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -201,6 +221,12 @@ void CPlayerSword::Update(_float _fTimeDelta)
     //cout << m_pActorCom->Get_Shapes()[0]->getActor() << endl;
 
     __super::Update(_fTimeDelta);
+
+    // Trail Effect 정점 갱신
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        m_pTrailEffect->Update(_fTimeDelta);
+    }
 }
 
 void CPlayerSword::Late_Update(_float _fTimeDelta)
@@ -212,6 +238,9 @@ void CPlayerSword::Late_Update(_float _fTimeDelta)
     }
 
     __super::Late_Update(_fTimeDelta);
+
+    if (COORDINATE_3D == Get_CurCoord())
+        m_pTrailEffect->Late_Update(_fTimeDelta);
 }
 
 HRESULT CPlayerSword::Render()
@@ -511,12 +540,9 @@ void CPlayerSword::Attack(CGameObject* _pVictim)
         return;
     CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == Get_CurCoord()) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
     CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.2f, 20, CCamera::SHAKE_XY);
-    Event_Hit(this, static_cast<CCharacter*>(_pVictim), m_pPlayer->Get_AttackDamg(),XMVectorZero());
-    CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
-    if (pCharacter)
-    {
-        Event_KnockBack(pCharacter, Get_LookDirection(), COORDINATE_2D == Get_CurCoord() ? m_f2DKnockBackPower : m_f3DKnockBackPower);
-    }
+    _vector vKnockBackForce = Get_LookDirection() * (COORDINATE_2D == Get_CurCoord() ? m_f2DKnockBackPower : m_f3DKnockBackPower);
+    Event_Hit(this, static_cast<CCharacter*>(_pVictim), m_pPlayer->Get_AttackDamg(), vKnockBackForce);
+
     m_AttckedObjects.insert(_pVictim);
 	Safe_AddRef(_pVictim);
 }
@@ -530,6 +556,12 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
         _uint iShapeCount = (_uint)m_pActorCom->Get_Shapes().size();
         for (_uint i = 0; i < iShapeCount; i++)
             m_pActorCom->Set_ShapeEnable(i, false);
+
+        m_pTrailEffect->Set_AddUpdate(_bOn);
+        if (false == _bOn)
+        {
+            m_pTrailEffect->Delete_Delay(0.5f);
+        }
     }
     if (false == _bOn)
     {
@@ -601,6 +633,7 @@ CGameObject* CPlayerSword::Clone(void* _pArg)
 
 void CPlayerSword::Free()
 {
+    Safe_Release(m_pTrailEffect);
 	Safe_Release(m_pBody2DColliderCom);
     for (CGameObject* pObj : m_AttckedObjects)
     {

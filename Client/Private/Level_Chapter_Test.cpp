@@ -279,10 +279,10 @@ void CLevel_Chapter_Test::Update(_float _fTimeDelta)
 		int a = 0;
 	}
 
-	if (KEY_DOWN(KEY::T)) {
-		CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Trigger.json"));
-		CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
-	}
+	//if (KEY_DOWN(KEY::T)) {
+	//	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Trigger.json"));
+	//	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
+	//}
 
 }
 
@@ -889,23 +889,6 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
 {
-	CBeetle::MONSTER_DESC Beetle_Desc;
-	Beetle_Desc.iCurLevelID = m_eLevelID;
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-17.f, 6.55f, 23.f);
-	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-9.f, 0.35f, -22.f);
-	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_1;
-	Beetle_Desc.isSneakMode = true;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
-
-	//Monster_Desc.tTransform3DDesc.vPosition = _float3(10.0f, 1.0f, 10.0f);
-	//Monster_Desc.tTransform3DDesc.vScaling = _float3(1.f, 1.f, 1.f);
-
-	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Monster_Desc)))
-		return E_FAIL;*/
-
 	//CBarfBug::MONSTER_DESC Monster_Desc;
 	//Monster_Desc.iCurLevelID = m_eLevelID;
 
@@ -958,10 +941,43 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, _strLayerTag, &Boss_Desc)))
 		//	return E_FAIL;
 
-			/*  Projectile  */
+	//CJumpBug::MONSTER_DESC JumpBug_Desc;
+	//JumpBug_Desc.iCurLevelID = m_eLevelID;
+	//JumpBug_Desc.eStartCoord = COORDINATE_3D;
+	//JumpBug_Desc.tTransform3DDesc.vInitialPosition = _float3(-12.0f, 0.35f, -21.0f);
+	//JumpBug_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_JumpBug"), m_eLevelID, _strLayerTag, &JumpBug_Desc)))
+	//	return E_FAIL;
+
 	Pooling_DESC Pooling_Desc;
 	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
 	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Rat");
+	Pooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
+
+	CRat::MONSTER_DESC* Rat_Desc = new CRat::MONSTER_DESC;
+	Rat_Desc->iCurLevelID = m_eLevelID;
+	Rat_Desc->eStartCoord = COORDINATE_3D;
+	//Rat_Desc->tTransform3DDesc.vInitialPosition = _float3(-20.0f, 0.35f, -21.0f);
+	//Rat_Desc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"), m_eLevelID, _strLayerTag, Rat_Desc)))
+	//	return E_FAIL;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Rat"), Pooling_Desc, Rat_Desc);
+
+	_float3 vPos = { -20.0f, 0.35f, -21.0f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Rat"), COORDINATE_3D, &vPos);
+
+	vPos = { -700.0f, -60.f, 0.f };
+	_wstring strSectionKey = TEXT("CHAPTER4_P0304");
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Rat"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+
+	/*  Projectile  */
+	Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
 	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
 
 	CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;

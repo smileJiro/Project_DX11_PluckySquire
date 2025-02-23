@@ -88,7 +88,7 @@ void CPlayerState_PickUpObject::Enter()
 	m_tPickupKeyFrame.vScale = m_tOriginalKeyFrame.vScale;
 
 	//CarryingKeyFrame
-	_matrix matCarryingOfset = XMLoadFloat4x4( m_pOwner->Get_CarryingOffset_Ptr(eCoord));
+	_matrix matCarryingOfset = XMLoadFloat4x4(&m_pCarriableObject->Get_HeadUpMatrix(eCoord));
 	m_tCarryingKeyFrame.Set_Matrix(matCarryingOfset);
 	m_tCarryingKeyFrame.vScale = m_tOriginalKeyFrame.vScale;
 
@@ -162,8 +162,8 @@ void CPlayerState_PickUpObject::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CPlayerState_PickUpObject::Align()
 {
-	m_pCarriableObject->Set_SocketMatrix(COORDINATE_2D, m_pOwner->Get_CarryingOffset_Ptr(COORDINATE_2D));
-	m_pCarriableObject->Set_SocketMatrix(COORDINATE_3D, m_pOwner->Get_CarryingOffset_Ptr(COORDINATE_3D));
+	m_pCarriableObject->Set_SocketMatrix(COORDINATE_2D, &m_pCarriableObject->Get_HeadUpMatrix(COORDINATE_2D));
+	m_pCarriableObject->Set_SocketMatrix(COORDINATE_3D, &m_pCarriableObject->Get_HeadUpMatrix(COORDINATE_3D));
 	
 	m_pCarriableObject->Set_Position(_vector{ 0,0,0 });
 	m_pCarriableObject->Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });

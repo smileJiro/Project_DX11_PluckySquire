@@ -184,7 +184,9 @@ void CSection::Free()
         auto GameObjects = m_Layers[i]->Get_GameObjects();
         
         for (auto pGameObject : GameObjects)
+        {
             Safe_Release(pGameObject);
+        }
 
         Safe_Release(m_Layers[i]);
     }
