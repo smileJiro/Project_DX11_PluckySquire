@@ -135,7 +135,7 @@ public:
 	_tchar*								Get_DialogId() { return m_tDialogId; }
 	_tchar*								Get_strSectionID() { return m_strCurrentSection; }
 	void								Set_DialogId(const _tchar* _id, const _tchar* _strCurSection = nullptr, _bool _DisplayDialogue = true, _bool _DisPlayPortrait = true);
-
+	void								Set_DialogEnd();
 	_int								Get_DialogueLineIndex() { return 
 		m_iCurrnetLineIndex; }
 	void								Set_DialogueLineIndex(_int _index) { m_iCurrnetLineIndex = _index; }

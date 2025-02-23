@@ -99,8 +99,8 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 #ifdef _DEBUG
 			if (true == m_isDebugRender)
 			{
-				const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
-				m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+				//const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+				//m_pVIBufferCom->Update_PxDebug(RenderBuffer);
 			}
 #endif // _DEBUG
 		}
@@ -433,22 +433,22 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	SceneDesc.cpuDispatcher = m_pPxDefaultCpuDispatcher;
 	SceneDesc.filterShader = TWFilterShader;//TWFilterShader; //PxDefaultSimulationFilterShader;//; // 일단 기본값으로 생성 해보자.
 	SceneDesc.simulationEventCallback = m_pPhysx_EventCallBack; // 일단 기본값으로 생성 해보자.
-	SceneDesc.broadPhaseType = PxBroadPhaseType::eMBP;
+	SceneDesc.broadPhaseType = PxBroadPhaseType::eABP;
 	SceneDesc.contactModifyCallback = m_pPhysx_ContactModifyCallback;
 	SceneDesc.flags |= PxSceneFlag::eENABLE_PCM;
 
 	/* Create Scene */
 	m_pPxScene = m_pPxPhysics->createScene(SceneDesc);
-	if (nullptr == m_pPxScene)
-		return E_FAIL;
-	PxBounds3 regionBounds(PxVec3(-100.0f, -100.0f, -100.0f), PxVec3(100.0f, 100.0f, 100.0f));
-	// PxBroadPhaseRegion 생성
-	PxBroadPhaseRegion region;
-	region.bounds = regionBounds;
-	region.userData = nullptr; // 사용자 데이터가 필요하지 않으면 nullptr
-
-	// Region 추가
-	m_pPxScene->addBroadPhaseRegion(region);
+	//if (nullptr == m_pPxScene)
+	//	return E_FAIL;
+	//PxBounds3 regionBounds(PxVec3(-150.0f, -150.0f, -150.0f), PxVec3(150.0f, 150.0f, 150.0f));
+	//// PxBroadPhaseRegion 생성
+	//PxBroadPhaseRegion region;
+	//region.bounds = regionBounds;
+	//region.userData = nullptr; // 사용자 데이터가 필요하지 않으면 nullptr
+	//
+	//// Region 추가
+	//m_pPxScene->addBroadPhaseRegion(region);
 	/* Setting Pvd */
 	PxPvdSceneClient* pvdClient = m_pPxScene->getScenePvdClient();
 #if defined(_DEBUG)
