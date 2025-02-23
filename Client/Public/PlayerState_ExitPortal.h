@@ -16,7 +16,7 @@ public:
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 private:
     CPortal* m_pPortal = nullptr;
-    _float m_f3DJumpDistance = 3.f;
+    _float m_f3DJumpDistance = 5.f;
     NORMAL_DIRECTION m_ePortalNormal;
 };
 

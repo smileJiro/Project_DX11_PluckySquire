@@ -15,7 +15,10 @@ CPlayerState_JumpToPortal::CPlayerState_JumpToPortal(CPlayer* _pOwner)
 void CPlayerState_JumpToPortal::Update(_float _fTimeDelta)
 {
     if (m_bPortaled)
+    {
+        m_pOwner->Set_State(CPlayer::EXIT_PORTAL);
         return;
+    }
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	NORMAL_DIRECTION eNormal;
     if (COORDINATE_2D == eCoord)
@@ -26,6 +29,7 @@ void CPlayerState_JumpToPortal::Update(_float _fTimeDelta)
             m_pPortal->Use_Portal(m_pOwner,&eNormal);
             m_pOwner->Set_PortalNormal(eNormal);
             m_bPortaled = true;
+     
             return;
         }
 	}
