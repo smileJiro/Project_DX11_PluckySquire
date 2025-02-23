@@ -101,6 +101,7 @@ public: /* For. NewRenderer*/
 	void				Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _isUpdateConstBuffer = false);
 	HRESULT				Load_IBL(const _wstring& _strIBLJsonPath);
 	HRESULT				Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer);
+	void				Set_PlayerHideColor(const _float3 _vHideColor, _bool _isUpdate = false);
 #ifdef _DEBUG
 	HRESULT				Add_DebugComponent_New(class CComponent* _pDebugCom);
 	void				Set_DebugRender_New(_bool _isBool);

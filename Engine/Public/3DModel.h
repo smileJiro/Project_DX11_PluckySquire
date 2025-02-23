@@ -26,7 +26,6 @@ public:
 	{
 		// 모델의 머티리얼 클래스가 얕은복사라 같은모델이지만 별도의 머티리얼 컬러를 가지는 경우에 대한 처리가 어려움이있어 생성된 desc
 		_bool isDeepCopyConstBuffer = false;
-		_float4 vMaterialDefaultColor = {};
 	}MODEL3D_DESC;
 protected:
 	C3DModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -72,6 +71,23 @@ public:
 	virtual void			To_NextAnimation() override;
 	virtual void			Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) override;
 
+	// Material Get, Set 
+
+	// Get
+	const CONST_PS			Get_MaterialConstBuffer_PixelConstBuffer(_uint _iMaterialIndex) const;
+	const _float4&			Get_MaterialConstBuffer_Albedo(_uint _iMaterialIndex) const;
+	float					Get_MaterialConstBuffer_Roughness(_uint _iMaterialIndex) const;
+	float					Get_MaterialConstBuffer_Metallic(_uint _iMaterialIndex) const;
+	float					Get_MaterialConstBuffer_AO(_uint _iMaterialIndex) const;
+	const _float4&			Get_MaterialConstBuffer_MultipleAlbedo(_uint _iMaterialIndex) const;
+
+	void					Set_MaterialConstBuffer_PixelConstBuffer(_uint _iMaterialIndex, const CONST_PS& _tPixelConstData, _bool _isUpdate = false);
+	void					Set_MaterialConstBuffer_UseAlbedoMap(_uint _iMaterialIndex, _bool _useAlbedoMap, _bool _isUpdate = false);
+	void					Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, const _float4& _vAlbedoColor, _bool _isUpdate = false);
+	void					Set_MaterialConstBuffer_MutipleAlbedo(_uint _iMaterialIndex, const _float4& _vMultipleAlbedoColor, _bool _isUpdate = false);
+	void					Set_MaterialConstBuffer_Roughness(_uint _iMaterialIndex, _float _fRoughness, _bool _isUpdate = false);
+	void					Set_MaterialConstBuffer_Metallic(_uint _iMaterialIndex, _float _fMetallic, _bool _isUpdate = false);
+	void					Set_MaterialConstBuffer_AO(_uint _iMaterialIndex, _float _fAO, _bool _isUpdate = false);
 
 #ifdef _DEBUG
 public:

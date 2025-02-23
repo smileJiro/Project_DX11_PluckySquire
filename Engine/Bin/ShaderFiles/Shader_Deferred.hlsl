@@ -72,6 +72,8 @@ float4x4 g_LightViewMatrix, g_LightProjMatrix;
 Texture2D g_Texture;
 // Geometry RTV
 Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_DepthTexture;
+// PlayerDepth
+Texture2D g_PlayerDepthTexture;
 // Env Map
 TextureCube g_IBLSpecularTexture, g_IBLIrradianceTexture; // Irradiance = diffuse
 Texture2D g_BRDFTexture;
@@ -88,9 +90,7 @@ vector g_vMtrlAmbient = 1.0f, g_vMtrlSpecular = 1.0f; // 특별한 경우가 아니라면 
 float4 g_vCamWorld;
 float g_fFarZ = 1000.f;
 
-// Gamma, Exposure
-float g_fGamma = 2.2f;
-float g_fExposure = 1.0f;
+float3 g_vHideColor;
 
 /* Effect */
 // Weighted Blended
@@ -418,25 +418,37 @@ PS_OUT PS_MAIN_COMBINE(PS_IN In)
     
     //vLighting = vLighting + vPBRBlur;
     
+    float3 vToneMapColor = float3(0.0f, 0.0f, 0.0f);
     if (TONE_FILMIC == c_GlobalIBLVariable.iToneMappingFlag)
     {
-        vLighting = FilmicToneMapping(vLighting);
+        vToneMapColor = FilmicToneMapping(vLighting);
     }
     else if (TONE_UNCHARTED2 == c_GlobalIBLVariable.iToneMappingFlag)
     {
-        vLighting = Uncharted2ToneMapping(vLighting);
+        vToneMapColor = Uncharted2ToneMapping(vLighting);
     }
     else if (TONE_LUMAREINHARD == c_GlobalIBLVariable.iToneMappingFlag)
     {
-        vLighting = lumaBasedReinhardToneMapping(vLighting);
+        vToneMapColor = lumaBasedReinhardToneMapping(vLighting);
     }
     else
     {
-        vLighting = LinearToneMapping(vLighting);
+        vToneMapColor = LinearToneMapping(vLighting);
     }
 
+    float fPlayerDepthDesc = g_PlayerDepthTexture.Sample(LinearSampler, In.vTexcoord).r;
+    float fPlayerViewZ = fPlayerDepthDesc * g_fFarZ;
     
-    Out.vColor = float4(vLighting, 1.0f);
+    float3 vHideColor = g_vHideColor;
+    // 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
+    float fViewZDiff = fPlayerViewZ - fViewZ - 1.0f;
+    float fHideMin = 0.0f;
+    float fHideMax = 10.0f;
+    vHideColor = lerp(vToneMapColor, vHideColor, saturate(fViewZDiff / (fHideMax - fHideMin)));
+    vToneMapColor = 0.0f < fViewZDiff ? vHideColor : vToneMapColor;
+    
+    //vToneMapColor = lerp(vToneMapColor, vHideColor, (vDepth.y - fPlayerDepthDesc));
+    Out.vColor = float4(vToneMapColor, 1.0f);
     //Out.vColor.rgb *= c_DofVariable.fFadeRatio;
     return Out;
 }

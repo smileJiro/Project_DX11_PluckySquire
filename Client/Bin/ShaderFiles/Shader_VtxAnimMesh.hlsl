@@ -50,7 +50,6 @@ float4 g_vCamPosition;
 float2 g_fStartUV;
 float2 g_fEndUV;
 
-
 // Vertex Shader //
 struct VS_IN
 {
@@ -205,6 +204,7 @@ struct PS_OUT
     float4 vNormal : SV_TARGET1;
     float4 vORMH : SV_TARGET2;
     float4 vDepth : SV_TARGET3;
+
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -227,7 +227,7 @@ PS_OUT PS_MAIN(PS_IN In)
     if (vAlbedo.a < 0.1f)
         discard;
     
-    Out.vDiffuse = vAlbedo;
+    Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
     // 1,0,0 
     // 1, 0.5, 0.5 (양의 x 축)
     // 0, 0.5, 0.5 (음의 x 축)
@@ -334,6 +334,17 @@ PS_COLOR PS_FRESNEL(PS_IN In)
     return Out;
 }
 
+struct PS_PLAYERDEPTHOUT
+{
+    float fPlayerDepth : SV_TARGET0;
+};
+PS_PLAYERDEPTHOUT PS_PLAYERDEPTH(PS_IN In)
+{
+    PS_PLAYERDEPTHOUT Out = (PS_PLAYERDEPTHOUT) 0;
+
+    Out.fPlayerDepth = In.vProjPos.w / g_fFarZ;
+    return Out;
+}
 // technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
 // pass : technique에 포함된 하위 개념으로 개별 렌더링 작업에 대한 구체적인 설정을 정의한다.
 // https://www.notion.so/15-Shader-Keyword-technique11-pass-10eb1e26c8a8807aad86fb2de6738a1a // 컨트롤 클릭
@@ -409,5 +420,15 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_FRESNEL();
+    }
+
+    pass PlayerDepth // 7
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_PLAYERDEPTH();
     }
 }

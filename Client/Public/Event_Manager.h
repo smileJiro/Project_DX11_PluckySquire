@@ -84,6 +84,9 @@ private:
 	vector<CActorObject*> m_ThreadCreateMapObjects;
 	_bool m_isCreateFinished = false;
 public:
+	_wstring* m_pMapObjectFilePath = nullptr;
+	_wstring* m_pMapObjectLayerTag = nullptr;
+public:
 	virtual void Free() override;
 };
 

@@ -44,6 +44,8 @@ HRESULT CNewRenderer::Initialize()
 	if(FAILED(m_pShader->Bind_ConstBuffer("GlobalIBLConstData", m_pGlobalIBLConstBuffer)))
 		return E_FAIL;
 
+
+	m_pShader->Bind_RawValue("g_vHideColor", &m_vPlayerHideColor, sizeof(_float3));
 	return S_OK;
 }
 
@@ -251,6 +253,14 @@ void CNewRenderer::Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _is
 		m_pGameInstance->UpdateConstBuffer(m_tGlobalIBLData, m_pGlobalIBLConstBuffer);
 		m_pShader->Bind_ConstBuffer("GlobalIBLConstData", m_pGlobalIBLConstBuffer);
 	}
+}
+
+void CNewRenderer::Set_PlayerHideColor(const _float3 _vPlayerHideColor, _bool _isUpdate)
+{
+	m_vPlayerHideColor = _vPlayerHideColor;
+
+	if(true == _isUpdate)
+		m_pShader->Bind_RawValue("g_vHideColor", &m_vPlayerHideColor, sizeof(_float3));
 }
 
 #ifdef _DEBUG

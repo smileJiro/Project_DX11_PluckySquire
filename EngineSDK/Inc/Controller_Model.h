@@ -1,5 +1,6 @@
 #pragma once
 #include "Base.h"
+#include "3DModel.h"
 /* 2D Model(CVIBuffer_Rect) 와 3D Model(CModel) 을 관리하는 클래스. */
 /* 현재 Object의 Coordinate State에 따라, 기능을 실행, 제한 등 컨트롤을 하는 클래스 */
 /* Transform에 비해 상대적으로 공통 된 기능이 없다시피 함. PlayAnimation, SetupAnimation 정도? */
@@ -24,6 +25,8 @@ public:
 		_uint i3DModelPrototypeLevelID;
 		wstring wstr2DModelPrototypeTag;
 		wstring wstr3DModelPrototypeTag;
+
+		C3DModel::MODEL3D_DESC tModel3DDesc{};
 	}CON_MODEL_DESC;
 
 protected:
@@ -45,7 +48,7 @@ public: /* 2D, 3D */
 	void			Register_OnAnimEndCallBack(const function<void(COORDINATE,_uint)>& fCallback) { m_listAnimEndCallBack.push_back(fCallback); }
 	void			Invoke_OnAnimEndCallBack(COORDINATE _eCoord, _uint iAnimIdx);
 	//Get
-	CModel* Get_Model(COORDINATE _eCoord) {return m_ModelComs[_eCoord];}
+	CModel*			Get_Model(COORDINATE _eCoord) {return m_ModelComs[_eCoord];}
 
 	//Set
 	void Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
