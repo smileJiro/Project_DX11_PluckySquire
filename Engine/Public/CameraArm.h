@@ -91,7 +91,8 @@ private:
 	_float3				m_vRotation = {};
 	_float				m_fLength = {};
 
-	_float				m_fRotationValue = { 1.f };
+	_float				m_fStartLength = {};
+	_float3				m_vStartArm = {};;
 
 	// Desire Arm
 	ARM_DATA*			m_pNextArmData = { nullptr };

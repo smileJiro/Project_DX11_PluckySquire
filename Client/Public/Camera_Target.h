@@ -114,6 +114,7 @@ private:
 	_bool						m_isEnableLookAt = { true };
 	_bool						m_isExitLookAt = { false };
 	_float2						m_fLookTime = {0.4f, 0.f };
+	_float3						m_vStartLookVector = {};
 	
 	list<pair<FREEZE_EXITDATA, _uint>>	m_FreezeExitDatas = {};
 	FREEZE_EXITDATA				m_vCurFreezeExitData = {};
