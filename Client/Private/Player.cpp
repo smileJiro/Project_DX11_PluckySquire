@@ -902,10 +902,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         break;
     }
     m_pSword->Set_AttackEnable(false);
-    if (m_pPortal)
-        Set_State(EXIT_PORTAL);
-    else
-        Set_State(IDLE);
+
 
     return S_OK;
 }
