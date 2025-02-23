@@ -889,11 +889,9 @@ void CPlayer::Attack(CGameObject* _pVictim)
     CCamera_Manager::CAMERA_TYPE eCameraType = (COORDINATE_2D == Get_CurCoord()) ? CCamera_Manager::TARGET_2D : CCamera_Manager::TARGET;
     CCamera_Manager::GetInstance()->Start_Shake_ByCount(eCameraType, 0.15f, 0.1f, 20, CCamera::SHAKE_XY);
     CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pVictim);
-    Event_Hit(this, pCharacter, m_tStat.iDamg, XMVectorZero());
-    if (pCharacter)
-    {
-        Event_KnockBack(pCharacter, Get_LookDirection(), COORDINATE_2D == Get_CurCoord() ? m_f2DKnockBackPower : m_f3DKnockBackPower);
-    }
+    _vector vKnockBackForce = Get_LookDirection() * (COORDINATE_2D == Get_CurCoord() ? m_f2DKnockBackPower : m_f3DKnockBackPower);
+    Event_Hit(this, pCharacter, m_tStat.iDamg, vKnockBackForce);
+
     m_AttckedObjects.insert(_pVictim);
 }
 

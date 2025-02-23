@@ -338,18 +338,33 @@ void CCharacter::KnockBack(_fvector _vForce)
 _float CCharacter::Measure_FloorDistance()
 {
     _float fFloorHeihgt = -1;
-    PxCapsuleGeometry pxGeom;
-    m_pActorCom->Get_Shapes()[(_uint)SHAPE_USE::SHAPE_BODY]->getCapsuleGeometry(pxGeom);
-    _vector vCharacterPos = Get_FinalPosition();
+     _vector vCharacterPos = Get_FinalPosition();
     _float3 vOrigin;
     XMStoreFloat3(&vOrigin, vCharacterPos);
-    vOrigin.y += (m_fStepHeightThreshold + pxGeom.halfHeight + pxGeom.radius);
 
     _float3 vRayDir = { 0,-1,0 };
     list<CActorObject*> hitActors;
     list<RAYCASTHIT> raycasthits;
 
-    _bool bResult =m_pGameInstance->MultiSweep(&pxGeom, m_matQueryShapeOffset, vOrigin, vRayDir, 10.f, hitActors, raycasthits);
+    PxGeometryHolder pxGeomHolder = m_pActorCom->Get_Shapes()[(_uint)SHAPE_USE::SHAPE_BODY]->getGeometry().any();
+    PxGeometryType::Enum eGeomType = pxGeomHolder.getType();
+    if (PxGeometryType::eCAPSULE == eGeomType)
+    {
+        PxCapsuleGeometry& pxCapsule = pxGeomHolder.capsule();
+        vOrigin.y += (m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
+    }
+    else if (PxGeometryType::eBOX == eGeomType)
+    {
+        PxBoxGeometry& pxBox = pxGeomHolder.box();
+        vOrigin.y += (m_fStepHeightThreshold + pxBox.halfExtents.y);
+    }
+    else if (PxGeometryType::eSPHERE == eGeomType)
+    {
+        PxSphereGeometry& pxSphere = pxGeomHolder.sphere();
+        vOrigin.y += (m_fStepHeightThreshold + pxSphere.radius);
+    }
+
+    _bool bResult =m_pGameInstance->MultiSweep(&pxGeomHolder.any(), m_matQueryShapeOffset, vOrigin, vRayDir, 10.f, hitActors, raycasthits);
     if (bResult)
     {
         //닿은 것들 중에서 가장 높은 것을 찾기
@@ -379,24 +394,38 @@ _vector CCharacter::StepAssist(_fvector _vVelocity,_float _fTimeDelta)
     if (COORDINATE_3D == Get_CurCoord())
     {
         CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-        PxCapsuleGeometry pxGeom;
-        m_pActorCom->Get_Shapes()[(_uint)SHAPE_USE::SHAPE_BODY]->getCapsuleGeometry(pxGeom);
         _float3 vMyPos;// = pDynamicActor->Get_GlobalPose();
         XMStoreFloat3(&vMyPos, Get_FinalPosition());
 		_vector vPredictMove = _vVelocity * _fTimeDelta;
 		vPredictMove = XMVectorSetY(vPredictMove, 0.f);
         _float3 vOrigin = vMyPos;
 		vOrigin.x += vPredictMove.m128_f32[0];
-        vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxGeom.halfHeight + pxGeom.radius);
 		vOrigin.z += vPredictMove.m128_f32[2];
 
         _float3 vDir = { 0.f,-1.f, 0.f };
         _float fDistance = m_fStepHeightThreshold*2.f;
         list<CActorObject*> hitActors;
         list<RAYCASTHIT> raycastHits;
+        PxGeometryHolder pxGeomHolder= m_pActorCom->Get_Shapes()[(_uint)SHAPE_USE::SHAPE_BODY]->getGeometry().any();
+        PxGeometryType::Enum eGeomType = pxGeomHolder.getType();
+        if (PxGeometryType::eCAPSULE == eGeomType)
+        {
+			 PxCapsuleGeometry& pxCapsule = pxGeomHolder.capsule();
+            vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
+		}
+		else if (PxGeometryType::eBOX == eGeomType)
+		{
+			 PxBoxGeometry& pxBox = pxGeomHolder.box();
+			vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxBox.halfExtents.y);
+		}
+		else if (PxGeometryType::eSPHERE == eGeomType)
+		{
+             PxSphereGeometry& pxSphere = pxGeomHolder.sphere();
+			vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxSphere.radius);
+        }
 
+        _bool bResult = m_pGameInstance->MultiSweep(&pxGeomHolder.any(), m_matQueryShapeOffset, vOrigin, vDir, fDistance, hitActors, raycastHits);
 
-        _bool bResult = m_pGameInstance->MultiSweep(&pxGeom, m_matQueryShapeOffset,vOrigin, vDir, fDistance, hitActors, raycastHits);
         if (bResult)
         {
             _bool bFloorChecked = false;
