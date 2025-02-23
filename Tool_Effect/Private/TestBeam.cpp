@@ -41,8 +41,8 @@ HRESULT CTestBeam::Initialize(void* _pArg)
     //m_pBufferCom->Update_EndPosition(XMVectorSet(5.f, 5.f, 5.f, 1.f));
     //m_pBufferCom->End_Update();
 
-    m_pBufferCom->Set_RandomMin(_float3(-0.3f, 0.f, -0.3f));
-    m_pBufferCom->Set_RandomMax(_float3(0.3f, 0.f, 0.3f));
+    m_pBufferCom->Set_RandomMin(_float3(-2.f, 0.f, -2.f));
+    m_pBufferCom->Set_RandomMax(_float3(-2.f, 0.f, 2.f));
     m_pBufferCom->Initialize_Positions(_float3(0.f, 0.f, 0.f), _float3(5.f, 5.f, 5.f));
 
     m_vColor = _float4(0.96f, 0.5f, 0.31f, 0.85f);
@@ -73,6 +73,24 @@ void CTestBeam::Update(_float _fTimeDelta)
     if (ImGui::DragFloat4("Color", (_float*)&m_vColor, 0.001f))
     {
       
+    }
+
+    if (ImGui::Button("Converge"))
+    {
+        m_bUpdate = !m_bUpdate;
+    }
+
+    if (ImGui::Button("Reset"))
+    {
+        m_pBufferCom->Reset_Positions();
+    }
+
+
+    if (m_bUpdate)
+    {
+        m_pBufferCom->Begin_Update();
+        m_pBufferCom->Converge_Points(_fTimeDelta * 2.f);
+        m_pBufferCom->End_Update();
     }
 
 

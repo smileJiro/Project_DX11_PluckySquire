@@ -117,6 +117,9 @@ HRESULT CVIBuffer_Beam::Initialize(void* _pArg)
 
 void CVIBuffer_Beam::Initialize_Positions(const _float3& _vStartPos, const _float3& _vEndPos)
 {
+	if (m_isUpdate)
+		return;
+
 	D3D11_MAPPED_SUBRESOURCE		SubResource{};
 	m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 	m_pUpdateVertices = static_cast<VTXBEAM*>(SubResource.pData);
@@ -146,37 +149,66 @@ void CVIBuffer_Beam::Initialize_Positions(const _float3& _vStartPos, const _floa
 
 void CVIBuffer_Beam::Begin_Update()
 {
+	if (m_isUpdate)
+		return;
+
 	D3D11_MAPPED_SUBRESOURCE		SubResource{};
 	m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 	m_pUpdateVertices = static_cast<VTXBEAM*>(SubResource.pData);
 
+	m_isUpdate = true;
 }
 
 void CVIBuffer_Beam::End_Update()
 {
+	if (false == m_isUpdate)
+		return;
+
 	m_pContext->Unmap(m_pVB, 0);
+
+	m_isUpdate = false;
 }
 
 void CVIBuffer_Beam::Update_StartPosition(_fvector _vStartPosition)
 {
+	if (false == m_isUpdate)
+		return;
+
 	XMStoreFloat3(&m_pUpdateVertices[0].vPosition, _vStartPosition);
 
 	m_pVertices[0].vPosition = m_pUpdateVertices[0].vPosition;
 
-	Update_RandomPositions();
+	Update_RandomPoints();
 }
 
 void CVIBuffer_Beam::Update_EndPosition(_fvector _vEndPosition)
 {
+	if (false == m_isUpdate)
+		return;
+
 	XMStoreFloat3(&m_pUpdateVertices[m_iNumVertices - 1].vPosition, _vEndPosition);
 
 	m_pVertices[m_iNumVertices - 1].vPosition = m_pUpdateVertices[m_iNumVertices - 1].vPosition;
 
-	Update_RandomPositions();
+	Update_RandomPoints();
 }
 
-void CVIBuffer_Beam::Update_RandomPositions()
+void CVIBuffer_Beam::Reset_Positions()
 {
+	if (false == m_isUpdate)
+		Begin_Update();
+
+	memcpy(m_pUpdateVertices, m_pVertices, sizeof(VTXBEAM) * m_iNumVertices);
+
+	End_Update();
+}
+
+
+void CVIBuffer_Beam::Update_RandomPoints()
+{
+	if (false == m_isUpdate)
+		return;
+
 	_vector vStartPos = XMLoadFloat3(&m_pUpdateVertices[0].vPosition);
 	_vector vEndPos = XMLoadFloat3(&m_pUpdateVertices[m_iNumVertices - 1].vPosition);
 
@@ -192,15 +224,34 @@ void CVIBuffer_Beam::Update_RandomPositions()
 	}
 }
 
-void CVIBuffer_Beam::Reset_Positions()
+void CVIBuffer_Beam::Converge_Points(_float _fSpeeds)
 {
-	D3D11_MAPPED_SUBRESOURCE		SubResource{};
-	m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-	m_pUpdateVertices = static_cast<VTXBEAM*>(SubResource.pData);
+	if (false == m_isUpdate)
+		return;
 
-	m_pUpdateVertices = m_pVertices;
+	_vector vStartPos = XMLoadFloat3(&m_pUpdateVertices[0].vPosition);
+	_vector vEndPos = XMLoadFloat3(&m_pUpdateVertices[m_iNumVertices - 1].vPosition);
 
-	m_pContext->Unmap(m_pVB, 0);
+	for (_int i = 1; i < m_iNumVertices - 1; ++i)
+	{
+		_vector vOriginPosition = vStartPos + (vEndPos - vStartPos) * (_float)(i) / m_iNumVertices;
+		_vector vPosition = XMLoadFloat3(&m_pUpdateVertices[i].vPosition);
+
+		_vector vDir = vOriginPosition - vPosition;
+
+		// 충분히 작으면 Origin으로
+		if (0.005f > XMVectorGetX(XMVector3Length(vDir)))
+		{
+			vPosition = vOriginPosition;
+		}
+		else
+		{
+			vPosition = XMVector3Normalize(vDir) * _fSpeeds + vPosition;
+		}
+
+		XMStoreFloat3(&m_pUpdateVertices[i].vPosition, vPosition);
+	}
+
 }
 
 CVIBuffer_Beam* CVIBuffer_Beam::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iMaxVertexCount)

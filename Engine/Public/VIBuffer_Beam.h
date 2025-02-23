@@ -26,20 +26,23 @@ public:
 public:
 	void			Begin_Update();
 	void			End_Update();
-	void			Update_StartPosition(_fvector _vStartPosition); // Beam의 처음 위치 설정
-	void			Update_EndPosition(_fvector _vEndPosition);	 // Beam의 마지막 위치 설정
-	void			Update_RandomPositions();
+	void			Update_StartPosition(_fvector _vStartPosition);		// Beam의 처음 위치 설정
+	void			Update_EndPosition(_fvector _vEndPosition);			// Beam의 마지막 위치 설정
 	void			Reset_Positions();
 
+	void			Update_RandomPoints();
+	void			Converge_Points(_float _fSpeeds);
 public:
 	void			Set_RandomMin(const _float3& _vMin) { m_vRandomMin = _vMin; }
 	void			Set_RandomMax(const _float3& _vMax) { m_vRandomMax = _vMax; }
+
 
 private:
 	_float3					m_vRandomMin = { 0.f, 0.f, 0.f };
 	_float3					m_vRandomMax = { 0.f, 0.f, 0.f };
 
 private:
+	_bool					m_isUpdate = { false };
 	VTXBEAM*				m_pVertices = { nullptr };
 	VTXBEAM*				m_pUpdateVertices = { nullptr };
 

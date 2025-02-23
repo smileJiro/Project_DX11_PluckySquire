@@ -28,6 +28,7 @@ private:
 	CTexture*			m_pTextureCom = { nullptr };
 
 private:
+	_bool				m_bUpdate = { false };
 	_float4				m_vColor = { 1.f, 1.f, 1.f, 1.f  };
 
 private:
