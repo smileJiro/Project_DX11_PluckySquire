@@ -90,8 +90,6 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 				{
 					Event_CreateObject(pGameObject->Get_CurLevelID(), L"Layer_2DMapObject", pGameObject);
 
-					Safe_AddRef(pGameObject);
-
 					auto eRenderLayer = SECTION_2D_PLAYMAP_OBJECT;
 
 					if (pGameObject->Is_BackGround())
