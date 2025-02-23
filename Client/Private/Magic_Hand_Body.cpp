@@ -28,7 +28,7 @@ HRESULT CMagic_Hand_Body::Initialize(void* _pArg)
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
-    CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P1314"), this);
+    //CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P1314"), this);
 
 
     m_pControllerTransform->Get_Transform(COORDINATE_3D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(2.92f, 0.f, -21.0f, 1.f));

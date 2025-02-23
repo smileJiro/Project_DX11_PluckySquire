@@ -80,7 +80,7 @@ void CBulb::Late_Update(_float _fTimeDelta)
 {
 	if (COORDINATE_3D == Get_CurCoord() && false == m_isFrustumCulling)
 	{
-		m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BLEND, this);
+		m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_GEOMETRY, this);
 	}
 
 	__super::Late_Update(_fTimeDelta);
