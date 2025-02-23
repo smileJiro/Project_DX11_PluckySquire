@@ -28,6 +28,14 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 	CARRIABLE_DESC* pDesc = static_cast<CARRIABLE_DESC*>(_pArg);
 
 	m_eCarriableId = pDesc->eCrriableObjId;
+	XMStoreFloat4x4(&m_matHeadUpMatrix[COORDINATE_2D], XMMatrixTranslation(0.f, pDesc->fHeadUpHeight2D, 0.f));
+	
+	_matrix matHeadUpRotationMatrix = XMMatrixRotationQuaternion(XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&pDesc->vHeadUpRoolPitchYaw3D)));
+	XMStoreFloat4x4(&m_matHeadUpMatrix[COORDINATE_3D], 
+		matHeadUpRotationMatrix
+		* XMMatrixTranslation(pDesc->vHeadUpOffset3D.x, pDesc->vHeadUpOffset3D.y, pDesc->vHeadUpOffset3D.z));
+
+
 
     pDesc->eStartCoord  = COORDINATE_3D;
     pDesc->iModelPrototypeLevelID_2D = pDesc->iCurLevelID;
@@ -94,28 +102,8 @@ void CCarriableObject::Late_Update(_float _fTimeDelta)
 	}
 	if (COORDINATE_2D == Get_CurCoord() && false == Is_Carrying())
 	{
-		//m_f2DUpForce -= 9.8f * _fTimeDelta * 300;\
-		//m_f2DFloorDistance += m_f2DUpForce * _fTimeDelta;  
-		//if (0 > m_f2DFloorDistance)
-		//{
-		//	m_f2DFloorDistance = 0;
-		//	m_b2DOnGround = true;
-		//	m_bThrowing = false;
-		//	m_f2DUpForce = 0;
-		//}
-		//else if (0 == m_f2DFloorDistance)
-		//{
-		//	m_bThrowing = false;
-		//	m_b2DOnGround = true;
-		//}
-		//else
-		//{
-		//	m_b2DOnGround = false;
-		//}
-		//_vector vMyPosition = Get_FinalPosition();
-		//_vector vPosition =m_v2DGroundPosition + m_v2DThrowHorizeForce * _fTimeDelta;
-		//vPosition = XMVectorSetY(vPosition, XMVectorGetY(vPosition) + m_f2DFloorDistance);
-		//Set_Position(vPosition);
+		m_vThrowSocketOffset2D = m_matHeadUpMatrix[COORDINATE_2D];
+		
 	}
 
 }
@@ -129,7 +117,6 @@ HRESULT CCarriableObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _p
 	{
 		Set_Position({ 0,0,0 });
 		Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
-		Set_SocketMatrix(_eCoordinate, m_pCarrier->Get_CarryingOffset_Ptr(_eCoordinate));
 		Set_ParentMatrix(_eCoordinate, m_pCarrier->Get_ControllerTransform()->Get_WorldMatrix_Ptr(_eCoordinate));
 		
 		m_pControllerModel->Get_Model(COORDINATE_3D)->Set_Active(COORDINATE_3D == _eCoordinate);
@@ -155,15 +142,19 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 	{
 		if (nullptr != m_pCarrier)
 			return E_FAIL;
+
 		m_pCarrier = _pCarrier;
-		m_f2DFloorDistance = m_pCarrier->Get_CarryingOffset_Ptr(COORDINATE_2D)->_42;
-		m_f2DUpForce = 0.f;
+
 	}
 	return S_OK;
 }
 
 void CCarriableObject::Throw(_fvector _vForce)
 {
+	Set_ParentMatrix(COORDINATE_2D, nullptr);
+	Set_ParentMatrix(COORDINATE_3D, nullptr);
+	Set_SocketMatrix(COORDINATE_3D, nullptr);
+	Set_SocketMatrix(COORDINATE_2D, nullptr);
 	if (COORDINATE_3D == Get_CurCoord())
 	{
 		_float3 vForce;
@@ -172,12 +163,7 @@ void CCarriableObject::Throw(_fvector _vForce)
 	}
 	else
 	{
-		m_v2DThrowHorizeForce = _vForce;
-		m_v2DGroundPosition = m_pCarrier->Get_FinalPosition();
-		m_f2DFloorDistance = m_pCarrier->Get_CarryingOffset_Ptr(COORDINATE_2D)->_42;
-		m_f2DUpForce = 0.f;
-		m_b2DOnGround = false;
-		m_bThrowing = true;
+		Set_SocketMatrix(COORDINATE_2D, &m_vThrowSocketOffset2D);
 	}
 }
 

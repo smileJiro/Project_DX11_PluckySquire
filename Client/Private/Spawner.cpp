@@ -54,7 +54,6 @@ HRESULT CSpawner::Initialize(void* _pArg)
 			m_isDeleteObjectDesc = true;
 			pDesc = nullptr;
 		}
-
 	}
 	else
 	{

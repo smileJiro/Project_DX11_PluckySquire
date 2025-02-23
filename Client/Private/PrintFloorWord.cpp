@@ -51,10 +51,24 @@ void CPrintFloorWord::Update(_float _fTimeDelta)
 {
 	_float fThisPosX = m_vRenderPos.x;
 	_float fThisPosY = m_vRenderPos.y;
-	_float fPlayerPosX = Uimgr->Get_Player()->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0];
-	_float fPlayerPosY = Uimgr->Get_Player()->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1];
+	CPlayer* pPlayer = Uimgr->Get_Player();
+	if (nullptr == pPlayer)
+	{
+		MSG_BOX("Null이면 안되는데 null이 들어온상황. ");
+		// 레벨전환시 순서 잘 살펴야함 상욱형 >> 플레이어생성전인데 유아이매니저에서 플레이어를 참조했다던지, 레벨전환시 여기서 터짐
+		return;
+	}
+	CController_Transform* pControllerTransform = pPlayer->Get_ControllerTransform();
+	if (nullptr == pControllerTransform)
+	{
+		MSG_BOX("Null이면 안되는데 null이 들어온상황. ");
+		// 레벨전환시 순서 잘 살펴야함 상욱형 >> 플레이어생성전인데 유아이매니저에서 플레이어를 참조했다던지, 레벨전환시 여기서 터짐
+		return;
+	}
+	_float fPlayerPosX = pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0];
+	_float fPlayerPosY = pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1];
 	
-	if (250.f > fabs(fThisPosX - fPlayerPosX) && 250.f > fabs(fThisPosY - fPlayerPosY) &&COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	if (250.f > fabs(fThisPosX - fPlayerPosX) && 250.f > fabs(fThisPosY - fPlayerPosY) &&COORDINATE_2D == pPlayer->Get_CurCoord())
 	{
 		m_isFadeIn = true;
 	}

@@ -103,7 +103,7 @@ void CPlayerState_LaydownObject::Enter()
 
 	_float3 vScale = m_pCarriableObject->Get_FinalScale();
 	//CarryingKeyFrame
-	_matrix matCarryingOfset = XMLoadFloat4x4(m_pOwner->Get_CarryingOffset_Ptr(eCoord));
+	_matrix matCarryingOfset = XMLoadFloat4x4(&m_pCarriableObject->Get_HeadUpMatrix(eCoord));
 	m_tCarryingKeyFrame.Set_Matrix(matCarryingOfset);
 	m_tCarryingKeyFrame.vScale = vScale;
 	m_pCarriableObject->Set_WorldMatrix(m_tCarryingKeyFrame.Get_Matrix());
@@ -118,7 +118,9 @@ void CPlayerState_LaydownObject::Enter()
 	{
 		vTmp = m_pOwner->Get_LookDirection(COORDINATE_2D) * m_pOwner->Get_PickupRange(eCoord);
 	}
-	_matrix mat3DPickupOffset = XMMatrixTranslationFromVector(vTmp);
+	_matrix mat3DPickupOffset = matCarryingOfset;
+	mat3DPickupOffset.r[3].m128_f32[1] = 0.f;
+	mat3DPickupOffset.r[3] += vTmp;
 	m_tLayDownFrame.Set_Matrix(mat3DPickupOffset);
 	m_tLayDownFrame.vScale = vScale;
 

@@ -228,6 +228,7 @@ void CLunchBox::LunchBoxOpen()
 	CRabbitLunch::RABBITLUNCH_DESC tRabbitLunchDesc{};
     //  도시락 위치 : pDesc->tTransform3DDesc.vInitialPosition = _float3(-34.5f, 3.40f, -7.8f);
 	tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::CARROT_1;
+    tRabbitLunchDesc.eCrriableObjId = CCarriableObject::CARRIABLE_OBJ_ID::CARROT;
     tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos ;
     tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-fXPosRange*0.5f, fXPosRange * 0.5f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-fYPosRange*0.5f, fYPosRange*0.5f);
@@ -263,6 +264,7 @@ void CLunchBox::LunchBoxOpen()
     pDynamicActor->Add_Impuls(XMVectorSetZ(vForce, XMVectorGetZ(vForce) + m_pGameInstance->Compute_Random(-fForceRange * 0.5f, fForceRange * 0.5f)));
 
     tRabbitLunchDesc.eLunchType = CRabbitLunch::LUNCH_TYPE::GRAPE_1;
+    tRabbitLunchDesc.eCrriableObjId = CCarriableObject::CARRIABLE_OBJ_ID::GRAPE;
     tRabbitLunchDesc.tTransform3DDesc.vInitialPosition = vBoxPos;
     tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.x += m_pGameInstance->Compute_Random(-fXPosRange * 0.5f, fXPosRange * 0.5f);
     tRabbitLunchDesc.tTransform3DDesc.vInitialPosition.y += m_pGameInstance->Compute_Random(-fYPosRange * 0.5f, fYPosRange * 0.5f);

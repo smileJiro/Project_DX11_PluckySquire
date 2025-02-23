@@ -180,16 +180,7 @@ void CSection::Active_OnDisable()
 void CSection::Free()
 {
     for (_uint i = 0; i < m_iLayerGroupCount; i++)
-    {
-        auto GameObjects = m_Layers[i]->Get_GameObjects();
-        
-        for (auto pGameObject : GameObjects)
-            Safe_Release(pGameObject);
-
         Safe_Release(m_Layers[i]);
-    }
-    
-
     Safe_Delete_Array(m_Layers);
 
     Safe_Release(m_pGameInstance);

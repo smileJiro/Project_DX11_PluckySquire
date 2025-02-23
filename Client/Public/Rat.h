@@ -52,6 +52,8 @@ public:
 	virtual void Change_Animation() override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
+	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
+
 	virtual void Turn_Animation(_bool _isCW) override;
 
 private:
