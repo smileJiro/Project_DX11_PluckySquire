@@ -99,8 +99,8 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 #ifdef _DEBUG
 			if (true == m_isDebugRender)
 			{
-				//const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
-				//m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+				const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+				m_pVIBufferCom->Update_PxDebug(RenderBuffer);
 			}
 #endif // _DEBUG
 		}

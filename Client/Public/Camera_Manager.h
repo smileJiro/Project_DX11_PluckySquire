@@ -62,6 +62,7 @@ public:
 	void				Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fShakeTime, _float _fShakeForce, _uint _iShakeCount, _uint _iShakeType = CCamera::SHAKE_XY, _float _fDelayTime = 0.f);	
 	void				Start_FadeIn(_float _fFadeTime = 1.0f);
 	void				Start_FadeOut(_float _fFadeTime = 1.0f);
+
 public:
 	void				Load_ArmData();
 	void				Load_CutSceneData();

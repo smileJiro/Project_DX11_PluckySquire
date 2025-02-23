@@ -238,7 +238,6 @@ void CCamera::Start_Changing_AtOffset(_float _fAtOffsetTime, _vector _vNextAtOff
 	m_iOffsetRatioType = _iRatioType;
 	XMStoreFloat3(&m_vNextAtOffset, _vNextAtOffset);
 	m_vStartAtOffset = m_vAtOffset;
-	
 }
 
 void CCamera::Start_Shake_ByTime(_float _fShakeTime, _float _fShakeForce, _float _fShakeCycleTime, SHAKE_TYPE _ShakeType, _float _fDelayTime)
@@ -371,6 +370,7 @@ void CCamera::Change_AtOffset(_float _fTimeDelta)
 
 	if (fRatio >= (1.f - EPSILON)) {
 		m_isChangingAtOffset = false;
+		m_vStartAtOffset = { 0.f, 0.f, 0.f };
 		m_fAtOffsetTime.y = 0.f;
 	}
 

@@ -104,48 +104,52 @@ void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_D
 void CCamera_Target::Add_CustomArm(ARM_DATA _tArmData)
 {
 	m_CustomArmData = _tArmData;
-	m_pCurArm->Set_StartInfo(m_pCurArm->Get_ArmVector(), m_pCurArm->Get_Length());
 }
 
 void CCamera_Target::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _int _iTriggerID)
 {
 	m_iFreezeMask |= _iFreezeMask;
-	//memcpy(&m_vFreezeEnterPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
 	m_vFreezeEnterPos = m_vPreTargetPos;
 	m_isFreezeExit = false;
 
-	_float3 vExitArm;
-	XMStoreFloat3(&vExitArm, _vExitArm);
-	m_FreezeExitArms.push_back({ vExitArm , _iTriggerID });
+	FREEZE_EXITDATA tExitData = {};
+	XMStoreFloat3(&tExitData.vFreezeExitArm, _vExitArm);
+	// 아직 Length는 가지고 오지 않았음
+	// tExitData.fFreezeExitLength = ...;
+
+	m_FreezeExitDatas.push_back({ tExitData , _iTriggerID });
 }
 
 void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 {
 	m_iFreezeMask ^= _iFreezeMask;
-	m_fFreezeExitTime = { 1.f, 0.f };
+	m_fFreezeExitTime = { 0.8f, 0.f };
 	m_isFreezeExit = true;
+	m_isFreezeExitReturn = true;
 
-	for (auto& iter = m_FreezeExitArms.begin(); iter != m_FreezeExitArms.end();) {
+	for (auto& iter = m_FreezeExitDatas.begin(); iter != m_FreezeExitDatas.end();) {
 		if (_iTriggerID == (*iter).second) {
-			m_vCurFreezeExitArm = (*iter).first;
-			iter = m_FreezeExitArms.erase(iter);
-
-			_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-			_vector vDir = vPos - XMLoadFloat3(&m_vPreTargetPos);
-			_float fLength = XMVectorGetX(XMVector3Length(vDir));
-
-			m_pCurArm->Set_ArmVector(XMVector3Normalize(vDir));
-			m_pCurArm->Set_Length(fLength);
-			m_pCurArm->Set_StartInfo(XMVector3Normalize(vDir), fLength);
+			m_vCurFreezeExitData = (*iter).first;
+			iter = m_FreezeExitDatas.erase(iter);
 
 			m_isFreezeExit = true;
+			m_isFreezeExitReturn = true;
 			m_fFreezeExitTime.y = 0.f;
+	/*		if (DEFAULT == m_eCameraMode) {
+				_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+				_vector vDir = vPos - XMLoadFloat3(&m_vPreTargetPos);
+				_float fLength = XMVectorGetX(XMVector3Length(vDir));
+
+				m_pCurArm->Set_ArmVector(XMVector3Normalize(vDir));
+				m_pCurArm->Set_Length(fLength);
+
+				m_isFreezeExit = true;
+				m_fFreezeExitTime.y = 0.f;
+			}*/
 		}
 		else
 			++iter;
 	}
-
-	//m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_vFreezeExitArm)));
 }
 
 void CCamera_Target::Set_EnableLookAt(_bool _isEnableLookAt)
@@ -155,7 +159,6 @@ void CCamera_Target::Set_EnableLookAt(_bool _isEnableLookAt)
 		m_isExitLookAt = true;
 		m_fLookTime.y = 0.f;
 		XMStoreFloat3(&m_vStartLookVector, m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-		//m_vStartLookVector = 
 	}
 
 	m_isEnableLookAt = _isEnableLookAt;
@@ -310,7 +313,6 @@ void CCamera_Target::Calculate_Player()
 
 	m_pCurArm->Set_ArmVector(XMVector3Normalize(vDir));
 	m_pCurArm->Set_Length(fLength);
-	m_pCurArm->Set_StartInfo(XMVector3Normalize(vDir), fLength);
 
 	memcpy(&m_vPreTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
 }
@@ -349,8 +351,6 @@ _bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID
 	if (nullptr == m_pCurArm)
 		return false;
 
-	Set_Arm_From_Freeze();
-
 	m_pCurArm->Set_NextArmData(pData->first, _iTriggerID);
 	m_szEventTag = _wszNextArmName;
 
@@ -385,8 +385,6 @@ void CCamera_Target::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 {
 	if (nullptr == m_pCurArm)
 		return;
-
-	Set_Arm_From_Freeze();
 
 	m_pCurArm->Set_PreArmDataState(_iTriggerID, _isReturn);
 
@@ -439,6 +437,7 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 	Action_Zoom(_fTimeDelta);
 	Action_Shake(_fTimeDelta);
 	Change_AtOffset(_fTimeDelta);
+	Change_FreezeOffset(_fTimeDelta);
 
 	switch (m_eCameraMode) {
 	case DEFAULT:
@@ -483,48 +482,9 @@ void CCamera_Target::Action_SetUp_ByMode()
 
 void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 {
-	_float fRatio;
-	
-	if (true == m_isFreezeExit) {
-
-		m_fFreezeExitTime.y += _fTimeDelta;
-		fRatio = m_fFreezeExitTime.y / m_fFreezeExitTime.x;
-
-		if (m_pCurArm->Move_To_FreezeExitArm(fRatio, XMLoadFloat3(&m_vCurFreezeExitArm))) {
-			m_fFreezeExitTime.y = 0.f;
-			m_isFreezeExit = false;
-		}
-	}
-
-
 	_vector vTargetPos;
 	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);	// 목표 위치 + Arm -> 최종 결과물
 	_vector vCurPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-
-	if (true == m_isFreezeExit) {
-		// Freeze X를 나왔는데 Freeze Z에 있을 때
-		if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
-			vCameraPos = XMVectorLerp(vCurPos, XMVectorSetZ(vCameraPos, XMVectorGetZ(vCurPos)), fRatio);
-		}
-		// Freeze Z를 나왔는데 Freeze X에 있을 때
-		else if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
-			vCameraPos = XMVectorLerp(vCurPos, XMVectorSetX(vCameraPos, XMVectorGetX(vCurPos)), fRatio);
-		}
-		else if (RESET == m_iFreezeMask) {
-			//vCameraPos = XMVectorLerp(vCurPos, vCameraPos, fRatio);
-
-			_float fZ = m_pGameInstance->Lerp(XMVectorGetZ(vCurPos), XMVectorGetZ(vCameraPos), fRatio);
-			vCameraPos = XMVectorSetZ(vCameraPos, fZ);
-		}
-	}
-	else {
-		if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
-			vCameraPos = XMVectorSetX(vCameraPos, XMVectorGetX(vCurPos));
-		}
-		if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
-			vCameraPos = XMVectorSetZ(vCameraPos, XMVectorGetZ(vCurPos));
-		}
-	}
 
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
@@ -533,15 +493,13 @@ void CCamera_Target::Defualt_Move(_float _fTimeDelta)
 
 void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 {
-	// 만약 방금 Freeze Trigger를 나갔다면 Arm을 그냥 지금으로 설정, Length도 
-	Set_Arm_From_Freeze();
+	if (true == m_isFreezeExitReturn) {
+		m_isFreezeExitReturn = false;
+	}
 
 	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta)) {
 		m_eCameraMode = DEFAULT;
 		CTrigger_Manager::GetInstance()->On_End(m_szEventTag);
-
-		//if(RESET != m_iFreezeMask)
-		//	m_pCurArm->Set_ArmVector(XMLoadFloat3(&m_vCurFreezeExitArm));
 
 		return;
 	}
@@ -549,16 +507,6 @@ void CCamera_Target::Move_To_NextArm(_float _fTimeDelta)
 	_vector vTargetPos;
 	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);
 	_vector vCurPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-	if (RESET != m_iFreezeMask) {
-		if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
-			_vector vFixedPos = XMVectorSetX(vTargetPos, m_vFreezeEnterPos.x);
-			vCameraPos = vFixedPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
-		}
-		if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
-			_vector vFixedPos = XMVectorSetY(vTargetPos, m_vFreezeEnterPos.y);
-			vCameraPos = vFixedPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
-		}
-	}
 
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
@@ -570,10 +518,10 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 	// Tool용
 	if (false == m_isLookAt)
 		return;
-	//_vector vTargetPos = XMLoadFloat4x4(m_pTargetWorldMatrix).r[TARGET_POS];
-	
+
 	if ((true == m_isEnableLookAt) && (false == m_isExitLookAt)) {
-		_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+		_vector vFreezeOffset = -XMLoadFloat3(&m_vPreFreezeOffset);
+		_vector vAt = _vTargetPos + vFreezeOffset + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 		m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 	}
 	else if ((true == m_isEnableLookAt) && (true == m_isExitLookAt)) {
@@ -582,7 +530,8 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fLookTime, fTimeDelta, EASE_IN_OUT);
 
 		if (fRatio >= (1.f - EPSILON)) {
-			_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+			_vector vFreezeOffset = -XMLoadFloat3(&m_vPreFreezeOffset);
+			_vector vAt = _vTargetPos + vFreezeOffset + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 			m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 
 			m_isExitLookAt = false;
@@ -590,8 +539,9 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 			return;
 		}
 
+		_vector vFreezeOffset = -XMLoadFloat3(&m_vPreFreezeOffset);
 		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-		_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+		_vector vAt = _vTargetPos + vFreezeOffset + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 		_vector vDir = XMVector3Normalize(vAt - vPos);
 
 		_vector vLook = XMVectorLerp(XMLoadFloat3(&m_vStartLookVector), vDir, fRatio);
@@ -602,7 +552,9 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 
 void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
 {
-	Set_Arm_From_Freeze();
+	if (true == m_isFreezeExitReturn) {
+		m_isFreezeExitReturn = false;
+	}
 
 	if (true == m_pCurArm->Move_To_PreArm(_fTimeDelta)) {
 		m_eCameraMode = DEFAULT;
@@ -624,17 +576,6 @@ void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
 	_vector vTargetPos;
 	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);
 
-	if (RESET != m_iFreezeMask) {
-		if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
-			_vector vFixedPos = XMVectorSetX(vTargetPos, m_vFreezeEnterPos.x);
-			vCameraPos = vFixedPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
-		}
-		if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
-			_vector vFixedPos = XMVectorSetY(vTargetPos, m_vFreezeEnterPos.y);
-			vCameraPos = vFixedPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
-		}
-	}
-
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
 	Look_Target(vTargetPos, _fTimeDelta);
@@ -642,6 +583,10 @@ void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
 
 void CCamera_Target::Move_To_CustomArm(_float _fTimeDelta)
 {
+	if (true == m_isFreezeExitReturn) {
+		m_isFreezeExitReturn = false;
+	}
+
 	if (true == m_pCurArm->Move_To_CustomArm(&m_CustomArmData, _fTimeDelta)) {
 		m_eCameraMode = DEFAULT;
 	}
@@ -657,9 +602,31 @@ void CCamera_Target::Move_To_CustomArm(_float _fTimeDelta)
 _vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fTimeDelta)
 {
 	_vector vTargetPos;
-	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
 
-	_vector vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f), vTargetPos, m_fSmoothSpeed * _fTimeDelta);
+	// 현재 타겟 위치와 Freeze했을 당시 Target 위치 사이의 Offset을 계산한다 
+	Calculate_FreezeOffset(&vTargetPos);
+
+	_vector vCurPos, vCurFreezeOffset = {};
+
+	// Target Change가 안 됐을 때는 시간 제한 없이 Smooth를 한다
+	if (false == m_isTargetChanged) {
+		vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f), vTargetPos + XMLoadFloat3(&m_vFreezeOffset), m_fSmoothSpeed * _fTimeDelta);
+		vCurFreezeOffset = XMVectorLerp(XMLoadFloat3(&m_vPreFreezeOffset), XMLoadFloat3(&m_vFreezeOffset), m_fSmoothSpeed * _fTimeDelta);
+
+		XMStoreFloat3(&m_vPreFreezeOffset, vCurFreezeOffset);
+	}
+	// Target Change일 땐 지정된 시간만큼 바뀐 Target으로 이동한다
+	else {
+		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fTargetChangingTime, _fTimeDelta, EASE_IN_OUT);
+
+		if (fRatio >= (1.f - EPSILON)) {
+			vCurPos = vTargetPos;
+			m_isTargetChanged = false;
+		}
+
+		vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f), vTargetPos, fRatio);
+	}
+
 
 	if (nullptr != _pLerpTargetPos)
 		*_pLerpTargetPos = vCurPos;
@@ -668,6 +635,18 @@ _vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fT
 	XMStoreFloat3(&m_vPreTargetPos, vCurPos);
 
 	return vCameraPos;
+}
+
+void CCamera_Target::Calculate_FreezeOffset(_vector* _pTargetPos)
+{
+	memcpy(_pTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+
+	if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
+		m_vFreezeOffset.x = m_vFreezeEnterPos.x - XMVectorGetX(*_pTargetPos);
+	}
+	if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
+		m_vFreezeOffset.z = m_vFreezeEnterPos.z - XMVectorGetZ(*_pTargetPos);
+	}
 }
 
 void CCamera_Target::Switching(_float _fTimeDelta)
@@ -698,6 +677,8 @@ void CCamera_Target::Switching(_float _fTimeDelta)
 
 		// ㅋㅋ 시발 이거 나중에 어떻게든 해 봐 고쳐
 		m_isFreezeExit = false;
+		XMStoreFloat3(&m_vFreezeEnterPos, vTargetPos);
+		m_vPreFreezeOffset = { 0.f, 0.f, 0.f };
 		return;
 	}
 
@@ -720,21 +701,30 @@ void CCamera_Target::Switching(_float _fTimeDelta)
 	m_fFovy = fFovy;
 }
 
-void CCamera_Target::Set_Arm_From_Freeze()
+void CCamera_Target::Change_FreezeOffset(_float _fTimeDelta)
 {
-	// 만약 방금 Freeze Trigger를 나갔다면 Arm을 그냥 지금으로 설정, Length도 
-	if ((true == m_isFreezeExit)) {
-		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-		_vector vDir = vPos - XMLoadFloat3(&m_vPreTargetPos);
-		_float fLength = XMVectorGetX(XMVector3Length(vDir));
+	if (false == m_isFreezeExit)
+		return;
 
-		m_pCurArm->Set_ArmVector(XMVector3Normalize(vDir));
-		m_pCurArm->Set_Length(fLength);
-		m_pCurArm->Set_StartInfo(XMVector3Normalize(vDir), fLength);
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fFreezeExitTime, _fTimeDelta, EASE_IN_OUT);
 
-		m_isFreezeExit = false;
+	if (fRatio >= (1.f - EPSILON)) {
 		m_fFreezeExitTime.y = 0.f;
+		m_isFreezeExit = false;
+		m_vFreezeOffset = { 0.f, 0.f, 0.f };
+
+		if (m_eCameraMode == DEFAULT && true == m_isFreezeExitReturn)
+			m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_vCurFreezeExitData.vFreezeExitArm)));
+
+		return;
 	}
+
+	_vector vFreezeOffset = XMVectorLerp(XMLoadFloat3(&m_vFreezeOffset), XMVectorZero(), fRatio);
+
+	if(m_eCameraMode == DEFAULT && true == m_isFreezeExitReturn)
+		m_pCurArm->Move_To_FreezeExitArm(fRatio, XMLoadFloat3(&m_vCurFreezeExitData.vFreezeExitArm), 0.f);
+
+	XMStoreFloat3(&m_vFreezeOffset, vFreezeOffset);
 }
 
 pair<ARM_DATA*, SUB_DATA*>* CCamera_Target::Find_ArmData(_wstring _wszArmTag)

@@ -158,6 +158,10 @@ protected: /* Shake */
 	_float						m_fShakeForce = {};
 	_float3						m_vShakeOffset = {};
 
+protected: /*Target Change*/
+	_bool						m_isTargetChanged = { false };
+	_float2						m_fTargetChangingTime = { 1.f, 0.f };
+
 protected: // Initial
 	INITIAL_DATA				m_tInitialData = {};
 	_bool						m_isInitialData = { false };
@@ -165,7 +169,6 @@ protected: // Initial
 
 protected: // EventTag (ex CutScene_1 ...)
 	_wstring					m_szEventTag = {};
-
 
 protected:
 	CONST_DOF					m_tDofData = {};
