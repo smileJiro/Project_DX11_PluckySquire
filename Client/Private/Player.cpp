@@ -523,8 +523,19 @@ void CPlayer::Update(_float _fTimeDelta)
 void CPlayer::Late_Update(_float _fTimeDelta)
 {            // cout << "Upforce :" << m_f2DUpForce << " Height : " << m_f2DHeight << endl;
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
-    _vector vUp = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_UP));
-    m_pBody->Set_Position(vUp * m_f2DFloorDistance);
+    if (COORDINATE_2D == Get_CurCoord())
+    {
+        if (Is_PlatformerMode())
+        {
+            Move(_vector{0.f,1.f,0.f} * m_f2DUpForce, _fTimeDelta);
+        }
+        else
+        {
+            _vector vUp = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_UP));
+            m_pBody->Set_Position(vUp * m_f2DFloorDistance);
+        }
+    }
+
     //cout << endl;
 
 }
@@ -961,9 +972,8 @@ void CPlayer::Jump()
     {
         if (m_bPlatformerMode)
         {
-			m_pGravityCom->Set_GravityAcc(-m_f2DPlatformerJumpPower * 1.2f);
-         
             m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
+            m_f2DUpForce = m_f2DPlatformerJumpPower;
         }
         else
             m_f2DUpForce = m_f2DJumpPower;
@@ -1547,6 +1557,7 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
     if (true == _bPlatformerMode)
     {
         Event_SetActive(m_pGravityCom, true);
+        m_pGravityCom->Set_Active(false);
         m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
         CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
 
@@ -1556,6 +1567,7 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
     else
     {
         Event_SetActive(m_pGravityCom, false);
+        m_pGravityCom->Set_Active(true);
         m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
         CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
         pCollider->Set_Radius(m_f2DColliderBodyRadius);

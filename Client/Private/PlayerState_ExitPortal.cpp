@@ -31,7 +31,6 @@ void CPlayerState_ExitPortal::Enter()
 
 	if (COORDINATE_3D == eCoord)
 	{
-		static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_FOOT, true);
 		static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
 		m_ePortalNormal = m_pOwner->Get_PortalNormal();
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_BOOK_JUMP_FALL_FRONT_NEWRIG);
@@ -62,6 +61,9 @@ void CPlayerState_ExitPortal::Enter()
 			break;
 		}
 		m_pOwner->LookDirectionXZ_Dynamic(vImpulse);
+		_float3 vPos;
+		XMStoreFloat3(&vPos, vPortalPos + vImpulse * 0.5f);
+		m_pOwner->Get_ActorCom()->Set_GlobalPose(vPos);
 		m_pOwner->Add_Impuls(vImpulse * m_f3DJumpDistance);
 		//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(vTargetPos, XMConvertToRadians(45.f));
 	}
