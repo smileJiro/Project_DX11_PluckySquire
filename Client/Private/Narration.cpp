@@ -275,7 +275,7 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 							CNarration_Anim* pAnim;
 							pAnim = static_cast<CNarration_Anim*>(pObject);
 
-							// TODO :: 누수 잡는 중
+
 							pAnimation.push_back(pAnim);
 							//Safe_AddRef(pAnim);
 
@@ -285,13 +285,14 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 					}
 					// 애니메이션 처리 후, 완성된 대화 데이터를 NarData에 추가한다.
 					
-					// TODO :: 누수 잡는 중
+
 					m_vAnimObjectsByLine.emplace(iLine, pAnimation);
 
-					for (_int i = 0; i < pAnimation.size(); ++i)
-					{
-						Safe_AddRef(pAnimation[i]);
-					}
+					// TODO :: 누수 예상 - 박상욱
+					//for (_int i = 0; i < pAnimation.size(); ++i)
+					//{
+					//	Safe_AddRef(pAnimation[i]);
+					//}
 
 					NarData.lines.push_back(DialogueData);
 					++iLine;
@@ -404,10 +405,11 @@ vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine
 	{
 		m_pCurrentAnimObj = iter->second;
 
-		for (auto& animObj : m_pCurrentAnimObj)
-		{
-			Safe_AddRef(animObj);
-		}
+		// TODO :: 누수 예상 - 박상욱
+		//for (auto& animObj : m_pCurrentAnimObj)
+		//{
+		//	Safe_AddRef(animObj);
+		//}
 	}
 
 	// NarAnim과 동기화하여 섹션 레이어에 추가
@@ -500,7 +502,9 @@ _int iAnim = 0;
 
 		CNarration_Anim* pAnim = static_cast<CNarration_Anim*>(pObject);
 		newAnims.push_back(pAnim);
-		Safe_AddRef(pAnim);
+
+		// TODO :: 누수 예상 - 박상욱
+		//Safe_AddRef(pAnim);
 	}
 
 	return newAnims;
@@ -869,6 +873,14 @@ void CNarration::Free()
 		}
 	}
 	m_vAnimObjectsByLine.clear();
+
+
+	for (auto iter : m_vecAnimation)
+	{
+		Safe_Release(iter);
+	}
+	m_vecAnimation.clear();
+
 
 	__super::Free();
 }
