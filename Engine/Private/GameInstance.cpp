@@ -578,6 +578,11 @@ HRESULT CGameInstance::Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D
 	return m_pNewRenderer->Bind_DofConstBuffer(_szConstBufferName, _pConstBuffer);
 }
 
+void CGameInstance::Set_PlayerHideColor(const _float3 _vHideColor, _bool _isUpdate)
+{
+	return m_pNewRenderer->Set_PlayerHideColor(_vHideColor, _isUpdate);
+}
+
 #ifdef _DEBUG
 
 HRESULT CGameInstance::Add_DebugComponent_New(CComponent* _pDebugCom)

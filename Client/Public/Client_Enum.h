@@ -17,6 +17,7 @@ namespace Client
 		PR3D_PRIORITY =			10,
 		PR3D_SHADOW =			20,
 		PR3D_GEOMETRY =			30,
+		PR3D_PLAYERDEPTH =		32, // 플레이어 벽에 가려지는거 효과
 		PR3D_DIRECTLIGHTS =		40,
 		PR3D_LIGHTNG =			50, // >>> 리졸빙
 		PR3D_POSTPROCESSING =		52, // PostProcessing

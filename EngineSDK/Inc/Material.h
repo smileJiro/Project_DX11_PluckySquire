@@ -73,6 +73,29 @@ public:
 
 #endif // _DEBUG
 	HRESULT Bind_PixelConstBuffer(CShader* _pShader);
+
+public:
+	// Get
+	const CONST_PS Get_PixelConstBuffer() const { return m_tPixelConstData; }
+
+	const _float4& Get_Albedo() const { return m_tPixelConstData.Material.Albedo; }
+	float Get_Roughness() const { return m_tPixelConstData.Material.Roughness; }
+	float Get_Metallic() const { return m_tPixelConstData.Material.Metallic; }
+	float Get_AO() const { return m_tPixelConstData.Material.AO; }
+
+	const _float4& Get_MultipleAlbedo() const { return m_tPixelConstData.Material.MultipleAlbedo; }
+
+	// Set
+	void Use_AlbedoMap(_bool _useAlbedoMap, _bool _isUpdate = false);
+	void Set_PixelConstBuffer(const CONST_PS& _tPixelConstData, _bool _isUpdate = false);
+
+	void Set_Albedo(const _float4& _vAlbedo, _bool _isUpdate = false);
+	void Set_Roughness(_float _fRoughness, _bool _isUpdate = false);
+	void Set_Metallic(_float _fMetallic, _bool _isUpdate = false);
+	void Set_AO(_float _fAO, _bool _isUpdate = false);
+
+	void Set_MultipleAlbedo(const _float4& _vMutipleAlbedo, _bool _isUpdate = false);
+
 protected:
 	// 텍스쳐를 담는 벡터를 보관하는 배열.
 	CTexture*					m_MaterialTextures[aiTextureType_UNKNOWN];
@@ -83,12 +106,13 @@ protected: /* Shader에 바인딩하는 ConstBuffer */
 
 protected:
 	HRESULT	Ready_PixelConstBuffer();
+
 public:
 	static CMaterial* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* szDirPath, ifstream& inFile);
 	virtual void Free() override;
 
 	// CComponent을(를) 통해 상속됨
-	CMaterial* Clone_DeepCopyConstBuffer();
+	CMaterial* Clone_DeepCopyConstBuffer(); // constbuffer만 새로생성하고, 나머지는 얕은복사하는
 	CComponent* Clone(void* pArg) override;
 };
 

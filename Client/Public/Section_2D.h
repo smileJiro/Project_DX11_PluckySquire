@@ -52,7 +52,6 @@ protected:
 	virtual ~CSection_2D() = default;
 
 public:
-
 	/// <summary>
 	/// 부모의 Initialize를 호출한다.
 	/// </summary>
