@@ -154,7 +154,9 @@ HRESULT CCollision_Manager::Unregister_Section(const _wstring& _strSectionKey)
             {
                 Safe_Release(pColl);
             }
+            pObjvec.clear();
         }
+        
         m_Colliders.erase(iter);
     }
 //#ifdef _DEBUG

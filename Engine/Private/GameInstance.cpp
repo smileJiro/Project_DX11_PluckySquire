@@ -1406,6 +1406,7 @@ HRESULT CGameInstance::Unregister_Section(const _wstring& _strSectionKey)
 {
 	if (nullptr == m_pCollision_Manager)
 		return E_FAIL;
+
 	return m_pCollision_Manager->Unregister_Section(_strSectionKey);
 
 }
