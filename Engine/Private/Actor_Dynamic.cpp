@@ -1,4 +1,4 @@
-#include "Actor_Dynamic.h"
+ï»¿#include "Actor_Dynamic.h"
 #include "ActorObject.h"
 
 CActor_Dynamic::CActor_Dynamic(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ACTOR_TYPE _eActorType)
@@ -32,7 +32,7 @@ void CActor_Dynamic::Priority_Update(_float _fTimeDelta)
 
 void CActor_Dynamic::Update(_float _fTimeDelta)
 {
-	/* GameObjectµé ¾÷µ¥ÀÌÆ® ÈÄ Component ¾÷µ¥ÀÌÆ® µÇ´Ï±î. ¿©±â¼­ objectÀÇ À§Ä¡¸¦ µû¶ó°¡´Â KinematicÀ» ¸¸µé°Ú»ï. */
+	/* GameObjectë“¤ ì—…ë°ì´íŠ¸ í›„ Component ì—…ë°ì´íŠ¸ ë˜ë‹ˆê¹Œ. ì—¬ê¸°ì„œ objectì˜ ìœ„ì¹˜ë¥¼ ë”°ë¼ê°€ëŠ” Kinematicì„ ë§Œë“¤ê² ì‚¼. */
 	if (ACTOR_TYPE::KINEMATIC == m_eActorType)
 	{
 		if (nullptr == m_pOwner)
@@ -117,7 +117,7 @@ HRESULT CActor_Dynamic::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNe
 void CActor_Dynamic::Start_ParabolicTo(_vector _vPosition, _float _fLaunchRadianAngle, _float _fGravityMag)
 {
 	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
-	//°Å¸® ±¸ÇÏ±â
+	//ê±°ë¦¬ êµ¬í•˜ê¸°
 	PxTransform pxTransform = pDynamic->getGlobalPose();
 	PxVec3 pxPos = pxTransform.p;
 	PxVec3 pxTargetPos = PxVec3(XMVectorGetX(_vPosition), XMVectorGetY(_vPosition), XMVectorGetZ(_vPosition));
@@ -125,25 +125,25 @@ void CActor_Dynamic::Start_ParabolicTo(_vector _vPosition, _float _fLaunchRadian
 	_float fDistanceXZ = sqrtf(pxDiff.x * pxDiff.x + pxDiff.z * pxDiff.z);
 	_float fDistanceY = pxDiff.y;
 
-	//µµ´Ş °¡´ÉÇÑ °÷ÀÎÁö È®ÀÎ. µµ´Ş ºÒ°¡´ÉÇÑ °÷ÀÌ¸é ±×³É ¸®ÅÏ
+	//ë„ë‹¬ ê°€ëŠ¥í•œ ê³³ì¸ì§€ í™•ì¸. ë„ë‹¬ ë¶ˆê°€ëŠ¥í•œ ê³³ì´ë©´ ê·¸ëƒ¥ ë¦¬í„´
 	_float fDenominator = fDistanceXZ * tanf(_fLaunchRadianAngle) - fDistanceY;
 	if (fDenominator <= 0)
 	{
 		return;
 	}
-	//ÃÊ±â ¼Óµµ ±¸ÇÏ±â (Æ÷¹°¼± °ø½Ä). ÃÊ±â ¼Óµµ°¡ À½¼öÀÌ¸é ¹º°¡ Àß¸øµÈ °ÍÀÓ. ±×³É ¸®ÅÏ
+	//ì´ˆê¸° ì†ë„ êµ¬í•˜ê¸° (í¬ë¬¼ì„  ê³µì‹). ì´ˆê¸° ì†ë„ê°€ ìŒìˆ˜ì´ë©´ ë­”ê°€ ì˜ëª»ëœ ê²ƒì„. ê·¸ëƒ¥ ë¦¬í„´
 	_float fV0_squared = (_fGravityMag * fDistanceXZ * fDistanceXZ) / (2.0f * cosf(_fLaunchRadianAngle) * cosf(_fLaunchRadianAngle) * fDenominator);
 	if (fV0_squared < 0.0f) 
 		return ;
 	_float fV0 =  sqrtf(fV0_squared);
 
-	//¼öÆò ¹æÇâ ±¸ÇÏ±â.
+	//ìˆ˜í‰ ë°©í–¥ êµ¬í•˜ê¸°.
 	PxVec3 pxHorizontalDirection = { pxDiff.x, 0, pxDiff.z};
 	pxHorizontalDirection.normalize();
 
-	//ÃÖÁ¾ ¼öÆò ¼Óµµ´Â ÃÊ±â ¼Óµµ * cos(¹ß»ç°¢)
+	//ìµœì¢… ìˆ˜í‰ ì†ë„ëŠ” ì´ˆê¸° ì†ë„ * cos(ë°œì‚¬ê°)
 	PxVec3 pxVelocity = fV0* cosf(_fLaunchRadianAngle) * pxHorizontalDirection;
-	//ÃÖÁ¾ ¼öÁ÷ ¼Óµµ´Â ÃÊ±â ¼Óµµ * sin(¹ß»ç°¢)
+	//ìµœì¢… ìˆ˜ì§ ì†ë„ëŠ” ì´ˆê¸° ì†ë„ * sin(ë°œì‚¬ê°)
 	pxVelocity.y = fV0 * sinf(_fLaunchRadianAngle);
 
 	pDynamic->setLinearVelocity(pxVelocity, m_isActive);
@@ -195,9 +195,10 @@ _vector CActor_Dynamic::Get_AngularVelocity()
 	return vAngularVelocity;
 }
 
+
 void CActor_Dynamic::Set_LinearVelocity(_fvector _vDirection, _float _fVelocity)
 {
-	// true : °´Ã¼°¡ ¹°¸®°ø°£»ó¿¡¼­ ¼ö¸é»óÅÂÀÎ °æ¿ì ±ú¿î´Ù´Â ÆÄ¶ó¹ÌÅÍÀÓ >>> false¸é ¼ö¸é»óÅÂÀÎ °æ¿ì ±ú¿ìÁö ¾ÊÀ½.
+	// true : ê°ì²´ê°€ ë¬¼ë¦¬ê³µê°„ìƒì—ì„œ ìˆ˜ë©´ìƒíƒœì¸ ê²½ìš° ê¹¨ìš´ë‹¤ëŠ” íŒŒë¼ë¯¸í„°ì„ >>> falseë©´ ìˆ˜ë©´ìƒíƒœì¸ ê²½ìš° ê¹¨ìš°ì§€ ì•ŠìŒ.
 	static_cast<PxRigidDynamic*>(m_pActor)->setLinearVelocity(PxVec3(XMVectorGetX(_vDirection) * _fVelocity, XMVectorGetY(_vDirection) * _fVelocity, XMVectorGetZ(_vDirection) * _fVelocity), m_isActive);
 }
 
@@ -228,11 +229,11 @@ void CActor_Dynamic::Set_Rotation(_fvector _vAxis, _float _fRadian)
 	PxTransform currentTransform = pDynamicActor->getGlobalPose();
 	PxVec3 currentPosition = currentTransform.p;
 
-	// »õ·Î¿î È¸Àü »ı¼º (¶óµğ¾È ´ÜÀ§ °¢µµ·Î ¼³Á¤)
+	// ìƒˆë¡œìš´ íšŒì „ ìƒì„± (ë¼ë””ì•ˆ ë‹¨ìœ„ ê°ë„ë¡œ ì„¤ì •)
 	PxVec3 rotationAxis(XMVectorGetX(_vAxis), XMVectorGetY(_vAxis), XMVectorGetZ(_vAxis));
 	PxQuat newRotation(_fRadian, rotationAxis.getNormalized());
 
-	// »õ·Î¿î º¯È¯ Àû¿ë
+	// ìƒˆë¡œìš´ ë³€í™˜ ì ìš©
 	PxTransform newTransform(currentPosition, newRotation);
 	pDynamicActor->setGlobalPose(newTransform, m_isActive); 
 }
@@ -247,15 +248,15 @@ void CActor_Dynamic::Set_Rotation(_fvector _vLook)
 	_vector vForward = _vector{0,0,1,0};
 	PxQuat newRotation;
 	if (XMVector3NearEqual(vForward, vLook, XMVectorReplicate(1e-6f))) {
-		newRotation = PxQuat(PxIdentity); // µ¿ÀÏÇÑ ¹æÇâÀÌ¸é ´ÜÀ§ ÄõÅÍ´Ï¾ğ ¹İÈ¯
+		newRotation = PxQuat(PxIdentity); // ë™ì¼í•œ ë°©í–¥ì´ë©´ ë‹¨ìœ„ ì¿¼í„°ë‹ˆì–¸ ë°˜í™˜
 	}
 
-	_float fAngle = acos(XMVectorGetX(XMVector3Dot(vForward, vLook))); // ¶óµğ¾È °ª
+	_float fAngle = acos(XMVectorGetX(XMVector3Dot(vForward, vLook))); // ë¼ë””ì•ˆ ê°’
 	if (XMVectorGetX(vLook) < 0)
 		fAngle = -fAngle;
 	PxVec3 pxAxis = PxVec3(0, 1,0);
 	newRotation = PxQuat(fAngle, pxAxis);
-	// »õ·Î¿î º¯È¯ Àû¿ë
+	// ìƒˆë¡œìš´ ë³€í™˜ ì ìš©
 	PxTransform newTransform(currentPosition, newRotation);
 	pDynamicActor->setGlobalPose(newTransform, m_isActive); 
 }

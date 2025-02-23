@@ -50,8 +50,8 @@ public:
 	};
 	typedef struct tagAttackTriggerDesc
 	{
-		_float fRadius;
-		_float fOffset = {};
+		_float2 vExtents = {100.f,100.f};
+		_float2 vOffset = {0.f,0.f};
 	}ATTACK_TRIGGER_DESC;
 	enum ATTACK_TYPE
 	{
@@ -441,7 +441,7 @@ public:
 	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
-	virtual void On_Hit(CGameObject* _pHitter, _int _fDamg) override;
+	virtual void On_Hit(CGameObject* _pHitter, _int _fDamg, _fvector _vForce) override;
 	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
 public:
@@ -449,10 +449,10 @@ public:
 
 	void Move_Attack_3D();
 	void Attack(CGameObject* _pVictim);
-	void Move(_fvector _vForce, _float _fTimeDelta);
+
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Jump();
-	void	ThrowSword();
+	void ThrowSword();
 	void ThrowObject();
 	void Add_Upforce(_float _fForce);
 	PLAYER_INPUT_RESULT Player_KeyInput();
@@ -466,20 +466,20 @@ public:
 	void Start_Invinciblity();
 
 	//Get
-	_bool Is_OnGround();
+
 	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
 	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
 	_bool Is_SwordHandling();
 	_bool Is_CarryingObject(){ return nullptr != m_pCarryingObject; }
 	_bool Is_AttackTriggerActive();
-	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
+
 	_bool Is_PlayingAnim();
 	_bool Has_InteractObject() { return nullptr != m_pInteractableObject; }
 	_float Get_UpForce();
 	_float Get_AnimProgress();
 	_float Get_HeadHeight() { return m_fHeadHeight; }
-	_float Get_StepSlopeThreshold() { return m_fStepSlopeThreshold; }
+
 	_float Get_ArmHeight() { return m_fArmHeight; }
 	_float Get_ArmLength() { return m_fArmLength; }
 	_float Get_AirRotationSpeed() { return m_fAirRotateSpeed; }
@@ -515,6 +515,7 @@ public:
 	CModelObject* Get_Body() { return m_pBody; }
 	_vector Get_RootBonePosition();
 	NORMAL_DIRECTION Get_PortalNormal() { return m_e3DPortalNormal; }
+	const ATTACK_TRIGGER_DESC& Get_AttackTriggerDesc(ATTACK_TYPE _eAttackType, F_DIRECTION _eFDir) {return m_f2DAttackTriggerDesc[_eAttackType][(_uint)_eFDir];}
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -559,23 +560,23 @@ private:
 	_float m_fFootLength = 0.25f;
 	_float m_fAttackForwardingForce = 12.f;
 	_float m_fGroundRotateSpeed = 360.f;
-	_float m_fStepSlopeThreshold = 0.1f;
+
 	_float m_f3DLandAnimHeightThreshold= 0.6f;
 	_float m_f3DJumpPower = 10.5f;
 	_float m_fAirRotateSpeed = 40.f;
 	_float m_fAirRunSpeed = 6.f;
 	_float m_f3DMoveSpeed= 6.f;
-	_float m_f3DFloorDistance = 0.f;
+
 	_float m_f3DThrowObjectPower = 20.f;
 	_float m_f3DPickupRange = 1.3f;
 	_float m_f3DKnockBackPower = 10.f;
 
-	_bool m_bOnGround = false;
 	_bool m_bAttackTrigger = false;
 	_uint m_iSpinAttackLevel = 4;
 	_vector m_vClamberEndPosition = { 0.f,0.f,0.f,1.f };//벽타기 끝날 위치
 	_vector m_vWallNormal= { 0.f,0.f,1.f,0.f };//접촉한 벽의 법선
-	_vector m_v3DTargetDirection = { 0.f,0.f,-1.f };
+
+
 	_float4x4 m_mat3DCarryingOffset = {};
 	PLAYER_MODE m_ePlayerMode = PLAYER_MODE_NORMAL;
 	NORMAL_DIRECTION m_e3DPortalNormal= NORMAL_DIRECTION::LAST;
@@ -583,8 +584,8 @@ private:
 
 	//2D전용
 	_float m_f2DAttackForwardSpeed = 700.f;
-	_float m_f2DUpForce = 0.f;
-	_float m_f2DFloorDistance = 0.f;
+
+
 	_float m_f2DMoveSpeed= 400.f;
 	_float m_f2DJumpPower = 600.f;
 	_float m_f2DPlatformerJumpPower = 900.f;
@@ -598,12 +599,12 @@ private:
 	/* 태웅 */
 	_float m_f2DColliderBodyRadius = 20.f;
 	/* 태웅 */
-	_float m_fInvincibleTIme = 0.5f;
+	_float m_fInvincibleTIme = 1.5f;
 	_float m_fInvincibleTImeAcc = 0.f;
 	_bool m_bInvincible = false;
-	_bool m_bPlatformerMode = false;
+
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
-	ATTACK_TRIGGER_DESC m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST];// = { 93.f, 93.f, 120.f };
+	ATTACK_TRIGGER_DESC m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST][(_uint)F_DIRECTION::F_DIR_LAST];// = { 93.f, 93.f, 120.f };
 	//ATTACK_TRIGGER_DESC_2D m_f2DAttackAngle[ATTACK_TYPE_LAST];// = { 110.f, 110.f,45.f };
 	_float m_f2DAirRunSpeed = 300.f;
 	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;

@@ -73,41 +73,41 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype(); // 프로토 타입 전용 Initialize
 	virtual HRESULT Initialize(void* _pArg); // 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
-	virtual void			Priority_Update(_float _fTimeDelta) override;
-	virtual void			Update(_float fTimeDelta) override;
-	virtual void			Late_Update(_float _fTimeDelta) override;
+	virtual void	Priority_Update(_float _fTimeDelta) override;
+	virtual void	Update(_float fTimeDelta) override;
+	virtual void	Late_Update(_float _fTimeDelta) override;
+	virtual HRESULT	Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag);
+	virtual HRESULT	Render() override;
 	virtual HRESULT Render_Shadow() { return S_OK; }
-	virtual HRESULT			Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag);
-	virtual HRESULT			Render() override;
-	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
+	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
 public:
 	_bool Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst);
 	_bool Is_PickingCursor_Model_Test(_float2 _fCursorPos, _float& _fDst);
 	//const _float4x4* Find_BoneMatrix(const _char* _pBoneName) const;
 	void Register_OnAnimEndCallBack(const function<void(COORDINATE,_uint)>& fCallback);
-
+	virtual void Check_FrustumCulling();
 public:
 	// Get
-	_uint					Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
-	CModel*					Get_Model(COORDINATE _eCoord);
-	_float					Get_AnimationTime(_uint iAnimIndex) ;
-	_float					Get_AnimationTime() ;
-	_bool					Is_PlayingAnim() { return m_bPlayingAnim; }
+	_uint	Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
+	CModel*	Get_Model(COORDINATE _eCoord);
+	_float	Get_AnimationTime(_uint iAnimIndex) ;
+	_float	Get_AnimationTime() ;
+	_bool	Is_PlayingAnim() { return m_bPlayingAnim; }
 	// Set
-	void					Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
-	void					Set_Animation(_uint iIdx);
-	void					Set_3DAnimationTransitionTime(_uint iIdx, _float _fTime);
-	void					Switch_Animation(_uint iIdx);
-	void					To_NextAnimation();
+	void	Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
+	void	Set_Animation(_uint iIdx);
+	void	Set_3DAnimationTransitionTime(_uint iIdx, _float _fTime);
+	void	Switch_Animation(_uint iIdx);
+	void	To_NextAnimation();
 
-	void					Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
-	_uint					Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
-	void					Set_PlayingAnim(_bool _bPlaying);
-	void					Set_ReverseAnimation(_bool _bReverse) { m_bReverseAnimation = _bReverse; }
-	_bool					Is_ReverseAnimation() { return m_bReverseAnimation; }
-	_bool					Is_DuringAnimation();
-	void					Change_RenderGroup(COORDINATE _eCoord, _uint _iGroupKey, _uint _iPriorityKey)
+	void	Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
+	_uint	Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
+	void	Set_PlayingAnim(_bool _bPlaying);
+	void	Set_ReverseAnimation(_bool _bReverse) { m_bReverseAnimation = _bReverse; }
+	_bool	Is_ReverseAnimation() { return m_bReverseAnimation; }
+	_bool	Is_DuringAnimation();
+	void	Change_RenderGroup(COORDINATE _eCoord, _uint _iGroupKey, _uint _iPriorityKey)
 	{ 
 		if (COORDINATE_2D == _eCoord)
 		{
@@ -136,6 +136,7 @@ protected:
 	_uint					m_iPriorityID_3D = 0;
 	_bool					m_bPlayingAnim = true;	
 	_bool					m_bReverseAnimation = false;
+
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 

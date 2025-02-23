@@ -22,6 +22,7 @@ public:
 	//Get
 	_vector						Get_LinearVelocity();
 	_vector						Get_AngularVelocity();
+
 	//Set
 	void							Set_Kinematic();
 	void							Set_Dynamic();

@@ -131,6 +131,7 @@
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
+#include "Effect_Trail.h"
 
 
 
@@ -282,7 +283,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG_Borderline"),
         CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/New_T_bg_border.dds"), 1))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Trail"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Trail_03.dds"), 1))))
+        return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
@@ -323,6 +326,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPoint"),
         CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPoint.hlsl"), VTXPOINT::Elements, VTXPOINT::iNumElements))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Trail"),
+        CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Trail.hlsl"), VTXTRAIL::Elements, VTXTRAIL::iNumElements))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Compute_Shader_MeshInstance"),
         CCompute_Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_CS_Mesh.hlsl")))))
         return E_FAIL;
@@ -350,6 +356,11 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_Component_VIBuffer_Cube */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
         CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Trail*/
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Trail32"),
+        CVIBuffer_Trail::Create(m_pDevice, m_pContext, 32))))
         return E_FAIL;
     
     /* Bulb*/
@@ -583,11 +594,20 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Blocker2D"),
         CBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
         return E_FAIL;
+
+    /* For. Prototype_GameObject_SwordTrail */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_EffectTrail"),
+        CEffect_Trail::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     
 
     lstrcpy(m_szLoadingText, TEXT("이펙트(을)를 로딩중입니다."));
 
     if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/"))))
+        return E_FAIL;
+
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_STATIC,
+        TEXT("../Bin/Resources/Models/2D_FX"))))
         return E_FAIL;
 
     if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Common"))))
@@ -700,10 +720,6 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         CDebugDraw_For_Client::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     #endif // _DEBUG
-
-    
-
-
 
     lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_Texture_PickBulb"),
@@ -833,10 +849,6 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
         return E_FAIL;
 
-    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_2,
-        TEXT("../Bin/Resources/Models/2D_FX"))))
-        return E_FAIL;
-
     /* 낱개 로딩 예시*/
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model2D_FallingRock"),
@@ -923,6 +935,8 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Grape_03"),
         C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Grapes_Grape_03/Grapes_Grape_03.model", matPretransform))))
         return E_FAIL;
+
+    ///* 중복 키값도 Prototype_Manager에서 쳐내개 변경했음. 이제 중복 키값 로드해도 멈추지않음. */
     //if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_2, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
     //    return E_FAIL;
     if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_2, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform, true)))
@@ -1284,10 +1298,6 @@ HRESULT CLoader::Loading_Level_Chapter_4()
         return E_FAIL;
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
         TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
-        return E_FAIL;
-
-    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
-        TEXT("../Bin/Resources/Models/2D_FX"))))
         return E_FAIL;
 
     /* 낱개 로딩 예시*/
@@ -1785,6 +1795,14 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
         C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DNonAnim/FallingRockShadow/FallingRockShadow.dds", true))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("JumpBug"),
+        C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter4/Monster/JumpBug/JumpBug.model2d"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Rat"),
+        C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Monster/Rat/Rat.model2d"))))
+        return E_FAIL;
+
 
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Dice3D"),
@@ -2098,7 +2116,7 @@ HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _sz
 
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
                 C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
-            {
+            {   
                 string str = "Failed to Create 3DModel";
                 str += entry.path().filename().replace_extension().string();
                 MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
@@ -2261,7 +2279,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
                 CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
                     (LEVEL_ID)_eObjectLevelId,
                     m_pGameInstance,
-                    hFile, false, true);
+                    hFile, false, true , true);
             if (nullptr != pGameObject)
                 m_pGameInstance->Add_GameObject_ToLayer(_eObjectLevelId, strLayerTag.c_str(), pGameObject);
         }
@@ -2294,7 +2312,7 @@ void CLoader::Free()
     // 크리티컬 섹션을 삭제한다.
     DeleteCriticalSection(&m_Critical_Section);
 
+    Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);
-    Safe_Release(m_pGameInstance);
 }

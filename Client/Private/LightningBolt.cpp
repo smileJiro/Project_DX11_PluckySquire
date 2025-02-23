@@ -154,7 +154,7 @@ void CLightningBolt::Lightning()
     m_p2DColliderComs[0]->Set_Active(true);
 }
 
-void CLightningBolt::On_Hit(CGameObject* _pHitter, _float _fDamg)
+void CLightningBolt::On_Hit(CGameObject* _pHitter, _float _fDamg, _fvector _vForce)
 {
 
 }
@@ -184,7 +184,7 @@ void CLightningBolt::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _p
         if (LIGHTNING_DISC == static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
         {
             static_cast<CPlayer*>(_pOtherObject)->Set_State(CPlayer::ELECTRIC);
-            Event_Hit(this, _pOtherObject, 1);
+            Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, XMVectorZero());
         }
         
         m_isStop = true;

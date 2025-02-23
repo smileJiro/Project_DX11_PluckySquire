@@ -8,7 +8,8 @@ const _char* CKeyframe_Module::g_szModuleNames[2] = { "COLOR_KEYFRAME", "SCALE_K
 #endif // _DEBUG
 
 CKeyframe_Module::CKeyframe_Module(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    : m_pDevice(_pDevice)
+    : CEffect_Module()
+    , m_pDevice(_pDevice)
     , m_pContext(_pContext)
 {
     m_eModuleType = MODULE_KEYFRAME;
@@ -377,15 +378,14 @@ CEffect_Module* CKeyframe_Module::Clone()
 
 void CKeyframe_Module::Free()
 {
-    Safe_Release(m_pDevice);
-    Safe_Release(m_pContext);
-
     Safe_Release(m_pSRVKeyframeDatas);
     Safe_Release(m_pKeyframeDataTexture);
 
     m_KeyframeDatas.clear();
     m_Keyframes.clear();
 
+    Safe_Release(m_pContext);
+    Safe_Release(m_pDevice);
 
     __super::Free();
 }

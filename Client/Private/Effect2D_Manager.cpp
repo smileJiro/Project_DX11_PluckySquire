@@ -121,7 +121,7 @@ HRESULT CEffect2D_Manager::Pooling_Effects(const _wstring& _strEffectModelTag, _
 	return S_OK;
 }
 
-HRESULT CEffect2D_Manager::Play_Effect(const _wstring& _strEffectModelTag, const _wstring& _strSectionKey, _fmatrix _2DWorldMatrix, _float _fDelayTime, _uint _iAnimIndex, _bool _isLoop, _float _fLifeTime)
+HRESULT CEffect2D_Manager::Play_Effect(const _wstring& _strEffectModelTag, const _wstring& _strSectionKey, _fmatrix _2DWorldMatrix, _float _fDelayTime, _uint _iAnimIndex, _bool _isLoop, _float _fLifeTime, _uint _iSectionLayerGroup)
 {
 	vector<CEffect2D*>* pEffectPool = Find_EffectPool(_strEffectModelTag);
 	if (nullptr == pEffectPool)
@@ -131,7 +131,7 @@ HRESULT CEffect2D_Manager::Play_Effect(const _wstring& _strEffectModelTag, const
 	{
 		if (false == pEffect->Is_Active())
 		{
-			pEffect->Play_Effect(_strSectionKey, _2DWorldMatrix, _fDelayTime, _iAnimIndex, _isLoop, _fLifeTime);
+			pEffect->Play_Effect(_strSectionKey, _2DWorldMatrix, _fDelayTime, _iAnimIndex, _isLoop, _fLifeTime, _iSectionLayerGroup);
 			return S_OK;
 		}
 	}
@@ -141,7 +141,7 @@ HRESULT CEffect2D_Manager::Play_Effect(const _wstring& _strEffectModelTag, const
 		return E_FAIL;
 
 	/* 다시한번 호출하여 재귀적으로 새로 생성된 이펙트를 만든다. */
-	Play_Effect(_strEffectModelTag, _strSectionKey, _2DWorldMatrix, _fDelayTime, _iAnimIndex, _isLoop, _fLifeTime);
+	Play_Effect(_strEffectModelTag, _strSectionKey, _2DWorldMatrix, _fDelayTime, _iAnimIndex, _isLoop, _fLifeTime, _iSectionLayerGroup);
 
 	return S_OK;
 }

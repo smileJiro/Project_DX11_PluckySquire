@@ -8,7 +8,6 @@ BEGIN(Engine)
 class CGameInstance;
 END
 
-
 BEGIN(Client)
 class CLoader final : public CBase
 {

@@ -99,7 +99,7 @@ public:
 	}
 
 	template<typename T, typename std::enable_if<std::is_base_of<Client::CMapObject, T>::value, _int>::type = 0>
-	static T* Bulid_3DObject(LEVEL_ID _eLevelID, CGameInstance* _pGameInstance, HANDLE& _hFile, _bool _isCulling = true, _bool _isStatic = false)
+	static T* Bulid_3DObject(LEVEL_ID _eLevelID, CGameInstance* _pGameInstance, HANDLE& _hFile, _bool _isCulling = true, _bool _isActorToScene = true, _bool _isStatic = false)
 	{
 		DWORD	dwByte(0);
 
@@ -120,8 +120,7 @@ public:
 		NormalDesc.iModelPrototypeLevelID_3D = _isStatic ? LEVEL_STATIC : NormalDesc.iModelPrototypeLevelID_3D;
 		NormalDesc.isCulling = _isCulling;
 		NormalDesc.Build_3D_Transform(vWorld);
-
-
+		NormalDesc.isAddActorToScene = _isActorToScene;
 		CBase* pBase = nullptr;
 
 

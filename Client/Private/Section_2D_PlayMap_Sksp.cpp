@@ -13,17 +13,13 @@ CSection_2D_PlayMap_Sksp::CSection_2D_PlayMap_Sksp(ID3D11Device* _pDevice, ID3D1
 {
 }
 
-HRESULT CSection_2D_PlayMap_Sksp::Initialize(SECTION_2D_PLAYMAP_DESC* _pDesc, _uint _iPriorityKey)
+HRESULT CSection_2D_PlayMap_Sksp::Initialize(void* _pDesc)
 {
-	if (FAILED(__super::Initialize(_pDesc, _iPriorityKey)))
+	if (FAILED(__super::Initialize(_pDesc)))
 		return E_FAIL;
 	return S_OK;
 }
 
-HRESULT CSection_2D_PlayMap_Sksp::Import(json _SectionJson, _uint _iPriorityKey)
-{
-	return __super::Import(_SectionJson, _iPriorityKey);
-}
 
 HRESULT CSection_2D_PlayMap_Sksp::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
 {
@@ -49,11 +45,11 @@ HRESULT CSection_2D_PlayMap_Sksp::Section_AddRenderGroup_Process()
 	return S_OK;
 }
 
-CSection_2D_PlayMap_Sksp* CSection_2D_PlayMap_Sksp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iPriorityKey, json _SectionJson)
+CSection_2D_PlayMap_Sksp* CSection_2D_PlayMap_Sksp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pDesc)
 {
 	CSection_2D_PlayMap_Sksp* pInstance = new CSection_2D_PlayMap_Sksp(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Import(_SectionJson, _iPriorityKey)))
+	if (FAILED(pInstance->Initialize(_pDesc)))
 	{
 		MSG_BOX("Failed Create CSection_2D_PlayMap_Sksp");
 		Safe_Release(pInstance);

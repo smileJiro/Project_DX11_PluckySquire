@@ -69,6 +69,7 @@ HRESULT CPooling_Manager::Register_PoolingObject(const _wstring& _strPoolingTag,
 	PullingObjects.push_back(pGameObject);
 	Safe_AddRef(pGameObject);
 	pGameObject->Set_Active(false);
+	pGameObject->Set_Pooling(true);
 	
 	/* Pulling Objects */
 	m_PoolingObjects.emplace(_strPoolingTag, PullingObjects);
@@ -151,7 +152,18 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINA
 			if (nullptr != _pRotation)
 				pGameObject->Get_ControllerTransform()->RotationQuaternionW(*_pRotation);
 			if (nullptr != _pPosition)
+			{
+				CActorObject* pActorObject = dynamic_cast<CActorObject*>(pGameObject);
+				if (nullptr != pActorObject)
+				{
+					CActor* pActor = pActorObject->Get_ActorCom();
+					if (nullptr != pActor)
+					{
+						pActor->Set_GlobalPose(*_pPosition);
+					}
+				}
 				pGameObject->Set_Position(XMLoadFloat3(_pPosition));
+			}
 
 
 			if (COORDINATE_2D == eCoordinate)
@@ -251,8 +263,8 @@ void CPooling_Manager::Free()
 	m_ObjectsDescs.clear();
 
 	Safe_Release(m_pGameInstance);
-	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
 
 	__super::Free();
 }

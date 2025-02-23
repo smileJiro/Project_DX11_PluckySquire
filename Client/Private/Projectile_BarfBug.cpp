@@ -67,8 +67,6 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
 
     Safe_Delete(pDesc->pActorDesc);
 
-    m_isPooling = true;
-
 	return S_OK;
 }
 
@@ -167,7 +165,7 @@ void CProjectile_BarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     }
 }
 
-void CProjectile_BarfBug::On_Hit(CGameObject* _pHitter, _float _fDamg)
+void CProjectile_BarfBug::On_Hit(CGameObject* _pHitter, _float _fDamg, _fvector _vForce)
 {
 
 }
@@ -178,10 +176,10 @@ void CProjectile_BarfBug::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
     {
         if((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
         {
-            Event_Hit(this, _Other.pActorUserData->pOwner, 1);
             _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
             XMVectorSetY(vRepulse, -1.f);
-            Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
+            Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), 1, vRepulse);
+            //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
             Event_DeleteObject(this);
 
             m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_impact_") + to_wstring(rand() % 2), 50.f);
@@ -205,7 +203,7 @@ void CProjectile_BarfBug::On_Collision2D_Enter(CCollider* _pMyCollider, CCollide
 {
     if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID() || OBJECT_GROUP::MAPOBJECT & _pOtherObject->Get_ObjectGroupID() || OBJECT_GROUP::BLOCKER & _pOtherObject->Get_ObjectGroupID())
     {
-        Event_Hit(this, _pOtherObject, 1);
+        Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, XMVectorZero());
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PROJECTILESPLAT);
         m_isStop = true;
 

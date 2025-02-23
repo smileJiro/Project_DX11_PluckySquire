@@ -15,32 +15,25 @@ CSection_2D_Narration::CSection_2D_Narration(ID3D11Device* _pDevice, ID3D11Devic
 {
 }
 
-HRESULT CSection_2D_Narration::Initialize(SECTION_2D_DESC* _pDesc, _uint _iPriorityKey)
+HRESULT CSection_2D_Narration::Initialize(void* _pDesc)
 {
-	if (FAILED(__super::Initialize(_pDesc, _iPriorityKey)))
+	if (nullptr == _pDesc)
 		return E_FAIL;
+
+	SECTION_2D_NARRATION_DESC* pDesc = static_cast<SECTION_2D_NARRATION_DESC*>(_pDesc);
+
+	if (FAILED(__super::Initialize(_pDesc)))
+		return E_FAIL;
+
 
 	return S_OK;
 }
 
-HRESULT CSection_2D_Narration::Import(json _SectionJson, _uint _iPriorityKey)
+HRESULT CSection_2D_Narration::Import(void* _pDesc)
 {
-
+	SECTION_2D_NARRATION_DESC* pDesc = static_cast<SECTION_2D_NARRATION_DESC*>(_pDesc);
 #pragma region json 객체의 기본 정보 읽습니다. 하위 주석 참조.
-	if (FAILED(__super::Import(_SectionJson, _iPriorityKey)))
-		return E_FAIL;
-#pragma endregion
-	
-#pragma region Narraion의 경우, TextureName이 있는지 검사하고 해당 이름을 통해 백그라운드 텍스쳐를 불러옵니다.
-	_wstring strSectionBackGroundFileName = L"";
-
-	if(_SectionJson["Section_Info"].contains("Section_TextureName"))
-	{ 
-		_string strTextureName = _SectionJson["Section_Info"]["Section_TextureName"];
-		strSectionBackGroundFileName = StringToWstring(strTextureName);
-	}
-
-	if (FAILED(Ready_Map_2D(strSectionBackGroundFileName)))
+	if (FAILED(__super::Import(_pDesc)))
 		return E_FAIL;
 #pragma endregion
 	return S_OK;
@@ -90,11 +83,11 @@ HRESULT CSection_2D_Narration::Remove_GameObject_ToSectionLayer(CGameObject* _pG
 }
 ;
 
-CSection_2D_Narration* CSection_2D_Narration::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iPriorityKey, SECTION_2D_DESC* _pDesc)
+CSection_2D_Narration* CSection_2D_Narration::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pDesc)
 {
 	CSection_2D_Narration* pInstance = new CSection_2D_Narration(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize(_pDesc, _iPriorityKey)))
+	if (FAILED(pInstance->Initialize(_pDesc)))
 	{
 		MSG_BOX("Failed Create CSection_2D_Narration");
 		Safe_Release(pInstance);
@@ -103,18 +96,6 @@ CSection_2D_Narration* CSection_2D_Narration::Create(ID3D11Device* _pDevice, ID3
 	return pInstance;
 }
 
-CSection_2D_Narration* CSection_2D_Narration::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _uint _iPriorityKey, json _SectionJson)
-{
-	CSection_2D_Narration* pInstance = new CSection_2D_Narration(_pDevice, _pContext);
-
-	if (FAILED(pInstance->Import(_SectionJson, _iPriorityKey)))
-	{
-		MSG_BOX("Failed Create CSection_2D_Narration");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
 void CSection_2D_Narration::Free()
 {
 	__super::Free();

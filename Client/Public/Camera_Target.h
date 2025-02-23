@@ -91,6 +91,7 @@ private:
 	const _float4x4*			m_pTargetWorldMatrix = { nullptr };
 	_float3						m_vPreTargetPos = {};
 	_float3						m_vFreezeOffset = {};
+	_float3						m_vPreFreezeOffset = {};
 
 	CAMERA_MODE					m_eCameraMode = { CAMERA_MODE_END };
 	CAMERA_MODE					m_ePreCameraMode = { DEFAULT };
@@ -105,6 +106,7 @@ private:
 	// Freeze
 	_uint						m_iFreezeMask = {};
 	_bool						m_isFreezeExit = { false };
+	_bool						m_isFreezeExitReturn = { false };	// Freeze Exit Arm으로 돌아가기
 	_float2						m_fFreezeExitTime = { 0.8f, 0.f };
 	_float3						m_vFreezeEnterPos = {};
 
@@ -143,7 +145,6 @@ private:
 	_vector						Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fTimeDelta);
 	void						Calculate_FreezeOffset(_vector* _pTargetPos);
 	virtual	void				Switching(_float _fTimeDelta) override;
-	void						Set_Arm_From_Freeze();
 	void						Change_FreezeOffset(_float _fTimeDelta);
 
 private:

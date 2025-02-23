@@ -29,12 +29,13 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta);
 	virtual HRESULT				Render();
 	virtual HRESULT				Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID);
-
+public:
+	virtual void				Check_FrustumCulling() { return; }
 public:
 	virtual void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
 	virtual void						On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
 	virtual void						On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) { return; }
-	virtual void						On_Hit(CGameObject* _pHitter, _int _fDamg) { return; }
+	virtual void						On_Hit(CGameObject* _pHitter, _int _fDamg, _fvector _vForce) { return; }
 protected:/* Component Update */
 	void						Priority_Update_Component(_float _fTimeDelta);
 	void						Update_Component(_float _fTimeDelta);
@@ -50,14 +51,13 @@ private:
 	virtual void                On_CoordinateChange(COORDINATE _eCoordinate, const _float3& _vPosition) {}
 
 public:
-	// Get
+	//Get
 	const _wstring&				Get_Name() const								{ return m_strName; }
 	COORDINATE					Get_CurCoord() const							{ return m_pControllerTransform->Get_CurCoord(); }
 	CController_Transform*		Get_ControllerTransform() const					{ return m_pControllerTransform; }
 	_matrix						Get_WorldMatrix()								{ return m_pControllerTransform->Get_WorldMatrix(); }
 	virtual _matrix				Get_FinalWorldMatrix()							{ return m_pControllerTransform->Get_WorldMatrix(); }
  	virtual _vector				Get_FinalPosition() const						{ return m_pControllerTransform->Get_State(CTransform::STATE_POSITION); }
-
 	virtual _float3				Get_FinalScale() const							{ return m_pControllerTransform->Get_Scale(); }
 	_bool						Is_Dead() const									{ return m_isDead; }
 	_bool						Is_Render() const								{ return m_isRender; }
@@ -66,7 +66,8 @@ public:
 	_uint						Get_GameObjectInstanceID() const				{ return m_iInstanceID; }
 	const _wstring&				Get_Include_Section_Name()						{ return m_strSectionName; }
 	_uint						Get_ObjectGroupID() const { return m_iObjectGroupID; }
-	// Set
+
+	//Set
 	void						Set_Name(const _wstring& _strName)				{ m_strName = _strName; }
 	void						Set_WorldMatrix(_float4x4 _WorldMatrix)			{ m_pControllerTransform->Set_WorldMatrix(_WorldMatrix); }
 	void						Set_Position(_fvector _vPos)					{ m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(_vPos, 1.0f)); }
@@ -102,6 +103,7 @@ protected:
 	_bool						m_isDead = false;
 	_bool						m_isRender = true;
 	_bool						m_isPooling = false;
+	_bool						m_isFrustumCulling = false;
 protected:
 	map<const _wstring, CComponent*> m_Components;
 

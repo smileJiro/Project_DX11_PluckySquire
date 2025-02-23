@@ -197,53 +197,53 @@ _bool CUI_Manager::isLeft_Right()
 
 void CUI_Manager::Test_Update(_float _fTimedelta)
 {
-	if (KEY_DOWN(KEY::U) && 0 <= m_iTextIndex)
-	{
-		switch (m_iTextIndex)
-		{
-		case 0:
+	//if (KEY_DOWN(KEY::U) && 0 <= m_iTextIndex)
+	//{
+	//	switch (m_iTextIndex)
+	//	{
+	//	case 0:
 
-		{
-			if (m_isTest == false)
-			{
-				Uimgr->Set_PlayNarration(TEXT("Chapter2_P0506_Narration_01"));
-				m_isTest = true;
-			}
-			
-			//Uimgr->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
-			
-			++m_iTextIndex;
-		}
-		break;
+	//	{
+	//		if (m_isTest == false)
+	//		{
+	//			Uimgr->Set_PlayNarration(TEXT("Chapter2_P0506_Narration_01"));
+	//			m_isTest = true;
+	//		}
+	//		
+	//		//Uimgr->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
+	//		
+	//		++m_iTextIndex;
+	//	}
+	//	break;
 
-		case 1:
-		{
-			Uimgr->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
-			
-			++m_iTextIndex;
-		}
-		break;
-		
-		case 2:
-		{
-			
-		}
-		break;
+	//	case 1:
+	//	{
+	//		Uimgr->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
+	//		
+	//		++m_iTextIndex;
+	//	}
+	//	break;
+	//	
+	//	case 2:
+	//	{
+	//		
+	//	}
+	//	break;
 
-		}
+	//	}
 
-		
-	}
+	//	
+	//}
 
 
-	if (m_isPlayerNarration == true)
-	{
-		if (false == m_pNarration->CBase::Is_Active())
-		{
-			m_pNarration->CBase::Set_Active(true);
-		}
-	}
-			
+	//if (m_isPlayerNarration == true)
+	//{
+	//	if (false == m_pNarration->CBase::Is_Active())
+	//	{
+	//		m_pNarration->CBase::Set_Active(true);
+	//	}
+	//}
+	//		
 
 
 

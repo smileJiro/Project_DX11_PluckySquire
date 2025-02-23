@@ -59,7 +59,7 @@ namespace Map_Tool
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
-	
+
 	void Event_Capcher(const _tchar* _strFIlePath)
 	{
 		EVENT tEvent;
@@ -171,7 +171,7 @@ namespace Map_Tool
 	{
 		return string::npos != _strSourceText.find(_strDestText);
 	}
-	
+
 	_bool ContainWstring(const _wstring _strSourceText, const _wstring _strDestText)
 	{
 		return string::npos != _strSourceText.find(_strDestText);
@@ -216,7 +216,7 @@ namespace Map_Tool
 		return false;
 	}
 
-	std::wstring OpenDirectoryDialog()
+	std::wstring OpenDirectoryDialog(const _wstring& _strRelativePath)
 	{
 
 		CoInitialize(NULL);
@@ -227,34 +227,51 @@ namespace Map_Tool
 		if (SUCCEEDED(hr)) {
 			// 폴더 선택 모드 활성화
 			DWORD dwOptions;
-			pfd->GetOptions(&dwOptions);
-			pfd->SetOptions(dwOptions | FOS_PICKFOLDERS); // 디렉토리 선택 모드
 
-			// 다이얼로그 표시
-			hr = pfd->Show(NULL);
-			if (SUCCEEDED(hr)) {
-				IShellItem* psiResult;
-				hr = pfd->GetResult(&psiResult);
+			_wstring strModelPath = _strRelativePath;
+			//L"../../Client/Bin/Resources/Models/2DMapObject/";
+			_tchar originalDir[MAX_PATH];
 
+			if (!GetFullPathName(strModelPath.c_str(), MAX_PATH, originalDir, NULL))
+				return L"";
+
+			IShellItem* pFolder = nullptr;
+			hr = SHCreateItemFromParsingName(originalDir, nullptr, IID_PPV_ARGS(&pFolder));
+
+			if (SUCCEEDED(hr))
+			{
+
+				pfd->SetFolder(pFolder);
+				pfd->GetOptions(&dwOptions);
+				pfd->SetOptions(dwOptions | FOS_PICKFOLDERS); // 디렉토리 선택 모드
+
+				// 다이얼로그 표시
+				hr = pfd->Show(NULL);
 				if (SUCCEEDED(hr)) {
-					// 디렉토리 경로 가져오기
-					PWSTR pszFilePath = NULL;
-					psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
+					IShellItem* psiResult;
+					hr = pfd->GetResult(&psiResult);
 
-					// 경로를 std::string으로 변환
-					std::wstring ws(pszFilePath);
+					if (SUCCEEDED(hr)) {
+						// 디렉토리 경로 가져오기
+						PWSTR pszFilePath = NULL;
+						psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
+
+						// 경로를 std::string으로 변환
+						std::wstring ws(pszFilePath);
 
 
-					// 메모리 해제
-					CoTaskMemFree(pszFilePath);
-					psiResult->Release();
-					pfd->Release();
-					CoUninitialize();
+						// 메모리 해제
+						CoTaskMemFree(pszFilePath);
+						psiResult->Release();
+						pfd->Release();
+						CoUninitialize();
 
-					return pszFilePath; // 선택한 디렉토리 경로 반환
+						return pszFilePath; // 선택한 디렉토리 경로 반환
+					}
 				}
+				pfd->Release();
 			}
-			pfd->Release();
+
 		}
 
 		CoUninitialize();

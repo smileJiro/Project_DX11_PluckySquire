@@ -35,7 +35,7 @@ public:
 		_float4x4				ActorOffsetMatrix = {};
 		_bool					FreezeRotation_XYZ[3] = { false, true, false };
 		_bool					FreezePosition_XYZ[3] = { false, false, false };
-		
+		_bool					isAddActorToScene = true;
 		FILTER_DATA				tFilterData = {};
 	}ACTOR_DESC;
 protected:
@@ -55,6 +55,10 @@ public:
 	virtual HRESULT				Render();
 #endif
 
+public:/* Actor를 Scene에 추가 혹은 제거 */
+	void Add_ActorToScene();
+	void Remove_ActorFromScene();
+	_bool Is_ActorInScene();
 public:/* Default PhysX */
 	virtual void				Set_LinearVelocity(_vector _vDirection, _float _fVelocity) { return; }
 	virtual void				Set_AngularVelocity(const _float3& _vAngularVelocity) { return; }

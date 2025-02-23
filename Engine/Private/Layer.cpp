@@ -1,9 +1,11 @@
 #include "Layer.h"
 #include "ContainerObject.h"
+#include "GameInstance.h"
 
 CLayer::CLayer()
+    :m_pGameInstance(CGameInstance::GetInstance())
 {
-    
+    Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CLayer::Add_GameObject(CGameObject* _pGameObject)
@@ -37,6 +39,15 @@ void CLayer::Priority_Update(_float fTimeDelta)
         if(iter->Is_Active())
             iter->Priority_Update(fTimeDelta);
     }
+
+    m_pGameInstance->Get_ThreadPool()->EnqueueJob([this]()
+        {
+            for (auto& iter : m_GameObjects)
+            {
+                if (iter->Is_Active())
+                    iter->Check_FrustumCulling();
+            }
+        });
 }
 
 void CLayer::Update(_float fTimeDelta)
@@ -205,5 +216,6 @@ void CLayer::Free()
 {
     Clear_GameObjects();
 
+    Safe_Release(m_pGameInstance);
     __super::Free();
 }
