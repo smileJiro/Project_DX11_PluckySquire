@@ -33,7 +33,7 @@ HRESULT CPlayerBody::Render()
 {
     if (FAILED(__super::Render()))
         return E_FAIL;
-
+    //cout << "PlayerBOdyPos: " << m_WorldMatrices[COORDINATE_3D]._41 << ", " << m_WorldMatrices[COORDINATE_3D]._42 << ", " << m_WorldMatrices[COORDINATE_3D]._43 << endl;
     return S_OK;
 }
 

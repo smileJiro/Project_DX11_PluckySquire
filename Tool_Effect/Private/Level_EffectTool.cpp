@@ -176,10 +176,15 @@ HRESULT CLevel_EffectTool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
 		LEVEL_TOOL, _strLayerTag, &Desc)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL, TEXT("Prototype_GameObject_TestTrail"),
-		LEVEL_TOOL, _strLayerTag, &Desc)))
-		return E_FAIL;
+	//Desc.iCurLevelID = LEVEL_TOOL;
+	//Desc.isCoordChangeEnable = false;
+	//Desc.eStartCoord = COORDINATE_3D;
 
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL, TEXT("Prototype_GameObject_TestBeam"),
+	//	LEVEL_TOOL, _strLayerTag, &Desc)))
+	//	return E_FAIL;
+
+	
 
 	return S_OK;
 }
@@ -399,6 +404,7 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 		{
 			CEmitter::PARTICLE_EMITTER_DESC Desc = {};
 
+			Desc.pParentMatrices[COORDINATE_3D] = m_pNowItem->Get_FinalWorldMatrix_Ptr(COORDINATE_3D);
 			Desc.eStartCoord = COORDINATE_3D;
 			Desc.iCurLevelID = LEVEL_TOOL;
 			Desc.isCoordChangeEnable = false;
@@ -416,7 +422,7 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 		if (ImGui::Button("New_Mesh_Emitter"))
 		{
 			CEmitter::PARTICLE_EMITTER_DESC Desc = {};
-
+			Desc.pParentMatrices[COORDINATE_3D] = m_pNowItem->Get_FinalWorldMatrix_Ptr(COORDINATE_3D);
 			Desc.eStartCoord = COORDINATE_3D; 
 			Desc.iCurLevelID = LEVEL_TOOL;
 			Desc.isCoordChangeEnable = false;
@@ -435,7 +441,7 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 		if (ImGui::Button("New_Sprite_Effect"))
 		{
 			CSpriteEffect_Emitter::SPRITE_EMITTER_DESC Desc = {};
-
+			Desc.pParentMatrices[COORDINATE_3D] = m_pNowItem->Get_FinalWorldMatrix_Ptr(COORDINATE_3D);
 			Desc.eStartCoord = COORDINATE_3D;
 			Desc.iCurLevelID = LEVEL_TOOL;
 			Desc.isCoordChangeEnable = false;
@@ -457,7 +463,7 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 		if (ImGui::Button("New_Effect"))
 		{
 			CEmitter::PARTICLE_EMITTER_DESC Desc = {};
-
+			Desc.pParentMatrices[COORDINATE_3D] = m_pNowItem->Get_FinalWorldMatrix_Ptr(COORDINATE_3D);
 			Desc.eStartCoord = COORDINATE_3D;
 			Desc.iCurLevelID = LEVEL_TOOL;
 			Desc.isCoordChangeEnable = false;
@@ -596,6 +602,10 @@ void CLevel_EffectTool::Tool_Texture()
 				if (ImGui::Button("Texture2 Set"))
 				{
 					m_pNowItem->Set_Texture(m_pEffectTexture, 2);
+				}
+				if (ImGui::Button("Texture3 Set"))
+				{
+					m_pNowItem->Set_Texture(m_pEffectTexture, 3);
 				}
 			}
 

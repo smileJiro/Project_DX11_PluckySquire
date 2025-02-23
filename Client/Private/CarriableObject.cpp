@@ -89,22 +89,35 @@ void CCarriableObject::Update(_float _fTimeDelta)
 
 void CCarriableObject::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
 	COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
+	if (COORDINATE_2D == eCurCoord)
+	{
+		m_fDownForce += 9.8f * _fTimeDelta * 180;
+
+		m_fFloorDistance -= m_fDownForce * _fTimeDelta;
+		if (m_fFloorDistance < 0)
+		{
+			m_fFloorDistance = 0.f;
+			m_fDownForce = 0.f;
+		}
+		if (m_fFloorDistance > 0.f)
+		{
+			m_pControllerTransform->Go_Direction(XMVector3Normalize(m_vThrowForce2D), XMVector3Length(m_vThrowForce2D).m128_f32[0], _fTimeDelta);
+		}
+	}
+
+	__super::Late_Update(_fTimeDelta);
+	_matrix matWorld = XMLoadFloat4x4(&m_WorldMatrices[eCurCoord]);
 	if(nullptr != m_pParentBodyMatrices[eCurCoord])
 	{
-		_matrix matWorld = XMLoadFloat4x4(&m_WorldMatrices[eCurCoord]);
 		_matrix matBody = XMLoadFloat4x4(m_pParentBodyMatrices[eCurCoord]);
 		matWorld.r[3] += matBody.r[3];
 		matWorld.r[3].m128_f32[3] = 1.f;
-		XMStoreFloat4x4(&m_WorldMatrices[eCurCoord], matWorld);
-		//cout << "Position : " << matWorld.r[3].m128_f32[0] << ", "<< matWorld.r[3].m128_f32[1] << ", " << matWorld.r[3].m128_f32[2] << endl;
 	}
-	if (COORDINATE_2D == Get_CurCoord() && false == Is_Carrying())
-	{
-		m_vThrowSocketOffset2D = m_matHeadUpMatrix[COORDINATE_2D];
-		
-	}
+
+	matWorld.r[3].m128_f32[1] += m_fFloorDistance;
+	XMStoreFloat4x4(&m_WorldMatrices[eCurCoord], matWorld);
+	//cout << "Position : " << matWorld.r[3].m128_f32[0] << ", "<< matWorld.r[3].m128_f32[1] << ", " << matWorld.r[3].m128_f32[2] << endl;
 
 }
 
@@ -129,20 +142,14 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 {
 	if (nullptr == _pCarrier)
 	{
-		Set_ParentMatrix(COORDINATE_3D, nullptr);
-		Set_ParentMatrix(COORDINATE_2D, nullptr);
-		Set_SocketMatrix(COORDINATE_3D, nullptr);
-		Set_SocketMatrix(COORDINATE_2D, nullptr);
-		Set_ParentBodyMatrix(COORDINATE_3D, nullptr);
-		Set_ParentBodyMatrix(COORDINATE_2D, nullptr);
 		m_pCarrier = nullptr;
-
 	}
 	else
 	{
 		if (nullptr != m_pCarrier)
 			return E_FAIL;
-
+		m_fFloorDistance = 0.f;
+		m_vThrowForce2D = { 0.f,0.f,0.f };
 		m_pCarrier = _pCarrier;
 
 	}
@@ -151,19 +158,17 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 
 void CCarriableObject::Throw(_fvector _vForce)
 {
-	Set_ParentMatrix(COORDINATE_2D, nullptr);
-	Set_ParentMatrix(COORDINATE_3D, nullptr);
-	Set_SocketMatrix(COORDINATE_3D, nullptr);
-	Set_SocketMatrix(COORDINATE_2D, nullptr);
 	if (COORDINATE_3D == Get_CurCoord())
 	{
+
 		_float3 vForce;
 		XMStoreFloat3(&vForce, _vForce);
 		static_cast<CActor_Dynamic*>(m_pActorCom)->Add_Impulse(vForce);
 	}
 	else
 	{
-		Set_SocketMatrix(COORDINATE_2D, &m_vThrowSocketOffset2D);
+		m_fFloorDistance = m_matHeadUpMatrix[COORDINATE_2D]._42;
+		m_vThrowForce2D = _vForce;
 	}
 }
 

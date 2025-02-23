@@ -590,8 +590,8 @@ private:
 	_float m_f2DPlatformerJumpPower = 1200.f;
 	_float m_f2DCenterYOffset= 36.f;
 	_float m_f2DInteractRange = 93.f;
-	_float m_f2DThrowObjectPower = 100.f;
-	_float m_f2DPickupRange = 93.f;
+	_float m_f2DThrowObjectPower = 900.f;
+	_float m_f2DPickupRange = 80.f;
 	_float m_f2DKnockBackPower = 700.f;
 	_float m_f2DInteractOffset = 40.f;
 

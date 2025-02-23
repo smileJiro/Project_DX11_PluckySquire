@@ -139,9 +139,11 @@ protected: /* Zoom */
 	_uint		m_iCurZoomLevel = LEVEL_6;
 
 	_float2		m_fZoomTime = {};
+	_float		m_fStartFovy = {};
 
 protected: // Change AtOffset
 	_float3						m_vAtOffset = {};
+	_float3						m_vStartAtOffset = {};
 	_float3						m_vNextAtOffset = {};
 	_bool						m_isChangingAtOffset = { false };
 	_float2						m_fAtOffsetTime = {};

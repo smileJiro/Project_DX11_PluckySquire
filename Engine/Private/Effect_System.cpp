@@ -401,6 +401,7 @@ HRESULT CEffect_System::Cleanup_DeadReferences()
 #ifdef _DEBUG
 HRESULT CEffect_System::Add_New_Emitter(CEmitter::EFFECT_TYPE _eType, void* _pArg)
 {
+
 	if (CEmitter::SPRITE == _eType)
 	{
 		CParticle_Sprite_Emitter* pOut = CParticle_Sprite_Emitter::Create(m_pDevice, m_pContext, _pArg);
