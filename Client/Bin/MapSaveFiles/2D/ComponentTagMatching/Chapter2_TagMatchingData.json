@@ -3072,7 +3072,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "art_studio_inner",
@@ -3205,7 +3205,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "diner_inner",
@@ -3284,7 +3284,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "gallery_inner",
@@ -3333,7 +3333,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "green_house_inner",
@@ -3400,7 +3400,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "inn_inner",
@@ -3470,7 +3470,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "juice_bar_inner",
@@ -3479,7 +3479,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "juice_bar_paint",
@@ -3582,7 +3582,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "pink_house_inner",
@@ -3730,7 +3730,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "rubboink_inner",
