@@ -17,6 +17,8 @@
 #include "3DMapObject.h"
 #include "MapObjectFactory.h"
 
+#include "UI_Manager.h"
+
 CLevel_Camera_Tool_Client::CLevel_Camera_Tool_Client(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CLevel(_pDevice, _pContext)
 	, m_eLevelID(LEVEL_CAMERA_TOOL)
@@ -72,6 +74,9 @@ HRESULT CLevel_Camera_Tool_Client::Initialize(LEVEL_ID _eLevelID)
 
 void CLevel_Camera_Tool_Client::Update(_float _fTimeDelta)
 {
+	// 피직스 업데이트 
+	m_pGameInstance->Physx_Update(_fTimeDelta);
+
 	// Change Camera Free  Or Target Or CutScene
 	if (KEY_DOWN(KEY::TAB)) {
 		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
@@ -88,9 +93,9 @@ void CLevel_Camera_Tool_Client::Update(_float _fTimeDelta)
 	}
 
 	Show_CameraTool();
-	//Show_CutSceneTool(_fTimeDelta);
+	Show_CutSceneTool(_fTimeDelta);
 	Show_ArmInfo();
-	//Show_CutSceneInfo();
+	Show_CutSceneInfo();
 	Show_SaveLoadFileWindow();
 
 	Show_AnimModel(_fTimeDelta);
@@ -236,6 +241,19 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Player(const _wstring& _strLayerT
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
+
+	//CPlayer* pPlayer = { nullptr };
+	//pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
+
+	//if (nullptr == Uimgr->Get_Player())
+	//{
+	//	CUI_Manager::GetInstance()->Set_Player(pPlayer);
+	//}
+	//_int iCurCoord = (COORDINATE_2D);
+	//_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
+
+	//Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 	return S_OK;
 }
@@ -1856,6 +1874,8 @@ CGameObject* CLevel_Camera_Tool_Client::Create_Cube()
 	Desc.strModelPrototypeTag_3D = TEXT("alphabet_blocks_d_mesh");
 
 	Desc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+	Desc.iPriorityID_3D = PR3D_BLEND;
+	Desc.iRenderGroupID_3D = RG_3D;
 
 	Desc.tTransform3DDesc.vInitialPosition = m_tKeyFrameInfo.vPosition;
 	Desc.tTransform3DDesc.vInitialScaling = _float3(0.1f, 0.1f, 0.1f);
@@ -1864,7 +1884,7 @@ CGameObject* CLevel_Camera_Tool_Client::Create_Cube()
 
 	CGameObject* pCube;
 
-	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_ModelObject"), LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"), &pCube, &Desc);
+	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Cube"), LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"), &pCube, &Desc);
 	Safe_AddRef(pCube);
 
 	return pCube;
@@ -2225,7 +2245,8 @@ void CLevel_Camera_Tool_Client::Picking()
 			Get_RayInfo(&vRayPos, &vRayDir);
 
 			_float2 fMousePos = m_pGameInstance->Get_CursorPos();
-			_float fDist = {};
+			_float fDist = { 99999999.f };
+			_vector vClickedPos = {};
 
 			if (0 > fMousePos.x || g_iWinSizeX < fMousePos.x || 0 > fMousePos.y || g_iWinSizeY < fMousePos.y)
 				return;
@@ -2237,16 +2258,43 @@ void CLevel_Camera_Tool_Client::Picking()
 
 			for (auto& GameObject : Objects) {
 				CModelObject* pModelObject = dynamic_cast<CModelObject*>(GameObject);
-				_bool isPicked = pModelObject->Is_PickingCursor_Model_Test(fMousePos, fDist);
+				_float fTemp = {};
+				_bool isPicked = pModelObject->Is_PickingCursor_Model_Test(fMousePos, fTemp);
 
 				if (true == isPicked) {
-					_vector vClickedPos = vRayPos + (vRayDir * fDist);
-
-					XMStoreFloat3(&m_tKeyFrameInfo.vPosition, vClickedPos);
+					if (fDist > fTemp) {
+						fDist = fTemp;
+						vClickedPos = vRayPos + (vRayDir * fDist);
+					}
+					//vClickedPos = vRayPos + (vRayDir * fDist);
 				}
 			}
 
-			pLayer = m_pGameInstance->Find_Layer(LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"));
+			pLayer = m_pGameInstance->Find_Layer(LEVEL_CAMERA_TOOL, TEXT("Layer_Room_Environment"));
+
+			if (nullptr == pLayer)
+				return;
+
+			Objects = pLayer->Get_GameObjects();
+
+			pGameObject = nullptr;
+
+			for (auto& GameObject : Objects) {
+				CModelObject* pModelObject = dynamic_cast<CModelObject*>(GameObject);
+				_float fTemp = {};
+				_bool isPicked = pModelObject->Is_PickingCursor_Model_Test(fMousePos, fTemp);
+
+				if (true == isPicked) {
+					if (fDist > fTemp) {
+						fDist = fTemp;
+						vClickedPos = vRayPos + (vRayDir * fDist);
+					}
+				}
+			}
+
+			XMStoreFloat3(&m_tKeyFrameInfo.vPosition, vClickedPos);
+
+			/*pLayer = m_pGameInstance->Find_Layer(LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"));
 
 			if (nullptr == pLayer)
 				return;
@@ -2260,11 +2308,11 @@ void CLevel_Camera_Tool_Client::Picking()
 				_bool isPicked = pModelObject->Is_PickingCursor_Model_Test(fMousePos, fDist);
 
 				if (true == isPicked) {
-					_vector vClickedPos = vRayPos + (vRayDir * fDist);
+					vClickedPos = vRayPos + (vRayDir * fDist);
 
 					XMStoreFloat3(&m_tKeyFrameInfo.vPosition, vClickedPos);
 				}
-			}
+			}*/
 		}
 	}
 }

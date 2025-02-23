@@ -466,6 +466,9 @@
     <Filter Include="02.GameObjects\Camera\CutScene\Tool">
       <UniqueIdentifier>{336b0df6-6e3c-41ca-affe-4c78e0786cf4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Camera\CutScene\Tool\Cube">
+      <UniqueIdentifier>{d8948c54-5fa7-446a-ac11-a3806149292c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1099,6 +1102,9 @@
     <ClInclude Include="..\Public\Camera_CutScene_Save.h">
       <Filter>02.GameObjects\Camera\CutScene\Tool</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Cube.h">
+      <Filter>02.GameObjects\Camera\CutScene\Tool\Cube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1720,6 +1726,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_Camera_Tool_Client.cpp">
       <Filter>01.Levels\04. Camera_Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Cube.cpp">
+      <Filter>02.GameObjects\Camera\CutScene\Tool\Cube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

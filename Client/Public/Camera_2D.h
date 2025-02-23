@@ -127,8 +127,6 @@ private:
 
 	_uint						m_iPlayType = {};
 
-	_bool						m_isChangeTarget = { false };
-
 	// CustomArm
 	ARM_DATA					m_CustomArmData = {};
 

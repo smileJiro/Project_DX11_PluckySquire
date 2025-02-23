@@ -99,6 +99,20 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
         }
     #pragma endregion
 
+#pragma region CameraTool Picking용 효림
+#ifdef _DEBUG
+        if (LEVEL_CAMERA_TOOL == pDesc->iCurLevelID) {
+            CRay::RAY_DESC RayDesc = {};
+            RayDesc.fViewportWidth = (_float)g_iWinSizeX;
+            RayDesc.fViewportHeight = (_float)g_iWinSizeY;
+
+            if (FAILED(Add_Component(LEVEL_CAMERA_TOOL, L"Prototype_Component_Ray",
+                TEXT("Com_Ray"), reinterpret_cast<CComponent**>(&m_pRayCom), &RayDesc)))
+                return E_FAIL;
+        }
+#endif
+#pragma endregion
+
     // ModelObject Initialize를 건너뛰고, 작업한다. 
     if (FAILED(CPartObject::Initialize(_pArg)))
         return E_FAIL;

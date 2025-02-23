@@ -52,9 +52,6 @@ public:
 	void				Update(_float fTimeDelta);
 	void				Late_Update(_float fTimeDelta);
 
-#ifdef _DEBUG
-	void				Render_Arm();
-#endif
 	_float3				Get_Rotation() { return m_vRotation; }
 	_float				Get_Length() { return m_fLength; }
 
@@ -62,7 +59,7 @@ public:
 	void				Set_Length(_float _fLength) { m_fLength = _fLength; }
 	void				Set_ArmTag(_wstring _wszArmTag) { m_wszArmTag = _wszArmTag; }
 	void				Set_ArmVector(_vector _vArm);
-	void				Set_StartInfo(_vector _vArm, _float _fLength);
+
 public:
 	_wstring			Get_ArmTag() { return m_wszArmTag; }
 	_vector				Get_ArmVector() { return XMLoadFloat3(&m_vArm); }
@@ -77,7 +74,7 @@ public:
 	_bool				Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook = false);
 	_bool				Move_To_CustomArm(ARM_DATA* _pCustomData, _float _fTimeDelta);
 	_bool				Move_To_PreArm(_float _fTimeDelta);						// Stack에 저장해둔 Arm으로
-	_bool				Move_To_FreezeExitArm(_float _fRatio, _fvector _vFreezeExitArm);
+	_bool				Move_To_FreezeExitArm(_float _fRatio, _fvector _vFreezeExitArm, _float _fFreezeExitLength);
 
 private:
 	ID3D11Device*		m_pDevice = { nullptr };
@@ -94,9 +91,6 @@ private:
 	_float3				m_vRotation = {};
 	_float				m_fLength = {};
 
-	_float				m_fStartLength = {};
-	_float3				m_vStartArm = {};
-
 	_float				m_fRotationValue = { 1.f };
 
 	// Desire Arm
@@ -110,20 +104,7 @@ private:
 	_float2				m_fReturnTime = { 0.8f, 0.f };
 	_int				m_iCurTriggerID = {};
 
-	// Line
-#ifdef _DEBUG
-	LINE_BUFFER			m_vertices[2];
-
-	PrimitiveBatch<VertexPositionColor>*	m_pBatch = { nullptr };
-	BasicEffect*							m_pEffect = { nullptr };
-	ID3D11DepthStencilState*				m_pDepthStencilState = { nullptr };
-	ID3D11InputLayout*						m_pInputLayout = { nullptr };
-#endif
-
 private:
-#ifdef _DEBUG
-	HRESULT				Set_PrimitiveBatch();
-#endif
 	void				Set_WorldMatrix();
 
 	void				Turn_ArmX(_float fAngle);
