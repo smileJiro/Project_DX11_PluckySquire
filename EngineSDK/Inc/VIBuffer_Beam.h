@@ -5,6 +5,13 @@ BEGIN(Engine)
 
 class ENGINE_DLL CVIBuffer_Beam : public CVIBuffer
 {
+public:
+	typedef struct tagVIBufferBeamDesc
+	{
+		_float3 vRandomMin = { 0.f, 0.f, 0.f };
+		_float3 vRandomMax = { 0.f, 0.f, 0.f };
+	} VIBUFFERBEAM_DESC;
+
 private:
 	CVIBuffer_Beam(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CVIBuffer_Beam(const CVIBuffer_Beam& _Prototype);
@@ -14,14 +21,23 @@ public:
 	HRESULT Initialize_Prototype(_uint _iMaxVertexCount);
 	virtual HRESULT Initialize(void* _pArg) override;
 
-	void	Initialize_Positions(const _float3& _vMin, const _float3& _vMax); // 그냥 랜덤 세팅임..
-	void	Initialize_StartEndPositions(const _float3& _vStart, const _float3& _vEnd); // 그냥 시작/끝 위치 설정임..
+	void	Initialize_Positions(const _float3& _vStartPos, const _float3& _vEndPos); // 시작/끝 위치 설정 + 그냥 나머지 랜덤 세팅임..
+
 public:
 	void			Begin_Update();
 	void			End_Update();
 	void			Update_StartPosition(_fvector _vStartPosition); // Beam의 처음 위치 설정
 	void			Update_EndPosition(_fvector _vEndPosition);	 // Beam의 마지막 위치 설정
+	void			Update_RandomPositions();
 	void			Reset_Positions();
+
+public:
+	void			Set_RandomMin(const _float3& _vMin) { m_vRandomMin = _vMin; }
+	void			Set_RandomMax(const _float3& _vMax) { m_vRandomMax = _vMax; }
+
+private:
+	_float3					m_vRandomMin = { 0.f, 0.f, 0.f };
+	_float3					m_vRandomMax = { 0.f, 0.f, 0.f };
 
 private:
 	VTXBEAM*				m_pVertices = { nullptr };

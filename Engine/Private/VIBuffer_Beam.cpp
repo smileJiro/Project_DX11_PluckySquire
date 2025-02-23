@@ -37,7 +37,7 @@ HRESULT CVIBuffer_Beam::Initialize_Prototype(_uint _iMaxVertexCount)
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
 		m_pVertices[i].vPosition = _float3(0.f, 0.f, 0.f);
-		m_pVertices[i].fIndex = (_float)i;
+		m_pVertices[i].fIndex = (_float)i / (_float)(m_iNumVertices - 1);
 	}
 
 #pragma endregion Vertices
@@ -79,6 +79,14 @@ HRESULT CVIBuffer_Beam::Initialize_Prototype(_uint _iMaxVertexCount)
 
 HRESULT CVIBuffer_Beam::Initialize(void* _pArg)
 {
+	if (nullptr != _pArg)
+	{
+		VIBUFFERBEAM_DESC* pDesc = static_cast<VIBUFFERBEAM_DESC*>(_pArg);
+
+		m_vRandomMin = pDesc->vRandomMin;
+		m_vRandomMax = pDesc->vRandomMax;
+	}
+
 #pragma region VERTEX_BUFFER
 
 	// 1. BufferDesc 값을 채운다.
@@ -107,20 +115,23 @@ HRESULT CVIBuffer_Beam::Initialize(void* _pArg)
 	return S_OK;
 }
 
-void CVIBuffer_Beam::Initialize_Positions(const _float3& _vMin, const _float3& _vMax)
+void CVIBuffer_Beam::Initialize_Positions(const _float3& _vStartPos, const _float3& _vEndPos)
 {
 	D3D11_MAPPED_SUBRESOURCE		SubResource{};
 	m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 	m_pUpdateVertices = static_cast<VTXBEAM*>(SubResource.pData);
 
-	_vector vStartPos = XMLoadFloat3(&m_pVertices[0].vPosition);
-	_vector vEndPos = XMLoadFloat3(&m_pVertices[m_iNumVertices - 1].vPosition);
+	m_pUpdateVertices[0].vPosition = _vStartPos;
+	m_pUpdateVertices[m_iNumVertices - 1].vPosition = _vEndPos;
+
+	_vector vStartPos = XMLoadFloat3(&m_pUpdateVertices[0].vPosition);
+	_vector vEndPos = XMLoadFloat3(&m_pUpdateVertices[m_iNumVertices - 1].vPosition);
 
 	for (_int i = 1; i < m_iNumVertices - 1; ++i)
 	{
 		_vector vPosition = vStartPos + (vEndPos - vStartPos) * (_float)(i) / m_iNumVertices;
-		_vector vRandom = XMVectorSet(m_pGameInstance->Compute_Random(_vMin.x, _vMax.x), m_pGameInstance->Compute_Random(_vMin.y, _vMax.y)
-			, m_pGameInstance->Compute_Random(_vMin.z, _vMax.z), 0.f);
+		_vector vRandom = XMVectorSet(m_pGameInstance->Compute_Random(m_vRandomMin.x, m_vRandomMax.x), m_pGameInstance->Compute_Random(m_vRandomMin.y, m_vRandomMax.y)
+			, m_pGameInstance->Compute_Random(m_vRandomMin.z, m_vRandomMax.z), 0.f);
 
 		vPosition += vRandom;
 
@@ -132,19 +143,6 @@ void CVIBuffer_Beam::Initialize_Positions(const _float3& _vMin, const _float3& _
 	m_pContext->Unmap(m_pVB, 0);
 }
 
-void CVIBuffer_Beam::Initialize_StartEndPositions(const _float3& _vStart, const _float3& _vEnd)
-{
-	D3D11_MAPPED_SUBRESOURCE		SubResource{};
-	m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-	m_pUpdateVertices = static_cast<VTXBEAM*>(SubResource.pData);
-
-	m_pUpdateVertices[0].vPosition = _vStart;
-	m_pUpdateVertices[m_iNumVertices - 1].vPosition = _vEnd;
-
-	memcpy(m_pVertices, m_pUpdateVertices, sizeof(VTXBEAM) * m_iNumVertices);
-
-	m_pContext->Unmap(m_pVB, 0);
-}
 
 void CVIBuffer_Beam::Begin_Update()
 {
@@ -164,6 +162,8 @@ void CVIBuffer_Beam::Update_StartPosition(_fvector _vStartPosition)
 	XMStoreFloat3(&m_pUpdateVertices[0].vPosition, _vStartPosition);
 
 	m_pVertices[0].vPosition = m_pUpdateVertices[0].vPosition;
+
+	Update_RandomPositions();
 }
 
 void CVIBuffer_Beam::Update_EndPosition(_fvector _vEndPosition)
@@ -171,6 +171,25 @@ void CVIBuffer_Beam::Update_EndPosition(_fvector _vEndPosition)
 	XMStoreFloat3(&m_pUpdateVertices[m_iNumVertices - 1].vPosition, _vEndPosition);
 
 	m_pVertices[m_iNumVertices - 1].vPosition = m_pUpdateVertices[m_iNumVertices - 1].vPosition;
+
+	Update_RandomPositions();
+}
+
+void CVIBuffer_Beam::Update_RandomPositions()
+{
+	_vector vStartPos = XMLoadFloat3(&m_pUpdateVertices[0].vPosition);
+	_vector vEndPos = XMLoadFloat3(&m_pUpdateVertices[m_iNumVertices - 1].vPosition);
+
+	for (_int i = 1; i < m_iNumVertices - 1; ++i)
+	{
+		_vector vPosition = vStartPos + (vEndPos - vStartPos) * (_float)(i) / m_iNumVertices;
+		_vector vRandom = XMVectorSet(m_pGameInstance->Compute_Random(m_vRandomMin.x, m_vRandomMax.x), m_pGameInstance->Compute_Random(m_vRandomMin.y, m_vRandomMax.y)
+			, m_pGameInstance->Compute_Random(m_vRandomMin.z, m_vRandomMax.z), 0.f);
+
+		vPosition += vRandom;
+
+		XMStoreFloat3(&m_pUpdateVertices[i].vPosition, vPosition);
+	}
 }
 
 void CVIBuffer_Beam::Reset_Positions()
@@ -179,6 +198,7 @@ void CVIBuffer_Beam::Reset_Positions()
 	m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 	m_pUpdateVertices = static_cast<VTXBEAM*>(SubResource.pData);
 
+	m_pUpdateVertices = m_pVertices;
 
 	m_pContext->Unmap(m_pVB, 0);
 }

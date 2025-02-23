@@ -93,10 +93,10 @@ void GS_MAIN(line GS_IN In[2], inout TriangleStream<GS_OUT> OutStream)
     Out[2].vProjPos = Out[2].vPosition;
     Out[3].vProjPos = Out[3].vPosition; 
     
-    Out[0].vTexcoord = float2(1.f, 1.f);
-    Out[1].vTexcoord = float2(0.f, 1.f);
-    Out[2].vTexcoord = float2(0.f, 0.f);
-    Out[3].vTexcoord = float2(1.f, 0.f);
+    Out[0].vTexcoord = float2(1.f, In[1].fIndex);
+    Out[1].vTexcoord = float2(0.f, In[1].fIndex);
+    Out[2].vTexcoord = float2(0.f, In[0].fIndex);
+    Out[3].vTexcoord = float2(1.f, In[0].fIndex);
     
     OutStream.Append(Out[0]);
     OutStream.Append(Out[1]);

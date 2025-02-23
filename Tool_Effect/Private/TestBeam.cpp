@@ -41,9 +41,9 @@ HRESULT CTestBeam::Initialize(void* _pArg)
     //m_pBufferCom->Update_EndPosition(XMVectorSet(5.f, 5.f, 5.f, 1.f));
     //m_pBufferCom->End_Update();
 
-    m_pBufferCom->Initialize_StartEndPositions(_float3(0.f, 0.f, 0.f), _float3(5.f, 5.f, 5.f));
-    m_pBufferCom->Initialize_Positions(_float3(-0.3f, 0.f, -0.3f), _float3(0.3f, 0.f, 0.3f));
-
+    m_pBufferCom->Set_RandomMin(_float3(-0.3f, 0.f, -0.3f));
+    m_pBufferCom->Set_RandomMax(_float3(0.3f, 0.f, 0.3f));
+    m_pBufferCom->Initialize_Positions(_float3(0.f, 0.f, 0.f), _float3(5.f, 5.f, 5.f));
 
     m_vColor = _float4(0.96f, 0.5f, 0.31f, 0.85f);
     return S_OK;

@@ -208,7 +208,7 @@ HRESULT CMainEffectTool::Ready_Prototype_Static()
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_DefaultRibbon"),
-		CVIBuffer_Beam::Create(m_pDevice, m_pContext, 5))))
+		CVIBuffer_Beam::Create(m_pDevice, m_pContext, 8))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Point"),
