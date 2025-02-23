@@ -223,7 +223,11 @@ HRESULT CUI_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iN
 		
 
 	if (nullptr != m_pDiagloue)
+	{
 		Safe_Release(m_pDiagloue);
+		m_pDiagloue = nullptr;
+	}
+		
 
 
 
