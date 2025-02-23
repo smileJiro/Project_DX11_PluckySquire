@@ -1391,7 +1391,7 @@ void CPlayer::Set_Animation(_uint _iAnimIndex)
 
 void CPlayer::Set_State(STATE _eState)
 {
-    cout << "eState: " << _eState << endl;
+    //cout << "eState: " << _eState << endl;
     //_uint iAnimIdx;
     switch (_eState)
     {
