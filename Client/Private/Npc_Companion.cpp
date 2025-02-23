@@ -8,6 +8,7 @@
 #include "StateMachine.h"
 
 #include "NPC_Violet.h"
+#include "Dialogue.h"
 
 
 
@@ -56,6 +57,11 @@ HRESULT CNPC_Companion::Child_Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_isRender = false;
+	//m_strCurSecion = pDesc->strLocateSection
+	wsprintf(m_strCurSecion, Uimgr->Get_Dialogue(pDesc->strDialogueIndex)[0].Section.c_str());
+	
+
+
 
 	return S_OK;
 }
