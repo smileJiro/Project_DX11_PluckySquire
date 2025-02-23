@@ -504,7 +504,6 @@ public:
 	_vector Get_BodyPosition();
 	IInteractable* Get_InteractableObject() { return m_pInteractableObject; }
 	CPortal* Get_CurrentPortal() { return m_pPortal; }
-	const _float4x4* Get_CarryingOffset_Ptr(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? &m_mat2DCarryingOffset : &m_mat3DCarryingOffset; }
 	STATE Get_CurrentStateID();
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	PLAYER_MODE Get_PlayerMode() { return m_ePlayerMode; }
@@ -595,7 +594,7 @@ private:
 	_float m_f2DPickupRange = 93.f;
 	_float m_f2DKnockBackPower = 700.f;
 	_float m_f2DInteractOffset = 40.f;
-	_float4x4 m_mat2DCarryingOffset = {};
+
 	/* еб©У */
 	_float m_f2DColliderBodyRadius = 20.f;
 	/* еб©У */
