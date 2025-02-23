@@ -761,9 +761,9 @@ HRESULT CEvent_Manager::Execute_KnockBack(const EVENT& _tEvent)
 {
 	CCharacter* pCharacter = (CCharacter*)_tEvent.Parameters[0];
 	_vector vForce = XMLoadFloat3( (_float3*)_tEvent.Parameters[1]);
-
 	pCharacter->KnockBack(vForce);
 	delete (_float3*)_tEvent.Parameters[1];
+	Safe_Release(pCharacter);
 	return S_OK;
 }
 

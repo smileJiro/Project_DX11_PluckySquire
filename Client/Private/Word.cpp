@@ -24,8 +24,10 @@ CWord::CWord(const CWord& _Prototype)
 HRESULT CWord::Initialize(void* _pArg)
 {
 	WORD_DESC* pDesc = static_cast<WORD_DESC*>(_pArg);
-
-
+	//2.23 머리위에 왔을 때의 상태에 대한 설정 추가. -김지완-
+	pDesc->eCrriableObjId = WORD;
+	pDesc->vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
+	pDesc->vHeadUpOffset3D = { 0.f,1.5f,0.f };
 
 
 	m_iRenderGroupID_3D = RG_3D;
@@ -174,7 +176,7 @@ HRESULT CWord::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition
 	{
 		Set_Position({ 0,0,0 });
 		Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
-		Set_SocketMatrix(_eCoordinate, m_pCarrier->Get_CarryingOffset_Ptr(_eCoordinate));
+		Set_SocketMatrix(_eCoordinate, &Get_HeadUpMatrix(_eCoordinate));
 		Set_ParentMatrix(_eCoordinate, m_pCarrier->Get_ControllerTransform()->Get_WorldMatrix_Ptr(_eCoordinate));
 
 		//m_pControllerModel->Get_Model(COORDINATE_3D)->Set_Active(COORDINATE_3D == _eCoordinate);

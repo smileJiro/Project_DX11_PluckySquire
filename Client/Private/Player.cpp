@@ -47,8 +47,7 @@ CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 CPlayer::CPlayer(const CPlayer& _Prototype)
     :CCharacter(_Prototype)
-	, m_mat3DCarryingOffset(_Prototype.m_mat3DCarryingOffset)
-	, m_mat2DCarryingOffset(_Prototype.m_mat2DCarryingOffset)
+
 {
     for (_uint i = 0; i < ATTACK_TYPE_LAST; i++)
     {
@@ -110,8 +109,6 @@ HRESULT CPlayer::Initialize_Prototype()
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::LEFT].vOffset = { -50.f, 0.f };
 
 
-    XMStoreFloat4x4(&m_mat3DCarryingOffset ,XMMatrixTranslation(0.f, 2.0f, 0.f));
-    XMStoreFloat4x4(&m_mat2DCarryingOffset ,XMMatrixTranslation(0.f, 100.f, 0.f));
 
     return S_OK;
 }
@@ -254,6 +251,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     Set_PlatformerMode(false);
 
 	m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD,false);
+    Set_State(CPlayer::IDLE);
     return S_OK;
 }
 
@@ -904,8 +902,10 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         break;
     }
     m_pSword->Set_AttackEnable(false);
-    if(m_pPortal)
+    if (m_pPortal)
         Set_State(EXIT_PORTAL);
+    else
+        Set_State(IDLE);
 
     return S_OK;
 }
