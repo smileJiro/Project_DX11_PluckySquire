@@ -103,7 +103,6 @@ void CCarriableObject::Late_Update(_float _fTimeDelta)
 	if (COORDINATE_2D == Get_CurCoord() && false == Is_Carrying())
 	{
 		m_vThrowSocketOffset2D = m_matHeadUpMatrix[COORDINATE_2D];
-		
 	}
 
 }

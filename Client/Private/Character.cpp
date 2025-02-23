@@ -35,11 +35,7 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
     {
         if (m_bPlatformerMode)
         {
-            m_f2DUpForce -= 9.8f * _fTimeDelta * 180;
-            if (m_f2DUpForce <= 0)
-            {
-                m_f2DUpForce = 0;
-            }
+            Move(_vector{ 0.f,1.f,0.f } *m_f2DUpForce, _fTimeDelta);
         }
         else
         {
@@ -501,9 +497,18 @@ void CCharacter::Move(_fvector _vForce, _float _fTimeDelta)
         _vector vVeclocity = _vForce /** m_tStat[COORDINATE_3D].fMoveSpeed*/  /** fDot*/;
 
         vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
-		if (Is_OnGround())
-            vVeclocity = StepAssist(vVeclocity,_fTimeDelta);
-        pDynamicActor->Set_LinearVelocity(vVeclocity);
+
+        if (pDynamicActor->Is_Dynamic())
+        {
+            if (Is_OnGround())
+                vVeclocity = StepAssist(vVeclocity, _fTimeDelta);
+            pDynamicActor->Set_LinearVelocity(vVeclocity);
+        }
+        else
+        {
+            m_pControllerTransform->Go_Direction(_vForce,_fTimeDelta);
+        }
+
 
     }
     else

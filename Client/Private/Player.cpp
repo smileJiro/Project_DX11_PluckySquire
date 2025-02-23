@@ -475,6 +475,7 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
        return E_FAIL;
    //Safe_AddRef(m_pGravityCom);
+   
    m_pGravityCom->Set_Active(false);
     return S_OK;
 }
@@ -527,7 +528,8 @@ void CPlayer::Late_Update(_float _fTimeDelta)
     {
         if (Is_PlatformerMode())
         {
-            Move(_vector{0.f,1.f,0.f} * m_f2DUpForce, _fTimeDelta);
+
+
         }
         else
         {
@@ -709,6 +711,7 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
                     /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
                     m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
                     //Set_State(STATE::IDLE);
+                    m_f2DUpForce = 0.f;
 
                 }
                 else if (-1.0f + fEpsilon >= fGdotC)
