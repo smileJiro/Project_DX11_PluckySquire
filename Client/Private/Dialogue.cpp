@@ -85,7 +85,7 @@ void CDialog::Late_Update(_float _fTimeDelta)
 {
 	//Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
 
-	if (true == Uimgr->Get_DisplayDialogue() && COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	if (true == Uimgr->Get_DisplayDialogue() && false == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 	{
 		Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
 	}
@@ -321,11 +321,11 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	_float3 vTextPos3D = { 0.f, 0.f, 0.f };
 	_float3 vTextPos2D = { 0.f, 0.f, 0.f };
 
-	if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	if (false == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 	{
 		vTextPos3D = Uimgr->Get_CalDialoguePos();
 	}
-	else if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	else if (true == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 	{
 		vTextPos2D = Uimgr->Get_CalDialoguePos();
 	}
@@ -385,7 +385,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	case LOC_MIDDOWN:  // 가운데 아래
 	{	
 	
-		 if (COORDINATE_3D ==  Uimgr->Get_Player()->Get_CurCoord())
+		 if (false == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 		 {
 			 if (9 != Uimgr->Get_Dialogue(m_tDialogIndex)[0].lines[Uimgr->Get_DialogueLineIndex()].BG)
 			 {
@@ -417,7 +417,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 			 }
 			 
 		 }
-		 else if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+		 else if (true == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 		 {
 			 _float2 vPos = { 0.f , 0.f };
 
@@ -657,7 +657,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		{
 		case LOC_MIDDOWN:
 		{
-			if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+			if (true == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 			{
 				if (!m_isAddSectionRender)
 				{
@@ -686,7 +686,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 
 				vPos.y -= _RTSize.y * 0.13f;
 			}
-			else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+			else if (false == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 			{
 				if (true == m_isAddSectionRender)
 				{
@@ -999,11 +999,11 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 
 		}
 
-		if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+		if (true == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 		{
 			m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_Scale(m_vDisplay2DSize.x, m_vDisplay2DSize.y, 1.f);
 		}
-		else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+		else if (false == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 		{
 			m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_Scale(m_vDisplay3DSize.x, m_vDisplay3DSize.y, 1.f);
 		}
@@ -1013,7 +1013,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 		case LOC_MIDDOWN:
 		{
-			if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+			if (true == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 			{
 				if (!m_isAddSectionRender)
 				{
@@ -1038,7 +1038,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 
 				vPos.y -= _RTSize.y * 0.13f;
 			}
-			else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+			else if (false == Uimgr->Get_Dialogue(Uimgr->Get_DialogId())[0].lines[Uimgr->Get_DialogueLineIndex()].is2D)
 			{
 				if (true == m_isAddSectionRender)
 				{
