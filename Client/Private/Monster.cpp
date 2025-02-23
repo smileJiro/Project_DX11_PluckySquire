@@ -92,7 +92,7 @@ HRESULT CMonster::Render()
 	{
 		for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
 		{
-			m_p2DColliderComs[i]->Render();
+			m_p2DColliderComs[i]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(Get_Include_Section_Name()));
 		}
 	}
 #endif // _DEBUG
@@ -389,7 +389,7 @@ void CMonster::Active_OnEnable()
 	// 1. PxActor 활성화 (활성화 시점에는 먼저 켜고)
 	CActorObject::Active_OnEnable();
 
-	m_pControllerTransform->Set_WorldMatrix(XMMatrixIdentity());
+	//m_pControllerTransform->Set_WorldMatrix(XMMatrixIdentity());
 	m_tStat.iHP = m_tStat.iMaxHP;
 
 	// 2. 몬스터 할거 하고

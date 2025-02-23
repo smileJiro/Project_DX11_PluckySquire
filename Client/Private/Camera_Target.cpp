@@ -524,29 +524,31 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 		_vector vAt = _vTargetPos + vFreezeOffset + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 		m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 	}
-	//else if ((true == m_isEnableLookAt) && (true == m_isExitLookAt)) {
-	//	// LookAt 보간
+	else if ((true == m_isEnableLookAt) && (true == m_isExitLookAt)) {
+		// LookAt 보간
 
-	//	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fLookTime, fTimeDelta, EASE_IN_OUT);
+		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fLookTime, fTimeDelta, EASE_IN_OUT);
 
-	//	if (fRatio >= (1.f - EPSILON)) {
-	//		_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
-	//		m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
+		if (fRatio >= (1.f - EPSILON)) {
+			_vector vFreezeOffset = -XMLoadFloat3(&m_vPreFreezeOffset);
+			_vector vAt = _vTargetPos + vFreezeOffset + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+			m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 
-	//		m_isExitLookAt = false;
-	//		m_fLookTime.y = 0.f;
-	//		return;
-	//	}
+			m_isExitLookAt = false;
+			m_fLookTime.y = 0.f;
+			return;
+		}
 
-	//	_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-	//	_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
-	//	_vector vDir = XMVector3Normalize(vAt - vPos);
-	//	_vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
+		_vector vFreezeOffset = -XMLoadFloat3(&m_vPreFreezeOffset);
+		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+		_vector vAt = _vTargetPos + vFreezeOffset + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+		_vector vDir = XMVector3Normalize(vAt - vPos);
+		_vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
 
-	//	vLook = XMVectorLerp(vLook, vDir, fRatio);
+		vLook = XMVectorLerp(vLook, vDir, fRatio);
 
-	//	m_pControllerTransform->Get_Transform()->Set_Look(vLook);
-	//}
+		m_pControllerTransform->Get_Transform()->Set_Look(vLook);
+	}
 }
 
 void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
@@ -676,6 +678,8 @@ void CCamera_Target::Switching(_float _fTimeDelta)
 
 		// ㅋㅋ 시발 이거 나중에 어떻게든 해 봐 고쳐
 		m_isFreezeExit = false;
+		XMStoreFloat3(&m_vFreezeEnterPos, vTargetPos);
+		m_vPreFreezeOffset = { 0.f, 0.f, 0.f };
 		return;
 	}
 

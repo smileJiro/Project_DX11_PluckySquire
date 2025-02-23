@@ -35,7 +35,7 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
     {
         if (m_bPlatformerMode)
         {
-
+            Move(_vector{ 0.f,1.f,0.f } *m_f2DUpForce, _fTimeDelta);
         }
         else
         {

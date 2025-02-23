@@ -475,6 +475,7 @@ HRESULT CPlayer::Ready_Components()
        TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
        return E_FAIL;
    //Safe_AddRef(m_pGravityCom);
+   
    m_pGravityCom->Set_Active(false);
     return S_OK;
 }
@@ -527,8 +528,7 @@ void CPlayer::Late_Update(_float _fTimeDelta)
     {
         if (Is_PlatformerMode())
         {
-            cout << "m_f2DUpForce" << m_f2DUpForce << endl;
-            Move(_vector{0.f,1.f,0.f} * m_f2DUpForce, _fTimeDelta);
+
 
         }
         else
