@@ -26,6 +26,8 @@ HRESULT CMonster::Initialize_Prototype()
 HRESULT CMonster::Initialize(void* _pArg)
 {
 	MONSTER_DESC* pDesc = static_cast<MONSTER_DESC*>(_pArg);
+	pDesc->iNumPartObjects = PART_END;
+
 	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
@@ -412,9 +414,7 @@ void CMonster::Active_OnDisable()
 	// 1. 몬스터 할거 하고
 	m_fAccTime = { 0.f };
 	m_isDelay = { false };
-	m_fDelayTime = { 0.f };
 	m_isCool = { false };
-	m_fCoolTime = { 0.f };
 	m_iAttackCount = { 0 };
 
 	Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);

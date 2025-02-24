@@ -26,7 +26,6 @@ HRESULT CBeetle::Initialize(void* _pArg)
     CBeetle::MONSTER_DESC* pDesc = static_cast<CBeetle::MONSTER_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
-    pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(1080.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;

@@ -6,6 +6,37 @@ class CSoldier_Spear final : public CMonster
 public:
 	enum Animation
 	{
+		ALERT = 13,
+		BLOCK_HOLD_PUT_DOWN,
+		CHASE,
+		BLOCK_HOLD_IMPACT,
+		BLOCK_HOLD_LOOP,
+		BLOCK_HOLD_UP,
+		DASH_ATTACK_LOOP,
+		DASH_ATTACK_RECOVERY,
+		DASH_ATTACK_STARTUP,
+		DEATH_01,
+		DEATH_02_EDIT,
+		FAST_WALK,
+		HIT_BACK,
+		HIT_FRONT,
+		IDLE,
+		SALUTE,
+		SHAKE_HEAD,
+		STRAFE_BWD,
+		STRAFE_LEFT_01,
+		STRAFE_LEFT_02,
+		STRAFE_RIGHT_01,
+		STRAFE_RIGHT_02,
+		STRETCH_01,
+		STRETCH_02,
+		WALK,
+		ARREST = 41,
+		LAST,
+	};
+
+	/*enum Animation
+	{
 		CROSSBOW_ALERT,
 		CROSSBOW_DEATH_ALT,
 		CROSSBOW_DEATH,
@@ -49,7 +80,7 @@ public:
 		BOMB_THROW,
 		ARREST,
 		LAST,
-	};
+	};*/
 
 private:
 	CSoldier_Spear(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

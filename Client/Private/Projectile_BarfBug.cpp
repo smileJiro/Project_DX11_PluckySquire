@@ -6,12 +6,12 @@
 #include "Section_Manager.h"
 
 CProjectile_BarfBug::CProjectile_BarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CContainerObject(_pDevice, _pContext)
+	: CProjectile_Monster(_pDevice, _pContext)
 {
 }
 
 CProjectile_BarfBug::CProjectile_BarfBug(const CProjectile_BarfBug& _Prototype)
-	: CContainerObject(_Prototype)
+	: CProjectile_Monster(_Prototype)
 {
 }
 
@@ -27,7 +27,6 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
     //투사체는 쓰는 객체가 Desc 넣어줌.
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = true;
-    pDesc->iNumPartObjects = PART_LAST;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 400.f;
@@ -35,10 +34,7 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
-
     pDesc->fLifeTime = 5.f;
-    m_fLifeTime = pDesc->fLifeTime;
 
 
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -72,19 +68,11 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
 
 void CProjectile_BarfBug::Priority_Update(_float _fTimeDelta)
 {
-    m_fAccTime += _fTimeDelta;
-
     __super::Priority_Update(_fTimeDelta);
 }
 
 void CProjectile_BarfBug::Update(_float _fTimeDelta)
 {
-	if (false == Is_Dead() && m_fLifeTime <= m_fAccTime)
-    {
-        m_fAccTime = 0.f;
-        Event_DeleteObject(this);
-    }
-
     if (true == Is_Dead())
     {
         int a = 10;
@@ -115,13 +103,7 @@ void CProjectile_BarfBug::Late_Update(_float _fTimeDelta)
 HRESULT CProjectile_BarfBug::Render()
 {
 #ifdef _DEBUG
-    if (COORDINATE_2D == Get_CurCoord())
-    {
-        for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
-        {
-            m_p2DColliderComs[i]->Render();
-        }
-    }
+
 #endif // _DEBUG
 
     __super::Render();
@@ -136,11 +118,7 @@ HRESULT CProjectile_BarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3*
     if (COORDINATE_2D == _eCoordinate)
     {
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_Animation(PROJECTILE);
-
-        CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
     }
-    else
-        CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 
     return S_OK;
 }
@@ -176,11 +154,7 @@ void CProjectile_BarfBug::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
     {
         if((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
         {
-            _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
-            XMVectorSetY(vRepulse, -1.f);
-            Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), 1, vRepulse);
-            //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
-            Event_DeleteObject(this);
+            __super::OnTrigger_Enter(_My, _Other);
 
             m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_impact_") + to_wstring(rand() % 2), 50.f);
         }
@@ -203,10 +177,9 @@ void CProjectile_BarfBug::On_Collision2D_Enter(CCollider* _pMyCollider, CCollide
 {
     if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID() || OBJECT_GROUP::MAPOBJECT & _pOtherObject->Get_ObjectGroupID() || OBJECT_GROUP::BLOCKER & _pOtherObject->Get_ObjectGroupID())
     {
-        Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, XMVectorZero());
-        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PROJECTILESPLAT);
-        m_isStop = true;
+        __super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
 
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PROJECTILESPLAT);
     }
 }
 
@@ -221,20 +194,13 @@ void CProjectile_BarfBug::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider
 void CProjectile_BarfBug::Active_OnEnable()
 {
     __super::Active_OnEnable();
- 
-    m_isStop = false;
+
 	//if (COORDINATE_3D == Get_CurCoord())
  //       m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
 }
 
 void CProjectile_BarfBug::Active_OnDisable()
 {
-    m_pControllerTransform->Set_WorldMatrix(XMMatrixIdentity());
-    m_fAccTime = 0.f;
-    m_isStop = false;
-
-    CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
-
     //if (COORDINATE_3D == Get_CurCoord())
 	   // m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
     __super::Active_OnDisable();

@@ -517,11 +517,12 @@ void CCharacter::Move(_fvector _vForce, _float _fTimeDelta)
     }
 }
 
-_bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon)
+_bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon, _bool _FreezeY)
 {
     CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
     _vector vDir = _vPosition - Get_FinalPosition();
-    vDir.m128_f32[1] = 0.f;
+    if(true == _FreezeY)
+        vDir.m128_f32[1] = 0.f;
     vDir.m128_f32[3] = 0.f;
     if (Check_Arrival(_vPosition, _fEpsilon))
     {
