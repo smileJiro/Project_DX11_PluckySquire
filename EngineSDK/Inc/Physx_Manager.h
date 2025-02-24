@@ -66,7 +66,9 @@ private: /* Event CallBack Class */
 	CPhysx_ContactModifyCallback* m_pPhysx_ContactModifyCallback = nullptr;
 public:
 	void Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
+	void Add_ActorUserData(ACTOR_USERDATA* _pUserData);
 	void Delete_ShapeUserData();
+	void Delete_ActorUserData();
 	_bool RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
 	_bool RayCast_Nearest_GroupFilter(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance,  _int _iGroupNum, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
 	_bool RayCast(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits);
@@ -79,7 +81,7 @@ public:
 
 private: /* SHAPE_USERDATA : 메모리 해제용 */
 	vector<SHAPE_USERDATA*> m_pShapeUserDatas;
-
+	vector<ACTOR_USERDATA*> m_pActorUserDatas;
 private: /* Test Object */
 	PxRigidStatic*				m_pGroundPlane = nullptr;
 	CVIBuffer_PxDebug*			m_pVIBufferCom = nullptr;
@@ -89,10 +91,12 @@ private: /* Test Object */
 
 public:
 	void						Set_DebugRender(_bool _isDebugRender) { m_isDebugRender = _isDebugRender; }
+
 private:
 	_bool						m_isDebugRender = true;
 	_float						m_fTimeAcc = 0.0f;
 	_float						m_fFixtedTimeStep= 1.f/60.f;
+
 private:
 	HRESULT						Initialize_Foundation();
 	HRESULT						Initialize_Physics();

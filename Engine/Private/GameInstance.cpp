@@ -235,6 +235,7 @@ _float CGameInstance::Compute_Random(_float _fMin, _float _fMax)
 HRESULT CGameInstance::Engine_Level_Enter(_int _iChangeLevelID)
 {
 	/* Engine Manager 의 Level Enter 시점. 이벤트 매니저에서 새로운 레벨을 생성한 후, 호출된다. */
+
 	m_pCollision_Manager->Level_Enter();
 	m_pPhysx_Manager->Level_Enter();
 	return S_OK;
@@ -254,8 +255,8 @@ HRESULT CGameInstance::Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChange
 
 
 	m_pObject_Manager->Level_Exit((_uint)iCurLevelID);
-	m_pPhysx_Manager->Level_Exit();
 	m_pPrototype_Manager->Level_Exit((_uint)iCurLevelID);
+	m_pPhysx_Manager->Level_Exit();
 	m_pLight_Manager->Level_Exit();
 	//m_pCollision_Manager->Level_Exit();
 
@@ -1300,6 +1301,14 @@ void CGameInstance::Add_ShapeUserData(SHAPE_USERDATA* _pUserData)
 	return m_pPhysx_Manager->Add_ShapeUserData(_pUserData);
 }
 
+void CGameInstance::Add_ActorUserData(ACTOR_USERDATA* _pUserData)
+{
+	if (nullptr == m_pPhysx_Manager)
+		return;
+
+	return m_pPhysx_Manager->Add_ActorUserData(_pUserData);
+}
+
 _uint CGameInstance::Create_ShapeID()
 {
 	if (nullptr == m_pPhysx_Manager)
@@ -1513,8 +1522,8 @@ void CGameInstance::Free() // 예외적으로 Safe_Release()가 아닌, Release_Engine()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pPrototype_Manager);
-	Safe_Release(m_pCubeMap);
 	Safe_Release(m_pPhysx_Manager);
+	Safe_Release(m_pCubeMap);
 	Safe_Release(m_pThreadPool);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pGraphic_Device);
