@@ -310,7 +310,7 @@
     <Filter Include="00.System\04.ThreadPool">
       <UniqueIdentifier>{674f52d0-a217-43ae-ba14-5ce0cc18f534}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\04.Components\VIBuffer\Ribbon%28Beam%29">
+    <Filter Include="01.Utility\04.Components\VIBuffer\Beam%28Ribbon%29">
       <UniqueIdentifier>{42eedbef-e8ba-4ee3-8257-f750bcd3138d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -642,8 +642,8 @@
     <ClInclude Include="..\Public\Physx_ContactModifyCallback.h">
       <Filter>00.System\03.Physx\EventCallBack</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\VIBuffer_Ribbon.h">
-      <Filter>01.Utility\04.Components\VIBuffer\Ribbon%28Beam%29</Filter>
+    <ClInclude Include="..\public\VIBuffer_Beam.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Beam%28Ribbon%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -962,8 +962,8 @@
     <ClCompile Include="..\Private\Physx_ContactModifyCallback.cpp">
       <Filter>00.System\03.Physx\EventCallBack</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\VIBuffer_Ribbon.cpp">
-      <Filter>01.Utility\04.Components\VIBuffer\Ribbon%28Beam%29</Filter>
+    <ClCompile Include="..\private\VIBuffer_Beam.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Beam%28Ribbon%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

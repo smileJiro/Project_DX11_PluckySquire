@@ -192,8 +192,7 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
 
 
 /* PixelShader */
-PS_OUT
-    PS_MAIN_DEFAULT(PS_IN In)
+PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     

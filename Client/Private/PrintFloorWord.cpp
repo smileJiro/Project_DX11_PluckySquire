@@ -57,8 +57,10 @@ void CPrintFloorWord::Update(_float _fTimeDelta)
 		MSG_BOX("Null이면 안되는데 null이 들어온상황. ");
 		// 레벨전환시 순서 잘 살펴야함 상욱형 >> 플레이어생성전인데 유아이매니저에서 플레이어를 참조했다던지, 레벨전환시 여기서 터짐
 		return;
-	}
+	} 
+
 	CController_Transform* pControllerTransform = pPlayer->Get_ControllerTransform();
+
 	if (nullptr == pControllerTransform)
 	{
 		MSG_BOX("Null이면 안되는데 null이 들어온상황. ");

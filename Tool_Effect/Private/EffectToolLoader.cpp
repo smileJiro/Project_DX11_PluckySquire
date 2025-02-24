@@ -8,7 +8,7 @@
 #include "ModelObject.h"
 #include "Magic_Hand_Body.h"
 #include "Magic_Hand.h"
-#include "TestTrail.h"
+#include "TestBeam.h"
 
 CEffectToolLoader::CEffectToolLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -92,6 +92,12 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
         return E_FAIL;
 
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_TestBeam"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Mask_07.dds")))))
+        return E_FAIL;
+
+    
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_MagicHandBody"),
         CMagic_Hand_Body::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -100,13 +106,8 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
         CMagic_Hand::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_TestTrail"),
-        CTestTrail::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Trail"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Trail_03.dds")))))
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_TestBeam"),
+        CTestBeam::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
 
