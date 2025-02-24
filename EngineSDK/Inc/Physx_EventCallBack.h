@@ -19,8 +19,14 @@ private:
 	CPhysx_EventCallBack();
 	virtual ~CPhysx_EventCallBack() = default;
 
+
 public:
 	void Update(); // 물리시뮬이 다 끝난경우 호출.
+
+public:
+	void Level_Enter();
+	void Level_Exit();
+
 private:
 	// 충돌 이벤트가 발생했을 때 호출된다.
 	void onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs) override;

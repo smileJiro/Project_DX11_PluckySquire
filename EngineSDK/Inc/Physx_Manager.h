@@ -19,6 +19,10 @@ public:
 	void						Update(_float _fTimeDelta);
 
 	HRESULT						Render();
+
+public:
+	void						Level_Enter();
+	void						Level_Exit();
 public:
 	PxPhysics*					Get_Physics() const { return m_pPxPhysics; }
 	PxCooking*					Get_Cooking() const { return m_pPxCooking; }
@@ -78,7 +82,6 @@ private: /* SHAPE_USERDATA : 메모리 해제용 */
 
 private: /* Test Object */
 	PxRigidStatic*				m_pGroundPlane = nullptr;
-	PxRigidStatic*				m_pTestDesk = nullptr;
 	CVIBuffer_PxDebug*			m_pVIBufferCom = nullptr;
 	CShader*					m_pShader = nullptr;
 

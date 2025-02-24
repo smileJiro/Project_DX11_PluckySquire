@@ -235,7 +235,8 @@ _float CGameInstance::Compute_Random(_float _fMin, _float _fMax)
 HRESULT CGameInstance::Engine_Level_Enter(_int _iChangeLevelID)
 {
 	/* Engine Manager 의 Level Enter 시점. 이벤트 매니저에서 새로운 레벨을 생성한 후, 호출된다. */
-	//m_pCollision_Manager->Level_Enter(_iChangeLevelID);
+	m_pCollision_Manager->Level_Enter();
+	m_pPhysx_Manager->Level_Enter();
 	return S_OK;
 }
 
@@ -249,7 +250,11 @@ HRESULT CGameInstance::Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChange
 	/* _iNextChangeLevelID가 유효하지 않은 경우.			>>>  _iChangeLevelID != LEVEL_LOADING */
 
 	/* Engine Manager 의 Level Exit 시점. 이벤트 매니저에서 새로운 레벨을 생성하기 전, 호출된다. */
+	m_pCollision_Manager->Level_Exit();
+
+
 	m_pObject_Manager->Level_Exit((_uint)iCurLevelID);
+	m_pPhysx_Manager->Level_Exit();
 	m_pPrototype_Manager->Level_Exit((_uint)iCurLevelID);
 	m_pLight_Manager->Level_Exit();
 	//m_pCollision_Manager->Level_Exit();

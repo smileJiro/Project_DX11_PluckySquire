@@ -145,6 +145,34 @@ HRESULT CPhysx_Manager::Render()
 	return S_OK;
 }
 
+void CPhysx_Manager::Level_Enter()
+{
+	if (nullptr == m_pPhysx_EventCallBack)
+		return;
+
+	m_pPhysx_EventCallBack->Level_Enter();
+}
+
+void CPhysx_Manager::Level_Exit()
+{
+	if (nullptr != m_pPhysx_EventCallBack)
+	{
+		m_pPhysx_EventCallBack->Level_Exit();
+	}
+
+	Delete_ShapeUserData();
+
+	PxU32 actorCount = m_pPxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
+	std::vector<PxActor*> actors(actorCount);
+	m_pPxScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, actors.data(), actorCount);
+
+	for (PxActor* actor : actors) {
+		m_pPxScene->removeActor(*actor);
+		actor->release(); // 메모리 해제
+	}
+	
+}
+
 _float CPhysx_Manager::Get_Gravity()
 {
 	return m_pPxScene->getGravity().magnitude();
@@ -570,11 +598,6 @@ void CPhysx_Manager::Free()
 	// 1. Actor 및 Shape 관련 리소스 해제
 	//if (m_pGroundPlane)
 	//	m_pGroundPlane->release();
-	if (m_pTestDesk)
-	{
-		m_pTestDesk->release();
-		m_pTestDesk = nullptr;
-	}
 
 	// 2. Scene 및 Dispatcher 정리
 	if (m_pPxScene)

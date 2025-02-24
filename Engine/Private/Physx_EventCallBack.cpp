@@ -197,6 +197,13 @@ void CPhysx_EventCallBack::Update()
 
 
 }
+void CPhysx_EventCallBack::Level_Enter()
+{
+}
+void CPhysx_EventCallBack::Level_Exit()
+{
+	m_StayTrigger.clear();
+}
 void CPhysx_EventCallBack::Add_StayTrigger(_ulonglong _ID, const COLL_INFO& _TriggerInfo, const COLL_INFO& _OtherInfo)
 {
 	if (m_StayTrigger.end() != m_StayTrigger.find(_ID))
