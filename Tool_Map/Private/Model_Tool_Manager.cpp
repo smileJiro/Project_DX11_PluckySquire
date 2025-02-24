@@ -560,11 +560,13 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 						_string strMaterialText = "Material ";
 						strButtonText += arrEnumText[iTextureType];
 						strMaterialText += std::to_string(iMaterialIdx);
+						_string strAddButtonID = strButtonText + "_" + strMaterialText;
 
 						if (iMaterialIdx > 0)
 							ImGui::NewLine();
 						ImGui::BulletText(strMaterialText.c_str());
 						//ImGui::SameLine();
+						ImGui::PushID(strAddButtonID.c_str());
 						Begin_Draw_ColorButton("#AddButton_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
 						if (StyleButton(MINI, strButtonText.c_str()))
 #pragma region ADD BUTTON
@@ -637,7 +639,7 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 						}
 #pragma endregion
 						End_Draw_ColorButton();
-
+						ImGui::PopID();
 						iMaterialIdx++;
 					}
 					if (nullptr != tDiffuseInfo.pSRV)

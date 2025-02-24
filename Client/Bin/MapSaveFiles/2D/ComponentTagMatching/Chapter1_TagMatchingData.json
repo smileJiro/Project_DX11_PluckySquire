@@ -3874,5 +3874,95 @@
   "SearchTag": "C06_0910_Metal_flags_01",
   "Sorting": false,
   "TextureName": "C06_0910_Metal_flags_01"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_7374_House_01_png",
+  "Sorting": false,
+  "TextureName": "C06_7374_House_01_png"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_7374_House_01_shadow_png",
+  "Sorting": false,
+  "TextureName": "C06_7374_House_01_shadow_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_7374_House_02_png",
+  "Sorting": false,
+  "TextureName": "C06_7374_House_02_png"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_7374_House_02_shadow_png",
+  "Sorting": false,
+  "TextureName": "C06_7374_House_02_shadow_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_7374_House_03_png",
+  "Sorting": false,
+  "TextureName": "C06_7374_House_03_png"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_7374_House_03_shadow_png",
+  "Sorting": false,
+  "TextureName": "C06_7374_House_03_shadow_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_7374_Wall_02_png",
+  "Sorting": false,
+  "TextureName": "C06_7374_Wall_02_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_7374_Wall_03_png",
+  "Sorting": false,
+  "TextureName": "C06_7374_Wall_03_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_7374_Wall_05_png",
+  "Sorting": false,
+  "TextureName": "C06_7374_Wall_05_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_7374_Wall_06_png",
+  "Sorting": false,
+  "TextureName": "C06_7374_Wall_06_png"
  }
 ]
