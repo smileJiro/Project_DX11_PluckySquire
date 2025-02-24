@@ -70,6 +70,7 @@
 
 #include "ModelObject.h"
 #include "CarriableObject.h"
+#include "DraggableObject.h"
 #include "Player.h"
 #include "PlayerBody.h"
 #include "PlayerSword.h"
@@ -494,6 +495,9 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CarrieableObject"),
         CCarriableObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+        CDraggableObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMapObject"),
         C2DMapDefaultObject::Create(m_pDevice, m_pContext))))
@@ -942,7 +946,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Grape_03"),
         C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Grapes_Grape_03/Grapes_Grape_03.model", matPretransform))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_PlasticBlock"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/SM_Plastic_Block_04/SM_Plastic_Block_04.model", matPretransform))))
+        return E_FAIL;
     ///* 중복 키값도 Prototype_Manager에서 쳐내개 변경했음. 이제 중복 키값 로드해도 멈추지않음. */
     //if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_2, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
     //    return E_FAIL;

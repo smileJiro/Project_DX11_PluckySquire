@@ -181,6 +181,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
     }
     case Client::CPlayerSword::RETRIEVING:
     {
+        m_fFlyingTimeAcc += _fTimeDelta;
 		_vector vMyPos = Get_FinalPosition();
 		_vector vTargetPos = m_pPlayer->Get_CenterPosition();
         _vector vDiff = vTargetPos - vMyPos;
@@ -440,7 +441,6 @@ void CPlayerSword::Throw(_fvector _vDirection)
         Set_Position(m_pPlayer->Get_CenterPosition());
         Set_Active(true);
 		m_pControllerModel->Get_Model(COORDINATE_2D)->Set_Animation(2);
-        
     }
 }
 

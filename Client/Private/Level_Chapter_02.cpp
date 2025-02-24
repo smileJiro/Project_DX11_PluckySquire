@@ -38,6 +38,7 @@
 
 #include "RayShape.h"
 #include "CarriableObject.h"
+#include "DraggableObject.h"
 #include "Bulb.h"
 
 
@@ -171,7 +172,12 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MagicHand (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-
+	if (FAILED(Ready_Layer_Test(TEXT("Layer_Test"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Test (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	
 	///* Test CollapseBlock */
 	//{
 	//	CCollapseBlock::MAPOBJ_DESC CollapseBlockDesc{};
@@ -1663,6 +1669,24 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Hand(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_MagicHand"),
 		m_eLevelID, _strLayerTag, &ContainerDesc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Test(const _wstring& _strLayerTag)
+{
+	CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
+	tDraggableDesc.iModelPrototypeLevelID_3D = m_eLevelID;
+	tDraggableDesc.iCurLevelID = m_eLevelID;
+	tDraggableDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_PlasticBlock");
+	tDraggableDesc.eStartCoord = COORDINATE_3D;
+	tDraggableDesc.vBoxHalfExtents = {1.02f,1.02f,1.02f};
+	tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
+	tDraggableDesc.tTransform3DDesc.vInitialPosition = { -47.f, 3.82f, 15.f };
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+	m_eLevelID, _strLayerTag, &tDraggableDesc)))
+	return E_FAIL;
 
 	return S_OK;
 }

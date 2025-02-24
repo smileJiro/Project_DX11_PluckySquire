@@ -188,6 +188,8 @@
     <ClInclude Include="..\Public\2DMapDefaultObject.h" />
     <ClInclude Include="..\Public\2DMapObject.h" />
     <ClInclude Include="..\Public\2DMapWordObject.h" />
+    <ClInclude Include="..\Public\DraggableObject.h" />
+    <ClInclude Include="..\Public\PlayerState_Drag.h" />
     <ClInclude Include="..\Public\Shadow2D.h" />
     <ClInclude Include="..\Public\3DMapDefaultObject.h" />
     <ClInclude Include="..\Public\3DMapObject.h" />
@@ -408,6 +410,8 @@
     <ClCompile Include="..\Private\2DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\2DMapObject.cpp" />
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
+    <ClCompile Include="..\Private\DraggableObject.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Drag.cpp" />
     <ClCompile Include="..\Private\Shadow2D.cpp" />
     <ClCompile Include="..\Private\3DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\3DMapObject.cpp" />

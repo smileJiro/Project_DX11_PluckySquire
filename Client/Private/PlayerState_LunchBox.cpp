@@ -30,34 +30,31 @@ void CPlayerState_LunchBox::Update(_float _fTimeDelta)
 		else
 			m_bArrival = true;
 	}
-
+	INTERACT_RESULT eResult =  m_pOwner->Try_Interact(_fTimeDelta);
 
 	if (LUNCHBOX_STATE_IDLE == m_eCurState)
 	{
-		if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
+		if (INTERACT_RESULT::CHARGING == eResult)
 		{
 			m_eCurState = LUNCHBOX_STATE_CHARGE;
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_LUNCHBOX_POSE_02_LOOP_GT);
 		}
+
 	}
 	else if (LUNCHBOX_STATE_CHARGE == m_eCurState)
 	{
-		if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
+		if (INTERACT_RESULT::SUCCESS == eResult)
 		{
+			m_eCurState = LUNCHBOX_STATE_LAST;
+			m_pGameInstance->End_SFX(_wstring(L"A_sfx_C2DESK_pull_lunchbox_lid"));
+			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_C2DESK_lunchbox_open"), 50.f);
 
-			if (m_pOwner->Try_Interact(m_pLunchBox, _fTimeDelta))
-			{
-				m_eCurState = LUNCHBOX_STATE_LAST;
-				m_pGameInstance->End_SFX(_wstring(L"A_sfx_C2DESK_pull_lunchbox_lid"));
-				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_C2DESK_lunchbox_open"), 50.f);
-
-				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_LUNCHBOX_BACKFLIP_GT);
-				m_pLunchBox->Set_PlayingAnim(true);
-				Event_KnockBack(m_pOwner, -m_vLook * m_fKnockBackPow);
-				return;
-			}
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_LUNCHBOX_BACKFLIP_GT);
+			m_pLunchBox->Set_PlayingAnim(true);
+			Event_KnockBack(m_pOwner, -m_vLook * m_fKnockBackPow);
+			return;
 		}
-		else
+		else if(INTERACT_RESULT::FAIL == eResult)
 		{
 			m_eCurState = LUNCHBOX_STATE_IDLE;
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_LUNCHBOX_POSE_01_LOOP_GT);

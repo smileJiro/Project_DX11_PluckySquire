@@ -3,6 +3,7 @@
 #include "PlayerState_Run.h"
 #include "PlayerState_Idle.h"
 #include "GameInstance.h"
+#include "Interactable.h"
 
 CPlayerState_JumpDown::CPlayerState_JumpDown(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::JUMP_DOWN)
@@ -45,14 +46,9 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 	// 이하 공중일 때
 	if (false == bCarrying)
 	{
-		if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
+		INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
+		if (INTERACT_RESULT::SUCCESS != eResult)
 		{
-			m_pOwner->Try_Interact(m_pOwner->Get_InteractableObject(), _fTimeDelta);
-			return;
-		}
-		else
-		{
-			m_pOwner->End_Interact();
 			if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
 			{
 				m_pOwner->Set_State(CPlayer::ROLL);
@@ -72,8 +68,6 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 				return;
 			}
 		}
-
-
 
 	}
 	else

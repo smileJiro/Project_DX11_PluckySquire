@@ -26,6 +26,7 @@
 #include "PlayerState_Evict.h"
 #include "PlayerState_LunchBox.h"
 #include "PlayerState_Electric.h"
+#include "PlayerState_Drag.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "Section_Manager.h"
@@ -39,6 +40,7 @@
 #include "Blocker.h"
 #include "NPC_Store.h"
 #include "Portal.h"
+#include "DraggableObject.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -518,7 +520,8 @@ void CPlayer::Update(_float _fTimeDelta)
 
     CUI_Manager::GetInstance()->Set_isQIcon((nullptr != m_pInteractableObject) 
         && KEY::Q == m_pInteractableObject->Get_InteractKey());
-    m_pInteractableObject = nullptr;
+    if(m_pInteractableObject && false== m_pInteractableObject->Is_Interacting())
+        m_pInteractableObject = nullptr;
 
 }
 
@@ -619,7 +622,6 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
             if (Check_ReplaceInteractObject(pInteractable))
             {
 				m_pInteractableObject = pInteractable;
-                m_pPortal = dynamic_cast<CPortal*>(m_pInteractableObject);
             }
 
         }
@@ -751,9 +753,6 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
             if (Check_ReplaceInteractObject(pInteractable))
             {
                 m_pInteractableObject = pInteractable;
-                STATE eStat = m_pStateMachine->Get_CurrentState()->Get_StateID();
-                m_pPortal = dynamic_cast<CPortal*>(m_pInteractableObject);
-               
             }
         }
         
@@ -1066,25 +1065,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
                 tResult.bInputStates[PLAYER_INPUT_SPINLAUNCH] = true;
         }
     }
-    //포탈은 떨어져도 발동할 수 있어야 함. 
-    _bool bHasInteractable = Has_InteractObject();
-    if (bHasInteractable)
-    {
-        IInteractable* pInteractable =  Get_InteractableObject();
-        IInteractable::INTERACT_TYPE eInteractType = pInteractable->Get_InteractType();
-        KEY eInteractKey = pInteractable->Get_InteractKey();
-        if (IInteractable::INTERACT_TYPE::CHARGE == eInteractType)
-        {
-            if (KEY_PRESSING(eInteractKey))
-                tResult.bInputStates[PLAYER_INPUT_INTERACT] = true;
-        }
-        else if (IInteractable::INTERACT_TYPE::NORMAL == eInteractType)
-        {
-            if (KEY_DOWN(eInteractKey))
-                tResult.bInputStates[PLAYER_INPUT_INTERACT] = true;
-        }
-    }
-    else if (bCarrying)
+
+    if (false == Has_InteractObject() && bCarrying)
     {
          //상호작용 오브젝트가 범위 안에 있으면 상호작용, 아니면 던지기
         if (KEY_DOWN(KEY::E))
@@ -1158,6 +1140,8 @@ void CPlayer::Revive()
 	Set_State(IDLE);
 }
 
+//아무런 상호작용 중이 아닐 때에는 그냥 가장 가까운 애로 교체.
+//포탈, 끌고다니기 등 상호작용 중일 때는 교체 불가.
 _bool CPlayer::Check_ReplaceInteractObject(IInteractable* _pObj)
 {
     if(nullptr == _pObj)
@@ -1176,37 +1160,6 @@ _bool CPlayer::Check_ReplaceInteractObject(IInteractable* _pObj)
     return false;
 }
 
-_bool CPlayer::Try_Interact(IInteractable* _pInteractable, _float _fTimeDelta)
-{
-    if (nullptr == _pInteractable)
-        return false;
-
-
-    if (0 == _pInteractable->Get_ChargeProgress())
-    {
-
-    }
-    if (_pInteractable->Is_ChargeCompleted())
-    {
-        _pInteractable->End_Charge(this);
-        _pInteractable->Interact(this);
-        return true;
-    }
-    else
-    {
-        _pInteractable->Charge(this, _fTimeDelta);
-        return false;
-    }
-
-
-}
-
-void CPlayer::End_Interact()
-{
-    if (nullptr == m_pInteractableObject)
-        return;
-    m_pInteractableObject->End_Charge(this);
-}
 
 void CPlayer::Start_Portal(CPortal* _pPortal)
 {
@@ -1229,6 +1182,42 @@ void CPlayer::Start_Invinciblity()
 	m_fInvincibleTImeAcc = 0;
     //m_pActorCom->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
 	//m_pBody2DColliderCom->Set_Active(false);
+}
+
+INTERACT_RESULT CPlayer::Try_Interact(_float _fTimeDelta)
+{
+ 
+    if (Has_InteractObject())
+    {
+        IInteractable* pInteractable = Get_InteractableObject();
+        IInteractable::INTERACT_TYPE eInteractType = pInteractable->Get_InteractType();
+        KEY eInteractKey = pInteractable->Get_InteractKey();
+        _bool bTryInteract = false;
+        if (IInteractable::INTERACT_TYPE::CHARGE == eInteractType)
+        {
+            if (KEY_PRESSING(eInteractKey))
+                bTryInteract = true;
+        }
+        else if (IInteractable::INTERACT_TYPE::NORMAL == eInteractType)
+        {
+            if (KEY_DOWN(eInteractKey))
+                bTryInteract = true;
+        }
+        else if (IInteractable::INTERACT_TYPE::HOLDING == eInteractType)
+        {
+            if (KEY_PRESSING(eInteractKey))
+                bTryInteract = true;
+        }
+        if (bTryInteract)
+            return m_pInteractableObject->Try_Interact(this, _fTimeDelta);
+        else
+        {
+            m_pInteractableObject->End_Interact(this);
+            return INTERACT_RESULT::FAIL;
+        }
+    }
+    else
+        return INTERACT_RESULT::FAIL;
 }
 
 
@@ -1362,10 +1351,7 @@ CPlayer::STATE CPlayer::Get_CurrentStateID()
 	return m_pStateMachine->Get_CurrentState()->Get_StateID();
 }
 
-CCarriableObject* CPlayer::Get_CarryingObject()
-{
-    { return (m_pCarryingObject); }
-}
+
 
 const _float4x4* CPlayer::Get_BodyWorldMatrix_Ptr() const
 {
@@ -1474,6 +1460,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::ELECTRIC:
         m_pStateMachine->Transition_To(new CPlayerState_Electric(this));
+        break;
+    case Client::CPlayer::DRAG:
+        m_pStateMachine->Transition_To(new CPlayerState_Drag(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;
@@ -1629,6 +1618,7 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
 
     return S_OK;
 }
+
 void CPlayer::Set_GravityCompOn(_bool _bOn)
 {
 	m_pGravityCom->Set_Active(_bOn);

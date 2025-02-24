@@ -3,6 +3,7 @@
 #include "PlayerState_JumpDown.h"
 #include "PlayerState_Run.h"
 #include "PlayerState_Idle.h"
+#include "Interactable.h"
 #include "GameInstance.h"
 
 
@@ -20,16 +21,10 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 		return;
 	}
 
-	 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
-	 
-	if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
+	PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
+	INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
+	if (INTERACT_RESULT::SUCCESS != eResult)
 	{
-		m_pOwner->Try_Interact(m_pOwner->Get_InteractableObject(), _fTimeDelta);
-		return;
-	}
-	else
-	{
-		m_pOwner->End_Interact();
 		if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
 		{
 			m_pOwner->Set_State(CPlayer::ROLL);

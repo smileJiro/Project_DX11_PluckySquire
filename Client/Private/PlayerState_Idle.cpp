@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Player.h"
 #include "StateMachine.h"
+#include "Interactable.h"
 #include "PlayerState_Run.h"
 
 
@@ -34,12 +35,10 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 		}
 		
 	}
-	if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
-		m_pOwner->Try_Interact(m_pOwner->Get_InteractableObject(), _fTimeDelta);
-	else
-	{
-		m_pOwner->End_Interact();
 
+	//Interact 시도 후 실패하면 나머지 입력 받기.
+	if(INTERACT_RESULT::FAIL == m_pOwner->Try_Interact(_fTimeDelta))
+	{
 		if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_SPINATTACK])
