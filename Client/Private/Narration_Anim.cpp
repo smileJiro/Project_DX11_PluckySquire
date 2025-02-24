@@ -32,7 +32,7 @@ HRESULT CNarration_Anim::Initialize(void* _pArg)
 
 	// 애니메이션 인덱스가 올바르게 초기화되어 있다고 가정 (아직 초기화되지 않았다면 default 0 할당)
 	// pDesc->AnimIndex = 0;  // 필요 시 명시적으로 초기화
-
+	//
 	// m_iCurLevelID 설정 (양쪽 모두 동일하게)
 
 	if (!pDesc || pDesc->lines.empty() || pDesc->lines[0].NarAnim.empty()) return E_FAIL;

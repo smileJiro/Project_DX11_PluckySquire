@@ -283,6 +283,8 @@ HRESULT CEvent_Manager::Execute_LevelChange(const EVENT& _tEvent)
 	if (FAILED(m_pGameInstance->Engine_Level_Exit(iChangeLevelID, iNextChangeLevelID)))
 		return E_FAIL;
 
+
+
 	/* Level_Manager Exit */
 	if (FAILED(m_pGameInstance->Level_Manager_Exit(iChangeLevelID, iNextChangeLevelID)))
 		return E_FAIL;
@@ -789,7 +791,6 @@ HRESULT CEvent_Manager::Execute_Sneak_BeetleCaught(const EVENT& _tEvent)
 
 HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 {
-	CSection_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CEffect2D_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	return S_OK;
@@ -807,7 +808,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 
 	CEffect2D_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	Uimgr->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
-	
+
 
 	return S_OK;
 }

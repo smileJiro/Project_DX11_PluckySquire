@@ -14,7 +14,6 @@ public:
 	enum CAMERA_2D_MODE 
 	{ 
 		DEFAULT, 
-		MOVE_TO_DESIREPOS, 
 		MOVE_TO_NEXTARM, 
 		MOVE_TO_CUSTOMARM, 
 		RETURN_TO_DEFUALT, 
@@ -102,8 +101,7 @@ private:
 	_float3						m_v2DTargetWorldPos = {};
 	_float3						m_v2DPreTargetWorldPos = {};
 	_float3						m_v2DFixedPos = {};
-
-	_float3						m_vStartPos = {}; // Target 바뀌었을 때 Lerp하기 위한 변수
+	_float3						m_vStartPos = {};			// Target 바뀌었을 때 Lerp하기 위한 변수
 
 	// 이전 2D 좌표계 저장, 000일 때를 구하기 위해서
 	_float2						m_v2DdMatrixPos = {};
@@ -116,8 +114,6 @@ private:
 	_bool						m_isBook = { true };
 	_float						m_fFixedY = {};
 
-	// Arm
-	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>	m_ArmDatas;
 
 	// Sketch Space
 	NORMAL_DIRECTION			m_eCurSpaceDir = { NORMAL_DIRECTION::NONEWRITE_NORMAL };
@@ -128,6 +124,10 @@ private:
 	MAGNIFICATION_TYPE			m_eMagnificationType = {};
 
 	_uint						m_iPlayType = {};
+	_bool						m_iNarrationPosType = { false };		// 나중에 int로 바꾸기, 지금은 true면 left
+
+	// Arm
+	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>	m_ArmDatas;
 
 	// CustomArm
 	ARM_DATA					m_CustomArmData = {};
@@ -138,7 +138,6 @@ private:
 
 	void						Defualt_Move(_float _fTimeDelta);
 	void						Move_To_NextArm(_float _fTimeDelta);
-	void						Move_To_DesirePos(_float _fTimeDelta);
 	void						Move_To_CustomArm(_float _fTimeDelta);
 	void						Return_To_Default(_float _fTimeDelta);
 	void						Flipping_Up(_float _fTimeDelta);
@@ -153,7 +152,6 @@ private:
 	void						Calculate_Book_Scroll();					
 	void						Check_MagnificationType();
 	void						Clamp_FixedPos();
-	void						Check_TargetChange();
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);

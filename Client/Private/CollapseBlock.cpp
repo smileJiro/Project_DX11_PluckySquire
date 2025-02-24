@@ -119,6 +119,8 @@ void CCollapseBlock::State_Change()
 
 void CCollapseBlock::State_Change_Idle()
 {
+	m_pGravityCom->Set_Active(false);
+	m_pGravityCom->Set_GravityOffset(0.0f);
 }
 
 void CCollapseBlock::State_Change_Shake()
@@ -234,6 +236,16 @@ HRESULT CCollapseBlock::Ready_Components()
 	m_pGravityCom->Set_Active(false);
 
 	return S_OK;
+}
+
+void CCollapseBlock::Active_OnEnable()
+{
+	__super::Active_OnEnable();
+}
+
+void CCollapseBlock::Active_OnDisable()
+{
+	__super::Active_OnDisable();
 }
 
 CCollapseBlock* CCollapseBlock::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

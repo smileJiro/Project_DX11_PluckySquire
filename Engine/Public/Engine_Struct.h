@@ -87,6 +87,7 @@ namespace Engine
 	{
 		CActorObject*				pOwner = nullptr;
 		_uint						iObjectGroup = 0;
+		_bool						isInToScene = false;
 	}ACTOR_USERDATA;
 
 	typedef struct tagShapeUserData

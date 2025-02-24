@@ -277,6 +277,7 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tempData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), tempData.eCurlevelId, TEXT("Layer_UI"), &pObject, &tempData)))
 								return E_FAIL;
 
+							Safe_AddRef(pObject);
 							// 积己茄 局聪皋捞记 按眉 持扁
 							CNarration_Anim* pAnim;
 							pAnim = static_cast<CNarration_Anim*>(pObject);

@@ -55,7 +55,10 @@ private: /* 상태 실행 루틴 */
 
 private:
 	HRESULT							Ready_Components();
-
+private:
+	/* Active 변경시 호출되는 함수 추가. */
+	virtual void Active_OnEnable();
+	virtual void Active_OnDisable();
 public:
 	static CCollapseBlock*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CGameObject*					Clone(void* _pArg) override;
