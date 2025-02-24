@@ -51,7 +51,7 @@ HRESULT CNarration::Initialize(void* _pArg)
 
 void CNarration::Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::NUMPAD0))
+	if (KEY_DOWN(KEY::G))
 	{
 		StopNarration();
 		return;
