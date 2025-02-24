@@ -83,6 +83,8 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
                     ShapeData.pShapeDesc = &ShapeCookingDesc;
                     ShapeData.isTrigger = false;
                     ShapeData.isVisual = false;
+                    ShapeData.FilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
+                    ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER | OBJECT_GROUP::DYNAMIC_OBJECT;
                     _float3 fScale =
                         _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&pDesc->tTransform3DDesc.matWorld.m[0]))),
                             XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&pDesc->tTransform3DDesc.matWorld.m[1]))),

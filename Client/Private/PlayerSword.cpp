@@ -181,6 +181,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
     }
     case Client::CPlayerSword::RETRIEVING:
     {
+        m_fFlyingTimeAcc += _fTimeDelta;
 		_vector vMyPos = Get_FinalPosition();
 		_vector vTargetPos = m_pPlayer->Get_CenterPosition();
         _vector vDiff = vTargetPos - vMyPos;
@@ -393,6 +394,7 @@ void CPlayerSword::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOth
 {
 }
 
+
 void CPlayerSword::Active_OnEnable()
 {
     COORDINATE eCoord = Get_CurCoord();
@@ -422,7 +424,7 @@ HRESULT CPlayerSword::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewP
     }
     else
     {
-        Set_Active(m_pPlayer->Is_SneakMode());
+        Set_Active(m_pPlayer->Is_SwordMode());
     }
     return S_OK;
 }
@@ -439,7 +441,6 @@ void CPlayerSword::Throw(_fvector _vDirection)
         Set_Position(m_pPlayer->Get_CenterPosition());
         Set_Active(true);
 		m_pControllerModel->Get_Model(COORDINATE_2D)->Set_Animation(2);
-        
     }
 }
 
@@ -475,6 +476,7 @@ void CPlayerSword::On_StateChange()
             _matrix matWorld = XMMatrixIdentity() * XMMatrixRotationY(XMConvertToRadians(180));
             m_pControllerTransform->Set_WorldMatrix(matWorld);
             static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
+            Switch_Grip(true);
         }
         else
         {
@@ -497,10 +499,10 @@ void CPlayerSword::On_StateChange()
             _vector vLook = XMVectorSetY(m_pControllerTransform->Get_State(CTransform::STATE_LOOK), 0);
             static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Dynamic();
             static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(vLook);
-            m_pBody2DColliderCom->Set_Active(true);
         }
         else
         {
+            m_pBody2DColliderCom->Set_Active(true);
             Switch_Animation(2);
         }
         Set_AttackEnable(true);
@@ -514,7 +516,7 @@ void CPlayerSword::On_StateChange()
             _float3 vSpeed = { 0.f,0.f,0.f };
             pDynamicActor->Set_LinearVelocity({ 0.f,0.f,0.f });
             pDynamicActor->Set_AngularVelocity(vSpeed);
-            pDynamicActor->Set_Rotation(m_vStuckDirection);
+            pDynamicActor->Set_Rotation(-m_vStuckDirection);
             static_cast<CActor_Dynamic*>(m_pActorCom)->Late_Update(0);
             static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
         }

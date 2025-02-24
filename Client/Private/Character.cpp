@@ -128,6 +128,13 @@ void CCharacter::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other,
                 _ModifiableContacts.Set_StaticFriction(i, 0.0f);
                 continue;
             }
+            _vector vPoint = _ModifiableContacts.Get_Point(i);
+            if(vPoint.m128_f32[1] > m_fStepHeightThreshold + Get_FinalPosition().m128_f32[1])
+            {
+                _ModifiableContacts.Set_DynamicFriction(i, 0.0f);
+                _ModifiableContacts.Set_StaticFriction(i, 0.0f);
+                continue;
+            }
             _ModifiableContacts.Set_Restitution(i, 0);
         }
         break;
