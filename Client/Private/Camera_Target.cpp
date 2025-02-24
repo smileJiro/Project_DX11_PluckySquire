@@ -122,8 +122,8 @@ void CCamera_Target::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _in
 
 void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 {
-	//m_fFreezeOffsetTime.x = 4.f;
-	//m_fFreezeExitReturnTime.x = 5.f;
+	m_fFreezeOffsetTime.x = 1.2f;
+	m_fFreezeExitReturnTime.x = 1.2f;
 	m_iFreezeMask ^= _iFreezeMask;
 	m_isFreezeExit = true;
 	m_isFreezeOffsetReturn = true;
@@ -342,6 +342,8 @@ INITIAL_DATA CCamera_Target::Get_InitialData()
 		XMStoreFloat3(&tData.vAt, vResultAt);
 		
 	}
+
+	m_vFreezeOffset = { 0.f, 0.f, 0.f };
 
 	return tData;
 }
@@ -724,7 +726,7 @@ void CCamera_Target::Change_FreezeOffset(_float _fTimeDelta)
 		return;
 	}
 
-	_vector vFreezeOffset = XMVectorLerp(XMLoadFloat3(&m_vFreezeOffset), XMVectorZero(), fRatio);
+	_vector vFreezeOffset = XMVectorLerp(XMLoadFloat3(&m_vStartFreezeOffset), XMVectorZero(), fRatio);
 
 	XMStoreFloat3(&m_vFreezeOffset, vFreezeOffset);
 

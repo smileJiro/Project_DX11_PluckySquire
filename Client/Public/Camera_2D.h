@@ -103,6 +103,8 @@ private:
 	_float3						m_v2DPreTargetWorldPos = {};
 	_float3						m_v2DFixedPos = {};
 
+	_float3						m_vStartPos = {}; // Target 바뀌었을 때 Lerp하기 위한 변수
+
 	// 이전 2D 좌표계 저장, 000일 때를 구하기 위해서
 	_float2						m_v2DdMatrixPos = {};
 

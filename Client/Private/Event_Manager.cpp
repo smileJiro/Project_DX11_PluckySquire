@@ -15,6 +15,7 @@
 #include "Pooling_Manager.h"
 #include "Section_Manager.h"
 #include "UI_Manager.h"
+#include "PlayerData_Manager.h"
 
 #include "FSM.h"
 #include "FSM_Boss.h"
@@ -801,6 +802,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 	CSection_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CCamera_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
+	CPlayerData_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CEffect_Manager::GetInstance()->Level_Exit();
 
 	CEffect2D_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
