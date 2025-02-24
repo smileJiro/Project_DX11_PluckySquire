@@ -191,13 +191,15 @@ PS_BRIGHTCOLOR PS_SUBDISSOLVE(PS_IN In)
 {
     PS_BRIGHTCOLOR Out = (PS_BRIGHTCOLOR) 0;
     
-    float fMask = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
-    + float2(g_MaskUVScale.z, g_MaskUVScale.w)).r;
-    float fSub = g_SecondTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_SubUVScale.x, g_SubUVScale.y))
-    + float2(g_SubUVScale.z, g_SubUVScale.w)).r;
+    float fSub = g_SecondTexture.Sample(LinearSampler, (g_fTimeAcc * In.vTexcoord * (float2(g_SubUVScale.x, g_SubUVScale.y))
+    + float2(g_SubUVScale.z, g_SubUVScale.w))).r;
+    
+    float fMask = g_MaskTexture.Sample(LinearSampler, (float2(fSub / 10.f, fSub / 10.f) * In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
+    + float2(g_MaskUVScale.z, g_MaskUVScale.w))).r;
+
     
     float4 vColor = g_vColor;
-    vColor.a = vColor.a * fMask * fSub;
+    vColor.a = vColor.a * fMask;
     
     float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y))
     + float2(g_NoiseUVScale.z, g_NoiseUVScale.w)).r;
