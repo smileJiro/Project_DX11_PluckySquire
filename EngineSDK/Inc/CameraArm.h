@@ -59,6 +59,7 @@ public:
 	void				Set_Length(_float _fLength) { m_fLength = _fLength; }
 	void				Set_ArmTag(_wstring _wszArmTag) { m_wszArmTag = _wszArmTag; }
 	void				Set_ArmVector(_vector _vArm);
+	void				Set_StartInfo();
 
 public:
 	_wstring			Get_ArmTag() { return m_wszArmTag; }

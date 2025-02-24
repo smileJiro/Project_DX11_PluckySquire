@@ -70,6 +70,15 @@ CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext
 HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 {
 	m_eLevelID = _eLevelID;
+
+	if (FAILED(CSection_Manager::GetInstance()->Level_Enter(_eLevelID)))
+	{
+		MSG_BOX(" Failed CSection_Manager Level_Enter(Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+
+
+
 	if (FAILED(Ready_Lights()))
 	{
 		MSG_BOX(" Failed Ready_Lights (Level_Chapter_02::Initialize)");

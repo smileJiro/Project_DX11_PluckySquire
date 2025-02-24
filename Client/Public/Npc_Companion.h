@@ -51,6 +51,7 @@ public:
 private:
 	HRESULT						Ready_Companion(const _wstring& _strLayerName, void* _pArg);
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) {};
+	void						Set_NotDisPlaySection();
 
 protected:
 	virtual	void				Interact(CPlayer* _pUser) {};
@@ -86,6 +87,7 @@ protected:
 	void						Delay_Off();
 	_bool						is_LookOut() { return m_isLookOut; }
 	_bool						is_Trace() { return m_isTrace; }
+	vector<_wstring>			m_vecNotDisplaySections;
 
 
 public:
@@ -104,6 +106,8 @@ protected:
 	_float2						m_CurPlayerPos = { 0.f, 0.f };
 	_float2						m_vPreNPCPos = { 0.f ,0.f };
 	_bool						m_isLookOut = { false };
+	_bool						m_isDeleteObejct = { false };
+
 
 
 private:

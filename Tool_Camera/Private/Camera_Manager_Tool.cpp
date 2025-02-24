@@ -29,8 +29,7 @@ void CCamera_Manager_Tool::Update()
 
 void CCamera_Manager_Tool::Render()
 {
-	if (nullptr != m_pCurrentArm)
-		m_pCurrentArm->Render_Arm();
+
 }
 
 void CCamera_Manager_Tool::Clear()

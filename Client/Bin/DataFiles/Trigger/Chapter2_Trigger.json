@@ -214,38 +214,6 @@
   {
     "Arm_Info": {
       "Exit_Return_Mask": {
-        "ReturnMask": 0
-      }
-    },
-    "Collider_Info": {
-      "HalfExtents": [
-        2.200000047683716,
-        1.7999999523162842,
-        0.5
-      ],
-      "Position": [
-        -27.091999053955078,
-        4.5329999923706055,
-        -7.630000114440918
-      ],
-      "Radius": 0.5,
-      "Rotation": [
-        -0.0,
-        0.0,
-        -0.0
-      ],
-      "ShapeType": 0
-    },
-    "Fillter_MyGroup": 128,
-    "Fillter_OtherGroupMask": 2,
-    "Trigger_ConditionType": 3,
-    "Trigger_Coordinate": 1,
-    "Trigger_EventTag": "Chapter2_3",
-    "Trigger_Type": 1
-  },
-  {
-    "Arm_Info": {
-      "Exit_Return_Mask": {
         "ReturnMask": 10
       }
     },
@@ -747,7 +715,7 @@
     "Collider_Info": {
       "HalfExtents": [
         0.5,
-        0.5,
+        2.5,
         2.0999999046325684
       ],
       "Position": [

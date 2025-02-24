@@ -79,6 +79,8 @@ HRESULT CSection_2D_Narration::Remove_GameObject_ToSectionLayer(CGameObject* _pG
 	// TODO:: 추후 개선 오버라이드 2개
 	if (nullptr != pNPC)
 		pNPC->Set_Render(true);
+
+
 	return hr;
 }
 ;

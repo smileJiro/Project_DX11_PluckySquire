@@ -10,6 +10,8 @@
 #include "NPC_Violet.h"
 #include "Dialogue.h"
 
+#include "Section_2D_Narration.h"
+
 
 
 CNPC_Companion::CNPC_Companion(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -91,28 +93,53 @@ void CNPC_Companion::Update(_float _fTimeDelta)
 
 			if (PlayerSection != NpcSection)
 			{
-
+			
 				if (TEXT("Violet") == m_vecCompanionNpc[i]->Get_Name())
 				{
-
+			
 					if (CNPC_Violet::VIOLET_NOTRENDER == static_cast<CNPC_Violet*>(m_vecCompanionNpc[i])->Get_RenderType())
 					{
 						 
-
+						CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
 						continue;
 					}
+			
+					
+					
+					 //특정 섹션에서만 안나와야한다.
+					 //현재는 전체 섹션을 체크를한다..
 
-					//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
+					const _wstring curSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
 
-					if (false == CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
+					if (curSection != TEXT("Chapter2_P0102") &&
+						curSection !=TEXT("Chapter2_P0506") &&
+						curSection !=TEXT("Chapter2_P1112") &&
+						curSection !=TEXT("Chapter2_P1314") &&
+						!CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
+					{
 						CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
+						return;
+					}
+					
+					//if (TEXT("Chapter2_P0304") != CSection_Manager::GetInstance()->Get_Cur_Section_Key() ||
+					//	TEXT("Chapter2_P1112") != CSection_Manager::GetInstance()->Get_Cur_Section_Key() ||
+					//	TEXT("Chapter2_P1314") != CSection_Manager::GetInstance()->Get_Cur_Section_Key() &&
+					//	false == CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
+					//	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
 				}
-
+			
 				else 
 				{
 					//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
-					if (false == CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
+					const _wstring curSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+
+					if (curSection != TEXT("Chapter2_P0506") &&
+						curSection != TEXT("Chapter2_P1112") &&
+						curSection != TEXT("Chapter2_P1314") &&
+						!CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
+					{
 						CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
+					}
 				}
 			}
 		}
@@ -257,6 +284,13 @@ HRESULT CNPC_Companion::Ready_Companion(const _wstring& _strLayerName, void* _pA
 	return S_OK;
 }
 
+void CNPC_Companion::Set_NotDisPlaySection()
+{
+
+	// 나중에 하자. 어디어디 안들어갈건지 파악이 필요하다.
+
+}
+
 void CNPC_Companion::Set_TargetObject(_int _index)
 {
 	if (0 == m_vecCompanionNpc.size())
@@ -325,14 +359,21 @@ CGameObject* CNPC_Companion::Clone(void* _pArg)
 
 void CNPC_Companion::Free()
 {
-	//Safe_Release(m_pColliderCom);
-	Safe_Release(m_pTargetObject);
-
-	for (auto iter : m_vecCompanionNpc)
+	if (false == m_isDeleteObejct && nullptr != m_pTargetObject)
 	{
-		Safe_Release(iter);
+		Safe_Release(m_pTargetObject);
 	}
-	m_vecCompanionNpc.clear();
+
+	
+	if (0 < m_vecCompanionNpc.size())
+	{
+		for (auto iter : m_vecCompanionNpc)
+		{
+			Safe_Release(iter);
+		}
+		m_vecCompanionNpc.clear();
+	}
+
 
 	__super::Free();
 }

@@ -86,6 +86,7 @@ private:
     vector<CNarration_Anim*>    CreateAnimationObjectsForLine(_uint iLine);
     void                        Update_Narration(_float _fTimeDelta);
     void                        PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken);
+    void                        StopNarration();
 
 
 private:

@@ -23,6 +23,9 @@ private:
 public:
 	void					Update();
 
+public:
+	void					Level_Enter();
+	void					Level_Exit();
 private: /* Collision Group Update (그룹별 충돌검사 루틴) */
 	void					Collision_GroupUpdate(const array<vector<CCollider*>, MAX_GROUPID>& _ColGroups, _uint _iLeft, _uint _iRight);
 

@@ -253,6 +253,7 @@ public: /* For. Physx_Manager*/
 	PxScene*			Get_Physx_Scene() const;
 	PxMaterial*			Get_Material(ACTOR_MATERIAL _eType) const;
 	void				Add_ShapeUserData(SHAPE_USERDATA* _pUserData);
+	void				Add_ActorUserData(ACTOR_USERDATA* _pUserData);
 	_uint				Create_ShapeID();
 	_bool				RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
 	_bool				RayCast_Nearest_GroupFilter(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _int _iGroupNum, _float3* _pOutPos = nullptr, CActorObject** _ppOutActorObject = nullptr);
