@@ -7,6 +7,7 @@
 #include "Section_Manager.h"     
 #include "Camera_Manager.h"
 #include "Effect_Trail.h"
+#include "Effect_Beam.h"
 
 CPlayerSword::CPlayerSword(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -123,19 +124,65 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     SwordTrailDesc.iCurLevelID = m_iCurLevelID;
     SwordTrailDesc.isCoordChangeEnable = false;
     SwordTrailDesc.pParentMatrices[COORDINATE_3D] = &m_WorldMatrices[COORDINATE_3D];
-    SwordTrailDesc.fLength = 1.f;
-    SwordTrailDesc.vAddPoint = _float3(0.f, 0.f, -0.88f);
+    SwordTrailDesc.fLength = 0.8f;
+    SwordTrailDesc.vAddPoint = _float3(0.f, 0.f, -0.85f);
     SwordTrailDesc.vColor = _float4(0.62f, 0.82f, 1.33f, 0.85f);
     SwordTrailDesc.szTextureTag = L"Prototype_Component_Texture_Trail";
     SwordTrailDesc.szBufferTag = L"Prototype_Component_VIBuffer_Trail32";
-    SwordTrailDesc.fAddTime = 0.001f;
-    SwordTrailDesc.fDeleteTime = 0.024f;
+    SwordTrailDesc.fAddTime = 0.015f;
+    SwordTrailDesc.fTrailLifeTime = 0.25f;
 
     m_pTrailEffect = static_cast<CEffect_Trail*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_EffectTrail"), &SwordTrailDesc));
 
     if (nullptr == m_pTrailEffect)
         return E_FAIL;
 
+    // Throw Trail
+    CEffect_System::EFFECT_SYSTEM_DESC EffectSystemDesc = {};
+    EffectSystemDesc.iCurLevelID = m_iCurLevelID;
+    EffectSystemDesc.isCoordChangeEnable = false;
+    EffectSystemDesc.iSpriteShaderLevel = LEVEL_STATIC;
+    EffectSystemDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+    
+    EffectSystemDesc.iModelShaderLevel = LEVEL_STATIC;
+    EffectSystemDesc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
+    
+    EffectSystemDesc.iEffectShaderLevel = LEVEL_STATIC;
+    EffectSystemDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+    
+    EffectSystemDesc.iSingleSpriteShaderLevel = LEVEL_STATIC;
+    EffectSystemDesc.szSingleSpriteShaderTags = L"Prototype_Component_Shader_VtxPoint";
+    EffectSystemDesc.iSingleSpriteBufferLevel = LEVEL_STATIC;
+    EffectSystemDesc.szSingleSpriteBufferTags = L"Prototype_Component_VIBuffer_Point";
+    
+    EffectSystemDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+    EffectSystemDesc.szMeshComputeShaderTag = L"Prototype_Component_Compute_Shader_MeshInstance";
+
+    m_pThrowTrailEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("SwordThrowTrail2.json"), &EffectSystemDesc));
+    if (nullptr == m_pThrowTrailEffect)
+        return E_FAIL;
+    m_pThrowTrailEffect->Set_ParentMatrix(COORDINATE_3D, &m_WorldMatrices[COORDINATE_3D]);
+
+    // Pullback Beam
+    CEffect_Beam::EFFECTBEAM_DESC EffectBeamDesc = {};
+    EffectBeamDesc.iCurLevelID = m_iCurLevelID;
+    EffectBeamDesc.isCoordChangeEnable = false;
+    EffectBeamDesc.eStartCoord = COORDINATE_3D;
+    EffectBeamDesc.szBufferTag = L"Prototype_Component_VIBuffer_Beam16";
+    EffectBeamDesc.szTextureTag = L"Prototype_Component_Texture_Grad04";
+    EffectBeamDesc.vRandomMin = _float3(-0.5f, -0.5f, 0.f);
+    EffectBeamDesc.vRandomMax = _float3(0.5f, 0.5f, 0.f);
+    EffectBeamDesc.fWidth = 0.08f;
+    EffectBeamDesc.vColor = _float4(0.5f, 0.9f, 1.f, 5.f);
+    EffectBeamDesc.isConverge = true;
+    EffectBeamDesc.isRenderPoint = false;
+    EffectBeamDesc.fConvergeSpeed = 4.f;
+    //EffectBeamDesc.fPointSize = 0.01f;
+    //EffectBeamDesc.vPointColor = _float4(0.1f, 1.f, 0.6f, 3.f);
+    //EffectBeamDesc.szPointTextureTag = L"Prototype_Component_Texture_Glow01";
+    m_pBeamEffect = static_cast<CEffect_Beam*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_EffectBeam"), &EffectBeamDesc));
+    if (nullptr == m_pBeamEffect)
+        return E_FAIL;
     return S_OK;
 }
 
@@ -171,16 +218,18 @@ void CPlayerSword::Update(_float _fTimeDelta)
             _float3 vAngularVelocity = { 0, -m_fRotationForce3D, 0 };
             m_pActorCom->Set_AngularVelocity(vAngularVelocity);
             pDynamicActor->Set_LinearVelocity(m_vThrowDirection * m_fFlyingSpeed3D);
+            m_pThrowTrailEffect->Update(_fTimeDelta);
         }
         else
         {
             m_pControllerTransform->Go_Direction(m_vThrowDirection, abs(m_fFlyingSpeed2D), _fTimeDelta);
         }
-
         break;
     }
     case Client::CPlayerSword::RETRIEVING:
     {
+        m_fFlyingTimeAcc += _fTimeDelta;
+
 		_vector vMyPos = Get_FinalPosition();
 		_vector vTargetPos = m_pPlayer->Get_CenterPosition();
         _vector vDiff = vTargetPos - vMyPos;
@@ -193,6 +242,12 @@ void CPlayerSword::Update(_float _fTimeDelta)
             _float3 vAngularVelocity = { 0, -m_fRotationForce3D, 0 };
             m_pActorCom->Set_AngularVelocity(vAngularVelocity);
             pDynamicActor->Set_LinearVelocity(vDir * m_fFlyingSpeed3D);
+            m_pThrowTrailEffect->Update(_fTimeDelta);
+
+            if (0.15f < m_fFlyingTimeAcc)
+            {
+                m_pBeamEffect->Set_Active(false);
+            }
         }
         else
         {
@@ -203,14 +258,25 @@ void CPlayerSword::Update(_float _fTimeDelta)
 		if (fDistance < fRetriveRange)
 		{
 			Set_State(HANDLING);
+            if (COORDINATE_3D == Get_CurCoord())
+            {
+                m_pThrowTrailEffect->Stop_Spawn(0.5f);
+                m_pBeamEffect->Set_Active(false);
+            }
 		}
+
         break;
     }
     case Client::CPlayerSword::STUCK:
     {
         if (MOUSE_DOWN(MOUSE_KEY::RB))
         {
+            m_pThrowTrailEffect->Active_Effect();
             Set_State(RETRIEVING);
+
+            m_pBeamEffect->Set_StartPosition(m_pPlayer->Get_CenterPosition());
+            m_pBeamEffect->Set_EndPosition(XMLoadFloat3((_float3*)&m_WorldMatrices[COORDINATE_3D].m[3]));
+            m_pBeamEffect->Set_Active(true);
         }
 
         break;
@@ -226,6 +292,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
     if (COORDINATE_3D == Get_CurCoord())
     {
         m_pTrailEffect->Update(_fTimeDelta);
+        m_pBeamEffect->Update(_fTimeDelta);
     }
 }
 
@@ -239,8 +306,13 @@ void CPlayerSword::Late_Update(_float _fTimeDelta)
 
     __super::Late_Update(_fTimeDelta);
 
+    // Effect Update
     if (COORDINATE_3D == Get_CurCoord())
+    {
         m_pTrailEffect->Late_Update(_fTimeDelta);
+        m_pThrowTrailEffect->Late_Update(_fTimeDelta);
+        m_pBeamEffect->Late_Update(_fTimeDelta);
+    }
 }
 
 HRESULT CPlayerSword::Render()
@@ -269,11 +341,14 @@ void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other
         {
             if (Is_Outing())
             {
-                m_fFlyingTimeAcc = 0;
+                m_fFlyingTimeAcc = 0.f;
                 m_vStuckDirection = XMVectorSetW(XMVector3Normalize(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition()), 0);
                 Set_State(STUCK);
 
                 m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_stick-") + to_wstring(rand() % 3), 30.f);
+
+                if (COORDINATE_3D == Get_CurCoord())
+                    m_pThrowTrailEffect->Stop_Spawn(0.5f);
             }
         }
         else if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
@@ -438,8 +513,12 @@ void CPlayerSword::Throw(_fvector _vDirection)
     {
         Set_Position(m_pPlayer->Get_CenterPosition());
         Set_Active(true);
-		m_pControllerModel->Get_Model(COORDINATE_2D)->Set_Animation(2);
-        
+		m_pControllerModel->Get_Model(COORDINATE_2D)->Set_Animation(2);  
+    }
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        m_pThrowTrailEffect->Active_Effect();
+        m_pTrailEffect->Delete_Effect();
     }
 }
 
@@ -634,6 +713,9 @@ CGameObject* CPlayerSword::Clone(void* _pArg)
 void CPlayerSword::Free()
 {
     Safe_Release(m_pTrailEffect);
+    Safe_Release(m_pThrowTrailEffect);
+    Safe_Release(m_pBeamEffect);
+
 	Safe_Release(m_pBody2DColliderCom);
     for (CGameObject* pObj : m_AttckedObjects)
     {

@@ -104,14 +104,26 @@ void CMeshEffect_Emitter::Update(_float _fTimeDelta)
 
 void CMeshEffect_Emitter::Late_Update(_float _fTimeDelta)
 {
-	if (ABSOLUTE_WORLD == m_eSpawnPosition)
-	{
-		if (m_pSpawnMatrix)
-			XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * XMLoadFloat4x4(m_pSpawnMatrix));
+	if (STOP_SPAWN == m_eNowEvent)
+		Set_Active(false);
 
-		//else
-			//XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D));
+	if (FOLLOW_PARENT == m_eSpawnPosition)
+	{
+		_matrix SpawnMatrix = {};
+		if (nullptr != m_pSpawnMatrix)
+		{
+			SpawnMatrix = XMLoadFloat4x4(m_pSpawnMatrix);
+			SpawnMatrix.r[0] = XMVector3Normalize(SpawnMatrix.r[0]);
+			SpawnMatrix.r[1] = XMVector3Normalize(SpawnMatrix.r[1]);
+			SpawnMatrix.r[2] = XMVector3Normalize(SpawnMatrix.r[2]);
+		}
+		else
+			SpawnMatrix = XMMatrixIdentity();
+
+		XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * SpawnMatrix * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
 	}
+
+
 
 	if (m_isActive && m_iAccLoop)
 		m_pGameInstance->Add_RenderObject_New(s_iRG_3D, s_iRGP_EFFECT, this);
@@ -378,6 +390,8 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("SubIntensity", "g_fSubIntensity")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("AlphaTest", "g_fAlphaTest")))
 			return E_FAIL;

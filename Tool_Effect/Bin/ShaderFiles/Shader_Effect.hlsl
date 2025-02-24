@@ -14,6 +14,7 @@ float4 g_vLook;
 
 float g_fAlphaTest, g_fColorTest;
 float g_fAlpha;
+float g_fSubIntensity;
 
 Texture2D g_AlphaTexture, g_MaskTexture, g_NoiseTexture, g_DissolveTexture, g_SecondTexture;
 float4 g_AlphaUVScale, g_MaskUVScale, g_NoiseUVScale, g_DissolveUVScale, g_SubUVScale;
@@ -194,15 +195,15 @@ PS_BRIGHTCOLOR PS_SUBDISSOLVE(PS_IN In)
     float fSub = g_SecondTexture.Sample(LinearSampler, (g_fTimeAcc * In.vTexcoord * (float2(g_SubUVScale.x, g_SubUVScale.y))
     + float2(g_SubUVScale.z, g_SubUVScale.w))).r;
     
-    float fMask = g_MaskTexture.Sample(LinearSampler, (float2(fSub / 10.f, fSub / 10.f) * In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
-    + float2(g_MaskUVScale.z, g_MaskUVScale.w))).r;
+    float fMask = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
+    + float2(g_MaskUVScale.z, g_MaskUVScale.w) + (float2(fSub / g_fSubIntensity, fSub / g_fSubIntensity))).r;
 
     
     float4 vColor = g_vColor;
     vColor.a = vColor.a * fMask;
     
     float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y))
-    + float2(g_NoiseUVScale.z, g_NoiseUVScale.w)).r;
+    + float2(g_NoiseUVScale.z, g_NoiseUVScale.w) + (float2(fSub / g_fSubIntensity, fSub / g_fSubIntensity))).r;
     
     float fDissolveThreshold = g_fDissolveFactor; //clamp(g_fTimeAcc * g_fDissolveFactor, 0.f, 1.f);
     float fDissolveMask = step(fDissolveThreshold, fDissolve);
