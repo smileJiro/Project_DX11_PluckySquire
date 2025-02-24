@@ -92,6 +92,7 @@ private:
 	_float3						m_vPreTargetPos = {};
 	_float3						m_vFreezeOffset = {};
 	_float3						m_vPreFreezeOffset = {};
+	_float3						m_vStartFreezeOffset = {};
 
 	CAMERA_MODE					m_eCameraMode = { CAMERA_MODE_END };
 	CAMERA_MODE					m_ePreCameraMode = { DEFAULT };
@@ -105,10 +106,13 @@ private:
 
 	// Freeze
 	_uint						m_iFreezeMask = {};
+	_float3						m_vFreezeEnterPos = {};
+
 	_bool						m_isFreezeExit = { false };
 	_bool						m_isFreezeExitReturn = { false };	// Freeze Exit Arm으로 돌아가기
-	_float2						m_fFreezeExitTime = { 0.8f, 0.f };
-	_float3						m_vFreezeEnterPos = {};
+	_bool						m_isFreezeOffsetReturn = { false };
+	_float2						m_fFreezeOffsetTime = { 4.f, 0.f };
+	_float2						m_fFreezeExitReturnTime = { 5.f, 0.f };
 
 	// LookAt
 	_bool						m_isEnableLookAt = { true };
@@ -116,7 +120,7 @@ private:
 	_float2						m_fLookTime = {0.4f, 0.f };
 	_float3						m_vStartLookVector = {};
 	
-	list<pair<FREEZE_EXITDATA, _uint>>	m_FreezeExitDatas = {};
+	list<pair<FREEZE_EXITDATA, _uint>>	m_FreezeExitDatas;
 	FREEZE_EXITDATA				m_vCurFreezeExitData = {};
 
 	// PreArm Return
@@ -147,6 +151,7 @@ private:
 	void						Calculate_FreezeOffset(_vector* _pTargetPos);
 	virtual	void				Switching(_float _fTimeDelta) override;
 	void						Change_FreezeOffset(_float _fTimeDelta);
+	void						Move_To_ExitArm(_float _fTimeDelta);
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);

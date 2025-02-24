@@ -110,7 +110,7 @@ void CCamera_Target::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _in
 {
 	m_iFreezeMask |= _iFreezeMask;
 	m_vFreezeEnterPos = m_vPreTargetPos;
-	m_isFreezeExit = false;
+	//m_isFreezeExit = false;
 
 	FREEZE_EXITDATA tExitData = {};
 	XMStoreFloat3(&tExitData.vFreezeExitArm, _vExitArm);
@@ -122,19 +122,24 @@ void CCamera_Target::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _in
 
 void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 {
+	//m_fFreezeOffsetTime.x = 4.f;
+	//m_fFreezeExitReturnTime.x = 5.f;
 	m_iFreezeMask ^= _iFreezeMask;
-	m_fFreezeExitTime = { 0.8f, 0.f };
 	m_isFreezeExit = true;
+	m_isFreezeOffsetReturn = true;
 	m_isFreezeExitReturn = true;
+	m_vStartFreezeOffset = m_vFreezeOffset;
 
-	for (auto& iter = m_FreezeExitDatas.begin(); iter != m_FreezeExitDatas.end();) {
+     	for (auto& iter = m_FreezeExitDatas.begin(); iter != m_FreezeExitDatas.end();) {
 		if (_iTriggerID == (*iter).second) {
 			m_vCurFreezeExitData = (*iter).first;
 			iter = m_FreezeExitDatas.erase(iter);
 
 			m_isFreezeExit = true;
 			m_isFreezeExitReturn = true;
-			m_fFreezeExitTime.y = 0.f;
+			m_fFreezeOffsetTime.y = 0.f;
+			m_fFreezeExitReturnTime.y = 0.f;
+			m_pCurArm->Set_StartInfo();
 	/*		if (DEFAULT == m_eCameraMode) {
 				_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 				_vector vDir = vPos - XMLoadFloat3(&m_vPreTargetPos);
@@ -437,7 +442,9 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 	Action_Zoom(_fTimeDelta);
 	Action_Shake(_fTimeDelta);
 	Change_AtOffset(_fTimeDelta);
+	
 	Change_FreezeOffset(_fTimeDelta);
+	Move_To_ExitArm(_fTimeDelta);
 
 	switch (m_eCameraMode) {
 	case DEFAULT:
@@ -703,28 +710,109 @@ void CCamera_Target::Switching(_float _fTimeDelta)
 
 void CCamera_Target::Change_FreezeOffset(_float _fTimeDelta)
 {
-	if (false == m_isFreezeExit)
+	if (false == m_isFreezeExit || false == m_isFreezeOffsetReturn)
 		return;
 
-	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fFreezeExitTime, _fTimeDelta, EASE_IN_OUT);
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fFreezeOffsetTime, _fTimeDelta, EASE_IN_OUT);
 
 	if (fRatio >= (1.f - EPSILON)) {
-		m_fFreezeExitTime.y = 0.f;
-		m_isFreezeExit = false;
+		m_fFreezeOffsetTime.y = 0.f;
+		//m_isFreezeExit = false;
 		m_vFreezeOffset = { 0.f, 0.f, 0.f };
-
-		if (m_eCameraMode == DEFAULT && true == m_isFreezeExitReturn)
-			m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_vCurFreezeExitData.vFreezeExitArm)));
+		m_isFreezeOffsetReturn = false;
 
 		return;
 	}
 
 	_vector vFreezeOffset = XMVectorLerp(XMLoadFloat3(&m_vFreezeOffset), XMVectorZero(), fRatio);
 
-	if(m_eCameraMode == DEFAULT && true == m_isFreezeExitReturn)
-		m_pCurArm->Move_To_FreezeExitArm(fRatio, XMLoadFloat3(&m_vCurFreezeExitData.vFreezeExitArm), 0.f);
-
 	XMStoreFloat3(&m_vFreezeOffset, vFreezeOffset);
+
+#pragma region offset 갔다가 회전
+	/*if (true == m_isFreezeOffsetReturn) {
+		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fFreezeExitTime, _fTimeDelta, EASE_IN_OUT);
+
+		if (fRatio >= (1.f - EPSILON)) {
+			m_fFreezeExitTime.y = 0.f;
+			m_isFreezeOffsetReturn = false;
+			m_vFreezeOffset = { 0.f, 0.f, 0.f };
+			m_vStartFreezeOffset = { 0.f, 0.f, 0.f };
+
+			return;
+		}
+
+		_vector vFreezeOffset = XMVectorLerp(XMLoadFloat3(&m_vStartFreezeOffset), XMVectorZero(), fRatio);
+
+		XMStoreFloat3(&m_vFreezeOffset, vFreezeOffset);
+	}
+	else if (false == m_isFreezeOffsetReturn) {
+
+		if (true == m_isFreezeExitReturn) {
+
+			_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fFreezeExitTime, _fTimeDelta, EASE_IN_OUT);
+
+			if (fRatio >= (1.f - EPSILON)) {
+				m_fFreezeExitTime.y = 0.f;
+				m_isFreezeExit = false;
+				m_isFreezeExitReturn = false;
+				m_vFreezeOffset = { 0.f, 0.f, 0.f };
+
+				m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_vCurFreezeExitData.vFreezeExitArm)));
+
+				return;
+			}
+
+			m_pCurArm->Move_To_FreezeExitArm(fRatio, XMLoadFloat3(&m_vCurFreezeExitData.vFreezeExitArm), 0.f);
+		}
+		else {
+			m_isFreezeExit = false;
+			m_fFreezeExitTime.y = 0.f;
+			m_vFreezeOffset = { 0.f, 0.f, 0.f };
+		}
+	}*/
+#pragma endregion
+
+#pragma region Offset과 동시 회전(시간 동일)
+	//_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fFreezeExitTime, _fTimeDelta, EASE_IN_OUT);
+
+	//if (fRatio >= (1.f - EPSILON)) {
+	//	m_fFreezeExitTime.y = 0.f;
+	//	m_isFreezeExit = false;
+	//	m_vFreezeOffset = { 0.f, 0.f, 0.f };
+
+	//	if (m_eCameraMode == DEFAULT && true == m_isFreezeExitReturn)
+	//		m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_vCurFreezeExitData.vFreezeExitArm)));
+
+	//	return;
+	//}
+
+	//_vector vFreezeOffset = XMVectorLerp(XMLoadFloat3(&m_vFreezeOffset), XMVectorZero(), fRatio);
+
+	//if(m_eCameraMode == DEFAULT && true == m_isFreezeExitReturn)
+	//	m_pCurArm->Move_To_FreezeExitArm(fRatio, XMLoadFloat3(&m_vCurFreezeExitData.vFreezeExitArm), 0.f);
+
+	//XMStoreFloat3(&m_vFreezeOffset, vFreezeOffset);
+#pragma endregion
+}
+
+void CCamera_Target::Move_To_ExitArm(_float _fTimeDelta)
+{
+	if (false == m_isFreezeExit || false == m_isFreezeExitReturn)
+		return;
+
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fFreezeExitReturnTime, _fTimeDelta, EASE_IN_OUT);
+
+	if (fRatio >= (1.f - EPSILON)) {
+		m_fFreezeExitReturnTime.y = 0.f;
+		m_isFreezeExit = false;
+		m_isFreezeOffsetReturn = false;
+
+		m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_vCurFreezeExitData.vFreezeExitArm)));
+
+		return;
+	}
+
+	m_pCurArm->Move_To_FreezeExitArm(fRatio, XMLoadFloat3(&m_vCurFreezeExitData.vFreezeExitArm), 0.f);
 }
 
 pair<ARM_DATA*, SUB_DATA*>* CCamera_Target::Find_ArmData(_wstring _wszArmTag)
