@@ -137,7 +137,7 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 	if(true == m_isBound)
 	{
 		//다음 위치가 구역을 벗어나는지 체크 후 벗어나면 정지 후 반대방향으로 진행
-		Check_Bound(_fTimeDelta);
+		//Check_Bound(_fTimeDelta);
 	}
 
 	//이동

@@ -24,14 +24,13 @@ HRESULT CSoldier_Spear::Initialize(void* _pArg)
     CSoldier_Spear::MONSTER_DESC* pDesc = static_cast<CSoldier_Spear::MONSTER_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
-    pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 3.f;
+    pDesc->fAttackRange = 4.f;
     pDesc->fAlert2DRange = 5.f;
     pDesc->fChase2DRange = 12.f;
     pDesc->fAttack2DRange = 3.f;

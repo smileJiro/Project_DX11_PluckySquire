@@ -472,6 +472,9 @@
     <Filter Include="02.GameObjects\Camera\CutScene\Tool\Cube">
       <UniqueIdentifier>{d8948c54-5fa7-446a-ac11-a3806149292c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\BirdMonster\Projectile">
+      <UniqueIdentifier>{11e68097-e7aa-4c46-b41a-038dcd1e66c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1126,6 +1129,15 @@
     <ClInclude Include="..\Public\RenderGroup_PlayerDepth.h">
       <Filter>94.RenderGroups%28Custom%29\PlayerDepth</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Projectile_BirdMonster.h">
+      <Filter>02.GameObjects\Monster\BirdMonster\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Projectile_Monster.h">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ChaseFlyState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1768,6 +1780,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Cube.cpp">
       <Filter>02.GameObjects\Camera\CutScene\Tool\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Projectile_BirdMonster.cpp">
+      <Filter>02.GameObjects\Monster\BirdMonster\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Projectile_Monster.cpp">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ChaseFlyState.cpp">
+      <Filter>03.Components\FSM\State\Chase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

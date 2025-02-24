@@ -20,6 +20,7 @@
 #include "Beetle.h"
 #include "BarfBug.h"
 #include "Projectile_BarfBug.h"
+#include "Projectile_BirdMonster.h"
 #include "JumpBug.h"
 #include "BirdMonster.h"
 #include "Goblin.h"
@@ -984,10 +985,30 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 
 	_float3 vPos = { -700.0f, -60.f, 0.f };
 	_wstring strSectionKey = TEXT("CHAPTER4_P0304");
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_JumpBug"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_JumpBug"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
 
 	vPos = { -20.0f, 0.35f, -21.0f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_JumpBug"), COORDINATE_3D, &vPos);
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_JumpBug"), COORDINATE_3D, &vPos);
+
+
+
+
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_BirdMonster");
+	Pooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
+
+	CBirdMonster::MONSTER_DESC* BirdMonster_Desc = new CBirdMonster::MONSTER_DESC;
+	BirdMonster_Desc->iCurLevelID = m_eLevelID;
+	BirdMonster_Desc->eStartCoord = COORDINATE_3D;
+	BirdMonster_Desc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_BirdMonster"), Pooling_Desc, BirdMonster_Desc);
+
+	vPos = { 5.5f, 0.35f, -3.0f };
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_BirdMonster"), COORDINATE_3D, &vPos);
+
+
 
 	/*  Projectile  */
 	Pooling_Desc;
@@ -999,6 +1020,17 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 	pProjDesc->iCurLevelID = m_eLevelID;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
+
+
+	Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BirdMonster");
+
+	CProjectile_BirdMonster::PROJECTILE_BIRDMONSTER_DESC* pBirdProjDesc = new CProjectile_BirdMonster::PROJECTILE_BIRDMONSTER_DESC;
+	pBirdProjDesc->iCurLevelID = m_eLevelID;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BirdMonster"), Pooling_Desc, pBirdProjDesc);
 
 	return S_OK;
 }
