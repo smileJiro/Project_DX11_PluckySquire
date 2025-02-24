@@ -71,14 +71,20 @@ HRESULT CActor::Initialize(void* _pArg)
 	pActorUserData->pOwner = m_pOwner;
 	pActorUserData->iObjectGroup = pDesc->tFilterData.MyGroup;
 	m_pActor->userData = pActorUserData;
+	m_pGameInstance->Add_ActorUserData(pActorUserData);
 
 	Setup_SimulationFiltering(pDesc->tFilterData.MyGroup, pDesc->tFilterData.OtherGroupMask, false);
 
 	// Scene에 등록. (추후 곧바로 등록하지 않고 싶다면, 별도의 Desc 변수를 추가할 예정.)
-
+	
 	if (true == pDesc->isAddActorToScene)
 	{
+		
 		Add_ActorToScene();
+	}
+	else
+	{
+		pActorUserData->isInToScene = false;
 	}
 
 
@@ -166,11 +172,19 @@ HRESULT CActor::Render()
 }
 void CActor::Add_ActorToScene()
 {
+	ACTOR_USERDATA* pActorUserData = static_cast<ACTOR_USERDATA*>(m_pActor->userData);
+	assert(pActorUserData);
+
+	pActorUserData->isInToScene = true;
 	PxScene* pScene = m_pGameInstance->Get_Physx_Scene();
 	pScene->addActor(*m_pActor);
 }
 void CActor::Remove_ActorFromScene()
 {
+	ACTOR_USERDATA* pActorUserData = static_cast<ACTOR_USERDATA*>(m_pActor->userData);
+	assert(pActorUserData);
+
+	pActorUserData->isInToScene = false;
 	PxScene* pScene = m_pGameInstance->Get_Physx_Scene();
 	pScene->removeActor(*m_pActor);
 }
@@ -859,16 +873,18 @@ void CActor::Free()
 	{
 		pPxShape->release();
 	}
-
+	m_Shapes.clear();
+	
 	if (nullptr != m_pActor)
 	{
 		// 순환 참조로 인해 RefCount 관리하지 않는다.
 		ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(m_pActor->userData);
+		assert(pActorUserData);
 		pActorUserData->pOwner = nullptr;
-		delete m_pActor->userData;
-		m_pActor->userData = nullptr;
-		m_pOwner = nullptr;
-		m_pGameInstance->Get_Physx_Scene()->removeActor(*m_pActor);
+		if(true == pActorUserData->isInToScene)
+		{
+			m_pGameInstance->Get_Physx_Scene()->removeActor(*m_pActor);
+		}
 		m_pActor->release();
 		m_pActor = nullptr;
 	}

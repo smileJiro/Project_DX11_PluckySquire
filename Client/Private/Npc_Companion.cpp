@@ -325,14 +325,21 @@ CGameObject* CNPC_Companion::Clone(void* _pArg)
 
 void CNPC_Companion::Free()
 {
-	//Safe_Release(m_pColliderCom);
-	Safe_Release(m_pTargetObject);
-
-	for (auto iter : m_vecCompanionNpc)
+	if (false == m_isDeleteObejct && nullptr != m_pTargetObject)
 	{
-		Safe_Release(iter);
+		Safe_Release(m_pTargetObject);
 	}
-	m_vecCompanionNpc.clear();
+
+	
+	if (0 < m_vecCompanionNpc.size())
+	{
+		for (auto iter : m_vecCompanionNpc)
+		{
+			Safe_Release(iter);
+		}
+		m_vecCompanionNpc.clear();
+	}
+
 
 	__super::Free();
 }

@@ -45,9 +45,6 @@ private:
 	CShader*					m_pShaderCom = { nullptr };
 	C3DModel*					m_pModelCom = { nullptr };
 
-	//_uint						m_iRenderGroupID = {};
-	//_uint						m_iPriorityID = {};
-
 private:
 	_uint						m_iItemType = {};
 	_uint						m_iItemMode = {};

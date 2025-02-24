@@ -224,6 +224,7 @@
 					"fposX": 300.0,
 					"fposY": 300.0,
 					"fwaitingTime": 2.0,
+					"isDirTurn": false,
 					"NarAnim": [
 						{
 							"strAnimationid": "P1112_01_01",

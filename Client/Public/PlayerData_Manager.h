@@ -37,6 +37,9 @@ private:
 public:
 	HRESULT					Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 
+	HRESULT					Level_Enter(_int _iChangeLevelID);
+	HRESULT					Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
+
 public:
 	_uint					Get_BulbCount() { return m_iBulbCount; }
 	_bool					Is_Own(PLAYERITEM_TYPE _eItemType);
