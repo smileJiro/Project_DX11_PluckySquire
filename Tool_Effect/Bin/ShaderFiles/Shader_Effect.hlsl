@@ -190,7 +190,6 @@ float3 g_fBrightness = float3(0.2126, 0.7152, 0.0722);
 PS_BRIGHTCOLOR PS_SUBDISSOLVE(PS_IN In)
 {
     PS_BRIGHTCOLOR Out = (PS_BRIGHTCOLOR) 0;
-
     
     float fMask = g_MaskTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_MaskUVScale.x, g_MaskUVScale.y))
     + float2(g_MaskUVScale.z, g_MaskUVScale.w)).r;
