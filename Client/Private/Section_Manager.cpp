@@ -73,6 +73,12 @@ HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
 
 	Clear_Sections();
 
+	return S_OK;
+}
+
+HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
+{
+
 	/* 전환되는 레벨에 따른 Section 설정 필요. */
 	_wstring strJsonPath = L"";
 	_wstring strMapInfoJson = L"_Data";
@@ -121,14 +127,8 @@ HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
 
 		if (FAILED(Ready_CurLevelSections(strJsonPath + strMapInfoJson)))
 			return E_FAIL;
-		
+
 	}
-
-	return S_OK;
-}
-
-HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
-{
 	return S_OK;
 }
 

@@ -63,6 +63,15 @@ CLevel_Chapter_04::CLevel_Chapter_04(ID3D11Device* _pDevice, ID3D11DeviceContext
 HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 {
 	m_eLevelID = _eLevelID;
+
+
+
+	if (FAILED(CSection_Manager::GetInstance()->Level_Enter(_eLevelID)))
+	{
+		MSG_BOX(" Failed CSection_Manager Level_Enter(CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
 	Ready_CubeMap(TEXT("Layer_CubeMap"));
