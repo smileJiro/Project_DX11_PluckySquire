@@ -2596,16 +2596,16 @@ void C2DMap_Tool_Manager::Import(const _string& _strFileName, json& _MapFileJson
 	if (m_p2DRenderGroup != nullptr)
 	{
 
-		if (fRenderResolution.x < fRenderResolution.y || fRenderResolution.x == -1.f)
-		{
+		//if (fRenderResolution.x < fRenderResolution.y || fRenderResolution.x == -1.f)
+		//{
 			fTargetSize.x = fLevelSizePixels.x;
 			fTargetSize.y = fLevelSizePixels.y;
-		}
-		else 
-		{
-			fTargetSize.x = fRenderResolution.x;
-			fTargetSize.y = fRenderResolution.y;
-		}
+		//}
+		//else 
+		//{
+		//	fTargetSize.x = fRenderResolution.x;
+		//	fTargetSize.y = fRenderResolution.y;
+		//}
 
 		_float2 fLgcRenderTargetSize = m_p2DRenderGroup->Get_RenderTarget_Size();
 
