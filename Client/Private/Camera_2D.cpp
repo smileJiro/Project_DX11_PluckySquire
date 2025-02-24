@@ -130,13 +130,14 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 	if (CSection_Manager::GetInstance()->is_WordPos_Capcher()) 
 	{
 		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
-	
+
 		m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
 		pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
 
 		switch ((_int)m_eCurSpaceDir) {
 		case (_int)NORMAL_DIRECTION::NONEWRITE_NORMAL:
 		{
+			int a = 0;
 		}
 		break;
 		case (_int)NORMAL_DIRECTION::POSITIVE_X:
@@ -219,7 +220,7 @@ void CCamera_2D::Change_Target(CGameObject* _pTarget)
 	m_eTargetCoordinate = _pTarget->Get_CurCoord();
 	m_isTargetChanged = true;
 
-	XMStoreFloat3(&m_vStartPos, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+	m_vStartPos = m_v2DPreTargetWorldPos;
 }
 
 INITIAL_DATA CCamera_2D::Get_InitialData()
@@ -255,9 +256,6 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	case MOVE_TO_NEXTARM:
 		Move_To_NextArm(_fTimeDelta);
 		break;
-	case MOVE_TO_DESIREPOS:
-		Move_To_DesirePos(_fTimeDelta);
-		break;
 	case MOVE_TO_CUSTOMARM:
 		Move_To_CustomArm(_fTimeDelta);
 		break;
@@ -288,8 +286,6 @@ void CCamera_2D::Action_SetUp_ByMode()
 			break;
 		case MOVE_TO_NEXTARM:
 			break;
-		case MOVE_TO_DESIREPOS:
-			break;
 		case MOVE_TO_CUSTOMARM:
 			break;
 		case RETURN_TO_DEFUALT:
@@ -305,9 +301,6 @@ void CCamera_2D::Action_SetUp_ByMode()
 			
 			CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Book"), 0);
 			Change_Target(pBook);		
-		/*	m_pTargetWorldMatrix = pBook->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-			m_eTargetCoordinate = COORDINATE_3D;
-			m_isTargetChanged = true;*/
 		}
 			break;
 		case FLIPPING_DOWN:
@@ -329,9 +322,6 @@ void CCamera_2D::Action_SetUp_ByMode()
 			{
 				CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
 				Change_Target(pPlayer);
-				//m_pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-				//m_eTargetCoordinate = COORDINATE_2D;
-				//m_isTargetChanged = true;
 			}
 				break;
 			case CSection_2D::NARRAION:
@@ -375,11 +365,6 @@ void CCamera_2D::Move_To_NextArm(_float _fTimeDelta)
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
 
 	Look_Target(_fTimeDelta);
-}
-
-void CCamera_2D::Move_To_DesirePos(_float _fTimeDelta)
-{
-
 }
 
 void CCamera_2D::Move_To_CustomArm(_float _fTimeDelta)
@@ -464,25 +449,25 @@ _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
 	_vector vCurPos = {};
 
 	// Target Change가 안 됐을 때는 시간 제한 없이 Smooth를 한다
-	//if (false == m_isTargetChanged) {
+	if (false == m_isTargetChanged) {
 		// 좌표 계산
 		_vector vDistance = XMLoadFloat3(&m_v2DTargetWorldPos) - XMLoadFloat3(&m_v2DPreTargetWorldPos);
 		_float fSpeed = XMVectorGetX(XMVector3Length(vDistance)) / (m_fTrackingTime.x);
 		vCurPos = XMLoadFloat3(&m_v2DPreTargetWorldPos) + (XMVector3Normalize(vDistance) * fSpeed * _fTimeDelta);
-	//}
+	}
 	// Target Change일 땐 지정된 시간만큼 바뀐 Target으로 이동한다
-	//else {
+	else {
 
-	//	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fTrackingTime, _fTimeDelta, EASE_IN_OUT);
+		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fTrackingTime, _fTimeDelta, EASE_IN_OUT);
 
-	//	if (fRatio >= (1.f - EPSILON)) {
-	//		m_fTrackingTime.y = 0.f;
-	//		m_isTargetChanged = false;
-	//	}
+		if (fRatio >= (1.f - EPSILON)) {
+			m_fTrackingTime.y = 0.f;
+			m_isTargetChanged = false;
+		}
 
-	//	vCurPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMLoadFloat3(&m_v2DTargetWorldPos), EASE_IN_OUT);
-	//	vCurPos = XMVectorSetW(vCurPos, 1.f);
-	//}
+		vCurPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMLoadFloat3(&m_v2DTargetWorldPos), fRatio);
+		vCurPos = XMVectorSetW(vCurPos, 1.f);
+	}
 	
 	_vector vCameraPos = vCurPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 
@@ -527,6 +512,9 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 
 	// Pos
 	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+	if (true == XMVector3Equal(vTargetPos, XMVectorZero())) {
+		vTargetPos = XMLoadFloat3(&m_v2DPreTargetWorldPos);
+	}
 
 	_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 	_vector vResulPos = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vPosition), vCameraPos, fRatio);
@@ -542,6 +530,8 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 	// Zoom Level
 	_float fFovy = m_pGameInstance->Lerp(m_ZoomLevels[m_tInitialData.iZoomLevel], m_ZoomLevels[m_iCurZoomLevel], fRatio);
 	m_fFovy = fFovy;
+
+	XMStoreFloat3(&m_v2DPreTargetWorldPos, vTargetPos);
 }
 
 void CCamera_2D::Find_TargetPos()
@@ -563,6 +553,11 @@ void CCamera_2D::Find_TargetPos()
 			if (m_eCurSpaceDir != (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)))) {
 
 				switch (((_int)roundf(XMVectorGetW(vTargetPos)))) {
+				case (_int)NORMAL_DIRECTION::NONEWRITE_NORMAL:
+				{
+					//Set_NextArmData(TEXT("Default_Positive_X"), 0);
+				}
+				break;
 				case (_int)NORMAL_DIRECTION::POSITIVE_X:
 				{
 					Set_NextArmData(TEXT("Default_Positive_X"), 0);
@@ -602,9 +597,14 @@ void CCamera_2D::Find_TargetPos()
 			_float2 fSectionSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(m_strSectionName);
 			_float2 vPos = { };
 
-			_bool isLeft = true;//Uimgr->isLeft_Right();	// true면 left
+			if (true != m_iNarrationPosType) {// 임시 처리.....
+				m_isTargetChanged = true;
+				m_vStartPos = m_v2DPreTargetWorldPos;
+			}
 
-			if (true == isLeft) 
+			m_iNarrationPosType = true; //Uimgr->isLeft_Right();	// true면 left
+
+			if (true == m_iNarrationPosType)
 				vPos = { fSectionSize.x * 0.25f, fSectionSize.y * 0.5f };
 			else 
 				vPos = { fSectionSize.x * (1.f - 0.25f), fSectionSize.y * 0.5f};
@@ -613,13 +613,13 @@ void CCamera_2D::Find_TargetPos()
 			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { vPos.x, vPos.y });
 
 			XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
-			m_isTargetChanged = true;
 		}
 	}
 	break;
 	case (_uint)COORDINATE_3D:
 	{
 		memcpy(&m_v2DTargetWorldPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+		m_iNarrationPosType = false; // 임시 처리.....
 	}
 	break;
 	}
@@ -680,32 +680,32 @@ void CCamera_2D::Calculate_Book_Scroll()
 	//	m_v2DdMatrixPos.y = fSectionSize.y * 0.5f;
 	//}
 #pragma endregion
-	_float2 vTargetUV = { m_v2DdMatrixPos.x + (fSectionSize.x * 0.5f), -m_v2DdMatrixPos.y + (fSectionSize.y * 0.5f) };
+	_float2 vTargetPixelPos = { m_v2DdMatrixPos.x + (fSectionSize.x * 0.5f), -m_v2DdMatrixPos.y + (fSectionSize.y * 0.5f) };
 
 
-	if (vTargetUV.x <= (fSectionSize.x * m_fBasicRatio[m_eMagnificationType].x)) {
-		vTargetUV.x = fSectionSize.x * m_fBasicRatio[m_eMagnificationType].x;
+	if (vTargetPixelPos.x <= (fSectionSize.x * m_fBasicRatio[m_eMagnificationType].x)) {
+		vTargetPixelPos.x = fSectionSize.x * m_fBasicRatio[m_eMagnificationType].x;
 	}
-	else if (vTargetUV.x >= (fSectionSize.x * (1.f - m_fBasicRatio[m_eMagnificationType].x))) {
-		vTargetUV.x = fSectionSize.x * (1.f - m_fBasicRatio[m_eMagnificationType].x);
+	else if (vTargetPixelPos.x >= (fSectionSize.x * (1.f - m_fBasicRatio[m_eMagnificationType].x))) {
+		vTargetPixelPos.x = fSectionSize.x * (1.f - m_fBasicRatio[m_eMagnificationType].x);
 	}
 	
-	if (vTargetUV.y <= (fSectionSize.y * m_fBasicRatio[m_eMagnificationType].y)) {
-		vTargetUV.y = fSectionSize.y * m_fBasicRatio[m_eMagnificationType].y;
+	if (vTargetPixelPos.y <= (fSectionSize.y * m_fBasicRatio[m_eMagnificationType].y)) {
+		vTargetPixelPos.y = fSectionSize.y * m_fBasicRatio[m_eMagnificationType].y;
 	}
-	else if (vTargetUV.y >= (fSectionSize.y * (1.f - m_fBasicRatio[m_eMagnificationType].y))) {
-		vTargetUV.y = fSectionSize.y * (1.f - m_fBasicRatio[m_eMagnificationType].y);
+	else if (vTargetPixelPos.y >= (fSectionSize.y * (1.f - m_fBasicRatio[m_eMagnificationType].y))) {
+		vTargetPixelPos.y = fSectionSize.y * (1.f - m_fBasicRatio[m_eMagnificationType].y);
 	}
 
 	if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
-		vTargetUV.x = fSectionSize.x * 0.5f;
+		vTargetPixelPos.x = fSectionSize.x * 0.5f;
 	}
 	if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
-		vTargetUV.y = fSectionSize.y * 0.5f;
+		vTargetPixelPos.y = fSectionSize.y * 0.5f;
 	}
 
-	_float2 vTargetNDC = { vTargetUV.x - (fSectionSize.x * 0.5f), (fSectionSize.y * 0.5f) - vTargetUV.y };
-	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { vTargetNDC.x, vTargetNDC.y });
+	_float2 v2DTargetWorld = { vTargetPixelPos.x - (fSectionSize.x * 0.5f), (fSectionSize.y * 0.5f) - vTargetPixelPos.y };
+	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { v2DTargetWorld.x, v2DTargetWorld.y });
 	XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 }
 
