@@ -34,6 +34,15 @@ void CCollision_Manager::Update()
     }
 }
 
+void CCollision_Manager::Level_Enter()
+{
+}
+
+void CCollision_Manager::Level_Exit()
+{
+    m_PrevCollInfo.clear();
+}
+
 void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, MAX_GROUPID>& _ColGroups, _uint _iLeft, _uint _iRight)
 {
     auto& LeftColliders  = _ColGroups[_iLeft];

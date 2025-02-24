@@ -73,6 +73,12 @@ HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
 
 	Clear_Sections();
 
+	return S_OK;
+}
+
+HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
+{
+
 	/* 전환되는 레벨에 따른 Section 설정 필요. */
 	_wstring strJsonPath = L"";
 	_wstring strMapInfoJson = L"_Data";
@@ -121,14 +127,8 @@ HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
 
 		if (FAILED(Ready_CurLevelSections(strJsonPath + strMapInfoJson)))
 			return E_FAIL;
-		
+
 	}
-
-	return S_OK;
-}
-
-HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
-{
 	return S_OK;
 }
 
@@ -330,6 +330,7 @@ _vector CSection_Manager::Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* _pT
 {
 	if (nullptr == _pTargetTexture)
 		return _vector();
+
 	// 맵핑하여 데이터 접근
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	if (FAILED(m_pContext->Map(_pTargetTexture, 0, D3D11_MAP_READ, 0, &mappedResource)))

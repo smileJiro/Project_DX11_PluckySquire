@@ -26,6 +26,23 @@ HRESULT CPlayerData_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceCont
 	return S_OK;
 }
 
+HRESULT CPlayerData_Manager::Level_Enter(_int _iChangeLevelID)
+{
+	return S_OK;
+}
+
+HRESULT CPlayerData_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
+{
+	for (auto& PlayerItem : m_ItemState)
+	{
+		Safe_Release(PlayerItem.second.second);
+		PlayerItem.second.second = nullptr;
+	}
+
+
+	return S_OK;
+}
+
 _bool CPlayerData_Manager::Is_Own(PLAYERITEM_TYPE _eItemType)
 {
 	_wstring wszItemTag = m_ItemTags[_eItemType].first;
