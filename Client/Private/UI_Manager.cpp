@@ -263,7 +263,10 @@ HRESULT CUI_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iN
 	Uimgr->Set_isMakeItem(false);
 
 	if (nullptr != m_pNarration)
+	{
 		Safe_Release(m_pNarration);
+		m_pNarration = nullptr;
+	}
 
 
 	return S_OK;

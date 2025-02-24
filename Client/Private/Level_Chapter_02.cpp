@@ -111,11 +111,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
-	//	assert(nullptr);
-	//}
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_02::Initialize)");
@@ -1690,7 +1690,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Test(const _wstring& _strLayerTag)
 	tDraggableDesc.eStartCoord = COORDINATE_3D;
 	tDraggableDesc.vBoxHalfExtents = {1.02f,1.02f,1.02f};
 	tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
-	tDraggableDesc.tTransform3DDesc.vInitialPosition = { -47.f, 3.82f, 15.f };
+	tDraggableDesc.tTransform3DDesc.vInitialPosition = { -47.f, 5.82f, 15.f };
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
 	m_eLevelID, _strLayerTag, &tDraggableDesc)))

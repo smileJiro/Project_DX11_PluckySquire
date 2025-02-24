@@ -61,6 +61,7 @@ public:
 	HRESULT Add_SneakState();
 	HRESULT Add_Chase_NoneAttackState();
 	HRESULT Add_Neutral_State(_bool _isJump=false);
+	HRESULT Add_FlyUnit_State();
 
 protected:
 	CState* m_pCurState = { nullptr };

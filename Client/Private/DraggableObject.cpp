@@ -38,7 +38,7 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 	ActorDesc.FreezePosition_XYZ[0] = false;
 	ActorDesc.FreezePosition_XYZ[1] = false;
 	ActorDesc.FreezePosition_XYZ[2] = false;
-
+	ActorDesc.isAddActorToScene = true;
 
 	SHAPE_BOX_DESC ShapeDesc = {};
 	ShapeDesc.vHalfExtents = pDesc->vBoxHalfExtents;

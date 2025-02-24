@@ -188,6 +188,11 @@
     <ClInclude Include="..\Public\2DMapDefaultObject.h" />
     <ClInclude Include="..\Public\2DMapObject.h" />
     <ClInclude Include="..\Public\2DMapWordObject.h" />
+    <ClInclude Include="..\Public\ChaseFlyState.h" />
+    <ClInclude Include="..\Public\Projectile_BirdMonster.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\Projectile_Monster.h" />
     <ClInclude Include="..\Public\DraggableObject.h" />
     <ClInclude Include="..\Public\PlayerState_Drag.h" />
     <ClInclude Include="..\Public\Shadow2D.h" />
@@ -358,7 +363,9 @@
     <ClInclude Include="..\Public\StandbyNoneAttackState.h" />
     <ClInclude Include="..\Public\State_Sneak.h" />
     <ClInclude Include="..\Public\Soldier_Bomb.h" />
-    <ClInclude Include="..\Public\Soldier_CrossBow.h" />
+    <ClInclude Include="..\Public\Soldier_CrossBow.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\Soldier_Spear.h" />
     <ClInclude Include="..\Public\StandbyState.h" />
     <ClInclude Include="..\public\Effect_Trail.h" />
@@ -410,6 +417,11 @@
     <ClCompile Include="..\Private\2DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\2DMapObject.cpp" />
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
+    <ClCompile Include="..\Private\ChaseFlyState.cpp" />
+    <ClCompile Include="..\Private\Projectile_BirdMonster.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\Projectile_Monster.cpp" />
     <ClCompile Include="..\Private\DraggableObject.cpp" />
     <ClCompile Include="..\Private\PlayerState_Drag.cpp" />
     <ClCompile Include="..\Private\Shadow2D.cpp" />
@@ -579,7 +591,9 @@
     <ClCompile Include="..\Private\StandbyNoneAttackState.cpp" />
     <ClCompile Include="..\Private\State_Sneak.cpp" />
     <ClCompile Include="..\Private\Soldier_Bomb.cpp" />
-    <ClCompile Include="..\Private\Soldier_CrossBow.cpp" />
+    <ClCompile Include="..\Private\Soldier_CrossBow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\Soldier_Spear.cpp" />
     <ClCompile Include="..\Private\StandbyState.cpp" />
     <ClCompile Include="..\private\Effect_Trail.cpp" />
