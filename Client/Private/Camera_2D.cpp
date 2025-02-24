@@ -48,6 +48,8 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 	m_eMagnificationType = HORIZON_NON_SCALE;
 	m_iFreezeMask |= FREEZE_Z;
 
+	// TargetChangineTime이 Camera에 있는데 여기서는 TrackingTime으로 쫓아가는 게 나을 것 같기도
+
 	return S_OK;
 }
 
@@ -216,6 +218,8 @@ void CCamera_2D::Change_Target(CGameObject* _pTarget)
 	m_pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 	m_eTargetCoordinate = _pTarget->Get_CurCoord();
 	m_isTargetChanged = true;
+
+	XMStoreFloat3(&m_vStartPos, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
 }
 
 INITIAL_DATA CCamera_2D::Get_InitialData()
@@ -300,8 +304,10 @@ void CCamera_2D::Action_SetUp_ByMode()
 			Set_NextArmData(TEXT("BookFlipping_Horizon"), 0);
 			
 			CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Book"), 0);
-			m_pTargetWorldMatrix = pBook->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+			Change_Target(pBook);		
+		/*	m_pTargetWorldMatrix = pBook->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 			m_eTargetCoordinate = COORDINATE_3D;
+			m_isTargetChanged = true;*/
 		}
 			break;
 		case FLIPPING_DOWN:
@@ -322,8 +328,10 @@ void CCamera_2D::Action_SetUp_ByMode()
 			case CSection_2D::PLAYMAP:
 			{
 				CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
-				m_pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-				m_eTargetCoordinate = COORDINATE_2D;
+				Change_Target(pPlayer);
+				//m_pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+				//m_eTargetCoordinate = COORDINATE_2D;
+				//m_isTargetChanged = true;
 			}
 				break;
 			case CSection_2D::NARRAION:
@@ -453,12 +461,29 @@ _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
 
 	// Book Scroll 계산
 	Calculate_Book_Scroll();
+	_vector vCurPos = {};
 
-	// 좌표 계산
-	_vector vDistance = XMLoadFloat3(&m_v2DTargetWorldPos) - XMLoadFloat3(&m_v2DPreTargetWorldPos);
-	_float fSpeed = XMVectorGetX(XMVector3Length(vDistance)) / (m_fTrackingTime.x);
-	_vector vCurPos = XMLoadFloat3(&m_v2DPreTargetWorldPos) + (XMVector3Normalize(vDistance) * fSpeed * _fTimeDelta);
+	// Target Change가 안 됐을 때는 시간 제한 없이 Smooth를 한다
+	//if (false == m_isTargetChanged) {
+		// 좌표 계산
+		_vector vDistance = XMLoadFloat3(&m_v2DTargetWorldPos) - XMLoadFloat3(&m_v2DPreTargetWorldPos);
+		_float fSpeed = XMVectorGetX(XMVector3Length(vDistance)) / (m_fTrackingTime.x);
+		vCurPos = XMLoadFloat3(&m_v2DPreTargetWorldPos) + (XMVector3Normalize(vDistance) * fSpeed * _fTimeDelta);
+	//}
+	// Target Change일 땐 지정된 시간만큼 바뀐 Target으로 이동한다
+	//else {
 
+	//	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fTrackingTime, _fTimeDelta, EASE_IN_OUT);
+
+	//	if (fRatio >= (1.f - EPSILON)) {
+	//		m_fTrackingTime.y = 0.f;
+	//		m_isTargetChanged = false;
+	//	}
+
+	//	vCurPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMLoadFloat3(&m_v2DTargetWorldPos), EASE_IN_OUT);
+	//	vCurPos = XMVectorSetW(vCurPos, 1.f);
+	//}
+	
 	_vector vCameraPos = vCurPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
 
 	XMStoreFloat3(&m_v2DPreTargetWorldPos, vCurPos);
@@ -588,6 +613,7 @@ void CCamera_2D::Find_TargetPos()
 			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { vPos.x, vPos.y });
 
 			XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
+			m_isTargetChanged = true;
 		}
 	}
 	break;
@@ -738,19 +764,19 @@ void CCamera_2D::Clamp_FixedPos()
 	//m_v2DFixedPos.y = max(minY, min(maxY, m_v2DFixedPos.y));
 }
 
-void CCamera_2D::Check_TargetChange()
-{
-	if (false == m_isTargetChanged)
-		return;
-
-	_vector vDistance = XMLoadFloat3(&m_v2DTargetWorldPos) - XMLoadFloat3(&m_v2DPreTargetWorldPos);
-	_float fDistanceLength = XMVectorGetX(XMVector3Length(vDistance));
-
-	if (fDistanceLength < EPSILON) {
-		CTrigger_Manager::GetInstance()->On_End(TEXT("2D_Camera_Change_Target"));
-		m_isTargetChanged = false;
-	}
-}
+//void CCamera_2D::Check_TargetChange()
+//{
+//	if (false == m_isTargetChanged)
+//		return;
+//
+//	_vector vDistance = XMLoadFloat3(&m_v2DTargetWorldPos) - XMLoadFloat3(&m_v2DPreTargetWorldPos);
+//	_float fDistanceLength = XMVectorGetX(XMVector3Length(vDistance));
+//
+//	if (fDistanceLength < EPSILON) {
+//		CTrigger_Manager::GetInstance()->On_End(TEXT("2D_Camera_Change_Target"));
+//		m_isTargetChanged = false;
+//	}
+//}
 
 pair<ARM_DATA*, SUB_DATA*>* CCamera_2D::Find_ArmData(_wstring _wszArmTag)
 {

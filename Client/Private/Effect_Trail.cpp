@@ -102,7 +102,7 @@ HRESULT CEffect_Trail::Render()
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
 
-    if (FAILED(m_pShaderCom->Begin(0)))
+    if (FAILED(m_pShaderCom->Begin_NoInput(0)))
         return E_FAIL;
 
     if (FAILED(m_pBufferCom->Bind_BufferDesc()))

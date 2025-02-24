@@ -163,14 +163,30 @@ void CVIBuffer_Trail::Update(_float _fTimeDelta)
 
 HRESULT CVIBuffer_Trail::Bind_BufferDesc()
 {
+	//// 버퍼에 대한 정보를 여기서 장치에 세팅 
+	//ID3D11Buffer* pVertexBuffers[] =
+	//{
+
+	//	m_pVB,
+	//};
+	//_uint iVertexStrides[] =
+	//{
+	//	m_iVertexStride,
+	//};
+	//_uint iVertexOffsets[] =
+	//{
+	//	0,
+	//};
+
 	m_pContext->VSSetShaderResources(0, 1, &m_pBufferSRV);
 	m_pContext->IASetPrimitiveTopology(m_ePrimitiveTopology);
-
+	//m_pContext->IASetVertexBuffers(0, m_iCurVertexCount, pVertexBuffers, iVertexStrides, iVertexOffsets);
 	return S_OK;
 }
 
 HRESULT CVIBuffer_Trail::Render()
 {
+
 	m_pContext->Draw(_uint(m_iCurVertexCount), 0);
 
 	ID3D11ShaderResourceView* nullSRV[6] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };

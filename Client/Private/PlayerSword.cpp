@@ -124,7 +124,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     SwordTrailDesc.isCoordChangeEnable = false;
     SwordTrailDesc.pParentMatrices[COORDINATE_3D] = &m_WorldMatrices[COORDINATE_3D];
     SwordTrailDesc.fLength = 1.f;
-    SwordTrailDesc.vAddPoint = _float3(-0.05f, 0.f, 0.88f);
+    SwordTrailDesc.vAddPoint = _float3(0.f, 0.f, -0.88f);
     SwordTrailDesc.vColor = _float4(0.62f, 0.82f, 1.33f, 0.85f);
     SwordTrailDesc.szTextureTag = L"Prototype_Component_Texture_Trail";
     SwordTrailDesc.szBufferTag = L"Prototype_Component_VIBuffer_Trail32";
