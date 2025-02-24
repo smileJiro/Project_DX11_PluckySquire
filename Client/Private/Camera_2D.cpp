@@ -706,6 +706,11 @@ void CCamera_2D::Calculate_Book_Scroll()
 
 	_float2 v2DTargetWorld = { vTargetPixelPos.x - (fSectionSize.x * 0.5f), (fSectionSize.y * 0.5f) - vTargetPixelPos.y };
 	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { v2DTargetWorld.x, v2DTargetWorld.y });
+	
+	if (XMVector3Equal(vTargetPos, XMVectorZero())) {
+		int a = 0;
+	}
+
 	XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 }
 

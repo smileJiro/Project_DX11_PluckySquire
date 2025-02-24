@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Level_Camera_Tool_Client.h"
 #include "Level_Loading.h"
-#include "GameInstance.h"
+#include "GameInstance.h"ww
 
 #include "Camera_Free.h"
 #include "Camera_Target.h"
@@ -133,7 +133,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Lights()
 
 HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Map()
 {
-	if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+	if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
 		return E_FAIL;
 
 	return S_OK;
@@ -235,11 +235,12 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Player(const _wstring& _strLayerT
 {
 	CGameObject** pGameObject = nullptr;
 
-	CPlayer::CONTAINEROBJ_DESC Desc;
-	Desc.iCurLevelID = m_eLevelID;
-	Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	CPlayer::CONTAINEROBJ_DESC PlayerDesc = {};
+	PlayerDesc.iCurLevelID = m_eLevelID;
+	PlayerDesc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	_int a = sizeof(CPlayer::CONTAINEROBJ_DESC);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &PlayerDesc)))
 		return E_FAIL;
 
 	//CPlayer* pPlayer = { nullptr };
