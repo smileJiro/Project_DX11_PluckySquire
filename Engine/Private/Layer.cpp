@@ -137,16 +137,8 @@ void CLayer::SetActive_GameObjects(_bool _isActive)
 
     for (; iter != m_GameObjects.end(); )
     {
-        if (true == (*iter)->Is_Pooling())
-        {
-            (*iter)->Set_Active(_isActive);
-            iter = m_GameObjects.erase(iter);
-        }
-        else
-        {
-            (*iter)->Set_Active(_isActive);
-            ++iter;
-        }
+        (*iter)->Set_Active(_isActive);
+        ++iter;
     }
 
     //for (auto& pGameObject : m_GameObjects)
