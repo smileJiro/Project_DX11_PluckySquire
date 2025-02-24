@@ -493,86 +493,86 @@ void CLevel_EffectTool::Tool_Adjust_System(_float _fTimeDelta)
 
 void CLevel_EffectTool::Tool_Texture()
 {
-	ImGui::Begin("Particle Textures");
+	//ImGui::Begin("Particle Textures");
 
-	if (ImGui::TreeNode("Preview Particle Texture"))
-	{
-		if (m_pParticleTexture)
-		{
-			ImVec2 imageSize(300, 300); // 이미지 크기 설정
-			ID3D11ShaderResourceView* pSelectImage = m_pParticleTexture->Get_SRV(0);
-			if (nullptr != pSelectImage)
-			{
-				ImGui::Image((ImTextureID)pSelectImage, imageSize);
-			}
+	//if (ImGui::TreeNode("Preview Particle Texture"))
+	//{
+	//	if (m_pParticleTexture)
+	//	{
+	//		ImVec2 imageSize(300, 300); // 이미지 크기 설정
+	//		ID3D11ShaderResourceView* pSelectImage = m_pParticleTexture->Get_SRV(0);
+	//		if (nullptr != pSelectImage)
+	//		{
+	//			ImGui::Image((ImTextureID)pSelectImage, imageSize);
+	//		}
 
-			if (m_pNowItem)
-			{
-				if (ImGui::Button("Set_Texture"))
-				{
-					m_pNowItem->Set_Texture(m_pParticleTexture);
-				}
-			}
+	//		if (m_pNowItem)
+	//		{
+	//			if (ImGui::Button("Set_Texture"))
+	//			{
+	//				m_pNowItem->Set_Texture(m_pParticleTexture);
+	//			}
+	//		}
 
-		}
+	//	}
 
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("Particle Texture"))
-	{
-		static _wstring wstrSelectedKey = L"";
-		static int iSelectedIndex = -1;
+	//	ImGui::TreePop();
+	//}
+	//if (ImGui::TreeNode("Particle Texture"))
+	//{
+	//	static _wstring wstrSelectedKey = L"";
+	//	static int iSelectedIndex = -1;
 
-		if (ImGui::BeginListBox("Textures List"))
-		{
-			int iIndex = 0;
-			for (const auto& [key, pTexture] : m_ParticleTextures)
-			{
-				std::string strKey = WSTRINGTOSTRING(key);
+	//	if (ImGui::BeginListBox("Textures List"))
+	//	{
+	//		int iIndex = 0;
+	//		for (const auto& [key, pTexture] : m_ParticleTextures)
+	//		{
+	//			std::string strKey = WSTRINGTOSTRING(key);
 
-				const bool is_selected = (iSelectedIndex == iIndex);
+	//			const bool is_selected = (iSelectedIndex == iIndex);
 
-				if (ImGui::Selectable(strKey.c_str(), is_selected))
-				{
-					if (is_selected)
-					{
-						m_pParticleTexture = nullptr;
-						iSelectedIndex = -1; // 선택 해제
-						wstrSelectedKey = L"";
-					}
-					else
-					{
-						m_pParticleTexture = pTexture;
-						iSelectedIndex = iIndex;
-						wstrSelectedKey = key;
-					}
-				}
+	//			if (ImGui::Selectable(strKey.c_str(), is_selected))
+	//			{
+	//				if (is_selected)
+	//				{
+	//					m_pParticleTexture = nullptr;
+	//					iSelectedIndex = -1; // 선택 해제
+	//					wstrSelectedKey = L"";
+	//				}
+	//				else
+	//				{
+	//					m_pParticleTexture = pTexture;
+	//					iSelectedIndex = iIndex;
+	//					wstrSelectedKey = key;
+	//				}
+	//			}
 
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
+	//			if (is_selected)
+	//				ImGui::SetItemDefaultFocus();
 
-				++iIndex;
-			}
-			ImGui::EndListBox();
-		}
+	//			++iIndex;
+	//		}
+	//		ImGui::EndListBox();
+	//	}
 
-		ImGui::InputText("Texture Directory", m_szParticleTexturePath, MAX_PATH);
+	//	ImGui::InputText("Texture Directory", m_szParticleTexturePath, MAX_PATH);
 
-		if (ImGui::Button("Load_DDSTextures"))
-		{
-			Load_Textures(".dds", m_szParticleTexturePath, m_ParticleTextures);
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Load_PNGTextures"))
-		{
-			Load_Textures(".png", m_szParticleTexturePath, m_ParticleTextures);
-		}
+	//	if (ImGui::Button("Load_DDSTextures"))
+	//	{
+	//		Load_Textures(".dds", m_szParticleTexturePath, m_ParticleTextures);
+	//	}
+	//	ImGui::SameLine();
+	//	if (ImGui::Button("Load_PNGTextures"))
+	//	{
+	//		Load_Textures(".png", m_szParticleTexturePath, m_ParticleTextures);
+	//	}
 
 
-		ImGui::TreePop();
-	}
+	//	ImGui::TreePop();
+	//}
 
-	ImGui::End();
+	//ImGui::End();
 
 	ImGui::Begin("Effect Textures");
 
@@ -753,20 +753,23 @@ HRESULT CLevel_EffectTool::Load_Textures(const _char* _szExtension, const _char*
 			if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, entry.path().filename(),
 				pTexture)))
 			{
-				string str = "Failed to Create CTexture";
-				str += entry.path().filename().string();
-				MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
-				
-				Safe_Release(pTexture);
-
-				return E_FAIL;
+				//string str = "Failed to Create CTexture";
+				//str += entry.path().filename().string();
+				//MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+				//
+				//Safe_Release(pTexture);
+				//
+				//return E_FAIL;
 			}
 
-			pTexture->Add_SRVName(entry.path().c_str());
-			_TextureMaps.emplace(entry.path().c_str(), pTexture);
-			
+			else
+			{
+				pTexture->Add_SRVName(entry.path().c_str());
+				_TextureMaps.emplace(entry.path().c_str(), pTexture);
 
-			Safe_AddRef(pTexture);
+
+				Safe_AddRef(pTexture);
+			}
 		}
 	}
 
