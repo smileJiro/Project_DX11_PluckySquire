@@ -1537,7 +1537,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
 	tCarriableDesc.eStartCoord = COORDINATE_3D;
 	tCarriableDesc.iCurLevelID = m_eLevelID;
-	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.0f, 21.5f);
+	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.8f, 21.5f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
 		return E_FAIL;
 	CModelObject::MODELOBJECT_DESC tModelDesc{};

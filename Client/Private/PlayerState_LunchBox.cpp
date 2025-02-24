@@ -31,7 +31,7 @@ void CPlayerState_LunchBox::Update(_float _fTimeDelta)
 	}
 	INTERACT_RESULT eResult =  m_pOwner->Try_Interact(_fTimeDelta);
 
-	if (LUNCHBOX_STATE_CHARGE == m_eCurState)
+	if (LUNCHBOX_STATE_LAST == m_eCurState)
 	{
 		m_pOwner->Stop_Rotate();
 
