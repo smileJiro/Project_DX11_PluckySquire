@@ -532,6 +532,51 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 			}
 
 		}
+		ImGui::SameLine();
+		if (StyleButton(MINI, "Bring to Front"))
+		{
+			if (nullptr != m_pPickingObject)
+			{
+				_wstring strPrototag = m_pPickingObject->Get_ModelName();
+
+				auto pInfo = Find_Info(strPrototag);
+				if (nullptr != pInfo)
+				{
+					_float2 fPosition = m_pPickingObject->Get_DefaultPosition();
+					Event_DeleteObject(m_pPickingObject);
+
+					_float2 fSize = m_pGameInstance->Get_RT_Size(m_strRTKey);
+
+					C2DMapObject::MAPOBJ_2D_DESC NormalDesc = { };
+					NormalDesc.strProtoTag = strPrototag;
+					NormalDesc.fDefaultPosition = { 0.f,0.f };
+					NormalDesc.fRenderTargetSize = { (_float)fSize.x, (_float)fSize.y };
+					NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
+					NormalDesc.iRenderGroupID_2D = m_p2DRenderGroup->Get_RenderGroupID();
+					NormalDesc.iPriorityID_2D = m_p2DRenderGroup->Get_PriorityID();
+					NormalDesc.pInfo = pInfo;
+
+					CGameObject* pGameObject = nullptr;
+					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DMapObject"),
+						LEVEL_TOOL_2D_MAP,
+						L"Layer_2DMapObject",
+						&pGameObject,
+						(void*)&NormalDesc)))
+					{
+						int a = 1;
+					}
+					else
+					{
+						m_pPickingObject = static_cast<C2DMapObject*>(pGameObject);
+						m_pPickingObject->Set_DefaultPosition(fPosition);
+						static_cast<C2DMapObject*>(m_pPickingObject)->Set_OffsetPos(m_fOffsetPos);
+					}
+				}
+				
+			}
+
+		}
+
 		ImGui::Text("Model SearchKey : %s", WstringToString(strKey).c_str());
 		ImGui::Text("Model Name : %s", WstringToString(strModelName).c_str());
 		ImGui::Text("Model Load : %s", m_pPickingObject->Is_ModelLoad() ? "On" : "Off");

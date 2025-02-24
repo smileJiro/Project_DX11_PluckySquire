@@ -26,7 +26,7 @@
    "ColliderType": 0
   },
   "ModelType": 1,
-  "SearchTag": "Bush_C02",
+  "SearchTag": "Bush",
   "Sorting": true,
   "SortingPropertis": {
    "Sorting_Offset_Pos": {
@@ -2828,7 +2828,7 @@
   "BackGround": false,
   "Collider": false,
   "ModelType": 0,
-  "SearchTag": "Bunting",
+  "SearchTag": "artia_bunting_02",
   "Sorting": false,
   "TextureName": "artia_bunting_02"
  },
@@ -2837,7 +2837,7 @@
   "BackGround": false,
   "Collider": false,
   "ModelType": 0,
-  "SearchTag": "Bush",
+  "SearchTag": "artia_bush_01",
   "Sorting": false,
   "TextureName": "artia_bush_01"
  },
@@ -3826,5 +3826,53 @@
   "SearchTag": "TD_Paint_Post",
   "Sorting": false,
   "TextureName": "paint_post_01_Sprite"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 8
+  },
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "artia_roof_trarrg_mountain_Sprite",
+  "Sorting": false,
+  "TextureName": "artia_roof_trarrg_mountain_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_Foreground_mountain_01",
+  "Sorting": false,
+  "TextureName": "C06_Foreground_mountain_01"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_Foreground_mountain_02",
+  "Sorting": false,
+  "TextureName": "C06_Foreground_mountain_02"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_Foreground_mountain_03",
+  "Sorting": false,
+  "TextureName": "C06_Foreground_mountain_03"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C06_0910_Metal_flags_01",
+  "Sorting": false,
+  "TextureName": "C06_0910_Metal_flags_01"
  }
 ]
