@@ -188,6 +188,7 @@ void CPhysx_Manager::Level_Exit()
 	}
 
 	Safe_Release(m_pPhysx_EventCallBack);
+	Safe_Release(m_pPhysx_ContactModifyCallback);
 
 	Initialize_Scene();
 }
@@ -471,6 +472,14 @@ HRESULT CPhysx_Manager::Initialize_Physics()
 
 HRESULT CPhysx_Manager::Initialize_Scene()
 {
+	// Event CallBack Class 
+	m_pPhysx_EventCallBack = CPhysx_EventCallBack::Create();
+	if (nullptr == m_pPhysx_EventCallBack)
+		return E_FAIL;
+	m_pPhysx_ContactModifyCallback = CPhysx_ContactModifyCallback::Create();
+	if (nullptr == m_pPhysx_ContactModifyCallback)
+		return E_FAIL;
+
 	/* Setting Desc */
 	PxSceneDesc SceneDesc(m_pPxPhysics->getTolerancesScale());
 	SceneDesc.gravity = PxVec3(0.0f, -9.81f * 3.0f, 0.0f);
