@@ -283,6 +283,10 @@ HRESULT CEvent_Manager::Execute_LevelChange(const EVENT& _tEvent)
 	if (FAILED(m_pGameInstance->Engine_Level_Exit(iChangeLevelID, iNextChangeLevelID)))
 		return E_FAIL;
 
+	CSection_Manager::GetInstance()->Level_Exit(iChangeLevelID, iNextChangeLevelID);
+
+
+
 	/* Level_Manager Exit */
 	if (FAILED(m_pGameInstance->Level_Manager_Exit(iChangeLevelID, iNextChangeLevelID)))
 		return E_FAIL;
@@ -799,7 +803,6 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 {
 	_int iCurLevelID = m_pGameInstance->Get_CurLevelID();
 
-	CSection_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CPooling_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CCamera_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	CPlayerData_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
