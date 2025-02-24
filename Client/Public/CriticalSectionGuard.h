@@ -14,7 +14,7 @@ public:
 	CCriticalSectionGuard(CCriticalSectionGuard&&) = delete;
 	CCriticalSectionGuard& operator=(CCriticalSectionGuard&&) = delete;
 
-private:
+private://
 	CRITICAL_SECTION* m_cs = nullptr;
 };
 END

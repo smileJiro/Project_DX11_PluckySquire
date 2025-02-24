@@ -104,6 +104,8 @@ protected:
 	_float2						m_CurPlayerPos = { 0.f, 0.f };
 	_float2						m_vPreNPCPos = { 0.f ,0.f };
 	_bool						m_isLookOut = { false };
+	_bool						m_isDeleteObejct = { false };
+
 
 
 private:

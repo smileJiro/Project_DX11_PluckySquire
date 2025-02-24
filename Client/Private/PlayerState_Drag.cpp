@@ -10,24 +10,28 @@ CPlayerState_Drag::CPlayerState_Drag(CPlayer* _pOwner)
 
 void CPlayerState_Drag::Update(_float _fTimeDelta)
 {
-	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+	m_fAnimTransitionTimeAcc += _fTimeDelta;
+	if (m_fAnimTransitionTimeAcc < m_fAnimTransitionTime)
+		return;
 	INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
-	if (INTERACT_RESULT::CHARGING == eResult)
+	m_pOwner->Stop_Rotate();
+	if (INTERACT_RESULT::SUCCESS == eResult)
 	{
-		m_pDraggableObject->Try_Interact(m_pOwner, _fTimeDelta);
-
+		PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 		if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 		{
 			m_pOwner->Set_PlayingAnim(true);
 			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
+			m_pDraggableObject->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
 		}
-		else
+		else 
 		{
 			m_pOwner->Set_PlayingAnim(false);
 		}
 	}
 	else
 	{
+		m_pOwner->Set_PlayingAnim(true);
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;
 	}
@@ -48,7 +52,7 @@ void CPlayerState_Drag::Enter()
 	}
 	else
 	{
-
+		m_pOwner->Get_Body()->Set_3DAnimationTransitionTime((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_PULL_GT, m_fAnimTransitionTime);
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_PULL_GT);
 	}
 }

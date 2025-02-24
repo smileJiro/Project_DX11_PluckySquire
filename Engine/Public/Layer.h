@@ -36,6 +36,7 @@ public:
 private:
 	CGameInstance* m_pGameInstance = nullptr;
 private:
+	_wstring							m_strName{}; // 이름추가하고, 디버깅좀하자. TODO:: 0224
 	list<class CGameObject*>			m_GameObjects{};
 
 private: /* private : CObject_Manager 에서만 접근 가능하게 제한. */

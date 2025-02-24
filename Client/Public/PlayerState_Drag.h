@@ -18,6 +18,9 @@ public:
 private:
 	_float m_fDragMoveSpeed = 0.f;
 	CDraggableObject* m_pDraggableObject = nullptr;
+
+	_float m_fAnimTransitionTime = 0.2f;
+	_float m_fAnimTransitionTimeAcc = 0.2f;
 };
 
 END

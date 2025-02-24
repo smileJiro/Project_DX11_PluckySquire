@@ -51,6 +51,12 @@ HRESULT CNarration::Initialize(void* _pArg)
 
 void CNarration::Update(_float _fTimeDelta)
 {
+	if (KEY_DOWN(KEY::G))
+	{
+		StopNarration();
+		return;
+	}
+
 	if (false == m_isPlayNarration && true == Uimgr->Get_PlayNarration())
 	{
 		m_isPlayNarration = true;
@@ -271,11 +277,12 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tempData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), tempData.eCurlevelId, TEXT("Layer_UI"), &pObject, &tempData)))
 								return E_FAIL;
 
+							Safe_AddRef(pObject);
 							// 생성한 애니메이션 객체 넣기
 							CNarration_Anim* pAnim;
 							pAnim = static_cast<CNarration_Anim*>(pObject);
 
-							// TODO :: 누수 잡는 중
+
 							pAnimation.push_back(pAnim);
 							//Safe_AddRef(pAnim);
 
@@ -285,13 +292,14 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 					}
 					// 애니메이션 처리 후, 완성된 대화 데이터를 NarData에 추가한다.
 					
-					// TODO :: 누수 잡는 중
+
 					m_vAnimObjectsByLine.emplace(iLine, pAnimation);
 
-					for (_int i = 0; i < pAnimation.size(); ++i)
-					{
-						Safe_AddRef(pAnimation[i]);
-					}
+					// TODO :: 누수 예상 - 박상욱
+					//for (_int i = 0; i < pAnimation.size(); ++i)
+					//{
+					//	Safe_AddRef(pAnimation[i]);
+					//}
 
 					NarData.lines.push_back(DialogueData);
 					++iLine;
@@ -404,10 +412,11 @@ vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine
 	{
 		m_pCurrentAnimObj = iter->second;
 
-		for (auto& animObj : m_pCurrentAnimObj)
-		{
-			Safe_AddRef(animObj);
-		}
+		// TODO :: 누수 예상 - 박상욱
+		//for (auto& animObj : m_pCurrentAnimObj)
+		//{
+		//	Safe_AddRef(animObj);
+		//}
 	}
 
 	// NarAnim과 동기화하여 섹션 레이어에 추가
@@ -500,7 +509,9 @@ _int iAnim = 0;
 
 		CNarration_Anim* pAnim = static_cast<CNarration_Anim*>(pObject);
 		newAnims.push_back(pAnim);
-		Safe_AddRef(pAnim);
+
+		// TODO :: 누수 예상 - 박상욱
+		//Safe_AddRef(pAnim);
 	}
 
 	return newAnims;
@@ -605,10 +616,10 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						m_DisPlayTextLine = m_iCurrentLine;
 						
 						_float3 vPos = _float3(0.f, 0.f, 1.f);
-						//if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
-						//	Event_Book_Main_Section_Change_Start(1, &vPos);
-						//else
-						//	Event_Book_Main_Section_Change_Start(0, &vPos);
+						if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
+							Event_Book_Main_Section_Change_Start(1, &vPos);
+						else
+							Event_Book_Main_Section_Change_Start(0, &vPos);
 
 						if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
 						{
@@ -616,18 +627,10 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 							{
 								vPos = _float3(-693.f, -35.5f, 0.0f);
 							}
-							//else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter1_P0506"))
-							//{
-							//
-							//}
 							else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0708"))
 							{
 								vPos = _float3(0.0f, -293.f, 0.0f);
 							}
-							//else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0708"))
-							//{
-							//	vPos = _float3(0.0f, -293.f, 0.0f);
-							//}
 
 							Event_Book_Main_Section_Change_Start(1, &vPos);
 
@@ -673,18 +676,10 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						{
 							vPos = _float3(-693.f, -35.5f, 0.0f);
 						}
-						//else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter1_P0506"))
-						//{
-						//
-						//}
 						else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0708"))
 						{
 							vPos = _float3(0.0f, -333.f, 0.0f);
 						}
-						//else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0506"))
-						//{
-						//	vPos = _float3(0.0f, -333.f, 0.0f);
-						//}
 
 						Event_Book_Main_Section_Change_Start(1, &vPos);
 
@@ -761,10 +756,10 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					// 그런데 그 라인이 다음으로 넘기는 라인인가요?
 					if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isFinishedThisLine)
 					{
-						//if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
-						//	Event_Book_Main_Section_Change_Start(1, &vPos);
-						//else
-						//	Event_Book_Main_Section_Change_Start(0, &vPos);
+						if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
+							Event_Book_Main_Section_Change_Start(1, &vPos);
+						else
+							Event_Book_Main_Section_Change_Start(0, &vPos);
 
 						if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
 						{
@@ -772,10 +767,6 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 							{
 								vPos = _float3(-693.f, -35.5f, 0.0f);
 							}
-							//else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter1_P0506"))
-							//{
-							//
-							//}
 							else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0708"))
 							{
 								vPos = _float3(30.0f, 2322.f, 0.0f);
@@ -803,9 +794,6 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 							// 넘어갈 대상의 페이지를 가져온다.
 							// 넘어가는 패턴 -> 
 						}
-
-
-
 						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].NarAnim[0].strSectionid, this);
 					}
 				}
@@ -869,6 +857,14 @@ void CNarration::Free()
 		}
 	}
 	m_vAnimObjectsByLine.clear();
+
+
+	for (auto iter : m_vecAnimation)
+	{
+		Safe_Release(iter);
+	}
+	m_vecAnimation.clear();
+
 
 	__super::Free();
 }
@@ -934,6 +930,52 @@ void CNarration::PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken
 		_OutToken[i].strText = vTokens[i].strText;
 		_OutToken[i].fScale = vTokens[i].fScale;
 	}
+}
+
+void CNarration::StopNarration()
+{
+	//m_isPlayNarration = false;
+	//m_isStartNarration = false;
+	//m_isNarrationEnd = true;
+	//
+	//// 진행 중인 애니메이션 객체들 정리
+	//for (auto& animObj : m_pCurrentAnimObj)
+	//{
+	//	Safe_Release(animObj);
+	//}
+	//m_pCurrentAnimObj.clear();
+	if (false == m_isStartNarration)
+		return;
+
+	m_isStartNarration = false;
+	m_isNarrationEnd = true;
+	m_isPlayNarration = false;
+	Uimgr->Set_TurnoffPlayNarration(false);
+
+	for (auto iter : m_pCurrentAnimObj)
+	{
+		Safe_Release(iter);
+	}
+	m_pCurrentAnimObj.clear();
+
+	for (auto iter : m_vAnimObjectsByLine)
+	{
+		for (_int i = 0; i < iter.second.size(); ++i)
+		{
+			Safe_Release(iter.second[i]);
+		}
+	}
+	m_vAnimObjectsByLine.clear();
+
+	m_isLeftRight = true;
+	_float3 vPos = _float3(0.f, 0.f, 0.f);
+
+
+	if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
+		Event_Book_Main_Section_Change_Start(1, &vPos);
+	else
+		Event_Book_Main_Section_Change_Start(0, &vPos);
+
 }
 
 _bool CNarration::isLeftRight()

@@ -521,6 +521,16 @@ void CFallingRock::Active_OnEnable()
 
 void CFallingRock::Active_OnDisable()
 {
+	if (STATE::STATE_BOUND_3D == m_eCurState || STATE::STATE_BOUND_2D == m_eCurState)
+	{
+		m_fDeadTime.y = 0.0f;
+		Event_DeleteObject(this); /* 풀링객체면 알아서 Layer에서 Delete 하지않고, Active만 False 처리한다. */
+		m_eCurState = STATE::STATE_FALLDOWN;
+		State_Change();
+
+	}
+
+
 	__super::Active_OnDisable();
 }
 

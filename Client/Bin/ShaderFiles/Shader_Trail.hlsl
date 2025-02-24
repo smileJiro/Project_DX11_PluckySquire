@@ -14,6 +14,13 @@ struct VS_IN
 {
     float3 vPosition : POSITION;
     float2 vTexcoord : TEXCOORD0;
+};
+
+/* ±¸Á¶Ã¼ */
+struct VS_Trail
+{
+    float3 vPosition : POSITION;
+    float2 vTexcoord : TEXCOORD0;
     float2 vLifeTime : TEXCOORD1;
 };
 
@@ -58,7 +65,7 @@ struct PS_OUT
 
 
 
-StructuredBuffer<VS_IN> Trails : register(t0);
+StructuredBuffer<VS_Trail> Trails : register(t0);
 
 VS_OUT VS_MAIN(uint iVertexID : SV_VertexID)
 {

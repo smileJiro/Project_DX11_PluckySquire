@@ -188,6 +188,18 @@ void CCameraArm::Set_ArmVector(_vector _vArm)
     m_pTransform->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
 }
 
+void CCameraArm::Set_StartInfo()
+{
+    m_vStartArm = m_vArm;
+    m_fStartLength = m_fLength;
+}
+
+//void CCameraArm::Set_StartInfo(_fvector _vStartArm, _float _fStartLength)
+//{
+//    XMStoreFloat3(&m_vStartArm, _vStartArm);
+//    m_fStartLength = _fStartLength;
+//}
+
 void CCameraArm::Turn_ArmX(_float fAngle)
 {
     // Right축
@@ -529,11 +541,12 @@ _bool CCameraArm::Move_To_FreezeExitArm(_float _fRatio, _fvector _vFreezeExitArm
     if (_fRatio >= (1.f - EPSILON)) {
         XMStoreFloat3(&m_vArm, XMVector3Normalize(_vFreezeExitArm));
         m_pTransform->Set_Look(XMLoadFloat3(&m_vArm));
+        m_vStartArm = { 0.f, 0.f, 0.f };
        // m_fLength = _fFreezeExitLength;
         return true;
     }
 
-    _vector vArm = XMVectorLerp(XMLoadFloat3(&m_vArm), _vFreezeExitArm, _fRatio);
+    _vector vArm = XMVectorLerp(XMLoadFloat3(&m_vStartArm), _vFreezeExitArm, _fRatio);
     // m_fLength = m_pGameInstance->Lerp(m_fLength, _fFreezeExitLength, _fRatio);
     // Length는 아직 하지 말아 보기
     XMStoreFloat3(&m_vArm, XMVector3Normalize(vArm));

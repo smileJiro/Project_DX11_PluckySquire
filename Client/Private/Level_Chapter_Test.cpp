@@ -60,6 +60,15 @@ CLevel_Chapter_Test::CLevel_Chapter_Test(ID3D11Device* _pDevice, ID3D11DeviceCon
 HRESULT CLevel_Chapter_Test::Initialize(LEVEL_ID _eLevelID)
 {
 	m_eLevelID = _eLevelID;
+
+
+
+	if (FAILED(CSection_Manager::GetInstance()->Level_Enter(_eLevelID)))
+	{
+		MSG_BOX(" Failed CSection_Manager Level_Enter(CLevel_Chapter_Test::Initialize)");
+		assert(nullptr);
+	}
+
 	Ready_Lights();
 	CGameObject* pCameraTarget = nullptr;
 	Ready_CubeMap(TEXT("Layer_CubeMap"));
@@ -942,14 +951,7 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, _strLayerTag, &Boss_Desc)))
 		//	return E_FAIL;
 
-	CJumpBug::MONSTER_DESC JumpBug_Desc;
-	JumpBug_Desc.iCurLevelID = m_eLevelID;
-	JumpBug_Desc.eStartCoord = COORDINATE_3D;
-	JumpBug_Desc.tTransform3DDesc.vInitialPosition = _float3(-12.0f, 0.35f, -21.0f);
-	JumpBug_Desc.tTransform3DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_JumpBug"), m_eLevelID, _strLayerTag, &JumpBug_Desc)))
-		return E_FAIL;
 
 	Pooling_DESC Pooling_Desc;
 	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
@@ -974,6 +976,27 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 	//vPos = { -700.0f, -60.f, 0.f };
 	//_wstring strSectionKey = TEXT("CHAPTER4_P0304");
 	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Rat"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+
+
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_JumpBug");
+	Pooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
+
+	CJumpBug::MONSTER_DESC* JumpBug_Desc = new CJumpBug::MONSTER_DESC;
+	JumpBug_Desc->iCurLevelID = m_eLevelID;
+	JumpBug_Desc->eStartCoord = COORDINATE_3D;
+	JumpBug_Desc->tTransform3DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
+	JumpBug_Desc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_JumpBug"), Pooling_Desc, JumpBug_Desc);
+
+	_float3 vPos = { -700.0f, -60.f, 0.f };
+	_wstring strSectionKey = TEXT("CHAPTER4_P0304");
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_JumpBug"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+
+	vPos = { -20.0f, 0.35f, -21.0f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_JumpBug"), COORDINATE_3D, &vPos);
 
 	/*  Projectile  */
 	Pooling_Desc;

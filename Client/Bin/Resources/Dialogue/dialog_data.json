@@ -969,8 +969,8 @@
 					"Talker": "스래쉬",
 					"BG": 2,
 					"location": 1,
-					"is2D": false,
-					"isPortrait": false,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -985,8 +985,8 @@
 					"Talker": "스래쉬",
 					"BG": 2,
 					"location": 1,
-					"is2D": false,
-					"isPortrait": false,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -1007,8 +1007,8 @@
 					"Talker": "바이올렛",
 					"BG": 13,
 					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -1023,8 +1023,8 @@
 					"Talker": "스래쉬",
 					"BG": 2,
 					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -1045,8 +1045,8 @@
 					"Talker": "배고픈 토끼",
 					"BG": 2,
 					"location": 3,
-					"is2D": false,
-					"isPortrait": false,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350

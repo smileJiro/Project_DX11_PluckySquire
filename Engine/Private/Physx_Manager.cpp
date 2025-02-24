@@ -55,9 +55,7 @@ HRESULT CPhysx_Manager::Initialize()
 
 	// 필요한 시각화 기능 활성화
 #ifdef _DEBUG
-	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
-	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f); // 충돌 형태 시각화
-	//m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 1.0f);
+
 
 		/* Debug */
 	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 30000);
@@ -145,6 +143,56 @@ HRESULT CPhysx_Manager::Render()
 	return S_OK;
 }
 
+void CPhysx_Manager::Level_Enter()
+{
+	//if (nullptr != m_pPhysx_EventCallBack)
+	//{
+	//	m_pPhysx_EventCallBack->Level_Enter();
+	//}
+
+	//
+	
+
+}
+
+void CPhysx_Manager::Level_Exit()
+{
+	if (nullptr != m_pPhysx_EventCallBack)
+	{
+		m_pPhysx_EventCallBack->Level_Exit();
+	}
+
+	Delete_ShapeUserData();
+	Delete_ActorUserData();
+
+	//PxU32 actorCount = m_pPxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
+	//std::vector<PxActor*> actors(actorCount);
+	//m_pPxScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, actors.data(), actorCount);
+
+	//for (PxActor* actor : actors) {
+	//	m_pPxScene->removeActor(*actor);
+	//	actor->release(); // 메모리 해제
+	//}
+
+	m_pPxScene->setSimulationEventCallback(nullptr);
+	if (m_pPxScene)
+	{
+		m_pPxScene->release();
+		m_pPxScene = nullptr;
+	}
+
+	if (m_pPxDefaultCpuDispatcher)
+	{
+		m_pPxDefaultCpuDispatcher->release();
+		m_pPxDefaultCpuDispatcher = nullptr;
+	}
+
+	Safe_Release(m_pPhysx_EventCallBack);
+	Safe_Release(m_pPhysx_ContactModifyCallback);
+
+	Initialize_Scene();
+}
+
 _float CPhysx_Manager::Get_Gravity()
 {
 	return m_pPxScene->getGravity().magnitude();
@@ -155,6 +203,11 @@ void CPhysx_Manager::Add_ShapeUserData(SHAPE_USERDATA* _pUserData)
 	m_pShapeUserDatas.push_back(_pUserData);
 }
 
+void CPhysx_Manager::Add_ActorUserData(ACTOR_USERDATA* _pUserData)
+{
+	m_pActorUserDatas.push_back(_pUserData);
+}
+
 void CPhysx_Manager::Delete_ShapeUserData()
 {
 	for (auto& pUserData : m_pShapeUserDatas)
@@ -163,6 +216,16 @@ void CPhysx_Manager::Delete_ShapeUserData()
 		pUserData = nullptr;
 	}
 	m_pShapeUserDatas.clear();
+}
+
+void CPhysx_Manager::Delete_ActorUserData()
+{
+	for (auto& pUserData : m_pActorUserDatas)
+	{
+		delete pUserData;
+		pUserData = nullptr;
+	}
+	m_pActorUserDatas.clear();
 }
 
 _bool CPhysx_Manager::RayCast_Nearest(const _float3& _vOrigin, const _float3& _vRayDir, _float _fMaxDistance, _float3* _pOutPos, CActorObject** _ppOutActorObject)
@@ -409,6 +472,14 @@ HRESULT CPhysx_Manager::Initialize_Physics()
 
 HRESULT CPhysx_Manager::Initialize_Scene()
 {
+	// Event CallBack Class 
+	m_pPhysx_EventCallBack = CPhysx_EventCallBack::Create();
+	if (nullptr == m_pPhysx_EventCallBack)
+		return E_FAIL;
+	m_pPhysx_ContactModifyCallback = CPhysx_ContactModifyCallback::Create();
+	if (nullptr == m_pPhysx_ContactModifyCallback)
+		return E_FAIL;
+
 	/* Setting Desc */
 	PxSceneDesc SceneDesc(m_pPxPhysics->getTolerancesScale());
 	SceneDesc.gravity = PxVec3(0.0f, -9.81f * 3.0f, 0.0f);
@@ -450,13 +521,16 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	//// Region 추가
 	//m_pPxScene->addBroadPhaseRegion(region);
 	/* Setting Pvd */
-	PxPvdSceneClient* pvdClient = m_pPxScene->getScenePvdClient();
+	//PxPvdSceneClient* pvdClient = m_pPxScene->getScenePvdClient();
 #if defined(_DEBUG)
-	if (pvdClient) {
-		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, false);
-		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, false);
-		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, false);
-	}
+	//if (pvdClient) {
+	//	pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, false);
+	//	pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, false);
+	//	pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, false);
+	//}
+	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
+	m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f); // 충돌 형태 시각화
+	//m_pPxScene->setVisualizationParameter(PxVisualizationParameter::eACTOR_AXES, 1.0f);
 #endif
 #pragma region 추가적인 이벤트 처리나 flag 설정이 필요한 경우
 	/* 추가적인 이벤트 처리나 flag 설정이 필요한 경우 */
@@ -566,15 +640,10 @@ void CPhysx_Manager::Free()
 
 	// Shape User Data 정리
 	Delete_ShapeUserData();
-
+	Delete_ActorUserData();
 	// 1. Actor 및 Shape 관련 리소스 해제
 	//if (m_pGroundPlane)
 	//	m_pGroundPlane->release();
-	if (m_pTestDesk)
-	{
-		m_pTestDesk->release();
-		m_pTestDesk = nullptr;
-	}
 
 	// 2. Scene 및 Dispatcher 정리
 	if (m_pPxScene)

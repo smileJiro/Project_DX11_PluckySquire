@@ -71,6 +71,15 @@ CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext
 HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 {
 	m_eLevelID = _eLevelID;
+
+	if (FAILED(CSection_Manager::GetInstance()->Level_Enter(_eLevelID)))
+	{
+		MSG_BOX(" Failed CSection_Manager Level_Enter(Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+
+
+
 	if (FAILED(Ready_Lights()))
 	{
 		MSG_BOX(" Failed Ready_Lights (Level_Chapter_02::Initialize)");
@@ -266,7 +275,6 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 	}
 
 	// TODO :: 나중 제거, 테스트용도 - 박상욱
-	Uimgr->Test_Update(_fTimeDelta);
 
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
@@ -1529,7 +1537,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
 	tCarriableDesc.eStartCoord = COORDINATE_3D;
 	tCarriableDesc.iCurLevelID = m_eLevelID;
-	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.5f, 21.5f);
+	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.0f, 21.5f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
 		return E_FAIL;
 	CModelObject::MODELOBJECT_DESC tModelDesc{};

@@ -20,7 +20,6 @@ void CPlayerState_LunchBox::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;
 	}
-
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	_vector vPlayerPos = m_pOwner->Get_FinalPosition();
 	if (false == m_bArrival )
@@ -32,7 +31,12 @@ void CPlayerState_LunchBox::Update(_float _fTimeDelta)
 	}
 	INTERACT_RESULT eResult =  m_pOwner->Try_Interact(_fTimeDelta);
 
-	if (LUNCHBOX_STATE_IDLE == m_eCurState)
+	if (LUNCHBOX_STATE_CHARGE == m_eCurState)
+	{
+		m_pOwner->Stop_Rotate();
+
+	}
+	else if (LUNCHBOX_STATE_IDLE == m_eCurState)
 	{
 		if (INTERACT_RESULT::CHARGING == eResult)
 		{
@@ -60,11 +64,6 @@ void CPlayerState_LunchBox::Update(_float _fTimeDelta)
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_LUNCHBOX_POSE_01_LOOP_GT);
 
 		}
-	}
-	else
-	{
-
-
 	}
 }
 

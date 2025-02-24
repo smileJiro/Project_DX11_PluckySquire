@@ -54,6 +54,10 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
 			m_pOwner->Set_State(CPlayer::LAYDOWNOBJECT);
 	}
+	else
+	{
+		int a = 0;
+	}
 
 
 }

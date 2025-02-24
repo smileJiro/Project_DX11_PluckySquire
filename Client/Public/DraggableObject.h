@@ -33,10 +33,11 @@ public:
 	virtual void On_Touched(CPlayer* _pPlayer) override;
 	virtual void On_EndHolding(CPlayer* _pPlayer) override;
 	void Set_Dragger(CPlayer* _pPlayer) { m_pDragger = _pPlayer; }
-
+	void Move(_fvector _vForce, _float _fTimeDelta);
 private:
 	_bool m_bUserContact = false;
 	CPlayer* m_pDragger = nullptr;
+
 
 public:
 	static CDraggableObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
