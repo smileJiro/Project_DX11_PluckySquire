@@ -260,7 +260,6 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 	}
 
 	// TODO :: 나중 제거, 테스트용도 - 박상욱
-	Uimgr->Test_Update(_fTimeDelta);
 
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);

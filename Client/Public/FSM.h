@@ -60,7 +60,7 @@ public:
 
 	HRESULT Add_SneakState();
 	HRESULT Add_Chase_NoneAttackState();
-	HRESULT Add_Neutral_State();
+	HRESULT Add_Neutral_State(_bool _isJump=false);
 
 protected:
 	CState* m_pCurState = { nullptr };

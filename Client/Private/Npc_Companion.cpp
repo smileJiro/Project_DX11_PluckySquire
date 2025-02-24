@@ -8,6 +8,7 @@
 #include "StateMachine.h"
 
 #include "NPC_Violet.h"
+#include "Dialogue.h"
 
 
 
@@ -56,6 +57,11 @@ HRESULT CNPC_Companion::Child_Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_isRender = false;
+	//m_strCurSecion = pDesc->strLocateSection
+	wsprintf(m_strCurSecion, Uimgr->Get_Dialogue(pDesc->strDialogueIndex)[0].Section.c_str());
+	
+
+
 
 	return S_OK;
 }
@@ -133,7 +139,6 @@ void CNPC_Companion::Late_Update(_float _fTimeDelta)
 		}
 			
 	}
-
 	__super::Late_Update(_fTimeDelta);
 }
 
@@ -150,11 +155,8 @@ _float CNPC_Companion::Cal_PlayerDistance()
 
 _bool CNPC_Companion::Trace_Player(_float2 _vPlayerPos, _float2 vNPCPos)
 {
-	
 	if (120.f >= m_fPlayerDistance)
 	{
-		
-
 		return false;
 	}
 	else if (500.f <= m_fPlayerDistance)

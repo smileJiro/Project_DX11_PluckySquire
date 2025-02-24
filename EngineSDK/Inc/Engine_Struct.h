@@ -176,10 +176,20 @@ namespace Engine
 
 		XMFLOAT3		vPosition;
 		XMFLOAT2		vTexcoord;
+		XMFLOAT2		vLifeTime;
+
+		static const unsigned int					iNumElements = { 3 };
+		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
+	}VTXTRAIL;
+
+	typedef struct ENGINE_DLL tagVtxBeam
+	{
+		XMFLOAT3		vPosition;
+		float			fIndex;
 
 		static const unsigned int					iNumElements = { 2 };
 		static const D3D11_INPUT_ELEMENT_DESC		Elements[iNumElements];
-	}VTXTRAIL;
+	}VTXBEAM;
 
 	typedef struct ENGINE_DLL tagVtxPosition_Color
 	{

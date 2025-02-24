@@ -135,7 +135,7 @@
     <ClInclude Include="..\public\Effect_Reference.h">
       <Filter>02. GameObject\Etc</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\TestTrail.h">
+    <ClInclude Include="..\public\TestBeam.h">
       <Filter>02. GameObject\Etc</Filter>
     </ClInclude>
   </ItemGroup>
@@ -213,7 +213,7 @@
     <ClCompile Include="..\private\Effect_Reference.cpp">
       <Filter>02. GameObject\Etc</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\TestTrail.cpp">
+    <ClCompile Include="..\private\TestBeam.cpp">
       <Filter>02. GameObject\Etc</Filter>
     </ClCompile>
   </ItemGroup>
@@ -246,6 +246,9 @@
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Trail.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxBeam.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

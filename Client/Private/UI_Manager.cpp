@@ -90,6 +90,7 @@ void CUI_Manager::Delete_ShopItems(_uint _index)
 
 void CUI_Manager::pushBack_ShopItem(vector<CShopItemBG*> _ItemBGs)
 {
+
 	m_ShopItems.push_back(_ItemBGs);
 
 	for (auto& pShopItemBG : _ItemBGs)
@@ -134,7 +135,6 @@ vector<CDialog::DialogData> CUI_Manager::Get_Dialogue(const _wstring& _id)
 			return dialog.id == _id; 
 		});
 
-
 	if (iter != m_DialogDatas.end())
 	{
 		return { *iter };
@@ -166,6 +166,9 @@ CDialog::DialogLine CUI_Manager::Get_DialogueLine(const _wstring& _id, _int _Lin
 
 void CUI_Manager::Set_DialogId(const _tchar* _id, const _tchar* strCurSection,  _bool _DisplayDialogue, _bool _DisPlayPortrait)
 {
+	if (nullptr == m_pDiagloue)
+		return;
+
 	if (false == m_pDiagloue->CBase::Is_Active())
 	{
 		m_pDiagloue->CBase::Set_Active(true);
@@ -204,68 +207,29 @@ void CUI_Manager::Pushback_Dialogue(CDialog::DialogData _DialogData)
 
 _bool CUI_Manager::isLeft_Right()
 {
+	assert(m_pNarration);
+
 	return m_pNarration->isLeftRight();
 }
 
-void CUI_Manager::Test_Update(_float _fTimedelta)
-{
-	//if (KEY_DOWN(KEY::U) && 0 <= m_iTextIndex)
-	//{
-	//	switch (m_iTextIndex)
-	//	{
-	//	case 0:
-
-	//	{
-	//		if (m_isTest == false)
-	//		{
-	//			Uimgr->Set_PlayNarration(TEXT("Chapter2_P0506_Narration_01"));
-	//			m_isTest = true;
-	//		}
-	//		
-	//		//Uimgr->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
-	//		
-	//		++m_iTextIndex;
-	//	}
-	//	break;
-
-	//	case 1:
-	//	{
-	//		Uimgr->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
-	//		
-	//		++m_iTextIndex;
-	//	}
-	//	break;
-	//	
-	//	case 2:
-	//	{
-	//		
-	//	}
-	//	break;
-
-	//	}
-
-	//	
-	//}
-
-
-	//if (m_isPlayerNarration == true)
-	//{
-	//	if (false == m_pNarration->CBase::Is_Active())
-	//	{
-	//		m_pNarration->CBase::Set_Active(true);
-	//	}
-	//}
-	//		
-
-
-
-
-}
 
 HRESULT CUI_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID)
 {
-	Safe_Release(m_pPlayer);
-	Safe_Release(m_pDiagloue);
+	if (nullptr != m_pPlayer)
+	{
+		Safe_Release(m_pPlayer);
+		m_pPlayer = nullptr;
+	}
+		
+
+	if (nullptr != m_pDiagloue)
+	{
+		Safe_Release(m_pDiagloue);
+		m_pDiagloue = nullptr;
+	}
+		
+
+
 
 	if(iCurLevelID == LEVEL_LOGO)
 		Level_Logo_Exit(_iChangeLevelID, _iNextChangeLevelID);
@@ -298,7 +262,8 @@ HRESULT CUI_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iN
 
 	Uimgr->Set_isMakeItem(false);
 
-	Safe_Release(m_pNarration);
+	if (nullptr != m_pNarration)
+		Safe_Release(m_pNarration);
 
 
 	return S_OK;

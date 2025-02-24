@@ -164,7 +164,6 @@ public:
 
 
 	/************ 테스트용도 **********************/
-	void								Test_Update(_float _fTimedelta);
 	_uint								Get_TestDiaglogIndex() { return m_iTextIndex; }
 	void								Set_TestDialogIndex() { ++m_iTextIndex; }
 

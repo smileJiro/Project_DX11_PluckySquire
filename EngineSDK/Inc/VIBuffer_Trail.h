@@ -14,14 +14,14 @@ private:
 public:
 	virtual HRESULT Initialize_Prototype(_uint _iMaxVertexCount);
 	virtual HRESULT Initialize(void* _pArg);
-	//virtual void	Update(_float _fTimeDelta) override;
+	virtual void	Update(_float _fTimeDelta) override;
 
 	virtual HRESULT Bind_BufferDesc();
 	virtual HRESULT Render() override;
 
 public:
-	void	Add_Point(const _float4x4* _pWorldMatrix, _fvector _vPosition);
-	void	Delete_Point();
+	void	Add_Point(const _float4x4* _pWorldMatrix, _fvector _vPosition, _float _fLifeTime);
+	//void	Delete_Point();
 	void	Reset_Buffer() { m_iCurVertexCount = 0; }
 
 public:

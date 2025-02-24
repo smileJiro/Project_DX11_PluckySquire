@@ -678,12 +678,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 						{
 							Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
 						}
-
-						//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionID, this);
 					}
-
-					
-					
 					m_isAddSectionRender = true;
 				}
 

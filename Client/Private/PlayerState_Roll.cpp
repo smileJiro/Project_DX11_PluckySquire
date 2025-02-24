@@ -37,7 +37,8 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 		}
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
 		{
-			m_pOwner->Set_State(CPlayer::JUMP_UP);
+			if(false == m_pOwner->Is_PlatformerMode())
+				m_pOwner->Set_State(CPlayer::JUMP_UP);
 			return;
 		}
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
