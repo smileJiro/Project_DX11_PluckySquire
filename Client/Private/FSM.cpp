@@ -25,6 +25,7 @@
 #include "SideScroll_HitState.h"
 #include "Neutral_IdleState.h"
 #include "Neutral_PatrolState.h"
+#include "Neutral_Patrol_JumpState.h"
 
 CFSM::CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
@@ -411,7 +412,7 @@ HRESULT CFSM::Add_Chase_NoneAttackState()
 	return S_OK;
 }
 
-HRESULT CFSM::Add_Neutral_State()
+HRESULT CFSM::Add_Neutral_State(_bool _isJump)
 {
 	if (nullptr == m_pOwner)
 		return E_FAIL;
@@ -433,13 +434,26 @@ HRESULT CFSM::Add_Neutral_State()
 	pState->Set_FSM(this);
 	m_States.emplace((_uint)MONSTER_STATE::IDLE, pState);
 
-	pState = CNeutral_PatrolState::Create(&Desc);
-	if (nullptr == pState)
-		return E_FAIL;
-	pState->Set_Owner(m_pOwner);
-	pState->Set_FSM(this);
-	m_States.emplace((_uint)MONSTER_STATE::PATROL, pState);
-	Set_PatrolBound();
+	if(false == _isJump)
+	{
+		pState = CNeutral_PatrolState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::PATROL, pState);
+		Set_PatrolBound();
+	}
+	else
+	{
+		pState = CNeutral_Patrol_JumpState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::PATROL, pState);
+		Set_PatrolBound();
+	}
 
 	pState = CHitState::Create(&Desc);
 	if (nullptr == pState)

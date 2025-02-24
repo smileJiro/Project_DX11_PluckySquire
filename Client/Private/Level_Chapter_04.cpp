@@ -475,10 +475,9 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
 
 	if (nullptr == Uimgr->Get_Player())
-	{
 		CUI_Manager::GetInstance()->Set_Player(pPlayer);
 
-	}
+	
 
 
 

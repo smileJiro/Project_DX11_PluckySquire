@@ -82,6 +82,7 @@ void CPlayerState_PickUpObject::Enter()
 	else
 	{
 		vTmp = m_pOwner->Get_LookDirection(COORDINATE_2D) * m_pOwner->Get_PickupRange(eCoord);
+		vTmp = XMVectorSetY(vTmp, XMVectorGetY(vTmp) + 11.f);
 	}
 	_matrix mat3DPickupOffset = XMMatrixTranslationFromVector(vTmp);
 	m_tPickupKeyFrame.Set_Matrix(mat3DPickupOffset);

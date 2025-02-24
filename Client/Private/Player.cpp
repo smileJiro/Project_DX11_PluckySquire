@@ -264,7 +264,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
-    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     BodyDesc.strModelPrototypeTag_2D = TEXT("player");
     BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
@@ -295,8 +295,8 @@ HRESULT CPlayer::Ready_PartObjects()
     SwordDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     SwordDesc.iCurLevelID = m_iCurLevelID;
     SwordDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
-    SwordDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
-    SwordDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    SwordDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+    SwordDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
     SwordDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     SwordDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
     SwordDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
@@ -318,10 +318,13 @@ HRESULT CPlayer::Ready_PartObjects()
     m_pSword->Set_AttackEnable(false);
 
     //Part Glove
+    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
     BodyDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     BodyDesc.eActorType = ACTOR_TYPE::LAST;
     BodyDesc.pActorDesc = nullptr;
+    BodyDesc.isCoordChangeEnable = false;
     m_PartObjects[PLAYER_PART_GLOVE] = m_pGlove = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
 	Safe_AddRef(m_pGlove);
     if (nullptr == m_PartObjects[PLAYER_PART_GLOVE])
@@ -413,12 +416,12 @@ HRESULT CPlayer::Ready_Components()
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
-	CAnimEventGenerator* pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
+	CAnimEventGenerator* pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_PlayerAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenrator"), pAnimEventGenerator);
     
     tAnimEventDesc.pReceiver = this;
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
-    pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_Player2DAnimEvent"), &tAnimEventDesc));
+    pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_Player2DAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("2DAnimEventGenrator"), pAnimEventGenerator);
 
 	m_p2DColliderComs.resize(3);
@@ -1715,8 +1718,14 @@ void CPlayer::ThrowObject()
     {
         pObj->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, Get_FinalPosition());
     }
-	pObj->Throw(vForce);
+    pObj->Set_ParentMatrix(COORDINATE_2D, nullptr);
+    pObj->Set_ParentMatrix(COORDINATE_3D, nullptr);
+    pObj->Set_SocketMatrix(COORDINATE_3D, nullptr);
+    pObj->Set_SocketMatrix(COORDINATE_2D, nullptr);
+    pObj->Set_ParentBodyMatrix(COORDINATE_3D, nullptr);
+    pObj->Set_ParentBodyMatrix(COORDINATE_2D, nullptr);
     pObj->Set_Carrier(nullptr);
+	pObj->Throw(vForce);
 	Set_CarryingObject(nullptr);
 }
 

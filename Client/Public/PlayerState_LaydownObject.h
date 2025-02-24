@@ -21,8 +21,8 @@ private:
 
     _float m_f3DLayStartProgress = 0.44f;
     _float m_f3DFloorPrgress = 0.28f;
-    _float m_f2DLayStartProgress = 0.8f;
-    _float m_f2DFloorPrgress = 0.233f;
+    _float m_f2DLayStartProgress = 0.778f;
+    _float m_f2DFloorPrgress = 0.185f;
 	_float m_fLerpStartTime = 0.f;
 	_float m_fLerpEndTime = 0.f;
 	_float m_fTimeAcc = 0.f;

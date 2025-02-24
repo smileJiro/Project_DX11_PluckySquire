@@ -117,6 +117,7 @@ void CPlayerState_LaydownObject::Enter()
 	else
 	{
 		vTmp = m_pOwner->Get_LookDirection(COORDINATE_2D) * m_pOwner->Get_PickupRange(eCoord);
+		vTmp = XMVectorSetY(vTmp, XMVectorGetY(vTmp) + 11.f);
 	}
 	_matrix mat3DPickupOffset = matCarryingOfset;
 	mat3DPickupOffset.r[3].m128_f32[1] = 0.f;
@@ -151,6 +152,12 @@ void CPlayerState_LaydownObject::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CPlayerState_LaydownObject::Lay()
 {
+	m_pCarriableObject->Set_ParentMatrix(COORDINATE_3D, nullptr);
+	m_pCarriableObject->Set_ParentMatrix(COORDINATE_2D, nullptr);
+	m_pCarriableObject->Set_SocketMatrix(COORDINATE_3D, nullptr);
+	m_pCarriableObject->Set_SocketMatrix(COORDINATE_2D, nullptr);
+	m_pCarriableObject->Set_ParentBodyMatrix(COORDINATE_3D, nullptr);
+	m_pCarriableObject->Set_ParentBodyMatrix(COORDINATE_2D, nullptr);
 	m_pCarriableObject->Set_Carrier(nullptr);
 
 	_float4x4 matCarriableWorld;
