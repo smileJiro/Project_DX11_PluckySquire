@@ -123,29 +123,33 @@ void CNPC_Violet::Child_Update(_float _fTimeDelta)
 
 void CNPC_Violet::Child_LateUpdate(_float _fTimeDelta)
 {
-	if (m_isLookOut == true)
+	__super::Child_LateUpdate(_fTimeDelta);
+	//if (m_isLookOut == true)
+	//{
+	//	__super::Child_LateUpdate(_fTimeDelta);
+	//
+	//	if (VIOLET_RENDER == m_eRenderType  && TEXT("Chapter2_P0102") == CSection_Manager::GetInstance()->Get_Cur_Section_Key()/* || TEXT("Chapter2_P0506") == CSection_Manager::GetInstance()->Get_Cur_Section_Key()*/)
+	//	{
+	//		m_eRenderType = VIOLET_NOTRENDER;
+	//		
+	//		m_isRender = false;
+	//
+	//		//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+	//
+	//	}
+	//	 if (VIOLET_RENDER != m_eRenderType  && TEXT("Chapter2_P0102") != CSection_Manager::GetInstance()->Get_Cur_Section_Key())
+	//	{
+	//		m_eRenderType = VIOLET_RENDER;
+	//		
+	//		m_isRender = true;
+	//		//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CSection_Manager::GetInstance()->Get_Cur_Section_Key(), this, SECTION_2D_PLAYMAP_OBJECT);
+	//	}
+	//
+	//	
+	if (VIOLET_RENDER == m_eRenderType && false == m_isRender)
 	{
-		__super::Child_LateUpdate(_fTimeDelta);
-
-		if (VIOLET_RENDER == m_eRenderType && TEXT("Chapter2_P0102") == CSection_Manager::GetInstance()->Get_Cur_Section_Key())
-		{
-			m_eRenderType = VIOLET_NOTRENDER;
-			
-			m_isRender = false;
-
-			CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
-
-		}
-		else if (VIOLET_NOTRENDER == m_eRenderType && TEXT("Chapter2_P0102") != CSection_Manager::GetInstance()->Get_Cur_Section_Key())
-		{
-			m_eRenderType = VIOLET_RENDER;
-			
-			m_isRender = true;
-			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CSection_Manager::GetInstance()->Get_Cur_Section_Key(), this, SECTION_2D_PLAYMAP_OBJECT);
-		}
+		m_isRender = true;
 	}
-		
-
 
 		
 }
