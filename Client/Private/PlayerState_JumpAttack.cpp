@@ -59,7 +59,7 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 			return;
 
 		}
-		if (0 > fUpForce && fFloorDistance >= 0 && fFloorDistance <= fLandAnimHeightThreshold)
+		if (0 > fUpForce &&  fFloorDistance <= fLandAnimHeightThreshold)
 		{
 
 			if (false == m_bLandAnimed)

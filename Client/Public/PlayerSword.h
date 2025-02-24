@@ -42,9 +42,9 @@ public:
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
-	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
@@ -77,7 +77,7 @@ private:
 	_vector m_vThrowDirection = {};
 	_vector m_vStuckDirection = {};
 	_vector m_vStuckPosition = {};
-	_float m_fFlyingSpeed3D = 30.f;
+	_float m_fFlyingSpeed3D = 15.f;
 	_float m_fFlyingSpeed2D = 1200.f;
 	_float m_fRetriveRange3D = 0.5f;
 	_float m_fRetriveRange2D = 30.f;

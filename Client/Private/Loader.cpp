@@ -70,6 +70,7 @@
 
 #include "ModelObject.h"
 #include "CarriableObject.h"
+#include "DraggableObject.h"
 #include "Player.h"
 #include "PlayerBody.h"
 #include "PlayerSword.h"
@@ -104,6 +105,7 @@
 #include "Rat.h"
 #include "Zippy.h"
 #include "BirdMonster.h"
+#include "Projectile_BirdMonster.h"
 #include "Soldier_Spear.h"
 #include "Soldier_CrossBow.h"
 #include "Soldier_Bomb.h"
@@ -346,6 +348,8 @@ HRESULT CLoader::Loading_Level_Static()
         TEXT("../Bin/Resources/Models/2DAnim/Static/"))))
         return E_FAIL;
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_STATIC,
         TEXT("../Bin/Resources/Models/3DPlayerPart/"), matPretransform)))
         return E_FAIL;
@@ -493,6 +497,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CarrieableObject"),
         CCarriableObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+        CDraggableObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMapObject"),
         C2DMapDefaultObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -572,6 +579,11 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_GameObject_BirdMonster */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BirdMonster"),
         CBirdMonster::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Projectile_BirdMonster */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Projectile_BirdMonster"),
+        CProjectile_BirdMonster::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_Soldier_Spear */
@@ -940,7 +952,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Grape_03"),
         C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Grapes_Grape_03/Grapes_Grape_03.model", matPretransform))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_PlasticBlock"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/SM_Plastic_Block_04/SM_Plastic_Block_04.model", matPretransform))))
+        return E_FAIL;
     ///* 중복 키값도 Prototype_Manager에서 쳐내개 변경했음. 이제 중복 키값 로드해도 멈추지않음. */
     //if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_2, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
     //    return E_FAIL;
@@ -1634,6 +1648,9 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_ZippyAttackAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Monster/Zippy/Zippy_Attack.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_BirdMonsterAttackEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Namastarling_Rig_01/BirdMonster_Attack.animevt"))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_JumpBugJumpEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/jumpBug_Rig/JumpBug_Jump.animevt"))))

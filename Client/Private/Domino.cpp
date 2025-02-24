@@ -24,7 +24,7 @@ HRESULT CDomino::Initialize(void* _pArg)
 	pModelDsc->iRenderGroupID_3D = RG_3D;
 	pModelDsc->iPriorityID_3D = PR3D_GEOMETRY;
 
-	CActor::ACTOR_DESC ActorDesc;
+	CActor::ACTOR_DESC ActorDesc = {};
 	ActorDesc.pOwner = this;
 	XMStoreFloat4x4(&ActorDesc.ActorOffsetMatrix, XMMatrixTranslation(0.0f, 3.f, 0.f));
 	ActorDesc.FreezeRotation_XYZ[0] = false;
@@ -33,6 +33,7 @@ HRESULT CDomino::Initialize(void* _pArg)
 	ActorDesc.FreezePosition_XYZ[0] = false;
 	ActorDesc.FreezePosition_XYZ[1] = false;
 	ActorDesc.FreezePosition_XYZ[2] = false;
+	ActorDesc.isAddActorToScene = true;
 
 	SHAPE_BOX_DESC ShapeDesc = {};
 	ShapeDesc.vHalfExtents = { 0.18f,2.45f ,1.15f };

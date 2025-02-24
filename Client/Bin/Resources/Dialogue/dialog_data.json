@@ -819,8 +819,8 @@
 					"Talker": "?????",
 					"BG": 13,
 					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
+					"is2D": true,
+					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -835,7 +835,7 @@
 					"Talker": "바이올렛",
 					"BG": 13,
 					"location": 0,
-					"is2D": false,
+					"is2D": true,
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
@@ -851,7 +851,7 @@
 					"Talker": "바이올렛",
 					"BG": 13,
 					"location": 0,
-					"is2D": false,
+					"is2D": true,
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
@@ -867,7 +867,7 @@
 					"Talker": "바이올렛",
 					"BG": 13,
 					"location": 0,
-					"is2D": false,
+					"is2D": true,
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
@@ -883,7 +883,7 @@
 					"Talker": "바이올렛",
 					"BG": 13,
 					"location": 0,
-					"is2D": false,
+					"is2D": true,
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
@@ -899,7 +899,7 @@
 					"Talker": "바이올렛",
 					"BG": 13,
 					"location": 0,
-					"is2D": false,
+					"is2D": true,
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
@@ -915,7 +915,7 @@
 					"Talker": "바이올렛",
 					"BG": 13,
 					"location": 0,
-					"is2D": false,
+					"is2D": true,
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
@@ -931,7 +931,7 @@
 					"Talker": "바이올렛",
 					"BG": 13,
 					"location": 0,
-					"is2D": false,
+					"is2D": true,
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
@@ -947,7 +947,7 @@
 					"Talker": "바이올렛",
 					"BG": 13,
 					"location": 0,
-					"is2D": false,
+					"is2D": true,
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,

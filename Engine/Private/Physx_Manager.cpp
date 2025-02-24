@@ -17,13 +17,6 @@ CPhysx_Manager::CPhysx_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 
 HRESULT CPhysx_Manager::Initialize()
 {
-	// Event CallBack Class 
-	m_pPhysx_EventCallBack = CPhysx_EventCallBack::Create();
-	if (nullptr == m_pPhysx_EventCallBack)
-		return E_FAIL;
-	m_pPhysx_ContactModifyCallback = CPhysx_ContactModifyCallback::Create();
-	if (nullptr == m_pPhysx_ContactModifyCallback)
-		return E_FAIL;
 
 	if (FAILED(Initialize_Foundation()))
 		return E_FAIL;
@@ -82,46 +75,46 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 	//   -> 만약 다음 프레임으로 물리 시뮬을 미루면, 
 	//
 
-	if (nullptr != m_pPhysx_EventCallBack)
-		m_pPhysx_EventCallBack->Update();
-
-	m_fTimeAcc += _fTimeDelta;
-	if (m_fFixtedTimeStep <= m_fTimeAcc)
-	{
-		m_pPxScene->simulate(m_fFixtedTimeStep);
-		m_fTimeAcc -= m_fFixtedTimeStep;
-
-		//fetch 끝났는지 확인
-		if (m_pPxScene->fetchResults(true))
-		{
-#ifdef _DEBUG
-			if (true == m_isDebugRender)
-			{
-				const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
-				m_pVIBufferCom->Update_PxDebug(RenderBuffer);
-			}
-#endif // _DEBUG
-		}
-
-	}
-
-
 //	if (nullptr != m_pPhysx_EventCallBack)
 //		m_pPhysx_EventCallBack->Update();
 //
-//	//기존 코드
-//	m_pPxScene->simulate(_fTimeDelta);
-//
-//	if (m_pPxScene->fetchResults(true))
+//	m_fTimeAcc += _fTimeDelta;
+//	if (m_fFixtedTimeStep <= m_fTimeAcc)
 //	{
-//		if (nullptr != m_pPhysx_EventCallBack)
-//			m_pPhysx_EventCallBack->Update();
+//		m_pPxScene->simulate(m_fFixtedTimeStep);
+//		m_fTimeAcc -= m_fFixtedTimeStep;
 //
+//		//fetch 끝났는지 확인
+//		if (m_pPxScene->fetchResults(true))
+//		{
 //#ifdef _DEBUG
-//		const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
-//		m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+//			if (true == m_isDebugRender)
+//			{
+//				const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+//				m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+//			}
 //#endif // _DEBUG
+//		}
+//
 //	}
+
+
+	if (nullptr != m_pPhysx_EventCallBack)
+		m_pPhysx_EventCallBack->Update();
+
+	//기존 코드
+	m_pPxScene->simulate(_fTimeDelta);
+
+	if (m_pPxScene->fetchResults(true))
+	{
+		if (nullptr != m_pPhysx_EventCallBack)
+			m_pPhysx_EventCallBack->Update();
+
+#ifdef _DEBUG
+		const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
+		m_pVIBufferCom->Update_PxDebug(RenderBuffer);
+#endif // _DEBUG
+	}
 
 }
 
@@ -157,10 +150,6 @@ void CPhysx_Manager::Level_Enter()
 
 void CPhysx_Manager::Level_Exit()
 {
-	if (nullptr != m_pPhysx_EventCallBack)
-	{
-		m_pPhysx_EventCallBack->Level_Exit();
-	}
 
 	Delete_ShapeUserData();
 	Delete_ActorUserData();
@@ -175,6 +164,7 @@ void CPhysx_Manager::Level_Exit()
 	//}
 
 	m_pPxScene->setSimulationEventCallback(nullptr);
+	m_pPxScene->setContactModifyCallback(nullptr);
 	if (m_pPxScene)
 	{
 		m_pPxScene->release();

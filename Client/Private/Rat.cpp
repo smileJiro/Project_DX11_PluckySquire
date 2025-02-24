@@ -27,7 +27,6 @@ HRESULT CRat::Initialize(void* _pArg)
 {
     CRat::MONSTER_DESC* pDesc = static_cast<CRat::MONSTER_DESC*>(_pArg);
     pDesc->isCoordChangeEnable = true;
-    pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;

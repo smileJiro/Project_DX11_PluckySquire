@@ -1,14 +1,13 @@
 #pragma once
-#include "Monster.h"
+#include "Projectile_Monster.h"
 #include "Client_Defines.h"
 
 BEGIN(Client)
-class CProjectile_BarfBug final : public CContainerObject
+class CProjectile_BarfBug final : public CProjectile_Monster
 {
 public:
-	typedef struct tagProjectile_BarfBug_Desc : public CContainerObject::CONTAINEROBJ_DESC
+	typedef struct tagProjectile_BarfBug_Desc : public CProjectile_Monster::PROJECTILE_MONSTER_DESC
 	{
-		_float fLifeTime;
 	}PROJECTILE_BARFBUG_DESC;
 
 	enum Animation2D
@@ -18,7 +17,7 @@ public:
 		ANIM2D_LAST,
 	};
 
-protected:
+private:
 	CProjectile_BarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CProjectile_BarfBug(const CProjectile_BarfBug& _Prototype);
 	virtual ~CProjectile_BarfBug() = default;

@@ -24,7 +24,6 @@ HRESULT CSoldier_Bomb::Initialize(void* _pArg)
     CSoldier_Bomb::MONSTER_DESC* pDesc = static_cast<CSoldier_Bomb::MONSTER_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
-    pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;

@@ -260,8 +260,7 @@ HRESULT CEvent_Manager::Execute_DeleteObject(const EVENT& _tEvent)
 		return E_FAIL;
 
 	pDeleteObject->Set_Dead();
-	m_DeadObjectsList.push_back(pDeleteObject);
-	Safe_AddRef(pDeleteObject);
+	m_DeadObjectsList.push_back(pDeleteObject);// ClientFunction에서 AddRef하고있다.
 
 	return S_OK;
 }
@@ -353,10 +352,12 @@ HRESULT CEvent_Manager::Execute_SetActive(const EVENT& _tEvent)
 	if (true == isDelay)
 	{
 		m_DelayActiveList.push_back(make_pair(pBase, isActive));
-		Safe_AddRef(pBase);
 	}
 	else
+	{
 		pBase->Set_Active(isActive);
+		Safe_Release(pBase);
+	}
 
 	return S_OK;
 }
@@ -421,6 +422,7 @@ HRESULT CEvent_Manager::Execute_Setup_SimulationFilter(const EVENT& _tEvent)
 	_uint iOtherGroupMask = (_uint)_tEvent.Parameters[2];
 	pActor->Setup_SimulationFiltering(iMyGroup, iOtherGroupMask, true);
 
+	Safe_Release(pActor);
 	return S_OK;
 }
 
@@ -444,7 +446,7 @@ HRESULT CEvent_Manager::Execute_Change_Coordinate(const EVENT& _tEvent)
 
 	delete pPosition;
 	pPosition = nullptr;
-
+	Safe_Release(pActorObject);
 	return S_OK;
 }
 
@@ -456,6 +458,9 @@ HRESULT CEvent_Manager::Execute_Set_Kinematic(const EVENT& _tEvent)
 		pActor->Set_Kinematic();
 	else
 		pActor->Set_Dynamic();
+
+	Safe_Release(pActor);
+
 	return S_OK;
 }
 
@@ -474,7 +479,7 @@ HRESULT CEvent_Manager::Execute_ChangeMonsterState(const EVENT& _tEvent)
 		return E_FAIL;
 
 	pFSM->Change_State((_uint)eState);
-
+	Safe_Release(pFSM);
 	return S_OK;
 }
 
@@ -493,7 +498,7 @@ HRESULT CEvent_Manager::Execute_ChangeBossState(const EVENT& _tEvent)
 		return E_FAIL;
 
 	pFSM->Change_State((_uint)eState);
-
+	Safe_Release(pFSM);
 	return S_OK;
 }
 
@@ -744,6 +749,8 @@ HRESULT CEvent_Manager::Execute_Hit(const EVENT& _tEvent)
 	pVictim->On_Hit(pHitter, iDamg, vForce);
 
 	delete ((_float3*)_tEvent.Parameters[3]);
+	Safe_Release(pHitter);
+	Safe_Release(pVictim);
 	return S_OK;
 }
 
@@ -786,6 +793,8 @@ HRESULT CEvent_Manager::Execute_Sneak_BeetleCaught(const EVENT& _tEvent)
 	Safe_Delete(vPlayerPos);
 	Safe_Delete(vMonsterPos);
 
+	Safe_Release(pPlayer);
+	Safe_Release(pMonster);
 	return S_OK;
 }
 

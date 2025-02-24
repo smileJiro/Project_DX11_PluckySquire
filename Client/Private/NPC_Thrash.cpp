@@ -46,7 +46,7 @@ HRESULT CNPC_Thrash::Initialize(void* _pArg)
 
 	m_eActionType = ACTION_WAIT;
 	m_eMoving = MOVING_PRE;
-
+	m_eRenderType = THRASH_RENDER;
 
 	//if (FAILED(Ready_ActorDesc(pDesc)))
 	//	return E_FAIL;
@@ -81,6 +81,10 @@ HRESULT CNPC_Thrash::Initialize(void* _pArg)
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Thrash::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(226.3f, -2313.1f, 0.f, 1.f));
 	
+
+
+	m_isRender = true;
+
 	return S_OK;
 }
 
@@ -103,10 +107,15 @@ void CNPC_Thrash::Child_LateUpdate(_float _fTimeDelta)
 {
 	__super::Child_LateUpdate(_fTimeDelta);
 
-	if (TEXT("Chapter2_P0102") != CSection_Manager::GetInstance()->Get_Cur_Section_Key())
+	//if (TEXT("Chapter2_P0102") != CSection_Manager::GetInstance()->Get_Cur_Section_Key())
+	//{
+	//	m_isRender = true;
+	//	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CSection_Manager::GetInstance()->Get_Cur_Section_Key(), this, SECTION_2D_PLAYMAP_OBJECT);
+	//}
+
+	if (THRASH_RENDER == m_eRenderType && false == m_isRender)
 	{
 		m_isRender = true;
-		//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CSection_Manager::GetInstance()->Get_Cur_Section_Key(), this, SECTION_2D_PLAYMAP_OBJECT);
 	}
 }
 
