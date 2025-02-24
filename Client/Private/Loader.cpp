@@ -105,9 +105,10 @@
 #include "Zippy.h"
 #include "BirdMonster.h"
 #include "Projectile_BirdMonster.h"
+#include "Spear_Soldier.h"
 #include "Soldier_Spear.h"
-#include "Soldier_CrossBow.h"
-#include "Soldier_Bomb.h"
+#include "CrossBow_Soldier.h"
+#include "Bomb_Soldier.h"
 #include "Popuff.h"
 #include "Monster_Body.h"
 #include "Goblin_SideScroller.h"
@@ -580,24 +581,29 @@ HRESULT CLoader::Loading_Level_Static()
         CProjectile_BirdMonster::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_Soldier_Spear */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Spear"),
-        CSoldier_Spear::Create(m_pDevice, m_pContext))))
+    /* For. Prototype_GameObject_Spear_Soldier */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"),
+        CSpear_Soldier::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_Soldier_CrossBow */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_CrossBow"),
-        CSoldier_CrossBow::Create(m_pDevice, m_pContext))))
+    /* For. Prototype_GameObject_CrossBow_Soldier */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"),
+        CCrossBow_Soldier::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_Soldier_Bomb */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Bomb"),
-        CSoldier_Bomb::Create(m_pDevice, m_pContext))))
+    /* For. Prototype_GameObject_Bomb_Soldier */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"),
+        CBomb_Soldier::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_Popuff */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Popuff"),
         CPopuff::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Soldier_Spear */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Spear"),
+        CSoldier_Spear::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_LightningBolt */

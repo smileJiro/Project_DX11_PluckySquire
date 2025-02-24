@@ -1,7 +1,7 @@
 #pragma once
 #include "Monster.h"
 BEGIN(Client)
-class CSoldier_Bomb final : public CMonster
+class CBomb_Soldier final : public CMonster
 {
 public:
 	enum Animation
@@ -32,9 +32,9 @@ public:
 	};
 
 private:
-	CSoldier_Bomb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	CSoldier_Bomb(const CSoldier_Bomb& _Prototype);
-	virtual ~CSoldier_Bomb() = default;
+	CBomb_Soldier(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CBomb_Soldier(const CBomb_Soldier& _Prototype);
+	virtual ~CBomb_Soldier() = default;
 
 public:
 	virtual HRESULT			Initialize_Prototype() override;
@@ -54,7 +54,7 @@ private:
 	virtual HRESULT					Ready_PartObjects();
 
 public:
-	static CSoldier_Bomb* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CBomb_Soldier* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void			Free() override;
 };
