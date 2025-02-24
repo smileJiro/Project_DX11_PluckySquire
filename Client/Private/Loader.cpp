@@ -346,6 +346,8 @@ HRESULT CLoader::Loading_Level_Static()
         TEXT("../Bin/Resources/Models/2DAnim/Static/"))))
         return E_FAIL;
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_STATIC,
         TEXT("../Bin/Resources/Models/3DPlayerPart/"), matPretransform)))
         return E_FAIL;

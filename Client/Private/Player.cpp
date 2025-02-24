@@ -335,7 +335,7 @@ HRESULT CPlayer::Ready_PartObjects()
     C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_GLOVE])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_glove_hand_r")); /**/
     m_PartObjects[PLAYER_PART_GLOVE]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
-    Set_PartActive(PLAYER_PART_GLOVE, false);
+    Set_PartActive(PLAYER_PART_GLOVE, true);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
@@ -1821,7 +1821,13 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 
     }
-
+    if (m_pActorCom->Is_Kinematic())
+    {
+        if (KEY_PRESSING(KEY::SPACE))
+        {
+            Move(_vector{0.f,5.f,0.f}, _fTimeDelta);
+        }
+    }
     //if (KEY_DOWN(KEY::H))
     //{
     //    m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
