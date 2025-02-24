@@ -379,9 +379,6 @@
     <Filter Include="94.RenderGroups%28Custom%29\Effect\AfterEffect">
       <UniqueIdentifier>{560c6a5c-32ea-484e-a5cf-08cdc8f3c2ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Carriable">
-      <UniqueIdentifier>{0b0f1611-bbbf-455b-a49a-4b3eb34fb7d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.Components\FSM\State\Hit">
       <UniqueIdentifier>{4983bbf5-cb92-4f92-8db8-82bb595203d0}</UniqueIdentifier>
     </Filter>
@@ -457,9 +454,6 @@
     <Filter Include="02.GameObjects\NPC\03. Rabbit_Npc">
       <UniqueIdentifier>{36bed9b8-0f43-4b6f-8f4e-437082f831dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\LunchBox">
-      <UniqueIdentifier>{a9f39f66-4d1c-40ca-94ea-01e148f44ea0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\04. Camera_Tool">
       <UniqueIdentifier>{8c5b4074-1d5b-49b2-9553-52c162d6caba}</UniqueIdentifier>
     </Filter>
@@ -474,6 +468,15 @@
     </Filter>
     <Filter Include="02.GameObjects\Monster\BirdMonster\Projectile">
       <UniqueIdentifier>{11e68097-e7aa-4c46-b41a-038dcd1e66c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Interact">
+      <UniqueIdentifier>{bd6658a2-8148-4733-b2bb-372934090e0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Interact\Carriable">
+      <UniqueIdentifier>{0b0f1611-bbbf-455b-a49a-4b3eb34fb7d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Interact\LunchBox">
+      <UniqueIdentifier>{a9f39f66-4d1c-40ca-94ea-01e148f44ea0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -943,7 +946,7 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CarriableObject.h">
-      <Filter>02.GameObjects\Carriable</Filter>
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\HitState.h">
       <Filter>03.Components\FSM\State\Hit</Filter>
@@ -964,7 +967,7 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Dice.h">
-      <Filter>02.GameObjects\Carriable</Filter>
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Blocker.h">
       <Filter>02.GameObjects\Blocker</Filter>
@@ -1090,10 +1093,10 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\LunchBox.h">
-      <Filter>02.GameObjects\LunchBox</Filter>
+      <Filter>02.GameObjects\Interact\LunchBox</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\RabbitLunch.h">
-      <Filter>02.GameObjects\LunchBox</Filter>
+      <Filter>02.GameObjects\Interact\LunchBox</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Camera_CutScene.h">
       <Filter>02.GameObjects\Camera\CutScene</Filter>
@@ -1140,6 +1143,10 @@
     <ClInclude Include="..\Public\ChaseFlyState.h">
       <Filter>03.Components\FSM\State\Chase</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\DraggableObject.h">
+      <Filter>02.GameObjects\Interact</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Drag.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1596,7 +1603,7 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CarriableObject.cpp">
-      <Filter>02.GameObjects\Carriable</Filter>
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\HitState.cpp">
       <Filter>03.Components\FSM\State\Hit</Filter>
@@ -1617,7 +1624,7 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Dice.cpp">
-      <Filter>02.GameObjects\Carriable</Filter>
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Blocker.cpp">
       <Filter>02.GameObjects\Blocker</Filter>
@@ -1747,10 +1754,10 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\LunchBox.cpp">
-      <Filter>02.GameObjects\LunchBox</Filter>
+      <Filter>02.GameObjects\Interact\LunchBox</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\RabbitLunch.cpp">
-      <Filter>02.GameObjects\LunchBox</Filter>
+      <Filter>02.GameObjects\Interact\LunchBox</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Camera_CutScene_Save.cpp">
       <Filter>02.GameObjects\Camera\CutScene\Tool</Filter>
@@ -1794,6 +1801,10 @@
     <ClCompile Include="..\Private\ChaseFlyState.cpp">
       <Filter>03.Components\FSM\State\Chase</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\DraggableObject.cpp">
+      <Filter>02.GameObjects\Interact</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Drag.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

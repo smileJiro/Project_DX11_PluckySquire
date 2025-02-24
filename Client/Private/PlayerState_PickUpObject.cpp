@@ -2,6 +2,7 @@
 #include "PlayerState_PickUpObject.h"
 #include "Animation3D.h"
 #include "CarriableObject.h"
+#include "Actor_Dynamic.h"
 
 CPlayerState_PickUpObject::CPlayerState_PickUpObject(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::PICKUPOBJECT)
@@ -63,6 +64,7 @@ void CPlayerState_PickUpObject::Enter()
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	m_pCarriableObject = m_pOwner->Get_CarryingObject();
 	m_pCarriableObject->Set_Carrier(m_pOwner);
+	static_cast<CActor_Dynamic*>(m_pCarriableObject->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
 
 	//OriginalKeyFrame
 	_matrix matOriginalOfset = m_pCarriableObject->Get_FinalWorldMatrix();
@@ -137,6 +139,8 @@ void CPlayerState_PickUpObject::Exit()
 	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
 		m_pOwner->Set_Kinematic(false);
+		static_cast<CActor_Dynamic*>(m_pCarriableObject->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
+
 	}
 	//cout << "Align: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }

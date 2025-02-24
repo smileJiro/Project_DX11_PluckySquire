@@ -90,6 +90,11 @@ _vector CModifiableContacts::Get_Velocity(_uint _iIndex)
 	return { pxVelocity.x,pxVelocity.y, pxVelocity.z };
 }
 
+_float CModifiableContacts::Get_MaxImpulse(_uint _iIndex)
+{
+    return m_ContactSet.getMaxImpulse(_iIndex);
+}
+
 _uint CModifiableContacts::Get_ContactCount()
 {
     return m_ContactSet.size();
@@ -139,6 +144,12 @@ void CModifiableContacts::Set_Velocity(_uint _iIndex, _float3 _vVelocity)
 {
 	m_ContactSet.setTargetVelocity(_iIndex, PxVec3(_vVelocity.x, _vVelocity.y, _vVelocity.z));
 }
+
+void CModifiableContacts::Set_MaxImpulse(_uint _iIndex, _float _fImpulse)
+{
+    m_ContactSet.setMaxImpulse(_iIndex, _fImpulse);
+}
+
 
 void CModifiableContacts::Ignore(_uint _iIndex)
 {
