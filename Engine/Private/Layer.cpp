@@ -133,19 +133,19 @@ void CLayer::SetActive_GameObjects(_bool _isActive)
     if (true == m_GameObjects.empty())
         return;
 
-    auto iter = m_GameObjects.begin();
+    //auto iter = m_GameObjects.begin();
 
-    for (; iter != m_GameObjects.end(); )
-    {
-        (*iter)->Set_Active(_isActive);
-        ++iter;
-    }
-
-    //for (auto& pGameObject : m_GameObjects)
+    //for (; iter != m_GameObjects.end(); )
     //{
-    //    
-    //    pGameObject->Set_Active(_isActive);
+    //    (*iter)->Set_Active(_isActive);
+    //    ++iter;
     //}
+
+    for (auto& pGameObject : m_GameObjects)
+    {
+        
+        pGameObject->Set_Active(_isActive);
+    }
 }
 
 void CLayer::Cleanup_DeadReferences()

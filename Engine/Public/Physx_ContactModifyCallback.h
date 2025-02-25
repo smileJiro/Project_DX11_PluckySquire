@@ -17,6 +17,7 @@ public:
 	_vector Get_Normal(_uint _iIndex);
 	_vector Get_Point(_uint _iIndex);
 	_vector Get_Velocity(_uint _iIndex);
+	_float Get_MaxImpulse(_uint _iIndex);
 	_uint Get_ContactCount();
 		 
 	void Set_DynamicFriction(_uint _iIndex, _float _fFriction);
@@ -28,6 +29,12 @@ public:
 	void Set_Point(_uint _iIndex, _float3 _vPoint);
 	void Set_Velocity(_uint _iIndex, _fvector _vVelocity);
 	void Set_Velocity(_uint _iIndex, _float3 _vVelocity);
+	void Set_MaxImpulse(_uint _iIndex, _float _fImpulse);
+	void Set_InvInertiaScale0( _float _fScale);
+	void Set_InvInertiaScale1( _float _fScale);
+	void Set_InvMassScale0(_float _fScale);
+	void Set_InvMassScale1(_float _fScale);
+
 	void Ignore(_uint _iIndex);
 private:
 	PxContactSet& m_ContactSet;

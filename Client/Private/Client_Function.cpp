@@ -5,6 +5,8 @@
 #include "Actor.h"
 #include "Actor_Dynamic.h"
 #include "Character.h"
+#include "FSM.h"
+#include "Player.h"
 
 /* 함수 구현부 */
 namespace Client
@@ -30,7 +32,7 @@ namespace Client
 		tEvent.Parameters.resize(1); // NumParameters
 
 		tEvent.Parameters[0] = (DWORD_PTR)_pGameObject;
-
+		Safe_AddRef(_pGameObject);
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
@@ -53,6 +55,7 @@ namespace Client
 		tEvent.Parameters.resize(3); // NumParameters
 
 		tEvent.Parameters[0] = (DWORD_PTR)_pObject;
+		Safe_AddRef(_pObject);
 		tEvent.Parameters[1] = (DWORD_PTR)_isActive;
 		tEvent.Parameters[2] = (DWORD_PTR)_isDelay;
 
@@ -80,6 +83,7 @@ namespace Client
 		tEvent.Parameters.resize(3); // NumParameters
 
 		tEvent.Parameters[0] = (DWORD_PTR)_pActor;
+		Safe_AddRef(_pActor);
 		tEvent.Parameters[1] = (DWORD_PTR)_MyGroup;
 		tEvent.Parameters[2] = (DWORD_PTR)_OtherGroupMask;
 
@@ -94,7 +98,7 @@ namespace Client
 
 		tEvent.Parameters[0] = (DWORD_PTR)_eState;
 		tEvent.Parameters[1] = (DWORD_PTR)_pFSM;
-
+		Safe_AddRef(_pFSM);
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
@@ -106,7 +110,7 @@ namespace Client
 
 		tEvent.Parameters[0] = (DWORD_PTR)_eState;
 		tEvent.Parameters[1] = (DWORD_PTR)_pFSM;
-
+		Safe_AddRef(_pFSM);
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
@@ -117,6 +121,7 @@ namespace Client
 		tEvent.Parameters.resize(3); // NumParameters
 
 		tEvent.Parameters[0] = (DWORD_PTR)_pActorObject;
+		Safe_AddRef(_pActorObject);
 		tEvent.Parameters[1] = (DWORD_PTR)_eCoordinate;
 		_float3* pPosition = nullptr;
 		if (nullptr != _pNewPosition)
@@ -134,6 +139,7 @@ namespace Client
 		tEvent.Parameters.resize(2); // NumParameters
 
 		tEvent.Parameters[0] = (DWORD_PTR)_pActorObject;
+		Safe_AddRef(_pActorObject);
 		tEvent.Parameters[1] = (DWORD_PTR)_bValue;
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 
@@ -261,13 +267,13 @@ namespace Client
 		if (true == _pActor->Is_Dead())
 			return;
 
+		PxShape* pShape = _pActor->Get_ActorCom()->Get_Shapes()[_iShapeID];
+		pShape->acquireReference();
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::SET_SCENEQUERYFLAG;
-		tEvent.Parameters.resize(3);
-		tEvent.Parameters[0] = (DWORD_PTR)_pActor;
-		Safe_AddRef(_pActor);
-		tEvent.Parameters[1] = (DWORD_PTR)_iShapeID;
-		tEvent.Parameters[2] = (DWORD_PTR)_bEnable;
+		tEvent.Parameters.resize(2);
+		tEvent.Parameters[0] = (DWORD_PTR)pShape;
+		tEvent.Parameters[1] = (DWORD_PTR)_bEnable;
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
@@ -283,7 +289,9 @@ namespace Client
 
 		tEvent.Parameters.resize(4);
 		tEvent.Parameters[0] = (DWORD_PTR)_pHitter;
+		Safe_AddRef(_pHitter);
 		tEvent.Parameters[1] = (DWORD_PTR)_pVictim;
+		Safe_AddRef(_pVictim);
 		tEvent.Parameters[2] = (DWORD_PTR)_iDamg;
 
 		_float3* vForce = new _float3{ _vKnockBackForce.m128_f32[0], _vKnockBackForce.m128_f32[1], _vKnockBackForce.m128_f32[2] };
@@ -319,13 +327,27 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
+	void Event_SetPlayerState(CPlayer* _pObject, _uint _iStateIndex)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::SETPLAYERSTATE;
+
+		tEvent.Parameters.resize(2);
+		tEvent.Parameters[0] = (DWORD_PTR)_pObject;
+		Safe_AddRef(_pObject);
+		tEvent.Parameters[1] = (DWORD_PTR)_iStateIndex;
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
 	void Event_Sneak_BeetleCaught(CActorObject* _pPlayer, CActorObject* _pMonster, _float3* _vPlayerPos, _float3* _vMonsterPos)
 	{
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::SNEAK_BEETLECAUGHT;
 		tEvent.Parameters.resize(4);
 		tEvent.Parameters[0] = (DWORD_PTR)_pPlayer;
+		Safe_AddRef(_pPlayer);
 		tEvent.Parameters[1] = (DWORD_PTR)_pMonster;
+		Safe_AddRef(_pMonster);
 
 		if (nullptr == _vPlayerPos || nullptr == _vMonsterPos)
 			return;
@@ -411,17 +433,32 @@ namespace Client
 		return strMatrix;
 	}
 
-	F_DIRECTION To_FDirection(_vector _vDir)
+	F_DIRECTION To_FDirection(_vector _vDir, COORDINATE _eCoord)
 	{
-		//가로축이 더 클 때
-		if (abs(_vDir.m128_f32[0] )> abs(_vDir.m128_f32[1]))
-			return _vDir.m128_f32[0] < 0 ? F_DIRECTION::LEFT: F_DIRECTION::RIGHT;
-		//세로축이 더 클 때
-		else
-			return _vDir.m128_f32[1] > 0 ? F_DIRECTION::UP: F_DIRECTION::DOWN;
+		if (COORDINATE_2D == _eCoord)
+		{
+			//가로축이 더 클 때
+			if (abs(_vDir.m128_f32[0]) > abs(_vDir.m128_f32[1]))
+				return _vDir.m128_f32[0] < 0 ? F_DIRECTION::LEFT : F_DIRECTION::RIGHT;
+			//세로축이 더 클 때
+			else
+				return _vDir.m128_f32[1] > 0 ? F_DIRECTION::UP : F_DIRECTION::DOWN;
 
-		return F_DIRECTION::F_DIR_LAST;
+		}
+		else
+		{
+			//가로축이 더 클 때
+			if (abs(_vDir.m128_f32[0]) > abs(_vDir.m128_f32[2]))
+				return _vDir.m128_f32[0] < 0 ? F_DIRECTION::LEFT : F_DIRECTION::RIGHT;
+			//세로축이 더 클 때
+			else
+				return _vDir.m128_f32[2] > 0 ? F_DIRECTION::UP : F_DIRECTION::DOWN;
+
+		}
+
+		return F_DIRECTION();
 	}
+
 
 	_vector FDir_To_Vector(F_DIRECTION _eFDir)
 	{

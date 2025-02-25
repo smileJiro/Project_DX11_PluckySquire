@@ -98,6 +98,8 @@ HRESULT CLevel_Model_Tool::Ready_Layer_Camera(const _wstring& _strLayerTag)
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.eZoomLevel = CCamera::LEVEL_6;
 	Desc.eMode = CCamera_Free::INPUT_MODE_WASD;
+	Desc.fFocusDistance = 60.f;
+
 	//Desc.iCameraType = CCamera_Manager::FREE;
 	CGameObject* pGameObject = nullptr;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Free"),

@@ -45,6 +45,11 @@ void CStandbyState::State_Update(_float _fTimeDelta)
 		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 		return;
 	}
+	else if (COORDINATE_2D == m_pOwner->Get_CurCoord() && m_pOwner->Get_Include_Section_Name() != m_pTarget->Get_Include_Section_Name())
+	{
+		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		return;
+	}
 	
 	_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
 	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
@@ -69,7 +74,10 @@ void CStandbyState::State_Update(_float _fTimeDelta)
 				
 				//다 돌았으면 회전 애니메이션 재생 안하도록
 				if (true == m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+				{
+					m_pOwner->Stop_Rotate();
 					isTurn = false;
+				}
 
 				//회전 애니메이션 넣으면 드드득 거림
 				/*if (true == isTurn)

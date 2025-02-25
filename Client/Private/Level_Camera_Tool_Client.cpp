@@ -92,9 +92,9 @@ void CLevel_Camera_Tool_Client::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
-	Show_CameraTool();
+	//Show_CameraTool();
 	Show_CutSceneTool(_fTimeDelta);
-	Show_ArmInfo();
+	//Show_ArmInfo();
 	Show_CutSceneInfo();
 	Show_SaveLoadFileWindow();
 
@@ -135,6 +135,8 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Map()
 {
 	if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
 		return E_FAIL;
+	//if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -235,11 +237,12 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Player(const _wstring& _strLayerT
 {
 	CGameObject** pGameObject = nullptr;
 
-	CPlayer::CONTAINEROBJ_DESC Desc;
-	Desc.iCurLevelID = m_eLevelID;
-	Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	CPlayer::CONTAINEROBJ_DESC PlayerDesc = {};
+	PlayerDesc.iCurLevelID = m_eLevelID;
+	PlayerDesc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	_int a = sizeof(CPlayer::CONTAINEROBJ_DESC);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &PlayerDesc)))
 		return E_FAIL;
 
 	//CPlayer* pPlayer = { nullptr };
@@ -299,7 +302,8 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	Desc.iPriorityID_3D = PR3D_GEOMETRY;
 	Desc.iRenderGroupID_3D = RG_3D;
 	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
-	Desc.tTransform3DDesc.vInitialPosition = { 2.f,0.f,-17.3f };
+	Desc.tTransform3DDesc.vInitialPosition = { 2.f, 0.4f, -17.3f };
+	Desc.tTransform3DDesc.vInitialScaling = { 1.f, 1.f, 1.f };
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
 		LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
@@ -394,7 +398,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_DataFiles()
 		}
 	}
 
-	path = "../Bin/DataFiles/Camera/CutSceneData/";
+	path = "../Bin/DataFiles/Camera/CutSceneData/Tool/";
 	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
 		if (entry.path().extension() == ".json") {
 			m_JsonFilePaths.push_back(entry.path().string());
@@ -846,6 +850,42 @@ void CLevel_Camera_Tool_Client::Set_KeyFrameInfo()
 	}
 
 	ImGui::NewLine();
+
+
+	// List
+	//list<pair<CUTSCENE_KEYFRAME, CGameObject*>>		m_KeyFrames;
+
+	if (ImGui::BeginListBox("##KeyFrameList", ImVec2(-FLT_MIN, 10 * ImGui::GetTextLineHeightWithSpacing())))
+	{
+		for (auto& KeyFramePair : m_KeyFrames) {
+			_char szName[MAX_PATH] = {};
+			_uint iInstanceID = KeyFramePair.second->Get_GameObjectInstanceID();
+			_string strName = "Cube_";
+			strName += std::to_string(iInstanceID);
+
+			_int iSelectInstanceID = -1;
+			if (nullptr != m_pCurKeyFrame)
+			{
+				iSelectInstanceID = (_int)m_pCurKeyFrame->second->Get_GameObjectInstanceID();
+			}
+
+			if (ImGui::Selectable(strName.c_str(), iSelectInstanceID == iInstanceID))
+			{
+				if (iSelectInstanceID != iInstanceID)
+				{
+					m_pCurKeyFrame = &KeyFramePair;
+				}
+				else 
+				{
+					m_pCurKeyFrame = nullptr;
+				}
+			}
+		}
+		ImGui::EndListBox();
+	}
+
+
+
 
 }
 
@@ -2045,6 +2085,26 @@ void CLevel_Camera_Tool_Client::Set_CameraInfo()
 		XMStoreFloat3(&m_vInitialLookAt, vAt);
 	}
 
+
+	ImGui::Text("Input At: %.2f, %.2f, %.2f", m_DummyAt.x, m_DummyAt.y, m_DummyAt.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InputAtX", &m_DummyAt.x, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InputAtsY", &m_DummyAt.y, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InputAtZ", &m_DummyAt.z, 0.1f);
+
+	ImGui::SameLine();
+	if (ImGui::Button("Set At To Dummy")) {
+		m_vInitialLookAt = m_DummyAt;
+		pCamera->Get_ControllerTransform()->LookAt_3D(XMVectorSetW(XMLoadFloat3(&m_vInitialLookAt), 1.f));
+	}
+
 	ImGui::NewLine();
 	ImGui::Text("Fixed LookAt: %.2f, %.2f, %.2f", m_vInitialLookAt.x, m_vInitialLookAt.y, m_vInitialLookAt.z);
 
@@ -2462,10 +2522,10 @@ void CLevel_Camera_Tool_Client::Save_Data_CutScene()
 
 			// CutScene Tag 저장
 			_string szCutSceneTag = m_pGameInstance->WStringToString(CutSceneData.first);
-			CutScene_json["CutScene Tag"] = szCutSceneTag;
+			CutScene_json["CutScene_Tag"] = szCutSceneTag;
 
 			// Total Time 저장
-			CutScene_json["CutScene Time"] = { CutSceneData.second.first.x, CutSceneData.second.first.y };
+			CutScene_json["CutScene_Time"] = { CutSceneData.second.first.x, CutSceneData.second.first.y };
 
 			// Data Struct 저장
 			CutScene_json["Datas"] = json::array();
@@ -2571,7 +2631,7 @@ void CLevel_Camera_Tool_Client::Save_Data_CutScene()
 			Result["CutScene"].push_back(CutScene_json);
 		}
 
-		_wstring wszSavePath = L"../Bin/Resources/DataFiles/CutSceneData/";
+		_wstring wszSavePath = L"../../Client/Bin/DataFiles/Camera/CutSceneData/Tool/";
 		_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
 
 		ofstream file(wszSavePath + wszSaveName + TEXT(".json"));
@@ -2637,7 +2697,7 @@ void CLevel_Camera_Tool_Client::Save_Data_Arm()
 		Result.push_back(Trigger_json);
 	}
 
-	_wstring wszSavePath = L"../Bin/Resources/DataFiles/ArmData/";
+	_wstring wszSavePath = L"../Bin/DataFiles/Camera/ArmData/";
 	_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
 
 	ofstream file(wszSavePath + wszSaveName + TEXT(".json"));

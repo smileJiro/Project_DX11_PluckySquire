@@ -3,6 +3,7 @@
 #include "PlayerState_JumpDown.h"
 #include "PlayerState_Run.h"
 #include "PlayerState_Idle.h"
+#include "Interactable.h"
 #include "GameInstance.h"
 
 
@@ -19,41 +20,7 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::JUMP_DOWN);
 		return;
 	}
-
-	 PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
-	 
-	if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
-	{
-		m_pOwner->Try_Interact(m_pOwner->Get_InteractableObject(), _fTimeDelta);
-		return;
-	}
-	else
-	{
-		m_pOwner->End_Interact();
-		if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
-		{
-			m_pOwner->Set_State(CPlayer::ROLL);
-			return;
-		}
-		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
-		{
-			m_pOwner->Set_State(CPlayer::THROWSWORD);
-			return;
-		}
-		else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
-		{
-			if (m_pOwner->Is_PlatformerMode())
-				m_pOwner->Set_State(CPlayer::ATTACK);
-			else
-				m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
-			return;
-		}
-		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
-		{
-			m_pOwner->Set_State(CPlayer::THROWOBJECT);
-			return;
-		}
-	}
+	PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
 	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
 		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
@@ -79,6 +46,39 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed2D, _fTimeDelta);
 		}
 	}
+	INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
+	if (INTERACT_RESULT::NO_INPUT == eResult
+		|| INTERACT_RESULT::FAIL == eResult)
+	{
+		if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
+		{
+			m_pOwner->Set_State(CPlayer::ROLL);
+			return;
+		}
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
+		{
+			m_pOwner->Set_State(CPlayer::THROWSWORD);
+			return;
+		}
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
+		{
+			if (m_pOwner->Is_PlatformerMode())
+				m_pOwner->Set_State(CPlayer::ATTACK);
+			else
+				m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
+			return;
+		}
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
+		{
+			m_pOwner->Set_State(CPlayer::THROWOBJECT);
+			return;
+		}
+	}
+	else if (INTERACT_RESULT::SUCCESS == eResult)
+	{
+		return;
+	}
+
 }
 
 void CPlayerState_JumpUp::Enter()

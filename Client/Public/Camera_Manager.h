@@ -64,7 +64,7 @@ public:
 	void				Start_FadeOut(_float _fFadeTime = 1.0f);
 
 public:
-	void				Load_ArmData();
+	void				Load_ArmData(_wstring _sz3DFileName, _wstring _sz2DFileName);
 	void				Load_CutSceneData();
 	HRESULT				Load_DOF(const _wstring& _strJsonPath, _uint _iCameraType);
 
@@ -79,7 +79,7 @@ private:
 
 private:
 	void				Add_ArmData(_uint _iCameraType, _wstring wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
-	void				Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA>> _CutSceneData);
+	void				Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA*>> _CutSceneData);
 	void				Load_ArmData(_uint _iCameraType, _wstring _szFilePath);
 
 public:

@@ -134,6 +134,9 @@ private:
 	_float3									m_vInitialLookAt = {};
 	_float3									m_vCameraPos = {};
 
+	// CutScene At
+	_float3									m_DummyAt = {};
+
 private:
 	LEVEL_ID								m_eLevelID;
 

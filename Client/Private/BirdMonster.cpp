@@ -3,6 +3,9 @@
 #include "GameInstance.h"
 #include "FSM.h"
 #include "ModelObject.h"
+#include "Pooling_Manager.h"
+#include "Effect_Manager.h"
+#include "DetectionField.h"
 
 CBirdMonster::CBirdMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -22,16 +25,23 @@ HRESULT CBirdMonster::Initialize_Prototype()
 HRESULT CBirdMonster::Initialize(void* _pArg)
 {
     CBirdMonster::MONSTER_DESC* pDesc = static_cast<CBirdMonster::MONSTER_DESC*>(_pArg);
-    pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
-    pDesc->iNumPartObjects = PART_END;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->fAlertRange = 5.f;
-    pDesc->fChaseRange = 12.f;
+    pDesc->fChaseRange = 15.f;
     pDesc->fAttackRange = 10.f;
+
+    pDesc->fDelayTime = 1.f;
+    pDesc->fCoolTime = 3.f;
+
+    pDesc->fFOVX = 90.f;
+    pDesc->fFOVY = 60.f;
+
+    m_tStat.iHP = 5;
+    m_tStat.iMaxHP = 5;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -46,11 +56,7 @@ HRESULT CBirdMonster::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Add_FlyUnit_State();
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
@@ -59,6 +65,15 @@ HRESULT CBirdMonster::Initialize(void* _pArg)
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CBirdMonster::Animation_End, this, placeholders::_1, placeholders::_2));
+
+    Bind_AnimEventFunc("Attack", bind(&CBirdMonster::Attack, this));
+
+    /* Com_AnimEventGenerator */
+    CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+    tAnimEventDesc.pReceiver = this;
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_BirdMonsterAttackEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
@@ -74,6 +89,31 @@ HRESULT CBirdMonster::Initialize(void* _pArg)
 
 void CBirdMonster::Priority_Update(_float _fTimeDelta)
 {
+    if (true == m_isDelay)
+    {
+        m_fAccTime += _fTimeDelta;
+
+        if (m_fDelayTime <= m_fAccTime)
+        {
+            Delay_Off();
+            if (3 <= m_iAttackCount)
+            {
+                CoolTime_On();
+            }
+        }
+    }
+
+    if (true == m_isCool)
+    {
+        m_fAccTime += _fTimeDelta;
+
+        if (m_fCoolTime <= m_fAccTime)
+        {
+            CoolTime_Off();
+            m_iAttackCount = 0;
+        }
+    }
+
 
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
@@ -94,7 +134,12 @@ HRESULT CBirdMonster::Render()
 
 #ifdef _DEBUG
 
+    if (COORDINATE_3D == Get_CurCoord())
+        m_pDetectionField->Render();
+
 #endif // _DEBUG
+
+    __super::Render();
 
     /* Font Render */
 
@@ -123,8 +168,20 @@ void CBirdMonster::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
             break;
 
+        case MONSTER_STATE::STANDBY:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            break;
+
         case MONSTER_STATE::ATTACK:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACK);
+            break;
+
+        case MONSTER_STATE::HIT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT);
+            break;
+
+        case MONSTER_STATE::DEAD:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
             break;
 
         default:
@@ -138,17 +195,92 @@ void CBirdMonster::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
     switch ((CBirdMonster::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
     {
-    case ALERT:
+    case ALERT_EDIT:
         Set_AnimChangeable(true);
         break;
         
     case ATTACK:
+        //딜레이 동안은 애니 전환 안됨. 따라서 상태 전환도 불가
+        if (false == m_isDelay)
+        {
+            Set_AnimChangeable(true);
+            Delay_On();
+        }
+        break;
+
+    case HIT:
         Set_AnimChangeable(true);
-        pModelObject->Switch_Animation(ATTACK);
+        break;
+
+    case DIE:
+        Set_AnimChangeable(true);
+
+        CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+
+        //확률로 전구 생성
+        if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+        {
+            _float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bulb"), COORDINATE_3D, &vPos);
+        }
+
+        Event_DeleteObject(this);
         break;
 
     default:
         break;
+    }
+}
+
+void CBirdMonster::Attack()
+{   
+    if (false == m_isDelay && false == m_isCool)
+    {
+        _float3 vScale, vPosition;
+        _float4 vRotation;
+        COORDINATE eCoord = Get_CurCoord();
+
+        if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
+            return;
+
+        if (COORDINATE_3D == eCoord)
+        {
+            vPosition.y += vScale.y * 0.8f;
+			
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BirdMonster"), eCoord, &vPosition, &vRotation);
+        }
+        else if (COORDINATE_2D == eCoord)
+        {
+            //공격 위치 맞추기
+            switch (Get_2DDirection())
+            {
+            case Client::F_DIRECTION::LEFT:
+                vPosition.x -= 50.f;
+                vPosition.y += 20.f;
+                break;
+            case Client::F_DIRECTION::RIGHT:
+                vPosition.x += 50.f;
+                vPosition.y += 40.f;
+                break;
+            case Client::F_DIRECTION::UP:
+                vPosition.y += 70.f;
+                break;
+            case Client::F_DIRECTION::DOWN:
+                vPosition.y -= 30.f;
+                break;
+            default:
+                break;
+            }
+
+            _float fAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition));
+            fAngle=Restrict_2DRangeAttack_Angle(fAngle);
+            XMStoreFloat4(&vRotation, XMQuaternionRotationAxis(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMConvertToRadians(fAngle)));
+
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BirdMonster"), eCoord, &vPosition, &vRotation);
+
+        }
+        ++m_iAttackCount;
+
     }
 }
 
@@ -174,7 +306,7 @@ HRESULT CBirdMonster::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fHalfHeight = 0.5f;
+    ShapeDesc->fHalfHeight = 0.3f;
     ShapeDesc->fRadius = 0.5f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
@@ -183,7 +315,7 @@ HRESULT CBirdMonster::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
@@ -213,6 +345,29 @@ HRESULT CBirdMonster::Ready_Components()
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
+        return E_FAIL;
+
+#ifdef _DEBUG
+    /* Com_DebugDraw_For_Client */
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DebugDraw_For_Client"),
+        TEXT("Com_DebugDraw_For_Client"), reinterpret_cast<CComponent**>(&m_pDraw))))
+        return E_FAIL;
+#endif // _DEBUG
+
+    /* Com_DetectionField */
+    CDetectionField::DETECTIONFIELDDESC DetectionDesc;
+    DetectionDesc.fRange = m_fAlertRange;
+    DetectionDesc.fFOVX = m_fFOVX;
+    DetectionDesc.fFOVY = m_fFOVY;
+    DetectionDesc.fOffset = 0.f;
+    DetectionDesc.pOwner = this;
+    DetectionDesc.pTarget = m_pTarget;
+#ifdef _DEBUG
+    DetectionDesc.pDraw = m_pDraw;
+#endif // _DEBUG
+
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DetectionField"),
+        TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
         return E_FAIL;
 
     return S_OK;

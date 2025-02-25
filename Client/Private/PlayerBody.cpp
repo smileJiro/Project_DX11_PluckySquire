@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "GameInstance.h"
 #include "PlayerBody.h"
+#include "Player.h"
+#include "CarriableObject.h"
 
 CPlayerBody::CPlayerBody(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -11,6 +13,13 @@ CPlayerBody::CPlayerBody(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 CPlayerBody::CPlayerBody(const CPlayerBody& _Prototype)
 	: CModelObject(_Prototype)
 {
+}
+
+HRESULT CPlayerBody::Initialize(void* _pArg)
+{
+    PLAYER_BODY_DESC* pBodyDesc = static_cast<PLAYER_BODY_DESC*>(_pArg);
+    m_pPlayer = pBodyDesc->pPlayer;
+    return __super::Initialize(_pArg);
 }
 
 void CPlayerBody::Update(_float _fTimeDelta)
@@ -33,6 +42,13 @@ HRESULT CPlayerBody::Render()
 {
     if (FAILED(__super::Render()))
         return E_FAIL;
+    if (COORDINATE_2D == Get_CurCoord())
+    {
+        CCarriableObject* pCarriable = m_pPlayer->Get_CarryingObject();
+        if (pCarriable)
+            pCarriable->Render();
+    }
+
     //cout << "PlayerBOdyPos: " << m_WorldMatrices[COORDINATE_3D]._41 << ", " << m_WorldMatrices[COORDINATE_3D]._42 << ", " << m_WorldMatrices[COORDINATE_3D]._43 << endl;
     return S_OK;
 }

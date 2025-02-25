@@ -42,7 +42,7 @@ void CIdleState::State_Update(_float _fTimeDelta)
 		{
 			//몬스터 인식 범위 안에 들어오면 인식상태로 전환
 			_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
-			if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+			if (COORDINATE_2D == m_pOwner->Get_CurCoord() && m_pOwner->Get_Include_Section_Name() == m_pTarget->Get_Include_Section_Name())
 			{
 				if (fDis <= m_fAlert2DRange)
 				{

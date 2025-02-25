@@ -109,10 +109,10 @@ void CCharacter::Late_Update(_float _fTimeDelta)
 	__super::Late_Update(_fTimeDelta);
 }
 
-void CCharacter::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts)
+void CCharacter::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)
 {
-    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
-    switch (eShapeUse)
+    SHAPE_USE eMyShapeUse = (SHAPE_USE)_0.pShapeUserData->iShapeUse;
+    switch (eMyShapeUse)
     {
     case Client::SHAPE_USE::SHAPE_BODY:
     {
@@ -121,9 +121,12 @@ void CCharacter::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other,
         {
             //∫Æ¿Ã∏È?
             _float fNormal = abs(XMVectorGetY(_ModifiableContacts.Get_Normal(i)));
-            
-            if (fNormal < m_fStepSlopeThreshold)
+            _vector vPoint = _ModifiableContacts.Get_Point(i);
+
+            if (fNormal < m_fStepSlopeThreshold
+                || vPoint.m128_f32[1] > m_fStepHeightThreshold + Get_FinalPosition().m128_f32[1])
             {
+                _ModifiableContacts.Set_InvInertiaScale0(0.f);
                 _ModifiableContacts.Set_DynamicFriction(i, 0.0f);
                 _ModifiableContacts.Set_StaticFriction(i, 0.0f);
                 continue;
@@ -132,12 +135,6 @@ void CCharacter::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other,
         }
         break;
     }
-    case Client::SHAPE_USE::SHAPE_FOOT:
-        break;
-    case Client::SHAPE_USE::SHAPE_TRIGER:
-        break;
-    case Client::SHAPE_USE::SHAPE_USE_LAST:
-        break;
     default:
         break;
     }
@@ -517,11 +514,12 @@ void CCharacter::Move(_fvector _vForce, _float _fTimeDelta)
     }
 }
 
-_bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon)
+_bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon, _bool _FreezeY)
 {
     CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
     _vector vDir = _vPosition - Get_FinalPosition();
-    vDir.m128_f32[1] = 0.f;
+    if(true == _FreezeY)
+        vDir.m128_f32[1] = 0.f;
     vDir.m128_f32[3] = 0.f;
     if (Check_Arrival(_vPosition, _fEpsilon))
     {

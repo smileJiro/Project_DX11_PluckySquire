@@ -80,7 +80,7 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 		//적 발견 시 ALERT 전환
 		if (m_pTarget->Get_CurCoord() == m_pOwner->Get_CurCoord())
 		{	
-			if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+			if (COORDINATE_2D == m_pOwner->Get_CurCoord() && m_pOwner->Get_Include_Section_Name() == m_pTarget->Get_Include_Section_Name())
 			{
 				_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
 				if (fDis <= m_fAlert2DRange)
@@ -137,7 +137,7 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 	if(true == m_isBound)
 	{
 		//다음 위치가 구역을 벗어나는지 체크 후 벗어나면 정지 후 반대방향으로 진행
-		Check_Bound(_fTimeDelta);
+		//Check_Bound(_fTimeDelta);
 	}
 
 	//이동
@@ -169,7 +169,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 			if (m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 			{
 				m_isMove = true;
-				
+				m_pOwner->Stop_Rotate();
 				m_pOwner->Change_Animation();
 			}
 			else

@@ -172,6 +172,19 @@ void CCarriableObject::Throw(_fvector _vForce)
 	}
 }
 
+void CCarriableObject::Set_CollisionEnable(_bool _bEnable)
+{
+	for (auto& pCollidder: m_p2DColliderComs)
+	{
+		pCollidder->Set_Active(_bEnable);
+	} 
+	_uint iShapeCOunt = m_pActorCom->Get_Shapes().size();
+	for (_uint i = 0; i < iShapeCOunt; i++)
+	{
+		m_pActorCom->Set_ShapeEnable(i,_bEnable);
+	}
+}
+
 CCarriableObject* CCarriableObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CCarriableObject* pInstance = new CCarriableObject(_pDevice, _pContext);

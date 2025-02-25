@@ -27,7 +27,6 @@ HRESULT CJumpBug::Initialize(void* _pArg)
 {
     CJumpBug::MONSTER_DESC* pDesc = static_cast<CJumpBug::MONSTER_DESC*>(_pArg);
     pDesc->isCoordChangeEnable = true;
-    pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
@@ -57,7 +56,7 @@ HRESULT CJumpBug::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pFSM->Add_Neutral_State();
+    m_pFSM->Add_Neutral_State(true);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
@@ -68,7 +67,13 @@ HRESULT CJumpBug::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_RIGHT, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_UP, true);
 
-    pModelObject->Set_Animation(IDLE);
+    if (COORDINATE_3D == Get_CurCoord())
+        pModelObject->Set_Animation(Animation::IDLE);
+    else if (COORDINATE_2D == Get_CurCoord())
+    {
+        Set_2D_Direction(F_DIRECTION::DOWN);
+        pModelObject->Set_Animation(Animation2D::IDLE_DOWN);
+    }
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CJumpBug::Animation_End, this, placeholders::_1, placeholders::_2));
 
@@ -331,11 +336,12 @@ void CJumpBug::Monster_Move(_fvector _vDirection)
 
         if (true == m_isJump)
         {
-            _vector vDirection = _vDirection + XMVectorSet(0.f, 1.f, 0.f, 0.f);
-            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(vDirection), Get_ControllerTransform()->Get_SpeedPerSec()*10.f);
+            _vector vDirection = _vDirection + XMVectorSet(0.f, 0.5f, 0.f, 0.f);
+            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(vDirection), Get_ControllerTransform()->Get_SpeedPerSec());
         }
         else
         {
+            _vector vDirection = _vDirection + XMVectorSet(0.f, -1.f, 0.f, 0.f);
             Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(_vDirection), Get_ControllerTransform()->Get_SpeedPerSec());
         }
     }

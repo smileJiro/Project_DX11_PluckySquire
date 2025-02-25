@@ -26,6 +26,8 @@ HRESULT CMonster::Initialize_Prototype()
 HRESULT CMonster::Initialize(void* _pArg)
 {
 	MONSTER_DESC* pDesc = static_cast<MONSTER_DESC*>(_pArg);
+	pDesc->iNumPartObjects = PART_END;
+
 	m_fAlertRange = pDesc->fAlertRange;
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
@@ -64,7 +66,6 @@ HRESULT CMonster::Initialize(void* _pArg)
 
 void CMonster::Priority_Update(_float _fTimeDelta)
 {
-	CGameObject::Priority_Update_Component(_fTimeDelta); /* Component Priority_Update */
 	__super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
@@ -198,7 +199,10 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 	if (0 >= m_tStat.iHP)
 	{
 		Set_AnimChangeable(true);
-		//m_p2DColliderComs[0]->Set_Active(false);
+		if(nullptr != m_p2DColliderComs[0])
+		{
+			m_p2DColliderComs[0]->Set_Active(false);
+		}
 		Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
 	}
 	else
@@ -253,11 +257,6 @@ HRESULT CMonster::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosit
 {
 	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
 		return E_FAIL;
-
-	if (COORDINATE_2D == _eCoordinate)
-		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
-	else
-		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 
 	if (COORDINATE_2D == Get_CurCoord())
 		Set_2D_Direction(F_DIRECTION::DOWN);
@@ -412,9 +411,7 @@ void CMonster::Active_OnDisable()
 	// 1. 몬스터 할거 하고
 	m_fAccTime = { 0.f };
 	m_isDelay = { false };
-	m_fDelayTime = { 0.f };
 	m_isCool = { false };
-	m_fCoolTime = { 0.f };
 	m_iAttackCount = { 0 };
 
 	Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);

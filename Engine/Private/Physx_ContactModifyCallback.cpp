@@ -38,7 +38,8 @@ void CPhysx_ContactModifyCallback::onContactModify(PxContactModifyPair* pairs, P
         CollInfo_1.pActorUserData = pActorUserData_1;
         CollInfo_1.pShapeUserData = pShapeUserData_1;
 
-        pOwner_0->OnContact_Modify(CollInfo_0, CollInfo_1, CModifiableContacts(pair.contacts));
+        pOwner_0->OnContact_Modify(CollInfo_0, CollInfo_1, CModifiableContacts(pair.contacts),true);
+        pOwner_1->OnContact_Modify(CollInfo_0, CollInfo_1, CModifiableContacts(pair.contacts), false);
     }
 }
 
@@ -90,6 +91,11 @@ _vector CModifiableContacts::Get_Velocity(_uint _iIndex)
 	return { pxVelocity.x,pxVelocity.y, pxVelocity.z };
 }
 
+_float CModifiableContacts::Get_MaxImpulse(_uint _iIndex)
+{
+    return m_ContactSet.getMaxImpulse(_iIndex);
+}
+
 _uint CModifiableContacts::Get_ContactCount()
 {
     return m_ContactSet.size();
@@ -139,6 +145,34 @@ void CModifiableContacts::Set_Velocity(_uint _iIndex, _float3 _vVelocity)
 {
 	m_ContactSet.setTargetVelocity(_iIndex, PxVec3(_vVelocity.x, _vVelocity.y, _vVelocity.z));
 }
+
+void CModifiableContacts::Set_MaxImpulse(_uint _iIndex, _float _fImpulse)
+{
+    m_ContactSet.setMaxImpulse(_iIndex, _fImpulse);
+}
+
+void CModifiableContacts::Set_InvInertiaScale0(_float _fScale)
+{
+    m_ContactSet.setInvInertiaScale0(_fScale);
+}
+
+void CModifiableContacts::Set_InvInertiaScale1(_float _fScale)
+{
+    m_ContactSet.setInvInertiaScale1(_fScale);
+}
+
+void CModifiableContacts::Set_InvMassScale0(_float _fScale)
+{
+    m_ContactSet.setInvMassScale0(_fScale);
+}
+
+void CModifiableContacts::Set_InvMassScale1(_float _fScale)
+{
+    m_ContactSet.setInvMassScale1(_fScale);
+}
+
+
+
 
 void CModifiableContacts::Ignore(_uint _iIndex)
 {

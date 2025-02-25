@@ -55,7 +55,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	unsigned int numCores = std::thread::hardware_concurrency();
 	std::cout << "Logical cores: " << numCores << std::endl;
 	_uint iNumThreadPoolSize = numCores - iNumThreads;
-	m_pThreadPool = CThreadPool::Create(numCores);
+	m_pThreadPool = CThreadPool::Create(iNumThreadPoolSize);
 	if (nullptr == m_pThreadPool)
 		return E_FAIL;
 

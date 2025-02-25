@@ -1,6 +1,7 @@
 #pragma once
 #include "Character.h"
 #include "AnimEventReceiver.h"
+#include "Interactable.h"
 
 BEGIN(Engine)
 class CAnimEventGenerator;
@@ -9,6 +10,7 @@ class CModelObject;
 END
 BEGIN(Client)
 class CCarriableObject;
+class CDraggableObject;
 class CStateMachine;
 class IInteractable;
 class CPortal;
@@ -20,7 +22,6 @@ enum PLAYER_INPUT
 	PLAYER_INPUT_ATTACK,
 	PLAYER_INPUT_ROLL,
 	PLAYER_INPUT_THROWSWORD,
-	PLAYER_INPUT_INTERACT,
 	PLAYER_INPUT_THROWOBJECT,
 	PLAYER_INPUT_SNEAK,
 	PLAYER_INPUT_SPINATTACK,
@@ -32,6 +33,7 @@ enum PLAYER_INPUT
 	PLAYER_INPUT_TURNBOOK_END,
 	PLAYER_INPUT_LAST
 };
+
 typedef struct tagPlayerInputResult
 {
 	_vector vMoveDir = {0,0,0};
@@ -99,6 +101,7 @@ public:
 		TURN_BOOK,
 		EVICT,
 		LUNCHBOX,
+		DRAG,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -458,12 +461,13 @@ public:
 	PLAYER_INPUT_RESULT Player_KeyInput();
 	void Revive();
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
-	_bool Try_Interact(IInteractable* _pInteractable , _float _fTimeDelta);
-	void End_Interact();
+
 	void Start_Portal(CPortal* _pPortal);
 	void JumpTo_Portal(CPortal* _pPortal);
 	void Set_PlayingAnim(_bool _bPlaying);
 	void Start_Invinciblity();
+	// interact 함수가 호출되면 true 반환.
+	INTERACT_RESULT Try_Interact(_float _fTimeDelta);
 
 	//Get
 
@@ -486,6 +490,7 @@ public:
 	_float Get_AirRunSpeed() { return m_fAirRunSpeed; }
 	_float Get_AirRunSpeed2D() { return m_f2DAirRunSpeed; }
 	_float Get_MoveSpeed(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DMoveSpeed : m_f3DMoveSpeed; }
+	_float Get_DragMoveSpeed(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DDragMoveSpeed : m_f3DDragMoveSpeed; }
 	_float Get_PickupRange(COORDINATE _eCoord) { return COORDINATE_2D == _eCoord ? m_f2DPickupRange : m_f3DPickupRange; }	_int Get_AttackDamg() { return m_tStat.iDamg; }
 	_float Get_3DFloorDistance() { return m_f3DFloorDistance; }
 	_float Get_2DFloorDistance() { return m_f2DFloorDistance; }
@@ -503,18 +508,18 @@ public:
 	_vector Get_WallNormal() { return m_vWallNormal; }
 	_vector Get_BodyPosition();
 	IInteractable* Get_InteractableObject() { return m_pInteractableObject; }
-	CPortal* Get_CurrentPortal() { return m_pPortal; }
 	STATE Get_CurrentStateID();
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	PLAYER_MODE Get_PlayerMode() { return m_ePlayerMode; }
 	CController_Transform* Get_Transform() { return m_pControllerTransform; }
-	CCarriableObject* Get_CarryingObject();;
+	CCarriableObject* Get_CarryingObject() { return m_pCarryingObject; }
 	const _float4x4* Get_BodyWorldMatrix_Ptr() const;
 	const _float4x4* Get_BodyWorldMatrix_Ptr(COORDINATE eCoord) const;
 	CModelObject* Get_Body() { return m_pBody; }
 	_vector Get_RootBonePosition();
 	NORMAL_DIRECTION Get_PortalNormal() { return m_e3DPortalNormal; }
 	const ATTACK_TRIGGER_DESC& Get_AttackTriggerDesc(ATTACK_TYPE _eAttackType, F_DIRECTION _eFDir) {return m_f2DAttackTriggerDesc[_eAttackType][(_uint)_eFDir];}
+	const SHAPE_DATA& Get_BodyShapeData() { return m_tBodyShapeData; }
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -530,6 +535,7 @@ public:
 	void Set_PlatformerMode(_bool _bPlatformerMode);
 	void Set_Upforce(_float _fForce);
 	HRESULT Set_CarryingObject(CCarriableObject* _pCarryingObject);
+	void Set_InteractObject(IInteractable* _pInteractable) { m_pInteractableObject = _pInteractable; }
 	NORMAL_DIRECTION Set_PortalNormal(NORMAL_DIRECTION _eNormal) { return m_e3DPortalNormal = _eNormal; }
 	void Set_GravityCompOn(_bool _bOn);
 
@@ -565,6 +571,7 @@ private:
 	_float m_fAirRotateSpeed = 40.f;
 	_float m_fAirRunSpeed = 6.f;
 	_float m_f3DMoveSpeed= 6.f;
+	_float m_f3DDragMoveSpeed= 2.5f;
 
 	_float m_f3DThrowObjectPower = 20.f;
 	_float m_f3DPickupRange = 1.3f;
@@ -583,9 +590,8 @@ private:
 
 	//2D전용
 	_float m_f2DAttackForwardSpeed = 700.f;
-
-
 	_float m_f2DMoveSpeed= 400.f;
+	_float m_f2DDragMoveSpeed= 200.f;
 	_float m_f2DJumpPower = 600.f;
 	_float m_f2DPlatformerJumpPower = 1200.f;
 	_float m_f2DCenterYOffset= 36.f;
@@ -619,11 +625,14 @@ private:
 	CModelObject* m_pGlove= nullptr;
 
 	//기타 관계된 오브젝트
-	CCarriableObject* m_pCarryingObject = { nullptr};
+	CCarriableObject* m_pCarryingObject = nullptr;
 	set<CGameObject*> m_AttckedObjects;
 	IInteractable* m_pInteractableObject = nullptr;
-	CPortal* m_pPortal= nullptr;
 	CSampleBook* m_pBook = nullptr;
+
+
+	SHAPE_CAPSULE_DESC m_tBodyShapeDesc = {};
+	SHAPE_DATA m_tBodyShapeData = {};
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

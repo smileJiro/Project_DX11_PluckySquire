@@ -31,6 +31,7 @@ public:
 public:
 	virtual void Change_Animation() override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
+	virtual void Attack() override;
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);

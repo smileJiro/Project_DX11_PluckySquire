@@ -28,9 +28,9 @@ void CPlayerState_ExitPortal::Update(_float _fTimeDelta)
 void CPlayerState_ExitPortal::Enter()
 {
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-	m_pPortal = m_pOwner->Get_CurrentPortal();
+	m_pPortal = dynamic_cast<CPortal*>(m_pOwner->Get_InteractableObject());
+	assert(nullptr != m_pPortal);
 
-	assert(m_pPortal);
 	_vector vPortalPos = m_pPortal->Get_ControllerTransform()->Get_Transform(eCoord)->Get_State(CTransform::STATE_POSITION);
 	_vector vPlayerPos = m_pOwner->Get_FinalPosition();
 

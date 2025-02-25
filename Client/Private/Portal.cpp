@@ -169,6 +169,7 @@ HRESULT CPortal::Init_Actor()
     }
     case NORMAL_DIRECTION::POSITIVE_Y:
     {
+        WorldMatrix = XMMatrixIdentity();
         break;
     }
     case NORMAL_DIRECTION::NEGATIVE_Y:
@@ -187,7 +188,7 @@ HRESULT CPortal::Init_Actor()
         break;
     }
     }
-    WorldMatrix.r[3] = f3DPosition;
+    WorldMatrix.r[3] = XMVectorSetW(f3DPosition, 1.f);
 
     m_pEffectSystem->Set_EffectMatrix(WorldMatrix);
     m_PartObjects[PORTAL_PART_3D] = m_pEffectSystem;
@@ -321,17 +322,22 @@ void CPortal::Active_OnEnable()
 {
     __super::Active_OnEnable();
     if (m_pEffectSystem)
-        m_pEffectSystem->Active_All(true);
+    {
+        //m_pEffectSystem->Set_Active(true);
+        m_pEffectSystem->Active_Effect(true, 0);
+    }
 }
 
 void CPortal::Active_OnDisable()
 {
     __super::Active_OnEnable();
-    if (m_pEffectSystem)
+    if (m_pEffectSystem && m_pEffectSystem->Is_Active())
+    {
         m_pEffectSystem->Inactive_All();
+    }
 }
 
-void CPortal::On_Touched(CPlayer* _pPlayer)
+void CPortal::On_InteractionStart(CPlayer* _pPlayer)
 {
 	_pPlayer->Start_Portal(this);
 }

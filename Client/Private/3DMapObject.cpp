@@ -75,6 +75,7 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
                     ActorDesc.FreezePosition_XYZ[0] = false;
                     ActorDesc.FreezePosition_XYZ[1] = false;
                     ActorDesc.FreezePosition_XYZ[2] = false;
+                    ActorDesc.isAddActorToScene = true;
 
                     ShapeCookingDesc.isLoad = true;
                     ShapeCookingDesc.isSave = false;

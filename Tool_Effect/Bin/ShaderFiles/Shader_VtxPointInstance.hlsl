@@ -494,14 +494,17 @@ void GS_VELOCITYBILLBOARD(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStr
     //float3 vRightDir = normalize(cross(vUpDir.xyz, vLookDir));
 
     vector vLookDir = g_vLook;
+    //float3 vRightDir = normalize(cross(float3(0.f, 1.f, 0.f), vLookDir.xyz));
     float3 vRightDir = normalize(cross(normalize(In[0].vVelocity), vLookDir.xyz));
     float3 vUpDir = normalize(cross(vLookDir.xyz, vRightDir));
     
     float fDot = dot(vUpDir, normalize(In[0].vVelocity));
     
     float3 vCenter = In[0].vPosition.xyz;
-    float3 vRightDist = vRightDir * In[0].vPSize.x * 0.5f * (clamp(sqrt(1.f - fDot * fDot), 0.35f, 1.f));
-    float3 vUpDist = vUpDir * In[0].vPSize.y * 0.5f * (clamp(abs(fDot), 0.35f, 1.f));
+    //float3 vRightDist = vRightDir * In[0].vPSize.x * 0.5f * (clamp(sqrt(1.f - fDot * fDot), 0.35f, 1.f));
+    float3 vRightDist = vRightDir * In[0].vPSize.x * 0.5f * sqrt(1.f - fDot * fDot);
+    //float3 vUpDist = vUpDir * In[0].vPSize.y * 0.5f * (clamp(abs(fDot), 0.35f, 1.f));
+    float3 vUpDist = vUpDir * In[0].vPSize.y * 0.5f * abs(fDot);
     
     
     

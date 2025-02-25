@@ -184,7 +184,7 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINA
 
 	}
 
-	if (FAILED(Pooling_Objects(_strPoolingTag, 5)))
+ 	if (FAILED(Pooling_Objects(_strPoolingTag, 5)))
 		return E_FAIL;
 
 	if (FAILED(Create_Object(_strPoolingTag, eCoordinate, _pPosition, _pRotation, _pScaling)))

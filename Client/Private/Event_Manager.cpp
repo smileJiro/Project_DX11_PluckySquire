@@ -17,6 +17,7 @@
 #include "UI_Manager.h"
 #include "Dialog_Manager.h"
 #include "PlayerData_Manager.h"
+#include "Player.h"
 
 #include "FSM.h"
 #include "FSM_Boss.h"
@@ -219,6 +220,11 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_ChangeMapObject(_tEvent);
 	}
 	break;
+	case Client::EVENT_TYPE::SETPLAYERSTATE:
+	{
+		Execute_SetPlayerState(_tEvent);
+		break;
+	}
 	default:
 		break;
 	}
@@ -261,8 +267,7 @@ HRESULT CEvent_Manager::Execute_DeleteObject(const EVENT& _tEvent)
 		return E_FAIL;
 
 	pDeleteObject->Set_Dead();
-	m_DeadObjectsList.push_back(pDeleteObject);
-	Safe_AddRef(pDeleteObject);
+	m_DeadObjectsList.push_back(pDeleteObject);// ClientFunction에서 AddRef하고있다.
 
 	return S_OK;
 }
@@ -312,7 +317,7 @@ HRESULT CEvent_Manager::Execute_LevelChange(const EVENT& _tEvent)
 		pChangeLevel = CLevel_Chapter_Test::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
 		break;
 	case Client::LEVEL_CAMERA_TOOL:
-		//pChangeLevel = CLevel_Camera_Tool_Client::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+		pChangeLevel = CLevel_Camera_Tool_Client::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
 		break;
 	default:
 		break;
@@ -354,10 +359,12 @@ HRESULT CEvent_Manager::Execute_SetActive(const EVENT& _tEvent)
 	if (true == isDelay)
 	{
 		m_DelayActiveList.push_back(make_pair(pBase, isActive));
-		Safe_AddRef(pBase);
 	}
 	else
+	{
 		pBase->Set_Active(isActive);
+		Safe_Release(pBase);
+	}
 
 	return S_OK;
 }
@@ -422,6 +429,7 @@ HRESULT CEvent_Manager::Execute_Setup_SimulationFilter(const EVENT& _tEvent)
 	_uint iOtherGroupMask = (_uint)_tEvent.Parameters[2];
 	pActor->Setup_SimulationFiltering(iMyGroup, iOtherGroupMask, true);
 
+	Safe_Release(pActor);
 	return S_OK;
 }
 
@@ -445,7 +453,7 @@ HRESULT CEvent_Manager::Execute_Change_Coordinate(const EVENT& _tEvent)
 
 	delete pPosition;
 	pPosition = nullptr;
-
+	Safe_Release(pActorObject);
 	return S_OK;
 }
 
@@ -457,6 +465,9 @@ HRESULT CEvent_Manager::Execute_Set_Kinematic(const EVENT& _tEvent)
 		pActor->Set_Kinematic();
 	else
 		pActor->Set_Dynamic();
+
+	Safe_Release(pActor);
+
 	return S_OK;
 }
 
@@ -475,7 +486,7 @@ HRESULT CEvent_Manager::Execute_ChangeMonsterState(const EVENT& _tEvent)
 		return E_FAIL;
 
 	pFSM->Change_State((_uint)eState);
-
+	Safe_Release(pFSM);
 	return S_OK;
 }
 
@@ -494,7 +505,7 @@ HRESULT CEvent_Manager::Execute_ChangeBossState(const EVENT& _tEvent)
 		return E_FAIL;
 
 	pFSM->Change_State((_uint)eState);
-
+	Safe_Release(pFSM);
 	return S_OK;
 }
 
@@ -685,12 +696,11 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent)
 
 HRESULT CEvent_Manager::Execute_SetSceneQueryFlag(const EVENT& _tEvent)
 {
-	CActorObject* pActor = (CActorObject*)_tEvent.Parameters[0];
-	_uint iShapeID = (_uint)_tEvent.Parameters[1];
-	_bool bEnable = (_bool)_tEvent.Parameters[2];
-	pActor->Get_ActorCom()->Get_Shapes()[iShapeID]->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, bEnable);
+	PxShape* pShape = (PxShape*)_tEvent.Parameters[0];
+	_bool bEnable = (_bool)_tEvent.Parameters[1];
+	pShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, bEnable);
 
-	Safe_Release(pActor);
+	pShape->release();
 	return S_OK;
 }
 
@@ -745,6 +755,8 @@ HRESULT CEvent_Manager::Execute_Hit(const EVENT& _tEvent)
 	pVictim->On_Hit(pHitter, iDamg, vForce);
 
 	delete ((_float3*)_tEvent.Parameters[3]);
+	Safe_Release(pHitter);
+	Safe_Release(pVictim);
 	return S_OK;
 }
 
@@ -774,6 +786,15 @@ HRESULT CEvent_Manager::Execute_KnockBack(const EVENT& _tEvent)
 	return S_OK;
 }
 
+HRESULT CEvent_Manager::Execute_SetPlayerState(const EVENT& _tEvent)
+{
+	CPlayer* pPlayer = (CPlayer*)_tEvent.Parameters[0];
+	_uint iStateId =(_uint)_tEvent.Parameters[1];
+	pPlayer->Set_State((CPlayer::STATE)iStateId);
+	Safe_Release(pPlayer);
+	return S_OK;
+}
+
 HRESULT CEvent_Manager::Execute_Sneak_BeetleCaught(const EVENT& _tEvent)
 {
 	CActorObject* pPlayer = (CActorObject*)(_tEvent.Parameters[0]);
@@ -787,6 +808,8 @@ HRESULT CEvent_Manager::Execute_Sneak_BeetleCaught(const EVENT& _tEvent)
 	Safe_Delete(vPlayerPos);
 	Safe_Delete(vMonsterPos);
 
+	Safe_Release(pPlayer);
+	Safe_Release(pMonster);
 	return S_OK;
 }
 

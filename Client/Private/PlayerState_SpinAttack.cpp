@@ -149,6 +149,7 @@ void CPlayerState_SpinAttack::Set_SpinState(SPIN_STATE _eNewState)
 	}
 	case Client::CPlayerState_SpinAttack::SPIN_SPINNING:
 	{
+		m_pOwner->Start_Attack(CPlayer::ATTACK_TYPE_SPIN);
 		if (COORDINATE_3D == eCoord)
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SPIN_ATTACK_SPIN_LOOP_GT);
 		else
@@ -222,6 +223,7 @@ void CPlayerState_SpinAttack::Set_SpinState(SPIN_STATE _eNewState)
 	}
 	case Client::CPlayerState_SpinAttack::SPIN_SPINEND:
 	{
+		m_pOwner->End_Attack();
 		if (COORDINATE_3D == eCoord)
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SPIN_ATTACK_OUT_GT);
 		else

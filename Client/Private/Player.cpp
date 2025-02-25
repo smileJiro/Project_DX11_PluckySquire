@@ -26,8 +26,10 @@
 #include "PlayerState_Evict.h"
 #include "PlayerState_LunchBox.h"
 #include "PlayerState_Electric.h"
+#include "PlayerState_Drag.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
+#include "PlayerBody.h"
 #include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
@@ -39,6 +41,7 @@
 #include "Blocker.h"
 #include "NPC_Store.h"
 #include "Portal.h"
+#include "DraggableObject.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -150,52 +153,36 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ActorDesc.FreezePosition_XYZ[2] = false;
     
     /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_CAPSULE_DESC CapsuleDesc = {};
-    CapsuleDesc.fRadius = m_fFootLength;
-    CapsuleDesc.fHalfHeight = m_f3DCenterYOffset - m_fFootLength;
+
+    m_tBodyShapeDesc.fRadius = m_fFootLength;
+    m_tBodyShapeDesc.fHalfHeight = m_f3DCenterYOffset - m_fFootLength;
     //SHAPE_BOX_DESC ShapeDesc = {};
     //ShapeDesc.vHalfExtents = { 0.5f, 1.f, 0.5f };
 
     ActorDesc.ShapeDatas.resize(PLAYER_SHAPE_USE::PLAYER_SHAPE_USE_LAST);
     // 플레이어 몸통.
-    SHAPE_DATA ShapeData;
-    ShapeData.pShapeDesc = &CapsuleDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
-    ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-	ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset /*+ 0.1f*/, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    m_tBodyShapeData.pShapeDesc = &m_tBodyShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    m_tBodyShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+    m_tBodyShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    m_tBodyShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
+    m_tBodyShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+	m_tBodyShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
+	m_tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
+    XMStoreFloat4x4(&m_tBodyShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset /*+ 0.1f*/, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
-
-    //마찰용 박스
-    //SHAPE_BOX_DESC BoxDesc = {};
-    //_float fHalfWidth = CapsuleDesc.fRadius * cosf(XMConvertToRadians(45.f));
-    //BoxDesc.vHalfExtents = { fHalfWidth, CapsuleDesc.fRadius, fHalfWidth };
-    //SHAPE_DATA BoxShapeData;
-    //BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
-    //BoxShapeData.pShapeDesc = &BoxDesc;
-    //XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc.vHalfExtents.y, 0.0f));
-    //BoxShapeData.iShapeUse =(_uint)SHAPE_USE::SHAPE_FOOT;
-    //BoxShapeData.isTrigger = false;
-    //BoxShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
-    //BoxShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    //BoxShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
-    //ActorDesc.ShapeDatas.push_back(BoxShapeData);
-
+    ActorDesc.ShapeDatas[m_tBodyShapeData.iShapeUse] = m_tBodyShapeData;
 
     //주변 지형 감지용 구 (트리거)
+    SHAPE_SPHERE_DESC SphereDesc = {};
+    SphereDesc.fRadius = 2.5f;
+    SHAPE_DATA ShapeData = {};
+    ShapeData.pShapeDesc = &SphereDesc;
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
+    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
     ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
     ShapeData.isTrigger = true;
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_f3DCenterYOffset, 0));
-    SHAPE_SPHERE_DESC SphereDesc = {};
-    SphereDesc.fRadius = 2.5f;
-    ShapeData.pShapeDesc = &SphereDesc;
-    ShapeData.iShapeUse =(_uint) SHAPE_USE::SHAPE_TRIGER;
     ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
     ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::INTERACTION_OBEJCT;
     ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
@@ -258,8 +245,8 @@ HRESULT CPlayer::Initialize(void* _pArg)
 HRESULT CPlayer::Ready_PartObjects()
 {
     /* Part Body */
-    CModelObject::MODELOBJECT_DESC BodyDesc{};
-
+    CPlayerBody::PLAYER_BODY_DESC BodyDesc{};
+	BodyDesc.pPlayer = this;
     BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
@@ -318,14 +305,26 @@ HRESULT CPlayer::Ready_PartObjects()
     m_pSword->Set_AttackEnable(false);
 
     //Part Glove
-    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
-    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
-    BodyDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
-    BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
-    BodyDesc.eActorType = ACTOR_TYPE::LAST;
-    BodyDesc.pActorDesc = nullptr;
-    BodyDesc.isCoordChangeEnable = false;
-    m_PartObjects[PLAYER_PART_GLOVE] = m_pGlove = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+	CModelObject::MODELOBJECT_DESC GloveDesc{};
+
+    GloveDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
+    GloveDesc.iCurLevelID = m_iCurLevelID;
+    GloveDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
+
+    GloveDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
+    GloveDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    GloveDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    GloveDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+    GloveDesc.iRenderGroupID_3D = RG_3D;
+    GloveDesc.iPriorityID_3D = PR3D_GEOMETRY;
+    GloveDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+    GloveDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+    GloveDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
+    GloveDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    GloveDesc.eActorType = ACTOR_TYPE::LAST;
+    GloveDesc.pActorDesc = nullptr;
+    GloveDesc.isCoordChangeEnable = false;
+    m_PartObjects[PLAYER_PART_GLOVE] = m_pGlove = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &GloveDesc));
 	Safe_AddRef(m_pGlove);
     if (nullptr == m_PartObjects[PLAYER_PART_GLOVE])
     {
@@ -335,7 +334,7 @@ HRESULT CPlayer::Ready_PartObjects()
     C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_GLOVE])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_glove_hand_r")); /**/
     m_PartObjects[PLAYER_PART_GLOVE]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
-    Set_PartActive(PLAYER_PART_GLOVE, false);
+    Set_PartActive(PLAYER_PART_GLOVE, true);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
@@ -518,7 +517,8 @@ void CPlayer::Update(_float _fTimeDelta)
 
     CUI_Manager::GetInstance()->Set_isQIcon((nullptr != m_pInteractableObject) 
         && KEY::Q == m_pInteractableObject->Get_InteractKey());
-    m_pInteractableObject = nullptr;
+    if(m_pInteractableObject && false== m_pInteractableObject->Is_Interacting())
+        m_pInteractableObject = nullptr;
 
 }
 
@@ -601,7 +601,8 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
     case Client::SHAPE_USE::SHAPE_TRIGER:
         if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
             return;
-        Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
+        if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
+            Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
         break;
     }
 }
@@ -619,7 +620,6 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
             if (Check_ReplaceInteractObject(pInteractable))
             {
 				m_pInteractableObject = pInteractable;
-                m_pPortal = dynamic_cast<CPortal*>(m_pInteractableObject);
             }
 
         }
@@ -638,7 +638,8 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
     case Client::SHAPE_USE::SHAPE_TRIGER:
         if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
             return;
-        Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
+        if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
+            Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
         break;
     }
 }
@@ -751,9 +752,6 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
             if (Check_ReplaceInteractObject(pInteractable))
             {
                 m_pInteractableObject = pInteractable;
-                STATE eStat = m_pStateMachine->Get_CurrentState()->Get_StateID();
-                m_pPortal = dynamic_cast<CPortal*>(m_pInteractableObject);
-               
             }
         }
         
@@ -1005,6 +1003,7 @@ void CPlayer::Jump()
 
 PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
+    m_f3DJumpPower = 11.5f;
 	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
 	if (STATE::DIE == Get_CurrentStateID())
@@ -1066,25 +1065,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
                 tResult.bInputStates[PLAYER_INPUT_SPINLAUNCH] = true;
         }
     }
-    //포탈은 떨어져도 발동할 수 있어야 함. 
-    _bool bHasInteractable = Has_InteractObject();
-    if (bHasInteractable)
-    {
-        IInteractable* pInteractable =  Get_InteractableObject();
-        IInteractable::INTERACT_TYPE eInteractType = pInteractable->Get_InteractType();
-        KEY eInteractKey = pInteractable->Get_InteractKey();
-        if (IInteractable::INTERACT_TYPE::CHARGE == eInteractType)
-        {
-            if (KEY_PRESSING(eInteractKey))
-                tResult.bInputStates[PLAYER_INPUT_INTERACT] = true;
-        }
-        else if (IInteractable::INTERACT_TYPE::NORMAL == eInteractType)
-        {
-            if (KEY_DOWN(eInteractKey))
-                tResult.bInputStates[PLAYER_INPUT_INTERACT] = true;
-        }
-    }
-    else if (bCarrying)
+
+    if (false == Has_InteractObject() && bCarrying)
     {
          //상호작용 오브젝트가 범위 안에 있으면 상호작용, 아니면 던지기
         if (KEY_DOWN(KEY::E))
@@ -1158,6 +1140,8 @@ void CPlayer::Revive()
 	Set_State(IDLE);
 }
 
+//아무런 상호작용 중이 아닐 때에는 그냥 가장 가까운 애로 교체.
+//포탈, 끌고다니기 등 상호작용 중일 때는 교체 불가.
 _bool CPlayer::Check_ReplaceInteractObject(IInteractable* _pObj)
 {
     if(nullptr == _pObj)
@@ -1176,37 +1160,6 @@ _bool CPlayer::Check_ReplaceInteractObject(IInteractable* _pObj)
     return false;
 }
 
-_bool CPlayer::Try_Interact(IInteractable* _pInteractable, _float _fTimeDelta)
-{
-    if (nullptr == _pInteractable)
-        return false;
-
-
-    if (0 == _pInteractable->Get_ChargeProgress())
-    {
-
-    }
-    if (_pInteractable->Is_ChargeCompleted())
-    {
-        _pInteractable->End_Charge(this);
-        _pInteractable->Interact(this);
-        return true;
-    }
-    else
-    {
-        _pInteractable->Charge(this, _fTimeDelta);
-        return false;
-    }
-
-
-}
-
-void CPlayer::End_Interact()
-{
-    if (nullptr == m_pInteractableObject)
-        return;
-    m_pInteractableObject->End_Charge(this);
-}
 
 void CPlayer::Start_Portal(CPortal* _pPortal)
 {
@@ -1229,6 +1182,82 @@ void CPlayer::Start_Invinciblity()
 	m_fInvincibleTImeAcc = 0;
     //m_pActorCom->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
 	//m_pBody2DColliderCom->Set_Active(false);
+}
+
+INTERACT_RESULT CPlayer::Try_Interact(_float _fTimeDelta)
+{
+    //이미 인터렉터블 오브젝트가 있다? 
+    // -> 버튼만 눌러주면 바로 상호작용 OK
+    if (false == Has_InteractObject())
+    {
+        return INTERACT_RESULT::FAIL;
+    }
+    
+    IInteractable::INTERACT_TYPE eInteractType = m_pInteractableObject->Get_InteractType();
+    KEY eInteractKey = m_pInteractableObject->Get_InteractKey();
+
+    if (KEY_CHECK(eInteractKey, KEY_STATE::NONE))
+    {
+        m_pInteractableObject->Set_Interacting(false);
+        return INTERACT_RESULT::NO_INPUT;
+    }
+
+    switch (eInteractType)
+    {
+    case Client::IInteractable::NORMAL:
+        if (KEY_DOWN(eInteractKey))
+        {
+			m_pInteractableObject->Start_Interact(this);
+            m_pInteractableObject->Interact(this);
+			m_pInteractableObject->End_Interact(this);
+            return INTERACT_RESULT::SUCCESS;
+        }
+        break;
+    case Client::IInteractable::CHARGE:
+        if (KEY_DOWN(eInteractKey))
+        {
+            m_pInteractableObject->Start_Interact(this);
+            return INTERACT_RESULT::INTERACT_START;
+        }
+		else if (KEY_PRESSING(eInteractKey))
+		{
+			m_pInteractableObject->Pressing(this, _fTimeDelta);
+            if (m_pInteractableObject->Is_ChargeCompleted())
+            {
+                m_pInteractableObject->Interact(this);
+				m_pInteractableObject->End_Interact(this);
+                return INTERACT_RESULT::SUCCESS;
+            }
+            return INTERACT_RESULT::CHARGING;
+		}
+		else if (KEY_UP(eInteractKey))
+		{
+			m_pInteractableObject->End_Interact(this);
+            return INTERACT_RESULT::CHARGE_CANCEL;
+		}
+        break;
+    case Client::IInteractable::HOLDING:
+        if (KEY_DOWN(eInteractKey))
+        {
+            m_pInteractableObject->Start_Interact(this);
+            return INTERACT_RESULT::INTERACT_START;
+        }
+        else if (KEY_PRESSING(eInteractKey))
+        {
+            m_pInteractableObject->Pressing(this, _fTimeDelta);
+            m_pInteractableObject->Interact(this);
+            return INTERACT_RESULT::SUCCESS;
+        }
+        else if (KEY_UP(eInteractKey))
+        {
+            m_pInteractableObject->End_Interact(this);
+            return INTERACT_RESULT::INTERACT_END;
+        }
+        break;
+    default:
+        break;
+    }
+	return INTERACT_RESULT::FAIL;
 }
 
 
@@ -1362,10 +1391,7 @@ CPlayer::STATE CPlayer::Get_CurrentStateID()
 	return m_pStateMachine->Get_CurrentState()->Get_StateID();
 }
 
-CCarriableObject* CPlayer::Get_CarryingObject()
-{
-    { return (m_pCarryingObject); }
-}
+
 
 const _float4x4* CPlayer::Get_BodyWorldMatrix_Ptr() const
 {
@@ -1474,6 +1500,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::ELECTRIC:
         m_pStateMachine->Transition_To(new CPlayerState_Electric(this));
+        break;
+    case Client::CPlayer::DRAG:
+        m_pStateMachine->Transition_To(new CPlayerState_Drag(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;
@@ -1629,6 +1658,7 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
 
     return S_OK;
 }
+
 void CPlayer::Set_GravityCompOn(_bool _bOn)
 {
 	m_pGravityCom->Set_Active(_bOn);
@@ -1814,14 +1844,22 @@ void CPlayer::Key_Input(_float _fTimeDelta)
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //포탈 4 0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
             //도미노 { 6.99342966, 5.58722591, 21.8827782 }
-            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //주사위 2 (48.73f, 2.61f, -5.02f);
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 48.73f, 2.61f, -5.02f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+
         }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 
     }
-
+    if (m_pActorCom->Is_Kinematic())
+    {
+        if (KEY_PRESSING(KEY::SPACE))
+        {
+            Move(_vector{0.f,5.f,0.f}, _fTimeDelta);
+        }
+    }
     //if (KEY_DOWN(KEY::H))
     //{
     //    m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));

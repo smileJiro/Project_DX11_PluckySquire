@@ -18,6 +18,7 @@ public:
 		BOX,
 		CARROT,
 		GRAPE,
+		BOMB,
 		CARRIABLE_ID_LAST
 	};
 
@@ -52,6 +53,7 @@ public:
 	_bool Is_Carrying() { return nullptr != m_pCarrier; }
 	HRESULT Set_Carrier(CPlayer* _pCarrier);
 	void Throw(_fvector _vForce);
+	void Set_CollisionEnable(_bool _bEnable);
 	void Set_Kinematic(_bool _bKinematic);
 	void Set_ParentBodyMatrix(COORDINATE _eCoord, const _float4x4* _pBodyMatrix) { m_pParentBodyMatrices[_eCoord] = _pBodyMatrix; }
 	const _float4x4& Get_HeadUpMatrix(COORDINATE _eCoord) { return m_matHeadUpMatrix[_eCoord]; };

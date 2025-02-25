@@ -21,6 +21,7 @@
 #include "Spawner.h"
 #include "CollapseBlock.h"
 #include "Word_Container.h"
+#include "JumpPad.h"
 
 
 // Trigger
@@ -70,6 +71,7 @@
 
 #include "ModelObject.h"
 #include "CarriableObject.h"
+#include "DraggableObject.h"
 #include "Player.h"
 #include "PlayerBody.h"
 #include "PlayerSword.h"
@@ -104,9 +106,14 @@
 #include "Rat.h"
 #include "Zippy.h"
 #include "BirdMonster.h"
+#include "Projectile_BirdMonster.h"
+#include "Spear_Soldier.h"
 #include "Soldier_Spear.h"
+#include "Soldier_Shield.h"
+#include "CrossBow_Soldier.h"
 #include "Soldier_CrossBow.h"
-#include "Soldier_Bomb.h"
+#include "CrossBow_Arrow.h"
+#include "Bomb_Soldier.h"
 #include "Popuff.h"
 #include "Monster_Body.h"
 #include "Goblin_SideScroller.h"
@@ -132,6 +139,7 @@
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
 #include "Effect_Trail.h"
+#include "Effect_Beam.h"
 
 
 
@@ -291,6 +299,12 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Trail"),
         CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Trail_03.dds"), 1))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Grad04"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Grad_04.dds"), 1))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Glow01"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Glow_01.dds"), 1))))
+        return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
@@ -334,6 +348,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Trail"),
         CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Trail.hlsl"), VTXTRAIL::Elements, VTXTRAIL::iNumElements))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Beam"),
+        CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxBeam.hlsl"), VTXBEAM::Elements, VTXBEAM::iNumElements))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Compute_Shader_MeshInstance"),
         CCompute_Shader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_CS_Mesh.hlsl")))))
         return E_FAIL;
@@ -346,6 +363,8 @@ HRESULT CLoader::Loading_Level_Static()
         TEXT("../Bin/Resources/Models/2DAnim/Static/"))))
         return E_FAIL;
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_STATIC,
         TEXT("../Bin/Resources/Models/3DPlayerPart/"), matPretransform)))
         return E_FAIL;
@@ -371,6 +390,11 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_Component_Trail*/
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Trail32"),
         CVIBuffer_Trail::Create(m_pDevice, m_pContext, 32))))
+        return E_FAIL;
+
+    /* For. Prototype_Component_Beam*/
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Beam16"),
+        CVIBuffer_Beam::Create(m_pDevice, m_pContext, 16))))
         return E_FAIL;
     
     /* Bulb*/
@@ -493,6 +517,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CarrieableObject"),
         CCarriableObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+        CDraggableObject::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMapObject"),
         C2DMapDefaultObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -574,9 +601,39 @@ HRESULT CLoader::Loading_Level_Static()
         CBirdMonster::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    /* For. Prototype_GameObject_Projectile_BirdMonster */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Projectile_BirdMonster"),
+        CProjectile_BirdMonster::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Spear_Soldier */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"),
+        CSpear_Soldier::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_CrossBow_Soldier */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"),
+        CCrossBow_Soldier::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Bomb_Soldier */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"),
+        CBomb_Soldier::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Popuff */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Popuff"),
+        CPopuff::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     /* For. Prototype_GameObject_Soldier_Spear */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Spear"),
         CSoldier_Spear::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Soldier_Shield */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Shield"),
+        CSoldier_Shield::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_Soldier_CrossBow */
@@ -584,14 +641,9 @@ HRESULT CLoader::Loading_Level_Static()
         CSoldier_CrossBow::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_Soldier_Bomb */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Bomb"),
-        CSoldier_Bomb::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
-
-    /* For. Prototype_GameObject_Popuff */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Popuff"),
-        CPopuff::Create(m_pDevice, m_pContext))))
+    /* For. Prototype_GameObject_CrossBow_Arrow */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Arrow"),
+        CCrossBow_Arrow::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_LightningBolt */
@@ -608,6 +660,10 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_GameObject_SwordTrail */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_EffectTrail"),
         CEffect_Trail::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_EffectBeam"),
+        CEffect_Beam::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     
 
@@ -940,7 +996,9 @@ HRESULT CLoader::Loading_Level_Chapter_2()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_Grape_03"),
         C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Grapes_Grape_03/Grapes_Grape_03.model", matPretransform))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Model_PlasticBlock"),
+        C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/SM_Plastic_Block_04/SM_Plastic_Block_04.model", matPretransform))))
+        return E_FAIL;
     ///* 중복 키값도 Prototype_Manager에서 쳐내개 변경했음. 이제 중복 키값 로드해도 멈추지않음. */
     //if (FAILED(Load_Models_FromJson(LEVEL_CHAPTER_2, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
     //    return E_FAIL;
@@ -1295,7 +1353,7 @@ HRESULT CLoader::Loading_Level_Chapter_4()
         TEXT("../Bin/Resources/Models/2DMapObject/Chapter4/"))))
         return E_FAIL;
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
-        TEXT("../Bin/Resources/Models/2DAnim/Chapter2/"))))
+        TEXT("../Bin/Resources/Models/2DAnim/Chapter4/"))))
         return E_FAIL;
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
         TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
@@ -1378,7 +1436,9 @@ HRESULT CLoader::Loading_Level_Chapter_4()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_Dialogue_Portrait"),
         CPortrait::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_JumpPad"),
+        CJumpPad::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     ///////////////////////////////// UI /////////////////////////////////
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_StoreNPC"),
@@ -1496,6 +1556,8 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 
     if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform, true)))
         return E_FAIL;
+    //if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_04_Play_Desk.json", matPretransform, true)))
+    //    return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
         TEXT("../Bin/Resources/Models/3DMapObject/"), matPretransform)))
@@ -1635,8 +1697,14 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_ZippyAttackAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Monster/Zippy/Zippy_Attack.animevt"))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_BirdMonsterAttackEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Namastarling_Rig_01/BirdMonster_Attack.animevt"))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_JumpBugJumpEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/jumpBug_Rig/JumpBug_Jump.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_SoldierAttackEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/humgrump_troop_Rig_GT/SoldierAttack.animevt"))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_BookPageActionEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))

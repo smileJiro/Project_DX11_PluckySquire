@@ -29,7 +29,6 @@ HRESULT CGoblin::Initialize(void* _pArg)
     CGoblin::MONSTER_DESC* pDesc = static_cast<CGoblin::MONSTER_DESC*>(_pArg);
     //pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = true;
-    pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 4.f;
@@ -83,7 +82,13 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_RIGHT, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_UP, true);
 
-    pModelObject->Set_Animation(IDLE);
+    if (COORDINATE_3D == Get_CurCoord())
+        pModelObject->Set_Animation(Animation::IDLE);
+    else if (COORDINATE_2D == Get_CurCoord())
+    {
+        Set_2D_Direction(F_DIRECTION::DOWN);
+        pModelObject->Set_Animation(Animation2D::IDLE_DOWN);
+    }
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CGoblin::Animation_End, this, placeholders::_1, placeholders::_2));
 

@@ -57,10 +57,10 @@ HRESULT CDomino::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pModelDsc)))
 		return E_FAIL;
 
-	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(_vector{0.f,1.f,0.f},XMConvertToRadians(180.f));
+	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(_vector{ 0.f,1.f,0.f }, XMConvertToRadians(180.f));
 	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_MassLocalPos({ 0.0f,0.5f,0.f });
 	m_pActorCom->Set_Mass(50.f);
-    return S_OK;
+	return S_OK;
 }
 
 void CDomino::Late_Update(_float _fTimeDelta)
