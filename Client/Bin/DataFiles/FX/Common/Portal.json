@@ -159,33 +159,6 @@
                 {
                     "Apply": "TRANSLATION",
                     "Datas": {
-                        "Float3": [
-                            {
-                                "Name": "Amount",
-                                "Value": [
-                                    0.0,
-                                    0.20000000298023224,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Name": "Origin",
-                                "Value": [
-                                    0.0,
-                                    0.0,
-                                    0.0
-                                ]
-                            }
-                        ]
-                    },
-                    "Init": false,
-                    "Module": "POINT_ACCELERATION",
-                    "Order": 1,
-                    "Type": "MODULE_TRANSLATION"
-                },
-                {
-                    "Apply": "TRANSLATION",
-                    "Datas": {
                         "Float": [
                             {
                                 "Name": "Amount",
@@ -204,7 +177,7 @@
                         "Float": [
                             {
                                 "Name": "Amount",
-                                "Value": 200.0
+                                "Value": 300.0
                             },
                             {
                                 "Name": "Pull Amount",
@@ -321,6 +294,21 @@
                     "Module": "COLOR_KEYFRAME",
                     "Order": 6,
                     "Type": "MODULE_KEYFRAME"
+                },
+                {
+                    "Apply": "TRANSLATION",
+                    "Datas": {
+                        "Float": [
+                            {
+                                "Name": "Amount",
+                                "Value": 0.5
+                            }
+                        ]
+                    },
+                    "Init": true,
+                    "Module": "INIT_ACCELERATION",
+                    "Order": 6,
+                    "Type": "MODULE_TRANSLATION"
                 }
             ],
             "Pooling": "REVIVE",

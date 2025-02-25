@@ -90,7 +90,7 @@
             "SpawnType": "SPAWN_RATE",
             "Textures": [
                 {
-                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Shock_02_YClamp.dds",
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Shock_03_YClamp.dds",
                     "Type": "MASK"
                 }
             ],
