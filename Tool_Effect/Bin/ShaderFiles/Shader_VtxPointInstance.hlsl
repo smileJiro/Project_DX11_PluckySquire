@@ -494,6 +494,7 @@ void GS_VELOCITYBILLBOARD(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStr
     //float3 vRightDir = normalize(cross(vUpDir.xyz, vLookDir));
 
     vector vLookDir = g_vLook;
+    //float3 vRightDir = normalize(cross(float3(0.f, 1.f, 0.f), vLookDir.xyz));
     float3 vRightDir = normalize(cross(normalize(In[0].vVelocity), vLookDir.xyz));
     float3 vUpDir = normalize(cross(vLookDir.xyz, vRightDir));
     

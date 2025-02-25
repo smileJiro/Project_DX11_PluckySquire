@@ -1554,8 +1554,10 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         TEXT("../Bin/Resources/Models/2D_FX"))))
         return E_FAIL;
 
-    if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_04_Play_Desk.json", matPretransform, true)))
+    if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform, true)))
         return E_FAIL;
+    //if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_04_Play_Desk.json", matPretransform, true)))
+    //    return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
         TEXT("../Bin/Resources/Models/3DMapObject/"), matPretransform)))

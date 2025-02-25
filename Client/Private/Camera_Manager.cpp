@@ -234,7 +234,7 @@ void CCamera_Manager::Add_ArmData(_uint _iCameraType, _wstring wszArmTag, ARM_DA
 	}
 }
 
-void CCamera_Manager::Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA>> _CutSceneData)
+void CCamera_Manager::Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA*>> _CutSceneData)
 {
 	if (nullptr == m_Cameras[CUTSCENE])
 		return;
@@ -462,49 +462,46 @@ void CCamera_Manager::Load_ArmData(_wstring _sz3DFileName, _wstring _sz2DFileNam
 
 void CCamera_Manager::Load_CutSceneData()
 {
-	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/CutSceneData/Test.bin";
+	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/CutSceneData/CutScene_Test.json";
 
-	std::ifstream inFile(wszLoadPath, std::ios::binary);
-	if (!inFile) {
-		string str = "파일을 열 수 없습니다.";
-		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+	ifstream file(wszLoadPath);
+
+	if (!file.is_open())
+	{
+		MSG_BOX("파일을 열 수 없습니다.");
+		file.close();
+		return;
 	}
 
-	_uint iSize = {};
+	json Result;
+	file >> Result;
+	file.close();
 
-	inFile.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
-
-	for (_uint i = 0; i < iSize; ++i) {
-		
-		pair<_float2, vector<CUTSCENE_DATA>> CutSceneData;
-
-		// CutScene Tag 읽기
-		_uint strLength = {};
-		inFile.read(reinterpret_cast<char*>(&strLength), sizeof(_uint));
-		_wstring CutSceneTag;
-		CutSceneTag.resize(strLength);
-		inFile.read(reinterpret_cast<char*>(&CutSceneTag[0]), strLength * sizeof(wchar_t));
-
-		// Time 읽기
-		inFile.read(reinterpret_cast<char*>(&CutSceneData.first), sizeof(_float2));
-
-		// Data Struct 읽기
-		_uint iDataSize = {};
-		inFile.read(reinterpret_cast<char*>(&iDataSize), sizeof(_uint));
-
-		for (_uint j = 0; j < iDataSize; ++j) {
+	if (Result.is_array()) {
+		for (auto& CutScene_json : Result) {
+			pair<_float2, vector<CUTSCENE_DATA*>> CutSceneData;
 			
-			CUTSCENE_DATA tData = {};
+			// CutScene Tag 읽기
+			_string szCutSceneTag = CutScene_json["CutScene_Tag"];
+			// CutScene Total Time 읽기
+			CutSceneData.first = { CutScene_json["CutScene_Time"][0].get<_float>(), CutScene_json["CutScene_Time"][1].get<_float>() };
+	
+			// CutScene Data 읽기
+			if (CutScene_json["Datas"].is_array()) {
+				for (auto& Data : CutScene_json["Datas"]) {
+					CUTSCENE_DATA* pData = new CUTSCENE_DATA();
 
-			inFile.read(reinterpret_cast<char*>(&tData.vPosition), sizeof(_float3));
-			inFile.read(reinterpret_cast<char*>(&tData.vRotation), sizeof(_float3));
-			inFile.read(reinterpret_cast<char*>(&tData.vAtOffset), sizeof(_float3));
-			inFile.read(reinterpret_cast<char*>(&tData.fFovy), sizeof(_float));
+					pData->vPosition = { Data["Position"][0].get<_float>(), Data["Position"][1].get<_float>(), Data["Position"][2].get<_float>() };
+					pData->vRotation = { Data["Rotation"][0].get<_float>(), Data["Rotation"][1].get<_float>(), Data["Rotation"][2].get<_float>() };
+					pData->vAtOffset = { Data["AtOffset"][0].get<_float>(), Data["AtOffset"][1].get<_float>(), Data["AtOffset"][2].get<_float>() };
+					pData->fFovy = Data["Fovy"];
 
-			CutSceneData.second.push_back(tData);
+					CutSceneData.second.push_back(pData);
+				}
+			}
+
+			Add_CutScene(m_pGameInstance->StringToWString(szCutSceneTag), CutSceneData);
 		}
-
-		Add_CutScene(CutSceneTag, CutSceneData);
 	}
 }
 
