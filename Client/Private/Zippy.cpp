@@ -28,7 +28,6 @@ HRESULT CZippy::Initialize(void* _pArg)
     CZippy::MONSTER_DESC* pDesc = static_cast<CZippy::MONSTER_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_2D;
     pDesc->isCoordChangeEnable = false;
-    pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;

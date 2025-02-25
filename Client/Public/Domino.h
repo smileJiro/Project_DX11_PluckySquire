@@ -2,8 +2,7 @@
 #include "ModelObject.h"
 
 BEGIN(Client)
-class CDomino :
-    public CModelObject
+class CDomino : public CModelObject
 {
 protected:
 	explicit CDomino(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

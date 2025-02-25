@@ -9,6 +9,13 @@ class CNPC_Thrash final : public CNPC_Companion
 {
 
 public:
+	enum RENDER
+	{
+		THRASH_RENDER,
+		THRASH_NOTRENDER,
+		THRASHRENDER_END
+	};
+
 	enum ACTION
 	{
 		ACTION_WAIT,
@@ -212,6 +219,7 @@ private:
 	CNPC_Thrash::ACTION			m_eActionType = { ACTION_END };
 	CNPC_Thrash::ANIMATION		m_eAnimationType = { ANIM_END };
 	CNPC_Thrash::MOVING			m_eMoving = { MOVING_END };
+	CNPC_Thrash::RENDER			m_eRenderType = { THRASHRENDER_END };
 	_float						m_fIdleWaitTime = { 0.f };
 	_float						m_fWelcomeWaitTime = { 0.f };
 	_bool						m_isDialoging = { false };

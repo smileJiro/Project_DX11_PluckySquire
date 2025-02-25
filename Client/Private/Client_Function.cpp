@@ -5,6 +5,7 @@
 #include "Actor.h"
 #include "Actor_Dynamic.h"
 #include "Character.h"
+#include "FSM.h"
 
 /* 함수 구현부 */
 namespace Client
@@ -30,7 +31,7 @@ namespace Client
 		tEvent.Parameters.resize(1); // NumParameters
 
 		tEvent.Parameters[0] = (DWORD_PTR)_pGameObject;
-
+		Safe_AddRef(_pGameObject);
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
@@ -53,6 +54,7 @@ namespace Client
 		tEvent.Parameters.resize(3); // NumParameters
 
 		tEvent.Parameters[0] = (DWORD_PTR)_pObject;
+		Safe_AddRef(_pObject);
 		tEvent.Parameters[1] = (DWORD_PTR)_isActive;
 		tEvent.Parameters[2] = (DWORD_PTR)_isDelay;
 
@@ -80,6 +82,7 @@ namespace Client
 		tEvent.Parameters.resize(3); // NumParameters
 
 		tEvent.Parameters[0] = (DWORD_PTR)_pActor;
+		Safe_AddRef(_pActor);
 		tEvent.Parameters[1] = (DWORD_PTR)_MyGroup;
 		tEvent.Parameters[2] = (DWORD_PTR)_OtherGroupMask;
 
@@ -94,7 +97,7 @@ namespace Client
 
 		tEvent.Parameters[0] = (DWORD_PTR)_eState;
 		tEvent.Parameters[1] = (DWORD_PTR)_pFSM;
-
+		Safe_AddRef(_pFSM);
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
@@ -106,7 +109,7 @@ namespace Client
 
 		tEvent.Parameters[0] = (DWORD_PTR)_eState;
 		tEvent.Parameters[1] = (DWORD_PTR)_pFSM;
-
+		Safe_AddRef(_pFSM);
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
@@ -117,6 +120,7 @@ namespace Client
 		tEvent.Parameters.resize(3); // NumParameters
 
 		tEvent.Parameters[0] = (DWORD_PTR)_pActorObject;
+		Safe_AddRef(_pActorObject);
 		tEvent.Parameters[1] = (DWORD_PTR)_eCoordinate;
 		_float3* pPosition = nullptr;
 		if (nullptr != _pNewPosition)
@@ -134,6 +138,7 @@ namespace Client
 		tEvent.Parameters.resize(2); // NumParameters
 
 		tEvent.Parameters[0] = (DWORD_PTR)_pActorObject;
+		Safe_AddRef(_pActorObject);
 		tEvent.Parameters[1] = (DWORD_PTR)_bValue;
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 
@@ -283,7 +288,9 @@ namespace Client
 
 		tEvent.Parameters.resize(4);
 		tEvent.Parameters[0] = (DWORD_PTR)_pHitter;
+		Safe_AddRef(_pHitter);
 		tEvent.Parameters[1] = (DWORD_PTR)_pVictim;
+		Safe_AddRef(_pVictim);
 		tEvent.Parameters[2] = (DWORD_PTR)_iDamg;
 
 		_float3* vForce = new _float3{ _vKnockBackForce.m128_f32[0], _vKnockBackForce.m128_f32[1], _vKnockBackForce.m128_f32[2] };
@@ -325,7 +332,9 @@ namespace Client
 		tEvent.eType = EVENT_TYPE::SNEAK_BEETLECAUGHT;
 		tEvent.Parameters.resize(4);
 		tEvent.Parameters[0] = (DWORD_PTR)_pPlayer;
+		Safe_AddRef(_pPlayer);
 		tEvent.Parameters[1] = (DWORD_PTR)_pMonster;
+		Safe_AddRef(_pMonster);
 
 		if (nullptr == _vPlayerPos || nullptr == _vMonsterPos)
 			return;

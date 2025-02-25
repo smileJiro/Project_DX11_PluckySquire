@@ -17,13 +17,6 @@ CPhysx_Manager::CPhysx_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 
 HRESULT CPhysx_Manager::Initialize()
 {
-	// Event CallBack Class 
-	m_pPhysx_EventCallBack = CPhysx_EventCallBack::Create();
-	if (nullptr == m_pPhysx_EventCallBack)
-		return E_FAIL;
-	m_pPhysx_ContactModifyCallback = CPhysx_ContactModifyCallback::Create();
-	if (nullptr == m_pPhysx_ContactModifyCallback)
-		return E_FAIL;
 
 	if (FAILED(Initialize_Foundation()))
 		return E_FAIL;
@@ -157,10 +150,6 @@ void CPhysx_Manager::Level_Enter()
 
 void CPhysx_Manager::Level_Exit()
 {
-	if (nullptr != m_pPhysx_EventCallBack)
-	{
-		m_pPhysx_EventCallBack->Level_Exit();
-	}
 
 	Delete_ShapeUserData();
 	Delete_ActorUserData();
@@ -175,6 +164,7 @@ void CPhysx_Manager::Level_Exit()
 	//}
 
 	m_pPxScene->setSimulationEventCallback(nullptr);
+	m_pPxScene->setContactModifyCallback(nullptr);
 	if (m_pPxScene)
 	{
 		m_pPxScene->release();

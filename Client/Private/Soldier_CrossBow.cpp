@@ -24,7 +24,6 @@ HRESULT CSoldier_CrossBow::Initialize(void* _pArg)
     CSoldier_CrossBow::MONSTER_DESC* pDesc = static_cast<CSoldier_CrossBow::MONSTER_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
-    pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
@@ -60,7 +59,7 @@ HRESULT CSoldier_CrossBow::Initialize(void* _pArg)
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CROSSBOW_IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CROSSBOW_WALK, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
+    //pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
     pModelObject->Set_Animation((_uint)CROSSBOW_IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CSoldier_CrossBow::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -125,7 +124,7 @@ void CSoldier_CrossBow::Change_Animation()
             break;
 
         case MONSTER_STATE::CHASE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
+            //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
             break;
 
         case MONSTER_STATE::ATTACK:
@@ -143,9 +142,9 @@ void CSoldier_CrossBow::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
     switch ((CSoldier_CrossBow::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
     {
-    case ALERT:
-        Set_AnimChangeable(true);
-        break;
+    //case ALERT:
+    //    Set_AnimChangeable(true);
+    //    break;
         
     case CROSSBOW_SHOOT:
         pModelObject->Switch_Animation(CROSSBOW_SHOOT_RECOVERY);

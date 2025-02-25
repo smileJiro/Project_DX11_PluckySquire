@@ -24,7 +24,6 @@ HRESULT CPopuff::Initialize(void* _pArg)
     CPopuff::MONSTER_DESC* pDesc = static_cast<CPopuff::MONSTER_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
-    pDesc->iNumPartObjects = PART_END;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;

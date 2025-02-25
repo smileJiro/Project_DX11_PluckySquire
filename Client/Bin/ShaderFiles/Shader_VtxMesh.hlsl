@@ -44,6 +44,10 @@ int g_iFlag = 0;
 
 float4 g_vCamPosition;
 float4 g_vDefaultDiffuseColor;
+
+float2 g_fStartUV;
+float2 g_fEndUV;
+
 /* 구조체 */
 struct VS_IN
 {
@@ -106,6 +110,35 @@ VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
     Out.vWorldNormal = mul(float4(In.vNormal, 0.0f), g_WorldMatrix);
     return Out;
 }
+
+VS_OUT VS_MAIN_RENDERTARGET_UV(VS_IN In)
+{
+    VS_OUT Out = (VS_OUT)0;
+    matrix matWV, matWVP;
+
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+
+    //float2 vUV = g_fStartUV + In.vTexcoord * (g_fEndUV - g_fStartUV);
+    float2 vUV = lerp(g_fStartUV, g_fEndUV, In.vTexcoord);
+
+    if (g_iFlag == RT_RENDER_ROTATE)
+    {
+        float2 vRotate;
+        vRotate.x = 1.f - vUV.y;
+        vRotate.y = vUV.x;
+        vUV = vRotate;
+    }
+    Out.vPosition = mul(float4(In.vPosition, 1.0), matWVP);
+    Out.vNormal = normalize(mul(float4(In.vNormal, 0), g_WorldMatrix));
+    Out.vTexcoord = vUV;
+    Out.vWorldPos = mul(Out.vPosition, g_WorldMatrix);
+    Out.vProjPos = Out.vPosition; // w 나누기를 수행하지 않은 0 ~ far 사이의 z 값이 보존되어있는 position
+    Out.vTangent = In.vTangent;
+
+    return Out;
+}
+
 
 // Rendering PipeLine : PixelShader //
 struct PS_IN
@@ -431,6 +464,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_PLAYERDEPTH();
+    }
+
+    pass RenderTargetMappingPass // 10
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN_RENDERTARGET_UV();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN();
     }
 }
 
