@@ -192,7 +192,9 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
     float4 vMask = g_Texture.Sample(LinearSampler_Clamp, float2(In.vTexcoord.x, In.vTexcoord.y));
     
     vColor.rgb = vColor.rgb;
-    vColor.a = vColor.a * max(1.f - In.vTexcoord.y, 0.f) * vMask.r;
+   
+
+    vColor.a = vColor.a /** max(1.f - In.vTexcoord.y, 0.f)*/ * vMask.r * min(In.vTexcoord.x, 1.f - In.vTexcoord.x);
     if (0.05f > vColor.a)
         discard;
     

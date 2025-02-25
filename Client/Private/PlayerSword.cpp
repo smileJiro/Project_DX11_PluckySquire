@@ -6,6 +6,7 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"     
 #include "Camera_Manager.h"
+#include "Effect_Manager.h"
 #include "Effect_Trail.h"
 #include "Effect_Beam.h"
 
@@ -346,6 +347,7 @@ void CPlayerSword::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other
                 Set_State(STUCK);
 
                 m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_stick-") + to_wstring(rand() % 3), 30.f);
+                CEffect_Manager::GetInstance()->Active_Effect(TEXT("SwordThrowBlock"), true, &m_WorldMatrices[COORDINATE_3D]);
 
                 if (COORDINATE_3D == Get_CurCoord())
                     m_pThrowTrailEffect->Stop_Spawn(0.5f);
@@ -635,8 +637,9 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
         _uint iShapeCount = (_uint)m_pActorCom->Get_Shapes().size();
         for (_uint i = 0; i < iShapeCount; i++)
             m_pActorCom->Set_ShapeEnable(i, false);
-
-        m_pTrailEffect->Set_AddUpdate(_bOn);
+        
+        if (HANDLING == m_eCurrentState)
+            m_pTrailEffect->Set_AddUpdate(_bOn);
         if (false == _bOn)
         {
             m_pTrailEffect->Delete_Delay(0.5f);

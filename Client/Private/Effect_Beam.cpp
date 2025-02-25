@@ -44,15 +44,15 @@ HRESULT CEffect_Beam::Initialize(void* _pArg)
 void CEffect_Beam::Update(_float _fTimeDelta)
 {
 
-#ifdef _DEBUG
-	ImGui::Begin("Beam");
-	ImGui::DragFloat4("Color", (_float*)&m_vColor, 0.01f);
-	ImGui::DragFloat("Width", &m_fWidth, 0.01f);
-	ImGui::DragFloat4("PointColor", (_float*)&m_vPointColor, 0.01f);
-	ImGui::DragFloat("PointSize", &m_fPointSize, 0.01f);
-
-	ImGui::End();
-#endif 
+//#ifdef _DEBUG
+//	ImGui::Begin("Beam");
+//	ImGui::DragFloat4("Color", (_float*)&m_vColor, 0.01f);
+//	ImGui::DragFloat("Width", &m_fWidth, 0.01f);
+//	ImGui::DragFloat4("PointColor", (_float*)&m_vPointColor, 0.01f);
+//	ImGui::DragFloat("PointSize", &m_fPointSize, 0.01f);
+//
+//	ImGui::End();
+//#endif 
 	if (false == m_isActive)
 		return;
 

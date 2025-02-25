@@ -294,26 +294,29 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
 			return E_FAIL;
 
-		Bind_Texture(ALPHA, "g_AlphaTexture");
+		//Bind_Texture(ALPHA, "g_AlphaTexture");
 		Bind_Texture(MASK, "g_MaskTexture");
 		Bind_Texture(NOISE, "g_NoiseTexture");
 
 
-		if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
-			return E_FAIL;
+		//if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
+		//	return E_FAIL;
 		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("AlphaTest", "g_fAlphaTest")))
 			return E_FAIL;
-		if (FAILED(Bind_Float("ColorTest", "g_fColorTest")))
-			return E_FAIL;
+		//if (FAILED(Bind_Float("ColorTest", "g_fColorTest")))
+		//	return E_FAIL;
 		if (FAILED(Bind_Float("BloomThreshold", "g_fBloomThreshold")))
 			return E_FAIL;
 
-		if (FAILED(Bind_Float4("AlphaUVScale", "g_AlphaUVScale")))
+		if (FAILED(Bind_Float4("DissolveEdgeColor", "g_vEdgeColor")))
 			return E_FAIL;
+
+		//if (FAILED(Bind_Float4("AlphaUVScale", "g_AlphaUVScale")))
+		//	return E_FAIL;
 		if (FAILED(Bind_Float4("MaskUVScale", "g_MaskUVScale")))
 			return E_FAIL;
 		if (FAILED(Bind_Float4("NoiseUVScale", "g_NoiseUVScale")))
@@ -333,25 +336,28 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
 			return E_FAIL;
 
-		Bind_Texture(ALPHA, "g_AlphaTexture");
+		//Bind_Texture(ALPHA, "g_AlphaTexture");
 		Bind_Texture(MASK, "g_MaskTexture");
 		Bind_Texture(NOISE, "g_NoiseTexture");
 
-		if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
-			return E_FAIL;
+		//if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
+		//	return E_FAIL;
 		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("AlphaTest", "g_fAlphaTest")))
 			return E_FAIL;
-		if (FAILED(Bind_Float("ColorTest", "g_fColorTest")))
-			return E_FAIL;
+		//if (FAILED(Bind_Float("ColorTest", "g_fColorTest")))
+		//	return E_FAIL;
 		if (FAILED(Bind_Float("BloomThreshold", "g_fBloomThreshold")))
 			return E_FAIL;
 
-		if (FAILED(Bind_Float4("AlphaUVScale", "g_AlphaUVScale")))
+		if (FAILED(Bind_Float4("DissolveEdgeColor", "g_vEdgeColor")))
 			return E_FAIL;
+
+		//if (FAILED(Bind_Float4("AlphaUVScale", "g_AlphaUVScale")))
+		//	return E_FAIL;
 		if (FAILED(Bind_Float4("MaskUVScale", "g_MaskUVScale")))
 			return E_FAIL;
 		if (FAILED(Bind_Float4("NoiseUVScale", "g_NoiseUVScale")))
@@ -409,6 +415,44 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 		if (FAILED(Bind_Float4("SubUVScale", "g_SubUVScale")))
 			return E_FAIL;
 
+		break;
+	}
+	case SUBCOLOR_BLOOM_DISSOLVE:
+	{
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_fTimeAcc", &m_fAccTime, sizeof(_float))))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
+			return E_FAIL;
+
+		//Bind_Texture(ALPHA, "g_AlphaTexture");
+		Bind_Texture(MASK, "g_MaskTexture");
+		Bind_Texture(NOISE, "g_NoiseTexture");
+
+
+		//if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
+		//	return E_FAIL;
+		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("AlphaTest", "g_fAlphaTest")))
+			return E_FAIL;
+		//if (FAILED(Bind_Float("ColorTest", "g_fColorTest")))
+		//	return E_FAIL;
+		if (FAILED(Bind_Float("BloomThreshold", "g_fBloomThreshold")))
+			return E_FAIL;
+
+		if (FAILED(Bind_Float4("DissolveEdgeColor", "g_vEdgeColor")))
+			return E_FAIL;
+		if (FAILED(Bind_Float4("SubColor", "g_vSubColor")))
+			return E_FAIL;
+
+		//if (FAILED(Bind_Float4("AlphaUVScale", "g_AlphaUVScale")))
+		//	return E_FAIL;
+		if (FAILED(Bind_Float4("MaskUVScale", "g_MaskUVScale")))
+			return E_FAIL;
+		if (FAILED(Bind_Float4("NoiseUVScale", "g_NoiseUVScale")))
+			return E_FAIL;
 
 		break;
 	}
@@ -618,7 +662,8 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 		if (ImGui::TreeNode("Pass"))
 		{
 
-			const _char* items[] = { "Default", "Dissolve", "Bloom", "Bloom_Dissolve", "Bloom_Dissolve_BillBoard", "Distortion", "Sub_Dissolve"};
+			const _char* items[] = { "Default", "Dissolve", "Bloom", "Bloom_Dissolve", "Bloom_Dissolve_BillBoard", "Distortion", 
+				"Sub_Dissolve", "SubColor_Bloom_Dissolve"};
 			static _int item_selected_idx = 0;
 			const char* combo_preview_value = items[item_selected_idx];
 
