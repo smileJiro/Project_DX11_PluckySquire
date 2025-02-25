@@ -15,6 +15,7 @@
 #include "Pooling_Manager.h"
 #include "Section_Manager.h"
 #include "UI_Manager.h"
+#include "Dialog_Manager.h"
 #include "PlayerData_Manager.h"
 
 #include "FSM.h"
@@ -808,6 +809,8 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 
 	CEffect2D_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	Uimgr->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
+	CDialog_Manager::GetInstance()->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
+
 
 
 	return S_OK;

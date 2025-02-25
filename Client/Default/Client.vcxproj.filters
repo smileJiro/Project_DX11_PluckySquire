@@ -472,6 +472,9 @@
     <Filter Include="02.GameObjects\Camera\CutScene\Tool\Cube">
       <UniqueIdentifier>{d8948c54-5fa7-446a-ac11-a3806149292c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\99. Dialog_Manager">
+      <UniqueIdentifier>{be8cd20e-6575-4400-b74d-735c56c67db8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1034,6 +1037,7 @@
       <Filter>02.GameObjects\Word</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\2DMapWordObject.h" />
+    <ClInclude Include="..\public\CollapseBlock.h" />
     <ClInclude Include="..\Public\Goblin_SideScroller.h" />
     <ClInclude Include="..\Public\LightningBolt.h" />
     <ClInclude Include="..\Public\PlayerState_Evict.h" />
@@ -1125,8 +1129,8 @@
     <ClInclude Include="..\Public\RenderGroup_PlayerDepth.h">
       <Filter>94.RenderGroups%28Custom%29\PlayerDepth</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CollapseBlock.h">
-      <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
+    <ClInclude Include="..\Public\Dialog_Manager.h">
+      <Filter>02.GameObjects\UI\99. Dialog_Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1678,6 +1682,7 @@
       <Filter>02.GameObjects\Word</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
+    <ClCompile Include="..\private\CollapseBlock.cpp" />
     <ClCompile Include="..\Private\Goblin_SideScroller.cpp" />
     <ClCompile Include="..\Private\GameEventExecuter.cpp" />
     <ClCompile Include="..\Private\LightningBolt.cpp" />
@@ -1770,8 +1775,8 @@
     <ClCompile Include="..\Private\Cube.cpp">
       <Filter>02.GameObjects\Camera\CutScene\Tool\Cube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CollapseBlock.cpp">
-      <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
+    <ClCompile Include="..\Private\Dialog_Manager.cpp">
+      <Filter>02.GameObjects\UI\99. Dialog_Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
