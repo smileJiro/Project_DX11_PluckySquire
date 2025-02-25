@@ -30,7 +30,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
 {
     CBarfBug::MONSTER_DESC* pDesc = static_cast<CBarfBug::MONSTER_DESC*>(_pArg);
     pDesc->isCoordChangeEnable = true;
-    pDesc->iNumPartObjects = PART_END;
+
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;

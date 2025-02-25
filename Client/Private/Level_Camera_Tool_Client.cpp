@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Level_Camera_Tool_Client.h"
 #include "Level_Loading.h"
-#include "GameInstance.h"ww
+#include "GameInstance.h"
 
 #include "Camera_Free.h"
 #include "Camera_Target.h"
@@ -93,9 +93,9 @@ void CLevel_Camera_Tool_Client::Update(_float _fTimeDelta)
 	}
 
 	Show_CameraTool();
-	Show_CutSceneTool(_fTimeDelta);
+	//Show_CutSceneTool(_fTimeDelta);
 	Show_ArmInfo();
-	Show_CutSceneInfo();
+	//Show_CutSceneInfo();
 	Show_SaveLoadFileWindow();
 
 	Show_AnimModel(_fTimeDelta);
@@ -2638,7 +2638,7 @@ void CLevel_Camera_Tool_Client::Save_Data_Arm()
 		Result.push_back(Trigger_json);
 	}
 
-	_wstring wszSavePath = L"../Bin/Resources/DataFiles/ArmData/";
+	_wstring wszSavePath = L"../Bin/DataFiles/Camera/ArmData/";
 	_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
 
 	ofstream file(wszSavePath + wszSaveName + TEXT(".json"));

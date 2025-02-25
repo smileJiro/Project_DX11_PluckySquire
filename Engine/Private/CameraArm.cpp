@@ -112,6 +112,7 @@ void CCameraArm::Set_NextArmData(ARM_DATA* _pData, _int _iTriggerID)
     m_pNextArmData = _pData;
     m_fStartLength = m_fLength;
     m_vStartArm = m_vArm;
+    m_fReturnTime.y = 0.f;
 
     for (auto& PreArm : m_PreArms) {
         if (_iTriggerID == PreArm.first.iTriggerID) {

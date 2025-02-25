@@ -34,7 +34,11 @@ HRESULT CPlayerData_Manager::Level_Enter(_int _iChangeLevelID)
 HRESULT CPlayerData_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
 {
 	for (auto& PlayerItem : m_ItemState)
+	{
 		Safe_Release(PlayerItem.second.second);
+		PlayerItem.second.second = nullptr;
+	}
+
 
 	return S_OK;
 }

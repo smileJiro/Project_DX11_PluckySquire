@@ -1005,6 +1005,7 @@ void CPlayer::Jump()
 
 PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
+    m_f3DJumpPower = 11.5f;
 	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
 	if (STATE::DIE == Get_CurrentStateID())

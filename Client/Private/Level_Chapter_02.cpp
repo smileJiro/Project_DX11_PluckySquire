@@ -70,6 +70,15 @@ CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext
 HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 {
 	m_eLevelID = _eLevelID;
+
+	if (FAILED(CSection_Manager::GetInstance()->Level_Enter(_eLevelID)))
+	{
+		MSG_BOX(" Failed CSection_Manager Level_Enter(Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+
+
+
 	if (FAILED(Ready_Lights()))
 	{
 		MSG_BOX(" Failed Ready_Lights (Level_Chapter_02::Initialize)");
@@ -101,11 +110,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
-	//	assert(nullptr);
-	//}
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_02::Initialize)");
@@ -652,7 +661,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 		m_eLevelID, _strLayerTag, &pCamera, &Desc)))
 		return E_FAIL;
 
-	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::FREE, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::FREE, static_cast<CCamera*>(pCamera));
 
 	// Target Camera
 	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
@@ -675,7 +684,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 		m_eLevelID, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
-	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, static_cast<CCamera*>(pCamera));
 
 	_float3 vArm;
 	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.67f, -0.74f, 0.f)));
@@ -698,7 +707,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 		m_eLevelID, _strLayerTag, &pCamera, &CutSceneDesc)))
 		return E_FAIL;
 
-	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::CUTSCENE, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::CUTSCENE, static_cast<CCamera*>(pCamera));
 
 	// 2D Camera
 	CCamera_2D::CAMERA_2D_DESC Target2DDesc{};
@@ -721,7 +730,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 		m_eLevelID, _strLayerTag, &pCamera, &Target2DDesc)))
 		return E_FAIL;
 
-	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, static_cast<CCamera*>(pCamera));
 
 	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
 	//vRotation = { XMConvertToRadians(-79.2f), XMConvertToRadians(0.f), 0.f };
@@ -730,7 +739,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// Load CutSceneData, ArmData
 	CCamera_Manager::GetInstance()->Load_CutSceneData();
-	CCamera_Manager::GetInstance()->Load_ArmData();
+	CCamera_Manager::GetInstance()->Load_ArmData(TEXT("Chapter2_ArmData.json"), TEXT("Chapter2_SketchSpace_ArmData.json"));
 
 
 	return S_OK;

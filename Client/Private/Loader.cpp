@@ -104,6 +104,7 @@
 #include "Rat.h"
 #include "Zippy.h"
 #include "BirdMonster.h"
+#include "Projectile_BirdMonster.h"
 #include "Soldier_Spear.h"
 #include "Soldier_CrossBow.h"
 #include "Soldier_Bomb.h"
@@ -572,6 +573,11 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_GameObject_BirdMonster */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BirdMonster"),
         CBirdMonster::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Projectile_BirdMonster */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Projectile_BirdMonster"),
+        CProjectile_BirdMonster::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_Soldier_Spear */
@@ -1634,6 +1640,9 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_ZippyAttackAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/Monster/Zippy/Zippy_Attack.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_BirdMonsterAttackEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Namastarling_Rig_01/BirdMonster_Attack.animevt"))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_JumpBugJumpEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/jumpBug_Rig/JumpBug_Jump.animevt"))))

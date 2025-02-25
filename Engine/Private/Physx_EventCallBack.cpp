@@ -104,6 +104,7 @@ void CPhysx_EventCallBack::onTrigger(PxTriggerPair* pairs, PxU32 count)
 			_bool isResult = Erase_StayTrigger(ID.ID);
 			if (true == isResult || PxPairFlag::eNOTIFY_TOUCH_LOST == pairs[i].status)
 				pTriggerOwner->OnTrigger_Exit(TriggerCollInfo, OtherCollInfo);
+
 			continue;
 
 		}
