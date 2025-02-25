@@ -30,10 +30,12 @@ public:
 	void Interact(CPlayer* _pUser) override;
 	_bool Is_Interactable(CPlayer* _pUser) override;
 	_float Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) override;
-	virtual void On_Touched(CPlayer* _pPlayer) override;
-	virtual void On_EndHolding(CPlayer* _pPlayer) override;
+	virtual void On_InteractionStart(CPlayer* _pPlayer) override;
+	virtual void On_InteractionEnd(CPlayer* _pPlayer) override;
 	void Set_Dragger(CPlayer* _pPlayer) { m_pDragger = _pPlayer; }
 	void Move(_fvector _vForce, _float _fTimeDelta);
+
+	F_DIRECTION Check_HoldingDirection(CPlayer* _pPlayer);
 private:
 	_bool m_bUserContact = false;
 	CPlayer* m_pDragger = nullptr;

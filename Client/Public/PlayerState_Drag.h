@@ -14,13 +14,16 @@ public:
     virtual void Exit() override;
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 
-
 private:
 	_float m_fDragMoveSpeed = 0.f;
 	CDraggableObject* m_pDraggableObject = nullptr;
 
 	_float m_fAnimTransitionTime = 0.2f;
 	_float m_fAnimTransitionTimeAcc = 0.2f;
+
+    _bool m_bPushing = false;
+    _float m_fPushThreshold = 0.3f;
+	F_DIRECTION m_eHoldDirection = F_DIRECTION::F_DIR_LAST;
 };
 
 END

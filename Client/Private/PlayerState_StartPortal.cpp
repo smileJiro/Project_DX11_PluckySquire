@@ -25,7 +25,8 @@ void CPlayerState_StartPortal::Update(_float _fTimeDelta)
 
 		}
 	}
-	else if (INTERACT_RESULT::FAIL == eResult)
+	else if (INTERACT_RESULT::FAIL == eResult
+		|| INTERACT_RESULT::NO_INPUT == eResult)
 	{
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;

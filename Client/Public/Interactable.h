@@ -5,9 +5,13 @@
 BEGIN(Client)
 enum class INTERACT_RESULT
 {
+	INTERACT_START,
+	INTERACT_END,
 	SUCCESS,//Interact가 호출됨.
 	FAIL,//Charging도 아닌데 Interact가 호출되지 않음.
 	CHARGING,//Charging 중
+	CHARGE_CANCEL,//Charging 중
+	NO_INPUT,
 	PLAYER_INTERACT_RESULT_LAST
 };
 class CPlayer;
@@ -33,76 +37,38 @@ public:
 	virtual _float Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)abstract;
 
 	_bool Is_ChargeCompleted() { return m_fInteractTimeAcc >= m_fInteractChargeTime; }
-	_bool Is_Interacting() {return m_fInteractTimeAcc > 0.f;}
+	_bool Is_Interacting() { return m_bInteracting;}
 	_float Get_ChargeProgress() { return m_fInteractTimeAcc / m_fInteractChargeTime; }
 	KEY Get_InteractKey() { return m_eInteractKey; }	
 	INTERACT_TYPE Get_InteractType() { return m_eInteractType; }
-
-	//사용법 : 플레이어의 Interact 인풋을 확인하고 Try_Interact를 호출.
-	INTERACT_RESULT Try_Interact(CPlayer* _pPlayer, _float _fTimeDelta)
+	void Set_Interacting(_bool _bInteracting) { m_bInteracting = _bInteracting; }
+	
+	void Start_Interact(CPlayer* _pPlayer)
 	{
-		if (nullptr == _pPlayer)
-			return INTERACT_RESULT::FAIL;
-
-		IInteractable::INTERACT_TYPE eInteractType = Get_InteractType();
-		if (IInteractable::INTERACT_TYPE::NORMAL == eInteractType)
-		{
-			Interact(_pPlayer);
-			return INTERACT_RESULT::SUCCESS;
-		}
-		else if (IInteractable::INTERACT_TYPE::CHARGE == eInteractType)
-		{
-			if (Is_ChargeCompleted())
-			{
-				End_Interact(_pPlayer);
-				Interact(_pPlayer);
-				return INTERACT_RESULT::SUCCESS;
-			}
-			else
-			{
-				Charge(_pPlayer, _fTimeDelta);
-				return INTERACT_RESULT::CHARGING;
-			}
-
-		}
-		else if (IInteractable::INTERACT_TYPE::HOLDING == eInteractType)
-		{
-			Holding(_pPlayer, _fTimeDelta);
-			Interact(_pPlayer);
-			return INTERACT_RESULT::SUCCESS;
-		}
-
+		On_InteractionStart(_pPlayer);
+		m_fInteractTimeAcc = 0.f;
+		m_bInteracting = true;
+	}
+	void Pressing(CPlayer* _pPlayer, _float _fTimeDelta)
+	{
+		On_Pressing(_pPlayer, _fTimeDelta);
+		m_fInteractTimeAcc += _fTimeDelta;
+		m_bInteracting = true;
 	}
 	void End_Interact(CPlayer* _pPlayer)
 	{
-		On_ChargeCanceled(_pPlayer);
+		On_InteractionEnd(_pPlayer);
 		m_fInteractTimeAcc = 0.f;
-	}
-protected:
-	void Holding(CPlayer* _pPlayer, _float _fTimeDelta)
-	{
-		if (m_fInteractTimeAcc == 0.f)
-			On_Touched(_pPlayer);
-		m_fInteractTimeAcc += _fTimeDelta;
-	}
-	_bool End_Holding(CPlayer* _pPlayer)
-	{
-		On_EndHolding(_pPlayer);
-		return m_fInteractTimeAcc = 0.f;
-	}
-	void Charge(CPlayer* _pPlayer, _float _fTimeDelta)
-	{
-		if (m_fInteractTimeAcc == 0.f)
-			On_Touched(_pPlayer);
-		m_fInteractTimeAcc += _fTimeDelta;
+		m_bInteracting = false;
 	}
 
+protected:
 
 	//플레이어가 건드렸을 때(상호작용 버튼을 눌렀을 때) 호출됨. Charge가 시작된 경우를 의미.
-	virtual void On_Touched(CPlayer* _pPlayer) {}
+	virtual void On_InteractionStart(CPlayer* _pPlayer) {}
+	virtual void On_Pressing(CPlayer* _pPlayer, _float _fTimeDelta){}
 	//플레이어가 상호작용을 취소했을 때 호출됨.
-	virtual void On_ChargeCanceled(CPlayer* _pPlayer) {}
-	virtual void On_EndHolding(CPlayer* _pPlayer) {}
+	virtual void On_InteractionEnd(CPlayer* _pPlayer) {}
 protected:
 	_float m_fInteractTimeAcc = 0.0f;
 	//차징하는 데 걸리는 시간. 차징 타입이 아니면 0으로 두기.
@@ -110,6 +76,7 @@ protected:
 
 	INTERACT_TYPE m_eInteractType = INTERACT_TYPE::NORMAL;
 	KEY m_eInteractKey = KEY::E;
+	_bool m_bInteracting = false;
 };
 
 //예시  코드 : 상호작용하면 사망하는 NPC~
