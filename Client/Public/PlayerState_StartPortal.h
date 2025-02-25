@@ -22,6 +22,8 @@ private:
 	_float m_f3DJumpDistance = 1.5f;
 	_float m_f2DMoveSpeed = 600.f;
 	_float m_f3DMoveSpeed = 10.f;
+
+
 };
 //포탈 타는 과정
 //1. 플레이어의 TriggerShape가 포탈과 충돌함.

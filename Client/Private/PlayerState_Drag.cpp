@@ -20,6 +20,10 @@ void CPlayerState_Drag::Update(_float _fTimeDelta)
 		PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 		if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 		{
+			//물체와 나 사이의 방향과 일치하는 방향으로 이동하면 PUSH
+			//일치하지 않는 바향으로 이동하면 PULL
+	
+
 			m_pOwner->Set_PlayingAnim(true);
 			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
 			m_pDraggableObject->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
@@ -52,6 +56,7 @@ void CPlayerState_Drag::Enter()
 	}
 	else
 	{
+		m_eHoldDirection = m_pDraggableObject->Check_HoldingDirection(m_pOwner);
 		m_pOwner->Get_Body()->Set_3DAnimationTransitionTime((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_PULL_GT, m_fAnimTransitionTime);
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_PULL_GT);
 	}

@@ -36,9 +36,9 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 	{
 		CActor::ACTOR_DESC ActorDesc = {};
 		ActorDesc.pOwner = this;
-		ActorDesc.FreezeRotation_XYZ[0] = false;
-		ActorDesc.FreezeRotation_XYZ[1] = false;
-		ActorDesc.FreezeRotation_XYZ[2] = false;
+		ActorDesc.FreezeRotation_XYZ[0] = true;
+		ActorDesc.FreezeRotation_XYZ[1] = true;
+		ActorDesc.FreezeRotation_XYZ[2] = true;
 		ActorDesc.FreezePosition_XYZ[0] = false;
 		ActorDesc.FreezePosition_XYZ[1] = false;
 		ActorDesc.FreezePosition_XYZ[2] = false;
@@ -135,28 +135,7 @@ void CDraggableObject::Late_Update(_float _fTimeDelta)
 
 void CDraggableObject::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts)
 {
-	SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
-	switch (eShapeUse)
-	{
-	case Client::SHAPE_USE::SHAPE_BODY:
-	{
-		if (m_pDragger 
-			&& OBJECT_GROUP::MAPOBJECT == _Other.pActorUserData->iObjectGroup
-			|| OBJECT_GROUP::DYNAMIC_OBJECT == _Other.pActorUserData->iObjectGroup
-			|| OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
-		{
-			_uint iContactCount = _ModifiableContacts.Get_ContactCount();
-			for (_uint i = 0; i < iContactCount; i++)
-			{
 
-				_ModifiableContacts.Set_StaticFriction(i, 0);
-				_ModifiableContacts.Set_DynamicFriction(i, 0);
-			}
-		}
-
-		break;
-	}
-	}
 }
 
 void CDraggableObject::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -247,6 +226,14 @@ void CDraggableObject::Move(_fvector _vForce, _float _fTimeDelta)
 	{
 		m_pControllerTransform->Go_Direction(_vForce, XMVectorGetX(XMVector3Length(_vForce)), _fTimeDelta);
 	}
+}
+
+F_DIRECTION CDraggableObject::Check_HoldingDirection(CPlayer* _pPlayer)
+{
+	//어떤 면에 붙어있는지 체크
+
+	//return _pPlayer->;
+	return F_DIRECTION::DOWN;
 }
 
 
