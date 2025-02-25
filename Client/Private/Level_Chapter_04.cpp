@@ -887,34 +887,46 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 {
 	CGameObject* pObject;
 
-	Pooling_DESC Pooling_Desc;
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_BarfBug");
-	Pooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
+	CBarfBug::MONSTER_DESC BarfBug_Desc;
+	BarfBug_Desc.iCurLevelID = m_eLevelID;
+	BarfBug_Desc.eStartCoord = COORDINATE_2D;
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(-1000.0f, 150.f, 0.f);
+	BarfBug_Desc.tTransform2DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
 
-	CBarfBug::MONSTER_DESC* BarfBug_Desc = new CBarfBug::MONSTER_DESC;
-	BarfBug_Desc->iCurLevelID = m_eLevelID;
-	BarfBug_Desc->eStartCoord = COORDINATE_2D;
-	BarfBug_Desc->tTransform3DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
-
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_BarfBug"), Pooling_Desc, BarfBug_Desc);
-
-	_float3 vPos = { -1000.0f, 150.f, 0.f };
 	_wstring strSectionKey = TEXT("Chapter4_P0304");
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_BarfBug"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
 	
-	vPos = { -650.0f, -75.f, 0.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_BarfBug"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(-650.0f, -75.f, 0.f);
 
-	vPos = { 400.0f, 180.f, 0.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_BarfBug"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
+		return E_FAIL;
 
-	vPos = { 900.0f, 200.f, 0.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_BarfBug"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
 
-	vPos = { 600.0f, -50.f, 0.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_BarfBug"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(400.0f, 180.f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
+
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(900.0f, 200.f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
+
+	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(600.0f, -50.f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
 
 	/*vPos = { 35.0f, 4.89f, -2.8f };
 	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_BarfBug"), COORDINATE_3D, &vPos, nullptr, nullptr);*/
@@ -929,29 +941,30 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &BarfBug_Desc)))
 	//	return E_FAIL;
 
-	Pooling_Desc;
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Goblin");
-	Pooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
+	CGoblin::MONSTER_DESC Goblin_Desc;
+	Goblin_Desc.iCurLevelID = m_eLevelID;
+	Goblin_Desc.eStartCoord = COORDINATE_3D;
 
-	CGoblin::MONSTER_DESC* Goblin_Desc = new CGoblin::MONSTER_DESC;
-	Goblin_Desc->iCurLevelID = m_eLevelID;
-	Goblin_Desc->eStartCoord = COORDINATE_3D;
+	Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(32.5f, 4.85f, 0.f);
+	Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Goblin"), Pooling_Desc, BarfBug_Desc);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
+		return E_FAIL;
 
-	vPos = { 32.5f, 4.85f, 0.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Goblin"), COORDINATE_3D, &vPos, nullptr, nullptr);
+	Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(41.5f, 4.92f, -4.5f);
 
-	vPos = { 41.5f, 4.92f, -4.5f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Goblin"), COORDINATE_3D, &vPos, nullptr, nullptr);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
+		return E_FAIL;
 
-	vPos = { 43.5f, 4.23f, 5.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Goblin"), COORDINATE_3D, &vPos, nullptr, nullptr);
+	Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(43.5f, 4.23f, 5.f);
 
-	vPos = { 49.f, 4.29f, 6.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Goblin"), COORDINATE_3D, &vPos, nullptr, nullptr);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
+		return E_FAIL;
+
+	Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(49.f, 4.29f, 6.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -968,6 +981,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster_Projectile(const _wstring& _strLa
 
 	CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
 	pProjDesc->iCurLevelID = m_eLevelID;
+	pProjDesc->eStartCoord = COORDINATE_3D;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
 
