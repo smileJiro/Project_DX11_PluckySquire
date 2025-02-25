@@ -6,6 +6,7 @@
 #include "Actor_Dynamic.h"
 #include "Character.h"
 #include "FSM.h"
+#include "Player.h"
 
 /* 함수 구현부 */
 namespace Client
@@ -323,6 +324,18 @@ namespace Client
 		tEvent.Parameters[0] = (DWORD_PTR)_pObject;
 		Safe_AddRef(_pObject);
 		tEvent.Parameters[1] = (DWORD_PTR)fForce;
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
+	}
+
+	void Event_SetPlayerState(CPlayer* _pObject, _uint _iStateIndex)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::SETPLAYERSTATE;
+
+		tEvent.Parameters.resize(2);
+		tEvent.Parameters[0] = (DWORD_PTR)_pObject;
+		Safe_AddRef(_pObject);
+		tEvent.Parameters[1] = (DWORD_PTR)_iStateIndex;
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 

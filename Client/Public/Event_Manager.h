@@ -59,6 +59,7 @@ private:
 
 	HRESULT Execute_Get_Bulb(const EVENT& _tEvent);
 	HRESULT Execute_KnockBack(const EVENT& _tEvent);
+	HRESULT Execute_SetPlayerState(const EVENT& _tEvent);
 
 	HRESULT Execute_Sneak_BeetleCaught(const EVENT& _tEvent);
 
