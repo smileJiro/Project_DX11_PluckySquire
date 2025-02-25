@@ -3973,5 +3973,32 @@
   "SearchTag": "Sksp01_Wall_02_png",
   "Sorting": false,
   "TextureName": "Sksp01_Wall_02_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "SketchSpace_Crinkle_Paper_Wall_01_Sprite",
+  "Sorting": false,
+  "TextureName": "SketchSpace_Crinkle_Paper_Wall_01_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "SketchSpace_Crinkle_Paper_Wall_02_Sprite",
+  "Sorting": false,
+  "TextureName": "SketchSpace_Crinkle_Paper_Wall_02_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "SketchSpace_Crinkle_Paper_Wall_03_Sprite",
+  "Sorting": false,
+  "TextureName": "SketchSpace_Crinkle_Paper_Wall_03_Sprite"
  }
 ]
