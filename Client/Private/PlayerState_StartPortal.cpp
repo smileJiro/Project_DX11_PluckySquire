@@ -12,7 +12,9 @@ void CPlayerState_StartPortal::Update(_float _fTimeDelta)
 {
 	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-	if (tKeyResult.bInputStates[PLAYER_INPUT_INTERACT])
+	//Interact 키가 안눌리면 취소해야 함.
+	INTERACT_RESULT eResult =  m_pOwner->Try_Interact(_fTimeDelta);
+	if (INTERACT_RESULT::CHARGING == eResult)
 	{
 		if (COORDINATE_2D == eCoord)
 		{
@@ -22,13 +24,15 @@ void CPlayerState_StartPortal::Update(_float _fTimeDelta)
 					* m_f2DMoveSpeed, _fTimeDelta);
 
 		}
-		if (m_pOwner->Try_Interact( m_pPortal,_fTimeDelta))
-			return;
 	}
-	else
+	else if (INTERACT_RESULT::FAIL == eResult
+		|| INTERACT_RESULT::NO_INPUT == eResult)
 	{
-		m_pOwner->End_Interact();
 		m_pOwner->Set_State(CPlayer::IDLE);
+		return;
+	}
+	else if(INTERACT_RESULT::SUCCESS == eResult)
+	{
 		return;
 	}
 	if (m_pOwner->Is_PlayingAnim())
@@ -44,8 +48,8 @@ void CPlayerState_StartPortal::Update(_float _fTimeDelta)
 
 void CPlayerState_StartPortal::Enter()
 {
-	m_pPortal = (m_pOwner->Get_CurrentPortal());
-	assert(m_pPortal);
+	m_pPortal = dynamic_cast<CPortal*>(m_pOwner->Get_InteractableObject());
+	assert(nullptr != m_pPortal);
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	m_vTargetPos = m_pPortal->Get_ControllerTransform()->Get_Transform(eCoord)->Get_State(CTransform::STATE_POSITION);
 	_vector vPlayerPos = m_pOwner->Get_FinalPosition();

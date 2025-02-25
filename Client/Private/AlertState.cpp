@@ -47,6 +47,11 @@ void CAlertState::State_Update(_float _fTimeDelta)
 		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 		return;
 	}
+	else if (COORDINATE_2D == m_pOwner->Get_CurCoord() && m_pOwner->Get_Include_Section_Name() != m_pTarget->Get_Include_Section_Name())
+	{
+		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		return;
+	}
 
 	_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
 	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))

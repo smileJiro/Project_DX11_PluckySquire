@@ -26,7 +26,7 @@ public:
 	virtual void Interact(CPlayer* _pUser) override;
 	virtual _bool Is_Interactable(CPlayer* _pUser) override;
 	virtual _float Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) override;
-	virtual void	On_Touched(CPlayer* _pPlayer) override;
+	virtual void	On_InteractionStart(CPlayer* _pPlayer) override;
 	
 	void	LunchBoxOpen();
 

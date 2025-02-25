@@ -29,7 +29,7 @@ void CPlayerState_Clamber::Update(_float _fTimeDelta)
 void CPlayerState_Clamber::Enter()
 {
 	assert(COORDINATE_3D == m_pOwner->Get_CurCoord());
-
+	static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
 	m_pOwner->Stop_Move();
 	m_pOwner->Set_Kinematic(true);
 
@@ -46,6 +46,7 @@ void CPlayerState_Clamber::Enter()
 
 void CPlayerState_Clamber::Exit()
 {
+	static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
 }
 
 void CPlayerState_Clamber::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

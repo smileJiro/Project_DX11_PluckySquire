@@ -27,9 +27,6 @@
 #include "Goblin.h"
 #include "Popuff.h"
 #include "Rat.h"
-#include "Soldier_Spear.h"
-#include "Soldier_CrossBow.h"
-#include "Soldier_Bomb.h"
 #include "ButterGrump.h"
 #include "Goblin_SideScroller.h"
 #include "LightningBolt.h"
@@ -38,6 +35,7 @@
 
 #include "RayShape.h"
 #include "CarriableObject.h"
+#include "DraggableObject.h"
 #include "Bulb.h"
 
 
@@ -180,7 +178,12 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MagicHand (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-
+	if (FAILED(Ready_Layer_Test(TEXT("Layer_Test"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Test (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	
 	///* Test CollapseBlock */
 	//{
 	//	CCollapseBlock::MAPOBJ_DESC CollapseBlockDesc{};
@@ -1485,6 +1488,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects(const _wstring& _strLayerTag)
 		return E_FAIL;
 	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("SwordThrowBlock.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
 	return S_OK;
 }
 
@@ -1531,7 +1538,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
 	tCarriableDesc.eStartCoord = COORDINATE_3D;
 	tCarriableDesc.iCurLevelID = m_eLevelID;
-	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.5f, 21.5f);
+	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.8f, 21.5f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
 		return E_FAIL;
 	CModelObject::MODELOBJECT_DESC tModelDesc{};
@@ -1671,6 +1678,24 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Hand(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_MagicHand"),
 		m_eLevelID, _strLayerTag, &ContainerDesc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Test(const _wstring& _strLayerTag)
+{
+	CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
+	tDraggableDesc.iModelPrototypeLevelID_3D = m_eLevelID;
+	tDraggableDesc.iCurLevelID = m_eLevelID;
+	tDraggableDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_PlasticBlock");
+	tDraggableDesc.eStartCoord = COORDINATE_3D;
+	tDraggableDesc.vBoxHalfExtents = {1.02f,1.02f,1.02f};
+	tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
+	tDraggableDesc.tTransform3DDesc.vInitialPosition = { -47.f, 5.82f, 15.f };
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+	m_eLevelID, _strLayerTag, &tDraggableDesc)))
+	return E_FAIL;
 
 	return S_OK;
 }

@@ -33,7 +33,7 @@ HRESULT CDice::Initialize(void* _pArg)
 	//DiceModelDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 1.0f, -10.f);
 	//DiceModelDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	
-	CActor::ACTOR_DESC ActorDesc;
+	CActor::ACTOR_DESC ActorDesc = {};
 	ActorDesc.pOwner = this;
 	ActorDesc.FreezeRotation_XYZ[0] = false;
 	ActorDesc.FreezeRotation_XYZ[1] = false;

@@ -22,6 +22,12 @@ private:
 	_float m_f3DJumpDistance = 1.5f;
 	_float m_f2DMoveSpeed = 600.f;
 	_float m_f3DMoveSpeed = 10.f;
-};
 
+
+};
+//포탈 타는 과정
+//1. 플레이어의 TriggerShape가 포탈과 충돌함.
+//2. 플레이어의 IntreacterbleObject로 포탈을 설정한다.
+//3. IDLE등의 상태에서 Player::TryInteract 호출.
+//4. E키를 누르면 
 END

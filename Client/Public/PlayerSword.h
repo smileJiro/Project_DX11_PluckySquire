@@ -3,6 +3,7 @@
 #include "Player.h"
 BEGIN(Engine)
 class CCollider;
+class CEffect_System;
 END
 BEGIN(Client)
 class CPlayerSword :
@@ -42,9 +43,9 @@ public:
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
-	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
@@ -77,7 +78,7 @@ private:
 	_vector m_vThrowDirection = {};
 	_vector m_vStuckDirection = {};
 	_vector m_vStuckPosition = {};
-	_float m_fFlyingSpeed3D = 30.f;
+	_float m_fFlyingSpeed3D = 15.f;
 	_float m_fFlyingSpeed2D = 1200.f;
 	_float m_fRetriveRange3D = 0.5f;
 	_float m_fRetriveRange2D = 30.f;
@@ -95,9 +96,10 @@ private:
 	class CPlayer* m_pPlayer = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;
 
-	// Trail È¿°ú
-	class CEffect_Trail* m_pTrailEffect = { nullptr };
-
+	// VFX
+	class CEffect_Trail*	m_pTrailEffect = { nullptr };
+	class CEffect_System*	m_pThrowTrailEffect = { nullptr };
+	class CEffect_Beam*		m_pBeamEffect = { nullptr };
 public:
 	static CPlayerSword* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

@@ -1,0 +1,138 @@
+{
+    "Emitters": [
+        {
+            "Color": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "DelayTime": 0.0,
+            "Event": 0,
+            "Float": [
+                {
+                    "Name": "AlphaTest",
+                    "Value": 0.4000000059604645
+                },
+                {
+                    "Name": "BloomThreshold",
+                    "Value": 1.5099999904632568
+                },
+                {
+                    "Name": "DissolveEdge",
+                    "Value": 1.8650000095367432
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": 1.1200000047683716
+                },
+                {
+                    "Name": "SpawnRate",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "SubIntensity",
+                    "Value": 6.0
+                }
+            ],
+            "Float4": [
+                {
+                    "Name": "DissolveEdgeColor",
+                    "Value": [
+                        0.0,
+                        1.0,
+                        0.5249999761581421,
+                        1.0
+                    ]
+                },
+                {
+                    "Name": "MaskUVScale",
+                    "Value": [
+                        4.0,
+                        2.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        3.0,
+                        2.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "SubUVScale",
+                    "Value": [
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "LoopTime": 1,
+            "Model": "../Bin/Resources/Models/FX/S_FX_PLY_SwordThrow_Trail_01.model",
+            "Pooling": "KILL",
+            "PreTransform": [
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "ShaderPass": "SUB_DISSOLVE",
+            "SpawnPosition": "FOLLOW_PARENT",
+            "SpawnType": "SPAWN_RATE",
+            "Textures": [
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Trail_04_90.dds",
+                    "Type": "MASK"
+                },
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_06_90.dds",
+                    "Type": "NOISE"
+                },
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_01.dds",
+                    "Type": "SECOND"
+                }
+            ],
+            "Time": 5.0,
+            "Transform": [
+                1.2999999523162842,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.2999999523162842,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.2999999523162842,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Type": "EFFECT"
+        }
+    ],
+    "Name": "SwordThrowTrail2",
+    "ToolLoopTime": 2.0
+}

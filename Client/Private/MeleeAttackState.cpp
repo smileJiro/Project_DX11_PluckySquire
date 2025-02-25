@@ -35,6 +35,18 @@ void CMeleeAttackState::State_Update(_float _fTimeDelta)
 		return;
 	if (nullptr == m_pOwner)
 		return;
+
+	if (m_pTarget->Get_CurCoord() != m_pOwner->Get_CurCoord())
+	{
+		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		return;
+	}
+	else if (COORDINATE_2D == m_pOwner->Get_CurCoord() && m_pOwner->Get_Include_Section_Name() != m_pTarget->Get_Include_Section_Name())
+	{
+		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		return;
+	}
+
 	//АјАн
 	//if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
 	//{

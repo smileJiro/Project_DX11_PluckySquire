@@ -35,6 +35,18 @@ void CChaseAttackState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
+	if (m_pTarget->Get_CurCoord() != m_pOwner->Get_CurCoord())
+	{
+		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		return;
+	}
+	else if (COORDINATE_2D == m_pOwner->Get_CurCoord() && m_pOwner->Get_Include_Section_Name() != m_pTarget->Get_Include_Section_Name())
+	{
+		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		return;
+	}
+
+
 	if(true == m_pOwner->IsContactToTarget())
 		Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
 
