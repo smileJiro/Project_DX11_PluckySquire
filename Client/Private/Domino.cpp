@@ -73,6 +73,23 @@ HRESULT CDomino::Render()
 	return __super::Render();
 }
 
+void CDomino::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)
+{
+	OBJECT_GROUP eOtherGroup = (OBJECT_GROUP)(_bIm0 ? _1.pActorUserData->iObjectGroup : _0.pActorUserData->iObjectGroup);
+	if (OBJECT_GROUP::PLAYER & eOtherGroup)
+	{
+		_uint iContactCount = _ModifiableContacts.Get_ContactCount();
+		for (_uint i = 0; i < iContactCount; i++)
+		{
+			_ModifiableContacts.Set_Restitution(i, 0);
+			if (_bIm0)
+				_ModifiableContacts.Set_InvMassScale0(0.f);
+			else
+				_ModifiableContacts.Set_InvMassScale1(0.f);
+		}
+	}
+}
+
 CDomino* CDomino::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CDomino* pInstance = new CDomino(_pDevice, _pContext);

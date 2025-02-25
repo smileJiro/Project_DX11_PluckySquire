@@ -1177,7 +1177,9 @@
     <ClInclude Include="..\Public\PlayerState_Drag.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\JumpPad.h" />
+    <ClInclude Include="..\Public\JumpPad.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1845,7 +1847,9 @@
     <ClCompile Include="..\Private\PlayerState_Drag.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\JumpPad.cpp" />
+    <ClCompile Include="..\Private\JumpPad.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
