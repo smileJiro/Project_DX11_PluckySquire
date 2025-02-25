@@ -519,6 +519,7 @@ public:
 	_vector Get_RootBonePosition();
 	NORMAL_DIRECTION Get_PortalNormal() { return m_e3DPortalNormal; }
 	const ATTACK_TRIGGER_DESC& Get_AttackTriggerDesc(ATTACK_TYPE _eAttackType, F_DIRECTION _eFDir) {return m_f2DAttackTriggerDesc[_eAttackType][(_uint)_eFDir];}
+	const SHAPE_DATA& Get_BodyShapeData() { return m_tBodyShapeData; }
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -534,6 +535,7 @@ public:
 	void Set_PlatformerMode(_bool _bPlatformerMode);
 	void Set_Upforce(_float _fForce);
 	HRESULT Set_CarryingObject(CCarriableObject* _pCarryingObject);
+	void Set_InteractObject(IInteractable* _pInteractable) { m_pInteractableObject = _pInteractable; }
 	NORMAL_DIRECTION Set_PortalNormal(NORMAL_DIRECTION _eNormal) { return m_e3DPortalNormal = _eNormal; }
 	void Set_GravityCompOn(_bool _bOn);
 
@@ -569,7 +571,7 @@ private:
 	_float m_fAirRotateSpeed = 40.f;
 	_float m_fAirRunSpeed = 6.f;
 	_float m_f3DMoveSpeed= 6.f;
-	_float m_f3DDragMoveSpeed= 3.f;
+	_float m_f3DDragMoveSpeed= 2.5f;
 
 	_float m_f3DThrowObjectPower = 20.f;
 	_float m_f3DPickupRange = 1.3f;
@@ -627,6 +629,10 @@ private:
 	set<CGameObject*> m_AttckedObjects;
 	IInteractable* m_pInteractableObject = nullptr;
 	CSampleBook* m_pBook = nullptr;
+
+
+	SHAPE_CAPSULE_DESC m_tBodyShapeDesc = {};
+	SHAPE_DATA m_tBodyShapeData = {};
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

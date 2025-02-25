@@ -152,52 +152,36 @@ HRESULT CPlayer::Initialize(void* _pArg)
     ActorDesc.FreezePosition_XYZ[2] = false;
     
     /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_CAPSULE_DESC CapsuleDesc = {};
-    CapsuleDesc.fRadius = m_fFootLength;
-    CapsuleDesc.fHalfHeight = m_f3DCenterYOffset - m_fFootLength;
+
+    m_tBodyShapeDesc.fRadius = m_fFootLength;
+    m_tBodyShapeDesc.fHalfHeight = m_f3DCenterYOffset - m_fFootLength;
     //SHAPE_BOX_DESC ShapeDesc = {};
     //ShapeDesc.vHalfExtents = { 0.5f, 1.f, 0.5f };
 
     ActorDesc.ShapeDatas.resize(PLAYER_SHAPE_USE::PLAYER_SHAPE_USE_LAST);
     // 플레이어 몸통.
-    SHAPE_DATA ShapeData;
-    ShapeData.pShapeDesc = &CapsuleDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
-    ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-	ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset /*+ 0.1f*/, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    m_tBodyShapeData.pShapeDesc = &m_tBodyShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    m_tBodyShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+    m_tBodyShapeData.eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT;  // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    m_tBodyShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
+    m_tBodyShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+	m_tBodyShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
+	m_tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
+    XMStoreFloat4x4(&m_tBodyShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset /*+ 0.1f*/, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
-
-    //마찰용 박스
-    //SHAPE_BOX_DESC BoxDesc = {};
-    //_float fHalfWidth = CapsuleDesc.fRadius * cosf(XMConvertToRadians(45.f));
-    //BoxDesc.vHalfExtents = { fHalfWidth, CapsuleDesc.fRadius, fHalfWidth };
-    //SHAPE_DATA BoxShapeData;
-    //BoxShapeData.eShapeType = SHAPE_TYPE::BOX;
-    //BoxShapeData.pShapeDesc = &BoxDesc;
-    //XMStoreFloat4x4(&BoxShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc.vHalfExtents.y, 0.0f));
-    //BoxShapeData.iShapeUse =(_uint)SHAPE_USE::SHAPE_FOOT;
-    //BoxShapeData.isTrigger = false;
-    //BoxShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
-    //BoxShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-    //BoxShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
-    //ActorDesc.ShapeDatas.push_back(BoxShapeData);
-
+    ActorDesc.ShapeDatas[m_tBodyShapeData.iShapeUse] = m_tBodyShapeData;
 
     //주변 지형 감지용 구 (트리거)
+    SHAPE_SPHERE_DESC SphereDesc = {};
+    SphereDesc.fRadius = 2.5f;
+    SHAPE_DATA ShapeData = {};
+    ShapeData.pShapeDesc = &SphereDesc;
     ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
+    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
     ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
     ShapeData.isTrigger = true;
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_f3DCenterYOffset, 0));
-    SHAPE_SPHERE_DESC SphereDesc = {};
-    SphereDesc.fRadius = 2.5f;
-    ShapeData.pShapeDesc = &SphereDesc;
-    ShapeData.iShapeUse =(_uint) SHAPE_USE::SHAPE_TRIGER;
     ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
     ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::INTERACTION_OBEJCT;
     ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
@@ -604,7 +588,8 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
     case Client::SHAPE_USE::SHAPE_TRIGER:
         if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
             return;
-        Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
+        if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
+            Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
         break;
     }
 }
@@ -640,7 +625,8 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
     case Client::SHAPE_USE::SHAPE_TRIGER:
         if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
             return;
-        Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
+        if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
+            Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
         break;
     }
 }
@@ -1194,9 +1180,8 @@ INTERACT_RESULT CPlayer::Try_Interact(_float _fTimeDelta)
         return INTERACT_RESULT::FAIL;
     }
     
-    IInteractable* pInteractable = Get_InteractableObject();
-    IInteractable::INTERACT_TYPE eInteractType = pInteractable->Get_InteractType();
-    KEY eInteractKey = pInteractable->Get_InteractKey();
+    IInteractable::INTERACT_TYPE eInteractType = m_pInteractableObject->Get_InteractType();
+    KEY eInteractKey = m_pInteractableObject->Get_InteractKey();
 
     if (KEY_CHECK(eInteractKey, KEY_STATE::NONE))
     {
