@@ -111,6 +111,8 @@
 #include "Soldier_Spear.h"
 #include "Soldier_Shield.h"
 #include "CrossBow_Soldier.h"
+#include "Soldier_CrossBow.h"
+#include "CrossBow_Arrow.h"
 #include "Bomb_Soldier.h"
 #include "Popuff.h"
 #include "Monster_Body.h"
@@ -632,6 +634,16 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_GameObject_Soldier_Shield */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Shield"),
         CSoldier_Shield::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Soldier_CrossBow */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_CrossBow"),
+        CSoldier_CrossBow::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_CrossBow_Arrow */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Arrow"),
+        CCrossBow_Arrow::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_LightningBolt */
@@ -1542,8 +1554,10 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         TEXT("../Bin/Resources/Models/2D_FX"))))
         return E_FAIL;
 
-    if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_04_Play_Desk.json", matPretransform, true)))
+    if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform, true)))
         return E_FAIL;
+    //if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_04_Play_Desk.json", matPretransform, true)))
+    //    return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
         TEXT("../Bin/Resources/Models/3DMapObject/"), matPretransform)))

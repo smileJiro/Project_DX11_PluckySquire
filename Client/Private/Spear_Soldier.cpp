@@ -35,9 +35,11 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
     pDesc->fAttackRange = 2.f;
     pDesc->fAlert2DRange = 5.f;
     pDesc->fChase2DRange = 12.f;
-    pDesc->fAttack2DRange = 3.f;
+    pDesc->fAttack2DRange = 4.f;
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 30.f;
+
+    pDesc->fCoolTime = 1.f;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -94,6 +96,15 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
 
 void CSpear_Soldier::Priority_Update(_float _fTimeDelta)
 {
+    if (true == IsCool())
+    {
+        m_fAccTime += _fTimeDelta;
+        if (m_fCoolTime <= m_fAccTime)
+        {
+            m_fAccTime = 0.f;
+            CoolTime_Off();
+        }
+    }
 
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
@@ -104,9 +115,8 @@ void CSpear_Soldier::Update(_float _fTimeDelta)
     {
         if (COORDINATE_3D == Get_CurCoord())
         {
-            _vector vDir = Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
-            vDir.m128_f32[1] = 0.f;
-            Get_ActorCom()->Set_LinearVelocity(vDir, Get_ControllerTransform()->Get_SpeedPerSec());
+            m_vDir.y = 0;
+            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(XMLoadFloat3(&m_vDir)), Get_ControllerTransform()->Get_SpeedPerSec() * 1.2f);
         }
 
         /*m_fAccDistance += Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta;
@@ -161,6 +171,7 @@ void CSpear_Soldier::Attack()
 {
     if (false == m_isDash)
     {
+        XMStoreFloat3(&m_vDir, Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
         m_isDash = true;
     }
 }
@@ -220,13 +231,13 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         
     case DASH_ATTACK_STARTUP:
         pModelObject->Switch_Animation(DASH_ATTACK_LOOP);
-        Attack();
         break;
 
     case DASH_ATTACK_LOOP:
         m_isDash = false;
         Stop_MoveXZ();
         Set_AnimChangeable(true);
+        CoolTime_Off();
         break;
 
     case DASH_ATTACK_RECOVERY:

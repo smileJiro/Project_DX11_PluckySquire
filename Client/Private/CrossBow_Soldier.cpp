@@ -3,6 +3,9 @@
 #include "GameInstance.h"
 #include "FSM.h"
 #include "ModelObject.h"
+#include "DetectionField.h"
+#include "Soldier_CrossBow.h"
+#include "Pooling_Manager.h"
 
 CCrossBow_Soldier::CCrossBow_Soldier(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -25,7 +28,7 @@ HRESULT CCrossBow_Soldier::Initialize(void* _pArg)
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->fAlertRange = 5.f;
@@ -34,6 +37,10 @@ HRESULT CCrossBow_Soldier::Initialize(void* _pArg)
     pDesc->fAlert2DRange = 5.f;
     pDesc->fChase2DRange = 12.f;
     pDesc->fAttack2DRange = 10.f;
+    pDesc->fFOVX = 90.f;
+    pDesc->fFOVY = 30.f;
+
+    pDesc->fCoolTime = 1.f;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -51,15 +58,18 @@ HRESULT CCrossBow_Soldier::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CROSSBOW_IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CROSSBOW_WALK, true);
-    //pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CROSSBOW_STRAFE_FWD, true);
     pModelObject->Set_Animation((_uint)CROSSBOW_IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CCrossBow_Soldier::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -105,6 +115,29 @@ HRESULT CCrossBow_Soldier::Render()
     return S_OK;
 }
 
+void CCrossBow_Soldier::Attack()
+{
+    if (false == m_isDelay && false == m_isCool)
+    {
+        _float3 vScale, vPosition;
+        _float4 vRotation;
+        COORDINATE eCoord = Get_CurCoord();
+
+        if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
+            return;
+
+        if (COORDINATE_3D == eCoord)
+        {
+            //공격 위치 맞추기
+            vPosition.y += vScale.y * 0.5f;
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_CrossBow_Arrow"), eCoord, &vPosition, &vRotation);
+        }
+
+        ++m_iAttackCount;
+
+    }
+}
+
 void CCrossBow_Soldier::Change_Animation()
 {
     if(m_iState != m_iPreState)
@@ -123,12 +156,24 @@ void CCrossBow_Soldier::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_ALERT);
             break;
 
+        case MONSTER_STATE::STANDBY:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_SHOOT_RECOVERY);
+            break;
+
         case MONSTER_STATE::CHASE:
-            //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_STRAFE_FWD);
             break;
 
         case MONSTER_STATE::ATTACK:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_SHOOT);
+            break;
+
+        case MONSTER_STATE::HIT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_HIT_FWDS);
+            break;
+
+        case MONSTER_STATE::DEAD:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_DEATH);
             break;
 
         default:
@@ -142,9 +187,9 @@ void CCrossBow_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
     switch ((CCrossBow_Soldier::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
     {
-    //case ALERT:
-    //    Set_AnimChangeable(true);
-    //    break;
+    case CROSSBOW_ALERT:
+        Set_AnimChangeable(true);
+        break;
         
     case CROSSBOW_SHOOT:
         pModelObject->Switch_Animation(CROSSBOW_SHOOT_RECOVERY);
@@ -227,6 +272,29 @@ HRESULT CCrossBow_Soldier::Ready_Components()
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
         return E_FAIL;
 
+#ifdef _DEBUG
+    /* Com_DebugDraw_For_Client */
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DebugDraw_For_Client"),
+        TEXT("Com_DebugDraw_For_Client"), reinterpret_cast<CComponent**>(&m_pDraw))))
+        return E_FAIL;
+#endif // _DEBUG
+
+    /* Com_DetectionField */
+    CDetectionField::DETECTIONFIELDDESC DetectionDesc;
+    DetectionDesc.fRange = m_fAlertRange;
+    DetectionDesc.fFOVX = m_fFOVX;
+    DetectionDesc.fFOVY = m_fFOVY;
+    DetectionDesc.fOffset = 0.f;
+    DetectionDesc.pOwner = this;
+    DetectionDesc.pTarget = m_pTarget;
+#ifdef _DEBUG
+    DetectionDesc.pDraw = m_pDraw;
+#endif // _DEBUG
+
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DetectionField"),
+        TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -252,6 +320,35 @@ HRESULT CCrossBow_Soldier::Ready_PartObjects()
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
+
+    /* Part_Weapon */
+    CSoldier_CrossBow::SOLDIER_CROSSBOW_DESC CrossBowDesc{};
+    CrossBowDesc.strModelPrototypeTag_3D = TEXT("CrossBow");
+    CrossBowDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+
+    CrossBowDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+
+    CrossBowDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+
+    CrossBowDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+
+    CrossBowDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    CrossBowDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+    CrossBowDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+    CrossBowDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+
+    CrossBowDesc.iRenderGroupID_3D = RG_3D;
+    CrossBowDesc.iPriorityID_3D = PR3D_GEOMETRY;
+
+    CrossBowDesc.pParent = this;
+
+    m_PartObjects[PART_RIGHT_WEAPON] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_CrossBow"), &CrossBowDesc));
+    if (nullptr == m_PartObjects[PART_RIGHT_WEAPON])
+        return E_FAIL;
+
+    C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
+    static_cast<CPartObject*>(m_PartObjects[PART_RIGHT_WEAPON])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r"));
+    m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
 
     return S_OK;
 }
