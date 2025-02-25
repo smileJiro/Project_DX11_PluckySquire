@@ -3222,7 +3222,7 @@ void C2DMap_Tool_Manager::Load_2DModelList()
 
 	m_ObjectInfoLists.clear();
 	_wstring wstrPath = MAP_2D_DEFAULT_PATH;
-	wstrPath += L"ComponentTagMatching/Chapter1_TagMatchingData.json";
+	wstrPath += L"ComponentTagMatching/MapObject_TagMatchingData.json";
 
 
 	const std::string strPath = WstringToString(wstrPath);
@@ -3263,7 +3263,7 @@ void C2DMap_Tool_Manager::Save_2DModelList()
 			Outputjson.push_back(ObjJson);
 	}
 	_wstring wstrPath = MAP_2D_DEFAULT_PATH;
-	wstrPath += L"ComponentTagMatching/Chapter1_TagMatchingData.json";
+	wstrPath += L"ComponentTagMatching/MapObject_TagMatchingData.json";
 
 
 	const std::string strPath = WstringToString(wstrPath);

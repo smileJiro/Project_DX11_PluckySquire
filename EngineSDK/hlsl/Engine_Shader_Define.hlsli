@@ -9,7 +9,7 @@
 
 #define RT_RENDER_DEAFULT 0
 #define RT_RENDER_ROTATE  1
-
+#define RT_RENDER_UVRENDER  2
 
 /* Normal Enum Flag */
 #define NONEWRITE_NORMAL -1
