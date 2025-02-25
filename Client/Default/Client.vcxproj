@@ -190,6 +190,7 @@
     <ClInclude Include="..\Public\2DMapWordObject.h" />
     <ClInclude Include="..\public\Effect_Beam.h" />
     <ClInclude Include="..\Public\ChaseFlyState.h" />
+    <ClInclude Include="..\Public\JumpPad.h" />
     <ClInclude Include="..\Public\Projectile_BirdMonster.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
@@ -421,6 +422,7 @@
     <ClCompile Include="..\Private\2DMapObject.cpp" />
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
+    <ClCompile Include="..\Private\JumpPad.cpp" />
     <ClCompile Include="..\Private\Projectile_BirdMonster.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>

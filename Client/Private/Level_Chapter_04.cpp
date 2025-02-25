@@ -30,6 +30,7 @@
 #include "ButterGrump.h"
 #include "Blocker.h"
 #include "Bulb.h"
+#include "JumpPad.h"
 
 
 #include "RayShape.h"
@@ -84,6 +85,8 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	Ready_Layer_Effects2D(TEXT("Layer_Effect2D"));
 	//Ready_Layer_NPC(TEXT("Layer_NPC"));
 	Ready_Layer_Blocker2D(TEXT("Layer_Blocker2D"));
+	if (FAILED(Ready_Layer_Carriable(TEXT("Layer_Carriable"))))
+		return E_FAIL;
 	//액터 들어가는넘.,
 	Ready_Layer_Map();
 
@@ -1120,6 +1123,19 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Blocker2D(const _wstring& _strLayerTag)
 
 	//if(FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
 	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
+{
+	CJumpPad::tagJumpPadDesc tJumpPadDesc = {};
+	tJumpPadDesc.iCurLevelID = m_eLevelID;
+	tJumpPadDesc.eStartCoord = COORDINATE_3D;
+	tJumpPadDesc.tTransform3DDesc.vInitialPosition = { 0.f, 5.82f, 0.f };
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpPad"),
+		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

@@ -1171,10 +1171,13 @@
     <ClInclude Include="..\Public\DraggableObject.h">
       <Filter>02.GameObjects\Interact</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_Drag.h" />
     <ClInclude Include="..\Public\BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Drag.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\JumpPad.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1833,13 +1836,16 @@
     <ClCompile Include="..\Private\DraggableObject.cpp">
       <Filter>02.GameObjects\Interact</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_Drag.cpp" />
     <ClCompile Include="..\private\Effect_Trail.cpp">
       <Filter>02.GameObjects\Effect\Trail</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Effect_Beam.cpp">
       <Filter>02.GameObjects\Effect\Beam</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Drag.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\JumpPad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

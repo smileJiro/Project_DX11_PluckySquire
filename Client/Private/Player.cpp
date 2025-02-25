@@ -29,6 +29,7 @@
 #include "PlayerState_Drag.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
+#include "PlayerBody.h"
 #include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
@@ -244,8 +245,8 @@ HRESULT CPlayer::Initialize(void* _pArg)
 HRESULT CPlayer::Ready_PartObjects()
 {
     /* Part Body */
-    CModelObject::MODELOBJECT_DESC BodyDesc{};
-
+    CPlayerBody::PLAYER_BODY_DESC BodyDesc{};
+	BodyDesc.pPlayer = this;
     BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
@@ -304,14 +305,26 @@ HRESULT CPlayer::Ready_PartObjects()
     m_pSword->Set_AttackEnable(false);
 
     //Part Glove
-    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
-    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
-    BodyDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
-    BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
-    BodyDesc.eActorType = ACTOR_TYPE::LAST;
-    BodyDesc.pActorDesc = nullptr;
-    BodyDesc.isCoordChangeEnable = false;
-    m_PartObjects[PLAYER_PART_GLOVE] = m_pGlove = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+	CModelObject::MODELOBJECT_DESC GloveDesc{};
+
+    GloveDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
+    GloveDesc.iCurLevelID = m_iCurLevelID;
+    GloveDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
+
+    GloveDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
+    GloveDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    GloveDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    GloveDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+    GloveDesc.iRenderGroupID_3D = RG_3D;
+    GloveDesc.iPriorityID_3D = PR3D_GEOMETRY;
+    GloveDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+    GloveDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+    GloveDesc.strModelPrototypeTag_3D = TEXT("latch_glove");
+    GloveDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    GloveDesc.eActorType = ACTOR_TYPE::LAST;
+    GloveDesc.pActorDesc = nullptr;
+    GloveDesc.isCoordChangeEnable = false;
+    m_PartObjects[PLAYER_PART_GLOVE] = m_pGlove = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &GloveDesc));
 	Safe_AddRef(m_pGlove);
     if (nullptr == m_PartObjects[PLAYER_PART_GLOVE])
     {

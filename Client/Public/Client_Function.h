@@ -43,6 +43,7 @@ namespace Client
 	void Event_Get_Bulb(_uint _iCoordinate);
 	void Event_KnockBack(CCharacter* _pObject,  _fvector _vDirection, _float _fPower);
 	void Event_KnockBack(CCharacter* _pObject,  _fvector _vForce);
+	void Event_SetPlayerState(class CPlayer* _pObject,  _uint _iStateIndex);
 	void Event_Sneak_BeetleCaught(CActorObject* _pPlayer, CActorObject* _pMonster, _float3* _vPlayerPosx, _float3* _vMonsterPos);
 
 	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID);

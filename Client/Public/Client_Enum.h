@@ -142,6 +142,7 @@ namespace Client
 		HIT,
 		GET_BULB,
 		KNOCKBACK,
+		SETPLAYERSTATE,
 		SNEAK_BEETLECAUGHT,
 		
 		LAST,
