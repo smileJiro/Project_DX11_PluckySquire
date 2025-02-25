@@ -37,7 +37,9 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 	}
 
 	//Interact 시도 후 실패하면 나머지 입력 받기.
-	if(INTERACT_RESULT::FAIL == m_pOwner->Try_Interact(_fTimeDelta))
+ 	INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
+	if(INTERACT_RESULT::FAIL == eResult
+		|| INTERACT_RESULT::NO_INPUT == eResult)
 	{
 		if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
