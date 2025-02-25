@@ -268,7 +268,6 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
 			return E_FAIL;
 
-		Bind_Texture(ALPHA, "g_AlphaTexture");
 		Bind_Texture(MASK, "g_MaskTexture");
 
 		if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
@@ -813,26 +812,26 @@ void CMeshEffect_Emitter::Tool_SetEffect()
 	
 		if (ImGui::TreeNode("Show Textures"))
 		{
-			if (ImGui::TreeNode("Alpha"))
-			{
-				if (nullptr != m_Textures[ALPHA])
-				{
-					ImVec2 imageSize(300, 300); // 이미지 크기 설정
-					ID3D11ShaderResourceView* pSelectImage = m_Textures[ALPHA]->Get_SRV(0);
-					if (nullptr != pSelectImage)
-					{
-						ImGui::Image((ImTextureID)pSelectImage, imageSize);
-					}
-					
-					ImGui::Text(WSTRINGTOSTRING(*m_Textures[ALPHA]->Get_SRVName(0)).c_str());
+			//if (ImGui::TreeNode("Alpha"))
+			//{
+			//	if (nullptr != m_Textures[ALPHA])
+			//	{
+			//		ImVec2 imageSize(300, 300); // 이미지 크기 설정
+			//		ID3D11ShaderResourceView* pSelectImage = m_Textures[ALPHA]->Get_SRV(0);
+			//		if (nullptr != pSelectImage)
+			//		{
+			//			ImGui::Image((ImTextureID)pSelectImage, imageSize);
+			//		}
+			//		
+			//		ImGui::Text(WSTRINGTOSTRING(*m_Textures[ALPHA]->Get_SRVName(0)).c_str());
 
-					if (ImGui::Button("Delete"))
-					{
-						Safe_Release(m_Textures[ALPHA]);
-					}
-				}
-				ImGui::TreePop();
-			}
+			//		if (ImGui::Button("Delete"))
+			//		{
+			//			Safe_Release(m_Textures[ALPHA]);
+			//		}
+			//	}
+			//	ImGui::TreePop();
+			//}
 
 			if (ImGui::TreeNode("Mask"))
 			{

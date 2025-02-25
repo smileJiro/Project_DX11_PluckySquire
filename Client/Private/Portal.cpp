@@ -169,6 +169,7 @@ HRESULT CPortal::Init_Actor()
     }
     case NORMAL_DIRECTION::POSITIVE_Y:
     {
+        WorldMatrix = XMMatrixIdentity();
         break;
     }
     case NORMAL_DIRECTION::NEGATIVE_Y:
@@ -187,7 +188,7 @@ HRESULT CPortal::Init_Actor()
         break;
     }
     }
-    WorldMatrix.r[3] = f3DPosition;
+    WorldMatrix.r[3] = XMVectorSetW(f3DPosition, 1.f);
 
     m_pEffectSystem->Set_EffectMatrix(WorldMatrix);
     m_PartObjects[PORTAL_PART_3D] = m_pEffectSystem;

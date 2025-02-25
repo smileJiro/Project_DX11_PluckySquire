@@ -5,34 +5,34 @@
                 1.0,
                 1.0,
                 1.0,
-                1.5
+                1.0
             ],
             "DelayTime": 0.0,
             "Event": 0,
             "Float": [
                 {
                     "Name": "AlphaTest",
-                    "Value": 0.4000000059604645
+                    "Value": 0.4950000047683716
                 },
                 {
-                    "Name": "BloomThreshold",
-                    "Value": 0.5350000262260437
-                },
-                {
-                    "Name": "DissolveEdge",
-                    "Value": 1.8650000095367432
-                },
-                {
-                    "Name": "DissolveFactor",
-                    "Value": 1.1200000047683716
-                },
-                {
-                    "Name": "SpawnRate",
+                    "Name": "AlphaValue",
                     "Value": 0.0
                 },
                 {
-                    "Name": "SubIntensity",
-                    "Value": 6.0
+                    "Name": "BloomThreshold",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "ColorTest",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "DissolveEdge",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": 0.0
                 }
             ],
             "Float4": [
@@ -40,16 +40,16 @@
                     "Name": "DissolveEdgeColor",
                     "Value": [
                         0.0,
-                        1.0,
-                        0.7390000224113464,
-                        1.0
+                        0.0,
+                        0.0,
+                        0.0
                     ]
                 },
                 {
                     "Name": "MaskUVScale",
                     "Value": [
-                        4.0,
                         2.0,
+                        1.0,
                         0.0,
                         0.0
                     ]
@@ -57,73 +57,56 @@
                 {
                     "Name": "NoiseUVScale",
                     "Value": [
-                        3.0,
-                        2.0,
                         0.0,
-                        0.0
-                    ]
-                },
-                {
-                    "Name": "SubUVScale",
-                    "Value": [
-                        1.0,
-                        1.0,
+                        0.0,
                         0.0,
                         0.0
                     ]
                 }
             ],
             "LoopTime": 1,
-            "Model": "../Bin/Resources/Models/FX/S_FX_PLY_SwordThrow_Trail_01.model",
+            "Model": "../Bin/Resources/Models/FX/S_FX_CMN_Shock_01.model",
             "Pooling": "KILL",
             "PreTransform": [
-                0.006666666828095913,
-                0.0,
-                0.0,
                 0.0,
                 0.0,
                 0.006666666828095913,
                 0.0,
                 0.0,
-                0.0,
-                0.0,
                 0.006666666828095913,
+                0.0,
+                0.0,
+                -0.006666666828095913,
+                0.0,
+                0.0,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
                 1.0
             ],
-            "ShaderPass": "SUB_DISSOLVE",
-            "SpawnPosition": "FOLLOW_PARENT",
+            "ShaderPass": "BLOOM_DISSOLVE",
+            "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "SPAWN_RATE",
             "Textures": [
                 {
-                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Trail_04_90.dds",
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Shock_02_YClamp.dds",
                     "Type": "MASK"
-                },
-                {
-                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_06_90.dds",
-                    "Type": "NOISE"
-                },
-                {
-                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_01.dds",
-                    "Type": "SECOND"
                 }
             ],
-            "Time": 5.0,
+            "Time": 3.0,
             "Transform": [
-                1.2000000476837158,
+                1.0,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                1.2000000476837158,
+                1.0,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                1.2000000476837158,
+                1.0,
                 0.0,
                 0.0,
                 0.0,
@@ -133,6 +116,6 @@
             "Type": "EFFECT"
         }
     ],
-    "Name": "SwordThrowTrail2",
-    "ToolLoopTime": 2.0
+    "Name": "SwordCombo",
+    "ToolLoopTime": 3.0
 }
