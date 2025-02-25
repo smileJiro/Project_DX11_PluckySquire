@@ -82,7 +82,7 @@ HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
 	/* 전환되는 레벨에 따른 Section 설정 필요. */
 	_wstring strJsonPath = L"";
 	_wstring strMapInfoJson = L"_Data";
-	_wstring strModelInfoJsonName = L"_TagMatchingData";
+	_wstring strModelInfoJsonName = L"MapObject_TagMatchingData";
 	_wstring strWordJsonName = L"_Word_List";
 
 
@@ -122,7 +122,7 @@ HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
 			if (FAILED(m_pWordGameGenerator->Load_Word(strJsonPath + strWordJsonName)))
 				return E_FAIL;
 		}
-		if (FAILED(Ready_CurLevelSectionModels(strJsonPath + strModelInfoJsonName)))
+		if (FAILED(Ready_CurLevelSectionModels(strModelInfoJsonName)))
 			return E_FAIL;
 
 		if (FAILED(Ready_CurLevelSections(strJsonPath + strMapInfoJson)))

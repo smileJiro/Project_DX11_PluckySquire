@@ -116,7 +116,21 @@ HRESULT CMapObject::Initialize(void* _pArg)
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
 
-    if (FAILED(__super::Initialize(pDesc)))
+
+
+    m_iShaderPasses[COORDINATE_2D] = pDesc->iShaderPass_2D;
+    m_iShaderPasses[COORDINATE_3D] = pDesc->iShaderPass_3D;
+    m_strModelPrototypeTag[COORDINATE_2D] = pDesc->strModelPrototypeTag_2D;
+    m_strModelPrototypeTag[COORDINATE_3D] = pDesc->strModelPrototypeTag_3D;
+    m_fFrustumCullingRange = pDesc->fFrustumCullingRange;
+
+    m_iRenderGroupID_3D = pDesc->iRenderGroupID_3D;
+    m_iPriorityID_3D = pDesc->iPriorityID_3D;
+
+    if (FAILED(CModelObject::Ready_Components(pDesc)))
+        return E_FAIL;
+
+    if (FAILED(CPartObject::Initialize(pDesc)))
         return E_FAIL;
 
 
