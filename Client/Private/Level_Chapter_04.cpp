@@ -894,7 +894,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	BarfBug_Desc.iCurLevelID = m_eLevelID;
 	BarfBug_Desc.eStartCoord = COORDINATE_2D;
 	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(-1000.0f, 150.f, 0.f);
-	BarfBug_Desc.tTransform2DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
+	BarfBug_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	_wstring strSectionKey = TEXT("Chapter4_P0304");
 

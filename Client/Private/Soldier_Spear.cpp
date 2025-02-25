@@ -4,6 +4,7 @@
 #include "3DModel.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "Monster.h"
 
 CSoldier_Spear::CSoldier_Spear(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -72,12 +73,12 @@ HRESULT CSoldier_Spear::Render()
 
 void CSoldier_Spear::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
+    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup
+        && (_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse
+        && (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
     {
-        if ((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
-        {
-            int a = 10;
-        }
+        _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+        Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), m_pParent->Get_Stat().iDamg, vRepulse);
     }
 
 }

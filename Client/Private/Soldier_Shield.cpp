@@ -4,6 +4,7 @@
 #include "3DModel.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "Monster.h"
 
 CSoldier_Shield::CSoldier_Shield(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -76,7 +77,9 @@ void CSoldier_Shield::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Ot
     {
         if ((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
         {
-            int a = 10;
+            _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+            Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), vRepulse);
+            Event_KnockBack(static_cast<CCharacter*>(m_pParent), -vRepulse);
         }
     }
 
@@ -138,13 +141,13 @@ HRESULT CSoldier_Shield::Ready_ActorDesc(void* _pArg)
     ActorDesc->FreezePosition_XYZ[2] = false;
 
     /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_SPHERE_DESC* ShapeDesc = new SHAPE_SPHERE_DESC;
-    ShapeDesc->fRadius = 0.1f;
+    SHAPE_BOX_DESC* ShapeDesc = new SHAPE_BOX_DESC;
+    ShapeDesc->vHalfExtents = { 0.3f, 0.3f, 0.1f };
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
+    ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.

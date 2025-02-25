@@ -1019,21 +1019,14 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_BirdMonster"), COORDINATE_3D, &vPos);
 
 
+	CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
+	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
+	Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(5.5f, 0.35f, -3.0f);
 
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Spear_Soldier");
-	Pooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
-
-	CSpear_Soldier::MONSTER_DESC* Spear_Soldier_Desc = new CSpear_Soldier::MONSTER_DESC;
-	Spear_Soldier_Desc->iCurLevelID = m_eLevelID;
-	Spear_Soldier_Desc->eStartCoord = COORDINATE_3D;
-	Spear_Soldier_Desc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Spear_Soldier"), Pooling_Desc, Spear_Soldier_Desc);
-
-	vPos = { 5.5f, 0.35f, -3.0f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Spear_Soldier"), COORDINATE_3D, &vPos);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
+		return E_FAIL;
 
 	/*  Projectile  */
 	Pooling_Desc;
@@ -1043,6 +1036,7 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 
 	CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
 	pProjDesc->iCurLevelID = m_eLevelID;
+	pProjDesc->eStartCoord = COORDINATE_3D;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
 
@@ -1054,6 +1048,7 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 
 	CProjectile_BirdMonster::PROJECTILE_BIRDMONSTER_DESC* pBirdProjDesc = new CProjectile_BirdMonster::PROJECTILE_BIRDMONSTER_DESC;
 	pBirdProjDesc->iCurLevelID = m_eLevelID;
+	pProjDesc->eStartCoord = COORDINATE_3D;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BirdMonster"), Pooling_Desc, pBirdProjDesc);
 
