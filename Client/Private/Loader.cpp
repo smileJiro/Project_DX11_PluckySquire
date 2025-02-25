@@ -21,6 +21,7 @@
 #include "Spawner.h"
 #include "CollapseBlock.h"
 #include "Word_Container.h"
+#include "JumpPad.h"
 
 
 // Trigger
@@ -1340,7 +1341,7 @@ HRESULT CLoader::Loading_Level_Chapter_4()
         TEXT("../Bin/Resources/Models/2DMapObject/Chapter4/"))))
         return E_FAIL;
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
-        TEXT("../Bin/Resources/Models/2DAnim/Chapter2/"))))
+        TEXT("../Bin/Resources/Models/2DAnim/Chapter4/"))))
         return E_FAIL;
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_CHAPTER_4,
         TEXT("../Bin/Resources/Models/2DMapObject/Static"))))
@@ -1423,7 +1424,9 @@ HRESULT CLoader::Loading_Level_Chapter_4()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_Dialogue_Portrait"),
         CPortrait::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_JumpPad"),
+        CJumpPad::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
 
     ///////////////////////////////// UI /////////////////////////////////
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_StoreNPC"),

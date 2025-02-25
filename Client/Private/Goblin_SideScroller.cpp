@@ -26,7 +26,6 @@ HRESULT CGoblin_SideScroller::Initialize_Prototype()
 HRESULT CGoblin_SideScroller::Initialize(void* _pArg)
 {
     CGoblin_SideScroller::SIDESCROLLDESC* pDesc = static_cast<CGoblin_SideScroller::SIDESCROLLDESC*>(_pArg);
-    pDesc->eStartCoord = COORDINATE_2D;
     pDesc->isCoordChangeEnable = false;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
