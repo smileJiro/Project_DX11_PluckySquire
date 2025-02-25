@@ -191,7 +191,6 @@ HRESULT CPortal::Init_Actor()
     WorldMatrix.r[3] = XMVectorSetW(f3DPosition, 1.f);
 
     m_pEffectSystem->Set_EffectMatrix(WorldMatrix);
-    m_pEffectSystem->Active_All(true);
     m_PartObjects[PORTAL_PART_3D] = m_pEffectSystem;
 
     Safe_AddRef(m_pEffectSystem);
@@ -323,14 +322,19 @@ void CPortal::Active_OnEnable()
 {
     __super::Active_OnEnable();
     if (m_pEffectSystem)
-        m_pEffectSystem->Active_All(true);
+    {
+        //m_pEffectSystem->Set_Active(true);
+        m_pEffectSystem->Active_Effect(true, 0);
+    }
 }
 
 void CPortal::Active_OnDisable()
 {
     __super::Active_OnEnable();
-    if (m_pEffectSystem)
+    if (m_pEffectSystem && m_pEffectSystem->Is_Active())
+    {
         m_pEffectSystem->Inactive_All();
+    }
 }
 
 void CPortal::On_InteractionStart(CPlayer* _pPlayer)

@@ -241,6 +241,8 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 		//	return E_FAIL;
 		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
 			return E_FAIL;
+		if (FAILED(Bind_Float("DissolveTimeFactor", "g_fDissolveTimeFactor")))
+			return E_FAIL;
 		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("AlphaTest", "g_fAlphaTest")))
@@ -302,6 +304,8 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 		//	return E_FAIL;
 		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
 			return E_FAIL;
+		if (FAILED(Bind_Float("DissolveTimeFactor", "g_fDissolveTimeFactor")))
+			return E_FAIL;
 		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("AlphaTest", "g_fAlphaTest")))
@@ -342,6 +346,8 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 		//if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
 		//	return E_FAIL;
 		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("DissolveTimeFactor", "g_fDissolveTimeFactor")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
 			return E_FAIL;
@@ -394,6 +400,8 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 
 		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
 			return E_FAIL;
+		if (FAILED(Bind_Float("DissolveTimeFactor", "g_fDissolveTimeFactor")))
+			return E_FAIL;
 		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("SubIntensity", "g_fSubIntensity")))
@@ -431,6 +439,8 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 		//if (FAILED(Bind_Float("AlphaValue", "g_fAlpha")))
 		//	return E_FAIL;
 		if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
+			return E_FAIL;
+		if (FAILED(Bind_Float("DissolveTimeFactor", "g_fDissolveTimeFactor")))
 			return E_FAIL;
 		if (FAILED(Bind_Float("DissolveEdge", "g_fDissolveEdgeWidth")))
 			return E_FAIL;

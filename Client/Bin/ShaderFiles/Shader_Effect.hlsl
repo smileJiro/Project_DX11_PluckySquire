@@ -146,7 +146,7 @@ PS_COLOR PS_MAIN(PS_IN In)
     return Out;
 }
 
-float g_fDissolveThreshold, g_fDissolveEdgeWidth, g_fDissolveEdgeIntensity, g_fDissolveFactor;
+float g_fDissolveThreshold, g_fDissolveEdgeWidth, g_fDissolveEdgeIntensity, g_fDissolveFactor, g_fDissolveTimeFactor;
 float4 g_vEdgeColor;
 
 PS_COLOR PS_DISSOLVE(PS_IN In)
@@ -162,7 +162,7 @@ PS_COLOR PS_DISSOLVE(PS_IN In)
     float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y))
     + float2(g_NoiseUVScale.z, g_NoiseUVScale.w)).r;
     
-    float fDissolveThreshold = g_fDissolveFactor; //clamp(g_fTimeAcc * g_fDissolveFactor, 0.f, 1.f);
+    float fDissolveThreshold = g_fDissolveFactor + g_fTimeAcc * g_fDissolveTimeFactor; //clamp(g_fTimeAcc * g_fDissolveFactor, 0.f, 1.f);
     float fDissolveMask = step(fDissolveThreshold, fDissolve);
     
     float fEdgeMask = smoothstep(fDissolveThreshold - g_fDissolveEdgeWidth, fDissolveThreshold, fDissolve);
@@ -205,7 +205,7 @@ PS_BRIGHTCOLOR PS_SUBDISSOLVE(PS_IN In)
     float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y))
     + float2(g_NoiseUVScale.z, g_NoiseUVScale.w) + (float2(fSub / g_fSubIntensity, fSub / g_fSubIntensity))).r;
     
-    float fDissolveThreshold = g_fDissolveFactor; //clamp(g_fTimeAcc * g_fDissolveFactor, 0.f, 1.f);
+    float fDissolveThreshold = clamp(g_fDissolveFactor + g_fTimeAcc * g_fDissolveTimeFactor, 0.f, 1.f); //clamp(g_fTimeAcc * g_fDissolveFactor, 0.f, 1.f);
     float fDissolveMask = step(fDissolveThreshold, fDissolve);
     
     float fEdgeMask = smoothstep(fDissolveThreshold - g_fDissolveEdgeWidth, fDissolveThreshold, fDissolve);
@@ -238,7 +238,8 @@ PS_BRIGHTCOLOR PS_SUBCOLORDISSOLVE(PS_IN In)
     
     float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y))
     + float2(g_NoiseUVScale.z, g_NoiseUVScale.w)).r;
-    float fDissolveThreshold = clamp(g_fTimeAcc * g_fDissolveFactor, 0.f, 1.f);
+    //float fDissolveThreshold = clamp(g_fDissolveFactor + g_fTimeAcc * g_fDissolveTimeFactor, 0.f, 1.f); //clamp(g_fTimeAcc * g_fDissolveFactor, 0.f, 1.f);
+    float fDissolveThreshold = g_fDissolveFactor + g_fTimeAcc * g_fDissolveTimeFactor; //clamp(g_fTimeAcc * g_fDissolveFactor, 0.f, 1.f);
     float fDissolveMask = step(fDissolveThreshold, fDissolve);
     
     float fEdgeMask = smoothstep(fDissolveThreshold - g_fDissolveEdgeWidth, fDissolveThreshold, fDissolve);
@@ -306,7 +307,7 @@ PS_BRIGHTCOLOR PS_BLOOMDISSOLVE(PS_IN In)
     
     float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vTexcoord * (float2(g_NoiseUVScale.x, g_NoiseUVScale.y))
     + float2(g_NoiseUVScale.z, g_NoiseUVScale.w)).r;
-    float fDissolveThreshold = clamp(g_fTimeAcc * g_fDissolveFactor, 0.f, 1.f);
+    float fDissolveThreshold = clamp(g_fDissolveFactor + g_fTimeAcc * g_fDissolveTimeFactor, 0.f, 1.f); //clamp(g_fTimeAcc * g_fDissolveFactor, 0.f, 1.f);
     float fDissolveMask = step(fDissolveThreshold, fDissolve);
     
     float fEdgeMask = smoothstep(fDissolveThreshold - g_fDissolveEdgeWidth, fDissolveThreshold, fDissolve);

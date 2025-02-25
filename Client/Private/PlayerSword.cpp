@@ -642,6 +642,10 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
         
         if (HANDLING == m_eCurrentState)
             m_pTrailEffect->Set_AddUpdate(_bOn);
+        if (_bOn && CPlayer::ATTACK_TYPE::ATTACK_TYPE_NORMAL3 == _eAttackType)
+        {
+            CEffect_Manager::GetInstance()->Active_Effect(TEXT("SwordCombo"), true, &m_WorldMatrices[COORDINATE_3D]);
+        }
         if (false == _bOn)
         {
             m_pTrailEffect->Delete_Delay(0.5f);

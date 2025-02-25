@@ -428,7 +428,11 @@
                 },
                 {
                     "Name": "DissolveFactor",
-                    "Value": 3.0
+                    "Value": 0.0
+                },
+                {
+                    "Name": "DissolveTimeFactor",
+                    "Value": 2.0
                 }
             ],
             "Float4": [
