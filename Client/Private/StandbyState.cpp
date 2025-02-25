@@ -74,7 +74,10 @@ void CStandbyState::State_Update(_float _fTimeDelta)
 				
 				//다 돌았으면 회전 애니메이션 재생 안하도록
 				if (true == m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+				{
+					m_pOwner->Stop_Rotate();
 					isTurn = false;
+				}
 
 				//회전 애니메이션 넣으면 드드득 거림
 				/*if (true == isTurn)

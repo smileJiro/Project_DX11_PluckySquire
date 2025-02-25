@@ -496,6 +496,9 @@
     <Filter Include="02.GameObjects\Effect\Beam">
       <UniqueIdentifier>{eb24b0a4-cad5-46d8-9a86-5ef97a30bdf4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Soldier\CrossBow\Weapon">
+      <UniqueIdentifier>{bc573363-d09e-4ae1-b848-2f07041536b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1174,6 +1177,12 @@
     <ClInclude Include="..\Public\BarfBug.h">
       <Filter>02.GameObjects\Monster\BarfBug</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Soldier_CrossBow.h">
+      <Filter>02.GameObjects\Monster\Soldier\CrossBow\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CrossBow_Arrow.h">
+      <Filter>02.GameObjects\Monster\Soldier\CrossBow\Weapon</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Drag.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
@@ -1846,6 +1855,12 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\JumpPad.cpp" />
+    <ClCompile Include="..\Private\Soldier_CrossBow.cpp">
+      <Filter>02.GameObjects\Monster\Soldier\CrossBow\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CrossBow_Arrow.cpp">
+      <Filter>02.GameObjects\Monster\Soldier\CrossBow\Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
