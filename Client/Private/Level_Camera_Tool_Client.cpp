@@ -93,9 +93,9 @@ void CLevel_Camera_Tool_Client::Update(_float _fTimeDelta)
 	}
 
 	Show_CameraTool();
-	Show_CutSceneTool(_fTimeDelta);
+	//Show_CutSceneTool(_fTimeDelta);
 	Show_ArmInfo();
-	Show_CutSceneInfo();
+	//Show_CutSceneInfo();
 	Show_SaveLoadFileWindow();
 
 	Show_AnimModel(_fTimeDelta);
@@ -133,7 +133,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Lights()
 
 HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Map()
 {
-	if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+	if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
 		return E_FAIL;
 
 	return S_OK;
@@ -235,11 +235,12 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Player(const _wstring& _strLayerT
 {
 	CGameObject** pGameObject = nullptr;
 
-	CPlayer::CONTAINEROBJ_DESC Desc;
-	Desc.iCurLevelID = m_eLevelID;
-	Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	CPlayer::CONTAINEROBJ_DESC PlayerDesc = {};
+	PlayerDesc.iCurLevelID = m_eLevelID;
+	PlayerDesc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	_int a = sizeof(CPlayer::CONTAINEROBJ_DESC);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &PlayerDesc)))
 		return E_FAIL;
 
 	//CPlayer* pPlayer = { nullptr };
@@ -2637,7 +2638,7 @@ void CLevel_Camera_Tool_Client::Save_Data_Arm()
 		Result.push_back(Trigger_json);
 	}
 
-	_wstring wszSavePath = L"../Bin/Resources/DataFiles/ArmData/";
+	_wstring wszSavePath = L"../Bin/DataFiles/Camera/ArmData/";
 	_wstring wszSaveName = m_pGameInstance->StringToWString(m_szSaveName);
 
 	ofstream file(wszSavePath + wszSaveName + TEXT(".json"));
