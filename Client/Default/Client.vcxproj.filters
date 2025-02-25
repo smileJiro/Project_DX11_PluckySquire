@@ -1149,6 +1149,7 @@
     </ClInclude>
     <ClInclude Include="..\public\CollapseBlock.h">
       <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Dialog_Manager.h">
       <Filter>02.GameObjects\UI\99. Dialog_Manager</Filter>
     </ClInclude>
@@ -1865,6 +1866,7 @@
     </ClCompile>
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp">
       <Filter>02.GameObjects\Monster\Soldier\CrossBow\Weapon</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\Dialog_Manager.cpp">
       <Filter>02.GameObjects\UI\99. Dialog_Manager</Filter>
     </ClCompile>
