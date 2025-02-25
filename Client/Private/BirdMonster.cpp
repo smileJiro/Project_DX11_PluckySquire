@@ -25,7 +25,6 @@ HRESULT CBirdMonster::Initialize_Prototype()
 HRESULT CBirdMonster::Initialize(void* _pArg)
 {
     CBirdMonster::MONSTER_DESC* pDesc = static_cast<CBirdMonster::MONSTER_DESC*>(_pArg);
-    pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);

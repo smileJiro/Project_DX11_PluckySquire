@@ -71,6 +71,15 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CSpear_Soldier::Animation_End, this, placeholders::_1, placeholders::_2));
 
+    Bind_AnimEventFunc("Attack", bind(&CSpear_Soldier::Attack, this));
+
+    /* Com_AnimEventGenerator */
+    CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+    tAnimEventDesc.pReceiver = this;
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_Spear_SoldierAttackEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
+
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
     for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
@@ -204,6 +213,7 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
     case DASH_ATTACK_LOOP:
         m_isDash = false;
+        Stop_MoveXZ();
         Set_AnimChangeable(true);
         break;
 

@@ -588,9 +588,6 @@
     <ClInclude Include="..\Public\MeleeAttackState.h">
       <Filter>03.Components\FSM\State\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BarfBug.h">
-      <Filter>02.GameObjects\Monster\BarfBug</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\RangedAttackState.h">
       <Filter>03.Components\FSM\State\Attack</Filter>
     </ClInclude>
@@ -1175,6 +1172,9 @@
       <Filter>02.GameObjects\Interact</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Drag.h" />
+    <ClInclude Include="..\Public\BarfBug.h">
+      <Filter>02.GameObjects\Monster\BarfBug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
