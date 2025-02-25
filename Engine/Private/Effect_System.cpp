@@ -208,6 +208,9 @@ void CEffect_System::Priority_Update(_float _fTimeDelta)
 
 void CEffect_System::Update(_float _fTimeDelta)
 {
+	if (false == m_isActive)
+		return;
+
 	_bool isActive = false;
 	for (auto& pEmitter : m_Emitters)
 	{
@@ -227,15 +230,26 @@ void CEffect_System::Update(_float _fTimeDelta)
 
 void CEffect_System::Late_Update(_float _fTimeDelta)
 {
+	if (false == m_isActive)
+		return;
+
 	// 부모 오브젝트의 World에 따라 먼저 Update된 이후에 갱신됩니다.
 	__super::Late_Update(_fTimeDelta);
 
+	_bool isActive = false;
 	for (auto& pEmitter : m_Emitters)
+	{
 #ifdef _DEBUG
 		pEmitter->Late_Update(_fTimeDelta * m_fDebugTimeScale);
 #elif NDEBUG
 		pEmitter->Late_Update(_fTimeDelta);
 #endif
+
+		if (pEmitter->Is_Active())
+			isActive = true;
+	}
+	if (false == isActive)
+		Set_Active(false);
 
 }
 

@@ -478,6 +478,12 @@
     <Filter Include="02.GameObjects\Interact\LunchBox">
       <UniqueIdentifier>{a9f39f66-4d1c-40ca-94ea-01e148f44ea0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Effect\Trail">
+      <UniqueIdentifier>{72da46ba-58b9-4873-88c8-6331d99c2641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Effect\Beam">
+      <UniqueIdentifier>{eb24b0a4-cad5-46d8-9a86-5ef97a30bdf4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1107,9 +1113,6 @@
     <ClInclude Include="..\Public\Camera_CutScene_Save.h">
       <Filter>02.GameObjects\Camera\CutScene\Tool</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Effect_Trail.h">
-      <Filter>02.GameObjects\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Effect_Manager.h">
       <Filter>02.GameObjects\Effect\Manager</Filter>
     </ClInclude>
@@ -1130,6 +1133,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\RenderGroup_PlayerDepth.h">
       <Filter>94.RenderGroups%28Custom%29\PlayerDepth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_Trail.h">
+      <Filter>02.GameObjects\Effect\Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_Beam.h">
+      <Filter>02.GameObjects\Effect\Beam</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CollapseBlock.h">
       <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
@@ -1765,9 +1774,6 @@
     <ClCompile Include="..\Private\Level_Camera_Tool_Client.cpp">
       <Filter>01.Levels\04. Camera_Tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Effect_Trail.cpp">
-      <Filter>02.GameObjects\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Effect_Manager.cpp">
       <Filter>02.GameObjects\Effect\Manager</Filter>
     </ClCompile>
@@ -1805,6 +1811,12 @@
       <Filter>02.GameObjects\Interact</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Drag.cpp" />
+    <ClCompile Include="..\private\Effect_Trail.cpp">
+      <Filter>02.GameObjects\Effect\Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_Beam.cpp">
+      <Filter>02.GameObjects\Effect\Beam</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1856,6 +1868,9 @@
       <Filter>97.ShaderFiles\PBR</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Trail.hlsl">
+      <Filter>97.ShaderFiles\Effect</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxBeam.hlsl">
       <Filter>97.ShaderFiles\Effect</Filter>
     </FxCompile>
   </ItemGroup>
