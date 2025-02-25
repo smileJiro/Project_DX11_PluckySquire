@@ -30,6 +30,7 @@
 #include "ButterGrump.h"
 #include "Blocker.h"
 #include "Bulb.h"
+#include "JumpPad.h"
 
 
 #include "RayShape.h"
@@ -84,6 +85,8 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	Ready_Layer_Effects2D(TEXT("Layer_Effect2D"));
 	//Ready_Layer_NPC(TEXT("Layer_NPC"));
 	Ready_Layer_Blocker2D(TEXT("Layer_Blocker2D"));
+	if (FAILED(Ready_Layer_Carriable(TEXT("Layer_Carriable"))))
+		return E_FAIL;
 	//액터 들어가는넘.,
 	Ready_Layer_Map();
 
@@ -891,7 +894,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	BarfBug_Desc.iCurLevelID = m_eLevelID;
 	BarfBug_Desc.eStartCoord = COORDINATE_2D;
 	BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(-1000.0f, 150.f, 0.f);
-	BarfBug_Desc.tTransform2DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
+	BarfBug_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	_wstring strSectionKey = TEXT("Chapter4_P0304");
 
@@ -1063,6 +1066,14 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Effects(const _wstring& _strLayerTag)
 		return E_FAIL;
 	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("SwordCombo.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("SwordJumpAttack.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
 	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("RockOut.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
 		return E_FAIL;
 	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
@@ -1120,6 +1131,19 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Blocker2D(const _wstring& _strLayerTag)
 
 	//if(FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
 	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
+{
+	CJumpPad::tagJumpPadDesc tJumpPadDesc = {};
+	tJumpPadDesc.iCurLevelID = m_eLevelID;
+	tJumpPadDesc.eStartCoord = COORDINATE_3D;
+	tJumpPadDesc.tTransform3DDesc.vInitialPosition = { 0.f, 5.82f, 0.f };
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpPad"),
+		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

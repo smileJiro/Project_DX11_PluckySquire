@@ -1,0 +1,411 @@
+{
+    "Emitters": [
+        {
+            "Color": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "DelayTime": 0.009999999776482582,
+            "Event": 0,
+            "Float": [
+                {
+                    "Name": "AlphaTest",
+                    "Value": 0.5
+                },
+                {
+                    "Name": "BloomThreshold",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "DissolveEdge",
+                    "Value": 1.0
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "DissolveTimeFactor",
+                    "Value": 3.200000047683716
+                }
+            ],
+            "Float4": [
+                {
+                    "Name": "DissolveEdgeColor",
+                    "Value": [
+                        0.0,
+                        0.7390000224113464,
+                        1.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "MaskUVScale",
+                    "Value": [
+                        2.0,
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        8.0,
+                        0.30000001192092896,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "SubColor",
+                    "Value": [
+                        0.0,
+                        0.7390000224113464,
+                        1.0,
+                        0.0
+                    ]
+                }
+            ],
+            "LoopTime": 1,
+            "Model": "../Bin/Resources/Models/FX/S_FX_CMN_Cylinder_JotJumpAttack_02.model",
+            "Pooling": "KILL",
+            "PreTransform": [
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "ShaderPass": "SUBCOLOR_BLOOM_DISSOLVE",
+            "SpawnPosition": "RELATIVE_WORLD",
+            "SpawnType": "SPAWN_RATE",
+            "Textures": [
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Shock_02_YClamp.dds",
+                    "Type": "MASK"
+                },
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_16.dds",
+                    "Type": "NOISE"
+                },
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_01.dds",
+                    "Type": "SECOND"
+                }
+            ],
+            "Time": 3.0,
+            "Transform": [
+                3.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                6.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                3.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Type": "EFFECT"
+        },
+        {
+            "Color": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "DelayTime": 0.009999999776482582,
+            "Event": 0,
+            "Float": [
+                {
+                    "Name": "AlphaTest",
+                    "Value": 0.5
+                },
+                {
+                    "Name": "BloomThreshold",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "DissolveEdge",
+                    "Value": 1.0
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": 0.699999988079071
+                },
+                {
+                    "Name": "DissolveTimeFactor",
+                    "Value": 1.0
+                }
+            ],
+            "Float4": [
+                {
+                    "Name": "DissolveEdgeColor",
+                    "Value": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "MaskUVScale",
+                    "Value": [
+                        4.0,
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        8.0,
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "SubColor",
+                    "Value": [
+                        0.0,
+                        0.7390000224113464,
+                        1.0,
+                        0.0
+                    ]
+                }
+            ],
+            "LoopTime": 1,
+            "Model": "../Bin/Resources/Models/FX/S_FX_CMN_Circle_01.model",
+            "Pooling": "KILL",
+            "PreTransform": [
+                0.0,
+                -0.006666666828095913,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "ShaderPass": "SUBCOLOR_BLOOM_DISSOLVE",
+            "SpawnPosition": "RELATIVE_WORLD",
+            "SpawnType": "SPAWN_RATE",
+            "Textures": [
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Mask_06.dds",
+                    "Type": "MASK"
+                },
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_14.dds",
+                    "Type": "NOISE"
+                }
+            ],
+            "Time": 3.0,
+            "Transform": [
+                3.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                3.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                3.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Type": "EFFECT"
+        },
+        {
+            "Color": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "DelayTime": 0.05000000074505806,
+            "Event": 0,
+            "Float": [
+                {
+                    "Name": "AlphaTest",
+                    "Value": 0.05999999865889549
+                },
+                {
+                    "Name": "BloomThreshold",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "DissolveEdge",
+                    "Value": 1.0
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": 0.30000001192092896
+                },
+                {
+                    "Name": "DissolveTimeFactor",
+                    "Value": 2.0
+                }
+            ],
+            "Float4": [
+                {
+                    "Name": "DissolveEdgeColor",
+                    "Value": [
+                        0.0,
+                        0.7390000224113464,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "Name": "MaskUVScale",
+                    "Value": [
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        3.0,
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "SubColor",
+                    "Value": [
+                        0.0,
+                        0.7390000224113464,
+                        1.0,
+                        0.0
+                    ]
+                }
+            ],
+            "LoopTime": 1,
+            "Model": "../Bin/Resources/Models/FX/S_FX_CMN_Ring_05.model",
+            "Modules": [
+                {
+                    "Apply": "SCALE",
+                    "Init": false,
+                    "Keyframe": [
+                        {
+                            "Data": [
+                                3.5,
+                                3.5,
+                                3.5,
+                                1.0
+                            ],
+                            "Time": 0.0
+                        },
+                        {
+                            "Data": [
+                                5.0,
+                                5.0,
+                                5.0,
+                                1.0
+                            ],
+                            "Time": 0.4000000059604645
+                        }
+                    ],
+                    "Module": "SCALE_KEYFRAME",
+                    "Order": 0,
+                    "Type": "MODULE_KEYFRAME"
+                }
+            ],
+            "Pooling": "KILL",
+            "PreTransform": [
+                0.0,
+                -0.006666666828095913,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "ShaderPass": "SUBCOLOR_BLOOM_DISSOLVE",
+            "SpawnPosition": "RELATIVE_WORLD",
+            "SpawnType": "SPAWN_RATE",
+            "Textures": [
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_White_01.dds",
+                    "Type": "MASK"
+                },
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_01.dds",
+                    "Type": "NOISE"
+                }
+            ],
+            "Time": 3.0,
+            "Transform": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Type": "EFFECT"
+        }
+    ],
+    "Name": "SwordJumpAttack",
+    "ToolLoopTime": 2.0
+}

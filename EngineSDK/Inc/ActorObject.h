@@ -37,7 +37,7 @@ public:
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other) { return; }
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other) { return; }
 
-	virtual void OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts) { return; }
+	virtual void OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0) { return; }
 
 	void Add_Impuls(_fvector _vForce);
 	void Add_Force(_fvector _vForce);

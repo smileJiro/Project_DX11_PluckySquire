@@ -109,10 +109,10 @@ void CCharacter::Late_Update(_float _fTimeDelta)
 	__super::Late_Update(_fTimeDelta);
 }
 
-void CCharacter::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts)
+void CCharacter::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)
 {
-    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
-    switch (eShapeUse)
+    SHAPE_USE eMyShapeUse = (SHAPE_USE)_0.pShapeUserData->iShapeUse;
+    switch (eMyShapeUse)
     {
     case Client::SHAPE_USE::SHAPE_BODY:
     {
@@ -121,16 +121,12 @@ void CCharacter::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other,
         {
             //∫Æ¿Ã∏È?
             _float fNormal = abs(XMVectorGetY(_ModifiableContacts.Get_Normal(i)));
-            
-            if (fNormal < m_fStepSlopeThreshold)
-            {
-                _ModifiableContacts.Set_DynamicFriction(i, 0.0f);
-                _ModifiableContacts.Set_StaticFriction(i, 0.0f);
-                continue;
-            }
             _vector vPoint = _ModifiableContacts.Get_Point(i);
-            if(vPoint.m128_f32[1] > m_fStepHeightThreshold + Get_FinalPosition().m128_f32[1])
+
+            if (fNormal < m_fStepSlopeThreshold
+                || vPoint.m128_f32[1] > m_fStepHeightThreshold + Get_FinalPosition().m128_f32[1])
             {
+                _ModifiableContacts.Set_InvInertiaScale0(0.f);
                 _ModifiableContacts.Set_DynamicFriction(i, 0.0f);
                 _ModifiableContacts.Set_StaticFriction(i, 0.0f);
                 continue;
@@ -139,12 +135,6 @@ void CCharacter::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other,
         }
         break;
     }
-    case Client::SHAPE_USE::SHAPE_FOOT:
-        break;
-    case Client::SHAPE_USE::SHAPE_TRIGER:
-        break;
-    case Client::SHAPE_USE::SHAPE_USE_LAST:
-        break;
     default:
         break;
     }

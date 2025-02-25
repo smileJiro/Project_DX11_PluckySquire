@@ -35,9 +35,11 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
     pDesc->fAttackRange = 2.f;
     pDesc->fAlert2DRange = 5.f;
     pDesc->fChase2DRange = 12.f;
-    pDesc->fAttack2DRange = 3.f;
+    pDesc->fAttack2DRange = 4.f;
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 30.f;
+
+    pDesc->fCoolTime = 1.f;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -94,6 +96,15 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
 
 void CSpear_Soldier::Priority_Update(_float _fTimeDelta)
 {
+    if (true == IsCool())
+    {
+        m_fAccTime += _fTimeDelta;
+        if (m_fCoolTime <= m_fAccTime)
+        {
+            m_fAccTime = 0.f;
+            CoolTime_Off();
+        }
+    }
 
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
@@ -104,9 +115,8 @@ void CSpear_Soldier::Update(_float _fTimeDelta)
     {
         if (COORDINATE_3D == Get_CurCoord())
         {
-            _vector vDir = Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
-            vDir.m128_f32[1] = 0.f;
-            Get_ActorCom()->Set_LinearVelocity(vDir, Get_ControllerTransform()->Get_SpeedPerSec());
+            m_vDir.y = 0;
+            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(XMLoadFloat3(&m_vDir)), Get_ControllerTransform()->Get_SpeedPerSec() * 1.2f);
         }
 
         /*m_fAccDistance += Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta;
@@ -145,10 +155,23 @@ HRESULT CSpear_Soldier::Render()
     return S_OK;
 }
 
+void CSpear_Soldier::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+}
+
+void CSpear_Soldier::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+}
+
+void CSpear_Soldier::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+}
+
 void CSpear_Soldier::Attack()
 {
     if (false == m_isDash)
     {
+        XMStoreFloat3(&m_vDir, Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
         m_isDash = true;
     }
 }
@@ -208,13 +231,13 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         
     case DASH_ATTACK_STARTUP:
         pModelObject->Switch_Animation(DASH_ATTACK_LOOP);
-        Attack();
         break;
 
     case DASH_ATTACK_LOOP:
         m_isDash = false;
         Stop_MoveXZ();
         Set_AnimChangeable(true);
+        CoolTime_Off();
         break;
 
     case DASH_ATTACK_RECOVERY:
@@ -257,7 +280,7 @@ HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fHalfHeight + ShapeDesc->fRadius + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fHalfHeight + ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);

@@ -96,7 +96,12 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
-	virtual void Attack();
+	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+
+public:
+	virtual void Attack() override;
 	virtual void Change_Animation() override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
@@ -104,6 +109,7 @@ private:
 	_bool m_isDash = { false };
 	_float m_fDashDistance = { 0.f };
 	_float m_fAccDistance = { 0.f };
+	_float3 m_vDir = {};
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);

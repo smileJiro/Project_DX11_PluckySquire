@@ -66,7 +66,6 @@ HRESULT CMonster::Initialize(void* _pArg)
 
 void CMonster::Priority_Update(_float _fTimeDelta)
 {
-	CGameObject::Priority_Update_Component(_fTimeDelta); /* Component Priority_Update */
 	__super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
@@ -200,7 +199,10 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 	if (0 >= m_tStat.iHP)
 	{
 		Set_AnimChangeable(true);
-		m_p2DColliderComs[0]->Set_Active(false);
+		if(nullptr != m_p2DColliderComs[0])
+		{
+			m_p2DColliderComs[0]->Set_Active(false);
+		}
 		Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
 	}
 	else

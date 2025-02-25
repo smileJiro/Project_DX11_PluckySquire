@@ -169,7 +169,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 			if (m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 			{
 				m_isMove = true;
-				
+				m_pOwner->Stop_Rotate();
 				m_pOwner->Change_Animation();
 			}
 			else

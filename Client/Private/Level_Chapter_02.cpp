@@ -178,9 +178,9 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MagicHand (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Test(TEXT("Layer_Test"))))
+	if (FAILED(Ready_Layer_Draggable(TEXT("Layer_Draggable"))))
 	{
-		MSG_BOX(" Failed Ready_Layer_Test (Level_Chapter_02::Initialize)");
+		MSG_BOX(" Failed REady_Layer_Draggable (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
 	
@@ -1401,6 +1401,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster_Projectile(const _wstring& _strLa
 
 	CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
 	pProjDesc->iCurLevelID = m_eLevelID;
+	pProjDesc->eStartCoord = COORDINATE_3D;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
 
@@ -1492,6 +1493,14 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects(const _wstring& _strLayerTag)
 		return E_FAIL;
 	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("SwordCombo.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("SwordJumpAttack.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+	
 	return S_OK;
 }
 
@@ -1682,7 +1691,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Hand(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Chapter_02::Ready_Layer_Test(const _wstring& _strLayerTag)
+HRESULT CLevel_Chapter_02::Ready_Layer_Draggable(const _wstring& _strLayerTag)
 {
 	CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
 	tDraggableDesc.iModelPrototypeLevelID_3D = m_eLevelID;

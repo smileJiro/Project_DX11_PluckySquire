@@ -212,7 +212,12 @@ void CS_POINT_ACCELERATION(int3 dispatchThreadID : SV_DispatchThreadID)
 [numthreads(256, 1, 1)]
 void CS_LIMIT_ACCELERATION(int3 dispatchThreadID : SV_DispatchThreadID)
 {
-    Particles[dispatchThreadID.x].vAcceleration = normalize(Particles[dispatchThreadID.x].vAcceleration) * min(g_fAmount, length(Particles[dispatchThreadID.x].vAcceleration));
+    float fLength = max(min(length(Particles[dispatchThreadID.x].vAcceleration), g_fAmount), 0.01f);
+    float3 vDir = normalize(Particles[dispatchThreadID.x].vAcceleration);
+    
+    
+    Particles[dispatchThreadID.x].vAcceleration = vDir * fLength;
+    //Particles[dispatchThreadID.x].vAcceleration = normalize(Particles[dispatchThreadID.x].vAcceleration) * min(g_fAmount, length(Particles[dispatchThreadID.x].vAcceleration));
 
 }
 
