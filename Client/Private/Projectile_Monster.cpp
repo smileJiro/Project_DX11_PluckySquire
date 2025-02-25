@@ -164,7 +164,7 @@ void CProjectile_Monster::Active_OnDisable()
     m_fAccTime = 0.f;
     m_isStop = false;
 
-    CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+    CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName,this);
 
     //if (COORDINATE_3D == Get_CurCoord())
 	   // m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
