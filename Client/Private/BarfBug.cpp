@@ -370,53 +370,53 @@ void CBarfBug::Change_Animation()
 
 void CBarfBug::Attack()
 {
-    //if (false == m_isDelay && false == m_isCool)
-    //{
-    //    _float3 vScale, vPosition;
-    //    _float4 vRotation;
-    //    COORDINATE eCoord = Get_CurCoord();
+    if (false == m_isDelay && false == m_isCool)
+    {
+        _float3 vScale, vPosition;
+        _float4 vRotation;
+        COORDINATE eCoord = Get_CurCoord();
 
-    //    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
-    //        return;
+        if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
+            return;
 
-    //    if (COORDINATE_3D == eCoord)
-    //    {
-    //        vPosition.y += vScale.y * 0.5f;
-    //        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), eCoord, &vPosition, &vRotation);
-    //    }
-    //    else if (COORDINATE_2D == eCoord)
-    //    {
-    //        //공격 위치 맞추기
-    //        switch (Get_2DDirection())
-    //        {
-    //        case Client::F_DIRECTION::LEFT:
-    //            vPosition.x -= 50.f;
-    //            vPosition.y += 20.f;
-    //            break;
-    //        case Client::F_DIRECTION::RIGHT:
-    //            vPosition.x += 50.f;
-    //            vPosition.y += 40.f;
-    //            break;
-    //        case Client::F_DIRECTION::UP:
-    //            vPosition.y += 70.f;
-    //            break;
-    //        case Client::F_DIRECTION::DOWN:
-    //            vPosition.y -= 30.f;
-    //            break;
-    //        default:
-    //            break;
-    //        }
+        if (COORDINATE_3D == eCoord)
+        {
+            vPosition.y += vScale.y * 0.5f;
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), eCoord, &vPosition, &vRotation);
+        }
+        else if (COORDINATE_2D == eCoord)
+        {
+            //공격 위치 맞추기
+            switch (Get_2DDirection())
+            {
+            case Client::F_DIRECTION::LEFT:
+                vPosition.x -= 50.f;
+                vPosition.y += 20.f;
+                break;
+            case Client::F_DIRECTION::RIGHT:
+                vPosition.x += 50.f;
+                vPosition.y += 40.f;
+                break;
+            case Client::F_DIRECTION::UP:
+                vPosition.y += 70.f;
+                break;
+            case Client::F_DIRECTION::DOWN:
+                vPosition.y -= 30.f;
+                break;
+            default:
+                break;
+            }
 
-    //        _float fAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition));
-    //        fAngle=Restrict_2DRangeAttack_Angle(fAngle);
-    //        XMStoreFloat4(&vRotation, XMQuaternionRotationAxis(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMConvertToRadians(fAngle)));
+            _float fAngle = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition));
+            fAngle=Restrict_2DRangeAttack_Angle(fAngle);
+            XMStoreFloat4(&vRotation, XMQuaternionRotationAxis(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMConvertToRadians(fAngle)));
 
-    //        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), eCoord, &vPosition, &vRotation, nullptr, &m_strSectionName);
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), eCoord, &vPosition, &vRotation, nullptr, &m_strSectionName);
 
-    //    }
-    //    ++m_iAttackCount;
+        }
+        ++m_iAttackCount;
 
-    //}
+    }
 }
 
 void CBarfBug::Turn_Animation(_bool _isCW)
