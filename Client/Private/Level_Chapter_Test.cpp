@@ -29,6 +29,7 @@
 #include "Spear_Soldier.h"
 #include "Soldier_Spear.h"
 #include "CrossBow_Soldier.h"
+#include "CrossBow_Arrow.h"
 #include "Bomb_Soldier.h"
 #include "ButterGrump.h"
 
@@ -1051,6 +1052,17 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 	pProjDesc->eStartCoord = COORDINATE_3D;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BirdMonster"), Pooling_Desc, pBirdProjDesc);
+
+	Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_CrossBow_Arrow");
+
+	//CSoldier_CrossBow::PROJECTILE_BIRDMONSTER_DESC pBirdProjDesc;
+	//pBirdProjDesc->iCurLevelID = m_eLevelID;
+	//pProjDesc->eStartCoord = COORDINATE_3D;
+
+	//CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BirdMonster"), Pooling_Desc, pBirdProjDesc);
 
 	return S_OK;
 }
