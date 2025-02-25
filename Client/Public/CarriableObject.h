@@ -18,6 +18,7 @@ public:
 		BOX,
 		CARROT,
 		GRAPE,
+		BOMB,
 		CARRIABLE_ID_LAST
 	};
 
