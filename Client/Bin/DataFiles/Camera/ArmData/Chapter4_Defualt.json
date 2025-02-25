@@ -1,0 +1,82 @@
+[
+    {
+        "Arm_Data": {
+            "Arm_Length": 15.300003051757813,
+            "Arm_Length_RatioType": 3,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                -0.002883707173168659,
+                0.47901424765586853,
+                -0.877802312374115
+            ]
+        },
+        "Arm_Tag": "Chapter4_1",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                0.5,
+                0.0
+            ],
+            "AtOffset_RatioType": 3,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 2,
+            "Zoom_RatioType": 3,
+            "Zoom_Time": 1.2000000476837158
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 17.900012969970703,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                0.0,
+                0.0
+            ],
+            "Desire_Arm": [
+                0.0,
+                0.5462098121643066,
+                -0.8376482725143433
+            ]
+        },
+        "Arm_Tag": "Defualt",
+        "Sub_Data": {
+            "Use_SubData": false
+        }
+    }
+]

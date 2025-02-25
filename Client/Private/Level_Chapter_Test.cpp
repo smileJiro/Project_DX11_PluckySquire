@@ -26,9 +26,11 @@
 #include "Goblin.h"
 #include "Popuff.h"
 #include "Rat.h"
+#include "Spear_Soldier.h"
 #include "Soldier_Spear.h"
-#include "Soldier_CrossBow.h"
-#include "Soldier_Bomb.h"
+#include "CrossBow_Soldier.h"
+#include "CrossBow_Arrow.h"
+#include "Bomb_Soldier.h"
 #include "ButterGrump.h"
 
 
@@ -490,7 +492,7 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Camera(const _wstring& _strLayerTag, CG
 
 	// Load CutSceneData, ArmData
 	CCamera_Manager::GetInstance()->Load_CutSceneData();
-	CCamera_Manager::GetInstance()->Load_ArmData();
+	CCamera_Manager::GetInstance()->Load_ArmData(TEXT("Chapter2_ArmData.json"), TEXT("Chapter2_SketchSpace_ArmData.json"));
 
 	return S_OK;
 }
@@ -1018,6 +1020,14 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_BirdMonster"), COORDINATE_3D, &vPos);
 
 
+	CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
+	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
+	Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(5.5f, 0.35f, -3.0f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
+		return E_FAIL;
 
 	/*  Projectile  */
 	Pooling_Desc;
@@ -1027,6 +1037,7 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 
 	CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
 	pProjDesc->iCurLevelID = m_eLevelID;
+	pProjDesc->eStartCoord = COORDINATE_3D;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
 
@@ -1038,8 +1049,20 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 
 	CProjectile_BirdMonster::PROJECTILE_BIRDMONSTER_DESC* pBirdProjDesc = new CProjectile_BirdMonster::PROJECTILE_BIRDMONSTER_DESC;
 	pBirdProjDesc->iCurLevelID = m_eLevelID;
+	pProjDesc->eStartCoord = COORDINATE_3D;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BirdMonster"), Pooling_Desc, pBirdProjDesc);
+
+	Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_CrossBow_Arrow");
+
+	//CSoldier_CrossBow::PROJECTILE_BIRDMONSTER_DESC pBirdProjDesc;
+	//pBirdProjDesc->iCurLevelID = m_eLevelID;
+	//pProjDesc->eStartCoord = COORDINATE_3D;
+
+	//CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BirdMonster"), Pooling_Desc, pBirdProjDesc);
 
 	return S_OK;
 }

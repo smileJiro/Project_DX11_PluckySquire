@@ -38,12 +38,12 @@ namespace Client
 	void Event_Book_Main_Section_Change_End(const _wstring& _strSectionTag);
 	void Event_Book_Main_Change(_uint _iCameraType);
 	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID, _bool _bEnable);
-	void Event_SetSceneQueryFlag(CActorObject* _pActor, _uint _iShapeID, _bool _bEnable);
 	void Event_Hit(CGameObject* _pHitter,CCharacter* _pVictim ,_int _iDamg, _fvector _vKnockBackDirection, _float _fKnockBackPower);
 	void Event_Hit(CGameObject* _pHitter, CCharacter* _pVictim ,_int _iDamg, _fvector _vKnockBackForce);
 	void Event_Get_Bulb(_uint _iCoordinate);
 	void Event_KnockBack(CCharacter* _pObject,  _fvector _vDirection, _float _fPower);
 	void Event_KnockBack(CCharacter* _pObject,  _fvector _vForce);
+	void Event_SetPlayerState(class CPlayer* _pObject,  _uint _iStateIndex);
 	void Event_Sneak_BeetleCaught(CActorObject* _pPlayer, CActorObject* _pMonster, _float3* _vPlayerPosx, _float3* _vMonsterPos);
 
 	//void Event_CameraTrigger(_uint _iCameraTriggerType, _wstring& _szEventTag, _int _iTriggerID);
@@ -54,7 +54,7 @@ namespace Client
 	std::wstring StringToWstring(const std::string& _strUTF8);
 	std::string WstringToString(const std::wstring& wstr); 
 	std::string MatrixToString(_float4x4 vMatrix);
-	F_DIRECTION To_FDirection(_vector _vDir);
+	F_DIRECTION To_FDirection(_vector _vDir, COORDINATE _eCoord = COORDINATE_2D);
 	_vector FDir_To_Vector(F_DIRECTION _eFDir);
 	E_DIRECTION FDir_To_EDir(F_DIRECTION _eFDir);
 	E_DIRECTION To_EDirection(_vector _vDir);

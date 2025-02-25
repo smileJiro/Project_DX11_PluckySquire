@@ -80,6 +80,10 @@ private:
 	virtual HRESULT					Ready_PartObjects();
 
 public:
+	virtual void Active_OnEnable() override;
+	virtual void Active_OnDisable() override;
+
+public:
 	static CBarfBug* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void			Free() override;

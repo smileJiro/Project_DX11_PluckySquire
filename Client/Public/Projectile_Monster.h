@@ -44,7 +44,7 @@ public:
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
-private:
+protected:
 	_float m_fLifeTime = { 0.f };
 	_float m_fAccTime = { 0.f };
 

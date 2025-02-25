@@ -14,7 +14,7 @@ class CSneak_DetectionField;
 class CMonster abstract : public CCharacter, public IAnimEventReceiver
 {
 public:
-	enum MONSTERPART { PART_BODY, PART_EFFECT, PART_WEAPON,  PART_END };
+	enum MONSTERPART { PART_BODY, PART_EFFECT, PART_LEFT_WEAPON, PART_RIGHT_WEAPON,  PART_END };
 
 	typedef struct tagMonsterDesc : public CCharacter::CHARACTER_DESC
 	{

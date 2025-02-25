@@ -67,7 +67,13 @@ HRESULT CJumpBug::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_RIGHT, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_UP, true);
 
-    pModelObject->Set_Animation(IDLE);
+    if (COORDINATE_3D == Get_CurCoord())
+        pModelObject->Set_Animation(Animation::IDLE);
+    else if (COORDINATE_2D == Get_CurCoord())
+    {
+        Set_2D_Direction(F_DIRECTION::DOWN);
+        pModelObject->Set_Animation(Animation2D::IDLE_DOWN);
+    }
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CJumpBug::Animation_End, this, placeholders::_1, placeholders::_2));
 

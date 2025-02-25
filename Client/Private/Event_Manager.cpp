@@ -16,6 +16,7 @@
 #include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "PlayerData_Manager.h"
+#include "Player.h"
 
 #include "FSM.h"
 #include "FSM_Boss.h"
@@ -218,6 +219,11 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_ChangeMapObject(_tEvent);
 	}
 	break;
+	case Client::EVENT_TYPE::SETPLAYERSTATE:
+	{
+		Execute_SetPlayerState(_tEvent);
+		break;
+	}
 	default:
 		break;
 	}
@@ -310,7 +316,7 @@ HRESULT CEvent_Manager::Execute_LevelChange(const EVENT& _tEvent)
 		pChangeLevel = CLevel_Chapter_Test::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
 		break;
 	case Client::LEVEL_CAMERA_TOOL:
-		//pChangeLevel = CLevel_Camera_Tool_Client::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+		pChangeLevel = CLevel_Camera_Tool_Client::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
 		break;
 	default:
 		break;
@@ -689,12 +695,11 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent)
 
 HRESULT CEvent_Manager::Execute_SetSceneQueryFlag(const EVENT& _tEvent)
 {
-	CActorObject* pActor = (CActorObject*)_tEvent.Parameters[0];
-	_uint iShapeID = (_uint)_tEvent.Parameters[1];
-	_bool bEnable = (_bool)_tEvent.Parameters[2];
-	pActor->Get_ActorCom()->Get_Shapes()[iShapeID]->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, bEnable);
+	PxShape* pShape = (PxShape*)_tEvent.Parameters[0];
+	_bool bEnable = (_bool)_tEvent.Parameters[1];
+	pShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, bEnable);
 
-	Safe_Release(pActor);
+	pShape->release();
 	return S_OK;
 }
 
@@ -777,6 +782,15 @@ HRESULT CEvent_Manager::Execute_KnockBack(const EVENT& _tEvent)
 	pCharacter->KnockBack(vForce);
 	delete (_float3*)_tEvent.Parameters[1];
 	Safe_Release(pCharacter);
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_SetPlayerState(const EVENT& _tEvent)
+{
+	CPlayer* pPlayer = (CPlayer*)_tEvent.Parameters[0];
+	_uint iStateId =(_uint)_tEvent.Parameters[1];
+	pPlayer->Set_State((CPlayer::STATE)iStateId);
+	Safe_Release(pPlayer);
 	return S_OK;
 }
 

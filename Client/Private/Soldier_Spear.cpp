@@ -1,17 +1,21 @@
 #include "stdafx.h"
 #include "Soldier_Spear.h"
+#include "Actor_Dynamic.h"
+#include "3DModel.h"
 #include "GameInstance.h"
-#include "FSM.h"
-#include "ModelObject.h"
+#include "Section_Manager.h"
+#include "Monster.h"
 
 CSoldier_Spear::CSoldier_Spear(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    : CMonster(_pDevice, _pContext)
+    :CModelObject(_pDevice, _pContext)
 {
 }
 
+
 CSoldier_Spear::CSoldier_Spear(const CSoldier_Spear& _Prototype)
-    : CMonster(_Prototype)
+    :CModelObject(_Prototype)
 {
+
 }
 
 HRESULT CSoldier_Spear::Initialize_Prototype()
@@ -21,48 +25,20 @@ HRESULT CSoldier_Spear::Initialize_Prototype()
 
 HRESULT CSoldier_Spear::Initialize(void* _pArg)
 {
-    CSoldier_Spear::MONSTER_DESC* pDesc = static_cast<CSoldier_Spear::MONSTER_DESC*>(_pArg);
-    pDesc->eStartCoord = COORDINATE_3D;
+    //Part Sword
+    SOLDIER_SPEAR_DESC* pDesc = static_cast<SOLDIER_SPEAR_DESC*>(_pArg);
+
     pDesc->isCoordChangeEnable = false;
+    pDesc->eStartCoord = COORDINATE_3D;
+    pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+    m_pParent = pDesc->pParent;
 
-    pDesc->fAlertRange = 5.f;
-    pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 4.f;
-    pDesc->fAlert2DRange = 5.f;
-    pDesc->fChase2DRange = 12.f;
-    pDesc->fAttack2DRange = 3.f;
-
-    /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;
 
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
-
-    if (FAILED(Ready_Components()))
-        return E_FAIL;
-
-    if (FAILED(Ready_PartObjects()))
-        return E_FAIL;
-
-    m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
-    m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
-
-    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
-    pModelObject->Set_Animation(IDLE);
-
-    pModelObject->Register_OnAnimEndCallBack(bind(&CSoldier_Spear::Animation_End, this, placeholders::_1, placeholders::_2));
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
@@ -76,95 +52,77 @@ HRESULT CSoldier_Spear::Initialize(void* _pArg)
     return S_OK;
 }
 
-void CSoldier_Spear::Priority_Update(_float _fTimeDelta)
-{
-
-    __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
-}
-
 void CSoldier_Spear::Update(_float _fTimeDelta)
 {
-    __super::Update(_fTimeDelta); /* Part Object Update */
+    __super::Update(_fTimeDelta);
 }
 
 void CSoldier_Spear::Late_Update(_float _fTimeDelta)
 {
-    __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
+    __super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CSoldier_Spear::Render()
 {
-    /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
-
 #ifdef _DEBUG
+#endif
+    if(Is_Active())
+        return __super::Render();
+    return S_OK;
+}
 
-#endif // _DEBUG
+void CSoldier_Spear::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup
+        && (_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse
+        && (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
+    {
+        _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+        Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), m_pParent->Get_Stat().iDamg, vRepulse);
+    }
 
-    /* Font Render */
+}
+
+void CSoldier_Spear::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+}
+
+void CSoldier_Spear::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+}
+
+void CSoldier_Spear::Active_OnEnable()
+{
+    __super::Active_OnEnable();
+}
+
+void CSoldier_Spear::Active_OnDisable()
+{
+    __super::Active_OnDisable();
+}
+
+HRESULT CSoldier_Spear::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
+{
+    if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+        return E_FAIL;
 
     return S_OK;
 }
 
-void CSoldier_Spear::Change_Animation()
+void CSoldier_Spear::Attack(CGameObject* _pVictim)
 {
-    if(m_iState != m_iPreState)
-    {
-        switch (MONSTER_STATE(m_iState))
-        {
-        case MONSTER_STATE::IDLE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
-            break;
-
-        case MONSTER_STATE::PATROL:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
-            break;
-
-        case MONSTER_STATE::ALERT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
-            break;
-
-        case MONSTER_STATE::CHASE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
-            break;
-
-        case MONSTER_STATE::ATTACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_STARTUP);
-            break;
-
-        default:
-            break;
-        }
-    }
 }
 
-void CSoldier_Spear::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
+_vector CSoldier_Spear::Get_LookDirection()
 {
-    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-    switch ((CSoldier_Spear::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
-    {
-    case ALERT:
-        Set_AnimChangeable(true);
-        break;
-        
-    case DASH_ATTACK_STARTUP:
-        pModelObject->Switch_Animation(DASH_ATTACK_RECOVERY);
-        break;
-
-    case DASH_ATTACK_RECOVERY:
-        pModelObject->Switch_Animation(DASH_ATTACK_STARTUP);
-        Set_AnimChangeable(true);
-        break;
-
-    default:
-        break;
-    }
+    return _vector();
 }
 
 HRESULT CSoldier_Spear::Ready_ActorDesc(void* _pArg)
 {
-    CSoldier_Spear::MONSTER_DESC* pDesc = static_cast<CSoldier_Spear::MONSTER_DESC*>(_pArg);
+    CSoldier_Spear::SOLDIER_SPEAR_DESC* pDesc = static_cast<CSoldier_Spear::SOLDIER_SPEAR_DESC*>(_pArg);
 
-    pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
+    pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
 
     /* Actor의 주인 오브젝트 포인터 */
@@ -183,22 +141,22 @@ HRESULT CSoldier_Spear::Ready_ActorDesc(void* _pArg)
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
     ShapeDesc->fHalfHeight = 0.5f;
-    ShapeDesc->fRadius = 0.5f;
+    ShapeDesc->fRadius = 0.1f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
-    ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
+    ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER_PROJECTILE;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;
@@ -209,60 +167,13 @@ HRESULT CSoldier_Spear::Ready_ActorDesc(void* _pArg)
     return S_OK;
 }
 
-HRESULT CSoldier_Spear::Ready_Components()
-{
-    /* Com_FSM */
-    CFSM::FSMDESC FSMDesc;
-    FSMDesc.fAlertRange = m_fAlertRange;
-    FSMDesc.fChaseRange = m_fChaseRange;
-    FSMDesc.fAttackRange = m_fAttackRange;
-    FSMDesc.fAlert2DRange = m_fAlert2DRange;
-    FSMDesc.fChase2DRange = m_fChase2DRange;
-    FSMDesc.fAttack2DRange = m_fAttack2DRange;
-    FSMDesc.isMelee = true;
-    FSMDesc.pOwner = this;
-    FSMDesc.iCurLevel = m_iCurLevelID;
-
-    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
-        TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
-        return E_FAIL;
-
-    return S_OK;
-}
-
-HRESULT CSoldier_Spear::Ready_PartObjects()
-{
-    /* Part Body */
-    CModelObject::MODELOBJECT_DESC BodyDesc{};
-
-    BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
-    BodyDesc.iCurLevelID = m_iCurLevelID;
-    BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
-
-    BodyDesc.strModelPrototypeTag_3D = TEXT("humgrump_troop_Rig_GT");
-	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-
-    BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
-
-    BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-    BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
-    BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
-
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"), &BodyDesc));
-    if (nullptr == m_PartObjects[PART_BODY])
-        return E_FAIL;
-
-    return S_OK;
-}
-
 CSoldier_Spear* CSoldier_Spear::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
     CSoldier_Spear* pInstance = new CSoldier_Spear(_pDevice, _pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CSoldier_Spear");
+        MSG_BOX("Failed to Created : Soldier_Spear");
         Safe_Release(pInstance);
     }
 
@@ -275,7 +186,7 @@ CGameObject* CSoldier_Spear::Clone(void* _pArg)
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : CSoldier_Spear");
+        MSG_BOX("Failed to Cloned : Soldier_Spear");
         Safe_Release(pInstance);
     }
 
@@ -284,6 +195,7 @@ CGameObject* CSoldier_Spear::Clone(void* _pArg)
 
 void CSoldier_Spear::Free()
 {
+    m_pParent = nullptr;
 
     __super::Free();
 }

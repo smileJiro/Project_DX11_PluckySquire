@@ -14,16 +14,21 @@ public:
     virtual void Exit() override;
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 
+
+    void Switch_To_PushAnimation(COORDINATE _eCoord );
+    void Switch_To_PullAnimation(COORDINATE _eCoord, _vector _vMoveDir);
+
 private:
 	_float m_fDragMoveSpeed = 0.f;
 	CDraggableObject* m_pDraggableObject = nullptr;
 
 	_float m_fAnimTransitionTime = 0.2f;
-	_float m_fAnimTransitionTimeAcc = 0.2f;
+	_float m_fAnimTransitionTimeAcc = 0.0f;
 
-    _bool m_bPushing = false;
     _float m_fPushThreshold = 0.3f;
-	F_DIRECTION m_eHoldDirection = F_DIRECTION::F_DIR_LAST;
+    _vector m_vHoldOffset = { 0.f,0.f,0.f };
+    F_DIRECTION m_eOldDragDirection = F_DIRECTION::F_DIR_LAST;
+	_uint m_iAdditionalShapeIndex = 0;
 };
 
 END
