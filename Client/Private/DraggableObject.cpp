@@ -67,9 +67,24 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 		ShapeData2.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
 		ShapeData2.FilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
 		ShapeData2.FilterData.OtherGroupMask = OBJECT_GROUP::PLAYER_TRIGGER;
-
 		XMStoreFloat4x4(&ShapeData2.LocalOffsetMatrix, XMMatrixTranslation(0.0f, pDesc->vBoxHalfExtents.y, 0.f));
 		ActorDesc.ShapeDatas.push_back(ShapeData2);
+
+		SHAPE_BOX_DESC ShapeDesc3 = {};
+		ShapeDesc3.vHalfExtents = pDesc->vBoxHalfExtents;
+		ShapeDesc3.vHalfExtents.x += 0.2f;
+		ShapeDesc3.vHalfExtents.z += 0.2f;
+		SHAPE_DATA ShapeData3;
+		ShapeData3.pShapeDesc = &ShapeDesc3;
+		ShapeData3.eShapeType = SHAPE_TYPE::BOX;
+		ShapeData3.eMaterial = ACTOR_MATERIAL::STICKY;
+		ShapeData3.isTrigger = true;
+		ShapeData3.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
+		ShapeData3.FilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
+		ShapeData3.FilterData.OtherGroupMask =OBJECT_GROUP::PLAYER;
+		XMStoreFloat4x4(&ShapeData3.LocalOffsetMatrix, XMMatrixTranslation(pDesc->vBoxOffset.x, pDesc->vBoxOffset.y, pDesc->vBoxOffset.z));
+		ActorDesc.ShapeDatas.push_back(ShapeData3);
+
 
 		ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
 		ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
@@ -80,7 +95,7 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 			return E_FAIL;
 
 		m_pActorCom->Set_MassLocalPos(pDesc->vBoxOffset);
-		m_pActorCom->Set_Mass(15.5f);
+		//m_pActorCom->Set_Mass(30.5f);
 		return S_OK;
 	}
 	else
@@ -133,9 +148,27 @@ void CDraggableObject::Late_Update(_float _fTimeDelta)
 	__super::Late_Update(_fTimeDelta);
 }
 
-void CDraggableObject::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts)
+void CDraggableObject::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)
 {
+	OBJECT_GROUP eOtherGroup = (OBJECT_GROUP)(_bIm0 ? _1.pActorUserData->iObjectGroup : _0.pActorUserData->iObjectGroup);
+	if (OBJECT_GROUP::PLAYER & eOtherGroup)
+	{
 
+		_uint iContactCount = _ModifiableContacts.Get_ContactCount();
+		for (_uint i = 0; i < iContactCount; i++)
+		{
+			if (Is_Interacting())
+				_ModifiableContacts.Ignore(i);
+			else
+			{
+				_ModifiableContacts.Set_Restitution(i, 0);
+				if (_bIm0)
+					_ModifiableContacts.Set_InvMassScale0(0.f);
+				else
+					_ModifiableContacts.Set_InvMassScale1(0.f);
+			}
+		}
+	}
 }
 
 void CDraggableObject::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -156,8 +189,25 @@ void CDraggableObject::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Ot
 
 void CDraggableObject::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
+
+}
+
+void CDraggableObject::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+
+}
+
+void CDraggableObject::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+}
+
+void CDraggableObject::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+	if (m_pDragger && m_pDragger == _Other.pActorUserData->pOwner)
 	{
+		m_pDragger->Set_InteractObject(nullptr);
+		End_Interact(m_pDragger);
+		m_pDragger = nullptr;
 		m_bUserContact = false;
 	}
 }
@@ -178,8 +228,7 @@ _bool CDraggableObject::Is_Interactable(CPlayer* _pUser)
 	//-> m_pDragger가 있으면 무적권 가능. 
 	//플레이어가 이제 관심없어지면 m_pDragger를 nullptr로 만들어줘야 함.
 
-	if (m_pDragger)
-		return true;
+
 
 	return m_bUserContact;
 }
@@ -226,14 +275,6 @@ void CDraggableObject::Move(_fvector _vForce, _float _fTimeDelta)
 	{
 		m_pControllerTransform->Go_Direction(_vForce, XMVectorGetX(XMVector3Length(_vForce)), _fTimeDelta);
 	}
-}
-
-F_DIRECTION CDraggableObject::Check_HoldingDirection(CPlayer* _pPlayer)
-{
-	//어떤 면에 붙어있는지 체크
-
-	//return _pPlayer->;
-	return F_DIRECTION::DOWN;
 }
 
 

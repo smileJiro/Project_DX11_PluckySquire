@@ -21,10 +21,13 @@ protected:
 	HRESULT Initialize(void* _pArg);
 	virtual void Update(_float _fTimeDelta) override;
 	virtual void Late_Update(_float _fTimeDelta) override;
-	virtual void OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts)override;
+	virtual void OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)override;
 	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 
 public:
 	void Interact(CPlayer* _pUser) override;
@@ -35,7 +38,6 @@ public:
 	void Set_Dragger(CPlayer* _pPlayer) { m_pDragger = _pPlayer; }
 	void Move(_fvector _vForce, _float _fTimeDelta);
 
-	F_DIRECTION Check_HoldingDirection(CPlayer* _pPlayer);
 private:
 	_bool m_bUserContact = false;
 	CPlayer* m_pDragger = nullptr;

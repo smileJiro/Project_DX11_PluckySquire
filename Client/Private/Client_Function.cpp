@@ -266,13 +266,13 @@ namespace Client
 		if (true == _pActor->Is_Dead())
 			return;
 
+		PxShape* pShape = _pActor->Get_ActorCom()->Get_Shapes()[_iShapeID];
+		pShape->acquireReference();
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::SET_SCENEQUERYFLAG;
-		tEvent.Parameters.resize(3);
-		tEvent.Parameters[0] = (DWORD_PTR)_pActor;
-		Safe_AddRef(_pActor);
-		tEvent.Parameters[1] = (DWORD_PTR)_iShapeID;
-		tEvent.Parameters[2] = (DWORD_PTR)_bEnable;
+		tEvent.Parameters.resize(2);
+		tEvent.Parameters[0] = (DWORD_PTR)pShape;
+		tEvent.Parameters[1] = (DWORD_PTR)_bEnable;
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
@@ -420,17 +420,32 @@ namespace Client
 		return strMatrix;
 	}
 
-	F_DIRECTION To_FDirection(_vector _vDir)
+	F_DIRECTION To_FDirection(_vector _vDir, COORDINATE _eCoord)
 	{
-		//가로축이 더 클 때
-		if (abs(_vDir.m128_f32[0] )> abs(_vDir.m128_f32[1]))
-			return _vDir.m128_f32[0] < 0 ? F_DIRECTION::LEFT: F_DIRECTION::RIGHT;
-		//세로축이 더 클 때
-		else
-			return _vDir.m128_f32[1] > 0 ? F_DIRECTION::UP: F_DIRECTION::DOWN;
+		if (COORDINATE_2D == _eCoord)
+		{
+			//가로축이 더 클 때
+			if (abs(_vDir.m128_f32[0]) > abs(_vDir.m128_f32[1]))
+				return _vDir.m128_f32[0] < 0 ? F_DIRECTION::LEFT : F_DIRECTION::RIGHT;
+			//세로축이 더 클 때
+			else
+				return _vDir.m128_f32[1] > 0 ? F_DIRECTION::UP : F_DIRECTION::DOWN;
 
-		return F_DIRECTION::F_DIR_LAST;
+		}
+		else
+		{
+			//가로축이 더 클 때
+			if (abs(_vDir.m128_f32[0]) > abs(_vDir.m128_f32[2]))
+				return _vDir.m128_f32[0] < 0 ? F_DIRECTION::LEFT : F_DIRECTION::RIGHT;
+			//세로축이 더 클 때
+			else
+				return _vDir.m128_f32[2] > 0 ? F_DIRECTION::UP : F_DIRECTION::DOWN;
+
+		}
+
+		return F_DIRECTION();
 	}
+
 
 	_vector FDir_To_Vector(F_DIRECTION _eFDir)
 	{

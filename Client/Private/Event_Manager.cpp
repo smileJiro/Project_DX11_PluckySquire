@@ -689,12 +689,11 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent)
 
 HRESULT CEvent_Manager::Execute_SetSceneQueryFlag(const EVENT& _tEvent)
 {
-	CActorObject* pActor = (CActorObject*)_tEvent.Parameters[0];
-	_uint iShapeID = (_uint)_tEvent.Parameters[1];
-	_bool bEnable = (_bool)_tEvent.Parameters[2];
-	pActor->Get_ActorCom()->Get_Shapes()[iShapeID]->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, bEnable);
+	PxShape* pShape = (PxShape*)_tEvent.Parameters[0];
+	_bool bEnable = (_bool)_tEvent.Parameters[1];
+	pShape->setFlag(PxShapeFlag::eSCENE_QUERY_SHAPE, bEnable);
 
-	Safe_Release(pActor);
+	pShape->release();
 	return S_OK;
 }
 

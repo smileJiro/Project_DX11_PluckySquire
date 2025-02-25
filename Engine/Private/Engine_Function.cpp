@@ -13,7 +13,7 @@ PxFilterFlags TWFilterShader(PxFilterObjectAttributes Attribute_0, PxFilterData 
 	if ((FilterData_0.word0 & FilterData_1.word1) && (FilterData_1.word0 & FilterData_0.word1))
 	{
 		PairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST
-				 |= PxPairFlag::eNOTIFY_CONTACT_POINTS | PxPairFlag::eSOLVE_CONTACT | PxPairFlag::eMODIFY_CONTACTS; ;
+				 |= PxPairFlag::eNOTIFY_CONTACT_POINTS | PxPairFlag::eSOLVE_CONTACT | PxPairFlag::eMODIFY_CONTACTS;
 		return PxFilterFlag::eDEFAULT;
 	}
 
