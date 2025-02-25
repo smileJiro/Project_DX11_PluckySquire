@@ -80,8 +80,10 @@ void CProjectile_BarfBug::Update(_float _fTimeDelta)
 
 	if (COORDINATE_2D == Get_CurCoord())
     {
-        if(false == m_isStop)
+        if (false == m_isStop)
             m_pControllerTransform->Go_Up(_fTimeDelta);
+        else
+            int a = 10;
     }
 
     else if (COORDINATE_3D == Get_CurCoord())
