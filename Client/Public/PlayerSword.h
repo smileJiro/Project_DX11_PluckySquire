@@ -3,6 +3,7 @@
 #include "Player.h"
 BEGIN(Engine)
 class CCollider;
+class CEffect_System;
 END
 BEGIN(Client)
 class CPlayerSword :
@@ -95,9 +96,10 @@ private:
 	class CPlayer* m_pPlayer = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;
 
-	// Trail È¿°ú
-	class CEffect_Trail* m_pTrailEffect = { nullptr };
-
+	// VFX
+	class CEffect_Trail*	m_pTrailEffect = { nullptr };
+	class CEffect_System*	m_pThrowTrailEffect = { nullptr };
+	class CEffect_Beam*		m_pBeamEffect = { nullptr };
 public:
 	static CPlayerSword* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

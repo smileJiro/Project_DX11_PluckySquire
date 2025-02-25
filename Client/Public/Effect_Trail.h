@@ -15,7 +15,7 @@ public:
 	typedef struct tagEffectTrail : public CPartObject::PARTOBJECT_DESC
 	{		
 		_float fAddTime = 0.002f;
-		_float fDeleteTime = 0.019f;
+		_float fTrailLifeTime = 0.25f;
 		_float fLength = 1.5f;
 		_float3 vAddPoint = _float3(0.f, 0.f, 0.f);
 		_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
@@ -58,6 +58,7 @@ private:
 private:
 	_float m_fAccAddTime = 0.f;
 	_float m_fAddTime = 0.002f;
+	_float m_fTrailLifeTime = 0.25f;
 	//_float m_fAccDeleteTime = 0.f;
 	//_float m_fDeleteTime = 0.019f;
 	

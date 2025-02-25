@@ -1491,6 +1491,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects(const _wstring& _strLayerTag)
 		return E_FAIL;
 	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("SwordThrowBlock.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
+		return E_FAIL;
+	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+
 	return S_OK;
 }
 

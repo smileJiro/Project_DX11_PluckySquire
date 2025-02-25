@@ -5,30 +5,34 @@
                 1.0,
                 1.0,
                 1.0,
-                5.0
+                1.0
             ],
             "DelayTime": 0.0,
             "Event": 0,
             "Float": [
                 {
                     "Name": "AlphaTest",
-                    "Value": 0.0
+                    "Value": 0.4000000059604645
                 },
                 {
                     "Name": "BloomThreshold",
-                    "Value": 0.5199999809265137
+                    "Value": 1.5099999904632568
                 },
                 {
                     "Name": "DissolveEdge",
-                    "Value": 2.924999952316284
+                    "Value": 1.8650000095367432
                 },
                 {
                     "Name": "DissolveFactor",
-                    "Value": 1.7350000143051147
+                    "Value": 1.1200000047683716
                 },
                 {
                     "Name": "SpawnRate",
                     "Value": 0.0
+                },
+                {
+                    "Name": "SubIntensity",
+                    "Value": 6.0
                 }
             ],
             "Float4": [
@@ -37,8 +41,8 @@
                     "Value": [
                         0.0,
                         1.0,
-                        0.5,
-                        0.5299999713897705
+                        0.5249999761581421,
+                        1.0
                     ]
                 },
                 {
@@ -91,7 +95,7 @@
                 1.0
             ],
             "ShaderPass": "SUB_DISSOLVE",
-            "SpawnPosition": "RELATIVE_WORLD",
+            "SpawnPosition": "FOLLOW_PARENT",
             "SpawnType": "SPAWN_RATE",
             "Textures": [
                 {
@@ -109,17 +113,17 @@
             ],
             "Time": 5.0,
             "Transform": [
-                1.0,
+                1.2999999523162842,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                1.0,
+                1.2999999523162842,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                1.0,
+                1.2999999523162842,
                 0.0,
                 0.0,
                 0.0,
@@ -129,6 +133,6 @@
             "Type": "EFFECT"
         }
     ],
-    "Name": "SwordThrowTrail",
+    "Name": "SwordThrowTrail2",
     "ToolLoopTime": 2.0
 }
