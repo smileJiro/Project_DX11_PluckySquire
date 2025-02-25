@@ -453,13 +453,11 @@ void CCamera_Manager::Start_FadeOut(_float _fFadeTime)
 	m_Cameras[m_eCurrentCameraType]->Start_PostProcessing_Fade(CCamera::FADE_OUT, _fFadeTime);
 }
 
-void CCamera_Manager::Load_ArmData()
+void CCamera_Manager::Load_ArmData(_wstring _sz3DFileName, _wstring _sz2DFileName)
 {
-	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/Chapter2_ArmData.json";
-	Load_ArmData(TARGET, wszLoadPath);
-
-	wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/Chapter2_SketchSpace_ArmData.json";
-	Load_ArmData(TARGET_2D, wszLoadPath);
+	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/";
+	Load_ArmData(TARGET, wszLoadPath + _sz3DFileName);
+	Load_ArmData(TARGET_2D, wszLoadPath + _sz2DFileName);
 }
 
 void CCamera_Manager::Load_CutSceneData()

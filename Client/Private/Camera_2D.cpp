@@ -712,7 +712,7 @@ void CCamera_2D::Calculate_Book_Scroll()
 	if (XMVector3Equal(vTargetPos, XMVectorZero())) {
 		int a = 0;
 	}
-	
+
 	XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 }
 

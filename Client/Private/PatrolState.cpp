@@ -80,7 +80,7 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 		//적 발견 시 ALERT 전환
 		if (m_pTarget->Get_CurCoord() == m_pOwner->Get_CurCoord())
 		{	
-			if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+			if (COORDINATE_2D == m_pOwner->Get_CurCoord() && m_pOwner->Get_Include_Section_Name() == m_pTarget->Get_Include_Section_Name())
 			{
 				_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
 				if (fDis <= m_fAlert2DRange)

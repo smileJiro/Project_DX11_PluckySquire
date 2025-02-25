@@ -106,9 +106,11 @@
 #include "Zippy.h"
 #include "BirdMonster.h"
 #include "Projectile_BirdMonster.h"
+#include "Spear_Soldier.h"
 #include "Soldier_Spear.h"
-#include "Soldier_CrossBow.h"
-#include "Soldier_Bomb.h"
+#include "Soldier_Shield.h"
+#include "CrossBow_Soldier.h"
+#include "Bomb_Soldier.h"
 #include "Popuff.h"
 #include "Monster_Body.h"
 #include "Goblin_SideScroller.h"
@@ -601,24 +603,34 @@ HRESULT CLoader::Loading_Level_Static()
         CProjectile_BirdMonster::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_Soldier_Spear */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Spear"),
-        CSoldier_Spear::Create(m_pDevice, m_pContext))))
+    /* For. Prototype_GameObject_Spear_Soldier */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"),
+        CSpear_Soldier::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_Soldier_CrossBow */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_CrossBow"),
-        CSoldier_CrossBow::Create(m_pDevice, m_pContext))))
+    /* For. Prototype_GameObject_CrossBow_Soldier */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"),
+        CCrossBow_Soldier::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_Soldier_Bomb */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Bomb"),
-        CSoldier_Bomb::Create(m_pDevice, m_pContext))))
+    /* For. Prototype_GameObject_Bomb_Soldier */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"),
+        CBomb_Soldier::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_Popuff */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Popuff"),
         CPopuff::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Soldier_Spear */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Spear"),
+        CSoldier_Spear::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Soldier_Shield */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Shield"),
+        CSoldier_Shield::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_LightningBolt */
@@ -1527,7 +1539,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         TEXT("../Bin/Resources/Models/2D_FX"))))
         return E_FAIL;
 
-    if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform, true)))
+    if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_04_Play_Desk.json", matPretransform, true)))
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_CAMERA_TOOL,
@@ -1673,6 +1685,9 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_JumpBugJumpEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/jumpBug_Rig/JumpBug_Jump.animevt"))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Spear_SoldierAttackEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/humgrump_troop_Rig_GT/Spear_SodierAttack.animevt"))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_BookPageActionEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DMapObject/book/book_Animation_Event.animevt"))))

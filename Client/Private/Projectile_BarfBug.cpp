@@ -25,7 +25,6 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
     PROJECTILE_BARFBUG_DESC* pDesc = static_cast<PROJECTILE_BARFBUG_DESC*>(_pArg);
 
     //투사체는 쓰는 객체가 Desc 넣어줌.
-    pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = true;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
@@ -80,8 +79,10 @@ void CProjectile_BarfBug::Update(_float _fTimeDelta)
 
 	if (COORDINATE_2D == Get_CurCoord())
     {
-        if(false == m_isStop)
+        if (false == m_isStop)
             m_pControllerTransform->Go_Up(_fTimeDelta);
+        else
+            int a = 10;
     }
 
     else if (COORDINATE_3D == Get_CurCoord())
