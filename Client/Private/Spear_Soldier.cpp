@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "FSM.h"
 #include "Soldier_Spear.h"
+#include "Soldier_Shield.h"
 #include "DetectionField.h"
 
 CSpear_Soldier::CSpear_Soldier(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -31,10 +32,12 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 4.f;
+    pDesc->fAttackRange = 2.f;
     pDesc->fAlert2DRange = 5.f;
     pDesc->fChase2DRange = 12.f;
     pDesc->fAttack2DRange = 3.f;
+    pDesc->fFOVX = 90.f;
+    pDesc->fFOVY = 30.f;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -52,8 +55,11 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
@@ -85,6 +91,25 @@ void CSpear_Soldier::Priority_Update(_float _fTimeDelta)
 
 void CSpear_Soldier::Update(_float _fTimeDelta)
 {
+    if (true == m_isDash)
+    {
+        if (COORDINATE_3D == Get_CurCoord())
+        {
+            _vector vDir = Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
+            vDir.m128_f32[1] = 0.f;
+            Get_ActorCom()->Set_LinearVelocity(vDir, Get_ControllerTransform()->Get_SpeedPerSec());
+        }
+
+        /*m_fAccDistance += Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta;
+
+        if (m_fDashDistance <= m_fAccDistance)
+        {
+            m_fAccDistance = 0.f;
+            m_isDash = false;
+            Stop_MoveXZ();
+        }*/
+    }
+
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
@@ -111,6 +136,14 @@ HRESULT CSpear_Soldier::Render()
     return S_OK;
 }
 
+void CSpear_Soldier::Attack()
+{
+    if (false == m_isDash)
+    {
+        m_isDash = true;
+    }
+}
+
 void CSpear_Soldier::Change_Animation()
 {
     if(m_iState != m_iPreState)
@@ -129,12 +162,24 @@ void CSpear_Soldier::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
             break;
 
+        case MONSTER_STATE::STANDBY:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_RECOVERY);
+            break;
+
         case MONSTER_STATE::CHASE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
             break;
 
         case MONSTER_STATE::ATTACK:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_STARTUP);
+            break;
+
+        case MONSTER_STATE::HIT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT_FRONT);
+            break;
+
+        case MONSTER_STATE::DEAD:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH_02_EDIT);
             break;
 
         default:
@@ -153,11 +198,16 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
         
     case DASH_ATTACK_STARTUP:
-        pModelObject->Switch_Animation(DASH_ATTACK_RECOVERY);
+        pModelObject->Switch_Animation(DASH_ATTACK_LOOP);
+        Attack();
+        break;
+
+    case DASH_ATTACK_LOOP:
+        m_isDash = false;
+        Set_AnimChangeable(true);
         break;
 
     case DASH_ATTACK_RECOVERY:
-        pModelObject->Switch_Animation(DASH_ATTACK_STARTUP);
         Set_AnimChangeable(true);
         break;
 
@@ -188,7 +238,7 @@ HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fHalfHeight = 0.4f;
+    ShapeDesc->fHalfHeight = 0.3f;
     ShapeDesc->fRadius = 0.4f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
@@ -197,7 +247,7 @@ HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fHalfHeight + ShapeDesc->fRadius + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
@@ -282,6 +332,7 @@ HRESULT CSpear_Soldier::Ready_PartObjects()
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 
+
     /* Part_Weapon */
     CSoldier_Spear::SOLDIER_SPEAR_DESC SpearDesc{};
     SpearDesc.strModelPrototypeTag_3D = TEXT("Spear");
@@ -298,17 +349,47 @@ HRESULT CSpear_Soldier::Ready_PartObjects()
     SpearDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
     SpearDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
 
+    SpearDesc.iRenderGroupID_3D = RG_3D;
+    SpearDesc.iPriorityID_3D = PR3D_GEOMETRY;
+
     SpearDesc.pParent = this;
 
-    m_PartObjects[PART_WEAPON] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Spear"), &SpearDesc));
-    if (nullptr == m_PartObjects[PART_WEAPON])
+    m_PartObjects[PART_RIGHT_WEAPON] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Spear"), &SpearDesc));
+    if (nullptr == m_PartObjects[PART_RIGHT_WEAPON])
         return E_FAIL;
 
     C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
-    static_cast<CPartObject*>(m_PartObjects[PART_WEAPON])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r"));
-    //m_PartObjects[PART_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
-    //Set_PartActive(PART_WEAPON, false);
+    static_cast<CPartObject*>(m_PartObjects[PART_RIGHT_WEAPON])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r"));
+    m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
+    //Set_PartActive(PART_RIGHT_WEAPON, false);
 
+
+    CSoldier_Shield::SOLDIER_SHIELD_DESC ShieldDesc{};
+    ShieldDesc.strModelPrototypeTag_3D = TEXT("Shield");
+    ShieldDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+
+    ShieldDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+
+    ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+
+    ShieldDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+
+    ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    ShieldDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+    ShieldDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+    ShieldDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+
+    ShieldDesc.iRenderGroupID_3D = RG_3D;
+    ShieldDesc.iPriorityID_3D = PR3D_GEOMETRY;
+
+    ShieldDesc.pParent = this;
+
+    m_PartObjects[PART_LEFT_WEAPON] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Shield"), &ShieldDesc));
+    if (nullptr == m_PartObjects[PART_LEFT_WEAPON])
+        return E_FAIL;
+
+    static_cast<CPartObject*>(m_PartObjects[PART_LEFT_WEAPON])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_l"));
+    m_PartObjects[PART_LEFT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
 
     return S_OK;
 }

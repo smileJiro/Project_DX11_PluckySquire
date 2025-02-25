@@ -1153,6 +1153,9 @@
     <ClInclude Include="..\Public\Soldier_Spear.h">
       <Filter>02.GameObjects\Monster\Soldier\Spear\Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Soldier_Shield.h">
+      <Filter>02.GameObjects\Monster\Soldier\Spear\Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1806,6 +1809,9 @@
       <Filter>02.GameObjects\Monster\Soldier\Bomb</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Soldier_Spear.cpp">
+      <Filter>02.GameObjects\Monster\Soldier\Spear\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Soldier_Shield.cpp">
       <Filter>02.GameObjects\Monster\Soldier\Spear\Weapon</Filter>
     </ClCompile>
   </ItemGroup>

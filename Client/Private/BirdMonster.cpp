@@ -277,7 +277,7 @@ void CBirdMonster::Attack()
             fAngle=Restrict_2DRangeAttack_Angle(fAngle);
             XMStoreFloat4(&vRotation, XMQuaternionRotationAxis(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMConvertToRadians(fAngle)));
 
-            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BarfBug"), eCoord, &vPosition, &vRotation);
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BirdMonster"), eCoord, &vPosition, &vRotation);
 
         }
         ++m_iAttackCount;

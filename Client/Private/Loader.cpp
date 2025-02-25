@@ -107,6 +107,7 @@
 #include "Projectile_BirdMonster.h"
 #include "Spear_Soldier.h"
 #include "Soldier_Spear.h"
+#include "Soldier_Shield.h"
 #include "CrossBow_Soldier.h"
 #include "Bomb_Soldier.h"
 #include "Popuff.h"
@@ -604,6 +605,11 @@ HRESULT CLoader::Loading_Level_Static()
     /* For. Prototype_GameObject_Soldier_Spear */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Spear"),
         CSoldier_Spear::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
+    /* For. Prototype_GameObject_Soldier_Shield */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Soldier_Shield"),
+        CSoldier_Shield::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     /* For. Prototype_GameObject_LightningBolt */

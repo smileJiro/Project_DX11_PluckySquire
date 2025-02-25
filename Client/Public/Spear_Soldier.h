@@ -96,8 +96,14 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
+	virtual void Attack();
 	virtual void Change_Animation() override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
+
+private:
+	_bool m_isDash = { false };
+	_float m_fDashDistance = { 0.f };
+	_float m_fAccDistance = { 0.f };
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);

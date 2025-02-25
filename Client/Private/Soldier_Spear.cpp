@@ -121,7 +121,7 @@ HRESULT CSoldier_Spear::Ready_ActorDesc(void* _pArg)
 {
     CSoldier_Spear::SOLDIER_SPEAR_DESC* pDesc = static_cast<CSoldier_Spear::SOLDIER_SPEAR_DESC*>(_pArg);
 
-    pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
+    pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
 
     /* Actor의 주인 오브젝트 포인터 */
