@@ -75,24 +75,37 @@
 			"Pre_Page_Tag": "Chapter4_P0506",
 			"Next_Page_Tag": "Chapter5_P0102"
 		}
-	}
-	,
-	{
-		"Section_Name": "Chapter5_P0102",
-		"Section_BackGround_Name": "Chapter5_P0102_BackGround",
-		"Section_File_Name": "Chapter5_P0102.m2chc",
-		"Section_Type": 0,
+	},
+		{
+		"Section_Name": "Chapter4_SKSP_01",
+		"Section_BackGround_Name": "Chapter4_SKSP_01_BackGround",
+		"Section_File_Name": "Chapter4_SKSP_01.m2chc",
+		"Section_Type": 2,
 		"Section_Info": {
-			"Camera_Zoom_Ratio": 2.0,
 			"RenderResolution": {
-				"X": 5119.0,
-				"Y": 1439.0
+				"X": 5120.0,
+				"Y": 2048.0
 			},
 			"LevelSizePixels": {
-				"X": 5119.0,
-				"Y": 1439.0
+				"X": 7680.0,
+				"Y": 3072.0
+			}
+		}
+	},
+	{
+		"Section_Name": "Chapter4_SKSP_02",
+		"Section_BackGround_Name": "Chapter4_SKSP_02_BackGround",
+		"Section_File_Name": "Chapter4_SKSP_02.m2chc",
+		"Section_Type": 2,
+		"Section_Info": {
+			"RenderResolution": {
+				"X": 14336.0,
+				"Y": 3072.0
 			},
-			"Pre_Page_Tag": "Chapter4_P0708"
+			"LevelSizePixels": {
+				"X": 14336.0,
+				"Y": 3072.0
+			}
 		}
 	}
 ]

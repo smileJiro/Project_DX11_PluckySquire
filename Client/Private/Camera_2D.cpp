@@ -243,6 +243,8 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	if (true == m_isInitialData)
 		return;
 
+	m_fTrackingTime.x = 1.5f;
+
 	Find_TargetPos();
 
 	Action_Zoom(_fTimeDelta);

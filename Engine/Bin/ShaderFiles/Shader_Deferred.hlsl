@@ -31,6 +31,9 @@ struct DirectLightData
     float4 vDiffuse; // 난반사광 (16byte)
     float4 vAmbient; // 주변광 (16byte)
     float4 vSpecular; // 정반사광 (16byte)
+    
+    float fRadius;
+    float3 dummy1;
 };
 
 /* DofData */ 
@@ -213,6 +216,11 @@ float3 lumaBasedReinhardToneMapping(float3 _vColor) // 색상의 변화가 적은 부드러
     return _vColor;
 }
 
+//float3 LightRadiance(DirectLightData _tLight, float3 vPixelWorldPos, float3 _vWorldNormal, Texture2D shadowMap)
+//{
+//    float3 vLight
+//}
+
 float4 GetWorldPositionFromDepth(float2 _vTexcoord, float _fNDCDepth, float _fViewSpaceZ) // 뎁스값을 기반으로 픽셀의 월드포지션을 연산.
 {
     float4 vPixelWorld = 0.0f;
@@ -309,6 +317,7 @@ PS_OUT PS_PBR_LIGHT_POINT(PS_IN In)
 
     float fAttenuation = pow(saturate((c_DirectLight.fFallOutEnd - fLightDist) / (c_DirectLight.fFallOutEnd - c_DirectLight.fFallOutStart)), 2.0f); //saturate((c_DirectLight.fFallOutEnd - fLightDist) / (c_DirectLight.fFallOutEnd - c_DirectLight.fFallOutStart));
     float3 vFinalRadiance = c_DirectLight.vRadiance * fAttenuation;
+    
     
     float3 DirectLighting = ((vDiffuseBRDF * c_DirectLight.vDiffuse.rgb) + (vSpecularBRDf * c_DirectLight.vSpecular.rgb)) * vFinalRadiance * NdotI;
     

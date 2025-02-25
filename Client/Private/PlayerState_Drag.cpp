@@ -1,0 +1,73 @@
+#include "stdafx.h"
+#include "PlayerState_Drag.h"
+#include "DraggableObject.h"
+#include "Actor_Dynamic.h"
+
+CPlayerState_Drag::CPlayerState_Drag(CPlayer* _pOwner)
+	:CPlayerState(_pOwner, CPlayer::DRAG)
+{
+}
+
+void CPlayerState_Drag::Update(_float _fTimeDelta)
+{
+	m_fAnimTransitionTimeAcc += _fTimeDelta;
+	if (m_fAnimTransitionTimeAcc < m_fAnimTransitionTime)
+		return;
+	INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
+	m_pOwner->Stop_Rotate();
+	if (INTERACT_RESULT::SUCCESS == eResult)
+	{
+		PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+		if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
+		{
+			//물체와 나 사이의 방향과 일치하는 방향으로 이동하면 PUSH
+			//일치하지 않는 바향으로 이동하면 PULL
+	
+
+			m_pOwner->Set_PlayingAnim(true);
+			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
+			m_pDraggableObject->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
+		}
+		else 
+		{
+			m_pOwner->Set_PlayingAnim(false);
+		}
+	}
+	else
+	{
+		m_pOwner->Set_PlayingAnim(true);
+		m_pOwner->Set_State(CPlayer::IDLE);
+		return;
+	}
+
+
+
+}
+
+void CPlayerState_Drag::Enter()
+{
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+	m_pDraggableObject = dynamic_cast<CDraggableObject*>( m_pOwner->Get_InteractableObject());
+	assert(nullptr != m_pDraggableObject);
+	m_fDragMoveSpeed = m_pOwner->Get_DragMoveSpeed(eCoord);
+	if (COORDINATE_2D == eCoord)
+	{
+		
+	}
+	else
+	{
+		m_eHoldDirection = m_pDraggableObject->Check_HoldingDirection(m_pOwner);
+		m_pOwner->Get_Body()->Set_3DAnimationTransitionTime((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_PULL_GT, m_fAnimTransitionTime);
+		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_PULL_GT);
+	}
+}
+
+void CPlayerState_Drag::Exit()
+{
+
+}
+
+void CPlayerState_Drag::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+
+}

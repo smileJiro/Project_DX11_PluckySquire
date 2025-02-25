@@ -243,20 +243,22 @@ void CEmitter::Active_OnDisable()
 
 void CEmitter::Set_Matrix()
 {
-	_matrix SpawnMatrix = {};
-	if (nullptr != m_pSpawnMatrix)
+	if (FOLLOW_PARENT != m_eSpawnPosition)
 	{
-		SpawnMatrix = XMLoadFloat4x4(m_pSpawnMatrix);
-		SpawnMatrix.r[0] = XMVector3Normalize(SpawnMatrix.r[0]);
-		SpawnMatrix.r[1] = XMVector3Normalize(SpawnMatrix.r[1]);
-		SpawnMatrix.r[2] = XMVector3Normalize(SpawnMatrix.r[2]);
-	}
-	else 
-		SpawnMatrix = XMMatrixIdentity();
+		_matrix SpawnMatrix = {};
+		if (nullptr != m_pSpawnMatrix)
+		{
+			SpawnMatrix = XMLoadFloat4x4(m_pSpawnMatrix);
+			SpawnMatrix.r[0] = XMVector3Normalize(SpawnMatrix.r[0]);
+			SpawnMatrix.r[1] = XMVector3Normalize(SpawnMatrix.r[1]);
+			SpawnMatrix.r[2] = XMVector3Normalize(SpawnMatrix.r[2]);
+		}
+		else
+			SpawnMatrix = XMMatrixIdentity();
 
 
-	XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * SpawnMatrix * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
-
+		XMStoreFloat4x4(&m_WorldMatrices[COORDINATE_3D], m_pControllerTransform->Get_WorldMatrix(COORDINATE_3D) * SpawnMatrix * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]));
+	}	
 }
 
 HRESULT CEmitter::Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc)
@@ -270,9 +272,7 @@ HRESULT CEmitter::Ready_Components(const PARTICLE_EMITTER_DESC* _pDesc)
 		if (FAILED(Add_Component(_pDesc->iProtoShaderLevel, _pDesc->szComputeShaderTag,
 			TEXT("Com_ComputeShader"), reinterpret_cast<CComponent**>(&m_pComputeShader))))
 			return E_FAIL;
-
 	}
-
 
 	return S_OK;
 }
@@ -313,7 +313,7 @@ void CEmitter::Tool_Update(_float fTimeDelta)
 {
 	if (ImGui::TreeNode("Position Type"))
 	{
-		const char* items[] = { "Relative Position", "Absolute Position" };
+		const char* items[] = { "Relative Position", "Absolute Position", "Follow Parent" };
 		static _int item_selected_idx = 0;
 		const char* combo_preview_value = items[item_selected_idx];
 

@@ -1,1 +1,6 @@
-xcopy			/y			.\Bin\DataFiles\Effects\*.*			..\Client\Bin\DataFiles\FX\Common\
+xcopy			/y			.\Bin\DataFiles\Effects\*.*				..\Client\Bin\DataFiles\FX\Common\
+xcopy			/y			.\Bin\Resources\Textures\Effects\*.*	..\Client\Bin\Resources\Textures\Effects\
+xcopy			/y			.\Bin\Resources\Models\FX\*.*			..\Client\Bin\Resources\Models\FX\
+xcopy			/y			.\Bin\ShaderFiles\Shader_Effect.hlsl	..\Client\Bin\ShaderFiles\Shader_Effect.hlsl
+xcopy			/y			.\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl	..\Client\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl
+xcopy			/y			.\Bin\ShaderFiles\Shader_VtxMeshInstance.hlsl	..\Client\Bin\ShaderFiles\Shader_VtxMeshInstance.hlsl

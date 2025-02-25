@@ -22,6 +22,9 @@ public:
 	virtual HRESULT Initialize(void* _pArg) override;
 
 	void	Initialize_Positions(const _float3& _vStartPos, const _float3& _vEndPos); // 시작/끝 위치 설정 + 그냥 나머지 랜덤 세팅임..
+	
+	HRESULT	Bind_PointBufferDesc();
+	HRESULT Render_Points();
 
 public:
 	void			Begin_Update();

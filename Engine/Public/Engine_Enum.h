@@ -70,6 +70,7 @@ enum class PASS_VTXMESH
 	FRESNEL,	// 전구 임시
 	MAIN2,		// 전구 임시
 	PLAYERDEPTH,
+	RENDERTARGET_MAPP,
 	LAST
 };
 
