@@ -72,7 +72,10 @@ private:
 	_wstring					m_strDSVKey;
 	_wstring					m_strMRTKey;
 
-	_wstring					m_strWorldRTKey;
+	_wstring					m_strWorldRTKey = L"";
+	_int						m_iWorldRenderGroupID;
+	_int						m_iWorldPriorityID;
+	
 
 	
 	CTexture*					m_pTextureCom = nullptr;		// Map Origin Texture;

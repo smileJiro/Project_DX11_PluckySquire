@@ -256,10 +256,11 @@ HRESULT CMonster::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosit
 	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
 		return E_FAIL;
 
-	if (COORDINATE_2D == _eCoordinate)
-		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
-	else
-		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+	//// TODO ::1½ºÅÃ 
+	//if (COORDINATE_2D == _eCoordinate)
+	//	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	//else
+	//	CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 
 	if (COORDINATE_2D == Get_CurCoord())
 		Set_2D_Direction(F_DIRECTION::DOWN);
