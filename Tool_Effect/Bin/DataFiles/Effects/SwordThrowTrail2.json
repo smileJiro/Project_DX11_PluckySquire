@@ -2,8 +2,8 @@
     "Emitters": [
         {
             "Color": [
-                1.0,
-                1.0,
+                0.0,
+                0.7390000224113464,
                 1.0,
                 1.5
             ],
@@ -16,7 +16,7 @@
                 },
                 {
                     "Name": "BloomThreshold",
-                    "Value": 0.5350000262260437
+                    "Value": 0.4350000023841858
                 },
                 {
                     "Name": "DissolveEdge",
@@ -25,6 +25,10 @@
                 {
                     "Name": "DissolveFactor",
                     "Value": 1.1200000047683716
+                },
+                {
+                    "Name": "DissolveTimeFactor",
+                    "Value": 0.0
                 },
                 {
                     "Name": "SpawnRate",
@@ -39,9 +43,9 @@
                 {
                     "Name": "DissolveEdgeColor",
                     "Value": [
-                        0.0,
                         1.0,
-                        0.7390000224113464,
+                        1.0,
+                        1.0,
                         1.0
                     ]
                 },
