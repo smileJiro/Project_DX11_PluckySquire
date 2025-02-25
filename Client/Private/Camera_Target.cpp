@@ -328,9 +328,17 @@ INITIAL_DATA CCamera_Target::Get_InitialData()
 
 	XMStoreFloat3(&tData.vPosition, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
 
-	_vector vTargetPos;
-	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
-	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+#pragma region Pos + Look
+	//_vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
+	//_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+	//_vector vAt = vPos + vLook;
+	//XMStoreFloat3(&tData.vAt, vAt);
+
+	//tData.iZoomLevel = m_iCurZoomLevel;
+#pragma endregion
+
+	//PreTargetPos를 주는 게 더 나을 것 같은데
+	_vector vAt = XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 	XMStoreFloat3(&tData.vAt, vAt);
 
 	tData.iZoomLevel = m_iCurZoomLevel;
@@ -340,7 +348,7 @@ INITIAL_DATA CCamera_Target::Get_InitialData()
 		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 		_vector vResultAt = vPos + vLook;
 		XMStoreFloat3(&tData.vAt, vResultAt);
-		
+
 	}
 
 	m_vFreezeOffset = { 0.f, 0.f, 0.f };
@@ -726,9 +734,9 @@ void CCamera_Target::Switching(_float _fTimeDelta)
 	_vector vTargetPos;
 	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
 	_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
-	_vector vResulPos = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vPosition), vCameraPos, fRatio);
+	_vector vResultPos = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vPosition), vCameraPos, fRatio);
 
-	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vResulPos, 1.f));
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vResultPos, 1.f));
 
 	// LookAt
 	_vector vLookAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);

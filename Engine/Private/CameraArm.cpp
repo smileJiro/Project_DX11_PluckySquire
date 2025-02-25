@@ -381,7 +381,6 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
     if (!(m_iMovementFlags & DONE_Y_ROTATE)) {
         _float fRatio = m_pGameInstance->Calculate_Ratio(&m_pNextArmData->fMoveTimeAxisY, _fTimeDelta, LERP);
 
-        cout << fRatio << endl;
         if (fRatio >= (1.f - EPSILON)) {
 
             m_vArm = m_pNextArmData->vDesireArm;
@@ -396,8 +395,6 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
                 m_pTransform->Set_Look(XMLoadFloat3(&m_vArm));
                 m_pNextArmData->fMoveTimeAxisY.y = 0.f;
                 m_iMovementFlags |= DONE_Y_ROTATE;
-                //
-                cout << "A" << endl;
             }
 
             _vector vArm = XMVectorLerp(XMLoadFloat3(&m_vStartArm), XMLoadFloat3(&m_pNextArmData->vDesireArm), fRatio);
