@@ -30,57 +30,58 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 	m_eInteractKey = KEY::E;
 	m_eInteractType = INTERACT_TYPE::HOLDING;
 	
-	CActor::ACTOR_DESC ActorDesc = {};
-	ActorDesc.pOwner = this;
-	ActorDesc.FreezeRotation_XYZ[0] = false;
-	ActorDesc.FreezeRotation_XYZ[1] = false;
-	ActorDesc.FreezeRotation_XYZ[2] = false;
-	ActorDesc.FreezePosition_XYZ[0] = false;
-	ActorDesc.FreezePosition_XYZ[1] = false;
-	ActorDesc.FreezePosition_XYZ[2] = false;
-	ActorDesc.isAddActorToScene = true;
+	
 
-	SHAPE_BOX_DESC ShapeDesc = {};
-	ShapeDesc.vHalfExtents = pDesc->vBoxHalfExtents;
-	SHAPE_DATA ShapeData;
-	ShapeData.pShapeDesc = &ShapeDesc;
-	ShapeData.eShapeType = SHAPE_TYPE::BOX;
-	ShapeData.eMaterial = ACTOR_MATERIAL::STICKY;
-	ShapeData.isTrigger = false;
-	ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
-	ShapeData.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
-	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(pDesc->vBoxOffset.x, pDesc->vBoxOffset.y, pDesc->vBoxOffset.z));
-	ActorDesc.ShapeDatas.push_back(ShapeData);
-
-	SHAPE_SPHERE_DESC ShapeDesc2 = {};
-	ShapeDesc2.fRadius = 0.25f;
-	SHAPE_DATA ShapeData2;
-	ShapeData2.pShapeDesc = &ShapeDesc2;
-	ShapeData2.eShapeType = SHAPE_TYPE::SPHERE;
-	ShapeData2.eMaterial = ACTOR_MATERIAL::DEFAULT;
-	ShapeData2.isTrigger = false;
-	ShapeData2.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
-	ShapeData2.FilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
-	ShapeData2.FilterData.OtherGroupMask = OBJECT_GROUP::PLAYER_TRIGGER;
-
-	XMStoreFloat4x4(&ShapeData2.LocalOffsetMatrix, XMMatrixTranslation(0.0f, pDesc->vBoxHalfExtents.y, 0.f));
-	ActorDesc.ShapeDatas.push_back(ShapeData2);
-
-	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
-	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
-	pDesc->pActorDesc = &ActorDesc;
-	pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
-
-	if (FAILED(__super::Initialize(pDesc)))
-		return E_FAIL;
-
-	m_pActorCom->Set_MassLocalPos(pDesc->vBoxOffset);
-	//m_pActorCom->Set_Mass(15.5f);
-	return S_OK;
 	if (COORDINATE_3D == pDesc->eStartCoord)
 	{
-		
+		CActor::ACTOR_DESC ActorDesc = {};
+		ActorDesc.pOwner = this;
+		ActorDesc.FreezeRotation_XYZ[0] = true;
+		ActorDesc.FreezeRotation_XYZ[1] = true;
+		ActorDesc.FreezeRotation_XYZ[2] = true;
+		ActorDesc.FreezePosition_XYZ[0] = false;
+		ActorDesc.FreezePosition_XYZ[1] = false;
+		ActorDesc.FreezePosition_XYZ[2] = false;
+		ActorDesc.isAddActorToScene = true;
+
+		SHAPE_BOX_DESC ShapeDesc = {};
+		ShapeDesc.vHalfExtents = pDesc->vBoxHalfExtents;
+		SHAPE_DATA ShapeData;
+		ShapeData.pShapeDesc = &ShapeDesc;
+		ShapeData.eShapeType = SHAPE_TYPE::BOX;
+		ShapeData.eMaterial = ACTOR_MATERIAL::STICKY;
+		ShapeData.isTrigger = false;
+		ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
+		ShapeData.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
+		ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
+		XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(pDesc->vBoxOffset.x, pDesc->vBoxOffset.y, pDesc->vBoxOffset.z));
+		ActorDesc.ShapeDatas.push_back(ShapeData);
+
+		SHAPE_SPHERE_DESC ShapeDesc2 = {};
+		ShapeDesc2.fRadius = 0.25f;
+		SHAPE_DATA ShapeData2;
+		ShapeData2.pShapeDesc = &ShapeDesc2;
+		ShapeData2.eShapeType = SHAPE_TYPE::SPHERE;
+		ShapeData2.eMaterial = ACTOR_MATERIAL::DEFAULT;
+		ShapeData2.isTrigger = false;
+		ShapeData2.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
+		ShapeData2.FilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
+		ShapeData2.FilterData.OtherGroupMask = OBJECT_GROUP::PLAYER_TRIGGER;
+
+		XMStoreFloat4x4(&ShapeData2.LocalOffsetMatrix, XMMatrixTranslation(0.0f, pDesc->vBoxHalfExtents.y, 0.f));
+		ActorDesc.ShapeDatas.push_back(ShapeData2);
+
+		ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
+		ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
+		pDesc->pActorDesc = &ActorDesc;
+		pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
+
+		if (FAILED(__super::Initialize(pDesc)))
+			return E_FAIL;
+
+		m_pActorCom->Set_MassLocalPos(pDesc->vBoxOffset);
+		m_pActorCom->Set_Mass(15.5f);
+		return S_OK;
 	}
 	else
 	{
@@ -134,21 +135,7 @@ void CDraggableObject::Late_Update(_float _fTimeDelta)
 
 void CDraggableObject::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts)
 {
-	SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
-	switch (eShapeUse)
-	{
-	case Client::SHAPE_USE::SHAPE_BODY:
-	{
-		_uint iContactCount = _ModifiableContacts.Get_ContactCount();
-		for (_uint i = 0; i < iContactCount; i++)
-		{
 
-			//_ModifiableContacts.Set_StaticFriction(i,100.f);
-			//_ModifiableContacts.Set_DynamicFriction(i,100.f);
-		}
-		break;
-	}
-	}
 }
 
 void CDraggableObject::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -204,13 +191,13 @@ _float CDraggableObject::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 
 }
 
-void CDraggableObject::On_Touched(CPlayer* _pPlayer)
+void CDraggableObject::On_InteractionStart(CPlayer* _pPlayer)
 {
 	Set_Dragger(_pPlayer);
 	_pPlayer->Set_State(CPlayer::DRAG);
 }
 
-void CDraggableObject::On_EndHolding(CPlayer* _pPlayer)
+void CDraggableObject::On_InteractionEnd(CPlayer* _pPlayer)
 {
 	Set_Dragger(nullptr);
 }
@@ -239,6 +226,14 @@ void CDraggableObject::Move(_fvector _vForce, _float _fTimeDelta)
 	{
 		m_pControllerTransform->Go_Direction(_vForce, XMVectorGetX(XMVector3Length(_vForce)), _fTimeDelta);
 	}
+}
+
+F_DIRECTION CDraggableObject::Check_HoldingDirection(CPlayer* _pPlayer)
+{
+	//어떤 면에 붙어있는지 체크
+
+	//return _pPlayer->;
+	return F_DIRECTION::DOWN;
 }
 
 

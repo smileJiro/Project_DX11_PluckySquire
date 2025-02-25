@@ -101,7 +101,15 @@ VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
     matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matWVP = mul(matWV, g_ProjMatrix);
 
+
     float4 vNDCCoord = float4(In.vTexcoord.xy, 0.0f, 1.0f);
+
+    if (g_iFlag == RT_RENDER_UVRENDER)
+    {
+        float2 vUV = lerp(g_fStartUV, g_fEndUV, In.vTexcoord);
+        vNDCCoord.xy = vUV.xy;
+    }
+
     vNDCCoord = float4(vNDCCoord.xy * 2.0f - 1.0f, 0.0f, 1.0f);
     vNDCCoord.y *= -1.0f;
     Out.vPosition = vNDCCoord;

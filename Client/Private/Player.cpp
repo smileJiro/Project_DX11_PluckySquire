@@ -1186,38 +1186,79 @@ void CPlayer::Start_Invinciblity()
 
 INTERACT_RESULT CPlayer::Try_Interact(_float _fTimeDelta)
 {
- 
-    if (Has_InteractObject())
+    //이미 인터렉터블 오브젝트가 있다? 
+    // -> 버튼만 눌러주면 바로 상호작용 OK
+    if (false == Has_InteractObject())
     {
-        IInteractable* pInteractable = Get_InteractableObject();
-        IInteractable::INTERACT_TYPE eInteractType = pInteractable->Get_InteractType();
-        KEY eInteractKey = pInteractable->Get_InteractKey();
-        _bool bTryInteract = false;
-        if (IInteractable::INTERACT_TYPE::CHARGE == eInteractType)
+        return INTERACT_RESULT::FAIL;
+    }
+    
+    IInteractable* pInteractable = Get_InteractableObject();
+    IInteractable::INTERACT_TYPE eInteractType = pInteractable->Get_InteractType();
+    KEY eInteractKey = pInteractable->Get_InteractKey();
+
+    if (KEY_CHECK(eInteractKey, KEY_STATE::NONE))
+    {
+        m_pInteractableObject->Set_Interacting(false);
+        return INTERACT_RESULT::NO_INPUT;
+    }
+
+    switch (eInteractType)
+    {
+    case Client::IInteractable::NORMAL:
+        if (KEY_DOWN(eInteractKey))
         {
-            if (KEY_PRESSING(eInteractKey))
-                bTryInteract = true;
+			m_pInteractableObject->Start_Interact(this);
+            m_pInteractableObject->Interact(this);
+			m_pInteractableObject->End_Interact(this);
+            return INTERACT_RESULT::SUCCESS;
         }
-        else if (IInteractable::INTERACT_TYPE::NORMAL == eInteractType)
+        break;
+    case Client::IInteractable::CHARGE:
+        if (KEY_DOWN(eInteractKey))
         {
-            if (KEY_DOWN(eInteractKey))
-                bTryInteract = true;
+            m_pInteractableObject->Start_Interact(this);
+            return INTERACT_RESULT::INTERACT_START;
         }
-        else if (IInteractable::INTERACT_TYPE::HOLDING == eInteractType)
+		else if (KEY_PRESSING(eInteractKey))
+		{
+			m_pInteractableObject->Pressing(this, _fTimeDelta);
+            if (m_pInteractableObject->Is_ChargeCompleted())
+            {
+                m_pInteractableObject->Interact(this);
+				m_pInteractableObject->End_Interact(this);
+                return INTERACT_RESULT::SUCCESS;
+            }
+            return INTERACT_RESULT::CHARGING;
+		}
+		else if (KEY_UP(eInteractKey))
+		{
+			m_pInteractableObject->End_Interact(this);
+            return INTERACT_RESULT::CHARGE_CANCEL;
+		}
+        break;
+    case Client::IInteractable::HOLDING:
+        if (KEY_DOWN(eInteractKey))
         {
-            if (KEY_PRESSING(eInteractKey))
-                bTryInteract = true;
+            m_pInteractableObject->Start_Interact(this);
+            return INTERACT_RESULT::INTERACT_START;
         }
-        if (bTryInteract)
-            return m_pInteractableObject->Try_Interact(this, _fTimeDelta);
-        else
+        else if (KEY_PRESSING(eInteractKey))
+        {
+            m_pInteractableObject->Pressing(this, _fTimeDelta);
+            m_pInteractableObject->Interact(this);
+            return INTERACT_RESULT::SUCCESS;
+        }
+        else if (KEY_UP(eInteractKey))
         {
             m_pInteractableObject->End_Interact(this);
-            return INTERACT_RESULT::FAIL;
+            return INTERACT_RESULT::INTERACT_END;
         }
+        break;
+    default:
+        break;
     }
-    else
-        return INTERACT_RESULT::FAIL;
+	return INTERACT_RESULT::FAIL;
 }
 
 

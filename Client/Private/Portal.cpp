@@ -332,7 +332,7 @@ void CPortal::Active_OnDisable()
         m_pEffectSystem->Inactive_All();
 }
 
-void CPortal::On_Touched(CPlayer* _pPlayer)
+void CPortal::On_InteractionStart(CPlayer* _pPlayer)
 {
 	_pPlayer->Start_Portal(this);
 }

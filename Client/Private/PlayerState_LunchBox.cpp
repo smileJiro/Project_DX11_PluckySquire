@@ -58,7 +58,9 @@ void CPlayerState_LunchBox::Update(_float _fTimeDelta)
 			Event_KnockBack(m_pOwner, -m_vLook * m_fKnockBackPow);
 			return;
 		}
-		else if(INTERACT_RESULT::FAIL == eResult)
+		else if(INTERACT_RESULT::FAIL == eResult
+			|| INTERACT_RESULT::NO_INPUT == eResult
+			|| INTERACT_RESULT::CHARGE_CANCEL == eResult)
 		{
 			m_eCurState = LUNCHBOX_STATE_IDLE;
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_LUNCHBOX_POSE_01_LOOP_GT);

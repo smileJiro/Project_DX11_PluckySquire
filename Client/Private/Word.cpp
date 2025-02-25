@@ -28,12 +28,18 @@ HRESULT CWord::Initialize(void* _pArg)
 	pDesc->eCrriableObjId = WORD;
 	pDesc->vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
 	pDesc->vHeadUpOffset3D = { 0.f,1.5f,0.f };
+	XMStoreFloat4x4(&m_matHeadUpMatrix[COORDINATE_2D], XMMatrixTranslation(0.f, pDesc->fHeadUpHeight2D, 0.f));
+
+	_matrix matHeadUpRotationMatrix = XMMatrixRotationQuaternion(XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&pDesc->vHeadUpRoolPitchYaw3D)));
+	XMStoreFloat4x4(&m_matHeadUpMatrix[COORDINATE_3D],
+		matHeadUpRotationMatrix
+		* XMMatrixTranslation(pDesc->vHeadUpOffset3D.x, pDesc->vHeadUpOffset3D.y, pDesc->vHeadUpOffset3D.z));
+
+
 
 
 	m_iRenderGroupID_3D = RG_3D;
 	m_iPriorityID_3D = PR3D_GEOMETRY;
-
-
 
 	m_pWordTexture = pDesc->pSRV;
 	m_fSize = pDesc->fSize;
