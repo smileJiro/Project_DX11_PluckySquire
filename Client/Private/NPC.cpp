@@ -2,7 +2,11 @@
 #include "NPC.h"
 #include "GameInstance.h"
 #include "FSM.h"
+
+
 #include "UI_Manager.h"
+#include "Dialog_Manager.h"
+
 #include "StateMachine.h"
 
 CNPC::CNPC(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -77,24 +81,27 @@ HRESULT CNPC::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 
 void CNPC::Throw_Dialogue()
 {
+	CDialog_Manager::GetInstance()->Set_DialogId(m_strDialogueIndex, m_strCurSecion);
+	//Uimgr->Set_DialogId(m_strDialogueIndex, m_strCurSecion);
 
-	Uimgr->Set_DialogId(m_strDialogueIndex, m_strCurSecion);
 
-	_float4 vPos = {};
+
+	_float3 vPos = {};
 
 	if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
 	{
-		vPos = _float4(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0], m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1], 0.f, 1.f);
+		vPos = _float3(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0], m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1], 0.f);
 	}
 	else if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
 	{
-		vPos = _float4(m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
+		vPos = _float3(m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
 			m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_State(CTransform::STATE_POSITION).m128_f32[1],
-			m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_State(CTransform::STATE_POSITION).m128_f32[2],
-			1.f);
+			m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_State(CTransform::STATE_POSITION).m128_f32[2]);
 	}
 
-	Uimgr->Set_DialoguePos(vPos);
+
+	CDialog_Manager::GetInstance()->Set_DialoguePos(vPos);
+	//Uimgr->Set_DialoguePos(vPos);
 	Uimgr->Set_DisplayDialogue(true);
 	Uimgr->Set_PortraitRender(true);
 

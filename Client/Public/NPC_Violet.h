@@ -20,7 +20,7 @@ public:
 	{
 		ACTION_WAIT,
 		ACTION_IDLE,
-		ACTION_MOVE,
+		ACTION_INTERACTION,
 		ACTION_DIALOG,
 		ACTION_TRACE,
 		ACTION_END
@@ -230,6 +230,12 @@ private:
 	_float						m_fWelcomeWaitTime = { 0.f };
 	_bool						m_isDialoging = { false };
 	_bool						m_isDialogRock = { false };
+
+	_bool						m_DisplayWelcomeDialog = { false };
+	_bool						m_isWelcomeDialog = { false };
+	_bool						m_isWelcomeDisplayDialog = { false };
+
+	_bool						m_isRockDialogue = { false };
 
 };
 
