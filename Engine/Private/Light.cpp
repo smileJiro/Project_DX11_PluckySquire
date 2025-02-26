@@ -103,12 +103,15 @@ HRESULT CLight::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 	//if (FAILED(m_pGameInstance->UpdateConstBuffer(m_tLightConstData, m_pLightConstbuffer)))
 	//	return E_FAIL;
 
-	_pShader->Bind_Matrix("g_LightViewMatrix", &m_ViewMatrix);
-	_pShader->Bind_Matrix("g_LightProjMatrix", &m_ProjMatrix);
 
 
-	if (FAILED(_pShader->Bind_SRV("g_ShadowMapTexture", m_pShadowRenderTarget->Get_SRV())))
-		return E_FAIL;
+	if(true == m_tLightConstData.isShadow)
+	{
+		_pShader->Bind_Matrix("g_LightViewMatrix", &m_ViewMatrix);
+		_pShader->Bind_Matrix("g_LightProjMatrix", &m_ProjMatrix);
+		if (FAILED(_pShader->Bind_SRV("g_ShadowMapTexture", m_pShadowRenderTarget->Get_SRV())))
+			return E_FAIL;
+	}
 
 	if(FAILED(_pShader->Bind_ConstBuffer("BasicDirectLightConstData", m_pLightConstbuffer)))
 		return E_FAIL;
