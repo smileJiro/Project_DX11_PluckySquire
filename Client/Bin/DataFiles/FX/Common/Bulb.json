@@ -2,8 +2,8 @@
     "Emitters": [
         {
             "Color": [
-                0.722000002861023,
-                0.6000000238418579,
+                0.8920000195503235,
+                0.7400000095367432,
                 0.0,
                 0.699999988079071
             ],
@@ -12,11 +12,11 @@
             "Float": [
                 {
                     "Name": "AlphaTest",
-                    "Value": 0.004999999888241291
+                    "Value": 0.019999999552965164
                 },
                 {
                     "Name": "BloomThreshold",
-                    "Value": 0.2750000059604645
+                    "Value": 0.3199999928474426
                 },
                 {
                     "Name": "ColorTest",
@@ -24,11 +24,15 @@
                 },
                 {
                     "Name": "DissolveEdge",
-                    "Value": 0.4399999976158142
+                    "Value": 0.14000000059604645
                 },
                 {
                     "Name": "DissolveFactor",
-                    "Value": 4.0
+                    "Value": 0.0
+                },
+                {
+                    "Name": "DissolveTimeFactor",
+                    "Value": 3.0
                 }
             ],
             "Float4": [
