@@ -9,6 +9,8 @@
 #include "Section_2D_PlayMap.h"
 
 #include "UI_Manager.h"
+#include "Dialog_Manager.h"
+
 #include "PlayerData_Manager.h"
 #include "GameEventExecuter.h"
 #include "Effect_Manager.h"
@@ -481,7 +483,7 @@ void CTrigger_Manager::Resister_Trigger_Action()
 		};
 
 	m_Actions[TEXT("Dialogue")] = [this](_wstring _wszEventTag) {
-		Uimgr->Set_DialogId(TEXT("Gauntlet_Acquire_01"));
+		CDialog_Manager::GetInstance()->Set_DialogId(TEXT("Gauntlet_Acquire_01"));
 		};
 
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) {

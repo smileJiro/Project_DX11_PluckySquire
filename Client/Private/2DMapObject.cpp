@@ -69,10 +69,6 @@ HRESULT C2DMapObject::Render()
     return hr;
 }
 
-HRESULT C2DMapObject::Render_Shadow()
-{
-    return S_OK;
-}
 
 HRESULT C2DMapObject::Ready_Collider(MAPOBJ_DESC* Desc, _bool _isBlock)
 {

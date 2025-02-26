@@ -5,6 +5,7 @@
 #include "GameInstance.h"
 #include "Player.h"
 #include "StateMachine.h"
+#include "Effect_Manager.h"
 
 CPlayerState_Attack::CPlayerState_Attack(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::ATTACK)

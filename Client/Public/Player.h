@@ -15,6 +15,8 @@ class CStateMachine;
 class IInteractable;
 class CPortal;
 class CSampleBook;
+class CStopStamp;
+class CBombStamp;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -528,6 +530,7 @@ public:
 	NORMAL_DIRECTION Get_PortalNormal() { return m_e3DPortalNormal; }
 	const ATTACK_TRIGGER_DESC& Get_AttackTriggerDesc(ATTACK_TYPE _eAttackType, F_DIRECTION _eFDir) {return m_f2DAttackTriggerDesc[_eAttackType][(_uint)_eFDir];}
 	const SHAPE_DATA& Get_BodyShapeData() { return m_tBodyShapeData; }
+	PLAYER_PART Get_CurrentStampType() { return m_eCurrentStamp; }
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -577,7 +580,7 @@ private:
 	_float m_f3DLandAnimHeightThreshold= 0.6f;
 	_float m_f3DJumpPower = 10.5f;
 	_float m_fAirRotateSpeed = 40.f;
-	_float m_fAirRunSpeed = 6.f;
+	_float m_fAirRunSpeed = 480.f; // 매 프레임 AddFore이므로 DeltaTime이 곱해짐
 	_float m_f3DMoveSpeed= 6.f;
 	_float m_f3DDragMoveSpeed= 2.5f;
 
@@ -631,6 +634,9 @@ private:
 	class CPlayerSword* m_pSword = nullptr;
 	CModelObject* m_pBody = nullptr;
 	CModelObject* m_pGlove= nullptr;
+	CStopStamp* m_pStopStmap = nullptr;
+	CBombStamp* m_pBombStmap = nullptr;
+	PLAYER_PART m_eCurrentStamp = PLAYER_PART::PLAYER_PART_BOMB_STMAP;
 
 	//기타 관계된 오브젝트
 	CCarriableObject* m_pCarryingObject = nullptr;

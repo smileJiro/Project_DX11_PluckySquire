@@ -1,6 +1,9 @@
 #include "Light.h"
 #include "GameInstance.h"
 #include "DebugDraw.h"
+
+_int CLight::s_iShadowLightID = 0;
+
 CLight::CLight(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LIGHT_TYPE _eLightType)
 	: m_pDevice(_pDevice)
 	, m_pContext(_pContext)
@@ -15,6 +18,23 @@ CLight::CLight(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LIGHT_TYP
 HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 {
 	m_tLightConstData = _LightDesc;
+
+	// Shadow Light 여부 판단 후 행렬 계산 작업 수행.
+	if (true == m_tLightConstData.isShadow)
+	{
+		/* 0. Shadow ID 부여 */
+		m_iShadowLightID = s_iShadowLightID++;
+
+		/* 1. RenderTarget을 만든다, DSV는 DSV_Shadow 사용한다(메인앱에서 생성했음). */
+		_wstring strShadowRTTag = TEXT("Target_Shadow_");
+		strShadowRTTag += to_wstring(m_iShadowLightID);
+		m_pGameInstance->Add_RenderTarget(strShadowRTTag, SHADOWMAP_X, SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f,0.0f,0.0f,0.0f), &m_pShadowRenderTarget);
+		/* 2. 자기 자신을 shadow rendergroup에 등록한다. */
+
+		Compute_ViewProjMatrix();
+
+		m_pGameInstance->Add_ShadowLight(this);
+	}
 
 	// Create ConstantBuffer
 	if (FAILED(m_pGameInstance->CreateConstBuffer(m_tLightConstData, D3D11_USAGE_DYNAMIC, &m_pLightConstbuffer)))
@@ -39,6 +59,7 @@ HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 }
 HRESULT CLight::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 {
+#pragma region Debug
 
 	if (KEY_DOWN(KEY::F))
 	{
@@ -62,6 +83,7 @@ HRESULT CLight::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 		}
 	}
 
+#pragma endregion
 
 	_uint iPassIndex = {};
 	
@@ -76,6 +98,21 @@ HRESULT CLight::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 	default:
 		return E_FAIL;
 	}
+
+	//Compute_ViewProjMatrix();
+	//if (FAILED(m_pGameInstance->UpdateConstBuffer(m_tLightConstData, m_pLightConstbuffer)))
+	//	return E_FAIL;
+
+
+	if (true == m_tLightConstData.isShadow)
+	{
+		_pShader->Bind_Matrix("g_LightViewMatrix", &m_ViewMatrix);
+		_pShader->Bind_Matrix("g_LightProjMatrix", &m_ProjMatrix);
+
+		if (FAILED(_pShader->Bind_SRV("g_ShadowMapTexture", m_pShadowRenderTarget->Get_SRV())))
+			return E_FAIL;
+	}
+
 
 	if(FAILED(_pShader->Bind_ConstBuffer("BasicDirectLightConstData", m_pLightConstbuffer)))
 		return E_FAIL;
@@ -100,6 +137,28 @@ HRESULT CLight::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 	//
 	//m_pBatch->End();
 	return S_OK;
+}
+
+HRESULT CLight::Compute_ViewProjMatrix()
+{
+	if (LIGHT_TYPE::POINT == m_eType)
+		return E_FAIL;
+
+	if (LIGHT_TYPE::DIRECTOINAL == m_eType)
+	{
+		_vector vLightDir = XMVector3Normalize(XMLoadFloat3(&m_tLightConstData.vDirection));
+		_vector vEye = vLightDir * -1.0f * 30.f;
+		_vector vAt = vEye + vLightDir;
+		_vector vWorldUp = { 0.0f, 1.0f, 0.0f, 0.0f };
+
+		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixLookAtLH(vEye, vAt, vWorldUp));
+
+		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(m_fFovy), SHADOWMAP_X / SHADOWMAP_Y, m_vNearFarPlane.x, m_vNearFarPlane.y));
+
+		m_tLightConstData.LightViewProjMatrix = XMLoadFloat4x4(&m_ViewMatrix) * XMLoadFloat4x4(&m_ProjMatrix);
+
+	}
+
 }
 
 HRESULT CLight::Set_LightConstData_AndUpdateBuffer(const CONST_LIGHT& _LightConstData)

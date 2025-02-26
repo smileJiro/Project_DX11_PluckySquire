@@ -248,7 +248,6 @@ void CZippy::Change_Animation()
                     eAnim = DASH_IN_DOWN;
                 else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
                     eAnim = DASH_IN_RIGHT;
-                m_isDash = true;
                 break;
 
             default:
@@ -296,12 +295,15 @@ void CZippy::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     {
     case DASH_IN_DOWN:
         pModelObject->Switch_Animation(DASH_DOWN);
+        m_isDash = true;
         break;
     case DASH_IN_RIGHT:
         pModelObject->Switch_Animation(DASH_RIGHT);
+        m_isDash = true;
         break;
     case DASH_IN_UP:
         pModelObject->Switch_Animation(DASH_UP);
+        m_isDash = true;
         break;
 
     case ELEC_IN_DOWN:
@@ -368,6 +370,10 @@ void CZippy::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CZippy::Attack_End()
 {
+    //현재 애니메이션만 바꿔주므로
+    if (m_iState == (_uint)MONSTER_STATE::DEAD)
+        return;
+
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
     if (true == m_isDash)
     {
@@ -399,9 +405,10 @@ void CZippy::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCol
         {
             static_cast<CPlayer*>(_pOtherObject)->Set_State(CPlayer::ELECTRIC);
             Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), Get_Stat().iDamg, XMVectorZero());
+            Attack_End();
             m_isElectric = false;
-            Change_Animation();
             m_fAccElecTime = 0.f;
+            Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
         }
         else
         {
@@ -429,11 +436,54 @@ void CZippy::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
     if (true == m_isDash)
     {
-        //대시 중일 때는 대시를 풀었다가 다시 대시공격하도록
-        m_fAccDistance = 0.f;
-        Attack();
+        //대시 중일 때는 데미지만 입음.
+        m_tStat.iHP -= _iDamg;
+        if (m_tStat.iHP < 0)
+        {
+            m_tStat.iHP = 0;
+        }
+        if (0 >= m_tStat.iHP)
+        {
+            m_isDash = false;
+            Set_AnimChangeable(true);
+            m_p2DColliderComs[0]->Set_Active(false);
+            Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
+        }
+        else
+        {
+            //KnockBack(_vForce);
+
+            //Effect
+            _matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
+
+            _wstring strFXTag = L"Hit_FX";
+            strFXTag += to_wstring((_int)ceil(m_pGameInstance->Compute_Random(0.f, 5.f)));
+            CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+            matFX.r[0] = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+            switch ((_uint)ceil(m_pGameInstance->Compute_Random(0.f, 4.f)))
+            {
+            case 1:
+                CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words1"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+                break;
+
+            case 2:
+                CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words2"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+                break;
+
+            case 3:
+                CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words4"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+                break;
+
+            case 4:
+                CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words5"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+                break;
+            }
+        }
     }
-    __super::On_Hit(_pHitter, _iDamg, _vForce);
+    else
+    {
+        __super::On_Hit(_pHitter, _iDamg, _vForce);
+    }
 }
 
 _bool CZippy::Has_StateAnim(MONSTER_STATE _eState)

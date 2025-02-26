@@ -57,7 +57,10 @@ void CModelObject::Late_Update(_float _fTimeDelta)
     if (COORDINATE_3D == Get_CurCoord())
     {
         if (false == m_isFrustumCulling)
+        {
             m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
+            m_pGameInstance->Add_RenderObject_New(REDNERGROUP_SHADOWID, 0, this);
+        }
     }
 
     /* Update Parent Matrix */
@@ -98,6 +101,40 @@ HRESULT CModelObject::Render()
 	CShader* pShader = m_pShaderComs[eCoord];
 	_uint iShaderPass = m_iShaderPasses[eCoord];
     m_pControllerModel->Render(pShader, iShaderPass);
+
+    return S_OK;
+}
+
+HRESULT CModelObject::Render_Shadow(_float4x4* _pViewMatrix, _float4x4* _pProjMatrix)
+{
+    COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+    if (COORDINATE_2D == eCoord)
+        return S_OK;
+
+    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
+        return E_FAIL;
+
+    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ViewMatrix", _pViewMatrix)))
+        return E_FAIL;
+
+    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ProjMatrix", _pProjMatrix)))
+        return E_FAIL;
+
+    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4))))
+        return E_FAIL;
+    
+    CShader* pShader = m_pShaderComs[eCoord];
+
+    _uint iShaderPass = {};
+    if (m_pControllerModel->Get_Model(COORDINATE_3D)->Is_AnimModel())
+    {
+        iShaderPass = (_uint)PASS_VTXANIMMESH::SHADOWMAP;
+    }
+    else
+    {
+        iShaderPass = (_uint)PASS_VTXMESH::SHADOWMAP;
+    }
+    m_pControllerModel->Render_Shadow(m_pShaderComs[eCoord], iShaderPass);
 
     return S_OK;
 }

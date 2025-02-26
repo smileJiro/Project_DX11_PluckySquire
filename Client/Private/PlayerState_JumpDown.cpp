@@ -93,7 +93,7 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 				return;
 
 			//°øÁß ¹«ºù
-			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
+			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed * _fTimeDelta );
 			m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
 		}
 		else

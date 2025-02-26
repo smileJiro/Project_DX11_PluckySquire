@@ -31,6 +31,8 @@
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
+#include "StopStamp.h"
+#include "BombStamp.h"
 #include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
@@ -338,27 +340,11 @@ HRESULT CPlayer::Ready_PartObjects()
     Set_PartActive(PLAYER_PART_GLOVE, false);
 
     //Part STOP STAMP
-    CModelObject::MODELOBJECT_DESC StampDesc{};
-
-    StampDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
-    StampDesc.iCurLevelID = m_iCurLevelID;
-    StampDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
-
-    StampDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    StampDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-    StampDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-    StampDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
-    StampDesc.iRenderGroupID_3D = RG_3D;
-    StampDesc.iPriorityID_3D = PR3D_GEOMETRY;
-    StampDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
-    StampDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
-    StampDesc.strModelPrototypeTag_3D = TEXT("Stop_Stamp");
-    StampDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
-    StampDesc.eActorType = ACTOR_TYPE::LAST;
-    StampDesc.pActorDesc = nullptr;
-    StampDesc.isCoordChangeEnable = false;
-    m_PartObjects[PLAYER_PART_STOP_STMAP] = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &StampDesc));
-    Safe_AddRef(m_pGlove);
+    CStopStamp::STOP_STAMP_DESC StopStampDesc{};
+    StopStampDesc.iCurLevelID = m_iCurLevelID;
+    StopStampDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    m_PartObjects[PLAYER_PART_STOP_STMAP] = m_pStopStmap = static_cast<CStopStamp*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_StopStamp"), &StopStampDesc));
+    Safe_AddRef(m_pStopStmap);
     if (nullptr == m_PartObjects[PLAYER_PART_STOP_STMAP])
     {
         MSG_BOX("CPlayer STOPSTAMP Creation Failed");
@@ -370,9 +356,12 @@ HRESULT CPlayer::Ready_PartObjects()
     m_PartObjects[PLAYER_PART_STOP_STMAP]->Set_Position({0.f,-0.4f,0.f});
     Set_PartActive(PLAYER_PART_STOP_STMAP, false);
 
-    StampDesc.strModelPrototypeTag_3D = TEXT("Bomb_Stamp");
-    m_PartObjects[PLAYER_PART_BOMB_STMAP] = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &StampDesc));
-    Safe_AddRef(m_pGlove);
+    //Part BOMB STAMP
+	CBombStamp::BOMB_STAMP_DESC BombStampDesc{};
+    BombStampDesc.iCurLevelID = m_iCurLevelID;
+    BombStampDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    m_PartObjects[PLAYER_PART_BOMB_STMAP] = m_pBombStmap =  static_cast<CBombStamp*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_BombStamp"), &BombStampDesc));
+    Safe_AddRef(m_pBombStmap);
     if (nullptr == m_PartObjects[PLAYER_PART_BOMB_STMAP])
     {
         MSG_BOX("CPlayer BOMBSTAMP Creation Failed");
@@ -992,10 +981,16 @@ void CPlayer::StampSmash()
 		CSampleBook* pSampleBook = dynamic_cast<CSampleBook*>(m_pInteractableObject);
         if (nullptr == pSampleBook)
             return;
-        _vector v2DPosition = pSampleBook->Convert_Position_3DTo2D(m_PartObjects[PLAYER_PART_STOP_STMAP]->Get_FinalPosition());
-    
-        //_float fRange = XMVector3Length(XMVectorSetY( m_PartObjects[PLAYER_PART_STOP_STMAP]->Get_FinalPosition(),0) - XMVectorSetY( m_pBody->Get_FinalPosition(),0)).m128_f32[0];
-        //int a = 0;
+        _vector v2DPosition = pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition());
+        
+        if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
+        {
+            m_pBombStmap->Smash(v2DPosition);
+        }
+        else if(PLAYER_PART::PLAYER_PART_STOP_STMAP == m_eCurrentStamp)
+        {
+            m_pStopStmap->Smash(v2DPosition);
+        }
 	}
 }
 
@@ -1541,12 +1536,15 @@ void CPlayer::Set_State(STATE _eState)
     switch (_eState)
     {
     case Client::CPlayer::IDLE:
+        //cout << "IDLE" << endl;
         m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
         break;
     case Client::CPlayer::RUN:
+        //cout << "Run" << endl;
         m_pStateMachine->Transition_To(new CPlayerState_Run(this));
         break;
     case Client::CPlayer::JUMP_UP:
+        //cout << "JUMPUP" << endl;
         m_pStateMachine->Transition_To(new CPlayerState_JumpUp(this));
         break;
     case Client::CPlayer::JUMP_DOWN:
@@ -1814,7 +1812,10 @@ void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 {
 	Set_PartActive(_ePartId, false);
+    if(COORDINATE_3D == Get_CurCoord() && Is_SwordHandling())
+		Set_PartActive(PLAYER_PART_SWORD, true);
 }
+
 
 void CPlayer::ThrowSword()
 {
@@ -1949,9 +1950,11 @@ void CPlayer::Key_Input(_float _fTimeDelta)
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //포탈 4 0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
             //도미노 { 6.99342966, 5.58722591, 21.8827782 }
-            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //주사위 2 (48.73f, 2.61f, -5.02f);
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 48.73f, 2.61f, -5.02f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+
         }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 
@@ -2015,6 +2018,8 @@ void CPlayer::Free()
 	Safe_Release(m_pSword);
 	Safe_Release(m_pBody);
 	Safe_Release(m_pGlove);
+	Safe_Release(m_pBombStmap);
+	Safe_Release(m_pStopStmap);
 
     Safe_Release(m_pCarryingObject);
 

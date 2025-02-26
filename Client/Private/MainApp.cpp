@@ -7,6 +7,7 @@
 #include "Event_Manager.h"
 #include "Pooling_Manager.h"
 #include "UI_Manager.h"
+#include "Dialog_Manager.h"
 #include "Camera_Manager.h"
 #include "Section_Manager.h"
 
@@ -623,7 +624,7 @@ HRESULT CMainApp::Ready_RenderTargets()
 
 	/* Settiong DSV */
 
-	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), g_iShadowWidth, g_iShadowHeight)))
+	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), SHADOWMAP_X, SHADOWMAP_Y)))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Downsample1"), (_uint)(g_iWinSizeX / 6.f), (_uint)(g_iWinSizeY / 6.f))))
@@ -672,6 +673,7 @@ void CMainApp::Free()
 	CCamera_Manager::DestroyInstance();
 	CPooling_Manager::DestroyInstance();
 	CUI_Manager::DestroyInstance();
+	CDialog_Manager::DestroyInstance();
 	CSection_Manager::DestroyInstance();
 	CTrigger_Manager::DestroyInstance();
 	CPlayerData_Manager::DestroyInstance();

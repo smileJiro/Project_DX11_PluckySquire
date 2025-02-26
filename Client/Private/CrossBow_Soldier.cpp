@@ -40,7 +40,7 @@ HRESULT CCrossBow_Soldier::Initialize(void* _pArg)
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 30.f;
 
-    pDesc->fCoolTime = 1.f;
+    pDesc->fCoolTime = 3.f;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -74,6 +74,15 @@ HRESULT CCrossBow_Soldier::Initialize(void* _pArg)
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CCrossBow_Soldier::Animation_End, this, placeholders::_1, placeholders::_2));
 
+    Bind_AnimEventFunc("Attack", bind(&CCrossBow_Soldier::Attack, this));
+
+    /* Com_AnimEventGenerator */
+    CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+    tAnimEventDesc.pReceiver = this;
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_SoldierAttackEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
+
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
     for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
@@ -88,6 +97,11 @@ HRESULT CCrossBow_Soldier::Initialize(void* _pArg)
 
 void CCrossBow_Soldier::Priority_Update(_float _fTimeDelta)
 {
+    m_fAccTime += _fTimeDelta;
+    if (m_fCoolTime <= m_fAccTime)
+    {
+        CoolTime_Off();
+    }
 
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
@@ -107,8 +121,13 @@ HRESULT CCrossBow_Soldier::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        m_pDetectionField->Render();
+    }
 #endif // _DEBUG
+
+    __super::Render();
 
     /* Font Render */
 
@@ -134,7 +153,11 @@ void CCrossBow_Soldier::Attack()
         }
 
         ++m_iAttackCount;
-
+        if (2 <= m_iAttackCount)
+        {
+            m_iAttackCount = 0;
+            CoolTime_On();
+        }
     }
 }
 
@@ -227,7 +250,7 @@ HRESULT CCrossBow_Soldier::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fHalfHeight = 0.5f;
+    ShapeDesc->fHalfHeight = 0.2f;
     ShapeDesc->fRadius = 0.5f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
@@ -236,7 +259,7 @@ HRESULT CCrossBow_Soldier::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fHalfHeight + ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
@@ -264,7 +287,7 @@ HRESULT CCrossBow_Soldier::Ready_Components()
     FSMDesc.fAlert2DRange = m_fAlert2DRange;
     FSMDesc.fChase2DRange = m_fChase2DRange;
     FSMDesc.fAttack2DRange = m_fAttack2DRange;
-    FSMDesc.isMelee = true;
+    FSMDesc.isMelee = false;
     FSMDesc.pOwner = this;
     FSMDesc.iCurLevel = m_iCurLevelID;
 
@@ -332,7 +355,7 @@ HRESULT CCrossBow_Soldier::Ready_PartObjects()
 
     CrossBowDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
-    CrossBowDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    CrossBowDesc.tTransform3DDesc.vInitialPosition = _float3(-0.1f, 0.f, -0.1f);
     CrossBowDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
     CrossBowDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
     CrossBowDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
@@ -348,7 +371,8 @@ HRESULT CCrossBow_Soldier::Ready_PartObjects()
 
     C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PART_RIGHT_WEAPON])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r"));
-    m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
+	//m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->RotationXYZ(_float3{ 0.f,XMConvertToRadians(-90.f),XMConvertToRadians(90.f) });
+	m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->RotationXYZ(_float3{ XMConvertToRadians(-90.f), 0.f, XMConvertToRadians(90.f) });
 
     return S_OK;
 }

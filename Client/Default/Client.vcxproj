@@ -188,10 +188,13 @@
     <ClInclude Include="..\Public\2DMapDefaultObject.h" />
     <ClInclude Include="..\Public\2DMapObject.h" />
     <ClInclude Include="..\Public\2DMapWordObject.h" />
+    <ClInclude Include="..\Public\Bomb.h" />
+    <ClInclude Include="..\Public\BombStamp.h" />
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
     <ClInclude Include="..\public\Effect_Beam.h" />
     <ClInclude Include="..\Public\ChaseFlyState.h" />
     <ClInclude Include="..\Public\JumpPad.h" />
+    <ClInclude Include="..\Public\PlayerBomb.h" />
     <ClInclude Include="..\Public\PlayerState_Stamp.h" />
     <ClInclude Include="..\Public\Projectile_BirdMonster.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -199,6 +202,7 @@
     <ClInclude Include="..\Public\Projectile_Monster.h" />
     <ClInclude Include="..\Public\DraggableObject.h" />
     <ClInclude Include="..\Public\PlayerState_Drag.h" />
+    <ClInclude Include="..\Public\Dialog_Manager.h" />
     <ClInclude Include="..\Public\Shadow2D.h" />
     <ClInclude Include="..\Public\3DMapDefaultObject.h" />
     <ClInclude Include="..\Public\3DMapObject.h" />
@@ -425,9 +429,12 @@
     <ClCompile Include="..\Private\2DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\2DMapObject.cpp" />
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
+    <ClCompile Include="..\Private\Bomb.cpp" />
+    <ClCompile Include="..\Private\BombStamp.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
     <ClCompile Include="..\Private\JumpPad.cpp" />
+    <ClCompile Include="..\Private\PlayerBomb.cpp" />
     <ClCompile Include="..\Private\PlayerState_Stamp.cpp" />
     <ClCompile Include="..\Private\Projectile_BirdMonster.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -436,6 +443,7 @@
     <ClCompile Include="..\Private\DraggableObject.cpp" />
     <ClCompile Include="..\Private\PlayerState_Drag.cpp" />
     <ClCompile Include="..\private\Effect_Beam.cpp" />
+    <ClCompile Include="..\Private\Dialog_Manager.cpp" />
     <ClCompile Include="..\Private\Shadow2D.cpp" />
     <ClCompile Include="..\Private\3DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\3DMapObject.cpp" />

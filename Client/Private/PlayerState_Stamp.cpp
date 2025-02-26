@@ -51,7 +51,7 @@ void CPlayerState_Stamp::Update(_float _fTimeDelta)
 
 void CPlayerState_Stamp::Enter()
 {
-	m_pOwner->Equip_Part(CPlayer::PLAYER_PART_STOP_STMAP);
+	m_pOwner->Equip_Part(m_pOwner->Get_CurrentStampType());
 	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_STAMP_PULLOUT_SHORT_NEWRIG);
 	m_fStampSpeed = m_pOwner->Get_MoveSpeed(COORDINATE_3D)*0.5f;
 	m_eStampState = STAMP_START;
@@ -59,12 +59,7 @@ void CPlayerState_Stamp::Enter()
 
 void CPlayerState_Stamp::Exit()
 {
-	if(m_pOwner->Is_SwordHandling())
-		m_pOwner->Equip_Part(CPlayer::PLAYER_PART_SWORD);
-	else
-		m_pOwner->UnEquip_Part(CPlayer::PLAYER_PART_STOP_STMAP);
-
-
+	m_pOwner->UnEquip_Part(m_pOwner->Get_CurrentStampType());
 }
 
 void CPlayerState_Stamp::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

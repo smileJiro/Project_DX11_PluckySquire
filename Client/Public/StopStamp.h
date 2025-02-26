@@ -21,6 +21,8 @@ public:
 	void Update(_float _fTimeDelta) override;
 	void Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
+
+	void Smash(_fvector v2DPosition);
 private:
 
 public:

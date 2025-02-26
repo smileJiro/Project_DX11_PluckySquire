@@ -398,6 +398,23 @@ HRESULT CParticle_Sprite_Emitter::Bind_ShaderValue_ByPass()
             return E_FAIL;
         break;
     }
+    case SUBCOLORBLOOM_DISSOLVE:
+    {
+        if (FAILED(Bind_Float4("NoiseUVScale", "g_vNoiseUVScale")))
+            return E_FAIL;
+        if (FAILED(Bind_Float4("EdgeColor", "g_vEdgeColor")))
+            return E_FAIL;
+        if (FAILED(Bind_Float4("SubColor", "g_vSubColor")))
+            return E_FAIL;
+
+        if (FAILED(Bind_Float("BloomThreshold", "g_fBloomThreshold")))
+            return E_FAIL;
+        if (FAILED(Bind_Float("EdgeWidth", "g_fEdgeWidth")))
+            return E_FAIL;
+        if (FAILED(Bind_Float("DissolveTimeFactor", "g_fDissolveTimeFactor")))
+            return E_FAIL;
+        break;
+    }
     default:
         break;
     }

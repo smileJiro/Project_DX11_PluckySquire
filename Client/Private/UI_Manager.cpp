@@ -212,6 +212,19 @@ _bool CUI_Manager::isLeft_Right()
 	return m_pNarration->isLeftRight();
 }
 
+void CUI_Manager::Narration_Update()
+{
+	// Active가 아닌데 Narration이 플레이중이면 active로 돌린다.
+
+	if (false == m_pNarration->CBase::Is_Active())
+	{
+		if (true == Uimgr->Get_PlayNarration())
+		{
+			m_pNarration->CBase::Set_Active(true);
+		}
+	}
+}
+
 
 HRESULT CUI_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID)
 {

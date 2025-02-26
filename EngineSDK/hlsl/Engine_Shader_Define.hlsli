@@ -20,6 +20,9 @@
 #define POSITIVE_Z 4 
 #define NEGATIVE_Z 5 
 
+/* Shadow Flag */
+#define IS_SHADOWLIGHT 1
+
 struct Material_PS
 {
     float4 Albedo; // baseColor

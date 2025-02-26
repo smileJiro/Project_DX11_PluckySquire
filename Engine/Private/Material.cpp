@@ -243,7 +243,7 @@ HRESULT CMaterial::Ready_PixelConstBuffer()
 	return S_OK;
 }
 
-#ifdef _DEBUG
+
 HRESULT CMaterial::Update_PixelConstBuffer()
 {
 	if (FAILED(Ready_PixelConstBuffer()))
@@ -251,8 +251,6 @@ HRESULT CMaterial::Update_PixelConstBuffer()
 
 	return m_pGameInstance->UpdateConstBuffer(m_tPixelConstData, m_pPixeConstBuffer);
 }
-#endif // _DEBUG
-
 
 CMaterial* CMaterial::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* szDirPath, ifstream& inFile)
 {

@@ -499,6 +499,9 @@
     <Filter Include="02.GameObjects\Monster\Soldier\CrossBow\Weapon">
       <UniqueIdentifier>{bc573363-d09e-4ae1-b848-2f07041536b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\99. Dialog_Manager">
+      <UniqueIdentifier>{be8cd20e-6575-4400-b74d-735c56c67db8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1147,6 +1150,9 @@
     <ClInclude Include="..\public\CollapseBlock.h">
       <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Dialog_Manager.h">
+      <Filter>02.GameObjects\UI\99. Dialog_Manager</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Projectile_BirdMonster.h">
       <Filter>02.GameObjects\Monster\BirdMonster\Projectile</Filter>
     </ClInclude>
@@ -1186,6 +1192,10 @@
     <ClInclude Include="..\Public\PlayerState_Drag.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\JumpPad.h" />
+    <ClInclude Include="..\Public\Bomb.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\JumpPad.h">
       <Filter>02.GameObjects</Filter>
     </ClInclude>
@@ -1193,6 +1203,8 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\StopStamp.h" />
+    <ClInclude Include="..\Public\BombStamp.h" />
+    <ClInclude Include="..\Public\PlayerBomb.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1867,6 +1879,12 @@
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp">
       <Filter>02.GameObjects\Monster\Soldier\CrossBow\Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Bomb.cpp">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dialog_Manager.cpp">
+      <Filter>02.GameObjects\UI\99. Dialog_Manager</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\JumpPad.cpp">
       <Filter>02.GameObjects</Filter>
     </ClCompile>
@@ -1874,6 +1892,8 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\StopStamp.cpp" />
+    <ClCompile Include="..\Private\BombStamp.cpp" />
+    <ClCompile Include="..\Private\PlayerBomb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

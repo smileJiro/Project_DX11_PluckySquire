@@ -14,7 +14,6 @@ CPlayerState_Run::CPlayerState_Run(CPlayer* _pOwner)
 void CPlayerState_Run::Update(_float _fTimeDelta)
 {
 	//Foot_On();
-
 	_float fUpForce = m_pOwner->Get_UpForce();
 	_bool bOnGround = m_pOwner->Is_OnGround();
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
@@ -28,71 +27,75 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 			return;
 		}
 	}
-
-	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
-	_bool bSneak = tKeyResult.bInputStates[PLAYER_INPUT_SNEAK];
-	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
+	INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
+	if (INTERACT_RESULT::FAIL == eResult
+		|| INTERACT_RESULT::NO_INPUT == eResult)
 	{
-		_float fMoveSpeed = m_pOwner->Get_MoveSpeed(eCoord);;
-		COORDINATE eCoord = m_pOwner->Get_CurCoord();
-		if (COORDINATE_2D == eCoord)
+		PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
+		_bool bSneak = tKeyResult.bInputStates[PLAYER_INPUT_SNEAK];
+		if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 		{
-			E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
-			F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
-			m_pOwner->Set_2DDirection(To_EDirection(tKeyResult.vDir));
-
-			if (m_eOldFDir != eFDir)
+			_float fMoveSpeed = m_pOwner->Get_MoveSpeed(eCoord);;
+			COORDINATE eCoord = m_pOwner->Get_CurCoord();
+			if (COORDINATE_2D == eCoord)
 			{
-				Switch_RunAnimation2D(eFDir);
-				m_eOldFDir = eFDir;
+				E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
+				F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
+				m_pOwner->Set_2DDirection(To_EDirection(tKeyResult.vDir));
+
+				if (m_eOldFDir != eFDir)
+				{
+					Switch_RunAnimation2D(eFDir);
+					m_eOldFDir = eFDir;
+				}
 			}
+			else
+			{
+				m_pOwner->Rotate_To(XMVector3Normalize(tKeyResult.vMoveDir), m_fRotateSpeed);
+				if (bSneak != m_bSneakBefore)
+				{
+					Switch_RunAnimation3D(bSneak);
+					m_bSneakBefore = bSneak;
+				}
+				fMoveSpeed = bSneak ? fMoveSpeed * 0.5f : fMoveSpeed;
+			}
+			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * fMoveSpeed, _fTimeDelta);
+
+			// 걷는 사운드 재생
+			m_fAccSoundDelay += _fTimeDelta;
+			if (0.3f <= m_fAccSoundDelay)
+			{
+				if (false == bSneak)
+					m_pGameInstance->Start_SFX(_wstring(L"A_sfx_footsteps_generic-") + to_wstring(rand() % 20), 20.f);
+				else
+					m_pGameInstance->Start_SFX(_wstring(L"A_sfx_footsteps_sneak-") + to_wstring(rand() % 20), 20.f);
+
+				m_fAccSoundDelay = 0.f;
+			}
+
+			if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
+				m_pOwner->Set_State(CPlayer::ATTACK);
+			else if (tKeyResult.bInputStates[PLAYER_INPUT_SPINATTACK])
+				m_pOwner->Set_State(CPlayer::SPINATTACK);
+			else if (tKeyResult.bInputStates[PLAYER_INPUT_START_STAMP])
+				m_pOwner->Set_State(CPlayer::STAMP);
+			else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
+				m_pOwner->Set_State(CPlayer::JUMP_UP);
+			else if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
+				m_pOwner->Set_State(CPlayer::ROLL);
+			else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
+				m_pOwner->Set_State(CPlayer::THROWSWORD);
+			else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
+				m_pOwner->Set_State(CPlayer::THROWOBJECT);
+			return;
 		}
 		else
 		{
-			m_pOwner->Rotate_To(XMVector3Normalize(tKeyResult.vMoveDir), m_fRotateSpeed);
-			if (bSneak != m_bSneakBefore)
-			{
-				Switch_RunAnimation3D(bSneak);
-				m_bSneakBefore = bSneak;
-			}
-			fMoveSpeed  = bSneak ? fMoveSpeed * 0.5f : fMoveSpeed;
-		}
-		m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir)* fMoveSpeed, _fTimeDelta);
-
-		// 걷는 사운드 재생
-		m_fAccSoundDelay += _fTimeDelta;
-		if (0.3f <= m_fAccSoundDelay)
-		{
-			if (false == bSneak)
-				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_footsteps_generic-") + to_wstring(rand() % 20), 20.f);
-			else
-				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_footsteps_sneak-") + to_wstring(rand() % 20), 20.f);
-
-			m_fAccSoundDelay = 0.f;
+			m_pOwner->Set_State(CPlayer::IDLE);
+			return;
 		}
 
-		if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
-			m_pOwner->Set_State(CPlayer::ATTACK);
-		else if (tKeyResult.bInputStates[PLAYER_INPUT_SPINATTACK])
-			m_pOwner->Set_State(CPlayer::SPINATTACK);
-		else if (tKeyResult.bInputStates[PLAYER_INPUT_START_STAMP])
-			m_pOwner->Set_State(CPlayer::STAMP);
-		else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
-			m_pOwner->Set_State(CPlayer::JUMP_UP);
-		else if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
-			m_pOwner->Set_State(CPlayer::ROLL);
-		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
-			m_pOwner->Set_State(CPlayer::THROWSWORD);
-		else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
-			m_pOwner->Set_State(CPlayer::THROWOBJECT);
-		return;
 	}
-	else
-	{
-		m_pOwner->Set_State(CPlayer::IDLE);
-		return;
-	}
-
 		
 }
 

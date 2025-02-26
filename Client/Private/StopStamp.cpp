@@ -19,6 +19,21 @@ HRESULT CStopStamp::Initialize(void* _pArg)
 {
     STOP_STAMP_DESC* pBodyDesc = static_cast<STOP_STAMP_DESC*>(_pArg);
 
+    pBodyDesc->eStartCoord = COORDINATE_3D;
+
+    pBodyDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+    pBodyDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    pBodyDesc->tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    pBodyDesc->tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+    pBodyDesc->iRenderGroupID_3D = RG_3D;
+    pBodyDesc->iPriorityID_3D = PR3D_GEOMETRY;
+    pBodyDesc->iModelPrototypeLevelID_2D = LEVEL_STATIC;
+    pBodyDesc->iModelPrototypeLevelID_3D = LEVEL_STATIC;
+
+    pBodyDesc->eActorType = ACTOR_TYPE::LAST;
+    pBodyDesc->pActorDesc = nullptr;
+    pBodyDesc->isCoordChangeEnable = false;
+    pBodyDesc->strModelPrototypeTag_3D = TEXT("Stop_Stamp");
     return __super::Initialize(_pArg);
 }
 
@@ -29,12 +44,6 @@ void CStopStamp::Update(_float _fTimeDelta)
 
 void CStopStamp::Late_Update(_float _fTimeDelta)
 {
-    if (COORDINATE_3D == Get_CurCoord())
-    {
-        if (false == m_isFrustumCulling)
-            m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, PR3D_PLAYERDEPTH, this);
-    }
-
     __super::Late_Update(_fTimeDelta);
 }
 
@@ -46,6 +55,11 @@ HRESULT CStopStamp::Render()
 
     //cout << "PlayerBOdyPos: " << m_WorldMatrices[COORDINATE_3D]._41 << ", " << m_WorldMatrices[COORDINATE_3D]._42 << ", " << m_WorldMatrices[COORDINATE_3D]._43 << endl;
     return S_OK;
+}
+
+void CStopStamp::Smash(_fvector v2DPosition)
+{
+
 }
 
 CStopStamp* CStopStamp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
