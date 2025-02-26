@@ -303,16 +303,6 @@ void CLevel_Chapter_Test::Update(_float _fTimeDelta)
 	//	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	//}
 
-	if (KEY_DOWN(KEY::F5))
-	{
-		_float3 vPos = { 0.f, 5.f, -10.f };
-		//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos, nullptr, nullptr);
-
-		vPos = { -750.f,-50.f,0.f };
-		_wstring strSectionKey = L"Chapter4_P0304";
-		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
-	}
-
 }
 
 HRESULT CLevel_Chapter_Test::Render()

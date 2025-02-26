@@ -39,7 +39,7 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 30.f;
 
-    pDesc->fCoolTime = 1.f;
+    pDesc->fCoolTime = 2.f;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -69,6 +69,7 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, BLOCK_HOLD_LOOP, true);
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CSpear_Soldier::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -195,7 +196,7 @@ void CSpear_Soldier::Change_Animation()
             break;
 
         case MONSTER_STATE::STANDBY:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_RECOVERY);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BLOCK_HOLD_UP);
             break;
 
         case MONSTER_STATE::CHASE:
@@ -236,11 +237,23 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     case DASH_ATTACK_LOOP:
         m_isDash = false;
         Stop_MoveXZ();
-        Set_AnimChangeable(true);
-        CoolTime_Off();
+        pModelObject->Switch_Animation(DASH_ATTACK_RECOVERY);
+        CoolTime_On();
         break;
 
     case DASH_ATTACK_RECOVERY:
+        Set_AnimChangeable(true);
+        break;
+
+    case BLOCK_HOLD_UP:
+        pModelObject->Switch_Animation(BLOCK_HOLD_LOOP);
+        break;
+
+    case HIT_FRONT:
+        Set_AnimChangeable(true);
+        break;
+
+    case DEATH_02_EDIT:
         Set_AnimChangeable(true);
         break;
 
@@ -422,7 +435,7 @@ HRESULT CSpear_Soldier::Ready_PartObjects()
         return E_FAIL;
 
     static_cast<CPartObject*>(m_PartObjects[PART_LEFT_WEAPON])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_l"));
-    m_PartObjects[PART_LEFT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
+    m_PartObjects[PART_LEFT_WEAPON]->Get_ControllerTransform()->RotationXYZ(_float3{ XMConvertToRadians(-90.f), XMConvertToRadians(-90.f), 0.f });
 
     return S_OK;
 }

@@ -86,7 +86,8 @@ HRESULT CBomb::Initialize(void* _pArg)
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
 	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER;
 	BombModelDesc->pActorDesc = &ActorDesc;
-	BombModelDesc->eActorType = ACTOR_TYPE::DYNAMIC;
+	BombModelDesc->eActorType = ACTOR_TYPE::KINEMATIC;
+
 	if (FAILED(__super::Initialize(BombModelDesc)))
 		return E_FAIL;
 
@@ -277,9 +278,9 @@ void CBomb::Active_OnEnable()
 {
 	__super::Active_OnEnable();
 	Set_Render(true);
-	CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());
-	pDynamic->Update(0.f);
-	pDynamic->Set_Dynamic();
+	//CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());
+	//pDynamic->Update(0.f);
+	//pDynamic->Set_Dynamic();
 
 	m_p2DColliderComs[0]->Set_Active(true);
 	m_p2DColliderComs[2]->Set_Active(false);

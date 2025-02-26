@@ -4,6 +4,7 @@
 #include "FSM.h"
 #include "ModelObject.h"
 #include "DetectionField.h"
+#include "Pooling_Manager.h"
 
 CBomb_Soldier::CBomb_Soldier(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -68,6 +69,15 @@ HRESULT CBomb_Soldier::Initialize(void* _pArg)
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CBomb_Soldier::Animation_End, this, placeholders::_1, placeholders::_2));
 
+    Bind_AnimEventFunc("Attack", bind(&CBomb_Soldier::Attack, this));
+
+    /* Com_AnimEventGenerator */
+    CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+    tAnimEventDesc.pReceiver = this;
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_SoldierAttackEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
+
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
     for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
@@ -109,6 +119,11 @@ HRESULT CBomb_Soldier::Render()
     return S_OK;
 }
 
+void CBomb_Soldier::Attack()
+{
+    
+}
+
 void CBomb_Soldier::Change_Animation()
 {
     if(m_iState != m_iPreState)
@@ -128,7 +143,7 @@ void CBomb_Soldier::Change_Animation()
             break;
 
         case MONSTER_STATE::STANDBY:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BOMB_OUT);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
             break;
 
         case MONSTER_STATE::CHASE:
@@ -136,7 +151,16 @@ void CBomb_Soldier::Change_Animation()
             break;
 
         case MONSTER_STATE::ATTACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BOMB_THROW);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BOMB_OUT);
+            Create_Bomb();
+            break;
+
+        case MONSTER_STATE::HIT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT_FRONT);
+            break;
+
+        case MONSTER_STATE::DEAD:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH_02_EDIT);
             break;
 
         default:
@@ -154,12 +178,42 @@ void CBomb_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         Set_AnimChangeable(true);
         break;
 
+    case BOMB_OUT:
+        pModelObject->Switch_Animation(BOMB_THROW);
+        break;
+
     case BOMB_THROW:
+        Set_AnimChangeable(true);
+        break;
+
+    case HIT_FRONT:
+        Set_AnimChangeable(true);
+        break;
+
+    case DEATH_02_EDIT:
         Set_AnimChangeable(true);
         break;
 
     default:
         break;
+    }
+}
+
+void CBomb_Soldier::Create_Bomb()
+{
+    if(COORDINATE_3D == Get_CurCoord())
+    {
+        _matrix HandMatrix = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("j_hand_attach_r"));
+
+        _float3 vPosition;
+        _float4 vRotation;
+
+        m_pGameInstance->MatrixDecompose(nullptr, &vRotation, &vPosition, HandMatrix);
+
+        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPosition, &vRotation);
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPosition);
+
+
     }
 }
 
