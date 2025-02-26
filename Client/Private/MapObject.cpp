@@ -51,10 +51,6 @@ HRESULT CMapObject::Render()
     return __super::Render();
 }
 
-HRESULT CMapObject::Render_Shadow()
-{
-    return __super::Render_Shadow();
-}
 
 void CMapObject::Free()
 {

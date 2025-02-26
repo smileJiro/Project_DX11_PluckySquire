@@ -36,6 +36,7 @@ public:
 	virtual HRESULT			Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCollider);
 	virtual HRESULT			Initialize(void* _pArg) override;
 	virtual HRESULT			Render(CShader* _pShader, _uint _iShaderPass) override;
+	virtual HRESULT			Render_Shadow(CShader* _pShader, _uint _iShaderPass) override;
 	virtual HRESULT			Render_Default(CShader* _pShader, _uint _iShaderPass) override;
 public:
 	HRESULT					Bind_Material(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex = 0);

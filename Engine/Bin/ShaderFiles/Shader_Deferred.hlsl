@@ -32,8 +32,11 @@ struct DirectLightData
     float4 vAmbient; // 주변광 (16byte)
     float4 vSpecular; // 정반사광 (16byte)
     
-    float fRadius;
-    float3 dummy1;
+    int isShadow;
+    float fLightRadius;
+    float2 dummy1;
+    
+    matrix LightViewProjMatrix;
 };
 
 /* DofData */ 
@@ -87,7 +90,7 @@ Texture2D g_LightingTexture;
 // Blur 대상 Texture2D
 Texture2D g_SrcBlurTargetTexture;
 // etc
-Texture2D g_LightDepthTexture, g_FinalTexture;
+Texture2D g_ShadowMapTexture, g_FinalTexture;
 // Default Mtrl
 vector g_vMtrlAmbient = 1.0f, g_vMtrlSpecular = 1.0f; // 특별한 경우가 아니라면 재질의 Ambient와 Specular는 특정 값으로 고정 후, 조명의 값으로 변화를 준다. 
 float4 g_vCamWorld;
@@ -321,7 +324,10 @@ PS_OUT PS_PBR_LIGHT_POINT(PS_IN In)
     
     float3 DirectLighting = ((vDiffuseBRDF * c_DirectLight.vDiffuse.rgb) + (vSpecularBRDf * c_DirectLight.vSpecular.rgb)) * vFinalRadiance * NdotI;
     
-    Out.vColor = float4(DirectLighting.rgb, 1.0f);
+    // Shadow Factor 계산
+    float fShadowFactor = 1.0f;
+    
+    Out.vColor = float4(DirectLighting.rgb * fShadowFactor, 1.0f);
     
     return Out;
 }
@@ -369,7 +375,31 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
     
     float3 DirectLighting = ((vDiffuseBRDF * c_DirectLight.vDiffuse.rgb) + (vSpecularBRDf * c_DirectLight.vSpecular.rgb)) * c_DirectLight.vRadiance * NdotI;
     
-    Out.vColor = float4(DirectLighting.rgb, 1.0f);
+    // Shadow Factor 계산
+    float fShadowFactor = 1.0f;
+    if (c_DirectLight.isShadow & 1)
+    {
+
+        // 1. 픽셀 월드좌표를 광원 기준 투영좌표로 이동 
+        float4 vLightScreen = mul(vPixelWorld, g_LightViewMatrix);
+        vLightScreen = mul(vLightScreen, g_LightProjMatrix);
+        vLightScreen.xyz /= vLightScreen.w; // w 나누기 까지 수행.
+        
+        // 2. ndc 좌표를 texcoord 좌표롤 변환
+        float2 vLightTexcoord = float2(vLightScreen.x, vLightScreen.y * -1.0f);
+        vLightTexcoord += 1.0f;
+        vLightTexcoord *= 0.5f;
+        
+        float fLightDepth = g_ShadowMapTexture.Sample(LinearSampler, saturate(vLightTexcoord)).r; // viewspace상의 z 값을 far로 나누어 저장했음.
+        if (fLightDepth * g_fFarZ + 0.1f < vLightScreen.w)
+            fShadowFactor = 0.0f;
+    }
+
+    
+    
+    
+    
+    Out.vColor = float4(DirectLighting.rgb * fShadowFactor, 1.0f);
     return Out;
 }
 

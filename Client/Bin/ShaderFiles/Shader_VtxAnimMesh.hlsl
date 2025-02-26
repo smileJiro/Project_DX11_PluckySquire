@@ -70,7 +70,11 @@ struct VS_OUT
     float4 vProjPos : TEXCOORD2;
     float4 vTangent : TEXCOORD3;
 };
-
+struct VS_SHADOW_OUT
+{
+    float4 vPosition : SV_POSITION;
+    float4 vProjPos : TEXCOORD0; // 투영 변환 행렬까지 연산 시킨 포지션 정보를 ps 로 전달한다. >>> w 값을 위해. 
+};
 VS_OUT VS_MAIN(VS_IN In)
 {
     VS_OUT Out = (VS_OUT) 0;
@@ -100,6 +104,28 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
+VS_SHADOW_OUT VS_SHADOWMAP(VS_IN In)
+{
+    VS_SHADOW_OUT Out = (VS_SHADOW_OUT) 0;
+    matrix matWV, matWVP;
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+    
+    /* 자신에게 영향을 주는 Bone Matrix를 가중치에 따라 스칼라 곱을 수행한 후, 원소끼리 덧셈연산. */
+    /* w 값을 새로 구하는 이유 : 영향받는 Bone 자체가 없는 Fiona의 Sword 같은 메쉬들도 일단 제대로 렌더하기위해. (배치용 Bone) */ 
+    float BlendWeightW = 1.0 - (In.vBlendWeights.x + In.vBlendWeights.y + In.vBlendWeights.z);
+    
+    matrix matBones = mul(g_BoneMatrices[In.vBlendIndicse.x], In.vBlendWeights.x) +
+                      mul(g_BoneMatrices[In.vBlendIndicse.y], In.vBlendWeights.y) +
+                      mul(g_BoneMatrices[In.vBlendIndicse.z], In.vBlendWeights.z) +
+                      mul(g_BoneMatrices[In.vBlendIndicse.w], In.vBlendWeights.w);
+    
+    vector vPosition = mul(float4(In.vPosition, 1.0), matBones);
+
+    Out.vPosition = mul(vPosition, matWVP);
+    Out.vProjPos = Out.vPosition; // w 나누기를 수행하지 않은 0 ~ far 사이의 z 값이 보존되어있는 position
+    return Out;
+}
 
 VS_OUT VS_MAIN_RENDERTARGET_UV(VS_IN In)
 {
@@ -237,22 +263,23 @@ PS_OUT PS_MAIN(PS_IN In)
 
     return Out;
 }
+struct PS_SHADOW_IN
+{
+    float4 vPosition : SV_POSITION;
+    float4 vProjPos : TEXCOORD0;
+};
+
 
 // LightDepth 기록용 PixelShader 
-struct PS_OUT_LIGHTDEPTH
+struct PS_SHADOWMAP_OUT
 {
     float vLightDepth : SV_TARGET0;
 };
 
-PS_OUT_LIGHTDEPTH PS_MAIN_LIGHTDEPTH(PS_IN In)
+PS_SHADOWMAP_OUT PS_SHADOWMAP(PS_SHADOW_IN In)
 {
-    PS_OUT_LIGHTDEPTH Out = (PS_OUT_LIGHTDEPTH) 0;
-    
-    float4 vMtrlDiffuse = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord);
-    
-    if (vMtrlDiffuse.a < 0.01f)
-        discard;
-    
+    PS_SHADOWMAP_OUT Out = (PS_SHADOWMAP_OUT) 0;
+
     Out.vLightDepth = In.vProjPos.w / g_fFarZ;
     
     return Out;
@@ -381,18 +408,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass LightDepth // 3
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_LIGHTDEPTH();
-    }
-
-    pass RenderTargetMappingPass // 4
+    pass RenderTargetMappingPass // 3
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -402,7 +418,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass BookWorldPosMap // 5
+    pass BookWorldPosMap // 4
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -412,7 +428,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_WORLDPOSMAP();
     }
     
-    pass Fresnel // 6
+    pass Fresnel // 5
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -422,7 +438,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_FRESNEL();
     }
 
-    pass PlayerDepth // 7
+    pass PlayerDepth // 6
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -430,5 +446,14 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_PLAYERDEPTH();
+    }
+    pass ShadowMap // 7
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_SHADOWMAP();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_SHADOWMAP();
     }
 }

@@ -68,7 +68,7 @@ public :
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
-	virtual HRESULT			Render_Shadow() override;
+
 	virtual HRESULT			Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag) override;
 
 	_bool					Book_Action(BOOK_PAGE_ACTION _eAction);

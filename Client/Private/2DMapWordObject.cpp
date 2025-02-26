@@ -156,11 +156,6 @@ HRESULT C2DMapWordObject::Render()
     return __super::Render();
 }
 
-HRESULT C2DMapWordObject::Render_Shadow()
-{
-    return S_OK;
-}
-
 HRESULT C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
 {
     for_each(m_Actions.begin(), m_Actions.end(), [this, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]

@@ -56,7 +56,6 @@ protected:
 	void Compute_ProjMatrix();
 
 public:
-#ifdef _DEBUG
 	_float	Get_Fovy(_uint _iZoomLevel) { return m_ZoomLevels[_iZoomLevel]; }
 	_uint	Get_PreZoomLevel() { return m_iPreZoomLevel; }
 	_uint	Get_CurrentZoomLevel() { return m_iCurZoomLevel; }
@@ -64,8 +63,6 @@ public:
 
 	void	Set_ZoomLevel(_uint _iZoomLevel) { m_iCurZoomLevel = _iZoomLevel; m_fFovy = m_ZoomLevels[_iZoomLevel]; }
 	void	Set_AtOffset(_fvector _vAtOffset) { XMStoreFloat3(&m_vAtOffset, _vAtOffset); }
-#endif
-
 	// Get
 	CONST_DOF Get_DofBufferData() const { return m_tDofData; }
 	_uint Get_CamType() const { return m_eCameraType; }

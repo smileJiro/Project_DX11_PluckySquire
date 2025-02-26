@@ -82,9 +82,9 @@ void CPhysx_EventCallBack::onTrigger(PxTriggerPair* pairs, PxU32 count)
 		SHAPE_USERDATA* pTriggerShapeUserData = static_cast<SHAPE_USERDATA*>(pairs[i].triggerShape->userData);
 		SHAPE_USERDATA* pOtherShapeUserData = static_cast<SHAPE_USERDATA*>(pairs[i].otherShape->userData);
 
-
 		CActorObject* pTriggerOwner = pTriggerActorUserData->pOwner;
 		CActorObject* pOtherOwner = pOtherActorUserData->pOwner;
+
 
 		TRIGGER_ID ID = {};
 		ID.iLeft_ID = pTriggerShapeUserData->iShapeInstanceID;
@@ -102,7 +102,7 @@ void CPhysx_EventCallBack::onTrigger(PxTriggerPair* pairs, PxU32 count)
 			|| false == pTriggerOwner->Get_ActorCom()->Is_Active() || false == pOtherOwner->Get_ActorCom()->Is_Active())
 		{
 			_bool isResult = Erase_StayTrigger(ID.ID);
-			if (true == isResult || PxPairFlag::eNOTIFY_TOUCH_LOST == pairs[i].status)
+			if ((true == isResult || PxPairFlag::eNOTIFY_TOUCH_LOST == pairs[i].status) && nullptr != pTriggerOwner)
 				pTriggerOwner->OnTrigger_Exit(TriggerCollInfo, OtherCollInfo);
 
 			continue;

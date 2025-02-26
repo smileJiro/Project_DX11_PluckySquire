@@ -17,7 +17,6 @@ public :
 public :
 	virtual void					Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT					Render() override;
-	virtual HRESULT					Render_Shadow() override;
 	virtual HRESULT					Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag) override;
 
 

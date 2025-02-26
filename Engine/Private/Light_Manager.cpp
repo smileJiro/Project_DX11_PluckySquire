@@ -50,6 +50,11 @@ HRESULT CLight_Manager::Add_Light(const CONST_LIGHT& LightDesc, LIGHT_TYPE _eTyp
 	return S_OK;
 }
 
+void CLight_Manager::Update(_float _fTimeDelta)
+{
+
+}
+
 HRESULT CLight_Manager::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 {
 	for (auto& pLight : m_Lights)
