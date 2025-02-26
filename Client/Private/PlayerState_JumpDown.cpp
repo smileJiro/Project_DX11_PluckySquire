@@ -42,12 +42,14 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 
 		return;
 	}
-	_bool bCarrying = m_pOwner->Is_CarryingObject();
 	// 이하 공중일 때
+	_bool bCarrying = m_pOwner->Is_CarryingObject();
+	//물건 들고있지 않으면?
 	if (false == bCarrying)
 	{
 		INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
-		if (INTERACT_RESULT::SUCCESS != eResult)
+		if (INTERACT_RESULT::NO_INPUT == eResult
+			|| INTERACT_RESULT::FAIL == eResult)
 		{
 			if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
 			{
@@ -67,6 +69,10 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 					m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
 				return;
 			}
+		}
+		else if(INTERACT_RESULT::SUCCESS == eResult)
+		{
+			return;
 		}
 
 	}

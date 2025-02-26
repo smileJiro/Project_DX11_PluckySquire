@@ -211,7 +211,7 @@ _float CLunchBox::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
         - _pUser->Get_ControllerTransform()->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
 }
 
-void CLunchBox::On_Touched(CPlayer* _pPlayer)
+void CLunchBox::On_InteractionStart(CPlayer* _pPlayer)
 {
     _pPlayer->Set_State(CPlayer::LUNCHBOX);
 }

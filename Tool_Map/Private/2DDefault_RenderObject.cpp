@@ -281,7 +281,7 @@ void C2DDefault_RenderObject::Update_RenderWorld()
 	else 
 	{
 		m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
-		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - m_fSizeX * 0.5f, -m_fY + m_fSizeY, 0.f, 1.f));
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - m_fSizeX * 0.5f, 0, 0.f, 1.f));
 
 	}
 

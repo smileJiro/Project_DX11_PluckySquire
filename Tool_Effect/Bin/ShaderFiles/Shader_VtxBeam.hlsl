@@ -47,6 +47,7 @@ struct PS_OUT
 {
     float4 vAccumulate : SV_TARGET0;
     float vRevealage : SV_TARGET1;
+    float4 vBloom : SV_TARGET2;
 };
 
 
@@ -93,10 +94,10 @@ void GS_MAIN(line GS_IN In[2], inout TriangleStream<GS_OUT> OutStream)
     Out[2].vProjPos = Out[2].vPosition;
     Out[3].vProjPos = Out[3].vPosition; 
     
-    Out[0].vTexcoord = float2(1.f, In[1].fIndex);
-    Out[1].vTexcoord = float2(0.f, In[1].fIndex);
-    Out[2].vTexcoord = float2(0.f, In[0].fIndex);
-    Out[3].vTexcoord = float2(1.f, In[0].fIndex);
+    Out[0].vTexcoord = float2(1.f, 1.f);
+    Out[1].vTexcoord = float2(0.f, 1.f);
+    Out[2].vTexcoord = float2(0.f, 0.f);
+    Out[3].vTexcoord = float2(1.f, 0.f);
     
     OutStream.Append(Out[0]);
     OutStream.Append(Out[1]);
@@ -160,6 +161,7 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
     Out.vAccumulate.rgb = vColor.rgb * vColor.a * fWeight;
     Out.vAccumulate.a = vColor.a * fWeight;
     Out.vRevealage.r = vColor.a /** clamp(log(0.6f + vColor.a), 0.25f, 0.6f)*/;
+    Out.vBloom = Out.vAccumulate;
     
     return Out;
 }

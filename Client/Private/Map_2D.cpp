@@ -145,6 +145,17 @@ HRESULT CMap_2D::Create_Default_MapTexture()
 
 HRESULT CMap_2D::Register_WorldCapture(CModelObject* _pModel)
 {
+
+	// 이미 등록되었따는 뜻
+	// 고로, 같은 그룹에 두번 등록
+	// 덧그리는 건 알바 없음임. 안그렇게 디자인 했겠지. 클리어는 안해주므로, 상관없음.
+	if (L"" != m_strWorldRTKey)
+	{
+		m_pGameInstance->Add_RenderObject_New(m_iWorldRenderGroupID, m_iWorldPriorityID, _pModel);
+		return S_OK;
+	
+	}
+
 	_wstring strWorldRVTag = m_strRTKey + L"_WorldPosMap";
 	_wstring strWorldMRTTag = m_strMRTKey + L"_WorldPosMap";
 	_wstring strWorldDSVTag = m_strDSVKey + L"_WorldPosMap";
@@ -193,6 +204,8 @@ HRESULT CMap_2D::Register_WorldCapture(CModelObject* _pModel)
 	m_pGameInstance->Add_RenderObject_New(iRenderGroupID, iPriorityID, _pModel);
 
 	m_strWorldRTKey = strWorldRVTag;
+	m_iWorldRenderGroupID = iRenderGroupID;
+	m_iWorldPriorityID = iPriorityID;
 
 	return S_OK;
 }

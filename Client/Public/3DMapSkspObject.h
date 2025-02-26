@@ -6,6 +6,14 @@ BEGIN(Client)
 
 class C3DMapSkspObject final : public C3DMapObject
 {
+public :
+	enum SKSP_RENDER_TYPE
+	{
+		SKSP_DEFAULT,
+		SKSP_FLAGS,
+		SKSP_LAST
+	};
+
 private:
 	C3DMapSkspObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	C3DMapSkspObject(const C3DMapSkspObject& _Prototype);
@@ -20,8 +28,14 @@ public :
 	virtual HRESULT					Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag) override;
 
 
+private :
+	HRESULT					Render_Default();
+	HRESULT					Render_Flags();
+
 public :
-	_wstring m_strRenderSectionTag = L"";
+	_wstring			m_strRenderSectionTag = L"";
+	SKSP_RENDER_TYPE	m_eSkspType = SKSP_DEFAULT;
+
 
 public:
 	static C3DMapSkspObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

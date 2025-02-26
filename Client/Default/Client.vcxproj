@@ -188,13 +188,18 @@
     <ClInclude Include="..\Public\2DMapDefaultObject.h" />
     <ClInclude Include="..\Public\2DMapObject.h" />
     <ClInclude Include="..\Public\2DMapWordObject.h" />
+    <ClInclude Include="..\Public\Bomb.h" />
+    <ClInclude Include="..\Public\CrossBow_Arrow.h" />
+    <ClInclude Include="..\public\Effect_Beam.h" />
     <ClInclude Include="..\Public\ChaseFlyState.h" />
+    <ClInclude Include="..\Public\JumpPad.h" />
     <ClInclude Include="..\Public\Projectile_BirdMonster.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Projectile_Monster.h" />
     <ClInclude Include="..\Public\DraggableObject.h" />
     <ClInclude Include="..\Public\PlayerState_Drag.h" />
+    <ClInclude Include="..\Public\Dialog_Manager.h" />
     <ClInclude Include="..\Public\Shadow2D.h" />
     <ClInclude Include="..\Public\3DMapDefaultObject.h" />
     <ClInclude Include="..\Public\3DMapObject.h" />
@@ -359,14 +364,17 @@
     <ClInclude Include="..\Public\Sneak_PatrolState.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\Soldier_CrossBow.h" />
+    <ClInclude Include="..\Public\Soldier_Shield.h" />
+    <ClInclude Include="..\Public\Soldier_Spear.h" />
     <ClInclude Include="..\public\Spawner.h" />
     <ClInclude Include="..\Public\StandbyNoneAttackState.h" />
     <ClInclude Include="..\Public\State_Sneak.h" />
-    <ClInclude Include="..\Public\Soldier_Bomb.h" />
-    <ClInclude Include="..\Public\Soldier_CrossBow.h">
+    <ClInclude Include="..\Public\Bomb_Soldier.h" />
+    <ClInclude Include="..\Public\CrossBow_Soldier.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\Public\Soldier_Spear.h" />
+    <ClInclude Include="..\Public\Spear_Soldier.h" />
     <ClInclude Include="..\Public\StandbyState.h" />
     <ClInclude Include="..\public\Effect_Trail.h" />
     <ClInclude Include="..\Public\TriggerObject.h" />
@@ -417,13 +425,18 @@
     <ClCompile Include="..\Private\2DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\2DMapObject.cpp" />
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
+    <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
+    <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
+    <ClCompile Include="..\Private\JumpPad.cpp" />
     <ClCompile Include="..\Private\Projectile_BirdMonster.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\Projectile_Monster.cpp" />
     <ClCompile Include="..\Private\DraggableObject.cpp" />
     <ClCompile Include="..\Private\PlayerState_Drag.cpp" />
+    <ClCompile Include="..\private\Effect_Beam.cpp" />
+    <ClCompile Include="..\Private\Dialog_Manager.cpp" />
     <ClCompile Include="..\Private\Shadow2D.cpp" />
     <ClCompile Include="..\Private\3DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\3DMapObject.cpp" />
@@ -587,14 +600,17 @@
     <ClCompile Include="..\Private\Sneak_PatrolState.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\Soldier_CrossBow.cpp" />
+    <ClCompile Include="..\Private\Soldier_Shield.cpp" />
+    <ClCompile Include="..\Private\Soldier_Spear.cpp" />
     <ClCompile Include="..\private\Spawner.cpp" />
     <ClCompile Include="..\Private\StandbyNoneAttackState.cpp" />
     <ClCompile Include="..\Private\State_Sneak.cpp" />
-    <ClCompile Include="..\Private\Soldier_Bomb.cpp" />
-    <ClCompile Include="..\Private\Soldier_CrossBow.cpp">
+    <ClCompile Include="..\Private\Bomb_Soldier.cpp" />
+    <ClCompile Include="..\Private\CrossBow_Soldier.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\Private\Soldier_Spear.cpp" />
+    <ClCompile Include="..\Private\Spear_Soldier.cpp" />
     <ClCompile Include="..\Private\StandbyState.cpp" />
     <ClCompile Include="..\private\Effect_Trail.cpp" />
     <ClCompile Include="..\Private\TriggerObject.cpp" />
@@ -661,6 +677,7 @@
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Trail.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxBeam.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />

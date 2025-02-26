@@ -51,12 +51,6 @@ public:
 	virtual void Active_OnDisable() override;
 
 private:
-	_float m_fLifeTime = { 0.f };
-	_float m_fAccTime = { 0.f };
-
-	_bool m_isStop = {};
-
-private:
 	virtual HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();

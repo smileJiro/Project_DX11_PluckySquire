@@ -34,7 +34,7 @@ HRESULT CEffect_Trail::Initialize(void* _pArg)
     m_vAddPoint = pDesc->vAddPoint;
     m_vColor = pDesc->vColor;
     m_fAddTime = pDesc->fAddTime;
-    //m_fDeleteTime = pDesc->fDeleteTime;
+    m_fTrailLifeTime = pDesc->fTrailLifeTime;
 
     return S_OK;
 }
@@ -43,14 +43,14 @@ void CEffect_Trail::Update(_float _fTimeDelta)
 {   
     __super::Update(_fTimeDelta);
 
-//#ifdef _DEBUG
+//#ifdef _DEBUGsdda
 //    ImGui::Begin("Set Trail Effect");
 //
 //    ImGui::DragFloat4("Color", (_float*)(&m_vColor), 0.01f);
 //    ImGui::DragFloat("Length", &m_fLength);
 //    ImGui::DragFloat3("Add Point", (_float*)&m_vAddPoint);
 //    ImGui::DragFloat("Add Time", &m_fAddTime);
-//    ImGui::DragFloat("Delete Time", &m_fDeleteTime);
+//    ImGui::DragFloat("Delete Time", &m_fTrailLifeTime);
 //
 //
 //    ImGui::End();
@@ -63,7 +63,7 @@ void CEffect_Trail::Update(_float _fTimeDelta)
 
         if (m_fAddTime <= m_fAccAddTime)
         {
-            m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], XMVectorSetW(XMLoadFloat3(&m_vAddPoint), 1.f), 0.25f);
+            m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], XMVectorSetW(XMLoadFloat3(&m_vAddPoint), 1.f), m_fTrailLifeTime);
 
             m_fAccAddTime = 0.f;
         }
@@ -115,22 +115,26 @@ HRESULT CEffect_Trail::Render()
 
 void CEffect_Trail::Add_Point(_fvector _vPosition)
 {    
-    m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], _vPosition, 0.25f);
+    m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], _vPosition, m_fTrailLifeTime);
 }
 
 void CEffect_Trail::Add_Point()
 {
-    m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], XMVectorSetW(XMLoadFloat3(&m_vAddPoint), 1.f), 0.25f);
+    m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], XMVectorSetW(XMLoadFloat3(&m_vAddPoint), 1.f), m_fTrailLifeTime);
 }
 
 void CEffect_Trail::Delete_Effect()
 {
     m_pBufferCom->Reset_Buffer();
+    m_fAccAddTime = 0.f;
+
 }
 
 void CEffect_Trail::Delete_Delay(_float _fDelay)
 {
     m_fDeleteAllDelay = _fDelay;
+    m_fAccAddTime = 0.f;
+
 }
 
 HRESULT CEffect_Trail::Bind_ShaderResources()

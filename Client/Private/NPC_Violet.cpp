@@ -5,6 +5,8 @@
 #include "Section_Manager.h"
 
 #include "UI_Manager.h"
+#include "Dialog_Manager.h"
+
 #include "StateMachine.h"
 
 
@@ -107,7 +109,8 @@ void CNPC_Violet::Child_Update(_float _fTimeDelta)
 	{
 		if (m_isTrace)
 		{
-			Trace(_fTimeDelta);
+			if (false == m_isRockDialogue)
+				Trace(_fTimeDelta);
 		}
 		else
 		{
@@ -204,135 +207,105 @@ void CNPC_Violet::For_MoveAnimationChange(_float _fTimeDelta, _float2 _vNpcPos)
 	_vector CurPos = XMVectorSet(_vNpcPos.x, _vNpcPos.y, 0.f, 1.f);
 	_vector PrePos = XMVectorSet(m_vPreNPCPos.x, m_vPreNPCPos.y, 0.f, 1.f);
 
-	// 어? 너 지금 이전 거리가 달라졌네  그러면 이동한거야 / 애니메이션 변경시키자구
-	if (0.f < XMVectorGetX(XMVector3Length(CurPos - PrePos)))
+	// 이동 여부 검사
+	if (XMVectorGetX(XMVector3Length(CurPos - PrePos)) > 0.f)
 	{
 		CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
-		if (0.f < fabs(m_vPreNPCPos.x - _vNpcPos.x) && 0.f < fabs(m_vPreNPCPos.y - _vNpcPos.y))
+		// 기존과의 차이를 구함 (양수이면 이전 위치보다 작다는 의미)
+		float fDeltaX = m_vPreNPCPos.x - _vNpcPos.x;
+		float fDeltaY = m_vPreNPCPos.y - _vNpcPos.y;
+
+		// 대각선 혹은 수평 이동의 경우: 좌우 이동 조건을 우선 처리
+		if (fabs(fDeltaX) > 1.f)
 		{
-			if (5.f < fabs(m_vPreNPCPos.y - _vNpcPos.y))
+			if (fDeltaX > 1.f) // _vNpcPos.x가 이전 위치보다 작으면 왼쪽 이동
 			{
-				//위로 올라간다.
-
-				//(1.f > m_vPreNPCPos.y - _NPCPos.y)
-
-
-				if (1.f > m_vPreNPCPos.y - _vNpcPos.y)
+				if (Violet_Run_Right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
 				{
-					// 위로 간다.
-					if ( Violet_Run_Up != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
-					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Up);
-					m_eAnimationType = ANIM_UP;
-					m_fIdleWaitTime = 0.f;
+					_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+					m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+					pModelObject->Switch_Animation(Violet_Run_Right);
+					m_eAnimationType = ANIM_LEFT;
 				}
-				else if (1.f < m_vPreNPCPos.y - _vNpcPos.y)
-				{
-					// 아래로간다.
-					if (Violet_Run_Down != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
-						static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Down);
-					m_eAnimationType = ANIM_DOWN;
-					m_fIdleWaitTime = 0.f;
-				}
-
-
+				m_fIdleWaitTime = 0.f;
 			}
-			else if (0.f <= fabs(m_vPreNPCPos.x - _vNpcPos.x))
+			else if (fDeltaX < -1.f) // _vNpcPos.x가 이전 위치보다 크면 오른쪽 이동
 			{
-				// 양옆으로 이동한다.
-
-				if (1.f < m_vPreNPCPos.x - _vNpcPos.x)
+				if (Violet_Run_Right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
 				{
-					// 좌측으로 이동한다.
-					if (Violet_Run_Right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
-					{
-						_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-						m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-						static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
-						m_eAnimationType = ANIM_LEFT;
-					}
-
-
-					m_fIdleWaitTime = 0.f;
+					_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+					m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+					pModelObject->Switch_Animation(Violet_Run_Right);
+					m_eAnimationType = ANIM_RIGHT;
 				}
-				else if (-1.f >= m_vPreNPCPos.x - _vNpcPos.x)
-				{
-					// 우측으로 이동한다.
-					if (Violet_Run_Right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
-					{
-						_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-						m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
-						static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
-						m_eAnimationType = ANIM_RIGHT;
-					}
-
-					m_fIdleWaitTime = 0.f;
-				}
-
+				m_fIdleWaitTime = 0.f;
 			}
 		}
-
-		//y로만 이동한거야?
+		// 좌우 이동이 미미할 경우에만 수직 이동 처리
+		else if (fabs(fDeltaY) > 1.f)
+		{
+			if (fDeltaY <= -1.f) // _vNpcPos.y가 이전 위치보다 크면 위쪽 이동
+			{
+				if (Violet_Run_Up != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+				{
+					pModelObject->Switch_Animation(Violet_Run_Up);
+					m_eAnimationType = ANIM_UP;
+				}
+				m_fIdleWaitTime = 0.f;
+			}
+			else if (fDeltaY >= 1.f) // _vNpcPos.y가 이전 위치보다 작으면 아래쪽 이동
+			{
+				if (Violet_Run_Down != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+				{
+					pModelObject->Switch_Animation(Violet_Run_Down);
+					m_eAnimationType = ANIM_DOWN;
+				}
+				m_fIdleWaitTime = 0.f;
+			}
+		}
+		// 이동 후 이전 위치 업데이트
 		m_vPreNPCPos = _vNpcPos;
 	}
 	else
 	{
+		// 이동이 없을 경우 idle 상태 처리
 		CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-
 		if (ANIM_UP != m_eAnimationType && ANIM_DOWN != m_eAnimationType)
 			m_fIdleWaitTime += _fTimeDelta;
 
-		if (ANIM_IDLE != m_eAnimationType && 3.f <= m_fIdleWaitTime)
-		{
+		if (ANIM_IDLE != m_eAnimationType && m_fIdleWaitTime >= 3.f)
 			m_eAnimationType = ANIM_IDLE;
-		}
 
 		switch (m_eAnimationType)
 		{
 		case ANIM_UP:
-		{
 			if (Violet_idle_up != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
-				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_up);
-
-		}
-		break;
-
+				pModelObject->Switch_Animation(Violet_idle_up);
+			break;
 		case ANIM_DOWN:
-		{
 			if (Violet_idle_down != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
-				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_down);
-		}
-		break;
-
+				pModelObject->Switch_Animation(Violet_idle_down);
+			break;
 		case ANIM_LEFT:
-		{
 			if (Violet_idle_right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
 			{
 				_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
 				m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_right);
+				pModelObject->Switch_Animation(Violet_idle_right);
 			}
-			
-		}
-		break;
-
+			break;
 		case ANIM_RIGHT:
-		{
 			if (Violet_idle_right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
 			{
 				_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
 				m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
-				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_right);
+				pModelObject->Switch_Animation(Violet_idle_right);
 			}
-		}
-		break;
-
+			break;
 		case ANIM_IDLE:
-		{
-			if (Violet_idle_down != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
-				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_down);
-		}
-		break;
+			pModelObject->Switch_Animation(Violet_idle_down);
+			break;
 		}
 	}
 }
@@ -358,46 +331,46 @@ void CNPC_Violet::Welcome_Jot(_float _fTimeDelta)
 			if (Violet_idle_down != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
 				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_down);
 
-			m_fWelcomeWaitTime += _fTimeDelta;
-
-			if (5.f < m_fWelcomeWaitTime)
-			{
-				m_eActionType = ACTION_MOVE;
-			}
-			else
-				return;
+			//m_fWelcomeWaitTime += _fTimeDelta;
+			//
+			//if (5.f < m_fWelcomeWaitTime)
+			//{
+			//	m_eActionType = ACTION_MOVE;
+			//}
+			//else
+			//	return;
 		}
 
 		// 캐릭터로 향해 뚜벅뚜벅 걸어온다.
 		//m_eActionType = ACTION_MOVE;
 
-		if (ACTION_MOVE == m_eActionType)
+		if (m_isWelcomeDialog)
 		{
-			if (Violet_Run_Right != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
-			{
-				_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-				m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
-				m_eAnimationType = ANIM_LEFT;
-			}
-
-
-			_float4 vPlayerPos = _float4(Uimgr->Get_Player()->Get_FinalPosition().m128_f32[0], Uimgr->Get_Player()->Get_FinalPosition().m128_f32[1], 0.f, 1.f);
-			_float4 vVioletPos = _float4(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0], m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1], 0.f, 1.f);
-			_float4 vCalPos = _float4(vVioletPos.x - vPlayerPos.x, vVioletPos.y - vPlayerPos.y, 0.f, 1.f);
-			_float	fDistance = XMVectorGetX(XMVector3Length(XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f)));
-
-			if (200.f <= fDistance)
-			{
-				// 걸어간다.
-				vVioletPos.x -= m_f2DSpeed * _fTimeDelta;
-				m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, _float4(vVioletPos.x, vVioletPos.y, 0.f, 1.f));
-			}
-			else
-			{
+			//if (Violet_Run_Right != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+			//{
+			//	_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+			//	m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+			//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
+			//	m_eAnimationType = ANIM_LEFT;
+			//}
+			//
+			//
+			//_float4 vPlayerPos = _float4(Uimgr->Get_Player()->Get_FinalPosition().m128_f32[0], Uimgr->Get_Player()->Get_FinalPosition().m128_f32[1], 0.f, 1.f);
+			//_float4 vVioletPos = _float4(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0], m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1], 0.f, 1.f);
+			//_float4 vCalPos = _float4(vVioletPos.x - vPlayerPos.x, vVioletPos.y - vPlayerPos.y, 0.f, 1.f);
+			//_float	fDistance = XMVectorGetX(XMVector3Length(XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f)));
+			//
+			//if (200.f <= fDistance)
+			//{
+			//	// 걸어간다.
+			//	vVioletPos.x -= m_f2DSpeed * _fTimeDelta;
+			//	m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, _float4(vVioletPos.x, vVioletPos.y, 0.f, 1.f));
+			//}
+			//else
+			//{
 
 				// 일정 거리까지 오면 다이얼로그 시작한다.
-				m_eActionType = ACTION_DIALOG;
+				
 
 				if (Violet_Talk01_Right != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
 				{
@@ -407,17 +380,22 @@ void CNPC_Violet::Welcome_Jot(_float _fTimeDelta)
 					m_eAnimationType = ANIM_LEFT;
 				}
 
-				Throw_Dialogue();
-
+				if (ACTION_DIALOG != m_eActionType)
+				{
+					Throw_Dialogue();
+					m_isWelcomeDialog = false;
+				}
+				
+				m_eActionType = ACTION_DIALOG;
 				// 멈추고 다이얼로그를 시작한다.
-			}
+			
 		}
 		else if (ACTION_DIALOG == m_eActionType)
 		{
 
 			// 다이얼로그가 끝났나?
 			// 다이얼로그가 끝났는지 계속 체크한다.
-			if (false == Uimgr->Get_DisplayDialogue())
+			if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
 			{
 				// 다이얼로그가 끝났으면 trace를 이제 true로해서 따라 다니게 한다.
 				m_eActionType = ACTION_TRACE;
@@ -433,29 +411,37 @@ void CNPC_Violet::Rock_Dialog(_float _fTimeDelta)
 		2.f > fabs(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0] + 400) &&
 		m_isDialogRock == false)
 	{
+		wstring CurSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+		wsprintf(m_strCurSecion, CurSection.c_str());
 		wsprintf(m_strDialogueIndex, TEXT("Violet_Rock_01"));
 		Throw_Dialogue();
 		m_isDialogRock = true;
+		m_isRockDialogue = true;
 	}
 
 	if (m_isDialogRock == true)
 	{
-		if (true == Uimgr->Get_DisplayDialogue())
+		if (true == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
 		{
 			CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
 			if (Violet_Talk01_Right != pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
-				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Talk01_Right);
+				pModelObject->Switch_Animation(Violet_Talk01_Right);
+		}
+		else if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+		{
+			m_isRockDialogue = false;
 		}
 	}
-		
-
-
 }
 
 void CNPC_Violet::Interact(CPlayer* _pUser)
 {
-	
+	if (false == m_DisplayWelcomeDialog)
+	{
+		m_DisplayWelcomeDialog = true;
+		m_isWelcomeDialog = true;
+	}
 }
 
 _bool CNPC_Violet::Is_Interactable(CPlayer* _pUser)

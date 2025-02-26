@@ -433,7 +433,7 @@ HRESULT CSampleBook::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _ws
 	_float2 vStartCoord = { 0.0f, 0.0f };
 	_float2 vEndCoord = { 0.5f, 1.f };
 	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
-	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vStartCoord, sizeof(_float2));
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
 	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iRotateFlag, sizeof(_uint));
 
 	p3DModel->Bind_Matrices(m_pShaderComs[COORDINATE_3D], "g_BoneMatrices", CUR_LEFT);
@@ -444,7 +444,7 @@ HRESULT CSampleBook::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _ws
 	vStartCoord = { 0.5f, 0.0f };
 	vEndCoord = { 1.f, 1.f };
 	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
-	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vStartCoord, sizeof(_float2));
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
 	p3DModel->Bind_Matrices(m_pShaderComs[COORDINATE_3D], "g_BoneMatrices", CUR_RIGHT);
 	m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXANIMMESH::WORLDPOSMAP_BOOK);
 	pRightMesh->Bind_BufferDesc();

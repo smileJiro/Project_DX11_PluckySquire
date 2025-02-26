@@ -1,26 +1,15 @@
 #pragma once
-#include "Monster.h"
+#include "ModelObject.h"
+
 BEGIN(Client)
-class CSoldier_CrossBow final : public CMonster
+class CMonster;
+class CSoldier_CrossBow : public CModelObject
 {
 public:
-	enum Animation
+	typedef struct tagSoldier_CrossBowDesc : public CModelObject::MODELOBJECT_DESC
 	{
-		CROSSBOW_ALERT,
-		CROSSBOW_DEATH_ALT,
-		CROSSBOW_DEATH,
-		CROSSBOW_HIT_FWDS,
-		CROSSBOW_IDLE,
-		CROSSBOW_SHOOT,
-		CROSSBOW_SHOOT_IDLE,
-		CROSSBOW_SHOOT_RECOVERY,
-		CROSSBOW_STRAFE_BWD,
-		CROSSBOW_STRAFE_FWD,
-		CROSSBOW_STRAFE_LEFT,
-		CROSSBOW_STRAFE_RIGHT,
-		CROSSBOW_WALK,
-		LAST,
-	};
+		class CMonster* pParent = nullptr;
+	}SOLDIER_CROSSBOW_DESC;
 
 private:
 	CSoldier_CrossBow(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -28,21 +17,32 @@ private:
 	virtual ~CSoldier_CrossBow() = default;
 
 public:
-	virtual HRESULT			Initialize_Prototype() override;
-	virtual HRESULT			Initialize(void* _pArg) override;
-	virtual void			Priority_Update(_float _fTimeDelta) override;
-	virtual void			Update(_float _fTimeDelta) override;
-	virtual void			Late_Update(_float _fTimeDelta) override;
-	virtual HRESULT			Render() override;
+	virtual HRESULT	Initialize_Prototype() override;
+	virtual HRESULT Initialize(void* _pArg) override;
+	virtual void	Update(_float _fTimeDelta) override;
+	virtual void	Late_Update(_float _fTimeDelta) override;
+	virtual HRESULT	Render() override;
 
-public:
-	virtual void Change_Animation() override;
-	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
+
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
+	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void Active_OnEnable() override;
+	virtual void Active_OnDisable() override;
+
+	virtual HRESULT	 Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
+
+	void Attack(CGameObject* _pVictim);
+
+	_vector Get_LookDirection();
+
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
-	virtual HRESULT					Ready_Components();
-	virtual HRESULT					Ready_PartObjects();
+
+private:
+	_bool m_isAttackEnable = false;
+	CMonster* m_pParent = { nullptr };
 
 public:
 	static CSoldier_CrossBow* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

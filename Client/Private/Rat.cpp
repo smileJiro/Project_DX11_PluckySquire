@@ -72,7 +72,13 @@ HRESULT CRat::Initialize(void* _pArg)
     m_pFSM->Add_Neutral_State();
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
-    pModelObject->Set_Animation(IDLE);
+    if (COORDINATE_3D == Get_CurCoord())
+        pModelObject->Set_Animation(Animation::IDLE);
+    else if (COORDINATE_2D == Get_CurCoord())
+    {
+        Set_2D_Direction(F_DIRECTION::DOWN);
+        pModelObject->Set_Animation(Animation2D::IDLE_DOWN);
+    }
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CRat::Animation_End, this, placeholders::_1, placeholders::_2));
 

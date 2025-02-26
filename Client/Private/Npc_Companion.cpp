@@ -60,7 +60,7 @@ HRESULT CNPC_Companion::Child_Initialize(void* _pArg)
 
 	m_isRender = false;
 	//m_strCurSecion = pDesc->strLocateSection
-	wsprintf(m_strCurSecion, Uimgr->Get_Dialogue(pDesc->strDialogueIndex)[0].Section.c_str());
+	//wsprintf(m_strCurSecion, Uimgr->Get_Dialogue(pDesc->strDialogueIndex)[0].Section.c_str());
 	
 
 
@@ -112,9 +112,9 @@ void CNPC_Companion::Update(_float _fTimeDelta)
 					const _wstring curSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
 
 					if (curSection != TEXT("Chapter2_P0102") &&
-						curSection !=TEXT("Chapter2_P0506") &&
-						curSection !=TEXT("Chapter2_P1112") &&
-						curSection !=TEXT("Chapter2_P1314") &&
+						curSection != TEXT("Chapter2_P0506") &&
+						curSection != TEXT("Chapter2_P1112") &&
+						curSection != TEXT("Chapter2_P1314") &&
 						!CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
 					{
 						CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
@@ -164,7 +164,6 @@ void CNPC_Companion::Late_Update(_float _fTimeDelta)
 		{
 			Child->Child_LateUpdate(_fTimeDelta);
 		}
-			
 	}
 	__super::Late_Update(_fTimeDelta);
 }

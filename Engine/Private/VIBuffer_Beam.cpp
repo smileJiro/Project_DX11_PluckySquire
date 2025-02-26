@@ -146,6 +146,39 @@ void CVIBuffer_Beam::Initialize_Positions(const _float3& _vStartPos, const _floa
 	m_pContext->Unmap(m_pVB, 0);
 }
 
+HRESULT CVIBuffer_Beam::Bind_PointBufferDesc()
+{
+	// 버퍼에 대한 정보를 여기서 장치에 세팅 
+	ID3D11Buffer* pVertexBuffers[] =
+	{
+		m_pVB,
+	};
+	_uint iVertexStrides[] =
+	{
+		m_iVertexStride,
+	};
+	_uint iVertexOffsets[] =
+	{
+		0,
+	};
+
+	// IA에 VertexBuffer 전송
+	m_pContext->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers, iVertexStrides, iVertexOffsets);
+	// IA에 IndexBuffer 전송
+	m_pContext->IASetIndexBuffer(m_pIB, m_eIndexFormat, 0);
+	// IA에 PrimitiveTopology 전송
+	m_pContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Beam::Render_Points()
+{
+	m_pContext->DrawIndexed(m_iNumIndices, 0, 0);
+
+	return S_OK;
+}
+
 
 void CVIBuffer_Beam::Begin_Update()
 {
@@ -172,25 +205,29 @@ void CVIBuffer_Beam::End_Update()
 void CVIBuffer_Beam::Update_StartPosition(_fvector _vStartPosition)
 {
 	if (false == m_isUpdate)
-		return;
+		Begin_Update();
 
 	XMStoreFloat3(&m_pUpdateVertices[0].vPosition, _vStartPosition);
 
 	m_pVertices[0].vPosition = m_pUpdateVertices[0].vPosition;
 
 	Update_RandomPoints();
+
+	End_Update();
 }
 
 void CVIBuffer_Beam::Update_EndPosition(_fvector _vEndPosition)
 {
 	if (false == m_isUpdate)
-		return;
+		Begin_Update();
 
 	XMStoreFloat3(&m_pUpdateVertices[m_iNumVertices - 1].vPosition, _vEndPosition);
 
 	m_pVertices[m_iNumVertices - 1].vPosition = m_pUpdateVertices[m_iNumVertices - 1].vPosition;
 
 	Update_RandomPoints();
+
+	End_Update();
 }
 
 void CVIBuffer_Beam::Reset_Positions()
@@ -207,7 +244,7 @@ void CVIBuffer_Beam::Reset_Positions()
 void CVIBuffer_Beam::Update_RandomPoints()
 {
 	if (false == m_isUpdate)
-		return;
+		Begin_Update();
 
 	_vector vStartPos = XMLoadFloat3(&m_pUpdateVertices[0].vPosition);
 	_vector vEndPos = XMLoadFloat3(&m_pUpdateVertices[m_iNumVertices - 1].vPosition);
@@ -222,12 +259,15 @@ void CVIBuffer_Beam::Update_RandomPoints()
 
 		XMStoreFloat3(&m_pUpdateVertices[i].vPosition, vPosition);
 	}
+
+	End_Update();
+
 }
 
 void CVIBuffer_Beam::Converge_Points(_float _fSpeeds)
 {
 	if (false == m_isUpdate)
-		return;
+		Begin_Update();
 
 	_vector vStartPos = XMLoadFloat3(&m_pUpdateVertices[0].vPosition);
 	_vector vEndPos = XMLoadFloat3(&m_pUpdateVertices[m_iNumVertices - 1].vPosition);
@@ -240,7 +280,7 @@ void CVIBuffer_Beam::Converge_Points(_float _fSpeeds)
 		_vector vDir = vOriginPosition - vPosition;
 
 		// 충분히 작으면 Origin으로
-		if (0.005f > XMVectorGetX(XMVector3Length(vDir)))
+		if (0.05f > XMVectorGetX(XMVector3Length(vDir)))
 		{
 			vPosition = vOriginPosition;
 		}
@@ -251,6 +291,8 @@ void CVIBuffer_Beam::Converge_Points(_float _fSpeeds)
 
 		XMStoreFloat3(&m_pUpdateVertices[i].vPosition, vPosition);
 	}
+
+	End_Update();
 
 }
 

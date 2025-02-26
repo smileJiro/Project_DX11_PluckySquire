@@ -229,8 +229,13 @@ INITIAL_DATA CCamera_2D::Get_InitialData()
 
 	XMStoreFloat3(&tData.vPosition, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
 
-	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
-	_vector vAt = vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+#pragma region Pos + Look
+	//_vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
+	//_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+	//_vector vAt = vPos + vLook;
+	//XMStoreFloat3(&tData.vAt, vAt);
+#pragma endregion
+	_vector vAt = XMVectorSetW(XMLoadFloat3(&m_v2DPreTargetWorldPos), 1.f) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 	XMStoreFloat3(&tData.vAt, vAt);
 
 	tData.iZoomLevel = m_iCurZoomLevel;
@@ -242,7 +247,7 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 {
 	if (true == m_isInitialData)
 		return;
-
+	
 	Find_TargetPos();
 
 	Action_Zoom(_fTimeDelta);
@@ -710,7 +715,7 @@ void CCamera_2D::Calculate_Book_Scroll()
 	if (XMVector3Equal(vTargetPos, XMVectorZero())) {
 		int a = 0;
 	}
-	
+
 	XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 }
 

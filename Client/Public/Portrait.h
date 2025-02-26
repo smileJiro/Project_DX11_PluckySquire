@@ -1,5 +1,6 @@
 #pragma once
 #include "UI.h"
+#include "Dialogue.h"
 
 BEGIN(Engine)
 class CShader;
@@ -56,6 +57,7 @@ private:
     void        ChangePosition(_bool _isRender, _float2 _RTSize);
 
 
+
 private:
     //DialogData          m_DialogData;   // 현재 다이얼로그 데이터
     //_int                m_iCurrentLineIndex = 0; // 현재 출력 중인 라인의 인덱스 (id)
@@ -76,16 +78,32 @@ public:
     HRESULT      Cleanup_DeadReferences() override;
 
     void        Set_AddSectionRender(_bool _OnOff) { m_isAddSectionRender = _OnOff; }
+    void        SetPortraitState(_bool _bPortraitRender, _bool _is2D, PORT _eFace,  const _float3& _vDialoguePos, const wstring& _strSection);
+    void        Set_PortraitRender(_bool _isRender) { m_isPortraitRender = _isRender; }
+    _bool       Get_PortraitRender() { return m_isPortraitRender; }
+
+
+    /* 새로운 다이얼로그쪽..*/
+    //void        Set_is2D(_bool _is2D) { m_is2D = _is2D; }
+    //void        Set_PortraitDisplayPortrait(_bool _DisplayPortrait) { m_isDisplayPortrait = _DisplayPortrait; }
+    //void        Set_PortraitDisPlaySection(wstring _strSection) { m_strDisplaySection = _strSection; }
+    ///////////////////////
 
 private:
-    PORT        m_ePortrait;
-    PORT    m_ePortraitFace;
+    PORT                m_ePortrait;
+    PORT                m_ePortraitFace;
     _tchar			    m_tDialogIndex[MAX_PATH] = {};
     _bool               m_isAddSectionRender = { false };
     _bool               m_isDialoging = { false };
 	_float2             m_vDisplay3DSize = { 0.f, 0.f };
 	_float2             m_vDisplay2DSize = { 0.f, 0.f };
 
+    /* 새로운 다이얼로그작업쪽..*/
+    _bool               m_isPortraitRender = { false };
+    _bool               m_is2D = { true };
+    _float2             m_vDisplaySize = { 0.f, 0.f };
+    _float3             m_vDialoguePos = { 0.f , 0.f, 0.f };
+    wstring             m_strSection;
 };
 
 END

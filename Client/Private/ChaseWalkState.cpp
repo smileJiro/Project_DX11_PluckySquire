@@ -37,6 +37,16 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 
 	if (m_pTarget->Get_CurCoord() != m_pOwner->Get_CurCoord())
 	{
+		if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+		{
+			m_pOwner->Stop_Move();
+			m_pOwner->Stop_Rotate();
+		}
+		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		return;
+	}
+	else if (COORDINATE_2D == m_pOwner->Get_CurCoord() && m_pOwner->Get_Include_Section_Name() != m_pTarget->Get_Include_Section_Name())
+	{
 		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 		return;
 	}
@@ -46,6 +56,8 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 	XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_FinalPosition()));
 	if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
 	{
+		if(COORDINATE_3D == m_pOwner->Get_CurCoord())
+			m_pOwner->Stop_Rotate();
 		//공격 준비로 전환
 		Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
 		return;
@@ -54,6 +66,11 @@ void CChaseWalkState::State_Update(_float _fTimeDelta)
 	//추적 범위 벗어나면 IDLE 전환
 	if (fDis > Get_CurCoordRange(MONSTER_STATE::CHASE))
 	{
+		if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+		{
+			m_pOwner->Stop_Move();
+			m_pOwner->Stop_Rotate();
+		}
 		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 	}
 	else
