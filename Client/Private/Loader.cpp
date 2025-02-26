@@ -34,8 +34,8 @@
 /* For. UI*/
 #include "Pick_Bulb.h"
 #include "SettingPanelBG.h"
-#include "StopStamp.h"
-#include "BombStamp.h"
+#include "StopStamp_UI.h"
+#include "BombStamp_UI.h"
 #include "ArrowForStamp.h"
 #include "ESC_HeartPoint.h"
 #include "UI_Interaction_Book.h"
@@ -1035,10 +1035,10 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         CPick_Bulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_StopStamp"),
-		CStopStamp::Create(m_pDevice, m_pContext))))
+		CStopStamp_UI::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_BombStamp"),
-		CBombStamp::Create(m_pDevice, m_pContext))))
+		CBombStamp_UI::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_ArrowForStamp"),
 		CArrowForStamp::Create(m_pDevice, m_pContext))))
@@ -1399,10 +1399,10 @@ HRESULT CLoader::Loading_Level_Chapter_4()
         CPick_Bulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_StopStamp"),
-        CStopStamp::Create(m_pDevice, m_pContext))))
+        CStopStamp_UI::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_BombStamp"),
-        CBombStamp::Create(m_pDevice, m_pContext))))
+        CBombStamp_UI::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ArrowForStamp"),
         CArrowForStamp::Create(m_pDevice, m_pContext))))
@@ -1910,10 +1910,10 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
         CPick_Bulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_StopStamp"),
-        CStopStamp::Create(m_pDevice, m_pContext))))
+        CStopStamp_UI::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_BombStamp"),
-        CBombStamp::Create(m_pDevice, m_pContext))))
+        CBombStamp_UI::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_ArrowForStamp"),
         CArrowForStamp::Create(m_pDevice, m_pContext))))

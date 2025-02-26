@@ -198,6 +198,7 @@ public:
 	/// <param name="_v2DTransformPosition">2D ÁÂÇ¥</param>
 	_vector Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* _pTargetTexture, _float2 _v2DTransformPosition);
 
+
 	_bool	is_WordPos_Capcher() { return m_pBookWorldPosMap != nullptr; }
 
 	/// <summary>

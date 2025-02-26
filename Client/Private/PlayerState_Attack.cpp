@@ -109,6 +109,7 @@ void CPlayerState_Attack::Enter()
 
 void CPlayerState_Attack::Exit()
 {
+    m_pOwner->End_Attack();
 }
 
 void CPlayerState_Attack::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

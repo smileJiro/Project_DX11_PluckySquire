@@ -27,6 +27,7 @@
 #include "PlayerState_LunchBox.h"
 #include "PlayerState_Electric.h"
 #include "PlayerState_Drag.h"
+#include "PlayerState_Stamp.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -42,6 +43,7 @@
 #include "NPC_Store.h"
 #include "Portal.h"
 #include "DraggableObject.h"
+#include "SampleBook.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -299,7 +301,6 @@ HRESULT CPlayer::Ready_PartObjects()
         MSG_BOX("CPlayer Sword Creation Failed");
         return E_FAIL;
     }
-    m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 1,0,0,0 });
     Set_PartActive(PLAYER_PART_SWORD, false);
     m_pSword->Switch_Grip(true);
     m_pSword->Set_AttackEnable(false);
@@ -334,7 +335,54 @@ HRESULT CPlayer::Ready_PartObjects()
     C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_GLOVE])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_glove_hand_r")); /**/
     m_PartObjects[PLAYER_PART_GLOVE]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
-    Set_PartActive(PLAYER_PART_GLOVE, true);
+    Set_PartActive(PLAYER_PART_GLOVE, false);
+
+    //Part STOP STAMP
+    CModelObject::MODELOBJECT_DESC StampDesc{};
+
+    StampDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
+    StampDesc.iCurLevelID = m_iCurLevelID;
+    StampDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
+
+    StampDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+    StampDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    StampDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    StampDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+    StampDesc.iRenderGroupID_3D = RG_3D;
+    StampDesc.iPriorityID_3D = PR3D_GEOMETRY;
+    StampDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+    StampDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+    StampDesc.strModelPrototypeTag_3D = TEXT("Stop_Stamp");
+    StampDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    StampDesc.eActorType = ACTOR_TYPE::LAST;
+    StampDesc.pActorDesc = nullptr;
+    StampDesc.isCoordChangeEnable = false;
+    m_PartObjects[PLAYER_PART_STOP_STMAP] = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &StampDesc));
+    Safe_AddRef(m_pGlove);
+    if (nullptr == m_PartObjects[PLAYER_PART_STOP_STMAP])
+    {
+        MSG_BOX("CPlayer STOPSTAMP Creation Failed");
+        return E_FAIL;
+    }
+    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_STOP_STMAP])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r")); /**/
+    m_PartObjects[PLAYER_PART_STOP_STMAP]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
+    m_PartObjects[PLAYER_PART_STOP_STMAP]->Set_Position({0.f,-0.4f,0.f});
+    Set_PartActive(PLAYER_PART_STOP_STMAP, false);
+
+    StampDesc.strModelPrototypeTag_3D = TEXT("Bomb_Stamp");
+    m_PartObjects[PLAYER_PART_BOMB_STMAP] = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &StampDesc));
+    Safe_AddRef(m_pGlove);
+    if (nullptr == m_PartObjects[PLAYER_PART_BOMB_STMAP])
+    {
+        MSG_BOX("CPlayer BOMBSTAMP Creation Failed");
+        return E_FAIL;
+    }
+    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_BOMB_STMAP])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r")); /**/
+    m_PartObjects[PLAYER_PART_BOMB_STMAP]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
+    m_PartObjects[PLAYER_PART_BOMB_STMAP]->Set_Position({ 0.f,-0.4f,0.f });
+    Set_PartActive(PLAYER_PART_BOMB_STMAP, false);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
@@ -411,6 +459,7 @@ HRESULT CPlayer::Ready_Components()
     Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
     Bind_AnimEventFunc("ThrowObject", bind(&CPlayer::ThrowObject, this));
     Bind_AnimEventFunc("Attack", bind(&CPlayer::Move_Attack_3D, this));
+    Bind_AnimEventFunc("StampSmash", bind(&CPlayer::StampSmash, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -936,6 +985,20 @@ void CPlayer::Move_Attack_3D()
     }
 }
 
+void CPlayer::StampSmash()
+{
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+		CSampleBook* pSampleBook = dynamic_cast<CSampleBook*>(m_pInteractableObject);
+        if (nullptr == pSampleBook)
+            return;
+        _vector v2DPosition = pSampleBook->Convert_Position_3DTo2D(m_PartObjects[PLAYER_PART_STOP_STMAP]->Get_FinalPosition());
+    
+        //_float fRange = XMVector3Length(XMVectorSetY( m_PartObjects[PLAYER_PART_STOP_STMAP]->Get_FinalPosition(),0) - XMVectorSetY( m_pBody->Get_FinalPosition(),0)).m128_f32[0];
+        //int a = 0;
+	}
+}
+
 void CPlayer::Attack(CGameObject* _pVictim)
 {
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
@@ -1003,7 +1066,6 @@ void CPlayer::Jump()
 
 PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
-    m_f3DJumpPower = 11.5f;
 	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
 	if (STATE::DIE == Get_CurrentStateID())
@@ -1040,6 +1102,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 
         return tResult;
     }
+
+
 
 	_bool bCarrying = Is_CarryingObject();
     if (false == bCarrying && Is_SwordHandling())
@@ -1131,6 +1195,44 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     }
     tResult.bInputStates[PLAYER_INPUT_MOVE] =false ==  XMVector3Equal(tResult.vMoveDir, XMVectorZero());
     
+    return tResult;
+}
+
+PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_Stamp()
+{
+    PLAYER_INPUT_RESULT tResult;
+    fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
+    _bool bIsStamping = CPlayer::STAMP == m_pStateMachine->Get_CurrentState()->Get_StateID();
+	if (false == bIsStamping) return tResult;
+
+    if (KEY_DOWN(KEY::LSHIFT))
+        tResult.bInputStates[PLAYER_INPUT_ROLL] = true;
+    if (MOUSE_DOWN(MOUSE_KEY::LB)
+        || MOUSE_DOWN(MOUSE_KEY::RB)
+        ||KEY_DOWN(KEY::E))
+        tResult.bInputStates[PLAYER_INPUT_CANCEL_STAMP] = true;
+
+    if (KEY_DOWN(KEY::Q))
+        tResult.bInputStates[PLAYER_INPUT_KEEP_STAMP] = true;
+    else if (KEY_PRESSING(KEY::Q))
+        tResult.bInputStates[PLAYER_INPUT_KEEP_STAMP] = true;
+
+
+    //ÀÌµ¿
+    _vector vRight = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
+    _vector vUp = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_UP));
+    if (KEY_PRESSING(KEY::W))
+        tResult.vDir += _vector{ 0.f, 0.f, 1.f,0.f };
+    if (KEY_PRESSING(KEY::A))
+        tResult.vDir += _vector{ -1.f, 0.f, 0.f,0.f };
+    if (KEY_PRESSING(KEY::S))
+        tResult.vDir += _vector{ 0.f, 0.f, -1.f,0.f };
+    if (KEY_PRESSING(KEY::D))
+        tResult.vDir += _vector{ 1.f, 0.f, 0.f,0.f };
+    tResult.vDir = XMVector3Normalize(tResult.vDir);
+    tResult.vMoveDir = tResult.vDir;
+    tResult.bInputStates[PLAYER_INPUT_MOVE] = false == XMVector3Equal(tResult.vMoveDir, XMVectorZero());
+
     return tResult;
 }
 
@@ -1503,6 +1605,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::DRAG:
         m_pStateMachine->Transition_To(new CPlayerState_Drag(this));
+        break;
+    case Client::CPlayer::STAMP:
+        m_pStateMachine->Transition_To(new CPlayerState_Stamp(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;

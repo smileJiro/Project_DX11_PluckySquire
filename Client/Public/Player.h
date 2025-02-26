@@ -31,6 +31,9 @@ enum PLAYER_INPUT
 	PLAYER_INPUT_TURNBOOK_LEFT,
 	PLAYER_INPUT_TURNBOOK_RIGHT,
 	PLAYER_INPUT_TURNBOOK_END,
+	PLAYER_INPUT_START_STAMP,
+	PLAYER_INPUT_KEEP_STAMP,
+	PLAYER_INPUT_CANCEL_STAMP,
 	PLAYER_INPUT_LAST
 };
 
@@ -76,6 +79,8 @@ public:
 	{
 		PLAYER_PART_SWORD= 1,
 		PLAYER_PART_GLOVE,
+		PLAYER_PART_STOP_STMAP,
+		PLAYER_PART_BOMB_STMAP,
 		PLAYER_PART_LAST
 	};
 	enum STATE
@@ -102,6 +107,7 @@ public:
 		EVICT,
 		LUNCHBOX,
 		DRAG,
+		STAMP,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -451,6 +457,7 @@ public:
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
 	void Move_Attack_3D();
+	void StampSmash();
 	void Attack(CGameObject* _pVictim);
 
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
@@ -459,6 +466,7 @@ public:
 	void ThrowObject();
 	void Add_Upforce(_float _fForce);
 	PLAYER_INPUT_RESULT Player_KeyInput();
+	PLAYER_INPUT_RESULT Player_KeyInput_Stamp();
 	void Revive();
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
 
