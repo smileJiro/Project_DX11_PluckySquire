@@ -280,7 +280,7 @@ PS_SHADOWMAP_OUT PS_SHADOWMAP(PS_SHADOW_IN In)
 {
     PS_SHADOWMAP_OUT Out = (PS_SHADOWMAP_OUT) 0;
 
-    Out.vLightDepth = In.vProjPos.w / g_fFarZ;
+    Out.vLightDepth = In.vProjPos.w;
     
     return Out;
 }

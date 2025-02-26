@@ -242,6 +242,41 @@ float4 GetWorldPositionFromDepth(float2 _vTexcoord, float _fNDCDepth, float _fVi
     return vPixelWorld;
 }
 
+float PCF_Filter(float2 _vUV, float _fZReceiverNDC, float _fFilterRadiusUV, Texture2D _ShadowMapTexture)
+{
+    // RTV 기반 쉐도우맵이라 직접 PCF를 구현하여야 한다.
+    int iKernelSize = 8;
+    float fSumShadowFactor = 0.0f;
+
+    // 커널 중심에서 주변 텍셀 샘플링
+    int iLoopNum = (iKernelSize / 2);
+    for (int x = -iLoopNum; x <= iLoopNum; ++x) // '<='로 수정
+    {
+        for (int y = -iLoopNum; y <= iLoopNum; ++y) // '<='로 수정
+        {
+            // 주변 텍셀 좌표 계산
+            int DiskY = y + iLoopNum;
+            int DiskX = x + iLoopNum;
+
+            // Poisson Disk 인덱스 순환 접근
+            int poissonIndex = (DiskY * iKernelSize + DiskX) % 64;
+            float2 vOffset = diskSamples64[poissonIndex] * _fFilterRadiusUV;
+
+            // 쉐도우맵에서 깊이 샘플링
+            float fSampledDepth = _ShadowMapTexture.Sample(LinearSampler_Clamp, _vUV + vOffset);
+
+            // 깊이 비교 (좌표계 확인 필요)
+            if (_fZReceiverNDC <= fSampledDepth)
+            {
+                fSumShadowFactor += 1.0f;
+            }
+        }
+    }
+
+    // 평균화하여 부드러운 그림자 생성
+    return fSumShadowFactor / (iKernelSize * iKernelSize); // 동적 커널 크기 지원
+}
+
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -390,9 +425,20 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
         vLightTexcoord += 1.0f;
         vLightTexcoord *= 0.5f;
         
-        float fLightDepth = g_ShadowMapTexture.Sample(LinearSampler, saturate(vLightTexcoord)).r; // viewspace상의 z 값을 far로 나누어 저장했음.
-        if (fLightDepth * g_fFarZ + 0.1f < vLightScreen.w)
-            fShadowFactor = 0.0f;
+        float fMaxBias = 0.3f;
+        float fMinBias = 0.001f;
+        float fSlopeScaledBias = max(fMaxBias * (1.0f - dot(vNormalWorld, vLightVector)), fMinBias);
+        
+        uint width, height, numMips;
+        g_ShadowMapTexture.GetDimensions(0, width, height, numMips);
+        
+        // Texel Size
+        float dx = 5.0 / (float) width;
+        //float fLightDepth = g_ShadowMapTexture.Sample(LinearSampler, vLightTexcoord).r;
+        fShadowFactor = PCF_Filter(vLightTexcoord.xy, vLightScreen.w - fSlopeScaledBias, dx, g_ShadowMapTexture);
+        //float fLightDepth = g_ShadowMapTexture.SampleCmpLevelZero(ShadowCompareSampler, vLightTexcoord).r; // viewspace상의 z 값을 far로 나누어 저장했음.
+        //if (fLightDepth + fSlopeScaledBias < vLightScreen.w)
+        //    fShadowFactor = 0.0f;
     }
 
     

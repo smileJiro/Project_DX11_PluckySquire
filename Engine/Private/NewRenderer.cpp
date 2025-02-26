@@ -309,6 +309,7 @@ void CNewRenderer::Set_PlayerHideColor(const _float3 _vPlayerHideColor, _bool _i
 		m_pShader->Bind_RawValue("g_vHideColor", &m_vPlayerHideColor, sizeof(_float3));
 }
 
+
 #ifdef _DEBUG
 
 HRESULT CNewRenderer::Render_Debug()

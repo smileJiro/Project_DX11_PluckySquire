@@ -100,27 +100,27 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         {
             // 타이머 업데이트
             pGameInstance->Update_TimeDelta(TEXT("Timer_Default"));
-            pMainApp->Progress(pGameInstance->Get_TimeDelta(TEXT("Timer_Default")));
-            //fTimeAcc += pGameInstance->Get_TimeDelta(TEXT("Timer_Default"));
-            //if (fTimeAcc >= 1.0f / 60.f )
-            //{
-            //    static LARGE_INTEGER start = {};
-            //    static LARGE_INTEGER end = {};
-            //    
-            //    // 만약 TimeAcc가 60분의 1초보다 크다면, 다시 0으로 리셋
-            //    fTimeAcc = 0.0f;
-            //    // 60frame Timer Update >>> 이로서 60 프레임 제한이 되어있는 Timer를 사용 가능.
-            //    pGameInstance->Update_TimeDelta(TEXT("Timer_120"));
-            //
-            //    QueryPerformanceCounter(&start);
-            //    // 60frame 제한. 초당 60프레임만큼만 update, render 하겠다.
-            //    pMainApp->Progress(pGameInstance->Get_TimeDelta(TEXT("Timer_120")));
-            //    QueryPerformanceCounter(&end);
-            //
-            //    double iOneFrameDeltaTime = (double)(end.QuadPart - start.QuadPart) / (double)frequency.QuadPart;
-            //
-            //    pMainApp->Set_OneFrameDeltaTime((_float)iOneFrameDeltaTime);
-            //}
+            //pMainApp->Progress(pGameInstance->Get_TimeDelta(TEXT("Timer_Default")));
+            fTimeAcc += pGameInstance->Get_TimeDelta(TEXT("Timer_Default"));
+            if (fTimeAcc >= 1.0f / 60.f )
+            {
+                static LARGE_INTEGER start = {};
+                static LARGE_INTEGER end = {};
+                
+                // 만약 TimeAcc가 60분의 1초보다 크다면, 다시 0으로 리셋
+                fTimeAcc = 0.0f;
+                // 60frame Timer Update >>> 이로서 60 프레임 제한이 되어있는 Timer를 사용 가능.
+                pGameInstance->Update_TimeDelta(TEXT("Timer_120"));
+            
+                QueryPerformanceCounter(&start);
+                // 60frame 제한. 초당 60프레임만큼만 update, render 하겠다.
+                pMainApp->Progress(pGameInstance->Get_TimeDelta(TEXT("Timer_120")));
+                QueryPerformanceCounter(&end);
+            
+                double iOneFrameDeltaTime = (double)(end.QuadPart - start.QuadPart) / (double)frequency.QuadPart;
+            
+                pMainApp->Set_OneFrameDeltaTime((_float)iOneFrameDeltaTime);
+            }
             
 
         }
