@@ -66,7 +66,6 @@ public:
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
-	virtual HRESULT			Render_Shadow() override;
 	HRESULT					Render_Preview(_float4x4* _ViewMat, _float4x4* _ProjMat);
 
 	void					Set_Operation(OPERATION _eOper) { m_CurrentGizmoOperation = _eOper; }

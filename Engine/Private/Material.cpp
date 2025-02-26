@@ -124,70 +124,56 @@ void CMaterial::Set_PixelConstBuffer(const CONST_PS& _tPixelConstData, _bool _is
 {
 	m_tPixelConstData = _tPixelConstData;
 
-#ifdef _DEBUG
 	if (true == _isUpdate)
 		Update_PixelConstBuffer();
-#endif // _DEBUG
 }
 
 void CMaterial::Use_AlbedoMap(_bool _useAlbedoMap, _bool _isUpdate)
 {
 	m_tPixelConstData.useAlbedoMap = _useAlbedoMap;
 
-#ifdef _DEBUG
 	if (true == _isUpdate)
 		Update_PixelConstBuffer();
-#endif // _DEBUG
 }
 
 void CMaterial::Set_Albedo(const _float4& _vAlbedo, _bool _isUpdate)
 {
 	m_tPixelConstData.Material.Albedo = _vAlbedo;
 
-#ifdef _DEBUG
 	if (true == _isUpdate)
 		Update_PixelConstBuffer();
-#endif // _DEBUG
 }
 
 void CMaterial::Set_Roughness(_float _fRoughness, _bool _isUpdate)
 {
 	m_tPixelConstData.Material.Roughness = _fRoughness;
 
-#ifdef _DEBUG
 	if (true == _isUpdate)
 		Update_PixelConstBuffer();
-#endif // _DEBUG
 }
 
 void CMaterial::Set_Metallic(_float _fMetallic, _bool _isUpdate)
 {
 	m_tPixelConstData.Material.Metallic = _fMetallic;
 
-#ifdef _DEBUG
 	if (true == _isUpdate)
 		Update_PixelConstBuffer();
-#endif // _DEBUG
 }
 
 void CMaterial::Set_AO(_float _fAO, _bool _isUpdate)
 {
 	m_tPixelConstData.Material.AO = _fAO;
 
-#ifdef _DEBUG
 	if (true == _isUpdate)
 		Update_PixelConstBuffer();
-#endif // _DEBUG
 }
 
 void CMaterial::Set_MultipleAlbedo(const _float4& _vMutipleAlbedo, _bool _isUpdate)
 {
 	m_tPixelConstData.Material.MultipleAlbedo = _vMutipleAlbedo;
 	
-#ifdef _DEBUG
 	if (true == _isUpdate)
 		Update_PixelConstBuffer();
-#endif // _DEBUG
 }
 
 HRESULT CMaterial::Ready_PixelConstBuffer()

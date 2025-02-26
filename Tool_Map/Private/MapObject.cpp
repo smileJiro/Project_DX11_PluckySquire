@@ -211,10 +211,6 @@ HRESULT CMapObject::Render()
     return S_OK;
 }
 
-HRESULT CMapObject::Render_Shadow()
-{
-    return S_OK;
-}
 
 HRESULT CMapObject::Render_Preview(_float4x4* _ViewMat, _float4x4* _ProjMat)
 {
@@ -297,6 +293,7 @@ HRESULT CMapObject::Add_Textures(TEXTURE_INFO& _tDiffuseInfo, _uint _eTextureTyp
             return E_FAIL;
         if (FAILED(pMaterials[_tDiffuseInfo.iMaterialIndex]->Ready_PixelConstBuffer()))
             return E_FAIL;
+
         return pMaterials[_tDiffuseInfo.iMaterialIndex]->Update_PixelConstBuffer();
     }
     return S_OK;
@@ -529,19 +526,44 @@ HRESULT CMapObject::Save_Override_Material(HANDLE _hFile)
 HRESULT CMapObject::Save_Override_Color(HANDLE _hFile)
 {
     DWORD	dwByte(0);
-    WriteFile(_hFile, &m_eColorShaderModes[0], sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+    // 컬러를 섞을 갯수를 재고 기록한다.
+    _uint iMaterialCount = 0;
 
-	_float4 fDefaultDiffuseColor = Get_Diffuse_Color(0);
-
-    switch (m_eColorShaderModes[0])
-    {
+    for_each(m_eColorShaderModes.begin(), m_eColorShaderModes.end(), [&iMaterialCount](auto eMode) {
+        switch (eMode)
+        {
         case Engine::C3DModel::COLOR_DEFAULT:
         case Engine::C3DModel::MIX_DIFFUSE:
+        {
+            iMaterialCount++;
+        }
+        break;
+        default:
+            break;
+        }
+        });
+    WriteFile(_hFile, &iMaterialCount, sizeof(_uint), &dwByte, nullptr);
+
+    // 컬러 정보가 있는 마테리얼이면, 마테리얼 인덱스-컬러모드-컬러 순으로 기록한다.
+    for (_uint i = 0; i < (_uint)m_eColorShaderModes.size(); i++)
+    {
+        switch (m_eColorShaderModes[i])
+        {
+        case Engine::C3DModel::COLOR_DEFAULT:
+        case Engine::C3DModel::MIX_DIFFUSE:
+        {
+            WriteFile(_hFile, &i, sizeof(_uint), &dwByte, nullptr);
+            WriteFile(_hFile, &m_eColorShaderModes[i], sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+
+            _float4 fDefaultDiffuseColor = Get_Diffuse_Color(i);
             WriteFile(_hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+        }
             break;
         default:
             break;
+        }
     }
+
 
     return S_OK;
 }
@@ -590,22 +612,46 @@ HRESULT CMapObject::Load_Override_Material(HANDLE _hFile)
 HRESULT CMapObject::Load_Override_Color(HANDLE _hFile)
 {
     DWORD	dwByte(0);
-    ReadFile(_hFile, &m_eColorShaderModes[0], sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+    _uint iMaterialCount = 0;
+    ReadFile(_hFile, &iMaterialCount, sizeof(_uint), &dwByte, nullptr);
 
-	_float4 fDefaultDiffuseColor = { 1.f,1.f,1.f,1.f };
-
-    switch (m_eColorShaderModes[0])
+    for (_uint i = 0; i < iMaterialCount; i++)
     {
-    case Engine::C3DModel::COLOR_DEFAULT:
-    case Engine::C3DModel::MIX_DIFFUSE:
-        ReadFile(_hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+        _uint iMaterialIndex = 0;
+        ReadFile(_hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
+        ReadFile(_hFile, &m_eColorShaderModes[iMaterialIndex], sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+        switch (m_eColorShaderModes[i])
+        {
+        case Engine::C3DModel::COLOR_DEFAULT:
+        case Engine::C3DModel::MIX_DIFFUSE:
+        {
+            Set_Color_Shader_Mode(iMaterialIndex, m_eColorShaderModes[iMaterialIndex]);
+            _float4 fDefaultDiffuseColor = {};
+            ReadFile(_hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+            Set_Diffuse_Color(iMaterialIndex, fDefaultDiffuseColor);
+        }
         break;
-    default:
-        break;
+        default:
+            break;
+        }
     }
+ //   DWORD	dwByte(0);
+ //   ReadFile(_hFile, &m_eColorShaderModes[0], sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
 
-    Set_Color_Shader_Mode(0, m_eColorShaderModes[0]);
-    Set_Diffuse_Color(0, fDefaultDiffuseColor);
+	//_float4 fDefaultDiffuseColor = { 1.f,1.f,1.f,1.f };
+
+ //   switch (m_eColorShaderModes[0])
+ //   {
+ //   case Engine::C3DModel::COLOR_DEFAULT:
+ //   case Engine::C3DModel::MIX_DIFFUSE:
+ //       ReadFile(_hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+ //       break;
+ //   default:
+ //       break;
+ //   }
+
+ //   Set_Color_Shader_Mode(0, m_eColorShaderModes[0]);
+ //   Set_Diffuse_Color(0, fDefaultDiffuseColor);
 
     return S_OK;
 }
