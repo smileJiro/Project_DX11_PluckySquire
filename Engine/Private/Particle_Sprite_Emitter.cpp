@@ -384,8 +384,10 @@ HRESULT CParticle_Sprite_Emitter::Bind_ShaderValue_ByPass()
             return E_FAIL;
         if (FAILED(Bind_Float("DissolveTimeFactor", "g_fDissolveTimeFactor")))
             return E_FAIL;
+        if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
+            return E_FAIL;
 
-        if (nullptr != m_pDissolveTextureCom && m_pDissolveTextureCom->Bind_ShaderResource(m_pShaderCom, "g_NoiseTexture"))
+        if (nullptr != m_pDissolveTextureCom && FAILED(m_pDissolveTextureCom->Bind_ShaderResource(m_pShaderCom, "g_NoiseTexture")))
             return E_FAIL;
 
         break;

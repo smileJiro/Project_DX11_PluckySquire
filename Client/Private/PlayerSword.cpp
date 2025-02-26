@@ -174,7 +174,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     EffectBeamDesc.vRandomMin = _float3(-0.5f, -0.5f, 0.f);
     EffectBeamDesc.vRandomMax = _float3(0.5f, 0.5f, 0.f);
     EffectBeamDesc.fWidth = 0.08f;
-    EffectBeamDesc.vColor = _float4(0.5f, 0.9f, 1.f, 5.f);
+    EffectBeamDesc.vColor = _float4(0.67f, 0.789f, 0.88f, 5.f);
     EffectBeamDesc.isConverge = true;
     EffectBeamDesc.isRenderPoint = false;
     EffectBeamDesc.fConvergeSpeed = 4.f;

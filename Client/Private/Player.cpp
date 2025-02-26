@@ -33,6 +33,7 @@
 #include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
+#include "Effect_Manager.h"
     
 #include "Collider_Fan.h"
 #include "Collider_AABB.h"
@@ -50,7 +51,7 @@ CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 CPlayer::CPlayer(const CPlayer& _Prototype)
     :CCharacter(_Prototype)
-
+    , m_pEffectManager(CEffect_Manager::GetInstance())
 {
     for (_uint i = 0; i < ATTACK_TYPE_LAST; i++)
     {
@@ -59,6 +60,8 @@ CPlayer::CPlayer(const CPlayer& _Prototype)
     		m_f2DAttackTriggerDesc[i][j] = _Prototype.m_f2DAttackTriggerDesc[i][j];
         }
     }
+
+    Safe_AddRef(m_pEffectManager);
 }
 
 HRESULT CPlayer::Initialize_Prototype()
@@ -422,6 +425,17 @@ HRESULT CPlayer::Ready_Components()
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
     pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_Player2DAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("2DAnimEventGenrator"), pAnimEventGenerator);
+
+
+    // EffectAnimEvent
+    Bind_AnimEventFunc("Dust_Walk", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Walk"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
+    //Bind_AnimEventFunc("Dust_Jump", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Jump"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
+    
+    tAnimEventDesc.pReceiver = this;
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
+    pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_PlayeEffectEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("EffectEventGenerator"), pAnimEventGenerator);
+
 
 	m_p2DColliderComs.resize(3);
    /* Test 2D Collider */
@@ -1914,6 +1928,7 @@ void CPlayer::Free()
 	Safe_Release(m_pGlove);
 
     Safe_Release(m_pCarryingObject);
-
+    
+    Safe_Release(m_pEffectManager);
     __super::Free();
 }

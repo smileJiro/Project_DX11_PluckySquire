@@ -1,0 +1,38 @@
+[
+    {
+        "Name": "Bulb.json",
+        "Count": 4
+    },
+    {
+        "Name": "MonsterHit.json",
+        "Count": 5
+    },
+    {
+        "Name": "MonsterDead.json",
+        "Count": 5
+    },
+    {
+        "Name": "SwordThrowBlock.json",
+        "Count": 1
+    },
+    {
+        "Name": "SwordCombo.json",
+        "Count": 1
+    },
+    {
+        "Name": "SwordJumpAttack.json",
+        "Count": 1
+    },
+    {
+        "Name": "Dodge.json",
+        "Count": 2
+    },
+    {
+        "Name": "Dust_Walk.json",
+        "Count": 3
+    },
+    {
+        "Name": "Dust_Jump.json",
+        "Count": 3
+    }
+]

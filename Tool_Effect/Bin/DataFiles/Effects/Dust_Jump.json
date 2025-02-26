@@ -7,31 +7,31 @@
                         0.800000011920929,
                         0.699999988079071,
                         0.5,
-                        1.0
+                        0.699999988079071
                     ],
                     "Arg2": [
-                        0.8999999761581421,
-                        0.800000011920929,
-                        0.6000000238418579,
+                        1.0,
+                        1.0,
+                        1.0,
                         1.0
                     ],
                     "SetType": "DIRECTSET"
                 },
-                "Count": 8,
+                "Count": 16,
                 "LifeTime": {
-                    "Arg1": 0.4000000059604645,
-                    "Arg2": 0.0,
-                    "SetType": "DIRECTSET"
+                    "Arg1": 0.5,
+                    "Arg2": 0.6000000238418579,
+                    "SetType": "RANDOMLINEAR"
                 },
                 "Position": {
                     "Arg1": [
                         -0.20000000298023224,
-                        0.0,
+                        -0.05000000074505806,
                         0.0
                     ],
                     "Arg2": [
                         0.20000000298023224,
-                        0.05000000074505806,
+                        0.10000000149011612,
                         0.0
                     ],
                     "SetType": "RANDOMRANGE"
@@ -51,13 +51,13 @@
                 },
                 "Scale": {
                     "Arg1": [
-                        0.4000000059604645,
-                        0.4000000059604645,
+                        1.0,
+                        1.0,
                         1.0
                     ],
                     "Arg2": [
-                        0.6000000238418579,
-                        0.6000000238418579,
+                        1.5,
+                        1.5,
                         1.0
                     ],
                     "SetType": "RANDOMLINEAR"
@@ -88,8 +88,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.0,
-            "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_04.dds",
+            "DelayTime": 0.009999999776482582,
             "Event": 0,
             "Float": [
                 {
@@ -101,24 +100,12 @@
                     "Value": 1.0
                 },
                 {
-                    "Name": "DissolveFactor",
-                    "Value": 0.0
-                },
-                {
-                    "Name": "DissolveTimeFactor",
-                    "Value": 1.0
-                },
-                {
-                    "Name": "EdgeWidth",
-                    "Value": 0.10000000149011612
-                },
-                {
                     "Name": "MaskBrightness",
                     "Value": 0.0
                 },
                 {
                     "Name": "SpawnRate",
-                    "Value": 5.0
+                    "Value": 1.0
                 }
             ],
             "Float4": [
@@ -130,53 +117,10 @@
                         0.0,
                         0.0
                     ]
-                },
-                {
-                    "Name": "EdgeColor",
-                    "Value": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ]
-                },
-                {
-                    "Name": "NoiseUVScale",
-                    "Value": [
-                        0.25,
-                        0.25,
-                        0.5,
-                        0.5
-                    ]
                 }
             ],
             "LoopTime": 1,
             "Modules": [
-                {
-                    "Apply": "TRANSLATION",
-                    "Datas": {
-                        "Float": [
-                            {
-                                "Name": "Amount",
-                                "Value": 2.5
-                            }
-                        ],
-                        "Float3": [
-                            {
-                                "Name": "Origin",
-                                "Value": [
-                                    0.0,
-                                    -0.05000000074505806,
-                                    0.0
-                                ]
-                            }
-                        ]
-                    },
-                    "Init": true,
-                    "Module": "POINT_VELOCITY",
-                    "Order": 1,
-                    "Type": "MODULE_TRANSLATION"
-                },
                 {
                     "Apply": "UV",
                     "Datas": {
@@ -199,7 +143,7 @@
                     },
                     "Init": false,
                     "Module": "UV_ANIM",
-                    "Order": 2,
+                    "Order": 0,
                     "Type": "MODULE_UV"
                 },
                 {
@@ -226,8 +170,33 @@
                         }
                     ],
                     "Module": "COLOR_KEYFRAME",
-                    "Order": 2,
+                    "Order": 1,
                     "Type": "MODULE_KEYFRAME"
+                },
+                {
+                    "Apply": "TRANSLATION",
+                    "Datas": {
+                        "Float": [
+                            {
+                                "Name": "Amount",
+                                "Value": 5.0
+                            }
+                        ],
+                        "Float3": [
+                            {
+                                "Name": "Origin",
+                                "Value": [
+                                    0.0,
+                                    -0.05000000074505806,
+                                    0.0
+                                ]
+                            }
+                        ]
+                    },
+                    "Init": true,
+                    "Module": "POINT_VELOCITY",
+                    "Order": 2,
+                    "Type": "MODULE_TRANSLATION"
                 }
             ],
             "Pooling": "KILL",
@@ -235,7 +204,7 @@
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "BURST_SPAWN",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_SmokeLoop8x8_01_D.dds",
-            "Time": 3.0,
+            "Time": 1.0,
             "Transform": [
                 1.0,
                 0.0,
@@ -257,6 +226,6 @@
             "Type": "SPRITE"
         }
     ],
-    "Name": "Dust_Walk",
+    "Name": "Dust_Jump",
     "ToolLoopTime": 1.0
 }

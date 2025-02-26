@@ -9,7 +9,7 @@ vector          g_vCamPosition, g_vLook;
 float4          g_vParticleColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 float4          g_vSubColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 float4          g_vNoiseUVScale, g_vEdgeColor;
-float           g_fEdgeWidth, g_fDissolveTimeFactor;
+float           g_fEdgeWidth, g_fDissolveTimeFactor, g_fDissolveFactor;
 
 float4          g_vColorIntensity = { 1.0f, 1.0f, 1.0f, 1.0f };
 float g_fMaskBrightness = { 1.0f }, g_fColorScale = { 1.0f };
@@ -727,6 +727,7 @@ PS_OUT_WEIGHTEDBLENDED_BLOOM PS_WEIGHT_BLENDEDSUBCOLORBLOOM(PS_IN In)
     return Out;
 }
 
+
 PS_OUT_WEIGHTEDBLENDED PS_WEIGHT_BLENDEDDISSOLVE(PS_IN In)
 {
     PS_OUT_WEIGHTEDBLENDED Out = (PS_OUT_WEIGHTEDBLENDED) 0;
@@ -740,7 +741,7 @@ PS_OUT_WEIGHTEDBLENDED PS_WEIGHT_BLENDEDDISSOLVE(PS_IN In)
     vColor = vColor + vColor * g_vColorIntensity;
     
     float fNormalizedTime = clamp(In.vLifeTime.y / In.vLifeTime.x, 0.f, 1.f);
-    float fDissolveThreshold = clamp(fNormalizedTime * g_fDissolveTimeFactor, 0.f, 1.f);
+    float fDissolveThreshold = fNormalizedTime * g_fDissolveTimeFactor + g_fDissolveFactor;
     
     float fDissolveMask = step(fDissolveThreshold, fDissolve);
     float fEdgeMask = smoothstep(fDissolveThreshold - g_fEdgeWidth, fDissolveThreshold, fDissolve);

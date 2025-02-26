@@ -143,6 +143,7 @@
 	{
 		"Section_Name": "Chapter2_P1314",
 		"Section_BackGround_Name": "Chapter2_P1314_BackGround",
+		"Section_Start": true,
 		"Section_File_Name": "Chapter2_P1314.m2chc",
 		"Section_Type": 0,
 		"Section_Default": 0,
