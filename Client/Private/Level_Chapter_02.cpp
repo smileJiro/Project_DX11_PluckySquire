@@ -272,8 +272,7 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		//Event_ChangeMapObject(LEVEL_CHAPTER_2, TEXT("Chapter_04_Default_Desk.mchc"), TEXT("Layer_MapObject"), true);
 	}
 
-	// TODO :: 나중 제거, 테스트용도 - 박상욱
-	//Uimgr->Test_Update();
+	Uimgr->Narration_Update();
 
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
@@ -406,6 +405,8 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		_wstring dd = TEXT("Chapter2_P0910");
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &dd);
 	}
+
+
 
 }
 
