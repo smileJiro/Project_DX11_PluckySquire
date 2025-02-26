@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "FSM.h"
 #include "ModelObject.h"
+#include "DetectionField.h"
 
 CBomb_Soldier::CBomb_Soldier(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -30,7 +31,7 @@ HRESULT CBomb_Soldier::Initialize(void* _pArg)
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 10.f;
+    pDesc->fAttackRange = 8.f;
     pDesc->fAlert2DRange = 5.f;
     pDesc->fChase2DRange = 12.f;
     pDesc->fAttack2DRange = 10.f;
@@ -51,8 +52,11 @@ HRESULT CBomb_Soldier::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
@@ -121,6 +125,10 @@ void CBomb_Soldier::Change_Animation()
 
         case MONSTER_STATE::ALERT:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
+            break;
+
+        case MONSTER_STATE::STANDBY:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BOMB_OUT);
             break;
 
         case MONSTER_STATE::CHASE:
@@ -193,7 +201,7 @@ HRESULT CBomb_Soldier::Ready_ActorDesc(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER | OBJECT_GROUP::EXPLOSION;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;
@@ -214,12 +222,35 @@ HRESULT CBomb_Soldier::Ready_Components()
     FSMDesc.fAlert2DRange = m_fAlert2DRange;
     FSMDesc.fChase2DRange = m_fChase2DRange;
     FSMDesc.fAttack2DRange = m_fAttack2DRange;
-    FSMDesc.isMelee = true;
+    FSMDesc.isMelee = false;
     FSMDesc.pOwner = this;
     FSMDesc.iCurLevel = m_iCurLevelID;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
+        return E_FAIL;
+
+#ifdef _DEBUG
+    /* Com_DebugDraw_For_Client */
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DebugDraw_For_Client"),
+        TEXT("Com_DebugDraw_For_Client"), reinterpret_cast<CComponent**>(&m_pDraw))))
+        return E_FAIL;
+#endif // _DEBUG
+
+    /* Com_DetectionField */
+    CDetectionField::DETECTIONFIELDDESC DetectionDesc;
+    DetectionDesc.fRange = m_fAlertRange;
+    DetectionDesc.fFOVX = m_fFOVX;
+    DetectionDesc.fFOVY = m_fFOVY;
+    DetectionDesc.fOffset = 0.f;
+    DetectionDesc.pOwner = this;
+    DetectionDesc.pTarget = m_pTarget;
+#ifdef _DEBUG
+    DetectionDesc.pDraw = m_pDraw;
+#endif // _DEBUG
+
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DetectionField"),
+        TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
         return E_FAIL;
 
     return S_OK;
