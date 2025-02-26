@@ -95,6 +95,22 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	XMStoreFloat4x4(&ShapeData2.LocalOffsetMatrix, XMMatrixIdentity());
 	ActorDesc.ShapeDatas.push_back(ShapeData2);
 
+	//책주변에는 없고 위에 플레이어가 있는지 감지하기
+	SHAPE_BOX_DESC BoxDesc3 = {};
+	BoxDesc3.vHalfExtents = { 19.8f, 1.2f, 5.6f };
+	SHAPE_DATA ShapeData3;
+	ShapeData3.pShapeDesc = &BoxDesc3;
+	ShapeData3.eShapeType = SHAPE_TYPE::BOX;
+	ShapeData3.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
+	ShapeData3.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
+	ShapeData3.isTrigger = true;
+	ShapeData3.FilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
+	ShapeData3.FilterData.OtherGroupMask = OBJECT_GROUP::PLAYER;
+	XMStoreFloat4x4(&ShapeData3.LocalOffsetMatrix, XMMatrixIdentity());
+	ActorDesc.ShapeDatas.push_back(ShapeData3);
+
+
+
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
 	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::DYNAMIC_OBJECT;
 
@@ -538,6 +554,7 @@ void CSampleBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 		m_eCurAction = ACTION_LAST;
 	}
 #pragma endregion
+	Calc_Page3DWorldMinMax();
 }
 
 void CSampleBook::PageAction_Call_PlayerEvent()
@@ -611,7 +628,10 @@ void CSampleBook::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 		if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup
 			&& (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
 		{
-			m_isPlayerAround = true;
+			if(_My.pShapeUserData->iShapeIndex == 1)
+				m_isPlayerAround = true;
+			else if (_My.pShapeUserData->iShapeIndex == 2)
+				m_isPlayerAbove = true;
 		}
 		break;
 	}
@@ -630,19 +650,28 @@ void CSampleBook::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 		if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup
 			&& (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
 		{
-			m_isPlayerAround = false;
+			if (_My.pShapeUserData->iShapeIndex == 1)
+				m_isPlayerAround = false;
+			else if (_My.pShapeUserData->iShapeIndex == 2)
+				m_isPlayerAbove = false;
 		}
 		break;
 	}
 }
 void CSampleBook::Interact(CPlayer* _pUser)
 {
-	_pUser->Set_State(CPlayer::TURN_BOOK);
+	if(m_isPlayerAround)
+		_pUser->Set_State(CPlayer::TURN_BOOK);
+	else if (m_isPlayerAbove)
+	{
+		Calc_Page3DWorldMinMax();
+		_pUser->Set_State(CPlayer::STAMP);
+	}
 }
 
 _bool CSampleBook::Is_Interactable(CPlayer* _pUser)
 {
-	return m_isPlayerAround && (false == _pUser->Is_CarryingObject());
+	return (m_isPlayerAround || m_isPlayerAbove) && (false == _pUser->Is_CarryingObject());
 }
 
 _float CSampleBook::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
@@ -667,6 +696,59 @@ void CSampleBook::Execute_AnimEvent(_uint _iAnimIndex)
 	m_eAnimAction = (BOOK_ANIM_ACTION)_iAnimIndex;
 	Set_ReverseAnimation(false);
 	Set_Animation(_iAnimIndex);
+}
+
+//3DPos가 책에서 어떤 위치인지 계산하기
+_vector CSampleBook::Convert_Position_3DTo2D(_fvector _v3DPos)
+{
+	_float2 vRatio = { (XMVectorGetX(_v3DPos) - m_v3DWorldMin.x) / (m_v3DWorldMax.x - m_v3DWorldMin.x)
+	, (XMVectorGetZ(_v3DPos) - m_v3DWorldMin.z) / (m_v3DWorldMax.z - m_v3DWorldMin.z) };
+
+	if (-0.03f > vRatio.x || 1.03f < vRatio.x
+		|| -0.03f > vRatio.y || 1.03f < vRatio.y)
+		return _vector();
+	// 2D 좌표계로 변환
+
+	_float2 v2DPos = { vRatio.x * m_v2DWorldPixelSize.x - m_v2DWorldPixelSize.x * 0.5f,
+		 vRatio.y * m_v2DWorldPixelSize.y - m_v2DWorldPixelSize.y * 0.5f };
+	return _vector{ v2DPos .x ,v2DPos .y };
+}
+
+void CSampleBook::Calc_Page3DWorldMinMax()
+{//1. 책의 3d 월드 상에서 Min,Max 점 얻기
+	//2. _v3DPos가  Min, Max 안의 어떤 비율의 지점에 있는지 계산
+	//3. 비율 * 책 크기(section->RenderResolution)
+	CSection_Manager* pSectionManager = SECTION_MGR;
+	CSection* pSection = pSectionManager->Find_Section(pSectionManager->Get_Cur_Section_Key());
+
+	if (nullptr == pSection)
+		return ;
+
+	CSection_2D* p2DSection = dynamic_cast<CSection_2D*>(pSection);
+
+	if (nullptr == p2DSection)
+		return ;
+
+	ID3D11Texture2D* pTexture2D = p2DSection->Get_WorldTexture();
+
+	// 맵핑하여 데이터 접근
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	if (FAILED(m_pContext->Map(pTexture2D, 0, D3D11_MAP_READ, 0, &mappedResource)))
+		return ;
+	// 2D Transform 위치를 픽셀 좌표계로 변환. 해당 텍스쳐의 가로 세로 사이즈를 알아야함.
+	m_v2DWorldPixelSize.x = mappedResource.RowPitch / sizeof(_float) / 4;
+	m_v2DWorldPixelSize.y = mappedResource.DepthPitch / mappedResource.RowPitch;
+
+
+	_uint iLeftBotIndex = m_v2DWorldPixelSize.x * (m_v2DWorldPixelSize.y - 1) * 4;
+	_uint iRightTopIndex = (m_v2DWorldPixelSize.x - 2) * 4;
+	// float4 데이터 읽기
+	_float* fData = static_cast<_float*>(mappedResource.pData);
+	m_v3DWorldMin = { fData[iLeftBotIndex],fData[iLeftBotIndex + 1],fData[iLeftBotIndex + 2] };
+	m_v3DWorldMax = { fData[iRightTopIndex],fData[iRightTopIndex + 1],fData[iRightTopIndex + 2] };
+
+
+	m_pContext->Unmap(pTexture2D, 0);
 }
 
 CSampleBook* CSampleBook::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

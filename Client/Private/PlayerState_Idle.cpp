@@ -45,6 +45,8 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 			m_pOwner->Set_State(CPlayer::ATTACK);
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_SPINATTACK])
 			m_pOwner->Set_State(CPlayer::SPINATTACK);
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_START_STAMP])
+			m_pOwner->Set_State(CPlayer::STAMP);
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_JUMP])
 			m_pOwner->Set_State(CPlayer::JUMP_UP);
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])

@@ -228,7 +228,8 @@ HRESULT CMeshEffect_Emitter::Bind_ShaderValue_ByPass()
 	{
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
 			return E_FAIL;
-
+		if (FAILED(m_pShaderCom->Bind_RawValue("g_fTimeAcc", &m_fAccTime, sizeof(_float))))
+			return E_FAIL;
 
 		//if (FAILED(m_pShaderCom->Bind_RawValue("g_fTimeAcc", &m_fAccTime, sizeof(_float))))
 		//	return E_FAIL;

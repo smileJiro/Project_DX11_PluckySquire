@@ -72,6 +72,7 @@ public:
 #endif // _DEBUG
 
 	HRESULT	Update_PixelConstBuffer();
+	HRESULT	Ready_PixelConstBuffer();
 
 	HRESULT Bind_PixelConstBuffer(CShader* _pShader);
 
@@ -105,8 +106,6 @@ protected: /* Shader에 바인딩하는 ConstBuffer */
 	CONST_PS					m_tPixelConstData = {};
 	ID3D11Buffer*				m_pPixeConstBuffer = nullptr;
 
-protected:
-	HRESULT	Ready_PixelConstBuffer();
 
 public:
 	static CMaterial* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* szDirPath, ifstream& inFile);
