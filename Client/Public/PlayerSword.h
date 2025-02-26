@@ -78,7 +78,7 @@ private:
 	_vector m_vThrowDirection = {};
 	_vector m_vStuckDirection = {};
 	_vector m_vStuckPosition = {};
-	_float m_fFlyingSpeed3D = 15.f;
+	_float m_fFlyingSpeed3D = 20.f;
 	_float m_fFlyingSpeed2D = 1200.f;
 	_float m_fRetriveRange3D = 0.5f;
 	_float m_fRetriveRange2D = 30.f;

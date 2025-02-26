@@ -11,6 +11,7 @@
 #include "Camera_2D.h"
 #include "Player.h"
 #include "CarriableObject.h"
+#include "Detonator.h"
 
 
 CSampleBook::CSampleBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -664,8 +665,15 @@ void CSampleBook::Interact(CPlayer* _pUser)
 		_pUser->Set_State(CPlayer::TURN_BOOK);
 	else if (m_isPlayerAbove)
 	{
-		Calc_Page3DWorldMinMax();
-		_pUser->Set_State(CPlayer::STAMP);
+		if (_pUser->Is_DetonationMode())
+		{
+			_pUser->Set_State(CPlayer::BOMBER);
+		}
+		else
+		{
+			Calc_Page3DWorldMinMax();
+			_pUser->Set_State(CPlayer::STAMP);
+		}
 	}
 }
 
