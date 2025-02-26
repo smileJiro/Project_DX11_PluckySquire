@@ -91,6 +91,7 @@ private:
 
 private: /* Player Hide */
 	_float3								m_vPlayerHideColor = { 1.0f, 0.24f, 0.4666f };
+	_float3								m_vOtherHideColor = { 0.8f,0.8f ,0.8f };
 
 #ifdef _DEBUG
 private:
