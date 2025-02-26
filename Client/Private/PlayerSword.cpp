@@ -39,7 +39,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     PLAYER_SWORD_DESC* pDesc = static_cast<PLAYER_SWORD_DESC*>(_pArg);
     m_pPlayer = pDesc->pParent;
     pDesc->pParentMatrices[COORDINATE_3D] = m_pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D);
-    C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_pPlayer->Get_PartObject(CPlayer::PART_BODY))->Get_Model(COORDINATE_3D));
+    C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_pPlayer->Get_Body())->Get_Model(COORDINATE_3D));
     Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_glove_hand_attach_r"));
 
     pDesc->isCoordChangeEnable = true;
@@ -174,7 +174,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     EffectBeamDesc.vRandomMin = _float3(-0.5f, -0.5f, 0.f);
     EffectBeamDesc.vRandomMax = _float3(0.5f, 0.5f, 0.f);
     EffectBeamDesc.fWidth = 0.08f;
-    EffectBeamDesc.vColor = _float4(0.5f, 0.9f, 1.f, 5.f);
+    EffectBeamDesc.vColor = _float4(0.67f, 0.789f, 0.88f, 5.f);
     EffectBeamDesc.isConverge = true;
     EffectBeamDesc.isRenderPoint = false;
     EffectBeamDesc.fConvergeSpeed = 4.f;
@@ -552,7 +552,7 @@ void CPlayerSword::On_StateChange()
         if (COORDINATE_3D == eCoord)
         {
             Set_ParentMatrix(eCoord, m_pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));
-            C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_pPlayer->Get_PartObject(CPlayer::PART_BODY))->Get_Model(COORDINATE_3D));
+            C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_pPlayer->Get_Body())->Get_Model(COORDINATE_3D));
             Set_SocketMatrix(COORDINATE_3D,p3DModel->Get_BoneMatrix("j_glove_hand_attach_r"));
             _matrix matWorld = XMMatrixIdentity() * XMMatrixRotationY(XMConvertToRadians(180));
             m_pControllerTransform->Set_WorldMatrix(matWorld);

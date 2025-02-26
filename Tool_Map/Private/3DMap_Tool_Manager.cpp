@@ -1035,6 +1035,7 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 							strButtonText += arrEnumText[iTextureType];
 							strMaterialText += std::to_string(iMaterialIdx);
 							_string strAddButtonID = strButtonText + "_" + strMaterialText;
+							_string strAddColorButtonID = strButtonText + "_Color_" + strMaterialText;
 
 							if (iMaterialIdx > 0)
 								ImGui::NewLine();
@@ -1105,6 +1106,137 @@ void C3DMap_Tool_Manager::Model_Imgui(_bool _bLock)
 #pragma endregion
 							End_Draw_ColorButton();
 							ImGui::PopID();
+							if (iTextureType == aiTextureType_DIFFUSE)
+							{
+								static _bool isColorPopupOpen = false;
+								static _float4 backup_color;
+								_float4 fColor = pTargetObj->Get_Diffuse_Color(iMaterialIdx);
+								auto Mode = pTargetObj->Get_Color_Shader_Mode(iMaterialIdx);
+
+
+								ImGui::SameLine();
+								ImGui::PushID(strAddColorButtonID.c_str());
+								Begin_Draw_ColorButton("#AddColorButton_Style", ImVec4(0.93f, 0.33f, 0.71f, 1.f));
+								
+								if (StyleButton(MINI, "Edit Diffuse Color"))
+								{
+									ImGui::OpenPopup("##Add Diffuse Color");
+									if (Mode == C3DModel::COLOR_NONE)
+									{
+										pTargetObj->Set_Color_Shader_Mode(iMaterialIdx, C3DModel::COLOR_DEFAULT);
+										pTargetObj->Set_Diffuse_Color(iMaterialIdx, backup_color);
+
+									}
+									isColorPopupOpen = true;
+								}
+								if (ImGui::BeginPopup("##Add Diffuse Color"))
+								{
+									if (ImGui::RadioButton("None", Mode == C3DModel::COLOR_SHADER_MODE::COLOR_NONE))
+										pTargetObj->Set_Color_Shader_Mode(iMaterialIdx, C3DModel::COLOR_SHADER_MODE::COLOR_NONE);
+									ImGui::SameLine();
+									if (ImGui::RadioButton("Default", Mode == C3DModel::COLOR_SHADER_MODE::COLOR_DEFAULT))
+										pTargetObj->Set_Color_Shader_Mode(iMaterialIdx, C3DModel::COLOR_SHADER_MODE::COLOR_DEFAULT);
+									ImGui::SameLine();
+									if (ImGui::RadioButton("Mix", Mode == C3DModel::COLOR_SHADER_MODE::MIX_DIFFUSE))
+										pTargetObj->Set_Color_Shader_Mode(iMaterialIdx, C3DModel::COLOR_SHADER_MODE::MIX_DIFFUSE);
+									
+
+
+									switch (Mode)
+									{
+										case Engine::C3DModel::COLOR_DEFAULT:
+										case Engine::C3DModel::MIX_DIFFUSE:
+										{
+											_float4 fColor = pTargetObj->Get_Diffuse_Color(iMaterialIdx);
+
+											static bool saved_palette_init = true;
+											static ImVec4 saved_palette[32] = {};
+											if (saved_palette_init)
+											{
+												for (int n = 0; n < IM_ARRAYSIZE(saved_palette); n++)
+												{
+													ImGui::ColorConvertHSVtoRGB(n / 31.0f, 0.8f, 0.8f,
+														saved_palette[n].x, saved_palette[n].y, saved_palette[n].z);
+													saved_palette[n].w = 1.0f; // Alpha
+												}
+												saved_palette_init = false;
+											}
+											ImGui::Separator();
+											if(ImGui::ColorPicker4("##picker", (float*)&fColor, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoSmallPreview))
+												pTargetObj->Set_Diffuse_Color(iMaterialIdx, backup_color = fColor);
+											ImGui::SameLine();
+
+											ImGui::BeginGroup(); // Lock X position
+											ImGui::Text("Current");
+											ImGui::ColorButton("##current", ImVec4(fColor.x, fColor.y, fColor.z, fColor.w), ImGuiColorEditFlags_NoPicker | ImGuiColorEditFlags_AlphaPreviewHalf, ImVec2(60, 40));
+											ImGui::Text("Previous");
+											if (ImGui::ColorButton("##previous", ImVec4(backup_color.x, backup_color.y, backup_color.z, backup_color.w), ImGuiColorEditFlags_NoPicker | ImGuiColorEditFlags_AlphaPreviewHalf, ImVec2(60, 40)))
+												pTargetObj->Set_Diffuse_Color(iMaterialIdx, backup_color);
+											ImGui::Separator();
+											ImGui::Text("Palette");
+											for (int n = 0; n < IM_ARRAYSIZE(saved_palette); n++)
+											{
+												ImGui::PushID(n);
+												if ((n % 8) != 0)
+													ImGui::SameLine(0.0f, ImGui::GetStyle().ItemSpacing.y);
+
+												ImGuiColorEditFlags palette_button_flags = ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_NoPicker | ImGuiColorEditFlags_NoTooltip;
+												if (ImGui::ColorButton("##palette", saved_palette[n], palette_button_flags, ImVec2(20, 20)))
+													pTargetObj->Set_Diffuse_Color(iMaterialIdx, backup_color = _float4(saved_palette[n].x, saved_palette[n].y, saved_palette[n].z, fColor.w));
+
+
+												// Allow user to drop colors into each palette entry. Note that ColorButton() is already a
+												// drag source by default, unless specifying the ImGuiColorEditFlags_NoDragDrop flag.
+												if (ImGui::BeginDragDropTarget())
+												{
+													if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(IMGUI_PAYLOAD_TYPE_COLOR_3F))
+														memcpy((float*)&saved_palette[n], payload->Data, sizeof(float) * 3);
+													if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(IMGUI_PAYLOAD_TYPE_COLOR_4F))
+														memcpy((float*)&saved_palette[n], payload->Data, sizeof(float) * 4);
+													ImGui::EndDragDropTarget();
+												}
+
+												ImGui::PopID();
+											}
+											ImGui::EndGroup();
+
+											//_float4 fColor = pTargetObj->Get_Diffuse_Color(iMaterialIdx);
+											//if(ImGui::ColorEdit4("##DiffuseColor", &fColor.x))
+											//	pTargetObj->Set_Diffuse_Color(iMaterialIdx, fColor);
+
+										}
+										break;
+									}
+
+
+
+									ImGui::EndPopup();
+								}
+
+								End_Draw_ColorButton();
+
+								ImGui::PopID();
+
+								switch (Mode)
+								{
+								case Engine::C3DModel::COLOR_DEFAULT:
+								case Engine::C3DModel::MIX_DIFFUSE:
+									ImGui::SameLine();
+									ImGui::TextColored(ImVec4(fColor.x, fColor.y, fColor.z, fColor.w), C3DModel::MIX_DIFFUSE == Mode ? "Mix" : "DEFAULT");
+
+									ImGui::SameLine();
+									strAddColorButtonID += "_ColorPicker";
+									ImGui::PushID(strAddColorButtonID.c_str());
+
+									if (ImGui::ColorEdit4("##DiffuseColor", &fColor.x, ImGuiColorEditFlags_NoInputs))
+										pTargetObj->Set_Diffuse_Color(iMaterialIdx, fColor);
+									ImGui::PopID();
+									break;
+								}
+							}
+
+
+
 							iMaterialIdx++;
 						}
 						if (nullptr != tDiffuseInfo.pSRV)
@@ -1492,6 +1624,7 @@ void C3DMap_Tool_Manager::Load(_bool _bSelected)
 			NormalDesc.iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MAP;
 			NormalDesc.tTransform3DDesc.isMatrix = true;
 			NormalDesc.tTransform3DDesc.matWorld = vWorld;
+			NormalDesc.isDeepCopyConstBuffer = true;
 
 
 			CGameObject* pGameObject = nullptr;

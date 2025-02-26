@@ -36,6 +36,9 @@ HRESULT CPortal::Initialize(void* _pArg)
     m_fTriggerRadius =  pDesc->fTriggerRadius;
     m_fInteractChargeTime = 0.6f;
     m_eInteractType = INTERACT_TYPE::CHARGE;
+	//m_strInteractName = L"포탈타기";
+    //m_bUIPlayerHeadUp = true;
+
     m_iPortalIndex =  pDesc->iPortalIndex;
     // Actor Object는 차후에, ReadyObject 를 따로 불러 생성.
     if (FAILED(__super::Initialize(_pArg)))
@@ -56,6 +59,8 @@ void CPortal::Priority_Update(_float _fTimeDelta)
 
 void CPortal::Update(_float fTimeDelta)
 {
+    if (nullptr != m_pEffectSystem && false == m_pEffectSystem->Is_Active())
+        m_pEffectSystem->Active_Effect(true);
     __super::Update(fTimeDelta);
 }
 
@@ -190,7 +195,7 @@ HRESULT CPortal::Init_Actor()
     }
     WorldMatrix.r[3] = XMVectorSetW(f3DPosition, 1.f);
 
-    m_pEffectSystem->Set_EffectMatrix(WorldMatrix);
+    m_pEffectSystem->Set_EffectMatrix(WorldMatrix);;
     m_PartObjects[PORTAL_PART_3D] = m_pEffectSystem;
 
     Safe_AddRef(m_pEffectSystem);

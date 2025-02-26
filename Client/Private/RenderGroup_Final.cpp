@@ -30,9 +30,6 @@ HRESULT CRenderGroup_Final::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuff
     _pRTShader->Bind_Matrix("g_ViewMatrixInv", &m_pGameInstance->Get_TransformInverseFloat4x4(CPipeLine::D3DTS_VIEW));
     _pRTShader->Bind_Matrix("g_ProjMatrixInv", &m_pGameInstance->Get_TransformInverseFloat4x4(CPipeLine::D3DTS_PROJ));
 
-    _pRTShader->Bind_Matrix("g_LightViewMatrix", m_pGameInstance->Get_Shadow_Transform_Ptr(CShadow::D3DTS_VIEW));
-    _pRTShader->Bind_Matrix("g_LightProjMatrix", m_pGameInstance->Get_Shadow_Transform_Ptr(CShadow::D3DTS_PROJ));
-
     /* Diffuse 와 Shade RTV를 바인드하고 이제 이 두 데이터를 가지고 최종 화면을 그려낼 것 이다. */
     if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_AlbedoTexture", TEXT("Target_Albedo"))))
         return E_FAIL;

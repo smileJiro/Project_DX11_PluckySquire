@@ -266,8 +266,40 @@ HRESULT CLevel_Chapter_04::Render()
 
 HRESULT CLevel_Chapter_04::Ready_Lights()
 {
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
-	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
+	//m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
+	//m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
+
+
+
+
+	CONST_LIGHT LightDesc{};
+
+	///* 规氢己堡盔*/
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
+
+	//LightDesc.vDirection = { 0.0f, -1.0f, -1.0f };
+	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	//LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	//LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	//LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	////LightDesc.isShadow = true;
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+	//	return E_FAIL;
+
+	/* 规氢己堡盔*/
+	ZeroMemory(&LightDesc, sizeof LightDesc);
+
+	LightDesc.vDirection = { -0.7f, -0.9f, -1.0f };
+	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	LightDesc.vDiffuse = _float4(1.0f, 0.3882f, 0.2784f, 1.0f);
+	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.0f);
+	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	LightDesc.isShadow = true;
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+		return E_FAIL;
+
+
+
 
 
 	//CONST_LIGHT LightDesc{};
@@ -309,7 +341,7 @@ HRESULT CLevel_Chapter_04::Ready_CubeMap(const _wstring& _strLayerTag)
 	Desc.iRenderGroupID = RG_3D;
 	Desc.iPriorityID = PR3D_PRIORITY;
 	Desc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
-	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
+	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_Chapter4Env");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
 		m_eLevelID, _strLayerTag, &pCubeMap, &Desc)))
 		return E_FAIL;
@@ -375,7 +407,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	Desc.fFovy = XMConvertToRadians(60.f);
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	Desc.fNear = 0.1f;
-	Desc.fFar = 1000.f;
+	Desc.fFar = 300.f;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.eZoomLevel = CCamera::LEVEL_6;
@@ -1025,54 +1057,24 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Effects(const _wstring& _strLayerTag)
 	Desc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
 	Desc.szMeshComputeShaderTag = L"Prototype_Component_Compute_Shader_MeshInstance";
 
+	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("FX_Static"), LEVEL_STATIC);
+	if (nullptr == pJson)
+		return E_FAIL;
+
+
 	CGameObject* pOut = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Bulb.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+	for (_int i = 0; i < (*pJson).size(); ++i)
+	{
+		_wstring strName = STRINGTOWSTRING((*pJson)[i]["Name"]);
+		_int iCount = (*pJson)[i]["Count"];
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Bulb.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Bulb.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("MonsterHit.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("MonsterHit.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("MonsterHit.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("MonsterDead.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("MonsterDead.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("MonsterDead.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("SwordThrowBlock.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("SwordCombo.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("SwordJumpAttack.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+		for (_int j = 0; j < iCount; ++j)
+		{
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strName, m_eLevelID, _strLayerTag, &pOut, &Desc)))
+				return E_FAIL;
+			CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+		}
+	}
 
 	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("RockOut.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
 		return E_FAIL;

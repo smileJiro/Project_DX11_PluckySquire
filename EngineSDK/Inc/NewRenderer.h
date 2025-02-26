@@ -8,9 +8,9 @@ class CComponent;
 class CShader;
 class CVIBuffer_Rect;
 class CRenderGroup;
+class CLight;
 class CNewRenderer final : public CBase
 {
-
 private:
 	CNewRenderer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CNewRenderer() = default;
@@ -31,6 +31,11 @@ public: /* DSV */
 	HRESULT								Add_DSV(const _wstring _strDSVTag, _uint _iWidth, _uint _iHeight);
 	HRESULT								Add_DSV(const _wstring _strDSVTag, ID3D11DepthStencilView* _pDSV);
 	HRESULT								Erase_DSV(const _wstring _strDSVTag);
+
+public: /* Shadow Light */
+	HRESULT								Add_ShadowLight(CLight* _pShadowLight);
+	HRESULT								Remove_ShadowLight(_int _iShadowLightID);
+	HRESULT								Clear_ShadowLight();
 
 public:/* Bind Defferd ConstBufferData */
 	HRESULT								Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer);
@@ -84,8 +89,9 @@ private:
 	CONST_IBL							m_tGlobalIBLData = {};
 	ID3D11Buffer*						m_pGlobalIBLConstBuffer = nullptr;
 
-private:
+private: /* Player Hide */
 	_float3								m_vPlayerHideColor = { 1.0f, 0.24f, 0.4666f };
+	_float3								m_vOtherHideColor = { 0.8f,0.8f ,0.8f };
 
 #ifdef _DEBUG
 private:

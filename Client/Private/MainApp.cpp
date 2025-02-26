@@ -624,7 +624,7 @@ HRESULT CMainApp::Ready_RenderTargets()
 
 	/* Settiong DSV */
 
-	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), g_iShadowWidth, g_iShadowHeight)))
+	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), SHADOWMAP_X, SHADOWMAP_Y)))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Downsample1"), (_uint)(g_iWinSizeX / 6.f), (_uint)(g_iWinSizeY / 6.f))))

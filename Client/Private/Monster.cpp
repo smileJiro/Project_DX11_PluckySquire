@@ -213,6 +213,7 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 
 		//Effect
 		if (COORDINATE_3D == Get_CurCoord())
+			//CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
 			CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
 
 		else if (COORDINATE_2D == Get_CurCoord())

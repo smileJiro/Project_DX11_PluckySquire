@@ -136,6 +136,8 @@ void CPlayerState_Idle::Switch_IdleAnimation3D(_bool _bStealth)
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_STEALTH_IDLE_GT);
 	else if(m_pOwner->Is_CarryingObject())
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_PICKUP_IDLE_GT);
+	else if(m_pOwner->Is_DetonationMode())
+		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_REMOTE_HOLD);
 	else
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_IDLE_01_GT);
 
