@@ -79,11 +79,11 @@ public:
 	const wstring&			Get_ModelName() { return m_strModelName; }
 
 
-	virtual void			Set_Diffuse_Color(const _float4 _fDiffuseColor) { m_fDefaultDiffuseColor = _fDiffuseColor; };
-	virtual const _float4	Get_Diffuse_Color() { return m_fDefaultDiffuseColor; }
+	virtual void					Set_Diffuse_Color(_uint _iMaterialIndex, const _float4 _fDiffuseColor);
+	virtual const _float4			Get_Diffuse_Color(_uint _iMaterialIndex);
 
-	void					Set_Color_Shader_Mode(C3DModel::COLOR_SHADER_MODE _eMode) { m_eColorShaderMode = _eMode; }
-	C3DModel::COLOR_SHADER_MODE		Get_Color_Shader_Mode() { return m_eColorShaderMode; }
+	void							Set_Color_Shader_Mode(_uint _iMaterialIndex, C3DModel::COLOR_SHADER_MODE _eMode);
+	C3DModel::COLOR_SHADER_MODE		Get_Color_Shader_Mode(_uint _iMaterialIndex);
 
 #ifdef _DEBUG
 	HRESULT					Get_Textures(vector<TEXTURE_INFO>& _Diffuses,_uint _eTextureType = aiTextureType_DIFFUSE);
@@ -124,11 +124,7 @@ private :
 	_bool					m_isSpsk = false;
 	_string					m_strSpskTag = "";
 
-	C3DModel::COLOR_SHADER_MODE		m_eColorShaderMode = C3DModel::COLOR_NONE;
-
-	// magenta
-	_float4						m_fDefaultDiffuseColor = { 1.f, 0.f, 1.f, 1.f };
-
+	vector<C3DModel::COLOR_SHADER_MODE>		m_eColorShaderModes;
 
 public:
 	static CMapObject*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

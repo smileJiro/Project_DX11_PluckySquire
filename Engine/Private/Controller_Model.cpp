@@ -52,7 +52,7 @@ HRESULT CController_Model::Ready_Models(CON_MODEL_DESC* _pDesc)
     case Engine::COORDINATE_3D:
     {
 
-        CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, _pDesc->i3DModelPrototypeLevelID, _pDesc->wstr3DModelPrototypeTag, nullptr));
+        CComponent* pComponent = static_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, _pDesc->i3DModelPrototypeLevelID, _pDesc->wstr3DModelPrototypeTag, &_pDesc->tModel3DDesc));
         if (nullptr == pComponent)
             return E_FAIL;
 

@@ -123,7 +123,7 @@ HRESULT C3DModel::Initialize(void* _pArg)
 		return S_OK;
 
 	vector<CMaterial*> NewMaterials;
-	NewMaterials.resize(m_Materials.size());
+	NewMaterials.reserve(m_Materials.size());
 	if (true == pDesc->isDeepCopyConstBuffer)
 	{
 		/* 만약 deep copy 대상이라면 복사생성자에서 얕은복사했던거 릴리즈하고 다시 머티리얼 생성 */
@@ -514,7 +514,7 @@ void C3DModel::Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, const _floa
 	m_Materials[_iMaterialIndex]->Set_Albedo(_vAlbedoColor, _isUpdate);
 }
 
-void C3DModel::Set_MaterialConstBuffer_MutipleAlbedo(_uint _iMaterialIndex, const _float4& _vMultipleAlbedoColor, _bool _isUpdate)
+void C3DModel::Set_MaterialConstBuffer_MultipleAlbedo(_uint _iMaterialIndex, const _float4& _vMultipleAlbedoColor, _bool _isUpdate)
 {
 	m_Materials[_iMaterialIndex]->Set_MultipleAlbedo(_vMultipleAlbedoColor, _isUpdate);
 }

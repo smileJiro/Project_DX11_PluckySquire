@@ -349,6 +349,7 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
 	tModelDesc.i3DModelPrototypeLevelID = _pDesc->iModelPrototypeLevelID_3D;
 	tModelDesc.wstr2DModelPrototypeTag = _pDesc->strModelPrototypeTag_2D;
 	tModelDesc.wstr3DModelPrototypeTag = _pDesc->strModelPrototypeTag_3D;
+	tModelDesc.tModel3DDesc.isDeepCopyConstBuffer = _pDesc->isDeepCopyConstBuffer;
 
 	m_pControllerModel = CController_Model::Create(m_pDevice, m_pContext, &tModelDesc);
 

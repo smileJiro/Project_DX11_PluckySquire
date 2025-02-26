@@ -84,7 +84,7 @@ public:
 	void					Set_MaterialConstBuffer_PixelConstBuffer(_uint _iMaterialIndex, const CONST_PS& _tPixelConstData, _bool _isUpdate = false);
 	void					Set_MaterialConstBuffer_UseAlbedoMap(_uint _iMaterialIndex, _bool _useAlbedoMap, _bool _isUpdate = false);
 	void					Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, const _float4& _vAlbedoColor, _bool _isUpdate = false);
-	void					Set_MaterialConstBuffer_MutipleAlbedo(_uint _iMaterialIndex, const _float4& _vMultipleAlbedoColor, _bool _isUpdate = false);
+	void					Set_MaterialConstBuffer_MultipleAlbedo(_uint _iMaterialIndex, const _float4& _vMultipleAlbedoColor, _bool _isUpdate = false);
 	void					Set_MaterialConstBuffer_Roughness(_uint _iMaterialIndex, _float _fRoughness, _bool _isUpdate = false);
 	void					Set_MaterialConstBuffer_Metallic(_uint _iMaterialIndex, _float _fMetallic, _bool _isUpdate = false);
 	void					Set_MaterialConstBuffer_AO(_uint _iMaterialIndex, _float _fAO, _bool _isUpdate = false);

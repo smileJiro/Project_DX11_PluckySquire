@@ -339,8 +339,8 @@ HRESULT CTask_Manager::Parsing()
 					}
 					if (fColor.x != 0.f)
 					{
-						pMapObject->Set_Diffuse_Color(fColor);
-						pMapObject->Set_Color_Shader_Mode(C3DModel::COLOR_DEFAULT);
+						pMapObject->Set_Color_Shader_Mode(0,C3DModel::COLOR_DEFAULT);
+						pMapObject->Set_Diffuse_Color(0,fColor);
 					}
 
 					continue;
@@ -616,8 +616,8 @@ HRESULT CTask_Manager::Find_Override_Material_Color(CMapObject* _pMapObject, jso
 
 								memcpy(((&fColor.x) + i), &fValue, sizeof(_float));
 							}
-							_pMapObject->Set_Diffuse_Color(fColor);
-							_pMapObject->Set_Color_Shader_Mode(C3DModel::COLOR_DEFAULT);
+							_pMapObject->Set_Color_Shader_Mode(0,C3DModel::COLOR_DEFAULT);
+							_pMapObject->Set_Diffuse_Color(0,fColor);
 						}
 					}
 				}
