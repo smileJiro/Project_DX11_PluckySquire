@@ -1347,18 +1347,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
 
-	Pooling_DESC Pooling_Desc;
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = _strLayerTag;
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Zippy");
-	Pooling_Desc.eSection2DRenderGroup = SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT;
-
-	CZippy::MONSTER_DESC* pZippy_Desc = new CZippy::MONSTER_DESC;
-	pZippy_Desc->iCurLevelID = m_eLevelID;
-	pZippy_Desc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Zippy"), Pooling_Desc, pZippy_Desc);
-
 	//Zippy_Desc.tTransform2DDesc.vInitialPosition = _float3(-450.0f, -30.f, 0.f);
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"), m_eLevelID, _strLayerTag, &pObject, &Zippy_Desc)))
@@ -1377,7 +1365,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0910"), pObject);
 
-
+	Pooling_DESC Pooling_Desc;
 	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
 	Pooling_Desc.strLayerTag = _strLayerTag;
 	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_LightningBolt");

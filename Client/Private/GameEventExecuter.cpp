@@ -17,6 +17,8 @@
 #include "Camera_Target.h"
 #include "2DMapActionObject.h"
 
+#include "Zippy.h"
+
 CGameEventExecuter::CGameEventExecuter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameObject(_pDevice, _pContext)
 	, m_pGameInstance(CGameInstance::GetInstance())
@@ -138,12 +140,28 @@ void CGameEventExecuter::C020910_Bolt_Spawn(_float _fTimeDelta)
 
 void CGameEventExecuter::C020910_Monster_Spawn(_float _fTimeDelta)
 {
+	CGameObject* pObject = nullptr;
+	CZippy::MONSTER_DESC Zippy_Desc;
+	Zippy_Desc.iCurLevelID = LEVEL_CHAPTER_2;
+	Zippy_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
 	_float3 vPos = { 500.0f, 10.f, 0.f };
 	_wstring strSectionKey = TEXT("Chapter2_P0910");
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Zippy"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+
+	Zippy_Desc.tTransform2DDesc.vInitialPosition = vPos;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"), LEVEL_CHAPTER_2, TEXT("Layer_Monster"), &pObject, &Zippy_Desc)))
+		return;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
 
 	vPos = { -450.0f, -30.f, 0.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Zippy"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	Zippy_Desc.tTransform2DDesc.vInitialPosition = vPos;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"), LEVEL_CHAPTER_2, TEXT("Layer_Monster"), &pObject, &Zippy_Desc)))
+		return;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
 
 	GameEvent_End();
 }
