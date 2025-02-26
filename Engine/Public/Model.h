@@ -15,6 +15,7 @@ protected:
 	virtual ~CModel() = default;
 public:
 	virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass)abstract;
+	virtual HRESULT			Render_Shadow(CShader* _pShader, _uint _iShaderPass) { return S_OK; }
 	virtual HRESULT			Render_Default(CShader* _pShader, _uint _iShaderPass) { return S_OK; }
 	virtual _bool Play_Animation(_float fTimeDelta, _bool bReverse = false) {return false;}
 	virtual void To_NextAnimation()abstract;

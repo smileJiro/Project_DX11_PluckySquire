@@ -143,6 +143,7 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 	if (nullptr == _pCarrier)
 	{
 		m_pCarrier = nullptr;
+		static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
 	}
 	else
 	{
@@ -151,7 +152,7 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 		m_fFloorDistance = 0.f;
 		m_vThrowForce2D = { 0.f,0.f,0.f };
 		m_pCarrier = _pCarrier;
-
+		static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
 	}
 	return S_OK;
 }

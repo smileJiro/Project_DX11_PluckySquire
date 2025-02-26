@@ -603,10 +603,10 @@
     <ClInclude Include="..\Public\Camera_Manager.h">
       <Filter>02.GameObjects\Camera\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\StopStamp.h">
+    <ClInclude Include="..\Public\StopStamp_UI.h">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\00. StopStamp</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BombStamp.h">
+    <ClInclude Include="..\Public\BombStamp_UI.h">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\01. BombStamp</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ArrowForStamp.h">
@@ -1196,6 +1196,15 @@
     <ClInclude Include="..\Public\Bomb.h">
       <Filter>02.GameObjects\Interact\Carriable</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\JumpPad.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Stamp.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StopStamp.h" />
+    <ClInclude Include="..\Public\BombStamp.h" />
+    <ClInclude Include="..\Public\PlayerBomb.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1279,10 +1288,10 @@
     <ClCompile Include="..\Private\Camera_Manager.cpp">
       <Filter>02.GameObjects\Camera\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\StopStamp.cpp">
+    <ClCompile Include="..\Private\StopStamp_UI.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\00. StopStamp</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BombStamp.cpp">
+    <ClCompile Include="..\Private\BombStamp_UI.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\01. BombStamp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ArrowForStamp.cpp">
@@ -1876,6 +1885,15 @@
     <ClCompile Include="..\Private\Dialog_Manager.cpp">
       <Filter>02.GameObjects\UI\99. Dialog_Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\JumpPad.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Stamp.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StopStamp.cpp" />
+    <ClCompile Include="..\Private\BombStamp.cpp" />
+    <ClCompile Include="..\Private\PlayerBomb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

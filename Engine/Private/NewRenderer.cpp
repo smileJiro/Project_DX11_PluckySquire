@@ -1,7 +1,8 @@
 #include "NewRenderer.h"
 #include "GameInstance.h"
 #include "GameObject.h"
-#include "RenderGroup.h"
+
+#include "RenderGroup_Shadow.h"
 
 CNewRenderer::CNewRenderer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:m_pDevice(_pDevice)
@@ -43,6 +44,24 @@ HRESULT CNewRenderer::Initialize()
 	/* Default 값으로 Shader에 바인딩 */
 	if(FAILED(m_pShader->Bind_ConstBuffer("GlobalIBLConstData", m_pGlobalIBLConstBuffer)))
 		return E_FAIL;
+
+	/* Shadow RenderGroup 생성. */
+	CRenderGroup_Shadow::RG_DESC RG_ShadowDesc;
+	RG_ShadowDesc.iRenderGroupID = REDNERGROUP_SHADOWID;
+	RG_ShadowDesc.iPriorityID = 0;
+	CRenderGroup_Shadow* pRenderGroup_Shdow = CRenderGroup_Shadow::Create(m_pDevice, m_pContext, &RG_ShadowDesc);
+	if (nullptr == pRenderGroup_Shdow)
+	{
+		MSG_BOX("Failed Create RenderGroup_Shadow(NewRenderer Class)");
+		return E_FAIL;
+	}
+	if (FAILED(Add_RenderGroup(pRenderGroup_Shdow->Get_RenderGroupID(), pRenderGroup_Shdow->Get_PriorityID(), pRenderGroup_Shdow)))
+		return E_FAIL;
+
+	Safe_Release(pRenderGroup_Shdow);
+	pRenderGroup_Shdow = nullptr;
+
+
 
 
 	m_pShader->Bind_RawValue("g_vHideColor", &m_vPlayerHideColor, sizeof(_float3));
@@ -198,6 +217,33 @@ HRESULT CNewRenderer::Erase_DSV(const _wstring _strDSVTag)
 	return S_OK;
 }
 
+HRESULT CNewRenderer::Add_ShadowLight(CLight* _pShadowLight)
+{
+	CRenderGroup_Shadow* pRenderGroup_Shadow = static_cast<CRenderGroup_Shadow*>(Find_RenderGroup(REDNERGROUP_SHADOWID, 0));
+	if (nullptr == pRenderGroup_Shadow)
+		return E_FAIL;
+
+	return pRenderGroup_Shadow->Add_ShadowLight(_pShadowLight);
+}
+
+HRESULT CNewRenderer::Remove_ShadowLight(_int _iShadowLightID)
+{
+	CRenderGroup_Shadow* pRenderGroup_Shadow = static_cast<CRenderGroup_Shadow*>(Find_RenderGroup(REDNERGROUP_SHADOWID, 0));
+	if (nullptr == pRenderGroup_Shadow)
+		return E_FAIL;
+
+	return pRenderGroup_Shadow->Remove_ShadowLight(_iShadowLightID);
+}
+
+HRESULT CNewRenderer::Clear_ShadowLight()
+{
+	CRenderGroup_Shadow* pRenderGroup_Shadow = static_cast<CRenderGroup_Shadow*>(Find_RenderGroup(REDNERGROUP_SHADOWID, 0));
+	if (nullptr == pRenderGroup_Shadow)
+		return E_FAIL;
+
+	return pRenderGroup_Shadow->Clear_ShadowLight();
+}
+
 HRESULT CNewRenderer::Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer)
 {
 	if(FAILED(m_pShader->Bind_ConstBuffer(_szConstBufferName, _pConstBuffer)))
@@ -262,6 +308,7 @@ void CNewRenderer::Set_PlayerHideColor(const _float3 _vPlayerHideColor, _bool _i
 	if(true == _isUpdate)
 		m_pShader->Bind_RawValue("g_vHideColor", &m_vPlayerHideColor, sizeof(_float3));
 }
+
 
 #ifdef _DEBUG
 

@@ -55,7 +55,7 @@ void CSound_Manager::Start_BGM(const wstring& strBGMTag, _float _fVolume)
         m_pCurPlayBGM->Stop_Sound(true);
 
     m_pCurPlayBGM = pBGM;
-
+    Safe_AddRef(m_pCurPlayBGM);
     m_pCurPlayBGM->Play_BGM(0.0f, true);
     m_pCurPlayBGM->Set_Volume(_fVolume); // bgm 사운드는 고정 30으로
 }

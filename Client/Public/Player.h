@@ -15,6 +15,8 @@ class CStateMachine;
 class IInteractable;
 class CPortal;
 class CSampleBook;
+class CStopStamp;
+class CBombStamp;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -31,6 +33,9 @@ enum PLAYER_INPUT
 	PLAYER_INPUT_TURNBOOK_LEFT,
 	PLAYER_INPUT_TURNBOOK_RIGHT,
 	PLAYER_INPUT_TURNBOOK_END,
+	PLAYER_INPUT_START_STAMP,
+	PLAYER_INPUT_KEEP_STAMP,
+	PLAYER_INPUT_CANCEL_STAMP,
 	PLAYER_INPUT_LAST
 };
 
@@ -76,6 +81,8 @@ public:
 	{
 		PLAYER_PART_SWORD= 1,
 		PLAYER_PART_GLOVE,
+		PLAYER_PART_STOP_STMAP,
+		PLAYER_PART_BOMB_STMAP,
 		PLAYER_PART_LAST
 	};
 	enum STATE
@@ -102,6 +109,7 @@ public:
 		EVICT,
 		LUNCHBOX,
 		DRAG,
+		STAMP,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -451,6 +459,7 @@ public:
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
 	void Move_Attack_3D();
+	void StampSmash();
 	void Attack(CGameObject* _pVictim);
 
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
@@ -459,6 +468,7 @@ public:
 	void ThrowObject();
 	void Add_Upforce(_float _fForce);
 	PLAYER_INPUT_RESULT Player_KeyInput();
+	PLAYER_INPUT_RESULT Player_KeyInput_Stamp();
 	void Revive();
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
 
@@ -520,6 +530,7 @@ public:
 	NORMAL_DIRECTION Get_PortalNormal() { return m_e3DPortalNormal; }
 	const ATTACK_TRIGGER_DESC& Get_AttackTriggerDesc(ATTACK_TYPE _eAttackType, F_DIRECTION _eFDir) {return m_f2DAttackTriggerDesc[_eAttackType][(_uint)_eFDir];}
 	const SHAPE_DATA& Get_BodyShapeData() { return m_tBodyShapeData; }
+	PLAYER_PART Get_CurrentStampType() { return m_eCurrentStamp; }
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -545,6 +556,7 @@ public:
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
+
 private:
 	void					Key_Input(_float _fTimeDelta);
 
@@ -569,7 +581,7 @@ private:
 	_float m_f3DLandAnimHeightThreshold= 0.6f;
 	_float m_f3DJumpPower = 10.5f;
 	_float m_fAirRotateSpeed = 40.f;
-	_float m_fAirRunSpeed = 6.f;
+	_float m_fAirRunSpeed = 480.f; // 매 프레임 AddFore이므로 DeltaTime이 곱해짐
 	_float m_f3DMoveSpeed= 6.f;
 	_float m_f3DDragMoveSpeed= 2.5f;
 
@@ -623,6 +635,9 @@ private:
 	class CPlayerSword* m_pSword = nullptr;
 	CModelObject* m_pBody = nullptr;
 	CModelObject* m_pGlove= nullptr;
+	CStopStamp* m_pStopStmap = nullptr;
+	CBombStamp* m_pBombStmap = nullptr;
+	PLAYER_PART m_eCurrentStamp = PLAYER_PART::PLAYER_PART_BOMB_STMAP;
 
 	//기타 관계된 오브젝트
 	CCarriableObject* m_pCarryingObject = nullptr;
@@ -633,6 +648,8 @@ private:
 
 	SHAPE_CAPSULE_DESC m_tBodyShapeDesc = {};
 	SHAPE_DATA m_tBodyShapeData = {};
+
+	class CEffect_Manager* m_pEffectManager = { nullptr };
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

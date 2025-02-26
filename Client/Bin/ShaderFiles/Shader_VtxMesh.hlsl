@@ -66,7 +66,11 @@ struct VS_OUT
     float4 vProjPos : TEXCOORD2; // 투영 변환 행렬까지 연산 시킨 포지션 정보를 ps 로 전달한다. >>> w 값을 위해. 
     float3 vTangent : TEXCOORD3;
 };
-
+struct VS_SHADOW_OUT
+{
+    float4 vPosition : SV_POSITION;
+    float4 vProjPos : TEXCOORD0; // 투영 변환 행렬까지 연산 시킨 포지션 정보를 ps 로 전달한다. >>> w 값을 위해. 
+};
 // Rendering PipeLine : Vertex Shader // 
 VS_OUT VS_MAIN(VS_IN In)
 {
@@ -85,6 +89,18 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
+VS_SHADOW_OUT VS_SHADOWMAP(VS_IN In)
+{
+    VS_SHADOW_OUT Out = (VS_SHADOW_OUT) 0;
+    matrix matWV, matWVP;
+
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+    
+    Out.vPosition = mul(float4(In.vPosition, 1.0), matWVP);
+    Out.vProjPos = Out.vPosition; // w 나누기를 수행하지 않은 0 ~ far 사이의 z 값이 보존되어있는 position
+    return Out;
+}
 
 struct VS_WORLDOUT
 {
@@ -199,23 +215,25 @@ PS_OUT PS_MAIN(PS_IN In)
     
     return Out;
 }
+struct PS_SHADOW_IN
+{
+    float4 vPosition : SV_POSITION;
+    float4 vProjPos : TEXCOORD0;
+};
+
 
 // LightDepth 기록용 PixelShader 
-struct PS_OUT_LIGHTDEPTH
+struct PS_SHADOWMAP_OUT
 {
     float vLightDepth : SV_TARGET0;
 };
 
-PS_OUT_LIGHTDEPTH PS_MAIN_LIGHTDEPTH(PS_IN In)
+PS_SHADOWMAP_OUT PS_SHADOWMAP(PS_SHADOW_IN In)
 {
-    PS_OUT_LIGHTDEPTH Out = (PS_OUT_LIGHTDEPTH) 0;
+    PS_SHADOWMAP_OUT Out = (PS_SHADOWMAP_OUT) 0;
+
     
-    float4 vMtrlDiffuse = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord);
-    
-    if (vMtrlDiffuse.a < 0.01f)
-        discard;
-    
-    Out.vLightDepth = In.vProjPos.w / g_fFarZ;
+    Out.vLightDepth = In.vProjPos.w;
     
     return Out;
 }
@@ -390,18 +408,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass LightDepth // 2
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_LIGHTDEPTH();
-    }
-
-    pass Color // 3
+    pass Color // 2
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -412,7 +419,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_COLOR();
     }
 
-    pass MixColor // 4
+    pass MixColor // 3
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -423,7 +430,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MIX_COLOR();
     }
 
-    pass TestProjectile // 5
+    pass TestProjectile //4
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -434,7 +441,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_TEST_PROJECTILE();
     }
 
-    pass BookWorldPosMap // 6
+    pass BookWorldPosMap // 5
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -444,7 +451,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_WORLDPOSMAP();
     }
 
-    pass Fresnel // 7
+    pass Fresnel // 6
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -454,7 +461,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_FRESNEL();
     }
 
-    pass Defaultpass2 // 8
+    pass Defaultpass2 // 7
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -464,7 +471,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN2();
     }
 
-    pass PlayerDepth // 9
+    pass PlayerDepth // 8
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -474,7 +481,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_PLAYERDEPTH();
     }
 
-    pass RenderTargetMappingPass // 10
+    pass RenderTargetMappingPass // 9
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -482,6 +489,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN_RENDERTARGET_UV();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
+    }
+
+    pass ShadowMap // 10
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_SHADOWMAP();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_SHADOWMAP();
     }
 }
 

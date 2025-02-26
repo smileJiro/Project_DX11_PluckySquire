@@ -56,6 +56,8 @@ void CPortal::Priority_Update(_float _fTimeDelta)
 
 void CPortal::Update(_float fTimeDelta)
 {
+    if (nullptr != m_pEffectSystem && false == m_pEffectSystem->Is_Active())
+        m_pEffectSystem->Active_Effect(true);
     __super::Update(fTimeDelta);
 }
 
@@ -190,7 +192,7 @@ HRESULT CPortal::Init_Actor()
     }
     WorldMatrix.r[3] = XMVectorSetW(f3DPosition, 1.f);
 
-    m_pEffectSystem->Set_EffectMatrix(WorldMatrix);
+    m_pEffectSystem->Set_EffectMatrix(WorldMatrix);;
     m_PartObjects[PORTAL_PART_3D] = m_pEffectSystem;
 
     Safe_AddRef(m_pEffectSystem);

@@ -189,10 +189,13 @@
     <ClInclude Include="..\Public\2DMapObject.h" />
     <ClInclude Include="..\Public\2DMapWordObject.h" />
     <ClInclude Include="..\Public\Bomb.h" />
+    <ClInclude Include="..\Public\BombStamp.h" />
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
     <ClInclude Include="..\public\Effect_Beam.h" />
     <ClInclude Include="..\Public\ChaseFlyState.h" />
     <ClInclude Include="..\Public\JumpPad.h" />
+    <ClInclude Include="..\Public\PlayerBomb.h" />
+    <ClInclude Include="..\Public\PlayerState_Stamp.h" />
     <ClInclude Include="..\Public\Projectile_BirdMonster.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
@@ -280,7 +283,7 @@
     <ClInclude Include="..\public\MainTable.h" />
     <ClInclude Include="..\public\DetectionField.h" />
     <ClInclude Include="..\Public\Camera_Manager.h" />
-    <ClInclude Include="..\Public\BombStamp.h" />
+    <ClInclude Include="..\Public\BombStamp_UI.h" />
     <ClInclude Include="..\Public\ChaseWalkState.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
@@ -377,6 +380,7 @@
     <ClInclude Include="..\Public\Spear_Soldier.h" />
     <ClInclude Include="..\Public\StandbyState.h" />
     <ClInclude Include="..\public\Effect_Trail.h" />
+    <ClInclude Include="..\Public\StopStamp.h" />
     <ClInclude Include="..\Public\TriggerObject.h" />
     <ClInclude Include="..\Public\Trigger_Manager.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h" />
@@ -401,7 +405,7 @@
     <ClInclude Include="..\public\Camera_Target.h" />
     <ClInclude Include="..\Public\Pick_Bulb.h" />
     <ClInclude Include="..\public\State.h" />
-    <ClInclude Include="..\Public\StopStamp.h" />
+    <ClInclude Include="..\Public\StopStamp_UI.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\TestTerrain.h" />
     <ClInclude Include="..\Public\UI.h" />
@@ -426,9 +430,12 @@
     <ClCompile Include="..\Private\2DMapObject.cpp" />
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
     <ClCompile Include="..\Private\Bomb.cpp" />
+    <ClCompile Include="..\Private\BombStamp.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
     <ClCompile Include="..\Private\JumpPad.cpp" />
+    <ClCompile Include="..\Private\PlayerBomb.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Stamp.cpp" />
     <ClCompile Include="..\Private\Projectile_BirdMonster.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
@@ -520,7 +527,7 @@
     <ClCompile Include="..\private\MainTable.cpp" />
     <ClCompile Include="..\private\DetectionField.cpp" />
     <ClCompile Include="..\Private\Camera_Manager.cpp" />
-    <ClCompile Include="..\Private\BombStamp.cpp" />
+    <ClCompile Include="..\Private\BombStamp_UI.cpp" />
     <ClCompile Include="..\Private\ChaseWalkState.cpp" />
     <ClCompile Include="..\Private\Client_Function.cpp" />
     <ClCompile Include="..\Private\Condition.cpp" />
@@ -613,6 +620,7 @@
     <ClCompile Include="..\Private\Spear_Soldier.cpp" />
     <ClCompile Include="..\Private\StandbyState.cpp" />
     <ClCompile Include="..\private\Effect_Trail.cpp" />
+    <ClCompile Include="..\Private\StopStamp.cpp" />
     <ClCompile Include="..\Private\TriggerObject.cpp" />
     <ClCompile Include="..\Private\Trigger_Manager.cpp" />
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp" />
@@ -639,7 +647,7 @@
     <ClCompile Include="..\Private\Pick_Bulb.cpp" />
     <ClCompile Include="..\private\State.cpp" />
     <ClCompile Include="..\Private\StateMachine.cpp" />
-    <ClCompile Include="..\Private\StopStamp.cpp" />
+    <ClCompile Include="..\Private\StopStamp_UI.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\TestTerrain.cpp" />
     <ClCompile Include="..\Private\Transition.cpp" />

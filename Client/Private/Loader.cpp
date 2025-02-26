@@ -34,8 +34,8 @@
 /* For. UI*/
 #include "Pick_Bulb.h"
 #include "SettingPanelBG.h"
-#include "StopStamp.h"
-#include "BombStamp.h"
+#include "StopStamp_UI.h"
+#include "BombStamp_UI.h"
 #include "ArrowForStamp.h"
 #include "ESC_HeartPoint.h"
 #include "UI_Interaction_Book.h"
@@ -75,6 +75,9 @@
 #include "Player.h"
 #include "PlayerBody.h"
 #include "PlayerSword.h"
+#include "StopStamp.h"
+#include "BombStamp.h"
+#include "PlayerBomb.h"
 #include "TestTerrain.h"
 #include "RabbitLunch.h"
 
@@ -239,6 +242,9 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Player2DAnimEvent"),
         CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Static/Player/player2danimevts.animevt"))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_PlayeEffectEvent"),
+        CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Latch_SkelMesh_NewRig/Player_Effect.animevt"))))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("2D 콜라이더를 로딩중입니다."));
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
@@ -262,6 +268,11 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_TestEnv"),
         CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/TestEnv_%d.dds"), 3, true))))
         return E_FAIL;
+    /* For. Prototype_Component_Texture_Chapter4Env */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter4Env"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter4Env_%d.dds"), 3, true))))
+        return E_FAIL;
+
     
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom1.dds"), 1))))
@@ -551,6 +562,15 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"),
         CPlayerSword::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_StopStamp"),
+        CStopStamp::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BombStamp"),
+        CBombStamp::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBomb"),
+        CPlayerBomb::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"),
         CPlayerBody::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -670,6 +690,9 @@ HRESULT CLoader::Loading_Level_Static()
     lstrcpy(m_szLoadingText, TEXT("이펙트(을)를 로딩중입니다."));
 
     if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/FX/FX_StaticInfo.json"), TEXT("FX_Static"), LEVEL_STATIC)))
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_STATIC,
@@ -1035,10 +1058,10 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         CPick_Bulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_StopStamp"),
-		CStopStamp::Create(m_pDevice, m_pContext))))
+		CStopStamp_UI::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_BombStamp"),
-		CBombStamp::Create(m_pDevice, m_pContext))))
+		CBombStamp_UI::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_ArrowForStamp"),
 		CArrowForStamp::Create(m_pDevice, m_pContext))))
@@ -1194,6 +1217,14 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 
     //Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_2, L"Room_Enviroment.mchc");
     Map_Object_Create(LEVEL_STATIC, LEVEL_CHAPTER_2, L"Room_Enviroment_Small.mchc");
+
+    lstrcpy(m_szLoadingText, TEXT("Level2 이펙트 로딩중입니다."));
+
+    if (FAILED(Load_Directory_Effects(LEVEL_CHAPTER_2, TEXT("../Bin/DataFiles/FX/Level2/"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/FX/FX_Level2.json"), TEXT("FX_Level2"), LEVEL_CHAPTER_2)))
+        return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;
@@ -1399,10 +1430,10 @@ HRESULT CLoader::Loading_Level_Chapter_4()
         CPick_Bulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_StopStamp"),
-        CStopStamp::Create(m_pDevice, m_pContext))))
+        CStopStamp_UI::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_BombStamp"),
-        CBombStamp::Create(m_pDevice, m_pContext))))
+        CBombStamp_UI::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ArrowForStamp"),
         CArrowForStamp::Create(m_pDevice, m_pContext))))
@@ -1910,10 +1941,10 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
         CPick_Bulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_StopStamp"),
-        CStopStamp::Create(m_pDevice, m_pContext))))
+        CStopStamp_UI::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_BombStamp"),
-        CBombStamp::Create(m_pDevice, m_pContext))))
+        CBombStamp_UI::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_ArrowForStamp"),
         CArrowForStamp::Create(m_pDevice, m_pContext))))

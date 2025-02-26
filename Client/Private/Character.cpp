@@ -111,6 +111,10 @@ void CCharacter::Late_Update(_float _fTimeDelta)
 
 void CCharacter::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)
 {
+	if (_bIm0)
+		_ModifiableContacts.Set_InvInertiaScale0(0.f);
+	else
+		_ModifiableContacts.Set_InvInertiaScale1(0.f);
     SHAPE_USE eMyShapeUse = (SHAPE_USE)_0.pShapeUserData->iShapeUse;
     switch (eMyShapeUse)
     {
@@ -126,7 +130,6 @@ void CCharacter::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CMod
             if (fNormal < m_fStepSlopeThreshold
                 || vPoint.m128_f32[1] > m_fStepHeightThreshold + Get_FinalPosition().m128_f32[1])
             {
-                _ModifiableContacts.Set_InvInertiaScale0(0.f);
                 _ModifiableContacts.Set_DynamicFriction(i, 0.0f);
                 _ModifiableContacts.Set_StaticFriction(i, 0.0f);
                 continue;

@@ -63,10 +63,7 @@ void CCube::Late_Update(_float _fTimeDelta)
     CPartObject::Late_Update(_fTimeDelta);
 }
 
-HRESULT CCube::Render_Shadow()
-{
-    return S_OK;
-}
+
 
 HRESULT CCube::Ready_Components()
 {

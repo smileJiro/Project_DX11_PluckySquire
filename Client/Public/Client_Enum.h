@@ -4,6 +4,7 @@ namespace Client
 {
 	enum RENDERGROUP
 	{
+		RG_SHADOW = REDNERGROUP_SHADOWID, // ,77
 		RG_2D = 1000,
 		RG_3D = 2000,
 

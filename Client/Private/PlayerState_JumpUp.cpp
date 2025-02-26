@@ -5,6 +5,7 @@
 #include "PlayerState_Idle.h"
 #include "Interactable.h"
 #include "GameInstance.h"
+#include "Effect_Manager.h"
 
 
 CPlayerState_JumpUp::CPlayerState_JumpUp(CPlayer* _pOwner)
@@ -25,7 +26,7 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 	{
 		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
 		{
-			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
+			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed * _fTimeDelta);
 			m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
 		}
 		else
@@ -162,6 +163,9 @@ void CPlayerState_JumpUp::Switch_JumpAnimation()
 		}
 	}
 	else	if (COORDINATE_3D == eCoord)
+	{
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_UP_02_GT);
+		CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Jump"), true, m_pOwner->Get_Transform()->Get_WorldMatrix_Ptr());
+	}
 
 }
