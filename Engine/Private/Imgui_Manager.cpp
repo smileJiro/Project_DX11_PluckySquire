@@ -613,6 +613,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 		if (ImGui::DragFloat3("Direction##Light", &tConstLightData.vDirection.x, 0.01f, -1.f, 1.f, "%.3f", ImGuiSliderFlags_AlwaysClamp))
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
+			(*Selectiter)->Compute_ViewProjMatrix();
 		}
 		if (ImGui::DragFloat3("Radiance##Light", &tConstLightData.vRadiance.x, 0.1f, 0.f, 500.f, "%.3f", ImGuiSliderFlags_AlwaysClamp))
 		{
@@ -643,6 +644,8 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 		};
+
+		
 
 		// Delete Light 
 		if (ImGui::Button("Delete Light"))

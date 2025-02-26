@@ -146,7 +146,7 @@ HRESULT CLight::Compute_ViewProjMatrix()
 	if (LIGHT_TYPE::DIRECTOINAL == m_eType)
 	{
 		_vector vLightDir = XMVector3Normalize(XMLoadFloat3(&m_tLightConstData.vDirection));
-		_vector vEye = vLightDir * -1.0f * 30.f;
+		_vector vEye = vLightDir * -1.0f * 70.f;
 		_vector vAt = vEye + vLightDir;
 		_vector vWorldUp = { 0.0f, 1.0f, 0.0f, 0.0f };
 

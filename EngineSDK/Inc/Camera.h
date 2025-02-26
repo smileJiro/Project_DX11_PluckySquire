@@ -23,7 +23,7 @@ public:
 		_float			fFovy = { 0.f };
 		_float			fAspect = { 0.f };
 		_float			fNear = { 0.f };
-		_float			fFar = { 0.f };
+		_float			fFar = { 300.f };
 
 		// Dof ±âº»°ª 
 		_float			fSensorHeight = 24.0f;
