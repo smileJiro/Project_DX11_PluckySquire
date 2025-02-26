@@ -192,7 +192,7 @@ HRESULT CPortal::Init_Actor()
     }
     WorldMatrix.r[3] = XMVectorSetW(f3DPosition, 1.f);
 
-    m_pEffectSystem->Set_EffectMatrix(WorldMatrix);
+    m_pEffectSystem->Set_EffectMatrix(WorldMatrix);;
     m_PartObjects[PORTAL_PART_3D] = m_pEffectSystem;
 
     Safe_AddRef(m_pEffectSystem);
