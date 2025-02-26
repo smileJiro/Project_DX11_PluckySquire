@@ -199,6 +199,7 @@
     <ClInclude Include="..\Public\Projectile_Monster.h" />
     <ClInclude Include="..\Public\DraggableObject.h" />
     <ClInclude Include="..\Public\PlayerState_Drag.h" />
+    <ClInclude Include="..\Public\Dialog_Manager.h" />
     <ClInclude Include="..\Public\Shadow2D.h" />
     <ClInclude Include="..\Public\3DMapDefaultObject.h" />
     <ClInclude Include="..\Public\3DMapObject.h" />
@@ -435,6 +436,7 @@
     <ClCompile Include="..\Private\DraggableObject.cpp" />
     <ClCompile Include="..\Private\PlayerState_Drag.cpp" />
     <ClCompile Include="..\private\Effect_Beam.cpp" />
+    <ClCompile Include="..\Private\Dialog_Manager.cpp" />
     <ClCompile Include="..\Private\Shadow2D.cpp" />
     <ClCompile Include="..\Private\3DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\3DMapObject.cpp" />

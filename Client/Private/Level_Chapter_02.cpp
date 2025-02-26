@@ -48,6 +48,7 @@
 
 //#include "UI.h"
 #include "UI_Manager.h"
+#include "Dialog_Manager.h"
 #include "SettingPanelBG.h"
 #include "SettingPanel.h"
 #include "ESC_HeartPoint.h"
@@ -272,6 +273,7 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 	}
 
 	// TODO :: 나중 제거, 테스트용도 - 박상욱
+	//Uimgr->Test_Update();
 
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
@@ -1085,7 +1087,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dialogue"), pDesc.iCurLevelID, _strLayerTag, &pDialogueObject, &pDesc)))
 		return E_FAIL;
 
-	Uimgr->Set_Dialogue(static_cast<CDialog*>(pDialogueObject));
+	CDialog_Manager::GetInstance()->Set_Dialog(static_cast<CDialog*>(pDialogueObject));
 
 
 
@@ -1097,7 +1099,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dialogue_Portrait"), pDesc.iCurLevelID, _strLayerTag, &pDialogueObject, &pDesc)))
 		return E_FAIL;
 
-	Uimgr->Get_pDialogue()->Set_Portrait(static_cast<CPortrait*>(pDialogueObject));
+	CDialog_Manager::GetInstance()->Get_Dialog()->Set_Portrait(static_cast<CPortrait*>(pDialogueObject));
 
 	/* 테스트 용 */
 	/* (0.0) ~ MAXSIZE 기준으로 fX, fY 를 설정하여야합니다. */
