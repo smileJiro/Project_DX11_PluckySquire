@@ -2,8 +2,8 @@
     "Emitters": [
         {
             "Color": [
-                0.0,
-                0.7390000224113464,
+                1.0,
+                1.0,
                 1.0,
                 1.5
             ],
@@ -20,11 +20,11 @@
                 },
                 {
                     "Name": "DissolveEdge",
-                    "Value": 1.8650000095367432
+                    "Value": 1.0549999475479126
                 },
                 {
                     "Name": "DissolveFactor",
-                    "Value": 1.1200000047683716
+                    "Value": 0.8849999904632568
                 },
                 {
                     "Name": "DissolveTimeFactor",
@@ -43,8 +43,8 @@
                 {
                     "Name": "DissolveEdgeColor",
                     "Value": [
-                        1.0,
-                        1.0,
+                        0.0,
+                        0.7390000224113464,
                         1.0,
                         1.0
                     ]

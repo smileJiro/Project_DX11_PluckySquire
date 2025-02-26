@@ -130,7 +130,7 @@ private:
 	_wstring						m_strCacheFilePath = L"../Bin/cashe.cchc";
 	_char							m_szSaveFileName[MAX_PATH];
 	_char							m_szImportLayerTag[MAX_PATH];
-	_wstring						m_strPickingLayerTag;
+	_wstring						m_strPickingLayerTag = L"Layer_MapObject";
 
 	_float3							m_fPickingPos = _float3();
 	_float3							m_fPreviewPos = _float3();

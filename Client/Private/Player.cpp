@@ -36,6 +36,7 @@
 #include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
+#include "Effect_Manager.h"
     
 #include "Collider_Fan.h"
 #include "Collider_AABB.h"
@@ -54,7 +55,7 @@ CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 CPlayer::CPlayer(const CPlayer& _Prototype)
     :CCharacter(_Prototype)
-
+    , m_pEffectManager(CEffect_Manager::GetInstance())
 {
     for (_uint i = 0; i < ATTACK_TYPE_LAST; i++)
     {
@@ -63,6 +64,8 @@ CPlayer::CPlayer(const CPlayer& _Prototype)
     		m_f2DAttackTriggerDesc[i][j] = _Prototype.m_f2DAttackTriggerDesc[i][j];
         }
     }
+
+    Safe_AddRef(m_pEffectManager);
 }
 
 HRESULT CPlayer::Initialize_Prototype()
@@ -460,6 +463,17 @@ HRESULT CPlayer::Ready_Components()
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
     pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_Player2DAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("2DAnimEventGenrator"), pAnimEventGenerator);
+
+
+    // EffectAnimEvent
+    Bind_AnimEventFunc("Dust_Walk", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Walk"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
+    //Bind_AnimEventFunc("Dust_Jump", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Jump"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
+    
+    tAnimEventDesc.pReceiver = this;
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
+    pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_PlayeEffectEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("EffectEventGenerator"), pAnimEventGenerator);
+
 
 	m_p2DColliderComs.resize(3);
    /* Test 2D Collider */
@@ -1953,7 +1967,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //¡÷ªÁ¿ß 2 (48.73f, 2.61f, -5.02f);
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 48.73f, 2.61f, -5.02f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
-            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 15.f, 10.f, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
 
         }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
@@ -2022,6 +2036,7 @@ void CPlayer::Free()
 	Safe_Release(m_pStopStmap);
 
     Safe_Release(m_pCarryingObject);
-
+    
+    Safe_Release(m_pEffectManager);
     __super::Free();
 }

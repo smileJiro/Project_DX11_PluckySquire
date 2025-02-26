@@ -205,6 +205,8 @@ public: /* For. Sound_Manager */
 
 public: /* For. Json_Manager*/
 	HRESULT				Load_Json(const _tchar* _szFilePath, _Out_ json* _pOutJson);
+	HRESULT				Load_Json_InLevel(const _tchar* _szFilePath, const _wstring& _strKey, _uint _iLevelIndex);
+	const json*			Find_Json_InLevel(const _wstring& _strKey, _uint _iLevelIndex);
 
 
 

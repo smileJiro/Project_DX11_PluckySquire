@@ -246,9 +246,6 @@ HRESULT CMaterial::Ready_PixelConstBuffer()
 
 HRESULT CMaterial::Update_PixelConstBuffer()
 {
-	if (FAILED(Ready_PixelConstBuffer()))
-		return E_FAIL;
-
 	return m_pGameInstance->UpdateConstBuffer(m_tPixelConstData, m_pPixeConstBuffer);
 }
 

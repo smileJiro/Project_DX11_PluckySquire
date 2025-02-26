@@ -5,6 +5,7 @@
 #include "GameInstance.h"
 #include "Player.h"
 #include "StateMachine.h"
+#include "Effect_Manager.h"
 
 
 CPlayerState_Roll::CPlayerState_Roll(CPlayer* _pOwner)
@@ -131,6 +132,8 @@ void CPlayerState_Roll::Enter()
 		m_pOwner->LookDirectionXZ_Dynamic(m_vDirection);
 		m_pOwner->Stop_Rotate();
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_DODGE_GT);
+
+		CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dodge"), true,m_pOwner->Get_Transform()->Get_WorldMatrix_Ptr());
     }
 
 	//if (static_cast<CPlayer*>(m_pOwner)->Is_OnGround())

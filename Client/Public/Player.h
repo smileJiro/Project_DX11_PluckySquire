@@ -556,6 +556,7 @@ public:
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
 
+
 private:
 	void					Key_Input(_float _fTimeDelta);
 
@@ -647,6 +648,8 @@ private:
 
 	SHAPE_CAPSULE_DESC m_tBodyShapeDesc = {};
 	SHAPE_DATA m_tBodyShapeData = {};
+
+	class CEffect_Manager* m_pEffectManager = { nullptr };
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

@@ -163,10 +163,6 @@ HRESULT CSample_Skechspace::Render()
 	return S_OK;
 }
 
-HRESULT CSample_Skechspace::Render_Shadow()
-{
-	return S_OK;
-}
 
 CSample_Skechspace* CSample_Skechspace::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

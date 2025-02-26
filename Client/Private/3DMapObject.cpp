@@ -144,7 +144,7 @@ void C3DMapObject::Late_Update(_float _fTimeDelta)
             Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
 
             //m_pGameInstance->Add_RenderObject_New(REDNERGROUP_SHADOWID, 0, this);
-            //Register_RenderGroup(REDNERGROUP_SHADOWID, 0);
+            Register_RenderGroup(REDNERGROUP_SHADOWID, 0);
 
             //if(nullptr != m_pActorCom)
             //    m_pActorCom->Set_ShapeRayCastFlag(true);
@@ -157,31 +157,39 @@ void C3DMapObject::Late_Update(_float _fTimeDelta)
 }
 
 /// <summary>
-/// 개선 필요한 렌더 코드. 디퓨즈 없이 기본 컬러값으로 칠할지 여부를 확인하고, 매번 3D Shader 패스를 다르게 설정한다.
+/// 렌더
 /// </summary>
 /// <returns>렌더 성공 여부</returns>
 HRESULT C3DMapObject::Render()
 {
-    switch (m_eColorShaderMode)
-    {
-        case Engine::C3DModel::COLOR_DEFAULT:
-            if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDefaultDiffuseColor", &m_fDefaultDiffuseColor, sizeof(_float4))))
-                return E_FAIL;
-            m_iShaderPasses[COORDINATE_3D] = 3;
-            break;
-        case Engine::C3DModel::MIX_DIFFUSE:
-            if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDefaultDiffuseColor", &m_fDefaultDiffuseColor, sizeof(_float4))))
-                return E_FAIL;
-            m_iShaderPasses[COORDINATE_3D] = 4;
-            break;
-        default:
-            m_iShaderPasses[COORDINATE_3D] = 0;
-            break;
-    }
     return CModelObject::Render();
 }
 
+void C3DMapObject::Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, C3DModel::COLOR_SHADER_MODE _eColorMode, _float4 _fAlbedoColor)
+{
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+    if (nullptr == pModel)
+        return;
+    
+    if (pModel)
+    {
+        C3DModel* p3DModel = static_cast<C3DModel*>(pModel);
 
+        switch (_eColorMode)
+        {
+        case Engine::C3DModel::COLOR_DEFAULT:
+            p3DModel->Set_MaterialConstBuffer_UseAlbedoMap(_iMaterialIndex, false, false);
+            p3DModel->Set_MaterialConstBuffer_Albedo(_iMaterialIndex, _fAlbedoColor, true);
+            break;
+        case Engine::C3DModel::MIX_DIFFUSE:
+            p3DModel->Set_MaterialConstBuffer_UseAlbedoMap(_iMaterialIndex, true, false);
+            p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, _fAlbedoColor, true);
+            break;
+        default:
+            break;
+        }
+    }
+}
 
 void C3DMapObject::Free()
 {

@@ -25,7 +25,7 @@ namespace Engine
 	}CONST_DOF;
 	typedef struct tagGlobalIBLConstData
 	{
-		float fStrengthIBL = 1.0f;
+		float fStrengthIBL = 0.5f;
 		int iSpecularBaseMipLevel = 2;
 		float fRoughnessToMipFactor = 5.0f;
 		float fHDRMaxLuminance = 1000.f;		// 16byte

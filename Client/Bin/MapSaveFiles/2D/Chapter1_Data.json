@@ -143,6 +143,7 @@
 	{
 		"Section_Name": "Chapter2_P1314",
 		"Section_BackGround_Name": "Chapter2_P1314_BackGround",
+		"Section_Start": true,
 		"Section_File_Name": "Chapter2_P1314.m2chc",
 		"Section_Type": 0,
 		"Section_Default": 0,
@@ -206,12 +207,12 @@
 		"Section_Type": 2,
 		"Section_Info": {
 			"RenderResolution": {
-			"X": 3584.0,
-			"Y": 2048.0
+				"X": 2800.0,
+				"Y": 768.0
 			},
 			"LevelSizePixels": {
-			"X": 5376.0,
-			"Y": 3072.0
+				"X": 4200.0,
+				"Y": 1152.0
 			}
 		}
 	},

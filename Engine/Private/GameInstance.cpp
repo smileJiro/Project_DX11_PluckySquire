@@ -125,7 +125,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pSound_Manager)
 		return E_FAIL;
 
-	m_pJson_Manager = CJson_Manager::Create();
+	m_pJson_Manager = CJson_Manager::Create(EngineDesc.iNumLevels);
 	if (nullptr == m_pJson_Manager)
 		return E_FAIL;
 	
@@ -257,6 +257,7 @@ HRESULT CGameInstance::Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChange
 	m_pPrototype_Manager->Level_Exit((_uint)iCurLevelID);
 	m_pPhysx_Manager->Level_Exit();
 	m_pLight_Manager->Level_Exit();
+	m_pJson_Manager->Level_Exit(iCurLevelID);
 	//m_pCollision_Manager->Level_Exit();
 
 	return S_OK;
@@ -1115,6 +1116,24 @@ HRESULT CGameInstance::Load_Json(const _tchar* _szFilePath, _Out_ json* _pOutJso
 
 
 	return m_pJson_Manager->Load_Json(_szFilePath, _pOutJson);
+}
+
+HRESULT CGameInstance::Load_Json_InLevel(const _tchar* _szFilePath, const _wstring& _strKey, _uint _iLevelIndex)
+{
+	if (nullptr == m_pJson_Manager)
+		return E_FAIL;
+
+
+	return m_pJson_Manager->Load_Json_InLevel(_szFilePath, _strKey, _iLevelIndex);
+}
+
+const json* CGameInstance::Find_Json_InLevel(const _wstring& _strKey, _uint _iLevelIndex)
+{
+	if (nullptr == m_pJson_Manager)
+		return nullptr;
+
+
+	return m_pJson_Manager->Find_Json_InLevel(_strKey, _iLevelIndex);
 }
 
 HRESULT CGameInstance::Start_Imgui()
