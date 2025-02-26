@@ -183,10 +183,6 @@ HRESULT C2DMapActionObject::Render()
     return __super::Render();
 }
 
-HRESULT C2DMapActionObject::Render_Shadow()
-{
-    return S_OK;
-}
 
 void C2DMapActionObject::Ready_Action()
 {

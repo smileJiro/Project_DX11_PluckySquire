@@ -69,10 +69,11 @@ public:
 		return S_OK;
 	}
 
+#endif // _DEBUG
+
 	HRESULT	Update_PixelConstBuffer();
 	HRESULT	Ready_PixelConstBuffer();
 
-#endif // _DEBUG
 	HRESULT Bind_PixelConstBuffer(CShader* _pShader);
 
 public:

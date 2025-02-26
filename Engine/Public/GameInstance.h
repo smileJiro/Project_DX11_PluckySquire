@@ -102,6 +102,9 @@ public: /* For. NewRenderer*/
 	HRESULT				Load_IBL(const _wstring& _strIBLJsonPath);
 	HRESULT				Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer);
 	void				Set_PlayerHideColor(const _float3 _vHideColor, _bool _isUpdate = false);
+	HRESULT				Add_ShadowLight(class CLight* _pShadowLight);
+	HRESULT				Remove_ShadowLight(_int _iShadowLightID);
+	HRESULT				Clear_ShadowLight();
 #ifdef _DEBUG
 	HRESULT				Add_DebugComponent_New(class CComponent* _pDebugCom);
 	void				Set_DebugRender_New(_bool _isBool);
@@ -165,6 +168,8 @@ public: /* For. Target_Manager */
 	_float2				Get_RT_Size(const _wstring& _strTargetTag);
 	HRESULT				Erase_RenderTarget(const _wstring& _strTargetTag);
 	HRESULT				Erase_MRT(const _wstring& _strMRTTag);
+
+	class CRenderTarget* Find_RenderTarget(const _wstring& _strTargetTag);
 	/* MSAA 전용 함수 */
 	HRESULT				Resolve_RT_MSAA(const _wstring& _strTargetTag); // MSAA Texture를 단일 샘플 데이터로 m_pTexture2D에 copy; 
 	HRESULT				Resolve_MRT_MSAA(const _wstring& _strMRTTag); // MSAA Texture를 단일 샘플 데이터로 m_pTexture2D에 copy; 
@@ -173,12 +178,8 @@ public: /* For. Target_Manager */
 	HRESULT				Render_RT_Debug(const _wstring& _strMRTTag, CShader* _pShader, CVIBuffer_Rect* _pVIBufferRect);			/* 디버그 렌더 함수 */
 	map<const _wstring, CRenderTarget*>& Get_RenderTargets();
 	map<const _wstring, list<CRenderTarget*>>& Get_MRTs();
-#endif //_DEBUG
 
-public: /* For. Shadow */
-	const _float4x4*	Get_Shadow_Transform_Ptr(CShadow::D3DTRANSFORMSTATE _eState);
-	void				SetUp_Shadow_TransformMatrix(CShadow::D3DTRANSFORMSTATE _eState, _fmatrix _TransformMatrix);
-	void				SetUp_TargetShadowMatrix(_fvector _vLightDirection, _fvector _vWorldPos, _float _fDistance, _float2 _vNearFar = _float2(0.1f, 100.f));
+#endif //_DEBUG
 
 public: /* For. Sound_Manager */
 	LPDIRECTSOUND8		Get_SoundDevice();
@@ -204,6 +205,8 @@ public: /* For. Sound_Manager */
 
 public: /* For. Json_Manager*/
 	HRESULT				Load_Json(const _tchar* _szFilePath, _Out_ json* _pOutJson);
+	HRESULT				Load_Json_InLevel(const _tchar* _szFilePath, const _wstring& _strKey, _uint _iLevelIndex);
+	const json*			Find_Json_InLevel(const _wstring& _strKey, _uint _iLevelIndex);
 
 
 

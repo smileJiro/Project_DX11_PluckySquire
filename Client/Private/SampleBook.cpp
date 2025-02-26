@@ -372,10 +372,6 @@ HRESULT CSampleBook::Render()
 	return S_OK;
 }
 
-HRESULT CSampleBook::Render_Shadow()
-{
-	return S_OK;
-}
 
 HRESULT CSampleBook::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag)
 {
