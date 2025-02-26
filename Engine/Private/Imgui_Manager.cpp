@@ -259,6 +259,15 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_RT_FullScreen()
 
 	}
 
+	map<const _wstring, list<CRenderTarget*>> MRTs = m_pGameInstance->Get_MRTs();
+	ImVec2 imageSize(800, 450); // 이미지 크기 설정
+	ID3D11ShaderResourceView* pSelectImage = nullptr;
+	pSelectImage = m_pGameInstance->Get_RT_SRV(TEXT("Target_Shadow_0"));
+	if (nullptr != pSelectImage)
+	{
+		ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+	}
+	//TEXT("Target_Shadow_");
 
 	ImGui::End();
 

@@ -86,11 +86,6 @@ HRESULT C3DMapSkspObject::Render()
     return S_OK;
 }
 
-HRESULT C3DMapSkspObject::Render_Shadow()
-{
-    return __super::Render_Shadow();
-}
-
 HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag)
 {
 

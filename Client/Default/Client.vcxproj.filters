@@ -1193,6 +1193,9 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\JumpPad.h" />
+    <ClInclude Include="..\Public\Bomb.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1866,6 +1869,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp">
       <Filter>02.GameObjects\Monster\Soldier\CrossBow\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bomb.cpp">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Dialog_Manager.cpp">
       <Filter>02.GameObjects\UI\99. Dialog_Manager</Filter>

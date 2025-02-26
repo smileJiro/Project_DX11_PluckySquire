@@ -164,6 +164,7 @@ public:
 
 
 	/************ 테스트용도 **********************/
+	void								Narration_Update();
 	_uint								Get_TestDiaglogIndex() { return m_iTextIndex; }
 	void								Set_TestDialogIndex() { ++m_iTextIndex; }
 

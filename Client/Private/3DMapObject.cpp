@@ -142,6 +142,10 @@ void C3DMapObject::Late_Update(_float _fTimeDelta)
         if (false == m_isCulling || false == m_isFrustumCulling)
         {
             Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
+
+            //m_pGameInstance->Add_RenderObject_New(REDNERGROUP_SHADOWID, 0, this);
+            Register_RenderGroup(REDNERGROUP_SHADOWID, 0);
+
             //if(nullptr != m_pActorCom)
             //    m_pActorCom->Set_ShapeRayCastFlag(true);
         }
@@ -175,11 +179,6 @@ HRESULT C3DMapObject::Render()
             break;
     }
     return CModelObject::Render();
-}
-
-HRESULT C3DMapObject::Render_Shadow()
-{
-    return S_OK;
 }
 
 

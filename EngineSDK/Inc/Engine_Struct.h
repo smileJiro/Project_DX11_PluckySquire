@@ -25,7 +25,7 @@ namespace Engine
 	}CONST_DOF;
 	typedef struct tagGlobalIBLConstData
 	{
-		float fStrengthIBL = 1.0f;
+		float fStrengthIBL = 0.5f;
 		int iSpecularBaseMipLevel = 2;
 		float fRoughnessToMipFactor = 5.0f;
 		float fHDRMaxLuminance = 1000.f;		// 16byte
@@ -79,6 +79,15 @@ namespace Engine
 		XMFLOAT4		vDiffuse;
 		XMFLOAT4		vAmbient;
 		XMFLOAT4		vSpecular;
+
+		// Shadow 
+		int				isShadow; // 자기 자신이 shadow가 있는 light인지. >> 이 변수가 true라면, shadow map을 텍스쳐링하여 shadowfactor를 계산한다.
+		float			fLightRadius; // 조명의 두께(반지름 pcss)
+		XMFLOAT2		dummy;
+
+		// Matrix
+		XMMATRIX		LightViewProjMatrix; // 자기 자신의 view, proj 매트릭스.
+
 	}CONST_LIGHT;
 
 #pragma endregion // Shader ConstantBuffer Struct

@@ -330,7 +330,7 @@ CRenderTarget* CTarget_Manager::Find_RenderTarget(const _wstring& _strTargetTag)
     auto	iter = m_RenderTargets.find(_strTargetTag);
     if (iter == m_RenderTargets.end())
         return nullptr;
-
+    
     return iter->second;
 }
 

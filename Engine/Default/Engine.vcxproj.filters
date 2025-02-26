@@ -313,6 +313,9 @@
     <Filter Include="01.Utility\04.Components\VIBuffer\Beam%28Ribbon%29">
       <UniqueIdentifier>{42eedbef-e8ba-4ee3-8257-f750bcd3138d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\14.RenderGroup\RenderGroup_Shadow">
+      <UniqueIdentifier>{fcff2067-6821-4aa8-b686-9bb7d06a6c12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -645,6 +648,9 @@
     <ClInclude Include="..\public\VIBuffer_Beam.h">
       <Filter>01.Utility\04.Components\VIBuffer\Beam%28Ribbon%29</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\RenderGroup_Shadow.h">
+      <Filter>01.Utility\14.RenderGroup\RenderGroup_Shadow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -964,6 +970,9 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Beam.cpp">
       <Filter>01.Utility\04.Components\VIBuffer\Beam%28Ribbon%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RenderGroup_Shadow.cpp">
+      <Filter>01.Utility\14.RenderGroup\RenderGroup_Shadow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

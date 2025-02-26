@@ -65,11 +65,6 @@ HRESULT C2DMapDefaultObject::Render()
     return hr;
 }
 
-HRESULT C2DMapDefaultObject::Render_Shadow()
-{
-    return S_OK;
-}
-
 
 C2DMapDefaultObject* C2DMapDefaultObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

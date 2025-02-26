@@ -272,8 +272,7 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		//Event_ChangeMapObject(LEVEL_CHAPTER_2, TEXT("Chapter_04_Default_Desk.mchc"), TEXT("Layer_MapObject"), true);
 	}
 
-	// TODO :: 나중 제거, 테스트용도 - 박상욱
-	//Uimgr->Test_Update();
+	Uimgr->Narration_Update();
 
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
@@ -407,6 +406,8 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &dd);
 	}
 
+
+
 }
 
 HRESULT CLevel_Chapter_02::Render()
@@ -422,24 +423,34 @@ HRESULT CLevel_Chapter_02::Render()
 HRESULT CLevel_Chapter_02::Ready_Lights()
 {
 	// 이게, 일반
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
-	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
+	//m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
+	//m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
 
-	//CONST_LIGHT LightDesc{};
-	//
-	//ZeroMemory(&LightDesc, sizeof LightDesc);
-	//
-	//LightDesc.vPosition = _float3(0.0f, 20.0f, 0.0f);
-	//LightDesc.fFallOutStart = 20.0f;
-	//LightDesc.fFallOutEnd = 1000.0f;
-	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	//LightDesc.vDiffuse = _float4(1.0f, 0.0f, 0.0f, 1.0f);
-	//LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
-	//LightDesc.vSpecular = _float4(1.0f, 0.0f, 0.0f, 1.0f);
-	//
-	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
-	//	return E_FAIL;
+	CONST_LIGHT LightDesc{};
 
+	/* 방향성광원*/
+	ZeroMemory(&LightDesc, sizeof LightDesc);
+
+	LightDesc.vDirection = { 0.0f, -1.0f, -1.0f };
+	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	//LightDesc.isShadow = true;
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+		return E_FAIL;
+
+	/* 방향성광원*/
+	ZeroMemory(&LightDesc, sizeof LightDesc);
+
+	LightDesc.vDirection = { -1.0f, -1.0f, -1.0f };
+	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	LightDesc.isShadow = true;
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -1346,18 +1357,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
 
-	Pooling_DESC Pooling_Desc;
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = _strLayerTag;
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Zippy");
-	Pooling_Desc.eSection2DRenderGroup = SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT;
-
-	CZippy::MONSTER_DESC* pZippy_Desc = new CZippy::MONSTER_DESC;
-	pZippy_Desc->iCurLevelID = m_eLevelID;
-	pZippy_Desc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Zippy"), Pooling_Desc, pZippy_Desc);
-
 	//Zippy_Desc.tTransform2DDesc.vInitialPosition = _float3(-450.0f, -30.f, 0.f);
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"), m_eLevelID, _strLayerTag, &pObject, &Zippy_Desc)))
@@ -1376,7 +1375,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0910"), pObject);
 
-
+	Pooling_DESC Pooling_Desc;
 	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
 	Pooling_Desc.strLayerTag = _strLayerTag;
 	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_LightningBolt");
