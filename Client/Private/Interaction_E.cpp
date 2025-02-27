@@ -301,7 +301,7 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 
 		
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(DisPlayPos._41, DisPlayPos._42 + 20.f, 0.f, 1.f));
-		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX * 0.9f, m_fSizeY * 0.9f , 1.f));
+		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX * 0.9f, m_fSizeY * 0.3f , 1.f));
 
 		m_vObejctPos = _float3(DisPlayPos._41, DisPlayPos._42 + 40.f, 0.f);
 		
@@ -368,9 +368,6 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize)
 	// 이건 3D에요
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
-
-		//ViewportDesc.Width * 0.5f, -m_fY + ViewportDesc.Height * 0.5f,
-
 		vTextPos = _float2(m_vObejctPos.x, m_vObejctPos.y);
 		m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	}

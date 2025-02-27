@@ -34,7 +34,7 @@ HRESULT CUI_Interaction_Book::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_isRender = true;
+	m_isRender = false;
 	wsprintf(m_tFont, TEXT("Á¶Á¾"));
 
 	return S_OK;
@@ -65,7 +65,6 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 			return;
 		}
 			
-
 		if (true == pSampleBook->Get_PlayerAround() && CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
 		{
 			m_isRender = true;
@@ -74,7 +73,6 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 		{
 			m_isRender = false;
 		}
-
 	}
 
 
