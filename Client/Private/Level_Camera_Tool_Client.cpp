@@ -28,6 +28,13 @@ CLevel_Camera_Tool_Client::CLevel_Camera_Tool_Client(ID3D11Device* _pDevice, ID3
 HRESULT CLevel_Camera_Tool_Client::Initialize(LEVEL_ID _eLevelID)
 {
 	m_eLevelID = _eLevelID;
+
+	if (FAILED(CSection_Manager::GetInstance()->Level_Enter(LEVEL_CHAPTER_2)))
+	{
+		MSG_BOX(" Failed CSection_Manager Level_Enter(Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+
 	if (FAILED(Ready_Lights()))
 		return E_FAIL;
 	
@@ -49,7 +56,7 @@ HRESULT CLevel_Camera_Tool_Client::Initialize(LEVEL_ID _eLevelID)
 	if (FAILED(Ready_Layer_MainTable(TEXT("Layer_MainTable"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
+	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"), pCameraTarget)))
 		return E_FAIL;
 
 	Ready_DataFiles();
@@ -235,15 +242,16 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Camera(const _wstring& _strLayerT
 
 HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut)
 {
-	//CGameObject** pGameObject = nullptr;
+	CGameObject** pGameObject = nullptr;
 
-	//CPlayer::CONTAINEROBJ_DESC PlayerDesc = {};
-	//PlayerDesc.iCurLevelID = m_eLevelID;
-	//PlayerDesc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
-	//_int a = sizeof(CPlayer::CONTAINEROBJ_DESC);
+	CPlayer::CONTAINEROBJ_DESC PlayerDesc = {};
+	PlayerDesc.iCurLevelID = m_eLevelID;
+	PlayerDesc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	PlayerDesc.tTransform3DDesc.vInitialRotation = { 0.f, XMConvertToRadians(180.f), 0.f};   // TODO ::임시 위치
+	_int a = sizeof(CPlayer::CONTAINEROBJ_DESC);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &PlayerDesc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &PlayerDesc)))
+		return E_FAIL;
 
 	//CPlayer* pPlayer = { nullptr };
 	//pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
@@ -261,7 +269,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Player(const _wstring& _strLayerT
 	return S_OK;
 }
 
-HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
+HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strLayerTag, CGameObject* _pPlayer)
 {
 	// Cube
 	CModelObject* pOut = { nullptr };
@@ -335,26 +343,30 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	m_ModelObjects.push_back(pOut);
 
 	// Player
-	Desc.eStartCoord = COORDINATE_3D;
-	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	Desc.isCoordChangeEnable = false;
-	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	Desc.strModelPrototypeTag_3D = L"Latch_SkelMesh_NewRig";
-	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
-	Desc.iShaderPass_3D = 0;
-	Desc.iPriorityID_3D = PR3D_BLEND;
-	Desc.iRenderGroupID_3D = RG_3D;
-	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
-	Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 0.352f, -21.02f };
-	Desc.tTransform3DDesc.vInitialRotation = { 0.f, XMConvertToRadians(180.f), 0.f };
+	//Desc.eStartCoord = COORDINATE_3D;
+	//Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
+	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	//Desc.isCoordChangeEnable = false;
+	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	//Desc.strModelPrototypeTag_3D = L"Latch_SkelMesh_NewRig";
+	//Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	//Desc.iShaderPass_3D = 0;
+	//Desc.iPriorityID_3D = PR3D_BLEND;
+	//Desc.iRenderGroupID_3D = RG_3D;
+	//Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+	////Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 0.352f, -21.02f };
+	//Desc.tTransform3DDesc.vInitialPosition = { 2.94290805f, 0.351999998f, -21.1068630f };
+	//Desc.tTransform3DDesc.vInitialRotation = { 0.f, XMConvertToRadians(180.f), 0.f };
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
-		LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+	//	LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+	//	return E_FAIL;
 
 	//pOut->Set_Active(false);
-	m_ModelObjects.push_back(pOut);
+	
+	CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0));
+	CModelObject* pPlayerBody = static_cast<CModelObject*>(pPlayer->Get_PlayerPartObject(CPlayer::PLAYER_PART_BODY));
+	m_ModelObjects.push_back(pPlayerBody);
 
 	return S_OK;
 }
@@ -2599,6 +2611,13 @@ void CLevel_Camera_Tool_Client::Play_CutScene(_float fTimeDelta)
 			if (true == m_isSelectModel[i]) {
 				m_ModelObjects[i]->Set_AnimationLoop(COORDINATE_3D, m_iAnim[i], m_isLoop);
 				m_ModelObjects[i]->Set_Animation(m_iAnim[i]);
+
+				if (2 == i) {
+					CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0));
+					pPlayer->Get_ActorCom()->Set_GlobalPose({ 2.94290805f, 0.351999998f, -21.1068630f });
+					pPlayer->Set_Kinematic(true);
+					pPlayer->LookDirectionXZ_Kinematic(_vector{ 0,0,-1 });
+				}
 			}
 		}
 

@@ -176,26 +176,26 @@ void CInteraction_E::Cal_PlayerHighPos()
 void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 {
 	// 각종 오브젝트
-	if (nullptr == Uimgr->Get_Player()->Get_InteractableObject())
-		return;
+	//if (nullptr == Uimgr->Get_Player()->Get_InteractableObject())
+	//	return;
 
-	_float3 vObjectPos = { 0.f, 0.f, 0.f };
+	//_float3 vObjectPos = { 0.f, 0.f, 0.f };
 
-	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
-	{
-		_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
-		vObjectPos.x = _pGameObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0];
-		vObjectPos.y = _pGameObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1] + RTSize.y * 0.175f;
-	}
-	
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, vObjectPos.y, 0.f, 1.f));
+	//if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	//{
+	//	_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
+	//	vObjectPos.x = _pGameObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0];
+	//	vObjectPos.y = _pGameObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1] + RTSize.y * 0.175f;
+	//}
+	//
+	//m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, vObjectPos.y, 0.f, 1.f));
 
-	wstring test = Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractName();
+	//wstring test = Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractName();
 
-	if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
-		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+	//if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
+	//	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
-	int a = 0;
+	//int a = 0;
 
 
 }
