@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Section_Manager.h"
 #include "PalmMarker.h"
+#include "PalmDecal.h"
 
 
 CStopStamp::CStopStamp(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -36,7 +37,27 @@ HRESULT CStopStamp::Initialize(void* _pArg)
     pBodyDesc->pActorDesc = nullptr;
     pBodyDesc->isCoordChangeEnable = false;
     pBodyDesc->strModelPrototypeTag_3D = TEXT("Stop_Stamp");
-    return __super::Initialize(_pArg);
+    if (FAILED(__super::Initialize(_pArg)))
+        return E_FAIL;
+
+
+    //도장 손바닥 자국 만들기
+    CModelObject::MODELOBJECT_DESC tDecalDesc{};
+    tDecalDesc.iCurLevelID = m_iCurLevelID;
+    m_pPalmDecal = static_cast<CPalmDecal*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PalmDecal"), &tDecalDesc));
+	if (nullptr == m_pPalmDecal)
+	{
+		MSG_BOX("CPlayer PalmDecal Creation Failed");
+		return E_FAIL;
+	}
+    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_PlayerSubs"), m_pPalmDecal)))
+        return E_FAIL;  
+    CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+    if (FAILED(pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), m_pPalmDecal, SECTION_2D_PLAYMAP_OBJECT)))
+        return E_FAIL;
+	m_pPalmDecal->Set_Active(false);
+    Safe_AddRef(m_pPalmDecal);
+    return S_OK;
 }
 
 void CStopStamp::Update(_float _fTimeDelta)
@@ -59,28 +80,10 @@ HRESULT CStopStamp::Render()
     return S_OK;
 }
 
-void CStopStamp::Place_PlamMarker(_fvector v2DPosition)
+void CStopStamp::Place_PalmMarker(_fvector v2DPosition)
 {
-    CSection_Manager* pSectionManager = SECTION_MGR;
-    CSection* pSection = pSectionManager->Find_Section(pSectionManager->Get_Cur_Section_Key());
-
-    if (nullptr == pSection)
-        return;
-
-    CSection_2D* p2DSection = dynamic_cast<CSection_2D*>(pSection);
-
-    if (nullptr == p2DSection)
-        return;
-
-    CModelObject::MODELOBJECT_DESC tPalmDesc{};
-    tPalmDesc.tTransform2DDesc.vInitialPosition = _float3(XMVectorGetX(v2DPosition), XMVectorGetY(v2DPosition), 0.0f);
-    tPalmDesc.iCurLevelID = m_iCurLevelID;
-    CPalmMarker* pPlayerBomb = static_cast<CPalmMarker*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PalmMarker"), &tPalmDesc));
-
-    m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_Player"), pPlayerBomb);
-
-
-    pSectionManager->Add_GameObject_ToSectionLayer(pSectionManager->Get_Cur_Section_Key(), pPlayerBomb, SECTION_2D_PLAYMAP_OBJECT);
+	m_pPalmDecal->Set_Active(true);
+	m_pPalmDecal->Set_Position({ XMVectorGetX(v2DPosition), XMVectorGetY(v2DPosition), 0.0f });
 }
 
 CStopStamp* CStopStamp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -111,5 +114,6 @@ CGameObject* CStopStamp::Clone(void* _pArg)
 
 void CStopStamp::Free()
 {
+	Safe_Release(m_pPalmDecal);
     __super::Free();
 }

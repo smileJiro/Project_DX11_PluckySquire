@@ -679,7 +679,9 @@ void CSampleBook::Interact(CPlayer* _pUser)
 
 _bool CSampleBook::Is_Interactable(CPlayer* _pUser)
 {
-	return (m_isPlayerAround || m_isPlayerAbove) && (false == _pUser->Is_CarryingObject());
+	return (m_isPlayerAround || m_isPlayerAbove) 
+		&& (false == _pUser->Is_CarryingObject())
+		&& COORDINATE_3D == _pUser->Get_CurCoord();
 }
 
 _float CSampleBook::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)

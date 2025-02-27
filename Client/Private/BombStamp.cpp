@@ -65,7 +65,7 @@ IBombable* CBombStamp::Place_Bomb(_fvector v2DPosition)
     tBombDesc.tTransform2DDesc.vInitialPosition = _float3(XMVectorGetX(v2DPosition), XMVectorGetY(v2DPosition), 0.0f);
 	tBombDesc.iCurLevelID = m_iCurLevelID;
     CPlayerBomb* pPlayerBomb = static_cast<CPlayerBomb*>( m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBomb"), &tBombDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID,TEXT("Layer_Player"), pPlayerBomb);
+	m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID,TEXT("Layer_PlayerSubs"), pPlayerBomb);
     CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
     pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), pPlayerBomb, SECTION_2D_PLAYMAP_OBJECT);
     //폭탄 설치가능한 애가 피킹됐느지 확인.

@@ -81,6 +81,8 @@
 #include "BombStamp.h"
 #include "PlayerBomb.h"
 #include "Detonator.h"
+#include "PalmMarker.h"
+#include "PalmDecal.h"
 #include "TestTerrain.h"
 #include "RabbitLunch.h"
 #include "Bomb.h"
@@ -308,6 +310,11 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_ESCBookMark"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/T_bookmark.dds"), 1))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_E"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Interact_E.dds"), 1))))
+		return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG_Borderline"),
         CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/New_T_bg_border.dds"), 1))))
         return E_FAIL;
@@ -587,6 +594,12 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Detonator"),
         CDetonator::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PalmMarker"),
+        CPalmMarker::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PalmDecal"),
+        CPalmDecal::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"),
         CPlayerBody::Create(m_pDevice, m_pContext))))

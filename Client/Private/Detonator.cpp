@@ -33,8 +33,15 @@ HRESULT CDetonator::Initialize(void* _pArg)
 
 void CDetonator::Detonate()
 {
+	if (nullptr == m_pBomb)
+		return;
 	m_pBomb->Detonate();
-	m_pBomb = nullptr;
+    m_pBomb = nullptr;
+}
+
+void CDetonator::Set_Bombable(IBombable* _pBomb)
+{
+    m_pBomb = _pBomb;
 }
 
 CDetonator* CDetonator::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
