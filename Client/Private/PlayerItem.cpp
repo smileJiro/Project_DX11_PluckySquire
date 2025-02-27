@@ -90,6 +90,7 @@ void CPlayerItem::Update(_float _fTimeDelta)
 	{
 		if (false == m_isInFrustum)
 		{
+			// temp
 			CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Guntlet1"), true, Get_FinalPosition());
 			m_isInFrustum = true;
 		}
@@ -227,6 +228,10 @@ void CPlayerItem::Action_Disappear(_float _fTimeDelta)
 	// ¸¶Áö¸·¿¡? »ç½Ç ¹¹ µüÈ÷ ÇÒ ÇÊ¿ä´Â ¾øÀ½
 	this->Set_Active(false);
 	m_isStop = false; 
+
+	// ÀÌÆåÆ® ÆÎ
+	CEffect_Manager::GetInstance()->Active_EffectPositionID(TEXT("Guntlet1"), true, Get_FinalPosition(), 1);
+	CEffect_Manager::GetInstance()->InActive_EffectID(TEXT("Guntlet1"), 0);
 }
 
 void CPlayerItem::Check_PosY()

@@ -195,7 +195,7 @@ HRESULT CPortal::Init_Actor()
     }
     WorldMatrix.r[3] = XMVectorSetW(f3DPosition, 1.f);
 
-    m_pEffectSystem->Set_EffectMatrix(WorldMatrix);;
+    m_pEffectSystem->Set_EffectMatrix(WorldMatrix);
     m_PartObjects[PORTAL_PART_3D] = m_pEffectSystem;
 
     Safe_AddRef(m_pEffectSystem);
@@ -239,6 +239,9 @@ void CPortal::Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal)
         SECTION_MGR->Remove_GameObject_FromSectionLayer(m_strSectionName, _pUser);
 
     Event_Change_Coordinate(_pUser, (COORDINATE)iCurCoord, &vNewPos);
+
+    if (m_pEffectSystem)
+        m_pEffectSystem->Active_Effect(true, 1);
 }
 
 HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
