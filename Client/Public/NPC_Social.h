@@ -78,6 +78,9 @@ private:
 	_bool			m_isThrow = { false };
 	
 	_bool			m_isPlayDisplay = { false };
+	_bool			m_isHaveDialog = { false };
+
+	_bool			m_isInteractable = { false };
 
 
 

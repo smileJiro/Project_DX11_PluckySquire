@@ -197,6 +197,9 @@
     <ClInclude Include="..\Public\ChaseFlyState.h" />
     <ClInclude Include="..\Public\Interaction_E.h" />
     <ClInclude Include="..\Public\JumpPad.h" />
+    <ClInclude Include="..\Public\Level_Chapter_06.h" />
+    <ClInclude Include="..\Public\PalmDecal.h" />
+    <ClInclude Include="..\Public\PalmMarker.h" />
     <ClInclude Include="..\Public\PlayerBomb.h" />
     <ClInclude Include="..\Public\PlayerState_Bomber.h" />
     <ClInclude Include="..\Public\PlayerState_Stamp.h" />
@@ -251,7 +254,6 @@
     <ClInclude Include="..\Public\HitState.h" />
     <ClInclude Include="..\Public\Interactable.h" />
     <ClInclude Include="..\Public\Level_Chapter_04.h" />
-    <ClInclude Include="..\Public\Level_Chapter_Test.h" />
     <ClInclude Include="..\Public\Magic_Hand.h" />
     <ClInclude Include="..\Public\Magic_Hand_Body.h" />
     <ClInclude Include="..\Public\LightningBolt.h" />
@@ -384,6 +386,7 @@
     <ClInclude Include="..\Public\Spear_Soldier.h" />
     <ClInclude Include="..\Public\StandbyState.h" />
     <ClInclude Include="..\public\Effect_Trail.h" />
+    <ClInclude Include="..\Public\Stoppable.h" />
     <ClInclude Include="..\Public\StopStamp.h" />
     <ClInclude Include="..\Public\TriggerObject.h" />
     <ClInclude Include="..\Public\Trigger_Manager.h" />
@@ -441,6 +444,9 @@
     <ClCompile Include="..\Private\Detonator.cpp" />
     <ClCompile Include="..\Private\Interaction_E.cpp" />
     <ClCompile Include="..\Private\JumpPad.cpp" />
+    <ClCompile Include="..\Private\Level_Chapter_06.cpp" />
+    <ClCompile Include="..\Private\PalmDecal.cpp" />
+    <ClCompile Include="..\Private\PalmMarker.cpp" />
     <ClCompile Include="..\Private\PlayerBomb.cpp" />
     <ClCompile Include="..\Private\PlayerState_Bomber.cpp" />
     <ClCompile Include="..\Private\PlayerState_Stamp.cpp" />
@@ -498,7 +504,6 @@
     <ClCompile Include="..\Private\GameEventExecuter.cpp" />
     <ClCompile Include="..\Private\HitState.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_04.cpp" />
-    <ClCompile Include="..\Private\Level_Chapter_Test.cpp" />
     <ClCompile Include="..\Private\Magic_Hand.cpp" />
     <ClCompile Include="..\Private\Magic_Hand_Body.cpp" />
     <ClCompile Include="..\Private\LightningBolt.cpp" />
@@ -628,6 +633,7 @@
     <ClCompile Include="..\Private\Spear_Soldier.cpp" />
     <ClCompile Include="..\Private\StandbyState.cpp" />
     <ClCompile Include="..\private\Effect_Trail.cpp" />
+    <ClCompile Include="..\Private\Stoppable.cpp" />
     <ClCompile Include="..\Private\StopStamp.cpp" />
     <ClCompile Include="..\Private\TriggerObject.cpp" />
     <ClCompile Include="..\Private\Trigger_Manager.cpp" />

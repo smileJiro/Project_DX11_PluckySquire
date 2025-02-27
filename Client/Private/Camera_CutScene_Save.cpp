@@ -43,13 +43,14 @@ void CCamera_CutScene_Save::Update(_float _fTimeDelta)
 
 void CCamera_CutScene_Save::Late_Update(_float _fTimeDelta)
 {
-	Before_CutScene(_fTimeDelta);
-	Play_CutScene(_fTimeDelta);
-	After_CutScene(_fTimeDelta);
-
 	Action_Zoom(_fTimeDelta);
 	Action_Shake(_fTimeDelta);
 	Change_AtOffset(_fTimeDelta);
+	Action_LookAt(_fTimeDelta);
+
+	Before_CutScene(_fTimeDelta);
+	Play_CutScene(_fTimeDelta);
+	After_CutScene(_fTimeDelta);
 
 	if (false == m_isSimulation)
 		__super::Compute_PipeLineMatrices();
@@ -58,6 +59,7 @@ void CCamera_CutScene_Save::Late_Update(_float _fTimeDelta)
 void CCamera_CutScene_Save::CutScene_Clear()
 {
 	m_CutScenes.clear();
+	m_CutSceneSubDatas.clear();
 }
 
 void CCamera_CutScene_Save::Set_NextCutScene(_wstring _wszCutSceneName, INITIAL_DATA* _pTargetPos)
@@ -78,17 +80,20 @@ void CCamera_CutScene_Save::Set_NextCutScene(_wstring _wszCutSceneName, INITIAL_
 	Initialize_CameraInfo(_pTargetPos);
 
 	// 있다면, 이전에 저장해 둔 CutScene Data 지우기
-	pair<_float2, vector<CUTSCENE_DATA>>* pData = Find_CutSceneData(_wszCutSceneName);
+	pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA>>* pData = Find_CutSceneData(_wszCutSceneName);
 	if (nullptr != pData)
 		(*pData).second.clear();
 	else {
-		pair<_float2, vector<CUTSCENE_DATA>> Data;
+		pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA>> Data;
 		m_CutSceneDatas.emplace(_wszCutSceneName, Data);
 	}
 
+	// PrePosition 저장, Sector 이동할 떄도 해 줘야 할 것 같음
+	m_vPrePosition = (*m_pCurCutScene)[m_iCurSectorIndex]->Get_KeyFrame(1).vPosition;
+
 }
 
-void CCamera_CutScene_Save::Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene)
+void CCamera_CutScene_Save::Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene, CUTSCENE_SUB_DATA _tSubData)
 {
 	vector<CCutScene_Sector*>* pCutScene = Find_CutScene(_wszCutSceneTag);
 
@@ -99,6 +104,7 @@ void CCamera_CutScene_Save::Add_CutScene(_wstring _wszCutSceneTag, vector<CCutSc
 		Sector->Sort_Sector();
 
 	m_CutScenes.emplace(_wszCutSceneTag, _vecCutScene);
+	m_CutSceneSubDatas.emplace(_wszCutSceneTag, _tSubData);
 }
 
 void CCamera_CutScene_Save::Play_CutScene(_float _fTimeDelta)
@@ -106,9 +112,9 @@ void CCamera_CutScene_Save::Play_CutScene(_float _fTimeDelta)
 	if (nullptr == m_pCurCutScene || true == m_isStartCutScene || true == m_isFinishCutScene)
 		return;
 
-	_vector vPosition;
+	_vector vPosition, vAt;
 
-	_bool isSectorFinish = (*m_pCurCutScene)[m_iCurSectorIndex]->Play_Sector(_fTimeDelta, &vPosition);
+	_bool isSectorFinish = (*m_pCurCutScene)[m_iCurSectorIndex]->Play_Sector(_fTimeDelta, &vPosition, &vAt);
 	if (true == isSectorFinish) {
 		m_iCurSectorIndex++;
 
@@ -126,11 +132,15 @@ void CCamera_CutScene_Save::Play_CutScene(_float _fTimeDelta)
 
 			m_pCurCutScene = nullptr;
 
-			pair<_float2, vector<CUTSCENE_DATA>>* pData = Find_CutSceneData(m_wszCurCutSceneTag);
+			pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA>>* pData = Find_CutSceneData(m_wszCurCutSceneTag);
 
 			if (nullptr == pData)
 				return;
-			pData->first = { fTotalTime, 0.f };
+			pData->first.fTotalTime = { fTotalTime, 0.f };
+			
+			auto Subiter = m_CutSceneSubDatas.find(m_wszCurCutSceneTag);
+
+			pData->first.iNextCameraType = (*Subiter).second.iNextCameraType;
 		}
 		else {
 			Change_Sector();
@@ -140,8 +150,16 @@ void CCamera_CutScene_Save::Play_CutScene(_float _fTimeDelta)
 	}
 
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vPosition, 1.f));
-	Process_Movement(_fTimeDelta);
+	
+	vAt = vAt + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+
+	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
+	XMStoreFloat3(&m_vAt, vAt);
+
+	//Process_Movement(_fTimeDelta);
 	Save_Data();
+
+	XMStoreFloat3(&m_vPrePosition, vPosition);
 
 #ifdef _DEBUG
 	XMStoreFloat3(&m_vSimulationPos, XMVectorSetW(vPosition, 1.f));
@@ -166,7 +184,7 @@ vector<CCutScene_Sector*>* CCamera_CutScene_Save::Find_CutScene(_wstring _wszCut
 	return &(iter->second);
 }
 
-pair<_float2, vector<CUTSCENE_DATA>>* CCamera_CutScene_Save::Find_CutSceneData(_wstring _wszCutSceneName)
+pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA>>* CCamera_CutScene_Save::Find_CutSceneData(_wstring _wszCutSceneName)
 {
 	auto iter = m_CutSceneDatas.find(_wszCutSceneName);
 
@@ -232,6 +250,7 @@ void CCamera_CutScene_Save::Process_Movement(_float _fTimeDelta)
 		return;
 
 	if (true == (*m_pCurCutScene)[m_iCurSectorIndex]->Get_IsChangeKeyFrame()) {
+
 		_float fTimeOffset = (*m_pCurCutScene)[m_iCurSectorIndex]->Get_TimeOffset();
 		_int iCurKeyFrameIdx = (*m_pCurCutScene)[m_iCurSectorIndex]->Get_CurKeyFrameIndex();
 		vector<CUTSCENE_KEYFRAME>* pKeyFrames = (*m_pCurCutScene)[m_iCurSectorIndex]->Get_KeyFrames();
@@ -239,13 +258,14 @@ void CCamera_CutScene_Save::Process_Movement(_float _fTimeDelta)
 		if (iCurKeyFrameIdx >= (_int)((*pKeyFrames).size() - 2))
 			return;
 
-		Start_Changing_AtOffset(fTimeOffset, XMLoadFloat3(&(*pKeyFrames)[iCurKeyFrameIdx + 1].vAtOffset), (*pKeyFrames)[iCurKeyFrameIdx + 1].iAtRatioType);
+		Start_Changing_LookAt(fTimeOffset, XMLoadFloat3(&(*pKeyFrames)[iCurKeyFrameIdx + 1].vAt), (*pKeyFrames)[iCurKeyFrameIdx + 1].iAtRatioType);
 		Start_Zoom(fTimeOffset, (CCamera::ZOOM_LEVEL)(*pKeyFrames)[iCurKeyFrameIdx + 1].iZoomLevel, (RATIO_TYPE)(*pKeyFrames)[iCurKeyFrameIdx + 1].iZoomRatioType);
+
+		Slerp_At(iCurKeyFrameIdx, pKeyFrames);
+		//Action_LookAt(_fTimeDelta);
 	}
 
-	_vector vAt = XMLoadFloat3(&m_vTargetPos) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
-
-	cout << "Offset: " << m_vAtOffset.x << "   " << m_vAtOffset.y << "   " << m_vAtOffset.z << endl;
+	_vector vAt = XMLoadFloat3(&m_vAt) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 }
@@ -260,9 +280,9 @@ void CCamera_CutScene_Save::Initialize_CameraInfo(INITIAL_DATA* _pTargetPos)
 		CUTSCENE_KEYFRAME tKeyFrame = (*m_pCurCutScene)[m_iCurSectorIndex]->Get_KeyFrame(1);
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&tKeyFrame.vPosition), 1.f));
-		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&tKeyFrame.vAtOffset), 1.f));
+		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&tKeyFrame.vAt), 1.f));
 		m_vAtOffset = { 0.f, 0.f, 0.f };
-		m_vTargetPos = tKeyFrame.vAtOffset;
+		m_vAt = tKeyFrame.vAt;
 
 		// 초기 Zoom Level 설정
 		m_iCurZoomLevel = tKeyFrame.iZoomLevel;
@@ -277,7 +297,7 @@ void CCamera_CutScene_Save::Initialize_CameraInfo(INITIAL_DATA* _pTargetPos)
 
 		// 초기 보는 곳 설정
 		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&m_tInitialData.vAt), 1.f));
-		m_vTargetPos = m_tInitialData.vAt;
+		m_vAt = m_tInitialData.vAt;
 		m_vAtOffset = { 0.f, 0.f, 0.f };
 
 		// 초기 Zoom Level 설정
@@ -286,9 +306,61 @@ void CCamera_CutScene_Save::Initialize_CameraInfo(INITIAL_DATA* _pTargetPos)
 	}
 }
 
+void CCamera_CutScene_Save::Start_Changing_LookAt(_float _fLookAtTime, _fvector _vNextLookAt, _uint _iRatioType)
+{
+	m_isChangingLookAt = true;
+	m_fLookAtTime = { _fLookAtTime, 0.f };
+	m_iLookAtRatioType = _iRatioType;
+	XMStoreFloat3(&m_vNextLookAt, _vNextLookAt);
+	m_vStartLookAt = m_vAt;
+}
+
+void CCamera_CutScene_Save::Action_LookAt(_float _fTimeDelta)
+{
+	if (false == m_isChangingLookAt)
+		return;
+	
+	_float fRatio = Calculate_Ratio(&m_fLookAtTime, _fTimeDelta, m_iLookAtRatioType);
+
+	if (fRatio >= (1.f - EPSILON)) {
+		m_isChangingLookAt = false;
+		m_vStartLookAt = { 0.f, 0.f, 0.f };
+		m_fLookAtTime.y = 0.f;
+		m_vAt = m_vNextLookAt;
+
+		return;
+	}
+
+	_vector vLookAt = XMVectorLerp(XMLoadFloat3(&m_vStartLookAt), XMLoadFloat3(&m_vNextLookAt), fRatio);
+
+	XMStoreFloat3(&m_vAt, vLookAt);
+}
+
+void CCamera_CutScene_Save::Slerp_At(_int iCurKeyFrameIdx, vector<CUTSCENE_KEYFRAME>* pKeyFrames)
+{
+	/*_vector vOldAtDir = XMVector3Normalize(XMLoadFloat3(&m_vAt) - XMLoadFloat3(&m_vPrePosition));
+	_vector vNewAtDir = XMVector3Normalize(XMLoadFloat3(&(*pKeyFrames)[iCurKeyFrameIdx].vAt) - XMLoadFloat3(&m_vPrePosition));
+
+	_vector qOld = XMQuaternionRotationMatrix(XMMatrixLookAtLH(XMVectorZero(), vOldAtDir, XMVectorSet(0, 1, 0, 0)));
+	_vector qNew = XMQuaternionRotationMatrix(XMMatrixLookAtLH(XMVectorZero(), vNewAtDir, XMVectorSet(0, 1, 0, 0)));
+
+	_vector qlerped = XMQuaternionSlerp(qOld, qNew, 0.5f);
+
+	_matrix matRot = XMMatrixRotationQuaternion(qlerped);
+	_vector vFinalLookDir = XMVector3Normalize(matRot.r[2]);
+
+	_vector vFinalAt = XMLoadFloat3(&m_vPrePosition) + (vFinalLookDir * XMVectorGetX(XMVector3Length(XMLoadFloat3(&(*pKeyFrames)[iCurKeyFrameIdx].vAt) - XMLoadFloat3(&m_vPrePosition))));
+	XMStoreFloat3(&m_vAt, vFinalAt);*/
+
+	_vector vAt = XMVectorLerp(XMLoadFloat3(&m_vAt), XMLoadFloat3(&(*pKeyFrames)[iCurKeyFrameIdx].vAt), 0.5f);
+
+	XMStoreFloat3(&m_vAt, vAt);
+	m_vStartLookAt = m_vAt;
+}
+
 void CCamera_CutScene_Save::Save_Data()
 {
-	pair<_float2, vector<CUTSCENE_DATA>>* pData = Find_CutSceneData(m_wszCurCutSceneTag);
+	pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA>>* pData = Find_CutSceneData(m_wszCurCutSceneTag);
 
 	CUTSCENE_DATA tData = {};
 
@@ -298,12 +370,12 @@ void CCamera_CutScene_Save::Save_Data()
 
 	// 초기 입력 데이터가 있을 때
 	if (true == m_isInitialData) {
-		_vector vAtOffset = XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
-		XMStoreFloat3(&tData.vAtOffset, vAtOffset);
+		_vector vAtOffset = XMLoadFloat3(&m_vAt) + XMLoadFloat3(&m_vShakeOffset);
+		XMStoreFloat3(&tData.vAt, vAtOffset);
 	}
 	else {
-		_vector vAtOffset = XMLoadFloat3(&m_vTargetPos) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
-		XMStoreFloat3(&tData.vAtOffset, vAtOffset);
+		_vector vAtOffset = XMLoadFloat3(&m_vAt) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+		XMStoreFloat3(&tData.vAt, vAtOffset);
 	}
 
 	(*pData).second.push_back(tData);

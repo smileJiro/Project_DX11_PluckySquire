@@ -80,8 +80,7 @@ void CDialog::Update(_float _fTimeDelta)
 		NextDialogue(vRTSize); // 다음 다이얼로그의 위치를 변경한다.
 	}
 
-	if (m_isDisplayDialogue)
-	UpdateDialogueLine();
+	
 
 
 	// 다이얼로그 변경 시 이용 스위치이나 뭘듯 해야할듯
@@ -98,6 +97,8 @@ void CDialog::Update(_float _fTimeDelta)
 void CDialog::Late_Update(_float _fTimeDelta)
 {
 	//Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
+
+
 	if (true == m_isDisplayDialogue && false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
 	{
 		Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
@@ -119,7 +120,12 @@ void CDialog::Late_Update(_float _fTimeDelta)
 		{
 			m_pPortrait->CBase::Set_Active(true);
 		}
+
+
+		
 	}
+
+
 }
 
 HRESULT CDialog::Render()
@@ -169,6 +175,10 @@ HRESULT CDialog::Render()
 			DisplayText(vRTSize);
 		}
 	}
+
+	// TODO :: 일단 여기에다가 두면 얼굴을 나중에 렌더한다. (박상욱)
+	if (m_isDisplayDialogue)
+		UpdateDialogueLine();
 		
 
 	return S_OK;

@@ -63,6 +63,15 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 			MultiByteToWideChar(CP_ACP, 0, szFileName, (int)strlen(szFileName), szWideName, MAX_PATH);
 			MultiByteToWideChar(CP_ACP, 0, szExt, (int)strlen(szExt), szWideExt, MAX_PATH);
 
+
+
+			_wstring strMaterialPath = L"../Bin/Resources/Textures/ModelTexture/";
+			strMaterialPath += szWideName;
+			strMaterialPath += szWideExt;
+
+			if (filesystem::exists(strMaterialPath))
+				lstrcpy(szWideFullPath, strMaterialPath.c_str());
+
 			ID3D11ShaderResourceView* pSRV = { nullptr };
 			HRESULT		hr = {};
 			if (false == strcmp(szExt, ".dds") || false == strcmp(szExt, ".DDS"))

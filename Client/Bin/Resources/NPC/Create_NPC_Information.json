@@ -11,6 +11,8 @@
 			"vPositionZ": 0.0,
 			"CollisionScaleX": 70.0,
 			"CollisionScaleY": 70.0,
+			"isInteractable": true,
+			"isDialog": true,
 			"is2D": true
 		},
 		{
@@ -24,6 +26,8 @@
 			"vPositionZ": 0.0,
 			"CollisionScaleX": 70.0,
 			"CollisionScaleY": 70.0,
+			"isInteractable": true,
+			"isDialog": true,
 			"is2D": true
 		},
 		{
@@ -37,6 +41,8 @@
 			"vPositionZ": 0.0,
 			"CollisionScaleX": 70.0,
 			"CollisionScaleY": 70.0,
+			"isInteractable": true,
+			"isDialog": true,
 			"is2D": true
 		},
 		{
@@ -49,6 +55,8 @@
 			"vPositionZ": 0.0,
 			"CollisionScaleX": 70.0,
 			"CollisionScaleY": 70.0,
+			"isInteractable": false,
+			"isDialog": false,
 			"is2D": true
 		},
 		{
@@ -62,6 +70,8 @@
 			"vPositionZ": 0.0,
 			"CollisionScaleX": 70.0,
 			"CollisionScaleY": 70.0,
+			"isInteractable": false,
+			"isDialog": false,
 			"is2D": true
 		}
 	]

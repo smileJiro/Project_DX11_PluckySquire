@@ -167,6 +167,7 @@ void CBomb::Late_Update(_float _fTimeDelta)
 HRESULT CBomb::Render()
 {
 
+#ifdef _DEBUG
 	if (COORDINATE_2D == Get_CurCoord())
 	{
 		for (_uint i = 0; i < m_p2DColliderComs.size(); i++)
@@ -177,6 +178,7 @@ HRESULT CBomb::Render()
 			}
 		}
 	}
+#endif
 
 	__super::Render();
 

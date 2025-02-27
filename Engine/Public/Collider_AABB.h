@@ -27,7 +27,7 @@ public:
 
 public:
 	_bool			Is_Collision(CCollider* _pOther) override;
-	virtual _bool	Is_ContainsPoint(_float2 _vPosition)override;
+	virtual _bool	Is_ContainsPoint(_float2 _vPosition) override;
 	void			Block(CCollider* _pOther);
 	void			Block_AABB(CCollider_AABB* _pOther);
 	void			Block_Circle(CCollider_Circle* _pOther);

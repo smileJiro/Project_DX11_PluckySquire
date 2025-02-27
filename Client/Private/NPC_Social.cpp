@@ -7,6 +7,7 @@
 #include "UI_Manager.h"
 #include "StateMachine.h"
 #include "Npc_OnlySocial.h"
+#include "Dialog_Manager.h"
 
 
 
@@ -39,8 +40,10 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	m_iCreateSection = pDesc->strCreateSection;
 	m_strDialogueID = pDesc->strDialogueId;
 	m_iStartAnimation = pDesc->iStartAnimation;
+	m_isHaveDialog = pDesc->isDialog;
 	m_vPosition = _float3(pDesc->vPositionX, pDesc->vPositionY, pDesc->vPositionZ);
 	m_vCollsionScale = _float2(pDesc->CollsionScaleX, pDesc->CollsionScaleY);
+	m_isInteractable = pDesc->isInteractable;
 	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 
 	pDesc->eStartCoord = COORDINATE_2D;
@@ -95,7 +98,7 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Social::On_AnimEnd, this , placeholders::_1, placeholders::_2));
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z, 1.f));
 
-	
+	m_eInteractID = INTERACT_ID::NPC;
 	//CActor::ACTOR_DESC ActorDesc;
 	//
 	///* Actor의 주인 오브젝트 포인터 */
@@ -172,7 +175,7 @@ void CNPC_Social::Update(_float _fTimeDelta)
 
 void CNPC_Social::Late_Update(_float _fTimeDelta)
 {
-	if (false == m_isThrow && true == m_isColPlayer)
+	if (false == m_isThrow && true == m_isColPlayer && true == m_isHaveDialog)
 	{
 		Throw_Dialogue();
 		m_isThrow = true;
@@ -206,6 +209,10 @@ void CNPC_Social::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOth
 
 void CNPC_Social::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+	//if (true == m_isThrow && false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+	//{
+	//	m_isThrow = false;
+	//}
 }
 
 void CNPC_Social::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -301,7 +308,12 @@ HRESULT CNPC_Social::Ready_Components()
 	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.5f };
 	AABBDesc.isBlock = true;
 	AABBDesc.isTrigger = false;
-	AABBDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+
+	if (true == m_isInteractable)
+		AABBDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+	else
+		AABBDesc.iCollisionGroupID = OBJECT_GROUP::NONE;
+
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
 		TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
 		return E_FAIL;

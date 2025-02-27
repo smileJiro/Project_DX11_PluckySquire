@@ -75,6 +75,7 @@ public :
 	void					PageAction_End(COORDINATE _eCoord, _uint iAnimIdx);
 	void					PageAction_Call_PlayerEvent();
 	BOOK_PAGE_ACTION		Get_ActionType() { return m_eCurAction; }
+	_bool					Get_PlayerAround() { return m_isPlayerAround; }
 
 public:						
 	HRESULT					Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition);

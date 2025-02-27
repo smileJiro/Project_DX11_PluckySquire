@@ -14,6 +14,17 @@ enum class INTERACT_RESULT
 	NO_INPUT,
 	PLAYER_INTERACT_RESULT_LAST
 };
+enum class INTERACT_ID
+{
+	NPC,
+	CARRIABLE,
+	PORTAL,
+	BOOK,
+	DRAGGABLE,
+	LUNCHBOX,
+	INTERACT_ID_LAST
+
+};
 class CPlayer;
 class IInteractable 
 {
@@ -45,25 +56,25 @@ public:
 	
 	void Start_Interact(CPlayer* _pPlayer)
 	{
-		On_InteractionStart(_pPlayer);
 		m_fInteractTimeAcc = 0.f;
 		m_bInteracting = true;
+		On_InteractionStart(_pPlayer);
 	}
 	void Pressing(CPlayer* _pPlayer, _float _fTimeDelta)
 	{
-		On_Pressing(_pPlayer, _fTimeDelta);
 		m_fInteractTimeAcc += _fTimeDelta;
 		m_bInteracting = true;
+		On_Pressing(_pPlayer, _fTimeDelta);
 	}
 	void End_Interact(CPlayer* _pPlayer)
 	{
-		On_InteractionEnd(_pPlayer);
 		m_fInteractTimeAcc = 0.f;
 		m_bInteracting = false;
+		On_InteractionEnd(_pPlayer);
 	}
 
-	//wstring Get_InteractName() { return m_strInteractName; }
-	//_bool Is_UIPlayerHeadUp() { return m_bUIPlayerHeadUp; }
+	INTERACT_ID Get_InteractID() { return m_eInteractID; } // 인터렉트가 된 대상의 이름을 가져온다.
+	_bool Is_UIPlayerHeadUp() { return m_bUIPlayerHeadUp; }	// 유저의 머리위에 노출시킬것인가 아닌가
 protected:
 
 	//플레이어가 건드렸을 때(상호작용 버튼을 눌렀을 때) 호출됨. Charge가 시작된 경우를 의미.
@@ -80,8 +91,8 @@ protected:
 	KEY m_eInteractKey = KEY::E;
 	_bool m_bInteracting = false;
 
-	//wstring m_strInteractName = TEXT("상호작용");
-	//_bool m_bUIPlayerHeadUp = false;
+	INTERACT_ID m_eInteractID = INTERACT_ID::NPC;
+	_bool m_bUIPlayerHeadUp = false;
 };
 
 //예시  코드 : 상호작용하면 사망하는 NPC~
