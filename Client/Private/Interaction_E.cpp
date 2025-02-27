@@ -201,10 +201,10 @@ void CInteraction_E::Cal_PlayerHighPos()
 void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 {
 	// 각종 오브젝트
-	//if (nullptr == Uimgr->Get_Player()->Get_InteractableObject())
-	//	return;
+	if (nullptr == Uimgr->Get_Player()->Get_InteractableObject())
+		return;
 
-	//_float3 vObjectPos = { 0.f, 0.f, 0.f };
+	_float3 vObjectPos = { 0.f, 0.f, 0.f };
 
 	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
