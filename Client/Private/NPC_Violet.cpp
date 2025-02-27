@@ -93,6 +93,8 @@ HRESULT CNPC_Violet::Initialize(void* _pArg)
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Violet::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(990.f, -36.5f, 0.f, 1.f));
 	
+	m_strInteractName = TEXT("NPC");
+
 	return S_OK;
 }
 

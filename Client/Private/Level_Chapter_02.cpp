@@ -273,7 +273,7 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		//Event_ChangeMapObject(LEVEL_CHAPTER_2, TEXT("Chapter_04_Default_Desk.mchc"), TEXT("Layer_MapObject"), true);
 	}
 
-	Uimgr->Narration_Update();
+	Uimgr->UI_Update();
 
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
@@ -1136,11 +1136,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	pDesc.fSizeX = 360.f / 2.f;
 	pDesc.fSizeY = 144.f / 2.f;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	CGameObject* pGameObject;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject ,&pDesc)))
 		return E_FAIL;
 
-
-	CGameObject* pGameObject;
+	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pGameObject));
+	
 
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))

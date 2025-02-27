@@ -43,6 +43,7 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	m_isHaveDialog = pDesc->isDialog;
 	m_vPosition = _float3(pDesc->vPositionX, pDesc->vPositionY, pDesc->vPositionZ);
 	m_vCollsionScale = _float2(pDesc->CollsionScaleX, pDesc->CollsionScaleY);
+	m_isInteractable = pDesc->isInteractable;
 	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 
 	pDesc->eStartCoord = COORDINATE_2D;
@@ -308,7 +309,12 @@ HRESULT CNPC_Social::Ready_Components()
 	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.5f };
 	AABBDesc.isBlock = true;
 	AABBDesc.isTrigger = false;
-	AABBDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+
+	if (true == m_isInteractable)
+		AABBDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+	else
+		AABBDesc.iCollisionGroupID = OBJECT_GROUP::NONE;
+
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
 		TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
 		return E_FAIL;
