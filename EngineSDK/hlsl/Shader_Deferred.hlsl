@@ -34,7 +34,8 @@ struct DirectLightData
     
     int isShadow;
     float fLightRadius;
-    float2 dummy1;
+    float fShadowFactor;
+    float dummy1;
     
     matrix LightViewProjMatrix;
 };
@@ -277,7 +278,7 @@ float PCF_Filter(float2 _vUV, float _fZReceiverNDC, float _fFilterRadiusUV, Text
     }
 
     // 평균화하여 부드러운 그림자 생성
-    return fSumShadowFactor / (iKernelSize * iKernelSize); // 동적 커널 크기 지원
+    return (fSumShadowFactor * c_DirectLight.fShadowFactor) / (iKernelSize * iKernelSize); // 동적 커널 크기 지원
 }
 
 float3 RandomWorldHemiSphereNormal(float3 _vWorldNormal, float2 _vTexCoord)
@@ -318,7 +319,7 @@ float Compute_SSAO(float3 _vPixelWorldPos, float3 _vPixelWorldNormal, float2 _vR
     vRandomPosTexcoord += 1.0f;
     vRandomPosTexcoord *= 0.5f;
     
-    float fSampleViewZ = g_DepthTexture.Sample(PointSampler, vRandomPosTexcoord).y * g_fFarZ;
+    float fSampleViewZ = g_DepthTexture.Sample(LinearSampler_Clamp, vRandomPosTexcoord).y * g_fFarZ;
     float fBiaseFactor = 0.0001f;
     float bias = fBiaseFactor * vViewPosition.z / g_fFarZ;
     float dp = max(dot(vViewNormal, normalize(vRandomViewPos - (vViewPosition))), 0.0f); // 새로 샘플한 지점의 뷰 공간 포지션과 현재 나의 노말을 내적하여 방향성을 비교
@@ -531,12 +532,12 @@ PS_OUT PS_MAIN_LIGHTING(PS_IN In)
     [unroll]
     for (int i = 0; i < 64; ++i)
     {
-        float fSSAO = Compute_SSAO(vPixelWorld.xyz, normalize(vNormalWorld), g_RandomTexcoords[i], 0.05f, g_DepthTexture);
-
+        float fSSAO = Compute_SSAO(vPixelWorld.xyz, normalize(vNormalWorld), g_RandomTexcoords[i], 0.1f, g_DepthTexture);
+    
         SumSSAO += fSSAO;
     }
     SumSSAO /= 64.f;
-    SumSSAO = pow(1.0f - SumSSAO, 4);
+    SumSSAO = pow(1.0f - SumSSAO, 1);
     vAmbientLighting *= SumSSAO;
     
     
@@ -590,17 +591,16 @@ PS_OUT PS_MAIN_COMBINE(PS_IN In)
     float fPlayerDepthDesc = g_PlayerDepthTexture.Sample(LinearSampler, In.vTexcoord).r;
     float fPlayerViewZ = fPlayerDepthDesc * g_fFarZ;
     
-    //float3 vHideColor = g_vHideColor;
-    //// 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
-    //float fViewZDiff = fPlayerViewZ - fViewZ - 1.0f;
-    //float fHideMin = 0.0f;
-    //float fHideMax = 10.0f;
-    //vHideColor = lerp(vToneMapColor, vHideColor, saturate(fViewZDiff / (fHideMax - fHideMin)));
-    //vToneMapColor = 0.0f < fViewZDiff ? vHideColor : vToneMapColor;
+    float3 vHideColor = g_vHideColor;
+    // 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
+    float fViewZDiff = fPlayerViewZ - fViewZ - 1.0f;
+    float fHideMin = 0.0f;
+    float fHideMax = 10.0f;
+    vHideColor = lerp(vToneMapColor, vHideColor, saturate(fViewZDiff / (fHideMax - fHideMin)));
+    vToneMapColor = 0.0f < fViewZDiff ? vHideColor : vToneMapColor;
     
-    //vToneMapColor = lerp(vToneMapColor, vHideColor, (vDepth.y - fPlayerDepthDesc));
+    vToneMapColor = lerp(vToneMapColor, vHideColor, (vDepth.y - fPlayerDepthDesc));
     Out.vColor = float4(vToneMapColor, 1.0f);
-    //Out.vColor.rgb *= c_DofVariable.fFadeRatio;
     return Out;
 }
 
