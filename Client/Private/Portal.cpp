@@ -347,6 +347,11 @@ void CPortal::On_InteractionStart(CPlayer* _pPlayer)
 	_pPlayer->Start_Portal(this);
 }
 
+void CPortal::On_InteractionEnd(CPlayer* _pPlayer)
+{
+    m_bInteracting = true;
+}
+
 CPortal* CPortal::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
     CPortal* pInstance = new CPortal(_pDevice, _pContext);

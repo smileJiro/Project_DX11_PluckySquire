@@ -45,21 +45,21 @@ public:
 	
 	void Start_Interact(CPlayer* _pPlayer)
 	{
-		On_InteractionStart(_pPlayer);
 		m_fInteractTimeAcc = 0.f;
 		m_bInteracting = true;
+		On_InteractionStart(_pPlayer);
 	}
 	void Pressing(CPlayer* _pPlayer, _float _fTimeDelta)
 	{
-		On_Pressing(_pPlayer, _fTimeDelta);
 		m_fInteractTimeAcc += _fTimeDelta;
 		m_bInteracting = true;
+		On_Pressing(_pPlayer, _fTimeDelta);
 	}
 	void End_Interact(CPlayer* _pPlayer)
 	{
-		On_InteractionEnd(_pPlayer);
 		m_fInteractTimeAcc = 0.f;
 		m_bInteracting = false;
+		On_InteractionEnd(_pPlayer);
 	}
 
 	wstring Get_InteractName() { return m_strInteractName; } // 인터렉트가 된 대상의 이름을 가져온다.

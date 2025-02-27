@@ -57,8 +57,8 @@ public:
 	virtual void Active_OnEnable() override;
 
 protected:
-	virtual void	On_InteractionStart(CPlayer* _pPlayer);
-
+	virtual void	On_InteractionStart(CPlayer* _pPlayer)override;
+	virtual void	On_InteractionEnd(CPlayer* _pPlayer) override;
 private :
 	CCollider*	m_pColliderCom = { nullptr };
 

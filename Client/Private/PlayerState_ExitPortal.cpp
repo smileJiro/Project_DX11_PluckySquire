@@ -94,7 +94,7 @@ void CPlayerState_ExitPortal::Enter()
 		}
 	}
 
-
+	m_pPortal->Set_Interacting(false);
 }
 //ÇÃ·¹ÀÌ¾î Á×À¸¸é ¶³¾îÁü
 
