@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "FSM.h"
 #include "ModelObject.h"
+#include "DetectionField.h"
+#include "Pooling_Manager.h"
 
 CBomb_Soldier::CBomb_Soldier(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -30,7 +32,7 @@ HRESULT CBomb_Soldier::Initialize(void* _pArg)
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 10.f;
+    pDesc->fAttackRange = 8.f;
     pDesc->fAlert2DRange = 5.f;
     pDesc->fChase2DRange = 12.f;
     pDesc->fAttack2DRange = 10.f;
@@ -51,8 +53,11 @@ HRESULT CBomb_Soldier::Initialize(void* _pArg)
     m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
     m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
@@ -63,6 +68,15 @@ HRESULT CBomb_Soldier::Initialize(void* _pArg)
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CBomb_Soldier::Animation_End, this, placeholders::_1, placeholders::_2));
+
+    Bind_AnimEventFunc("Attack", bind(&CBomb_Soldier::Attack, this));
+
+    /* Com_AnimEventGenerator */
+    CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+    tAnimEventDesc.pReceiver = this;
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_SoldierAttackEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
@@ -105,6 +119,11 @@ HRESULT CBomb_Soldier::Render()
     return S_OK;
 }
 
+void CBomb_Soldier::Attack()
+{
+    
+}
+
 void CBomb_Soldier::Change_Animation()
 {
     if(m_iState != m_iPreState)
@@ -123,12 +142,25 @@ void CBomb_Soldier::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
             break;
 
+        case MONSTER_STATE::STANDBY:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            break;
+
         case MONSTER_STATE::CHASE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
             break;
 
         case MONSTER_STATE::ATTACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BOMB_THROW);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BOMB_OUT);
+            Create_Bomb();
+            break;
+
+        case MONSTER_STATE::HIT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT_FRONT);
+            break;
+
+        case MONSTER_STATE::DEAD:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH_02_EDIT);
             break;
 
         default:
@@ -146,12 +178,42 @@ void CBomb_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         Set_AnimChangeable(true);
         break;
 
+    case BOMB_OUT:
+        pModelObject->Switch_Animation(BOMB_THROW);
+        break;
+
     case BOMB_THROW:
+        Set_AnimChangeable(true);
+        break;
+
+    case HIT_FRONT:
+        Set_AnimChangeable(true);
+        break;
+
+    case DEATH_02_EDIT:
         Set_AnimChangeable(true);
         break;
 
     default:
         break;
+    }
+}
+
+void CBomb_Soldier::Create_Bomb()
+{
+    if(COORDINATE_3D == Get_CurCoord())
+    {
+        _matrix HandMatrix = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("j_hand_attach_r"));
+
+        _float3 vPosition;
+        _float4 vRotation;
+
+        m_pGameInstance->MatrixDecompose(nullptr, &vRotation, &vPosition, HandMatrix);
+
+        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPosition, &vRotation);
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPosition);
+
+
     }
 }
 
@@ -193,7 +255,7 @@ HRESULT CBomb_Soldier::Ready_ActorDesc(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER | OBJECT_GROUP::EXPLOSION;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;
@@ -214,12 +276,35 @@ HRESULT CBomb_Soldier::Ready_Components()
     FSMDesc.fAlert2DRange = m_fAlert2DRange;
     FSMDesc.fChase2DRange = m_fChase2DRange;
     FSMDesc.fAttack2DRange = m_fAttack2DRange;
-    FSMDesc.isMelee = true;
+    FSMDesc.isMelee = false;
     FSMDesc.pOwner = this;
     FSMDesc.iCurLevel = m_iCurLevelID;
 
     if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
+        return E_FAIL;
+
+#ifdef _DEBUG
+    /* Com_DebugDraw_For_Client */
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DebugDraw_For_Client"),
+        TEXT("Com_DebugDraw_For_Client"), reinterpret_cast<CComponent**>(&m_pDraw))))
+        return E_FAIL;
+#endif // _DEBUG
+
+    /* Com_DetectionField */
+    CDetectionField::DETECTIONFIELDDESC DetectionDesc;
+    DetectionDesc.fRange = m_fAlertRange;
+    DetectionDesc.fFOVX = m_fFOVX;
+    DetectionDesc.fFOVY = m_fFOVY;
+    DetectionDesc.fOffset = 0.f;
+    DetectionDesc.pOwner = this;
+    DetectionDesc.pTarget = m_pTarget;
+#ifdef _DEBUG
+    DetectionDesc.pDraw = m_pDraw;
+#endif // _DEBUG
+
+    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DetectionField"),
+        TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
         return E_FAIL;
 
     return S_OK;

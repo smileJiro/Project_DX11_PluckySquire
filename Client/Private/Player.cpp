@@ -174,7 +174,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     m_tBodyShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     m_tBodyShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
 	m_tBodyShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-	m_tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
+	m_tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::EXPLOSION; // Actor가 충돌을 감지할 그룹
     XMStoreFloat4x4(&m_tBodyShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset /*+ 0.1f*/, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
