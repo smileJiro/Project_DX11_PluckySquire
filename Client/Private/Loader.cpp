@@ -369,6 +369,10 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Glow01"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Glow_01.dds"), 1))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_E"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Interact_E.dds"), 1))))
+		return E_FAIL;
 #pragma endregion
 
 #pragma region Static - Sound Load
@@ -640,6 +644,12 @@ HRESULT CLoader::Loading_Level_Static()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBomb"),
 		CPlayerBomb::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PalmMarker"),
+		CPalmMarker::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PalmDecal"),
+		CPalmDecal::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Detonator"),
 		CDetonator::Create(m_pDevice, m_pContext))))
@@ -1297,7 +1307,7 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 	// 2D Map Object
 	arrPaths[PATH_2D_MAP] = L"../Bin/Resources/Models/2DMapObject/";
 	// 2D NonAmim Active Object (ex. FallingRock, bulb)...
-	arrPaths[PATH_2D_NONANIM_OBJECT] = L"../Bin/Resources/Models/3DObject/";
+	arrPaths[PATH_2D_NONANIM_OBJECT] = L"../Bin/Resources/Models/2DNonAnim/";
 	// 2D Anim Object (ex.NPC)...
 	arrPaths[PATH_2D_ANIM_OBJECT] = L"../Bin/Resources/Models/2DAnim/";
 

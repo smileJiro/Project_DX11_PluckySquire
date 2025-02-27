@@ -197,7 +197,7 @@ CPalmDecal* CPalmDecal::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Created PalmMarker Failed");
+        MSG_BOX("Created PalmDecal Failed");
         Safe_Release(pInstance);
         return nullptr;
     }
@@ -211,7 +211,7 @@ CGameObject* CPalmDecal::Clone(void* _pArg)
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Clone PalmMarker Failed");
+        MSG_BOX("Clone PalmDecal Failed");
         Safe_Release(pInstance);
         return nullptr;
     }
