@@ -18,6 +18,16 @@
 #include "MainTable.h"
 #include "Player.h"
 #include "Beetle.h"
+#include "BirdMonster.h"
+#include "Projectile_BirdMonster.h"
+#include "Spear_Soldier.h"
+#include "CrossBow_Soldier.h"
+#include "Bomb_Soldier.h"
+#include "Soldier_Spear.h"
+#include "Soldier_Shield.h"
+#include "Soldier_CrossBow.h"
+#include "CrossBow_Arrow.h"
+#include "Bomb.h"
 #include "LightningBolt.h"
 #include "RabbitLunch.h"
 
@@ -935,12 +945,71 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
 {
+	CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
+	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
+	Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -23.0f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
+		return E_FAIL;
+
+	CCrossBow_Soldier::MONSTER_DESC CrossBow_Soldier_Desc;
+	CrossBow_Soldier_Desc.iCurLevelID = m_eLevelID;
+	CrossBow_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	CrossBow_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	CrossBow_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 0.35f, -23.0f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"), m_eLevelID, _strLayerTag, &CrossBow_Soldier_Desc)))
+		return E_FAIL;
+
+	CBomb_Soldier::MONSTER_DESC Bomb_Soldier_Desc;
+	Bomb_Soldier_Desc.iCurLevelID = m_eLevelID;
+	Bomb_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	Bomb_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut)
 {
-	
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BirdMonster");
+
+	CProjectile_BirdMonster::PROJECTILE_BIRDMONSTER_DESC* pBirdProjDesc = new CProjectile_BirdMonster::PROJECTILE_BIRDMONSTER_DESC;
+	pBirdProjDesc->iCurLevelID = m_eLevelID;
+	pBirdProjDesc->eStartCoord = COORDINATE_3D;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BirdMonster"), Pooling_Desc, pBirdProjDesc);
+
+	Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_CrossBow_Arrow");
+
+	CCrossBow_Arrow::CROSSBOW_ARROW_DESC* ArrowDesc = new CCrossBow_Arrow::CROSSBOW_ARROW_DESC;
+	ArrowDesc->iCurLevelID = m_eLevelID;
+	ArrowDesc->eStartCoord = COORDINATE_3D;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_CrossBow_Arrow"), Pooling_Desc, ArrowDesc);
+
+
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Bomb");
+	Pooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
+
+	CBomb::CARRIABLE_DESC* BombDesc = new CBomb::CARRIABLE_DESC;
+	BombDesc->iCurLevelID = m_eLevelID;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Bomb"), Pooling_Desc, BombDesc);
+
 	return S_OK;
 }
 
