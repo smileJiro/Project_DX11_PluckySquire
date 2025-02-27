@@ -1215,6 +1215,9 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
 
 HRESULT CLoader::Loading_Level_Camera_Tool()
 {
+
+
+
 #pragma region Camera Tool - Component Load
 
 	lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
@@ -1228,6 +1231,9 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 #pragma region Camera Tool - Model Load
 
 	lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
+
+	XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
 
 #pragma endregion
 
@@ -1247,11 +1253,19 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 
 #pragma endregion
 
-	if (FAILED(Loading_Level_Chapter_2(LEVEL_CHAPTER_TEST)))
+
+	// 3D Map Load
+	if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL,
+		MAP_3D_DEFAULT_PATH,
+		L"Chapter_04_Play_Desk.json",
+		matPretransform, true)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_2);
+	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_4);
 
+
+	if (FAILED(Loading_Level_Chapter_4(LEVEL_CAMERA_TOOL)))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 	m_isFinished = true;
@@ -1336,7 +1350,7 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 
 
 	/*===============3D Model Load Start*/
-	if (LEVEL_CHAPTER_TEST != _eLoadLevelID)
+	if (_eResourceLevelID == _eLoadLevelID)
 	{
 		std::cout << "=============== [" << arrLevelTexts[_eLoadLevelID] << "] 3D Map Load Start..." << endl;
 
