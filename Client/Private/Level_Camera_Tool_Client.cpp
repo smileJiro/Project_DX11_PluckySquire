@@ -301,20 +301,27 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SampleBook"),
 	//	m_eLevelID, L"Layer_Book", &m_pSimulationCube, &BookDesc)))
 	//	return E_FAIL;
-	Desc.eStartCoord = COORDINATE_3D;
-	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	Desc.strModelPrototypeTag_3D = L"Prototype_Model_Book";
-	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
-	Desc.iShaderPass_3D = 0;
-	Desc.iPriorityID_3D = PR3D_GEOMETRY;
-	Desc.iRenderGroupID_3D = RG_3D;
-	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
-	Desc.tTransform3DDesc.vInitialPosition = { 2.f, 0.4f, -17.3f };
-	Desc.tTransform3DDesc.vInitialScaling = { 1.f, 1.f, 1.f };
+	//Desc.eStartCoord = COORDINATE_3D;
+	//Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
+	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	//Desc.strModelPrototypeTag_3D = L"Prototype_Model_Book";
+	//Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	//Desc.iShaderPass_3D = 0;
+	//Desc.iPriorityID_3D = PR3D_GEOMETRY;
+	//Desc.iRenderGroupID_3D = RG_3D;
+	//Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+	//Desc.tTransform3DDesc.vInitialPosition = { 2.f, 0.4f, -17.3f };
+	//Desc.tTransform3DDesc.vInitialScaling = { 1.f, 1.f, 1.f };
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
-		LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+	//	LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+	//	return E_FAIL;
+
+	CModelObject::MODELOBJECT_DESC BookDesc = {};
+	BookDesc.iCurLevelID = m_eLevelID;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SampleBook"),
+		m_eLevelID, L"_strLayerTag", reinterpret_cast<CGameObject**>(&pOut), &BookDesc)))
 		return E_FAIL;
 
 	//pOut->Set_Active(false);
@@ -332,6 +339,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	Desc.iPriorityID_3D = PR3D_BLEND;
 	Desc.iRenderGroupID_3D = RG_3D;
 	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+	Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 1.17f, -21.02f };
 
 
