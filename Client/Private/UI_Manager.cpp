@@ -224,14 +224,17 @@ void CUI_Manager::UI_Update()
 		}
 	}
 
-	if (false == m_pInteractionE->CBase::Is_Active())
+	if (nullptr != m_pInteractionE)
 	{
-		if (nullptr == Uimgr->Get_Player()->Get_InteractableObject())
+		if (false == m_pInteractionE->CBase::Is_Active())
 		{
-			return;
+			if (nullptr == Uimgr->Get_Player()->Get_InteractableObject())
+			{
+				return;
+			}
+			else
+				m_pInteractionE->CBase::Set_Active(true);
 		}
-		else
-			m_pInteractionE->CBase::Set_Active(true);
 	}
 
 }
