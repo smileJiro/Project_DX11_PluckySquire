@@ -59,7 +59,10 @@ void CPlayerState_Stamp::Enter()
 
 void CPlayerState_Stamp::Exit()
 {
-	m_pOwner->UnEquip_Part(m_pOwner->Get_CurrentStampType());
+	m_pOwner->UnEquip_Part(CPlayer::PLAYER_PART_BOMB_STMAP);
+	m_pOwner->UnEquip_Part(CPlayer::PLAYER_PART_STOP_STMAP);
+	if(m_pOwner->Is_DetonationMode())
+		m_pOwner->Equip_Part(CPlayer::PLAYER_PART_DETONATOR);
 }
 
 void CPlayerState_Stamp::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

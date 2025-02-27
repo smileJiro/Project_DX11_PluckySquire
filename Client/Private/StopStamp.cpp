@@ -57,7 +57,7 @@ HRESULT CStopStamp::Render()
     return S_OK;
 }
 
-void CStopStamp::Smash(_fvector v2DPosition)
+void CStopStamp::Place_Stopper(_fvector v2DPosition)
 {
 
 }

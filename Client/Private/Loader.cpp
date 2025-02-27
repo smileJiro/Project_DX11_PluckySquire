@@ -78,8 +78,10 @@
 #include "StopStamp.h"
 #include "BombStamp.h"
 #include "PlayerBomb.h"
+#include "Detonator.h"
 #include "TestTerrain.h"
 #include "RabbitLunch.h"
+#include "Bomb.h"
 
 
 #include "2DModel.h"
@@ -549,6 +551,10 @@ HRESULT CLoader::Loading_Level_Static()
         CWord::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb"),
+        CBomb::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMap_SkspObject"),
         C3DMapSkspObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -570,6 +576,9 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBomb"),
         CPlayerBomb::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Detonator"),
+        CDetonator::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"),
         CPlayerBody::Create(m_pDevice, m_pContext))))
@@ -1891,6 +1900,9 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
         C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Monster/Rat/Rat.model2d"))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Bomb2D"),
+        C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Static/Bomb/Bomb2D.model2d"))))
+        return E_FAIL;
 
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Dice3D"),

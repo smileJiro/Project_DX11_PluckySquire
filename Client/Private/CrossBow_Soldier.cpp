@@ -70,6 +70,7 @@ HRESULT CCrossBow_Soldier::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CROSSBOW_IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CROSSBOW_WALK, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CROSSBOW_STRAFE_FWD, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CROSSBOW_SHOOT_IDLE, true);
     pModelObject->Set_Animation((_uint)CROSSBOW_IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CCrossBow_Soldier::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -180,7 +181,7 @@ void CCrossBow_Soldier::Change_Animation()
             break;
 
         case MONSTER_STATE::STANDBY:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_SHOOT_RECOVERY);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_SHOOT_IDLE);
             break;
 
         case MONSTER_STATE::CHASE:
@@ -219,7 +220,14 @@ void CCrossBow_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case CROSSBOW_SHOOT_RECOVERY:
-        pModelObject->Switch_Animation(CROSSBOW_SHOOT);
+        Set_AnimChangeable(true);
+        break;
+
+    case CROSSBOW_HIT_FWDS:
+        Set_AnimChangeable(true);
+        break;
+
+    case CROSSBOW_DEATH:
         Set_AnimChangeable(true);
         break;
 
@@ -266,7 +274,7 @@ HRESULT CCrossBow_Soldier::Ready_ActorDesc(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER | OBJECT_GROUP::EXPLOSION;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;

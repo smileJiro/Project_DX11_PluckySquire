@@ -3,8 +3,8 @@
 #include "GameInstance.h"
 #include "PlayerBody.h"
 #include "Player.h"
-#include <Section_Manager.h>
-#include <PlayerBomb.h>
+#include "Section_Manager.h"
+#include "PlayerBomb.h"
 
 
 CBombStamp::CBombStamp(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -59,7 +59,7 @@ HRESULT CBombStamp::Render()
     return S_OK;
 }
 
-void CBombStamp::Smash(_fvector v2DPosition)
+IBombable* CBombStamp::Place_Bomb(_fvector v2DPosition)
 {
 	CModelObject::MODELOBJECT_DESC tBombDesc{};
     tBombDesc.tTransform2DDesc.vInitialPosition = _float3(XMVectorGetX(v2DPosition), XMVectorGetY(v2DPosition), 0.0f);
@@ -69,6 +69,7 @@ void CBombStamp::Smash(_fvector v2DPosition)
     CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
     pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), pPlayerBomb, SECTION_2D_PLAYMAP_OBJECT);
 
+    return pPlayerBomb;
 }
 
 CBombStamp* CBombStamp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

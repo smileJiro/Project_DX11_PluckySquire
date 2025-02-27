@@ -2,6 +2,8 @@
 #include "ModelObject.h"
 
 BEGIN(Client)
+class CPlayerBomb;
+class IBombable;
 class CBombStamp :
     public CModelObject
 {
@@ -23,7 +25,7 @@ public:
 	virtual HRESULT			Render() override;
 
 
-	void Smash(_fvector v2DPosition);
+	IBombable* Place_Bomb(_fvector v2DPosition);
 private:
 
 public:

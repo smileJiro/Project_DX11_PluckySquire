@@ -62,6 +62,8 @@ public:
 		m_bInteracting = false;
 	}
 
+	//wstring Get_InteractName() { return m_strInteractName; }
+	//_bool Is_UIPlayerHeadUp() { return m_bUIPlayerHeadUp; }
 protected:
 
 	//플레이어가 건드렸을 때(상호작용 버튼을 눌렀을 때) 호출됨. Charge가 시작된 경우를 의미.
@@ -77,6 +79,9 @@ protected:
 	INTERACT_TYPE m_eInteractType = INTERACT_TYPE::NORMAL;
 	KEY m_eInteractKey = KEY::E;
 	_bool m_bInteracting = false;
+
+	//wstring m_strInteractName = TEXT("상호작용");
+	//_bool m_bUIPlayerHeadUp = false;
 };
 
 //예시  코드 : 상호작용하면 사망하는 NPC~
