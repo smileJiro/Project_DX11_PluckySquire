@@ -28,6 +28,13 @@ CLevel_Camera_Tool_Client::CLevel_Camera_Tool_Client(ID3D11Device* _pDevice, ID3
 HRESULT CLevel_Camera_Tool_Client::Initialize(LEVEL_ID _eLevelID)
 {
 	m_eLevelID = _eLevelID;
+
+	if (FAILED(CSection_Manager::GetInstance()->Level_Enter(LEVEL_CHAPTER_2)))
+	{
+		MSG_BOX(" Failed CSection_Manager Level_Enter(Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+
 	if (FAILED(Ready_Lights()))
 		return E_FAIL;
 	
@@ -49,7 +56,7 @@ HRESULT CLevel_Camera_Tool_Client::Initialize(LEVEL_ID _eLevelID)
 	if (FAILED(Ready_Layer_MainTable(TEXT("Layer_MainTable"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
+	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"), pCameraTarget)))
 		return E_FAIL;
 
 	Ready_DataFiles();
@@ -161,7 +168,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_CubeMap(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
-	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0);
+	//CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0);
 
 	CGameObject* pCamera = nullptr;
 
@@ -185,30 +192,30 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Camera(const _wstring& _strLayerT
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::FREE, dynamic_cast<CCamera*>(pCamera));
 
-	// Target Camera
-	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
+	//// Target Camera
+	//CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
 
-	TargetDesc.fSmoothSpeed = 5.f;
-	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
-	TargetDesc.vAtOffset = { 0.f, 3.f, 0.f };
-	TargetDesc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE::COORDINATE_3D);
+	//TargetDesc.fSmoothSpeed = 5.f;
+	//TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
+	//TargetDesc.vAtOffset = { 0.f, 3.f, 0.f };
+	//TargetDesc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE::COORDINATE_3D);
 
-	TargetDesc.fFovy = XMConvertToRadians(60.f);
-	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	TargetDesc.fNear = 0.1f;
-	TargetDesc.fFar = 1000.f;
-	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
-	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
-	TargetDesc.eZoomLevel = CCamera::LEVEL_6;
-	TargetDesc.iCameraType = CCamera_Manager::TARGET;
+	//TargetDesc.fFovy = XMConvertToRadians(60.f);
+	//TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	//TargetDesc.fNear = 0.1f;
+	//TargetDesc.fFar = 1000.f;
+	//TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
+	//TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
+	//TargetDesc.eZoomLevel = CCamera::LEVEL_6;
+	//TargetDesc.iCameraType = CCamera_Manager::TARGET;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
-		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &TargetDesc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
+	//	LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &TargetDesc)))
+	//	return E_FAIL;
 
-	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
+	//CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
 
-	Create_Arms();
+	//Create_Arms();
 
 	// CutScene Camera
 	CCamera_CutScene_Save::CAMERA_DESC CutSceneDesc{};
@@ -240,6 +247,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Player(const _wstring& _strLayerT
 	CPlayer::CONTAINEROBJ_DESC PlayerDesc = {};
 	PlayerDesc.iCurLevelID = m_eLevelID;
 	PlayerDesc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	PlayerDesc.tTransform3DDesc.vInitialRotation = { 0.f, XMConvertToRadians(180.f), 0.f};   // TODO ::임시 위치
 	_int a = sizeof(CPlayer::CONTAINEROBJ_DESC);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &PlayerDesc)))
@@ -261,7 +269,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Player(const _wstring& _strLayerT
 	return S_OK;
 }
 
-HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
+HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strLayerTag, CGameObject* _pPlayer)
 {
 	// Cube
 	CModelObject* pOut = { nullptr };
@@ -293,20 +301,27 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SampleBook"),
 	//	m_eLevelID, L"Layer_Book", &m_pSimulationCube, &BookDesc)))
 	//	return E_FAIL;
-	Desc.eStartCoord = COORDINATE_3D;
-	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	Desc.strModelPrototypeTag_3D = L"Prototype_Model_Book";
-	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
-	Desc.iShaderPass_3D = 0;
-	Desc.iPriorityID_3D = PR3D_GEOMETRY;
-	Desc.iRenderGroupID_3D = RG_3D;
-	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
-	Desc.tTransform3DDesc.vInitialPosition = { 2.f, 0.4f, -17.3f };
-	Desc.tTransform3DDesc.vInitialScaling = { 1.f, 1.f, 1.f };
+	//Desc.eStartCoord = COORDINATE_3D;
+	//Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
+	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	//Desc.strModelPrototypeTag_3D = L"Prototype_Model_Book";
+	//Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	//Desc.iShaderPass_3D = 0;
+	//Desc.iPriorityID_3D = PR3D_GEOMETRY;
+	//Desc.iRenderGroupID_3D = RG_3D;
+	//Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+	//Desc.tTransform3DDesc.vInitialPosition = { 2.f, 0.4f, -17.3f };
+	//Desc.tTransform3DDesc.vInitialScaling = { 1.f, 1.f, 1.f };
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
-		LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+	//	LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+	//	return E_FAIL;
+
+	CModelObject::MODELOBJECT_DESC BookDesc = {};
+	BookDesc.iCurLevelID = m_eLevelID;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SampleBook"),
+		m_eLevelID, L"_strLayerTag", reinterpret_cast<CGameObject**>(&pOut), &BookDesc)))
 		return E_FAIL;
 
 	//pOut->Set_Active(false);
@@ -324,6 +339,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	Desc.iPriorityID_3D = PR3D_BLEND;
 	Desc.iRenderGroupID_3D = RG_3D;
 	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+	Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 1.17f, -21.02f };
 
 
@@ -335,26 +351,30 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	m_ModelObjects.push_back(pOut);
 
 	// Player
-	Desc.eStartCoord = COORDINATE_3D;
-	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	Desc.isCoordChangeEnable = false;
-	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	Desc.strModelPrototypeTag_3D = L"Latch_SkelMesh_NewRig";
-	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
-	Desc.iShaderPass_3D = 0;
-	Desc.iPriorityID_3D = PR3D_BLEND;
-	Desc.iRenderGroupID_3D = RG_3D;
-	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
-	Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 1.17f, -21.02f };
-	Desc.tTransform3DDesc.vInitialRotation = { 0.f, XMConvertToRadians(180.f), 0.f };
+	//Desc.eStartCoord = COORDINATE_3D;
+	//Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
+	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	//Desc.isCoordChangeEnable = false;
+	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	//Desc.strModelPrototypeTag_3D = L"Latch_SkelMesh_NewRig";
+	//Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	//Desc.iShaderPass_3D = 0;
+	//Desc.iPriorityID_3D = PR3D_BLEND;
+	//Desc.iRenderGroupID_3D = RG_3D;
+	//Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+	////Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 0.352f, -21.02f };
+	//Desc.tTransform3DDesc.vInitialPosition = { 2.94290805f, 0.351999998f, -21.1068630f };
+	//Desc.tTransform3DDesc.vInitialRotation = { 0.f, XMConvertToRadians(180.f), 0.f };
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
-		LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+	//	LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+	//	return E_FAIL;
 
 	//pOut->Set_Active(false);
-	m_ModelObjects.push_back(pOut);
+	
+	CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0));
+	CModelObject* pPlayerBody = static_cast<CModelObject*>(pPlayer->Get_PlayerPartObject(CPlayer::PLAYER_PART_BODY));
+	m_ModelObjects.push_back(pPlayerBody);
 
 	return S_OK;
 }
@@ -664,41 +684,111 @@ void CLevel_Camera_Tool_Client::Show_AnimModel(_float _fTimeDelta)
 {
 	ImGui::Begin("Control Model");
 
-	static _int iModelIndex = {};
-	ImGui::InputInt("Model Index: %d", &iModelIndex);
+	//static _int iModelIndex = {};
+	ImGui::InputInt("Model Index: %d", &m_iModelIndex);
 
-	if (iModelIndex >= m_ModelObjects.size() || iModelIndex < -1)
+	if (m_iModelIndex >= m_ModelObjects.size() || m_iModelIndex < -1)
 		return;
 
 	//C3DModel* 
-	_float fTime = static_cast<C3DModel*>(m_ModelObjects[iModelIndex]->Get_Model(COORDINATE_3D))->Get_AnimTime();
+	_float fTime = static_cast<C3DModel*>(m_ModelObjects[m_iModelIndex]->Get_Model(COORDINATE_3D))->Get_AnimTime();
 	ImGui::Text("Current Anim Time : %.4f", fTime);
 
-	static _float fTimeScale = 1.f;
-	if (ImGui::DragFloat("LifeTime", &fTimeScale, 0.01f))
+	//static _bool isLoop = { true };
+	if (ImGui::RadioButton("Loop", m_isLoop))
 	{
-		m_pGameInstance->Set_TimeScale(fTimeScale, TEXT("Timer_Default"));
+		m_isLoop = !m_isLoop;
 	}
 
+	//static _int iAnim[3] = {};
 
-	static _bool isLoop = { true };
-	if (ImGui::RadioButton("Loop", isLoop))
+	ImGui::Text("Model 0(Book) Index: ", m_iAnim[0]);
+	ImGui::InputInt("Anim Index 0", &m_iAnim[0]);
+
+	ImGui::Text("Model 1(Hand) Index: ", m_iAnim[1]);
+	ImGui::InputInt("Anim Index 1", &m_iAnim[1]);
+
+	ImGui::Text("Model 2(Player) Index: ", m_iAnim[2]);
+	ImGui::InputInt("Anim Index 2", &m_iAnim[2]);
+
+	//static _int iReset = { 0 };
+	//ImGui::InputInt("Event ID", &iReset);
+
+	//static _bool isSelectModel[3] = {true};
+
+	if (ImGui::RadioButton("Book", m_isSelectModel[0]))
 	{
-		isLoop = !isLoop;
+		m_isSelectModel[0] = !m_isSelectModel[0];
 	}
 
-	static _int iAnim = { 0 };
-	ImGui::InputInt("Anim Index", &iAnim);
+	ImGui::SameLine();
+	if (ImGui::RadioButton("Hand", m_isSelectModel[1]))
+	{
+		m_isSelectModel[1] = !m_isSelectModel[1];
+	}
 
-	static _int iReset = { 0 };
-	ImGui::InputInt("Event ID", &iReset);
+	ImGui::SameLine();
+	if (ImGui::RadioButton("Player", m_isSelectModel[2]))
+	{
+		m_isSelectModel[2] = !m_isSelectModel[2];
+	}
 
 	if (ImGui::Button("Reset All"))
 	{
-		m_ModelObjects[iModelIndex]->Set_AnimationLoop(COORDINATE_3D, iAnim, isLoop);
-		m_ModelObjects[iModelIndex]->Set_Animation(iAnim);
+		for (_int i = 0; i < 3; ++i) {
+			if (true == m_isSelectModel[i]) {
+				m_ModelObjects[i]->Set_AnimationLoop(COORDINATE_3D, m_iAnim[i], m_isLoop);
+				m_ModelObjects[i]->Set_Animation(m_iAnim[i]);
+			}
+		}
 
+		m_fAnimTime = 0.f;
 	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Stop")) {
+		for (_int i = 0; i < 3; ++i) {
+			if (true == m_isSelectModel[i]) {
+				m_ModelObjects[i]->Set_PlayingAnim(false);
+			}
+		}
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("ReStart")) {
+		for (_int i = 0; i < 3; ++i) {
+			if (true == m_isSelectModel[i]) {
+				m_ModelObjects[i]->Set_PlayingAnim(true);
+			}
+		}
+	}
+
+	_float fAnimTime[3] = {};
+	pair<_float, _int> Greater = {};
+
+	for (_int i = 0; i < 3; ++i) {
+		if (true == m_isSelectModel[i]) {
+			fAnimTime[i] = m_ModelObjects[i]->Get_AnimationTime();
+
+			ImGui::Text("%d Time: %.2f", i, fAnimTime[i]);
+		}
+
+		if (Greater.first < fAnimTime[i]) {
+			Greater.first = fAnimTime[i];
+			Greater.second = i;
+		}
+	}
+
+	if (true == m_isSelectModel[Greater.second]) {
+		if (true == m_ModelObjects[Greater.second]->Is_PlayingAnim()) {
+			m_fAnimTime += _fTimeDelta;
+		}
+
+		ImGui::Text("Max Anim %d, Cur Time: %.2f", Greater.second, m_fAnimTime);
+	}
+
 
 	ImGui::End();
 }
@@ -788,18 +878,18 @@ void CLevel_Camera_Tool_Client::Set_KeyFrameInfo()
 
 	ImGui::NewLine();
 
-	ImGui::Text("At: %.2f, %.2f, %.2f      ", m_tKeyFrameInfo.vAtOffset.x, m_tKeyFrameInfo.vAtOffset.y, m_tKeyFrameInfo.vAtOffset.z);
+	ImGui::Text("At: %.2f, %.2f, %.2f      ", m_tKeyFrameInfo.vAt.x, m_tKeyFrameInfo.vAt.y, m_tKeyFrameInfo.vAt.z);
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFrameAtX", &m_tKeyFrameInfo.vAtOffset.x);
+	ImGui::DragFloat("##KeyFrameAtX", &m_tKeyFrameInfo.vAt.x);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFrameAtY", &m_tKeyFrameInfo.vAtOffset.y);
+	ImGui::DragFloat("##KeyFrameAtY", &m_tKeyFrameInfo.vAt.y);
 	ImGui::SameLine(0, 10.0f);
 
 	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFrameAtZ", &m_tKeyFrameInfo.vAtOffset.z);
+	ImGui::DragFloat("##KeyFrameAtZ", &m_tKeyFrameInfo.vAt.z);
 
 	if (true == m_tKeyFrameInfo.bLookTarget)
 		ImGui::Text("Loot Target: TRUE             ");
@@ -967,7 +1057,7 @@ void CLevel_Camera_Tool_Client::Show_KeyFrameInfo()
 			ImGui::Text("Ratio Type: EASE_IN_OUT          ");
 			break;
 		}
-		ImGui::Text("At: %.2f, %.2f, %.2f      ", m_pCurKeyFrame->first.vAtOffset.x, m_pCurKeyFrame->first.vAtOffset.y, m_pCurKeyFrame->first.vAtOffset.z);
+		ImGui::Text("At: %.2f, %.2f, %.2f      ", m_pCurKeyFrame->first.vAt.x, m_pCurKeyFrame->first.vAt.y, m_pCurKeyFrame->first.vAt.z);
 
 		if (true == m_pCurKeyFrame->first.bLookTarget)
 			ImGui::Text("Loot At: TRUE             ");
@@ -1002,6 +1092,9 @@ void CLevel_Camera_Tool_Client::Show_KeyFrameInfo()
 
 	for (auto& Frame : m_SelectedKeyFrame) {
 		ImGui::Text("Selected Position: %.2f, %.2f, %.2f", Frame.vPosition.x, Frame.vPosition.y, Frame.vPosition.z);
+		ImGui::SameLine();
+		ImGui::Text("   TimeStamp: %.2f", Frame.fTimeStamp);
+	
 	}
 
 	// Cur Scene Info
@@ -1011,12 +1104,24 @@ void CLevel_Camera_Tool_Client::Show_KeyFrameInfo()
 	ImGui::Text("Current Scene Info");
 	ImGui::Separator();
 
+
 	_int iSectorNum = {};
 	for (auto& CutScene : m_CutScenes) {
 		if (CutScene.first == m_CutSceneTags[m_iSelectedCutSceneNum]) {
 
 			_string Name = m_pGameInstance->WStringToString(m_CutSceneTags[m_iSelectedCutSceneNum]);
 			ImGui::Text("Current CutScene Tag: %s  ", Name.c_str());
+			//ImGui::NewLine();
+
+			CUTSCENE_SUB_DATA tSubData;
+			auto& Subiter = m_CutSceneSubDatas.find(CutScene.first);
+			if (CCamera_Manager::TARGET == (*Subiter).second.iNextCameraType) {
+				ImGui::Text("Current CutScene Next CameraType: TARGET");
+			}
+			else if (CCamera_Manager::TARGET_2D == (*Subiter).second.iNextCameraType) {
+				ImGui::Text("Current CutScene Next CameraType: TARGET_2D");
+			}
+
 			ImGui::NewLine();
 
 			for (auto& Sector : CutScene.second) {
@@ -1051,7 +1156,7 @@ void CLevel_Camera_Tool_Client::Show_KeyFrameInfo()
 						ImGui::Text("Ratio Type: EASE_IN_OUT          ");
 						break;
 					}
-					ImGui::Text("At: %.2f, %.2f, %.2f      ", (*pKeyFrames)[i].vAtOffset.x, (*pKeyFrames)[i].vAtOffset.y, (*pKeyFrames)[i].vAtOffset.z);
+					ImGui::Text("At: %.2f, %.2f, %.2f      ", (*pKeyFrames)[i].vAt.x, (*pKeyFrames)[i].vAt.y, (*pKeyFrames)[i].vAt.z);
 
 					if (true == (*pKeyFrames)[i].bLookTarget)
 						ImGui::Text("Loot At: TRUE             ");
@@ -1957,7 +2062,7 @@ void CLevel_Camera_Tool_Client::Edit_KeyFrame()
 		m_pCurKeyFrame->first.fTimeStamp = m_tKeyFrameInfo.fTimeStamp;
 		m_pCurKeyFrame->first.iZoomLevel = m_tKeyFrameInfo.iZoomLevel;
 		m_pCurKeyFrame->first.iZoomRatioType = m_tKeyFrameInfo.iZoomRatioType;
-		m_pCurKeyFrame->first.vAtOffset = m_tKeyFrameInfo.vAtOffset;
+		m_pCurKeyFrame->first.vAt = m_tKeyFrameInfo.vAt;
 		m_pCurKeyFrame->first.bLookTarget = m_tKeyFrameInfo.bLookTarget;
 		m_pCurKeyFrame->first.iAtRatioType = m_tKeyFrameInfo.iAtRatioType;
 
@@ -2108,42 +2213,49 @@ void CLevel_Camera_Tool_Client::Set_CameraInfo()
 	ImGui::NewLine();
 	ImGui::Text("Fixed LookAt: %.2f, %.2f, %.2f", m_vInitialLookAt.x, m_vInitialLookAt.y, m_vInitialLookAt.z);
 
-	_vector vNewLook = XMVector3Normalize(XMLoadFloat3(&m_vInitialLookAt) - vPos);
-	XMStoreFloat3(&m_vNextAtOffset, vNewLook - vLook);
+	//_vector vNewLook = XMVector3Normalize(XMLoadFloat3(&m_vInitialLookAt) - vPos);
+	_float fDistance = XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_vInitialLookAt) - vPos));
 
-	ImGui::Text("AtOffset: %.2f, %.2f, %.2f", m_vNextAtOffset.x, m_vNextAtOffset.y, m_vNextAtOffset.z);
+	_vector vNewAt = vPos + (vLook * fDistance);
+
+	//XMStoreFloat3(&m_vNextAtOffset, vNewAt - XMLoadFloat3(&m_vInitialLookAt));
+
+	ImGui::Text("Cur At: %.2f, %.2f, %.2f", XMVectorGetX(vNewAt), XMVectorGetY(vNewAt), XMVectorGetZ(vNewAt));
+
+	if (ImGui::Button("Create KeyFrame By Camera Pos")) {
+		XMStoreFloat3(&m_tKeyFrameInfo.vPosition, pCamera->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
+		CUTSCENE_KEYFRAME tFrame = m_tKeyFrameInfo;
+		CGameObject* pCube = Create_Cube();
+
+		XMStoreFloat3(&tFrame.vAt, vNewAt);
+		
+		if (nullptr == pCube)
+			return;
+
+		m_KeyFrames.push_back({ tFrame, pCube });
+	}
 }
 
 void CLevel_Camera_Tool_Client::Create_Sector()
 {
-	if (KEY_PRESSING(KEY::CTRL)) {
-		if (MOUSE_DOWN(MOUSE_KEY::LB)) {
+	ImGui::SameLine();
 
-			_float2 fMousePos = m_pGameInstance->Get_CursorPos();
+	if (ImGui::Button("Cur KeyFrame To Sector")) {
 
-			CGameObject* pCube = m_pGameInstance->Get_PickingModelObjectByCursor(LEVEL_CAMERA_TOOL, TEXT("Layer_Cube"), fMousePos);
+		if (nullptr == m_pCurKeyFrame)
+			return;
 
-			if (nullptr == pCube)
+		for (auto& SelectedFrame : m_SelectedKeyFrame) {
+
+			_float fEpsilon = 0.01f;
+
+			if (m_pCurKeyFrame->first.fTimeStamp < SelectedFrame.fTimeStamp + fEpsilon &&
+				m_pCurKeyFrame->first.fTimeStamp > SelectedFrame.fTimeStamp - fEpsilon)
 				return;
-
-			for (auto& KeyFrame : m_KeyFrames) {
-				if (KeyFrame.second == pCube) {
-
-					for (auto& SelectedFrame : m_SelectedKeyFrame) {
-						if (true == XMVector3Equal(XMLoadFloat3(&SelectedFrame.vPosition), XMLoadFloat3(&KeyFrame.first.vPosition)))
-							return;
-
-						_float fEpsilon = 0.01f;
-
-						if (KeyFrame.first.fTimeStamp < SelectedFrame.fTimeStamp + fEpsilon &&
-							KeyFrame.first.fTimeStamp > SelectedFrame.fTimeStamp - fEpsilon)
-							return;
-					}
-
-					m_SelectedKeyFrame.push_back(KeyFrame.first);
-				}
-			}
 		}
+
+		m_SelectedKeyFrame.push_back(m_pCurKeyFrame->first);
+		
 	}
 
 	switch (m_iSectorType) {
@@ -2178,6 +2290,16 @@ void CLevel_Camera_Tool_Client::Create_Sector()
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(-1);
 	ImGui::InputText("##CutScene Tag", m_szCutSceneTag, MAX_PATH);
+
+	ImGui::Text("CutScene Next CameraType: ", m_tCutSceneSubData.iNextCameraType);
+	ImGui::SameLine();
+	if (ImGui::Button("2D")) {
+		m_tCutSceneSubData.iNextCameraType = CCamera_Manager::TARGET_2D;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("TARGET")) {
+		m_tCutSceneSubData.iNextCameraType = CCamera_Manager::TARGET;
+	}
 
 	ImGui::NewLine();
 
@@ -2225,12 +2347,15 @@ void CLevel_Camera_Tool_Client::Create_Sector()
 		if (true == isSameTag) {
 			auto iter = m_CutScenes.find(m_pGameInstance->StringToWString(m_szCutSceneTag));
 			iter->second.push_back(pSector);
+	/*		auto SubDataiter = m_CutSceneSubDatas.find(m_pGameInstance->StringToWString(m_szCutSceneTag));
+			SubDataiter->second = m_tCutSceneSubData;*/
 		}
 		else {
 			vector<CCutScene_Sector*> vecSector;
 			vecSector.push_back(pSector);
 
 			m_CutScenes.emplace(m_pGameInstance->StringToWString(m_szCutSceneTag), vecSector);
+			m_CutSceneSubDatas.emplace(m_pGameInstance->StringToWString(m_szCutSceneTag), m_tCutSceneSubData);
 			m_CutSceneTags.push_back(m_pGameInstance->StringToWString(m_szCutSceneTag));
 		}
 
@@ -2434,7 +2559,10 @@ void CLevel_Camera_Tool_Client::Play_CutScene(_float fTimeDelta)
 		static_cast<CCamera_CutScene_Save*>(pCamera)->CutScene_Clear();
 
 		for (auto& CutScene : m_CutScenes) {
-			static_cast<CCamera_CutScene_Save*>(pCamera)->Add_CutScene(CutScene.first, CutScene.second);
+
+			auto Subiter = m_CutSceneSubDatas.find(CutScene.first);
+
+			static_cast<CCamera_CutScene_Save*>(pCamera)->Add_CutScene(CutScene.first, CutScene.second, (*Subiter).second);
 		}
 	}
 
@@ -2486,6 +2614,22 @@ void CLevel_Camera_Tool_Client::Play_CutScene(_float fTimeDelta)
 			return;
 
 		static_cast<CCamera_CutScene_Save*>(pCamera)->Set_NextCutScene(m_CutSceneTags[m_iSelectedCutSceneNum]);
+
+		for (_int i = 0; i < 3; ++i) {
+			if (true == m_isSelectModel[i]) {
+				m_ModelObjects[i]->Set_AnimationLoop(COORDINATE_3D, m_iAnim[i], m_isLoop);
+				m_ModelObjects[i]->Set_Animation(m_iAnim[i]);
+
+				if (2 == i) {
+					CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0));
+					pPlayer->Get_ActorCom()->Set_GlobalPose({ 2.94290805f, 0.351999998f, -21.1068630f });
+					pPlayer->Set_Kinematic(true);
+					pPlayer->LookDirectionXZ_Kinematic(_vector{ 0,0,-1 });
+				}
+			}
+		}
+
+		m_fAnimTime = 0.f;
 	}
 
 	ImGui::SameLine();
@@ -2509,7 +2653,7 @@ void CLevel_Camera_Tool_Client::Save_Data_CutScene()
 		if (nullptr == pCamera)
 			return;
 
-		map<_wstring, pair<_float2, vector<CUTSCENE_DATA>>>* pData = static_cast<CCamera_CutScene_Save*>(pCamera)->Get_CutSceneDatas();
+		map<_wstring, pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA>>>* pData = static_cast<CCamera_CutScene_Save*>(pCamera)->Get_CutSceneDatas();
 
 		if (nullptr == pData)
 			return;
@@ -2525,7 +2669,10 @@ void CLevel_Camera_Tool_Client::Save_Data_CutScene()
 			CutScene_json["CutScene_Tag"] = szCutSceneTag;
 
 			// Total Time 저장
-			CutScene_json["CutScene_Time"] = { CutSceneData.second.first.x, CutSceneData.second.first.y };
+			CutScene_json["CutScene_Time"] = { CutSceneData.second.first.fTotalTime.x, CutSceneData.second.first.fTotalTime.y };
+
+			// NextCameraType 저장
+			CutScene_json["CutScene_Next_CameraType"] = CutSceneData.second.first.iNextCameraType;
 
 			// Data Struct 저장
 			CutScene_json["Datas"] = json::array();
@@ -2534,7 +2681,7 @@ void CLevel_Camera_Tool_Client::Save_Data_CutScene()
 
 				Data_json["Position"] = { Data.vPosition.x, Data.vPosition.y, Data.vPosition.z };
 				Data_json["Rotation"] = { Data.vRotation.x, Data.vRotation.y, Data.vRotation.z };
-				Data_json["AtOffset"] = { Data.vAtOffset.x, Data.vAtOffset.y, Data.vAtOffset.z };
+				Data_json["At"] = { Data.vAt.x, Data.vAt.y, Data.vAt.z };
 				Data_json["Fovy"] = Data.fFovy;
 
 				CutScene_json["Datas"].push_back(Data_json);
@@ -2577,7 +2724,7 @@ void CLevel_Camera_Tool_Client::Save_Data_CutScene()
 			KeyFrame_json["TimeStamp"] = KeyFrame.first.fTimeStamp;
 			KeyFrame_json["Zoom_Level"] = KeyFrame.first.iZoomLevel;
 			KeyFrame_json["Zoom_RatioType"] = KeyFrame.first.iZoomRatioType;
-			KeyFrame_json["AtOffset"] = { KeyFrame.first.vAtOffset.x, KeyFrame.first.vAtOffset.y, KeyFrame.first.vAtOffset.z };
+			KeyFrame_json["At"] = { KeyFrame.first.vAt.x, KeyFrame.first.vAt.y, KeyFrame.first.vAt.z };
 			KeyFrame_json["Is_LookTarget"] = KeyFrame.first.bLookTarget;
 			KeyFrame_json["At_RatioType"] = KeyFrame.first.iAtRatioType;
 
@@ -2593,6 +2740,11 @@ void CLevel_Camera_Tool_Client::Save_Data_CutScene()
 
 			// CutScene Tag
 			CutScene_json["CutScene_Tag"] = m_pGameInstance->WStringToString(CutScene.first);
+
+			auto& SubDataiter = m_CutSceneSubDatas.find(CutScene.first);
+
+			// NextCameraType 저장
+			CutScene_json["CutScene_Next_CameraType"] = (*SubDataiter).second.iNextCameraType;
 
 			// Sector
 			CutScene_json["Sector"] = json::array();
@@ -2618,7 +2770,7 @@ void CLevel_Camera_Tool_Client::Save_Data_CutScene()
 					KeyFrame_json["TimeStamp"] = KeyFrame.fTimeStamp;
 					KeyFrame_json["Zoom_Level"] = KeyFrame.iZoomLevel;
 					KeyFrame_json["Zoom_RatioType"] = KeyFrame.iZoomRatioType;
-					KeyFrame_json["AtOffset"] = { KeyFrame.vAtOffset.x, KeyFrame.vAtOffset.y,KeyFrame.vAtOffset.z };
+					KeyFrame_json["At"] = { KeyFrame.vAt.x, KeyFrame.vAt.y,KeyFrame.vAt.z };
 					KeyFrame_json["Is_LookTarget"] = KeyFrame.bLookTarget;
 					KeyFrame_json["At_RatioType"] = KeyFrame.iAtRatioType;
 
@@ -2747,7 +2899,7 @@ void CLevel_Camera_Tool_Client::Load_Data_CutScene()
 				tKeyFrame.fTimeStamp = KeyFrame_json["TimeStamp"];
 				tKeyFrame.iZoomLevel = KeyFrame_json["Zoom_Level"];
 				tKeyFrame.iZoomRatioType = KeyFrame_json["Zoom_RatioType"];
-				tKeyFrame.vAtOffset = { KeyFrame_json["AtOffset"][0].get<_float>(), KeyFrame_json["AtOffset"][1].get<_float>(), KeyFrame_json["AtOffset"][2].get<_float>() };
+				tKeyFrame.vAt = { KeyFrame_json["At"][0].get<_float>(), KeyFrame_json["At"][1].get<_float>(), KeyFrame_json["At"][2].get<_float>() };
 				tKeyFrame.bLookTarget = KeyFrame_json["Is_LookTarget"];
 				tKeyFrame.iAtRatioType = KeyFrame_json["At_RatioType"];
 
@@ -2765,6 +2917,10 @@ void CLevel_Camera_Tool_Client::Load_Data_CutScene()
 
 				// CutScene Tag
 				_string szCutSceneTag = CutScene_json["CutScene_Tag"];
+
+				// SubData NextCameraType 저장
+				CUTSCENE_SUB_DATA tSubData;
+				tSubData.iNextCameraType = CutScene_json["CutScene_Next_CameraType"];
 
 				// Sector
 				if (CutScene_json.contains("Sector") && CutScene_json["Sector"].is_array()) {
@@ -2787,7 +2943,7 @@ void CLevel_Camera_Tool_Client::Load_Data_CutScene()
 								tKeyFrame.fTimeStamp = KeyFrame_json["TimeStamp"];
 								tKeyFrame.iZoomLevel = KeyFrame_json["Zoom_Level"];
 								tKeyFrame.iZoomRatioType = KeyFrame_json["Zoom_RatioType"];
-								tKeyFrame.vAtOffset = { KeyFrame_json["AtOffset"][0].get<_float>(), KeyFrame_json["AtOffset"][1].get<_float>(), KeyFrame_json["AtOffset"][2].get<_float>() };
+								tKeyFrame.vAt = { KeyFrame_json["At"][0].get<_float>(), KeyFrame_json["At"][1].get<_float>(), KeyFrame_json["At"][2].get<_float>() };
 								tKeyFrame.bLookTarget = KeyFrame_json["Is_LookTarget"];
 								tKeyFrame.iAtRatioType = KeyFrame_json["At_RatioType"];
 
@@ -2811,6 +2967,7 @@ void CLevel_Camera_Tool_Client::Load_Data_CutScene()
 								vecSector.push_back(pSector);
 
 								m_CutScenes.emplace(m_pGameInstance->StringToWString(szCutSceneTag), vecSector);
+								m_CutSceneSubDatas.emplace(m_pGameInstance->StringToWString(szCutSceneTag), tSubData);
 								m_CutSceneTags.push_back(m_pGameInstance->StringToWString(szCutSceneTag));
 							}
 						}

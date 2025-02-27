@@ -2,6 +2,7 @@
 #include "ModelObject.h"
 
 BEGIN(Client)
+class CPalmDecal;
 class CStopStamp :
     public CModelObject
 {
@@ -22,9 +23,9 @@ public:
 	void Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
-	void Place_Stopper(_fvector v2DPosition);
+	void Place_PalmMarker(_fvector v2DPosition);
 private:
-
+	CPalmDecal* m_pPalmDecal = nullptr;
 public:
 	static CStopStamp* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

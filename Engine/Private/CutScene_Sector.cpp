@@ -48,7 +48,7 @@ _float CCutScene_Sector::Get_TimeOffset()
 	if (-1 == m_iCurKeyFrameIndex || m_iCurKeyFrameIndex >= (_int)(m_KeyFrames.size() - 2))
 		return -1;
 
-	_float fTimeOffset = m_KeyFrames[m_iCurKeyFrameIndex + 1].fTimeStamp - m_KeyFrames[m_iCurKeyFrameIndex].fTimeStamp;
+	_float fTimeOffset = m_KeyFrames[m_iCurKeyFrameIndex + 1].fTimeStamp - m_fCurrentTime;
 
 	return fTimeOffset;
 }
@@ -78,7 +78,7 @@ _bool CCutScene_Sector::Get_IsChangeKeyFrame()
 	return false;
 }
 
-_bool CCutScene_Sector::Play_Sector(_float _fTimeDelta, _vector* _pOutPos)
+_bool CCutScene_Sector::Play_Sector(_float _fTimeDelta, _vector* _pOutPos, _vector* _pOutAt)
 {
 	m_fCurrentTime += _fTimeDelta;
 	
@@ -100,9 +100,11 @@ _bool CCutScene_Sector::Play_Sector(_float _fTimeDelta, _vector* _pOutPos)
 	switch (m_iSectorType) {
 	case SPLINE:
 		*_pOutPos = Calculate_Position_Catmull_Rom(fRatio);
+		*_pOutAt = Calculate_At_Catmull_Rom(fRatio);
 		break;
 	case LINEAR:
 		*_pOutPos = Calculate_Position_Linear(fRatio);
+		//*_pOutAt = Calculate_Position_Linear(fRatio);
 		break;
 	}
 
@@ -138,6 +140,29 @@ _vector CCutScene_Sector::Calculate_Position_Linear(_float _fRatio)
 {
 
 	return _vector();
+}
+
+_vector CCutScene_Sector::Calculate_At_Catmull_Rom(_float _fRatio)
+{
+	//_uint iSegment = (_uint)(_fRatio * (m_KeyFrames.size() - 3));
+	_float deBoorRatio = (m_fCurrentTime - m_KeyFrames[m_iCurSegmentIndex].fTimeStamp) /
+		(m_KeyFrames[m_iCurSegmentIndex + 3].fTimeStamp - m_KeyFrames[m_iCurSegmentIndex].fTimeStamp);
+
+	_vector vPos0 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex].vAt);
+	_vector vPos1 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 1].vAt);
+	_vector vPos2 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 2].vAt);
+	_vector vPos3 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 3].vAt);
+
+	_vector vLerp0_First = XMVectorLerp(vPos0, vPos1, deBoorRatio);
+	_vector vLerp1_First = XMVectorLerp(vPos1, vPos2, deBoorRatio);
+	_vector vLerp2_First = XMVectorLerp(vPos2, vPos3, deBoorRatio);
+
+	_vector vLerp0_Second = XMVectorLerp(vLerp0_First, vLerp1_First, deBoorRatio);
+	_vector vLerp1_Second = XMVectorLerp(vLerp1_First, vLerp2_First, deBoorRatio);
+
+	_vector vResult = XMVectorLerp(vLerp0_Second, vLerp1_Second, deBoorRatio);
+
+	return vResult;
 }
 
 _uint CCutScene_Sector::Find_Span(_float _fRatio)
@@ -249,7 +274,9 @@ void CCutScene_Sector::Sort_Sector()
 void CCutScene_Sector::Add_KeyFrame(CUTSCENE_KEYFRAME _tKeyFrame)
 {
 	for (auto& Frame : m_KeyFrames) {
-		if (true == XMVector3Equal(XMLoadFloat3(&Frame.vPosition), XMLoadFloat3(&_tKeyFrame.vPosition)))
+
+		if (_tKeyFrame.fTimeStamp < Frame.fTimeStamp + EPSILON &&
+			_tKeyFrame.fTimeStamp > Frame.fTimeStamp - EPSILON)
 			return;
 	}
 

@@ -134,7 +134,8 @@ HRESULT CGraphic_Device::Ready_SwapChain(HWND _hWnd, _bool _isWindowed, _uint _i
 	/* 스케치북에 사과를 그릴꺼야. */
 	/* RENDER_TARGET : 그림을 당하는 대상. 스케치북 */
 	SwapChain.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	SwapChain.BufferCount = 2;
+	//SwapChain.BufferCount = 2;	// 원본 - (Failed Render MainApp 떠서 잠시 바꿈 - 효림)
+	SwapChain.BufferCount = 1;
 
 	/*스왑하는 형태 : 모니터 주사율에 따라 조절해도 됨. */
 	SwapChain.BufferDesc.RefreshRate.Numerator = 60;
@@ -147,7 +148,8 @@ HRESULT CGraphic_Device::Ready_SwapChain(HWND _hWnd, _bool _isWindowed, _uint _i
 
 	SwapChain.OutputWindow = _hWnd;
 	SwapChain.Windowed = _isWindowed;
-	SwapChain.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+	//SwapChain.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD; // 원본 - (Failed Render MainApp 떠서 잠시 바꿈 - 효림)
+	SwapChain.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	if (FAILED(pFactory->CreateSwapChain(m_pDevice, &SwapChain, &m_pSwapChain)))
 		return E_FAIL;
 

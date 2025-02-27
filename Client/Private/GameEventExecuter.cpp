@@ -438,13 +438,30 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
 
 			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night.json"));
 			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/chapter2_N.json"));
+
+			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+
+			ARM_DATA tData = {};
+			tData.fMoveTimeAxisRight = { 1.5f, 0.f };
+			tData.fRotationPerSecAxisRight = { XMConvertToRadians(-11.f), XMConvertToRadians(-1.f) };
+			tData.iRotationRatioType = EASE_IN_OUT;
+			tData.fLength = 9.0f;
+			tData.fLengthTime = { 1.5f, 0.f };
+			tData.iLengthRatioType = EASE_IN_OUT;
+
+			pCamera->Add_CustomArm(tData);
+			pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_CUSTOMARM);
+			pCamera->Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, -3.f, 0.f), EASE_IN_OUT);
+			pCamera->Start_Zoom(1.5f, (CCamera::ZOOM_LEVEL)CCamera::LEVEL_5, EASE_IN_OUT);
+			//pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
+
             m_isStart = true;
         }
 
         CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
        
         if (COORDINATE_3D == pPlayer->Get_CurCoord()) {
-			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+			/*CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
             pCamera->Set_CameraMode(CCamera_Target::MOVE_TO_CUSTOMARM);
 
             ARM_DATA tData = {};
@@ -457,42 +474,47 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
 
             pCamera->Add_CustomArm(tData);
 
-            pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
+            pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);*/
+
+			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
+			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("CutScene_Humgrump"));
 
             m_fTimer = 0.f;
             m_iStep++;
             m_isStart = false;
+
+			GameEvent_End();
         }
     }
-    else if (1 == m_iStep) {
+   // else if (1 == m_iStep) {
 
-        m_fTimer += _fTimeDelta;
+   //     m_fTimer += _fTimeDelta;
 
-        CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
-        
-        if (CPlayer::IDLE == static_cast<CPlayer*>(pPlayer)->Get_CurrentStateID()) {
-            CCamera_Manager::GetInstance()->Start_FadeOut(1.5f);
+   //     CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
+   //     
+   //     if (CPlayer::IDLE == static_cast<CPlayer*>(pPlayer)->Get_CurrentStateID()) {
+   //         CCamera_Manager::GetInstance()->Start_FadeOut(1.5f);
 
-            m_iStep++;
-            m_isStart = false;
-            m_fTimer = 0.f;
-        }
+   //         m_iStep++;
+   //         m_isStart = false;
+   //         m_fTimer = 0.f;
+   //     }
 
-    }
-    else if (2 == m_iStep) {
-        m_fTimer += _fTimeDelta;
+   // }
+   // else if (2 == m_iStep) {
+   //     m_fTimer += _fTimeDelta;
 
-        if (m_fTimer >= 1.6f) {
+   //     if (m_fTimer >= 1.6f) {
 
-			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-			pCamera->Set_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
-			pCamera->Set_NextArmData(TEXT("Default"), 12);
+			////CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+			////pCamera->Set_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+			////pCamera->Set_NextArmData(TEXT("Default"), 12);
 
-            CCamera_Manager::GetInstance()->Start_FadeIn(1.5f);
+   //         CCamera_Manager::GetInstance()->Start_FadeIn(1.5f);
 
-            GameEvent_End();
-        }
-    }
+   //         GameEvent_End();
+   //     }
+   // }
 }
 
 

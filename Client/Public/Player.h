@@ -570,6 +570,7 @@ public:
 	void Set_InteractObject(IInteractable* _pInteractable) { m_pInteractableObject = _pInteractable; }
 	NORMAL_DIRECTION Set_PortalNormal(NORMAL_DIRECTION _eNormal) { return m_e3DPortalNormal = _eNormal; }
 	void Set_GravityCompOn(_bool _bOn);
+	void Set_CurrentStampType(PLAYER_PART _eStamp) { m_eCurrentStamp = _eStamp; }
 
 	void Start_Attack(ATTACK_TYPE _eAttackType);
 	void End_Attack();

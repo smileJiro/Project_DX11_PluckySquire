@@ -26,7 +26,7 @@ HRESULT CWord::Initialize(void* _pArg)
 	WORD_DESC* pDesc = static_cast<WORD_DESC*>(_pArg);
 	//2.23 머리위에 왔을 때의 위치, 회전 등 상태에 대한 설정 추가. -김지완-
 	pDesc->eCrriableObjId = WORD;
-	pDesc->vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
+	//pDesc->vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
 	pDesc->vHeadUpOffset3D = { 0.f,1.5f,0.f };
 	XMStoreFloat4x4(&m_matHeadUpMatrix[COORDINATE_2D], XMMatrixTranslation(0.f, pDesc->fHeadUpHeight2D, 0.f));
 
@@ -34,8 +34,6 @@ HRESULT CWord::Initialize(void* _pArg)
 	XMStoreFloat4x4(&m_matHeadUpMatrix[COORDINATE_3D],
 		matHeadUpRotationMatrix
 		* XMMatrixTranslation(pDesc->vHeadUpOffset3D.x, pDesc->vHeadUpOffset3D.y, pDesc->vHeadUpOffset3D.z));
-
-
 
 
 	m_iRenderGroupID_3D = RG_3D;
