@@ -77,23 +77,22 @@ HRESULT CRabbitLunch::Initialize(void* _pArg)
 	switch (m_eLunchType)
 	{
 	case Client::CRabbitLunch::CARROT_1:
-		pModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Model_Carrot_01");
-
+		pModelDesc->strModelPrototypeTag_3D = TEXT("Carrots_Carrot_01");
 		break;
 	case Client::CRabbitLunch::CARROT_2:
-		pModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Model_Carrot_02");
+		pModelDesc->strModelPrototypeTag_3D = TEXT("Carrots_Carrot_02");
 		break;
 	case Client::CRabbitLunch::CARROT_3:
-		pModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Model_Carrot_03");
+		pModelDesc->strModelPrototypeTag_3D = TEXT("Carrots_Carrot_03");
 		break;
 	case Client::CRabbitLunch::GRAPE_1:
-		pModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Model_Grape_01");
+		pModelDesc->strModelPrototypeTag_3D = TEXT("Grapes_Grape_01");
 		break;
 	case Client::CRabbitLunch::GRAPE_2:
-		pModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Model_Grape_02");
+		pModelDesc->strModelPrototypeTag_3D = TEXT("Grapes_Grape_02");
 		break;
 	case Client::CRabbitLunch::GRAPE_3:
-		pModelDesc->strModelPrototypeTag_3D = TEXT("Prototype_Model_Grape_03");
+		pModelDesc->strModelPrototypeTag_3D = TEXT("Grapes_Grape_03");
 		break;
 	case Client::CRabbitLunch::LUNCH_TYPE_LAST:
 	default:

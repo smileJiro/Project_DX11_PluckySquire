@@ -290,13 +290,13 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	//CModelObject::MODELOBJECT_DESC BookDesc = {};
 	//BookDesc.iCurLevelID = m_eLevelID;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SampleBook"),
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
 	//	m_eLevelID, L"Layer_Book", &m_pSimulationCube, &BookDesc)))
 	//	return E_FAIL;
 	Desc.eStartCoord = COORDINATE_3D;
 	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
 	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	Desc.strModelPrototypeTag_3D = L"Prototype_Model_Book";
+	Desc.strModelPrototypeTag_3D = L"book";
 	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
 	Desc.iShaderPass_3D = 0;
 	Desc.iPriorityID_3D = PR3D_GEOMETRY;

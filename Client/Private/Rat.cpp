@@ -352,7 +352,7 @@ HRESULT CRat::Ready_Components()
     FSMDesc.pOwner = this;
     FSMDesc.iCurLevel = m_iCurLevelID;
 
-    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
         return E_FAIL;
 
