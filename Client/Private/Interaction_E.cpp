@@ -4,6 +4,7 @@
 #include "Interactable.h"
 #include "Section_Manager.h"
 #include "Dialog_Manager.h"
+#include "Player.h"
 
 
 
@@ -55,14 +56,24 @@ void CInteraction_E::Update(_float _fTimeDelta)
 	}
 	else
 	{
+		// TODO :: 일단 이름이 비어있으면 
+		if (TEXT("") == Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractName())
+			return;
+
 		if (false == m_isRender)
 			m_isRender = true;
 
 		CGameObject* pGameObejct = dynamic_cast<CGameObject*>(Uimgr->Get_Player()->Get_InteractableObject());
 
 
-		if (false == CSection_Manager::GetInstance()->Is_CurSection(pGameObejct))
-			return;
+		
+
+		if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+		{
+			if (false == CSection_Manager::GetInstance()->Is_CurSection(pGameObejct))
+				return;
+		}
+		
 
 		if (true == Uimgr->Get_Player()->Get_InteractableObject()->Is_UIPlayerHeadUp())
 		{
@@ -79,7 +90,10 @@ void CInteraction_E::Update(_float _fTimeDelta)
 
 void CInteraction_E::Late_Update(_float _fTimeDelta)
 {
-
+	if (true == m_isRender && COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		__super::Late_Update(_fTimeDelta);
+	}
 } 
 
 HRESULT CInteraction_E::Render()
@@ -93,7 +107,7 @@ HRESULT CInteraction_E::Render()
 
 
 
-	if (true == m_isRender && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	if (true == m_isRender /* && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord()*/)
 	{
 		// TODO :: 일단은...
 
@@ -236,7 +250,11 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 			m_vObejctPos = _float3(vObjectPos.x, vObjectPos.y + RTSize.y * 0.25f, 1.f);
 
 			if (m_vObejctPos.y <= 300.f)
+			{
 				m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, m_vObejctPos.y, 0.f, 1.f));
+				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+			}
+				
 			else
 			{
 				m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, m_vObejctPos.y - RTSize.y * 0.35f, 0.f, 1.f));
@@ -253,6 +271,7 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 			// 노출되는  UI의 최종 위치
 			m_vObejctPos = _float3(vObjectPos.x, vObjectPos.y + RTSize.y * 0.025f, 1.f);
 			m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, m_vObejctPos.y, 0.f, 1.f));
+			m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
 
 		}
 
@@ -265,10 +284,32 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 
 		//Display_Text(m_vObejctPos, RTSize);
 	}
+	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		_float4x4 DisPlayPos;
+		_matrix matWorld = _pGameObject->Get_FinalWorldMatrix();
+		//_matrix matView = XMLoadFloat4x4(m_pGameInstance->Get_ViewMatrix_Renderer());
+		//_matrix matProj = XMLoadFloat4x4(m_pGameInstance->Get_ProjMatrix_Renderer());
+
+		_matrix matView = XMLoadFloat4x4(&m_ViewMatrix);
+		_matrix matProj = XMLoadFloat4x4(&m_ProjMatrix);
+
+		_matrix matWV = XMMatrixMultiply(matWorld, matView);
+		_matrix matWVP = XMMatrixMultiply(matWV, matProj);
+
+		XMStoreFloat4x4(&DisPlayPos, matWVP);
+
+		
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(DisPlayPos._41, DisPlayPos._42 + 20.f, 0.f, 1.f));
+		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX * 0.9f, m_fSizeY * 0.9f , 1.f));
+
+		m_vObejctPos = _float3(DisPlayPos._41, DisPlayPos._42 + 40.f, 0.f);
+		
+		m_strIntaractName = Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractName();
+
+	}
 	
 
-
-	int a = 0;
 
 
 }
@@ -296,9 +337,12 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize)
 
 	// 위치로 어디로 띄울껀가요?
 	// 이건 2D에요
+
+	_float2 vTextPos = { 0.f, 0.f };
+
 	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
-		_float2 vTextPos = { 0.f, 0.f };
+		
 		_float2 vMiddlePos = { _vRTSize.x / 2.f, _vRTSize.y / 2.f };
 
 		_bool isColumn = { false };
@@ -325,6 +369,10 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize)
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 
+		//ViewportDesc.Width * 0.5f, -m_fY + ViewportDesc.Height * 0.5f,
+
+		vTextPos = _float2(m_vObejctPos.x, m_vObejctPos.y);
+		m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
 }
