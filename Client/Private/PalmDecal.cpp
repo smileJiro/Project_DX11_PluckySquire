@@ -79,6 +79,7 @@ HRESULT CPalmDecal::Initialize(void* _pArg)
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
 
+    Get_ControllerTransform()->Rotation(XMConvertToRadians(90.f), _vector{ 0.f, 0.f, 1.f, 0.f });
 
     return S_OK;
 }
@@ -94,7 +95,7 @@ void CPalmDecal::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOthe
 {
 }
 
-void CPalmDecal::On_Placed(_vector _v2DPos, _vector _v2DDir)
+void CPalmDecal::On_Placed(_fvector _v2DPos, _fvector _v2DDir)
 {    //3D 상에서의 위치 잡아주기
     //방향도 받아서 돌려주기
 

@@ -80,10 +80,10 @@ HRESULT CStopStamp::Render()
     return S_OK;
 }
 
-void CStopStamp::Place_PalmMarker(_fvector v2DPosition)
+void CStopStamp::Place_PalmMarker(_fvector v2DPosition, _fvector _v2DDirection)
 {
-	m_pPalmDecal->Set_Active(true);
-	m_pPalmDecal->Set_Position({ XMVectorGetX(v2DPosition), XMVectorGetY(v2DPosition), 0.0f });
+    m_pPalmDecal->Set_Active(true);
+    m_pPalmDecal->Set_Position({ XMVectorGetX(v2DPosition), XMVectorGetY(v2DPosition), 0.0f });
 }
 
 CStopStamp* CStopStamp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

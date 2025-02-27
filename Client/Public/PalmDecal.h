@@ -16,7 +16,7 @@ public:
 
 public:
 	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-	void On_Placed(_vector _v2DPos, _vector _v2DDir);
+	void On_Placed(_fvector _v2DPos, _fvector _v2DDir);
 public:
 	void Interact(CPlayer* _pUser) override;
 	_bool Is_Interactable(CPlayer* _pUser) override;
