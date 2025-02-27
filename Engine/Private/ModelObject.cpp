@@ -260,6 +260,7 @@ _bool CModelObject::Is_PickingCursor_Model_Test(_float2 _fCursorPos, _float& _fD
 void CModelObject::Register_OnAnimEndCallBack( const function<void(COORDINATE,_uint)>& fCallback)
 {
 	m_pControllerModel->Register_OnAnimEndCallBack(fCallback);
+
 }
 
 void CModelObject::Check_FrustumCulling()

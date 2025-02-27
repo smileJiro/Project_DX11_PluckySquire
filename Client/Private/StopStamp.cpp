@@ -1,239 +1,94 @@
 #include "stdafx.h"
 #include "StopStamp.h"
 #include "GameInstance.h"
-
-
+#include "PlayerBody.h"
+#include "Player.h"
 
 
 CStopStamp::CStopStamp(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CUI (_pDevice, _pContext)
+	: CModelObject(_pDevice, _pContext)
 {
 }
 
 CStopStamp::CStopStamp(const CStopStamp& _Prototype)
-	: CUI ( _Prototype )
+	: CModelObject(_Prototype)
 {
-}
-
-HRESULT CStopStamp::Initialize_Prototype()
-{
-	return S_OK;
 }
 
 HRESULT CStopStamp::Initialize(void* _pArg)
 {
-	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
+    STOP_STAMP_DESC* pBodyDesc = static_cast<STOP_STAMP_DESC*>(_pArg);
 
-	if (FAILED(__super::Initialize(pDesc)))
-		return E_FAIL;
+    pBodyDesc->eStartCoord = COORDINATE_3D;
 
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
+    pBodyDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+    pBodyDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    pBodyDesc->tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    pBodyDesc->tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+    pBodyDesc->iRenderGroupID_3D = RG_3D;
+    pBodyDesc->iPriorityID_3D = PR3D_GEOMETRY;
+    pBodyDesc->iModelPrototypeLevelID_2D = LEVEL_STATIC;
+    pBodyDesc->iModelPrototypeLevelID_3D = LEVEL_STATIC;
 
-
-
-	m_ePreStamp = CUI_Manager::GetInstance()->Get_StampIndex();
-
-	return S_OK;
-}
-
-void CStopStamp::Priority_Update(_float _fTimeDelta)
-{
+    pBodyDesc->eActorType = ACTOR_TYPE::LAST;
+    pBodyDesc->pActorDesc = nullptr;
+    pBodyDesc->isCoordChangeEnable = false;
+    pBodyDesc->strModelPrototypeTag_3D = TEXT("Stop_Stamp");
+    return __super::Initialize(_pArg);
 }
 
 void CStopStamp::Update(_float _fTimeDelta)
 {
-	
-
-
-	if (m_isActive == false)
-	{
-		if (true == m_isBig || true == m_isSmall)
-		{
-			if (true == m_isBig)
-			{
-				m_fSizeX = 96.f;
-				m_fSizeY = 148.f;
-				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
-
-				m_isBig = false;
-			}
-			
-			if (true == m_isSmall)
-			{
-				m_fSizeX = 72.f;
-				m_fSizeY = 111.f;
-				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
-
-				m_isSmall = false;
-			}
-		}
-
-		return;
-	}
-		
-
-	ChangeStamp(_fTimeDelta);
-	
-
+    __super::Update(_fTimeDelta);
 }
 
 void CStopStamp::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+    __super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CStopStamp::Render()
 {
-	
-	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-		return E_FAIL;
-
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture")))
-		return E_FAIL;
+    if (FAILED(__super::Render()))
+        return E_FAIL;
 
 
-	m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
-	m_pVIBufferCom->Bind_BufferDesc();
-	m_pVIBufferCom->Render();
-
-	//__super::Render();
-	
-
-	return S_OK;
+    //cout << "PlayerBOdyPos: " << m_WorldMatrices[COORDINATE_3D]._41 << ", " << m_WorldMatrices[COORDINATE_3D]._42 << ", " << m_WorldMatrices[COORDINATE_3D]._43 << endl;
+    return S_OK;
 }
 
-void CStopStamp::ChangeStamp(_float _fTimeDelta)
+void CStopStamp::Place_Stopper(_fvector v2DPosition)
 {
-	CUI_Manager::STAMP eStamp;
-	eStamp = CUI_Manager::GetInstance()->Get_StampIndex();
 
-	
-
-	if (m_ePreStamp != eStamp && false == m_isScaling)
-	{
-		if (eStamp == CUI_Manager::STAMP_BOMB)
-		{
-			//위치 변경이 필요한가요?
-			m_fX = g_iWinSizeX / 7.5f;
-			m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
-
-			m_isSmall = true;
-			m_isScaling = true;
-		}
-		else if (eStamp == CUI_Manager::STAMP_STOP)
-		{
-			//위치 변경이 필요한가요?
-			m_fX = g_iWinSizeX / 7.5f;
-			m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
-
-			m_isBig = true;
-			m_isScaling = true;
-		}
-		m_ePreStamp = eStamp;
-	}
-
-
-	if (true == m_isBig || true == m_isSmall)
-	{
-		if (true == m_isBig)
-		{
-			if (m_fSizeX <= 96)
-			{
-				m_fSizeX += _fTimeDelta * 100.f;
-				m_fSizeY += (_fTimeDelta * 1.54f) * 100.f;
-
-				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
-			}
-			else
-			{
-				m_isBig = false;
-				m_isScaling = false;
-			}
-				
-		}
-		else if (true == m_isSmall)
-		{
-			if (m_fSizeX > 72)
-			{
-				m_fSizeX -= _fTimeDelta * 100.f;
-				m_fSizeY -= (_fTimeDelta * 1.54f) * 100.f;
-
-				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
-			}
-			else
-			{
-				m_isSmall = false;
-				m_isScaling = false;
-			}	
-		}
-	}
-
-	
-}
-
-HRESULT CStopStamp::Ready_Components()
-{
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
-		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
-		return E_FAIL;
-
-	/* Com_VIBuffer */
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
-		TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-		return E_FAIL;
-
-	/* Com_Texture */
-	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_StopStamp"),
-		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-		return E_FAIL;
-
-	return S_OK;
 }
 
 CStopStamp* CStopStamp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	CStopStamp* pInstance = new CStopStamp(_pDevice, _pContext);
+    CStopStamp* pInstance = new CStopStamp(_pDevice, _pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype()))
-	{
-		MSG_BOX("Created CStopStamp Failed");
-		Safe_Release(pInstance);
-		return nullptr;
-	}
+    if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        MSG_BOX("Failed to Created : StopStamp");
+        Safe_Release(pInstance);
+    }
 
-	return pInstance;
+    return pInstance;
 }
 
 CGameObject* CStopStamp::Clone(void* _pArg)
 {
-	CStopStamp* pInstance = new CStopStamp(*this);
+    CStopStamp* pInstance = new CStopStamp(*this);
 
-	if (FAILED(pInstance->Initialize(_pArg)))
-	{
-		MSG_BOX("Clone CStopStamp Failed");
-		Safe_Release(pInstance);
-		return nullptr;
-	}
+    if (FAILED(pInstance->Initialize(_pArg)))
+    {
+        MSG_BOX("Failed to Cloned : StopStamp");
+        Safe_Release(pInstance);
+    }
 
-	return pInstance;
+    return pInstance;
 }
 
 void CStopStamp::Free()
 {
-	
-	__super::Free();
-	
-}
-
-HRESULT CStopStamp::Cleanup_DeadReferences()
-{
-
-	return S_OK;
+    __super::Free();
 }

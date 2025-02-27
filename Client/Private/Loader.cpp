@@ -34,8 +34,8 @@
 /* For. UI*/
 #include "Pick_Bulb.h"
 #include "SettingPanelBG.h"
-#include "StopStamp.h"
-#include "BombStamp.h"
+#include "StopStamp_UI.h"
+#include "BombStamp_UI.h"
 #include "ArrowForStamp.h"
 #include "ESC_HeartPoint.h"
 #include "UI_Interaction_Book.h"
@@ -75,8 +75,13 @@
 #include "Player.h"
 #include "PlayerBody.h"
 #include "PlayerSword.h"
+#include "StopStamp.h"
+#include "BombStamp.h"
+#include "PlayerBomb.h"
+#include "Detonator.h"
 #include "TestTerrain.h"
 #include "RabbitLunch.h"
+#include "Bomb.h"
 
 
 #include "2DModel.h"
@@ -265,6 +270,11 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_TestEnv"),
         CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/TestEnv_%d.dds"), 3, true))))
         return E_FAIL;
+    /* For. Prototype_Component_Texture_Chapter4Env */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter4Env"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter4Env_%d.dds"), 3, true))))
+        return E_FAIL;
+
     
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom1.dds"), 1))))
@@ -541,6 +551,10 @@ HRESULT CLoader::Loading_Level_Static()
         CWord::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb"),
+        CBomb::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMap_SkspObject"),
         C3DMapSkspObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
@@ -553,6 +567,18 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerSword"),
         CPlayerSword::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_StopStamp"),
+        CStopStamp::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BombStamp"),
+        CBombStamp::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBomb"),
+        CPlayerBomb::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Detonator"),
+        CDetonator::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"),
         CPlayerBody::Create(m_pDevice, m_pContext))))
@@ -1041,10 +1067,10 @@ HRESULT CLoader::Loading_Level_Chapter_2()
         CPick_Bulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_StopStamp"),
-		CStopStamp::Create(m_pDevice, m_pContext))))
+		CStopStamp_UI::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_BombStamp"),
-		CBombStamp::Create(m_pDevice, m_pContext))))
+		CBombStamp_UI::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_ArrowForStamp"),
 		CArrowForStamp::Create(m_pDevice, m_pContext))))
@@ -1413,10 +1439,10 @@ HRESULT CLoader::Loading_Level_Chapter_4()
         CPick_Bulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_StopStamp"),
-        CStopStamp::Create(m_pDevice, m_pContext))))
+        CStopStamp_UI::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_BombStamp"),
-        CBombStamp::Create(m_pDevice, m_pContext))))
+        CBombStamp_UI::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ArrowForStamp"),
         CArrowForStamp::Create(m_pDevice, m_pContext))))
@@ -1874,6 +1900,9 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
         C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Monster/Rat/Rat.model2d"))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Bomb2D"),
+        C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Static/Bomb/Bomb2D.model2d"))))
+        return E_FAIL;
 
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_Component_Dice3D"),
@@ -1924,10 +1953,10 @@ HRESULT CLoader::Loading_Level_Chapter_TEST()
         CPick_Bulb::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_StopStamp"),
-        CStopStamp::Create(m_pDevice, m_pContext))))
+        CStopStamp_UI::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_BombStamp"),
-        CBombStamp::Create(m_pDevice, m_pContext))))
+        CBombStamp_UI::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_TEST, TEXT("Prototype_GameObject_ArrowForStamp"),
         CArrowForStamp::Create(m_pDevice, m_pContext))))

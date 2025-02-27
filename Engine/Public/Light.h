@@ -42,12 +42,12 @@ private:
 
 private:
 	static _int				s_iShadowLightID;
+	_float4x4				m_ProjMatrix = {};
 private: /* Shadow */
 	_int					m_iShadowLightID = -1;
-	_float					m_fFovy = 90.f;
-	_float2					m_vNearFarPlane = { 0.1f, 1000.f };
+	_float					m_fFovy = 120.f;
+	_float2					m_vNearFarPlane = { 0.1f, 300.f };
 	_float4x4				m_ViewMatrix = {};
-	_float4x4				m_ProjMatrix = {};
 	CRenderTarget*			m_pShadowRenderTarget = nullptr;
 
 

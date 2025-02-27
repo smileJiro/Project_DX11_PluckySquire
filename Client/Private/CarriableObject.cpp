@@ -28,6 +28,9 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 	CARRIABLE_DESC* pDesc = static_cast<CARRIABLE_DESC*>(_pArg);
 
 	m_eCarriableId = pDesc->eCrriableObjId;
+	//m_strInteractName = L"들어올리기";
+	//m_bUIPlayerHeadUp = false;
+
 	XMStoreFloat4x4(&m_matHeadUpMatrix[COORDINATE_2D], XMMatrixTranslation(0.f, pDesc->fHeadUpHeight2D, 0.f));
 	
 	_matrix matHeadUpRotationMatrix = XMMatrixRotationQuaternion(XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&pDesc->vHeadUpRoolPitchYaw3D)));
@@ -143,6 +146,7 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 	if (nullptr == _pCarrier)
 	{
 		m_pCarrier = nullptr;
+		static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
 	}
 	else
 	{
@@ -151,7 +155,7 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 		m_fFloorDistance = 0.f;
 		m_vThrowForce2D = { 0.f,0.f,0.f };
 		m_pCarrier = _pCarrier;
-
+		static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
 	}
 	return S_OK;
 }

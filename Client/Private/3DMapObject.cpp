@@ -139,21 +139,20 @@ void C3DMapObject::Late_Update(_float _fTimeDelta)
     CGameObject::Late_Update_Component(_fTimeDelta);
 
         /* Add Render Group */
-        if (false == m_isCulling || false == m_isFrustumCulling)
-        {
-            Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
 
-            //m_pGameInstance->Add_RenderObject_New(REDNERGROUP_SHADOWID, 0, this);
-            Register_RenderGroup(REDNERGROUP_SHADOWID, 0);
-
-            //if(nullptr != m_pActorCom)
-            //    m_pActorCom->Set_ShapeRayCastFlag(true);
-        }
-        else
-        {
-            //if (nullptr != m_pActorCom)
-            //    m_pActorCom->Set_ShapeRayCastFlag(false);
-        }
+    Register_RenderGroup(REDNERGROUP_SHADOWID, 0);
+    if (false == m_isCulling || false == m_isFrustumCulling)
+    {
+        Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
+    
+        //if(nullptr != m_pActorCom)
+        //    m_pActorCom->Set_ShapeRayCastFlag(true);
+    }
+    else
+    {
+        //if (nullptr != m_pActorCom)
+        //    m_pActorCom->Set_ShapeRayCastFlag(false);
+    }
 }
 
 /// <summary>
