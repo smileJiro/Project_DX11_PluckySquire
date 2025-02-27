@@ -98,7 +98,7 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z, 1.f));
 
 	
-	m_strInteractName = TEXT("NPC");
+	m_eInteractID = INTERACT_ID::NPC;
 	//CActor::ACTOR_DESC ActorDesc;
 	//
 	///* Actor의 주인 오브젝트 포인터 */
