@@ -712,7 +712,7 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
         break;
     }
     if (m_pInteractableObject 
-        && dynamic_cast<CGameObject*>( m_pInteractableObject) == _Other.pActorUserData->pOwner
+        && dynamic_cast<CGameObject*>(m_pInteractableObject) == _Other.pActorUserData->pOwner
         &&false == m_pInteractableObject->Is_Interacting())
         m_pInteractableObject = nullptr;
 }
@@ -913,7 +913,10 @@ void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
     default:
         break;
     }
-
+    if (m_pInteractableObject
+        && dynamic_cast<CGameObject*>( m_pInteractableObject )== _pOtherObject
+        && false == m_pInteractableObject->Is_Interacting())
+        m_pInteractableObject = nullptr;
 }
 
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
