@@ -963,18 +963,15 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
 
-	/*vPos = { 35.0f, 4.89f, -2.8f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_BarfBug"), COORDINATE_3D, &vPos, nullptr, nullptr);*/
 
+	BarfBug_Desc.iCurLevelID = m_eLevelID;
+	BarfBug_Desc.eStartCoord = COORDINATE_3D;
 
-	//BarfBug_Desc.iCurLevelID = m_eLevelID;
-	//BarfBug_Desc.eStartCoord = COORDINATE_3D;
+	BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(35.0f, 4.89f, -2.8f);
+	BarfBug_Desc.tTransform3DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
 
-	//BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(35.0f, 4.89f, -2.8f);
-	//BarfBug_Desc.tTransform3DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &BarfBug_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &BarfBug_Desc)))
+		return E_FAIL;
 
 	CGoblin::MONSTER_DESC Goblin_Desc;
 	Goblin_Desc.iCurLevelID = m_eLevelID;

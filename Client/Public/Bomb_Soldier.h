@@ -44,6 +44,8 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
+	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
+
 public:
 	virtual void Attack() override;
 	virtual void Change_Animation() override;

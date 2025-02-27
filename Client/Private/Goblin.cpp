@@ -504,28 +504,28 @@ HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_CAPSULE; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
     ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc->fRadius + 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
-    //마찰용 박스
-    SHAPE_BOX_DESC* BoxDesc = new SHAPE_BOX_DESC;
-    BoxDesc->vHalfExtents = { ShapeDesc->fRadius - 0.1f, ShapeDesc->fRadius - 0.1f, ShapeDesc->fRadius - 0.1f };
+    ////마찰용 박스
+    //SHAPE_BOX_DESC* BoxDesc = new SHAPE_BOX_DESC;
+    //BoxDesc->vHalfExtents = { ShapeDesc->fRadius - 0.1f, ShapeDesc->fRadius - 0.1f, ShapeDesc->fRadius - 0.1f };
 
-    /* 해당 Shape의 Flag에 대한 Data 정의 */
-    //SHAPE_DATA* ShapeData = new SHAPE_DATA;
-    ShapeData->pShapeDesc = BoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::NORESTITUTION; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc->vHalfExtents.y, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    ///* 해당 Shape의 Flag에 대한 Data 정의 */
+    ////SHAPE_DATA* ShapeData = new SHAPE_DATA;
+    //ShapeData->pShapeDesc = BoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    //ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
+    //ShapeData->eMaterial = ACTOR_MATERIAL::NORESTITUTION; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    //ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc->vHalfExtents.y, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
-    /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc->ShapeDatas.push_back(*ShapeData);
+    ///* 최종으로 결정 된 ShapeData를 PushBack */
+    //ActorDesc->ShapeDatas.push_back(*ShapeData);
 
     //공격용 구
     ///* 사용하려는 Shape의 형태를 정의 */

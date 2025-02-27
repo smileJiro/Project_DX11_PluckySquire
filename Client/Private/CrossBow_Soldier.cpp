@@ -38,9 +38,12 @@ HRESULT CCrossBow_Soldier::Initialize(void* _pArg)
     pDesc->fChase2DRange = 12.f;
     pDesc->fAttack2DRange = 10.f;
     pDesc->fFOVX = 90.f;
-    pDesc->fFOVY = 30.f;
+    pDesc->fFOVY = 60.f;
 
     pDesc->fCoolTime = 3.f;
+
+    m_tStat.iHP = 5;
+    m_tStat.iMaxHP = 5;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -135,6 +138,14 @@ HRESULT CCrossBow_Soldier::Render()
     return S_OK;
 }
 
+void CCrossBow_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    __super::On_Hit(_pHitter, _iDamg, _vForce);
+    
+    m_iAttackCount = 0;
+    CoolTime_Off();
+}
+
 void CCrossBow_Soldier::Attack()
 {
     if (false == m_isDelay && false == m_isCool)
@@ -150,15 +161,13 @@ void CCrossBow_Soldier::Attack()
         {
             //공격 위치 맞추기
             vPosition.y += vScale.y * 0.5f;
+
+            if(0== m_iAttackCount)
+                XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - Get_FinalPosition()));
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_CrossBow_Arrow"), eCoord, &vPosition, &vRotation);
         }
 
         ++m_iAttackCount;
-        if (2 <= m_iAttackCount)
-        {
-            m_iAttackCount = 0;
-            CoolTime_On();
-        }
     }
 }
 
@@ -190,6 +199,7 @@ void CCrossBow_Soldier::Change_Animation()
 
         case MONSTER_STATE::ATTACK:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_SHOOT);
+            Set_PreAttack(false);
             break;
 
         case MONSTER_STATE::HIT:
@@ -216,11 +226,20 @@ void CCrossBow_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
         
     case CROSSBOW_SHOOT:
-        pModelObject->Switch_Animation(CROSSBOW_SHOOT_RECOVERY);
+        if (2 <= m_iAttackCount)
+        {
+            m_iAttackCount = 0;
+            CoolTime_On();
+            pModelObject->Switch_Animation(CROSSBOW_SHOOT_RECOVERY);
+        }
+        else
+            pModelObject->Switch_Animation(CROSSBOW_SHOOT);
+
         break;
 
     case CROSSBOW_SHOOT_RECOVERY:
         Set_AnimChangeable(true);
+        Set_PreAttack(true);
         break;
 
     case CROSSBOW_HIT_FWDS:
@@ -265,7 +284,7 @@ HRESULT CCrossBow_Soldier::Ready_ActorDesc(void* _pArg)
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fHalfHeight + ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 

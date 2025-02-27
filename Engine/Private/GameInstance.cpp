@@ -1231,6 +1231,11 @@ _fvector CGameInstance::Rotate_Vector(_fvector _vAxis, _fvector _vVector, _float
 	return m_pGlobalFunction_Manager->Rotate_Vector(_vAxis, _vVector, _fDegrees);
 }
 
+_fvector CGameInstance::Direction_To_Quaternion(_fvector _vDefaulfDir, _fvector _vDirection)
+{
+	return m_pGlobalFunction_Manager->Direction_To_Quaternion(_vDefaulfDir, _vDirection);
+}
+
 _uint CGameInstance::Compare_VectorLength(_fvector _vVector1, _fvector _vVector2)
 {
 	return m_pGlobalFunction_Manager->Compare_VectorLength(_vVector1, _vVector2);
