@@ -62,8 +62,8 @@ public:
 		m_bInteracting = false;
 	}
 
-	wstring Get_InteractName() { return m_strInteractName; }
-	_bool Is_UIPlayerHeadUp() { return m_bUIPlayerHeadUp; }
+	wstring Get_InteractName() { return m_strInteractName; } // 인터렉트가 된 대상의 이름을 가져온다.
+	_bool Is_UIPlayerHeadUp() { return m_bUIPlayerHeadUp; }	// 유저의 머리위에 노출시킬것인가 아닌가
 protected:
 
 	//플레이어가 건드렸을 때(상호작용 버튼을 눌렀을 때) 호출됨. Charge가 시작된 경우를 의미.

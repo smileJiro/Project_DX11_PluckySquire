@@ -55,6 +55,7 @@
 #include "UI_JotMain.h"
 #include "Narration.h"
 #include "Narration_Anim.h"
+#include "Interaction_E.h"
 /* For. UI*/
 
 /* For. NPC*/
@@ -525,6 +526,8 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), CSettingPanelBG::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Goblin"), CESC_Goblin::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), CInteraction_E::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

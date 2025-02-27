@@ -38,9 +38,9 @@ public:
 	HRESULT					Cleanup_DeadReferences() override;
 
 private:
-	void					Cal_PlayerHighPos(_float2 _vRTSize);
-	void					Cal_ObjectPos(_float2 _vRTSize, CGameObject* _pGameObject);
-	void					Cal_DisplayPos();
+	void					Cal_PlayerHighPos();
+	void					Cal_ObjectPos(CGameObject* _pGameObject);
+	void					Cal_DisplayPos(_float2 _vRTSize, CGameObject* _pGameObject);
 
 };
 
