@@ -1028,7 +1028,7 @@ void CPlayer::StampSmash()
         }
         else if(PLAYER_PART::PLAYER_PART_STOP_STMAP == m_eCurrentStamp)
         {
-            m_pStopStmap->Place_PlamMarker(v2DPosition);
+            m_pStopStmap->Place_PalmMarker(v2DPosition);
         }
 	}
 }
@@ -2039,9 +2039,12 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     }
     if (KEY_DOWN(KEY::NUM1))
     {
-		Set_CurrentStampType(PLAYER_PART_STOP_STMAP);
-        if(STATE::STAMP == Get_CurrentStateID())
-            Equip_Part(PLAYER_PART_STOP_STMAP);
+        if (false == m_pDetonator->Is_DetonationMode())
+        {
+            Set_CurrentStampType(PLAYER_PART_STOP_STMAP);
+            if (STATE::STAMP == Get_CurrentStateID())
+                Equip_Part(PLAYER_PART_STOP_STMAP);
+        }
     }
     else if (KEY_DOWN(KEY::NUM2))
     {

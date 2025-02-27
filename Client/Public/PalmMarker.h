@@ -3,7 +3,7 @@
 #include "Interactable.h"
 BEGIN(Client)
 class CPalmMarker :
-	public CModelObject, public IInteractable
+	public CModelObject
 {
 private:
 	explicit CPalmMarker(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -17,10 +17,6 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
-	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-	virtual void Interact(CPlayer* _pUser) override;
-	virtual _bool Is_Interactable(CPlayer* _pUser) override;
-	virtual _float Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) override;
 private:
 
 public:
