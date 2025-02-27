@@ -18,6 +18,7 @@ CPalmDecal::CPalmDecal(const CPalmDecal& _Prototype)
 
 HRESULT CPalmDecal::Initialize(void* _pArg)
 {
+	m_pSectionMgr = CSection_Manager::GetInstance();
     m_eInteractID = INTERACT_ID::PALMDECAL;
     m_eInteractKey = KEY::Q;
 
@@ -143,15 +144,15 @@ void CPalmDecal::Place(_fvector _v2DPos, _fvector _v2DDir)
 {   
     Erase();
 
-    CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
-    pSectionMgr->Remove_GameObject_FromSectionLayer(m_strSectionName,this);
-	m_strSectionName = pSectionMgr->Get_Cur_Section_Key();
-    pSectionMgr->Add_GameObject_ToSectionLayer(m_strSectionName, this, SECTION_2D_PLAYMAP_STAMP);
+  
+    m_pSectionMgr->Remove_GameObject_FromSectionLayer(m_strSectionName,this);
+	m_strSectionName = m_pSectionMgr->Get_Cur_Section_Key();
+    m_pSectionMgr->Add_GameObject_ToSectionLayer(m_strSectionName, this, SECTION_2D_PLAYMAP_STAMP);
     static_cast<CTransform_2D*>(m_pControllerTransform->Get_Transform(COORDINATE_2D))->LookDir(_v2DDir);
     Set_Position({ XMVectorGetX(_v2DPos), XMVectorGetY(_v2DPos), 0.0f });
 
 
-    _vector v3DPos = pSectionMgr->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { XMVectorGetX(_v2DPos),XMVectorGetY(_v2DPos) });
+    _vector v3DPos = m_pSectionMgr->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { XMVectorGetX(_v2DPos),XMVectorGetY(_v2DPos) });
     m_pControllerTransform->Get_Transform(COORDINATE_3D)->Set_State(CTransform::STATE_POSITION, v3DPos);
     m_pActorCom->Update(0.f);
 
@@ -181,7 +182,8 @@ void CPalmDecal::Interact(CPlayer* _pUser)
 _bool CPalmDecal::Is_Interactable(CPlayer* _pUser)
 {
     return (COORDINATE_3D == _pUser->Get_CurCoord()) 
-        && (false == _pUser->Is_CarryingObject());
+        && (false == _pUser->Is_CarryingObject()
+        && m_strSectionName == m_pSectionMgr->Get_Cur_Section_Key());
 }
 
 _float CPalmDecal::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
