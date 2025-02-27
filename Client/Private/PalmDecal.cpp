@@ -69,45 +69,114 @@ HRESULT CPalmDecal::Initialize(void* _pArg)
     /* Test 2D Collider */
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
-    CircleDesc.fRadius = 40.f;
+    CircleDesc.fRadius = 50.f;
     CircleDesc.vScale = { 1.0f, 1.0f };
-    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius * 0.5f };
+    CircleDesc.vOffsetPosition = { 0.f, 0.f };
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;
-    CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
-
+    m_p2DColliderComs[0]->Set_Active(false);
     Get_ControllerTransform()->Rotation(XMConvertToRadians(90.f), _vector{ 0.f, 0.f, 1.f, 0.f });
 
     return S_OK;
 }
 
+void CPalmDecal::Priority_Update(_float _fTimeDelta)
+{
+    __super::Priority_Update(_fTimeDelta);
+
+}
+
+void CPalmDecal::Update(_float _fTimeDelta)
+{
+    __super::Update(_fTimeDelta);
+}
+
 void CPalmDecal::Late_Update(_float _fTimeDelta)
 {
+
 	__super::Late_Update(_fTimeDelta);
 
-    m_p2DColliderComs[0]->Set_Active(false);
+}
+
+HRESULT CPalmDecal::Render()
+{
+#ifdef _DEBUG
+
+     m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+
+
+#endif // _DEBUG
+
+    return __super::Render();
 }
 
 void CPalmDecal::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+    int a = 0;
+    Event_SetActive( m_p2DColliderComs[0], false);
 }
 
-void CPalmDecal::On_Placed(_fvector _v2DPos, _fvector _v2DDir)
+void CPalmDecal::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    OBJECT_GROUP eOtherGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
+    switch (eOtherGroup)
+    {
+    case Client::MONSTER:
+    case Client::INTERACTION_OBEJCT:
+    case Client::MAPOBJECT:
+    {
+        m_StoppedObjects.insert(_pOtherObject);
+        break;
+    }
+    case Client::NONE:
+    case Client::PLAYER:
+    case Client::PLAYER_TRIGGER:
+    case Client::PLAYER_PROJECTILE:
+    case Client::MONSTER_PROJECTILE:
+    case Client::TRIGGER_OBJECT:
+    case Client::RAY_OBJECT:
+    case Client::BLOCKER:
+    case Client::BOOK_3D:
+    case Client::WORD_GAME:
+    case Client::FALLINGROCK_BASIC:
+    case Client::EFFECT2D:
+    case Client::DYNAMIC_OBJECT:
+    case Client::NPC_EVENT:
+    case Client::EXPLOSION:
+        break;
+    default:
+        break;
+    }
+}
+
+void CPalmDecal::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    int a = 0;
+}
+
+void CPalmDecal::Place(_fvector _v2DPos, _fvector _v2DDir)
 {    //3D 상에서의 위치 잡아주기
     //방향도 받아서 돌려주기
     Set_Position({ XMVectorGetX(_v2DPos), XMVectorGetY(_v2DPos), 0.0f });
     static_cast<CTransform_2D*>(m_pControllerTransform->Get_Transform(COORDINATE_2D))->LookDir(_v2DDir);
-    m_p2DColliderComs[0]->Set_Active(true);
+
+    Event_SetActive(m_p2DColliderComs[0], true);
+}
+
+void CPalmDecal::Erase()
+{
+    //지우기
 }
 
 
 void CPalmDecal::Interact(CPlayer* _pUser)
 {
     //지워지기
-    int a = 0;
+    Erase();
 }
 
 _bool CPalmDecal::Is_Interactable(CPlayer* _pUser)

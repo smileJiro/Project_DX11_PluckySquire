@@ -50,6 +50,7 @@ void CCollider_AABB::Update(_float _fTimeDelta)
         return;
 
     Update_OwnerTransform();
+    __super::Update(_fTimeDelta);
 }
 
 void CCollider_AABB::Late_Update(_float _fTimeDelta)

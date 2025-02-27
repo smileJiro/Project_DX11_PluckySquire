@@ -224,7 +224,7 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 	
 
 
-	int a = 0;
+	//int a = 0;
 
 
 }

@@ -47,6 +47,7 @@ void CCollider_Circle::Update(_float _fTimeDelta)
         return;
 
     Update_OwnerTransform();
+    __super::Update(_fTimeDelta);
 }
 
 void CCollider_Circle::Late_Update(_float _fTimeDelta)

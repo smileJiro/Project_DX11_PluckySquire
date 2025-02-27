@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Collider_Circle.h"
 #include "Player.h"
+#include "Section_Manager.h"
 
 CPalmMarker::CPalmMarker(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -51,6 +52,7 @@ void CPalmMarker::Late_Update(_float _fTimeDelta)
 
 HRESULT CPalmMarker::Render()
 {
+
 	return __super::Render();
 }
 

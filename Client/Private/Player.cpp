@@ -1032,7 +1032,7 @@ void CPlayer::StampSmash()
 	    _vector v2DDirection = Get_LookDirection();
         v2DDirection =XMVectorSetY(v2DDirection, XMVectorGetZ(v2DDirection));
 	    v2DDirection = XMVector3Normalize(XMVectorSetZ( v2DDirection,0.f));
-        m_pStopStmap->Place_PalmMarker(v2DPosition, v2DDirection);
+        m_pStopStmap->Place_PalmDecal(v2DPosition, v2DDirection);
     }
 
 }

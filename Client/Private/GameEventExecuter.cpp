@@ -482,37 +482,39 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
             m_fTimer = 0.f;
             m_iStep++;
             m_isStart = false;
+
+			GameEvent_End();
         }
     }
-    else if (1 == m_iStep) {
+   // else if (1 == m_iStep) {
 
-        m_fTimer += _fTimeDelta;
+   //     m_fTimer += _fTimeDelta;
 
-        CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
-        
-        if (CPlayer::IDLE == static_cast<CPlayer*>(pPlayer)->Get_CurrentStateID()) {
-            CCamera_Manager::GetInstance()->Start_FadeOut(1.5f);
+   //     CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
+   //     
+   //     if (CPlayer::IDLE == static_cast<CPlayer*>(pPlayer)->Get_CurrentStateID()) {
+   //         CCamera_Manager::GetInstance()->Start_FadeOut(1.5f);
 
-            m_iStep++;
-            m_isStart = false;
-            m_fTimer = 0.f;
-        }
+   //         m_iStep++;
+   //         m_isStart = false;
+   //         m_fTimer = 0.f;
+   //     }
 
-    }
-    else if (2 == m_iStep) {
-        m_fTimer += _fTimeDelta;
+   // }
+   // else if (2 == m_iStep) {
+   //     m_fTimer += _fTimeDelta;
 
-        if (m_fTimer >= 1.6f) {
+   //     if (m_fTimer >= 1.6f) {
 
-			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-			pCamera->Set_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
-			pCamera->Set_NextArmData(TEXT("Default"), 12);
+			////CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+			////pCamera->Set_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+			////pCamera->Set_NextArmData(TEXT("Default"), 12);
 
-            CCamera_Manager::GetInstance()->Start_FadeIn(1.5f);
+   //         CCamera_Manager::GetInstance()->Start_FadeIn(1.5f);
 
-            GameEvent_End();
-        }
-    }
+   //         GameEvent_End();
+   //     }
+   // }
 }
 
 

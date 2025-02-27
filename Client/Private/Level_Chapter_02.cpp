@@ -449,7 +449,7 @@ HRESULT CLevel_Chapter_02::Ready_Lights()
 	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
 	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
 	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
-	LightDesc.isShadow = true;
+	LightDesc.isShadow = false;
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
 		return E_FAIL;
 
