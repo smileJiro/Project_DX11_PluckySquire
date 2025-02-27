@@ -7,6 +7,7 @@
 #include "UI_Manager.h"
 #include "StateMachine.h"
 #include "Npc_OnlySocial.h"
+#include "Dialog_Manager.h"
 
 
 
@@ -208,6 +209,10 @@ void CNPC_Social::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOth
 
 void CNPC_Social::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+	//if (true == m_isThrow && false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+	//{
+	//	m_isThrow = false;
+	//}
 }
 
 void CNPC_Social::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
