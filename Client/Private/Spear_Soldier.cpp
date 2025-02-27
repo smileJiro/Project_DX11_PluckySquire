@@ -261,7 +261,7 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case DEATH_02_EDIT:
-        Set_AnimChangeable(true);
+        Monster_Death();
         break;
 
     default:

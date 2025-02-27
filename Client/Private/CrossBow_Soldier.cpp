@@ -247,7 +247,7 @@ void CCrossBow_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case CROSSBOW_DEATH:
-        Set_AnimChangeable(true);
+        Monster_Death();
         break;
 
     default:
