@@ -147,6 +147,17 @@ HRESULT CMapObject::Initialize(void* _pArg)
 
     //}
     Set_PlayingAnim(false);
+
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+    _uint iMaterialCnt = 0;
+    if (pModel)
+    {
+        C3DModel* p3DModel = static_cast<C3DModel*>(pModel);
+        _uint iSize = (_uint)p3DModel->Get_Materials().size();
+		m_eColorShaderModes.resize(iSize);
+		fill(m_eColorShaderModes.begin(), m_eColorShaderModes.end(), C3DModel::COLOR_NONE);
+    }
+
     return S_OK;
 }
 
@@ -196,30 +207,10 @@ void CMapObject::Late_Update(_float _fTimeDelta)
 
 HRESULT CMapObject::Render()
 {
-    switch (m_eColorShaderMode)
-    {
-        case Engine::C3DModel::COLOR_DEFAULT:
-            if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDefaultDiffuseColor", &m_fDefaultDiffuseColor, sizeof(_float4))))
-                return E_FAIL;
-            m_iShaderPasses[COORDINATE_3D] = 3;
-            break;
-        case Engine::C3DModel::MIX_DIFFUSE:
-            if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDefaultDiffuseColor", &m_fDefaultDiffuseColor, sizeof(_float4))))
-                return E_FAIL;
-                m_iShaderPasses[COORDINATE_3D] = 4;
-            break;
-        default:
-                m_iShaderPasses[COORDINATE_3D] = 0;
-            break;
-    }
     CModelObject::Render();
     return S_OK;
 }
 
-HRESULT CMapObject::Render_Shadow()
-{
-    return S_OK;
-}
 
 HRESULT CMapObject::Render_Preview(_float4x4* _ViewMat, _float4x4* _ProjMat)
 {
@@ -238,26 +229,6 @@ HRESULT CMapObject::Render_Preview(_float4x4* _ViewMat, _float4x4* _ProjMat)
 
     if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ProjMatrix", _ProjMat)))
         return E_FAIL;
-
-    switch (m_eColorShaderMode)
-    {
-        case Engine::C3DModel::COLOR_DEFAULT:
-            if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDefaultDiffuseColor", &m_fDefaultDiffuseColor, sizeof(_float4))))
-                return E_FAIL;
-            m_iShaderPasses[COORDINATE_3D] = 3;
-            break;
-        case Engine::C3DModel::MIX_DIFFUSE:
-            if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDefaultDiffuseColor", &m_fDefaultDiffuseColor, sizeof(_float4))))
-                return E_FAIL;
-            m_iShaderPasses[COORDINATE_3D] = 4;
-            break;
-        default:
-            m_iShaderPasses[COORDINATE_3D] = 0;
-            break;
-    }
-
-
-
 
     CModelObject::Render();
     return S_OK;
@@ -320,6 +291,9 @@ HRESULT CMapObject::Add_Textures(TEXTURE_INFO& _tDiffuseInfo, _uint _eTextureTyp
             , _tDiffuseInfo.szTextureName
         )))
             return E_FAIL;
+        if (FAILED(pMaterials[_tDiffuseInfo.iMaterialIndex]->Ready_PixelConstBuffer()))
+            return E_FAIL;
+
         return pMaterials[_tDiffuseInfo.iMaterialIndex]->Update_PixelConstBuffer();
     }
     return S_OK;
@@ -392,6 +366,106 @@ HRESULT	CMapObject::Push_Texture(const _string _strTextureName, _uint _eTextureT
     return E_FAIL;
 }
 
+void CMapObject::Set_Diffuse_Color(_uint _iMaterialIndex, const _float4 _fDiffuseColor)
+{
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+    if (pModel)
+    {
+        C3DModel* p3DModel = static_cast<C3DModel*>(pModel);
+
+        switch (m_eColorShaderModes[_iMaterialIndex])
+        {
+        case Engine::C3DModel::COLOR_DEFAULT:
+            p3DModel->Set_MaterialConstBuffer_Albedo(_iMaterialIndex, _fDiffuseColor,true);
+            break;
+        case Engine::C3DModel::MIX_DIFFUSE:
+            p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, _fDiffuseColor,true);
+            break;
+        }
+    }
+}
+
+
+const _float4 CMapObject::Get_Diffuse_Color(_uint _iMaterialIndex)
+{
+    _float4 fReturnColor = { 1.f,1.f,1.f,1.f };
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+    if (pModel)
+    {
+        C3DModel* p3DModel = static_cast<C3DModel*>(pModel);
+
+        switch (m_eColorShaderModes[_iMaterialIndex])
+        {
+        case Engine::C3DModel::COLOR_DEFAULT:
+            fReturnColor = p3DModel->Get_MaterialConstBuffer_Albedo(_iMaterialIndex);
+            break;
+        case Engine::C3DModel::MIX_DIFFUSE:
+            fReturnColor = p3DModel->Get_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex);
+            break;
+        default:
+            break;
+        }
+    }
+
+    return fReturnColor;
+}
+
+void CMapObject::Set_Color_Shader_Mode(_uint _iMaterialIndex, C3DModel::COLOR_SHADER_MODE _eMode)
+{
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+    _float4 fColor = {};
+    if (pModel)
+    {
+        C3DModel* p3DModel = static_cast<C3DModel*>(pModel);
+
+        switch (_eMode)
+        {
+        case Engine::C3DModel::COLOR_NONE:
+            // 알베도맵 사용함.
+            // mix color를 초기화시켜줌.
+			p3DModel->Set_MaterialConstBuffer_UseAlbedoMap(_iMaterialIndex, true, true );
+			p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, _float4(1.f, 1.f, 1.f, 1.f), true);
+            break;
+        case Engine::C3DModel::COLOR_DEFAULT:
+            // 알베도맵 사용하지 않음.
+            // 전에 mix color를 사용중이었다면, 가져와서 default color에 적용한 후,
+			// mix color를 초기화.
+			p3DModel->Set_MaterialConstBuffer_UseAlbedoMap(_iMaterialIndex, false, true );
+            
+            if (m_eColorShaderModes[_iMaterialIndex] == Engine::C3DModel::COLOR_DEFAULT)
+            {
+                fColor = Get_Diffuse_Color(_iMaterialIndex);
+                p3DModel->Set_MaterialConstBuffer_Albedo(_iMaterialIndex, fColor, true);
+            }
+            
+            p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, _float4(1.f, 1.f, 1.f, 1.f), true);
+            break;
+        case Engine::C3DModel::MIX_DIFFUSE:
+            // 알베도맵 사용함.
+            // 전에 default color를 사용중이었다면, 가져와서 mix color에 적용함.
+            p3DModel->Set_MaterialConstBuffer_UseAlbedoMap(_iMaterialIndex, true, true);
+            
+            if (m_eColorShaderModes[_iMaterialIndex] == Engine::C3DModel::COLOR_DEFAULT)
+            {
+			    fColor = Get_Diffuse_Color(_iMaterialIndex);
+				p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, fColor, true);
+            }
+            
+            break;
+        default:
+            break;
+        }
+    }
+
+	m_eColorShaderModes[_iMaterialIndex] = _eMode;
+}
+
+C3DModel::COLOR_SHADER_MODE CMapObject::Get_Color_Shader_Mode(_uint _iMaterialIndex)
+{
+    return m_eColorShaderModes[_iMaterialIndex];
+}
+
+
 HRESULT CMapObject::Add_Texture_Type(_uint _eTextureType)
 {
     CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
@@ -452,17 +526,45 @@ HRESULT CMapObject::Save_Override_Material(HANDLE _hFile)
 HRESULT CMapObject::Save_Override_Color(HANDLE _hFile)
 {
     DWORD	dwByte(0);
-    WriteFile(_hFile, &m_eColorShaderMode, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+    // 컬러를 섞을 갯수를 재고 기록한다.
+    _uint iMaterialCount = 0;
 
-    switch (m_eColorShaderMode)
-    {
+    for_each(m_eColorShaderModes.begin(), m_eColorShaderModes.end(), [&iMaterialCount](auto eMode) {
+        switch (eMode)
+        {
         case Engine::C3DModel::COLOR_DEFAULT:
         case Engine::C3DModel::MIX_DIFFUSE:
-            WriteFile(_hFile, &m_fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+        {
+            iMaterialCount++;
+        }
+        break;
+        default:
+            break;
+        }
+        });
+    WriteFile(_hFile, &iMaterialCount, sizeof(_uint), &dwByte, nullptr);
+
+    // 컬러 정보가 있는 마테리얼이면, 마테리얼 인덱스-컬러모드-컬러 순으로 기록한다.
+    for (_uint i = 0; i < (_uint)m_eColorShaderModes.size(); i++)
+    {
+        switch (m_eColorShaderModes[i])
+        {
+        case Engine::C3DModel::COLOR_DEFAULT:
+        case Engine::C3DModel::MIX_DIFFUSE:
+        {
+            WriteFile(_hFile, &i, sizeof(_uint), &dwByte, nullptr);
+            WriteFile(_hFile, &m_eColorShaderModes[i], sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+
+            _float4 fDefaultDiffuseColor = Get_Diffuse_Color(i);
+            WriteFile(_hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+        }
             break;
         default:
             break;
+        }
     }
+
+
     return S_OK;
 }
 
@@ -510,16 +612,47 @@ HRESULT CMapObject::Load_Override_Material(HANDLE _hFile)
 HRESULT CMapObject::Load_Override_Color(HANDLE _hFile)
 {
     DWORD	dwByte(0);
-    ReadFile(_hFile, &m_eColorShaderMode, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
-    switch (m_eColorShaderMode)
+    _uint iMaterialCount = 0;
+    ReadFile(_hFile, &iMaterialCount, sizeof(_uint), &dwByte, nullptr);
+
+    for (_uint i = 0; i < iMaterialCount; i++)
     {
-    case Engine::C3DModel::COLOR_DEFAULT:
-    case Engine::C3DModel::MIX_DIFFUSE:
-        ReadFile(_hFile, &m_fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+        _uint iMaterialIndex = 0;
+        ReadFile(_hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
+        ReadFile(_hFile, &m_eColorShaderModes[iMaterialIndex], sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+        switch (m_eColorShaderModes[iMaterialIndex])
+        {
+        case Engine::C3DModel::COLOR_DEFAULT:
+        case Engine::C3DModel::MIX_DIFFUSE:
+        {
+            Set_Color_Shader_Mode(iMaterialIndex, m_eColorShaderModes[iMaterialIndex]);
+            _float4 fDefaultDiffuseColor = {};
+            ReadFile(_hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+            Set_Diffuse_Color(iMaterialIndex, fDefaultDiffuseColor);
+        }
         break;
-    default:
-        break;
+        default:
+            break;
+        }
     }
+ //   DWORD	dwByte(0);
+ //   ReadFile(_hFile, &m_eColorShaderModes[0], sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+
+	//_float4 fDefaultDiffuseColor = { 1.f,1.f,1.f,1.f };
+
+ //   switch (m_eColorShaderModes[0])
+ //   {
+ //   case Engine::C3DModel::COLOR_DEFAULT:
+ //   case Engine::C3DModel::MIX_DIFFUSE:
+ //       ReadFile(_hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+ //       break;
+ //   default:
+ //       break;
+ //   }
+
+ //   Set_Color_Shader_Mode(0, m_eColorShaderModes[0]);
+ //   Set_Diffuse_Color(0, fDefaultDiffuseColor);
+
     return S_OK;
 }
 

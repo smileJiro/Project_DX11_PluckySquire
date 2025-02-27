@@ -20,7 +20,7 @@ public:
 	{
 		ACTION_WAIT,
 		ACTION_IDLE,
-		ACTION_MOVE,
+		ACTION_INTERACTION,
 		ACTION_DIALOG,
 		ACTION_TRACE,
 		ACTION_END
@@ -226,6 +226,11 @@ private:
 
 	_float						m_fNextDialogWait = { 0.f };
 	_bool						m_isNextDialog = { false };
+
+
+	_bool						m_isInteraction = { false };
+	_bool						m_isDisplayDialogue = { false };
+
 };
 
 END

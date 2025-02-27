@@ -27,12 +27,18 @@
 #include "PlayerState_LunchBox.h"
 #include "PlayerState_Electric.h"
 #include "PlayerState_Drag.h"
+#include "PlayerState_Stamp.h"
+#include "PlayerState_Bomber.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
+#include "StopStamp.h"
+#include "BombStamp.h"
+#include "Detonator.h"
 #include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
+#include "Effect_Manager.h"
     
 #include "Collider_Fan.h"
 #include "Collider_AABB.h"
@@ -42,6 +48,7 @@
 #include "NPC_Store.h"
 #include "Portal.h"
 #include "DraggableObject.h"
+#include "SampleBook.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -50,7 +57,7 @@ CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 CPlayer::CPlayer(const CPlayer& _Prototype)
     :CCharacter(_Prototype)
-
+    , m_pEffectManager(CEffect_Manager::GetInstance())
 {
     for (_uint i = 0; i < ATTACK_TYPE_LAST; i++)
     {
@@ -59,6 +66,8 @@ CPlayer::CPlayer(const CPlayer& _Prototype)
     		m_f2DAttackTriggerDesc[i][j] = _Prototype.m_f2DAttackTriggerDesc[i][j];
         }
     }
+
+    Safe_AddRef(m_pEffectManager);
 }
 
 HRESULT CPlayer::Initialize_Prototype()
@@ -110,8 +119,6 @@ HRESULT CPlayer::Initialize_Prototype()
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::RIGHT].vOffset = { 50.f, 0.f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::LEFT].vExtents = { 146.5f, 74.5f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::LEFT].vOffset = { -50.f, 0.f };
-
-
 
     return S_OK;
 }
@@ -167,7 +174,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     m_tBodyShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     m_tBodyShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
 	m_tBodyShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-	m_tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
+	m_tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::EXPLOSION; // Actor가 충돌을 감지할 그룹
     XMStoreFloat4x4(&m_tBodyShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset /*+ 0.1f*/, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
@@ -299,7 +306,6 @@ HRESULT CPlayer::Ready_PartObjects()
         MSG_BOX("CPlayer Sword Creation Failed");
         return E_FAIL;
     }
-    m_PartObjects[PLAYER_PART_SWORD]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 1,0,0,0 });
     Set_PartActive(PLAYER_PART_SWORD, false);
     m_pSword->Switch_Grip(true);
     m_pSword->Set_AttackEnable(false);
@@ -334,7 +340,58 @@ HRESULT CPlayer::Ready_PartObjects()
     C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_GLOVE])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_glove_hand_r")); /**/
     m_PartObjects[PLAYER_PART_GLOVE]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
-    Set_PartActive(PLAYER_PART_GLOVE, true);
+    Set_PartActive(PLAYER_PART_GLOVE, false);
+
+    //Part STOP STAMP
+    CStopStamp::STOP_STAMP_DESC StopStampDesc{};
+    StopStampDesc.iCurLevelID = m_iCurLevelID;
+    StopStampDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    m_PartObjects[PLAYER_PART_STOP_STMAP] = m_pStopStmap = static_cast<CStopStamp*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_StopStamp"), &StopStampDesc));
+    Safe_AddRef(m_pStopStmap);
+    if (nullptr == m_PartObjects[PLAYER_PART_STOP_STMAP])
+    {
+        MSG_BOX("CPlayer STOPSTAMP Creation Failed");
+        return E_FAIL;
+    }
+    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_STOP_STMAP])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r")); /**/
+    m_PartObjects[PLAYER_PART_STOP_STMAP]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
+    m_PartObjects[PLAYER_PART_STOP_STMAP]->Set_Position({0.f,-0.4f,0.f});
+    Set_PartActive(PLAYER_PART_STOP_STMAP, false);
+
+    //Part BOMB STAMP
+	CBombStamp::BOMB_STAMP_DESC BombStampDesc{};
+    BombStampDesc.iCurLevelID = m_iCurLevelID;
+    BombStampDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    m_PartObjects[PLAYER_PART_BOMB_STMAP] = m_pBombStmap =  static_cast<CBombStamp*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_BombStamp"), &BombStampDesc));
+    Safe_AddRef(m_pBombStmap);
+    if (nullptr == m_PartObjects[PLAYER_PART_BOMB_STMAP])
+    {
+        MSG_BOX("CPlayer BOMBSTAMP Creation Failed");
+        return E_FAIL;
+    }
+    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_BOMB_STMAP])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r")); /**/
+    m_PartObjects[PLAYER_PART_BOMB_STMAP]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
+    m_PartObjects[PLAYER_PART_BOMB_STMAP]->Set_Position({ 0.f,-0.4f,0.f });
+    Set_PartActive(PLAYER_PART_BOMB_STMAP, false);
+
+
+	//Part DETONATOR
+    CDetonator::DETONATOR_DESC tDetonatorDesc{};
+    tDetonatorDesc.iCurLevelID = m_iCurLevelID;
+    tDetonatorDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    m_PartObjects[PLAYER_PART_DETONATOR] = m_pDetonator = static_cast<CDetonator*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Detonator"), &tDetonatorDesc));
+    Safe_AddRef(m_pDetonator);
+    if (nullptr == m_PartObjects[PLAYER_PART_DETONATOR])
+    {
+        MSG_BOX("CPlayer BOMBSTAMP Creation Failed");
+        return E_FAIL;
+    }
+    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_DETONATOR])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_l")); /**/
+    Set_PartActive(PLAYER_PART_DETONATOR, false);
+
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
@@ -411,6 +468,8 @@ HRESULT CPlayer::Ready_Components()
     Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
     Bind_AnimEventFunc("ThrowObject", bind(&CPlayer::ThrowObject, this));
     Bind_AnimEventFunc("Attack", bind(&CPlayer::Move_Attack_3D, this));
+    Bind_AnimEventFunc("StampSmash", bind(&CPlayer::StampSmash, this));
+    Bind_AnimEventFunc("Detonate", bind(&CPlayer::Detonate, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -422,6 +481,17 @@ HRESULT CPlayer::Ready_Components()
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
     pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_Player2DAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("2DAnimEventGenrator"), pAnimEventGenerator);
+
+
+    // EffectAnimEvent
+    Bind_AnimEventFunc("Dust_Walk", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Walk"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
+    //Bind_AnimEventFunc("Dust_Jump", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Jump"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
+    
+    tAnimEventDesc.pReceiver = this;
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
+    pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_PlayeEffectEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("EffectEventGenerator"), pAnimEventGenerator);
+
 
 	m_p2DColliderComs.resize(3);
    /* Test 2D Collider */
@@ -517,8 +587,7 @@ void CPlayer::Update(_float _fTimeDelta)
 
     CUI_Manager::GetInstance()->Set_isQIcon((nullptr != m_pInteractableObject) 
         && KEY::Q == m_pInteractableObject->Get_InteractKey());
-    if(m_pInteractableObject && false== m_pInteractableObject->Is_Interacting())
-        m_pInteractableObject = nullptr;
+
 
 }
 
@@ -642,6 +711,10 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
             Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
         break;
     }
+    if (m_pInteractableObject 
+        && dynamic_cast<CGameObject*>(m_pInteractableObject) == _Other.pActorUserData->pOwner
+        &&false == m_pInteractableObject->Is_Interacting())
+        m_pInteractableObject = nullptr;
 }
 
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -840,7 +913,10 @@ void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
     default:
         break;
     }
-
+    if (m_pInteractableObject
+        && dynamic_cast<CGameObject*>( m_pInteractableObject )== _pOtherObject
+        && false == m_pInteractableObject->Is_Interacting())
+        m_pInteractableObject = nullptr;
 }
 
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
@@ -881,6 +957,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 {
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
+    m_pInteractableObject = nullptr;
     if (Is_CarryingObject())
     {
         m_pCarryingObject->Change_Coordinate(_eCoordinate);
@@ -936,6 +1013,26 @@ void CPlayer::Move_Attack_3D()
     }
 }
 
+void CPlayer::StampSmash()
+{
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+		CSampleBook* pSampleBook = dynamic_cast<CSampleBook*>(m_pInteractableObject);
+        if (nullptr == pSampleBook)
+            return;
+        _vector v2DPosition = pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition());
+        
+        if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
+        {
+            m_pDetonator->Set_Bombable(m_pBombStmap->Place_Bomb(v2DPosition));
+        }
+        else if(PLAYER_PART::PLAYER_PART_STOP_STMAP == m_eCurrentStamp)
+        {
+            m_pStopStmap->Place_PlamMarker(v2DPosition);
+        }
+	}
+}
+
 void CPlayer::Attack(CGameObject* _pVictim)
 {
     if (m_AttckedObjects.find(_pVictim) != m_AttckedObjects.end())
@@ -948,6 +1045,13 @@ void CPlayer::Attack(CGameObject* _pVictim)
     Event_Hit(this, pCharacter, m_tStat.iDamg, vKnockBackForce);
 
     m_AttckedObjects.insert(_pVictim);
+}
+
+void CPlayer::Detonate()
+{
+	if (nullptr == m_pDetonator)
+		return;
+	m_pDetonator->Detonate();
 }
 
 
@@ -1000,10 +1104,8 @@ void CPlayer::Jump()
 
 
 
-
 PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
-    m_f3DJumpPower = 11.5f;
 	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
 	if (STATE::DIE == Get_CurrentStateID())
@@ -1131,6 +1233,44 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     }
     tResult.bInputStates[PLAYER_INPUT_MOVE] =false ==  XMVector3Equal(tResult.vMoveDir, XMVectorZero());
     
+    return tResult;
+}
+
+PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_Stamp()
+{
+    PLAYER_INPUT_RESULT tResult;
+    fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
+    _bool bIsStamping = CPlayer::STAMP == m_pStateMachine->Get_CurrentState()->Get_StateID();
+	if (false == bIsStamping) return tResult;
+
+    if (KEY_DOWN(KEY::LSHIFT))
+        tResult.bInputStates[PLAYER_INPUT_ROLL] = true;
+    if (MOUSE_DOWN(MOUSE_KEY::LB)
+        || MOUSE_DOWN(MOUSE_KEY::RB)
+        ||KEY_DOWN(KEY::E))
+        tResult.bInputStates[PLAYER_INPUT_CANCEL_STAMP] = true;
+
+    if (KEY_DOWN(KEY::Q))
+        tResult.bInputStates[PLAYER_INPUT_KEEP_STAMP] = true;
+    else if (KEY_PRESSING(KEY::Q))
+        tResult.bInputStates[PLAYER_INPUT_KEEP_STAMP] = true;
+
+
+    //이동
+    _vector vRight = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
+    _vector vUp = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_UP));
+    if (KEY_PRESSING(KEY::W))
+        tResult.vDir += _vector{ 0.f, 0.f, 1.f,0.f };
+    if (KEY_PRESSING(KEY::A))
+        tResult.vDir += _vector{ -1.f, 0.f, 0.f,0.f };
+    if (KEY_PRESSING(KEY::S))
+        tResult.vDir += _vector{ 0.f, 0.f, -1.f,0.f };
+    if (KEY_PRESSING(KEY::D))
+        tResult.vDir += _vector{ 1.f, 0.f, 0.f,0.f };
+    tResult.vDir = XMVector3Normalize(tResult.vDir);
+    tResult.vMoveDir = tResult.vDir;
+    tResult.bInputStates[PLAYER_INPUT_MOVE] = false == XMVector3Equal(tResult.vMoveDir, XMVectorZero());
+
     return tResult;
 }
 
@@ -1295,6 +1435,11 @@ _bool CPlayer::Is_AttackTriggerActive()
     }
 }
 
+_bool CPlayer::Is_DetonationMode()
+{
+    return m_pDetonator->Is_DetonationMode();
+}
+
 _bool CPlayer::Is_PlayingAnim()
 {
     return m_pBody->Is_PlayingAnim();
@@ -1439,12 +1584,15 @@ void CPlayer::Set_State(STATE _eState)
     switch (_eState)
     {
     case Client::CPlayer::IDLE:
+        //cout << "IDLE" << endl;
         m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
         break;
     case Client::CPlayer::RUN:
+        //cout << "Run" << endl;
         m_pStateMachine->Transition_To(new CPlayerState_Run(this));
         break;
     case Client::CPlayer::JUMP_UP:
+        //cout << "JUMPUP" << endl;
         m_pStateMachine->Transition_To(new CPlayerState_JumpUp(this));
         break;
     case Client::CPlayer::JUMP_DOWN:
@@ -1503,6 +1651,12 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::DRAG:
         m_pStateMachine->Transition_To(new CPlayerState_Drag(this));
+        break;
+    case Client::CPlayer::STAMP:
+        m_pStateMachine->Transition_To(new CPlayerState_Stamp(this));
+        break;
+    case Client::CPlayer::BOMBER:
+        m_pStateMachine->Transition_To(new CPlayerState_Bomber(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;
@@ -1664,6 +1818,7 @@ void CPlayer::Set_GravityCompOn(_bool _bOn)
 	m_pGravityCom->Set_Active(_bOn);
     m_pGravityCom->Change_State(_bOn ?  CGravity::STATE_FALLDOWN : CGravity::STATE_FLOOR);
 }
+
 void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 {
 	m_eCurAttackType = _eAttackType;
@@ -1696,20 +1851,42 @@ void CPlayer::End_Attack()
         m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD, false);
         m_pSword->Set_AttackEnable(false);
     }
+
 }
 
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 {
-	for (_int i = PLAYER_PART_SWORD; i < PLAYER_PART_LAST; ++i)
-		Set_PartActive((_uint)i, false);
+	if (PLAYER_PART_BODY == _ePartId)
+		return;
+    _bool bMainEquip = false;
+    for (_uint i = 0; i < PLAYER_MAIN_EQUIP::PLAYER_MAIN_EQUIP_LAST; i++)
+    {
+        if (i == _ePartId)
+        {
+            for (_int i = PLAYER_MAIN_EQUIP_SWORD; i < PLAYER_MAIN_EQUIP_LAST; ++i)
+                Set_PartActive((_uint)i, false);
+            break;
+        }
+    }
     if(COORDINATE_3D == Get_CurCoord())
 	    Set_PartActive(_ePartId, true);
 }
 
 void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 {
+    if (PLAYER_PART_BODY == _ePartId)
+        return;
+    if(COORDINATE_3D == Get_CurCoord() && Is_SwordHandling())
+		Set_PartActive(PLAYER_PART_SWORD, true);
 	Set_PartActive(_ePartId, false);
 }
+
+void CPlayer::UnEquip_All()
+{
+    for (_int i = PLAYER_PART_SWORD; i < PLAYER_PART_LAST; ++i)
+        Set_PartActive((_uint)i, false);
+}
+
 
 void CPlayer::ThrowSword()
 {
@@ -1844,9 +2021,11 @@ void CPlayer::Key_Input(_float _fTimeDelta)
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //포탈 4 0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
             //도미노 { 6.99342966, 5.58722591, 21.8827782 }
-            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //주사위 2 (48.73f, 2.61f, -5.02f);
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 48.73f, 2.61f, -5.02f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 15.f, 10.f, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+
         }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 
@@ -1857,6 +2036,18 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         {
             Move(_vector{0.f,5.f,0.f}, _fTimeDelta);
         }
+    }
+    if (KEY_DOWN(KEY::NUM1))
+    {
+		Set_CurrentStampType(PLAYER_PART_STOP_STMAP);
+        if(STATE::STAMP == Get_CurrentStateID())
+            Equip_Part(PLAYER_PART_STOP_STMAP);
+    }
+    else if (KEY_DOWN(KEY::NUM2))
+    {
+		Set_CurrentStampType(PLAYER_PART_BOMB_STMAP);
+        if (STATE::STAMP == Get_CurrentStateID())
+            Equip_Part(PLAYER_PART_BOMB_STMAP);
     }
     //if (KEY_DOWN(KEY::H))
     //{
@@ -1910,8 +2101,11 @@ void CPlayer::Free()
 	Safe_Release(m_pSword);
 	Safe_Release(m_pBody);
 	Safe_Release(m_pGlove);
+	Safe_Release(m_pBombStmap);
+	Safe_Release(m_pStopStmap);
 
     Safe_Release(m_pCarryingObject);
-
+    
+    Safe_Release(m_pEffectManager);
     __super::Free();
 }

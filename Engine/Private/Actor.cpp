@@ -170,6 +170,8 @@ HRESULT CActor::Render()
 	m_pBatch->End();
 	return S_OK;
 }
+#endif // _DEBUG
+
 void CActor::Add_ActorToScene()
 {
 	ACTOR_USERDATA* pActorUserData = static_cast<ACTOR_USERDATA*>(m_pActor->userData);
@@ -195,8 +197,6 @@ _bool CActor::Is_ActorInScene()
 
 	return true;
 }
-#endif // _DEBUG
-
 
 
 

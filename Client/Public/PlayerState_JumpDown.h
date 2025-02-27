@@ -21,7 +21,7 @@ private:
     F_DIRECTION m_eOldFDir = F_DIRECTION::F_DIR_LAST;
     _bool m_bPlatformerMode = false;
     _bool m_bGrounded = false;
-    _float m_fAirRunSpeed = 10.f;
+    _float m_fAirRunSpeed = 1000.f;
     _float m_fAirRunSpeed2D = 300.f;
     _float m_fAirRotateSpeed = 100.f;
     //벽 기어오르기 관련

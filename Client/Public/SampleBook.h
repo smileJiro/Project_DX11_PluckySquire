@@ -68,7 +68,7 @@ public :
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
-	virtual HRESULT			Render_Shadow() override;
+
 	virtual HRESULT			Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag) override;
 
 	_bool					Book_Action(BOOK_PAGE_ACTION _eAction);
@@ -79,6 +79,10 @@ public :
 public:						
 	HRESULT					Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition);
 	void					Execute_AnimEvent(_uint _iAnimIndex);
+	_vector					Convert_Position_3DTo2D(_fvector _v3DPos);
+
+private:
+	void					Calc_Page3DWorldMinMax();	
 private :
 	CAnimEventGenerator*	m_pAnimEventGenerator = { nullptr };
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
@@ -87,6 +91,11 @@ private :
 	_float3					m_fNextPos = {};
 	_bool					m_isAction = { false };
 	_bool					m_isPlayerAround= { false };
+	_bool					m_isPlayerAbove= { false };
+
+	_float3					m_v3DWorldMin = { -1.f, -1.f, -1.f };
+	_float3					m_v3DWorldMax = { 1.f, 1.f, 1.f };
+	_float2					m_v2DWorldPixelSize = { 0.f, 0.f };
 public:
 	static CSampleBook* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

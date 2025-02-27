@@ -78,6 +78,7 @@ public:
         LOC  location = LOC_MIDHIGH;    // 위치 설정
         PORTRAITNAME portrait = PORTRAITNAME_DEFAULT;
         Animation animation;   // 애니메이션 정보
+        wstring Section;
     };
 
     struct DialogData
@@ -103,7 +104,8 @@ public:
 
 public:
     CPortrait* Get_Portrait() { return m_pPortrait; }
-    void        Set_Portrait(CPortrait* _Portrait) { m_pPortrait = _Portrait; Safe_AddRef(_Portrait); }
+    void       Set_Portrait(CPortrait* _Portrait) { m_pPortrait = _Portrait; Safe_AddRef(_Portrait); }
+    void       UpdateDialogueLine();
 
 private:
     HRESULT     LoadFromJson(const std::wstring& filePath); // 데이터 로드
@@ -114,6 +116,35 @@ private:
 
     // 추후 수정 (프로토 타입용..)
     void        isCloseDialogueForTalket(_tchar* _DialogId);
+
+    // 추후 수정해야한다. 주소를 받던가
+    vector<CDialog::DialogData>			Get_Dialogue(const _wstring& _id);
+    CDialog::DialogLine					Get_DialogueLine(const _wstring& _id, _int _LineIndex);
+
+    /* UI_manager에서 이동*/
+ public:
+    void                                Set_DialogueId(const _tchar* _id) { 
+        wsprintf(m_tDialogId, _id); 
+    }
+    void                                Set_strCurSection(const _tchar* _strCurSection) {
+        wsprintf(m_strCurrentSection, _strCurSection); 
+    }
+    _bool                               Get_DisPlayDialogue() { return m_isDisplayDialogue; }
+    void                                Set_DisPlayDialogue(_bool _displayDialogue) { 
+        m_isDisplayDialogue = _displayDialogue; 
+    }
+    void                                Set_DisplayPortraitRender(_bool _displayPortrait) { 
+        m_isPortraitRender = _displayPortrait; 
+    }
+    void                                Set_DialoguePos(_float3 _vPos) 
+    {
+        m_vDialoguePos.x = _vPos.x;
+        m_vDialoguePos.y = _vPos.y;
+        m_vDialoguePos.z = _vPos.z;
+        m_vDialoguePos.w = 1.f;
+    }
+
+
 
 private:
     DialogData          m_DialogData;   // 현재 다이얼로그 데이터
@@ -130,11 +161,25 @@ private:
 
     CPortrait*          m_pPortrait = { nullptr };
 
-    //vector<DialogData>  m_DialogDatas;
 
     _bool               m_isOpenDialogue = { true };
 
-   // vector<DialogData>         Get_Dialogues() { return m_DialogDatas; }
+
+
+/* UI_manager에서 이동*/
+private:
+
+    vector<CDialog::DialogData>			m_DialogDatas;                              // 다이얼로그의 데이터 모음
+    wstring                             m_strCurrentDialogId;
+    _tchar								m_tDialogId[MAX_PATH] = {};                 // 다이얼로그 ID
+    _tchar								m_strCurrentSection[MAX_PATH] = {};         // 현재 진행중인 섹션
+    //_int								m_iCurrnetLineIndex = { 0 };                // 현재 진행 중인 라인
+    _bool								m_isPortraitRender = { false };             // 초상화를 노출시킬까요?
+    _bool								m_isDisplayDialogue = { false };            // 다이얼로그를 노출 시킬까요?
+    _bool								m_isDialogueFinishShopPanel = { false };    // 다이얼로그를 끝나고 샵을 오픈 시킬까요?
+    _float4								m_vDialoguePos = { 0.f, 0.f, 0.f, 1.f };    // 다이얼로그의 포지션
+    _float3								m_vCalDialoguePos = { 0.f, 0.f, 0.f };      // 각 알맞게 계산 된 다이얼로그의 포지션
+
 
 protected:
     virtual HRESULT Ready_Components() override;

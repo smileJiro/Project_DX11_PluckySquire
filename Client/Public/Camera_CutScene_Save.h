@@ -22,7 +22,7 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta) override;
 
 public:
-#ifdef _DEBUG
+
 	_float3						Get_SimulationPos() { return m_vSimulationPos; }
 	_bool						Get_IsFinish() { return m_isFinishCutScene; }
 	_bool						Get_IsSimulation() { return m_isSimulation; }
@@ -31,8 +31,6 @@ public:
 	void						Set_IsFinish(_bool _isFinish) { m_isFinishCutScene = _isFinish; }
 	void						Set_IsSimulation(_bool _isSimulation) { m_isSimulation = _isSimulation; }
 	void						CutScene_Clear();
-#endif
-
 public:
 	void						Set_NextCutScene(_wstring _wszCutSceneName, INITIAL_DATA* _pTargetPos = nullptr);
 	void						Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene, CUTSCENE_SUB_DATA _tSubData);
@@ -56,11 +54,11 @@ private:
 	//INITIAL_DATA								m_tInitialData = {};
 	//_bool										m_isInitialData = { false };
 	//_float2										m_InitialTime = { 0.3f, 0.f };
-
-#ifdef _DEBUG
 	_float3										m_vSimulationPos = {};
 	_bool										m_isSimulation = { false };
 	_float2										m_fSimulationTime = { 0.5f, 0.f };
+#ifdef _DEBUG
+
 #endif
 
 	_bool										m_isChangingLookAt = { false };

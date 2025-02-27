@@ -286,28 +286,28 @@ HRESULT CRenderer::Render_Priority()
 
 HRESULT CRenderer::Render_Shadow()
 {
-    if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Shadow"), m_pShadowDepthStencilView)))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Shadow"), m_pShadowDepthStencilView)))
+    //    return E_FAIL;
 
-    if (FAILED(SetUp_Viewport(g_iShadowWidth, g_iShadowHeight)))
-        return E_FAIL;
+    //if (FAILED(SetUp_Viewport(g_iShadowWidth, g_iShadowHeight)))
+    //    return E_FAIL;
 
-    /* Render */
-    for (auto& pRenderObject : m_RenderObjects[RG_SHADOW])
-    {
-        if (nullptr != pRenderObject && true == pRenderObject->Is_Render())
-            static_cast<CModelObject*>(pRenderObject)->Render_Shadow();
+    ///* Render */
+    //for (auto& pRenderObject : m_RenderObjects[RG_SHADOW])
+    //{
+    //    if (nullptr != pRenderObject && true == pRenderObject->Is_Render())
+    //        static_cast<CModelObject*>(pRenderObject)->Render_Shadow();
 
-        Safe_Release(pRenderObject);
-    }
-    m_RenderObjects[RG_SHADOW].clear();
+    //    Safe_Release(pRenderObject);
+    //}
+    //m_RenderObjects[RG_SHADOW].clear();
 
-    if (FAILED(m_pGameInstance->End_MRT()))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->End_MRT()))
+    //    return E_FAIL;
 
-    /* Origin Viewport Setup */
-    if (FAILED(SetUp_Viewport(m_iOriginViewportWidth, m_iOriginViewportHeight)))
-        return E_FAIL;
+    ///* Origin Viewport Setup */
+    //if (FAILED(SetUp_Viewport(m_iOriginViewportWidth, m_iOriginViewportHeight)))
+    //    return E_FAIL;
 
     return S_OK;
 }
@@ -389,8 +389,6 @@ HRESULT CRenderer::Render_Final()
     m_pShader->Bind_Matrix("g_ViewMatrixInv", &m_pGameInstance->Get_TransformInverseFloat4x4(CPipeLine::D3DTS_VIEW));
     m_pShader->Bind_Matrix("g_ProjMatrixInv", &m_pGameInstance->Get_TransformInverseFloat4x4(CPipeLine::D3DTS_PROJ));
 
-    m_pShader->Bind_Matrix("g_LightViewMatrix", m_pGameInstance->Get_Shadow_Transform_Ptr(CShadow::D3DTS_VIEW));
-    m_pShader->Bind_Matrix("g_LightProjMatrix", m_pGameInstance->Get_Shadow_Transform_Ptr(CShadow::D3DTS_PROJ));
 
     /* Diffuse 와 Shade RTV를 바인드하고 이제 이 두 데이터를 가지고 최종 화면을 그려낼 것 이다. */
     if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(m_pShader, "g_DiffuseTexture", TEXT("Target_Diffuse"))))

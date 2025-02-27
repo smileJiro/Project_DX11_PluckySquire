@@ -15236,8 +15236,8 @@
       },
       "BookID": 202,
       "RenderResolution": {
-        "X": 3584.0,
-        "Y": 2048.0
+        "X": 5376.0,
+        "Y": 3072.0
       },
       "LevelSizePixels": {
         "X": 10752.0,

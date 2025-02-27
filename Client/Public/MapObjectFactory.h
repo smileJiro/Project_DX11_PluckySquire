@@ -7,6 +7,17 @@
 #include "3DMapObject.h"
 #include "GameInstance.h"
 
+
+
+typedef	struct tagDiffuseColorInfo
+{
+	_uint iMaterialIndex;
+	C3DModel::COLOR_SHADER_MODE eColorMode;
+	_float4 fDiffuseColor;
+}DIFFUSE_COLOR_INFO;
+
+
+
 BEGIN(Client)
 class CMapObjectFactory {
 public:
@@ -123,12 +134,40 @@ public:
 		NormalDesc.isAddActorToScene = _isActorToScene;
 		CBase* pBase = nullptr;
 
-
+		// 1 스케치스페이스 사용여부?
 		_uint iSksp = 0;
 		ReadFile(_hFile, &iSksp, sizeof(_uint), &dwByte, nullptr);
 
+		if (1 == iSksp)
+		{
+			NormalDesc.isSksp = true;
+			_char		szSaveSkspName[MAX_PATH];
+			ReadFile(_hFile, &szSaveSkspName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
+			NormalDesc.strSkspTag = szSaveSkspName;
+		}
+
+		// 2. 컬러 정보가 있는가의 여부?
+		_uint iMaterialCount = 0;
+		vector<DIFFUSE_COLOR_INFO> m_MaterialColors;
+
+		ReadFile(_hFile, &iMaterialCount, sizeof(_uint), &dwByte, nullptr);
+		if (0 < iMaterialCount)
+		{
+			m_MaterialColors.resize(iMaterialCount);
+
+			for (_uint i = 0; i < iMaterialCount; i++)
+			{
+				ReadFile(_hFile, &m_MaterialColors[i].iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
+				ReadFile(_hFile, &m_MaterialColors[i].eColorMode, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+				ReadFile(_hFile, &m_MaterialColors[i].fDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+			}
+		}
+		// 컬러 정보가 있으면, 상수 버퍼를 만든다.
+		if (0 < iMaterialCount)
+			NormalDesc.isDeepCopyConstBuffer = true;
+
+
 		
-		// TODO : 맵 특수케이스 이넘 만들어서 관리할건데, 일단 스케치스페이스만 0210 박예슬
 		switch (iSksp)
 		{
 				// Default
@@ -145,10 +184,6 @@ public:
 				// Sksp
 			case 1 :
 				{
-					NormalDesc.isSksp = true;
-					_char		szSaveSkspName[MAX_PATH];
-					ReadFile(_hFile, &szSaveSkspName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
-					NormalDesc.strSkspTag = szSaveSkspName;
 					pBase = _pGameInstance->
 						Clone_Prototype(
 							PROTOTYPE::PROTO_GAMEOBJ,
@@ -161,33 +196,11 @@ public:
 				break;
 		}
 
-
-
-		if (pBase)
+		if (nullptr != pBase)
 		{
-			DWORD	dwByte(0);
-			_uint iOverrideCount = 0;
-			C3DModel::COLOR_SHADER_MODE eTextureType;
-			_float4 fDefaultDiffuseColor;
-
-
-			ReadFile(_hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
 			T* pMapObject = static_cast<T*>(pBase);
 
-			pMapObject->Set_Color_Shader_Mode(eTextureType);
-
-			switch (eTextureType)
-			{
-			case Engine::C3DModel::COLOR_DEFAULT:
-			case Engine::C3DModel::MIX_DIFFUSE:
-			{
-				ReadFile(_hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
-				pMapObject->Set_Diffuse_Color(fDefaultDiffuseColor);
-			}
-			break;
-			default:
-				break;
-			}
+			_uint iOverrideCount = 0;
 
 			ReadFile(_hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
 			if (0 < iOverrideCount)
@@ -203,9 +216,15 @@ public:
 				}
 			}
 
+			if (0 < iMaterialCount)
+			{
+				for (auto& tColorInfo : m_MaterialColors)
+					pMapObject->Set_MaterialConstBuffer_Albedo(tColorInfo.iMaterialIndex, tColorInfo.eColorMode, tColorInfo.fDiffuseColor);
+			}
+
 			return pMapObject;
+
 		}
-		
 		return nullptr;
 
 	}

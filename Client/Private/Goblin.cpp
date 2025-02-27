@@ -305,7 +305,8 @@ void CGoblin::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         case DEATH:
             Set_AnimChangeable(true);
 
-            CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+            //CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+            CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("MonsterDead"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
 
             //확률로 전구 생성
             if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
@@ -544,7 +545,7 @@ HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER | OBJECT_GROUP::EXPLOSION;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;

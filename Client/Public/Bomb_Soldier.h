@@ -45,8 +45,12 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
+	virtual void Attack() override;
 	virtual void Change_Animation() override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
+
+private:
+	void Create_Bomb();
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);

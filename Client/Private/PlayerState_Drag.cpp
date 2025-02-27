@@ -19,7 +19,9 @@ void CPlayerState_Drag::Update(_float _fTimeDelta)
 		return;
 	}
 	CActor_Dynamic* pDraggableDynamic = dynamic_cast<CActor_Dynamic*>(m_pDraggableObject->Get_ActorCom());
-	if (pDraggableDynamic->Get_LinearVelocity().m128_f32[1] < -0.1f)
+	CActor_Dynamic* pOwnerDynamic = dynamic_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom());
+	if (pDraggableDynamic->Get_LinearVelocity().m128_f32[1] < -0.1f
+		|| pOwnerDynamic->Get_LinearVelocity().m128_f32[1] < -0.1f)
 	{
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;

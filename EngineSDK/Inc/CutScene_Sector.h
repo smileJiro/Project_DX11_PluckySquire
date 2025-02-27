@@ -29,8 +29,7 @@ public:
 	void						Late_Update(_float _fTimeDelta);
 
 public:
-#ifdef _DEBUG
-	vector<CUTSCENE_KEYFRAME>*	Get_KeyFrames() { return &m_KeyFrames; };
+	vector<CUTSCENE_KEYFRAME>* Get_KeyFrames() { return &m_KeyFrames; };
 	_uint						Get_CurKeyFrameIndex() { return m_iCurKeyFrameIndex; };
 	_float						Get_TimeOffset();
 	_bool						Get_IsLookAt();
@@ -38,7 +37,6 @@ public:
 	_uint						Get_SectorType() { return m_iSectorType; }
 	_float						Get_SectorDuration() { return m_fDuration; }
 	_float						Get_LastTimeStamp();
-#endif
 
 	_bool						Get_IsChangeKeyFrame();
 

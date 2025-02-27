@@ -55,7 +55,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	unsigned int numCores = std::thread::hardware_concurrency();
 	std::cout << "Logical cores: " << numCores << std::endl;
 	_uint iNumThreadPoolSize = numCores - iNumThreads;
-	m_pThreadPool = CThreadPool::Create(numCores / 2);
+	m_pThreadPool = CThreadPool::Create(iNumThreadPoolSize);
 	if (nullptr == m_pThreadPool)
 		return E_FAIL;
 
@@ -125,7 +125,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pSound_Manager)
 		return E_FAIL;
 
-	m_pJson_Manager = CJson_Manager::Create();
+	m_pJson_Manager = CJson_Manager::Create(EngineDesc.iNumLevels);
 	if (nullptr == m_pJson_Manager)
 		return E_FAIL;
 	
@@ -158,7 +158,6 @@ void CGameInstance::Priority_Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pSound_Manager->Update(fTimeDelta);
 
-	m_pPipeLine->Update(); 
 	m_pFrustum->Update();
 }
 
@@ -179,7 +178,7 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 {
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update ¼öÇà ÈÄ, DeadObject Safe_Release() + erase();
 
-
+	m_pPipeLine->Update();
 #ifdef _DEBUG
 	if (m_pNewRenderer)
 	{
@@ -258,6 +257,7 @@ HRESULT CGameInstance::Engine_Level_Exit(_int _iChangeLevelID, _int _iNextChange
 	m_pPrototype_Manager->Level_Exit((_uint)iCurLevelID);
 	m_pPhysx_Manager->Level_Exit();
 	m_pLight_Manager->Level_Exit();
+	m_pJson_Manager->Level_Exit(iCurLevelID);
 	//m_pCollision_Manager->Level_Exit();
 
 	return S_OK;
@@ -587,6 +587,21 @@ HRESULT CGameInstance::Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D
 void CGameInstance::Set_PlayerHideColor(const _float3 _vHideColor, _bool _isUpdate)
 {
 	return m_pNewRenderer->Set_PlayerHideColor(_vHideColor, _isUpdate);
+}
+
+HRESULT CGameInstance::Add_ShadowLight(class CLight* _pShadowLight)
+{
+	return m_pNewRenderer->Add_ShadowLight(_pShadowLight);
+}
+
+HRESULT CGameInstance::Remove_ShadowLight(_int _iShadowLightID)
+{
+	return m_pNewRenderer->Remove_ShadowLight(_iShadowLightID);
+}
+
+HRESULT CGameInstance::Clear_ShadowLight()
+{
+	return m_pNewRenderer->Clear_ShadowLight();
 }
 
 #ifdef _DEBUG
@@ -925,6 +940,14 @@ HRESULT CGameInstance::Erase_MRT(const _wstring& _strMRTTag)
 	return m_pTarget_Manager->Erase_MRT(_strMRTTag);
 }
 
+CRenderTarget* CGameInstance::Find_RenderTarget(const _wstring& _strTargetTag)
+{
+	if (nullptr == m_pTarget_Manager)
+		return nullptr;
+
+	return m_pTarget_Manager->Find_RenderTarget(_strTargetTag);
+}
+
 HRESULT CGameInstance::Resolve_RT_MSAA(const _wstring& _strTargetTag)
 {
 	if (nullptr == m_pTarget_Manager)
@@ -939,21 +962,6 @@ HRESULT CGameInstance::Resolve_MRT_MSAA(const _wstring& _strMRTTag)
 		return E_FAIL;
 
 	return m_pTarget_Manager->Resolve_MRT_MSAA(_strMRTTag);
-}
-
-const _float4x4* CGameInstance::Get_Shadow_Transform_Ptr(CShadow::D3DTRANSFORMSTATE _eState)
-{
-	return m_pShadow->Get_Shadow_Transform_Ptr(_eState);
-}
-
-void CGameInstance::SetUp_Shadow_TransformMatrix(CShadow::D3DTRANSFORMSTATE _eState, _fmatrix _TransformMatrix)
-{
-	m_pShadow->SetUp_TransformMatrix(_eState, _TransformMatrix);
-}
-
-void CGameInstance::SetUp_TargetShadowMatrix(_fvector _vLightDirection, _fvector _vWorldPos, _float _fDistance, _float2 _vNearFar)
-{
-	m_pShadow->SetUp_TargetShadowMatrix(_vLightDirection, _vWorldPos, _fDistance, _vNearFar);
 }
 
 
@@ -1108,6 +1116,24 @@ HRESULT CGameInstance::Load_Json(const _tchar* _szFilePath, _Out_ json* _pOutJso
 
 
 	return m_pJson_Manager->Load_Json(_szFilePath, _pOutJson);
+}
+
+HRESULT CGameInstance::Load_Json_InLevel(const _tchar* _szFilePath, const _wstring& _strKey, _uint _iLevelIndex)
+{
+	if (nullptr == m_pJson_Manager)
+		return E_FAIL;
+
+
+	return m_pJson_Manager->Load_Json_InLevel(_szFilePath, _strKey, _iLevelIndex);
+}
+
+const json* CGameInstance::Find_Json_InLevel(const _wstring& _strKey, _uint _iLevelIndex)
+{
+	if (nullptr == m_pJson_Manager)
+		return nullptr;
+
+
+	return m_pJson_Manager->Find_Json_InLevel(_strKey, _iLevelIndex);
 }
 
 HRESULT CGameInstance::Start_Imgui()

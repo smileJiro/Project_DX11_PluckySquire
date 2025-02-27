@@ -18,9 +18,12 @@ void CPlayerState_Clamber::Update(_float _fTimeDelta)
 {
 	m_fAnimRatio = m_pOwner->Get_AnimProgress();
 	_float3 vEndPosition, vStartPosition, vCurPosition;
+
+	_float fLerpRatio = (m_fAnimRatio - m_fLerpStartProgress) / (m_fLerpEndProgress - m_fLerpStartProgress);
+	fLerpRatio = max(0.f, min(1.f, fLerpRatio));
 	XMStoreFloat3(&vEndPosition, m_vClamberEndPosition);
 	XMStoreFloat3(&vStartPosition, m_vClamberStartPosition);
-	XMStoreFloat3(&vCurPosition, XMVectorLerp(XMLoadFloat3(&vStartPosition), XMLoadFloat3(&vEndPosition), m_fAnimRatio));
+	XMStoreFloat3(&vCurPosition, XMVectorLerp(XMLoadFloat3(&vStartPosition), XMLoadFloat3(&vEndPosition), fLerpRatio));
 	m_pOwner->Set_Position(XMLoadFloat3( &vCurPosition));
 }
 

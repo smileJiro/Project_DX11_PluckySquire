@@ -12,6 +12,10 @@
 #define			RATIO_BOOK2D_X	0.3333333f
 #define			RATIO_BOOK2D_Y	0.3333333f
 
+#define			SHADOWMAP_XY 2048.f
+#define			SHADOWMAP_X 8192.f//4096.f
+#define			SHADOWMAP_Y 8192.f//4096.f
+#define			REDNERGROUP_SHADOWID 77
 #define			EPSILON	0.0001f
 
 

@@ -29,12 +29,6 @@ void CPlayerBody::Update(_float _fTimeDelta)
 
 void CPlayerBody::Late_Update(_float _fTimeDelta)
 {
-    if (COORDINATE_3D == Get_CurCoord())
-    {
-        if (false == m_isFrustumCulling)
-            m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, PR3D_PLAYERDEPTH, this);
-    }
-
     __super::Late_Update(_fTimeDelta);
 }
 

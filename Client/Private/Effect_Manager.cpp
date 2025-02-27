@@ -91,7 +91,7 @@ void CEffect_Manager::Active_EffectPositionID(const _tchar* _szEffectTag, _bool 
 void CEffect_Manager::Active_Effect(const _tchar* _szEffectTag, _bool _isReset, const _float4x4* _pWorldMatrix)
 {
 	_bool _isActive;
-	CEffect_System* pEffect = Find_Effect(_szEffectTag, &_isActive);
+ 	CEffect_System* pEffect = Find_Effect(_szEffectTag, &_isActive);
 
 	if (nullptr == pEffect)
 		return;
@@ -204,6 +204,7 @@ CEffect_System* CEffect_Manager::Find_Effect(const _tchar* _szEffectTag, _Out_ _
 	if (_pActive)
 		*_pActive = true;
 	return iterFirst->second;
+	//return nullptr;
 }
 
 void CEffect_Manager::Free()

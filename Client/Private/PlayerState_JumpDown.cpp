@@ -4,6 +4,7 @@
 #include "PlayerState_Idle.h"
 #include "GameInstance.h"
 #include "Interactable.h"
+#include "Effect_Manager.h"
 
 CPlayerState_JumpDown::CPlayerState_JumpDown(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::JUMP_DOWN)
@@ -33,7 +34,11 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 			m_bGrounded = true;
 
 			if (COORDINATE_3D == eCoord)
+			{
 				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_LAND_02_GT);
+				CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Jump"), true, m_pOwner->Get_Transform()->Get_WorldMatrix_Ptr());
+
+			}
 
 			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_land-") + to_wstring(rand() % 10), 30.f);
 		}
@@ -93,7 +98,7 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 				return;
 
 			//°øÁß ¹«ºù
-			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed);
+			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed * _fTimeDelta );
 			m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
 		}
 		else
@@ -153,6 +158,7 @@ void CPlayerState_JumpDown::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	{
 		if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_LAND_02_GT == iAnimIdx)
 			m_pOwner->Set_State(CPlayer::IDLE);
+
 	}
 }
 
@@ -202,7 +208,9 @@ void CPlayerState_JumpDown::Switch_To_JumpDownAnimation()
 		}
 	}
 	else	if (COORDINATE_3D == eCoord)
+	{
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMP_DOWN_02_GT);
+	}
 
 
 }

@@ -174,7 +174,7 @@ HRESULT CMagic_Hand::Ready_PartObjects()
     EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
     EffectDesc.szMeshComputeShaderTag = L"Prototype_Component_Compute_Shader_MeshInstance";
     // Level ¹Ù²ã¾ßÇÔ
-    m_PartObjects[MAGICHAND_EFFECT] = m_pEffectSystem = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("BookOut.json"), &EffectDesc));
+    m_PartObjects[MAGICHAND_EFFECT] = m_pEffectSystem = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_2, TEXT("BookOut.json"), &EffectDesc));
     m_pEffectSystem->Set_Position(XMVectorSet(2.92f, 0.f, -21.0f, 1.f));
     m_pEffectSystem->Set_SpawnMatrix(pMatrix);
 

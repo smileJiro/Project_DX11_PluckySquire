@@ -25,7 +25,7 @@ private:
     _float m_fHeadHeight = 0;
     _float m_fArmLength = 0;
 
-    _float m_fLerpStartProgress = 0;
-    _float m_fLerpEndProgress = 1;
+    _float m_fLerpStartProgress = 0.194;
+    _float m_fLerpEndProgress = 0.503;
 };
 END

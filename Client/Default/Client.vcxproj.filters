@@ -499,6 +499,12 @@
     <Filter Include="02.GameObjects\Monster\Soldier\CrossBow\Weapon">
       <UniqueIdentifier>{bc573363-d09e-4ae1-b848-2f07041536b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\99. Dialog_Manager">
+      <UniqueIdentifier>{be8cd20e-6575-4400-b74d-735c56c67db8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E">
+      <UniqueIdentifier>{2aab60c7-a543-45be-93ec-270840324c3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -600,10 +606,10 @@
     <ClInclude Include="..\Public\Camera_Manager.h">
       <Filter>02.GameObjects\Camera\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\StopStamp.h">
+    <ClInclude Include="..\Public\StopStamp_UI.h">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\00. StopStamp</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BombStamp.h">
+    <ClInclude Include="..\Public\BombStamp_UI.h">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\01. BombStamp</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ArrowForStamp.h">
@@ -1147,6 +1153,9 @@
     <ClInclude Include="..\public\CollapseBlock.h">
       <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Dialog_Manager.h">
+      <Filter>02.GameObjects\UI\99. Dialog_Manager</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Projectile_BirdMonster.h">
       <Filter>02.GameObjects\Monster\BirdMonster\Projectile</Filter>
     </ClInclude>
@@ -1187,6 +1196,25 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\JumpPad.h" />
+    <ClInclude Include="..\Public\Bomb.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\JumpPad.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Stamp.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StopStamp.h" />
+    <ClInclude Include="..\Public\BombStamp.h" />
+    <ClInclude Include="..\Public\PlayerBomb.h" />
+    <ClInclude Include="..\Public\Detonator.h" />
+    <ClInclude Include="..\Public\PlayerState_Bomber.h" />
+    <ClInclude Include="..\Public\Bombable.h" />
+    <ClInclude Include="..\Public\Interaction_E.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PalmMarker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1270,10 +1298,10 @@
     <ClCompile Include="..\Private\Camera_Manager.cpp">
       <Filter>02.GameObjects\Camera\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\StopStamp.cpp">
+    <ClCompile Include="..\Private\StopStamp_UI.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\00. StopStamp</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BombStamp.cpp">
+    <ClCompile Include="..\Private\BombStamp_UI.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\01. BombStamp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ArrowForStamp.cpp">
@@ -1861,6 +1889,28 @@
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp">
       <Filter>02.GameObjects\Monster\Soldier\CrossBow\Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Bomb.cpp">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dialog_Manager.cpp">
+      <Filter>02.GameObjects\UI\99. Dialog_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\JumpPad.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Stamp.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StopStamp.cpp" />
+    <ClCompile Include="..\Private\BombStamp.cpp" />
+    <ClCompile Include="..\Private\PlayerBomb.cpp" />
+    <ClCompile Include="..\Private\Detonator.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Bomber.cpp" />
+    <ClCompile Include="..\Private\Bombable.cpp" />
+    <ClCompile Include="..\Private\Interaction_E.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PalmMarker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

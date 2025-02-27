@@ -31,6 +31,7 @@
 #include "CrossBow_Soldier.h"
 #include "CrossBow_Arrow.h"
 #include "Bomb_Soldier.h"
+#include "Bomb.h"
 #include "ButterGrump.h"
 
 
@@ -102,12 +103,17 @@ HRESULT CLevel_Chapter_Test::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::EXPLOSION);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::EXPLOSION);
+	
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::EXPLOSION, OBJECT_GROUP::MONSTER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::EXPLOSION, OBJECT_GROUP::PLAYER);
 
 	//실험용. -김지완-
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::PLAYER_PROJECTILE);
@@ -956,22 +962,11 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 
 
 
-	Pooling_DESC Pooling_Desc;
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Rat");
-	Pooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
-
-	CRat::MONSTER_DESC* Rat_Desc = new CRat::MONSTER_DESC;
-	Rat_Desc->iCurLevelID = m_eLevelID;
-	Rat_Desc->eStartCoord = COORDINATE_3D;
 	//Rat_Desc->tTransform3DDesc.vInitialPosition = _float3(-20.0f, 0.35f, -21.0f);
 	//Rat_Desc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"), m_eLevelID, _strLayerTag, Rat_Desc)))
 	//	return E_FAIL;
-
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Rat"), Pooling_Desc, Rat_Desc);
 
 	//_float3 vPos = { -20.0f, 0.35f, -21.0f };
 	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Rat"), COORDINATE_3D, &vPos);
@@ -981,19 +976,6 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Rat"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
 
 
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_JumpBug");
-	Pooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
-
-	CJumpBug::MONSTER_DESC* JumpBug_Desc = new CJumpBug::MONSTER_DESC;
-	JumpBug_Desc->iCurLevelID = m_eLevelID;
-	JumpBug_Desc->eStartCoord = COORDINATE_3D;
-	JumpBug_Desc->tTransform3DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
-	JumpBug_Desc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_JumpBug"), Pooling_Desc, JumpBug_Desc);
-
 	_float3 vPos = { -700.0f, -60.f, 0.f };
 	_wstring strSectionKey = TEXT("CHAPTER4_P0304");
 	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_JumpBug"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
@@ -1001,20 +983,6 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 	vPos = { -20.0f, 0.35f, -21.0f };
 	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_JumpBug"), COORDINATE_3D, &vPos);
 
-
-
-
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_BirdMonster");
-	Pooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
-
-	CBirdMonster::MONSTER_DESC* BirdMonster_Desc = new CBirdMonster::MONSTER_DESC;
-	BirdMonster_Desc->iCurLevelID = m_eLevelID;
-	BirdMonster_Desc->eStartCoord = COORDINATE_3D;
-	BirdMonster_Desc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_BirdMonster"), Pooling_Desc, BirdMonster_Desc);
 
 	vPos = { 5.5f, 0.35f, -3.0f };
 	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_BirdMonster"), COORDINATE_3D, &vPos);
@@ -1024,13 +992,24 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
 	Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
 	Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(5.5f, 0.35f, -3.0f);
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -3.0f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
 		return E_FAIL;
 
+	CCrossBow_Soldier::MONSTER_DESC CrossBow_Soldier_Desc;
+	CrossBow_Soldier_Desc.iCurLevelID = m_eLevelID;
+	CrossBow_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	CrossBow_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	CrossBow_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(5.5f, 0.35f, -3.0f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"), m_eLevelID, _strLayerTag, &CrossBow_Soldier_Desc)))
+		return E_FAIL;
+
+
+
 	/*  Projectile  */
-	Pooling_Desc;
+	Pooling_DESC Pooling_Desc;
 	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
 	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
 	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
@@ -1049,7 +1028,7 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 
 	CProjectile_BirdMonster::PROJECTILE_BIRDMONSTER_DESC* pBirdProjDesc = new CProjectile_BirdMonster::PROJECTILE_BIRDMONSTER_DESC;
 	pBirdProjDesc->iCurLevelID = m_eLevelID;
-	pProjDesc->eStartCoord = COORDINATE_3D;
+	pBirdProjDesc->eStartCoord = COORDINATE_3D;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BirdMonster"), Pooling_Desc, pBirdProjDesc);
 
@@ -1058,11 +1037,22 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
 	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_CrossBow_Arrow");
 
-	//CSoldier_CrossBow::PROJECTILE_BIRDMONSTER_DESC pBirdProjDesc;
-	//pBirdProjDesc->iCurLevelID = m_eLevelID;
-	//pProjDesc->eStartCoord = COORDINATE_3D;
+	CCrossBow_Arrow::CROSSBOW_ARROW_DESC* ArrowDesc = new CCrossBow_Arrow::CROSSBOW_ARROW_DESC;
+	ArrowDesc->iCurLevelID = m_eLevelID;
+	ArrowDesc->eStartCoord = COORDINATE_3D;
 
-	//CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BirdMonster"), Pooling_Desc, pBirdProjDesc);
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_CrossBow_Arrow"), Pooling_Desc, ArrowDesc);
+
+
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Bomb");
+	Pooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
+
+	CBomb::CARRIABLE_DESC* BombDesc = new CBomb::CARRIABLE_DESC;
+	BombDesc->iCurLevelID = m_eLevelID;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Bomb"), Pooling_Desc, BombDesc);
 
 	return S_OK;
 }
@@ -1077,6 +1067,8 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Effects(const _wstring& _strLayerTag)
 HRESULT CLevel_Chapter_Test::Ready_Layer_Effect2D(const _wstring& _strLayerTag)
 {
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Prototype_Model2D_FallingRock"), LEVEL_CHAPTER_TEST, 3);
+	
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Generic_Explosion"), LEVEL_STATIC, 3);
 
 
 	/*CEffect2D::EFFECT2D_DESC EffectDesc = {};

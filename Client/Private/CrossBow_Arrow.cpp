@@ -25,15 +25,13 @@ HRESULT CCrossBow_Arrow::Initialize(void* _pArg)
     CROSSBOW_ARROW_DESC* pDesc = static_cast<CROSSBOW_ARROW_DESC*>(_pArg);
 
     //투사체는 쓰는 객체가 Desc 넣어줌.
-    pDesc->isCoordChangeEnable = true;
-
-    pDesc->eStartCoord = COORDINATE_3D;
+    pDesc->isCoordChangeEnable = false;
 
     //pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     //pDesc->tTransform2DDesc.fSpeedPerSec = 400.f;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+    pDesc->tTransform3DDesc.fSpeedPerSec = 15.f;
 
     pDesc->fLifeTime = 3.f;
 
@@ -213,7 +211,7 @@ HRESULT CCrossBow_Arrow::Ready_ActorDesc(void* _pArg)
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
     ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);

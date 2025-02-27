@@ -32,8 +32,11 @@ struct DirectLightData
     float4 vAmbient; // 주변광 (16byte)
     float4 vSpecular; // 정반사광 (16byte)
     
-    float fRadius;
-    float3 dummy1;
+    int isShadow;
+    float fLightRadius;
+    float2 dummy1;
+    
+    matrix LightViewProjMatrix;
 };
 
 /* DofData */ 
@@ -87,7 +90,7 @@ Texture2D g_LightingTexture;
 // Blur 대상 Texture2D
 Texture2D g_SrcBlurTargetTexture;
 // etc
-Texture2D g_LightDepthTexture, g_FinalTexture;
+Texture2D g_ShadowMapTexture, g_FinalTexture;
 // Default Mtrl
 vector g_vMtrlAmbient = 1.0f, g_vMtrlSpecular = 1.0f; // 특별한 경우가 아니라면 재질의 Ambient와 Specular는 특정 값으로 고정 후, 조명의 값으로 변화를 준다. 
 float4 g_vCamWorld;
@@ -239,6 +242,41 @@ float4 GetWorldPositionFromDepth(float2 _vTexcoord, float _fNDCDepth, float _fVi
     return vPixelWorld;
 }
 
+float PCF_Filter(float2 _vUV, float _fZReceiverNDC, float _fFilterRadiusUV, Texture2D _ShadowMapTexture)
+{
+    // RTV 기반 쉐도우맵이라 직접 PCF를 구현하여야 한다.
+    int iKernelSize = 8;
+    float fSumShadowFactor = 0.0f;
+
+    // 커널 중심에서 주변 텍셀 샘플링
+    int iLoopNum = (iKernelSize / 2);
+    for (int x = -iLoopNum; x <= iLoopNum; ++x) // '<='로 수정
+    {
+        for (int y = -iLoopNum; y <= iLoopNum; ++y) // '<='로 수정
+        {
+            // 주변 텍셀 좌표 계산
+            int DiskY = y + iLoopNum;
+            int DiskX = x + iLoopNum;
+
+            // Poisson Disk 인덱스 순환 접근
+            int poissonIndex = (DiskY * iKernelSize + DiskX) % 64;
+            float2 vOffset = diskSamples64[poissonIndex] * _fFilterRadiusUV;
+
+            // 쉐도우맵에서 깊이 샘플링
+            float fSampledDepth = _ShadowMapTexture.Sample(LinearSampler_Clamp, _vUV + vOffset);
+
+            // 깊이 비교 (좌표계 확인 필요)
+            if (_fZReceiverNDC <= fSampledDepth)
+            {
+                fSumShadowFactor += 1.0f;
+            }
+        }
+    }
+
+    // 평균화하여 부드러운 그림자 생성
+    return fSumShadowFactor / (iKernelSize * iKernelSize); // 동적 커널 크기 지원
+}
+
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -321,7 +359,10 @@ PS_OUT PS_PBR_LIGHT_POINT(PS_IN In)
     
     float3 DirectLighting = ((vDiffuseBRDF * c_DirectLight.vDiffuse.rgb) + (vSpecularBRDf * c_DirectLight.vSpecular.rgb)) * vFinalRadiance * NdotI;
     
-    Out.vColor = float4(DirectLighting.rgb, 1.0f);
+    // Shadow Factor 계산
+    float fShadowFactor = 1.0f;
+    
+    Out.vColor = float4(DirectLighting.rgb * fShadowFactor, 1.0f);
     
     return Out;
 }
@@ -369,7 +410,42 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
     
     float3 DirectLighting = ((vDiffuseBRDF * c_DirectLight.vDiffuse.rgb) + (vSpecularBRDf * c_DirectLight.vSpecular.rgb)) * c_DirectLight.vRadiance * NdotI;
     
-    Out.vColor = float4(DirectLighting.rgb, 1.0f);
+    // Shadow Factor 계산
+    float fShadowFactor = 1.0f;
+    if (c_DirectLight.isShadow & 1)
+    {
+
+        // 1. 픽셀 월드좌표를 광원 기준 투영좌표로 이동 
+        float4 vLightScreen = mul(vPixelWorld, g_LightViewMatrix);
+        vLightScreen = mul(vLightScreen, g_LightProjMatrix);
+        vLightScreen.xyz /= vLightScreen.w; // w 나누기 까지 수행.
+        
+        // 2. ndc 좌표를 texcoord 좌표롤 변환
+        float2 vLightTexcoord = float2(vLightScreen.x, vLightScreen.y * -1.0f);
+        vLightTexcoord += 1.0f;
+        vLightTexcoord *= 0.5f;
+        
+        float fMaxBias = 0.3f;
+        float fMinBias = 0.001f;
+        float fSlopeScaledBias = max(fMaxBias * (1.0f - dot(vNormalWorld, vLightVector)), fMinBias);
+        
+        uint width, height, numMips;
+        g_ShadowMapTexture.GetDimensions(0, width, height, numMips);
+        
+        // Texel Size
+        float dx = 5.0 / (float) width;
+        //float fLightDepth = g_ShadowMapTexture.Sample(LinearSampler, vLightTexcoord).r;
+        fShadowFactor = PCF_Filter(vLightTexcoord.xy, vLightScreen.w - fSlopeScaledBias, dx, g_ShadowMapTexture);
+        //float fLightDepth = g_ShadowMapTexture.SampleCmpLevelZero(ShadowCompareSampler, vLightTexcoord).r; // viewspace상의 z 값을 far로 나누어 저장했음.
+        //if (fLightDepth + fSlopeScaledBias < vLightScreen.w)
+        //    fShadowFactor = 0.0f;
+    }
+
+    
+    
+    
+    
+    Out.vColor = float4(DirectLighting.rgb * fShadowFactor, 1.0f);
     return Out;
 }
 

@@ -17,6 +17,7 @@ public:
 public:
 	HRESULT Initialize();
 	HRESULT Add_Light(const CONST_LIGHT& LightDesc, LIGHT_TYPE _eType);
+	void	Update(_float _fTimeDelta);
 	HRESULT Render(class CShader* _pShader, class CVIBuffer_Rect* _pVIBuffer);
 public:
 	HRESULT Load_Lights(const _wstring& _strLightsJsonPath);
