@@ -39,6 +39,7 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	m_iCreateSection = pDesc->strCreateSection;
 	m_strDialogueID = pDesc->strDialogueId;
 	m_iStartAnimation = pDesc->iStartAnimation;
+	m_isHaveDialog = pDesc->isDialog;
 	m_vPosition = _float3(pDesc->vPositionX, pDesc->vPositionY, pDesc->vPositionZ);
 	m_vCollsionScale = _float2(pDesc->CollsionScaleX, pDesc->CollsionScaleY);
 	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
@@ -96,6 +97,7 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z, 1.f));
 
 	
+	m_strInteractName = TEXT("NPC");
 	//CActor::ACTOR_DESC ActorDesc;
 	//
 	///* Actor의 주인 오브젝트 포인터 */
@@ -172,7 +174,7 @@ void CNPC_Social::Update(_float _fTimeDelta)
 
 void CNPC_Social::Late_Update(_float _fTimeDelta)
 {
-	if (false == m_isThrow && true == m_isColPlayer)
+	if (false == m_isThrow && true == m_isColPlayer && true == m_isHaveDialog)
 	{
 		Throw_Dialogue();
 		m_isThrow = true;

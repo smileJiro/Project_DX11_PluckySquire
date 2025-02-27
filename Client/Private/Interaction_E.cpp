@@ -74,7 +74,7 @@ void CInteraction_E::Late_Update(_float _fTimeDelta)
 HRESULT CInteraction_E::Render()
 {
 	
-	if (true == m_isRender && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	if (/*true == m_isRender &&*/ COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 		// TODO :: ÀÏ´ÜÀº...
 
@@ -163,6 +163,9 @@ void CInteraction_E::Cal_PlayerHighPos()
 		vCalPos.y = vPlayerPos.y + RTSize.y * 0.175f;
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f));
+
+		if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
+			CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 	}
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
@@ -188,6 +191,9 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, vObjectPos.y, 0.f, 1.f));
 
 	wstring test = Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractName();
+
+	if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
 	int a = 0;
 
