@@ -78,6 +78,7 @@ void CInteraction_E::Update(_float _fTimeDelta)
 		{
 			if (false == CSection_Manager::GetInstance()->Is_CurSection(pGameObejct))
 				return;
+
 		}
 		
 		if (true == pInteractableObject->Is_UIPlayerHeadUp())
@@ -106,16 +107,24 @@ HRESULT CInteraction_E::Render()
 		return S_OK;
 
 
+
+
+
+
 	// 인터렉션 진행 중일 때 랜더 끄기
 
+	IInteractable* pInteractableObject = Uimgr->Get_Player()->Get_InteractableObject();
+	if (nullptr == pInteractableObject)
+		return S_OK;
 
+
+	CGameObject* pGameObject = dynamic_cast<CGameObject*>(pInteractableObject);
 
 	if (true == m_isRender /* && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord()*/)
 	{
 		// TODO :: 일단은...
 
 		__super::Render();
-
 
 		
 		_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
@@ -289,6 +298,8 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 
 		//Display_Text(m_vObejctPos, RTSize);
 	}
+
+	//////////////////////////////////////// 3D //////////////////////////////////////////
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 		_float4x4 DisPlayPos;
