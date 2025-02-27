@@ -99,6 +99,9 @@ HRESULT CCollider_AABB::Render(_float2 _fRenderTargetSize)
 
 _bool CCollider_AABB::Is_Collision(CCollider* _pOther)
 {
+    if (false == m_isActive)
+        return false;
+
     _bool isResult = false;
     switch (_pOther->Get_Type())
     {
