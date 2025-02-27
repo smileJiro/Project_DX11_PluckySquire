@@ -19,7 +19,7 @@ public:
 	virtual HRESULT Initialize(void* _pArg) override;
 
 	void Detonate();
-	void Set_Bombable(IBombable* _pBomb) { m_pBomb = _pBomb; }
+	void Set_Bombable(IBombable* _pBomb);
 	_bool Is_DetonationMode() { return nullptr != m_pBomb; }
 private:
 	IBombable* m_pBomb = nullptr;

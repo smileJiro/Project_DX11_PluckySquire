@@ -98,6 +98,8 @@ void CDialog::Update(_float _fTimeDelta)
 void CDialog::Late_Update(_float _fTimeDelta)
 {
 	//Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
+
+
 	if (true == m_isDisplayDialogue && false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
 	{
 		Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);

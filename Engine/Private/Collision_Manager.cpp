@@ -53,14 +53,11 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
 
     for (_uint i = 0; i < LeftColliders.size(); ++i)
     {
-        // LeftCollider가 유효하지 않거나, 비활성 상태인 경우
-        if (nullptr == LeftColliders[i] || false == LeftColliders[i]->Is_Active())
-            continue;
 
         for (_uint j = 0; j < RightColliders.size(); ++j)
         {
             // RightCollider가 유효하지 않거나, 비활성 상태인 경우, 혹은 자기 자신과의 충돌검사인 경우 
-            if (nullptr == RightColliders[j] || false == RightColliders[j]->Is_Active() || LeftColliders[i] == RightColliders[j])
+            if (LeftColliders[i] == RightColliders[j])
                 continue;
 
             CCollider* pLeftCollider = LeftColliders[i];
@@ -74,20 +71,22 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
             {
                 // 첫 충돌검사 대상.
                 m_PrevCollInfo.emplace(ID.ID, false);
-                iter = m_PrevCollInfo.find(ID.ID);
+                iter = m_PrevCollInfo.find(ID.ID); 
             }
 
             // 본격적인 충돌 검사 수행.
             CGameObject* pLeftObject = pLeftCollider->Get_Owner();
             CGameObject* pRightObject = pRightCollider->Get_Owner();
-            if (pLeftCollider->Is_Trigger() || pRightCollider->Is_Trigger())
-                int a = 0;
+
+
             if (true == pLeftCollider->Is_Collision(pRightCollider))
             {
                 if (true == iter->second)
                 {
                     // 이전 프레임에도 충돌 중이었다.
-                    if (true == pLeftObject->Is_Dead() || true == pRightObject->Is_Dead() || false == pLeftObject->Is_Active() || false == pRightObject->Is_Active())
+                    if (true == pLeftObject->Is_Dead() || true == pRightObject->Is_Dead() ||
+                        false == pLeftObject->Is_Active() || false == pRightObject->Is_Active() || 
+                        false == pLeftCollider->Is_Active() || false == pRightCollider->Is_Active())
                     {
                         // 만약 두 오브젝트 중 하나가 Dead Object라면, 충돌 탈출.
                         pLeftObject->On_Collision2D_Exit(pLeftCollider, pRightCollider, pRightObject);

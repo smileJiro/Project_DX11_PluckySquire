@@ -45,7 +45,7 @@ HRESULT CPlayerBomb::Initialize(void* _pArg)
     CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius * 0.5f };
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;
-    CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
@@ -58,20 +58,7 @@ HRESULT CPlayerBomb::Initialize(void* _pArg)
     return S_OK;
 }
 
-void CPlayerBomb::Update(_float _fTimeDelta)
-{
-	__super::Update(_fTimeDelta);
-}
 
-void CPlayerBomb::Late_Update(_float _fTimeDelta)
-{
-	__super::Late_Update(_fTimeDelta);
-}
-
-HRESULT CPlayerBomb::Render()
-{
-    return __super::Render();
-}
 
 CPlayerBomb* CPlayerBomb::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

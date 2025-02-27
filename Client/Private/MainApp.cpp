@@ -53,7 +53,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 	EngineDesc.isNewRenderer = true;
 #ifdef _DEBUG
-	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_MESH_PICKING; // NONE_IMPORT
+	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
 #elif NDEBUG
 	EngineDesc.eImportMode |= NONE_IMPORT;
 #endif
@@ -501,7 +501,7 @@ HRESULT CMainApp::Ready_RenderTargets()
 		return E_FAIL;
 
 	/* Target_Depth */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
 		return E_FAIL;
 	
 	/* Target_PlayerDepth */

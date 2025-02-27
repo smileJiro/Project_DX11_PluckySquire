@@ -34,7 +34,7 @@ public:
 	HRESULT				Ready_CubeMap(const _wstring& _strLayerTag);
 	HRESULT				Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget);
 	HRESULT				Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut);
-	HRESULT				Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
+	HRESULT				Ready_Layer_TestTerrain(const _wstring& _strLayerTag, CGameObject* _pPlayer);
 	HRESULT				Ready_Layer_MainTable(const _wstring& _strLayerTag);
 	HRESULT				Ready_DataFiles();
 
@@ -90,6 +90,9 @@ private:
 	pair<CUTSCENE_KEYFRAME, CGameObject*>* m_pCurKeyFrame = { nullptr };
 
 	map<_wstring, vector<CCutScene_Sector*>>		m_CutScenes;
+	map<_wstring, CUTSCENE_SUB_DATA>				m_CutSceneSubDatas;
+	CUTSCENE_SUB_DATA							m_tCutSceneSubData = {};
+
 	vector<CUTSCENE_KEYFRAME>				m_SelectedKeyFrame;
 	_uint									m_iSectorType = {};
 	_float									m_fSectorDuration = {};
@@ -128,7 +131,13 @@ private:
 
 	// CutScene Model...
 private:
+	// AnimTool
 	vector<CModelObject*>					m_ModelObjects;
+	_float									m_fAnimTime = {};
+	_int									m_iModelIndex = {};
+	_bool									m_isLoop = { false };
+	_int									m_iAnim[3] = {};
+	_bool									m_isSelectModel[3] = { true };
 
 	_bool									m_isSetAt = { false };
 	_float3									m_vInitialLookAt = {};

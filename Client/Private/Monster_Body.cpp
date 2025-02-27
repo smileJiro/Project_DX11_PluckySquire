@@ -45,7 +45,7 @@ void CMonster_Body::Late_Update(_float _fTimeDelta)
 	if (COORDINATE_3D == Get_CurCoord())
 	{
 		if (false == m_isFrustumCulling)
-			m_pGameInstance->Add_RenderObject_New(RENDERGROUP::RG_3D, PR3D_PLAYERDEPTH, this);
+			Register_RenderGroup(m_iRenderGroupID_3D, PR3D_PLAYERDEPTH);
 	}
 	__super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }

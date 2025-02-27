@@ -234,7 +234,7 @@ void CCamera_Manager::Add_ArmData(_uint _iCameraType, _wstring wszArmTag, ARM_DA
 	}
 }
 
-void CCamera_Manager::Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA*>> _CutSceneData)
+void CCamera_Manager::Add_CutScene(_wstring _wszCutSceneTag, pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA*>> _CutSceneData)
 {
 	if (nullptr == m_Cameras[CUTSCENE])
 		return;
@@ -462,7 +462,7 @@ void CCamera_Manager::Load_ArmData(_wstring _sz3DFileName, _wstring _sz2DFileNam
 
 void CCamera_Manager::Load_CutSceneData()
 {
-	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/CutSceneData/CutScene_Test.json";
+	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/CutSceneData/Chapter2_CutScene.json";
 
 	ifstream file(wszLoadPath);
 
@@ -479,13 +479,15 @@ void CCamera_Manager::Load_CutSceneData()
 
 	if (Result.is_array()) {
 		for (auto& CutScene_json : Result) {
-			pair<_float2, vector<CUTSCENE_DATA*>> CutSceneData;
+			pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA*>> CutSceneData;
 			
 			// CutScene Tag 읽기
 			_string szCutSceneTag = CutScene_json["CutScene_Tag"];
 			// CutScene Total Time 읽기
-			CutSceneData.first = { CutScene_json["CutScene_Time"][0].get<_float>(), CutScene_json["CutScene_Time"][1].get<_float>() };
-	
+			CutSceneData.first.fTotalTime = { CutScene_json["CutScene_Time"][0].get<_float>(), CutScene_json["CutScene_Time"][1].get<_float>() };
+			// Next CameraType
+			CutSceneData.first.iNextCameraType = CutScene_json["CutScene_Next_CameraType"];
+
 			// CutScene Data 읽기
 			if (CutScene_json["Datas"].is_array()) {
 				for (auto& Data : CutScene_json["Datas"]) {
@@ -493,7 +495,7 @@ void CCamera_Manager::Load_CutSceneData()
 
 					pData->vPosition = { Data["Position"][0].get<_float>(), Data["Position"][1].get<_float>(), Data["Position"][2].get<_float>() };
 					pData->vRotation = { Data["Rotation"][0].get<_float>(), Data["Rotation"][1].get<_float>(), Data["Rotation"][2].get<_float>() };
-					pData->vAtOffset = { Data["AtOffset"][0].get<_float>(), Data["AtOffset"][1].get<_float>(), Data["AtOffset"][2].get<_float>() };
+					pData->vAt = { Data["At"][0].get<_float>(), Data["At"][1].get<_float>(), Data["At"][2].get<_float>() };
 					pData->fFovy = Data["Fovy"];
 
 					CutSceneData.second.push_back(pData);

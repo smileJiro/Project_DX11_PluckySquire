@@ -32,6 +32,7 @@ HRESULT CRenderGroup_DirectLights::Render(CShader* _pRTShader, CVIBuffer_Rect* _
     _pRTShader->Bind_Matrix("g_ProjMatrixInv", &m_pGameInstance->Get_TransformInverseFloat4x4(CPipeLine::D3DTS_PROJ));
 
     _pRTShader->Bind_RawValue("g_vCamWorld", m_pGameInstance->Get_CamPosition(), sizeof(_float4));
+    _float f = *m_pGameInstance->Get_FarZ();
     _pRTShader->Bind_RawValue("g_fFarZ", m_pGameInstance->Get_FarZ(), sizeof(_float));
 
     if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_AlbedoTexture", TEXT("Target_Albedo"))))
