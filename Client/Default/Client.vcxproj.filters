@@ -502,6 +502,9 @@
     <Filter Include="02.GameObjects\UI\99. Dialog_Manager">
       <UniqueIdentifier>{be8cd20e-6575-4400-b74d-735c56c67db8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E">
+      <UniqueIdentifier>{2aab60c7-a543-45be-93ec-270840324c3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1205,6 +1208,9 @@
     <ClInclude Include="..\Public\StopStamp.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
     <ClInclude Include="..\Public\PlayerBomb.h" />
+    <ClInclude Include="..\Public\Interaction_E.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1894,6 +1900,9 @@
     <ClCompile Include="..\Private\StopStamp.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
     <ClCompile Include="..\Private\PlayerBomb.cpp" />
+    <ClCompile Include="..\Private\Interaction_E.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
