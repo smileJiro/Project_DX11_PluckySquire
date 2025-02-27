@@ -957,6 +957,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 {
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
+    m_pInteractableObject = nullptr;
     if (Is_CarryingObject())
     {
         m_pCarryingObject->Change_Coordinate(_eCoordinate);
