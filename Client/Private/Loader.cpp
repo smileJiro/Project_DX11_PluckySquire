@@ -9,6 +9,7 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
+#include "Camera_CutScene_Save.h"
 #include "Camera_2D.h"
 #include "Ray.h"
 #include "Cube.h"
@@ -80,6 +81,8 @@
 #include "BombStamp.h"
 #include "PlayerBomb.h"
 #include "Detonator.h"
+#include "PalmMarker.h"
+#include "PalmDecal.h"
 #include "TestTerrain.h"
 #include "RabbitLunch.h"
 #include "Bomb.h"
@@ -591,6 +594,12 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Detonator"),
         CDetonator::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PalmMarker"),
+        CPalmMarker::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PalmDecal"),
+        CPalmDecal::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"),
         CPlayerBody::Create(m_pDevice, m_pContext))))
@@ -1651,7 +1660,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 
     /* For. Prototype_GameObject_Camera_CutScene */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_CutScene_Save"),
-        CCamera_CutScene::Create(m_pDevice, m_pContext))))
+        CCamera_CutScene_Save::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
