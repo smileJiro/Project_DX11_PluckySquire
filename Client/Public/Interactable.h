@@ -22,6 +22,7 @@ enum class INTERACT_ID
 	BOOK,
 	DRAGGABLE,
 	LUNCHBOX,
+	PALMDECAL,
 	INTERACT_ID_LAST
 
 };
@@ -91,7 +92,7 @@ protected:
 	KEY m_eInteractKey = KEY::E;
 	_bool m_bInteracting = false;
 
-	INTERACT_ID m_eInteractID = INTERACT_ID::NPC;
+	INTERACT_ID m_eInteractID = INTERACT_ID::INTERACT_ID_LAST;
 	_bool m_bUIPlayerHeadUp = false;
 };
 

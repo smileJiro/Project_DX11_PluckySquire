@@ -128,6 +128,7 @@ public:
 		DRAG,
 		STAMP,
 		BOMBER,
+		ERASE_PALM,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -480,6 +481,7 @@ public:
 	void StampSmash();
 	void Attack(CGameObject* _pVictim);
 	void Detonate();
+	void ErasePalm();
 
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Jump();

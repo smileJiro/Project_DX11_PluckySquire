@@ -29,6 +29,7 @@
 #include "PlayerState_Drag.h"
 #include "PlayerState_Stamp.h"
 #include "PlayerState_Bomber.h"
+#include "PlayerState_ErasePalmDecal.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -470,6 +471,7 @@ HRESULT CPlayer::Ready_Components()
     Bind_AnimEventFunc("Attack", bind(&CPlayer::Move_Attack_3D, this));
     Bind_AnimEventFunc("StampSmash", bind(&CPlayer::StampSmash, this));
     Bind_AnimEventFunc("Detonate", bind(&CPlayer::Detonate, this));
+    Bind_AnimEventFunc("ErasePalm", bind(&CPlayer::ErasePalm, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -1057,6 +1059,13 @@ void CPlayer::Detonate()
 	if (nullptr == m_pDetonator)
 		return;
 	m_pDetonator->Detonate();
+}
+
+void CPlayer::ErasePalm()
+{
+	if (nullptr == m_pStopStmap)
+		return;
+	m_pStopStmap->Erase_PalmDecal();
 }
 
 
@@ -1662,6 +1671,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::BOMBER:
         m_pStateMachine->Transition_To(new CPlayerState_Bomber(this));
+        break;
+    case Client::CPlayer::ERASE_PALM:
+        m_pStateMachine->Transition_To(new CPlayerState_ErasePalmDecal(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;

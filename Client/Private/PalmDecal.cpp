@@ -18,15 +18,20 @@ CPalmDecal::CPalmDecal(const CPalmDecal& _Prototype)
 
 HRESULT CPalmDecal::Initialize(void* _pArg)
 {
+    m_eInteractID = INTERACT_ID::PALMDECAL;
+    m_eInteractKey = KEY::Q;
+
+
     CModelObject::MODELOBJECT_DESC* pBodyDesc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
 
     pBodyDesc->eStartCoord = COORDINATE_2D;
     pBodyDesc->isCoordChangeEnable = false;
 
     pBodyDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+    pBodyDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     pBodyDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
 
-    pBodyDesc->tTransform2DDesc.vInitialScaling = _float3(0.8f, 0.8f, 0.8f);
+    pBodyDesc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
     pBodyDesc->iModelPrototypeLevelID_2D = LEVEL_STATIC;
     pBodyDesc->strModelPrototypeTag_2D = TEXT("stamp_icon_stop_01_Sprite");
@@ -42,29 +47,25 @@ HRESULT CPalmDecal::Initialize(void* _pArg)
     ActorDesc.FreezePosition_XYZ[1] = false;
     ActorDesc.FreezePosition_XYZ[2] = false;
 
-    SHAPE_SPHERE_DESC tShapeDesc = {};
-	tShapeDesc.fRadius = 0.2f;
-    SHAPE_DATA tShapeData = {};
-    ActorDesc.ShapeDatas.resize(1);
-    tShapeData.pShapeDesc = &tShapeDesc;            
-    tShapeData.eShapeType = SHAPE_TYPE::SPHERE;    
-    tShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
-    tShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
-    tShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    tShapeData.FilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
-    tShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_TRIGGER;
-    XMStoreFloat4x4(&tShapeData.LocalOffsetMatrix, XMMatrixIdentity());
+    SHAPE_SPHERE_DESC ShapeDesc2 = {};
+    ShapeDesc2.fRadius = 0.25f;
+    SHAPE_DATA ShapeData2;
+    ShapeData2.pShapeDesc = &ShapeDesc2;
+    ShapeData2.eShapeType = SHAPE_TYPE::SPHERE;
+    ShapeData2.eMaterial = ACTOR_MATERIAL::DEFAULT;
+    ShapeData2.isTrigger = false;
+    ShapeData2.FilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
+    ShapeData2.FilterData.OtherGroupMask = OBJECT_GROUP::PLAYER_TRIGGER;
+    XMStoreFloat4x4(&ShapeData2.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
+    ActorDesc.ShapeDatas.push_back(ShapeData2);
 
-    ActorDesc.ShapeDatas[tShapeData.iShapeUse] = tShapeData;
     ActorDesc.tFilterData.MyGroup = m_iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
     ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_TRIGGER;
-
-
     pBodyDesc->eActorType = ACTOR_TYPE::KINEMATIC;
     pBodyDesc->pActorDesc = &ActorDesc;
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
-
+	m_pControllerTransform->Create_Transform(COORDINATE_3D);
 
     m_p2DColliderComs.resize(1);
     /* Test 2D Collider */
@@ -124,35 +125,6 @@ void CPalmDecal::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOthe
         m_StoppedObjects.insert(_pOtherObject);
     }
 
-    //OBJECT_GROUP eOtherGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
-    //switch (eOtherGroup)
-    //{
-    //case Client::MONSTER:
-    //case Client::INTERACTION_OBEJCT:
-    //case Client::MAPOBJECT:
-    //{
-
-    //    break;
-    //}
-    //case Client::NONE:
-    //case Client::PLAYER:
-    //case Client::PLAYER_TRIGGER:
-    //case Client::PLAYER_PROJECTILE:
-    //case Client::MONSTER_PROJECTILE:
-    //case Client::TRIGGER_OBJECT:
-    //case Client::RAY_OBJECT:
-    //case Client::BLOCKER:
-    //case Client::BOOK_3D:
-    //case Client::WORD_GAME:
-    //case Client::FALLINGROCK_BASIC:
-    //case Client::EFFECT2D:
-    //case Client::DYNAMIC_OBJECT:
-    //case Client::NPC_EVENT:
-    //case Client::EXPLOSION:
-    //    break;
-    //default:
-    //    break;
-    //}
 
     Event_SetActive( m_p2DColliderComs[0], false);
 }
@@ -170,11 +142,18 @@ void CPalmDecal::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOther
 void CPalmDecal::Place(_fvector _v2DPos, _fvector _v2DDir)
 {   
     Erase();
-    Set_Active(true);
-    //3D 상에서의 위치 잡아주기
-    //방향도 받아서 돌려주기
-    Set_Position({ XMVectorGetX(_v2DPos), XMVectorGetY(_v2DPos), 0.0f });
+
+    CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+    pSectionMgr->Remove_GameObject_FromSectionLayer(m_strSectionName,this);
+	m_strSectionName = pSectionMgr->Get_Cur_Section_Key();
+    pSectionMgr->Add_GameObject_ToSectionLayer(m_strSectionName, this, SECTION_2D_PLAYMAP_STAMP);
     static_cast<CTransform_2D*>(m_pControllerTransform->Get_Transform(COORDINATE_2D))->LookDir(_v2DDir);
+    Set_Position({ XMVectorGetX(_v2DPos), XMVectorGetY(_v2DPos), 0.0f });
+
+
+    _vector v3DPos = pSectionMgr->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { XMVectorGetX(_v2DPos),XMVectorGetY(_v2DPos) });
+    m_pControllerTransform->Get_Transform(COORDINATE_3D)->Set_State(CTransform::STATE_POSITION, v3DPos);
+    m_pActorCom->Update(0.f);
 
     Event_SetActive(m_p2DColliderComs[0], true);
 }
@@ -195,7 +174,8 @@ void CPalmDecal::Erase()
 void CPalmDecal::Interact(CPlayer* _pUser)
 {
     //지워지기
-    Erase();
+	_pUser->Set_State(CPlayer::ERASE_PALM);
+
 }
 
 _bool CPalmDecal::Is_Interactable(CPlayer* _pUser)

@@ -78,8 +78,11 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
 
 void CCharacter::Update(_float _fTimeDelta)
 {
-    if(false == Is_Stopped())
-	    __super::Update(_fTimeDelta);
+    if (COORDINATE_3D == Get_CurCoord() || false == Is_Stopped())
+    {
+        __super::Update(_fTimeDelta);
+    }
+    
 
     //여기는 파트 오브젝트까지 전부 업데이트 끝난 상황.
     m_vLookBefore = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
