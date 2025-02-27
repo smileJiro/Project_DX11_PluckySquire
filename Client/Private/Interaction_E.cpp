@@ -47,7 +47,9 @@ void CInteraction_E::Priority_Update(_float _fTimeDelta)
 
 void CInteraction_E::Update(_float _fTimeDelta)
 {
-	if (nullptr == Uimgr->Get_Player()->Get_InteractableObject())
+	IInteractable* pInteractableObject = Uimgr->Get_Player()->Get_InteractableObject();
+
+	if (nullptr == pInteractableObject)
 	{
 		if (true == m_isRender)
 			m_isRender = false;
@@ -56,36 +58,37 @@ void CInteraction_E::Update(_float _fTimeDelta)
 	}
 	else
 	{
-		// TODO :: 일단 이름이 비어있으면 
-		//if (TEXT("") == Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractName())
-		//	return;
+		// TODO :: 일단 북이면
+		if (INTERACT_ID::BOOK == pInteractableObject->Get_InteractID())
+		{
+			if (true == m_isRender)
+				m_isRender = false;
+
+			return;
+		}
+			
 
 		if (false == m_isRender)
 			m_isRender = true;
 
-		CGameObject* pGameObejct = dynamic_cast<CGameObject*>(Uimgr->Get_Player()->Get_InteractableObject());
+		CGameObject* pGameObejct = dynamic_cast<CGameObject*>(pInteractableObject);
 
-
-		
-
+		// 현재 섹션에 오브젝트가 없다면
 		if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 		{
 			if (false == CSection_Manager::GetInstance()->Is_CurSection(pGameObejct))
 				return;
 		}
 		
-
-		if (true == Uimgr->Get_Player()->Get_InteractableObject()->Is_UIPlayerHeadUp())
+		if (true == pInteractableObject->Is_UIPlayerHeadUp())
 		{
 			Cal_PlayerHighPos();
 		}
-		else if (false == Uimgr->Get_Player()->Get_InteractableObject()->Is_UIPlayerHeadUp())
+		else if (false == pInteractableObject->Is_UIPlayerHeadUp())
 		{
 			Cal_ObjectPos(pGameObejct);
 		}
 	}
-	
-
 }
 
 void CInteraction_E::Late_Update(_float _fTimeDelta)

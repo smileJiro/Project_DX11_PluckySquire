@@ -74,6 +74,11 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 			m_isRender = false;
 		}
 	}
+	else if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		if (true == m_isRender)
+			m_isRender = false;
+	}
 
 
 	
