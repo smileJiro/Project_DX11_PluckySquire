@@ -47,7 +47,6 @@ HRESULT CStopStamp::Initialize(void* _pArg)
     m_pPalmDecal = static_cast<CPalmDecal*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PalmDecal"), &tDecalDesc));
 	if (nullptr == m_pPalmDecal)
 	{
-		MSG_BOX("CPlayer PalmDecal Creation Failed");
 		return E_FAIL;
 	}
     if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_PlayerSubs"), m_pPalmDecal)))
