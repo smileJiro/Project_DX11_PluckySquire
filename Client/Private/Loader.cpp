@@ -1274,13 +1274,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_4);
 
 
-	if (FAILED(Loading_Level_Chapter_4(LEVEL_CAMERA_TOOL)))
-		return E_FAIL;
-
-	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
-	m_isFinished = true;
-
-	return S_OK;
+	return Loading_Level_Chapter_4(LEVEL_CAMERA_TOOL);
 }
 
 HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)

@@ -29,7 +29,7 @@ HRESULT CLevel_Camera_Tool_Client::Initialize(LEVEL_ID _eLevelID)
 {
 	m_eLevelID = _eLevelID;
 
-	if (FAILED(CSection_Manager::GetInstance()->Level_Enter(LEVEL_CHAPTER_4)))
+	if (FAILED(CSection_Manager::GetInstance()->Level_Enter(_eLevelID)))
 	{
 		MSG_BOX(" Failed CSection_Manager Level_Enter(Level_Chapter_02::Initialize)");
 		assert(nullptr);
@@ -275,24 +275,24 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	CModelObject* pOut = { nullptr };
 	CModelObject::MODELOBJECT_DESC Desc = {};
 
-	Desc.eStartCoord = COORDINATE_3D;
-	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	Desc.isCoordChangeEnable = false;
-	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	//Desc.eStartCoord = COORDINATE_3D;
+	//Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
+	//Desc.isCoordChangeEnable = false;
+	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
 
-	Desc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	Desc.strModelPrototypeTag_3D = TEXT("alphabet_blocks_a_mesh");
+	//Desc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+	//Desc.strModelPrototypeTag_3D = TEXT("alphabet_blocks_a_mesh");
 
-	Desc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+	//Desc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
-	Desc.tTransform3DDesc.vInitialPosition = m_tKeyFrameInfo.vPosition;
-	Desc.tTransform3DDesc.vInitialScaling = _float3(0.5f, 0.5f, 0.5f);
-	Desc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	Desc.tTransform3DDesc.fSpeedPerSec = 0.f;
+	//Desc.tTransform3DDesc.vInitialPosition = m_tKeyFrameInfo.vPosition;
+	//Desc.tTransform3DDesc.vInitialScaling = _float3(0.5f, 0.5f, 0.5f);
+	//Desc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+	//Desc.tTransform3DDesc.fSpeedPerSec = 0.f;
 
-	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), LEVEL_CAMERA_TOOL, TEXT("Layer_Simulation"), &m_pSimulationCube, &Desc);
-	Safe_AddRef(m_pSimulationCube);
-	m_pSimulationCube->Set_Active(false);
+	//m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), LEVEL_CAMERA_TOOL, TEXT("Layer_Simulation"), &m_pSimulationCube, &Desc);
+	//Safe_AddRef(m_pSimulationCube);
+	//m_pSimulationCube->Set_Active(false);
 
 	// Book
 	//CModelObject::MODELOBJECT_DESC BookDesc = {};
@@ -325,30 +325,30 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 		return E_FAIL;
 
 	//pOut->Set_Active(false);
-	m_ModelObjects.push_back(pOut);
-
-	// Hand
-	Desc.eStartCoord = COORDINATE_3D;
-	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	Desc.isCoordChangeEnable = false;
-	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	Desc.strModelPrototypeTag_3D = L"Prototype_Model_MagicHand";
-	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
-	Desc.iShaderPass_3D = 0;
-	Desc.iPriorityID_3D = PR3D_BLEND;
-	Desc.iRenderGroupID_3D = RG_3D;
-	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
-	Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 1.17f, -21.02f };
-
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
-		LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
-		return E_FAIL;
-
-	//pOut->Set_Active(false);
-	m_ModelObjects.push_back(pOut);
+	//m_ModelObjects.push_back(pOut);
+	//
+	//// Hand
+	//Desc.eStartCoord = COORDINATE_3D;
+	//Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
+	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	//Desc.isCoordChangeEnable = false;
+	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	//Desc.strModelPrototypeTag_3D = L"Prototype_Model_MagicHand";
+	//Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	//Desc.iShaderPass_3D = 0;
+	//Desc.iPriorityID_3D = PR3D_BLEND;
+	//Desc.iRenderGroupID_3D = RG_3D;
+	//Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+	//Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 1.17f, -21.02f };
+	//
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+	//	LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+	//	return E_FAIL;
+	//
+	////pOut->Set_Active(false);
+	//m_ModelObjects.push_back(pOut);
 
 	// Player
 	//Desc.eStartCoord = COORDINATE_3D;
