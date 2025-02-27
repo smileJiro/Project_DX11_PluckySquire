@@ -103,6 +103,8 @@ void CCamera_CutScene::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		// 초기 Zoom Level 설정
 		//m_iCurZoomLevel = tCutSceneData.iZoomLevel;
 		m_fFovy = tCutSceneData->fFovy;
+
+		m_isInitialData = false;
 	}
 	else {
 		m_tInitialData = *_pInitialData;

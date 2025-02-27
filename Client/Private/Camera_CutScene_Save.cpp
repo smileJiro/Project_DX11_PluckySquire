@@ -151,12 +151,12 @@ void CCamera_CutScene_Save::Play_CutScene(_float _fTimeDelta)
 
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vPosition, 1.f));
 	
-	//vAt = vAt + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+	vAt = vAt + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 
-	//m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
-	//XMStoreFloat3(&m_vAt, vAt);
+	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
+	XMStoreFloat3(&m_vAt, vAt);
 
-	Process_Movement(_fTimeDelta);
+	//Process_Movement(_fTimeDelta);
 	Save_Data();
 
 	XMStoreFloat3(&m_vPrePosition, vPosition);

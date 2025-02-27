@@ -34,7 +34,7 @@ public:
 	HRESULT				Ready_CubeMap(const _wstring& _strLayerTag);
 	HRESULT				Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget);
 	HRESULT				Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut);
-	HRESULT				Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
+	HRESULT				Ready_Layer_TestTerrain(const _wstring& _strLayerTag, CGameObject* _pPlayer);
 	HRESULT				Ready_Layer_MainTable(const _wstring& _strLayerTag);
 	HRESULT				Ready_DataFiles();
 
@@ -138,7 +138,6 @@ private:
 	_bool									m_isLoop = { false };
 	_int									m_iAnim[3] = {};
 	_bool									m_isSelectModel[3] = { true };
-
 
 	_bool									m_isSetAt = { false };
 	_float3									m_vInitialLookAt = {};

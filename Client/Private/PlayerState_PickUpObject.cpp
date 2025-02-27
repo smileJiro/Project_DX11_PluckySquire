@@ -64,6 +64,7 @@ void CPlayerState_PickUpObject::Enter()
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	m_pCarriableObject = m_pOwner->Get_CarryingObject();
 	m_pCarriableObject->Set_Carrier(m_pOwner);
+
 	//static_cast<CActor_Dynamic*>(m_pCarriableObject->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
 
 	//OriginalKeyFrame
@@ -140,6 +141,7 @@ void CPlayerState_PickUpObject::Exit()
 		//static_cast<CActor_Dynamic*>(m_pCarriableObject->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
 	}
 	m_pOwner->Set_Kinematic(false);
+	m_pOwner->Set_InteractObject(nullptr);
 	//cout << "Align: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
 

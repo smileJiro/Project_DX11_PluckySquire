@@ -17,7 +17,7 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
-private:
+	
 
 public:
 	static CPalmMarker* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

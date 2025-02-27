@@ -39,7 +39,7 @@ cbuffer MultiFresnels : register(b1)
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture; // PBR
 
-float g_fFarZ = 1000.f;
+float g_fFarZ = 300.f;
 int g_iFlag = 0;
 
 float4 g_vCamPosition;

@@ -183,6 +183,8 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 			Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
 
 			Look_Target(0.f);
+
+			m_isInitialData = false;
 		}
 		// 초기 위치부터 다음위치까지 Lerp를 해야 함
 		else {
@@ -633,7 +635,7 @@ void CCamera_2D::Find_TargetPos()
 				m_vStartPos = m_v2DPreTargetWorldPos;
 			}
 
-			m_iNarrationPosType = true; //Uimgr->isLeft_Right();	// true면 left
+			m_iNarrationPosType = false; //Uimgr->isLeft_Right();	// true면 left
 
 			if (true == m_iNarrationPosType)
 				vPos = { fSectionSize.x * 0.25f, fSectionSize.y * 0.5f };

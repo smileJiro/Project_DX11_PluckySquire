@@ -53,7 +53,7 @@
 
 CLevel_Chapter_04::CLevel_Chapter_04(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
-	m_eLevelID(LEVEL_CHAPTER_2)
+	m_eLevelID(LEVEL_CHAPTER_4)
 	, CLevel(_pDevice, _pContext)
 {
 }
@@ -69,26 +69,84 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed CSection_Manager Level_Enter(CLevel_Chapter_04::Initialize)");
 		assert(nullptr);
 	}
-
-	Ready_Lights();
+	if (FAILED(Ready_Lights()))
+	{
+		MSG_BOX(" Failed Ready_Lights (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
 	CGameObject* pCameraTarget = nullptr;
-	Ready_CubeMap(TEXT("Layer_CubeMap"));
-	Ready_Layer_MainTable(TEXT("Layer_MainTable"));
-	Ready_Layer_TestTerrain(TEXT("Layer_Terrain"));
-	Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget);
-	Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget);
-	Ready_Layer_Monster(TEXT("Layer_Monster"));
-	Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"));
-	Ready_Layer_UI(TEXT("Layer_UI"));
-	Ready_Layer_Item(TEXT("Layer_Item"));
-	Ready_Layer_Effects(TEXT("Layer_Effect"));
-	Ready_Layer_Effects2D(TEXT("Layer_Effect2D"));
-	//Ready_Layer_NPC(TEXT("Layer_NPC"));
-	Ready_Layer_Blocker2D(TEXT("Layer_Blocker2D"));
+	if (FAILED(Ready_CubeMap(TEXT("Layer_CubeMap"))))
+	{
+		MSG_BOX(" Failed Ready_CubeMap (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_MainTable(TEXT("Layer_MainTable"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_MainTable (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Book(TEXT("Layer_Terrain"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Book (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget)))
+	{
+		MSG_BOX(" Failed Ready_Layer_Player (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"), pCameraTarget)))
+	{
+		MSG_BOX(" Failed Ready_Layer_Camera (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Monster (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_UI (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Item(TEXT("Layer_Item"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Item (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_NPC(TEXT("Layer_NPC"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_NPC (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Effects(TEXT("Layer_Effect"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Effects (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Effects2D(TEXT("Layer_Effect2D"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Effects2D (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
 	if (FAILED(Ready_Layer_Carriable(TEXT("Layer_Carriable"))))
-		return E_FAIL;
-	//액터 들어가는넘.,
-	Ready_Layer_Map();
+	{
+		MSG_BOX(" Failed Ready_Layer_Carriable (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Map()))
+	{
+		MSG_BOX(" Failed Ready_Layer_Map (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+
+
 
 	/* Collision Test */
 
@@ -112,11 +170,6 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
-
-	// 그룹필터 제거
-	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
-	//m_pGameInstance->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
-	//m_pGameInstance->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 
 	/* Load Trigger*/
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger.json"));
@@ -377,6 +430,10 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Map()
 		if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
 			return E_FAIL;
 		break;
+	case Client::LEVEL_CHAPTER_6:
+		if (FAILED(Map_Object_Create(L"Chapter_06_Play_Desk.mchc")))
+			return E_FAIL;
+		break;
 	case Client::LEVEL_CHAPTER_TEST:
 		if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
 			return E_FAIL;
@@ -384,8 +441,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Map()
 	default:
 		break;
 	}
-
-	//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
 
 	return S_OK;
 }
@@ -430,7 +485,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	TargetDesc.fFovy = XMConvertToRadians(60.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	TargetDesc.fNear = 0.1f;
-	TargetDesc.fFar = 1000.f;
+	TargetDesc.fFar = 300.f;
 	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
 	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
 	TargetDesc.eZoomLevel = CCamera::LEVEL_4;
@@ -453,7 +508,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CutSceneDesc.fFovy = XMConvertToRadians(60.f);
 	CutSceneDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	CutSceneDesc.fNear = 0.1f;
-	CutSceneDesc.fFar = 1000.f;
+	CutSceneDesc.fFar = 300.f;
 	CutSceneDesc.vEye = _float3(0.f, 10.f, -7.f);
 	CutSceneDesc.vAt = _float3(0.f, 0.f, 0.f);
 	CutSceneDesc.eZoomLevel = CCamera::LEVEL_6;
@@ -476,7 +531,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	Target2DDesc.fFovy = XMConvertToRadians(60.f);
 	Target2DDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	Target2DDesc.fNear = 0.1f;
-	Target2DDesc.fFar = 1000.f;
+	Target2DDesc.fFar = 300.f;
 	Target2DDesc.vEye = _float3(0.f, 10.f, -7.f);
 	Target2DDesc.vAt = _float3(0.f, 0.f, 0.f);
 	Target2DDesc.eZoomLevel = CCamera::LEVEL_6;
@@ -527,36 +582,12 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	return S_OK;
 }
 
-HRESULT CLevel_Chapter_04::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
+HRESULT CLevel_Chapter_04::Ready_Layer_Book(const _wstring& _strLayerTag)
 {
-	/* Test Terrain */
-	//CTestTerrain::MODELOBJECT_DESC TerrainDesc{};
-
-	//TerrainDesc.eStartCoord = COORDINATE_3D;
-	//TerrainDesc.iCurLevelID = m_eLevelID;
-	//TerrainDesc.isCoordChangeEnable = false;
-	//TerrainDesc.iModelPrototypeLevelID_3D = m_eLevelID;
-	//TerrainDesc.strModelPrototypeTag_3D = TEXT("WoodenPlatform_01");
-	//TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-
-	//TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-
-	//TerrainDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-	//TerrainDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-	//TerrainDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	//TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_TestTerrain"), m_eLevelID, _strLayerTag, &TerrainDesc)))
-	//	return E_FAIL;
-
-
-
-	//TODO :: SAMPLE
-
 	CModelObject::MODELOBJECT_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SampleBook"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
 
@@ -895,26 +926,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Item(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_04::Ready_Layer_NPC(const _wstring& _strLayerTag)
 {
-	CNPC::NPC_DESC NPCDesc;
-
-	NPCDesc.iCurLevelID = m_eLevelID;
-	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	NPCDesc.iMainIndex = 0;
-	NPCDesc.iSubIndex = 0;
-	wsprintf(NPCDesc.strDialogueIndex, TEXT("dialog_01"));
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
-		return E_FAIL;
-
-	NPCDesc.iCurLevelID = m_eLevelID;
-	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	NPCDesc.iMainIndex = 0;
-	NPCDesc.iSubIndex = 0;
-	wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_DJMoonbeard"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
-		return E_FAIL;
-
 	return S_OK;
 }
 
@@ -1076,22 +1087,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Effects(const _wstring& _strLayerTag)
 		}
 	}
 
-	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("RockOut.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("RockOut.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("RockOut.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("RockOut.json"), m_eLevelID, _strLayerTag, &pOut, &Desc)))
-		return E_FAIL;
-	CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));*/
-
 	return S_OK;
 }
 
@@ -1099,10 +1094,10 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 {
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Jump_Dust"), LEVEL_STATIC, 1);
 
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves1"), LEVEL_CHAPTER_4, 3);
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves2"), LEVEL_CHAPTER_4, 3);
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust1"), LEVEL_CHAPTER_4, 3);
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust2"), LEVEL_CHAPTER_4, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves1"), m_eLevelID, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves2"), m_eLevelID, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust1"), m_eLevelID, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust2"), m_eLevelID, 3);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Death_Burst"), LEVEL_STATIC, 3);
 
@@ -1115,24 +1110,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words2"), LEVEL_STATIC, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words4"), LEVEL_STATIC, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words5"), LEVEL_STATIC, 3);
-
-	return S_OK;
-}
-
-HRESULT CLevel_Chapter_04::Ready_Layer_Blocker2D(const _wstring& _strLayerTag)
-{
-	//CGameObject* pGameObject = nullptr;
-	//CBlocker::BLOCKER2D_DESC Desc = {};
-	//Desc.iCurLevelID = LEVEL_CHAPTER_4;
-	//Desc.isFloor = true;
-	//Desc.vColliderExtents = { 300.f, 100.f };
-	//Desc.vColliderScale = { 1.0f, 1.0f };
-	//Desc.Build_2D_Transform(_float2(0.0f, 100.f), _float2(1.0f, 1.0f));
-	//if(FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Blocker2D"), LEVEL_CHAPTER_4, _strLayerTag, &pGameObject, &Desc)))
-	//	return E_FAIL;
-
-	//if(FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
-	//	return E_FAIL;
 
 	return S_OK;
 }

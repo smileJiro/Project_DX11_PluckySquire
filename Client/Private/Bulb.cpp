@@ -35,10 +35,7 @@ HRESULT CBulb::Initialize(void* _pArg)
 	pDesc->isCoordChangeEnable = false;
 
 	if (COORDINATE_3D == pDesc->eStartCoord)
-	{
 		Initialize_3D_Object(pDesc);
-
-	}
 
 	if (COORDINATE_2D == pDesc->eStartCoord)
 		Initialize_2D_Object(pDesc);
@@ -350,7 +347,7 @@ HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)
 			return E_FAIL;
 
 		// Model
-		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("LightbulbPickup_01"),
+		if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("LightbulbPickup_01"),
 			TEXT("Com_Model_3D"), reinterpret_cast<CComponent**>(&m_p3DModelCom))))
 			return E_FAIL;
 	}
@@ -363,7 +360,7 @@ HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)
 			return E_FAIL;
 
 		// Model
-		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Model2D_Bulb"),
+		if (FAILED(Add_Component(m_pGameInstance->Get_StaticLevelID(), TEXT("Prototype_Model2D_Bulb"),
 			TEXT("Com_Model_2D"), reinterpret_cast<CComponent**>(&m_p2DModelCom))))
 			return E_FAIL;
 

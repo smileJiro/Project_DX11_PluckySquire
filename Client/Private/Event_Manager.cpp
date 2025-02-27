@@ -7,7 +7,7 @@
 #include "Level_Logo.h"
 #include "Level_Chapter_02.h"
 #include "Level_Chapter_04.h"
-#include "Level_Chapter_Test.h"
+#include "Level_Chapter_06.h"
 #include "Level_Camera_Tool_Client.h"
 #include "Section_Manager.h"
 #include "Layer.h"
@@ -313,8 +313,18 @@ HRESULT CEvent_Manager::Execute_LevelChange(const EVENT& _tEvent)
 	case Client::LEVEL_CHAPTER_4:
 		pChangeLevel = CLevel_Chapter_04::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
 		break;
+	case Client::LEVEL_CHAPTER_6:
+		pChangeLevel = CLevel_Chapter_06::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+		break;
 	case Client::LEVEL_CHAPTER_TEST:
-		pChangeLevel = CLevel_Chapter_Test::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+	{
+		//switch (iChangeLevelID)
+		//{
+		//default:
+		//	break;
+		//}
+	
+	}
 		break;
 	case Client::LEVEL_CAMERA_TOOL:
 		pChangeLevel = CLevel_Camera_Tool_Client::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);

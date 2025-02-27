@@ -277,7 +277,7 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 
 		
 
-		m_strIntaractName = Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractName();
+		//m_strIntaractName = Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractID();
 
 		if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
 			CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);

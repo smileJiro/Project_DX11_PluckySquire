@@ -1,5 +1,6 @@
 #pragma once
 #include "ContainerObject.h"
+#include "Stoppable.h"
 
 BEGIN(Client)
 typedef struct tagCharacterStat
@@ -8,7 +9,7 @@ typedef struct tagCharacterStat
 	_int iHP = 12;
 	_int iMaxHP = 12;
 }STAT;
-class CCharacter abstract :   public CContainerObject
+class CCharacter abstract : public CContainerObject, public IStoppable
 {
 public:
 	typedef struct tagCharacterDesc : public CContainerObject::CONTAINEROBJ_DESC
@@ -31,7 +32,6 @@ public:
 	virtual void OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts, _bool _bIm0)override;	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
-
 public:
 	_bool Is_OnGround();
 	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
@@ -78,8 +78,11 @@ protected:
 	_float4x4 m_matQueryShapeOffset;
 	_vector m_vFloorNormal;
 
+
 public:	
 	virtual void Free() override;
+
+
 };
 
 END

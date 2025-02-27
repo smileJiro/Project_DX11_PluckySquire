@@ -36,7 +36,7 @@ HRESULT CPortal::Initialize(void* _pArg)
     m_fTriggerRadius =  pDesc->fTriggerRadius;
     m_fInteractChargeTime = 0.6f;
     m_eInteractType = INTERACT_TYPE::CHARGE;
-	m_strInteractName = TEXT("Æ÷Å»Å¸±â");
+    m_eInteractID = INTERACT_ID::PORTAL;
     m_bUIPlayerHeadUp = true;
 
     m_iPortalIndex =  pDesc->iPortalIndex;
@@ -345,6 +345,10 @@ void CPortal::Active_OnDisable()
 void CPortal::On_InteractionStart(CPlayer* _pPlayer)
 {
 	_pPlayer->Start_Portal(this);
+}
+
+void CPortal::On_InteractionEnd(CPlayer* _pPlayer)
+{
 }
 
 CPortal* CPortal::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
