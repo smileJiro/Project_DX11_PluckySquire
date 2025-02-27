@@ -97,9 +97,9 @@ void CPlayerState_PickUpObject::Enter()
 
 	if (COORDINATE_3D == eCoord)
 	{
-		m_pCarriableObject->Set_Kinematic(true);
 		m_pOwner->Set_Kinematic(true);
 	}
+	m_pCarriableObject->Set_Kinematic(true);
 
 	m_pCarriableObject->Set_ParentMatrix(COORDINATE_3D, m_pOwner->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));
 	m_pCarriableObject->Set_ParentMatrix(COORDINATE_2D, m_pOwner->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_2D));
@@ -137,9 +137,9 @@ void CPlayerState_PickUpObject::Exit()
 {
 	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
-		m_pOwner->Set_Kinematic(false);
 		//static_cast<CActor_Dynamic*>(m_pCarriableObject->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
 	}
+	m_pOwner->Set_Kinematic(false);
 	//cout << "Align: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
 

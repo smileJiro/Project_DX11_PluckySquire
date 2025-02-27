@@ -587,8 +587,7 @@ void CPlayer::Update(_float _fTimeDelta)
 
     CUI_Manager::GetInstance()->Set_isQIcon((nullptr != m_pInteractableObject) 
         && KEY::Q == m_pInteractableObject->Get_InteractKey());
-    if(m_pInteractableObject && false== m_pInteractableObject->Is_Interacting())
-        m_pInteractableObject = nullptr;
+
 
 }
 
@@ -712,6 +711,10 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
             Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
         break;
     }
+    if (m_pInteractableObject 
+        && dynamic_cast<CGameObject*>(m_pInteractableObject) == _Other.pActorUserData->pOwner
+        &&false == m_pInteractableObject->Is_Interacting())
+        m_pInteractableObject = nullptr;
 }
 
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -910,7 +913,10 @@ void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
     default:
         break;
     }
-
+    if (m_pInteractableObject
+        && dynamic_cast<CGameObject*>( m_pInteractableObject )== _pOtherObject
+        && false == m_pInteractableObject->Is_Interacting())
+        m_pInteractableObject = nullptr;
 }
 
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
