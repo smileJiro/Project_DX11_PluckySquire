@@ -66,7 +66,7 @@ void CInteraction_E::Update(_float _fTimeDelta)
 
 			return;
 		}
-			
+
 
 		if (false == m_isRender)
 			m_isRender = true;
@@ -80,7 +80,7 @@ void CInteraction_E::Update(_float _fTimeDelta)
 				return;
 
 		}
-		
+
 		if (true == pInteractableObject->Is_UIPlayerHeadUp())
 		{
 			Cal_PlayerHighPos();
@@ -98,10 +98,10 @@ void CInteraction_E::Late_Update(_float _fTimeDelta)
 	{
 		__super::Late_Update(_fTimeDelta);
 	}
-} 
+}
 
 HRESULT CInteraction_E::Render()
-{	
+{
 	// 다이얼로그 중일땐 랜더 끄기
 	if (true == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
 		return S_OK;
@@ -124,16 +124,39 @@ HRESULT CInteraction_E::Render()
 	{
 		// TODO :: 일단은...
 
-		__super::Render();
+		if (COORDINATE_3D == pGameObject->Get_CurCoord())
+		{
+			if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
+				return E_FAIL;
 
-		
+			
+				if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+					return E_FAIL;
+
+				if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+					return E_FAIL;
+			
+
+			if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture", 0)))
+				return E_FAIL;
+
+			m_pShaderComs[COORDINATE_2D]->Begin((_uint)0);
+			m_pVIBufferCom->Bind_BufferDesc();
+			m_pVIBufferCom->Render();
+		}
+		else
+		{
+			__super::Render();
+		}
+
+
 		_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
 		//Display_Text(RTSize);
 
 		if (nullptr == Uimgr->Get_Player()->Get_InteractableObject())
 			return S_OK;
 		else
-			Display_Text(_float3(0.f,0.f,0.f), RTSize, Uimgr->Get_Player()->Get_InteractableObject());
+			Display_Text(_float3(0.f, 0.f, 0.f), RTSize, Uimgr->Get_Player()->Get_InteractableObject());
 	}
 
 
@@ -268,14 +291,14 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 				m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, m_vObejctPos.y, 0.f, 1.f));
 				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
 			}
-				
+
 			else
 			{
 				m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, m_vObejctPos.y - RTSize.y * 0.35f, 0.f, 1.f));
 				m_vObejctPos.y = m_vObejctPos.y - RTSize.y * 0.35f;
 			}
-				
-		
+
+
 		}
 		else
 		{
@@ -289,7 +312,7 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 
 		}
 
-		
+
 
 		//m_strIntaractName = Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractID();
 
@@ -302,30 +325,35 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 	//////////////////////////////////////// 3D //////////////////////////////////////////
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
-		_float4x4 DisPlayPos;
 		_matrix matWorld = _pGameObject->Get_FinalWorldMatrix();
-		//_matrix matView = XMLoadFloat4x4(m_pGameInstance->Get_ViewMatrix_Renderer());
-		//_matrix matProj = XMLoadFloat4x4(m_pGameInstance->Get_ProjMatrix_Renderer());
 
-		_matrix matView = XMLoadFloat4x4(&m_ViewMatrix);
-		_matrix matProj = XMLoadFloat4x4(&m_ProjMatrix);
+		// 2. 반드시 게임 카메라의 뷰와 프로젝션 행렬을 사용하세요.
+		_matrix matView = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW));
+		_matrix matProj = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ));
 
-		_matrix matWV = XMMatrixMultiply(matWorld, matView);
-		_matrix matWVP = XMMatrixMultiply(matWV, matProj);
+		// 3. 변환할 월드 상의 위치(원점 기준, 필요시 오프셋 추가)
+		XMVECTOR vLocalPos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
 
-		XMStoreFloat4x4(&DisPlayPos, matWVP);
+		// 4. 월드, 뷰, 프로젝션 행렬을 곱해 동차 좌표 변환 (w분할 자동 적용)
+		XMVECTOR vClipPos = XMVector3TransformCoord(vLocalPos, XMMatrixMultiply(XMMatrixMultiply(matWorld, matView), matProj));
 
-		
-		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(DisPlayPos._41, DisPlayPos._42 + 20.f, 0.f, 1.f));
-		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX * 0.9f, m_fSizeY * 0.3f , 1.f));
+		// 5. NDC 좌표(-1 ~ 1)를 스크린 좌표(픽셀)로 변환
+		float ndcX = XMVectorGetX(vClipPos);
+		float ndcY = XMVectorGetY(vClipPos);
+		float screenX = ((ndcX + 1.f) * 0.5f) * g_iWinSizeX;
+		float screenY = ((1.f - ((ndcY + 1.f) * 0.5f))) * g_iWinSizeY;
 
-		m_vObejctPos = _float3(DisPlayPos._41, DisPlayPos._42 + 40.f, 0.f);
-		
+		// 6. UI 오프셋 적용 (예: 오브젝트 위쪽으로 20픽셀 이동)
+		screenY -= 20.f;
+
+		// 7. 계산된 스크린 좌표를 UI 컨트롤러에 적용
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(screenX, screenY, 0.f, 1.f));
+		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX * 0.9f, m_fSizeY * 0.3f, 1.f));
+		m_vObejctPos = _float3(screenX, screenY, 0.f);
+
+
 
 	}
-	
-
-
 
 }
 
@@ -377,7 +405,7 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 
 	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
-		
+
 		_float2 vMiddlePos = { _vRTSize.x / 2.f, _vRTSize.y / 2.f };
 
 		_bool isColumn = { false };
