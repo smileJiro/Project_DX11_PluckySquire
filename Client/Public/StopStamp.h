@@ -22,7 +22,7 @@ public:
 	void Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
-	void Place_Stopper(_fvector v2DPosition);
+	void Place_PlamMarker(_fvector v2DPosition);
 private:
 
 public:

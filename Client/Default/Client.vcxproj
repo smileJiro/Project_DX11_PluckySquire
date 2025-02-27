@@ -196,6 +196,7 @@
     <ClInclude Include="..\public\Effect_Beam.h" />
     <ClInclude Include="..\Public\ChaseFlyState.h" />
     <ClInclude Include="..\Public\JumpPad.h" />
+    <ClInclude Include="..\Public\PalmMarker.h" />
     <ClInclude Include="..\Public\PlayerBomb.h" />
     <ClInclude Include="..\Public\PlayerState_Bomber.h" />
     <ClInclude Include="..\Public\PlayerState_Stamp.h" />
@@ -439,6 +440,7 @@
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
     <ClCompile Include="..\Private\Detonator.cpp" />
     <ClCompile Include="..\Private\JumpPad.cpp" />
+    <ClCompile Include="..\Private\PalmMarker.cpp" />
     <ClCompile Include="..\Private\PlayerBomb.cpp" />
     <ClCompile Include="..\Private\PlayerState_Bomber.cpp" />
     <ClCompile Include="..\Private\PlayerState_Stamp.cpp" />

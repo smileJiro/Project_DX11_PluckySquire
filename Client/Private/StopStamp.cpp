@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "PlayerBody.h"
 #include "Player.h"
+#include "Section_Manager.h"
+#include "PalmMarker.h"
 
 
 CStopStamp::CStopStamp(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -57,9 +59,28 @@ HRESULT CStopStamp::Render()
     return S_OK;
 }
 
-void CStopStamp::Place_Stopper(_fvector v2DPosition)
+void CStopStamp::Place_PlamMarker(_fvector v2DPosition)
 {
+    CSection_Manager* pSectionManager = SECTION_MGR;
+    CSection* pSection = pSectionManager->Find_Section(pSectionManager->Get_Cur_Section_Key());
 
+    if (nullptr == pSection)
+        return;
+
+    CSection_2D* p2DSection = dynamic_cast<CSection_2D*>(pSection);
+
+    if (nullptr == p2DSection)
+        return;
+
+    CModelObject::MODELOBJECT_DESC tPalmDesc{};
+    tPalmDesc.tTransform2DDesc.vInitialPosition = _float3(XMVectorGetX(v2DPosition), XMVectorGetY(v2DPosition), 0.0f);
+    tPalmDesc.iCurLevelID = m_iCurLevelID;
+    CPalmMarker* pPlayerBomb = static_cast<CPalmMarker*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PalmMarker"), &tPalmDesc));
+
+    m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_Player"), pPlayerBomb);
+
+
+    pSectionManager->Add_GameObject_ToSectionLayer(pSectionManager->Get_Cur_Section_Key(), pPlayerBomb, SECTION_2D_PLAYMAP_OBJECT);
 }
 
 CStopStamp* CStopStamp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

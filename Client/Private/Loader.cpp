@@ -374,6 +374,10 @@ HRESULT CLoader::Loading_Level_Static()
     if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_STATIC,
         TEXT("../Bin/Resources/Models/2DAnim/Static/"))))
         return E_FAIL;
+    lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
+    if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_STATIC,
+        TEXT("../Bin/Resources/Models/2DNonAnim/Static/"))))
+        return E_FAIL;
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
 

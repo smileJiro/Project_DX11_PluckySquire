@@ -68,7 +68,7 @@ IBombable* CBombStamp::Place_Bomb(_fvector v2DPosition)
 	m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID,TEXT("Layer_Player"), pPlayerBomb);
     CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
     pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), pPlayerBomb, SECTION_2D_PLAYMAP_OBJECT);
-
+    //폭탄 설치가능한 애가 피킹됐느지 확인.
     return pPlayerBomb;
 }
 

@@ -1208,6 +1208,7 @@
     <ClInclude Include="..\Public\Detonator.h" />
     <ClInclude Include="..\Public\PlayerState_Bomber.h" />
     <ClInclude Include="..\Public\Bombable.h" />
+    <ClInclude Include="..\Public\PalmMarker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1900,6 +1901,7 @@
     <ClCompile Include="..\Private\Detonator.cpp" />
     <ClCompile Include="..\Private\PlayerState_Bomber.cpp" />
     <ClCompile Include="..\Private\Bombable.cpp" />
+    <ClCompile Include="..\Private\PalmMarker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

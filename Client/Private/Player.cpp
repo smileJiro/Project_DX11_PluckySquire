@@ -1017,12 +1017,11 @@ void CPlayer::StampSmash()
         
         if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
         {
-
             m_pDetonator->Set_Bombable(m_pBombStmap->Place_Bomb(v2DPosition));
         }
         else if(PLAYER_PART::PLAYER_PART_STOP_STMAP == m_eCurrentStamp)
         {
-            m_pStopStmap->Place_Stopper(v2DPosition);
+            m_pStopStmap->Place_PlamMarker(v2DPosition);
         }
 	}
 }
@@ -1812,6 +1811,7 @@ void CPlayer::Set_GravityCompOn(_bool _bOn)
 	m_pGravityCom->Set_Active(_bOn);
     m_pGravityCom->Change_State(_bOn ?  CGravity::STATE_FALLDOWN : CGravity::STATE_FLOOR);
 }
+
 void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 {
 	m_eCurAttackType = _eAttackType;
@@ -1849,6 +1849,8 @@ void CPlayer::End_Attack()
 
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 {
+	if (PLAYER_PART_BODY == _ePartId)
+		return;
     _bool bMainEquip = false;
     for (_uint i = 0; i < PLAYER_MAIN_EQUIP::PLAYER_MAIN_EQUIP_LAST; i++)
     {
@@ -1865,6 +1867,8 @@ void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 
 void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 {
+    if (PLAYER_PART_BODY == _ePartId)
+        return;
     if(COORDINATE_3D == Get_CurCoord() && Is_SwordHandling())
 		Set_PartActive(PLAYER_PART_SWORD, true);
 	Set_PartActive(_ePartId, false);
@@ -2025,6 +2029,18 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         {
             Move(_vector{0.f,5.f,0.f}, _fTimeDelta);
         }
+    }
+    if (KEY_DOWN(KEY::NUM1))
+    {
+		Set_CurrentStampType(PLAYER_PART_STOP_STMAP);
+        if(STATE::STAMP == Get_CurrentStateID())
+            Equip_Part(PLAYER_PART_STOP_STMAP);
+    }
+    else if (KEY_DOWN(KEY::NUM2))
+    {
+		Set_CurrentStampType(PLAYER_PART_BOMB_STMAP);
+        if (STATE::STAMP == Get_CurrentStateID())
+            Equip_Part(PLAYER_PART_BOMB_STMAP);
     }
     //if (KEY_DOWN(KEY::H))
     //{
