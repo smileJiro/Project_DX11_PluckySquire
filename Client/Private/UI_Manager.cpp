@@ -212,7 +212,7 @@ _bool CUI_Manager::isLeft_Right()
 	return m_pNarration->isLeftRight();
 }
 
-void CUI_Manager::Narration_Update()
+void CUI_Manager::UI_Update()
 {
 	// Active가 아닌데 Narration이 플레이중이면 active로 돌린다.
 
@@ -223,6 +223,17 @@ void CUI_Manager::Narration_Update()
 			m_pNarration->CBase::Set_Active(true);
 		}
 	}
+
+	if (false == m_pInteractionE->CBase::Is_Active())
+	{
+		if (nullptr == Uimgr->Get_Player()->Get_InteractableObject())
+		{
+			return;
+		}
+		else
+			m_pInteractionE->CBase::Set_Active(true);
+	}
+
 }
 
 
@@ -241,7 +252,11 @@ HRESULT CUI_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iN
 		m_pDiagloue = nullptr;
 	}
 		
-
+	if (nullptr != m_pInteractionE)
+	{
+		Safe_Release(m_pInteractionE);
+		m_pInteractionE = nullptr;
+	}
 
 
 	if(iCurLevelID == LEVEL_LOGO)
@@ -313,6 +328,7 @@ void CUI_Manager::Free()
 	
 	Safe_Release(m_pPlayer);
 	Safe_Release(m_pDiagloue);
+	Safe_Release(m_pInteractionE);
 
 	for (auto iter : m_pSettingPanels)
 	{

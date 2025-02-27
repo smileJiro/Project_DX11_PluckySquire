@@ -7,6 +7,7 @@
 #include "Section_Manager.h"
 #include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
+#include "Pooling_Manager.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -199,7 +200,7 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 	if (0 >= m_tStat.iHP)
 	{
 		Set_AnimChangeable(true);
-		if(nullptr != m_p2DColliderComs[0])
+		if (0 < m_p2DColliderComs.size())
 		{
 			m_p2DColliderComs[0]->Set_Active(false);
 		}
@@ -244,6 +245,22 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 			}
 		}
 	}
+}
+
+void CMonster::Monster_Death()
+{
+	Set_AnimChangeable(true);
+
+	CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+
+	//확률로 전구 생성
+	if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+	{
+		_float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bulb"), COORDINATE_3D, &vPos);
+	}
+
+	Event_DeleteObject(this);
 }
 
 void CMonster::Attack()

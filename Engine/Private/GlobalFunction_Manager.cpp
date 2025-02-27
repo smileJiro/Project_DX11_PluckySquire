@@ -191,6 +191,21 @@ _fvector CGlobalFunction_Manager::Rotate_Vector(_fvector _vAxis, _fvector _vVect
 	return XMVector3Rotate(_vVector, vQuaternion);
 }
 
+_fvector CGlobalFunction_Manager::Direction_To_Quaternion(_fvector _vDefaulfDir, _fvector _vDirection)
+{
+	_vector vDirection = XMVector3Normalize(_vDirection);
+	_vector vAxis = XMVector3Normalize(XMVector3Cross(_vDefaulfDir, vDirection));
+
+	_float RotAngle = acosf(XMVectorGetX(XMVector3Dot(_vDefaulfDir, vDirection)));
+
+	if (RotAngle < 0.0001f)
+	{
+		return XMQuaternionIdentity();
+	}
+
+	return XMQuaternionRotationAxis(vAxis, RotAngle);
+}
+
 _float CGlobalFunction_Manager::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType)
 {
 	_float fRatio = {};

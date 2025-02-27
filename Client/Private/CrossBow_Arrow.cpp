@@ -67,24 +67,25 @@ void CCrossBow_Arrow::Priority_Update(_float _fTimeDelta)
 
 void CCrossBow_Arrow::Update(_float _fTimeDelta)
 {
-    if (true == Is_Dead())
-    {
-        int a = 10;
-    }
-
 	if (COORDINATE_2D == Get_CurCoord())
     {
         if (false == m_isStop)
             m_pControllerTransform->Go_Up(_fTimeDelta);
-        else
-            int a = 10;
     }
 
     else if (COORDINATE_3D == Get_CurCoord())
     {
-        m_pControllerTransform->Go_Straight(_fTimeDelta);
-        /*_float3 vForce; XMStoreFloat3(&vForce, Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
-        m_pActorCom->Set_LinearVelocity(XMLoadFloat3(&vForce), Get_ControllerTransform()->Get_SpeedPerSec());*/
+        //if (nullptr != m_pTarget)
+        //{
+        //    if (true == m_isFirstLoop)
+        //    {
+        //        XMStoreFloat3(&m_vDir, m_pTarget->Get_FinalPosition() - Get_FinalPosition());
+        //    }
+
+        //    m_pControllerTransform->Go_Direction(XMVector3Normalize(XMLoadFloat3(&m_vDir)), m_pControllerTransform->Get_SpeedPerSec(), _fTimeDelta);
+        //}
+        //else
+            m_pControllerTransform->Go_Straight(_fTimeDelta);
     }
 
     __super::Update(_fTimeDelta);

@@ -198,7 +198,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 void CLevel_Chapter_06::Update(_float _fTimeDelta)
 {
 
-	Uimgr->Narration_Update();
+	Uimgr->UI_Update();
 
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
