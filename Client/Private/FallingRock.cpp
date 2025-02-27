@@ -35,7 +35,7 @@ HRESULT CFallingRock::Initialize(void* _pArg)
 		
 
 	/* 2D */
-	pDesc->Build_2D_Model(pDesc->iCurLevelID, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"), (_uint)PASS_VTXPOSTEX::SPRITE2D, true);
+	pDesc->Build_2D_Model(pDesc->iCurLevelID, TEXT("FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"), (_uint)PASS_VTXPOSTEX::SPRITE2D, true);
 
 	/* 3D */
 	pDesc->iRenderGroupID_3D = RENDERGROUP::RG_3D;

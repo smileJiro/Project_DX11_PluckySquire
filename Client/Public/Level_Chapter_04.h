@@ -23,7 +23,7 @@ public:
 	HRESULT					Ready_Layer_Map();
 	HRESULT					Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget);
 	HRESULT					Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut);
-	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
+	HRESULT					Ready_Layer_Book(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_UI(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Item(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_NPC(const _wstring& _strLayerTag);
@@ -31,7 +31,6 @@ public:
 	HRESULT					Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut = nullptr);
 	HRESULT					Ready_Layer_Effects(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Effects2D(const _wstring& _strLayerTag);
-	HRESULT					Ready_Layer_Blocker2D(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Carriable(const _wstring& _strLayerTag);
 
 private:

@@ -47,6 +47,7 @@ void CCollider_Circle::Update(_float _fTimeDelta)
         return;
 
     Update_OwnerTransform();
+
     __super::Update(_fTimeDelta);
 }
 
@@ -90,6 +91,9 @@ HRESULT CCollider_Circle::Render(_float2 _fRenderTargetSize)
 
 _bool CCollider_Circle::Is_Collision(CCollider* _pOther)
 {
+    if (false == m_isActive)
+        return false;
+
     _bool isResult = false;
     switch (_pOther->Get_Type())
     {
@@ -108,6 +112,9 @@ _bool CCollider_Circle::Is_Collision(CCollider* _pOther)
 
 _bool CCollider_Circle::Is_ContainsPoint(_float2 _vPosition)
 {
+    if (false == m_isActive)
+        return false;
+
     _float fDistance = XMVector2Length(XMLoadFloat2(&_vPosition)-XMLoadFloat2(&m_vPosition)).m128_f32[0];
 
     return fDistance < m_fFinalRadius;
@@ -125,6 +132,7 @@ void CCollider_Circle::Update_OwnerTransform()
 
 void CCollider_Circle::Block(CCollider* _pOther)
 {
+
     switch (_pOther->Get_Type())
     {
     case Engine::CCollider::CIRCLE_2D:

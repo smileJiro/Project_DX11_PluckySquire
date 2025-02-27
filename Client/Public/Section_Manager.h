@@ -247,6 +247,9 @@ public :
 #pragma endregion
 
 
+	void							Set_LoadLevel(LEVEL_ID _iLevelID) { m_iLoadLevel = _iLevelID; }
+
+
 private:
 	/// <summary>
 	/// 해당 섹션을 활성화 섹션 리스트에 추가하고, 앞뒤 페이지가 있을 경우 카피를 한번 돌려줌.
@@ -265,6 +268,9 @@ private:
 	/// <param name="_strJsonPath">json 경로</param>
 	HRESULT							Ready_CurLevelSections(const _wstring& _strJsonPath);
 
+
+
+
 private:
 	ID3D11Device*					m_pDevice = nullptr;
 	ID3D11DeviceContext*			m_pContext = nullptr;
@@ -275,7 +281,7 @@ private:
 
 	// 현재 레벨 
 	LEVEL_ID						m_iCurLevelID = LEVEL_END;
-
+	LEVEL_ID						m_iLoadLevel = LEVEL_END;
 	// 현재 책에서 재생중인 섹션
 	CSection_2D*					m_pCurSection = nullptr;
 

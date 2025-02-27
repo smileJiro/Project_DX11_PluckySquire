@@ -8,6 +8,10 @@ namespace Engine
 	class CActor;
 
 #pragma region Shader ConstantBuffer Struct
+	typedef struct tagRandomTexcoord
+	{
+		XMFLOAT2 vRandomTexcoord[64];
+	}RANDOM_TEXCOORD;
 	typedef struct tagDofConstData
 	{
 		float			fSensorHeight = 24.0f;

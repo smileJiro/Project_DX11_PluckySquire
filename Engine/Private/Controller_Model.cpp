@@ -79,6 +79,7 @@ HRESULT CController_Model::Ready_Models(CON_MODEL_DESC* _pDesc)
 
 HRESULT CController_Model::Render(CShader* _Shader, _uint _iShaderPass)
 {
+
     return 	m_ModelComs[m_eCurCoord]->Render(_Shader, _iShaderPass);
 }
 

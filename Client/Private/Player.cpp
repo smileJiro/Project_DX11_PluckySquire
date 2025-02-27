@@ -259,7 +259,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
-    BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
     BodyDesc.strModelPrototypeTag_2D = TEXT("player");
     BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");

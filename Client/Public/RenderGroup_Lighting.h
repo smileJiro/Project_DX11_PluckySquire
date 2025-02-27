@@ -13,6 +13,9 @@ public:
 	HRESULT Initialize(void* _pArg) override;
 	HRESULT Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuffer) override;
 
+private:
+	RANDOM_TEXCOORD m_tRandomTexcoord = {};
+
 public:
 	static CRenderGroup_Lighting* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pArg);
 	void Free() override;

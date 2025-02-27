@@ -78,6 +78,7 @@ HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
 
 HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
 {
+	m_iLoadLevel = LEVEL_END == m_iLoadLevel ? m_iCurLevelID : m_iLoadLevel;
 
 	/* 전환되는 레벨에 따른 Section 설정 필요. */
 	_wstring strJsonPath = L"";
@@ -86,38 +87,31 @@ HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
 	_wstring strWordJsonName = L"_Word_List";
 
 
-	// 임시 : 로딩구조 바뀌면 변경
+
+
 	_bool isSectionLoading = false;
-	switch (m_iCurLevelID)
+	switch (m_iLoadLevel)
 	{
-	case Client::LEVEL_LOADING:
-		strJsonPath = L"";
-		break;
-	case Client::LEVEL_STATIC:
-		strJsonPath = L"";
-		break;
-	case Client::LEVEL_LOGO:
-		strJsonPath = L"";
-		break;
 	case Client::LEVEL_CHAPTER_2:
-		strJsonPath = L"Chapter1";
+		strJsonPath = L"Chapter2";
 		isSectionLoading = true;
 		break;
 	case Client::LEVEL_CHAPTER_4:
-		strJsonPath = L"Chapter2";
+		strJsonPath = L"Chapter4";
 		isSectionLoading = true;
 		break;
-	case Client::LEVEL_CHAPTER_TEST:
-		strJsonPath = L"Chapter2";
+	case Client::LEVEL_CHAPTER_6:
+		strJsonPath = L"Chapter6";
 		isSectionLoading = true;
 		break;
 	case Client::LEVEL_CAMERA_TOOL: // 효림 임시...
-		strJsonPath = L"Chapter1";
+		strJsonPath = L"Chapter2";
 		isSectionLoading = true;
 		break;
 	default:
 		return E_FAIL;
 	}
+
 	if (isSectionLoading)
 	{
 
@@ -133,6 +127,8 @@ HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
 			return E_FAIL;
 
 	}
+
+	m_iLoadLevel = LEVEL_END;
 	return S_OK;
 }
 

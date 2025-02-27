@@ -29,7 +29,7 @@ HRESULT CLevel_Camera_Tool_Client::Initialize(LEVEL_ID _eLevelID)
 {
 	m_eLevelID = _eLevelID;
 
-	if (FAILED(CSection_Manager::GetInstance()->Level_Enter(LEVEL_CHAPTER_2)))
+	if (FAILED(CSection_Manager::GetInstance()->Level_Enter(LEVEL_CHAPTER_4)))
 	{
 		MSG_BOX(" Failed CSection_Manager Level_Enter(Level_Chapter_02::Initialize)");
 		assert(nullptr);
@@ -140,10 +140,10 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Lights()
 
 HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Map()
 {
-	if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
-		return E_FAIL;
-	//if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
+	//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
 	//	return E_FAIL;
+	if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -298,7 +298,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	//CModelObject::MODELOBJECT_DESC BookDesc = {};
 	//BookDesc.iCurLevelID = m_eLevelID;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SampleBook"),
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
 	//	m_eLevelID, L"Layer_Book", &m_pSimulationCube, &BookDesc)))
 	//	return E_FAIL;
 	//Desc.eStartCoord = COORDINATE_3D;
@@ -320,7 +320,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	CModelObject::MODELOBJECT_DESC BookDesc = {};
 	BookDesc.iCurLevelID = m_eLevelID;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SampleBook"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
 		m_eLevelID, L"_strLayerTag", reinterpret_cast<CGameObject**>(&pOut), &BookDesc)))
 		return E_FAIL;
 
@@ -2213,12 +2213,18 @@ void CLevel_Camera_Tool_Client::Set_CameraInfo()
 	ImGui::NewLine();
 	ImGui::Text("Fixed LookAt: %.2f, %.2f, %.2f", m_vInitialLookAt.x, m_vInitialLookAt.y, m_vInitialLookAt.z);
 
-	//_vector vNewLook = XMVector3Normalize(XMLoadFloat3(&m_vInitialLookAt) - vPos);
 	_float fDistance = XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_vInitialLookAt) - vPos));
 
-	_vector vNewAt = vPos + (vLook * fDistance);
+	_vector vNewAt;
 
-	//XMStoreFloat3(&m_vNextAtOffset, vNewAt - XMLoadFloat3(&m_vInitialLookAt));
+	ImGui::Checkbox("Use Fixed At", &m_isSetAt);
+
+	if (true == m_isSetAt) {
+		vNewAt = vPos + (vLook * fDistance);
+	}
+	else {
+		vNewAt = vPos + vLook;
+	}
 
 	ImGui::Text("Cur At: %.2f, %.2f, %.2f", XMVectorGetX(vNewAt), XMVectorGetY(vNewAt), XMVectorGetZ(vNewAt));
 

@@ -558,7 +558,7 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_TestTerrain(const _wstring& _strLayerTa
 	CModelObject::MODELOBJECT_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SampleBook"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
 
