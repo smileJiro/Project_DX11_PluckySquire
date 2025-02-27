@@ -70,7 +70,7 @@ void CCollider::Update(_float _fTimeDelta)
 
 void CCollider::Late_Update(_float _fTimeDelta)
 {
-    m_pGameInstance->Add_Collider(m_pOwner->Get_Include_Section_Name(), m_iCollisionGroupID, this);
+    
 }
 
 #ifdef _DEBUG

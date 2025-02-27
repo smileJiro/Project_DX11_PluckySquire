@@ -59,6 +59,16 @@ void CGameObject::Priority_Update(_float _fTimeDelta)
 void CGameObject::Update(_float _fTimeDelta)
 {
     Update_Component(_fTimeDelta);
+
+
+    for (auto& p2DColliderCom : m_p2DColliderComs)
+    {
+        if (nullptr == p2DColliderCom)
+            continue;
+
+        m_pGameInstance->Add_Collider(m_strSectionName, p2DColliderCom->Get_CollisionGroupID(), p2DColliderCom);
+    }
+
 }
 
 void CGameObject::Late_Update(_float _fTimeDelta)

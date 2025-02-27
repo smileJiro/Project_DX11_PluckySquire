@@ -23,7 +23,7 @@ public:
 	void Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
-	void Place_PalmMarker(_fvector v2DPosition);
+	void Place_PalmDecal(_fvector v2DPosition, _fvector _v2DDirection);
 private:
 	CPalmDecal* m_pPalmDecal = nullptr;
 public:

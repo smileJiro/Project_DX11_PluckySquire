@@ -259,7 +259,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
-    BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
     BodyDesc.strModelPrototypeTag_2D = TEXT("player");
     BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
@@ -1015,22 +1015,26 @@ void CPlayer::Move_Attack_3D()
 
 void CPlayer::StampSmash()
 {
-	if (COORDINATE_3D == Get_CurCoord())
-	{
-		CSampleBook* pSampleBook = dynamic_cast<CSampleBook*>(m_pInteractableObject);
-        if (nullptr == pSampleBook)
-            return;
-        _vector v2DPosition = pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition());
-        
-        if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
-        {
-            m_pDetonator->Set_Bombable(m_pBombStmap->Place_Bomb(v2DPosition));
-        }
-        else if(PLAYER_PART::PLAYER_PART_STOP_STMAP == m_eCurrentStamp)
-        {
-            m_pStopStmap->Place_PalmMarker(v2DPosition);
-        }
-	}
+    if (COORDINATE_3D != Get_CurCoord())
+        return;
+
+	CSampleBook* pSampleBook = dynamic_cast<CSampleBook*>(m_pInteractableObject);
+    if (nullptr == pSampleBook)
+        return;
+
+    _vector v2DPosition = pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition());
+    if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
+    {
+        m_pDetonator->Set_Bombable(m_pBombStmap->Place_Bomb(v2DPosition));
+    }
+    else if(PLAYER_PART::PLAYER_PART_STOP_STMAP == m_eCurrentStamp)
+    {
+	    _vector v2DDirection = Get_LookDirection();
+        v2DDirection =XMVectorSetY(v2DDirection, XMVectorGetZ(v2DDirection));
+	    v2DDirection = XMVector3Normalize(XMVectorSetZ( v2DDirection,0.f));
+        m_pStopStmap->Place_PalmDecal(v2DPosition, v2DDirection);
+    }
+
 }
 
 void CPlayer::Attack(CGameObject* _pVictim)

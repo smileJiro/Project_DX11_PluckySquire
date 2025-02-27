@@ -53,7 +53,7 @@ HRESULT CStopStamp::Initialize(void* _pArg)
     if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_PlayerSubs"), m_pPalmDecal)))
         return E_FAIL;  
     CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
-    if (FAILED(pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), m_pPalmDecal, SECTION_2D_PLAYMAP_OBJECT)))
+    if (FAILED(pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), m_pPalmDecal, SECTION_2D_PLAYMAP_STAMP)))
         return E_FAIL;
 	m_pPalmDecal->Set_Active(false);
     Safe_AddRef(m_pPalmDecal);
@@ -80,10 +80,10 @@ HRESULT CStopStamp::Render()
     return S_OK;
 }
 
-void CStopStamp::Place_PalmMarker(_fvector v2DPosition)
+void CStopStamp::Place_PalmDecal(_fvector v2DPosition, _fvector _v2DDirection)
 {
-	m_pPalmDecal->Set_Active(true);
-	m_pPalmDecal->Set_Position({ XMVectorGetX(v2DPosition), XMVectorGetY(v2DPosition), 0.0f });
+    m_pPalmDecal->Set_Active(true);
+	m_pPalmDecal->Place(v2DPosition, _v2DDirection);
 }
 
 CStopStamp* CStopStamp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

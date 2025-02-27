@@ -325,13 +325,13 @@ HRESULT CSpear_Soldier::Ready_Components()
     FSMDesc.pOwner = this;
     FSMDesc.iCurLevel = m_iCurLevelID;
 
-    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
         return E_FAIL;
 
 #ifdef _DEBUG
     /* Com_DebugDraw_For_Client */
-    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DebugDraw_For_Client"),
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_DebugDraw_For_Client"),
         TEXT("Com_DebugDraw_For_Client"), reinterpret_cast<CComponent**>(&m_pDraw))))
         return E_FAIL;
 #endif // _DEBUG
@@ -348,7 +348,7 @@ HRESULT CSpear_Soldier::Ready_Components()
     DetectionDesc.pDraw = m_pDraw;
 #endif // _DEBUG
 
-    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DetectionField"),
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_DetectionField"),
         TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
         return E_FAIL;
 
@@ -365,7 +365,7 @@ HRESULT CSpear_Soldier::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strModelPrototypeTag_3D = TEXT("humgrump_troop_Rig_GT");
-	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+	BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 

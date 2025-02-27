@@ -50,6 +50,8 @@ void CCollider_AABB::Update(_float _fTimeDelta)
         return;
 
     Update_OwnerTransform();
+
+    __super::Update(_fTimeDelta);
 }
 
 void CCollider_AABB::Late_Update(_float _fTimeDelta)
@@ -97,6 +99,9 @@ HRESULT CCollider_AABB::Render(_float2 _fRenderTargetSize)
 
 _bool CCollider_AABB::Is_Collision(CCollider* _pOther)
 {
+    if (false == m_isActive)
+        return false;
+
     _bool isResult = false;
     switch (_pOther->Get_Type())
     {
@@ -117,12 +122,16 @@ _bool CCollider_AABB::Is_Collision(CCollider* _pOther)
 
 _bool CCollider_AABB::Is_ContainsPoint(_float2 _vPosition)
 {
+    if (false == m_isActive)
+        return false;
+
 	return m_vPosition.x - m_vFinalExtents.x <= _vPosition.x && m_vPosition.x + m_vFinalExtents.x >= _vPosition.x &&
 		m_vPosition.y - m_vFinalExtents.y <= _vPosition.y && m_vPosition.y + m_vFinalExtents.y >= _vPosition.y;
 }
 
 void CCollider_AABB::Block(CCollider* _pOther)
 {
+
     switch (_pOther->Get_Type())
     {
     case Engine::CCollider::CIRCLE_2D:

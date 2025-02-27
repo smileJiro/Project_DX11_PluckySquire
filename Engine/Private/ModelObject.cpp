@@ -100,6 +100,8 @@ HRESULT CModelObject::Render()
     COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
 	CShader* pShader = m_pShaderComs[eCoord];
 	_uint iShaderPass = m_iShaderPasses[eCoord];
+    if (COORDINATE_3D == eCoord)
+        pShader->Bind_RawValue("g_fFarZ", m_pGameInstance->Get_FarZ(), sizeof(_float));
     m_pControllerModel->Render(pShader, iShaderPass);
 
     return S_OK;
