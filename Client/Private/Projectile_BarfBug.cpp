@@ -292,8 +292,8 @@ HRESULT CProjectile_BarfBug::Ready_PartObjects()
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     BodyDesc.strModelPrototypeTag_2D = TEXT("barferbug_projectile");
     BodyDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sphere_01");
-    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
-    BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
     BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::TEST_PROJECTILE;
 

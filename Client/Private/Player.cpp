@@ -259,7 +259,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
-    BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
     BodyDesc.strModelPrototypeTag_2D = TEXT("player");
     BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
@@ -621,8 +621,8 @@ HRESULT CPlayer::Render()
 #ifdef _DEBUG
     if(m_pBody2DColliderCom->Is_Active())
         m_pBody2DColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
-    //if(m_pBody2DTriggerCom->Is_Active())
-    //    m_pBody2DTriggerCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+    if(m_pBody2DTriggerCom->Is_Active())
+        m_pBody2DTriggerCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
     if (m_pAttack2DTriggerCom->Is_Active())
         m_pAttack2DTriggerCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
 
@@ -653,7 +653,6 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 {
     __super::OnContact_Exit(_My, _Other, _ContactPointDatas);
 	m_pStateMachine->Get_CurrentState()->OnContact_Exit(_My, _Other, _ContactPointDatas);
-
 
 
 }
@@ -701,20 +700,23 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
     __super::OnTrigger_Exit(_My, _Other);
 	m_pStateMachine->Get_CurrentState()->OnTrigger_Exit(_My, _Other);
-    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
-    switch (eShapeUse)
+    _uint iShapeUse = (_uint)_My.pShapeUserData->iShapeUse;
+    switch (iShapeUse)
     {
-    case Client::SHAPE_USE::SHAPE_TRIGER:
+    case (_uint)Client::SHAPE_USE::SHAPE_TRIGER:
         if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
             return;
         if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
             Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
         break;
+    case Client::CPlayer::PLAYER_SHAPE_USE::INTERACTION:
+        if (m_pInteractableObject
+            && dynamic_cast<CGameObject*>(m_pInteractableObject) == _Other.pActorUserData->pOwner
+            && false == m_pInteractableObject->Is_Interacting())
+            m_pInteractableObject = nullptr;
+        break;
     }
-    if (m_pInteractableObject 
-        && dynamic_cast<CGameObject*>(m_pInteractableObject) == _Other.pActorUserData->pOwner
-        &&false == m_pInteractableObject->Is_Interacting())
-        m_pInteractableObject = nullptr;
+
 }
 
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -913,10 +915,14 @@ void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
     default:
         break;
     }
-    if (m_pInteractableObject
-        && dynamic_cast<CGameObject*>( m_pInteractableObject )== _pOtherObject
-        && false == m_pInteractableObject->Is_Interacting())
-        m_pInteractableObject = nullptr;
+
+    if (OBJECT_GROUP::PLAYER_TRIGGER == _pMyCollider->Get_CollisionGroupID())
+    {
+        if (m_pInteractableObject
+            && dynamic_cast<CGameObject*>(m_pInteractableObject) == _pOtherObject
+            && false == m_pInteractableObject->Is_Interacting())
+            m_pInteractableObject = nullptr;
+    }
 }
 
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
@@ -957,7 +963,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 {
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
-    m_pInteractableObject = nullptr;
+    //m_pInteractableObject = nullptr;
     if (Is_CarryingObject())
     {
         m_pCarryingObject->Change_Coordinate(_eCoordinate);
@@ -1015,22 +1021,26 @@ void CPlayer::Move_Attack_3D()
 
 void CPlayer::StampSmash()
 {
-	if (COORDINATE_3D == Get_CurCoord())
-	{
-		CSampleBook* pSampleBook = dynamic_cast<CSampleBook*>(m_pInteractableObject);
-        if (nullptr == pSampleBook)
-            return;
-        _vector v2DPosition = pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition());
-        
-        if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
-        {
-            m_pDetonator->Set_Bombable(m_pBombStmap->Place_Bomb(v2DPosition));
-        }
-        else if(PLAYER_PART::PLAYER_PART_STOP_STMAP == m_eCurrentStamp)
-        {
-            m_pStopStmap->Place_PalmMarker(v2DPosition);
-        }
-	}
+    if (COORDINATE_3D != Get_CurCoord())
+        return;
+
+	CSampleBook* pSampleBook = dynamic_cast<CSampleBook*>(m_pInteractableObject);
+    if (nullptr == pSampleBook)
+        return;
+
+    _vector v2DPosition = pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition());
+    if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
+    {
+        m_pDetonator->Set_Bombable(m_pBombStmap->Place_Bomb(v2DPosition));
+    }
+    else if(PLAYER_PART::PLAYER_PART_STOP_STMAP == m_eCurrentStamp)
+    {
+	    _vector v2DDirection = Get_LookDirection();
+        v2DDirection =XMVectorSetY(v2DDirection, XMVectorGetZ(v2DDirection));
+	    v2DDirection = XMVector3Normalize(XMVectorSetZ( v2DDirection,0.f));
+        m_pStopStmap->Place_PalmDecal(v2DPosition, v2DDirection);
+    }
+
 }
 
 void CPlayer::Attack(CGameObject* _pVictim)
@@ -1806,7 +1816,7 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
             return E_FAIL;
         m_pCarryingObject = _pCarryingObject;
         Safe_AddRef(m_pCarryingObject);
-
+ 
         Set_State(PICKUPOBJECT);
     }
 

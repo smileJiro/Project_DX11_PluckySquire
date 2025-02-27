@@ -42,7 +42,7 @@ float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 float4x4 g_BoneMatrices[256];
 Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture; // PBR
 
-float g_fFarZ = 1000.f;
+float g_fFarZ = 300.f;
 int g_iFlag = 0;
 
 float4 g_vCamPosition;
@@ -260,7 +260,7 @@ PS_OUT PS_MAIN(PS_IN In)
     Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
     Out.vORMH = vORMH;
     Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 1.0f);
-
+    
     return Out;
 }
 struct PS_SHADOW_IN

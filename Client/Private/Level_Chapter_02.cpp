@@ -63,7 +63,7 @@
 CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: 
 	m_eLevelID(LEVEL_CHAPTER_2)
-	,CLevel(_pDevice, _pContext)
+	, CLevel(_pDevice, _pContext)
 {
 }
 
@@ -76,8 +76,6 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed CSection_Manager Level_Enter(Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-
-
 
 	if (FAILED(Ready_Lights()))
 	{
@@ -95,9 +93,9 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MainTable (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"))))
+	if (FAILED(Ready_Layer_Book(TEXT("Layer_Terrain"))))
 	{
-		MSG_BOX(" Failed Ready_Layer_TestTerrain (Level_Chapter_02::Initialize)");
+		MSG_BOX(" Failed Ready_Layer_Book (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
 	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"), &pCameraTarget)))
@@ -141,7 +139,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Spawner (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	
+
 	if (FAILED(Ready_Layer_Effects(TEXT("Layer_Effect"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Effects (Level_Chapter_02::Initialize)");
@@ -185,21 +183,21 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed REady_Layer_Draggable (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	
+
 	///* Test CollapseBlock */
 	//{
 	//	CCollapseBlock::MAPOBJ_DESC CollapseBlockDesc{};
-	//	CollapseBlockDesc.Build_2D_Model(LEVEL_CHAPTER_2, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"));
+	//	CollapseBlockDesc.Build_2D_Model(m_eLevelID, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"));
 	//	CollapseBlockDesc.Build_2D_Transform(_float2(-100.f, -300.f));
 	//	CollapseBlockDesc.eStartCoord = COORDINATE_2D;
 	//	CGameObject* pGameObject = nullptr;
-	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_CollapseBlock"), m_eLevelID, TEXT("Layer_CollapseBlock"), &pGameObject, &CollapseBlockDesc)))
+	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_CollapseBlock"), m_eLevelID, TEXT("Layer_CollapseBlock"), &pGameObject, &CollapseBlockDesc)))
 	//		return E_FAIL;
 
 	//	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
 	//}
 
-	
+
 
 	///* Pooling Test */
 	//Pooling_DESC Pooling_Desc;
@@ -270,7 +268,7 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 	if (KEY_DOWN(KEY::T))
 	{
 		//CLoader::Create(m_pDevice, m_pContext, LEVEL_CHAPTER_4);
-		//Event_ChangeMapObject(LEVEL_CHAPTER_2, TEXT("Chapter_04_Default_Desk.mchc"), TEXT("Layer_MapObject"), true);
+		//Event_ChangeMapObject(m_eLevelID, TEXT("Chapter_04_Default_Desk.mchc"), TEXT("Layer_MapObject"), true);
 	}
 
 	Uimgr->Narration_Update();
@@ -390,25 +388,6 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		isResult = m_pGameInstance->RayCast_Nearest(vOrigin, vRayDirection, 1000.f, &vOutPos, &pActorObject);
 		int a = 0;
 	}
-
-	if (KEY_DOWN(KEY::Y))
-	{
-		if (FAILED(Ready_Layer_FallingRock(TEXT("Layer_FallingRock"))))
-		{
-			MSG_BOX(" Failed Ready_Layer_FallingRock (Level_Chapter_02::Initialize)");
-			assert(nullptr);
-		}
-	}
-
-	if (KEY_DOWN(KEY::X))
-	{
-		_float3 vPos = _float3(500.0f, 10.f, 0.f);
-		_wstring dd = TEXT("Chapter2_P0910");
-		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_LightningBolt"), COORDINATE_2D, &vPos, nullptr, nullptr, &dd);
-	}
-
-
-
 }
 
 HRESULT CLevel_Chapter_02::Render()
@@ -500,6 +479,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Map()
 		if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
 			return E_FAIL;
 		break;
+	case Client::LEVEL_CHAPTER_6:
+		if (FAILED(Map_Object_Create(L"Chapter_06_Play_Desk.mchc")))
+			return E_FAIL;
+		break;
 	case Client::LEVEL_CHAPTER_TEST:
 		if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
 			return E_FAIL;
@@ -507,8 +490,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Map()
 	default:
 		break;
 	}
-
-	//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
 
 	return S_OK;
 }
@@ -520,14 +501,14 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 		CFallingRock::FALLINGROCK_DESC* pFallingRockDesc = new CFallingRock::FALLINGROCK_DESC; /* struct 구조체를 복사하면 가장 좋겠지만 desc 구조체 clone 구현이 좀 애매해서 현재 */
 		pFallingRockDesc->eStartCoord = COORDINATE_2D;
 		pFallingRockDesc->fFallDownEndY = RTSIZE_BOOK2D_Y * 0.5f - 50.f;
-		pFallingRockDesc->iCurLevelID = LEVEL_CHAPTER_2;
+		pFallingRockDesc->iCurLevelID = m_eLevelID;
 		pFallingRockDesc->isDeepCopyConstBuffer = false;
 		pFallingRockDesc->Build_2D_Transform(_float2(0.0f, 500.f));
 
 		/* Pooling Desc */
 		Pooling_DESC tPooling_Desc; /* 삭제처리하자 */
 		tPooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_TRIGGER;
-		tPooling_Desc.iPrototypeLevelID = LEVEL_CHAPTER_2;
+		tPooling_Desc.iPrototypeLevelID = m_eLevelID;
 		tPooling_Desc.strLayerTag = TEXT("Layer_FallingRock");
 		tPooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_FallingRock");
 		tPooling_Desc.strSectionKey = TEXT("Chapter2_P0304");
@@ -535,8 +516,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 		CSpawner::SPAWNER_DESC SpawnerDesc;
 		SpawnerDesc.pObjectCloneDesc = pFallingRockDesc;
 		SpawnerDesc.tPoolingDesc = tPooling_Desc;
-		SpawnerDesc.eCurLevelID = LEVEL_CHAPTER_2;
-		SpawnerDesc.eGameObjectPrototypeLevelID = LEVEL_CHAPTER_2;
+		SpawnerDesc.eCurLevelID = m_eLevelID;
+		SpawnerDesc.eGameObjectPrototypeLevelID = m_eLevelID;
 		SpawnerDesc.fSpawnCycleTime = 5.0f;
 		SpawnerDesc.iOneClycleSpawnCount = 1;
 		SpawnerDesc.vSpawnPosition = _float3(0.0f, 500.f, 0.0f);
@@ -546,52 +527,52 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 		SpawnerDesc.strLayerTag = TEXT("Layer_FallingRock");
 
 		CGameObject* pGameObject = nullptr;
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), m_eLevelID, _strLayerTag, &pGameObject, &SpawnerDesc)))
 			return E_FAIL;
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
 
 		pGameObject = nullptr;
 		SpawnerDesc.fSpawnCycleTime = 4.0f;
 		SpawnerDesc.vSpawnPosition = _float3(400.0f, 700.f, 0.0f);
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), m_eLevelID, _strLayerTag, &pGameObject, &SpawnerDesc)))
 			return E_FAIL;
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
 
 		pGameObject = nullptr;
 		SpawnerDesc.fSpawnCycleTime = 7.0f;
 		SpawnerDesc.vSpawnPosition = _float3(550.0f, 1000.f, 0.0f);
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), m_eLevelID, _strLayerTag, &pGameObject, &SpawnerDesc)))
 			return E_FAIL;
 
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
 	} /* 돌덩이 맵 */
-	
+
 
 
 	{ /* 종 스크롤 맵 좌측방향 돌덩이 */
-	
+
 		/* Falling Rock*/
 		CFallingRock::FALLINGROCK_DESC* pFallingRockDesc = new CFallingRock::FALLINGROCK_DESC; /* struct 구조체를 복사하면 가장 좋겠지만 desc 구조체 clone 구현이 좀 애매해서 현재 */
 		pFallingRockDesc->eStartCoord = COORDINATE_2D;
-		pFallingRockDesc->iCurLevelID = LEVEL_CHAPTER_2;
+		pFallingRockDesc->iCurLevelID = m_eLevelID;
 		pFallingRockDesc->isDeepCopyConstBuffer = false;
 		pFallingRockDesc->Build_2D_Transform(_float2(600.0f, -350.0f));
 		pFallingRockDesc->isColBound = true;
 		pFallingRockDesc->eColBoundDirection = CFallingRock::COLBOUND_LEFT;
-	
+
 		/* Pooling Desc */
 		Pooling_DESC tPooling_Desc; /* 삭제처리하자 */
 		tPooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_TRIGGER;
-		tPooling_Desc.iPrototypeLevelID = LEVEL_CHAPTER_2;
+		tPooling_Desc.iPrototypeLevelID = m_eLevelID;
 		tPooling_Desc.strLayerTag = TEXT("Layer_FallingRock_Left");
 		tPooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_FallingRock");
 		tPooling_Desc.strSectionKey = TEXT("Chapter2_P0102");
-	
+
 		CSpawner::SPAWNER_DESC SpawnerDesc;
 		SpawnerDesc.pObjectCloneDesc = pFallingRockDesc;
 		SpawnerDesc.tPoolingDesc = tPooling_Desc;
-		SpawnerDesc.eCurLevelID = LEVEL_CHAPTER_2;
-		SpawnerDesc.eGameObjectPrototypeLevelID = LEVEL_CHAPTER_2;
+		SpawnerDesc.eCurLevelID = m_eLevelID;
+		SpawnerDesc.eGameObjectPrototypeLevelID = m_eLevelID;
 		SpawnerDesc.fSpawnCycleTime = 5.0f;
 		SpawnerDesc.iOneClycleSpawnCount = 1;
 		SpawnerDesc.vSpawnPosition = _float3(600.0f, -350.0f, 0.0f);
@@ -599,38 +580,38 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 		SpawnerDesc.strPoolingTag = TEXT("Pooling_FallingRock_Left");
 		SpawnerDesc.ePoolingObjectStartCoord = COORDINATE_2D;
 		SpawnerDesc.strLayerTag = TEXT("Layer_FallingRock_Left");
-	
+
 		CGameObject* pGameObject = nullptr;
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), m_eLevelID, _strLayerTag, &pGameObject, &SpawnerDesc)))
 			return E_FAIL;
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
-	
+
 	} /* 종 스크롤 맵 좌측방향 돌덩이 */
-	
+
 	{ /* 종 스크롤 맵 우측방향 돌덩이 */
-	
+
 	/* Falling Rock*/
 		CFallingRock::FALLINGROCK_DESC* pFallingRockDesc = new CFallingRock::FALLINGROCK_DESC; /* struct 구조체를 복사하면 가장 좋겠지만 desc 구조체 clone 구현이 좀 애매해서 현재 */
 		pFallingRockDesc->eStartCoord = COORDINATE_2D;
-		pFallingRockDesc->iCurLevelID = LEVEL_CHAPTER_2;
+		pFallingRockDesc->iCurLevelID = m_eLevelID;
 		pFallingRockDesc->isDeepCopyConstBuffer = false;
 		pFallingRockDesc->Build_2D_Transform(_float2(-700.0f, 1350.0f));
 		pFallingRockDesc->isColBound = true;
 		pFallingRockDesc->eColBoundDirection = CFallingRock::COLBOUND_RIGHT;
-	
+
 		/* Pooling Desc */
 		Pooling_DESC tPooling_Desc; /* 삭제처리하자 */
 		tPooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_TRIGGER;
-		tPooling_Desc.iPrototypeLevelID = LEVEL_CHAPTER_2;
+		tPooling_Desc.iPrototypeLevelID = m_eLevelID;
 		tPooling_Desc.strLayerTag = TEXT("Layer_FallingRock_Right");
 		tPooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_FallingRock");
 		tPooling_Desc.strSectionKey = TEXT("Chapter2_P0102");
-	
+
 		CSpawner::SPAWNER_DESC SpawnerDesc;
 		SpawnerDesc.pObjectCloneDesc = pFallingRockDesc;
 		SpawnerDesc.tPoolingDesc = tPooling_Desc;
-		SpawnerDesc.eCurLevelID = LEVEL_CHAPTER_2;
-		SpawnerDesc.eGameObjectPrototypeLevelID = LEVEL_CHAPTER_2;
+		SpawnerDesc.eCurLevelID = m_eLevelID;
+		SpawnerDesc.eGameObjectPrototypeLevelID = m_eLevelID;
 		SpawnerDesc.fSpawnCycleTime = 5.0f;
 		SpawnerDesc.iOneClycleSpawnCount = 1;
 		SpawnerDesc.vSpawnPosition = _float3(-700.0f, 1350.0f, 0.0f);
@@ -638,13 +619,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 		SpawnerDesc.strPoolingTag = TEXT("Pooling_FallingRock_Right");
 		SpawnerDesc.ePoolingObjectStartCoord = COORDINATE_2D;
 		SpawnerDesc.strLayerTag = TEXT("Layer_FallingRock_Right");
-	
+
 		CGameObject* pGameObject = nullptr;
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &SpawnerDesc)))
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), m_eLevelID, _strLayerTag, &pGameObject, &SpawnerDesc)))
 			return E_FAIL;
 
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
-	
+
 	} /* 종 스크롤 맵 우측방향 돌덩이 */
 
 
@@ -791,35 +772,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	return S_OK;
 }
 
-HRESULT CLevel_Chapter_02::Ready_Layer_TestTerrain(const _wstring& _strLayerTag)
+HRESULT CLevel_Chapter_02::Ready_Layer_Book(const _wstring& _strLayerTag)
 {
-	/* Test Terrain */
-	//CTestTerrain::MODELOBJECT_DESC TerrainDesc{};
-
-	//TerrainDesc.eStartCoord = COORDINATE_3D;
-	//TerrainDesc.iCurLevelID = m_eLevelID;
-	//TerrainDesc.isCoordChangeEnable = false;
-	//TerrainDesc.iModelPrototypeLevelID_3D = m_eLevelID;
-	//TerrainDesc.strModelPrototypeTag_3D = TEXT("WoodenPlatform_01");
-	//TerrainDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-
-	//TerrainDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-
-	//TerrainDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-	//TerrainDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-	//TerrainDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	//TerrainDesc.tTransform3DDesc.fSpeedPerSec = 0.f;
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_TestTerrain"), m_eLevelID, _strLayerTag, &TerrainDesc)))
-	//	return E_FAIL;
-
-
-
 	//TODO :: SAMPLE
 	CModelObject::MODELOBJECT_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SampleBook"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
 
@@ -1190,15 +1149,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 {
 	CNPC::NPC_DESC NPCDesc;
 
-	//NPCDesc.iCurLevelID = m_eLevelID;
-	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//NPCDesc.iMainIndex = 0;
-	//NPCDesc.iSubIndex = 0;
-	//wsprintf(NPCDesc.strDialogueIndex, TEXT("dialog_01"));
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
-	//	return E_FAIL;
-
 	NPCDesc.iCurLevelID = m_eLevelID;
 	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
 	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
@@ -1208,7 +1158,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	//wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_OnlySocial"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
-	
+
 
 	wsprintf(NPCDesc.strDialogueIndex, L"");
 	NPCDesc.iCurLevelID = m_eLevelID;
@@ -1265,7 +1215,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
 		return E_FAIL;
-	
+
 
 	//Pooling_DESC Pooling_Desc;
 	//Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
@@ -1296,7 +1246,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
-	
+
 
 	//CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Goblin"), Pooling_Desc, pGoblin_Desc);
 
@@ -1366,24 +1316,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
-	//Zippy_Desc.tTransform2DDesc.vInitialPosition = _float3(-450.0f, -30.f, 0.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"), m_eLevelID, _strLayerTag, &pObject, &Zippy_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0910"), pObject);
-
-
-	//CLightningBolt::LIGHTNINGBOLT_DESC LightningBolt_Desc;
-	//LightningBolt_Desc.iCurLevelID = m_eLevelID;
-	//LightningBolt_Desc.tTransform2DDesc.vInitialPosition = _float3(500.0f, 10.f, 0.f);
-	//LightningBolt_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_LightningBolt"), m_eLevelID, _strLayerTag, &pObject, &LightningBolt_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0910"), pObject);
 
 	Pooling_DESC Pooling_Desc;
 	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
@@ -1459,10 +1391,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects(const _wstring& _strLayerTag)
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strName, m_eLevelID, _strLayerTag, &pOut, &Desc)))
 				return E_FAIL;
 			CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
-		}		
+		}
 	}
 
-	pJson = m_pGameInstance->Find_Json_InLevel(TEXT("FX_Level2"), LEVEL_CHAPTER_2);
+	pJson = m_pGameInstance->Find_Json_InLevel(TEXT("FX_Level2"), m_eLevelID);
 	if (nullptr == pJson)
 		return E_FAIL;
 
@@ -1473,7 +1405,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects(const _wstring& _strLayerTag)
 
 		for (_int j = 0; j < iCount; ++j)
 		{
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, strName, m_eLevelID, _strLayerTag, &pOut, &Desc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, strName, m_eLevelID, _strLayerTag, &pOut, &Desc)))
 				return E_FAIL;
 			CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
 		}
@@ -1502,14 +1434,14 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_02::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 {
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("LightningBolt"), LEVEL_CHAPTER_2, 2);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("LightningBolt"), m_eLevelID, 2);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Jump_Dust"), LEVEL_STATIC, 1);
 
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves1"), LEVEL_CHAPTER_2, 3);
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves2"), LEVEL_CHAPTER_2, 3);
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust1"), LEVEL_CHAPTER_2, 3);
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust2"), LEVEL_CHAPTER_2, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves1"), m_eLevelID, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves2"), m_eLevelID, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust1"), m_eLevelID, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust2"), m_eLevelID, 3);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Death_Burst"), LEVEL_STATIC, 3);
 
@@ -1526,10 +1458,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("health_pickup_small"), LEVEL_STATIC, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("health_pickup_large"), LEVEL_STATIC, 3);
 
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("beam"), LEVEL_CHAPTER_2, 1);
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("EffectBack"), LEVEL_CHAPTER_2, 1);
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("hum"), LEVEL_CHAPTER_2, 1);
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("storm"), LEVEL_CHAPTER_2, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("beam"), m_eLevelID, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("EffectBack"), m_eLevelID, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("hum"), m_eLevelID, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("storm"), m_eLevelID, 1);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Player2dJumpAttackFX"), LEVEL_STATIC, 1);
 
@@ -1544,7 +1476,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	tCarriableDesc.eStartCoord = COORDINATE_3D;
 	tCarriableDesc.iCurLevelID = m_eLevelID;
 	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.8f, 21.5f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
 		return E_FAIL;
 	CModelObject::MODELOBJECT_DESC tModelDesc{};
 	tModelDesc.eStartCoord = COORDINATE_3D;
@@ -1555,27 +1487,27 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	_float fDominoXPositionStep = -3.5f;
 	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
 	tModelDesc.tTransform3DDesc.vInitialScaling = _float3(1.5f, 1.5f, 1.5f);
-	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino4");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_4");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino2");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_2");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 	tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001f;
-	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino3");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
-
 
 	//2번째 도미노
 	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(48.13f, 2.61f, -5.02f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
 		return E_FAIL;
 
 	fDominoXPosition = 64.5f;
@@ -1583,14 +1515,14 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	fDominoZPosition = -0.54f;
 	fDominoXPositionStep = -3.5f;
 	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
-	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino1");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 
 
 	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-	tModelDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_Domino3");
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 		return E_FAIL;
 
 
@@ -1601,7 +1533,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_LunchBox(const _wstring& _strLayerTag)
 {
 	CModelObject::MODELOBJECT_DESC tModelDesc{};
 	tModelDesc.iCurLevelID = m_eLevelID;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_LunchBox"), m_eLevelID, _strLayerTag, &tModelDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_LunchBox"), m_eLevelID, _strLayerTag, &tModelDesc)))
 		return E_FAIL;
 
 
@@ -1613,12 +1545,12 @@ HRESULT CLevel_Chapter_02::Ready_Layer_FallingRock(const _wstring& _strLayerTag)
 	//CFallingRock::FALLINGROCK_DESC Desc = {};
 	//Desc.eStartCoord = COORDINATE_2D;
 	//Desc.fFallDownEndY = RTSIZE_BOOK2D_Y * 0.5f - 50.f;
-	//Desc.iCurLevelID = LEVEL_CHAPTER_2;
+	//Desc.iCurLevelID = m_eLevelID;
 	//Desc.isDeepCopyConstBuffer = true;
 	//Desc.Build_2D_Transform(_float2(0.0f, 500.f));
 	//
 	//CGameObject* pGameObject = nullptr;
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_FallingRock"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject , &Desc)))
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_FallingRock"), m_eLevelID, _strLayerTag, &pGameObject , &Desc)))
 	//	return E_FAIL;
 	//
 	//if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
@@ -1692,7 +1624,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Draggable(const _wstring& _strLayerTag)
 	CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
 	tDraggableDesc.iModelPrototypeLevelID_3D = m_eLevelID;
 	tDraggableDesc.iCurLevelID = m_eLevelID;
-	tDraggableDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_PlasticBlock");
+	tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
 	tDraggableDesc.eStartCoord = COORDINATE_3D;
 	tDraggableDesc.vBoxHalfExtents = {1.02f,1.02f,1.02f};
 	tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
