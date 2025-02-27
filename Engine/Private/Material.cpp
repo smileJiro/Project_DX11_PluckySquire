@@ -65,7 +65,7 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 
 
 
-			_wstring strMaterialPath = L"../Bin/Resources/Textures/Test/output/";
+			_wstring strMaterialPath = L"../Bin/Resources/Textures/ModelTexture/";
 			strMaterialPath += szWideName;
 			strMaterialPath += szWideExt;
 
