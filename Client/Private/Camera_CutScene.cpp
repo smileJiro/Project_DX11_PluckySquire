@@ -68,14 +68,15 @@ _bool CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName)
 		return false;
 
 	m_isStartCutScene = true;
+	m_isFinishCutScene = false;
 	m_szEventTag = _wszCutSceneName;
 
 	return true;
 }
 
-void CCamera_CutScene::Add_CutScene(_wstring _wszCutSceneTag, pair<_float2, vector<CUTSCENE_DATA*>> _CutSceneData)
+void CCamera_CutScene::Add_CutScene(_wstring _wszCutSceneTag, pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA*>> _CutSceneData)
 {
-	pair<_float2, vector<CUTSCENE_DATA*>>* pData = Find_CutScene(_wszCutSceneTag);
+	pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA*>>* pData = Find_CutScene(_wszCutSceneTag);
 
 	if (nullptr != pData)
 		return;
@@ -94,10 +95,10 @@ void CCamera_CutScene::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		CUTSCENE_DATA* tCutSceneData = m_pCurCutScene->second[0];
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMLoadFloat3(&tCutSceneData->vPosition));
-		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&tCutSceneData->vAtOffset), 1.f));
+		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&tCutSceneData->vAt), 1.f));
 
 		// 뭐지 왜 이렇게 했지 잘못 쳤나? 와 저장을 AtOffset이 아닌 At을 저장함 ㅋㅋ
-		m_vAtOffset = tCutSceneData->vAtOffset;
+		m_vAt = tCutSceneData->vAt;
 
 		// 초기 Zoom Level 설정
 		//m_iCurZoomLevel = tCutSceneData.iZoomLevel;
@@ -112,7 +113,7 @@ void CCamera_CutScene::Switch_CameraView(INITIAL_DATA* _pInitialData)
 
 		// 초기 보는 곳 설정
 		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&m_tInitialData.vAt), 1.f));
-		m_vAtOffset = m_tInitialData.vAt;
+		m_vAt = m_tInitialData.vAt;
 
 		// 초기 Zoom Level 설정
 		m_iCurZoomLevel = m_tInitialData.iZoomLevel;
@@ -126,7 +127,7 @@ INITIAL_DATA CCamera_CutScene::Get_InitialData()
 
 	XMStoreFloat3(&tData.vPosition, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
 
-	_vector vAt = XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);	// CutScene은 사실상 AtOffset이 최종적 At임 지금
+	_vector vAt = XMLoadFloat3(&m_vAt) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 	XMStoreFloat3(&tData.vAt, vAt);
 
 	_int iZoomLevel = {};
@@ -148,31 +149,30 @@ void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
 
 	//_vector vPosition;
 
-	m_pCurCutScene->first.y += _fTimeDelta;
-	_float fRatio = m_pCurCutScene->first.y / m_pCurCutScene->first.x;
+	m_pCurCutScene->first.fTotalTime.y += _fTimeDelta;
+	_float fRatio = m_pCurCutScene->first.fTotalTime.y / m_pCurCutScene->first.fTotalTime.x;
 
 	if (fRatio >= (1.f - EPSILON)) {
 		_uint iLastIndex = (_uint)m_pCurCutScene->second.size() - 1;
 		
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_pCurCutScene->second[iLastIndex]->vPosition), 1.f));
-		_vector vAt = XMLoadFloat3(&m_pCurCutScene->second[iLastIndex]->vAtOffset);
+		_vector vAt = XMLoadFloat3(&m_pCurCutScene->second[iLastIndex]->vAt);
 
 		m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 		m_fFovy = m_pCurCutScene->second[iLastIndex]->fFovy;
 
 		// Reset
-		m_pCurCutScene->first.y = 0.f;
+		m_pCurCutScene->first.fTotalTime.y = 0.f;
 		m_isFinishCutScene = true;
-		m_vAtOffset = { 0.f, 0.f, 0.f };
+		vAt = { 0.f, 0.f, 0.f };
 
-		m_pCurCutScene = nullptr;
 		return;
 	}
 	
 	_uint iIndex = (_uint)m_pGameInstance->Lerp(0, (_float)(m_pCurCutScene->second.size()), fRatio);
 	
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_pCurCutScene->second[iIndex]->vPosition), 1.f));
-	_vector vAt = XMLoadFloat3(&m_pCurCutScene->second[iIndex]->vAtOffset);
+	_vector vAt = XMLoadFloat3(&m_pCurCutScene->second[iIndex]->vAt); // 나중에 Shake 넣기 02.26
 
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 	m_fFovy = m_pCurCutScene->second[iIndex]->fFovy;
@@ -186,7 +186,7 @@ void CCamera_CutScene::Change_Sector()
 	Switch_CameraView(nullptr);
 }
 
-pair<_float2, vector<CUTSCENE_DATA*>>* CCamera_CutScene::Find_CutScene(_wstring _wszCutSceneName)
+pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA*>>* CCamera_CutScene::Find_CutScene(_wstring _wszCutSceneName)
 {
 	auto iter = m_CutSceneDatas.find(_wszCutSceneName);
 
@@ -215,8 +215,9 @@ void CCamera_CutScene::After_CutScene(_float _fTimeDelta)
 	// 해당 함수까지 끝난다면 카메라 전환 등 동작 수행
 	// 확 돌지, 점진적으로 돌아야 하는 건지 여기서 결정
 	// 멈춰 있을지도 이 이전에 얼마나 멈출 건지, 그 정보를 CutScene Data가 가지고 있어야 함
-	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET);
+	CCamera_Manager::GetInstance()->Change_CameraType(m_pCurCutScene->first.iNextCameraType);
 	m_isFinishCutScene = false;
+	m_pCurCutScene = nullptr;
 }
 
 void CCamera_CutScene::Switching(_float _fTimeDelta)
@@ -231,7 +232,7 @@ void CCamera_CutScene::Switching(_float _fTimeDelta)
 
 	if (fRatio >= (1.f - EPSILON)) {
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&tData->vPosition), 1.f));
-		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&tData->vAtOffset), 1.f));
+		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&tData->vAt), 1.f));
 		m_fFovy = tData->fFovy;
 		m_InitialTime.y = 0.f;
 		m_isInitialData = false;
@@ -244,7 +245,7 @@ void CCamera_CutScene::Switching(_float _fTimeDelta)
 	_float fFovy = m_pGameInstance->Lerp(m_ZoomLevels[m_tInitialData.iZoomLevel], tData->fFovy, fRatio);
 	// Data의 첫번째 vAtOffset은 보는 곳임
 	// 근데 At은 왜 Lerp를 안 했지? 나중에 이상하면 고치기(지금 만듦)
-	_vector vAt = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vAt), XMLoadFloat3(&tData->vAtOffset), fRatio);
+	_vector vAt = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vAt), XMLoadFloat3(&tData->vAt), fRatio);
 
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 

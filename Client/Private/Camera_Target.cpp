@@ -104,6 +104,7 @@ void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_D
 void CCamera_Target::Add_CustomArm(ARM_DATA _tArmData)
 {
 	m_CustomArmData = _tArmData;
+	m_pCurArm->Set_StartInfo();
 }
 
 void CCamera_Target::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _int _iTriggerID)

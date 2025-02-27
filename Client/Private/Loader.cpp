@@ -9,6 +9,7 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Camera_CutScene.h"
+#include "Camera_CutScene_Save.h"
 #include "Camera_2D.h"
 #include "Ray.h"
 #include "Cube.h"
@@ -55,6 +56,7 @@
 #include "UI_JotMain.h"
 #include "Narration.h"
 #include "Narration_Anim.h"
+#include "Interaction_E.h"
 /* For. UI*/
 
 /* For. NPC*/
@@ -527,6 +529,8 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_SettingPanel"), CSettingPanelBG::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_ESC_Goblin"), CESC_Goblin::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), CInteraction_E::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 
@@ -1651,7 +1655,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 
     /* For. Prototype_GameObject_Camera_CutScene */
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_CutScene_Save"),
-        CCamera_CutScene::Create(m_pDevice, m_pContext))))
+        CCamera_CutScene_Save::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);

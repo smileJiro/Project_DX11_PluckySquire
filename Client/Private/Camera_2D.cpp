@@ -101,6 +101,7 @@ void CCamera_2D::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA*
 void CCamera_2D::Add_CustomArm(ARM_DATA _tArmData)
 {
 	m_CustomArmData = _tArmData;
+	m_pCurArm->Set_StartInfo();
 }
 
 _bool CCamera_2D::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
@@ -247,6 +248,31 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 {
 	if (true == m_isInitialData)
 		return;
+
+	//static _bool isDebug = true;
+	//int a = 0;
+	////isDebug = false;
+	//if (false == isDebug) {
+	//	ARM_DATA tData = {};
+	//	tData.fMoveTimeAxisRight = { 1.5f, 0.f };
+	//	tData.fRotationPerSecAxisRight = { XMConvertToRadians(-11.f), XMConvertToRadians(-1.f) };
+	//	tData.iRotationRatioType = EASE_IN_OUT;
+	//	tData.fLength = 9.f;
+	//	tData.fLengthTime = { 1.5f, 0.f };
+	//	tData.iLengthRatioType = EASE_IN_OUT;
+
+	//	Add_CustomArm(tData);
+	//	m_eCameraMode = MOVE_TO_CUSTOMARM;
+	//	Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, -3.f, 0.f), EASE_IN_OUT);
+	//	Start_Zoom(1.5f, (ZOOM_LEVEL)LEVEL_5, EASE_IN_OUT);
+	//	//Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);
+
+	//	isDebug = true;
+	//}
+
+	/*Start_Zoom(1.5f, (ZOOM_LEVEL)LEVEL_6, EASE_IN_OUT);
+	Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);*/
+	
 	
 	Find_TargetPos();
 

@@ -54,6 +54,7 @@
 #include "ESC_HeartPoint.h"
 #include "ShopItemBG.h"
 #include "MapObjectFactory.h"
+#include "Interaction_E.h"
 
 #include "NPC.h"
 #include "Loader.h"
@@ -1132,6 +1133,12 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+	pDesc.fSizeX = 256.f / 4.f;
+	pDesc.fSizeY = 256.f / 4.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
 
 	CGameObject* pGameObject;
 
@@ -1220,6 +1227,9 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	NPCDesc.iSubIndex = 0;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_Rabbit"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
+
+
+
 
 	return S_OK;
 }

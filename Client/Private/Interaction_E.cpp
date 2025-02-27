@@ -2,6 +2,7 @@
 #include "Interaction_E.h"
 #include "UI_Manager.h"
 #include "Interactable.h"
+#include "Section_Manager.h"
 
 
 
@@ -50,7 +51,16 @@ void CInteraction_E::Update(_float _fTimeDelta)
 	}
 	else
 	{
-		Cal_DisplayPos();
+		CGameObject* pGameObejct = dynamic_cast<CGameObject*>(Uimgr->Get_Player()->Get_InteractableObject());
+
+		if (true == Uimgr->Get_Player()->Get_InteractableObject()->Is_UIPlayerHeadUp())
+		{
+			Cal_PlayerHighPos();
+		}
+		else if (false == Uimgr->Get_Player()->Get_InteractableObject()->Is_UIPlayerHeadUp())
+		{
+			Cal_ObjectPos(pGameObejct);
+		}
 	}
 	
 
@@ -64,7 +74,7 @@ void CInteraction_E::Late_Update(_float _fTimeDelta)
 HRESULT CInteraction_E::Render()
 {
 	
-	if (true == m_isRender && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	if (/*true == m_isRender &&*/ COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 		// TODO :: 일단은...
 
@@ -136,23 +146,26 @@ HRESULT CInteraction_E::Cleanup_DeadReferences()
 	return S_OK;
 }
 
-void CInteraction_E::Cal_PlayerHighPos(_float2 _vRTSize)
+void CInteraction_E::Cal_PlayerHighPos()
 {
 	// 포탈 및 점프
 
 	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 		// TODO :: 해당 부분은 가변적이다. 추후 변경해야한다.
-		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+		_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
 
 		_float2 vPlayerPos = _float2(Uimgr->Get_Player()->Get_BodyPosition().m128_f32[0], Uimgr->Get_Player()->Get_BodyPosition().m128_f32[1]);
 
 		_float2 vCalPos = { 0.f, 0.f };
 
 		vCalPos.x = vPlayerPos.x;
-		vCalPos.y = vPlayerPos.y + _vRTSize.y * 0.175f;
+		vCalPos.y = vPlayerPos.y + RTSize.y * 0.175f;
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f));
+
+		if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
+			CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 	}
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
@@ -160,7 +173,7 @@ void CInteraction_E::Cal_PlayerHighPos(_float2 _vRTSize)
 	}
 }
 
-void CInteraction_E::Cal_ObjectPos(_float2 _vRTSize, CGameObject* _pGameObject)
+void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 {
 	// 각종 오브젝트
 	if (nullptr == Uimgr->Get_Player()->Get_InteractableObject())
@@ -170,18 +183,29 @@ void CInteraction_E::Cal_ObjectPos(_float2 _vRTSize, CGameObject* _pGameObject)
 
 	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
+		_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
 		vObjectPos.x = _pGameObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0];
-		vObjectPos.y = _pGameObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1] + _vRTSize.y * 0.175f;
+		vObjectPos.y = _pGameObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1] + RTSize.y * 0.175f;
 	}
 	
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, vObjectPos.y, 0.f, 1.f));
+
+	wstring test = Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractName();
+
+	if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+
+	int a = 0;
+
+
 }
 
-void CInteraction_E::Cal_DisplayPos()
+void CInteraction_E::Cal_DisplayPos(_float2 _vRTSize, CGameObject* _pGameObject)
 {
 	IInteractable* InteractObject = Uimgr->Get_Player()->Get_InteractableObject();
 	CGameObject* pGameObject = dynamic_cast<CGameObject*>(InteractObject);
 
+	int a = 0;
 
 	// 플레이어 위로 노출되는 포탈, 
 	// if ()
