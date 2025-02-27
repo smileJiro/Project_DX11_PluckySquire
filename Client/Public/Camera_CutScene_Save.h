@@ -26,7 +26,7 @@ public:
 	_float3						Get_SimulationPos() { return m_vSimulationPos; }
 	_bool						Get_IsFinish() { return m_isFinishCutScene; }
 	_bool						Get_IsSimulation() { return m_isSimulation; }
-	map<_wstring, pair<_float2, vector<CUTSCENE_DATA>>>* Get_CutSceneDatas() { return &m_CutSceneDatas; }
+	map<_wstring, pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA>>>* Get_CutSceneDatas() { return &m_CutSceneDatas; }
 
 	void						Set_IsFinish(_bool _isFinish) { m_isFinishCutScene = _isFinish; }
 	void						Set_IsSimulation(_bool _isSimulation) { m_isSimulation = _isSimulation; }
@@ -35,11 +35,12 @@ public:
 
 public:
 	void						Set_NextCutScene(_wstring _wszCutSceneName, INITIAL_DATA* _pTargetPos = nullptr);
-	void						Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene);
+	void						Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_Sector*> _vecCutScene, CUTSCENE_SUB_DATA _tSubData);
 
 private:
 	map<_wstring, vector<CCutScene_Sector*>>	m_CutScenes;
-	map<_wstring, pair<_float2, vector<CUTSCENE_DATA>>>		m_CutSceneDatas;
+	map<_wstring, CUTSCENE_SUB_DATA>			m_CutSceneSubDatas;
+	map<_wstring, pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA>>>		m_CutSceneDatas;
 	vector<CCutScene_Sector*>* m_pCurCutScene = { nullptr };
 	_wstring									m_wszCurCutSceneTag = {};
 
@@ -49,8 +50,9 @@ private:
 	_bool										m_isStartCutScene = { false };
 	_bool										m_isFinishCutScene = { false };
 
+
 	// Target
-	_float3										m_vTargetPos = {};
+	//_float3										m_vTargetPos = {};
 	//INITIAL_DATA								m_tInitialData = {};
 	//_bool										m_isInitialData = { false };
 	//_float2										m_InitialTime = { 0.3f, 0.f };
@@ -61,18 +63,30 @@ private:
 	_float2										m_fSimulationTime = { 0.5f, 0.f };
 #endif
 
+	_bool										m_isChangingLookAt = { false };
+	_float3										m_vStartLookAt = {};
+	_float2										m_fLookAtTime = {};
+	_int										m_iLookAtRatioType = {};
+	_float3										m_vNextLookAt = {};
+	_float3										m_vAt = {};
+
+	_float3										m_vPrePosition = {};
+
 private:
 	void						Play_CutScene(_float _fTimeDelta);
 	void						Change_Sector();
 
 	vector<CCutScene_Sector*>* Find_CutScene(_wstring _wszCutSceneName);
-	pair < _float2, vector<CUTSCENE_DATA>>* Find_CutSceneData(_wstring _wszCutSceneName);
+	pair < CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA>>* Find_CutSceneData(_wstring _wszCutSceneName);
 
 	void						Before_CutScene(_float _fTimeDelta);
 	void						After_CutScene(_float _fTimeDelta);
 
 	void						Process_Movement(_float _fTimeDelta);
 	void						Initialize_CameraInfo(INITIAL_DATA* _pTargetPos);
+	void						Start_Changing_LookAt(_float _fLookAtTime, _fvector _vNextLookAt, _uint _iRatioType);
+	void						Action_LookAt(_float _fTimeDelta);
+	void						Slerp_At(_int iCurKeyFrameIdx, vector<CUTSCENE_KEYFRAME>* pKeyFrames);
 
 	void						Save_Data();
 

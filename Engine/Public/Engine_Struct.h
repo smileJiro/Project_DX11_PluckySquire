@@ -372,7 +372,7 @@ namespace Engine
 		_uint				iZoomLevel = {};
 		_uint				iZoomRatioType = {};
 		
-		_float3				vAtOffset = {};
+		_float3				vAt = {};
 		_bool				bLookTarget = {};
 		_uint				iAtRatioType = {};
 	} CUTSCENE_KEYFRAME;
@@ -382,9 +382,15 @@ namespace Engine
 		_float3				vPosition = {};
 		_float3				vRotation = {};
 
-		_float3				vAtOffset = {};
+		_float3				vAt = {};
 		_float				fFovy = {};
 	} CUTSCENE_DATA;
+
+	typedef struct tagCutSceneSubData
+	{
+		_float2				fTotalTime = {};
+		_uint				iNextCameraType = {};
+	} CUTSCENE_SUB_DATA;
 
 	typedef struct tagInitialData
 	{

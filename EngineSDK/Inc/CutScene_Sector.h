@@ -43,7 +43,7 @@ public:
 	_bool						Get_IsChangeKeyFrame();
 
 public:
-	_bool						Play_Sector(_float _fTimeDelta, _vector* _pOutPos);
+	_bool						Play_Sector(_float _fTimeDelta, _vector* _pOutPos, _vector* _pOutAt);
 	void						Sort_Sector();
 	void						Add_KeyFrame(CUTSCENE_KEYFRAME _tKeyFrame);
 
@@ -69,6 +69,8 @@ private:
 	_vector						Calculate_Position_Spline_Test(_float _fTimeDelta);
 	_vector						Calculate_Position_Catmull_Rom(_float _fRatio);
 	_vector						Calculate_Position_Linear(_float _fRatio);
+
+	_vector						Calculate_At_Catmull_Rom(_float _fRatio);
 
 	_uint						Find_Span(_float _fRatio);
 	_float						BasisFunction(_uint _i, _uint _iDegree, _float _fRatio);
