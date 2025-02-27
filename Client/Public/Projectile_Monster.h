@@ -45,10 +45,15 @@ public:
 	virtual void Active_OnDisable() override;
 
 protected:
+	CGameObject* m_pTarget = { nullptr };
+
+	_float3 m_vDir = {};
+
 	_float m_fLifeTime = { 0.f };
 	_float m_fAccTime = { 0.f };
 
 	_bool m_isStop = {};
+	_bool m_isFirstLoop = { true };
 
 private:
 	//virtual HRESULT					Ready_ActorDesc(void* _pArg);

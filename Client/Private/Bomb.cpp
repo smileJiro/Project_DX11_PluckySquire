@@ -49,7 +49,7 @@ HRESULT CBomb::Initialize(void* _pArg)
 	SHAPE_DATA ShapeData;
 	ShapeData.pShapeDesc = &ShapeDesc;
 	ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-	ShapeData.eMaterial = ACTOR_MATERIAL::BOUNCY;
+	ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
 	ShapeData.isTrigger = false;
 	ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
@@ -86,7 +86,7 @@ HRESULT CBomb::Initialize(void* _pArg)
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
 	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER;
 	BombModelDesc->pActorDesc = &ActorDesc;
-	BombModelDesc->eActorType = ACTOR_TYPE::KINEMATIC;
+	BombModelDesc->eActorType = ACTOR_TYPE::DYNAMIC;
 
 	if (FAILED(__super::Initialize(BombModelDesc)))
 		return E_FAIL;
@@ -117,6 +117,9 @@ HRESULT CBomb::Initialize(void* _pArg)
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
 		TEXT("Com_2DExplisionCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &CircleDesc)))
 		return E_FAIL;
+
+
+	Get_ActorCom()->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_TRIGER, false);
 	m_p2DColliderComs[2]->Set_Active(false);
 
 	Set_AnimationLoop(COORDINATE_2D, 0, true);
@@ -180,6 +183,11 @@ HRESULT CBomb::Render()
 	__super::Render();
 
 	return S_OK;
+}
+
+void CBomb::Bomb_Shape_Enable(_bool _isEnable)
+{
+	Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, _isEnable);
 }
 
 void CBomb::Explode()
