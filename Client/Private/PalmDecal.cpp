@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Section_Manager.h"
 #include "Camera_Manager.h"
+#include "Stoppable.h"
 
 CPalmDecal::CPalmDecal(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -116,50 +117,61 @@ HRESULT CPalmDecal::Render()
 
 void CPalmDecal::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    int a = 0;
+    IStoppable* pStop = dynamic_cast<IStoppable*>(_pOtherObject);
+    if (pStop)
+    {
+        pStop->Stop();
+        m_StoppedObjects.insert(_pOtherObject);
+    }
+
+    //OBJECT_GROUP eOtherGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
+    //switch (eOtherGroup)
+    //{
+    //case Client::MONSTER:
+    //case Client::INTERACTION_OBEJCT:
+    //case Client::MAPOBJECT:
+    //{
+
+    //    break;
+    //}
+    //case Client::NONE:
+    //case Client::PLAYER:
+    //case Client::PLAYER_TRIGGER:
+    //case Client::PLAYER_PROJECTILE:
+    //case Client::MONSTER_PROJECTILE:
+    //case Client::TRIGGER_OBJECT:
+    //case Client::RAY_OBJECT:
+    //case Client::BLOCKER:
+    //case Client::BOOK_3D:
+    //case Client::WORD_GAME:
+    //case Client::FALLINGROCK_BASIC:
+    //case Client::EFFECT2D:
+    //case Client::DYNAMIC_OBJECT:
+    //case Client::NPC_EVENT:
+    //case Client::EXPLOSION:
+    //    break;
+    //default:
+    //    break;
+    //}
+
     Event_SetActive( m_p2DColliderComs[0], false);
 }
 
 void CPalmDecal::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    OBJECT_GROUP eOtherGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
-    switch (eOtherGroup)
-    {
-    case Client::MONSTER:
-    case Client::INTERACTION_OBEJCT:
-    case Client::MAPOBJECT:
-    {
-        m_StoppedObjects.insert(_pOtherObject);
-        break;
-    }
-    case Client::NONE:
-    case Client::PLAYER:
-    case Client::PLAYER_TRIGGER:
-    case Client::PLAYER_PROJECTILE:
-    case Client::MONSTER_PROJECTILE:
-    case Client::TRIGGER_OBJECT:
-    case Client::RAY_OBJECT:
-    case Client::BLOCKER:
-    case Client::BOOK_3D:
-    case Client::WORD_GAME:
-    case Client::FALLINGROCK_BASIC:
-    case Client::EFFECT2D:
-    case Client::DYNAMIC_OBJECT:
-    case Client::NPC_EVENT:
-    case Client::EXPLOSION:
-        break;
-    default:
-        break;
-    }
+
 }
 
 void CPalmDecal::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    int a = 0;
+
 }
 
 void CPalmDecal::Place(_fvector _v2DPos, _fvector _v2DDir)
-{    //3D 상에서의 위치 잡아주기
+{   
+    Erase();
+    Set_Active(true);
+    //3D 상에서의 위치 잡아주기
     //방향도 받아서 돌려주기
     Set_Position({ XMVectorGetX(_v2DPos), XMVectorGetY(_v2DPos), 0.0f });
     static_cast<CTransform_2D*>(m_pControllerTransform->Get_Transform(COORDINATE_2D))->LookDir(_v2DDir);
@@ -169,7 +181,14 @@ void CPalmDecal::Place(_fvector _v2DPos, _fvector _v2DDir)
 
 void CPalmDecal::Erase()
 {
+    Set_Active(false);
     //지우기
+    for (auto& pStopped : m_StoppedObjects)
+    {
+        IStoppable* pStoppable = dynamic_cast<IStoppable*>(pStopped);
+        pStoppable->UnStop();
+    }
+	m_StoppedObjects.clear();
 }
 
 

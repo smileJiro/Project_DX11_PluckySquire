@@ -21,6 +21,7 @@ public:
 		_float		vPositionZ;
 		_float		CollsionScaleX;
 		_float		CollsionScaleY;
+		_bool		isInteractable;
 		_bool		isDialog;
 		_bool		is2D;
 	};

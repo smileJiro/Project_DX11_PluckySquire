@@ -146,6 +146,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	Init_RT_RenderPos_Capcher();
 
 	m_fInteractChargeTime = 0.0f;
+	m_eInteractID = INTERACT_ID::BOOK;
 	m_eInteractType = INTERACT_TYPE::NORMAL;
 	m_eInteractKey = KEY::Q;
 

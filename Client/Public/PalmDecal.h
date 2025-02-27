@@ -2,6 +2,7 @@
 #include "ModelObject.h"
 #include "Interactable.h"
 BEGIN(Client)
+class IStoppable;
 class CPalmDecal :
 	public CModelObject, public IInteractable
 {
