@@ -17,7 +17,7 @@
                     ],
                     "SetType": "DIRECTSET"
                 },
-                "Count": 16,
+                "Count": 24,
                 "LifeTime": {
                     "Arg1": 0.5,
                     "Arg2": 0.6000000238418579,
@@ -25,12 +25,12 @@
                 },
                 "Position": {
                     "Arg1": [
-                        -0.20000000298023224,
+                        0.0,
                         -0.05000000074505806,
                         0.0
                     ],
                     "Arg2": [
-                        0.20000000298023224,
+                        0.0,
                         0.10000000149011612,
                         0.0
                     ],
@@ -63,11 +63,14 @@
                     "SetType": "RANDOMLINEAR"
                 },
                 "ShapeLocation": {
+                    "Coverage": 0.0,
                     "Position": [
                         0.0,
                         0.0,
                         0.0
                     ],
+                    "Ring_Distribution": 0.0,
+                    "Ring_Radius": 0.20000000298023224,
                     "Rotation": [
                         0.0,
                         0.0,
@@ -78,7 +81,7 @@
                         1.0,
                         1.0
                     ],
-                    "Shape": "NONE"
+                    "Shape": "RING"
                 },
                 "UVSet": {
                     "Count": 1.0,
@@ -204,7 +207,7 @@
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "BURST_SPAWN",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_SmokeLoop8x8_01_D.dds",
-            "Time": 1.0,
+            "Time": 0.5,
             "Transform": [
                 1.0,
                 0.0,

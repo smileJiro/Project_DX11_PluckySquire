@@ -698,7 +698,7 @@ HRESULT CLoader::Loading_Level_Static()
 
     lstrcpy(m_szLoadingText, TEXT("이펙트(을)를 로딩중입니다."));
 
-    if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/"))))
+    if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/LoadInfo.json"))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/FX/FX_StaticInfo.json"), TEXT("FX_Static"), LEVEL_STATIC)))
@@ -1229,7 +1229,7 @@ HRESULT CLoader::Loading_Level_Chapter_2()
 
     lstrcpy(m_szLoadingText, TEXT("Level2 이펙트 로딩중입니다."));
 
-    if (FAILED(Load_Directory_Effects(LEVEL_CHAPTER_2, TEXT("../Bin/DataFiles/FX/Level2/"))))
+    if (FAILED(Load_Directory_Effects(LEVEL_CHAPTER_2, TEXT("../Bin/DataFiles/FX/Level2/LoadInfo.json"))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/FX/FX_Level2.json"), TEXT("FX_Level2"), LEVEL_CHAPTER_2)))
@@ -2313,23 +2313,44 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
 HRESULT CLoader::Load_Directory_Effects(LEVEL_ID _iLevID, const _tchar* _szJsonFilePath)
 {
     std::filesystem::path path;
-    path = _szJsonFilePath;
+    //path = _szJsonFilePath;
 
-    for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
-        if (entry.path().extension() == ".json") {
-            
-            CEffect_System* pParticleSystem = CEffect_System::Create(m_pDevice, m_pContext, entry.path().c_str());
+    json jsonLoadInfo;
+    m_pGameInstance->Load_Json(_szJsonFilePath, &jsonLoadInfo);
 
-            if (FAILED(m_pGameInstance->Add_Prototype(_iLevID, entry.path().filename(), pParticleSystem)))
-            {
-                string str = "Failed to Create Effects";
-                str += entry.path().filename().replace_extension().string();
-                MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
-                return E_FAIL;
-            }
+    for (_int i = 0; i < jsonLoadInfo["Path"].size(); ++i)
+    {
+        path = STRINGTOWSTRING(jsonLoadInfo["Path"][i]);
 
+        CEffect_System* pParticleSystem = CEffect_System::Create(m_pDevice, m_pContext, path.c_str());
+
+        if (FAILED(m_pGameInstance->Add_Prototype(_iLevID, path.filename(), pParticleSystem)))
+        {
+            string str = "Failed to Create Effects";
+            str += path.filename().replace_extension().string();
+            MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+            return E_FAIL;
         }
+
     }
+     
+
+
+    //for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+    //    if (entry.path().extension() == ".json") {
+    //        
+    //        CEffect_System* pParticleSystem = CEffect_System::Create(m_pDevice, m_pContext, entry.path().c_str());
+    //
+    //        if (FAILED(m_pGameInstance->Add_Prototype(_iLevID, entry.path().filename(), pParticleSystem)))
+    //        {
+    //            string str = "Failed to Create Effects";
+    //            str += entry.path().filename().replace_extension().string();
+    //            MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+    //            return E_FAIL;
+    //        }
+    //
+    //    }
+    //}
 
     return S_OK;
 }

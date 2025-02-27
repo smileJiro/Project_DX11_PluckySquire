@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Trigger_Manager.h"
+#include "Effect_Manager.h"
 
 CPlayerItem::CPlayerItem(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CTriggerObject(_pDevice, _pContext)
@@ -74,6 +75,7 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 	//m_pActorCom->Set_AngularVelocity({ 0.f, 0.f, XMConvertToRadians(45.f) });
 
 	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Gravity(false);
+
 	return S_OK;
 }
 
@@ -84,6 +86,24 @@ void CPlayerItem::Priority_Update(_float _fTimeDelta)
 
 void CPlayerItem::Update(_float _fTimeDelta)
 {
+	if (m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 2.f))
+	{
+		if (false == m_isInFrustum)
+		{
+			CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Guntlet1"), true, Get_FinalPosition());
+			m_isInFrustum = true;
+		}
+		
+	}
+	else
+	{
+		if (true == m_isInFrustum)
+		{
+			CEffect_Manager::GetInstance()->InActive_Effect(TEXT("Guntlet1"));
+			m_isInFrustum = false;
+		}
+	}
+
 	PxVec3 AnglularVelocity = static_cast<PxRigidDynamic*>(m_pActorCom->Get_RigidActor())->getAngularVelocity();
 
 	m_pActorCom->Set_AngularVelocity({ 0.f, 1.f, 0.f });
@@ -101,6 +121,9 @@ void CPlayerItem::Update(_float _fTimeDelta)
 
 void CPlayerItem::Late_Update(_float _fTimeDelta)
 {
+	if (false == m_isInFrustum)
+		return;
+
 	m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_GEOMETRY, this);
 
 	__super::Late_Update(_fTimeDelta);
