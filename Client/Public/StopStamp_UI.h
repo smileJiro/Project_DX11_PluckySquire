@@ -2,7 +2,7 @@
 #include "UI.h"
 #include "Client_Defines.h"
 #include "UI_Manager.h"
-#include "D:\Workbench\Portfolio\CopyMojam\EngineSDK\Inc\ModelObject.h"
+#include "ModelObject.h"
 
 
 BEGIN(Engine)

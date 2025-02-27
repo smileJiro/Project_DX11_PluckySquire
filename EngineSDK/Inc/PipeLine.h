@@ -43,7 +43,9 @@ public:
 	_float* Get_NearZ() { return &m_vNearFarZ.x; }
 	_float* Get_FarZ() { return &m_vNearFarZ.y; }
 	// Set
-	void Set_Transform(D3DTRANSFORMSTATE _eState, _fmatrix _TransformMatrix) { XMStoreFloat4x4(&m_TransformMatrices[_eState], _TransformMatrix); }
+	void Set_Transform(D3DTRANSFORMSTATE _eState, _fmatrix _TransformMatrix) { 
+		XMStoreFloat4x4(&m_TransformMatrices[_eState], _TransformMatrix);
+	}
 	void Set_NearFarZ(_float2 _vNearFarZ) { m_vNearFarZ = _vNearFarZ; };
 
 private:
