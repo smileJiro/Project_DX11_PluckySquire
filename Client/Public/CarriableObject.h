@@ -25,7 +25,7 @@ public:
 	typedef struct tagCarriableDesc : public CModelObject::MODELOBJECT_DESC
 	{
 		CARRIABLE_OBJ_ID eCrriableObjId = CARRIABLE_OBJ_ID::CARRIABLE_ID_LAST;
-		_float3 vHeadUpRoolPitchYaw3D = { 0.f,1.f,0.f };
+		_float3 vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
 		_float3 vHeadUpOffset3D = { 0.f,1.f,0.f };
 		_float fHeadUpHeight2D = 100.0f;
 	}CARRIABLE_DESC;

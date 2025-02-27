@@ -17,6 +17,8 @@ class CPortal;
 class CSampleBook;
 class CStopStamp;
 class CBombStamp;
+class CDetonator;
+class CPlayerBomb;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -36,6 +38,7 @@ enum PLAYER_INPUT
 	PLAYER_INPUT_START_STAMP,
 	PLAYER_INPUT_KEEP_STAMP,
 	PLAYER_INPUT_CANCEL_STAMP,
+	PLAYER_INPUT_DETONATE,
 	PLAYER_INPUT_LAST
 };
 
@@ -79,11 +82,25 @@ public:
 
 	enum PLAYER_PART
 	{
+		PLAYER_PART_BODY = 0,
 		PLAYER_PART_SWORD= 1,
 		PLAYER_PART_GLOVE,
 		PLAYER_PART_STOP_STMAP,
 		PLAYER_PART_BOMB_STMAP,
+		PLAYER_PART_DETONATOR = 5,
 		PLAYER_PART_LAST
+	};
+	enum PLAYER_MAIN_EQUIP
+	{
+		PLAYER_MAIN_EQUIP_SWORD = 1,
+		PLAYER_MAIN_EQUIP_GLOVE,
+		PLAYER_MAIN_EQUIP_STOP_STMAP,
+		PLAYER_MAIN_EQUIP_BOMB_STMAP,
+		PLAYER_MAIN_EQUIP_LAST
+	};
+	enum PLAYER_SUB_EQUIP
+	{
+		PLAYER_SUB_EQUIP_DETONATOR = 5,
 	};
 	enum STATE
 	{
@@ -110,6 +127,7 @@ public:
 		LUNCHBOX,
 		DRAG,
 		STAMP,
+		BOMBER,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -461,6 +479,7 @@ public:
 	void Move_Attack_3D();
 	void StampSmash();
 	void Attack(CGameObject* _pVictim);
+	void Detonate();
 
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Jump();
@@ -487,6 +506,7 @@ public:
 	_bool Is_SwordHandling();
 	_bool Is_CarryingObject(){ return nullptr != m_pCarryingObject; }
 	_bool Is_AttackTriggerActive();
+	_bool Is_DetonationMode();
 
 	_bool Is_PlayingAnim();
 	_bool Has_InteractObject() { return nullptr != m_pInteractableObject; }
@@ -526,6 +546,7 @@ public:
 	const _float4x4* Get_BodyWorldMatrix_Ptr() const;
 	const _float4x4* Get_BodyWorldMatrix_Ptr(COORDINATE eCoord) const;
 	CModelObject* Get_Body() { return m_pBody; }
+	CPartObject* Get_PlayerPartObject(PLAYER_PART _ePartId) { return m_PartObjects[(_uint)_ePartId]; }
 	_vector Get_RootBonePosition();
 	NORMAL_DIRECTION Get_PortalNormal() { return m_e3DPortalNormal; }
 	const ATTACK_TRIGGER_DESC& Get_AttackTriggerDesc(ATTACK_TYPE _eAttackType, F_DIRECTION _eFDir) {return m_f2DAttackTriggerDesc[_eAttackType][(_uint)_eFDir];}
@@ -549,12 +570,14 @@ public:
 	void Set_InteractObject(IInteractable* _pInteractable) { m_pInteractableObject = _pInteractable; }
 	NORMAL_DIRECTION Set_PortalNormal(NORMAL_DIRECTION _eNormal) { return m_e3DPortalNormal = _eNormal; }
 	void Set_GravityCompOn(_bool _bOn);
+	void Set_CurrentStampType(PLAYER_PART _eStamp) { m_eCurrentStamp = _eStamp; }
 
 	void Start_Attack(ATTACK_TYPE _eAttackType);
 	void End_Attack();
 	void Flush_AttckedSet() { m_AttckedObjects.clear(); }
 	void Equip_Part(PLAYER_PART _ePartId);
 	void UnEquip_Part(PLAYER_PART _ePartId);
+	void UnEquip_All();
 
 
 private:
@@ -638,13 +661,14 @@ private:
 	CStopStamp* m_pStopStmap = nullptr;
 	CBombStamp* m_pBombStmap = nullptr;
 	PLAYER_PART m_eCurrentStamp = PLAYER_PART::PLAYER_PART_BOMB_STMAP;
+	CDetonator* m_pDetonator = nullptr;
 
 	//기타 관계된 오브젝트
 	CCarriableObject* m_pCarryingObject = nullptr;
 	set<CGameObject*> m_AttckedObjects;
 	IInteractable* m_pInteractableObject = nullptr;
 	CSampleBook* m_pBook = nullptr;
-
+	CPlayerBomb* m_pBomb = nullptr;
 
 	SHAPE_CAPSULE_DESC m_tBodyShapeDesc = {};
 	SHAPE_DATA m_tBodyShapeData = {};

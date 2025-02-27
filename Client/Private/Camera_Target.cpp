@@ -104,6 +104,7 @@ void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_D
 void CCamera_Target::Add_CustomArm(ARM_DATA _tArmData)
 {
 	m_CustomArmData = _tArmData;
+	m_pCurArm->Set_StartInfo();
 }
 
 void CCamera_Target::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _int _iTriggerID)
@@ -187,6 +188,8 @@ void CCamera_Target::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
 
 		Look_Target(XMLoadFloat3(&m_vPreTargetPos) + XMLoadFloat3(&m_vAtOffset), 0.f);
+
+		m_isInitialData = false;
 	}
 	// 초기 위치부터 다음위치까지 Lerp를 해야 함
 	else {
@@ -310,16 +313,16 @@ void CCamera_Target::Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex
 
 void CCamera_Target::Calculate_Player()
 {
-	_float3 PlayerPos = {};
-	memcpy(&PlayerPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
-	_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-	_vector vDir = vPos - XMLoadFloat3(&PlayerPos);
-	_float fLength = XMVectorGetX(XMVector3Length(vDir));
+	//_float3 PlayerPos = {};
+	//memcpy(&PlayerPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+	//_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+	//_vector vDir = vPos - XMLoadFloat3(&PlayerPos);
+	//_float fLength = XMVectorGetX(XMVector3Length(vDir));
 
-	m_pCurArm->Set_ArmVector(XMVector3Normalize(vDir));
-	m_pCurArm->Set_Length(fLength);
+	//m_pCurArm->Set_ArmVector(XMVector3Normalize(vDir));
+	//m_pCurArm->Set_Length(fLength);
 
-	memcpy(&m_vPreTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+	//memcpy(&m_vPreTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
 }
 
 INITIAL_DATA CCamera_Target::Get_InitialData()

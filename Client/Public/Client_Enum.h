@@ -89,6 +89,8 @@ namespace Client
 		SECTION_2D_PLAYMAP_TRIGGER,
 		SECTION_2D_PLAYMAP_EFFECT,
 		SECTION_2D_PLAYMAP_UI,
+		SECTION_2D_PLAYMAP_STAMP,
+		SECTION_2D_PLAYMAP_POST_PROCESS,
 		SECTION_2D_PLAYMAP_SPAWNER,
 		SECTION_2D_PLAYMAP_RENDERGROUP_LAST,
 	};
@@ -113,6 +115,7 @@ namespace Client
 		EFFECT2D =					0x2000,
 		DYNAMIC_OBJECT =			0x4000,	//맵에 있는 다이나믹 오브젝트(주사위, WORD, 당근 등 사용중) 
 		NPC_EVENT =					0x8000,
+		EXPLOSION =					0x10000,		//폭발 (플레이어, 몬스터 모두 충돌)
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬
 	};

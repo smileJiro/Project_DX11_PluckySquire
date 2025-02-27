@@ -3,8 +3,8 @@
 #include "GameInstance.h"
 #include "PlayerBody.h"
 #include "Player.h"
-#include <Section_Manager.h>
-#include <PlayerBomb.h>
+#include "Section_Manager.h"
+#include "PlayerBomb.h"
 
 
 CBombStamp::CBombStamp(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -59,16 +59,17 @@ HRESULT CBombStamp::Render()
     return S_OK;
 }
 
-void CBombStamp::Smash(_fvector v2DPosition)
+IBombable* CBombStamp::Place_Bomb(_fvector v2DPosition)
 {
 	CModelObject::MODELOBJECT_DESC tBombDesc{};
     tBombDesc.tTransform2DDesc.vInitialPosition = _float3(XMVectorGetX(v2DPosition), XMVectorGetY(v2DPosition), 0.0f);
 	tBombDesc.iCurLevelID = m_iCurLevelID;
     CPlayerBomb* pPlayerBomb = static_cast<CPlayerBomb*>( m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBomb"), &tBombDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID,TEXT("Layer_Player"), pPlayerBomb);
+	m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID,TEXT("Layer_PlayerSubs"), pPlayerBomb);
     CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
     pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), pPlayerBomb, SECTION_2D_PLAYMAP_OBJECT);
-
+    //폭탄 설치가능한 애가 피킹됐느지 확인.
+    return pPlayerBomb;
 }
 
 CBombStamp* CBombStamp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

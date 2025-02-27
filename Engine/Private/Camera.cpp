@@ -22,7 +22,7 @@ HRESULT CCamera::Initialize(void* _pArg)
 {
 	/* Zoom Level */
 	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_1] = XMConvertToRadians(8.f);
-	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_2] = XMConvertToRadians(17.f);
+	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_2] = XMConvertToRadians(25.f);
 	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_3] = XMConvertToRadians(35.f);
 	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_4] = XMConvertToRadians(40.f);
 	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_5] = XMConvertToRadians(47.f);

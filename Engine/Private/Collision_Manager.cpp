@@ -71,7 +71,7 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
             {
                 // 첫 충돌검사 대상.
                 m_PrevCollInfo.emplace(ID.ID, false);
-                iter = m_PrevCollInfo.find(ID.ID);
+                iter = m_PrevCollInfo.find(ID.ID); 
             }
 
             // 본격적인 충돌 검사 수행.

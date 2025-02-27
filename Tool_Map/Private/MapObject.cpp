@@ -620,7 +620,7 @@ HRESULT CMapObject::Load_Override_Color(HANDLE _hFile)
         _uint iMaterialIndex = 0;
         ReadFile(_hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
         ReadFile(_hFile, &m_eColorShaderModes[iMaterialIndex], sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
-        switch (m_eColorShaderModes[i])
+        switch (m_eColorShaderModes[iMaterialIndex])
         {
         case Engine::C3DModel::COLOR_DEFAULT:
         case Engine::C3DModel::MIX_DIFFUSE:

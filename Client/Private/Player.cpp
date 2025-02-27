@@ -28,11 +28,13 @@
 #include "PlayerState_Electric.h"
 #include "PlayerState_Drag.h"
 #include "PlayerState_Stamp.h"
+#include "PlayerState_Bomber.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
 #include "StopStamp.h"
 #include "BombStamp.h"
+#include "Detonator.h"
 #include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
@@ -118,8 +120,6 @@ HRESULT CPlayer::Initialize_Prototype()
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::LEFT].vExtents = { 146.5f, 74.5f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::LEFT].vOffset = { -50.f, 0.f };
 
-
-
     return S_OK;
 }
 
@@ -174,7 +174,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     m_tBodyShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     m_tBodyShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
 	m_tBodyShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-	m_tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT; // Actor가 충돌을 감지할 그룹
+	m_tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::EXPLOSION; // Actor가 충돌을 감지할 그룹
     XMStoreFloat4x4(&m_tBodyShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset /*+ 0.1f*/, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
@@ -376,6 +376,23 @@ HRESULT CPlayer::Ready_PartObjects()
     m_PartObjects[PLAYER_PART_BOMB_STMAP]->Set_Position({ 0.f,-0.4f,0.f });
     Set_PartActive(PLAYER_PART_BOMB_STMAP, false);
 
+
+	//Part DETONATOR
+    CDetonator::DETONATOR_DESC tDetonatorDesc{};
+    tDetonatorDesc.iCurLevelID = m_iCurLevelID;
+    tDetonatorDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    m_PartObjects[PLAYER_PART_DETONATOR] = m_pDetonator = static_cast<CDetonator*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Detonator"), &tDetonatorDesc));
+    Safe_AddRef(m_pDetonator);
+    if (nullptr == m_PartObjects[PLAYER_PART_DETONATOR])
+    {
+        MSG_BOX("CPlayer BOMBSTAMP Creation Failed");
+        return E_FAIL;
+    }
+    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_DETONATOR])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_l")); /**/
+    Set_PartActive(PLAYER_PART_DETONATOR, false);
+
+
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_UP, true);
@@ -452,6 +469,7 @@ HRESULT CPlayer::Ready_Components()
     Bind_AnimEventFunc("ThrowObject", bind(&CPlayer::ThrowObject, this));
     Bind_AnimEventFunc("Attack", bind(&CPlayer::Move_Attack_3D, this));
     Bind_AnimEventFunc("StampSmash", bind(&CPlayer::StampSmash, this));
+    Bind_AnimEventFunc("Detonate", bind(&CPlayer::Detonate, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -569,8 +587,7 @@ void CPlayer::Update(_float _fTimeDelta)
 
     CUI_Manager::GetInstance()->Set_isQIcon((nullptr != m_pInteractableObject) 
         && KEY::Q == m_pInteractableObject->Get_InteractKey());
-    if(m_pInteractableObject && false== m_pInteractableObject->Is_Interacting())
-        m_pInteractableObject = nullptr;
+
 
 }
 
@@ -694,6 +711,10 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
             Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
         break;
     }
+    if (m_pInteractableObject 
+        && dynamic_cast<CGameObject*>(m_pInteractableObject) == _Other.pActorUserData->pOwner
+        &&false == m_pInteractableObject->Is_Interacting())
+        m_pInteractableObject = nullptr;
 }
 
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -892,7 +913,10 @@ void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
     default:
         break;
     }
-
+    if (m_pInteractableObject
+        && dynamic_cast<CGameObject*>( m_pInteractableObject )== _pOtherObject
+        && false == m_pInteractableObject->Is_Interacting())
+        m_pInteractableObject = nullptr;
 }
 
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
@@ -933,6 +957,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 {
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
+    m_pInteractableObject = nullptr;
     if (Is_CarryingObject())
     {
         m_pCarryingObject->Change_Coordinate(_eCoordinate);
@@ -990,22 +1015,26 @@ void CPlayer::Move_Attack_3D()
 
 void CPlayer::StampSmash()
 {
-	if (COORDINATE_3D == Get_CurCoord())
-	{
-		CSampleBook* pSampleBook = dynamic_cast<CSampleBook*>(m_pInteractableObject);
-        if (nullptr == pSampleBook)
-            return;
-        _vector v2DPosition = pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition());
-        
-        if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
-        {
-            m_pBombStmap->Smash(v2DPosition);
-        }
-        else if(PLAYER_PART::PLAYER_PART_STOP_STMAP == m_eCurrentStamp)
-        {
-            m_pStopStmap->Smash(v2DPosition);
-        }
-	}
+    if (COORDINATE_3D != Get_CurCoord())
+        return;
+
+	CSampleBook* pSampleBook = dynamic_cast<CSampleBook*>(m_pInteractableObject);
+    if (nullptr == pSampleBook)
+        return;
+
+    _vector v2DPosition = pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition());
+    if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
+    {
+        m_pDetonator->Set_Bombable(m_pBombStmap->Place_Bomb(v2DPosition));
+    }
+    else if(PLAYER_PART::PLAYER_PART_STOP_STMAP == m_eCurrentStamp)
+    {
+	    _vector v2DDirection = Get_LookDirection();
+        v2DDirection =XMVectorSetY(v2DDirection, XMVectorGetZ(v2DDirection));
+	    v2DDirection = XMVector3Normalize(XMVectorSetZ( v2DDirection,0.f));
+        m_pStopStmap->Place_PalmDecal(v2DPosition, v2DDirection);
+    }
+
 }
 
 void CPlayer::Attack(CGameObject* _pVictim)
@@ -1020,6 +1049,13 @@ void CPlayer::Attack(CGameObject* _pVictim)
     Event_Hit(this, pCharacter, m_tStat.iDamg, vKnockBackForce);
 
     m_AttckedObjects.insert(_pVictim);
+}
+
+void CPlayer::Detonate()
+{
+	if (nullptr == m_pDetonator)
+		return;
+	m_pDetonator->Detonate();
 }
 
 
@@ -1072,7 +1108,6 @@ void CPlayer::Jump()
 
 
 
-
 PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
 	PLAYER_INPUT_RESULT tResult;
@@ -1111,8 +1146,6 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 
         return tResult;
     }
-
-
 
 	_bool bCarrying = Is_CarryingObject();
     if (false == bCarrying && Is_SwordHandling())
@@ -1406,6 +1439,11 @@ _bool CPlayer::Is_AttackTriggerActive()
     }
 }
 
+_bool CPlayer::Is_DetonationMode()
+{
+    return m_pDetonator->Is_DetonationMode();
+}
+
 _bool CPlayer::Is_PlayingAnim()
 {
     return m_pBody->Is_PlayingAnim();
@@ -1621,6 +1659,9 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::STAMP:
         m_pStateMachine->Transition_To(new CPlayerState_Stamp(this));
         break;
+    case Client::CPlayer::BOMBER:
+        m_pStateMachine->Transition_To(new CPlayerState_Bomber(this));
+        break;
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -1781,6 +1822,7 @@ void CPlayer::Set_GravityCompOn(_bool _bOn)
 	m_pGravityCom->Set_Active(_bOn);
     m_pGravityCom->Change_State(_bOn ?  CGravity::STATE_FALLDOWN : CGravity::STATE_FLOOR);
 }
+
 void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 {
 	m_eCurAttackType = _eAttackType;
@@ -1813,21 +1855,40 @@ void CPlayer::End_Attack()
         m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD, false);
         m_pSword->Set_AttackEnable(false);
     }
+
 }
 
 void CPlayer::Equip_Part(PLAYER_PART _ePartId)
 {
-	for (_int i = PLAYER_PART_SWORD; i < PLAYER_PART_LAST; ++i)
-		Set_PartActive((_uint)i, false);
+	if (PLAYER_PART_BODY == _ePartId)
+		return;
+    _bool bMainEquip = false;
+    for (_uint i = 0; i < PLAYER_MAIN_EQUIP::PLAYER_MAIN_EQUIP_LAST; i++)
+    {
+        if (i == _ePartId)
+        {
+            for (_int i = PLAYER_MAIN_EQUIP_SWORD; i < PLAYER_MAIN_EQUIP_LAST; ++i)
+                Set_PartActive((_uint)i, false);
+            break;
+        }
+    }
     if(COORDINATE_3D == Get_CurCoord())
 	    Set_PartActive(_ePartId, true);
 }
 
 void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
 {
-	Set_PartActive(_ePartId, false);
+    if (PLAYER_PART_BODY == _ePartId)
+        return;
     if(COORDINATE_3D == Get_CurCoord() && Is_SwordHandling())
 		Set_PartActive(PLAYER_PART_SWORD, true);
+	Set_PartActive(_ePartId, false);
+}
+
+void CPlayer::UnEquip_All()
+{
+    for (_int i = PLAYER_PART_SWORD; i < PLAYER_PART_LAST; ++i)
+        Set_PartActive((_uint)i, false);
 }
 
 
@@ -1979,6 +2040,21 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         {
             Move(_vector{0.f,5.f,0.f}, _fTimeDelta);
         }
+    }
+    if (KEY_DOWN(KEY::NUM1))
+    {
+        if (false == m_pDetonator->Is_DetonationMode())
+        {
+            Set_CurrentStampType(PLAYER_PART_STOP_STMAP);
+            if (STATE::STAMP == Get_CurrentStateID())
+                Equip_Part(PLAYER_PART_STOP_STMAP);
+        }
+    }
+    else if (KEY_DOWN(KEY::NUM2))
+    {
+		Set_CurrentStampType(PLAYER_PART_BOMB_STMAP);
+        if (STATE::STAMP == Get_CurrentStateID())
+            Equip_Part(PLAYER_PART_BOMB_STMAP);
     }
     //if (KEY_DOWN(KEY::H))
     //{

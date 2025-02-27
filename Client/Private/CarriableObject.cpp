@@ -28,6 +28,9 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 	CARRIABLE_DESC* pDesc = static_cast<CARRIABLE_DESC*>(_pArg);
 
 	m_eCarriableId = pDesc->eCrriableObjId;
+	m_strInteractName = TEXT("들어 올리기");
+	m_bUIPlayerHeadUp = false;
+
 	XMStoreFloat4x4(&m_matHeadUpMatrix[COORDINATE_2D], XMMatrixTranslation(0.f, pDesc->fHeadUpHeight2D, 0.f));
 	
 	_matrix matHeadUpRotationMatrix = XMMatrixRotationQuaternion(XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&pDesc->vHeadUpRoolPitchYaw3D)));
