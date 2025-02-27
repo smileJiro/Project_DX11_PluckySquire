@@ -98,7 +98,8 @@ void CPalmDecal::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOthe
 void CPalmDecal::On_Placed(_fvector _v2DPos, _fvector _v2DDir)
 {    //3D 상에서의 위치 잡아주기
     //방향도 받아서 돌려주기
-
+    Set_Position({ XMVectorGetX(_v2DPos), XMVectorGetY(_v2DPos), 0.0f });
+    static_cast<CTransform_2D*>(m_pControllerTransform->Get_Transform(COORDINATE_2D))->LookDir(_v2DDir);
     m_p2DColliderComs[0]->Set_Active(true);
 }
 
