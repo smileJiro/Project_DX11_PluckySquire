@@ -85,7 +85,6 @@ HRESULT CNPC_Thrash::Initialize(void* _pArg)
 
 
 	m_isRender = true;
-	m_strInteractName = TEXT("NPC");
 
 	return S_OK;
 }

@@ -57,8 +57,8 @@ void CInteraction_E::Update(_float _fTimeDelta)
 	else
 	{
 		// TODO :: 일단 이름이 비어있으면 
-		if (TEXT("") == Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractName())
-			return;
+		//if (TEXT("") == Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractName())
+		//	return;
 
 		if (false == m_isRender)
 			m_isRender = true;
@@ -118,8 +118,10 @@ HRESULT CInteraction_E::Render()
 		_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
 		//Display_Text(RTSize);
 
-		
-		Display_Text(_float3(0.f,0.f,0.f), RTSize);
+		if (nullptr == Uimgr->Get_Player()->Get_InteractableObject())
+			return S_OK;
+		else
+			Display_Text(_float3(0.f,0.f,0.f), RTSize, Uimgr->Get_Player()->Get_InteractableObject());
 	}
 
 
@@ -305,7 +307,6 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 
 		m_vObejctPos = _float3(DisPlayPos._41, DisPlayPos._42 + 40.f, 0.f);
 		
-		m_strIntaractName = Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractName();
 
 	}
 	
@@ -326,14 +327,34 @@ void CInteraction_E::Cal_DisplayPos(_float2 _vRTSize, CGameObject* _pGameObject)
 	//
 }
 
-void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize)
+void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable* _pGameObject)
 {
-
-	// 글자 어떤걸로 띄울 것인가?
-	if (m_strIntaractName == TEXT("NPC"))
+	switch (_pGameObject->Get_InteractID())
 	{
-		m_strDisplayText = TEXT("대화하기");
+	case INTERACT_ID::NPC:
+		m_strDisplayText = TEXT("대화");
+		break;
+
+	case INTERACT_ID::CARRIABLE:
+		m_strDisplayText = TEXT("줍기");
+		break;
+
+	case INTERACT_ID::PORTAL:
+		m_strDisplayText = TEXT("포탈사용");
+		break;
+
+	case INTERACT_ID::BOOK:
+		m_strDisplayText = TEXT("북");
+		break;
+
+	case INTERACT_ID::LUNCHBOX:
+		m_strDisplayText = TEXT("열기");
+		break;
+
+	default:
+		break;
 	}
+
 
 	// 위치로 어디로 띄울껀가요?
 	// 이건 2D에요
