@@ -243,7 +243,7 @@ void CEmitter::Active_OnDisable()
 
 void CEmitter::Set_Matrix()
 {
-	if (FOLLOW_PARENT != m_eSpawnPosition)
+	//if (FOLLOW_PARENT != m_eSpawnPosition)
 	{
 		_matrix SpawnMatrix = {};
 		if (nullptr != m_pSpawnMatrix)

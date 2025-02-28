@@ -130,6 +130,9 @@ void CParticle_Sprite_Emitter::Late_Update(_float _fTimeDelta)
 {
     __super::Late_Update(_fTimeDelta);
 
+    if (FOLLOW_PARENT == m_eSpawnPosition)
+        Set_Matrix();
+
     if (m_isActive && m_iAccLoop)
         m_pGameInstance->Add_RenderObject_New(s_iRG_3D, s_iRGP_PARTICLE, this);
 }
@@ -197,13 +200,12 @@ void CParticle_Sprite_Emitter::Update_Emitter(_float _fTimeDelta)
     m_pComputeShader->End_Compute();
 
 
-
     if (STOP_SPAWN != m_eNowEvent)
     {
         if (SPAWN_RATE == m_eSpawnType)
         {
             _float fAbsolute;
-            if (RELATIVE_WORLD == m_eSpawnPosition)
+            if (RELATIVE_WORLD == m_eSpawnPosition || FOLLOW_PARENT == m_eSpawnPosition)
             {
                 m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &s_IdentityMatrix);
 
@@ -236,12 +238,12 @@ void CParticle_Sprite_Emitter::Update_Emitter(_float _fTimeDelta)
         else if (BURST_SPAWN == m_eSpawnType)
         {
             _float fAbsolute;
-            if (RELATIVE_WORLD == m_eSpawnPosition)
+            if (RELATIVE_WORLD == m_eSpawnPosition || FOLLOW_PARENT == m_eSpawnPosition)
             {
                 fAbsolute = 0.f;
                 m_pComputeShader->Bind_Matrix("g_SpawnMatrix", &s_IdentityMatrix);
             }
-            else if (ABSOLUTE_WORLD == m_eSpawnPosition)
+            else if (ABSOLUTE_WORLD == m_eSpawnPosition )
             {
                 fAbsolute = 1.f;
                 if (m_pSpawnMatrix)
@@ -285,7 +287,7 @@ HRESULT CParticle_Sprite_Emitter::Bind_ShaderResources()
     _float fAbsolute = 0.f;
     if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
         return E_FAIL;
-    if (RELATIVE_WORLD == m_eSpawnPosition)
+    if (RELATIVE_WORLD == m_eSpawnPosition || FOLLOW_PARENT == m_eSpawnPosition)
     {
         fAbsolute = 0.f;
     }
@@ -420,7 +422,29 @@ HRESULT CParticle_Sprite_Emitter::Bind_ShaderValue_ByPass()
 
         if (nullptr != m_pDissolveTextureCom && FAILED(m_pDissolveTextureCom->Bind_ShaderResource(m_pShaderCom, "g_NoiseTexture")))
             return E_FAIL;
+        break;
+    }
+    case DISSOLVECOLOR_SUBCOLORBLOOM:
+    {
+        if (FAILED(Bind_Float4("NoiseUVScale", "g_vNoiseUVScale")))
+            return E_FAIL;
+        if (FAILED(Bind_Float4("DissolveColor", "g_vDissolveColor")))
+            return E_FAIL;
+        if (FAILED(Bind_Float("EdgeWidth", "g_fEdgeWidth")))
+            return E_FAIL;
+        if (FAILED(Bind_Float("DissolveTimeFactor", "g_fDissolveTimeFactor")))
+            return E_FAIL;
+        if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
+            return E_FAIL;
 
+        if (FAILED(Bind_Float4("SubColor", "g_vSubColor")))
+            return E_FAIL;
+        if (FAILED(Bind_Float("BloomThreshold", "g_fBloomThreshold")))
+            return E_FAIL;
+
+        if (nullptr != m_pDissolveTextureCom && FAILED(m_pDissolveTextureCom->Bind_ShaderResource(m_pShaderCom, "g_NoiseTexture")))
+            return E_FAIL;
+        break;
     }
     default:
         break;
@@ -722,7 +746,7 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
             "ROTATION_BILLBOARD_BLOOM", "VELOCITY_BILLBOARD",
             "VELOCITY_BILLBOARD_BLOOM", "SUBCOLOR_BLOOM",
             "DEFAULT_DISSOLVE", "VELOCITY_BILLBOARD_SUBCOLORBLOOM",
-            "DISSOLVE_SUBCOLORBLOOM",
+            "DISSOLVE_SUBCOLORBLOOM", "DISSOLVECOLOR_SUBCOLORBLOOM"
         };
         static _int item_selected_idx = 0;
         const char* combo_preview_value = items[item_selected_idx];

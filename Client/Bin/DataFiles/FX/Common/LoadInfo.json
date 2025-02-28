@@ -1,11 +1,13 @@
 {
     "Path": [
+        "../Bin/DataFiles/FX/Common/Bomb.json",
         "../Bin/DataFiles/FX/Common/Book_Default.json",
         "../Bin/DataFiles/FX/Common/Bulb.json",
         "../Bin/DataFiles/FX/Common/Dodge.json",
         "../Bin/DataFiles/FX/Common/Dust_Jump.json",
         "../Bin/DataFiles/FX/Common/Dust_Walk.json",
         "../Bin/DataFiles/FX/Common/Dust_Dodge.json",
+        "../Bin/DataFiles/FX/Common/Fuse.json",
         "../Bin/DataFiles/FX/Common/MonsterDead.json",
         "../Bin/DataFiles/FX/Common/MonsterHit.json",
         "../Bin/DataFiles/FX/Common/Portal.json",
