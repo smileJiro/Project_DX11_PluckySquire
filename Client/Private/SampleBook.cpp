@@ -142,7 +142,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 			Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_BookPageActionEvent"), &tAnimEventDesc));
 	
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
-
+	Safe_AddRef(m_pAnimEventGenerator);
 
 	Init_RT_RenderPos_Capcher();
 

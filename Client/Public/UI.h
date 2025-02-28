@@ -124,6 +124,7 @@ protected:
 	virtual HRESULT			Ready_Components();
 	HRESULT					Bind_ShaderResources();
 	void					Change_BookScale_ForShop(_float2 _vRTSize);
+	_float2					WorldToSceen(_matrix _WorldPos);
 
 
 public:
