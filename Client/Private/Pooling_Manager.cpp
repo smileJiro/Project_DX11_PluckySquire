@@ -184,10 +184,73 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINA
 
 	}
 
+	if (FAILED(Pooling_Objects(_strPoolingTag, 5)))
+		return E_FAIL;
+
+	if (FAILED(Create_Object(_strPoolingTag, eCoordinate, _pPosition, _pRotation, _pScaling, _pSectionKey)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINATE eCoordinate, CGameObject** _ppOut, _float3* _pPosition, _float4* _pRotation, _float3* _pScaling, const _wstring* _pSectionKey)
+{
+	vector<CGameObject*>* pGameObjects = Find_PoolingObjects(_strPoolingTag);
+
+	if (nullptr == pGameObjects)
+		return E_FAIL;
+
+	for (auto& pGameObject : *pGameObjects)
+	{
+		if (false == pGameObject->Is_Active())
+		{
+			pGameObject->Set_Alive();
+			pGameObject->Set_Active(true);
+			pGameObject->Change_Coordinate(eCoordinate);
+
+			if (nullptr != _pScaling)
+				pGameObject->Set_Scale(*_pScaling);
+			if (nullptr != _pRotation)
+				pGameObject->Get_ControllerTransform()->RotationQuaternionW(*_pRotation);
+			if (nullptr != _pPosition)
+			{
+				CActorObject* pActorObject = dynamic_cast<CActorObject*>(pGameObject);
+				if (nullptr != pActorObject)
+				{
+					CActor* pActor = pActorObject->Get_ActorCom();
+					if (nullptr != pActor)
+					{
+						pActor->Set_GlobalPose(*_pPosition);
+					}
+				}
+				pGameObject->Set_Position(XMLoadFloat3(_pPosition));
+			}
+
+
+			if (COORDINATE_2D == eCoordinate)
+			{
+				/* 오브젝트 삭제시 Section에서 제거되었으니, 다시 Active 활성화 시 자기 자신의 Section에 추가하자. */
+				pair<Pooling_DESC, CGameObject::GAMEOBJECT_DESC*>* pPair = Find_PoolingDesc(_strPoolingTag);
+
+				if (nullptr != _pSectionKey)
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(*_pSectionKey, pGameObject, pPair->first.eSection2DRenderGroup); // Event 처리로 해야해 
+				else if (false == pPair->first.strSectionKey.empty())
+				{
+					CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pPair->first.strSectionKey, pGameObject, pPair->first.eSection2DRenderGroup);
+				}
+			}
+
+			*_ppOut = pGameObject;
+
+			return S_OK;
+		}
+
+	}
+
  	if (FAILED(Pooling_Objects(_strPoolingTag, 5)))
 		return E_FAIL;
 
-	if (FAILED(Create_Object(_strPoolingTag, eCoordinate, _pPosition, _pRotation, _pScaling)))
+	if (FAILED(Create_Object(_strPoolingTag, eCoordinate, _ppOut, _pPosition, _pRotation, _pScaling, _pSectionKey)))
 		return E_FAIL;
 
 	return S_OK;
