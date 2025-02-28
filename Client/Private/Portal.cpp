@@ -266,7 +266,7 @@ HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
 HRESULT CPortal::Ready_PartObjects(PORTAL_DESC* _pDesc)
 {
     CModelObject::MODELOBJECT_DESC ModelDesc{};
-    ModelDesc.Build_2D_Model(_pDesc->iCurLevelID,
+    ModelDesc.Build_2D_Model(LEVEL_STATIC,
         L"Portal_2D",
         L"Prototype_Component_Shader_VtxPosTex",
         (_uint)PASS_VTXPOSTEX::SPRITE2D
