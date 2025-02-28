@@ -374,7 +374,7 @@ HRESULT CCrossBow_Soldier::Ready_PartObjects()
     /* Part_Weapon */
     CSoldier_CrossBow::SOLDIER_CROSSBOW_DESC CrossBowDesc{};
     CrossBowDesc.strModelPrototypeTag_3D = TEXT("CrossBow");
-    CrossBowDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    CrossBowDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
 
     CrossBowDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 

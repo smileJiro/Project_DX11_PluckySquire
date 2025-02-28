@@ -41,8 +41,8 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 
 
     pDesc->eStartCoord  = COORDINATE_3D;
-    pDesc->iModelPrototypeLevelID_2D = pDesc->iCurLevelID;
-    pDesc->iModelPrototypeLevelID_3D = pDesc->iCurLevelID;
+    //pDesc->iModelPrototypeLevelID_2D = pDesc->iCurLevelID;
+    //pDesc->iModelPrototypeLevelID_3D = pDesc->iCurLevelID;
 
     pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
     pDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;

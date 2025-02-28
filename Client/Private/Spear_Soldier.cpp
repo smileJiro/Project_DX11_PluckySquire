@@ -389,7 +389,7 @@ HRESULT CSpear_Soldier::Ready_PartObjects()
     /* Part_Weapon */
     CSoldier_Spear::SOLDIER_SPEAR_DESC SpearDesc{};
     SpearDesc.strModelPrototypeTag_3D = TEXT("Spear");
-    SpearDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    SpearDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
 
     SpearDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 
@@ -419,7 +419,7 @@ HRESULT CSpear_Soldier::Ready_PartObjects()
 
     CSoldier_Shield::SOLDIER_SHIELD_DESC ShieldDesc{};
     ShieldDesc.strModelPrototypeTag_3D = TEXT("Shield");
-    ShieldDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    ShieldDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
 
     ShieldDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 
