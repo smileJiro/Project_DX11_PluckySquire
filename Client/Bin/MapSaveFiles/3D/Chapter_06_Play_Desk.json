@@ -16,10 +16,8 @@
   "Button_01",
   "Button_02",
   "Mat",
-  "CardboardTubes_Base_01",
   "ToyCylinderBlocks",
   "ruler_01",
-  "WoodenSideWalls_01_06",
   "RobotPlatform_01",
   "Wristband_01",
   "paperclip_01",
@@ -31,6 +29,7 @@
   "cardboard_boxes_01",
   "CardboardTube_B_03_Flat",
   "CardboardTube_B_03",
+  "CardboardTubes_Base_01",
   "chess_bishop_01",
   "chess_pawn_01",
   "chess_rook_01",
@@ -39,7 +38,6 @@
   "Desk_C06_Box_01",
   "Desk_C06_Box_02",
   "Desk_C06_Box_03",
-  "Tree_0",
   "domino_01",
   "domino_03",
   "domino_04",
@@ -202,6 +200,7 @@
   "ToyBrick_14",
   "ToyBrick_24",
   "ToyCylinderBlocks_Base_01",
+  "Tree_0",
   "Tree_4",
   "Tree_3",
   "Tree_Mod_02",
@@ -222,6 +221,7 @@
   "Wooden_Structure_5",
   "Wooden_Structure_4",
   "Wooden_Structure_3",
+  "WoodenSideWalls_01_06",
   "WoodenSideWalls_01_01",
   "WoodenSideWalls_01_05",
   "WoodenSideWalls_01_11",
@@ -234,6 +234,7 @@
   "CardboardTube_B_02",
   "GlueUpdate",
   "mug_loop_02",
-  "SM_Toy_Tub"
+  "SM_Toy_Tub",
+  "SM_Toy_Tub_Collision_01"
  ]
 }
