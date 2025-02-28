@@ -47,6 +47,18 @@ void CInteraction_E::Priority_Update(_float _fTimeDelta)
 
 void CInteraction_E::Update(_float _fTimeDelta)
 {
+	
+	
+}
+
+void CInteraction_E::Late_Update(_float _fTimeDelta)
+{
+	if (true == m_isRender && COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		__super::Late_Update(_fTimeDelta);
+	}
+
+
 	IInteractable* pInteractableObject = Uimgr->Get_Player()->Get_InteractableObject();
 
 	if (nullptr == pInteractableObject)
@@ -89,16 +101,11 @@ void CInteraction_E::Update(_float _fTimeDelta)
 		{
 			Cal_ObjectPos(pGameObejct);
 		}
+
 	}
 }
 
-void CInteraction_E::Late_Update(_float _fTimeDelta)
-{
-	if (true == m_isRender && COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
-	{
-		__super::Late_Update(_fTimeDelta);
-	}
-}
+
 
 HRESULT CInteraction_E::Render()
 {
@@ -250,6 +257,22 @@ void CInteraction_E::Cal_PlayerHighPos()
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 		//TODO :: 3D 어떻게 표현할것인가?
+
+		_float2 vCalx = __super::WorldToSceen(Uimgr->Get_Player()->Get_WorldMatrix());
+
+
+
+		_float CalX = vCalx.x - 800.f;
+		_float CalY = vCalx.y - 400.f;
+
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(CalX, CalY, 0.f, 1.f));
+		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX, m_fSizeY, 1.f));
+		//m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(800.f, 800.f, 1.f));
+		m_vObejctPos = _float3(vCalx.x, g_iWinSizeY - vCalx.y, 0.f);
+
+		if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
+			SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
+		
 	}
 }
 
@@ -325,75 +348,14 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 	//////////////////////////////////////// 3D //////////////////////////////////////////
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
-		//_matrix matWorld = _pGameObject->Get_FinalWorldMatrix();
-		//
-		//
-		//_matrix matView = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW));
-		//_matrix matProj = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ));
+		_float2 vCalx = __super::WorldToSceen(_pGameObject->Get_WorldMatrix());
 
+		_float CalX = vCalx.x - 800.f;
+		_float CalY = vCalx.y - 150.f;
 
-		//_matrix matView = XMLoadFloat4x4(m_pGameInstance->Get_ViewMatrix_Renderer());
-		//_matrix matProj = XMLoadFloat4x4(m_pGameInstance->Get_ProjMatrix_Renderer());
-
-		_matrix matView = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW));
-		_matrix matProj = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ));
-
-		//
-		//_matrix matView = XMLoadFloat4x4(m_pGameInstance->Get_ViewMatrix_Renderer());
-		//_matrix matProj = XMLoadFloat4x4(m_pGameInstance->Get_ProjMatrix_Renderer());
-		//
-		//XMVECTOR vLocalPos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
-		//
-		//
-		//XMVECTOR vClipPos = XMVector3TransformCoord(vLocalPos, XMMatrixMultiply(XMMatrixMultiply(matWorld, matView), matProj));
-		//
-		//
-		//float ndcX = XMVectorGetX(vClipPos);
-		//float ndcY = XMVectorGetY(vClipPos);
-		//float screenX = ((ndcX + 1.f) * 0.5f) * g_iWinSizeX;
-		//float screenY = ((1.f - ((ndcY + 1.f) * 0.5f))) * g_iWinSizeY;
-		//
-		//
-		//screenY -= 20.f;
-
-		_float2 vFinalPos;
-		_float2 CalPos;
-		_matrix matVP = XMMatrixMultiply(matView, matProj);
-		XMMATRIX matWorld = _pGameObject->Get_WorldMatrix();
-		XMVECTOR vWorldPos = matWorld.r[3]; 
-		XMVECTOR vClipPos = XMVector4Transform(vWorldPos, matVP);
-
-		_float fW = XMVectorGetW(vClipPos);
-
-		if (fW != 0.0f)
-		{
-			XMVECTOR vNDCPos = XMVectorScale(vClipPos, 1.0f / fW);
-			//_vector vecScrPos = XMVectorScale(CalPos, 1.0f / fW);
-			float ndcX = XMVectorGetX(vNDCPos);
-			float ndcY = XMVectorGetY(vNDCPos);
-
-			
-			vFinalPos.x = (ndcX + 1.f) * 0.5f * g_iWinSizeX;
-			vFinalPos.y = (1.f - ndcY) * 0.5f * g_iWinSizeY;
-
-			CalPos.x = vFinalPos.x - m_fSizeX * 0.5f - 700.f;
-			CalPos.y = vFinalPos.y - m_fSizeY * 0.5f - 120.f;
-	
-			//vFinalPos = CalPos;
-
-		}
-		
-		
-
-		
-
-
-
-
-		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(CalPos.x, CalPos.y, 0.f, 1.f));
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(CalX, CalY, 0.f, 1.f));
 		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX, m_fSizeY, 1.f));
-		//m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(800.f, 800.f, 1.f));
-		m_vObejctPos = _float3(vFinalPos.x, vFinalPos.y, 0.f);
+		m_vObejctPos = _float3(vCalx.x, g_iWinSizeY - vCalx.y, 0.f);
 
 		if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
 			SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
@@ -427,7 +389,7 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		break;
 
 	case INTERACT_ID::PORTAL:
-		m_strDisplayText = TEXT("포탈사용");
+		m_strDisplayText = TEXT("이동");
 		break;
 
 	case INTERACT_ID::BOOK:
@@ -477,7 +439,17 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 		vTextPos = _float2(m_vObejctPos.x, m_vObejctPos.y);
-		m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+
+		IInteractable* pInteractableObject = Uimgr->Get_Player()->Get_InteractableObject();
+
+
+		if (nullptr == pInteractableObject)
+			return;
+
+		if (false == pInteractableObject->Is_UIPlayerHeadUp())
+			m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y - 315.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		else
+			m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x - 10.f, vTextPos.y - 65.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
 }

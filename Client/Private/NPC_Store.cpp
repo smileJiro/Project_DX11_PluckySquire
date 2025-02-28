@@ -69,7 +69,9 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	tAnimEventDesc.pReceiver = this;
 	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
 	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("NPC_Store"), &tAnimEventDesc));
+	Safe_AddRef(m_pAnimEventGenerator);
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
+	
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Store::On_AnimEnd, this , placeholders::_1, placeholders::_2));
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(0.f, 0.f, 0.f, 1.f));
