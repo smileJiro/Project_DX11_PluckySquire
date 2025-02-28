@@ -109,7 +109,7 @@ void CCamera_CutScene::Switch_CameraView(INITIAL_DATA* _pInitialData)
 	else {
 		m_tInitialData = *_pInitialData;
 		m_isInitialData = true;
-		m_InitialTime.x = 0.3f;
+		m_InitialTime = { _pInitialData->fInitialTime, 0.f };
 		// 초기 위치 설정
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMLoadFloat3(&m_tInitialData.vPosition));
 
@@ -200,11 +200,12 @@ pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA*>>* CCamera_CutScene::Find_CutScene
 
 void CCamera_CutScene::Before_CutScene(_float _fTimeDelta)
 {
+	if (false == m_isStartCutScene || true == m_isInitialData)
+		return;
+
 	// 일단 안 함 이전 동작
 	m_isStartCutScene = false;
 
-	if (false == m_isStartCutScene)
-		return;
 }
 
 void CCamera_CutScene::After_CutScene(_float _fTimeDelta)
@@ -230,7 +231,7 @@ void CCamera_CutScene::Switching(_float _fTimeDelta)
 	// Initial 데이터랑 KeyFrame 혹은 vector<m_CutSceneDatas> 첫 번째 값을 보간함
 	CUTSCENE_DATA* tData = m_pCurCutScene->second[0];
 
-	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN);
+	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
 
 	if (fRatio >= (1.f - EPSILON)) {
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&tData->vPosition), 1.f));

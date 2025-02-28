@@ -99,6 +99,20 @@ void CLevel_Camera_Tool_Client::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
+	if (KEY_DOWN(KEY::P)) {
+		CGameObject* pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::FREE);
+		_float fSpeedPerSec = pCamera->Get_ControllerTransform()->Get_SpeedPerSec();
+		fSpeedPerSec += 0.1f;
+		pCamera->Get_ControllerTransform()->Set_SpeedPerSec(fSpeedPerSec);
+	}
+	if (KEY_DOWN(KEY::O)) {
+		CGameObject* pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::FREE);
+		_float fSpeedPerSec = pCamera->Get_ControllerTransform()->Get_SpeedPerSec();
+		fSpeedPerSec -= 0.1f;
+		pCamera->Get_ControllerTransform()->Set_SpeedPerSec(fSpeedPerSec);
+	}
+
+
 	//Show_CameraTool();
 	Show_CutSceneTool(_fTimeDelta);
 	//Show_ArmInfo();
@@ -469,7 +483,7 @@ void CLevel_Camera_Tool_Client::Show_CutSceneTool(_float fTimeDelta)
 	Picking();
 
 	Set_KeyFrameInfo();
-	Set_CameraInfo();
+	Set_CameraInfo(fTimeDelta);
 
 	ImGui::Checkbox("Create Point", &m_isCreatePoint);
 
@@ -1217,7 +1231,7 @@ void CLevel_Camera_Tool_Client::Show_SaveLoadFileWindow()
 	ImGui::SameLine();
 	ImGui::Checkbox("CutScene Data", &m_isCutSceneData);
 
-	ImGui::BeginChild("Files", ImVec2(400, 150), true);  // true는 border 표시
+	ImGui::BeginChild("Files", ImVec2(600, 150), true);  // true는 border 표시
 	for (int i = 0; i < m_JsonFilePaths.size(); ++i)
 	{
 		if (ImGui::Selectable(m_JsonFilePaths[i].c_str(), m_iCurrentJsonFileIndex == i))
@@ -2128,7 +2142,7 @@ void CLevel_Camera_Tool_Client::Set_CurrentKeyFrame()
 	}
 }
 
-void CLevel_Camera_Tool_Client::Set_CameraInfo()
+void CLevel_Camera_Tool_Client::Set_CameraInfo(_float _fTimeDelta)
 {
 	ImGui::NewLine();
 	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
@@ -2235,6 +2249,71 @@ void CLevel_Camera_Tool_Client::Set_CameraInfo()
 			return;
 
 		m_KeyFrames.push_back({ tFrame, pCube });
+	}
+
+
+	// Making Line
+
+	ImGui::NewLine();
+	ImGui::Dummy(ImVec2((ImGui::GetWindowSize().x - ImGui::CalcTextSize("Centered Text").x) * 0.5f, 0.0f));
+	ImGui::SameLine();
+	ImGui::Text("Create Line CutScene");
+	ImGui::Separator();
+
+	ImGui::Text("Input StartPosition: %.2f, %.2f, %.2f", m_vStartPos.x, m_vStartPos.y, m_vStartPos.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InputStartPosX", &m_vStartPos.x, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InputStartPosY", &m_vStartPos.y, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InputStartPosZ", &m_vStartPos.z, 0.1f);
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Cur Pos To Start")) {
+		XMStoreFloat3(&m_vStartPos, vPos);
+	}
+
+	ImGui::Text("Input Destination: %.2f, %.2f, %.2f", m_vDestination.x, m_vDestination.y, m_vDestination.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InputDestinationX", &m_vDestination.x, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InputDestinationPosY", &m_vDestination.y, 0.1f);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##InputDestinationPosZ", &m_vDestination.z, 0.1f);
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Cur Pos To Destination")) {
+		XMStoreFloat3(&m_vDestination, vPos);
+	}
+
+	_float fTotalDistance = XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_vDestination) - XMLoadFloat3(&m_vStartPos)));
+	ImGui::Text("Total Distance(Destination - Start): %.2f", fTotalDistance);
+
+	_float fCurDistance = XMVectorGetX(XMVector3Length(vPos - XMLoadFloat3(&m_vStartPos)));
+	ImGui::Text("Distance By CurPos(Cur Pos - Start): %.2f", fCurDistance);
+
+	static _bool isMoveToDestination = { false };
+	ImGui::Checkbox("Move To Destination", &isMoveToDestination);
+
+	if (true == isMoveToDestination) {
+		if (KEY_PRESSING(KEY::I)) {
+
+			_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_vDestination) - XMLoadFloat3(&m_vStartPos));
+
+			pCamera->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
+		}
 	}
 }
 
@@ -2563,8 +2642,13 @@ void CLevel_Camera_Tool_Client::Play_CutScene(_float fTimeDelta)
 		for (auto& CutScene : m_CutScenes) {
 
 			auto Subiter = m_CutSceneSubDatas.find(CutScene.first);
+			CUTSCENE_SUB_DATA tSubData = (*Subiter).second;
+			if (Subiter == m_CutSceneSubDatas.end()) {
 
-			static_cast<CCamera_CutScene_Save*>(pCamera)->Add_CutScene(CutScene.first, CutScene.second, (*Subiter).second);
+				return;
+			}
+
+			static_cast<CCamera_CutScene_Save*>(pCamera)->Add_CutScene(CutScene.first, CutScene.second, tSubData);
 		}
 	}
 
