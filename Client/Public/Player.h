@@ -72,6 +72,7 @@ public:
 		ATTACK_TYPE_NORMAL3,
 		ATTACK_TYPE_SPIN,
 		ATTACK_TYPE_JUMPATTACK,
+		ATTACK_TYPE_THKROWSWORD,
 		ATTACK_TYPE_LAST
 	};
 	enum PLAYER_MODE
@@ -489,6 +490,7 @@ public:
 	void Jump();
 	void ThrowSword();
 	void ThrowObject();
+	void SpinAttack();
 	void Add_Upforce(_float _fForce);
 	PLAYER_INPUT_RESULT Player_KeyInput();
 	PLAYER_INPUT_RESULT Player_KeyInput_Stamp();

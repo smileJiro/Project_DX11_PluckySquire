@@ -90,6 +90,9 @@ private:
 	_float m_f3DNormalAttackZOffset = 0.5f;
 	_float m_f3DJumpAttackRange = 2.5f;
 	_float m_f3DJumpAttackZOffset = 0.0f;
+	_float m_f3DThrowAttackRadius = 0.35f;
+	_float m_f3DThrowAttackHalfHeight = 0.5f;
+	_float m_f3DThrowAttackZOffset = 0.0f;
 
 	SWORD_STATE m_eCurrentState = HANDLING;
 	SWORD_STATE m_ePastState = HANDLING;
