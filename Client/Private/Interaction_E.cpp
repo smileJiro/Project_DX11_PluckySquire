@@ -250,6 +250,42 @@ void CInteraction_E::Cal_PlayerHighPos()
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 		//TODO :: 3D 어떻게 표현할것인가?
+
+		_matrix matView = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW));
+		_matrix matProj = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ));
+
+		//_matrix matView = XMLoadFloat4x4(m_pGameInstance->Get_ViewMatrix_Renderer());
+		//_matrix matProj = XMLoadFloat4x4(m_pGameInstance->Get_ProjMatrix_Renderer());
+
+
+
+
+		_float2 vFinalPos;
+		_float2 CalPos;
+		_matrix matVP = XMMatrixMultiply(matView, matProj);
+		XMMATRIX matWorld = Uimgr->Get_Player()->Get_WorldMatrix();
+		XMVECTOR vWorldPos = matWorld.r[3];
+		XMVECTOR vClipPos = XMVector4Transform(vWorldPos, matVP);
+
+		_float fW = XMVectorGetW(vClipPos);
+
+		if (fW != 0.0f)
+		{
+			XMVECTOR vNDCPos = XMVectorScale(vClipPos, 1.0f / fW);
+			//_vector vecScrPos = XMVectorScale(CalPos, 1.0f / fW);
+			float ndcX = XMVectorGetX(vNDCPos);
+			float ndcY = XMVectorGetY(vNDCPos);
+
+
+			vFinalPos.x = (ndcX + 1.f) * 0.5f * g_iWinSizeX;
+			vFinalPos.y = (1.f - ndcY) * 0.5f * g_iWinSizeY;
+
+			CalPos.x = vFinalPos.x - m_fSizeX * 0.5f - 700.f;
+			CalPos.y = vFinalPos.y - m_fSizeY * 0.5f - 200.f;
+
+			//vFinalPos = CalPos;
+
+		}
 	}
 }
 
@@ -328,15 +364,15 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 		//_matrix matWorld = _pGameObject->Get_FinalWorldMatrix();
 		//
 		//
-		//_matrix matView = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW));
-		//_matrix matProj = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ));
-
-
-		//_matrix matView = XMLoadFloat4x4(m_pGameInstance->Get_ViewMatrix_Renderer());
-		//_matrix matProj = XMLoadFloat4x4(m_pGameInstance->Get_ProjMatrix_Renderer());
-
 		_matrix matView = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW));
 		_matrix matProj = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ));
+
+
+		//_matrix matView = XMLoadFloat4x4(&m_ViewMatrix);
+		//_matrix matProj = XMLoadFloat4x4(&m_ProjMatrix);
+
+		//_matrix matView = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW));
+		//_matrix matProj = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ));
 
 		//
 		//_matrix matView = XMLoadFloat4x4(m_pGameInstance->Get_ViewMatrix_Renderer());
@@ -377,7 +413,7 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 			vFinalPos.y = (1.f - ndcY) * 0.5f * g_iWinSizeY;
 
 			CalPos.x = vFinalPos.x - m_fSizeX * 0.5f - 700.f;
-			CalPos.y = vFinalPos.y - m_fSizeY * 0.5f - 120.f;
+			CalPos.y = vFinalPos.y - m_fSizeY * 0.5f - 200.f;
 	
 			//vFinalPos = CalPos;
 
