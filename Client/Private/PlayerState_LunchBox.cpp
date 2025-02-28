@@ -27,7 +27,11 @@ void CPlayerState_LunchBox::Update(_float _fTimeDelta)
 		if (false == m_pOwner->Check_Arrival(m_vPosition, 0.5f))
 			m_pOwner->Move(XMVector3Normalize(m_vPosition - vPlayerPos) * m_fMoveSpeed, _fTimeDelta);
 		else
+		{
+			_float3 vPos; XMStoreFloat3(&vPos, m_vPosition);
+			m_pOwner->Get_ActorCom()->Set_GlobalPose(vPos);
 			m_bArrival = true;
+		}
 	}
 	INTERACT_RESULT eResult =  m_pOwner->Try_Interact(_fTimeDelta);
 

@@ -39,7 +39,7 @@ public:
 protected:
 	_float4x4				m_WorldMatrices[COORDINATE_LAST] = {}; // 자기자신의 최종 행렬 
 	const _float4x4*		m_pParentMatrices[COORDINATE_LAST] = {nullptr}; // 부모의 월드 행렬의 주소
-	const _float4x4* m_pSocketMatrix[COORDINATE_LAST] = { nullptr };
+	const _float4x4*		m_pSocketMatrix[COORDINATE_LAST] = { nullptr };
 public:
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override; 

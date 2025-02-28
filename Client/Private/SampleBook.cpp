@@ -699,6 +699,11 @@ _float CSampleBook::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 	return 9999.f;
 }
 
+_bool CSampleBook::Is_DuringAnimation()
+{
+	return m_pControllerModel->Get_Model(m_pControllerTransform->Get_CurCoord())->Is_DuringAnimation();
+}
+
 HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition)
 {
 	if (Book_Action(_eAction))
