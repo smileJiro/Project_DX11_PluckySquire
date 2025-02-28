@@ -424,26 +424,9 @@ HRESULT CParticle_Sprite_Emitter::Bind_ShaderValue_ByPass()
             return E_FAIL;
         break;
     }
-    case DISSOLVECOLOR_SUBCOLORBLOOM:
+    case FIRE:
     {
-        if (FAILED(Bind_Float4("NoiseUVScale", "g_vNoiseUVScale")))
-            return E_FAIL;
-        if (FAILED(Bind_Float4("DissolveColor", "g_vDissolveColor")))
-            return E_FAIL;
-        if (FAILED(Bind_Float("EdgeWidth", "g_fEdgeWidth")))
-            return E_FAIL;
-        if (FAILED(Bind_Float("DissolveTimeFactor", "g_fDissolveTimeFactor")))
-            return E_FAIL;
-        if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
-            return E_FAIL;
-
-        if (FAILED(Bind_Float4("SubColor", "g_vSubColor")))
-            return E_FAIL;
-        if (FAILED(Bind_Float("BloomThreshold", "g_fBloomThreshold")))
-            return E_FAIL;
-
-        if (nullptr != m_pDissolveTextureCom && FAILED(m_pDissolveTextureCom->Bind_ShaderResource(m_pShaderCom, "g_NoiseTexture")))
-            return E_FAIL;
+        
         break;
     }
     default:
