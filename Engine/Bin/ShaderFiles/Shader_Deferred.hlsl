@@ -619,18 +619,18 @@ PS_OUT PS_MAIN_COMBINE(PS_IN In)
     
     
     
-    // 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
-    float fPlayerDepthDesc = g_PlayerDepthTexture.Sample(LinearSampler, In.vTexcoord).r;
-    float fPlayerViewZ = fPlayerDepthDesc * g_fFarZ;
+    //// 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
+    //float fPlayerDepthDesc = g_PlayerDepthTexture.Sample(LinearSampler, In.vTexcoord).r;
+    //float fPlayerViewZ = fPlayerDepthDesc * g_fFarZ;
     
-    float3 vHideColor = g_vHideColor;
-    float fViewZDiff = fPlayerViewZ - fViewZ - 1.0f;
-    float fHideMin = 0.0f;
-    float fHideMax = 10.0f;
-    vHideColor = lerp(vToneMapColor, vHideColor, saturate(fViewZDiff / (fHideMax - fHideMin)));
-    vToneMapColor = 0.0f < fViewZDiff ? vHideColor : vToneMapColor;
+    //float3 vHideColor = g_vHideColor;
+    //float fViewZDiff = fPlayerViewZ - fViewZ - 1.0f;
+    //float fHideMin = 0.0f;
+    //float fHideMax = 10.0f;
+    //vHideColor = lerp(vToneMapColor, vHideColor, saturate(fViewZDiff / (fHideMax - fHideMin)));
+    //vToneMapColor = 0.0f < fViewZDiff ? vHideColor : vToneMapColor;
     
-    vToneMapColor = lerp(vToneMapColor, vHideColor, (vDepth.y - fPlayerDepthDesc));
+    //vToneMapColor = lerp(vToneMapColor, vHideColor, (vDepth.y - fPlayerDepthDesc));
     Out.vColor = float4(vToneMapColor, 1.0f);
     return Out;
 }

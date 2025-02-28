@@ -147,5 +147,8 @@ void CPlayerState_Roll::Exit()
 
 void CPlayerState_Roll::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
-	m_pOwner->Set_State(CPlayer::IDLE);
+	if (m_pOwner->Is_OnGround())
+		m_pOwner->Set_State(CPlayer::IDLE);
+	else
+		m_pOwner->Set_State(CPlayer::JUMP_DOWN);
 }

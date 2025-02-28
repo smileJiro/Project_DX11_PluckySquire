@@ -20,11 +20,14 @@ CLevel_AnimTool::CLevel_AnimTool(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 
 HRESULT CLevel_AnimTool::Initialize()
 {
-	m_fDefault2DCamSize = m_pGameInstance->Get_RT_Size(L"Target_Book_2D");
+
+	m_fDefault2DCamSize = m_pGameInstance->Get_RT_Size(L"Target_PostProcessing");
 
 	Ready_Lights();
 	Ready_CubeMap(TEXT("Layer_CubeMap"));
 	CModelObject::MODELOBJECT_DESC tModelObjDesc = {};
+	tModelObjDesc.iPriorityID_3D = PR3D_PRIORITY;
+	tModelObjDesc.iRenderGroupID_3D = RG_3D;
 	tModelObjDesc.Build_2D_Model(LEVEL_ANIMTOOL, TEXT("Prototype_Component_Background"), TEXT("Prototype_Component_Shader_VtxPosTex"), (_uint)PASS_VTXPOSTEX::SPRITE2D, false);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_ANIMTOOL, TEXT("Prototype_GameObject_BackGround"), LEVEL_ANIMTOOL, TEXT("Background"), (CGameObject**)&m_pBackground, &tModelObjDesc)))
 	{
