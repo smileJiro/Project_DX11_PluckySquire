@@ -1168,13 +1168,13 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     if (KEY_DOWN(KEY::SPACE))
         tResult.bInputStates[PLAYER_INPUT_JUMP] = true;
     //구르기 & 잠입
-    else if (false == bCarrying && KEY_PRESSING(KEY::LSHIFT))
-    {
-        if (Is_SneakMode())
-            tResult.bInputStates[PLAYER_INPUT_SNEAK] = true;
-        else
-            tResult.bInputStates[PLAYER_INPUT_ROLL] = true;
-    }
+    //else if (false == bCarrying && KEY_PRESSING(KEY::LSHIFT))
+    //{
+    //    if (Is_SneakMode())
+    //        tResult.bInputStates[PLAYER_INPUT_SNEAK] = true;
+    //    else
+    //        tResult.bInputStates[PLAYER_INPUT_ROLL] = true;
+    //}
 
     COORDINATE eCoord = Get_CurCoord();
     //이동
