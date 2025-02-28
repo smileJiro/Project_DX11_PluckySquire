@@ -1269,7 +1269,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_ControlBook()
     _bool bIsTurningBook = CPlayer::TURN_BOOK == m_pStateMachine->Get_CurrentState()->Get_StateID();
 
     if (false == bIsTurningBook)
-    return tResult;
+        return tResult;
     if (KEY_PRESSING(KEY::A))
     {
         tResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT] = true;
@@ -2139,6 +2139,7 @@ void CPlayer::Free()
 	Safe_Release(m_pGlove);
 	Safe_Release(m_pBombStmap);
 	Safe_Release(m_pStopStmap);
+	Safe_Release(m_pDetonator);
 
     Safe_Release(m_pCarryingObject);
     

@@ -134,7 +134,7 @@ HRESULT CBomb::Initialize(void* _pArg)
 
 void CBomb::Priority_Update(_float _fTimeDelta)
 {
-	if(true == m_isOn)
+	if (true == m_isOn)
 	{
 		m_fAccTime += _fTimeDelta;
 
@@ -145,14 +145,17 @@ void CBomb::Priority_Update(_float _fTimeDelta)
 				Explode();
 			}
 		}
-		else
+	}
+
+	else if (true == m_isExplode)
+	{
+		m_fAccTime += _fTimeDelta;
+
+		if (m_fExplodeTime <= m_fAccTime)
 		{
-			if (m_fExplodeTime <= m_fAccTime)
+			if (false == m_isDead)
 			{
-				if (false == m_isDead)
-				{
-					Event_DeleteObject(this);
-				}
+				Event_DeleteObject(this);
 			}
 		}
 	}
@@ -191,9 +194,14 @@ HRESULT CBomb::Render()
 	return S_OK;
 }
 
-void CBomb::Set_Time_On(_bool _isOn)
+void CBomb::Set_Time_On()
 {
-	m_isOn = _isOn;
+	m_isOn = true;
+}
+
+void CBomb::Set_Time_Off()
+{
+	m_isOn = false;
 }
 
 void CBomb::Bomb_Shape_Enable(_bool _isEnable)
@@ -203,6 +211,8 @@ void CBomb::Bomb_Shape_Enable(_bool _isEnable)
 
 void CBomb::Explode()
 {
+	Set_Time_Off();
+
 	Set_Render(false);
 
 	//기존 콜라이더를 끄고 폭발용 콜라이더 켬
@@ -299,6 +309,7 @@ void CBomb::Active_OnEnable()
 {
 	__super::Active_OnEnable();
 	Set_Render(true);
+	Set_Time_On();
 	//CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());
 	//pDynamic->Update(0.f);
 	//pDynamic->Set_Dynamic();
