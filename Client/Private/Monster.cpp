@@ -207,8 +207,17 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 	}
 	else
 	{
-		Set_AnimChangeable(true);
-		Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+		if((_uint)MONSTER_STATE::HIT != m_iState)
+		{
+			Set_AnimChangeable(true);
+			Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+		}
+		else
+		{
+			Set_AnimChangeable(true);
+			Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+			Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+		}
 		KnockBack(_vForce);
 
 		//Effect

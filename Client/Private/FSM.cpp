@@ -556,7 +556,10 @@ HRESULT CFSM::CleanUp()
 {
 	for (auto& Pair : m_States)
 	{
-		Pair.second->CleanUp();
+		if(nullptr != Pair.second)
+		{
+			Pair.second->CleanUp();
+		}
 	}
 
 	return S_OK;

@@ -369,7 +369,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_HomingBall");
 
-    CBoss_HomingBall::BOSS_HOMINGBALL_DESC* pHomingBallDesc = new CBoss_HomingBall::BOSS_HOMINGBALL_DESC;
+    CBoss_HomingBall::PROJECTILE_MONSTER_DESC* pHomingBallDesc = new CBoss_HomingBall::PROJECTILE_MONSTER_DESC;
     pHomingBallDesc->fLifeTime = 4.f;
     pHomingBallDesc->eStartCoord = COORDINATE_3D;
     pHomingBallDesc->isCoordChangeEnable = false;
@@ -384,7 +384,7 @@ HRESULT CButterGrump::Ready_Projectiles()
 
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_EnergyBall");
 
-    CBoss_EnergyBall::BOSS_ENERGYBALL_DESC* pEnergyBallDesc = new CBoss_EnergyBall::BOSS_ENERGYBALL_DESC;
+    CBoss_EnergyBall::PROJECTILE_MONSTER_DESC* pEnergyBallDesc = new CBoss_EnergyBall::PROJECTILE_MONSTER_DESC;
     pEnergyBallDesc->fLifeTime = 5.f;
     pEnergyBallDesc->eStartCoord = COORDINATE_3D;
     pEnergyBallDesc->isCoordChangeEnable = false;
@@ -398,7 +398,7 @@ HRESULT CButterGrump::Ready_Projectiles()
 
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_YellowBall");
 
-    CBoss_YellowBall::BOSS_YELLOWBALL_DESC* pYellowBallDesc = new CBoss_YellowBall::BOSS_YELLOWBALL_DESC;
+    CBoss_YellowBall::PROJECTILE_MONSTER_DESC* pYellowBallDesc = new CBoss_YellowBall::PROJECTILE_MONSTER_DESC;
     pYellowBallDesc->fLifeTime = 5.f;
     pYellowBallDesc->eStartCoord = COORDINATE_3D;
     pYellowBallDesc->isCoordChangeEnable = false;
@@ -412,7 +412,7 @@ HRESULT CButterGrump::Ready_Projectiles()
 
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_PurpleBall");
 
-    CBoss_PurpleBall::BOSS_PURPLEBALL_DESC* pPurpleBallDesc = new CBoss_PurpleBall::BOSS_PURPLEBALL_DESC;
+    CBoss_PurpleBall::PROJECTILE_MONSTER_DESC* pPurpleBallDesc = new CBoss_PurpleBall::PROJECTILE_MONSTER_DESC;
     pPurpleBallDesc->fLifeTime = 5.f;
     pPurpleBallDesc->eStartCoord = COORDINATE_3D;
     pPurpleBallDesc->isCoordChangeEnable = false;
