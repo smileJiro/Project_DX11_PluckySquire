@@ -1759,7 +1759,6 @@
       <Filter>02.GameObjects\Word</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
-    <ClCompile Include="..\private\CollapseBlock.cpp" />
     <ClCompile Include="..\Private\Goblin_SideScroller.cpp" />
     <ClCompile Include="..\Private\GameEventExecuter.cpp" />
     <ClCompile Include="..\Private\LightningBolt.cpp" />
@@ -1920,6 +1919,9 @@
     <ClCompile Include="..\Private\PalmMarker.cpp" />
     <ClCompile Include="..\Private\Stoppable.cpp" />
     <ClCompile Include="..\Private\PlayerState_ErasePalmDecal.cpp" />
+    <ClCompile Include="..\private\CollapseBlock.cpp">
+      <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

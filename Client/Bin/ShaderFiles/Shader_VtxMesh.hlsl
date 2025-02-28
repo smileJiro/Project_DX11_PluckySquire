@@ -183,6 +183,11 @@ struct PS_OUT
     float4 vDepth : SV_TARGET3;
 };
 
+struct PS_ONLYALBEDO_OUT
+{
+    float4 vDiffuse : SV_TARGET0;
+};
+
 /* PixelShader */
 PS_OUT PS_MAIN(PS_IN In)
 {
@@ -215,6 +220,21 @@ PS_OUT PS_MAIN(PS_IN In)
     
     return Out;
 }
+
+PS_ONLYALBEDO_OUT PS_ONLYALBEDO(PS_IN In) // 포스트 프로세싱 이후에 그리는
+{
+    PS_ONLYALBEDO_OUT Out = (PS_ONLYALBEDO_OUT) 0;
+
+    float4 vAlbedo = useAlbedoMap ? g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord) : Material.Albedo;
+    
+    if (vAlbedo.a < 0.01f)
+        discard;
+    
+    Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
+    
+    return Out;
+}
+
 struct PS_SHADOW_IN
 {
     float4 vPosition : SV_POSITION;
@@ -355,22 +375,6 @@ struct PS_DIFFUSE
     float4 vColor : SV_TARGET0;
 };
 
-PS_DIFFUSE PS_FRESNEL(PS_IN In)
-{
-    PS_DIFFUSE Out = (PS_DIFFUSE) 0;
-    
-    float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
-    float fLength = length(vViewDirection);
-    vViewDirection = normalize(vViewDirection);    
-    
-    float InnerValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, InnerFresnel.fBaseReflect, InnerFresnel.fExp, InnerFresnel.fStrength);
-    float OuterValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OuterFresnel.fBaseReflect, OuterFresnel.fExp, OuterFresnel.fStrength);
-    
-    Out.vColor = (InnerFresnel.vColor * (1.f - InnerValue) + OuterValue * OuterFresnel.vColor);
-    
-    return Out;
-}
-
 PS_DIFFUSE PS_MAIN2(PS_IN In)
 {
     PS_DIFFUSE Out = (PS_DIFFUSE) 0;
@@ -398,7 +402,28 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass NoneCullPass // 1
+    pass AfterPostProcessingPass // 1
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_ONLYALBEDO();
+    }
+
+    pass AlphaPass // 2
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_ONLYALBEDO();
+    }
+
+    pass NoneCullPass // 3
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -408,7 +433,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass Color // 2
+    pass Color // 4
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -419,7 +444,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_COLOR();
     }
 
-    pass MixColor // 3
+    pass MixColor // 5
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -430,7 +455,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MIX_COLOR();
     }
 
-    pass TestProjectile //4
+    pass TestProjectile //6
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -441,7 +466,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_TEST_PROJECTILE();
     }
 
-    pass BookWorldPosMap // 5
+    pass BookWorldPosMap // 7
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -449,26 +474,6 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_BOOKWORLDPOSMAP();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_WORLDPOSMAP();
-    }
-
-    pass Fresnel // 6
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_FRESNEL();
-    }
-
-    pass Defaultpass2 // 7
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN2();
     }
 
     pass PlayerDepth // 8
@@ -500,6 +505,8 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SHADOWMAP();
     }
+
+
 }
 
 /* 빛이 들어와서 맞고 튕긴 반사벡터와 이 픽셀을 바라보는 시선 벡터가 이루는 각이 180일때 최대 밝기 */
