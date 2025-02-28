@@ -41,12 +41,18 @@ private:
 	void					Cal_PlayerHighPos();
 	void					Cal_ObjectPos(CGameObject* _pGameObject);
 	void					Cal_DisplayPos(_float2 _vRTSize, CGameObject* _pGameObject);
-	void					Display_Text(_float2 _vRTSize);
+	void					Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable* _pGameObject);
 
 private:
 	wstring					m_strIntaractName;
 	wstring					m_strDisplayText;
-	_float3					m_vCalPos;
+	_float3					m_vObejctPos;
+
+	_float					m_fScaledWidth;
+	_float					m_fScaledHeight;
+
+	_float					m_screenX;
+	_float					m_screenY;
 
 
 };

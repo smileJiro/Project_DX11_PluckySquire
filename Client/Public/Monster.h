@@ -86,6 +86,15 @@ public:
 		return m_isContactToTarget;
 	}
 
+	void Set_PreAttack(_bool _isPreAttack)
+	{
+		m_isPreAttack = _isPreAttack;
+	}
+	_bool Get_PreAttack()
+	{
+		return m_isPreAttack;
+	}
+
 	_float3 Get_RayOffset() const
 	{
 		return m_vRayOffset;
@@ -118,6 +127,9 @@ public:
 	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
 	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
+
+protected:
+	void Monster_Death();
 
 
 public:
@@ -187,6 +199,8 @@ protected:
 	_bool m_isCool = { false };
 	_float m_fCoolTime = { 0.f };
 	_uint	 m_iAttackCount = { 0 };
+
+	_bool m_isPreAttack = { false };
 
 	//½Ã¾ß°¢
 	_float m_fFOVX = { 0.f };

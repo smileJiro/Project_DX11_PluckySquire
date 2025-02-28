@@ -246,7 +246,7 @@ void CBirdMonster::Attack()
         if (COORDINATE_3D == eCoord)
         {
             vPosition.y += vScale.y * 0.8f;
-			
+            XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - Get_FinalPosition()));
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BirdMonster"), eCoord, &vPosition, &vRotation);
         }
         else if (COORDINATE_2D == eCoord)

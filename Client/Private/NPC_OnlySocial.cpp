@@ -177,6 +177,11 @@ HRESULT CNPC_OnlySocial::LoadFromJson(const std::wstring& filePath)
 				tOnlySocial.CollsionScaleY = SocialNPC["CollisionScaleY"].get<_float>();
 			}
 
+			if (SocialNPC.contains("isInteractable") && SocialNPC["isInteractable"].is_boolean())
+			{
+				tOnlySocial.isInteractable = SocialNPC["isInteractable"].get<_bool>();
+			}
+
 			if (SocialNPC.contains("isDialog") && SocialNPC["isDialog"].is_boolean())
 			{
 				tOnlySocial.isDialog = SocialNPC["isDialog"].get<_bool>();

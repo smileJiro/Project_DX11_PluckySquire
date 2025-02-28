@@ -553,7 +553,7 @@ HRESULT CZippy::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strModelPrototypeTag_2D = TEXT("Zippy");
-    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
 
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
 

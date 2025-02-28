@@ -3,7 +3,7 @@
 #include "GameInstance.h"
 #include "UI_Manager.h"
 #include "PlayerData_Manager.h"
-
+#include "SampleBook.h"
 #include "Interactable.h"
 
 
@@ -34,7 +34,7 @@ HRESULT CUI_Interaction_Book::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_isRender = true;
+	m_isRender = false;
 	wsprintf(m_tFont, TEXT("조종"));
 
 	return S_OK;
@@ -53,23 +53,33 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 		__super::Update(_fTimeDelta);
 	}
 	
-	
-	if (true == Uimgr->Get_isQIcon() && CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
+	if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
-		m_isRender = true;
-	}
-	else
-	{
-		m_isRender = false;
-	}
-	
-	
+		CSampleBook* pSampleBook = dynamic_cast<CSampleBook*>(Uimgr->Get_Player()->Get_InteractableObject());
 
-		// 반환 값이 널이 아니다.
-		//interactable get_interactkey() 
-		// 
-		
-		// 이 키가 Q다
+		if (nullptr == pSampleBook)
+		{
+			if (true == m_isRender)
+				m_isRender = false;
+
+			return;
+		}
+			
+		if (true == pSampleBook->Get_PlayerAround() && CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
+		{
+			m_isRender = true;
+		}
+		else
+		{
+			m_isRender = false;
+		}
+	}
+	else if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		if (true == m_isRender)
+			m_isRender = false;
+	}
+
 
 	
 }

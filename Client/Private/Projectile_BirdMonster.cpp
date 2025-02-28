@@ -67,11 +67,6 @@ void CProjectile_BirdMonster::Priority_Update(_float _fTimeDelta)
 
 void CProjectile_BirdMonster::Update(_float _fTimeDelta)
 {
-    if (true == Is_Dead())
-    {
-        int a = 10;
-    }
-
 	if (COORDINATE_2D == Get_CurCoord())
     {
         if(false == m_isStop)
@@ -80,7 +75,18 @@ void CProjectile_BirdMonster::Update(_float _fTimeDelta)
 
     else if (COORDINATE_3D == Get_CurCoord())
     {
-        m_pControllerTransform->Go_Straight(_fTimeDelta);
+        if (nullptr != m_pTarget)
+        {
+            if (true == m_isFirstLoop)
+            {
+                XMStoreFloat3(&m_vDir, m_pTarget->Get_FinalPosition() - Get_FinalPosition());
+            }
+
+            m_pControllerTransform->Go_Direction(XMVector3Normalize(XMLoadFloat3(&m_vDir)), m_pControllerTransform->Get_SpeedPerSec(), _fTimeDelta);
+        }
+        else
+            m_pControllerTransform->Go_Straight(_fTimeDelta);
+
         /*_float3 vForce; XMStoreFloat3(&vForce, Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
         m_pActorCom->Set_LinearVelocity(XMLoadFloat3(&vForce), Get_ControllerTransform()->Get_SpeedPerSec());*/
     }
@@ -183,7 +189,7 @@ void CProjectile_BirdMonster::On_Collision2D_Exit(CCollider* _pMyCollider, CColl
 void CProjectile_BirdMonster::Active_OnEnable()
 {
     __super::Active_OnEnable();
- 
+
 	//if (COORDINATE_3D == Get_CurCoord())
  //       m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
 }

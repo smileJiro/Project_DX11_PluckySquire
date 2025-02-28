@@ -584,11 +584,6 @@ void CPlayer::Update(_float _fTimeDelta)
 		}
 	}
     __super::Update(_fTimeDelta); /* Part Object Update */
-
-    CUI_Manager::GetInstance()->Set_isQIcon((nullptr != m_pInteractableObject) 
-        && KEY::Q == m_pInteractableObject->Get_InteractKey());
-
-
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
@@ -963,7 +958,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 {
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
-    //m_pInteractableObject = nullptr;
+    m_pInteractableObject = nullptr;
     if (Is_CarryingObject())
     {
         m_pCarryingObject->Change_Coordinate(_eCoordinate);

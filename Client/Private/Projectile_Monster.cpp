@@ -41,6 +41,19 @@ HRESULT CProjectile_Monster::Initialize(void* _pArg)
     //if (FAILED(Ready_PartObjects()))
     //    return E_FAIL;
 
+
+    //플레이어 위치 가져오기
+    m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
+    if (nullptr == m_pTarget)
+    {
+#ifdef _DEBUG
+        cout << "MONSTERINIT : NO PLAYER" << endl;
+#endif // _DEBUG
+        return S_OK;
+    }
+
+    Safe_AddRef(m_pTarget);
+
 	return S_OK;
 }
 
@@ -64,6 +77,9 @@ void CProjectile_Monster::Update(_float _fTimeDelta)
 
 void CProjectile_Monster::Late_Update(_float _fTimeDelta)
 {
+    //첫 루프가 끝나므로 (자식 객체들이 이미 전부 lateupdate까지 돈 상태)
+    if (true == m_isFirstLoop)
+        m_isFirstLoop = false;
 
 	__super::Late_Update(_fTimeDelta);
 }
@@ -119,8 +135,8 @@ void CProjectile_Monster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
 
     }
 
-    //if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
-    //    Event_DeleteObject(this);
+    if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+        Event_DeleteObject(this);
 }
 
 void CProjectile_Monster::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -154,6 +170,7 @@ void CProjectile_Monster::Active_OnEnable()
     __super::Active_OnEnable();
  
     m_isStop = false;
+    m_isFirstLoop = true;
 	//if (COORDINATE_3D == Get_CurCoord())
  //       m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
 }
@@ -281,6 +298,6 @@ void CProjectile_Monster::Active_OnDisable()
 
 void CProjectile_Monster::Free()
 {
-
+    Safe_Release(m_pTarget);
     __super::Free();
 }

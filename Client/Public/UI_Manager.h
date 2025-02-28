@@ -6,6 +6,7 @@
 #include "Dialogue.h"
 #include "Logo_Props.h"
 #include "Narration.h"
+#include "Interaction_E.h"
 
 
 
@@ -25,6 +26,7 @@ private:
 	STAMP								m_eStampIndex = { STAMP_STOP };
 	CPlayer* m_pPlayer = { nullptr };
 	CDialog* m_pDiagloue = { nullptr };
+	CInteraction_E* m_pInteractionE = { nullptr };
 	
 
 	map<_uint, CSettingPanelBG*>		m_pSettingPanels;
@@ -81,6 +83,7 @@ private:
 	
 
 public:
+	void								Set_InterActionE(CInteraction_E* _interactionE) { m_pInteractionE = _interactionE; Safe_AddRef(_interactionE); }
 	STAMP								Get_StampIndex() { return m_eStampIndex; }
 	void								Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
 	CPlayer*							Get_Player() { return m_pPlayer; }
@@ -164,7 +167,7 @@ public:
 
 
 	/************ 테스트용도 **********************/
-	void								Narration_Update();
+	void								UI_Update();
 	_uint								Get_TestDiaglogIndex() { return m_iTextIndex; }
 	void								Set_TestDialogIndex() { ++m_iTextIndex; }
 
