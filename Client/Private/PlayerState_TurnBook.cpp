@@ -109,7 +109,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 				m_pBook->Set_ReverseAnimation(false);
 				//기울이는 중에 특정 진행도를 넘으면?
 				if (m_fSlidProgress >= m_pBook->Get_CurrentAnimationProgress())
-					m_pBook->SlideObjects(false);
+					m_pBook->SlideObjects_LToR();
 				//기울이는 중에 완전히 덮히면?
 				if (false == m_pBook->Is_DuringAnimation())
 					Set_State(CLOSED_RIGHT);
@@ -146,7 +146,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 				m_pBook->Set_ReverseAnimation(false);
 				//기울이는 중에 특정 진행도를 넘으면?
 				if (m_fSlidProgress >= m_pBook->Get_CurrentAnimationProgress())
-					m_pBook->SlideObjects(true);
+					m_pBook->SlideObjects_RToL();
 				//기울이는 중에 완전히 덮히면?
 				if (false == m_pBook->Is_DuringAnimation())
 					Set_State(CLOSED_LEFT);

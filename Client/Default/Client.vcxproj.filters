@@ -1253,6 +1253,7 @@
     <ClInclude Include="..\Public\NPC_Manager.h">
       <Filter>02.GameObjects\NPC\100. NPC_Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\SlipperyObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1982,6 +1983,7 @@
     <ClCompile Include="..\Private\NPC_Manager.cpp">
       <Filter>02.GameObjects\NPC\100. NPC_Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\SlipperyObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
