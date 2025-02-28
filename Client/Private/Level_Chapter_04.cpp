@@ -243,7 +243,15 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
 #endif // _DEBUG
 
+	if (KEY_DOWN(KEY::I)) {
+		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Intro"));
+		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
+	}
 
+	if (KEY_DOWN(KEY::J)) {
+		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Flag"));
+		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
+	}
 
 	static _float3 vOutPos = {};
 
@@ -551,7 +559,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
 
 	// Load CutSceneData, ArmData
-	CCamera_Manager::GetInstance()->Load_CutSceneData();
+	CCamera_Manager::GetInstance()->Load_CutSceneData(TEXT("Chapter4_CutScene.json"));
 	CCamera_Manager::GetInstance()->Load_ArmData(TEXT("Chapter4_ArmData.json"), TEXT("Chapter2_SketchSpace_ArmData.json"));
 
 	return S_OK;
@@ -974,18 +982,15 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
 
-	/*vPos = { 35.0f, 4.89f, -2.8f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_BarfBug"), COORDINATE_3D, &vPos, nullptr, nullptr);*/
 
+	BarfBug_Desc.iCurLevelID = m_eLevelID;
+	BarfBug_Desc.eStartCoord = COORDINATE_3D;
 
-	//BarfBug_Desc.iCurLevelID = m_eLevelID;
-	//BarfBug_Desc.eStartCoord = COORDINATE_3D;
+	BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(35.0f, 4.89f, -2.8f);
+	BarfBug_Desc.tTransform3DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
 
-	//BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(35.0f, 4.89f, -2.8f);
-	//BarfBug_Desc.tTransform3DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &BarfBug_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &BarfBug_Desc)))
+		return E_FAIL;
 
 	CGoblin::MONSTER_DESC Goblin_Desc;
 	Goblin_Desc.iCurLevelID = m_eLevelID;

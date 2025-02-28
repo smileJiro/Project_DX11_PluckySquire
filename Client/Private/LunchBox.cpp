@@ -21,6 +21,7 @@ HRESULT CLunchBox::Initialize(void* _pArg)
 {
     m_fInteractChargeTime = 1.f;
     m_eInteractType = INTERACT_TYPE::CHARGE;
+	m_eInteractID = INTERACT_ID::LUNCHBOX;
 
     CModelObject::MODELOBJECT_DESC* pDesc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
 

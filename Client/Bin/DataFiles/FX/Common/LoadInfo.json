@@ -1,0 +1,17 @@
+{
+    "Path": [
+        "../Bin/DataFiles/FX/Common/Book_Default.json",
+        "../Bin/DataFiles/FX/Common/Bulb.json",
+        "../Bin/DataFiles/FX/Common/Dodge.json",
+        "../Bin/DataFiles/FX/Common/Dust_Jump.json",
+        "../Bin/DataFiles/FX/Common/Dust_Walk.json",
+        "../Bin/DataFiles/FX/Common/Dust_Dodge.json",
+        "../Bin/DataFiles/FX/Common/MonsterDead.json",
+        "../Bin/DataFiles/FX/Common/MonsterHit.json",
+        "../Bin/DataFiles/FX/Common/Portal.json",
+        "../Bin/DataFiles/FX/Common/SwordCombo.json",
+        "../Bin/DataFiles/FX/Common/SwordJumpAttack.json",
+        "../Bin/DataFiles/FX/Common/SwordThrowBlock.json",
+        "../Bin/DataFiles/FX/Common/SwordThrowTrail2.json"
+    ]
+}

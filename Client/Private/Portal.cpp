@@ -36,7 +36,7 @@ HRESULT CPortal::Initialize(void* _pArg)
     m_fTriggerRadius =  pDesc->fTriggerRadius;
     m_fInteractChargeTime = 0.6f;
     m_eInteractType = INTERACT_TYPE::CHARGE;
-	m_strInteractName = TEXT("Æ÷Å»Å¸±â");
+    m_eInteractID = INTERACT_ID::PORTAL;
     m_bUIPlayerHeadUp = true;
 
     m_iPortalIndex =  pDesc->iPortalIndex;
@@ -195,7 +195,7 @@ HRESULT CPortal::Init_Actor()
     }
     WorldMatrix.r[3] = XMVectorSetW(f3DPosition, 1.f);
 
-    m_pEffectSystem->Set_EffectMatrix(WorldMatrix);;
+    m_pEffectSystem->Set_EffectMatrix(WorldMatrix);
     m_PartObjects[PORTAL_PART_3D] = m_pEffectSystem;
 
     Safe_AddRef(m_pEffectSystem);
@@ -239,6 +239,9 @@ void CPortal::Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal)
         SECTION_MGR->Remove_GameObject_FromSectionLayer(m_strSectionName, _pUser);
 
     Event_Change_Coordinate(_pUser, (COORDINATE)iCurCoord, &vNewPos);
+
+    if (m_pEffectSystem)
+        m_pEffectSystem->Active_Effect(true, 1);
 }
 
 HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
@@ -349,7 +352,6 @@ void CPortal::On_InteractionStart(CPlayer* _pPlayer)
 
 void CPortal::On_InteractionEnd(CPlayer* _pPlayer)
 {
-    m_bInteracting = true;
 }
 
 CPortal* CPortal::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

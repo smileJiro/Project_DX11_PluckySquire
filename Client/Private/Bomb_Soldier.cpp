@@ -5,6 +5,7 @@
 #include "ModelObject.h"
 #include "DetectionField.h"
 #include "Pooling_Manager.h"
+#include "Bomb.h"
 
 CBomb_Soldier::CBomb_Soldier(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -27,15 +28,23 @@ HRESULT CBomb_Soldier::Initialize(void* _pArg)
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
-    pDesc->fAttackRange = 8.f;
+    pDesc->fAttackRange = 10.f;
     pDesc->fAlert2DRange = 5.f;
     pDesc->fChase2DRange = 12.f;
     pDesc->fAttack2DRange = 10.f;
+
+    pDesc->fFOVX = 90.f;
+    pDesc->fFOVY = 60.f;
+
+    pDesc->fDelayTime = 1.f;
+
+    m_tStat.iHP = 5;
+    m_tStat.iMaxHP = 5;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -92,6 +101,14 @@ HRESULT CBomb_Soldier::Initialize(void* _pArg)
 
 void CBomb_Soldier::Priority_Update(_float _fTimeDelta)
 {
+    if(true == m_isDelay)
+    {
+        m_fAccTime += _fTimeDelta;
+        if (m_fDelayTime <= m_fAccTime)
+        {
+            Delay_Off();
+        }
+    }
 
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
@@ -111,7 +128,10 @@ HRESULT CBomb_Soldier::Render()
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
 #ifdef _DEBUG
-
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        m_pDetectionField->Render();
+    }
 #endif // _DEBUG
 
     /* Font Render */
@@ -119,9 +139,45 @@ HRESULT CBomb_Soldier::Render()
     return S_OK;
 }
 
+void CBomb_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    __super::On_Hit(_pHitter, _iDamg, _vForce);
+
+    if (nullptr != m_PartObjects[PART_RIGHT_WEAPON])
+    {
+        Event_DeleteObject(m_PartObjects[PART_RIGHT_WEAPON]);
+    }
+}
+
 void CBomb_Soldier::Attack()
 {
-    
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        Set_PreAttack(false);
+
+        // 다이나믹으로 전환하고 레이어에 넣기
+        m_PartObjects[PART_RIGHT_WEAPON]->Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
+        m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(0.f), _vector{ 1.f,0.f,0.f,0.f });
+        CCarriableObject* pBomb = static_cast<CCarriableObject*>(m_PartObjects[PART_RIGHT_WEAPON]);
+        pBomb->Set_Kinematic(false);
+        m_pGameInstance->Add_GameObject_ToLayer(Get_CurLevelID(), TEXT("Layer_Monster_Projectile"), m_PartObjects[PART_RIGHT_WEAPON]);
+        
+
+        //던지기
+        CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(pBomb->Get_ActorCom());
+        _float3 vForce;
+		XMStoreFloat3(&vForce, m_pTarget->Get_FinalPosition() - Get_FinalPosition());
+        //pDynamic->Add_Force(vForce);
+        //pDynamic->Set_Gravity(true);
+        pDynamic->Start_ParabolicTo(m_pTarget->Get_FinalPosition(), XMConvertToRadians(60.f));
+
+        //파트에서 빼기
+		pBomb->Set_ParentMatrix(COORDINATE_3D, nullptr);
+		pBomb->Set_SocketMatrix(COORDINATE_3D, nullptr);
+        m_PartObjects[PART_RIGHT_WEAPON] = nullptr;
+    }
+
+    Delay_On();
 }
 
 void CBomb_Soldier::Change_Animation()
@@ -191,7 +247,7 @@ void CBomb_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case DEATH_02_EDIT:
-        Set_AnimChangeable(true);
+        Monster_Death();
         break;
 
     default:
@@ -203,7 +259,9 @@ void CBomb_Soldier::Create_Bomb()
 {
     if(COORDINATE_3D == Get_CurCoord())
     {
-        _matrix HandMatrix = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("j_hand_attach_r"));
+        C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
+
+        _matrix HandMatrix = XMLoadFloat4x4(p3DModel->Get_BoneMatrix("j_hand_attach_r"));
 
         _float3 vPosition;
         _float4 vRotation;
@@ -211,9 +269,25 @@ void CBomb_Soldier::Create_Bomb()
         m_pGameInstance->MatrixDecompose(nullptr, &vRotation, &vPosition, HandMatrix);
 
         //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPosition, &vRotation);
-        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPosition);
+        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPosition);
 
+        CGameObject* pObject = nullptr;
 
+        CBomb::CARRIABLE_DESC BombDesc;
+        BombDesc.iCurLevelID = Get_CurLevelID();
+        BombDesc.eStartCoord = COORDINATE_3D;
+        BombDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+
+        BombDesc.pParentMatrices[COORDINATE_3D] = Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D);
+
+        m_PartObjects[PART_RIGHT_WEAPON] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb"), &BombDesc));
+        if (nullptr == m_PartObjects[PART_RIGHT_WEAPON])
+            return;
+
+        m_PartObjects[PART_RIGHT_WEAPON]->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r"));
+        m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 1.f,0.f,0.f,0.f });
+        static_cast<CCarriableObject*>(m_PartObjects[PART_RIGHT_WEAPON])->Set_Kinematic(true);
+        m_PartObjects[PART_RIGHT_WEAPON]->Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
     }
 }
 
@@ -239,16 +313,16 @@ HRESULT CBomb_Soldier::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fHalfHeight = 0.5f;
+    ShapeDesc->fHalfHeight = 0.2f;
     ShapeDesc->fRadius = 0.5f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fHalfHeight + ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);

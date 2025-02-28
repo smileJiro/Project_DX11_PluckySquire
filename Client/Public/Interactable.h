@@ -14,6 +14,17 @@ enum class INTERACT_RESULT
 	NO_INPUT,
 	PLAYER_INTERACT_RESULT_LAST
 };
+enum class INTERACT_ID
+{
+	NPC,
+	CARRIABLE,
+	PORTAL,
+	BOOK,
+	DRAGGABLE,
+	LUNCHBOX,
+	INTERACT_ID_LAST
+
+};
 class CPlayer;
 class IInteractable 
 {
@@ -62,7 +73,7 @@ public:
 		On_InteractionEnd(_pPlayer);
 	}
 
-	wstring Get_InteractName() { return m_strInteractName; } // 인터렉트가 된 대상의 이름을 가져온다.
+	INTERACT_ID Get_InteractID() { return m_eInteractID; } // 인터렉트가 된 대상의 이름을 가져온다.
 	_bool Is_UIPlayerHeadUp() { return m_bUIPlayerHeadUp; }	// 유저의 머리위에 노출시킬것인가 아닌가
 protected:
 
@@ -80,7 +91,7 @@ protected:
 	KEY m_eInteractKey = KEY::E;
 	_bool m_bInteracting = false;
 
-	wstring m_strInteractName = TEXT("");
+	INTERACT_ID m_eInteractID = INTERACT_ID::NPC;
 	_bool m_bUIPlayerHeadUp = false;
 };
 

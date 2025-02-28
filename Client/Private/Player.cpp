@@ -485,7 +485,7 @@ HRESULT CPlayer::Ready_Components()
 
     // EffectAnimEvent
     Bind_AnimEventFunc("Dust_Walk", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Walk"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
-    //Bind_AnimEventFunc("Dust_Jump", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Jump"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
+    Bind_AnimEventFunc("Dust_Dodge", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Dodge"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
     
     tAnimEventDesc.pReceiver = this;
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
@@ -584,11 +584,6 @@ void CPlayer::Update(_float _fTimeDelta)
 		}
 	}
     __super::Update(_fTimeDelta); /* Part Object Update */
-
-    CUI_Manager::GetInstance()->Set_isQIcon((nullptr != m_pInteractableObject) 
-        && KEY::Q == m_pInteractableObject->Get_InteractKey());
-
-
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
@@ -963,7 +958,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 {
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
-    //m_pInteractableObject = nullptr;
+    m_pInteractableObject = nullptr;
     if (Is_CarryingObject())
     {
         m_pCarryingObject->Change_Coordinate(_eCoordinate);

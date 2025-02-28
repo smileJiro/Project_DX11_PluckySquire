@@ -271,7 +271,7 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		//Event_ChangeMapObject(m_eLevelID, TEXT("Chapter_04_Default_Desk.mchc"), TEXT("Layer_MapObject"), true);
 	}
 
-	Uimgr->Narration_Update();
+	Uimgr->UI_Update();
 
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
@@ -736,7 +736,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
 
 	// Load CutSceneData, ArmData
-	CCamera_Manager::GetInstance()->Load_CutSceneData();
+	CCamera_Manager::GetInstance()->Load_CutSceneData(TEXT("Chapter2_CutScene.json"));
 	CCamera_Manager::GetInstance()->Load_ArmData(TEXT("Chapter2_ArmData.json"), TEXT("Chapter2_SketchSpace_ArmData.json"));
 
 
@@ -1093,13 +1093,15 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	pDesc.fSizeX = 360.f / 2.f;
-	pDesc.fSizeY = 144.f / 2.f;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
-		return E_FAIL;
-
+	pDesc.fSizeY = 149.f / 2.f;
 
 	CGameObject* pGameObject;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject ,&pDesc)))
+		return E_FAIL;
+
+	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pGameObject));
+	
 
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
@@ -1113,7 +1115,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 HRESULT CLevel_Chapter_02::Ready_Layer_Item(const _wstring& _strLayerTag)
 {
 	// Test(PlayerItem: Glove, Stamp)
-	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 6.273f, -19.097f));
+	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 7.5f, -19.097f));
 	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 

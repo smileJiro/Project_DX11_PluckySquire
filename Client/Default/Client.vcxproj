@@ -386,6 +386,7 @@
     <ClInclude Include="..\Public\Spear_Soldier.h" />
     <ClInclude Include="..\Public\StandbyState.h" />
     <ClInclude Include="..\public\Effect_Trail.h" />
+    <ClInclude Include="..\Public\Stoppable.h" />
     <ClInclude Include="..\Public\StopStamp.h" />
     <ClInclude Include="..\Public\TriggerObject.h" />
     <ClInclude Include="..\Public\Trigger_Manager.h" />
@@ -632,6 +633,7 @@
     <ClCompile Include="..\Private\Spear_Soldier.cpp" />
     <ClCompile Include="..\Private\StandbyState.cpp" />
     <ClCompile Include="..\private\Effect_Trail.cpp" />
+    <ClCompile Include="..\Private\Stoppable.cpp" />
     <ClCompile Include="..\Private\StopStamp.cpp" />
     <ClCompile Include="..\Private\TriggerObject.cpp" />
     <ClCompile Include="..\Private\Trigger_Manager.cpp" />

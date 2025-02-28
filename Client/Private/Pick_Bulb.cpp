@@ -31,7 +31,7 @@ HRESULT CPick_Bulb::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_isRender = true;
+	m_isRender = false;
 
 	return S_OK;
 }
