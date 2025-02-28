@@ -86,11 +86,6 @@ HRESULT CMapObject::Render()
     return S_OK;
 }
 
-HRESULT CMapObject::Render_Shadow()
-{
-    return S_OK;
-}
-
 #ifdef _DEBUG
 
 //

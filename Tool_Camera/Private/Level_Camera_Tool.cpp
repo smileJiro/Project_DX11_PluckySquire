@@ -748,18 +748,18 @@ void CLevel_Camera_Tool::Set_KeyFrameInfo()
 
 	ImGui::NewLine();
 
-	ImGui::Text("At: %.2f, %.2f, %.2f      ", m_tKeyFrameInfo.vAtOffset.x, m_tKeyFrameInfo.vAtOffset.y, m_tKeyFrameInfo.vAtOffset.z);
-	ImGui::SameLine();
-	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFrameAtX", &m_tKeyFrameInfo.vAtOffset.x);
-	ImGui::SameLine(0, 10.0f);
+	//////////ImGui::Text("At: %.2f, %.2f, %.2f      ", m_tKeyFrameInfo.vAtOffset.x, m_tKeyFrameInfo.vAtOffset.y, m_tKeyFrameInfo.vAtOffset.z);
+	//////////ImGui::SameLine();
+	//////////ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	//////////ImGui::DragFloat("##KeyFrameAtX", &m_tKeyFrameInfo.vAtOffset.x);
+	//////////ImGui::SameLine(0, 10.0f);
 
-	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFrameAtY", &m_tKeyFrameInfo.vAtOffset.y);
-	ImGui::SameLine(0, 10.0f);
+	//////////ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	//////////ImGui::DragFloat("##KeyFrameAtY", &m_tKeyFrameInfo.vAtOffset.y);
+	//////////ImGui::SameLine(0, 10.0f);
 
-	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-	ImGui::DragFloat("##KeyFrameAtZ", &m_tKeyFrameInfo.vAtOffset.z);
+	//////////ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	//////////ImGui::DragFloat("##KeyFrameAtZ", &m_tKeyFrameInfo.vAtOffset.z);
 
 	if(true == m_tKeyFrameInfo.bLookTarget)
 		ImGui::Text("Loot Target: TRUE             ");
@@ -891,7 +891,7 @@ void CLevel_Camera_Tool::Show_KeyFrameInfo()
 			ImGui::Text("Ratio Type: EASE_IN_OUT          ");
 			break;
 		}
-		ImGui::Text("At: %.2f, %.2f, %.2f      ", m_pCurKeyFrame->first.vAtOffset.x, m_pCurKeyFrame->first.vAtOffset.y, m_pCurKeyFrame->first.vAtOffset.z);
+		/*ImGui::Text("At: %.2f, %.2f, %.2f      ", m_pCurKeyFrame->first.vAtOffset.x, m_pCurKeyFrame->first.vAtOffset.y, m_pCurKeyFrame->first.vAtOffset.z);*/
 
 		if (true == m_pCurKeyFrame->first.bLookTarget)
 			ImGui::Text("Loot At: TRUE             ");
@@ -975,7 +975,7 @@ void CLevel_Camera_Tool::Show_KeyFrameInfo()
 						ImGui::Text("Ratio Type: EASE_IN_OUT          ");
 						break;
 					}
-					ImGui::Text("At: %.2f, %.2f, %.2f      ", (*pKeyFrames)[i].vAtOffset.x, (*pKeyFrames)[i].vAtOffset.y, (*pKeyFrames)[i].vAtOffset.z);
+					/*ImGui::Text("At: %.2f, %.2f, %.2f      ", (*pKeyFrames)[i].vAtOffset.x, (*pKeyFrames)[i].vAtOffset.y, (*pKeyFrames)[i].vAtOffset.z);*/
 					
 					if (true == (*pKeyFrames)[i].bLookTarget)
 						ImGui::Text("Loot At: TRUE             ");
@@ -1856,7 +1856,7 @@ void CLevel_Camera_Tool::Edit_KeyFrame()
 		m_pCurKeyFrame->first.fTimeStamp = m_tKeyFrameInfo.fTimeStamp;
 		m_pCurKeyFrame->first.iZoomLevel = m_tKeyFrameInfo.iZoomLevel;
 		m_pCurKeyFrame->first.iZoomRatioType = m_tKeyFrameInfo.iZoomRatioType;
-		m_pCurKeyFrame->first.vAtOffset = m_tKeyFrameInfo.vAtOffset;
+		//m_pCurKeyFrame->first.vAtOffset = m_tKeyFrameInfo.vAtOffset;
 		m_pCurKeyFrame->first.bLookTarget = m_tKeyFrameInfo.bLookTarget;
 		m_pCurKeyFrame->first.iAtRatioType = m_tKeyFrameInfo.iAtRatioType;
 
@@ -2385,7 +2385,7 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 
 				Data_json["Position"] = { Data.vPosition.x, Data.vPosition.y, Data.vPosition.z };
 				Data_json["Rotation"] = { Data.vRotation.x, Data.vRotation.y, Data.vRotation.z };
-				Data_json["AtOffset"] = { Data.vAtOffset.x, Data.vAtOffset.y, Data.vAtOffset.z };
+				//Data_json["AtOffset"] = { Data.vAtOffset.x, Data.vAtOffset.y, Data.vAtOffset.z };
 				Data_json["Fovy"] = Data.fFovy;
 
 				CutScene_json["Datas"].push_back(Data_json);
@@ -2428,7 +2428,7 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 			KeyFrame_json["TimeStamp"] = KeyFrame.first.fTimeStamp;
 			KeyFrame_json["Zoom_Level"] = KeyFrame.first.iZoomLevel;
 			KeyFrame_json["Zoom_RatioType"] = KeyFrame.first.iZoomRatioType;
-			KeyFrame_json["AtOffset"] = { KeyFrame.first.vAtOffset.x, KeyFrame.first.vAtOffset.y, KeyFrame.first.vAtOffset.z };
+			//KeyFrame_json["AtOffset"] = { KeyFrame.first.vAtOffset.x, KeyFrame.first.vAtOffset.y, KeyFrame.first.vAtOffset.z };
 			KeyFrame_json["Is_LookTarget"] = KeyFrame.first.bLookTarget;
 			KeyFrame_json["At_RatioType"] = KeyFrame.first.iAtRatioType;
 
@@ -2469,7 +2469,7 @@ void CLevel_Camera_Tool::Save_Data_CutScene()
 					KeyFrame_json["TimeStamp"] = KeyFrame.fTimeStamp;
 					KeyFrame_json["Zoom_Level"] = KeyFrame.iZoomLevel;
 					KeyFrame_json["Zoom_RatioType"] = KeyFrame.iZoomRatioType;
-					KeyFrame_json["AtOffset"] = { KeyFrame.vAtOffset.x, KeyFrame.vAtOffset.y,KeyFrame.vAtOffset.z };
+					//KeyFrame_json["AtOffset"] = { KeyFrame.vAtOffset.x, KeyFrame.vAtOffset.y,KeyFrame.vAtOffset.z };
 					KeyFrame_json["Is_LookTarget"] = KeyFrame.bLookTarget;
 					KeyFrame_json["At_RatioType"] = KeyFrame.iAtRatioType;
 
@@ -2597,7 +2597,7 @@ void CLevel_Camera_Tool::Load_Data_CutScene()
 				tKeyFrame.fTimeStamp = KeyFrame_json["TimeStamp"];
 				tKeyFrame.iZoomLevel = KeyFrame_json["Zoom_Level"];
 				tKeyFrame.iZoomRatioType = KeyFrame_json["Zoom_RatioType"];
-				tKeyFrame.vAtOffset = { KeyFrame_json["AtOffset"][0].get<_float>(), KeyFrame_json["AtOffset"][1].get<_float>(), KeyFrame_json["AtOffset"][2].get<_float>() };
+				//tKeyFrame.vAtOffset = { KeyFrame_json["AtOffset"][0].get<_float>(), KeyFrame_json["AtOffset"][1].get<_float>(), KeyFrame_json["AtOffset"][2].get<_float>() };
 				tKeyFrame.bLookTarget = KeyFrame_json["Is_LookTarget"];
 				tKeyFrame.iAtRatioType = KeyFrame_json["At_RatioType"];
 
@@ -2637,7 +2637,7 @@ void CLevel_Camera_Tool::Load_Data_CutScene()
 								tKeyFrame.fTimeStamp = KeyFrame_json["TimeStamp"];
 								tKeyFrame.iZoomLevel = KeyFrame_json["Zoom_Level"];
 								tKeyFrame.iZoomRatioType = KeyFrame_json["Zoom_RatioType"];
-								tKeyFrame.vAtOffset = { KeyFrame_json["AtOffset"][0].get<_float>(), KeyFrame_json["AtOffset"][1].get<_float>(), KeyFrame_json["AtOffset"][2].get<_float>() };
+								//tKeyFrame.vAtOffset = { KeyFrame_json["AtOffset"][0].get<_float>(), KeyFrame_json["AtOffset"][1].get<_float>(), KeyFrame_json["AtOffset"][2].get<_float>() };
 								tKeyFrame.bLookTarget = KeyFrame_json["Is_LookTarget"];
 								tKeyFrame.iAtRatioType = KeyFrame_json["At_RatioType"];
 
