@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "CarriableObject.h"
 #include "Detonator.h"
+#include "SlipperyObject.h"
 
 
 CSampleBook::CSampleBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -141,7 +142,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 			Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_BookPageActionEvent"), &tAnimEventDesc));
 	
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
-
+	Safe_AddRef(m_pAnimEventGenerator);
 
 	Init_RT_RenderPos_Capcher();
 
@@ -700,6 +701,30 @@ _float CSampleBook::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 _bool CSampleBook::Is_DuringAnimation()
 {
 	return m_pControllerModel->Get_Model(m_pControllerTransform->Get_CurCoord())->Is_DuringAnimation();
+}
+
+void CSampleBook::SlideObjects_RToL()
+{
+	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+	CSection_2D* pSection = static_cast<CSection_2D*>( CSection_Manager::GetInstance()->Find_Section(pSectionMgr->Get_Cur_Section_Key()));
+	list<CGameObject*> ObjList = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_SLIPPERY)->Get_GameObjects();
+	for (auto& pObj : ObjList)
+	{
+		if (XMVectorGetX( pObj->Get_FinalPosition()) > 0.f)
+			static_cast<CSlipperyObject*>(pObj)->Start_Slip(_vector{-1.0f, 0.f,0.f});
+	}
+}
+
+void CSampleBook::SlideObjects_LToR()
+{
+	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+	CSection_2D* pSection = static_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(pSectionMgr->Get_Cur_Section_Key()));
+	list<CGameObject*> ObjList = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_SLIPPERY)->Get_GameObjects();
+	for (auto& pObj : ObjList)
+	{
+		if (XMVectorGetX(pObj->Get_FinalPosition()) < 0.f)
+			static_cast<CSlipperyObject*>(pObj)->Start_Slip(_vector{ 1.0f, 0.f,0.f });
+	}
 }
 
 HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition)

@@ -120,7 +120,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../EngineSDK/Lib/imguidll/debug/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(Configuration)\Engine.lib;DirectXTKd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -162,6 +162,8 @@
     <ClInclude Include="..\Public\RenderGroup_DirectLights.h" />
     <ClInclude Include="..\Public\RenderGroup_DownSample.h" />
     <ClInclude Include="..\Public\RenderGroup_Lighting.h" />
+    <ClInclude Include="..\Public\RenderGroup_PlayerDepth.h" />
+    <ClInclude Include="..\Public\RenderGroup_PostProcessing.h" />
     <ClInclude Include="..\Public\RenderGroup_WorldPos.h" />
     <ClInclude Include="..\Public\Test2DModel.h" />
     <ClInclude Include="..\Public\Test3DModel.h" />
@@ -197,6 +199,8 @@
     <ClCompile Include="..\Private\RenderGroup_DirectLights.cpp" />
     <ClCompile Include="..\Private\RenderGroup_DownSample.cpp" />
     <ClCompile Include="..\Private\RenderGroup_Lighting.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_PlayerDepth.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_PostProcessing.cpp" />
     <ClCompile Include="..\Private\RenderGroup_WorldPos.cpp" />
     <ClCompile Include="..\Private\Test2DModel.cpp" />
     <ClCompile Include="..\Private\Test3DModel.cpp" />

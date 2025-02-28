@@ -170,6 +170,24 @@ void CUI::Change_BookScale_ForShop(_float2 _vRTSize)
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH((_float)_vRTSize.x, (_float)_vRTSize.y, 0.0f, 1.0f));
 }
 
+_float2 CUI::WorldToSceen(_matrix _WorldPos)
+{
+	_vector WorldPos = _WorldPos.r[3];
+
+	_matrix matView = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW));
+	_matrix matProj = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ));
+
+	_vector ProjectedPos = XMVector3TransformCoord(WorldPos, matView * matProj);
+
+	_float3 FinalPos;
+	XMStoreFloat3(&FinalPos, ProjectedPos);
+
+	_float ScreenX = (FinalPos.x + 1.0f) * 0.5f * g_iWinSizeX;
+	_float ScreenY = (1.0f - (FinalPos.y + 1.0f) * 0.5f) * g_iWinSizeY;
+
+	return _float2(ScreenX, ScreenY);
+}
+
 void CUI::Free()
 {
 	Safe_Release(m_pModelCom);

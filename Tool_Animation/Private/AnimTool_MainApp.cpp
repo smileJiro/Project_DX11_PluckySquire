@@ -13,6 +13,8 @@
 #include "RenderGroup_Lighting.h"
 #include "RenderGroup_AfterEffect.h"
 #include "RenderGroup_Combine.h"
+#include "RenderGroup_PostProcessing.h"
+#include "RenderGroup_PlayerDepth.h"
 #include "CubeMap.h"
 
 CAnimTool_MainApp::CAnimTool_MainApp()
@@ -101,31 +103,6 @@ HRESULT CAnimTool_MainApp::Ready_RenderGroup()
 	CRenderGroup* pRenderGroup = nullptr;
 	CRenderGroup_MRT* pRenderGroup_MRT = nullptr;
 
-	/* RG_3D, PR3D_BOOK2D */
-	CRenderGroup_MRT::RG_MRT_DESC RG_Book2DDesc;
-	RG_Book2DDesc.iRenderGroupID = RENDERGROUP::RG_2D;
-	RG_Book2DDesc.iPriorityID = PRIORITY_2D::PR2D_SECTION_START;
-	RG_Book2DDesc.isViewportSizeChange = true;
-	RG_Book2DDesc.strMRTTag = TEXT("MRT_Book_2D");
-	RG_Book2DDesc.pDSV = m_pGameInstance->Find_DSV(TEXT("DSV_Book2D"));
-	RG_Book2DDesc.vViewportSize = _float2((_float)RTSIZE_BOOK2D_X, (_float)RTSIZE_BOOK2D_Y);
-	RG_Book2DDesc.isClear = true;
-	if (nullptr == RG_Book2DDesc.pDSV)
-	{
-		MSG_BOX("Book2D DSV가 없대.");
-		return E_FAIL;
-	}
-	pRenderGroup_MRT = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_Book2DDesc);
-	if (nullptr == pRenderGroup_MRT)
-	{
-		MSG_BOX("Failed Create PR3D_BOOK2D");
-		return E_FAIL;
-	}
-	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_MRT->Get_RenderGroupID(), pRenderGroup_MRT->Get_PriorityID(), pRenderGroup_MRT)))
-		return E_FAIL;
-
-	Safe_Release(pRenderGroup_MRT);
-	pRenderGroup_MRT = nullptr;
 	/* RG_3D, PR3D_PRIORITY */
 	CRenderGroup_MRT::RG_MRT_DESC RGPriorityDesc;
 	RGPriorityDesc.iRenderGroupID = RENDERGROUP::RG_3D;
@@ -195,12 +172,48 @@ HRESULT CAnimTool_MainApp::Ready_RenderGroup()
 	Safe_Release(pRenderGroup_Lighting);
 	pRenderGroup_Lighting = nullptr;
 
+
+
+	/* RG_3D, PR3D_POSTPROCESSING */
+	CRenderGroup_PostProcessing::RG_POST_DESC RG_PostDesc;
+	RG_PostDesc.iBlurLevel = 2;
+	RG_PostDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_PostDesc.iPriorityID = PR3D_POSTPROCESSING;
+	CRenderGroup_PostProcessing* pRenderGroup_Post = CRenderGroup_PostProcessing::Create(m_pDevice, m_pContext, &RG_PostDesc);
+	if (nullptr == pRenderGroup_Post)
+	{
+		MSG_BOX("Failed Create PR3D_POSTPROCESSING");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Post->Get_RenderGroupID(), pRenderGroup_Post->Get_PriorityID(), pRenderGroup_Post)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_Post);
+	pRenderGroup_Post = nullptr;
+
+	/* RG_3D, PR3D_AFTERPOSTPROCESSING */
+	CRenderGroup_MRT::RG_MRT_DESC RG_AfterPostDesc;
+	RG_AfterPostDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_AfterPostDesc.iPriorityID = PRIORITY_3D::PR3D_AFTERPOSTPROCESSING;
+	RG_AfterPostDesc.strMRTTag = TEXT("MRT_PostProcessing");
+	RG_AfterPostDesc.isClear = false;
+
+	CRenderGroup_MRT* pRenderGroup_AfterPost = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_AfterPostDesc);
+	if (nullptr == pRenderGroup_AfterPost)
+	{
+		MSG_BOX("Failed Create PR3D_AFTERPOSTPROCESSING");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_AfterPost->Get_RenderGroupID(), pRenderGroup_AfterPost->Get_PriorityID(), pRenderGroup_AfterPost)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_AfterPost);
+	pRenderGroup_AfterPost = nullptr;
+
 	/* RG_3D, PR3D_COMBINE */
 	CRenderGroup_Combine::RG_MRT_DESC RG_CombineDesc;
 	RG_CombineDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RG_CombineDesc.iPriorityID = PRIORITY_3D::PR3D_COMBINE;
 	RG_CombineDesc.strMRTTag = TEXT("MRT_Combine");
-	RG_CombineDesc.isClear = true;
+	RG_CombineDesc.isClear = false;
 	CRenderGroup_Combine* pRenderGroup_Combine = CRenderGroup_Combine::Create(m_pDevice, m_pContext, &RG_CombineDesc);
 	if (nullptr == pRenderGroup_Combine)
 	{
@@ -211,6 +224,7 @@ HRESULT CAnimTool_MainApp::Ready_RenderGroup()
 		return E_FAIL;
 	Safe_Release(pRenderGroup_Combine);
 	pRenderGroup_Combine = nullptr;
+
 
 	/* RG_3D, PR3D_BLEND */
 	CRenderGroup_MRT::RG_MRT_DESC RG_BlendDesc;
@@ -346,16 +360,11 @@ HRESULT CAnimTool_MainApp::Ready_RenderGroup()
 	Safe_Release(pRenderGroup);
 	pRenderGroup = nullptr;
 
-
 	return S_OK;
 }
 
 HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 {
-	/* Target Book2D */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Book_2D"), (_uint)RTSIZE_BOOK2D_X, (_uint)RTSIZE_BOOK2D_Y, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
-		return E_FAIL;
-
 	/* Target_Albedo */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Albedo"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
 		return E_FAIL;
@@ -369,7 +378,11 @@ HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 		return E_FAIL;
 
 	/* Target_Depth */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
+		return E_FAIL;
+
+	/* Target_PlayerDepth */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_PlayerDepth"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R32_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
 		return E_FAIL;
 
 	/* Target_DirectLightAcc */
@@ -380,15 +393,23 @@ HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_RenderTarget_MSAA(TEXT("Target_Lighting"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
-	/* Target_Combine */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Combine"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+	/* Target_PostProcessing */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_PostProcessing"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
+	/* Target_Combine */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Combine"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+
+	/* Target_EffectColor*/
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_EffectColor"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
 		return E_FAIL;
 
 	/* Target_Bloom */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Bloom"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+		return E_FAIL;
+	/* Target_Distortion */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Distortion"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R8G8_SNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
 		return E_FAIL;
 	/* Target_DownSample */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_DownSample1"), (_uint)(g_iWinSizeX / 6.f), (_uint)(g_iWinSizeY / 6.f), DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
@@ -413,10 +434,6 @@ HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 
 	/* RTV를 모아두는 MRT를 세팅 */
 
-	/* MRT_Book_2D*/
-	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Book_2D"), TEXT("Target_Book_2D"))))
-		return E_FAIL;
-
 	/* MRT_Geometry */
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Geometry"), TEXT("Target_Albedo"))))
 		return E_FAIL;
@@ -427,6 +444,9 @@ HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Geometry"), TEXT("Target_Depth"))))
 		return E_FAIL;
 
+	/* MRT_PlayerDepth */
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_PlayerDepth"), TEXT("Target_PlayerDepth"))))
+		return E_FAIL;
 #pragma region LightAcc(Old)
 	///* MRT_LightAcc */
 //if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Shade"))))
@@ -446,6 +466,10 @@ HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Lighting"), TEXT("Target_Lighting"))))
 		return E_FAIL;
 
+	/* MRT_PostProcessing */
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_PostProcessing"), TEXT("Target_PostProcessing"))))
+		return E_FAIL;
+
 	/* MRT_Combine */
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Combine"), TEXT("Target_Combine"))))
 		return E_FAIL;
@@ -454,6 +478,8 @@ HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Effect"), TEXT("Target_EffectColor"))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Effect"), TEXT("Target_Bloom"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Effect"), TEXT("Target_Distortion"))))
 		return E_FAIL;
 
 	///* MRT_BLUR */
@@ -483,9 +509,8 @@ HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 
 	/* Settiong DSV */
 
-	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), g_iShadowWidth, g_iShadowHeight)))
+	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), SHADOWMAP_X, SHADOWMAP_Y)))
 		return E_FAIL;
-
 
 	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Downsample1"), (_uint)(g_iWinSizeX / 6.f), (_uint)(g_iWinSizeY / 6.f))))
 		return E_FAIL;
@@ -493,8 +518,8 @@ HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Downsample2"), (_uint)(g_iWinSizeX / 24.f), (_uint)(g_iWinSizeY / 24.f))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Book2D"), RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y)))
-		return E_FAIL;
+
+#ifdef _DEBUG
 
 	/* 위치 설정. */
 	_float fSizeX = (_float)g_iWinSizeX * 0.2f;
@@ -505,6 +530,9 @@ HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Albedo"), fX, fY, fSizeX, fSizeY);
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_Normal"), fX, fY + fSizeY * 1.0f, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
 	m_pGameInstance->Ready_RT_Debug(TEXT("Target_EffectAccumulate"), fX, fY, (_float)g_iWinSizeX * 0.2f, (_float)g_iWinSizeY * 0.2f);
+
+#endif // _DEBUG
+
 
 	return S_OK;
 }

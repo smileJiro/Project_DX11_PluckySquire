@@ -472,6 +472,7 @@ HRESULT CPlayer::Ready_Components()
     Bind_AnimEventFunc("StampSmash", bind(&CPlayer::StampSmash, this));
     Bind_AnimEventFunc("Detonate", bind(&CPlayer::Detonate, this));
     Bind_AnimEventFunc("ErasePalm", bind(&CPlayer::ErasePalm, this));
+    Bind_AnimEventFunc("SpinAttack", bind(&CPlayer::SpinAttack, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -1168,13 +1169,13 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
     if (KEY_DOWN(KEY::SPACE))
         tResult.bInputStates[PLAYER_INPUT_JUMP] = true;
     //구르기 & 잠입
-    //else if (false == bCarrying && KEY_PRESSING(KEY::LSHIFT))
-    //{
-    //    if (Is_SneakMode())
-    //        tResult.bInputStates[PLAYER_INPUT_SNEAK] = true;
-    //    else
-    //        tResult.bInputStates[PLAYER_INPUT_ROLL] = true;
-    //}
+    else if (false == bCarrying && KEY_PRESSING(KEY::LSHIFT))
+    {
+        if (Is_SneakMode())
+            tResult.bInputStates[PLAYER_INPUT_SNEAK] = true;
+        else
+            tResult.bInputStates[PLAYER_INPUT_ROLL] = true;
+    }
 
     COORDINATE eCoord = Get_CurCoord();
     //이동
@@ -1968,6 +1969,12 @@ void CPlayer::ThrowObject()
     pObj->Set_Carrier(nullptr);
 	pObj->Throw(vForce);
 	Set_CarryingObject(nullptr);
+}
+
+void CPlayer::SpinAttack()
+{
+    End_Attack();
+    Start_Attack(CPlayer::ATTACK_TYPE_SPIN);
 }
 
 void CPlayer::Add_Upforce(_float _fForce)
