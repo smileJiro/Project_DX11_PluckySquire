@@ -106,7 +106,7 @@ void CCamera_CutScene::Add_CutScene(_wstring _wszCutSceneTag, vector<CCutScene_S
 
 void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
 {
-	if (nullptr == m_pCurCutScene || true == m_isStartCutScene || true == m_isFinishCutScene)
+	/*if (nullptr == m_pCurCutScene || true == m_isStartCutScene || true == m_isFinishCutScene)
 		return;
 
 	_vector vPosition;
@@ -148,7 +148,7 @@ void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
 
 #ifdef _DEBUG
 	XMStoreFloat3(&m_vSimulationPos, XMVectorSetW(vPosition, 1.f));
-#endif
+#endif*/
 }
 
 void CCamera_CutScene::Change_Sector()
@@ -243,7 +243,7 @@ void CCamera_CutScene::Process_Movement(_float _fTimeDelta)
 		if (iCurKeyFrameIdx >= (_int)((*pKeyFrames).size() - 2))
 			return;
 
-		Start_Changing_AtOffset(fTimeOffset, XMLoadFloat3(&(*pKeyFrames)[iCurKeyFrameIdx + 1].vAtOffset), (*pKeyFrames)[iCurKeyFrameIdx + 1].iAtRatioType);
+		//Start_Changing_AtOffset(fTimeOffset, XMLoadFloat3(&(*pKeyFrames)[iCurKeyFrameIdx + 1].vAtOffset), (*pKeyFrames)[iCurKeyFrameIdx + 1].iAtRatioType);
 		Start_Zoom(fTimeOffset, (CCamera::ZOOM_LEVEL)(*pKeyFrames)[iCurKeyFrameIdx + 1].iZoomLevel, (RATIO_TYPE)(*pKeyFrames)[iCurKeyFrameIdx + 1].iZoomRatioType);
 	}
 
@@ -264,9 +264,9 @@ void CCamera_CutScene::Initialize_CameraInfo(INITIAL_DATA* _pTargetPos)
 		CUTSCENE_KEYFRAME tKeyFrame = (*m_pCurCutScene)[m_iCurSectorIndex]->Get_KeyFrame(1);
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&tKeyFrame.vPosition), 1.f));
-		m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&tKeyFrame.vAtOffset), 1.f));
+		//m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&tKeyFrame.vAtOffset), 1.f));
 		m_vAtOffset = { 0.f, 0.f, 0.f };
-		m_vTargetPos = tKeyFrame.vAtOffset;
+		//m_vTargetPos = tKeyFrame.vAtOffset;
 
 		// 초기 Zoom Level 설정
 		m_iCurZoomLevel = tKeyFrame.iZoomLevel;
@@ -303,11 +303,11 @@ void CCamera_CutScene::Save_Data()
 	// 초기 입력 데이터가 있을 때
 	if (true == m_isInitialData) {
 		_vector vAtOffset = XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
-		XMStoreFloat3(&tData.vAtOffset, vAtOffset);
+		//XMStoreFloat3(&tData.vAtOffset, vAtOffset);
 	}
 	else {
 		_vector vAtOffset = XMLoadFloat3(&m_vTargetPos) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
-		XMStoreFloat3(&tData.vAtOffset, vAtOffset);
+		//XMStoreFloat3(&tData.vAtOffset, vAtOffset);
 	}
 
 	(*pData).second.push_back(tData);

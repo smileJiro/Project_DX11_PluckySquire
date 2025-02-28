@@ -17,8 +17,6 @@ public:
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 
-	virtual HRESULT			Render_Shadow() override;
-
 private:
 	HRESULT					Ready_Components();
 
