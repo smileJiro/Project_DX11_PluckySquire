@@ -41,7 +41,7 @@ void CActor_Dynamic::Update(_float _fTimeDelta)
 		{
 			return;
 		}
-		_matrix OwnerWorldMatrix = m_pOwner->Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_WorldMatrix();// Get_FinalWorldMatrix();
+		_matrix OwnerWorldMatrix = m_pOwner->Get_FinalWorldMatrix();
 		_vector vScale, vRotation, vTranslation;
 		XMMatrixDecompose(&vScale, &vRotation, &vTranslation, OwnerWorldMatrix);
 

@@ -117,6 +117,11 @@ HRESULT CPalmDecal::Render()
     return __super::Render();
 }
 
+_matrix CPalmDecal::Get_FinalWorldMatrix()
+{
+    return Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_WorldMatrix();
+}
+
 void CPalmDecal::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
     IStoppable* pStop = dynamic_cast<IStoppable*>(_pOtherObject);
@@ -178,7 +183,7 @@ void CPalmDecal::Interact(CPlayer* _pUser)
 	_pUser->Set_State(CPlayer::ERASE_PALM);
 
 }
-
+/*Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_WorldMatrix();*/
 _bool CPalmDecal::Is_Interactable(CPlayer* _pUser)
 {
     return (COORDINATE_3D == _pUser->Get_CurCoord()) 
