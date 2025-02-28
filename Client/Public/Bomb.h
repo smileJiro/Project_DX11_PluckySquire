@@ -16,6 +16,7 @@ public:
 	virtual HRESULT Render() override;
 	
 public:
+	void Set_Time_On(_bool _isOn);
 	void Bomb_Shape_Enable(_bool _isEnable);
 
 private:
@@ -46,6 +47,7 @@ private:
 	_float m_fLifeTime = { 0.f };
 	_float m_fExplodeTime = { 0.f };
 	_bool m_isExplode = { false };
+	_bool m_isOn = { true };
 
 public:
 	static CBomb* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
