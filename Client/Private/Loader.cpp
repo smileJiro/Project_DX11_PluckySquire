@@ -1258,7 +1258,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 
 	/* For. Prototype_GameObject_Camera_CutScene */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_CutScene_Save"),
-		CCamera_CutScene::Create(m_pDevice, m_pContext))))
+		CCamera_CutScene_Save::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 #pragma endregion

@@ -58,8 +58,17 @@ void CCamera_CutScene_Save::Late_Update(_float _fTimeDelta)
 
 void CCamera_CutScene_Save::CutScene_Clear()
 {
-	m_CutScenes.clear();
-	m_CutSceneSubDatas.clear();
+	if(!m_CutScenes.empty())
+		m_CutScenes.clear();
+	//if (!m_CutSceneSubDatas.empty())
+
+	for (auto it = m_CutSceneSubDatas.begin(); it != m_CutSceneSubDatas.end(); ++it) {
+		_wstring a = it->first;
+	}
+
+	cout << &m_CutSceneSubDatas << endl;
+
+	map<std::wstring, CUTSCENE_SUB_DATA>().swap(m_CutSceneSubDatas);
 }
 
 void CCamera_CutScene_Save::Set_NextCutScene(_wstring _wszCutSceneName, INITIAL_DATA* _pTargetPos)
@@ -104,7 +113,14 @@ void CCamera_CutScene_Save::Add_CutScene(_wstring _wszCutSceneTag, vector<CCutSc
 		Sector->Sort_Sector();
 
 	m_CutScenes.emplace(_wszCutSceneTag, _vecCutScene);
-	m_CutSceneSubDatas.emplace(_wszCutSceneTag, _tSubData);
+
+	int i = _ITERATOR_DEBUG_LEVEL;
+
+	cout << &m_CutSceneSubDatas << endl;
+	int a = m_CutSceneSubDatas.size();
+
+	m_CutSceneSubDatas.try_emplace(_wszCutSceneTag, _tSubData);
+	//m_CutSceneSubDatas.emplace(_wszCutSceneTag, _tSubData);
 }
 
 void CCamera_CutScene_Save::Play_CutScene(_float _fTimeDelta)
