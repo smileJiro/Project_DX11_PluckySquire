@@ -157,6 +157,7 @@ void CBomb_Soldier::Attack()
 
         // 다이나믹으로 전환하고 레이어에 넣기
         m_PartObjects[PART_RIGHT_WEAPON]->Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
+        m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(0.f), _vector{ 1.f,0.f,0.f,0.f });
         CCarriableObject* pBomb = static_cast<CCarriableObject*>(m_PartObjects[PART_RIGHT_WEAPON]);
         pBomb->Set_Kinematic(false);
         m_pGameInstance->Add_GameObject_ToLayer(Get_CurLevelID(), TEXT("Layer_Monster_Projectile"), m_PartObjects[PART_RIGHT_WEAPON]);
@@ -173,7 +174,6 @@ void CBomb_Soldier::Attack()
         //파트에서 빼기
 		pBomb->Set_ParentMatrix(COORDINATE_3D, nullptr);
 		pBomb->Set_SocketMatrix(COORDINATE_3D, nullptr);
-        m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(0.f), _vector{ 1.f,0.f,0.f,0.f });
         m_PartObjects[PART_RIGHT_WEAPON] = nullptr;
     }
 

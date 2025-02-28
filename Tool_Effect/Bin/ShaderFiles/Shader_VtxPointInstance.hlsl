@@ -767,6 +767,49 @@ PS_OUT_WEIGHTEDBLENDED PS_WEIGHT_BLENDEDDISSOLVE(PS_IN In)
     return Out;
 }
 
+PS_OUT_WEIGHTEDBLENDED_BLOOM PS_WEIGHT_BLENDEDDISSOLVE_SUBBLOOM(PS_IN In)
+{
+    PS_OUT_WEIGHTEDBLENDED_BLOOM Out = (PS_OUT_WEIGHTEDBLENDED_BLOOM) 0;
+    
+    float4 vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord);
+    float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vOriginTexcoord * float2(g_vNoiseUVScale.x, g_vNoiseUVScale.y) + float2(g_vNoiseUVScale.z, g_vNoiseUVScale.w) * In.fRandom).r;
+    
+    vColor.a = vColor.r * In.vColor.a;
+    vColor.rgb = In.vColor.rgb * g_fColorScale + vColor.rgb * g_fMaskBrightness;
+
+    vColor = vColor + vColor * g_vColorIntensity;
+    
+    float fNormalizedTime = clamp(In.vLifeTime.y / In.vLifeTime.x, 0.f, 1.f);
+    float fDissolveThreshold = fNormalizedTime * g_fDissolveTimeFactor + g_fDissolveFactor;
+    
+    float fDissolveMask = step(fDissolveThreshold, fDissolve);
+    float fEdgeMask = smoothstep(fDissolveThreshold - g_fEdgeWidth, fDissolveThreshold, fDissolve);
+    
+    vColor.a = fEdgeMask * vColor.a;
+    vColor.rgb = lerp(g_vEdgeColor.rgb, vColor.rgb, fEdgeMask);
+    //vColor.rgb = fEdgeMask.xxx;
+    if (g_AlphaTest > vColor.a)
+        discard;
+    // 아래 식 추가 선택
+    /*max(min(1.0, max(max(vColor.r, vColor.g), vColor.b) * vColor.a), vColor.a)*/
+    // Weight 식 선택 후 적용, 혹은 1.0
+    float fWeight = In.fWeight * max(min(1.0, max(max(vColor.r, vColor.g), vColor.b) * vColor.a), vColor.a);
+    //float fWeight = In.fWeight * max(min(1.0, max(max(vColor.r, vColor.g), vColor.b) * vColor.a), vColor.a) * vColor.a;
+    //float fWeight = In.fWeight * vColor.a;
+    
+    float fLuminance = dot(vColor.rgb, g_fBrightness);
+    float fBrightness = max(fLuminance - g_fBloomThreshold, 0.0) / ((length(vColor.rgb) * 0.33f - g_fBloomThreshold));
+
+    Out.vAccumulate.rgb = vColor.rgb * vColor.a * fWeight;
+    Out.vAccumulate.a = vColor.a * fWeight;
+    Out.vRevealage.r = vColor.a * clamp(log(0.6f + vColor.a), 0.25f, 0.6f);
+    
+    Out.vBright = g_vSubColor * vColor.a * fBrightness;
+    
+
+    return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -889,6 +932,19 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_SRV_MAIN();
         GeometryShader = compile gs_5_0 GS_VELOCITYBILLBOARD();
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDSUBCOLORBLOOM();
+        ComputeShader = NULL;
+    }
+
+    pass DISSOLVE_SUBCOLORBLOOM // 9
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_SRV_MAIN();
+        GeometryShader = compile gs_5_0 GS_MAIN();
+        PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDDISSOLVE_SUBBLOOM();
         ComputeShader = NULL;
     }
 

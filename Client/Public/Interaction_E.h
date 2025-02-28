@@ -48,6 +48,12 @@ private:
 	wstring					m_strDisplayText;
 	_float3					m_vObejctPos;
 
+	_float					m_fScaledWidth;
+	_float					m_fScaledHeight;
+
+	_float					m_screenX;
+	_float					m_screenY;
+
 
 };
 

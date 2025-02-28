@@ -158,6 +158,7 @@ HRESULT CLight::Compute_ViewProjMatrix()
 
 	}
 
+	return S_OK;
 }
 
 HRESULT CLight::Set_LightConstData_AndUpdateBuffer(const CONST_LIGHT& _LightConstData)
