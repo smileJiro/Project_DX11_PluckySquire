@@ -2139,6 +2139,7 @@ void CPlayer::Free()
 	Safe_Release(m_pGlove);
 	Safe_Release(m_pBombStmap);
 	Safe_Release(m_pStopStmap);
+	Safe_Release(m_pDetonator);
 
     Safe_Release(m_pCarryingObject);
     
