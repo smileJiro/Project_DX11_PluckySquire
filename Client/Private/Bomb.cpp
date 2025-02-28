@@ -24,6 +24,8 @@ HRESULT CBomb::Initialize(void* _pArg)
 	BombModelDesc->vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
 	BombModelDesc->vHeadUpOffset3D = { 0.f,1.3f,0.f };
 	BombModelDesc->isCoordChangeEnable = true;
+	BombModelDesc->iModelPrototypeLevelID_3D = LEVEL_STATIC;
+	BombModelDesc->iModelPrototypeLevelID_2D = LEVEL_STATIC;
 	BombModelDesc->strModelPrototypeTag_2D = TEXT("Bomb2D");
 	BombModelDesc->strModelPrototypeTag_3D = TEXT("Bomb");
 	BombModelDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
