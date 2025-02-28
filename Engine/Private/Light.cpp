@@ -20,7 +20,7 @@ HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 	m_tLightConstData = _LightDesc;
 
 	// Shadow Light 여부 판단 후 행렬 계산 작업 수행.
-	if (true == m_tLightConstData.isShadow)
+	if (true == (_bool)m_tLightConstData.isShadow)
 	{
 		/* 0. Shadow ID 부여 */
 		m_iShadowLightID = s_iShadowLightID++;
@@ -28,7 +28,7 @@ HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 		/* 1. RenderTarget을 만든다, DSV는 DSV_Shadow 사용한다(메인앱에서 생성했음). */
 		_wstring strShadowRTTag = TEXT("Target_Shadow_");
 		strShadowRTTag += to_wstring(m_iShadowLightID);
-		m_pGameInstance->Add_RenderTarget(strShadowRTTag, SHADOWMAP_X, SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f,0.0f,0.0f,0.0f), &m_pShadowRenderTarget);
+		m_pGameInstance->Add_RenderTarget(strShadowRTTag, (_uint)SHADOWMAP_X, (_uint)SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f,0.0f,0.0f,0.0f), &m_pShadowRenderTarget);
 		/* 2. 자기 자신을 shadow rendergroup에 등록한다. */
 
 		Compute_ViewProjMatrix();
@@ -158,6 +158,55 @@ HRESULT CLight::Compute_ViewProjMatrix()
 
 	}
 
+	return S_OK;
+}
+
+void CLight::Set_Shadow(_bool _isShadow)
+{
+	if (true == _isShadow)
+	{
+		/* 1. Shadow를 켠 경우 */
+		if (true == m_tLightConstData.isShadow)
+			/* 2. 만약 원래 true였던 경우, */
+			return;
+		m_tLightConstData.isShadow = _isShadow;
+
+		if (nullptr == m_pShadowRenderTarget)
+		{
+			/* RenderTarget이 없는 경우, (첫 쉐도우 생성 요청.)*/
+
+			/* 0. Shadow ID 부여 */
+			m_iShadowLightID = s_iShadowLightID++;
+
+			/* 1. RenderTarget을 만든다, DSV는 DSV_Shadow 사용한다(메인앱에서 생성했음). */
+			_wstring strShadowRTTag = TEXT("Target_Shadow_");
+			strShadowRTTag += to_wstring(m_iShadowLightID);
+			m_pGameInstance->Add_RenderTarget(strShadowRTTag, SHADOWMAP_X, SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f, 0.0f, 0.0f, 0.0f), &m_pShadowRenderTarget);
+			/* 2. 자기 자신을 shadow rendergroup에 등록한다. */
+		}
+		else
+		{
+			/* RenderTarget이 이미 존재하는 경우 */
+		}
+
+
+		Compute_ViewProjMatrix();
+
+		m_pGameInstance->Add_ShadowLight(this);
+	}
+	else
+	{
+		/* shdow를 끄라고 요청한 경우 */
+		if (false == m_tLightConstData.isShadow)
+			/* 이미 쉐도우가 없는 경우 */
+			return;
+		
+		m_tLightConstData.isShadow = false;
+		m_pGameInstance->Remove_ShadowLight(m_iShadowLightID);
+	}
+
+	m_pGameInstance->UpdateConstBuffer(m_tLightConstData, m_pLightConstbuffer);
+	
 }
 
 HRESULT CLight::Set_LightConstData_AndUpdateBuffer(const CONST_LIGHT& _LightConstData)

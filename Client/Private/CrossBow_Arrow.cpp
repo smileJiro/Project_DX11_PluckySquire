@@ -262,7 +262,7 @@ HRESULT CCrossBow_Arrow::Ready_PartObjects()
     //BodyDesc.strModelPrototypeTag_2D = TEXT("barferbug_projectile");
     BodyDesc.strModelPrototypeTag_3D = TEXT("Crossbow_Arrow");
     //BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
-    BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
     //BodyDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 

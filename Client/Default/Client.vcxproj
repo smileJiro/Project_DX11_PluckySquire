@@ -203,6 +203,7 @@
     <ClInclude Include="..\Public\PalmMarker.h" />
     <ClInclude Include="..\Public\PlayerBomb.h" />
     <ClInclude Include="..\Public\PlayerState_Bomber.h" />
+    <ClInclude Include="..\Public\PlayerState_ErasePalmDecal.h" />
     <ClInclude Include="..\Public\PlayerState_Stamp.h" />
     <ClInclude Include="..\Public\Projectile_BirdMonster.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -451,6 +452,7 @@
     <ClCompile Include="..\Private\PalmMarker.cpp" />
     <ClCompile Include="..\Private\PlayerBomb.cpp" />
     <ClCompile Include="..\Private\PlayerState_Bomber.cpp" />
+    <ClCompile Include="..\Private\PlayerState_ErasePalmDecal.cpp" />
     <ClCompile Include="..\Private\PlayerState_Stamp.cpp" />
     <ClCompile Include="..\Private\Projectile_BirdMonster.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

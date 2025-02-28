@@ -34,7 +34,8 @@ struct DirectLightData
     
     int isShadow;
     float fLightRadius;
-    float2 dummy1;
+    float fShadowFactor;
+    float dummy1;
     
     matrix LightViewProjMatrix;
 };
@@ -92,6 +93,7 @@ Texture2D g_DirectLightsTexture;
 Texture2D g_LightingTexture;
 // Blur 대상 Texture2D
 Texture2D g_SrcBlurTargetTexture;
+Texture2D g_PostProcessingTexture;
 // etc
 Texture2D g_ShadowMapTexture, g_FinalTexture;
 // Default Mtrl
@@ -269,15 +271,15 @@ float PCF_Filter(float2 _vUV, float _fZReceiverNDC, float _fFilterRadiusUV, Text
             float fSampledDepth = _ShadowMapTexture.Sample(LinearSampler_Clamp, _vUV + vOffset);
 
             // 깊이 비교 (좌표계 확인 필요)
-            if (_fZReceiverNDC <= fSampledDepth)
+            if (fSampledDepth <= _fZReceiverNDC)
             {
-                fSumShadowFactor += 1.0f;
+                fSumShadowFactor += c_DirectLight.fShadowFactor;
             }
         }
     }
 
     // 평균화하여 부드러운 그림자 생성
-    return fSumShadowFactor / (iKernelSize * iKernelSize); // 동적 커널 크기 지원
+    return (fSumShadowFactor) / (iKernelSize * iKernelSize); // 동적 커널 크기 지원
 }
 
 float3 RandomWorldHemiSphereNormal(float3 _vWorldNormal, float2 _vTexCoord)
@@ -291,7 +293,7 @@ float3 RandomWorldHemiSphereNormal(float3 _vWorldNormal, float2 _vTexCoord)
     float3 randomVec = normalize(float3(NoiseX, NoiseY, abs(NoiseZ))); // Z축을 양수로 제한
 
 // TBN 행렬로 법선 기준 정렬
-    float3 upVector = abs(_vWorldNormal.y) < 0.999 ? float3(0.f, 1.f, 0.f) : float3(1.f, 0.f, 0.f);
+    float3 upVector = abs(_vWorldNormal.y) < 0.999 ? float3(0.f, 1.f, 0.f) : cross(float3(0, 1, 0), _vWorldNormal);
     float3 tangent = normalize(cross(_vWorldNormal, upVector)); // Tangent 계산
     float3 bitangent = cross(_vWorldNormal, tangent); // Bitangent 계산
     float3x3 TBN = float3x3(tangent, bitangent, _vWorldNormal); // TBN 행렬 생성
@@ -299,18 +301,33 @@ float3 RandomWorldHemiSphereNormal(float3 _vWorldNormal, float2 _vTexCoord)
 // 로컬 랜덤 벡터를 법선 기준으로 변환
     return mul(TBN, randomVec);
 }
+float3 SampleHemisphere(float3 randomNormal, float3 worldNormal)
+{
 
-float Compute_SSAO(float3 _vPixelWorldPos, float3 _vPixelWorldNormal, float2 _vRandomTexcoord, float _fRadius, Texture2D _DepthTexture)
+    // 로컬 좌표계에서의 샘플 방향
+    float3 localDir = randomNormal;
+
+    // 2. 월드 좌표계를 기준으로 변환
+    // worldNormal을 기준으로 직교 좌표계 생성
+    float3 tangent = normalize(abs(worldNormal.z) > 0.999 ? float3(1, 0, 0) : cross(float3(0, 1, 0), worldNormal));
+    float3 bitangent = cross(worldNormal, tangent);
+
+    // 로컬 방향을 월드 공간으로 변환
+    return localDir.x * tangent + localDir.y * bitangent + localDir.z * worldNormal;
+}
+float Compute_SSAO(float3 _vPixelWorldPos, float3 _vPixelWorldNormal, float2 _vRandomTexcoord, float _fRadius, Texture2D _DepthTexture, float3 _vRandomNormal)
 {
     float3 vViewPosition = mul(float4(_vPixelWorldPos, 1.0f), g_CamViewMatrix).xyz;
     float3 vViewNormal = mul(float4(_vPixelWorldNormal, 0.0f), g_CamViewMatrix).xyz;
     
-    float3 vRandomWorldHemiNormal = RandomWorldHemiSphereNormal(_vPixelWorldNormal, _vRandomTexcoord);
+    float3 vRandomWorldHemiNormal = SampleHemisphere(_vRandomNormal, _vPixelWorldNormal);
+
+
     float3 vRandomViewHemiNormal = mul(float4(vRandomWorldHemiNormal, 0.0f), g_CamViewMatrix).xyz;
     
     float flip = sign(dot(vRandomViewHemiNormal, vViewNormal)); // 부호 결정
     
-    float3 vRandomViewPos = vViewPosition + (normalize(vRandomViewHemiNormal) * flip * _fRadius);
+    float3 vRandomViewPos = vViewPosition + (normalize(vRandomViewHemiNormal) /** flip */* _fRadius);
     float4 vNDCPos = mul(float4(vRandomViewPos, 1.0f), g_CamProjMatrix);  
     vNDCPos.xyz /= vNDCPos.w;
     float2 vRandomPosTexcoord = vNDCPos.xy;
@@ -318,12 +335,16 @@ float Compute_SSAO(float3 _vPixelWorldPos, float3 _vPixelWorldNormal, float2 _vR
     vRandomPosTexcoord += 1.0f;
     vRandomPosTexcoord *= 0.5f;
     
-    float fSampleViewZ = g_DepthTexture.Sample(PointSampler, vRandomPosTexcoord).y * g_fFarZ;
+    float fSampleViewZ = g_DepthTexture.Sample(LinearSampler_Clamp, vRandomPosTexcoord).y * g_fFarZ;
     float fBiaseFactor = 0.0001f;
     float bias = fBiaseFactor * vViewPosition.z / g_fFarZ;
     float dp = max(dot(vViewNormal, normalize(vRandomViewPos - (vViewPosition))), 0.0f); // 새로 샘플한 지점의 뷰 공간 포지션과 현재 나의 노말을 내적하여 방향성을 비교
-    float fDistZ = saturate((vViewPosition.z - bias - fSampleViewZ) / _fRadius); // 뷰스페이스의 Z 값을 정규화 
-    float fSSAO = dp * fDistZ * 0.5f;
+    float fDistZ = saturate(((vViewPosition.z - bias - fSampleViewZ) / _fRadius)); // 뷰스페이스의 Z 값을 정규화 
+
+    float zFalloff = 2.0f;
+    float zFactor = saturate(1.0f - (abs((vViewPosition.z - bias - fSampleViewZ)) / zFalloff)) * 1.2f;
+
+    float fSSAO = dp * fDistZ * zFactor;
     return fSSAO;
 }
 
@@ -410,9 +431,9 @@ PS_OUT PS_PBR_LIGHT_POINT(PS_IN In)
     float3 DirectLighting = ((vDiffuseBRDF * c_DirectLight.vDiffuse.rgb) + (vSpecularBRDf * c_DirectLight.vSpecular.rgb)) * vFinalRadiance * NdotI;
     
     // Shadow Factor 계산
-    float fShadowFactor = 1.0f;
+    float fShadowFactor = 0.0f;
     
-    Out.vColor = float4(DirectLighting.rgb * fShadowFactor, 1.0f);
+    Out.vColor = float4(DirectLighting.rgb * (1.0f - fShadowFactor), 1.0f);
     
     return Out;
 }
@@ -461,7 +482,7 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
     float3 DirectLighting = ((vDiffuseBRDF * c_DirectLight.vDiffuse.rgb) + (vSpecularBRDf * c_DirectLight.vSpecular.rgb)) * c_DirectLight.vRadiance * NdotI;
     
     // Shadow Factor 계산
-    float fShadowFactor = 1.0f;
+    float fShadowFactor = 0.0f;
     if (c_DirectLight.isShadow & 1)
     {
 
@@ -495,7 +516,7 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
     
     
     
-    Out.vColor = float4(DirectLighting.rgb * fShadowFactor, 1.0f);
+    Out.vColor = float4(DirectLighting.rgb * (1 - fShadowFactor), 1.0f);
     return Out;
 }
 
@@ -531,13 +552,13 @@ PS_OUT PS_MAIN_LIGHTING(PS_IN In)
     [unroll]
     for (int i = 0; i < 64; ++i)
     {
-        float fSSAO = Compute_SSAO(vPixelWorld.xyz, normalize(vNormalWorld), g_RandomTexcoords[i], 0.05f, g_DepthTexture);
-
+        float fSSAO = Compute_SSAO(vPixelWorld.xyz, normalize(vNormalWorld), g_RandomTexcoords[i], 1.0f, g_DepthTexture, ssaoKernel[i]);
+    
         SumSSAO += fSSAO;
     }
     SumSSAO /= 64.f;
-    SumSSAO = pow(1.0f - SumSSAO, 4);
-    vAmbientLighting *= SumSSAO;
+    SumSSAO = 1.0f - SumSSAO;
+    vAmbientLighting *= pow(SumSSAO, 4);
     
     
     //Out.vColor = float4(SumSSAO, SumSSAO, SumSSAO /*+ vEmmision*/, 1.0f);
@@ -545,11 +566,10 @@ PS_OUT PS_MAIN_LIGHTING(PS_IN In)
     Out.vColor = clamp(Out.vColor, 0.0f, c_GlobalIBLVariable.fHDRMaxLuminance);
     return Out;
 }
-
-PS_OUT PS_MAIN_COMBINE(PS_IN In)
+PS_OUT PS_PBR_BLUR_FINAL(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-    float3 vLighting = g_LightingTexture.Sample(LinearSampler,In.vTexcoord).rgb;
+    float3 vLighting = g_LightingTexture.Sample(LinearSampler, In.vTexcoord).rgb;
     float3 vPBRBlur = g_SrcBlurTargetTexture.Sample(LinearSampler, In.vTexcoord).rgb;
     float2 vDepth = g_DepthTexture.Sample(PointSampler, In.vTexcoord).rg;
     float fViewZ = vDepth.y * g_fFarZ;
@@ -567,40 +587,51 @@ PS_OUT PS_MAIN_COMBINE(PS_IN In)
     vPBRBlur *= (c_DofVariable.vBlurColor * c_DofVariable.fDofBrightness);
     vLighting = (vLighting * (1.0f - fCoc)) + (vPBRBlur * fCoc);
     
-    //vLighting = vLighting + vPBRBlur;
+    Out.vColor = float4(vLighting, 1.0f); // PBR_BLURFINAL TARGET
+    return Out;
+}
+PS_OUT PS_MAIN_COMBINE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    float3 vPostProcessing = g_PostProcessingTexture.Sample(LinearSampler, In.vTexcoord).rgb;
+    float2 vDepth = g_DepthTexture.Sample(PointSampler, In.vTexcoord).rg;
+    float fViewZ = vDepth.y * g_fFarZ;
+    
     
     float3 vToneMapColor = float3(0.0f, 0.0f, 0.0f);
     if (TONE_FILMIC == c_GlobalIBLVariable.iToneMappingFlag)
     {
-        vToneMapColor = FilmicToneMapping(vLighting);
+        vToneMapColor = FilmicToneMapping(vPostProcessing);
     }
     else if (TONE_UNCHARTED2 == c_GlobalIBLVariable.iToneMappingFlag)
     {
-        vToneMapColor = Uncharted2ToneMapping(vLighting);
+        vToneMapColor = Uncharted2ToneMapping(vPostProcessing);
     }
     else if (TONE_LUMAREINHARD == c_GlobalIBLVariable.iToneMappingFlag)
     {
-        vToneMapColor = lumaBasedReinhardToneMapping(vLighting);
+        vToneMapColor = lumaBasedReinhardToneMapping(vPostProcessing);
     }
     else
     {
-        vToneMapColor = LinearToneMapping(vLighting);
+        vToneMapColor = LinearToneMapping(vPostProcessing);
     }
 
+    
+    
+    
+    // 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
     float fPlayerDepthDesc = g_PlayerDepthTexture.Sample(LinearSampler, In.vTexcoord).r;
     float fPlayerViewZ = fPlayerDepthDesc * g_fFarZ;
     
-    //float3 vHideColor = g_vHideColor;
-    //// 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
-    //float fViewZDiff = fPlayerViewZ - fViewZ - 1.0f;
-    //float fHideMin = 0.0f;
-    //float fHideMax = 10.0f;
-    //vHideColor = lerp(vToneMapColor, vHideColor, saturate(fViewZDiff / (fHideMax - fHideMin)));
-    //vToneMapColor = 0.0f < fViewZDiff ? vHideColor : vToneMapColor;
+    float3 vHideColor = g_vHideColor;
+    float fViewZDiff = fPlayerViewZ - fViewZ - 1.0f;
+    float fHideMin = 0.0f;
+    float fHideMax = 10.0f;
+    vHideColor = lerp(vToneMapColor, vHideColor, saturate(fViewZDiff / (fHideMax - fHideMin)));
+    vToneMapColor = 0.0f < fViewZDiff ? vHideColor : vToneMapColor;
     
-    //vToneMapColor = lerp(vToneMapColor, vHideColor, (vDepth.y - fPlayerDepthDesc));
+    vToneMapColor = lerp(vToneMapColor, vHideColor, (vDepth.y - fPlayerDepthDesc));
     Out.vColor = float4(vToneMapColor, 1.0f);
-    //Out.vColor.rgb *= c_DofVariable.fFadeRatio;
     return Out;
 }
 
@@ -964,5 +995,16 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_PBR_BLUR_UP();
         ComputeShader = NULL;
 
+    }
+
+    pass PBR_Blur_Final // 11
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_PBR_BLUR_FINAL();
     }
 }

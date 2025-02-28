@@ -153,7 +153,7 @@ private:
 	class C2DTrigger_Sample*		m_pPickingBlocker = nullptr;
 	
 	_wstring						m_strMapBinaryPath = L"../../Client/Bin/MapSaveFiles/2D/";
-	_wstring						m_strMapMeshPath = L"../../Client/Bin/Resources/Models/3DMapObject/";
+	_wstring						m_strMapMeshPath = L"../../Client/Bin/Resources/Models/3DObject/";
 	_char							m_szSaveFileName[MAX_PATH];
 
 	

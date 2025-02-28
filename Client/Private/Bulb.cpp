@@ -372,7 +372,7 @@ HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)
 
 		CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
 		CircleDesc.pOwner = this;
-		CircleDesc.fRadius = 20.f;
+		CircleDesc.fRadius = 1.f;
 		CircleDesc.vScale = { 1.f/ fScaleX, 1.f/ fScaleY };
 		CircleDesc.vOffsetPosition = { 0.f, 0.f };
 		CircleDesc.isBlock = false;
@@ -388,7 +388,7 @@ HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)
 		pCollider = nullptr;
 		CircleDesc = {};
 		CircleDesc.pOwner = this;
-		CircleDesc.fRadius = 100.f;
+		CircleDesc.fRadius = 25.f;
 		CircleDesc.vScale = { 1.f / fScaleX, 1.f / fScaleY };
 		CircleDesc.vOffsetPosition = { 0.f, 0.f };
 		CircleDesc.isBlock = false;

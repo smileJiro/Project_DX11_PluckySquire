@@ -34,5 +34,9 @@
     {
         "Name": "Dust_Jump.json",
         "Count": 3
+    },
+    {
+        "Name": "Dust_Dodge.json",
+        "Count": 5
     }
 ]

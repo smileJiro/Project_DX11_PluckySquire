@@ -279,6 +279,12 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_ZippyAttackAnimEvent"),
 		CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Static/Monster/Zippy/Zippy_Attack.animevt"))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_BirdMonsterAttackAnimEvent"),
+		CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Static/Monster/Namastarling_Rig_01/BirdMonster_Attack.animevt"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_SoldierAttackAnimEvent"),
+		CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Static/Monster/humgrump_troop_Rig_GT/SoldierAttack.animevt"))))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_FSM"),
 		CFSM::Create(m_pDevice, m_pContext))))
@@ -783,8 +789,8 @@ HRESULT CLoader::Loading_Level_Static()
 
 	lstrcpy(m_szLoadingText, TEXT("이펙트(을)를 로딩중입니다."));
 
-	if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/"))))
-		return E_FAIL;
+    if (FAILED(Load_Directory_Effects(LEVEL_STATIC, TEXT("../Bin/DataFiles/FX/Common/LoadInfo.json"))))
+        return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/FX/FX_StaticInfo.json"), TEXT("FX_Static"), LEVEL_STATIC)))
 		return E_FAIL;
@@ -997,7 +1003,7 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 		lstrcpy(m_szLoadingText, TEXT("Level2 이펙트 로딩중입니다."));
 
-		if (FAILED(Load_Directory_Effects(_eLoadLevelID, TEXT("../Bin/DataFiles/FX/Level2/"))))
+		if (FAILED(Load_Directory_Effects(LEVEL_CHAPTER_2, TEXT("../Bin/DataFiles/FX/Level2/LoadInfo.json"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/FX/FX_Level2.json"), TEXT("FX_Level2"), _eLoadLevelID)))
@@ -1258,7 +1264,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 
 	/* For. Prototype_GameObject_Camera_CutScene */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_CutScene_Save"),
-		CCamera_CutScene::Create(m_pDevice, m_pContext))))
+		CCamera_CutScene_Save::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 #pragma endregion
@@ -1267,14 +1273,14 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 	// 3D Map Load
 	if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL,
 		MAP_3D_DEFAULT_PATH,
-		L"Chapter_04_Play_Desk.json",
+		L"Chapter_06_Play_Desk.json",
 		matPretransform, true)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_4);
+	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_6);
 
 
-	return Loading_Level_Chapter_4(LEVEL_CAMERA_TOOL);
+	return Loading_Level_Chapter_6(LEVEL_CAMERA_TOOL);
 }
 
 HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
@@ -1884,26 +1890,47 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
 
 HRESULT CLoader::Load_Directory_Effects(LEVEL_ID _iLevID, const _tchar* _szJsonFilePath)
 {
-	std::filesystem::path path;
-	path = _szJsonFilePath;
+    std::filesystem::path path;
+    //path = _szJsonFilePath;
 
-	for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
-		if (entry.path().extension() == ".json") {
+    json jsonLoadInfo;
+    m_pGameInstance->Load_Json(_szJsonFilePath, &jsonLoadInfo);
 
-			CEffect_System* pParticleSystem = CEffect_System::Create(m_pDevice, m_pContext, entry.path().c_str());
+    for (_int i = 0; i < jsonLoadInfo["Path"].size(); ++i)
+    {
+        path = STRINGTOWSTRING(jsonLoadInfo["Path"][i]);
 
-			if (FAILED(m_pGameInstance->Add_Prototype(_iLevID, entry.path().filename(), pParticleSystem)))
-			{
-				string str = "Failed to Create Effects";
-				str += entry.path().filename().replace_extension().string();
-				MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
-				return E_FAIL;
-			}
+        CEffect_System* pParticleSystem = CEffect_System::Create(m_pDevice, m_pContext, path.c_str());
 
-		}
-	}
+        if (FAILED(m_pGameInstance->Add_Prototype(_iLevID, path.filename(), pParticleSystem)))
+        {
+            string str = "Failed to Create Effects";
+            str += path.filename().replace_extension().string();
+            MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+            return E_FAIL;
+        }
 
-	return S_OK;
+    }
+     
+
+
+    //for (const auto& entry : std::filesystem::recursive_directory_iterator(path)) {
+    //    if (entry.path().extension() == ".json") {
+    //        
+    //        CEffect_System* pParticleSystem = CEffect_System::Create(m_pDevice, m_pContext, entry.path().c_str());
+    //
+    //        if (FAILED(m_pGameInstance->Add_Prototype(_iLevID, entry.path().filename(), pParticleSystem)))
+    //        {
+    //            string str = "Failed to Create Effects";
+    //            str += entry.path().filename().replace_extension().string();
+    //            MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+    //            return E_FAIL;
+    //        }
+    //
+    //    }
+    //}
+
+    return S_OK;
 }
 
 HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _strFileName)

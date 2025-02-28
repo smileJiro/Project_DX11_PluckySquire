@@ -65,7 +65,7 @@ public:
 
 public:
 	void				Load_ArmData(_wstring _sz3DFileName, _wstring _sz2DFileName);
-	void				Load_CutSceneData();
+	void				Load_CutSceneData(_wstring _szCutSceneFileName);
 	HRESULT				Load_DOF(const _wstring& _strJsonPath, _uint _iCameraType);
 
 private:

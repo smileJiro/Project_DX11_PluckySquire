@@ -649,8 +649,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	Desc.fFovy = XMConvertToRadians(60.f);
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	Desc.fNear = 0.1f;
-	Desc.fFar = 1000.f;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.eZoomLevel = CCamera::LEVEL_6;
@@ -672,8 +670,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	TargetDesc.fFovy = XMConvertToRadians(60.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	TargetDesc.fNear = 0.1f;
-	TargetDesc.fFar = 1000.f;
 	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
 	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
 	TargetDesc.eZoomLevel = CCamera::LEVEL_6;
@@ -695,8 +691,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	CutSceneDesc.fFovy = XMConvertToRadians(60.f);
 	CutSceneDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	CutSceneDesc.fNear = 0.1f;
-	CutSceneDesc.fFar = 1000.f;
 	CutSceneDesc.vEye = _float3(0.f, 10.f, -7.f);
 	CutSceneDesc.vAt = _float3(0.f, 0.f, 0.f);
 	CutSceneDesc.eZoomLevel = CCamera::LEVEL_6;
@@ -718,8 +712,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	Target2DDesc.fFovy = XMConvertToRadians(60.f);
 	Target2DDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	Target2DDesc.fNear = 0.1f;
-	Target2DDesc.fFar = 1000.f;
 	Target2DDesc.vEye = _float3(0.f, 10.f, -7.f);
 	Target2DDesc.vAt = _float3(0.f, 0.f, 0.f);
 	Target2DDesc.eZoomLevel = CCamera::LEVEL_6;
@@ -737,7 +729,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
 
 	// Load CutSceneData, ArmData
-	CCamera_Manager::GetInstance()->Load_CutSceneData();
+	CCamera_Manager::GetInstance()->Load_CutSceneData(TEXT("Chapter2_CutScene.json"));
 	CCamera_Manager::GetInstance()->Load_ArmData(TEXT("Chapter2_ArmData.json"), TEXT("Chapter2_SketchSpace_ArmData.json"));
 
 
@@ -1116,7 +1108,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 HRESULT CLevel_Chapter_02::Ready_Layer_Item(const _wstring& _strLayerTag)
 {
 	// Test(PlayerItem: Glove, Stamp)
-	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 6.273f, -19.097f));
+	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 7.5f, -19.097f));
 	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 

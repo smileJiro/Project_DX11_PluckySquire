@@ -243,7 +243,15 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
 #endif // _DEBUG
 
+	if (KEY_DOWN(KEY::I)) {
+		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Intro"));
+		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
+	}
 
+	if (KEY_DOWN(KEY::J)) {
+		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Flag"));
+		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
+	}
 
 	static _float3 vOutPos = {};
 
@@ -305,6 +313,19 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	//	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	//}
 
+	if (KEY_DOWN(KEY::F5))
+	{
+		CGoblin::MONSTER_DESC Goblin_Desc;
+		Goblin_Desc.iCurLevelID = m_eLevelID;
+		Goblin_Desc.eStartCoord = COORDINATE_3D;
+
+		Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(5.f, 0.35f, -3.f);
+		Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, TEXT("Layer_Monster"), &Goblin_Desc)))
+			return;
+	}
+
 }
 
 HRESULT CLevel_Chapter_04::Render()
@@ -348,6 +369,7 @@ HRESULT CLevel_Chapter_04::Ready_Lights()
 	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.0f);
 	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
 	LightDesc.isShadow = true;
+	LightDesc.fShadowFactor = 1.0f;
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
 		return E_FAIL;
 
@@ -461,8 +483,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	Desc.fFovy = XMConvertToRadians(60.f);
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	Desc.fNear = 0.1f;
-	Desc.fFar = 300.f;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.eZoomLevel = CCamera::LEVEL_6;
@@ -484,8 +504,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	TargetDesc.fFovy = XMConvertToRadians(60.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	TargetDesc.fNear = 0.1f;
-	TargetDesc.fFar = 300.f;
 	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
 	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
 	TargetDesc.eZoomLevel = CCamera::LEVEL_4;
@@ -507,8 +525,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	CutSceneDesc.fFovy = XMConvertToRadians(60.f);
 	CutSceneDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	CutSceneDesc.fNear = 0.1f;
-	CutSceneDesc.fFar = 300.f;
 	CutSceneDesc.vEye = _float3(0.f, 10.f, -7.f);
 	CutSceneDesc.vAt = _float3(0.f, 0.f, 0.f);
 	CutSceneDesc.eZoomLevel = CCamera::LEVEL_6;
@@ -530,8 +546,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	Target2DDesc.fFovy = XMConvertToRadians(60.f);
 	Target2DDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	Target2DDesc.fNear = 0.1f;
-	Target2DDesc.fFar = 300.f;
 	Target2DDesc.vEye = _float3(0.f, 10.f, -7.f);
 	Target2DDesc.vAt = _float3(0.f, 0.f, 0.f);
 	Target2DDesc.eZoomLevel = CCamera::LEVEL_6;
@@ -551,7 +565,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
 
 	// Load CutSceneData, ArmData
-	CCamera_Manager::GetInstance()->Load_CutSceneData();
+	CCamera_Manager::GetInstance()->Load_CutSceneData(TEXT("Chapter4_CutScene.json"));
 	CCamera_Manager::GetInstance()->Load_ArmData(TEXT("Chapter4_ArmData.json"), TEXT("Chapter2_SketchSpace_ArmData.json"));
 
 	return S_OK;

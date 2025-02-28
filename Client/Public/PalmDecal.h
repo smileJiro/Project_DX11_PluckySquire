@@ -3,6 +3,7 @@
 #include "Interactable.h"
 BEGIN(Client)
 class IStoppable;
+class CSection_Manager;
 class CPalmDecal :
 	public CModelObject, public IInteractable
 {
@@ -18,6 +19,7 @@ public:
 	virtual void Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT	Render() override;
 public:
+	virtual _matrix		Get_FinalWorldMatrix() override;
 	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
@@ -30,7 +32,7 @@ public:
 
 private:
 	set<CGameObject*> m_StoppedObjects;
-
+	CSection_Manager* m_pSectionMgr = nullptr;
 public:
 	static CPalmDecal* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

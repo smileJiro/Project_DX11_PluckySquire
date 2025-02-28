@@ -646,13 +646,31 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 		};
 
 		
-
 		// Delete Light 
-		if (ImGui::Button("Delete Light"))
+		if (ImGui::Button("Shadow On"))
 		{
-			if (FAILED(m_pGameInstance->Delete_Light(selected_index)))
-				return E_FAIL;
+			if(false == (*Selectiter)->Is_ShadowLight() && LIGHT_TYPE::POINT != (*Selectiter)->Get_Type())
+			{
+				// Shadow가 현재 비활성상태이고, 타입이 point가 아닌경우,
+				(*Selectiter)->Set_Shadow(true);
+			}
 		}
+		ImGui::SameLine();
+		// Delete Light 
+		if (ImGui::Button("Shadow Off"))
+		{
+			if (true == (*Selectiter)->Is_ShadowLight() && LIGHT_TYPE::POINT != (*Selectiter)->Get_Type())
+			{
+				// Shadow가 현재 비활성상태이고, 타입이 point가 아닌경우,
+				(*Selectiter)->Set_Shadow(false);
+			}
+
+		}
+		if (ImGui::SliderFloat("ShadowFactor##Light", &tConstLightData.fShadowFactor, -2.0f, 2.0f, "%.3f"))
+		{
+			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
+		};
+
 
 		// Save Lights Data 
 		ImGui::Separator();

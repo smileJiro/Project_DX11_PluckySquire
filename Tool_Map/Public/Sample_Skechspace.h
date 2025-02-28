@@ -20,8 +20,12 @@ public:
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
+	HRESULT					Render_Plag();
+	HRESULT					Render_Cup();
 public :
 	_bool					m_isPreView = false;
+	SKSP_TYPE				m_eSkspType = SKSP_DEFAULT;
+
 public:
 	static CSample_Skechspace* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

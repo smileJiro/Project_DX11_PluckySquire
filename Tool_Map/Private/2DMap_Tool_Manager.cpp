@@ -1944,18 +1944,28 @@ void C2DMap_Tool_Manager::Change_Proto_Mesh()
 		m_arrSelectName[MODEL_3D_LIST]);
 	if (nullptr == pCheck)
 	{
-		_wstring strFilePath = m_strMapMeshPath + m_arrSelectName[MODEL_3D_LIST] + L"/";
-		strFilePath += m_arrSelectName[MODEL_3D_LIST] + L".model";
-		XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, 
-			m_arrSelectName[MODEL_3D_LIST],
-			C3DModel::Create(m_pDevice, m_pContext, 
-			WstringToString(strFilePath).c_str(), matPretransform, true))))
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(m_strMapMeshPath))
 		{
-			LOG_TYPE("Model Proto Failed", LOG_ERROR);
-			return;
+			if (entry.path().extension() == ".model" && entry.path().filename().wstring() == m_arrSelectName[MODEL_3D_LIST] + L".model")
+			{
+				_wstring strFilePath = entry.path();
+					//m_strMapMeshPath + m_arrSelectName[MODEL_3D_LIST] + L"/";
+				//strFilePath += m_arrSelectName[MODEL_3D_LIST] + L".model";
+				XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+				if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP,
+					m_arrSelectName[MODEL_3D_LIST],
+					C3DModel::Create(m_pDevice, m_pContext,
+						WstringToString(strFilePath).c_str(), matPretransform, true))))
+				{
+					LOG_TYPE("Model Proto Failed", LOG_ERROR);
+					return;
+				}
+			
+			}
 		}
+
 	}
 
 
@@ -2822,7 +2832,7 @@ void C2DMap_Tool_Manager::Load_3D_Map(_bool _bSelected)
 
 			if (pGameObject)
 			{
-				static_cast<CMapObject*>(pGameObject)->Load_Spsk(hFile);
+				static_cast<CMapObject*>(pGameObject)->Load_Sksp(hFile);
 				static_cast<CMapObject*>(pGameObject)->Load_Override_Color(hFile);
 				static_cast<CMapObject*>(pGameObject)->Load_Override_Material(hFile);
 

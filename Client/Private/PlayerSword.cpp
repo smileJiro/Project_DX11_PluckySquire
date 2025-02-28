@@ -79,7 +79,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;  
 	ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     ShapeData.isTrigger = true;                    
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, m_f3DNormalAttackZOffset));
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, -m_f3DNormalAttackZOffset));
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     //점프 공격용 트리거
@@ -189,6 +189,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
 
 void CPlayerSword::Update(_float _fTimeDelta)
 {
+
     if (m_eCurrentState != m_ePastState)
         On_StateChange();
     COORDINATE eCoord = Get_CurCoord();
@@ -285,7 +286,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
     default:
         break;
     }
-    //cout << m_pActorCom->Get_Shapes()[0]->getActor() << endl;
+
 
     __super::Update(_fTimeDelta);
 
@@ -470,6 +471,26 @@ void CPlayerSword::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOth
 {
 }
 
+//void CPlayerSword::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, 
+//    CModifiableContacts& _ModifiableContacts, _bool _bIm0)
+//{
+//  //  if (Is_Flying())
+//  //  {
+//		//_vector vMyPos = Get_FinalPosition();
+//  //      _uint iContactCount = _ModifiableContacts.Get_ContactCount();
+//  //      for (_uint i = 0; i < iContactCount; i++)
+//  //      {
+//  //          _vector vContactPos = _ModifiableContacts.Get_Point(i);
+//		//	_float fDistance = XMVectorGetX(XMVector3Length(vContactPos - vMyPos));
+//		//	if (fDistance > 0.1f)
+//		//	{
+//		//		_ModifiableContacts.Ignore(i);
+//		//	}
+//  //      }
+//  //  }
+//
+//}
+
 
 void CPlayerSword::Active_OnEnable()
 {
@@ -543,7 +564,6 @@ void CPlayerSword::Set_State(SWORD_STATE _eNewState)
 void CPlayerSword::On_StateChange()
 {
     COORDINATE eCoord = Get_CurCoord();
-   // cout << "SwrodState : " << m_eCurrentState << endl;
     switch (m_eCurrentState)
     {
     case Client::CPlayerSword::HANDLING:
@@ -646,8 +666,8 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
         {
             if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_NORMAL3 == _eAttackType)
                 CEffect_Manager::GetInstance()->Active_Effect(TEXT("SwordCombo"), true, &m_WorldMatrices[COORDINATE_3D]);
-            if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_JUMPATTACK == _eAttackType)
-                CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("SwordJumpAttack"), true, XMLoadFloat4((_float4*)&m_WorldMatrices[COORDINATE_3D].m[3]));
+       /*     if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_JUMPATTACK == _eAttackType)
+                CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("SwordJumpAttack"), true, XMLoadFloat4((_float4*)&m_WorldMatrices[COORDINATE_3D].m[3]));*/
         }
 
         else 

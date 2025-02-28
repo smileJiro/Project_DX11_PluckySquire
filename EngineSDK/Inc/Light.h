@@ -19,6 +19,9 @@ public:
 
 public: /* Shadow View Proj */
 	HRESULT Compute_ViewProjMatrix(); // view 따로, proj 따로 저장해야함, 기존 모델들 vs shader 그대로 가려면
+
+public:
+	
 public:
 	// Get
 	const CONST_LIGHT* Get_LightDesc_Ptr() const { return &m_tLightConstData; }
@@ -28,9 +31,10 @@ public:
 	_float4x4* Get_ProjMatrix() { return &m_ProjMatrix; }
 	CRenderTarget* Get_ShadowRenderTarget() { return m_pShadowRenderTarget; }
 	_int Get_ShadowLightID() const { return m_iShadowLightID; }
+	_bool Is_ShadowLight() const { return m_tLightConstData.isShadow; }
 	// Set
 	HRESULT Set_LightConstData_AndUpdateBuffer(const CONST_LIGHT& _LightConstData);
-
+	void Set_Shadow(_bool _isShadow);
 private:
 	ID3D11Device*			m_pDevice = nullptr;
 	ID3D11DeviceContext*	m_pContext = nullptr;

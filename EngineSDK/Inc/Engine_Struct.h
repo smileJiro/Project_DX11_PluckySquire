@@ -16,7 +16,7 @@ namespace Engine
 	{
 		float			fSensorHeight = 24.0f;
 		float			fAperture = 2.8f; // 조리개 크기
-		float			fFocusDistance = 5.0f; // 초점 평면거리
+		float			fFocusDistance = 50.0f; // 초점 평면거리
 		float			fFocalLength = 0; // Fovy와 FocusDistance를 기반으로 구해지는 값.
 
 		float			fDofBrightness = 1.5f; // Fovy와 FocusDistance를 기반으로 구해지는 값.
@@ -87,7 +87,8 @@ namespace Engine
 		// Shadow 
 		int				isShadow; // 자기 자신이 shadow가 있는 light인지. >> 이 변수가 true라면, shadow map을 텍스쳐링하여 shadowfactor를 계산한다.
 		float			fLightRadius; // 조명의 두께(반지름 pcss)
-		XMFLOAT2		dummy;
+		float			fShadowFactor = 1.0f;
+		float			dummy1;
 
 		// Matrix
 		XMMATRIX		LightViewProjMatrix; // 자기 자신의 view, proj 매트릭스.

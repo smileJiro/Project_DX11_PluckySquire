@@ -460,9 +460,9 @@ void CCamera_Manager::Load_ArmData(_wstring _sz3DFileName, _wstring _sz2DFileNam
 	Load_ArmData(TARGET_2D, wszLoadPath + _sz2DFileName);
 }
 
-void CCamera_Manager::Load_CutSceneData()
+void CCamera_Manager::Load_CutSceneData(_wstring _szCutSceneFileName)
 {
-	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/CutSceneData/Chapter2_CutScene.json";
+	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/CutSceneData/" + _szCutSceneFileName;
 
 	ifstream file(wszLoadPath);
 

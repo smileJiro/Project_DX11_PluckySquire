@@ -4000,5 +4000,68 @@
   "SearchTag": "SketchSpace_Crinkle_Paper_Wall_03_Sprite",
   "Sorting": false,
   "TextureName": "SketchSpace_Crinkle_Paper_Wall_03_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "Desk_C06_MugBlue_FG_01_Sprite",
+  "Sorting": false,
+  "TextureName": "Desk_C06_MugBlue_FG_01_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "Desk_C06_MugBlue_FG_02_Sprite",
+  "Sorting": false,
+  "TextureName": "Desk_C06_MugBlue_FG_02_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "Desk_C06_MugRed_FG_01_Sprite",
+  "Sorting": false,
+  "TextureName": "Desk_C06_MugRed_FG_01_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "Desk_C06_MugRed_FG_02_Sprite",
+  "Sorting": false,
+  "TextureName": "Desk_C06_MugRed_FG_02_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "Desk_C06_MugYellow_FG_01_Sprite",
+  "Sorting": false,
+  "TextureName": "Desk_C06_MugYellow_FG_01_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "Desk_C06_MugYellow_FG_02_Sprite",
+  "Sorting": false,
+  "TextureName": "Desk_C06_MugYellow_FG_02_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "Desk_C06_Pad_Sprite",
+  "Sorting": false,
+  "TextureName": "Desk_C06_Pad_Sprite"
  }
 ]

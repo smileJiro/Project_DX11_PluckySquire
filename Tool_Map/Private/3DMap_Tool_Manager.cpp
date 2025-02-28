@@ -457,18 +457,21 @@ void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 			pPickingObj->Imgui_Render_ObjectInfos();
 
 
-			_bool isSksp = pPickingObj->Is_SpskMode();
+			_uint iSksp = pPickingObj->Get_SkspType();
+			if (ImGui::RadioButton("None", iSksp == SKSP_NONE))
+				pPickingObj->Set_SkspType(SKSP_NONE);
+			if (ImGui::RadioButton("Default", iSksp == SKSP_DEFAULT))
+				pPickingObj->Set_SkspType(SKSP_DEFAULT);
+			if (ImGui::RadioButton("Cup", iSksp == SKSP_CUP))
+				pPickingObj->Set_SkspType(SKSP_CUP);
+			if (ImGui::RadioButton("Tub", iSksp == SKSP_TUB))
+				pPickingObj->Set_SkspType(SKSP_TUB);
 
-			if (ImGui::Checkbox("SKSP?", &isSksp))
+			if (iSksp != SKSP_NONE)
 			{
-				pPickingObj->Set_SpskMode(isSksp);
-			}
-
-			if (isSksp)
-			{
-				_string strSKSPName = pPickingObj->Set_SpskTag();
+				_string strSKSPName = pPickingObj->Set_SkspTag();
 				if (InputText("##Model Search Tag", strSKSPName))
-					pPickingObj->Set_SpskTag(strSKSPName);
+					pPickingObj->Set_SkspTag(strSKSPName);
 			}
 		}
 
@@ -1453,7 +1456,7 @@ void C3DMap_Tool_Manager::Save(_bool _bSelected)
 					//	세이브 파라미터 4. 월드 매트릭스
 					WriteFile(hFile, &pObject->Get_WorldMatrix(), sizeof(_float4x4), &dwByte, nullptr);
 					// 세이브 파라미터 5. 스케치스페이스
-					pObject->Save_Spsk(hFile);
+					pObject->Save_Sksp(hFile);
 					//	세이브 파라미터 6. 컬러
 					pObject->Save_Override_Color(hFile);
 					// 세이브 파라미터 7. 마테리얼 오버라이드
@@ -1636,7 +1639,7 @@ void C3DMap_Tool_Manager::Load(_bool _bSelected)
 
 			if (pGameObject)
 			{
-				static_cast<CMapObject*>(pGameObject)->Load_Spsk(hFile);
+				static_cast<CMapObject*>(pGameObject)->Load_Sksp(hFile);
 				static_cast<CMapObject*>(pGameObject)->Load_Override_Color(hFile);
 				static_cast<CMapObject*>(pGameObject)->Load_Override_Material(hFile);
 
@@ -2003,7 +2006,7 @@ void C3DMap_Tool_Manager::Load_ModelList()
 
 	strPath
 		= STATIC_3D_MODEL_FILE_PATH;
-	strPath += L"3DMapObject/";
+	strPath += L"3DObject/";
 	for (const auto& entry : ::recursive_directory_iterator(strPath))
 	{
 		if (is_directory(entry))

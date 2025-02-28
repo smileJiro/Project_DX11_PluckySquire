@@ -229,7 +229,13 @@ void CSampleBook::Update(_float _fTimeDelta)
 
 void CSampleBook::Late_Update(_float _fTimeDelta)
 {
-	//Register_RenderGroup(m_iRenderGroupID_3D, m_iPriorityID_3D);
+	if (KEY_DOWN(KEY::X))
+	{
+		_int isRenderState = m_eCurRenderState;
+		isRenderState ^= 1;
+
+		Change_RenderState((BOOK_RENDERSTATE)isRenderState);
+	}
 	__super::Late_Update(_fTimeDelta);
 }
 
@@ -250,7 +256,7 @@ HRESULT CSampleBook::Render()
 	for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
 	{
 		_uint iRotateFlag = 0;
-		_uint iShaderPass = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP;
+		//_uint iShaderPass = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP;
 		auto pMesh = pModel->Get_Mesh(i);
 		_uint iMaterialIndex = pMesh->Get_MaterialIndex();
 
@@ -691,6 +697,11 @@ _float CSampleBook::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 	return 9999.f;
 }
 
+_bool CSampleBook::Is_DuringAnimation()
+{
+	return m_pControllerModel->Get_Model(m_pControllerTransform->Get_CurCoord())->Is_DuringAnimation();
+}
+
 HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition)
 {
 	if (Book_Action(_eAction))
@@ -793,6 +804,29 @@ void CSampleBook::Free()
 {
 	Safe_Release(m_pAnimEventGenerator);
 	__super::Free();
+}
+
+void CSampleBook::Change_RenderState(BOOK_RENDERSTATE _eRenderState)
+{
+	if (m_eCurRenderState == _eRenderState)
+		return;
+
+	switch (_eRenderState)
+	{
+	case Client::CSampleBook::RENDERSTATE_LIGHT:
+		m_iPriorityID_3D = PR3D_GEOMETRY;
+		m_iShaderPasses[COORDINATE_3D] = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP;
+		break;
+	case Client::CSampleBook::RENDERSTATE_NONLIGHT:
+		m_iPriorityID_3D = PR3D_AFTERPOSTPROCESSING;
+		m_iShaderPasses[COORDINATE_3D] = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP_AFTERPOSTPROCESSING;
+		break;
+	default:
+		break;
+	}
+
+	m_eCurRenderState = _eRenderState;
+
 }
 
 
