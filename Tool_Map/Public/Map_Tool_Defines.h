@@ -40,6 +40,16 @@ namespace Map_Tool
 		RG_LAST,
 	};
 
+	enum SKSP_TYPE
+	{
+		SKSP_NONE,
+		SKSP_DEFAULT,
+		SKSP_CUP,
+		SKSP_TUB,
+		SKSP_LAST
+	
+	};
+
 	enum PRIORITY_3D
 	{
 		PR3D_PRIORITY = 10,
