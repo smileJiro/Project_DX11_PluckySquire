@@ -38,6 +38,9 @@ HRESULT CLevel_AnimTool::Initialize()
 	//Ready_Layer_TestTerrain(TEXT("Terrain"));
 	//Create_Camera(TEXT("Camera"));
 	SetWindowText(g_hWnd, TEXT("애니메이션 툴입니다."));
+
+	/* Blur RenderGroupOn */
+	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
 	return S_OK;
 }
 

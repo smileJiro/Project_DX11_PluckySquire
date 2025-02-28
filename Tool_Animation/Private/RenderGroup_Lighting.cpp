@@ -13,6 +13,7 @@ HRESULT CRenderGroup_Lighting::Initialize(void* _pArg)
         return E_FAIL;
 
 
+
     return S_OK;
 }
 
@@ -28,8 +29,8 @@ HRESULT CRenderGroup_Lighting::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTB
     _pRTShader->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_ProjMatrix_Renderer());
 
     _float4x4 matView = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
-    _pRTShader->Bind_Matrix("g_CamViewMatrix", &matView);
     _float4x4 matProj = m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+    _pRTShader->Bind_Matrix("g_CamViewMatrix", &matView);
     _pRTShader->Bind_Matrix("g_CamProjMatrix", &matProj);
 
     //if (FAILED(_pRTShader->Bind_RawValue("g_RandomTexcoords", (_float*)&m_tRandomTexcoord.vRandomTexcoord[0].x, sizeof(_float) * 64 * 2)))
