@@ -55,6 +55,13 @@ public:
 		INDEX_LAST
 	};
 
+	enum BOOK_RENDERSTATE
+	{
+		RENDERSTATE_LIGHT,
+		RENDERSTATE_NONLIGHT,
+
+		RENDERSTATE_LAST
+	};
 private:
 
 	CSampleBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -75,6 +82,7 @@ public:
 	void Interact(CPlayer* _pUser) override;
 	_bool Is_Interactable(CPlayer* _pUser) override;
 	_float Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) override;
+
 public :	
 	virtual void			Priority_Update(_float _fTimeDelta) override;
 	virtual void			Update(_float _fTimeDelta) override;
@@ -111,6 +119,14 @@ private :
 	_float3					m_v3DWorldMin = { -1.f, -1.f, -1.f };
 	_float3					m_v3DWorldMax = { 1.f, 1.f, 1.f };
 	_float2					m_v2DWorldPixelSize = { 0.f, 0.f };
+
+
+public:
+	void					Change_RenderState(BOOK_RENDERSTATE _eRenderState);
+
+private: /* Render State */
+	BOOK_RENDERSTATE		m_eCurRenderState = BOOK_RENDERSTATE::RENDERSTATE_LIGHT;
+
 public:
 	static CSampleBook* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

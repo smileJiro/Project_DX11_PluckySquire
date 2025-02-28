@@ -20,18 +20,18 @@ public:
 		// 줌 레벨임 NORMAL이 기본값 임
 		ZOOM_LEVEL		eZoomLevel = LEVEL_6;
 
-		_float			fFovy = { 0.f };
-		_float			fAspect = { 0.f };
-		_float			fNear = { 0.f };
-		_float			fFar = { 300.f };
+		_float			fFovy = { 62.f };
+		_float			fAspect = { 16/9.f };
+		_float			fNear = { 0.1f };
+		_float			fFar = { 500.f };
 
 		// Dof 기본값 
 		_float			fSensorHeight = 24.0f;
 		_float			fAperture = 2.8f; // 조리개 크기
-		_float			fFocusDistance = 13.0f; // 초점 평면거리
+		_float			fFocusDistance = 50.0f; // 초점 평면거리
 		_float			fDofBrightness = 0.9f;
 		_float			fBaseBlurPower = 0.05f;
-		_float3			vBlurColor = { 1.0f, 1.0f, 1.2f };
+		_float3			vBlurColor = { 1.0f, 1.0f, 1.0f };
 	}CAMERA_DESC;
 
 protected:
