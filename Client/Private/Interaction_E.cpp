@@ -327,26 +327,26 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 	{
 		_matrix matWorld = _pGameObject->Get_FinalWorldMatrix();
 
-		// 2. 반드시 게임 카메라의 뷰와 프로젝션 행렬을 사용하세요.
+
 		_matrix matView = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW));
 		_matrix matProj = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ));
 
-		// 3. 변환할 월드 상의 위치(원점 기준, 필요시 오프셋 추가)
+
 		XMVECTOR vLocalPos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
 
-		// 4. 월드, 뷰, 프로젝션 행렬을 곱해 동차 좌표 변환 (w분할 자동 적용)
+
 		XMVECTOR vClipPos = XMVector3TransformCoord(vLocalPos, XMMatrixMultiply(XMMatrixMultiply(matWorld, matView), matProj));
 
-		// 5. NDC 좌표(-1 ~ 1)를 스크린 좌표(픽셀)로 변환
+		
 		float ndcX = XMVectorGetX(vClipPos);
 		float ndcY = XMVectorGetY(vClipPos);
 		float screenX = ((ndcX + 1.f) * 0.5f) * g_iWinSizeX;
 		float screenY = ((1.f - ((ndcY + 1.f) * 0.5f))) * g_iWinSizeY;
 
-		// 6. UI 오프셋 적용 (예: 오브젝트 위쪽으로 20픽셀 이동)
+	
 		screenY -= 20.f;
 
-		// 7. 계산된 스크린 좌표를 UI 컨트롤러에 적용
+
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(screenX, screenY, 0.f, 1.f));
 		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX * 0.9f, m_fSizeY * 0.3f, 1.f));
 		m_vObejctPos = _float3(screenX, screenY, 0.f);
