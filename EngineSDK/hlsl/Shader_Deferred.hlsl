@@ -34,7 +34,8 @@ struct DirectLightData
     
     int isShadow;
     float fLightRadius;
-    float2 dummy1;
+    float fShadowFactor;
+    float dummy1;
     
     matrix LightViewProjMatrix;
 };
@@ -277,7 +278,7 @@ float PCF_Filter(float2 _vUV, float _fZReceiverNDC, float _fFilterRadiusUV, Text
     }
 
     // 평균화하여 부드러운 그림자 생성
-    return fSumShadowFactor / (iKernelSize * iKernelSize); // 동적 커널 크기 지원
+    return (fSumShadowFactor * c_DirectLight.fShadowFactor) / (iKernelSize * iKernelSize); // 동적 커널 크기 지원
 }
 
 float3 RandomWorldHemiSphereNormal(float3 _vWorldNormal, float2 _vTexCoord)
@@ -291,7 +292,7 @@ float3 RandomWorldHemiSphereNormal(float3 _vWorldNormal, float2 _vTexCoord)
     float3 randomVec = normalize(float3(NoiseX, NoiseY, abs(NoiseZ))); // Z축을 양수로 제한
 
 // TBN 행렬로 법선 기준 정렬
-    float3 upVector = abs(_vWorldNormal.y) < 0.999 ? float3(0.f, 1.f, 0.f) : float3(1.f, 0.f, 0.f);
+    float3 upVector = abs(_vWorldNormal.y) < 0.999 ? float3(0.f, 1.f, 0.f) : cross(float3(0, 1, 0), _vWorldNormal);
     float3 tangent = normalize(cross(_vWorldNormal, upVector)); // Tangent 계산
     float3 bitangent = cross(_vWorldNormal, tangent); // Bitangent 계산
     float3x3 TBN = float3x3(tangent, bitangent, _vWorldNormal); // TBN 행렬 생성
@@ -299,18 +300,33 @@ float3 RandomWorldHemiSphereNormal(float3 _vWorldNormal, float2 _vTexCoord)
 // 로컬 랜덤 벡터를 법선 기준으로 변환
     return mul(TBN, randomVec);
 }
+float3 SampleHemisphere(float3 randomNormal, float3 worldNormal)
+{
 
-float Compute_SSAO(float3 _vPixelWorldPos, float3 _vPixelWorldNormal, float2 _vRandomTexcoord, float _fRadius, Texture2D _DepthTexture)
+    // 로컬 좌표계에서의 샘플 방향
+    float3 localDir = randomNormal;
+
+    // 2. 월드 좌표계를 기준으로 변환
+    // worldNormal을 기준으로 직교 좌표계 생성
+    float3 tangent = normalize(abs(worldNormal.z) > 0.999 ? float3(1, 0, 0) : cross(float3(0, 1, 0), worldNormal));
+    float3 bitangent = cross(worldNormal, tangent);
+
+    // 로컬 방향을 월드 공간으로 변환
+    return localDir.x * tangent + localDir.y * bitangent + localDir.z * worldNormal;
+}
+float Compute_SSAO(float3 _vPixelWorldPos, float3 _vPixelWorldNormal, float2 _vRandomTexcoord, float _fRadius, Texture2D _DepthTexture, float3 _vRandomNormal)
 {
     float3 vViewPosition = mul(float4(_vPixelWorldPos, 1.0f), g_CamViewMatrix).xyz;
     float3 vViewNormal = mul(float4(_vPixelWorldNormal, 0.0f), g_CamViewMatrix).xyz;
     
-    float3 vRandomWorldHemiNormal = RandomWorldHemiSphereNormal(_vPixelWorldNormal, _vRandomTexcoord);
+    float3 vRandomWorldHemiNormal = SampleHemisphere(_vRandomNormal, _vPixelWorldNormal);
+
+
     float3 vRandomViewHemiNormal = mul(float4(vRandomWorldHemiNormal, 0.0f), g_CamViewMatrix).xyz;
     
     float flip = sign(dot(vRandomViewHemiNormal, vViewNormal)); // 부호 결정
     
-    float3 vRandomViewPos = vViewPosition + (normalize(vRandomViewHemiNormal) * flip * _fRadius);
+    float3 vRandomViewPos = vViewPosition + (normalize(vRandomViewHemiNormal) /** flip */* _fRadius);
     float4 vNDCPos = mul(float4(vRandomViewPos, 1.0f), g_CamProjMatrix);  
     vNDCPos.xyz /= vNDCPos.w;
     float2 vRandomPosTexcoord = vNDCPos.xy;
@@ -318,12 +334,16 @@ float Compute_SSAO(float3 _vPixelWorldPos, float3 _vPixelWorldNormal, float2 _vR
     vRandomPosTexcoord += 1.0f;
     vRandomPosTexcoord *= 0.5f;
     
-    float fSampleViewZ = g_DepthTexture.Sample(PointSampler, vRandomPosTexcoord).y * g_fFarZ;
+    float fSampleViewZ = g_DepthTexture.Sample(LinearSampler_Clamp, vRandomPosTexcoord).y * g_fFarZ;
     float fBiaseFactor = 0.0001f;
     float bias = fBiaseFactor * vViewPosition.z / g_fFarZ;
     float dp = max(dot(vViewNormal, normalize(vRandomViewPos - (vViewPosition))), 0.0f); // 새로 샘플한 지점의 뷰 공간 포지션과 현재 나의 노말을 내적하여 방향성을 비교
-    float fDistZ = saturate((vViewPosition.z - bias - fSampleViewZ) / _fRadius); // 뷰스페이스의 Z 값을 정규화 
-    float fSSAO = dp * fDistZ * 0.5f;
+    float fDistZ = saturate(((vViewPosition.z - bias - fSampleViewZ) / _fRadius)); // 뷰스페이스의 Z 값을 정규화 
+
+    float zFalloff = 2.0f;
+    float zFactor = saturate(1.0f - (abs((vViewPosition.z - bias - fSampleViewZ)) / zFalloff)) * 1.2f;
+
+    float fSSAO = dp * fDistZ * zFactor;
     return fSSAO;
 }
 
@@ -531,13 +551,13 @@ PS_OUT PS_MAIN_LIGHTING(PS_IN In)
     [unroll]
     for (int i = 0; i < 64; ++i)
     {
-        float fSSAO = Compute_SSAO(vPixelWorld.xyz, normalize(vNormalWorld), g_RandomTexcoords[i], 0.05f, g_DepthTexture);
-
+        float fSSAO = Compute_SSAO(vPixelWorld.xyz, normalize(vNormalWorld), g_RandomTexcoords[i], 1.0f, g_DepthTexture, ssaoKernel[i]);
+    
         SumSSAO += fSSAO;
     }
     SumSSAO /= 64.f;
-    SumSSAO = pow(1.0f - SumSSAO, 4);
-    vAmbientLighting *= SumSSAO;
+    SumSSAO = 1.0f - SumSSAO;
+    vAmbientLighting *= pow(SumSSAO, 4);
     
     
     //Out.vColor = float4(SumSSAO, SumSSAO, SumSSAO /*+ vEmmision*/, 1.0f);
@@ -590,17 +610,16 @@ PS_OUT PS_MAIN_COMBINE(PS_IN In)
     float fPlayerDepthDesc = g_PlayerDepthTexture.Sample(LinearSampler, In.vTexcoord).r;
     float fPlayerViewZ = fPlayerDepthDesc * g_fFarZ;
     
-    //float3 vHideColor = g_vHideColor;
-    //// 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
-    //float fViewZDiff = fPlayerViewZ - fViewZ - 1.0f;
-    //float fHideMin = 0.0f;
-    //float fHideMax = 10.0f;
-    //vHideColor = lerp(vToneMapColor, vHideColor, saturate(fViewZDiff / (fHideMax - fHideMin)));
-    //vToneMapColor = 0.0f < fViewZDiff ? vHideColor : vToneMapColor;
+    float3 vHideColor = g_vHideColor;
+    // 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
+    float fViewZDiff = fPlayerViewZ - fViewZ - 1.0f;
+    float fHideMin = 0.0f;
+    float fHideMax = 10.0f;
+    vHideColor = lerp(vToneMapColor, vHideColor, saturate(fViewZDiff / (fHideMax - fHideMin)));
+    vToneMapColor = 0.0f < fViewZDiff ? vHideColor : vToneMapColor;
     
-    //vToneMapColor = lerp(vToneMapColor, vHideColor, (vDepth.y - fPlayerDepthDesc));
+    vToneMapColor = lerp(vToneMapColor, vHideColor, (vDepth.y - fPlayerDepthDesc));
     Out.vColor = float4(vToneMapColor, 1.0f);
-    //Out.vColor.rgb *= c_DofVariable.fFadeRatio;
     return Out;
 }
 

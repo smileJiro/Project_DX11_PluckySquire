@@ -24,6 +24,8 @@ HRESULT CBomb::Initialize(void* _pArg)
 	BombModelDesc->vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
 	BombModelDesc->vHeadUpOffset3D = { 0.f,1.3f,0.f };
 	BombModelDesc->isCoordChangeEnable = true;
+	BombModelDesc->iModelPrototypeLevelID_3D = LEVEL_STATIC;
+	BombModelDesc->iModelPrototypeLevelID_2D = LEVEL_STATIC;
 	BombModelDesc->strModelPrototypeTag_2D = TEXT("Bomb2D");
 	BombModelDesc->strModelPrototypeTag_3D = TEXT("Bomb");
 	BombModelDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
@@ -132,19 +134,26 @@ HRESULT CBomb::Initialize(void* _pArg)
 
 void CBomb::Priority_Update(_float _fTimeDelta)
 {
-	m_fAccTime += _fTimeDelta;
-	if(false == m_isExplode)
+	if (true == m_isOn)
 	{
-		if (m_fLifeTime <= m_fAccTime)
+		m_fAccTime += _fTimeDelta;
+
+		if (false == m_isExplode)
 		{
-			Explode();
+			if (m_fLifeTime <= m_fAccTime)
+			{
+				Explode();
+			}
 		}
 	}
-	else
+
+	else if (true == m_isExplode)
 	{
+		m_fAccTime += _fTimeDelta;
+
 		if (m_fExplodeTime <= m_fAccTime)
 		{
-			if(false == m_isDead)
+			if (false == m_isDead)
 			{
 				Event_DeleteObject(this);
 			}
@@ -185,6 +194,16 @@ HRESULT CBomb::Render()
 	return S_OK;
 }
 
+void CBomb::Set_Time_On()
+{
+	m_isOn = true;
+}
+
+void CBomb::Set_Time_Off()
+{
+	m_isOn = false;
+}
+
 void CBomb::Bomb_Shape_Enable(_bool _isEnable)
 {
 	Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, _isEnable);
@@ -192,6 +211,8 @@ void CBomb::Bomb_Shape_Enable(_bool _isEnable)
 
 void CBomb::Explode()
 {
+	Set_Time_Off();
+
 	Set_Render(false);
 
 	//기존 콜라이더를 끄고 폭발용 콜라이더 켬
@@ -288,6 +309,7 @@ void CBomb::Active_OnEnable()
 {
 	__super::Active_OnEnable();
 	Set_Render(true);
+	Set_Time_On();
 	//CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());
 	//pDynamic->Update(0.f);
 	//pDynamic->Set_Dynamic();

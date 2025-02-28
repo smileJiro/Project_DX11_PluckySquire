@@ -95,10 +95,10 @@ public:
 
 	HRESULT					Save_Override_Material(HANDLE _hFile);
 	HRESULT					Save_Override_Color(HANDLE _hFile);
-	HRESULT					Save_Spsk(HANDLE _hFile);
+	HRESULT					Save_Sksp(HANDLE _hFile);
 	HRESULT					Load_Override_Material(HANDLE _hFile);
 	HRESULT					Load_Override_Color(HANDLE _hFile);
-	HRESULT					Load_Spsk(HANDLE _hFile);
+	HRESULT					Load_Sksp(HANDLE _hFile);
 
 	_uint					Get_MaterialCount();
 
@@ -106,11 +106,11 @@ public:
 #endif // _DEBUG
 
 
-	void Set_SpskTag(const _string& _strSpskTag) { m_strSpskTag = _strSpskTag; }
-	void Set_SpskMode(_bool _isSpsk) { m_isSpsk = _isSpsk; }
+	void Set_SkspTag(const _string& _strSpskTag) { m_strSpskTag = _strSpskTag; }
+	void Set_SkspType(_uint _iSpskType) { m_iSkspType = _iSpskType; }
 	
-	const _string& Set_SpskTag() { return m_strSpskTag; }
-	_bool Is_SpskMode() { return m_isSpsk; }
+	const _string& Set_SkspTag() { return m_strSpskTag; }
+	_uint Get_SkspType() { return m_iSkspType; }
 
 private :
 	OPERATION				m_CurrentGizmoOperation = TRANSLATE;
@@ -120,7 +120,7 @@ private :
 	_float4x4				m_matWorld;
 
 	_uint					m_iDiffuseIndex = 0;
-	_bool					m_isSpsk = false;
+	_uint					m_iSkspType = 0;
 	_string					m_strSpskTag = "";
 
 	vector<C3DModel::COLOR_SHADER_MODE>		m_eColorShaderModes;

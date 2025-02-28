@@ -87,7 +87,8 @@ namespace Engine
 		// Shadow 
 		int				isShadow; // 자기 자신이 shadow가 있는 light인지. >> 이 변수가 true라면, shadow map을 텍스쳐링하여 shadowfactor를 계산한다.
 		float			fLightRadius; // 조명의 두께(반지름 pcss)
-		XMFLOAT2		dummy;
+		float			fShadowFactor = 1.0f;
+		float			dummy1;
 
 		// Matrix
 		XMMATRIX		LightViewProjMatrix; // 자기 자신의 view, proj 매트릭스.

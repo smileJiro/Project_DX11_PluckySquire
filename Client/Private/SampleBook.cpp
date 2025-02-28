@@ -230,6 +230,14 @@ void CSampleBook::Update(_float _fTimeDelta)
 void CSampleBook::Late_Update(_float _fTimeDelta)
 {
 	//Register_RenderGroup(m_iRenderGroupID_3D, m_iPriorityID_3D);
+	if (KEY_DOWN(KEY::C))
+	{
+		m_iPriorityID_3D = PR3D_BLEND;
+	}
+	if (KEY_DOWN(KEY::X))
+	{
+		m_iPriorityID_3D = PR3D_GEOMETRY;
+	}
 	__super::Late_Update(_fTimeDelta);
 }
 
