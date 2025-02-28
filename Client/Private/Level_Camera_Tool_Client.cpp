@@ -193,8 +193,6 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Camera(const _wstring& _strLayerT
 
 	Desc.fFovy = XMConvertToRadians(30.f);
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	Desc.fNear = 0.1f;
-	Desc.fFar = 1000.f;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.eZoomLevel = CCamera::LEVEL_6;
@@ -236,8 +234,6 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Camera(const _wstring& _strLayerT
 
 	CutSceneDesc.fFovy = XMConvertToRadians(60.f);
 	CutSceneDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	CutSceneDesc.fNear = 0.1f;
-	CutSceneDesc.fFar = 1000.f;
 	CutSceneDesc.vEye = _float3(0.f, 10.f, -7.f);
 	CutSceneDesc.vAt = _float3(0.f, 0.f, 0.f);
 	CutSceneDesc.eZoomLevel = CCamera::LEVEL_6;

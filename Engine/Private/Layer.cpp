@@ -40,14 +40,14 @@ void CLayer::Priority_Update(_float fTimeDelta)
             iter->Priority_Update(fTimeDelta);
     }
 
-    //m_pGameInstance->Get_ThreadPool()->EnqueueJob([this]()
-    //    {
-    //        for (auto& iter : m_GameObjects)
-    //        {
-    //            if (iter->Is_Active())
-    //                iter->Check_FrustumCulling();
-    //        }
-    //    });
+    m_pGameInstance->Get_ThreadPool()->EnqueueJob([this]()
+        {
+            for (auto& iter : m_GameObjects)
+            {
+                if (iter->Is_Active())
+                    iter->Check_FrustumCulling();
+            }
+        });
 
 }
 

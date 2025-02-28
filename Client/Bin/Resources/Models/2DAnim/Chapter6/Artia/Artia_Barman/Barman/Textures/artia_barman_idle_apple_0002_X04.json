@@ -1,0 +1,66 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "artia_barman_idle_apple_0002_X04",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1059.0,
+        "Y": 312.0
+      },
+      "BakedSourceDimension": {
+        "X": 256.0,
+        "Y": 373.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'artia-barman-0'",
+        "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Textures/artia-barman-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 147.0,
+          "Y": 284.0,
+          "Z": 0.64160156,
+          "W": 0.076416016
+        },
+        {
+          "X": -107.0,
+          "Y": 284.0,
+          "Z": 0.5175781,
+          "W": 0.076416016
+        },
+        {
+          "X": -107.0,
+          "Y": -87.0,
+          "Z": 0.5175781,
+          "W": 0.16699219
+        },
+        {
+          "X": 147.0,
+          "Y": -87.0,
+          "Z": 0.64160156,
+          "W": 0.16699219
+        },
+        {
+          "X": 147.0,
+          "Y": 284.0,
+          "Z": 0.64160156,
+          "W": 0.076416016
+        },
+        {
+          "X": -107.0,
+          "Y": -87.0,
+          "Z": 0.5175781,
+          "W": 0.16699219
+        }
+      ]
+    }
+  }
+]

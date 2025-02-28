@@ -63,12 +63,6 @@ void CTest_Terrain::Late_Update(_float _fTimeDelta)
     CPartObject::Late_Update(_fTimeDelta);
 }
 
-
-HRESULT CTest_Terrain::Render_Shadow()
-{
-    return S_OK;
-}
-
 HRESULT CTest_Terrain::Ready_Components()
 {
     return S_OK;

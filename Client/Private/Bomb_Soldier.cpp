@@ -161,7 +161,7 @@ void CBomb_Soldier::Attack()
         CBomb* pBomb = static_cast<CBomb*>(m_PartObjects[PART_RIGHT_WEAPON]);
         pBomb->Set_Kinematic(false);
         pBomb->Set_Time_On();
-        m_pGameInstance->Add_GameObject_ToLayer(Get_CurLevelID(), TEXT("Layer_Monster_Projectile"), m_PartObjects[PART_RIGHT_WEAPON]);
+        //m_pGameInstance->Add_GameObject_ToLayer(Get_CurLevelID(), TEXT("Layer_Monster_Projectile"), m_PartObjects[PART_RIGHT_WEAPON]);
         
 
         //´øÁö±â

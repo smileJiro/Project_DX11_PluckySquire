@@ -350,7 +350,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TRIGGER_TOOL,
-        TEXT("../../Client/Bin/Resources/Models/3DMapObject/"), matPretransform)))
+        TEXT("../../Client/Bin/Resources/Models/3DObject/"), matPretransform)))
         return E_FAIL;
 
     matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));

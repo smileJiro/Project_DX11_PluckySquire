@@ -662,8 +662,8 @@ HRESULT CMapObject::Load_Sksp(HANDLE _hFile)
     _uint iSpsk =  0;
     ReadFile(_hFile, &m_iSkspType, sizeof(_uint), &dwByte, nullptr);
 
-    m_isSpsk = 1 == iSpsk ? true : false;
-    if (m_isSpsk)
+    _bool isSksp = 0 <  m_iSkspType ? true : false;
+    if (isSksp)
     {
         _char		szSaveSpskName[MAX_PATH];
         ReadFile(_hFile, &szSaveSpskName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);

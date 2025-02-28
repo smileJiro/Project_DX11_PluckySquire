@@ -163,14 +163,34 @@ void CNPC_Social::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
 
-	if (m_strDialogueID == TEXT("C01_Humgrump_01"))
+
+	if (m_iPreSocialNpcAnimationindex != m_iSocialNpcAnimationIndex)
 	{
-		if (true == m_isPlayDisplay && false == Uimgr->Get_DisplayDialogue())
-		{
-			//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation()
-		}
+		if (-1 == m_iSocialNpcAnimationIndex)
+			m_iSocialNpcAnimationIndex = 0;
+
+		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(m_iSocialNpcAnimationIndex);
+		m_iPreSocialNpcAnimationindex = m_iSocialNpcAnimationIndex;
 	}
-	
+
+	if (true == m_isPlayDisplay && false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+	{
+		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(m_iStartAnimation);
+
+		m_iSocialNpcAnimationIndex = m_iStartAnimation;
+		m_isPlayDisplay = false;
+		
+	}
+
+
+	//if (m_strDialogueID == TEXT("C01_Humgrump_01"))
+	//{
+	//	if (true == m_isPlayDisplay && false == Uimgr->Get_DisplayDialogue())
+	//	{
+	//		//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation()
+	//	}
+	//}
+	//
 }
 
 void CNPC_Social::Late_Update(_float _fTimeDelta)

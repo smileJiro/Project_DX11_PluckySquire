@@ -11,6 +11,7 @@
 					"location": 2,
 					"is2D": true,
 					"isPortrait": true,
+					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -129,6 +130,7 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
+					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -145,6 +147,7 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
+					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -161,6 +164,7 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
+					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -177,6 +181,7 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
+					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -193,6 +198,7 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
+					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -209,6 +215,7 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
+					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -225,6 +232,7 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
+					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -241,6 +249,7 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
+					
 					"animation": {
 						"duration": 1000,
 						"speed": 350

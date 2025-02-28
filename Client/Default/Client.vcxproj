@@ -120,7 +120,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../EngineSDK/Lib/physx/debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../EngineSDK/Lib/physx/debug;../../EngineSDK/Lib/imguidll/debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(Configuration)\Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
@@ -171,7 +171,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../EngineSDK/Lib/physx/release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../EngineSDK/Lib/physx/release;../../EngineSDK/Lib/imguidll/release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(Configuration)\Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\Interaction_E.h" />
     <ClInclude Include="..\Public\JumpPad.h" />
     <ClInclude Include="..\Public\Level_Chapter_06.h" />
+    <ClInclude Include="..\Public\NPC_Manager.h" />
     <ClInclude Include="..\Public\PalmDecal.h" />
     <ClInclude Include="..\Public\PalmMarker.h" />
     <ClInclude Include="..\Public\PlayerBomb.h" />
@@ -446,6 +447,7 @@
     <ClCompile Include="..\Private\Interaction_E.cpp" />
     <ClCompile Include="..\Private\JumpPad.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_06.cpp" />
+    <ClCompile Include="..\Private\NPC_Manager.cpp" />
     <ClCompile Include="..\Private\PalmDecal.cpp" />
     <ClCompile Include="..\Private\PalmMarker.cpp" />
     <ClCompile Include="..\Private\PlayerBomb.cpp" />
