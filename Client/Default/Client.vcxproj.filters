@@ -508,6 +508,9 @@
     <Filter Include="NewFilter1">
       <UniqueIdentifier>{ce7fbcc7-0a2a-4ec8-a33f-ed2f8c2ad06f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\NPC\100. NPC_Manager">
+      <UniqueIdentifier>{d7663a2e-f2cd-4c80-a744-dcac42db9a16}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1220,6 +1223,9 @@
     <ClInclude Include="..\Public\PalmDecal.h" />
     <ClInclude Include="..\Public\PalmMarker.h" />
     <ClInclude Include="..\Public\Stoppable.h" />
+    <ClInclude Include="..\Public\NPC_Manager.h">
+      <Filter>02.GameObjects\NPC\100. NPC_Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1918,6 +1924,9 @@
     <ClCompile Include="..\Private\PalmDecal.cpp" />
     <ClCompile Include="..\Private\PalmMarker.cpp" />
     <ClCompile Include="..\Private\Stoppable.cpp" />
+    <ClCompile Include="..\Private\NPC_Manager.cpp">
+      <Filter>02.GameObjects\NPC\100. NPC_Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
