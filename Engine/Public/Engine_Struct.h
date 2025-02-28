@@ -46,7 +46,7 @@ namespace Engine
 		float		Roughness = 0.5f;					 
 		float		Metallic = 0.0f;					 
 		float		AO = 0.7f;
-		float		dummy;												// 16byte
+		float		Emissive = 0.0f;									// 16byte
 
 		XMFLOAT4	MultipleAlbedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);	// 16byte
 	}MATERIAL_PS;

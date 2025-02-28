@@ -40,7 +40,7 @@ cbuffer MultiFresnels : register(b1)
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 /* Bone Matrix */
 float4x4 g_BoneMatrices[256];
-Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture; // PBR
+Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture, g_EmmisiveTexture; // PBR
 
 float g_fFarZ = 300.f;
 int g_iFlag = 0;
@@ -247,6 +247,7 @@ PS_OUT PS_MAIN(PS_IN In)
     float4 vAlbedo = useAlbedoMap ? g_AlbedoTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f) : Material.Albedo;
     float3 vNormal = useNormalMap ? Get_WorldNormal(g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz, In.vNormal.xyz, In.vTangent.xyz, 0) : In.vNormal.xyz;
     float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
+    float fEmmisive = useORMHMap ? g_EmmisiveTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
     
     if (false == useORMHMap)
     {

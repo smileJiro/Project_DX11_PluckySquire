@@ -26,8 +26,28 @@ HRESULT CRenderGroup_Combine::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBu
     _pRTShader->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_ViewMatrix_Renderer());
     _pRTShader->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_ProjMatrix_Renderer());
 
-    /* 2. 현재는 라이팅 타겟을 그대로 바인딩하지만 추후에는 뭔가 다른 타겟을 바인딩하겠지 후처리끝난... */
-    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_LightingTexture", TEXT("Target_Lighting"))))
+    ///* 2. 현재는 라이팅 타겟을 그대로 바인딩하지만 추후에는 뭔가 다른 타겟을 바인딩하겠지 후처리끝난... */
+    //if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_LightingTexture", TEXT("Target_Lighting"))))
+    //{
+    //    if (FAILED(m_pGameInstance->End_MRT()))
+    //        return E_FAIL;
+    //    return E_FAIL;
+    //}
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_PostProcessingTexture", TEXT("Target_PostProcessing"))))
+    {
+        if (FAILED(m_pGameInstance->End_MRT()))
+            return E_FAIL;
+        return E_FAIL;
+    }
+    /* 3. Dof 관련 값은 이미 NewRenderer에서 채워줬음. */
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_DepthTexture", TEXT("Target_Depth"))))
+    {
+        if (FAILED(m_pGameInstance->End_MRT()))
+            return E_FAIL;
+        return E_FAIL;
+    }
+    /* 물체 뒤에 숨은 플레이어를 표현하기 위해 추가된 렌더타겟 */
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_PlayerDepthTexture", TEXT("Target_PlayerDepth"))))
     {
         if (FAILED(m_pGameInstance->End_MRT()))
             return E_FAIL;
