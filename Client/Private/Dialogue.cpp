@@ -1,3 +1,4 @@
+dialogue 백업
 #include "stdafx.h"
 #include "Dialogue.h"
 #include "GameInstance.h"
@@ -10,12 +11,12 @@
 #include "Trigger_Manager.h"
 
 CDialog::CDialog(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CUI (_pDevice, _pContext)
+	: CUI(_pDevice, _pContext)
 {
 }
 
 CDialog::CDialog(const CDialog& _Prototype)
-	: CUI ( _Prototype )
+	: CUI(_Prototype)
 {
 }
 
@@ -38,16 +39,18 @@ HRESULT CDialog::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data.json"))))
-		return E_FAIL;
+
+
+
+
 
 
 	_float2 vCalScale = { 0.f, 0.f };
 	vCalScale.x = m_vOriginSize.x * RATIO_BOOK2D_X;
 	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
-	
+
 	m_vDisplay2DSize = vCalScale;
-	
+
 	m_pControllerTransform->Set_Scale(m_vDisplay2DSize.x, m_vDisplay2DSize.y, 1.f);
 	//
 	m_isRender = false;
@@ -71,16 +74,16 @@ HRESULT CDialog::Initialize(void* _pArg)
 
 void CDialog::Update(_float _fTimeDelta)
 {
-	
+
 	// 다이얼로그가 활성화된 경우에만 B 키 입력 처리
 	// TODO :: 어찌해야할지?
 	if (m_isDisplayDialogue && KEY_DOWN(KEY::B))
 	{
-		_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+		_float2 vRTSize = SECTION_MGR->Get_Section_RenderTarget_Size(SECTION_MGR->Get_Cur_Section_Key());
 		NextDialogue(vRTSize); // 다음 다이얼로그의 위치를 변경한다.
 	}
 
-	
+
 
 
 	// 다이얼로그 변경 시 이용 스위치이나 뭘듯 해야할듯
@@ -113,7 +116,7 @@ void CDialog::Late_Update(_float _fTimeDelta)
 		{
 			// TODO
 			CDialog_Manager::GetInstance()->Get_Dialog()->CBase::Set_Active(true);
-			
+
 		}
 
 		if (false == m_pPortrait->CBase::Is_Active())
@@ -122,7 +125,7 @@ void CDialog::Late_Update(_float _fTimeDelta)
 		}
 
 
-		
+
 	}
 
 
@@ -137,7 +140,10 @@ HRESULT CDialog::Render()
 		if (false == m_isFirstRefresh)
 		{
 			// TODO :: 우리의 2D 렌더타겟은 가변적이다. 현재는 가져올 방법이 없어 강제로 넣는다.
-			_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+			//_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+
+
+			_float2 vRTSize = SECTION_MGR->Get_Section_RenderTarget_Size(SECTION_MGR->Get_Cur_Section_Key());
 
 			FirstCalPos(vRTSize);
 		}
@@ -149,9 +155,9 @@ HRESULT CDialog::Render()
 		else
 		{
 			_float4 vColor = _float4(Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].Red / 255.f,
-									Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].Green / 255.f,
-									Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].Blue / 255.f,
-									 1.f);
+				Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].Green / 255.f,
+				Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].Blue / 255.f,
+				1.f);
 
 			if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_vColors", &vColor, sizeof(_float4))))
 				return E_FAIL;
@@ -161,7 +167,7 @@ HRESULT CDialog::Render()
 
 
 
-		
+
 
 		if (m_iCurrentLineIndex < Get_Dialogue(m_tDialogIndex)[0].lines.size())
 		{
@@ -179,7 +185,7 @@ HRESULT CDialog::Render()
 	// TODO :: 일단 여기에다가 두면 얼굴을 나중에 렌더한다. (박상욱)
 	if (m_isDisplayDialogue)
 		UpdateDialogueLine();
-		
+
 
 	return S_OK;
 }
@@ -196,7 +202,7 @@ void CDialog::UpdateDialogueLine()
 	if (0 == wcslen(m_tDialogId))
 		return;
 
-	DialogData currentData = Get_Dialogue(m_tDialogId)[0]; 
+	DialogData currentData = Get_Dialogue(m_tDialogId)[0];
 	if (m_iCurrentLineIndex >= (int)currentData.lines.size())
 		return;
 
@@ -220,6 +226,22 @@ void CDialog::UpdateDialogueLine()
 			currentData.Section                 /* 섹션 이름 */
 		);
 	}
+}
+
+HRESULT CDialog::NextLevelLoadJson(_int _iNextLevel)
+{
+	if (3 == (_int)_iNextLevel)
+	{
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data.json"))))
+			return E_FAIL;
+	}
+	else if (5 == _iNextLevel)
+	{
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_02.json"))))
+			return E_FAIL;
+	}
+
+	return S_OK;
 }
 
 HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
@@ -249,7 +271,7 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 			{
 				dialogData.Section = StringToWstring(dialog["Section"].get<string>());
 			}
-			
+
 			// Dialog가 끝날 시 실행될 이벤트(트리거) 태그, 필요하지 않으면 내용이 없습니다.
 			if (dialog.contains("TriggerTag"))
 			{
@@ -279,13 +301,13 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 					{
 						dialogLine.Talker = StringToWstring(line["Talker"].get<string>());
 					}
-						
+
 					// 대사
 					if (line.contains("text") && line["text"].is_string())
 					{
 						dialogLine.text = StringToWstring(line["text"].get<string>());
 					}
-						
+
 					// 다이얼로그 배경
 					if (line.contains("BG") && line["BG"].is_number_integer())
 					{
@@ -330,13 +352,18 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 					{
 						dialogLine.isPortrait = line["isPortrait"].get<_bool>();
 					}
-						
+
+					if (line.contains("iAnimationIndex") && line["iAnimationIndex"].is_number_integer())
+					{
+						dialogLine.iAnimationIndex = line["iAnimationIndex"].get<int>();
+					}
+
 					// 다이얼로그 위치 enum 참조
 					if (line.contains("location") && line["location"].is_number_integer())
 					{
 						dialogLine.location = static_cast<LOC>(line["location"].get<int>());
 					}
-					
+
 					dialogLine.Section = dialogData.Section;
 
 					// 탁탁탁 나오는 애니메이션의 스피드 및 대기 시간
@@ -347,11 +374,11 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 						{
 							dialogLine.animation.duration = anim["duration"].get<int>();
 						}
-							
+
 						if (anim.contains("speed") && anim["speed"].is_number_integer())
 						{
 							dialogLine.animation.speed = anim["speed"].get<int>();
-						}	
+						}
 					}
 					dialogData.lines.push_back(dialogLine);
 				}
@@ -381,7 +408,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
-	
+
 	_float3 vTextPos3D = { 0.f, 0.f, 0.f };
 	_float3 vTextPos2D = { 0.f, 0.f, 0.f };
 
@@ -401,14 +428,14 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		wsprintf(m_strDialogSection, CurrentDialog.c_str());
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strDialogSection, this);
 	}
-		
-	
+
+
 
 	static _wstring strDisplaytext;
 	static _float fWaitTime = 0.0f;
-	static _int iPreviousLineIndex = -1; 
+	static _int iPreviousLineIndex = -1;
 
-	
+
 
 	// 라인이 변경되었을 때 초기화
 	if (iPreviousLineIndex != m_iCurrentLineIndex)
@@ -416,7 +443,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		strDisplaytext.clear();
 		fWaitTime = 0.0f;
 		iPreviousLineIndex = m_iCurrentLineIndex;
-		
+
 	}
 
 	// 하나씩 출력되게 계산
@@ -447,50 +474,50 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	switch (currentLine.location)
 	{
 	case LOC_MIDDOWN:  // 가운데 아래
-	{	
-	
-		 if (false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
-		 {
-			 if (9 != Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].BG)
-			 {
-				 vTextPos3D = _float3(g_iWinSizeX / 3.25f, g_iWinSizeY - g_iWinSizeY / 4.5f, 0.f);
-				 // 대상 이름 출력
-				 wsprintf(m_tFont, currentLine.Talker.c_str());
-				 pGameInstance->Render_Font(TEXT("Font28"), m_tFont, _float2(vTextPos3D.x, vTextPos3D.y), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+	{
 
-				 // 대화 내용 출력
-				 wsprintf(m_tFont, strDisplaytext.c_str());
-				 pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 120.f, vTextPos3D.y + 70.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+		if (false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
+		{
+			if (9 != Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].BG)
+			{
+				vTextPos3D = _float3(g_iWinSizeX / 3.25f, g_iWinSizeY - g_iWinSizeY / 4.5f, 0.f);
+				// 대상 이름 출력
+				wsprintf(m_tFont, currentLine.Talker.c_str());
+				pGameInstance->Render_Font(TEXT("Font28"), m_tFont, _float2(vTextPos3D.x, vTextPos3D.y), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 
-				 Safe_Release(pGameInstance);
-				 return S_OK;
-			 }
-			 else
-			 {
-				 vTextPos3D = _float3(g_iWinSizeX / 3.25f, g_iWinSizeY - g_iWinSizeY / 4.5f, 0.f);
-				 // 대상 이름 출력
-				 wsprintf(m_tFont, currentLine.Talker.c_str());
-				 pGameInstance->Render_Font(TEXT("Font28"), m_tFont, _float2(vTextPos3D.x, vTextPos3D.y), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+				// 대화 내용 출력
+				wsprintf(m_tFont, strDisplaytext.c_str());
+				pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 120.f, vTextPos3D.y + 70.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 
-				 // 대화 내용 출력
-				 wsprintf(m_tFont, strDisplaytext.c_str());
-				 pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 120.f, vTextPos3D.y + 55.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+				Safe_Release(pGameInstance);
+				return S_OK;
+			}
+			else
+			{
+				vTextPos3D = _float3(g_iWinSizeX / 3.25f, g_iWinSizeY - g_iWinSizeY / 4.5f, 0.f);
+				// 대상 이름 출력
+				wsprintf(m_tFont, currentLine.Talker.c_str());
+				pGameInstance->Render_Font(TEXT("Font28"), m_tFont, _float2(vTextPos3D.x, vTextPos3D.y), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 
-				 Safe_Release(pGameInstance);
-				 return S_OK;
-			 }
-			 
-		 }
-		 else if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
-		 {
-			 _float2 vPos = { 0.f , 0.f };
+				// 대화 내용 출력
+				wsprintf(m_tFont, strDisplaytext.c_str());
+				pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 120.f, vTextPos3D.y + 55.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 
-			 vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
-			 vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+				Safe_Release(pGameInstance);
+				return S_OK;
+			}
+
+		}
+		else if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
+		{
+			_float2 vPos = { 0.f , 0.f };
+
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
 
 
-			 vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
-		 }
+			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+		}
 	}
 	break;
 
@@ -512,7 +539,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 			vPos.y = vTextPos2D.y + _vRTSize.y * 0.012f;
 			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 
-		
+
 		}
 	}
 	break;
@@ -528,7 +555,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 	}
 	break;
-	
+
 	case LOC_MIDRIGHT: // 가운데 우측
 	{
 		//_float2 vPos = { 0.f , 0.f };
@@ -568,7 +595,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 			pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vTextPos2D.x - 50.f, vTextPos2D.y + 50.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 			Safe_Release(pGameInstance);
 			return S_OK;
-		
+
 		}
 	}
 	break;
@@ -576,14 +603,14 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	case LOC_LEFTDOWN: // 가운데 우측
 	{
 		_float2 vPos = { 0.f , 0.f };
-		
+
 		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
 		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
-		
-		
+
+
 		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
-		
-		
+
+
 
 	}
 	break;
@@ -633,7 +660,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 
 		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 	}
-	
+
 
 	break;
 	}
@@ -641,9 +668,9 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	// 2D 기준
 	_float2 vCalPos = { 0.f, 0.f };
 	// 중점
-	
 
-	
+
+
 
 	if (isColumn == false)
 	{
@@ -680,7 +707,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 
 		// 대화 내용 출력
 		wsprintf(m_tFont, strDisplaytext.c_str());
-		pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vCalPos.x - 50.f, vCalPos.y + 50.f) , XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+		pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vCalPos.x - 50.f, vCalPos.y + 50.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 	}
 
 	Safe_Release(pGameInstance);
@@ -717,14 +744,27 @@ void CDialog::NextDialogue(_float2 _RTSize)
 	{
 		m_iCurrentLineIndex += 1;
 
+		if (m_iCurrentLineIndex <= Get_Dialogue(_strDialogue)[0].lines.size() - 1)
+		{
+			if (-1 != Get_Dialogue(_strDialogue)[0].lines[m_iCurrentLineIndex].iAnimationIndex)
+			{
+				CDialog_Manager::GetInstance()->Set_ActionChange(Get_Dialogue(_strDialogue)[0].lines[m_iCurrentLineIndex].iAnimationIndex);
+			}
+		}
+
+
+
+
+
+
 		_float2 vPos = {};
 		if (false == m_isRender)
 		{
 			m_isRender = true;
 			m_isPortraitRender = true;
 		}
-		
-		
+
+
 		switch (Get_DialogueLine(_strDialogue, m_iCurrentLineIndex).location)
 		{
 		case LOC_MIDDOWN:
@@ -1040,16 +1080,16 @@ void CDialog::NextDialogue(_float2 _RTSize)
 
 			// TODO :: dialogmgr에 넣어야한다.
 			CDialog_Manager::GetInstance()->Set_DialogEnd();
-		
+
 			m_iCurrentLineIndex = 0;
 			m_isDisplayDialogue = false;
-			
+
 			m_pPortrait->Set_PortraitRender(false);
 
 
 			//wsprintf(m_strCurrentSection, L"");
-			
-				m_isFirstRefresh = false;
+
+			m_isFirstRefresh = false;
 
 			// 다이얼로그 끝나고 상점을 닫기 위해 해당 다이얼로그가 상점 관련인지 확인한다.
 			isOpenPanel(_strDialogue);
@@ -1079,11 +1119,15 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			m_isPortraitRender = Get_Dialogue(_strDialogue)[0].lines[m_iCurrentLineIndex].isPortrait;
 
 
-			//if (false == m_pPortrait->CBase::Is_Active())
-			//{
-			//	m_pPortrait->CBase::Set_Active(true);
-			//}
-
+			// 다이얼로그 간 애니메이션 이동 //
+			if (m_iCurrentLineIndex <= Get_Dialogue(_strDialogue)[0].lines.size() - 1)
+			{
+				// 애니메이션이 단일인 NPC 및 객체가 아닌 트리거, 이벤트 다이얼로그의 대한 안전 코드추가 //
+				if (-1 != Get_Dialogue(_strDialogue)[0].lines[m_iCurrentLineIndex].iAnimationIndex)
+				{
+					CDialog_Manager::GetInstance()->Set_ActionChange(Get_Dialogue(_strDialogue)[0].lines[m_iCurrentLineIndex].iAnimationIndex);
+				}
+			}
 		}
 
 		if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
@@ -1136,13 +1180,13 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 					//}
 					//else
 					//{
-					m_strSectionName = L"";
-					
-					CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
-						Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
-					//}
-				//	m_isAddSectionRender = false;
+				m_strSectionName = L"";
+
+				CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+				Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
 				//}
+			//	m_isAddSectionRender = false;
+			//}
 
 				vPos = _float2(g_iWinSizeX / 2.f, g_iWinSizeY - g_iWinSizeY / 8.f);
 				m_vCalDialoguePos = _float3(vPos.x, vPos.y, 0.f);
@@ -1401,7 +1445,7 @@ void CDialog::isOpenPanel(_tchar* _DialogId)
 	_tchar NpcName[MAX_PATH] = {};
 	_tchar strSrcName[MAX_PATH] = {};
 	wsprintf(NpcName, Get_Dialogue(_DialogId)[0].lines[0].Talker.c_str());
-	
+
 	// 상점용
 	wsprintf(strSrcName, TEXT("마르티나"));
 	if (0 == wcscmp(NpcName, strSrcName))
@@ -1529,7 +1573,7 @@ void CDialog::Free()
 	Safe_Release(m_pPortrait);
 	//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 	__super::Free();
-	
+
 }
 
 HRESULT CDialog::Cleanup_DeadReferences()

@@ -35,8 +35,8 @@ HRESULT CNPC_OnlySocial::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	if (FAILED(LoadFromJson(TEXT("../Bin/Resources/NPC/Create_NPC_Information.json"))))
-		return E_FAIL;
+	//if (FAILED(LoadFromJson(TEXT("../Bin/Resources/NPC/Create_NPC_Information.json"))))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -71,6 +71,22 @@ HRESULT CNPC_OnlySocial::Render()
 	return S_OK;
 }
 
+
+HRESULT CNPC_OnlySocial::NextLevelLoadJson(_int _iNextLevel)
+{
+	if (3 == (_int)_iNextLevel)
+	{
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/NPC/Create_NPC_Information.json"))))
+			return E_FAIL;
+	}
+	else if (5 == _iNextLevel)
+	{
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/NPC/Create_NPC_Information_Chapter6.json"))))
+			return E_FAIL;
+	}
+
+	return S_OK;
+}
 
 CNPC_OnlySocial* CNPC_OnlySocial::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
@@ -115,7 +131,7 @@ HRESULT CNPC_OnlySocial::LoadFromJson(const std::wstring& filePath)
 {
 	if (GetFileAttributes(filePath.c_str()) == INVALID_FILE_ATTRIBUTES)
 	{
-		MSG_BOX("Dialog File Not Found");
+		MSG_BOX("OnlySocial File Not Found");
 		return E_FAIL;
 	}
 

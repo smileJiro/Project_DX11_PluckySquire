@@ -23,27 +23,29 @@ HRESULT C3DMapSkspObject::Initialize(void* _pArg)
     MAPOBJ_3D_DESC* pDesc = static_cast<MAPOBJ_3D_DESC*>(_pArg);
 
 
-    if (!pDesc->isSksp)
+    if (pDesc->iSksp == SKSP_NONE)
         return E_FAIL;
-
+    m_eSkspType = (SKSP_RENDER_TYPE)pDesc->iSksp;
     m_strRenderSectionTag = StringToWstring(pDesc->strSkspTag);
 
 
     if (L"Chapter4_SKSP_02" == m_strRenderSectionTag)
-        m_eSkspType = SKSP_FLAGS;
+        m_eSkspType = SKSP_PLAG;
 
     CSection* pSection = SECTION_MGR->Find_Section(m_strRenderSectionTag);
 
-    if (nullptr == pSection)
-        return E_FAIL;
-
+    //if (nullptr == pSection)
+    //    return E_FAIL;
+    if (nullptr != pSection)
+    {
     CSection_2D* p2DSection = dynamic_cast<CSection_2D*>(pSection);
 
-    if (nullptr == p2DSection)
-        return E_FAIL;
+    //if (nullptr == p2DSection)
+    //    return E_FAIL;
 
-
-    p2DSection->Register_WorldCapture(this);
+   if (nullptr != p2DSection)
+        p2DSection->Register_WorldCapture(this);
+    }
 
 
     return __super::Initialize(_pArg);
@@ -54,7 +56,7 @@ void C3DMapSkspObject::Late_Update(_float _fTimeDelta)
     CGameObject::Late_Update_Component(_fTimeDelta);
 
     /* Add Render Group */
-    if (SKSP_FLAGS == m_eSkspType || false == m_isCulling || false == m_isFrustumCulling)
+    if (SKSP_PLAG == m_eSkspType || false == m_isCulling || false == m_isFrustumCulling)
     {
         Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
         SECTION_MGR->SetActive_Section(m_strRenderSectionTag, true);
@@ -75,7 +77,11 @@ HRESULT C3DMapSkspObject::Render()
         if (FAILED(Render_Default()))
             return E_FAIL;
         break;
-    case Client::C3DMapSkspObject::SKSP_FLAGS:
+    case Client::C3DMapSkspObject::SKSP_PLAG:
+        if (FAILED(Render_Flags()))
+            return E_FAIL;
+        break;
+    case Client::C3DMapSkspObject::SKSP_CUP:
         if (FAILED(Render_Flags()))
             return E_FAIL;
         break;
@@ -110,7 +116,7 @@ HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, cons
         switch (m_eSkspType)
         {
 
-        case Client::C3DMapSkspObject::SKSP_FLAGS:
+        case Client::C3DMapSkspObject::SKSP_PLAG:
         {
 
             CMesh* pLeftMesh = p3DModel->Get_Mesh(2);
@@ -310,6 +316,47 @@ HRESULT C3DMapSkspObject::Render_Flags()
 
         pMesh->Bind_BufferDesc();
 
+        pMesh->Render();
+    }
+    return S_OK;
+}
+
+HRESULT C3DMapSkspObject::Render_Cup()
+{
+    if (FAILED(Bind_ShaderResources_WVP()))
+        return E_FAIL;
+    COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+    CShader* pShader = m_pShaderComs[eCoord];
+    _uint iShaderPass = m_iShaderPasses[eCoord];
+    C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
+
+    _bool iFlag = false;
+
+    m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+
+    for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
+    {
+        _uint iShaderPass = (_uint)PASS_VTXMESH::DEFAULT;
+        auto pMesh = pModel->Get_Mesh(i);
+        _uint iMaterialIndex = pMesh->Get_MaterialIndex();
+
+        if (0 == i)
+        {
+            if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_AlbedoTexture", TEXT("Target_2D"))))
+                return E_FAIL;
+        }
+        else
+        {
+
+            if (FAILED(pModel->Bind_Material(pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, 0)))
+            {
+                int a = 0;
+            }
+
+        }
+
+        pShader->Begin(iShaderPass);
+        pMesh->Bind_BufferDesc();
         pMesh->Render();
     }
     return S_OK;

@@ -86,7 +86,7 @@ private:
 	_float m_fRotationForce3D = 100.f;
 
 	//일반 공격 관련
-	_float m_f3DNormalAttackRange = 0.5f;
+	_float m_f3DNormalAttackRange = 0.8f;
 	_float m_f3DNormalAttackZOffset = 0.5f;
 	_float m_f3DJumpAttackRange = 2.5f;
 	_float m_f3DJumpAttackZOffset = 0.0f;

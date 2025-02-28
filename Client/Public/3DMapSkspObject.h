@@ -7,10 +7,15 @@ BEGIN(Client)
 class C3DMapSkspObject final : public C3DMapObject
 {
 public :
+
+public :
 	enum SKSP_RENDER_TYPE
 	{
+		SKSP_NONE,
 		SKSP_DEFAULT,
-		SKSP_FLAGS,
+		SKSP_CUP,
+		SKSP_TUB,
+		SKSP_PLAG,
 		SKSP_LAST
 	};
 
@@ -31,6 +36,7 @@ public :
 private :
 	HRESULT					Render_Default();
 	HRESULT					Render_Flags();
+	HRESULT					Render_Cup();
 
 public :
 	_wstring			m_strRenderSectionTag = L"";

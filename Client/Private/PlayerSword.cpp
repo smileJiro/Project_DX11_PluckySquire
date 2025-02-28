@@ -79,7 +79,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;  
 	ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     ShapeData.isTrigger = true;                    
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, m_f3DNormalAttackZOffset));
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, -m_f3DNormalAttackZOffset));
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     //점프 공격용 트리거
@@ -189,6 +189,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
 
 void CPlayerSword::Update(_float _fTimeDelta)
 {
+
     if (m_eCurrentState != m_ePastState)
         On_StateChange();
     COORDINATE eCoord = Get_CurCoord();
@@ -285,7 +286,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
     default:
         break;
     }
-    //cout << m_pActorCom->Get_Shapes()[0]->getActor() << endl;
+
 
     __super::Update(_fTimeDelta);
 
@@ -563,7 +564,6 @@ void CPlayerSword::Set_State(SWORD_STATE _eNewState)
 void CPlayerSword::On_StateChange()
 {
     COORDINATE eCoord = Get_CurCoord();
-   // cout << "SwrodState : " << m_eCurrentState << endl;
     switch (m_eCurrentState)
     {
     case Client::CPlayerSword::HANDLING:

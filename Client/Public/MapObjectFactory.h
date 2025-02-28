@@ -138,9 +138,9 @@ public:
 		_uint iSksp = 0;
 		ReadFile(_hFile, &iSksp, sizeof(_uint), &dwByte, nullptr);
 
-		if (1 == iSksp)
+		if (0 < iSksp)
 		{
-			NormalDesc.isSksp = true;
+			NormalDesc.iSksp = iSksp;
 			_char		szSaveSkspName[MAX_PATH];
 			ReadFile(_hFile, &szSaveSkspName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 			NormalDesc.strSkspTag = szSaveSkspName;
@@ -183,6 +183,9 @@ public:
 				break;
 				// Sksp
 			case 1 :
+			case 2 :
+			case 3 :
+			case 4 :
 				{
 					pBase = _pGameInstance->
 						Clone_Prototype(
@@ -196,35 +199,45 @@ public:
 				break;
 		}
 
-		if (nullptr != pBase)
+
+		_uint iOverrideCount = 0;
+
+		ReadFile(_hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
+		if (0 < iOverrideCount)
 		{
-			T* pMapObject = static_cast<T*>(pBase);
-
-			_uint iOverrideCount = 0;
-
-			ReadFile(_hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);
-			if (0 < iOverrideCount)
+			for (_uint i = 0; i < iOverrideCount; i++)
 			{
-				for (_uint i = 0; i < iOverrideCount; i++)
-				{
-					_uint iMaterialIndex, iTexTypeIndex, iTexIndex;
-					ReadFile(_hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
-					ReadFile(_hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
-					ReadFile(_hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
+				_uint iMaterialIndex, iTexTypeIndex, iTexIndex;
+				ReadFile(_hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
+				ReadFile(_hFile, &iTexTypeIndex, sizeof(_uint), &dwByte, nullptr);
+				ReadFile(_hFile, &iTexIndex, sizeof(_uint), &dwByte, nullptr);
 
+				if (nullptr != pBase)
+				{
+					T* pMapObject = static_cast<T*>(pBase);
 					pMapObject->Change_TextureIdx(iTexIndex, iTexTypeIndex, iMaterialIndex);
 				}
 			}
-
-			if (0 < iMaterialCount)
-			{
-				for (auto& tColorInfo : m_MaterialColors)
-					pMapObject->Set_MaterialConstBuffer_Albedo(tColorInfo.iMaterialIndex, tColorInfo.eColorMode, tColorInfo.fDiffuseColor);
-			}
-
-			return pMapObject;
-
 		}
+
+		if (0 < iMaterialCount)
+		{
+			for (auto& tColorInfo : m_MaterialColors)
+			{
+				if (nullptr != pBase)
+				{
+					T* pMapObject = static_cast<T*>(pBase);
+					pMapObject->Set_MaterialConstBuffer_Albedo(tColorInfo.iMaterialIndex, tColorInfo.eColorMode, tColorInfo.fDiffuseColor);
+				}
+			}
+		}
+		if (nullptr != pBase)
+		{
+			T* pMapObject = static_cast<T*>(pBase);
+			return pMapObject;
+		}
+
+
 		return nullptr;
 
 	}

@@ -218,7 +218,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     BodyGuardShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
     BodyGuardShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
     BodyGuardShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER; // Actor가 충돌을 감지할 그룹
-    ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
+    ActorDesc.ShapeDatas[BodyGuardShapeData.iShapeUse] = ShapeData;
 
 
 
@@ -1854,6 +1854,7 @@ void CPlayer::Set_GravityCompOn(_bool _bOn)
 
 void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 {
+
 	m_eCurAttackType = _eAttackType;
 	if (COORDINATE_2D == Get_CurCoord())
 	{
