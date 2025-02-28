@@ -38,6 +38,15 @@ HRESULT CSample_Skechspace::Initialize(void* _pArg)
 	__super::Initialize(_pArg);
 
 
+
+	// 10. 11
+	m_eSkspType = SKSP_DEFAULT;
+	if (m_strModelPrototypeTag[COORDINATE_3D] == L"Desk_C04_Sketchspace_Hanging_Flags_01")
+		m_eSkspType = SKSP_PLAG;
+	if (m_strModelPrototypeTag[COORDINATE_3D] == L"Mug")
+		m_eSkspType = SKSP_CUP;
+
+
 	Set_Position(XMVectorSet(2.f, 6.f, -17.3f, 1.f));
 
 	return S_OK;
@@ -62,13 +71,21 @@ void CSample_Skechspace::Late_Update(_float _fTimeDelta)
 
 HRESULT CSample_Skechspace::Render()
 {
-	// 10. 11
 
-	_bool isOverrideUV = false;
-	if (m_strModelPrototypeTag[COORDINATE_3D] == L"Desk_C04_Sketchspace_Hanging_Flags_01")
-		isOverrideUV = true;
 
-	if (!isOverrideUV)
+	switch (m_eSkspType)
+	{
+
+		break;
+	case Map_Tool::SKSP_CUP:
+		return Render_Cup();
+	case Map_Tool::SKSP_TUB:
+		return Render_Cup();
+	case Map_Tool::SKSP_PLAG:
+		return Render_Plag();
+	case Map_Tool::SKSP_NONE:
+	case Map_Tool::SKSP_DEFAULT:
+	default:
 	{
 		if (FAILED(Bind_ShaderResources_WVP()))
 			return E_FAIL;
@@ -98,51 +115,98 @@ HRESULT CSample_Skechspace::Render()
 			pMesh->Render();
 		}
 	}
-	else
+		break;
+	}
+
+
+	return S_OK;
+}
+
+HRESULT CSample_Skechspace::Render_Plag()
+{
+	if (FAILED(Bind_ShaderResources_WVP()))
+		return E_FAIL;
+	COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+	CShader* pShader = m_pShaderComs[eCoord];
+	_uint iShaderPass = m_iShaderPasses[eCoord];
+	C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
+
+	_bool iFlag = false;
+
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+
+	for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
 	{
+		_uint iShaderPass = (_uint)PASS_VTXMESH::DEFAULT;
+		auto pMesh = pModel->Get_Mesh(i);
+		_uint iMaterialIndex = pMesh->Get_MaterialIndex();
 
-		if (FAILED(Bind_ShaderResources_WVP()))
-			return E_FAIL;
-		COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
-		CShader* pShader = m_pShaderComs[eCoord];
-		_uint iShaderPass = m_iShaderPasses[eCoord];
-		C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
-
-		_bool iFlag = false;
-
-		m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
-
-		for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
+		if (2 == i || 5 == i)
 		{
-			_uint iShaderPass = (_uint)PASS_VTXMESH::DEFAULT;
-			auto pMesh = pModel->Get_Mesh(i);
-			_uint iMaterialIndex = pMesh->Get_MaterialIndex();
-
-			if (2 == i || 5 == i)
+			_float2 fStartUV = {};
+			_float2 fEndUV = {};
+			if (2 == i)
 			{
-				_float2 fStartUV = {};
-				_float2 fEndUV = {};
-				if (2 == i)
-				{
-					fStartUV = { -0.5f,0.f };
-					fEndUV = { 0.f,1.f };
-				}
-				else if (5 == i)
-				{
-					fStartUV = { 0.5f,0.f };
-					fEndUV = { 1.f,1.f };
+				fStartUV = { -0.5f,0.f };
+				fEndUV = { 0.f,1.f };
+			}
+			else if (5 == i)
+			{
+				fStartUV = { 0.5f,0.f };
+				fEndUV = { 1.f,1.f };
 
-				}
-				if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fStartUV, sizeof(_float2))))
-					return E_FAIL;
-				if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fEndUV, sizeof(_float2))))
-					return E_FAIL;
-				iShaderPass = (_uint)PASS_VTXMESH::RENDERTARGET_MAPP;
+			}
+			if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fStartUV, sizeof(_float2))))
+				return E_FAIL;
+			if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fEndUV, sizeof(_float2))))
+				return E_FAIL;
+			iShaderPass = (_uint)PASS_VTXMESH::RENDERTARGET_MAPP;
 
+			if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_AlbedoTexture", TEXT("Target_2D"))))
+				return E_FAIL;
+
+
+		}
+		else
+		{
+
+			if (FAILED(pModel->Bind_Material(pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, 0)))
+			{
+				int a = 0;
+			}
+
+		}
+
+		pShader->Begin(iShaderPass);
+		pMesh->Bind_BufferDesc();
+		pMesh->Render();
+	}
+	return S_OK;
+}
+
+HRESULT CSample_Skechspace::Render_Cup()
+{
+	if (FAILED(Bind_ShaderResources_WVP()))
+		return E_FAIL;
+	COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+	CShader* pShader = m_pShaderComs[eCoord];
+	_uint iShaderPass = m_iShaderPasses[eCoord];
+	C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
+
+	_bool iFlag = false;
+
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+
+	for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
+	{
+		_uint iShaderPass = (_uint)PASS_VTXMESH::DEFAULT;
+		auto pMesh = pModel->Get_Mesh(i);
+		_uint iMaterialIndex = pMesh->Get_MaterialIndex();
+
+			if (0 == i)
+			{
 				if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_AlbedoTexture", TEXT("Target_2D"))))
 					return E_FAIL;
-
-
 			}
 			else
 			{
@@ -151,14 +215,12 @@ HRESULT CSample_Skechspace::Render()
 				{
 					int a = 0;
 				}
-			
+
 			}
 
 			pShader->Begin(iShaderPass);
 			pMesh->Bind_BufferDesc();
 			pMesh->Render();
-		}
-
 	}
 	return S_OK;
 }
