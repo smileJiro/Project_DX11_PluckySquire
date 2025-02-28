@@ -1264,7 +1264,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 
 	/* For. Prototype_GameObject_Camera_CutScene */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Camera_CutScene_Save"),
-		CCamera_CutScene::Create(m_pDevice, m_pContext))))
+		CCamera_CutScene_Save::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 #pragma endregion
@@ -1273,14 +1273,14 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 	// 3D Map Load
 	if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL,
 		MAP_3D_DEFAULT_PATH,
-		L"Chapter_04_Play_Desk.json",
+		L"Chapter_06_Play_Desk.json",
 		matPretransform, true)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_4);
+	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_6);
 
 
-	return Loading_Level_Chapter_4(LEVEL_CAMERA_TOOL);
+	return Loading_Level_Chapter_6(LEVEL_CAMERA_TOOL);
 }
 
 HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)

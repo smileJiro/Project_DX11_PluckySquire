@@ -666,7 +666,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 			}
 
 		}
-		if (ImGui::SliderFloat("ShadowFactor##Light", &tConstLightData.fShadowFactor, 0.0f, 1.0f, "%.3f"))
+		if (ImGui::SliderFloat("ShadowFactor##Light", &tConstLightData.fShadowFactor, -2.0f, 2.0f, "%.3f"))
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 		};

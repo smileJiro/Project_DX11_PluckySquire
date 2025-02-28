@@ -16,7 +16,7 @@ namespace Engine
 	{
 		float			fSensorHeight = 24.0f;
 		float			fAperture = 2.8f; // 조리개 크기
-		float			fFocusDistance = 5.0f; // 초점 평면거리
+		float			fFocusDistance = 50.0f; // 초점 평면거리
 		float			fFocalLength = 0; // Fovy와 FocusDistance를 기반으로 구해지는 값.
 
 		float			fDofBrightness = 1.5f; // Fovy와 FocusDistance를 기반으로 구해지는 값.

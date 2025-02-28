@@ -137,7 +137,7 @@ private:
 	_int									m_iModelIndex = {};
 	_bool									m_isLoop = { false };
 	_int									m_iAnim[3] = {};
-	_bool									m_isSelectModel[3] = { true };
+	_bool									m_isSelectModel[3] = { false };
 
 	_bool									m_isSetAt = { false };
 	_float3									m_vInitialLookAt = {};
@@ -145,6 +145,8 @@ private:
 
 	// CutScene At
 	_float3									m_DummyAt = {};
+	_float3									m_vStartPos = {};
+	_float3									m_vDestination = {};
 
 private:
 	LEVEL_ID								m_eLevelID;
@@ -188,7 +190,7 @@ private:
 	void				Delete_KeyFrame();
 	void				Set_CurrentKeyFrame();
 
-	void				Set_CameraInfo();
+	void				Set_CameraInfo(_float _fTimeDelta);
 
 	void				Create_Sector();
 	void				Edit_Sector();

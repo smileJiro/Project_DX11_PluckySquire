@@ -233,6 +233,11 @@ struct PS_OUT
 
 };
 
+struct PS_ONLYALBEDO_OUT
+{
+    float4 vDiffuse : SV_TARGET0;
+};
+
 PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
@@ -263,12 +268,26 @@ PS_OUT PS_MAIN(PS_IN In)
     
     return Out;
 }
+
+PS_ONLYALBEDO_OUT PS_ONLYALBEDO(PS_IN In) // 포스트 프로세싱 이후에 그리는
+{
+    PS_ONLYALBEDO_OUT Out = (PS_ONLYALBEDO_OUT) 0;
+
+    float4 vAlbedo = useAlbedoMap ? g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord) : Material.Albedo;
+    
+    if (vAlbedo.a < 0.01f)
+        discard;
+    
+    Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
+    
+    return Out;
+}
+
 struct PS_SHADOW_IN
 {
     float4 vPosition : SV_POSITION;
     float4 vProjPos : TEXCOORD0;
 };
-
 
 // LightDepth 기록용 PixelShader 
 struct PS_SHADOWMAP_OUT
@@ -388,17 +407,28 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
     
-    pass AlphaPass // 1
+    pass AfterPostProcessingPass // 1
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_ONLYALBEDO();
+    }
+
+    pass AlphaPass // 2
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_WriteNone, 0);
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN();
+        PixelShader = compile ps_5_0 PS_ONLYALBEDO();
     }
 
-    pass NoneCullPass // 2
+    pass NoneCullPass // 3
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -408,7 +438,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass RenderTargetMappingPass // 3
+    pass RenderTargetMappingPass // 4
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -418,7 +448,17 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass BookWorldPosMap // 4
+    pass RenderTargetMappingPass_AfterPostProcessing // 5
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN_RENDERTARGET_UV();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_ONLYALBEDO();
+    }
+
+    pass BookWorldPosMap // 6
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -428,7 +468,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_WORLDPOSMAP();
     }
     
-    pass Fresnel // 5
+    pass Fresnel // 7
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -438,7 +478,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_FRESNEL();
     }
 
-    pass PlayerDepth // 6
+    pass PlayerDepth // 8
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -447,7 +487,7 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_PLAYERDEPTH();
     }
-    pass ShadowMap // 7
+    pass ShadowMap // 9
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
