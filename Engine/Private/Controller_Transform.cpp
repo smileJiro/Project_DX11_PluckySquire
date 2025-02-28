@@ -145,6 +145,35 @@ HRESULT CController_Transform::Bind_ShaderResource(CShader* pShader, const _char
  	return m_pTransforms[m_eCurCoord]->Bind_ShaderResource(pShader, pConstantName);
 }
 
+void CController_Transform::Create_Transform(COORDINATE _eCoordinate)
+{
+	if(m_pTransforms[_eCoordinate])
+		return;
+	switch (_eCoordinate)
+	{
+	case Engine::COORDINATE_2D:
+	{
+		m_pTransforms[COORDINATE_2D] = CTransform_2D::Create(m_pDevice, m_pContext);
+		if (nullptr == m_pTransforms[COORDINATE_2D])
+			return ;
+		CTransform_2D::tagTransform2DDesc tDesc = {};
+		if (FAILED(m_pTransforms[COORDINATE_2D]->Initialize(&tDesc)	))
+			return ;
+		break;
+	}
+	case Engine::COORDINATE_3D:
+	{
+		m_pTransforms[COORDINATE_3D] = CTransform_3D::Create(m_pDevice, m_pContext);
+		if (nullptr == m_pTransforms[COORDINATE_3D])
+			return;
+		CTransform_3D::tagTransform3DDesc tDesc = {};
+		if (FAILED(m_pTransforms[COORDINATE_3D]->Initialize(&tDesc)))
+			return;
+		break;
+	}
+	}
+}
+
 
 
 void CController_Transform::LookAt_3D(_fvector _vAt, _fvector _vAxis, _float _fAngle)

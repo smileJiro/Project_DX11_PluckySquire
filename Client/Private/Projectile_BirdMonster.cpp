@@ -281,7 +281,7 @@ HRESULT CProjectile_BirdMonster::Ready_PartObjects()
     
     BodyDesc.strModelPrototypeTag_3D = TEXT("BirdMonster_Projectile");
     
-    BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
     
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 

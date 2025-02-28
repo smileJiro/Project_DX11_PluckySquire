@@ -1220,6 +1220,7 @@
     <ClInclude Include="..\Public\PalmDecal.h" />
     <ClInclude Include="..\Public\PalmMarker.h" />
     <ClInclude Include="..\Public\Stoppable.h" />
+    <ClInclude Include="..\Public\PlayerState_ErasePalmDecal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1918,6 +1919,7 @@
     <ClCompile Include="..\Private\PalmDecal.cpp" />
     <ClCompile Include="..\Private\PalmMarker.cpp" />
     <ClCompile Include="..\Private\Stoppable.cpp" />
+    <ClCompile Include="..\Private\PlayerState_ErasePalmDecal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

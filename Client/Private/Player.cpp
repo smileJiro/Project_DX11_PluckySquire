@@ -29,6 +29,7 @@
 #include "PlayerState_Drag.h"
 #include "PlayerState_Stamp.h"
 #include "PlayerState_Bomber.h"
+#include "PlayerState_ErasePalmDecal.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -470,6 +471,7 @@ HRESULT CPlayer::Ready_Components()
     Bind_AnimEventFunc("Attack", bind(&CPlayer::Move_Attack_3D, this));
     Bind_AnimEventFunc("StampSmash", bind(&CPlayer::StampSmash, this));
     Bind_AnimEventFunc("Detonate", bind(&CPlayer::Detonate, this));
+    Bind_AnimEventFunc("ErasePalm", bind(&CPlayer::ErasePalm, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -1059,6 +1061,13 @@ void CPlayer::Detonate()
 	m_pDetonator->Detonate();
 }
 
+void CPlayer::ErasePalm()
+{
+	if (nullptr == m_pStopStmap)
+		return;
+	m_pStopStmap->Erase_PalmDecal();
+}
+
 
 void CPlayer::Move_Forward(_float fVelocity, _float _fTimeDelta)
 {
@@ -1121,32 +1130,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         }
         return tResult;
     }
-    _bool bIsTurningBook = CPlayer::TURN_BOOK == m_pStateMachine->Get_CurrentState()->Get_StateID();
 
-    if (bIsTurningBook)
-    {
-        if (KEY_PRESSING(KEY::A))
-        {
-			tResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT] = true;
-        }
-        else if (KEY_PRESSING(KEY::D))
-        {
-			tResult.bInputStates[PLAYER_INPUT_TURNBOOK_RIGHT] = true;
-        }
-        else
-        {
-            if (MOUSE_DOWN(MOUSE_KEY::LB)
-                || MOUSE_DOWN(MOUSE_KEY::RB)
-                || KEY_DOWN(KEY::SPACE)
-                || KEY_DOWN(KEY::LSHIFT))
-            {
-                tResult.bInputStates[PLAYER_INPUT_TURNBOOK_END] = true;
-            }
-        }
-
-
-        return tResult;
-    }
 
 	_bool bCarrying = Is_CarryingObject();
     if (false == bCarrying && Is_SwordHandling())
@@ -1276,6 +1260,47 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_Stamp()
     tResult.vMoveDir = tResult.vDir;
     tResult.bInputStates[PLAYER_INPUT_MOVE] = false == XMVector3Equal(tResult.vMoveDir, XMVectorZero());
 
+    return tResult;
+}
+
+PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_ControlBook()
+{
+    PLAYER_INPUT_RESULT tResult;
+    _bool bIsTurningBook = CPlayer::TURN_BOOK == m_pStateMachine->Get_CurrentState()->Get_StateID();
+
+    if (false == bIsTurningBook)
+    return tResult;
+    if (KEY_PRESSING(KEY::A))
+    {
+        tResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT] = true;
+    }
+    else if (KEY_PRESSING(KEY::D))
+    {
+        tResult.bInputStates[PLAYER_INPUT_TURNBOOK_RIGHT] = true;
+    }
+    else if (KEY_PRESSING(KEY::Z))
+    {
+        tResult.bInputStates[PLAYER_INPUT_TILTBOOK_LEFT] = true;
+    }
+    else if (KEY_PRESSING(KEY::X))
+    {
+        tResult.bInputStates[PLAYER_INPUT_TILTBOOK_RIGHT] = true;
+    }
+    else
+    {
+        if (MOUSE_DOWN(MOUSE_KEY::LB)
+            || MOUSE_DOWN(MOUSE_KEY::RB)
+            || KEY_DOWN(KEY::SPACE)
+            || KEY_DOWN(KEY::LSHIFT)
+            || KEY_DOWN(KEY::Q))
+        {
+            tResult.bInputStates[PLAYER_INPUT_TURNBOOK_END] = true;
+        }
+    }
+
+
+    return tResult;
+    
     return tResult;
 }
 
@@ -1663,6 +1688,9 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::BOMBER:
         m_pStateMachine->Transition_To(new CPlayerState_Bomber(this));
         break;
+    case Client::CPlayer::ERASE_PALM:
+        m_pStateMachine->Transition_To(new CPlayerState_ErasePalmDecal(this));
+        break;
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -2019,9 +2047,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     }
     if (KEY_DOWN(KEY::Z))
     {
-        COORDINATE eCoord =Get_CurCoord();
-        if (COORDINATE_3D == eCoord)
-        {
+        //COORDINATE eCoord =Get_CurCoord();
+        //if (COORDINATE_3D == eCoord)
+        //{
             //±ÙÃ³ Æ÷Å»
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //Æ÷Å» 4 0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
@@ -2029,9 +2057,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //ÁÖ»çÀ§ 2 (48.73f, 2.61f, -5.02f);
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 48.73f, 2.61f, -5.02f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
-            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 15.f, 10.f, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 15.f, 10.f, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
 
-        }
+       // }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 
     }

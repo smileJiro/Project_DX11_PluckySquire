@@ -394,7 +394,7 @@ _bool CPhysx_Manager::MultiSweep(PxGeometry* pxGeom, const _float4x4& _matShpeOf
 	_float4 vQuat;
 	_float3 vPosition;
 	if (false == m_pGameInstance->MatrixDecompose(&vScale, &vQuat, &vPosition, XMLoadFloat4x4(&_matShpeOffsetMatrix)))
-		return E_FAIL;
+		return false;
 	vOrigin.x += vPosition.x;
 	vOrigin.y += vPosition.y;
 	vOrigin.z += vPosition.z;

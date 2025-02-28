@@ -85,6 +85,11 @@ void CStopStamp::Place_PalmDecal(_fvector v2DPosition, _fvector _v2DDirection)
 	m_pPalmDecal->Place(v2DPosition, _v2DDirection);
 }
 
+void CStopStamp::Erase_PalmDecal()
+{
+    m_pPalmDecal->Erase();
+}
+
 CStopStamp* CStopStamp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
     CStopStamp* pInstance = new CStopStamp(_pDevice, _pContext);

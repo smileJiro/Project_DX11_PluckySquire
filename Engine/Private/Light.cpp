@@ -20,7 +20,7 @@ HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 	m_tLightConstData = _LightDesc;
 
 	// Shadow Light 여부 판단 후 행렬 계산 작업 수행.
-	if (true == m_tLightConstData.isShadow)
+	if (true == (_bool)m_tLightConstData.isShadow)
 	{
 		/* 0. Shadow ID 부여 */
 		m_iShadowLightID = s_iShadowLightID++;
@@ -28,7 +28,7 @@ HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 		/* 1. RenderTarget을 만든다, DSV는 DSV_Shadow 사용한다(메인앱에서 생성했음). */
 		_wstring strShadowRTTag = TEXT("Target_Shadow_");
 		strShadowRTTag += to_wstring(m_iShadowLightID);
-		m_pGameInstance->Add_RenderTarget(strShadowRTTag, SHADOWMAP_X, SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f,0.0f,0.0f,0.0f), &m_pShadowRenderTarget);
+		m_pGameInstance->Add_RenderTarget(strShadowRTTag, (_uint)SHADOWMAP_X, (_uint)SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f,0.0f,0.0f,0.0f), &m_pShadowRenderTarget);
 		/* 2. 자기 자신을 shadow rendergroup에 등록한다. */
 
 		Compute_ViewProjMatrix();
