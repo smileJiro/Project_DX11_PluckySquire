@@ -46,6 +46,7 @@ public:
 	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	//virtual void OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts, _bool _bIm0)override;	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
@@ -87,7 +88,7 @@ private:
 	//일반 공격 관련
 	_float m_f3DNormalAttackRange = 0.5f;
 	_float m_f3DNormalAttackZOffset = 0.5f;
-	_float m_f3DJumpAttackRange = 1.5f;
+	_float m_f3DJumpAttackRange = 2.5f;
 	_float m_f3DJumpAttackZOffset = 0.0f;
 
 	SWORD_STATE m_eCurrentState = HANDLING;

@@ -108,7 +108,8 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
                 else
                 {
                     // 이전프레임에는 충돌하지 않았다.(첫 충돌)
-                    if (false == pLeftObject->Is_Dead() && false == pRightObject->Is_Dead() && true == pLeftObject->Is_Active() && true == pRightObject->Is_Active())
+                    if (false == pLeftObject->Is_Dead() && false == pRightObject->Is_Dead() && true == pLeftObject->Is_Active() && true == pRightObject->Is_Active() &&
+                        true == pLeftCollider->Is_Active() && true == pRightCollider->Is_Active())
                     {
                         pLeftObject->On_Collision2D_Enter(pLeftCollider, pRightCollider, pRightObject);
                         pRightObject->On_Collision2D_Enter(pRightCollider, pLeftCollider, pLeftObject);

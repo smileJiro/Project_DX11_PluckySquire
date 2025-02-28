@@ -26,6 +26,7 @@ public:
 	//HRESULT					Create_Objects(const _wstring& _strPoolingTag, _uint iNumPoolingObjects, _float3* _pPosition = nullptr, _float4* _pRotation = nullptr, _float3* _pScaling = nullptr);
 	//HRESULT					Create_Object(const _wstring& _strPoolingTag, _float3* _pPosition = nullptr, _float4* _pRotation = nullptr, _float3* _pScaling = nullptr);
 	HRESULT					Create_Object(const _wstring& _strPoolingTag, COORDINATE eCoordinate, _float3* _pPosition = nullptr, _float4* _pRotation = nullptr, _float3* _pScaling = nullptr, const _wstring* _pSectionKey = nullptr);
+	HRESULT					Create_Object(const _wstring& _strPoolingTag, COORDINATE eCoordinate, CGameObject** _ppOut, _float3* _pPosition = nullptr, _float4* _pRotation = nullptr, _float3* _pScaling = nullptr, const _wstring* _pSectionKey = nullptr);
 	HRESULT					Create_Objects(const _wstring& _strPoolingTag, _uint iNumPoolingObjects, COORDINATE eCoordinate, _float3* _pPosition = nullptr, _float4* _pRotation = nullptr, _float3* _pScaling = nullptr, const _wstring* _pSectionKey = nullptr);
 
 private:

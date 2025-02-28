@@ -84,7 +84,7 @@ HRESULT CCrossBow_Soldier::Initialize(void* _pArg)
     CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
     tAnimEventDesc.pReceiver = this;
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
-    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_SoldierAttackEvent"), &tAnimEventDesc));
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_SoldierAttackAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
@@ -374,7 +374,7 @@ HRESULT CCrossBow_Soldier::Ready_PartObjects()
     /* Part_Weapon */
     CSoldier_CrossBow::SOLDIER_CROSSBOW_DESC CrossBowDesc{};
     CrossBowDesc.strModelPrototypeTag_3D = TEXT("CrossBow");
-    CrossBowDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    CrossBowDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
 
     CrossBowDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 
@@ -397,8 +397,7 @@ HRESULT CCrossBow_Soldier::Ready_PartObjects()
         return E_FAIL;
 
     C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
-    static_cast<CPartObject*>(m_PartObjects[PART_RIGHT_WEAPON])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r"));
-	//m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->RotationXYZ(_float3{ 0.f,XMConvertToRadians(-90.f),XMConvertToRadians(90.f) });
+    m_PartObjects[PART_RIGHT_WEAPON]->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r"));
 	m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->RotationXYZ(_float3{ XMConvertToRadians(-90.f), 0.f, XMConvertToRadians(90.f) });
 
     return S_OK;

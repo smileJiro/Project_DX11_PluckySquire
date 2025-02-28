@@ -967,14 +967,14 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"), m_eLevelID, _strLayerTag, &CrossBow_Soldier_Desc)))
 	//	return E_FAIL;
 
-	//CBomb_Soldier::MONSTER_DESC Bomb_Soldier_Desc;
-	//Bomb_Soldier_Desc.iCurLevelID = m_eLevelID;
-	//Bomb_Soldier_Desc.eStartCoord = COORDINATE_3D;
-	//Bomb_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
+	CBomb_Soldier::MONSTER_DESC Bomb_Soldier_Desc;
+	Bomb_Soldier_Desc.iCurLevelID = m_eLevelID;
+	Bomb_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	Bomb_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

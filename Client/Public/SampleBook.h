@@ -29,8 +29,20 @@ public:
 	enum BOOK_ANIMATION
 	{
 		IDLE = 0 ,
+		PAGE_IMPACT,
+		OPEN_TO_FLAT,
+		OPEN_IDLE,
+		OPEN,
 		MAGICDUST = 5,
+		FLATTEN,
+
+		FLAT_PAGE_TURN = 8,
 		ACTION = 8,
+
+		CLOSED_IDLE = 10,
+		CLOSE_R_TO_L = 11,
+		CLOSE_L_TO_R = 12,
+		BOOKOUT_CLOSE,
 		ANIMATION_LAST
 	};
 	
@@ -76,7 +88,9 @@ public :
 	void					PageAction_Call_PlayerEvent();
 	BOOK_PAGE_ACTION		Get_ActionType() { return m_eCurAction; }
 	_bool					Get_PlayerAround() { return m_isPlayerAround; }
+	_bool					Is_DuringAnimation();
 
+	void					Tilt(_bool _bLeft);
 public:						
 	HRESULT					Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition);
 	void					Execute_AnimEvent(_uint _iAnimIndex);

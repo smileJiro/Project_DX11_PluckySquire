@@ -230,6 +230,17 @@ void CSampleBook::Update(_float _fTimeDelta)
 void CSampleBook::Late_Update(_float _fTimeDelta)
 {
 	//Register_RenderGroup(m_iRenderGroupID_3D, m_iPriorityID_3D);
+	if (KEY_DOWN(KEY::LSHIFT))
+	{
+		m_iPriorityID_3D = PR3D_AFTERPOSTPROCESSING;
+		m_iShaderPasses[COORDINATE_3D] = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP_AFTERPOSTPROCESSING;
+	}
+	if (KEY_DOWN(KEY::X))
+	{
+		m_iPriorityID_3D = PR3D_GEOMETRY;
+		m_iShaderPasses[COORDINATE_3D] = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP;
+
+	}
 	__super::Late_Update(_fTimeDelta);
 }
 
@@ -250,7 +261,7 @@ HRESULT CSampleBook::Render()
 	for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
 	{
 		_uint iRotateFlag = 0;
-		_uint iShaderPass = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP;
+		//_uint iShaderPass = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP;
 		auto pMesh = pModel->Get_Mesh(i);
 		_uint iMaterialIndex = pMesh->Get_MaterialIndex();
 
@@ -689,6 +700,11 @@ _bool CSampleBook::Is_Interactable(CPlayer* _pUser)
 _float CSampleBook::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 {
 	return 9999.f;
+}
+
+_bool CSampleBook::Is_DuringAnimation()
+{
+	return m_pControllerModel->Get_Model(m_pControllerTransform->Get_CurCoord())->Is_DuringAnimation();
 }
 
 HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition)
