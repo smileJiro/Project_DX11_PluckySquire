@@ -470,6 +470,26 @@ void CPlayerSword::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOth
 {
 }
 
+//void CPlayerSword::OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, 
+//    CModifiableContacts& _ModifiableContacts, _bool _bIm0)
+//{
+//  //  if (Is_Flying())
+//  //  {
+//		//_vector vMyPos = Get_FinalPosition();
+//  //      _uint iContactCount = _ModifiableContacts.Get_ContactCount();
+//  //      for (_uint i = 0; i < iContactCount; i++)
+//  //      {
+//  //          _vector vContactPos = _ModifiableContacts.Get_Point(i);
+//		//	_float fDistance = XMVectorGetX(XMVector3Length(vContactPos - vMyPos));
+//		//	if (fDistance > 0.1f)
+//		//	{
+//		//		_ModifiableContacts.Ignore(i);
+//		//	}
+//  //      }
+//  //  }
+//
+//}
+
 
 void CPlayerSword::Active_OnEnable()
 {

@@ -16,6 +16,8 @@ public:
 	virtual HRESULT Render() override;
 	
 public:
+	void Set_Time_On();
+	void Set_Time_Off();
 	void Bomb_Shape_Enable(_bool _isEnable);
 
 private:
@@ -46,6 +48,7 @@ private:
 	_float m_fLifeTime = { 0.f };
 	_float m_fExplodeTime = { 0.f };
 	_bool m_isExplode = { false };
+	_bool m_isOn = { true }; //심지에 불 붙은 상태
 
 public:
 	static CBomb* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
