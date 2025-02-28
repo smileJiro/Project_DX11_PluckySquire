@@ -32,6 +32,8 @@ HRESULT CPalmMarker::Initialize(void* _pArg)
     pBodyDesc->iModelPrototypeLevelID_2D = LEVEL_STATIC;
     pBodyDesc->strModelPrototypeTag_2D = TEXT("stamp_icon_stop_01_Sprite");
 
+
+
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 

@@ -291,7 +291,7 @@ HRESULT CGoblin_SideScroller::Ready_Components()
     FSMDesc.isMelee = true;
     FSMDesc.eSideScroll_Bound = m_eSideScroll_Bound;
 
-    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
         return E_FAIL;
 
@@ -344,7 +344,7 @@ HRESULT CGoblin_SideScroller::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strModelPrototypeTag_2D = TEXT("Goblin_SideScroller");
-    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
 
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
 

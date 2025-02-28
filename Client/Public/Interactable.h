@@ -14,6 +14,18 @@ enum class INTERACT_RESULT
 	NO_INPUT,
 	PLAYER_INTERACT_RESULT_LAST
 };
+enum class INTERACT_ID
+{
+	NPC,
+	CARRIABLE,
+	PORTAL,
+	BOOK,
+	DRAGGABLE,
+	LUNCHBOX,
+	PALMDECAL,
+	INTERACT_ID_LAST
+
+};
 class CPlayer;
 class IInteractable 
 {
@@ -45,24 +57,24 @@ public:
 	
 	void Start_Interact(CPlayer* _pPlayer)
 	{
-		On_InteractionStart(_pPlayer);
 		m_fInteractTimeAcc = 0.f;
 		m_bInteracting = true;
+		On_InteractionStart(_pPlayer);
 	}
 	void Pressing(CPlayer* _pPlayer, _float _fTimeDelta)
 	{
-		On_Pressing(_pPlayer, _fTimeDelta);
 		m_fInteractTimeAcc += _fTimeDelta;
 		m_bInteracting = true;
+		On_Pressing(_pPlayer, _fTimeDelta);
 	}
 	void End_Interact(CPlayer* _pPlayer)
 	{
-		On_InteractionEnd(_pPlayer);
 		m_fInteractTimeAcc = 0.f;
 		m_bInteracting = false;
+		On_InteractionEnd(_pPlayer);
 	}
 
-	wstring Get_InteractName() { return m_strInteractName; } // 인터렉트가 된 대상의 이름을 가져온다.
+	INTERACT_ID Get_InteractID() { return m_eInteractID; } // 인터렉트가 된 대상의 이름을 가져온다.
 	_bool Is_UIPlayerHeadUp() { return m_bUIPlayerHeadUp; }	// 유저의 머리위에 노출시킬것인가 아닌가
 protected:
 
@@ -80,7 +92,7 @@ protected:
 	KEY m_eInteractKey = KEY::E;
 	_bool m_bInteracting = false;
 
-	wstring m_strInteractName = TEXT("");
+	INTERACT_ID m_eInteractID = INTERACT_ID::INTERACT_ID_LAST;
 	_bool m_bUIPlayerHeadUp = false;
 };
 

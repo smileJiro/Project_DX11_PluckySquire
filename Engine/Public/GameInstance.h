@@ -232,6 +232,7 @@ public: /* For. GlobalFunction_Manager */
 	_float				Get_Angle_Between_Vectors(_fvector _vNormal, _fvector _vVector1, _fvector _vVector2);		//노말벡터 기준으로 방향 벡터 간 각도 구함 (0-360도 간)
 	_float				Clamp_Degrees(_float _fDegrees);		//0~360도 사이로 만듦
 	_fvector			Rotate_Vector(_fvector _vAxis, _fvector _vVector, _float _fDegrees);		//각도 넣어서 벡터 회전
+	_fvector			Direction_To_Quaternion(_fvector _vDefaulfDir, _fvector _vDirection);	//방향벡터를 기본 방향 기준 쿼터니언으로 변환
 
 	//같으면 0 / 1번 벡터가 크면 1 / 2번 벡터가 크면 2
 	_uint				Compare_VectorLength(_fvector _vVector1, _fvector _vVector2);	

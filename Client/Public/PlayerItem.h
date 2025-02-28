@@ -45,6 +45,7 @@ private:
 	CShader*					m_pShaderCom = { nullptr };
 	C3DModel*					m_pModelCom = { nullptr };
 
+
 private:
 	_uint						m_iItemType = {};
 	_uint						m_iItemMode = {};
@@ -59,6 +60,7 @@ private:
 	_bool						m_isScaleDown = { false };
 	_bool						m_isFinishWait = { false };
 	_bool						m_isStop = { false };
+	_bool						m_isInFrustum = { false };
 
 private:
 	HRESULT						Ready_Components(PLAYERITEM_DESC* _pArg);

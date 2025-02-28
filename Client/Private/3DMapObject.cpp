@@ -53,7 +53,7 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
     // 모델에 쿠킹 셰잎 정보가 있으면, 액터 정보를 ModelDesc에 포함시킨다.
 
     #pragma region CActorObject::Initialize(pArg) 준비작업 
-        if (nullptr != m_pControllerModel)
+        if (nullptr != m_pControllerModel && LEVEL_STATIC != pDesc->iModelPrototypeLevelID_3D)
         {
             CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
 
@@ -94,7 +94,7 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
                     pDesc->pActorDesc = &ActorDesc;
 
                     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
-                    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER | OBJECT_GROUP::DYNAMIC_OBJECT;
+                    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::MONSTER_PROJECTILE;
                 }
             }
         }

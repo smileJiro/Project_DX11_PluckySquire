@@ -2,6 +2,8 @@
 #include "ModelObject.h"
 #include "Interactable.h"
 BEGIN(Client)
+class IStoppable;
+class CSection_Manager;
 class CPalmDecal :
 	public CModelObject, public IInteractable
 {
@@ -29,7 +31,7 @@ public:
 
 private:
 	set<CGameObject*> m_StoppedObjects;
-
+	CSection_Manager* m_pSectionMgr = nullptr;
 public:
 	static CPalmDecal* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

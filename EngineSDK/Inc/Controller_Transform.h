@@ -75,7 +75,7 @@ public: /* 2D, 3D */
 	void					TurnAngle(_float _fRadian, _fvector _vAxis = { 0.0f, 1.0f, 0.0f, 0.0f });	// 기존 회전을 기준으로 정해진 각도만큼 회전한다
 	_float					Compute_Distance(_fvector _vTargetPos); // 거리 계산 함수.
 	HRESULT					Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);
-
+	void					Create_Transform(COORDINATE _eCoordinate);
 public: /* 2D */
 
 public: /* 3D */

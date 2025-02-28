@@ -27,6 +27,7 @@ HRESULT CMeleeAttackState::Initialize(void* _pArg)
 void CMeleeAttackState::State_Enter()
 {
 	m_pOwner->Set_AnimChangeable(false);
+	m_pOwner->Set_PreAttack(true);
 }
 
 void CMeleeAttackState::State_Update(_float _fTimeDelta)
@@ -47,6 +48,18 @@ void CMeleeAttackState::State_Update(_float _fTimeDelta)
 		return;
 	}
 
+	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+	{
+		if (true == m_pOwner->Get_PreAttack())
+		{
+			_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
+			if (true == m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+			{
+				m_pOwner->Stop_Rotate();
+			}
+		}
+	}
+
 	//АјАн
 	//if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
 	//{
@@ -63,6 +76,7 @@ void CMeleeAttackState::State_Update(_float _fTimeDelta)
 
 void CMeleeAttackState::State_Exit()
 {
+	m_pOwner->Set_PreAttack(false);
 }
 
 CMeleeAttackState* CMeleeAttackState::Create(void* _pArg)

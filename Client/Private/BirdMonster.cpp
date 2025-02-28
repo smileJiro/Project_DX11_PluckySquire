@@ -246,7 +246,7 @@ void CBirdMonster::Attack()
         if (COORDINATE_3D == eCoord)
         {
             vPosition.y += vScale.y * 0.8f;
-			
+            XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - Get_FinalPosition()));
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BirdMonster"), eCoord, &vPosition, &vRotation);
         }
         else if (COORDINATE_2D == eCoord)
@@ -343,13 +343,13 @@ HRESULT CBirdMonster::Ready_Components()
     FSMDesc.pOwner = this;
     FSMDesc.iCurLevel = m_iCurLevelID;
 
-    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_FSM"),
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
         return E_FAIL;
 
 #ifdef _DEBUG
     /* Com_DebugDraw_For_Client */
-    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DebugDraw_For_Client"),
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_DebugDraw_For_Client"),
         TEXT("Com_DebugDraw_For_Client"), reinterpret_cast<CComponent**>(&m_pDraw))))
         return E_FAIL;
 #endif // _DEBUG
@@ -366,7 +366,7 @@ HRESULT CBirdMonster::Ready_Components()
     DetectionDesc.pDraw = m_pDraw;
 #endif // _DEBUG
 
-    if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_DetectionField"),
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_DetectionField"),
         TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
         return E_FAIL;
 
@@ -383,7 +383,7 @@ HRESULT CBirdMonster::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strModelPrototypeTag_3D = TEXT("Namastarling_Rig_01");
-	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+	BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 

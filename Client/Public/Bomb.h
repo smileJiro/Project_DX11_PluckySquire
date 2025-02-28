@@ -15,6 +15,9 @@ public:
 	virtual void		Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render() override;
 	
+public:
+	void Bomb_Shape_Enable(_bool _isEnable);
+
 private:
 	void Explode();
 

@@ -24,6 +24,7 @@ public:
 	virtual HRESULT			Render() override;
 
 	void Place_PalmDecal(_fvector v2DPosition, _fvector _v2DDirection);
+	void Erase_PalmDecal();
 private:
 	CPalmDecal* m_pPalmDecal = nullptr;
 public:

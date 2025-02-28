@@ -7,7 +7,7 @@
                         0.800000011920929,
                         0.699999988079071,
                         0.5,
-                        1.0
+                        0.699999988079071
                     ],
                     "Arg2": [
                         0.8999999761581421,
@@ -17,7 +17,7 @@
                     ],
                     "SetType": "DIRECTSET"
                 },
-                "Count": 8,
+                "Count": 20,
                 "LifeTime": {
                     "Arg1": 0.4000000059604645,
                     "Arg2": 0.0,
@@ -25,16 +25,16 @@
                 },
                 "Position": {
                     "Arg1": [
-                        -0.20000000298023224,
+                        0.0,
                         0.0,
                         0.0
                     ],
                     "Arg2": [
-                        0.20000000298023224,
+                        0.0,
                         0.05000000074505806,
                         0.0
                     ],
-                    "SetType": "RANDOMRANGE"
+                    "SetType": "RANDOMLINEAR"
                 },
                 "Rotation": {
                     "Arg1": [
@@ -63,11 +63,14 @@
                     "SetType": "RANDOMLINEAR"
                 },
                 "ShapeLocation": {
+                    "Coverage": 0.0,
                     "Position": [
                         0.0,
                         0.0,
                         0.0
                     ],
+                    "Ring_Distribution": 0.0,
+                    "Ring_Radius": 0.14000000059604645,
                     "Rotation": [
                         0.0,
                         0.0,
@@ -78,7 +81,7 @@
                         1.0,
                         1.0
                     ],
-                    "Shape": "NONE"
+                    "Shape": "RING"
                 },
                 "UVSet": {
                     "Count": 1.0,
@@ -88,7 +91,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.0,
+            "DelayTime": 0.009999999776482582,
             "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_04.dds",
             "Event": 0,
             "Float": [
@@ -235,7 +238,7 @@
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "BURST_SPAWN",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_SmokeLoop8x8_01_D.dds",
-            "Time": 3.0,
+            "Time": 0.5,
             "Transform": [
                 1.0,
                 0.0,

@@ -29,6 +29,7 @@
 #include "PlayerState_Drag.h"
 #include "PlayerState_Stamp.h"
 #include "PlayerState_Bomber.h"
+#include "PlayerState_ErasePalmDecal.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -259,7 +260,7 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
-    BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
     BodyDesc.strModelPrototypeTag_2D = TEXT("player");
     BodyDesc.strModelPrototypeTag_3D = TEXT("Latch_SkelMesh_NewRig");
     BodyDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
@@ -470,6 +471,7 @@ HRESULT CPlayer::Ready_Components()
     Bind_AnimEventFunc("Attack", bind(&CPlayer::Move_Attack_3D, this));
     Bind_AnimEventFunc("StampSmash", bind(&CPlayer::StampSmash, this));
     Bind_AnimEventFunc("Detonate", bind(&CPlayer::Detonate, this));
+    Bind_AnimEventFunc("ErasePalm", bind(&CPlayer::ErasePalm, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -485,7 +487,7 @@ HRESULT CPlayer::Ready_Components()
 
     // EffectAnimEvent
     Bind_AnimEventFunc("Dust_Walk", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Walk"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
-    //Bind_AnimEventFunc("Dust_Jump", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Jump"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
+    Bind_AnimEventFunc("Dust_Dodge", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Dodge"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
     
     tAnimEventDesc.pReceiver = this;
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
@@ -584,11 +586,6 @@ void CPlayer::Update(_float _fTimeDelta)
 		}
 	}
     __super::Update(_fTimeDelta); /* Part Object Update */
-
-    CUI_Manager::GetInstance()->Set_isQIcon((nullptr != m_pInteractableObject) 
-        && KEY::Q == m_pInteractableObject->Get_InteractKey());
-
-
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
@@ -621,8 +618,8 @@ HRESULT CPlayer::Render()
 #ifdef _DEBUG
     if(m_pBody2DColliderCom->Is_Active())
         m_pBody2DColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
-    //if(m_pBody2DTriggerCom->Is_Active())
-    //    m_pBody2DTriggerCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+    if(m_pBody2DTriggerCom->Is_Active())
+        m_pBody2DTriggerCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
     if (m_pAttack2DTriggerCom->Is_Active())
         m_pAttack2DTriggerCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
 
@@ -653,7 +650,6 @@ void CPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 {
     __super::OnContact_Exit(_My, _Other, _ContactPointDatas);
 	m_pStateMachine->Get_CurrentState()->OnContact_Exit(_My, _Other, _ContactPointDatas);
-
 
 
 }
@@ -701,20 +697,23 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
     __super::OnTrigger_Exit(_My, _Other);
 	m_pStateMachine->Get_CurrentState()->OnTrigger_Exit(_My, _Other);
-    SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
-    switch (eShapeUse)
+    _uint iShapeUse = (_uint)_My.pShapeUserData->iShapeUse;
+    switch (iShapeUse)
     {
-    case Client::SHAPE_USE::SHAPE_TRIGER:
+    case (_uint)Client::SHAPE_USE::SHAPE_TRIGER:
         if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
             return;
         if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
             Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
         break;
+    case Client::CPlayer::PLAYER_SHAPE_USE::INTERACTION:
+        if (m_pInteractableObject
+            && dynamic_cast<CGameObject*>(m_pInteractableObject) == _Other.pActorUserData->pOwner
+            && false == m_pInteractableObject->Is_Interacting())
+            m_pInteractableObject = nullptr;
+        break;
     }
-    if (m_pInteractableObject 
-        && dynamic_cast<CGameObject*>(m_pInteractableObject) == _Other.pActorUserData->pOwner
-        &&false == m_pInteractableObject->Is_Interacting())
-        m_pInteractableObject = nullptr;
+
 }
 
 void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -913,10 +912,14 @@ void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
     default:
         break;
     }
-    if (m_pInteractableObject
-        && dynamic_cast<CGameObject*>( m_pInteractableObject )== _pOtherObject
-        && false == m_pInteractableObject->Is_Interacting())
-        m_pInteractableObject = nullptr;
+
+    if (OBJECT_GROUP::PLAYER_TRIGGER == _pMyCollider->Get_CollisionGroupID())
+    {
+        if (m_pInteractableObject
+            && dynamic_cast<CGameObject*>(m_pInteractableObject) == _pOtherObject
+            && false == m_pInteractableObject->Is_Interacting())
+            m_pInteractableObject = nullptr;
+    }
 }
 
 void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
@@ -1058,6 +1061,13 @@ void CPlayer::Detonate()
 	m_pDetonator->Detonate();
 }
 
+void CPlayer::ErasePalm()
+{
+	if (nullptr == m_pStopStmap)
+		return;
+	m_pStopStmap->Erase_PalmDecal();
+}
+
 
 void CPlayer::Move_Forward(_float fVelocity, _float _fTimeDelta)
 {
@@ -1120,32 +1130,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
         }
         return tResult;
     }
-    _bool bIsTurningBook = CPlayer::TURN_BOOK == m_pStateMachine->Get_CurrentState()->Get_StateID();
 
-    if (bIsTurningBook)
-    {
-        if (KEY_PRESSING(KEY::A))
-        {
-			tResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT] = true;
-        }
-        else if (KEY_PRESSING(KEY::D))
-        {
-			tResult.bInputStates[PLAYER_INPUT_TURNBOOK_RIGHT] = true;
-        }
-        else
-        {
-            if (MOUSE_DOWN(MOUSE_KEY::LB)
-                || MOUSE_DOWN(MOUSE_KEY::RB)
-                || KEY_DOWN(KEY::SPACE)
-                || KEY_DOWN(KEY::LSHIFT))
-            {
-                tResult.bInputStates[PLAYER_INPUT_TURNBOOK_END] = true;
-            }
-        }
-
-
-        return tResult;
-    }
 
 	_bool bCarrying = Is_CarryingObject();
     if (false == bCarrying && Is_SwordHandling())
@@ -1275,6 +1260,47 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_Stamp()
     tResult.vMoveDir = tResult.vDir;
     tResult.bInputStates[PLAYER_INPUT_MOVE] = false == XMVector3Equal(tResult.vMoveDir, XMVectorZero());
 
+    return tResult;
+}
+
+PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_ControlBook()
+{
+    PLAYER_INPUT_RESULT tResult;
+    _bool bIsTurningBook = CPlayer::TURN_BOOK == m_pStateMachine->Get_CurrentState()->Get_StateID();
+
+    if (false == bIsTurningBook)
+    return tResult;
+    if (KEY_PRESSING(KEY::A))
+    {
+        tResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT] = true;
+    }
+    else if (KEY_PRESSING(KEY::D))
+    {
+        tResult.bInputStates[PLAYER_INPUT_TURNBOOK_RIGHT] = true;
+    }
+    else if (KEY_PRESSING(KEY::Z))
+    {
+        tResult.bInputStates[PLAYER_INPUT_TILTBOOK_LEFT] = true;
+    }
+    else if (KEY_PRESSING(KEY::X))
+    {
+        tResult.bInputStates[PLAYER_INPUT_TILTBOOK_RIGHT] = true;
+    }
+    else
+    {
+        if (MOUSE_DOWN(MOUSE_KEY::LB)
+            || MOUSE_DOWN(MOUSE_KEY::RB)
+            || KEY_DOWN(KEY::SPACE)
+            || KEY_DOWN(KEY::LSHIFT)
+            || KEY_DOWN(KEY::Q))
+        {
+            tResult.bInputStates[PLAYER_INPUT_TURNBOOK_END] = true;
+        }
+    }
+
+
+    return tResult;
+    
     return tResult;
 }
 
@@ -1662,6 +1688,9 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::BOMBER:
         m_pStateMachine->Transition_To(new CPlayerState_Bomber(this));
         break;
+    case Client::CPlayer::ERASE_PALM:
+        m_pStateMachine->Transition_To(new CPlayerState_ErasePalmDecal(this));
+        break;
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -1810,7 +1839,7 @@ HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
             return E_FAIL;
         m_pCarryingObject = _pCarryingObject;
         Safe_AddRef(m_pCarryingObject);
-
+ 
         Set_State(PICKUPOBJECT);
     }
 
@@ -2018,9 +2047,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     }
     if (KEY_DOWN(KEY::Z))
     {
-        COORDINATE eCoord =Get_CurCoord();
-        if (COORDINATE_3D == eCoord)
-        {
+        //COORDINATE eCoord =Get_CurCoord();
+        //if (COORDINATE_3D == eCoord)
+        //{
             //근처 포탈
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //포탈 4 0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
@@ -2028,9 +2057,9 @@ void CPlayer::Key_Input(_float _fTimeDelta)
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //주사위 2 (48.73f, 2.61f, -5.02f);
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 48.73f, 2.61f, -5.02f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
-            static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 15.f, 10.f, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 15.f, 10.f, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
 
-        }
+       // }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
 
     }

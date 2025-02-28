@@ -115,7 +115,6 @@ _bool CCutScene_Sector::Play_Sector(_float _fTimeDelta, _vector* _pOutPos, _vect
 
 _vector CCutScene_Sector::Calculate_Position_Spline(_float _fRatio)
 {
-	//_uint iSegment = (_uint)(_fRatio * (m_KeyFrames.size() - 3));
 	_float deBoorRatio = (m_fCurrentTime - m_KeyFrames[m_iCurSegmentIndex].fTimeStamp) /
 		(m_KeyFrames[m_iCurSegmentIndex + 3].fTimeStamp - m_KeyFrames[m_iCurSegmentIndex].fTimeStamp);
 
@@ -144,25 +143,20 @@ _vector CCutScene_Sector::Calculate_Position_Linear(_float _fRatio)
 
 _vector CCutScene_Sector::Calculate_At_Catmull_Rom(_float _fRatio)
 {
-	//_uint iSegment = (_uint)(_fRatio * (m_KeyFrames.size() - 3));
-	_float deBoorRatio = (m_fCurrentTime - m_KeyFrames[m_iCurSegmentIndex].fTimeStamp) /
-		(m_KeyFrames[m_iCurSegmentIndex + 3].fTimeStamp - m_KeyFrames[m_iCurSegmentIndex].fTimeStamp);
+	_vector P0 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex].vAt);
+	_vector P1 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 1].vAt);
+	_vector P2 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 2].vAt);
+	_vector P3 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 3].vAt);
 
-	_vector vPos0 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex].vAt);
-	_vector vPos1 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 1].vAt);
-	_vector vPos2 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 2].vAt);
-	_vector vPos3 = XMLoadFloat3(&m_KeyFrames[m_iCurSegmentIndex + 3].vAt);
+	_float t2 = _fRatio * _fRatio;
+	_float t3 = t2 * _fRatio;
 
-	_vector vLerp0_First = XMVectorLerp(vPos0, vPos1, deBoorRatio);
-	_vector vLerp1_First = XMVectorLerp(vPos1, vPos2, deBoorRatio);
-	_vector vLerp2_First = XMVectorLerp(vPos2, vPos3, deBoorRatio);
-
-	_vector vLerp0_Second = XMVectorLerp(vLerp0_First, vLerp1_First, deBoorRatio);
-	_vector vLerp1_Second = XMVectorLerp(vLerp1_First, vLerp2_First, deBoorRatio);
-
-	_vector vResult = XMVectorLerp(vLerp0_Second, vLerp1_Second, deBoorRatio);
-
-	return vResult;
+	return 0.5f * (
+		(2.0f * P1) +
+		(-P0 + P2) * _fRatio +
+		(2.0f * P0 - 5.0f * P1 + 4.0f * P2 - P3) * t2 +
+		(-P0 + 3.0f * P1 - 3.0f * P2 + P3) * t3
+		);
 }
 
 _uint CCutScene_Sector::Find_Span(_float _fRatio)

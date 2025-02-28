@@ -87,7 +87,7 @@ private:
 	//일반 공격 관련
 	_float m_f3DNormalAttackRange = 0.5f;
 	_float m_f3DNormalAttackZOffset = 0.5f;
-	_float m_f3DJumpAttackRange = 1.5f;
+	_float m_f3DJumpAttackRange = 2.5f;
 	_float m_f3DJumpAttackZOffset = 0.0f;
 
 	SWORD_STATE m_eCurrentState = HANDLING;

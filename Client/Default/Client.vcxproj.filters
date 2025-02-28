@@ -505,6 +505,9 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E">
       <UniqueIdentifier>{2aab60c7-a543-45be-93ec-270840324c3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NewFilter1">
+      <UniqueIdentifier>{ce7fbcc7-0a2a-4ec8-a33f-ed2f8c2ad06f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -993,9 +996,6 @@
     <ClInclude Include="..\Public\StandbyNoneAttackState.h">
       <Filter>03.Components\FSM\State\Standby</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_Chapter_Test.h">
-      <Filter>01.Levels\03.GamePlay</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Portal.h">
       <Filter>02.GameObjects\Portal</Filter>
     </ClInclude>
@@ -1211,9 +1211,16 @@
     <ClInclude Include="..\Public\Detonator.h" />
     <ClInclude Include="..\Public\PlayerState_Bomber.h" />
     <ClInclude Include="..\Public\Bombable.h" />
+    <ClInclude Include="..\Public\Level_Chapter_06.h">
+      <Filter>01.Levels\03.GamePlay</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Interaction_E.h">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PalmDecal.h" />
+    <ClInclude Include="..\Public\PalmMarker.h" />
+    <ClInclude Include="..\Public\Stoppable.h" />
+    <ClInclude Include="..\Public\PlayerState_ErasePalmDecal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1693,9 +1700,6 @@
     <ClCompile Include="..\Private\StandbyNoneAttackState.cpp">
       <Filter>03.Components\FSM\State\Standby</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_Chapter_Test.cpp">
-      <Filter>01.Levels\03.GamePlay</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Portal.cpp">
       <Filter>02.GameObjects\Portal</Filter>
     </ClCompile>
@@ -1909,6 +1913,13 @@
     <ClCompile Include="..\Private\Interaction_E.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Level_Chapter_06.cpp">
+      <Filter>01.Levels\03.GamePlay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PalmDecal.cpp" />
+    <ClCompile Include="..\Private\PalmMarker.cpp" />
+    <ClCompile Include="..\Private\Stoppable.cpp" />
+    <ClCompile Include="..\Private\PlayerState_ErasePalmDecal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

@@ -12,6 +12,14 @@ BEGIN(Client)
 class CLoader final : public CBase
 {
 private:
+	enum PATH_TYPE { 
+		PATH_3D_NONANIM_OBJECT,
+		PATH_3D_ANIM_OBJECT,
+		PATH_2D_MAP,
+		PATH_2D_NONANIM_OBJECT,
+		PATH_2D_ANIM_OBJECT,
+		PATH_LAST };
+private:
 	CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CLoader() = default;
 
@@ -40,10 +48,16 @@ private:
 private:
 	HRESULT Loading_Level_Static();
 	HRESULT Loading_Level_Logo();
+	HRESULT Loading_Level_Chapter_2(LEVEL_ID _eLoadLevel = LEVEL_CHAPTER_2);
+	HRESULT Loading_Level_Chapter_4(LEVEL_ID _eLoadLevel = LEVEL_CHAPTER_4);
+	HRESULT Loading_Level_Chapter_6(LEVEL_ID _eLoadLevel = LEVEL_CHAPTER_6);
+	HRESULT Loading_Level_Chapter_8(LEVEL_ID _eLoadLevel = LEVEL_CHAPTER_8);
 	HRESULT Loading_Level_Chapter_TEST();
-	HRESULT Loading_Level_Chapter_2();
-	HRESULT Loading_Level_Chapter_4();
 	HRESULT Loading_Level_Camera_Tool();
+
+	HRESULT Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLEVELID);
+	HRESULT UI_Texture_Load(LEVEL_ID _eLevelID);
+	HRESULT UI_Object_Load(LEVEL_ID _eLevelID);
 
 private: /* Sound */
 	HRESULT Loading_BGM_PathFind(const _wstring& strDirectoryPath);

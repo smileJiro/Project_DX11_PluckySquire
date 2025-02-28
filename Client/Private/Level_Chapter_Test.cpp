@@ -558,7 +558,7 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_TestTerrain(const _wstring& _strLayerTa
 	CModelObject::MODELOBJECT_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SampleBook"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
 
@@ -987,12 +987,21 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 	vPos = { 5.5f, 0.35f, -3.0f };
 	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_BirdMonster"), COORDINATE_3D, &vPos);
 
+	//CBirdMonster::MONSTER_DESC Bird_Monster_Desc;
+	//Bird_Monster_Desc.iCurLevelID = m_eLevelID;
+	//Bird_Monster_Desc.eStartCoord = COORDINATE_3D;
+	//Bird_Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Bird_Monster_Desc.tTransform3DDesc.vInitialPosition = _float3(5.5f, 0.35f, -23.0f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bird_Monster"), m_eLevelID, _strLayerTag, &Bird_Monster_Desc)))
+	//	return E_FAIL;
+
 
 	CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
 	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
 	Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
 	Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -3.0f);
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -23.0f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
 		return E_FAIL;
@@ -1001,12 +1010,19 @@ HRESULT CLevel_Chapter_Test::Ready_Layer_Monster(const _wstring& _strLayerTag, C
 	CrossBow_Soldier_Desc.iCurLevelID = m_eLevelID;
 	CrossBow_Soldier_Desc.eStartCoord = COORDINATE_3D;
 	CrossBow_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	CrossBow_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(5.5f, 0.35f, -3.0f);
+	CrossBow_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 0.35f, -23.0f);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"), m_eLevelID, _strLayerTag, &CrossBow_Soldier_Desc)))
 		return E_FAIL;
 
+	CBomb_Soldier::MONSTER_DESC Bomb_Soldier_Desc;
+	Bomb_Soldier_Desc.iCurLevelID = m_eLevelID;
+	Bomb_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	Bomb_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
+		return E_FAIL;
 
 	/*  Projectile  */
 	Pooling_DESC Pooling_Desc;

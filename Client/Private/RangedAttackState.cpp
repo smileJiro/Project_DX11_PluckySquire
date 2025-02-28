@@ -27,6 +27,7 @@ HRESULT CRangedAttackState::Initialize(void* _pArg)
 void CRangedAttackState::State_Enter()
 {
 	m_pOwner->Set_AnimChangeable(false);
+	m_pOwner->Set_PreAttack(true);
 }
 
 void CRangedAttackState::State_Update(_float _fTimeDelta)
@@ -47,6 +48,18 @@ void CRangedAttackState::State_Update(_float _fTimeDelta)
 		return;
 	}
 
+
+	if(COORDINATE_3D == m_pOwner->Get_CurCoord())
+	{
+		if(true == m_pOwner->Get_PreAttack())
+		{
+			_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
+			if (true == m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+			{
+				m_pOwner->Stop_Rotate();
+			}
+		}
+	}
 
 	_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());
 	//if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
@@ -88,6 +101,7 @@ void CRangedAttackState::State_Update(_float _fTimeDelta)
 
 void CRangedAttackState::State_Exit()
 {
+	m_pOwner->Set_PreAttack(false);
 }
 
 CRangedAttackState* CRangedAttackState::Create(void* _pArg)

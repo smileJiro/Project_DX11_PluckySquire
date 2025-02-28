@@ -47,7 +47,6 @@ HRESULT CStopStamp::Initialize(void* _pArg)
     m_pPalmDecal = static_cast<CPalmDecal*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PalmDecal"), &tDecalDesc));
 	if (nullptr == m_pPalmDecal)
 	{
-		MSG_BOX("CPlayer PalmDecal Creation Failed");
 		return E_FAIL;
 	}
     if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_PlayerSubs"), m_pPalmDecal)))
@@ -84,6 +83,11 @@ void CStopStamp::Place_PalmDecal(_fvector v2DPosition, _fvector _v2DDirection)
 {
     m_pPalmDecal->Set_Active(true);
 	m_pPalmDecal->Place(v2DPosition, _v2DDirection);
+}
+
+void CStopStamp::Erase_PalmDecal()
+{
+    m_pPalmDecal->Erase();
 }
 
 CStopStamp* CStopStamp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

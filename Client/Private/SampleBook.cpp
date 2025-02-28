@@ -41,6 +41,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 		L"Prototype_Component_Shader_VtxAnimMesh",
 		(_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP
 	);
+	pDesc->iModelPrototypeLevelID_3D = LEVEL_STATIC;
 	pDesc->tTransform3DDesc.vInitialPosition = _float3(2.f, 0.4f, -17.3f);
 	pDesc->tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
@@ -137,7 +138,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	m_pAnimEventGenerator = 
 		static_cast<CAnimEventGenerator*> 
 		(m_pGameInstance->
-			Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_BookPageActionEvent"), &tAnimEventDesc));
+			Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_BookPageActionEvent"), &tAnimEventDesc));
 	
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
@@ -145,6 +146,7 @@ HRESULT CSampleBook::Initialize(void* _pArg)
 	Init_RT_RenderPos_Capcher();
 
 	m_fInteractChargeTime = 0.0f;
+	m_eInteractID = INTERACT_ID::BOOK;
 	m_eInteractType = INTERACT_TYPE::NORMAL;
 	m_eInteractKey = KEY::Q;
 

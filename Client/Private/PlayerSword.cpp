@@ -646,8 +646,8 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
         {
             if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_NORMAL3 == _eAttackType)
                 CEffect_Manager::GetInstance()->Active_Effect(TEXT("SwordCombo"), true, &m_WorldMatrices[COORDINATE_3D]);
-            if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_JUMPATTACK == _eAttackType)
-                CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("SwordJumpAttack"), true, XMLoadFloat4((_float4*)&m_WorldMatrices[COORDINATE_3D].m[3]));
+       /*     if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_JUMPATTACK == _eAttackType)
+                CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("SwordJumpAttack"), true, XMLoadFloat4((_float4*)&m_WorldMatrices[COORDINATE_3D].m[3]));*/
         }
 
         else 
