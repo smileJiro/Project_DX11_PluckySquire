@@ -144,7 +144,7 @@ _bool C2DMapObject::IsCursor_In(_float2 _fCursorPos)
 	_float fOffY = (g_iWinSizeY - fConvertRenderTargetSize.y) * 0.5f;
 
 	_float fRelativeX = (_fCursorPos.x - fOffX) / fConvertRenderTargetSize.x;
-	_float fRelativeY = (_fCursorPos.y) / fConvertRenderTargetSize.y;
+	_float fRelativeY = (_fCursorPos.y - fOffY) / fConvertRenderTargetSize.y;
 
 	_float2 fRealPos = { fRelativeX * m_fRenderTargetSize.x , fRelativeY * m_fRenderTargetSize.y };
 	//fRealPos.x -= m_fRenderTargetSize.x * 0.5f;

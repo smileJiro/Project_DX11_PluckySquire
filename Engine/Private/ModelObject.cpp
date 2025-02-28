@@ -316,6 +316,11 @@ _float CModelObject::Get_AnimationTime()
     return m_pControllerModel->Get_Model(Get_CurCoord())->Get_AnimationTime();    
 }
 
+_float CModelObject::Get_CurrentAnimationProgress()
+{
+    return m_pControllerModel->Get_Model(Get_CurCoord())->Get_CurrentAnimProgeress();
+}
+
 void CModelObject::Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop)
 {
     m_pControllerModel->Set_AnimationLoop(_eCoord,iIdx, bIsLoop);
@@ -444,6 +449,10 @@ _uint CModelObject::Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex)
     if (m_pControllerModel)
         return m_pControllerModel->Get_TextureIndex_To_3D(_eTextureType, _iMaterialIndex);
     return 0;
+}
+_uint CModelObject::Get_CurrentAnimIndex()
+{
+    return m_pControllerModel->Get_Model(Get_CurCoord())->Get_CurrentAnimIndex();
 }
 void CModelObject::Set_PlayingAnim(_bool _bPlaying)
 {

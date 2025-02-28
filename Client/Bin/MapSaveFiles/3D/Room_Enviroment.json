@@ -3,6 +3,8 @@
   true
  ],
  "data": [
+  "SM_door",
+  "SM_Doorknob",
   "alphabet_blocks_a_mesh",
   "alphabet_blocks_b_mesh",
   "AstronautToy",
@@ -62,9 +64,7 @@
   "SM_desk_split_rdrawer",
   "SM_desk_split_sideboards",
   "SM_desk_split_topboard_02",
-  "SM_door",
   "SM_Door_Frame",
-  "SM_Doorknob",
   "SM_Earphones",
   "SM_Football_01",
   "SM_HangingFlags",

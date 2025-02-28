@@ -59,5 +59,7 @@ private:
 
 	_bool m_bUpside = false;
 	CSampleBook* m_pBook = nullptr;
+	_float m_fTiltIdleTime = 1.f;
+	_float m_fTiltIdleTimeAcc = 0.f;
 };
 END
