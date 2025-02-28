@@ -1,0 +1,37 @@
+[
+    {
+        "Arm_Data": {
+            "Arm_Length": 13.199995040893555,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                0.0,
+                0.0
+            ],
+            "Desire_Arm": [
+                8.816114416276832e-08,
+                0.5776063799858093,
+                -0.816314697265625
+            ]
+        },
+        "Arm_Tag": "Chapter6_Default",
+        "Sub_Data": {
+            "Use_SubData": false
+        }
+    }
+]
