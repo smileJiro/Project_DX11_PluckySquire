@@ -127,11 +127,6 @@ HRESULT CSampleBook::Render()
     return S_OK;
 }
 
-HRESULT CSampleBook::Render_Shadow()
-{
-    return S_OK;
-}
-
 CSampleBook* CSampleBook::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
     CSampleBook* pInstance = new CSampleBook(_pDevice, _pContext);

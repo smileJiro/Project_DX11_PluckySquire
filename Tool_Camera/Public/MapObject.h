@@ -19,7 +19,6 @@ public:
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
-	virtual HRESULT			Render_Shadow() override;
 
 	virtual void			Set_Diffuse_Color(const _float4 _fDiffuseColor) { m_fDefaultDiffuseColor = _fDiffuseColor; };
 	virtual const _float4	Get_Diffuse_Color() { return m_fDefaultDiffuseColor; }
