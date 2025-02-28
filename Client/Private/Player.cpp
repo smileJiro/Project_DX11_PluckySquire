@@ -487,7 +487,7 @@ HRESULT CPlayer::Ready_Components()
 
     // EffectAnimEvent
     Bind_AnimEventFunc("Dust_Walk", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Walk"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
-    //Bind_AnimEventFunc("Dust_Jump", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Jump"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
+    Bind_AnimEventFunc("Dust_Dodge", [this]() {CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dust_Dodge"), true, m_pControllerTransform->Get_WorldMatrix_Ptr() );});
     
     tAnimEventDesc.pReceiver = this;
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
