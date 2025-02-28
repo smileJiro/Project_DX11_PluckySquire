@@ -548,17 +548,17 @@ PS_OUT PS_MAIN_LIGHTING(PS_IN In)
 
         
     /* 4. SSAO 는 간접광의 밝기를 조절하는. */
-    float SumSSAO = 0.0f;
-    [unroll]
-    for (int i = 0; i < 64; ++i)
-    {
-        float fSSAO = Compute_SSAO(vPixelWorld.xyz, normalize(vNormalWorld), g_RandomTexcoords[i], 1.0f, g_DepthTexture, ssaoKernel[i]);
-    
-        SumSSAO += fSSAO;
-    }
-    SumSSAO /= 64.f;
-    SumSSAO = 1.0f - SumSSAO;
-    vAmbientLighting *= pow(SumSSAO, 4);
+    //float SumSSAO = 0.0f;
+    //[unroll]
+    //for (int i = 0; i < 64; ++i)
+    //{
+    //    float fSSAO = Compute_SSAO(vPixelWorld.xyz, normalize(vNormalWorld), g_RandomTexcoords[i], 1.0f, g_DepthTexture, ssaoKernel[i]);
+    //
+    //    SumSSAO += fSSAO;
+    //}
+    //SumSSAO /= 64.f;
+    //SumSSAO = 1.0f - SumSSAO;
+    //vAmbientLighting *= pow(SumSSAO, 4);
     
     
     //Out.vColor = float4(SumSSAO, SumSSAO, SumSSAO /*+ vEmmision*/, 1.0f);
@@ -621,7 +621,7 @@ PS_OUT PS_MAIN_COMBINE(PS_IN In)
     
     // 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
     float fPlayerDepthDesc = g_PlayerDepthTexture.Sample(LinearSampler, In.vTexcoord).r;
-    float fPlayerViewZ = fPlayerDepthDesc * g_fFarZ;
+    float fPlayerViewZ = fPlayerDepthDesc;
     
     float3 vHideColor = g_vHideColor;
     float fViewZDiff = fPlayerViewZ - fViewZ - 1.0f;
