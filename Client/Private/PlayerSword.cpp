@@ -189,8 +189,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
 
 void CPlayerSword::Update(_float _fTimeDelta)
 {
-    if (m_bAttackEnable)
-        cout << "enabled" << endl;
+
     if (m_eCurrentState != m_ePastState)
         On_StateChange();
     COORDINATE eCoord = Get_CurCoord();
@@ -287,7 +286,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
     default:
         break;
     }
-    //cout << m_pActorCom->Get_Shapes()[0]->getActor() << endl;
+
 
     __super::Update(_fTimeDelta);
 
@@ -565,7 +564,6 @@ void CPlayerSword::Set_State(SWORD_STATE _eNewState)
 void CPlayerSword::On_StateChange()
 {
     COORDINATE eCoord = Get_CurCoord();
-   // cout << "SwrodState : " << m_eCurrentState << endl;
     switch (m_eCurrentState)
     {
     case Client::CPlayerSword::HANDLING:
@@ -654,7 +652,6 @@ void CPlayerSword::Attack(CGameObject* _pVictim)
 
 void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackType)
 {
-    cout << (_bOn ? "StartAttack " : "EndAttack") << _eAttackType << endl;
 	COORDINATE eCoord = Get_CurCoord();
     m_bAttackEnable = _bOn;
     if (COORDINATE_3D == eCoord)

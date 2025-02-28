@@ -452,8 +452,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	Desc.fFovy = XMConvertToRadians(60.f);
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	Desc.fNear = 0.1f;
-	Desc.fFar = 1000.f;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
 	Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Desc.eZoomLevel = CCamera::LEVEL_6;
@@ -475,8 +473,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	TargetDesc.fFovy = XMConvertToRadians(60.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	TargetDesc.fNear = 0.1f;
-	TargetDesc.fFar = 1000.f;
 	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
 	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
 	TargetDesc.eZoomLevel = CCamera::LEVEL_6;
@@ -498,8 +494,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	CutSceneDesc.fFovy = XMConvertToRadians(60.f);
 	CutSceneDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	CutSceneDesc.fNear = 0.1f;
-	CutSceneDesc.fFar = 1000.f;
 	CutSceneDesc.vEye = _float3(0.f, 10.f, -7.f);
 	CutSceneDesc.vAt = _float3(0.f, 0.f, 0.f);
 	CutSceneDesc.eZoomLevel = CCamera::LEVEL_6;
@@ -521,8 +515,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	Target2DDesc.fFovy = XMConvertToRadians(60.f);
 	Target2DDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	Target2DDesc.fNear = 0.1f;
-	Target2DDesc.fFar = 1000.f;
 	Target2DDesc.vEye = _float3(0.f, 10.f, -7.f);
 	Target2DDesc.vAt = _float3(0.f, 0.f, 0.f);
 	Target2DDesc.eZoomLevel = CCamera::LEVEL_6;
@@ -949,23 +941,23 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
 {
-	//CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
-	//Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
-	//Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
-	//Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -23.0f);
+	CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
+	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
+	Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -23.0f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
+		return E_FAIL;
 
-	//CCrossBow_Soldier::MONSTER_DESC CrossBow_Soldier_Desc;
-	//CrossBow_Soldier_Desc.iCurLevelID = m_eLevelID;
-	//CrossBow_Soldier_Desc.eStartCoord = COORDINATE_3D;
-	//CrossBow_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//CrossBow_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 0.35f, -23.0f);
+	CCrossBow_Soldier::MONSTER_DESC CrossBow_Soldier_Desc;
+	CrossBow_Soldier_Desc.iCurLevelID = m_eLevelID;
+	CrossBow_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	CrossBow_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	CrossBow_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 0.35f, -23.0f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"), m_eLevelID, _strLayerTag, &CrossBow_Soldier_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"), m_eLevelID, _strLayerTag, &CrossBow_Soldier_Desc)))
+		return E_FAIL;
 
 	CBomb_Soldier::MONSTER_DESC Bomb_Soldier_Desc;
 	Bomb_Soldier_Desc.iCurLevelID = m_eLevelID;

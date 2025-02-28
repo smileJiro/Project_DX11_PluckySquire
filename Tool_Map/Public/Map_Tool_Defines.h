@@ -46,6 +46,7 @@ namespace Map_Tool
 		SKSP_DEFAULT,
 		SKSP_CUP,
 		SKSP_TUB,
+		SKSP_PLAG,
 		SKSP_LAST
 	
 	};
