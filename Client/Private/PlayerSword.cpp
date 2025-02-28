@@ -79,7 +79,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;  
 	ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     ShapeData.isTrigger = true;                    
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, m_f3DNormalAttackZOffset));
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, -m_f3DNormalAttackZOffset));
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     //점프 공격용 트리거
@@ -189,6 +189,8 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
 
 void CPlayerSword::Update(_float _fTimeDelta)
 {
+    if (m_bAttackEnable)
+        cout << "enabled" << endl;
     if (m_eCurrentState != m_ePastState)
         On_StateChange();
     COORDINATE eCoord = Get_CurCoord();
@@ -652,6 +654,7 @@ void CPlayerSword::Attack(CGameObject* _pVictim)
 
 void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackType)
 {
+    cout << (_bOn ? "StartAttack " : "EndAttack") << _eAttackType << endl;
 	COORDINATE eCoord = Get_CurCoord();
     m_bAttackEnable = _bOn;
     if (COORDINATE_3D == eCoord)
