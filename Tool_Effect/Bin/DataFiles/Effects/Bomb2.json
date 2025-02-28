@@ -90,7 +90,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.15000000596046448,
+            "DelayTime": 0.10000000149011612,
             "Event": 0,
             "Float": [
                 {
@@ -317,11 +317,11 @@
                     ],
                     "SetType": "RANDOMLINEAR"
                 },
-                "Count": 48,
+                "Count": 32,
                 "LifeTime": {
                     "Arg1": 0.5,
-                    "Arg2": 0.0,
-                    "SetType": "DIRECTSET"
+                    "Arg2": 0.800000011920929,
+                    "SetType": "RANDOMLINEAR"
                 },
                 "Position": {
                     "Arg1": [
@@ -363,6 +363,12 @@
                     "SetType": "DIRECTSET"
                 },
                 "ShapeLocation": {
+                    "Box_Surface": 1.0,
+                    "Depth": 0.4000000059604645,
+                    "Height": 0.800000011920929,
+                    "MidX": 0.5,
+                    "MidY": 0.5,
+                    "MidZ": 0.5,
                     "Position": [
                         0.0,
                         0.0,
@@ -378,9 +384,8 @@
                         1.0,
                         1.0
                     ],
-                    "Shape": "SPHERE",
-                    "Sphere_Radius": 1.0,
-                    "Sphere_Surface": 0.800000011920929
+                    "Shape": "BOX",
+                    "Width": 0.4000000059604645
                 },
                 "UVSet": {
                     "Count": 1.0,
@@ -390,7 +395,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.15000000596046448,
+            "DelayTime": 0.10000000149011612,
             "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Mask_01_Clamp.dds",
             "Event": 0,
             "Float": [
@@ -634,7 +639,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.15000000596046448,
+            "DelayTime": 0.10000000149011612,
             "Event": 0,
             "Float": [
                 {
@@ -852,7 +857,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.15000000596046448,
+            "DelayTime": 0.10000000149011612,
             "Event": 0,
             "Float": [
                 {
@@ -967,7 +972,7 @@
                     ],
                     "SetType": "UNSET"
                 },
-                "Count": 128,
+                "Count": 64,
                 "LifeTime": {
                     "Arg1": 0.6000000238418579,
                     "Arg2": 0.699999988079071,
@@ -1029,8 +1034,8 @@
                         1.0
                     ],
                     "Shape": "SPHERE",
-                    "Sphere_Radius": 1.0,
-                    "Sphere_Surface": 0.800000011920929
+                    "Sphere_Radius": 0.5,
+                    "Sphere_Surface": 0.5
                 },
                 "UVSet": {
                     "Count": 4.0,
@@ -1040,7 +1045,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.20000000298023224,
+            "DelayTime": 0.18000000715255737,
             "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_02.dds",
             "Event": 0,
             "Float": [
@@ -1247,8 +1252,8 @@
                 },
                 "Scale": {
                     "Arg1": [
-                        1.0,
-                        1.0,
+                        3.0,
+                        3.0,
                         1.0
                     ],
                     "Arg2": [
@@ -1256,7 +1261,7 @@
                         1.0,
                         1.0
                     ],
-                    "SetType": "UNSET"
+                    "SetType": "DIRECTSET"
                 },
                 "ShapeLocation": {
                     "Position": [
@@ -1284,11 +1289,15 @@
                     ]
                 }
             },
-            "DelayTime": 0.0,
-            "Event": 1,
+            "DelayTime": 0.05000000074505806,
+            "Event": 0,
             "Float": [
                 {
                     "Name": "AlphaTest",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "BloomThreshold",
                     "Value": 0.0
                 },
                 {
@@ -1310,6 +1319,15 @@
                     "Value": [
                         0.0,
                         0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "SubColor",
+                    "Value": [
+                        0.10000000149011612,
+                        4.999999873689376e-05,
                         0.0,
                         0.0
                     ]
@@ -1341,10 +1359,46 @@
                     "Module": "UV_ANIM",
                     "Order": 0,
                     "Type": "MODULE_UV"
+                },
+                {
+                    "Apply": "SCALE",
+                    "Init": false,
+                    "Keyframe": [
+                        {
+                            "Data": [
+                                0.5,
+                                0.5,
+                                1.0,
+                                1.0
+                            ],
+                            "Time": 0.0
+                        },
+                        {
+                            "Data": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "Time": 0.5
+                        },
+                        {
+                            "Data": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "Time": 1.0
+                        }
+                    ],
+                    "Module": "SCALE_KEYFRAME",
+                    "Order": 1,
+                    "Type": "MODULE_KEYFRAME"
                 }
             ],
             "Pooling": "KILL",
-            "ShaderPass": "DEFAULT",
+            "ShaderPass": "SUBCOLOR_BLOOM",
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "BURST_SPAWN",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Hit2x2_01.dds",
@@ -1370,6 +1424,6 @@
             "Type": "SPRITE"
         }
     ],
-    "Name": "Bomb",
-    "ToolLoopTime": 1.0
+    "Name": "Bomb2",
+    "ToolLoopTime": 2.0
 }

@@ -931,7 +931,7 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_SRV_MAIN();
         GeometryShader = compile gs_5_0 GS_VELOCITYBILLBOARD();
-        PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDSUBCOLORBLOOM();
+        PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDSUBCOaLORBLOOM();
         ComputeShader = NULL;
     }
 
