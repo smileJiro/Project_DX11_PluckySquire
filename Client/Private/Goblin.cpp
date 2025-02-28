@@ -47,8 +47,8 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 30.f;
 
-    m_tStat.iHP = 5;
-    m_tStat.iMaxHP = 5;
+    m_tStat.iHP = 15;
+    m_tStat.iMaxHP = 15;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -388,8 +388,10 @@ void CGoblin::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
             if ((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse
                 && (_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse)
             {
-                Attack();
-                m_isContactToTarget = true;
+                _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+                XMVectorSetY(vRepulse, -1.f);
+                Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), (_float)Get_Stat().iDamg, vRepulse);
+                 Attack();
 
             }
         }
@@ -420,14 +422,12 @@ void CGoblin::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
     if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup && (_uint)SHAPE_USE::SHAPE_TRIGER == _My.pShapeUserData->iShapeUse)
     {
-        if ((_uint)MONSTER_STATE::ATTACK == m_iState)
+        if ((_uint)MONSTER_STATE::CHASE == m_iState)
         {
             _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
             XMVectorSetY(vRepulse, -1.f);
             Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), (_float)Get_Stat().iDamg, vRepulse);
-            //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
             Attack();
-            Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
         }
     }
 }
@@ -498,7 +498,7 @@ HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC* ShapeDesc = new SHAPE_SPHERE_DESC;
-    ShapeDesc->fRadius = 0.4f;
+    ShapeDesc->fRadius = 0.5f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
