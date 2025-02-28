@@ -129,13 +129,13 @@ HRESULT CInteraction_E::Render()
 			if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_WorldMatrix")))
 				return E_FAIL;
 
-			
-				if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-					return E_FAIL;
 
-				if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-					return E_FAIL;
-			
+			if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+				return E_FAIL;
+
+			if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+				return E_FAIL;
+
 
 			if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_2D], "g_DiffuseTexture", 0)))
 				return E_FAIL;
@@ -306,7 +306,7 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 			vObjectPos.y = _pGameObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1];
 
 			// 노출되는  UI의 최종 위치
-			m_vObejctPos = _float3(vObjectPos.x, vObjectPos.y + RTSize.y * 0.025f, 1.f);
+			//m_vObejctPos = _float3(vObjectPos.x, vObjectPos.y + RTSize.y * 0.025f, 1.f);
 			m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, m_vObejctPos.y, 0.f, 1.f));
 			m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
 
@@ -325,33 +325,78 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 	//////////////////////////////////////// 3D //////////////////////////////////////////
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
-		_matrix matWorld = _pGameObject->Get_FinalWorldMatrix();
+		//_matrix matWorld = _pGameObject->Get_FinalWorldMatrix();
+		//
+		//
+		//_matrix matView = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW));
+		//_matrix matProj = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ));
 
+
+		//_matrix matView = XMLoadFloat4x4(m_pGameInstance->Get_ViewMatrix_Renderer());
+		//_matrix matProj = XMLoadFloat4x4(m_pGameInstance->Get_ProjMatrix_Renderer());
 
 		_matrix matView = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW));
 		_matrix matProj = XMLoadFloat4x4(&m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ));
 
+		//
+		//_matrix matView = XMLoadFloat4x4(m_pGameInstance->Get_ViewMatrix_Renderer());
+		//_matrix matProj = XMLoadFloat4x4(m_pGameInstance->Get_ProjMatrix_Renderer());
+		//
+		//XMVECTOR vLocalPos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+		//
+		//
+		//XMVECTOR vClipPos = XMVector3TransformCoord(vLocalPos, XMMatrixMultiply(XMMatrixMultiply(matWorld, matView), matProj));
+		//
+		//
+		//float ndcX = XMVectorGetX(vClipPos);
+		//float ndcY = XMVectorGetY(vClipPos);
+		//float screenX = ((ndcX + 1.f) * 0.5f) * g_iWinSizeX;
+		//float screenY = ((1.f - ((ndcY + 1.f) * 0.5f))) * g_iWinSizeY;
+		//
+		//
+		//screenY -= 20.f;
 
-		XMVECTOR vLocalPos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+		_float2 vFinalPos;
+		_float2 CalPos;
+		_matrix matVP = XMMatrixMultiply(matView, matProj);
+		XMMATRIX matWorld = _pGameObject->Get_WorldMatrix();
+		XMVECTOR vWorldPos = matWorld.r[3]; 
+		XMVECTOR vClipPos = XMVector4Transform(vWorldPos, matVP);
 
+		_float fW = XMVectorGetW(vClipPos);
 
-		XMVECTOR vClipPos = XMVector3TransformCoord(vLocalPos, XMMatrixMultiply(XMMatrixMultiply(matWorld, matView), matProj));
+		if (fW != 0.0f)
+		{
+			XMVECTOR vNDCPos = XMVectorScale(vClipPos, 1.0f / fW);
+			//_vector vecScrPos = XMVectorScale(CalPos, 1.0f / fW);
+			float ndcX = XMVectorGetX(vNDCPos);
+			float ndcY = XMVectorGetY(vNDCPos);
+
+			
+			vFinalPos.x = (ndcX + 1.f) * 0.5f * g_iWinSizeX;
+			vFinalPos.y = (1.f - ndcY) * 0.5f * g_iWinSizeY;
+
+			CalPos.x = vFinalPos.x - m_fSizeX * 0.5f - 700.f;
+			CalPos.y = vFinalPos.y - m_fSizeY * 0.5f - 120.f;
+	
+			//vFinalPos = CalPos;
+
+		}
+		
+		
 
 		
-		float ndcX = XMVectorGetX(vClipPos);
-		float ndcY = XMVectorGetY(vClipPos);
-		float screenX = ((ndcX + 1.f) * 0.5f) * g_iWinSizeX;
-		float screenY = ((1.f - ((ndcY + 1.f) * 0.5f))) * g_iWinSizeY;
-
-	
-		screenY -= 20.f;
 
 
-		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(screenX, screenY, 0.f, 1.f));
-		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX * 0.9f, m_fSizeY * 0.3f, 1.f));
-		m_vObejctPos = _float3(screenX, screenY, 0.f);
 
 
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(CalPos.x, CalPos.y, 0.f, 1.f));
+		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX, m_fSizeY, 1.f));
+		//m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(800.f, 800.f, 1.f));
+		m_vObejctPos = _float3(vFinalPos.x, vFinalPos.y, 0.f);
+
+		if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
+			SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
 
 	}
 

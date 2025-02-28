@@ -15,6 +15,7 @@
 #include "Pooling_Manager.h"
 #include "Section_Manager.h"
 #include "UI_Manager.h"
+#include "NPC_Manager.h"
 #include "Dialog_Manager.h"
 #include "PlayerData_Manager.h"
 #include "Player.h"
@@ -827,6 +828,8 @@ HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 {
 	CPooling_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CEffect2D_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
+	CDialog_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
+	CNPC_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	return S_OK;
 }
 

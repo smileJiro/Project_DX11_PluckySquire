@@ -8,6 +8,7 @@
 #include "Pooling_Manager.h"
 #include "UI_Manager.h"
 #include "Dialog_Manager.h"
+#include "NPC_Manager.h"
 #include "Camera_Manager.h"
 #include "Section_Manager.h"
 
@@ -702,6 +703,7 @@ void CMainApp::Free()
 	CPooling_Manager::DestroyInstance();
 	CUI_Manager::DestroyInstance();
 	CDialog_Manager::DestroyInstance();
+	CNPC_Manager::DestroyInstance();
 	CSection_Manager::DestroyInstance();
 	CTrigger_Manager::DestroyInstance();
 	CPlayerData_Manager::DestroyInstance();

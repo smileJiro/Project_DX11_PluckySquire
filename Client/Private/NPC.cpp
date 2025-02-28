@@ -102,8 +102,9 @@ void CNPC::Throw_Dialogue()
 
 	CDialog_Manager::GetInstance()->Set_DialoguePos(vPos);
 	//Uimgr->Set_DialoguePos(vPos);
-	Uimgr->Set_DisplayDialogue(true);
-	Uimgr->Set_PortraitRender(true);
+	CDialog_Manager::GetInstance()->Set_DisPlayDialogue(true);
+	CDialog_Manager::GetInstance()->Set_NPC(this);
+	//Uimgr->Set_PortraitRender(true);
 
 
 }
