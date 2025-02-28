@@ -134,21 +134,25 @@ HRESULT CBomb::Initialize(void* _pArg)
 
 void CBomb::Priority_Update(_float _fTimeDelta)
 {
-	m_fAccTime += _fTimeDelta;
-	if(false == m_isExplode)
+	if(true == m_isOn)
 	{
-		if (m_fLifeTime <= m_fAccTime)
+		m_fAccTime += _fTimeDelta;
+
+		if (false == m_isExplode)
 		{
-			Explode();
-		}
-	}
-	else
-	{
-		if (m_fExplodeTime <= m_fAccTime)
-		{
-			if(false == m_isDead)
+			if (m_fLifeTime <= m_fAccTime)
 			{
-				Event_DeleteObject(this);
+				Explode();
+			}
+		}
+		else
+		{
+			if (m_fExplodeTime <= m_fAccTime)
+			{
+				if (false == m_isDead)
+				{
+					Event_DeleteObject(this);
+				}
 			}
 		}
 	}
@@ -185,6 +189,11 @@ HRESULT CBomb::Render()
 	__super::Render();
 
 	return S_OK;
+}
+
+void CBomb::Set_Time_On(_bool _isOn)
+{
+	m_isOn = _isOn;
 }
 
 void CBomb::Bomb_Shape_Enable(_bool _isEnable)

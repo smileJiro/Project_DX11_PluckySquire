@@ -160,6 +160,7 @@ void CBomb_Soldier::Attack()
         m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(0.f), _vector{ 1.f,0.f,0.f,0.f });
         CCarriableObject* pBomb = static_cast<CCarriableObject*>(m_PartObjects[PART_RIGHT_WEAPON]);
         pBomb->Set_Kinematic(false);
+        static_cast<CBomb*>(m_PartObjects[PART_RIGHT_WEAPON])->Set_Time_On(true);
         m_pGameInstance->Add_GameObject_ToLayer(Get_CurLevelID(), TEXT("Layer_Monster_Projectile"), m_PartObjects[PART_RIGHT_WEAPON]);
         
 
@@ -288,6 +289,7 @@ void CBomb_Soldier::Create_Bomb()
         m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 1.f,0.f,0.f,0.f });
         static_cast<CCarriableObject*>(m_PartObjects[PART_RIGHT_WEAPON])->Set_Kinematic(true);
         m_PartObjects[PART_RIGHT_WEAPON]->Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
+        static_cast<CBomb*>(m_PartObjects[PART_RIGHT_WEAPON])->Set_Time_On(false);
     }
 }
 
