@@ -34,6 +34,8 @@ enum PLAYER_INPUT
 	PLAYER_INPUT_REVIVE,
 	PLAYER_INPUT_TURNBOOK_LEFT,
 	PLAYER_INPUT_TURNBOOK_RIGHT,
+	PLAYER_INPUT_TILTBOOK_LEFT,
+	PLAYER_INPUT_TILTBOOK_RIGHT,
 	PLAYER_INPUT_TURNBOOK_END,
 	PLAYER_INPUT_START_STAMP,
 	PLAYER_INPUT_KEEP_STAMP,
@@ -490,6 +492,7 @@ public:
 	void Add_Upforce(_float _fForce);
 	PLAYER_INPUT_RESULT Player_KeyInput();
 	PLAYER_INPUT_RESULT Player_KeyInput_Stamp();
+	PLAYER_INPUT_RESULT Player_KeyInput_ControlBook();
 	void Revive();
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
 
