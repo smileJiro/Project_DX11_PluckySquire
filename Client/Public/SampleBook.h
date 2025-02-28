@@ -99,7 +99,7 @@ public :
 
 	_bool					Is_DuringAnimation();
 
-	void					Tilt(_bool _bLeft);
+	void					SlideObjects(_bool _bLeft);
 public:						
 	HRESULT					Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition);
 	void					Execute_AnimEvent(_uint _iAnimIndex);

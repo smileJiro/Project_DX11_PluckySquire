@@ -702,6 +702,11 @@ _bool CSampleBook::Is_DuringAnimation()
 	return m_pControllerModel->Get_Model(m_pControllerTransform->Get_CurCoord())->Is_DuringAnimation();
 }
 
+void CSampleBook::SlideObjects(_bool _bLeft)
+{
+	int a = 0;
+}
+
 HRESULT CSampleBook::Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition)
 {
 	if (Book_Action(_eAction))
