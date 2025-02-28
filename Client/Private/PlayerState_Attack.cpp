@@ -68,8 +68,6 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
                 }
                 Switch_To_AttackAnimation(m_iComboCount);
                 m_pOwner->Start_Attack((CPlayer::ATTACK_TYPE)(CPlayer::ATTACK_TYPE_NORMAL1 + m_iComboCount));
-
-
             }
             m_bCombo = false;
         }

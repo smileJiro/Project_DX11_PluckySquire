@@ -113,10 +113,10 @@ void CLevel_Camera_Tool_Client::Update(_float _fTimeDelta)
 	}
 
 
-	//Show_CameraTool();
-	Show_CutSceneTool(_fTimeDelta);
-	//Show_ArmInfo();
-	Show_CutSceneInfo();
+	Show_CameraTool();
+	//Show_CutSceneTool(_fTimeDelta);
+	Show_ArmInfo();
+	//Show_CutSceneInfo();
 	Show_SaveLoadFileWindow();
 
 	Show_AnimModel(_fTimeDelta);
@@ -156,7 +156,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Map()
 {
 	//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
 	//	return E_FAIL;
-	if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
+	if (FAILED(Map_Object_Create(L"Chapter_06_Play_Desk.mchc")))
 		return E_FAIL;
 
 	return S_OK;
@@ -182,7 +182,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_CubeMap(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Camera(const _wstring& _strLayerTag, CGameObject* _pTarget)
 {
-	//CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0);
+	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0);
 
 	CGameObject* pCamera = nullptr;
 
@@ -204,30 +204,30 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Camera(const _wstring& _strLayerT
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::FREE, dynamic_cast<CCamera*>(pCamera));
 
-	//// Target Camera
-	//CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
+	// Target Camera
+	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
 
-	//TargetDesc.fSmoothSpeed = 5.f;
-	//TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
-	//TargetDesc.vAtOffset = { 0.f, 3.f, 0.f };
-	//TargetDesc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE::COORDINATE_3D);
+	TargetDesc.fSmoothSpeed = 5.f;
+	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
+	TargetDesc.vAtOffset = { 0.f, 3.f, 0.f };
+	TargetDesc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE::COORDINATE_3D);
 
-	//TargetDesc.fFovy = XMConvertToRadians(60.f);
-	//TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	//TargetDesc.fNear = 0.1f;
-	//TargetDesc.fFar = 1000.f;
-	//TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
-	//TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
-	//TargetDesc.eZoomLevel = CCamera::LEVEL_6;
-	//TargetDesc.iCameraType = CCamera_Manager::TARGET;
+	TargetDesc.fFovy = XMConvertToRadians(60.f);
+	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
+	TargetDesc.fNear = 0.1f;
+	TargetDesc.fFar = 1000.f;
+	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
+	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
+	TargetDesc.eZoomLevel = CCamera::LEVEL_6;
+	TargetDesc.iCameraType = CCamera_Manager::TARGET;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
-	//	LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &TargetDesc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
+		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &TargetDesc)))
+		return E_FAIL;
 
-	//CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
 
-	//Create_Arms();
+	Create_Arms();
 
 	// CutScene Camera
 	CCamera_CutScene_Save::CAMERA_DESC CutSceneDesc{};
@@ -309,30 +309,8 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	//BookDesc.iCurLevelID = m_eLevelID;
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
-	//	m_eLevelID, L"Layer_Book", &m_pSimulationCube, &BookDesc)))
+	//	m_eLevelID, L"_strLayerTag", reinterpret_cast<CGameObject**>(&pOut), &BookDesc)))
 	//	return E_FAIL;
-	//Desc.eStartCoord = COORDINATE_3D;
-	//Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	//Desc.strModelPrototypeTag_3D = L"Prototype_Model_Book";
-	//Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
-	//Desc.iShaderPass_3D = 0;
-	//Desc.iPriorityID_3D = PR3D_GEOMETRY;
-	//Desc.iRenderGroupID_3D = RG_3D;
-	//Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
-	//Desc.tTransform3DDesc.vInitialPosition = { 2.f, 0.4f, -17.3f };
-	//Desc.tTransform3DDesc.vInitialScaling = { 1.f, 1.f, 1.f };
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
-	//	LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
-	//	return E_FAIL;
-
-	CModelObject::MODELOBJECT_DESC BookDesc = {};
-	BookDesc.iCurLevelID = m_eLevelID;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
-		m_eLevelID, L"_strLayerTag", reinterpret_cast<CGameObject**>(&pOut), &BookDesc)))
-		return E_FAIL;
 
 	//pOut->Set_Active(false);
 	//m_ModelObjects.push_back(pOut);
@@ -440,6 +418,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_DataFiles()
 
 void CLevel_Camera_Tool_Client::Show_CameraTool()
 {
+	
 	ImGui::Begin("Camera Basic Tool");
 
 	// Play Move
