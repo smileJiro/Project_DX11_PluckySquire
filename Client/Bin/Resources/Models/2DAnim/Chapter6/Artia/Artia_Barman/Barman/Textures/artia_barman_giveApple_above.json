@@ -1,0 +1,84 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "artia_barman_giveApple_above",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": null,
+          "FrameRun": 8
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_giveApple_above_0001_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_giveApple_above_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_giveApple_above_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_giveApple_above_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_giveApple_above_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_giveApple_above_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_giveApple_above_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_giveApple_above_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_giveApple_above_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_giveApple_above_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_giveApple_above_0006_X06'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_giveApple_above_0006_X06.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_giveApple_above_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_giveApple_above_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_giveApple_above_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_giveApple_above_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_giveApple_above_0009_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_giveApple_above_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": null,
+          "FrameRun": 8
+        }
+      ]
+    }
+  }
+]

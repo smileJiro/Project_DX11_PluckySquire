@@ -259,7 +259,7 @@ void CModel_Tool_Manager::Model_Collider_Imgui(_bool _bLock)
 						NormalDesc.iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MODEL;
 						CGameObject* pGameObject = nullptr;
 						m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
-							LEVEL_TOOL_3D_MAP,
+							LEVEL_TOOL_3D_MODEL,
 							L"Layer_EditMapObject",
 							&pGameObject,
 							(void*)&NormalDesc);

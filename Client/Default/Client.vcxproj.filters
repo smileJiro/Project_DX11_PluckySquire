@@ -511,6 +511,9 @@
     <Filter Include="Interface\Interact">
       <UniqueIdentifier>{6f7c500f-8dd0-45d5-9288-58dfccb1c72d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\NPC\100. NPC_Manager">
+      <UniqueIdentifier>{d7663a2e-f2cd-4c80-a744-dcac42db9a16}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1244,6 +1247,12 @@
     <ClInclude Include="..\Public\Bombable.h">
       <Filter>Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PalmDecal.h" />
+    <ClInclude Include="..\Public\PalmMarker.h" />
+    <ClInclude Include="..\Public\Stoppable.h" />
+    <ClInclude Include="..\Public\NPC_Manager.h">
+      <Filter>02.GameObjects\NPC\100. NPC_Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1962,6 +1971,16 @@
     </ClCompile>
     <ClCompile Include="..\Private\Bombable.cpp">
       <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PalmDecal.cpp" />
+    <ClCompile Include="..\Private\PalmMarker.cpp" />
+    <ClCompile Include="..\Private\Stoppable.cpp" />
+    <ClCompile Include="..\Private\PlayerState_ErasePalmDecal.cpp" />
+    <ClCompile Include="..\private\CollapseBlock.cpp">
+      <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPC_Manager.cpp">
+      <Filter>02.GameObjects\NPC\100. NPC_Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

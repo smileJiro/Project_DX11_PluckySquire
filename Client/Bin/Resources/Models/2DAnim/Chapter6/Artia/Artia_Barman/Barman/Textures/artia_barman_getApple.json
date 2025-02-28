@@ -1,0 +1,195 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "artia_barman_getApple",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0003_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0003_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0004_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0004_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0005_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0005_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0009_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0010_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0010_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0011_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0011_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0012_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0012_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0013_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0013_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0014_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0014_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0015_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0015_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0016_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0016_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0017_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0017_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0018_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0018_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0019_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0019_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0020_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0020_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0021_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0021_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0022_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0022_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0023_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0023_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0024_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0024_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0025_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0025_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'artia_barman_getApple_0026_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Artia/Barman/Frames/artia_barman_getApple_0026_X02.0"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]

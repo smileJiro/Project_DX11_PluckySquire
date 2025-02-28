@@ -8,6 +8,7 @@
 #include "Pooling_Manager.h"
 #include "UI_Manager.h"
 #include "Dialog_Manager.h"
+#include "NPC_Manager.h"
 #include "Camera_Manager.h"
 #include "Section_Manager.h"
 
@@ -311,7 +312,7 @@ HRESULT CMainApp::Ready_RenderGroup()
 
 	/* RG_3D, PR3D_POSTPROCESSING */
 	CRenderGroup_PostProcessing::RG_POST_DESC RG_PostDesc;
-	RG_PostDesc.iBlurLevel = 4;
+	RG_PostDesc.iBlurLevel = 2;
 	RG_PostDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RG_PostDesc.iPriorityID = PR3D_POSTPROCESSING;
 	CRenderGroup_PostProcessing* pRenderGroup_Post = CRenderGroup_PostProcessing::Create(m_pDevice, m_pContext, &RG_PostDesc);
@@ -702,6 +703,7 @@ void CMainApp::Free()
 	CPooling_Manager::DestroyInstance();
 	CUI_Manager::DestroyInstance();
 	CDialog_Manager::DestroyInstance();
+	CNPC_Manager::DestroyInstance();
 	CSection_Manager::DestroyInstance();
 	CTrigger_Manager::DestroyInstance();
 	CPlayerData_Manager::DestroyInstance();
