@@ -400,22 +400,27 @@ HRESULT CParticle_Sprite_Emitter::Bind_ShaderValue_ByPass()
             return E_FAIL;
         break;
     }
-    case SUBCOLORBLOOM_DISSOLVE:
+    case DISSOLVE_SUBCOLORBLOOM:
     {
         if (FAILED(Bind_Float4("NoiseUVScale", "g_vNoiseUVScale")))
             return E_FAIL;
         if (FAILED(Bind_Float4("EdgeColor", "g_vEdgeColor")))
             return E_FAIL;
-        if (FAILED(Bind_Float4("SubColor", "g_vSubColor")))
-            return E_FAIL;
-
-        if (FAILED(Bind_Float("BloomThreshold", "g_fBloomThreshold")))
-            return E_FAIL;
         if (FAILED(Bind_Float("EdgeWidth", "g_fEdgeWidth")))
             return E_FAIL;
         if (FAILED(Bind_Float("DissolveTimeFactor", "g_fDissolveTimeFactor")))
             return E_FAIL;
-        break;
+        if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
+            return E_FAIL;
+
+        if (FAILED(Bind_Float4("SubColor", "g_vSubColor")))
+            return E_FAIL;
+        if (FAILED(Bind_Float("BloomThreshold", "g_fBloomThreshold")))
+            return E_FAIL;
+
+        if (nullptr != m_pDissolveTextureCom && FAILED(m_pDissolveTextureCom->Bind_ShaderResource(m_pShaderCom, "g_NoiseTexture")))
+            return E_FAIL;
+
     }
     default:
         break;
@@ -716,7 +721,8 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
         const _char* items[] = { "Default", "DEFAULT_BLOOM", "ROTATION_BILLBOARD", 
             "ROTATION_BILLBOARD_BLOOM", "VELOCITY_BILLBOARD",
             "VELOCITY_BILLBOARD_BLOOM", "SUBCOLOR_BLOOM",
-            "DEFAULT_DISSOLVE", "VELOCITY_BILLBOARD_SUBCOLORBLOOM"
+            "DEFAULT_DISSOLVE", "VELOCITY_BILLBOARD_SUBCOLORBLOOM",
+            "DISSOLVE_SUBCOLORBLOOM",
         };
         static _int item_selected_idx = 0;
         const char* combo_preview_value = items[item_selected_idx];

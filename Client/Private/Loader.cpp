@@ -997,7 +997,7 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 		lstrcpy(m_szLoadingText, TEXT("Level2 이펙트 로딩중입니다."));
 
-		if (FAILED(Load_Directory_Effects(_eLoadLevelID, TEXT("../Bin/DataFiles/FX/Level2/"))))
+		if (FAILED(Load_Directory_Effects(LEVEL_CHAPTER_2, TEXT("../Bin/DataFiles/FX/Level2/LoadInfo.json"))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/FX/FX_Level2.json"), TEXT("FX_Level2"), _eLoadLevelID)))

@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "GameInstance.h"
 #include "Effect2D_Manager.h"
+#include "Effect_Manager.h"
 
 CPlayerState_JumpAttack::CPlayerState_JumpAttack(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::JUMP_ATTACK)
@@ -56,6 +57,8 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 
 			m_bGrounded = true;
 			m_pOwner->Start_Attack(CPlayer::ATTACK_TYPE_JUMPATTACK);
+			CEffect_Manager::GetInstance()->Active_Effect(TEXT("SwordJumpAttack"), true, m_pOwner->Get_Transform()->Get_WorldMatrix_Ptr());
+
 			return;
 
 		}
@@ -70,6 +73,8 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 				return;
 			}
 		}
+
+
 	}
 	else
 	{

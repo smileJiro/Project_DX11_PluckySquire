@@ -991,13 +991,13 @@
                 },
                 "Scale": {
                     "Arg1": [
-                        0.5,
-                        0.5,
+                        1.0,
+                        1.0,
                         1.0
                     ],
                     "Arg2": [
-                        0.699999988079071,
-                        0.699999988079071,
+                        1.5,
+                        1.5,
                         1.0
                     ],
                     "SetType": "RANDOMLINEAR"
@@ -1006,7 +1006,7 @@
                     "Coverage": 0.10000000149011612,
                     "Position": [
                         0.0,
-                        0.0,
+                        0.20000000298023224,
                         0.0
                     ],
                     "Ring_Distribution": 0.0,
@@ -1031,7 +1031,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.6000000238418579,
+            "DelayTime": 0.009999999776482582,
             "Event": 1,
             "Float": [
                 {
@@ -1271,13 +1271,13 @@
                 },
                 "Scale": {
                     "Arg1": [
-                        0.5,
-                        0.5,
+                        0.6000000238418579,
+                        0.6000000238418579,
                         1.0
                     ],
                     "Arg2": [
-                        0.800000011920929,
-                        0.800000011920929,
+                        0.8999999761581421,
+                        0.8999999761581421,
                         1.0
                     ],
                     "SetType": "RANDOMLINEAR"
@@ -1286,7 +1286,7 @@
                     "Coverage": 0.5,
                     "Position": [
                         0.0,
-                        0.0,
+                        0.30000001192092896,
                         0.0
                     ],
                     "Ring_Distribution": 0.0,
@@ -1311,7 +1311,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.6000000238418579,
+            "DelayTime": 0.009999999776482582,
             "Event": 1,
             "Float": [
                 {
@@ -1435,6 +1435,139 @@
                 1.0
             ],
             "Type": "SPRITE"
+        },
+        {
+            "Color": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "DelayTime": 0.0,
+            "Event": 1,
+            "Float": [
+                {
+                    "Name": "SpawnRate",
+                    "Value": 0.0
+                }
+            ],
+            "Float4": [
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "LoopTime": 1,
+            "Model": "../Bin/Resources/Models/FX/S_FX_CMN_Ring_02.model",
+            "Modules": [
+                {
+                    "Apply": "COLOR",
+                    "Init": false,
+                    "Keyframe": [
+                        {
+                            "Data": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "Time": 0.0
+                        },
+                        {
+                            "Data": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Time": 0.5
+                        }
+                    ],
+                    "Module": "COLOR_KEYFRAME",
+                    "Order": 0,
+                    "Type": "MODULE_KEYFRAME"
+                },
+                {
+                    "Apply": "SCALE",
+                    "Init": false,
+                    "Keyframe": [
+                        {
+                            "Data": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "Time": 0.0
+                        },
+                        {
+                            "Data": [
+                                2.5,
+                                2.5,
+                                2.5,
+                                1.0
+                            ],
+                            "Time": 0.5
+                        }
+                    ],
+                    "Module": "SCALE_KEYFRAME",
+                    "Order": 1,
+                    "Type": "MODULE_KEYFRAME"
+                }
+            ],
+            "Pooling": "KILL",
+            "PreTransform": [
+                0.0,
+                -0.006666666828095913,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "ShaderPass": "DISTORTION",
+            "SpawnPosition": "RELATIVE_WORLD",
+            "SpawnType": "SPAWN_RATE",
+            "Textures": [
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Grad_02_180.dds",
+                    "Type": "NOISE"
+                }
+            ],
+            "Time": 0.5,
+            "Transform": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.30000001192092896,
+                0.0,
+                1.0
+            ],
+            "Type": "EFFECT"
         }
     ],
     "Name": "PortalType2",
