@@ -37,6 +37,7 @@ HRESULT CRenderGroup_PostProcessing::Render(CShader* _pRTShader, CVIBuffer_Rect*
     /* 렌더 콜 한번에 여러번 그리게할거야 for 문 돌면서 renderTarget을 등록하고, srv를 다른 렌더타겟의 srv로 */
     static _int iBindMaxSizeRTs = 8;
     static vector<CRenderTarget*> DrawMRT;
+    _int iBlurFinalIndex = 0;
     for (int i = 0; i < m_BlurRenderTargets.size(); ++i)
     {
         // 1. Blur RenderTarget을 MRT로 만들고 바인딩.
@@ -78,18 +79,52 @@ HRESULT CRenderGroup_PostProcessing::Render(CShader* _pRTShader, CVIBuffer_Rect*
         _pRTBuffer->Bind_BufferDesc(); /* 이거 한번만해줘도 됨*/
         _pRTBuffer->Render();
 
+
         if (FAILED(m_pGameInstance->End_MRT()))
             return E_FAIL;
 
         DrawMRT.clear();
     }
 
+    /* 최종 결과물을 만들고 톤매핑 하여 백버퍼 혹은 최종 타겟에 그리는 단계 */
+    if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_PostProcessing"), nullptr, true)))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_LightingTexture", TEXT("Target_Lighting"))))
+    {
+        if (FAILED(m_pGameInstance->End_MRT()))
+            return E_FAIL;
+        return E_FAIL;
+    }
+    /* 6. DOF 적용 및 최종 후처리 후 */ ///////////////////////////////////////////////////////////////////////////////////TODO :: dof 적용안대고있삼 
+    /* 2. 현재는 라이팅 타겟을 그대로 바인딩하지만 추후에는 뭔가 다른 타겟을 바인딩하겠지 후처리끝난... */
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_SrcBlurTargetTexture", TEXT("Target_PBRBlurFinal"))))
+    {
+        if (FAILED(m_pGameInstance->End_MRT()))
+            return E_FAIL;
+        return E_FAIL;
+    }
+    /* 3. Dof 관련 값은 이미 NewRenderer에서 채워줬음. */
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_DepthTexture", TEXT("Target_Depth"))))
+    {
+        if (FAILED(m_pGameInstance->End_MRT()))
+            return E_FAIL;
+        return E_FAIL;
+    }
+
+    _pRTShader->Begin((_uint)PASS_DEFERRED::PBR_BLUR_FINAL);
+
+    _pRTBuffer->Bind_BufferDesc(); /* 이거 한번만해줘도 됨*/
+    _pRTBuffer->Render();
+
+    if (FAILED(m_pGameInstance->End_MRT()))
+        return E_FAIL;
 
     //Setup_Viewport(_float2((_float)m_pGameInstance->Get_ViewportWidth(), (_float)m_pGameInstance->Get_ViewportHeight()));
 
 
 
-    
+
     return S_OK;
 }
 
@@ -118,7 +153,7 @@ HRESULT CRenderGroup_PostProcessing::Ready_BlurRenderTarget()
     {
         /* blur level 4 기준 : 4, 2, 1 */
         _wstring strRTName = TEXT("Post_Blur_");
-        strRTName += to_wstring((iNumRenderTargets /2) + i);
+        strRTName += to_wstring((iNumRenderTargets / 2) + i);
         _int iLevel = m_iBlurLevel - 2 - i;
         _int iDiv = (_int)pow(2, iLevel);
         CRenderTarget* pUpTarget = CRenderTarget::Create(m_pDevice, m_pContext, strRTName, g_iWinSizeX / iDiv, g_iWinSizeY / iDiv, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f));
@@ -153,6 +188,12 @@ void CRenderGroup_PostProcessing::Free()
         Safe_Release(pRenderTarget);
     }
     m_BlurRenderTargets.clear();
+    for (auto& pDSV : m_DSVs)
+    {
+        Safe_Release(pDSV);
+    }
+    m_DSVs.clear();
+
 
     __super::Free();
 }
