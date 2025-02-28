@@ -94,20 +94,23 @@ public:
 	CModel*	Get_Model(COORDINATE _eCoord);
 	_float	Get_AnimationTime(_uint iAnimIndex) ;
 	_float	Get_AnimationTime() ;
+	_float	Get_CurrentAnimationProgress() ;
+	_uint	Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
+	_uint	Get_CurrentAnimIndex();
+	_bool	Is_ReverseAnimation() { return m_bReverseAnimation; }
+	//애니메이션 진행도가 0~1 사이인지 반환
+	_bool	Is_DuringAnimation();
+	//애니메이션이 재생중인지 반환
 	_bool	Is_PlayingAnim() { return m_bPlayingAnim; }
 	// Set
 	void	Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
 	void	Set_Animation(_uint iIdx);
 	void	Set_3DAnimationTransitionTime(_uint iIdx, _float _fTime);
-	void	Switch_Animation(_uint iIdx);
-	void	To_NextAnimation();
-
-	void	Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
-	_uint	Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
 	void	Set_PlayingAnim(_bool _bPlaying);
 	void	Set_ReverseAnimation(_bool _bReverse) { m_bReverseAnimation = _bReverse; }
-	_bool	Is_ReverseAnimation() { return m_bReverseAnimation; }
-	_bool	Is_DuringAnimation();
+	void	Switch_Animation(_uint iIdx);
+	void	To_NextAnimation();
+	void	Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
 	void	Change_RenderGroup(COORDINATE _eCoord, _uint _iGroupKey, _uint _iPriorityKey)
 	{ 
 		if (COORDINATE_2D == _eCoord)
@@ -121,6 +124,7 @@ public:
 			m_iPriorityID_3D = _iPriorityKey;
 		}
 	}
+
 
 
 protected:

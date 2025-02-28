@@ -67,9 +67,12 @@ namespace Camera_Tool
 			PR3D_SHADOW = 20,
 			PR3D_GEOMETRY = 30,
 			PR3D_DIRECTLIGHTS = 40,
+
 			PR3D_LIGHTNG = 50, // >>> ¸®Á¹ºù
+			PR3D_AFTERLIGHTING = 51,
 			PR3D_POSTPROCESSING = 52, // PostProcessing
-			PR3D_SSAO = 54, // PostProcessing
+			PR3D_AFTERPOSTPROCESSING = 59,
+
 			PR3D_COMBINE = 60, // ToneMapping
 			PR3D_BLEND = 70,
 			PR3D_EFFECT = 80,

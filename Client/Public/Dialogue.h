@@ -72,6 +72,7 @@ public:
 
         _bool is2D;
         _bool isPortrait;
+        _int  iAnimationIndex = { -1 };
 
         _float3 vFontColor = _float3(0.f, 0.f, 0.f);
         
@@ -106,10 +107,12 @@ public:
     CPortrait* Get_Portrait() { return m_pPortrait; }
     void       Set_Portrait(CPortrait* _Portrait) { m_pPortrait = _Portrait; Safe_AddRef(_Portrait); }
     void       UpdateDialogueLine();
+    HRESULT     NextLevelLoadJson(_int _iNextLevel);
 
 private:
+   
     HRESULT     LoadFromJson(const std::wstring& filePath); // 데이터 로드
-    HRESULT      DisplayText(_float2 _vRTSize); // 타이핑 되게하자.
+    HRESULT     DisplayText(_float2 _vRTSize); // 타이핑 되게하자.
     void        NextDialogue(_float2 _RTSize);
     void        FirstCalPos(_float2 _RTSize);
     void        isOpenPanel(_tchar* _DialogId);
@@ -163,6 +166,7 @@ private:
 
 
     _bool               m_isOpenDialogue = { true };
+    _float2              m_vRenderRatio = { 0.f , 0.f};
 
 
 

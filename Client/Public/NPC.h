@@ -69,6 +69,7 @@ public:
 	virtual void				Change_Animation() {};
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void						Change_Dir();
+	void						Set_SocialNpcAnimationIndex(_int _id) { m_iSocialNpcAnimationIndex = _id; }
 
 protected:
 	void Delay_On()
@@ -128,6 +129,9 @@ protected:
 	CCollider*				m_p2DNpcCollider = nullptr;
 	CStateMachine*			m_pStateMachine = nullptr;
 
+
+	_int					m_iSocialNpcAnimationIndex = { -1 };
+	_int					m_iPreSocialNpcAnimationindex = { -1 };
 
 	
 

@@ -24,7 +24,11 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 
 	_float fProgress =m_pOwner->Get_AnimProgress();
-	_float fMotionCancelProgress = eCoord == COORDINATE_2D ? m_f2DMotionCancelProgress : m_f3DMotionCancelProgress;
+    _float fMotionCancelProgress;
+    if (COORDINATE_2D == eCoord)
+        fMotionCancelProgress = m_f2DMotionCancelProgress[m_iComboCount];
+    else
+		fMotionCancelProgress = m_f3DMotionCancelProgress[m_iComboCount];
 	if (COORDINATE_2D == eCoord &&
         fProgress >= m_f2DForwardStartProgress && fProgress <= m_f2DForwardEndProgress)
 	{
@@ -40,7 +44,6 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
         else
             m_pOwner->Move(EDir_To_Vector( m_pOwner->Get_2DDirection())  *m_f2DForwardSpeed, _fTimeDelta);
 	}
-    //cout << "combo : "<< m_iComboCount << " / Progress : " << fProgress << endl;
 	if (fProgress >= fMotionCancelProgress)
 	{
         if(m_pOwner->Is_AttackTriggerActive())

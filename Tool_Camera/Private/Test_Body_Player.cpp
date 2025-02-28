@@ -66,11 +66,6 @@ HRESULT CTest_Body_Player::Render()
     return S_OK;
 }
 
-HRESULT CTest_Body_Player::Render_Shadow()
-{
-    return S_OK;
-}
-
 HRESULT CTest_Body_Player::Ready_Components()
 {
     return S_OK;

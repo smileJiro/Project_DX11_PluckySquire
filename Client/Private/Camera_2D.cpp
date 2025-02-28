@@ -157,6 +157,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		{
 			pData = Find_ArmData(TEXT("Default_Positive_Y"));
 			m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+			
 		}
 			break;
 		case (_int)NORMAL_DIRECTION::NEGATIVE_Y:
@@ -170,6 +171,12 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		}
 			break;
 		}
+
+		// SUbData 하기 전 임시 (2.28)
+		m_pCurArm->Set_Length(12.5f);
+		m_iCurZoomLevel = LEVEL_6;
+		m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
+		m_vAtOffset = { 0.f, 0.f, 0.f };
 
 		// Initial Data가 없어서 TargetPos + vArm * Length로 초기 위치를 바로 잡아주기
 		if (nullptr == _pInitialData) {
@@ -519,7 +526,7 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 	if (false == m_isInitialData)
 		return;
 
-	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN);
+	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
 
 	if (fRatio >= (1.f - EPSILON)) {
 		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });

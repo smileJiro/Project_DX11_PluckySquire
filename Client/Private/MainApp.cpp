@@ -8,6 +8,7 @@
 #include "Pooling_Manager.h"
 #include "UI_Manager.h"
 #include "Dialog_Manager.h"
+#include "NPC_Manager.h"
 #include "Camera_Manager.h"
 #include "Section_Manager.h"
 
@@ -307,6 +308,8 @@ HRESULT CMainApp::Ready_RenderGroup()
 	Safe_Release(pRenderGroup_Lighting);
 	pRenderGroup_Lighting = nullptr;
 
+
+
 	/* RG_3D, PR3D_POSTPROCESSING */
 	CRenderGroup_PostProcessing::RG_POST_DESC RG_PostDesc;
 	RG_PostDesc.iBlurLevel = 4;
@@ -323,12 +326,30 @@ HRESULT CMainApp::Ready_RenderGroup()
 	Safe_Release(pRenderGroup_Post);
 	pRenderGroup_Post = nullptr;
 
+	/* RG_3D, PR3D_AFTERPOSTPROCESSING */
+	CRenderGroup_MRT::RG_MRT_DESC RG_AfterPostDesc;
+	RG_AfterPostDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_AfterPostDesc.iPriorityID = PRIORITY_3D::PR3D_AFTERPOSTPROCESSING;
+	RG_AfterPostDesc.strMRTTag = TEXT("MRT_PostProcessing");
+	RG_AfterPostDesc.isClear = false;
+
+	CRenderGroup_MRT* pRenderGroup_AfterPost = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_AfterPostDesc);
+	if (nullptr == pRenderGroup_AfterPost)
+	{
+		MSG_BOX("Failed Create PR3D_AFTERPOSTPROCESSING");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_AfterPost->Get_RenderGroupID(), pRenderGroup_AfterPost->Get_PriorityID(), pRenderGroup_AfterPost)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_AfterPost);
+	pRenderGroup_AfterPost = nullptr;
+
 	/* RG_3D, PR3D_COMBINE */
 	CRenderGroup_Combine::RG_MRT_DESC RG_CombineDesc;
 	RG_CombineDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RG_CombineDesc.iPriorityID = PRIORITY_3D::PR3D_COMBINE;
 	RG_CombineDesc.strMRTTag = TEXT("MRT_Combine");
-	RG_CombineDesc.isClear = true;
+	RG_CombineDesc.isClear = false;
 	CRenderGroup_Combine* pRenderGroup_Combine = CRenderGroup_Combine::Create(m_pDevice, m_pContext, &RG_CombineDesc);
 	if (nullptr == pRenderGroup_Combine)
 	{
@@ -516,6 +537,10 @@ HRESULT CMainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_RenderTarget_MSAA(TEXT("Target_Lighting"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
+	/* Target_PostProcessing */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_PostProcessing"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+
 	/* Target_Combine */ 
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Combine"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
@@ -583,6 +608,10 @@ HRESULT CMainApp::Ready_RenderTargets()
 
 	/* MRT_Lighting */
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Lighting"), TEXT("Target_Lighting"))))
+		return E_FAIL;
+
+	/* MRT_PostProcessing */
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_PostProcessing"), TEXT("Target_PostProcessing"))))
 		return E_FAIL;
 
 	/* MRT_Combine */
@@ -674,6 +703,7 @@ void CMainApp::Free()
 	CPooling_Manager::DestroyInstance();
 	CUI_Manager::DestroyInstance();
 	CDialog_Manager::DestroyInstance();
+	CNPC_Manager::DestroyInstance();
 	CSection_Manager::DestroyInstance();
 	CTrigger_Manager::DestroyInstance();
 	CPlayerData_Manager::DestroyInstance();

@@ -708,7 +708,7 @@ void CCamera_Target::Switching(_float _fTimeDelta)
 	//m_InitialTime.y += _fTimeDelta;
 	//_float fRatio = m_InitialTime.y / m_InitialTime.x;
 
-	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN);
+	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
 
 	if (fRatio >= (1.f - EPSILON)) {
 		_vector vTargetPos;

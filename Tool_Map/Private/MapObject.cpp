@@ -568,13 +568,13 @@ HRESULT CMapObject::Save_Override_Color(HANDLE _hFile)
     return S_OK;
 }
 
-HRESULT CMapObject::Save_Spsk(HANDLE _hFile)
+HRESULT CMapObject::Save_Sksp(HANDLE _hFile)
 {
     DWORD	dwByte(0);
-    _uint iSpsk = m_isSpsk ? 1 : 0;
-    WriteFile(_hFile, &iSpsk, sizeof(_uint), &dwByte, nullptr);
+    //_uint iSpsk = m_isSpsk ? 1 : 0;
+    WriteFile(_hFile, &m_iSkspType, sizeof(_uint), &dwByte, nullptr);
 
-    if (m_isSpsk)
+    if (m_iSkspType != SKSP_NONE)
     {
         _char		szSaveSpskName[MAX_PATH];
         strcpy_s(szSaveSpskName, m_strSpskTag.c_str());
@@ -656,14 +656,14 @@ HRESULT CMapObject::Load_Override_Color(HANDLE _hFile)
     return S_OK;
 }
 
-HRESULT CMapObject::Load_Spsk(HANDLE _hFile)
+HRESULT CMapObject::Load_Sksp(HANDLE _hFile)
 {
     DWORD	dwByte(0);
     _uint iSpsk =  0;
-    ReadFile(_hFile, &iSpsk, sizeof(_uint), &dwByte, nullptr);
+    ReadFile(_hFile, &m_iSkspType, sizeof(_uint), &dwByte, nullptr);
 
-    m_isSpsk = 1 == iSpsk ? true : false;
-    if (m_isSpsk)
+    _bool isSksp = 0 <  m_iSkspType ? true : false;
+    if (isSksp)
     {
         _char		szSaveSpskName[MAX_PATH];
         ReadFile(_hFile, &szSaveSpskName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);

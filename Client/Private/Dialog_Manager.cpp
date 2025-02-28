@@ -45,6 +45,12 @@ void CDialog_Manager::Set_DialogEnd()
 	m_pDialogue->Set_DisPlayDialogue(false);
 	m_pDialogue->Set_DisplayPortraitRender(false);
 
+	if (nullptr != m_pNPC)
+	{
+		Safe_Release(m_pNPC);
+		m_pNPC = nullptr;
+	}
+
 
 
 }
@@ -55,6 +61,12 @@ HRESULT CDialog_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int
 	{
 		Safe_Release(m_pDialogue);
 		m_pDialogue = nullptr;
+	}
+
+	if (nullptr != m_pNPC)
+	{
+		Safe_Release(m_pNPC);
+		m_pNPC = nullptr;
 	}
 
 
@@ -69,6 +81,11 @@ HRESULT CDialog_Manager::Level_Logo_Exit(_int _iChangeLevelID, _int _iNextChange
 
 HRESULT CDialog_Manager::Level_Enter(_int _iChangeLevelID)
 {
+	if (nullptr == m_pDialogue)
+		return S_OK;
+
+	m_pDialogue->NextLevelLoadJson(_iChangeLevelID);
+
 	return S_OK;
 }
 
@@ -76,7 +93,7 @@ HRESULT CDialog_Manager::Level_Enter(_int _iChangeLevelID)
 void CDialog_Manager::Free()
 {
 	Safe_Release(m_pDialogue);
-	
+	Safe_Release(m_pNPC);
 
 	__super::Free();
 }

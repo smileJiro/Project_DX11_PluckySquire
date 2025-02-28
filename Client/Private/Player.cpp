@@ -218,7 +218,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     BodyGuardShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
     BodyGuardShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
     BodyGuardShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER; // Actor가 충돌을 감지할 그룹
-    ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
+    ActorDesc.ShapeDatas[BodyGuardShapeData.iShapeUse] = ShapeData;
 
 
 
@@ -1269,7 +1269,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_ControlBook()
     _bool bIsTurningBook = CPlayer::TURN_BOOK == m_pStateMachine->Get_CurrentState()->Get_StateID();
 
     if (false == bIsTurningBook)
-    return tResult;
+        return tResult;
     if (KEY_PRESSING(KEY::A))
     {
         tResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT] = true;
@@ -1854,6 +1854,7 @@ void CPlayer::Set_GravityCompOn(_bool _bOn)
 
 void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 {
+
 	m_eCurAttackType = _eAttackType;
 	if (COORDINATE_2D == Get_CurCoord())
 	{
@@ -2139,6 +2140,7 @@ void CPlayer::Free()
 	Safe_Release(m_pGlove);
 	Safe_Release(m_pBombStmap);
 	Safe_Release(m_pStopStmap);
+	Safe_Release(m_pDetonator);
 
     Safe_Release(m_pCarryingObject);
     

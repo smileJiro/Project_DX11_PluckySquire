@@ -84,7 +84,7 @@ HRESULT CBomb_Soldier::Initialize(void* _pArg)
     CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
     tAnimEventDesc.pReceiver = this;
     tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
-    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_SoldierAttackEvent"), &tAnimEventDesc));
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_SoldierAttackAnimEvent"), &tAnimEventDesc));
     Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
@@ -158,9 +158,10 @@ void CBomb_Soldier::Attack()
         // 다이나믹으로 전환하고 레이어에 넣기
         m_PartObjects[PART_RIGHT_WEAPON]->Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
         m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(0.f), _vector{ 1.f,0.f,0.f,0.f });
-        CCarriableObject* pBomb = static_cast<CCarriableObject*>(m_PartObjects[PART_RIGHT_WEAPON]);
+        CBomb* pBomb = static_cast<CBomb*>(m_PartObjects[PART_RIGHT_WEAPON]);
         pBomb->Set_Kinematic(false);
-        m_pGameInstance->Add_GameObject_ToLayer(Get_CurLevelID(), TEXT("Layer_Monster_Projectile"), m_PartObjects[PART_RIGHT_WEAPON]);
+        pBomb->Set_Time_On();
+        //m_pGameInstance->Add_GameObject_ToLayer(Get_CurLevelID(), TEXT("Layer_Monster_Projectile"), m_PartObjects[PART_RIGHT_WEAPON]);
         
 
         //던지기
@@ -263,31 +264,36 @@ void CBomb_Soldier::Create_Bomb()
 
         _matrix HandMatrix = XMLoadFloat4x4(p3DModel->Get_BoneMatrix("j_hand_attach_r"));
 
-        _float3 vPosition;
+        _float3 vPosition = { 0.f,0.f,0.f };
         _float4 vRotation;
 
-        m_pGameInstance->MatrixDecompose(nullptr, &vRotation, &vPosition, HandMatrix);
-
-        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPosition, &vRotation);
-        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPosition);
+        //m_pGameInstance->MatrixDecompose(nullptr, &vRotation, &vPosition, HandMatrix);
 
         CGameObject* pObject = nullptr;
 
-        CBomb::CARRIABLE_DESC BombDesc;
+        //CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPosition, &vRotation);
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPosition);
+
+        m_PartObjects[PART_RIGHT_WEAPON] = static_cast<CPartObject*>(pObject);
+
+       /* CBomb::CARRIABLE_DESC BombDesc;
         BombDesc.iCurLevelID = Get_CurLevelID();
         BombDesc.eStartCoord = COORDINATE_3D;
         BombDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
 
         BombDesc.pParentMatrices[COORDINATE_3D] = Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
-        m_PartObjects[PART_RIGHT_WEAPON] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb"), &BombDesc));
+        m_PartObjects[PART_RIGHT_WEAPON] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb"), &BombDesc));*/
+        
         if (nullptr == m_PartObjects[PART_RIGHT_WEAPON])
             return;
 
+        m_PartObjects[PART_RIGHT_WEAPON]->Set_ParentMatrix(COORDINATE_3D, Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));
         m_PartObjects[PART_RIGHT_WEAPON]->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r"));
         m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 1.f,0.f,0.f,0.f });
         static_cast<CCarriableObject*>(m_PartObjects[PART_RIGHT_WEAPON])->Set_Kinematic(true);
         m_PartObjects[PART_RIGHT_WEAPON]->Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
+        static_cast<CBomb*>(m_PartObjects[PART_RIGHT_WEAPON])->Set_Time_Off();
     }
 }
 
