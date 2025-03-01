@@ -78,7 +78,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     }
     Safe_Delete(pDesc->pActorDesc);
 
-    Get_ActorCom()->Set_ShapeEnable(BOSS_SHAPE_USE_SHIELD, false);
+    Get_ActorCom()->Set_ShapeEnable(BOSS_SHAPE_SHIELD, false);
 
     return S_OK;
 }
@@ -367,7 +367,6 @@ HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
     SHAPE_SPHERE_DESC* LeftEyeShapeDesc = new SHAPE_SPHERE_DESC;
     LeftEyeShapeDesc->fRadius = 10.f;
 
-    SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = LeftEyeShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
@@ -382,7 +381,6 @@ HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
     SHAPE_SPHERE_DESC* RightEyeShapeDesc = new SHAPE_SPHERE_DESC;
     RightEyeShapeDesc->fRadius = 10.f;
 
-    SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = RightEyeShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
@@ -400,7 +398,6 @@ HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
     TongueShapeDesc->fRadius = 10.f;
     TongueShapeDesc->fHalfHeight = 10.f;
 
-    SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = TongueShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
@@ -416,7 +413,6 @@ HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
     SHAPE_SPHERE_DESC* ShieldShapeDesc = new SHAPE_SPHERE_DESC;
     ShieldShapeDesc->fRadius = 100.f;
 
-    SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShieldShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.

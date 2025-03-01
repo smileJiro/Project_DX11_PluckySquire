@@ -33,6 +33,8 @@ public:
 public:
 	typedef struct tagMapObjectDesc : public CModelObject::MODELOBJECT_DESC
 	{
+		_bool			isCookingSave = false;
+		_string			strSavePath = "";
 		_tchar			szModelName[MAX_PATH];
 		OBJ_CREATE_TYPE eCreateType;
 

@@ -747,6 +747,152 @@ HRESULT CTask_Manager::Export_Result(const _wstring& _strFilePath, const _wstrin
 	return S_OK;
 }
 
+HRESULT CTask_Manager::Cooking(const _string& _strCookingPath, CMapObject* _pMapObject, COOKING_MODE _eMode)
+{
+	PxCooking* pCooking = m_pGameInstance->Get_Cooking();
+	PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
+
+
+
+	if (pCooking == nullptr || pPhysics == nullptr)
+		return E_FAIL;
+
+
+	PxShapeFlags ShapeFlags = PxShapeFlag::eSIMULATION_SHAPE;
+	PxMaterial* pShapeMaterial = m_pGameInstance->Get_Material(ACTOR_MATERIAL::DEFAULT);
+
+
+	CModel* _pModel = _pMapObject->Get_Model(COORDINATE_3D);
+	if (nullptr == _pModel)
+		return E_FAIL;
+	C3DModel* pModel = static_cast<C3DModel*>(_pModel);
+
+	_uint iNumMeshes = pModel->Get_NumMeshes();
+
+	_string strCookingPath = _strCookingPath;
+
+	switch (_eMode)
+	{
+	case Map_Tool::CTask_Manager::COOKING_CONVEX:
+	{
+		CMesh* pMesh = pModel->Get_Mesh(0);
+
+		PxConvexMeshDesc  meshDesc;
+		if (FAILED(pMesh->Cooking(meshDesc)))
+			return E_FAIL;
+		
+		PxDefaultMemoryOutputStream writeBuffer;
+		PxCookingParams params(pPhysics->getTolerancesScale());
+		pCooking->setParams(params);
+		
+		
+		if (!pCooking->cookConvexMesh(meshDesc, writeBuffer))
+			return E_FAIL;
+
+
+		ofstream file;
+		file.open(strCookingPath, ios::binary);
+		if (!file)
+			return E_FAIL;
+
+		_uint iMeshDataSize = writeBuffer.getSize();
+
+		file.write((_char*)&iMeshDataSize, sizeof(_uint));
+		file.write((_char*)writeBuffer.getData(), iMeshDataSize);
+
+		file.close();
+	}
+
+		break;
+	case Map_Tool::CTask_Manager::COOKING_TRI:
+	{
+
+		CMesh* pMesh = pModel->Get_Mesh(0);
+
+		PxTriangleMeshDesc meshDesc;
+		if (FAILED(pMesh->Cooking(meshDesc)))
+			return E_FAIL;
+		PxDefaultMemoryOutputStream writeBuffer;
+		PxCookingParams params(pPhysics->getTolerancesScale());
+		pCooking->setParams(params);
+
+		if (!pCooking->cookTriangleMesh(meshDesc, writeBuffer))
+			return E_FAIL;
+
+		strCookingPath = std::filesystem::path(_strCookingPath).replace_extension("").string();
+		strCookingPath += ".modelTriColl";
+		ofstream file;
+		file.open(strCookingPath, ios::binary);
+		if (!file)
+			return E_FAIL;
+
+		_uint iMeshDataSize = writeBuffer.getSize();
+
+		file.write((_char*)&iMeshDataSize, sizeof(_uint));
+		file.write((_char*)writeBuffer.getData(), iMeshDataSize);
+
+		file.close();
+	}
+
+
+		break;
+	case Map_Tool::CTask_Manager::COOKING_MULTI:
+
+	{
+
+#pragma region 복수메쉬
+
+		_uint iMeshMaxSize = 0;
+
+		for (_uint i = 0; i < iNumMeshes; i++)
+		{
+			CMesh* pMesh = pModel->Get_Mesh(i);
+
+			PxConvexMeshDesc meshDesc;
+			pMesh->Cooking(meshDesc);
+
+			PxDefaultMemoryOutputStream writeBuffer;
+			PxCookingParams params(pPhysics->getTolerancesScale());
+			pCooking->setParams(params);
+
+			if (!pCooking->cookConvexMesh(meshDesc, writeBuffer))
+				return E_FAIL;
+
+
+			string strMultiMeshPath = std::filesystem::path(strCookingPath).replace_extension("").string();
+			strMultiMeshPath += "_";
+			strMultiMeshPath += std::to_string(i);
+			strMultiMeshPath += ".modelMultiColl";
+			ofstream file;
+			//file.open(strMultiMeshPath, ios::binary | std::ios::app);
+			file.open(strMultiMeshPath, ios::binary);
+			if (!file)
+				return E_FAIL;
+
+			_uint iMeshDataSize = writeBuffer.getSize();
+
+			file.write((_char*)&iMeshDataSize, sizeof(_uint));
+			file.write((_char*)writeBuffer.getData(), iMeshDataSize);
+
+			file.close();
+		}
+
+#pragma endregion
+
+	}
+
+		break;
+	case Map_Tool::CTask_Manager::COOKING_LAST:
+		break;
+	default:
+		break;
+
+	}
+
+
+
+}
+
 _bool CTask_Manager::Check_EgnoreObject(_string _strModelName)
 {
 	auto iter = find_if(m_EgnoreObjectNames.begin(), m_EgnoreObjectNames.end(), [&_strModelName]

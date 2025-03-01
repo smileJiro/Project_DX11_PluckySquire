@@ -53,6 +53,15 @@ HRESULT C3DMapSkspObject::Initialize(void* _pArg)
 
 void C3DMapSkspObject::Late_Update(_float _fTimeDelta)
 {
+    if (KEY_DOWN(KEY::X))
+    {
+        _int isRenderState = m_eCurRenderState;
+        isRenderState ^= 1;
+
+        Change_RenderState((RT_RENDERSTATE)isRenderState, false);
+    }
+    
+
     CGameObject::Late_Update_Component(_fTimeDelta);
 
     /* Add Render Group */
@@ -82,89 +91,12 @@ HRESULT C3DMapSkspObject::Render()
             return E_FAIL;
         break;
     case Client::C3DMapSkspObject::SKSP_CUP:
-        if (FAILED(Render_Flags()))
+        if (FAILED(Render_Cup()))
             return E_FAIL;
         break;
     default:
         break;
     }
-
-    return S_OK;
-}
-
-HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag)
-{
-
-    CSection* pSection = SECTION_MGR->Find_Section(m_strRenderSectionTag);
-    if (nullptr == pSection)
-        return E_FAIL;
-    CSection_2D* p2DSection = static_cast<CSection_2D*>(pSection);
-    ID3D11Texture2D* pTexture = p2DSection->Get_WorldTexture();
-    if (nullptr == pTexture)
-        return E_FAIL;
-
-    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
-        return E_FAIL;
-    _uint iFlag = 0;
-
-    C3DModel* p3DModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(COORDINATE_3D));
-    if (nullptr == p3DModel)
-        return E_FAIL;
-
-
-
-        switch (m_eSkspType)
-        {
-
-        case Client::C3DMapSkspObject::SKSP_PLAG:
-        {
-
-            CMesh* pLeftMesh = p3DModel->Get_Mesh(2);
-            CMesh* pRightMesh = p3DModel->Get_Mesh(5);
-            iFlag = 2;
-
-
-            _float2 vStartCoord = { 0.5f, 0.0f };
-            _float2 vEndCoord = { 1.f,1.f };
-            m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
-            m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
-
-            m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
-            m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
-            pLeftMesh->Bind_BufferDesc();
-            pLeftMesh->Render();
-
-            //vStartCoord = { 0.5f, 0.0f };
-            //vEndCoord = { 1.f, 1.f };
-            m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
-            m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
-            m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
-            pRightMesh->Bind_BufferDesc();
-            pRightMesh->Render();
-        }
-            break;
-        case Client::C3DMapSkspObject::SKSP_DEFAULT:
-        case Client::C3DMapSkspObject::SKSP_LAST:
-        default:
-        {
-            iFlag = 0;
-            m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
-            p3DModel->Render(m_pShaderComs[COORDINATE_3D], (_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
-        }
-            break;
-        }
-
-
-    ID3D11ShaderResourceView* pSRV = m_pGameInstance->Get_RT_SRV(_strCopyRTTag);
-    ID3D11Resource* pResource = nullptr;
-    pSRV->GetResource(&pResource);
-    m_pContext->CopyResource(pTexture, pResource);
-    
-    Safe_AddRef(pTexture);
-    p2DSection->Set_WorldTexture(pTexture);
-    //어차피 똑같은건데... 코드 분리하기 좀 늦은거같아서 그냥 똑같은거 한번 넣어서 포탈 생성 타게 만듬.
-                                           // 그를 위한 Safe_Addref(내부에서 한번 릴리즈 해주니까.) 
-    Safe_Release(pResource);
 
     return S_OK;
 }
@@ -226,6 +158,7 @@ HRESULT C3DMapSkspObject::Render_Default()
     return S_OK;
 }
 
+
 HRESULT C3DMapSkspObject::Render_Flags()
 {
     if (FAILED(Bind_ShaderResources_WVP()))
@@ -274,14 +207,16 @@ HRESULT C3DMapSkspObject::Render_Flags()
                 return E_FAIL;
             if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fEndUV, sizeof(_float2))))
                 return E_FAIL;
-            iShaderPass = (_uint)PASS_VTXMESH::RENDERTARGET_MAPP;
+            iShaderPass = m_iShaderPasses[eCoord] == (_uint)PASS_VTXMESH::AFTERPOSTPROCESSING ?
+                (_uint)PASS_VTXMESH::RENDERTARGET_MAPP_AFTERPOSTPROCESSING
+                : (_uint)PASS_VTXMESH::RENDERTARGET_MAPP;
 
             if (FAILED(pShader->Bind_SRV("g_AlbedoTexture", pResourceView)))
                 return E_FAIL;
         }
         else 
         {
-            iShaderPass = (_uint)PASS_VTXMESH::DEFAULT;
+            iShaderPass = m_iShaderPasses[eCoord];
 
             if (FAILED(pModel->Bind_Material(pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, 0)))
             {
@@ -327,7 +262,6 @@ HRESULT C3DMapSkspObject::Render_Cup()
         return E_FAIL;
     COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
     CShader* pShader = m_pShaderComs[eCoord];
-    _uint iShaderPass = m_iShaderPasses[eCoord];
     C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
 
     _bool iFlag = false;
@@ -336,13 +270,19 @@ HRESULT C3DMapSkspObject::Render_Cup()
 
     for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
     {
+
         _uint iShaderPass = (_uint)PASS_VTXMESH::DEFAULT;
         auto pMesh = pModel->Get_Mesh(i);
         _uint iMaterialIndex = pMesh->Get_MaterialIndex();
 
+        if (FAILED(pModel->Bind_Material_PixelConstBuffer(iMaterialIndex, pShader)))
+            return E_FAIL;
+
         if (0 == i)
         {
-            if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_AlbedoTexture", TEXT("Target_2D"))))
+            ID3D11ShaderResourceView* pResourceView = nullptr;
+            pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(m_strRenderSectionTag);
+            if (FAILED(pShader->Bind_SRV("g_AlbedoTexture", pResourceView)))
                 return E_FAIL;
         }
         else
@@ -355,12 +295,138 @@ HRESULT C3DMapSkspObject::Render_Cup()
 
         }
 
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_NormalTexture", i, aiTextureType_NORMALS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_ORMHTexture", i, aiTextureType_BASE_COLOR, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_MetallicTexture", i, aiTextureType_METALNESS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_RoughnessTexture", i, aiTextureType_DIFFUSE_ROUGHNESS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_AOTexture", i, aiTextureType_AMBIENT_OCCLUSION, 0)))
+        {
+        }
         pShader->Begin(iShaderPass);
         pMesh->Bind_BufferDesc();
         pMesh->Render();
     }
     return S_OK;
 }
+
+void C3DMapSkspObject::Change_RenderState(RT_RENDERSTATE _eRenderState, _bool _isMapped)
+{
+    switch (_eRenderState)
+    {
+    case Client::RT_RENDERSTATE::RENDERSTATE_LIGHT:
+        m_iPriorityID_3D = PR3D_GEOMETRY;
+        m_iShaderPasses[COORDINATE_3D] = (_uint)PASS_VTXMESH::DEFAULT;
+        break;
+    case Client::RT_RENDERSTATE::RENDERSTATE_NONLIGHT:
+        m_iPriorityID_3D = PR3D_AFTERPOSTPROCESSING;
+        m_iShaderPasses[COORDINATE_3D] = (_uint)PASS_VTXMESH::AFTERPOSTPROCESSING;
+        break;
+    default:
+        break;
+    }
+
+    m_eCurRenderState = _eRenderState;
+}
+
+HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag)
+{
+
+    CSection* pSection = SECTION_MGR->Find_Section(m_strRenderSectionTag);
+    if (nullptr == pSection)
+        return E_FAIL;
+    CSection_2D* p2DSection = static_cast<CSection_2D*>(pSection);
+    ID3D11Texture2D* pTexture = p2DSection->Get_WorldTexture();
+    if (nullptr == pTexture)
+        return E_FAIL;
+
+    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
+        return E_FAIL;
+    _uint iFlag = 0;
+
+    C3DModel* p3DModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(COORDINATE_3D));
+    if (nullptr == p3DModel)
+        return E_FAIL;
+
+
+
+    switch (m_eSkspType)
+    {
+
+    case Client::C3DMapSkspObject::SKSP_PLAG:
+    {
+
+        CMesh* pLeftMesh = p3DModel->Get_Mesh(2);
+        CMesh* pRightMesh = p3DModel->Get_Mesh(5);
+        iFlag = 2;
+
+
+        _float2 vStartCoord = { 0.5f, 0.0f };
+        _float2 vEndCoord = { 1.f,1.f };
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
+
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+        m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
+        pLeftMesh->Bind_BufferDesc();
+        pLeftMesh->Render();
+
+        //vStartCoord = { 0.5f, 0.0f };
+        //vEndCoord = { 1.f, 1.f };
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
+        m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
+        pRightMesh->Bind_BufferDesc();
+        pRightMesh->Render();
+    }
+    break;
+    case Client::C3DMapSkspObject::SKSP_CUP:
+    {
+        CMesh* pMesh = p3DModel->Get_Mesh(0);
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+        m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
+        pMesh->Bind_BufferDesc();
+        pMesh->Render();
+    }
+    break;
+    case Client::C3DMapSkspObject::SKSP_DEFAULT:
+    case Client::C3DMapSkspObject::SKSP_LAST:
+    default:
+    {
+        iFlag = 0;
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+        p3DModel->Render(m_pShaderComs[COORDINATE_3D], (_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
+    }
+    break;
+    }
+
+
+    ID3D11ShaderResourceView* pSRV = m_pGameInstance->Get_RT_SRV(_strCopyRTTag);
+    ID3D11Resource* pResource = nullptr;
+    pSRV->GetResource(&pResource);
+    m_pContext->CopyResource(pTexture, pResource);
+
+    Safe_AddRef(pTexture);
+    p2DSection->Set_WorldTexture(pTexture);
+    //어차피 똑같은건데... 코드 분리하기 좀 늦은거같아서 그냥 똑같은거 한번 넣어서 포탈 생성 타게 만듬.
+                                           // 그를 위한 Safe_Addref(내부에서 한번 릴리즈 해주니까.) 
+    Safe_Release(pResource);
+
+    return S_OK;
+}
+
 
 C3DMapSkspObject* C3DMapSkspObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

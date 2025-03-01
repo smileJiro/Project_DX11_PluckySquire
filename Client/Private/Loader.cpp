@@ -1895,6 +1895,8 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
 		auto iter = strModelNames.find(strFileName);
 		if (iter != strModelNames.end())
 		{
+			if (strFileName == "StarSticker")
+				int a = 1;
 			strModelNames.erase(iter);
 			if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, StringToWstring(strFileName),
 				C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix, _isCollider))))
