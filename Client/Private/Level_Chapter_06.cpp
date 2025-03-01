@@ -190,7 +190,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
 
 	// Trigger
-	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger.json"));
+	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter6_Trigger.json"));
 	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 
 	// BGM ½ÃÀÛ
@@ -486,8 +486,8 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, static_cast<CCamera*>(pCamera));
 
 	_float3 vArm;
-	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.67f, -0.74f, 0.f)));
-	_float fLength = 14.6f;
+	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.5776063799858093f, -0.87f, 0.f)));
+	_float fLength = 12.5f;
 	Create_Arm((_uint)COORDINATE_3D, pCamera, vArm, fLength);
 
 	// CutScene Camera
@@ -534,7 +534,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// Load CutSceneData, ArmData
 	CCamera_Manager::GetInstance()->Load_CutSceneData(TEXT("Chapter2_CutScene.json"));
-	CCamera_Manager::GetInstance()->Load_ArmData(TEXT("Chapter2_ArmData.json"), TEXT("Chapter2_SketchSpace_ArmData.json"));
+	CCamera_Manager::GetInstance()->Load_ArmData(TEXT("Chapter6_ArmData.json"), TEXT("Chapter2_SketchSpace_ArmData.json"));
 
 	return S_OK;
 }
