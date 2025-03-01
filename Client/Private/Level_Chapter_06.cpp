@@ -28,6 +28,7 @@
 #include "Soldier_CrossBow.h"
 #include "CrossBow_Arrow.h"
 #include "Bomb.h"
+#include "SlipperyObject.h"
 #include "LightningBolt.h"
 #include "RabbitLunch.h"
 
@@ -1082,6 +1083,20 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("health_pickup_large"), LEVEL_STATIC, 3);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Player2dJumpAttackFX"), LEVEL_STATIC, 1);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_06::Ready_Layer_Slippery()
+{
+	CModelObject::MODELOBJECT_DESC tSlipperyDesc{};
+	tSlipperyDesc.tTransform2DDesc.vInitialPosition = _float3(500.f, 0.f, 0.0f);
+	tSlipperyDesc.iCurLevelID = m_eLevelID;
+	tSlipperyDesc.Build_2D_Model(m_eLevelID, TEXT("Prototype_Model2D_BigPig"), TEXT("Prototype_Component_Shader_VtxPosTex"),(_uint)PASS_VTXPOSTEX::SPRITE2D, false);
+	CSlipperyObject* pSlippery = static_cast<CSlipperyObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBomb"), &tSlipperyDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pSlippery);
+	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+	pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), pSlippery, SECTION_2D_PLAYMAP_SLIPPERY);
 
 	return S_OK;
 }
