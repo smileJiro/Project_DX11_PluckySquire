@@ -1,4 +1,3 @@
-dialogue 백업
 #include "stdafx.h"
 #include "Dialogue.h"
 #include "GameInstance.h"
@@ -684,8 +683,6 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		pGameInstance->Render_Font(TEXT("Font20"), m_tFont, vCalPos, XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 
 
-		vCalPos.x += _vRTSize.x * 0.03f;
-		vCalPos.y -= +_vRTSize.y * 0.1f;
 
 		// 대화 내용 출력
 		wsprintf(m_tFont, strDisplaytext.c_str());

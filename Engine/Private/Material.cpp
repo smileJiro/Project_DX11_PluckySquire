@@ -76,7 +76,7 @@ HRESULT CMaterial::Initialize(const _char* szDirPath, ifstream& inFile)
 			HRESULT		hr = {};
 			if (false == strcmp(szExt, ".dds") || false == strcmp(szExt, ".DDS"))
 			{
-				if (aiTextureType_DIFFUSE == texIdx || aiTextureType_EMISSIVE == texIdx || aiTextureType_EMISSION_COLOR == texIdx)
+				if (aiTextureType_DIFFUSE == texIdx)
 				{
 					hr = DirectX::CreateDDSTextureFromFileEx(
 						m_pDevice,               // Direct3D ÀåÄ¡

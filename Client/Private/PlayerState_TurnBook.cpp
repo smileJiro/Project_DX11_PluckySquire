@@ -15,7 +15,10 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 
 	if (tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_END])
 	{
-		Set_State(BOOK_STATE::IDLE);
+		m_pBook->Set_PlayingAnim(true);
+		m_pBook->Switch_Animation(CSampleBook::IDLE);
+		m_pOwner->Set_State(CPlayer::IDLE);
+		return;
 	}
 
 	if(IDLE == m_eBookState)
@@ -95,7 +98,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 				m_pBook->Set_ReverseAnimation(true);
 				//넘기는 중에 다 펼쳐지면? 
 				if (false == m_pBook->Is_DuringAnimation() 
-					&&  0.f >=m_pBook->Get_CurrentAnimationProgress())
+					&&  0.2f >=m_pBook->Get_CurrentAnimationProgress())
 				{
 					Set_State(IDLE);
 				}
@@ -104,6 +107,9 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 			else if (CSampleBook::BOOK_ANIMATION::CLOSE_L_TO_R == iBookAnim)
 			{
 				m_pBook->Set_ReverseAnimation(false);
+				//기울이는 중에 특정 진행도를 넘으면?
+				if (m_fSlidProgress >= m_pBook->Get_CurrentAnimationProgress())
+					m_pBook->SlideObjects_LToR();
 				//기울이는 중에 완전히 덮히면?
 				if (false == m_pBook->Is_DuringAnimation())
 					Set_State(CLOSED_RIGHT);
@@ -129,7 +135,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 				m_pBook->Set_ReverseAnimation(true);
 				//넘기는 중에 다 펼쳐지면? 
 				if (false == m_pBook->Is_DuringAnimation()
-					&& 0.f >= m_pBook->Get_CurrentAnimationProgress())
+					&& 0.2f >= m_pBook->Get_CurrentAnimationProgress())
 				{
 					Set_State(IDLE);
 				}
@@ -138,6 +144,9 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 			else if (CSampleBook::BOOK_ANIMATION::CLOSE_R_TO_L == iBookAnim)
 			{
 				m_pBook->Set_ReverseAnimation(false);
+				//기울이는 중에 특정 진행도를 넘으면?
+				if (m_fSlidProgress >= m_pBook->Get_CurrentAnimationProgress())
+					m_pBook->SlideObjects_RToL();
 				//기울이는 중에 완전히 덮히면?
 				if (false == m_pBook->Is_DuringAnimation())
 					Set_State(CLOSED_LEFT);
