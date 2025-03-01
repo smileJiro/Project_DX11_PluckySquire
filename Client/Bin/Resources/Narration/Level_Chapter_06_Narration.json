@@ -1,0 +1,120 @@
+{
+	"Narration": [
+		{
+			"strSectionid": "Chapter1_P0102",
+			"strid": "Chapter1_P0102_Narration_01",
+			"CurlevelId": 3,
+			"bTerminal": false,
+			"lines": [
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "{150}옛{100}날 옛적에#{150}험그럼프{110}라는#아주 위대한#마법사가#있었습니다.",
+					"strSFX": "C6_P6768_01_Sub1",
+					"strSubSFX": "",
+					"fLineHeight": 70.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 4.0,
+					"fscale": 1.5,
+					"isLeft": true,
+					"fposX": 300.0,
+					"fposY": 250.0,
+					"fwaitingTime": 5.0,
+					"NarAnim": [
+						{
+							"strAnimationid": "C8_P0910_1",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 650.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "국왕 험그럼프는#{120}멋진 궁전{100}에#살면서#모조 왕국#전체를#몸소#다스렸습니다.",
+					"strSFX": "C6_P6768_01",
+					"strSubSFX": "",
+					"fLineHeight": 50.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 1.5,
+					"fscale": 1.5,
+					"isLeft": false,
+					"fposX": 200.0,
+					"fposY": 150.0,
+					"fwaitingTime": 1.5,
+					"isFinishedThisLine": false,
+					"NarAnim": [
+						{
+							"strAnimationid": "C8_P0910_2",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 600.0,
+							"fPosY": 400.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "",
+					"strSFX": "",
+					"strSubSFX": "",
+					"fLineHeight": 60.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 6.0,
+					"fscale": 1.5,
+					"isLeft": true,
+					"fposX": 700.0,
+					"fposY": 200.0,
+					"fwaitingTime": 8.0,
+					"isFinishedThisLine": true,
+					"NarAnim": [
+						{
+							"strAnimationid": "C8_P0910_2",
+							"AnimationIndex": 2,
+							"isLoop": true,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 600.0,
+							"fPosY": 150.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "C8_P0910_2",
+							"AnimationIndex": 3,
+							"isLoop": true,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 600.0,
+							"fPosY": 100.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "C8_P0910_2",
+							"AnimationIndex": 4,
+							"isLoop": true,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 800.0,
+							"fPosY": 100.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -58,7 +58,7 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 
 	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0506"), this);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), this);
 
 	CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
@@ -71,7 +71,6 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("NPC_Store"), &tAnimEventDesc));
 	Safe_AddRef(m_pAnimEventGenerator);
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
-	
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Store::On_AnimEnd, this , placeholders::_1, placeholders::_2));
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(0.f, 0.f, 0.f, 1.f));
@@ -159,7 +158,7 @@ void CNPC_Store::Late_Update(_float _fTimeDelta)
 	{
 		m_isDialoging = true;
 		Throw_Dialogue();
-		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
+		//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
 	}
 
 	ChangeState_Panel();
@@ -206,6 +205,10 @@ void CNPC_Store::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 		case ANIM_2D::Martina_Puschase01:
 			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_idle01);
+			break;
+
+		case ANIM_2D::Martina_puschase02:
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
 			break;
 
 		case ANIM_2D::Martina_NoMoney01_into:

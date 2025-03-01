@@ -277,6 +277,9 @@ void CCamera_Manager::Load_ArmData(_uint _iCameraType, _wstring _szFilePath)
 
 		tArmData->vDesireArm = { Trigger_json["Arm_Data"]["Desire_Arm"][0].get<_float>(), Trigger_json["Arm_Data"]["Desire_Arm"][1].get<_float>(), Trigger_json["Arm_Data"]["Desire_Arm"][2].get<_float>() };
 
+		_vector vNormalizeDir = XMVector3Normalize(XMLoadFloat3(&tArmData->vDesireArm));
+		XMStoreFloat3(&tArmData->vDesireArm, vNormalizeDir);
+
 		// Sub Data
 		_bool IsUseSubData = Trigger_json["Sub_Data"]["Use_SubData"];
 		SUB_DATA* pSubData = nullptr;

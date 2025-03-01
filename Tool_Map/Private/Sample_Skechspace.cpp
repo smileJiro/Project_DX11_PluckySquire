@@ -45,9 +45,16 @@ HRESULT CSample_Skechspace::Initialize(void* _pArg)
 		m_eSkspType = SKSP_PLAG;
 	if (m_strModelPrototypeTag[COORDINATE_3D] == L"Mug")
 		m_eSkspType = SKSP_CUP;
+	if (m_strModelPrototypeTag[COORDINATE_3D] == L"Desk_C06_StorageBox_Sketchspace_01")
+		m_eSkspType = SKSP_STORAGE;
+	if (m_strModelPrototypeTag[COORDINATE_3D] == L"Desk_C06_StorageBox_Sketchspace_02")
+	{
+		m_eSkspType = SKSP_STORAGE;
+		m_isLeft = false;
+	}
 
 
-	Set_Position(XMVectorSet(2.f, 6.f, -17.3f, 1.f));
+	Set_Position(XMVectorSet(2.f, 10.f, -17.3f, 1.f));
 
 	return S_OK;
 }
@@ -80,9 +87,11 @@ HRESULT CSample_Skechspace::Render()
 	case Map_Tool::SKSP_CUP:
 		return Render_Cup();
 	case Map_Tool::SKSP_TUB:
-		return Render_Cup();
+		return Render_Tub();
 	case Map_Tool::SKSP_PLAG:
 		return Render_Plag();
+	case Map_Tool::SKSP_STORAGE:
+		return Render_Storage();
 	case Map_Tool::SKSP_NONE:
 	case Map_Tool::SKSP_DEFAULT:
 	default:
@@ -221,6 +230,118 @@ HRESULT CSample_Skechspace::Render_Cup()
 			pShader->Begin(iShaderPass);
 			pMesh->Bind_BufferDesc();
 			pMesh->Render();
+	}
+	return S_OK;
+}
+
+HRESULT CSample_Skechspace::Render_Tub()
+{
+	if (FAILED(Bind_ShaderResources_WVP()))
+		return E_FAIL;
+	COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+	CShader* pShader = m_pShaderComs[eCoord];
+	_uint iShaderPass = m_iShaderPasses[eCoord];
+	C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
+
+	_bool iFlag = false;
+
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+
+	for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
+	{
+		_uint iShaderPass = (_uint)PASS_VTXMESH::DEFAULT;
+		auto pMesh = pModel->Get_Mesh(i);
+		_uint iMaterialIndex = pMesh->Get_MaterialIndex();
+
+		if (2 == i || 5 == i)
+		{
+			_float2 fStartUV = {};
+			_float2 fEndUV = {};
+			if (2 == i)
+			{
+				fStartUV = { -0.5f,0.f };
+				fEndUV = { 0.f,1.f };
+			}
+			else if (5 == i)
+			{
+				fStartUV = { 0.5f,0.f };
+				fEndUV = { 1.f,1.f };
+
+			}
+			if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fStartUV, sizeof(_float2))))
+				return E_FAIL;
+			if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fEndUV, sizeof(_float2))))
+				return E_FAIL;
+			iShaderPass = (_uint)PASS_VTXMESH::RENDERTARGET_MAPP;
+
+			if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_AlbedoTexture", TEXT("Target_2D"))))
+				return E_FAIL;
+
+
+		}
+		else
+		{
+
+			if (FAILED(pModel->Bind_Material(pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, 0)))
+			{
+				int a = 0;
+			}
+
+		}
+
+		pShader->Begin(iShaderPass);
+		pMesh->Bind_BufferDesc();
+		pMesh->Render();
+	}
+	return S_OK;
+}
+
+HRESULT CSample_Skechspace::Render_Storage()
+{
+	if (FAILED(Bind_ShaderResources_WVP()))
+		return E_FAIL;
+	COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+	CShader* pShader = m_pShaderComs[eCoord];
+	_uint iShaderPass = m_iShaderPasses[eCoord];
+	C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
+
+	_bool iFlag = false;
+
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+
+	for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
+	{
+		_uint iShaderPass = (_uint)PASS_VTXMESH::DEFAULT;
+		auto pMesh = pModel->Get_Mesh(i);
+		_uint iMaterialIndex = pMesh->Get_MaterialIndex();
+
+		_float2 fStartUV = {};
+		_float2 fEndUV = {};
+		if (m_isLeft)
+		{
+		fStartUV = { 0.f,0.f };
+		fEndUV = { 0.5f,1.f };
+		}
+		else 
+		{
+			fStartUV = { 0.5f,0.f };
+			fEndUV = { 1.f,1.f };
+		}
+		iShaderPass = (_uint)PASS_VTXMESH::RENDERTARGET_MAPP;
+
+		if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fStartUV, sizeof(_float2))))
+			return E_FAIL;
+		if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fEndUV, sizeof(_float2))))
+			return E_FAIL;
+		iShaderPass = (_uint)PASS_VTXMESH::RENDERTARGET_MAPP;
+
+		if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_AlbedoTexture", TEXT("Target_2D"))))
+			return E_FAIL;
+
+
+		pShader->Begin(iShaderPass);
+		pMesh->Bind_BufferDesc();
+		pMesh->Render();
 	}
 	return S_OK;
 }

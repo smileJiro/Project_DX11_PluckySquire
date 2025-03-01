@@ -22,9 +22,12 @@ public:
 	virtual HRESULT			Render() override;
 	HRESULT					Render_Plag();
 	HRESULT					Render_Cup();
+	HRESULT					Render_Tub();
+	HRESULT					Render_Storage();
 public :
 	_bool					m_isPreView = false;
 	SKSP_TYPE				m_eSkspType = SKSP_DEFAULT;
+	_bool					m_isLeft = true;
 
 public:
 	static CSample_Skechspace* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

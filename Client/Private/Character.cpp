@@ -2,6 +2,7 @@
 #include "Character.h" 
 #include "Actor_Dynamic.h"
 #include "GameInstance.h"
+#include "Section_Manager.h"
 
 CCharacter::CCharacter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice, _pContext)
@@ -522,6 +523,23 @@ void CCharacter::Move(_fvector _vForce, _float _fTimeDelta)
     else
     {
         m_pControllerTransform->Go_Direction(_vForce, XMVectorGetX(XMVector3Length(_vForce)), _fTimeDelta);
+
+        if (m_bScrollingMode)
+        {
+            _float2 fSize = SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName);
+       
+            _vector vPos = Get_FinalPosition();
+            _float2 fPlayerPos = { XMVectorGetX(vPos), XMVectorGetY(vPos) };
+            _float fDefaultWitdh = (fSize.x * 0.5f);
+            if (-fDefaultWitdh > fPlayerPos.x)
+            {
+                Set_Position(XMVectorSetX(vPos, fPlayerPos.x + fSize.x));
+            }
+            if (fDefaultWitdh < fPlayerPos.x)
+            {
+                Set_Position(XMVectorSetX(vPos,fPlayerPos.x -  fSize.x));
+            }
+        }
     }
 }
 
