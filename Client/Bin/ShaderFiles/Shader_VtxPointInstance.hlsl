@@ -3,21 +3,22 @@
 float4x4        g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 float4x4        g_InverseMatrix;
 float4x4        g_WorldPosMatrix;
-Texture2D       g_DiffuseTexture, g_NoiseTexture;
+Texture2D       g_DiffuseTexture, g_NoiseTexture, g_DistortionTexture;
 
 vector          g_vCamPosition, g_vLook;
 float4          g_vParticleColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 float4          g_vSubColor = { 1.0f, 1.0f, 1.0f, 1.0f };
-float4 g_vNoiseUVScale, g_vEdgeColor, g_vDissolveColor;
+float4          g_vNoiseUVScale, g_vEdgeColor, g_vDissolveColor, g_vDistortionUVScale ;
 float           g_fEdgeWidth, g_fDissolveTimeFactor, g_fDissolveFactor;
 
 float4          g_vColorIntensity = { 1.0f, 1.0f, 1.0f, 1.0f };
 float g_fMaskBrightness = { 1.0f }, g_fColorScale = { 1.0f };
-
+float g_fStrength;
 float g_Near, g_Far;
 float g_AlphaTest;
 float g_fBloomThreshold;
 float g_fAbsolute;
+float2 g_NoiseIntensity;
 
 
 // Weight에 대한 식은 총 4개
@@ -809,7 +810,7 @@ PS_OUT_WEIGHTEDBLENDED_BLOOM PS_WEIGHT_BLENDEDDISSOLVE_SUBBLOOM(PS_IN In)
     return Out;
 }
 
-PS_OUT_WEIGHTEDBLENDED_BLOOM FIRE(PS_IN In)
+PS_OUT_WEIGHTEDBLENDED_BLOOM PS_FIRESMOKE(PS_IN In)
 {
     PS_OUT_WEIGHTEDBLENDED_BLOOM Out = (PS_OUT_WEIGHTEDBLENDED_BLOOM) 0;
     
@@ -829,7 +830,7 @@ PS_OUT_WEIGHTEDBLENDED_BLOOM FIRE(PS_IN In)
     float fEdgeMask = smoothstep(fDissolveThreshold - g_fEdgeWidth, fDissolveThreshold, fDissolve);
     
     //vColor.a = fEdgeMask * vColor.a;
-    vColor.rgb = lerp(float3(-0.1f, -0.1f, -0.1f), vColor.rgb, fEdgeMask);
+    vColor.rgb = lerp(float3(0.f, 0.f, 0.f), vColor.rgb, fEdgeMask);
     if (g_AlphaTest > vColor.a)
         discard;
     // 아래 식 추가 선택
@@ -838,6 +839,101 @@ PS_OUT_WEIGHTEDBLENDED_BLOOM FIRE(PS_IN In)
     float fWeight = In.fWeight * max(min(1.0, max(max(vColor.r, vColor.g), vColor.b) * vColor.a), vColor.a);
     //float fWeight = In.fWeight * max(min(1.0, max(max(vColor.r, vColor.g), vColor.b) * vColor.a), vColor.a) * vColor.a;
     //float fWeight = In.fWeight * vColor.a;
+    
+    Out.vAccumulate.rgb = vColor.rgb * vColor.a * fWeight;
+    Out.vAccumulate.a = vColor.a * fWeight;
+    Out.vRevealage.r = vColor.a * clamp(log(0.6f + vColor.a), 0.25f, 0.6f);
+
+    return Out;
+}
+
+float2 Random(float2 vParameter)
+{
+    float2 vRandom;
+    vRandom = float2(dot(vParameter, float2(127.1f, 311.7f)), dot(vParameter, float2(269.5f, 183.3f)));
+    
+    return -1.0f + 2.0f * frac(sin(vParameter) * 43758.54f);
+}
+
+const float fK1 = 0.366025f;
+const float fK2 = 0.211324f;
+
+float Noise(float2 vParameter)
+{
+    float2 vInput = floor(vParameter + (vParameter.x + vParameter.y) * fK1);
+    float2 vA = vParameter - vInput + (vInput.x + vInput.y) * fK2;
+    float2 vO = vA.x > vA.y ? float2(1.0f, 0.f) : float2(0.0f, 1.0f);
+    float2 vB = vA - vO + fK2; // 
+    float2 vC = vA - 1.0f + 2.0f * fK2; // 
+    
+    float3 vH = max(0.5f - float3(dot(vA, vA), dot(vB, vB), dot(vC, vC)), 0.0f); // 
+    float3 vN = vH * vH * vH * vH * float3(dot(vA, Random(vInput + 0.f)), dot(vB, Random(vInput + vO)), dot(vC, Random(vInput + 1.0f)));
+    
+    float fReturn = dot(vN, float3(70.f, 70.f, 70.f));
+    return fReturn;  
+}
+
+float FBM(float2 vUV)
+{
+    float fResult;
+    float2x2 mat2 = float2x2(1.6f, -1.2f, 1.2f, 1.6f);
+    
+    fResult = 0.5f * Noise(vUV);
+    vUV = mul(vUV, mat2);
+    fResult += 0.25f * Noise(vUV);
+    vUV = mul(vUV, mat2);
+    fResult += 0.125f * Noise(vUV);
+    vUV = mul(vUV, mat2);
+    fResult += 0.0625f * Noise(vUV);
+    fResult = 0.5f + 0.5f * fResult;
+    
+    return fResult;
+}
+
+
+PS_OUT_WEIGHTEDBLENDED_BLOOM PS_FIRE(PS_IN In)
+{
+    PS_OUT_WEIGHTEDBLENDED_BLOOM Out = (PS_OUT_WEIGHTEDBLENDED_BLOOM) 0;
+    
+    float2 vUV = float2(In.vTexcoord.x, In.vTexcoord.y);
+    
+    float fTimeValue =  g_fStrength * In.vLifeTime.y;
+    
+    vUV.x = fmod(In.vTexcoord.x, 1.f) - 0.5f;
+    vUV.y -= 0.25f;
+    
+    float fN = FBM(g_fStrength * vUV - float2(0.f, fTimeValue));
+    //float fC = 1.f - 16.f * pow(max(0.f, length(vUV * float2(1.8f + vUV.y * 1.5f, 0.75f)) - fN * max(0.f, vUV.y + 0.25f)), 1.2);
+   
+    //float fC1 = fN * fC * (1.5f - pow(2.5f * vUV.y, 4.f));
+    //fC1 = clamp(fC1, 0.f, 1.f);
+    
+    //float3 vColor = float3(1.5f * fC1, 1.5f * pow(fC1, 3.f), pow(fC1, 6.f));
+    //float fAlpha = fC * (1.f - pow(In.vTexcoord.y, 3.f));
+    //float4 vFragColor = float4(lerp(float3(0.f, 0.f, 0.f), vColor, fAlpha), fAlpha);
+    float2 vDistortUV = float2(In.vTexcoord.x - 0.5f, 1.f - In.vTexcoord.y) * fN * g_NoiseIntensity;
+    float2 vDistort = In.vTexcoord + vDistortUV;
+       
+    float4 vColor = g_DiffuseTexture.Sample(LinearSampler_Clamp, vDistort);
+    //float fDissolve = g_NoiseTexture.Sample(LinearSampler, In.vOriginTexcoord * float2(g_vNoiseUVScale.x, g_vNoiseUVScale.y) + float2(g_vNoiseUVScale.z, g_vNoiseUVScale.w) * In.fRandom).r;    
+    vColor.a = vColor.r * In.vColor.a;
+    vColor.rgb = In.vColor.rgb * g_fColorScale + vColor.rgb * g_fMaskBrightness;
+
+    vColor = vColor + vColor * g_vColorIntensity;
+    
+    //float fDissolveThreshold = fNormalizedTime * g_fDissolveTimeFactor + g_fDissolveFactor;
+    
+    //float fDissolveMask = step(fDissolveThreshold, fDissolve);
+    //float fEdgeMask = smoothstep(fDissolveThreshold - g_fEdgeWidth, fDissolveThreshold, fDissolve);
+    
+    ////vColor.a = fEdgeMask * vColor.a;
+    //vColor.rgb = lerp(float3(0.f, 0.f, 0.f), vColor.rgb, fEdgeMask);
+    if (g_AlphaTest > vColor.a)
+        discard;
+
+    
+    float fWeight = In.fWeight * max(min(1.0, max(max(vColor.r, vColor.g), vColor.b) * vColor.a), vColor);
+
     
     Out.vAccumulate.rgb = vColor.rgb * vColor.a * fWeight;
     Out.vAccumulate.a = vColor.a * fWeight;
@@ -984,7 +1080,7 @@ technique11 DefaultTechnique
         ComputeShader = NULL;
     }
 
-    pass DISSOLVECOLOR_SUBCOLORBLOOM // 10
+    pass FIRESMOKE // 10
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_WriteNone, 0);
@@ -993,10 +1089,21 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_SRV_MAIN();
         GeometryShader = compile gs_5_0 GS_MAIN();
-        PixelShader = compile ps_5_0 FIRE();
+        PixelShader = compile ps_5_0 PS_FIRESMOKE();
         ComputeShader = NULL;
     }
 
+    pass FIRE // 11
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
 
+        VertexShader = compile vs_5_0 VS_SRV_MAIN();
+        GeometryShader = compile gs_5_0 GS_MAIN();
+        PixelShader = compile ps_5_0 PS_FIRE();
+        ComputeShader = NULL;
+    }
 
 }

@@ -134,6 +134,8 @@ void CPlayerState_Roll::Enter()
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_DODGE_GT);
 
 		CEffect_Manager::GetInstance()->Active_Effect(TEXT("Dodge"), true,m_pOwner->Get_Transform()->Get_WorldMatrix_Ptr());
+		CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip5"), false, m_pOwner->Get_Transform()->Get_WorldMatrix_Ptr(), 1);
+
     }
 
 	//if (static_cast<CPlayer*>(m_pOwner)->Is_OnGround())
@@ -142,6 +144,8 @@ void CPlayerState_Roll::Enter()
 
 void CPlayerState_Roll::Exit()
 {
+	if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+		CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("Zip5"), 1.f);
 
 }
 
