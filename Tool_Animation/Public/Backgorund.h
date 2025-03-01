@@ -12,10 +12,10 @@ protected:
 
 public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
-	virtual HRESULT			Render() override;
+	//virtual HRESULT			Render() override;
 
 protected:
-	virtual HRESULT			Bind_ShaderResources_WVP();
+	//virtual HRESULT			Bind_ShaderResources_WVP();
 
 private:
 	_float4x4 m_matView;
