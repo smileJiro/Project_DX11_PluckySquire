@@ -60,10 +60,17 @@ HRESULT CRenderGroup_DirectLights::Render(CShader* _pRTShader, CVIBuffer_Rect* _
 
         return E_FAIL;
     }
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_EtcTexture", TEXT("Target_Etc"))))
+    {
+        if (FAILED(m_pGameInstance->End_MRT()))
+            return E_FAIL;
+
+        return E_FAIL;
+    }
 
     /* 4. 사각형 정점 정보 바인딩 */
     _pRTBuffer->Bind_BufferDesc();
-
+    
     if (FAILED(m_pGameInstance->Render_Lights(_pRTShader, _pRTBuffer)))
         return E_FAIL;
 
