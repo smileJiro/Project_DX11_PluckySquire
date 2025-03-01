@@ -134,6 +134,8 @@ private:
 	// 2. Shape 정보와 Actor Desc를 기반으로 Actor를 생성.
 	HRESULT						Ready_Actor(ACTOR_DESC* _pActorDesc);
 
+	PxShape*					Ready_CookingShape(const SHAPE_DATA& _ShapeData, _uint _iCookingColliderType, PxShapeFlags& _ShapeFlags, PxMaterial* _pMaterial, _float3 _fScale, _uint _iMeshIndex = 0);
+
 public:
 	void						Free() override;
 };

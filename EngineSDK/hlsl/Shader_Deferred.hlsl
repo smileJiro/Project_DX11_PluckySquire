@@ -71,6 +71,8 @@ cbuffer DofConstData : register(b2)
     DofData c_DofVariable;
 }
 
+
+
 float2 g_RandomTexcoords[64];
 /* Basic */
 // Object Matrix Data 
@@ -81,7 +83,7 @@ float4x4 g_LightViewMatrix, g_LightProjMatrix;
 // Debug
 Texture2D g_Texture;
 // Geometry RTV
-Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_DepthTexture;
+Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_DepthTexture, g_EtcTexture;
 // PlayerDepth
 Texture2D g_PlayerDepthTexture;
 // Env Map
@@ -150,33 +152,33 @@ float3 SchlickFresnel(float3 _F0, float _NdotH) // 물체의 반사계수 F를 구하는 함
     //return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0); // 원형
 }
 
-float3 DiffuseIBL(float3 _vAlbedo, float3 _vNormalWorld, float3 _vPixelToEye, float _fMetallic)
+float3 DiffuseIBL(float3 _vAlbedo, float3 _vNormalWorld, float3 _vPixelToEye, float _fMetallic, float _fSpecular)
 {
     // 핵심 : 물체의 반사계수를 프레넬 공식으로 구하고, (1- 반사계수) 만큼의 에너지를 확산반사로 사용하는 것임 그래서 kd를 구하고 kd * 알베도 * 디퓨즈맵 = 최종 diffuse color 
     // Func Shlick(F0, l, n); l : 
-    float3 F0 = lerp(Fdielectric, _vAlbedo, _fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
+    float3 F0 = lerp(Fdielectric + _fSpecular, _vAlbedo, _fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
     float F = SchlickFresnel(F0, dot(_vNormalWorld, _vPixelToEye));
     float3 kd = lerp(1.0 - F, 0.0, _fMetallic); // 물체의 확산반사계수 : 메탈릭 수치에 따라 보정되는 값임 >>> F로 반사되는 에너지를 제외한 에너지를 확산반사의 양으로 사용함.
     float3 vIrradiance = g_IBLIrradianceTexture.Sample(LinearSampler, _vNormalWorld).rgb; // Diffuse는 물체의 노말방향에서 샘플링.
     
     return kd * _vAlbedo * vIrradiance;
 }
-float3 SpecularIBL(float3 _vAlbedo, float3 _vNormalWorld, float3 _vPixelToEye, float _fMetallic, float _fRoughness)
+float3 SpecularIBL(float3 _vAlbedo, float3 _vNormalWorld, float3 _vPixelToEye, float _fMetallic, float _fRoughness, float _fSpecular)
 {
     // 1.0f - Roughness >>> IBL Baker의 텍스쳐가 반전되어있어서 적용.
     float2 vSpecularBRDF = g_BRDFTexture.Sample(LinearSampler_Clamp, float2(dot(_vNormalWorld, _vPixelToEye), 1.0f - _fRoughness)).rg; // BRDF 함수를 통한 물체의 반사빈도를 계산. 거칠기가 높을수록 적은 값.
     float3 vSpecularIrradiance = g_IBLSpecularTexture.SampleLevel(LinearSampler, reflect(-_vPixelToEye, _vNormalWorld), c_GlobalIBLVariable.iSpecularBaseMipLevel + _fRoughness * c_GlobalIBLVariable.fRoughnessToMipFactor /*스페큘러 반사에대한*/).rgb;
     
-    float3 F0 = lerp(Fdielectric, _vAlbedo, _fMetallic);
+    float3 F0 = lerp(Fdielectric + _fSpecular, _vAlbedo, _fMetallic);
     
     return (F0 * vSpecularBRDF.x + vSpecularBRDF.y) * vSpecularIrradiance;
 }
 
 float3 AmbientLightingByIBL(float3 _vAlbedo, float3 _vNormalWorld, float3 _vPixelToEye, float _fAO,
-                            float _fMetallic, float _fRoughness)
+                            float _fMetallic, float _fRoughness, float _fSpecular)
 {
-    float3 vDiffuseIBL = DiffuseIBL(_vAlbedo, _vNormalWorld, _vPixelToEye, _fMetallic);
-    float3 vSpecularIBL = SpecularIBL(_vAlbedo, _vNormalWorld, _vPixelToEye, _fMetallic, _fRoughness);
+    float3 vDiffuseIBL = DiffuseIBL(_vAlbedo, _vNormalWorld, _vPixelToEye, _fMetallic, _fSpecular);
+    float3 vSpecularIBL = SpecularIBL(_vAlbedo, _vNormalWorld, _vPixelToEye, _fMetallic, _fRoughness, _fSpecular);
      
     return (vDiffuseIBL + vSpecularIBL) * _fAO;
 }
@@ -400,6 +402,7 @@ PS_OUT PS_PBR_LIGHT_POINT(PS_IN In)
     float3 vAlbedo = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord).rgb;
     float3 vNormalWorld = g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz * 2.0f - 1.0f; // 16 unorm을 변환하여 값 저장.
     float4 vORMHDesc = g_ORMHTexture.Sample(LinearSampler, In.vTexcoord);
+    float4 vEtcDesc = g_EtcTexture.Sample(LinearSampler, In.vTexcoord);
     float fAO = vORMHDesc.r;
     float fRoughness = vORMHDesc.g;
     float fMetallic = vORMHDesc.b;
@@ -415,7 +418,9 @@ PS_OUT PS_PBR_LIGHT_POINT(PS_IN In)
     float NdotH = max(0.0f, dot(vNormalWorld, vHalfway));
     float NdotO = max(0.0f, dot(vNormalWorld, vPixelToEye));
     
-    float3 F0 = lerp(Fdielectric, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
+    float fSpecular = vEtcDesc.r * 0.5f;
+    float3 F0 = lerp(Fdielectric + fSpecular, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
+    //float3 F0 = lerp(Fdielectric, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
     float F = SchlickFresnel(F0, dot(vHalfway, vPixelToEye));
     float3 kd = lerp(float3(1.0f, 1.0f, 1.0f) - F, float3(0.0f, 0.0f, 0.0f), fMetallic); // 물체의 확산반사계수 : 메탈릭 수치에 따라 보정되는 값임 >>> F로 반사되는 에너지를 제외한 에너지를 확산반사의 양으로 사용함.
     float3 vDiffuseBRDF = kd * vAlbedo;
@@ -433,7 +438,7 @@ PS_OUT PS_PBR_LIGHT_POINT(PS_IN In)
     // Shadow Factor 계산
     float fShadowFactor = 0.0f;
     
-    Out.vColor = float4(DirectLighting.rgb * (1.0f - fShadowFactor), 1.0f);
+    Out.vColor = float4(max(DirectLighting.rgb * (1 - fShadowFactor), 0.0f), 1.0f);
     
     return Out;
 }
@@ -452,6 +457,7 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
     float3 vAlbedo = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord).rgb;
     float3 vNormalWorld = g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz * 2.0f - 1.0f; // 16 unorm을 변환하여 값 저장.
     float4 vORMHDesc = g_ORMHTexture.Sample(LinearSampler, In.vTexcoord);
+    float4 vEtcDesc = g_EtcTexture.Sample(LinearSampler, In.vTexcoord);
     float fAO = vORMHDesc.r;
     float fRoughness = vORMHDesc.g;
     float fMetallic = vORMHDesc.b;
@@ -467,7 +473,9 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
     float NdotH = max(0.0f, dot(vNormalWorld, vHalfway));
     float NdotO = max(0.0f, dot(vNormalWorld, vPixelToEye));
     
-    float3 F0 = lerp(Fdielectric, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
+    float fSpecular = vEtcDesc.r * 0.5f;
+    float3 F0 = lerp(Fdielectric + fSpecular, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
+    //float3 F0 = lerp(Fdielectric, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
     float F = SchlickFresnel(F0, dot(vHalfway, vPixelToEye));
     float3 kd = lerp(float3(1.0f, 1.0f, 1.0f) - F, float3(0.0f, 0.0f, 0.0f), fMetallic); // 물체의 확산반사계수 : 메탈릭 수치에 따라 보정되는 값임 >>> F로 반사되는 에너지를 제외한 에너지를 확산반사의 양으로 사용함.
     float3 vDiffuseBRDF = kd * vAlbedo;
@@ -516,7 +524,7 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
     
     
     
-    Out.vColor = float4(DirectLighting.rgb * (1 - fShadowFactor), 1.0f);
+    Out.vColor = float4(max(DirectLighting.rgb * (1 - fShadowFactor), 0.0f), 1.0f);
     return Out;
 }
 
@@ -535,34 +543,37 @@ PS_OUT PS_MAIN_LIGHTING(PS_IN In)
     float3 vAlbedo = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord).rgb;
     float3 vNormalWorld = g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz * 2.0f - 1.0f; // 16 unorm을 변환하여 값 저장.
     float4 vORMHDesc = g_ORMHTexture.Sample(LinearSampler, In.vTexcoord);
+    //float4 vEtcDesc = g_EtcTexture.Sample(LinearSampler, In.vTexcoord);
     float fAO =         vORMHDesc.r;
     float fRoughness =  vORMHDesc.g;
     float fMetallic =   vORMHDesc.b;
     float fHeight =     vORMHDesc.a;
 
     /* 2. IBL 기반으로 AbientLighting 결과를 저장한다. */
-    float3 vAmbientLighting = AmbientLightingByIBL(vAlbedo, vNormalWorld, vPixelToEye, fAO, fMetallic, fRoughness) * c_GlobalIBLVariable.fStrengthIBL;
+    //float fSpecular = vEtcDesc.r * 0.5f;
+    float fSpecular = 0.0f; // 간접광 specular 적용 시
+    float3 vAmbientLighting = AmbientLightingByIBL(vAlbedo, vNormalWorld, vPixelToEye, fAO, fMetallic, fRoughness, fSpecular) * c_GlobalIBLVariable.fStrengthIBL;
     
     /* 3. 조명의 정보를 읽어들여 직접 조명에 대한 연산을 수행한다. */
     float3 vDirectLighting = g_DirectLightsTexture.Sample(LinearSampler, In.vTexcoord);
 
         
     /* 4. SSAO 는 간접광의 밝기를 조절하는. */
-    //float SumSSAO = 0.0f;
-    //[unroll]
-    //for (int i = 0; i < 64; ++i)
-    //{
-    //    float fSSAO = Compute_SSAO(vPixelWorld.xyz, normalize(vNormalWorld), g_RandomTexcoords[i], 1.0f, g_DepthTexture, ssaoKernel[i]);
-    //
-    //    SumSSAO += fSSAO;
-    //}
-    //SumSSAO /= 64.f;
-    //SumSSAO = 1.0f - SumSSAO;
-    //vAmbientLighting *= pow(SumSSAO, 4);
+    float SumSSAO = 0.0f;
+    [unroll]
+    for (int i = 0; i < 64; ++i)
+    {
+        float fSSAO = Compute_SSAO(vPixelWorld.xyz, normalize(vNormalWorld), g_RandomTexcoords[i], 1.0f, g_DepthTexture, ssaoKernel[i]);
+    
+        SumSSAO += fSSAO;
+    }
+    SumSSAO /= 64.f;
+    SumSSAO = 1.0f - SumSSAO;
+    vAmbientLighting *= pow(SumSSAO, 4);
     
     
     //Out.vColor = float4(SumSSAO, SumSSAO, SumSSAO /*+ vEmmision*/, 1.0f);
-    Out.vColor = float4(vAmbientLighting + vDirectLighting /*+ vEmmision*/, 1.0f);
+    Out.vColor = float4(max(vAmbientLighting, 0.0f) + vDirectLighting /*+ vEmmision*/, 1.0f);
     Out.vColor = clamp(Out.vColor, 0.0f, c_GlobalIBLVariable.fHDRMaxLuminance);
     return Out;
 }
@@ -619,16 +630,17 @@ PS_OUT PS_MAIN_COMBINE(PS_IN In)
     
     
     
-    //// 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
-    //float fPlayerDepthDesc = g_PlayerDepthTexture.Sample(LinearSampler, In.vTexcoord).r;
-    //float fPlayerViewZ = fPlayerDepthDesc * g_fFarZ;
+    // 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
+    float fPlayerDepthDesc = g_PlayerDepthTexture.Sample(LinearSampler, In.vTexcoord).r;
+    float fPlayerViewZ = fPlayerDepthDesc * g_fFarZ;
     
-    //float3 vHideColor = g_vHideColor;
-    //float fViewZDiff = fPlayerViewZ - fViewZ - 1.0f;
-    //float fHideMin = 0.0f;
-    //float fHideMax = 10.0f;
-    //vHideColor = lerp(vToneMapColor, vHideColor, saturate(fViewZDiff / (fHideMax - fHideMin)));
-    //vToneMapColor = 0.0f < fViewZDiff ? vHideColor : vToneMapColor;
+    float3 vHideColor = g_vHideColor;
+    float PlayerDepthBias = 0.5f;
+    float fViewZDiff = fPlayerViewZ - fViewZ - PlayerDepthBias;
+    float fHideMin = 0.0f;
+    float fHideMax = 10.0f;
+    vHideColor = lerp(vToneMapColor, vHideColor, saturate(fViewZDiff / (fHideMax - fHideMin)));
+    vToneMapColor = 0.0f < fViewZDiff ? vHideColor : vToneMapColor;
     
     //vToneMapColor = lerp(vToneMapColor, vHideColor, (vDepth.y - fPlayerDepthDesc));
     Out.vColor = float4(vToneMapColor, 1.0f);

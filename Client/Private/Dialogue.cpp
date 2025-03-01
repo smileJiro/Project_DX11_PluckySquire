@@ -391,6 +391,12 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 // 폰트 렌더 해주는 역할
 HRESULT CDialog::DisplayText(_float2 _vRTSize)
 {
+	m_vRTSize = _vRTSize;
+
+	_float fScaleX = _vRTSize.x / RTSIZE_BOOK2D_X;
+	_float fScaleY = _vRTSize.y / RTSIZE_BOOK2D_Y;
+	
+
 	// 가로가 기나요? 세로가 기나요?
 	_bool isColumn = { false };
 
@@ -400,7 +406,20 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		isColumn = true;
 	}
 
+	static _wstring strDisplaytext;
+	static _float fWaitTime = 0.0f;
+	static _int iPreviousLineIndex = -1;
 
+	static _wstring sPrevDialogId;
+
+	// 현재 다이얼로그 ID와 이전 다이얼로그 ID를 비교하여 다르면 초기화
+	if (sPrevDialogId != m_tDialogId)
+	{
+		strDisplaytext.clear();  // 텍스트 초기화
+		fWaitTime = 0.0f;        // 대기 시간 초기화
+		iPreviousLineIndex = -1; // 라인 인덱스 초기화
+		sPrevDialogId = m_tDialogId; // 현재 다이얼로그 ID 저장
+	}
 
 	if (m_iCurrentLineIndex >= Get_Dialogue(m_tDialogIndex)[0].lines.size())
 		return E_FAIL;
@@ -430,11 +449,9 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 
 
 
-	static _wstring strDisplaytext;
-	static _float fWaitTime = 0.0f;
-	static _int iPreviousLineIndex = -1;
-
-
+	//static _wstring strDisplaytext;
+	//static _float fWaitTime = 0.0f;
+	//static _int iPreviousLineIndex = -1;
 
 	// 라인이 변경되었을 때 초기화
 	if (iPreviousLineIndex != m_iCurrentLineIndex)
@@ -511,8 +528,8 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		{
 			_float2 vPos = { 0.f , 0.f };
 
-			vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
-			vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
 
 
 			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
@@ -527,8 +544,8 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		_float2 vPos = { 0.f , 0.f };
 		if (false == isColumn)
 		{
-			vPos.x = vTextPos2D.x - _vRTSize.x * 0.1f;
-			vPos.y = vTextPos2D.y + _vRTSize.y * 0.3f;
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
 			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 		}
 		else if (true == isColumn)
@@ -547,8 +564,8 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	{
 		_float2 vPos = { 0.f , 0.f };
 
-		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
-		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
 
 
 		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
@@ -557,20 +574,13 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 
 	case LOC_MIDRIGHT: // 가운데 우측
 	{
-		//_float2 vPos = { 0.f , 0.f };
-		//
-		//vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
-		//vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
-		//
-		//
-		//vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 
 
 		_float2 vPos = { 0.f , 0.f };
 		if (false == isColumn)
 		{
-			vPos.x = vTextPos2D.x - _vRTSize.x * 0.1f;
-			vPos.y = vTextPos2D.y + _vRTSize.y * 0.3f;
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.1f / fScaleX;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.3f / fScaleY;
 			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 		}
 		else if (true == isColumn)
@@ -603,8 +613,8 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	{
 		_float2 vPos = { 0.f , 0.f };
 
-		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
-		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
 
 
 		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
@@ -618,8 +628,8 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	{
 		_float2 vPos = { 0.f , 0.f };
 
-		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
-		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
 
 
 		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
@@ -630,8 +640,8 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	{
 		_float2 vPos = { 0.f , 0.f };
 
-		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
-		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
 
 
 		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
@@ -642,8 +652,8 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	{
 		_float2 vPos = { 0.f , 0.f };
 
-		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
-		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
 
 
 		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
@@ -653,8 +663,8 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	{
 		_float2 vPos = { 0.f , 0.f };
 
-		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f;
-		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f;
+		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
 
 
 		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
@@ -680,13 +690,13 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 
 		// 대상 이름 출력
 		wsprintf(m_tFont, currentLine.Talker.c_str());
-		pGameInstance->Render_Font(TEXT("Font20"), m_tFont, vCalPos, XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+		pGameInstance->Render_Font(TEXT("Font20"), m_tFont, _float2(vCalPos.x, vCalPos.y ), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 
 
 
 		// 대화 내용 출력
 		wsprintf(m_tFont, strDisplaytext.c_str());
-		pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vCalPos.x - 120.f, vCalPos.y + 120.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+		pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2((vCalPos.x - 50.f), (vCalPos.y + 45.f)), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 
 	}
 	else if (isColumn == true)
@@ -726,6 +736,12 @@ void CDialog::NextDialogue(_float2 _RTSize)
 
 	if (!m_isDisplayDialogue)
 		return;
+
+	m_vRTSize = _RTSize;
+
+	// 현재 렌더사이즈 / 2560 의 사이즈의 비율
+	_float fScaleX = _RTSize.x / RTSIZE_BOOK2D_X;
+	_float fScaleY = _RTSize.y / RTSIZE_BOOK2D_Y;
 
 
 	_tchar _strDialogue[MAX_PATH] = {};
@@ -796,7 +812,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 				vPos.x = m_vDialoguePos.x;
 				vPos.y = m_vDialoguePos.y;
 
-				vPos.y -= _RTSize.y * 0.13f;
+				vPos.y -= _RTSize.y * 0.13f / fScaleY;
 			}
 			else if (false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
 			{
@@ -842,7 +858,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.y += _RTSize.y * 0.21f;
+			vPos.y += _RTSize.y * 0.25f / fScaleY;
 		}
 		break;
 
@@ -869,8 +885,8 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.x -= _RTSize.x * 0.14f;
-			vPos.y += _RTSize.y * 0.05f;
+			vPos.x -= _RTSize.x * 0.14f / fScaleX;
+			vPos.y += _RTSize.y * 0.05f / fScaleY;
 		}
 		break;
 
@@ -898,8 +914,8 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.x += _RTSize.x * 0.165f;
-			vPos.y += _RTSize.y * 0.05f;
+			vPos.x += _RTSize.x * 0.165f/ fScaleX;
+			vPos.y += _RTSize.y * 0.05f / fScaleY;
 		}
 		break;
 
@@ -954,8 +970,8 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.x -= _RTSize.x * 0.165f;
-			vPos.y += _RTSize.y * 0.19f;
+			vPos.x -= _RTSize.x * 0.165f / fScaleX;
+			vPos.y += _RTSize.y * 0.19f / fScaleY;
 		}
 		break;
 
@@ -982,8 +998,8 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.x += _RTSize.x * 0.165f;
-			vPos.y += _RTSize.y * 0.19f;
+			vPos.x += _RTSize.x * 0.165f / fScaleX;
+			vPos.y += _RTSize.y * 0.19f / fScaleY;
 		}
 		break;
 
@@ -1010,8 +1026,8 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.x += _RTSize.x * 0.165f;
-			vPos.y -= _RTSize.y * 0.14f;
+			vPos.x += _RTSize.x * 0.165f / fScaleX;
+			vPos.y -= _RTSize.y * 0.14f / fScaleY;
 		}
 		break;
 
@@ -1039,7 +1055,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.y += _RTSize.y * 0.38f;
+			vPos.y += _RTSize.y * 0.38f / fScaleY;
 		}
 
 
@@ -1090,6 +1106,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 
 			// 다이얼로그 끝나고 상점을 닫기 위해 해당 다이얼로그가 상점 관련인지 확인한다.
 			isOpenPanel(_strDialogue);
+			
 
 
 		}
@@ -1099,7 +1116,12 @@ void CDialog::NextDialogue(_float2 _RTSize)
 // 처음 다이얼로그 입장 시 위치 계산해주는 함수
 void CDialog::FirstCalPos(_float2 _RTSize)
 {
+	// 현재 섹션의 렌더 사이즈
+	m_vRTSize = _RTSize;
 
+	// 현재 렌더사이즈 / 2560 의 사이즈의 비율
+	_float fScaleX = _RTSize.x / RTSIZE_BOOK2D_X;
+	_float fScaleY = _RTSize.y / RTSIZE_BOOK2D_Y;
 
 	_tchar _strDialogue[MAX_PATH] = {};
 	wsprintf(_strDialogue, m_tDialogId);
@@ -1115,17 +1137,18 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			m_isRender = true;
 			m_isPortraitRender = Get_Dialogue(_strDialogue)[0].lines[m_iCurrentLineIndex].isPortrait;
 
+		}
 
-			// 다이얼로그 간 애니메이션 이동 //
-			if (m_iCurrentLineIndex <= Get_Dialogue(_strDialogue)[0].lines.size() - 1)
+		// 다이얼로그 간 애니메이션 이동 //
+		if (m_iCurrentLineIndex <= Get_Dialogue(_strDialogue)[0].lines.size() - 1)
+		{
+			// 애니메이션이 단일인 NPC 및 객체가 아닌 트리거, 이벤트 다이얼로그의 대한 안전 코드추가 //
+			if (-1 != Get_Dialogue(_strDialogue)[0].lines[m_iCurrentLineIndex].iAnimationIndex)
 			{
-				// 애니메이션이 단일인 NPC 및 객체가 아닌 트리거, 이벤트 다이얼로그의 대한 안전 코드추가 //
-				if (-1 != Get_Dialogue(_strDialogue)[0].lines[m_iCurrentLineIndex].iAnimationIndex)
-				{
-					CDialog_Manager::GetInstance()->Set_ActionChange(Get_Dialogue(_strDialogue)[0].lines[m_iCurrentLineIndex].iAnimationIndex);
-				}
+				CDialog_Manager::GetInstance()->Set_ActionChange(Get_Dialogue(_strDialogue)[0].lines[m_iCurrentLineIndex].iAnimationIndex);
 			}
 		}
+
 
 		if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
 		{
@@ -1164,7 +1187,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 				vPos.x = m_vDialoguePos.x;
 				vPos.y = m_vDialoguePos.y;
 
-				vPos.y -= _RTSize.y * 0.13f;
+				vPos.y -= _RTSize.y * 0.13f / fScaleY;
 			}
 			else if (false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
 			{
@@ -1226,7 +1249,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.y += _RTSize.y * 0.21f;
+			vPos.y += _RTSize.y * 0.25f / fScaleY;
 		}
 		break;
 
@@ -1253,8 +1276,8 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.x -= _RTSize.x * 0.14f;
-			vPos.y += _RTSize.y * 0.05f;
+			vPos.x -= _RTSize.x * 0.14f / fScaleX;
+			vPos.y += _RTSize.y * 0.05f / fScaleY;
 		}
 		break;
 
@@ -1281,8 +1304,8 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.x += _RTSize.x * 0.165f;
-			vPos.y += _RTSize.y * 0.05f;
+			vPos.x += _RTSize.x * 0.165f / fScaleX;
+			vPos.y += _RTSize.y * 0.05f / fScaleY;
 		}
 		break;
 
@@ -1309,8 +1332,8 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.x -= _RTSize.x * 0.165f;
-			vPos.y -= _RTSize.y * 0.14f;
+			vPos.x -= _RTSize.x * 0.165f / fScaleX;
+			vPos.y -= _RTSize.y * 0.14f / fScaleY;
 		}
 		break;
 
@@ -1337,8 +1360,8 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.x -= _RTSize.x * 0.165f;
-			vPos.y += _RTSize.y * 0.19f;
+			vPos.x -= _RTSize.x * 0.165f / fScaleX;
+			vPos.y += _RTSize.y * 0.19f / fScaleY;
 		}
 		break;
 
@@ -1365,8 +1388,8 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.x += _RTSize.x * 0.165f;
-			vPos.y += _RTSize.y * 0.19f;
+			vPos.x += _RTSize.x * 0.165f / fScaleX;
+			vPos.y += _RTSize.y * 0.19f / fScaleY;
 		}
 		break;
 
@@ -1393,8 +1416,8 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.x += _RTSize.x * 0.165f;
-			vPos.y -= _RTSize.y * 0.14f;
+			vPos.x += _RTSize.x * 0.165f / fScaleX;
+			vPos.y -= _RTSize.y * 0.14f / fScaleY;
 		}
 		break;
 		case LOC_VERYMIDHIGH:
@@ -1420,7 +1443,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.y += _RTSize.y * 0.38f;
+			vPos.y += _RTSize.y * 0.38f / fScaleY;
 		}
 		break;
 		}

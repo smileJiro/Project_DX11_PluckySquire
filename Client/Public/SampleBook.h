@@ -1,4 +1,5 @@
 #pragma once
+#include "Client_Defines.h"
 #include "ModelObject.h"
 #include "AnimEventReceiver.h"
 #include "Interactable.h"
@@ -55,13 +56,7 @@ public:
 		INDEX_LAST
 	};
 
-	enum BOOK_RENDERSTATE
-	{
-		RENDERSTATE_LIGHT,
-		RENDERSTATE_NONLIGHT,
 
-		RENDERSTATE_LAST
-	};
 private:
 
 	CSampleBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -124,10 +119,10 @@ private :
 
 
 public:
-	void					Change_RenderState(BOOK_RENDERSTATE _eRenderState);
+	void					Change_RenderState(RT_RENDERSTATE _eRenderState);
 
 private: /* Render State */
-	BOOK_RENDERSTATE		m_eCurRenderState = BOOK_RENDERSTATE::RENDERSTATE_LIGHT;
+	RT_RENDERSTATE		m_eCurRenderState = RT_RENDERSTATE::RENDERSTATE_LIGHT;
 
 public:
 	static CSampleBook* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

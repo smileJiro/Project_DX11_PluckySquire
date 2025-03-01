@@ -647,6 +647,14 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 
 		
 		// Delete Light 
+
+		if (ImGui::Button("Delete Light"))
+		{
+			// Shadow가 현재 비활성상태이고, 타입이 point가 아닌경우,
+			m_pGameInstance->Delete_Light(selected_index);
+
+		}
+
 		if (ImGui::Button("Shadow On"))
 		{
 			if(false == (*Selectiter)->Is_ShadowLight() && LIGHT_TYPE::POINT != (*Selectiter)->Get_Type())

@@ -364,11 +364,11 @@ HRESULT CMesh::Cooking(PxTriangleMeshDesc& Desc)
 
 	Desc.points.count = static_cast<PxU32>(m_iNumVertices);
 	Desc.points.stride = sizeof(_float3);
-	//Desc.points.data = m_vecVerticesPos.data();
+	Desc.points.data = m_vecVerticesPos.data();
 
 	Desc.triangles.count = static_cast<PxU32>((m_iNumIndices / 3));
 	Desc.triangles.stride = 3 * m_iIndexStride;
-	//Desc.triangles.data = m_vecIndexBuffer.data();
+	Desc.triangles.data = m_vecIndexBuffer.data();
 
 	return S_OK;
 }

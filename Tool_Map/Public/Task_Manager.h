@@ -18,6 +18,16 @@ class CMapObject;
 
 class CTask_Manager final : public CBase
 {
+
+public :
+	enum COOKING_MODE
+	{
+		COOKING_CONVEX,
+		COOKING_TRI,
+		COOKING_MULTI,
+		COOKING_LAST
+	};
+
 private :
 
 	enum TASK_TYPE
@@ -26,6 +36,7 @@ private :
 		MODEL_RE_PACKAGING,
 		TASK_END
 	};
+	
 
 	typedef struct tagMapObjectParsingData
 	{
@@ -85,6 +96,10 @@ public :
 
 	// 로그 저장용 ㄱ-
 	HRESULT					Export_Result(const _wstring& _strFilePath, const _wstring& _strFileName, vector<_string> _ExportStrings );
+
+
+	HRESULT					Cooking(const _string& _strCookingPath, CMapObject* _pMapObject, COOKING_MODE _eMode);
+
 
 
 #pragma region Get_Set
