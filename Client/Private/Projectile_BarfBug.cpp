@@ -67,6 +67,9 @@ HRESULT CProjectile_BarfBug::Initialize(void* _pArg)
 
     Safe_Delete(pDesc->pActorDesc);
 
+
+    //static_cast<C3DModel*>(pModelObject->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 1.f, 1.f, 1.f));
+
 	return S_OK;
 }
 

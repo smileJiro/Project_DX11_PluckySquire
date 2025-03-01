@@ -77,7 +77,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CButterGrump::Animation_End, this, placeholders::_1, placeholders::_2));
 
-    m_pControllerTransform->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
+    //m_pControllerTransform->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
@@ -91,7 +91,6 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Gravity(false);
 
     m_PartObjects[BOSSPART_SHIELD]->Set_Active(false);
-
 
     //플레이어 위치 가져오기
     m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
@@ -539,6 +538,9 @@ HRESULT CButterGrump::Ready_PartObjects()
     m_PartObjects[BOSSPART_SHIELD] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_ButterGrump_Shield"), &ShieldDesc));
     if (nullptr == m_PartObjects[BOSSPART_SHIELD])
         return E_FAIL;
+
+    _float4x4 matSocket; XMStoreFloat4x4(&matSocket, XMLoadFloat4x4(p3DModel->Get_BoneMatrix("buttergrump_righead_nose")) * XMMatrixTranslation(0.f, 0.f, -100.f));
+    m_PartObjects[BOSSPART_SHIELD]->Set_SocketMatrix(COORDINATE_3D, &matSocket);
 
     return S_OK;
 }
