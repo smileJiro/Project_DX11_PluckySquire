@@ -365,7 +365,7 @@ HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC* LeftEyeShapeDesc = new SHAPE_SPHERE_DESC;
-    LeftEyeShapeDesc->fRadius = 1.f;
+    LeftEyeShapeDesc->fRadius = 10.f;
 
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = LeftEyeShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
@@ -380,7 +380,7 @@ HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC* RightEyeShapeDesc = new SHAPE_SPHERE_DESC;
-    RightEyeShapeDesc->fRadius = 1.f;
+    RightEyeShapeDesc->fRadius = 10.f;
 
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = RightEyeShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
@@ -397,8 +397,8 @@ HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* TongueShapeDesc = new SHAPE_CAPSULE_DESC;
-    TongueShapeDesc->fRadius = 1.f;
-    TongueShapeDesc->fHalfHeight = 1.f;
+    TongueShapeDesc->fRadius = 10.f;
+    TongueShapeDesc->fHalfHeight = 10.f;
 
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = TongueShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
@@ -414,7 +414,7 @@ HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC* ShieldShapeDesc = new SHAPE_SPHERE_DESC;
-    ShieldShapeDesc->fRadius = 10.f;
+    ShieldShapeDesc->fRadius = 100.f;
 
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShieldShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
