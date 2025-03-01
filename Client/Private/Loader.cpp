@@ -81,6 +81,7 @@
 #include "BombStamp.h"
 #include "PlayerBomb.h"
 #include "Detonator.h"
+#include "ZetPack.h"
 #include "PalmMarker.h"
 #include "PalmDecal.h"
 #include "TestTerrain.h"
@@ -659,6 +660,9 @@ HRESULT CLoader::Loading_Level_Static()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Detonator"),
 		CDetonator::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ZetPack"),
+		CZetPack::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"),
 		CPlayerBody::Create(m_pDevice, m_pContext))))

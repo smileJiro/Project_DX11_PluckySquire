@@ -19,6 +19,7 @@ class CStopStamp;
 class CBombStamp;
 class CDetonator;
 class CPlayerBomb;
+class CZetPack;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -41,6 +42,7 @@ enum PLAYER_INPUT
 	PLAYER_INPUT_KEEP_STAMP,
 	PLAYER_INPUT_CANCEL_STAMP,
 	PLAYER_INPUT_DETONATE,
+	PLAYER_INPUT_ZETPROPEL,
 	PLAYER_INPUT_LAST
 };
 
@@ -91,6 +93,7 @@ public:
 		PLAYER_PART_STOP_STMAP,
 		PLAYER_PART_BOMB_STMAP,
 		PLAYER_PART_DETONATOR = 5,
+		PLAYER_PART_ZETPACK,
 		PLAYER_PART_LAST
 	};
 	enum PLAYER_MAIN_EQUIP
@@ -104,6 +107,7 @@ public:
 	enum PLAYER_SUB_EQUIP
 	{
 		PLAYER_SUB_EQUIP_DETONATOR = 5,
+		PLAYER_SUB_EQUIP_ZETPACK
 	};
 	enum STATE
 	{
@@ -496,6 +500,9 @@ public:
 	PLAYER_INPUT_RESULT Player_KeyInput_Stamp();
 	PLAYER_INPUT_RESULT Player_KeyInput_ControlBook();
 	void Revive();
+	void ReFuel();
+	void ZetPropel(_float _fTimeDelta);
+	void Retropropulsion();
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
 
 	void Start_Portal(CPortal* _pPortal);
@@ -514,6 +521,7 @@ public:
 	_bool Is_CarryingObject(){ return nullptr != m_pCarryingObject; }
 	_bool Is_AttackTriggerActive();
 	_bool Is_DetonationMode();
+	_bool Is_ZetPackMode();
 
 	_bool Is_PlayingAnim();
 	_bool Has_InteractObject() { return nullptr != m_pInteractableObject; }
@@ -559,6 +567,8 @@ public:
 	const ATTACK_TRIGGER_DESC& Get_AttackTriggerDesc(ATTACK_TYPE _eAttackType, F_DIRECTION _eFDir) {return m_f2DAttackTriggerDesc[_eAttackType][(_uint)_eFDir];}
 	const SHAPE_DATA& Get_BodyShapeData() { return m_tBodyShapeData; }
 	PLAYER_PART Get_CurrentStampType() { return m_eCurrentStamp; }
+	CActor_Dynamic* Get_ActorDynamic();
+
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -603,7 +613,7 @@ private:
 	_float m_f3DInteractLookOffset = 0.65f;
 	_float m_f3DInteractRadius = 1.f;
 	_float m_fHeadHeight = 1.f;
-	_float m_fArmHeight = 0.5f; // 벽타기 기준 높이
+	_float m_fArmHeight = 0.6f; // 벽타기 기준 높이
 	_float m_fArmLength = 0.325f;// 벽 타기 범위
 	_float m_fFootLength = 0.25f;
 	_float m_fAttackForwardingForce = 12.f;
@@ -611,8 +621,8 @@ private:
 
 	_float m_f3DLandAnimHeightThreshold= 0.6f;
 	_float m_f3DJumpPower = 10.5f;
-	_float m_fAirRotateSpeed = 40.f;
-	_float m_fAirRunSpeed = 480.f; // 매 프레임 AddFore이므로 DeltaTime이 곱해짐
+	_float m_fAirRotateSpeed = 360.f;
+	_float m_fAirRunSpeed = 4.2f; // 매 프레임 AddFore이므로 DeltaTime이 곱해짐
 	_float m_f3DMoveSpeed= 6.f;
 	_float m_f3DDragMoveSpeed= 2.5f;
 
@@ -670,6 +680,7 @@ private:
 	CBombStamp* m_pBombStmap = nullptr;
 	PLAYER_PART m_eCurrentStamp = PLAYER_PART::PLAYER_PART_BOMB_STMAP;
 	CDetonator* m_pDetonator = nullptr;
+	CZetPack* m_pZetPack = nullptr;
 
 	//기타 관계된 오브젝트
 	CCarriableObject* m_pCarryingObject = nullptr;

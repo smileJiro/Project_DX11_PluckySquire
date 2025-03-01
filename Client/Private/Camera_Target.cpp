@@ -369,6 +369,19 @@ _bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID
 	if (nullptr == m_pCurArm)
 		return false;
 
+	// 만약 Switching 중에 NextArm Trigger에 닿았다면
+	if (true == m_isInitialData) {
+		m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+		m_pCurArm->Set_Length(pData->first->fLength);
+		m_iCurZoomLevel = pData->second->iZoomLevel;
+		m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
+		m_vAtOffset = pData->second->vAtOffset;
+
+		m_eCameraMode = DEFAULT;
+		return false;
+	}
+
+	// Swithcing 중이 아니라면 평소대로 함
 	m_pCurArm->Set_NextArmData(pData->first, _iTriggerID);
 	m_szEventTag = _wszNextArmName;
 
@@ -404,7 +417,7 @@ void CCamera_Target::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 	if (nullptr == m_pCurArm)
 		return;
 
-	m_pCurArm->Set_PreArmDataState(_iTriggerID, _isReturn);
+ 	m_pCurArm->Set_PreArmDataState(_iTriggerID, _isReturn);
 
 	if (true == _isReturn) {
 		for (auto& PreArm : m_PreSubArms) {

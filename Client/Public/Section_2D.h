@@ -118,6 +118,7 @@ public:
 
 	_bool								Is_Rotation() { return m_isRotation; }
 	_bool								Is_Override_WorldTex() { return m_isOverride_WorldTex; }
+	_uint								Get_Override_Normal() { return m_iOverride_Normal; }
 
 	HRESULT								Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType);
 
@@ -166,7 +167,7 @@ protected:
 	_bool					m_isScrolling = false;
 	_bool					m_isRotation = false;
 	_bool					m_isOverride_WorldTex = false;
-
+	_uint					m_iOverride_Normal = { 0 };
 
 	_float					m_fCameraRatio = 1.f;
 
