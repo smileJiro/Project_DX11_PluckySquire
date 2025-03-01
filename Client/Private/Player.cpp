@@ -472,6 +472,7 @@ HRESULT CPlayer::Ready_Components()
     Bind_AnimEventFunc("StampSmash", bind(&CPlayer::StampSmash, this));
     Bind_AnimEventFunc("Detonate", bind(&CPlayer::Detonate, this));
     Bind_AnimEventFunc("ErasePalm", bind(&CPlayer::ErasePalm, this));
+    Bind_AnimEventFunc("SpinAttack", bind(&CPlayer::SpinAttack, this));
 
 	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
 	tAnimEventDesc.pReceiver = this;
@@ -1968,6 +1969,12 @@ void CPlayer::ThrowObject()
     pObj->Set_Carrier(nullptr);
 	pObj->Throw(vForce);
 	Set_CarryingObject(nullptr);
+}
+
+void CPlayer::SpinAttack()
+{
+    End_Attack();
+    Start_Attack(CPlayer::ATTACK_TYPE_SPIN);
 }
 
 void CPlayer::Add_Upforce(_float _fForce)

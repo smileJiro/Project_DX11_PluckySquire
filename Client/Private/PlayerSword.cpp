@@ -93,6 +93,18 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, m_f3DJumpAttackZOffset));
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
+    //칼 던지기용 트리거
+    SHAPE_CAPSULE_DESC ShapeDesc3 = {};
+    ShapeDesc3.fRadius = m_f3DThrowAttackRadius;
+    ShapeDesc3.fHalfHeight = m_f3DThrowAttackHalfHeight;
+    ShapeData.pShapeDesc = &ShapeDesc3;
+    ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;
+    ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
+    ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
+    ShapeData.isTrigger = true;
+    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, m_f3DThrowAttackZOffset));
+    ActorDesc.ShapeDatas.push_back(ShapeData);
+
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER_PROJECTILE;
     ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::PLAYER;
@@ -606,7 +618,7 @@ void CPlayerSword::On_StateChange()
             m_pBody2DColliderCom->Set_Active(true);
             Switch_Animation(2);
         }
-        Set_AttackEnable(true);
+        Set_AttackEnable(true, CPlayer::ATTACK_TYPE_THKROWSWORD);
         break;
     }
     case Client::CPlayerSword::STUCK:
@@ -686,7 +698,30 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
     else
     {
         if (COORDINATE_3D == eCoord)
-            m_pActorCom->Set_ShapeEnable(CPlayer::ATTACK_TYPE::ATTACK_TYPE_JUMPATTACK == _eAttackType ? 1 : 0, true);
+        {
+            _uint iShapeIdx = 0;
+            switch (_eAttackType)
+            {
+            case Client::CPlayer::ATTACK_TYPE_NORMAL1:
+            case Client::CPlayer::ATTACK_TYPE_NORMAL2:
+            case Client::CPlayer::ATTACK_TYPE_NORMAL3:
+            case Client::CPlayer::ATTACK_TYPE_SPIN:
+                iShapeIdx = 0;
+                break;
+                break;
+            case Client::CPlayer::ATTACK_TYPE_JUMPATTACK:
+                iShapeIdx = 1;
+                break;
+            case Client::CPlayer::ATTACK_TYPE_THKROWSWORD:
+                iShapeIdx = 2;
+                break;
+            case Client::CPlayer::ATTACK_TYPE_LAST:
+                break;
+            default:
+                break;
+            }
+            m_pActorCom->Set_ShapeEnable(iShapeIdx, true);
+        }
         else
             m_pBody2DColliderCom->Set_Active(true);
     }

@@ -63,7 +63,6 @@ void CPlayerState_SpinAttack::Enter()
 
 	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_spin_powerup-") + to_wstring(rand() % 5), 50.f);
 
-
 }
 
 void CPlayerState_SpinAttack::Exit()

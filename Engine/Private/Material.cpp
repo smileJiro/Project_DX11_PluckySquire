@@ -214,6 +214,9 @@ HRESULT CMaterial::Ready_PixelConstBuffer()
 		case aiTextureType_DIFFUSE:
 			m_tPixelConstData.useAlbedoMap = iNumSRVs; // 1이상이면 true고 0이면 false니까.
 			break;
+		case aiTextureType_SPECULAR:
+			m_tPixelConstData.useSpecularMap = iNumSRVs;
+			break;
 		case aiTextureType_EMISSIVE:
 			m_tPixelConstData.useEmissiveMap = iNumSRVs;
 			break;

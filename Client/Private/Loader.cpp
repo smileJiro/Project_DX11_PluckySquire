@@ -1144,6 +1144,41 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		/* Monster */
 
+		/* Boss Test */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_Component_FSM_Boss"),
+		CFSM_Boss::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_ButterGrump */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump"),
+	    CButterGrump::Create(m_pDevice, m_pContext))))
+	    return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_HomingBall"),
+	    CBoss_HomingBall::Create(m_pDevice, m_pContext))))
+	    return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_EnergyBall"),
+	    CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
+	    return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_YellowBall"),
+	    CBoss_YellowBall::Create(m_pDevice, m_pContext))))
+	    return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_PurpleBall"),
+	    CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
+	    return E_FAIL;
+
+	XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model_ButterGrump"),
+		C3DModel::Create(m_pDevice, m_pContext,
+			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/buttergrump_Rig.model"
+				), matPretransform))))
+		return E_FAIL;
+
+
 		/* Etc */
 
 		/* For. Prototype_GameObject_CollapseBlock */
@@ -1178,28 +1213,28 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	/* Boss */
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_Component_FSM_Boss"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_8, TEXT("Prototype_Component_FSM_Boss"),
 	//	CFSM_Boss::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
 
 	/* For. Prototype_GameObject_ButterGrump */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_ButterGrump"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"),
 	//    CButterGrump::Create(m_pDevice, m_pContext))))
 	//    return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Boss_HomingBall"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Boss_HomingBall"),
 	//    CBoss_HomingBall::Create(m_pDevice, m_pContext))))
 	//    return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Boss_EnergyBall"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Boss_EnergyBall"),
 	//    CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
 	//    return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Boss_YellowBall"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Boss_YellowBall"),
 	//    CBoss_YellowBall::Create(m_pDevice, m_pContext))))
 	//    return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_Boss_PurpleBall"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Boss_PurpleBall"),
 	//    CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
 	//    return E_FAIL;
 

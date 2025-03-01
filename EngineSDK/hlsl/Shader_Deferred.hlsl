@@ -467,6 +467,7 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
     float NdotH = max(0.0f, dot(vNormalWorld, vHalfway));
     float NdotO = max(0.0f, dot(vNormalWorld, vPixelToEye));
     
+    
     float3 F0 = lerp(Fdielectric, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
     float F = SchlickFresnel(F0, dot(vHalfway, vPixelToEye));
     float3 kd = lerp(float3(1.0f, 1.0f, 1.0f) - F, float3(0.0f, 0.0f, 0.0f), fMetallic); // 물체의 확산반사계수 : 메탈릭 수치에 따라 보정되는 값임 >>> F로 반사되는 에너지를 제외한 에너지를 확산반사의 양으로 사용함.
@@ -548,17 +549,17 @@ PS_OUT PS_MAIN_LIGHTING(PS_IN In)
 
         
     /* 4. SSAO 는 간접광의 밝기를 조절하는. */
-    float SumSSAO = 0.0f;
-    [unroll]
-    for (int i = 0; i < 64; ++i)
-    {
-        float fSSAO = Compute_SSAO(vPixelWorld.xyz, normalize(vNormalWorld), g_RandomTexcoords[i], 1.0f, g_DepthTexture, ssaoKernel[i]);
-    
-        SumSSAO += fSSAO;
-    }
-    SumSSAO /= 64.f;
-    SumSSAO = 1.0f - SumSSAO;
-    vAmbientLighting *= pow(SumSSAO, 4);
+    //float SumSSAO = 0.0f;
+    //[unroll]
+    //for (int i = 0; i < 64; ++i)
+    //{
+    //    float fSSAO = Compute_SSAO(vPixelWorld.xyz, normalize(vNormalWorld), g_RandomTexcoords[i], 1.0f, g_DepthTexture, ssaoKernel[i]);
+    //
+    //    SumSSAO += fSSAO;
+    //}
+    //SumSSAO /= 64.f;
+    //SumSSAO = 1.0f - SumSSAO;
+    //vAmbientLighting *= pow(SumSSAO, 4);
     
     
     //Out.vColor = float4(SumSSAO, SumSSAO, SumSSAO /*+ vEmmision*/, 1.0f);
@@ -619,18 +620,18 @@ PS_OUT PS_MAIN_COMBINE(PS_IN In)
     
     
     
-    // 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
-    float fPlayerDepthDesc = g_PlayerDepthTexture.Sample(LinearSampler, In.vTexcoord).r;
-    float fPlayerViewZ = fPlayerDepthDesc * g_fFarZ;
+    //// 플레이어가 물체보다 뒤에있는 경우, 특정 색상으로 그리기 
+    //float fPlayerDepthDesc = g_PlayerDepthTexture.Sample(LinearSampler, In.vTexcoord).r;
+    //float fPlayerViewZ = fPlayerDepthDesc * g_fFarZ;
     
-    float3 vHideColor = g_vHideColor;
-    float fViewZDiff = fPlayerViewZ - fViewZ - 1.0f;
-    float fHideMin = 0.0f;
-    float fHideMax = 10.0f;
-    vHideColor = lerp(vToneMapColor, vHideColor, saturate(fViewZDiff / (fHideMax - fHideMin)));
-    vToneMapColor = 0.0f < fViewZDiff ? vHideColor : vToneMapColor;
+    //float3 vHideColor = g_vHideColor;
+    //float fViewZDiff = fPlayerViewZ - fViewZ - 1.0f;
+    //float fHideMin = 0.0f;
+    //float fHideMax = 10.0f;
+    //vHideColor = lerp(vToneMapColor, vHideColor, saturate(fViewZDiff / (fHideMax - fHideMin)));
+    //vToneMapColor = 0.0f < fViewZDiff ? vHideColor : vToneMapColor;
     
-    vToneMapColor = lerp(vToneMapColor, vHideColor, (vDepth.y - fPlayerDepthDesc));
+    //vToneMapColor = lerp(vToneMapColor, vHideColor, (vDepth.y - fPlayerDepthDesc));
     Out.vColor = float4(vToneMapColor, 1.0f);
     return Out;
 }

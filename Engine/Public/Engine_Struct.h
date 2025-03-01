@@ -41,15 +41,16 @@ namespace Engine
 	}CONST_IBL;
 	typedef struct tagMaterialDefault
 	{
-		XMFLOAT4	Albedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f);		   // 16byte
+		XMFLOAT4	Albedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);		   // 16byte
 
 		float		Roughness = 0.5f;					 
 		float		Metallic = 0.0f;					 
 		float		AO = 0.7f;
-		float		dummy;												// 16byte
+		float		Emissive = 0.0f;									// 16byte
 
 		XMFLOAT4	MultipleAlbedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);	// 16byte
 	}MATERIAL_PS;
+	
 	typedef struct tagBasicPixelConstData // 동적변화가 없는 애들위주로.
 	{
 		MATERIAL_PS Material; // 32Byte
@@ -61,12 +62,11 @@ namespace Engine
 
 		int			useRoughnessMap = 0;
 		int			useEmissiveMap = 0;
-		int			useORMHMap = 0;			// Oclusion, Roughness, Metalic, Height
-		int			invertNormalMapY = 0;	// 16Byte  // LH, RH 에 따라 Y 축 반전이 필요한 경우가 있음.
-		//float		dummy;					
+		int			useORMHMap = 0;			// Oclusion, Roughness, Metalic, Height'
+		int			useSpecularMap = 0;
 
-		// float expose = 1.0f;
-		// float gamma = 1.0f; // 추후 hdr 톤매핑 시 사용.
+		int			invertNormalMapY = 0;	// 16Byte  // LH, RH 에 따라 Y 축 반전이 필요한 경우가 있음.
+		XMFLOAT3	dummy;
 	}CONST_PS;
 
 

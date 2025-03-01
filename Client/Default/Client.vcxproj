@@ -120,7 +120,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../EngineSDK/Lib/physx/debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../EngineSDK/Lib/physx/debug;../../EngineSDK/Lib/imguidll/debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(Configuration)\Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
@@ -171,7 +171,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../EngineSDK/Lib/physx/release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../EngineSDK/Lib/;../../EngineSDK/Lib/physx/release;../../EngineSDK/Lib/imguidll/release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(Configuration)\Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
@@ -364,6 +364,7 @@
     <ClInclude Include="..\Public\ShopPanel_YesNo.h" />
     <ClInclude Include="..\Public\SideScroll_HitState.h" />
     <ClInclude Include="..\Public\SideScroll_PatrolState.h" />
+    <ClInclude Include="..\Public\SlipperyObject.h" />
     <ClInclude Include="..\Public\Sneak_AlertState.h" />
     <ClInclude Include="..\Public\Sneak_AttackState.h" />
     <ClInclude Include="..\Public\Sneak_AwareState.h" />
@@ -613,6 +614,7 @@
     <ClCompile Include="..\Private\ShopPanel_YesNo.cpp" />
     <ClCompile Include="..\Private\SideScroll_HitState.cpp" />
     <ClCompile Include="..\Private\SideScroll_PatrolState.cpp" />
+    <ClCompile Include="..\Private\SlipperyObject.cpp" />
     <ClCompile Include="..\Private\Sneak_AlertState.cpp" />
     <ClCompile Include="..\Private\Sneak_AttackState.cpp" />
     <ClCompile Include="..\Private\Sneak_AwareState.cpp" />
