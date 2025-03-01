@@ -14,7 +14,10 @@ cbuffer BasicPixelConstData : register(b0)
     int useRoughnessMap;
     int useEmissiveMap;
     int useORMHMap;
-    int invertNormalMapY; // 16
+    int useSpecularMap; // 16
+    
+    int invertNormalMapY; 
+    float3 dummy;
 }
 
 struct Fresnel
@@ -37,9 +40,9 @@ cbuffer MultiFresnels : register(b1)
 
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture; // PBR
+Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture, g_SpecularTexture, g_EmissiveTexture; // PBR
 
-float g_fFarZ = 300.f;
+float g_fFarZ = 500.f;
 int g_iFlag = 0;
 
 float4 g_vCamPosition;
@@ -181,6 +184,7 @@ struct PS_OUT
     float4 vNormal : SV_TARGET1;
     float4 vORMH : SV_TARGET2;
     float4 vDepth : SV_TARGET3;
+    float4 vEtc : SV_TARGET4;
 };
 
 struct PS_ONLYALBEDO_OUT
@@ -196,6 +200,8 @@ PS_OUT PS_MAIN(PS_IN In)
     float4 vAlbedo = useAlbedoMap ? g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord) : Material.Albedo;
     float3 vNormal = useNormalMap ? Get_WorldNormal(g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz, In.vNormal.xyz, In.vTangent.xyz, 0) : In.vNormal.xyz;
     float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
+    float fSpecular = useSpecularMap ? g_SpecularTexture.Sample(LinearSampler, In.vTexcoord).r : 0.0f;
+    float fEmissive = useEmissiveMap ? g_EmissiveTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Emissive;
     if (false == useORMHMap)
     {
         vORMH.r = useAOMap ? g_AOTexture.Sample(LinearSampler, In.vTexcoord).r : Material.AO;
@@ -203,8 +209,8 @@ PS_OUT PS_MAIN(PS_IN In)
         vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
     }
     
-    if (vAlbedo.a < 0.01f)
-        discard;
+   //if (vAlbedo.a < 0.01f)
+   //    discard;
     
     Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
     // 1,0,0
@@ -217,6 +223,7 @@ PS_OUT PS_MAIN(PS_IN In)
     //vORMH.b = 1.00f;// TestCode
     Out.vORMH = vORMH;
     Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 1.0f);
+    Out.vEtc = float4(fSpecular, fEmissive, 0.0f, 1.0f);
     
     return Out;
 }
@@ -496,7 +503,18 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass ShadowMap // 10
+    pass RenderTargetMappingPass_AfterPostProcessing // 10
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_RENDERTARGET_UV();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_ONLYALBEDO();
+    }
+
+    pass ShadowMap // 11
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);

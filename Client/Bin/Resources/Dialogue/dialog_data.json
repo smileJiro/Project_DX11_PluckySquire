@@ -1055,7 +1055,7 @@
 					"BG": 2,
 					"location": 3,
 					"is2D": true,
-					"isPortrait": true,
+					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
 						"speed": 350

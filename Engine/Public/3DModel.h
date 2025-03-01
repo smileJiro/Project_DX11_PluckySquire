@@ -107,6 +107,8 @@ public :
 	_char*						Get_CookingColliderData() { return m_arrCookingColliderData; }
 	_uint						Get_CookingColliderDataLength() { return m_iCookingColliderDataLength; }
 	_bool						Has_CookingCollider() { return m_isCookingCollider; }
+	_uint						Get_CookingColliderType() { return m_iCoockingMeshType; }
+	_string						Get_CookingColliderPath() { return m_strColliderPath; }
 
 protected:
 	_uint						m_arrTextureBindingIndex[aiTextureType_UNKNOWN][aiTextureType_UNKNOWN];
@@ -122,13 +124,15 @@ protected:
 	_uint						m_iCurrentAnimIndex = {};
 	_uint						m_iPrevAnimIndex = {};
 	_uint						m_iNumAnimations = 0;
-	vector<CAnimation3D*>			m_Animations;
+	vector<CAnimation3D*>		m_Animations;
 	
 
 	map<_uint, KEYFRAME>		m_mapAnimTransLeftFrame;
 
 	_bool						m_isCookingCollider = false;
+	_uint						m_iCoockingMeshType = 0;
 	_uint						m_iCookingColliderDataLength = 0;
+	_string						m_strColliderPath = "";	
 	_char*						m_arrCookingColliderData = nullptr;
 
 

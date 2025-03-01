@@ -59,7 +59,9 @@ HRESULT CToolSpriteFrame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 		{
 			for (const auto& entry : std::filesystem::recursive_directory_iterator(_RootDir))
 			{
-				if (".dds" == entry.path().extension())
+				cout << entry.path().filename() << endl;
+				if (".dds" == entry.path().extension()
+					|| ".DDS" == entry.path().extension())
 				{
 					if (entry.path().filename().string() == pathSubPath.filename().string())
 					{

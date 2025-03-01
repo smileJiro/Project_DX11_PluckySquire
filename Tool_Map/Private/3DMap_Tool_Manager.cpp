@@ -452,7 +452,14 @@ void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 				pPickingObj->Set_Operation(CMapObject::ROTATE);
 			if (ImGui::IsKeyPressed(ImGuiKey_F3))
 				pPickingObj->Set_Operation(CMapObject::SCALE);
+			_bool hasCookingCollider = static_cast<C3DModel*>(pPickingObj->Get_Model(COORDINATE_3D))->Has_CookingCollider();
 
+			ImGui::Text("Collider Load :");
+			ImGui::SameLine();
+			if (hasCookingCollider)
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "OK");
+			else
+				ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "NO");
 
 			pPickingObj->Imgui_Render_ObjectInfos();
 

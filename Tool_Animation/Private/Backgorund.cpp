@@ -21,7 +21,7 @@ CBackgorund::CBackgorund(const CBackgorund& _Prototype)
 
 void CBackgorund::Late_Update(_float _fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject(CRenderer::RG_UI, this);
+	m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
 	__super::Late_Update(_fTimeDelta);
 }
 

@@ -117,6 +117,12 @@
       <Filter>RenderGroup</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Backgorund.h" />
+    <ClInclude Include="..\Public\RenderGroup_PostProcessing.h">
+      <Filter>RenderGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_PlayerDepth.h">
+      <Filter>RenderGroup</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\TestTerrain.cpp" />
@@ -205,6 +211,12 @@
       <Filter>RenderGroup</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Backgorund.cpp" />
+    <ClCompile Include="..\Private\RenderGroup_PostProcessing.cpp">
+      <Filter>RenderGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_PlayerDepth.cpp">
+      <Filter>RenderGroup</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tool_Animation.rc">

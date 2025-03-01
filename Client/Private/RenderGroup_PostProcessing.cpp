@@ -86,7 +86,7 @@ HRESULT CRenderGroup_PostProcessing::Render(CShader* _pRTShader, CVIBuffer_Rect*
         DrawMRT.clear();
     }
 
-    /* 최종 결과물을 만들고 톤매핑 하여 백버퍼 혹은 최종 타겟에 그리는 단계 */
+    
     if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_PostProcessing"), nullptr, true)))
         return E_FAIL;
 

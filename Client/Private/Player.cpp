@@ -36,6 +36,7 @@
 #include "StopStamp.h"
 #include "BombStamp.h"
 #include "Detonator.h"
+#include "ZetPack.h"
 #include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
@@ -129,7 +130,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     CPlayer::CHARACTER_DESC* pDesc = static_cast<CPlayer::CHARACTER_DESC*>(_pArg);
 
     m_iCurLevelID = pDesc->iCurLevelID;
-	pDesc->_fStepHeightThreshold = 0.2f;
+	pDesc->_fStepHeightThreshold = 0.225f;
 	pDesc->_fStepSlopeThreshold = 0.45f;
 
     pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
@@ -393,6 +394,24 @@ HRESULT CPlayer::Ready_PartObjects()
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_DETONATOR])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_l")); /**/
     Set_PartActive(PLAYER_PART_DETONATOR, false);
 
+    //Part ZETPACK
+    CZetPack::ZETPACK_DESC tZetPackDesc{};
+    tZetPackDesc.pPlayer = this;
+    tZetPackDesc.iCurLevelID = m_iCurLevelID;
+    tZetPackDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+
+    m_PartObjects[PLAYER_PART_ZETPACK]= m_pZetPack  = static_cast<CZetPack*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ZetPack"), &tZetPackDesc));
+    if (nullptr == m_PartObjects[PLAYER_PART_ZETPACK])
+    {
+        MSG_BOX("CPlayer ZETPACK Creation Failed");
+        return E_FAIL;
+    }
+    Safe_AddRef(m_pZetPack);
+    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_ZETPACK])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_pelvis")); /**/
+    m_PartObjects[PLAYER_PART_ZETPACK]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0.f,1.f,0.f,0.f });
+    m_PartObjects[PLAYER_PART_ZETPACK]->Set_Position({ 0.f,-0.1f,0.5f });
+    Set_PartActive(PLAYER_PART_ZETPACK, false);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
@@ -549,7 +568,7 @@ HRESULT CPlayer::Ready_Components()
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
        TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
        return E_FAIL;
-   //Safe_AddRef(m_pGravityCom);
+   Safe_AddRef(m_pGravityCom);
    
    m_pGravityCom->Set_Active(false);
     return S_OK;
@@ -1177,6 +1196,11 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
             tResult.bInputStates[PLAYER_INPUT_ROLL] = true;
     }
 
+	if (Is_ZetPackMode())
+	{
+		if (KEY_PRESSING(KEY::SPACE))
+			tResult.bInputStates[PLAYER_INPUT_ZETPROPEL] = true;
+	}
     COORDINATE eCoord = Get_CurCoord();
     //이동
 
@@ -1309,6 +1333,27 @@ void CPlayer::Revive()
 {
 	m_tStat.iHP = m_tStat.iMaxHP;
 	Set_State(IDLE);
+}
+
+void CPlayer::ReFuel()
+{
+    m_pZetPack->ReFuel();
+}
+
+void CPlayer::ZetPropel(_float _fTimeDelta)
+{
+	if (Is_ZetPackMode())
+	{
+		m_pZetPack->Propel(_fTimeDelta);
+	}
+}
+
+void CPlayer::Retropropulsion()
+{
+    if (Is_ZetPackMode())
+    {
+        m_pZetPack->Retropropulsion();
+    }
 }
 
 //아무런 상호작용 중이 아닐 때에는 그냥 가장 가까운 애로 교체.
@@ -1471,6 +1516,11 @@ _bool CPlayer::Is_DetonationMode()
     return m_pDetonator->Is_DetonationMode();
 }
 
+_bool CPlayer::Is_ZetPackMode()
+{
+    return m_PartObjects[PLAYER_PART_ZETPACK]->Is_Active(); 
+}
+
 _bool CPlayer::Is_PlayingAnim()
 {
     return m_pBody->Is_PlayingAnim();
@@ -1596,6 +1646,11 @@ _vector CPlayer::Get_RootBonePosition()
 
 
 
+
+CActor_Dynamic* CPlayer::Get_ActorDynamic()
+{
+    return static_cast<CActor_Dynamic*>(m_pActorCom);
+}
 
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
@@ -2148,6 +2203,7 @@ void CPlayer::Free()
 	Safe_Release(m_pBombStmap);
 	Safe_Release(m_pStopStmap);
 	Safe_Release(m_pDetonator);
+	Safe_Release(m_pZetPack);
 
     Safe_Release(m_pCarryingObject);
     

@@ -332,7 +332,7 @@ void CPortal::Active_OnEnable()
     if (m_pEffectSystem)
     {
         //m_pEffectSystem->Set_Active(true);
-        m_pEffectSystem->Active_Effect(true, 0);
+        m_pEffectSystem->Active_Effect(false, 0);
     }
 }
 

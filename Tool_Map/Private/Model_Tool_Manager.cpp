@@ -48,8 +48,8 @@ HRESULT CModel_Tool_Manager::Initialize(CImguiLogger* _pLogger)
 	// 모델 리스트 불러오기
 	Load_ModelList();
 
-	m_pMapParsingManager = CTask_Manager::Create(m_pDevice, m_pContext, m_pLogger);
-	if (nullptr == m_pMapParsingManager)
+	m_pTaskManager = CTask_Manager::Create(m_pDevice, m_pContext, m_pLogger);
+	if (nullptr == m_pTaskManager)
 		return E_FAIL;
 
 
@@ -71,7 +71,7 @@ void CModel_Tool_Manager::Update_Tool()
 	// 임구이 화면 구성
 	Update_Imgui_Logic();
 
-	m_pMapParsingManager->Update();
+	m_pTaskManager->Update();
 
 
 
@@ -222,6 +222,16 @@ void CModel_Tool_Manager::Model_Collider_Imgui(_bool _bLock)
 					ImGui::SeparatorText("Select Model Info");
 
 					_wstring pPreviewModelName = m_pPreviewObject->Get_ModelName();
+					_bool hasCookingCollider = static_cast<C3DModel*>(m_pPreviewObject->Get_Model(COORDINATE_3D))->Has_CookingCollider();
+					
+
+					ImGui::Text("Model Name : %s", WstringToString(pPreviewModelName).c_str());
+					ImGui::Text("Collider Load :");
+					ImGui::SameLine();
+					if (hasCookingCollider)
+						ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "OK");
+					else
+						ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "NO");
 
 					ID3D11ShaderResourceView* pSelectImage = nullptr;
 					pSelectImage = m_pGameInstance->Get_RT_SRV(L"Model_Preview");
@@ -266,6 +276,33 @@ void CModel_Tool_Manager::Model_Collider_Imgui(_bool _bLock)
 
 						if (pGameObject)
 							m_pCurObject = static_cast<CMapObject*>(pGameObject);
+					}
+					End_Draw_ColorButton();
+					Begin_Draw_ColorButton("##Cooking", ImVec4(0.663f, 0.922f, 0.647f, 1.0f));
+					if (StyleButton(ALIGN_SQUARE, "Cooking Collider", 2.f))
+					{
+						if (m_pCurObject)
+							Event_DeleteObject(m_pCurObject);
+
+						CMapObject::MAPOBJ_DESC NormalDesc = {};
+						lstrcpy(NormalDesc.szModelName, pPreviewModelName.c_str());
+						NormalDesc.eCreateType = CMapObject::OBJ_CREATE;
+						NormalDesc.iCurLevelID = LEVEL_TOOL_3D_MODEL;
+						NormalDesc.iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MODEL;
+						CGameObject* pGameObject = nullptr;
+						m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
+							LEVEL_TOOL_3D_MODEL,
+							L"Layer_EditMapObject",
+							&pGameObject,
+							(void*)&NormalDesc);
+
+						if (pGameObject)
+							m_pCurObject = static_cast<CMapObject*>(pGameObject);
+
+						_string strPath = WstringToString(strfilePath);
+						strPath += "/";
+						strPath += WstringToString(m_pCurObject->Get_ModelName());
+						m_pTaskManager->Cooking(strPath, m_pCurObject, CTask_Manager::COOKING_MODE::COOKING_CONVEX);
 					}
 					End_Draw_ColorButton();
 				}
@@ -373,7 +410,7 @@ void CModel_Tool_Manager::Model_Material_Imgui(_bool _bLock)
 #pragma region Button1
 		Begin_Draw_ColorButton("Model_RePacking_Style", (ImVec4(1.f, 0.56f, 0.32f, 1.f)));
 		if (StyleButton(ALIGN_SQUARE, "Model RePackaging"))
-			m_pMapParsingManager->Register_RePackaging((*iter).second, pTargetObj);
+			m_pTaskManager->Register_RePackaging((*iter).second, pTargetObj);
 		End_Draw_ColorButton();
 #pragma endregion
 
@@ -928,7 +965,7 @@ void CModel_Tool_Manager::Free()
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pLogger);
-	Safe_Release(m_pMapParsingManager);
+	Safe_Release(m_pTaskManager);
 
 	__super::Free();
 }

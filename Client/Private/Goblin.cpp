@@ -42,7 +42,7 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->fAlert2DRange = 300.f;
     pDesc->fChase2DRange = 600.f;
     pDesc->fAttack2DRange = 100.f;
-    pDesc->fDelayTime = 3.f;
+    pDesc->fDelayTime = 2.f;
 
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 30.f;
@@ -111,8 +111,7 @@ void CGoblin::Priority_Update(_float _fTimeDelta)
         m_fAccTime += _fTimeDelta;
         if (m_fDelayTime <= m_fAccTime)
         {
-            m_fAccTime = 0.f;
-            m_isDelay = false;
+            Delay_Off();
         }
     }
 
@@ -391,8 +390,8 @@ void CGoblin::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
                 _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
                 XMVectorSetY(vRepulse, -1.f);
                 Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), (_float)Get_Stat().iDamg, vRepulse);
-                 Attack();
-
+                Attack();
+                m_isContactToTarget = true;
             }
         }
     }
@@ -409,11 +408,15 @@ void CGoblin::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 
 void CGoblin::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup && (_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse)
+    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
     {
-        if (true == m_isContactToTarget)
+        if ((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse
+            && (_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse)
         {
-            m_isContactToTarget = false;
+            if (true == m_isContactToTarget)
+            {
+                m_isContactToTarget = false;
+            }
         }
     }
 }

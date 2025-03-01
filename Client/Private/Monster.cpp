@@ -73,7 +73,6 @@ void CMonster::Priority_Update(_float _fTimeDelta)
 void CMonster::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta); /* Part Object Update */
-	m_vLookBefore = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
 }
 
 void CMonster::Late_Update(_float _fTimeDelta)
@@ -208,8 +207,17 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 	}
 	else
 	{
-		Set_AnimChangeable(true);
-		Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+		if((_uint)MONSTER_STATE::HIT != m_iState)
+		{
+			Set_AnimChangeable(true);
+			Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+		}
+		else
+		{
+			Set_AnimChangeable(true);
+			Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+			Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+		}
 		KnockBack(_vForce);
 
 		//Effect
@@ -251,13 +259,28 @@ void CMonster::Monster_Death()
 {
 	Set_AnimChangeable(true);
 
-	CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
-
-	//확률로 전구 생성
-	if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+	if(COORDINATE_3D == Get_CurCoord())
 	{
-		_float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
-		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bulb"), COORDINATE_3D, &vPos);
+		CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+
+		//확률로 전구 생성
+			if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+			{
+				_float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+				CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bulb"), COORDINATE_3D, &vPos);
+			}
+	}
+	else if (COORDINATE_2D == Get_CurCoord())
+	{
+		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
+
+		//확률로 전구 생성
+		if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+		{
+			_float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+			_wstring strCurSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+			CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_2DBulb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strCurSection);
+		}
 	}
 
 	Event_DeleteObject(this);

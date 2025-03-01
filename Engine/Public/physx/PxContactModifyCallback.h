@@ -93,7 +93,7 @@ public:
 	{ 
 		PxContactPatch* patch = getPatch();
 		patch->internalFlags |= PxContactPatch::eREGENERATE_PATCHES;
-		mContacts[i].normal = n;
+		mContacts[i].normal = n.getNormalized();
 	}
 
 	/**
