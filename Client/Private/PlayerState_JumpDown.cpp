@@ -143,7 +143,7 @@ void CPlayerState_JumpDown::Enter()
 	m_fAirRunSpeed2D = m_pOwner->Get_AirRunSpeed2D();
 	Switch_To_JumpDownAnimation();
 
-	m_pOwner->Get_ActorDynamic()->Set_LinearDamping(0.2f);
+	m_pOwner->Get_ActorDynamic()->Set_LinearDamping(0.5f);
 	m_fArmYPositionBefore = XMVectorGetY(m_pOwner->Get_FinalPosition()) + m_pOwner->Get_ArmHeight();
 	m_fWallYPosition = -1;
 }
@@ -288,7 +288,7 @@ _bool CPlayerState_JumpDown::Try_Clamber()
 		//
 		//현재 바닥 높이가 팔 높이보다 높고 이전 바닥 높이는 팔 높이보다 낮으면?
 		//-> 기어오르기
-		_float fArmYPositionCurrent = XMVectorGetY(vPlayerPos) + m_fArmHeight;
+ 		_float fArmYPositionCurrent = XMVectorGetY(vPlayerPos) + m_fArmHeight;
 		if (m_fArmYPositionBefore> m_fWallYPosition
 			&& fArmYPositionCurrent <= m_fWallYPosition)
 		{

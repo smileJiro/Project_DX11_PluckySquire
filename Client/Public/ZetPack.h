@@ -28,9 +28,12 @@ public:
 	void Retropropulsion();
 private:
 	CPlayer* m_pPlayer = nullptr;
-	_float m_fFuel = 3.0f;
-	_float m_fMaxFuel = 3.0f;
+	_float m_fFuel = 2.5f;
+	_float m_fMaxFuel = 2.5f;
 	_float m_fFuelConsumption = 1.0f;
+
+	_float m_fMaxForeceRatio = 1.0f;
+	_float m_fMinForeceRatio = 0.5f;
 	_float m_fPropelForce = 1900.f;
 public:
 	static CZetPack* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

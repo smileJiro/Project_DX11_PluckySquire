@@ -109,11 +109,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-	{
-		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_02::Initialize)");
@@ -761,6 +761,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
+	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_NORMAL);
+	pPlayer->UnEquip_All();
 
 	return S_OK;
 }
@@ -1479,7 +1481,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 	tModelDesc.eStartCoord = COORDINATE_3D;
 	tModelDesc.iCurLevelID = m_eLevelID;
 	_float fDominoXPosition = 14.47f;
-	_float fDominoYPosition = 1.61f;
+	_float fDominoYPosition = 1.31f;
 	_float fDominoZPosition = 24.3f;
 	_float fDominoXPositionStep = -3.5f;
 	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);

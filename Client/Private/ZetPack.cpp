@@ -57,12 +57,14 @@ void CZetPack::Propel(_float _fTimeDelta)
 {
 	m_fFuel -= m_fFuelConsumption * _fTimeDelta;
     if (m_fFuel >= 0.f)
-        m_pPlayer->Add_Force(_vector{ 0.f,m_fPropelForce * m_fFuel / m_fMaxFuel *_fTimeDelta,0.f });
+    {
+        _float fRatio = m_fMinForeceRatio + (m_fMaxForeceRatio - m_fMinForeceRatio)* m_fFuel/ m_fMaxFuel;
+        m_pPlayer->Add_Force(_vector{ 0.f,m_fPropelForce * fRatio * _fTimeDelta,0.f });
+    }
     else
     {
         int a = 0;
     }
-    cout << "Fuel" << m_fFuel << endl;
 }
 
 void CZetPack::Retropropulsion()

@@ -612,7 +612,7 @@ private:
 	_float m_f3DInteractLookOffset = 0.65f;
 	_float m_f3DInteractRadius = 1.f;
 	_float m_fHeadHeight = 1.f;
-	_float m_fArmHeight = 0.5f; // 벽타기 기준 높이
+	_float m_fArmHeight = 0.6f; // 벽타기 기준 높이
 	_float m_fArmLength = 0.325f;// 벽 타기 범위
 	_float m_fFootLength = 0.25f;
 	_float m_fAttackForwardingForce = 12.f;
@@ -621,7 +621,7 @@ private:
 	_float m_f3DLandAnimHeightThreshold= 0.6f;
 	_float m_f3DJumpPower = 10.5f;
 	_float m_fAirRotateSpeed = 360.f;
-	_float m_fAirRunSpeed = 3.5f; // 매 프레임 AddFore이므로 DeltaTime이 곱해짐
+	_float m_fAirRunSpeed = 4.2f; // 매 프레임 AddFore이므로 DeltaTime이 곱해짐
 	_float m_f3DMoveSpeed= 6.f;
 	_float m_f3DDragMoveSpeed= 2.5f;
 

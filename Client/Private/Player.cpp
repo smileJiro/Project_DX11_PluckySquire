@@ -130,7 +130,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     CPlayer::CHARACTER_DESC* pDesc = static_cast<CPlayer::CHARACTER_DESC*>(_pArg);
 
     m_iCurLevelID = pDesc->iCurLevelID;
-	pDesc->_fStepHeightThreshold = 0.2f;
+	pDesc->_fStepHeightThreshold = 0.225f;
 	pDesc->_fStepSlopeThreshold = 0.45f;
 
     pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
@@ -411,7 +411,7 @@ HRESULT CPlayer::Ready_PartObjects()
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_ZETPACK])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_pelvis")); /**/
     m_PartObjects[PLAYER_PART_ZETPACK]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0.f,1.f,0.f,0.f });
     m_PartObjects[PLAYER_PART_ZETPACK]->Set_Position({ 0.f,-0.1f,0.5f });
-    Set_PartActive(PLAYER_PART_ZETPACK, true);
+    Set_PartActive(PLAYER_PART_ZETPACK, false);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);

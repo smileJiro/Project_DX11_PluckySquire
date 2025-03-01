@@ -96,7 +96,7 @@ void CPlayerState_JumpUp::Enter()
 	m_fAirRotateSpeed = m_pOwner->Get_AirRotationSpeed();
 	m_fAirRunSpeed2D = m_pOwner->Get_AirRunSpeed2D();
 	m_pOwner->LookDirectionXZ_Dynamic(m_pOwner->Get_3DTargetDirection());
-	m_pOwner->Get_ActorDynamic()->Set_LinearDamping(0.2f);
+	m_pOwner->Get_ActorDynamic()->Set_LinearDamping(0.5f);
 	m_pOwner->Jump();
 	m_pOwner->ReFuel();
 	Switch_JumpAnimation();

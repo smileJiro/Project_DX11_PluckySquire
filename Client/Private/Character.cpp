@@ -19,7 +19,7 @@ HRESULT CCharacter::Initialize(void* _pArg)
 	CHARACTER_DESC* pDesc = static_cast<CHARACTER_DESC*>(_pArg);
 	m_fStepSlopeThreshold = pDesc->_fStepSlopeThreshold;
 	m_fStepHeightThreshold = pDesc->_fStepHeightThreshold;
-
+    m_fGravity = m_pGameInstance->Get_Gravity();
     XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixRotationZ(XMConvertToRadians(90.f)));
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
@@ -356,6 +356,7 @@ _float CCharacter::Measure_FloorDistance()
     if (PxGeometryType::eCAPSULE == eGeomType)
     {
         PxCapsuleGeometry& pxCapsule = pxGeomHolder.capsule();
+        pxCapsule.radius *= 0.5f;
         vOrigin.y += (m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
     }
     else if (PxGeometryType::eBOX == eGeomType)
@@ -378,6 +379,7 @@ _float CCharacter::Measure_FloorDistance()
         {
             if (pActor != this)//맵과 닿음.
             {
+                //cout << "iterHitPoint->vNormal.y" << iterHitPoint->vNormal.y << endl;
                 if (iterHitPoint->vNormal.y > m_fStepSlopeThreshold)//닿은 곳의 경사가 너무 급하지 않으면
                 {
                     fFloorHeihgt = max(fFloorHeihgt, iterHitPoint->vPosition.y);
@@ -475,9 +477,9 @@ _vector CCharacter::StepAssist(_fvector _vVelocity,_float _fTimeDelta)
                     vNewVelocity.m128_f32[1] += fMaxDiffY / fDiffXZ * XMVector3Length(vNewVelocity).m128_f32[0];
       
                     if (fMaxDiffY > 0)
-                        vNewVelocity.m128_f32[1] += 9.8f * 3.f * _fTimeDelta;
+                        vNewVelocity.m128_f32[1] += m_fGravity * _fTimeDelta;
                     else
-                        vNewVelocity.m128_f32[1] -= 9.8f * 3.f * _fTimeDelta;
+                        vNewVelocity.m128_f32[1] -= m_fGravity * _fTimeDelta;
                     
                     return vNewVelocity;
                 }
