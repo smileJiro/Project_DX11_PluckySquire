@@ -47,7 +47,7 @@ HRESULT CProjectile_Monster::Initialize(void* _pArg)
     if (nullptr == m_pTarget)
     {
 #ifdef _DEBUG
-        cout << "MONSTERINIT : NO PLAYER" << endl;
+        cout << "MONSTERI_PROJ_INIT : NO PLAYER" << endl;
 #endif // _DEBUG
         return S_OK;
     }
@@ -179,9 +179,9 @@ void CProjectile_Monster::Active_OnDisable()
 {
     m_pControllerTransform->Set_WorldMatrix(XMMatrixIdentity());
     m_fAccTime = 0.f;
-    m_isStop = false;
 
-    CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName,this);
+  /*  if(COORDINATE_2D == Get_CurCoord())
+        CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName,this);*/
 
     //if (COORDINATE_3D == Get_CurCoord())
 	   // m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);

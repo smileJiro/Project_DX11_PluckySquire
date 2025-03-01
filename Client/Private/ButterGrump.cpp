@@ -38,6 +38,9 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pDesc->fDelayTime = 0.5f;
     pDesc->fCoolTime = 3.f;
 
+    if (FAILED(Ready_ActorDesc(pDesc)))
+        return E_FAIL;
+
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
@@ -47,8 +50,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    if (FAILED(Ready_Projectiles()))
-        return E_FAIL;
+   /* if (FAILED(Ready_Projectiles()))
+        return E_FAIL;*/
     
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SCENE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
@@ -66,6 +69,16 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pModelObject->Register_OnAnimEndCallBack(bind(&CButterGrump::Animation_End, this, placeholders::_1, placeholders::_2));
 
     m_pControllerTransform->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
+
+    /* Actor Desc 채울 때 쓴 데이터 할당해제 */
+
+    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
+    {
+        Safe_Delete(pDesc->pActorDesc->ShapeDatas[i].pShapeDesc);
+    }
+    Safe_Delete(pDesc->pActorDesc);
+
+    Get_ActorCom()->Set_ShapeEnable(BOSS_SHAPE_SHIELD, false);
 
     return S_OK;
 }
@@ -314,6 +327,113 @@ void CButterGrump::Play_Intro()
 
 HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
 {
+    CButterGrump::MONSTER_DESC* pDesc = static_cast<CButterGrump::MONSTER_DESC*>(_pArg);
+
+    pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
+    CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
+
+    /* Actor의 주인 오브젝트 포인터 */
+    ActorDesc->pOwner = this;
+
+    /* Actor의 회전축을 고정하는 파라미터 */
+    ActorDesc->FreezeRotation_XYZ[0] = true;
+    ActorDesc->FreezeRotation_XYZ[1] = false;
+    ActorDesc->FreezeRotation_XYZ[2] = true;
+
+    /* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
+    ActorDesc->FreezePosition_XYZ[0] = false;
+    ActorDesc->FreezePosition_XYZ[1] = false;
+    ActorDesc->FreezePosition_XYZ[2] = false;
+
+
+    /* 사용하려는 Shape의 형태를 정의 */
+    SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
+    ShapeDesc->fRadius = 1.f;
+    ShapeDesc->fHalfHeight = 1.f;
+
+    SHAPE_DATA* ShapeData = new SHAPE_DATA;
+    ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc->fHalfHeight + ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+
+    /* 사용하려는 Shape의 형태를 정의 */
+    SHAPE_SPHERE_DESC* LeftEyeShapeDesc = new SHAPE_SPHERE_DESC;
+    LeftEyeShapeDesc->fRadius = 1.f;
+
+    ShapeData->pShapeDesc = LeftEyeShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
+    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->iShapeUse = (_uint)BOSS_SHAPE_USE::BOSS_SHAPE_LEFT_EYE;
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, LeftEyeShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+    /* 사용하려는 Shape의 형태를 정의 */
+    SHAPE_SPHERE_DESC* RightEyeShapeDesc = new SHAPE_SPHERE_DESC;
+    RightEyeShapeDesc->fRadius = 1.f;
+
+    ShapeData->pShapeDesc = RightEyeShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
+    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->iShapeUse = (_uint)BOSS_SHAPE_USE::BOSS_SHAPE_RIGHT_EYE;
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, RightEyeShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+
+
+    /* 사용하려는 Shape의 형태를 정의 */
+    SHAPE_CAPSULE_DESC* TongueShapeDesc = new SHAPE_CAPSULE_DESC;
+    TongueShapeDesc->fRadius = 1.f;
+    TongueShapeDesc->fHalfHeight = 1.f;
+
+    ShapeData->pShapeDesc = TongueShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->iShapeUse = (_uint)BOSS_SHAPE_USE::BOSS_SHAPE_TONGUE;
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, TongueShapeDesc->fHalfHeight + TongueShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+
+    /* 사용하려는 Shape의 형태를 정의 */
+    SHAPE_SPHERE_DESC* ShieldShapeDesc = new SHAPE_SPHERE_DESC;
+    ShieldShapeDesc->fRadius = 10.f;
+
+    ShapeData->pShapeDesc = ShieldShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
+    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->iShapeUse = (_uint)BOSS_SHAPE_USE::BOSS_SHAPE_SHIELD;
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+
+       /* 충돌 필터에 대한 세팅 ()*/
+    ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER | OBJECT_GROUP::EXPLOSION;
+
+    /* Actor Component Finished */
+    pDesc->pActorDesc = ActorDesc;
+
+    /* Shapedata 할당해제 */
+    Safe_Delete(ShapeData);
+
     return S_OK;
 }
 
@@ -342,7 +462,7 @@ HRESULT CButterGrump::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
-    BodyDesc.strModelPrototypeTag_3D = TEXT("buttergrump_Rig");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_ButterGrump");
 	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
 
@@ -369,7 +489,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_HomingBall");
 
-    CBoss_HomingBall::BOSS_HOMINGBALL_DESC* pHomingBallDesc = new CBoss_HomingBall::BOSS_HOMINGBALL_DESC;
+    CBoss_HomingBall::PROJECTILE_MONSTER_DESC* pHomingBallDesc = new CBoss_HomingBall::PROJECTILE_MONSTER_DESC;
     pHomingBallDesc->fLifeTime = 4.f;
     pHomingBallDesc->eStartCoord = COORDINATE_3D;
     pHomingBallDesc->isCoordChangeEnable = false;
@@ -384,7 +504,7 @@ HRESULT CButterGrump::Ready_Projectiles()
 
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_EnergyBall");
 
-    CBoss_EnergyBall::BOSS_ENERGYBALL_DESC* pEnergyBallDesc = new CBoss_EnergyBall::BOSS_ENERGYBALL_DESC;
+    CBoss_EnergyBall::PROJECTILE_MONSTER_DESC* pEnergyBallDesc = new CBoss_EnergyBall::PROJECTILE_MONSTER_DESC;
     pEnergyBallDesc->fLifeTime = 5.f;
     pEnergyBallDesc->eStartCoord = COORDINATE_3D;
     pEnergyBallDesc->isCoordChangeEnable = false;
@@ -398,7 +518,7 @@ HRESULT CButterGrump::Ready_Projectiles()
 
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_YellowBall");
 
-    CBoss_YellowBall::BOSS_YELLOWBALL_DESC* pYellowBallDesc = new CBoss_YellowBall::BOSS_YELLOWBALL_DESC;
+    CBoss_YellowBall::PROJECTILE_MONSTER_DESC* pYellowBallDesc = new CBoss_YellowBall::PROJECTILE_MONSTER_DESC;
     pYellowBallDesc->fLifeTime = 5.f;
     pYellowBallDesc->eStartCoord = COORDINATE_3D;
     pYellowBallDesc->isCoordChangeEnable = false;
@@ -412,7 +532,7 @@ HRESULT CButterGrump::Ready_Projectiles()
 
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_PurpleBall");
 
-    CBoss_PurpleBall::BOSS_PURPLEBALL_DESC* pPurpleBallDesc = new CBoss_PurpleBall::BOSS_PURPLEBALL_DESC;
+    CBoss_PurpleBall::PROJECTILE_MONSTER_DESC* pPurpleBallDesc = new CBoss_PurpleBall::PROJECTILE_MONSTER_DESC;
     pPurpleBallDesc->fLifeTime = 5.f;
     pPurpleBallDesc->eStartCoord = COORDINATE_3D;
     pPurpleBallDesc->isCoordChangeEnable = false;
