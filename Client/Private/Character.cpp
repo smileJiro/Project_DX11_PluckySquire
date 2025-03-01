@@ -128,12 +128,14 @@ void CCharacter::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CMod
         for (_uint i = 0; i < iContactCount; i++)
         {
             //º®ÀÌ¸é?
-            _float fNormal = abs(XMVectorGetY(_ModifiableContacts.Get_Normal(i)));
+            _vector vWallNormal = _ModifiableContacts.Get_Normal(i);
+            _float fNormal = abs(XMVectorGetY(vWallNormal));
             _vector vPoint = _ModifiableContacts.Get_Point(i);
 
             if (fNormal < m_fStepSlopeThreshold
                 || vPoint.m128_f32[1] > m_fStepHeightThreshold + Get_FinalPosition().m128_f32[1])
             {
+                _ModifiableContacts.Set_Normal(i, XMVectorSetY( vWallNormal, 0.f));
                 _ModifiableContacts.Set_DynamicFriction(i, 0.0f);
                 _ModifiableContacts.Set_StaticFriction(i, 0.0f);
                 continue;

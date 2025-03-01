@@ -5,6 +5,7 @@
 #include "Character.h"
 #include "Actor_Dynamic.h"
 #include "Effect2D_Manager.h"
+#include "Effect_Manager.h"
 
 CBomb::CBomb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCarriableObject(_pDevice, _pContext)
@@ -126,8 +127,8 @@ HRESULT CBomb::Initialize(void* _pArg)
 
 	Set_AnimationLoop(COORDINATE_2D, 0, true);
 
-	m_fLifeTime = 5.f;
-	m_fExplodeTime = 1.f;
+	m_fLifeTime = 1.f;
+	m_fExplodeTime = 0.1f;
 
     return S_OK;
 }
@@ -230,6 +231,8 @@ void CBomb::Explode()
 		static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Kinematic();
 		Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
 		Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_TRIGER, true);
+
+		CEffect_Manager::GetInstance()->Active_Effect(TEXT("Bomb"), true, &m_WorldMatrices[COORDINATE_3D]);
 	}
 
 	m_fAccTime = 0.f;
@@ -313,6 +316,8 @@ void CBomb::Active_OnEnable()
 	//CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());
 	//pDynamic->Update(0.f);
 	//pDynamic->Set_Dynamic();
+
+	CEffect_Manager::GetInstance()->Active_Effect(TEXT("Fuse"), true, &m_WorldMatrices[COORDINATE_3D]);
 
 	m_p2DColliderComs[0]->Set_Active(true);
 	m_p2DColliderComs[2]->Set_Active(false);

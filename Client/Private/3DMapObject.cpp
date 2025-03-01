@@ -59,7 +59,7 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
 
             if (nullptr != pModel)
             {
-                C3DModel* p3DModel = static_cast<C3DModel*>(pModel);
+                Engine::C3DModel* p3DModel = static_cast<Engine::C3DModel*>(pModel);
                 if (p3DModel->Has_CookingCollider())
                 {
                     _uint iColliderType = p3DModel->Get_CookingColliderType();
