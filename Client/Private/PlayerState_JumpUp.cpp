@@ -94,6 +94,9 @@ void CPlayerState_JumpUp::Enter()
 
 	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_jump-") + to_wstring(rand() % 12), 50.f);
 	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_jump-") + to_wstring(rand() % 6), 20.f);
+
+	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+		CEffect_Manager::GetInstance()->Active_Effect(TEXT("Zip3"), false, m_pOwner->Get_Transform()->Get_WorldMatrix_Ptr());
 }
 
 void CPlayerState_JumpUp::Exit()
@@ -106,6 +109,8 @@ void CPlayerState_JumpUp::Exit()
 	else
 	{
 		m_pOwner->Stop_Rotate();
+		CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("Zip3"), 1.f);
+
 	}
 }
 

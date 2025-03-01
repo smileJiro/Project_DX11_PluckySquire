@@ -11,7 +11,7 @@ public:
 		ROTATION_BILLBOARD, ROTATION_BILLBOARD_BLOOM,
 		VELOCITY_BILLBOARD, VELOCITY_BILLBOARD_BLOOM,
 		SUBCOLORBLOOM,		DEFAULT_DISSOLVE, VELOCITY_BILLBOARD_SUBCOLORBLOOM,
-		DISSOLVE_SUBCOLORBLOOM, DISSOLVECOLOR_SUBCOLORBLOOM
+		DISSOLVE_SUBCOLORBLOOM, FIRE,
 	};
 
 private:
@@ -35,6 +35,7 @@ private:
 	class CVIBuffer_Point_Particle* m_pParticleBufferCom = { nullptr };
 	class CTexture*					m_pMaskTextureCom = { nullptr };
 	class CTexture*					m_pDissolveTextureCom = { nullptr };
+	class CTexture*					m_pSecondTextureCom = { nullptr };
 
 private:
 	//_float							m_fAlphaDiscard = { 0.f };
@@ -87,7 +88,7 @@ NLOHMANN_JSON_SERIALIZE_ENUM(CParticle_Sprite_Emitter::EFFECT_SHADERPASS, {
 {CParticle_Sprite_Emitter::EFFECT_SHADERPASS::VELOCITY_BILLBOARD_BLOOM, "VELOCITY_BILLBOARD_BLOOM"},
 {CParticle_Sprite_Emitter::EFFECT_SHADERPASS::DEFAULT_DISSOLVE, "DEFAULT_DISSOLVE"},
 {CParticle_Sprite_Emitter::EFFECT_SHADERPASS::DISSOLVE_SUBCOLORBLOOM, "DISSOLVE_SUBCOLORBLOOM"},
-{CParticle_Sprite_Emitter::EFFECT_SHADERPASS::DISSOLVECOLOR_SUBCOLORBLOOM, "DISSOLVECOLOR_SUBCOLORBLOOM"},
+{CParticle_Sprite_Emitter::EFFECT_SHADERPASS::FIRE, "FIRE"},
 
 	});
 END

@@ -19,6 +19,8 @@ CParticle_Sprite_Emitter::CParticle_Sprite_Emitter(const CParticle_Sprite_Emitte
         m_pMaskTextureCom = static_cast<CTexture*>(_Prototype.m_pMaskTextureCom->Clone(nullptr));
     if (nullptr != _Prototype.m_pDissolveTextureCom)
         m_pDissolveTextureCom = static_cast<CTexture*>(_Prototype.m_pDissolveTextureCom->Clone(nullptr));
+    if (nullptr != _Prototype.m_pSecondTextureCom)
+        m_pSecondTextureCom = static_cast<CTexture*>(_Prototype.m_pSecondTextureCom->Clone(nullptr));
 
     if (nullptr != _Prototype.m_pParticleBufferCom)
     {
@@ -72,11 +74,30 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
     }
 
 
+    // Second Texture ?
+    if (_jsonInfo.contains("SecondTexture"))
+    {
+        strTexturePath = _jsonInfo["SecondTexture"];
 
+        if (m_pGameInstance->Find_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath)))
+        {
+            m_pSecondTextureCom = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_pGameInstance->Get_StaticLevelID(),
+                STRINGTOWSTRING(strTexturePath), nullptr));
+        }
+        else
+        {
+            m_pSecondTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
+            m_pGameInstance->Add_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath), m_pSecondTextureCom);
+
+        }
+    }
 #ifdef  _DEBUG
     m_pMaskTextureCom->Add_SRVName(STRINGTOWSTRING(_jsonInfo["Texture"]));
     if (m_pDissolveTextureCom)
         m_pDissolveTextureCom->Add_SRVName(STRINGTOWSTRING(_jsonInfo["DissolveTexture"]));
+    if (m_pSecondTextureCom)
+        m_pSecondTextureCom->Add_SRVName(STRINGTOWSTRING(_jsonInfo["SecondTexture"]));
+    
 #endif //  _DEBUG
 
 
@@ -426,7 +447,16 @@ HRESULT CParticle_Sprite_Emitter::Bind_ShaderValue_ByPass()
     }
     case FIRE:
     {
-        
+        if (FAILED(Bind_Float4("NoiseUVScale", "g_vNoiseUVScale")))
+            return E_FAIL;
+        if (FAILED(Bind_Float("EdgeWidth", "g_fEdgeWidth")))
+            return E_FAIL;
+        if (FAILED(Bind_Float("DissolveTimeFactor", "g_fDissolveTimeFactor")))
+            return E_FAIL;
+        if (FAILED(Bind_Float("DissolveFactor", "g_fDissolveFactor")))
+            return E_FAIL;
+        if (nullptr != m_pDissolveTextureCom && FAILED(m_pDissolveTextureCom->Bind_ShaderResource(m_pShaderCom, "g_NoiseTexture")))
+            return E_FAIL;
         break;
     }
     default:
@@ -450,6 +480,11 @@ HRESULT CParticle_Sprite_Emitter::Ready_Components(const PARTICLE_EMITTER_DESC* 
     {
         m_Components.emplace(L"Com_Dissolve", m_pDissolveTextureCom);
         Safe_AddRef(m_pDissolveTextureCom);
+    }
+    if (nullptr != m_pSecondTextureCom)
+    {
+        m_Components.emplace(L"Com_Second", m_pSecondTextureCom);
+        Safe_AddRef(m_pSecondTextureCom);
     }
 
     if (nullptr != m_pParticleBufferCom)
@@ -493,6 +528,7 @@ void CParticle_Sprite_Emitter::Free()
     Safe_Release(m_pParticleBufferCom);
     Safe_Release(m_pMaskTextureCom);
     Safe_Release(m_pDissolveTextureCom);
+    Safe_Release(m_pSecondTextureCom);
 
     __super::Free();
 }
@@ -729,7 +765,7 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
             "ROTATION_BILLBOARD_BLOOM", "VELOCITY_BILLBOARD",
             "VELOCITY_BILLBOARD_BLOOM", "SUBCOLOR_BLOOM",
             "DEFAULT_DISSOLVE", "VELOCITY_BILLBOARD_SUBCOLORBLOOM",
-            "DISSOLVE_SUBCOLORBLOOM", "DISSOLVECOLOR_SUBCOLORBLOOM"
+            "DISSOLVE_SUBCOLORBLOOM", "FIRE"
         };
         static _int item_selected_idx = 0;
         const char* combo_preview_value = items[item_selected_idx];
@@ -803,7 +839,31 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
             }
             ImGui::TreePop();
         }
+
+
+        if (ImGui::TreeNode("Second"))
+        {
+            if (nullptr != m_pSecondTextureCom)
+            {
+                ImVec2 imageSize(300, 300); // 이미지 크기 설정
+                ID3D11ShaderResourceView* pSelectImage = m_pSecondTextureCom->Get_SRV(0);
+                if (nullptr != pSelectImage)
+                {
+                    ImGui::Image((ImTextureID)pSelectImage, imageSize);
+                }
+
+                ImGui::Text(WSTRINGTOSTRING(*m_pSecondTextureCom->Get_SRVName(0)).c_str());
+
+
+                if (ImGui::Button("Delete"))
+                {
+                    Safe_Release(m_pSecondTextureCom);
+                }
+            }
+            ImGui::TreePop();
+        }
         ImGui::TreePop();
+
 
     }
 
@@ -871,7 +931,8 @@ HRESULT CParticle_Sprite_Emitter::Save(json& _jsonOut)
     _jsonOut["Texture"] = WSTRINGTOSTRING(*m_pMaskTextureCom->Get_SRVName(0)).c_str();
     if (nullptr != m_pDissolveTextureCom)
         _jsonOut["DissolveTexture"] = WSTRINGTOSTRING(*m_pDissolveTextureCom->Get_SRVName(0)).c_str();
-
+    if (nullptr != m_pSecondTextureCom)
+        _jsonOut["SecondTexture"] = WSTRINGTOSTRING(*m_pSecondTextureCom->Get_SRVName(0)).c_str();
 
     EFFECT_SHADERPASS eShaderPass = (EFFECT_SHADERPASS)m_iShaderPass;
     _jsonOut["ShaderPass"] = eShaderPass;
@@ -911,6 +972,19 @@ void CParticle_Sprite_Emitter::Set_Texture(CTexture* _pTextureCom, _uint _iTextu
         m_pDissolveTextureCom = _pTextureCom;
         m_Components[L"Com_Dissolve"] = m_pDissolveTextureCom;
         Safe_AddRef(m_pDissolveTextureCom);
+    }
+
+
+    if (2 == _iTextureIndex)
+    {
+        if (m_pSecondTextureCom)
+        {
+            Safe_Release(m_pSecondTextureCom);
+        }
+
+        m_pSecondTextureCom = _pTextureCom;
+        m_Components[L"Com_Second"] = m_pSecondTextureCom;
+        Safe_AddRef(m_pSecondTextureCom);
     }
 
 

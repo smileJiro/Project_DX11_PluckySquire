@@ -35,6 +35,7 @@ private:
 	class CVIBuffer_Point_Particle* m_pParticleBufferCom = { nullptr };
 	class CTexture*					m_pMaskTextureCom = { nullptr };
 	class CTexture*					m_pDissolveTextureCom = { nullptr };
+	class CTexture*					m_pSecondTextureCom = { nullptr };
 
 private:
 	//_float							m_fAlphaDiscard = { 0.f };
