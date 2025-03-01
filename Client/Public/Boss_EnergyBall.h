@@ -1,15 +1,15 @@
 #pragma once
-#include "Monster.h"
+#include "Projectile_Monster.h"
 #include "Client_Defines.h"
 
 BEGIN(Client)
-class CBoss_EnergyBall final : public CContainerObject
+class CBoss_EnergyBall final : public CProjectile_Monster
 {
-public:
-	typedef struct tagBoss_EnergyBall_Desc : public CContainerObject::CONTAINEROBJ_DESC
-	{
-		_float fLifeTime;
-	}BOSS_ENERGYBALL_DESC;
+//public:
+//	typedef struct tagBoss_EnergyBall_Desc : public CProjectile_Monster::CONTAINEROBJ_DESC
+//	{
+//		_float fLifeTime;
+//	}BOSS_ENERGYBALL_DESC;
 
 protected:
 	CBoss_EnergyBall(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -28,11 +28,6 @@ public:
 	HRESULT Cleanup_DeadReferences() override;
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
-
-private:
-	_float m_fLifeTime = { 5.f };
-	_float m_fAccTime = { 0.f };
-	CGameObject* m_pTarget = { nullptr };
 
 private:
 	virtual HRESULT					Ready_Components();

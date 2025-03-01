@@ -49,6 +49,15 @@ public:
 		LAST,
 	};
 
+	enum BOSS_SHAPE_USE
+	{
+		BOSS_SHAPE_LEFT_EYE = SHAPE_USE::SHAPE_USE_LAST,
+		BOSS_SHAPE_RIGHT_EYE,
+		BOSS_SHAPE_TONGUE,
+		BOSS_SHAPE_SHIELD,
+		BOSS_SHAPE_LAST
+	};
+
 private:
 	CButterGrump(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CButterGrump(const CButterGrump& _Prototype);

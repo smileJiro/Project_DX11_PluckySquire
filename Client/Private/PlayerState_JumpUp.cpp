@@ -21,16 +21,23 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::JUMP_DOWN);
 		return;
 	}
+
 	PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
 	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
 		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
 		{
-			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed * _fTimeDelta);
+			//m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed * _fTimeDelta);
+			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed, _fTimeDelta);
 			m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
 		}
 		else
 			m_pOwner->Stop_Rotate();
+
+		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_ZETPROPEL])
+		{
+			m_pOwner->ZetPropel(_fTimeDelta);
+		}
 	}
 	else
 	{
@@ -89,7 +96,9 @@ void CPlayerState_JumpUp::Enter()
 	m_fAirRotateSpeed = m_pOwner->Get_AirRotationSpeed();
 	m_fAirRunSpeed2D = m_pOwner->Get_AirRunSpeed2D();
 	m_pOwner->LookDirectionXZ_Dynamic(m_pOwner->Get_3DTargetDirection());
+	m_pOwner->Get_ActorDynamic()->Set_LinearDamping(0.2f);
 	m_pOwner->Jump();
+	m_pOwner->ReFuel();
 	Switch_JumpAnimation();
 
 	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_jump-") + to_wstring(rand() % 12), 50.f);
@@ -99,7 +108,7 @@ void CPlayerState_JumpUp::Enter()
 void CPlayerState_JumpUp::Exit()
 {
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-
+	m_pOwner->Get_ActorDynamic()->Set_LinearDamping(0.f);
 	if (COORDINATE_2D == eCoord)
 	{
 	}

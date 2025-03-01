@@ -20,9 +20,9 @@ private:
 private:
     F_DIRECTION m_eOldFDir = F_DIRECTION::F_DIR_LAST;
     _bool m_bPlatformerMode = false;
-    _float m_fAirRunSpeed = 10.f;
-    _float m_fAirRunSpeed2D = 300.f;
-	_float m_fAirRotateSpeed = 100.f;
+    _float m_fAirRunSpeed = 0.f;
+    _float m_fAirRunSpeed2D = 0.f;
+	_float m_fAirRotateSpeed = 0.f;
 };
 
 END

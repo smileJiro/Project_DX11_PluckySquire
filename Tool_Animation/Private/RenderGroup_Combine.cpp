@@ -53,7 +53,7 @@ HRESULT CRenderGroup_Combine::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBu
             return E_FAIL;
         return E_FAIL;
     }
-    
+
     _pRTShader->Begin((_uint)PASS_DEFERRED::COMBINE);
 
     _pRTBuffer->Bind_BufferDesc();

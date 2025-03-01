@@ -86,7 +86,7 @@ HRESULT CRenderGroup_PostProcessing::Render(CShader* _pRTShader, CVIBuffer_Rect*
         DrawMRT.clear();
     }
 
-    /* 최종 결과물을 만들고 톤매핑 하여 백버퍼 혹은 최종 타겟에 그리는 단계 */
+
     if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_PostProcessing"), nullptr, true)))
         return E_FAIL;
 
@@ -124,7 +124,7 @@ HRESULT CRenderGroup_PostProcessing::Render(CShader* _pRTShader, CVIBuffer_Rect*
 
 
 
-    
+
     return S_OK;
 }
 
@@ -153,7 +153,7 @@ HRESULT CRenderGroup_PostProcessing::Ready_BlurRenderTarget()
     {
         /* blur level 4 기준 : 4, 2, 1 */
         _wstring strRTName = TEXT("Post_Blur_");
-        strRTName += to_wstring((iNumRenderTargets /2) + i);
+        strRTName += to_wstring((iNumRenderTargets / 2) + i);
         _int iLevel = m_iBlurLevel - 2 - i;
         _int iDiv = (_int)pow(2, iLevel);
         CRenderTarget* pUpTarget = CRenderTarget::Create(m_pDevice, m_pContext, strRTName, g_iWinSizeX / iDiv, g_iWinSizeY / iDiv, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f));

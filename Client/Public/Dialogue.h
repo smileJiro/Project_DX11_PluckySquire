@@ -167,6 +167,7 @@ private:
 
     _bool               m_isOpenDialogue = { true };
     _float2              m_vRenderRatio = { 0.f , 0.f};
+    _float2             m_vRTSize = { 0.f , 0.f };
 
 
 
