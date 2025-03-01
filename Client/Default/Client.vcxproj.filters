@@ -514,6 +514,9 @@
     <Filter Include="02.GameObjects\NPC\100. NPC_Manager">
       <UniqueIdentifier>{d7663a2e-f2cd-4c80-a744-dcac42db9a16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Boss\Part">
+      <UniqueIdentifier>{71019787-e43c-4ea9-847c-046f30743f44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1254,6 +1257,18 @@
       <Filter>02.GameObjects\NPC\100. NPC_Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SlipperyObject.h" />
+    <ClInclude Include="..\Public\ButterGrump_LeftEye.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ButterGrump_RightEye.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ButterGrump_Tongue.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ButterGrump_Shield.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1984,6 +1999,18 @@
       <Filter>02.GameObjects\NPC\100. NPC_Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SlipperyObject.cpp" />
+    <ClCompile Include="..\Private\ButterGrump_LeftEye.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ButterGrump_RightEye.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ButterGrump_Tongue.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ButterGrump_Shield.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
