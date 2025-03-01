@@ -69,6 +69,92 @@
 			"LevelSizePixels": {
 				"X": 5762.0,
 				"Y": 2102.0
+			},
+			"Scrolling": true,
+			"Override_Normal": 2
+		}
+	},
+	{
+		"Section_Name": "Chapter6_SKSP_02",
+		"Section_BackGround_Name": "Chapter6_SKSP_02_BackGround",
+		"Section_File_Name": "Chapter6_SKSP_02.m2chc",
+		"Section_Type": 2,
+		"Section_Info": {
+			"RenderResolution": {
+				"X": 7680.0,
+				"Y": 5376.0
+			},
+			"LevelSizePixels": {
+				"X": 7680.0,
+				"Y": 5376.0
+			}
+		}
+	},
+	{
+		"Section_Name": "Chapter6_SKSP_03",
+		"Section_BackGround_Name": "Chapter6_SKSP_03_BackGround",
+		"Section_File_Name": "Chapter6_SKSP_03.m2chc",
+		"Section_Type": 2,
+		"Section_Info": {
+			"RenderResolution": {
+				"X": 5762.0,
+				"Y": 2102.0
+			},
+			"LevelSizePixels": {
+				"X": 5762.0,
+				"Y": 2102.0
+			},
+			"Scrolling": true,
+			"Override_Normal": 2
+		}
+	},
+	{
+		"Section_Name": "Chapter6_SKSP_05",
+		"Section_BackGround_Name": "Chapter6_SKSP_05_BackGround",
+		"Section_File_Name": "Chapter6_SKSP_05.m2chc",
+		"Section_Type": 2,
+		"Section_Info": {
+			"RenderResolution": {
+				"X": 18432.0,
+				"Y": 8192.0
+			},
+			"LevelSizePixels": {
+				"X": 18432.0,
+				"Y": 8192.0
+			}
+		}
+	},
+	{
+		"Section_Name": "Chapter6_SKSP_06",
+		"Section_BackGround_Name": "Chapter6_SKSP_06_BackGround",
+		"Section_File_Name": "Chapter6_SKSP_06.m2chc",
+		"Section_Type": 2,
+		"Section_Info": {
+			"RenderResolution": {
+				"X": 5762.0,
+				"Y": 2102.0
+			},
+			"LevelSizePixels": {
+				"X": 5762.0,
+				"Y": 2102.0
+			},
+			"Scrolling": true,
+			"Override_Normal": 2
+		}
+	},
+	{
+		"Section_Name": "Chapter6_SKSP_07",
+		"Section_BackGround_Name": "Chapter6_SKSP_07_BackGround",
+		"Section_File_Name": "Chapter6_SKSP_07.m2chc",
+		"Section_Type": 2,
+		"Section_Info": {
+			"RenderResolution": {
+				"X": 3840.0,
+				"Y": 4608.0
+			},
+			"LevelSizePixels": {
+				"X": 3840.0,
+				"Y": 4608.0
 			}
 		}
 	}

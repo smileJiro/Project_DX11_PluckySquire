@@ -73,9 +73,17 @@ HRESULT CSection_2D::Import(void* _pDesc)
 
 		auto SectionInfo = pDesc->SectionJson["Section_Info"];
 		if (SectionInfo.contains("Rotation"))
-		{
 			m_isRotation = SectionInfo["Rotation"];
-		}
+
+		if (SectionInfo.contains("Scrolling"))
+			m_isScrolling = SectionInfo["Scrolling"];
+		
+		if (SectionInfo.contains("Override_Normal"))
+			m_iOverride_Normal = SectionInfo["Override_Normal"];
+
+		if (SectionInfo.contains("Camera_Zoom_Ratio"))
+			m_fCameraRatio = (_float)SectionInfo["Camera_Zoom_Ratio"];
+
 		if (SectionInfo.contains("RenderResolution"))
 		{
 			pDesc->fRenderResolution.x = SectionInfo["RenderResolution"]["X"];
@@ -85,10 +93,6 @@ HRESULT CSection_2D::Import(void* _pDesc)
 		{
 			pDesc->fLevelSizePixels.x = SectionInfo["LevelSizePixels"]["X"];
 			pDesc->fLevelSizePixels.y = SectionInfo["LevelSizePixels"]["Y"];
-		}
-		if (SectionInfo.contains("Camera_Zoom_Ratio"))
-		{
-			m_fCameraRatio = (_float)SectionInfo["Camera_Zoom_Ratio"];
 		}
 
 	}

@@ -3,7 +3,7 @@
 #include "Compute_Shader.h"
 
 #ifdef _DEBUG
-const _char* CUV_Module::g_szModuleNames[1] = {"UV_ANIM"};
+const _char* CUV_Module::g_szModuleNames[2] = {"UV_ANIM", "RANDOM_UV_ANIM"};
 #endif
 CUV_Module::CUV_Module()
     : CEffect_Module()
@@ -69,6 +69,15 @@ _int CUV_Module::Update_Module(CCompute_Shader* _pCShader)
         return 14;
         break;
     }
+
+    case RANDOM_UV_ANIM:
+    {
+        _pCShader->Bind_RawValue("g_Size", &m_Float2Datas["UVSize"], sizeof(_float2));
+        _pCShader->Bind_RawValue("g_Count", &m_Float2Datas["Count"], sizeof(_float2));
+
+        return 15;
+        break;
+    }
     }
 
     return - 1;
@@ -108,6 +117,9 @@ HRESULT CUV_Module::Initialize(MODULE_NAME _eType)
     {
     case UV_ANIM:
         m_strTypeName = "UV_ANIM";
+        break;
+    case RANDOM_UV_ANIM:
+        m_strTypeName = "RANDOM_UV_ANIM";
         break;
     }
 

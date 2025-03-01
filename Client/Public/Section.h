@@ -50,9 +50,7 @@ public:
 		_iOutputGroupID = m_iGroupID; 
 	_iOutputPriorityID = m_iPriorityID; 
 	return true; };
-	
 	virtual HRESULT Section_AddRenderGroup_Process() abstract;
-
 	_bool			Is_CurSection(CGameObject* _pGameObject);
 
 

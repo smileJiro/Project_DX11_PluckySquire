@@ -134,6 +134,15 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
                 ), matPretransform))))
         return E_FAIL;
 
+    matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+    
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_Bomb"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../Bin/Resources/Models/Nonanim/bomb/bomb.model"
+                ), matPretransform))))
+        return E_FAIL;
+
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_MagicHand"),
         CEffect_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/BookOut.json")))))

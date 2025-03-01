@@ -1,5 +1,8 @@
 ﻿#include "Actor_Dynamic.h"
 #include "ActorObject.h"
+#include "Physx_Manager.h"
+#include "GameInstance.h"
+
 
 CActor_Dynamic::CActor_Dynamic(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, ACTOR_TYPE _eActorType)
     :CActor(_pDevice, _pContext, _eActorType)
@@ -116,6 +119,7 @@ HRESULT CActor_Dynamic::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNe
 
 void CActor_Dynamic::Start_ParabolicTo(_vector _vPosition, _float _fLaunchRadianAngle, _float _fGravityMag)
 {
+	_fGravityMag = m_pGameInstance->Get_Gravity();
 	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
 	//거리 구하기
 	PxTransform pxTransform = pDynamic->getGlobalPose();

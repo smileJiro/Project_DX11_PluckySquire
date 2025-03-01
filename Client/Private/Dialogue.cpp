@@ -89,7 +89,8 @@ void CDialog::Update(_float _fTimeDelta)
 	//if (true == m_isRender)
 	//{
 	//	Uimgr->Set_DialogId(TEXT("dialog_01"));
-	//	wsprintf(m_tDialogIndex, Uimgr->Get_DialogId());
+	//	wsprintf(m_tDialogIndex, 
+	// ->Get_DialogId());
 	//}
 
 
@@ -539,8 +540,6 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 
 	case LOC_MIDHIGH:   // 가운데 위에
 	{
-
-
 		_float2 vPos = { 0.f , 0.f };
 		if (false == isColumn)
 		{
@@ -579,8 +578,8 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		_float2 vPos = { 0.f , 0.f };
 		if (false == isColumn)
 		{
-			vPos.x = vTextPos2D.x - _vRTSize.x * 0.1f / fScaleX;
-			vPos.y = vTextPos2D.y + _vRTSize.y * 0.3f / fScaleY;
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
 			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 		}
 		else if (true == isColumn)

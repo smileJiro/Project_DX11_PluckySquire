@@ -212,7 +212,12 @@ void CS_POINT_ACCELERATION(int3 dispatchThreadID : SV_DispatchThreadID)
 [numthreads(256, 1, 1)]
 void CS_LIMIT_ACCELERATION(int3 dispatchThreadID : SV_DispatchThreadID)
 {
-    Particles[dispatchThreadID.x].vAcceleration = normalize(Particles[dispatchThreadID.x].vAcceleration) * min(g_fAmount, length(Particles[dispatchThreadID.x].vAcceleration));
+    float fLength = max(min(length(Particles[dispatchThreadID.x].vAcceleration), g_fAmount), 0.01f);
+    float3 vDir = normalize(Particles[dispatchThreadID.x].vAcceleration);
+    
+    
+    Particles[dispatchThreadID.x].vAcceleration = vDir * fLength;
+    //Particles[dispatchThreadID.x].vAcceleration = normalize(Particles[dispatchThreadID.x].vAcceleration) * min(g_fAmount, length(Particles[dispatchThreadID.x].vAcceleration));
 
 }
 
@@ -289,19 +294,34 @@ void CS_UVANIM(int3 dispatchThreadID : SV_DispatchThreadID)
     
     //float fNormalizeTime = clamp(Particles[dispatchThreadID.x].vLifeTime.y / Particles[dispatchThreadID.x].vLifeTime.x, 0.f, 1.f);
     //float fIndexTime = fNormalizeTime + Particles[dispatchThreadID.x].fRandom;
-    //float fExceed = step(1.f, fIndexTime);  
-    //
+    //float fExceed = step(1.f, fIndexTime);
+    
     //float fIndex = (fIndexTime - 1.f * fExceed) * g_Count.x * g_Count.y;
     //fIndex = floor(fIndex);
-    //
+    
     //float fIndexY = floor((fIndex + 0.01f) / g_Count.x);
     //float fIndexX = fIndex - fIndexY * g_Count.x;
-    //
+    
     //Particles[dispatchThreadID.x].vTexcoord = float4(fIndexX * g_Size.x, fIndexY * g_Size.y, (fIndexX + 1) * g_Size.x, (fIndexY + 1) * g_Size.y);
     
 }
 
-
+[numthreads(256, 1, 1)]
+void CS_RANDOM_UVANIM(int3 dispatchThreadID : SV_DispatchThreadID)
+{ 
+    float fNormalizeTime = clamp(Particles[dispatchThreadID.x].vLifeTime.y / Particles[dispatchThreadID.x].vLifeTime.x, 0.f, 1.f);
+    float fIndexTime = fNormalizeTime + Particles[dispatchThreadID.x].fRandom;
+    float fExceed = step(1.f, fIndexTime);
+    
+    float fIndex = (fIndexTime - 1.f * fExceed) * g_Count.x * g_Count.y;
+    fIndex = floor(fIndex);
+    
+    float fIndexY = floor((fIndex + 0.01f) / g_Count.x);
+    float fIndexX = fIndex - fIndexY * g_Count.x;
+    
+    Particles[dispatchThreadID.x].vTexcoord = float4(fIndexX * g_Size.x, fIndexY * g_Size.y, (fIndexX + 1) * g_Size.x, (fIndexY + 1) * g_Size.y);
+    
+}
 
 
 technique11 DefaultTechnique
@@ -423,5 +443,14 @@ technique11 DefaultTechnique
         PixelShader = NULL;
         ComputeShader = compile cs_5_0 CS_UVANIM();
     }
+
+    pass RANDOMUVANIM // 15
+    {
+        VertexShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = NULL;
+        ComputeShader = compile cs_5_0 CS_RANDOM_UVANIM();
+    }
+
 
 }

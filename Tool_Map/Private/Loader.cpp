@@ -313,7 +313,7 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
         TEXT("../../Client/Bin/Resources/Models/2DMapObject/"))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP,L"Portal_2D",
-        C2DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/2DAnim/Chapter2/MapObject/Portal_2D/Portal_2D.model2d"))))
+        C2DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/2DAnim/Static/Portal_2D/Portal_2D.model2d"))))
     {
         return E_FAIL;
     }
