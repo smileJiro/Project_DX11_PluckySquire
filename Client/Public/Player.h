@@ -572,6 +572,7 @@ public:
 	void Set_SwordGrip(_bool _bForehand);
 	void Set_Kinematic(_bool _bKinematic);
 	void Set_PlatformerMode(_bool _bPlatformerMode);
+	void Set_ScrollingMode(_bool _bScrollingMode);
 	void Set_Upforce(_float _fForce);
 	HRESULT Set_CarryingObject(CCarriableObject* _pCarryingObject);
 	void Set_InteractObject(IInteractable* _pInteractable) { m_pInteractableObject = _pInteractable; }

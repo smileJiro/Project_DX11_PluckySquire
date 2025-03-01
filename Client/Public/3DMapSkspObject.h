@@ -16,7 +16,9 @@ public :
 		SKSP_CUP,
 		SKSP_TUB,
 		SKSP_PLAG,
+		SKSP_STORAGE,
 		SKSP_LAST
+
 	};
 
 private:
@@ -40,12 +42,15 @@ private :
 	HRESULT					Render_Default();
 	HRESULT					Render_Flags();
 	HRESULT					Render_Cup();
+	HRESULT					Render_Tub();
+	HRESULT					Render_Storage();
 
 private :
 	_wstring			m_strRenderSectionTag = L"";
 	SKSP_RENDER_TYPE	m_eSkspType = SKSP_DEFAULT;
 	RT_RENDERSTATE		m_eCurRenderState = RT_RENDERSTATE::RENDERSTATE_LIGHT;
 
+	_bool				m_isRight = false;
 
 public:
 	static C3DMapSkspObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

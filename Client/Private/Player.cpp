@@ -1802,6 +1802,12 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
         pCollider->Set_Offset(_float2(0.0f, m_f2DColliderBodyRadius * 0.5f));
     }
 }
+
+void CPlayer::Set_ScrollingMode(_bool _bScrollingMode)
+{
+    m_bScrollingMode = _bScrollingMode;
+}
+
 void CPlayer::Set_Upforce(_float _fForce)
 {
     if (COORDINATE_2D == Get_CurCoord())
