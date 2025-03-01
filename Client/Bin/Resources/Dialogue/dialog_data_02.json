@@ -33,7 +33,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "할 수만 있다면 당신 얼굴을 수천 장이라도 그리고 싶어",
+					"text": "할 수만 있다면 당신 얼굴을 수천 장이라도 그리고 싶어.",
 					"Red": 255,
 					"Green": 255,
 					"Blue": 242
@@ -313,24 +313,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "해바라기가 아름답군",
-					"Red": 255,
-					"Green": 220,
-					"Blue": 95
-				},
-				{
-					"Portrait": 2,
-					"Talker": "빈",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "자연을 진정으로 사랑한다면",
+					"text": "해바라기가 아름답군. 자연을 진정으로 사랑한다면,",
 					"Red": 255,
 					"Green": 220,
 					"Blue": 95
@@ -433,7 +416,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "뭘 읽고 있냐고요? 견습기사 모험기지 뭐겠어요!",
+					"text": "뭘 읽고 있냐고요? 견습기사 모험기지. 뭐 겠어요!",
 					"Red": 236,
 					"Green": 165,
 					"Blue": 158
@@ -467,24 +450,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "언젠가 주인공인 견습기사를",
-					"Red": 236,
-					"Green": 165,
-					"Blue": 158
-				},
-				{
-					"Portrait": 2,
-					"Talker": "조지아",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "직접 만나 봤으면 좋겠어요",
+					"text": "언젠가 주인공인 견습기사를 직접 만나 봤으면 좋겠어요.",
 					"Red": 236,
 					"Green": 165,
 					"Blue": 158
@@ -976,7 +942,7 @@
 					"location": 1,
 					"is2D": true,
 					"isPortrait": false,
-					"iAnimationIndex": 3,
+					"iAnimationIndex": 2,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -1176,7 +1142,7 @@
 				},
 				{
 					"Portrait": 2,
-					"Talker": " 이브",
+					"Talker": "살",
 					"BG": 0,
 					"location": 1,
 					"is2D": true,

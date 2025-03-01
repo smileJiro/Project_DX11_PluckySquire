@@ -79,6 +79,7 @@ private:
 	_bool						m_isOpenSate = { false };
 	_bool						m_isLunch = false;
 	_bool						m_isChangePos = { false };
+	_bool						m_isThrow = { false };
 };
 
 END

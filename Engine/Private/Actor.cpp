@@ -248,6 +248,104 @@ HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
 	return S_OK;
 }
 
+PxShape* CActor::Ready_CookingShape(const SHAPE_DATA& _ShapeData, _uint _iCookingColliderType, PxShapeFlags& _ShapeFlags, PxMaterial* _pMaterial, _float3 _fScale, _uint _iMeshIndex)
+{
+
+	PxCooking* pCooking = m_pGameInstance->Get_Cooking();
+	PxPhysics* pPhysics = m_pGameInstance->Get_Physics();
+
+	if (pCooking == nullptr || pPhysics == nullptr)
+		return nullptr;
+
+	//ShapeFlags &= ~PxShapeFlag::eVISUALIZATION; // ƒÌ≈∑ ¿¸øÎ Ω¶¿Ÿ¿∫∑ª¥ı µ•¿Ã≈Õ ª˝º∫ x 
+
+	SHAPE_COOKING_DESC* pDesc = static_cast<SHAPE_COOKING_DESC*>(_ShapeData.pShapeDesc);
+
+	if (nullptr == m_pOwner)
+		return nullptr;
+
+	CModelObject* pModelObj = dynamic_cast<CModelObject*>(m_pOwner);
+	if (nullptr == pModelObj)
+		return nullptr;
+
+	CModel* _pModel = pModelObj->Get_Model(COORDINATE_3D);
+	if (nullptr == _pModel)
+		return nullptr;
+	C3DModel* pModel = static_cast<C3DModel*>(_pModel);
+
+	_uint iNumMeshes = pModel->Get_NumMeshes();
+
+	if (pModel->Has_CookingCollider())
+	{
+		_uint iCookingMeshType = pModel->Get_CookingColliderType();
+
+		switch (iCookingMeshType)
+		{
+		case 0:
+		{
+			PxDefaultMemoryInputData readBuffer((PxU8*)pModel->Get_CookingColliderData(), pModel->Get_CookingColliderDataLength());
+			PxConvexMesh* pPxMesh = pPhysics->createConvexMesh(readBuffer);
+
+			PxMeshScale mashScale(PxVec3(_fScale.x, _fScale.y, _fScale.z));
+
+			PxConvexMeshGeometry geometry(pPxMesh, mashScale);
+			if (!geometry.isValid())
+				return nullptr;
+			return  pPhysics->createShape(geometry, *_pMaterial, true, _ShapeFlags);
+		}
+			break;
+		case 1:
+		{
+
+			PxDefaultMemoryInputData readBuffer((PxU8*)pModel->Get_CookingColliderData(), pModel->Get_CookingColliderDataLength());
+			PxTriangleMesh* pPxMesh = pPhysics->createTriangleMesh(readBuffer);
+
+			PxMeshScale mashScale(PxVec3(_fScale.x, _fScale.y, _fScale.z));
+
+			PxTriangleMeshGeometry geometry(pPxMesh, mashScale);
+			if (!geometry.isValid())
+				return nullptr;
+
+			return  pPhysics->createShape(geometry, *_pMaterial, true, _ShapeFlags);
+		}
+			break;
+		case 2:
+		{
+			_string strRootPath = pModel->Get_CookingColliderPath();
+			_string strPath = strRootPath +  "_" + std::to_string(_iMeshIndex) + ".modelMultiColl";
+			ifstream  file;
+			file.open(strPath, ios::binary);
+			if (!file)
+				return nullptr;
+			_uint iCookingColliderDataLength;
+			_char* arrCookingColliderData = nullptr;
+
+			file.read(reinterpret_cast<_char*>(&iCookingColliderDataLength), sizeof(_uint));
+			arrCookingColliderData = new _char[iCookingColliderDataLength];
+			file.read(arrCookingColliderData, iCookingColliderDataLength);
+			file.close();
+
+			PxDefaultMemoryInputData readBuffer((PxU8*)arrCookingColliderData, iCookingColliderDataLength);
+			PxConvexMesh* pPxMesh = pPhysics->createConvexMesh(readBuffer);
+
+			PxMeshScale mashScale(PxVec3(_fScale.x, _fScale.y, _fScale.z));
+
+			PxConvexMeshGeometry geometry(pPxMesh, mashScale);
+			if (!geometry.isValid())
+				return nullptr;
+			PxShape* pReturnShape = pPhysics->createShape(geometry, *_pMaterial, true, _ShapeFlags);
+			Safe_Delete_Array(arrCookingColliderData);
+			return pReturnShape;
+		}
+			break;
+		default:
+			break;
+		}
+	}
+
+	return nullptr;
+}
+
 _float3 CActor::Get_GlobalPose()
 {
 	PxTransform CurTransform = m_pActor->getGlobalPose();
@@ -343,8 +441,6 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 	break;
 	case Engine::SHAPE_TYPE::COOKING:
 	{
-		ShapeFlags &= ~PxShapeFlag::eVISUALIZATION; // ƒÌ≈∑ ¿¸øÎ Ω¶¿Ÿ¿∫∑ª¥ı µ•¿Ã≈Õ ª˝º∫ x 
-
 		SHAPE_COOKING_DESC* pDesc = static_cast<SHAPE_COOKING_DESC*>(_ShapeData.pShapeDesc);
 
 		if (nullptr == m_pOwner)
@@ -359,115 +455,10 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 			return E_FAIL;
 		C3DModel* pModel = static_cast<C3DModel*>(_pModel);
 
-		_uint iNumMeshes = pModel->Get_NumMeshes();
-
-
-
-		for (_uint i = 0; i < iNumMeshes; i++)
+		if (pModel->Has_CookingCollider())
 		{
-
-			if (false == pDesc->isLoad)
-			{
-#pragma region Cooking
-
-				CMesh* pMesh = pModel->Get_Mesh(i);
-				PxCooking* pCooking = m_pGameInstance->Get_Cooking();
-
-
-#pragma region convex
-				PxConvexMeshDesc  meshDesc;
-				if (FAILED(pMesh->Cooking(meshDesc)))
-					return E_FAIL;
-
-				PxDefaultMemoryOutputStream writeBuffer;
-				PxCookingParams params(pPhysics->getTolerancesScale());
-				pCooking->setParams(params);
-
-
-				if (!pCooking->cookConvexMesh(meshDesc, writeBuffer))
-					return E_FAIL;
-
-#pragma region Cooking Save
-				if (pDesc->isSave)
-				{
-
-					ofstream file;
-
-					file.open(pDesc->strFilePath, ios::binary);
-					if (!file)
-						return E_FAIL;
-
-					_uint iMeshDataSize = writeBuffer.getSize();
-
-					file.write((_char*)&iMeshDataSize, sizeof(_uint));
-					file.write((_char*)writeBuffer.getData(), iMeshDataSize);
-				}
-#pragma endregion
-
-				PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
-				PxConvexMesh* pPxMesh = pPhysics->createConvexMesh(readBuffer);
-
-
-				PxMeshScale mashScale(PxVec3(vScale.x, vScale.y, vScale.z));
-
-				PxConvexMeshGeometry geometry(pPxMesh, mashScale);
-				pShape = pPhysics->createShape(geometry, *pShapeMaterial, true, ShapeFlags);
-#pragma endregion
-
-			#pragma region Triangle
-
-				//PxTriangleMeshDesc meshDesc;
-				//if (FAILED(pMesh->Cooking(meshDesc)))
-				//    return E_FAIL;
-				//PxDefaultMemoryOutputStream writeBuffer;
-				//PxCookingParams params(pPhysics->getTolerancesScale());
-				//pCooking->setParams(params);
-
-				//if (!pCooking->cookTriangleMesh(meshDesc, writeBuffer))
-				//    return E_FAIL;
-
-				//PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
-				//PxTriangleMesh* pPxMesh = pPhysics->createTriangleMesh(readBuffer);
-				//PxTriangleMeshGeometry geometry(pPxMesh);
-				//pShape = pPhysics->createShape(geometry, *pShapeMaterial, true, ShapeFlags);
-#pragma endregion
-#pragma endregion
-			}
-			else
-			{
-				if (pModel->Has_CookingCollider())
-				{
-					PxDefaultMemoryInputData readBuffer((PxU8*)pModel->Get_CookingColliderData(), pModel->Get_CookingColliderDataLength());
-					PxConvexMesh* pPxMesh = pPhysics->createConvexMesh(readBuffer);
-
-					PxMeshScale mashScale(PxVec3(vScale.x, vScale.y, vScale.z));
-
-					PxConvexMeshGeometry geometry(pPxMesh, mashScale);
-					pShape = pPhysics->createShape(geometry, *pShapeMaterial, true, ShapeFlags);
-				}
-				else
-				{
-					ifstream  file;
-					file.open(pDesc->strFilePath, ios::binary);
-					if (!file)
-						return E_FAIL;
-					_uint meshDataSize;
-					file.read(reinterpret_cast<_char*>(&meshDataSize), sizeof(_uint));
-					vector<_char> meshData(meshDataSize);
-					file.read(meshData.data(), meshDataSize);
-
-					PxDefaultMemoryInputData readBuffer((PxU8*)meshData.data(), meshDataSize);
-
-					PxConvexMesh* pPxMesh = pPhysics->createConvexMesh(readBuffer);
-
-					PxMeshScale mashScale(PxVec3(vScale.x, vScale.y, vScale.z));
-
-					PxConvexMeshGeometry geometry(pPxMesh, mashScale);
-					pShape = pPhysics->createShape(geometry, *pShapeMaterial, true, ShapeFlags);
-				}
-
-			}
-
+			_uint iCookingMeshType = pModel->Get_CookingColliderType();
+			pShape = Ready_CookingShape(_ShapeData, iCookingMeshType,  ShapeFlags, pShapeMaterial, vScale, pDesc->iShapeIndex);
 		}
 	}
 	break;
@@ -477,7 +468,7 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 
 	if (nullptr == pShape)
 	{
-		MSG_BOX("Failed Create pShape (CActor::Ready_Shape)");
+		//MSG_BOX("Failed Create pShape (CActor::Ready_Shape)");
 		return E_FAIL;
 	}
 
