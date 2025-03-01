@@ -146,6 +146,7 @@ HRESULT C3DModel::Initialize(void* _pArg)
 
 HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 {
+
 	/* Mesh ¥‹¿ß ∑ª¥ı. */
 	for (_uint i = 0; i < m_iNumMeshes; ++i)
 	{
