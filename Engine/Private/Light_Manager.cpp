@@ -59,7 +59,7 @@ HRESULT CLight_Manager::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 {
 	for (auto& pLight : m_Lights)
 	{
-		pLight->Render(_pShader, _pVIBuffer);
+		pLight->Render_Light(_pShader, _pVIBuffer);
 	}
 
 	return S_OK;
@@ -115,6 +115,24 @@ HRESULT CLight_Manager::Load_Lights(const _wstring& _strLightsJsonPath)
 		tConstLightData.vRadiance.x = jsonLights[i]["vRadiance"]["x"];
 		tConstLightData.vRadiance.y = jsonLights[i]["vRadiance"]["y"];
 		tConstLightData.vRadiance.z = jsonLights[i]["vRadiance"]["z"];
+
+		if (jsonLights[i].contains("isShadow") && eType != LIGHT_TYPE::POINT)
+		{
+			tConstLightData.isShadow = jsonLights[i]["isShadow"];
+		}
+		else
+		{
+			tConstLightData.isShadow = false;
+		}
+
+		if (jsonLights[i].contains("fShadowFactor") && eType != LIGHT_TYPE::POINT)
+		{
+			tConstLightData.fShadowFactor = jsonLights[i]["fShadowFactor"];
+		}
+		else
+		{
+			tConstLightData.fShadowFactor = 1.0f;
+		}
 
 		if (FAILED(Add_Light(tConstLightData, eType)))
 			return E_FAIL;

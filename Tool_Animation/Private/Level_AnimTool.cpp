@@ -85,7 +85,7 @@ HRESULT CLevel_AnimTool::Render()
 	if (m_pTestModelObj)
 		SetWindowText(g_hWnd, m_szLoadedPath.c_str());
 #endif
-
+	
 	return S_OK;
 }
 
@@ -394,7 +394,7 @@ HRESULT CLevel_AnimTool::Ready_Lights()
 
 	LightDesc.vDirection = { 0.0f, -1.0f, 1.0f };
 	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	LightDesc.vDiffuse = _float4(1.0f, 1.0f, 1.0f, 1.0f);
 	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
 	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
 

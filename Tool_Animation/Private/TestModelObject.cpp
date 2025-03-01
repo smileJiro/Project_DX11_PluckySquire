@@ -6,6 +6,8 @@
 #include "Controller_Model.h"
 #include "TestController_Model.h"
 #include "Engine_Defines.h"
+#include "GameInstance.h"
+#include "RenderTarget.h"
 
 CTestModelObject::CTestModelObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -58,6 +60,12 @@ HRESULT CTestModelObject::Render()
     {
         m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix",&m_ViewMatrix);
         m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix",&m_ProjMatrix);
+
+        CGameInstance::GetInstance()->Find_RenderTarget(TEXT("Target_DirectLightAcc"))->Set_ClearColor(_float4(62.f/255.f, 145.f / 255.f, 172.f / 255.f, 1.0f));
+    }
+    else
+    {
+        CGameInstance::GetInstance()->Find_RenderTarget(TEXT("Target_DirectLightAcc"))->Set_ClearColor(_float4(0.0f, 0.0f, 0.0f, 1.0f));
     }
     return __super::Render();
 }

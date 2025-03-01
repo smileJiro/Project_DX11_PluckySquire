@@ -622,6 +622,15 @@ void CGameInstance::Set_DebugRender_New(_bool _isBool)
 	return m_pNewRenderer->Set_DebugRender(_isBool);
 }
 
+HRESULT CGameInstance::Add_BaseDebug(CBase* _pBaseDebug)
+{
+	if (nullptr == m_pNewRenderer)
+		return E_FAIL;
+
+	return m_pNewRenderer->Add_BaseDebug(_pBaseDebug);
+}
+
+
 #endif // _DEBUG
 
 const KEY_STATE& CGameInstance::GetKeyState(KEY _eKEY)
