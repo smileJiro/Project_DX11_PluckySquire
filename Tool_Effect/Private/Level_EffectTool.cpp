@@ -256,6 +256,25 @@ HRESULT CLevel_EffectTool::Ready_Layer_Model(const _wstring& _strLayerTag)
 	m_ModelObjects.push_back(pOut);
 
 
+
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_TOOL;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL;
+	Desc.strModelPrototypeTag_3D = L"Prototype_Model_Bomb";
+	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
+	Desc.iShaderPass_3D = 0;
+	Desc.iPriorityID_3D = PR3D_GEOMETRY;
+	Desc.iRenderGroupID_3D = RG_3D;
+	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_ModelObject"),
+		LEVEL_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+		return E_FAIL;
+
+	pOut->Set_Active(false);
+	m_ModelObjects.push_back(pOut);
+
 	Desc.eStartCoord = COORDINATE_3D;
 	Desc.iCurLevelID = LEVEL_TOOL;
 	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL;
@@ -275,6 +294,8 @@ HRESULT CLevel_EffectTool::Ready_Layer_Model(const _wstring& _strLayerTag)
 	//pOut->Set_Position(XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
 	m_ModelObjects.push_back(pOut);
 
+
+
 	//
 
 	CContainerObject::CONTAINEROBJ_DESC ContainerDesc = {};
@@ -286,6 +307,9 @@ HRESULT CLevel_EffectTool::Ready_Layer_Model(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_TOOL, TEXT("Prototype_GameObject_MagicHand"),
 		LEVEL_TOOL, _strLayerTag, &ContainerDesc)))
 		return E_FAIL;
+
+
+
 
 	return S_OK;
 }
@@ -681,8 +705,8 @@ void CLevel_EffectTool::Tool_ControlModel(_float _fTimeDelta)
 		{
 			ImGui::Begin("Control Model");
 
-			_float fTime = static_cast<C3DModel*>(pModel->Get_Model(COORDINATE_3D))->Get_AnimTime();
-			ImGui::Text("Current Anim Time : %.4f", fTime);
+			//_float fTime = static_cast<C3DModel*>(pModel->Get_Model(COORDINATE_3D))->Get_AnimTime();
+			//ImGui::Text("Current Anim Time : %.4f", fTime);
 			
 			static _float fTimeScale = 1.f;
 			if (ImGui::DragFloat("LifeTime", &fTimeScale, 0.01f))

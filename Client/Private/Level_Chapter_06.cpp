@@ -28,6 +28,7 @@
 #include "Soldier_CrossBow.h"
 #include "CrossBow_Arrow.h"
 #include "Bomb.h"
+#include "SlipperyObject.h"
 #include "LightningBolt.h"
 #include "ButterGrump.h"
 #include "RabbitLunch.h"
@@ -191,7 +192,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
 
 	// Trigger
-	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger.json"));
+	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter6_Trigger.json"));
 	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 
 	// BGM ½ÃÀÛ
@@ -487,8 +488,8 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, static_cast<CCamera*>(pCamera));
 
 	_float3 vArm;
-	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.67f, -0.74f, 0.f)));
-	_float fLength = 14.6f;
+	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.5776063799858093f, -0.87f, 0.f)));
+	_float fLength = 12.5f;
 	Create_Arm((_uint)COORDINATE_3D, pCamera, vArm, fLength);
 
 	// CutScene Camera
@@ -535,7 +536,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// Load CutSceneData, ArmData
 	CCamera_Manager::GetInstance()->Load_CutSceneData(TEXT("Chapter2_CutScene.json"));
-	CCamera_Manager::GetInstance()->Load_ArmData(TEXT("Chapter2_ArmData.json"), TEXT("Chapter2_SketchSpace_ArmData.json"));
+	CCamera_Manager::GetInstance()->Load_ArmData(TEXT("Chapter6_ArmData.json"), TEXT("Chapter2_SketchSpace_ArmData.json"));
 
 	return S_OK;
 }
@@ -562,7 +563,8 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	_int iCurCoord = (COORDINATE_2D);
 	_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
-
+	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
+	pPlayer->Equip_Part(CPlayer::PLAYER_PART_ZETPACK);
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 
@@ -1116,6 +1118,20 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("health_pickup_large"), LEVEL_STATIC, 3);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Player2dJumpAttackFX"), LEVEL_STATIC, 1);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_06::Ready_Layer_Slippery()
+{
+	CModelObject::MODELOBJECT_DESC tSlipperyDesc{};
+	tSlipperyDesc.tTransform2DDesc.vInitialPosition = _float3(500.f, 0.f, 0.0f);
+	tSlipperyDesc.iCurLevelID = m_eLevelID;
+	tSlipperyDesc.Build_2D_Model(m_eLevelID, TEXT("Prototype_Model2D_BigPig"), TEXT("Prototype_Component_Shader_VtxPosTex"),(_uint)PASS_VTXPOSTEX::SPRITE2D, false);
+	CSlipperyObject* pSlippery = static_cast<CSlipperyObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBomb"), &tSlipperyDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pSlippery);
+	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+	pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), pSlippery, SECTION_2D_PLAYMAP_SLIPPERY);
 
 	return S_OK;
 }

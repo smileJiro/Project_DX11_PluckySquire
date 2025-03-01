@@ -34,13 +34,17 @@ public :
 
 
 private :
+	void					Change_RenderState(RT_RENDERSTATE _eRenderState, _bool _isMapped);
+
+
 	HRESULT					Render_Default();
 	HRESULT					Render_Flags();
 	HRESULT					Render_Cup();
 
-public :
+private :
 	_wstring			m_strRenderSectionTag = L"";
 	SKSP_RENDER_TYPE	m_eSkspType = SKSP_DEFAULT;
+	RT_RENDERSTATE		m_eCurRenderState = RT_RENDERSTATE::RENDERSTATE_LIGHT;
 
 
 public:

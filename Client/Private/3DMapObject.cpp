@@ -47,8 +47,8 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
 
     // 구조체는 if문 내부에 넣어서 포인터로 던지면, 사라지므로. 밖에 선언
     CActor::ACTOR_DESC ActorDesc;
-    SHAPE_COOKING_DESC ShapeCookingDesc = {};
-    SHAPE_DATA ShapeData;
+    vector <SHAPE_COOKING_DESC> vecShapeCookingDesc = {};
+    vector<SHAPE_DATA>  vecShapeData;
 
     // 모델에 쿠킹 셰잎 정보가 있으면, 액터 정보를 ModelDesc에 포함시킨다.
 
@@ -59,9 +59,10 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
 
             if (nullptr != pModel)
             {
-                if (static_cast<C3DModel*>(pModel)->Has_CookingCollider())
+                Engine::C3DModel* p3DModel = static_cast<Engine::C3DModel*>(pModel);
+                if (p3DModel->Has_CookingCollider())
                 {
-
+                    _uint iColliderType = p3DModel->Get_CookingColliderType();
                     MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
 
                     pDesc->eActorType = ACTOR_TYPE::STATIC;
@@ -77,20 +78,58 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
                     ActorDesc.FreezePosition_XYZ[2] = false;
                     ActorDesc.isAddActorToScene = true;
 
-                    ShapeCookingDesc.isLoad = true;
-                    ShapeCookingDesc.isSave = false;
-                    ShapeData.eShapeType = SHAPE_TYPE::COOKING;
-                    ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
-                    ShapeData.pShapeDesc = &ShapeCookingDesc;
-                    ShapeData.isTrigger = false;
-                    ShapeData.isVisual = false;
+
+
                     _float3 fScale =
                         _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&pDesc->tTransform3DDesc.matWorld.m[0]))),
                             XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&pDesc->tTransform3DDesc.matWorld.m[1]))),
                             XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&pDesc->tTransform3DDesc.matWorld.m[2]))));
                     _matrix matScale = XMMatrixScaling(fScale.x, fScale.y, fScale.z);
-                    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, matScale);
-                    ActorDesc.ShapeDatas.push_back(ShapeData);
+
+                    switch (iColliderType)
+                    {
+                    case 0:
+                    case 1:
+                    {
+                        vecShapeData.resize(1);
+                        vecShapeCookingDesc.resize(1);
+                        vecShapeData[0].eShapeType = SHAPE_TYPE::COOKING;
+                        vecShapeData[0].eMaterial = ACTOR_MATERIAL::DEFAULT;
+                        vecShapeData[0].pShapeDesc = &vecShapeCookingDesc[0];
+                        vecShapeData[0].isTrigger = false;
+                        vecShapeData[0].isVisual = iColliderType;
+                        XMStoreFloat4x4(&vecShapeData[0].LocalOffsetMatrix, matScale);
+                        break;
+                    }
+                    case 2:
+                    {
+                        _uint iMeshSize = (_uint)p3DModel->Get_Meshes().size();
+						vecShapeData.resize(iMeshSize);
+                        vecShapeCookingDesc.resize(iMeshSize);
+						SHAPE_DATA tempShapeData = {};
+						tempShapeData.eShapeType = SHAPE_TYPE::COOKING;
+						tempShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
+						tempShapeData.isTrigger = false;
+						tempShapeData.isVisual = false;
+                        XMStoreFloat4x4(&tempShapeData.LocalOffsetMatrix, matScale);
+
+                        fill(vecShapeData.begin(), vecShapeData.end(), tempShapeData);
+                        _uint iMeshIndex = 0;
+                        for (_uint i = 0; i < iMeshSize; ++i) 
+                        {
+                            vecShapeCookingDesc[i].iShapeIndex = i;
+							vecShapeData[i].pShapeDesc = &vecShapeCookingDesc[i];
+                        }
+						break;
+                    }
+                    default:
+                        break;
+                    }
+
+                    ActorDesc.ShapeDatas.insert(ActorDesc.ShapeDatas.end(), vecShapeData.begin(), vecShapeData.end());
+
+
+                 
                     pDesc->pActorDesc = &ActorDesc;
 
                     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;

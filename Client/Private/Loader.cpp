@@ -81,6 +81,7 @@
 #include "BombStamp.h"
 #include "PlayerBomb.h"
 #include "Detonator.h"
+#include "ZetPack.h"
 #include "PalmMarker.h"
 #include "PalmDecal.h"
 #include "TestTerrain.h"
@@ -659,6 +660,9 @@ HRESULT CLoader::Loading_Level_Static()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Detonator"),
 		CDetonator::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ZetPack"),
+		CZetPack::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"),
 		CPlayerBody::Create(m_pDevice, m_pContext))))
@@ -1906,6 +1910,8 @@ HRESULT CLoader::Load_Models_FromJson(LEVEL_ID _iLevId, const _tchar* _szJsonFil
 		auto iter = strModelNames.find(strFileName);
 		if (iter != strModelNames.end())
 		{
+			if (strFileName == "StarSticker")
+				int a = 1;
 			strModelNames.erase(iter);
 			if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, StringToWstring(strFileName),
 				C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix, _isCollider))))

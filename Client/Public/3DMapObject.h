@@ -32,7 +32,7 @@ public:
 	virtual HRESULT					Render() override;
 
 
-	virtual void					Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, C3DModel::COLOR_SHADER_MODE _eColorMode, _float4 _fAlbedoColor);
+	virtual void					Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, Engine::C3DModel::COLOR_SHADER_MODE _eColorMode, _float4 _fAlbedoColor);
 
 protected:
 	_uint							m_iDiffuseIndex = 0;

@@ -111,14 +111,12 @@ private:
 	DIRECTION_TYPE				m_eDirectionType = { HORIZON };
 
 	// Book
-	_bool						m_isBook = { true };
 	_float						m_fFixedY = {};
-
 
 	// Sketch Space
 	NORMAL_DIRECTION			m_eCurSpaceDir = { NORMAL_DIRECTION::NONEWRITE_NORMAL };
 
-	// 카메라 위치 고정
+	// 카메라 위치 고정s
 	_float2						m_fBasicRatio[MAGNIFICATION_END] = {};	// 렌더 타겟의 어느 정도 비율로 고정할 것인지 결정, 기본적으로 해야 함
 	_uint						m_iFreezeMask = { NONE };
 	MAGNIFICATION_TYPE			m_eMagnificationType = {};
@@ -151,7 +149,6 @@ private:
 	void						Find_TargetPos();
 	void						Calculate_Book_Scroll();					
 	void						Check_MagnificationType();
-	void						Clamp_FixedPos();
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);

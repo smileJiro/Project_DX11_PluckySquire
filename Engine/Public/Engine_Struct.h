@@ -144,8 +144,7 @@ namespace Engine
 
 	typedef struct tagCookingDesc : public SHAPE_DESC
 	{
-		_bool isLoad = false;
-		_bool isSave = false;
+		_uint	iShapeIndex = 0; // ÄíÅ·¿¡ ¾¹´Ï´Ù..
 		_string strFilePath;
 	}SHAPE_COOKING_DESC;
 
