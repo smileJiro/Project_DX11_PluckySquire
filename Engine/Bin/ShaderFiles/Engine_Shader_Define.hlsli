@@ -30,7 +30,7 @@ struct Material_PS
     float Roughness;
     float Metallic;
     float AO;
-    float dummy;
+    float Emissive;
     
     float4 MultipleAlbedo;
 };

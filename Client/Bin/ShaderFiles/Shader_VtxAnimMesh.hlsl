@@ -5,17 +5,20 @@
 /* PS ConstBuffer */ 
 cbuffer BasicPixelConstData : register(b0)
 {
-    Material_PS Material;       // 32
+    Material_PS Material; // 32
     
     int useAlbedoMap;
     int useNormalMap;
     int useAOMap;
-    int useMetallicMap;         // 16
+    int useMetallicMap; // 16
     
     int useRoughnessMap;
     int useEmissiveMap;
     int useORMHMap;
-    int invertNormalMapY;       // 16
+    int useSpecularMap; // 16
+    
+    int invertNormalMapY;
+    float3 dummy;
 }
 
 
@@ -40,9 +43,9 @@ cbuffer MultiFresnels : register(b1)
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 /* Bone Matrix */
 float4x4 g_BoneMatrices[256];
-Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture, g_EmmisiveTexture; // PBR
+Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture, g_SpecularTexture, g_EmissiveTexture; // PBR
 
-float g_fFarZ = 300.f;
+float g_fFarZ = 500.f;
 int g_iFlag = 0;
 
 float4 g_vCamPosition;
@@ -230,6 +233,7 @@ struct PS_OUT
     float4 vNormal : SV_TARGET1;
     float4 vORMH : SV_TARGET2;
     float4 vDepth : SV_TARGET3;
+    float4 vEtc : SV_TARGET4;
 
 };
 
@@ -247,7 +251,8 @@ PS_OUT PS_MAIN(PS_IN In)
     float4 vAlbedo = useAlbedoMap ? g_AlbedoTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f) : Material.Albedo;
     float3 vNormal = useNormalMap ? Get_WorldNormal(g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz, In.vNormal.xyz, In.vTangent.xyz, 0) : In.vNormal.xyz;
     float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
-    float fEmmisive = useORMHMap ? g_EmmisiveTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
+    float fSpecular = useSpecularMap ? g_SpecularTexture.Sample(LinearSampler, In.vTexcoord).r : 0.0f;
+    float fEmissive = useEmissiveMap ? g_EmissiveTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Emissive;
     
     if (false == useORMHMap)
     {
@@ -266,6 +271,7 @@ PS_OUT PS_MAIN(PS_IN In)
     Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
     Out.vORMH = vORMH;
     Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 1.0f);
+    Out.vEtc = float4(fSpecular, fEmissive, 0.0f, 1.0f);
     
     return Out;
 }

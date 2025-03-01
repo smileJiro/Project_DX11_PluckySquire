@@ -158,7 +158,14 @@ HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 		{
 			int a = 0;
 		}
-
+		if (FAILED(Bind_Material(_pShader, "g_EmissiveTexture", i, aiTextureType_EMISSIVE, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_EMISSIVE])))
+		{
+			int a = 0;
+		}
+		if (FAILED(Bind_Material(_pShader, "g_SpecularTexture", i, aiTextureType_SPECULAR, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_SPECULAR])))
+		{
+			int a = 0;
+		}
 		if (FAILED(Bind_Material(_pShader, "g_NormalTexture", i, aiTextureType_NORMALS, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_NORMALS])))
 		{
 			int a = 0;
@@ -179,7 +186,7 @@ HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 		{
 			int a = 0;
 		}
-		
+
 		/* Bind Bone Matrices */
 		if (Is_AnimModel())
 		{

@@ -467,6 +467,7 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
     float NdotH = max(0.0f, dot(vNormalWorld, vHalfway));
     float NdotO = max(0.0f, dot(vNormalWorld, vPixelToEye));
     
+    
     float3 F0 = lerp(Fdielectric, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
     float F = SchlickFresnel(F0, dot(vHalfway, vPixelToEye));
     float3 kd = lerp(float3(1.0f, 1.0f, 1.0f) - F, float3(0.0f, 0.0f, 0.0f), fMetallic); // 물체의 확산반사계수 : 메탈릭 수치에 따라 보정되는 값임 >>> F로 반사되는 에너지를 제외한 에너지를 확산반사의 양으로 사용함.
