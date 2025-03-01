@@ -69,6 +69,7 @@ protected:
 	_bool	m_isKnockBack = {};
 	_bool m_bOnGround = false;
 	_bool m_bPlatformerMode = false;
+	_bool m_bScrollingMode = false;
 	_float3 m_vKnockBackDirection = {};
 	_vector m_vLookBefore = { 0.f,0.f,-1.f };
 	_vector m_v3DTargetDirection = { 0.f,0.f,-1.f };

@@ -164,6 +164,7 @@ protected:
 	_wstring				m_strNextPageTag = L"";
 	_wstring				m_strPrePageTag = L"";
 
+	_bool					m_isScrolling = false;
 	_bool					m_isRotation = false;
 	_bool					m_isOverride_WorldTex = false;
 	_uint					m_iOverride_Normal = { 0 };
