@@ -64,7 +64,7 @@ protected:
 	_float m_fKnockBackForce = {};
 	_float m_fKnockBackAccTime = {};
 
-	_float m_fStepSlopeThreshold = 0.15f;
+	_float m_fStepSlopeThreshold = 0.45f;
 	_float m_fStepHeightThreshold = 0.15f;
 	_bool	m_isKnockBack = {};
 	_bool m_bOnGround = false;
@@ -77,7 +77,7 @@ protected:
 	_float m_f2DUpForce = 0.f;
 	_float4x4 m_matQueryShapeOffset;
 	_vector m_vFloorNormal;
-
+	_float m_fGravity = 0.f;
 
 public:	
 	virtual void Free() override;

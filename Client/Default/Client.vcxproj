@@ -430,6 +430,7 @@
     <ClInclude Include="..\Public\WordPrinter.h" />
     <ClInclude Include="..\Public\Word_Container.h" />
     <ClInclude Include="..\Public\Word_Controller.h" />
+    <ClInclude Include="..\Public\ZetPack.h" />
     <ClInclude Include="..\Public\Zippy.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Client_Etc.h" />
@@ -687,6 +688,7 @@
     <ClCompile Include="..\Private\WordPrinter.cpp" />
     <ClCompile Include="..\Private\Word_Container.cpp" />
     <ClCompile Include="..\Private\Word_Controller.cpp" />
+    <ClCompile Include="..\Private\ZetPack.cpp" />
     <ClCompile Include="..\Private\Zippy.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="PlayerState_PlatformJumpAttack.cpp" />

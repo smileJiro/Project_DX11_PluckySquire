@@ -789,7 +789,7 @@ HRESULT CTask_Manager::Cooking(const _string& _strCookingPath, CMapObject* _pMap
 		if (!pCooking->cookConvexMesh(meshDesc, writeBuffer))
 			return E_FAIL;
 
-
+		strCookingPath += ".modelcoll";
 		ofstream file;
 		file.open(strCookingPath, ios::binary);
 		if (!file)

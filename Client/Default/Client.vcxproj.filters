@@ -1269,6 +1269,7 @@
     <ClInclude Include="..\Public\ButterGrump_Shield.h">
       <Filter>02.GameObjects\Monster\Boss\Part</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ZetPack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2011,6 +2012,7 @@
     <ClCompile Include="..\Private\ButterGrump_Shield.cpp">
       <Filter>02.GameObjects\Monster\Boss\Part</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\ZetPack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
