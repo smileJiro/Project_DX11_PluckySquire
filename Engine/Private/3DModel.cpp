@@ -23,6 +23,8 @@ C3DModel::C3DModel(const C3DModel& _Prototype)
 	, m_iNumAnimations(_Prototype.m_iNumAnimations)
 	, m_isCookingCollider(_Prototype.m_isCookingCollider)
 	, m_iCookingColliderDataLength(_Prototype.m_iCookingColliderDataLength)
+	, m_iCoockingMeshType(_Prototype.m_iCoockingMeshType)
+	, m_strColliderPath(_Prototype.m_strColliderPath)
 	, m_arrCookingColliderData(_Prototype.m_arrCookingColliderData)
 {
 
@@ -97,8 +99,27 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 	if (_isCookingCollider)
 	{
 		_string strColliderPath = pModelFilePath;
-		strColliderPath += "Coll";
-		if (filesystem::exists(strColliderPath))
+		if (filesystem::exists(strColliderPath + "Coll"))
+		{
+			strColliderPath += "Coll";
+			m_isCookingCollider = true;
+			m_iCoockingMeshType = 0;
+		}
+		else if (filesystem::exists(strColliderPath + "TriColl"))
+		{
+			strColliderPath += "TriColl";
+			m_isCookingCollider = true;
+			m_iCoockingMeshType = 1;
+		}
+		else if (filesystem::exists(std::filesystem::path(strColliderPath).replace_extension("").string() + "_0.modelMultiColl"))
+		{
+			strColliderPath += "Tmp";
+			m_isCookingCollider = true;
+			m_iCoockingMeshType = 2;
+			m_strColliderPath = std::filesystem::path(strColliderPath).replace_extension("").string();
+		}
+
+		if(m_isCookingCollider && filesystem::exists(strColliderPath))
 		{
 			ifstream  file;
 			file.open(strColliderPath, ios::binary);
@@ -107,8 +128,6 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 			file.read(reinterpret_cast<_char*>(&m_iCookingColliderDataLength), sizeof(_uint));
 			m_arrCookingColliderData = new _char[m_iCookingColliderDataLength];
 			file.read(m_arrCookingColliderData, m_iCookingColliderDataLength);
-
-			m_isCookingCollider = _isCookingCollider;
 			file.close();
 		}
 	}

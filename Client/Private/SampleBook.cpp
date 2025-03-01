@@ -234,7 +234,7 @@ void CSampleBook::Late_Update(_float _fTimeDelta)
 		_int isRenderState = m_eCurRenderState;
 		isRenderState ^= 1;
 
-		Change_RenderState((BOOK_RENDERSTATE)isRenderState);
+		Change_RenderState((RT_RENDERSTATE)isRenderState);
 	}
 	__super::Late_Update(_fTimeDelta);
 }
@@ -806,18 +806,18 @@ void CSampleBook::Free()
 	__super::Free();
 }
 
-void CSampleBook::Change_RenderState(BOOK_RENDERSTATE _eRenderState)
+void CSampleBook::Change_RenderState(RT_RENDERSTATE _eRenderState)
 {
 	if (m_eCurRenderState == _eRenderState)
 		return;
 
 	switch (_eRenderState)
 	{
-	case Client::CSampleBook::RENDERSTATE_LIGHT:
+	case Client::RT_RENDERSTATE::RENDERSTATE_LIGHT:
 		m_iPriorityID_3D = PR3D_GEOMETRY;
 		m_iShaderPasses[COORDINATE_3D] = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP;
 		break;
-	case Client::CSampleBook::RENDERSTATE_NONLIGHT:
+	case Client::RT_RENDERSTATE::RENDERSTATE_NONLIGHT:
 		m_iPriorityID_3D = PR3D_AFTERPOSTPROCESSING;
 		m_iShaderPasses[COORDINATE_3D] = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP_AFTERPOSTPROCESSING;
 		break;

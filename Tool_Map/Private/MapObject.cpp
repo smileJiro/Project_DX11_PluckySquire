@@ -60,61 +60,84 @@ HRESULT CMapObject::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 0.f;
 
-
-
-    pDesc->eActorType = ACTOR_TYPE::STATIC;
     CActor::ACTOR_DESC ActorDesc;
+    vector <SHAPE_COOKING_DESC> vecShapeCookingDesc = {};
+    vector<SHAPE_DATA>  vecShapeData;
+    C3DModel* p3DModel = static_cast<C3DModel*>(pBase);
 
-    ActorDesc.pOwner = this;
+    if (p3DModel->Has_CookingCollider())
+    {
+        _uint iColliderType = p3DModel->Get_CookingColliderType();
+        MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
 
-    ActorDesc.FreezeRotation_XYZ[0] = true;
-    ActorDesc.FreezeRotation_XYZ[1] = true;
-    ActorDesc.FreezeRotation_XYZ[2] = true;
+        pDesc->eActorType = ACTOR_TYPE::STATIC;
 
-    ActorDesc.FreezePosition_XYZ[0] = false;
-    ActorDesc.FreezePosition_XYZ[1] = false;
-    ActorDesc.FreezePosition_XYZ[2] = false;
+        ActorDesc.pOwner = this;
 
-    SHAPE_COOKING_DESC ShapeCookingDesc = {};
-    ShapeCookingDesc.isLoad = true;
-    ShapeCookingDesc.isSave = false;
-    ShapeCookingDesc.strFilePath = WstringToString(STATIC_3D_MODEL_FILE_PATH);
-    ShapeCookingDesc.strFilePath += "3DCollider/";
-    ShapeCookingDesc.strFilePath += WstringToString(m_strModelName);
-    ShapeCookingDesc.strFilePath += ".modelColl";
-    SHAPE_DATA ShapeData;
-    ShapeData.isVisual = true;
-    ShapeData.eShapeType = SHAPE_TYPE::COOKING;
-    ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; 
-    ShapeData.pShapeDesc = &ShapeCookingDesc;
-    ShapeData.isTrigger = false;                   
+        ActorDesc.FreezeRotation_XYZ[0] = true;
+        ActorDesc.FreezeRotation_XYZ[1] = true;
+        ActorDesc.FreezeRotation_XYZ[2] = true;
+
+        ActorDesc.FreezePosition_XYZ[0] = false;
+        ActorDesc.FreezePosition_XYZ[1] = false;
+        ActorDesc.FreezePosition_XYZ[2] = false;
+        ActorDesc.isAddActorToScene = true;
 
 
 
-    //FILE* file = fopen("convex_mesh.bin", "rb");
-    //fseek(file, 0, SEEK_END);
-    //size_t fileSize = ftell(file);
-    //rewind(file);
+        _float3 fScale =
+            _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[0]))),
+                XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[1]))),
+                XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[2]))));
+        _matrix matScale = XMMatrixScaling(fScale.x, fScale.y, fScale.z);
 
-    //char* data = new char[fileSize];
-    //fread(data, 1, fileSize, file);
-    //fclose(file);
+        switch (iColliderType)
+        {
+        case 0:
+        case 1:
+        {
+            vecShapeData.resize(1);
+            vecShapeCookingDesc.resize(1);
+            vecShapeData[0].eShapeType = SHAPE_TYPE::COOKING;
+            vecShapeData[0].eMaterial = ACTOR_MATERIAL::DEFAULT;
+            vecShapeData[0].pShapeDesc = &vecShapeCookingDesc[0];
+            vecShapeData[0].isTrigger = false;
+            vecShapeData[0].isVisual = true;
+            XMStoreFloat4x4(&vecShapeData[0].LocalOffsetMatrix, matScale);
+            break;
+        }
+        case 2:
+        {
+            _uint iMeshSize = (_uint)p3DModel->Get_Meshes().size();
+            vecShapeData.resize(iMeshSize);
+            vecShapeCookingDesc.resize(iMeshSize);
+            SHAPE_DATA tempShapeData = {};
+            tempShapeData.eShapeType = SHAPE_TYPE::COOKING;
+            tempShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
+            tempShapeData.isTrigger = false;
+            tempShapeData.isVisual = true;
+            XMStoreFloat4x4(&tempShapeData.LocalOffsetMatrix, matScale);
 
-    //PxDefaultMemoryInputData input(reinterpret_cast<PxU8*>(data), fileSize);
-    //PxConvexMesh* convexMesh = physics->createConvexMesh(input);
-    //delete[] data;
+            fill(vecShapeData.begin(), vecShapeData.end(), tempShapeData);
+            _uint iMeshIndex = 0;
+            for (_uint i = 0; i < iMeshSize; ++i)
+            {
+                vecShapeCookingDesc[i].iShapeIndex = i;
+                vecShapeData[i].pShapeDesc = &vecShapeCookingDesc[i];
+            }
+            break;
+        }
+        default:
+            break;
+        }
+
+        ActorDesc.ShapeDatas.insert(ActorDesc.ShapeDatas.end(), vecShapeData.begin(), vecShapeData.end());
 
 
-    _float3 fScale = 
-    _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[0]))),
-        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[1]))),
-        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[2]))));
-    _matrix matScale = XMMatrixScaling(fScale.x, fScale.y, fScale.z);
-    XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, matScale);
-    ActorDesc.ShapeDatas.push_back(ShapeData);
 
-    /* Actor Component Finished */
-    pDesc->pActorDesc = &ActorDesc;
+        pDesc->pActorDesc = &ActorDesc;
+
+    }
 
 
 

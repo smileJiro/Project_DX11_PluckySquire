@@ -296,4 +296,14 @@ namespace Client
 		BOMB_SOLDIER,
 		LAST
 	};
+
+	enum RT_RENDERSTATE
+	{
+		RENDERSTATE_LIGHT,
+		RENDERSTATE_NONLIGHT,
+
+		RENDERSTATE_LAST
+	};
+
+
 }
