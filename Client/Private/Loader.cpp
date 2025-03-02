@@ -106,6 +106,7 @@
 #include "Sneak_DetectionField.h"
 #include "LightningBolt.h"
 #include "LunchBox.h"
+#include "Rubboink_Tiny.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -1203,6 +1204,9 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 	    CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
 	    return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Rubboink_Tiny"),
+		CRubboink_Tiny::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model_ButterGrump"),

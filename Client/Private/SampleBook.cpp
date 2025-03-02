@@ -707,11 +707,15 @@ void CSampleBook::SlideObjects_RToL()
 {
 	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
 	CSection_2D* pSection = static_cast<CSection_2D*>( CSection_Manager::GetInstance()->Find_Section(pSectionMgr->Get_Cur_Section_Key()));
-	list<CGameObject*> ObjList = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_SLIPPERY)->Get_GameObjects();
+	list<CGameObject*> ObjList = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT)->Get_GameObjects();
 	for (auto& pObj : ObjList)
 	{
 		if (XMVectorGetX( pObj->Get_FinalPosition()) > 0.f)
-			static_cast<CSlipperyObject*>(pObj)->Start_Slip(_vector{-1.0f, 0.f,0.f});
+		{
+			CSlipperyObject* pSlippery = dynamic_cast<CSlipperyObject*>(pObj);
+			if(pSlippery)
+				pSlippery->Start_Slip(_vector{ -1.0f, 0.f,0.f });
+		}
 	}
 }
 
@@ -719,11 +723,15 @@ void CSampleBook::SlideObjects_LToR()
 {
 	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
 	CSection_2D* pSection = static_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(pSectionMgr->Get_Cur_Section_Key()));
-	list<CGameObject*> ObjList = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_SLIPPERY)->Get_GameObjects();
+	list<CGameObject*> ObjList = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT)->Get_GameObjects();
 	for (auto& pObj : ObjList)
 	{
 		if (XMVectorGetX(pObj->Get_FinalPosition()) < 0.f)
-			static_cast<CSlipperyObject*>(pObj)->Start_Slip(_vector{ 1.0f, 0.f,0.f });
+		{
+			CSlipperyObject* pSlippery = dynamic_cast<CSlipperyObject*>(pObj);
+			if (pSlippery)
+				pSlippery->Start_Slip(_vector{ 1.0f, 0.f,0.f });
+		}
 	}
 }
 

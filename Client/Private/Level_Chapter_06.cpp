@@ -31,6 +31,7 @@
 #include "SlipperyObject.h"
 #include "LightningBolt.h"
 #include "ButterGrump.h"
+#include "Rubboink_Tiny.h"
 #include "RabbitLunch.h"
 
 
@@ -150,6 +151,11 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	if (FAILED(Ready_Layer_Map()))
 	{
 		MSG_BOX(" Failed Ready_Layer_Map (Level_Chapter_06::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Slippery()))
+	{
+		MSG_BOX(" Failed Ready_Layer_Slippery (Level_Chapter_06::Initialize)");
 		assert(nullptr);
 	}
 
@@ -1124,14 +1130,14 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Slippery()
 {
-	CModelObject::MODELOBJECT_DESC tSlipperyDesc{};
-	tSlipperyDesc.tTransform2DDesc.vInitialPosition = _float3(500.f, 0.f, 0.0f);
+	CSlipperyObject::CONTAINEROBJ_DESC tSlipperyDesc{};
+
 	tSlipperyDesc.iCurLevelID = m_eLevelID;
-	tSlipperyDesc.Build_2D_Model(m_eLevelID, TEXT("Prototype_Model2D_BigPig"), TEXT("Prototype_Component_Shader_VtxPosTex"),(_uint)PASS_VTXPOSTEX::SPRITE2D, false);
-	CSlipperyObject* pSlippery = static_cast<CSlipperyObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBomb"), &tSlipperyDesc));
+	
+	CSlipperyObject* pSlippery = static_cast<CSlipperyObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Rubboink_Tiny"), &tSlipperyDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pSlippery);
 	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
-	pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), pSlippery, SECTION_2D_PLAYMAP_SLIPPERY);
+	pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), pSlippery, SECTION_2D_PLAYMAP_OBJECT);
 
 	return S_OK;
 }
