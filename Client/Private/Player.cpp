@@ -805,6 +805,10 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
         
     }
         break;
+    case DOOR:
+    {    
+        break;
+    }
     default:
         break;
     }
@@ -909,7 +913,11 @@ void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
             m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
         }
     }
-    break;
+    break;    
+    case DOOR:
+    {
+        break;
+    }
     default:
         break;
     }
