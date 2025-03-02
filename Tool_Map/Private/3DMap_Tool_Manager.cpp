@@ -477,6 +477,8 @@ void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 				pPickingObj->Set_SkspType(SKSP_PLAG);
 			if (ImGui::RadioButton("Storage", iSksp == SKSP_STORAGE))
 				pPickingObj->Set_SkspType(SKSP_STORAGE);
+			if (ImGui::RadioButton("Postit", iSksp == SKSP_LAST))
+				pPickingObj->Set_SkspType(SKSP_LAST);
 
 			if (iSksp != SKSP_NONE)
 			{

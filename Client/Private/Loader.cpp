@@ -108,6 +108,8 @@
 #include "LunchBox.h"
 #include "Door_Yellow.h"
 #include "Pressure_Plate.h"
+#include "Rubboink_Tiny.h"
+#include "MudPit.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -1257,6 +1259,12 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 	    CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
 	    return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Rubboink_Tiny"),
+		CRubboink_Tiny::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_MudPit"),
+		CMudPit::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),

@@ -1,20 +1,48 @@
 [
+
 	{
 		"Section_Name": "Chapter1_P0708",
 		"Spawn_Data": [
 			{
-				"Monster_Type": 0,
+				"Monster_Type": 2,
 				"Monster_Pos": [
-					420.0,
-					60.0
+					460.0,
+					100.0
 				]
 			},
 			{
-				"Monster_Type": 0,
+				"Monster_Type": 2,
 				"Monster_Pos": [
-					-120.0,
-					-10.0
+					700.0,
+					20.0
 				]
+			}
+		]
+	},
+	{
+		"Section_Name": "Chapter2_P0102",
+		"Spawn_Data": [
+			{
+				"Monster_Type": 2,
+				"Monster_Pos": [
+					210.0,
+					1203.0
+				],
+				"SideScroll": true,
+				"Monster_Info": {
+					"Side_Scroll_Bound": 0
+				}
+			},
+			{
+				"Monster_Type": 2,
+				"Monster_Pos": [
+					400.0,
+					1203.0
+				],
+				"SideScroll": true,
+				"Monster_Info": {
+					"Side_Scroll_Bound": 0
+				}
 			}
 		]
 	}
