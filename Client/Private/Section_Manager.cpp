@@ -503,15 +503,18 @@ void CSection_Manager::Main_Section_Active_Process(const _wstring& _strSectionTa
 
 	if (pTargetSection->Get_Section_2D_PlayType() == CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION)
 	{
-		if (pTargetSection->Get_SectionName() == L"Chapter2_P0506")
-			CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter2_P0506_Narration_01"));
+		//if (pTargetSection->Get_SectionName() == L"Chapter2_P0506")
+		//	CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter2_P0506_Narration_01"));
+		//
+		//if (pTargetSection->Get_SectionName() == L"Chapter2_P1920")
+		//	CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter2_P1920_Narration_01"));
 	}
 
-	if (pTargetSection->Get_Section_2D_PlayType() == CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION)
-	{
-		if (pTargetSection->Get_SectionName() == L"Chapter2_P1920")
-			CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter2_P1920_Narration_01"));
-	}
+	//if (pTargetSection->Get_Section_2D_PlayType() == CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION)
+	//{
+	//	if (pTargetSection->Get_SectionName() == L"Chapter2_P1920")
+	//		CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter2_P1920_Narration_01"));
+	//}
 
 }
 
