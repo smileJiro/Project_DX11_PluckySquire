@@ -271,7 +271,9 @@ PS_OUT PS_MAIN(PS_IN In)
     Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
     Out.vORMH = vORMH;
     Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 1.0f);
-    Out.vEtc = float4(fSpecular, fEmissive, 0.0f, 1.0f);
+    
+    float3 vEmissiveColor = Material.EmissiveColor * fEmissive;
+    Out.vEtc = float4(vEmissiveColor, fSpecular /**/);
     
     return Out;
 }

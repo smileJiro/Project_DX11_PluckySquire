@@ -78,6 +78,8 @@ HRESULT CRenderGroup_DirectLights::Render(CShader* _pRTShader, CVIBuffer_Rect* _
     if (FAILED(m_pGameInstance->End_MRT()))
         return E_FAIL;
 
+
+
     return S_OK;
 }
 

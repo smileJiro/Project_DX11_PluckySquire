@@ -313,19 +313,6 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	//	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	//}
 
-	if (KEY_DOWN(KEY::F5))
-	{
-		CGoblin::MONSTER_DESC Goblin_Desc;
-		Goblin_Desc.iCurLevelID = m_eLevelID;
-		Goblin_Desc.eStartCoord = COORDINATE_3D;
-
-		Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(5.f, 0.35f, -3.f);
-		Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, TEXT("Layer_Monster"), &Goblin_Desc)))
-			return;
-	}
-
 }
 
 HRESULT CLevel_Chapter_04::Render()

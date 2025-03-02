@@ -49,6 +49,8 @@ namespace Engine
 		float		Emissive = 0.0f;									// 16byte
 
 		XMFLOAT4	MultipleAlbedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);	// 16byte
+		XMFLOAT3	EmissiveColor = XMFLOAT3(1.0f, 1.0f, 1.0f);
+		float		dummy;
 	}MATERIAL_PS;
 	
 	typedef struct tagBasicPixelConstData // 동적변화가 없는 애들위주로.

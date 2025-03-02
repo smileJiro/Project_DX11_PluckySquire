@@ -21,6 +21,7 @@ public:
 	HRESULT Render(class CShader* _pShader, class CVIBuffer_Rect* _pVIBuffer);
 public:
 	HRESULT Load_Lights(const _wstring& _strLightsJsonPath);
+
 	HRESULT Delete_Light(_uint _iLightIndex);
 public:
 	void	Level_Exit();

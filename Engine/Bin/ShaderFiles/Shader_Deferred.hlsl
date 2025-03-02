@@ -418,7 +418,7 @@ PS_OUT PS_PBR_LIGHT_POINT(PS_IN In)
     float NdotH = max(0.0f, dot(vNormalWorld, vHalfway));
     float NdotO = max(0.0f, dot(vNormalWorld, vPixelToEye));
     
-    float fSpecular = vEtcDesc.r * 0.5f;
+    float fSpecular = vEtcDesc.a * 0.5f;
     float3 F0 = lerp(Fdielectric + fSpecular, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
     //float3 F0 = lerp(Fdielectric, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
     float F = SchlickFresnel(F0, dot(vHalfway, vPixelToEye));
@@ -473,7 +473,7 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
     float NdotH = max(0.0f, dot(vNormalWorld, vHalfway));
     float NdotO = max(0.0f, dot(vNormalWorld, vPixelToEye));
     
-    float fSpecular = vEtcDesc.r * 0.5f;
+    float fSpecular = vEtcDesc.a * 0.5f;
     float3 F0 = lerp(Fdielectric + fSpecular, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
     //float3 F0 = lerp(Fdielectric, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
     float F = SchlickFresnel(F0, dot(vHalfway, vPixelToEye));
@@ -543,14 +543,15 @@ PS_OUT PS_MAIN_LIGHTING(PS_IN In)
     float3 vAlbedo = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord).rgb;
     float3 vNormalWorld = g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz * 2.0f - 1.0f; // 16 unorm을 변환하여 값 저장.
     float4 vORMHDesc = g_ORMHTexture.Sample(LinearSampler, In.vTexcoord);
-    //float4 vEtcDesc = g_EtcTexture.Sample(LinearSampler, In.vTexcoord);
+    float4 vEtcDesc = g_EtcTexture.Sample(LinearSampler, In.vTexcoord);
+    float3 vEmissiveColor = vEtcDesc.rgb;
     float fAO =         vORMHDesc.r;
     float fRoughness =  vORMHDesc.g;
     float fMetallic =   vORMHDesc.b;
     float fHeight =     vORMHDesc.a;
 
     /* 2. IBL 기반으로 AbientLighting 결과를 저장한다. */
-    //float fSpecular = vEtcDesc.r * 0.5f;
+    //float fSpecular = vEtcDesc.a * 0.3f;
     float fSpecular = 0.0f; // 간접광 specular 적용 시
     float3 vAmbientLighting = AmbientLightingByIBL(vAlbedo, vNormalWorld, vPixelToEye, fAO, fMetallic, fRoughness, fSpecular) * c_GlobalIBLVariable.fStrengthIBL;
     
@@ -573,7 +574,7 @@ PS_OUT PS_MAIN_LIGHTING(PS_IN In)
     
     
     //Out.vColor = float4(SumSSAO, SumSSAO, SumSSAO /*+ vEmmision*/, 1.0f);
-    Out.vColor = float4(max(vAmbientLighting, 0.0f) + vDirectLighting /*+ vEmmision*/, 1.0f);
+    Out.vColor = float4(max(vAmbientLighting, 0.0f) + vDirectLighting /*+ vEmissiveColor*/, 1.0f);
     Out.vColor = clamp(Out.vColor, 0.0f, c_GlobalIBLVariable.fHDRMaxLuminance);
     return Out;
 }
@@ -635,7 +636,7 @@ PS_OUT PS_MAIN_COMBINE(PS_IN In)
     float fPlayerViewZ = fPlayerDepthDesc * g_fFarZ;
     
     float3 vHideColor = g_vHideColor;
-    float PlayerDepthBias = 0.5f;
+    float PlayerDepthBias = 1.0f;
     float fViewZDiff = fPlayerViewZ - fViewZ - PlayerDepthBias;
     float fHideMin = 0.0f;
     float fHideMax = 10.0f;

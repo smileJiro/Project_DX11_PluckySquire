@@ -23,7 +23,7 @@ HRESULT CRenderGroup_PostProcessing::Initialize(void* _pArg)
     /* 블러 레벨에 따라 미리 렌더 타겟을 생성한다. */
     Ready_BlurRenderTarget();
 
-    Set_Active(false);
+    //Set_Active(false);
     return S_OK;
 }
 

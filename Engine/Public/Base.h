@@ -13,6 +13,13 @@ protected:
 public:
 	_uint AddRef();
 	_uint Release();
+
+#ifdef _DEBUG
+public:
+	virtual HRESULT Render_Base_Debug() { return S_OK; }
+#endif // _DEBUG
+
+
 protected:
 	_uint m_iRefCnt = 0;
 
