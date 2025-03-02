@@ -59,8 +59,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    if (FAILED(Ready_Projectiles()))
-        return E_FAIL;
+    //if (FAILED(Ready_Projectiles()))
+    //    return E_FAIL;
     
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SCENE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
