@@ -206,6 +206,7 @@
     <ClInclude Include="..\Public\Interaction_E.h" />
     <ClInclude Include="..\Public\JumpPad.h" />
     <ClInclude Include="..\Public\Level_Chapter_06.h" />
+    <ClInclude Include="..\Public\MudPit.h" />
     <ClInclude Include="..\Public\NPC_Manager.h" />
     <ClInclude Include="..\Public\PalmDecal.h" />
     <ClInclude Include="..\Public\PalmMarker.h" />
@@ -221,6 +222,7 @@
     <ClInclude Include="..\Public\DraggableObject.h" />
     <ClInclude Include="..\Public\PlayerState_Drag.h" />
     <ClInclude Include="..\Public\Dialog_Manager.h" />
+    <ClInclude Include="..\Public\Rubboink_Tiny.h" />
     <ClInclude Include="..\Public\Shadow2D.h" />
     <ClInclude Include="..\Public\3DMapDefaultObject.h" />
     <ClInclude Include="..\Public\3DMapObject.h" />
@@ -466,6 +468,7 @@
     <ClCompile Include="..\Private\Interaction_E.cpp" />
     <ClCompile Include="..\Private\JumpPad.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_06.cpp" />
+    <ClCompile Include="..\Private\MudPit.cpp" />
     <ClCompile Include="..\Private\NPC_Manager.cpp" />
     <ClCompile Include="..\Private\PalmDecal.cpp" />
     <ClCompile Include="..\Private\PalmMarker.cpp" />
@@ -482,6 +485,7 @@
     <ClCompile Include="..\Private\PlayerState_Drag.cpp" />
     <ClCompile Include="..\private\Effect_Beam.cpp" />
     <ClCompile Include="..\Private\Dialog_Manager.cpp" />
+    <ClCompile Include="..\Private\Rubboink_Tiny.cpp" />
     <ClCompile Include="..\Private\Shadow2D.cpp" />
     <ClCompile Include="..\Private\3DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\3DMapObject.cpp" />

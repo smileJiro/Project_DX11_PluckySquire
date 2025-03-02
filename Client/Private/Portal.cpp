@@ -7,6 +7,7 @@
 
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
+#include "Camera_2D.h"
 
 CPortal::CPortal(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CContainerObject(_pDevice, _pContext)
@@ -311,6 +312,9 @@ void CPortal::Interact(CPlayer* _pUser)
 {
     if (COORDINATE_2D == _pUser->Get_CurCoord()) {
         static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET))->Set_InitialData(m_strSectionName, m_iPortalIndex);
+    }
+    else if (COORDINATE_3D == _pUser->Get_CurCoord()) {
+        static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D))->Set_Current_PortalID(m_iPortalIndex);
     }
 
 	_pUser->JumpTo_Portal(this);

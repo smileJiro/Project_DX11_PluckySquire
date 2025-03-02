@@ -54,7 +54,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 	EngineDesc.isNewRenderer = true;
 #ifdef _DEBUG
-	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
+	EngineDesc.eImportMode |= NONE_IMPORT | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
 #elif NDEBUG
 	EngineDesc.eImportMode |= IMPORT_IMGUI;
 #endif
@@ -213,6 +213,7 @@ HRESULT CMainApp::Ready_Font()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font54"), TEXT("../Bin/Resources/Fonts/YangRound54.spritefont"))))
 		return E_FAIL;
+
 
 
 	return S_OK;

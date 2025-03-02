@@ -1,38 +1,25 @@
 #include "stdafx.h"
 #include "SlipperyObject.h"
 #include "Collider_Circle.h"
+#include "ModelObject.h"
 
 CSlipperyObject::CSlipperyObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:CModelObject(_pDevice, _pContext)
+	:CContainerObject(_pDevice, _pContext)
 {
 }
 
 CSlipperyObject::CSlipperyObject(const CSlipperyObject& _Prototype)
-	:CModelObject(_Prototype)
+	:CContainerObject(_Prototype)
 {
 }
 
 
 HRESULT CSlipperyObject::Initialize(void* _pArg)
 {
-	CModelObject::MODELOBJECT_DESC* pBodyDesc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
-
-	pBodyDesc->eStartCoord = COORDINATE_2D;
-	pBodyDesc->isCoordChangeEnable = false;
-
-	pBodyDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-	pBodyDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
-	pBodyDesc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	pBodyDesc->tTransform2DDesc.fSpeedPerSec = 500.f;
-
-	pBodyDesc->iObjectGroupID = OBJECT_GROUP::MAPOBJECT;
-
-
+	SLIPPERY_DESC* pDesc = static_cast<SLIPPERY_DESC*>(_pArg);
+	m_iImpactCollisionFilter = pDesc->iImpactCollisionFilter;
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
-
-
-	m_p2DColliderComs.resize(1);
 
 	return S_OK;
 }
@@ -51,26 +38,29 @@ HRESULT CSlipperyObject::Render()
 	return __super::Render();
 }
 
+
+
+
+
 void CSlipperyObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if (OBJECT_GROUP::BLOCKER == _pOtherCollider->Get_CollisionGroupID())
+	if (m_bSlip)
 	{
-		m_bSlip = false;
+		if (m_iImpactCollisionFilter & _pOtherCollider->Get_CollisionGroupID())
+		{
+			m_bSlip = false;
+			On_Impact(_pOtherObject);
+		}
 	}
-}
-
-void CSlipperyObject::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
-{
-}
-
-void CSlipperyObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
-{
 }
 
 void CSlipperyObject::Start_Slip(_vector _vDirection)
 {
+	if (m_bSlip)
+		return;
 	m_bSlip = true;
 	m_vSlipDirection = _vDirection;
+	On_StartSlip(_vDirection);
 }
 
 

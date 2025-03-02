@@ -83,6 +83,7 @@ public:
 	virtual INITIAL_DATA		Get_InitialData() override;
 
 	void						Set_CameraMode(_uint _iCameraMode) { m_eCameraMode = (CAMERA_2D_MODE)_iCameraMode; }
+	void						Set_Current_PortalID(_uint _iPortalID) { m_iPortalID = _iPortalID; }  // Portal 들어갈 때 Data 초기화하기 
 	void						Set_InitialData(_fvector _vArm, _float _fLength, _fvector _vOffset);
 	void						Set_InitialData(pair<ARM_DATA*, SUB_DATA*>* pData);
 	void						Set_InitialData(_wstring _szSectionTag);
@@ -139,6 +140,9 @@ private:
 
 	// CustomArm
 	ARM_DATA					m_CustomArmData = {};
+
+	// Portal ID
+	_uint						m_iPortalID = {};
 
 private:
 	void						Action_Mode(_float _fTimeDelta);
