@@ -50,7 +50,7 @@ HRESULT CButterGrump_Shield::Initialize(void* _pArg)
     Safe_Delete(pDesc->pActorDesc);
 
     int i = static_cast<C3DModel*>(Get_Model(COORDINATE_3D))->Get_Materials().size();
-    static_cast<C3DModel*>(Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 0.f, 0.f, 0.5f));
+    static_cast<C3DModel*>(Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 0.f, 0.f, 1.f));
 
     return S_OK;
 }

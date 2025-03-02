@@ -90,7 +90,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     //Get_ActorCom()->Set_ShapeEnable(1, false);
     static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Gravity(false);
 
-    m_PartObjects[BOSSPART_SHIELD]->Set_Active(false);
+    //m_PartObjects[BOSSPART_SHIELD]->Set_Active(false);
 
     //플레이어 위치 가져오기
     m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
@@ -516,31 +516,31 @@ HRESULT CButterGrump::Ready_PartObjects()
     m_PartObjects[BOSSPART_TONGUE]->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("buttergrump_righead_tongue_01"));
 
 
-    CButterGrump_Shield::BUTTERGRUMP_SHIELD_DESC ShieldDesc{};
+    //CButterGrump_Shield::BUTTERGRUMP_SHIELD_DESC ShieldDesc{};
 
-    ShieldDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_HalfSphere_01_2");
-    ShieldDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    ShieldDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    //ShieldDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_HalfSphere_01_2");
+    //ShieldDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    //ShieldDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
-    ShieldDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    //ShieldDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+    //ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
-    ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-    ShieldDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-    ShieldDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
-    ShieldDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+    //ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    //ShieldDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+    //ShieldDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+    //ShieldDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
 
-    ShieldDesc.iRenderGroupID_3D = RG_3D;
-    ShieldDesc.iPriorityID_3D = PR3D_GEOMETRY;
+    //ShieldDesc.iRenderGroupID_3D = RG_3D;
+    //ShieldDesc.iPriorityID_3D = PR3D_GEOMETRY;
 
-    ShieldDesc.pParent = this;
+    //ShieldDesc.pParent = this;
 
-    m_PartObjects[BOSSPART_SHIELD] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_ButterGrump_Shield"), &ShieldDesc));
-    if (nullptr == m_PartObjects[BOSSPART_SHIELD])
-        return E_FAIL;
+    //m_PartObjects[BOSSPART_SHIELD] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_ButterGrump_Shield"), &ShieldDesc));
+    //if (nullptr == m_PartObjects[BOSSPART_SHIELD])
+    //    return E_FAIL;
 
-    _float4x4 matSocket; XMStoreFloat4x4(&matSocket, XMLoadFloat4x4(p3DModel->Get_BoneMatrix("buttergrump_righead_nose")) * XMMatrixTranslation(0.f, 0.f, -100.f));
-    m_PartObjects[BOSSPART_SHIELD]->Set_SocketMatrix(COORDINATE_3D, &matSocket);
+    //_float4x4 matSocket; XMStoreFloat4x4(&matSocket, XMMatrixTranslation(0.f, 100.f, -100.f) * XMLoadFloat4x4(p3DModel->Get_BoneMatrix("buttergrump_righead_nose")));
+    //m_PartObjects[BOSSPART_SHIELD]->Set_SocketMatrix(COORDINATE_3D, &matSocket);
 
     return S_OK;
 }
