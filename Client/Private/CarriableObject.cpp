@@ -181,7 +181,7 @@ void CCarriableObject::Set_CollisionEnable(_bool _bEnable)
 	{
 		pCollidder->Set_Active(_bEnable);
 	} 
-	_uint iShapeCOunt = m_pActorCom->Get_Shapes().size();
+	_uint iShapeCOunt = (_uint)m_pActorCom->Get_Shapes().size();
 	for (_uint i = 0; i < iShapeCOunt; i++)
 	{
 		m_pActorCom->Set_ShapeEnable(i,_bEnable);
