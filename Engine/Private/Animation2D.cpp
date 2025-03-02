@@ -190,8 +190,9 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta, _bool _bReverse)
 
 		}
 	}
-	//마지막 프레임 +1 일떄 
-	if (m_iCurrentFrame >= (m_iFrameCount))
+
+	if ((_bReverse && m_iCurrentFrame <= 0)
+		|| (false == _bReverse && m_iCurrentFrame >= (m_iFrameCount)))
 	{
 		//루프면 처음으로
 		if (m_bLoop)
@@ -201,10 +202,13 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta, _bool _bReverse)
 		//루프 아니면 마지막인채로 유지
 		else
 		{
-			m_iCurrentFrame = m_iFrameCount - 1;
+			m_iCurrentFrame = _bReverse ? 0 : m_iFrameCount - 1;
 			return true;
 		}
+		
 	}
+
+
 
 	m_fCurrentFrameTime += _fTimeDelta * m_fSpeedMagnifier;
 

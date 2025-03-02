@@ -353,7 +353,7 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInit
 		CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(SECTION_MGR->Get_SectionLeveID(), L"Layer_Player", 0);
 		
 		if (nullptr != pPlayer)
-			static_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Set_Include_Section_Name(pPlayer->Get_Include_Section_Name());
+			static_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Enter_Section(pPlayer->Get_Include_Section_Name());
 	}
 	break;
 	}

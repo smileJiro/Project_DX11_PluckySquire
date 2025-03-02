@@ -79,8 +79,8 @@ public:
 	void						Set_Alive()										{ m_isDead = false; }
 	virtual void				Set_Render(_bool _isRender)						{ m_isRender = _isRender; }
 	void						Set_Pooling(_bool _isPooling)					{ m_isPooling = _isPooling; }
-	virtual void				Set_Include_Section_Name(const _wstring _strIncludeSectionName) { m_strSectionName = _strIncludeSectionName; }
-	void						Init_Include_Section_Name()						{ m_strSectionName = L""; }
+	virtual void				Enter_Section(const _wstring _strIncludeSectionName) { m_strSectionName = _strIncludeSectionName; }
+	virtual void				Exit_Section(const _wstring _strIncludeSectionName)	{ m_strSectionName = L""; }
 	
 protected:
 	ID3D11Device*				m_pDevice = nullptr;
@@ -111,12 +111,13 @@ protected:
 	HRESULT					Add_Component(_uint _iPrototypeLevelID, const _wstring& _strPrototypeTag, const _wstring& _strComponentTag, CComponent** _ppOut, void* _pArg = nullptr);
 	HRESULT					Add_Component(const _wstring& _strComponentTag, CComponent* _pComponent);
 
+	HRESULT					Remove_Component(const _wstring& _strComponentTag);
 public:
 	virtual CGameObject*	Clone(void* _pArg) = 0; // Clone() 프로토 타입이나 객체의 복사시 사용된다.
 	virtual void			Free() override;
 	virtual HRESULT			Cleanup_DeadReferences() = 0; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 public:
 	virtual HRESULT Imgui_Render_ObjectInfos();
 #endif // _DEBUG

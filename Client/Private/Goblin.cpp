@@ -389,7 +389,7 @@ void CGoblin::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
             {
                 _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
                 XMVectorSetY(vRepulse, -1.f);
-                Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), (_float)Get_Stat().iDamg, vRepulse);
+                Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), Get_Stat().iDamg, vRepulse);
                 Attack();
                 m_isContactToTarget = true;
             }
@@ -429,7 +429,7 @@ void CGoblin::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
         {
             _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
             XMVectorSetY(vRepulse, -1.f);
-            Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), (_float)Get_Stat().iDamg, vRepulse);
+            Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), Get_Stat().iDamg, vRepulse);
             Attack();
         }
     }

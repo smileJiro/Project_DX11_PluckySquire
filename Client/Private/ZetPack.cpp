@@ -20,34 +20,59 @@ HRESULT CZetPack::Initialize(void* _pArg)
 	ZETPACK_DESC* pDesc = (ZETPACK_DESC*)_pArg;
 	m_pPlayer = pDesc->pPlayer;
     pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->isCoordChangeEnable = false;
+    pDesc->isCoordChangeEnable = true;
+
     pDesc->iModelPrototypeLevelID_3D = LEVEL_STATIC;
     pDesc->strModelPrototypeTag_3D = TEXT("Zip_rig");
     pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     pDesc->iRenderGroupID_3D = RG_3D;
     pDesc->iPriorityID_3D = PR3D_GEOMETRY;
+    pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
     pDesc->iModelPrototypeLevelID_2D = LEVEL_STATIC;
-    pDesc->strModelPrototypeTag_2D = TEXT("Zip_rig");
-    pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxMesh");
-
+    pDesc->strModelPrototypeTag_2D = TEXT("zetpack");
+    pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+    pDesc->tTransform2DDesc.vInitialPosition = { 0.f,0.f,0.f };
+    pDesc->tTransform2DDesc.vInitialScaling = { 1.f,1.f,1.f };
+    pDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
+    pDesc->iObjectGroupID = OBJECT_GROUP::PLAYER;
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 	return S_OK;
 }
 
+void CZetPack::Priority_Update(_float _fTimeDelta)
+{
+    m_bPropel = false;
+    __super::Priority_Update(_fTimeDelta);
+}
+
 void CZetPack::Update(_float _fTimeDelta)
 {
+
 	__super::Update(_fTimeDelta);
+
+
 }
 
 void CZetPack::Late_Update(_float _fTimeDelta)
 {
     __super::Late_Update(_fTimeDelta);
+    if (m_bPropel)
+    {
+        _float fPlayerUpForce = m_pPlayer->Get_UpForce();
+        if (0.f > fPlayerUpForce)
+            Switch_State(ZET_STATE::STATE_DESCEND);
+        else if (0.f < fPlayerUpForce)
+            Switch_State(ZET_STATE::STATE_ASCEND);
+    }
+    else
+        Switch_State(ZET_STATE::STATE_IDLE);
 }
 
 HRESULT CZetPack::Render()
 {
+ //   cout << m_pControllerModel->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex() << endl;
 	return __super::Render();
 }
 
@@ -59,26 +84,53 @@ void CZetPack::ReFuel()
 //»ó½ÂÇÏ±â
 void CZetPack::Propel(_float _fTimeDelta)
 {
-	m_fFuel -= m_fFuelConsumption * _fTimeDelta;
+    m_bPropel = true;
+    COORDINATE eCoord = Get_CurCoord();
+    _float fFuelConsumpTion = COORDINATE_2D == eCoord ? m_fFuelConsumption2D : m_fFuelConsumption3D;
+	_float fMinForceRatio = COORDINATE_2D == eCoord ? m_fMinForeceRatio2D : m_fMinForeceRatio3D;
+    _float fMinForceFuel = m_fMaxFuel * (COORDINATE_2D == eCoord ? m_fMinForceFuelRatio2D : m_fMinForceFuelRatio3D);
+	m_fFuel -= fFuelConsumpTion * _fTimeDelta ;
     if (m_fFuel >= 0.f)
     {
-        _float fRatio = m_fMinForeceRatio + (m_fMaxForeceRatio - m_fMinForeceRatio)* m_fFuel/ m_fMaxFuel;
-        m_pPlayer->Add_Force(_vector{ 0.f,m_fPropelForce * fRatio * _fTimeDelta,0.f });
+        _float fRatio = fMinForceRatio + (m_fMaxForeceRatio - fMinForceRatio) * max(m_fFuel - fMinForceFuel, 0.f) / m_fMaxFuel;
+        //cout << "Ratio" << fRatio << endl;
+        m_pPlayer->Add_Upforce((COORDINATE_2D == eCoord ? m_fPropelForce2D : m_fPropelForce3D)
+            * fRatio * _fTimeDelta);
     }
     else
     {
-        int a = 0;
+        m_fFuel = 0.f;
+
     }
+    cout << "m_fFuel : " << m_fFuel << endl;
+
+
 }
 
-void CZetPack::Retropropulsion()
+
+void CZetPack::Switch_State(ZET_STATE _eState)
 {
-    CActor_Dynamic* pActor = m_pPlayer->Get_ActorDynamic();
-    _vector vVelodicty = pActor->Get_LinearVelocity();
-    _float fVelocityY = XMVectorGetY(vVelodicty);
-    if (fVelocityY < 0.f)
-        fVelocityY *= 0.5f;
-	pActor->Set_LinearVelocity(XMVectorSetY(vVelodicty, fVelocityY));
+	if (_eState == m_eState)
+		return;
+	COORDINATE eCoord = Get_CurCoord();
+	switch (_eState)
+	{
+	case STATE_IDLE:
+        if (COORDINATE_2D == eCoord)
+            m_pControllerModel->Switch_Animation(ANIM_IDLE);
+        break;
+	case STATE_ASCEND:
+        if(COORDINATE_2D == eCoord)
+		    m_pControllerModel->Switch_Animation(ANIM_ASCEND);
+		break;
+	case STATE_DESCEND:
+        if (COORDINATE_2D == eCoord)
+		    m_pControllerModel->Switch_Animation(ANIM_DESCEND);
+		break;
+	default:
+		break;
+	}
+    m_eState = _eState;
 }
 
 CZetPack* CZetPack::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

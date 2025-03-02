@@ -37,7 +37,7 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
         {
             if (false == m_bRised )
             {
-                m_pOwner->Add_Upforce(m_f2DRisingForce);
+                m_pOwner->Add_Impuls({ 0.f,m_f2DRisingForce,0.f });
                 m_bRised = true;
             }
         }

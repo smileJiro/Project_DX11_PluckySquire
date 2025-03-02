@@ -18,6 +18,7 @@ private:
 
 	_bool Try_Clamber();
 private:
+    CModelObject* m_pBody = nullptr;
     F_DIRECTION m_eOldFDir = F_DIRECTION::F_DIR_LAST;
     _bool m_bPlatformerMode = false;
     _bool m_bGrounded = false;

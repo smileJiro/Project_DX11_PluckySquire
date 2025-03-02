@@ -836,7 +836,7 @@ HRESULT CTask_Manager::Cooking(const _string& _strCookingPath, CMapObject* _pMap
 
 
 		break;
-	case Map_Tool::CTask_Manager::COOKING_MULTI:
+	case Map_Tool::CTask_Manager::COOKING_MULTI_CONVEX:
 
 	{
 
@@ -862,7 +862,7 @@ HRESULT CTask_Manager::Cooking(const _string& _strCookingPath, CMapObject* _pMap
 			string strMultiMeshPath = std::filesystem::path(strCookingPath).replace_extension("").string();
 			strMultiMeshPath += "_";
 			strMultiMeshPath += std::to_string(i);
-			strMultiMeshPath += ".modelMultiColl";
+			strMultiMeshPath += ".modelMultiConvex";
 			ofstream file;
 			//file.open(strMultiMeshPath, ios::binary | std::ios::app);
 			file.open(strMultiMeshPath, ios::binary);
@@ -880,7 +880,51 @@ HRESULT CTask_Manager::Cooking(const _string& _strCookingPath, CMapObject* _pMap
 #pragma endregion
 
 	}
+	break;
+	case Map_Tool::CTask_Manager::COOKING_MULTI_TRI:
 
+	{
+
+#pragma region 복수메쉬
+
+		_uint iMeshMaxSize = 0;
+
+		for (_uint i = 0; i < iNumMeshes; i++)
+		{
+			CMesh* pMesh = pModel->Get_Mesh(i);
+
+			PxTriangleMeshDesc meshDesc;
+			if (FAILED(pMesh->Cooking(meshDesc)))
+				return E_FAIL;
+			PxDefaultMemoryOutputStream writeBuffer;
+			PxCookingParams params(pPhysics->getTolerancesScale());
+			pCooking->setParams(params);
+
+			if (!pCooking->cookTriangleMesh(meshDesc, writeBuffer))
+				return E_FAIL;
+
+
+			string strMultiMeshPath = std::filesystem::path(strCookingPath).replace_extension("").string();
+			strMultiMeshPath += "_";
+			strMultiMeshPath += std::to_string(i);
+			strMultiMeshPath += ".modelMultiTri";
+			ofstream file;
+			//file.open(strMultiMeshPath, ios::binary | std::ios::app);
+			file.open(strMultiMeshPath, ios::binary);
+			if (!file)
+				return E_FAIL;
+
+			_uint iMeshDataSize = writeBuffer.getSize();
+
+			file.write((_char*)&iMeshDataSize, sizeof(_uint));
+			file.write((_char*)writeBuffer.getData(), iMeshDataSize);
+
+			file.close();
+		}
+		break;
+#pragma endregion
+
+	}
 		break;
 	case Map_Tool::CTask_Manager::COOKING_LAST:
 		break;
@@ -889,7 +933,7 @@ HRESULT CTask_Manager::Cooking(const _string& _strCookingPath, CMapObject* _pMap
 
 	}
 
-
+	return S_OK;
 
 }
 

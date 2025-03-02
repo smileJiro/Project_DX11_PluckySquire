@@ -291,7 +291,7 @@ ID3D11ShaderResourceView* CTarget_Manager::Get_SRV(const _wstring& _strTargetTag
     return pRenderTarget->Get_SRV();
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 HRESULT CTarget_Manager::Ready_Debug(const _wstring& _strTargetTag, _float _fX, _float _fY, _float _fSizeX, _float _fSizeY)
 {
     CRenderTarget* pRenderTarget = Find_RenderTarget(_strTargetTag);

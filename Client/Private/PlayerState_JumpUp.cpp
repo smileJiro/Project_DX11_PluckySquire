@@ -6,6 +6,7 @@
 #include "Interactable.h"
 #include "GameInstance.h"
 #include "Effect_Manager.h"
+#include "ModelObject.h"
 
 
 CPlayerState_JumpUp::CPlayerState_JumpUp(CPlayer* _pOwner)
@@ -15,14 +16,9 @@ CPlayerState_JumpUp::CPlayerState_JumpUp(CPlayer* _pOwner)
 
 void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 {
-	_float fUpForce = m_pOwner->Get_UpForce();
-	if (0 > fUpForce)
-	{
-		m_pOwner->Set_State(CPlayer::JUMP_DOWN);
-		return;
-	}
 
 	PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
+
 	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
 		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
@@ -34,10 +30,7 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 		else
 			m_pOwner->Stop_Rotate();
 
-		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_ZETPROPEL])
-		{
-			m_pOwner->ZetPropel(_fTimeDelta);
-		}
+
 	}
 	else
 	{
@@ -53,6 +46,16 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 			}
 			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed2D, _fTimeDelta);
 		}
+	}
+	if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_ZETPROPEL])
+	{
+		m_pOwner->ZetPropel(_fTimeDelta);
+	}
+	_float fUpForce = m_pOwner->Get_UpForce();
+	if (0.f > fUpForce)
+	{
+		m_pOwner->Set_State(CPlayer::JUMP_DOWN);
+		return;
 	}
 	INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
 	if (INTERACT_RESULT::NO_INPUT == eResult
@@ -97,15 +100,19 @@ void CPlayerState_JumpUp::Enter()
 	m_fAirRunSpeed2D = m_pOwner->Get_AirRunSpeed2D();
 	m_pOwner->LookDirectionXZ_Dynamic(m_pOwner->Get_3DTargetDirection());
 	m_pOwner->Get_ActorDynamic()->Set_LinearDamping(0.5f);
-	m_pOwner->Jump();
-	m_pOwner->ReFuel();
 	Switch_JumpAnimation();
 
-	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_jump-") + to_wstring(rand() % 12), 50.f);
-	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_jump-") + to_wstring(rand() % 6), 20.f);
+	if (m_pOwner->Is_OnGround())
+	{
 
-	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
-		CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip5"), true, m_pOwner->Get_Transform()->Get_WorldMatrix_Ptr(), 1);
+		m_pOwner->Jump();
+		m_pOwner->ReFuel();
+		m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_jump-") + to_wstring(rand() % 12), 50.f);
+		m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_jump-") + to_wstring(rand() % 6), 20.f);
+	}
+
+	//if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+	//	CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip5"), true, m_pOwner->Get_Transform()->Get_WorldMatrix_Ptr(), 1);
 }
 
 void CPlayerState_JumpUp::Exit()
@@ -118,7 +125,7 @@ void CPlayerState_JumpUp::Exit()
 	else
 	{
 		m_pOwner->Stop_Rotate();
-		CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("Zip5"), 1.f);
+		//CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("Zip5"), 1.f);
 
 	}
 }
@@ -175,6 +182,7 @@ void CPlayerState_JumpUp::Switch_JumpAnimation()
 				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_JUMP_RISE_DOWN);
 			break;
 		}
+
 	}
 	else	if (COORDINATE_3D == eCoord)
 	{

@@ -197,6 +197,8 @@
     <ClInclude Include="..\Public\ButterGrump_Tongue.h" />
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
     <ClInclude Include="..\Public\Detonator.h" />
+    <ClInclude Include="..\public\Door_2D.h" />
+    <ClInclude Include="..\public\Door_Yellow.h" />
     <ClInclude Include="..\public\Effect_Beam.h" />
     <ClInclude Include="..\Public\ChaseFlyState.h" />
     <ClInclude Include="..\Public\Interaction_E.h" />
@@ -209,6 +211,7 @@
     <ClInclude Include="..\Public\PlayerState_Bomber.h" />
     <ClInclude Include="..\Public\PlayerState_ErasePalmDecal.h" />
     <ClInclude Include="..\Public\PlayerState_Stamp.h" />
+    <ClInclude Include="..\public\Pressure_Plate.h" />
     <ClInclude Include="..\Public\Projectile_BirdMonster.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
@@ -454,6 +457,8 @@
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
     <ClCompile Include="..\Private\Detonator.cpp" />
+    <ClCompile Include="..\private\Door_2D.cpp" />
+    <ClCompile Include="..\private\Door_Yellow.cpp" />
     <ClCompile Include="..\Private\Interaction_E.cpp" />
     <ClCompile Include="..\Private\JumpPad.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_06.cpp" />
@@ -464,6 +469,7 @@
     <ClCompile Include="..\Private\PlayerState_Bomber.cpp" />
     <ClCompile Include="..\Private\PlayerState_ErasePalmDecal.cpp" />
     <ClCompile Include="..\Private\PlayerState_Stamp.cpp" />
+    <ClCompile Include="..\private\Pressure_Plate.cpp" />
     <ClCompile Include="..\Private\Projectile_BirdMonster.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>

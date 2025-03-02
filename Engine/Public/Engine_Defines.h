@@ -151,7 +151,7 @@ using json = nlohmann::json;
 
 // Memory Leak Check Code
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>

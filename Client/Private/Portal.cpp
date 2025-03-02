@@ -81,8 +81,6 @@ HRESULT CPortal::Render()
 
 HRESULT CPortal::Init_Actor()
 {
-    Safe_Release(m_pActorCom);
-
 
 
     _vector f2DPosition = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION);
@@ -90,6 +88,10 @@ HRESULT CPortal::Init_Actor()
     // 월드맵이 설정됐으니, 포지션 설정.
     _vector f3DPosition = SECTION_MGR->Get_WorldPosition_FromWorldPosMap(m_strSectionName, _float2(XMVectorGetX(f2DPosition), XMVectorGetY(f2DPosition)));
 
+    if (m_pActorCom != nullptr || true == XMVector3Equal(f3DPosition, XMVectorZero())) 
+    {
+        return S_OK;
+    }
 
     _float4 fStorePostion = {};
 

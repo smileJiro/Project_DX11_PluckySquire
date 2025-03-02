@@ -78,7 +78,7 @@ void CGameObject::Late_Update(_float _fTimeDelta)
 
 HRESULT CGameObject::Render()
 {
-//#ifdef _DEBUG
+//#ifdef NDEBUG
 //    for (auto& p2DCollider : m_p2DColliderComs)
 //    {
 //        p2DCollider->Render();
@@ -179,6 +179,18 @@ HRESULT CGameObject::Add_Component(const _wstring& _strComponentTag, CComponent*
     return S_OK;
 }
 
+HRESULT CGameObject::Remove_Component(const _wstring& _strComponentTag)
+{
+    CComponent* pComponent = Find_Component(_strComponentTag);
+    if (nullptr == pComponent)
+        return E_FAIL;
+
+    Safe_Release(pComponent);
+    m_Components.erase(_strComponentTag);
+
+    return S_OK;
+}
+
 void CGameObject::Free()
 {
     for (auto& Pair : m_Components)
@@ -201,7 +213,7 @@ void CGameObject::Free()
 
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CGameObject::Imgui_Render_ObjectInfos()
 {

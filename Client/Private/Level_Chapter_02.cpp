@@ -45,6 +45,7 @@
 #include "Spawner.h"
 #include "CollapseBlock.h"
 
+#include "Door_Yellow.h"
 
 //#include "UI.h"
 #include "UI_Manager.h"
@@ -184,6 +185,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed REady_Layer_Draggable (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
+	if (FAILED(Ready_Layer_MapGimmick(TEXT("Layer_MapGimmick"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 
 	///* Test CollapseBlock */
 	//{
@@ -222,8 +228,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FALLINGROCK_BASIC);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::DOOR);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER_PROJECTILE);
+
+
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::NPC_EVENT, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
@@ -233,10 +242,12 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
 
-
 	/* 돌덩이 */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::BLOCKER);
 
+	/* 발판 - 문*/
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::MAP_GIMMICK);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER);
 
 	// 그룹필터 제거
 	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
@@ -404,34 +415,34 @@ HRESULT CLevel_Chapter_02::Render()
 HRESULT CLevel_Chapter_02::Ready_Lights()
 {
 	// 이게, 일반
-	//m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
-	//m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Bright.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Bright.json"));
 
-	CONST_LIGHT LightDesc{};
-
-	/* 방향성광원*/
-	ZeroMemory(&LightDesc, sizeof LightDesc);
-
-	LightDesc.vDirection = { 0.0f, -1.0f, -1.0f };
-	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
-	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
-	//LightDesc.isShadow = true;
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
-		return E_FAIL;
-
-	/* 방향성광원*/
-	ZeroMemory(&LightDesc, sizeof LightDesc);
-
-	LightDesc.vDirection = { -1.0f, -1.0f, -1.0f };
-	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
-	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
-	LightDesc.isShadow = false;
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
-		return E_FAIL;
+	//CONST_LIGHT LightDesc{};
+	//
+	///* 방향성광원*/
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
+	//
+	//LightDesc.vDirection = { 0.0f, -1.0f, -1.0f };
+	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	//LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	//LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	//LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	////LightDesc.isShadow = true;
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+	//	return E_FAIL;
+	//
+	///* 방향성광원*/
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
+	//
+	//LightDesc.vDirection = { -1.0f, -1.0f, -1.0f };
+	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	//LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	//LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	//LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	//LightDesc.isShadow = false;
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -444,11 +455,11 @@ HRESULT CLevel_Chapter_02::Ready_CubeMap(const _wstring& _strLayerTag)
 	Desc.iRenderGroupID = RG_3D;
 	Desc.iPriorityID = PR3D_PRIORITY;
 	Desc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
-	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
+	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_Chapter4Env");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
 		m_eLevelID, _strLayerTag, &pCubeMap, &Desc)))
 		return E_FAIL;
-
+	
 	m_pGameInstance->Set_CubeMap(static_cast<CCubeMap*>(pCubeMap));
 
 	return S_OK;
@@ -1633,6 +1644,24 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Draggable(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
 	m_eLevelID, _strLayerTag, &tDraggableDesc)))
 	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
+{
+	CDoor_Yellow::DOOR_YELLOW_DESC Desc = {};
+	Desc.tTransform2DDesc.vInitialPosition = _float3(24.f, -113.f, 0.f);
+	Desc.iCurLevelID = m_eLevelID;
+	Desc.isHorizontal = true;
+	Desc.eSize = CDoor_2D::SMALL;
+	Desc.eInitialState = CDoor_2D::CLOSED;
+	Desc.vPressurePlatePos = _float3(-55.f, -240.f, 0.f);
+	Desc.strSectionTag = L"Chapter2_SKSP_03";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

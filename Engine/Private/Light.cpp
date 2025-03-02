@@ -40,7 +40,7 @@ HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 	if (FAILED(m_pGameInstance->CreateConstBuffer(m_tLightConstData, D3D11_USAGE_DYNAMIC, &m_pLightConstbuffer)))
 		return E_FAIL;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
 	m_pEffect = new BasicEffect(m_pDevice);
 
@@ -79,7 +79,7 @@ HRESULT CLight::Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 
 
 
-	if(true == m_tLightConstData.isShadow)
+	if(true == (_bool)m_tLightConstData.isShadow)
 	{
 		_pShader->Bind_Matrix("g_LightViewMatrix", &m_ViewMatrix);
 		_pShader->Bind_Matrix("g_LightProjMatrix", &m_ProjMatrix);
@@ -96,7 +96,7 @@ HRESULT CLight::Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 	_pVIBuffer->Render();
 
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	m_pGameInstance->Add_BaseDebug(this);
 #endif // _DEBUG
 
@@ -104,7 +104,7 @@ HRESULT CLight::Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 	return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CLight::Render_Base_Debug()
 {
@@ -162,7 +162,7 @@ void CLight::Set_Shadow(_bool _isShadow)
 	if (true == _isShadow)
 	{
 		/* 1. Shadow를 켠 경우 */
-		if (true == m_tLightConstData.isShadow)
+		if (true == (_bool)m_tLightConstData.isShadow)
 			/* 2. 만약 원래 true였던 경우, */
 			return;
 		m_tLightConstData.isShadow = _isShadow;
@@ -177,7 +177,7 @@ void CLight::Set_Shadow(_bool _isShadow)
 			/* 1. RenderTarget을 만든다, DSV는 DSV_Shadow 사용한다(메인앱에서 생성했음). */
 			_wstring strShadowRTTag = TEXT("Target_Shadow_");
 			strShadowRTTag += to_wstring(m_iShadowLightID);
-			m_pGameInstance->Add_RenderTarget(strShadowRTTag, SHADOWMAP_X, SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f, 0.0f, 0.0f, 0.0f), &m_pShadowRenderTarget);
+			m_pGameInstance->Add_RenderTarget(strShadowRTTag, (_uint)SHADOWMAP_X,(_uint)SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f, 0.0f, 0.0f, 0.0f), &m_pShadowRenderTarget);
 			/* 2. 자기 자신을 shadow rendergroup에 등록한다. */
 		}
 		else
@@ -231,7 +231,7 @@ CLight* CLight::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, c
 
 void CLight::Free()
 {
-#ifdef _DEBUG
+#ifdef NDEBUG
 	Safe_Release(m_pInputLayout);
 	Safe_Delete(m_pBatch);
 	Safe_Delete(m_pEffect);

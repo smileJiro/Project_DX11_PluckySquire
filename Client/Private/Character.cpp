@@ -32,6 +32,7 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
 
     __super::Priority_Update(_fTimeDelta);
     COORDINATE eCoord = Get_CurCoord();
+    _bool bOldGround = m_bOnGround;
     if (COORDINATE_2D == eCoord)
     {
         if (m_bPlatformerMode)
@@ -75,6 +76,8 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
         }
         //경사가 너ㅏ무 급하면 무시
     }
+    if (bOldGround == false && m_bOnGround == true)
+        On_Land();
 }
 
 void CCharacter::Update(_float _fTimeDelta)

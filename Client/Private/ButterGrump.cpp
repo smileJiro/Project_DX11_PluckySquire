@@ -59,8 +59,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-   /* if (FAILED(Ready_Projectiles()))
-        return E_FAIL;*/
+    //if (FAILED(Ready_Projectiles()))
+    //    return E_FAIL;
     
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SCENE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
@@ -87,10 +87,10 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     }
     Safe_Delete(pDesc->pActorDesc);
 
-    //Get_ActorCom()->Set_ShapeEnable(1, false);
     static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Gravity(false);
 
-    //m_PartObjects[BOSSPART_SHIELD]->Set_Active(false);
+    m_PartObjects[BOSSPART_SHIELD]->Set_Active(false);
+    m_PartObjects[BOSSPART_SHIELD]->Get_ControllerTransform()->RotationXYZ(_float3(0.f, 90.f, 0.f));
 
     //플레이어 위치 가져오기
     m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
@@ -447,6 +447,11 @@ HRESULT CButterGrump::Ready_PartObjects()
     BodyDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_ButterGrump");
 	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
 
+    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
+    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
+    BodyDesc.iRenderGroupID_3D = RG_3D;
+    BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
+
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
@@ -454,7 +459,7 @@ HRESULT CButterGrump::Ready_PartObjects()
     BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
     BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
 
-    m_PartObjects[BOSSPART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"), &BodyDesc));
+    m_PartObjects[BOSSPART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[BOSSPART_BODY])
         return E_FAIL;
 
@@ -516,31 +521,30 @@ HRESULT CButterGrump::Ready_PartObjects()
     m_PartObjects[BOSSPART_TONGUE]->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("buttergrump_righead_tongue_01"));
 
 
-    //CButterGrump_Shield::BUTTERGRUMP_SHIELD_DESC ShieldDesc{};
+    CButterGrump_Shield::BUTTERGRUMP_SHIELD_DESC ShieldDesc{};
 
-    //ShieldDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_HalfSphere_01_2");
-    //ShieldDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    //ShieldDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    ShieldDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_HalfSphere_01_2");
+    ShieldDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    ShieldDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
-    //ShieldDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    //ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    ShieldDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+    ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::ALPHABLEND;
 
-    //ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-    //ShieldDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-    //ShieldDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
-    //ShieldDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+    ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(-7.0f, 0.0f, -5.0f);
+    ShieldDesc.tTransform3DDesc.vInitialScaling = _float3(25.0f, 25.0f, 25.0f);
+    ShieldDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+    ShieldDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
 
-    //ShieldDesc.iRenderGroupID_3D = RG_3D;
-    //ShieldDesc.iPriorityID_3D = PR3D_GEOMETRY;
+    ShieldDesc.iRenderGroupID_3D = RG_3D;
+    ShieldDesc.iPriorityID_3D = PR3D_GEOMETRY;
 
-    //ShieldDesc.pParent = this;
+    ShieldDesc.pParent = this;
 
-    //m_PartObjects[BOSSPART_SHIELD] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_ButterGrump_Shield"), &ShieldDesc));
-    //if (nullptr == m_PartObjects[BOSSPART_SHIELD])
-    //    return E_FAIL;
+    m_PartObjects[BOSSPART_SHIELD] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_ButterGrump_Shield"), &ShieldDesc));
+    if (nullptr == m_PartObjects[BOSSPART_SHIELD])
+        return E_FAIL;
 
-    //_float4x4 matSocket; XMStoreFloat4x4(&matSocket, XMMatrixTranslation(0.f, 100.f, -100.f) * XMLoadFloat4x4(p3DModel->Get_BoneMatrix("buttergrump_righead_nose")));
-    //m_PartObjects[BOSSPART_SHIELD]->Set_SocketMatrix(COORDINATE_3D, &matSocket);
+    m_PartObjects[BOSSPART_SHIELD]->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("buttergrump_righead_nose"));
 
     return S_OK;
 }
@@ -549,14 +553,13 @@ HRESULT CButterGrump::Ready_Projectiles()
 {
     Pooling_DESC Pooling_Desc;
     Pooling_Desc.iPrototypeLevelID = m_iCurLevelID;
-    Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+    Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_HomingBall");
 
     CBoss_HomingBall::PROJECTILE_MONSTER_DESC* pHomingBallDesc = new CBoss_HomingBall::PROJECTILE_MONSTER_DESC;
     pHomingBallDesc->fLifeTime = 4.f;
     pHomingBallDesc->eStartCoord = COORDINATE_3D;
     pHomingBallDesc->isCoordChangeEnable = false;
-    pHomingBallDesc->iNumPartObjects = PART_LAST;
     pHomingBallDesc->iCurLevelID = m_iCurLevelID;
 
     pHomingBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
@@ -571,7 +574,6 @@ HRESULT CButterGrump::Ready_Projectiles()
     pEnergyBallDesc->fLifeTime = 5.f;
     pEnergyBallDesc->eStartCoord = COORDINATE_3D;
     pEnergyBallDesc->isCoordChangeEnable = false;
-    pEnergyBallDesc->iNumPartObjects = PART_LAST;
     pEnergyBallDesc->iCurLevelID = m_iCurLevelID;
 
     pEnergyBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
@@ -585,7 +587,6 @@ HRESULT CButterGrump::Ready_Projectiles()
     pYellowBallDesc->fLifeTime = 5.f;
     pYellowBallDesc->eStartCoord = COORDINATE_3D;
     pYellowBallDesc->isCoordChangeEnable = false;
-    pYellowBallDesc->iNumPartObjects = PART_LAST;
     pYellowBallDesc->iCurLevelID = m_iCurLevelID;
 
     pYellowBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
@@ -599,7 +600,6 @@ HRESULT CButterGrump::Ready_Projectiles()
     pPurpleBallDesc->fLifeTime = 5.f;
     pPurpleBallDesc->eStartCoord = COORDINATE_3D;
     pPurpleBallDesc->isCoordChangeEnable = false;
-    pPurpleBallDesc->iNumPartObjects = PART_LAST;
     pPurpleBallDesc->iCurLevelID = m_iCurLevelID;
 
     pPurpleBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);

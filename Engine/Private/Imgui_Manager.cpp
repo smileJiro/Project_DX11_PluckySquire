@@ -121,7 +121,7 @@ HRESULT CImgui_Manager::LevelChange_Imgui()
 	return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CImgui_Manager::Imgui_Debug_Render()
 {
@@ -467,6 +467,30 @@ HRESULT CImgui_Manager::Imgui_Debug_IBLGlobalVariable()
 	ImGui::SliderFloat("RoughnessToMipFactor", &tConstIBLData.fRoughnessToMipFactor, 0.0f, 20.0f, "%.4f");
 	ImGui::SliderFloat("HDRMaxLuminance", &tConstIBLData.fHDRMaxLuminance, 0.5f, 50.0f, "%.4f");
 
+	static int iSelectedCubeMap = 0;
+	if (ImGui::RadioButton("IBL_TEST", iSelectedCubeMap == IBLTEXTURE::IBL_TEST))
+	{
+		iSelectedCubeMap = (_int)IBLTEXTURE::IBL_TEST; // Flag 1 선택
+		m_pGameInstance->Change_CubeMap(TEXT("Prototype_Component_Texture_TestEnv"));
+	}
+	if (ImGui::RadioButton("IBL_CHAPTER2_BRIGHT", iSelectedCubeMap == IBLTEXTURE::IBL_CHAPTER2_BRIGHT))
+	{
+		iSelectedCubeMap = (_int)IBLTEXTURE::IBL_CHAPTER2_BRIGHT; // Flag 1 선택
+		m_pGameInstance->Change_CubeMap(TEXT("Prototype_Component_Texture_Chapter2_BrightEnv"));
+	}
+	if (ImGui::RadioButton("IBL_CHAPTER2_NIGHT", iSelectedCubeMap == IBLTEXTURE::IBL_CHAPTER2_NIGHT))
+	{
+		iSelectedCubeMap = (_int)IBLTEXTURE::IBL_CHAPTER2_NIGHT; // Flag 1 선택
+		m_pGameInstance->Change_CubeMap(TEXT("Prototype_Component_Texture_Chapter2_NightEnv"));
+	}
+	if (ImGui::RadioButton("IBL_CHAPTER4", iSelectedCubeMap == IBLTEXTURE::IBL_CHAPTER4))
+	{
+		iSelectedCubeMap = (_int)IBLTEXTURE::IBL_CHAPTER4; // Flag 1 선택
+		m_pGameInstance->Change_CubeMap(TEXT("Prototype_Component_Texture_Chapter4Env"));
+	}
+	
+
+
 	int iSelectedFlag = tConstIBLData.iToneMappingFlag;
 	if (ImGui::RadioButton("TONE_LINEAR", iSelectedFlag == 0))
 		iSelectedFlag = 0; // Flag 1 선택
@@ -510,7 +534,7 @@ HRESULT CImgui_Manager::Imgui_Debug_IBLGlobalVariable()
 	ImGui::Separator();
 	ImGui::Separator();
 
-	if (ImGui::Button("Load Lights Data##Lights"))
+	if (ImGui::Button("Load IBL Data##IBL"))
 	{
 		OPENFILENAME ofn = {};
 		ZeroMemory(&ofn, sizeof(ofn));
@@ -570,13 +594,16 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 			return S_OK;
 		}
 		static LIGHT_TYPE eType = LIGHT_TYPE::LAST;
+		static LIGHT_TYPE eListType = LIGHT_TYPE::LAST;
 		if (ImGui::BeginListBox("##Lights"))
 		{
 			for (int i = 0; i < Lights.size(); ++i)
 			{
 				bool is_selected = (selected_index == i);
 				string strGameObjectName;
-				strGameObjectName = "Light_" + to_string(i);
+				eListType = (*iter)->Get_Type();
+				strGameObjectName += LIGHT_TYPE::POINT == eListType ? "Point" : "Directional";
+				strGameObjectName += "Light_" + to_string(i);
 				if (ImGui::Selectable(strGameObjectName.c_str(), is_selected))
 				{
 					selected_index = i; // 선택된 항목 업데이트
@@ -758,7 +785,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 
 				LightJson["isShadow"] = tConstLightData.isShadow;
 
-				if(eType != LIGHT_TYPE::POINT && true == tConstLightData.isShadow)
+				if(eType != LIGHT_TYPE::POINT && true == (_bool)tConstLightData.isShadow)
 					LightJson["fShadowFactor"] = tConstLightData.fShadowFactor;
 
 				LightsJson.push_back(LightJson);
