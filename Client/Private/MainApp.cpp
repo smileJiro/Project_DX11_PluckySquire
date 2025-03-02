@@ -140,7 +140,7 @@ void CMainApp::Imgui_FPS(_float _fTimeDelta)
 {
 	ImGui::Begin("FPS");
 	static _int iMaxFPS = (_int)(1.0f / m_iOneFrameDeltaTime);
-	_int iInGameFPS = m_pGameInstance->Get_FPS(TEXT("Timer_Default"));
+	_int iInGameFPS = m_pGameInstance->Get_FPS(TEXT("Timer_120"));
 	m_vFPSRenderTime.y += _fTimeDelta;
 	if (m_vFPSRenderTime.x <= m_vFPSRenderTime.y)
 	{
@@ -213,6 +213,7 @@ HRESULT CMainApp::Ready_Font()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font54"), TEXT("../Bin/Resources/Fonts/YangRound54.spritefont"))))
 		return E_FAIL;
+
 
 
 	return S_OK;

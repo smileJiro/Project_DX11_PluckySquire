@@ -334,6 +334,7 @@ HRESULT CLoader::Loading_Level_Static()
 #pragma region Static - Texture Load
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
+	/* CubeMap HDRI */
 	/* For. Prototype_Component_Texture_BRDF_Shilick */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BRDF_Shilick"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/BRDF_Shilick.dds"), 1))))
@@ -346,6 +347,18 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter4Env"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter4Env_%d.dds"), 3, true))))
 		return E_FAIL;
+	/* For. Prototype_Component_Texture_Chapter2_NightEnv */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter2_NightEnv"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter2_NightEnv_%d.dds"), 3, true))))
+		return E_FAIL;
+	/* For. Prototype_Component_Texture_Chapter2_BrightEnv */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter2_BrightEnv"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter2_BrightEnv_%d.dds"), 3, true))))
+		return E_FAIL;
+
+
+	
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom1.dds"), 1))))
 		return E_FAIL;
@@ -939,7 +952,7 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 
 		/* 테스트 용도 : 박상욱*/
-		
+
 
 
 
@@ -1152,9 +1165,35 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
-		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/P6768_TheGiantTracks_KR.wav"));
-		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_C6_TheGiantTracks.wav"));
-		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_And_Exploded_On_The_Ground_Below.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/P6768_TheGiantTracks_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_C6_TheGiantTracks.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub2"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_And_Exploded_On_The_Ground_Below.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("C8_P0910_01"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P0910/P0102_OnceUponATime_C9_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P0910_01_Sub"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P0910/A_sfx_C9_OnceUponATime.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P0910_02"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P0910/P0304_LordHumGrumpRuled_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_01_01"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_TheLoyalOnesWouldBeTreated_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_01_02"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_AndTaxed_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_02_01_Sub"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/A_sfx_C9_PutInTheirPlace.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_02_01"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_TheDisloyalOnes_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_02_02"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_Well_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_02_03"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_TheyWouldBePutInTheirPlace_KR.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("C8_P1718_01"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1718/P1314_TheTraiterJot_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1718_02"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1718/P1314_InsideWhichHeAwaited_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1718_01_Sub"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1718/A_sfx_C9_DarknessOfTheVent.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_01_1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_AheadOfTheFugitives_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_01_2"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_AndPatrolledByHighly_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_TheTraitorousRodentPrepared_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_2"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_APlanQuiteObviouslyDoomed_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1_Sub"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/A_sfx_C9_TheTraiterousRodent.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheGangArrived_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/A_sfx_C8_TheGangArrivedAtArtia.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_2_1"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_ToSeeTheAftermath_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_2_2"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheArmyOfArtia_KR.wav"));
+
 
 	#pragma endregion
 
@@ -1225,12 +1264,6 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 	XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model_ButterGrump"),
-		C3DModel::Create(m_pDevice, m_pContext,
-			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/buttergrump_Rig.model"
-				), matPretransform))))
-		return E_FAIL;
-
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),
 		C3DModel::Create(m_pDevice, m_pContext,
 			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sphere_01.model"
@@ -1240,6 +1273,20 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_HalfSphere_01_2"),
 		C3DModel::Create(m_pDevice, m_pContext,
 			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_HalfSphere_01_2.model"
+				), matPretransform))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("HomingBall"),
+		C3DModel::Create(m_pDevice, m_pContext,
+			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/HomingBall.model"
+				), matPretransform))))
+		return E_FAIL;
+
+	matPretransform *= XMMatrixRotationY(XMConvertToRadians(180.f));
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model_ButterGrump"),
+		C3DModel::Create(m_pDevice, m_pContext,
+			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/buttergrump_Rig.model"
 				), matPretransform))))
 		return E_FAIL;
 

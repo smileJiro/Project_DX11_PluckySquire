@@ -111,6 +111,7 @@ protected:
 	HRESULT					Add_Component(_uint _iPrototypeLevelID, const _wstring& _strPrototypeTag, const _wstring& _strComponentTag, CComponent** _ppOut, void* _pArg = nullptr);
 	HRESULT					Add_Component(const _wstring& _strComponentTag, CComponent* _pComponent);
 
+	HRESULT					Remove_Component(const _wstring& _strComponentTag);
 public:
 	virtual CGameObject*	Clone(void* _pArg) = 0; // Clone() 프로토 타입이나 객체의 복사시 사용된다.
 	virtual void			Free() override;
