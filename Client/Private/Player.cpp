@@ -1029,7 +1029,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 
 void CPlayer::On_Land()
 {
-    cout << "Player Landed" << endl;
+    //cout << "Player Landed" << endl;
 }
 
 

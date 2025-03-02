@@ -66,7 +66,7 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 {
 #ifdef _DEBUG
 	Key_Input(fTimeDelta);
-	Imgui(fTimeDelta);
+	//Imgui(fTimeDelta);
 #endif
 
 	Switching(fTimeDelta);
@@ -119,8 +119,6 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 {
 	if (nullptr == m_pCurArm)
 		return;
-
-	m_pGameInstance->Get_CurLevelID();
 
 	// Sketch Space 면에 따라서 Arm 바꿔 주기
 	if (CSection_Manager::GetInstance()->is_WordPos_Capcher()) 
@@ -286,6 +284,16 @@ void CCamera_2D::Set_InitialData(_wstring _szSectionTag)
 	}
 	else if (TEXT("Chapter4_SKSP_07") == _szSectionTag) {
 		pData = Find_ArmData(TEXT("Custom_Stair"));
+	}
+	else if (TEXT("Chapter6_SKSP_05") == _szSectionTag) {
+		switch (m_iPortalID) {
+		case 0:
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+		}
 	}
 
 	if (nullptr != pData) 
@@ -912,6 +920,20 @@ void CCamera_2D::Key_Input(_float _fTimeDelta)
 		}
 
 		m_pCurArm->Set_Rotation(fRotation);
+	}
+
+	_float fArmLength = {};
+	fArmLength = m_pCurArm->Get_Length();
+
+	if (KEY_PRESSING(KEY::CTRL)) {
+		if (KEY_DOWN(KEY::K)) {
+			fArmLength += 0.1;
+			m_pCurArm->Set_Length(fArmLength);
+		}
+		else if (KEY_DOWN(KEY::J)) {
+			fArmLength -= 0.1;
+			m_pCurArm->Set_Length(fArmLength);
+		}
 	}
 }
 

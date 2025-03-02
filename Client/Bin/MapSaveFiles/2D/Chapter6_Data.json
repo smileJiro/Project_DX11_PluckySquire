@@ -139,7 +139,8 @@
 			"LevelSizePixels": {
 				"X": 18432.0,
 				"Y": 8192.0
-			}
+			},
+			"Override_Normal": 1
 		}
 	},
 	{
