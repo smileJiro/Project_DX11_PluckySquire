@@ -129,7 +129,7 @@ void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 	m_isFreezeExitReturn = true;
 	m_vStartFreezeOffset = m_vFreezeOffset;
 
-     	for (auto& iter = m_FreezeExitDatas.begin(); iter != m_FreezeExitDatas.end();) {
+    for (auto& iter = m_FreezeExitDatas.begin(); iter != m_FreezeExitDatas.end();) {
 		if (_iTriggerID == (*iter).second) {
 			m_vCurFreezeExitData = (*iter).first;
 			iter = m_FreezeExitDatas.erase(iter);
@@ -232,9 +232,11 @@ void CCamera_Target::Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex
 
 	Set_InitialData(pData);
 
-	// Freeze Enter Pos 예외 처리
-	if(TEXT("Chapter2_SKSP_03") == _szSectionTag && 0 == _iPortalIndex)
-		m_vFreezeEnterPos = { 11.9279337f, 7.85533524f, 24.1609268f };
+	// Freeze Enter Pos 예외 처리 / 필요없는 것 같은데 0302
+	//if(TEXT("Chapter2_SKSP_03") == _szSectionTag && 0 == _iPortalIndex)
+	//	m_vFreezeEnterPos = { 11.9279337f, 7.85533524f, 24.1609268f };
+	//else if (TEXT("Chapter4_SKSP_07") == _szSectionTag && 0 == _iPortalIndex)
+	//	m_vFreezeEnterPos = { -32.9828110f, 21.4380665f, 24.7532139f };
 }
 
 void CCamera_Target::Set_InitialData(pair<ARM_DATA*, SUB_DATA*>* pData)
@@ -386,7 +388,7 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 			m_pCurArm->Set_Rotation(fRotation);
 		}
 	}
-	else if (KEY_PRESSING(KEY::LSHIFT)) {
+	else if (KEY_PRESSING(KEY::TAB)) {
 
 		//if (KEY_PRESSING(KEY::LSHIFT))
 		//	return;
@@ -414,6 +416,100 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 
 		m_pCurArm->Set_Rotation(fRotation);
 	}
+
+
+	// ImGui
+	ImGui::Begin("Arm");
+
+	_float3 vCurArm = {};
+	XMStoreFloat3(&vCurArm, m_pCurArm->Get_ArmVector());
+	_float fArmLength = m_pCurArm->Get_Length();
+
+	ImGui::SameLine();
+	if (ImGui::Button("- Length") || ImGui::IsItemActive()) {// 누르고 있는 동안 계속 동작
+		fArmLength -= 0.1;
+		m_pCurArm->Set_Length(fArmLength);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("+ Length") || ImGui::IsItemActive()) {
+		fArmLength += 0.1;
+		m_pCurArm->Set_Length(fArmLength);
+	}
+
+	_float3 vTargetPos = {};
+	_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+	_float3 vDebugArm = {}; 
+
+	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+	XMStoreFloat3(&vDebugArm, XMVector3Normalize(XMLoadFloat3(&vTargetPos) - vPos));
+	
+	fArmLength = m_pCurArm->Get_Length();
+	ImGui::Text("Cur Arm: %.4f, %.4f, %.4f", vCurArm.x, vCurArm.y, vCurArm.z);
+	ImGui::Text("Debug Arm(Pos - TargetPos): %.4f, %.4f, %.4f", vDebugArm.x, vDebugArm.y, vDebugArm.z);
+	ImGui::Text("Cur Length: %.2f", fArmLength);
+	ImGui::Text("Cur ZoomLevel: %d", m_iCurZoomLevel);
+	ImGui::Text("Cur AtOffset: %.4f, %.4f, %.4f", m_vAtOffset.x, m_vAtOffset.y, m_vAtOffset.z);
+
+	ImGui::NewLine();
+
+	static _float3 vInputArm = {};
+	static _float fInputLength = {};
+	static _float3 vInputAtOffset = {};
+
+	ImGui::Text("Desire Arm: %.2f, %.2f, %.2f", vInputArm.x, vInputArm.y, vInputArm.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireX", &vInputArm.x);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireY", &vInputArm.y);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireZ", &vInputArm.z);
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Set Arm")) {
+		m_pCurArm->Set_ArmVector(XMLoadFloat3(&vInputArm));
+	}
+
+	ImGui::Text("Desire Length: %.2f         ", fInputLength);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireLength", &fInputLength);
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Set Length")) {
+		m_pCurArm->Set_Length(fInputLength);
+	}
+
+	ImGui::Text("Set AtOffset: %.2f, %.2f, %.2f", vInputAtOffset.x, vInputAtOffset.y, vInputAtOffset.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetAtOffsetX", &vInputAtOffset.x);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetAtOffsetY", &vInputAtOffset.y);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetAtOffsetZ", &vInputAtOffset.z);
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Set AtOffset")) {
+		m_vAtOffset = vInputAtOffset;
+	}
+
+	if (ImGui::Button("Set CurArm To InputArm")) {
+		vInputArm = vCurArm;
+	}
+
+	ImGui::End();
 #endif
 }
 

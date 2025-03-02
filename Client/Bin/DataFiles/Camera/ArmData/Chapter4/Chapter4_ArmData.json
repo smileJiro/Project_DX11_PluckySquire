@@ -598,5 +598,502 @@
         "Sub_Data": {
             "Use_SubData": false
         }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 14.099998474121094,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                -0.002382864709943533,
+                0.688365638256073,
+                -0.7253455519676208
+            ]
+        },
+        "Arm_Tag": "Chapter4_Portal1_Start",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 3,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 1.2000000476837158
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 13.099994659423828,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                -0.002557209227234125,
+                0.6277190446853638,
+                -0.778415858745575
+            ]
+        },
+        "Arm_Tag": "Chapter4_Portal2_Start",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                1.5,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 3,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 1.2000000476837158
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 13.999998092651367,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                -0.003320962656289339,
+                0.5952451229095459,
+                -0.8035176992416382
+            ]
+        },
+        "Arm_Tag": "Chapter4_Portal2_End",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                2.0,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 3,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 1.2000000476837158
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 13.999998092651367,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                -0.003320962656289339,
+                0.5952451229095459,
+                -0.8035176992416382
+            ]
+        },
+        "Arm_Tag": "Chapter4_Portal3_Start",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                2.0,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 3,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 1.2000000476837158
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 13.999998092651367,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                -0.003320962656289339,
+                0.5952451229095459,
+                -0.8035176992416382
+            ]
+        },
+        "Arm_Tag": "Chapter4_Portal4_Start",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                2.0,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 3,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 1.2000000476837158
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 13.999998092651367,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                -0.003320962656289339,
+                0.5952451229095459,
+                -0.8035176992416382
+            ]
+        },
+        "Arm_Tag": "Chapter4_Portal5_Start",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                2.0,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 3,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 1.2000000476837158
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 15.800004959106445,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                0.563648283,
+                0.399879605,
+                -0.722769320
+            ]
+        },
+        "Arm_Tag": "Chapter4_Portal6_Start",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                0.5,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 2,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 1.2000000476837158
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 15.800004959106445,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                -0.003252535592764616,
+                0.6169618368148804,
+                -0.7869618535041809
+            ]
+        },
+        "Arm_Tag": "Chapter4_Portal6_Middle",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                0.5,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 2,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 1.2000000476837158
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 14.1,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                -0.0040,
+                0.2290,
+                -0.9734
+            ]
+        },
+        "Arm_Tag": "Chapter4_Portal6_End",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                0.5,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 4,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 1.2000000476837158
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 13.599996566772461,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                0.4029,
+                -0.5885,
+                0.7009
+            ]
+        },
+        "Arm_Tag": "Chapter4_Portal7_Start",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                1.5,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 2,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 1.2000000476837158
+        }
+    },
+    {
+        "Arm_Data": {
+            "Arm_Length": 13.599996566772461,
+            "Arm_Length_RatioType": 0,
+            "Arm_MoveTime_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_MoveTime_AxisY": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisRight": [
+                0.0,
+                0.0
+            ],
+            "Arm_RotationPerSec_AxisY": [
+                0.0,
+                0.0
+            ],
+            "Arm_Time": [
+                1.2000000476837158,
+                0.0
+            ],
+            "Desire_Arm": [
+                -0.003165223402902484,
+                0.6429981589317322,
+                -0.7658361196517944
+            ]
+        },
+        "Arm_Tag": "Chapter4_Portal7_End",
+        "Sub_Data": {
+            "AtOffset": [
+                0.0,
+                1.5,
+                0.0
+            ],
+            "AtOffset_RatioType": 0,
+            "AtOffset_Time": 1.2000000476837158,
+            "Use_SubData": true,
+            "Zoom_Level": 2,
+            "Zoom_RatioType": 0,
+            "Zoom_Time": 1.2000000476837158
+        }
     }
+
+
 ]

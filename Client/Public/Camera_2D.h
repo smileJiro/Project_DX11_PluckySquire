@@ -166,6 +166,7 @@ private:
 
 #ifdef _DEBUG
 	void						Key_Input(_float _fTimeDelta);
+	void						Imgui(_float _fTimeDelta);
 #endif
 
 public:
