@@ -64,8 +64,8 @@ void CCamera_2D::Update(_float fTimeDelta)
 
 void CCamera_2D::Late_Update(_float fTimeDelta)
 {
-#ifdef _DEBUG
 	Key_Input(fTimeDelta);
+#ifdef _DEBUG
 	//Imgui(fTimeDelta);
 #endif
 
@@ -292,6 +292,9 @@ void CCamera_2D::Set_InitialData(_wstring _szSectionTag)
 		case 1:
 			break;
 		case 2:
+		{
+			pData = Find_ArmData(TEXT("Custom_Box_2"));
+		}
 			break;
 		}
 	}
@@ -877,7 +880,7 @@ pair<ARM_DATA*, SUB_DATA*>* CCamera_2D::Find_ArmData(_wstring _wszArmTag)
 	return &(iter->second);
 }
 
-#ifdef _DEBUG
+
 void CCamera_2D::Key_Input(_float _fTimeDelta)
 {
 	_long		MouseMove = {};
@@ -935,8 +938,17 @@ void CCamera_2D::Key_Input(_float _fTimeDelta)
 			m_pCurArm->Set_Length(fArmLength);
 		}
 	}
-}
 
+	if (KEY_PRESSING(KEY::TAB)) {
+		if (KEY_DOWN(KEY::K)) {
+			m_vAtOffset.y += 0.1f;
+		}
+		else if (KEY_DOWN(KEY::J)) {
+			m_vAtOffset.y -= 0.1f;
+		}
+	}
+}
+#ifdef _DEBUG
 void CCamera_2D::Imgui(_float _fTimeDelta)
 {
 	ImGui::Begin("Arm");
