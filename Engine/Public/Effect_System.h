@@ -66,7 +66,7 @@ public:
 	virtual void		 Free() override;
 	virtual HRESULT		 Cleanup_DeadReferences() override;
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 public:
 	HRESULT						Add_New_Emitter(CEmitter::EFFECT_TYPE _eType, void* _pArg);
 	void						Tool_Update(_float _fTimeDelta);

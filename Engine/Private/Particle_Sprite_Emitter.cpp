@@ -91,7 +91,7 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
 
         }
     }
-#ifdef NDEBUG
+#ifdef _DEBUG
     m_pMaskTextureCom->Add_SRVName(STRINGTOWSTRING(_jsonInfo["Texture"]));
     if (m_pDissolveTextureCom)
         m_pDissolveTextureCom->Add_SRVName(STRINGTOWSTRING(_jsonInfo["DissolveTexture"]));
@@ -546,7 +546,7 @@ HRESULT CParticle_Sprite_Emitter::Cleanup_DeadReferences()
 	return S_OK;
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 void CParticle_Sprite_Emitter::Tool_Setting()
 {
     if (m_pParticleBufferCom)

@@ -20,7 +20,7 @@ CMeshEffect_Emitter::CMeshEffect_Emitter(const CMeshEffect_Emitter& _Prototype)
 	, m_Textures(_Prototype.m_Textures)
 	, m_vColor(_Prototype.m_vColor)
 	//, m_eShaderPass(_Prototype.m_eShaderPass)
-#ifdef NDEBUG
+#ifdef _DEBUG
 	, m_strModelPath(_Prototype.m_strModelPath)
 	, m_PreTransformMatrix(_Prototype.m_PreTransformMatrix)
 	, m_vDefaultColor(_Prototype.m_vDefaultColor)
@@ -76,7 +76,7 @@ HRESULT CMeshEffect_Emitter::Initialize_Prototype(const json& _jsonInfo)
 		return E_FAIL;
 
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 	m_strModelPath = strModelPath;
 	m_PreTransformMatrix = PreTransformMatrix;
 	m_vDefaultColor = m_vColor;
@@ -522,7 +522,7 @@ HRESULT CMeshEffect_Emitter::Load_TextureInfo(const json& _jsonInfo)
 
 				m_pGameInstance->Add_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strPath), pTexture);
 			}
-#ifdef NDEBUG
+#ifdef _DEBUG
 			m_Textures[eType]->Add_SRVName(STRINGTOWSTRING(strPath));
 #endif
 		}
@@ -574,7 +574,7 @@ HRESULT CMeshEffect_Emitter::Cleanup_DeadReferences()
 	return S_OK;
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 void CMeshEffect_Emitter::Tool_Setting()
 {

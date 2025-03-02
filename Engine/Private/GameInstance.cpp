@@ -179,7 +179,7 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update ¼öÇà ÈÄ, DeadObject Safe_Release() + erase();
 
 	m_pPipeLine->Update();
-#ifdef NDEBUG
+#ifdef _DEBUG
 	if (m_pNewRenderer)
 	{
 		m_pNewRenderer->Update_Imgui();
@@ -437,7 +437,7 @@ CGameObject* CGameInstance::Get_GameObject_Ptr(_int _iLevelID, const _wstring& _
 	return m_pObject_Manager->Get_GameObject_Ptr(_iLevelID, _strLayerTag, _iObjectIndex);
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 map<const _wstring, class CLayer*>* CGameInstance::Get_Layers_Ptr()
 {
 	return m_pObject_Manager->Get_Layers_Ptr();
@@ -454,7 +454,7 @@ HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP _eRenderGroup, CG
 	return m_pRenderer->Add_RenderObject(_eRenderGroup, _pRenderObject);
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 HRESULT CGameInstance::Add_DebugComponent(CComponent* _pDebugCom)
 {
 	if (true == m_isNewRenderer)
@@ -604,7 +604,7 @@ HRESULT CGameInstance::Clear_ShadowLight()
 	return m_pNewRenderer->Clear_ShadowLight();
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 HRESULT CGameInstance::Add_DebugComponent_New(CComponent* _pDebugCom)
 {
@@ -1169,7 +1169,7 @@ void CGameInstance::Render_DrawData_Imgui()
 
 	return m_pImgui_Manager->Render_DrawData();
 }
-#ifdef NDEBUG
+#ifdef _DEBUG
 HRESULT	CGameInstance::Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag, _uint _iObjectId)
 {
 	if (nullptr == m_pImgui_Manager)
@@ -1501,7 +1501,7 @@ HRESULT CGameInstance::Physx_Render()
 }
 
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 HRESULT CGameInstance::Ready_RT_Debug(const _wstring& _strTargetTag, _float _fX, _float _fY, _float _fSizeX, _float _fSizeY)
 {

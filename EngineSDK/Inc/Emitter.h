@@ -115,7 +115,7 @@ public:
 	virtual void		 Free() override;
 	virtual HRESULT		 Cleanup_DeadReferences() = 0;
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 public:
 	virtual void				Tool_Update(_float fTimeDelta);
 	virtual void				Tool_Setting();
