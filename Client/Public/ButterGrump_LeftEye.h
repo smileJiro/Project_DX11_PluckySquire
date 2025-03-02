@@ -1,0 +1,46 @@
+#pragma once
+#include "PartObject.h"
+
+BEGIN(Client)
+class CMonster;
+class CButterGrump_LeftEye : public CPartObject
+{
+public:
+	typedef struct tagButterGrump_LeftEyeDesc : public CPartObject::PARTOBJECT_DESC
+	{
+		class CMonster* pParent = nullptr;
+	}BUTTERGRUMP_LEFTEYE_DESC;
+
+private:
+	CButterGrump_LeftEye(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CButterGrump_LeftEye(const CButterGrump_LeftEye& _Prototype);
+	virtual ~CButterGrump_LeftEye() = default;
+
+public:
+	virtual HRESULT	Initialize_Prototype() override;
+	virtual HRESULT Initialize(void* _pArg) override;
+	virtual void	Update(_float _fTimeDelta) override;
+	virtual void	Late_Update(_float _fTimeDelta) override;
+	virtual HRESULT	Render() override;
+
+
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
+	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void Active_OnEnable() override;
+	virtual void Active_OnDisable() override;
+
+private:
+	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
+
+private:
+	_bool m_isHitEnable = { true };
+	CMonster* m_pParent = { nullptr };
+
+public:
+	static CButterGrump_LeftEye* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	virtual CGameObject* Clone(void* _pArg) override;
+	virtual void			Free() override;
+};
+
+END
