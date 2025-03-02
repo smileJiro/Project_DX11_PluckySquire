@@ -609,7 +609,7 @@ void CSampleBook::PageAction_Call_PlayerEvent()
 			if (CCamera_Manager::CAMERA_TYPE::TARGET_2D == CCamera_Manager::GetInstance()->Get_CameraType())
 			{
 				CCamera* pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D);
-				static_cast<CCamera_2D*>(pCamera)->Set_Include_Section_Name(strMoveSectionName);
+				static_cast<CCamera_2D*>(pCamera)->Enter_Section(strMoveSectionName);
 			}
 		}
 	}

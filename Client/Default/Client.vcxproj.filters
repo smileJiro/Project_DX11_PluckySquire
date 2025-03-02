@@ -514,6 +514,18 @@
     <Filter Include="02.GameObjects\NPC\100. NPC_Manager">
       <UniqueIdentifier>{d7663a2e-f2cd-4c80-a744-dcac42db9a16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Boss\Part">
+      <UniqueIdentifier>{71019787-e43c-4ea9-847c-046f30743f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Door_2D">
+      <UniqueIdentifier>{aa18310b-25cd-4895-ad77-1b8fec105d57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Door_2D\Door">
+      <UniqueIdentifier>{2609ac0a-44e0-4916-a8b7-8fd8b53ae121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Door_2D\Pressure_Plate">
+      <UniqueIdentifier>{c84e00c4-ed90-4043-b9c1-415d594bd204}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1254,7 +1266,28 @@
       <Filter>02.GameObjects\NPC\100. NPC_Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SlipperyObject.h" />
+    <ClInclude Include="..\Public\ButterGrump_LeftEye.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ButterGrump_RightEye.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ButterGrump_Tongue.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ButterGrump_Shield.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\ZetPack.h" />
+    <ClInclude Include="..\public\Door_Yellow.h">
+      <Filter>02.GameObjects\Door_2D\Door</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Door_2D.h">
+      <Filter>02.GameObjects\Door_2D\Door</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Pressure_Plate.h">
+      <Filter>02.GameObjects\Door_2D\Pressure_Plate</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1985,7 +2018,28 @@
       <Filter>02.GameObjects\NPC\100. NPC_Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SlipperyObject.cpp" />
+    <ClCompile Include="..\Private\ButterGrump_LeftEye.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ButterGrump_RightEye.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ButterGrump_Tongue.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ButterGrump_Shield.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\ZetPack.cpp" />
+    <ClCompile Include="..\private\Door_2D.cpp">
+      <Filter>02.GameObjects\Door_2D\Door</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Door_Yellow.cpp">
+      <Filter>02.GameObjects\Door_2D\Door</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Pressure_Plate.cpp">
+      <Filter>02.GameObjects\Door_2D\Pressure_Plate</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

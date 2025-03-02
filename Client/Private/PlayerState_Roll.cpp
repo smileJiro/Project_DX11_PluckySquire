@@ -144,8 +144,8 @@ void CPlayerState_Roll::Enter()
 
 void CPlayerState_Roll::Exit()
 {
-	if (COORDINATE_2D == m_pOwner->Get_CurCoord())
-		CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("Zip5"), 1.f);
+	//if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+	//	CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("Zip5"), 1.f);
 
 }
 

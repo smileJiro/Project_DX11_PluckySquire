@@ -71,8 +71,8 @@ protected:
 	vector<pair<CSpriteFrame*,_uint>> m_SpriteFrames;
 
 	_float m_fCurrentFrameTime = 0;
-	_uint m_iCurrentFrame = { 0};
-	_uint m_iCurrentSubFrame = { 0};
+	_int m_iCurrentFrame = { 0};
+	_int m_iCurrentSubFrame = { 0};
 
 public:
 	static CAnimation2D* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const _char* szDirPath, ifstream& _infIle, map<string, CTexture*>& _Textures);

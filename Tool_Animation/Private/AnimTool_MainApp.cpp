@@ -136,22 +136,6 @@ HRESULT CAnimTool_MainApp::Ready_RenderGroup()
 	Safe_Release(pRenderGroup_MRT);
 	pRenderGroup_MRT = nullptr;
 
-	/* RG_3D, PR3D_PLAYERDEPTH */
-	CRenderGroup_PlayerDepth::RG_MRT_DESC RG_PlayerDepthDesc;
-	RG_PlayerDepthDesc.iRenderGroupID = RENDERGROUP::RG_3D;
-	RG_PlayerDepthDesc.iPriorityID = PRIORITY_3D::PR3D_PLAYERDEPTH;
-	RG_PlayerDepthDesc.strMRTTag = TEXT("MRT_PlayerDepth");
-	CRenderGroup_PlayerDepth* pRenderGroup_PlayerDepth = CRenderGroup_PlayerDepth::Create(m_pDevice, m_pContext, &RG_PlayerDepthDesc);
-	if (nullptr == pRenderGroup_PlayerDepth)
-	{
-		MSG_BOX("Failed Create PR3D_PLAYERDEPTH");
-		return E_FAIL;
-	}
-	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_PlayerDepth->Get_RenderGroupID(), pRenderGroup_PlayerDepth->Get_PriorityID(), pRenderGroup_PlayerDepth)))
-		return E_FAIL;
-	Safe_Release(pRenderGroup_PlayerDepth);
-	pRenderGroup_PlayerDepth = nullptr;
-
 	/* RG_3D, PR3D_DIRECTLIGHTS */
 	//MRT_DirectLightAcc;
 	CRenderGroup_DirectLights::RG_MRT_DESC RG_DirectLightsDesc;
@@ -393,6 +377,10 @@ HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_ORMH"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
 		return E_FAIL;
 
+	/* Target_Etc */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Etc"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
+		return E_FAIL;
+
 	/* Target_Depth */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Depth"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.0f, 1.0f, 1.0f, 1.0f))))
 		return E_FAIL;
@@ -402,11 +390,11 @@ HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 		return E_FAIL;
 
 	/* Target_DirectLightAcc */
-	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_DirectLightAcc"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f,0.f, 0.f, 1.f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_DirectLightAcc"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
 	/* Target_Lighting */ /* HDR */
-	if (FAILED(m_pGameInstance->Add_RenderTarget_MSAA(TEXT("Target_Lighting"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 1.f))))
+	if (FAILED(m_pGameInstance->Add_RenderTarget_MSAA(TEXT("Target_Lighting"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
 	/* Target_PostProcessing */
@@ -458,6 +446,8 @@ HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Geometry"), TEXT("Target_ORMH"))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Geometry"), TEXT("Target_Depth"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Geometry"), TEXT("Target_Etc"))))
 		return E_FAIL;
 
 	/* MRT_PlayerDepth */
@@ -525,7 +515,7 @@ HRESULT CAnimTool_MainApp::Ready_RenderTargets()
 
 	/* Settiong DSV */
 
-	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), SHADOWMAP_X, SHADOWMAP_Y)))
+	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), (_uint)SHADOWMAP_X, (_uint)SHADOWMAP_Y)))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Downsample1"), (_uint)(g_iWinSizeX / 6.f), (_uint)(g_iWinSizeY / 6.f))))

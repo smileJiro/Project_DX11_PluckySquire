@@ -964,7 +964,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 
 
-
+	return S_OK;
 
 }
 

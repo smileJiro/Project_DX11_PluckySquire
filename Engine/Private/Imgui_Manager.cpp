@@ -785,7 +785,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 
 				LightJson["isShadow"] = tConstLightData.isShadow;
 
-				if(eType != LIGHT_TYPE::POINT && true == tConstLightData.isShadow)
+				if(eType != LIGHT_TYPE::POINT && true == (_bool)tConstLightData.isShadow)
 					LightJson["fShadowFactor"] = tConstLightData.fShadowFactor;
 
 				LightsJson.push_back(LightJson);

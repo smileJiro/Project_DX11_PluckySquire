@@ -47,7 +47,7 @@ HRESULT CDomino::Initialize(void* _pArg)
 	SHAPE_BOX_DESC ShapeDesc2 = {};
 	ShapeDesc2.vHalfExtents = { 0.43f,0.12f ,1.15f };
 	ShapeData.pShapeDesc = &ShapeDesc2;
-	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.24f, ShapeDesc2.vHalfExtents.y + 0.01, 0.f));
+	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.24f, ShapeDesc2.vHalfExtents.y + 0.01f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;

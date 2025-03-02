@@ -130,9 +130,9 @@ void CVIBuffer_Beam::Initialize_Positions(const _float3& _vStartPos, const _floa
 	_vector vStartPos = XMLoadFloat3(&m_pUpdateVertices[0].vPosition);
 	_vector vEndPos = XMLoadFloat3(&m_pUpdateVertices[m_iNumVertices - 1].vPosition);
 
-	for (_int i = 1; i < m_iNumVertices - 1; ++i)
+	for (_uint i = 1; i < m_iNumVertices - 1; ++i)
 	{
-		_vector vPosition = vStartPos + (vEndPos - vStartPos) * (_float)(i) / m_iNumVertices;
+		_vector vPosition = vStartPos + (vEndPos - vStartPos) * (_float)(i) / (_float)m_iNumVertices;
 		_vector vRandom = XMVectorSet(m_pGameInstance->Compute_Random(m_vRandomMin.x, m_vRandomMax.x), m_pGameInstance->Compute_Random(m_vRandomMin.y, m_vRandomMax.y)
 			, m_pGameInstance->Compute_Random(m_vRandomMin.z, m_vRandomMax.z), 0.f);
 
@@ -249,9 +249,9 @@ void CVIBuffer_Beam::Update_RandomPoints()
 	_vector vStartPos = XMLoadFloat3(&m_pUpdateVertices[0].vPosition);
 	_vector vEndPos = XMLoadFloat3(&m_pUpdateVertices[m_iNumVertices - 1].vPosition);
 
-	for (_int i = 1; i < m_iNumVertices - 1; ++i)
+	for (_uint i = 1; i < m_iNumVertices - 1; ++i)
 	{
-		_vector vPosition = vStartPos + (vEndPos - vStartPos) * (_float)(i) / m_iNumVertices;
+		_vector vPosition = vStartPos + (vEndPos - vStartPos) * (_float)(i) / (_float)m_iNumVertices;
 		_vector vRandom = XMVectorSet(m_pGameInstance->Compute_Random(m_vRandomMin.x, m_vRandomMax.x), m_pGameInstance->Compute_Random(m_vRandomMin.y, m_vRandomMax.y)
 			, m_pGameInstance->Compute_Random(m_vRandomMin.z, m_vRandomMax.z), 0.f);
 
@@ -272,9 +272,9 @@ void CVIBuffer_Beam::Converge_Points(_float _fSpeeds)
 	_vector vStartPos = XMLoadFloat3(&m_pUpdateVertices[0].vPosition);
 	_vector vEndPos = XMLoadFloat3(&m_pUpdateVertices[m_iNumVertices - 1].vPosition);
 
-	for (_int i = 1; i < m_iNumVertices - 1; ++i)
+	for (_uint i = 1; i < m_iNumVertices - 1; ++i)
 	{
-		_vector vOriginPosition = vStartPos + (vEndPos - vStartPos) * (_float)(i) / m_iNumVertices;
+		_vector vOriginPosition = vStartPos + (vEndPos - vStartPos) * (_float)(i) / (_float)m_iNumVertices;
 		_vector vPosition = XMLoadFloat3(&m_pUpdateVertices[i].vPosition);
 
 		_vector vDir = vOriginPosition - vPosition;

@@ -106,6 +106,8 @@
 #include "Sneak_DetectionField.h"
 #include "LightningBolt.h"
 #include "LunchBox.h"
+#include "Door_Yellow.h"
+#include "Pressure_Plate.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -130,6 +132,10 @@
 
 /* For. Boss */
 #include "ButterGrump.h"
+#include "ButterGrump_LeftEye.h"
+#include "ButterGrump_RightEye.h"
+#include "ButterGrump_Tongue.h"
+#include "ButterGrump_Shield.h"
 #include "Boss_EnergyBall.h"
 #include "Boss_HomingBall.h"
 #include "Boss_YellowBall.h"
@@ -145,11 +151,16 @@
 #include "Domino.h"
 #include "Portal.h"
 #include "Word.h"
+
+// Etc
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
+
+// Player Effect 
 #include "Effect_Trail.h"
 #include "Effect_Beam.h"
+
 
 
 
@@ -792,6 +803,14 @@ HRESULT CLoader::Loading_Level_Static()
 		CBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		CDoor_Yellow::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Pressure_Plate"),
+		CPressure_Plate::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For. Prototype_GameObject_SwordTrail */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_EffectTrail"),
 		CEffect_Trail::Create(m_pDevice, m_pContext))))
@@ -1182,6 +1201,20 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 	    CButterGrump::Create(m_pDevice, m_pContext))))
 	    return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_LeftEye"),
+		CButterGrump_LeftEye::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_RightEye"),
+		CButterGrump_RightEye::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_Tongue"),
+		CButterGrump_Tongue::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_Shield"),
+		CButterGrump_Shield::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_HomingBall"),
 	    CBoss_HomingBall::Create(m_pDevice, m_pContext))))
 	    return E_FAIL;
@@ -1203,6 +1236,18 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model_ButterGrump"),
 		C3DModel::Create(m_pDevice, m_pContext,
 			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/buttergrump_Rig.model"
+				), matPretransform))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),
+		C3DModel::Create(m_pDevice, m_pContext,
+			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sphere_01.model"
+				), matPretransform))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_HalfSphere_01_2"),
+		C3DModel::Create(m_pDevice, m_pContext,
+			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_HalfSphere_01_2.model"
 				), matPretransform))))
 		return E_FAIL;
 
@@ -1241,30 +1286,44 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	/* Boss */
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_8, TEXT("Prototype_Component_FSM_Boss"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_Component_FSM_Boss"),
 	//	CFSM_Boss::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
 
-	/* For. Prototype_GameObject_ButterGrump */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"),
-	//    CButterGrump::Create(m_pDevice, m_pContext))))
-	//    return E_FAIL;
+	///* For. Prototype_GameObject_ButterGrump */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump"),
+	//	CButterGrump::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Boss_HomingBall"),
-	//    CBoss_HomingBall::Create(m_pDevice, m_pContext))))
-	//    return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_LeftEye"),
+	//	CButterGrump_LeftEye::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_RightEye"),
+	//	CButterGrump_RightEye::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_Tongue"),
+	//	CButterGrump_Tongue::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_Shield"),
+	//	CButterGrump_Shield::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Boss_EnergyBall"),
-	//    CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
-	//    return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Boss_YellowBall"),
-	//    CBoss_YellowBall::Create(m_pDevice, m_pContext))))
-	//    return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_HomingBall"),
+	//	CBoss_HomingBall::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Boss_PurpleBall"),
-	//    CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
-	//    return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_EnergyBall"),
+	//	CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_YellowBall"),
+	//	CBoss_YellowBall::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_PurpleBall"),
+	//	CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 	return S_OK;
 }

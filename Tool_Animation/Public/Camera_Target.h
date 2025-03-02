@@ -54,6 +54,7 @@ public:
 	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
 	void						Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 
+	CCameraArm*					Get_Arm() { return m_pArm; }		
 private:
 	const _float4x4*					m_pTargetWorldMatrix = { nullptr };
 

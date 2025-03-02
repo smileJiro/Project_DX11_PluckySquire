@@ -21,37 +21,45 @@ CBackgorund::CBackgorund(const CBackgorund& _Prototype)
 
 void CBackgorund::Late_Update(_float _fTimeDelta)
 {
-	m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
-	__super::Late_Update(_fTimeDelta);
+	if (COORDINATE_3D == m_pControllerTransform->Get_CurCoord())
+		Register_RenderGroup(RG_3D, PR3D_GEOMETRY);
+	else if (COORDINATE_2D == m_pControllerTransform->Get_CurCoord())
+		Register_RenderGroup(RG_3D, PR3D_UI);
+	CPartObject::Late_Update(_fTimeDelta);
 }
 
-HRESULT CBackgorund::Render()
-{
-	if (FAILED(Bind_ShaderResources_WVP()))
-		return E_FAIL;
-	COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
-	CShader* pShader = m_pShaderComs[eCoord];
-	_uint iShaderPass = m_iShaderPasses[eCoord];
-	m_pControllerModel->Render(pShader, iShaderPass);
-	return S_OK;
-}
+//HRESULT CBackgorund::Render()
+//{
+//	if (FAILED(Bind_ShaderResources_WVP()))
+//		return E_FAIL;
+//	COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+//	CShader* pShader = m_pShaderComs[eCoord];
+//	_uint iShaderPass = m_iShaderPasses[eCoord];
+//	if (COORDINATE_3D == eCoord)
+//		pShader->Bind_RawValue("g_fFarZ", m_pGameInstance->Get_FarZ(), sizeof(_float));
+//	m_pControllerModel->Render(pShader, iShaderPass);
+//	return S_OK;
+//}
 
-HRESULT CBackgorund::Bind_ShaderResources_WVP()
-{
-	_matrix matLocal = *static_cast<C2DModel*>(m_pControllerModel->Get_Model(COORDINATE_2D))->Get_CurrentSpriteTransform();
-
-	_matrix matWorld = matLocal * XMLoadFloat4x4(&m_WorldMatrices[COORDINATE_2D]);
-
-	_float4x4 matWorld4x4;
-	XMStoreFloat4x4(&matWorld4x4, matWorld);
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_WorldMatrix", &matWorld4x4)))
-		return E_FAIL;
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_matView)))
-		return E_FAIL;
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_matProj)))
-		return E_FAIL;
-	return S_OK;
-}
+//HRESULT CBackgorund::Bind_ShaderResources_WVP()
+//{
+//	_matrix matLocal = *static_cast<C2DModel*>(m_pControllerModel->Get_Model(COORDINATE_2D))->Get_CurrentSpriteTransform();
+//
+//	_matrix matWorld = matLocal * XMLoadFloat4x4(&m_WorldMatrices[COORDINATE_2D]);
+//
+//	_float4x4 matWorld4x4;
+//	XMStoreFloat4x4(&matWorld4x4, matWorld);
+//	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_WorldMatrix", &matWorld4x4)))
+//		return E_FAIL;
+//	//if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
+//	//	return E_FAIL;
+//
+//	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ViewMatrix", &m_matView)))
+//		return E_FAIL;
+//	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_ProjMatrix", &m_matProj)))
+//		return E_FAIL;
+//	return S_OK;
+//}
 
 CBackgorund* CBackgorund::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
