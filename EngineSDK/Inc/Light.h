@@ -15,7 +15,13 @@ private:
 
 public:
 	HRESULT Initialize(const CONST_LIGHT& _LightDesc);
-	HRESULT Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer);
+	HRESULT Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer);
+#ifdef _DEBUG
+	HRESULT Render_Base_Debug() override;
+	_bool m_isSelect = false;
+	_bool Is_Select() const { return m_isSelect; }
+	void Set_Select(_bool _isSelect) { m_isSelect = _isSelect; }
+#endif // !_DEBUG
 
 public: /* Shadow View Proj */
 	HRESULT Compute_ViewProjMatrix(); // view 따로, proj 따로 저장해야함, 기존 모델들 vs shader 그대로 가려면

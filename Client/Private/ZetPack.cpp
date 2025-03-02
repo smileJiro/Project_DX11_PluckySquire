@@ -27,6 +27,10 @@ HRESULT CZetPack::Initialize(void* _pArg)
     pDesc->iRenderGroupID_3D = RG_3D;
     pDesc->iPriorityID_3D = PR3D_GEOMETRY;
 
+    pDesc->iModelPrototypeLevelID_2D = LEVEL_STATIC;
+    pDesc->strModelPrototypeTag_2D = TEXT("Zip_rig");
+    pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxMesh");
+
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 	return S_OK;

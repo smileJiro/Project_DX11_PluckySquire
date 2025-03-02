@@ -120,10 +120,6 @@ HRESULT CRenderGroup_PostProcessing::Render(CShader* _pRTShader, CVIBuffer_Rect*
     if (FAILED(m_pGameInstance->End_MRT()))
         return E_FAIL;
 
-    //Setup_Viewport(_float2((_float)m_pGameInstance->Get_ViewportWidth(), (_float)m_pGameInstance->Get_ViewportHeight()));
-
-
-
 
     return S_OK;
 }

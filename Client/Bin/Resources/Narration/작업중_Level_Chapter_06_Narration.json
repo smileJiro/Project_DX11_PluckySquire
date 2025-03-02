@@ -1,0 +1,146 @@
+{
+	"Narration": [
+		{
+			"strSectionid": "Chapter6_P0304",
+			"strid": "Chapter6_P0304_Narration_01",
+			"CurlevelId": 3,
+			"bTerminal": false,
+			"lines": [
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": " ",
+					"strSFX": "C6_P6768_01_Sub1",
+					"strSubSFX": "",
+					"fLineHeight": 70.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 3.0,
+					"fscale": 1.5,
+					"isLeft": true,
+					"fposX": 300.0,
+					"fposY": 250.0,
+					"fwaitingTime": 3.0,
+					"NarAnim": [
+						{
+							"strAnimationid": "C06_P0304_Machine",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter6_P0304",
+							"fPosX": 500.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "C06_P0304_Wall",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter6_P0304",
+							"fPosX": 450.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "C06_P0304_Machine",
+							"AnimationIndex": 2,
+							"isLoop": false,
+							"strSectionid": "Chapter6_P0304",
+							"fPosX": 550.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "C06_P0304_Machine",
+							"AnimationIndex": 8,
+							"isLoop": false,
+							"strSectionid": "Chapter6_P0304",
+							"fPosX": 1195.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "C06_P0304_Machine",
+							"AnimationIndex": 5,
+							"isLoop": false,
+							"strSectionid": "Chapter6_P0304",
+							"fPosX": 1200.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "C06_P0304_Machine",
+							"AnimationIndex": 3,
+							"isLoop": false,
+							"strSectionid": "Chapter6_P0304",
+							"fPosX": 200.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "C06_P0304_Machine",
+							"AnimationIndex": 4,
+							"isLoop": false,
+							"strSectionid": "Chapter6_P0304",
+							"fPosX": 2300.0,
+							"fPosY": 400.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "C06_P0304_Machine",
+							"AnimationIndex": 6,
+							"isLoop": false,
+							"strSectionid": "Chapter6_P0304",
+							"fPosX": 650.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "{130}거대한 기계{100}가#무참히 짓밟고#지나간 자리였죠.",
+					"strSFX": "C6_P6768_01",
+					"strSubSFX": "C6_P6768_01_Sub2",
+					"fLineHeight": 60.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 4.0,
+					"fscale": 1.5,
+					"isLeft": false,
+					"fposX": 700.0,
+					"fposY": 200.0,
+					"fwaitingTime": 4.0,
+					"isFinishedThisLine": true,
+					"NarAnim": [
+						{
+							"strAnimationid": "C06_P0304_Machine",
+							"AnimationIndex": 7,
+							"isLoop": false,
+							"strSectionid": "Chapter6_P0304",
+							"fPosX": 650.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				}
+			]
+		}
+	]
+}

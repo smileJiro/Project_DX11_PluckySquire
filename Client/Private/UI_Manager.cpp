@@ -350,6 +350,7 @@ void CUI_Manager::Free()
 
 	for (auto iter : m_pShopPanels)
 	{
+
 		Safe_Release(iter.second);
 	}
 	m_pShopPanels.clear();

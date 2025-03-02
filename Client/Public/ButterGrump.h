@@ -49,14 +49,16 @@ public:
 		LAST,
 	};
 
-	enum BOSS_SHAPE_USE
-	{
-		BOSS_SHAPE_LEFT_EYE = SHAPE_USE::SHAPE_USE_LAST,
-		BOSS_SHAPE_RIGHT_EYE,
-		BOSS_SHAPE_TONGUE,
-		BOSS_SHAPE_SHIELD,
-		BOSS_SHAPE_LAST
-	};
+	enum BOSSPART {BOSSPART_BODY, BOSSPART_LEFTEYE, BOSSPART_RIGHTEYE, BOSSPART_TONGUE, BOSSPART_SHIELD, BOSSPART_END};
+
+	//enum BOSS_SHAPE_USE
+	//{
+	//	BOSS_SHAPE_LEFT_EYE = SHAPE_USE::SHAPE_USE_LAST,
+	//	BOSS_SHAPE_RIGHT_EYE,
+	//	BOSS_SHAPE_TONGUE,
+	//	BOSS_SHAPE_SHIELD,
+	//	BOSS_SHAPE_LAST
+	//};
 
 private:
 	CButterGrump(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -85,6 +87,8 @@ private:
 
 private:
 	CFSM_Boss* m_pBossFSM = { nullptr };
+
+	_bool m_isInvincible = { false };
 
 public:
 	static CButterGrump* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

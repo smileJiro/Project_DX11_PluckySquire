@@ -1,125 +1,6 @@
 {
 	"dialogs": [
 		{
-			"id": "dialog_01",
-			"Section": "Chapter1_P0506",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "마르티나",
-					"BG": 2,
-					"location": 2,
-					"is2D": true,
-					"isPortrait": true,
-					
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "안녕하세요, 용감한 용사 여러분!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 2,
-					"Talker": "마티나",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "전 마르티나라고 해요... 만나서 반가워요!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 2,
-					"Talker": "마티나",
-					"BG": 2,
-					"location": 3,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "새 물건이 들어왔어요. 한번 보세요!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 2,
-					"Talker": "마티나",
-					"BG": 2,
-					"location": 4,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "LEFT_DOWN의 위치에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 2,
-					"Talker": "마티나",
-					"BG": 2,
-					"location": 5,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "LEFT_HIGH의 위치에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 2,
-					"Talker": "마티나",
-					"BG": 2,
-					"location": 6,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "RIGHT_HIGH의 위치에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 2,
-					"Talker": "마티나",
-					"BG": 2,
-					"location": 7,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "RIGHT_DOWN의 위치에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
 			"id": "DJ_Moobeard_Dialogue_01",
 			"Section": "Chapter1_P0506",
 			"lines": [
@@ -130,7 +11,6 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
-					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -147,7 +27,6 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
-					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -164,7 +43,6 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
-					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -181,7 +59,6 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
-					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -198,7 +75,6 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
-					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -215,7 +91,6 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
-					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -232,7 +107,6 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
-					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -249,7 +123,6 @@
 					"location": 0,
 					"is2D": true,
 					"isPortrait": true,
-					
 					"animation": {
 						"duration": 1000,
 						"speed": 350
