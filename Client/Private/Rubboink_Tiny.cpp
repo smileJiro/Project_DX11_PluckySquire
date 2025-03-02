@@ -112,6 +112,12 @@ void CRubboink_Tiny::Late_Update(_float _fTimeDelta)
 
 void CRubboink_Tiny::On_StartSlip(_vector _vDirection)
 {
+	if (m_bSlipped)
+	{
+		m_bSlip = false;
+		return;
+	}
+	m_bSlipped = true;
 	m_pBody->Switch_Animation(BODY_ANIM_ROLL);
 	m_pFace->Set_Active(false);
 	m_pZZZ->Set_Active(false);

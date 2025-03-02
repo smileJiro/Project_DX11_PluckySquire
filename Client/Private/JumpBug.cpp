@@ -230,7 +230,7 @@ void CJumpBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             break;
 
         case DIE:
-            Set_AnimChangeable(true);
+            Monster_Death();
             break;
 
         default:
@@ -275,19 +275,20 @@ void CJumpBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         case DIE_DOWN:
         case DIE_UP:
         case DIE_RIGHT:
-            Set_AnimChangeable(true);
+            Monster_Death();
+            //Set_AnimChangeable(true);
 
-            CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
+            //CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
 
-            //확률로 전구 생성
-            if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
-            {
-                _float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
-                _wstring strCurSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
-                CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_2DBulb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strCurSection);
-            }
+            ////확률로 전구 생성
+            //if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+            //{
+            //    _float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+            //    _wstring strCurSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+            //    CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_2DBulb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strCurSection);
+            //}
 
-            Event_DeleteObject(this);
+            //Event_DeleteObject(this);
 
             break;
 

@@ -1,0 +1,27 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "sketchspace_pressurePlate_down",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'sketchspace_pressurePlate_down_0001_X01'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_02/Sketchspace/PressurePlate/Frames/sketchspace_pressurePlate_down_0001_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'sketchspace_pressurePlate_down_0002_X01'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_02/Sketchspace/PressurePlate/Frames/sketchspace_pressurePlate_down_0002_X01.0"
+          },
+          "FrameRun": 1
+        }
+      ],
+      "CollisionSource": "EFlipbookCollisionMode::FirstFrameCollision"
+    }
+  }
+]

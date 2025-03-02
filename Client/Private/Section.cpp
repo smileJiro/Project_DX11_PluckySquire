@@ -49,7 +49,7 @@ HRESULT CSection::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint
      if (FAILED(m_Layers[_iLayerIndex]->Add_GameObject(_pGameObject)))
         return E_FAIL;
 
-    _pGameObject->Set_Include_Section_Name(m_strName);
+    _pGameObject->Enter_Section(m_strName);
     _pGameObject->Set_Active(Is_Active());
     Safe_AddRef(_pGameObject);
     return S_OK; 
@@ -64,6 +64,7 @@ HRESULT CSection::Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject)
     if (nullptr != pLayer) 
     {
         Safe_Release(_pGameObject);
+        _pGameObject->Exit_Section(m_strName);
         return pLayer->Remove_GameObject(_pGameObject);
     }
     else

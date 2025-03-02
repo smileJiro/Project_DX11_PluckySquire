@@ -437,15 +437,15 @@ HRESULT CPlayer::Ready_PartObjects()
     return S_OK;
 }
 
-void CPlayer::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
+void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 {
     /* еб©У : */
-    __super::Set_Include_Section_Name(_strIncludeSectionName);
+    __super::Enter_Section(_strIncludeSectionName);
     for (auto& i : m_PartObjects)
     {
 		if(nullptr == i)
 			continue;
-		i->Set_Include_Section_Name(_strIncludeSectionName);
+		i->Enter_Section(_strIncludeSectionName);
     }
     if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
     {
@@ -474,7 +474,7 @@ HRESULT CPlayer::Ready_Components()
     
     m_pStateMachine = static_cast<CStateMachine*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"), &tStateMachineDesc));
     m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
-    Add_Component(TEXT("StateMachine"), m_pStateMachine);
+    Add_Component(TEXT("1StateMachine"), m_pStateMachine);
     Safe_AddRef(m_pStateMachine);
 
     Bind_AnimEventFunc("ThrowSword", bind(&CPlayer::ThrowSword, this));
@@ -817,6 +817,10 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
         
     }
         break;
+    case DOOR:
+    {    
+        break;
+    }
     default:
         break;
     }
@@ -921,7 +925,11 @@ void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
             m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
         }
     }
-    break;
+    break;    
+    case DOOR:
+    {
+        break;
+    }
     default:
         break;
     }
@@ -979,7 +987,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         m_pCarryingObject->Change_Coordinate(_eCoordinate);
         if (COORDINATE_2D == _eCoordinate)
         {
-            m_pCarryingObject->Set_Include_Section_Name(m_strSectionName);
+            //m_pCarryingObject->Enter_Section(m_strSectionName);
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCarryingObject);
         }
         else
@@ -1021,7 +1029,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 
 void CPlayer::On_Land()
 {
-    cout << "Player Landed" << endl;
+    //cout << "Player Landed" << endl;
 }
 
 

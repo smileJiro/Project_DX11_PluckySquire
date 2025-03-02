@@ -1,0 +1,40 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "sketchspace_pressurePlate_up",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'sketchspace_pressurePlate_up_0001_X02'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_02/Sketchspace/PressurePlate/Frames/sketchspace_pressurePlate_up_0001_X02.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'sketchspace_pressurePlate_up_0002_X02'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_02/Sketchspace/PressurePlate/Frames/sketchspace_pressurePlate_up_0002_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'sketchspace_pressurePlate_up_0003_X02'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_02/Sketchspace/PressurePlate/Frames/sketchspace_pressurePlate_up_0003_X02.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'sketchspace_pressurePlate_up_0004_X02'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_02/Sketchspace/PressurePlate/Frames/sketchspace_pressurePlate_up_0004_X02.0"
+          },
+          "FrameRun": 1
+        }
+      ],
+      "CollisionSource": "EFlipbookCollisionMode::FirstFrameCollision"
+    }
+  }
+]

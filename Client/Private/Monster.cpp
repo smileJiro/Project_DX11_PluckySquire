@@ -8,6 +8,7 @@
 #include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
 #include "Pooling_Manager.h"
+#include "Section_2D_PlayMap.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -203,6 +204,8 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 		{
 			m_p2DColliderComs[0]->Set_Active(false);
 		}
+
+
 		Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
 	}
 	else
@@ -379,6 +382,34 @@ _float CMonster::Restrict_2DRangeAttack_Angle(_float _fDegrees)
 		break;
 	}
 	return fDegrees;
+}
+
+void CMonster::Enter_Section(const _wstring _strIncludeSectionName)
+{
+	__super::Enter_Section(_strIncludeSectionName);
+
+	if (Get_CurCoord() == COORDINATE_2D)
+	{
+		CSection* pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
+		auto pPlaySection = dynamic_cast<CSection_2D_PlayMap*>(pSection);
+
+		if (nullptr != pPlaySection)
+			pPlaySection->Add_MonsterCount();
+	}
+
+}
+
+void CMonster::Exit_Section(const _wstring _strIncludeSectionName)
+{
+	__super::Exit_Section(_strIncludeSectionName);
+	if (Get_CurCoord() == COORDINATE_2D)
+	{
+		CSection* pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
+		auto pPlaySection = dynamic_cast<CSection_2D_PlayMap*>(pSection);
+
+		if (nullptr != pPlaySection)
+			pPlaySection->Reduce_MonsterCount();
+	}
 }
 
 void CMonster::Set_2D_Direction(F_DIRECTION _eDir)

@@ -1,0 +1,382 @@
+{
+	"Narration": [
+		{
+			"strSectionid": "Chapter1_P0102",
+			"strid": "Chapter1_P0102_Narration_01",
+			"CurlevelId": 3,
+			"bTerminal": false,
+			"lines": [
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "{150}옛{100}날 옛적에#{125}저트{100}라는#{110}용감한 견습 기사{100}가#있었습니다.",
+					"strSFX": "P0102_01_01",
+					"fLineHeight": 70.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 4.0,
+					"fscale": 1.5,
+					"isLeft": true,
+					"fposX": 300.0,
+					"fposY": 250.0,
+					"fwaitingTime": 5.0,
+					"NarAnim": [
+						{
+							"strAnimationid": "0102_01_Narration_Model",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 650.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "{80}저트는 사악한 마법사#{90}험그럼프로부터#나라를 지켰고...",
+					"strSFX": "P0102_02_01",
+					"fLineHeight": 50.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 4.0,
+					"fscale": 1.5,
+					"isLeft": false,
+					"fposX": 250.0,
+					"fposY": 500.0,
+					"fwaitingTime": 5.0,
+					"NarAnim": [
+						{
+							"strAnimationid": "0102_02_Narration_Model_Jot",
+							"AnimationIndex": 0,
+							"isLooap": false,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 300.0,
+							"fPosY": 450.0,
+							"vAnimationScaleX": 1.0,
+							"vAnimationScaleY": 1.0,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "0102_02_Narration_Model_Humgrump",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 600.0,
+							"fPosY": 400.0,
+							"vAnimationScaleX": 1.0,
+							"vAnimationScaleY": 1.0,
+							"fwaitingTime": 5.0
+						}
+					]
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "{60}다들 그런 저트에게#{60}고마워했죠.",
+					"strSFX": "P0102_02_02",
+					"fLineHeight": 35.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 3.0,
+					"fscale": 1.0,
+					"isLeft": false,
+					"fposX": 925.0,
+					"fposY": 180.0,
+					"fwaitingTime": 4.0,
+					"isFinishedThisLine": true,
+					"NarAnim": [
+						{
+							"strAnimationid": "0102_02_Narration_Model_Villager",
+							"AnimationIndex": 0,
+							"isLoop": true,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 900.0,
+							"fPosY": 450.0,
+							"vAnimationScaleX": 0.8,
+							"vAnimationScaleY": 0.8,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "0102_02_Narration_Model_Villager",
+							"AnimationIndex": 1,
+							"isLoop": true,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 1050.0,
+							"fPosY": 460.0,
+							"vAnimationScaleX": 0.8,
+							"vAnimationScaleY": 0.8,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "0102_02_Narration_Model_Villager",
+							"AnimationIndex": 2,
+							"isLoop": true,
+							"strSectionid": "Chapter1_P0102",
+							"fPosX": 1180.0,
+							"fPosY": 440.0,
+							"vAnimationScaleX": 0.8,
+							"vAnimationScaleY": 0.8,
+							"fwaitingTime": 5.0
+						}
+					]
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "어느 날#잠에서 깬 저트는",
+					"strSFX": "P0304_01_01",
+					"fLineHeight": 40.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 3.3,
+					"fscale": 1.5,
+					"isLeft": true,
+					"fposX": 200.0,
+					"fposY": 50.0,
+					"fwaitingTime": 3.0,
+					"NarAnim": [
+						{
+							"strAnimationid": "P0304_01_01",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter1_P0304",
+							"fPosX": 320.0,
+							"fPosY": 450.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "용감히#침대에서#나왔습니다.",
+					"strSFX": "P0304_01_02",
+					"fLineHeight": 43.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 3.0,
+					"fscale": 1.5,
+					"isLeft": true,
+					"fposX": 800.0,
+					"fposY": 100.0,
+					"fwaitingTime": 3.0,
+					"NarAnim": [
+						{
+							"strAnimationid": "P0304_01_02",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter1_P0304",
+							"fPosX": 950.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "{200}밀랍 대소동",
+					"strSFX": "P0304_02_01",
+					"fLineHeight": 70.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 4.0,
+					"fscale": 1.5,
+					"isLeft": false,
+					"fposX": 450.0,
+					"fposY": 275.0,
+					"fwaitingTime": 3.0,
+					"isFinishedThisLine": true,
+					"NarAnim": [
+						{
+							"strAnimationid": "P0304_02_01",
+							"AnimationIndex": 1,
+							"isLoop": false,
+							"strSectionid": "Chapter1_P0304",
+							"fPosX": 650.0,
+							"fPosY": 550.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				}
+			]
+		},
+		{
+			"strSectionid": "Chapter1_P1112",
+			"strid": "Chapter1_P1112_Narration_01",
+			"CurlevelId": 3,
+			"bTerminal": true,
+			"lines": [
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "둘은#아래로#{120}떨어졌어요.",
+					"strSFX": "P1112_01_01",
+					"fLineHeight": 50.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 2.8,
+					"fscale": 1.5,
+					"isLeft": true,
+					"fposX": 900.0,
+					"fposY": 300.0,
+					"fwaitingTime": 5.0,
+					"NarAnim": [
+						{
+							"strAnimationid": "P1112_01_01",
+							"AnimationIndex": 0,
+							"isLoop": true,
+							"strSectionid": "Chapter1_P1112",
+							"fPosX": 600.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "{200}아이쿠!",
+					"strSFX": "P1112_01_02",
+					"fLineHeight": 40.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 3.0,
+					"fscale": 1.0,
+					"isLeft": false,
+					"fposX": 525.0,
+					"fposY": 450.0,
+					"fwaitingTime": 3.0,
+					"isFinishedThisLine": true,
+					"NarAnim": [
+						{
+							"strAnimationid": "P1112_01_02",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter1_P1112",
+							"fPosX": 675.0,
+							"fPosY": 270.0,
+							"vAnimationScaleX": 0.8,
+							"vAnimationScaleY": 0.8,
+							"fwaitingTime": 5.0
+						}
+					]
+				}
+			]
+		},
+		{
+			"strSectionid": "Chapter2_P0506",
+			"strid": "Chapter1_P0506_Narration_01",
+			"CurlevelId": 3,
+			"bTerminal": true,
+			"lines": [
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "삼총사는 우뚝#멈췄습니다.",
+					"strSFX": "P1920_01_01",
+					"fLineHeight": 70.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 4.0,
+					"fscale": 1.5,
+					"isLeft": true,
+					"fposX": 300.0,
+					"fposY": 300.0,
+					"fwaitingTime": 5.0,
+					"NarAnim": [
+						{
+							"strAnimationid": "P1920_01_01",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter2_P0506",
+							"fPosX": 650.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "P1920_01_01",
+							"AnimationIndex": 1,
+							"isLoop": false,
+							"strSectionid": "Chapter2_P0506",
+							"fPosX": 650.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "P1920_01_01",
+							"AnimationIndex": 2,
+							"isLoop": false,
+							"strSectionid": "Chapter2_P0506",
+							"fPosX": 650.0,
+							"fPosY": 350.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "저기, 지평선 위로...",
+					"strSFX": "P1920_01_02",
+					"fLineHeight": 40.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 4.0,
+					"fscale": 1.0,
+					"isLeft": true,
+					"fposX": 700.0,
+					"fposY": 100.0,
+					"fwaitingTime": 5.0
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "{130}책의 탑{100}이#보였습니다.",
+					"strSFX": "P1920_02_01",
+					"fLineHeight": 40.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 4.0,
+					"fscale": 1.0,
+					"isLeft": false,
+					"fposX": 700.0,
+					"fposY": 100.0,
+					"fwaitingTime": 5.0,
+					"isFinishedThisLine": true,
+					"NarAnim": [
+						{
+							"strAnimationid": "P1920_02_01",
+							"AnimationIndex": 0,
+							"isLoop": true,
+							"strSectionid": "Chapter2_P0506",
+							"fPosX": 800.0,
+							"fPosY": 450.0,
+							"vAnimationScaleX": 0.8,
+							"vAnimationScaleY": 0.8,
+							"fwaitingTime": 5.0
+						},
+						{
+							"strAnimationid": "P1920_02_02",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter2_P0506",
+							"fPosX": 800.0,
+							"fPosY": 450.0,
+							"vAnimationScaleX": 0.8,
+							"vAnimationScaleY": 0.8,
+							"fwaitingTime": 5.0
+						}
+					]
+				}
+			]
+		}
+	]
+}

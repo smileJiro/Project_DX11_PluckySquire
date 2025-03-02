@@ -290,7 +290,7 @@ public: /* For. D3DUtils */
 public: /* For. CubeMap */
 	void				Set_CubeMap(class CCubeMap* _pCubeMap);
 	HRESULT				Bind_IBLTexture(CShader* _pShaderCom, const _char* _pBRDFConstName, const _char* _pSpecularConstName, const _char* _pIrradianceConstName);
-
+	HRESULT				Change_CubeMap(const _wstring& _strCubeMapPrototypeTag);
 public: /* For. Collision_Manager */
 /* Section µî·Ï*/
 	HRESULT					Register_Section(const _wstring& _strSectionKey);

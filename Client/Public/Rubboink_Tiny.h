@@ -75,6 +75,7 @@ private:
 	CModelObject* m_pZZZ = nullptr;
 
 	CMudPit* m_pMudPit = nullptr;
+	_bool m_bSlipped = false;
 public:
 	static CRubboink_Tiny* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

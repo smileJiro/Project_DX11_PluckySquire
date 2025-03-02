@@ -39,6 +39,7 @@
 *.tlog
 *.ilk
 *.exp
+*.enc
 *.cso
 *.recipe
 .vs/

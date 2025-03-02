@@ -604,7 +604,7 @@ private:
 	HRESULT					Ready_PartObjects();
 
 public:
-	virtual void			Set_Include_Section_Name(const _wstring _strIncludeSectionName);
+	virtual void			Enter_Section(const _wstring _strIncludeSectionName);
 private:
 	//Variables
 	_float m_f3DCenterYOffset = 0.5f;

@@ -56,6 +56,8 @@ void CSlipperyObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _
 
 void CSlipperyObject::Start_Slip(_vector _vDirection)
 {
+	if (m_bSlip)
+		return;
 	m_bSlip = true;
 	m_vSlipDirection = _vDirection;
 	On_StartSlip(_vDirection);

@@ -338,6 +338,35 @@ PxShape* CActor::Ready_CookingShape(const SHAPE_DATA& _ShapeData, _uint _iCookin
 			return pReturnShape;
 		}
 			break;
+		case 3:
+		{
+			_string strRootPath = pModel->Get_CookingColliderPath();
+			_string strPath = strRootPath + "_" + std::to_string(_iMeshIndex) + ".modelMultiTri";
+			ifstream  file;
+			file.open(strPath, ios::binary);
+			if (!file)
+				return nullptr;
+			_uint iCookingColliderDataLength;
+			_char* arrCookingColliderData = nullptr;
+
+			file.read(reinterpret_cast<_char*>(&iCookingColliderDataLength), sizeof(_uint));
+			arrCookingColliderData = new _char[iCookingColliderDataLength];
+			file.read(arrCookingColliderData, iCookingColliderDataLength);
+			file.close();
+
+			PxDefaultMemoryInputData readBuffer((PxU8*)arrCookingColliderData, iCookingColliderDataLength);
+			PxTriangleMesh* pPxMesh = pPhysics->createTriangleMesh(readBuffer);
+
+			PxMeshScale mashScale(PxVec3(_fScale.x, _fScale.y, _fScale.z));
+
+			PxTriangleMeshGeometry geometry(pPxMesh, mashScale);
+			if (!geometry.isValid())
+				return nullptr;
+			PxShape* pReturnShape = pPhysics->createShape(geometry, *_pMaterial, true, _ShapeFlags);
+			Safe_Delete_Array(arrCookingColliderData);
+			return pReturnShape;
+		}
+		break;
 		default:
 			break;
 		}

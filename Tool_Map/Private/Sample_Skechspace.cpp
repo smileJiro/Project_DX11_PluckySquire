@@ -45,6 +45,8 @@ HRESULT CSample_Skechspace::Initialize(void* _pArg)
 		m_eSkspType = SKSP_PLAG;
 	if (m_strModelPrototypeTag[COORDINATE_3D] == L"Mug")
 		m_eSkspType = SKSP_CUP;
+	if (m_strModelPrototypeTag[COORDINATE_3D] == L"SM_Toy_Tub")
+		m_eSkspType = SKSP_TUB;
 	if (m_strModelPrototypeTag[COORDINATE_3D] == L"Desk_C06_StorageBox_Sketchspace_01")
 		m_eSkspType = SKSP_STORAGE;
 	if (m_strModelPrototypeTag[COORDINATE_3D] == L"Desk_C06_StorageBox_Sketchspace_02")
@@ -253,19 +255,19 @@ HRESULT CSample_Skechspace::Render_Tub()
 		auto pMesh = pModel->Get_Mesh(i);
 		_uint iMaterialIndex = pMesh->Get_MaterialIndex();
 
-		if (2 == i || 5 == i)
+		if (1 == i || 2 == i)
 		{
 			_float2 fStartUV = {};
 			_float2 fEndUV = {};
-			if (2 == i)
+			if (1 == i)
 			{
-				fStartUV = { -0.5f,0.f };
-				fEndUV = { 0.f,1.f };
+				fStartUV = { 0.f,-0.64f };
+				fEndUV = { 0.51f,3.03f };
 			}
-			else if (5 == i)
+			else if (2 == i)
 			{
-				fStartUV = { 0.5f,0.f };
-				fEndUV = { 1.f,1.f };
+				fStartUV = { 0.5f,-0.64f };
+				fEndUV = { 1.01f,3.03f };
 
 			}
 			if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fStartUV, sizeof(_float2))))

@@ -41,6 +41,8 @@ HRESULT CCamera::Initialize(void* _pArg)
 
 	CAMERA_DESC* pDesc = static_cast<CAMERA_DESC*>(_pArg);
 
+	m_iCurLevelID = pDesc->iCurLevelID;
+
 	/* 뷰 행렬에 대한 트랜스폼 동기화 작업. */
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&pDesc->vEye), 1.f));
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&pDesc->vAt), 1.f));

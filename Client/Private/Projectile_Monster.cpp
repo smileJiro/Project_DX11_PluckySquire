@@ -80,6 +80,10 @@ void CProjectile_Monster::Late_Update(_float _fTimeDelta)
     //첫 루프가 끝나므로 (자식 객체들이 이미 전부 lateupdate까지 돈 상태)
     if (true == m_isFirstLoop)
         m_isFirstLoop = false;
+#ifdef _DEBUG
+    if (COORDINATE_3D == Get_CurCoord())
+        m_pGameInstance->Add_RenderObject_New(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY, this);
+#endif // DEBUG
 
 	__super::Late_Update(_fTimeDelta);
 }
@@ -87,6 +91,7 @@ void CProjectile_Monster::Late_Update(_float _fTimeDelta)
 HRESULT CProjectile_Monster::Render()
 {
 #ifdef _DEBUG
+
     if (COORDINATE_2D == Get_CurCoord())
     {
         for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)

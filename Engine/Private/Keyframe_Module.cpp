@@ -108,9 +108,9 @@ HRESULT CKeyframe_Module::Initialize(const json& _jsonModuleInfo, _int _iNumInst
    _float4* pPixel = new _float4[128 * 16];
    ZeroMemory(pPixel, sizeof(_float4) * 128 * 16);
 
-   for (size_t i = 0; i < 16; i++)
+   for (_uint i = 0; i < 16; i++)
    {
-       for (size_t j = 0; j < 128; j++)
+       for (_uint j = 0; j < 128; j++)
        {
            _uint		iIndex = i * 128 + j;
 

@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "sketchspace_pressurePlate_down_idle_0003_X04",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1.0,
+        "Y": 826.0
+      },
+      "BakedSourceDimension": {
+        "X": 315.0,
+        "Y": 267.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'sketchspace-pressurePlate-0'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_02/Sketchspace/PressurePlate/Textures/sketchspace-pressurePlate-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 158.0,
+          "Y": 126.0,
+          "Z": 0.3076172,
+          "W": 0.4038086
+        },
+        {
+          "X": -155.0,
+          "Y": 126.0,
+          "Z": 0.001953125,
+          "W": 0.4038086
+        },
+        {
+          "X": -155.0,
+          "Y": -139.0,
+          "Z": 0.001953125,
+          "W": 0.5332031
+        },
+        {
+          "X": 158.0,
+          "Y": -139.0,
+          "Z": 0.3076172,
+          "W": 0.5332031
+        },
+        {
+          "X": 158.0,
+          "Y": 126.0,
+          "Z": 0.3076172,
+          "W": 0.4038086
+        },
+        {
+          "X": -155.0,
+          "Y": -139.0,
+          "Z": 0.001953125,
+          "W": 0.5332031
+        }
+      ]
+    }
+  }
+]
