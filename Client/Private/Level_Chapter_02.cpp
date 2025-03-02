@@ -1650,7 +1650,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Draggable(const _wstring& _strLayerTag)
 HRESULT CLevel_Chapter_02::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 {
 	CDoor_Yellow::DOOR_YELLOW_DESC Desc = {};
-	Desc.tTransform2DDesc.vInitialPosition = _float3(30.f, -113.f, 0.f);
+	Desc.tTransform2DDesc.vInitialPosition = _float3(24.f, -113.f, 0.f);
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.isHorizontal = true;
 	Desc.eSize = CDoor_2D::SMALL;
