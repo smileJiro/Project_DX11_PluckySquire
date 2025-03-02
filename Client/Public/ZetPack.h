@@ -73,7 +73,7 @@ private:
 	_float m_fMinForeceRatio2D = 0.2f;
 
 	// MinForceFuelRatio 만큼의 연료가 남았을 때 [추진력 * m_fMinForceFuelRatio] 만큼의 추진력을 냄.
-	_float m_fMinForceFuelRatio3D = 0.f;
+	_float m_fMinForceFuelRatio3D = 0.25f;
 	_float m_fMinForceFuelRatio2D = 0.725f;
 
 
