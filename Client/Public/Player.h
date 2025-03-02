@@ -480,7 +480,7 @@ public:
 
 	virtual void On_Hit(CGameObject* _pHitter, _int _fDamg, _fvector _vForce) override;
 	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
-
+	virtual void On_Land();
 public:
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
@@ -502,7 +502,6 @@ public:
 	void Revive();
 	void ReFuel();
 	void ZetPropel(_float _fTimeDelta);
-	void Retropropulsion();
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
 
 	void Start_Portal(CPortal* _pPortal);
@@ -513,7 +512,6 @@ public:
 	INTERACT_RESULT Try_Interact(_float _fTimeDelta);
 
 	//Get
-
 	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
 	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
@@ -653,7 +651,6 @@ private:
 	_float m_f2DPickupRange = 80.f;
 	_float m_f2DKnockBackPower = 700.f;
 	_float m_f2DInteractOffset = 40.f;
-
 	/* 태웅 */
 	_float m_f2DColliderBodyRadius = 20.f;
 	/* 태웅 */
