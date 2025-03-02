@@ -59,8 +59,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    //if (FAILED(Ready_Projectiles()))
-    //    return E_FAIL;
+    if (FAILED(Ready_Projectiles()))
+        return E_FAIL;
     
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SCENE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
@@ -97,7 +97,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     if (nullptr == m_pTarget)
     {
 #ifdef _DEBUG
-        cout << "MONSTERINIT : NO PLAYER" << endl;
+        cout << "BOSSINIT : NO PLAYER" << endl;
 #endif // _DEBUG
         return S_OK;
     }
@@ -228,16 +228,17 @@ void CButterGrump::Attack()
 {
     _float3 vScale, vPosition;
     _float4 vRotation;
-    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
+    _matrix matMuzzle = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[BOSSPART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("buttergrump_rigtonsils_01_01"));
+    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, matMuzzle))
         return;
     switch ((BOSS_STATE)m_iState)
     {
     case BOSS_STATE::ENERGYBALL:
     {
-        vPosition.y += vScale.y * 0.5f;
-        vPosition.x += m_pGameInstance->Compute_Random(-5.f, 5.f);
-        vPosition.y += m_pGameInstance->Compute_Random(-5.f, 5.f);
-        vPosition.z += m_pGameInstance->Compute_Random(-5.f, 5.f);
+        //vPosition.y += vScale.y * 0.5f;
+        //vPosition.x += m_pGameInstance->Compute_Random(-5.f, 5.f);
+        //vPosition.y += m_pGameInstance->Compute_Random(-5.f, 5.f);
+        //vPosition.z += m_pGameInstance->Compute_Random(-5.f, 5.f);
         //XMQuaternionMultiply(XMLoadFloat4(&vRotation), )
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_EnergyBall"), COORDINATE_3D,  &vPosition, &vRotation);
 
@@ -250,7 +251,7 @@ void CButterGrump::Attack()
 
         Rot = XMQuaternionMultiply(Rot, XMQuaternionRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f)));
         XMStoreFloat4(&vRotation, Rot);
-        vPosition.y += vScale.y * 0.5f;
+        //vPosition.y += vScale.y * 0.5f;
 
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_HomingBall"), COORDINATE_3D, &vPosition, &vRotation);
 
@@ -562,7 +563,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     pHomingBallDesc->isCoordChangeEnable = false;
     pHomingBallDesc->iCurLevelID = m_iCurLevelID;
 
-    pHomingBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pHomingBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(30.f);
     pHomingBallDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_HomingBall"), Pooling_Desc, pHomingBallDesc);
