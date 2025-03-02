@@ -50,6 +50,7 @@ public:
 	{
 		m_isLookAt = _isLookAt; 
 	}
+
 public:
 	void						Set_NextArmData(ARM_DATA* _pArmData, SUB_DATA* _pSubData);		// Event 처리 하면 사라지고 바로 Arm에 넣을 수도
 

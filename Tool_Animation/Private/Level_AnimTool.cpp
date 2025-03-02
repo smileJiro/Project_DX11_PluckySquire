@@ -78,8 +78,15 @@ void CLevel_AnimTool::Update(_float _fTimeDelta)
 		{
 			m_fZoomMultiplier += fMove * m_f3DZoomSpeed * _fTimeDelta;
 			m_fZoomMultiplier = max(m_fZoomMultiplier, 0.2f);
-			m_fZoomMultiplier = min(m_fZoomMultiplier, 3.f);
-			m_pTargetCam->Set_Fovy(m_fZoomMultiplier * m_fDefault3DCamFovY);
+			m_fZoomMultiplier = min(m_fZoomMultiplier, 10.f);
+			_float fLength = m_pTargetCam->Get_Arm()->Get_Length();
+			
+			fLength = m_fZoomMultiplier * 20;
+
+			m_pTargetCam->Get_Arm()->Set_Length(fLength);
+			//m_pTargetCam->Set_Fovy(m_fZoomMultiplier * m_fDefault3DCamFovY);
+			//m_pTargetCam->Set_Arm
+			//m_pTargetCam->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, _float4{ 0,0, -m_fZoomMultiplier * 10,1 });
 		}
 		else
 		{
