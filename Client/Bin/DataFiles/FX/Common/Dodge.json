@@ -192,10 +192,10 @@
                     "Shape": "NONE"
                 },
                 "UVSet": {
-                    "Count": 4.0,
+                    "Count": 1.0,
                     "UV": [
-                        0.5,
-                        0.5
+                        1.0,
+                        1.0
                     ]
                 }
             },
@@ -287,7 +287,7 @@
             "ShaderPass": "DEFAULT_BLOOM",
             "SpawnPosition": "ABSOLUTE_WORLD",
             "SpawnType": "SPAWN_RATE",
-            "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Dust2x2_01_2.dds",
+            "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Glow_02.dds",
             "Time": 0.5,
             "Transform": [
                 1.0,

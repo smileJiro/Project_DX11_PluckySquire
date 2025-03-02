@@ -49,8 +49,8 @@ HRESULT CButterGrump_Shield::Initialize(void* _pArg)
 
     Safe_Delete(pDesc->pActorDesc);
 
-    _int i = (_int)static_cast<C3DModel*>(Get_Model(COORDINATE_3D))->Get_Materials().size();
-    static_cast<C3DModel*>(Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 0.f, 0.f, 1.f));
+    //int i = static_cast<C3DModel*>(Get_Model(COORDINATE_3D))->Get_Materials().size();
+    static_cast<C3DModel*>(Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 1.f, 1.f, 0.7f));
 
     return S_OK;
 }
@@ -97,10 +97,14 @@ void CButterGrump_Shield::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& 
 void CButterGrump_Shield::Active_OnEnable()
 {
     __super::Active_OnEnable();
+
+    Get_ActorCom()->Set_AllShapeEnable(true);
 }
 
 void CButterGrump_Shield::Active_OnDisable()
 {
+    Get_ActorCom()->Set_AllShapeEnable(false);
+
     __super::Active_OnDisable();
 }
 
@@ -126,7 +130,7 @@ HRESULT CButterGrump_Shield::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC* ShapeDesc = new SHAPE_SPHERE_DESC;
-    ShapeDesc->fRadius = 20.f;
+    ShapeDesc->fRadius = 10.f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
@@ -134,7 +138,8 @@ HRESULT CButterGrump_Shield::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, -10.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc->fRadius * 2.f, -20.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);

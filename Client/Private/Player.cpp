@@ -119,6 +119,7 @@ HRESULT CPlayer::Initialize_Prototype()
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::LEFT].vExtents = { 146.5f, 74.5f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::LEFT].vOffset = { -50.f, 0.f };
 
+
     return S_OK;
 }
 
@@ -349,7 +350,6 @@ HRESULT CPlayer::Ready_PartObjects()
         MSG_BOX("CPlayer STOPSTAMP Creation Failed");
         return E_FAIL;
     }
-    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_STOP_STMAP])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r")); /**/
     m_PartObjects[PLAYER_PART_STOP_STMAP]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
     m_PartObjects[PLAYER_PART_STOP_STMAP]->Set_Position({0.f,-0.4f,0.f});
@@ -366,7 +366,6 @@ HRESULT CPlayer::Ready_PartObjects()
         MSG_BOX("CPlayer BOMBSTAMP Creation Failed");
         return E_FAIL;
     }
-    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_BOMB_STMAP])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r")); /**/
     m_PartObjects[PLAYER_PART_BOMB_STMAP]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
     m_PartObjects[PLAYER_PART_BOMB_STMAP]->Set_Position({ 0.f,-0.4f,0.f });
@@ -384,7 +383,6 @@ HRESULT CPlayer::Ready_PartObjects()
         MSG_BOX("CPlayer BOMBSTAMP Creation Failed");
         return E_FAIL;
     }
-    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_DETONATOR])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_l")); /**/
     Set_PartActive(PLAYER_PART_DETONATOR, false);
 
@@ -393,6 +391,7 @@ HRESULT CPlayer::Ready_PartObjects()
     tZetPackDesc.pPlayer = this;
     tZetPackDesc.iCurLevelID = m_iCurLevelID;
     tZetPackDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    tZetPackDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
     m_PartObjects[PLAYER_PART_ZETPACK]= m_pZetPack  = static_cast<CZetPack*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ZetPack"), &tZetPackDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_ZETPACK])
     {
@@ -400,8 +399,8 @@ HRESULT CPlayer::Ready_PartObjects()
         return E_FAIL;
     }
     Safe_AddRef(m_pZetPack);
-    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_ZETPACK])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_pelvis")); /**/
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_ZETPACK])->Set_SocketMatrix(COORDINATE_2D, m_pBody->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_2D)); /**/
     m_PartObjects[PLAYER_PART_ZETPACK]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0.f,1.f,0.f,0.f });
     m_PartObjects[PLAYER_PART_ZETPACK]->Set_Position({ 0.f,-0.1f,0.5f });
     Set_PartActive(PLAYER_PART_ZETPACK, false);
@@ -605,7 +604,6 @@ void CPlayer::Update(_float _fTimeDelta)
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {            // cout << "Upforce :" << m_f2DUpForce << " Height : " << m_f2DHeight << endl;
-    __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
     if (COORDINATE_2D == Get_CurCoord())
     {
         if (Is_PlatformerMode())
@@ -619,6 +617,8 @@ void CPlayer::Late_Update(_float _fTimeDelta)
             m_pBody->Set_Position(vUp * m_f2DFloorDistance);
         }
     }
+    __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
+
 
     //cout << endl;
 
@@ -817,6 +817,10 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
         
     }
         break;
+    case DOOR:
+    {    
+        break;
+    }
     default:
         break;
     }
@@ -921,7 +925,11 @@ void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
             m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
         }
     }
-    break;
+    break;    
+    case DOOR:
+    {
+        break;
+    }
     default:
         break;
     }
@@ -1017,6 +1025,11 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     m_pSword->Set_AttackEnable(false);
 
     return S_OK;
+}
+
+void CPlayer::On_Land()
+{
+    cout << "Player Landed" << endl;
 }
 
 
@@ -1341,13 +1354,6 @@ void CPlayer::ZetPropel(_float _fTimeDelta)
 	}
 }
 
-void CPlayer::Retropropulsion()
-{
-    if (Is_ZetPackMode())
-    {
-        m_pZetPack->Retropropulsion();
-    }
-}
 
 //아무런 상호작용 중이 아닐 때에는 그냥 가장 가까운 애로 교체.
 //포탈, 끌고다니기 등 상호작용 중일 때는 교체 불가.
@@ -1649,6 +1655,8 @@ void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
+
+
 }
 
 void CPlayer::Set_Animation(_uint _iAnimIndex)
@@ -1665,6 +1673,8 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::IDLE:
         //cout << "IDLE" << endl;
         m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
+        if (Is_ZetPackMode())
+            m_pZetPack->Switch_State(CZetPack::STATE_IDLE);
         break;
     case Client::CPlayer::RUN:
         //cout << "Run" << endl;
@@ -2035,16 +2045,14 @@ void CPlayer::Add_Upforce(_float _fForce)
 {
     if (COORDINATE_2D == Get_CurCoord())
     {
-        if(Is_PlatformerMode())
-			m_pGravityCom->Set_GravityAcc(m_pGravityCom->Get_GravityAcc() - _fForce);
-		else
-			m_f2DUpForce += _fForce;
+		m_f2DUpForce += _fForce;
+
 	}
 	else
 	{
 		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 		_vector vVelocity = pDynamicActor->Get_LinearVelocity();
-		pDynamicActor->Add_Impulse(_float3{ 0, _fForce ,0 });
+		pDynamicActor->Add_Force(_float3{ 0, _fForce ,0 });
     }
 
 }

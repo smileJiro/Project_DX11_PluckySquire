@@ -106,6 +106,8 @@
 #include "Sneak_DetectionField.h"
 #include "LightningBolt.h"
 #include "LunchBox.h"
+#include "Door_Yellow.h"
+#include "Pressure_Plate.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -149,11 +151,16 @@
 #include "Domino.h"
 #include "Portal.h"
 #include "Word.h"
+
+// Etc
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
+
+// Player Effect 
 #include "Effect_Trail.h"
 #include "Effect_Beam.h"
+
 
 
 
@@ -781,6 +788,14 @@ HRESULT CLoader::Loading_Level_Static()
 	/* For. Prototype_GameObject_Blocker2D */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Blocker2D"),
 		CBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		CDoor_Yellow::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Pressure_Plate"),
+		CPressure_Plate::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For. Prototype_GameObject_SwordTrail */
