@@ -177,8 +177,8 @@
 		"Section_Type": 2,
 		"Section_Info": {
 			"RenderResolution": {
-				"X": 768.0,
-				"Y": 2048.0
+				"X": 1152.0,
+				"Y": 3072.0
 			},
 			"LevelSizePixels": {
 				"X": 1152.0,
@@ -193,8 +193,8 @@
 		"Section_Type": 2,
 		"Section_Info": {
 			"RenderResolution": {
-				"X": 768.0,
-				"Y": 2048.0
+				"X": 1152.0,
+				"Y": 3072.0
 			},
 			"LevelSizePixels": {
 				"X": 1152.0,

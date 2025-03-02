@@ -18,7 +18,6 @@ HRESULT CPressure_Plate::Initialize(void* _pArg)
     if (nullptr == _pArg)
         return E_FAIL;
     CModelObject::MODELOBJECT_DESC* pBodyDesc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
-
     pBodyDesc->eStartCoord = COORDINATE_2D;
     pBodyDesc->isCoordChangeEnable = false;
     pBodyDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
