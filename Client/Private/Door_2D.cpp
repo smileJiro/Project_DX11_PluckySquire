@@ -40,6 +40,12 @@ HRESULT CDoor_2D::Initialize(void* _pArg)
     m_eDoorState = pBodyDesc->eInitialState;
 
     m_p2DColliderComs.resize(1);
+
+    if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pBodyDesc->strSectionTag, this)))
+        return E_FAIL;
+    
+    _float2 vSectionSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(pBodyDesc->strSectionTag);
+
     ///* Test 2D Collider */
     CCollider_AABB::COLLIDER_AABB_DESC AABBDESC = {};
 
@@ -85,8 +91,6 @@ HRESULT CDoor_2D::Initialize(void* _pArg)
     
 
     //Switch_Animation(H_LARGE_RED_CLOSE);
-    if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pBodyDesc->strSectionTag, this)))
-        return E_FAIL;
 
 
     return S_OK;

@@ -240,8 +240,8 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
 		if (m_fTimer > 3.0f && !m_isLight)
 		{
 			m_isLight = true;
-			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night.json"));
-			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/chapter2_N.json"));
+			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
+			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
 		}
 
 		if (m_fTimer > 4.5f) {
@@ -436,8 +436,8 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
         if (false == m_isStart) {
             static_cast<CMagic_Hand*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_MagicHand"), 0))->Set_Start(true);
 
-			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night.json"));
-			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/chapter2_N.json"));
+			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
+			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
 
 			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
 

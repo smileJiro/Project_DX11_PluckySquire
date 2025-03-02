@@ -163,7 +163,7 @@ void C2DModel::Switch_Animation(_uint _iIdx, _bool _bReverse)
 	m_Animation2Ds[m_iCurAnimIdx]->Reset(_bReverse);
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 const CSpriteFrame* C2DModel::Get_SpriteFrame()
 {

@@ -415,34 +415,34 @@ HRESULT CLevel_Chapter_02::Render()
 HRESULT CLevel_Chapter_02::Ready_Lights()
 {
 	// 이게, 일반
-	//m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
-	//m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Bright.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Bright.json"));
 
-	CONST_LIGHT LightDesc{};
-
-	/* 방향성광원*/
-	ZeroMemory(&LightDesc, sizeof LightDesc);
-
-	LightDesc.vDirection = { 0.0f, -1.0f, -1.0f };
-	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
-	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
-	//LightDesc.isShadow = true;
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
-		return E_FAIL;
-
-	/* 방향성광원*/
-	ZeroMemory(&LightDesc, sizeof LightDesc);
-
-	LightDesc.vDirection = { -1.0f, -1.0f, -1.0f };
-	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
-	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
-	LightDesc.isShadow = false;
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
-		return E_FAIL;
+	//CONST_LIGHT LightDesc{};
+	//
+	///* 방향성광원*/
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
+	//
+	//LightDesc.vDirection = { 0.0f, -1.0f, -1.0f };
+	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	//LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	//LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	//LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	////LightDesc.isShadow = true;
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+	//	return E_FAIL;
+	//
+	///* 방향성광원*/
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
+	//
+	//LightDesc.vDirection = { -1.0f, -1.0f, -1.0f };
+	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	//LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	//LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	//LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	//LightDesc.isShadow = false;
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -455,11 +455,11 @@ HRESULT CLevel_Chapter_02::Ready_CubeMap(const _wstring& _strLayerTag)
 	Desc.iRenderGroupID = RG_3D;
 	Desc.iPriorityID = PR3D_PRIORITY;
 	Desc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
-	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
+	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_Chapter4Env");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
 		m_eLevelID, _strLayerTag, &pCubeMap, &Desc)))
 		return E_FAIL;
-
+	
 	m_pGameInstance->Set_CubeMap(static_cast<CCubeMap*>(pCubeMap));
 
 	return S_OK;
@@ -1650,7 +1650,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Draggable(const _wstring& _strLayerTag)
 HRESULT CLevel_Chapter_02::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 {
 	CDoor_Yellow::DOOR_YELLOW_DESC Desc = {};
-	Desc.tTransform2DDesc.vInitialPosition = _float3(30.f, -113.f, 0.f);
+	Desc.tTransform2DDesc.vInitialPosition = _float3(24.f, -113.f, 0.f);
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.isHorizontal = true;
 	Desc.eSize = CDoor_2D::SMALL;

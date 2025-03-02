@@ -333,6 +333,7 @@ HRESULT CLoader::Loading_Level_Static()
 #pragma region Static - Texture Load
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
+	/* CubeMap HDRI */
 	/* For. Prototype_Component_Texture_BRDF_Shilick */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BRDF_Shilick"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/BRDF_Shilick.dds"), 1))))
@@ -345,6 +346,18 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter4Env"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter4Env_%d.dds"), 3, true))))
 		return E_FAIL;
+	/* For. Prototype_Component_Texture_Chapter2_NightEnv */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter2_NightEnv"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter2_NightEnv_%d.dds"), 3, true))))
+		return E_FAIL;
+	/* For. Prototype_Component_Texture_Chapter2_BrightEnv */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter2_BrightEnv"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter2_BrightEnv_%d.dds"), 3, true))))
+		return E_FAIL;
+
+
+	
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom1.dds"), 1))))
 		return E_FAIL;

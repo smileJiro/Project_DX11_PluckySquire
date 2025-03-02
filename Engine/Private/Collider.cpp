@@ -13,7 +13,7 @@ CCollider::CCollider(const CCollider& _Prototype)
     ,m_iColliderID(s_iNextColliderID++)
     ,m_eType(_Prototype.m_eType)
 {
-#ifdef _DEBUG
+#ifdef NDEBUG
     m_pInputLayout = _Prototype.m_pInputLayout;
     m_pBatch = _Prototype.m_pBatch;
     m_pEffect = _Prototype.m_pEffect;
@@ -23,7 +23,7 @@ CCollider::CCollider(const CCollider& _Prototype)
 
 HRESULT CCollider::Initialize_Prototype()
 {
-#ifdef _DEBUG
+#ifdef NDEBUG
     m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
     m_pEffect = new BasicEffect(m_pDevice);
 
@@ -73,7 +73,7 @@ void CCollider::Late_Update(_float _fTimeDelta)
     
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CCollider::Render()
 {
@@ -93,7 +93,7 @@ void CCollider::Free()
 {
     m_pOwner = nullptr;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
     Safe_Release(m_pInputLayout);
 
     if (false == m_isCloned)
