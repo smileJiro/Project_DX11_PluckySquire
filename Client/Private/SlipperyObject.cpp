@@ -16,7 +16,8 @@ CSlipperyObject::CSlipperyObject(const CSlipperyObject& _Prototype)
 
 HRESULT CSlipperyObject::Initialize(void* _pArg)
 {
-
+	SLIPPERY_DESC* pDesc = static_cast<SLIPPERY_DESC*>(_pArg);
+	m_iImpactCollisionFilter = pDesc->iImpactCollisionFilter;
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
@@ -39,20 +40,18 @@ HRESULT CSlipperyObject::Render()
 
 
 
+
+
 void CSlipperyObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if (OBJECT_GROUP::BLOCKER == _pOtherCollider->Get_CollisionGroupID())
+	if (m_bSlip)
 	{
-		m_bSlip = false;
+		if (m_iImpactCollisionFilter & _pOtherCollider->Get_CollisionGroupID())
+		{
+			m_bSlip = false;
+			On_Impact(_pOtherObject);
+		}
 	}
-}
-
-void CSlipperyObject::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
-{
-}
-
-void CSlipperyObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
-{
 }
 
 void CSlipperyObject::Start_Slip(_vector _vDirection)

@@ -19,14 +19,16 @@ CRubboink_Tiny::CRubboink_Tiny(const CRubboink_Tiny& _Prototype)
 
 HRESULT CRubboink_Tiny::Initialize(void* _pArg)
 {
-	CSlipperyObject::CONTAINEROBJ_DESC* pDesc = static_cast<CSlipperyObject::CONTAINEROBJ_DESC*>(_pArg);
+	TINY_DESC* pDesc = static_cast<TINY_DESC*>(_pArg);
+	m_pMudPit = pDesc->pMudPit;
+
 	pDesc->iNumPartObjects = 3;
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable = false;
 	pDesc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	pDesc->tTransform2DDesc.vInitialPosition = _float3(1320.f, 515.f, 0.f);
 	pDesc->tTransform2DDesc.fSpeedPerSec = 750.f;
-	pDesc->iObjectGroupID = OBJECT_GROUP::MAPOBJECT;
+	pDesc->iObjectGroupID = OBJECT_GROUP::SLIPPERY;
 	
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
@@ -43,10 +45,14 @@ HRESULT CRubboink_Tiny::Initialize(void* _pArg)
 	CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius * 0.5f };
 	CircleDesc.isBlock = true;
 	CircleDesc.isTrigger = false;
-	CircleDesc.iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
+	CircleDesc.iCollisionGroupID = OBJECT_GROUP::SLIPPERY;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
 		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
 		return E_FAIL;
+
+
+	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CRubboink_Tiny::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+
 	return S_OK;
 }
 HRESULT CRubboink_Tiny::Ready_Parts()
@@ -72,6 +78,25 @@ HRESULT CRubboink_Tiny::Ready_Parts()
 
 	return S_OK;
 }
+
+void CRubboink_Tiny::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	if (m_bSlip && 
+		(CGameObject*)m_pMudPit == _pOtherObject)
+	{
+		m_bSlip = false;
+		On_Impact(_pOtherObject);
+	}
+}
+
+void CRubboink_Tiny::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+	if (BODY_ANIM::BODY_ANIM_MUD_DIVE == iAnimIdx)
+	{
+		m_pBody->Switch_Animation(BODY_ANIM::BODY_ANIM_MUD_IDLE);
+	}
+}
+
 void CRubboink_Tiny::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
@@ -85,19 +110,6 @@ void CRubboink_Tiny::Late_Update(_float _fTimeDelta)
 
 
 
-void CRubboink_Tiny::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
-{
-	__super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
-}
-
-void CRubboink_Tiny::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
-{
-}
-
-void CRubboink_Tiny::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
-{
-}
-
 void CRubboink_Tiny::On_StartSlip(_vector _vDirection)
 {
 	m_pBody->Switch_Animation(BODY_ANIM_ROLL);
@@ -105,6 +117,17 @@ void CRubboink_Tiny::On_StartSlip(_vector _vDirection)
 	m_pZZZ->Set_Active(false);
 	m_pZZZ->Set_Render(false);
 	m_pFace->Set_Render(false);
+}
+
+void CRubboink_Tiny::On_Impact(CGameObject* _pOtherObject)
+{
+	Set_Position(_pOtherObject->Get_FinalPosition());
+	m_pBody->Switch_Animation(BODY_ANIM_MUD_DIVE);
+	m_pFace->Set_Active(false);
+	m_pZZZ->Set_Active(false);
+	m_pZZZ->Set_Render(false);
+	m_pFace->Set_Render(false);
+	m_p2DColliderComs[0]->Set_Offset(_float2{-200.f,50.f});
 }
 
 CRubboink_Tiny* CRubboink_Tiny::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

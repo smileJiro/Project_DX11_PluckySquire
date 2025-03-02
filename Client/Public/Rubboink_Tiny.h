@@ -6,7 +6,7 @@ class CModelObject;
 END
 
 BEGIN(Client)
-
+class CMudPit;
 class CRubboink_Tiny :
     public CSlipperyObject
 {
@@ -47,6 +47,10 @@ public:
 		ZZZ_ANIM_INTO,
 		ZZZ_ANIM_LAST
 	};
+	typedef struct tagTinyDesc : public CSlipperyObject::SLIPPERY_DESC
+	{
+		CMudPit* pMudPit = nullptr;
+	}TINY_DESC;
 public:
 	CRubboink_Tiny(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CRubboink_Tiny(const CRubboink_Tiny& _Prototype);
@@ -58,17 +62,19 @@ public:
 	virtual void Late_Update(_float _fTimeDelta) override;
 
 	HRESULT Ready_Parts();
+
 public:
 	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 private:
 	virtual void On_StartSlip(_vector _vDirection) override;
-
+	virtual void On_Impact(CGameObject* _pOtherObject) override;
 private:
 	CModelObject* m_pBody = nullptr;
 	CModelObject* m_pFace = nullptr;
 	CModelObject* m_pZZZ = nullptr;
+
+	CMudPit* m_pMudPit = nullptr;
 public:
 	static CRubboink_Tiny* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
