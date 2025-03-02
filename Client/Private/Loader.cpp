@@ -1233,12 +1233,6 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 	XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model_ButterGrump"),
-		C3DModel::Create(m_pDevice, m_pContext,
-			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/buttergrump_Rig.model"
-				), matPretransform))))
-		return E_FAIL;
-
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),
 		C3DModel::Create(m_pDevice, m_pContext,
 			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sphere_01.model"
@@ -1248,6 +1242,20 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_HalfSphere_01_2"),
 		C3DModel::Create(m_pDevice, m_pContext,
 			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_HalfSphere_01_2.model"
+				), matPretransform))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("HomingBall"),
+		C3DModel::Create(m_pDevice, m_pContext,
+			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/HomingBall.model"
+				), matPretransform))))
+		return E_FAIL;
+
+	matPretransform *= XMMatrixRotationY(XMConvertToRadians(180.f));
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model_ButterGrump"),
+		C3DModel::Create(m_pDevice, m_pContext,
+			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/buttergrump_Rig.model"
 				), matPretransform))))
 		return E_FAIL;
 

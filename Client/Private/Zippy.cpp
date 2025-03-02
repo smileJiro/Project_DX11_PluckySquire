@@ -347,20 +347,21 @@ void CZippy::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     case DIE_DOWN:
     case DIE_RIGHT:
     case DIE_UP:
-        Set_AnimChangeable(true);
-        //풀링에 넣을 시 변경
-        //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
-        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
+        Monster_Death();
+        //Set_AnimChangeable(true);
+        ////풀링에 넣을 시 변경
+        ////Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+        //CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
        
-        //확률로 전구 생성
-        if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
-        {
-            _float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
-            _wstring strCurSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
-            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_2DBulb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strCurSection);
-        }
-        
-        Event_DeleteObject(this);
+        ////확률로 전구 생성
+        //if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+        //{
+        //    _float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+        //    _wstring strCurSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+        //    CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_2DBulb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strCurSection);
+        //}
+        //
+        //Event_DeleteObject(this);
         break;
 
     default:
