@@ -266,9 +266,9 @@ void CGoblin_SideScroller::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _
     __super::On_Hit(_pHitter, _iDamg, _vForce);
 }
 
-void CGoblin_SideScroller::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
+void CGoblin_SideScroller::Enter_Section(const _wstring _strIncludeSectionName)
 {
-    __super::Set_Include_Section_Name(_strIncludeSectionName);
+    __super::Enter_Section(_strIncludeSectionName);
 
     //if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
     //{

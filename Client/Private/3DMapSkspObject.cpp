@@ -45,6 +45,10 @@ HRESULT C3DMapSkspObject::Initialize(void* _pArg)
         p2DSection->Register_WorldCapture(this);
     }
 
+
+
+    HRESULT hr = __super::Initialize(_pArg);
+
     switch (m_eSkspType)
     {
     case Client::C3DMapSkspObject::SKSP_NONE:
@@ -54,7 +58,10 @@ HRESULT C3DMapSkspObject::Initialize(void* _pArg)
     case Client::C3DMapSkspObject::SKSP_CUP:
         break;
     case Client::C3DMapSkspObject::SKSP_TUB:
-        break;
+    {
+        m_isCulling = false;
+    }
+    break;
     case Client::C3DMapSkspObject::SKSP_PLAG:
         m_isCulling = false;
         break;
@@ -69,21 +76,22 @@ HRESULT C3DMapSkspObject::Initialize(void* _pArg)
                 iNum = (strModelName[i] - '0') * iFactor + iNum;
                 iFactor *= 10;
             }
-            else 
+            else
                 break;
         }
 
         if (iNum == 2)
             m_isRight = true;
     }
-        break;
+    break;
     case Client::C3DMapSkspObject::SKSP_LAST:
         break;
     default:
         break;
     }
 
-    return __super::Initialize(_pArg);
+    return hr;
+
 }
 
 void C3DMapSkspObject::Late_Update(_float _fTimeDelta)
@@ -100,7 +108,7 @@ void C3DMapSkspObject::Late_Update(_float _fTimeDelta)
     CGameObject::Late_Update_Component(_fTimeDelta);
 
     /* Add Render Group */
-    if (false == m_isCulling || false == m_isFrustumCulling)
+    if (false == m_isFrustumCulling)
     {
         Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
         SECTION_MGR->SetActive_Section(m_strRenderSectionTag, true);
@@ -367,6 +375,94 @@ HRESULT C3DMapSkspObject::Render_Cup()
 
 HRESULT C3DMapSkspObject::Render_Tub()
 {
+    if (FAILED(Bind_ShaderResources_WVP()))
+        return E_FAIL;
+
+    COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+    CShader* pShader = m_pShaderComs[eCoord];
+    _uint iShaderPass = m_iShaderPasses[eCoord];
+    C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
+
+    ID3D11ShaderResourceView* pResourceView = nullptr;
+    pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(m_strRenderSectionTag);
+
+    if (nullptr == pResourceView)
+        return E_FAIL;
+
+    for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
+    {
+        auto pMesh = pModel->Get_Mesh(i);
+        _uint iMaterialIndex = pMesh->Get_MaterialIndex();
+
+        if (FAILED(pModel->Bind_Material_PixelConstBuffer(iMaterialIndex, pShader)))
+            return E_FAIL;
+
+
+        if (1 == i || 2 == i)
+        {
+            _float2 fStartUV = {};
+            _float2 fEndUV = {};
+            if (1 == i)
+            {
+                fStartUV = { 0.f,-0.64f };
+                fEndUV = { 0.51f,3.03f };
+            }
+            else if (2 == i)
+            {
+                fStartUV = { 0.5f,-0.64f };
+                fEndUV = { 1.01f,3.03f };
+
+            }
+            if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fStartUV, sizeof(_float2))))
+                return E_FAIL;
+            if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fEndUV, sizeof(_float2))))
+                return E_FAIL;
+            iShaderPass = m_iShaderPasses[eCoord] == (_uint)PASS_VTXMESH::AFTERPOSTPROCESSING ?
+                (_uint)PASS_VTXMESH::RENDERTARGET_MAPP_AFTERPOSTPROCESSING
+                : (_uint)PASS_VTXMESH::RENDERTARGET_MAPP;
+
+            if (FAILED(pShader->Bind_SRV("g_AlbedoTexture", pResourceView)))
+                return E_FAIL;
+        }
+        else
+        {
+            iShaderPass = m_iShaderPasses[eCoord];
+
+            if (FAILED(pModel->Bind_Material(pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, 0)))
+            {
+            }
+        }
+
+
+
+
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_NormalTexture", i, aiTextureType_NORMALS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_ORMHTexture", i, aiTextureType_BASE_COLOR, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_MetallicTexture", i, aiTextureType_METALNESS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_RoughnessTexture", i, aiTextureType_DIFFUSE_ROUGHNESS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_AOTexture", i, aiTextureType_AMBIENT_OCCLUSION, 0)))
+        {
+        }
+
+        pShader->Begin(iShaderPass);
+
+        pMesh->Bind_BufferDesc();
+
+        pMesh->Render();
+    }
     return S_OK;
 }
 
@@ -464,6 +560,14 @@ void C3DMapSkspObject::Change_RenderState(RT_RENDERSTATE _eRenderState, _bool _i
     m_eCurRenderState = _eRenderState;
 }
 
+void C3DMapSkspObject::Check_FrustumCulling()
+{
+    if (COORDINATE_3D == Get_CurCoord() && true == m_isCulling)
+        m_isFrustumCulling = !m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 10.f);
+    else
+        m_isFrustumCulling = false;
+}
+
 HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag)
 {
 
@@ -493,7 +597,7 @@ HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, cons
 
         CMesh* pLeftMesh = p3DModel->Get_Mesh(2);
         CMesh* pRightMesh = p3DModel->Get_Mesh(5);
-        iFlag = 2;
+        iFlag = 3;
 
 
         _float2 vStartCoord = { 0.5f, 0.0f };
@@ -508,6 +612,31 @@ HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, cons
 
         //vStartCoord = { 0.5f, 0.0f };
         //vEndCoord = { 1.f, 1.f };
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
+        m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
+        pRightMesh->Bind_BufferDesc();
+        pRightMesh->Render();
+    }
+    break;
+    case Client::C3DMapSkspObject::SKSP_TUB:
+    {
+        CMesh* pLeftMesh = p3DModel->Get_Mesh(1);
+        CMesh* pRightMesh = p3DModel->Get_Mesh(2);
+        iFlag = 2;
+
+        _float2 vStartCoord = { 0.f,-0.64f };
+        _float2 vEndCoord = { 0.51f,3.03f };
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
+
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+        m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
+        pLeftMesh->Bind_BufferDesc();
+        pLeftMesh->Render();
+
+        vStartCoord = { 0.5f,-0.64f };
+        vEndCoord = { 1.01f,3.03f };
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
         m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);

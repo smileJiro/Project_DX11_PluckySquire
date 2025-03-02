@@ -79,8 +79,8 @@ public:
 	void						Set_Alive()										{ m_isDead = false; }
 	virtual void				Set_Render(_bool _isRender)						{ m_isRender = _isRender; }
 	void						Set_Pooling(_bool _isPooling)					{ m_isPooling = _isPooling; }
-	virtual void				Set_Include_Section_Name(const _wstring _strIncludeSectionName) { m_strSectionName = _strIncludeSectionName; }
-	void						Init_Include_Section_Name()						{ m_strSectionName = L""; }
+	virtual void				Enter_Section(const _wstring _strIncludeSectionName) { m_strSectionName = _strIncludeSectionName; }
+	virtual void				Exit_Section(const _wstring _strIncludeSectionName)	{ m_strSectionName = L""; }
 	
 protected:
 	ID3D11Device*				m_pDevice = nullptr;

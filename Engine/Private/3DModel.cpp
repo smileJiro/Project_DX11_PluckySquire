@@ -111,11 +111,18 @@ HRESULT C3DModel::Initialize_Prototype(const _char* pModelFilePath, _fmatrix Pre
 			m_isCookingCollider = true;
 			m_iCoockingMeshType = 1;
 		}
-		else if (filesystem::exists(std::filesystem::path(strColliderPath).replace_extension("").string() + "_0.modelMultiColl"))
+		else if (filesystem::exists(std::filesystem::path(strColliderPath).replace_extension("").string() + "_0.modelMultiConvex"))
 		{
 			strColliderPath += "Tmp";
 			m_isCookingCollider = true;
 			m_iCoockingMeshType = 2;
+			m_strColliderPath = std::filesystem::path(strColliderPath).replace_extension("").string();
+		}
+		else if (filesystem::exists(std::filesystem::path(strColliderPath).replace_extension("").string() + "_0.modelMultiTri"))
+		{
+			strColliderPath += "Tmp";
+			m_isCookingCollider = true;
+			m_iCoockingMeshType = 3;
 			m_strColliderPath = std::filesystem::path(strColliderPath).replace_extension("").string();
 		}
 
