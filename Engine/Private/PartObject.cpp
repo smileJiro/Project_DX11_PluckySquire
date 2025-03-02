@@ -112,7 +112,7 @@ HRESULT CPartObject::Cleanup_DeadReferences()
     return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CPartObject::Imgui_Render_ObjectInfos()
 {

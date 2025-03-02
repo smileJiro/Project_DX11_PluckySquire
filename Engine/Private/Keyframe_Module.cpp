@@ -1,7 +1,7 @@
 #include "Keyframe_Module.h"
 #include "Compute_Shader.h"
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 const _char* CKeyframe_Module::g_szModuleNames[2] = { "COLOR_KEYFRAME", "SCALE_KEYFRAME" };
 
@@ -79,7 +79,7 @@ HRESULT CKeyframe_Module::Initialize(const json& _jsonModuleInfo, _int _iNumInst
     if (_jsonModuleInfo.contains("Module"))
     {
         m_eModuleName = _jsonModuleInfo["Module"];
-#ifdef _DEBUG
+#ifdef NDEBUG
         m_strTypeName = _jsonModuleInfo["Module"];
 #endif
     }
@@ -390,7 +390,7 @@ void CKeyframe_Module::Free()
     __super::Free();
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CKeyframe_Module::Initialize(MODULE_NAME _eModuleName, _int _iNumInstance)
 {

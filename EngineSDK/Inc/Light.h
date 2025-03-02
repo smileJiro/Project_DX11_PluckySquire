@@ -16,7 +16,7 @@ private:
 public:
 	HRESULT Initialize(const CONST_LIGHT& _LightDesc);
 	HRESULT Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer);
-#ifdef _DEBUG
+#ifdef NDEBUG
 	HRESULT Render_Base_Debug() override;
 	_bool m_isSelect = false;
 	_bool Is_Select() const { return m_isSelect; }
@@ -61,7 +61,7 @@ private: /* Shadow */
 	CRenderTarget*			m_pShadowRenderTarget = nullptr;
 
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	PrimitiveBatch<VertexPositionColor>* m_pBatch = nullptr;
 	BasicEffect* m_pEffect = nullptr;
 	ID3D11InputLayout* m_pInputLayout = nullptr;

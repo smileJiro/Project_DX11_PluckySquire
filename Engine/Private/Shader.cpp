@@ -25,7 +25,7 @@ HRESULT CShader::Initialize_Prototype(const _tchar* _pShaderFilePath, const D3D1
     /* 셰이더 코드를 컴파일 하고, 해당 셰이더 객체의 정보를 기반으로 InputLayout을 생성 후 저장. */
     _uint iHlslFlag = 0;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
     iHlslFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
 #else
     iHlslFlag = D3DCOMPILE_OPTIMIZATION_LEVEL1;

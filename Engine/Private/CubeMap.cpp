@@ -150,6 +150,23 @@ HRESULT CCubeMap::Bind_IBLTexture(CShader* _pShaderCom, const _char* _pBRDFConst
 	return S_OK;
 }
 
+HRESULT CCubeMap::Change_CubeMap(const _wstring& _strCubeMapPrototypeTag)
+{
+	Remove_Component(TEXT("Com_Texture_Cube"));
+	Safe_Release(m_pCubeTexturesCom);
+
+
+
+	assert(!m_pCubeTexturesCom); // null이 아니면 assert
+	/* Com_Texture_Cube */
+	_int iStaticLevelID = m_pGameInstance->Get_StaticLevelID();
+	if (FAILED(Add_Component(iStaticLevelID, _strCubeMapPrototypeTag,
+		TEXT("Com_Texture_Cube"), reinterpret_cast<CComponent**>(&m_pCubeTexturesCom))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CCubeMap* CCubeMap::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CCubeMap* pInstance = new CCubeMap(_pDevice, _pContext);

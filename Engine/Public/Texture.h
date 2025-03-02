@@ -46,7 +46,7 @@ public:
 		m_SRVNames.push_back(strSRVName);
 		m_iNumSRVs++;
 	}
-#ifdef _DEBUG
+#ifdef NDEBUG
 	HRESULT Delete_Texture( _uint _iIndex)
 	{
 		if (_iIndex >= m_SRVs.size())

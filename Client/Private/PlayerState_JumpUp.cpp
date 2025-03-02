@@ -104,8 +104,8 @@ void CPlayerState_JumpUp::Enter()
 	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_jump-") + to_wstring(rand() % 12), 50.f);
 	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_jump-") + to_wstring(rand() % 6), 20.f);
 
-	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
-		CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip5"), true, m_pOwner->Get_Transform()->Get_WorldMatrix_Ptr(), 1);
+	//if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+	//	CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip5"), true, m_pOwner->Get_Transform()->Get_WorldMatrix_Ptr(), 1);
 }
 
 void CPlayerState_JumpUp::Exit()
