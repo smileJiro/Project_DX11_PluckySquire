@@ -1288,6 +1288,12 @@
     <ClInclude Include="..\public\Pressure_Plate.h">
       <Filter>02.GameObjects\Door_2D\Pressure_Plate</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Boss_WingSlam.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossWingSlamState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2039,6 +2045,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Pressure_Plate.cpp">
       <Filter>02.GameObjects\Door_2D\Pressure_Plate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss_WingSlam.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossWingSlamState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -50,19 +50,19 @@ void CBoss_HomingBall::Update(_float _fTimeDelta)
     //테스트용, 원 게임에서는 구체인데 일단 불릿 모델 써봄
     if (false == m_isHoming)
     {
-		if (2.f <= m_fAccTime)
+        if (2.f <= m_fAccTime)
         {
             m_isHoming = true;
-            m_pControllerTransform->Set_SpeedPerSec(m_fOriginSpeed * 2.f);
+            m_pControllerTransform->Set_SpeedPerSec(m_fOriginSpeed * 3.f);
         }
+        m_pControllerTransform->Go_Straight(_fTimeDelta);
     }
     else
     {
         m_pControllerTransform->Set_AutoRotationYDirection(vDir);
         m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
+        m_pControllerTransform->Go_Direction(vDir, _fTimeDelta);
     }
-
-    m_pControllerTransform->Go_Direction(vDir, _fTimeDelta);
 
      __super::Update(_fTimeDelta);
 }
@@ -201,7 +201,7 @@ HRESULT CBoss_HomingBall::Ready_PartObjects()
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform3DDesc.vInitialScaling = _float3(2.f, 2.f, 2.f);
+    BodyDesc.tTransform3DDesc.vInitialScaling = _float3(10.f, 10.f, 10.f);
     BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
