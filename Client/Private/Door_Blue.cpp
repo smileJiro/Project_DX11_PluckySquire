@@ -15,7 +15,18 @@ CDoor_Blue::CDoor_Blue(const CDoor_Blue& _Prototype)
 
 HRESULT CDoor_Blue::Initialize(void* _pArg)
 {
-	return S_OK;
+    if (nullptr == _pArg)
+        return E_FAIL;
+
+    if (FAILED(__super::Initialize(_pArg)))
+        return E_FAIL;
+
+    Set_AnimLoop();
+    Switch_Animation_By_State();
+
+    Register_OnAnimEndCallBack(bind(&CDoor_Blue::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+
+    return S_OK;
 }
 
 
@@ -25,10 +36,48 @@ void CDoor_Blue::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CDoor_Blue::Set_AnimLoop()
 {
+    if (m_isHorizontal)
+    {
+        if (LARGE == m_eDoorSize)
+        {
+            Set_AnimationLoop(COORDINATE::COORDINATE_2D, H_LARGE_BLUE_CLOSED, false);
+            Set_AnimationLoop(COORDINATE::COORDINATE_2D, H_LARGE_BLUE_OPEN, false);
+            Set_AnimationLoop(COORDINATE::COORDINATE_2D, H_LARGE_BLUE_OPENED, true);
+        }
+        else if (MED == m_eDoorSize)
+        {
+            Set_AnimationLoop(COORDINATE::COORDINATE_2D, H_MED_BLUE_CLOSED, false);
+            Set_AnimationLoop(COORDINATE::COORDINATE_2D, H_MED_BLUE_OPEN, false);
+            Set_AnimationLoop(COORDINATE::COORDINATE_2D, H_MED_BLUE_OPENED, true);
+        }
+        else
+        {
+            Set_AnimationLoop(COORDINATE::COORDINATE_2D, H_SMALL_BLUE_CLOSED, false);
+            Set_AnimationLoop(COORDINATE::COORDINATE_2D, H_SMALL_BLUE_OPEN, false);
+            Set_AnimationLoop(COORDINATE::COORDINATE_2D, H_SMALL_BLUE_OPENED, true);
+        }
+    }
+    else
+    {
+        if (LARGE == m_eDoorSize)
+        {
+        }
+        else if (MED == m_eDoorSize)
+        {
+        }
+        else
+        {
+            Set_AnimationLoop(COORDINATE::COORDINATE_2D, V_SMALL_YELLOW_CLOSE, false);
+            Set_AnimationLoop(COORDINATE::COORDINATE_2D, V_SMALL_YELLOW_CLOSED, true);
+            Set_AnimationLoop(COORDINATE::COORDINATE_2D, V_SMALL_YELLOW_OPEN, false);
+            Set_AnimationLoop(COORDINATE::COORDINATE_2D, V_SMALL_YELLOW_OPENED, true);
+        }
+    }
 }
 
 void CDoor_Blue::Switch_Animation_By_State()
 {
+
 }
 
 CDoor_Blue* CDoor_Blue::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
