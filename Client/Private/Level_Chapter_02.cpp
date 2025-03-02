@@ -1651,12 +1651,12 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Draggable(const _wstring& _strLayerTag)
 HRESULT CLevel_Chapter_02::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 {
 	CDoor_Yellow::DOOR_YELLOW_DESC Desc = {};
-	Desc.tTransform2DDesc.vInitialPosition = _float3(24.f, -113.f, 0.f);
+	Desc.tTransform2DDesc.vInitialPosition = _float3(44.f, -173.f, 0.f);
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.isHorizontal = true;
-	Desc.eSize = CDoor_2D::SMALL;
+	Desc.eSize = CDoor_2D::MED;
 	Desc.eInitialState = CDoor_2D::CLOSED;
-	Desc.vPressurePlatePos = _float3(-55.f, -240.f, 0.f);
+	Desc.vPressurePlatePos = _float3(-90.f, -350.f, 0.f);
 	Desc.strSectionTag = L"Chapter2_SKSP_03";
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),

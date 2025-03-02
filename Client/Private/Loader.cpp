@@ -947,7 +947,7 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 
 		/* 테스트 용도 : 박상욱*/
-		
+
 
 
 
@@ -1160,9 +1160,35 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
-		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/P6768_TheGiantTracks_KR.wav"));
-		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_C6_TheGiantTracks.wav"));
-		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_And_Exploded_On_The_Ground_Below.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/P6768_TheGiantTracks_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_C6_TheGiantTracks.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub2"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_And_Exploded_On_The_Ground_Below.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("C8_P0910_01"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P0910/P0102_OnceUponATime_C9_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P0910_01_Sub"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P0910/A_sfx_C9_OnceUponATime.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P0910_02"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P0910/P0304_LordHumGrumpRuled_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_01_01"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_TheLoyalOnesWouldBeTreated_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_01_02"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_AndTaxed_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_02_01_Sub"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/A_sfx_C9_PutInTheirPlace.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_02_01"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_TheDisloyalOnes_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_02_02"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_Well_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_02_03"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_TheyWouldBePutInTheirPlace_KR.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("C8_P1718_01"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1718/P1314_TheTraiterJot_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1718_02"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1718/P1314_InsideWhichHeAwaited_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1718_01_Sub"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1718/A_sfx_C9_DarknessOfTheVent.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_01_1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_AheadOfTheFugitives_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_01_2"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_AndPatrolledByHighly_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_TheTraitorousRodentPrepared_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_2"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_APlanQuiteObviouslyDoomed_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1_Sub"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/A_sfx_C9_TheTraiterousRodent.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheGangArrived_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/A_sfx_C8_TheGangArrivedAtArtia.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_2_1"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_ToSeeTheAftermath_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_2_2"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheArmyOfArtia_KR.wav"));
+
 
 	#pragma endregion
 

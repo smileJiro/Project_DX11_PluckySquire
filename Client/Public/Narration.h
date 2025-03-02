@@ -47,7 +47,7 @@ public:
         _float fFadeDuration;       // 페이드인이 완료될 때 까지의 시간
         _float fDelayNextLine;      // 페이드인이 완료 된 후 다음 라인으로 넘어가기까지의 시간
         _bool  isDirTurn = true;           // 책장을 넘기는 방향 true는 우측, false는 좌측
-
+        _float3    fRGB = { 0.f, 0.f, 0.f };
         _bool   isFinishedThisLine = { false };
         _int    AnimationCount = { 0 };
         vector<NarrationAnimation> NarAnim;
@@ -62,6 +62,7 @@ public:
         _int     LineCount = { 0 };
         _bool    bTerminal = false;
         _int        AnimIndex = { 0 };
+
         vector<NarrationDialogData> lines;
     };
 
