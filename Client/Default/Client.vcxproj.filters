@@ -526,6 +526,9 @@
     <Filter Include="02.GameObjects\Door_2D\Pressure_Plate">
       <UniqueIdentifier>{c84e00c4-ed90-4043-b9c1-415d594bd204}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\NPC\04. Postit_Page">
+      <UniqueIdentifier>{83799b27-5927-4329-80f8-64ced9914002}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1288,6 +1291,7 @@
     <ClInclude Include="..\public\Pressure_Plate.h">
       <Filter>02.GameObjects\Door_2D\Pressure_Plate</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Postit_Page.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2040,6 +2044,7 @@
     <ClCompile Include="..\private\Pressure_Plate.cpp">
       <Filter>02.GameObjects\Door_2D\Pressure_Plate</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Postit_Page.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
