@@ -87,6 +87,7 @@
 #include "TestTerrain.h"
 #include "RabbitLunch.h"
 #include "Bomb.h"
+#include "Key.h"
 
 
 #include "2DModel.h"
@@ -796,6 +797,10 @@ HRESULT CLoader::Loading_Level_Static()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Pressure_Plate"),
 		CPressure_Plate::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"),
+		CKey::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For. Prototype_GameObject_SwordTrail */

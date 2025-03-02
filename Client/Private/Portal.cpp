@@ -132,7 +132,7 @@ HRESULT CPortal::Init_Actor()
         Active_OnEnable();
 
     Change_Coordinate(COORDINATE_2D, nullptr);
-    // Æ÷Å» »ý¼º.
+    // Æ÷Å» ÀÌÆåÆ® »ý¼º.
     m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_WorldMatrix_Ptr();
 
     CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};

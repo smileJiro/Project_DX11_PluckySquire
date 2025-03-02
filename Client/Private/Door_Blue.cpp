@@ -1,0 +1,63 @@
+#include "stdafx.h"
+#include "Door_Blue.h"
+#include "GameInstance.h"
+#include "Section_Manager.h"
+
+CDoor_Blue::CDoor_Blue(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	: CDoor_2D(_pDevice, _pContext)
+{
+}
+
+CDoor_Blue::CDoor_Blue(const CDoor_Blue& _Prototype)
+	: CDoor_2D(_Prototype)
+{
+}
+
+HRESULT CDoor_Blue::Initialize(void* _pArg)
+{
+	return S_OK;
+}
+
+
+void CDoor_Blue::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+}
+
+void CDoor_Blue::Set_AnimLoop()
+{
+}
+
+void CDoor_Blue::Switch_Animation_By_State()
+{
+}
+
+CDoor_Blue* CDoor_Blue::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+{
+    CDoor_Blue* pInstance = new CDoor_Blue(_pDevice, _pContext);
+
+    if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        MSG_BOX("Failed to Created : CDoor_Blue");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
+
+CGameObject* CDoor_Blue::Clone(void* _pArg)
+{
+    CDoor_Blue* pInstance = new CDoor_Blue(*this);
+
+    if (FAILED(pInstance->Initialize(_pArg)))
+    {
+        MSG_BOX("Failed to Cloned : CDoor_Blue");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
+
+void CDoor_Blue::Free()
+{
+    __super::Free();
+}

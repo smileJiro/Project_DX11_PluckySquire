@@ -1,0 +1,229 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Gatekey_key_horizontal",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0001'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0001.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0002'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0002.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0003'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0003.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0004'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0004.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0005'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0005.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0006'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0006.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0007'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0007.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0008'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0008.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0009'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0009.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0010'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0010.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0011'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0011.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0012'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0012.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0013'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0013.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0014'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0014.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0015'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0015.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0016'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0016.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0017'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0017.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0018'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0018.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0019'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0019.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0020'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0020.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0021'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0021.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0022'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0022.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0023'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0023.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0024'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0024.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0025'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0025.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0026'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0026.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0027'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0027.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0028'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0028.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0029'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0029.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0030'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0030.1"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Gatekey_key_horizontal_0031'",
+            "ObjectPath": "/Game/Map/Objects/Chapter_04/_Shared/Sketchspace/GateKey/Frames/Gatekey_key_horizontal_0031.1"
+          },
+          "FrameRun": 2
+        }
+      ]
+    }
+  }
+]
