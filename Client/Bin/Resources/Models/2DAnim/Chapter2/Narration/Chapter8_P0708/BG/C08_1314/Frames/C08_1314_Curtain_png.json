@@ -1,0 +1,107 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "C08_1314_Curtain_png",
+    "Class": "UScriptClass'BodySetup'",
+    "Flags": "RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 1744.0,
+            "Y": 10.0,
+            "Z": 280.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "5FCA2CDF4ED0AC5FBFE5F9B62913992E"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "C08_1314_Curtain_png",
+    "Class": "UScriptClass'PaperSprite'",
+    "Flags": "RF_Public | RF_Standalone | RF_Transactional | RF_WasLoaded | RF_LoadCompleted",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 2025.0,
+        "Y": 1627.0
+      },
+      "BakedSourceDimension": {
+        "X": 1744.0,
+        "Y": 280.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'C08_1314-0'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_08/C08_1314/Textures/C08_1314-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'C08_1314_Curtain_png:BodySetup_1'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_08/C08_1314/Frames/C08_1314_Curtain_png.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 872.0,
+          "Y": 140.0,
+          "Z": 0.920166,
+          "W": 0.7944336
+        },
+        {
+          "X": -872.0,
+          "Y": 140.0,
+          "Z": 0.49438477,
+          "W": 0.7944336
+        },
+        {
+          "X": -872.0,
+          "Y": -140.0,
+          "Z": 0.49438477,
+          "W": 0.93115234
+        },
+        {
+          "X": 872.0,
+          "Y": -140.0,
+          "Z": 0.920166,
+          "W": 0.93115234
+        },
+        {
+          "X": 872.0,
+          "Y": 140.0,
+          "Z": 0.920166,
+          "W": 0.7944336
+        },
+        {
+          "X": -872.0,
+          "Y": -140.0,
+          "Z": 0.49438477,
+          "W": 0.93115234
+        }
+      ]
+    }
+  }
+]

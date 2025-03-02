@@ -29,8 +29,6 @@ HRESULT C3DMapSkspObject::Initialize(void* _pArg)
     m_strRenderSectionTag = StringToWstring(pDesc->strSkspTag);
 
 
-    if (L"Chapter4_SKSP_02" == m_strRenderSectionTag)
-        m_eSkspType = SKSP_PLAG;
 
     CSection* pSection = SECTION_MGR->Find_Section(m_strRenderSectionTag);
 
@@ -47,6 +45,43 @@ HRESULT C3DMapSkspObject::Initialize(void* _pArg)
         p2DSection->Register_WorldCapture(this);
     }
 
+    switch (m_eSkspType)
+    {
+    case Client::C3DMapSkspObject::SKSP_NONE:
+        break;
+    case Client::C3DMapSkspObject::SKSP_DEFAULT:
+        break;
+    case Client::C3DMapSkspObject::SKSP_CUP:
+        break;
+    case Client::C3DMapSkspObject::SKSP_TUB:
+        break;
+    case Client::C3DMapSkspObject::SKSP_PLAG:
+        m_isCulling = false;
+        break;
+    case Client::C3DMapSkspObject::SKSP_STORAGE:
+    {
+        m_isCulling = false;
+        _wstring strModelName = pDesc->strModelPrototypeTag_3D;
+        _int iNum = 0;
+        _int iFactor = 1;
+        for (_int i = (_int)strModelName.size() - 1; i >= 0; --i) {
+            if (isdigit(strModelName[i])) {
+                iNum = (strModelName[i] - '0') * iFactor + iNum;
+                iFactor *= 10;
+            }
+            else 
+                break;
+        }
+
+        if (iNum == 2)
+            m_isRight = true;
+    }
+        break;
+    case Client::C3DMapSkspObject::SKSP_LAST:
+        break;
+    default:
+        break;
+    }
 
     return __super::Initialize(_pArg);
 }
@@ -65,7 +100,7 @@ void C3DMapSkspObject::Late_Update(_float _fTimeDelta)
     CGameObject::Late_Update_Component(_fTimeDelta);
 
     /* Add Render Group */
-    if (SKSP_PLAG == m_eSkspType || false == m_isCulling || false == m_isFrustumCulling)
+    if (false == m_isCulling || false == m_isFrustumCulling)
     {
         Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
         SECTION_MGR->SetActive_Section(m_strRenderSectionTag, true);
@@ -92,6 +127,14 @@ HRESULT C3DMapSkspObject::Render()
         break;
     case Client::C3DMapSkspObject::SKSP_CUP:
         if (FAILED(Render_Cup()))
+            return E_FAIL;
+        break;
+    case Client::C3DMapSkspObject::SKSP_TUB:
+        if (FAILED(Render_Tub()))
+            return E_FAIL;
+        break;
+    case Client::C3DMapSkspObject::SKSP_STORAGE:
+        if (FAILED(Render_Storage()))
             return E_FAIL;
         break;
     default:
@@ -322,6 +365,86 @@ HRESULT C3DMapSkspObject::Render_Cup()
     return S_OK;
 }
 
+HRESULT C3DMapSkspObject::Render_Tub()
+{
+    return S_OK;
+}
+
+HRESULT C3DMapSkspObject::Render_Storage()
+{
+    if (FAILED(Bind_ShaderResources_WVP()))
+        return E_FAIL;
+    COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+    CShader* pShader = m_pShaderComs[eCoord];
+    _uint iShaderPass = m_iShaderPasses[eCoord];
+    C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
+
+    _bool iFlag = false;
+    ID3D11ShaderResourceView* pResourceView = nullptr;
+
+    pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(m_strRenderSectionTag);
+    if (FAILED(pShader->Bind_SRV("g_AlbedoTexture", pResourceView)))
+        return E_FAIL;
+
+    m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+
+    for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
+    {
+        _uint iShaderPass = (_uint)PASS_VTXMESH::DEFAULT;
+        auto pMesh = pModel->Get_Mesh(i);
+        _uint iMaterialIndex = pMesh->Get_MaterialIndex();
+        if (FAILED(pModel->Bind_Material_PixelConstBuffer(iMaterialIndex, pShader)))
+            return E_FAIL;
+        _float2 fStartUV = {};
+        _float2 fEndUV = {};
+        if (!m_isRight)
+        {
+            fStartUV = { 0.f,0.f };
+            fEndUV = { 0.5f,1.f };
+        }
+        else
+        {
+            fStartUV = { 0.5f,0.f };
+            fEndUV = { 1.f,1.f };
+        }
+        iShaderPass = (_uint)PASS_VTXMESH::RENDERTARGET_MAPP;
+
+        if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fStartUV, sizeof(_float2))))
+            return E_FAIL;
+        if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fEndUV, sizeof(_float2))))
+            return E_FAIL;
+        iShaderPass = (_uint)PASS_VTXMESH::RENDERTARGET_MAPP;
+
+        if (FAILED(pShader->Bind_SRV("g_AlbedoTexture", pResourceView)))
+            return E_FAIL;
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_NormalTexture", i, aiTextureType_NORMALS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_ORMHTexture", i, aiTextureType_BASE_COLOR, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_MetallicTexture", i, aiTextureType_METALNESS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_RoughnessTexture", i, aiTextureType_DIFFUSE_ROUGHNESS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_AOTexture", i, aiTextureType_AMBIENT_OCCLUSION, 0)))
+        {
+        }
+
+        pShader->Begin(iShaderPass);
+        pMesh->Bind_BufferDesc();
+        pMesh->Render();
+    }
+    return S_OK;
+}
+
 void C3DMapSkspObject::Change_RenderState(RT_RENDERSTATE _eRenderState, _bool _isMapped)
 {
     switch (_eRenderState)
@@ -390,6 +513,35 @@ HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, cons
         m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
         pRightMesh->Bind_BufferDesc();
         pRightMesh->Render();
+    }
+    break;
+    case Client::C3DMapSkspObject::SKSP_STORAGE:
+    {
+
+        CMesh* pMesh = p3DModel->Get_Mesh(0);
+        iFlag = 2;
+
+
+        _float2 vStartCoord = { 0.5f, 0.0f };
+        _float2 vEndCoord = { 1.f,1.f };
+        if (!m_isRight)
+        {
+            vStartCoord = { 0.f,0.f };
+            vEndCoord = { 0.5f,1.f };
+        }
+        else
+        {
+            vStartCoord = { 0.5f,0.f };
+            vEndCoord = { 1.f,1.f };
+        }
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
+
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+        m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
+        pMesh->Bind_BufferDesc();
+        pMesh->Render();
+
     }
     break;
     case Client::C3DMapSkspObject::SKSP_CUP:

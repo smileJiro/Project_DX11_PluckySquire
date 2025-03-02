@@ -346,7 +346,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/SM_desk_split_topboard_02/SM_desk_split_topboard_02.model", matPretransform))))
         return E_FAIL;
 
-    if (FAILED(Load_Models_FromJson(LEVEL_TRIGGER_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_04_Play_Desk.json", matPretransform)))
+    if (FAILED(Load_Models_FromJson(LEVEL_TRIGGER_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_06_Play_Desk.json", matPretransform)))
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TRIGGER_TOOL,
@@ -360,11 +360,20 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TRIGGER_TOOL,
-        TEXT("../../Client/Bin/Resources/Models/3DPlayerPart/"), matPretransform)))
+        TEXT("../../Client/Bin/Resources/Models/3DObject/Static/3DPlayerPart/"), matPretransform)))
         return E_FAIL;
     //if (FAILED(Load_Dirctory_2DModels_Recursive(LEVEL_TRIGGER_TOOL,
     //    TEXT("../../Client/Bin/Resources/Models/2DAnim/"))))
     //    return E_FAIL;
+
+
+   // matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TRIGGER_TOOL, TEXT("Prototype_Model_Book"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../Bin/Resources/Models/book/book.model"
+                ), matPretransform))))
+        return E_FAIL;
 
 
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
@@ -397,7 +406,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
     //    CSampleBook::Create(m_pDevice, m_pContext))))
     //    return E_FAIL;
 
-    Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_04_Play_Desk.mchc");
+    Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_06_Play_Desk.mchc");
 
     //Map_Object_Create(LEVEL_STATIC, LEVEL_TRIGGER_TOOL, L"Room_Enviroment.mchc");
 
@@ -665,32 +674,29 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
 
                 isTempReturn = ReadFile(hFile, &issksp, sizeof(_uint), &dwByte, nullptr);
 
-                if (1 == issksp)
+                if (0 < issksp)
                 {
                     isTempReturn = ReadFile(hFile, &szSaveskspName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
                 }
 
 
-                DWORD	dwByte(0);
+                _uint iMaterialCount = 0;
                 _uint iOverrideCount = 0;
-                C3DModel::COLOR_SHADER_MODE eTextureType;
-                _float4 fDefaultDiffuseColor;
+
+                _uint iMaterialIndex;
+                _uint eColorMode;
+                _float4 fDiffuseColor;
 
 
-                isTempReturn = ReadFile(hFile, &eTextureType, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
-                static_cast<CMapObject*>(pGameObject)->Set_Color_Shader_Mode(eTextureType);
-
-                switch (eTextureType)
+                ReadFile(hFile, &iMaterialCount, sizeof(_uint), &dwByte, nullptr);
+                if (0 < iMaterialCount)
                 {
-                case Engine::C3DModel::COLOR_DEFAULT:
-                case Engine::C3DModel::MIX_DIFFUSE:
-                {
-                    isTempReturn = ReadFile(hFile, &fDefaultDiffuseColor, sizeof(_float4), &dwByte, nullptr);
-                    static_cast<CMapObject*>(pGameObject)->Set_Diffuse_Color(fDefaultDiffuseColor);
-                }
-                break;
-                default:
-                    break;
+                    for (_uint i = 0; i < iMaterialCount; i++)
+                    {
+                        ReadFile(hFile, &iMaterialIndex, sizeof(_uint), &dwByte, nullptr);
+                        ReadFile(hFile, &eColorMode, sizeof(C3DModel::COLOR_SHADER_MODE), &dwByte, nullptr);
+                        ReadFile(hFile, &fDiffuseColor, sizeof(_float4), &dwByte, nullptr);
+                    }
                 }
 
                 isTempReturn = ReadFile(hFile, &iOverrideCount, sizeof(_uint), &dwByte, nullptr);

@@ -913,6 +913,13 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 		m_pGameInstance->Load_SFX(TEXT("P1920_01_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1920/P1920_01_02.wav"));
 		m_pGameInstance->Load_SFX(TEXT("P1920_02_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1920/P1920_02_01.wav"));
 
+
+		/* 테스트 용도 : 박상욱*/
+		
+
+
+
+
 	#pragma endregion
 
 	#pragma region Chapter 2 - Model Load
@@ -1120,6 +1127,10 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 	#pragma region Chapter 6 - Sound Load
 
 		lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
+
+		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/P6768_TheGiantTracks_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_C6_TheGiantTracks.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_And_Exploded_On_The_Ground_Below.wav"));
 
 	#pragma endregion
 

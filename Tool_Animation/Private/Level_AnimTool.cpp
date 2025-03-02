@@ -25,33 +25,33 @@ HRESULT CLevel_AnimTool::Initialize()
 
 	Ready_Lights();
 	Ready_CubeMap(TEXT("Layer_CubeMap"));
-	CModelObject::MODELOBJECT_DESC tModelObjDesc = {};
-	tModelObjDesc.iPriorityID_3D = PR3D_GEOMETRY;
-	tModelObjDesc.iRenderGroupID_3D = RG_3D;
-	//tModelObjDesc.eStartCoord = COORDINATE_3D;
-	//tModelObjDesc.Build_3D_Model(LEVEL_ANIMTOOL, TEXT("Prototype_Component_Background"), TEXT("Prototype_Component_Shader_VtxMesh"), (_uint)PASS_VTXMESH::DEFAULT, false);
-	tModelObjDesc.tTransform2DDesc.vInitialPosition = _float3(0, 0, 0);
-	tModelObjDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
-	tModelObjDesc.eStartCoord = COORDINATE_2D;
-	tModelObjDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-	tModelObjDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_Background");
-	tModelObjDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
-	tModelObjDesc.isCoordChangeEnable = false;
-	tModelObjDesc.iCurLevelID = LEVEL_ANIMTOOL;
-	tModelObjDesc.iModelPrototypeLevelID_2D = LEVEL_ANIMTOOL;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_ANIMTOOL, TEXT("Prototype_GameObject_BackGround"), LEVEL_ANIMTOOL, TEXT("Background"), (CGameObject**)&m_pBackground, &tModelObjDesc)))
-	{
-		Safe_Release(m_pBackground);
-		return E_FAIL;
-	}
-	m_pBackground->Get_ControllerTransform()->Set_Scale({g_iWinSizeX,g_iWinSizeY,1});
-	m_pBackground->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, _float4{0,0,0.1,1});
+	//CModelObject::MODELOBJECT_DESC tModelObjDesc = {};
+	//tModelObjDesc.iPriorityID_3D = PR3D_GEOMETRY;
+	//tModelObjDesc.iRenderGroupID_3D = RG_3D;
+	////tModelObjDesc.eStartCoord = COORDINATE_3D;
+	////tModelObjDesc.Build_3D_Model(LEVEL_ANIMTOOL, TEXT("Prototype_Component_Background"), TEXT("Prototype_Component_Shader_VtxMesh"), (_uint)PASS_VTXMESH::DEFAULT, false);
+	//tModelObjDesc.tTransform2DDesc.vInitialPosition = _float3(0, 0, 0);
+	//tModelObjDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+	//tModelObjDesc.eStartCoord = COORDINATE_2D;
+	//tModelObjDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+	//tModelObjDesc.strModelPrototypeTag_2D = TEXT("Prototype_Component_Background");
+	//tModelObjDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
+	//tModelObjDesc.isCoordChangeEnable = false;
+	//tModelObjDesc.iCurLevelID = LEVEL_ANIMTOOL;
+	//tModelObjDesc.iModelPrototypeLevelID_2D = LEVEL_ANIMTOOL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_ANIMTOOL, TEXT("Prototype_GameObject_BackGround"), LEVEL_ANIMTOOL, TEXT("Background"), (CGameObject**)&m_pBackground, &tModelObjDesc)))
+	//{
+	//	Safe_Release(m_pBackground);
+	//	return E_FAIL;
+	//}
+	//m_pBackground->Get_ControllerTransform()->Set_Scale({g_iWinSizeX,g_iWinSizeY,1});
+	//m_pBackground->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, _float4{0,0,0.1,1});
 	//Ready_Layer_TestTerrain(TEXT("Terrain"));
 	//Create_Camera(TEXT("Camera"));
 	SetWindowText(g_hWnd, TEXT("애니메이션 툴입니다."));
 
 	/* Blur RenderGroupOn */
-	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_GEOMETRY, true);
+	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
 	return S_OK;
 }
 
@@ -96,7 +96,7 @@ HRESULT CLevel_AnimTool::Render()
 	if (m_pTestModelObj)
 		SetWindowText(g_hWnd, m_szLoadedPath.c_str());
 #endif
-
+	
 	return S_OK;
 }
 
@@ -405,7 +405,7 @@ HRESULT CLevel_AnimTool::Ready_Lights()
 
 	LightDesc.vDirection = { 0.0f, -1.0f, 1.0f };
 	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	LightDesc.vDiffuse = _float4(1.0f, 1.0f, 1.0f, 1.0f);
 	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
 	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
 

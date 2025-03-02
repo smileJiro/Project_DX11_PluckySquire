@@ -37,6 +37,9 @@ HRESULT CNarration::Initialize(void* _pArg)
 	{
 		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Narration/Level_Chapter_02_Narration.json"))))
 			return E_FAIL;
+
+		//if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Narration/Level_Chapter_06_Narration.json"))))
+		//	return E_FAIL;
 	}
 	
 	_float2 vCalScale = { 0.f, 0.f };
@@ -173,6 +176,11 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 
 					if (line.contains("strSFX") && line["strSFX"].is_string())
 						DialogueData.strSFX = StringToWstring(line["strSFX"].get<string>());
+
+
+					if (line.contains("strSubSFX") && line["strSubSFX"].is_string())
+						DialogueData.strSubSFX = StringToWstring(line["strSubSFX"].get<string>());
+					
 
 					if (line.contains("isLeft") && line["isLeft"].is_boolean())
 						DialogueData.isLeft = line["isLeft"].get<bool>();
@@ -432,7 +440,11 @@ vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine
 		);
 	}
 
-	m_pGameInstance->Start_SFX_Delay(m_NarrationDatas[m_iNarrationCount].lines[iLine].strSFX, 0.f, 50.f, false);
+	if (TEXT("NOT") != m_NarrationDatas[m_iNarrationCount].lines[iLine].strSFX)
+		m_pGameInstance->Start_SFX_Delay(m_NarrationDatas[m_iNarrationCount].lines[iLine].strSFX, 0.f, 50.f, false);
+
+	if (TEXT("NOT") != m_NarrationDatas[m_iNarrationCount].lines[iLine].strSubSFX)
+		m_pGameInstance->Start_SFX_Delay(m_NarrationDatas[m_iNarrationCount].lines[iLine].strSubSFX, 0.f, 30.f, false);
 
 	return m_pCurrentAnimObj;
 }

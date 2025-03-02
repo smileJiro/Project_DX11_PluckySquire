@@ -22,7 +22,7 @@ private:
     _bool m_bPlatformerMode = false;
     _float m_fAirRunSpeed = 0.f;
     _float m_fAirRunSpeed2D = 0.f;
-	_float m_fAirRotateSpeed = 0.f;
+	_float m_fAirRotateSpeed = 0.f ;
 };
 
 END

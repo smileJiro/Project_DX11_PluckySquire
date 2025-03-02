@@ -473,6 +473,10 @@ void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 				pPickingObj->Set_SkspType(SKSP_CUP);
 			if (ImGui::RadioButton("Tub", iSksp == SKSP_TUB))
 				pPickingObj->Set_SkspType(SKSP_TUB);
+			if (ImGui::RadioButton("Plag", iSksp == SKSP_PLAG))
+				pPickingObj->Set_SkspType(SKSP_PLAG);
+			if (ImGui::RadioButton("Storage", iSksp == SKSP_STORAGE))
+				pPickingObj->Set_SkspType(SKSP_STORAGE);
 
 			if (iSksp != SKSP_NONE)
 			{

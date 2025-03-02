@@ -75,6 +75,7 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 	__super::Late_Update(fTimeDelta);
 }
 
+// Initial Data를 Set해주는 용도로 쓰고 있었네 3.1
 void CCamera_2D::Set_Data(_fvector _vArm, _float _fLength, _fvector _vOffset)
 {
 	m_pCurArm->Set_ArmVector(_vArm);
@@ -130,48 +131,64 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 	// Sketch Space 면에 따라서 Arm 바꿔 주기
 	if (CSection_Manager::GetInstance()->is_WordPos_Capcher()) 
 	{
-		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+		CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
+		m_iPlayType = static_cast<CSection_2D*>(pSection)->Get_Section_2D_PlayType();
 
-		m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
-		pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+#pragma region Narration || Book
+		if (CSection_2D::NARRAION == m_iPlayType || CSection_2D::PLAYMAP == m_iPlayType) { // 일단 Narration이랑 Book이랑 같이 처리
+			pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+			pData = Find_ArmData(TEXT("Book_Horizon"));
 
-		switch ((_int)m_eCurSpaceDir) {
-		case (_int)NORMAL_DIRECTION::NONEWRITE_NORMAL:
-		{
-			int a = 0;
-		}
-		break;
-		case (_int)NORMAL_DIRECTION::POSITIVE_X:
-		{
-			pData = Find_ArmData(TEXT("Default_Positive_X"));
 			m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
 		}
-			break;
-		case (_int)NORMAL_DIRECTION::NEGATIVE_X:
-		{
-			pData = Find_ArmData(TEXT("Default_Negative_X"));
-			m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
-		}
-			break;
-		case (_int)NORMAL_DIRECTION::POSITIVE_Y:
-		{
-			pData = Find_ArmData(TEXT("Default_Positive_Y"));
-			m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
-			
-		}
-			break;
-		case (_int)NORMAL_DIRECTION::NEGATIVE_Y:
-			break;
-		case (_int)NORMAL_DIRECTION::POSITIVE_Z:
-			break;
-		case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
-		{
-			pData = Find_ArmData(TEXT("Default_Negative_Z"));
-			m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
-		}
-			break;
-		}
+#pragma endregion
 
+#pragma region Sketch Space
+		else if (CSection_2D::SKSP == m_iPlayType) {
+			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+
+			// 기존 Normal로 할지 아닐지 결정하기
+			m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
+			pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+
+			switch ((_int)m_eCurSpaceDir) {
+			case (_int)NORMAL_DIRECTION::NONEWRITE_NORMAL:
+			{
+				int a = 0;
+			}
+			break;
+			case (_int)NORMAL_DIRECTION::POSITIVE_X:
+			{
+				pData = Find_ArmData(TEXT("Default_Positive_X"));
+				m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+			}
+			break;
+			case (_int)NORMAL_DIRECTION::NEGATIVE_X:
+			{
+				pData = Find_ArmData(TEXT("Default_Negative_X"));
+				m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+			}
+			break;
+			case (_int)NORMAL_DIRECTION::POSITIVE_Y:
+			{
+				pData = Find_ArmData(TEXT("Default_Positive_Y"));
+				m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+
+			}
+			break;
+			case (_int)NORMAL_DIRECTION::NEGATIVE_Y:
+				break;
+			case (_int)NORMAL_DIRECTION::POSITIVE_Z:
+				break;
+			case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
+			{
+				pData = Find_ArmData(TEXT("Default_Negative_Z"));
+				m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+			}
+			break;
+			}
+		}
+#pragma endregion
 		// SUbData 하기 전 임시 (2.28)
 		m_pCurArm->Set_Length(12.5f);
 		m_iCurZoomLevel = LEVEL_6;
@@ -210,18 +227,8 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 			m_fFovy = m_ZoomLevels[m_tInitialData.iZoomLevel];
 		}
 
-		
-		// Book일 경우
-		CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
-
-		if (CSection_2D::SECTION_2D_BOOK == static_cast<CSection_2D*>(pSection)->Get_Section_2D_RenderType()) {
-			m_isBook = true;
-		}
-		else
-			m_isBook = false;
-
+		Check_MagnificationType();
 	}
-	Check_MagnificationType();
 }
 
 void CCamera_2D::Change_Target(CGameObject* _pTarget)
@@ -239,12 +246,6 @@ INITIAL_DATA CCamera_2D::Get_InitialData()
 
 	XMStoreFloat3(&tData.vPosition, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
 
-#pragma region Pos + Look
-	//_vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
-	//_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-	//_vector vAt = vPos + vLook;
-	//XMStoreFloat3(&tData.vAt, vAt);
-#pragma endregion
 	_vector vAt = XMVectorSetW(XMLoadFloat3(&m_v2DPreTargetWorldPos), 1.f) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 	XMStoreFloat3(&tData.vAt, vAt);
 
@@ -258,6 +259,7 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	if (true == m_isInitialData)
 		return;
 
+#pragma region Arm Debuging 코드
 	//static _bool isDebug = true;
 	//int a = 0;
 	////isDebug = false;
@@ -269,20 +271,20 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	//	tData.fLength = 9.f;
 	//	tData.fLengthTime = { 1.5f, 0.f };
 	//	tData.iLengthRatioType = EASE_IN_OUT;
-
+	
 	//	Add_CustomArm(tData);
 	//	m_eCameraMode = MOVE_TO_CUSTOMARM;
 	//	Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, -3.f, 0.f), EASE_IN_OUT);
 	//	Start_Zoom(1.5f, (ZOOM_LEVEL)LEVEL_5, EASE_IN_OUT);
 	//	//Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);
-
+	
 	//	isDebug = true;
 	//}
-
+	
 	/*Start_Zoom(1.5f, (ZOOM_LEVEL)LEVEL_6, EASE_IN_OUT);
 	Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);*/
-	
-	
+#pragma endregion
+
 	Find_TargetPos();
 
 	Action_Zoom(_fTimeDelta);
@@ -429,8 +431,6 @@ void CCamera_2D::Flipping_Up(_float _fTimeDelta)
 {	
 	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta, true)) {
 		m_eCameraMode = FLIPPING_PAUSE;
-
-		//return;
 	}
 
 	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
@@ -447,11 +447,10 @@ void CCamera_2D::Flipping_Down(_float _fTimeDelta)
 {
 	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta, true)) {
 		
-		if (CSection_2D::NARRAION == m_iPlayType && true == m_isBook)
+		if (CSection_2D::NARRAION == m_iPlayType)
 			m_eCameraMode = NARRATION;
 		else
 			m_eCameraMode = DEFAULT;
-		//return;
 	}
 
 	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
@@ -580,16 +579,31 @@ void CCamera_2D::Find_TargetPos()
 	switch (m_eTargetCoordinate) {
 	case (_uint)COORDINATE_2D:
 	{
+#pragma region Book
 		if (CSection_2D::PLAYMAP == m_iPlayType) {
 			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 
 			if (!XMVector3Equal(vTargetPos, XMVectorZero())) {
 				XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 				m_v2DdMatrixPos = { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 };
-				// Clamp_FixedPos();  // 이동 가능한 최소 범위로 제한
 			}
 			else
 				break;
+		}
+#pragma endregion
+
+#pragma region Sketch Space
+		else if (CSection_2D::SKSP == m_iPlayType) {
+			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+
+			if (!XMVector3Equal(vTargetPos, XMVectorZero())) {
+				XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
+				m_v2DdMatrixPos = { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 };
+			}
+			else
+				break;
+
+			// 기존 Normal을 가지고 올 건지 아닌지를 체크하자 
 			if (m_eCurSpaceDir != (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)))) {
 
 				switch (((_int)roundf(XMVectorGetW(vTargetPos)))) {
@@ -633,6 +647,9 @@ void CCamera_2D::Find_TargetPos()
 				m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
 			}
 		}
+#pragma endregion
+
+#pragma region Narration
 		else if (CSection_2D::NARRAION == m_iPlayType) {
 			_float2 fSectionSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(m_strSectionName);
 			_float2 vPos = { };
@@ -646,14 +663,15 @@ void CCamera_2D::Find_TargetPos()
 
 			if (true == m_iNarrationPosType)
 				vPos = { fSectionSize.x * 0.25f, fSectionSize.y * 0.5f };
-			else 
-				vPos = { fSectionSize.x * (1.f - 0.25f), fSectionSize.y * 0.5f};
+			else
+				vPos = { fSectionSize.x * (1.f - 0.25f), fSectionSize.y * 0.5f };
 
 			vPos = { (vPos.x - (fSectionSize.x * 0.5f)), -vPos.y + (fSectionSize.y * 0.5f) };
 			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { vPos.x, vPos.y });
 
 			XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 		}
+#pragma endregion
 	}
 	break;
 	case (_uint)COORDINATE_3D:
@@ -667,7 +685,7 @@ void CCamera_2D::Find_TargetPos()
 
 void CCamera_2D::Calculate_Book_Scroll()
 {
-	if (false == m_isBook || COORDINATE_3D == m_eTargetCoordinate || CSection_2D::NARRAION == m_iPlayType)
+	if (CSection_2D::PLAYMAP != m_iPlayType || COORDINATE_3D == m_eTargetCoordinate)
 		return;
 
 	_float2 fSectionSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(m_strSectionName);
@@ -756,11 +774,10 @@ void CCamera_2D::Calculate_Book_Scroll()
 
 void CCamera_2D::Check_MagnificationType()
 {
-	if (false == m_isBook)
+	if (CSection_2D::PLAYMAP != m_iPlayType)
 		return;
 
 	CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
-	m_iPlayType = static_cast<CSection_2D*>(pSection)->Get_Section_2D_PlayType();
 
 	// 종
 	if (true == static_cast<CSection_2D*>(pSection)->Is_Rotation()) {
@@ -789,39 +806,6 @@ void CCamera_2D::Check_MagnificationType()
 		m_eDirectionType = HORIZON;
 	}
 }
-
-void CCamera_2D::Clamp_FixedPos()
-{
-	//if (false == m_isBook)
-	//	return;
-
-	//// 섹션 크기 가져오기
-	//_float2 fSectionSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(m_strSectionName);
-
-	//// 최소/최대 이동 가능 범위 계산
-	//_float minX = fSectionSize.x * m_fBasicRatio[m_eMagnificationType].x;
-	//_float maxX = fSectionSize.x * (1.f - m_fBasicRatio[m_eMagnificationType].x);
-	//_float minY = fSectionSize.y * m_fBasicRatio[m_eMagnificationType].y;
-	//_float maxY = fSectionSize.y * (1.f - m_fBasicRatio[m_eMagnificationType].y);
-
-	//// FixedPos를 범위 내로 제한
-	//m_v2DFixedPos.x = max(minX, min(maxX, m_v2DFixedPos.x));
-	//m_v2DFixedPos.y = max(minY, min(maxY, m_v2DFixedPos.y));
-}
-
-//void CCamera_2D::Check_TargetChange()
-//{
-//	if (false == m_isTargetChanged)
-//		return;
-//
-//	_vector vDistance = XMLoadFloat3(&m_v2DTargetWorldPos) - XMLoadFloat3(&m_v2DPreTargetWorldPos);
-//	_float fDistanceLength = XMVectorGetX(XMVector3Length(vDistance));
-//
-//	if (fDistanceLength < EPSILON) {
-//		CTrigger_Manager::GetInstance()->On_End(TEXT("2D_Camera_Change_Target"));
-//		m_isTargetChanged = false;
-//	}
-//}
 
 pair<ARM_DATA*, SUB_DATA*>* CCamera_2D::Find_ArmData(_wstring _wszArmTag)
 {
