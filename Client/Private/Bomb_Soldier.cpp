@@ -265,7 +265,7 @@ void CBomb_Soldier::Create_Bomb()
         _matrix HandMatrix = XMLoadFloat4x4(p3DModel->Get_BoneMatrix("j_hand_attach_r"));
 
         _float3 vPosition = { 0.f,0.f,0.f };
-        _float4 vRotation;
+        //_float4 vRotation;
 
         //m_pGameInstance->MatrixDecompose(nullptr, &vRotation, &vPosition, HandMatrix);
 

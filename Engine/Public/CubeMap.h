@@ -42,6 +42,8 @@ public:
 public:
 	HRESULT				Bind_IBLTexture(CShader* _pShaderCom, const _char* _pBRDFConstName, const _char* _pSpecularConstName, const _char* _pIrradianceConstName);
 
+public:
+	HRESULT				Change_CubeMap(const _wstring& _strCubeMapPrototypeTag);
 protected:
 	CShader*			m_pShaderCom = nullptr;
 	CTexture*			m_pCubeTexturesCom = {};		// multi texture

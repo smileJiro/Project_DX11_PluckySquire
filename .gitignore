@@ -14,7 +14,7 @@
 #Compiled Dynamic libraries
 *.so
 *.dylib
-#*.dll
+*.dll
 
 #Fortran module files
 *.mod
@@ -24,13 +24,14 @@
 *.lai
 *.la
 *.a
-#*.lib
+*.lib
 
 #Executables
 *.exe
 *.out
 *.app
 
+*.res
 *.pdb
 *.log
 *.idb
@@ -38,6 +39,7 @@
 *.tlog
 *.ilk
 *.exp
+*.enc
 *.cso
 *.recipe
 .vs/
@@ -129,3 +131,4 @@
 /Tool_Effect/Bin/Release/Engine.dll
 /Client/Bin/Resources/Textures/CubeMap/HDRI/
 /Tool_Effect/Bin/Resources/Textures/CubeMap/HDRI
+/Tool_Map/Bin/Debug/Tool_Map.lib

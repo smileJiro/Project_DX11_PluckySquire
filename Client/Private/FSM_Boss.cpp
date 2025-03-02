@@ -46,6 +46,7 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 
 	CState* pState = nullptr;
 	CState::STATEDESC Desc = {};
+	Desc.iCurLevel = m_iCurLevel;
 
 	switch ((BOSS_STATE)_iState)
 	{

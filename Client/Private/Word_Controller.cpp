@@ -88,7 +88,7 @@ HRESULT CWord_Controller::Import(CSection_2D* _pSection, json _ControllerJson)
 		//m_PartObjects[i] = CWord_Container::Create(m_pDevice, m_pContext);
 		if (nullptr != m_PartObjects[i])  
 		{
-			m_PartObjects[i]->Set_Include_Section_Name(_pSection->Get_SectionName());
+			m_PartObjects[i]->Enter_Section(_pSection->Get_SectionName());
 			static_cast<CWord_Container*>(m_PartObjects[i])->Set_ControllerIndex(m_iControllerIndex);
 			static_cast<CWord_Container*>(m_PartObjects[i])->Set_ContainerIndex(i);
 		}
@@ -277,13 +277,13 @@ HRESULT CWord_Controller::Register_RenderGroup(_uint _iGroupId, _uint _iPriority
 	return m_pGameInstance->Add_RenderObject_New(_iGroupId, _iPriorityID, this); // Collider2D Render 및 debug관련 렌더를 container에서 수행.
 }
 
-void CWord_Controller::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
+void CWord_Controller::Enter_Section(const _wstring _strIncludeSectionName)
 {
-	__super::Set_Include_Section_Name(_strIncludeSectionName);
+	__super::Enter_Section(_strIncludeSectionName);
 	for (auto pController : m_PartObjects)
 	{
 		if(nullptr != pController)
-			pController->Set_Include_Section_Name(_strIncludeSectionName);
+			pController->Enter_Section(_strIncludeSectionName);
 	}
 }
 

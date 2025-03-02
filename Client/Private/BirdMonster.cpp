@@ -213,18 +213,19 @@ void CBirdMonster::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case DIE:
-        Set_AnimChangeable(true);
+        Monster_Death();
+        //Set_AnimChangeable(true);
 
-        CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+        //CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
 
-        //확률로 전구 생성
-        if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
-        {
-            _float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
-            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bulb"), COORDINATE_3D, &vPos);
-        }
+        ////확률로 전구 생성
+        //if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+        //{
+        //    _float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+        //    CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bulb"), COORDINATE_3D, &vPos);
+        //}
 
-        Event_DeleteObject(this);
+        //Event_DeleteObject(this);
         break;
 
     default:

@@ -10,6 +10,10 @@
 #include "Boss_YellowBall.h"
 #include "Boss_PurpleBall.h"
 #include "FSM_Boss.h"
+#include "ButterGrump_LeftEye.h"
+#include "ButterGrump_RightEye.h"
+#include "ButterGrump_Tongue.h"
+#include "ButterGrump_Shield.h"
 
 CButterGrump::CButterGrump(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -35,13 +39,18 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
 
-    pDesc->fDelayTime = 0.5f;
-    pDesc->fCoolTime = 3.f;
+    pDesc->iNumPartObjects = BOSSPART_END;
+
+    pDesc->iObjectGroupID = OBJECT_GROUP::BOSS;
+
+    m_fDelayTime = 0.5f;
+    m_fCoolTime = 3.f;
+
 
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;
 
-    if (FAILED(__super::Initialize(pDesc)))
+    if (FAILED(CContainerObject::Initialize(pDesc)))
         return E_FAIL;
 
     if (FAILED(Ready_Components()))
@@ -50,8 +59,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-   /* if (FAILED(Ready_Projectiles()))
-        return E_FAIL;*/
+    if (FAILED(Ready_Projectiles()))
+        return E_FAIL;
     
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SCENE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
@@ -68,7 +77,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CButterGrump::Animation_End, this, placeholders::_1, placeholders::_2));
 
-    m_pControllerTransform->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
+    //m_pControllerTransform->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
@@ -78,7 +87,22 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     }
     Safe_Delete(pDesc->pActorDesc);
 
-    Get_ActorCom()->Set_ShapeEnable(BOSS_SHAPE_SHIELD, false);
+    static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Gravity(false);
+
+    m_PartObjects[BOSSPART_SHIELD]->Set_Active(false);
+    m_PartObjects[BOSSPART_SHIELD]->Get_ControllerTransform()->RotationXYZ(_float3(0.f, 90.f, 0.f));
+
+    //플레이어 위치 가져오기
+    m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
+    if (nullptr == m_pTarget)
+    {
+#ifdef _DEBUG
+        cout << "BOSSINIT : NO PLAYER" << endl;
+#endif // _DEBUG
+        return S_OK;
+    }
+
+    Safe_AddRef(m_pTarget);
 
     return S_OK;
 }
@@ -135,6 +159,11 @@ void CButterGrump::Update(_float _fTimeDelta)
     //    Set_AnimChangeable(true);
     //    m_pBossFSM->Change_State((_uint)BOSS_STATE::SCENE);
     //}
+    if (KEY_DOWN(KEY::F5))
+    {
+        m_isInvincible ^= 1;
+        m_PartObjects[BOSSPART_SHIELD]->Set_Active(m_isInvincible);
+    }
 
 #endif // _DEBUG
 
@@ -199,16 +228,17 @@ void CButterGrump::Attack()
 {
     _float3 vScale, vPosition;
     _float4 vRotation;
-    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, m_pControllerTransform->Get_WorldMatrix()))
+    _matrix matMuzzle = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[BOSSPART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("buttergrump_rigtonsils_01_01"));
+    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, matMuzzle))
         return;
     switch ((BOSS_STATE)m_iState)
     {
     case BOSS_STATE::ENERGYBALL:
     {
-        vPosition.y += vScale.y * 0.5f;
-        vPosition.x += m_pGameInstance->Compute_Random(-5.f, 5.f);
-        vPosition.y += m_pGameInstance->Compute_Random(-5.f, 5.f);
-        vPosition.z += m_pGameInstance->Compute_Random(-5.f, 5.f);
+        //vPosition.y += vScale.y * 0.5f;
+        //vPosition.x += m_pGameInstance->Compute_Random(-5.f, 5.f);
+        //vPosition.y += m_pGameInstance->Compute_Random(-5.f, 5.f);
+        //vPosition.z += m_pGameInstance->Compute_Random(-5.f, 5.f);
         //XMQuaternionMultiply(XMLoadFloat4(&vRotation), )
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_EnergyBall"), COORDINATE_3D,  &vPosition, &vRotation);
 
@@ -221,7 +251,7 @@ void CButterGrump::Attack()
 
         Rot = XMQuaternionMultiply(Rot, XMQuaternionRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f)));
         XMStoreFloat4(&vRotation, Rot);
-        vPosition.y += vScale.y * 0.5f;
+        //vPosition.y += vScale.y * 0.5f;
 
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_HomingBall"), COORDINATE_3D, &vPosition, &vRotation);
 
@@ -329,7 +359,7 @@ HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
 {
     CButterGrump::MONSTER_DESC* pDesc = static_cast<CButterGrump::MONSTER_DESC*>(_pArg);
 
-    pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
+    pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
 
     /* Actor의 주인 오브젝트 포인터 */
@@ -363,70 +393,24 @@ HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
 
-    /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_SPHERE_DESC* LeftEyeShapeDesc = new SHAPE_SPHERE_DESC;
-    LeftEyeShapeDesc->fRadius = 1.f;
+    ///* 사용하려는 Shape의 형태를 정의 */
+    //SHAPE_SPHERE_DESC* ShieldShapeDesc = new SHAPE_SPHERE_DESC;
+    //ShieldShapeDesc->fRadius = 15.f;
 
-    ShapeData->pShapeDesc = LeftEyeShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-    ShapeData->iShapeUse = (_uint)BOSS_SHAPE_USE::BOSS_SHAPE_LEFT_EYE;
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, LeftEyeShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    //ShapeData->pShapeDesc = ShieldShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    //ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
+    //ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    //ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    //ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
+    //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
-    /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc->ShapeDatas.push_back(*ShapeData);
-
-    /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_SPHERE_DESC* RightEyeShapeDesc = new SHAPE_SPHERE_DESC;
-    RightEyeShapeDesc->fRadius = 1.f;
-
-    ShapeData->pShapeDesc = RightEyeShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-    ShapeData->iShapeUse = (_uint)BOSS_SHAPE_USE::BOSS_SHAPE_RIGHT_EYE;
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, RightEyeShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
-
-    /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc->ShapeDatas.push_back(*ShapeData);
-
-
-
-    /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_CAPSULE_DESC* TongueShapeDesc = new SHAPE_CAPSULE_DESC;
-    TongueShapeDesc->fRadius = 1.f;
-    TongueShapeDesc->fHalfHeight = 1.f;
-
-    ShapeData->pShapeDesc = TongueShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-    ShapeData->iShapeUse = (_uint)BOSS_SHAPE_USE::BOSS_SHAPE_TONGUE;
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, TongueShapeDesc->fHalfHeight + TongueShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
-
-    /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc->ShapeDatas.push_back(*ShapeData);
-
-
-    /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_SPHERE_DESC* ShieldShapeDesc = new SHAPE_SPHERE_DESC;
-    ShieldShapeDesc->fRadius = 10.f;
-
-    ShapeData->pShapeDesc = ShieldShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    ShapeData->iShapeUse = (_uint)BOSS_SHAPE_USE::BOSS_SHAPE_SHIELD;
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
-
-    /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc->ShapeDatas.push_back(*ShapeData);
+    ///* 최종으로 결정 된 ShapeData를 PushBack */
+    //ActorDesc->ShapeDatas.push_back(*ShapeData);
 
 
        /* 충돌 필터에 대한 세팅 ()*/
-    ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER | OBJECT_GROUP::EXPLOSION;
+    ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::BOSS;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::EXPLOSION;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;
@@ -461,23 +445,107 @@ HRESULT CButterGrump::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
-    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
     BodyDesc.strModelPrototypeTag_3D = TEXT("Prototype_Model_ButterGrump");
 	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+
+    BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXANIMMESH::DEFAULT;
+    BodyDesc.iRenderGroupID_3D = RG_3D;
+    BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
     BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-    BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
-    /* 태웅 : 렌더러 관련 추가 */
-    BodyDesc.iRenderGroupID_3D = RG_3D;
-    BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
-    if (nullptr == m_PartObjects[PART_BODY])
+    BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+    BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+
+    m_PartObjects[BOSSPART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+    if (nullptr == m_PartObjects[BOSSPART_BODY])
         return E_FAIL;
+
+
+    /* Parts */
+
+    CButterGrump_LeftEye::BUTTERGRUMP_LEFTEYE_DESC LeftEyeDesc{};
+
+    LeftEyeDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+
+    LeftEyeDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    LeftEyeDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+    LeftEyeDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+    LeftEyeDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+
+    LeftEyeDesc.pParent = this;
+
+    m_PartObjects[BOSSPART_LEFTEYE] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_ButterGrump_LeftEye"), &LeftEyeDesc));
+    if (nullptr == m_PartObjects[BOSSPART_LEFTEYE])
+        return E_FAIL;
+
+    C3DModel* p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[BOSSPART_BODY])->Get_Model(COORDINATE_3D));
+    m_PartObjects[BOSSPART_LEFTEYE]->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("buttergrump_righead_left_eye"));
+
+
+    CButterGrump_RightEye::BUTTERGRUMP_RIGHTEYE_DESC RightEyeDesc{};
+
+    RightEyeDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+
+    RightEyeDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    RightEyeDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+    RightEyeDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+    RightEyeDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+
+    RightEyeDesc.pParent = this;
+
+    m_PartObjects[BOSSPART_RIGHTEYE] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_ButterGrump_RightEye"), &RightEyeDesc));
+    if (nullptr == m_PartObjects[BOSSPART_RIGHTEYE])
+        return E_FAIL;
+
+    m_PartObjects[BOSSPART_RIGHTEYE]->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("buttergrump_righead_right_eye"));
+
+
+    CButterGrump_Tongue::BUTTERGRUMP_TONGUE_DESC TongueDesc{};
+
+    TongueDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+
+    TongueDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    TongueDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+    TongueDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+    TongueDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+
+    TongueDesc.pParent = this;
+
+    m_PartObjects[BOSSPART_TONGUE] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_ButterGrump_Tongue"), &TongueDesc));
+    if (nullptr == m_PartObjects[BOSSPART_TONGUE])
+        return E_FAIL;
+
+    m_PartObjects[BOSSPART_TONGUE]->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("buttergrump_righead_tongue_01"));
+
+
+    CButterGrump_Shield::BUTTERGRUMP_SHIELD_DESC ShieldDesc{};
+
+    ShieldDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_HalfSphere_01_2");
+    ShieldDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+    ShieldDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+
+    ShieldDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+    ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::ALPHABLEND;
+
+    ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(-7.0f, 0.0f, -5.0f);
+    ShieldDesc.tTransform3DDesc.vInitialScaling = _float3(25.0f, 25.0f, 25.0f);
+    ShieldDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+    ShieldDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+
+    ShieldDesc.iRenderGroupID_3D = RG_3D;
+    ShieldDesc.iPriorityID_3D = PR3D_GEOMETRY;
+
+    ShieldDesc.pParent = this;
+
+    m_PartObjects[BOSSPART_SHIELD] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_ButterGrump_Shield"), &ShieldDesc));
+    if (nullptr == m_PartObjects[BOSSPART_SHIELD])
+        return E_FAIL;
+
+    m_PartObjects[BOSSPART_SHIELD]->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("buttergrump_righead_nose"));
 
     return S_OK;
 }
@@ -486,17 +554,16 @@ HRESULT CButterGrump::Ready_Projectiles()
 {
     Pooling_DESC Pooling_Desc;
     Pooling_Desc.iPrototypeLevelID = m_iCurLevelID;
-    Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
+    Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
     Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_HomingBall");
 
     CBoss_HomingBall::PROJECTILE_MONSTER_DESC* pHomingBallDesc = new CBoss_HomingBall::PROJECTILE_MONSTER_DESC;
     pHomingBallDesc->fLifeTime = 4.f;
     pHomingBallDesc->eStartCoord = COORDINATE_3D;
     pHomingBallDesc->isCoordChangeEnable = false;
-    pHomingBallDesc->iNumPartObjects = PART_LAST;
     pHomingBallDesc->iCurLevelID = m_iCurLevelID;
 
-    pHomingBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pHomingBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(30.f);
     pHomingBallDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_HomingBall"), Pooling_Desc, pHomingBallDesc);
@@ -508,7 +575,6 @@ HRESULT CButterGrump::Ready_Projectiles()
     pEnergyBallDesc->fLifeTime = 5.f;
     pEnergyBallDesc->eStartCoord = COORDINATE_3D;
     pEnergyBallDesc->isCoordChangeEnable = false;
-    pEnergyBallDesc->iNumPartObjects = PART_LAST;
     pEnergyBallDesc->iCurLevelID = m_iCurLevelID;
 
     pEnergyBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
@@ -522,7 +588,6 @@ HRESULT CButterGrump::Ready_Projectiles()
     pYellowBallDesc->fLifeTime = 5.f;
     pYellowBallDesc->eStartCoord = COORDINATE_3D;
     pYellowBallDesc->isCoordChangeEnable = false;
-    pYellowBallDesc->iNumPartObjects = PART_LAST;
     pYellowBallDesc->iCurLevelID = m_iCurLevelID;
 
     pYellowBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
@@ -536,7 +601,6 @@ HRESULT CButterGrump::Ready_Projectiles()
     pPurpleBallDesc->fLifeTime = 5.f;
     pPurpleBallDesc->eStartCoord = COORDINATE_3D;
     pPurpleBallDesc->isCoordChangeEnable = false;
-    pPurpleBallDesc->iNumPartObjects = PART_LAST;
     pPurpleBallDesc->iCurLevelID = m_iCurLevelID;
 
     pPurpleBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);

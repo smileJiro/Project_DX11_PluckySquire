@@ -140,7 +140,7 @@ void CMainApp::Imgui_FPS(_float _fTimeDelta)
 {
 	ImGui::Begin("FPS");
 	static _int iMaxFPS = (_int)(1.0f / m_iOneFrameDeltaTime);
-	_int iInGameFPS = m_pGameInstance->Get_FPS(TEXT("Timer_Default"));
+	_int iInGameFPS = m_pGameInstance->Get_FPS(TEXT("Timer_120"));
 	m_vFPSRenderTime.y += _fTimeDelta;
 	if (m_vFPSRenderTime.x <= m_vFPSRenderTime.y)
 	{
@@ -660,7 +660,7 @@ HRESULT CMainApp::Ready_RenderTargets()
 
 	/* Settiong DSV */
 
-	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), SHADOWMAP_X, SHADOWMAP_Y)))
+	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Shadow"), (_uint)SHADOWMAP_X, (_uint)SHADOWMAP_Y)))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_DSV_ToRenderer(TEXT("DSV_Downsample1"), (_uint)(g_iWinSizeX / 6.f), (_uint)(g_iWinSizeY / 6.f))))

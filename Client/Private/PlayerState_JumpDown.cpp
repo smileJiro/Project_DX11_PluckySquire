@@ -5,6 +5,7 @@
 #include "GameInstance.h"
 #include "Interactable.h"
 #include "Effect_Manager.h"
+#include "ModelObject.h"
 
 CPlayerState_JumpDown::CPlayerState_JumpDown(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::JUMP_DOWN)
@@ -48,13 +49,21 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 
 		return;
 	}
-	//_float fUpForce = m_pOwner->Get_UpForce();
-	//if (0 < fUpForce)
-	//{
-	//	m_pOwner->Set_State(CPlayer::JUMP_UP);
-	//	return;
-	//}
-	// 이하 공중일 때
+	if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_ZETPROPEL])
+	{
+		m_pOwner->ZetPropel(_fTimeDelta);
+	}
+	_float fUpForce = m_pOwner->Get_UpForce();
+	_bool bReverse = m_pBody->Is_ReverseAnimation();
+	if (false == bReverse && 0.f < fUpForce)
+	{
+		m_pBody->Set_ReverseAnimation(true);
+	}
+	else if (bReverse && 0.f > fUpForce)
+	{
+		m_pBody->Set_ReverseAnimation(false);
+	}
+		// 이하 공중일 때
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
 	//물건 들고있지 않으면?
 	if (false == bCarrying)
@@ -81,10 +90,6 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 					m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
 				return;
 			}
-			else if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_ZETPROPEL])
-			{
-				m_pOwner->ZetPropel(_fTimeDelta);
-			}
 		}
 		else if(INTERACT_RESULT::SUCCESS == eResult)
 		{
@@ -102,6 +107,8 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 	}
 	if (COORDINATE_3D == eCoord)
 	{
+
+
 		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
 		{
 			//기어오르기 체크
@@ -146,6 +153,7 @@ void CPlayerState_JumpDown::Enter()
 	m_pOwner->Get_ActorDynamic()->Set_LinearDamping(0.5f);
 	m_fArmYPositionBefore = XMVectorGetY(m_pOwner->Get_FinalPosition()) + m_pOwner->Get_ArmHeight();
 	m_fWallYPosition = -1;
+	m_pBody = m_pOwner->Get_Body();
 }
 
 void CPlayerState_JumpDown::Exit()
