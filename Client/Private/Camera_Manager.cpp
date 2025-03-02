@@ -456,16 +456,52 @@ void CCamera_Manager::Start_FadeOut(_float _fFadeTime)
 	m_Cameras[m_eCurrentCameraType]->Start_PostProcessing_Fade(CCamera::FADE_OUT, _fFadeTime);
 }
 
-void CCamera_Manager::Load_ArmData(_wstring _sz3DFileName, _wstring _sz2DFileName)
+void CCamera_Manager::Load_ArmData(LEVEL_ID _eLevelID)
 {
+	_wstring szArmFileName, sz2DArmFileName;
+
+	switch (_eLevelID) {
+	case LEVEL_CHAPTER_2:
+		szArmFileName = TEXT("Chapter2/Chapter2_ArmData.json");
+		sz2DArmFileName = TEXT("Chapter2/Chapter2_2D_ArmData.json");
+		break;
+	case LEVEL_CHAPTER_4:
+		szArmFileName = TEXT("Chapter4/Chapter4_ArmData.json");
+		sz2DArmFileName = TEXT("Chapter4/Chapter4_2D_ArmData.json");
+		break;
+	case LEVEL_CHAPTER_6:
+		szArmFileName = TEXT("Chapter6/Chapter6_ArmData.json");
+		sz2DArmFileName = TEXT("Chapter6/Chapter6_2D_ArmData.json");
+		break;
+	}
+
 	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/";
-	Load_ArmData(TARGET, wszLoadPath + _sz3DFileName);
-	Load_ArmData(TARGET_2D, wszLoadPath + _sz2DFileName);
+	Load_ArmData(TARGET, wszLoadPath + szArmFileName);
+	Load_ArmData(TARGET_2D, wszLoadPath + sz2DArmFileName);
+
+	if (nullptr == m_Cameras[TARGET])
+		return;
+
+	static_cast<CCamera_Target*>(m_Cameras[TARGET])->Load_InitialArmTag();
 }
 
-void CCamera_Manager::Load_CutSceneData(_wstring _szCutSceneFileName)
+void CCamera_Manager::Load_CutSceneData(LEVEL_ID _eLevelID)
 {
-	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/CutSceneData/" + _szCutSceneFileName;
+	_wstring szFileName;
+
+	switch (_eLevelID) {
+	case LEVEL_CHAPTER_2:
+		szFileName = TEXT("Chapter2/Chapter2_CutScene.json");
+		break;
+	case LEVEL_CHAPTER_4:
+		szFileName = TEXT("Chapter4/Chapter4_CutScene.json");
+		break;
+	case LEVEL_CHAPTER_6:
+		szFileName = TEXT("Chapter6/Chapter6_CutScene.json");
+		break;
+	}
+
+	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/CutSceneData/" + szFileName;
 
 	ifstream file(wszLoadPath);
 

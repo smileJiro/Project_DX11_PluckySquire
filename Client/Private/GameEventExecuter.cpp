@@ -401,7 +401,7 @@ void CGameEventExecuter::Chapter2_Intro(_float _fTimeDelta)
         if (false == m_isStart) {
             CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
             pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 2.f);
-            pCamera->Set_Data(XMVectorSet(-0.670150876f, 0.506217539f, -0.542809010f, 0.f), 46.20f, XMVectorSet(-15.f, 5.f, 0.f, 0.f));
+            pCamera->Set_InitialData(XMVectorSet(-0.670150876f, 0.506217539f, -0.542809010f, 0.f), 46.20f, XMVectorSet(-15.f, 5.f, 0.f, 0.f));
             pCamera->Set_NextArmData(TEXT("Intro"), 0);
             pCamera->Start_Changing_AtOffset(5.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);
             pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_NEXTARM);

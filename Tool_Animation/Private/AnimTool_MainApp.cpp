@@ -74,7 +74,7 @@ void CAnimTool_MainApp::Progress(_float _fTimeDelta)
 
 	if (FAILED(Render()))
 	{
-		MSG_BOX("Failed Render MainApp_ §∂§≤ ≥ ¿”?");
+		MSG_BOX("Failed Render MainApp");
 		return;
 	}
 

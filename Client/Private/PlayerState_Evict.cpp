@@ -94,13 +94,7 @@ void CPlayerState_Evict::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 				pBone->Update_CombinedTransformationMatrix(Bones, XMLoadFloat4x4(&p3DModel->Get_PreTransformMatrix()));
 
 
-			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-			pCamera->Calculate_Player();
-
 			m_pOwner->Set_Kinematic(false);
-
-
-			
 		}
 		else if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_IDLE_NERVOUS_01_GT == iAnimIdx)
 		{

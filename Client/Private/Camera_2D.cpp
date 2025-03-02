@@ -75,14 +75,6 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 	__super::Late_Update(fTimeDelta);
 }
 
-// Initial Data를 Set해주는 용도로 쓰고 있었네 3.1
-void CCamera_2D::Set_Data(_fvector _vArm, _float _fLength, _fvector _vOffset)
-{
-	m_pCurArm->Set_ArmVector(_vArm);
-	m_pCurArm->Set_Length(_fLength);
-	XMStoreFloat3(&m_vAtOffset, _vOffset);
-}
-
 void CCamera_2D::Add_CurArm(CCameraArm* _pCameraArm)
 {
 	if (nullptr == _pCameraArm)
@@ -145,55 +137,59 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 
 #pragma region Sketch Space
 		else if (CSection_2D::SKSP == m_iPlayType) {
-			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 
-			// 기존 Normal로 할지 아닐지 결정하기
-			m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
-			pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+			_uint iNormalType = static_cast<CSection_2D*>(pSection)->Get_Override_Normal();
 
-			switch ((_int)m_eCurSpaceDir) {
-			case (_int)NORMAL_DIRECTION::NONEWRITE_NORMAL:
-			{
-				int a = 0;
-			}
-			break;
-			case (_int)NORMAL_DIRECTION::POSITIVE_X:
-			{
-				pData = Find_ArmData(TEXT("Default_Positive_X"));
-				m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
-			}
-			break;
-			case (_int)NORMAL_DIRECTION::NEGATIVE_X:
-			{
-				pData = Find_ArmData(TEXT("Default_Negative_X"));
-				m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
-			}
-			break;
-			case (_int)NORMAL_DIRECTION::POSITIVE_Y:
-			{
-				pData = Find_ArmData(TEXT("Default_Positive_Y"));
-				m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+			// Sketch Space의 Normal Type에 따라 Arm 결정하기
+			/* 기존 Normal*/
+			if (ARM_NORMAL_TYPE::DEFAULT_NORMAL == iNormalType) {
+				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 
-			}
-			break;
-			case (_int)NORMAL_DIRECTION::NEGATIVE_Y:
+				m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
+				pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+
+				switch ((_int)m_eCurSpaceDir) {
+				case (_int)NORMAL_DIRECTION::NONEWRITE_NORMAL:
+				{
+					int a = 0;
+				}
 				break;
-			case (_int)NORMAL_DIRECTION::POSITIVE_Z:
+				case (_int)NORMAL_DIRECTION::POSITIVE_X:
+				{
+					pData = Find_ArmData(TEXT("Default_Positive_X"));
+				}
 				break;
-			case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
-			{
-				pData = Find_ArmData(TEXT("Default_Negative_Z"));
-				m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+				case (_int)NORMAL_DIRECTION::NEGATIVE_X:
+				{
+					pData = Find_ArmData(TEXT("Default_Negative_X"));
+				}
+				break;
+				case (_int)NORMAL_DIRECTION::POSITIVE_Y:
+				{
+					pData = Find_ArmData(TEXT("Default_Positive_Y"));
+				}
+				break;
+				case (_int)NORMAL_DIRECTION::NEGATIVE_Y:
+					break;
+				case (_int)NORMAL_DIRECTION::POSITIVE_Z:
+					break;
+				case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
+				{
+					pData = Find_ArmData(TEXT("Default_Negative_Z"));
+				}
+				break;
+				}
+				if (nullptr != pData)
+					Set_InitialData(pData);
 			}
-			break;
+			else if (ARM_NORMAL_TYPE::CUSTOM_NORMAL == iNormalType){
+				Set_InitialData(m_strSectionName);
+			}
+			else if (ARM_NORMAL_TYPE::NORMAL_MAP == iNormalType) {
+
 			}
 		}
 #pragma endregion
-		// SUbData 하기 전 임시 (2.28)
-		m_pCurArm->Set_Length(12.5f);
-		m_iCurZoomLevel = LEVEL_6;
-		m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
-		m_vAtOffset = { 0.f, 0.f, 0.f };
 
 		// Initial Data가 없어서 TargetPos + vArm * Length로 초기 위치를 바로 잡아주기
 		if (nullptr == _pInitialData) {
@@ -207,6 +203,8 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 			Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
 
 			Look_Target(0.f);
+
+			m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
 
 			m_isInitialData = false;
 		}
@@ -223,6 +221,8 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 			m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&m_tInitialData.vAt), 1.f));
 
 			// 초기 Zoom Level 설정
+			// ㄹㅇ 3D의 초기 ZoomLevel을 그냥 아예 설정하고 있었음... 근데 이렇게 하면 내가 각 Sksp마다 fov를 조절할 수는 있지만
+			// 같은 Positive Y인데 다른 경우엔 어캄? .. 걍 저렇게 하는 게 나을 수도
 			m_iCurZoomLevel = m_tInitialData.iZoomLevel;
 			m_fFovy = m_ZoomLevels[m_tInitialData.iZoomLevel];
 		}
@@ -252,6 +252,38 @@ INITIAL_DATA CCamera_2D::Get_InitialData()
 	tData.iZoomLevel = m_iCurZoomLevel;
 
 	return tData;
+}
+
+void CCamera_2D::Set_InitialData(_fvector _vArm, _float _fLength, _fvector _vOffset)
+{
+	m_pCurArm->Set_ArmVector(_vArm);
+	m_pCurArm->Set_Length(_fLength);
+	XMStoreFloat3(&m_vAtOffset, _vOffset);
+}
+
+void CCamera_2D::Set_InitialData(pair<ARM_DATA*, SUB_DATA*>* pData)
+{
+	m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+	m_pCurArm->Set_Length(pData->first->fLength);
+
+	if (nullptr == pData->second)
+		return;
+
+	m_vAtOffset = pData->second->vAtOffset;
+	m_iCurZoomLevel = pData->second->iZoomLevel;
+	m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
+}
+
+void CCamera_2D::Set_InitialData(_wstring _szSectionTag)
+{
+	// SectionTag에 따라서 미리 저장해 둔 Arm 불러오기
+	pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+	
+	// if(_szSectionTag == TEXT("Chapter2_SKSP_05")
+	// ...
+
+	if (nullptr != pData) 
+		Set_InitialData(pData);
 }
 
 void CCamera_2D::Action_Mode(_float _fTimeDelta)
@@ -399,7 +431,7 @@ void CCamera_2D::Defualt_Move(_float _fTimeDelta)
 void CCamera_2D::Move_To_NextArm(_float _fTimeDelta)
 {
 	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta, true)) {
-		m_eCameraMode = DEFAULT;
+		m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 	}
 
 	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
@@ -412,7 +444,7 @@ void CCamera_2D::Move_To_NextArm(_float _fTimeDelta)
 void CCamera_2D::Move_To_CustomArm(_float _fTimeDelta)
 {
 	if (true == m_pCurArm->Move_To_CustomArm(&m_CustomArmData, _fTimeDelta)) {
-		m_eCameraMode = DEFAULT;
+		m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 	}
 
 	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
@@ -450,7 +482,7 @@ void CCamera_2D::Flipping_Down(_float _fTimeDelta)
 		if (CSection_2D::NARRAION == m_iPlayType)
 			m_eCameraMode = NARRATION;
 		else
-			m_eCameraMode = DEFAULT;
+			m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 	}
 
 	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
@@ -545,7 +577,7 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 		m_InitialTime.y = 0.f;
 		m_isInitialData = false;
 
-		m_eCameraMode = DEFAULT;
+		m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 		return;
 	}
 

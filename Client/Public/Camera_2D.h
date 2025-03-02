@@ -48,6 +48,15 @@ public:
 		MAGNIFICATION_END
 	};
 
+	enum ARM_NORMAL_TYPE
+	{
+		DEFAULT_NORMAL = 0,
+		CUSTOM_NORMAL = 1,
+		NORMAL_MAP = 2,
+
+		NORMAL_TYPE_END
+	};
+
 	typedef struct tagCamera2DDesc : public CCamera::CAMERA_DESC
 	{
 		CAMERA_2D_MODE			eCameraMode = { DEFAULT };
@@ -74,8 +83,9 @@ public:
 	virtual INITIAL_DATA		Get_InitialData() override;
 
 	void						Set_CameraMode(_uint _iCameraMode) { m_eCameraMode = (CAMERA_2D_MODE)_iCameraMode; }
-	void						Set_InitilData(INITIAL_DATA _tData) {};
-	void						Set_Data(_fvector _vArm, _float _fLength, _fvector _vOffset);
+	void						Set_InitialData(_fvector _vArm, _float _fLength, _fvector _vOffset);
+	void						Set_InitialData(pair<ARM_DATA*, SUB_DATA*>* pData);
+	void						Set_InitialData(_wstring _szSectionTag);
 
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
@@ -116,7 +126,7 @@ private:
 	// Sketch Space
 	NORMAL_DIRECTION			m_eCurSpaceDir = { NORMAL_DIRECTION::NONEWRITE_NORMAL };
 
-	// 카메라 위치 고정s
+	// 카메라 위치 고정
 	_float2						m_fBasicRatio[MAGNIFICATION_END] = {};	// 렌더 타겟의 어느 정도 비율로 고정할 것인지 결정, 기본적으로 해야 함
 	_uint						m_iFreezeMask = { NONE };
 	MAGNIFICATION_TYPE			m_eMagnificationType = {};
@@ -142,12 +152,13 @@ private:
 	void						Flipping_Pause(_float _fTimeDelta);
 	void						Flipping_Down(_float _fTimeDelta);
 	void						Play_Narration(_float _fTimeDelta);
+	
 	void						Look_Target(_float fTimeDelta);
-
 	_vector						Calculate_CameraPos(_float _fTimeDelta);
+	void						Calculate_Book_Scroll();
+
 	virtual	void				Switching(_float _fTimeDelta) override;
 	void						Find_TargetPos();
-	void						Calculate_Book_Scroll();					
 	void						Check_MagnificationType();
 
 private:

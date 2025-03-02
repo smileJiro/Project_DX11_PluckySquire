@@ -478,9 +478,9 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// Free Camera
 	CCamera_Free::CAMERA_FREE_DESC Desc{};
+	Desc.iCurLevelID = m_eLevelID;
 
 	Desc.fMouseSensor = 0.1f;
-
 	Desc.fFovy = XMConvertToRadians(60.f);
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
@@ -496,6 +496,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// Target Camera
 	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
+	TargetDesc.iCurLevelID = m_eLevelID;
 
 	TargetDesc.fSmoothSpeed = 7.f;
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
@@ -522,6 +523,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// CutScene Camera
 	CCamera_CutScene::CAMERA_DESC CutSceneDesc{};
+	CutSceneDesc.iCurLevelID = m_eLevelID;
 
 	CutSceneDesc.fFovy = XMConvertToRadians(60.f);
 	CutSceneDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
@@ -538,6 +540,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// 2D Camera
 	CCamera_2D::CAMERA_2D_DESC Target2DDesc{};
+	Target2DDesc.iCurLevelID = m_eLevelID;
 
 	Target2DDesc.fSmoothSpeed = 5.f;
 	Target2DDesc.eCameraMode = CCamera_2D::DEFAULT;
@@ -565,8 +568,8 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
 
 	// Load CutSceneData, ArmData
-	CCamera_Manager::GetInstance()->Load_CutSceneData(TEXT("Chapter4_CutScene.json"));
-	CCamera_Manager::GetInstance()->Load_ArmData(TEXT("Chapter4_ArmData.json"), TEXT("Chapter2_SketchSpace_ArmData.json"));
+	CCamera_Manager::GetInstance()->Load_CutSceneData(m_eLevelID);
+	CCamera_Manager::GetInstance()->Load_ArmData(m_eLevelID);
 
 	return S_OK;
 }
