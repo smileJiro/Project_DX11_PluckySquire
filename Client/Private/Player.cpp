@@ -68,7 +68,7 @@ CPlayer::CPlayer(const CPlayer& _Prototype)
     		m_f2DAttackTriggerDesc[i][j] = _Prototype.m_f2DAttackTriggerDesc[i][j];
         }
     }
-
+      
     Safe_AddRef(m_pEffectManager);
 }
 
@@ -92,7 +92,6 @@ HRESULT CPlayer::Initialize_Prototype()
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2][(_uint)F_DIRECTION::LEFT].vExtents = { 55.5f, 86.5f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2][(_uint)F_DIRECTION::LEFT].vOffset = { -40.f,m_f2DCenterYOffset };
 
-    
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::DOWN].vExtents = { 70.f, 70.f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, -45.f  };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::UP].vExtents = { 70.f, 70.f };
@@ -102,7 +101,6 @@ HRESULT CPlayer::Initialize_Prototype()
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::LEFT].vExtents = { 70.f, 70.f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::LEFT].vOffset = { -80.f,0.f };
 
-
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vExtents = { 211.f, 211.f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, m_f2DCenterYOffset };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::UP].vExtents = { 211.f, 211.f };
@@ -111,7 +109,6 @@ HRESULT CPlayer::Initialize_Prototype()
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::RIGHT].vOffset = { 0.f, m_f2DCenterYOffset};
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vExtents = { 211.f, 211.f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vOffset = { 0.f, m_f2DCenterYOffset };
-
                            
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::DOWN].vExtents = { 146.5f, 74.5f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, -20.f };
@@ -221,14 +218,11 @@ HRESULT CPlayer::Initialize(void* _pArg)
     BodyGuardShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER; // Actor가 충돌을 감지할 그룹
     ActorDesc.ShapeDatas[BodyGuardShapeData.iShapeUse] = ShapeData;
 
-
-
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
     ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT| OBJECT_GROUP::BLOCKER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
-    
 
     if (FAILED(__super::Initialize(pDesc)))
     {
@@ -399,7 +393,6 @@ HRESULT CPlayer::Ready_PartObjects()
     tZetPackDesc.pPlayer = this;
     tZetPackDesc.iCurLevelID = m_iCurLevelID;
     tZetPackDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
-
     m_PartObjects[PLAYER_PART_ZETPACK]= m_pZetPack  = static_cast<CZetPack*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ZetPack"), &tZetPackDesc));
     if (nullptr == m_PartObjects[PLAYER_PART_ZETPACK])
     {

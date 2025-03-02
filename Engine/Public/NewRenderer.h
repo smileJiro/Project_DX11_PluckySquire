@@ -46,13 +46,23 @@ public:
 public:
 	void Update_Imgui();
 public: 
-	HRESULT Add_DebugComponent(CComponent* pDebugCom)
+	HRESULT Add_DebugComponent(CComponent* _pDebugCom)
 	{
 		if (false == m_isDebugRender)
 			return S_OK;
 
-		m_DebugComponents.push_back(pDebugCom);
-		Safe_AddRef(pDebugCom);
+		m_DebugComponents.push_back(_pDebugCom);
+		Safe_AddRef(_pDebugCom);
+		return S_OK;
+	}
+
+	HRESULT Add_BaseDebug(CBase* _pBaseDebug)
+	{
+		if (false == m_isDebugBase)
+			return S_OK;
+
+		m_BaseDebugs.push_back(_pBaseDebug);
+		Safe_AddRef(_pBaseDebug);
 		return S_OK;
 	}
 	void Set_DebugRender(_bool _isBool) { m_isDebugRender = _isBool; }
@@ -96,8 +106,11 @@ private: /* Player Hide */
 #ifdef _DEBUG
 private:
 	list<CComponent*> m_DebugComponents;
+	list<CBase*> m_BaseDebugs;
 	_bool m_isDebugRender = true;
+	_bool m_isDebugBase = true;
 	HRESULT Render_Debug();
+	HRESULT Render_Base_Debugs();
 #endif // debug component
 private:
 	HRESULT Ready_DepthStencilView(const _wstring _strDSVTag, _uint _iWidth, _uint _iHeight);

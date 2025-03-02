@@ -30,6 +30,8 @@ public:
 	ID3D11ShaderResourceView*	Get_SRV() const { return m_pSRV; }
 	_float2						Get_Size() const { return m_vSize; }
 	const _wstring&				Get_Name() const { return m_strName; }
+
+	void Set_ClearColor(const _float4& _vColor) { m_vClearColor = _vColor; }
 protected:
 	_wstring					m_strName;
 	DXGI_FORMAT					m_ePixelFormat = {};
