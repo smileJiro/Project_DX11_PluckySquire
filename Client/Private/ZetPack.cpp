@@ -41,45 +41,38 @@ HRESULT CZetPack::Initialize(void* _pArg)
 	return S_OK;
 }
 
+void CZetPack::Priority_Update(_float _fTimeDelta)
+{
+    m_bPropel = false;
+    __super::Priority_Update(_fTimeDelta);
+}
+
 void CZetPack::Update(_float _fTimeDelta)
 {
+
 	__super::Update(_fTimeDelta);
 
 
-    _float fPlayerUpForce = m_pPlayer->Get_UpForce();
-    if (fPlayerUpForce <= 0.f)
-        Switch_State(STATE_IDLE);
 }
 
 void CZetPack::Late_Update(_float _fTimeDelta)
 {
-    //E_DIRECTION eDir = m_pPlayer->Get_2DDirection();;
-    //switch (eDir)
-    //{
-    //case Client::E_DIRECTION::LEFT:
-    //case Client::E_DIRECTION::LEFT_UP:
-    //case Client::E_DIRECTION::LEFT_DOWN:
-    //{
-    //    _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-    //    Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-    //    break;
-    //}
-    //case Client::E_DIRECTION::RIGHT:
-    //case Client::E_DIRECTION::RIGHT_UP:
-    //case Client::E_DIRECTION::RIGHT_DOWN:
-    //{
-    //    _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-    //    Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
-    //    break;
-    //}
-    //default:
-    //    break;
-    //}
     __super::Late_Update(_fTimeDelta);
+    if (m_bPropel)
+    {
+        _float fPlayerUpForce = m_pPlayer->Get_UpForce();
+        if (0.f > fPlayerUpForce)
+            Switch_State(ZET_STATE::STATE_DESCEND);
+        else if (0.f < fPlayerUpForce)
+            Switch_State(ZET_STATE::STATE_ASCEND);
+    }
+    else
+        Switch_State(ZET_STATE::STATE_IDLE);
 }
 
 HRESULT CZetPack::Render()
 {
+ //   cout << m_pControllerModel->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex() << endl;
 	return __super::Render();
 }
 
@@ -91,29 +84,25 @@ void CZetPack::ReFuel()
 //»ó½ÂÇÏ±â
 void CZetPack::Propel(_float _fTimeDelta)
 {
+    m_bPropel = true;
     COORDINATE eCoord = Get_CurCoord();
     _float fFuelConsumpTion = COORDINATE_2D == eCoord ? m_fFuelConsumption2D : m_fFuelConsumption3D;
 	_float fMinForceRatio = COORDINATE_2D == eCoord ? m_fMinForeceRatio2D : m_fMinForeceRatio3D;
-    _float fMinForceFuel = m_fMaxFuel* COORDINATE_2D == eCoord ? m_fMinForceFuelRatio2D : m_fMinForceFuelRatio3D;
+    _float fMinForceFuel = m_fMaxFuel * (COORDINATE_2D == eCoord ? m_fMinForceFuelRatio2D : m_fMinForceFuelRatio3D);
 	m_fFuel -= fFuelConsumpTion * _fTimeDelta ;
     if (m_fFuel >= 0.f)
     {
         _float fRatio = fMinForceRatio + (m_fMaxForeceRatio - fMinForceRatio) * max(m_fFuel - fMinForceFuel, 0.f) / m_fMaxFuel;
-        m_pPlayer->Add_Upforce(COORDINATE_2D == eCoord ? m_fPropelForce2D : m_fPropelForce3D 
+        //cout << "Ratio" << fRatio << endl;
+        m_pPlayer->Add_Upforce((COORDINATE_2D == eCoord ? m_fPropelForce2D : m_fPropelForce3D)
             * fRatio * _fTimeDelta);
-
-        _float fPlayerUpForce = m_pPlayer->Get_UpForce();
-        if (0.f > fPlayerUpForce)
-            Switch_State(ZET_STATE::STATE_DESCEND);
-        else if (0.f < fPlayerUpForce)
-            Switch_State(ZET_STATE::STATE_ASCEND);
     }
     else
     {
         m_fFuel = 0.f;
-        Switch_State(ZET_STATE::STATE_IDLE);
+
     }
-    //cout << "m_fFuel : " << m_fFuel << endl;
+    cout << "m_fFuel : " << m_fFuel << endl;
 
 
 }

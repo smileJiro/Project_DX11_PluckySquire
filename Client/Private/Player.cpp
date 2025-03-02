@@ -2038,6 +2038,7 @@ void CPlayer::Add_Upforce(_float _fForce)
     if (COORDINATE_2D == Get_CurCoord())
     {
 		m_f2DUpForce += _fForce;
+
 	}
 	else
 	{
