@@ -84,6 +84,7 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 			m_pOwner->Set_State(CPlayer::THROWOBJECT);
 			return;
 		}
+		return;
 	}
 	else if (INTERACT_RESULT::SUCCESS == eResult)
 	{

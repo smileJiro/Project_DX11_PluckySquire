@@ -61,6 +61,6 @@ private:
 	CSampleBook* m_pBook = nullptr;
 	_float m_fTiltIdleTime = 0.5f;
 	_float m_fTiltIdleTimeAcc = 0.f;
-	_float m_fSlidProgress = 0.15f;
+	_float m_fSlidProgress = 0.16f;
 };
 END

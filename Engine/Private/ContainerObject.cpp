@@ -30,6 +30,7 @@ HRESULT CContainerObject::Initialize(void* _pArg)
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
+
     return S_OK;
 }
 
