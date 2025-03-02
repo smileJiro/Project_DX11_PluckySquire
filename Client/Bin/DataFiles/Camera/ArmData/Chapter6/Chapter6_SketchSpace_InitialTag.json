@@ -1,0 +1,43 @@
+[
+    {
+        "Section_Tag": "Chapter2_SKSP_01",
+        "Arm_Tag": [
+          "Chapter2_Portal1_Start",
+          "Chapter2_Portal1_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter2_SKSP_02",
+        "Arm_Tag": [
+          "Chapter2_Portal2_Start",
+          "Chapter2_Portal2_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter2_SKSP_03",
+        "Arm_Tag": [
+          "Chapter2_Portal3_Start",
+          "Chapter2_Portal3_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter2_SKSP_04",
+        "Arm_Tag": [
+          "Chapter2_Portal4_Start",
+          "Chapter2_Portal4_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter2_SKSP_05",
+        "Arm_Tag": [
+          "Chapter2_Portal5_Start",
+          "Chapter2_Portal5_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter2_P1314",
+        "Arm_Tag": [
+          "Book_Horizon"
+        ]
+    }
+]

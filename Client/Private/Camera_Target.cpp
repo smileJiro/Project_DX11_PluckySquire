@@ -129,7 +129,7 @@ void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 	m_isFreezeExitReturn = true;
 	m_vStartFreezeOffset = m_vFreezeOffset;
 
-     	for (auto& iter = m_FreezeExitDatas.begin(); iter != m_FreezeExitDatas.end();) {
+    for (auto& iter = m_FreezeExitDatas.begin(); iter != m_FreezeExitDatas.end();) {
 		if (_iTriggerID == (*iter).second) {
 			m_vCurFreezeExitData = (*iter).first;
 			iter = m_FreezeExitDatas.erase(iter);
@@ -189,6 +189,7 @@ void CCamera_Target::Switch_CameraView(INITIAL_DATA* _pInitialData)
 
 		Look_Target(XMLoadFloat3(&m_vPreTargetPos) + XMLoadFloat3(&m_vAtOffset), 0.f);
 
+		m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
 		m_isInitialData = false;
 	}
 	// 초기 위치부터 다음위치까지 Lerp를 해야 함
@@ -211,118 +212,53 @@ void CCamera_Target::Switch_CameraView(INITIAL_DATA* _pInitialData)
 
 void CCamera_Target::Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex)
 {
-	// 2D에서 3D로 갈 때 Section Tag? Portal에 따라서 나갈 때 3D Target 카메라의 초기값 정해 주기 
-	// ㅈㄴ 하드코딩 나중에 수정
-
+	// 2D -> 3D, Portal에 따라서 나갈 때 SectionTag에 따라서 3D Target 카메라의 초기값 정해 주기 
 	m_isEnableLookAt = true;
 	m_isFreezeExit = false;
 
 	pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
 
-	if (TEXT("Chapter2_SKSP_01") == _szSectionTag) {
-		switch (_iPortalIndex) {
-		case 0:
-		{
-			pData = Find_ArmData(TEXT("Chapter2_Portal1_Start"));
-		}
-			
-			break;
-		case 1:
-		{
-			pData = Find_ArmData(TEXT("Chapter2_Portal1_End"));
-		}
-			break;
-		}
-	}
-	else if (TEXT("Chapter2_SKSP_02") == _szSectionTag) {
-		switch (_iPortalIndex) {
-		case 0:
-		{
-			pData = Find_ArmData(TEXT("Chapter2_Portal2_Start"));
-		}
-			break;
-		case 1:
-		{
-			pData = Find_ArmData(TEXT("Chapter2_Portal2_End"));
-		}
-			break;
-		}
-	}
-	else if (TEXT("Chapter2_SKSP_03") == _szSectionTag) {
-		switch (_iPortalIndex) {
-		case 0:
-		{
-			pData = Find_ArmData(TEXT("Chapter2_Portal3_Start"));
-			m_vFreezeEnterPos = { 11.9279337f, 7.85533524f, 24.1609268f };
-		}
-			break;
-		case 1:
-		{
-			pData = Find_ArmData(TEXT("Chapter2_Portal3_End"));
-		}
-			break;
-		}
-	}
-	else if (TEXT("Chapter2_SKSP_04") == _szSectionTag) {
-		switch (_iPortalIndex) {
-		case 0:
-		{
-			pData = Find_ArmData(TEXT("Chapter2_Portal4_Start"));
-		}
-			break;
-		case 1:
-		{
-			pData = Find_ArmData(TEXT("Chapter2_Portal4_End"));
-		}
-			break;
-		}
-	}
-	else if (TEXT("Chapter2_SKSP_05") == _szSectionTag) {
-		switch (_iPortalIndex) {
-		case 0:
-		{
-			pData = Find_ArmData(TEXT("Chapter2_Portal5_Start"));
-		}
-			break;
-		case 1:
-		{
-			pData = Find_ArmData(TEXT("Chapter2_Portal5_End"));
-		}
-			break;
-		}
-	}
-	else if (TEXT("Chapter2_P1314") == _szSectionTag) {
-		pData = Find_ArmData(TEXT("Book_Horizon"));
-	}
-	else {
-		m_pCurArm->Set_ArmVector(XMVectorSet(0.f, 0.67f, -0.74f, 0.f));
-		m_pCurArm->Set_Length(7.f);
-		m_iCurZoomLevel = { 5 };
-		m_fFovy = { m_ZoomLevels[5] };
-		m_vAtOffset = { 0.f, 0.f, 0.f };
+	auto& iter = m_SkspInitialTags.find(_szSectionTag);
 
+	if (iter == m_SkspInitialTags.end()) {
+		Set_InitialData(XMVectorSet(0.f, 0.67f, -0.74f, 0.f), 7.f, XMVectorZero(), ZOOM_LEVEL::LEVEL_6);
 		return;
 	}
+		
+	pData = Find_ArmData((*iter).second[_iPortalIndex]);
 
-	m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
-	m_pCurArm->Set_Length(pData->first->fLength);
-	m_iCurZoomLevel = { pData->second->iZoomLevel };
-	m_fFovy = { m_ZoomLevels[pData->second->iZoomLevel] };
-	m_vAtOffset = { pData->second->vAtOffset };
+	if (nullptr == pData)
+		return;
+
+	Set_InitialData(pData);
+
+	// Freeze Enter Pos 예외 처리 / 필요없는 것 같은데 0302
+	//if(TEXT("Chapter2_SKSP_03") == _szSectionTag && 0 == _iPortalIndex)
+	//	m_vFreezeEnterPos = { 11.9279337f, 7.85533524f, 24.1609268f };
+	//else if (TEXT("Chapter4_SKSP_07") == _szSectionTag && 0 == _iPortalIndex)
+	//	m_vFreezeEnterPos = { -32.9828110f, 21.4380665f, 24.7532139f };
 }
 
-void CCamera_Target::Calculate_Player()
+void CCamera_Target::Set_InitialData(pair<ARM_DATA*, SUB_DATA*>* pData)
 {
-	//_float3 PlayerPos = {};
-	//memcpy(&PlayerPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
-	//_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-	//_vector vDir = vPos - XMLoadFloat3(&PlayerPos);
-	//_float fLength = XMVectorGetX(XMVector3Length(vDir));
+	m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+	m_pCurArm->Set_Length(pData->first->fLength);
 
-	//m_pCurArm->Set_ArmVector(XMVector3Normalize(vDir));
-	//m_pCurArm->Set_Length(fLength);
+	if (nullptr == pData->second)
+		return;
 
-	//memcpy(&m_vPreTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+	m_vAtOffset = pData->second->vAtOffset;
+	m_iCurZoomLevel = pData->second->iZoomLevel;
+	m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
+}
+
+void CCamera_Target::Set_InitialData(_fvector _vArm, _float _fLength, _fvector _vOffset, _uint _iZoomLevel)
+{
+	m_pCurArm->Set_ArmVector(_vArm);
+	m_pCurArm->Set_Length(_fLength);
+	XMStoreFloat3(&m_vAtOffset, _vOffset);
+	m_iCurZoomLevel = _iZoomLevel;
+	m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
 }
 
 INITIAL_DATA CCamera_Target::Get_InitialData()
@@ -339,9 +275,8 @@ INITIAL_DATA CCamera_Target::Get_InitialData()
 
 	//tData.iZoomLevel = m_iCurZoomLevel;
 #pragma endregion
-
-	//PreTargetPos를 주는 게 더 나을 것 같은데
-	_vector vAt = XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+	_vector vFreezeOffset = -XMLoadFloat3(&m_vPreFreezeOffset);
+	_vector vAt = XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f) + vFreezeOffset + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 	XMStoreFloat3(&tData.vAt, vAt);
 
 	tData.iZoomLevel = m_iCurZoomLevel;
@@ -453,7 +388,7 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 			m_pCurArm->Set_Rotation(fRotation);
 		}
 	}
-	else if (KEY_PRESSING(KEY::LSHIFT)) {
+	else if (KEY_PRESSING(KEY::TAB)) {
 
 		//if (KEY_PRESSING(KEY::LSHIFT))
 		//	return;
@@ -481,6 +416,100 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 
 		m_pCurArm->Set_Rotation(fRotation);
 	}
+
+
+	// ImGui
+	ImGui::Begin("Arm");
+
+	_float3 vCurArm = {};
+	XMStoreFloat3(&vCurArm, m_pCurArm->Get_ArmVector());
+	_float fArmLength = m_pCurArm->Get_Length();
+
+	ImGui::SameLine();
+	if (ImGui::Button("- Length") || ImGui::IsItemActive()) {// 누르고 있는 동안 계속 동작
+		fArmLength -= 0.1;
+		m_pCurArm->Set_Length(fArmLength);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("+ Length") || ImGui::IsItemActive()) {
+		fArmLength += 0.1;
+		m_pCurArm->Set_Length(fArmLength);
+	}
+
+	_float3 vTargetPos = {};
+	_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+	_float3 vDebugArm = {}; 
+
+	memcpy(&vTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+	XMStoreFloat3(&vDebugArm, XMVector3Normalize(XMLoadFloat3(&vTargetPos) - vPos));
+	
+	fArmLength = m_pCurArm->Get_Length();
+	ImGui::Text("Cur Arm: %.4f, %.4f, %.4f", vCurArm.x, vCurArm.y, vCurArm.z);
+	ImGui::Text("Debug Arm(Pos - TargetPos): %.4f, %.4f, %.4f", vDebugArm.x, vDebugArm.y, vDebugArm.z);
+	ImGui::Text("Cur Length: %.2f", fArmLength);
+	ImGui::Text("Cur ZoomLevel: %d", m_iCurZoomLevel);
+	ImGui::Text("Cur AtOffset: %.4f, %.4f, %.4f", m_vAtOffset.x, m_vAtOffset.y, m_vAtOffset.z);
+
+	ImGui::NewLine();
+
+	static _float3 vInputArm = {};
+	static _float fInputLength = {};
+	static _float3 vInputAtOffset = {};
+
+	ImGui::Text("Desire Arm: %.2f, %.2f, %.2f", vInputArm.x, vInputArm.y, vInputArm.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireX", &vInputArm.x);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireY", &vInputArm.y);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireZ", &vInputArm.z);
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Set Arm")) {
+		m_pCurArm->Set_ArmVector(XMLoadFloat3(&vInputArm));
+	}
+
+	ImGui::Text("Desire Length: %.2f         ", fInputLength);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireLength", &fInputLength);
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Set Length")) {
+		m_pCurArm->Set_Length(fInputLength);
+	}
+
+	ImGui::Text("Set AtOffset: %.2f, %.2f, %.2f", vInputAtOffset.x, vInputAtOffset.y, vInputAtOffset.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetAtOffsetX", &vInputAtOffset.x);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetAtOffsetY", &vInputAtOffset.y);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetAtOffsetZ", &vInputAtOffset.z);
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Set AtOffset")) {
+		m_vAtOffset = vInputAtOffset;
+	}
+
+	if (ImGui::Button("Set CurArm To InputArm")) {
+		vInputArm = vCurArm;
+	}
+
+	ImGui::End();
 #endif
 }
 
@@ -739,7 +768,7 @@ void CCamera_Target::Switching(_float _fTimeDelta)
 		m_InitialTime.y = 0.f;
 		m_isInitialData = false;
 
-		// ㅋㅋ 시발 이거 나중에 어떻게든 해 봐 고쳐
+		// ㅋㅋ 이거 나중에 어떻게든 해 봐 고쳐
 		m_isFreezeExit = false;
 		XMStoreFloat3(&m_vFreezeEnterPos, vTargetPos);
 		m_vPreFreezeOffset = { 0.f, 0.f, 0.f };
@@ -850,6 +879,51 @@ void CCamera_Target::Change_FreezeOffset(_float _fTimeDelta)
 
 	//XMStoreFloat3(&m_vFreezeOffset, vFreezeOffset);
 #pragma endregion
+}
+
+void CCamera_Target::Load_InitialArmTag()
+{
+	_wstring szFileName;
+
+	switch (m_iCurLevelID) {
+	case LEVEL_CHAPTER_2:
+		szFileName = TEXT("Chapter2/Chapter2_SketchSpace_InitialTag.json");
+		break;
+	case LEVEL_CHAPTER_4:
+		szFileName = TEXT("Chapter4/Chapter4_SketchSpace_InitialTag.json");
+		break;
+	case LEVEL_CHAPTER_6:
+		szFileName = TEXT("Chapter6/Chapter6_SketchSpace_InitialTag.json");
+		break;
+	}
+
+	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/" + szFileName;
+
+	ifstream file(wszLoadPath);
+
+	if (!file.is_open())
+	{
+		MSG_BOX("Initial Arm 파일을 열 수 없습니다.");
+		file.close();
+		return;
+	}
+
+	json Result;
+	file >> Result;
+	file.close();
+
+	if (Result.is_array()) {
+		for (auto& InitialTag_json : Result) {
+			_wstring szSectionTag = m_pGameInstance->StringToWString(InitialTag_json["Section_Tag"]);
+			vector<_wstring> ArmTags;
+
+			for (auto& ArmTag : InitialTag_json["Arm_Tag"]) {
+				ArmTags.push_back(m_pGameInstance->StringToWString(ArmTag));
+			}
+
+			m_SkspInitialTags.emplace(szSectionTag, ArmTags);
+		}
+	}
 }
 
 void CCamera_Target::Move_To_ExitArm(_float _fTimeDelta)

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Dice.h"
 #include "Section_Manager.h"
+#include "GameInstance.h"
 
 CDice::CDice(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCarriableObject(_pDevice, _pContext)
@@ -74,6 +75,23 @@ HRESULT CDice::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(DiceModelDesc)))
 		return E_FAIL;
 
+	// 2D 충돌용 콜라이더 추가.
+	m_p2DColliderComs.resize(2);
+
+	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+
+	CircleDesc.pOwner = this;
+	CircleDesc.fRadius = 0.2f;
+	CircleDesc.vScale = { 1.0f, 1.0f };
+	CircleDesc.vOffsetPosition = { 0.f, 0.f };
+	CircleDesc.isBlock = false;
+	CircleDesc.isTrigger = true;
+	CircleDesc.iCollisionGroupID = OBJECT_GROUP::MAP_GIMMICK;
+
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
+		return E_FAIL;
+
 
     return S_OK;
 }
@@ -90,6 +108,10 @@ void CDice::Late_Update(_float _fTimeDelta)
 
 HRESULT CDice::Render()
 {
+//#ifdef _DEBUG
+//	if (COORDINATE_2D == Get_CurCoord() && 2 <= m_p2DColliderComs.size() && nullptr != m_p2DColliderComs[1])
+//		m_p2DColliderComs[1]->Render();
+//#endif
 	return __super::Render();
 }
 

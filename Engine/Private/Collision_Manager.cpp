@@ -78,7 +78,6 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
             CGameObject* pLeftObject = pLeftCollider->Get_Owner();
             CGameObject* pRightObject = pRightCollider->Get_Owner();
 
-
             if (true == pLeftCollider->Is_Collision(pRightCollider))
             {
                 if (true == iter->second)
@@ -101,7 +100,7 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
 
                         if (true == pLeftCollider->Is_Block() && false == pRightCollider->Is_Trigger())
                             pLeftCollider->Block(pRightCollider);
-                        else if (true == pRightCollider->Is_Block() && false == pLeftCollider->Is_Trigger())
+                        if (true == pRightCollider->Is_Block() && false == pLeftCollider->Is_Trigger())
                             pRightCollider->Block(pLeftCollider);
                     }
                 }
@@ -117,7 +116,7 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
 
                         if (true == pLeftCollider->Is_Block() && false == pRightCollider->Is_Trigger())
                             pLeftCollider->Block(pRightCollider);
-                        else if (true == pRightCollider->Is_Block() && false == pLeftCollider->Is_Trigger())
+                        if (true == pRightCollider->Is_Block() && false == pLeftCollider->Is_Trigger())
                             pRightCollider->Block(pLeftCollider);
                     }
                 }

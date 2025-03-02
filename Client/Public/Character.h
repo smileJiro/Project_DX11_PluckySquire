@@ -54,6 +54,7 @@ public:
 
 	void KnockBack(_fvector _vForce);
 
+	virtual void On_Land() {};
 protected:
 	_float Measure_FloorDistance();
 	_vector StepAssist(_fvector _vVelocity, _float _fTimeDelta);

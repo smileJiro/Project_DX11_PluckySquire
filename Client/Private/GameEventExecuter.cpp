@@ -240,8 +240,8 @@ void CGameEventExecuter::Chapter2_BookMagic(_float _fTimeDelta)
 		if (m_fTimer > 3.0f && !m_isLight)
 		{
 			m_isLight = true;
-			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night.json"));
-			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/chapter2_N.json"));
+			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
+			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
 		}
 
 		if (m_fTimer > 4.5f) {
@@ -401,7 +401,7 @@ void CGameEventExecuter::Chapter2_Intro(_float _fTimeDelta)
         if (false == m_isStart) {
             CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
             pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 2.f);
-            pCamera->Set_Data(XMVectorSet(-0.670150876f, 0.506217539f, -0.542809010f, 0.f), 46.20f, XMVectorSet(-15.f, 5.f, 0.f, 0.f));
+            pCamera->Set_InitialData(XMVectorSet(-0.670150876f, 0.506217539f, -0.542809010f, 0.f), 46.20f, XMVectorSet(-15.f, 5.f, 0.f, 0.f));
             pCamera->Set_NextArmData(TEXT("Intro"), 0);
             pCamera->Start_Changing_AtOffset(5.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);
             pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_NEXTARM);
@@ -436,8 +436,8 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
         if (false == m_isStart) {
             static_cast<CMagic_Hand*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_MagicHand"), 0))->Set_Start(true);
 
-			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night.json"));
-			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/chapter2_N.json"));
+			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
+			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
 
 			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
 

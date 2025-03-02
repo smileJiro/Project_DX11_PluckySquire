@@ -302,7 +302,7 @@ void CModel_Tool_Manager::Model_Collider_Imgui(_bool _bLock)
 						_string strPath = WstringToString(strfilePath);
 						strPath += "/";
 						strPath += WstringToString(m_pCurObject->Get_ModelName());
-						m_pTaskManager->Cooking(strPath, m_pCurObject, CTask_Manager::COOKING_MODE::COOKING_CONVEX);
+						m_pTaskManager->Cooking(strPath, m_pCurObject, CTask_Manager::COOKING_MODE::COOKING_MULTI_TRI);
 					}
 					End_Draw_ColorButton();
 				}

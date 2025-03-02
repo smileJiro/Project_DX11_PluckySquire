@@ -106,6 +106,8 @@
 #include "Sneak_DetectionField.h"
 #include "LightningBolt.h"
 #include "LunchBox.h"
+#include "Door_Yellow.h"
+#include "Pressure_Plate.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -149,11 +151,16 @@
 #include "Domino.h"
 #include "Portal.h"
 #include "Word.h"
+
+// Etc
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
+
+// Player Effect 
 #include "Effect_Trail.h"
 #include "Effect_Beam.h"
+
 
 
 
@@ -326,6 +333,7 @@ HRESULT CLoader::Loading_Level_Static()
 #pragma region Static - Texture Load
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다."));
 
+	/* CubeMap HDRI */
 	/* For. Prototype_Component_Texture_BRDF_Shilick */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BRDF_Shilick"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/BRDF_Shilick.dds"), 1))))
@@ -338,6 +346,18 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter4Env"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter4Env_%d.dds"), 3, true))))
 		return E_FAIL;
+	/* For. Prototype_Component_Texture_Chapter2_NightEnv */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter2_NightEnv"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter2_NightEnv_%d.dds"), 3, true))))
+		return E_FAIL;
+	/* For. Prototype_Component_Texture_Chapter2_BrightEnv */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter2_BrightEnv"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter2_BrightEnv_%d.dds"), 3, true))))
+		return E_FAIL;
+
+
+	
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_OptionBG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/T_Panel-Bottom1.dds"), 1))))
 		return E_FAIL;
@@ -781,6 +801,14 @@ HRESULT CLoader::Loading_Level_Static()
 	/* For. Prototype_GameObject_Blocker2D */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Blocker2D"),
 		CBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		CDoor_Yellow::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Pressure_Plate"),
+		CPressure_Plate::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For. Prototype_GameObject_SwordTrail */

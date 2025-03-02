@@ -91,7 +91,7 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
 
         }
     }
-#ifdef  _DEBUG
+#ifdef _DEBUG
     m_pMaskTextureCom->Add_SRVName(STRINGTOWSTRING(_jsonInfo["Texture"]));
     if (m_pDissolveTextureCom)
         m_pDissolveTextureCom->Add_SRVName(STRINGTOWSTRING(_jsonInfo["DissolveTexture"]));

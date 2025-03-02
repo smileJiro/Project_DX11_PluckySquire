@@ -1,0 +1,9 @@
+{
+    "fExposure": 0.4230000078678131,
+    "fGamma": 1.5894999504089355,
+    "fHDRMaxLuminance": 1000.0,
+    "fRoughnessToMipFactor": 4.784999847412109,
+    "fStrengthIBL": 0.07739999890327454,
+    "iSpecularBaseMipLevel": 1,
+    "iToneMappingFlag": 3
+}

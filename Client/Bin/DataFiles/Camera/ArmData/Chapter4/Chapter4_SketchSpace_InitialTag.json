@@ -1,0 +1,49 @@
+[
+    {
+        "Section_Tag": "Chapter4_SKSP_01",
+        "Arm_Tag": [
+          "Chapter4_Portal1_Start"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter4_SKSP_02",
+        "Arm_Tag": [
+          "Chapter4_Portal2_Start",
+          "Chapter4_Portal2_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter4_SKSP_03",
+        "Arm_Tag": [
+          "Chapter4_Portal3_Start"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter4_SKSP_04",
+        "Arm_Tag": [
+          "Chapter4_Portal4_Start",
+          "Chapter4_Portal4_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter4_SKSP_05",
+        "Arm_Tag": [
+          "Chapter4_Portal5_Start"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter4_SKSP_06",
+        "Arm_Tag": [
+          "Chapter4_Portal6_Start",
+          "Chapter4_Portal6_Middle",
+          "Chapter4_Portal6_End"
+        ]
+    },
+      {
+        "Section_Tag": "Chapter4_SKSP_07",
+        "Arm_Tag": [
+          "Chapter4_Portal7_Start",
+          "Chapter4_Portal7_End"
+        ]
+    }
+]

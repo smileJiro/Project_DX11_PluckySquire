@@ -52,7 +52,7 @@ public:
 	virtual void On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce) override;
 
 public:
-	virtual void			Set_Include_Section_Name(const _wstring _strIncludeSectionName) override;
+	virtual void			Enter_Section(const _wstring _strIncludeSectionName) override;
 
 private:
 	virtual HRESULT					Ready_Components();

@@ -109,6 +109,24 @@
 		}
 	},
 	{
+		"Section_Name": "Chapter6_SKSP_04",
+		"Section_BackGround_Name": "Chapter6_SKSP_04_BackGround",
+		"Section_File_Name": "Chapter6_SKSP_04.m2chc",
+		"Section_Type": 2,
+		"Section_Info": {
+			"RenderResolution": {
+				"X": 15360.0,
+				"Y": 2160.0
+			},
+			"LevelSizePixels": {
+				"X": 15360.0,
+				"Y": 2160.0
+			},
+			"Scrolling": true,
+			"Override_Normal": 2
+		}
+	},
+	{
 		"Section_Name": "Chapter6_SKSP_05",
 		"Section_BackGround_Name": "Chapter6_SKSP_05_BackGround",
 		"Section_File_Name": "Chapter6_SKSP_05.m2chc",
