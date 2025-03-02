@@ -146,8 +146,9 @@ public:
 	void						Change_Dir();
 	_bool						IsTarget_In_Detection();
 	_bool						IsTarget_In_Sneak_Detection();
-	_float					Restrict_2DRangeAttack_Angle(_float _fDegrees);
-
+	_float						Restrict_2DRangeAttack_Angle(_float _fDegrees);
+	virtual void				Enter_Section(const _wstring _strIncludeSectionName) override;
+	virtual void				Exit_Section(const _wstring _strIncludeSectionName) override;
 protected:
 	void Delay_On() 
 	{ 

@@ -107,6 +107,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
             break;
         }
         case 2:
+        case 3:
         {
             _uint iMeshSize = (_uint)p3DModel->Get_Meshes().size();
             vecShapeData.resize(iMeshSize);

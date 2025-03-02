@@ -33,6 +33,15 @@ public:
 	virtual HRESULT						Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex) override;
 	virtual HRESULT						Section_AddRenderGroup_Process() override;
 
+	virtual _uint						Get_MonsterCount() { return m_iMonsterCount; }
+	virtual void						Add_MonsterCount() { m_iMonsterCount++; }
+	virtual void						Reduce_MonsterCount() { m_iMonsterCount--; }
+
+
+
+private :	
+	_uint m_iMonsterCount = 0;
+
 public:
 	void Free() override;
 };

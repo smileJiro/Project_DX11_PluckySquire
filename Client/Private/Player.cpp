@@ -437,15 +437,15 @@ HRESULT CPlayer::Ready_PartObjects()
     return S_OK;
 }
 
-void CPlayer::Set_Include_Section_Name(const _wstring _strIncludeSectionName)
+void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 {
     /* еб©У : */
-    __super::Set_Include_Section_Name(_strIncludeSectionName);
+    __super::Enter_Section(_strIncludeSectionName);
     for (auto& i : m_PartObjects)
     {
 		if(nullptr == i)
 			continue;
-		i->Set_Include_Section_Name(_strIncludeSectionName);
+		i->Enter_Section(_strIncludeSectionName);
     }
     if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
     {
@@ -987,7 +987,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         m_pCarryingObject->Change_Coordinate(_eCoordinate);
         if (COORDINATE_2D == _eCoordinate)
         {
-            m_pCarryingObject->Set_Include_Section_Name(m_strSectionName);
+            //m_pCarryingObject->Enter_Section(m_strSectionName);
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCarryingObject);
         }
         else

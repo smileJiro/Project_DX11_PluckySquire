@@ -120,19 +120,27 @@ VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
     matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matWVP = mul(matWV, g_ProjMatrix);
 
-
-    float4 vNDCCoord = float4(In.vTexcoord.xy, 0.0f, 1.0f);
+    
+    float2 vTexCoord = frac(In.vTexcoord);
+    float4 vNDCCoord = float4(vTexCoord, 0.0f, 1.0f);
 
     if (g_iFlag == RT_RENDER_UVRENDER)
     {
-        float2 vUV = lerp(g_fStartUV, g_fEndUV, In.vTexcoord);
+        float2 vUV = lerp(g_fStartUV, g_fEndUV, vTexCoord);
         vNDCCoord.xy = vUV.xy;
     }
-
+    if (g_iFlag == RT_RENDER_UVRENDER_OVERUV)
+    {
+        vTexCoord = In.vTexcoord; // 다시 원복시켜
+        vNDCCoord = float4(vTexCoord, 0.0f, 1.0f);
+        float2 vUV = lerp(g_fStartUV, g_fEndUV, vTexCoord);
+        vNDCCoord.xy = vUV.xy;
+    }
+    
     vNDCCoord = float4(vNDCCoord.xy * 2.0f - 1.0f, 0.0f, 1.0f);
     vNDCCoord.y *= -1.0f;
     Out.vPosition = vNDCCoord;
-    Out.vTexcoord = In.vTexcoord;
+    Out.vTexcoord = vTexCoord;
     Out.vWorldPos = mul(float4(In.vPosition, 1.0f), g_WorldMatrix);
     Out.vWorldNormal = mul(float4(In.vNormal, 0.0f), g_WorldMatrix);
     return Out;
