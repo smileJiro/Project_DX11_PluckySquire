@@ -42,6 +42,7 @@ private:
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
+	void Priority_Update(_float _fTimeDelta) override;
 	void Update(_float _fTimeDelta) override;
 	void Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
@@ -54,6 +55,8 @@ public:
 	void Switch_State(ZET_STATE _eState);
 private:
 	CPlayer* m_pPlayer = nullptr;
+	_bool m_bPropel = false;
+
 	_float m_fFuel = 1.;
 	_float m_fMaxFuel = 1.f;
 	_float m_fFuelConsumption3D = 0.4f;
@@ -61,17 +64,17 @@ private:
 
 	//추진력.
 	_float m_fPropelForce3D = 1900.f;
-	_float m_fPropelForce2D = 45.f;
+	_float m_fPropelForce2D = 5000.f;
 
-	//최대 연료일 때 추진력 * m_fMaxForeceRatio 만큼의 추진력을 냄.
+	//최대 연료일 때 [추진력 * m_fMaxForeceRatio] 만큼의 추진력을 냄.
 	_float m_fMaxForeceRatio = 1.0f;
 	//최저 추진력 비율. 연료가 남아있는 동안엔 최소 이정도임.
 	_float m_fMinForeceRatio3D = 0.5f;
-	_float m_fMinForeceRatio2D = 0.0f;
+	_float m_fMinForeceRatio2D = 0.2f;
 
-	// MinForceFuelRatio 만큼의 연료가 남았을 때 추진력 * m_fMinForceFuelRatio 만큼의 추진력을 냄.
-	_float m_fMinForceFuelRatio3D = 0.f;
-	_float m_fMinForceFuelRatio2D = 0.8f;
+	// MinForceFuelRatio 만큼의 연료가 남았을 때 [추진력 * m_fMinForceFuelRatio] 만큼의 추진력을 냄.
+	_float m_fMinForceFuelRatio3D = 0.25f;
+	_float m_fMinForceFuelRatio2D = 0.725f;
 
 
 	ZET_STATE m_eState = ZET_STATE::STATE_IDLE;
