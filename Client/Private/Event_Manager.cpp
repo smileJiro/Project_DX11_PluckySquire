@@ -757,7 +757,7 @@ HRESULT CEvent_Manager::Execute_Hit(const EVENT& _tEvent)
 {
 	CGameObject* pHitter = (CGameObject*)_tEvent.Parameters[0];
 	CCharacter* pVictim = (CCharacter*)_tEvent.Parameters[1];
-	_int iDamg = _tEvent.Parameters[2];
+	_int iDamg = (_int)_tEvent.Parameters[2];
 	_vector vForce = XMLoadFloat3((_float3*)_tEvent.Parameters[3]);
 
 	if (nullptr == pHitter || nullptr == pVictim)
