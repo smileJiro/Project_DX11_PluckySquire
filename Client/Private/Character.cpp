@@ -2,6 +2,7 @@
 #include "Character.h" 
 #include "Actor_Dynamic.h"
 #include "GameInstance.h"
+#include "Section_Manager.h"
 
 CCharacter::CCharacter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice, _pContext)
@@ -19,7 +20,7 @@ HRESULT CCharacter::Initialize(void* _pArg)
 	CHARACTER_DESC* pDesc = static_cast<CHARACTER_DESC*>(_pArg);
 	m_fStepSlopeThreshold = pDesc->_fStepSlopeThreshold;
 	m_fStepHeightThreshold = pDesc->_fStepHeightThreshold;
-
+    m_fGravity = m_pGameInstance->Get_Gravity();
     XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixRotationZ(XMConvertToRadians(90.f)));
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
@@ -31,6 +32,7 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
 
     __super::Priority_Update(_fTimeDelta);
     COORDINATE eCoord = Get_CurCoord();
+    _bool bOldGround = m_bOnGround;
     if (COORDINATE_2D == eCoord)
     {
         if (m_bPlatformerMode)
@@ -74,6 +76,8 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
         }
         //경사가 너ㅏ무 급하면 무시
     }
+    if (bOldGround == false && m_bOnGround == true)
+        On_Land();
 }
 
 void CCharacter::Update(_float _fTimeDelta)
@@ -127,17 +131,20 @@ void CCharacter::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CMod
         _uint iContactCount = _ModifiableContacts.Get_ContactCount();
         for (_uint i = 0; i < iContactCount; i++)
         {
-            //벽이면?
-            _float fNormal = abs(XMVectorGetY(_ModifiableContacts.Get_Normal(i)));
+            _vector vWallNormal = _ModifiableContacts.Get_Normal(i);
+            _float fNormal = abs(XMVectorGetY(vWallNormal));
             _vector vPoint = _ModifiableContacts.Get_Point(i);
 
-            if (fNormal < m_fStepSlopeThreshold
+            //벽이면? || 
+            if (fNormal < m_fStepSlopeThreshold 
                 || vPoint.m128_f32[1] > m_fStepHeightThreshold + Get_FinalPosition().m128_f32[1])
             {
                 _ModifiableContacts.Set_DynamicFriction(i, 0.0f);
                 _ModifiableContacts.Set_StaticFriction(i, 0.0f);
-                continue;
             }
+            if(fNormal < m_fStepSlopeThreshold )
+                _ModifiableContacts.Set_Normal(i, XMVectorSetY( vWallNormal, 0.f));
+
             _ModifiableContacts.Set_Restitution(i, 0);
         }
         break;
@@ -356,6 +363,7 @@ _float CCharacter::Measure_FloorDistance()
     if (PxGeometryType::eCAPSULE == eGeomType)
     {
         PxCapsuleGeometry& pxCapsule = pxGeomHolder.capsule();
+        pxCapsule.radius *= 0.5f;
         vOrigin.y += (m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
     }
     else if (PxGeometryType::eBOX == eGeomType)
@@ -378,6 +386,7 @@ _float CCharacter::Measure_FloorDistance()
         {
             if (pActor != this)//맵과 닿음.
             {
+                //cout << "iterHitPoint->vNormal.y" << iterHitPoint->vNormal.y << endl;
                 if (iterHitPoint->vNormal.y > m_fStepSlopeThreshold)//닿은 곳의 경사가 너무 급하지 않으면
                 {
                     fFloorHeihgt = max(fFloorHeihgt, iterHitPoint->vPosition.y);
@@ -475,9 +484,9 @@ _vector CCharacter::StepAssist(_fvector _vVelocity,_float _fTimeDelta)
                     vNewVelocity.m128_f32[1] += fMaxDiffY / fDiffXZ * XMVector3Length(vNewVelocity).m128_f32[0];
       
                     if (fMaxDiffY > 0)
-                        vNewVelocity.m128_f32[1] += 9.8f * 3.f * _fTimeDelta;
+                        vNewVelocity.m128_f32[1] += m_fGravity * _fTimeDelta;
                     else
-                        vNewVelocity.m128_f32[1] -= 9.8f * 3.f * _fTimeDelta;
+                        vNewVelocity.m128_f32[1] -= m_fGravity * _fTimeDelta;
                     
                     return vNewVelocity;
                 }
@@ -518,6 +527,23 @@ void CCharacter::Move(_fvector _vForce, _float _fTimeDelta)
     else
     {
         m_pControllerTransform->Go_Direction(_vForce, XMVectorGetX(XMVector3Length(_vForce)), _fTimeDelta);
+
+        if (m_bScrollingMode)
+        {
+            _float2 fSize = SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName);
+       
+            _vector vPos = Get_FinalPosition();
+            _float2 fPlayerPos = { XMVectorGetX(vPos), XMVectorGetY(vPos) };
+            _float fDefaultWitdh = (fSize.x * 0.5f);
+            if (-fDefaultWitdh > fPlayerPos.x)
+            {
+                Set_Position(XMVectorSetX(vPos, fPlayerPos.x + fSize.x));
+            }
+            if (fDefaultWitdh < fPlayerPos.x)
+            {
+                Set_Position(XMVectorSetX(vPos,fPlayerPos.x -  fSize.x));
+            }
+        }
     }
 }
 

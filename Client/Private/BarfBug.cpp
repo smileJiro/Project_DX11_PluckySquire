@@ -160,19 +160,10 @@ void CBarfBug::Priority_Update(_float _fTimeDelta)
 void CBarfBug::Update(_float _fTimeDelta)
 {
 #ifdef _DEBUG
-    //if (KEY_DOWN(KEY::F5))
-    //{
-    //    _int iCurCoord = (_int)Get_CurCoord();
-    //    (_int)iCurCoord ^= 1;
-    //    _float3 vNewPos;
-
-    //    if (iCurCoord == COORDINATE_2D)
-    //        vNewPos = _float3(500.f, 6.f, 0.f);
-    //    else
-    //        vNewPos = _float3(-10.0f, 0.35f, -23.0f);
-
-    //    Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
-    //}
+    if (KEY_DOWN(KEY::F5))
+    {
+        //Set_Active(true);
+    }
 #endif // _DEBUG
 
     __super::Update(_fTimeDelta); /* Part Object Update */

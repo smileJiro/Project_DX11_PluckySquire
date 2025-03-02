@@ -96,13 +96,28 @@ HRESULT CNewRenderer::Draw_RenderObject()
 			MSG_BOX("Render Failed Render_Debug");
 			return E_FAIL;
 		}
+
 		m_pGameInstance->Physx_Render();
+	}
+
+	if (true == m_isDebugBase)
+	{
+		if (FAILED(Render_Base_Debugs()))
+		{
+			MSG_BOX("Render Failed Render_Base_Debug");
+			return E_FAIL;
+		}
+
 	}
 
 	if (KEY_DOWN(KEY::F6))
 	{
 		m_isDebugRender ^= 1;
 		m_pGameInstance->Set_Physx_DebugRender(m_isDebugRender);
+		if (KEY_PRESSING(KEY::ALT))
+		{
+			m_isDebugBase ^= 1;
+		}
 	}
 
 #endif
@@ -327,6 +342,21 @@ HRESULT CNewRenderer::Render_Debug()
 	return S_OK;
 }
 
+HRESULT CNewRenderer::Render_Base_Debugs()
+{
+	for (auto& pBase : m_BaseDebugs)
+	{
+		if (nullptr != pBase)
+			pBase->Render_Base_Debug();
+
+		Safe_Release(pBase);
+	}
+
+	m_BaseDebugs.clear();
+
+	return S_OK;
+}
+
 #endif // _DEBUG
 
 HRESULT CNewRenderer::Ready_DepthStencilView(const _wstring _strDSVTag, _uint _iWidth, _uint _iHeight)
@@ -400,6 +430,12 @@ void CNewRenderer::Free()
 		Safe_Release(pDebugComponent);
 	}
 	m_DebugComponents.clear();
+	for (auto& pBase : m_BaseDebugs)
+	{
+		Safe_Release(pBase);
+	}
+	m_BaseDebugs.clear();
+	
 #endif // _DEBUG
 
 	Safe_Release(m_pGlobalIBLConstBuffer);

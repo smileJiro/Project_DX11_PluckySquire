@@ -33,6 +33,8 @@ struct Material_PS
     float Emissive;
     
     float4 MultipleAlbedo;
+    float3 EmissiveColor;
+    float dummy;
 };
 
 

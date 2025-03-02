@@ -57,34 +57,8 @@ HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 
 	return S_OK;
 }
-HRESULT CLight::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
+HRESULT CLight::Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 {
-#pragma region Debug
-
-	if (KEY_DOWN(KEY::F))
-	{
-		if (m_eType == LIGHT_TYPE::POINT)
-		{
-			m_tLightConstData.vPosition = { 0.0f, 20.f, 0.0f };
-			m_tLightConstData.fFallOutStart = 1.f;
-			m_tLightConstData.fFallOutEnd = 30.f;
-			m_tLightConstData.vDiffuse = { 0.0f, 0.0f, 9.0f, 1.0f };
-			m_tLightConstData.vSpecular = { 0.0f, 0.0f, 1.0f, 1.0f };
-			m_pGameInstance->UpdateConstBuffer(m_tLightConstData, m_pLightConstbuffer);
-		}
-		if (m_eType == LIGHT_TYPE::DIRECTOINAL)
-		{
-			m_tLightConstData.vDirection = { 0.0f, -1.0f, 1.0f };
-			m_tLightConstData.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-			m_tLightConstData.vDiffuse = _float4(0.1f, 0.1f, 0.1f, 1.0f);
-			m_tLightConstData.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.0f);
-			m_tLightConstData.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.0f);
-			m_pGameInstance->UpdateConstBuffer(m_tLightConstData, m_pLightConstbuffer);
-		}
-	}
-
-#pragma endregion
-
 	_uint iPassIndex = {};
 	
 	switch (m_eType)
@@ -105,7 +79,7 @@ HRESULT CLight::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 
 
 
-	if(true == m_tLightConstData.isShadow)
+	if(true == (_bool)m_tLightConstData.isShadow)
 	{
 		_pShader->Bind_Matrix("g_LightViewMatrix", &m_ViewMatrix);
 		_pShader->Bind_Matrix("g_LightProjMatrix", &m_ProjMatrix);
@@ -122,21 +96,42 @@ HRESULT CLight::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 	_pVIBuffer->Render();
 
 
-	//m_pEffect->SetWorld(XMMatrixIdentity());
-	//m_pEffect->SetView(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW));
-	//m_pEffect->SetProjection(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ));
-	//
-	//m_pEffect->Apply(m_pContext);
-	//m_pContext->IASetInputLayout(m_pInputLayout);
-	//m_pBatch->Begin();
-	//BoundingSphere sphere = {};
-	//sphere.Center = m_tLightConstData.vPosition;
-	//sphere.Radius = 2.0f;
-	//DX::Draw(m_pBatch, sphere, XMVectorSet(1.0f, 1.0f, 0.0f, 1.0f));
-	//
-	//m_pBatch->End();
+#ifdef _DEBUG
+	m_pGameInstance->Add_BaseDebug(this);
+#endif // _DEBUG
+
+
 	return S_OK;
 }
+
+#ifdef _DEBUG
+
+HRESULT CLight::Render_Base_Debug()
+{
+	m_pEffect->SetWorld(XMMatrixIdentity());
+	m_pEffect->SetView(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW));
+	m_pEffect->SetProjection(m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ));
+
+	m_pEffect->Apply(m_pContext);
+	m_pContext->IASetInputLayout(m_pInputLayout);
+	m_pBatch->Begin();
+	BoundingSphere sphere = {};
+	sphere.Center = m_tLightConstData.vPosition;
+	sphere.Radius = 2.0f;
+
+	static _vector m_LightDebugColor = XMVectorSet(1.0f, 1.0f, 0.0f, 1.0f);
+	static _vector m_LightSelectDebugColor = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
+	if(true == m_isSelect)
+		DX::Draw(m_pBatch, sphere, m_LightSelectDebugColor);
+	else
+		DX::Draw(m_pBatch, sphere, m_LightDebugColor);
+
+	m_pBatch->End();
+
+	return S_OK;
+}
+#endif // _DEBUG
+
 
 HRESULT CLight::Compute_ViewProjMatrix()
 {
@@ -147,10 +142,11 @@ HRESULT CLight::Compute_ViewProjMatrix()
 	{
 		_vector vLightDir = XMVector3Normalize(XMLoadFloat3(&m_tLightConstData.vDirection));
 		_vector vEye = vLightDir * -1.0f * 70.f;
+		XMStoreFloat3(&m_tLightConstData.vPosition, vEye);
 		_vector vAt = vEye + vLightDir;
 		_vector vWorldUp = { 0.0f, 1.0f, 0.0f, 0.0f };
 
-		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixLookAtLH(vEye, vAt, vWorldUp));
+		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixLookAtLH(XMVectorSetW(XMLoadFloat3(&m_tLightConstData.vPosition), 1.0f), vAt, vWorldUp));
 
 		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(m_fFovy), SHADOWMAP_X / SHADOWMAP_Y, m_vNearFarPlane.x, m_vNearFarPlane.y));
 
@@ -166,7 +162,7 @@ void CLight::Set_Shadow(_bool _isShadow)
 	if (true == _isShadow)
 	{
 		/* 1. Shadow를 켠 경우 */
-		if (true == m_tLightConstData.isShadow)
+		if (true == (_bool)m_tLightConstData.isShadow)
 			/* 2. 만약 원래 true였던 경우, */
 			return;
 		m_tLightConstData.isShadow = _isShadow;
@@ -181,7 +177,7 @@ void CLight::Set_Shadow(_bool _isShadow)
 			/* 1. RenderTarget을 만든다, DSV는 DSV_Shadow 사용한다(메인앱에서 생성했음). */
 			_wstring strShadowRTTag = TEXT("Target_Shadow_");
 			strShadowRTTag += to_wstring(m_iShadowLightID);
-			m_pGameInstance->Add_RenderTarget(strShadowRTTag, SHADOWMAP_X, SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f, 0.0f, 0.0f, 0.0f), &m_pShadowRenderTarget);
+			m_pGameInstance->Add_RenderTarget(strShadowRTTag, (_uint)SHADOWMAP_X,(_uint)SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f, 0.0f, 0.0f, 0.0f), &m_pShadowRenderTarget);
 			/* 2. 자기 자신을 shadow rendergroup에 등록한다. */
 		}
 		else

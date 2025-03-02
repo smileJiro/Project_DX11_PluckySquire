@@ -54,7 +54,7 @@ void CObject_Background::Update(_float _fTimeDelta)
 
 void CObject_Background::Late_Update(_float _fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BLEND, this);
+    //m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_BLEND, this);
     //m_pGameInstance->Add_RenderObject(CRenderer::RG_NONBLEND, this);
 }
 

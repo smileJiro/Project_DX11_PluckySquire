@@ -889,7 +889,7 @@ HRESULT CTask_Manager::Cooking(const _string& _strCookingPath, CMapObject* _pMap
 
 	}
 
-
+	return S_OK;
 
 }
 

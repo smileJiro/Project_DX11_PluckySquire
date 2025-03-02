@@ -96,7 +96,7 @@ void CPlayerState_Drag::Enter()
 	{
 		CActor_Dynamic* pDraggableDynamic = dynamic_cast<CActor_Dynamic*>( m_pDraggableObject->Get_ActorCom());
 		CActor_Dynamic* pOwnerDynamic = dynamic_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom());
-		m_iAdditionalShapeIndex = pDraggableDynamic->Get_Shapes().size();
+		m_iAdditionalShapeIndex = (_uint)pDraggableDynamic->Get_Shapes().size();
 		SHAPE_DATA tShape = m_pOwner->Get_BodyShapeData();
 		tShape.iShapeUse = (_uint)SHAPE_USE::SHAPE_USE_LAST;
 		_matrix matLocalOffset =XMLoadFloat4x4(&tShape.LocalOffsetMatrix);

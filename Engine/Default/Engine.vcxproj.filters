@@ -316,6 +316,9 @@
     <Filter Include="01.Utility\14.RenderGroup\RenderGroup_Shadow">
       <UniqueIdentifier>{fcff2067-6821-4aa8-b686-9bb7d06a6c12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\14.RenderGroup\RenderGroup_Debug">
+      <UniqueIdentifier>{3df200df-6b6a-4e45-8570-2fce93c11760}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">

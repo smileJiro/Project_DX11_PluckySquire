@@ -559,11 +559,16 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 
 	{ /* Light Info */
 		const list<CLight*>& Lights = m_pGameInstance->Get_Lights();
-
 		static int selected_index = -1; // 선택된 항목의 인덱스
 		static CONST_LIGHT tConstLightData = {};
-		auto& iter = Lights.begin();
+		auto iter = Lights.begin();
 		static auto& Selectiter = Lights.begin();
+		if (true == Lights.empty())
+		{
+			Selectiter = Lights.end();
+			ImGui::End();
+			return S_OK;
+		}
 		static LIGHT_TYPE eType = LIGHT_TYPE::LAST;
 		if (ImGui::BeginListBox("##Lights"))
 		{
@@ -575,9 +580,13 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 				if (ImGui::Selectable(strGameObjectName.c_str(), is_selected))
 				{
 					selected_index = i; // 선택된 항목 업데이트
+					if(Selectiter != Lights.end())
+						(*Selectiter)->Set_Select(false);
+					(*iter)->Set_Select(true);
 					tConstLightData = (*iter)->Get_LightDesc();
 					eType = (*iter)->Get_Type();
 					Selectiter = iter;
+					
 				}
 
 				// 선택된 항목에 포커스 설정
@@ -647,11 +656,21 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 
 		
 		// Delete Light 
+		if (ImGui::Button("Copy_Light"))
+		{
+			if (Selectiter != Lights.end())
+			{
+				CONST_LIGHT AddLightDesc = tConstLightData;
+				m_pGameInstance->Add_Light(AddLightDesc, (LIGHT_TYPE)(*Selectiter)->Get_Type());
+			}
+
+		}
 
 		if (ImGui::Button("Delete Light"))
 		{
 			// Shadow가 현재 비활성상태이고, 타입이 point가 아닌경우,
 			m_pGameInstance->Delete_Light(selected_index);
+			Selectiter = Lights.begin();
 
 		}
 
@@ -737,6 +756,11 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 				LightJson["vSpecular"]["b"] = tConstLightData.vSpecular.z;
 				LightJson["vSpecular"]["a"] = tConstLightData.vSpecular.w;
 
+				LightJson["isShadow"] = tConstLightData.isShadow;
+
+				if(eType != LIGHT_TYPE::POINT && true == (_bool)tConstLightData.isShadow)
+					LightJson["fShadowFactor"] = tConstLightData.fShadowFactor;
+
 				LightsJson.push_back(LightJson);
 			}
 
@@ -776,6 +800,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 				//받아온 파일입니다
 				const _wstring strFilePath = szName;
 				m_pGameInstance->Load_Lights(strFilePath);
+				Selectiter = Lights.begin();
 			}
 		}
 		

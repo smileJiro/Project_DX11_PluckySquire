@@ -4063,5 +4063,32 @@
   "SearchTag": "Desk_C06_Pad_Sprite",
   "Sorting": false,
   "TextureName": "Desk_C06_Pad_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "D06_SKSP_SIGN_Sprite",
+  "Sorting": false,
+  "TextureName": "D06_SKSP_SIGN_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "D06_SKSP_IndividualPlatforms012_Sprite",
+  "Sorting": false,
+  "TextureName": "D06_SKSP_IndividualPlatforms012_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "D06_SKSP_IndividualPlatforms01_Sprite",
+  "Sorting": false,
+  "TextureName": "D06_SKSP_IndividualPlatforms01_Sprite"
  }
 ]

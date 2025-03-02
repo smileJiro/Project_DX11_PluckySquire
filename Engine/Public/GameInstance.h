@@ -108,6 +108,7 @@ public: /* For. NewRenderer*/
 #ifdef _DEBUG
 	HRESULT				Add_DebugComponent_New(class CComponent* _pDebugCom);
 	void				Set_DebugRender_New(_bool _isBool);
+	HRESULT				Add_BaseDebug(CBase* _pBaseDebug);
 #endif
 
 public: /* For. Key_Manager */

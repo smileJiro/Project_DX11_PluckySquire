@@ -114,10 +114,10 @@ void CCamera_CutScene_Save::Add_CutScene(_wstring _wszCutSceneTag, vector<CCutSc
 
 	m_CutScenes.emplace(_wszCutSceneTag, _vecCutScene);
 
-	int i = _ITERATOR_DEBUG_LEVEL;
+	_int i = _ITERATOR_DEBUG_LEVEL;
 
 	cout << &m_CutSceneSubDatas << endl;
-	int a = m_CutSceneSubDatas.size();
+	_int a = (_int)m_CutSceneSubDatas.size();
 
 	m_CutSceneSubDatas.try_emplace(_wszCutSceneTag, _tSubData);
 	//m_CutSceneSubDatas.emplace(_wszCutSceneTag, _tSubData);

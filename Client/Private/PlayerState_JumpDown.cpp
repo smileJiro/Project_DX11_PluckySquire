@@ -5,6 +5,7 @@
 #include "GameInstance.h"
 #include "Interactable.h"
 #include "Effect_Manager.h"
+#include "ModelObject.h"
 
 CPlayerState_JumpDown::CPlayerState_JumpDown(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::JUMP_DOWN)
@@ -28,6 +29,7 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 			m_pOwner->Set_State(CPlayer::RUN);
 			return;
 		}
+
 		//바닥에 방금 닿음
 		if (false == m_bGrounded)
 		{
@@ -47,7 +49,21 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 
 		return;
 	}
-	// 이하 공중일 때
+	if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_ZETPROPEL])
+	{
+		m_pOwner->ZetPropel(_fTimeDelta);
+	}
+	_float fUpForce = m_pOwner->Get_UpForce();
+	_bool bReverse = m_pBody->Is_ReverseAnimation();
+	if (false == bReverse && 0.f < fUpForce)
+	{
+		m_pBody->Set_ReverseAnimation(true);
+	}
+	else if (bReverse && 0.f > fUpForce)
+	{
+		m_pBody->Set_ReverseAnimation(false);
+	}
+		// 이하 공중일 때
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
 	//물건 들고있지 않으면?
 	if (false == bCarrying)
@@ -91,6 +107,8 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 	}
 	if (COORDINATE_3D == eCoord)
 	{
+
+
 		if (tKeyResult.bInputStates[PLAYER_INPUT::PLAYER_INPUT_MOVE])
 		{
 			//기어오르기 체크
@@ -98,7 +116,8 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 				return;
 
 			//공중 무빙
-			m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed * _fTimeDelta );
+			//m_pOwner->Add_Force(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed * _fTimeDelta );
+			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed, _fTimeDelta);
 			m_pOwner->Rotate_To(tKeyResult.vMoveDir, m_fAirRotateSpeed);
 		}
 		else
@@ -131,8 +150,10 @@ void CPlayerState_JumpDown::Enter()
 	m_fAirRunSpeed2D = m_pOwner->Get_AirRunSpeed2D();
 	Switch_To_JumpDownAnimation();
 
+	m_pOwner->Get_ActorDynamic()->Set_LinearDamping(0.5f);
 	m_fArmYPositionBefore = XMVectorGetY(m_pOwner->Get_FinalPosition()) + m_pOwner->Get_ArmHeight();
 	m_fWallYPosition = -1;
+	m_pBody = m_pOwner->Get_Body();
 }
 
 void CPlayerState_JumpDown::Exit()
@@ -146,6 +167,7 @@ void CPlayerState_JumpDown::Exit()
 	{
 		m_pOwner->Stop_Rotate();
 	}
+	m_pOwner->Get_ActorDynamic()->Set_LinearDamping(0.f);
 }
 
 void CPlayerState_JumpDown::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
@@ -274,7 +296,7 @@ _bool CPlayerState_JumpDown::Try_Clamber()
 		//
 		//현재 바닥 높이가 팔 높이보다 높고 이전 바닥 높이는 팔 높이보다 낮으면?
 		//-> 기어오르기
-		_float fArmYPositionCurrent = XMVectorGetY(vPlayerPos) + m_fArmHeight;
+ 		_float fArmYPositionCurrent = XMVectorGetY(vPlayerPos) + m_fArmHeight;
 		if (m_fArmYPositionBefore> m_fWallYPosition
 			&& fArmYPositionCurrent <= m_fWallYPosition)
 		{

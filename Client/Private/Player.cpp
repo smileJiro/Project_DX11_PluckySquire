@@ -36,6 +36,7 @@
 #include "StopStamp.h"
 #include "BombStamp.h"
 #include "Detonator.h"
+#include "ZetPack.h"
 #include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
@@ -67,7 +68,7 @@ CPlayer::CPlayer(const CPlayer& _Prototype)
     		m_f2DAttackTriggerDesc[i][j] = _Prototype.m_f2DAttackTriggerDesc[i][j];
         }
     }
-
+      
     Safe_AddRef(m_pEffectManager);
 }
 
@@ -91,7 +92,6 @@ HRESULT CPlayer::Initialize_Prototype()
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2][(_uint)F_DIRECTION::LEFT].vExtents = { 55.5f, 86.5f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL2][(_uint)F_DIRECTION::LEFT].vOffset = { -40.f,m_f2DCenterYOffset };
 
-    
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::DOWN].vExtents = { 70.f, 70.f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, -45.f  };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::UP].vExtents = { 70.f, 70.f };
@@ -101,7 +101,6 @@ HRESULT CPlayer::Initialize_Prototype()
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::LEFT].vExtents = { 70.f, 70.f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::LEFT].vOffset = { -80.f,0.f };
 
-
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vExtents = { 211.f, 211.f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, m_f2DCenterYOffset };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::UP].vExtents = { 211.f, 211.f };
@@ -110,7 +109,6 @@ HRESULT CPlayer::Initialize_Prototype()
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::RIGHT].vOffset = { 0.f, m_f2DCenterYOffset};
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vExtents = { 211.f, 211.f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vOffset = { 0.f, m_f2DCenterYOffset };
-
                            
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::DOWN].vExtents = { 146.5f, 74.5f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, -20.f };
@@ -121,6 +119,7 @@ HRESULT CPlayer::Initialize_Prototype()
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::LEFT].vExtents = { 146.5f, 74.5f };
     m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::LEFT].vOffset = { -50.f, 0.f };
 
+
     return S_OK;
 }
 
@@ -129,7 +128,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     CPlayer::CHARACTER_DESC* pDesc = static_cast<CPlayer::CHARACTER_DESC*>(_pArg);
 
     m_iCurLevelID = pDesc->iCurLevelID;
-	pDesc->_fStepHeightThreshold = 0.2f;
+	pDesc->_fStepHeightThreshold = 0.225f;
 	pDesc->_fStepSlopeThreshold = 0.45f;
 
     pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
@@ -220,14 +219,11 @@ HRESULT CPlayer::Initialize(void* _pArg)
     BodyGuardShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER; // Actor가 충돌을 감지할 그룹
     ActorDesc.ShapeDatas[BodyGuardShapeData.iShapeUse] = ShapeData;
 
-
-
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
     ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT| OBJECT_GROUP::BLOCKER;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
-    
 
     if (FAILED(__super::Initialize(pDesc)))
     {
@@ -354,7 +350,6 @@ HRESULT CPlayer::Ready_PartObjects()
         MSG_BOX("CPlayer STOPSTAMP Creation Failed");
         return E_FAIL;
     }
-    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_STOP_STMAP])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r")); /**/
     m_PartObjects[PLAYER_PART_STOP_STMAP]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
     m_PartObjects[PLAYER_PART_STOP_STMAP]->Set_Position({0.f,-0.4f,0.f});
@@ -371,7 +366,6 @@ HRESULT CPlayer::Ready_PartObjects()
         MSG_BOX("CPlayer BOMBSTAMP Creation Failed");
         return E_FAIL;
     }
-    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_BOMB_STMAP])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r")); /**/
     m_PartObjects[PLAYER_PART_BOMB_STMAP]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0,1,0,0 });
     m_PartObjects[PLAYER_PART_BOMB_STMAP]->Set_Position({ 0.f,-0.4f,0.f });
@@ -389,10 +383,27 @@ HRESULT CPlayer::Ready_PartObjects()
         MSG_BOX("CPlayer BOMBSTAMP Creation Failed");
         return E_FAIL;
     }
-    p3DModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_DETONATOR])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_l")); /**/
     Set_PartActive(PLAYER_PART_DETONATOR, false);
 
+    //Part ZETPACK
+    CZetPack::ZETPACK_DESC tZetPackDesc{};
+    tZetPackDesc.pPlayer = this;
+    tZetPackDesc.iCurLevelID = m_iCurLevelID;
+    tZetPackDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    tZetPackDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+    m_PartObjects[PLAYER_PART_ZETPACK]= m_pZetPack  = static_cast<CZetPack*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ZetPack"), &tZetPackDesc));
+    if (nullptr == m_PartObjects[PLAYER_PART_ZETPACK])
+    {
+        MSG_BOX("CPlayer ZETPACK Creation Failed");
+        return E_FAIL;
+    }
+    Safe_AddRef(m_pZetPack);
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_ZETPACK])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_pelvis")); /**/
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_ZETPACK])->Set_SocketMatrix(COORDINATE_2D, m_pBody->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_2D)); /**/
+    m_PartObjects[PLAYER_PART_ZETPACK]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0.f,1.f,0.f,0.f });
+    m_PartObjects[PLAYER_PART_ZETPACK]->Set_Position({ 0.f,-0.1f,0.5f });
+    Set_PartActive(PLAYER_PART_ZETPACK, false);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
@@ -549,7 +560,7 @@ HRESULT CPlayer::Ready_Components()
    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
        TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
        return E_FAIL;
-   //Safe_AddRef(m_pGravityCom);
+   Safe_AddRef(m_pGravityCom);
    
    m_pGravityCom->Set_Active(false);
     return S_OK;
@@ -593,7 +604,6 @@ void CPlayer::Update(_float _fTimeDelta)
 
 void CPlayer::Late_Update(_float _fTimeDelta)
 {            // cout << "Upforce :" << m_f2DUpForce << " Height : " << m_f2DHeight << endl;
-    __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
     if (COORDINATE_2D == Get_CurCoord())
     {
         if (Is_PlatformerMode())
@@ -607,6 +617,8 @@ void CPlayer::Late_Update(_float _fTimeDelta)
             m_pBody->Set_Position(vUp * m_f2DFloorDistance);
         }
     }
+    __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
+
 
     //cout << endl;
 
@@ -1015,6 +1027,11 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     return S_OK;
 }
 
+void CPlayer::On_Land()
+{
+    cout << "Player Landed" << endl;
+}
+
 
 void CPlayer::Move_Attack_3D()
 {
@@ -1185,6 +1202,11 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
             tResult.bInputStates[PLAYER_INPUT_ROLL] = true;
     }
 
+	if (Is_ZetPackMode())
+	{
+		if (KEY_PRESSING(KEY::SPACE))
+			tResult.bInputStates[PLAYER_INPUT_ZETPROPEL] = true;
+	}
     COORDINATE eCoord = Get_CurCoord();
     //이동
 
@@ -1318,6 +1340,20 @@ void CPlayer::Revive()
 	m_tStat.iHP = m_tStat.iMaxHP;
 	Set_State(IDLE);
 }
+
+void CPlayer::ReFuel()
+{
+    m_pZetPack->ReFuel();
+}
+
+void CPlayer::ZetPropel(_float _fTimeDelta)
+{
+	if (Is_ZetPackMode())
+	{
+		m_pZetPack->Propel(_fTimeDelta);
+	}
+}
+
 
 //아무런 상호작용 중이 아닐 때에는 그냥 가장 가까운 애로 교체.
 //포탈, 끌고다니기 등 상호작용 중일 때는 교체 불가.
@@ -1479,6 +1515,11 @@ _bool CPlayer::Is_DetonationMode()
     return m_pDetonator->Is_DetonationMode();
 }
 
+_bool CPlayer::Is_ZetPackMode()
+{
+    return m_PartObjects[PLAYER_PART_ZETPACK]->Is_Active(); 
+}
+
 _bool CPlayer::Is_PlayingAnim()
 {
     return m_pBody->Is_PlayingAnim();
@@ -1605,10 +1646,17 @@ _vector CPlayer::Get_RootBonePosition()
 
 
 
+CActor_Dynamic* CPlayer::Get_ActorDynamic()
+{
+    return static_cast<CActor_Dynamic*>(m_pActorCom);
+}
+
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
+
+
 }
 
 void CPlayer::Set_Animation(_uint _iAnimIndex)
@@ -1625,6 +1673,8 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::IDLE:
         //cout << "IDLE" << endl;
         m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
+        if (Is_ZetPackMode())
+            m_pZetPack->Switch_State(CZetPack::STATE_IDLE);
         break;
     case Client::CPlayer::RUN:
         //cout << "Run" << endl;
@@ -1810,6 +1860,12 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
         pCollider->Set_Offset(_float2(0.0f, m_f2DColliderBodyRadius * 0.5f));
     }
 }
+
+void CPlayer::Set_ScrollingMode(_bool _bScrollingMode)
+{
+    m_bScrollingMode = _bScrollingMode;
+}
+
 void CPlayer::Set_Upforce(_float _fForce)
 {
     if (COORDINATE_2D == Get_CurCoord())
@@ -1989,16 +2045,13 @@ void CPlayer::Add_Upforce(_float _fForce)
 {
     if (COORDINATE_2D == Get_CurCoord())
     {
-        if(Is_PlatformerMode())
-			m_pGravityCom->Set_GravityAcc(m_pGravityCom->Get_GravityAcc() - _fForce);
-		else
-			m_f2DUpForce += _fForce;
+		m_f2DUpForce += _fForce;
 	}
 	else
 	{
 		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 		_vector vVelocity = pDynamicActor->Get_LinearVelocity();
-		pDynamicActor->Add_Impulse(_float3{ 0, _fForce ,0 });
+		pDynamicActor->Add_Force(_float3{ 0, _fForce ,0 });
     }
 
 }
@@ -2156,6 +2209,7 @@ void CPlayer::Free()
 	Safe_Release(m_pBombStmap);
 	Safe_Release(m_pStopStmap);
 	Safe_Release(m_pDetonator);
+	Safe_Release(m_pZetPack);
 
     Safe_Release(m_pCarryingObject);
     

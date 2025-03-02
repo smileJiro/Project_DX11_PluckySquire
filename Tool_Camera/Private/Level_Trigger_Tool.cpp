@@ -196,6 +196,25 @@ HRESULT CLevel_Trigger_Tool::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 		LEVEL_TRIGGER_TOOL, _strLayerTag, &Desc)))
 		return E_FAIL;
 
+	// Book
+	CModelObject::MODELOBJECT_DESC BookDesc = {};
+
+	BookDesc.eStartCoord = COORDINATE_3D;
+	BookDesc.iCurLevelID = LEVEL_TRIGGER_TOOL;
+	BookDesc.iModelPrototypeLevelID_3D = LEVEL_TRIGGER_TOOL;
+	BookDesc.strModelPrototypeTag_3D = L"Prototype_Model_Book";
+	BookDesc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	BookDesc.iShaderPass_3D = 0;
+	BookDesc.iPriorityID_3D = PR3D_GEOMETRY;
+	BookDesc.iRenderGroupID_3D = RG_3D;
+	BookDesc.tTransform3DDesc.fSpeedPerSec = 1.f;
+	BookDesc.tTransform3DDesc.vInitialPosition = _float3(2.f, 0.4f, -17.3f);
+	BookDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+		LEVEL_TRIGGER_TOOL, _strLayerTag, &BookDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -369,7 +388,7 @@ void CLevel_Trigger_Tool::Show_SaveLoadFileWindow()
 	ImGui::SameLine();
 	ImGui::Checkbox("Bulb", &m_isBulb);
 
-	ImGui::BeginChild("Files", ImVec2(400, 150), true);  // true는 border 표시
+	ImGui::BeginChild("Files", ImVec2(600, 150), true);  // true는 border 표시
 	for (int i = 0; i < m_JsonFilePaths.size(); ++i)
 	{
 		if (ImGui::Selectable(m_JsonFilePaths[i].c_str(), m_iCurrentJsonFileIndex == i))
@@ -718,15 +737,15 @@ void CLevel_Trigger_Tool::Set_TriggerBasicInfo()
 		ImGui::SameLine();
 
 		ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-		ImGui::DragFloat("##HalfExtentX", &m_vHalfExtents.x, 0.1f, 0.5f, 20.f);
+		ImGui::DragFloat("##HalfExtentX", &m_vHalfExtents.x, 0.1f, 0.5f, 40.f);
 		ImGui::SameLine(0, 10.0f);
 
 		ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-		ImGui::DragFloat("##HalfExtentY", &m_vHalfExtents.y, 0.1f, 0.5f, 20.f);
+		ImGui::DragFloat("##HalfExtentY", &m_vHalfExtents.y, 0.1f, 0.5f, 40.f);
 		ImGui::SameLine(0, 10.0f);
 
 		ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
-		ImGui::DragFloat("##HalfExtentZ", &m_vHalfExtents.z, 0.1f, 0.5f, 20.f);
+		ImGui::DragFloat("##HalfExtentZ", &m_vHalfExtents.z, 0.1f, 0.5f, 40.f);
 		break;
 	case (_uint)SHAPE_TYPE::SPHERE:
 		ImGui::Text("Radius: %.2f                 ", m_fRadius);
