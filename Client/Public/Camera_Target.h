@@ -69,7 +69,6 @@ public:
 	void						Get_ArmNames(vector<_wstring>* _vecArmNames);
 #pragma endregion
 
-
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
 	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
@@ -82,11 +81,15 @@ public:
 	void						Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID);
 	void						Set_EnableLookAt(_bool _isEnableLookAt);
 
+	void						Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex); // Portal 나갈 때 Data 초기화하기 
+	void						Set_InitialData(pair<ARM_DATA*, SUB_DATA*>* pData);
+	void						Set_InitialData(_fvector _vArm, _float _fLength, _fvector _vOffset, _uint _iZoomLevel);
+
 	void						Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
-	void						Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex); // Portal 나갈 때 Data 초기화하기 
 
-	void						Calculate_Player(); // 임시
+	void						Load_InitialArmTag();
+
 private:
 	const _float4x4*			m_pTargetWorldMatrix = { nullptr };
 	_float3						m_vPreTargetPos = {};
@@ -130,10 +133,12 @@ private:
 	// CustomArm
 	ARM_DATA					m_CustomArmData = {};
 
+	// Portal Initial Data
+	map<_wstring, vector<_wstring>> m_SkspInitialTags;
+
 #pragma region Tool용
 	_bool						m_isLookAt = { true };
 #pragma endregion
-
 
 private:
 	void						Key_Input(_float _fTimeDelta);
@@ -145,13 +150,13 @@ private:
 	void						Move_To_NextArm(_float _fTimeDelta);
 	void						Move_To_PreArm(_float _fTimeDelta);
 	void						Move_To_CustomArm(_float _fTimeDelta);
-	void						Look_Target(_fvector _vTargetPos, _float _fTimeDelta);
+	void						Move_To_ExitArm(_float _fTimeDelta);
 
 	_vector						Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fTimeDelta);
 	void						Calculate_FreezeOffset(_vector* _pTargetPos);
+	void						Look_Target(_fvector _vTargetPos, _float _fTimeDelta);
 	virtual	void				Switching(_float _fTimeDelta) override;
 	void						Change_FreezeOffset(_float _fTimeDelta);
-	void						Move_To_ExitArm(_float _fTimeDelta);
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);
