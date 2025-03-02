@@ -215,6 +215,7 @@ HRESULT CMainApp::Ready_Font()
 		return E_FAIL;
 
 
+
 	return S_OK;
 }
 

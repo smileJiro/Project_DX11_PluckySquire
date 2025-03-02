@@ -157,6 +157,11 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 			if (Nar.contains("bTerminal") && Nar["bTerminal"].is_boolean())
 				NarData.bTerminal = Nar["bTerminal"].get<bool>();
 
+
+
+
+
+
 			_int iLine = { 0 };
 
 			if (Nar.contains("lines") && Nar["lines"].is_array())
@@ -173,6 +178,20 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 
 					if (line.contains("strtext") && line["strtext"].is_string())
 						DialogueData.strtext = StringToWstring(line["strtext"].get<string>());
+
+
+
+					if (line.contains("fR") && line["fR"].is_number_float())
+						DialogueData.fRGB.x = line["fR"].get<_float>();
+
+					if (line.contains("fG") && line["fG"].is_number_float())
+						DialogueData.fRGB.y = line["fG"].get<_float>();
+
+					if (line.contains("fB") && line["fB"].is_number_float())
+						DialogueData.fRGB.z = line["fB"].get<_float>();
+
+
+
 
 					if (line.contains("strSFX") && line["strSFX"].is_string())
 						DialogueData.strSFX = StringToWstring(line["strSFX"].get<string>());
@@ -383,6 +402,8 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 				continue;
 			}
 
+			
+
 			// 토큰의 크기를 측정하고 텍스트 렌더링 (알파값 적용)
 			_vector vecSize = m_pGameInstance->Measuring(TEXT("Font40"), token.strText.c_str());
 			_float2 vTextSize = { 0.f, 0.f };
@@ -390,6 +411,7 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 
 			m_pGameInstance->Render_Scaling_Font(TEXT("Font40"), token.strText.c_str(), _float2(fx, fy), XMVectorSet(0.f, 0.f, 0.f, alpha) // alpha 적용
 				,0.f, _float2(0.f, 0.f), token.fScale);
+
 
 			fx += vTextSize.x * token.fScale * 0.98f;
 		}

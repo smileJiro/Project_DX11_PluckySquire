@@ -1,7 +1,0 @@
-C08_1314_Humgrump_Blink,
-C08_1314_Humgrump_Blink_Single,
-C08_1314_Humgrump_Glow_Into,
-C08_1314_Humgrump_Glow_Loop,
-C08_1314_Humgrump_Jump,
-C08_1314_Humgrump_Jump_Standing,
-C08_1314_Humgrump_Smile,
