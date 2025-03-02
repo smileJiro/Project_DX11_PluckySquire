@@ -68,7 +68,6 @@ HRESULT CPressure_Plate::Render()
     __super::Render();
 
 #ifdef _DEBUG
-    m_strSectionName = SECTION_MGR->Get_Cur_Section_Key();
     for (auto& p2DCollider : m_p2DColliderComs)
     {
         p2DCollider->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
