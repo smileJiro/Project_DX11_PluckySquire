@@ -133,7 +133,7 @@ HRESULT CPortal::Init_Actor()
     HRESULT hr = CActorObject::Ready_Components(&ActorObjectDesc);
     
     if (SUCCEEDED(hr))
-        Set_Active(true);
+        Active_OnEnable();
 
     Change_Coordinate(COORDINATE_2D, nullptr);
     // Æ÷Å» ÀÌÆåÆ® »ý¼º.

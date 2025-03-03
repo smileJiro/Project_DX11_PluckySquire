@@ -4,6 +4,7 @@
 #include "Section_Manager.h"
 
 #include "Door_Blue.h"
+#include "Player.h"
 
 CKey::CKey(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCarriableObject(_pDevice, _pContext)
@@ -96,9 +97,11 @@ HRESULT CKey::Initialize(void* _pArg)
 
 	m_p2DColliderComs[1]->Set_Active(true);
 
-	Set_AnimationLoop(COORDINATE_2D, IDLE, true);
+	Register_OnAnimEndCallBack(bind(&CKey::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+
 
 	// TEMP
+	Set_AnimationLoop(COORDINATE_2D, IDLE, true);
 	m_pControllerModel->Get_Model(COORDINATE_2D)->Set_Animation(IDLE);
 
 	return S_OK;
@@ -129,12 +132,53 @@ void CKey::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColli
 {
 	OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
 
-	//if (OBJECT_GROUP::PLAYER == eGroup || OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
+	// 문이 열리네요.
+	if (OBJECT_GROUP::DOOR == eGroup)
+	{
+		CDoor_Blue* pDoor = dynamic_cast<CDoor_Blue*>(_pOtherObject);
+
+		if (nullptr == pDoor)			
+			return;
+		else
+		{
+			// 문의 위치로 설정,
+			_vector vPosition = pDoor->Get_FinalPosition();
+			pDoor->Open_Door();
+
+			// 플레이어를 상태 = IDLE로 설정, 열쇠의 위치 설정,
+			if (nullptr != m_pCarrier)
+			{
+				m_pCarrier->Set_CarryingObject(nullptr);
+				m_pCarrier->Set_State(CPlayer::IDLE);
+
+				Set_ParentMatrix(COORDINATE_2D, nullptr);
+				Set_ParentMatrix(COORDINATE_3D, nullptr);
+				Set_SocketMatrix(COORDINATE_3D, nullptr);
+				Set_SocketMatrix(COORDINATE_2D, nullptr);
+				Set_ParentBodyMatrix(COORDINATE_3D, nullptr);
+				Set_ParentBodyMatrix(COORDINATE_2D, nullptr);
+
+				Set_Position(vPosition + XMVectorSet(0.f, -10.f, 0.f, 0.f));
+				Switch_Animation(OPEN);
+
+				Set_Carrier(nullptr);
+				for (auto& iter : m_p2DColliderComs)
+				{
+					Event_SetActive(iter, false);
+				}
+			}
+
+		}
+	}
 
 }
 
-void CKey::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+void CKey::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
+	if (OPEN == iAnimIdx)
+	{
+		Event_DeleteObject(this);
+	}
 }
 
 CKey* CKey::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

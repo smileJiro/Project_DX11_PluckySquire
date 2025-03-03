@@ -17,13 +17,13 @@ public:
 	HRESULT Initialize(void* _pArg);
 	virtual void		Update(_float _fTimeDelta) override;
 	virtual void		Late_Update(_float _fTimeDelta) override;
-	virtual HRESULT Render() override;
+	virtual HRESULT		Render() override;
 
 public:
 	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
-	virtual void	On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 
-
+public:
+	void			On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
 public:
 	static CKey* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

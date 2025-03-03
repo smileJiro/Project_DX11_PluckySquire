@@ -30,6 +30,12 @@ HRESULT CDoor_Blue::Initialize(void* _pArg)
     return S_OK;
 }
 
+void CDoor_Blue::Open_Door()
+{
+    m_eDoorState = OPEN;
+    Switch_Animation_By_State();
+}
+
 
 void CDoor_Blue::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
