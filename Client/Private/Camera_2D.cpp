@@ -221,7 +221,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 			/*	if (iWidth * iHeight <= iIndex || 0 > iIndex)
 					vNormal = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);*/
 
-				_uint iDefaultIndex = iIndex * 2;
+				_uint iDefaultIndex = iIndex * 4;
 
 				// float4 데이터 읽기
 				_float x = fData[iDefaultIndex] / 65535.0f;; // Red 채널
