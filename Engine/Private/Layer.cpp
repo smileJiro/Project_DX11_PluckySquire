@@ -40,15 +40,6 @@ void CLayer::Priority_Update(_float fTimeDelta)
             iter->Priority_Update(fTimeDelta);
     }
 
-    m_pGameInstance->Get_ThreadPool()->EnqueueJob([this]()
-        {
-            for (auto& iter : m_GameObjects)
-            {
-                if (iter->Is_Active())
-                    iter->Check_FrustumCulling();
-            }
-        });
-
 }
 
 void CLayer::Update(_float fTimeDelta)
@@ -177,6 +168,15 @@ void CLayer::Clear_GameObjects()
         Safe_Release(pGameObject);
 
     m_GameObjects.clear();
+}
+
+void CLayer::Check_FrustumCulling()
+{
+    for (auto& pGameObject : m_GameObjects)
+    {
+        if (true == pGameObject->Is_Active())
+            pGameObject->Check_FrustumCulling();
+    }
 }
 
 CGameObject* CLayer::Get_GameObject_Ptr(_int _iObjectIndex)
