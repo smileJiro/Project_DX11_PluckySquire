@@ -856,7 +856,6 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 	CNPC_Manager::GetInstance()->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 
 
-
 	return S_OK;
 }
 

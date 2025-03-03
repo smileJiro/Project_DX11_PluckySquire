@@ -45,6 +45,9 @@ public:
 
 	void			Set_SFXVolume(const wstring& strSFXTag, _float _fVolume);
 
+	HRESULT			Clear_Sound();
+
+
 private:
 	LPDIRECTSOUND8	m_pSoundDevice = nullptr;	// 사운드카드 대표 객체
 	map<_wstring, CSound*> m_BGMs;
