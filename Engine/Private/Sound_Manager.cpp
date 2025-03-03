@@ -52,7 +52,9 @@ void CSound_Manager::Start_BGM(const wstring& strBGMTag, _float _fVolume)
         return;
 
     if (nullptr != m_pCurPlayBGM)
-        m_pCurPlayBGM->Stop_Sound(true);
+    {
+        End_BGM();
+    }
 
     m_pCurPlayBGM = pBGM;
     Safe_AddRef(m_pCurPlayBGM);
@@ -99,6 +101,35 @@ void CSound_Manager::Set_SFXVolume(const wstring& strSFXTag, _float _fVolume)
     {
         pSFX->Set_Volume(_fVolume);
     }
+}
+
+HRESULT CSound_Manager::Clear_Sound()
+{
+    Safe_Release(m_pCurPlayBGM);
+    m_pCurPlayBGM = nullptr;
+    for (auto& Pair : m_DelaySFXs)
+    {
+        Safe_Release(Pair.first);
+    }
+    m_DelaySFXs.clear();
+
+
+    for (auto& iter : m_BGMs)
+    {
+        Safe_Release(iter.second);
+    }
+    m_BGMs.clear();
+
+    for (auto& iter : m_SFXs)
+    {
+        for (CSound* pSound : iter.second)
+        {
+            Safe_Release(pSound);
+        }
+        iter.second.clear();
+    }
+    m_SFXs.clear();
+    return S_OK;
 }
 
 _float CSound_Manager::Get_SFXVolume(const wstring& strSFXTag)
@@ -231,6 +262,12 @@ HRESULT CSound_Manager::Load_BGM(const wstring& strBGMTag, const wstring& strBGM
     if (nullptr == pBGM)
         return E_FAIL;
 
+    if (nullptr != Find_BGM(strBGMTag))
+    {
+        Safe_Release(pBGM);
+        return E_FAIL;
+    }
+
     m_BGMs.emplace(strBGMTag, pBGM);
     return S_OK;
 }
@@ -242,7 +279,10 @@ HRESULT CSound_Manager::Load_SFX(const wstring& strSFXTag, const wstring& strSFX
         return E_FAIL;
 
     if (nullptr != Find_SFX(strSFXTag))
+    {
+        Safe_Release(pSFX);
         return E_FAIL;
+    }
 
     vector<CSound*> PullingSFXs;
     PullingSFXs.push_back(pSFX);
@@ -306,31 +346,11 @@ CSound_Manager* CSound_Manager::Create(HWND _hWnd)
     return pInstance;
 }
 
+
+
+
 void CSound_Manager::Free()
 {
-    for (auto& Pair : m_DelaySFXs)
-    {
-        Safe_Release(Pair.first);
-    }
-    m_DelaySFXs.clear();
-
-
-    for (auto& iter : m_BGMs)
-    {
-        Safe_Release(iter.second);
-    }
-    m_BGMs.clear();
-
-    for (auto& iter : m_SFXs)
-    {
-        for (CSound* pSound : iter.second)
-        {
-            Safe_Release(pSound);
-        }
-        iter.second.clear();
-    }
-    m_SFXs.clear();
-    Safe_Release(m_pCurPlayBGM);
+    Clear_Sound();
     Safe_Release(m_pSoundDevice);
-    
 }

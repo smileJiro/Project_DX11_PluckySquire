@@ -203,6 +203,7 @@ public: /* For. Sound_Manager */
 	_bool				Is_SFXPlaying(const wstring& strSFXTag);
 	_float				Get_SFXVolume(const wstring& strSFXTag);
 	void				Set_SFXVolume(const wstring& strSFXTag, _float _fVolume);
+	HRESULT				Clear_Sound();
 
 public: /* For. Json_Manager*/
 	HRESULT				Load_Json(const _tchar* _szFilePath, _Out_ json* _pOutJson);
