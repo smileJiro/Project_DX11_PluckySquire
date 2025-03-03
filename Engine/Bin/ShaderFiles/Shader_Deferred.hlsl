@@ -528,6 +528,94 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
     return Out;
 }
 
+
+PS_OUT PS_PBR_LIGHT_SPOT(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    /* x : 깊이버퍼에 기록된 원근투영된 깊이값(NDC), y : 뷰스페이스 상의 z / farz 값 */
+    float4 vDepthDesc = g_DepthTexture.Sample(PointSampler, In.vTexcoord);
+    float fViewZ = vDepthDesc.y * g_fFarZ;
+    /* 픽셀의 월드 포지션을 구한다. */
+    float4 vPixelWorld = GetWorldPositionFromDepth(In.vTexcoord, vDepthDesc.x, fViewZ);
+    
+    /* 1. 연산에 필요한 데이터들을 읽어들인다. */
+    float3 vPixelToEye = normalize(g_vCamWorld - vPixelWorld).rgb;
+    float3 vAlbedo = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord).rgb;
+    float3 vNormalWorld = g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz * 2.0f - 1.0f; // 16 unorm을 변환하여 값 저장.
+    float4 vORMHDesc = g_ORMHTexture.Sample(LinearSampler, In.vTexcoord);
+    float4 vEtcDesc = g_EtcTexture.Sample(LinearSampler, In.vTexcoord);
+    float fAO = vORMHDesc.r;
+    float fRoughness = vORMHDesc.g;
+    float fMetallic = vORMHDesc.b;
+    float fHeight = vORMHDesc.a;
+    
+/* 2. Direction Light 연산 수행 */
+     /* 2. Point Light 연산 수행 */
+    float3 vLightVector = c_DirectLight.vPosition - vPixelWorld.xyz;
+    float fLightDist = length(vLightVector);
+    vLightVector /= fLightDist;
+    float3 vHalfway = normalize(vPixelToEye + vLightVector);
+    
+    float NdotI = max(0.0f, dot(vNormalWorld, vLightVector));
+    float NdotH = max(0.0f, dot(vNormalWorld, vHalfway));
+    float NdotO = max(0.0f, dot(vNormalWorld, vPixelToEye));
+    
+    float fSpecular = vEtcDesc.a * 0.5f;
+    float3 F0 = lerp(Fdielectric + fSpecular, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
+    //float3 F0 = lerp(Fdielectric, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
+    float F = SchlickFresnel(F0, dot(vHalfway, vPixelToEye));
+    float3 kd = lerp(float3(1.0f, 1.0f, 1.0f) - F, float3(0.0f, 0.0f, 0.0f), fMetallic); // 물체의 확산반사계수 : 메탈릭 수치에 따라 보정되는 값임 >>> F로 반사되는 에너지를 제외한 에너지를 확산반사의 양으로 사용함.
+    float3 vDiffuseBRDF = kd * vAlbedo;
+    
+    float D = NdfGGX(NdotH, fRoughness);
+    float3 G = SchlickGGX(NdotI, NdotO, fRoughness);
+    float3 vSpecularBRDf = (F * D * G) / max(1e-5f, 4.0f * NdotI * NdotO);
+
+    float fSpotFactor = pow(max(dot(-vLightVector, normalize(c_DirectLight.vDirection)), 0.0f), max(c_DirectLight.fSpotPower, 1.0f));
+
+    float fAttenuation = pow(saturate((c_DirectLight.fFallOutEnd - fLightDist) / (c_DirectLight.fFallOutEnd - c_DirectLight.fFallOutStart)), 2.0f); //saturate((c_DirectLight.fFallOutEnd - fLightDist) / (c_DirectLight.fFallOutEnd - c_DirectLight.fFallOutStart));
+    float3 vFinalRadiance = c_DirectLight.vRadiance * fAttenuation * fSpotFactor;
+    
+    float3 DirectLighting = ((vDiffuseBRDF * c_DirectLight.vDiffuse.rgb) + (vSpecularBRDf * c_DirectLight.vSpecular.rgb)) * vFinalRadiance * NdotI;
+    
+    // Shadow Factor 계산
+    float fShadowFactor = 0.0f;
+    if (c_DirectLight.isShadow & 1)
+    {
+
+        // 1. 픽셀 월드좌표를 광원 기준 투영좌표로 이동 
+        float4 vLightScreen = mul(vPixelWorld, g_LightViewMatrix);
+        vLightScreen = mul(vLightScreen, g_LightProjMatrix);
+        vLightScreen.xyz /= vLightScreen.w; // w 나누기 까지 수행.
+        
+        // 2. ndc 좌표를 texcoord 좌표롤 변환
+        float2 vLightTexcoord = float2(vLightScreen.x, vLightScreen.y * -1.0f);
+        vLightTexcoord += 1.0f;
+        vLightTexcoord *= 0.5f;
+        
+        float fMaxBias = 0.3f;
+        float fMinBias = 0.001f;
+        float fSlopeScaledBias = max(fMaxBias * (1.0f - dot(vNormalWorld, vLightVector)), fMinBias);
+        
+        uint width, height, numMips;
+        g_ShadowMapTexture.GetDimensions(0, width, height, numMips);
+        
+        // Texel Size
+        float dx = 5.0 / (float) width;
+        //float fLightDepth = g_ShadowMapTexture.Sample(LinearSampler, vLightTexcoord).r;
+        fShadowFactor = PCF_Filter(vLightTexcoord.xy, vLightScreen.w - fSlopeScaledBias, dx, g_ShadowMapTexture);
+        //float fLightDepth = g_ShadowMapTexture.SampleCmpLevelZero(ShadowCompareSampler, vLightTexcoord).r; // viewspace상의 z 값을 far로 나누어 저장했음.
+        //if (fLightDepth + fSlopeScaledBias < vLightScreen.w)
+        //    fShadowFactor = 0.0f;
+    }
+
+    Out.vColor = float4(max(DirectLighting.rgb * (1 - fShadowFactor), 0.0f), 1.0f);
+    
+    return Out;
+}
+
+
+
 PS_OUT PS_MAIN_LIGHTING(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
@@ -982,6 +1070,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_PBR_LIGHT_DIRECTIONAL();
+    }
+
+    pass PBR_Spot // 9
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_OneBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_PBR_LIGHT_SPOT();
     }
 
     pass PBR_BLUR_DOWN // 10

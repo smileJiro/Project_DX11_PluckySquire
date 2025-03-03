@@ -62,6 +62,7 @@ void CPortal::Update(_float fTimeDelta)
 {
     if (nullptr != m_pEffectSystem && false == m_pEffectSystem->Is_Active())
         m_pEffectSystem->Active_Effect(true);
+
     __super::Update(fTimeDelta);
 }
 
@@ -132,10 +133,10 @@ HRESULT CPortal::Init_Actor()
     HRESULT hr = CActorObject::Ready_Components(&ActorObjectDesc);
     
     if (SUCCEEDED(hr))
-        Active_OnEnable();
+        Set_Active(true);
 
     Change_Coordinate(COORDINATE_2D, nullptr);
-    // Æ÷Å» »ý¼º.
+    // Æ÷Å» ÀÌÆåÆ® »ý¼º.
     m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_WorldMatrix_Ptr();
 
     CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};

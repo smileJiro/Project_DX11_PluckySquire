@@ -30,6 +30,10 @@ public:
 	_bool Is_Interactable(CPlayer* _pUser) override;
 	_float Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) override;
 
+public:
+	virtual void Active_OnEnable();
+	virtual void Active_OnDisable();
+
 private:
 	set<CGameObject*> m_StoppedObjects;
 	CSection_Manager* m_pSectionMgr = nullptr;

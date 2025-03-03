@@ -105,8 +105,10 @@ void CActorObject::Set_Dead()
 
 void CActorObject::Active_OnEnable()
 {
-    if (nullptr != m_pActorCom)
+    if (nullptr != m_pActorCom && COORDINATE_3D == Get_CurCoord())
+    {
         m_pActorCom->Set_Active(true);
+    }
 
 }
 
@@ -147,6 +149,8 @@ HRESULT CActorObject::Ready_Components(ACTOROBJECT_DESC* _pDesc)
         break;
     }
 
+    if (nullptr != m_pActorCom && COORDINATE_2D == _pDesc->eStartCoord)
+        m_pActorCom->Set_Active(false);
 
     return S_OK;
 }
