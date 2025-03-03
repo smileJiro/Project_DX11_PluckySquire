@@ -1470,6 +1470,7 @@ void C2DMap_Tool_Manager::TriggerEvent_Imgui(_bool bLock)
 		string m_strConditionNames[] = { "Collision Enter",
 											"Collision",
 											"Collision Exit", };
+
 		string m_strEventNames[] = { "CutScene Event",
 									"Object Spawn",
 										"Map_Change",

@@ -75,6 +75,7 @@ HRESULT CTriggerObject::Initialize_3D_Trigger(CActor::ACTOR_DESC** _pActorDesc, 
     m_iTriggerType = _pDesc->iTriggerType;
     m_szEventTag = _pDesc->szEventTag;
     m_eConditionType = _pDesc->eConditionType;
+    m_isReusable = _pDesc->eConditionType;
     //m_eCoordiNate = _pDesc->eCoordiNate; StartCoordinate가 있는데?
 
     _pDesc->eActorType = (ACTOR_TYPE)_pDesc->iActorType;;
@@ -178,6 +179,8 @@ void CTriggerObject::Resister_ExitHandler_ByCollision(function<void(_uint, _int,
     m_CollisionExitHandler = _Handler;
 }
 
+
+
 void CTriggerObject::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
     if (m_EnterHandler) {
@@ -202,6 +205,8 @@ void CTriggerObject::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Othe
         m_CollisionExitHandler(m_iTriggerType, m_iTriggerID, _My, _Other);
     }
 }
+
+
 
 void CTriggerObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {

@@ -161,7 +161,8 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 	if (nullptr == _pCarrier)
 	{
 		m_pCarrier = nullptr;
-		static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
+		if (COORDINATE_3D == Get_CurCoord())
+			static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
 	}
 	else
 	{

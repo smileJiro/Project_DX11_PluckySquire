@@ -1321,6 +1321,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Postit_Page.h" />
     <ClInclude Include="..\Public\TiltSwapPusher.h" />
+    <ClInclude Include="..\Public\Boss_Rock.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossRockVolleyState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\BombableObject.h" />
   </ItemGroup>
   <ItemGroup>
@@ -2101,6 +2107,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Postit_Page.cpp" />
     <ClCompile Include="..\Private\TiltSwapPusher.cpp" />
+    <ClCompile Include="..\Private\Boss_Rock.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossRockVolleyState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\BombableObject.cpp" />
   </ItemGroup>
   <ItemGroup>

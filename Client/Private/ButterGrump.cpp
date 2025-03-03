@@ -10,6 +10,7 @@
 #include "Boss_YellowBall.h"
 #include "Boss_PurpleBall.h"
 #include "Boss_WingSlam.h"
+#include "Boss_Rock.h"
 #include "FSM_Boss.h"
 #include "ButterGrump_LeftEye.h"
 #include "ButterGrump_RightEye.h"
@@ -79,7 +80,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CButterGrump::Animation_End, this, placeholders::_1, placeholders::_2));
 
-    Bind_AnimEventFunc("Attack", bind(&CButterGrump::Attack, this));
+    Bind_AnimEventFunc("On_Attack", bind(&CButterGrump::On_Attack, this));
 
     /* Com_AnimEventGenerator */
     CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
@@ -233,6 +234,10 @@ void CButterGrump::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WING_SLAM_INTO);
             break;
 
+        case BOSS_STATE::ROCKVOLLEY:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_INTO);
+            break;
+
         default:
             break;
         }
@@ -327,6 +332,53 @@ void CButterGrump::Attack()
         break;
     }
 
+    case BOSS_STATE::ROCKVOLLEY:
+    {
+
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_Rock"), COORDINATE_3D, &vPosition, &vRotation);
+
+        break;
+    }
+
+    default:
+        break;
+    }
+}
+
+void CButterGrump::On_Attack()
+{
+    m_isAttack = true;
+
+    switch ((BOSS_STATE)m_iState)
+    {
+    case BOSS_STATE::ENERGYBALL:
+        m_fDelayTime = 0.3f;
+        m_iNumAttack = 10;
+        break;
+
+    case BOSS_STATE::HOMINGBALL:
+        m_fDelayTime = 0.5f;
+        m_iNumAttack = 1;
+        break;
+
+    case BOSS_STATE::YELLOWBALL:
+        m_fDelayTime = 0.3f;
+        m_iNumAttack = 3;
+        break;
+
+    case BOSS_STATE::PURPLEBALL:
+        m_fDelayTime = 0.3f;
+        break;
+
+    case BOSS_STATE::WINGSLAM:
+        m_iNumAttack = 1;
+        break;
+
+    case BOSS_STATE::ROCKVOLLEY:
+        m_fDelayTime = 0.3f;
+        m_iNumAttack = 10;
+        break;
+
     default:
         break;
     }
@@ -367,6 +419,14 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case WING_SLAM_OUT:
+        Set_AnimChangeable(true);
+        break;
+
+    case WINGSHIELD_ROCK_VOLLEY_INTO:
+        pModelObject->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_LOOP);
+        break;
+
+    case WINGSHIELD_ROCK_VOLLEY_OUT:
         Set_AnimChangeable(true);
         break;
 
@@ -651,9 +711,21 @@ HRESULT CButterGrump::Ready_Projectiles()
     pWingSlamDesc->iCurLevelID = m_iCurLevelID;
 
     pWingSlamDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pWingSlamDesc->tTransform3DDesc.fSpeedPerSec = 20.f;
+    pWingSlamDesc->tTransform3DDesc.fSpeedPerSec = 30.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_WingSlam"), Pooling_Desc, pWingSlamDesc);
+
+
+    CBoss_Rock::PROJECTILE_MONSTER_DESC* pRockDesc = new CBoss_Rock::PROJECTILE_MONSTER_DESC;
+    pRockDesc->fLifeTime = 3.f;
+    pRockDesc->eStartCoord = COORDINATE_3D;
+    pRockDesc->isCoordChangeEnable = false;
+    pRockDesc->iCurLevelID = m_iCurLevelID;
+
+    pRockDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pRockDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+
+    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_Rock"), Pooling_Desc, pRockDesc);
 
     return S_OK;
 }
