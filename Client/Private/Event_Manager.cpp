@@ -91,8 +91,15 @@ void CEvent_Manager::Update(_float _fTimeDelta)
 
 	for (size_t i = 0; i < m_Events.size(); ++i)
 	{
-		Execute(m_Events[i]);
+		//if(EVENT_TYPE::LEVEL_CHANGE != (EVENT_TYPE)m_Events[i].eType)
+			Execute(m_Events[i]);
 	}
+
+	//for (size_t i = 0; i < m_Events.size(); ++i)
+	//{
+	//	if (EVENT_TYPE::LEVEL_CHANGE == (EVENT_TYPE)m_Events[i].eType)
+	//		Execute(m_Events[i]);
+	//}
 	m_Events.clear();
 
 }

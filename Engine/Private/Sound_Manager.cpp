@@ -69,7 +69,11 @@ void CSound_Manager::Stop_BGM()
 void CSound_Manager::End_BGM()
 {
     if (nullptr != m_pCurPlayBGM)
+    {
         m_pCurPlayBGM->Stop_Sound(true);
+        Safe_Release(m_pCurPlayBGM);
+        m_pCurPlayBGM = nullptr;
+    }
 }
 
 void CSound_Manager::Set_BGMVolume(_float _fVolume)
@@ -326,8 +330,7 @@ void CSound_Manager::Free()
         iter.second.clear();
     }
     m_SFXs.clear();
-
-    Safe_Release(m_pSoundDevice);
     Safe_Release(m_pCurPlayBGM);
+    Safe_Release(m_pSoundDevice);
     
 }

@@ -78,9 +78,9 @@ HRESULT CPressure_Plate::Render()
 
 void CPressure_Plate::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
+    OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
     
-    if (OBJECT_GROUP::PLAYER == eGroup || OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
+    if (OBJECT_GROUP::PLAYER == eGroup || OBJECT_GROUP::GIMMICK_OBJECT == eGroup)
     {
         if (DOWN != m_eState && DOWN_IDLE != m_eState)
         {
@@ -93,9 +93,9 @@ void CPressure_Plate::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _
 
 void CPressure_Plate::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
+    OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
 
-    if (OBJECT_GROUP::PLAYER == eGroup || OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
+    if (OBJECT_GROUP::PLAYER == eGroup || OBJECT_GROUP::GIMMICK_OBJECT == eGroup)
     {
         --m_iCollisionObjects;
         
