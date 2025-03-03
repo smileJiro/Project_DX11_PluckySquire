@@ -339,11 +339,12 @@ HRESULT CLevel_Chapter_04::Render()
 
 HRESULT CLevel_Chapter_04::Ready_Lights()
 {
-	//m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
-	//m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
-
-
-
+#ifdef _DEBUG
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
+#elif _NDEBUG
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter4.json"));
+#endif // _DEBUG
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter4.json"));
 
 	CONST_LIGHT LightDesc{};
 
@@ -359,18 +360,18 @@ HRESULT CLevel_Chapter_04::Ready_Lights()
 	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
 	//	return E_FAIL;
 
-	/* 规氢己堡盔*/
-	ZeroMemory(&LightDesc, sizeof LightDesc);
+	///* 规氢己堡盔*/
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
 
-	LightDesc.vDirection = { -0.7f, -0.9f, -1.0f };
-	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(1.0f, 0.3882f, 0.2784f, 1.0f);
-	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.0f);
-	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
-	LightDesc.isShadow = true;
-	LightDesc.fShadowFactor = 1.0f;
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
-		return E_FAIL;
+	//LightDesc.vDirection = { -0.7f, -0.9f, -1.0f };
+	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	//LightDesc.vDiffuse = _float4(1.0f, 0.3882f, 0.2784f, 1.0f);
+	//LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.0f);
+	//LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	//LightDesc.isShadow = true;
+	//LightDesc.fShadowFactor = 1.0f;
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+	//	return E_FAIL;
 
 
 

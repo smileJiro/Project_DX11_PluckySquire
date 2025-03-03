@@ -219,9 +219,24 @@ HRESULT CSection_Manager::Section_AddRenderGroup_Process()
 		if (nullptr == SectionPair.second || !SectionPair.second->Is_Active())
 			continue;
 
-		if (FAILED(SectionPair.second->Section_AddRenderGroup_Process()))
+		CSection_2D* pSection2D = static_cast<CSection_2D*>(SectionPair.second);
+		// 텍스쳐 복사
+		if (FAILED(pSection2D->Copy_DefaultMap_ToRenderTarget()))
 			return E_FAIL;
 	}
+
+	m_pGameInstance->Get_ThreadPool()->EnqueueJob([this]()
+		{
+			for (auto& SectionPair : m_CurLevelSections)
+			{
+				if (nullptr == SectionPair.second || !SectionPair.second->Is_Active())
+					continue;
+
+				//CSection_2D* pSection2D = static_cast<CSection_2D*>(SectionPair.second);
+				SectionPair.second->Section_AddRenderGroup_Process();
+			}
+			
+		});
 
 	return S_OK;
 }

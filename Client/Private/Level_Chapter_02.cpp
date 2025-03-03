@@ -416,8 +416,12 @@ HRESULT CLevel_Chapter_02::Render()
 
 HRESULT CLevel_Chapter_02::Ready_Lights()
 {
-	// 이게, 일반
+#ifdef _DEBUG
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
+#elif _NDEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Bright.json"));
+#endif // _DEBUG
+
 	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Bright.json"));
 
 	//CONST_LIGHT LightDesc{};
