@@ -26,12 +26,13 @@ public:
 
 
 public:
-	void Start_Slip(_vector _vDirection);
+	void Start_Slip(_fvector _vDirection, _float _fPower);
 private:
-	virtual void On_StartSlip(_vector _vDirection) {};
+	virtual void On_StartSlip(_vector _vDirection, _float _fPowerMag = 1.f) {};
 	virtual void On_Impact(CGameObject* _pOtherObject) {};
 protected:
 	_bool m_bSlip = false;
+	_float m_fSlipPower = 1.f;
 	_vector m_vSlipDirection = {};
 	_uint m_iImpactCollisionFilter = 0;
 public:

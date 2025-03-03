@@ -67,7 +67,7 @@ public:
 	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 private:
-	virtual void On_StartSlip(_vector _vDirection) override;
+	virtual void On_StartSlip(_fvector _vDirection, _float _fPower) override;
 	virtual void On_Impact(CGameObject* _pOtherObject) override;
 private:
 	CModelObject* m_pBody = nullptr;

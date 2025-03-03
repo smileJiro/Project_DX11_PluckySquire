@@ -110,7 +110,7 @@ void CRubboink_Tiny::Late_Update(_float _fTimeDelta)
 
 
 
-void CRubboink_Tiny::On_StartSlip(_vector _vDirection)
+void CRubboink_Tiny::On_StartSlip(_fvector _vDirection, _float _fPower)
 {
 	if (m_bSlipped)
 	{
@@ -124,6 +124,8 @@ void CRubboink_Tiny::On_StartSlip(_vector _vDirection)
 	m_pZZZ->Set_Render(false);
 	m_pFace->Set_Render(false);
 }
+
+
 
 void CRubboink_Tiny::On_Impact(CGameObject* _pOtherObject)
 {
