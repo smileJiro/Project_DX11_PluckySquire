@@ -121,10 +121,6 @@ void CPrototype_Manager::Free()
     {
         for (auto& Pair : m_pPrototypes[i])
         {
-
-            if (Pair.first == TEXT("Prototype_GameObject_CubeMap")) {
-                int a = 0;
-            }
             Safe_Release(Pair.second);
 
         }
