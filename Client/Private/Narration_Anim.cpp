@@ -110,7 +110,7 @@ void CNarration_Anim::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
 
-	if (true == m_isPlayAnimation)
+	if (m_pModelCom && true == m_isPlayAnimation)
 	{
 		m_pModelCom->Play_Animation(_fTimeDelta, false);
 	}
