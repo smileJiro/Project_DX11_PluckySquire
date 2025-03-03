@@ -137,12 +137,12 @@ HRESULT CNarration_Anim::Render()
 	_float4x4 matWorld4x4;
 	XMStoreFloat4x4(&matWorld4x4, matWorld);
 
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_WorldMatrix", &matWorld4x4)))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &matWorld4x4)))
 		return E_FAIL;
 
 	if (m_isPlayAnimation == true)
 	{
-		m_pModelCom->Render(m_pShaderComs[COORDINATE_2D], (_uint)PASS_VTXPOSTEX::SPRITE2D);
+		m_pModelCom->Render(m_pShaderCom, (_uint)PASS_VTXPOSTEX::SPRITE2D);
 		int a = 0;
 	}
 
@@ -172,7 +172,7 @@ HRESULT CNarration_Anim::Ready_Components()
 {	
 	// 셰이더를 만든다.
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
-		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
+		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	// 모델쪽 생성하는 관련 부분 // 모델 게임레벨

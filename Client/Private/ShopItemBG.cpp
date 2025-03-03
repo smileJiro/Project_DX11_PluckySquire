@@ -89,7 +89,7 @@ HRESULT CShopItemBG::Render()
 		else if (false == m_isChooseItem)
 		{
 
-			if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_fOpaque", &m_fOpaque, sizeof(_float))))
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_fOpaque", &m_fOpaque, sizeof(_float))))
 				return E_FAIL;
 
 			__super::Render(0, PASS_VTXPOSTEX::UI_ALPHA);
@@ -136,7 +136,7 @@ void CShopItemBG::isRender()
 HRESULT CShopItemBG::Ready_Components()
 {
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
-		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
+		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	/* Com_VIBuffer */
