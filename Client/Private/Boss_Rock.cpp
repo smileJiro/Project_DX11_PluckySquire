@@ -1,25 +1,25 @@
 #include "stdafx.h"
-#include "Boss_WingSlam.h"
+#include "Boss_Rock.h"
 #include "ModelObject.h"
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
 
-CBoss_WingSlam::CBoss_WingSlam(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CBoss_Rock::CBoss_Rock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CProjectile_Monster(_pDevice, _pContext)
 {
 }
 
-CBoss_WingSlam::CBoss_WingSlam(const CBoss_WingSlam& _Prototype)
+CBoss_Rock::CBoss_Rock(const CBoss_Rock& _Prototype)
     : CProjectile_Monster(_Prototype)
 {
 }
 
-HRESULT CBoss_WingSlam::Initialize_Prototype()
+HRESULT CBoss_Rock::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CBoss_WingSlam::Initialize(void* _pArg)
+HRESULT CBoss_Rock::Initialize(void* _pArg)
 {
     PROJECTILE_MONSTER_DESC* pDesc = static_cast<PROJECTILE_MONSTER_DESC*>(_pArg);
 
@@ -35,81 +35,47 @@ HRESULT CBoss_WingSlam::Initialize(void* _pArg)
 	return S_OK;
 }
 
-void CBoss_WingSlam::Priority_Update(_float _fTimeDelta)
+void CBoss_Rock::Priority_Update(_float _fTimeDelta)
 {
     __super::Priority_Update(_fTimeDelta);
 }
 
-void CBoss_WingSlam::Update(_float _fTimeDelta)
+void CBoss_Rock::Update(_float _fTimeDelta)
 {
 
     /*_vector vDir = m_pTarget->Get_FinalPosition() - Get_FinalPosition();
     m_pControllerTransform->Go_Direction(vDir, _fTimeDelta);*/
     m_pControllerTransform->Go_Straight(_fTimeDelta);
 
-    if (KEY_DOWN(KEY::F5))
-    {
-        switch (m_iIdx)
-        {
-        case 0:
-            m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(90.f, 0.f, 0.f));
-            break;
-
-        case 1:
-            m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(0.f,90.f, 0.f));
-            break;
-
-        case 2:
-            m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(90.f, 90.f, 0.f));
-            break;
-
-        case 3:
-            m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(-90.f, 0.f, 0.f));
-            break;
-
-        case 4:
-            m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(0.f, -90.f, 0.f));
-            break;
-
-        case 5:
-            m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(-90.f, -90.f, 0.f));
-            break;
-        }
-
-        ++m_iIdx;
-        if (m_iIdx > 5)
-            m_iIdx = 0;
-    }
-
     __super::Update(_fTimeDelta);
 }
 
-void CBoss_WingSlam::Late_Update(_float _fTimeDelta)
+void CBoss_Rock::Late_Update(_float _fTimeDelta)
 {
 
   	__super::Late_Update(_fTimeDelta);
 }
 
-HRESULT CBoss_WingSlam::Render()
+HRESULT CBoss_Rock::Render()
 {
     __super::Render();
     return S_OK;
 }
 
-void CBoss_WingSlam::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+void CBoss_Rock::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
     __super::OnTrigger_Enter(_My, _Other);
 }
 
-void CBoss_WingSlam::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
+void CBoss_Rock::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
 }
 
-void CBoss_WingSlam::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
+void CBoss_Rock::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
 }
 
-HRESULT CBoss_WingSlam::Cleanup_DeadReferences()
+HRESULT CBoss_Rock::Cleanup_DeadReferences()
 {
     if (FAILED(__super::Cleanup_DeadReferences()))
         return E_FAIL;
@@ -131,17 +97,17 @@ HRESULT CBoss_WingSlam::Cleanup_DeadReferences()
     return S_OK;
 }
 
-void CBoss_WingSlam::Active_OnEnable()
+void CBoss_Rock::Active_OnEnable()
 {
     __super::Active_OnEnable();
 }
 
-void CBoss_WingSlam::Active_OnDisable()
+void CBoss_Rock::Active_OnDisable()
 {
     __super::Active_OnDisable();
 }
 
-HRESULT CBoss_WingSlam::Ready_ActorDesc(void* _pArg)
+HRESULT CBoss_Rock::Ready_ActorDesc(void* _pArg)
 {
     PROJECTILE_MONSTER_DESC* pDesc = static_cast<PROJECTILE_MONSTER_DESC*>(_pArg);
 
@@ -162,18 +128,17 @@ HRESULT CBoss_WingSlam::Ready_ActorDesc(void* _pArg)
     ActorDesc->FreezePosition_XYZ[2] = false;
 
     /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
+    SHAPE_SPHERE_DESC* ShapeDesc = new SHAPE_SPHERE_DESC;
     ShapeDesc->fRadius = 2.f;
-    ShapeDesc->fHalfHeight = 10.f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+    ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
     ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
@@ -191,12 +156,12 @@ HRESULT CBoss_WingSlam::Ready_ActorDesc(void* _pArg)
     return S_OK;
 }
 
-HRESULT CBoss_WingSlam::Ready_Components()
+HRESULT CBoss_Rock::Ready_Components()
 {
     return S_OK;
 }
 
-HRESULT CBoss_WingSlam::Ready_PartObjects()
+HRESULT CBoss_Rock::Ready_PartObjects()
 {
     CModelObject::MODELOBJECT_DESC BodyDesc{};
 
@@ -205,7 +170,7 @@ HRESULT CBoss_WingSlam::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    BodyDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sonic_03");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sphere_01");
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
@@ -215,49 +180,46 @@ HRESULT CBoss_WingSlam::Ready_PartObjects()
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform3DDesc.vInitialScaling = _float3(20.f, 20.f, 20.f);
-    BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    BodyDesc.tTransform3DDesc.vInitialScaling = _float3(2.f, 2.f, 2.f);
+    BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(0.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 
-    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 1.f, 1.f, 1.f));
-
-    //m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(45.f, 0.f, -45.f));
-    m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationQuaternion(_float3(90.f, -90.f, 0.f));
+    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 1.f, 0.f, 1.f));
 
     return S_OK;
 }
 
-CBoss_WingSlam* CBoss_WingSlam::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CBoss_Rock* CBoss_Rock::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    CBoss_WingSlam* pInstance = new CBoss_WingSlam(_pDevice, _pContext);
+    CBoss_Rock* pInstance = new CBoss_Rock(_pDevice, _pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CBoss_WingSlam");
+        MSG_BOX("Failed to Created : CBoss_Rock");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CBoss_WingSlam::Clone(void* _pArg)
+CGameObject* CBoss_Rock::Clone(void* _pArg)
 {
-    CBoss_WingSlam* pInstance = new CBoss_WingSlam(*this);
+    CBoss_Rock* pInstance = new CBoss_Rock(*this);
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : CBoss_WingSlam");
+        MSG_BOX("Failed to Cloned : CBoss_Rock");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CBoss_WingSlam::Free()
+void CBoss_Rock::Free()
 {
     Safe_Release(m_pTarget);
 

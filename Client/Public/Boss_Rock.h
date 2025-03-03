@@ -3,18 +3,18 @@
 #include "Client_Defines.h"
 
 BEGIN(Client)
-class CBoss_WingSlam final : public CProjectile_Monster
+class CBoss_Rock final : public CProjectile_Monster
 {
 //public:
-//	typedef struct tagBoss_EnergyBall_Desc : public CProjectile_Monster::CONTAINEROBJ_DESC
+//	typedef struct tagBoss_Rock_Desc : public CProjectile_Monster::CONTAINEROBJ_DESC
 //	{
 //		_float fLifeTime;
 //	}BOSS_ENERGYBALL_DESC;
 
 protected:
-	CBoss_WingSlam(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	CBoss_WingSlam(const CBoss_WingSlam& _Prototype);
-	virtual ~CBoss_WingSlam() = default;
+	CBoss_Rock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CBoss_Rock(const CBoss_Rock& _Prototype);
+	virtual ~CBoss_Rock() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype(); // 프로토 타입 전용 Initialize
@@ -35,15 +35,12 @@ public:
 	virtual void Active_OnDisable() override;
 
 private:
-	_int m_iIdx = { 0 };
-
-private:
 	virtual HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
 
 public:
-	static CBoss_WingSlam* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CBoss_Rock* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void			Free() override;
 };
