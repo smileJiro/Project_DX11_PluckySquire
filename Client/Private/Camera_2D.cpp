@@ -221,7 +221,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 			/*	if (iWidth * iHeight <= iIndex || 0 > iIndex)
 					vNormal = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);*/
 
-				_uint iDefaultIndex = iIndex * 2;
+				_uint iDefaultIndex = iIndex * 4;
 
 				// float4 데이터 읽기
 				_float x = fData[iDefaultIndex] / 65535.0f;; // Red 채널
@@ -907,6 +907,9 @@ void CCamera_2D::Check_MagnificationType()
 	// 횡
 	else {
 		// 배율
+
+		_float fRatio = static_cast<CSection_2D*>(pSection)->Get_CameraRatio();
+
 		if (1.f == 1.f) {
 			m_eMagnificationType = HORIZON_NON_SCALE;
 			m_iFreezeMask = FREEZE_Z;
