@@ -232,6 +232,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::DOOR);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER_PROJECTILE);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::BLOCKER, OBJECT_GROUP::PLAYER_PROJECTILE);
 
 
 

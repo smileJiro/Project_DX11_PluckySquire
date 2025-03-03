@@ -2,6 +2,7 @@
 	{
 		"Section_Name": "Chapter1_P0102",
 		"Section_BackGround_Name": "Chapter1_P0102_BackGround",
+						
 		"Section_Type": 1,
 		"Section_Default": 0,
 		"Section_Info": {
@@ -54,7 +55,6 @@
 	},
 	{
 		"Section_Name": "Chapter1_P1112",
-		"Section_Start": true,
 		"Section_BackGround_Name": "Chapter1_P1112_BackGround",
 		"Section_Type": 1,
 		"Section_Default": 0,
@@ -64,6 +64,7 @@
 	},
 	{
 		"Section_Name": "Chapter2_P0102",
+		"Section_Start": true,
 		"Section_File_Name": "Chapter2_P0102.m2chc",
 		"Section_BackGround_Name": "Chapter2_P0102_BackGround",
 		"Section_Type": 0,
