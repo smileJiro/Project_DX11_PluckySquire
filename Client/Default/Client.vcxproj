@@ -191,6 +191,8 @@
     <ClInclude Include="..\Public\Bomb.h" />
     <ClInclude Include="..\Public\Bombable.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
+    <ClInclude Include="..\Public\BossWingSlamState.h" />
+    <ClInclude Include="..\Public\Boss_WingSlam.h" />
     <ClInclude Include="..\Public\ButterGrump_LeftEye.h" />
     <ClInclude Include="..\Public\ButterGrump_RightEye.h" />
     <ClInclude Include="..\Public\ButterGrump_Shield.h" />
@@ -453,6 +455,8 @@
     <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\Bombable.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
+    <ClCompile Include="..\Private\BossWingSlamState.cpp" />
+    <ClCompile Include="..\Private\Boss_WingSlam.cpp" />
     <ClCompile Include="..\Private\ButterGrump_LeftEye.cpp" />
     <ClCompile Include="..\Private\ButterGrump_RightEye.cpp" />
     <ClCompile Include="..\Private\ButterGrump_Shield.cpp" />

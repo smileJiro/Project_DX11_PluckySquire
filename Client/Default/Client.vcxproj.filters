@@ -1301,6 +1301,12 @@
     <ClInclude Include="..\Public\Domino.h">
       <Filter>02.GameObjects\MapObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Boss_WingSlam.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossWingSlamState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2065,6 +2071,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Domino.cpp">
       <Filter>02.GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss_WingSlam.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossWingSlamState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
