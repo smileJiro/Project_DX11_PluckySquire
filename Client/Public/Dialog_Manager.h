@@ -27,7 +27,7 @@ public:
 	void								Set_DialogId(const _tchar* _id, const _tchar* _strCurSection = nullptr, _bool _DisplayDialogue = true, _bool _DisPlayPortrait = true);
 	CDialog*							Get_Dialog() { return m_pDialogue; }
 
-	void								Set_Dialog(CDialog* _pDialog) { m_pDialogue = _pDialog; }
+	void								Set_Dialog(CDialog* _pDialog) { m_pDialogue = _pDialog; Safe_AddRef(_pDialog);}
 	void								Set_NPC(CNPC* _npc) { m_pNPC = _npc; Safe_AddRef(_npc); }
 	void								Set_ActionChange(_int _AnimIndex) { m_pNPC->Set_SocialNpcAnimationIndex(_AnimIndex); }
 
