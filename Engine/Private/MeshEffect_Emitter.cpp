@@ -517,6 +517,8 @@ HRESULT CMeshEffect_Emitter::Load_TextureInfo(const json& _jsonInfo)
 				m_pGameInstance->Add_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strPath), CTexture::Create(m_pDevice, m_pContext, strPath.c_str()));
 			}
 
+			Safe_Release(m_Textures[eType]);
+
 			m_Textures[eType] = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_pGameInstance->Get_StaticLevelID(),
 				STRINGTOWSTRING(strPath), nullptr));
 			#ifdef _DEBUG

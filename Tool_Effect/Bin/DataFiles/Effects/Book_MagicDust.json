@@ -107,10 +107,6 @@
                     "Value": 1.0
                 },
                 {
-                    "Name": "DissolveFactor",
-                    "Value": 0.0
-                },
-                {
                     "Name": "DissolveTimeFactor",
                     "Value": 0.30000001192092896
                 },

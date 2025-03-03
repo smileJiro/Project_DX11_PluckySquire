@@ -68,7 +68,6 @@ private :
 
 	virtual void					GameEvent_End();
 
-
 private:
 	_float		m_fMaxTimer = 0.f;
 	_float		m_fTimer = 0.f;

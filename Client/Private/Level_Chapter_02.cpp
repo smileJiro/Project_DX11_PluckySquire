@@ -468,7 +468,6 @@ HRESULT CLevel_Chapter_02::Ready_CubeMap(const _wstring& _strLayerTag)
 		return E_FAIL;
 	
 	m_pGameInstance->Set_CubeMap(static_cast<CCubeMap*>(pCubeMap));
-
 	return S_OK;
 }
 

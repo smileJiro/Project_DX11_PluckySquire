@@ -10,13 +10,13 @@ CCompute_Shader::CCompute_Shader(const CCompute_Shader& _Prototype)
     //, m_ComputeShaders(_Prototype.m_ComputeShaders)
     , m_pEffect(_Prototype.m_pEffect)
     , m_iNumLayouts(_Prototype.m_iNumLayouts)
-    , m_pEventQuery(_Prototype.m_pEventQuery)
+    //, m_pEventQuery(_Prototype.m_pEventQuery)
 {
     //for (auto& Pair : m_ComputeShaders)
     //    Safe_AddRef(Pair.second);
 
     Safe_AddRef(m_pEffect);
-    Safe_AddRef(m_pEventQuery);
+   // Safe_AddRef(m_pEventQuery);
 }
 
 HRESULT CCompute_Shader::Initialize_Prototype(const _tchar* _pShaderFilePath)
@@ -68,10 +68,10 @@ HRESULT CCompute_Shader::Initialize_Prototype(const _tchar* _pShaderFilePath)
     m_iNumLayouts = TechniqueDesc.Passes;
 
 
-    D3D11_QUERY_DESC queryDesc = {};
-    queryDesc.Query = D3D11_QUERY_EVENT;
-    queryDesc.MiscFlags = 0;
-    m_pDevice->CreateQuery(&queryDesc, &m_pEventQuery);
+    //D3D11_QUERY_DESC queryDesc = {};
+    //queryDesc.Query = D3D11_QUERY_EVENT;
+    //queryDesc.MiscFlags = 0;
+    //m_pDevice->CreateQuery(&queryDesc, &m_pEventQuery);
 
     return S_OK;
 }
@@ -227,11 +227,8 @@ CComponent* CCompute_Shader::Clone(void* _pArg)
 
 void CCompute_Shader::Free()
 {
-    //for (auto& Pair : m_ComputeShaders)
-    //    Safe_Release(Pair.second);
-
     Safe_Release(m_pEffect);
-    Safe_Release(m_pEventQuery);
+    //Safe_Release(m_pEventQuery);
 
     __super::Free();
 }

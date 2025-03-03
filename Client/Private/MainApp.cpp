@@ -92,6 +92,7 @@ void CMainApp::Progress(_float _fTimeDelta)
 		Imgui_FPS(_fTimeDelta);
 
 	m_pGameInstance->Update_Engine(_fTimeDelta);
+	CEffect_Manager::GetInstance()->Update_Manager();
 	CCamera_Manager::GetInstance()->Update(_fTimeDelta);
 	CTrigger_Manager::GetInstance()->Update();
 	// TODO :: 여기가 맞는지? >> 맞는 것 같삼.
