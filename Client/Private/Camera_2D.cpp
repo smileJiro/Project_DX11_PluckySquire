@@ -679,6 +679,10 @@ void CCamera_2D::Find_TargetPos()
 	{
 #pragma region Book
 		if (CSection_2D::PLAYMAP == m_iPlayType) {
+
+			if (false == Is_Target_In_SketchSpace())
+				break;
+			
 			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 
 			if (!XMVector3Equal(vTargetPos, XMVectorZero())) {
@@ -692,6 +696,10 @@ void CCamera_2D::Find_TargetPos()
 
 #pragma region Sketch Space
 		else if (CSection_2D::SKSP == m_iPlayType) {
+
+			if (false == Is_Target_In_SketchSpace())
+				break;
+
 			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 
 			if (!XMVector3Equal(vTargetPos, XMVectorZero())) {
@@ -920,6 +928,23 @@ void CCamera_2D::Check_MagnificationType()
 		}
 		m_eDirectionType = HORIZON;
 	}
+}
+
+_bool CCamera_2D::Is_Target_In_SketchSpace()
+{
+	_float2 fSectionSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(m_strSectionName);
+	_float2 fTargetPos = {};
+
+	memcpy(&fTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float2));
+
+	fTargetPos = { fTargetPos.x + (fSectionSize.x * 0.5f), -(fTargetPos.y - (fSectionSize.y * 0.5f)) };
+
+	if (fTargetPos.x <= 0.f || fSectionSize.x <= fTargetPos.x ||
+		fTargetPos.y <= 0.f || fSectionSize.y <= fTargetPos.y) {
+		return false;
+	}
+
+	return true;
 }
 
 HRESULT CCamera_2D::Create_NormalCopyTexture()
