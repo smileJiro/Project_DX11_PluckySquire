@@ -73,6 +73,7 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 		SHAPE_BOX_DESC ShapeDesc3 = {};
 		ShapeDesc3.vHalfExtents = pDesc->vBoxHalfExtents;
 		ShapeDesc3.vHalfExtents.x += 0.2f;
+		ShapeDesc3.vHalfExtents.y -= 0.2f;
 		ShapeDesc3.vHalfExtents.z += 0.2f;
 		SHAPE_DATA ShapeData3;
 		ShapeData3.pShapeDesc = &ShapeDesc3;
@@ -173,10 +174,7 @@ void CDraggableObject::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1
 
 void CDraggableObject::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
-	{
-		m_bUserContact = true;
-	}
+
 }
 
 void CDraggableObject::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -194,7 +192,10 @@ void CDraggableObject::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Ot
 
 void CDraggableObject::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-
+	if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
+	{
+		m_bUserContact = true;
+	}
 }
 
 void CDraggableObject::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
