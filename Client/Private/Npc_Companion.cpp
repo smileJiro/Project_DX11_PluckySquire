@@ -8,6 +8,7 @@
 #include "StateMachine.h"
 
 #include "NPC_Violet.h"
+#include "NPC_Thrash.h"
 #include "Dialogue.h"
 
 #include "Section_2D_Narration.h"
@@ -34,7 +35,6 @@ HRESULT CNPC_Companion::Initialize_Prototype()
 
 HRESULT CNPC_Companion::Initialize(void* _pArg)
 {
-
 	CNPC::NPC_DESC* pDesc = static_cast<CNPC::NPC_DESC*>(_pArg);
 
 	m_iCurLevelID = pDesc->iCurLevelID;
@@ -244,7 +244,7 @@ HRESULT CNPC_Companion::Ready_Companion(const _wstring& _strLayerName, void* _pA
 	CompanionDesc.isCoordChangeEnable = false;
 	CompanionDesc.iNumPartObjects = PART_END;
 	CompanionDesc.tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	CompanionDesc.tTransform2DDesc.fSpeedPerSec = static_cast<CPlayer*>(m_pTarget)->Get_MoveSpeed(COORDINATE_2D);
+	//CompanionDesc.tTransform2DDesc.fSpeedPerSec = static_cast<CPlayer*>(m_pTargetObject)->Get_MoveSpeed(COORDINATE_2D);
 	CompanionDesc.iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 	CompanionDesc.iMainIndex = 0;
 	CompanionDesc.iSubIndex = 0;
@@ -269,7 +269,7 @@ HRESULT CNPC_Companion::Ready_Companion(const _wstring& _strLayerName, void* _pA
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_NPC_Companion_Thrash"), CompanionDesc.iCurLevelID, _strLayerName, &pGameObject, &CompanionDesc)))
 		return E_FAIL;
 
-	m_vecCompanionNpc.push_back(static_cast<CNPC_Violet*>(pGameObject));
+	m_vecCompanionNpc.push_back(static_cast<CNPC_Thrash*>(pGameObject));
 	Safe_AddRef(pGameObject);
 
 
@@ -294,21 +294,24 @@ void CNPC_Companion::Set_TargetObject(_int _index)
 {
 	if (0 == m_vecCompanionNpc.size())
 		return;
-
 	// 첫번째다? 플레이어를 따라가자.
 	if (0 == _index)
 	{
-		CPlayer* pPlayer = static_cast<CPlayer*>(m_pTarget);
-
+		m_pTargetObject = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
+		Safe_AddRef(m_pTargetObject);
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pTargetObject);
 		Set_PlayerObject(m_vecCompanionNpc[_index], pPlayer);
-	} 
+		_float fSpeed = pPlayer->Get_MoveSpeed(COORDINATE_2D);
+		m_vecCompanionNpc[_index]->Get_ControllerTransform()->Set_SpeedPerSec(fSpeed);
 
+	} 
 	// 두번째 세번째다?
 	// 이전놈을 데리고 와야한다.
 	else if (1 <= _index)
 	{
 		auto iter = m_vecCompanionNpc[_index - 1];
 		Set_NPCObject(m_vecCompanionNpc[_index], iter);
+		m_vecCompanionNpc[_index]->Get_ControllerTransform()->Set_SpeedPerSec(m_vecCompanionNpc[0]->Get_ControllerTransform()->Get_SpeedPerSec());
 	}
 }
 

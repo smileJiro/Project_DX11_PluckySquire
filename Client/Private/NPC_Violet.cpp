@@ -469,7 +469,7 @@ void CNPC_Violet::Trace(_float _fTimeDelta)
 
 	Cal_PlayerDistance();
 
-	if (COORDINATE_2D == m_pTarget->Get_CurCoord())
+	if (COORDINATE_2D == m_pTargetObject->Get_CurCoord())
 	{
 		m_isMove = Trace_Player(vTargetObjectPos, _NPCPos);
 	}

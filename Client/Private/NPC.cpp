@@ -33,11 +33,8 @@ HRESULT CNPC::Initialize(void* _pArg)
 
 	m_iMainIndex = pDesc->iMainIndex;
 	m_iSubIndex = pDesc->iSubIndex; 
-	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
 	wsprintf(m_strDialogueIndex, pDesc->strDialogueIndex);
 	wsprintf(m_strCurSecion, pDesc->strLocateSection);
-
-	Safe_AddRef(m_pTarget);
 
 	return S_OK;
 }
@@ -129,21 +126,6 @@ HRESULT CNPC::Cleanup_DeadReferences()
 	if (FAILED(__super::Cleanup_DeadReferences()))
 		return E_FAIL;
 
-	if (nullptr == m_pTarget)
-	{
-#ifdef _DEBUG
-		cout << "MONSTER : NO PLAYER" << endl;
-#endif // _DEBUG
-		return S_OK;
-	}
-
-	if (true == m_pTarget->Is_Dead())
-	{
-		Safe_Release(m_pTarget);
-		m_pTarget = nullptr;
-
-	}
-
 	return S_OK;
 }
 
@@ -184,8 +166,6 @@ void CNPC::Free()
 		Safe_Release(pGameObject);
 	m_pNpcObject.clear();
 
-	if (nullptr != m_pTarget)
-		Safe_Release(m_pTarget);
 
 	Safe_Release(m_pAnimEventGenerator);
 
