@@ -84,6 +84,7 @@ HRESULT CTriggerObject::Initialize_3D_Trigger(CActor::ACTOR_DESC** _pActorDesc, 
     m_szEventTag = _pDesc->szEventTag;
     m_eConditionType = _pDesc->eConditionType;
     //m_eCoordiNate = _pDesc->eCoordiNate; StartCoordinate가 있는데?
+    m_isReusable = _pDesc->isReusable;
 
     _pDesc->eActorType = (ACTOR_TYPE)_pDesc->iActorType;;
     *_pActorDesc = new CActor::ACTOR_DESC();
@@ -142,6 +143,9 @@ HRESULT CTriggerObject::Initialize_2D_Trigger(TRIGGEROBJECT_DESC* _pDesc)
     m_iTriggerType = _pDesc->iTriggerType;
     m_szEventTag = _pDesc->szEventTag;
     m_eConditionType = _pDesc->eConditionType;
+    m_isReusable = _pDesc->isReusable;
+
+
     CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
     AABBDesc.pOwner = this;
     AABBDesc.vExtents = { 1.f, 1.f };
@@ -219,7 +223,9 @@ void CTriggerObject::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Oth
     if (m_CollisionEnterHandler) {
         m_CollisionEnterHandler(m_iTriggerType, m_iTriggerID, _My, _Other);
     }
-    
+    if (!m_isReusable)
+        Event_DeleteObject(this);
+
 }
 
 void CTriggerObject::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -242,6 +248,8 @@ void CTriggerObject::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Othe
     if (m_CollisionExitHandler) {
         m_CollisionExitHandler(m_iTriggerType, m_iTriggerID, _My, _Other);
     }
+    if (!m_isReusable)
+        Event_DeleteObject(this);
 }
 
 void CTriggerObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -249,6 +257,8 @@ void CTriggerObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _p
     if (m_EnterHandler) {
         m_EnterHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
+    if (!m_isReusable)
+        Event_DeleteObject(this);
 }
 
 void CTriggerObject::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -263,6 +273,8 @@ void CTriggerObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pO
     if (m_ExitHandler) {
         m_ExitHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
+    if (!m_isReusable)
+        Event_DeleteObject(this);
 }
 
 CTriggerObject* CTriggerObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
