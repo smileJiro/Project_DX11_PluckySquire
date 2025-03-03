@@ -14,7 +14,15 @@ CPostit_Page::CPostit_Page(const CPostit_Page& _Prototype)
 
 HRESULT CPostit_Page::Initialize(void* _pArg)
 {
+    Set_PlayingAnim(false);
     return __super::Initialize(_pArg);
+}
+
+void CPostit_Page::Anim_Action(POSTIT_PAGE_ANIM_TYPE eType, _bool _isLoop)
+{
+    Set_PlayingAnim(true);
+    Set_Animation(eType);
+    Set_AnimationLoop(COORDINATE_2D, eType, _isLoop);
 }
 
 
