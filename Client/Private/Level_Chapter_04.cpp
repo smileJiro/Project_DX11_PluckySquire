@@ -1287,7 +1287,7 @@ CLevel_Chapter_04* CLevel_Chapter_04::Create(ID3D11Device* _pDevice, ID3D11Devic
 
 void CLevel_Chapter_04::Free()
 {
-
+	m_pGameInstance->End_BGM();
 
 	__super::Free();
 }
