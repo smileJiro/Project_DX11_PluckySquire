@@ -9,12 +9,12 @@
 
 
 CNarration::CNarration(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CUI (_pDevice, _pContext)
+	: CUI(_pDevice, _pContext)
 {
 }
 
 CNarration::CNarration(const CNarration& _Prototype)
-	: CUI ( _Prototype )
+	: CUI(_Prototype)
 {
 }
 
@@ -32,7 +32,7 @@ HRESULT CNarration::Initialize(void* _pArg)
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
-	
+
 	if (LEVEL_CHAPTER_2 == pDesc->iCurLevelID)
 	{
 		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Narration/Level_Chapter_02_Narration.json"))))
@@ -41,7 +41,7 @@ HRESULT CNarration::Initialize(void* _pArg)
 		//if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Narration/Level_Chapter_06_Narration.json"))))
 		//	return E_FAIL;
 	}
-	
+
 	_float2 vCalScale = { 0.f, 0.f };
 	vCalScale.x = m_vOriginSize.x * RATIO_BOOK2D_X;
 	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
@@ -75,12 +75,12 @@ void CNarration::Update(_float _fTimeDelta)
 		{
 			//if (animObj)
 			//{
-				if (false == animObj->CBase::Is_Active())
-					animObj->CBase::Set_Active(true);
+			if (false == animObj->CBase::Is_Active())
+				animObj->CBase::Set_Active(true);
 
-				animObj->StartAnimation();
+			animObj->StartAnimation();
 
-				m_DisPlayTextLine = 0;
+			m_DisPlayTextLine = 0;
 			//}
 		}
 	}
@@ -105,7 +105,7 @@ void CNarration::Update(_float _fTimeDelta)
 
 		Update_Narration(_fTimeDelta);
 	}
-		
+
 }
 
 void CNarration::Late_Update(_float _fTimeDelta)
@@ -199,7 +199,7 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 
 					if (line.contains("strSubSFX") && line["strSubSFX"].is_string())
 						DialogueData.strSubSFX = StringToWstring(line["strSubSFX"].get<string>());
-					
+
 
 					if (line.contains("isLeft") && line["isLeft"].is_boolean())
 						DialogueData.isLeft = line["isLeft"].get<bool>();
@@ -283,7 +283,7 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 							{
 								Animation.isLoop = Anim["isLoop"].get<_bool>();
 							}
-								
+
 
 							// 임시 대화 데이터를 생성하여 해당 애니메이션만 담는다.
 							NarrationDialogData tempDialogue = DialogueData;
@@ -304,21 +304,24 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tempData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), tempData.eCurlevelId, TEXT("Layer_UI"), &pObject, &tempData)))
 								return E_FAIL;
 
-							Safe_AddRef(pObject);
+							
 							// 생성한 애니메이션 객체 넣기
 							CNarration_Anim* pAnim;
 							pAnim = static_cast<CNarration_Anim*>(pObject);
 
+							// 누수 의심 코드
+							
+							Safe_Release(pObject);
 
 							pAnimation.push_back(pAnim);
-							//Safe_AddRef(pAnim);
+							Safe_AddRef(pAnim);
 
 							// 원본 DialogueData에도 해당 애니메이션 데이터를 저장(필요에 따라 사용)
 							DialogueData.NarAnim.push_back(Animation);
 						}
 					}
 					// 애니메이션 처리 후, 완성된 대화 데이터를 NarData에 추가한다.
-					
+
 
 					m_vAnimObjectsByLine.emplace(iLine, pAnimation);
 
@@ -362,7 +365,7 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 	{
 
 		// 이전 라인은 완전 불투명, 현재 라인은 fade-in 중
-		float alpha = (i < m_iCurrentLine) ? 1.f : m_fTextAlpha; 
+		float alpha = (i < m_iCurrentLine) ? 1.f : m_fTextAlpha;
 		NarrationDialogData& dialogue = lines[i];
 
 		// 해당 라인의 시작 위치
@@ -402,7 +405,7 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 				continue;
 			}
 
-			
+
 
 			// 토큰의 크기를 측정하고 텍스트 렌더링 (알파값 적용)
 			_vector vecSize = m_pGameInstance->Measuring(TEXT("Font40"), token.strText.c_str());
@@ -410,7 +413,7 @@ HRESULT CNarration::DisplayText(_float2 _vRTSize)
 			XMStoreFloat2(&vTextSize, vecSize);
 
 			m_pGameInstance->Render_Scaling_Font(TEXT("Font40"), token.strText.c_str(), _float2(fx, fy), XMVectorSet(0.f, 0.f, 0.f, alpha) // alpha 적용
-				,0.f, _float2(0.f, 0.f), token.fScale);
+				, 0.f, _float2(0.f, 0.f), token.fScale);
 
 
 			fx += vTextSize.x * token.fScale * 0.98f;
@@ -511,10 +514,10 @@ vector<CNarration_Anim*> CNarration::CreateAnimationObjectsForLine(_uint iLine)
 	// 현재 나레이션 데이터에서 iLine에 해당하는 DialogueData의 애니메이션 정보를 가져옴
 	NarrationDialogData dialogueData = m_NarrationDatas[m_iNarrationCount].lines[iLine];
 
-// dialogueData의 NarAnim 배열에 있는 각 애니메이션 정보를 토대로
-// 애니메이션 객체를 생성해 주는 로직 (m_pGameInstance->Add_GameObject_ToLayer 호출 등)
-// 예시)
-_int iAnim = 0;
+	// dialogueData의 NarAnim 배열에 있는 각 애니메이션 정보를 토대로
+	// 애니메이션 객체를 생성해 주는 로직 (m_pGameInstance->Add_GameObject_ToLayer 호출 등)
+	// 예시)
+	_int iAnim = 0;
 	for (auto& animInfo : dialogueData.NarAnim)
 	{
 		// tempData 구성 (대화 라인은 단일 데이터임)
@@ -571,14 +574,14 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 				{
 					m_isLeftRight = true;
 					GetAnimationObjectForLine(m_iCurrentLine);
-					
+
 				}
 				// 애니메이션 시작해
 				if (nullptr != m_pCurrentAnimObj[i])
 				{
 					m_pCurrentAnimObj[i]->StartAnimation();
 				}
-						
+
 			}
 		}
 	}
@@ -620,7 +623,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					if (false == m_isNextLineReady)
 					{
 						m_isNextLineReady = true;
-						
+
 
 						m_isWaitingPrint = true;
 						//GetAnimationObjectForLine(m_iCurrentLine, 0);
@@ -648,7 +651,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 
 						// TODO :: 테스트용도
 						m_DisPlayTextLine = m_iCurrentLine;
-						
+
 						_float3 vPos = _float3(0.f, 0.f, 1.f);
 						if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
 							Event_Book_Main_Section_Change_Start(1, &vPos);
@@ -733,7 +736,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						// 넘어갈 대상의 페이지를 가져온다.
 						// 넘어가는 패턴 -> 
 					}
-						
+
 
 
 					/* 하드코딩 */
@@ -750,7 +753,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					Uimgr->Set_TurnoffPlayNarration(false);
 
 					// TODO :: 누수 잡는 중
-					
+
 					for (auto iter : m_pCurrentAnimObj)
 					{
 						Safe_Release(iter);

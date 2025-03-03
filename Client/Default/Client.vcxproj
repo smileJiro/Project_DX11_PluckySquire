@@ -192,6 +192,7 @@
     <ClInclude Include="..\Public\Bombable.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
     <ClInclude Include="..\Public\BossWingSlamState.h" />
+    <ClInclude Include="..\Public\Boss_Rock.h" />
     <ClInclude Include="..\Public\Boss_WingSlam.h" />
     <ClInclude Include="..\Public\ButterGrump_LeftEye.h" />
     <ClInclude Include="..\Public\ButterGrump_RightEye.h" />
@@ -405,6 +406,7 @@
     <ClInclude Include="..\public\Effect_Trail.h" />
     <ClInclude Include="..\Public\Stoppable.h" />
     <ClInclude Include="..\Public\StopStamp.h" />
+    <ClInclude Include="..\Public\TiltSwapPusher.h" />
     <ClInclude Include="..\Public\TriggerObject.h" />
     <ClInclude Include="..\Public\Trigger_Manager.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h" />
@@ -458,6 +460,7 @@
     <ClCompile Include="..\Private\Bombable.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
     <ClCompile Include="..\Private\BossWingSlamState.cpp" />
+    <ClCompile Include="..\Private\Boss_Rock.cpp" />
     <ClCompile Include="..\Private\Boss_WingSlam.cpp" />
     <ClCompile Include="..\Private\ButterGrump_LeftEye.cpp" />
     <ClCompile Include="..\Private\ButterGrump_RightEye.cpp" />
@@ -670,6 +673,7 @@
     <ClCompile Include="..\private\Effect_Trail.cpp" />
     <ClCompile Include="..\Private\Stoppable.cpp" />
     <ClCompile Include="..\Private\StopStamp.cpp" />
+    <ClCompile Include="..\Private\TiltSwapPusher.cpp" />
     <ClCompile Include="..\Private\TriggerObject.cpp" />
     <ClCompile Include="..\Private\Trigger_Manager.cpp" />
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp" />

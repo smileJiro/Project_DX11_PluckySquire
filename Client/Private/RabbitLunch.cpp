@@ -16,7 +16,7 @@ HRESULT CRabbitLunch::Initialize(void* _pArg)
 {
 	RABBITLUNCH_DESC* pModelDesc = static_cast<RABBITLUNCH_DESC*>(_pArg);
 	m_eLunchType = pModelDesc->eLunchType;
-
+	pModelDesc->eStartCoord = COORDINATE_3D;
 	pModelDesc->vHeadUpRoolPitchYaw3D = { 0.f,0.f,XMConvertToRadians(90.f) };
 
 	pModelDesc->isCoordChangeEnable = true;
