@@ -92,6 +92,7 @@ HRESULT CWordGame_Generator::Load_Word(const _wstring& _strJsonPath)
 				m_Words[iIndex]->Set_Active(false);
 
 				Event_CreateObject(SECTION_MGR->Get_SectionLeveID(), L"Layer_WordObj", m_Words[iIndex]);
+				Safe_AddRef(m_Words[iIndex]);
 
 			}
 			iLoop++;
