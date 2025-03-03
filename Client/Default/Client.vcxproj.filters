@@ -1307,6 +1307,10 @@
     <ClInclude Include="..\Public\BossWingSlamState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Postit_Page.h" />
+    <ClInclude Include="..\Public\Boss_Rock.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2077,6 +2081,10 @@
     </ClCompile>
     <ClCompile Include="..\Private\BossWingSlamState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Postit_Page.cpp" />
+    <ClCompile Include="..\Private\Boss_Rock.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
