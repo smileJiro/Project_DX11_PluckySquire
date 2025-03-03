@@ -907,6 +907,9 @@ void CCamera_2D::Check_MagnificationType()
 	// »æ
 	else {
 		// πË¿≤
+
+		_float fRatio = static_cast<CSection_2D*>(pSection)->Get_CameraRatio();
+
 		if (1.f == 1.f) {
 			m_eMagnificationType = HORIZON_NON_SCALE;
 			m_iFreezeMask = FREEZE_Z;
