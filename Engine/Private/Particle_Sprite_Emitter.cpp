@@ -47,7 +47,7 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
     }
     else
     {
-        CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
+        m_pMaskTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
         m_pGameInstance->Add_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath), m_pMaskTextureCom);
 
     }
@@ -67,7 +67,7 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
         }
         else
         {
-            CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
+            m_pDissolveTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
             m_pGameInstance->Add_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath), m_pDissolveTextureCom);
 
         }
@@ -86,7 +86,7 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
         }
         else
         {
-            CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
+            m_pDistortionTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
             m_pGameInstance->Add_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath), m_pDistortionTextureCom);
 
         }
