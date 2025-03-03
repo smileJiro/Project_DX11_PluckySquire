@@ -92,7 +92,7 @@ void CLogo_BG::Late_Update(_float _fTimeDelta)
 
 HRESULT CLogo_BG::Render()
 {	
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_vColors", &m_vColor, sizeof(_float4))))
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColors", &m_vColor, sizeof(_float4))))
 		return E_FAIL;
 
 	__super::Render(0, PASS_VTXPOSTEX::COLOR_ALPHA);
@@ -262,7 +262,7 @@ void CLogo_BG::ProcesssByIndex(_int _iIndex)
 HRESULT CLogo_BG::Ready_Components()
 {
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
-		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
+		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	/* Com_VIBuffer */
