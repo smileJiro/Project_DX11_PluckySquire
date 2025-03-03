@@ -232,6 +232,8 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 				m_pContext->Unmap(m_pCopyNormalMap, 0);
 
 				vNormal = XMVectorSet(x, y, z, w);
+				vNormal = (vNormal * 2.f) - XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f);
+
 
 				Set_InitialData(vNormal, 12.5f, XMVectorZero(), 5);
 			}
@@ -761,10 +763,58 @@ void CCamera_2D::Find_TargetPos()
 
 			/* Custom Normal*/
 			else if (ARM_NORMAL_TYPE::CUSTOM_NORMAL == iNormalType) {
+
+				
+
 			}
 
 			/* Normal Map */
 			else if (ARM_NORMAL_TYPE::NORMAL_MAP == iNormalType) {
+
+				if (FAILED(m_pGameInstance->Copy_RT_Resource(TEXT("Target_Normal"), m_pCopyNormalMap)))
+					MSG_BOX("Copy Failed");
+				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+				_vector vNormal = {};
+
+				_matrix matResult = m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW);
+				matResult = matResult * m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ);
+
+				vTargetPos = XMVector3TransformCoord(vTargetPos, matResult);
+
+				_int iPixelX = (_int)((XMVectorGetX(vTargetPos) + 1.f) * (g_iWinSizeX * 0.5f));
+				_int iPixelY = (_int)((1.f - XMVectorGetY(vTargetPos)) * (g_iWinSizeY * 0.5f));
+
+				D3D11_MAPPED_SUBRESOURCE mappedResource;
+				if (FAILED(m_pContext->Map(m_pCopyNormalMap, 0, D3D11_MAP_READ, 0, &mappedResource)))
+					MSG_BOX("Normal Map Copy Failed");
+
+				//_int iWidth = mappedResource.RowPitch / sizeof(uint16_t) / 4;
+				//_int iHeight = mappedResource.DepthPitch / mappedResource.RowPitch;
+
+				// RowPitch는 한 줄의 바이트 수를 나타냄
+				uint16_t* fData = static_cast<uint16_t*>(mappedResource.pData);
+
+				// 픽셀 위치 계산 (4 floats per pixel)
+				_int rowPitchInPixels = mappedResource.RowPitch / (sizeof(uint16_t) * 4);
+				_int iIndex = iPixelY * rowPitchInPixels + iPixelX;
+
+				/*	if (iWidth * iHeight <= iIndex || 0 > iIndex)
+						vNormal = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);*/
+
+				_uint iDefaultIndex = iIndex * 4;
+
+				// float4 데이터 읽기
+				_float x = fData[iDefaultIndex] / 65535.0f;; // Red 채널
+				_float y = fData[iDefaultIndex + 1] / 65535.0f;; // Green 채널
+				_float z = fData[iDefaultIndex + 2] / 65535.0f;; // Blue 채널
+				_float w = fData[iDefaultIndex + 3] / 65535.0f;; // Alpha 채널
+
+				m_pContext->Unmap(m_pCopyNormalMap, 0);
+
+				vNormal = XMVectorSet(x, y, z, w);
+				vNormal = (vNormal * 2.f) - XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f);
+
+				Set_InitialData(vNormal, 8.5f, XMVectorZero(), 5);
 			}
 		}
 #pragma endregion
