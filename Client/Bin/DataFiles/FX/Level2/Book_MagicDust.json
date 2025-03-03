@@ -2354,10 +2354,6 @@
             "SpawnType": "SPAWN_RATE",
             "Textures": [
                 {
-                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_01.dds",
-                    "Type": "ALPHA"
-                },
-                {
                     "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Grad_03.dds",
                     "Type": "MASK"
                 },
