@@ -216,13 +216,17 @@ void CUI_Manager::UI_Update()
 {
 	// Active가 아닌데 Narration이 플레이중이면 active로 돌린다.
 
-	if (false == m_pNarration->CBase::Is_Active())
+	if (nullptr != m_pNarration)
 	{
-		if (true == Uimgr->Get_PlayNarration())
+		if (false == m_pNarration->CBase::Is_Active())
 		{
-			m_pNarration->CBase::Set_Active(true);
+			if (true == Uimgr->Get_PlayNarration())
+			{
+				m_pNarration->CBase::Set_Active(true);
+			}
 		}
 	}
+
 
 	if (nullptr != m_pInteractionE)
 	{
