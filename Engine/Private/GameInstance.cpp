@@ -1117,6 +1117,14 @@ void CGameInstance::Set_SFXVolume(const wstring& strSFXTag, _float _fVolume)
 	return m_pSound_Manager->Set_SFXVolume(strSFXTag, _fVolume);
 }
 
+HRESULT CGameInstance::Clear_Sound()
+{
+	if (nullptr == m_pSound_Manager)
+		return E_FAIL;
+
+	return m_pSound_Manager->Clear_Sound();
+}
+
 HRESULT CGameInstance::Load_Json(const _tchar* _szFilePath, _Out_ json* _pOutJson)
 {
 	if (nullptr == m_pJson_Manager)

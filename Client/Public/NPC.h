@@ -99,7 +99,6 @@ protected:
 protected:
 	_uint					m_iState = {};
 	_uint					m_iPreState = {};
-	CGameObject*			m_pTarget = { nullptr };
 	_float					m_fAlertRange = { 0.f };
 	_float					m_fChaseRange = { 0.f };
 	_float					m_fAttackRange = { 0.f };

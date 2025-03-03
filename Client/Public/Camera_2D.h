@@ -168,6 +168,7 @@ private:
 	virtual	void				Switching(_float _fTimeDelta) override;
 	void						Find_TargetPos();
 	void						Check_MagnificationType();
+	_bool						Is_Target_In_SketchSpace();
 
 	// Copy RT
 	HRESULT						Create_NormalCopyTexture();
