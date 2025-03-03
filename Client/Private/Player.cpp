@@ -580,7 +580,7 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 void CPlayer::Update(_float _fTimeDelta)
 {
-
+  
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
 
