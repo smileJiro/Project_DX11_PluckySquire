@@ -310,10 +310,11 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 							pAnim = static_cast<CNarration_Anim*>(pObject);
 
 							// 누수 의심 코드
+							
 							Safe_Release(pObject);
 
 							pAnimation.push_back(pAnim);
-							//Safe_AddRef(pAnim);
+							Safe_AddRef(pAnim);
 
 							// 원본 DialogueData에도 해당 애니메이션 데이터를 저장(필요에 따라 사용)
 							DialogueData.NarAnim.push_back(Animation);
