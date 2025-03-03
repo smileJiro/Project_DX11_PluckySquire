@@ -59,7 +59,6 @@ CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 CPlayer::CPlayer(const CPlayer& _Prototype)
     :CCharacter(_Prototype)
-    , m_pEffectManager(CEffect_Manager::GetInstance())
 {
     for (_uint i = 0; i < ATTACK_TYPE_LAST; i++)
     {
@@ -68,8 +67,6 @@ CPlayer::CPlayer(const CPlayer& _Prototype)
     		m_f2DAttackTriggerDesc[i][j] = _Prototype.m_f2DAttackTriggerDesc[i][j];
         }
     }
-      
-    Safe_AddRef(m_pEffectManager);
 }
 
 HRESULT CPlayer::Initialize_Prototype()
@@ -2225,6 +2222,5 @@ void CPlayer::Free()
 
     Safe_Release(m_pCarryingObject);
     
-    Safe_Release(m_pEffectManager);
     __super::Free();
 }
