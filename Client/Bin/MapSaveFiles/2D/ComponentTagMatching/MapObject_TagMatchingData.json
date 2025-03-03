@@ -4094,7 +4094,7 @@
  {
   "Active": true,
   "ActivePropertis": {
-   "ActiveType": 3
+   "ActiveType": 8
   },
   "BackGround": false,
   "Collider": false,
@@ -4106,7 +4106,7 @@
  {
   "Active": true,
   "ActivePropertis": {
-   "ActiveType": 3
+   "ActiveType": 8
   },
   "BackGround": false,
   "Collider": false,
@@ -4118,7 +4118,7 @@
  {
   "Active": true,
   "ActivePropertis": {
-   "ActiveType": 3
+   "ActiveType": 8
   },
   "BackGround": false,
   "Collider": false,
