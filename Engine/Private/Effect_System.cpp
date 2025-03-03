@@ -357,7 +357,7 @@ CEffect_System* CEffect_System::Create(ID3D11Device* _pDevice, ID3D11DeviceConte
 
 	if (FAILED(pInstance->Initialize_Prototype(_szFilePath)))
 	{
-		MSG_BOX("Failed to Cloned : CEffect_System");
+		MSG_BOX("Failed to Created : CEffect_System");
 		Safe_Release(pInstance);
 	}
 
