@@ -1528,7 +1528,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	fDominoXPosition = 64.5f;
-	fDominoYPosition = 0.25;
+	fDominoYPosition = 0.0;
 	fDominoZPosition = -0.54f;
 	fDominoXPositionStep = -3.5f;
 	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
