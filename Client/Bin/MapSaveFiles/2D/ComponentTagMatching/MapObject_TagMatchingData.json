@@ -4090,5 +4090,41 @@
   "SearchTag": "D06_SKSP_IndividualPlatforms01_Sprite",
   "Sorting": false,
   "TextureName": "D06_SKSP_IndividualPlatforms01_Sprite"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 3
+  },
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "Postit_01",
+  "Sorting": false,
+  "TextureName": "Postit_01"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 3
+  },
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "Postit_02",
+  "Sorting": false,
+  "TextureName": "Postit_02"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 3
+  },
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "Postit_03",
+  "Sorting": false,
+  "TextureName": "Postit_03"
  }
 ]

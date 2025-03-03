@@ -48,8 +48,8 @@ HRESULT CLevel_3D_Map_Tool::Render()
 
 HRESULT CLevel_3D_Map_Tool::Ready_Lights()
 {
-	m_pGameInstance->Load_Lights(TEXT("../../Client/Bin/DataFiles/DirectLights/DirectionalTest.json"));
-	m_pGameInstance->Load_IBL(TEXT("../../Client/Bin/DataFiles/IBL/DirectionalTest.json"));
+	m_pGameInstance->Load_Lights(TEXT("../../Client/Bin/DataFiles/DirectLights/DirectionalTest2.json"));
+	m_pGameInstance->Load_IBL(TEXT("../../Client/Bin/DataFiles/IBL/DirectionalTest2.json"));
 
 	return S_OK;
 }

@@ -1023,9 +1023,6 @@
     <ClInclude Include="..\Public\Portal.h">
       <Filter>02.GameObjects\Portal</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Domino.h">
-      <Filter>02.GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Die.h" />
     <ClInclude Include="..\public\FallingRock.h">
       <Filter>02.GameObjects\FallingRock</Filter>
@@ -1219,7 +1216,6 @@
     <ClInclude Include="..\Public\PlayerState_Drag.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\JumpPad.h" />
     <ClInclude Include="..\Public\Bomb.h">
       <Filter>02.GameObjects\Interact\Carriable</Filter>
     </ClInclude>
@@ -1235,32 +1231,11 @@
     <ClInclude Include="..\Public\Interaction_E.h">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BombStamp.h">
-      <Filter>02.GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Detonator.h">
-      <Filter>02.GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\PalmDecal.h">
-      <Filter>02.GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\PalmMarker.h">
-      <Filter>02.GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\PlayerBomb.h">
-      <Filter>02.GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\StopStamp.h">
-      <Filter>02.GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Bomber.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_ErasePalmDecal.h">
       <Filter>03.Components\PlayerState</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Stoppable.h">
-      <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Bombable.h">
       <Filter>Interface</Filter>
@@ -1271,7 +1246,6 @@
     <ClInclude Include="..\Public\NPC_Manager.h">
       <Filter>02.GameObjects\NPC\100. NPC_Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\SlipperyObject.h" />
     <ClInclude Include="..\Public\ButterGrump_LeftEye.h">
       <Filter>02.GameObjects\Monster\Boss\Part</Filter>
     </ClInclude>
@@ -1299,6 +1273,51 @@
     </ClInclude>
     <ClInclude Include="..\public\Key.h">
       <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Stoppable.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SlipperyObject.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StopStamp.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ZetPack.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PalmDecal.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PalmMarker.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerBomb.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BombStamp.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Detonator.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Rubboink_Tiny.h">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MudPit.h">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\JumpPad.h">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Domino.h">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_WingSlam.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossWingSlamState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1782,9 +1801,6 @@
     <ClCompile Include="..\Private\Portal.cpp">
       <Filter>02.GameObjects\Portal</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Domino.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Die.cpp" />
     <ClCompile Include="..\private\FallingRock.cpp">
       <Filter>02.GameObjects\FallingRock</Filter>
@@ -1964,7 +1980,6 @@
     <ClCompile Include="..\Private\PlayerState_Drag.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\JumpPad.cpp" />
     <ClCompile Include="..\Private\Soldier_CrossBow.cpp">
       <Filter>02.GameObjects\Monster\Soldier\CrossBow\Weapon</Filter>
     </ClCompile>
@@ -1989,32 +2004,8 @@
     <ClCompile Include="..\Private\Level_Chapter_06.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BombStamp.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Detonator.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\PalmDecal.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\PalmMarker.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\PlayerBomb.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\StopStamp.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Bomber.cpp">
       <Filter>03.Components\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_ErasePalmDecal.cpp">
-      <Filter>03.Components\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Stoppable.cpp">
-      <Filter>Interface</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Bombable.cpp">
       <Filter>Interface</Filter>
@@ -2029,7 +2020,6 @@
     <ClCompile Include="..\Private\NPC_Manager.cpp">
       <Filter>02.GameObjects\NPC\100. NPC_Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\SlipperyObject.cpp" />
     <ClCompile Include="..\Private\ButterGrump_LeftEye.cpp">
       <Filter>02.GameObjects\Monster\Boss\Part</Filter>
     </ClCompile>
@@ -2057,6 +2047,54 @@
     </ClCompile>
     <ClCompile Include="..\private\Key.cpp">
       <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Stoppable.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SlipperyObject.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_ErasePalmDecal.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StopStamp.cpp">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ZetPack.cpp">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PalmDecal.cpp">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PalmMarker.cpp">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerBomb.cpp">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BombStamp.cpp">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Detonator.cpp">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Rubboink_Tiny.cpp">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MudPit.cpp">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\JumpPad.cpp">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Domino.cpp">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss_WingSlam.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossWingSlamState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

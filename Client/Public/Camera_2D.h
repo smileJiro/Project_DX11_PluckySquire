@@ -168,8 +168,8 @@ private:
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);
 
-#ifdef _DEBUG
 	void						Key_Input(_float _fTimeDelta);
+#ifdef _DEBUG
 	void						Imgui(_float _fTimeDelta);
 #endif
 

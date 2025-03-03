@@ -75,13 +75,21 @@ _uint CChannel::Get_KeyFrameIndex(_float fTrackPos, _uint iStartKeyFrameIdx, _bo
 
 	if (_bReverse)
 	{
-		while (fTrackPos <= m_KeyFrames[iStartKeyFrameIdx-1].fTrackPosition)
-			--iStartKeyFrameIdx;
+		if (iStartKeyFrameIdx > 0)
+		{
+			while (fTrackPos <= m_KeyFrames[iStartKeyFrameIdx - 1].fTrackPosition)
+				--iStartKeyFrameIdx;
+		}
+
 	}
 	else
 	{
-		while (fTrackPos >= m_KeyFrames[iStartKeyFrameIdx + 1].fTrackPosition)
-			++iStartKeyFrameIdx;
+		if (iStartKeyFrameIdx < m_KeyFrames.size() - 1)
+		{
+			while (fTrackPos >= m_KeyFrames[iStartKeyFrameIdx + 1].fTrackPosition)
+				++iStartKeyFrameIdx;
+		}
+
 	}
 
 	return iStartKeyFrameIdx;
