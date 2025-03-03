@@ -192,7 +192,7 @@ void CUI::Free()
 {
 	Safe_Release(m_pModelCom);
 
-	//Safe_Release(m_pShaderCom);
+	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);
 
