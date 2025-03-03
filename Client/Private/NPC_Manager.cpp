@@ -51,7 +51,7 @@ void CNPC_Manager::Free()
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pOnlyNpc);
 	Safe_Release(m_pNPC);
-	Safe_Release(m_pGameInstance);
+
 	__super::Free();
 }
 
