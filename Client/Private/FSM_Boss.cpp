@@ -8,6 +8,7 @@
 #include "BossEnergyBallState.h"
 #include "BossYellowBallState.h"
 #include "BossWingSlamState.h"
+#include "BossRockVolleyState.h"
 
 CFSM_Boss::CFSM_Boss(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CFSM(_pDevice, _pContext)
@@ -124,6 +125,16 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
 		m_States.emplace((_uint)BOSS_STATE::WINGSLAM, pState);
+		break;
+
+	case Client::BOSS_STATE::ROCKVOLLEY:
+		pState = CBossRockVolleyState::Create(&Desc);
+
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)BOSS_STATE::ROCKVOLLEY, pState);
 		break;
 
 	case Client::BOSS_STATE::LAST:

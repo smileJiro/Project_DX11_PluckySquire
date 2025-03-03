@@ -304,7 +304,7 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tempData.eCurlevelId, TEXT("Prototype_GameObject_Narration_Anim"), tempData.eCurlevelId, TEXT("Layer_UI"), &pObject, &tempData)))
 								return E_FAIL;
 
-							Safe_AddRef(pObject);
+							//Safe_AddRef(pObject);
 							// 생성한 애니메이션 객체 넣기
 							CNarration_Anim* pAnim;
 							pAnim = static_cast<CNarration_Anim*>(pObject);
@@ -312,7 +312,7 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 
 							pAnimation.push_back(pAnim);
 							//Safe_AddRef(pAnim);
-
+							Safe_Release(pObject);
 							// 원본 DialogueData에도 해당 애니메이션 데이터를 저장(필요에 따라 사용)
 							DialogueData.NarAnim.push_back(Animation);
 						}
