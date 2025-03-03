@@ -145,7 +145,11 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Map (CLevel_Chapter_04::Initialize)");
 		assert(nullptr);
 	}
-
+	if (FAILED(Ready_Layer_MapGimmick(TEXT("Layer_MapGimmick"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Map (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
 
 
 	/* Collision Test */
@@ -1134,6 +1138,32 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpPad"),
 		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
 		return E_FAIL;
+
+	tJumpPadDesc.iCurLevelID = m_eLevelID;
+	tJumpPadDesc.eStartCoord = COORDINATE_2D;
+	tJumpPadDesc.tTransform2DDesc.vInitialPosition = { -588.f, 166.5f, 0.f };
+	tJumpPadDesc.strInitialSectionTag = L"Chapter4_SKSP_01";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpPad"),
+		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
+		return E_FAIL;
+
+
+	CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
+	tCarriableDesc.eStartCoord = COORDINATE_2D;
+	tCarriableDesc.iCurLevelID = m_eLevelID;
+	tCarriableDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	tCarriableDesc.strInitialSectionTag;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"), m_eLevelID, _strLayerTag, &tCarriableDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
+{
+
+
 
 	return S_OK;
 }
