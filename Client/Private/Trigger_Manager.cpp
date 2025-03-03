@@ -111,6 +111,9 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 			Desc.iFillterMyGroup = Trigger_json["Fillter_MyGroup"];
 			Desc.iFillterOtherGroupMask = Trigger_json["Fillter_OtherGroupMask"];
 
+			if(Trigger_json.contains("Trigger_Reusable"))
+				Desc.isReusable = Trigger_json["Trigger_Reusable"];
+
 		#pragma endregion
 
 		#pragma region 2. Coordº° Desc ÆíÁý
@@ -329,6 +332,7 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTrigge
 	_string szKey = "Next_Position";
 
 	switch (_tDesc.iTriggerType) {
+
 		case (_uint)TRIGGER_TYPE::SECTION_CHANGE_TRIGGER:
 		{
 			if (_TriggerJson.contains("MapTrigger_Info")) 
@@ -338,6 +342,8 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTrigge
 			}
 		}
 		break;
+
+
 	}
 
 	if (nullptr != _pSection)

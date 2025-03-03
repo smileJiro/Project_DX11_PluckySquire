@@ -38,6 +38,9 @@ public:
 		_bool						isTrigger = { true };
 		_float3						vLocalPosOffset = {};
 		_bool						FreezeRotation[3] = { true, false, true };
+
+		_bool						isReusable = true;
+
 	}TRIGGEROBJECT_DESC;
 
 protected:
@@ -76,6 +79,10 @@ public:
 	void						Resister_ExitHandler(function<void(_uint, _int, _wstring)> _Handler);
 	void						Resister_ExitHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler);
 
+
+	void						Set_Reuseble(_bool _isReuseble) { m_isReusable = _isReuseble; }
+	_bool						Is_Reusable() { return m_isReusable; };
+
 public:
 	virtual void				OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
 	virtual void				OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other) override;
@@ -86,6 +93,8 @@ public:
 	virtual void				On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
 
 protected:
+	_bool						m_isReusable = true;
+
 	class CCollider*			m_pColliderCom = { nullptr };
 	SHAPE_TYPE					m_eShapeType = { SHAPE_TYPE::LAST };
 	_uint						m_iTriggerType;

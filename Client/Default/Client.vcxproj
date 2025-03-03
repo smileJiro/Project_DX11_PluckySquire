@@ -191,6 +191,7 @@
     <ClInclude Include="..\Public\Bomb.h" />
     <ClInclude Include="..\Public\Bombable.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
+    <ClInclude Include="..\Public\BossRockVolleyState.h" />
     <ClInclude Include="..\Public\BossWingSlamState.h" />
     <ClInclude Include="..\Public\Boss_Rock.h" />
     <ClInclude Include="..\Public\Boss_WingSlam.h" />
@@ -459,6 +460,7 @@
     <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\Bombable.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
+    <ClCompile Include="..\Private\BossRockVolleyState.cpp" />
     <ClCompile Include="..\Private\BossWingSlamState.cpp" />
     <ClCompile Include="..\Private\Boss_Rock.cpp" />
     <ClCompile Include="..\Private\Boss_WingSlam.cpp" />

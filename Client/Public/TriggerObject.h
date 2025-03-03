@@ -38,6 +38,9 @@ public:
 		_float3						vLocalPosOffset = {};
 		_bool						FreezeRotation[3] = { true, false, true };
 		_uint						iShapeUse = { 0 };
+
+		_bool						isReusable = true;
+
 	}TRIGGEROBJECT_DESC;
 
 protected:
@@ -56,6 +59,10 @@ public:
 
 	virtual	void				Update(_float _fTimeDelta) override;
 	virtual void				Late_Update(_float _fTimeDelta) override;
+
+
+	void						Set_Reuseble(_bool _isReuseble) { m_isReusable = _isReuseble; }
+	_bool						Is_Reusable() { return m_isReusable; };
 
 public:
 	_uint						Get_TriggerType() { return m_iTriggerType; }
@@ -88,6 +95,9 @@ public:
 	virtual void				On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
 
 protected:
+
+	_bool						m_isReusable = true;
+
 	SHAPE_TYPE					m_eShapeType = { SHAPE_TYPE::LAST };
 	_uint						m_iTriggerType;
 

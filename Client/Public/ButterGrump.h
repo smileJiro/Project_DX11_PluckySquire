@@ -76,6 +76,7 @@ public:
 public:
 	virtual void Change_Animation() override;
 	virtual void Attack() override;
+	virtual void On_Attack();
 	void	Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 	void Play_Intro();
 
@@ -89,6 +90,8 @@ private:
 	CFSM_Boss* m_pBossFSM = { nullptr };
 
 	_bool m_isInvincible = { false };
+	_bool m_isAttack = { false };
+	_uint m_iNumAttack = { 0 };
 
 public:
 	static CButterGrump* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
