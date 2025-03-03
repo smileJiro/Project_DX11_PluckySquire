@@ -28,7 +28,8 @@ void CLevel_Loading::Update(_float _fTimeDelta)
 {
     if (true == m_pLoader->isFinished())
     {
-        Event_LevelChange(m_eNextLevelID);
+        //if(KEY_DOWN(KEY::ENTER))
+            Event_LevelChange(m_eNextLevelID);
     }
 
     static _wstring strLoading = L"Loading";

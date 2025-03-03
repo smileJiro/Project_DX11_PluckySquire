@@ -110,6 +110,7 @@ CGameObject* CWord_Container::Clone(void* _pArg)
 
 void CWord_Container::Free()
 {
+	Safe_Release(m_pMyWord);
 	__super::Free();
 }
 
@@ -173,7 +174,7 @@ void CWord_Container::Set_Word(CWord* _pWord)
 		Pop_Word();
 
 	m_pMyWord = _pWord;
-
+	Safe_AddRef(m_pMyWord);
 	SECTION_MGR->Word_Action_To_Section(m_strSectionName, m_iControllerIndex, m_iContainerIndex, m_pMyWord->Get_WordType());
 	SECTION_MGR->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pMyWord);
 	m_pMyWord->Set_Active(false);
@@ -193,6 +194,7 @@ void CWord_Container::Pop_Word()
 		vPos = XMVectorSetX(vPos, XMVectorGetX(vPos) + 10.f);
 		vPos = XMVectorSetY(vPos, XMVectorGetY(vPos) - 10.f);
 		m_pMyWord->Set_Position(vPos);
+		Safe_Release(m_pMyWord);
 		m_pMyWord = nullptr;
 	}
 }
