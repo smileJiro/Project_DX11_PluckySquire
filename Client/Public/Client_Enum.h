@@ -132,7 +132,7 @@ namespace Client
 		NPC_EVENT =					0x8000,
 		EXPLOSION =					0x10000,		//폭발 (플레이어, 몬스터 모두 충돌)
 		DOOR =						0x20000,	// 2D에서 잠겨있는 문, 열쇠로 열 때를 대비하기 위해서.
-		MAP_GIMMICK =				0x40000,	// 맵 기믹 (발판, 등..)
+		GIMMICK_OBJECT =				0x40000,	// 맵 기믹 (발판, 등..)
 		BOSS =						0x80000,		//
 		SLIPPERY =					0x100000,	//책장 기울이기
 

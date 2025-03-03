@@ -108,6 +108,7 @@
 #include "LightningBolt.h"
 #include "LunchBox.h"
 #include "Door_Yellow.h"
+#include "Door_Blue.h"
 #include "Pressure_Plate.h"
 #include "Rubboink_Tiny.h"
 #include "MudPit.h"
@@ -809,6 +810,10 @@ HRESULT CLoader::Loading_Level_Static()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
 		CDoor_Yellow::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorBlue"),
+		CDoor_Blue::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Pressure_Plate"),

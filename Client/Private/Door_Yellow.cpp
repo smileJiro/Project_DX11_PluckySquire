@@ -33,6 +33,7 @@ HRESULT CDoor_Yellow::Initialize(void* _pArg)
 
     Register_OnAnimEndCallBack(bind(&CDoor_Yellow::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 
+    // 발판 추가.
     if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionTag, m_pPressurePlate, SECTION_2D_PLAYMAP_BACKGROUND)))
         return E_FAIL;
 

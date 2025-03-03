@@ -16,6 +16,8 @@ public:
 public:
 	void			On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
+
+
 private:
 	class CPressure_Plate* m_pPressurePlate = { nullptr };
 
