@@ -24,6 +24,7 @@ public:
 	void		Cleanup_DeadReferences(); 
 	void		SetActive_GameObjects(_bool _isActive);
 	void		Clear_GameObjects();
+	void		Check_FrustumCulling();
 	template <typename Comparator>
 	void		Sort_Objects(Comparator _funcCompair)
 	{

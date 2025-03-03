@@ -28,6 +28,7 @@ public:
 		_float3 vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
 		_float3 vHeadUpOffset3D = { 0.f,1.f,0.f };
 		_float fHeadUpHeight2D = 100.0f;
+		_wstring strInitialSectionTag = L"";
 	}CARRIABLE_DESC;
 protected:
 	explicit CCarriableObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

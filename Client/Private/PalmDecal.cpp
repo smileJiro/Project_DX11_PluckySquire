@@ -84,6 +84,7 @@ HRESULT CPalmDecal::Initialize(void* _pArg)
     m_p2DColliderComs[0]->Set_Active(false);
     Get_ControllerTransform()->Rotation(XMConvertToRadians(90.f), _vector{ 0.f, 0.f, 1.f, 0.f });
 
+
     return S_OK;
 }
 
@@ -195,6 +196,19 @@ _float CPalmDecal::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 {
     return XMVector3Length(m_pControllerTransform->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)
         - _pUser->Get_ControllerTransform()->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
+}
+
+void CPalmDecal::Active_OnEnable()
+{
+    __super::Active_OnEnable();
+    m_pActorCom->Set_Active(true);
+
+}
+
+void CPalmDecal::Active_OnDisable()
+{
+    __super::Active_OnDisable();
+    m_pActorCom->Set_Active(true);
 }
 
 CPalmDecal* CPalmDecal::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

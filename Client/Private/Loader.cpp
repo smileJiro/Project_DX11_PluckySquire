@@ -87,6 +87,7 @@
 #include "TestTerrain.h"
 #include "RabbitLunch.h"
 #include "Bomb.h"
+#include "Key.h"
 
 
 #include "2DModel.h"
@@ -358,6 +359,15 @@ HRESULT CLoader::Loading_Level_Static()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter2_BrightEnv_%d.dds"), 3, true))))
 		return E_FAIL;
 
+	/* For. Prototype_Component_Texture_Chapter6Env */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter6Env"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter6Env_%d.dds"), 3, true))))
+		return E_FAIL;
+	
+	/* For. Prototype_Component_Texture_Chapter6_2Env */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter6_2Env"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter6_2Env_%d.dds"), 3, true))))
+		return E_FAIL;
 
 	
 
@@ -812,6 +822,10 @@ HRESULT CLoader::Loading_Level_Static()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Pressure_Plate"),
 		CPressure_Plate::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"),
+		CKey::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For. Prototype_GameObject_SwordTrail */

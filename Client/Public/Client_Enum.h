@@ -220,6 +220,7 @@ namespace Client
 		YELLOWBALL,
 		PURPLEBALL,
 		WINGSLAM,
+		ROCKVOLLEY,
 
 		LAST,
 	};

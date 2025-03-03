@@ -6,10 +6,6 @@ CPostit_Page::CPostit_Page(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 {
 }
 
-CPostit_Page::~CPostit_Page()
-{
-}
-
 CPostit_Page::CPostit_Page(const CPostit_Page& _Prototype)
     : CModelObject(_Prototype)
 {

@@ -358,35 +358,38 @@ HRESULT CLevel_Chapter_06::Render()
 
 HRESULT CLevel_Chapter_06::Ready_Lights()
 {
-	// 이게, 일반
-	//m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
-	//m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
+#ifdef _DEBUG
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
+#elif NDEBUG
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6.json"));
+#endif // _DEBUG
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter6.json"));
 
-	CONST_LIGHT LightDesc{};
+	//CONST_LIGHT LightDesc{};
 
-	/* 방향성광원*/
-	ZeroMemory(&LightDesc, sizeof LightDesc);
+	///* 방향성광원*/
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
 
-	LightDesc.vDirection = { 0.0f, -1.0f, -1.0f };
-	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
-	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	//LightDesc.vDirection = { 0.0f, -1.0f, -1.0f };
+	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	//LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	//LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	//LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	////LightDesc.isShadow = true;
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+	//	return E_FAIL;
+
+	///* 방향성광원*/
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
+
+	//LightDesc.vDirection = { -1.0f, -1.0f, -1.0f };
+	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	//LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
+	//LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	//LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
 	//LightDesc.isShadow = true;
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
-		return E_FAIL;
-
-	/* 방향성광원*/
-	ZeroMemory(&LightDesc, sizeof LightDesc);
-
-	LightDesc.vDirection = { -1.0f, -1.0f, -1.0f };
-	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.0f);
-	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
-	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
-	LightDesc.isShadow = true;
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

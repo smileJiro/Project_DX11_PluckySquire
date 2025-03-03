@@ -52,7 +52,7 @@ void CTest3DModel::Set_Progress(_float _fTrackPos)
 {
 	if (m_Animations.empty())
 		return;
-	static_cast<CToolAnimation3D*> (m_Animations[m_iCurrentAnimIndex])->Set_Progress(_fTrackPos);
+	static_cast<CToolAnimation3D*> (m_Animations[m_iCurrentAnimIndex])->Set_Progress(_fTrackPos, false);
 }
 
 void CTest3DModel::Get_TextureNames(set<wstring>& _outTextureNames)

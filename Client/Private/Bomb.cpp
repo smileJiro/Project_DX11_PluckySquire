@@ -21,6 +21,7 @@ CBomb::CBomb(const CBomb& _Prototype)
 HRESULT CBomb::Initialize(void* _pArg)
 {
 	CARRIABLE_DESC* BombModelDesc = static_cast<CARRIABLE_DESC*>(_pArg);
+	BombModelDesc->eStartCoord = COORDINATE_3D;
 	BombModelDesc->eCrriableObjId = CARRIABLE_OBJ_ID::BOMB;
 	BombModelDesc->vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
 	BombModelDesc->vHeadUpOffset3D = { 0.f,1.3f,0.f };

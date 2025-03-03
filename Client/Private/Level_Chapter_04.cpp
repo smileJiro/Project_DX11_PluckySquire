@@ -145,7 +145,11 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Map (CLevel_Chapter_04::Initialize)");
 		assert(nullptr);
 	}
-
+	if (FAILED(Ready_Layer_MapGimmick(TEXT("Layer_MapGimmick"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Map (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
 
 
 	/* Collision Test */
@@ -327,11 +331,12 @@ HRESULT CLevel_Chapter_04::Render()
 
 HRESULT CLevel_Chapter_04::Ready_Lights()
 {
-	//m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest.json"));
-	//m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest.json"));
-
-
-
+#ifdef _DEBUG
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
+#elif NDEBUG
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter4.json"));
+#endif // _DEBUG
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter4.json"));
 
 	CONST_LIGHT LightDesc{};
 
@@ -347,18 +352,18 @@ HRESULT CLevel_Chapter_04::Ready_Lights()
 	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
 	//	return E_FAIL;
 
-	/* 规氢己堡盔*/
-	ZeroMemory(&LightDesc, sizeof LightDesc);
+	///* 规氢己堡盔*/
+	//ZeroMemory(&LightDesc, sizeof LightDesc);
 
-	LightDesc.vDirection = { -0.7f, -0.9f, -1.0f };
-	LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
-	LightDesc.vDiffuse = _float4(1.0f, 0.3882f, 0.2784f, 1.0f);
-	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.0f);
-	LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
-	LightDesc.isShadow = true;
-	LightDesc.fShadowFactor = 1.0f;
-	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
-		return E_FAIL;
+	//LightDesc.vDirection = { -0.7f, -0.9f, -1.0f };
+	//LightDesc.vRadiance = _float3(1.0f, 1.0f, 1.0f);
+	//LightDesc.vDiffuse = _float4(1.0f, 0.3882f, 0.2784f, 1.0f);
+	//LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.0f);
+	//LightDesc.vSpecular = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	//LightDesc.isShadow = true;
+	//LightDesc.fShadowFactor = 1.0f;
+	//if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::DIRECTOINAL)))
+	//	return E_FAIL;
 
 
 
@@ -1134,6 +1139,32 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpPad"),
 		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
 		return E_FAIL;
+
+	tJumpPadDesc.iCurLevelID = m_eLevelID;
+	tJumpPadDesc.eStartCoord = COORDINATE_2D;
+	tJumpPadDesc.tTransform2DDesc.vInitialPosition = { -588.f, 166.5f, 0.f };
+	tJumpPadDesc.strInitialSectionTag = L"Chapter4_SKSP_01";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpPad"),
+		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
+		return E_FAIL;
+
+
+	CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
+	tCarriableDesc.eStartCoord = COORDINATE_2D;
+	tCarriableDesc.iCurLevelID = m_eLevelID;
+	tCarriableDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	tCarriableDesc.strInitialSectionTag;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"), m_eLevelID, _strLayerTag, &tCarriableDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
+{
+
+
 
 	return S_OK;
 }

@@ -243,7 +243,7 @@ _float CAnimation2D::Get_AnimationTime()
 	return (_int)Get_AccumulativeSubFrameCount(m_iFrameCount - 1) / m_fFramesPerSecond / m_fSpeedMagnifier;
 }
 
-void CAnimation2D::Set_Progress(_float _fProgerss)
+void CAnimation2D::Set_Progress(_float _fProgerss, _bool _bReverse)
 {
 	_int iTotalSubFrameCount = (_int)Get_AccumulativeSubFrameCount(m_iFrameCount-1);
 	_int iTargetSubFrame = (_int)(_fProgerss * iTotalSubFrameCount);
