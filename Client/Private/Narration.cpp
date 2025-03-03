@@ -323,7 +323,7 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 					// 애니메이션 처리 후, 완성된 대화 데이터를 NarData에 추가한다.
 
 
-					m_vAnimObjectsByLine.emplace(iLine, pAnimation);
+					//m_vAnimObjectsByLine.emplace(iLine, pAnimation);
 
 					// TODO :: 누수 예상 - 박상욱
 					//for (_int i = 0; i < pAnimation.size(); ++i)
@@ -548,7 +548,7 @@ vector<CNarration_Anim*> CNarration::CreateAnimationObjectsForLine(_uint iLine)
 		newAnims.push_back(pAnim);
 
 		// TODO :: 누수 예상 - 박상욱
-		//Safe_AddRef(pAnim);
+		Safe_AddRef(pAnim);
 	}
 
 	return newAnims;
