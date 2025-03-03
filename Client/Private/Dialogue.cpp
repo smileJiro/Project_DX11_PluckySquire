@@ -159,7 +159,7 @@ HRESULT CDialog::Render()
 				Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].Blue / 255.f,
 				1.f);
 
-			if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_vColors", &vColor, sizeof(_float4))))
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_vColors", &vColor, sizeof(_float4))))
 				return E_FAIL;
 
 			__super::Render(Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].BG, PASS_VTXPOSTEX::DIALOGUE_BG_COLOR);
@@ -1540,7 +1540,7 @@ CDialog::DialogLine CDialog::Get_DialogueLine(const _wstring& _id, _int _LineInd
 HRESULT CDialog::Ready_Components()
 {
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
-		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderComs[COORDINATE_2D]))))
+		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	/* Com_VIBuffer */
