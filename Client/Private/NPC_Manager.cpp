@@ -48,6 +48,7 @@ HRESULT CNPC_Manager::Level_Enter(_int _iChangeLevelID)
 
 void CNPC_Manager::Free()
 {
+	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pOnlyNpc);
 	Safe_Release(m_pNPC);
 

@@ -92,6 +92,7 @@ HRESULT CDialog_Manager::Level_Enter(_int _iChangeLevelID)
 
 void CDialog_Manager::Free()
 {
+	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pDialogue);
 	Safe_Release(m_pNPC);
 
