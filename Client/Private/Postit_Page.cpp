@@ -11,40 +11,39 @@ CPostit_Page::CPostit_Page(const CPostit_Page& _Prototype)
 {
 }
 
-HRESULT CPostit_Page::Initialize_Prototype()
-{
-    return S_OK;
-}
 
 HRESULT CPostit_Page::Initialize(void* _pArg)
 {
-    return S_OK;
+    return __super::Initialize(_pArg);
 }
 
-HRESULT CPostit_Page::Render()
+
+CPostit_Page* CPostit_Page::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    return S_OK;
+    CPostit_Page* pInstance = new CPostit_Page(_pDevice, _pContext);
+
+    if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        MSG_BOX("Failed to Created : CPostit_Page");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
 }
 
-HRESULT CPostit_Page::Render_Shadow(_float4x4* _pViewMatrix, _float4x4* _pProjMatrix)
+CGameObject* CPostit_Page::Clone(void* _pArg)
 {
-    return S_OK;
-}
+    CPostit_Page* pInstance = new CPostit_Page(*this);
+    if (FAILED(pInstance->Initialize(_pArg)))
+    {
+        MSG_BOX("Failed to Cloned : CPostit_Page");
+        Safe_Release(pInstance);
+    }
 
-HRESULT CPostit_Page::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
-{
-    return S_OK;
-}
-
-void CPostit_Page::Check_FrustumCulling()
-{
-}
-
-CPostit_Page* CPostit_Page::Create()
-{
-    return nullptr;
+    return pInstance;
 }
 
 void CPostit_Page::Free()
 {
+    __super::Free();
 }

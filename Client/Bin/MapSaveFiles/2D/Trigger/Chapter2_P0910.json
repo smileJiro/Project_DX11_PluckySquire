@@ -10,6 +10,7 @@
         30.0
       ]
     },
+	"Trigger_Reusable" : false;
     "Fillter_MyGroup": 2,
     "Fillter_OtherGroupMask": 128,
     "Trigger_ConditionType": 0,
@@ -17,6 +18,26 @@
     "Trigger_EventTag": "C02P0910_MonsterSpawnProcess",
     "Trigger_Type": 0
   },
+	{
+    "Collider_Info": {
+      "Position":	 [
+        -68.0,
+        -242.0
+      ],
+      "Scale": [
+        500.0,
+        30.0
+      ]
+    },
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "C02P0910_MonsterSpawnProcess",
+    "Trigger_Type": 0
+  },
+  
+  
   {
     "Collider_Info": {
       "Position": [

@@ -528,6 +528,8 @@
     "Trigger_EventTag": "Chapter2_8",
     "Trigger_Type": 1
   },
+  
+  
   {
     "Collider_Info": {
       "HalfExtents": [
@@ -564,6 +566,11 @@
     "Trigger_EventTag": "Chapter2_LookAt_2",
     "Trigger_Type": 8
   },
+  
+  
+  
+  
+  
   {
     "Arm_Info": {
       "Exit_Return_Mask": {

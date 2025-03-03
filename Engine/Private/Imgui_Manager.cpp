@@ -239,7 +239,6 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_RT_FullScreen()
 							_float fYRatio = fRenderTargetSize.y * (fDefaultwidth / (_float)fRenderTargetSize.x);
 
 							imageSize = { fDefaultwidth, fYRatio };
-
 							if (nullptr != pSelectImage)
 								ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
 							ImGui::TreePop();

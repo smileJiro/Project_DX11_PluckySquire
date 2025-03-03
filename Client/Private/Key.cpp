@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "Key.h"
 #include "GameInstance.h"
+#include "Section_Manager.h"
+
+#include "Door_Blue.h"
+#include "Player.h"
 
 CKey::CKey(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCarriableObject(_pDevice, _pContext)
@@ -77,23 +81,27 @@ HRESULT CKey::Initialize(void* _pArg)
 	// 2D 충돌용 콜라이더 추가.
 	m_p2DColliderComs.resize(2);
 
-	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
 
-	CircleDesc.pOwner = this;
-	CircleDesc.fRadius = 0.2f;
-	CircleDesc.vScale = { 1.0f, 1.0f };
-	CircleDesc.vOffsetPosition = { 0.f, 0.f };
-	CircleDesc.isBlock = false;
-	CircleDesc.isTrigger = true;
-	CircleDesc.iCollisionGroupID = OBJECT_GROUP::MAP_GIMMICK;
+	AABBDesc.pOwner = this;
+	AABBDesc.vExtents = _float2(1.f, 1.f);
+	AABBDesc.vScale = { 1.0f, 1.0f };
+	AABBDesc.vOffsetPosition = { 0.f, 0.f };
+	AABBDesc.isBlock = false;
+	AABBDesc.isTrigger = true;
+	AABBDesc.iCollisionGroupID = OBJECT_GROUP::GIMMICK_OBJECT;
 
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &AABBDesc)))
 		return E_FAIL;
 
-	Set_AnimationLoop(COORDINATE_2D, IDLE, true);
+	m_p2DColliderComs[1]->Set_Active(true);
+
+	Register_OnAnimEndCallBack(bind(&CKey::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+
 
 	// TEMP
+	Set_AnimationLoop(COORDINATE_2D, IDLE, true);
 	m_pControllerModel->Get_Model(COORDINATE_2D)->Set_Animation(IDLE);
 
 	return S_OK;
@@ -111,12 +119,66 @@ void CKey::Late_Update(_float _fTimeDelta)
 
 HRESULT CKey::Render()
 {
-//#ifdef _DEBUG
-//	m_p2DColliderComs[0]->Render();
-//	if (COORDINATE_2D == Get_CurCoord() && 2 <= m_p2DColliderComs.size() && nullptr != m_p2DColliderComs[1])
-//		m_p2DColliderComs[1]->Render();
-//#endif
+#ifdef _DEBUG
+	for (auto& p2DCollider : m_p2DColliderComs)
+	{
+		p2DCollider->Render(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(m_strSectionName));
+	}
+#endif
 	return __super::Render();
+}
+
+void CKey::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
+
+	// 문이 열리네요.
+	if (OBJECT_GROUP::DOOR == eGroup)
+	{
+		CDoor_Blue* pDoor = dynamic_cast<CDoor_Blue*>(_pOtherObject);
+
+		if (nullptr == pDoor)			
+			return;
+		else
+		{
+			// 문의 위치로 설정,
+			_vector vPosition = pDoor->Get_FinalPosition();
+			pDoor->Open_Door();
+
+			// 플레이어를 상태 = IDLE로 설정, 열쇠의 위치 설정,
+			if (nullptr != m_pCarrier)
+			{
+				m_pCarrier->Set_CarryingObject(nullptr);
+				m_pCarrier->Set_State(CPlayer::IDLE);
+
+				Set_ParentMatrix(COORDINATE_2D, nullptr);
+				Set_ParentMatrix(COORDINATE_3D, nullptr);
+				Set_SocketMatrix(COORDINATE_3D, nullptr);
+				Set_SocketMatrix(COORDINATE_2D, nullptr);
+				Set_ParentBodyMatrix(COORDINATE_3D, nullptr);
+				Set_ParentBodyMatrix(COORDINATE_2D, nullptr);
+
+				Set_Position(vPosition + XMVectorSet(0.f, -10.f, 0.f, 0.f));
+				Switch_Animation(OPEN);
+
+				Set_Carrier(nullptr);
+				for (auto& iter : m_p2DColliderComs)
+				{
+					Event_SetActive(iter, false);
+				}
+			}
+
+		}
+	}
+
+}
+
+void CKey::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+	if (OPEN == iAnimIdx)
+	{
+		Event_DeleteObject(this);
+	}
 }
 
 CKey* CKey::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

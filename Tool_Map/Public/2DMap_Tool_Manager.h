@@ -42,6 +42,10 @@ private :
 		TRIGGER_EVENT_LIST,
 		LIST_END
 	};
+
+
+
+
 private:
 	typedef struct tagMapObjList
 	{

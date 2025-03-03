@@ -2,6 +2,7 @@
 #include "Door_Blue.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "Key.h"
 
 CDoor_Blue::CDoor_Blue(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CDoor_2D(_pDevice, _pContext)
@@ -29,6 +30,12 @@ HRESULT CDoor_Blue::Initialize(void* _pArg)
     return S_OK;
 }
 
+void CDoor_Blue::Open_Door()
+{
+    m_eDoorState = OPEN;
+    Switch_Animation_By_State();
+}
+
 
 void CDoor_Blue::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
@@ -39,6 +46,7 @@ void CDoor_Blue::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         Switch_Animation_By_State();
     }
 }
+
 
 void CDoor_Blue::Set_AnimLoop()
 {
