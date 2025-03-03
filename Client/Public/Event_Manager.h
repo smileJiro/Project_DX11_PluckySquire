@@ -34,6 +34,7 @@ private:
 	HRESULT Execute_CreateObject(const EVENT& _tEvent);
 	HRESULT Execute_DeleteObject(const EVENT& _tEvent);
 	HRESULT Execute_LevelChange(const EVENT& _tEvent);
+	HRESULT Level_Change();
 	HRESULT Execute_SetActive(const EVENT& _tEvent);
 	HRESULT Execute_ChangeMapObject(const EVENT& _tEvent);
 	HRESULT Execute_Setup_SimulationFilter(const EVENT& _tEvent);
@@ -87,6 +88,11 @@ private:
 public:
 	_wstring* m_pMapObjectFilePath = nullptr;
 	_wstring* m_pMapObjectLayerTag = nullptr;
+
+private:
+	_int m_iChangeLevelID = -1;
+	_int m_iNextChangeLevelID = -1;
+	_bool m_isLevelChange = false;
 public:
 	virtual void Free() override;
 };
