@@ -509,7 +509,7 @@ HRESULT CMeshEffect_Emitter::Load_TextureInfo(const json& _jsonInfo)
 			TEXTURE_TYPE eType = _jsonInfo["Textures"][i]["Type"];
 			_string strPath = _jsonInfo["Textures"][i]["Path"];
 
-			if (m_pGameInstance->Find_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strPath)))
+			if (nullptr != m_pGameInstance->Find_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strPath)))
 			{
 				m_Textures[eType] = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_pGameInstance->Get_StaticLevelID(),
 					STRINGTOWSTRING(strPath), nullptr));

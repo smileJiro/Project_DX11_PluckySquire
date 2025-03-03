@@ -40,14 +40,14 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
 
     _string strTexturePath = _jsonInfo["Texture"];
 
-    if (m_pGameInstance->Find_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath)))
+    if (nullptr != m_pGameInstance->Find_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath)))
     {
         m_pMaskTextureCom = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_pGameInstance->Get_StaticLevelID(),
             STRINGTOWSTRING(strTexturePath), nullptr));
     }
     else
     {
-        m_pMaskTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
+        CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
         m_pGameInstance->Add_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath), m_pMaskTextureCom);
 
     }
@@ -60,14 +60,14 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
     {
         strTexturePath = _jsonInfo["DissolveTexture"];
 
-        if (m_pGameInstance->Find_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath)))
+        if (nullptr != m_pGameInstance->Find_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath)))
         {
             m_pDissolveTextureCom = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_pGameInstance->Get_StaticLevelID(),
                 STRINGTOWSTRING(strTexturePath), nullptr));
         }
         else
         {
-            m_pDissolveTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
+            CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
             m_pGameInstance->Add_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath), m_pDissolveTextureCom);
 
         }
@@ -79,14 +79,14 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
     {
         strTexturePath = _jsonInfo["DistortionTexture"];
 
-        if (m_pGameInstance->Find_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath)))
+        if (nullptr != m_pGameInstance->Find_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath)))
         {
             m_pDistortionTextureCom = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_pGameInstance->Get_StaticLevelID(),
                 STRINGTOWSTRING(strTexturePath), nullptr));
         }
         else
         {
-            m_pDistortionTextureCom = CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
+            CTexture::Create(m_pDevice, m_pContext, strTexturePath.c_str(), 1);
             m_pGameInstance->Add_Prototype(m_pGameInstance->Get_StaticLevelID(), STRINGTOWSTRING(strTexturePath), m_pDistortionTextureCom);
 
         }
