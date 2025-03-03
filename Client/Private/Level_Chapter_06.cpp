@@ -714,7 +714,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 					return E_FAIL;
 
 				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BG].iTextureCount, static_cast<CSettingPanelBG*>(pSettingPanel));
-				Safe_Release(pSettingPanel);
+				//Safe_Release(pSettingPanel);
 
 			}
 			break;
@@ -731,7 +731,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 					return E_FAIL;
 
 				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BULB].iTextureCount, static_cast<CSettingPanelBG*>(pSettingPanel));
-				Safe_Release(pSettingPanel);
+				//Safe_Release(pSettingPanel);
 			}
 			break;
 			case CUI::SETTINGPANEL::SETTING_BACKESC:
@@ -747,7 +747,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 					return E_FAIL;
 
 				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_ESCBG].iTextureCount, static_cast<CSettingPanelBG*>(pSettingPanel));
-				Safe_Release(pSettingPanel);
+				//Safe_Release(pSettingPanel);
 
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fX = g_iWinSizeX / 14.f;
 				pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].fY = g_iWinSizeY - g_iWinSizeY / 18.f;
@@ -760,7 +760,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 					return E_FAIL;
 
 				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BACKESC].iTextureCount, static_cast<CSettingPanelBG*>(pSettingPanel));
-				Safe_Release(pSettingPanel);
+				//Safe_Release(pSettingPanel);
 			}
 			break;
 			case CUI::SETTINGPANEL::SETTING_BACKARROW:
@@ -777,7 +777,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 					return E_FAIL;
 
 				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BACKARROW].iTextureCount, static_cast<CSettingPanelBG*>(pSettingPanel));
-				Safe_Release(pSettingPanel);
+				//Safe_Release(pSettingPanel);
 			}
 			break;
 			case CUI::SETTINGPANEL::SETTING_ESCENTER:
@@ -792,7 +792,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 					return E_FAIL;
 
 				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_ENTERBG].iTextureCount, static_cast<CSettingPanelBG*>(pSettingPanel));
-				Safe_Release(pSettingPanel);
+				//Safe_Release(pSettingPanel);
 
 
 				pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].fX = g_iWinSizeX - g_iWinSizeX / 10.f;
@@ -806,7 +806,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 					return E_FAIL;
 
 				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_ESCENTER].iTextureCount, static_cast<CSettingPanelBG*>(pSettingPanel));
-				Safe_Release(pSettingPanel);
+				//Safe_Release(pSettingPanel);
 			}
 			break;
 
@@ -823,7 +823,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 					return E_FAIL;
 
 				CUI_Manager::GetInstance()->Emplace_SettingPanels((_uint)pDescs[CUI::SETTINGPANEL::SETTING_BOOKMARK].iTextureCount, static_cast<CSettingPanelBG*>(pSettingPanel));
-				Safe_Release(pSettingPanel);
+				//Safe_Release(pSettingPanel);
 
 			}
 			break;

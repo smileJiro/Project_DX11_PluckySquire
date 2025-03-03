@@ -34,9 +34,5 @@ public:
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override;
 
-
-
-
-
 };
 
