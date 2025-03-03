@@ -64,23 +64,17 @@ void CCamera_2D::Update(_float fTimeDelta)
 
 void CCamera_2D::Late_Update(_float fTimeDelta)
 {
-#ifdef _DEBUG
 	Key_Input(fTimeDelta);
+#ifdef _DEBUG
+	//Imgui(fTimeDelta);
 #endif
+
 	Switching(fTimeDelta);
 
 	Action_SetUp_ByMode();
 	Action_Mode(fTimeDelta);
 
 	__super::Late_Update(fTimeDelta);
-}
-
-// Initial Data를 Set해주는 용도로 쓰고 있었네 3.1
-void CCamera_2D::Set_Data(_fvector _vArm, _float _fLength, _fvector _vOffset)
-{
-	m_pCurArm->Set_ArmVector(_vArm);
-	m_pCurArm->Set_Length(_fLength);
-	XMStoreFloat3(&m_vAtOffset, _vOffset);
 }
 
 void CCamera_2D::Add_CurArm(CCameraArm* _pCameraArm)
@@ -126,8 +120,6 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 	if (nullptr == m_pCurArm)
 		return;
 
-	m_pGameInstance->Get_CurLevelID();
-
 	// Sketch Space 면에 따라서 Arm 바꿔 주기
 	if (CSection_Manager::GetInstance()->is_WordPos_Capcher()) 
 	{
@@ -145,55 +137,59 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 
 #pragma region Sketch Space
 		else if (CSection_2D::SKSP == m_iPlayType) {
-			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 
-			// 기존 Normal로 할지 아닐지 결정하기
-			m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
-			pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+			_uint iNormalType = static_cast<CSection_2D*>(pSection)->Get_Override_Normal();
 
-			switch ((_int)m_eCurSpaceDir) {
-			case (_int)NORMAL_DIRECTION::NONEWRITE_NORMAL:
-			{
-				int a = 0;
-			}
-			break;
-			case (_int)NORMAL_DIRECTION::POSITIVE_X:
-			{
-				pData = Find_ArmData(TEXT("Default_Positive_X"));
-				m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
-			}
-			break;
-			case (_int)NORMAL_DIRECTION::NEGATIVE_X:
-			{
-				pData = Find_ArmData(TEXT("Default_Negative_X"));
-				m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
-			}
-			break;
-			case (_int)NORMAL_DIRECTION::POSITIVE_Y:
-			{
-				pData = Find_ArmData(TEXT("Default_Positive_Y"));
-				m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+			// Sketch Space의 Normal Type에 따라 Arm 결정하기
+			/* 기존 Normal*/
+			if (ARM_NORMAL_TYPE::DEFAULT_NORMAL == iNormalType) {
+				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 
-			}
-			break;
-			case (_int)NORMAL_DIRECTION::NEGATIVE_Y:
+				m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
+				pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+
+				switch ((_int)m_eCurSpaceDir) {
+				case (_int)NORMAL_DIRECTION::NONEWRITE_NORMAL:
+				{
+					int a = 0;
+				}
 				break;
-			case (_int)NORMAL_DIRECTION::POSITIVE_Z:
+				case (_int)NORMAL_DIRECTION::POSITIVE_X:
+				{
+					pData = Find_ArmData(TEXT("Default_Positive_X"));
+				}
 				break;
-			case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
-			{
-				pData = Find_ArmData(TEXT("Default_Negative_Z"));
-				m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+				case (_int)NORMAL_DIRECTION::NEGATIVE_X:
+				{
+					pData = Find_ArmData(TEXT("Default_Negative_X"));
+				}
+				break;
+				case (_int)NORMAL_DIRECTION::POSITIVE_Y:
+				{
+					pData = Find_ArmData(TEXT("Default_Positive_Y"));
+				}
+				break;
+				case (_int)NORMAL_DIRECTION::NEGATIVE_Y:
+					break;
+				case (_int)NORMAL_DIRECTION::POSITIVE_Z:
+					break;
+				case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
+				{
+					pData = Find_ArmData(TEXT("Default_Negative_Z"));
+				}
+				break;
+				}
+				if (nullptr != pData)
+					Set_InitialData(pData);
 			}
-			break;
+			else if (ARM_NORMAL_TYPE::CUSTOM_NORMAL == iNormalType){
+				Set_InitialData(m_strSectionName);
+			}
+			else if (ARM_NORMAL_TYPE::NORMAL_MAP == iNormalType) {
+
 			}
 		}
 #pragma endregion
-		// SUbData 하기 전 임시 (2.28)
-		m_pCurArm->Set_Length(12.5f);
-		m_iCurZoomLevel = LEVEL_6;
-		m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
-		m_vAtOffset = { 0.f, 0.f, 0.f };
 
 		// Initial Data가 없어서 TargetPos + vArm * Length로 초기 위치를 바로 잡아주기
 		if (nullptr == _pInitialData) {
@@ -207,6 +203,8 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 			Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
 
 			Look_Target(0.f);
+
+			m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
 
 			m_isInitialData = false;
 		}
@@ -223,7 +221,9 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 			m_pControllerTransform->LookAt_3D(XMVectorSetW(XMLoadFloat3(&m_tInitialData.vAt), 1.f));
 
 			// 초기 Zoom Level 설정
-			m_iCurZoomLevel = m_tInitialData.iZoomLevel;
+			// ㄹㅇ 3D의 초기 ZoomLevel을 그냥 아예 설정하고 있었음... 근데 이렇게 하면 내가 각 Sksp마다 fov를 조절할 수는 있지만
+			// 같은 Positive Y인데 다른 경우엔 어캄? .. 걍 저렇게 하는 게 나을 수도
+			//m_iCurZoomLevel = m_tInitialData.iZoomLevel;
 			m_fFovy = m_ZoomLevels[m_tInitialData.iZoomLevel];
 		}
 
@@ -252,6 +252,55 @@ INITIAL_DATA CCamera_2D::Get_InitialData()
 	tData.iZoomLevel = m_iCurZoomLevel;
 
 	return tData;
+}
+
+void CCamera_2D::Set_InitialData(_fvector _vArm, _float _fLength, _fvector _vOffset)
+{
+	m_pCurArm->Set_ArmVector(_vArm);
+	m_pCurArm->Set_Length(_fLength);
+	XMStoreFloat3(&m_vAtOffset, _vOffset);
+}
+
+void CCamera_2D::Set_InitialData(pair<ARM_DATA*, SUB_DATA*>* pData)
+{
+	m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+	m_pCurArm->Set_Length(pData->first->fLength);
+
+	if (nullptr == pData->second)
+		return;
+
+	m_vAtOffset = pData->second->vAtOffset;
+	m_iCurZoomLevel = pData->second->iZoomLevel;
+	m_fFovy = m_ZoomLevels[m_iCurZoomLevel];
+}
+
+void CCamera_2D::Set_InitialData(_wstring _szSectionTag)
+{
+	// SectionTag에 따라서 미리 저장해 둔 Arm 불러오기
+	pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+
+	if (TEXT("Chapter4_SKSP_02") == _szSectionTag) {
+		pData = Find_ArmData(TEXT("Custom_Flag"));
+	}
+	else if (TEXT("Chapter4_SKSP_07") == _szSectionTag) {
+		pData = Find_ArmData(TEXT("Custom_Stair"));
+	}
+	else if (TEXT("Chapter6_SKSP_05") == _szSectionTag) {
+		switch (m_iPortalID) {
+		case 0:
+			break;
+		case 1:
+			break;
+		case 2:
+		{
+			pData = Find_ArmData(TEXT("Custom_Box_2"));
+		}
+			break;
+		}
+	}
+
+	if (nullptr != pData) 
+		Set_InitialData(pData);
 }
 
 void CCamera_2D::Action_Mode(_float _fTimeDelta)
@@ -399,7 +448,7 @@ void CCamera_2D::Defualt_Move(_float _fTimeDelta)
 void CCamera_2D::Move_To_NextArm(_float _fTimeDelta)
 {
 	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta, true)) {
-		m_eCameraMode = DEFAULT;
+		m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 	}
 
 	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
@@ -412,7 +461,7 @@ void CCamera_2D::Move_To_NextArm(_float _fTimeDelta)
 void CCamera_2D::Move_To_CustomArm(_float _fTimeDelta)
 {
 	if (true == m_pCurArm->Move_To_CustomArm(&m_CustomArmData, _fTimeDelta)) {
-		m_eCameraMode = DEFAULT;
+		m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 	}
 
 	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
@@ -450,7 +499,7 @@ void CCamera_2D::Flipping_Down(_float _fTimeDelta)
 		if (CSection_2D::NARRAION == m_iPlayType)
 			m_eCameraMode = NARRATION;
 		else
-			m_eCameraMode = DEFAULT;
+			m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 	}
 
 	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
@@ -545,7 +594,7 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 		m_InitialTime.y = 0.f;
 		m_isInitialData = false;
 
-		m_eCameraMode = DEFAULT;
+		m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 		return;
 	}
 
@@ -603,48 +652,62 @@ void CCamera_2D::Find_TargetPos()
 			else
 				break;
 
-			// 기존 Normal을 가지고 올 건지 아닌지를 체크하자 
-			if (m_eCurSpaceDir != (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)))) {
+			// Sketch Space의 Normal Type에 따라 Arm 결정하기
+			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
+			_uint iNormalType = static_cast<CSection_2D*>(pSection)->Get_Override_Normal();
 
-				switch (((_int)roundf(XMVectorGetW(vTargetPos)))) {
-				case (_int)NORMAL_DIRECTION::NONEWRITE_NORMAL:
-				{
-					//Set_NextArmData(TEXT("Default_Positive_X"), 0);
-				}
-				break;
-				case (_int)NORMAL_DIRECTION::POSITIVE_X:
-				{
-					Set_NextArmData(TEXT("Default_Positive_X"), 0);
-				}
-				break;
-				case (_int)NORMAL_DIRECTION::NEGATIVE_X:
-				{
-					Set_NextArmData(TEXT("Default_Negative_X"), 0);
-				}
-				break;
-				case (_int)NORMAL_DIRECTION::POSITIVE_Y:
-				{
-					if (NORMAL_DIRECTION::NEGATIVE_Z == m_eCurSpaceDir)
-						Set_NextArmData(TEXT("Default_Positive_Y"), 0);
-					else if (NORMAL_DIRECTION::NEGATIVE_X == m_eCurSpaceDir)
-						Set_NextArmData(TEXT("Default_Positive_Y_Left"), 0);
-					else if (NORMAL_DIRECTION::POSITIVE_X == m_eCurSpaceDir)
-						Set_NextArmData(TEXT("Default_Positive_Y_Right"), 0);
-				}
-				break;
-				case (_int)NORMAL_DIRECTION::NEGATIVE_Y:
-					break;
-				case (_int)NORMAL_DIRECTION::POSITIVE_Z:
-					break;
-				case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
-				{
-					Set_NextArmData(TEXT("Default_Negative_Z"), 0);
-				}
-				break;
-				}
+			/* 기존 Normal*/
+			if (ARM_NORMAL_TYPE::DEFAULT_NORMAL == iNormalType) {
+				if (m_eCurSpaceDir != (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)))) {
 
-				m_eCameraMode = MOVE_TO_NEXTARM;
-				m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
+					switch (((_int)roundf(XMVectorGetW(vTargetPos)))) {
+					case (_int)NORMAL_DIRECTION::NONEWRITE_NORMAL:
+					{
+						//Set_NextArmData(TEXT("Default_Positive_X"), 0);
+					}
+					break;
+					case (_int)NORMAL_DIRECTION::POSITIVE_X:
+					{
+						Set_NextArmData(TEXT("Default_Positive_X"), 0);
+					}
+					break;
+					case (_int)NORMAL_DIRECTION::NEGATIVE_X:
+					{
+						Set_NextArmData(TEXT("Default_Negative_X"), 0);
+					}
+					break;
+					case (_int)NORMAL_DIRECTION::POSITIVE_Y:
+					{
+						if (NORMAL_DIRECTION::NEGATIVE_Z == m_eCurSpaceDir)
+							Set_NextArmData(TEXT("Default_Positive_Y"), 0);
+						else if (NORMAL_DIRECTION::NEGATIVE_X == m_eCurSpaceDir)
+							Set_NextArmData(TEXT("Default_Positive_Y_Left"), 0);
+						else if (NORMAL_DIRECTION::POSITIVE_X == m_eCurSpaceDir)
+							Set_NextArmData(TEXT("Default_Positive_Y_Right"), 0);
+					}
+					break;
+					case (_int)NORMAL_DIRECTION::NEGATIVE_Y:
+						break;
+					case (_int)NORMAL_DIRECTION::POSITIVE_Z:
+						break;
+					case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
+					{
+						Set_NextArmData(TEXT("Default_Negative_Z"), 0);
+					}
+					break;
+					}
+
+					m_eCameraMode = MOVE_TO_NEXTARM;
+					m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
+				}
+			}
+
+			/* Custom Normal*/
+			else if (ARM_NORMAL_TYPE::CUSTOM_NORMAL == iNormalType) {
+			}
+
+			/* Normal Map */
+			else if (ARM_NORMAL_TYPE::NORMAL_MAP == iNormalType) {
 			}
 		}
 #pragma endregion
@@ -817,60 +880,163 @@ pair<ARM_DATA*, SUB_DATA*>* CCamera_2D::Find_ArmData(_wstring _wszArmTag)
 	return &(iter->second);
 }
 
-#ifdef _DEBUG
+
 void CCamera_2D::Key_Input(_float _fTimeDelta)
 {
-	//_float fLength = m_pCurArm->Get_Length();
+	_long		MouseMove = {};
+	_vector		fRotation = {};
 
-	/*if (KEY_DOWN(KEY::G)) {
-		CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Book"), 0);
-		
-		Change_Target(pBook);
-	}*/
-	//if (KEY_DOWN(KEY::F)) {
-	//	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
+	if (KEY_PRESSING(KEY::CTRL)) {
+		if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+			if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
+			{
+				fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * -0.3f);
+			}
 
-	//	Change_Target(pPlayer);
-	//}
+			m_pCurArm->Set_Rotation(fRotation);
+		}
+	}
+	else if (KEY_PRESSING(KEY::TAB)) {
 
-	//m_vAtOffset = { 0.f, 0.f, 0.f };
-	//if (KEY_DOWN(KEY::F)) {
-	//	
+		//if (KEY_PRESSING(KEY::LSHIFT))
+		//	return;
+		if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+			if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
+			{
+				fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
 
-	//	ARM_DATA tData = {};
-	//	tData.fMoveTimeAxisRight = { 5.f, 0.f };
-	//	tData.fRotationPerSecAxisRight = { XMConvertToRadians(-10.f), XMConvertToRadians(-1.f) };
-	//	tData.iRotationRatioType = EASE_IN_OUT;
-	//	tData.fLength = 20.f;
-	//	tData.fLengthTime = { 5.f, 0.f };
-	//	tData.iLengthRatioType = EASE_OUT;
+			}
+		}
 
-	//	Add_CustomArm(tData);
-	//	m_eCameraMode = MOVE_TO_CUSTOMARM;
+		m_pCurArm->Set_Rotation(fRotation);
+	}
+	else if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
 
-	//	static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
-	//	CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
-	//	Start_Shake_ByCount(0.2f, 0.1f, 10, SHAKE_XY);
-	//	Start_Changing_AtOffset(3.f, XMVectorSet(-0.7f, 2.f, 0.f, 0.f), EASE_IN_OUT);
+		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
+		{
+			fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
 
-	//	m_is = true;
-	//}
+		}
+		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
+		{
+			fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * -0.3f);
+		}
 
-	//if (true == m_is) {
-	//	m_a += _fTimeDelta;
+		m_pCurArm->Set_Rotation(fRotation);
+	}
 
-	//	
+	_float fArmLength = {};
+	fArmLength = m_pCurArm->Get_Length();
 
-	//	if (m_a > 5.8f) {
-	//		Start_Shake_ByCount(0.2f, 0.1f, 10, SHAKE_XY);
-	//		m_is = false;
-	//		m_a = 0.f;
-	//	}
-	///*	else if (m_a > 1.7f) {
-	//		Start_Shake_ByCount(0.2f, 0.05f, 5, SHAKE_XY);
-	//	}*/
-	//}
+	if (KEY_PRESSING(KEY::CTRL)) {
+		if (KEY_DOWN(KEY::K)) {
+			fArmLength += 0.1;
+			m_pCurArm->Set_Length(fArmLength);
+		}
+		else if (KEY_DOWN(KEY::J)) {
+			fArmLength -= 0.1;
+			m_pCurArm->Set_Length(fArmLength);
+		}
+	}
+
+	if (KEY_PRESSING(KEY::TAB)) {
+		if (KEY_DOWN(KEY::K)) {
+			m_vAtOffset.y += 0.1f;
+		}
+		else if (KEY_DOWN(KEY::J)) {
+			m_vAtOffset.y -= 0.1f;
+		}
+	}
 }
+#ifdef _DEBUG
+void CCamera_2D::Imgui(_float _fTimeDelta)
+{
+	ImGui::Begin("Arm");
+
+	_float3 vCurArm = {};
+	XMStoreFloat3(&vCurArm, m_pCurArm->Get_ArmVector());
+	_float fArmLength = m_pCurArm->Get_Length();
+
+	ImGui::SameLine();
+	if (ImGui::Button("- Length") || ImGui::IsItemActive()) {// 누르고 있는 동안 계속 동작
+		fArmLength -= 0.1;
+		m_pCurArm->Set_Length(fArmLength);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("+ Length") || ImGui::IsItemActive()) {
+		fArmLength += 0.1;
+		m_pCurArm->Set_Length(fArmLength);
+	}
+
+	fArmLength = m_pCurArm->Get_Length();
+	ImGui::Text("Cur Arm: %.4f, %.4f, %.4f", vCurArm.x, vCurArm.y, vCurArm.z);
+
+	ImGui::Text("Cur Length: %.2f", fArmLength);
+	ImGui::Text("Cur ZoomLevel: %d", m_iCurZoomLevel);
+	ImGui::Text("Cur AtOffset: %.4f, %.4f, %.4f", m_vAtOffset.x, m_vAtOffset.y, m_vAtOffset.z);
+
+	ImGui::NewLine();
+
+	static _float3 vInputArm = {};
+	static _float fInputLength = {};
+	static _float3 vInputAtOffset = {};
+
+	ImGui::Text("Desire Arm: %.2f, %.2f, %.2f", vInputArm.x, vInputArm.y, vInputArm.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireX", &vInputArm.x);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireY", &vInputArm.y);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireZ", &vInputArm.z);
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Set Arm")) {
+		m_pCurArm->Set_ArmVector(XMLoadFloat3(&vInputArm));
+	}
+
+	ImGui::Text("Desire Length: %.2f         ", fInputLength);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##DesireLength", &fInputLength);
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Set Length")) {
+		m_pCurArm->Set_Length(fInputLength);
+	}
+
+	ImGui::Text("Set AtOffset: %.2f, %.2f, %.2f", vInputAtOffset.x, vInputAtOffset.y, vInputAtOffset.z);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetAtOffsetX", &vInputAtOffset.x);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetAtOffsetY", &vInputAtOffset.y);
+	ImGui::SameLine(0, 10.0f);
+
+	ImGui::SetNextItemWidth(50.0f);    // 40으로 줄임
+	ImGui::DragFloat("##ResetAtOffsetZ", &vInputAtOffset.z);
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Set AtOffset")) {
+		m_vAtOffset = vInputAtOffset;
+	}
+
+	if (ImGui::Button("Set CurArm To InputArm")) {
+		vInputArm = vCurArm;
+	}
+
+	ImGui::End();
+}
+
 #endif
 
 CCamera_2D* CCamera_2D::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

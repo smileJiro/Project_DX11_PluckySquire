@@ -107,7 +107,7 @@ public:
 	void	Set_Animation(_uint iIdx);
 	void	Set_3DAnimationTransitionTime(_uint iIdx, _float _fTime);
 	void	Set_PlayingAnim(_bool _bPlaying);
-	void	Set_ReverseAnimation(_bool _bReverse) { m_bReverseAnimation = _bReverse; }
+	void	Set_ReverseAnimation(_bool _bReverse);
 	void	Switch_Animation(_uint iIdx);
 	void	To_NextAnimation();
 	void	Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);

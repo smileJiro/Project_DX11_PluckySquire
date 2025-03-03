@@ -64,8 +64,8 @@ public:
 	void				Start_FadeOut(_float _fFadeTime = 1.0f);
 
 public:
-	void				Load_ArmData(_wstring _sz3DFileName, _wstring _sz2DFileName);
-	void				Load_CutSceneData(_wstring _szCutSceneFileName);
+	void				Load_ArmData(LEVEL_ID _eLevelID);
+	void				Load_CutSceneData(LEVEL_ID _eLevelID);
 	HRESULT				Load_DOF(const _wstring& _strJsonPath, _uint _iCameraType);
 
 private:

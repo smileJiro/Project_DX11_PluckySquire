@@ -63,48 +63,10 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 	{
 		m_pBody->Set_ReverseAnimation(false);
 	}
+
 		// 이하 공중일 때
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
-	//물건 들고있지 않으면?
-	if (false == bCarrying)
-	{
-		INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
-		if (INTERACT_RESULT::NO_INPUT == eResult
-			|| INTERACT_RESULT::FAIL == eResult)
-		{
-			if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
-			{
-				m_pOwner->Set_State(CPlayer::ROLL);
-				return;
-			}
-			else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
-			{
-				m_pOwner->Set_State(CPlayer::THROWSWORD);
-				return;
-			}
-			else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
-			{
-				if (m_pOwner->Is_PlatformerMode())
-					m_pOwner->Set_State(CPlayer::ATTACK);
-				else
-					m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
-				return;
-			}
-		}
-		else if(INTERACT_RESULT::SUCCESS == eResult)
-		{
-			return;
-		}
 
-	}
-	else
-	{
-		if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
-		{
-			m_pOwner->Set_State(CPlayer::THROWOBJECT);
-			return;
-		}
-	}
 	if (COORDINATE_3D == eCoord)
 	{
 
@@ -137,6 +99,47 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 				m_eOldFDir = eFDir;
 			}
 			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed2D, _fTimeDelta);
+		}
+	}
+	//물건 들고있지 않으면?
+	if (false == bCarrying)
+	{
+		INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
+		if (INTERACT_RESULT::NO_INPUT == eResult
+			|| INTERACT_RESULT::FAIL == eResult)
+		{
+			if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
+			{
+				m_pOwner->Set_State(CPlayer::ROLL);
+				return;
+			}
+			else if (tKeyResult.bInputStates[PLAYER_INPUT_THROWSWORD])
+			{
+				m_pOwner->Set_State(CPlayer::THROWSWORD);
+				return;
+			}
+			else if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
+			{
+				if (m_pOwner->Is_PlatformerMode())
+					m_pOwner->Set_State(CPlayer::ATTACK);
+				else
+					m_pOwner->Set_State(CPlayer::JUMP_ATTACK);
+				return;
+			}
+			return;
+		}
+		else if(INTERACT_RESULT::SUCCESS == eResult)
+		{
+			return;
+		}
+
+	}
+	else
+	{
+		if (tKeyResult.bInputStates[PLAYER_INPUT_THROWOBJECT])
+		{
+			m_pOwner->Set_State(CPlayer::THROWOBJECT);
+			return;
 		}
 	}
 

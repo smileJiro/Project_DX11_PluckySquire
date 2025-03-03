@@ -97,7 +97,6 @@ namespace Client
 	{
 		SECTION_2D_PLAYMAP_BACKGROUND,
 		SECTION_2D_PLAYMAP_PORTAL,
-		SECTION_2D_PLAYMAP_SLIPPERY,
 		SECTION_2D_PLAYMAP_WORDCONTROLLER,
 		SECTION_2D_PLAYMAP_WORDOBJ,
 		SECTION_2D_PLAYMAP_WORD,
@@ -134,7 +133,8 @@ namespace Client
 		EXPLOSION =					0x10000,		//폭발 (플레이어, 몬스터 모두 충돌)
 		DOOR =						0x20000,	// 2D에서 잠겨있는 문, 열쇠로 열 때를 대비하기 위해서.
 		MAP_GIMMICK =				0x40000,	// 맵 기믹 (발판, 등..)
-		BOSS =					0x80000,		//폭발 (플레이어, 몬스터 모두 충돌)
+		BOSS =						0x80000,		//
+		SLIPPERY =					0x100000,	//책장 기울이기
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬
 	};
@@ -219,6 +219,7 @@ namespace Client
 		HOMINGBALL,
 		YELLOWBALL,
 		PURPLEBALL,
+		WINGSLAM,
 
 		LAST,
 	};

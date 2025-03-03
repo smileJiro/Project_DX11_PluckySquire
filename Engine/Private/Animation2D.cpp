@@ -180,7 +180,7 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta, _bool _bReverse)
 	{
 		m_fCurrentFrameTime = 0;
 		m_iCurrentSubFrame++;
-		if (m_iCurrentSubFrame >= m_SpriteFrames[m_iCurrentFrame].second)
+		if (m_iCurrentSubFrame >= (_uint)m_SpriteFrames[m_iCurrentFrame].second)
 		{
 			m_iCurrentSubFrame = 0;
 			if(_bReverse)
@@ -192,7 +192,7 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta, _bool _bReverse)
 	}
 
 	if ((_bReverse && m_iCurrentFrame <= 0)
-		|| (false == _bReverse && m_iCurrentFrame >= (m_iFrameCount)))
+		|| (false == _bReverse && (_uint)m_iCurrentFrame >= (m_iFrameCount)))
 	{
 		//루프면 처음으로
 		if (m_bLoop)
@@ -243,7 +243,7 @@ _float CAnimation2D::Get_AnimationTime()
 	return (_int)Get_AccumulativeSubFrameCount(m_iFrameCount - 1) / m_fFramesPerSecond / m_fSpeedMagnifier;
 }
 
-void CAnimation2D::Set_Progress(_float _fProgerss)
+void CAnimation2D::Set_Progress(_float _fProgerss, _bool _bReverse)
 {
 	_int iTotalSubFrameCount = (_int)Get_AccumulativeSubFrameCount(m_iFrameCount-1);
 	_int iTargetSubFrame = (_int)(_fProgerss * iTotalSubFrameCount);

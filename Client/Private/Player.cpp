@@ -1029,7 +1029,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 
 void CPlayer::On_Land()
 {
-    cout << "Player Landed" << endl;
+    //cout << "Player Landed" << endl;
 }
 
 
@@ -1132,12 +1132,19 @@ void CPlayer::Jump()
             m_f2DUpForce = m_f2DJumpPower;
 
     }
-    else
+    else 
     {
         CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-        _vector vVelocity = pDynamicActor->Get_LinearVelocity();
-        pDynamicActor->Set_LinearVelocity(vVelocity*0.5f);
-        pDynamicActor->Add_Impulse(_float3{ 0, m_f3DJumpPower ,0 });
+        if (pDynamicActor->Is_Kinematic())
+        {
+
+        }
+        else
+        {
+            _vector vVelocity = pDynamicActor->Get_LinearVelocity();
+            pDynamicActor->Set_LinearVelocity(vVelocity*0.5f);
+            pDynamicActor->Add_Impulse(_float3{ 0, m_f3DJumpPower ,0 });
+        }
 
     }
 }
@@ -1348,7 +1355,7 @@ void CPlayer::ReFuel()
 
 void CPlayer::ZetPropel(_float _fTimeDelta)
 {
-	if (Is_ZetPackMode())
+	if (Is_ZetPackMode() )
 	{
 		m_pZetPack->Propel(_fTimeDelta);
 	}
@@ -2051,8 +2058,12 @@ void CPlayer::Add_Upforce(_float _fForce)
 	else
 	{
 		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-		_vector vVelocity = pDynamicActor->Get_LinearVelocity();
-		pDynamicActor->Add_Force(_float3{ 0, _fForce ,0 });
+        if (false == pDynamicActor->Is_Kinematic())
+        {
+            _vector vVelocity = pDynamicActor->Get_LinearVelocity();
+            pDynamicActor->Add_Force(_float3{ 0, _fForce ,0 });
+        }
+
     }
 
 }

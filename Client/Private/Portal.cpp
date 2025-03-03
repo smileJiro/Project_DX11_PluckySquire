@@ -7,6 +7,7 @@
 
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
+#include "Camera_2D.h"
 
 CPortal::CPortal(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CContainerObject(_pDevice, _pContext)
@@ -82,8 +83,6 @@ HRESULT CPortal::Render()
 
 HRESULT CPortal::Init_Actor()
 {
-    Safe_Release(m_pActorCom);
-
 
 
     _vector f2DPosition = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION);
@@ -91,6 +90,10 @@ HRESULT CPortal::Init_Actor()
     // ¿ùµå¸ÊÀÌ ¼³Á¤µÆÀ¸´Ï, Æ÷Áö¼Ç ¼³Á¤.
     _vector f3DPosition = SECTION_MGR->Get_WorldPosition_FromWorldPosMap(m_strSectionName, _float2(XMVectorGetX(f2DPosition), XMVectorGetY(f2DPosition)));
 
+    if (m_pActorCom != nullptr || true == XMVector3Equal(f3DPosition, XMVectorZero())) 
+    {
+        return S_OK;
+    }
 
     _float4 fStorePostion = {};
 
@@ -133,7 +136,7 @@ HRESULT CPortal::Init_Actor()
         Set_Active(true);
 
     Change_Coordinate(COORDINATE_2D, nullptr);
-    // Æ÷Å» »ý¼º.
+    // Æ÷Å» ÀÌÆåÆ® »ý¼º.
     m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_WorldMatrix_Ptr();
 
     CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
@@ -310,6 +313,9 @@ void CPortal::Interact(CPlayer* _pUser)
 {
     if (COORDINATE_2D == _pUser->Get_CurCoord()) {
         static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET))->Set_InitialData(m_strSectionName, m_iPortalIndex);
+    }
+    else if (COORDINATE_3D == _pUser->Get_CurCoord()) {
+        static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D))->Set_Current_PortalID(m_iPortalIndex);
     }
 
 	_pUser->JumpTo_Portal(this);

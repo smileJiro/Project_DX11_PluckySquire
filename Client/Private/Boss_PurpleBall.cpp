@@ -112,6 +112,9 @@ HRESULT CBoss_PurpleBall::Ready_PartObjects()
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::TEST_PROJECTILE;
 
+    BodyDesc.iRenderGroupID_3D = RG_3D;
+    BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
+
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
@@ -122,6 +125,8 @@ HRESULT CBoss_PurpleBall::Ready_PartObjects()
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
+
+    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 1.f, 1.f, 1.f));
 
     return S_OK;
 }

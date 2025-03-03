@@ -87,6 +87,7 @@
 #include "TestTerrain.h"
 #include "RabbitLunch.h"
 #include "Bomb.h"
+#include "Key.h"
 
 
 #include "2DModel.h"
@@ -108,6 +109,8 @@
 #include "LunchBox.h"
 #include "Door_Yellow.h"
 #include "Pressure_Plate.h"
+#include "Rubboink_Tiny.h"
+#include "MudPit.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -140,6 +143,7 @@
 #include "Boss_HomingBall.h"
 #include "Boss_YellowBall.h"
 #include "Boss_PurpleBall.h"
+#include "Boss_WingSlam.h"
 #include "FSM_Boss.h"
 
 
@@ -820,6 +824,10 @@ HRESULT CLoader::Loading_Level_Static()
 		CPressure_Plate::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"),
+		CKey::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For. Prototype_GameObject_SwordTrail */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_EffectTrail"),
 		CEffect_Trail::Create(m_pDevice, m_pContext))))
@@ -956,7 +964,7 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 
 		/* 테스트 용도 : 박상욱*/
-		
+
 
 
 
@@ -1123,6 +1131,92 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			CJumpPad::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+
+		/* Boss Test */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_FSM_Boss"),
+			CFSM_Boss::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_ButterGrump */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ButterGrump"),
+			CButterGrump::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_BossAttackAnimEvent"),
+			CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/BossAttackAnim.animevt"))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ButterGrump_LeftEye"),
+			CButterGrump_LeftEye::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ButterGrump_RightEye"),
+			CButterGrump_RightEye::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ButterGrump_Tongue"),
+			CButterGrump_Tongue::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ButterGrump_Shield"),
+			CButterGrump_Shield::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_HomingBall"),
+			CBoss_HomingBall::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_EnergyBall"),
+			CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_YellowBall"),
+			CBoss_YellowBall::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_PurpleBall"),
+			CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_WingSlam"),
+			CBoss_WingSlam::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),
+			C3DModel::Create(m_pDevice, m_pContext,
+				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sphere_01.model"
+					), matPretransform))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_HalfSphere_01_2"),
+			C3DModel::Create(m_pDevice, m_pContext,
+				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_HalfSphere_01_2.model"
+					), matPretransform))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sonic_03"),
+			C3DModel::Create(m_pDevice, m_pContext,
+				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sonic_03.model"
+					), matPretransform))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("HomingBall"),
+			C3DModel::Create(m_pDevice, m_pContext,
+				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/HomingBall.model"
+					), matPretransform))))
+			return E_FAIL;
+
+		matPretransform *= XMMatrixRotationY(XMConvertToRadians(180.f));
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model_ButterGrump"),
+			C3DModel::Create(m_pDevice, m_pContext,
+				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/buttergrump_Rig.model"
+					), matPretransform))))
+			return E_FAIL;
+
+
+
+
 	#pragma endregion
 
 	#pragma region Chapter 4 - Effect Load
@@ -1169,9 +1263,35 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
-		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/P6768_TheGiantTracks_KR.wav"));
-		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_C6_TheGiantTracks.wav"));
-		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_And_Exploded_On_The_Ground_Below.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/P6768_TheGiantTracks_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_C6_TheGiantTracks.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub2"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_And_Exploded_On_The_Ground_Below.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("C8_P0910_01"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P0910/P0102_OnceUponATime_C9_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P0910_01_Sub"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P0910/A_sfx_C9_OnceUponATime.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P0910_02"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P0910/P0304_LordHumGrumpRuled_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_01_01"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_TheLoyalOnesWouldBeTreated_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_01_02"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_AndTaxed_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_02_01_Sub"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/A_sfx_C9_PutInTheirPlace.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_02_01"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_TheDisloyalOnes_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_02_02"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_Well_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1112_02_03"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1112/P0506_TheyWouldBePutInTheirPlace_KR.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("C8_P1718_01"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1718/P1314_TheTraiterJot_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1718_02"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1718/P1314_InsideWhichHeAwaited_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P1718_01_Sub"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P1718/A_sfx_C9_DarknessOfTheVent.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_01_1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_AheadOfTheFugitives_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_01_2"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_AndPatrolledByHighly_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_TheTraitorousRodentPrepared_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_2"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_APlanQuiteObviouslyDoomed_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1_Sub"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/A_sfx_C9_TheTraiterousRodent.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheGangArrived_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/A_sfx_C8_TheGangArrivedAtArtia.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_2_1"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_ToSeeTheAftermath_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_2_2"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheArmyOfArtia_KR.wav"));
+
 
 	#pragma endregion
 
@@ -1199,67 +1319,6 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 
 		/* Monster */
-
-		/* Boss Test */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_Component_FSM_Boss"),
-		CFSM_Boss::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For. Prototype_GameObject_ButterGrump */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump"),
-	    CButterGrump::Create(m_pDevice, m_pContext))))
-	    return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_LeftEye"),
-		CButterGrump_LeftEye::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_RightEye"),
-		CButterGrump_RightEye::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_Tongue"),
-		CButterGrump_Tongue::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_Shield"),
-		CButterGrump_Shield::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_HomingBall"),
-	    CBoss_HomingBall::Create(m_pDevice, m_pContext))))
-	    return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_EnergyBall"),
-	    CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
-	    return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_YellowBall"),
-	    CBoss_YellowBall::Create(m_pDevice, m_pContext))))
-	    return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_PurpleBall"),
-	    CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
-	    return E_FAIL;
-
-	XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
-
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model_ButterGrump"),
-		C3DModel::Create(m_pDevice, m_pContext,
-			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/buttergrump_Rig.model"
-				), matPretransform))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),
-		C3DModel::Create(m_pDevice, m_pContext,
-			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sphere_01.model"
-				), matPretransform))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_HalfSphere_01_2"),
-		C3DModel::Create(m_pDevice, m_pContext,
-			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_HalfSphere_01_2.model"
-				), matPretransform))))
-		return E_FAIL;
-
 
 		/* Etc */
 
@@ -1294,44 +1353,85 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	LEVEL_ID eResourceLevelID = LEVEL_CHAPTER_8;
 
 	/* Boss */
-
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_Component_FSM_Boss"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_FSM_Boss"),
 	//	CFSM_Boss::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
 
 	///* For. Prototype_GameObject_ButterGrump */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ButterGrump"),
 	//	CButterGrump::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_LeftEye"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_BossAttackAnimEvent"),
+	//	CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/BossAttackAnim.animevt"))))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ButterGrump_LeftEye"),
 	//	CButterGrump_LeftEye::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_RightEye"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ButterGrump_RightEye"),
 	//	CButterGrump_RightEye::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_Tongue"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ButterGrump_Tongue"),
 	//	CButterGrump_Tongue::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump_Shield"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ButterGrump_Shield"),
 	//	CButterGrump_Shield::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
 
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_HomingBall"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_HomingBall"),
 	//	CBoss_HomingBall::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_EnergyBall"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_EnergyBall"),
 	//	CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_YellowBall"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_YellowBall"),
 	//	CBoss_YellowBall::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Boss_PurpleBall"),
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_PurpleBall"),
 	//	CBoss_PurpleBall::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_WingSlam"),
+	//	CBoss_WingSlam::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+	//XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),
+	//	C3DModel::Create(m_pDevice, m_pContext,
+	//		("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sphere_01.model"
+	//			), matPretransform))))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_HalfSphere_01_2"),
+	//	C3DModel::Create(m_pDevice, m_pContext,
+	//		("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_HalfSphere_01_2.model"
+	//			), matPretransform))))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sonic_03"),
+	//	C3DModel::Create(m_pDevice, m_pContext,
+	//		("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sonic_03.model"
+	//			), matPretransform))))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("HomingBall"),
+	//	C3DModel::Create(m_pDevice, m_pContext,
+	//		("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/HomingBall.model"
+	//			), matPretransform))))
+	//	return E_FAIL;
+
+	//matPretransform *= XMMatrixRotationY(XMConvertToRadians(180.f));
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model_ButterGrump"),
+	//	C3DModel::Create(m_pDevice, m_pContext,
+	//		("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/buttergrump_Rig.model"
+	//			), matPretransform))))
 	//	return E_FAIL;
 
 	return S_OK;

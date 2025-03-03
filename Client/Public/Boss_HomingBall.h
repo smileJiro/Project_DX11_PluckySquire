@@ -25,14 +25,21 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+
+public:
 	HRESULT Cleanup_DeadReferences() override;
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
 private:
 	_float m_fOriginSpeed = { 0.f };
+	_bool m_isHoming = { false };
 
 private:
+	virtual HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
 

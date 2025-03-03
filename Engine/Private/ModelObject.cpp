@@ -459,6 +459,12 @@ void CModelObject::Set_PlayingAnim(_bool _bPlaying)
     m_bPlayingAnim = _bPlaying;
 }
 
+void CModelObject::Set_ReverseAnimation(_bool _bReverse)
+{ 
+    m_bReverseAnimation = _bReverse; 
+	m_pControllerModel->Get_Model(Get_CurCoord())->Switch_Reverse(_bReverse);
+}
+
 _bool CModelObject::Is_DuringAnimation()
 {
     return m_pControllerModel->Get_Model(Get_CurCoord())->Is_DuringAnimation();

@@ -97,7 +97,7 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
                         vecShapeData[0].eMaterial = ACTOR_MATERIAL::DEFAULT;
                         vecShapeData[0].pShapeDesc = &vecShapeCookingDesc[0];
                         vecShapeData[0].isTrigger = false;
-                        vecShapeData[0].isVisual = iColliderType;
+                        vecShapeData[0].isVisual = false;
                         XMStoreFloat4x4(&vecShapeData[0].LocalOffsetMatrix, matScale);
                         break;
                     }

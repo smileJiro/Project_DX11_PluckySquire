@@ -31,7 +31,9 @@
 #include "SlipperyObject.h"
 #include "LightningBolt.h"
 #include "ButterGrump.h"
+#include "Rubboink_Tiny.h"
 #include "RabbitLunch.h"
+#include "MudPit.h"
 
 
 #include "RayShape.h"
@@ -152,6 +154,11 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Map (Level_Chapter_06::Initialize)");
 		assert(nullptr);
 	}
+	if (FAILED(Ready_Layer_Slippery()))
+	{
+		MSG_BOX(" Failed Ready_Layer_Slippery (Level_Chapter_06::Initialize)");
+		assert(nullptr);
+	}
 
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
@@ -164,10 +171,13 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FALLINGROCK_BASIC);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::SLIPPERY);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER_PROJECTILE);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::MAPOBJECT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::BLOCKER);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::NPC_EVENT, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
@@ -453,9 +463,9 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// Free Camera
 	CCamera_Free::CAMERA_FREE_DESC Desc{};
+	Desc.iCurLevelID = m_eLevelID;
 
 	Desc.fMouseSensor = 0.1f;
-
 	Desc.fFovy = XMConvertToRadians(60.f);
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
@@ -471,6 +481,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// Target Camera
 	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
+	TargetDesc.iCurLevelID = m_eLevelID;
 
 	TargetDesc.fSmoothSpeed = 7.f;
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
@@ -497,6 +508,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// CutScene Camera
 	CCamera_CutScene::CAMERA_DESC CutSceneDesc{};
+	CutSceneDesc.iCurLevelID = m_eLevelID;
 
 	CutSceneDesc.fFovy = XMConvertToRadians(60.f);
 	CutSceneDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
@@ -513,6 +525,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// 2D Camera
 	CCamera_2D::CAMERA_2D_DESC Target2DDesc{};
+	Target2DDesc.iCurLevelID = m_eLevelID;
 
 	Target2DDesc.fSmoothSpeed = 5.f;
 	Target2DDesc.eCameraMode = CCamera_2D::DEFAULT;
@@ -538,8 +551,8 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
 
 	// Load CutSceneData, ArmData
-	CCamera_Manager::GetInstance()->Load_CutSceneData(TEXT("Chapter2_CutScene.json"));
-	CCamera_Manager::GetInstance()->Load_ArmData(TEXT("Chapter6_ArmData.json"), TEXT("Chapter2_SketchSpace_ArmData.json"));
+	CCamera_Manager::GetInstance()->Load_CutSceneData(m_eLevelID);
+	CCamera_Manager::GetInstance()->Load_ArmData(m_eLevelID);
 
 	return S_OK;
 }
@@ -958,6 +971,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
 
 
+	return S_OK;
 
 
 
@@ -999,15 +1013,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
 	//	return E_FAIL;
-
-	//CButterGrump::MONSTER_DESC Boss_Desc;
-	//Boss_Desc.iCurLevelID = m_eLevelID;
-	//Boss_Desc.eStartCoord = COORDINATE_3D;
-	//Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 30.35f, -13.0f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, _strLayerTag, &Boss_Desc)))
-	//return E_FAIL;
 
 	return S_OK;
 }
@@ -1127,14 +1132,23 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Slippery()
 {
-	CModelObject::MODELOBJECT_DESC tSlipperyDesc{};
-	tSlipperyDesc.tTransform2DDesc.vInitialPosition = _float3(500.f, 0.f, 0.0f);
-	tSlipperyDesc.iCurLevelID = m_eLevelID;
-	tSlipperyDesc.Build_2D_Model(m_eLevelID, TEXT("Prototype_Model2D_BigPig"), TEXT("Prototype_Component_Shader_VtxPosTex"),(_uint)PASS_VTXPOSTEX::SPRITE2D, false);
-	CSlipperyObject* pSlippery = static_cast<CSlipperyObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBomb"), &tSlipperyDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pSlippery);
 	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
-	pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), pSlippery, SECTION_2D_PLAYMAP_SLIPPERY);
+
+	CModelObject::MODELOBJECT_DESC tModelDesc = {};
+	tModelDesc.iCurLevelID = m_eLevelID;
+	CMudPit* pMudpit = static_cast<CMudPit*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_MudPit"), &tModelDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pMudpit);
+	pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), pMudpit, SECTION_2D_PLAYMAP_OBJECT);
+
+
+	CRubboink_Tiny::TINY_DESC  tSlipperyDesc{};
+	tSlipperyDesc.pMudPit = pMudpit;
+	tSlipperyDesc.iCurLevelID = m_eLevelID;
+	tSlipperyDesc.iImpactCollisionFilter = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER;
+
+	CSlipperyObject* pSlippery = static_cast<CSlipperyObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Rubboink_Tiny"), &tSlipperyDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pSlippery);
+	pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), pSlippery, SECTION_2D_PLAYMAP_OBJECT);
 
 	return S_OK;
 }

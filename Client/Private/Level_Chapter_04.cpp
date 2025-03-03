@@ -145,7 +145,11 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Map (CLevel_Chapter_04::Initialize)");
 		assert(nullptr);
 	}
-
+	if (FAILED(Ready_Layer_MapGimmick(TEXT("Layer_MapGimmick"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Map (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
 
 
 	/* Collision Test */
@@ -466,9 +470,9 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// Free Camera
 	CCamera_Free::CAMERA_FREE_DESC Desc{};
+	Desc.iCurLevelID = m_eLevelID;
 
 	Desc.fMouseSensor = 0.1f;
-
 	Desc.fFovy = XMConvertToRadians(60.f);
 	Desc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	Desc.vEye = _float3(0.f, 10.f, -7.f);
@@ -484,6 +488,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// Target Camera
 	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
+	TargetDesc.iCurLevelID = m_eLevelID;
 
 	TargetDesc.fSmoothSpeed = 7.f;
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
@@ -510,6 +515,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// CutScene Camera
 	CCamera_CutScene::CAMERA_DESC CutSceneDesc{};
+	CutSceneDesc.iCurLevelID = m_eLevelID;
 
 	CutSceneDesc.fFovy = XMConvertToRadians(60.f);
 	CutSceneDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
@@ -526,6 +532,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	// 2D Camera
 	CCamera_2D::CAMERA_2D_DESC Target2DDesc{};
+	Target2DDesc.iCurLevelID = m_eLevelID;
 
 	Target2DDesc.fSmoothSpeed = 5.f;
 	Target2DDesc.eCameraMode = CCamera_2D::DEFAULT;
@@ -553,8 +560,8 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
 
 	// Load CutSceneData, ArmData
-	CCamera_Manager::GetInstance()->Load_CutSceneData(TEXT("Chapter4_CutScene.json"));
-	CCamera_Manager::GetInstance()->Load_ArmData(TEXT("Chapter4_ArmData.json"), TEXT("Chapter2_SketchSpace_ArmData.json"));
+	CCamera_Manager::GetInstance()->Load_CutSceneData(m_eLevelID);
+	CCamera_Manager::GetInstance()->Load_ArmData(m_eLevelID);
 
 	return S_OK;
 }
@@ -1011,6 +1018,16 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
 		return E_FAIL;
 
+
+	//CButterGrump::MONSTER_DESC Boss_Desc;
+	//Boss_Desc.iCurLevelID = m_eLevelID;
+	//Boss_Desc.eStartCoord = COORDINATE_3D;
+	//Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 30.35f, -13.0f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, _strLayerTag, &Boss_Desc)))
+	//	return E_FAIL;
+
 	return S_OK;
 }
 
@@ -1122,6 +1139,32 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpPad"),
 		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
 		return E_FAIL;
+
+	tJumpPadDesc.iCurLevelID = m_eLevelID;
+	tJumpPadDesc.eStartCoord = COORDINATE_2D;
+	tJumpPadDesc.tTransform2DDesc.vInitialPosition = { -588.f, 166.5f, 0.f };
+	tJumpPadDesc.strInitialSectionTag = L"Chapter4_SKSP_01";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpPad"),
+		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
+		return E_FAIL;
+
+
+	CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
+	tCarriableDesc.eStartCoord = COORDINATE_2D;
+	tCarriableDesc.iCurLevelID = m_eLevelID;
+	tCarriableDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	tCarriableDesc.strInitialSectionTag;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"), m_eLevelID, _strLayerTag, &tCarriableDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
+{
+
+
 
 	return S_OK;
 }

@@ -29,7 +29,8 @@ public:
 	virtual _float Get_AnimationTime() override;
 	bool Is_AnimChangeable();
 
-	virtual void Set_Progress(_float _fProgerss)override;
+	virtual void Set_Progress(_float _fProgerss, _bool _bReverse)override;
+	void Update_CurrentKeyFrameIndices(_bool _bReverse);
 
 	void Set_PostDealyPercent(_float fPercentage) { m_fPostDelayPercentage = fPercentage; }
 	void Set_AnimTransitionTime(_float fTime) { m_fAnimTransitionTime = fTime; }

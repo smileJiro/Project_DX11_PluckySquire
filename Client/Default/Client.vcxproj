@@ -191,6 +191,8 @@
     <ClInclude Include="..\Public\Bomb.h" />
     <ClInclude Include="..\Public\Bombable.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
+    <ClInclude Include="..\Public\BossWingSlamState.h" />
+    <ClInclude Include="..\Public\Boss_WingSlam.h" />
     <ClInclude Include="..\Public\ButterGrump_LeftEye.h" />
     <ClInclude Include="..\Public\ButterGrump_RightEye.h" />
     <ClInclude Include="..\Public\ButterGrump_Shield.h" />
@@ -198,12 +200,15 @@
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
     <ClInclude Include="..\Public\Detonator.h" />
     <ClInclude Include="..\public\Door_2D.h" />
+    <ClInclude Include="..\public\Door_Blue.h" />
     <ClInclude Include="..\public\Door_Yellow.h" />
     <ClInclude Include="..\public\Effect_Beam.h" />
     <ClInclude Include="..\Public\ChaseFlyState.h" />
     <ClInclude Include="..\Public\Interaction_E.h" />
     <ClInclude Include="..\Public\JumpPad.h" />
+    <ClInclude Include="..\public\Key.h" />
     <ClInclude Include="..\Public\Level_Chapter_06.h" />
+    <ClInclude Include="..\Public\MudPit.h" />
     <ClInclude Include="..\Public\NPC_Manager.h" />
     <ClInclude Include="..\Public\PalmDecal.h" />
     <ClInclude Include="..\Public\PalmMarker.h" />
@@ -211,6 +216,7 @@
     <ClInclude Include="..\Public\PlayerState_Bomber.h" />
     <ClInclude Include="..\Public\PlayerState_ErasePalmDecal.h" />
     <ClInclude Include="..\Public\PlayerState_Stamp.h" />
+    <ClInclude Include="..\Public\Postit_Page.h" />
     <ClInclude Include="..\public\Pressure_Plate.h" />
     <ClInclude Include="..\Public\Projectile_BirdMonster.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -219,6 +225,7 @@
     <ClInclude Include="..\Public\DraggableObject.h" />
     <ClInclude Include="..\Public\PlayerState_Drag.h" />
     <ClInclude Include="..\Public\Dialog_Manager.h" />
+    <ClInclude Include="..\Public\Rubboink_Tiny.h" />
     <ClInclude Include="..\Public\Shadow2D.h" />
     <ClInclude Include="..\Public\3DMapDefaultObject.h" />
     <ClInclude Include="..\Public\3DMapObject.h" />
@@ -450,6 +457,8 @@
     <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\Bombable.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
+    <ClCompile Include="..\Private\BossWingSlamState.cpp" />
+    <ClCompile Include="..\Private\Boss_WingSlam.cpp" />
     <ClCompile Include="..\Private\ButterGrump_LeftEye.cpp" />
     <ClCompile Include="..\Private\ButterGrump_RightEye.cpp" />
     <ClCompile Include="..\Private\ButterGrump_Shield.cpp" />
@@ -458,10 +467,13 @@
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
     <ClCompile Include="..\Private\Detonator.cpp" />
     <ClCompile Include="..\private\Door_2D.cpp" />
+    <ClCompile Include="..\private\Door_Blue.cpp" />
     <ClCompile Include="..\private\Door_Yellow.cpp" />
     <ClCompile Include="..\Private\Interaction_E.cpp" />
     <ClCompile Include="..\Private\JumpPad.cpp" />
+    <ClCompile Include="..\private\Key.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_06.cpp" />
+    <ClCompile Include="..\Private\MudPit.cpp" />
     <ClCompile Include="..\Private\NPC_Manager.cpp" />
     <ClCompile Include="..\Private\PalmDecal.cpp" />
     <ClCompile Include="..\Private\PalmMarker.cpp" />
@@ -469,6 +481,7 @@
     <ClCompile Include="..\Private\PlayerState_Bomber.cpp" />
     <ClCompile Include="..\Private\PlayerState_ErasePalmDecal.cpp" />
     <ClCompile Include="..\Private\PlayerState_Stamp.cpp" />
+    <ClCompile Include="..\Private\Postit_Page.cpp" />
     <ClCompile Include="..\private\Pressure_Plate.cpp" />
     <ClCompile Include="..\Private\Projectile_BirdMonster.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -478,6 +491,7 @@
     <ClCompile Include="..\Private\PlayerState_Drag.cpp" />
     <ClCompile Include="..\private\Effect_Beam.cpp" />
     <ClCompile Include="..\Private\Dialog_Manager.cpp" />
+    <ClCompile Include="..\Private\Rubboink_Tiny.cpp" />
     <ClCompile Include="..\Private\Shadow2D.cpp" />
     <ClCompile Include="..\Private\3DMapDefaultObject.cpp" />
     <ClCompile Include="..\Private\3DMapObject.cpp" />

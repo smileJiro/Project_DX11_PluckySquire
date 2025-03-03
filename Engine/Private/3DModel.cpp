@@ -514,6 +514,11 @@ void C3DModel::Switch_Animation(_uint iIdx, _bool _bReverse)
 
 }
 
+void C3DModel::Switch_Reverse(_uint _iANimIdx, _bool _bReverse)
+{
+	m_Animations[_iANimIdx]->Update_CurrentKeyFrameIndices(_bReverse);
+}
+
 void C3DModel::To_NextAnimation()
 {
 	Switch_Animation((m_iCurrentAnimIndex + 1) % m_Animations.size());
