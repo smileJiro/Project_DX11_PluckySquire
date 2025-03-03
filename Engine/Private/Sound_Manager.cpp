@@ -262,6 +262,12 @@ HRESULT CSound_Manager::Load_BGM(const wstring& strBGMTag, const wstring& strBGM
     if (nullptr == pBGM)
         return E_FAIL;
 
+    if (nullptr != Find_BGM(strBGMTag))
+    {
+        Safe_Release(pBGM);
+        return E_FAIL;
+    }
+
     m_BGMs.emplace(strBGMTag, pBGM);
     return S_OK;
 }
