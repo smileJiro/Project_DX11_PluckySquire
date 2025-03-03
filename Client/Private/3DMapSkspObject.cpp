@@ -129,6 +129,10 @@ HRESULT C3DMapSkspObject::Render()
         if (FAILED(Render_Default()))
             return E_FAIL;
         break;
+    case Client::C3DMapSkspObject::SKSP_POSTIT:
+        if (FAILED(Render_Default()))
+            return E_FAIL;
+        break;
     case Client::C3DMapSkspObject::SKSP_PLAG:
         if (FAILED(Render_Flags()))
             return E_FAIL;
