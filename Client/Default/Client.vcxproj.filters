@@ -1327,6 +1327,7 @@
     <ClInclude Include="..\Public\BossRockVolleyState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BombableObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2112,6 +2113,7 @@
     <ClCompile Include="..\Private\BossRockVolleyState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\BombableObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

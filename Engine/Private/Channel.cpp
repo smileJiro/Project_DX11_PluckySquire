@@ -53,13 +53,17 @@ KEYFRAME CChannel::Get_Frame(_float fTrackPos, _uint* pOutCurrentKeyFrameIdx, _b
 
 	*pOutCurrentKeyFrameIdx = Get_KeyFrameIndex(fTrackPos, *pOutCurrentKeyFrameIdx, bReverse);
 	if (bReverse)
-	{	
+	{
+		if (*pOutCurrentKeyFrameIdx <= 0)
+			return m_KeyFrames[*pOutCurrentKeyFrameIdx];
 		_float fRatio = (m_KeyFrames[*pOutCurrentKeyFrameIdx].fTrackPosition - fTrackPos) /
 			(m_KeyFrames[*pOutCurrentKeyFrameIdx].fTrackPosition - m_KeyFrames[*pOutCurrentKeyFrameIdx - 1].fTrackPosition);
 		return Lerp_Frame(m_KeyFrames[*pOutCurrentKeyFrameIdx - 1],m_KeyFrames[*pOutCurrentKeyFrameIdx], 1 - fRatio);
 	}
 	else
 	{
+		if (*pOutCurrentKeyFrameIdx >= ((_int)m_KeyFrames.size() - 1))
+			return m_KeyFrames[*pOutCurrentKeyFrameIdx];
 		_float fRatio = (fTrackPos - m_KeyFrames[*pOutCurrentKeyFrameIdx].fTrackPosition) /
 			(m_KeyFrames[*pOutCurrentKeyFrameIdx + 1].fTrackPosition - m_KeyFrames[*pOutCurrentKeyFrameIdx].fTrackPosition);
 		return Lerp_Frame(m_KeyFrames[*pOutCurrentKeyFrameIdx], m_KeyFrames[*pOutCurrentKeyFrameIdx + 1], fRatio);;

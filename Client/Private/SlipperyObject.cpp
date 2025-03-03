@@ -28,7 +28,7 @@ void CSlipperyObject::Update(_float _fTimeDelta)
 {
 	if (m_bSlip)
 	{
-		m_pControllerTransform->Go_Direction(m_vSlipDirection, _fTimeDelta);
+		m_pControllerTransform->Go_Direction(m_vSlipDirection, m_fSlipPower, _fTimeDelta);
 	}
 	__super::Update(_fTimeDelta);
 }
@@ -54,12 +54,13 @@ void CSlipperyObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _
 	}
 }
 
-void CSlipperyObject::Start_Slip(_vector _vDirection)
+void CSlipperyObject::Start_Slip(_fvector _vDirection, _float _fPower)
 {
 	if (m_bSlip)
 		return;
 	m_bSlip = true;
 	m_vSlipDirection = _vDirection;
+	m_fSlipPower = _fPower;
 	On_StartSlip(_vDirection);
 }
 

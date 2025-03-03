@@ -25,7 +25,6 @@ public:
 	virtual void Detonate() override;
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-
 private:
 	CCollider* m_pExplosionCollider = nullptr;
 	set<CGameObject*> m_AttckedObjects;

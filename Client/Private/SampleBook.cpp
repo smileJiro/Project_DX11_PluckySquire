@@ -714,7 +714,7 @@ void CSampleBook::SlideObjects_RToL()
 		{
 			CSlipperyObject* pSlippery = dynamic_cast<CSlipperyObject*>(pObj);
 			if(pSlippery)
-				pSlippery->Start_Slip(_vector{ -1.0f, 0.f,0.f });
+				pSlippery->Start_Slip(_vector{ -1.0f, 0.f,0.f },500.f);
 		}
 	}
 }
@@ -730,7 +730,7 @@ void CSampleBook::SlideObjects_LToR()
 		{
 			CSlipperyObject* pSlippery = dynamic_cast<CSlipperyObject*>(pObj);
 			if (pSlippery)
-				pSlippery->Start_Slip(_vector{ 1.0f, 0.f,0.f });
+				pSlippery->Start_Slip(_vector{ 1.0f, 0.f,0.f },500.f);
 		}
 	}
 }
