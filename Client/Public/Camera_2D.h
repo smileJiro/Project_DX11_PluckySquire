@@ -84,7 +84,7 @@ public:
 
 	void						Set_CameraMode(_uint _iCameraMode) { m_eCameraMode = (CAMERA_2D_MODE)_iCameraMode; }
 	void						Set_Current_PortalID(_uint _iPortalID) { m_iPortalID = _iPortalID; }  // Portal 들어갈 때 Data 초기화하기 
-	void						Set_InitialData(_fvector _vArm, _float _fLength, _fvector _vOffset);
+	void						Set_InitialData(_fvector _vArm, _float _fLength, _fvector _vOffset, _uint _iZoomLevel);
 	void						Set_InitialData(pair<ARM_DATA*, SUB_DATA*>* pData);
 	void						Set_InitialData(_wstring _szSectionTag);
 
@@ -144,6 +144,10 @@ private:
 	// Portal ID
 	_uint						m_iPortalID = {};
 
+	// Normal map
+	ID3D11Texture2D*			m_pCopyNormalMap = {};
+
+
 private:
 	void						Action_Mode(_float _fTimeDelta);
 	void						Action_SetUp_ByMode();
@@ -164,6 +168,9 @@ private:
 	virtual	void				Switching(_float _fTimeDelta) override;
 	void						Find_TargetPos();
 	void						Check_MagnificationType();
+
+	// Copy RT
+	HRESULT						Create_NormalCopyTexture();
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);
