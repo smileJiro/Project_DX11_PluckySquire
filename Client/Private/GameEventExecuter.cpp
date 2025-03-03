@@ -21,9 +21,7 @@
 
 CGameEventExecuter::CGameEventExecuter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameObject(_pDevice, _pContext)
-	, m_pGameInstance(CGameInstance::GetInstance())
 {
-	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CGameEventExecuter::Initialize_Prototype()
@@ -556,7 +554,6 @@ CGameObject* CGameEventExecuter::Clone(void* _pArg)
 
 void CGameEventExecuter::Free()
 {
-	Safe_Release(m_pGameInstance);
 	__super::Free();
 }
 

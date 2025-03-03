@@ -28,7 +28,7 @@ public:
 
 private:
 	ID3DX11Effect* m_pEffect = { nullptr };
-	ID3D11Query* m_pEventQuery = { nullptr };
+	//ID3D11Query* m_pEventQuery = { nullptr };
 	_uint			m_iNumLayouts = { 0 }; // NumLayouts == NumPasses
 	//map<_string, ID3D11ComputeShader*> m_ComputeShaders;
 

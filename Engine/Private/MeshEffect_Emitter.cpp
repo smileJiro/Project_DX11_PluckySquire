@@ -26,10 +26,10 @@ CMeshEffect_Emitter::CMeshEffect_Emitter(const CMeshEffect_Emitter& _Prototype)
 	, m_vDefaultColor(_Prototype.m_vDefaultColor)
 #endif
 {
-	//Safe_AddRef(m_pEffectModelCom);
-	//
-	//for (auto& pTexture : m_Textures)
-	//	Safe_AddRef(pTexture);
+	Safe_AddRef(m_pEffectModelCom);
+	
+	for (auto& pTexture : m_Textures)
+		Safe_AddRef(pTexture);
 
 }
 
