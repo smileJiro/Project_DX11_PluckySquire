@@ -15,7 +15,7 @@ protected:
 public:
     virtual _float Get_Progress() abstract;
 
-    virtual void Set_Progress(_float _fProgerss)abstract;
+    virtual void Set_Progress(_float _fProgers, _bool _bReverse)abstract;
 	void Set_SpeedMagnifier(_float _fMag) { m_fSpeedMagnifier = _fMag; }
     void Set_Loop(_bool bIsLoop) { m_bLoop = bIsLoop; }
     virtual void Reset(_bool _bReverse = false);

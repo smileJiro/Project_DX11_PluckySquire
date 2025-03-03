@@ -69,6 +69,7 @@ public:
 	virtual void			Set_Animation(_uint iIdx, _bool _bReverse = false)override;
 	void						Set_AnimationTransitionTime(_uint iIdx, _float _fTime);
 	virtual void			Switch_Animation(_uint iIdx, _bool _bReverse = false)override;
+	virtual void			Switch_Reverse(_uint iIdx, _bool _bReverse = false) override;
 	virtual void			To_NextAnimation() override;
 	virtual void			Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) override;
 

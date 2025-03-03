@@ -158,13 +158,17 @@ bool CAnimation3D::Is_AnimChangeable()
 	return m_fDuration * m_fPostDelayPercentage <= m_fCurrentTrackPosition;
 }
 
-void CAnimation3D::Set_Progress(_float _fProgerss)
+void CAnimation3D::Set_Progress(_float _fProgerss, _bool _bReverse)
 {
 	m_fCurrentTrackPosition = _fProgerss * m_fDuration;
-	//현재 TrackPosition이 되기 전의 키 프레임으로
+	Update_CurrentKeyFrameIndices(_bReverse);
+}
+
+void CAnimation3D::Update_CurrentKeyFrameIndices(_bool _bReverse)
+{	//현재 TrackPosition이 되기 전의 키 프레임으로
 	for (_uint i = 0; i < m_iNumChannels; i++)
 	{
-		m_CurrentKeyFrameIndices[i] = m_vecChannel[i]->Get_KeyFrameIndex(m_fCurrentTrackPosition);
+		m_CurrentKeyFrameIndices[i] = m_vecChannel[i]->Get_KeyFrameIndex(m_fCurrentTrackPosition, _bReverse);
 	}
 }
 

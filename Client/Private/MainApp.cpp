@@ -54,7 +54,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 	EngineDesc.isNewRenderer = true;
 #ifdef _DEBUG
-	EngineDesc.eImportMode |= NONE_IMPORT | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
+	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
 #elif NDEBUG
 	EngineDesc.eImportMode |= NONE_IMPORT;
 #endif
@@ -94,11 +94,11 @@ void CMainApp::Progress(_float _fTimeDelta)
 	m_pGameInstance->Update_Engine(_fTimeDelta);
 	CCamera_Manager::GetInstance()->Update(_fTimeDelta);
 	CTrigger_Manager::GetInstance()->Update();
-
-	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
-
 	// TODO :: 여기가 맞는지? >> 맞는 것 같삼.
 	CSection_Manager::GetInstance()->Section_AddRenderGroup_Process();
+	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
+
+
 	if (IS_IMPORT_IMGUI)
 		m_pGameInstance->End_Imgui();
 

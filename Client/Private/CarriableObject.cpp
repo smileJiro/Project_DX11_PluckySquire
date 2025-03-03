@@ -40,7 +40,7 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 
 
 
-    pDesc->eStartCoord  = COORDINATE_3D;
+    //pDesc->eStartCoord  = COORDINATE_3D;
 
 
     pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
@@ -72,6 +72,22 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 	Safe_AddRef(m_pBody2DColliderCom);
 
 	m_pActorCom->Set_Mass(1.5f);
+
+	/* 2D 시작일 경우, Section에 추가. */
+	if (COORDINATE_2D == pDesc->eStartCoord)
+	{
+		if (0 != lstrcmp(pDesc->strInitialSectionTag.c_str(), L""))
+		{
+			if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strInitialSectionTag, this)))
+				return E_FAIL;
+		}
+		else
+		{
+			if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this)))
+				return E_FAIL;
+		}
+	}
+
     return S_OK;
 }
 

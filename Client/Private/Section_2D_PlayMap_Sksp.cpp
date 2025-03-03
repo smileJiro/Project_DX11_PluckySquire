@@ -58,8 +58,8 @@ HRESULT CSection_2D_PlayMap_Sksp::Remove_GameObject_ToSectionLayer(CGameObject* 
 HRESULT CSection_2D_PlayMap_Sksp::Section_AddRenderGroup_Process()
 {
 	// 텍스쳐 복사
-	if (FAILED(Copy_DefaultMap_ToRenderTarget()))
-		return E_FAIL;
+	//if (FAILED(Copy_DefaultMap_ToRenderTarget()))
+	//	return E_FAIL;
 
 	// 오브젝트 그룹 소트
 	Sort_Layer([](const CGameObject* pLeftGameObject, const CGameObject* pRightGameObject)->_bool {

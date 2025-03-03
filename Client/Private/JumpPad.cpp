@@ -78,7 +78,7 @@ HRESULT CJumpPad::Initialize(void* _pArg)
 		Set_Animation(SMALL_JUMP_3D);
 	else
 		Set_Animation(TOP_IDLE_2D);
-	m_pActorCom->Set_Mass(5.5f);
+	m_pActorCom->Set_Mass(1.5f);
 	return S_OK;
 }
 

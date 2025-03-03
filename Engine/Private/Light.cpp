@@ -69,10 +69,13 @@ HRESULT CLight::Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 	case Engine::LIGHT_TYPE::DIRECTOINAL:
 		iPassIndex = (_uint)PASS_DEFERRED::PBR_LIGHT_DIRECTIONAL;
 		break;
+	case Engine::LIGHT_TYPE::SPOT:
+		iPassIndex = (_uint)PASS_DEFERRED::PBR_LIGHT_SPOT;
+		break;
 	default:
 		return E_FAIL;
 	}
-
+	
 	//Compute_ViewProjMatrix();
 	//if (FAILED(m_pGameInstance->UpdateConstBuffer(m_tLightConstData, m_pLightConstbuffer)))
 	//	return E_FAIL;
@@ -147,6 +150,21 @@ HRESULT CLight::Compute_ViewProjMatrix()
 		_vector vWorldUp = { 0.0f, 1.0f, 0.0f, 0.0f };
 
 		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixLookAtLH(XMVectorSetW(XMLoadFloat3(&m_tLightConstData.vPosition), 1.0f), vAt, vWorldUp));
+
+		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(m_fFovy), SHADOWMAP_X / SHADOWMAP_Y, m_vNearFarPlane.x, m_vNearFarPlane.y));
+
+		m_tLightConstData.LightViewProjMatrix = XMLoadFloat4x4(&m_ViewMatrix) * XMLoadFloat4x4(&m_ProjMatrix);
+
+	}
+
+	if (LIGHT_TYPE::SPOT == m_eType)
+	{
+		_vector vLightDir = XMVector3Normalize(XMLoadFloat3(&m_tLightConstData.vDirection));
+		_vector vEye = XMVectorSetW(XMLoadFloat3(&m_tLightConstData.vPosition), 1.0f);
+		_vector vAt = vEye + vLightDir;
+		_vector vWorldUp = { 0.0f, 1.0f, 0.0f, 0.0f };
+
+		XMStoreFloat4x4(&m_ViewMatrix, XMMatrixLookAtLH(vEye, vAt, vWorldUp));
 
 		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(m_fFovy), SHADOWMAP_X / SHADOWMAP_Y, m_vNearFarPlane.x, m_vNearFarPlane.y));
 
