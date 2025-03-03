@@ -1129,6 +1129,14 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
 		return E_FAIL;
 
+	tJumpPadDesc.iCurLevelID = m_eLevelID;
+	tJumpPadDesc.eStartCoord = COORDINATE_2D;
+	tJumpPadDesc.tTransform2DDesc.vInitialPosition = { -588.f, 166.5f, 0.f };
+	tJumpPadDesc.strInitialSectionTag = L"Chapter4_SKSP_01";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpPad"),
+		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
+		return E_FAIL;
+
 
 	CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
 	tCarriableDesc.eStartCoord = COORDINATE_2D;

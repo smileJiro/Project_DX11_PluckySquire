@@ -32,6 +32,12 @@ HRESULT CDoor_Blue::Initialize(void* _pArg)
 
 void CDoor_Blue::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
+    if (OPEN == m_eDoorState)
+    {
+        m_eDoorState = OPENED;
+        m_p2DColliderComs[0]->Set_Active(false);
+        Switch_Animation_By_State();
+    }
 }
 
 void CDoor_Blue::Set_AnimLoop()
@@ -77,7 +83,41 @@ void CDoor_Blue::Set_AnimLoop()
 
 void CDoor_Blue::Switch_Animation_By_State()
 {
+    _uint iAnimIndex = 0;
+    if (m_isHorizontal)
+    {
+        if (LARGE == m_eDoorSize)
+        {
+            iAnimIndex = H_LARGE_BLUE_CLOSED;
+        }
+        else if (MED == m_eDoorSize)
+        {
+            iAnimIndex = H_MED_BLUE_CLOSED;
+        }
+        else
+        {
+            iAnimIndex = H_SMALL_BLUE_CLOSED;
+        }
+    }
+    else
+    {
+        return;
+    }
 
+    switch (m_eDoorState)
+    {
+    case OPEN:
+        iAnimIndex += 1;
+        break;
+    case OPENED:
+        iAnimIndex += 2;
+        break;
+    case CLOSED:
+        iAnimIndex += 0;
+        break;
+    }
+
+    Switch_Animation(iAnimIndex);
 }
 
 CDoor_Blue* CDoor_Blue::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
