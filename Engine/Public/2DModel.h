@@ -37,7 +37,7 @@ public:
 
 
 
-#ifdef NDEBUG
+#ifdef _DEBUG
     const CSpriteFrame* Get_SpriteFrame();
     CTexture* Get_Texture() {
         if (m_Textures.empty())

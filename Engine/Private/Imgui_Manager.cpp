@@ -121,7 +121,7 @@ HRESULT CImgui_Manager::LevelChange_Imgui()
 	return S_OK;
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 HRESULT CImgui_Manager::Imgui_Debug_Render()
 {
@@ -489,7 +489,16 @@ HRESULT CImgui_Manager::Imgui_Debug_IBLGlobalVariable()
 		m_pGameInstance->Change_CubeMap(TEXT("Prototype_Component_Texture_Chapter4Env"));
 	}
 	
-
+	if (ImGui::RadioButton("IBL_CHAPTER6", iSelectedCubeMap == IBLTEXTURE::IBL_CHAPTER6))
+	{
+		iSelectedCubeMap = (_int)IBLTEXTURE::IBL_CHAPTER6; // Flag 1 선택
+		m_pGameInstance->Change_CubeMap(TEXT("Prototype_Component_Texture_Chapter6Env"));
+	}
+	if (ImGui::RadioButton("IBL_CHAPTER6_2", iSelectedCubeMap == IBLTEXTURE::IBL_CHAPTER6_2))
+	{
+		iSelectedCubeMap = (_int)IBLTEXTURE::IBL_CHAPTER6_2; // Flag 1 선택
+		m_pGameInstance->Change_CubeMap(TEXT("Prototype_Component_Texture_Chapter6_2Env"));
+	}
 
 	int iSelectedFlag = tConstIBLData.iToneMappingFlag;
 	if (ImGui::RadioButton("TONE_LINEAR", iSelectedFlag == 0))
@@ -573,7 +582,8 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 			iSelectedType = (int)LIGHT_TYPE::POINT; // Flag 1 선택
 		if (ImGui::RadioButton("DIRECTIONAL##AddLight", iSelectedType == (int)LIGHT_TYPE::DIRECTOINAL))
 			iSelectedType = (int)LIGHT_TYPE::DIRECTOINAL; // Flag 1 선택
-
+		if (ImGui::RadioButton("SPOT##AddLight", iSelectedType == (int)LIGHT_TYPE::SPOT))
+			iSelectedType = (int)LIGHT_TYPE::SPOT; // Flag 1 선택
 		if (ImGui::Button("Add_Light"))
 		{
 			CONST_LIGHT AddLightDesc = {};
@@ -602,7 +612,20 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 				bool is_selected = (selected_index == i);
 				string strGameObjectName;
 				eListType = (*iter)->Get_Type();
-				strGameObjectName += LIGHT_TYPE::POINT == eListType ? "Point" : "Directional";
+				switch (eListType)
+				{
+				case Engine::LIGHT_TYPE::POINT:
+					strGameObjectName += "Point";
+					break;
+				case Engine::LIGHT_TYPE::DIRECTOINAL:
+					strGameObjectName += "Directional";
+					break;
+				case Engine::LIGHT_TYPE::SPOT:
+					strGameObjectName += "Spot";
+					break;
+				default:
+					break;
+				}
 				strGameObjectName += "Light_" + to_string(i);
 				if (ImGui::Selectable(strGameObjectName.c_str(), is_selected))
 				{
@@ -638,6 +661,9 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 		case Engine::LIGHT_TYPE::DIRECTOINAL:
 			ImGui::Text("LightType : DIRECTOINAL");
 			break;
+		case Engine::LIGHT_TYPE::SPOT:
+			ImGui::Text("LightType : SPOT");
+			break;
 		default:
 			break;
 		}
@@ -645,6 +671,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 		if (ImGui::DragFloat3("Position##Light", &tConstLightData.vPosition.x, 0.1f, -200.f, 200.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
+			(*Selectiter)->Compute_ViewProjMatrix();
 		}
 		if (ImGui::DragFloat3("Direction##Light", &tConstLightData.vDirection.x, 0.01f, -1.f, 1.f, "%.3f", ImGuiSliderFlags_AlwaysClamp))
 		{
@@ -748,6 +775,9 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 					break;
 				case Engine::LIGHT_TYPE::DIRECTOINAL:
 					LightJson["eType"] = "DIRECTOINAL";
+					break;
+				case Engine::LIGHT_TYPE::SPOT:
+					LightJson["eType"] = "SPOT";
 					break;
 				}
 				LightJson["vRadiance"]["x"] = tConstLightData.vRadiance.x;

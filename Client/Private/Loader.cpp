@@ -355,6 +355,15 @@ HRESULT CLoader::Loading_Level_Static()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter2_BrightEnv_%d.dds"), 3, true))))
 		return E_FAIL;
 
+	/* For. Prototype_Component_Texture_Chapter6Env */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter6Env"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter6Env_%d.dds"), 3, true))))
+		return E_FAIL;
+	
+	/* For. Prototype_Component_Texture_Chapter6_2Env */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Chapter6_2Env"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/CubeMap/HDRI/TestEnv/Chapter6_2Env_%d.dds"), 3, true))))
+		return E_FAIL;
 
 	
 

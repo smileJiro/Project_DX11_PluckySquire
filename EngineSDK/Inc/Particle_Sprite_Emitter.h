@@ -59,7 +59,7 @@ public:
 	virtual HRESULT		 Cleanup_DeadReferences() override;
 	
 	
-#ifdef NDEBUG 
+#ifdef _DEBUG 
 public:
 	virtual void				Tool_Setting() override;
 	virtual void				Tool_Update(_float _fTimeDelta) override;

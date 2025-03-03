@@ -10,7 +10,7 @@ CDebugDraw_For_Client::CDebugDraw_For_Client(ID3D11Device* _pDevice, ID3D11Devic
 CDebugDraw_For_Client::CDebugDraw_For_Client(const CDebugDraw_For_Client& _Prototype)
 	: CComponent(_Prototype)
 {
-#ifdef NDEBUG
+#ifdef _DEBUG
 	m_pInputLayout = _Prototype.m_pInputLayout;
 	m_pBatch = _Prototype.m_pBatch;
 	m_pEffect = _Prototype.m_pEffect;
@@ -20,7 +20,7 @@ CDebugDraw_For_Client::CDebugDraw_For_Client(const CDebugDraw_For_Client& _Proto
 
 HRESULT CDebugDraw_For_Client::Initialize_Prototype()
 {
-#ifdef NDEBUG
+#ifdef _DEBUG
 	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
 	m_pEffect = new BasicEffect(m_pDevice);
 
@@ -42,7 +42,7 @@ HRESULT CDebugDraw_For_Client::Initialize(void* _pArg)
 	return S_OK;
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 HRESULT CDebugDraw_For_Client::Render_Frustum(BoundingFrustum& _Frustum, _float4& _vDebugColor)
 {
@@ -107,7 +107,7 @@ CDebugDraw_For_Client* CDebugDraw_For_Client::Clone(void* _pArg)
 
 void CDebugDraw_For_Client::Free()
 {
-#ifdef NDEBUG
+#ifdef _DEBUG
 	if (false == m_isCloned)
 	{
 		Safe_Delete(m_pBatch);

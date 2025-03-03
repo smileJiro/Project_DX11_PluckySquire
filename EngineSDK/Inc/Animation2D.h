@@ -20,7 +20,7 @@ public:
 		return &m_matSpriteTransform; 
 	}
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 	CTexture* Get_Texture() const { return m_pTexture; }
 
 	const _float2 Get_StartUV() const { return m_vSpriteStartUV; }
