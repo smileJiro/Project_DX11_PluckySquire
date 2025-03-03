@@ -108,6 +108,7 @@
 #include "LightningBolt.h"
 #include "LunchBox.h"
 #include "Door_Yellow.h"
+#include "Door_Blue.h"
 #include "Pressure_Plate.h"
 #include "Rubboink_Tiny.h"
 #include "MudPit.h"
@@ -820,6 +821,10 @@ HRESULT CLoader::Loading_Level_Static()
 		CDoor_Yellow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorBlue"),
+		CDoor_Blue::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Pressure_Plate"),
 		CPressure_Plate::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -946,28 +951,21 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 		lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
 		m_pGameInstance->Load_SFX(TEXT("P0102_01_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C0102/P0102_01_01.wav"));
-
+	
 		m_pGameInstance->Load_SFX(TEXT("P0102_02_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C0102/P0102_02_01.wav"));
 		m_pGameInstance->Load_SFX(TEXT("P0102_02_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C0102/P0102_02_02.wav"));
-
+	
 		m_pGameInstance->Load_SFX(TEXT("P0304_01_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C0102/P0304_01_01.wav"));
 		m_pGameInstance->Load_SFX(TEXT("P0304_01_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C0102/P0304_01_02.wav"));
-
+	
 		m_pGameInstance->Load_SFX(TEXT("P0304_02_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C0102/P0304_02_01.wav"));
-
+	
 		m_pGameInstance->Load_SFX(TEXT("P1112_01_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1112/P1112_01_01.wav"));
 		m_pGameInstance->Load_SFX(TEXT("P1112_01_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1112/P1112_01_02.wav"));
-
+	
 		m_pGameInstance->Load_SFX(TEXT("P1920_01_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1920/P1920_01_01.wav"));
 		m_pGameInstance->Load_SFX(TEXT("P1920_01_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1920/P1920_01_02.wav"));
 		m_pGameInstance->Load_SFX(TEXT("P1920_02_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1920/P1920_02_01.wav"));
-
-
-		/* 테스트 용도 : 박상욱*/
-
-
-
-
 
 	#pragma endregion
 
@@ -1263,6 +1261,7 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
+		// 나레이션 관련
 		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/P6768_TheGiantTracks_KR.wav"));
 		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_C6_TheGiantTracks.wav"));
 		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub2"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_And_Exploded_On_The_Ground_Below.wav"));
@@ -1292,6 +1291,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_2_1"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_ToSeeTheAftermath_KR.wav"));
 		m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_2_2"),	TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheArmyOfArtia_KR.wav"));
 
+		m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_1"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AndNowHumgrump_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_2"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_ToClaimHisRightfulRole_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_3"),			TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AsTheGrandRuler_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_1_Sub"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/A_sfx_c08_Artian_Throne.wav"));
+		// 나레이션 관련
 
 	#pragma endregion
 

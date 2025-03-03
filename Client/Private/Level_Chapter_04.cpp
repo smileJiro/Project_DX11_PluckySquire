@@ -31,7 +31,7 @@
 #include "Blocker.h"
 #include "Bulb.h"
 #include "JumpPad.h"
-
+#include "Door_2D.h"
 
 #include "RayShape.h"
 
@@ -174,6 +174,14 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
+
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::DOOR);
+	/* 발판 - 기믹오브젝트, 2D에 해당하는 오브젝트 (주사위, 등.. )*/
+	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
+	/* 발판 - 플레이어 */
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER);
+	/* 문 - 기믹오브젝트 */
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::GIMMICK_OBJECT, OBJECT_GROUP::DOOR);
 
 	/* Load Trigger*/
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger.json"));
@@ -333,7 +341,7 @@ HRESULT CLevel_Chapter_04::Ready_Lights()
 {
 #ifdef _DEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
-#elif _NDEBUG
+#elif NDEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter4.json"));
 #endif // _DEBUG
 	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter4.json"));
@@ -1152,8 +1160,8 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 	CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
 	tCarriableDesc.eStartCoord = COORDINATE_2D;
 	tCarriableDesc.iCurLevelID = m_eLevelID;
-	tCarriableDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	tCarriableDesc.strInitialSectionTag;
+	tCarriableDesc.tTransform2DDesc.vInitialPosition = _float3(103.4f, -8.15f, 0.f);
+	tCarriableDesc.strInitialSectionTag = L"Chapter4_P0102";
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"), m_eLevelID, _strLayerTag, &tCarriableDesc)))
 		return E_FAIL;
@@ -1163,8 +1171,17 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 {
+	CDoor_2D::DOOR_2D_DESC Desc = {};
+	Desc.tTransform2DDesc.vInitialPosition = _float3(-679.f, 379.f, 0.f);
+	Desc.iCurLevelID = m_eLevelID;
+	Desc.isHorizontal = true;
+	Desc.eSize = CDoor_2D::SMALL;
+	Desc.eInitialState = CDoor_2D::CLOSED;
+	Desc.strSectionTag = L"Chapter4_P0102";
 
-
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorBlue"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

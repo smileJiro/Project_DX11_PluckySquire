@@ -35,6 +35,9 @@ public:
 	virtual void Active_OnDisable() override;
 
 private:
+	_int m_iIdx = { 0 };
+
+private:
 	virtual HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();

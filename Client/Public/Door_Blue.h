@@ -14,6 +14,9 @@ public:
 	virtual HRESULT Initialize(void* _pArg) override;
 
 public:
+	void			Open_Door();
+
+public:
 	void			On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
 private:

@@ -233,6 +233,10 @@ void CButterGrump::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WING_SLAM_INTO);
             break;
 
+        case BOSS_STATE::ROCKVOLLEY:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_INTO);
+            break;
+
         default:
             break;
         }
@@ -367,6 +371,14 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case WING_SLAM_OUT:
+        Set_AnimChangeable(true);
+        break;
+
+    case WINGSHIELD_ROCK_VOLLEY_INTO:
+        pModelObject->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_LOOP);
+        break;
+
+    case WINGSHIELD_ROCK_VOLLEY_OUT:
         Set_AnimChangeable(true);
         break;
 
@@ -651,7 +663,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     pWingSlamDesc->iCurLevelID = m_iCurLevelID;
 
     pWingSlamDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pWingSlamDesc->tTransform3DDesc.fSpeedPerSec = 20.f;
+    pWingSlamDesc->tTransform3DDesc.fSpeedPerSec = 30.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_WingSlam"), Pooling_Desc, pWingSlamDesc);
 
