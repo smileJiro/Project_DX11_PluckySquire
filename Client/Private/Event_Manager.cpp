@@ -94,13 +94,15 @@ void CEvent_Manager::Update(_float _fTimeDelta)
 		//if(EVENT_TYPE::LEVEL_CHANGE != (EVENT_TYPE)m_Events[i].eType)
 			Execute(m_Events[i]);
 	}
+	m_Events.clear();
 
+	Level_Change();
 	//for (size_t i = 0; i < m_Events.size(); ++i)
 	//{
 	//	if (EVENT_TYPE::LEVEL_CHANGE == (EVENT_TYPE)m_Events[i].eType)
 	//		Execute(m_Events[i]);
 	//}
-	m_Events.clear();
+
 
 }
 
@@ -283,12 +285,107 @@ HRESULT CEvent_Manager::Execute_DeleteObject(const EVENT& _tEvent)
 HRESULT CEvent_Manager::Execute_LevelChange(const EVENT& _tEvent)
 {
 	// par
-	_int iChangeLevelID = (_int)(_tEvent.Parameters[0]);
-	_int iNextChangeLevelID = (_int)(_tEvent.Parameters[1]);
-	
-	if (iChangeLevelID >= (_int)LEVEL_ID::LEVEL_END)
+	if (true == m_isLevelChange)
+	{
+		MSG_BOX("레벨전환 중복 호출");
+		return E_FAIL; // 중복 호출
+	}
+
+	m_iChangeLevelID	= (_int)(_tEvent.Parameters[0]);
+	m_iNextChangeLevelID	= (_int)(_tEvent.Parameters[1]);
+
+	if (m_iChangeLevelID >= (_int)LEVEL_ID::LEVEL_END)
 		return E_FAIL;
 
+	m_isLevelChange = true;
+
+	//_int iChangeLevelID = (_int)(_tEvent.Parameters[0]);
+	//_int iNextChangeLevelID = (_int)(_tEvent.Parameters[1]);
+	//
+	//if (iChangeLevelID >= (_int)LEVEL_ID::LEVEL_END)
+	//	return E_FAIL;
+
+	///* Client Exit */
+	//if (FAILED(Client_Level_Exit(iChangeLevelID, iNextChangeLevelID)))
+	//	return E_FAIL;
+
+	///* Engine Exit */
+	//if (FAILED(m_pGameInstance->Engine_Level_Exit(iChangeLevelID, iNextChangeLevelID)))
+	//	return E_FAIL;
+
+
+
+	///* Level_Manager Exit */
+	//if (FAILED(m_pGameInstance->Level_Manager_Exit(iChangeLevelID, iNextChangeLevelID)))
+	//	return E_FAIL;
+
+	//CLevel* pChangeLevel = nullptr;
+	//switch ((LEVEL_ID)iChangeLevelID)
+	//{
+	//case Client::LEVEL_STATIC:
+	//	pChangeLevel = CLevel_Static::Create(m_pDevice, m_pContext);
+	//	break;
+	//case Client::LEVEL_LOADING:
+	//	pChangeLevel = CLevel_Loading::Create(m_pDevice, m_pContext, (LEVEL_ID)iNextChangeLevelID);
+	//	break;
+	//case Client::LEVEL_LOGO:
+	//	pChangeLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
+	//	break;
+	//case Client::LEVEL_CHAPTER_2:
+	//	pChangeLevel = CLevel_Chapter_02::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+	//	break;
+	//case Client::LEVEL_CHAPTER_4:
+	//	pChangeLevel = CLevel_Chapter_04::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+	//	break;
+	//case Client::LEVEL_CHAPTER_6:
+	//	pChangeLevel = CLevel_Chapter_06::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+	//	break;
+	//case Client::LEVEL_CHAPTER_TEST:
+	//{
+	//	//switch (iChangeLevelID)
+	//	//{
+	//	//default:
+	//	//	break;
+	//	//}
+	//
+	//}
+	//	break;
+	//case Client::LEVEL_CAMERA_TOOL:
+	//	pChangeLevel = CLevel_Camera_Tool_Client::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+	//	break;
+	//default:
+	//	break;
+	//}
+
+	//if (nullptr == pChangeLevel)
+	//	return E_FAIL;
+
+	///* Level_Manager Enter */
+	//if (FAILED(m_pGameInstance->Level_Manager_Enter(iChangeLevelID, pChangeLevel)))
+	//{
+	//	Safe_Release(pChangeLevel);
+	//	return E_FAIL;
+	//}
+
+	///* Engine Level Enter */
+	//if (FAILED(m_pGameInstance->Engine_Level_Enter(iChangeLevelID)))
+	//	return E_FAIL;
+
+	///* Client Enter */
+	//if (FAILED(Client_Level_Enter(iChangeLevelID)))
+	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Level_Change()
+{
+	if (false == m_isLevelChange)
+		return S_OK;
+
+	_int iChangeLevelID = m_iChangeLevelID;
+	_int iNextChangeLevelID = m_iNextChangeLevelID;
+	m_isLevelChange = false;
 	/* Client Exit */
 	if (FAILED(Client_Level_Exit(iChangeLevelID, iNextChangeLevelID)))
 		return E_FAIL;
