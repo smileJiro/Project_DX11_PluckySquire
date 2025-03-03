@@ -59,7 +59,7 @@ public:
 	virtual _float	Get_Progress() override;
 	virtual _float Get_AnimationTime() override;
 
-	virtual void Set_Progress(_float _fProgerss)override;
+	virtual void Set_Progress(_float _fProgerss,_bool _bReverse)override;
 protected:
 	_uint Get_AccumulativeSubFrameCount(_uint _iFrameIndex);
 

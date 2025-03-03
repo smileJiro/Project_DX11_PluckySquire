@@ -219,6 +219,8 @@ namespace Client
 		HOMINGBALL,
 		YELLOWBALL,
 		PURPLEBALL,
+		WINGSLAM,
+		ROCKVOLLEY,
 
 		LAST,
 	};

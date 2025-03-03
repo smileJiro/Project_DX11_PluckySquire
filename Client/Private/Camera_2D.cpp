@@ -191,42 +191,43 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 				Set_InitialData(m_strSectionName);
 			}
 			else if (ARM_NORMAL_TYPE::NORMAL_MAP == iNormalType) {	
-				m_pGameInstance->Copy_RT_Resource(TEXT("Target_Normal"), m_pCopyNormalMap);
+				if(FAILED(m_pGameInstance->Copy_RT_Resource(TEXT("Target_Normal"), m_pCopyNormalMap)))
+					MSG_BOX("Copy Failed");
 				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 				_vector vNormal = {};
+				
+				_matrix matResult = m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW);
+				matResult = matResult * m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ);
 
-				_matrix matView = m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW);
-				_matrix matProj = m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ);
+				vTargetPos = XMVector3TransformCoord(vTargetPos, matResult);
 
-				vTargetPos = XMVector3TransformCoord(vTargetPos, matView * matProj);
-
-				_int iPixelX = (_int)(XMVectorGetX(vTargetPos) + 1.f) * (g_iWinSizeX * 0.5f);
-				_int iPixelY = (_int)(1.f - XMVectorGetY(vTargetPos) * (g_iWinSizeY * 0.5f));
+				_int iPixelX = (_int)((XMVectorGetX(vTargetPos) + 1.f) * (g_iWinSizeX * 0.5f));
+				_int iPixelY = (_int)((1.f - XMVectorGetY(vTargetPos)) * (g_iWinSizeY * 0.5f));
 
 				D3D11_MAPPED_SUBRESOURCE mappedResource;
 				if (FAILED(m_pContext->Map(m_pCopyNormalMap, 0, D3D11_MAP_READ, 0, &mappedResource)))
 					MSG_BOX("Normal Map Copy Failed");
 
-				_int iWidth = mappedResource.RowPitch / sizeof(_float) / 4;
-				_int iHeight = mappedResource.DepthPitch / mappedResource.RowPitch;
+				//_int iWidth = mappedResource.RowPitch / sizeof(uint16_t) / 4;
+				//_int iHeight = mappedResource.DepthPitch / mappedResource.RowPitch;
 
 				// RowPitch는 한 줄의 바이트 수를 나타냄
-				_float* fData = static_cast<_float*>(mappedResource.pData);
+				uint16_t* fData = static_cast<uint16_t*>(mappedResource.pData);
 
 				// 픽셀 위치 계산 (4 floats per pixel)
-				_int rowPitchInPixels = mappedResource.RowPitch / sizeof(_float) / 4;
+				_int rowPitchInPixels = mappedResource.RowPitch / (sizeof(uint16_t) * 4);
 				_int iIndex = iPixelY * rowPitchInPixels + iPixelX;
 
-				if (iWidth * iHeight <= iIndex || 0 > iIndex)
-					vNormal = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+			/*	if (iWidth * iHeight <= iIndex || 0 > iIndex)
+					vNormal = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);*/
 
-				_uint iDefaultIndex = iIndex * 4;
+				_uint iDefaultIndex = iIndex * 2;
 
 				// float4 데이터 읽기
-				_float x = fData[iDefaultIndex]; // Red 채널
-				_float y = fData[iDefaultIndex + 1]; // Green 채널
-				_float z = fData[iDefaultIndex + 2]; // Blue 채널
-				_float w = fData[iDefaultIndex + 3]; // Alpha 채널
+				_float x = fData[iDefaultIndex] / 65535.0f;; // Red 채널
+				_float y = fData[iDefaultIndex + 1] / 65535.0f;; // Green 채널
+				_float z = fData[iDefaultIndex + 2] / 65535.0f;; // Blue 채널
+				_float w = fData[iDefaultIndex + 3] / 65535.0f;; // Alpha 채널
 
 				m_pContext->Unmap(m_pCopyNormalMap, 0);
 
@@ -929,7 +930,7 @@ HRESULT CCamera_2D::Create_NormalCopyTexture()
 	desc.Height = (_uint)g_iWinSizeY; // 원본 텍스처 높이
 	desc.MipLevels = 1;
 	desc.ArraySize = 1;
-	desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // 원본 텍스처와 동일한 포맷
+	desc.Format = DXGI_FORMAT_R16G16B16A16_UNORM; // 원본 텍스처와 동일한 포맷
 	desc.SampleDesc.Count = 1;
 	desc.Usage = D3D11_USAGE_STAGING; // CPU 읽기 전용
 	desc.BindFlags = 0; // 바인딩 없음

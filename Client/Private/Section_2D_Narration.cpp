@@ -42,8 +42,8 @@ HRESULT CSection_2D_Narration::Import(void* _pDesc)
 
 HRESULT CSection_2D_Narration::Section_AddRenderGroup_Process()
 {
-	if (FAILED(Copy_DefaultMap_ToRenderTarget()))
-		return E_FAIL;
+	//if (FAILED(Copy_DefaultMap_ToRenderTarget()))
+	//	return E_FAIL;
 
 	if (FAILED(Add_RenderGroup_GameObjects()))
 		return E_FAIL;

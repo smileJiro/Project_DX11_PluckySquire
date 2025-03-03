@@ -9,6 +9,7 @@
 #include "Boss_EnergyBall.h"
 #include "Boss_YellowBall.h"
 #include "Boss_PurpleBall.h"
+#include "Boss_WingSlam.h"
 #include "FSM_Boss.h"
 #include "ButterGrump_LeftEye.h"
 #include "ButterGrump_RightEye.h"
@@ -67,6 +68,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::ENERGYBALL);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
 
     m_pBossFSM->Set_State((_uint)BOSS_STATE::IDLE);
 
@@ -76,6 +78,15 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CButterGrump::Animation_End, this, placeholders::_1, placeholders::_2));
+
+    Bind_AnimEventFunc("Attack", bind(&CButterGrump::Attack, this));
+
+    /* Com_AnimEventGenerator */
+    CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+    tAnimEventDesc.pReceiver = this;
+    tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D);
+    m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, TEXT("Prototype_Component_BossAttackAnimEvent"), &tAnimEventDesc));
+    Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
     //m_pControllerTransform->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
 
@@ -218,6 +229,14 @@ void CButterGrump::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_SMALL);
             break;
 
+        case BOSS_STATE::WINGSLAM:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WING_SLAM_INTO);
+            break;
+
+        case BOSS_STATE::ROCKVOLLEY:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_INTO);
+            break;
+
         default:
             break;
         }
@@ -228,8 +247,11 @@ void CButterGrump::Attack()
 {
     _float3 vScale, vPosition;
     _float4 vRotation;
-    _matrix matMuzzle = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[BOSSPART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("buttergrump_rigtonsils_01_01"));
-    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, &vPosition, matMuzzle))
+    //_matrix matMuzzle = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[BOSSPART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("buttergrump_rigtonsils_01_01")) * Get_FinalWorldMatrix();
+    _matrix matMuzzle = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[BOSSPART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("buttergrump_righead_tongue_08")) * Get_FinalWorldMatrix();
+    //if (false == m_pGameInstance->MatrixDecompose(nullptr, nullptr, &vPosition, matMuzzle))
+    XMStoreFloat3(&vPosition, matMuzzle.r[3]);
+    if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, nullptr, Get_FinalWorldMatrix()))
         return;
     switch ((BOSS_STATE)m_iState)
     {
@@ -301,6 +323,14 @@ void CButterGrump::Attack()
         break;
     }
 
+    case BOSS_STATE::WINGSLAM:
+    {
+
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlam"), COORDINATE_3D, &vPosition, &vRotation);
+
+        break;
+    }
+
     default:
         break;
     }
@@ -333,6 +363,22 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case FIREBALL_SPIT_SMALL:
+        Set_AnimChangeable(true);
+        break;
+
+    case WING_SLAM_INTO:
+        pModelObject->Switch_Animation(WING_SLAM_OUT);
+        break;
+
+    case WING_SLAM_OUT:
+        Set_AnimChangeable(true);
+        break;
+
+    case WINGSHIELD_ROCK_VOLLEY_INTO:
+        pModelObject->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_LOOP);
+        break;
+
+    case WINGSHIELD_ROCK_VOLLEY_OUT:
         Set_AnimChangeable(true);
         break;
 
@@ -607,6 +653,19 @@ HRESULT CButterGrump::Ready_Projectiles()
     pPurpleBallDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_PurpleBall"), Pooling_Desc, pPurpleBallDesc);
+
+    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_WingSlam");
+
+    CBoss_WingSlam::PROJECTILE_MONSTER_DESC* pWingSlamDesc = new CBoss_WingSlam::PROJECTILE_MONSTER_DESC;
+    pWingSlamDesc->fLifeTime = 3.f;
+    pWingSlamDesc->eStartCoord = COORDINATE_3D;
+    pWingSlamDesc->isCoordChangeEnable = false;
+    pWingSlamDesc->iCurLevelID = m_iCurLevelID;
+
+    pWingSlamDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pWingSlamDesc->tTransform3DDesc.fSpeedPerSec = 30.f;
+
+    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_WingSlam"), Pooling_Desc, pWingSlamDesc);
 
     return S_OK;
 }

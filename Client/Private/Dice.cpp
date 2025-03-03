@@ -17,6 +17,7 @@ CDice::CDice(const CDice& _Prototype)
 HRESULT CDice::Initialize(void* _pArg)
 {
 	CARRIABLE_DESC* DiceModelDesc = static_cast<CARRIABLE_DESC*>(_pArg);
+	DiceModelDesc->eStartCoord = COORDINATE_3D;
 	DiceModelDesc->eCrriableObjId = CARRIABLE_OBJ_ID::DIEC;
 	DiceModelDesc->vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
 	DiceModelDesc->vHeadUpOffset3D = { 0.f,1.8f,0.f };
