@@ -312,7 +312,7 @@ PxShape* CActor::Ready_CookingShape(const SHAPE_DATA& _ShapeData, _uint _iCookin
 		case 2:
 		{
 			_string strRootPath = pModel->Get_CookingColliderPath();
-			_string strPath = strRootPath +  "_" + std::to_string(_iMeshIndex) + ".modelMultiColl";
+			_string strPath = strRootPath +  "_" + std::to_string(_iMeshIndex) + ".modelMultiConvex";
 			ifstream  file;
 			file.open(strPath, ios::binary);
 			if (!file)

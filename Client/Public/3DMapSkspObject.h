@@ -17,6 +17,7 @@ public :
 		SKSP_TUB,
 		SKSP_PLAG,
 		SKSP_STORAGE,
+		SKSP_POSTIT,
 		SKSP_LAST
 
 	};

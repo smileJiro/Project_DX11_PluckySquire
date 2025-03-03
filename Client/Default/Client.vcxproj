@@ -405,6 +405,7 @@
     <ClInclude Include="..\public\Effect_Trail.h" />
     <ClInclude Include="..\Public\Stoppable.h" />
     <ClInclude Include="..\Public\StopStamp.h" />
+    <ClInclude Include="..\Public\TiltSwapPusher.h" />
     <ClInclude Include="..\Public\TriggerObject.h" />
     <ClInclude Include="..\Public\Trigger_Manager.h" />
     <ClInclude Include="..\Public\UI_Interaction_Book.h" />
@@ -670,6 +671,7 @@
     <ClCompile Include="..\private\Effect_Trail.cpp" />
     <ClCompile Include="..\Private\Stoppable.cpp" />
     <ClCompile Include="..\Private\StopStamp.cpp" />
+    <ClCompile Include="..\Private\TiltSwapPusher.cpp" />
     <ClCompile Include="..\Private\TriggerObject.cpp" />
     <ClCompile Include="..\Private\Trigger_Manager.cpp" />
     <ClCompile Include="..\Private\UI_Interaction_Book.cpp" />
