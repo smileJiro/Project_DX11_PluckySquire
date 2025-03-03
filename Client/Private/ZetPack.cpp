@@ -102,9 +102,6 @@ void CZetPack::Propel(_float _fTimeDelta)
         m_fFuel = 0.f;
 
     }
-    cout << "m_fFuel : " << m_fFuel << endl;
-
-
 }
 
 
