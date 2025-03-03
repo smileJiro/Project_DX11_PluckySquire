@@ -68,8 +68,6 @@ private :
 
 	virtual void					GameEvent_End();
 
-private:
-	CGameInstance* m_pGameInstance = nullptr;
 
 private:
 	_float		m_fMaxTimer = 0.f;
