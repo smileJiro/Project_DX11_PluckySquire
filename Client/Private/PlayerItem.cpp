@@ -165,6 +165,9 @@ void CPlayerItem::Action_Mode(_float _fTimeDelta)
 	case GETTING:
 		Action_Getting(_fTimeDelta);
 		break;
+	case WAIT:
+		Action_Wait(_fTimeDelta);
+		break;
 	case DISAPPEAR:
 		Action_Disappear(_fTimeDelta);
 		break;
@@ -175,11 +178,12 @@ void CPlayerItem::Action_Mode(_float _fTimeDelta)
 
 void CPlayerItem::Action_Getting(_float _fTimeDelta)
 {
+	// 1. Item 먹을 때 크기가 줄어듦
 	if (false == m_isScaleDown) {
-		m_fScaleTime.y += _fTimeDelta;
-		_float fRatio = m_fScaleTime.y / m_fScaleTime.x;
 
-		if (fRatio >= 1.f) {
+		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fScaleTime, _fTimeDelta, LERP);
+		
+		if (fRatio >= (1.f - EPSILON)) {
 			m_fScaleTime.y = 0.f;
 			m_isScaleDown = true;
 			m_isRender = false;
@@ -190,11 +194,13 @@ void CPlayerItem::Action_Getting(_float _fTimeDelta)
 		_float fScale = m_pGameInstance->Lerp(m_fOriginScale, 0.3f, fRatio);
 		m_pControllerTransform->Set_Scale(fScale, fScale, fScale);
 	}
-	else if (false == m_isFinishWait) {
-		m_fWaitTime.y += _fTimeDelta;
-		_float fRatio = m_fWaitTime.y / m_fWaitTime.x;
 
-		if (fRatio >= 1.f) {
+	// 2. 크키가 줄어든 후 일정 시간 후 기존 위치보다 위에서 나타남
+	else if (false == m_isFinishWait) {
+
+		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fWaitTime, _fTimeDelta, LERP);
+
+		if (fRatio >= (1.f - EPSILON)) {
 			m_fWaitTime.y = 0.f;
 			m_isFinishWait = true;
 			m_isRender = true;
@@ -205,17 +211,22 @@ void CPlayerItem::Action_Getting(_float _fTimeDelta)
 			m_pActorCom->Get_RigidActor()->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
 		}
 	}
-	else {
-		m_fScaleTime.y += _fTimeDelta;
-		_float fRatio = m_fScaleTime.y / m_fScaleTime.x;
 
-		if (fRatio >= 1.f) {
+	// 3. 위에서 나타남과 동시에 원래 크기로 다시 커지기 시작
+	// 4. 이때 Wait 상태로 전환되며, 특정 동작(다이얼로그 끝)이 있을 때까지 대기하기 시작 -> Wait 상태로 넘어감
+	else {
+		
+		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fScaleTime, _fTimeDelta, LERP);
+
+		if (fRatio >= (1.f - EPSILON)) {
 			m_fScaleTime.y = 0.f;
 			m_isScaleDown = false;
 			m_isFinishWait = false;
 
+			m_iItemMode = WAIT;
+
+			// 임시로 Trigger Manager에서 다 커지면 모든 동작을 끝내고 없애기 위해 넣었던 코드임 
 			CTrigger_Manager::GetInstance()->On_End(m_szItemTag);
-			m_iItemMode = ITEM_MODE::DISAPPEAR;
 		}
 
 		_float fScale = m_pGameInstance->Lerp(0.3f, m_fOriginScale, fRatio);
@@ -223,9 +234,14 @@ void CPlayerItem::Action_Getting(_float _fTimeDelta)
 	}
 }
 
+void CPlayerItem::Action_Wait(_float _fTimeDelta)
+{
+	// Action Disappear로 변하기 전까지 대기
+}
+
 void CPlayerItem::Action_Disappear(_float _fTimeDelta)
 {
-	// 마지막에? 사실 뭐 딱히 할 필요는 없음
+	// 마지막에? 사실 뭐 딱히 할 필요는 없음, 아예 삭제시켜 줘야 함
 	this->Set_Active(false);
 	m_isStop = false; 
 

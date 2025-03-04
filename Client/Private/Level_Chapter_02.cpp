@@ -63,6 +63,7 @@
 #include "NPC.h"
 #include "Loader.h"
 
+#include "PlayerItem.h"
 
 CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: 
@@ -367,6 +368,10 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		{
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_APPEAR, false);
 		}
+	}
+
+	if (KEY_DOWN(KEY::R)) {
+		CPlayerData_Manager::GetInstance()->Change_PlayerItemMode(CPlayerData_Manager::FLIPPING_GLOVE, CPlayerItem::DISAPPEAR);
 	}
 
 #endif // _DEBUG
