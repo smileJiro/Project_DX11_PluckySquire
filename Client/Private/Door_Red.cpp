@@ -25,7 +25,7 @@ HRESULT CDoor_Red::Initialize(void* _pArg)
         return E_FAIL;
 
     DOOR_RED_DESC* pDesc = static_cast<DOOR_RED_DESC*>(_pArg);
-    m_LayerTags = pDesc->LayerTags;
+    m_strLayerTag = pDesc->strLayerTag;
     m_fTargetDiff = pDesc->fTargetDiff;
 
     Set_AnimLoop();
@@ -41,17 +41,14 @@ void CDoor_Red::Update(_float _fTimeDelta)
     if (CLOSED == m_eDoorState)
     {
         _bool isEmpty = true;
-        for (auto& pTags : m_LayerTags)
-        {
-            if (false == m_pGameInstance->Is_EmptyLayer(m_iCurLevelID, pTags))
+            if (false == m_pGameInstance->Is_EmptyLayer(m_iCurLevelID, m_strLayerTag))
                 isEmpty = false;
 
-        }
         // TEMP
         // TargetÀ» ³ª·Î ÇØÁà.
         if (isEmpty)
         {
-            CCamera_Manager::GetInstance()->Change_CameraTarget(m_pControllerTransform->Get_WorldMatrix_Ptr());
+            CCamera_Manager::GetInstance()->Change_CameraTarget(this);
             m_isStartOpen = true;
         }
     }
@@ -87,8 +84,7 @@ void CDoor_Red::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         Switch_Animation_By_State();
 
         // TEMP:
-        CCamera_Manager::GetInstance()->Change_CameraTarget
-        (CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Get_ControllerTransform()->Get_WorldMatrix_Ptr());
+        CCamera_Manager::GetInstance()->Change_CameraTarget(CPlayerData_Manager::GetInstance()->Get_Player_Ptr());
     }
 
 }

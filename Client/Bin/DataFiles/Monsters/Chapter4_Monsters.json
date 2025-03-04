@@ -223,6 +223,48 @@
                 1.0,
                 1.0
             ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster_Door3",
+            "Position": [
+                60.0,
+                12.5,
+                13.0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster_Door3",
+            "Position": [
+                65.0,
+                12.5,
+                12.72
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_BarfBug",
+            "LayerTag": "Layer_Monster_Door3",
+            "Position": [
+                61.0,
+                12.5,
+                16.5
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
         }
     ]
 }

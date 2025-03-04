@@ -725,7 +725,7 @@ _vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fT
 		vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), vTargetPos, fRatio);
 	}
 
-
+	vCurPos = XMVectorSetW(vCurPos, 1.f);
 	if (nullptr != _pLerpTargetPos)
 		*_pLerpTargetPos = vCurPos;
 
