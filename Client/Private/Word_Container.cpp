@@ -137,6 +137,8 @@ void CWord_Container::Free()
 
 void CWord_Container::Interact(CPlayer* _pUser)
 {
+	//이제 사실상 Interact오브젝트일 필요가 없어졌어요.
+	//그냥 OnCOntatct2DSaty에서 word가 들어오면 흡수함.
 	if (_pUser->Is_CarryingObject())
 	{
 		CCarriableObject* pObj =  _pUser->Get_CarryingObject();

@@ -208,6 +208,10 @@
     <ClInclude Include="..\public\Effect_Beam.h" />
     <ClInclude Include="..\Public\ChaseFlyState.h" />
     <ClInclude Include="..\Public\GameEventExecuter.h" />
+    <ClInclude Include="..\Public\GameEventExecuter_C2.h" />
+    <ClInclude Include="..\Public\GameEventExecuter_C4.h" />
+    <ClInclude Include="..\Public\GameEventExecuter_C6.h" />
+    <ClInclude Include="..\Public\GameEventExecuter_C8.h" />
     <ClInclude Include="..\Public\Interaction_E.h" />
     <ClInclude Include="..\Public\JumpPad.h" />
     <ClInclude Include="..\public\Key.h" />
@@ -478,6 +482,10 @@
     <ClCompile Include="..\private\Door_2D.cpp" />
     <ClCompile Include="..\private\Door_Blue.cpp" />
     <ClCompile Include="..\private\Door_Yellow.cpp" />
+    <ClCompile Include="..\Private\GameEventExecuter_C2.cpp" />
+    <ClCompile Include="..\Private\GameEventExecuter_C4.cpp" />
+    <ClCompile Include="..\Private\GameEventExecuter_C6.cpp" />
+    <ClCompile Include="..\Private\GameEventExecuter_C8.cpp" />
     <ClCompile Include="..\Private\Interaction_E.cpp" />
     <ClCompile Include="..\Private\JumpPad.cpp" />
     <ClCompile Include="..\private\Key.cpp" />

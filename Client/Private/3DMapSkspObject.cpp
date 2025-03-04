@@ -51,20 +51,6 @@ HRESULT C3DMapSkspObject::Initialize(void* _pArg)
 
     switch (m_eSkspType)
     {
-    case Client::C3DMapSkspObject::SKSP_NONE:
-        break;
-    case Client::C3DMapSkspObject::SKSP_DEFAULT:
-        break;
-    case Client::C3DMapSkspObject::SKSP_CUP:
-        break;
-    case Client::C3DMapSkspObject::SKSP_TUB:
-    {
-        m_isCulling = false;
-    }
-    break;
-    case Client::C3DMapSkspObject::SKSP_PLAG:
-        m_isCulling = false;
-        break;
     case Client::C3DMapSkspObject::SKSP_STORAGE:
     {
         m_isCulling = false;
@@ -84,6 +70,11 @@ HRESULT C3DMapSkspObject::Initialize(void* _pArg)
             m_isRight = true;
     }
     break;
+    case Client::C3DMapSkspObject::SKSP_TUB:
+    case Client::C3DMapSkspObject::SKSP_PLAG:
+    case Client::C3DMapSkspObject::SKSP_POSTIT:
+        m_isCulling = false;
+        break;
     case Client::C3DMapSkspObject::SKSP_LAST:
         break;
     default:
