@@ -1364,6 +1364,12 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 	#pragma region Chapter 6 - Object Create
 
+		if (FAILED(Load_Directory_Effects(LEVEL_CHAPTER_6, TEXT("../Bin/DataFiles/FX/Level6/LoadInfo.json"))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/FX/FX_Level6.json"), TEXT("FX_Level6"), LEVEL_CHAPTER_6)))
+			return E_FAIL;
+
 		if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Small.mchc")))
 			return E_FAIL;
 

@@ -1,6 +1,10 @@
 #pragma once
 #include "ModelObject.h"
 
+BEGIN(Engine)
+class CEffect_System;
+END
+
 BEGIN(Client)
 class CZetPack :
     public CModelObject
