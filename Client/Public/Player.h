@@ -137,6 +137,7 @@ public:
 		STAMP,
 		BOMBER,
 		ERASE_PALM,
+		GET_ITEM,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D

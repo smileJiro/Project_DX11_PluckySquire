@@ -67,6 +67,7 @@ public:
 
 	CLayer* Get_Include_Layer(CGameObject* _pGameObject);
 
+	CLayer* Get_Layer(_uint _iLayerIndex) { return m_Layers[_iLayerIndex]; }
 protected:
 	virtual HRESULT Layer_Sort() { return S_OK; };
 

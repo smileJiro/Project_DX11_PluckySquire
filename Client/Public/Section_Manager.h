@@ -237,7 +237,9 @@ public:
 
 	// Set
 	void							Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPosMap);
-
+	_float3							Get_BookMinWorldPos() { return m_vBookWorldMin; }
+	_float3							Get_BookMaxWorldPos() { return m_vBookWorldMax; }
+	_float2							Get_BookPixelSize() { return m_vBookWorldPixelSize; }
 #pragma endregion
 
 	#pragma region 낱말 퍼즐
@@ -290,7 +292,9 @@ private:
 	
 	// 메인 책 월드맵 
 	ID3D11Texture2D*				m_pBookWorldPosMap = nullptr; // 더 좋은 위치가 있다면 추후 스케치 스페이스까지 추가하고 변경해주삼.(02.06 태웅)
-							
+	_float3							m_vBookWorldMin = { -1.f, -1.f, -1.f };
+	_float3							m_vBookWorldMax = { 1.f, 1.f, 1.f };
+	_float2							m_vBookWorldPixelSize = { 0.f, 0.f };
 
 	// 발급할 Prority Key Start 지점.
 	_uint							m_iPriorityGenKey = PR2D_SECTION_START;
