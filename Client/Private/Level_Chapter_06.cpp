@@ -359,9 +359,10 @@ HRESULT CLevel_Chapter_06::Ready_Lights()
 {
 #ifdef _DEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
-#elif NDEBUG
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6.json"));
+#elif _DEBUG
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6_2.json"));
 #endif // _DEBUG
+
 	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter6.json"));
 
 	//CONST_LIGHT LightDesc{};
@@ -401,7 +402,7 @@ HRESULT CLevel_Chapter_06::Ready_CubeMap(const _wstring& _strLayerTag)
 	Desc.iRenderGroupID = RG_3D;
 	Desc.iPriorityID = PR3D_PRIORITY;
 	Desc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
-	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
+	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_Chapter6Env");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
 		m_eLevelID, _strLayerTag, &pCubeMap, &Desc)))
 		return E_FAIL;

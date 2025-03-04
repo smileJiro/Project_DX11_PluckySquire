@@ -1,13 +1,13 @@
 #include "Light_Manager.h"
 
 #include "GameInstance.h"
-#include "Light.h"
+
 
 BEGIN(Engine)
 NLOHMANN_JSON_SERIALIZE_ENUM(LIGHT_TYPE, {
 {LIGHT_TYPE::POINT, "POINT"},
 {LIGHT_TYPE::DIRECTOINAL, "DIRECTOINAL"},
-
+{LIGHT_TYPE::SPOT, "SPOT"},
 	})
 END
 
@@ -50,9 +50,28 @@ HRESULT CLight_Manager::Add_Light(const CONST_LIGHT& LightDesc, LIGHT_TYPE _eTyp
 	return S_OK;
 }
 
+HRESULT CLight_Manager::Add_Light_Target(const CONST_LIGHT& LightDesc, LIGHT_TYPE _eType, CGameObject* _pGameObject, const _float3& _vOffsetPosition, CLight_Target** _ppOut, _bool _isNotClear)
+{
+	CLight_Target* pLight_Target = CLight_Target::Create(m_pDevice, m_pContext, LightDesc, _eType, _pGameObject, _vOffsetPosition, _isNotClear);
+
+	if (nullptr == pLight_Target)
+		return E_FAIL;
+
+	m_Lights.push_back(pLight_Target);
+
+	if (nullptr != _ppOut)
+		*_ppOut = pLight_Target;
+
+	return S_OK;
+}
+
 void CLight_Manager::Update(_float _fTimeDelta)
 {
-
+	for (auto& pLight : m_Lights)
+	{
+		if(true == pLight->Is_Active())
+			pLight->Update(_fTimeDelta);
+	}
 }
 
 HRESULT CLight_Manager::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
@@ -67,8 +86,9 @@ HRESULT CLight_Manager::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 
 HRESULT CLight_Manager::Load_Lights(const _wstring& _strLightsJsonPath)
 {
-	// 1. 현재 존재하는 Lights를 전부 제거
-	Clear();
+	// 1. 현재 존재하는 Lights를 전부 제거// 2. 셰도우 라이트가있다면 그것도 제거해야한다.
+	Clear_Load();
+	
 
 	// 2. Json File을 읽어와 데이터 로드
 	const std::string filePathLights = m_pGameInstance->WStringToString(_strLightsJsonPath);
@@ -167,10 +187,52 @@ void CLight_Manager::Level_Exit()
 	Clear();
 }
 
+void CLight_Manager::Clear_Load()
+{
+
+	vector<CLight*> NotClearLights;
+
+	for (auto& pLight : m_Lights)
+	{
+		if (true == pLight->Is_NotClear())
+		{
+			NotClearLights.push_back(pLight);
+			continue;
+		}
+
+		CONST_LIGHT tLightDesc = pLight->Get_LightDesc();
+		if (true == tLightDesc.isShadow)
+		{
+			_int iShadowLightID = pLight->Get_ShadowLightID();
+			m_pGameInstance->Remove_ShadowLight(iShadowLightID);
+		}
+		Safe_Release(pLight);
+	}
+	m_Lights.clear();
+
+	/* 라이트 로드종료 후, */
+	for (_uint i = 0; i < NotClearLights.size(); ++i)
+	{
+		m_Lights.push_back(NotClearLights[i]);
+	}
+	NotClearLights.clear();
+
+}
+
 void CLight_Manager::Clear()
 {
 	for (auto& pLight : m_Lights)
+	{
+		CONST_LIGHT tLightDesc = pLight->Get_LightDesc();
+		if (true == tLightDesc.isShadow)
+		{
+			_int iShadowLightID = pLight->Get_ShadowLightID();
+			m_pGameInstance->Remove_ShadowLight(iShadowLightID);
+		}
 		Safe_Release(pLight);
+	}
+
+
 
 	m_Lights.clear();
 

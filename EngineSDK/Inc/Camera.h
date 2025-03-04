@@ -78,6 +78,8 @@ public:
 		return 0.0f; 
 	}
 
+	class CCameraArm* Get_Arm() { return m_pCurArm; }
+
 	// Set
 	void Set_DofBufferData(const CONST_DOF& _tDofConstData, _bool _isUpdate = false);
 	void Set_Fovy(const _float _fFovy) { m_fFovy = _fFovy; }

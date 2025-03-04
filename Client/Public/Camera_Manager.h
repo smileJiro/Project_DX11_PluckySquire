@@ -38,11 +38,11 @@ public:
 	_uint				Get_CurCameraMode();
 
 #ifdef _DEBUG
+
+#endif
 	void				Start_ZoomIn();
 	void				Start_ZoomOut();
 	void				Imgui_Dof();
-#endif
-
 public:
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);			// Free Camera, Target Camera 셋팅(처음 한 번)
 	
@@ -63,10 +63,13 @@ public:
 	// 2. Ratio Type으로 보간할 때 어느 속도로 할지 결정
 	// 3. EASE_IN: 점점 빠르게, EASE_OUT: 점점 느리게, LERP: 기본 보간, EASE_IN_OUT: 빨라지다가 다시 느리게
 	void				Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType);
+	void				Start_ZoomIn(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iRatioType);
+	void				Start_ZoomOut(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iRatioType);
 
 	// AtOffset
 	// 1. Target Camera는 기본적으로 Target을 바라보지만, 타겟을 기준으로 해당 Offset만큼 떨어진 곳을 보도록 조절한다
-	void				Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, _uint _iRatioType);
+	void				Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, 
+		_uint _iRatioType);
 
 	// Shake 
 	// 1. Cycle Time은 설정한 Cycle Time마다 Shake를 준다 (0.02라면 0.02초마다 한 번씩 흔들림)
@@ -86,7 +89,11 @@ public:
 
 	// Length 조절
 	// 1. 정해진 시간만큼 Length를 조절한다
+	// 2. Decrease -> _fDecreaseValue만큼 Length를 줄인다
+	// 3. Increase -> _fIncreaseValue만큼 Length를 늘린다
 	void				Start_Changing_ArmLength(CAMERA_TYPE _eCameraType, _float _fLengthTime, _float _fLength, _uint _iRatioType);
+	void				Start_Changing_ArmLength_Decrease(CAMERA_TYPE _eCameraType, _float _fLengthTime, _float _fDecreaseValue, _uint _iRatioType);
+	void				Start_Changing_ArmLength_Increase(CAMERA_TYPE _eCameraType, _float _fLengthTime, _float _fIncreaseValue, _uint _iRatioType);
 
 	// Camera 원복
 	// 1. 원복하고 싶은 시점에 Set_ResetData 함수를 호출해서 현재 상태를 저장한다

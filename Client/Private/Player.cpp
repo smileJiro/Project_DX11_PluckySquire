@@ -234,7 +234,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     if (FAILED(Ready_Components()))
         return E_FAIL;
-     
+ 
+
+
 	m_ePlayerMode = PLAYER_MODE_NORMAL;
 
     Set_PlatformerMode(false);
@@ -407,6 +409,7 @@ HRESULT CPlayer::Ready_PartObjects()
     m_PartObjects[PLAYER_PART_ZETPACK]->Set_Position({ 0.f,-0.1f,0.5f });
     Set_PartActive(PLAYER_PART_ZETPACK, false);
 
+
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_UP, true);
@@ -567,7 +570,6 @@ HRESULT CPlayer::Ready_Components()
    m_pGravityCom->Set_Active(false);
     return S_OK;
 }
-
 
 void CPlayer::Priority_Update(_float _fTimeDelta)
 {
@@ -1900,31 +1902,46 @@ void CPlayer::Set_Upforce(_float _fForce)
     }
 
 }
-HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
+HRESULT CPlayer::CarryObject(CCarriableObject* _pCarryingObject)
+{
+    if (Is_CarryingObject())
+        return E_FAIL;
+    Set_CarryingObject(_pCarryingObject);
+
+    Set_State(PICKUPOBJECT);
+    return S_OK;
+}
+HRESULT CPlayer::LayDownObject()
+{
+    if (false == Is_CarryingObject())
+        return E_FAIL;
+    Set_State(LAYDOWNOBJECT);
+    Set_CarryingObject(nullptr);
+    return S_OK;
+}
+void CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
 {
     //손 비우기
     if (nullptr == _pCarryingObject)
     {
         if (Is_CarryingObject())
         {
-
             Safe_Release(m_pCarryingObject);
             m_pCarryingObject = nullptr;
         }
-        return S_OK;
+
     }
     //손에 물건 들리기
     else
     {
-        if (Is_CarryingObject())
-            return E_FAIL;
-        m_pCarryingObject = _pCarryingObject;
-        Safe_AddRef(m_pCarryingObject);
- 
-        Set_State(PICKUPOBJECT);
-    }
+        if (false == Is_CarryingObject())
+        {
+            m_pCarryingObject = _pCarryingObject;
+            Safe_AddRef(m_pCarryingObject);
+        }
 
-    return S_OK;
+    }
+    return;
 }
 
 void CPlayer::Set_GravityCompOn(_bool _bOn)
@@ -2042,7 +2059,7 @@ void CPlayer::ThrowObject()
     }
 
 	pObj->Throw(vForce);
-	Set_CarryingObject(nullptr);
+    Set_CarryingObject(nullptr);
 }
 
 void CPlayer::SpinAttack()
@@ -2211,7 +2228,7 @@ CGameObject* CPlayer::Clone(void* _pArg)
 
 void CPlayer::Free()
 {
-    // test
+
     Safe_Release(m_pBody2DColliderCom);
     Safe_Release(m_pBody2DTriggerCom);
     Safe_Release(m_pAttack2DTriggerCom);

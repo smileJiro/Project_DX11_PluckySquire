@@ -22,6 +22,16 @@ HRESULT CZipline::Render()
     return E_NOTIMPL;
 }
 
+CZipline* CZipline::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+{
+    return nullptr;
+}
+
+CGameObject* CZipline::Clone(void* _pArg)
+{
+    return nullptr;
+}
+
 void CZipline::Free()
 {
 }

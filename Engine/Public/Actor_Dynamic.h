@@ -27,6 +27,7 @@ public:
 	void							Set_Kinematic();
 	void							Set_Dynamic();
 	void							Set_SleepThreshold(_float _fThreshold);
+
 	_bool						Is_Sleeping();
 	virtual void				Set_LinearVelocity(_fvector _vDirection, _float _fVelocity);
 	virtual void				Set_LinearVelocity(_fvector _vVelocity);

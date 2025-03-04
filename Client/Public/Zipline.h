@@ -16,9 +16,13 @@ public:
 	virtual HRESULT Render() override;
 
 protected:
+	_bool			m_isUserAround = { false };
+	_bool			m_isUserContact = { false };
 
 public:
-	virtual void	Free() override;
+	static CZipline*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	virtual CGameObject*	Clone(void* _pArg) override;
+	virtual void			Free() override;
 };
 
 END

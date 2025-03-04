@@ -131,6 +131,7 @@ public: /* For. PipeLine */
 
 public: /* For. Light_Manager */
 	HRESULT				Add_Light(const CONST_LIGHT& LightDesc, LIGHT_TYPE _eType);
+	HRESULT				Add_Light_Target(const CONST_LIGHT& LightDesc, LIGHT_TYPE _eType, CGameObject* _pTargetOwner, const _float3& _vOffsetPostion, class CLight_Target** _ppOut, _bool _isNotClear = true);
 	const CONST_LIGHT*	Get_LightDesc_Ptr(_uint _iIndex) const;
 	HRESULT				Render_Lights(class CShader* _pShader, class CVIBuffer_Rect* _pVIBuffer);
 	HRESULT				Load_Lights(const _wstring& _strLightsJsonPath);

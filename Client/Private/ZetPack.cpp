@@ -5,6 +5,7 @@
 #include "Actor_Dynamic.h"
 #include "Effect_Manager.h"
 
+
 CZetPack::CZetPack(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
 {
@@ -38,6 +39,9 @@ HRESULT CZetPack::Initialize(void* _pArg)
     pDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
     pDesc->iObjectGroupID = OBJECT_GROUP::PLAYER;
     if (FAILED(__super::Initialize(pDesc)))
+        return E_FAIL;
+
+    if (FAILED(Ready_TargetLight()))
         return E_FAIL;
 
 	return S_OK;
@@ -123,6 +127,7 @@ void CZetPack::Switch_State(ZET_STATE _eState)
         {
             CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip"), true, &m_WorldMatrices[COORDINATE_3D], 0);
             CEffect_Manager::GetInstance()->Stop_SpawnID(TEXT("Zip"), 1.f, 1);
+            Event_SetActive(m_pTargetLight, false);
         }
         break;
 	case STATE_ASCEND:
@@ -133,6 +138,8 @@ void CZetPack::Switch_State(ZET_STATE _eState)
         else
         {
             CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip"), false, &m_WorldMatrices[COORDINATE_3D], 1);
+            Event_SetActive(m_pTargetLight, true);
+            
         }
 		break;
 	case STATE_DESCEND:
@@ -142,12 +149,33 @@ void CZetPack::Switch_State(ZET_STATE _eState)
         }
         else
         {
+
         }
 		break;
 	default:
 		break;
 	}
     m_eState = _eState;
+}
+
+HRESULT CZetPack::Ready_TargetLight()
+{
+    ///* 점광원 */
+    CONST_LIGHT LightDesc = {};
+    LightDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
+    LightDesc.fFallOutStart = 5.2f;
+    LightDesc.fFallOutEnd = 13.0f;
+    LightDesc.vRadiance = _float3(9.0f, 9.0f, 9.0f);
+    LightDesc.vDiffuse = _float4(1.0f, 0.371f, 0.0f, 1.0f);
+    LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+    LightDesc.vSpecular = _float4(1.0f, 0.450f, 0.0f, 1.0f);
+
+    if (FAILED(m_pGameInstance->Add_Light_Target(LightDesc, LIGHT_TYPE::POINT, this, _float3(0.0f, 0.0f, 0.0f), &m_pTargetLight, true)))
+        return E_FAIL;
+
+    Safe_AddRef(m_pTargetLight);
+    m_pTargetLight->Set_Active(false);
+    return S_OK;
 }
 
 CZetPack* CZetPack::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -178,5 +206,7 @@ CGameObject* CZetPack::Clone(void* _pArg)
 
 void CZetPack::Free()
 {
+    Safe_Release(m_pTargetLight); // 순환참조로 인해플레이어쪽에서만 Ref 카운트 관리.
+
     __super::Free();
 }
