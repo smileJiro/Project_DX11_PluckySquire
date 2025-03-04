@@ -38,35 +38,45 @@ void CPlayerState_ExitPortal::Enter()
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_BOOK_JUMP_FALL_FRONT_NEWRIG);
 
 		_vector vImpulse = { 0.f,0.f,0.f,0.f };
+		_vector vNewLookDIr = {0.f,0.f,1.f};
+
 		switch (m_ePortalNormal)
 		{
 		case Engine::NORMAL_DIRECTION::POSITIVE_X:
 			vImpulse = { 1.f,0.f,0.f ,0.f };
+			vNewLookDIr = vImpulse;
 			break;
 		case Engine::NORMAL_DIRECTION::NEGATIVE_X:
 			vImpulse = { -1.f,0.f,0.f ,0.f };
+			vNewLookDIr = vImpulse;
 			break;
 		case Engine::NORMAL_DIRECTION::POSITIVE_Y:
 			vImpulse = { 0.f,1.f,0.f ,0.f };
+			vNewLookDIr = EDir_To_Vector(m_pOwner->Get_2DDirection());
+			vNewLookDIr = XMVectorSetZ(vNewLookDIr, XMVectorGetY(vNewLookDIr));
 			break;
 		case Engine::NORMAL_DIRECTION::NEGATIVE_Y:
 			vImpulse = { 0.f,-1.f,0.f ,0.f };
+			vNewLookDIr = EDir_To_Vector(m_pOwner->Get_2DDirection());
+			vNewLookDIr = XMVectorSetZ(vNewLookDIr, XMVectorGetY(vNewLookDIr));
 			break;
 		case Engine::NORMAL_DIRECTION::POSITIVE_Z:
 			vImpulse = { 0.f,0.f,1.f,0.f };
+			vNewLookDIr = vImpulse;
 			break;
 		case Engine::NORMAL_DIRECTION::NEGATIVE_Z:
 			vImpulse = { 0.f,0.f,-1.f ,0.f };
+			vNewLookDIr = vImpulse;
 			break;
 		default:
 
 			break;
 		}
-		m_pOwner->LookDirectionXZ_Dynamic(vImpulse);
 		_float3 vPos;
 		XMStoreFloat3(&vPos, vPlayerPos + vImpulse * 0.5f);
 		m_pOwner->Get_ActorCom()->Set_GlobalPose(vPos);
 		m_pOwner->Add_Impuls(vImpulse * m_f3DJumpDistance);
+		m_pOwner->LookDirectionXZ_Dynamic(vNewLookDIr);
 		//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(vTargetPos, XMConvertToRadians(45.f));
 	}
 	else
