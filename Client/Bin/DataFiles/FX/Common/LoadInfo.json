@@ -14,7 +14,6 @@
         "../Bin/DataFiles/FX/Common/SwordCombo.json",
         "../Bin/DataFiles/FX/Common/SwordJumpAttack.json",
         "../Bin/DataFiles/FX/Common/SwordThrowBlock.json",
-        "../Bin/DataFiles/FX/Common/SwordThrowTrail2.json",
-        "../Bin/DataFiles/FX/Common/Zip5.json"
+        "../Bin/DataFiles/FX/Common/SwordThrowTrail2.json"
     ]
 }

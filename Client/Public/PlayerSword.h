@@ -51,6 +51,7 @@ public:
 	virtual void Active_OnDisable() override;
 
 	virtual HRESULT	 Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
+	virtual void	Enter_Section(const _wstring _strIncludeSectionName) override;
 
 	void Throw(_fvector _vDirection);
 	void Switch_Grip(_bool _bForehand);

@@ -580,7 +580,7 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 void CPlayer::Update(_float _fTimeDelta)
 {
-
+  
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
 
@@ -1152,6 +1152,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
 	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
+	if (m_bBlockInput)
+		return tResult;
 	if (STATE::DIE == Get_CurrentStateID())
     {
         if (KEY_DOWN(KEY::ENTER))
@@ -1264,6 +1266,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_Stamp()
 {
     PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
+    if (m_bBlockInput)
+        return tResult;
     _bool bIsStamping = CPlayer::STAMP == m_pStateMachine->Get_CurrentState()->Get_StateID();
 	if (false == bIsStamping) return tResult;
 
@@ -1302,7 +1306,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_ControlBook()
 {
     PLAYER_INPUT_RESULT tResult;
     _bool bIsTurningBook = CPlayer::TURN_BOOK == m_pStateMachine->Get_CurrentState()->Get_StateID();
-
+    if (m_bBlockInput)
+        return tResult;
     if (false == bIsTurningBook)
         return tResult;
     if (KEY_PRESSING(KEY::A))
@@ -2139,7 +2144,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 
        // }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
-
+		Set_BlockPlayerInput(!Is_PlayerInputBlocked());
     }
     if (m_pActorCom->Is_Kinematic())
     {

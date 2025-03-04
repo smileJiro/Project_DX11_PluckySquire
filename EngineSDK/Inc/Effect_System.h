@@ -49,6 +49,7 @@ public:
 	void						Stop_SpawnAll(_float _fDelayTime = 0.f);
 	void						Inactive_Effect(_uint _iEffectID = 0);
 	void						Inactive_All();
+	void						Reset_All();
 
 public:
 	void						Set_SpawnMatrix(const _float4x4* _pSpawnMatrix);

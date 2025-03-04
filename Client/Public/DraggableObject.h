@@ -39,6 +39,7 @@ public:
 	void Move(_fvector _vForce, _float _fTimeDelta);
 
 private:
+	_bool m_bUserAround = false;
 	_bool m_bUserContact = false;
 	CPlayer* m_pDragger = nullptr;
 

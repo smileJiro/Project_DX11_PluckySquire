@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Player.h"
 #include "Actor_Dynamic.h"
+#include "Effect_Manager.h"
 
 CZetPack::CZetPack(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -38,6 +39,7 @@ HRESULT CZetPack::Initialize(void* _pArg)
     pDesc->iObjectGroupID = OBJECT_GROUP::PLAYER;
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
+
 	return S_OK;
 }
 
@@ -114,15 +116,36 @@ void CZetPack::Switch_State(ZET_STATE _eState)
 	{
 	case STATE_IDLE:
         if (COORDINATE_2D == eCoord)
+        {
             m_pControllerModel->Switch_Animation(ANIM_IDLE);
+        }
+        else
+        {
+            CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip"), true, &m_WorldMatrices[COORDINATE_3D], 0);
+            CEffect_Manager::GetInstance()->Stop_SpawnID(TEXT("Zip"), 1.f, 1);
+        }
         break;
 	case STATE_ASCEND:
-        if(COORDINATE_2D == eCoord)
+        if (COORDINATE_2D == eCoord)
+        {
 		    m_pControllerModel->Switch_Animation(ANIM_ASCEND);
+        }
+        else
+        {
+            if (m_fMaxFuel - 0.05f <= m_fFuel)
+                CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip"), true, &m_WorldMatrices[COORDINATE_3D], 1);
+            else
+                CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip"), false, &m_WorldMatrices[COORDINATE_3D], 1);
+        }
 		break;
 	case STATE_DESCEND:
         if (COORDINATE_2D == eCoord)
+        {
 		    m_pControllerModel->Switch_Animation(ANIM_DESCEND);
+        }
+        else
+        {
+        }
 		break;
 	default:
 		break;
