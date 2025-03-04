@@ -52,6 +52,9 @@ public:
 	void					Increase_BulbCount() { m_iBulbCount += 1; };
 
 public:
+	void					Change_PlayerItemMode(_uint _iPlayerItemType, _uint _iItemMode);
+
+public:
 	void					Register_Player(CPlayer* _pPlayer);
 	CPlayer*				Get_Player_Ptr() { return m_pPlayer; }
 

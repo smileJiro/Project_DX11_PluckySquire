@@ -24,7 +24,6 @@ HRESULT CCollapseBlock::Initialize(void* _pArg)
 	// Save Desc
 
 	// Add Desc
-
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 

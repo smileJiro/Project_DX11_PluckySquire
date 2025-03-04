@@ -66,6 +66,7 @@ private:
 	void							Chapter2_Bettle_Page(_float _fTimeDelta);
 	void							Chapter2_OpenBookEvent(_float _fTimeDelta);
 	void							Chapter2_StorySequence(_float _fTimeDelta);
+	void							Chapter2_Get_Flipping_Glove(_float _fTimeDelta);
 
 public:
 	static CGameEventExecuter_C2* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

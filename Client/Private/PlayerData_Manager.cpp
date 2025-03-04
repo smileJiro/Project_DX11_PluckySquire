@@ -140,6 +140,13 @@ void CPlayerData_Manager::Get_PlayerItem(_wstring _szItemTag)
 	// Player에게 이거 가지고 있다고 넘겨주기
 }
 
+void CPlayerData_Manager::Change_PlayerItemMode(_uint _iPlayerItemType, _uint _iItemMode)
+{
+	_wstring szPlayerItemTag = m_ItemTags[_iPlayerItemType].first;
+
+	m_ItemState[szPlayerItemTag].second->Change_Mode(_iItemMode);
+}
+
 void CPlayerData_Manager::Register_Player(CPlayer* _pPlayer)
 {
 	Safe_Release(m_pPlayer);

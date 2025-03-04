@@ -31,6 +31,7 @@
 #include "Blocker.h"
 #include "Bulb.h"
 #include "JumpPad.h"
+#include "Zipline.h"
 #include "Door_Red.h"
 
 #include "RayShape.h"
@@ -343,7 +344,7 @@ HRESULT CLevel_Chapter_04::Ready_Lights()
 {
 #ifdef _DEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
-#elif _DEBUG
+#elif NDEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter4.json"));
 #endif // _DEBUG
 	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter4.json"));
@@ -1301,6 +1302,16 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
 		m_eLevelID, _strLayerTag, &DoorRedDesc)))
+		return E_FAIL;
+
+	// Zipline
+	CZipline::ZIPLINE_DESC ZipDesc = {};
+	ZipDesc.tTransform2DDesc.vInitialPosition = _float3(2266.09f, 265.5f, 0.f);
+	ZipDesc.iCurLevelID = m_eLevelID;
+	ZipDesc.strSectionTag = L"Chapter4_SKSP_02";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Zipline"),
+		m_eLevelID, _strLayerTag, &ZipDesc)))
 		return E_FAIL;
 
 	return S_OK;

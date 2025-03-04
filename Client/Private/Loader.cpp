@@ -114,6 +114,7 @@
 #include "Pressure_Plate.h"
 #include "Rubboink_Tiny.h"
 #include "MudPit.h"
+#include "Zipline.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -1255,6 +1256,9 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 					), matPretransform))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Zipline"),
+			CZipline::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter4_Monsters.json"), TEXT("Chapter4_Monsters"), _eLoadLevelID)))
 			return E_FAIL;
