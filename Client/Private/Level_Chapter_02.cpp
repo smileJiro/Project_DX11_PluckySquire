@@ -358,10 +358,6 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		}
 	}
 
-	if (KEY_DOWN(KEY::R)) {
-		CPlayerData_Manager::GetInstance()->Change_PlayerItemMode(CPlayerData_Manager::FLIPPING_GLOVE, CPlayerItem::DISAPPEAR);
-	}
-
 #endif // _DEBUG
 
 
