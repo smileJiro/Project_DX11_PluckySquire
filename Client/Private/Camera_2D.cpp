@@ -51,9 +51,10 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 
 	// TargetChangineTime이 Camera에 있는데 여기서는 TrackingTime으로 쫓아가는 게 나을 것 같기도
 
-
-	if (FAILED(Create_NormalCopyTexture()))
-		return E_FAIL;
+	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_01"), _float3(2.08f, 0.40f, -0.61f));
+	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_06"), _float3(44.53f, 0.40f, 1.21f));
+	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_03"), _float3(-37.8f, 29.89f, 41.25f));
+	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_04"), _float3(1.72f, 18.65f, 30.10f));
 
 	return S_OK;
 }
@@ -191,51 +192,17 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 				Set_InitialData(m_strSectionName);
 			}
 			else if (ARM_NORMAL_TYPE::NORMAL_MAP == iNormalType) {	
-				if(FAILED(m_pGameInstance->Copy_RT_Resource(TEXT("Target_Normal"), m_pCopyNormalMap)))
-					MSG_BOX("Copy Failed");
-				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
-				_vector vNormal = {};
+				auto& iter = m_NormalTargets.find(m_strSectionName);
+
+				if (iter == m_NormalTargets.end())
+					return;
 				
-				_matrix matResult = m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW);
-				matResult = matResult * m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ);
+				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 
-				vTargetPos = XMVector3TransformCoord(vTargetPos, matResult);
+				_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
+				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
 
-				_int iPixelX = (_int)((XMVectorGetX(vTargetPos) + 1.f) * (g_iWinSizeX * 0.5f));
-				_int iPixelY = (_int)((1.f - XMVectorGetY(vTargetPos)) * (g_iWinSizeY * 0.5f));
-
-				D3D11_MAPPED_SUBRESOURCE mappedResource;
-				if (FAILED(m_pContext->Map(m_pCopyNormalMap, 0, D3D11_MAP_READ, 0, &mappedResource)))
-					MSG_BOX("Normal Map Copy Failed");
-
-				//_int iWidth = mappedResource.RowPitch / sizeof(uint16_t) / 4;
-				//_int iHeight = mappedResource.DepthPitch / mappedResource.RowPitch;
-
-				// RowPitch는 한 줄의 바이트 수를 나타냄
-				uint16_t* fData = static_cast<uint16_t*>(mappedResource.pData);
-
-				// 픽셀 위치 계산 (4 floats per pixel)
-				_int rowPitchInPixels = mappedResource.RowPitch / (sizeof(uint16_t) * 4);
-				_int iIndex = iPixelY * rowPitchInPixels + iPixelX;
-
-			/*	if (iWidth * iHeight <= iIndex || 0 > iIndex)
-					vNormal = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);*/
-
-				_uint iDefaultIndex = iIndex * 4;
-
-				// float4 데이터 읽기
-				_float x = fData[iDefaultIndex] / 65535.0f;; // Red 채널
-				_float y = fData[iDefaultIndex + 1] / 65535.0f;; // Green 채널
-				_float z = fData[iDefaultIndex + 2] / 65535.0f;; // Blue 채널
-				_float w = fData[iDefaultIndex + 3] / 65535.0f;; // Alpha 채널
-
-				m_pContext->Unmap(m_pCopyNormalMap, 0);
-
-				vNormal = XMVectorSet(x, y, z, w);
-				vNormal = (vNormal * 2.f) - XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f);
-
-
-				Set_InitialData(vNormal, 12.5f, XMVectorZero(), 5);
+				Set_InitialData(vDir, 6.5f, XMVectorZero(), 5);
 			}
 		}
 #pragma endregion
@@ -835,51 +802,17 @@ void CCamera_2D::Find_TargetPos()
 
 			/* Normal Map */
 			else if (ARM_NORMAL_TYPE::NORMAL_MAP == iNormalType) {
+				auto& iter = m_NormalTargets.find(m_strSectionName);
 
-				if (FAILED(m_pGameInstance->Copy_RT_Resource(TEXT("Target_Normal"), m_pCopyNormalMap)))
-					MSG_BOX("Copy Failed");
+				if (iter == m_NormalTargets.end())
+					return;
+
 				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
-				_vector vNormal = {};
 
-				_matrix matResult = m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW);
-				matResult = matResult * m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ);
+				_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
+				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
 
-				vTargetPos = XMVector3TransformCoord(vTargetPos, matResult);
-
-				_int iPixelX = (_int)((XMVectorGetX(vTargetPos) + 1.f) * (g_iWinSizeX * 0.5f));
-				_int iPixelY = (_int)((1.f - XMVectorGetY(vTargetPos)) * (g_iWinSizeY * 0.5f));
-
-				D3D11_MAPPED_SUBRESOURCE mappedResource;
-				if (FAILED(m_pContext->Map(m_pCopyNormalMap, 0, D3D11_MAP_READ, 0, &mappedResource)))
-					MSG_BOX("Normal Map Copy Failed");
-
-				//_int iWidth = mappedResource.RowPitch / sizeof(uint16_t) / 4;
-				//_int iHeight = mappedResource.DepthPitch / mappedResource.RowPitch;
-
-				// RowPitch는 한 줄의 바이트 수를 나타냄
-				uint16_t* fData = static_cast<uint16_t*>(mappedResource.pData);
-
-				// 픽셀 위치 계산 (4 floats per pixel)
-				_int rowPitchInPixels = mappedResource.RowPitch / (sizeof(uint16_t) * 4);
-				_int iIndex = iPixelY * rowPitchInPixels + iPixelX;
-
-				/*	if (iWidth * iHeight <= iIndex || 0 > iIndex)
-						vNormal = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);*/
-
-				_uint iDefaultIndex = iIndex * 4;
-
-				// float4 데이터 읽기
-				_float x = fData[iDefaultIndex] / 65535.0f;; // Red 채널
-				_float y = fData[iDefaultIndex + 1] / 65535.0f;; // Green 채널
-				_float z = fData[iDefaultIndex + 2] / 65535.0f;; // Blue 채널
-				_float w = fData[iDefaultIndex + 3] / 65535.0f;; // Alpha 채널
-
-				m_pContext->Unmap(m_pCopyNormalMap, 0);
-
-				vNormal = XMVectorSet(x, y, z, w);
-				vNormal = (vNormal * 2.f) - XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f);
-
-				Set_InitialData(vNormal, 8.5f, XMVectorZero(), 5);
+				Set_InitialData(vDir, 6.5f, XMVectorZero(), 5);
 			}
 		}
 #pragma endregion
@@ -1060,28 +993,6 @@ _bool CCamera_2D::Is_Target_In_SketchSpace()
 	}
 
 	return true;
-}
-
-HRESULT CCamera_2D::Create_NormalCopyTexture()
-{
-	m_pCopyNormalMap = nullptr;
-
-	D3D11_TEXTURE2D_DESC	desc;
-	ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
-
-	desc.Width = (_uint)g_iWinSizeX; // 원본 텍스처 너비
-	desc.Height = (_uint)g_iWinSizeY; // 원본 텍스처 높이
-	desc.MipLevels = 1;
-	desc.ArraySize = 1;
-	desc.Format = DXGI_FORMAT_R16G16B16A16_UNORM; // 원본 텍스처와 동일한 포맷
-	desc.SampleDesc.Count = 1;
-	desc.Usage = D3D11_USAGE_STAGING; // CPU 읽기 전용
-	desc.BindFlags = 0; // 바인딩 없음
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
-
-	m_pDevice->CreateTexture2D(&desc, nullptr, &m_pCopyNormalMap);
-
-	return S_OK;
 }
 
 pair<ARM_DATA*, SUB_DATA*>* CCamera_2D::Find_ArmData(_wstring _wszArmTag)
@@ -1309,7 +1220,6 @@ void CCamera_2D::Free()
 	m_ArmDatas.clear();
 
 	Safe_Release(m_pCurArm);
-	Safe_Release(m_pCopyNormalMap);
 
 	__super::Free();
 }

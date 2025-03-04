@@ -146,9 +146,8 @@ private:
 	// Portal ID
 	_uint						m_iPortalID = {};
 
-	// Normal map
-	ID3D11Texture2D*			m_pCopyNormalMap = {};
-
+	// Normal
+	map<_wstring, _float3>		m_NormalTargets;
 
 private:
 	void						Action_Mode(_float _fTimeDelta);
@@ -172,9 +171,6 @@ private:
 	void						Find_TargetPos();
 	void						Check_MagnificationType();
 	_bool						Is_Target_In_SketchSpace();
-
-	// Copy RT
-	HRESULT						Create_NormalCopyTexture();
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);
