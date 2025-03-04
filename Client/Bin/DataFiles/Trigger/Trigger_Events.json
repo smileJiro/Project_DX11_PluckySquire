@@ -128,8 +128,8 @@
         "Is_Sequence": true
       },
       {
-        "ActionTag": "Dialogue",
-        "EventTag": "Gauntlet_Acquire_01",
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter2_Get_Flipping_Glove",
         "Is_Sequence": true
       }
     ]

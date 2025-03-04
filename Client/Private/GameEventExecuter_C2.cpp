@@ -861,6 +861,166 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 			if (Next_Step(!pPage->Is_DuringAnimation()))
 			{
 				CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+				pCamera->Start_PostProcessing_Fade(CCamera::FADE_OUT, 0.5f);
+				CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.5f);
+				pPage->Set_Render(false);
+			}
+		}
+	}
+	else if (Step_Check(STEP_7))
+	{
+		Next_Step_Over(0.3f);
+	}
+	else if (Step_Check(STEP_8))
+	{
+		if (Is_Start())
+		{
+			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+
+			//pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 0.3f);
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_BlockPlayerInput(false);
+		}
+	}
+	else
+	{
+		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_BlockPlayerInput(true);
+
+		}
+		Next_Step(true);
+	}
+	else if (Step_Check(STEP_1))
+	{
+		if (Is_Start())
+		{
+			CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
+
+			CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET, 1.f,
+				CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_CurrentZoomLevel() - 1, EASE_IN_OUT
+			);
+
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(3.f, 3.f, 0.f, 0.f),
+				EASE_IN_OUT
+			);
+
+			/*		CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-20.f), XMConvertToRadians(-2.f));
+					CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-10.f), XMConvertToRadians(-2.f));*/
+
+		}
+		Next_Step_Over(2.f);
+	}
+	else if (Step_Check(STEP_2))
+	{
+
+		if (Is_Start())
+		{
+			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter2_SKSP_Postit"));
+			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_BACKGROUND);
+
+			const auto& Objects = pLayer->Get_GameObjects();
+			if (Objects.size() != 1)
+				assert(nullptr);
+			m_pTargetObject = Objects.front();
+			if (nullptr == m_pTargetObject)
+				assert(nullptr);
+
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			if (nullptr != pPage)
+			{
+				pPage->Set_Render(true);
+				pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_APPEAR, false);
+			}
+
+		}
+		else
+		{
+			if (nullptr == m_pTargetObject)
+				assert(nullptr);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+
+			Next_Step(!pPage->Is_DuringAnimation() && m_fTimer > 1.8f);
+		}
+	}
+	else if (Step_Check(STEP_3))
+	{
+		if (Is_Start())
+		{
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_04");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else if (Step_Check(STEP_4))
+	{
+		if (Is_Start())
+		{
+
+			CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET, 1.5f,
+				CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_CurrentZoomLevel() - 1, EASE_IN_OUT
+			);
+
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.5f, 30.f, EASE_IN_OUT);
+
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(21.f, 0.f, 0.f, 0.f),
+				EASE_IN_OUT
+			);
+			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(20.f), XMConvertToRadians(2.f));
+			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-30.f), XMConvertToRadians(-4.f));
+
+		}
+		Next_Step_Over(2.5f);
+	}
+	else if (Step_Check(STEP_5))
+	{
+		if (Is_Start())
+		{
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_05");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else if (Step_Check(STEP_6))
+	{
+		if (Is_Start())
+		{
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_BlockPlayerInput(false);
+			if (nullptr == m_pTargetObject)
+				assert(nullptr);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+
+			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_DISAPPEAR, false);
+		}
+		else
+		{
+			if (nullptr == m_pTargetObject)
+				assert(nullptr);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+
+			if (Next_Step(!pPage->Is_DuringAnimation()))
+			{
+				CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
 				//pCamera->Start_PostProcessing_Fade(CCamera::FADE_OUT, 0.5f);
 				CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.5f);
 				pPage->Set_Render(false);
@@ -888,8 +1048,9 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 	}
 }
 
-void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
+void CGameEventExecuter_C2::Chapter2_Get_Flipping_Glove(_float _fTimeDelta)
 {
+
 }
 
 
