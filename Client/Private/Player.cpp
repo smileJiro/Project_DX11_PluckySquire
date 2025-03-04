@@ -1050,7 +1050,11 @@ void CPlayer::StampSmash()
     if (nullptr == pSampleBook)
         return;
 
-    _vector v2DPosition = pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition());
+    _vector v2DPosition;
+    if (FAILED(pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition(),&v2DPosition)))
+    {
+        return;
+    }
     if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
     {
         m_pDetonator->Set_Bombable(m_pBombStmap->Place_Bomb(v2DPosition));

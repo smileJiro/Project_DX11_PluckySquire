@@ -99,10 +99,10 @@ public :
 public:						
 	HRESULT					Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition);
 	void					Execute_AnimEvent(_uint _iAnimIndex);
-	_vector					Convert_Position_3DTo2D(_fvector _v3DPos);
+	HRESULT					Convert_Position_3DTo2D(_fvector _v3DPos, _vector* _pOutPosition);
 
 private:
-	void					Calc_Page3DWorldMinMax();	
+	//void					Calc_Page3DWorldMinMax();	
 private :
 	CAnimEventGenerator*	m_pAnimEventGenerator = { nullptr };
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
@@ -113,9 +113,7 @@ private :
 	_bool					m_isPlayerAround= { false };
 	_bool					m_isPlayerAbove= { false };
 
-	_float3					m_v3DWorldMin = { -1.f, -1.f, -1.f };
-	_float3					m_v3DWorldMax = { 1.f, 1.f, 1.f };
-	_float2					m_v2DWorldPixelSize = { 0.f, 0.f };
+
 
 
 public:

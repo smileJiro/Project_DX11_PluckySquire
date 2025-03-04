@@ -1323,14 +1323,12 @@
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Postit_Page.h" />
-    <ClInclude Include="..\Public\TiltSwapPusher.h" />
     <ClInclude Include="..\Public\Boss_Rock.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BossRockVolleyState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BombableObject.h" />
     <ClInclude Include="..\Public\GameEventExecuter.h">
       <Filter>02.GameObjects\GameEventExecuter</Filter>
     </ClInclude>
@@ -1345,6 +1343,13 @@
     </ClInclude>
     <ClInclude Include="..\Public\GameEventExecuter_C8.h">
       <Filter>02.GameObjects\GameEventExecuter\Chapter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zipline.h" />
+    <ClInclude Include="..\Public\BombableObject.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TiltSwapPusher.h">
+      <Filter>02.GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2124,14 +2129,12 @@
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Postit_Page.cpp" />
-    <ClCompile Include="..\Private\TiltSwapPusher.cpp" />
     <ClCompile Include="..\Private\Boss_Rock.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossRockVolleyState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BombableObject.cpp" />
     <ClCompile Include="..\Private\GameEventExecuter_C2.cpp">
       <Filter>02.GameObjects\GameEventExecuter\Chapter</Filter>
     </ClCompile>
@@ -2143,6 +2146,13 @@
     </ClCompile>
     <ClCompile Include="..\Private\GameEventExecuter_C8.cpp">
       <Filter>02.GameObjects\GameEventExecuter\Chapter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zipline.cpp" />
+    <ClCompile Include="..\Private\TiltSwapPusher.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BombableObject.cpp">
+      <Filter>02.GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
