@@ -110,6 +110,7 @@
 #include "LunchBox.h"
 #include "Door_Yellow.h"
 #include "Door_Blue.h"
+#include "Door_Red.h"
 #include "Pressure_Plate.h"
 #include "Rubboink_Tiny.h"
 #include "MudPit.h"
@@ -826,6 +827,10 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorBlue"),
 		CDoor_Blue::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+		
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+		CDoor_Red::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Pressure_Plate"),
 		CPressure_Plate::Create(m_pDevice, m_pContext))))
@@ -1253,6 +1258,9 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Zipline"),
 			CZipline::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter4_Monsters.json"), TEXT("Chapter4_Monsters"), _eLoadLevelID)))
 			return E_FAIL;
 
 	#pragma endregion

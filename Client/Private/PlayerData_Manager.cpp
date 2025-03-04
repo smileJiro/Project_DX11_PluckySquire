@@ -5,6 +5,7 @@
 
 #include "PlayerItem.h"
 #include "Bulb.h"
+#include "Player.h"
 
 IMPLEMENT_SINGLETON(CPlayerData_Manager)
 
@@ -39,6 +40,8 @@ HRESULT CPlayerData_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeL
 		PlayerItem.second.second = nullptr;
 	}
 
+	Safe_Release(m_pPlayer);
+	m_pPlayer = nullptr;
 
 	return S_OK;
 }
@@ -156,6 +159,13 @@ void CPlayerData_Manager::Change_PlayerItemMode(_wstring _strItemTag, _uint _iIt
 	}
 }
 
+void CPlayerData_Manager::Register_Player(CPlayer* _pPlayer)
+{
+	Safe_Release(m_pPlayer);
+	m_pPlayer = _pPlayer;
+	Safe_AddRef(m_pPlayer);
+}
+
 void CPlayerData_Manager::Set_Tags()
 {
 	m_ItemTags[FLIPPING_GLOVE] = { TEXT("Flipping_Glove"), TEXT("latch_glove") };
@@ -176,6 +186,8 @@ void CPlayerData_Manager::Free()
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
+
+	Safe_Release(m_pPlayer);
 
 	__super::Free();
 }

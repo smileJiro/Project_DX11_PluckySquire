@@ -76,6 +76,21 @@ HRESULT CObject_Manager::Level_Exit(_uint _iLevelID)
     return S_OK;
 }
 
+_bool CObject_Manager::Is_EmptyLayer(_uint _iLevelID, const _wstring& _strLayerTag)
+{
+    if (_iLevelID >= m_iNumLevels)
+        return true;
+
+    CLayer* pLayer = Find_Layer(_iLevelID, _strLayerTag);
+
+    if (nullptr == pLayer)
+        return true;
+
+    else
+        return pLayer->Is_Empty();
+
+}
+
 CLayer* CObject_Manager::Find_Layer(_uint _iLevelID, const _wstring& _strLayerTag)
 {
     if (_iLevelID >= m_iNumLevels)

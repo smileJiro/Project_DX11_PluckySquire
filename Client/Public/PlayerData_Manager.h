@@ -55,12 +55,17 @@ public:
 	void					Change_PlayerItemMode(_uint _iPlayerItemType, _uint _iItemMode);
 	void					Change_PlayerItemMode(_wstring _strItemTag, _uint _iItemMode);
 
+public:
+	void					Register_Player(CPlayer* _pPlayer);
+	CPlayer*				Get_Player_Ptr() { return m_pPlayer; }
+
 private: 
 	CGameInstance*						m_pGameInstance = { nullptr };
 	ID3D11Device*						m_pDevice = { nullptr };
 	ID3D11DeviceContext*				m_pContext = { nullptr };
 
 private:
+	class CPlayer*						m_pPlayer = { nullptr };
 	map<_wstring, pair<_bool, class CPlayerItem*>>	m_ItemState;
 	class CPlayerItem*					m_pCurItem = { nullptr };
 

@@ -143,7 +143,7 @@ void CKey::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColli
 		{
 			// 문의 위치로 설정,
 			_vector vPosition = pDoor->Get_FinalPosition();
-			pDoor->Open_Door();
+			//pDoor->Open_Door();
 
 			// 플레이어를 상태 = IDLE로 설정, 열쇠의 위치 설정,
 			if (nullptr != m_pCarrier)
