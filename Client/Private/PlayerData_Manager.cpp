@@ -144,6 +144,18 @@ void CPlayerData_Manager::Change_PlayerItemMode(_uint _iPlayerItemType, _uint _i
 	m_ItemState[szPlayerItemTag].second->Change_Mode(_iItemMode);
 }
 
+void CPlayerData_Manager::Change_PlayerItemMode(_wstring _strItemTag, _uint _iItemMode)
+{
+	for (_uint i = 0; i < ITEM_END; i++)
+	{
+		if (m_ItemTags[i].first == _strItemTag)
+		{
+			m_ItemState[_strItemTag].second->Change_Mode(_iItemMode);
+			break;
+		}
+	}
+}
+
 void CPlayerData_Manager::Set_Tags()
 {
 	m_ItemTags[FLIPPING_GLOVE] = { TEXT("Flipping_Glove"), TEXT("latch_glove") };

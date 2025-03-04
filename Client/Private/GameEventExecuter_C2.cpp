@@ -926,7 +926,6 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 	}
 	else if (Step_Check(STEP_2))
 	{
-
 		if (Is_Start())
 		{
 			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter2_SKSP_Postit"));
@@ -962,7 +961,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 		{
 			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
-			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_04");
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_06");
 		}
 		else
 			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
@@ -1047,13 +1046,6 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 		GameEvent_End();
 	}
 }
-
-void CGameEventExecuter_C2::Chapter2_Get_Flipping_Glove(_float _fTimeDelta)
-{
-
-}
-
-
 
 
 CGameEventExecuter_C2* CGameEventExecuter_C2::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
