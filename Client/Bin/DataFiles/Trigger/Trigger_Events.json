@@ -80,6 +80,16 @@
     ]
   },
   {
+    "Trigger_EventTag": "Chapter2_LunchBox_Open",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter2_LunchBox_Open",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Get_Flipping_Glove",
     "Actions": [
       {

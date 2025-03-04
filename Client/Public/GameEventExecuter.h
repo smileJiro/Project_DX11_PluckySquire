@@ -38,58 +38,103 @@
 
 
 
+BEGIN(Client)
 
-class CGameEventExecuter : public CGameObject
+class CPlayer;
+class CSampleBook;
+
+class CGameEventExecuter abstract : public CGameObject
 {
+protected:
+	enum STEP_TYPE
+	{
+		STEP_0,
+		STEP_1,
+		STEP_2,
+		STEP_3,
+		STEP_4,
+		STEP_5,
+		STEP_6,
+		STEP_7,
+		STEP_8,
+		STEP_LAST
+	};
 public :
 	typedef struct tagGameEventExecuter : public CGameObject::GAMEOBJECT_DESC
 	{
 		_wstring	strEventTag;
 	}EVENT_EXECUTER_DESC;
-private :
+protected:
 	CGameEventExecuter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CGameEventExecuter() = default;
 
 public :
-	virtual HRESULT					Initialize_Prototype() override;
-	virtual HRESULT					Initialize(void* _pArg) override;
-	virtual void					Priority_Update(_float _fTimeDelta) override;
-	virtual void					Update(_float _fTimeDelta) override;
-	virtual void					Late_Update(_float _fTimeDelta) override;
-
-
-private :
-	void C020910_Bolt_Spawn(_float _fTimeDelta);
-	void C020910_Monster_Spawn(_float _fTimeDelta);
-	void Chapter2_BookMagic(_float _fTimeDelta);
-	void Chapter2_Intro(_float _fTimeDelta);
-	void Chapter2_Humgrump(_float _fTimeDelta);
-	void Chapter2_Lunchbox_Appear(_float _fTimeDelta);
-
+	virtual HRESULT					Initialize(void* _pArg);
+	virtual void					Update(_float _fTimeDelta)  abstract;
 
 	virtual void					GameEvent_End();
 
-private:
+#pragma region 내부 구현할때 편하게 쓰라고 만듬
+
+protected:
+	_bool Is_Start()
+	{
+		if (!m_isStart)
+		{
+			m_isStart = true;
+			return true;
+		}
+		return false;
+	}
+	_bool  Next_Step(_bool _isNextStep)
+	{
+		if (_isNextStep)
+		{
+			m_isStart = false;
+			m_iStep++;
+			m_iSubStep = 0;
+			m_fTimer = 0.f;
+		}
+		return _isNextStep;
+	}
+	_bool  Next_Step_Over(_float _fMaxTime)
+	{
+		return Next_Step(m_fTimer > _fMaxTime);
+	}
+	
+	_bool Step_Check(STEP_TYPE _eType) { return _eType == m_iStep; }
+	
+	CPlayer* Get_Player();
+	CSampleBook* Get_Book();
+
+#pragma endregion
+
+protected:
 	_float		m_fMaxTimer = 0.f;
 	_float		m_fTimer = 0.f;
 	_wstring	m_strEventTag;
 	_wstring	m_strActionTag;
 	_bool		m_IsSequence;
 
-	_uint		m_iStep = 0;
-	_bool		m_isStart = { false };
-	_bool		m_isLight = { false };
 
-	_bool m_isSpawn = { false };
+	// 메인 스텝(이벤트의 흐름)
+	_uint		m_iStep = 0;
+	//서브 스텝(스텝 내부의 흐름)
+	_uint		m_iSubStep = 0;
+
+	// 스텝을 처음 시작했는가?
+	_bool		m_isStart = { false };
+	
+	//임시 데이터들 ...
+	_bool			m_isPlag = { false };
+	CGameObject*	m_pTargetObject = nullptr;
 
 	_int		m_iEventExcuterAction = -1;
 
 public:
-	static CGameEventExecuter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void Free();
 
 	// CGameObject을(를) 통해 상속됨
-	virtual CGameObject* Clone(void* _pArg) override;
 	virtual HRESULT Cleanup_DeadReferences() override;
 };
-
+END
