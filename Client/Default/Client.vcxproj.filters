@@ -538,6 +538,9 @@
     <Filter Include="02.GameObjects\GameEventExecuter\Chapter">
       <UniqueIdentifier>{6082059d-46bc-4630-9b78-c32a3fe672f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Components\FSM\State\SideScroll">
+      <UniqueIdentifier>{eb660517-2ad9-4701-b44e-4d5768863bad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1096,12 +1099,6 @@
     <ClInclude Include="..\Public\Goblin_SideScroller.h">
       <Filter>02.GameObjects\Monster\Goblin\SideScroller</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\SideScroll_PatrolState.h">
-      <Filter>03.Components\FSM\State\Patrol</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\SideScroll_HitState.h">
-      <Filter>03.Components\FSM\State\Hit</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Magic_Hand.h">
       <Filter>02.GameObjects\MagicHand</Filter>
     </ClInclude>
@@ -1362,6 +1359,24 @@
     </ClInclude>
     <ClInclude Include="..\Public\TiltSwapPusher.h">
       <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_Crystal.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_TennisBall.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SideScroll_HitState.h">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SideScroll_PatrolState.h">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossHitState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossShieldState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1916,12 +1931,6 @@
     <ClCompile Include="..\Private\Goblin_SideScroller.cpp">
       <Filter>02.GameObjects\Monster\Goblin\SideScroller</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\SideScroll_PatrolState.cpp">
-      <Filter>03.Components\FSM\State\Patrol</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\SideScroll_HitState.cpp">
-      <Filter>03.Components\FSM\State\Hit</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Magic_Hand.cpp">
       <Filter>02.GameObjects\MagicHand</Filter>
     </ClCompile>
@@ -2174,6 +2183,24 @@
     </ClCompile>
     <ClCompile Include="..\Private\TiltSwapPusher.cpp">
       <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss_Crystal.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss_TennisBall.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SideScroll_HitState.cpp">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SideScroll_PatrolState.cpp">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossHitState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossShieldState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
