@@ -538,6 +538,12 @@ HRESULT CPlayerSword::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewP
     return S_OK;
 }
 
+void CPlayerSword::Enter_Section(const _wstring _strIncludeSectionName)
+{
+    __super::Enter_Section(_strIncludeSectionName);
+    Set_State(HANDLING);
+}
+
 void CPlayerSword::Throw(_fvector _vDirection)
 {
     COORDINATE eCoord = m_pPlayer->Get_CurCoord();

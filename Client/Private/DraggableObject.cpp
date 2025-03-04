@@ -174,7 +174,11 @@ void CDraggableObject::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1
 
 void CDraggableObject::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-
+	if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup
+		&& (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
+	{
+		m_bUserContact = true;
+	}
 }
 
 void CDraggableObject::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -187,14 +191,19 @@ void CDraggableObject::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Ot
 
 void CDraggableObject::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-
+	if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup
+		&& (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
+	{
+		m_bUserContact = false;
+	}
 }
 
 void CDraggableObject::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-	if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
+	if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup
+		&& (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
 	{
-		m_bUserContact = true;
+		m_bUserAround = true;
 	}
 }
 
@@ -204,12 +213,16 @@ void CDraggableObject::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Ot
 
 void CDraggableObject::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+	if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup
+		&& (_uint)SHAPE_USE::SHAPE_BODY ==  _Other.pShapeUserData->iShapeUse)
+	{
+		m_bUserAround = false;
+	}
 	if (m_pDragger && m_pDragger == _Other.pActorUserData->pOwner)
 	{
 		m_pDragger->Set_InteractObject(nullptr);
 		End_Interact(m_pDragger);
 		m_pDragger = nullptr;
-		m_bUserContact = false;
 	}
 }
 
@@ -231,7 +244,7 @@ _bool CDraggableObject::Is_Interactable(CPlayer* _pUser)
 
 
 
-	return m_bUserContact;
+	return m_bUserAround && m_bUserContact;
 }
 
 _float CDraggableObject::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)

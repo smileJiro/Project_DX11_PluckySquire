@@ -371,10 +371,12 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInit
 
 void CCamera_Manager::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
 {
-	if (nullptr == m_Cameras[TARGET] || TARGET != m_eCurrentCameraType)
-		return;
+	m_Cameras[m_eCurrentCameraType]->Change_Target(_pTargetWorldMatrix);
+}
 
-	static_cast<CCamera_Target*>(m_Cameras[TARGET])->Change_Target(_pTargetWorldMatrix);
+void CCamera_Manager::Change_CameraTarget(CGameObject* _pTarget)
+{
+	m_Cameras[m_eCurrentCameraType]->Change_Target(_pTarget);
 }
 
 _bool CCamera_Manager::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
@@ -444,6 +446,46 @@ void CCamera_Manager::Start_Shake_ByCount(CAMERA_TYPE _eCameraType, _float _fSha
 		return;
 
 	m_Cameras[_eCameraType]->Start_Shake_ByCount(_fShakeTime, _fShakeForce, _iShakeCount, (CCamera::SHAKE_TYPE)_iShakeType, _fDelayTime);
+}
+
+void CCamera_Manager::Start_Turn_AxisY(CAMERA_TYPE _eCameraType, _float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	m_Cameras[_eCameraType]->Start_Turn_AxisY(_fTurnTime, _fMinRotationPerSec, _fMaxRotationPerSec);
+}
+
+void CCamera_Manager::Start_Turn_AxisRight(CAMERA_TYPE _eCameraType, _float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	m_Cameras[_eCameraType]->Start_Turn_AxisRight(_fTurnTime, _fMinRotationPerSec, _fMaxRotationPerSec);
+}
+
+void CCamera_Manager::Start_Changing_ArmLength(CAMERA_TYPE _eCameraType, _float _fLengthTime, _float _fLength, _uint _iRatioType)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	m_Cameras[_eCameraType]->Start_Changing_ArmLength(_fLengthTime, _fLength, (RATIO_TYPE)_iRatioType);
+}
+
+void CCamera_Manager::Set_ResetData(CAMERA_TYPE _eCameraType)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	m_Cameras[_eCameraType]->Set_ResetData();
+}
+
+void CCamera_Manager::Start_ResetArm_To_SettingPoint(CAMERA_TYPE _eCameraType, _float _fResetTime)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	m_Cameras[_eCameraType]->Start_ResetArm_To_SettingPoint(_fResetTime);
 }
 
 void CCamera_Manager::Start_FadeIn(_float _fFadeTime)

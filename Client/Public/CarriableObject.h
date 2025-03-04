@@ -50,6 +50,10 @@ public:
 	virtual _bool Is_Interactable(CPlayer* _pUser) override;
 	virtual _float Get_Distance(COORDINATE _eCOord, CPlayer* _pUser) override;
 	CARRIABLE_OBJ_ID Get_CarriableObjId() const { return m_eCarriableId; }
+	void PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset);
+	void PickUpEnd();
+	void LayDownStart(_fmatrix _matHeadUpPos);
+	void LayDownEnd(_fmatrix _matWorld);
 public:
 	_bool Is_Carrying() { return nullptr != m_pCarrier; }
 	HRESULT Set_Carrier(CPlayer* _pCarrier);
@@ -59,6 +63,11 @@ public:
 	void Set_ParentBodyMatrix(COORDINATE _eCoord, const _float4x4* _pBodyMatrix) { m_pParentBodyMatrices[_eCoord] = _pBodyMatrix; }
 	const _float4x4& Get_HeadUpMatrix(COORDINATE _eCoord) { return m_matHeadUpMatrix[_eCoord]; };
 
+protected:
+	virtual void On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset) {};
+	virtual void On_PickUpEnd() {};
+	virtual void On_LayDownStart(_fmatrix _matWorld) {};
+	virtual void On_LayDownEnd(_fmatrix _matWorld) {};
 protected:
 	CPlayer* m_pCarrier = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;

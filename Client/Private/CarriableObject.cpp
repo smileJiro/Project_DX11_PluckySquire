@@ -178,6 +178,13 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 
 void CCarriableObject::Throw(_fvector _vForce)
 {
+	Set_ParentMatrix(COORDINATE_2D, nullptr);
+	Set_ParentMatrix(COORDINATE_3D, nullptr);
+	Set_SocketMatrix(COORDINATE_3D, nullptr);
+	Set_SocketMatrix(COORDINATE_2D, nullptr);
+	Set_ParentBodyMatrix(COORDINATE_3D, nullptr);
+	Set_ParentBodyMatrix(COORDINATE_2D, nullptr);
+	Set_Carrier(nullptr);
 	if (COORDINATE_3D == Get_CurCoord())
 	{
 
@@ -253,6 +260,61 @@ _float CCarriableObject::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 {
 	return XMVector3Length(m_pControllerTransform->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)
 		- _pUser->Get_ControllerTransform()->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
+}
+
+
+
+void CCarriableObject::PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset)
+{
+	Set_Kinematic(true);
+
+	Set_Carrier(_pPalyer);
+	Set_ParentMatrix(COORDINATE_3D, _pPalyer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));
+	Set_ParentMatrix(COORDINATE_2D, _pPalyer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_2D));
+	Set_ParentBodyMatrix(COORDINATE_3D, _pPalyer->Get_BodyWorldMatrix_Ptr(COORDINATE_3D));
+	Set_ParentBodyMatrix(COORDINATE_2D, _pPalyer->Get_BodyWorldMatrix_Ptr(COORDINATE_2D));
+	_float4x4 matOffset;
+	XMStoreFloat4x4(&matOffset, _matPlayerOffset);
+	Set_WorldMatrix(matOffset);
+	On_PickUpStart(_pPalyer, _matPlayerOffset);
+}
+
+void CCarriableObject::PickUpEnd()
+{
+	Set_SocketMatrix(COORDINATE_2D, &Get_HeadUpMatrix(COORDINATE_2D));
+	Set_SocketMatrix(COORDINATE_3D, &Get_HeadUpMatrix(COORDINATE_3D));
+
+	Set_Position(_vector{ 0,0,0 });
+	Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
+	On_PickUpEnd();
+}
+
+void CCarriableObject::LayDownStart(_fmatrix _matWorld)
+{
+	Set_SocketMatrix(COORDINATE_2D, nullptr);
+	Set_SocketMatrix(COORDINATE_3D, nullptr);
+
+	_float4x4 matCarriableWorld;
+	XMStoreFloat4x4(&matCarriableWorld, _matWorld);
+	Set_WorldMatrix(matCarriableWorld);
+	Set_Kinematic(true);
+	On_LayDownStart(_matWorld);
+}
+
+void CCarriableObject::LayDownEnd(_fmatrix _matWorld)
+{
+	Set_ParentMatrix(COORDINATE_3D, nullptr);
+	Set_ParentMatrix(COORDINATE_2D, nullptr);
+	Set_SocketMatrix(COORDINATE_3D, nullptr);
+	Set_SocketMatrix(COORDINATE_2D, nullptr);
+	Set_ParentBodyMatrix(COORDINATE_3D, nullptr);
+	Set_ParentBodyMatrix(COORDINATE_2D, nullptr);
+	Set_Carrier(nullptr);
+	_float4x4 matCarriableWorld;
+	XMStoreFloat4x4(&matCarriableWorld, _matWorld);
+	Set_WorldMatrix(matCarriableWorld);
+
+	On_LayDownEnd(_matWorld);
 }
 
 void CCarriableObject::Set_Kinematic(_bool _bKinematic)
