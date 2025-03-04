@@ -278,6 +278,7 @@ void CCamera::Start_PostProcessing_Fade(FADE_TYPE _eFadeType, _float _fFadeTime)
 
 	m_eFadeType = _eFadeType;
 	m_vFadeTime.x = _fFadeTime;
+
 }
 
 void CCamera::Start_Turn_AxisY(_float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec)
@@ -503,7 +504,7 @@ void CCamera::Action_PostProcessing_Fade(_float _fTimeDelta)
 		}
 		else
 		{
-			m_tDofData.fFadeRatio = (1.0f - m_vFadeTime.y) / m_vFadeTime.x;
+			m_tDofData.fFadeRatio = 1.0f - (m_vFadeTime.y / m_vFadeTime.x);
 		}
 		m_isBindConstBuffer = true; // 해당 데이터가 true이면, 이번프레임 dof를 업데이트
 	}

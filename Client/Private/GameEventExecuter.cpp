@@ -22,8 +22,6 @@ CGameEventExecuter::CGameEventExecuter(ID3D11Device* _pDevice, ID3D11DeviceConte
 {
 }
 
-
-
 HRESULT CGameEventExecuter::Initialize(void* _pArg)
 {
 	CGameEventExecuter::EVENT_EXECUTER_DESC* pDesc =
