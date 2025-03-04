@@ -1,25 +1,10 @@
 [
   {
-    "Trigger_EventTag": "Event_Test",
+    "Trigger_EventTag": "Chapter2_Intro",
     "Actions": [
       {
-        "ActionTag": "Dialogue",
-        "EventTag": "Event_Dialogue_01",
-        "Is_Sequence": false
-      }
-    ]
-  },
-  {
-    "Trigger_EventTag": "Get_Flipping_Glove",
-    "Actions": [
-      {
-        "ActionTag": "Get_PlayerItem",
-        "EventTag": "Flipping_Glove",
-        "Is_Sequence": true
-      },
-      {
-        "ActionTag": "Dialogue",
-        "EventTag": "Gauntlet_Acquire_01",
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter2_Intro",
         "Is_Sequence": true
       }
     ]
@@ -39,59 +24,75 @@
       }
     ]
   },
-    {
-        "Trigger_EventTag": "Active_MagicDust",
-        "Actions": [
-            {
-                "ActionTag": "Active_MagicDust",
-                "EventTag": "Honey_Bee_Benny_01",
-                "Is_Sequence": false
-            },
-            {
-                "ActionTag": "Active_BookMagicDust",
-                "EventTag": "none",
-                "Is_Sequence": false
-            }
-        ]
-    },
-    {
-        "Trigger_EventTag": "Get_Out_Jot",
-        "Actions": [
-            {
-                "ActionTag": "Active_MagicHand",
-                "EventTag": "C01_Humgrump_01",
-                "Is_Sequence": false
-            }
-        ]
-    },
-    {
-        "Trigger_EventTag": "Chapter2_BookMagic",
-        "Actions": [
-              {
-                  "ActionTag": "Create_EventExecuter",
-                  "EventTag": "Chapter2_BookMagic",
-                  "Is_Sequence": true
-              }
-          ]
-     },
-    {
-        "Trigger_EventTag": "Chapter2_Intro",
-        "Actions": [
-              {
-                  "ActionTag": "Create_EventExecuter",
-                  "EventTag": "Chapter2_Intro",
-                  "Is_Sequence": true
-              }
-          ]
-     },
-    {
-        "Trigger_EventTag": "Chapter2_Humgrump",
-        "Actions": [
-              {
-                  "ActionTag": "Create_EventExecuter",
-                  "EventTag": "Chapter2_Humgrump",
-                  "Is_Sequence": true
-              }
-          ]
-     }
+  {
+    "Trigger_EventTag": "Chapter2_Humgrump",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter2_Humgrump",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Active_MagicDust",
+    "Actions": [
+      {
+        "ActionTag": "Active_MagicDust",
+        "EventTag": "Honey_Bee_Benny_01",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Active_BookMagicDust",
+        "EventTag": "none",
+        "Is_Sequence": false
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Get_Out_Jot",
+    "Actions": [
+      {
+        "ActionTag": "Active_MagicHand",
+        "EventTag": "C01_Humgrump_01",
+        "Is_Sequence": false
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter2_BookMagic",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter2_BookMagic",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter2_LunchBox_Appear",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter2_LunchBox_Appear",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Get_Flipping_Glove",
+    "Actions": [
+      {
+        "ActionTag": "Get_PlayerItem",
+        "EventTag": "Flipping_Glove",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Dialogue",
+        "EventTag": "Gauntlet_Acquire_01",
+        "Is_Sequence": true
+      }
+    ]
+  }
+
 ]

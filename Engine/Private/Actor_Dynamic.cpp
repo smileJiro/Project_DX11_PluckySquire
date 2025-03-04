@@ -117,7 +117,7 @@ HRESULT CActor_Dynamic::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNe
 	return S_OK;
 }
 
-void CActor_Dynamic::Start_ParabolicTo(_vector _vPosition, _float _fLaunchRadianAngle, _float _fGravityMag)
+_bool CActor_Dynamic::Start_ParabolicTo(_vector _vPosition, _float _fLaunchRadianAngle, _float _fGravityMag)
 {
 	_fGravityMag = m_pGameInstance->Get_Gravity();
 	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
@@ -133,12 +133,12 @@ void CActor_Dynamic::Start_ParabolicTo(_vector _vPosition, _float _fLaunchRadian
 	_float fDenominator = fDistanceXZ * tanf(_fLaunchRadianAngle) - fDistanceY;
 	if (fDenominator <= 0)
 	{
-		return;
+		return false;
 	}
 	//초기 속도 구하기 (포물선 공식). 초기 속도가 음수이면 뭔가 잘못된 것임. 그냥 리턴
 	_float fV0_squared = (_fGravityMag * fDistanceXZ * fDistanceXZ) / (2.0f * cosf(_fLaunchRadianAngle) * cosf(_fLaunchRadianAngle) * fDenominator);
 	if (fV0_squared < 0.0f) 
-		return ;
+		return false;
 	_float fV0 =  sqrtf(fV0_squared);
 
 	//수평 방향 구하기.
@@ -151,6 +151,7 @@ void CActor_Dynamic::Start_ParabolicTo(_vector _vPosition, _float _fLaunchRadian
 	pxVelocity.y = fV0 * sinf(_fLaunchRadianAngle);
 
 	pDynamic->setLinearVelocity(pxVelocity, m_isActive);
+	return true;
 }
 
 void CActor_Dynamic::Set_Kinematic()
