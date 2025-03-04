@@ -57,6 +57,9 @@ protected:
 		STEP_6,
 		STEP_7,
 		STEP_8,
+		STEP_9,
+		STEP_10,
+		STEP_11,
 		STEP_LAST
 	};
 public :
