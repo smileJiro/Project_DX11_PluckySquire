@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CEffect_System;
+class CLight_Target;
 END
 
 BEGIN(Client)
@@ -82,6 +83,11 @@ private:
 
 
 	ZET_STATE m_eState = ZET_STATE::STATE_IDLE;
+
+private: /* ÅÂ¿õ Ãß°¡ Target Light */
+	HRESULT Ready_TargetLight();
+private:
+	CLight_Target* m_pTargetLight = nullptr;
 public:
 	static CZetPack* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
