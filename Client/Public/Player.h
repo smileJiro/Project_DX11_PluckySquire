@@ -7,6 +7,7 @@ BEGIN(Engine)
 class CAnimEventGenerator;
 class CCollider; // test
 class CModelObject;
+class CLight_Target;
 END
 BEGIN(Client)
 class CCarriableObject;
@@ -601,6 +602,7 @@ private:
 
 private:
 	HRESULT					Ready_Components();
+	HRESULT					Ready_TargetLight();
 	HRESULT					Ready_PartObjects();
 
 public:
@@ -688,6 +690,10 @@ private:
 
 	SHAPE_CAPSULE_DESC m_tBodyShapeDesc = {};
 	SHAPE_DATA m_tBodyShapeData = {};
+
+private: /* ÅÂ¿õ Ãß°¡ Target Light */
+	CLight_Target* m_TargetLight = nullptr;
+
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

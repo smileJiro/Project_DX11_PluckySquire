@@ -16,7 +16,7 @@ CSpriteEffect_Emitter::CSpriteEffect_Emitter(const CSpriteEffect_Emitter& _Proto
 	: CEmitter(_Prototype)
 	, m_Textures(_Prototype.m_Textures)
 	, m_vColor(_Prototype.m_vColor)
-#ifdef _DEBUG
+#ifdef NDEBUG
 	, m_vDefaultColor(_Prototype.m_vDefaultColor)
 #endif
 {
@@ -47,7 +47,7 @@ HRESULT CSpriteEffect_Emitter::Initialize_Prototype(const json& _jsonInfo)
 	if (FAILED(Load_TextureInfo(_jsonInfo)))
 		return E_FAIL;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	m_vDefaultColor = m_vColor;
 #endif
 	return S_OK;
@@ -299,7 +299,7 @@ HRESULT CSpriteEffect_Emitter::Load_TextureInfo(const json& _jsonInfo)
 
 
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 			m_Textures[eType]->Add_SRVName(STRINGTOWSTRING(strPath));
 #endif
 		}
@@ -348,7 +348,7 @@ HRESULT CSpriteEffect_Emitter::Cleanup_DeadReferences()
 	return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 void CSpriteEffect_Emitter::Tool_Setting()
 {
 }

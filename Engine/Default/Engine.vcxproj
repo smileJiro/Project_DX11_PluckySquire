@@ -231,6 +231,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Effect_Module.h" />
     <ClInclude Include="..\public\Gravity.h" />
     <ClInclude Include="..\public\Keyframe_Module.h" />
+    <ClInclude Include="..\public\Light_Target.h" />
     <ClInclude Include="..\public\MeshEffect_Emitter.h" />
     <ClInclude Include="..\public\Frustum.h" />
     <ClInclude Include="..\public\NewRenderer.h" />
@@ -349,6 +350,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Effect_Module.cpp" />
     <ClCompile Include="..\private\Gravity.cpp" />
     <ClCompile Include="..\private\Keyframe_Module.cpp" />
+    <ClCompile Include="..\private\Light_Target.cpp" />
     <ClCompile Include="..\private\MeshEffect_Emitter.cpp" />
     <ClCompile Include="..\private\Frustum.cpp" />
     <ClCompile Include="..\private\NewRenderer.cpp" />

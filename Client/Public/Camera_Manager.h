@@ -38,11 +38,11 @@ public:
 	_uint				Get_CurCameraMode();
 
 #ifdef _DEBUG
+
+#endif
 	void				Start_ZoomIn();
 	void				Start_ZoomOut();
 	void				Imgui_Dof();
-#endif
-
 public:
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);			// Free Camera, Target Camera 셋팅(처음 한 번)
 	

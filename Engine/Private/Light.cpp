@@ -29,8 +29,8 @@ HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 		_wstring strShadowRTTag = TEXT("Target_Shadow_");
 		strShadowRTTag += to_wstring(m_iShadowLightID);
 		m_pGameInstance->Add_RenderTarget(strShadowRTTag, (_uint)SHADOWMAP_X, (_uint)SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f,0.0f,0.0f,0.0f), &m_pShadowRenderTarget);
+		Safe_AddRef(m_pShadowRenderTarget);
 		/* 2. 자기 자신을 shadow rendergroup에 등록한다. */
-
 		Compute_ViewProjMatrix();
 
 		m_pGameInstance->Add_ShadowLight(this);
@@ -40,7 +40,7 @@ HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 	if (FAILED(m_pGameInstance->CreateConstBuffer(m_tLightConstData, D3D11_USAGE_DYNAMIC, &m_pLightConstbuffer)))
 		return E_FAIL;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
 	m_pEffect = new BasicEffect(m_pDevice);
 
@@ -59,6 +59,9 @@ HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 }
 HRESULT CLight::Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 {
+	if (false == m_isActive)
+		return S_OK;
+
 	_uint iPassIndex = {};
 	
 	switch (m_eType)
@@ -75,12 +78,6 @@ HRESULT CLight::Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 	default:
 		return E_FAIL;
 	}
-	
-	//Compute_ViewProjMatrix();
-	//if (FAILED(m_pGameInstance->UpdateConstBuffer(m_tLightConstData, m_pLightConstbuffer)))
-	//	return E_FAIL;
-
-
 
 	if(true == (_bool)m_tLightConstData.isShadow)
 	{
@@ -99,7 +96,7 @@ HRESULT CLight::Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 	_pVIBuffer->Render();
 
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	m_pGameInstance->Add_BaseDebug(this);
 #endif // _DEBUG
 
@@ -107,7 +104,12 @@ HRESULT CLight::Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 	return S_OK;
 }
 
-#ifdef _DEBUG
+void CLight::Update(_float _fTimeDelta)
+{
+
+}
+
+#ifdef NDEBUG
 
 HRESULT CLight::Render_Base_Debug()
 {
@@ -219,7 +221,7 @@ void CLight::Set_Shadow(_bool _isShadow)
 		m_pGameInstance->Remove_ShadowLight(m_iShadowLightID);
 	}
 
-	m_pGameInstance->UpdateConstBuffer(m_tLightConstData, m_pLightConstbuffer);
+	Update_LightConstBuffer();
 	
 }
 
@@ -227,11 +229,28 @@ HRESULT CLight::Set_LightConstData_AndUpdateBuffer(const CONST_LIGHT& _LightCons
 {
 	m_tLightConstData = _LightConstData;
 
-	if(FAILED(m_pGameInstance->UpdateConstBuffer(m_tLightConstData, m_pLightConstbuffer)))
+	if (FAILED(Update_LightConstBuffer()))
 		return E_FAIL;
+
 	return S_OK;
 }
 
+HRESULT CLight::Update_LightConstBuffer()
+{
+	if (FAILED(m_pGameInstance->UpdateConstBuffer(m_tLightConstData, m_pLightConstbuffer)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+
+void CLight::Active_OnEnable()
+{
+}
+
+void CLight::Active_OnDisable()
+{
+}
 
 CLight* CLight::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const CONST_LIGHT& _LightDesc, LIGHT_TYPE _eLightType)
 {
@@ -249,11 +268,21 @@ CLight* CLight::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, c
 
 void CLight::Free()
 {
-#ifdef _DEBUG
+#ifdef NDEBUG
 	Safe_Release(m_pInputLayout);
 	Safe_Delete(m_pBatch);
 	Safe_Delete(m_pEffect);
 #endif // _DEBUG
+
+	if (true == m_tLightConstData.isShadow)
+	{
+		_wstring strShadowRTTag = TEXT("Target_Shadow_");
+		strShadowRTTag += to_wstring(m_iShadowLightID);
+		m_pGameInstance->Erase_RenderTarget(strShadowRTTag);
+		Safe_Release(m_pShadowRenderTarget);
+
+	}
+
 
 	Safe_Release(m_pLightConstbuffer);
 	Safe_Release(m_pGameInstance);

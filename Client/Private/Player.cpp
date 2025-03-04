@@ -234,6 +234,11 @@ HRESULT CPlayer::Initialize(void* _pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
      
+    if (FAILED(Ready_TargetLight()))
+        return E_FAIL;
+
+
+
 	m_ePlayerMode = PLAYER_MODE_NORMAL;
 
     Set_PlatformerMode(false);
@@ -402,6 +407,7 @@ HRESULT CPlayer::Ready_PartObjects()
     m_PartObjects[PLAYER_PART_ZETPACK]->Set_Position({ 0.f,-0.1f,0.5f });
     Set_PartActive(PLAYER_PART_ZETPACK, false);
 
+
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_UP, true);
@@ -560,6 +566,25 @@ HRESULT CPlayer::Ready_Components()
    Safe_AddRef(m_pGravityCom);
    
    m_pGravityCom->Set_Active(false);
+    return S_OK;
+}
+
+HRESULT CPlayer::Ready_TargetLight()
+{
+    ///* 점광원 */
+    CONST_LIGHT LightDesc = {};
+    LightDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
+    LightDesc.fFallOutStart = 5.2f;
+    LightDesc.fFallOutEnd = 12.0f;
+    LightDesc.vRadiance = _float3(9.0f, 9.0f, 9.0f);
+    LightDesc.vDiffuse = _float4(1.0f, 0.371f, 0.0f, 1.0f);
+    LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+    LightDesc.vSpecular = _float4(1.0f, 0.450f, 0.0f, 1.0f);
+
+    if (FAILED(m_pGameInstance->Add_Light_Target(LightDesc, LIGHT_TYPE::POINT, this, _float3(0.0f, 0.0f, 0.0f), &m_TargetLight, true)))
+        return E_FAIL;
+
+    Safe_AddRef(m_TargetLight);
     return S_OK;
 }
 
@@ -2205,7 +2230,8 @@ CGameObject* CPlayer::Clone(void* _pArg)
 
 void CPlayer::Free()
 {
-    // test
+    Safe_Release(m_TargetLight); // 순환참조로 인해플레이어쪽에서만 Ref 카운트 관리.
+
     Safe_Release(m_pBody2DColliderCom);
     Safe_Release(m_pBody2DTriggerCom);
     Safe_Release(m_pAttack2DTriggerCom);
