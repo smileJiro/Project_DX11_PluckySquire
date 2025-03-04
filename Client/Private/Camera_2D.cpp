@@ -76,6 +76,7 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 	Imgui(fTimeDelta);
 #endif
 
+	//m_eCameraMode = DEFAULT;
 	Switching(fTimeDelta);
 
 	Action_SetUp_ByMode();

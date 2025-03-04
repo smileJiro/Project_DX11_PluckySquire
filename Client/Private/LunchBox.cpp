@@ -305,5 +305,5 @@ void CLunchBox::LunchBoxOpen()
     m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_C2DESK_drop_carrot"), 0.1f, 40.f);
     m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_C2DESK_drop_carrot"), 0.13f, 30.f);
 
-    CTrigger_Manager::GetInstance()->Resister_TriggerEvent(L"Chapter2_LunchBox_Open",0);
+    CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Chapter2_LunchBox_Open",0);
 }

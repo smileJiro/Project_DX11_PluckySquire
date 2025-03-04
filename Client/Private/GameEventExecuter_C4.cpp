@@ -2,6 +2,9 @@
 #include "GameEventExecuter_C4.h"
 #include "Trigger_Manager.h"
 
+#include "Camera_Manager.h"
+#include "Camera_Target.h"
+
 
 CGameEventExecuter_C4::CGameEventExecuter_C4(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -39,6 +42,9 @@ void CGameEventExecuter_C4::Update(_float _fTimeDelta)
 		{
 		case Client::CTrigger_Manager::C02P0910_LIGHTNING_BOLT_SPAWN:
 			break;
+		case Client::CTrigger_Manager::CHAPTER4_RIDE_ZIPLINE:
+			Chapter4_Ride_Zipline(_fTimeDelta);
+			break;
 		default:
 			break;
 		}
@@ -48,6 +54,18 @@ void CGameEventExecuter_C4::Update(_float _fTimeDelta)
 
 void CGameEventExecuter_C4::Late_Update(_float _fTimeDelta)
 {
+}
+
+void CGameEventExecuter_C4::Chapter4_Ride_Zipline(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+		}
+	}
 }
 
 
