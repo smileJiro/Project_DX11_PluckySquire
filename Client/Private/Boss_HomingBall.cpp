@@ -58,20 +58,36 @@ void CBoss_HomingBall::Update(_float _fTimeDelta)
 
     _vector vDir = m_pTarget->Get_FinalPosition() - Get_FinalPosition();
 
+    //if (false == m_isHoming)
+    //{
+    //    if (2.f <= m_fAccTime)
+    //    {
+    //        m_isHoming = true;
+    //        m_pControllerTransform->Set_SpeedPerSec(m_fOriginSpeed * 3.f);
+    //    }
+    //    m_pControllerTransform->Go_Straight(_fTimeDelta);
+    //}
+    //else
+    //{
+    //    m_pControllerTransform->Set_AutoRotationYDirection(vDir);
+    //    m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
+    //    m_pControllerTransform->Go_Direction(vDir, _fTimeDelta);
+    //}
+
     if (false == m_isHoming)
     {
         if (2.f <= m_fAccTime)
         {
             m_isHoming = true;
             m_pControllerTransform->Set_SpeedPerSec(m_fOriginSpeed * 3.f);
+            XMStoreFloat3(&m_vDir, vDir);
         }
         m_pControllerTransform->Go_Straight(_fTimeDelta);
     }
     else
     {
-        m_pControllerTransform->Set_AutoRotationYDirection(vDir);
-        m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
-        m_pControllerTransform->Go_Direction(vDir, _fTimeDelta);
+        Get_ControllerTransform()->Set_State(CTransform::STATE_LOOK, XMVectorLerp(Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vDir), _fTimeDelta));
+        m_pControllerTransform->Go_Straight(_fTimeDelta);
     }
 
      __super::Update(_fTimeDelta);
@@ -133,6 +149,7 @@ void CBoss_HomingBall::Active_OnDisable()
 {
     m_pControllerTransform->Set_SpeedPerSec(m_fOriginSpeed);
     m_isHoming = false;
+    XMStoreFloat3(&m_vDir, XMVectorZero());
 
     __super::Active_OnDisable();
 }

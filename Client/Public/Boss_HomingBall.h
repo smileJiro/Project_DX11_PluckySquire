@@ -37,6 +37,7 @@ public:
 private:
 	_float m_fOriginSpeed = { 0.f };
 	_bool m_isHoming = { false };
+	_float3 m_vDir = {};
 
 private:
 	virtual HRESULT					Ready_ActorDesc(void* _pArg);
