@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 #include "Compute_Shader.h"
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 const _char* CUV_Module::g_szModuleNames[2] = {"UV_ANIM", "RANDOM_UV_ANIM"};
 #endif
 CUV_Module::CUV_Module()
@@ -27,7 +27,7 @@ HRESULT CUV_Module::Initialize(const json& _jsonModuleInfo)
     if (false == _jsonModuleInfo.contains("Module"))
         return E_FAIL;
     m_eModuleName = _jsonModuleInfo["Module"];
-#ifdef NDEBUG
+#ifdef _DEBUG
     m_strTypeName = _jsonModuleInfo["Module"];
 #endif
 
@@ -108,7 +108,7 @@ void CUV_Module::Free()
     
     __super::Free();
 }
-#ifdef NDEBUG
+#ifdef _DEBUG
 HRESULT CUV_Module::Initialize(MODULE_NAME _eType)
 {
     m_eModuleName = _eType;

@@ -167,7 +167,7 @@ void C2DModel::Switch_Reverse(_uint iIdx, _bool _bReverse)
 {
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 const CSpriteFrame* C2DModel::Get_SpriteFrame()
 {

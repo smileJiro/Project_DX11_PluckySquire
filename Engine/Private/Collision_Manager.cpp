@@ -167,7 +167,7 @@ HRESULT CCollision_Manager::Unregister_Section(const _wstring& _strSectionKey)
         
         m_Colliders.erase(iter);
     }
-//#ifdef NDEBUG
+//#ifdef _DEBUG
 //    else
 //        wcout << L"2D 컬리전 그룹에서 없는 섹션 삭제 요청.(오류 아님, 확인용) - [" << _strSectionKey <<"]" << endl;
 //#endif // _DEBUG

@@ -13,7 +13,7 @@ CEffect_System::CEffect_System(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 
 CEffect_System::CEffect_System(const CEffect_System& _Prototype)
 	: CPartObject(_Prototype)
-#ifdef NDEBUG
+#ifdef _DEBUG
 	, m_strFilePath(_Prototype.m_strFilePath)
 	, m_fToolRepeatTime(_Prototype.m_fToolRepeatTime)
 #endif // _DEBUG
@@ -82,7 +82,7 @@ HRESULT CEffect_System::Initialize_Prototype(const _tchar* _szFilePath)
 
 	}
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 	if (jsonEffectInfo.contains("ToolLoopTime"))
 	{
 		m_fToolRepeatTime = jsonEffectInfo["ToolLoopTime"];
@@ -214,9 +214,9 @@ void CEffect_System::Update(_float _fTimeDelta)
 	_bool isActive = false;
 	for (auto& pEmitter : m_Emitters)
 	{
-#ifdef NDEBUG
+#ifdef _DEBUG
 		pEmitter->Update(_fTimeDelta * m_fDebugTimeScale);
-#elif NDEBUG
+#elif _DEBUG
 		pEmitter->Update(_fTimeDelta);
 #endif
 
@@ -239,9 +239,9 @@ void CEffect_System::Late_Update(_float _fTimeDelta)
 	_bool isActive = false;
 	for (auto& pEmitter : m_Emitters)
 	{
-#ifdef NDEBUG
+#ifdef _DEBUG
 		pEmitter->Late_Update(_fTimeDelta * m_fDebugTimeScale);
-#elif NDEBUG
+#elif _DEBUG
 		pEmitter->Late_Update(_fTimeDelta);
 #endif
 
@@ -377,7 +377,7 @@ CGameObject* CEffect_System::Clone(void* _pArg)
 {
 	CEffect_System* pInstance = new CEffect_System(*this);
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 	// Åø Àü¿ë
 	if (0 == m_Emitters.size())
 	{
@@ -420,7 +420,7 @@ HRESULT CEffect_System::Cleanup_DeadReferences()
 }
 
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 HRESULT CEffect_System::Add_New_Emitter(CEmitter::EFFECT_TYPE _eType, void* _pArg)
 {
 

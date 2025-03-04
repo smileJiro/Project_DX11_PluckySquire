@@ -91,7 +91,7 @@ void CActor_Dynamic::Late_Update(_float _fTimeDelta)
 
 	}
 	
-#ifdef NDEBUG
+#ifdef _DEBUG
 	CActor::Late_Update(_fTimeDelta); // Debug_Render (Trigger Shape)
 #endif // _DEBUG
 

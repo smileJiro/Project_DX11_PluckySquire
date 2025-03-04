@@ -31,7 +31,7 @@ public:
 	virtual CEffect_Module* Clone();
 	virtual void Free() override;
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 public:
 	HRESULT Initialize(MODULE_NAME eType);
