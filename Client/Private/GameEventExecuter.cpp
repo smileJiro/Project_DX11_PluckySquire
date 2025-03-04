@@ -95,6 +95,9 @@ void CGameEventExecuter::Update(_float _fTimeDelta)
             break;
         case Client::CTrigger_Manager::CHAPTER2_HUMGRUMP:
             Chapter2_Humgrump(_fTimeDelta);
+            break;        
+		case Client::CTrigger_Manager::CHAPTER2_LUNCHBOX_APPEAR:
+            Chapter2_Humgrump(_fTimeDelta);
             break;
         default:
             break;
@@ -513,6 +516,22 @@ void CGameEventExecuter::Chapter2_Humgrump(_float _fTimeDelta)
    //         GameEvent_End();
    //     }
    // }
+}
+
+void CGameEventExecuter::Chapter2_Lunchbox_Appear(_float _fTimeDelta)
+{
+	if(0 == m_iStep) 
+	{
+		// Player->Stop();
+
+		m_fTimer += _fTimeDelta;
+
+		//if(1.5 == )
+		//	m_iStep++;
+		//m_fTimer = 0.f;
+	}
+
+	//
 }
 
 

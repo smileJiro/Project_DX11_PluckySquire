@@ -332,6 +332,14 @@ void CEffect_System::Inactive_All()
 	}
 }
 
+void CEffect_System::Reset_All()
+{
+	for (auto& pEmitter : m_Emitters)
+	{
+		pEmitter->Reset();
+	}
+}
+
 void CEffect_System::Set_SpawnMatrix(const _float4x4* _pSpawnMatrix)
 {
 	m_pSpawnMatrix = _pSpawnMatrix;

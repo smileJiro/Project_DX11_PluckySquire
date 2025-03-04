@@ -1328,6 +1328,9 @@
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BombableObject.h" />
+    <ClInclude Include="..\Public\GameEventExecuter.h">
+      <Filter>02.GameObjects\GameEventExecuter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

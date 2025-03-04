@@ -58,6 +58,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER2_BOOKMAGIC] = L"Chapter2_BookMagic";
 	m_EventExecuterTags[CHAPTER2_INTRO] = L"Chapter2_Intro";
 	m_EventExecuterTags[CHAPTER2_HUMGRUMP] = L"Chapter2_Humgrump";
+	m_EventExecuterTags[CHAPTER2_LUNCHBOX_APPEAR] = L"Chapter2_LunchBox_Appear";
 
 	return S_OK;
 }
@@ -489,7 +490,7 @@ void CTrigger_Manager::Resister_Trigger_Action()
 		};
 
 	m_Actions[TEXT("Dialogue")] = [this](_wstring _wszEventTag) {
-		CDialog_Manager::GetInstance()->Set_DialogId(TEXT("Gauntlet_Acquire_01"));
+		CDialog_Manager::GetInstance()->Set_DialogId(_wszEventTag.c_str());
 		};
 
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) {
