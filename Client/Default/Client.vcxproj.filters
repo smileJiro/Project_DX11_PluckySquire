@@ -1370,6 +1370,824 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Client.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MainApp.h">
+      <Filter>00.MainApp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Defines.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Loading.h">
+      <Filter>01.Levels\00.Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Loader.h">
+      <Filter>01.Levels\00.Loading\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Logo.h">
+      <Filter>01.Levels\02.Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Chapter_02.h">
+      <Filter>01.Levels\03.GamePlay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Macro.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Enum.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Struct.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Function.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Event_Manager.h">
+      <Filter>96.Event\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Camera_Target.h">
+      <Filter>02.GameObjects\Camera\Target</Filter>
+    </ClInclude>
+    <ClInclude Include="Client_Etc.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Static.h">
+      <Filter>01.Levels\01.Static</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Player.h">
+      <Filter>02.GameObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TestTerrain.h">
+      <Filter>02.GameObjects\TestTerrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CriticalSectionGuard.h">
+      <Filter>01.Levels\00.Loading\Loader\CriticalSectionGuard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI.h">
+      <Filter>02.GameObjects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Pick_Bulb.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\00. Pick_Bulb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Monster.h">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FSM.h">
+      <Filter>03.Components\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\State.h">
+      <Filter>03.Components\FSM\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\IdleState.h">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ChaseWalkState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Beetle.h">
+      <Filter>02.GameObjects\Monster\Beetle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MeleeAttackState.h">
+      <Filter>03.Components\FSM\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RangedAttackState.h">
+      <Filter>03.Components\FSM\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Pooling_Manager.h">
+      <Filter>95.Pooling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Manager.h">
+      <Filter>02.GameObjects\Camera\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StopStamp_UI.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\00. StopStamp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BombStamp_UI.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\01. BombStamp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ArrowForStamp.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\02. ArrowForStamp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI_Manager.h">
+      <Filter>02.GameObjects\UI\100. UI_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ESC_HeartPoint.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\00. HeartPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Projectile_BarfBug.h">
+      <Filter>02.GameObjects\Monster\BarfBug\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Idle.h" />
+    <ClInclude Include="..\Public\PlayerState_Run.h" />
+    <ClInclude Include="..\Public\UI_Interaction_Book.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ShopPanel.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SettingPanelBG.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\05. SettingPanelBG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SettingPanel.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Idle.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpUp.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Run.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\DetectionField.h">
+      <Filter>03.Components\DetectionField</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Attack.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_HomingBall.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FSM_Boss.h">
+      <Filter>03.Components\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossSceneState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ShopItemBG.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Heart.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\01. Interaction_Heart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Logo_Choose.h">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\00. Logo_Choose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ESC_Goblin.h">
+      <Filter>02.GameObjects\UI\01. SettingPanel\01. SettingGoblin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_EnergyBall.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossIdleState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossHomingBallState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossEnergyBallState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_YellowBall.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossYellowBallState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ButterGrump.h">
+      <Filter>02.GameObjects\Monster\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_PurpleBall.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossPurpleBallState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Goblin.h">
+      <Filter>02.GameObjects\Monster\Goblin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Rat.h">
+      <Filter>02.GameObjects\Monster\Rat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\JumpBug.h">
+      <Filter>02.GameObjects\Monster\JumpBug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BirdMonster.h">
+      <Filter>02.GameObjects\Monster\BirdMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Popuff.h">
+      <Filter>02.GameObjects\Monster\Popuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PatrolState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dialogue.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapObject.h">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SampleBook.h">
+      <Filter>02.GameObjects\MapObject\SampleBook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Map_2D.h">
+      <Filter>04.Section\Section_2D\Map_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Section_Manager.h">
+      <Filter>04.Section\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AlertState.h">
+      <Filter>03.Components\FSM\State\Alert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RenderGroup_DirectLights.h">
+      <Filter>94.RenderGroups%28Custom%29\PBR\DirectLights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Final.h">
+      <Filter>94.RenderGroups%28Custom%29\Old\Final</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Roll.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerSword.h">
+      <Filter>02.GameObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Monster_Body.h">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_2D.h">
+      <Filter>94.RenderGroups%28Custom%29\Old\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\NPC_Store.h">
+      <Filter>02.GameObjects\NPC\00. NPC_Store</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPC.h">
+      <Filter>02.GameObjects\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Portrait.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\04. Dialogue\00. Portrait</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Logo_Props.h">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\01. Logo_Props</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Logo_BG.h">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\02. Logo_BG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Logo.h">
+      <Filter>02.GameObjects\UI\03. Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ShopPanel_BG.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\00. ShopPanel_BGs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ShopPanel_YesNo.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\01. YesNo_Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StandbyState.h">
+      <Filter>03.Components\FSM\State\Standby</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_Body.h">
+      <Filter>02.GameObjects\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MainTable.h">
+      <Filter>02.GameObjects\MainTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerBody.h">
+      <Filter>02.GameObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Character.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_ThrowSword.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BarfBug.h">
+      <Filter>02.GameObjects\Monster\BarfBug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpDown.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Clamber.h" />
+    <ClInclude Include="..\Public\Camera_2D.h">
+      <Filter>02.GameObjects\Camera\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RayShape.h" />
+    <ClInclude Include="..\Public\FloorWord.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PrintFloorWord.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\05. FloorWord\00. PrintFloorWord</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RayShape.h" />
+    <ClInclude Include="..\public\RenderGroup_WorldPos.h">
+      <Filter>94.RenderGroups%28Custom%29\WorldPos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_IdleState.h">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_AlertState.h">
+      <Filter>03.Components\FSM\State\Alert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_AwareState.h">
+      <Filter>03.Components\FSM\State\Alert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_AttackState.h">
+      <Filter>03.Components\FSM\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_ChaseState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_InvestigateState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_PatrolState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_DetectionField.h">
+      <Filter>03.Components\Sneak_DetectionField</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_Logo.h">
+      <Filter>02.GameObjects\NPC\01. LogoNpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapObject.h">
+      <Filter>02.GameObjects\MapObject\0. Super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_JotMain.h">
+      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapObjectFactory.h">
+      <Filter>92.MapObjectFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapActionObject.h">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapObject.h">
+      <Filter>02.GameObjects\MapObject\2D\0. Super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_SpinAttack.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interactable.h">
+      <Filter>Interface\Interact</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Clamber.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpAttack.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpAttack.h" />
+    <ClInclude Include="..\Public\PlayerData_Manager.h">
+      <Filter>02.GameObjects\PlayerItem\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerItem.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TriggerObject.h">
+      <Filter>02.GameObjects\Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Trigger_Manager.h">
+      <Filter>02.GameObjects\Trigger\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Chapter_04.h">
+      <Filter>01.Levels\03.GamePlay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_Narration.h">
+      <Filter>04.Section\Section_2D\Narration_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPC_Social.h">
+      <Filter>02.GameObjects\NPC\99. Social_Npc\00. Npc_Social</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_OnlySocial.h">
+      <Filter>02.GameObjects\NPC\99. Social_Npc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RenderGroup_AfterParticle.h">
+      <Filter>94.RenderGroups%28Custom%29\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RenderGroup_DownSample.h">
+      <Filter>94.RenderGroups%28Custom%29\Effect\DownSample</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RenderGroup_Blur.h">
+      <Filter>94.RenderGroups%28Custom%29\Effect\Blur</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapDefaultObject.h">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\3DMapDefaultObject.h">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\3DMapObject.h">
+      <Filter>02.GameObjects\MapObject\3D\0. Super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Lighting.h">
+      <Filter>94.RenderGroups%28Custom%29\PBR\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Combine.h">
+      <Filter>94.RenderGroups%28Custom%29\PBR\Combine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\3DMapSkspObject.h">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Section_2D.h">
+      <Filter>04.Section\Section_2D\00. super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Section.h">
+      <Filter>04.Section\00. super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_PlayMap_Book.h">
+      <Filter>04.Section\Section_2D\PlayMap_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_PlayMap_Sksp.h">
+      <Filter>04.Section\Section_2D\PlayMap_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_PlayMap.h">
+      <Filter>04.Section\Section_2D\PlayMap_2D\00. super</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Narration.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\06. Narration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Narration_Anim.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\06. Narration\00. NarrationAnim</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Sneak.h">
+      <Filter>03.Components\FSM\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_AfterEffect.h">
+      <Filter>94.RenderGroups%28Custom%29\Effect\AfterEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RenderGroup_PostProcessing.h">
+      <Filter>94.RenderGroups%28Custom%29\PBR\PostProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_JumpAttack.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CarriableObject.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HitState.h">
+      <Filter>03.Components\FSM\State\Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DeadState.h">
+      <Filter>03.Components\FSM\State\Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bulb.h">
+      <Filter>02.GameObjects\Bulb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sneak_BackState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_PickUpObject.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_ThrowObject.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dice.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Blocker.h">
+      <Filter>02.GameObjects\Blocker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ChaseAttackState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StandbyNoneAttackState.h">
+      <Filter>03.Components\FSM\State\Standby</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Portal.h">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Die.h" />
+    <ClInclude Include="..\public\FallingRock.h">
+      <Filter>02.GameObjects\FallingRock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Die.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState_PlatformJumpAttack.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Spawner.h">
+      <Filter>91.Spawner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_Companion.h">
+      <Filter>02.GameObjects\NPC\02. NPC_Companion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPC_Violet.h">
+      <Filter>02.GameObjects\NPC\02. NPC_Companion\00. Violet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPC_Thrash.h">
+      <Filter>02.GameObjects\NPC\02. NPC_Companion\01. Thrash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_StartPortal.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_ExitPortal.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_IntoPortal.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RayShape.h">
+      <Filter>02.GameObjects\RayShape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Word.h">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zippy.h">
+      <Filter>02.GameObjects\Monster\Zippy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Word_Controller.h">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Word_Container.h">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WordGame_Generator.h">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WordPrinter.h">
+      <Filter>02.GameObjects\Word</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\2DMapWordObject.h" />
+    <ClInclude Include="..\public\CollapseBlock.h" />
+    <ClInclude Include="..\Public\Goblin_SideScroller.h" />
+    <ClInclude Include="..\Public\LightningBolt.h" />
+    <ClInclude Include="..\Public\PlayerState_Evict.h" />
+    <ClInclude Include="..\Public\PlayerState_LaydownObject.h" />
+    <ClInclude Include="..\Public\2DMapWordObject.h">
+      <Filter>02.GameObjects\MapObject\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_LaydownObject.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Goblin_SideScroller.h">
+      <Filter>02.GameObjects\Monster\Goblin\SideScroller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SideScroll_PatrolState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SideScroll_HitState.h">
+      <Filter>03.Components\FSM\State\Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Magic_Hand.h">
+      <Filter>02.GameObjects\MagicHand</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Magic_Hand_Body.h">
+      <Filter>02.GameObjects\MagicHand</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\LightningBolt.h">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Evict.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_TurnBook.h" />
+    <ClInclude Include="..\Public\SideScroll_HitState.h" />
+    <ClInclude Include="..\Public\SideScroll_PatrolState.h" />
+    <ClInclude Include="..\public\Effect2D.h">
+      <Filter>02.GameObjects\Effect2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect2D_Manager.h">
+      <Filter>02.GameObjects\Effect2D\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_Rabbit.h">
+      <Filter>02.GameObjects\NPC\03. Rabbit_Npc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_LunchBox.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Electric.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_TurnBook.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\LunchBox.h">
+      <Filter>02.GameObjects\Interact\LunchBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RabbitLunch.h">
+      <Filter>02.GameObjects\Interact\LunchBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_CutScene.h">
+      <Filter>02.GameObjects\Camera\CutScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Camera_Tool_Client.h">
+      <Filter>01.Levels\04. Camera_Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_CutScene_Save.h">
+      <Filter>02.GameObjects\Camera\CutScene\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Manager.h">
+      <Filter>02.GameObjects\Effect\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Neutral_IdleState.h">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Neutral_PatrolState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Neutral_Patrol_JumpState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Shadow2D.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Cube.h">
+      <Filter>02.GameObjects\Camera\CutScene\Tool\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_PlayerDepth.h">
+      <Filter>94.RenderGroups%28Custom%29\PlayerDepth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_Trail.h">
+      <Filter>02.GameObjects\Effect\Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_Beam.h">
+      <Filter>02.GameObjects\Effect\Beam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CollapseBlock.h">
+      <Filter>02.GameObjects\MapObject\2D\CollapseBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dialog_Manager.h">
+      <Filter>02.GameObjects\UI\99. Dialog_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Projectile_BirdMonster.h">
+      <Filter>02.GameObjects\Monster\BirdMonster\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Projectile_Monster.h">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ChaseFlyState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Spear_Soldier.h">
+      <Filter>02.GameObjects\Monster\Soldier\Spear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CrossBow_Soldier.h">
+      <Filter>02.GameObjects\Monster\Soldier\CrossBow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bomb_Soldier.h">
+      <Filter>02.GameObjects\Monster\Soldier\Bomb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Soldier_Spear.h">
+      <Filter>02.GameObjects\Monster\Soldier\Spear\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Soldier_Shield.h">
+      <Filter>02.GameObjects\Monster\Soldier\Spear\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DraggableObject.h">
+      <Filter>02.GameObjects\Interact</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BarfBug.h">
+      <Filter>02.GameObjects\Monster\BarfBug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Soldier_CrossBow.h">
+      <Filter>02.GameObjects\Monster\Soldier\CrossBow\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CrossBow_Arrow.h">
+      <Filter>02.GameObjects\Monster\Soldier\CrossBow\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Drag.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bomb.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\JumpPad.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Stamp.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Chapter_06.h">
+      <Filter>01.Levels\03.GamePlay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_E.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Bomber.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_ErasePalmDecal.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bombable.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PalmDecal.h" />
+    <ClInclude Include="..\Public\PalmMarker.h" />
+    <ClInclude Include="..\Public\Stoppable.h" />
+    <ClInclude Include="..\Public\NPC_Manager.h">
+      <Filter>02.GameObjects\NPC\100. NPC_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ButterGrump_LeftEye.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ButterGrump_RightEye.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ButterGrump_Tongue.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ButterGrump_Shield.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ZetPack.h" />
+    <ClInclude Include="..\public\Door_2D.h">
+      <Filter>02.GameObjects\Door_2D\Door</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Pressure_Plate.h">
+      <Filter>02.GameObjects\Pressure_Plate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Door_Yellow.h">
+      <Filter>02.GameObjects\Door_2D\Door\Yellow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Door_Blue.h">
+      <Filter>02.GameObjects\Door_2D\Door\Blue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Key.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Stoppable.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SlipperyObject.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StopStamp.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ZetPack.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PalmDecal.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PalmMarker.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerBomb.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BombStamp.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Detonator.h">
+      <Filter>02.GameObjects\PlayerItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Rubboink_Tiny.h">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MudPit.h">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\JumpPad.h">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Domino.h">
+      <Filter>02.GameObjects\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_WingSlam.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossWingSlamState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Postit_Page.h" />
+    <ClInclude Include="..\Public\TiltSwapPusher.h" />
+    <ClInclude Include="..\Public\Boss_Rock.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossRockVolleyState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BombableObject.h" />
+    <ClInclude Include="..\Public\GameEventExecuter.h">
+      <Filter>02.GameObjects\GameEventExecuter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GameEventExecuter_C2.h">
+      <Filter>02.GameObjects\GameEventExecuter\Chapter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GameEventExecuter_C4.h">
+      <Filter>02.GameObjects\GameEventExecuter\Chapter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GameEventExecuter_C6.h">
+      <Filter>02.GameObjects\GameEventExecuter\Chapter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GameEventExecuter_C8.h">
+      <Filter>02.GameObjects\GameEventExecuter\Chapter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Door_Red.h">
+      <Filter>02.GameObjects\Door_2D\Door\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zipline.h" />
+    <ClInclude Include="..\public\3DMapEmissiveObject.h">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="Client.cpp">
       <Filter>98.Default</Filter>
     </ClCompile>
@@ -2146,12 +2964,14 @@
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Postit_Page.cpp" />
+    <ClCompile Include="..\Private\TiltSwapPusher.cpp" />
     <ClCompile Include="..\Private\Boss_Rock.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossRockVolleyState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\BombableObject.cpp" />
     <ClCompile Include="..\Private\GameEventExecuter_C2.cpp">
       <Filter>02.GameObjects\GameEventExecuter\Chapter</Filter>
     </ClCompile>
@@ -2167,20 +2987,9 @@
     <ClCompile Include="..\private\Door_Red.cpp">
       <Filter>02.GameObjects\Door_2D\Door\Red</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\private\3DMapEmissiveObject.cpp">
       <Filter>02.GameObjects\MapObject\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_GetItem.cpp">
-      <Filter>03.Components\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BombableObject.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\TiltSwapPusher.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Zipline.cpp">
-      <Filter>02.GameObjects\Zipline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

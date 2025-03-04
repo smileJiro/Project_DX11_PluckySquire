@@ -448,7 +448,7 @@ HRESULT CJumpBug::Ready_PartObjects()
     BodyDesc.strModelPrototypeTag_3D = TEXT("jumpBug_Rig");
 	BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
     BodyDesc.strModelPrototypeTag_2D = TEXT("JumpBug");
-    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);

@@ -280,7 +280,7 @@ HRESULT CLevel_EffectTool::Ready_Layer_Model(const _wstring& _strLayerTag)
 	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL;
 	Desc.strModelPrototypeTag_3D = L"Prototype_Model_StarSticker";
 	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
-	Desc.iShaderPass_3D = 0;
+	Desc.iShaderPass_3D = 11;
 	Desc.iPriorityID_3D = PR3D_EFFECT;
 	Desc.iRenderGroupID_3D = RG_3D;
 	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
