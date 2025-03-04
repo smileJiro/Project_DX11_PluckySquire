@@ -399,6 +399,13 @@ HRESULT CGameInstance::Add_GameObject_ToLayer(_uint _iLevelID, const _wstring& _
 	return m_pObject_Manager->Add_GameObject_ToLayer(_iLevelID, _strLayerTag, _pGameObject);
 }
 
+_bool CGameInstance::Is_EmptyLayer(_uint _iLevelID, const _wstring& _strLayerTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return false;
+	return m_pObject_Manager->Is_EmptyLayer(_iLevelID, _strLayerTag);
+}
+
 CLayer* CGameInstance::Find_Layer(_uint _iLevelID, const _wstring& _strLayerTag)
 {
 	if (nullptr == m_pObject_Manager)

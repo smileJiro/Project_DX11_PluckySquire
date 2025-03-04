@@ -204,6 +204,7 @@
     <ClInclude Include="..\Public\Detonator.h" />
     <ClInclude Include="..\public\Door_2D.h" />
     <ClInclude Include="..\public\Door_Blue.h" />
+    <ClInclude Include="..\public\Door_Red.h" />
     <ClInclude Include="..\public\Door_Yellow.h" />
     <ClInclude Include="..\public\Effect_Beam.h" />
     <ClInclude Include="..\Public\ChaseFlyState.h" />
@@ -476,6 +477,7 @@
     <ClCompile Include="..\Private\Detonator.cpp" />
     <ClCompile Include="..\private\Door_2D.cpp" />
     <ClCompile Include="..\private\Door_Blue.cpp" />
+    <ClCompile Include="..\private\Door_Red.cpp" />
     <ClCompile Include="..\private\Door_Yellow.cpp" />
     <ClCompile Include="..\Private\Interaction_E.cpp" />
     <ClCompile Include="..\Private\JumpPad.cpp" />

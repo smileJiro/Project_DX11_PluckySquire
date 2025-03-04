@@ -249,8 +249,6 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 	/* 발판 - 기믹오브젝트, 2D에 해당하는 오브젝트 (주사위, 등.. )*/
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
-	/* 발판 - 플레이어 */
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER);
 
 	// 그룹필터 제거
 	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음

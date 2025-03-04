@@ -66,6 +66,7 @@ public: /* For. Object_Manager */
 	HRESULT				Add_GameObject_ToLayer(_uint _iPrototypeLevelID, const _wstring& _strPrototypeTag, _uint _iLevelID, const _wstring& _strLayerTag, CGameObject** _ppOut, void* pArg = nullptr); // Add Object를 Return
 	HRESULT				Add_GameObject_ToLayer(_uint _iLevelID, const _wstring& _strLayerTag, class CGameObject* _pGameObject); // Add Object를 직접 생성 후 Add To Layer
 
+	_bool				Is_EmptyLayer(_uint _iLevelID, const _wstring& _strLayerTag);
 	class CLayer*		Find_Layer(_uint _iLevelID, const _wstring& _strLayerTag);
 	class CGameObject*	Get_PickingModelObjectByCursor(_uint _iLevelID, const _wstring& _strLayerTag, _float2 _fCursorPos); // 마우스 커서로 피킹체크 후 충돌 오브젝트중 가장 가까운 오브젝트 리턴.
 	class CGameObject*	Find_NearestObject_Scaled(_uint _iLevelID, const _wstring& _strLayerTag, CController_Transform* const _pTransform, CGameObject* pCurTargetObject = nullptr);

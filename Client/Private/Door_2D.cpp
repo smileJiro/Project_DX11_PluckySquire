@@ -76,11 +76,20 @@ HRESULT CDoor_2D::Initialize(void* _pArg)
     else
     {
         if (LARGE == m_eDoorSize)
-            AABBDESC.vExtents = _float2(200.f, 200.f); // TEMP
+        {
+            AABBDESC.vExtents = _float2(35.f, 160.f);
+            AABBDESC.vOffsetPosition = { 0.f, 160.f };
+        }
         else if (MED == m_eDoorSize)
-            AABBDESC.vExtents = _float2(200.f, 200.f); // TEMP
+        {
+            AABBDESC.vExtents = _float2(35.f, 132.f);
+            AABBDESC.vOffsetPosition = { 0.f, 132.f };
+        }
         else
-            AABBDESC.vExtents = _float2(200.f, 200.f); // TEMP
+        {
+            AABBDESC.vExtents = _float2(35.f, 104.f);
+            AABBDESC.vOffsetPosition = { 0.f, 104.f };
+        }
     }
 
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
@@ -95,6 +104,8 @@ HRESULT CDoor_2D::Initialize(void* _pArg)
 
     return S_OK;
 }
+
+
 
 HRESULT CDoor_2D::Render()
 {
