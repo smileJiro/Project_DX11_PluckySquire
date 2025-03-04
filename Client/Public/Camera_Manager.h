@@ -66,7 +66,8 @@ public:
 
 	// AtOffset
 	// 1. Target Camera는 기본적으로 Target을 바라보지만, 타겟을 기준으로 해당 Offset만큼 떨어진 곳을 보도록 조절한다
-	void				Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, _uint _iRatioType);
+	void				Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, 
+		_uint _iRatioType);
 
 	// Shake 
 	// 1. Cycle Time은 설정한 Cycle Time마다 Shake를 준다 (0.02라면 0.02초마다 한 번씩 흔들림)

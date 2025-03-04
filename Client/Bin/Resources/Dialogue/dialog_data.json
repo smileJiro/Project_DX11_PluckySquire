@@ -1143,8 +1143,729 @@
         }
       ]
     },
-
     {
+      "id": "Postit_Page_03",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "잘하고 있어요, 견습 기사님!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "여기서 더 가면 원래 세계로 돌아가는 데\n도움이 될 물건이 있어요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "하지만 가는 길에 징그럽게 기어다니는\n콜레옵테라를 만날지도 몰라요...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그러니까 딱정벌레 말이에요!\n샘이 애완동물로 기르거든요...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "조심해요, 저트! 먹히지 말고요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+	{
+      "id": "Postit_Page_04",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "무사하군요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이제야 마음이 놓이네요...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "역시 용감한 견습 기사답게 거침이 없어요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "말이 나와서 말인데... 이렇게 나온 김에...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "꼭 봐 주었으면 하는 게 있어요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+	{
+      "id": "Postit_Page_05",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이 그림은 저트를 그린 거에요...\n지금 봐도 당신을 똑 닮았네요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "여기 있는 그림은 전부 샘이라는 아이가 그린 거에요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이 방에 사는 남자애인데, 당신이 살던 이야기책의 주인이기도 하죠.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "봐서 알겠지만, 샘은 당신과 당신의 모험에 깊은 애정을 가지고 있어요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "당신이 이걸 보게 돼서 정말 기뻐요...\n샘한테 당신이 얼마나 소중한지 알게 됐으니까.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+		{
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "하지만 이제 더 이상 지체할 시간이 없어요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "책으로 돌아가는 여정도 이제 절정에 다다랐어요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트에게 필요한 물건이 바로 이 스케치북\n너머에 있어요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "얼른 서두르세요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }       
+      ]
+    },
+	{
+      "id": "Postit_Page_06",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "건틀릿을 찾았군요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "아주 잘했어요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이제 얼른 책 속으로 돌아가세요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "곧 알게 되겠지만, 이 건틀릿이 집으로 돌아갈 수 있게\n도와줄 거에요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "아, 이 책상을 떠나기 전에 해 줄 말이 있어요.\n아주 중요한 이야기랍니다...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+		{
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "험그럼프를 조심해요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "당신의 이야기를 뺏어서 자기 이야기로 만들려고 해요.\n그 전에 반드시 막아야 돼요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그건 그 책 속에서 살아가는 존재들뿐만 아니라...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그 책을 읽고 감명을 받을 수많은 어린이를 위한 일이기도 해요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "샘도 그런 아이 중 하나고요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "사실 우리 책벌레는...\n미래를 볼 수 있답니다.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "샘은 커서 글을 쓰고 그림을 그리는 작가가 될 거예요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }      		
+      ]
+    },
+	{
+      "id": "Postit_Page_07",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "샘이 만든 이야기책은 아이들 사이에서 굉장한 인기를 끌게 돼요...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "관련 상품도 엄청나게 팔리고, 각종 유명 브랜드와의 콜라보는 말할 것도 없죠!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "샘의 책을 읽고 많은 아이들이 감명을 받을 거에요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "다만, 이건 모두 샘이 실제로\n그런 책을 썼을 때 이야기죠.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }	
+      ]
+    },
+	{
+      "id": "Postit_Page_08",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "험그럼프가 당신의 책을 지배하게 된다면\n이야기는 점점 형편없어질 거예요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+	{
+      "id": "Postit_Page_09",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이야기가 형편없는 책은 책장에 방치되죠.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+		        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "아무도 읽지 않을 테니까요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+		{
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그런 책은 생명력을 잃고,\n그 누구한테도 감명을 주지 못하게 돼요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+		{
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "당신의 이야기도 샘한테 감명을 주지 못할 거고...\n그렇게 되면...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+		{
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "샘이 앞으로 어떻게 될지 누가 알겠어요?\n반드시 막아야 돼요, 저트!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+		{
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "얼른 돌아가서 험그럼프를 막아 주세요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+	{
       "id": "Gauntlet_Acquire_01",
       "lines": [
         {
