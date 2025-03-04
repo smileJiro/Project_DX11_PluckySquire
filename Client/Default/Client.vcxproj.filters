@@ -532,6 +532,9 @@
     <Filter Include="02.GameObjects\Door_2D\Door\Blue">
       <UniqueIdentifier>{65bd6bac-a947-46fe-9d33-24da99f54e7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Door_2D\Door\Red">
+      <UniqueIdentifier>{82e9801c-15f4-4f5e-9a57-995b0eb07600}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\GameEventExecuter\Chapter">
       <UniqueIdentifier>{6082059d-46bc-4630-9b78-c32a3fe672f8}</UniqueIdentifier>
     </Filter>
@@ -1344,6 +1347,11 @@
     <ClInclude Include="..\Public\GameEventExecuter_C8.h">
       <Filter>02.GameObjects\GameEventExecuter\Chapter</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Door_Red.h">
+      <Filter>02.GameObjects\Door_2D\Door\Red</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zipline.h" />
+    <ClInclude Include="..\public\3DMapEmissiveObject.h" />
     <ClInclude Include="..\Public\Zipline.h" />
     <ClInclude Include="..\Public\BombableObject.h">
       <Filter>02.GameObjects</Filter>
@@ -2147,6 +2155,11 @@
     <ClCompile Include="..\Private\GameEventExecuter_C8.cpp">
       <Filter>02.GameObjects\GameEventExecuter\Chapter</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Door_Red.cpp">
+      <Filter>02.GameObjects\Door_2D\Door\Red</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zipline.cpp" />
+    <ClCompile Include="..\private\3DMapEmissiveObject.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\Private\TiltSwapPusher.cpp">
       <Filter>02.GameObjects</Filter>

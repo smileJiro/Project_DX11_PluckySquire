@@ -96,7 +96,7 @@ HRESULT CRenderGroup_Shadow::Remove_ShadowLight(_int _iShadowLightID)
             Safe_Release(*iter);
             iter = m_ShadowLights.erase(iter);
 
-            if (true == m_ShadowLights.empty())
+            if (false == m_ShadowLights.empty())
             {
                 for (auto& pGameObject : m_GroupObjects)
                 {

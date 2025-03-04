@@ -82,7 +82,6 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	}
 
 
-
 	if (FAILED(Ready_Lights()))
 	{
 		MSG_BOX(" Failed Ready_Lights (Level_Chapter_06::Initialize)");
@@ -204,7 +203,6 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 	// Trigger
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter6_Trigger.json"));
-	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 
 	// BGM ½ÃÀÛ
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
@@ -362,8 +360,9 @@ HRESULT CLevel_Chapter_06::Ready_Lights()
 #ifdef _DEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
 #elif NDEBUG
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6.json"));
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6_2.json"));
 #endif // _DEBUG
+
 	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter6.json"));
 
 	//CONST_LIGHT LightDesc{};
@@ -403,7 +402,7 @@ HRESULT CLevel_Chapter_06::Ready_CubeMap(const _wstring& _strLayerTag)
 	Desc.iRenderGroupID = RG_3D;
 	Desc.iPriorityID = PR3D_PRIORITY;
 	Desc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
-	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
+	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_Chapter6Env");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
 		m_eLevelID, _strLayerTag, &pCubeMap, &Desc)))
 		return E_FAIL;

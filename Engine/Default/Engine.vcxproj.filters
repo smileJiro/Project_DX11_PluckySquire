@@ -319,6 +319,9 @@
     <Filter Include="01.Utility\14.RenderGroup\RenderGroup_Debug">
       <UniqueIdentifier>{3df200df-6b6a-4e45-8570-2fce93c11760}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\07.Lights\Target">
+      <UniqueIdentifier>{724612e5-0fda-437f-bdee-5e2f03b6a4bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -654,6 +657,9 @@
     <ClInclude Include="..\public\RenderGroup_Shadow.h">
       <Filter>01.Utility\14.RenderGroup\RenderGroup_Shadow</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Light_Target.h">
+      <Filter>01.Utility\07.Lights\Target</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -976,6 +982,9 @@
     </ClCompile>
     <ClCompile Include="..\private\RenderGroup_Shadow.cpp">
       <Filter>01.Utility\14.RenderGroup\RenderGroup_Shadow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Light_Target.cpp">
+      <Filter>01.Utility\07.Lights\Target</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

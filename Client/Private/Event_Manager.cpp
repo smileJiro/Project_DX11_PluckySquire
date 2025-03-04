@@ -13,7 +13,6 @@
 #include "Layer.h"
 
 #include "Pooling_Manager.h"
-#include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "NPC_Manager.h"
 #include "Dialog_Manager.h"
@@ -32,7 +31,6 @@
 #include "SampleBook.h"
 
 #include "Trigger_Manager.h"
-#include "PlayerData_Manager.h"
 #include "Effect2D_Manager.h"
 
 #include "Effect_Manager.h"

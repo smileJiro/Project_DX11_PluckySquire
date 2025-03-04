@@ -63,6 +63,7 @@
 #include "NPC.h"
 #include "Loader.h"
 
+#include "PlayerItem.h"
 
 CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: 
@@ -193,18 +194,6 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-	///* Test CollapseBlock */
-	//{
-	//	CCollapseBlock::MAPOBJ_DESC CollapseBlockDesc{};
-	//	CollapseBlockDesc.Build_2D_Model(m_eLevelID, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"));
-	//	CollapseBlockDesc.Build_2D_Transform(_float2(-100.f, -300.f));
-	//	CollapseBlockDesc.eStartCoord = COORDINATE_2D;
-	//	CGameObject* pGameObject = nullptr;
-	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_CollapseBlock"), m_eLevelID, TEXT("Layer_CollapseBlock"), &pGameObject, &CollapseBlockDesc)))
-	//		return E_FAIL;
-
-	//	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
-	//}
 
 
 
@@ -251,8 +240,6 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 	/* 발판 - 기믹오브젝트, 2D에 해당하는 오브젝트 (주사위, 등.. )*/
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
-	/* 발판 - 플레이어 */
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER);
 
 	// 그룹필터 제거
 	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
@@ -265,7 +252,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 	// Trigger
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger.json"));
-	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
+	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger_Events.json"));
 
 	// BGM 시작
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
@@ -1583,24 +1570,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_LunchBox(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Chapter_02::Ready_Layer_FallingRock(const _wstring& _strLayerTag)
-{
-	//CFallingRock::FALLINGROCK_DESC Desc = {};
-	//Desc.eStartCoord = COORDINATE_2D;
-	//Desc.fFallDownEndY = RTSIZE_BOOK2D_Y * 0.5f - 50.f;
-	//Desc.iCurLevelID = m_eLevelID;
-	//Desc.isDeepCopyConstBuffer = true;
-	//Desc.Build_2D_Transform(_float2(0.0f, 500.f));
-	//
-	//CGameObject* pGameObject = nullptr;
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_FallingRock"), m_eLevelID, _strLayerTag, &pGameObject , &Desc)))
-	//	return E_FAIL;
-	//
-	//if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
-	//	return E_FAIL;
-
-	return S_OK;
-}
 
 HRESULT CLevel_Chapter_02::Ready_Layer_RayShape(const _wstring& _strLayerTag)
 {

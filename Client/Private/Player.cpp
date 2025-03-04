@@ -41,6 +41,7 @@
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
 #include "Effect_Manager.h"
+#include "PlayerData_Manager.h"
     
 #include "Collider_Fan.h"
 #include "Collider_AABB.h"
@@ -233,13 +234,19 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     if (FAILED(Ready_Components()))
         return E_FAIL;
-     
+ 
+
+
 	m_ePlayerMode = PLAYER_MODE_NORMAL;
 
     Set_PlatformerMode(false);
 
 	m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD,false);
     Set_State(CPlayer::IDLE);
+
+    // PlayerData Manager µî·Ï
+    CPlayerData_Manager::GetInstance()->Register_Player(this);
+
     return S_OK;
 }
 
@@ -402,6 +409,7 @@ HRESULT CPlayer::Ready_PartObjects()
     m_PartObjects[PLAYER_PART_ZETPACK]->Set_Position({ 0.f,-0.1f,0.5f });
     Set_PartActive(PLAYER_PART_ZETPACK, false);
 
+
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_UP, true);
@@ -562,7 +570,6 @@ HRESULT CPlayer::Ready_Components()
    m_pGravityCom->Set_Active(false);
     return S_OK;
 }
-
 
 void CPlayer::Priority_Update(_float _fTimeDelta)
 {
@@ -2225,7 +2232,7 @@ CGameObject* CPlayer::Clone(void* _pArg)
 
 void CPlayer::Free()
 {
-    // test
+
     Safe_Release(m_pBody2DColliderCom);
     Safe_Release(m_pBody2DTriggerCom);
     Safe_Release(m_pAttack2DTriggerCom);

@@ -31,9 +31,6 @@
     <Filter Include="97. ShaderFiles">
       <UniqueIdentifier>{bc296c5e-997d-4698-9f64-d19fdf2648ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96. JsonFiles">
-      <UniqueIdentifier>{6e2e03d3-1272-493a-9f0f-891109193c46}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\Background">
       <UniqueIdentifier>{60781b0e-2411-4e7c-bd8d-07e6a0d9e431}</UniqueIdentifier>
     </Filter>
@@ -138,6 +135,9 @@
     <ClInclude Include="..\public\TestBeam.h">
       <Filter>02. GameObject\Etc</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\TestEmissive.h">
+      <Filter>02. GameObject\MagicHand</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -216,6 +216,9 @@
     <ClCompile Include="..\private\TestBeam.cpp">
       <Filter>02. GameObject\Etc</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\TestEmissive.cpp">
+      <Filter>02. GameObject\MagicHand</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
@@ -251,19 +254,8 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxBeam.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Bin\DataFiles\Effects\TestEffect.json">
-      <Filter>96. JsonFiles</Filter>
-    </None>
-    <None Include="..\Bin\DataFiles\Effects\TestParticleSystem.json">
-      <Filter>96. JsonFiles</Filter>
-    </None>
-    <None Include="..\Bin\DataFiles\Effects\Portal.json">
-      <Filter>96. JsonFiles</Filter>
-    </None>
-    <None Include="..\Bin\DataFiles\Effects\Dodge.json">
-      <Filter>96. JsonFiles</Filter>
-    </None>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

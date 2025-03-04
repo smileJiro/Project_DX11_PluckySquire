@@ -30,6 +30,7 @@ public:
 	{
 		m_GameObjects.sort(_funcCompair);
 	}
+	_bool		Is_Empty() { return (0 < m_GameObjects.size()) ? false : true; }
 public:
 	// Get
 	const list<class CGameObject*>& Get_GameObjects() { return m_GameObjects; }

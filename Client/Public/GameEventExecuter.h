@@ -128,7 +128,6 @@ protected:
 	//임시 데이터들 ...
 	_bool			m_isPlag = { false };
 	CGameObject*	m_pTargetObject = nullptr;
-
 	_int		m_iEventExcuterAction = -1;
 
 public:

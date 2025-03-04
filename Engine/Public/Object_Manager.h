@@ -24,6 +24,7 @@ public:
 	void Late_Update(_float _fTimeDelta);
 	HRESULT Level_Exit(_uint _iLevelID);
 public:
+	_bool		Is_EmptyLayer(_uint _iLevelID, const _wstring& _strLayerTag);
 	CLayer*		Find_Layer(_uint _iLevelID, const _wstring& _strLayerTag);
 	/* Container용 과 Part용 분리. */
 	CComponent* Find_Component(_uint _iLevelID, const _wstring& _strLayerTag, const _wstring& _strComponentTag, _uint _iObjectIndex = 0);

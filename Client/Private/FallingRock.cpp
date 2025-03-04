@@ -5,7 +5,9 @@
 #include "Camera_Manager.h"
 #include "Blocker.h"
 #include "Effect_Manager.h"
+#include "Effect2D_Manager.h"
 #include "Character.h"
+
 
 CFallingRock::CFallingRock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -144,6 +146,8 @@ void CFallingRock::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOt
 		CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.1f, 0.2f, 20, CCamera::SHAKE_Y);
 		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, XMVectorZero());
 		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVectorSet(m_vColBoundDirection.x * 600.f, m_vColBoundDirection.y * 500.f, 0.0f, 0.0f));
+		Event_DeleteObject(this); // 플레이어랑 부딪히면 사라지고, 이펙트 생성.
+		//CEffect2D_Manager::GetInstance()->Play_Effect();
 		break;
 	case Client::MONSTER:
 		break;

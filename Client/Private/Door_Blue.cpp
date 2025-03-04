@@ -30,12 +30,6 @@ HRESULT CDoor_Blue::Initialize(void* _pArg)
     return S_OK;
 }
 
-void CDoor_Blue::Open_Door()
-{
-    m_eDoorState = OPEN;
-    Switch_Animation_By_State();
-}
-
 
 void CDoor_Blue::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
@@ -45,6 +39,26 @@ void CDoor_Blue::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         m_p2DColliderComs[0]->Set_Active(false);
         Switch_Animation_By_State();
     }
+}
+
+void CDoor_Blue::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
+
+    // ¹® ¿­¸².
+    if (OBJECT_GROUP::GIMMICK_OBJECT == eGroup)
+    {
+        CKey* pKey = dynamic_cast<CKey*>(_pOtherObject);
+
+        if (nullptr == pKey)
+            return;
+        else
+        {
+            m_eDoorState = OPEN;
+            Switch_Animation_By_State();
+        }
+    }
+
 }
 
 

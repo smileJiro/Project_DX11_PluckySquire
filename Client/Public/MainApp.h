@@ -19,7 +19,7 @@ public:
 	HRESULT Initialize();
 	void	Progress(_float _fTimeDelta);
 	HRESULT Render();
-
+	//
 public:
 	void Set_OneFrameDeltaTime(_float _iDeltaTime) { m_iOneFrameDeltaTime = _iDeltaTime; }
 private:

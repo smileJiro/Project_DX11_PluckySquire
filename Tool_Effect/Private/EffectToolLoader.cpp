@@ -9,6 +9,7 @@
 #include "Magic_Hand_Body.h"
 #include "Magic_Hand.h"
 #include "TestBeam.h"
+#include "TestEmissive.h"
 
 CEffectToolLoader::CEffectToolLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -109,6 +110,10 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_TestBeam"),
         CTestBeam::Create(m_pDevice, m_pContext))))
         return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_TestEmissive"),
+        CTestEmissive::Create(m_pDevice, m_pContext))))
+        return E_FAIL;
+
 
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
@@ -140,6 +145,12 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_Bomb"),
         C3DModel::Create(m_pDevice, m_pContext,
             ("../Bin/Resources/Models/Nonanim/bomb/bomb.model"
+                ), matPretransform))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_StarSticker"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../Bin/Resources/Models/Nonanim/Star/StarSticker.model"
                 ), matPretransform))))
         return E_FAIL;
 

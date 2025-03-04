@@ -15,6 +15,7 @@
 #include "GameEventExecuter.h"
 #include "Effect_Manager.h"
 #include "SampleBook.h"
+#include "PlayerItem.h"
 #include "Magic_Hand.h"
 
 IMPLEMENT_SINGLETON(CTrigger_Manager)
@@ -60,6 +61,9 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER2_HUMGRUMP] = L"Chapter2_Humgrump";
 	m_EventExecuterTags[CHAPTER2_LUNCHBOX_APPEAR] = L"Chapter2_LunchBox_Appear";
 	m_EventExecuterTags[CHAPTER2_LUNCHBOX_OPEN] = L"Chapter2_LunchBox_Open";
+	m_EventExecuterTags[CHAPTER2_BETTLE_PAGE] = L"Chapter2_Bettle_Page";
+	m_EventExecuterTags[CHAPTER2_OPENBOOKEVENT] = L"Chapter2_OpenBookEvent";
+	m_EventExecuterTags[CHAPTER2_STORYSEQUENCE] = L"Chapter2_StorySequence";
 
 	return S_OK;
 }
@@ -494,8 +498,16 @@ void CTrigger_Manager::Resister_Trigger_Action()
 		CDialog_Manager::GetInstance()->Set_DialogId(_wszEventTag.c_str());
 		};
 
+	m_Actions[TEXT("Glove_Get_Before")] = [this](_wstring _wszEventTag) {
+		
+		};
+	
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) {
 		CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
+		};
+	
+	m_Actions[TEXT("Glove_Get_After")] = [this](_wstring _wszEventTag) {
+		CPlayerData_Manager::GetInstance()->Change_PlayerItemMode(_wszEventTag, CPlayerItem::DISAPPEAR);
 		};
 
 	m_Actions[TEXT("Active_MagicDust")] = [this](_wstring _wszEventTag) 
