@@ -22,6 +22,7 @@ private:
 	_vector m_vPortalPos = {};
 	_float m_f3DDistanceThreshold = 0.5f;
     _float m_f3DJumpRadianMin =XMConvertToRadians(45.f);
+    _float m_f3DJumpRadianMax =XMConvertToRadians(89.f);
 };
 
 END

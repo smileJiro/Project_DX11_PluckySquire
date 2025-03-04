@@ -600,7 +600,7 @@ void CCharacter::LookDirectionXZ_Dynamic(_fvector _vDir)
     _vector vDir = XMVector3Normalize(_vDir);
     vDir = XMVectorSetY(vDir, 0);
     CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-    pDynamicActor->Set_Rotation(_vDir);
+    pDynamicActor->Set_Rotation(vDir);
 }
 
 
