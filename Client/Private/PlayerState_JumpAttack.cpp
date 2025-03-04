@@ -21,6 +21,7 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 	if (m_bRising && 0 > fUpForce)
 	{
 		m_pOwner->Add_Impuls(_vector{ 0.f,-7.5f,0.f });
+
 		if (COORDINATE_2D == eCoord)
 		{
 			switch (eDir)
@@ -40,6 +41,7 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 		else
 		{
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_JUMPATTACK_FALL);
+			m_pOwner->Get_ActorCom()->Set_ShapeMyFilterGroup((_uint)SHAPE_USE::SHAPE_BODY, OBJECT_GROUP::DYNAMIC_OBJECT);
 		}
 		m_bRising = false;
 	}
@@ -203,7 +205,10 @@ void CPlayerState_JumpAttack::Exit()
 	}
 	else
 	{
+		m_pOwner->Get_ActorCom()->Set_ShapeMyFilterGroup((_uint)SHAPE_USE::SHAPE_BODY, OBJECT_GROUP::PLAYER);
+
 		m_pOwner->Set_SwordGrip(true);
+
 	}
 
 }
