@@ -29,7 +29,7 @@ CGameEventExecuter_C2::CGameEventExecuter_C2(ID3D11Device* _pDevice, ID3D11Devic
 
 HRESULT CGameEventExecuter_C2::Initialize(void* _pArg)
 {
-	if (__super::Initialize(_pArg))
+	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
 	// 초기 설정 

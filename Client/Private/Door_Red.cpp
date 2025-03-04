@@ -2,6 +2,9 @@
 #include "Door_Red.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "Camera_Manager.h"
+#include "PlayerData_Manager.h"
+#include "Player.h"
 
 CDoor_Red::CDoor_Red(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CDoor_2D(_pDevice, _pContext)
@@ -23,6 +26,7 @@ HRESULT CDoor_Red::Initialize(void* _pArg)
 
     DOOR_RED_DESC* pDesc = static_cast<DOOR_RED_DESC*>(_pArg);
     m_LayerTags = pDesc->LayerTags;
+    m_fTargetDiff = pDesc->fTargetDiff;
 
     Set_AnimLoop();
     Switch_Animation_By_State();
@@ -34,19 +38,41 @@ HRESULT CDoor_Red::Initialize(void* _pArg)
 
 void CDoor_Red::Update(_float _fTimeDelta)
 {
-    _bool isEmpty = true;
-    for (auto& pTags : m_LayerTags)
+    if (CLOSED == m_eDoorState)
     {
-        if (false == m_pGameInstance->Is_EmptyLayer(m_iCurLevelID, pTags))
-            isEmpty = false;
-        
+        _bool isEmpty = true;
+        for (auto& pTags : m_LayerTags)
+        {
+            if (false == m_pGameInstance->Is_EmptyLayer(m_iCurLevelID, pTags))
+                isEmpty = false;
 
+        }
+        // TEMP
+        // Target을 나로 해줘.
+        if (isEmpty)
+        {
+            CCamera_Manager::GetInstance()->Change_CameraTarget(m_pControllerTransform->Get_WorldMatrix_Ptr());
+            m_isStartOpen = true;
+        }
     }
-    if (isEmpty)
+
+    // TEMP
+    if (m_isStartOpen && CLOSED == m_eDoorState)
     {
+        _vector v3DPosition = SECTION_MGR->Get_WorldPosition_FromWorldPosMap(m_strSectionName, 
+            _float2(XMVectorGetX(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)), XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION))));
 
+        _vector vCamPosition = CCamera_Manager::GetInstance()->Get_CameraVector(CTransform::STATE_POSITION);
 
+        // 진짜 OPEN 시작.
+        if (XMVectorGetX(XMVector3Length(v3DPosition - vCamPosition)) < m_fTargetDiff)
+        {
+            m_eDoorState = OPEN;
+
+            Switch_Animation_By_State();
+        }
     }
+   
     
     __super::Update(_fTimeDelta);
 }
@@ -54,6 +80,16 @@ void CDoor_Red::Update(_float _fTimeDelta)
 
 void CDoor_Red::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
+    if (OPEN == m_eDoorState)
+    {
+        m_eDoorState = OPENED;
+        m_p2DColliderComs[0]->Set_Active(false);
+        Switch_Animation_By_State();
+
+        // TEMP:
+        CCamera_Manager::GetInstance()->Change_CameraTarget(CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Get_ControllerTransform()->Get_WorldMatrix_Ptr());
+    }
+
 }
 
 void CDoor_Red::Set_AnimLoop()

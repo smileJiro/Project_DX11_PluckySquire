@@ -41,8 +41,17 @@ HRESULT CDoor_2D::Initialize(void* _pArg)
 
     m_p2DColliderComs.resize(1);
 
-    if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pBodyDesc->strSectionTag, this)))
-        return E_FAIL;
+    if (m_isHorizontal)
+    {
+        if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pBodyDesc->strSectionTag, this)))
+            return E_FAIL;
+    }
+    else
+    {
+        if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pBodyDesc->strSectionTag, this, SECTION_2D_PLAYMAP_BACKGROUND)))
+            return E_FAIL;
+    }
+
     
     _float2 vSectionSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(pBodyDesc->strSectionTag);
 

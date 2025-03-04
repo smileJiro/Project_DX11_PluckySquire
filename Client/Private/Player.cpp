@@ -41,6 +41,7 @@
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
 #include "Effect_Manager.h"
+#include "PlayerData_Manager.h"
     
 #include "Collider_Fan.h"
 #include "Collider_AABB.h"
@@ -240,6 +241,10 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
 	m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD,false);
     Set_State(CPlayer::IDLE);
+
+    // PlayerData Manager µî·Ï
+    CPlayerData_Manager::GetInstance()->Register_Player(this);
+
     return S_OK;
 }
 

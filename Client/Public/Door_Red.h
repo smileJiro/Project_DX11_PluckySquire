@@ -1,4 +1,4 @@
-#pragma once
+			#pragma once
 #include "Door_2D.h"
 
 BEGIN(Client)
@@ -7,6 +7,7 @@ class CDoor_Red : public CDoor_2D
 public:
 	typedef struct tagDoorRedDesc : public CDoor_2D::DOOR_2D_DESC
 	{
+		_float		     fTargetDiff = 10.f;
 		vector<_wstring> LayerTags;
 	}DOOR_RED_DESC;
 private:
@@ -23,6 +24,8 @@ public:
 	void			On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
 private:
+	_bool					m_isStartOpen = { false };
+	_float					m_fTargetDiff = { 10.f };
 	vector<_wstring>		m_LayerTags;
 
 private:
