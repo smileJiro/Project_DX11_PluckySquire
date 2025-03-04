@@ -360,7 +360,7 @@ HRESULT CLevel_Chapter_06::Ready_Lights()
 {
 #ifdef _DEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
-#elif NDEBUG
+#elif _DEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6_2.json"));
 #endif // _DEBUG
 

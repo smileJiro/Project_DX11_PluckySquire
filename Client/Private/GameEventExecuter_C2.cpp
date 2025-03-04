@@ -458,11 +458,13 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Appear(_float _fTimeDelta)
 			pPlayer->Set_BlockPlayerInput(true);
 			CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
 
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.5f, 25.f, EASE_IN_OUT)
+				;/*
 			CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET, 1.f,
 				CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_CurrentZoomLevel() + 5, EASE_IN_OUT
-			);
+			);*/
 		}
-		Next_Step_Over(1.f);
+		Next_Step_Over(1.5f);
 	}
 	else if (Step_Check(STEP_1))
 	{
@@ -471,14 +473,13 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Appear(_float _fTimeDelta)
 
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				0.5f,
-				XMVectorSet(-10.f, 3.f, 0.f, 0.f),
+				XMVectorSet(-10.f, -3.f, 0.f, 0.f),
 				EASE_IN_OUT
 			);
-			CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET, 0.5f,
-				CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_CurrentZoomLevel() - 1, EASE_IN_OUT
-			);
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET, 1.f, 10.f, EASE_IN_OUT);
+
 		}
-		Next_Step_Over(0.5f);
+		Next_Step_Over(1.f);
 
 	}
 	else if (Step_Check(STEP_2))
@@ -494,7 +495,7 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Appear(_float _fTimeDelta)
 		{
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(false);
-			CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 0.5f);
+			CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.f);
 		}
 
 		Next_Step(true);
@@ -642,7 +643,7 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
-				XMVectorSet(0.f, 3.f, 0.f, 0.f),
+				XMVectorSet(0.f, 4.f, 0.f, 0.f),
 				EASE_IN_OUT
 			);
 
@@ -650,7 +651,7 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-10.f), XMConvertToRadians(-2.f));*/
 
 		}
-		Next_Step_Over(2.f);
+		Next_Step_Over(1.5f);
 	}
 	else if (Step_Check(STEP_2))
 	{
