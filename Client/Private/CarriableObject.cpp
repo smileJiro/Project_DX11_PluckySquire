@@ -111,10 +111,12 @@ void CCarriableObject::Late_Update(_float _fTimeDelta)
 	if (COORDINATE_2D == eCurCoord)
 	{
 		m_fDownForce += 9.8f * _fTimeDelta * 180;
-
+		_float fOldDIstance = m_fFloorDistance;
 		m_fFloorDistance -= m_fDownForce * _fTimeDelta;
-		if (m_fFloorDistance < 0)
+		if (m_fFloorDistance < 0.f)
 		{
+			if (fOldDIstance > 0.f)
+				On_Land();
 			m_fFloorDistance = 0.f;
 			m_fDownForce = 0.f;
 		}
@@ -197,6 +199,7 @@ void CCarriableObject::Throw(_fvector _vForce)
 		m_fFloorDistance = m_matHeadUpMatrix[COORDINATE_2D]._42;
 		m_vThrowForce2D = _vForce;
 	}
+	On_Throw(_vForce);
 }
 
 void CCarriableObject::Set_CollisionEnable(_bool _bEnable)
@@ -247,8 +250,8 @@ void CCarriableObject::Free()
 
 void CCarriableObject::Interact(CPlayer* _pUser)
 {
-	_pUser->Set_CarryingObject(this);
-
+	//_pUser->Set_CarryingObject(this);
+	_pUser->CarryObject(this);
 }
 
 _bool CCarriableObject::Is_Interactable(CPlayer* _pUser)

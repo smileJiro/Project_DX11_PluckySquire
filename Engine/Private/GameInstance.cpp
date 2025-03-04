@@ -178,7 +178,8 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update ¼öÇà ÈÄ, DeadObject Safe_Release() + erase();
 
 	m_pPipeLine->Update();
-#ifdef _DEBUG
+	m_pLight_Manager->Update(fTimeDelta);
+#ifdef NDEBUG
 	if (m_pNewRenderer)
 	{
 		m_pNewRenderer->Update_Imgui();
@@ -436,7 +437,7 @@ CGameObject* CGameInstance::Get_GameObject_Ptr(_int _iLevelID, const _wstring& _
 	return m_pObject_Manager->Get_GameObject_Ptr(_iLevelID, _strLayerTag, _iObjectIndex);
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 map<const _wstring, class CLayer*>* CGameInstance::Get_Layers_Ptr()
 {
 	return m_pObject_Manager->Get_Layers_Ptr();
@@ -453,7 +454,7 @@ HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP _eRenderGroup, CG
 	return m_pRenderer->Add_RenderObject(_eRenderGroup, _pRenderObject);
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 HRESULT CGameInstance::Add_DebugComponent(CComponent* _pDebugCom)
 {
 	if (true == m_isNewRenderer)
@@ -603,7 +604,7 @@ HRESULT CGameInstance::Clear_ShadowLight()
 	return m_pNewRenderer->Clear_ShadowLight();
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CGameInstance::Add_DebugComponent_New(CComponent* _pDebugCom)
 {
@@ -752,6 +753,14 @@ HRESULT CGameInstance::Add_Light(const CONST_LIGHT& _LightDesc, LIGHT_TYPE _eTyp
 		return E_FAIL;
 
 	return m_pLight_Manager->Add_Light(_LightDesc, _eType);
+}
+
+HRESULT CGameInstance::Add_Light_Target(const CONST_LIGHT& _LightDesc, LIGHT_TYPE _eType, CGameObject* _pTargetOwner, const _float3& _vOffsetPostion, class CLight_Target** _ppOut, _bool _isNotClear)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Add_Light_Target(_LightDesc, _eType, _pTargetOwner, _vOffsetPostion, _ppOut, _isNotClear);
 }
 
 const CONST_LIGHT* CGameInstance::Get_LightDesc_Ptr(_uint _iIndex) const
@@ -1176,7 +1185,7 @@ void CGameInstance::Render_DrawData_Imgui()
 
 	return m_pImgui_Manager->Render_DrawData();
 }
-#ifdef _DEBUG
+#ifdef NDEBUG
 HRESULT	CGameInstance::Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag, _uint _iObjectId)
 {
 	if (nullptr == m_pImgui_Manager)
@@ -1508,7 +1517,7 @@ HRESULT CGameInstance::Physx_Render()
 }
 
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CGameInstance::Ready_RT_Debug(const _wstring& _strTargetTag, _float _fX, _float _fY, _float _fSizeX, _float _fSizeY)
 {

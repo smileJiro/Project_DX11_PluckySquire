@@ -35,11 +35,10 @@ void CCamera_Manager::Update(_float fTimeDelta)
 		Start_FadeOut(1.5f);
 	}*/
 
-#ifdef _DEBUG
-	if(IS_IMPORT_IMGUI)
+
+	if (IS_IMPORT_IMGUI)
 		Imgui_Dof();
 
-#endif // _DEBUG
 
 }
 
@@ -85,6 +84,8 @@ _uint CCamera_Manager::Get_CurCameraMode()
 	return _uint();
 }
 #ifdef _DEBUG
+
+#endif // _DEBUG
 
 void CCamera_Manager::Start_ZoomIn()
 {
@@ -140,7 +141,7 @@ void CCamera_Manager::Imgui_Dof()
 	{
 		m_Cameras[m_eCurrentCameraType]->Set_DofBufferData(tDofData, true);
 	}
-	if (ImGui::DragFloat3("BlurColor##Camera", &(tDofData.vBlurColor.x), 0.01f,0.0f, 2.0f))
+	if (ImGui::DragFloat3("BlurColor##Camera", &(tDofData.vBlurColor.x), 0.01f, 0.0f, 2.0f))
 	{
 		m_Cameras[m_eCurrentCameraType]->Set_DofBufferData(tDofData, true);
 	}
@@ -201,8 +202,6 @@ void CCamera_Manager::Imgui_Dof()
 
 	ImGui::End();
 }
-#endif // _DEBUG
-
 
 void CCamera_Manager::Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera)
 {
@@ -424,6 +423,20 @@ void CCamera_Manager::Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _u
 	m_Cameras[_eCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)_iZoomLevel, (RATIO_TYPE)_iRatioType);
 }
 
+void CCamera_Manager::Start_ZoomIn(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iRatioType)
+{
+	_uint iCurZoomLevel = m_Cameras[_eCameraType]->Get_CurrentZoomLevel();
+
+	m_Cameras[_eCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)(iCurZoomLevel - 1), (RATIO_TYPE)_iRatioType);
+}
+
+void CCamera_Manager::Start_ZoomOut(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iRatioType)
+{
+	_uint iCurZoomLevel = m_Cameras[_eCameraType]->Get_CurrentZoomLevel();
+
+	m_Cameras[_eCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)(iCurZoomLevel + 1), (RATIO_TYPE)_iRatioType);
+}
+
 void CCamera_Manager::Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, _uint _iRatioType)
 {
 	if (FREE == m_eCurrentCameraType)
@@ -470,6 +483,36 @@ void CCamera_Manager::Start_Changing_ArmLength(CAMERA_TYPE _eCameraType, _float 
 		return;
 
 	m_Cameras[_eCameraType]->Start_Changing_ArmLength(_fLengthTime, _fLength, (RATIO_TYPE)_iRatioType);
+}
+
+void CCamera_Manager::Start_Changing_ArmLength_Decrease(CAMERA_TYPE _eCameraType, _float _fLengthTime, _float _fDecreaseValue, _uint _iRatioType)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	CCameraArm* pArm = m_Cameras[_eCameraType]->Get_Arm();
+
+	if (nullptr == pArm)
+		return;
+
+	_float fLength = pArm->Get_Length();
+
+	m_Cameras[_eCameraType]->Start_Changing_ArmLength(_fLengthTime, fLength - _fDecreaseValue, (RATIO_TYPE)_iRatioType);
+}
+
+void CCamera_Manager::Start_Changing_ArmLength_Increase(CAMERA_TYPE _eCameraType, _float _fLengthTime, _float _fIncreaseValue, _uint _iRatioType)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	CCameraArm* pArm = m_Cameras[_eCameraType]->Get_Arm();
+
+	if (nullptr == pArm)
+		return;
+
+	_float fLength = pArm->Get_Length();
+
+	m_Cameras[_eCameraType]->Start_Changing_ArmLength(_fLengthTime, fLength + _fIncreaseValue, (RATIO_TYPE)_iRatioType);
 }
 
 void CCamera_Manager::Set_ResetData(CAMERA_TYPE _eCameraType)

@@ -7,6 +7,7 @@ BEGIN(Engine)
 class CAnimEventGenerator;
 class CCollider; // test
 class CModelObject;
+class CLight_Target;
 END
 BEGIN(Client)
 class CCarriableObject;
@@ -493,7 +494,12 @@ public:
 	void Move_Forward(_float fVelocity, _float _fTImeDelta);
 	void Jump();
 	void ThrowSword();
+	//플레이어가 정상적으로 물건을 던지게 만드는함수
 	void ThrowObject();
+	//플레이어가 정상적으로 물건을 들게 만드는 함수
+	HRESULT CarryObject(CCarriableObject* _pCarryingObject);
+	//플레이어가 저상저ㅏㄱ으로 물건을 내려놓게 만드는 함수
+	HRESULT LayDownObject();
 	void SpinAttack();
 	void Add_Upforce(_float _fForce);
 	PLAYER_INPUT_RESULT Player_KeyInput();
@@ -582,7 +588,8 @@ public:
 	void Set_PlatformerMode(_bool _bPlatformerMode);
 	void Set_ScrollingMode(_bool _bScrollingMode);
 	void Set_Upforce(_float _fForce);
-	HRESULT Set_CarryingObject(CCarriableObject* _pCarryingObject);
+	//진짜 포인터만 셋팅하는 함수
+	void Set_CarryingObject(CCarriableObject* _pCarryingObject);
 	void Set_InteractObject(IInteractable* _pInteractable) { m_pInteractableObject = _pInteractable; }
 	NORMAL_DIRECTION Set_PortalNormal(NORMAL_DIRECTION _eNormal) { return m_e3DPortalNormal = _eNormal; }
 	void Set_GravityCompOn(_bool _bOn);
@@ -602,6 +609,7 @@ private:
 
 private:
 	HRESULT					Ready_Components();
+	HRESULT					Ready_TargetLight();
 	HRESULT					Ready_PartObjects();
 
 public:
@@ -690,6 +698,10 @@ private:
 
 	SHAPE_CAPSULE_DESC m_tBodyShapeDesc = {};
 	SHAPE_DATA m_tBodyShapeData = {};
+
+private: /* 태웅 추가 Target Light */
+	CLight_Target* m_TargetLight = nullptr;
+
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

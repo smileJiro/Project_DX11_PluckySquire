@@ -91,7 +91,7 @@ void CActor_Dynamic::Late_Update(_float _fTimeDelta)
 
 	}
 	
-#ifdef _DEBUG
+#ifdef NDEBUG
 	CActor::Late_Update(_fTimeDelta); // Debug_Render (Trigger Shape)
 #endif // _DEBUG
 
@@ -180,6 +180,8 @@ void CActor_Dynamic::Set_SleepThreshold(_float _fThreshold)
 	PxRigidDynamic* pDynamic = static_cast<PxRigidDynamic*>(m_pActor);
 	pDynamic->setSleepThreshold(_fThreshold);
 }
+
+
 
 _bool CActor_Dynamic::Is_Sleeping()
 {

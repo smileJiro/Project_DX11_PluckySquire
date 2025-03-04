@@ -71,6 +71,7 @@ public :
 protected:
 	virtual void On_LayDownEnd(_fmatrix _matWoroverride) override;
 	virtual void On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset)override;
+	virtual void On_Land() override;
 private :
 	CVIBuffer_Rect*				m_pVIBufferCom = {};
 	ID3D11ShaderResourceView*	m_pWordTexture = {};

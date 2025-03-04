@@ -32,7 +32,7 @@ public:
 		//const _float4x4*	pTargetWorldMatrix = { nullptr };
 	}CAMERA_ARM_DESC;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	typedef struct tagLineBuffer
 	{
 		_float3				vPos;
