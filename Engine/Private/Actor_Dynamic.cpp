@@ -181,6 +181,8 @@ void CActor_Dynamic::Set_SleepThreshold(_float _fThreshold)
 	pDynamic->setSleepThreshold(_fThreshold);
 }
 
+
+
 _bool CActor_Dynamic::Is_Sleeping()
 {
 	return static_cast<PxRigidDynamic*>(m_pActor)->isSleeping();

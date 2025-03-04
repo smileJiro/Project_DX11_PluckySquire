@@ -198,6 +198,11 @@ _bool CActor::Is_ActorInScene()
 	return true;
 }
 
+void CActor::Set_ShapeMyFilterGroup(_uint _iShapeIdx, _uint _iFIlterGroup)
+{
+	m_Shapes[_iShapeIdx]->setSimulationFilterData(PxFilterData(_iFIlterGroup, m_Shapes[_iShapeIdx]->getSimulationFilterData().word1, m_Shapes[_iShapeIdx]->getSimulationFilterData().word2, m_Shapes[_iShapeIdx]->getSimulationFilterData().word3));
+}
+
 
 
 HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
