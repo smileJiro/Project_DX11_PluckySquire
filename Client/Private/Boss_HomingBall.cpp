@@ -47,7 +47,6 @@ void CBoss_HomingBall::Update(_float _fTimeDelta)
 
     _vector vDir = m_pTarget->Get_FinalPosition() - Get_FinalPosition();
 
-    //테스트용, 원 게임에서는 구체인데 일단 불릿 모델 써봄
     if (false == m_isHoming)
     {
         if (2.f <= m_fAccTime)
@@ -190,6 +189,8 @@ HRESULT CBoss_HomingBall::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
+
+    //테스트용, 원 게임에서는 구체인데 일단 불릿 모델 써봄
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     BodyDesc.strModelPrototypeTag_3D = TEXT("HomingBall");
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
@@ -209,7 +210,7 @@ HRESULT CBoss_HomingBall::Ready_PartObjects()
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 
-    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 0.f, 0.f, 1.f));
+    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 0.f, 0.f, 1.f), true);
 
     return S_OK;
 }
@@ -242,7 +243,5 @@ CGameObject* CBoss_HomingBall::Clone(void* _pArg)
 
 void CBoss_HomingBall::Free()
 {
-    Safe_Release(m_pTarget);
-
     __super::Free();
 }

@@ -188,7 +188,7 @@ HRESULT CBoss_EnergyBall::Ready_PartObjects()
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 
-    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 1.f, 0.f, 1.f));
+    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 1.f, 0.f, 1.f), true);
 
     return S_OK;
 }
@@ -221,7 +221,5 @@ CGameObject* CBoss_EnergyBall::Clone(void* _pArg)
 
 void CBoss_EnergyBall::Free()
 {
-    Safe_Release(m_pTarget);
-
     __super::Free();
 }

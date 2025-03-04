@@ -259,7 +259,5 @@ CGameObject* CBoss_WingSlam::Clone(void* _pArg)
 
 void CBoss_WingSlam::Free()
 {
-    Safe_Release(m_pTarget);
-
     __super::Free();
 }

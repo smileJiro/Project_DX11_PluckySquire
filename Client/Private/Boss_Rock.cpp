@@ -64,7 +64,29 @@ HRESULT CBoss_Rock::Render()
 
 void CBoss_Rock::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    __super::OnTrigger_Enter(_My, _Other);
+    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
+    {
+        if ((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
+        {
+            _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+            XMVectorSetY(vRepulse, -1.f);
+            Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), 1, vRepulse);
+            //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
+            Event_DeleteObject(this);
+        }
+    }
+
+    if (OBJECT_GROUP::PLAYER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
+    {
+        m_iHp -= 1;
+        if (0 >= m_iHp)
+        {
+            Event_DeleteObject(this);
+        }
+    }
+
+    if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+        Event_DeleteObject(this);
 }
 
 void CBoss_Rock::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -100,6 +122,8 @@ HRESULT CBoss_Rock::Cleanup_DeadReferences()
 void CBoss_Rock::Active_OnEnable()
 {
     __super::Active_OnEnable();
+
+    m_iHp = 10;
 }
 
 void CBoss_Rock::Active_OnDisable()
@@ -219,7 +243,5 @@ CGameObject* CBoss_Rock::Clone(void* _pArg)
 
 void CBoss_Rock::Free()
 {
-    Safe_Release(m_pTarget);
-
     __super::Free();
 }

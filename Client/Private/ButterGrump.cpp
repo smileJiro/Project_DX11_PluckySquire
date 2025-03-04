@@ -16,6 +16,8 @@
 #include "ButterGrump_RightEye.h"
 #include "ButterGrump_Tongue.h"
 #include "ButterGrump_Shield.h"
+#include "Boss_Crystal.h"
+#include "Boss_TennisBall.h"
 
 CButterGrump::CButterGrump(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -70,12 +72,15 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::ROCKVOLLEY);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::SHIELD);
 
     m_pBossFSM->Set_State((_uint)BOSS_STATE::IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WINGSHIELD_ROCK_VOLLEY_LOOP, true);
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CButterGrump::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -116,35 +121,23 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     Safe_AddRef(m_pTarget);
 
+
+    m_tStat.iHP = 10;
+    m_tStat.iMaxHP = 10;
+
     return S_OK;
 }
 
 void CButterGrump::Priority_Update(_float _fTimeDelta)
 {
-    //if (true == m_isDelay)
-    //{
-    //    m_fAccTime += _fTimeDelta;
-
-    //    if (m_fDelayTime <= m_fAccTime)
-    //    {
-    //        Delay_Off();
-    //        if (3 <= m_iAttackCount)
-    //        {
-    //            CoolTime_On();
-    //        }
-    //    }
-    //}
-
-    //if (true == m_isCool)
-    //{
-    //    m_fAccTime += _fTimeDelta;
-
-    //    if (m_fCoolTime <= m_fAccTime)
-    //    {
-    //        CoolTime_Off();
-    //        m_iAttackCount = 0;
-    //    }
-    //}
+    if (true == m_isDelay)
+    {
+        m_fAccTime += _fTimeDelta;
+        if (m_fDelayTime <= m_fAccTime)
+        {
+            Delay_Off();
+        }
+    }
 
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
@@ -178,6 +171,14 @@ void CButterGrump::Update(_float _fTimeDelta)
     }
 
 #endif // _DEBUG
+
+    if (true == m_isAttack)
+    {
+        if(false == m_isDelay)
+        {
+            Attack();
+        }
+    }
 
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -238,6 +239,10 @@ void CButterGrump::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_INTO);
             break;
 
+        case BOSS_STATE::SHIELD:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ROAR);
+            break;
+
         default:
             break;
         }
@@ -246,6 +251,8 @@ void CButterGrump::Change_Animation()
 
 void CButterGrump::Attack()
 {
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
     _float3 vScale, vPosition;
     _float4 vRotation;
     //_matrix matMuzzle = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[BOSSPART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("buttergrump_rigtonsils_01_01")) * Get_FinalWorldMatrix();
@@ -264,7 +271,7 @@ void CButterGrump::Attack()
         //vPosition.z += m_pGameInstance->Compute_Random(-5.f, 5.f);
         //XMQuaternionMultiply(XMLoadFloat4(&vRotation), )
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_EnergyBall"), COORDINATE_3D,  &vPosition, &vRotation);
-
+        m_isAttack = false;
         break;
     }
 
@@ -278,6 +285,7 @@ void CButterGrump::Attack()
 
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_HomingBall"), COORDINATE_3D, &vPosition, &vRotation);
 
+        m_isAttack = false;
         break;
     }
 
@@ -300,6 +308,17 @@ void CButterGrump::Attack()
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_YellowBall"), COORDINATE_3D, &vPos, &vRot);
         }
 
+        ++m_iAttackCount;
+
+        if (m_iNumAttack <= m_iAttackCount)
+        {
+            m_iAttackCount = 0;
+            m_isAttack = false;
+        }
+        else
+        {
+            Delay_On();
+        }
         break;
     }
 
@@ -321,27 +340,80 @@ void CButterGrump::Attack()
             vPos.y += 2.f * Array2[i];*/
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_PurpleBall"),COORDINATE_3D ,&vPos, &vRot);
         }
+
+        ++m_iAttackCount;
+
+        if (m_iNumAttack <= m_iAttackCount)
+        {
+            m_iAttackCount = 0;
+            m_isAttack = false;
+        }
+        else
+        {
+            Delay_On();
+        }
         break;
     }
 
     case BOSS_STATE::WINGSLAM:
     {
-
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlam"), COORDINATE_3D, &vPosition, &vRotation);
-
+        m_isAttack = false;
         break;
     }
 
     case BOSS_STATE::ROCKVOLLEY:
     {
+		_vector vLook = { 0.f,0.f,1.f };
+        //쿼터니언을 통해 룩벡터 구함
+		vLook = XMVector3Rotate(vLook, XMLoadFloat4(&vRotation));
+        //업벡터와 외적으로 수직 벡터 구하고 회전축으로 씀
+        _vector vRight = XMVector3Normalize(XMVector3Cross(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f)));
+        _vector vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
 
-        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_Rock"), COORDINATE_3D, &vPosition, &vRotation);
+		for (_int i = 0; i < 3; ++i)
+        {
+            _float fVerticalAngle = XMConvertToRadians(m_pGameInstance->Compute_Random(-15.f, 15.f));
+            _float fHorizontalAngle = XMConvertToRadians(m_pGameInstance->Compute_Random(-15.f, 15.f));
+            //_vector vVerticalRot = XMQuaternionRotationAxis(vRight, fVerticalAngle);
+            //_vector vHorizontalRot = XMQuaternionRotationAxis(vUp, fHorizontalAngle);
+            _vector vRot = XMQuaternionMultiply(XMQuaternionRotationAxis(vRight, fVerticalAngle), XMQuaternionRotationAxis(vUp, fHorizontalAngle));
+            _float4 vQuat; XMStoreFloat4(&vQuat, XMQuaternionMultiply(vRot, XMLoadFloat4(&vRotation)));
+
+            //_float3 vPos; XMStoreFloat3(&vPos, XMLoadFloat3(&vPosition));
+            //vPos.x += m_pGameInstance->Compute_Random(-5.f, 5.f);
+            //vPos.y += m_pGameInstance->Compute_Random(-5.f, 5.f);
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_Rock"), COORDINATE_3D, &vPosition, &vQuat);
+        }
+
+        ++m_iAttackCount;
+
+        if (m_iNumAttack <= m_iAttackCount)
+        {
+            pModelObject->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_OUT);
+            m_iAttackCount = 0;
+            m_isAttack = false;
+        }
+        else
+        {
+            Delay_On();
+        }
 
         break;
     }
 
     default:
         break;
+    }
+
+    if(true == m_PartObjects[BOSSPART_SHIELD]->Is_Active() && false == m_isSpawnOrb)
+    {
+        // 1/3 확률로 쉴드파괴용 크리스탈 생성
+        if (2 == (_uint)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
+        {
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_Crystal"), COORDINATE_3D, &vPosition, &vRotation);
+            m_isSpawnOrb = true;
+        }
     }
 }
 
@@ -357,7 +429,7 @@ void CButterGrump::On_Attack()
         break;
 
     case BOSS_STATE::HOMINGBALL:
-        m_fDelayTime = 0.5f;
+        //m_fDelayTime = 0.5f;
         m_iNumAttack = 1;
         break;
 
@@ -376,12 +448,28 @@ void CButterGrump::On_Attack()
 
     case BOSS_STATE::ROCKVOLLEY:
         m_fDelayTime = 0.3f;
-        m_iNumAttack = 10;
+        m_iNumAttack = 30;
         break;
+
+    case BOSS_STATE::SHIELD:
+    {
+        if (false == m_PartObjects[BOSSPART_SHIELD]->Is_Active())
+            m_PartObjects[BOSSPART_SHIELD]->Set_Active(true);
+
+        m_isAttack = false;
+    }
+    break;
 
     default:
         break;
     }
+}
+
+void CButterGrump::Shield_Break()
+{
+    //쉴드 끄고 애니메이션 전환
+    Event_SetActive(m_PartObjects[BOSSPART_SHIELD], false);
+    Hit();
 }
 
 void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
@@ -412,6 +500,7 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
     case FIREBALL_SPIT_SMALL:
         Set_AnimChangeable(true);
+        m_isAttack = false;
         break;
 
     case WING_SLAM_INTO:
@@ -424,9 +513,14 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
     case WINGSHIELD_ROCK_VOLLEY_INTO:
         pModelObject->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_LOOP);
+        On_Attack();
         break;
 
     case WINGSHIELD_ROCK_VOLLEY_OUT:
+        Set_AnimChangeable(true);
+        break;
+
+    case ROAR:
         Set_AnimChangeable(true);
         break;
 
@@ -447,6 +541,39 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CButterGrump::Play_Intro()
 {
+}
+
+void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    if ((_uint)BOSS_STATE::DEAD == m_iState)
+        return;
+
+    m_tStat.iHP -= _iDamg;
+    if (m_tStat.iHP < 0)
+    {
+        m_tStat.iHP = 0;
+    }
+    cout << "BOSS_HP : " << m_tStat.iHP << endl;
+    if (0 >= m_tStat.iHP)
+    {
+        if(false == m_isPhase2)
+        {
+            m_tStat.iHP = m_tStat.iMaxHP;
+            m_isPhase2 = true;
+        }
+        else
+        {
+            Set_AnimChangeable(true);
+
+            Event_ChangeBossState(BOSS_STATE::DEAD, m_pFSM);
+        }
+    }
+}
+
+void CButterGrump::Hit()
+{
+    Set_AnimChangeable(true);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RECEIVE_DAMAGE);
 }
 
 HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
@@ -472,8 +599,8 @@ HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fRadius = 1.f;
-    ShapeDesc->fHalfHeight = 1.f;
+    ShapeDesc->fRadius = 0.1f;
+    ShapeDesc->fHalfHeight = 0.1f;
 
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
@@ -663,8 +790,9 @@ HRESULT CButterGrump::Ready_Projectiles()
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_HomingBall"), Pooling_Desc, pHomingBallDesc);
 
 
-    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_EnergyBall");
 
+
+    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_EnergyBall");
     CBoss_EnergyBall::PROJECTILE_MONSTER_DESC* pEnergyBallDesc = new CBoss_EnergyBall::PROJECTILE_MONSTER_DESC;
     pEnergyBallDesc->fLifeTime = 5.f;
     pEnergyBallDesc->eStartCoord = COORDINATE_3D;
@@ -676,8 +804,9 @@ HRESULT CButterGrump::Ready_Projectiles()
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_EnergyBall"), Pooling_Desc, pEnergyBallDesc);
 
-    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_YellowBall");
 
+
+    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_YellowBall");
     CBoss_YellowBall::PROJECTILE_MONSTER_DESC* pYellowBallDesc = new CBoss_YellowBall::PROJECTILE_MONSTER_DESC;
     pYellowBallDesc->fLifeTime = 5.f;
     pYellowBallDesc->eStartCoord = COORDINATE_3D;
@@ -689,8 +818,9 @@ HRESULT CButterGrump::Ready_Projectiles()
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_YellowBall"), Pooling_Desc, pYellowBallDesc);
 
-    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_PurpleBall");
 
+
+    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_PurpleBall");
     CBoss_PurpleBall::PROJECTILE_MONSTER_DESC* pPurpleBallDesc = new CBoss_PurpleBall::PROJECTILE_MONSTER_DESC;
     pPurpleBallDesc->fLifeTime = 5.f;
     pPurpleBallDesc->eStartCoord = COORDINATE_3D;
@@ -702,8 +832,9 @@ HRESULT CButterGrump::Ready_Projectiles()
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_PurpleBall"), Pooling_Desc, pPurpleBallDesc);
 
-    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_WingSlam");
 
+
+    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_WingSlam");
     CBoss_WingSlam::PROJECTILE_MONSTER_DESC* pWingSlamDesc = new CBoss_WingSlam::PROJECTILE_MONSTER_DESC;
     pWingSlamDesc->fLifeTime = 3.f;
     pWingSlamDesc->eStartCoord = COORDINATE_3D;
@@ -711,13 +842,15 @@ HRESULT CButterGrump::Ready_Projectiles()
     pWingSlamDesc->iCurLevelID = m_iCurLevelID;
 
     pWingSlamDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pWingSlamDesc->tTransform3DDesc.fSpeedPerSec = 30.f;
+    pWingSlamDesc->tTransform3DDesc.fSpeedPerSec = 50.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_WingSlam"), Pooling_Desc, pWingSlamDesc);
 
 
+
+    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_Rock");
     CBoss_Rock::PROJECTILE_MONSTER_DESC* pRockDesc = new CBoss_Rock::PROJECTILE_MONSTER_DESC;
-    pRockDesc->fLifeTime = 3.f;
+    pRockDesc->fLifeTime = 10.f;
     pRockDesc->eStartCoord = COORDINATE_3D;
     pRockDesc->isCoordChangeEnable = false;
     pRockDesc->iCurLevelID = m_iCurLevelID;
@@ -726,6 +859,35 @@ HRESULT CButterGrump::Ready_Projectiles()
     pRockDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_Rock"), Pooling_Desc, pRockDesc);
+
+
+    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_Crystal");
+    CBoss_Crystal::BOSS_CRYSTAL_DESC* pCrystalDesc = new CBoss_Crystal::BOSS_CRYSTAL_DESC;
+    pCrystalDesc->fLifeTime = 20.f;
+    pCrystalDesc->eStartCoord = COORDINATE_3D;
+    pCrystalDesc->isCoordChangeEnable = false;
+    pCrystalDesc->iCurLevelID = m_iCurLevelID;
+    pCrystalDesc->pSpawner = this;
+
+    pCrystalDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pCrystalDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+
+    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_Crystal"), Pooling_Desc, pCrystalDesc);
+
+
+    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_TennisBall");
+    CBoss_TennisBall::BOSS_TENNISBALL_DESC* pTennisBallDesc = new CBoss_TennisBall::BOSS_TENNISBALL_DESC;
+    pTennisBallDesc->fLifeTime = 20.f;
+    pTennisBallDesc->eStartCoord = COORDINATE_3D;
+    pTennisBallDesc->isCoordChangeEnable = false;
+    pTennisBallDesc->iCurLevelID = m_iCurLevelID;
+    pTennisBallDesc->pSpawner = this;
+
+    pTennisBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pTennisBallDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+
+    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_TennisBall"), Pooling_Desc, pTennisBallDesc);
+
 
     return S_OK;
 }

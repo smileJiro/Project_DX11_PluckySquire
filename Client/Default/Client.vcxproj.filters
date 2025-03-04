@@ -683,9 +683,6 @@
     <ClInclude Include="..\Public\Boss_HomingBall.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\FSM_Boss.h">
-      <Filter>03.Components\FSM</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\BossSceneState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
@@ -1328,6 +1325,18 @@
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BombableObject.h" />
+    <ClInclude Include="..\Public\FSM_Boss.h">
+      <Filter>03.Components\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossShieldState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_Crystal.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_TennisBall.h">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2114,6 +2123,15 @@
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BombableObject.cpp" />
+    <ClCompile Include="..\Private\BossShieldState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss_Crystal.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss_TennisBall.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

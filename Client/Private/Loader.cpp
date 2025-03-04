@@ -146,6 +146,8 @@
 #include "Boss_PurpleBall.h"
 #include "Boss_WingSlam.h"
 #include "Boss_Rock.h"
+#include "Boss_Crystal.h"
+#include "Boss_TennisBall.h"
 #include "FSM_Boss.h"
 
 
@@ -1181,6 +1183,14 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_Rock"),
 			CBoss_Rock::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_Crystal"),
+			CBoss_Crystal::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_TennisBall"),
+			CBoss_TennisBall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);

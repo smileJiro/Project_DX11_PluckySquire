@@ -23,12 +23,19 @@ public:
 	virtual void	Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT	Render() override;
 
+	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 
-	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
-	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
-	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	//virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
+	//virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	//virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
+
+public:
+	void Shield_Break(const COLL_INFO& _Other);
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);

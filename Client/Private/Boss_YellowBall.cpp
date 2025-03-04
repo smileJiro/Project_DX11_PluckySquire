@@ -159,7 +159,5 @@ CGameObject* CBoss_YellowBall::Clone(void* _pArg)
 
 void CBoss_YellowBall::Free()
 {
-    Safe_Release(m_pTarget);
-
     __super::Free();
 }
