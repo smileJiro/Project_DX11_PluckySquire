@@ -8,7 +8,7 @@ public:
 	typedef struct tagDoorRedDesc : public CDoor_2D::DOOR_2D_DESC
 	{
 		_float		     fTargetDiff = 10.f;
-		vector<_wstring> LayerTags;
+		_wstring		 strLayerTag;
 	}DOOR_RED_DESC;
 private:
 	CDoor_Red(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -26,7 +26,7 @@ public:
 private:
 	_bool					m_isStartOpen = { false };
 	_float					m_fTargetDiff = { 10.f };
-	vector<_wstring>		m_LayerTags;
+	_wstring				m_strLayerTag;
 
 private:
 	void			Set_AnimLoop();

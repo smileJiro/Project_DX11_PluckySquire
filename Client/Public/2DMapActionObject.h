@@ -18,6 +18,7 @@ public :
 		ACTIVE_TYPE_DYNAMIC_BACKGROUND,
 		ACTIVE_TYPE_DAMEGED,
 		ACTIVE_TYPE_ACTIONANIM,
+		ACTIVE_TYPE_STORYSQ_LIGHT_ANIM,
 		ACTIVE_TYPE_LAST
 	};
 private:
@@ -45,8 +46,7 @@ public:
 	virtual void					On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 	virtual void					On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 
-
-private :
+private:
 	MAPOBJ_2D_ACTION_TYPE			m_eType;
 
 	_bool							m_isFadeOut = false;

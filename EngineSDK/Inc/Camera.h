@@ -174,6 +174,7 @@ protected: /* Shake */
 protected: /*Target Change*/
 	_bool						m_isTargetChanged = { false };
 	_float2						m_fTargetChangingTime = { 1.f, 0.f };
+	COORDINATE					m_eTargetCoordinate = { COORDINATE_2D };
 
 protected: // Initial
 	INITIAL_DATA				m_tInitialData = {};

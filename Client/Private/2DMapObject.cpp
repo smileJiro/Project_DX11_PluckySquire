@@ -36,7 +36,9 @@ HRESULT C2DMapObject::Initialize(void* _pArg)
         m_isBackGround = pDesc->isBackGround;
         m_isCollider = pDesc->isCollider;
         m_isActive = pDesc->isActive;
+
     }
+    m_strModelName = pDesc->strModelPrototypeTag_2D;
 
     return __super::Initialize(_pArg);
 }

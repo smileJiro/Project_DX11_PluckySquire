@@ -16,13 +16,12 @@ public:
 		DEFAULT, 
 		MOVE_TO_NEXTARM, 
 		MOVE_TO_CUSTOMARM, 
-		RETURN_TO_DEFUALT, 
 		FLIPPING_UP,
 		FLIPPING_PAUSE,
 		FLIPPING_DOWN,
 		NARRATION,
 		RESET_TO_SETTINGPOINT,
-
+		FREEZE,
 		CAMERA_2D_MODE_END 
 	};
 
@@ -156,12 +155,12 @@ private:
 	void						Defualt_Move(_float _fTimeDelta);
 	void						Move_To_NextArm(_float _fTimeDelta);
 	void						Move_To_CustomArm(_float _fTimeDelta);
-	void						Return_To_Default(_float _fTimeDelta);
 	void						Flipping_Up(_float _fTimeDelta);
 	void						Flipping_Pause(_float _fTimeDelta);
 	void						Flipping_Down(_float _fTimeDelta);
 	void						Play_Narration(_float _fTimeDelta);
 	void						Reset_To_SettingPoint(_float _fTimeDelta);
+	void						Freeze(_float _fTimeDelta);
 	
 	void						Look_Target(_float fTimeDelta);
 	_vector						Calculate_CameraPos(_float _fTimeDelta);
