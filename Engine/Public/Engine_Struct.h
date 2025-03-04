@@ -41,7 +41,7 @@ namespace Engine
 	}CONST_IBL;
 	typedef struct tagMaterialDefault
 	{
-		XMFLOAT4	Albedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);		   // 16byte
+		XMFLOAT4	Albedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f);		   // 16byte
 
 		float		Roughness = 0.5f;					 
 		float		Metallic = 0.0f;					 

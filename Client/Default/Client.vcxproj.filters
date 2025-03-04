@@ -1322,7 +1322,6 @@
     <ClInclude Include="..\Public\BossWingSlamState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Postit_Page.h" />
     <ClInclude Include="..\Public\TiltSwapPusher.h" />
     <ClInclude Include="..\Public\Boss_Rock.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
@@ -1345,6 +1344,10 @@
     </ClInclude>
     <ClInclude Include="..\Public\GameEventExecuter_C8.h">
       <Filter>02.GameObjects\GameEventExecuter\Chapter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Zipline.h" />
+    <ClInclude Include="..\Public\Postit_Page.h">
+      <Filter>02.GameObjects\NPC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2123,7 +2126,6 @@
     <ClCompile Include="..\Private\BossWingSlamState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Postit_Page.cpp" />
     <ClCompile Include="..\Private\TiltSwapPusher.cpp" />
     <ClCompile Include="..\Private\Boss_Rock.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
@@ -2143,6 +2145,10 @@
     </ClCompile>
     <ClCompile Include="..\Private\GameEventExecuter_C8.cpp">
       <Filter>02.GameObjects\GameEventExecuter\Chapter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Zipline.cpp" />
+    <ClCompile Include="..\Private\Postit_Page.cpp">
+      <Filter>02.GameObjects\NPC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
