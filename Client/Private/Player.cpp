@@ -580,7 +580,7 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 void CPlayer::Update(_float _fTimeDelta)
 {
-
+  
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
 
@@ -595,6 +595,8 @@ void CPlayer::Update(_float _fTimeDelta)
 		}
 	}
     __super::Update(_fTimeDelta); /* Part Object Update */
+    if (m_pInteractableObject && false == dynamic_cast<CBase*>(m_pInteractableObject)->Is_Active())
+        m_pInteractableObject = nullptr;
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
@@ -2033,13 +2035,7 @@ void CPlayer::ThrowObject()
     {
         pObj->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, Get_FinalPosition());
     }
-    pObj->Set_ParentMatrix(COORDINATE_2D, nullptr);
-    pObj->Set_ParentMatrix(COORDINATE_3D, nullptr);
-    pObj->Set_SocketMatrix(COORDINATE_3D, nullptr);
-    pObj->Set_SocketMatrix(COORDINATE_2D, nullptr);
-    pObj->Set_ParentBodyMatrix(COORDINATE_3D, nullptr);
-    pObj->Set_ParentBodyMatrix(COORDINATE_2D, nullptr);
-    pObj->Set_Carrier(nullptr);
+
 	pObj->Throw(vForce);
 	Set_CarryingObject(nullptr);
 }

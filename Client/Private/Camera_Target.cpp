@@ -60,8 +60,6 @@ void CCamera_Target::Late_Update(_float fTimeDelta)
 	Action_Mode(fTimeDelta);
 
 	__super::Late_Update(fTimeDelta);
-
-	//cout << m_pCurArm->Get_Length() << endl;
 }
 
 #pragma region  Tool용
@@ -175,6 +173,45 @@ void CCamera_Target::Set_EnableLookAt(_bool _isEnableLookAt)
 void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
 {
 	m_pTargetWorldMatrix = _pTargetWorldMatrix;
+}
+
+void CCamera_Target::Turn_AxisY(_float _fTimeDelta)
+{
+	if (false == m_isTurnAxisY)
+		return;
+
+	if (true == m_pCurArm->Turn_AxisY(&m_CustomArmData, _fTimeDelta)) {
+		m_isTurnAxisY = false;
+	}
+}
+
+void CCamera_Target::Turn_AxisRight(_float _fTimeDelta)
+{
+	if (false == m_isTurnAxisRight)
+		return;
+
+	if (true == m_pCurArm->Turn_AxisRight(&m_CustomArmData, _fTimeDelta)) {
+		m_isTurnAxisRight = false;
+	}
+}
+
+void CCamera_Target::Change_Length(_float _fTimeDelta)
+{
+	if (false == m_isChangingLength)
+		return;
+
+	if (true == m_pCurArm->Change_Length(&m_CustomArmData, _fTimeDelta)) {
+		m_isChangingLength = false;
+	}
+}
+
+void CCamera_Target::Start_ResetArm_To_SettingPoint(_float _fResetTime)
+{
+	m_pCurArm->Set_StartInfo();
+	Start_Changing_AtOffset(_fResetTime, XMLoadFloat3(&m_ResetArmData.vAtOffset), EASE_IN);
+	Start_Zoom(_fResetTime, (ZOOM_LEVEL)m_ResetArmData.iZoomLevel, EASE_IN);
+	m_eCameraMode = RESET_TO_SETTINGPOINT;
+	m_fResetTime = { _fResetTime, 0.f };
 }
 
 void CCamera_Target::Switch_CameraView(INITIAL_DATA* _pInitialData)
@@ -345,6 +382,7 @@ _bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID
 
 void CCamera_Target::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 {
+
 	if (nullptr == m_pCurArm)
 		return;
 	int a = 0;
@@ -371,6 +409,8 @@ void CCamera_Target::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 void CCamera_Target::Key_Input(_float _fTimeDelta)
 {
 #ifdef _DEBUG
+
+#pragma region RB 카메라 Arm 회전
 	_long		MouseMove = {};
 	_vector		fRotation = {};
 
@@ -412,9 +452,47 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 
 		m_pCurArm->Set_Rotation(fRotation);
 	}
+#pragma endregion
+
+#pragma region 예시 코드
+	/*if (KEY_DOWN(KEY::K)) {
+		Start_Changing_ArmLength(2.f, 20.f, EASE_IN);
+		Start_Turn_AxisY(2.f, XMConvertToRadians(-5.f), XMConvertToRadians(-10.f));
+		Start_Turn_AxisRight(2.f, XMConvertToRadians(-10.f), XMConvertToRadians(-2.f));
+	}
+
+	if (KEY_DOWN(KEY::J)) {
+		Set_ResetData();
+	}
+
+	if (KEY_DOWN(KEY::R)) {
+		Start_ResetArm_To_SettingPoint(2.f);
+	}*/
+
+
+	// CuttomData 예시 코드
+	// Right축, Y축 기준으로 회전 시간과 회전 정도 설정
+	// Length 시간과 Length 시간 설정을 한 번에 할 수 있음(Length는 EASE_IN, EASE_OUT 등등을 설정해 줘야 하지만 회전은 RPS로 설정함)
+	/*CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+	pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_CUSTOMARM);
+
+	ARM_DATA tData = {};
+	tData.fMoveTimeAxisRight = { 5.f, 0.f };
+	tData.fRotationPerSecAxisRight = { XMConvertToRadians(-10.f), XMConvertToRadians(-1.f) };
+	tData.fMoveTimeAxisY = { 5.f, 0.f };
+	tData.fRotationPerSecAxisY = { XMConvertToRadians(-10.f), XMConvertToRadians(-1.f) };
+	tData.fLength = 20.f;
+	tData.fLengthTime = { 5.f, 0.f };
+	tData.iLengthRatioType = EASE_OUT;
+
+	pCamera->Add_CustomArm(tData);
+
+	pCamera->Start_Shake_ByCount(0.2f, 0.1f, 10, CCamera::SHAKE_XY);
+	pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(-0.7f, 2.f, 0.f, 0.f), EASE_IN_OUT);*/
+#pragma endregion
 
 	//Imgui(_fTimeDelta);
-	
+
 #endif
 }
 
@@ -426,7 +504,11 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 	Action_Zoom(_fTimeDelta);
 	Action_Shake(_fTimeDelta);
 	Change_AtOffset(_fTimeDelta);
-	
+
+	Turn_AxisY(_fTimeDelta);
+	Turn_AxisRight(_fTimeDelta);
+	Change_Length(_fTimeDelta);
+
 	Change_FreezeOffset(_fTimeDelta);
 	Move_To_ExitArm(_fTimeDelta);
 
@@ -444,6 +526,9 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 		Move_To_CustomArm(_fTimeDelta);
 		break;
 	case RETURN_TO_DEFUALT:
+		break;
+	case RESET_TO_SETTINGPOINT:
+		Reset_To_SettingPoint(_fTimeDelta);
 		break;
 	}
 }
@@ -948,6 +1033,29 @@ void CCamera_Target::Move_To_ExitArm(_float _fTimeDelta)
 	}
 
 	m_pCurArm->Move_To_FreezeExitArm(fRatio, XMLoadFloat3(&m_vCurFreezeExitData.vFreezeExitArm), 0.f);
+}
+
+void CCamera_Target::Reset_To_SettingPoint(_float _fTimeDelta)
+{
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fResetTime, _fTimeDelta, EASE_IN_OUT);
+
+	if (fRatio >= (1.f - EPSILON)) {
+		m_fResetTime.y = 0.f;
+		m_eCameraMode = DEFAULT;
+
+		m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_ResetArmData.vPreArm)));
+
+		return;
+	}
+
+	m_pCurArm->Reset_To_SettingPoint(fRatio, XMLoadFloat3(&m_ResetArmData.vPreArm), m_ResetArmData.fPreLength);
+
+	_vector vTargetPos;
+	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);	// 목표 위치 + Arm -> 최종 결과물
+
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
+
+	Look_Target(vTargetPos, _fTimeDelta);
 }
 
 pair<ARM_DATA*, SUB_DATA*>* CCamera_Target::Find_ArmData(_wstring _wszArmTag)

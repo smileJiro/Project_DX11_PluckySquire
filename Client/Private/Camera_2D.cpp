@@ -289,6 +289,45 @@ void CCamera_2D::Change_Target(CGameObject* _pTarget)
 	m_vStartPos = m_v2DPreTargetWorldPos;
 }
 
+void CCamera_2D::Turn_AxisY(_float _fTimeDelta)
+{
+	if (false == m_isTurnAxisY)
+		return;
+
+	if (true == m_pCurArm->Turn_AxisY(&m_CustomArmData, _fTimeDelta)) {
+		m_isTurnAxisY = false;
+	}
+}
+
+void CCamera_2D::Turn_AxisRight(_float _fTimeDelta)
+{
+	if (false == m_isTurnAxisRight)
+		return;
+
+	if (true == m_pCurArm->Turn_AxisRight(&m_CustomArmData, _fTimeDelta)) {
+		m_isTurnAxisRight = false;
+	}
+}
+
+void CCamera_2D::Change_Length(_float _fTimeDelta)
+{
+	if (false == m_isChangingLength)
+		return;
+
+	if (true == m_pCurArm->Change_Length(&m_CustomArmData, _fTimeDelta)) {
+		m_isChangingLength = false;
+	}
+}
+
+void CCamera_2D::Start_ResetArm_To_SettingPoint(_float _fResetTime)
+{
+	m_pCurArm->Set_StartInfo();
+	Start_Changing_AtOffset(_fResetTime, XMLoadFloat3(&m_ResetArmData.vAtOffset), EASE_IN);
+	Start_Zoom(_fResetTime, (ZOOM_LEVEL)m_ResetArmData.iZoomLevel, EASE_IN);
+	m_eCameraMode = RESET_TO_SETTINGPOINT;
+	m_fResetTime = { _fResetTime, 0.f };
+}
+
 INITIAL_DATA CCamera_2D::Get_InitialData()
 {
 	INITIAL_DATA tData;
@@ -391,6 +430,10 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	Action_Shake(_fTimeDelta);
 	Change_AtOffset(_fTimeDelta);
 
+	Turn_AxisY(_fTimeDelta);
+	Turn_AxisRight(_fTimeDelta);
+	Change_Length(_fTimeDelta);
+
 	switch (m_eCameraMode) {
 	case DEFAULT:
 		Defualt_Move(_fTimeDelta);
@@ -413,8 +456,8 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	case FLIPPING_DOWN:
 		Flipping_Down(_fTimeDelta);
 		break;
-	case NARRATION:
-		Play_Narration(_fTimeDelta);
+	case RESET_TO_SETTINGPOINT:
+		Reset_To_SettingPoint(_fTimeDelta);
 		break;
 	}
 }
@@ -562,6 +605,28 @@ void CCamera_2D::Flipping_Down(_float _fTimeDelta)
 void CCamera_2D::Play_Narration(_float _fTimeDelta)
 {
 	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
+
+	Look_Target(_fTimeDelta);
+}
+
+void CCamera_2D::Reset_To_SettingPoint(_float _fTimeDelta)
+{
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fResetTime, _fTimeDelta, EASE_IN_OUT);
+
+	if (fRatio >= (1.f - EPSILON)) {
+		m_fResetTime.y = 0.f;
+		m_eCameraMode = DEFAULT;
+
+		m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_ResetArmData.vPreArm)));
+
+		return;
+	}
+
+	m_pCurArm->Reset_To_SettingPoint(fRatio, XMLoadFloat3(&m_ResetArmData.vPreArm), m_ResetArmData.fPreLength);
+	
+	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
+
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
 
 	Look_Target(_fTimeDelta);
@@ -1032,6 +1097,7 @@ pair<ARM_DATA*, SUB_DATA*>* CCamera_2D::Find_ArmData(_wstring _wszArmTag)
 
 void CCamera_2D::Key_Input(_float _fTimeDelta)
 {
+#pragma region RB 카메라 Arm 회전
 	_long		MouseMove = {};
 	_vector		fRotation = {};
 
@@ -1073,8 +1139,10 @@ void CCamera_2D::Key_Input(_float _fTimeDelta)
 
 		m_pCurArm->Set_Rotation(fRotation);
 	}
-
-	_float fArmLength = {};
+#pragma endregion
+	
+#pragma region ImGui 프레임 떨어졌을 때 쓰는 거
+	/*_float fArmLength = {};
 	fArmLength = m_pCurArm->Get_Length();
 
 	if (KEY_PRESSING(KEY::CTRL)) {
@@ -1095,8 +1163,26 @@ void CCamera_2D::Key_Input(_float _fTimeDelta)
 		else if (KEY_DOWN(KEY::J)) {
 			m_vAtOffset.y -= 0.1f;
 		}
+	}*/
+#pragma endregion
+
+#pragma region 예시 코드
+	/*if (KEY_DOWN(KEY::K)) {
+		Start_Changing_ArmLength(2.f, 20.f, EASE_IN);
+		Start_Turn_AxisY(2.f, XMConvertToRadians(-20.f), XMConvertToRadians(-30.f));
+		Start_Turn_AxisRight(2.f, XMConvertToRadians(-10.f), XMConvertToRadians(-2.f));
 	}
+
+	if (KEY_DOWN(KEY::J)) {
+		Set_ResetData();
+	}
+
+	if (KEY_DOWN(KEY::I)) {
+		Start_ResetArm_To_SettingPoint(2.f);
+	}*/
+#pragma endregion
 }
+
 #ifdef _DEBUG
 void CCamera_2D::Imgui(_float _fTimeDelta)
 {
