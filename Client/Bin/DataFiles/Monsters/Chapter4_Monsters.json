@@ -120,6 +120,51 @@
                 1.0,
                 1.0
             ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_JumpBug",
+            "SectionTag": "Chapter4_SKSP_03",
+            "LayerTag": "Layer_Monster_Door2",
+            "Position": [
+                312.0,
+                91.0,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_JumpBug",
+            "SectionTag": "Chapter4_SKSP_03",
+            "LayerTag": "Layer_Monster_Door2",
+            "Position": [
+                240.0,
+                -114.0,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_JumpBug",
+            "SectionTag": "Chapter4_SKSP_03",
+            "LayerTag": "Layer_Monster_Door2",
+            "Position": [
+                423.0,
+                -231.0,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
         }
     ],
     "3D": [

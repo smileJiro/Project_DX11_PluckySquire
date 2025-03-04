@@ -1298,7 +1298,20 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
 	DoorRedDesc.strSectionTag = L"Chapter4_P0102";
 	DoorRedDesc.LayerTags.push_back(L"Layer_Monster_Door1");
-	DoorRedDesc.fTargetDiff = 13.;
+	DoorRedDesc.fTargetDiff = 13.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+		m_eLevelID, _strLayerTag, &DoorRedDesc)))
+		return E_FAIL;
+
+	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(1010.f, -530.f, 0.f);
+	DoorRedDesc.iCurLevelID = m_eLevelID;
+	DoorRedDesc.isHorizontal = true;
+	DoorRedDesc.eSize = CDoor_2D::LARGE;
+	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+	DoorRedDesc.strSectionTag = L"Chapter4_SKSP_05";
+	DoorRedDesc.LayerTags.push_back(L"Layer_Monster_Door2");
+	DoorRedDesc.fTargetDiff = 13.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
 		m_eLevelID, _strLayerTag, &DoorRedDesc)))

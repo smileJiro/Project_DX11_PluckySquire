@@ -87,7 +87,8 @@ void CDoor_Red::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         Switch_Animation_By_State();
 
         // TEMP:
-        CCamera_Manager::GetInstance()->Change_CameraTarget(CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Get_ControllerTransform()->Get_WorldMatrix_Ptr());
+        CCamera_Manager::GetInstance()->Change_CameraTarget
+        (CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Get_ControllerTransform()->Get_WorldMatrix_Ptr());
     }
 
 }

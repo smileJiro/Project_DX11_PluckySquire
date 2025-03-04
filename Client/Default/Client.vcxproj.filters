@@ -1353,7 +1353,9 @@
       <Filter>02.GameObjects\Door_2D\Door\Red</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Zipline.h" />
-    <ClInclude Include="..\public\3DMapEmissiveObject.h" />
+    <ClInclude Include="..\public\3DMapEmissiveObject.h">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2156,7 +2158,9 @@
       <Filter>02.GameObjects\Door_2D\Door\Red</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Zipline.cpp" />
-    <ClCompile Include="..\private\3DMapEmissiveObject.cpp" />
+    <ClCompile Include="..\private\3DMapEmissiveObject.cpp">
+      <Filter>02.GameObjects\MapObject\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
