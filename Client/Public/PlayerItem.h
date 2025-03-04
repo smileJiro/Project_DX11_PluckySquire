@@ -15,7 +15,8 @@ public:
 	{
 		DEFAULT,
 		GETTING,		// 먹고 위로 올라가기
-		DISAPPEAR,
+		WAIT,
+		DISAPPEAR,		// 없애기(다이얼로그 다 끝내면 없애면 됨)
 		ITEM_MODE_END
 	};
 
@@ -67,6 +68,7 @@ private:
 	void						Action_Mode(_float _fTimeDelta);
 
 	void						Action_Getting(_float _fTimeDelta);
+	void						Action_Wait(_float _fTimeDelta);
 	void						Action_Disappear(_float _fTimeDelta);
 	void						Check_PosY();
 

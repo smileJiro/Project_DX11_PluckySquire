@@ -1029,15 +1029,15 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 	}
 	else if (Step_Check(STEP_7))
 	{
-		Next_Step_Over(0.3f);
+		Next_Step_Over(1.0f);
 	}
 	else if (Step_Check(STEP_8))
 	{
 		if (Is_Start())
 		{
-			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
 
-			//pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 0.5f);
+			CCamera_Manager::GetInstance()->Start_FadeIn(0.5f);
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(false);
 		}

@@ -32,6 +32,7 @@
 #include "Bulb.h"
 #include "JumpPad.h"
 #include "Door_2D.h"
+#include "Zipline.h"
 
 #include "RayShape.h"
 
@@ -1172,6 +1173,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 {
+	// Door
 	CDoor_2D::DOOR_2D_DESC Desc = {};
 	Desc.tTransform2DDesc.vInitialPosition = _float3(-679.f, 379.f, 0.f);
 	Desc.iCurLevelID = m_eLevelID;
@@ -1182,6 +1184,16 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorBlue"),
 		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+	// Zipline
+	CZipline::ZIPLINE_DESC ZipDesc = {};
+	ZipDesc.tTransform2DDesc.vInitialPosition = _float3(2266.09f, 265.5f, 0.f);
+	ZipDesc.iCurLevelID = m_eLevelID;
+	ZipDesc.strSectionTag = L"Chapter4_SKSP_02";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Zipline"),
+		m_eLevelID, _strLayerTag, &ZipDesc)))
 		return E_FAIL;
 
 	return S_OK;
