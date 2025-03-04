@@ -63,7 +63,7 @@ void CPlayerState_PickUpObject::Enter()
 	m_pOwner->UnEquip_Part(CPlayer::PLAYER_PART_SWORD);
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	m_pCarriableObject = m_pOwner->Get_CarryingObject();
-	m_pCarriableObject->Set_Carrier(m_pOwner);
+
 
 	//static_cast<CActor_Dynamic*>(m_pCarriableObject->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
 
@@ -72,8 +72,7 @@ void CPlayerState_PickUpObject::Enter()
 	_matrix vPlayerWorld = m_pOwner->Get_FinalWorldMatrix();
 	matOriginalOfset *= XMMatrixInverse(nullptr, vPlayerWorld);
 	m_tOriginalKeyFrame.Set_Matrix(matOriginalOfset);
-	_float4x4 matCarriableWorld;
-	XMStoreFloat4x4(&matCarriableWorld, matOriginalOfset);
+
 
 	//PickUpKeyFrame
 	_vector vTmp;
@@ -100,13 +99,8 @@ void CPlayerState_PickUpObject::Enter()
 	{
 		m_pOwner->Set_Kinematic(true);
 	}
-	m_pCarriableObject->Set_Kinematic(true);
+	m_pCarriableObject->PickUpStart(m_pOwner, matOriginalOfset);
 
-	m_pCarriableObject->Set_ParentMatrix(COORDINATE_3D, m_pOwner->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));
-	m_pCarriableObject->Set_ParentMatrix(COORDINATE_2D, m_pOwner->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_2D));
-	m_pCarriableObject->Set_ParentBodyMatrix(COORDINATE_3D, m_pOwner->Get_BodyWorldMatrix_Ptr(COORDINATE_3D));
-	m_pCarriableObject->Set_ParentBodyMatrix(COORDINATE_2D, m_pOwner->Get_BodyWorldMatrix_Ptr(COORDINATE_2D));
-	m_pCarriableObject->Set_WorldMatrix(matCarriableWorld);
 
 	if (COORDINATE_3D == eCoord)
 	{
@@ -167,10 +161,7 @@ void CPlayerState_PickUpObject::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CPlayerState_PickUpObject::Align()
 {
-	m_pCarriableObject->Set_SocketMatrix(COORDINATE_2D, &m_pCarriableObject->Get_HeadUpMatrix(COORDINATE_2D));
-	m_pCarriableObject->Set_SocketMatrix(COORDINATE_3D, &m_pCarriableObject->Get_HeadUpMatrix(COORDINATE_3D));
-	
-	m_pCarriableObject->Set_Position(_vector{ 0,0,0 });
-	m_pCarriableObject->Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
+	m_pCarriableObject->PickUpEnd();
+
 	//cout << "Align: " << v.m128_f32[0] << " " << v.m128_f32[1] << " " << v.m128_f32[2] << endl;
 }
