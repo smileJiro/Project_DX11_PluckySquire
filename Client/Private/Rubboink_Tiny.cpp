@@ -123,6 +123,7 @@ void CRubboink_Tiny::On_StartSlip(_fvector _vDirection, _float _fPower)
 	m_pZZZ->Set_Active(false);
 	m_pZZZ->Set_Render(false);
 	m_pFace->Set_Render(false);
+	m_p2DColliderComs[0]->Set_Block(false);
 }
 
 
@@ -136,6 +137,8 @@ void CRubboink_Tiny::On_Impact(CGameObject* _pOtherObject)
 	m_pZZZ->Set_Render(false);
 	m_pFace->Set_Render(false);
 	m_p2DColliderComs[0]->Set_Offset(_float2{-200.f,50.f});
+	m_p2DColliderComs[0]->Set_Block(true);
+
 }
 
 CRubboink_Tiny* CRubboink_Tiny::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

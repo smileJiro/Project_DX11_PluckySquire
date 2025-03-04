@@ -5,6 +5,7 @@
 
 #include "PlayerItem.h"
 #include "Bulb.h"
+#include "Player.h"
 
 IMPLEMENT_SINGLETON(CPlayerData_Manager)
 
@@ -39,6 +40,8 @@ HRESULT CPlayerData_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeL
 		PlayerItem.second.second = nullptr;
 	}
 
+	Safe_Release(m_pPlayer);
+	m_pPlayer = nullptr;
 
 	return S_OK;
 }
@@ -137,6 +140,32 @@ void CPlayerData_Manager::Get_PlayerItem(_wstring _szItemTag)
 	// Player에게 이거 가지고 있다고 넘겨주기
 }
 
+void CPlayerData_Manager::Change_PlayerItemMode(_uint _iPlayerItemType, _uint _iItemMode)
+{
+	_wstring szPlayerItemTag = m_ItemTags[_iPlayerItemType].first;
+
+	m_ItemState[szPlayerItemTag].second->Change_Mode(_iItemMode);
+}
+
+void CPlayerData_Manager::Change_PlayerItemMode(_wstring _strItemTag, _uint _iItemMode)
+{
+	for (_uint i = 0; i < ITEM_END; i++)
+	{
+		if (m_ItemTags[i].first == _strItemTag)
+		{
+			m_ItemState[_strItemTag].second->Change_Mode(_iItemMode);
+			break;
+		}
+	}
+}
+
+void CPlayerData_Manager::Register_Player(CPlayer* _pPlayer)
+{
+	Safe_Release(m_pPlayer);
+	m_pPlayer = _pPlayer;
+	Safe_AddRef(m_pPlayer);
+}
+
 void CPlayerData_Manager::Set_Tags()
 {
 	m_ItemTags[FLIPPING_GLOVE] = { TEXT("Flipping_Glove"), TEXT("latch_glove") };
@@ -157,6 +186,8 @@ void CPlayerData_Manager::Free()
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
+
+	Safe_Release(m_pPlayer);
 
 	__super::Free();
 }

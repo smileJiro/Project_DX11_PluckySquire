@@ -53,7 +53,7 @@ void CPlayerState_StartPortal::Enter()
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	m_vTargetPos = m_pPortal->Get_ControllerTransform()->Get_Transform(eCoord)->Get_State(CTransform::STATE_POSITION);
 	_vector vPlayerPos = m_pOwner->Get_FinalPosition();
-	_vector vDir = XMVector3Normalize(m_vTargetPos - vPlayerPos);
+	_vector vDir = XMVector3Normalize(XMVectorSetW( m_vTargetPos - vPlayerPos,0.f));
 	
 	if (COORDINATE_3D == eCoord)
 	{

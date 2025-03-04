@@ -6,6 +6,12 @@ BEGIN(Client)
 class CPostit_Page : public CModelObject
 {
 public :
+	typedef struct tagPostitPage : public CModelObject::MODELOBJECT_DESC
+	{
+		_wstring strInitSkspName;
+
+	}POSTIT_PAGE_DESC;
+public :
 	enum POSTIT_PAGE_ANIM_TYPE
 	{
 		POSTIT_PAGE_APPEAR,

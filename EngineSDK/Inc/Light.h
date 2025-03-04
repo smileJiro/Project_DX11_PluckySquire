@@ -9,13 +9,15 @@ class CGameInstance;
 class CRenderTarget;
 class CLight : public CBase
 {
-private:
+protected:
 	CLight(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LIGHT_TYPE _eLightType);
 	virtual ~CLight() = default;
 
 public:
-	HRESULT Initialize(const CONST_LIGHT& _LightDesc);
-	HRESULT Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer);
+	virtual HRESULT Initialize(const CONST_LIGHT& _LightDesc);
+	virtual void	Update(_float _fTimeDelta);
+	virtual HRESULT Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer);
+
 #ifdef _DEBUG
 	HRESULT Render_Base_Debug() override;
 	_bool m_isSelect = false;
@@ -38,27 +40,33 @@ public:
 	CRenderTarget* Get_ShadowRenderTarget() { return m_pShadowRenderTarget; }
 	_int Get_ShadowLightID() const { return m_iShadowLightID; }
 	_bool Is_ShadowLight() const { return m_tLightConstData.isShadow; }
+	_bool Is_NotClear() const { return m_isNotClear; }
 	// Set
 	HRESULT Set_LightConstData_AndUpdateBuffer(const CONST_LIGHT& _LightConstData);
+	HRESULT Update_LightConstBuffer();
 	void Set_Shadow(_bool _isShadow);
-private:
+protected:
 	ID3D11Device*			m_pDevice = nullptr;
 	ID3D11DeviceContext*	m_pContext = nullptr;
 	CGameInstance*			m_pGameInstance = nullptr;
-private:
+protected:
 	LIGHT_TYPE				m_eType = LIGHT_TYPE::LAST;
 	CONST_LIGHT				m_tLightConstData = {};
 	ID3D11Buffer*			m_pLightConstbuffer = nullptr;
 
-private:
+protected:
 	static _int				s_iShadowLightID;
 	_float4x4				m_ProjMatrix = {};
-private: /* Shadow */
+
+protected: /* Shadow */
 	_int					m_iShadowLightID = -1;
 	_float					m_fFovy = 120.f;
 	_float2					m_vNearFarPlane = { 0.1f, 300.f };
 	_float4x4				m_ViewMatrix = {};
 	CRenderTarget*			m_pShadowRenderTarget = nullptr;
+
+protected:
+	_bool					m_isNotClear = false; // Clear_Load 호출 시 삭제되지 않는 
 
 
 #ifdef _DEBUG
@@ -66,6 +74,11 @@ private: /* Shadow */
 	BasicEffect* m_pEffect = nullptr;
 	ID3D11InputLayout* m_pInputLayout = nullptr;
 #endif // _DEBUG
+
+private:
+	virtual void			Active_OnEnable();
+	virtual void			Active_OnDisable();
+
 public:
 	static CLight* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, const CONST_LIGHT& _LightDesc, LIGHT_TYPE _eLightType);
 	virtual void Free() override;

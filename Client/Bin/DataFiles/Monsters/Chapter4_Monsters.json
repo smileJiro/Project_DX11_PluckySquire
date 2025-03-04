@@ -1,0 +1,183 @@
+{
+    "2D": [
+        {
+            "MonsterTag": "Prototype_GameObject_BarfBug",
+            "SectionTag": "Chapter4_P0304",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -1000.0,
+                150.0,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_BarfBug",
+            "SectionTag": "Chapter4_P0304",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -650.0,
+                -75.0,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_BarfBug",
+            "SectionTag": "Chapter4_P0304",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                400.0,
+                180.0,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_BarfBug",
+            "SectionTag": "Chapter4_P0304",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                900.0,
+                200.0,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_BarfBug",
+            "SectionTag": "Chapter4_P0304",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                600.0,
+                -50.0,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_BarfBug",
+            "SectionTag": "Chapter4_P0102",
+            "LayerTag": "Layer_Monster_Door1",
+            "Position": [
+                2000.0,
+                -40.0,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_BarfBug",
+            "SectionTag": "Chapter4_P0102",
+            "LayerTag": "Layer_Monster_Door1",
+            "Position": [
+                1600.0,
+                -170.0,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_BarfBug",
+            "SectionTag": "Chapter4_P0102",
+            "LayerTag": "Layer_Monster_Door1",
+            "Position": [
+                1350.0,
+                -350.0,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    ],
+    "3D": [
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                32.5,
+                4.85,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                41.5,
+                4.92,
+                -4.5
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                43.5,
+                4.23,
+                5.0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                49.0,
+                4.29,
+                6.0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    ]
+}

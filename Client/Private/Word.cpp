@@ -212,11 +212,26 @@ HRESULT CWord::Ready_Components()
 	return S_OK;
 }
 
+void CWord::On_LayDownEnd(_fmatrix _matWoroverride)
+{
+	m_bLaydown = true;
+}
+
+void CWord::On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset)
+{
+	m_bLaydown = false;
+}
+
+void CWord::On_Land()
+{
+	m_bLaydown = true;
+}
 
 
 void CWord::Interact(CPlayer* _pUser)
 {
-	_pUser->Set_CarryingObject(this);
+	//_pUser->Set_CarryingObject(this);
+	_pUser->CarryObject(this);
 }
 
 _bool CWord::Is_Interactable(CPlayer* _pUser)

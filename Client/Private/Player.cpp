@@ -30,6 +30,7 @@
 #include "PlayerState_Stamp.h"
 #include "PlayerState_Bomber.h"
 #include "PlayerState_ErasePalmDecal.h"
+#include "PlayerState_GetItem.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -41,6 +42,7 @@
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
 #include "Effect_Manager.h"
+#include "PlayerData_Manager.h"
     
 #include "Collider_Fan.h"
 #include "Collider_AABB.h"
@@ -233,13 +235,19 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
     if (FAILED(Ready_Components()))
         return E_FAIL;
-     
+ 
+
+
 	m_ePlayerMode = PLAYER_MODE_NORMAL;
 
     Set_PlatformerMode(false);
 
 	m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD,false);
     Set_State(CPlayer::IDLE);
+
+    // PlayerData Manager 등록
+    CPlayerData_Manager::GetInstance()->Register_Player(this);
+
     return S_OK;
 }
 
@@ -402,6 +410,7 @@ HRESULT CPlayer::Ready_PartObjects()
     m_PartObjects[PLAYER_PART_ZETPACK]->Set_Position({ 0.f,-0.1f,0.5f });
     Set_PartActive(PLAYER_PART_ZETPACK, false);
 
+
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_UP, true);
@@ -563,7 +572,6 @@ HRESULT CPlayer::Ready_Components()
     return S_OK;
 }
 
-
 void CPlayer::Priority_Update(_float _fTimeDelta)
 {
     if (KEY_DOWN(KEY::K))
@@ -580,7 +588,7 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 void CPlayer::Update(_float _fTimeDelta)
 {
-
+  
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
 
@@ -595,6 +603,8 @@ void CPlayer::Update(_float _fTimeDelta)
 		}
 	}
     __super::Update(_fTimeDelta); /* Part Object Update */
+    if (m_pInteractableObject && false == dynamic_cast<CBase*>(m_pInteractableObject)->Is_Active())
+        m_pInteractableObject = nullptr;
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
@@ -1048,7 +1058,11 @@ void CPlayer::StampSmash()
     if (nullptr == pSampleBook)
         return;
 
-    _vector v2DPosition = pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition());
+    _vector v2DPosition;
+    if (FAILED(pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition(),&v2DPosition)))
+    {
+        return;
+    }
     if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
     {
         m_pDetonator->Set_Bombable(m_pBombStmap->Place_Bomb(v2DPosition));
@@ -1152,6 +1166,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
 	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
+	if (m_bBlockInput)
+		return tResult;
 	if (STATE::DIE == Get_CurrentStateID())
     {
         if (KEY_DOWN(KEY::ENTER))
@@ -1264,6 +1280,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_Stamp()
 {
     PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
+    if (m_bBlockInput)
+        return tResult;
     _bool bIsStamping = CPlayer::STAMP == m_pStateMachine->Get_CurrentState()->Get_StateID();
 	if (false == bIsStamping) return tResult;
 
@@ -1302,7 +1320,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_ControlBook()
 {
     PLAYER_INPUT_RESULT tResult;
     _bool bIsTurningBook = CPlayer::TURN_BOOK == m_pStateMachine->Get_CurrentState()->Get_StateID();
-
+    if (m_bBlockInput)
+        return tResult;
     if (false == bIsTurningBook)
         return tResult;
     if (KEY_PRESSING(KEY::A))
@@ -1754,6 +1773,9 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::ERASE_PALM:
         m_pStateMachine->Transition_To(new CPlayerState_ErasePalmDecal(this));
         break;
+    case Client::CPlayer::GET_ITEM:
+        m_pStateMachine->Transition_To(new CPlayerState_GetItem(this));
+        break;
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -1888,31 +1910,46 @@ void CPlayer::Set_Upforce(_float _fForce)
     }
 
 }
-HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
+HRESULT CPlayer::CarryObject(CCarriableObject* _pCarryingObject)
+{
+    if (Is_CarryingObject())
+        return E_FAIL;
+    Set_CarryingObject(_pCarryingObject);
+
+    Set_State(PICKUPOBJECT);
+    return S_OK;
+}
+HRESULT CPlayer::LayDownObject()
+{
+    if (false == Is_CarryingObject())
+        return E_FAIL;
+    Set_State(LAYDOWNOBJECT);
+    Set_CarryingObject(nullptr);
+    return S_OK;
+}
+void CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
 {
     //손 비우기
     if (nullptr == _pCarryingObject)
     {
         if (Is_CarryingObject())
         {
-
             Safe_Release(m_pCarryingObject);
             m_pCarryingObject = nullptr;
         }
-        return S_OK;
+
     }
     //손에 물건 들리기
     else
     {
-        if (Is_CarryingObject())
-            return E_FAIL;
-        m_pCarryingObject = _pCarryingObject;
-        Safe_AddRef(m_pCarryingObject);
- 
-        Set_State(PICKUPOBJECT);
-    }
+        if (false == Is_CarryingObject())
+        {
+            m_pCarryingObject = _pCarryingObject;
+            Safe_AddRef(m_pCarryingObject);
+        }
 
-    return S_OK;
+    }
+    return;
 }
 
 void CPlayer::Set_GravityCompOn(_bool _bOn)
@@ -2028,15 +2065,9 @@ void CPlayer::ThrowObject()
     {
         pObj->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, Get_FinalPosition());
     }
-    pObj->Set_ParentMatrix(COORDINATE_2D, nullptr);
-    pObj->Set_ParentMatrix(COORDINATE_3D, nullptr);
-    pObj->Set_SocketMatrix(COORDINATE_3D, nullptr);
-    pObj->Set_SocketMatrix(COORDINATE_2D, nullptr);
-    pObj->Set_ParentBodyMatrix(COORDINATE_3D, nullptr);
-    pObj->Set_ParentBodyMatrix(COORDINATE_2D, nullptr);
-    pObj->Set_Carrier(nullptr);
+
 	pObj->Throw(vForce);
-	Set_CarryingObject(nullptr);
+    Set_CarryingObject(nullptr);
 }
 
 void CPlayer::SpinAttack()
@@ -2139,7 +2170,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 
        // }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
-
+		Set_BlockPlayerInput(!Is_PlayerInputBlocked());
     }
     if (m_pActorCom->Is_Kinematic())
     {
@@ -2205,7 +2236,7 @@ CGameObject* CPlayer::Clone(void* _pArg)
 
 void CPlayer::Free()
 {
-    // test
+
     Safe_Release(m_pBody2DColliderCom);
     Safe_Release(m_pBody2DTriggerCom);
     Safe_Release(m_pAttack2DTriggerCom);

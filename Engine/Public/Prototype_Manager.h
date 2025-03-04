@@ -35,6 +35,7 @@
 #include "RenderTarget.h"
 #include "Controller_Transform.h"
 #include "Controller_Model.h"
+#include "Light_Target.h"
 
 /* Camera */
 #include "Camera_Free.h"
