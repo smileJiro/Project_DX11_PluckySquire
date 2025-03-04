@@ -371,10 +371,12 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInit
 
 void CCamera_Manager::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
 {
-	if (nullptr == m_Cameras[TARGET] || TARGET != m_eCurrentCameraType)
-		return;
+	m_Cameras[m_eCurrentCameraType]->Change_Target(_pTargetWorldMatrix);
+}
 
-	static_cast<CCamera_Target*>(m_Cameras[TARGET])->Change_Target(_pTargetWorldMatrix);
+void CCamera_Manager::Change_CameraTarget(CGameObject* _pTarget)
+{
+	m_Cameras[m_eCurrentCameraType]->Change_Target(_pTarget);
 }
 
 _bool CCamera_Manager::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
