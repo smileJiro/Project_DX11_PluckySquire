@@ -216,7 +216,7 @@ void CEffect_System::Update(_float _fTimeDelta)
 	{
 #ifdef _DEBUG
 		pEmitter->Update(_fTimeDelta * m_fDebugTimeScale);
-#elif _DEBUG
+#elif NDEBUG
 		pEmitter->Update(_fTimeDelta);
 #endif
 
@@ -241,7 +241,7 @@ void CEffect_System::Late_Update(_float _fTimeDelta)
 	{
 #ifdef _DEBUG
 		pEmitter->Late_Update(_fTimeDelta * m_fDebugTimeScale);
-#elif _DEBUG
+#elif NDEBUG
 		pEmitter->Late_Update(_fTimeDelta);
 #endif
 
