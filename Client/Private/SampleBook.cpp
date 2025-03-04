@@ -564,7 +564,6 @@ void CSampleBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 		m_eCurAction = ACTION_LAST;
 	}
 #pragma endregion
-	Calc_Page3DWorldMinMax();
 }
 
 void CSampleBook::PageAction_Call_PlayerEvent()
@@ -680,7 +679,6 @@ void CSampleBook::Interact(CPlayer* _pUser)
 		}
 		else
 		{
-			Calc_Page3DWorldMinMax();
 			_pUser->Set_State(CPlayer::STAMP);
 		}
 	}
@@ -754,58 +752,63 @@ void CSampleBook::Execute_AnimEvent(_uint _iAnimIndex)
 	Set_Animation(_iAnimIndex);
 }
 
-//3DPos가 책에서 어떤 위치인지 계산하기
-_vector CSampleBook::Convert_Position_3DTo2D(_fvector _v3DPos)
+HRESULT CSampleBook::Convert_Position_3DTo2D(_fvector _v3DPos, _vector* _pOutPosition)
 {
-	_float2 vRatio = { (XMVectorGetX(_v3DPos) - m_v3DWorldMin.x) / (m_v3DWorldMax.x - m_v3DWorldMin.x)
-	, (XMVectorGetZ(_v3DPos) - m_v3DWorldMin.z) / (m_v3DWorldMax.z - m_v3DWorldMin.z) };
+	CSection_Manager* pSectionManager = CSection_Manager::GetInstance();
+	_float2 vRenderTargetSize = pSectionManager->Get_Section_RenderTarget_Size(pSectionManager->Get_Cur_Section_Key());
+	_float3	vBookWorldMin = pSectionManager->Get_BookMinWorldPos();
+	_float3	vBookWorldMax = pSectionManager->Get_BookMaxWorldPos();
+	_float2 vRatio = { (XMVectorGetX(_v3DPos) - vBookWorldMin.x) / (vBookWorldMax.x - vBookWorldMin.x)
+	, (XMVectorGetZ(_v3DPos) - vBookWorldMin.z) / (vBookWorldMax.z - vBookWorldMin.z) };
 
-	if (-0.03f > vRatio.x || 1.03f < vRatio.x
-		|| -0.03f > vRatio.y || 1.03f < vRatio.y)
-		return _vector();
+	if (-0.f > vRatio.x || 1.f < vRatio.x
+		|| -0.f > vRatio.y || 1.f < vRatio.y)
+		return E_FAIL;
 	// 2D 좌표계로 변환
 
-	_float2 v2DPos = { vRatio.x * m_v2DWorldPixelSize.x - m_v2DWorldPixelSize.x * 0.5f,
-		 vRatio.y * m_v2DWorldPixelSize.y - m_v2DWorldPixelSize.y * 0.5f };
-	return _vector{ v2DPos .x ,v2DPos .y };
+	*_pOutPosition = { vRatio.x * vRenderTargetSize.x - vRenderTargetSize.x * 0.5f,
+		 vRatio.y * vRenderTargetSize.y - vRenderTargetSize.y * 0.5f };
+	return S_OK;
 }
 
-void CSampleBook::Calc_Page3DWorldMinMax()
-{//1. 책의 3d 월드 상에서 Min,Max 점 얻기
-	//2. _v3DPos가  Min, Max 안의 어떤 비율의 지점에 있는지 계산
-	//3. 비율 * 책 크기(section->RenderResolution)
-	CSection_Manager* pSectionManager = SECTION_MGR;
-	CSection* pSection = pSectionManager->Find_Section(pSectionManager->Get_Cur_Section_Key());
-
-	if (nullptr == pSection)
-		return ;
-
-	CSection_2D* p2DSection = dynamic_cast<CSection_2D*>(pSection);
-
-	if (nullptr == p2DSection)
-		return ;
-
-	ID3D11Texture2D* pTexture2D = p2DSection->Get_WorldTexture();
-
-	// 맵핑하여 데이터 접근
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	if (FAILED(m_pContext->Map(pTexture2D, 0, D3D11_MAP_READ, 0, &mappedResource)))
-		return ;
-	// 2D Transform 위치를 픽셀 좌표계로 변환. 해당 텍스쳐의 가로 세로 사이즈를 알아야함.
-	m_v2DWorldPixelSize.x = mappedResource.RowPitch / sizeof(_float) / 4;
-	m_v2DWorldPixelSize.y = mappedResource.DepthPitch / mappedResource.RowPitch;
 
 
-	_uint iLeftBotIndex = m_v2DWorldPixelSize.x * (m_v2DWorldPixelSize.y - 1) * 4;
-	_uint iRightTopIndex = (m_v2DWorldPixelSize.x - 2) * 4;
-	// float4 데이터 읽기
-	_float* fData = static_cast<_float*>(mappedResource.pData);
-	m_v3DWorldMin = { fData[iLeftBotIndex],fData[iLeftBotIndex + 1],fData[iLeftBotIndex + 2] };
-	m_v3DWorldMax = { fData[iRightTopIndex],fData[iRightTopIndex + 1],fData[iRightTopIndex + 2] };
-
-
-	m_pContext->Unmap(pTexture2D, 0);
-}
+//void CSampleBook::Calc_Page3DWorldMinMax()
+//{//1. 책의 3d 월드 상에서 Min,Max 점 얻기
+//	//2. _v3DPos가  Min, Max 안의 어떤 비율의 지점에 있는지 계산
+//	//3. 비율 * 책 크기(section->RenderResolution)
+//	CSection_Manager* pSectionManager = SECTION_MGR;
+//	CSection* pSection = pSectionManager->Find_Section(pSectionManager->Get_Cur_Section_Key());
+//
+//	if (nullptr == pSection)
+//		return;
+//
+//	CSection_2D* p2DSection = dynamic_cast<CSection_2D*>(pSection);
+//
+//	if (nullptr == p2DSection)
+//		return;
+//
+//	ID3D11Texture2D* pTexture2D = p2DSection->Get_WorldTexture();
+//
+//	// 맵핑하여 데이터 접근
+//	D3D11_MAPPED_SUBRESOURCE mappedResource;
+//	if (FAILED(m_pContext->Map(pTexture2D, 0, D3D11_MAP_READ, 0, &mappedResource)))
+//		return;
+//	// 2D Transform 위치를 픽셀 좌표계로 변환. 해당 텍스쳐의 가로 세로 사이즈를 알아야함.
+//	m_v2DWorldPixelSize.x = mappedResource.RowPitch / sizeof(_float) / 4;
+//	m_v2DWorldPixelSize.y = mappedResource.DepthPitch / mappedResource.RowPitch;
+//
+//
+//	_uint iLeftBotIndex = m_v2DWorldPixelSize.x * (m_v2DWorldPixelSize.y - 1) * 4;
+//	_uint iRightTopIndex = (m_v2DWorldPixelSize.x - 2) * 4;
+//	// float4 데이터 읽기
+//	_float* fData = static_cast<_float*>(mappedResource.pData);
+//	vBookWorldMin = { fData[iLeftBotIndex],fData[iLeftBotIndex + 1],fData[iLeftBotIndex + 2] };
+//	vBookWorldMax = { fData[iRightTopIndex],fData[iRightTopIndex + 1],fData[iRightTopIndex + 2] };
+//
+//
+//	m_pContext->Unmap(pTexture2D, 0);
+//}
 
 CSampleBook* CSampleBook::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

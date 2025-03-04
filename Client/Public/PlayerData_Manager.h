@@ -53,6 +53,7 @@ public:
 
 public:
 	void					Change_PlayerItemMode(_uint _iPlayerItemType, _uint _iItemMode);
+	void					Change_PlayerItemMode(_wstring _strItemTag, _uint _iItemMode);
 
 public:
 	void					Register_Player(CPlayer* _pPlayer);
