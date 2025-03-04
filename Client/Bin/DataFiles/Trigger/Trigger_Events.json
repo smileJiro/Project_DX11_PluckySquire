@@ -104,7 +104,7 @@
     "Actions": [
       {
         "ActionTag": "Create_EventExecuter",
-        "EventTag": "Chapter2_Bettle_Page",
+        "EventTag": "Chapter2_OpenBookEvent",
         "Is_Sequence": true
       }
     ]

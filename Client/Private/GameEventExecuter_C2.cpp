@@ -458,8 +458,8 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Appear(_float _fTimeDelta)
 			pPlayer->Set_BlockPlayerInput(true);
 			CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
 
-			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.5f, 25.f, EASE_IN_OUT)
-				;/*
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.5f, 25.f, EASE_IN_OUT);
+			/*
 			CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET, 1.f,
 				CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_CurrentZoomLevel() + 5, EASE_IN_OUT
 			);*/
@@ -643,7 +643,7 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
-				XMVectorSet(0.f, 4.f, 0.f, 0.f),
+				XMVectorSet(0.f, 3.5f, 0.f, 0.f),
 				EASE_IN_OUT
 			);
 
@@ -740,7 +740,7 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 			pPlayer->Set_BlockPlayerInput(true);
 
 		}
-		Next_Step_Over(0.5f);
+		Next_Step(true);
 	}
 	else if (Step_Check(STEP_1))
 	{
@@ -754,7 +754,7 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
-				XMVectorSet(0.f, 3.f, 0.f, 0.f),
+				XMVectorSet(3.f, 3.f, 0.f, 0.f),
 				EASE_IN_OUT
 			);
 
@@ -816,14 +816,15 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 				CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_CurrentZoomLevel() - 1, EASE_IN_OUT
 			);
 
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.5f, 30.f, EASE_IN_OUT);
+
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
-				1.5f,
-				XMVectorSet(20.f, 8.f, -20.f, 0.f),
+				1.f,
+				XMVectorSet(21.f, 0.f, 0.f, 0.f),
 				EASE_IN_OUT
 			);
-
-			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-20.f), XMConvertToRadians(-2.f));
-			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-10.f), XMConvertToRadians(-2.f));
+			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(20.f), XMConvertToRadians(2.f));
+			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-30.f), XMConvertToRadians(-4.f));
 
 		}
 		Next_Step_Over(2.5f);
@@ -859,12 +860,28 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 
 			if (Next_Step(!pPage->Is_DuringAnimation()))
 			{
-				CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 0.5f);
+				CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+				//pCamera->Start_PostProcessing_Fade(CCamera::FADE_OUT, 0.5f);
+				CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.5f);
 				pPage->Set_Render(false);
 			}
 		}
 	}
+	else if (Step_Check(STEP_7))
+	{
+		Next_Step_Over(0.3f);
+	}
+	else if (Step_Check(STEP_8))
+	{
+		if (Is_Start())
+		{
+			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
 
+			//pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 0.5f);
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_BlockPlayerInput(false);
+		}
+	}
 	else
 	{
 		GameEvent_End();
