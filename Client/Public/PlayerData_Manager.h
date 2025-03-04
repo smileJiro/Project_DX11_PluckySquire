@@ -51,6 +51,9 @@ public:
 	void					Get_PlayerItem(_wstring _szItemTag);
 	void					Increase_BulbCount() { m_iBulbCount += 1; };
 
+public:
+	void					Change_PlayerItemMode(_uint _iPlayerItemType, _uint _iItemMode);
+
 private: 
 	CGameInstance*						m_pGameInstance = { nullptr };
 	ID3D11Device*						m_pDevice = { nullptr };
