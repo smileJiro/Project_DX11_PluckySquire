@@ -124,12 +124,15 @@ void CZipline::Ride_Down(_float _fTimeDelta)
 
 	if (fRatio >= (1.f - EPSILON)) {
 		// Player 떨어지기
-		// Zipline 삭제
+		m_pRidingObject->Set_GravityCompOn(true);
+
+		this->Set_Active(false);
 	}
 
 	_vector vPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMLoadFloat3(&m_vDestination), fRatio);
 	
-	m_pRidingObject->
+	m_pRidingObject->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vPos, 1.f));
+
 }
 
 CZipline* CZipline::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
