@@ -15,6 +15,7 @@
 #include "GameEventExecuter.h"
 #include "Effect_Manager.h"
 #include "SampleBook.h"
+#include "PlayerItem.h"
 #include "Magic_Hand.h"
 
 IMPLEMENT_SINGLETON(CTrigger_Manager)
@@ -497,8 +498,30 @@ void CTrigger_Manager::Resister_Trigger_Action()
 		CDialog_Manager::GetInstance()->Set_DialogId(_wszEventTag.c_str());
 		};
 
-	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) {
+	m_Actions[TEXT("Glove_Get_Before")] = [this](_wstring _wszEventTag) {
+		// 1. 플레이어 잠그기.
+		// 2. 애니메이션 재생하기컷씬 카메라 위치로 고정하기
+		
+		CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Set_BlockPlayerInput(true);
+		CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
+		CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 0.f, 4.f, EASE_IN_OUT);
+		auto Arm = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_Arm();
+		Arm->Turn_ArmY(XMConvertToRadians(40.f));
+		Arm->Turn_ArmX(XMConvertToRadians(40.f));
+		};
+	
+	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) 
+		{
+
+		CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_ITEM_GET_NEWRIG);
 		CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
+		};
+	
+	m_Actions[TEXT("Glove_Get_After")] = [this](_wstring _wszEventTag) 
+{
+		CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Set_BlockPlayerInput(false);
+		CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Set_State(CPlayer::STATE::IDLE);
+		CPlayerData_Manager::GetInstance()->Change_PlayerItemMode(_wszEventTag, CPlayerItem::DISAPPEAR);
 		};
 
 	m_Actions[TEXT("Active_MagicDust")] = [this](_wstring _wszEventTag) 
@@ -506,10 +529,12 @@ void CTrigger_Manager::Resister_Trigger_Action()
 		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
 		};
 
-	m_Actions[TEXT("Active_BookMagicDust")] = [this](_wstring _wszEventTag) {
+	m_Actions[TEXT("Active_BookMagicDust")] = [this](_wstring _wszEventTag) 
+{
 		static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
 		};
-	m_Actions[TEXT("Active_MagicHand")] = [this](_wstring _wszEventTag) {
+	m_Actions[TEXT("Active_MagicHand")] = [this](_wstring _wszEventTag) 
+{
 		static_cast<CMagic_Hand*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_MagicHand"), 0))->Set_Start(true);
 		};
 	m_Actions[TEXT("Create_EventExecuter")] = [this](_wstring _wszEventTag) 

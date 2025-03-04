@@ -455,6 +455,20 @@ void CSection_Manager::Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPo
 
 	m_pBookWorldPosMap = _pBookWorldPosMap;
 
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	if (FAILED(m_pContext->Map(m_pBookWorldPosMap, 0, D3D11_MAP_READ, 0, &mappedResource)))
+		return;
+	// 2D Transform 위치를 픽셀 좌표계로 변환. 해당 텍스쳐의 가로 세로 사이즈를 알아야함.
+	m_vBookWorldPixelSize.x = mappedResource.RowPitch / sizeof(_float) / 4;
+	m_vBookWorldPixelSize.y = mappedResource.DepthPitch / mappedResource.RowPitch;
+
+	_uint iLeftBotIndex = m_vBookWorldPixelSize.x * (m_vBookWorldPixelSize.y - 1) * 4;
+	_uint iRightTopIndex = (m_vBookWorldPixelSize.x - 2) * 4;
+	// float4 데이터 읽기
+	_float* fData = static_cast<_float*>(mappedResource.pData);
+	m_vBookWorldMin = { fData[iLeftBotIndex],fData[iLeftBotIndex + 1],fData[iLeftBotIndex + 2] };
+	m_vBookWorldMax = { fData[iRightTopIndex],fData[iRightTopIndex + 1],fData[iRightTopIndex + 2] };
+	m_pContext->Unmap(m_pBookWorldPosMap, 0);
 
 	for (auto& SectionPair : m_CurLevelSections)
 	{

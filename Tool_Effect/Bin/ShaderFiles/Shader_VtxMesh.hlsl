@@ -47,6 +47,7 @@ float4 g_vDefaultDiffuseColor;
 
 float2 g_fStartUV;
 float2 g_fEndUV;
+float4 g_vColor, g_vSubColor;
 
 /* ±¸Á¶Ã¼ */
 struct VS_IN
@@ -385,6 +386,29 @@ PS_DIFFUSE PS_MAIN2(PS_IN In)
     return Out;
 }
 
+struct PS_BLOOM
+{
+    float4 vDiffuse : SV_TARGET0;
+    float4 vBrightness : SV_TARGET1;
+    float2 vDistortion : SV_TARGET2;
+};
+
+PS_BLOOM PS_EMISSIVE(PS_IN In)
+{
+    PS_BLOOM Out = (PS_BLOOM) 0;    
+        
+    float4 vColor = g_vColor;
+           
+    //float fLuminance = dot(vColor.rgb, g_fBrightness);
+    //float fBrightness = max(fLuminance - g_fBloomThreshold, 0.0) / (length(vColor.rgb) * 0.33f - g_fBloomThreshold);
+    
+    Out.vDiffuse = vColor;
+    Out.vBrightness = g_vSubColor;
+    
+    return Out;
+}
+
+
 technique11 DefaultTechnique
 {
     pass DefaultPass // 0
@@ -499,6 +523,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_SHADOWMAP();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SHADOWMAP();
+    }
+
+    pass Emissive // 11
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_EMISSIVE();
     }
 }
 

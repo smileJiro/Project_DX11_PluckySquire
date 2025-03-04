@@ -61,6 +61,7 @@ private:
 	void							Chapter2_BookMagic(_float _fTimeDelta);
 	void							Chapter2_Intro(_float _fTimeDelta);
 	void							Chapter2_Humgrump(_float _fTimeDelta);
+
 	void							Chapter2_Lunchbox_Appear(_float _fTimeDelta);
 	void							Chapter2_Lunchbox_Open(_float _fTimeDelta);
 	void							Chapter2_Bettle_Page(_float _fTimeDelta);
