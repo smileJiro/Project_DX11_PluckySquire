@@ -486,6 +486,36 @@ void CCamera_Manager::Start_Changing_ArmLength(CAMERA_TYPE _eCameraType, _float 
 	m_Cameras[_eCameraType]->Start_Changing_ArmLength(_fLengthTime, _fLength, (RATIO_TYPE)_iRatioType);
 }
 
+void CCamera_Manager::Start_Changing_ArmLength_Decrease(CAMERA_TYPE _eCameraType, _float _fLengthTime, _float _fDecreaseValue, _uint _iRatioType)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	CCameraArm* pArm = m_Cameras[_eCameraType]->Get_Arm();
+
+	if (nullptr == pArm)
+		return;
+
+	_float fLength = pArm->Get_Length();
+
+	m_Cameras[_eCameraType]->Start_Changing_ArmLength(_fLengthTime, fLength - _fDecreaseValue, (RATIO_TYPE)_iRatioType);
+}
+
+void CCamera_Manager::Start_Changing_ArmLength_Increase(CAMERA_TYPE _eCameraType, _float _fLengthTime, _float _fIncreaseValue, _uint _iRatioType)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	CCameraArm* pArm = m_Cameras[_eCameraType]->Get_Arm();
+
+	if (nullptr == pArm)
+		return;
+
+	_float fLength = pArm->Get_Length();
+
+	m_Cameras[_eCameraType]->Start_Changing_ArmLength(_fLengthTime, fLength + _fIncreaseValue, (RATIO_TYPE)_iRatioType);
+}
+
 void CCamera_Manager::Set_ResetData(CAMERA_TYPE _eCameraType)
 {
 	if (nullptr == m_Cameras[_eCameraType])
