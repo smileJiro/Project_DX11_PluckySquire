@@ -195,12 +195,6 @@ void CCameraArm::Set_StartInfo()
     m_fStartLength = m_fLength;
 }
 
-//void CCameraArm::Set_StartInfo(_fvector _vStartArm, _float _fStartLength)
-//{
-//    XMStoreFloat3(&m_vStartArm, _vStartArm);
-//    m_fStartLength = _fStartLength;
-//}
-
 void CCameraArm::Turn_ArmX(_float fAngle)
 {
     // Right축
@@ -549,6 +543,84 @@ _bool CCameraArm::Move_To_FreezeExitArm(_float _fRatio, _fvector _vFreezeExitArm
     // Length는 아직 하지 말아 보기
     XMStoreFloat3(&m_vArm, XMVector3Normalize(vArm));
     m_pTransform->Set_Look(vArm);
+
+    return false;
+}
+
+_bool CCameraArm::Reset_To_SettingPoint(_float _fRatio, _fvector _vSettingPoint, _float _fSettingLength)
+{
+    if (_fRatio >= (1.f - EPSILON)) {
+        XMStoreFloat3(&m_vArm, XMVector3Normalize(_vSettingPoint));
+        m_pTransform->Set_Look(XMLoadFloat3(&m_vArm));
+        m_vStartArm = { 0.f, 0.f, 0.f };
+        m_fLength = _fSettingLength;
+        return true;
+    }
+
+    _vector vArm = XMVectorLerp(XMLoadFloat3(&m_vStartArm), _vSettingPoint, _fRatio);
+    m_fLength = m_pGameInstance->Lerp(m_fStartLength, _fSettingLength, _fRatio);
+    XMStoreFloat3(&m_vArm, XMVector3Normalize(vArm));
+    m_pTransform->Set_Look(vArm);
+
+    return false;
+}
+
+_bool CCameraArm::Turn_AxisY(ARM_DATA* _pCustomData, _float _fTimeDelta)
+{
+    _float fRatio = m_pGameInstance->Calculate_Ratio(&_pCustomData->fMoveTimeAxisY, _fTimeDelta, LERP);
+
+    if (fRatio >= (1.f - EPSILON)) {
+        _pCustomData->fMoveTimeAxisY.y = 0.f;
+        return true;
+    }
+    else {
+        _float fRotationPerSec = m_pGameInstance->Lerp(_pCustomData->fRotationPerSecAxisY.x, _pCustomData->fRotationPerSecAxisY.y, fRatio);
+        m_pTransform->Set_RotationPerSec(fRotationPerSec);
+
+        m_pTransform->Turn(_fTimeDelta, XMVectorSet(0.0f, 1.f, 0.f, 0.f));
+
+        _vector vLook = m_pTransform->Get_State(CTransform::STATE_LOOK);
+        XMStoreFloat3(&m_vArm, vLook);
+    }
+
+    return false;
+}
+
+_bool CCameraArm::Turn_AxisRight(ARM_DATA* _pCustomData, _float _fTimeDelta)
+{
+    _float fRatio = m_pGameInstance->Calculate_Ratio(&_pCustomData->fMoveTimeAxisRight, _fTimeDelta, LERP);
+
+    if (fRatio >= (1.f - EPSILON)) {
+        _pCustomData->fMoveTimeAxisRight.y = 0.f;
+        return true;
+    }
+    else {
+        _float fRotationPerSec = m_pGameInstance->Lerp(_pCustomData->fRotationPerSecAxisRight.x, _pCustomData->fRotationPerSecAxisRight.y, fRatio);
+        m_pTransform->Set_RotationPerSec(fRotationPerSec);
+
+        _vector vCross = XMVector3Cross(XMLoadFloat3(&m_vArm), XMVectorSet(0.f, 1.f, 0.f, 0.f));
+
+        m_pTransform->Turn(_fTimeDelta, vCross);
+
+        _vector vLook = m_pTransform->Get_State(CTransform::STATE_LOOK);
+        XMStoreFloat3(&m_vArm, vLook);
+    }
+
+    return false;
+}
+
+_bool CCameraArm::Change_Length(ARM_DATA* _pCustomData, _float _fTimeDelta)
+{
+    _float fRatio = Calculate_Ratio(&_pCustomData->fLengthTime, _fTimeDelta, _pCustomData->iLengthRatioType);
+
+    if (fRatio >= (1.f - EPSILON)) {
+        _pCustomData->fLengthTime.y = 0.f;
+        m_fLength = _pCustomData->fLength;
+        return true;
+    }
+    else {
+        m_fLength = m_pGameInstance->Lerp(m_fStartLength, _pCustomData->fLength, fRatio);
+    }
 
     return false;
 }

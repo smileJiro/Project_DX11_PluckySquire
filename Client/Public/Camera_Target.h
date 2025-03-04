@@ -9,7 +9,7 @@ BEGIN(Client)
 class CCamera_Target  : public CCamera
 {
 public:
-	enum CAMERA_MODE { DEFAULT, MOVE_TO_NEXTARM, RETURN_TO_PREARM, RETURN_TO_DEFUALT, MOVE_TO_CUSTOMARM,  CAMERA_MODE_END };
+	enum CAMERA_MODE { DEFAULT, MOVE_TO_NEXTARM, RETURN_TO_PREARM, RETURN_TO_DEFUALT, MOVE_TO_CUSTOMARM, RESET_TO_SETTINGPOINT, CAMERA_MODE_END };
 	enum TARGET_STATE { TARGET_RIGHT, TARGET_UP, TARGET_LOOK, TARGET_POS, TARGET_STATE_END };
 
 	typedef struct tagCameraTargetDesc : public CCamera::CAMERA_DESC
@@ -85,8 +85,12 @@ public:
 	void						Set_InitialData(pair<ARM_DATA*, SUB_DATA*>* pData);
 	void						Set_InitialData(_fvector _vArm, _float _fLength, _fvector _vOffset, _uint _iZoomLevel);
 
-	void						Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
+	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix) override;
+	virtual void				Turn_AxisY(_float _fTimeDelta) override;
+	virtual void				Turn_AxisRight(_float _fTimeDelta) override;
+	virtual void				Change_Length(_float _fTimeDelta) override;
+	virtual void				Start_ResetArm_To_SettingPoint(_float _fResetTime) override;
 
 	void						Load_InitialArmTag();
 
@@ -105,7 +109,6 @@ private:
 
 	// Arm
 	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>	m_ArmDatas;
-	CCameraArm*					m_pCurArm = { nullptr };
 
 	// Freeze
 	_uint						m_iFreezeMask = {};
@@ -130,9 +133,6 @@ private:
 	list<pair<RETURN_SUBDATA, _bool>> m_PreSubArms;
 	_int						m_iCurTriggerID = {};
 
-	// CustomArm
-	ARM_DATA					m_CustomArmData = {};
-
 	// Portal Initial Data
 	map<_wstring, vector<_wstring>> m_SkspInitialTags;
 
@@ -151,6 +151,7 @@ private:
 	void						Move_To_PreArm(_float _fTimeDelta);
 	void						Move_To_CustomArm(_float _fTimeDelta);
 	void						Move_To_ExitArm(_float _fTimeDelta);
+	void						Reset_To_SettingPoint(_float _fTimeDelta);
 
 	_vector						Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fTimeDelta);
 	void						Calculate_FreezeOffset(_vector* _pTargetPos);

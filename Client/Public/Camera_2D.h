@@ -21,6 +21,8 @@ public:
 		FLIPPING_PAUSE,
 		FLIPPING_DOWN,
 		NARRATION,
+		RESET_TO_SETTINGPOINT,
+
 		CAMERA_2D_MODE_END 
 	};
 
@@ -98,12 +100,15 @@ public:
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
 	virtual void				Change_Target(const _float4x4* _pTargetMatrix) { m_pTargetWorldMatrix = _pTargetMatrix; }
 	virtual void				Change_Target(CGameObject* _pTarget);
+	virtual void				Turn_AxisY(_float _fTimeDelta) override;
+	virtual void				Turn_AxisRight(_float _fTimeDelta) override;
+	virtual void				Change_Length(_float _fTimeDelta) override;
+	virtual void				Start_ResetArm_To_SettingPoint(_float _fResetTime) override;
 
 private:
 	const _float4x4* 			m_pTargetWorldMatrix = { nullptr };
 	CAMERA_2D_MODE				m_eCameraMode = { CAMERA_2D_MODE_END };
 	CAMERA_2D_MODE				m_ePreCameraMode = { DEFAULT };
-	CCameraArm*					m_pCurArm = { nullptr };
 	COORDINATE					m_eTargetCoordinate = { COORDINATE_2D };
 
 	_float						m_fSmoothSpeed = {};
@@ -138,9 +143,6 @@ private:
 	// Arm
 	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>	m_ArmDatas;
 
-	// CustomArm
-	ARM_DATA					m_CustomArmData = {};
-
 	// Portal ID
 	_uint						m_iPortalID = {};
 
@@ -160,6 +162,7 @@ private:
 	void						Flipping_Pause(_float _fTimeDelta);
 	void						Flipping_Down(_float _fTimeDelta);
 	void						Play_Narration(_float _fTimeDelta);
+	void						Reset_To_SettingPoint(_float _fTimeDelta);
 	
 	void						Look_Target(_float fTimeDelta);
 	_vector						Calculate_CameraPos(_float _fTimeDelta);

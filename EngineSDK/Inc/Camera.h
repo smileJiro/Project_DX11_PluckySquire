@@ -110,6 +110,15 @@ public:
 	void		Start_Shake_ByTime(_float _fShakeTime, _float _fShakeForce, _float _fShakeCycleTime = 0.05f, SHAKE_TYPE _ShakeType = SHAKE_TYPE::SHAKE_XY, _float _fDelayTime = 0.f);
 	void		Start_Shake_ByCount(_float _fShakeTime, _float _fShakeForce, _int _iShakeCount, SHAKE_TYPE _ShakeType = SHAKE_TYPE::SHAKE_XY, _float _fDelayTime = 0.f);
 	void		Start_PostProcessing_Fade(FADE_TYPE _eFadeType, _float _fFadeTime = 1.0f);
+
+	void		Start_Turn_AxisY(_float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec);
+	void		Start_Turn_AxisRight(_float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec);
+	void		Start_Changing_ArmLength(_float _fLengthTime, _float _fLength, RATIO_TYPE _eRatioType);
+	virtual void		Start_ResetArm_To_SettingPoint(_float _fResetTime) {};
+
+	void		Set_ResetData();
+	//void		Reset_CameraArm();
+
 public:/* Dof 값 조절 후 Bind_DofBuffer() 호출 시 적용 */
 	HRESULT		Compute_FocalLength();
 	HRESULT		Bind_DofConstBuffer();
@@ -118,14 +127,19 @@ public:
 	void		End_Shake();
 
 protected:
-	void		Action_Zoom(_float _fTimeDelta);
-	void		Change_AtOffset(_float _fTimeDelta);
-	void		Action_Shake(_float _fTimeDelta);
-	void		Action_PostProcessing_Fade(_float _fTimeDelta);
-	_float		Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
+	void			Action_Zoom(_float _fTimeDelta);
+	void			Change_AtOffset(_float _fTimeDelta);
+	void			Action_Shake(_float _fTimeDelta);
+	void			Action_PostProcessing_Fade(_float _fTimeDelta);
+	
+	virtual void	Turn_AxisY(_float _fTimeDelta) {};
+	virtual void	Turn_AxisRight(_float _fTimeDelta) {};
+	virtual void	Change_Length(_float _fTimeDelta) {};
+	virtual void	Reset_To_SettingPoint(_float _fTimeDelta) {};
+	
+	_float			Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
 
-	virtual void		Switching(_float _fTimeDelta) {};
-
+	virtual void	Switching(_float _fTimeDelta) {};
 
 protected: /* Zoom */
 	_float		m_ZoomLevels[(_uint)ZOOM_LAST] = {};
@@ -175,6 +189,19 @@ protected:
 protected:
 	FADE_TYPE					m_eFadeType = FADE_TYPE::FADE_LAST;
 	_float2						m_vFadeTime = { 1.0f, 0.0f };
+
+protected:
+	class CCameraArm* m_pCurArm = { nullptr };
+	_bool						m_isChangingLength = { false };
+	_bool						m_isTurnAxisY = { false };
+	_bool						m_isTurnAxisRight = { false };
+
+	// CustomArm
+	ARM_DATA					m_CustomArmData = {};
+
+	// 해당 지점으로 카메라 복구
+	RETURN_ARMDATA				m_ResetArmData = {};
+	_float2						m_fResetTime = {};
 
 private:
 	HRESULT						Ready_DofConstData(CAMERA_DESC* _pDesc);
