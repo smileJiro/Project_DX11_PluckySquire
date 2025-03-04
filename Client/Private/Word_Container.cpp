@@ -80,6 +80,27 @@ HRESULT CWord_Container::Render()
 
 }
 
+void CWord_Container::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	if (OBJECT_GROUP::INTERACTION_OBEJCT == _pOtherObject->Get_ObjectGroupID())
+	{
+		CWord* pWord = dynamic_cast<CWord*>(_pOtherObject);
+		if (nullptr != pWord)
+		{
+			if (pWord->Is_LayedDown())
+			{
+				Set_Word(pWord);
+				pWord->Set_LayDown(false);
+				m_pOnwer->Update_Text();
+			}
+		}
+	}
+
+}
+
+
+
+
 CWord_Container* CWord_Container::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CWord_Container* pInstance = new CWord_Container(_pDevice, _pContext);
@@ -119,28 +140,28 @@ void CWord_Container::Interact(CPlayer* _pUser)
 	if (_pUser->Is_CarryingObject())
 	{
 		CCarriableObject* pObj =  _pUser->Get_CarryingObject();
-		CWord* pWord = dynamic_cast<CWord*>(pObj);
-		if (nullptr != pWord)
-		{
-			Set_Word(pWord);
-			m_pOnwer->Update_Text();
-			_pUser->Set_CarryingObject(nullptr);
-			pWord->Set_Carrier(nullptr);
-		}
+		//CWord* pWord = dynamic_cast<CWord*>(pObj);
+		//if (nullptr != pWord)
+		//{
+		//	Set_Word(pWord);
+		//	m_pOnwer->Update_Text();
+		//	_pUser->Set_CarryingObject(nullptr);
+		//	pWord->Set_Carrier(nullptr);
+		//}
 	}
 	else 
 	{
-		if (nullptr != m_pMyWord)
+		/*if (nullptr != m_pMyWord)
 		{
 			Pop_Word();
 			_pUser->Set_CarryingObject(m_pMyWord);
-		}
+		}*/
 	}
 }
 
 _bool CWord_Container::Is_Interactable(CPlayer* _pUser)
 {
-	return _pUser->Is_CarryingObject();
+	return false;//_pUser->Is_CarryingObject();
 }
 
 _float CWord_Container::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)

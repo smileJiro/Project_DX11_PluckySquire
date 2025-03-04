@@ -212,6 +212,16 @@ HRESULT CWord::Ready_Components()
 	return S_OK;
 }
 
+void CWord::On_LayDownEnd(_fmatrix _matWoroverride)
+{
+	m_bLaydown = true;
+}
+
+void CWord::On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset)
+{
+	m_bLaydown = false;
+}
+
 
 
 void CWord::Interact(CPlayer* _pUser)
