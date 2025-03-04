@@ -41,6 +41,8 @@
 *.exp
 *.enc
 *.cso
+*.iobj
+*.ipdb
 *.recipe
 .vs/
 /Client/Default/x64/Debug/pick_bulb.obj.enc
