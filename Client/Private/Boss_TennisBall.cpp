@@ -25,6 +25,9 @@ HRESULT CBoss_TennisBall::Initialize(void* _pArg)
 {
     BOSS_TENNISBALL_DESC* pDesc = static_cast<BOSS_TENNISBALL_DESC*>(_pArg);
 
+    if (FAILED(Ready_ActorDesc(pDesc)))
+        return E_FAIL;
+
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
@@ -33,6 +36,16 @@ HRESULT CBoss_TennisBall::Initialize(void* _pArg)
 
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
+
+
+    /* Actor Desc 채울 때 쓴 데이터 할당해제 */
+
+    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
+    {
+        Safe_Delete(pDesc->pActorDesc->ShapeDatas[i].pShapeDesc);
+    }
+    Safe_Delete(pDesc->pActorDesc);
+
 
     m_iObjectGroupID = OBJECT_GROUP::BOSS_PROJECTILE;
 
@@ -201,7 +214,7 @@ HRESULT CBoss_TennisBall::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC* ShapeDesc = new SHAPE_SPHERE_DESC;
-    ShapeDesc->fRadius = 20.f;
+    ShapeDesc->fRadius = 3.f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;

@@ -106,8 +106,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Gravity(false);
 
-    m_PartObjects[BOSSPART_SHIELD]->Set_Active(false);
     m_PartObjects[BOSSPART_SHIELD]->Get_ControllerTransform()->RotationXYZ(_float3(0.f, 90.f, 0.f));
+    m_PartObjects[BOSSPART_SHIELD]->Set_Active(false);
 
     //플레이어 위치 가져오기
     m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
@@ -241,6 +241,10 @@ void CButterGrump::Change_Animation()
 
         case BOSS_STATE::SHIELD:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ROAR);
+            break;
+
+        case BOSS_STATE::HIT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RECEIVE_DAMAGE);
             break;
 
         default:
@@ -524,6 +528,10 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         Set_AnimChangeable(true);
         break;
 
+    case RECEIVE_DAMAGE:
+        Set_AnimChangeable(true);
+        break;
+
     default:
         break;
     }
@@ -752,8 +760,10 @@ HRESULT CButterGrump::Ready_PartObjects()
     ShieldDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::ALPHABLEND;
 
-    ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(-7.0f, 0.0f, -5.0f);
-    ShieldDesc.tTransform3DDesc.vInitialScaling = _float3(25.0f, 25.0f, 25.0f);
+    _float fScale = 25.f;
+
+	ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(fScale * (-0.3f), 0.0f, fScale * (-0.5f));
+    ShieldDesc.tTransform3DDesc.vInitialScaling = _float3(fScale, fScale, fScale);
     ShieldDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
     ShieldDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
 
@@ -842,7 +852,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     pWingSlamDesc->iCurLevelID = m_iCurLevelID;
 
     pWingSlamDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pWingSlamDesc->tTransform3DDesc.fSpeedPerSec = 50.f;
+    pWingSlamDesc->tTransform3DDesc.fSpeedPerSec = 70.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_WingSlam"), Pooling_Desc, pWingSlamDesc);
 
