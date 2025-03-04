@@ -111,12 +111,12 @@
   },
   {
     "Trigger_EventTag": "Get_Flipping_Glove",
-	  {
+    "Actions": [
+      {
         "ActionTag": "Glove_Get_Before",
         "EventTag": "Flipping_Glove",
-        "Is_Sequence": true
-      }
-	"Actions": [
+        "Is_Sequence": false
+      },
       {
         "ActionTag": "Get_PlayerItem",
         "EventTag": "Flipping_Glove",
@@ -127,11 +127,11 @@
         "EventTag": "Gauntlet_Acquire_01",
         "Is_Sequence": true
       },
-	  {
+      {
         "ActionTag": "Glove_Get_After",
         "EventTag": "Flipping_Glove",
-        "Is_Sequence": true
-      }
+        "Is_Sequence": false
+      },
       {
         "ActionTag": "Create_EventExecuter",
         "EventTag": "Chapter2_StorySequence",

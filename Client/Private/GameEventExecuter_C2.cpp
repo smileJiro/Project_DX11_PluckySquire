@@ -906,8 +906,6 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
-
 			CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET, 1.f,
 				CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_CurrentZoomLevel() - 1, EASE_IN_OUT
 			);
@@ -917,10 +915,6 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				XMVectorSet(3.f, 3.f, 0.f, 0.f),
 				EASE_IN_OUT
 			);
-
-			/*		CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-20.f), XMConvertToRadians(-2.f));
-					CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-10.f), XMConvertToRadians(-2.f));*/
-
 		}
 		Next_Step_Over(2.f);
 	}
