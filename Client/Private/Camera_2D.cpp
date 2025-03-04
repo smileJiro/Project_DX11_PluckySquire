@@ -48,6 +48,7 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 
 	m_eMagnificationType = HORIZON_NON_SCALE;
 	m_iFreezeMask |= FREEZE_Z;
+	m_eTargetCoordinate = { COORDINATE_2D };
 
 	// TargetChangineTime이 Camera에 있는데 여기서는 TrackingTime으로 쫓아가는 게 나을 것 같기도
 
@@ -72,7 +73,7 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 #ifdef _DEBUG
-	//Imgui(fTimeDelta);
+	Imgui(fTimeDelta);
 #endif
 
 	Switching(fTimeDelta);
@@ -125,6 +126,8 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 {
 	if (nullptr == m_pCurArm)
 		return;
+	
+	m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 
 	// Sketch Space 면에 따라서 Arm 바꿔 주기
 	if (CSection_Manager::GetInstance()->is_WordPos_Capcher()) 
@@ -244,6 +247,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		}
 
 		Check_MagnificationType();
+
 	}
 }
 
@@ -338,6 +342,7 @@ void CCamera_2D::Set_InitialData(_wstring _szSectionTag)
 
 	if (TEXT("Chapter4_SKSP_02") == _szSectionTag) {
 		pData = Find_ArmData(TEXT("Custom_Flag"));
+		m_eCameraMode = FREEZE;
 	}
 	else if (TEXT("Chapter4_SKSP_07") == _szSectionTag) {
 		pData = Find_ArmData(TEXT("Custom_Stair"));
@@ -391,6 +396,7 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);*/
 #pragma endregion
 
+//	m_eCameraMode = DEFAULT;
 	Find_TargetPos();
 
 	Action_Zoom(_fTimeDelta);
@@ -411,9 +417,6 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	case MOVE_TO_CUSTOMARM:
 		Move_To_CustomArm(_fTimeDelta);
 		break;
-	case RETURN_TO_DEFUALT:
-		Return_To_Default(_fTimeDelta);
-		break;
 	case FLIPPING_UP:
 		Flipping_Up(_fTimeDelta);
 		break;
@@ -425,6 +428,9 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 		break;
 	case RESET_TO_SETTINGPOINT:
 		Reset_To_SettingPoint(_fTimeDelta);
+		break;
+	case FREEZE:
+		Freeze(_fTimeDelta);
 		break;
 	}
 }
@@ -439,8 +445,6 @@ void CCamera_2D::Action_SetUp_ByMode()
 		case MOVE_TO_NEXTARM:
 			break;
 		case MOVE_TO_CUSTOMARM:
-			break;
-		case RETURN_TO_DEFUALT:
 			break;
 		case FLIPPING_UP:
 		{	
@@ -532,11 +536,6 @@ void CCamera_2D::Move_To_CustomArm(_float _fTimeDelta)
 	Look_Target(_fTimeDelta);
 }
 
-
-void CCamera_2D::Return_To_Default(_float _fTimeDelta)
-{
-}
-
 void CCamera_2D::Flipping_Up(_float _fTimeDelta)
 {	
 	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta, true)) {
@@ -597,6 +596,10 @@ void CCamera_2D::Reset_To_SettingPoint(_float _fTimeDelta)
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
 
 	Look_Target(_fTimeDelta);
+}
+
+void CCamera_2D::Freeze(_float _fTimeDelta)
+{
 }
 
 void CCamera_2D::Look_Target(_float fTimeDelta)
@@ -677,7 +680,6 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 		m_InitialTime.y = 0.f;
 		m_isInitialData = false;
 
-		m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 		return;
 	}
 
