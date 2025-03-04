@@ -30,6 +30,7 @@
 #include "PlayerState_Stamp.h"
 #include "PlayerState_Bomber.h"
 #include "PlayerState_ErasePalmDecal.h"
+#include "PlayerState_GetItem.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -1771,6 +1772,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::ERASE_PALM:
         m_pStateMachine->Transition_To(new CPlayerState_ErasePalmDecal(this));
+        break;
+    case Client::CPlayer::GET_ITEM:
+        m_pStateMachine->Transition_To(new CPlayerState_GetItem(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;
