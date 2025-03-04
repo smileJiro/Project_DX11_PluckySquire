@@ -1895,31 +1895,46 @@ void CPlayer::Set_Upforce(_float _fForce)
     }
 
 }
-HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
+HRESULT CPlayer::CarryObject(CCarriableObject* _pCarryingObject)
+{
+    if (Is_CarryingObject())
+        return E_FAIL;
+    Set_CarryingObject(_pCarryingObject);
+
+    Set_State(PICKUPOBJECT);
+    return S_OK;
+}
+HRESULT CPlayer::LayDownObject()
+{
+    if (false == Is_CarryingObject())
+        return E_FAIL;
+    Set_State(LAYDOWNOBJECT);
+    Set_CarryingObject(nullptr);
+    return S_OK;
+}
+void CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
 {
     //손 비우기
     if (nullptr == _pCarryingObject)
     {
         if (Is_CarryingObject())
         {
-
             Safe_Release(m_pCarryingObject);
             m_pCarryingObject = nullptr;
         }
-        return S_OK;
+
     }
     //손에 물건 들리기
     else
     {
-        if (Is_CarryingObject())
-            return E_FAIL;
-        m_pCarryingObject = _pCarryingObject;
-        Safe_AddRef(m_pCarryingObject);
- 
-        Set_State(PICKUPOBJECT);
-    }
+        if (false == Is_CarryingObject())
+        {
+            m_pCarryingObject = _pCarryingObject;
+            Safe_AddRef(m_pCarryingObject);
+        }
 
-    return S_OK;
+    }
+    return;
 }
 
 void CPlayer::Set_GravityCompOn(_bool _bOn)
@@ -2037,7 +2052,7 @@ void CPlayer::ThrowObject()
     }
 
 	pObj->Throw(vForce);
-	Set_CarryingObject(nullptr);
+    Set_CarryingObject(nullptr);
 }
 
 void CPlayer::SpinAttack()
