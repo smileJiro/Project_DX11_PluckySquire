@@ -605,7 +605,7 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 void CPlayer::Update(_float _fTimeDelta)
 {
-
+  
     Key_Input(_fTimeDelta);
     COORDINATE eCoord  =  Get_CurCoord();
 
@@ -620,6 +620,8 @@ void CPlayer::Update(_float _fTimeDelta)
 		}
 	}
     __super::Update(_fTimeDelta); /* Part Object Update */
+    if (m_pInteractableObject && false == dynamic_cast<CBase*>(m_pInteractableObject)->Is_Active())
+        m_pInteractableObject = nullptr;
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
@@ -1177,6 +1179,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
 	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
+	if (m_bBlockInput)
+		return tResult;
 	if (STATE::DIE == Get_CurrentStateID())
     {
         if (KEY_DOWN(KEY::ENTER))
@@ -1289,6 +1293,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_Stamp()
 {
     PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
+    if (m_bBlockInput)
+        return tResult;
     _bool bIsStamping = CPlayer::STAMP == m_pStateMachine->Get_CurrentState()->Get_StateID();
 	if (false == bIsStamping) return tResult;
 
@@ -1327,7 +1333,8 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_ControlBook()
 {
     PLAYER_INPUT_RESULT tResult;
     _bool bIsTurningBook = CPlayer::TURN_BOOK == m_pStateMachine->Get_CurrentState()->Get_StateID();
-
+    if (m_bBlockInput)
+        return tResult;
     if (false == bIsTurningBook)
         return tResult;
     if (KEY_PRESSING(KEY::A))
@@ -1913,31 +1920,46 @@ void CPlayer::Set_Upforce(_float _fForce)
     }
 
 }
-HRESULT CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
+HRESULT CPlayer::CarryObject(CCarriableObject* _pCarryingObject)
+{
+    if (Is_CarryingObject())
+        return E_FAIL;
+    Set_CarryingObject(_pCarryingObject);
+
+    Set_State(PICKUPOBJECT);
+    return S_OK;
+}
+HRESULT CPlayer::LayDownObject()
+{
+    if (false == Is_CarryingObject())
+        return E_FAIL;
+    Set_State(LAYDOWNOBJECT);
+    Set_CarryingObject(nullptr);
+    return S_OK;
+}
+void CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
 {
     //손 비우기
     if (nullptr == _pCarryingObject)
     {
         if (Is_CarryingObject())
         {
-
             Safe_Release(m_pCarryingObject);
             m_pCarryingObject = nullptr;
         }
-        return S_OK;
+
     }
     //손에 물건 들리기
     else
     {
-        if (Is_CarryingObject())
-            return E_FAIL;
-        m_pCarryingObject = _pCarryingObject;
-        Safe_AddRef(m_pCarryingObject);
- 
-        Set_State(PICKUPOBJECT);
-    }
+        if (false == Is_CarryingObject())
+        {
+            m_pCarryingObject = _pCarryingObject;
+            Safe_AddRef(m_pCarryingObject);
+        }
 
-    return S_OK;
+    }
+    return;
 }
 
 void CPlayer::Set_GravityCompOn(_bool _bOn)
@@ -2053,15 +2075,9 @@ void CPlayer::ThrowObject()
     {
         pObj->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, Get_FinalPosition());
     }
-    pObj->Set_ParentMatrix(COORDINATE_2D, nullptr);
-    pObj->Set_ParentMatrix(COORDINATE_3D, nullptr);
-    pObj->Set_SocketMatrix(COORDINATE_3D, nullptr);
-    pObj->Set_SocketMatrix(COORDINATE_2D, nullptr);
-    pObj->Set_ParentBodyMatrix(COORDINATE_3D, nullptr);
-    pObj->Set_ParentBodyMatrix(COORDINATE_2D, nullptr);
-    pObj->Set_Carrier(nullptr);
+
 	pObj->Throw(vForce);
-	Set_CarryingObject(nullptr);
+    Set_CarryingObject(nullptr);
 }
 
 void CPlayer::SpinAttack()
@@ -2164,7 +2180,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 
        // }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
-
+		Set_BlockPlayerInput(!Is_PlayerInputBlocked());
     }
     if (m_pActorCom->Is_Kinematic())
     {

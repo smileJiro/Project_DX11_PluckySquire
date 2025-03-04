@@ -38,6 +38,8 @@
 #include "DraggableObject.h"
 #include "Bulb.h"
 
+#include "Postit_Page.h"
+
 
 #include "2DMapObject.h"
 #include "3DMapObject.h"
@@ -346,6 +348,27 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::O))
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
+
+	if (KEY_DOWN(KEY::I))
+	{
+		CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter2_SKSP_Postit"));
+		auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_BACKGROUND);
+
+		CGameObject* pGameObject = nullptr;
+		const auto& Objects = pLayer->Get_GameObjects();
+		if (Objects.size() != 1)
+			assert(nullptr);
+		pGameObject = Objects.front();
+		if (nullptr == pGameObject)
+			assert(nullptr);
+
+		CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(pGameObject);
+		if (nullptr != pPage)
+		{
+			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_APPEAR, false);
+		}
+	}
+
 #endif // _DEBUG
 
 
@@ -1195,7 +1218,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_Rabbit"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
 
-
+	CPostit_Page::POSTIT_PAGE_DESC PostitDesc = {};
+	PostitDesc.strInitSkspName = L"Chapter2_SKSP_Postit";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Postit_Page"), m_eLevelID, _strLayerTag, &PostitDesc)))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -1528,7 +1554,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	fDominoXPosition = 64.5f;
-	fDominoYPosition = 0.25;
+	fDominoYPosition = 0.0;
 	fDominoZPosition = -0.54f;
 	fDominoXPositionStep = -3.5f;
 	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);

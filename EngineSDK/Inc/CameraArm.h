@@ -76,6 +76,11 @@ public:
 	_bool				Move_To_CustomArm(ARM_DATA* _pCustomData, _float _fTimeDelta);
 	_bool				Move_To_PreArm(_float _fTimeDelta);						// Stack에 저장해둔 Arm으로
 	_bool				Move_To_FreezeExitArm(_float _fRatio, _fvector _vFreezeExitArm, _float _fFreezeExitLength);
+	_bool				Reset_To_SettingPoint(_float _fRatio, _fvector _vSettingPoint, _float _fSettingLength);
+
+	_bool				Turn_AxisY(ARM_DATA* _pCustomData, _float _fTimeDelta);
+	_bool				Turn_AxisRight(ARM_DATA* _pCustomData, _float _fTimeDelta);
+	_bool				Change_Length(ARM_DATA* _pCustomData, _float _fTimeDelta);
 
 private:
 	ID3D11Device*		m_pDevice = { nullptr };

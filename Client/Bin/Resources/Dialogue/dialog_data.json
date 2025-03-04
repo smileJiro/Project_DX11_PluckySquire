@@ -1104,6 +1104,22 @@
             "duration": 1000,
             "speed": 350
           },
+          "text": "다른 말로 하면, 그게 중요하다는 거죠!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
           "text": "아 참! 이 책상 위에는 아주 재밌는 물건들이 있어요...\n 책 속으로 돌아가는 데 도움이 될 만한 것도 있겠죠.",
           "Red": 0,
           "Green": 0,

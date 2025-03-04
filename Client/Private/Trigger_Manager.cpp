@@ -58,6 +58,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER2_BOOKMAGIC] = L"Chapter2_BookMagic";
 	m_EventExecuterTags[CHAPTER2_INTRO] = L"Chapter2_Intro";
 	m_EventExecuterTags[CHAPTER2_HUMGRUMP] = L"Chapter2_Humgrump";
+	m_EventExecuterTags[CHAPTER2_LUNCHBOX_APPEAR] = L"Chapter2_LunchBox_Appear";
+	m_EventExecuterTags[CHAPTER2_LUNCHBOX_OPEN] = L"Chapter2_LunchBox_Open";
 
 	return S_OK;
 }
@@ -489,7 +491,7 @@ void CTrigger_Manager::Resister_Trigger_Action()
 		};
 
 	m_Actions[TEXT("Dialogue")] = [this](_wstring _wszEventTag) {
-		CDialog_Manager::GetInstance()->Set_DialogId(TEXT("Gauntlet_Acquire_01"));
+		CDialog_Manager::GetInstance()->Set_DialogId(_wszEventTag.c_str());
 		};
 
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) {
@@ -511,7 +513,7 @@ void CTrigger_Manager::Resister_Trigger_Action()
 	{
 		CGameEventExecuter::EVENT_EXECUTER_DESC Desc = {};
 		Desc.strEventTag = _wszEventTag;
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_GameEventExecuter"),
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_GameEventExecuter"),
 			m_pGameInstance->Get_CurLevelID(), L"Layer_Event_Executer", &Desc)))
 			return;
 	};
