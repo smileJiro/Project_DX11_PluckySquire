@@ -48,8 +48,8 @@ public:
 	
 	void				Change_CameraMode(_uint _iCameraMode, _int _iNextMode = -1);		// 카메라 모드 전환(아마 Target Camera만 적용)							
 	void				Change_CameraType(_uint _iCurrentCameraType, _bool _isInitialData = false, _float _fInitialTime = 0.3f);
-	void				Change_CameraTarget(const _float4x4* _pTargetWorldMatrix);
-	void				Change_CameraTarget(CGameObject* _pTarget);
+	void				Change_CameraTarget(const _float4x4* _pTargetWorldMatrix, _float _fChangingTime = 1.f);
+	void				Change_CameraTarget(CGameObject* _pTarget, _float _fChangingTime = 1.f);
 
 	_bool				Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 	_bool				Set_NextCutSceneData(_wstring _wszCutSceneName);

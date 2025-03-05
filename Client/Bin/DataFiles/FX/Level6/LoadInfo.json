@@ -1,5 +1,6 @@
 {
     "Path": [
-        "../Bin/DataFiles/FX/Level6/Zip.json"
+        "../Bin/DataFiles/FX/Level6/Zip.json",
+        "../Bin/DataFiles/FX/Level6/CandleFire.json"
     ]
 }

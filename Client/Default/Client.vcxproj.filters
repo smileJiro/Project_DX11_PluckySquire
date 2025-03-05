@@ -541,6 +541,18 @@
     <Filter Include="03.Components\FSM\State\SideScroll">
       <UniqueIdentifier>{eb660517-2ad9-4701-b44e-4d5768863bad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\98. Narration_Manager">
+      <UniqueIdentifier>{e2af4f22-9c13-4cde-8ff9-a81afbee81ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Candle">
+      <UniqueIdentifier>{1cb61007-d218-4336-b051-8c7acdd622a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Candle\Body">
+      <UniqueIdentifier>{511fdae9-6fe1-430d-be48-d7806f7d2b05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Candle\UI">
+      <UniqueIdentifier>{ce419986-332d-4e1a-b132-84864e20191e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1384,6 +1396,22 @@
     <ClInclude Include="..\Public\BossTransitionState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BombableObject.h" />
+    <ClInclude Include="..\Public\Narration_New.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\06. Narration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Narration_Manager.h">
+      <Filter>02.GameObjects\UI\98. Narration_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Candle.h">
+      <Filter>02.GameObjects\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Candle_Body.h">
+      <Filter>02.GameObjects\Candle\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Candle_UI.h">
+      <Filter>02.GameObjects\Candle\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2213,6 +2241,22 @@
     </ClCompile>
     <ClCompile Include="..\Private\BossTransitionState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BombableObject.cpp" />
+    <ClCompile Include="..\Private\Narration_New.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\06. Narration</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Narration_Manager.cpp">
+      <Filter>02.GameObjects\UI\98. Narration_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Candle.cpp">
+      <Filter>02.GameObjects\Candle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Candle_Body.cpp">
+      <Filter>02.GameObjects\Candle\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Candle_UI.cpp">
+      <Filter>02.GameObjects\Candle\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

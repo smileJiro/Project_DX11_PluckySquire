@@ -656,7 +656,7 @@ HRESULT CEvent_Manager::Execute_Trigger_Enter(const EVENT& _tEvent)
 		break;
 	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
 	{
-		CTrigger_Manager::GetInstance()->Resister_TriggerEvent(*pStr, iTriggerID);
+		CTrigger_Manager::GetInstance()->Register_TriggerEvent(*pStr, iTriggerID);
 	}
 		break;
 	}

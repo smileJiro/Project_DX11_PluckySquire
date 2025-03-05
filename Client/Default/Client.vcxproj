@@ -207,6 +207,9 @@
     <ClInclude Include="..\Public\ButterGrump_RightEye.h" />
     <ClInclude Include="..\Public\ButterGrump_Shield.h" />
     <ClInclude Include="..\Public\ButterGrump_Tongue.h" />
+    <ClInclude Include="..\public\Candle.h" />
+    <ClInclude Include="..\public\Candle_Body.h" />
+    <ClInclude Include="..\public\Candle_UI.h" />
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
     <ClInclude Include="..\Public\Detonator.h" />
     <ClInclude Include="..\public\Door_2D.h" />
@@ -227,6 +230,8 @@
     <ClInclude Include="..\Public\PlayerState_GetItem.h" />
     <ClInclude Include="..\Public\Zipline.h" />
     <ClInclude Include="..\Public\MudPit.h" />
+    <ClInclude Include="..\Public\Narration_Manager.h" />
+    <ClInclude Include="..\Public\Narration_New.h" />
     <ClInclude Include="..\Public\NPC_Manager.h" />
     <ClInclude Include="..\Public\PalmDecal.h" />
     <ClInclude Include="..\Public\PalmMarker.h" />
@@ -492,6 +497,9 @@
     <ClCompile Include="..\Private\ButterGrump_RightEye.cpp" />
     <ClCompile Include="..\Private\ButterGrump_Shield.cpp" />
     <ClCompile Include="..\Private\ButterGrump_Tongue.cpp" />
+    <ClCompile Include="..\private\Candle.cpp" />
+    <ClCompile Include="..\private\Candle_Body.cpp" />
+    <ClCompile Include="..\private\Candle_UI.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
     <ClCompile Include="..\Private\Detonator.cpp" />
@@ -510,6 +518,8 @@
     <ClCompile Include="..\Private\PlayerState_GetItem.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\Private\MudPit.cpp" />
+    <ClCompile Include="..\Private\Narration_Manager.cpp" />
+    <ClCompile Include="..\Private\Narration_New.cpp" />
     <ClCompile Include="..\Private\NPC_Manager.cpp" />
     <ClCompile Include="..\Private\PalmDecal.cpp" />
     <ClCompile Include="..\Private\PalmMarker.cpp" />
