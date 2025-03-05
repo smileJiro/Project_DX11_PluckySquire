@@ -4,7 +4,7 @@
 BEGIN(Client)
 class C3DMapEmissiveObject : public C3DMapObject
 {
-	typedef struct : public C3DMapObject::MAPOBJ_3D_DESC
+	typedef struct tagEmissiveObjectDesc: public C3DMapObject::MAPOBJ_3D_DESC
 	{
 		_float4			m_vColor = { 0.7f, 0.7f, 0.2f, 1.f };
 		_float4			m_vBloomColor = { 0.8f, 0.8f, 0.6f, 1.f };
@@ -18,6 +18,7 @@ private:
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
+	virtual void	Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render() override;
 
 private:

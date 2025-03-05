@@ -1034,6 +1034,9 @@ void CCamera_Target::Load_InitialArmTag()
 	case LEVEL_CHAPTER_6:
 		szFileName = TEXT("Chapter6/Chapter6_SketchSpace_InitialTag.json");
 		break;
+	case LEVEL_CHAPTER_8:
+		szFileName = TEXT("Chapter6/Chapter6_SketchSpace_InitialTag.json");
+		break;
 	}
 
 	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/" + szFileName;

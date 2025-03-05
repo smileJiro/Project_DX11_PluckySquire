@@ -33,6 +33,17 @@ HRESULT C3DMapEmissiveObject::Initialize(void* _pArg)
     return S_OK;
 }
 
+void C3DMapEmissiveObject::Late_Update(_float _fTimeDelta)
+{
+    /* Add Render Group */
+    if (false == m_isCulling || false == m_isFrustumCulling)
+    {
+        Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
+    }
+
+    CGameObject::Late_Update_Component(_fTimeDelta);
+}
+
 HRESULT C3DMapEmissiveObject::Render()
 {
     if (FAILED(Bind_ShaderResources_WVP()))

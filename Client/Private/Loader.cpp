@@ -105,6 +105,7 @@
 #include "2DMapWordObject.h"
 #include "3DMapDefaultObject.h"
 #include "3DMapSkspObject.h"
+#include "3DMapEmissiveObject.h"
 #include "MapObjectFactory.h"
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
@@ -164,7 +165,7 @@
 
 
 // Sample
-#include "SampleBook.h"
+#include "Book.h"
 
 #include "RayShape.h"
 #include "Dice.h"
@@ -176,6 +177,8 @@
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
+#include "Candle.h"
+#include "Candle_Body.h"
 
 // Player Effect 
 #include "Effect_Trail.h"
@@ -244,6 +247,9 @@ HRESULT CLoader::Loading()
 		break;
 	case Client::LEVEL_CHAPTER_6:
 		hr = Loading_Level_Chapter_6();
+		break;
+	case Client::LEVEL_CHAPTER_8:
+		hr = Loading_Level_Chapter_8();
 		break;
 	case Client::LEVEL_CHAPTER_TEST:
 		hr = Loading_Level_Chapter_TEST();
@@ -516,7 +522,6 @@ HRESULT CLoader::Loading_Level_Static()
 		return E_FAIL;
 
 
-
 	XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 	/* For. Prototype_Component_VIBuffer_Rect */
@@ -577,9 +582,9 @@ HRESULT CLoader::Loading_Level_Static()
 		CCubeMap::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For. Prototype_GameObject_SampleBook */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
-		CSampleBook::Create(m_pDevice, m_pContext))))
+	/* For. Prototype_GameObject_Book */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
+		CBook::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For. Prototype_GameObject_MainTable */
@@ -680,6 +685,10 @@ HRESULT CLoader::Loading_Level_Static()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMap_SkspObject"),
 		C3DMapSkspObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapEmissiveObject"),
+		C3DMapEmissiveObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
@@ -949,7 +958,6 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 			CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/MapObject/LightningBolt/LightningBolt.animevt"))))
 			return E_FAIL;
 
-
 	#pragma endregion
 
 	#pragma region Chapter 2 - Texture Load
@@ -1000,13 +1008,6 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 					), matPretransform))))
 			return E_FAIL;
 
-		// 3D Model 개별 로드 - 별도의 Pretransform 적용
-		matPretransform = XMMatrixScaling(1 / 160.0f, 1 / 160.0f, 1 / 160.0f);
-
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model3D_FallingRock"),
-			C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Rock_03/Rock_03.model", matPretransform))))
-			return E_FAIL;
-
 		// 2D Model 개별 로드 - Model 경로 다름
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("dice_pink_03"),
 			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/dice_01/dice_pink_03.dds", true))))
@@ -1017,10 +1018,10 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Grape_Green"),
 			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/Grapes_Grape_01/Grape_Green.dds", true))))
 			return E_FAIL;
+
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_FallingRockShadow"),
 			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Chapter2/FallingRockShadow/FallingRockShadow.dds", true))))
 			return E_FAIL;
-
 	#pragma endregion
 
 	#pragma region Chapter 2 - Object Load
@@ -1138,12 +1139,22 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 
 		if (FAILED(Model_Load(eResourceLevelID, _eLoadLevelID)))
 			return E_FAIL;
+		// 3D Model 개별 로드 - 별도의 Pretransform 적용
+		//_matrix matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_FallingRockShadow"),
+			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Chapter2/FallingRockShadow/FallingRockShadow.dds", true))))
+			return E_FAIL;
 	#pragma endregion
 
 	#pragma region Chapter 4 - Object Load
 
 		lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+		/* For. Prototype_GameObject_FallingRock */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_FallingRock"),
+			CFallingRock::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		/* UI */
 		if (FAILED(UI_Object_Load(_eLoadLevelID)))
@@ -1219,7 +1230,7 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			CBoss_TennisBall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+		matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),
 			C3DModel::Create(m_pDevice, m_pContext,
@@ -1389,6 +1400,15 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			CCollapseBlock::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		/* For. Prototype_GameObject_Candle */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Candle"),
+			CCandle::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_Candle_Body */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Candle_Body"),
+			CCandle_Body::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 	#pragma endregion
 
 	#pragma region Chapter 6 - Effect Load
@@ -1767,6 +1787,10 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 		str3DMapProtoJsonName = L"Chapter_06_Play_Desk.json";
 		strChapterName += L"Chapter6";
 		break;
+	case LEVEL_CHAPTER_8:
+		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
+		strChapterName += L"Chapter8";
+		break;
 	case LEVEL_CAMERA_TOOL:
 		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
 		strChapterName += L"Chapter8";
@@ -1958,7 +1982,7 @@ HRESULT CLoader::UI_Texture_Load(LEVEL_ID _eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Enter.dds"), 1))))
 		return E_FAIL;
 
-
+	
 	return S_OK;
 }
 
