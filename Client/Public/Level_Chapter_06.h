@@ -34,6 +34,7 @@ public:
 	HRESULT					Ready_Layer_Effects(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Effects2D(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Slippery();
+	HRESULT					Ready_Layer_Defender();
 private:
 	void					Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength);
 

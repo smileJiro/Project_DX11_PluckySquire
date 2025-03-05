@@ -974,7 +974,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 
 			ZeroMemory(&LightDesc, sizeof LightDesc);
 
-			LightDesc.vPosition = { 66.10f, 10.10, -24.90f };
+			LightDesc.vPosition = { 66.10f, 10.10f, -24.90f };
 			LightDesc.vDirection = _float3(.0f, .0f, .0f);
 			LightDesc.vRadiance = _float3(5.0f, 9.0f, 7.0f);
 			LightDesc.vDiffuse = _float4(0.6f, 0.6f, 0.6f, 1.0f);

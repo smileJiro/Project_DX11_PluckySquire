@@ -40,8 +40,8 @@ HRESULT CPlayerData_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeL
 		PlayerItem.second.second = nullptr;
 	}
 
-	Safe_Release(m_pPlayer);
-	m_pPlayer = nullptr;
+	Safe_Release(m_pCurrentPlayer);
+	m_pCurrentPlayer = nullptr;
 
 	return S_OK;
 }
@@ -159,12 +159,27 @@ void CPlayerData_Manager::Change_PlayerItemMode(_wstring _strItemTag, _uint _iIt
 	}
 }
 
-void CPlayerData_Manager::Register_Player(CPlayer* _pPlayer)
+void CPlayerData_Manager::Register_Player(PLAYALBE_ID _ePlayableID, CPlayable* _pPlayer)
 {
-	Safe_Release(m_pPlayer);
-	m_pPlayer = _pPlayer;
-	Safe_AddRef(m_pPlayer);
+	Safe_Release(m_pPlayers[(_uint)_ePlayableID]);
+	m_pPlayers[(_uint)_ePlayableID] = _pPlayer;
+	Safe_AddRef(m_pPlayers[(_uint)_ePlayableID]);
 }
+
+void CPlayerData_Manager::Set_CurrentPlayer(PLAYALBE_ID _ePlayableID)
+{
+	if(m_pCurrentPlayer)
+	{
+		m_pCurrentPlayer->Set_BlockPlayerInput(true);
+		m_pCurrentPlayer->Set_Active(false);
+	}
+	Safe_Release(m_pCurrentPlayer);
+	m_pCurrentPlayer = m_pPlayers[(_uint)_ePlayableID];
+	m_pCurrentPlayer->Set_BlockPlayerInput(false);
+	m_pCurrentPlayer->Set_Active(true);
+	Safe_AddRef(m_pCurrentPlayer);
+}
+
 
 void CPlayerData_Manager::Set_Tags()
 {
@@ -187,7 +202,10 @@ void CPlayerData_Manager::Free()
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
 
-	Safe_Release(m_pPlayer);
+	for (auto& pPlayer : m_pPlayers)
+	{
+		Safe_Release(pPlayer);
+	}
 
 	__super::Free();
 }

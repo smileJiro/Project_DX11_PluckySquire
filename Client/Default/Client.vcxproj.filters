@@ -559,6 +559,12 @@
     <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Tile\Trap">
       <UniqueIdentifier>{60ba1fac-436c-4f94-bf84-e2e833d8a327}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Section\Section_2D\MiniGame_2D">
+      <UniqueIdentifier>{c1bd15de-5410-4959-a197-e6ced944b97d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Section\Section_2D\MiniGame_2D\Pip">
+      <UniqueIdentifier>{a5584601-2683-4eae-9a4f-60e52d0e3bd9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1398,6 +1404,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Level_Chapter_08.h">
       <Filter>01.Levels\03.GamePlay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_MiniGame.h">
+      <Filter>04.Section\Section_2D\MiniGame_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_MiniGame_Pip.h">
+      <Filter>04.Section\Section_2D\MiniGame_2D\Pip</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Minigame_Sneak.h">
       <Filter>90. Minigame_Sneak</Filter>
@@ -2243,14 +2255,21 @@
     <ClCompile Include="..\Private\Level_Chapter_08.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Minigame_Sneak.cpp">
-      <Filter>90. Minigame_Sneak</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Candle.cpp" />
     <ClCompile Include="..\private\Candle_Body.cpp" />
     <ClCompile Include="..\private\Candle_UI.cpp" />
     <ClCompile Include="..\Private\Narration_Manager.cpp" />
     <ClCompile Include="..\Private\Narration_New.cpp" />
+    <ClCompile Include="..\Private\Section_2D_MiniGame.cpp">
+      <Filter>04.Section\Section_2D\MiniGame_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Section_2D_MiniGame_Pip.cpp">
+      <Filter>04.Section\Section_2D\MiniGame_2D\Pip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Minigame_Sneak.cpp">
+      <Filter>90. Minigame_Sneak</Filter>
+    </ClCompile>
+
     <ClCompile Include="..\private\Sneak_Default_Tile.cpp">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Default</Filter>
     </ClCompile>

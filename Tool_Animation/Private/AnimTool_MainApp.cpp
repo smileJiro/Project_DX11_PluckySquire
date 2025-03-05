@@ -56,7 +56,7 @@ HRESULT CAnimTool_MainApp::Initialize()
 		return E_FAIL;
 
 	Set_EffectRG();
-
+	ImGui::GetIO().IniFilename = "./imgui.ini";
 	return S_OK;
 }
 
