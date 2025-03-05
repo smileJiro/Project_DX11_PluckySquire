@@ -184,7 +184,7 @@ void CSampleBook::Update(_float _fTimeDelta)
 				||
 				pGameObject->Get_CurCoord() == COORDINATE_3D
 				||
-				CCamera_2D::FLIPPING_PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()
+				CCamera_2D::PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()
 				)
 			{
 				if (m_eCurAction == NEXT)

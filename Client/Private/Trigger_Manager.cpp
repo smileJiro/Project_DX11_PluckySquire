@@ -65,6 +65,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER2_OPENBOOKEVENT] = L"Chapter2_OpenBookEvent";
 	m_EventExecuterTags[CHAPTER2_STORYSEQUENCE] = L"Chapter2_StorySequence";
 	m_EventExecuterTags[CHAPTER4_RIDE_ZIPLINE] = L"Chapter4_Ride_Zipline";
+	m_EventExecuterTags[CHAPTER4_EVENT_FLAG] = L"Chapter4_Event_Flag";
 
 	return S_OK;
 }

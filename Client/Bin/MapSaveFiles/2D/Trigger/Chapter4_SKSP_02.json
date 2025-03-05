@@ -2,12 +2,12 @@
   {
     "Collider_Info": {
       "Position": [
-        1992.0,
-        0.0
+        2122.0,
+        377.0
       ],
       "Scale": [
-        40.0,
-        501.0
+        31.0,
+        130.0
       ]
     },
     "Trigger_Reusable": false,

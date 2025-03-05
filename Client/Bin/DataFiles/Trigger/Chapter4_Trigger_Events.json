@@ -8,5 +8,15 @@
         "Is_Sequence": true
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "Chapter4_Event_Flag",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter4_Event_Flag",
+        "Is_Sequence": true
+      }
+    ]
   }
 ]

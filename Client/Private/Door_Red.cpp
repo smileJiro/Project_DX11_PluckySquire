@@ -46,7 +46,7 @@ void CDoor_Red::Update(_float _fTimeDelta)
 
         // TEMP
         // TargetÀ» ³ª·Î ÇØÁà.
-        if (isEmpty)
+        if (isEmpty && (false == m_isStartOpen))
         {
             CCamera_Manager::GetInstance()->Change_CameraTarget(this);
             m_isStartOpen = true;
