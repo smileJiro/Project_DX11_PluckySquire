@@ -1263,12 +1263,28 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
 		return E_FAIL;
 
+	tJumpPadDesc.iCurLevelID = m_eLevelID;
+	tJumpPadDesc.eStartCoord = COORDINATE_2D;
+	tJumpPadDesc.tTransform2DDesc.vInitialPosition = { 200.f, 180.f, 0.f };
+	tJumpPadDesc.strInitialSectionTag = L"Chapter4_SKSP_06";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpPad"),
+		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
+		return E_FAIL;
+
 
 	CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
 	tCarriableDesc.eStartCoord = COORDINATE_2D;
 	tCarriableDesc.iCurLevelID = m_eLevelID;
 	tCarriableDesc.tTransform2DDesc.vInitialPosition = _float3(103.4f, -8.15f, 0.f);
 	tCarriableDesc.strInitialSectionTag = L"Chapter4_P0102";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"), m_eLevelID, _strLayerTag, &tCarriableDesc)))
+		return E_FAIL;
+
+	tCarriableDesc.eStartCoord = COORDINATE_2D;
+	tCarriableDesc.iCurLevelID = m_eLevelID;
+	tCarriableDesc.tTransform2DDesc.vInitialPosition = _float3(-650.f, -340.f, 0.f);
+	tCarriableDesc.strInitialSectionTag = L"Chapter4_SKSP_05";
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"), m_eLevelID, _strLayerTag, &tCarriableDesc)))
 		return E_FAIL;
@@ -1290,6 +1306,17 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &DoorBlueDesc)))
 		return E_FAIL;
 
+	DoorBlueDesc.tTransform2DDesc.vInitialPosition = _float3(-558.f, -290.f, 0.f);
+	DoorBlueDesc.iCurLevelID = m_eLevelID;
+	DoorBlueDesc.isHorizontal = true;
+	DoorBlueDesc.eSize = CDoor_2D::SMALL;
+	DoorBlueDesc.eInitialState = CDoor_2D::CLOSED;
+	DoorBlueDesc.strSectionTag = L"Chapter4_SKSP_04";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorBlue"),
+		m_eLevelID, _strLayerTag, &DoorBlueDesc)))
+		return E_FAIL;
+
 	CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
 	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(1010.f, -530.f, 0.f);
 	DoorRedDesc.iCurLevelID = m_eLevelID;
@@ -1305,14 +1332,14 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &DoorRedDesc)))
 		return E_FAIL;
 
-	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(423.f, -231.f, 0.f);
+	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(605.f, -200.f, 0.f);
 	DoorRedDesc.iCurLevelID = m_eLevelID;
 	DoorRedDesc.isHorizontal = true;
 	DoorRedDesc.eSize = CDoor_2D::MED;
 	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
 	DoorRedDesc.strSectionTag = L"Chapter4_SKSP_05";
 	DoorRedDesc.strLayerTag = L"Layer_Monster_Door2";
-	DoorRedDesc.fTargetDiff = 10.f;
+	DoorRedDesc.fTargetDiff = -1.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
 		m_eLevelID, _strLayerTag, &DoorRedDesc)))
@@ -1331,6 +1358,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
 		m_eLevelID, _strLayerTag, &DoorRedDesc)))
 		return E_FAIL;
+
 
 	// Zipline
 	CZipline::ZIPLINE_DESC ZipDesc = {};
