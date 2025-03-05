@@ -22,6 +22,7 @@ public:
 		NARRATION,
 		RESET_TO_SETTINGPOINT,
 		FREEZE,
+		ZIPLINE,
 		CAMERA_2D_MODE_END 
 	};
 
@@ -97,8 +98,8 @@ public:
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
-	virtual void				Change_Target(const _float4x4* _pTargetMatrix) { m_pTargetWorldMatrix = _pTargetMatrix; }
-	virtual void				Change_Target(CGameObject* _pTarget);
+	virtual void				Change_Target(const _float4x4* _pTargetMatrix, _float _fChangingTime = 1.f) { m_pTargetWorldMatrix = _pTargetMatrix; m_fTargetChangingTime = { _fChangingTime, 0.f }; }
+	virtual void				Change_Target(CGameObject* _pTarget, _float _fChangingTime = 1.f);
 	virtual void				Turn_AxisY(_float _fTimeDelta) override;
 	virtual void				Turn_AxisRight(_float _fTimeDelta) override;
 	virtual void				Change_Length(_float _fTimeDelta) override;

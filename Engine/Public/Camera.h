@@ -89,8 +89,8 @@ public:
 	void Set_CameraMoveSpeed(const _float _fMoveSpeed) { if (nullptr != m_pControllerTransform) m_pControllerTransform->Set_SpeedPerSec(_fMoveSpeed); }
 
 public:
-	virtual void	Change_Target(const _float4x4* _pTargetWorldMatrix) {};
-	virtual void	Change_Target(CGameObject* _pTarget) {};
+	virtual void	Change_Target(const _float4x4* _pTargetWorldMatrix, _float _fChangingTime = 1.f) {};
+	virtual void	Change_Target(CGameObject* _pTarget, _float _fChangingTime = 1.f) {};
 	virtual void	Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) {};
 	virtual INITIAL_DATA Get_InitialData() { return INITIAL_DATA(); };
 	virtual _uint	Get_CameraMode() { return _uint(); }

@@ -120,6 +120,11 @@ _bool CCamera_2D::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
 	m_pCurArm->Set_NextArmData(pData->first, _iTriggerID);
 	m_szEventTag = _wszNextArmName;
 
+	if (nullptr != pData->second) {
+		Start_Zoom(pData->second->fZoomTime, (CCamera::ZOOM_LEVEL)pData->second->iZoomLevel, (RATIO_TYPE)pData->second->iZoomRatioType);
+		Start_Changing_AtOffset(pData->second->fAtOffsetTime, XMLoadFloat3(&pData->second->vAtOffset), pData->second->iAtRatioType);
+	}
+
 	return _bool();
 }
 
@@ -252,7 +257,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 	}
 }
 
-void CCamera_2D::Change_Target(CGameObject* _pTarget)
+void CCamera_2D::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
 {
 	m_pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 	m_eTargetCoordinate = _pTarget->Get_CurCoord();
@@ -494,6 +499,11 @@ void CCamera_2D::Action_SetUp_ByMode()
 			// 조정이 필요함
 		/*	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 			XMStoreFloat3(&m_v2DPreTargetWorldPos, vTargetPos);*/
+		}
+			break;
+		case ZIPLINE:
+		{
+			XMStoreFloat3(&m_vStartPos, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
 		}
 			break;
 		}
