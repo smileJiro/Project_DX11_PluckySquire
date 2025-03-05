@@ -119,19 +119,19 @@ void CZipline::Ride_Down(_float _fTimeDelta)
 		this->Set_Render(false);
 		XMStoreFloat3(&m_vStartPos, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
 	}
-	
-	//_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fZiplineTime, _fTimeDelta, EASE_IN_OUT);
-
-	//if (fRatio >= (1.f - EPSILON)) {
-	//	// Player ¶³¾îÁö±â
-	//	m_pRidingObject->Set_GravityCompOn(true);
-
-	//	this->Set_Active(false);
-	//}
-
-	//_vector vPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMLoadFloat3(&m_vDestination), fRatio);
 	//
-	//m_pRidingObject->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vPos, 1.f));
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fZiplineTime, _fTimeDelta, EASE_IN_OUT);
+
+	if (fRatio >= (1.f - EPSILON)) {
+		// Player ¶³¾îÁö±â
+		m_pRidingObject->Set_GravityCompOn(true);
+
+		this->Set_Active(false);
+	}
+
+	_vector vPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMLoadFloat3(&m_vDestination), fRatio);
+	
+	m_pRidingObject->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vPos, 1.f));
 
 }
 

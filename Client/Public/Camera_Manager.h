@@ -104,6 +104,7 @@ public:
 
 	void				Start_FadeIn(_float _fFadeTime = 1.0f);
 	void				Start_FadeOut(_float _fFadeTime = 1.0f);
+	void				Set_FadeRatio(_uint _eCameraType, _float _fFadeRatio, _bool _isUpdate);
 
 public:
 	void				Load_ArmData(LEVEL_ID _eLevelID);

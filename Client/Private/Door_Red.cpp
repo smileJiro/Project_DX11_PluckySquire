@@ -64,7 +64,7 @@ void CDoor_Red::Update(_float _fTimeDelta)
 
         // TEMP
         // Target을 나로 해줘.
-        if (isEmpty)
+        if (isEmpty && (false == m_isStartOpen))
         {
             // Target 설정.
             if (0.f < m_fTargetDiff)

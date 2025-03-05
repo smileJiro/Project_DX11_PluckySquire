@@ -44,7 +44,7 @@ public:
 public:
 	void						Add_Arm(CCameraArm* _pCameraArm);
 	void						Set_CameraMode(_uint _iCameraMode, _int _iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = _iNextCameraMode; }
-	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix) override;
+	//virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix) override;
 
 	void						Set_LookAt(_bool _isLookAt) 
 	{

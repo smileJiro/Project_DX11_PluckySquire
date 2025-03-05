@@ -74,6 +74,14 @@ _bool CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName)
 	return true;
 }
 
+void CCamera_CutScene::Set_Pause_After_CutScene(_bool _isPause)
+{
+	if (nullptr == m_pCurCutScene)
+		return;
+
+	m_pCurCutScene->first.isPause = _isPause;
+}
+
 void CCamera_CutScene::Add_CutScene(_wstring _wszCutSceneTag, pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA*>> _CutSceneData)
 {
 	pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA*>>* pData = Find_CutScene(_wszCutSceneTag);
@@ -218,9 +226,13 @@ void CCamera_CutScene::After_CutScene(_float _fTimeDelta)
 	// 해당 함수까지 끝난다면 카메라 전환 등 동작 수행
 	// 확 돌지, 점진적으로 돌아야 하는 건지 여기서 결정
 	// 멈춰 있을지도 이 이전에 얼마나 멈출 건지, 그 정보를 CutScene Data가 가지고 있어야 함
-	CCamera_Manager::GetInstance()->Change_CameraType(m_pCurCutScene->first.iNextCameraType);
-	m_isFinishCutScene = false;
-	m_pCurCutScene = nullptr;
+
+	// 멈출지 말지만 일단 설정함
+	if (false == m_pCurCutScene->first.isPause) {
+		CCamera_Manager::GetInstance()->Change_CameraType(m_pCurCutScene->first.iNextCameraType);
+		m_isFinishCutScene = false;
+		m_pCurCutScene = nullptr;
+	}
 }
 
 void CCamera_CutScene::Switching(_float _fTimeDelta)

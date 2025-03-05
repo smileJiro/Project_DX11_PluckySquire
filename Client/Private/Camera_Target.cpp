@@ -45,7 +45,6 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 void CCamera_Target::Priority_Update(_float fTimeDelta)
 {
-
 }
 
 void CCamera_Target::Update(_float fTimeDelta)
@@ -741,11 +740,11 @@ _vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fT
 		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fTargetChangingTime, _fTimeDelta, EASE_IN_OUT);
 
 		if (fRatio >= (1.f - EPSILON)) {
-			vCurPos = vTargetPos;
+			vCurPos = vTargetPos + XMLoadFloat3(&m_vPreFreezeOffset);
 			m_isTargetChanged = false;
 		}
 
-		vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), vTargetPos, fRatio);
+		vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), vTargetPos + XMLoadFloat3(&m_vPreFreezeOffset), fRatio);
 	}
 
 	vCurPos = XMVectorSetW(vCurPos, 1.f);

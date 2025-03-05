@@ -82,6 +82,8 @@ public:
 
 	_bool				Turn_AxisY(ARM_DATA* _pCustomData, _float _fTimeDelta);
 	_bool				Turn_AxisRight(ARM_DATA* _pCustomData, _float _fTimeDelta);
+	_bool				Turn_AxisY(_float _fAngle, _float _fTurnTime = 1.f, _float _fTimeDelta = 1.f, _uint _iRatioType = LERP);
+	_bool				Turn_AxisRight(_float _fAngle, _float _fTurnTime = 1.f, _float _fTimeDelta = 1.f, _uint _iRatioType = LERP);
 	_bool				Change_Length(ARM_DATA* _pCustomData, _float _fTimeDelta);
 
 private:
@@ -112,6 +114,11 @@ private:
 	deque<pair<RETURN_ARMDATA, _bool>> m_PreArms;		// Return Data, 현재 Return 중인지 아닌지 Check
 	_float2				m_fReturnTime = { 0.8f, 0.f };
 	_int				m_iCurTriggerID = {};
+
+	// Arm 회전
+	_float				m_fPreArmAngle = {};
+	_float2				m_fArmTurnTime = {};
+	_bool				m_isStartTurn = { false };
 
 private:
 	void				Set_WorldMatrix();
