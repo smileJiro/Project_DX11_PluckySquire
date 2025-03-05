@@ -122,6 +122,9 @@
 #include "DefenderPlayerProjectile.h"
 #include "Minigame_Defender.h"
 
+#include "Sneak_Default_Tile.h"
+#include "Sneak_Trap_Tile.h"
+
 /* For. Monster */
 #include "Beetle.h"
 #include "BarfBug.h"
@@ -1520,7 +1523,13 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	/* Monster */
 
 	/* Etc */
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakDefaultTile"),
+		CSneak_Default_Tile::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakTrapTile"),
+		CSneak_Trap_Tile::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 #pragma endregion
 

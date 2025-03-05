@@ -38,6 +38,24 @@ HRESULT CDoor_Red::Initialize(void* _pArg)
 
 void CDoor_Red::Update(_float _fTimeDelta)
 {
+#ifdef _DEBUG
+    if (KEY_PRESSING(KEY::LSHIFT) && KEY_DOWN(KEY::P))
+    {
+        m_isStartOpen = false;
+        m_eDoorState = CLOSED;
+        Switch_Animation_By_State();
+    }
+
+    if (KEY_PRESSING(KEY::LSHIFT) && KEY_DOWN(KEY::O))
+    {
+        m_isStartOpen = false;
+        m_eDoorState = CLOSED;
+        Switch_Animation_By_State();
+    }
+
+#endif
+
+
     if (CLOSED == m_eDoorState)
     {
         _bool isEmpty = true;
@@ -93,7 +111,7 @@ void CDoor_Red::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         Switch_Animation_By_State();
 
         if (0.f < m_fTargetDiff)
-            CCamera_Manager::GetInstance()->Change_CameraTarget(CPlayerData_Manager::GetInstance()->Get_Player_Ptr());
+            CCamera_Manager::GetInstance()->Change_CameraTarget(CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr());
     }
 
 }
