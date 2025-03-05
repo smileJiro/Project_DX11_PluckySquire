@@ -1137,7 +1137,7 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 		if (FAILED(Model_Load(eResourceLevelID, _eLoadLevelID)))
 			return E_FAIL;
 		// 3D Model 개별 로드 - 별도의 Pretransform 적용
-		_matrix matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+		//_matrix matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_FallingRockShadow"),
 			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Chapter2/FallingRockShadow/FallingRockShadow.dds", true))))
