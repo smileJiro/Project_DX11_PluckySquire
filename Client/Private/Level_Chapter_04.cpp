@@ -35,6 +35,9 @@
 #include "Door_Red.h"
 
 #include "RayShape.h"
+#include "FallingRock.h"
+#include "Spawner.h"
+#include "Book.h"
 
 
 #include "2DMapObject.h"
@@ -151,8 +154,12 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Map (CLevel_Chapter_04::Initialize)");
 		assert(nullptr);
 	}
-
-
+	if (FAILED(Ready_Layer_Spawner(TEXT("Layer_Spawner"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Map (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	
 	/* Collision Test */
 
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
@@ -164,6 +171,9 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FALLINGROCK_BASIC);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::DOOR);
+
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::WORD_GAME);
@@ -172,19 +182,20 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::BLOCKER);
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::MAPOBJECT);
+
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::MAPOBJECT);
 
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::DOOR);
 	/* 발판 - 기믹오브젝트, 2D에 해당하는 오브젝트 (주사위, 등.. )*/
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
 	/* 발판 - 플레이어 */
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER);
+
 	/* 문 - 기믹오브젝트 */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::GIMMICK_OBJECT, OBJECT_GROUP::DOOR);
-
+	/* 돌덩이 */
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::FALLINGROCK_BASIC, OBJECT_GROUP::BLOCKER);
 	/* Load Trigger*/
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger.json"));
 	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger_Events.json"));
@@ -431,7 +442,7 @@ HRESULT CLevel_Chapter_04::Ready_CubeMap(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_04::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 {
-	CMainTable::ACTOROBJECT_DESC Desc;
+	CMainTable::MAINTABLE_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
@@ -604,10 +615,10 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 HRESULT CLevel_Chapter_04::Ready_Layer_Book(const _wstring& _strLayerTag)
 {
-	CModelObject::MODELOBJECT_DESC Desc = {};
+	CBook::BOOK_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
 
@@ -1241,7 +1252,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words2"), LEVEL_STATIC, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words4"), LEVEL_STATIC, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_Words5"), LEVEL_STATIC, 3);
-
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("FallingRock_Breaking"), LEVEL_STATIC, 1);
 	return S_OK;
 }
 
@@ -1369,6 +1380,61 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Zipline"),
 		m_eLevelID, _strLayerTag, &ZipDesc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_Spawner(const _wstring& _strLayerTag)
+{
+	{/* 4챕 스케치스페이스 */
+		/* Falling Rock*/
+		CFallingRock::FALLINGROCK_DESC* pFallingRockDesc = new CFallingRock::FALLINGROCK_DESC; /* struct 구조체를 복사하면 가장 좋겠지만 desc 구조체 clone 구현이 좀 애매해서 현재 */
+		pFallingRockDesc->eStartCoord = COORDINATE_2D;
+		pFallingRockDesc->fFallDownEndY = 900.f;
+		pFallingRockDesc->fBoundEndPosY = -400.f;
+		pFallingRockDesc->m_isChapter4 = true;
+		pFallingRockDesc->iCurLevelID = m_eLevelID;
+		pFallingRockDesc->isDeepCopyConstBuffer = false;
+		pFallingRockDesc->Build_2D_Transform(_float2(0.0f, 1500.f));
+
+		/* Pooling Desc */
+		Pooling_DESC tPooling_Desc; /* 삭제처리하자 */
+		tPooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
+		tPooling_Desc.iPrototypeLevelID = m_eLevelID;
+		tPooling_Desc.strLayerTag = TEXT("Layer_FallingRock");
+		tPooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_FallingRock");
+		tPooling_Desc.strSectionKey = TEXT("Chapter4_SKSP_07");
+
+		CSpawner::SPAWNER_DESC SpawnerDesc;
+		SpawnerDesc.pObjectCloneDesc = pFallingRockDesc;
+		SpawnerDesc.tPoolingDesc = tPooling_Desc;
+		SpawnerDesc.eCurLevelID = m_eLevelID;
+		SpawnerDesc.eGameObjectPrototypeLevelID = m_eLevelID;
+		SpawnerDesc.fSpawnCycleTime = 5.0f;
+		SpawnerDesc.iOneClycleSpawnCount = 1;
+		SpawnerDesc.vSpawnPosition = _float3(0.0f, 1500.f, 0.0f);
+		SpawnerDesc.isPooling = true;
+		SpawnerDesc.strPoolingTag = TEXT("Pooling_FallingRock");
+		SpawnerDesc.ePoolingObjectStartCoord = COORDINATE_2D;
+		SpawnerDesc.strLayerTag = TEXT("Layer_FallingRock");
+ 
+		CGameObject* pGameObject = nullptr;
+		_float2 vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(TEXT("Chapter4_SKSP_07"));
+		_float fMonCount = 10;
+		for (_uint i = 0; i < fMonCount; ++i)
+		{
+			pGameObject = nullptr;
+			SpawnerDesc.vSpawnPosition = _float3(-400.f + (vRTSize.x / fMonCount) * i,
+				m_pGameInstance->GetInstance()->Compute_Random(1000.0f, 1800.0f), 0.0f);
+
+			SpawnerDesc.fSpawnCycleTime = m_pGameInstance->GetInstance()->Compute_Random(3.0f, 7.0f);
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), m_eLevelID, _strLayerTag, &pGameObject, &SpawnerDesc)))
+				return E_FAIL;
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter4_SKSP_07"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+		}
+
+	} /* 4챕 스케치스페이스 */
 
 	return S_OK;
 }

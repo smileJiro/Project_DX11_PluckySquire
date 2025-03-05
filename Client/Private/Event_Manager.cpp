@@ -8,6 +8,7 @@
 #include "Level_Chapter_02.h"
 #include "Level_Chapter_04.h"
 #include "Level_Chapter_06.h"
+#include "Level_Chapter_08.h"
 #include "Level_Camera_Tool_Client.h"
 #include "Section_Manager.h"
 #include "Layer.h"
@@ -28,7 +29,7 @@
 #include "Camera_Target.h"
 #include "Camera_2D.h"
 
-#include "SampleBook.h"
+#include "Book.h"
 
 #include "Trigger_Manager.h"
 #include "Effect2D_Manager.h"
@@ -418,6 +419,10 @@ HRESULT CEvent_Manager::Level_Change()
 		break;
 	case Client::LEVEL_CHAPTER_6:
 		pChangeLevel = CLevel_Chapter_06::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
+		break;
+		break;
+	case Client::LEVEL_CHAPTER_8:
+		pChangeLevel = CLevel_Chapter_08::Create(m_pDevice, m_pContext, (LEVEL_ID)iChangeLevelID);
 		break;
 	case Client::LEVEL_CHAPTER_TEST:
 	{
@@ -820,10 +825,10 @@ HRESULT CEvent_Manager::Execute_SetSceneQueryFlag(const EVENT& _tEvent)
 HRESULT CEvent_Manager::Execute_Book_Main_Section_Change_Start(const EVENT& _tEvent)
 {
 	
-	CSampleBook::BOOK_PAGE_ACTION eAction = (CSampleBook::BOOK_PAGE_ACTION)(_tEvent.Parameters[0]);
+	CBook::BOOK_PAGE_ACTION eAction = (CBook::BOOK_PAGE_ACTION)(_tEvent.Parameters[0]);
 	_float3* pPosition = (_float3*)(_tEvent.Parameters[1]);
 	
-	static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(),L"Layer_Book",0))
+	static_cast<CBook*>(m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(),L"Layer_Book",0))
 		->Execute_Action(eAction, *pPosition);
 	Safe_Delete(pPosition);
 	pPosition = nullptr;

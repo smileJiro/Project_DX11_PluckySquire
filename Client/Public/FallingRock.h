@@ -16,8 +16,10 @@ public:
 	typedef struct tagFallingRockDesc : CModelObject::MODELOBJECT_DESC
 	{
 		_float fFallDownEndY = {};
+		_float fBoundEndPosY = -200.f;
 		_bool isColBound = false;
 		COLBOUND2D eColBoundDirection = COLBOUND_LEFT;
+		_bool m_isChapter4 = false;
 	}FALLINGROCK_DESC;
 
 private:
@@ -52,7 +54,7 @@ private: /* Bound */
 	_float					m_fJumpForcePerSec = 500.f; // 처음엔 강하다가 점점 약해지겠지; 중력때문에
 
 private: /* Coord3D Change */
-	_float					m_fCoordChangePosY = -200.f;
+	_float					m_fBoundEndPosY = -200.f;
 	_float					m_fForce3D = 7.5f;
 	_float2					m_fDeadTime = { 3.0f, 0.0f };
 
@@ -65,9 +67,12 @@ private: /* Col_Scroll_Bound */
 	COLBOUND2D				m_eOriginDirection = {};
 	COLBOUND2D				m_eColBoundDirection = COLBOUND2D::COLBOUND_LAST;
 	_float2					m_vColBoundDirection = {}; /* 좌우 대각 이동 */
-	_float2					m_vDecrease = { 9.8f * 18.f,  0.0f }; // 
+	_float2					m_vDecrease = { 9.8f * 14.f,  0.0f }; // 
 	_float2					m_vLifeTimeAcc = { 7.0f, 0.0f };
 
+
+private:
+	_bool					m_isChapter4 = false;
 private:
 	void					State_Change();
 	void					State_Change_FallDown();

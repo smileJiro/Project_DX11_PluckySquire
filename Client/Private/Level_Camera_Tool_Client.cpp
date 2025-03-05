@@ -308,7 +308,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	//CModelObject::MODELOBJECT_DESC BookDesc = {};
 	//BookDesc.iCurLevelID = m_eLevelID;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
 	//	m_eLevelID, L"_strLayerTag", reinterpret_cast<CGameObject**>(&pOut), &BookDesc)))
 	//	return E_FAIL;
 
@@ -384,7 +384,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_MainTable(const _wstring& _strLay
 
 
 	// MainTable Actor
-	CMainTable::ACTOROBJECT_DESC Desc;
+	CMainTable::MAINTABLE_DESC Desc;
 	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),

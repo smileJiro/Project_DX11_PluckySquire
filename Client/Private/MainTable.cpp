@@ -20,11 +20,14 @@ HRESULT CMainTable::Initialize_Prototype()
 HRESULT CMainTable::Initialize(void* _pArg)
 {
 
-    CMainTable::ACTOROBJECT_DESC* pDesc = static_cast<CMainTable::ACTOROBJECT_DESC*>(_pArg);
+
+
+    CMainTable::MAINTABLE_DESC* pDesc = static_cast<CMainTable::MAINTABLE_DESC*>(_pArg);
 
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
-    pDesc->tTransform3DDesc.vInitialPosition = { 0.0f, -9.65f, 0.0f };
+    if (!pDesc->isOverride)
+        pDesc->tTransform3DDesc.vInitialPosition = { 0.0f, -9.65f, 0.0f };
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     pDesc->eActorType = ACTOR_TYPE::STATIC;
     CActor::ACTOR_DESC ActorDesc;
@@ -33,8 +36,10 @@ HRESULT CMainTable::Initialize(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_BOX_DESC ShapeDesc = {};
-    ShapeDesc.vHalfExtents = { 85.f, 10.f, 34.f };
-
+    if (!pDesc->isOverride)
+        ShapeDesc.vHalfExtents = { 85.f, 10.f, 34.f };
+    else
+        ShapeDesc.vHalfExtents = pDesc->vHalfExtents;
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA ShapeData;
     ShapeData.pShapeDesc = &ShapeDesc;             
