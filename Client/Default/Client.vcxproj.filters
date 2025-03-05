@@ -544,6 +544,30 @@
     <Filter Include="02.GameObjects\UI\98. Narration_Manager">
       <UniqueIdentifier>{e2af4f22-9c13-4cde-8ff9-a81afbee81ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="90. Minigame_Sneak">
+      <UniqueIdentifier>{fa690acd-ae0f-4182-89a0-5fe73843553f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects">
+      <UniqueIdentifier>{cab1d124-560b-4b6f-9de4-6ba7f2182691}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak">
+      <UniqueIdentifier>{227de015-2046-431b-8a29-398d60912fb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\NewFilter1">
+      <UniqueIdentifier>{0d2c76b1-3b9e-4847-8939-5e7ece7e3a08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile">
+      <UniqueIdentifier>{10d2a6a6-6aac-4da1-9cf5-f5b87a49f10b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\NewFilter1\NewFilter1">
+      <UniqueIdentifier>{a2712960-13e6-4b87-811b-11f240cdb52c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile\Default">
+      <UniqueIdentifier>{cff21b72-01f2-41c0-b6c9-85d95de3dd2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile\Fall">
+      <UniqueIdentifier>{60ba1fac-436c-4f94-bf84-e2e833d8a327}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1388,6 +1412,16 @@
     <ClInclude Include="..\Public\Narration_Manager.h">
       <Filter>02.GameObjects\UI\98. Narration_Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Minigame_Sneak.h">
+      <Filter>90. Minigame_Sneak</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_Tile.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_Default_Tile.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile\Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_Fall_Tile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2219,6 +2253,16 @@
     <ClCompile Include="..\Private\Narration_Manager.cpp">
       <Filter>02.GameObjects\UI\98. Narration_Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Minigame_Sneak.cpp">
+      <Filter>90. Minigame_Sneak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_Tile.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_Default_Tile.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile\Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_Fall_Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

@@ -1,0 +1,101 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "Sneak_tile_lit_yellow_left",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 196.0,
+            "Y": 10.0,
+            "Z": 196.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "9A7D93D748A43F07D285A18E8BCD7EB6"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "Sneak_tile_lit_yellow_left",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 793.0,
+        "Y": 1.0
+      },
+      "BakedSourceDimension": {
+        "X": 196.0,
+        "Y": 196.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'sneak_lit_tiles-0'",
+        "ObjectPath": "/Game/Minigames/Sneak/Textures/LitTiles/Textures/sneak_lit_tiles-0.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'Sneak_tile_lit_yellow_left:BodySetup_1'",
+        "ObjectPath": "/Game/Minigames/Sneak/Textures/LitTiles/Frames/Sneak_tile_lit_yellow_left.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 98.0,
+          "Y": 98.0,
+          "Z": 0.9658203,
+          "W": 0.0009765625
+        },
+        {
+          "X": -98.0,
+          "Y": 98.0,
+          "Z": 0.77441406,
+          "W": 0.0009765625
+        },
+        {
+          "X": -98.0,
+          "Y": -98.0,
+          "Z": 0.77441406,
+          "W": 0.19238281
+        },
+        {
+          "X": 98.0,
+          "Y": -98.0,
+          "Z": 0.9658203,
+          "W": 0.19238281
+        },
+        {
+          "X": 98.0,
+          "Y": 98.0,
+          "Z": 0.9658203,
+          "W": 0.0009765625
+        },
+        {
+          "X": -98.0,
+          "Y": -98.0,
+          "Z": 0.77441406,
+          "W": 0.19238281
+        }
+      ]
+    }
+  }
+]
