@@ -710,6 +710,10 @@ void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
             Event_ChangeBossState(BOSS_STATE::DEAD, m_pBossFSM);
         }
     }
+    else if (m_tStat.iMaxHP * 0.5 >= m_tStat.iHP)
+    {
+        m_isEnforce = true;
+    }
 }
 
 void CButterGrump::Hit()

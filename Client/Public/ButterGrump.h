@@ -120,6 +120,7 @@ private:
 	CFSM_Boss* m_pBossFSM = { nullptr };
 
 	_bool m_isInvincible = { false };
+	_bool m_isEnforce = { false };
 	_bool m_isPhase2 = { false };
 	_bool m_isAttack = { false };
 	_bool m_isAttackChained = { false };
