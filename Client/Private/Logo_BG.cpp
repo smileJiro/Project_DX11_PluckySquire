@@ -108,8 +108,8 @@ HRESULT CLogo_BG::Render()
 		TEXT("Ã©ÅÍ 2 ¸ÞÀÎ ¸Ê")
 		,TEXT("Ã©ÅÍ 4 ¸ÞÀÎ ¸Ê")
 		,TEXT("Ã©ÅÍ 6 ¸ÞÀÎ ¸Ê")
+		,TEXT("Ã©ÅÍ 8 ¸ÞÀÎ ¸Ê")
 		,TEXT("Ä«¸Þ¶ó Åø")
-		,TEXT("¹ÙÅÁÈ­¸éÀ¸·Î ³ª°¡±â")
 	};
 
 	_wstring* strCurText = nullptr;
@@ -247,12 +247,13 @@ void CLogo_BG::ProcesssByIndex(_int _iIndex)
 	case 3:
 	{
 		Uimgr->Set_LogoChangeState(false);
-		Event_LevelChange(LEVEL_LOADING, LEVEL_CAMERA_TOOL);
+		Event_LevelChange(LEVEL_LOADING, LEVEL_CHAPTER_8);
 	}
 	break;
 	case 4:
 	{
-		DestroyWindow(g_hWnd);
+		Uimgr->Set_LogoChangeState(false);
+		Event_LevelChange(LEVEL_LOADING, LEVEL_CAMERA_TOOL);
 	}
 	break;
 	}

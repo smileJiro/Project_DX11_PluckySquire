@@ -15,7 +15,7 @@ class CDraggableObject;
 class CStateMachine;
 class IInteractable;
 class CPortal;
-class CSampleBook;
+class CBook;
 class CStopStamp;
 class CBombStamp;
 class CDetonator;
@@ -519,6 +519,7 @@ public:
 	INTERACT_RESULT Try_Interact(_float _fTimeDelta);
 
 	//Get
+	_bool Is_ZetPack_Idle();
 	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
 	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
@@ -694,7 +695,7 @@ private:
 	CCarriableObject* m_pCarryingObject = nullptr;
 	set<CGameObject*> m_AttckedObjects;
 	IInteractable* m_pInteractableObject = nullptr;
-	CSampleBook* m_pBook = nullptr;
+	CBook* m_pBook = nullptr;
 	CPlayerBomb* m_pBomb = nullptr;
 
 	SHAPE_CAPSULE_DESC m_tBodyShapeDesc = {};

@@ -4,7 +4,7 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"
 #include "Trigger_Manager.h"
-#include "SampleBook.h"
+#include "Book.h"
 #include "Effect_Manager.h"
 #include "UI_Manager.h"
 #include "Target_Manager.h"

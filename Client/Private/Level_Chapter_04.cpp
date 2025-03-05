@@ -37,6 +37,7 @@
 #include "RayShape.h"
 #include "FallingRock.h"
 #include "Spawner.h"
+#include "Book.h"
 
 
 #include "2DMapObject.h"
@@ -441,7 +442,7 @@ HRESULT CLevel_Chapter_04::Ready_CubeMap(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_04::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 {
-	CMainTable::ACTOROBJECT_DESC Desc;
+	CMainTable::MAINTABLE_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
@@ -614,10 +615,10 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 HRESULT CLevel_Chapter_04::Ready_Layer_Book(const _wstring& _strLayerTag)
 {
-	CModelObject::MODELOBJECT_DESC Desc = {};
+	CBook::BOOK_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
 

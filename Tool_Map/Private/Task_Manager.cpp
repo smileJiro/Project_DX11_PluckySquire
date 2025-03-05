@@ -103,6 +103,7 @@ HRESULT CTask_Manager::Open_ParsingDialog(const wstring& _strLayerName)
 		SetCurrentDirectory(originalDir);
 		const _string strFilePath = m_pGameInstance->WStringToString(szName);
 		Register_Parsing(strFilePath, _strLayerName);
+		Parsing();
 	}
 
 	return S_OK;
@@ -244,7 +245,8 @@ HRESULT CTask_Manager::Parsing()
 
 	}
 
-	CCriticalSectionGuard csGuard(&m_Critical_Section);
+	m_LoadTasks.pop();
+	//CCriticalSectionGuard csGuard(&m_Critical_Section);
 
 
 	LOG_TYPE("Model Parsing Start - [ " + strFileFullPath + " ]", LOG_LOAD);
@@ -427,9 +429,8 @@ HRESULT CTask_Manager::Parsing()
 		LOG_TYPE("Export Result Save Error... ", LOG_ERROR);
 
 
-	CoUninitialize();
+	//CoUninitialize();
 	m_isLoadComp = true;
-	m_LoadTasks.pop();
 
 	return S_OK;
 }

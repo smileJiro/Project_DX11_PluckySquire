@@ -14,7 +14,7 @@
 #include "PlayerData_Manager.h"
 #include "GameEventExecuter.h"
 #include "Effect_Manager.h"
-#include "SampleBook.h"
+#include "Book.h"
 #include "PlayerItem.h"
 #include "Magic_Hand.h"
 
@@ -532,7 +532,7 @@ void CTrigger_Manager::Register_Trigger_Action()
 
 	m_Actions[TEXT("Active_BookMagicDust")] = [this](_wstring _wszEventTag) 
 {
-		static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
+		static_cast<CBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
 		};
 	m_Actions[TEXT("Active_MagicHand")] = [this](_wstring _wszEventTag) 
 {

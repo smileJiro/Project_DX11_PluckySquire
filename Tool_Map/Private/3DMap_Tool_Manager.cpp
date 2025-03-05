@@ -110,11 +110,11 @@ void C3DMap_Tool_Manager::Input_Object_Tool_Mode()
 			}
 		}
 
-		if (ImGui::IsKeyPressed(ImGuiKey_C))
-		{
-			if (!m_arrObjects[OBJECT_PREVIEW])
-				Object_Open_PreviewMode();
-		}
+		//if (ImGui::IsKeyPressed(ImGuiKey_C))
+		//{
+		//	if (!m_arrObjects[OBJECT_PREVIEW])
+		//		Object_Open_PreviewMode();
+		//}
 
 
 	}
