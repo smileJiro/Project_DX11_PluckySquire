@@ -18,6 +18,7 @@ CCharacter::CCharacter(const CCharacter& _Prototype)
 HRESULT CCharacter::Initialize(void* _pArg)
 {
 	CHARACTER_DESC* pDesc = static_cast<CHARACTER_DESC*>(_pArg);
+    m_tStat = pDesc->_tStat;
 	m_fStepSlopeThreshold = pDesc->_fStepSlopeThreshold;
 	m_fStepHeightThreshold = pDesc->_fStepHeightThreshold;
     m_fGravity = m_pGameInstance->Get_Gravity();

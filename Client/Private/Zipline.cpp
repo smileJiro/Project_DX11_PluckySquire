@@ -2,7 +2,7 @@
 #include "Zipline.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
-
+#include "PlayerBody.h"
 #include "Player.h"
 
 CZipline::CZipline(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

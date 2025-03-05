@@ -277,13 +277,15 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
 
-    m_PartObjects[PART_BODY] = m_pBody = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"), &BodyDesc));
+    m_PartObjects[PART_BODY] = m_pBody = static_cast<CPlayerBody*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"), &BodyDesc));
 	Safe_AddRef(m_pBody);
     if (nullptr == m_PartObjects[PART_BODY])
     {
         MSG_BOX("CPlayer Body Creation Failed");
         return E_FAIL;
     }
+
+
     //Part Sword
     CPlayerSword::PLAYER_SWORD_DESC SwordDesc{};
     SwordDesc.isCoordChangeEnable = true;
@@ -409,6 +411,8 @@ HRESULT CPlayer::Ready_PartObjects()
     m_PartObjects[PLAYER_PART_ZETPACK]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0.f,1.f,0.f,0.f });
     m_PartObjects[PLAYER_PART_ZETPACK]->Set_Position({ 0.f,-0.1f,0.5f });
     Set_PartActive(PLAYER_PART_ZETPACK, false);
+    
+
 
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));

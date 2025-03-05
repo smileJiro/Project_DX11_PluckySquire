@@ -21,6 +21,7 @@ class CBombStamp;
 class CDetonator;
 class CPlayerBomb;
 class CZetPack;
+class CPlayerBody;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -95,8 +96,10 @@ public:
 		PLAYER_PART_BOMB_STMAP,
 		PLAYER_PART_DETONATOR = 5,
 		PLAYER_PART_ZETPACK,
+		PLAYER_PART_CYBERBODY2D,
 		PLAYER_PART_LAST
 	};
+
 	enum PLAYER_MAIN_EQUIP
 	{
 		PLAYER_MAIN_EQUIP_SWORD = 1,
@@ -110,6 +113,7 @@ public:
 		PLAYER_SUB_EQUIP_DETONATOR = 5,
 		PLAYER_SUB_EQUIP_ZETPACK
 	};
+
 	enum STATE
 	{
 		IDLE,
@@ -346,6 +350,7 @@ public:
 		PLAYER_TRAPPED,
 		PLAYER_ZIPLINE,
 	};
+
 	enum class ANIM_STATE_3D
 	{
 		LATCH_ANIM_BOOK_JUMP_FALL_RIGHT
@@ -565,7 +570,7 @@ public:
 	CCarriableObject* Get_CarryingObject() { return m_pCarryingObject; }
 	const _float4x4* Get_BodyWorldMatrix_Ptr() const;
 	const _float4x4* Get_BodyWorldMatrix_Ptr(COORDINATE eCoord) const;
-	CModelObject* Get_Body() { return m_pBody; }
+	CPlayerBody* Get_Body() { return m_pBody; }
 	CPartObject* Get_PlayerPartObject(PLAYER_PART _ePartId) { return m_PartObjects[(_uint)_ePartId]; }
 	_vector Get_RootBonePosition();
 	NORMAL_DIRECTION Get_PortalNormal() { return m_e3DPortalNormal; }
@@ -682,7 +687,9 @@ private:
 
 	//Parts
 	class CPlayerSword* m_pSword = nullptr;
-	CModelObject* m_pBody = nullptr;
+	CPlayerBody* m_pBody = nullptr;
+	CModelObject* m_pBodyCyber2D = nullptr;
+
 	CModelObject* m_pGlove= nullptr;
 	CStopStamp* m_pStopStmap = nullptr;
 	CBombStamp* m_pBombStmap = nullptr;

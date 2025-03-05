@@ -116,6 +116,8 @@
 #include "Rubboink_Tiny.h"
 #include "MudPit.h"
 #include "Zipline.h"
+#include "DefenderPlayer.h"
+#include "DefenderPlayerProjectile.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -1292,7 +1294,9 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 	#pragma region Chapter 6 - Component Load
 
 		lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
-
+		//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_DefenderPlayerAnimGenerator"),
+		//	CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter6/DefenderPlayer/defenderplayeranimevts.animevt"))))
+		//	return E_FAIL;
 
 	#pragma endregion
 
@@ -1354,6 +1358,13 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_TiltSwapPusher"),
 			CTiltSwapPusher::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderPlayer"),
+			CDefenderPlayer::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderPlayerProjectile"),
+			CDefenderPlayerProjectile::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 		/* Monster */
 

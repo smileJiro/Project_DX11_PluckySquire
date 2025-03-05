@@ -202,6 +202,8 @@
     <ClInclude Include="..\Public\ButterGrump_Shield.h" />
     <ClInclude Include="..\Public\ButterGrump_Tongue.h" />
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
+    <ClInclude Include="..\Public\DefenderPlayer.h" />
+    <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
     <ClInclude Include="..\Public\Detonator.h" />
     <ClInclude Include="..\public\Door_2D.h" />
     <ClInclude Include="..\public\Door_Blue.h" />
@@ -482,6 +484,8 @@
     <ClCompile Include="..\Private\ButterGrump_Tongue.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
+    <ClCompile Include="..\Private\DefenderPlayer.cpp" />
+    <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
     <ClCompile Include="..\Private\Detonator.cpp" />
     <ClCompile Include="..\private\Door_2D.cpp" />
     <ClCompile Include="..\private\Door_Blue.cpp" />
