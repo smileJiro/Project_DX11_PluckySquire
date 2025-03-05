@@ -1,0 +1,40 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "SneakV03_sneaking_pressureplate_down",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_down_0001_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_down_0001_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_down_0002_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_down_0002_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_down_0003_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_down_0003_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_down_0004_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_down_0004_X01.1"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

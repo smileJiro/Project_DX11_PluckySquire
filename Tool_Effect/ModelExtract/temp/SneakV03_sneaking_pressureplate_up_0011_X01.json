@@ -1,0 +1,105 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "SneakV03_sneaking_pressureplate_up_0011_X01",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 1.0,
+              "Y": 0.0,
+              "Z": -1.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 202.0,
+            "Y": 10.0,
+            "Z": 182.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "7DC8D3824718982133AD8BB076C8E9BA"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "SneakV03_sneaking_pressureplate_up_0011_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 207.0,
+        "Y": 378.0
+      },
+      "BakedSourceDimension": {
+        "X": 204.0,
+        "Y": 184.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'sneakpit_v03_pressureplate-0'",
+        "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Textures/sneakpit_v03_pressureplate-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'SneakV03_sneaking_pressureplate_up_0011_X01:BodySetup_1'",
+        "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_up_0011_X01.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 102.0,
+          "Y": 90.0,
+          "Z": 0.40039062,
+          "W": 0.3701172
+        },
+        {
+          "X": -100.0,
+          "Y": 90.0,
+          "Z": 0.203125,
+          "W": 0.3701172
+        },
+        {
+          "X": -100.0,
+          "Y": -92.0,
+          "Z": 0.203125,
+          "W": 0.54785156
+        },
+        {
+          "X": 102.0,
+          "Y": -92.0,
+          "Z": 0.40039062,
+          "W": 0.54785156
+        },
+        {
+          "X": 102.0,
+          "Y": 90.0,
+          "Z": 0.40039062,
+          "W": 0.3701172
+        },
+        {
+          "X": -100.0,
+          "Y": -92.0,
+          "Z": 0.203125,
+          "W": 0.54785156
+        }
+      ]
+    }
+  }
+]
