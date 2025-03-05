@@ -201,7 +201,7 @@
     <ClInclude Include="..\Public\2DMapObject.h">
       <Filter>03. GameObject\2D\2D_MapObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\SampleBook.h">
+    <ClInclude Include="..\Public\Book.h">
       <Filter>03. GameObject\2D\SampleBook</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BackGround.h">
@@ -340,7 +340,7 @@
     <ClCompile Include="..\Private\2DMapObject.cpp">
       <Filter>03. GameObject\2D\2D_MapObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\SampleBook.cpp">
+    <ClCompile Include="..\Private\Book.cpp">
       <Filter>03. GameObject\2D\SampleBook</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BackGround.cpp">

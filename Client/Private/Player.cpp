@@ -52,7 +52,7 @@
 #include "NPC_Store.h"
 #include "Portal.h"
 #include "DraggableObject.h"
-#include "SampleBook.h"
+#include "Book.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -1054,12 +1054,12 @@ void CPlayer::StampSmash()
     if (COORDINATE_3D != Get_CurCoord())
         return;
 
-	CSampleBook* pSampleBook = dynamic_cast<CSampleBook*>(m_pInteractableObject);
-    if (nullptr == pSampleBook)
+	CBook* pBook = dynamic_cast<CBook*>(m_pInteractableObject);
+    if (nullptr == pBook)
         return;
 
     _vector v2DPosition;
-    if (FAILED(pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition(),&v2DPosition)))
+    if (FAILED(pBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition(),&v2DPosition)))
     {
         return;
     }

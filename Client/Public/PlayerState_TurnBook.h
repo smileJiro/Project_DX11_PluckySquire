@@ -1,7 +1,7 @@
 #pragma once
 #include "PlayerState.h"
 BEGIN(Client)
-class CSampleBook;
+class CBook;
 class CPlayerState_TurnBook :
     public CPlayerState
 {
@@ -58,7 +58,7 @@ private:
 	BOOK_STATE m_eBookState = BOOK_STATE::IDLE;
 
 	_bool m_bUpside = false;
-	CSampleBook* m_pBook = nullptr;
+	CBook* m_pBook = nullptr;
 	_float m_fTiltIdleTime = 0.5f;
 	_float m_fTiltIdleTimeAcc = 0.f;
 	_float m_fSlidProgress = 0.16f;

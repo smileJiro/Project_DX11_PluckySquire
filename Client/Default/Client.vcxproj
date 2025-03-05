@@ -225,6 +225,7 @@
     <ClInclude Include="..\Public\JumpPad.h" />
     <ClInclude Include="..\public\Key.h" />
     <ClInclude Include="..\Public\Level_Chapter_06.h" />
+    <ClInclude Include="..\Public\Level_Chapter_08.h" />
     <ClInclude Include="..\Public\PlayerState_GetItem.h" />
     <ClInclude Include="..\Public\Zipline.h" />
     <ClInclude Include="..\Public\MudPit.h" />
@@ -384,7 +385,7 @@
     <ClInclude Include="..\Public\RenderGroup_Lighting.h" />
     <ClInclude Include="..\public\RenderGroup_DirectLights.h" />
     <ClInclude Include="..\public\RenderGroup_WorldPos.h" />
-    <ClInclude Include="..\Public\SampleBook.h" />
+    <ClInclude Include="..\Public\Book.h" />
     <ClInclude Include="..\public\Section.h" />
     <ClInclude Include="..\public\Section_2D.h" />
     <ClInclude Include="..\Public\Section_2D_PlayMap.h" />
@@ -511,6 +512,7 @@
     <ClCompile Include="..\Private\JumpPad.cpp" />
     <ClCompile Include="..\private\Key.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_06.cpp" />
+    <ClCompile Include="..\Private\Level_Chapter_08.cpp" />
     <ClCompile Include="..\Private\PlayerState_GetItem.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\Private\MudPit.cpp" />
@@ -670,7 +672,7 @@
     <ClCompile Include="..\Private\RenderGroup_Lighting.cpp" />
     <ClCompile Include="..\private\RenderGroup_DirectLights.cpp" />
     <ClCompile Include="..\private\RenderGroup_WorldPos.cpp" />
-    <ClCompile Include="..\Private\SampleBook.cpp" />
+    <ClCompile Include="..\Private\Book.cpp" />
     <ClCompile Include="..\private\Section.cpp" />
     <ClCompile Include="..\private\Section_2D.cpp" />
     <ClCompile Include="..\Private\Section_2D_PlayMap.cpp" />

@@ -22,7 +22,7 @@
 #include "MainTable.h"
 #include "Bulb.h"
 
-#include "SampleBook.h"
+#include "Book.h"
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -315,9 +315,9 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         CCamera_CutScene::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_SampleBook */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_SampleBook"),
-        CSampleBook::Create(m_pDevice, m_pContext))))
+    /* For. Prototype_GameObject_Book */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Book"),
+        CBook::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     Map_Object_Create(LEVEL_CAMERA_TOOL, LEVEL_CAMERA_TOOL, L"Chapter_02_Play_Desk.mchc");
@@ -402,8 +402,8 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
 
 
     /* For. Prototype_GameObject_MapObject */
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TRIGGER_TOOL, TEXT("Prototype_GameObject_SampleBook"),
-    //    CSampleBook::Create(m_pDevice, m_pContext))))
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TRIGGER_TOOL, TEXT("Prototype_GameObject_Book"),
+    //    CBook::Create(m_pDevice, m_pContext))))
     //    return E_FAIL;
 
     Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_02_Play_Desk.mchc");
