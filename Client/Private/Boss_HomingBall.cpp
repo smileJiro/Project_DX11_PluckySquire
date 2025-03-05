@@ -45,6 +45,9 @@ HRESULT CBoss_HomingBall::Initialize(void* _pArg)
     }
     Safe_Delete(pDesc->pActorDesc);
 
+
+    m_fMinDistance = 10.f;
+
 	return S_OK;
 }
 
@@ -55,40 +58,7 @@ void CBoss_HomingBall::Priority_Update(_float _fTimeDelta)
 
 void CBoss_HomingBall::Update(_float _fTimeDelta)
 {
-
-    _vector vDir = m_pTarget->Get_FinalPosition() - Get_FinalPosition();
-
-    //if (false == m_isHoming)
-    //{
-    //    if (2.f <= m_fAccTime)
-    //    {
-    //        m_isHoming = true;
-    //        m_pControllerTransform->Set_SpeedPerSec(m_fOriginSpeed * 3.f);
-    //    }
-    //    m_pControllerTransform->Go_Straight(_fTimeDelta);
-    //}
-    //else
-    //{
-    //    m_pControllerTransform->Set_AutoRotationYDirection(vDir);
-    //    m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
-    //    m_pControllerTransform->Go_Direction(vDir, _fTimeDelta);
-    //}
-
-    if (false == m_isHoming)
-    {
-        if (2.f <= m_fAccTime)
-        {
-            m_isHoming = true;
-            m_pControllerTransform->Set_SpeedPerSec(m_fOriginSpeed * 3.f);
-            XMStoreFloat3(&m_vDir, vDir);
-        }
-        m_pControllerTransform->Go_Straight(_fTimeDelta);
-    }
-    else
-    {
-        Get_ControllerTransform()->Set_State(CTransform::STATE_LOOK, XMVectorLerp(Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vDir), _fTimeDelta));
-        m_pControllerTransform->Go_Straight(_fTimeDelta);
-    }
+    Homing(_fTimeDelta);
 
      __super::Update(_fTimeDelta);
 }
@@ -154,6 +124,51 @@ void CBoss_HomingBall::Active_OnDisable()
     __super::Active_OnDisable();
 }
 
+void CBoss_HomingBall::Homing(_float _fTimeDelta)
+{
+    _vector vDir = m_pTarget->Get_FinalPosition() - Get_FinalPosition();
+
+    //if (false == m_isHoming)
+    //{
+    //    if (2.f <= m_fAccTime)
+    //    {
+    //        m_isHoming = true;
+    //        m_pControllerTransform->Set_SpeedPerSec(m_fOriginSpeed * 3.f);
+    //    }
+    //    m_pControllerTransform->Go_Straight(_fTimeDelta);
+    //}
+    //else
+    //{
+    //    m_pControllerTransform->Set_AutoRotationYDirection(vDir);
+    //    m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
+    //    m_pControllerTransform->Go_Direction(vDir, _fTimeDelta);
+    //}
+
+    if (false == m_isHoming)
+    {
+        if (1.f <= m_fAccTime)
+        {
+            m_isHoming = true;
+            m_pControllerTransform->Set_SpeedPerSec(m_fOriginSpeed * 4.f);
+            XMStoreFloat3(&m_vDir, XMVector3Normalize(vDir));
+        }
+    }
+    else
+    {
+        _float fAngle = XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir), XMLoadFloat3(&m_vDir)));
+        //거리가 가깝지 않고 뒤에 있지 않을 때 방향전환
+        if (m_fMinDistance < XMVectorGetX(XMVector3Length(vDir)) && 0.f < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir), XMLoadFloat3(&m_vDir))))
+        {
+            XMStoreFloat3(&m_vDir, XMVector3Normalize(vDir));
+        }
+
+        _vector vLook = Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
+        Get_ControllerTransform()->Set_State(CTransform::STATE_LOOK, XMVectorLerp(vLook, XMLoadFloat3(&m_vDir), 0.1f));
+    }
+
+    m_pControllerTransform->Go_Straight(_fTimeDelta);
+}
+
 HRESULT CBoss_HomingBall::Ready_ActorDesc(void* _pArg)
 {
     PROJECTILE_MONSTER_DESC* pDesc = static_cast<PROJECTILE_MONSTER_DESC*>(_pArg);
@@ -176,8 +191,8 @@ HRESULT CBoss_HomingBall::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fRadius = 2.f;
-    ShapeDesc->fHalfHeight = 1.f;
+    ShapeDesc->fRadius = 1.f;
+    ShapeDesc->fHalfHeight = 2.f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
@@ -186,7 +201,7 @@ HRESULT CBoss_HomingBall::Ready_ActorDesc(void* _pArg)
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
     ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fRadius + ShapeDesc->fHalfHeight, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
@@ -220,7 +235,7 @@ HRESULT CBoss_HomingBall::Ready_PartObjects()
 
     //테스트용, 원 게임에서는 구체인데 일단 불릿 모델 써봄
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    BodyDesc.strModelPrototypeTag_3D = TEXT("HomingBall");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sphere_01");
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 

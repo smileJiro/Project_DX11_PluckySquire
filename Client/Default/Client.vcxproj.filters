@@ -1378,6 +1378,12 @@
     <ClInclude Include="..\Public\BossShieldState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BossDeadState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossTransitionState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2200,6 +2206,12 @@
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossShieldState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossDeadState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossTransitionState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
   </ItemGroup>
