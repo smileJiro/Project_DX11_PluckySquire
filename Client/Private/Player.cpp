@@ -2103,10 +2103,19 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
+        _vector vPos = Get_FinalPosition((COORDINATE)iCurCoord);
+
+		XMStoreFloat3(&vNewPos, vPos);
+
+
         if (iCurCoord == COORDINATE_2D)
+        {
             CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_OBJECT);
+        }
         else
+        {
             CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+        }
 
         Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
         //Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));

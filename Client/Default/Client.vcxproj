@@ -227,6 +227,8 @@
     <ClInclude Include="..\Public\Level_Chapter_06.h" />
     <ClInclude Include="..\Public\Level_Chapter_08.h" />
     <ClInclude Include="..\Public\PlayerState_GetItem.h" />
+    <ClInclude Include="..\Public\Section_2D_MiniGame.h" />
+    <ClInclude Include="..\Public\Section_2D_MiniGame_Pip.h" />
     <ClInclude Include="..\Public\Zipline.h" />
     <ClInclude Include="..\Public\MudPit.h" />
     <ClInclude Include="..\Public\Narration_Manager.h" />
@@ -514,6 +516,8 @@
     <ClCompile Include="..\Private\Level_Chapter_06.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_08.cpp" />
     <ClCompile Include="..\Private\PlayerState_GetItem.cpp" />
+    <ClCompile Include="..\Private\Section_2D_MiniGame.cpp" />
+    <ClCompile Include="..\Private\Section_2D_MiniGame_Pip.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\Private\MudPit.cpp" />
     <ClCompile Include="..\Private\Narration_Manager.cpp" />
