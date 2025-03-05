@@ -157,6 +157,8 @@ void CNarration_Anim::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 }
 
+
+
 void CNarration_Anim::StartAnimation()
 {
 	if (false == this->CBase::Is_Active())

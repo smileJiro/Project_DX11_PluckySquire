@@ -1,27 +1,29 @@
 #include "stdafx.h"
-#include "Boss_Rock.h"
+#include "Boss_TennisBall.h"
 #include "ModelObject.h"
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
+#include "ButterGrump_Shield.h"
+#include "ButterGrump.h"
 
-CBoss_Rock::CBoss_Rock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CBoss_TennisBall::CBoss_TennisBall(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CProjectile_Monster(_pDevice, _pContext)
 {
 }
 
-CBoss_Rock::CBoss_Rock(const CBoss_Rock& _Prototype)
+CBoss_TennisBall::CBoss_TennisBall(const CBoss_TennisBall& _Prototype)
     : CProjectile_Monster(_Prototype)
 {
 }
 
-HRESULT CBoss_Rock::Initialize_Prototype()
+HRESULT CBoss_TennisBall::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CBoss_Rock::Initialize(void* _pArg)
+HRESULT CBoss_TennisBall::Initialize(void* _pArg)
 {
-    PROJECTILE_MONSTER_DESC* pDesc = static_cast<PROJECTILE_MONSTER_DESC*>(_pArg);
+    BOSS_TENNISBALL_DESC* pDesc = static_cast<BOSS_TENNISBALL_DESC*>(_pArg);
 
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;
@@ -44,37 +46,62 @@ HRESULT CBoss_Rock::Initialize(void* _pArg)
     }
     Safe_Delete(pDesc->pActorDesc);
 
+
+    m_iObjectGroupID = OBJECT_GROUP::BOSS_PROJECTILE;
+
+    m_pSpawner = pDesc->pSpawner;
+
+    if (nullptr != m_pSpawner)
+        Safe_AddRef(m_pSpawner);
+
 	return S_OK;
 }
 
-void CBoss_Rock::Priority_Update(_float _fTimeDelta)
+void CBoss_TennisBall::Priority_Update(_float _fTimeDelta)
 {
     __super::Priority_Update(_fTimeDelta);
 }
 
-void CBoss_Rock::Update(_float _fTimeDelta)
+void CBoss_TennisBall::Update(_float _fTimeDelta)
 {
+    if(false == m_isShoot)
+    {
+        Get_ControllerTransform()->Go_Straight(_fTimeDelta);
+    }
+    else
+    {
+		Get_ControllerTransform()->Go_Direction(Get_FinalPosition() - m_pTarget->Get_FinalPosition(), Get_ControllerTransform()->Get_SpeedPerSec() * 3.f, _fTimeDelta);
+    }
 
-    /*_vector vDir = m_pTarget->Get_FinalPosition() - Get_FinalPosition();
-    m_pControllerTransform->Go_Direction(vDir, _fTimeDelta);*/
-    m_pControllerTransform->Go_Straight(_fTimeDelta);
+    if(KEY_PRESSING(KEY::CTRL))
+    {
+        if (KEY_DOWN(KEY::NUMPAD1))
+        {
+            m_isShoot = true;
+        }
+    }
 
     __super::Update(_fTimeDelta);
 }
 
-void CBoss_Rock::Late_Update(_float _fTimeDelta)
+void CBoss_TennisBall::Late_Update(_float _fTimeDelta)
 {
 
   	__super::Late_Update(_fTimeDelta);
 }
 
-HRESULT CBoss_Rock::Render()
+HRESULT CBoss_TennisBall::Render()
 {
     __super::Render();
     return S_OK;
 }
 
-void CBoss_Rock::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+void CBoss_TennisBall::Shoot()
+{
+    //회전
+}
+
+void CBoss_TennisBall::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
     if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
     {
@@ -84,32 +111,48 @@ void CBoss_Rock::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
             XMVectorSetY(vRepulse, -1.f);
             Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), 1, vRepulse);
             //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
-            Event_DeleteObject(this);
         }
     }
 
     if (OBJECT_GROUP::PLAYER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
     {
-        m_iHp -= 1;
-        if (0 >= m_iHp)
+        if(true == m_isShoot)
         {
-            Event_DeleteObject(this);
+            m_iHp -= 1;
+            if (0 >= m_iHp)
+            {
+                m_isShoot = true;
+            }
         }
     }
 
-    if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
-        Event_DeleteObject(this);
+    if (OBJECT_GROUP::BOSS & _Other.pActorUserData->iObjectGroup)
+    {
+        if ((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeIndex)
+        {
+            CButterGrump_Shield* pShield = dynamic_cast<CButterGrump_Shield*>(_Other.pActorUserData->pOwner);
+            if (nullptr != pShield)
+            {
+                pShield->Shield_Break(_My);
+                Event_DeleteObject(this);
+            }
+        }
+        
+    }
+
+    //if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+    //    Event_DeleteObject(this);
 }
 
-void CBoss_Rock::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
+void CBoss_TennisBall::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
 }
 
-void CBoss_Rock::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
+void CBoss_TennisBall::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
 }
 
-HRESULT CBoss_Rock::Cleanup_DeadReferences()
+HRESULT CBoss_TennisBall::Cleanup_DeadReferences()
 {
     if (FAILED(__super::Cleanup_DeadReferences()))
         return E_FAIL;
@@ -131,19 +174,25 @@ HRESULT CBoss_Rock::Cleanup_DeadReferences()
     return S_OK;
 }
 
-void CBoss_Rock::Active_OnEnable()
+void CBoss_TennisBall::Active_OnEnable()
 {
     __super::Active_OnEnable();
 
-    m_iHp = 10;
+    m_iHp = 30;
+    m_isShoot = false;
 }
 
-void CBoss_Rock::Active_OnDisable()
+void CBoss_TennisBall::Active_OnDisable()
 {
+    if (nullptr != m_pSpawner)
+    {
+        m_pSpawner->Set_SpawnOrb(false);
+    }
+
     __super::Active_OnDisable();
 }
 
-HRESULT CBoss_Rock::Ready_ActorDesc(void* _pArg)
+HRESULT CBoss_TennisBall::Ready_ActorDesc(void* _pArg)
 {
     PROJECTILE_MONSTER_DESC* pDesc = static_cast<PROJECTILE_MONSTER_DESC*>(_pArg);
 
@@ -165,7 +214,7 @@ HRESULT CBoss_Rock::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC* ShapeDesc = new SHAPE_SPHERE_DESC;
-    ShapeDesc->fRadius = 2.f;
+    ShapeDesc->fRadius = 3.f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
@@ -180,8 +229,8 @@ HRESULT CBoss_Rock::Ready_ActorDesc(void* _pArg)
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
-    ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER_PROJECTILE;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER;
+    ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::BOSS_PROJECTILE;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::BOSS;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;
@@ -192,12 +241,12 @@ HRESULT CBoss_Rock::Ready_ActorDesc(void* _pArg)
     return S_OK;
 }
 
-HRESULT CBoss_Rock::Ready_Components()
+HRESULT CBoss_TennisBall::Ready_Components()
 {
     return S_OK;
 }
 
-HRESULT CBoss_Rock::Ready_PartObjects()
+HRESULT CBoss_TennisBall::Ready_PartObjects()
 {
     CModelObject::MODELOBJECT_DESC BodyDesc{};
 
@@ -206,7 +255,7 @@ HRESULT CBoss_Rock::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    BodyDesc.strModelPrototypeTag_3D = TEXT("Rock_04_LowPoly");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("TennisBall_01");
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
@@ -216,44 +265,48 @@ HRESULT CBoss_Rock::Ready_PartObjects()
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform3DDesc.vInitialScaling = _float3(2.f, 2.f, 2.f);
-    BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(0.f);
+    BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+    BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 
+    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 0.7f, 0.f, 1.f));
+
     return S_OK;
 }
 
-CBoss_Rock* CBoss_Rock::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CBoss_TennisBall* CBoss_TennisBall::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    CBoss_Rock* pInstance = new CBoss_Rock(_pDevice, _pContext);
+    CBoss_TennisBall* pInstance = new CBoss_TennisBall(_pDevice, _pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CBoss_Rock");
+        MSG_BOX("Failed to Created : CBoss_TennisBall");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CBoss_Rock::Clone(void* _pArg)
+CGameObject* CBoss_TennisBall::Clone(void* _pArg)
 {
-    CBoss_Rock* pInstance = new CBoss_Rock(*this);
+    CBoss_TennisBall* pInstance = new CBoss_TennisBall(*this);
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : CBoss_Rock");
+        MSG_BOX("Failed to Cloned : CBoss_TennisBall");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CBoss_Rock::Free()
+void CBoss_TennisBall::Free()
 {
+    Safe_Release(m_pSpawner);
+
     __super::Free();
 }

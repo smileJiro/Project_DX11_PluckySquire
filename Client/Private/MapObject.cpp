@@ -27,7 +27,6 @@ HRESULT CMapObject::Initialize(void* _pArg)
 
     MAPOBJ_DESC* pDesc = static_cast<CMapObject::MAPOBJ_DESC*>(_pArg);
     pDesc->iObjectGroupID = OBJECT_GROUP::MAPOBJECT;
-
     return __super::Initialize(_pArg);
 }
 

@@ -9,6 +9,8 @@
 #include "BossYellowBallState.h"
 #include "BossWingSlamState.h"
 #include "BossRockVolleyState.h"
+#include "BossShieldState.h"
+#include "BossHitState.h"
 
 CFSM_Boss::CFSM_Boss(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CFSM(_pDevice, _pContext)
@@ -137,6 +139,26 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 		m_States.emplace((_uint)BOSS_STATE::ROCKVOLLEY, pState);
 		break;
 
+	case Client::BOSS_STATE::SHIELD:
+		pState = CBossShieldState::Create(&Desc);
+
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)BOSS_STATE::SHIELD, pState);
+		break;
+
+	case Client::BOSS_STATE::HIT:
+		pState = CBossHitState::Create(&Desc);
+
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)BOSS_STATE::HIT, pState);
+		break;
+
 	case Client::BOSS_STATE::LAST:
 		break;
 	default:
@@ -201,8 +223,20 @@ _uint CFSM_Boss::Determine_NextAttack()
 	//조건 체크 후 인덱스 증가하기 때문에 ATTACK으로 설정
 	if ((_uint)BOSS_STATE::LAST <= m_iAttackIdx)
 		m_iAttackIdx = (_uint)BOSS_STATE::ATTACK;
+	
+	++m_iAttackIdx;
 
-	return ++m_iAttackIdx;
+#ifdef _DEBUG
+	while(nullptr == m_States[m_iAttackIdx])
+	{
+		++m_iAttackIdx;
+
+		if ((_uint)BOSS_STATE::LAST <= m_iAttackIdx)
+			m_iAttackIdx = (_uint)BOSS_STATE::ATTACK + 1;
+	}
+#endif // _DEBUG
+
+	return m_iAttackIdx;
 }
 
 HRESULT CFSM_Boss::CleanUp()
