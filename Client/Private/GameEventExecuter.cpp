@@ -11,6 +11,7 @@
 #include "Magic_Hand.h"
 #include "Camera_2D.h"
 #include "UI_Manager.h"
+#include "Narration_Manager.h"
 #include "Effect_Manager.h"
 #include "Section_2D.h"
 #include "MapObject.h"
@@ -416,6 +417,7 @@ void CGameEventExecuter::Chapter2_Intro(_float _fTimeDelta)
     else if (1 == m_iStep) {
         if (false == m_isStart) {
             //CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
+			//CNarration_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
             m_isStart = true;
             m_iStep++;
         }

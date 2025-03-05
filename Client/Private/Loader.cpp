@@ -57,6 +57,7 @@
 #include "Narration.h"
 #include "Narration_Anim.h"
 #include "Interaction_E.h"
+#include "Narration_New.h"
 /* For. UI*/
 
 /* For. NPC*/
@@ -1877,6 +1878,9 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_PrintFloorWord"),
 		CPrintFloorWord::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_Narration_New"),
+	//	CNarration_New::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 
 	///////////////////////////////// NPC /////////////////////////////////

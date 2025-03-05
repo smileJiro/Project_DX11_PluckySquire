@@ -1117,10 +1117,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	
 	
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
+	//	return E_FAIL;
 
-	Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
+	//Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
 
 	return S_OK;
 }

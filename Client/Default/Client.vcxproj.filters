@@ -532,6 +532,9 @@
     <Filter Include="02.GameObjects\Door_2D\Door\Blue">
       <UniqueIdentifier>{65bd6bac-a947-46fe-9d33-24da99f54e7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\98. Narration_Manager">
+      <UniqueIdentifier>{e2af4f22-9c13-4cde-8ff9-a81afbee81ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1328,6 +1331,12 @@
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BombableObject.h" />
+    <ClInclude Include="..\Public\Narration_New.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\06. Narration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Narration_Manager.h">
+      <Filter>02.GameObjects\UI\98. Narration_Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2114,6 +2123,12 @@
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BombableObject.cpp" />
+    <ClCompile Include="..\Private\Narration_New.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\06. Narration</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Narration_Manager.cpp">
+      <Filter>02.GameObjects\UI\98. Narration_Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
