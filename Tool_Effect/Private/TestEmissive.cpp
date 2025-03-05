@@ -15,7 +15,11 @@ CTestEmissive::CTestEmissive(const CModelObject& _Prototype)
 
 void CTestEmissive::Late_Update(_float _fTimeDelta)
 {
-	ImGui::Begin();
+	ImGui::Begin("Test Emissive");
+
+	ImGui::DragFloat4("Bloom", (_float*)&m_vBloomColor, 0.001f);
+	ImGui::DragFloat4("Color", (_float*)&m_vColor, 0.001f);
+
 
 	ImGui::End();
 	m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_EFFECT, this);
@@ -36,7 +40,8 @@ HRESULT CTestEmissive::Render()
 HRESULT CTestEmissive::Bind_ShaderResources()
 {
 
-	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vBloomColor", &m_vBloomColor, sizeof(_float4));
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vSubColor", &m_vBloomColor, sizeof(_float4));
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4));
 
 
 	return S_OK;

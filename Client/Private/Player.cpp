@@ -55,12 +55,12 @@
 #include "SampleBook.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    :CCharacter(_pDevice, _pContext)
+    :CPlayable(_pDevice, _pContext, PLAYALBE_ID::NORMAL)
 {
 }
 
 CPlayer::CPlayer(const CPlayer& _Prototype)
-    :CCharacter(_Prototype)
+    :CPlayable(_Prototype)
 {
     for (_uint i = 0; i < ATTACK_TYPE_LAST; i++)
     {
@@ -246,7 +246,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     Set_State(CPlayer::IDLE);
 
     // PlayerData Manager µî·Ï
-    CPlayerData_Manager::GetInstance()->Register_Player(this);
+    CPlayerData_Manager::GetInstance()->Register_Player(PLAYALBE_ID::NORMAL,    this);
 
     return S_OK;
 }
@@ -1170,7 +1170,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
 	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
-	if (m_bBlockInput)
+	if (Is_PlayerInputBlocked())
 		return tResult;
 	if (STATE::DIE == Get_CurrentStateID())
     {
@@ -1284,7 +1284,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_Stamp()
 {
     PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
-    if (m_bBlockInput)
+    if (Is_PlayerInputBlocked())
         return tResult;
     _bool bIsStamping = CPlayer::STAMP == m_pStateMachine->Get_CurrentState()->Get_StateID();
 	if (false == bIsStamping) return tResult;
@@ -1324,7 +1324,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_ControlBook()
 {
     PLAYER_INPUT_RESULT tResult;
     _bool bIsTurningBook = CPlayer::TURN_BOOK == m_pStateMachine->Get_CurrentState()->Get_StateID();
-    if (m_bBlockInput)
+    if (Is_PlayerInputBlocked())
         return tResult;
     if (false == bIsTurningBook)
         return tResult;
@@ -1401,6 +1401,7 @@ _bool CPlayer::Check_ReplaceInteractObject(IInteractable* _pObj)
         return true;
     return false;
 }
+
 
 
 void CPlayer::Start_Portal(CPortal* _pPortal)
@@ -1808,10 +1809,6 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
         }
     }
 }
-
-
-
-
 
 void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
 {

@@ -368,22 +368,25 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInit
 	m_eCurrentCameraType = _iCurrentCameraType;
 }
 
-void CCamera_Manager::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
+void CCamera_Manager::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix, _float _fChangingTime)
 {
-	m_Cameras[m_eCurrentCameraType]->Change_Target(_pTargetWorldMatrix);
+	m_Cameras[m_eCurrentCameraType]->Change_Target(_pTargetWorldMatrix, _fChangingTime);
 }
 
-void CCamera_Manager::Change_CameraTarget(CGameObject* _pTarget)
+void CCamera_Manager::Change_CameraTarget(CGameObject* _pTarget, _float _fChangingTime)
 {
-	m_Cameras[m_eCurrentCameraType]->Change_Target(_pTarget);
+	m_Cameras[m_eCurrentCameraType]->Change_Target(_pTarget, _fChangingTime);
 }
 
 _bool CCamera_Manager::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
 {
-	if (nullptr == m_Cameras[TARGET])
+	if (nullptr == m_Cameras[m_eCurrentCameraType])
 		return false;
 
-	return static_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(_wszNextArmName, _iTriggerID);
+	if(TARGET == m_eCurrentCameraType)
+		return static_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(_wszNextArmName, _iTriggerID);
+	else
+		return static_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Set_NextArmData(_wszNextArmName, _iTriggerID);
 }
 
 _bool CCamera_Manager::Set_NextCutSceneData(_wstring _wszCutSceneName)

@@ -44,7 +44,7 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
         if (FAILED(CModelObject::Ready_Components(pDesc)))
             return E_FAIL;
     #pragma endregion
-
+    m_strModelName = pDesc->strModelPrototypeTag_3D;
     // 구조체는 if문 내부에 넣어서 포인터로 던지면, 사라지므로. 밖에 선언
     CActor::ACTOR_DESC ActorDesc;
     vector <SHAPE_COOKING_DESC> vecShapeCookingDesc = {};

@@ -110,7 +110,7 @@ HRESULT CBoss_PurpleBall::Ready_PartObjects()
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     BodyDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sphere_01");
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::TEST_PROJECTILE;
+    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
@@ -126,7 +126,7 @@ HRESULT CBoss_PurpleBall::Ready_PartObjects()
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 
-    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 1.f, 1.f, 1.f));
+    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 1.f, 1.f, 1.f), true);
 
     return S_OK;
 }
@@ -159,7 +159,5 @@ CGameObject* CBoss_PurpleBall::Clone(void* _pArg)
 
 void CBoss_PurpleBall::Free()
 {
-    Safe_Release(m_pTarget);
-
     __super::Free();
 }

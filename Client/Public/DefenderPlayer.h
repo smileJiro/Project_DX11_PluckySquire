@@ -1,5 +1,5 @@
 #pragma once
-#include "Character.h"
+#include "Playable.h"
 #include "AnimEventReceiver.h"
 
 BEGIN(Engine)
@@ -10,10 +10,16 @@ END
 
 BEGIN(Client)
 class CSection_Manager;
+class CPlayer;
 class CDefenderPlayer :
-    public CCharacter
+    public CPlayable
 {
 public:
+	enum DEFENDER_PART
+	{
+		DEFENDER_PART_CROSSHAIR= PART_LAST,
+		DEFENDER_PART_LAST,
+	};
 	enum class ANIM_STATE_CYBERJOT2D
 	{
 		CYBER2D_FLY_DOWN,
@@ -31,6 +37,10 @@ public:
 		CYBER2D_DEATH,
 		CYBVER2D_LAST,
 	};
+	typedef struct tagDefenderPlayerDesc : public CCharacter::CHARACTER_DESC
+	{
+		CPlayer* pOriginalPlayer = nullptr;
+	}DEFENDERPLAYER_DESC;
 private:
 	CDefenderPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CDefenderPlayer(const CDefenderPlayer& _Prototype);
@@ -44,11 +54,14 @@ public:
 	virtual void		Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT		Render() override;
 
+	void Set_Direction(T_DIRECTION _eTDir);
 	void Key_Input(_float _fTimeDelta);
+	void Start_Game();
 private:
-	HRESULT					Ready_Components();
-	HRESULT					Ready_PartObjects();
+	HRESULT	Ready_Components();
+	HRESULT	Ready_PartObjects();
 public:
+	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
@@ -62,6 +75,8 @@ public:
 public:
 	void Shoot();
 private:
+	T_DIRECTION m_eTDirection = T_DIRECTION::RIGHT;
+	CPlayer* m_pOriginalPlayer = nullptr;
 	CSection_Manager* m_pSection_Manager = nullptr;
 	//PARTS
 	CModelObject* m_pBody = nullptr;
@@ -72,13 +87,15 @@ private:
 
 	//STATS
 	_float m_fMoveSpeed = 500.f;
-	_float m_fShootDelay = 0.2f;
+	_float m_fShootDelay = 0.1f;
 	_float m_fShootTimeAcc = 0.f;
 
 	//CONTROL
-	_float m_fCrossHairMoveRange = 1000.f;
-	_float m_fCrossHairMoveSpeed = 300.f;
+	_float m_fCrossHairMoveRange = 300.f;
+	_float m_fCrossHairMoveSpeed = 100.f;
 	_float m_fCrossHairPosition = 0.f;
+	_float m_fCrossHairYOffset = 20.f;
+	_vector m_fBarrelOffset = { 80.f, 20.f };
 public:
 	static CDefenderPlayer* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

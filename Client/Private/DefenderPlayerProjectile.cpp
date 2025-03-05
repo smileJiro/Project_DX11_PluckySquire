@@ -21,17 +21,15 @@ HRESULT CDefenderPlayerProjectile::Initialize(void* _pArg)
 {
 	DEFENDERPLAYER_PROJECTILE_DESC* pDesc = static_cast<DEFENDERPLAYER_PROJECTILE_DESC*>(_pArg);
 	m_eTDirection = pDesc->_eTDirection;
-
+	pDesc->iObjectGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
 	pDesc->eStartCoord = COORDINATE_2D;
-	pDesc->iCurLevelID = m_iCurLevelID;
+	m_iCurLevelID = pDesc->iCurLevelID;
 	pDesc->isCoordChangeEnable = false;
 
 	pDesc->iModelPrototypeLevelID_2D = m_iCurLevelID;
 	pDesc->strModelPrototypeTag_2D = TEXT("DefenderPlayerProjectile_01_Sprite");
 	pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
 	pDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
-	pDesc->pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
-	pDesc->tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
 	pDesc->tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
 	pDesc->tTransform2DDesc.fSpeedPerSec = 1500.f;
 
@@ -66,6 +64,9 @@ void CDefenderPlayerProjectile::Update(_float _fTimeDelta)
 		m_pControllerTransform->Go_Left(_fTimeDelta);
 	else
 		m_pControllerTransform->Go_Right(_fTimeDelta);
+	m_fLifeTimeAcc += _fTimeDelta;
+	if (m_fLifeTimeAcc >= m_fLifeTime)
+		Event_DeleteObject(this);
 	__super::Update(_fTimeDelta);  
 }
 

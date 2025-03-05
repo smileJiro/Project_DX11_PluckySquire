@@ -47,6 +47,7 @@ public :
 		CHAPTER2_BETTLE_PAGE,
 		CHAPTER2_OPENBOOKEVENT,
 		CHAPTER2_STORYSEQUENCE,
+		CHAPTER4_RIDE_ZIPLINE,
 
 		EVENT_EXECUTER_ACTION_TYPE_LAST
 	};
@@ -94,7 +95,7 @@ public:
 	// Event Trigger
 	void						On_End(_wstring _szEventTag);	// 끝나는 Action의 EventTag를 넘겨주고 현재 실행 중인 Action인지 확인(ex CutScene_1)
 
-	void						Resister_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID);
+	void						Register_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID);
 
 
 #pragma region Load 관련 함수 (COORDNATE 분기)
@@ -125,8 +126,8 @@ private:
 	_int												m_iTriggerID = {};
 	_bool												m_isEventEnd = { false };
 private:
-	void						Resister_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger);
-	void						Resister_Trigger_Action();
+	void						Register_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger);
+	void						Register_Trigger_Action();
 
 	_uint						Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box);
 

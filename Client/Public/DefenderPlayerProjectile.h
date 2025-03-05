@@ -26,6 +26,8 @@ public:
 
 private:
 	T_DIRECTION m_eTDirection = T_DIRECTION::RIGHT;
+	_float m_fLifeTime = 10.f;
+	_float m_fLifeTimeAcc = 0.f;
 public:
 	static CDefenderPlayerProjectile* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

@@ -1,5 +1,5 @@
 #pragma once
-#include "Character.h"
+#include "Playable.h"
 #include "AnimEventReceiver.h"
 #include "Interactable.h"
 
@@ -22,6 +22,7 @@ class CDetonator;
 class CPlayerBomb;
 class CZetPack;
 class CPlayerBody;
+class CDefenderPlayer;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -55,7 +56,7 @@ typedef struct tagPlayerInputResult
 	_bool bInputStates[PLAYER_INPUT_LAST] = {false,};
 
 }PLAYER_INPUT_RESULT;
-class CPlayer final : public CCharacter, public virtual  IAnimEventReceiver
+class CPlayer final : public CPlayable, public virtual  IAnimEventReceiver
 {
 public:
 	enum PLAYER_SHAPE_USE
@@ -532,7 +533,7 @@ public:
 	_bool Is_AttackTriggerActive();
 	_bool Is_DetonationMode();
 	_bool Is_ZetPackMode();
-	_bool Is_PlayerInputBlocked() { return m_bBlockInput; }
+
 	_bool Is_PlayingAnim();
 	_bool Has_InteractObject() { return nullptr != m_pInteractableObject; }
 	_float Get_UpForce();
@@ -599,7 +600,7 @@ public:
 	void Set_InteractObject(IInteractable* _pInteractable) { m_pInteractableObject = _pInteractable; }
 	NORMAL_DIRECTION Set_PortalNormal(NORMAL_DIRECTION _eNormal) { return m_e3DPortalNormal = _eNormal; }
 	void Set_GravityCompOn(_bool _bOn);
-	void Set_BlockPlayerInput(_bool _bBlock) { m_bBlockInput = _bBlock; }
+
 	void Set_CurrentStampType(PLAYER_PART _eStamp) { m_eCurrentStamp = _eStamp; }
 
 	void Start_Attack(ATTACK_TYPE _eAttackType);
@@ -644,7 +645,7 @@ private:
 	_float m_f3DKnockBackPower = 10.f;
 
 	_bool m_bAttackTrigger = false;
-	_bool m_bBlockInput = false;
+
 	_uint m_iSpinAttackLevel = 4;
 	_vector m_vClamberEndPosition = { 0.f,0.f,0.f,1.f };//벽타기 끝날 위치
 	_vector m_vWallNormal= { 0.f,0.f,1.f,0.f };//접촉한 벽의 법선

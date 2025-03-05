@@ -27,9 +27,11 @@ public:
 	virtual HRESULT				Cleanup_DeadReferences() override; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
 	void						StartAnimation();
 	_bool						Get_PlayAnimation() { return m_isPlayAnimation; }
+	
 
 private:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+
 
 private:
 	_wstring					m_strSectionId = {};
@@ -38,6 +40,7 @@ private:
 	_float						m_fWaitingTime = { 0.f };
 	_float2						m_fAnimationScale = { 0.f, 0.f };
 	_bool						m_isPlayAnimation = { false };
+	
 };
 
 END

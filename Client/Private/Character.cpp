@@ -502,7 +502,7 @@ _vector CCharacter::StepAssist(_fvector _vVelocity,_float _fTimeDelta)
 
 void CCharacter::Move(_fvector _vForce, _float _fTimeDelta)
 {
-    ACTOR_TYPE eActorType = Get_ActorType();
+
 
     if (COORDINATE_3D == Get_CurCoord())
     {
@@ -522,7 +522,6 @@ void CCharacter::Move(_fvector _vForce, _float _fTimeDelta)
         {
             m_pControllerTransform->Go_Direction(_vForce,_fTimeDelta);
         }
-
 
     }
     else

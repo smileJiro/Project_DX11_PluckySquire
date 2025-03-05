@@ -17,6 +17,7 @@
 #include "CubeMap.h"
 #include "MainTable.h"
 #include "Player.h"
+#include "DefenderPlayer.h"
 #include "Beetle.h"
 #include "BirdMonster.h"
 #include "Projectile_BirdMonster.h"
@@ -36,6 +37,8 @@
 #include "TiltSwapPusher.h"
 #include "MudPit.h"
 
+//DEFENDER
+#include "Minigame_Defender.h"
 
 #include "RayShape.h"
 #include "CarriableObject.h"
@@ -159,7 +162,11 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Slippery (Level_Chapter_06::Initialize)");
 		assert(nullptr);
 	}
-
+	if (FAILED(Ready_Layer_Defender()))
+	{
+		MSG_BOX(" Failed Ready_Layer_Defender (Level_Chapter_06::Initialize)");
+		assert(nullptr);
+	}
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
@@ -203,6 +210,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 	// Trigger
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter6_Trigger.json"));
+	//CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter6_Trigger_Events.json"));
 
 	// BGM 시작
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
@@ -583,6 +591,28 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	pPlayer->Equip_Part(CPlayer::PLAYER_PART_ZETPACK);
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
+{
+	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+
+
+	CDefenderPlayer::DEFENDERPLAYER_DESC tDeffenderPlayerDesc = {};
+	tDeffenderPlayerDesc.iCurLevelID = m_eLevelID;
+	CDefenderPlayer* pPlayer = static_cast<CDefenderPlayer*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderPlayer"), &tDeffenderPlayerDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pPlayer);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
+	pPlayer->Set_Active(false);
+
+	CMiniGame_Defender::DEFENDER_CONTROLLTOWER_DESC tDesc = {};
+	tDesc.iCurLevelID = m_eLevelID;
+	tDesc.tTransform2DDesc.vInitialPosition = { -500.f, 0.35f, 0.f };   // TODO ::임시 위치
+	CMiniGame_Defender* pTower = static_cast<CMiniGame_Defender*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Minigame_Defender"), &tDesc));;
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pTower);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pTower, SECTION_2D_PLAYMAP_OBJECT);
 
 	return S_OK;
 }
@@ -972,17 +1002,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 
 	return S_OK;
-
-
-
-
-
-
-
-
-
-	return S_OK;
-
 }
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)

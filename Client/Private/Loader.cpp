@@ -57,6 +57,7 @@
 #include "Narration.h"
 #include "Narration_Anim.h"
 #include "Interaction_E.h"
+#include "Narration_New.h"
 /* For. UI*/
 
 /* For. NPC*/
@@ -118,6 +119,7 @@
 #include "Zipline.h"
 #include "DefenderPlayer.h"
 #include "DefenderPlayerProjectile.h"
+#include "Minigame_Defender.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -152,6 +154,8 @@
 #include "Boss_PurpleBall.h"
 #include "Boss_WingSlam.h"
 #include "Boss_Rock.h"
+#include "Boss_Crystal.h"
+#include "Boss_TennisBall.h"
 #include "FSM_Boss.h"
 #include "GameEventExecuter_C2.h"
 #include "GameEventExecuter_C4.h"
@@ -1207,6 +1211,14 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			CBoss_Rock::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_Crystal"),
+			CBoss_Crystal::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_TennisBall"),
+			CBoss_TennisBall::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),
@@ -1359,7 +1371,9 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_TiltSwapPusher"),
 			CTiltSwapPusher::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
-
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Minigame_Defender"),
+			CMiniGame_Defender::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderPlayer"),
 			CDefenderPlayer::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
@@ -2004,6 +2018,9 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_PrintFloorWord"),
 		CPrintFloorWord::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_Narration_New"),
+	//	CNarration_New::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 
 	///////////////////////////////// NPC /////////////////////////////////
