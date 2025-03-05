@@ -11,7 +11,7 @@
 #include "2DDefault_RenderObject.h"
 #include "2DTile_RenderObject.h"
 #include "2DMapObject.h"
-#include "SampleBook.h"
+#include "Book.h"
 #include "Sample_Skechspace.h"
 #include "BackGround.h"
 #include "2DModel.h"
@@ -330,8 +330,8 @@ HRESULT CLoader::Loading_Level_2D_Map_Tool()
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_2DMapObject"),
         C2DMapObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_SampleBook"),
-        CSampleBook::Create(m_pDevice, m_pContext))))
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_Book"),
+        CBook::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL_2D_MAP, TEXT("Prototype_GameObject_Sample_Skechspace"),
         CSample_Skechspace::Create(m_pDevice, m_pContext))))

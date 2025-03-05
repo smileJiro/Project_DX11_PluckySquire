@@ -15,7 +15,7 @@ class CDraggableObject;
 class CStateMachine;
 class IInteractable;
 class CPortal;
-class CSampleBook;
+class CBook;
 class CStopStamp;
 class CBombStamp;
 class CDetonator;
@@ -694,7 +694,7 @@ private:
 	CCarriableObject* m_pCarryingObject = nullptr;
 	set<CGameObject*> m_AttckedObjects;
 	IInteractable* m_pInteractableObject = nullptr;
-	CSampleBook* m_pBook = nullptr;
+	CBook* m_pBook = nullptr;
 	CPlayerBomb* m_pBomb = nullptr;
 
 	SHAPE_CAPSULE_DESC m_tBodyShapeDesc = {};

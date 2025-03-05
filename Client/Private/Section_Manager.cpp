@@ -104,6 +104,10 @@ HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
 		strJsonPath = L"Chapter6";
 		isSectionLoading = true;
 		break;
+	case Client::LEVEL_CHAPTER_8:
+		strJsonPath = L"Chapter8";
+		isSectionLoading = true;
+		break;
 	case Client::LEVEL_CAMERA_TOOL: // 효림 임시...
 		strJsonPath = L"Chapter6";
 		isSectionLoading = true;

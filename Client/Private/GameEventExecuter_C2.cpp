@@ -8,7 +8,7 @@
 #include "Effect2D_Manager.h"
 
 #include "GameInstance.h"
-#include "SampleBook.h"
+#include "Book.h"
 #include "Magic_Hand.h"
 #include "Camera_2D.h"
 #include "UI_Manager.h"
@@ -174,7 +174,7 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CSampleBook* pBook = Get_Book();
+			CBook* pBook = Get_Book();
 			if (nullptr != pBook)
 				CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Change_Target(pBook);
 		}
@@ -1083,7 +1083,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 			// 끝나면 x5로 이동,
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
-				XMVectorSet(10.f, 6.f, 0.f, 0.f),
+				XMVectorSet(11.f, 4.f, 0.f, 0.f),
 				EASE_IN_OUT
 			);
 		}
@@ -1124,27 +1124,28 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+			pCamera->Change_Target(Get_Book());
+			//CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 2.f, 20.f, EASE_IN_OUT);
 
-			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 2.f, 30.f, EASE_IN_OUT);
-
-			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
-				1.f,
-				XMVectorSet(41.f, 0.f, 0.f, 0.f),
-				EASE_IN_OUT
-			);
-			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(20.f), XMConvertToRadians(2.f));
-			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-30.f), XMConvertToRadians(-4.f));
+			//CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+			//	2.5f,
+			//	XMVectorSet(-41.f, 15.f, 0.f, 0.f),
+			//	EASE_IN_OUT
+			//);
+			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-45.f), XMConvertToRadians(-40.f));
+			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(45.f), XMConvertToRadians(40.f));
 
 		}
 		else
-			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+			Next_Step_Over(4.f);
 	}
 	else if (Step_Check(STEP_11))
 	{
 		if (Is_Start())
 		{
 			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-
+			pCamera->Change_Target(Get_Player());
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.5f);
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(false);

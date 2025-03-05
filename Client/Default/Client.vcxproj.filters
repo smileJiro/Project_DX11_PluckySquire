@@ -340,9 +340,6 @@
     <Filter Include="94.RenderGroups%28Custom%29\PBR\Combine">
       <UniqueIdentifier>{04255060-6660-4590-bec6-5e64f6a90ffa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\MapObject\SampleBook">
-      <UniqueIdentifier>{8bf5a38a-cd6a-4ee8-b268-00e43d9656dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\MapObject\3D\0. Super">
       <UniqueIdentifier>{5d40ea1d-b154-4325-ae2f-46cb3cf9249a}</UniqueIdentifier>
     </Filter>
@@ -540,6 +537,9 @@
     </Filter>
     <Filter Include="03.Components\FSM\State\SideScroll">
       <UniqueIdentifier>{eb660517-2ad9-4701-b44e-4d5768863bad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject\Book">
+      <UniqueIdentifier>{8bf5a38a-cd6a-4ee8-b268-00e43d9656dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -764,8 +764,8 @@
     <ClInclude Include="..\Public\MapObject.h">
       <Filter>02.GameObjects\MapObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\SampleBook.h">
-      <Filter>02.GameObjects\MapObject\SampleBook</Filter>
+    <ClInclude Include="..\Public\Book.h">
+      <Filter>02.GameObjects\MapObject\Book</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Map_2D.h">
       <Filter>04.Section\Section_2D\Map_2D</Filter>
@@ -1378,6 +1378,9 @@
     <ClInclude Include="..\Public\BossShieldState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Chapter_08.h">
+      <Filter>01.Levels\03.GamePlay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1595,8 +1598,8 @@
     <ClCompile Include="..\Private\MapObject.cpp">
       <Filter>02.GameObjects\MapObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\SampleBook.cpp">
-      <Filter>02.GameObjects\MapObject\SampleBook</Filter>
+    <ClCompile Include="..\Private\Book.cpp">
+      <Filter>02.GameObjects\MapObject\Book</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Map_2D.cpp">
       <Filter>04.Section\Section_2D\Map_2D</Filter>
@@ -2201,6 +2204,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\BossShieldState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Chapter_08.cpp">
+      <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

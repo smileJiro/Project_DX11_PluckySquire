@@ -5,7 +5,7 @@
 #include "Magic_Hand_Body.h"
 #include "Effect_System.h"
 #include "Player.h"
-#include "SampleBook.h"
+#include "Book.h"
 
 CMagic_Hand::CMagic_Hand(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CContainerObject(_pDevice, _pContext)
@@ -88,9 +88,9 @@ void CMagic_Hand::Update(_float _fTimeDelta)
 
         if (5.53f <= m_fFlipDelayTime)
         {
-            CSampleBook* pSampleBook = static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0));
-            if (nullptr != pSampleBook)
-                pSampleBook->Execute_AnimEvent(CSampleBook::ANIM_ACTION_CLOSEBYHAND);
+            CBook* pBook = static_cast<CBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0));
+            if (nullptr != pBook)
+                pBook->Execute_AnimEvent(CBook::ANIM_ACTION_CLOSEBYHAND);
             m_isReadyFlip = false;
         }
     }

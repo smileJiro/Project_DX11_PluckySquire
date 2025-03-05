@@ -41,7 +41,7 @@
 BEGIN(Client)
 
 class CPlayer;
-class CSampleBook;
+class CBook;
 
 class CGameEventExecuter_C2 : public CGameEventExecuter
 {

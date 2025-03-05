@@ -104,6 +104,7 @@
 #include "2DMapWordObject.h"
 #include "3DMapDefaultObject.h"
 #include "3DMapSkspObject.h"
+#include "3DMapEmissiveObject.h"
 #include "MapObjectFactory.h"
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
@@ -160,7 +161,7 @@
 
 
 // Sample
-#include "SampleBook.h"
+#include "Book.h"
 
 #include "RayShape.h"
 #include "Dice.h"
@@ -240,6 +241,9 @@ HRESULT CLoader::Loading()
 		break;
 	case Client::LEVEL_CHAPTER_6:
 		hr = Loading_Level_Chapter_6();
+		break;
+	case Client::LEVEL_CHAPTER_8:
+		hr = Loading_Level_Chapter_8();
 		break;
 	case Client::LEVEL_CHAPTER_TEST:
 		hr = Loading_Level_Chapter_TEST();
@@ -573,9 +577,9 @@ HRESULT CLoader::Loading_Level_Static()
 		CCubeMap::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For. Prototype_GameObject_SampleBook */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
-		CSampleBook::Create(m_pDevice, m_pContext))))
+	/* For. Prototype_GameObject_Book */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
+		CBook::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For. Prototype_GameObject_MainTable */
@@ -676,6 +680,10 @@ HRESULT CLoader::Loading_Level_Static()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMap_SkspObject"),
 		C3DMapSkspObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapEmissiveObject"),
+		C3DMapEmissiveObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
@@ -1751,6 +1759,10 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 	case LEVEL_CHAPTER_6:
 		str3DMapProtoJsonName = L"Chapter_06_Play_Desk.json";
 		strChapterName += L"Chapter6";
+		break;
+	case LEVEL_CHAPTER_8:
+		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
+		strChapterName += L"Chapter8";
 		break;
 	case LEVEL_CAMERA_TOOL:
 		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";

@@ -5,6 +5,13 @@
 BEGIN(Client)
 class CMainTable : public CActorObject
 {
+public :
+	typedef struct tagMainTable : public CActorObject::ACTOROBJECT_DESC
+	{
+		_bool isOverride = false;
+		_float3 vHalfExtents;
+	}MAINTABLE_DESC;
+
 private:
 	CMainTable(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CMainTable(const CMainTable& _Prototype);
