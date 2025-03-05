@@ -33,6 +33,7 @@
 #include "ButterGrump.h"
 #include "Rubboink_Tiny.h"
 #include "RabbitLunch.h"
+#include "TiltSwapPusher.h"
 #include "MudPit.h"
 
 
@@ -79,7 +80,6 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed CSection_Manager Level_Enter(Level_Chapter_06::Initialize)");
 		assert(nullptr);
 	}
-
 
 
 	if (FAILED(Ready_Lights()))
@@ -203,7 +203,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 	// Trigger
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter6_Trigger.json"));
-	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
+	//CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter6_Trigger_Events.json"));
 
 	// BGM ½ÃÀÛ
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
@@ -361,8 +361,9 @@ HRESULT CLevel_Chapter_06::Ready_Lights()
 #ifdef _DEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
 #elif NDEBUG
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6.json"));
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6_2.json"));
 #endif // _DEBUG
+
 	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter6.json"));
 
 	//CONST_LIGHT LightDesc{};
@@ -402,7 +403,7 @@ HRESULT CLevel_Chapter_06::Ready_CubeMap(const _wstring& _strLayerTag)
 	Desc.iRenderGroupID = RG_3D;
 	Desc.iPriorityID = PR3D_PRIORITY;
 	Desc.strBRDFPrototypeTag = TEXT("Prototype_Component_Texture_BRDF_Shilick");
-	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_TestEnv");
+	Desc.strCubeMapPrototypeTag = TEXT("Prototype_Component_Texture_Chapter6Env");
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
 		m_eLevelID, _strLayerTag, &pCubeMap, &Desc)))
 		return E_FAIL;
@@ -1098,6 +1099,23 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects(const _wstring& _strLayerTag)
 		}
 	}
 
+	pJson = m_pGameInstance->Find_Json_InLevel(TEXT("FX_Level6"), m_eLevelID);
+	if (nullptr == pJson)
+		return E_FAIL;
+
+	for (_int i = 0; i < (*pJson).size(); ++i)
+	{
+		_wstring strName = STRINGTOWSTRING((*pJson)[i]["Name"]);
+		_int iCount = (*pJson)[i]["Count"];
+
+		for (_int j = 0; j < iCount; ++j)
+		{
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, strName, m_eLevelID, _strLayerTag, &pOut, &Desc)))
+				return E_FAIL;
+			CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+		}
+	}
+
 	return S_OK;
 }
 
@@ -1138,7 +1156,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Slippery()
 	tModelDesc.iCurLevelID = m_eLevelID;
 	CMudPit* pMudpit = static_cast<CMudPit*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_MudPit"), &tModelDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pMudpit);
-	pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), pMudpit, SECTION_2D_PLAYMAP_OBJECT);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pMudpit, SECTION_2D_PLAYMAP_OBJECT);
 
 
 	CRubboink_Tiny::TINY_DESC  tSlipperyDesc{};
@@ -1148,7 +1166,17 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Slippery()
 
 	CSlipperyObject* pSlippery = static_cast<CSlipperyObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Rubboink_Tiny"), &tSlipperyDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pSlippery);
-	pSectionMgr->Add_GameObject_ToSectionLayer(pSectionMgr->Get_Cur_Section_Key(), pSlippery, SECTION_2D_PLAYMAP_OBJECT);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pSlippery, SECTION_2D_PLAYMAP_OBJECT);
+
+
+	//TMP
+	CTiltSwapPusher::TILTSWAPPUSHER_DESC tTiltSwapPusherDesc{};
+	tTiltSwapPusherDesc.eLookDirection = F_DIRECTION::LEFT;
+	tTiltSwapPusherDesc.iCurLevelID = m_eLevelID;
+	tTiltSwapPusherDesc.tTransform2DDesc.vInitialPosition = _float3(1530.f, 515.f, 0.f);
+	CTiltSwapPusher* pTSP = static_cast<CTiltSwapPusher*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_TiltSwapPusher"), &tTiltSwapPusherDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pTSP);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pTSP, SECTION_2D_PLAYMAP_OBJECT);
 
 	return S_OK;
 }

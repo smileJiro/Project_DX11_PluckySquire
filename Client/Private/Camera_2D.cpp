@@ -48,12 +48,14 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 
 	m_eMagnificationType = HORIZON_NON_SCALE;
 	m_iFreezeMask |= FREEZE_Z;
+	m_eTargetCoordinate = { COORDINATE_2D };
 
 	// TargetChangineTime이 Camera에 있는데 여기서는 TrackingTime으로 쫓아가는 게 나을 것 같기도
 
-
-	if (FAILED(Create_NormalCopyTexture()))
-		return E_FAIL;
+	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_01"), _float3(2.08f, 0.40f, -0.61f));
+	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_06"), _float3(44.53f, 0.40f, 1.21f));
+	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_03"), _float3(-37.8f, 29.89f, 41.25f));
+	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_04"), _float3(1.72f, 18.65f, 30.10f));
 
 	return S_OK;
 }
@@ -71,7 +73,7 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 #ifdef _DEBUG
-	//Imgui(fTimeDelta);
+	Imgui(fTimeDelta);
 #endif
 
 	Switching(fTimeDelta);
@@ -124,6 +126,8 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 {
 	if (nullptr == m_pCurArm)
 		return;
+	
+	m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 
 	// Sketch Space 면에 따라서 Arm 바꿔 주기
 	if (CSection_Manager::GetInstance()->is_WordPos_Capcher()) 
@@ -191,51 +195,17 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 				Set_InitialData(m_strSectionName);
 			}
 			else if (ARM_NORMAL_TYPE::NORMAL_MAP == iNormalType) {	
-				if(FAILED(m_pGameInstance->Copy_RT_Resource(TEXT("Target_Normal"), m_pCopyNormalMap)))
-					MSG_BOX("Copy Failed");
-				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
-				_vector vNormal = {};
+				auto& iter = m_NormalTargets.find(m_strSectionName);
+
+				if (iter == m_NormalTargets.end())
+					return;
 				
-				_matrix matResult = m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW);
-				matResult = matResult * m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ);
+				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 
-				vTargetPos = XMVector3TransformCoord(vTargetPos, matResult);
+				_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
+				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
 
-				_int iPixelX = (_int)((XMVectorGetX(vTargetPos) + 1.f) * (g_iWinSizeX * 0.5f));
-				_int iPixelY = (_int)((1.f - XMVectorGetY(vTargetPos)) * (g_iWinSizeY * 0.5f));
-
-				D3D11_MAPPED_SUBRESOURCE mappedResource;
-				if (FAILED(m_pContext->Map(m_pCopyNormalMap, 0, D3D11_MAP_READ, 0, &mappedResource)))
-					MSG_BOX("Normal Map Copy Failed");
-
-				//_int iWidth = mappedResource.RowPitch / sizeof(uint16_t) / 4;
-				//_int iHeight = mappedResource.DepthPitch / mappedResource.RowPitch;
-
-				// RowPitch는 한 줄의 바이트 수를 나타냄
-				uint16_t* fData = static_cast<uint16_t*>(mappedResource.pData);
-
-				// 픽셀 위치 계산 (4 floats per pixel)
-				_int rowPitchInPixels = mappedResource.RowPitch / (sizeof(uint16_t) * 4);
-				_int iIndex = iPixelY * rowPitchInPixels + iPixelX;
-
-			/*	if (iWidth * iHeight <= iIndex || 0 > iIndex)
-					vNormal = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);*/
-
-				_uint iDefaultIndex = iIndex * 4;
-
-				// float4 데이터 읽기
-				_float x = fData[iDefaultIndex] / 65535.0f;; // Red 채널
-				_float y = fData[iDefaultIndex + 1] / 65535.0f;; // Green 채널
-				_float z = fData[iDefaultIndex + 2] / 65535.0f;; // Blue 채널
-				_float w = fData[iDefaultIndex + 3] / 65535.0f;; // Alpha 채널
-
-				m_pContext->Unmap(m_pCopyNormalMap, 0);
-
-				vNormal = XMVectorSet(x, y, z, w);
-				vNormal = (vNormal * 2.f) - XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f);
-
-
-				Set_InitialData(vNormal, 12.5f, XMVectorZero(), 5);
+				Set_InitialData(vDir, 6.5f, XMVectorZero(), 5);
 			}
 		}
 #pragma endregion
@@ -277,6 +247,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		}
 
 		Check_MagnificationType();
+
 	}
 }
 
@@ -287,6 +258,45 @@ void CCamera_2D::Change_Target(CGameObject* _pTarget)
 	m_isTargetChanged = true;
 
 	m_vStartPos = m_v2DPreTargetWorldPos;
+}
+
+void CCamera_2D::Turn_AxisY(_float _fTimeDelta)
+{
+	if (false == m_isTurnAxisY)
+		return;
+
+	if (true == m_pCurArm->Turn_AxisY(&m_CustomArmData, _fTimeDelta)) {
+		m_isTurnAxisY = false;
+	}
+}
+
+void CCamera_2D::Turn_AxisRight(_float _fTimeDelta)
+{
+	if (false == m_isTurnAxisRight)
+		return;
+
+	if (true == m_pCurArm->Turn_AxisRight(&m_CustomArmData, _fTimeDelta)) {
+		m_isTurnAxisRight = false;
+	}
+}
+
+void CCamera_2D::Change_Length(_float _fTimeDelta)
+{
+	if (false == m_isChangingLength)
+		return;
+
+	if (true == m_pCurArm->Change_Length(&m_CustomArmData, _fTimeDelta)) {
+		m_isChangingLength = false;
+	}
+}
+
+void CCamera_2D::Start_ResetArm_To_SettingPoint(_float _fResetTime)
+{
+	m_pCurArm->Set_StartInfo();
+	Start_Changing_AtOffset(_fResetTime, XMLoadFloat3(&m_ResetArmData.vAtOffset), EASE_IN);
+	Start_Zoom(_fResetTime, (ZOOM_LEVEL)m_ResetArmData.iZoomLevel, EASE_IN);
+	m_eCameraMode = RESET_TO_SETTINGPOINT;
+	m_fResetTime = { _fResetTime, 0.f };
 }
 
 INITIAL_DATA CCamera_2D::Get_InitialData()
@@ -332,6 +342,7 @@ void CCamera_2D::Set_InitialData(_wstring _szSectionTag)
 
 	if (TEXT("Chapter4_SKSP_02") == _szSectionTag) {
 		pData = Find_ArmData(TEXT("Custom_Flag"));
+		m_eCameraMode = FREEZE;
 	}
 	else if (TEXT("Chapter4_SKSP_07") == _szSectionTag) {
 		pData = Find_ArmData(TEXT("Custom_Stair"));
@@ -385,11 +396,16 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);*/
 #pragma endregion
 
+//	m_eCameraMode = DEFAULT;
 	Find_TargetPos();
 
 	Action_Zoom(_fTimeDelta);
 	Action_Shake(_fTimeDelta);
 	Change_AtOffset(_fTimeDelta);
+
+	Turn_AxisY(_fTimeDelta);
+	Turn_AxisRight(_fTimeDelta);
+	Change_Length(_fTimeDelta);
 
 	switch (m_eCameraMode) {
 	case DEFAULT:
@@ -401,9 +417,6 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	case MOVE_TO_CUSTOMARM:
 		Move_To_CustomArm(_fTimeDelta);
 		break;
-	case RETURN_TO_DEFUALT:
-		Return_To_Default(_fTimeDelta);
-		break;
 	case FLIPPING_UP:
 		Flipping_Up(_fTimeDelta);
 		break;
@@ -413,8 +426,11 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	case FLIPPING_DOWN:
 		Flipping_Down(_fTimeDelta);
 		break;
-	case NARRATION:
-		Play_Narration(_fTimeDelta);
+	case RESET_TO_SETTINGPOINT:
+		Reset_To_SettingPoint(_fTimeDelta);
+		break;
+	case FREEZE:
+		Freeze(_fTimeDelta);
 		break;
 	}
 }
@@ -429,8 +445,6 @@ void CCamera_2D::Action_SetUp_ByMode()
 		case MOVE_TO_NEXTARM:
 			break;
 		case MOVE_TO_CUSTOMARM:
-			break;
-		case RETURN_TO_DEFUALT:
 			break;
 		case FLIPPING_UP:
 		{	
@@ -522,11 +536,6 @@ void CCamera_2D::Move_To_CustomArm(_float _fTimeDelta)
 	Look_Target(_fTimeDelta);
 }
 
-
-void CCamera_2D::Return_To_Default(_float _fTimeDelta)
-{
-}
-
 void CCamera_2D::Flipping_Up(_float _fTimeDelta)
 {	
 	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta, true)) {
@@ -565,6 +574,32 @@ void CCamera_2D::Play_Narration(_float _fTimeDelta)
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
 
 	Look_Target(_fTimeDelta);
+}
+
+void CCamera_2D::Reset_To_SettingPoint(_float _fTimeDelta)
+{
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fResetTime, _fTimeDelta, EASE_IN_OUT);
+
+	if (fRatio >= (1.f - EPSILON)) {
+		m_fResetTime.y = 0.f;
+		m_eCameraMode = DEFAULT;
+
+		m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_ResetArmData.vPreArm)));
+
+		return;
+	}
+
+	m_pCurArm->Reset_To_SettingPoint(fRatio, XMLoadFloat3(&m_ResetArmData.vPreArm), m_ResetArmData.fPreLength);
+	
+	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
+
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
+
+	Look_Target(_fTimeDelta);
+}
+
+void CCamera_2D::Freeze(_float _fTimeDelta)
+{
 }
 
 void CCamera_2D::Look_Target(_float fTimeDelta)
@@ -645,7 +680,6 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 		m_InitialTime.y = 0.f;
 		m_isInitialData = false;
 
-		m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 		return;
 	}
 
@@ -770,51 +804,17 @@ void CCamera_2D::Find_TargetPos()
 
 			/* Normal Map */
 			else if (ARM_NORMAL_TYPE::NORMAL_MAP == iNormalType) {
+				auto& iter = m_NormalTargets.find(m_strSectionName);
 
-				if (FAILED(m_pGameInstance->Copy_RT_Resource(TEXT("Target_Normal"), m_pCopyNormalMap)))
-					MSG_BOX("Copy Failed");
+				if (iter == m_NormalTargets.end())
+					return;
+
 				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
-				_vector vNormal = {};
 
-				_matrix matResult = m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW);
-				matResult = matResult * m_pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ);
+				_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
+				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
 
-				vTargetPos = XMVector3TransformCoord(vTargetPos, matResult);
-
-				_int iPixelX = (_int)((XMVectorGetX(vTargetPos) + 1.f) * (g_iWinSizeX * 0.5f));
-				_int iPixelY = (_int)((1.f - XMVectorGetY(vTargetPos)) * (g_iWinSizeY * 0.5f));
-
-				D3D11_MAPPED_SUBRESOURCE mappedResource;
-				if (FAILED(m_pContext->Map(m_pCopyNormalMap, 0, D3D11_MAP_READ, 0, &mappedResource)))
-					MSG_BOX("Normal Map Copy Failed");
-
-				//_int iWidth = mappedResource.RowPitch / sizeof(uint16_t) / 4;
-				//_int iHeight = mappedResource.DepthPitch / mappedResource.RowPitch;
-
-				// RowPitch는 한 줄의 바이트 수를 나타냄
-				uint16_t* fData = static_cast<uint16_t*>(mappedResource.pData);
-
-				// 픽셀 위치 계산 (4 floats per pixel)
-				_int rowPitchInPixels = mappedResource.RowPitch / (sizeof(uint16_t) * 4);
-				_int iIndex = iPixelY * rowPitchInPixels + iPixelX;
-
-				/*	if (iWidth * iHeight <= iIndex || 0 > iIndex)
-						vNormal = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);*/
-
-				_uint iDefaultIndex = iIndex * 4;
-
-				// float4 데이터 읽기
-				_float x = fData[iDefaultIndex] / 65535.0f;; // Red 채널
-				_float y = fData[iDefaultIndex + 1] / 65535.0f;; // Green 채널
-				_float z = fData[iDefaultIndex + 2] / 65535.0f;; // Blue 채널
-				_float w = fData[iDefaultIndex + 3] / 65535.0f;; // Alpha 채널
-
-				m_pContext->Unmap(m_pCopyNormalMap, 0);
-
-				vNormal = XMVectorSet(x, y, z, w);
-				vNormal = (vNormal * 2.f) - XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f);
-
-				Set_InitialData(vNormal, 8.5f, XMVectorZero(), 5);
+				Set_InitialData(vDir, 6.5f, XMVectorZero(), 5);
 			}
 		}
 #pragma endregion
@@ -997,28 +997,6 @@ _bool CCamera_2D::Is_Target_In_SketchSpace()
 	return true;
 }
 
-HRESULT CCamera_2D::Create_NormalCopyTexture()
-{
-	m_pCopyNormalMap = nullptr;
-
-	D3D11_TEXTURE2D_DESC	desc;
-	ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
-
-	desc.Width = (_uint)g_iWinSizeX; // 원본 텍스처 너비
-	desc.Height = (_uint)g_iWinSizeY; // 원본 텍스처 높이
-	desc.MipLevels = 1;
-	desc.ArraySize = 1;
-	desc.Format = DXGI_FORMAT_R16G16B16A16_UNORM; // 원본 텍스처와 동일한 포맷
-	desc.SampleDesc.Count = 1;
-	desc.Usage = D3D11_USAGE_STAGING; // CPU 읽기 전용
-	desc.BindFlags = 0; // 바인딩 없음
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
-
-	m_pDevice->CreateTexture2D(&desc, nullptr, &m_pCopyNormalMap);
-
-	return S_OK;
-}
-
 pair<ARM_DATA*, SUB_DATA*>* CCamera_2D::Find_ArmData(_wstring _wszArmTag)
 {
 	auto iter = m_ArmDatas.find(_wszArmTag);
@@ -1032,6 +1010,7 @@ pair<ARM_DATA*, SUB_DATA*>* CCamera_2D::Find_ArmData(_wstring _wszArmTag)
 
 void CCamera_2D::Key_Input(_float _fTimeDelta)
 {
+#pragma region RB 카메라 Arm 회전
 	_long		MouseMove = {};
 	_vector		fRotation = {};
 
@@ -1073,8 +1052,10 @@ void CCamera_2D::Key_Input(_float _fTimeDelta)
 
 		m_pCurArm->Set_Rotation(fRotation);
 	}
-
-	_float fArmLength = {};
+#pragma endregion
+	
+#pragma region ImGui 프레임 떨어졌을 때 쓰는 거
+	/*_float fArmLength = {};
 	fArmLength = m_pCurArm->Get_Length();
 
 	if (KEY_PRESSING(KEY::CTRL)) {
@@ -1095,8 +1076,26 @@ void CCamera_2D::Key_Input(_float _fTimeDelta)
 		else if (KEY_DOWN(KEY::J)) {
 			m_vAtOffset.y -= 0.1f;
 		}
+	}*/
+#pragma endregion
+
+#pragma region 예시 코드
+	/*if (KEY_DOWN(KEY::K)) {
+		Start_Changing_ArmLength(2.f, 20.f, EASE_IN);
+		Start_Turn_AxisY(2.f, XMConvertToRadians(-20.f), XMConvertToRadians(-30.f));
+		Start_Turn_AxisRight(2.f, XMConvertToRadians(-10.f), XMConvertToRadians(-2.f));
 	}
+
+	if (KEY_DOWN(KEY::J)) {
+		Set_ResetData();
+	}
+
+	if (KEY_DOWN(KEY::I)) {
+		Start_ResetArm_To_SettingPoint(2.f);
+	}*/
+#pragma endregion
 }
+
 #ifdef _DEBUG
 void CCamera_2D::Imgui(_float _fTimeDelta)
 {
@@ -1223,7 +1222,6 @@ void CCamera_2D::Free()
 	m_ArmDatas.clear();
 
 	Safe_Release(m_pCurArm);
-	Safe_Release(m_pCopyNormalMap);
 
 	__super::Free();
 }

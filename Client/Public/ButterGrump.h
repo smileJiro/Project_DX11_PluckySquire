@@ -66,6 +66,17 @@ private:
 	virtual ~CButterGrump() = default;
 
 public:
+	_bool Is_Phase2()
+	{
+		return m_isPhase2;
+	}
+
+	void Set_SpawnOrb(_bool _isSpawnOrb)
+	{
+		m_isSpawnOrb = _isSpawnOrb;
+	}
+	
+public:
 	virtual HRESULT			Initialize_Prototype() override;
 	virtual HRESULT			Initialize(void* _pArg) override;
 	virtual void			Priority_Update(_float _fTimeDelta) override;
@@ -77,8 +88,12 @@ public:
 	virtual void Change_Animation() override;
 	virtual void Attack() override;
 	virtual void On_Attack();
+	void Shield_Break();
 	void	Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 	void Play_Intro();
+
+	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
+	void Hit();
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
@@ -90,8 +105,12 @@ private:
 	CFSM_Boss* m_pBossFSM = { nullptr };
 
 	_bool m_isInvincible = { false };
+	_bool m_isPhase2 = { false };
 	_bool m_isAttack = { false };
 	_uint m_iNumAttack = { 0 };
+
+	//패턴 파훼용 투사체가 소환되어있는지 체크
+	_bool m_isSpawnOrb = { false };
 
 public:
 	static CButterGrump* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

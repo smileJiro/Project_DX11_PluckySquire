@@ -54,12 +54,15 @@ void CPlayerState_JumpToPortal::Enter()
         m_vPortalPos = m_pPortal->Get_ControllerTransform()->Get_Transform(eCoord)->Get_State(CTransform::STATE_POSITION);
     _float fYDIff   = XMVectorGetY(m_vPortalPos) - XMVectorGetY(m_pOwner->Get_FinalPosition());
 	_float fXZDiff = XMVectorGetX(XMVector3Length(XMVectorSetY(m_vPortalPos, 0.f) - XMVectorSetY(m_pOwner->Get_FinalPosition(), 0.f)));
-	_float fYRadian = max(m_f3DJumpRadianMin, atan2f(fYDIff, fXZDiff)) + XMConvertToRadians(10.f);
+	_float fYRadian = min(m_f3DJumpRadianMax,  max(m_f3DJumpRadianMin, atan2f(fYDIff, fXZDiff)) + XMConvertToRadians(10.f));
 
     if (COORDINATE_3D == eCoord)
     {
         static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY,false);
-        static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(m_vPortalPos, fYRadian);
+        if (false == static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(m_vPortalPos, fYRadian))
+        {
+			m_pOwner->Set_State(CPlayer::IDLE);
+        }
 	}
     else
     {

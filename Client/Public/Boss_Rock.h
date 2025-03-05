@@ -39,6 +39,9 @@ private:
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
 
+private:
+	_uint m_iHp = { 0 };
+
 public:
 	static CBoss_Rock* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

@@ -218,6 +218,7 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 		else
 		{
 			Set_AnimChangeable(true);
+			//임시코드 (현재 상태가 HIT이면 안 불리기 때문에)
 			Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 			Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
 		}

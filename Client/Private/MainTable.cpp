@@ -61,7 +61,7 @@ HRESULT CMainTable::Initialize(void* _pArg)
 
 HRESULT CMainTable::Initial2ize(void* _pArg)
 {
-    return E_NOTIMPL;
+    return S_OK;
 }
 
 CMainTable* CMainTable::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

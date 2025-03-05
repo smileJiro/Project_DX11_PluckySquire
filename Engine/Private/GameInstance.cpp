@@ -178,6 +178,7 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Late_Update(fTimeDelta); // Late_Update ¼öÇà ÈÄ, DeadObject Safe_Release() + erase();
 
 	m_pPipeLine->Update();
+	m_pLight_Manager->Update(fTimeDelta);
 #ifdef _DEBUG
 	if (m_pNewRenderer)
 	{
@@ -397,6 +398,13 @@ HRESULT CGameInstance::Add_GameObject_ToLayer(_uint _iLevelID, const _wstring& _
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 	return m_pObject_Manager->Add_GameObject_ToLayer(_iLevelID, _strLayerTag, _pGameObject);
+}
+
+_bool CGameInstance::Is_EmptyLayer(_uint _iLevelID, const _wstring& _strLayerTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return false;
+	return m_pObject_Manager->Is_EmptyLayer(_iLevelID, _strLayerTag);
 }
 
 CLayer* CGameInstance::Find_Layer(_uint _iLevelID, const _wstring& _strLayerTag)
@@ -752,6 +760,14 @@ HRESULT CGameInstance::Add_Light(const CONST_LIGHT& _LightDesc, LIGHT_TYPE _eTyp
 		return E_FAIL;
 
 	return m_pLight_Manager->Add_Light(_LightDesc, _eType);
+}
+
+HRESULT CGameInstance::Add_Light_Target(const CONST_LIGHT& _LightDesc, LIGHT_TYPE _eType, CGameObject* _pTargetOwner, const _float3& _vOffsetPostion, class CLight_Target** _ppOut, _bool _isNotClear)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Add_Light_Target(_LightDesc, _eType, _pTargetOwner, _vOffsetPostion, _ppOut, _isNotClear);
 }
 
 const CONST_LIGHT* CGameInstance::Get_LightDesc_Ptr(_uint _iIndex) const

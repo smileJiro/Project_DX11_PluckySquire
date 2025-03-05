@@ -278,7 +278,52 @@ void CCamera::Start_PostProcessing_Fade(FADE_TYPE _eFadeType, _float _fFadeTime)
 
 	m_eFadeType = _eFadeType;
 	m_vFadeTime.x = _fFadeTime;
+
 }
+
+void CCamera::Start_Turn_AxisY(_float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec)
+{
+	if (nullptr == m_pCurArm)
+		return;
+
+	m_isTurnAxisY = true;
+	m_CustomArmData.fMoveTimeAxisY = { _fTurnTime, 0.f };
+	m_CustomArmData.fRotationPerSecAxisY = { _fMinRotationPerSec, _fMaxRotationPerSec };
+}
+
+void CCamera::Start_Turn_AxisRight(_float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec)
+{
+	if (nullptr == m_pCurArm)
+		return;
+
+	m_isTurnAxisRight = true;
+	m_CustomArmData.fMoveTimeAxisRight = { _fTurnTime, 0.f };
+	m_CustomArmData.fRotationPerSecAxisRight = { _fMinRotationPerSec, _fMaxRotationPerSec };
+}
+
+void CCamera::Start_Changing_ArmLength(_float _fLengthTime, _float _fLength, RATIO_TYPE _eRatioType)
+{
+	if (nullptr == m_pCurArm)
+		return;
+
+	m_isChangingLength = true;
+	m_CustomArmData.fLengthTime = { _fLengthTime, 0.f };
+	m_CustomArmData.fLength = _fLength;
+	m_CustomArmData.iLengthRatioType = _eRatioType;
+	m_pCurArm->Set_StartInfo();
+}
+
+void CCamera::Set_ResetData()
+{
+	if (nullptr == m_pCurArm)
+		return;
+
+	XMStoreFloat3(&m_ResetArmData.vPreArm, m_pCurArm->Get_ArmVector());
+	m_ResetArmData.fPreLength = m_pCurArm->Get_Length();
+	m_ResetArmData.iZoomLevel = m_iCurZoomLevel;
+	m_ResetArmData.vAtOffset = m_vAtOffset;
+}
+
 
 //void CCamera::Start_Shake(SHAKE_TYPE _eType, _float _fShakeTime, _int _iShakeCount, _float _fPower)
 //{
@@ -459,7 +504,7 @@ void CCamera::Action_PostProcessing_Fade(_float _fTimeDelta)
 		}
 		else
 		{
-			m_tDofData.fFadeRatio = (1.0f - m_vFadeTime.y) / m_vFadeTime.x;
+			m_tDofData.fFadeRatio = 1.0f - (m_vFadeTime.y / m_vFadeTime.x);
 		}
 		m_isBindConstBuffer = true; // 해당 데이터가 true이면, 이번프레임 dof를 업데이트
 	}

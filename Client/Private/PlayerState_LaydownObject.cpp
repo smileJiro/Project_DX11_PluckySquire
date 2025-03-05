@@ -98,16 +98,14 @@ void CPlayerState_LaydownObject::Enter()
 	//LerpEnd이후엔 Parent,ParentBody를 떼고 TransformWorld에 Parent * LaydownMatrix 적용
 
 	//여길 지나는 순간 TransformWOrld(10,1,10) * Parent(10,0,10) * ParentBody(000)
-	m_pCarriableObject->Set_SocketMatrix(COORDINATE_2D, nullptr);
-	m_pCarriableObject->Set_SocketMatrix(COORDINATE_3D, nullptr);
 
 	_float3 vScale = m_pCarriableObject->Get_FinalScale();
 	//CarryingKeyFrame
 	_matrix matCarryingOfset = XMLoadFloat4x4(&m_pCarriableObject->Get_HeadUpMatrix(eCoord));
 	m_tCarryingKeyFrame.Set_Matrix(matCarryingOfset);
 	m_tCarryingKeyFrame.vScale = vScale;
-	m_pCarriableObject->Set_WorldMatrix(m_tCarryingKeyFrame.Get_Matrix());
 
+	m_pCarriableObject->LayDownStart(XMLoadFloat4x4(&m_tCarryingKeyFrame.Get_Matrix()));
 	_vector vTmp;
 	if (COORDINATE_3D == eCoord)
 	{
@@ -127,7 +125,7 @@ void CPlayerState_LaydownObject::Enter()
 
 	if (COORDINATE_3D == eCoord)
 	{
-		m_pCarriableObject->Set_Kinematic(true);
+		//m_pCarriableObject->Set_Kinematic(true);
 		m_pOwner->Set_Kinematic(true);
 	}
 }
@@ -152,15 +150,5 @@ void CPlayerState_LaydownObject::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CPlayerState_LaydownObject::Lay()
 {
-	m_pCarriableObject->Set_ParentMatrix(COORDINATE_3D, nullptr);
-	m_pCarriableObject->Set_ParentMatrix(COORDINATE_2D, nullptr);
-	m_pCarriableObject->Set_SocketMatrix(COORDINATE_3D, nullptr);
-	m_pCarriableObject->Set_SocketMatrix(COORDINATE_2D, nullptr);
-	m_pCarriableObject->Set_ParentBodyMatrix(COORDINATE_3D, nullptr);
-	m_pCarriableObject->Set_ParentBodyMatrix(COORDINATE_2D, nullptr);
-	m_pCarriableObject->Set_Carrier(nullptr);
-
-	_float4x4 matCarriableWorld;
-	XMStoreFloat4x4(&matCarriableWorld, XMLoadFloat4x4(&m_tLayDownFrame.Get_Matrix()) * m_pOwner->Get_WorldMatrix());
-	m_pCarriableObject->Set_WorldMatrix(matCarriableWorld);
+	m_pCarriableObject->LayDownEnd(XMLoadFloat4x4(&m_tLayDownFrame.Get_Matrix()) * m_pOwner->Get_WorldMatrix());
 }

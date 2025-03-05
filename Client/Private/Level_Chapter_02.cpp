@@ -38,6 +38,8 @@
 #include "DraggableObject.h"
 #include "Bulb.h"
 
+#include "Postit_Page.h"
+
 
 #include "2DMapObject.h"
 #include "3DMapObject.h"
@@ -61,6 +63,7 @@
 #include "NPC.h"
 #include "Loader.h"
 
+#include "PlayerItem.h"
 
 CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: 
@@ -191,18 +194,6 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-	///* Test CollapseBlock */
-	//{
-	//	CCollapseBlock::MAPOBJ_DESC CollapseBlockDesc{};
-	//	CollapseBlockDesc.Build_2D_Model(m_eLevelID, TEXT("Prototype_Model2D_FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"));
-	//	CollapseBlockDesc.Build_2D_Transform(_float2(-100.f, -300.f));
-	//	CollapseBlockDesc.eStartCoord = COORDINATE_2D;
-	//	CGameObject* pGameObject = nullptr;
-	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_CollapseBlock"), m_eLevelID, TEXT("Layer_CollapseBlock"), &pGameObject, &CollapseBlockDesc)))
-	//		return E_FAIL;
-
-	//	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
-	//}
 
 
 
@@ -249,8 +240,6 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 	/* 발판 - 기믹오브젝트, 2D에 해당하는 오브젝트 (주사위, 등.. )*/
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
-	/* 발판 - 플레이어 */
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER);
 
 	// 그룹필터 제거
 	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
@@ -263,7 +252,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 	// Trigger
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger.json"));
-	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
+	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger_Events.json"));
 
 	// BGM 시작
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
@@ -346,6 +335,27 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::O))
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
+
+	if (KEY_DOWN(KEY::I))
+	{
+		CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter2_SKSP_Postit"));
+		auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_BACKGROUND);
+
+		CGameObject* pGameObject = nullptr;
+		const auto& Objects = pLayer->Get_GameObjects();
+		if (Objects.size() != 1)
+			assert(nullptr);
+		pGameObject = Objects.front();
+		if (nullptr == pGameObject)
+			assert(nullptr);
+
+		CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(pGameObject);
+		if (nullptr != pPage)
+		{
+			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_APPEAR, false);
+		}
+	}
+
 #endif // _DEBUG
 
 
@@ -418,12 +428,12 @@ HRESULT CLevel_Chapter_02::Render()
 HRESULT CLevel_Chapter_02::Ready_Lights()
 {
 #ifdef _DEBUG
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
 #elif NDEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Bright.json"));
 #endif // _DEBUG
 
-	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Bright.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
 
 	//CONST_LIGHT LightDesc{};
 	//
@@ -1128,7 +1138,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 HRESULT CLevel_Chapter_02::Ready_Layer_Item(const _wstring& _strLayerTag)
 {
 	// Test(PlayerItem: Glove, Stamp)
-	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 7.5f, -19.097f));
+	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(62.31f, 6.28f, -21.097f));
 	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 
@@ -1195,7 +1205,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_Rabbit"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
 
-
+	CPostit_Page::POSTIT_PAGE_DESC PostitDesc = {};
+	PostitDesc.strInitSkspName = L"Chapter2_SKSP_Postit";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Postit_Page"), m_eLevelID, _strLayerTag, &PostitDesc)))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -1528,7 +1541,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	fDominoXPosition = 64.5f;
-	fDominoYPosition = 0.25;
+	fDominoYPosition = 0.0;
 	fDominoZPosition = -0.54f;
 	fDominoXPositionStep = -3.5f;
 	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
@@ -1557,24 +1570,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_LunchBox(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Chapter_02::Ready_Layer_FallingRock(const _wstring& _strLayerTag)
-{
-	//CFallingRock::FALLINGROCK_DESC Desc = {};
-	//Desc.eStartCoord = COORDINATE_2D;
-	//Desc.fFallDownEndY = RTSIZE_BOOK2D_Y * 0.5f - 50.f;
-	//Desc.iCurLevelID = m_eLevelID;
-	//Desc.isDeepCopyConstBuffer = true;
-	//Desc.Build_2D_Transform(_float2(0.0f, 500.f));
-	//
-	//CGameObject* pGameObject = nullptr;
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_FallingRock"), m_eLevelID, _strLayerTag, &pGameObject , &Desc)))
-	//	return E_FAIL;
-	//
-	//if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
-	//	return E_FAIL;
-
-	return S_OK;
-}
 
 HRESULT CLevel_Chapter_02::Ready_Layer_RayShape(const _wstring& _strLayerTag)
 {

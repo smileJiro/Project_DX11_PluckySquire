@@ -59,13 +59,19 @@ public:
 	virtual _bool		Is_Interactable(CPlayer* _pUser) override;
 	virtual _float		Get_Distance(COORDINATE _eCOord, CPlayer* _pUser) override;
 
-
 public :
 	_wstring Get_Text() { return m_strText; }
 	WORD_TYPE Get_WordType() { return m_eWordType; }
+	_bool Is_LayedDown() { return m_bLaydown; }
 
+	void Set_LayDown(_bool _bLayDown) { m_bLaydown = _bLayDown; }
 public :
 	HRESULT Ready_Components();
+
+protected:
+	virtual void On_LayDownEnd(_fmatrix _matWoroverride) override;
+	virtual void On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset)override;
+	virtual void On_Land() override;
 private :
 	CVIBuffer_Rect*				m_pVIBufferCom = {};
 	ID3D11ShaderResourceView*	m_pWordTexture = {};
@@ -75,6 +81,7 @@ private :
 	_wstring					m_strText;
 	_float2						m_fSize;
 
+	_bool m_bLaydown = false;
 
 public:
 	static	CWord*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

@@ -47,6 +47,7 @@ int g_iFlag = 0;
 
 float4 g_vCamPosition;
 float4 g_vDefaultDiffuseColor;
+float4 g_vColor, g_vSubColor;
 
 float2 g_fStartUV;
 float2 g_fEndUV;
@@ -405,6 +406,26 @@ PS_DIFFUSE PS_MAIN2(PS_IN In)
     return Out;
 }
 
+
+struct PS_BLOOM
+{
+    float4 vDiffuse : SV_TARGET0;
+    float4 vBrightness : SV_TARGET1;
+};
+
+PS_BLOOM PS_EMISSIVE(PS_IN In)
+{
+    PS_BLOOM Out = (PS_BLOOM) 0;
+        
+    float4 vColor = g_vColor;
+    
+    Out.vDiffuse = vColor;
+    Out.vBrightness = g_vSubColor;
+    
+    return Out;
+}
+
+
 technique11 DefaultTechnique
 {
     pass DefaultPass // 0
@@ -533,6 +554,15 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_SHADOWMAP();
     }
 
+    pass Emissive // 12
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_EMISSIVE();
+    }
 
 }
 

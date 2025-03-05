@@ -13,7 +13,6 @@
 #include "Layer.h"
 
 #include "Pooling_Manager.h"
-#include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "NPC_Manager.h"
 #include "Dialog_Manager.h"
@@ -32,7 +31,6 @@
 #include "SampleBook.h"
 
 #include "Trigger_Manager.h"
-#include "PlayerData_Manager.h"
 #include "Effect2D_Manager.h"
 
 #include "Effect_Manager.h"
@@ -951,7 +949,6 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 	Uimgr->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 	CDialog_Manager::GetInstance()->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 	CNPC_Manager::GetInstance()->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
-
 
 	return S_OK;
 }
