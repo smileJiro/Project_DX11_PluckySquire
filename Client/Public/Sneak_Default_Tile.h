@@ -12,8 +12,7 @@ private:
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
 
-private:
-	HRESULT Ready_Components();
+
 
 public:
 	static CSneak_Default_Tile* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

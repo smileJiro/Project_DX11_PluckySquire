@@ -550,19 +550,13 @@
     <Filter Include="02.GameObjects\MiniGameObjects\Sneak">
       <UniqueIdentifier>{227de015-2046-431b-8a29-398d60912fb3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\NewFilter1">
-      <UniqueIdentifier>{0d2c76b1-3b9e-4847-8939-5e7ece7e3a08}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile">
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Tile">
       <UniqueIdentifier>{10d2a6a6-6aac-4da1-9cf5-f5b87a49f10b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\NewFilter1\NewFilter1">
-      <UniqueIdentifier>{a2712960-13e6-4b87-811b-11f240cdb52c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile\Default">
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Tile\Default">
       <UniqueIdentifier>{cff21b72-01f2-41c0-b6c9-85d95de3dd2c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile\Fall">
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Tile\Trap">
       <UniqueIdentifier>{60ba1fac-436c-4f94-bf84-e2e833d8a327}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -1408,13 +1402,20 @@
     <ClInclude Include="..\public\Minigame_Sneak.h">
       <Filter>90. Minigame_Sneak</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Sneak_Tile.h">
-      <Filter>02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile</Filter>
-    </ClInclude>
+    <ClInclude Include="..\public\Candle.h" />
+    <ClInclude Include="..\public\Candle_Body.h" />
+    <ClInclude Include="..\public\Candle_UI.h" />
+    <ClInclude Include="..\Public\Narration_Manager.h" />
+    <ClInclude Include="..\Public\Narration_New.h" />
     <ClInclude Include="..\public\Sneak_Default_Tile.h">
-      <Filter>02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile\Default</Filter>
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Default</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Sneak_Fall_Tile.h" />
+    <ClInclude Include="..\public\Sneak_Tile.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_Trap_Tile.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Trap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2245,13 +2246,20 @@
     <ClCompile Include="..\private\Minigame_Sneak.cpp">
       <Filter>90. Minigame_Sneak</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Sneak_Tile.cpp">
-      <Filter>02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile</Filter>
-    </ClCompile>
+    <ClCompile Include="..\private\Candle.cpp" />
+    <ClCompile Include="..\private\Candle_Body.cpp" />
+    <ClCompile Include="..\private\Candle_UI.cpp" />
+    <ClCompile Include="..\Private\Narration_Manager.cpp" />
+    <ClCompile Include="..\Private\Narration_New.cpp" />
     <ClCompile Include="..\private\Sneak_Default_Tile.cpp">
-      <Filter>02.GameObjects\MiniGameObjects\Sneak\NewFilter1\Tile\Default</Filter>
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Default</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Sneak_Fall_Tile.cpp" />
+    <ClCompile Include="..\private\Sneak_Tile.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_Trap_Tile.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Trap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

@@ -8,8 +8,10 @@ END
 class CSneak_Tile : public CModelObject
 {
 public:
-	//enum DESTINATION {};
-	enum SNEAK_TILE_TYPE { DEFAULT, FALL };
+	enum TILE_ANIMATION 
+	{ DEFAULT_CLOSE, DEFAULT_CLOSED, DEFAULT_OPENED, DEFAULT_OPEN,
+		TRAP_CLOSE, TRAP_CLOSED, TRAP_OPEN, TRAP_OPENDED, DEFAULT_YELLOW, DEFAULT_RED, TRAP_YELLOW };
+	enum SNEAK_TILE_TYPE { DEFAULT, TRAP };
 	enum TILE_DIRECTION {LEFT, RIGHT, UP, DOWN, LAST };
 	typedef struct tagSneakTileDesc : public CModelObject::MODELOBJECT_DESC
 	{
@@ -31,8 +33,6 @@ public:
 
 
 protected:
-	C2DModel*				m_pYellowTile = { nullptr };
-	C2DModel*				m_pRedTile = { nullptr };
 	CSneak_Tile*			m_AdjacentTiles[LAST] = { nullptr, nullptr, nullptr, nullptr };
 
 protected:

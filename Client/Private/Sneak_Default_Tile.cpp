@@ -16,27 +16,15 @@ HRESULT CSneak_Default_Tile::Initialize(void* _pArg)
 {
 	SNEAK_TILEDESC* pDesc = static_cast<SNEAK_TILEDESC*>(_pArg);
 	
-	pDesc->strModelPrototypeTag_2D = TEXT("Sneak_AnimTile");
+	pDesc->strModelPrototypeTag_2D = TEXT("Sneak_Tile");
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
 
+	m_eTileType = DEFAULT;
 
     return S_OK;
-}
-
-HRESULT CSneak_Default_Tile::Ready_Components()
-{
-	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Sneak_tile_lit_yellow_trap"), TEXT("Com_YellowTile"), reinterpret_cast<CComponent**>(&m_pYellowTile), nullptr)))
-		return E_FAIL;
-
-	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Sneak_tile_red"), TEXT("Com_RedTile"), reinterpret_cast<CComponent**>(&m_pRedTile), nullptr)))
-		return E_FAIL;
-
-	return S_OK;
 }
 
 CSneak_Default_Tile* CSneak_Default_Tile::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

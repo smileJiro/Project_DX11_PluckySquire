@@ -42,8 +42,5 @@ HRESULT CSneak_Tile::Initialize(void* _pArg)
 
 void CSneak_Tile::Free()
 {
-	Safe_Release(m_pYellowTile);
-	Safe_Release(m_pRedTile);
-
 	__super::Free();
 }
