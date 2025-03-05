@@ -358,18 +358,6 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
     _vector vDot = XMVector3Dot(XMLoadFloat3(&m_vArm), XMLoadFloat3(&m_pNextArmData->vDesireArm));
     _float fAngle = acos(XMVectorGetX(vDot));
     _float fDegree = XMConvertToDegrees(fAngle);
-    //m_PreArms.pop_back();
-  
-    /*if (false == _isBook) {
-        if (fDegree < 3.f) {
-            m_iMovementFlags |= DONE_Y_ROTATE;
-            m_iMovementFlags |= DONE_LENGTH_MOVE;
-            m_pNextArmData->fMoveTimeAxisY.y = 0.f;
-            m_pNextArmData->fLengthTime.y = 0.f;
-      
-            return true;
-        }
-    }*/
 
     // 일단 Y축 회전 시간, EASE_IN으로 설정해서 하기
     if (!(m_iMovementFlags & DONE_Y_ROTATE)) {
@@ -605,6 +593,71 @@ _bool CCameraArm::Turn_AxisRight(ARM_DATA* _pCustomData, _float _fTimeDelta)
         _vector vLook = m_pTransform->Get_State(CTransform::STATE_LOOK);
         XMStoreFloat3(&m_vArm, vLook);
     }
+
+    return false;
+}
+
+_bool CCameraArm::Turn_AxisY(_float _fAngle, _float _fTurnTime, _float _fTimeDelta, _uint _iRatioType)
+{
+    if (false == m_isStartTurn) {
+        m_fArmTurnTime = { _fTurnTime, 0.f };
+        m_fPreArmAngle = 0.f;
+        m_isStartTurn = true;
+    }
+
+    _float fRatio = m_pGameInstance->Calculate_Ratio(&m_fArmTurnTime, _fTimeDelta, _iRatioType);
+
+    if (fRatio >= (1.f - EPSILON)) {
+        m_pTransform->TurnAngle(_fAngle - m_fPreArmAngle);
+        XMStoreFloat3(&m_vArm, m_pTransform->Get_State(CTransform::STATE_LOOK));
+        
+        m_fArmTurnTime.y = 0.f;
+        m_fPreArmAngle = 0.f;
+        m_isStartTurn = false;
+
+        return true;
+    }
+
+    _float fAngle = m_pGameInstance->Lerp(0.f, _fAngle, fRatio);
+    _float fResultAngle = fAngle - m_fPreArmAngle;
+    m_fPreArmAngle = fAngle;
+
+    // Y축
+    m_pTransform->TurnAngle(fResultAngle);
+    XMStoreFloat3(&m_vArm, m_pTransform->Get_State(CTransform::STATE_LOOK));
+
+    return false;
+}
+
+_bool CCameraArm::Turn_AxisRight(_float _fAngle, _float _fTurnTime, _float _fTimeDelta, _uint _iRatioType)
+{
+    if (false == m_isStartTurn) {
+        m_fArmTurnTime = { _fTurnTime, 0.f };
+        m_fPreArmAngle = 0.f;
+        m_isStartTurn = true;
+    }
+
+    _float fRatio = m_pGameInstance->Calculate_Ratio(&m_fArmTurnTime, _fTimeDelta, _iRatioType);
+
+    if (fRatio >= (1.f - EPSILON)) {
+        m_pTransform->TurnAngle(_fAngle - m_fPreArmAngle);
+        XMStoreFloat3(&m_vArm, m_pTransform->Get_State(CTransform::STATE_LOOK));
+
+        m_fArmTurnTime.y = 0.f;
+        m_fPreArmAngle = 0.f;
+        m_isStartTurn = false;
+
+        return true;
+    }
+
+    _float fAngle = m_pGameInstance->Lerp(0.f, _fAngle, fRatio);
+    _float fResultAngle = fAngle - m_fPreArmAngle;
+    m_fPreArmAngle = fAngle;
+
+    // Right
+    _vector vCrossX = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMLoadFloat3(&m_vArm));
+    m_pTransform->TurnAngle(fResultAngle, vCrossX);
+    XMStoreFloat3(&m_vArm, m_pTransform->Get_State(CTransform::STATE_LOOK));
 
     return false;
 }

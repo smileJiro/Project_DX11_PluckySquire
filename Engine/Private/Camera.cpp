@@ -517,6 +517,20 @@ void CCamera::Action_PostProcessing_Fade(_float _fTimeDelta)
 	}
 }
 
+// _isUpdate: 바로 적용할 것인지(true면 바로 적용)
+// _fFadeRatio: 1이면 밝게, 0이면 어둡게
+void CCamera::Set_FadeRatio(_float _fFadeRatio, _bool _isUpdate)
+{
+	_fFadeRatio = std::clamp(_fFadeRatio, 0.0f, 1.0f);
+	m_tDofData.fFadeRatio = _fFadeRatio;
+
+	if (true == _isUpdate)
+	{
+		m_pGameInstance->UpdateConstBuffer(m_tDofData, m_pConstDofBuffer);
+		Bind_DofConstBuffer();
+	}
+}
+
 //void CCamera::Action_Shake(_float _fTimeDelta)
 //{
 //	if (false == m_isShake)
@@ -573,6 +587,67 @@ _float CCamera::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRat
 		break;
 	}
 	return fRatio;
+}
+
+_bool CCamera::Turn_Camera_AxisY(_float _fAngle, _float _fTurnTime, _float _fTimeDelta, _uint _iRatioType)
+{
+	if (false == m_isStartTurn) {
+		m_fCameraTurnTime = { _fTurnTime, 0.f };
+		m_fPreLookAngle = 0.f;
+		m_isStartTurn = true;
+	}
+
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fCameraTurnTime, _fTimeDelta, _iRatioType);
+
+	if (fRatio >= (1.f - EPSILON)) {
+		m_pControllerTransform->TurnAngle(_fAngle - m_fPreLookAngle);
+
+		m_fCameraTurnTime.y = 0.f;
+		m_fPreLookAngle = 0.f;
+		m_isStartTurn = false;
+
+		return true;
+	}
+
+	_float fAngle = m_pGameInstance->Lerp(0.f, _fAngle, fRatio);
+	_float fResultAngle = fAngle - m_fPreLookAngle;
+	m_fPreLookAngle = fAngle;
+
+	// Y축
+	m_pControllerTransform->TurnAngle(fResultAngle);
+
+	return false;
+}
+_bool CCamera::Turn_Camera_AxisRight(_float _fAngle, _float _fTurnTime, _float _fTimeDelta, _uint _iRatioType)
+{
+	if (false == m_isStartTurn) {
+		m_fCameraTurnTime = { _fTurnTime, 0.f };
+		m_fPreLookAngle = 0.f;
+		m_isStartTurn = true;
+	}
+
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fCameraTurnTime, _fTimeDelta, _iRatioType);
+
+	if (fRatio >= (1.f - EPSILON)) {
+		m_pControllerTransform->TurnAngle(_fAngle - m_fPreLookAngle);
+
+		m_fCameraTurnTime.y = 0.f;
+		m_fPreLookAngle = 0.f;
+		m_isStartTurn = false;
+
+		return true;
+	}
+
+	_float fAngle = m_pGameInstance->Lerp(0.f, _fAngle, fRatio);
+	_float fResultAngle = fAngle - m_fPreLookAngle;
+	m_fPreLookAngle = fAngle;
+
+	// Right
+	_vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
+	_vector vCrossX = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
+	m_pControllerTransform->TurnAngle(fResultAngle, vCrossX);
+
+	return false;
 }
 
 HRESULT CCamera::Ready_DofConstData(CAMERA_DESC* _pDesc)

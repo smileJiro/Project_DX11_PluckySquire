@@ -64,6 +64,8 @@
 #include "NPC.h"
 #include "Loader.h"
 
+#include "Sneak_Default_Tile.h"
+
 
 CLevel_Chapter_08::CLevel_Chapter_08(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -414,8 +416,8 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 
 	Desc = {};
 	Desc.isOverride = true;
-	Desc.tTransform3DDesc.vInitialPosition = { -100.0f, 80.65f, 0.0f };
-	Desc.vHalfExtents = { 45.f, 10.f, 24.f };
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-104.5f, 59.9f, 21.f);
+	Desc.vHalfExtents = { 20.f, 5.f, 10.f };
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
 		m_eLevelID, _strLayerTag, &Desc)))
@@ -567,7 +569,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
-	Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	Desc.tTransform3DDesc.vInitialPosition = { -90.f, 67.f, 18.3f };   // TODO ::임시 위치
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -587,6 +589,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	pPlayer->Equip_Part(CPlayer::PLAYER_PART_ZETPACK);
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
+	
 
 	return S_OK;
 }
@@ -597,11 +600,17 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Book(const _wstring& _strLayerTag)
 	CBook::BOOK_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.isInitOverride = true;
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-90.f, 64.4f, 18.3f);
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-90.f, 64.4f, 19.0f);
 	Desc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
+
+	//// TEMP
+	//CSneak_Default_Tile::SNEAK_TILEDESC TileDesc = {};
+	//TileDesc.
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

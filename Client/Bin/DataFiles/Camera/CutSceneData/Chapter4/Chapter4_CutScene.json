@@ -16211,6 +16211,7 @@
     },
     {
         "CutScene_Next_CameraType": 1,
+        "Pause_After_CutScene" :  true,
         "CutScene_Tag": "Chapter4_Flag",
         "CutScene_Time": [
             8.0,

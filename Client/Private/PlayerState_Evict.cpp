@@ -11,6 +11,7 @@
 
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
+#include "PlayerBody.h"
 
 CPlayerState_Evict::CPlayerState_Evict(CPlayer* _pOwner)
 	: CPlayerState(_pOwner,CPlayer::EVICT)

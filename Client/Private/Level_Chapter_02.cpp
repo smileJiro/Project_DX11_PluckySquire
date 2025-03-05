@@ -1118,7 +1118,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	CGameObject* pGameObject;
+	//CGameObject* pGameObject;
 	
 	//pDesc.fSizeX = 360.f / 2.f;
 	//pDesc.fSizeY = 149.f / 2.f;

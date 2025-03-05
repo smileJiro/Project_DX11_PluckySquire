@@ -112,6 +112,7 @@ public:
 	void		Start_Shake_ByTime(_float _fShakeTime, _float _fShakeForce, _float _fShakeCycleTime = 0.05f, SHAKE_TYPE _ShakeType = SHAKE_TYPE::SHAKE_XY, _float _fDelayTime = 0.f);
 	void		Start_Shake_ByCount(_float _fShakeTime, _float _fShakeForce, _int _iShakeCount, SHAKE_TYPE _ShakeType = SHAKE_TYPE::SHAKE_XY, _float _fDelayTime = 0.f);
 	void		Start_PostProcessing_Fade(FADE_TYPE _eFadeType, _float _fFadeTime = 1.0f);
+	void		Set_FadeRatio(_float _fFadeRatio, _bool _isUpdate = false);
 
 	void		Start_Turn_AxisY(_float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec);
 	void		Start_Turn_AxisRight(_float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec);
@@ -142,6 +143,10 @@ protected:
 	_float			Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
 
 	virtual void	Switching(_float _fTimeDelta) {};
+
+public:
+	_bool			Turn_Camera_AxisY(_float _fAngle, _float _fTurnTime = 1.f, _float _fTimeDelta = 1.f, _uint _iRatioType = LERP);
+	_bool			Turn_Camera_AxisRight(_float _fAngle, _float _fTurnTime = 1.f, _float _fTimeDelta = 1.f, _uint _iRatioType = LERP);
 
 protected: /* Zoom */
 	_float		m_ZoomLevels[(_uint)ZOOM_LAST] = {};
@@ -205,6 +210,12 @@ protected:
 	// 해당 지점으로 카메라 복구
 	RETURN_ARMDATA				m_ResetArmData = {};
 	_float2						m_fResetTime = {};
+
+protected:
+	// Camera 회전
+	_float						m_fPreLookAngle = {};
+	_float2						m_fCameraTurnTime = {};
+	_bool						m_isStartTurn = { false };
 
 private:
 	HRESULT						Ready_DofConstData(CAMERA_DESC* _pDesc);

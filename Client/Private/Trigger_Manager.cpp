@@ -65,6 +65,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER2_OPENBOOKEVENT] = L"Chapter2_OpenBookEvent";
 	m_EventExecuterTags[CHAPTER2_STORYSEQUENCE] = L"Chapter2_StorySequence";
 	m_EventExecuterTags[CHAPTER4_RIDE_ZIPLINE] = L"Chapter4_Ride_Zipline";
+	m_EventExecuterTags[CHAPTER4_EVENT_FLAG] = L"Chapter4_Event_Flag";
 
 	return S_OK;
 }
@@ -503,7 +504,8 @@ void CTrigger_Manager::Register_Trigger_Action()
 		// 1. 플레이어 잠그기.
 		// 2. 애니메이션 재생하기컷씬 카메라 위치로 고정하기
 		
-		CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Set_BlockPlayerInput(true);
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_BlockPlayerInput(true);
+			
 		CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
 		CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 0.f, 6.f, EASE_IN_OUT);
 		auto Arm = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_Arm();
@@ -514,14 +516,14 @@ void CTrigger_Manager::Register_Trigger_Action()
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) 
 		{
 
-		CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_ITEM_GET_NEWRIG);
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_ITEM_GET_NEWRIG);
 		CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
 		};
 	
 	m_Actions[TEXT("Glove_Get_After")] = [this](_wstring _wszEventTag) 
 {
-		CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Set_BlockPlayerInput(false);
-		CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Set_State(CPlayer::STATE::IDLE);
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_BlockPlayerInput(false);
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_State(CPlayer::STATE::IDLE);
 		CPlayerData_Manager::GetInstance()->Change_PlayerItemMode(_wszEventTag, CPlayerItem::DISAPPEAR);
 		};
 
