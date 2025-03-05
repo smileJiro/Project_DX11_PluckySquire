@@ -55,12 +55,12 @@
 #include "Book.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    :CCharacter(_pDevice, _pContext)
+    :CPlayable(_pDevice, _pContext, PLAYALBE_ID::NORMAL)
 {
 }
 
 CPlayer::CPlayer(const CPlayer& _Prototype)
-    :CCharacter(_Prototype)
+    :CPlayable(_Prototype)
 {
     for (_uint i = 0; i < ATTACK_TYPE_LAST; i++)
     {
@@ -246,7 +246,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     Set_State(CPlayer::IDLE);
 
     // PlayerData Manager µî·Ï
-    CPlayerData_Manager::GetInstance()->Register_Player(this);
+    CPlayerData_Manager::GetInstance()->Register_Player(PLAYALBE_ID::NORMAL,    this);
 
     return S_OK;
 }
@@ -277,13 +277,15 @@ HRESULT CPlayer::Ready_PartObjects()
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
 
-    m_PartObjects[PART_BODY] = m_pBody = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"), &BodyDesc));
+    m_PartObjects[PART_BODY] = m_pBody = static_cast<CPlayerBody*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"), &BodyDesc));
 	Safe_AddRef(m_pBody);
     if (nullptr == m_PartObjects[PART_BODY])
     {
         MSG_BOX("CPlayer Body Creation Failed");
         return E_FAIL;
     }
+
+
     //Part Sword
     CPlayerSword::PLAYER_SWORD_DESC SwordDesc{};
     SwordDesc.isCoordChangeEnable = true;
@@ -409,6 +411,8 @@ HRESULT CPlayer::Ready_PartObjects()
     m_PartObjects[PLAYER_PART_ZETPACK]->Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), _vector{ 0.f,1.f,0.f,0.f });
     m_PartObjects[PLAYER_PART_ZETPACK]->Set_Position({ 0.f,-0.1f,0.5f });
     Set_PartActive(PLAYER_PART_ZETPACK, false);
+    
+
 
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
@@ -1166,7 +1170,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 {
 	PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
-	if (m_bBlockInput)
+	if (Is_PlayerInputBlocked())
 		return tResult;
 	if (STATE::DIE == Get_CurrentStateID())
     {
@@ -1280,7 +1284,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_Stamp()
 {
     PLAYER_INPUT_RESULT tResult;
     fill(begin(tResult.bInputStates), end(tResult.bInputStates), false);
-    if (m_bBlockInput)
+    if (Is_PlayerInputBlocked())
         return tResult;
     _bool bIsStamping = CPlayer::STAMP == m_pStateMachine->Get_CurrentState()->Get_StateID();
 	if (false == bIsStamping) return tResult;
@@ -1320,7 +1324,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_ControlBook()
 {
     PLAYER_INPUT_RESULT tResult;
     _bool bIsTurningBook = CPlayer::TURN_BOOK == m_pStateMachine->Get_CurrentState()->Get_StateID();
-    if (m_bBlockInput)
+    if (Is_PlayerInputBlocked())
         return tResult;
     if (false == bIsTurningBook)
         return tResult;
@@ -1397,6 +1401,7 @@ _bool CPlayer::Check_ReplaceInteractObject(IInteractable* _pObj)
         return true;
     return false;
 }
+
 
 
 void CPlayer::Start_Portal(CPortal* _pPortal)
@@ -1498,6 +1503,14 @@ INTERACT_RESULT CPlayer::Try_Interact(_float _fTimeDelta)
 	return INTERACT_RESULT::FAIL;
 }
 
+
+_bool CPlayer::Is_ZetPack_Idle()
+{
+    if (nullptr == m_pZetPack)
+        return false;
+    
+    return m_pZetPack->Get_State() == CZetPack::STATE_IDLE;
+}
 
 _bool CPlayer::Is_Sneaking()
 {
@@ -1804,10 +1817,6 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
         }
     }
 }
-
-
-
-
 
 void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
 {

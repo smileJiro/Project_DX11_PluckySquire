@@ -1,5 +1,7 @@
 #pragma once
 #include "Base.h"
+#include "Player.h"
+#include "DefenderPlayer.h"
 
 BEGIN(Engine)
 class CGameInstance;
@@ -7,6 +9,7 @@ class CGameObject;
 END
 
 BEGIN(Client)
+
 class CPlayerData_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CPlayerData_Manager)
@@ -56,8 +59,11 @@ public:
 	void					Change_PlayerItemMode(_wstring _strItemTag, _uint _iItemMode);
 
 public:
-	void					Register_Player(CPlayer* _pPlayer);
-	CPlayer*				Get_Player_Ptr() { return m_pPlayer; }
+	void					Register_Player(PLAYALBE_ID _ePlayableID,  CPlayable* _pPlayer);
+	void					Set_CurrentPlayer(PLAYALBE_ID _ePlayableID);
+	CPlayable*				Get_CurrentPlayer_Ptr() { return m_pCurrentPlayer; }
+	CPlayer*				Get_NormalPlayer_Ptr() { return static_cast<CPlayer*>(m_pPlayers[(_uint)PLAYALBE_ID::NORMAL]); }
+	CDefenderPlayer*		Get_DefenderPlayer_Ptr() { return static_cast<CDefenderPlayer*>(m_pPlayers[(_uint)PLAYALBE_ID::DEFENDER]); }
 
 private: 
 	CGameInstance*						m_pGameInstance = { nullptr };
@@ -65,7 +71,9 @@ private:
 	ID3D11DeviceContext*				m_pContext = { nullptr };
 
 private:
-	class CPlayer*						m_pPlayer = { nullptr };
+	CPlayable*							m_pCurrentPlayer = { nullptr };
+	CPlayable*							m_pPlayers[(_uint)PLAYALBE_ID::LAST] = { nullptr, nullptr };
+
 	map<_wstring, pair<_bool, class CPlayerItem*>>	m_ItemState;
 	class CPlayerItem*					m_pCurItem = { nullptr };
 
