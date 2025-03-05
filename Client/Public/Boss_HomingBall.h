@@ -34,10 +34,15 @@ public:
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
+
+private:
+	void Homing(_float _fTimeDelta);
+
 private:
 	_float m_fOriginSpeed = { 0.f };
 	_bool m_isHoming = { false };
 	_float3 m_vDir = {};
+	_float m_fMinDistance = { 0.f };
 
 private:
 	virtual HRESULT					Ready_ActorDesc(void* _pArg);

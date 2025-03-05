@@ -49,8 +49,9 @@ HRESULT CButterGrump_Shield::Initialize(void* _pArg)
 
     Safe_Delete(pDesc->pActorDesc);
 
-    //int i = static_cast<C3DModel*>(Get_Model(COORDINATE_3D))->Get_Materials().size();
-    static_cast<C3DModel*>(Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 1.f, 1.f, 0.5f), true);
+
+    static_cast<C3DModel*>(Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 1.f, 1.f, 1.f), true);
+    //static_cast<C3DModel*>(Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 1.f, 1.f, 0.5f), true);
 
     return S_OK;
 }
@@ -71,7 +72,7 @@ void CButterGrump_Shield::Update(_float _fTimeDelta)
     //        }
     //    }
     //}
-
+    cout << Get_FinalPosition().m128_f32[0] << "  " << Get_FinalPosition().m128_f32[1] << "  " << Get_FinalPosition().m128_f32[2] << endl;
     __super::Update(_fTimeDelta);
 }
 
@@ -132,7 +133,10 @@ void CButterGrump_Shield::Shield_Break(const COLL_INFO& _Other)
 {
     if (OBJECT_GROUP::BOSS_PROJECTILE & _Other.pActorUserData->iObjectGroup)
     {
-        static_cast<CButterGrump*>(m_pParent)->Shield_Break();
+        if(nullptr != m_pParent)
+        {
+            static_cast<CButterGrump*>(m_pParent)->Shield_Break();
+        }
     }
 }
 
@@ -158,7 +162,7 @@ HRESULT CButterGrump_Shield::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC* ShapeDesc = new SHAPE_SPHERE_DESC;
-    ShapeDesc->fRadius = 15.f;
+    ShapeDesc->fRadius = 17.f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
@@ -166,8 +170,8 @@ HRESULT CButterGrump_Shield::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc->fRadius * 2.f, -20.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
-	XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(8.0f, 0.f, -12.5f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(ShapeDesc->fRadius * (-1.f), 0.f, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
+	//XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(8.0f, 0.f, -12.5f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);

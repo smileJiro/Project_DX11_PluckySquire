@@ -193,9 +193,11 @@
     <ClInclude Include="..\Public\Bombable.h" />
     <ClInclude Include="..\Public\BombableObject.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
+    <ClInclude Include="..\Public\BossDeadState.h" />
     <ClInclude Include="..\Public\BossHitState.h" />
     <ClInclude Include="..\Public\BossRockVolleyState.h" />
     <ClInclude Include="..\Public\BossShieldState.h" />
+    <ClInclude Include="..\Public\BossTransitionState.h" />
     <ClInclude Include="..\Public\BossWingSlamState.h" />
     <ClInclude Include="..\Public\Boss_Crystal.h" />
     <ClInclude Include="..\Public\Boss_Rock.h" />
@@ -492,9 +494,11 @@
     <ClCompile Include="..\Private\Bombable.cpp" />
     <ClCompile Include="..\Private\BombableObject.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
+    <ClCompile Include="..\Private\BossDeadState.cpp" />
     <ClCompile Include="..\Private\BossHitState.cpp" />
     <ClCompile Include="..\Private\BossRockVolleyState.cpp" />
     <ClCompile Include="..\Private\BossShieldState.cpp" />
+    <ClCompile Include="..\Private\BossTransitionState.cpp" />
     <ClCompile Include="..\Private\BossWingSlamState.cpp" />
     <ClCompile Include="..\Private\Boss_Crystal.cpp" />
     <ClCompile Include="..\Private\Boss_Rock.cpp" />

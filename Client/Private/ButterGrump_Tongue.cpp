@@ -101,6 +101,11 @@ void CButterGrump_Tongue::Active_OnDisable()
     __super::Active_OnDisable();
 }
 
+void CButterGrump_Tongue::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    m_pParent->On_Hit(_pHitter, _iDamg, _vForce);
+}
+
 HRESULT CButterGrump_Tongue::Ready_ActorDesc(void* _pArg)
 {
     CButterGrump_Tongue::BUTTERGRUMP_TONGUE_DESC* pDesc = static_cast<CButterGrump_Tongue::BUTTERGRUMP_TONGUE_DESC*>(_pArg);

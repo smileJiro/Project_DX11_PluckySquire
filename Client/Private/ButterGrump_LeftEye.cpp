@@ -101,6 +101,11 @@ void CButterGrump_LeftEye::Active_OnDisable()
     __super::Active_OnDisable();
 }
 
+void CButterGrump_LeftEye::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    m_pParent->On_Hit(_pHitter, _iDamg, _vForce);
+}
+
 HRESULT CButterGrump_LeftEye::Ready_ActorDesc(void* _pArg)
 {
     CButterGrump_LeftEye::BUTTERGRUMP_LEFTEYE_DESC* pDesc = static_cast<CButterGrump_LeftEye::BUTTERGRUMP_LEFTEYE_DESC*>(_pArg);

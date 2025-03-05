@@ -37,14 +37,9 @@ void CBossYellowBallState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	if (true == m_isDelay)
-	{
-		m_fAccTime += _fTimeDelta;
-		if (m_fDelayTime <= m_fAccTime)
-		{
-			Delay_Off();
-		}
-	}
+
+	m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
+	m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
 
 	//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
 	////АјАн
