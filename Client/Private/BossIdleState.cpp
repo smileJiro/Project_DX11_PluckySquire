@@ -34,7 +34,7 @@ void CBossIdleState::State_Update(_float _fTimeDelta)
 		return;
 	if (nullptr == m_pOwner)
 		return;
-	
+
 	m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
 	m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
 

@@ -85,6 +85,12 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
+	_bool Is_Attack()
+	{
+		return m_isAttack;
+	}
+
+public:
 	virtual void Change_Animation() override;
 	virtual void Attack() override;
 	virtual void On_Attack();

@@ -69,12 +69,12 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SCENE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::TRANSITION);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::ENERGYBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::ENERGYBALL);
     //m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
     //m_pBossFSM->Add_State((_uint)BOSS_STATE::ROCKVOLLEY);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::SHIELD);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::SHIELD);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HIT);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::DEAD);
 
@@ -182,6 +182,14 @@ void CButterGrump::Update(_float _fTimeDelta)
     }
 
 #endif // _DEBUG
+
+
+   /* if (true == Get_PreAttack())
+    {
+        Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - Get_FinalPosition());
+        Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
+    }*/
+
 
     if (true == m_isAttack)
     {
@@ -360,7 +368,17 @@ void CButterGrump::Attack()
             }
         }
 
-        m_isAttack = false;
+        ++m_iAttackCount;
+
+        if (m_iNumAttack <= m_iAttackCount)
+        {
+            m_iAttackCount = 0;
+            m_isAttack = false;
+        }
+        else
+        {
+            Delay_On();
+        }
         break;
     }
 
@@ -376,12 +394,14 @@ void CButterGrump::Attack()
         {
             _float4 vRot;
             _float3 vPos=vPosition;
-            Rot = XMQuaternionMultiply(XMLoadFloat4(&vRotation), XMQuaternionRotationAxis(XMVectorSet(Array[i], Array2[i], 0.f, 0.f), XMConvertToRadians(20.f)));
+            Rot = XMQuaternionMultiply(XMLoadFloat4(&vRotation), XMQuaternionRotationAxis(XMVectorSet(Array[i], Array2[i], 0.f, 0.f), XMConvertToRadians(15.f)));
             XMStoreFloat4(&vRot, Rot);
             /*vPos.x += 2.f * Array[i];
             vPos.y += 2.f * Array2[i];*/
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_YellowBall"), COORDINATE_3D, &vPos, &vRot);
         }
+
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_YellowBall"), COORDINATE_3D, &vPosition, &vRotation);
 
         ++m_iAttackCount;
 
@@ -507,12 +527,15 @@ void CButterGrump::On_Attack()
         break;
 
     case BOSS_STATE::HOMINGBALL:
-        //m_fDelayTime = 0.5f;
-        m_iNumAttack = 1;
+        m_fDelayTime = 0.5f;
+        if (false == m_isPhase2)
+            m_iNumAttack = 1;
+        else
+            m_iNumAttack = 3;
         break;
 
     case BOSS_STATE::YELLOWBALL:
-        m_fDelayTime = 0.3f;
+        m_fDelayTime = 0.5f;
         m_iNumAttack = 3;
         break;
 
@@ -584,8 +607,15 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case FIREBALL_SPIT_SMALL:
+        //if (true == m_isAttack)
+        //{
+        //    pModelObject->Get_Model(COORDINATE_3D)->Get_Animation(FIREBALL_SPIT_SMALL)->Set_Progress(0.f, false);
+        //}
+        //else
+        //{
+        //    Set_AnimChangeable(true);
+        //}
         Set_AnimChangeable(true);
-        m_isAttack = false;
         break;
 
     case WING_SLAM_INTO:
@@ -894,7 +924,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     pEnergyBallDesc->iCurLevelID = m_iCurLevelID;
 
     pEnergyBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pEnergyBallDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+    pEnergyBallDesc->tTransform3DDesc.fSpeedPerSec = 15.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_EnergyBall"), Pooling_Desc, pEnergyBallDesc);
 
@@ -908,7 +938,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     pYellowBallDesc->iCurLevelID = m_iCurLevelID;
 
     pYellowBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pYellowBallDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+    pYellowBallDesc->tTransform3DDesc.fSpeedPerSec = 15.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_YellowBall"), Pooling_Desc, pYellowBallDesc);
 
@@ -922,7 +952,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     pPurpleBallDesc->iCurLevelID = m_iCurLevelID;
 
     pPurpleBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pPurpleBallDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+    pPurpleBallDesc->tTransform3DDesc.fSpeedPerSec = 15.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_PurpleBall"), Pooling_Desc, pPurpleBallDesc);
 

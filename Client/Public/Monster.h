@@ -43,9 +43,20 @@ public:
 	{
 		m_iState = _iState;
 	}
+
+	_uint Get_State()
+	{
+		return m_iState;
+	}
+
 	virtual void Set_PreState(_uint _iState)
 	{
 		m_iPreState = _iState;
+	}
+
+	_uint Get_PreState()
+	{
+		return m_iPreState;
 	}
 
 	void Set_AnimChangeable(_bool _isChangeable)
