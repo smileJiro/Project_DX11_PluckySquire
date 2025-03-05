@@ -58,40 +58,6 @@ void CBoss_WingSlam::Update(_float _fTimeDelta)
     m_pControllerTransform->Go_Direction(vDir, _fTimeDelta);*/
     m_pControllerTransform->Go_Straight(_fTimeDelta);
 
-    if (KEY_DOWN(KEY::F5))
-    {
-        switch (m_iIdx)
-        {
-        case 0:
-            m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(90.f, 0.f, 0.f));
-            break;
-
-        case 1:
-            m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(0.f,90.f, 0.f));
-            break;
-
-        case 2:
-            m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(90.f, 90.f, 0.f));
-            break;
-
-        case 3:
-            m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(-90.f, 0.f, 0.f));
-            break;
-
-        case 4:
-            m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(0.f, -90.f, 0.f));
-            break;
-
-        case 5:
-            m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(-90.f, -90.f, 0.f));
-            break;
-        }
-
-        ++m_iIdx;
-        if (m_iIdx > 5)
-            m_iIdx = 0;
-    }
-
     __super::Update(_fTimeDelta);
 }
 
@@ -234,7 +200,8 @@ HRESULT CBoss_WingSlam::Ready_PartObjects()
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 
-    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 1.f, 1.f, 1.f));
+    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_UseAlbedoMap(0, false, true);
+    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 1.f, 1.f, 1.f), true);
 
     //m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(45.f, 0.f, -45.f));
     m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationQuaternion(_float3(XMConvertToRadians(90.f), XMConvertToRadians(-90.f),XMConvertToRadians( 0.f)));

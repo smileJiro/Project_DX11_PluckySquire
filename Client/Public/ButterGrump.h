@@ -75,6 +75,20 @@ public:
 	{
 		m_isSpawnOrb = _isSpawnOrb;
 	}
+
+	_bool Is_Attack()
+	{
+		return m_isAttack;
+	}
+	_bool Is_AttackChained()
+	{
+		return m_isAttackChained;
+	}
+	
+	_float Get_ChainDelayTime()
+	{
+		return m_fChainDelayTime;
+	}
 	
 public:
 	virtual HRESULT			Initialize_Prototype() override;
@@ -84,11 +98,6 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
-public:
-	_bool Is_Attack()
-	{
-		return m_isAttack;
-	}
 
 public:
 	virtual void Change_Animation() override;
@@ -113,7 +122,13 @@ private:
 	_bool m_isInvincible = { false };
 	_bool m_isPhase2 = { false };
 	_bool m_isAttack = { false };
+	_bool m_isAttackChained = { false };
 	_uint m_iNumAttack = { 0 };
+	_uint m_iNumAttackChain = { 0 };
+	_uint m_iAttackChainCount = { 0 };
+
+	//연속 패턴에서 다음 공격으로 이어지기 까지의 딜레이(애니메이션 전환 시간)
+	_float m_fChainDelayTime = { 0.f };
 
 	//패턴 파훼용 투사체가 소환되어있는지 체크
 	_bool m_isSpawnOrb = { false };

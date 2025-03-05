@@ -69,12 +69,12 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SCENE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::TRANSITION);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::ENERGYBALL);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::ENERGYBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
     //m_pBossFSM->Add_State((_uint)BOSS_STATE::ROCKVOLLEY);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::SHIELD);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::SHIELD);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HIT);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::DEAD);
 
@@ -374,6 +374,16 @@ void CButterGrump::Attack()
         {
             m_iAttackCount = 0;
             m_isAttack = false;
+
+            if (true == m_isAttackChained)
+            {
+                ++m_iAttackChainCount;
+                if (m_iNumAttackChain <= m_iAttackChainCount)
+                {
+                    m_iAttackChainCount = 0;
+                    m_isAttackChained = false;
+                }
+            }
         }
         else
         {
@@ -409,6 +419,16 @@ void CButterGrump::Attack()
         {
             m_iAttackCount = 0;
             m_isAttack = false;
+
+            if (true == m_isAttackChained)
+            {
+                ++m_iAttackChainCount;
+                if (m_iNumAttackChain <= m_iAttackChainCount)
+                {
+                    m_iAttackChainCount = 0;
+                    m_isAttackChained = false;
+                }
+            }
         }
         else
         {
@@ -529,14 +549,24 @@ void CButterGrump::On_Attack()
     case BOSS_STATE::HOMINGBALL:
         m_fDelayTime = 0.5f;
         if (false == m_isPhase2)
+        {
             m_iNumAttack = 1;
+        }
         else
-            m_iNumAttack = 3;
+        {
+            m_iNumAttack = 1;
+            m_isAttackChained = true;
+            m_iNumAttackChain = 3;
+            m_fChainDelayTime = 0.5f;
+        }
         break;
 
     case BOSS_STATE::YELLOWBALL:
         m_fDelayTime = 0.5f;
-        m_iNumAttack = 3;
+        m_iNumAttack = 1;
+        m_isAttackChained = true;
+        m_iNumAttackChain = 3;
+        m_fChainDelayTime = 0.2f;
         break;
 
     case BOSS_STATE::PURPLEBALL:
@@ -607,14 +637,6 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case FIREBALL_SPIT_SMALL:
-        //if (true == m_isAttack)
-        //{
-        //    pModelObject->Get_Model(COORDINATE_3D)->Get_Animation(FIREBALL_SPIT_SMALL)->Set_Progress(0.f, false);
-        //}
-        //else
-        //{
-        //    Set_AnimChangeable(true);
-        //}
         Set_AnimChangeable(true);
         break;
 
@@ -871,11 +893,11 @@ HRESULT CButterGrump::Ready_PartObjects()
     ShieldDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     ShieldDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::ALPHABLEND;
 
     _float fScale = 25.f;
 
-	ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(fScale * (-0.3f), 0.0f, fScale * (-0.5f));
+	ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(fScale * (-0.3f), 0.0f, fScale * (-0.1f));
 	//ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
     ShieldDesc.tTransform3DDesc.vInitialScaling = _float3(fScale, fScale, fScale);
     ShieldDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();

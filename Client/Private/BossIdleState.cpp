@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 #include "GameObject.h"
 #include "BossIdleState.h"
-#include "Monster.h"
+#include "ButterGrump.h"
 #include "FSM.h"
 
 CBossIdleState::CBossIdleState()
@@ -38,8 +38,21 @@ void CBossIdleState::State_Update(_float _fTimeDelta)
 	m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
 	m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
 
-	if (m_fAccTime >= m_fCoolTime)
-		Event_ChangeBossState(BOSS_STATE::ATTACK, m_pFSM);
+	CButterGrump* pBoss = static_cast<CButterGrump*>(m_pOwner);
+
+	//공격이 이어진다면 이전 공격 상태로 전환
+	if (true == pBoss->Is_AttackChained())
+	{
+		if (m_fAccTime >= pBoss->Get_ChainDelayTime())
+		{
+			Event_ChangeBossState((BOSS_STATE)m_pOwner->Get_PreState(), m_pFSM);
+		}
+	}
+	else
+	{
+		if (m_fAccTime >= m_fCoolTime)
+			Event_ChangeBossState(BOSS_STATE::ATTACK, m_pFSM);
+	}
 }
 
 void CBossIdleState::State_Exit()
