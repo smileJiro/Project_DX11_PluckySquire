@@ -54,6 +54,7 @@ protected:
 
 	_bool m_isStop = {};
 	_bool m_isFirstLoop = { true };
+	_bool m_isTimeOver = { false };
 
 private:
 	//virtual HRESULT					Ready_ActorDesc(void* _pArg);

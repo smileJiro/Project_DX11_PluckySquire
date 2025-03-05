@@ -1006,33 +1006,5 @@
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter2_OpenBookEvent",
         "Trigger_Type": 0
-    },
-    {
-        "Collider_Info": {
-            "HalfExtents": [
-                3.0999999046325684,
-                3.799999952316284,
-                0.5
-            ],
-            "Position": [
-                59.09400177001953,
-                10.032999992370605,
-                -19.985000610351563
-            ],
-            "Radius": 0.5,
-            "Rotation": [
-                -0.0,
-                0.0,
-                -0.0
-            ],
-            "ShapeType": 0
-        },
-		"Trigger_Reusable" : false,
-        "Fillter_MyGroup": 128,
-        "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
-        "Trigger_Coordinate": 1,
-        "Trigger_EventTag": "Chapter2_StorySequence",
-        "Trigger_Type": 0
     }
 ]

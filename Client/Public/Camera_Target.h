@@ -85,7 +85,8 @@ public:
 	void						Set_InitialData(_fvector _vArm, _float _fLength, _fvector _vOffset, _uint _iZoomLevel);
 
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
-	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix) override;
+	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix, _float _fChangingTime = 1.f) override;
+	virtual void				Change_Target(CGameObject* _pTarget, _float _fChangingTime = 1.f) override;
 	virtual void				Turn_AxisY(_float _fTimeDelta) override;
 	virtual void				Turn_AxisRight(_float _fTimeDelta) override;
 	virtual void				Change_Length(_float _fTimeDelta) override;
@@ -134,6 +135,10 @@ private:
 
 	// Portal Initial Data
 	map<_wstring, vector<_wstring>> m_SkspInitialTags;
+
+	// 2D 객체 Target Change 하기 위한 변수
+	_wstring					m_szTargetSectionTag;
+	_float3						m_vStartPos = {};			// Target 바뀌었을 때 Lerp하기 위한 변수
 
 #pragma region Tool용
 	_bool						m_isLookAt = { true };

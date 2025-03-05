@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 
 #include "Trigger_Manager.h"
+#include "Section_Manager.h"
 
 CCamera_Target::CCamera_Target(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera{ pDevice, pContext }
@@ -33,6 +34,8 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 	m_eCameraMode = pDesc->eCameraMode;
 	m_vAtOffset = pDesc->vAtOffset;
 	m_pTargetWorldMatrix = pDesc->pTargetWorldMatrix;
+	
+	m_eTargetCoordinate = { COORDINATE_3D };
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -170,9 +173,24 @@ void CCamera_Target::Set_EnableLookAt(_bool _isEnableLookAt)
 	m_isEnableLookAt = _isEnableLookAt;
 }
 
-void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
+void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix, _float _fChangingTime)
 {
 	m_pTargetWorldMatrix = _pTargetWorldMatrix;
+	m_fTargetChangingTime = { _fChangingTime, 0.f };
+}
+
+void CCamera_Target::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
+{
+	m_pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+	m_eTargetCoordinate = _pTarget->Get_CurCoord();
+	m_isTargetChanged = true;
+
+	//_vector vStartPos = XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos) + XMLoadFloat3(&m_vPreFreezeOffset), 1.f);
+	//XMStoreFloat3(&m_vStartPos, vStartPos);
+	m_vStartPos = m_vPreTargetPos;
+
+	m_szTargetSectionTag = _pTarget->Get_Include_Section_Name();
+	m_fTargetChangingTime = { _fChangingTime, 0.f };
 }
 
 void CCamera_Target::Turn_AxisY(_float _fTimeDelta)
@@ -597,6 +615,14 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 
 	if ((true == m_isEnableLookAt) && (false == m_isExitLookAt)) {
 		_vector vFreezeOffset = -XMLoadFloat3(&m_vPreFreezeOffset);
+
+		switch (m_eTargetCoordinate) {
+		case COORDINATE_3D:
+			break;
+		case COORDINATE_2D:
+			vFreezeOffset = XMVectorZero();
+			break;
+		}
 		_vector vAt = _vTargetPos + vFreezeOffset + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 		m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 	}
@@ -693,9 +719,21 @@ _vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fT
 
 	// Target Change가 안 됐을 때는 시간 제한 없이 Smooth를 한다
 	if (false == m_isTargetChanged) {
-		vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f), vTargetPos + XMLoadFloat3(&m_vFreezeOffset), m_fSmoothSpeed * _fTimeDelta);
-		vCurFreezeOffset = XMVectorLerp(XMLoadFloat3(&m_vPreFreezeOffset), XMLoadFloat3(&m_vFreezeOffset), m_fSmoothSpeed * _fTimeDelta);
+		switch (m_eTargetCoordinate)
+		{
+		case COORDINATE_3D:
+		{
+			vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f), vTargetPos + XMLoadFloat3(&m_vFreezeOffset), m_fSmoothSpeed * _fTimeDelta);
+		}
+			break;
+		case COORDINATE_2D:
+		{
+			vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f), vTargetPos, m_fSmoothSpeed * _fTimeDelta);
+		}
+			break;
+		}
 
+		vCurFreezeOffset = XMVectorLerp(XMLoadFloat3(&m_vPreFreezeOffset), XMLoadFloat3(&m_vFreezeOffset), m_fSmoothSpeed * _fTimeDelta);
 		XMStoreFloat3(&m_vPreFreezeOffset, vCurFreezeOffset);
 	}
 	// Target Change일 땐 지정된 시간만큼 바뀐 Target으로 이동한다
@@ -707,10 +745,10 @@ _vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fT
 			m_isTargetChanged = false;
 		}
 
-		vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f), vTargetPos, fRatio);
+		vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), vTargetPos, fRatio);
 	}
 
-
+	vCurPos = XMVectorSetW(vCurPos, 1.f);
 	if (nullptr != _pLerpTargetPos)
 		*_pLerpTargetPos = vCurPos;
 
@@ -722,8 +760,20 @@ _vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fT
 
 void CCamera_Target::Calculate_FreezeOffset(_vector* _pTargetPos)
 {
-	memcpy(_pTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
-
+	switch (m_eTargetCoordinate) {
+	case (_uint)COORDINATE_2D:
+	{
+		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_szTargetSectionTag, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+		*_pTargetPos = vTargetPos;
+	}
+		break;
+	case (_uint)COORDINATE_3D:
+	{
+		memcpy(_pTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float4));
+	}
+		break;
+	}
+	
 	if (FREEZE_X == (m_iFreezeMask & FREEZE_X)) {
 		m_vFreezeOffset.x = m_vFreezeEnterPos.x - XMVectorGetX(*_pTargetPos);
 	}

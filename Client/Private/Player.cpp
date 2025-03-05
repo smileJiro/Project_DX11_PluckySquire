@@ -30,6 +30,7 @@
 #include "PlayerState_Stamp.h"
 #include "PlayerState_Bomber.h"
 #include "PlayerState_ErasePalmDecal.h"
+#include "PlayerState_GetItem.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -41,6 +42,7 @@
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
 #include "Effect_Manager.h"
+#include "PlayerData_Manager.h"
     
 #include "Collider_Fan.h"
 #include "Collider_AABB.h"
@@ -242,6 +244,10 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
 	m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD,false);
     Set_State(CPlayer::IDLE);
+
+    // PlayerData Manager µî·Ï
+    CPlayerData_Manager::GetInstance()->Register_Player(this);
+
     return S_OK;
 }
 
@@ -1052,7 +1058,11 @@ void CPlayer::StampSmash()
     if (nullptr == pSampleBook)
         return;
 
-    _vector v2DPosition = pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition());
+    _vector v2DPosition;
+    if (FAILED(pSampleBook->Convert_Position_3DTo2D(m_PartObjects[Get_CurrentStampType()]->Get_FinalPosition(),&v2DPosition)))
+    {
+        return;
+    }
     if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
     {
         m_pDetonator->Set_Bombable(m_pBombStmap->Place_Bomb(v2DPosition));
@@ -1762,6 +1772,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::ERASE_PALM:
         m_pStateMachine->Transition_To(new CPlayerState_ErasePalmDecal(this));
+        break;
+    case Client::CPlayer::GET_ITEM:
+        m_pStateMachine->Transition_To(new CPlayerState_GetItem(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;

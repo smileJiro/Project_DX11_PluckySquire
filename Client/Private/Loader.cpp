@@ -57,6 +57,7 @@
 #include "Narration.h"
 #include "Narration_Anim.h"
 #include "Interaction_E.h"
+#include "Narration_New.h"
 /* For. UI*/
 
 /* For. NPC*/
@@ -88,6 +89,7 @@
 #include "TestTerrain.h"
 #include "RabbitLunch.h"
 #include "Bomb.h"
+#include "TiltSwapPusher.h"
 #include "Key.h"
 
 
@@ -110,6 +112,7 @@
 #include "LunchBox.h"
 #include "Door_Yellow.h"
 #include "Door_Blue.h"
+#include "Door_Red.h"
 #include "Pressure_Plate.h"
 #include "Rubboink_Tiny.h"
 #include "MudPit.h"
@@ -148,6 +151,8 @@
 #include "Boss_PurpleBall.h"
 #include "Boss_WingSlam.h"
 #include "Boss_Rock.h"
+#include "Boss_Crystal.h"
+#include "Boss_TennisBall.h"
 #include "FSM_Boss.h"
 #include "GameEventExecuter_C2.h"
 #include "GameEventExecuter_C4.h"
@@ -827,6 +832,10 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorBlue"),
 		CDoor_Blue::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+		
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+		CDoor_Red::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Pressure_Plate"),
 		CPressure_Plate::Create(m_pDevice, m_pContext))))
@@ -1202,6 +1211,16 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			CBoss_Rock::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_Crystal"),
+			CBoss_Crystal::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_TennisBall"),
+			CBoss_TennisBall::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),
 			C3DModel::Create(m_pDevice, m_pContext,
 				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sphere_01.model"
@@ -1254,6 +1273,9 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Zipline"),
 			CZipline::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter4_Monsters.json"), TEXT("Chapter4_Monsters"), _eLoadLevelID)))
 			return E_FAIL;
 
 	#pragma endregion
@@ -1337,7 +1359,16 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_StoreNPC"),
 			CNPC_Store::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_MudPit"),
+			CMudPit::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Rubboink_Tiny"),
+			CRubboink_Tiny::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_TiltSwapPusher"),
+			CTiltSwapPusher::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 		/* Monster */
 
 		/* Etc */
@@ -1985,6 +2016,9 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_PrintFloorWord"),
 		CPrintFloorWord::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_Narration_New"),
+	//	CNarration_New::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 
 	///////////////////////////////// NPC /////////////////////////////////

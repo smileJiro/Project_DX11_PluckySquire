@@ -23,6 +23,9 @@ HRESULT CBoss_EnergyBall::Initialize(void* _pArg)
 {
     PROJECTILE_MONSTER_DESC* pDesc = static_cast<PROJECTILE_MONSTER_DESC*>(_pArg);
 
+    if (FAILED(Ready_ActorDesc(pDesc)))
+        return E_FAIL;
+
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
@@ -31,6 +34,16 @@ HRESULT CBoss_EnergyBall::Initialize(void* _pArg)
 
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
+
+
+
+    /* Actor Desc 채울 때 쓴 데이터 할당해제 */
+
+    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
+    {
+        Safe_Delete(pDesc->pActorDesc->ShapeDatas[i].pShapeDesc);
+    }
+    Safe_Delete(pDesc->pActorDesc);
 
 	return S_OK;
 }
@@ -188,7 +201,7 @@ HRESULT CBoss_EnergyBall::Ready_PartObjects()
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 
-    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 1.f, 0.f, 1.f));
+    static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 1.f, 0.f, 1.f), true);
 
     return S_OK;
 }
@@ -221,7 +234,5 @@ CGameObject* CBoss_EnergyBall::Clone(void* _pArg)
 
 void CBoss_EnergyBall::Free()
 {
-    Safe_Release(m_pTarget);
-
     __super::Free();
 }

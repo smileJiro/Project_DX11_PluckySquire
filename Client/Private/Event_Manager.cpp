@@ -13,7 +13,6 @@
 #include "Layer.h"
 
 #include "Pooling_Manager.h"
-#include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "NPC_Manager.h"
 #include "Dialog_Manager.h"
@@ -32,7 +31,6 @@
 #include "SampleBook.h"
 
 #include "Trigger_Manager.h"
-#include "PlayerData_Manager.h"
 #include "Effect2D_Manager.h"
 
 #include "Effect_Manager.h"
@@ -658,7 +656,7 @@ HRESULT CEvent_Manager::Execute_Trigger_Enter(const EVENT& _tEvent)
 		break;
 	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
 	{
-		CTrigger_Manager::GetInstance()->Resister_TriggerEvent(*pStr, iTriggerID);
+		CTrigger_Manager::GetInstance()->Register_TriggerEvent(*pStr, iTriggerID);
 	}
 		break;
 	}

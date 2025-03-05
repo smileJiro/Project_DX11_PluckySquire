@@ -28,7 +28,7 @@ public:
 	virtual _float	Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) override;
 
 protected:
-	_float2			m_fZiplineTime = { 6.5f, 0.f };
+	_float2			m_fZiplineTime = { 5.5f, 0.f };
 	_bool			m_isRideDown = { false };
 
 	CPlayer*		m_pRidingObject = { nullptr };

@@ -13,14 +13,12 @@ private:
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
 
-public:
-	void			Open_Door();
 
 public:
 	void			On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
-private:
-	class CPressure_Plate* m_pPressurePlate = { nullptr };
+public:
+	virtual void			On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 
 private:
 	void			Set_AnimLoop();

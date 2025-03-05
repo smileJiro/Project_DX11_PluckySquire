@@ -1,0 +1,89 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "SneakV03_sneaking_pressureplate_up",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_up_0001_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_up_0001_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_up_0002_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_up_0002_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_up_0003_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_up_0003_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_up_0004_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_up_0004_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_up_0005_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_up_0005_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_up_0006_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_up_0006_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_up_0007_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_up_0007_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_up_0008_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_up_0008_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_up_0009_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_up_0009_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_up_0010_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_up_0010_X01.1"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'SneakV03_sneaking_pressureplate_up_0011_X01'",
+            "ObjectPath": "/Game/Minigames/Sneak/Animation/AssetsV02/Frames/SneakV03_sneaking_pressureplate_up_0011_X01.1"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

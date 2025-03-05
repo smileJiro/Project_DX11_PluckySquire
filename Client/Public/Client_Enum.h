@@ -135,6 +135,7 @@ namespace Client
 		GIMMICK_OBJECT =			0x40000,	// 맵 기믹 (발판, 등..)
 		BOSS =						0x80000,		//
 		SLIPPERY =					0x100000,	//책장 기울이기
+		BOSS_PROJECTILE =					0x200000,	//보스 패턴 파훼용 투사체
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬
 	};
@@ -221,6 +222,10 @@ namespace Client
 		PURPLEBALL,
 		WINGSLAM,
 		ROCKVOLLEY,
+		SHIELD,
+
+		HIT,
+		DEAD,
 
 		LAST,
 	};

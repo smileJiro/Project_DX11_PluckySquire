@@ -137,11 +137,7 @@ void CZetPack::Switch_State(ZET_STATE _eState)
         }
         else
         {
-            if (m_fMaxFuel - 0.05f <= m_fFuel)
-                CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip"), true, &m_WorldMatrices[COORDINATE_3D], 1);
-            else
-                CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip"), false, &m_WorldMatrices[COORDINATE_3D], 1);
-
+            CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip"), false, &m_WorldMatrices[COORDINATE_3D], 1);
             Event_SetActive(m_pTargetLight, true);
             
         }
@@ -153,7 +149,7 @@ void CZetPack::Switch_State(ZET_STATE _eState)
         }
         else
         {
-
+            CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip"), false, &m_WorldMatrices[COORDINATE_3D], 1);
         }
 		break;
 	default:

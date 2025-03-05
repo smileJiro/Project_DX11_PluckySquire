@@ -14,7 +14,12 @@ protected:
 public:
 	void Install_Bomb();
 
-	void Detonate();
+	virtual void Detonate() override;
+
+	CCollider* Get_BodyCollider();
+protected:
+	virtual void On_BombInstalled() {};
+	virtual void On_Detonated() {};
 private:
 	_bool m_bBombInstalled = false;
 };

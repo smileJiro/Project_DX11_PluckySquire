@@ -1,0 +1,12 @@
+[
+  {
+    "Trigger_EventTag": "Chapter4_Ride_Zipline",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter4_Ride_Zipline",
+        "Is_Sequence": true
+      }
+    ]
+  }
+]

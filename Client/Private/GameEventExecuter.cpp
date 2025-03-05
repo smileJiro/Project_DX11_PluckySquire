@@ -6,11 +6,13 @@
 #include "Pooling_Manager.h"
 #include "Camera_Manager.h"
 #include "Effect2D_Manager.h"
+#include "PlayerData_Manager.h"
 
 #include "GameInstance.h"
 #include "SampleBook.h"
 #include "Camera_2D.h"
 #include "UI_Manager.h"
+#include "Narration_Manager.h"
 #include "Effect_Manager.h"
 #include "Section_2D.h"
 #include "MapObject.h"
@@ -52,10 +54,11 @@ void CGameEventExecuter::GameEvent_End()
 
 CPlayer* CGameEventExecuter::Get_Player()
 {
-	CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
+	return CPlayerData_Manager::GetInstance()->Get_Player_Ptr();
+	/*CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
 	if (nullptr == pGameObject)
 		return nullptr;
-	return static_cast<CPlayer*>(pGameObject);
+	return static_cast<CPlayer*>(pGameObject);*/
 }
 
 CSampleBook* CGameEventExecuter::Get_Book()

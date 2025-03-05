@@ -1086,7 +1086,7 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			if (-1 != Get_Dialogue(_strDialogue)[0].iTriggerID)
 			{
 				DialogData Data = Get_Dialogue(_strDialogue)[0];
-				CTrigger_Manager::GetInstance()->Resister_TriggerEvent(Data.wstrTriggerTag,
+				CTrigger_Manager::GetInstance()->Register_TriggerEvent(Data.wstrTriggerTag,
 					Data.iTriggerID);
 			}
 

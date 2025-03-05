@@ -860,8 +860,8 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 
 			if (Next_Step(!pPage->Is_DuringAnimation()))
 			{
-				CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-				CCamera_Manager::GetInstance()->Start_FadeOut(0.5f);
+				CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+				pCamera->Start_PostProcessing_Fade(CCamera::FADE_OUT, 0.5f);
 				CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.5f);
 				pPage->Set_Render(false);
 			}
@@ -869,9 +869,277 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 	}
 	else if (Step_Check(STEP_7))
 	{
-		Next_Step_Over(1.0f);
+		Next_Step_Over(0.3f);
 	}
 	else if (Step_Check(STEP_8))
+	{
+		if (Is_Start())
+		{
+			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+
+			//pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 0.3f);
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_BlockPlayerInput(false);
+		}
+	}
+	else
+	{
+		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0))
+	{
+		// 키 인풋 막기.
+		if (Is_Start())
+		{
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_BlockPlayerInput(true);
+
+		}
+		Next_Step(true);
+	}
+	else if (Step_Check(STEP_1))
+	{
+		if (Is_Start())
+		{
+			// 암 1 땡기기
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
+				1.f, EASE_IN_OUT);
+
+			// 암 x3 y2 이동
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(3.f, 2.f, 0.f, 0.f),
+				EASE_IN_OUT
+			);
+		}
+		// 카메라 무브 후 1초 인터벌
+		Next_Step_Over(2.f);
+	}
+	else if (Step_Check(STEP_2))
+	{
+		if (Is_Start())
+		{
+			// 책벌레 Appear 시작
+			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter2_SKSP_Postit"));
+			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_BACKGROUND);
+
+			const auto& Objects = pLayer->Get_GameObjects();
+			if (Objects.size() != 1)
+				assert(nullptr);
+			m_pTargetObject = Objects.front();
+			if (nullptr == m_pTargetObject)
+				assert(nullptr);
+
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			if (nullptr != pPage)
+			{
+				pPage->Set_Render(true);
+				pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_APPEAR, false);
+			}
+
+		}
+		else
+		{
+			if (nullptr == m_pTargetObject)
+				assert(nullptr);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			// 애니메이션 끝나고, 인터벌 조금 준뒤 다음 다이얼로그 스타트
+			Next_Step(!pPage->Is_DuringAnimation() && m_fTimer > 1.5f);
+		}
+	}
+	else if (Step_Check(STEP_3))
+	{
+		if (Is_Start())
+		{
+			// 말함
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_06");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else if (Step_Check(STEP_4))
+	{
+		if (Is_Start())
+		{
+
+			CONST_LIGHT LightDesc{};
+
+			ZeroMemory(&LightDesc, sizeof LightDesc);
+
+			LightDesc.vPosition = { 66.10f, 10.10, -24.90f };
+			LightDesc.vDirection = _float3(.0f, .0f, .0f);
+			LightDesc.vRadiance = _float3(5.0f, 9.0f, 7.0f);
+			LightDesc.vDiffuse = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+			LightDesc.vAmbient = _float4(0.f, 0.f, 0.f, 1.0f);
+			LightDesc.vSpecular = _float4(0.4f, 0.9f, 0.7f, 1.0f);
+			LightDesc.fFallOutStart = 2.738f;
+			LightDesc.fFallOutEnd = 12.24f;
+			LightDesc.isShadow = true;
+			LightDesc.fShadowFactor = 1.f;
+			if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
+				assert(nullptr);
+
+
+			// 끝나면 x5로 이동,
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(7.f, 2.f, 0.f, 0.f),
+				EASE_IN_OUT
+			);
+		}
+		Next_Step_Over(1.f);
+	}
+	else if (Step_Check(STEP_5))
+	{
+		// 다이얼로그 + 포스트잇 + 광원. 1.
+		if (Is_Start())
+		{
+
+			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter2_SKSP_Postit"));
+
+
+			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT);
+
+			const auto& Objects = pLayer->Get_GameObjects();
+
+			for_each(Objects.begin(), Objects.end(), [](CGameObject* pGameObject) {
+				auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
+
+				if (nullptr != pActionObj)
+				{
+					if (C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM == pActionObj->Get_ActionType()
+						&& pActionObj->Get_MapObjectModelName() == L"Postit_02"
+						)
+						pActionObj->Ready_Action();
+				}
+				});
+
+
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_07");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else if (Step_Check(STEP_6))
+	{
+		if (Is_Start())
+		{
+			// 끝나면 x5로 이동,
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(12.f, 2.f, 0.f, 0.f),
+				EASE_IN_OUT
+			);
+		
+		}
+		Next_Step_Over(1.f);
+	}
+	else if (Step_Check(STEP_7))
+	{
+		// 다이얼로그 + 포스트잇 2.
+		if (Is_Start())
+		{
+			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter2_SKSP_Postit"));
+
+
+			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT);
+
+			const auto& Objects = pLayer->Get_GameObjects();
+
+			for_each(Objects.begin(), Objects.end(), [](CGameObject* pGameObject) {
+				auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
+
+				if (nullptr != pActionObj)
+				{
+					if (C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM == pActionObj->Get_ActionType()
+						&& pActionObj->Get_MapObjectModelName() == L"Postit_01"
+						)
+						pActionObj->Ready_Action();
+				}
+				});
+
+
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_08");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else if (Step_Check(STEP_8))
+	{
+		if (Is_Start())
+		{
+			// 끝나면 x5로 이동,
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(10.f, 6.f, 0.f, 0.f),
+				EASE_IN_OUT
+			);
+		}
+		Next_Step_Over(1.f);
+		}
+	else if (Step_Check(STEP_9))
+	{
+		// 다이얼로그 + 포스트잇 3.
+		if (Is_Start())
+		{
+			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter2_SKSP_Postit"));
+
+
+			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT);
+
+			const auto& Objects = pLayer->Get_GameObjects();
+
+			for_each(Objects.begin(), Objects.end(), [](CGameObject* pGameObject) {
+				auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
+
+				if (nullptr != pActionObj)
+				{
+					if (C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM == pActionObj->Get_ActionType()
+						&& pActionObj->Get_MapObjectModelName() == L"Postit_03"
+						)
+						pActionObj->Ready_Action();
+				}
+				});
+
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_09");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else if (Step_Check(STEP_10))
+	{
+		if (Is_Start())
+		{
+
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 2.f, 30.f, EASE_IN_OUT);
+
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(41.f, 0.f, 0.f, 0.f),
+				EASE_IN_OUT
+			);
+			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(20.f), XMConvertToRadians(2.f));
+			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-30.f), XMConvertToRadians(-4.f));
+
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else if (Step_Check(STEP_11))
 	{
 		if (Is_Start())
 		{
@@ -886,13 +1154,8 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 	{
 		GameEvent_End();
 	}
+		
 }
-
-void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
-{
-}
-
-
 
 
 CGameEventExecuter_C2* CGameEventExecuter_C2::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

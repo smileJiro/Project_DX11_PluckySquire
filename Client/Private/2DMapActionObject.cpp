@@ -29,19 +29,11 @@ HRESULT C2DMapActionObject::Initialize(void* _pArg)
 
     MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
 
-    if (pDesc->is2DImport)
-    {
-        m_isSorting = pDesc->isSorting;
-        m_isBackGround = pDesc->isBackGround;
-        m_isCollider = pDesc->isCollider;
-        m_isActive = pDesc->isActive;
-    }
-
-
     m_eType = (MAPOBJ_2D_ACTION_TYPE)pDesc->eActiveType;
 
     if (FAILED(__super::Initialize(_pArg)))
         return  E_FAIL;
+
 
 #pragma region 콜라이더 개별설정
 
@@ -289,6 +281,8 @@ void C2DMapActionObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider*
         break;
     }
 }
+
+
 
 
 C2DMapActionObject* C2DMapActionObject::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
