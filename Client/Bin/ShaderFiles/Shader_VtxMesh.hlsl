@@ -218,8 +218,8 @@ PS_OUT PS_MAIN(PS_IN In)
         vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
     }
     
-   //if (vAlbedo.a < 0.01f)
-   //    discard;
+   if (vAlbedo.a < 0.01f)
+       discard;
     
     Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
     // 1,0,0
@@ -227,7 +227,7 @@ PS_OUT PS_MAIN(PS_IN In)
     // 0, 0.5, 0.5 (음의 x 축)
     Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
 
-    //Out.vDiffuse = 1.0f; // Test Code
+    //Out.vDiffuse = 1.0f; // Test Code5
     //vORMH.g = 0.02f;// TestCode
     //vORMH.b = 1.00f;// TestCode
     Out.vORMH = vORMH;
@@ -246,8 +246,8 @@ PS_ONLYALBEDO_OUT PS_ONLYALBEDO(PS_IN In) // 포스트 프로세싱 이후에 그리는
     
     if (vAlbedo.a < 0.01f)
         discard;
-    
-    Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
+
+    Out.vDiffuse = vAlbedo;
     
     return Out;
 }

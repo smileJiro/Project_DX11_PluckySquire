@@ -38,7 +38,7 @@ HRESULT CTrigger_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
 
-	Resister_Trigger_Action();
+	Register_Trigger_Action();
 	Mapping_ExecuterTag();
     return S_OK;
 
@@ -64,6 +64,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER2_BETTLE_PAGE] = L"Chapter2_Bettle_Page";
 	m_EventExecuterTags[CHAPTER2_OPENBOOKEVENT] = L"Chapter2_OpenBookEvent";
 	m_EventExecuterTags[CHAPTER2_STORYSEQUENCE] = L"Chapter2_StorySequence";
+	m_EventExecuterTags[CHAPTER4_RIDE_ZIPLINE] = L"Chapter4_Ride_Zipline";
 
 	return S_OK;
 }
@@ -161,7 +162,7 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 		#pragma endregion
 
 		#pragma region 5. 핸들러 등록
-			Resister_Event_Handler(Desc.iTriggerType, dynamic_cast<CTriggerObject*>(pTrigger));
+			Register_Event_Handler(Desc.iTriggerType, dynamic_cast<CTriggerObject*>(pTrigger));
 		#pragma endregion
 
 	}
@@ -215,7 +216,7 @@ void CTrigger_Manager::On_End(_wstring _szEventTag)
 		m_isEventEnd = true;
 }
 
-void CTrigger_Manager::Resister_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID)
+void CTrigger_Manager::Register_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID)
 {
 	auto iterator = m_TriggerEvents.find(_TriggerEventTag);
 
@@ -357,7 +358,7 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTrigge
 	return S_OK;
 }
 
-void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger)
+void CTrigger_Manager::Register_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger)
 {
 	// Handler 추가
 	//pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
@@ -482,7 +483,7 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	}
 }
 
-void CTrigger_Manager::Resister_Trigger_Action()
+void CTrigger_Manager::Register_Trigger_Action()
 {
 	m_Actions[TEXT("Camera_Arm_Move")] = [this](_wstring _wszEventTag) {
 		if (true == CCamera_Manager::GetInstance()->Set_NextArmData(_wszEventTag, m_iTriggerID))

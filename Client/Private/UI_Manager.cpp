@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UI_Manager.h"
+#include "Narration_Manager.h"
 
 IMPLEMENT_SINGLETON(CUI_Manager)
 
@@ -240,6 +241,11 @@ void CUI_Manager::UI_Update()
 				m_pInteractionE->CBase::Set_Active(true);
 		}
 	}
+
+	//if (true == CNarration_Manager::GetInstance()->Get_Playing())
+	//{
+	//	CNarration_Manager::GetInstance()->NarrationActive();
+	//}
 
 }
 

@@ -57,6 +57,7 @@
 #include "Narration.h"
 #include "Narration_Anim.h"
 #include "Interaction_E.h"
+#include "Narration_New.h"
 /* For. UI*/
 
 /* For. NPC*/
@@ -173,6 +174,8 @@
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
+#include "Candle.h"
+#include "Candle_Body.h"
 
 // Player Effect 
 #include "Effect_Trail.h"
@@ -514,7 +517,6 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Model2D_Bulb"),
 		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Static/bulb/pickup_bulb_01.dds", true))))
 		return E_FAIL;
-
 
 
 	XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
@@ -953,7 +955,6 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 			CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/MapObject/LightningBolt/LightningBolt.animevt"))))
 			return E_FAIL;
 
-
 	#pragma endregion
 
 	#pragma region Chapter 2 - Texture Load
@@ -1004,13 +1005,6 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 					), matPretransform))))
 			return E_FAIL;
 
-		// 3D Model 개별 로드 - 별도의 Pretransform 적용
-		matPretransform = XMMatrixScaling(1 / 160.0f, 1 / 160.0f, 1 / 160.0f);
-
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model3D_FallingRock"),
-			C3DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/NonAnim/Rock_03/Rock_03.model", matPretransform))))
-			return E_FAIL;
-
 		// 2D Model 개별 로드 - Model 경로 다름
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("dice_pink_03"),
 			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/dice_01/dice_pink_03.dds", true))))
@@ -1021,10 +1015,10 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Grape_Green"),
 			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/Grapes_Grape_01/Grape_Green.dds", true))))
 			return E_FAIL;
+
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_FallingRockShadow"),
 			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Chapter2/FallingRockShadow/FallingRockShadow.dds", true))))
 			return E_FAIL;
-
 	#pragma endregion
 
 	#pragma region Chapter 2 - Object Load
@@ -1142,12 +1136,22 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 
 		if (FAILED(Model_Load(eResourceLevelID, _eLoadLevelID)))
 			return E_FAIL;
+		// 3D Model 개별 로드 - 별도의 Pretransform 적용
+		_matrix matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_FallingRockShadow"),
+			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Chapter2/FallingRockShadow/FallingRockShadow.dds", true))))
+			return E_FAIL;
 	#pragma endregion
 
 	#pragma region Chapter 4 - Object Load
 
 		lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+		/* For. Prototype_GameObject_FallingRock */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_FallingRock"),
+			CFallingRock::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		/* UI */
 		if (FAILED(UI_Object_Load(_eLoadLevelID)))
@@ -1382,6 +1386,15 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			CCollapseBlock::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		/* For. Prototype_GameObject_Candle */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Candle"),
+			CCandle::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_Candle_Body */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Candle_Body"),
+			CCandle_Body::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 	#pragma endregion
 
 	#pragma region Chapter 6 - Effect Load
@@ -1955,7 +1968,7 @@ HRESULT CLoader::UI_Texture_Load(LEVEL_ID _eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Enter.dds"), 1))))
 		return E_FAIL;
 
-
+	
 	return S_OK;
 }
 
@@ -2015,6 +2028,9 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_PrintFloorWord"),
 		CPrintFloorWord::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_Narration_New"),
+	//	CNarration_New::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 
 	///////////////////////////////// NPC /////////////////////////////////

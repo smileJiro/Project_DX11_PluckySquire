@@ -531,6 +531,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 		pFallingRockDesc->eStartCoord = COORDINATE_2D;
 		pFallingRockDesc->fFallDownEndY = RTSIZE_BOOK2D_Y * 0.5f - 50.f;
 		pFallingRockDesc->iCurLevelID = m_eLevelID;
+
 		pFallingRockDesc->isDeepCopyConstBuffer = false;
 		pFallingRockDesc->Build_2D_Transform(_float2(0.0f, 500.f));
 
@@ -558,6 +559,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 		CGameObject* pGameObject = nullptr;
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), m_eLevelID, _strLayerTag, &pGameObject, &SpawnerDesc)))
 			return E_FAIL;
+
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
 
 		pGameObject = nullptr;
@@ -1128,10 +1130,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	
 	
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
+	//	return E_FAIL;
 
-	Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
+	//Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
 
 	return S_OK;
 }
@@ -1495,7 +1497,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("storm"), m_eLevelID, 1);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Player2dJumpAttackFX"), LEVEL_STATIC, 1);
-
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("FallingRock_Breaking"), LEVEL_STATIC, 1);
 	return S_OK;
 }
 

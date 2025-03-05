@@ -32,6 +32,8 @@ HRESULT CFallingRock::Initialize(void* _pArg)
 	m_fFallDownEndY = pDesc->fFallDownEndY;
 	m_isColBound = pDesc->isColBound;
 	m_eOriginDirection = pDesc->eColBoundDirection;
+	m_fBoundEndPosY = pDesc->fBoundEndPosY;
+	m_isChapter4 = pDesc->m_isChapter4;
 	// Add Desc
 	pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
 		
@@ -44,7 +46,7 @@ HRESULT CFallingRock::Initialize(void* _pArg)
 	pDesc->iPriorityID_3D = PR3D_GEOMETRY;
 	pDesc->vMaterialDefaultColor = { 1.0f, 1.0f, 1.0f , 1.0f };
 	pDesc->fFrustumCullingRange = 3.0f;
-	pDesc->Build_3D_Model(pDesc->iCurLevelID, TEXT("Prototype_Model3D_FallingRock"), TEXT("Prototype_Component_Shader_VtxMesh"), (_uint)PASS_VTXMESH::DEFAULT, true);
+	pDesc->Build_3D_Model(pDesc->iCurLevelID, TEXT("Rock_03"), TEXT("Prototype_Component_Shader_VtxMesh"), (_uint)PASS_VTXMESH::DEFAULT, true);
 
 	pDesc->eStartCoord = COORDINATE_2D; // 여기서 세팅해줘야함.
 
@@ -143,11 +145,30 @@ void CFallingRock::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOt
 	case Client::NONE:
 		break;
 	case Client::PLAYER:
+	{
 		CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.1f, 0.2f, 20, CCamera::SHAKE_Y);
+		_float4 vKnockBackForce = {};
+		_float fKnockBackStrength = 500.f;
+		if (m_eCurState == STATE_COL_BOUND)
+		{
+			vKnockBackForce.x = m_vColBoundDirection.x * fKnockBackStrength;
+			vKnockBackForce.y = m_vColBoundDirection.y * fKnockBackStrength;
+		}
+		else
+		{
+			_vector vPos = Get_FinalPosition();
+			_vector vOtherPos = _pOtherObject->Get_FinalPosition();
+			_vector vKnockBackDir = vOtherPos - vPos;
+			XMStoreFloat4(&vKnockBackForce, XMVector3Normalize(vKnockBackDir) * fKnockBackStrength);
+
+		}
+		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVectorSet(vKnockBackForce.x, vKnockBackForce.y, 0.0f, 0.0f));
 		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, XMVectorZero());
-		Event_KnockBack(static_cast<CCharacter*>(_pOtherObject), XMVectorSet(m_vColBoundDirection.x * 600.f, m_vColBoundDirection.y * 500.f, 0.0f, 0.0f));
 		Event_DeleteObject(this); // 플레이어랑 부딪히면 사라지고, 이펙트 생성.
-		//CEffect2D_Manager::GetInstance()->Play_Effect();
+		//_vector vPos = Get_FinalPosition();
+		//;
+		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("FallingRock_Breaking"), m_strSectionName, Get_WorldMatrix());
+	}
 		break;
 	case Client::MONSTER:
 		break;
@@ -170,9 +191,19 @@ void CFallingRock::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOt
 		if (true == _pMyCollider->Is_Trigger())
 			break;
 
+		/* 1. Blocker은 항상 AABB임을 가정. */
+		if (true == m_isChapter4)
+		{
+			Event_DeleteObject(this); // 플레이어랑 부딪히면 사라지고, 이펙트 생성.
+			//_vector vPos = Get_FinalPosition();
+			//;
+			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("FallingRock_Breaking"), m_strSectionName, Get_WorldMatrix());
+			return;
+		}
+
 		if (true == static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
 		{
-			/* 1. Blocker은 항상 AABB임을 가정. */
+
 
 		/* 2. 나의 Collider 중점 기준, AABB에 가장 가까운 점을 찾는다. */
 			_bool isResult = false;
@@ -287,6 +318,7 @@ void CFallingRock::State_Change()
 
 void CFallingRock::State_Change_FallDown()
 {
+	m_pControllerModel->Switch_Animation(STATE_FALLDOWN);
 	m_pGravityCom->Change_State(CGravity::STATE::STATE_FALLDOWN);
 	m_pGravityCom->Set_Active(true);
 }
@@ -389,9 +421,10 @@ void CFallingRock::Action_Bound_2D(_float _fTimeDelta)
 	if (m_vJumpTime.x <= m_vJumpTime.y)
 	{
 		_float fPosY = XMVectorGetY(vPos);
-		if (fPosY < m_fCoordChangePosY)
+		if (fPosY < m_fBoundEndPosY)
 		{
-			m_eCurState = STATE_BOUND_3D;
+			if(false == m_isChapter4)
+				m_eCurState = STATE_BOUND_3D;
 		}
 		/* 3. 다음 도착지 Y 계산(그림자위치) */
 		_float fUpForce = m_fJumpForcePerSec * m_vJumpTime.x;
@@ -485,7 +518,7 @@ HRESULT CFallingRock::Ready_Components(FALLINGROCK_DESC* _pDesc)
 	CircleDesc.fRadius = 20.f;
 	CircleDesc.vScale = { 1.0f, 1.0f };
 	CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius * 0.5f };
-	if(false == m_isColBound)
+	if(false == m_isColBound && false == m_isChapter4)
 	{
 		CircleDesc.isBlock = true;
 		CircleDesc.iCollisionGroupID = OBJECT_GROUP::FALLINGROCK_BASIC;
@@ -517,6 +550,7 @@ void CFallingRock::Active_OnEnable()
 	else
 	{
 		m_eCurState = STATE::STATE_COL_BOUND;
+		State_Change_ColBound_2D();
 	}
 
 

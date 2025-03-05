@@ -6,6 +6,7 @@ END
 
 BEGIN(Client)
 class CSpawner;
+class CCandle;
 class CLevel_Chapter_06 final : public CLevel
 {
 private:
@@ -40,6 +41,7 @@ private:
 
 	LEVEL_ID				m_eLevelID;
 
+	CCandle*				m_pCandle = nullptr;
 public:
 	static CLevel_Chapter_06* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eLevelID);
 	virtual void			Free() override;
