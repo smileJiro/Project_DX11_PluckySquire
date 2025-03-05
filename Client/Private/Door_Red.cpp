@@ -39,19 +39,13 @@ HRESULT CDoor_Red::Initialize(void* _pArg)
 void CDoor_Red::Update(_float _fTimeDelta)
 {
 #ifdef _DEBUG
-    if (KEY_PRESSING(KEY::LSHIFT) && KEY_DOWN(KEY::P))
+    if (KEY_PRESSING(KEY::CTRL) && KEY_DOWN(KEY::NUM0))
     {
         m_isStartOpen = false;
         m_eDoorState = CLOSED;
         Switch_Animation_By_State();
     }
 
-    if (KEY_PRESSING(KEY::LSHIFT) && KEY_DOWN(KEY::O))
-    {
-        m_isStartOpen = false;
-        m_eDoorState = CLOSED;
-        Switch_Animation_By_State();
-    }
 
 #endif
 

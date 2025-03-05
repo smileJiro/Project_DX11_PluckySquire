@@ -606,11 +606,11 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Book(const _wstring& _strLayerTag)
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
 
-	// TEMP
-	CSneak_Default_Tile::SNEAK_TILEDESC TileDesc = {};
-	TileDesc.
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
-		return E_FAIL;
+	//// TEMP
+	//CSneak_Default_Tile::SNEAK_TILEDESC TileDesc = {};
+	//TileDesc.
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }
