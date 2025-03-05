@@ -24,6 +24,8 @@ public:
 	virtual void					Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT					Render() override;
 
+	virtual _wstring				Get_MapObjectModelName() { return m_strModelName; }
+
 protected :
 	wstring							m_strModelName = L"";
 public:

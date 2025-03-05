@@ -1,15 +1,15 @@
 #include "stdafx.h"
 #include "GameInstance.h"
 #include "GameObject.h"
-#include "BossYellowBallState.h"
+#include "BossShieldState.h"
 #include "Monster.h"
 #include "FSM.h"
 
-CBossYellowBallState::CBossYellowBallState()
+CBossShieldState::CBossShieldState()
 {
 }
 
-HRESULT CBossYellowBallState::Initialize(void* _pArg)
+HRESULT CBossShieldState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
 
@@ -17,41 +17,36 @@ HRESULT CBossYellowBallState::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_fDelayTime = 0.3f;
-	m_iNumAttack = 3;
-	
+	m_iNumAttack = 10;
+		
 	return S_OK;
 }
 
 
-void CBossYellowBallState::State_Enter()
+void CBossShieldState::State_Enter()
 {
 	m_pOwner->Set_AnimChangeable(false);
-	Delay_Off();
-	m_iAttackCount = 0;
 }
 
-void CBossYellowBallState::State_Update(_float _fTimeDelta)
+void CBossShieldState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pTarget)
 		return;
 	if (nullptr == m_pOwner)
 		return;
 
-	if (true == m_isDelay)
-	{
-		m_fAccTime += _fTimeDelta;
-		if (m_fDelayTime <= m_fAccTime)
-		{
-			Delay_Off();
-		}
-	}
-
 	//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
-	////공격
-	////m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
+	//공격
+	//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
 	//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
 
-	////3번 뿜고 공격 종료
+	//10개 뿜고 공격 종료
+
+	if (m_pOwner->Get_AnimChangeable())
+	{
+		Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
+	}
+
 	//if (m_iNumAttack <= m_iAttackCount)
 	//{
 	//	Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
@@ -66,33 +61,26 @@ void CBossYellowBallState::State_Update(_float _fTimeDelta)
 	//	}
 	//}
 	
-
-	if (m_pOwner->Get_AnimChangeable())
-	{
-		Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
-	}
 }
 
-void CBossYellowBallState::State_Exit()
+void CBossShieldState::State_Exit()
 {
-	Delay_Off();
-	m_iAttackCount = 0;
 }
 
-CBossYellowBallState* CBossYellowBallState::Create(void* _pArg)
+CBossShieldState* CBossShieldState::Create(void* _pArg)
 {
-	CBossYellowBallState* pInstance = new CBossYellowBallState();
+	CBossShieldState* pInstance = new CBossShieldState();
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Failed to Created : CBossYellowBallState");
+		MSG_BOX("Failed to Created : CBossShieldState");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CBossYellowBallState::Free()
+void CBossShieldState::Free()
 {
 	__super::Free();
 }

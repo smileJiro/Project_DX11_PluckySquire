@@ -187,7 +187,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 
 	/* Load Trigger*/
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger.json"));
-	//CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger_Events.json"));
+	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger_Events.json"));
 
 	/* Blur RenderGroupOn */
 	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
@@ -1138,9 +1138,9 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(CGameObject** _ppout)
 	//Boss_Desc.iCurLevelID = m_eLevelID;
 	//Boss_Desc.eStartCoord = COORDINATE_3D;
 	//Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 30.35f, -13.0f);
+	//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, _strLayerTag, &Boss_Desc)))
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
 	//	return E_FAIL;
 
 	return S_OK;

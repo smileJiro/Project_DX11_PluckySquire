@@ -3,18 +3,21 @@
 #include "Client_Defines.h"
 
 BEGIN(Client)
-class CBoss_Rock final : public CProjectile_Monster
+
+class CButterGrump;
+
+class CBoss_TennisBall final : public CProjectile_Monster
 {
-//public:
-//	typedef struct tagBoss_Rock_Desc : public CProjectile_Monster::CONTAINEROBJ_DESC
-//	{
-//		_float fLifeTime;
-//	}BOSS_ENERGYBALL_DESC;
+public:
+	typedef struct tagBoss_TennisBall_Desc : public CProjectile_Monster::PROJECTILE_MONSTER_DESC
+	{
+		CButterGrump* pSpawner = { nullptr };
+	}BOSS_TENNISBALL_DESC;
 
 protected:
-	CBoss_Rock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	CBoss_Rock(const CBoss_Rock& _Prototype);
-	virtual ~CBoss_Rock() = default;
+	CBoss_TennisBall(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CBoss_TennisBall(const CBoss_TennisBall& _Prototype);
+	virtual ~CBoss_TennisBall() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype(); // 프로토 타입 전용 Initialize
@@ -23,6 +26,9 @@ public:
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
+
+public:
+	void Shoot();
 
 public:
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
@@ -41,9 +47,11 @@ private:
 
 private:
 	_uint m_iHp = { 0 };
+	_bool m_isShoot = { false };
+	CButterGrump* m_pSpawner = { nullptr };
 
 public:
-	static CBoss_Rock* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CBoss_TennisBall* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void			Free() override;
 };

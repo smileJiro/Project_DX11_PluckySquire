@@ -193,9 +193,13 @@
     <ClInclude Include="..\Public\Bombable.h" />
     <ClInclude Include="..\Public\BombableObject.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
+    <ClInclude Include="..\Public\BossHitState.h" />
     <ClInclude Include="..\Public\BossRockVolleyState.h" />
+    <ClInclude Include="..\Public\BossShieldState.h" />
     <ClInclude Include="..\Public\BossWingSlamState.h" />
+    <ClInclude Include="..\Public\Boss_Crystal.h" />
     <ClInclude Include="..\Public\Boss_Rock.h" />
+    <ClInclude Include="..\Public\Boss_TennisBall.h" />
     <ClInclude Include="..\Public\Boss_WingSlam.h" />
     <ClInclude Include="..\Public\ButterGrump_LeftEye.h" />
     <ClInclude Include="..\Public\ButterGrump_RightEye.h" />
@@ -221,6 +225,8 @@
     <ClInclude Include="..\Public\PlayerState_GetItem.h" />
     <ClInclude Include="..\Public\Zipline.h" />
     <ClInclude Include="..\Public\MudPit.h" />
+    <ClInclude Include="..\Public\Narration_Manager.h" />
+    <ClInclude Include="..\Public\Narration_New.h" />
     <ClInclude Include="..\Public\NPC_Manager.h" />
     <ClInclude Include="..\Public\PalmDecal.h" />
     <ClInclude Include="..\Public\PalmMarker.h" />
@@ -472,9 +478,13 @@
     <ClCompile Include="..\Private\Bombable.cpp" />
     <ClCompile Include="..\Private\BombableObject.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
+    <ClCompile Include="..\Private\BossHitState.cpp" />
     <ClCompile Include="..\Private\BossRockVolleyState.cpp" />
+    <ClCompile Include="..\Private\BossShieldState.cpp" />
     <ClCompile Include="..\Private\BossWingSlamState.cpp" />
+    <ClCompile Include="..\Private\Boss_Crystal.cpp" />
     <ClCompile Include="..\Private\Boss_Rock.cpp" />
+    <ClCompile Include="..\Private\Boss_TennisBall.cpp" />
     <ClCompile Include="..\Private\Boss_WingSlam.cpp" />
     <ClCompile Include="..\Private\ButterGrump_LeftEye.cpp" />
     <ClCompile Include="..\Private\ButterGrump_RightEye.cpp" />
@@ -498,6 +508,8 @@
     <ClCompile Include="..\Private\PlayerState_GetItem.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\Private\MudPit.cpp" />
+    <ClCompile Include="..\Private\Narration_Manager.cpp" />
+    <ClCompile Include="..\Private\Narration_New.cpp" />
     <ClCompile Include="..\Private\NPC_Manager.cpp" />
     <ClCompile Include="..\Private\PalmDecal.cpp" />
     <ClCompile Include="..\Private\PalmMarker.cpp" />

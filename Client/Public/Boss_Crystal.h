@@ -3,18 +3,21 @@
 #include "Client_Defines.h"
 
 BEGIN(Client)
-class CBoss_Rock final : public CProjectile_Monster
+
+class CButterGrump;
+
+class CBoss_Crystal final : public CProjectile_Monster
 {
-//public:
-//	typedef struct tagBoss_Rock_Desc : public CProjectile_Monster::CONTAINEROBJ_DESC
-//	{
-//		_float fLifeTime;
-//	}BOSS_ENERGYBALL_DESC;
+public:
+	typedef struct tagBoss_Crystal_Desc : public CProjectile_Monster::PROJECTILE_MONSTER_DESC
+	{
+		CButterGrump* pSpawner = nullptr;
+	}BOSS_CRYSTAL_DESC;
 
 protected:
-	CBoss_Rock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	CBoss_Rock(const CBoss_Rock& _Prototype);
-	virtual ~CBoss_Rock() = default;
+	CBoss_Crystal(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CBoss_Crystal(const CBoss_Crystal& _Prototype);
+	virtual ~CBoss_Crystal() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype(); // 프로토 타입 전용 Initialize
@@ -41,9 +44,10 @@ private:
 
 private:
 	_uint m_iHp = { 0 };
+	CButterGrump* m_pSpawner = { nullptr };
 
 public:
-	static CBoss_Rock* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CBoss_Crystal* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void			Free() override;
 };

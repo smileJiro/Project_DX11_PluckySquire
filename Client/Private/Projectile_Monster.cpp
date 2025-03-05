@@ -69,6 +69,7 @@ void CProjectile_Monster::Update(_float _fTimeDelta)
 	if (false == Is_Dead() && m_fLifeTime <= m_fAccTime)
     {
         m_fAccTime = 0.f;
+        m_isTimeOver = true;
         Event_DeleteObject(this);
     }
 
@@ -176,6 +177,7 @@ void CProjectile_Monster::Active_OnEnable()
  
     m_isStop = false;
     m_isFirstLoop = true;
+    m_isTimeOver = false;
 	//if (COORDINATE_3D == Get_CurCoord())
  //       m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
 }

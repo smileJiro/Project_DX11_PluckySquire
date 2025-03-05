@@ -12,6 +12,7 @@
 #include "SampleBook.h"
 #include "Camera_2D.h"
 #include "UI_Manager.h"
+#include "Narration_Manager.h"
 #include "Effect_Manager.h"
 #include "Section_2D.h"
 #include "MapObject.h"
