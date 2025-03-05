@@ -569,6 +569,10 @@ void CCamera_Manager::Load_ArmData(LEVEL_ID _eLevelID)
 		szArmFileName = TEXT("Chapter6/Chapter6_ArmData.json");
 		sz2DArmFileName = TEXT("Chapter6/Chapter6_2D_ArmData.json");
 		break;
+	case LEVEL_CHAPTER_8:
+		szArmFileName = TEXT("Chapter6/Chapter6_ArmData.json");
+		sz2DArmFileName = TEXT("Chapter6/Chapter6_2D_ArmData.json");
+		break;
 	}
 
 	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/ArmData/";
@@ -593,6 +597,9 @@ void CCamera_Manager::Load_CutSceneData(LEVEL_ID _eLevelID)
 		szFileName = TEXT("Chapter4/Chapter4_CutScene.json");
 		break;
 	case LEVEL_CHAPTER_6:
+		szFileName = TEXT("Chapter6/Chapter6_CutScene.json");
+		break;
+	case LEVEL_CHAPTER_8:
 		szFileName = TEXT("Chapter6/Chapter6_CutScene.json");
 		break;
 	}

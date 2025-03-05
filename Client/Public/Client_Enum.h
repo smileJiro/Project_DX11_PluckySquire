@@ -126,16 +126,16 @@ namespace Client
 		BLOCKER = 					0x200,	//9	(현재 2D 플랫포머에서 중력 컴포넌트랑 연계중. 3D에서 플레이어 몸통이랑 블락중)
 		BOOK_3D =					0x400,
 		WORD_GAME =					0x800,
-		FALLINGROCK_BASIC =			0x1000,
+		FALLINGROCK_BASIC =			0x1000, 
 		EFFECT2D =					0x2000,
-		DYNAMIC_OBJECT =			0x4000,	//맵에 있는 다이나믹 오브젝트(주사위, WORD, 당근 등 사용중) 
+		DYNAMIC_OBJECT =			0x4000,		//맵에 있는 다이나믹 오브젝트(주사위, WORD, 당근 등 사용중) 
 		NPC_EVENT =					0x8000,
 		EXPLOSION =					0x10000,		//폭발 (플레이어, 몬스터 모두 충돌)
 		DOOR =						0x20000,	// 2D에서 잠겨있는 문, 열쇠로 열 때를 대비하기 위해서.
-		GIMMICK_OBJECT =				0x40000,	// 맵 기믹 (발판, 등..)
+		GIMMICK_OBJECT =			0x40000,	// 맵 기믹 (발판, 등..)
 		BOSS =						0x80000,		//
 		SLIPPERY =					0x100000,	//책장 기울이기
-		BOSS_PROJECTILE =					0x200000,	//보스 패턴 파훼용 투사체
+		BOSS_PROJECTILE =			0x200000,	//보스 패턴 파훼용 투사체
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬
 	};

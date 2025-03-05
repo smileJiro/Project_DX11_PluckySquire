@@ -9,6 +9,7 @@
 #include "Effect_Manager.h"
 #include "Effect_Trail.h"
 #include "Effect_Beam.h"
+#include "PlayerBody.h"
 
 CPlayerSword::CPlayerSword(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)

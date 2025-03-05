@@ -9,7 +9,7 @@
 #include "PlayerData_Manager.h"
 
 #include "GameInstance.h"
-#include "SampleBook.h"
+#include "Book.h"
 #include "Camera_2D.h"
 #include "UI_Manager.h"
 #include "Narration_Manager.h"
@@ -54,19 +54,19 @@ void CGameEventExecuter::GameEvent_End()
 
 CPlayer* CGameEventExecuter::Get_Player()
 {
-	return CPlayerData_Manager::GetInstance()->Get_Player_Ptr();
+	return CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 	/*CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
 	if (nullptr == pGameObject)
 		return nullptr;
 	return static_cast<CPlayer*>(pGameObject);*/
 }
 
-CSampleBook* CGameEventExecuter::Get_Book()
+CBook* CGameEventExecuter::Get_Book()
 {
 	CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Book"), 0);
 	if (nullptr == pGameObject)
 		return nullptr;
-	return static_cast<CSampleBook*>(pGameObject);
+	return static_cast<CBook*>(pGameObject);
 }
 
 

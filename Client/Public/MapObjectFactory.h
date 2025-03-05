@@ -173,7 +173,15 @@ public:
 				// Default
 			case 0 :
 			{
-				pBase = _pGameInstance->
+				if (_string(szSaveMeshName) == "StarSticker")
+					pBase = _pGameInstance->
+					Clone_Prototype(
+						PROTOTYPE::PROTO_GAMEOBJ,
+						LEVEL_STATIC,
+						L"Prototype_GameObject_3DMapEmissiveObject",
+						reinterpret_cast<void*>(&NormalDesc));
+				else
+					pBase = _pGameInstance->
 					Clone_Prototype(
 						PROTOTYPE::PROTO_GAMEOBJ,
 						LEVEL_STATIC,

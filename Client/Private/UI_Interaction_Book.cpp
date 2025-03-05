@@ -3,7 +3,7 @@
 #include "GameInstance.h"
 #include "UI_Manager.h"
 #include "PlayerData_Manager.h"
-#include "SampleBook.h"
+#include "Book.h"
 #include "Interactable.h"
 
 
@@ -55,9 +55,9 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 	
 	if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
-		CSampleBook* pSampleBook = dynamic_cast<CSampleBook*>(Uimgr->Get_Player()->Get_InteractableObject());
+		CBook* pBook = dynamic_cast<CBook*>(Uimgr->Get_Player()->Get_InteractableObject());
 
-		if (nullptr == pSampleBook)
+		if (nullptr == pBook)
 		{
 			if (true == m_isRender)
 				m_isRender = false;
@@ -65,7 +65,7 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 			return;
 		}
 			
-		if (true == pSampleBook->Get_PlayerAround() && CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
+		if (true == pBook->Get_PlayerAround() && CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
 		{
 			m_isRender = true;
 		}

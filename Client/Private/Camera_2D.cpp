@@ -4,7 +4,7 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"
 #include "Trigger_Manager.h"
-#include "SampleBook.h"
+#include "Book.h"
 #include "Effect_Manager.h"
 #include "UI_Manager.h"
 #include "Target_Manager.h"
@@ -1213,12 +1213,12 @@ void CCamera_2D::Imgui(_float _fTimeDelta)
 
 	ImGui::SameLine();
 	if (ImGui::Button("- Length") || ImGui::IsItemActive()) {// 누르고 있는 동안 계속 동작
-		fArmLength -= 0.1;
+		fArmLength -= 0.1f;
 		m_pCurArm->Set_Length(fArmLength);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("+ Length") || ImGui::IsItemActive()) {
-		fArmLength += 0.1;
+		fArmLength += 0.1f;
 		m_pCurArm->Set_Length(fArmLength);
 	}
 

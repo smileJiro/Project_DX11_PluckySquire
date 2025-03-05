@@ -1,5 +1,5 @@
 #pragma once
-#include "Character.h"
+#include "Playable.h"
 #include "AnimEventReceiver.h"
 #include "Interactable.h"
 
@@ -15,12 +15,14 @@ class CDraggableObject;
 class CStateMachine;
 class IInteractable;
 class CPortal;
-class CSampleBook;
+class CBook;
 class CStopStamp;
 class CBombStamp;
 class CDetonator;
 class CPlayerBomb;
 class CZetPack;
+class CPlayerBody;
+class CDefenderPlayer;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -54,7 +56,7 @@ typedef struct tagPlayerInputResult
 	_bool bInputStates[PLAYER_INPUT_LAST] = {false,};
 
 }PLAYER_INPUT_RESULT;
-class CPlayer final : public CCharacter, public virtual  IAnimEventReceiver
+class CPlayer final : public CPlayable, public virtual  IAnimEventReceiver
 {
 public:
 	enum PLAYER_SHAPE_USE
@@ -95,8 +97,10 @@ public:
 		PLAYER_PART_BOMB_STMAP,
 		PLAYER_PART_DETONATOR = 5,
 		PLAYER_PART_ZETPACK,
+		PLAYER_PART_CYBERBODY2D,
 		PLAYER_PART_LAST
 	};
+
 	enum PLAYER_MAIN_EQUIP
 	{
 		PLAYER_MAIN_EQUIP_SWORD = 1,
@@ -110,6 +114,7 @@ public:
 		PLAYER_SUB_EQUIP_DETONATOR = 5,
 		PLAYER_SUB_EQUIP_ZETPACK
 	};
+
 	enum STATE
 	{
 		IDLE,
@@ -346,6 +351,7 @@ public:
 		PLAYER_TRAPPED,
 		PLAYER_ZIPLINE,
 	};
+
 	enum class ANIM_STATE_3D
 	{
 		LATCH_ANIM_BOOK_JUMP_FALL_RIGHT
@@ -519,6 +525,7 @@ public:
 	INTERACT_RESULT Try_Interact(_float _fTimeDelta);
 
 	//Get
+	_bool Is_ZetPack_Idle();
 	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
 	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
@@ -527,7 +534,7 @@ public:
 	_bool Is_AttackTriggerActive();
 	_bool Is_DetonationMode();
 	_bool Is_ZetPackMode();
-	_bool Is_PlayerInputBlocked() { return m_bBlockInput; }
+
 	_bool Is_PlayingAnim();
 	_bool Has_InteractObject() { return nullptr != m_pInteractableObject; }
 	_float Get_UpForce();
@@ -565,7 +572,7 @@ public:
 	CCarriableObject* Get_CarryingObject() { return m_pCarryingObject; }
 	const _float4x4* Get_BodyWorldMatrix_Ptr() const;
 	const _float4x4* Get_BodyWorldMatrix_Ptr(COORDINATE eCoord) const;
-	CModelObject* Get_Body() { return m_pBody; }
+	CPlayerBody* Get_Body() { return m_pBody; }
 	CPartObject* Get_PlayerPartObject(PLAYER_PART _ePartId) { return m_PartObjects[(_uint)_ePartId]; }
 	_vector Get_RootBonePosition();
 	NORMAL_DIRECTION Get_PortalNormal() { return m_e3DPortalNormal; }
@@ -594,7 +601,7 @@ public:
 	void Set_InteractObject(IInteractable* _pInteractable) { m_pInteractableObject = _pInteractable; }
 	NORMAL_DIRECTION Set_PortalNormal(NORMAL_DIRECTION _eNormal) { return m_e3DPortalNormal = _eNormal; }
 	void Set_GravityCompOn(_bool _bOn);
-	void Set_BlockPlayerInput(_bool _bBlock) { m_bBlockInput = _bBlock; }
+
 	void Set_CurrentStampType(PLAYER_PART _eStamp) { m_eCurrentStamp = _eStamp; }
 
 	void Start_Attack(ATTACK_TYPE _eAttackType);
@@ -639,7 +646,7 @@ private:
 	_float m_f3DKnockBackPower = 10.f;
 
 	_bool m_bAttackTrigger = false;
-	_bool m_bBlockInput = false;
+
 	_uint m_iSpinAttackLevel = 4;
 	_vector m_vClamberEndPosition = { 0.f,0.f,0.f,1.f };//벽타기 끝날 위치
 	_vector m_vWallNormal= { 0.f,0.f,1.f,0.f };//접촉한 벽의 법선
@@ -682,7 +689,9 @@ private:
 
 	//Parts
 	class CPlayerSword* m_pSword = nullptr;
-	CModelObject* m_pBody = nullptr;
+	CPlayerBody* m_pBody = nullptr;
+	CModelObject* m_pBodyCyber2D = nullptr;
+
 	CModelObject* m_pGlove= nullptr;
 	CStopStamp* m_pStopStmap = nullptr;
 	CBombStamp* m_pBombStmap = nullptr;
@@ -694,7 +703,7 @@ private:
 	CCarriableObject* m_pCarryingObject = nullptr;
 	set<CGameObject*> m_AttckedObjects;
 	IInteractable* m_pInteractableObject = nullptr;
-	CSampleBook* m_pBook = nullptr;
+	CBook* m_pBook = nullptr;
 	CPlayerBomb* m_pBomb = nullptr;
 
 	SHAPE_CAPSULE_DESC m_tBodyShapeDesc = {};

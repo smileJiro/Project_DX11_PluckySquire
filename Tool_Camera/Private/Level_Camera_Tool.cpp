@@ -247,7 +247,7 @@ HRESULT CLevel_Camera_Tool::Ready_Layer_TestTerrain(const _wstring& _strLayerTag
 	//CModelObject::MODELOBJECT_DESC Desc = {};
 	//Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_SampleBook"),
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Book"),
 	//	LEVEL_CAMERA_TOOL, L"Layer_Book", &Desc)))
 	//	return E_FAIL;
 

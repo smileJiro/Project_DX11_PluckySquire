@@ -48,8 +48,17 @@ void CDoor_Red::Update(_float _fTimeDelta)
         // Target을 나로 해줘.
         if (isEmpty && (false == m_isStartOpen))
         {
-            CCamera_Manager::GetInstance()->Change_CameraTarget(this);
-            m_isStartOpen = true;
+            // Target 설정.
+            if (0.f < m_fTargetDiff)
+            {
+                CCamera_Manager::GetInstance()->Change_CameraTarget(this);
+                m_isStartOpen = true;
+            }
+            else
+            {
+                m_eDoorState = OPEN;
+                Switch_Animation_By_State();
+            }
         }
     }
 
@@ -83,8 +92,8 @@ void CDoor_Red::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         m_p2DColliderComs[0]->Set_Active(false);
         Switch_Animation_By_State();
 
-        // TEMP:
-        CCamera_Manager::GetInstance()->Change_CameraTarget(CPlayerData_Manager::GetInstance()->Get_Player_Ptr());
+        if (0.f < m_fTargetDiff)
+            CCamera_Manager::GetInstance()->Change_CameraTarget(CPlayerData_Manager::GetInstance()->Get_Player_Ptr());
     }
 
 }

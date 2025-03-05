@@ -2,6 +2,7 @@
 #include "PlayerState_LaydownObject.h"
 #include "Animation3D.h"
 #include "CarriableObject.h"
+#include "PlayerBody.h"
 
 
 CPlayerState_LaydownObject::CPlayerState_LaydownObject(CPlayer* _pOwner)

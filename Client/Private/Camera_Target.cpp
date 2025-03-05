@@ -933,12 +933,12 @@ void CCamera_Target::Imgui(_float _fTimeDelta)
 
 	ImGui::SameLine();
 	if (ImGui::Button("- Length") || ImGui::IsItemActive()) {// 누르고 있는 동안 계속 동작
-		fArmLength -= 0.1;
+		fArmLength -= 0.1f;
 		m_pCurArm->Set_Length(fArmLength);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("+ Length") || ImGui::IsItemActive()) {
-		fArmLength += 0.1;
+		fArmLength += 0.1f;
 		m_pCurArm->Set_Length(fArmLength);
 	}
 
@@ -1031,6 +1031,9 @@ void CCamera_Target::Load_InitialArmTag()
 		szFileName = TEXT("Chapter4/Chapter4_SketchSpace_InitialTag.json");
 		break;
 	case LEVEL_CHAPTER_6:
+		szFileName = TEXT("Chapter6/Chapter6_SketchSpace_InitialTag.json");
+		break;
+	case LEVEL_CHAPTER_8:
 		szFileName = TEXT("Chapter6/Chapter6_SketchSpace_InitialTag.json");
 		break;
 	}

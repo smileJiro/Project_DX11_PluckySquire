@@ -17,6 +17,7 @@
 #include "CubeMap.h"
 #include "MainTable.h"
 #include "Player.h"
+#include "DefenderPlayer.h"
 #include "Beetle.h"
 #include "BirdMonster.h"
 #include "Projectile_BirdMonster.h"
@@ -35,7 +36,10 @@
 #include "RabbitLunch.h"
 #include "TiltSwapPusher.h"
 #include "MudPit.h"
+#include "Book.h"
 
+//DEFENDER
+#include "Minigame_Defender.h"
 
 #include "RayShape.h"
 #include "CarriableObject.h"
@@ -62,6 +66,7 @@
 
 #include "NPC.h"
 #include "Loader.h"
+#include "Candle.h"
 
 
 CLevel_Chapter_06::CLevel_Chapter_06(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -160,6 +165,21 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
+	/* Test Candle */
+	CCandle::CONTAINEROBJ_DESC CandleDesc;
+	CandleDesc.iCurLevelID = LEVEL_CHAPTER_6;
+	CandleDesc.Build_3D_Transform(_float3(0.0f, 1.0f, -7.0f));
+	CGameObject* pGameObject = nullptr;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Candle"), LEVEL_CHAPTER_6, TEXT("Layer_Candle"), &pGameObject, &CandleDesc)))
+		return E_FAIL;
+	m_pCandle = static_cast<CCandle*>(pGameObject);
+	Safe_AddRef(m_pCandle);
+
+	if (FAILED(Ready_Layer_Defender()))
+	{
+		MSG_BOX(" Failed Ready_Layer_Defender (Level_Chapter_06::Initialize)");
+		assert(nullptr);
+	}
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
@@ -415,7 +435,7 @@ HRESULT CLevel_Chapter_06::Ready_CubeMap(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_06::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 {
-	CMainTable::ACTOROBJECT_DESC Desc;
+	CMainTable::MAINTABLE_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
@@ -588,13 +608,35 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	return S_OK;
 }
 
+HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
+{
+	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+
+
+	CDefenderPlayer::DEFENDERPLAYER_DESC tDeffenderPlayerDesc = {};
+	tDeffenderPlayerDesc.iCurLevelID = m_eLevelID;
+	CDefenderPlayer* pPlayer = static_cast<CDefenderPlayer*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderPlayer"), &tDeffenderPlayerDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pPlayer);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
+	pPlayer->Set_Active(false);
+
+	CMiniGame_Defender::DEFENDER_CONTROLLTOWER_DESC tDesc = {};
+	tDesc.iCurLevelID = m_eLevelID;
+	tDesc.tTransform2DDesc.vInitialPosition = { -500.f, 0.35f, 0.f };   // TODO ::임시 위치
+	CMiniGame_Defender* pTower = static_cast<CMiniGame_Defender*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Minigame_Defender"), &tDesc));;
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pTower);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pTower, SECTION_2D_PLAYMAP_OBJECT);
+
+	return S_OK;
+}
+
 HRESULT CLevel_Chapter_06::Ready_Layer_Book(const _wstring& _strLayerTag)
 {
 	//TODO :: SAMPLE
-	CModelObject::MODELOBJECT_DESC Desc = {};
+	CBook::BOOK_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
 
@@ -973,17 +1015,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 
 	return S_OK;
-
-
-
-
-
-
-
-
-
-	return S_OK;
-
 }
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
@@ -1280,6 +1311,7 @@ CLevel_Chapter_06* CLevel_Chapter_06::Create(ID3D11Device* _pDevice, ID3D11Devic
 }
 void CLevel_Chapter_06::Free()
 {
+	Safe_Release(m_pCandle);
 	m_pGameInstance->End_BGM();
 
 	__super::Free();

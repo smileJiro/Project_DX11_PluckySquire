@@ -39,6 +39,7 @@
 #include "Bulb.h"
 
 #include "Postit_Page.h"
+#include "Book.h"
 
 
 #include "2DMapObject.h"
@@ -483,7 +484,7 @@ HRESULT CLevel_Chapter_02::Ready_CubeMap(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_02::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 {
-	CMainTable::ACTOROBJECT_DESC Desc;
+	CMainTable::MAINTABLE_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
@@ -530,6 +531,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 		pFallingRockDesc->eStartCoord = COORDINATE_2D;
 		pFallingRockDesc->fFallDownEndY = RTSIZE_BOOK2D_Y * 0.5f - 50.f;
 		pFallingRockDesc->iCurLevelID = m_eLevelID;
+
 		pFallingRockDesc->isDeepCopyConstBuffer = false;
 		pFallingRockDesc->Build_2D_Transform(_float2(0.0f, 500.f));
 
@@ -557,6 +559,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 		CGameObject* pGameObject = nullptr;
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), m_eLevelID, _strLayerTag, &pGameObject, &SpawnerDesc)))
 			return E_FAIL;
+
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
 
 		pGameObject = nullptr;
@@ -798,10 +801,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 HRESULT CLevel_Chapter_02::Ready_Layer_Book(const _wstring& _strLayerTag)
 {
 	//TODO :: SAMPLE
-	CModelObject::MODELOBJECT_DESC Desc = {};
+	CBook::BOOK_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_SampleBook"),
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
 
@@ -1115,7 +1118,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	CGameObject* pGameObject;
+	//CGameObject* pGameObject;
 	
 	//pDesc.fSizeX = 360.f / 2.f;
 	//pDesc.fSizeY = 149.f / 2.f;
@@ -1494,7 +1497,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("storm"), m_eLevelID, 1);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Player2dJumpAttackFX"), LEVEL_STATIC, 1);
-
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("FallingRock_Breaking"), LEVEL_STATIC, 1);
 	return S_OK;
 }
 

@@ -6,6 +6,7 @@ END
 
 BEGIN(Client)
 class CSpawner;
+class CCandle;
 class CLevel_Chapter_06 final : public CLevel
 {
 private:
@@ -33,6 +34,7 @@ public:
 	HRESULT					Ready_Layer_Effects(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Effects2D(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Slippery();
+	HRESULT					Ready_Layer_Defender();
 private:
 	void					Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength);
 
@@ -40,6 +42,7 @@ private:
 
 	LEVEL_ID				m_eLevelID;
 
+	CCandle*				m_pCandle = nullptr;
 public:
 	static CLevel_Chapter_06* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eLevelID);
 	virtual void			Free() override;

@@ -57,6 +57,7 @@ public:
 	CController_Transform*		Get_ControllerTransform() const					{ return m_pControllerTransform; }
 	_matrix						Get_WorldMatrix()								{ return m_pControllerTransform->Get_WorldMatrix(); }
 	virtual _matrix				Get_FinalWorldMatrix()							{ return m_pControllerTransform->Get_WorldMatrix(); }
+	virtual _vector				Get_FinalPosition(COORDINATE _eCoord) const { return m_pControllerTransform->Get_State(_eCoord, CTransform::STATE_POSITION); }
  	virtual _vector				Get_FinalPosition() const						{ return m_pControllerTransform->Get_State(CTransform::STATE_POSITION); }
 	virtual _float3				Get_FinalScale() const							{ return m_pControllerTransform->Get_Scale(); }
 	_bool						Is_Dead() const									{ return m_isDead; }
