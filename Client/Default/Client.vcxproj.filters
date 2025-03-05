@@ -535,6 +535,15 @@
     <Filter Include="02.GameObjects\GameEventExecuter\Chapter">
       <UniqueIdentifier>{6082059d-46bc-4630-9b78-c32a3fe672f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Candle">
+      <UniqueIdentifier>{1cb61007-d218-4336-b051-8c7acdd622a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Candle\Body">
+      <UniqueIdentifier>{511fdae9-6fe1-430d-be48-d7806f7d2b05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Candle\UI">
+      <UniqueIdentifier>{ce419986-332d-4e1a-b132-84864e20191e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1349,6 +1358,15 @@
     <ClInclude Include="..\Public\Postit_Page.h">
       <Filter>02.GameObjects\NPC</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Candle.h">
+      <Filter>02.GameObjects\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Candle_Body.h">
+      <Filter>02.GameObjects\Candle\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Candle_UI.h">
+      <Filter>02.GameObjects\Candle\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2149,6 +2167,15 @@
     <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\Private\Postit_Page.cpp">
       <Filter>02.GameObjects\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Candle.cpp">
+      <Filter>02.GameObjects\Candle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Candle_Body.cpp">
+      <Filter>02.GameObjects\Candle\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Candle_UI.cpp">
+      <Filter>02.GameObjects\Candle\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

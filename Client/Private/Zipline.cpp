@@ -129,7 +129,7 @@ void CZipline::Ride_Down(_float _fTimeDelta)
 
 	_vector vPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMLoadFloat3(&m_vDestination), fRatio);
 	
-	m_pRidingObject->
+	//m_pRidingObject->
 }
 
 CZipline* CZipline::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
