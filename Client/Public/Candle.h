@@ -2,7 +2,12 @@
 #include "ContainerObject.h"
 /* 1. 캔들 컨테이너는 바디, UI 를 파트로 소유한다. 이펙트는 이펙트 구현현황에따라 파트로 할지 별도로 재생을 시킬지 결정한다. */
 /* 2. 캔들 컨테이너는 자기 자신의 총 4가지 상태를 가진다. (Idle, TurnOn, FlameLoop, TurnOff)*/
+BEGIN(Engine)
+class CLight_Target;
+END
+
 BEGIN(Client)
+
 class CCandle final: public CContainerObject
 {
 public:
@@ -25,10 +30,16 @@ public:
 	virtual void					Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT					Render() override;
 
+public:
+	virtual void					OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other);
+	virtual void					OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other);
+	virtual void					OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
 private:
 	STATE							m_ePreState = STATE::STATE_LAST;
 	STATE							m_eCurState = STATE::STATE_LAST;
 
+private:
+	CLight_Target*					m_pTargetLight;
 private:
 	void							State_Change();
 
@@ -48,7 +59,8 @@ private:
 private:
 	HRESULT							Ready_Components();
 	HRESULT							Ready_PartObjects();
-
+private: 
+	HRESULT							Ready_TargetLight();
 public:
 	static CCandle*					Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CCandle*						Clone(void* _pArg) override;

@@ -519,6 +519,7 @@ public:
 	INTERACT_RESULT Try_Interact(_float _fTimeDelta);
 
 	//Get
+	_bool Is_ZetPack_Idle();
 	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
 	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }

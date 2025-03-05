@@ -1499,6 +1499,14 @@ INTERACT_RESULT CPlayer::Try_Interact(_float _fTimeDelta)
 }
 
 
+_bool CPlayer::Is_ZetPack_Idle()
+{
+    if (nullptr == m_pZetPack)
+        return false;
+    
+    return m_pZetPack->Get_State() == CZetPack::STATE_IDLE;
+}
+
 _bool CPlayer::Is_Sneaking()
 {
     STATE eState = Get_CurrentStateID();

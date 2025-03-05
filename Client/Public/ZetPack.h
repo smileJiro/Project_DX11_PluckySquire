@@ -58,6 +58,11 @@ public:
 	void Propel(_float _fTimeDelta);
 
 	void Switch_State(ZET_STATE _eState);
+
+public:
+	// Get
+	ZET_STATE Get_State() const { return m_eState; }
+	// Set
 private:
 	CPlayer* m_pPlayer = nullptr;
 	_bool m_bPropel = false;
