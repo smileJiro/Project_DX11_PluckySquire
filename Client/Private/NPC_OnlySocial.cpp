@@ -208,6 +208,28 @@ HRESULT CNPC_OnlySocial::LoadFromJson(const std::wstring& filePath)
 				tOnlySocial.is2D = SocialNPC["is2D"].get<_bool>();
 			}
 
+			if (SocialNPC.contains("fCollisionHalfHeight") && SocialNPC["fCollisionHalfHeight"].is_number_float())
+			{
+				tOnlySocial.fCollisionHalfHeight = SocialNPC["fCollisionHalfHeight"].get<_float>();
+			}
+
+			if (SocialNPC.contains("fCollisionRadius") && SocialNPC["fCollisionRadius"].is_number_float())
+			{
+				tOnlySocial.fCollisionRadius = SocialNPC["fCollisionRadius"].get<_float>();
+			}
+
+			if (SocialNPC.contains("fTriggerRadius") && SocialNPC["fTriggerRadius"].is_number_float())
+			{
+				tOnlySocial.fTriggerRadius = SocialNPC["fTriggerRadius"].get<_float>();
+			}
+			if (SocialNPC.contains("fRotateAngle") && SocialNPC["fRotateAngle"].is_number_float())
+			{
+				tOnlySocial.fRotateAngle = SocialNPC["fRotateAngle"].get<_float>();
+			}
+
+
+
+
 			if (SocialNPC.contains("strSectionid") && SocialNPC["strSectionid"].is_string())
 			{
 				tOnlySocial.strSectionid = StringToWstring(SocialNPC["strSectionid"].get<_string>());

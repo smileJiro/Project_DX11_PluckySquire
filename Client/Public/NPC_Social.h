@@ -62,9 +62,11 @@ private:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
 protected:
+	virtual void			OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
 	virtual void Interact(CPlayer* _pUser);
 	virtual _bool Is_Interactable(CPlayer* _pUser);
 	virtual _float Get_Distance(COORDINATE _eCOord, CPlayer* _pUser);
+
 
 
 private:
@@ -81,6 +83,10 @@ private:
 
 	_bool			m_isInteractable = { false };
 	_bool			m_is2D = { true };
+
+	_float			m_fNPCCollsionHalfHeight	= { 0.f };
+	_float			m_fNPCCollisionRadius		= { 0.f };
+	_float			m_fNPCTriggerRadius		= { 0.f };
 
 
 

@@ -37,8 +37,25 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 
 	m_is2D = pDesc->is2D;
 	m_strAnimaionName = pDesc->strAnimationName;
-	m_iCreateSection = pDesc->strCreateSection;
+	//m_iCreateSection = pDesc->strCreateSection;
 	m_strDialogueID = pDesc->strDialogueId;
+
+
+	m_fNPCCollsionHalfHeight = pDesc->fCollisionHalfHeight;
+	m_fNPCCollisionRadius = pDesc->fCollisionRadius;
+	m_fNPCTriggerRadius = pDesc->fTriggerRadius;
+
+
+	
+	if (false == m_is2D)
+	{
+		m_iCreateSection = pDesc->strCreateSection = 1;
+	}
+	else
+	{
+		m_iCreateSection = pDesc->strCreateSection;
+	}
+
 	m_iStartAnimation = pDesc->iStartAnimation;
 	m_isHaveDialog = pDesc->isDialog;
 	m_vPosition = _float3(pDesc->vPositionX, pDesc->vPositionY, pDesc->vPositionZ);
@@ -51,8 +68,6 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 
 	//if (true == pDesc->is2D)
 	//	pDesc->eStartCoord = COORDINATE_2D;
-
-
 	
 	pDesc->isCoordChangeEnable = true;
 	pDesc->iNumPartObjects = PART_END;
@@ -69,65 +84,21 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 
 	wsprintf(m_strCurSecion, pDesc->strSectionid.c_str());
 	
-
-	//if (FAILED(Ready_ActorDesc(pDesc)))
-	//	return E_FAIL;
-	if (false == pDesc->is2D)
+	if (!pDesc->is2D)
 	{
-		CActor::ACTOR_DESC ActorDesc;
-
-		/* Actor의 주인 오브젝트 포인터 */
-		ActorDesc.pOwner = this;
-
-		/* Actor의 회전축을 고정하는 파라미터 */
-		ActorDesc.FreezeRotation_XYZ[0] = false; 
-		ActorDesc.FreezeRotation_XYZ[1] = false;
-		ActorDesc.FreezeRotation_XYZ[2] = false;
-
-		/* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
-		ActorDesc.FreezePosition_XYZ[0] = false;
-		ActorDesc.FreezePosition_XYZ[1] = false;
-		ActorDesc.FreezePosition_XYZ[2] = false;
-
-		/* 사용하려는 Shape의 형태를 정의 */
-		SHAPE_CAPSULE_DESC ShapeDesc = {};
-		ShapeDesc.fHalfHeight = 0.25f;
-		ShapeDesc.fRadius = 0.25f;
-
-		/* 해당 Shape의 Flag에 대한 Data 정의 */
-		SHAPE_DATA ShapeData;
-		ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-		ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-		ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것
-		ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-		XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
-
-		/* 최종으로 결정 된 ShapeData를 PushBack */
-		ActorDesc.ShapeDatas.push_back(ShapeData);
-
-		/* 만약, Shape을 여러개 사용하고싶다면, 아래와 같이 별도의 Shape에 대한 정보를 추가하여 push_back() */
-		//ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-		//ShapeData.isTrigger = true;                     // Trigger로 사용하겠다.
-		//XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, 0.5, 0)); //여기임
-		//SHAPE_SPHERE_DESC SphereDesc = {};
-		//SphereDesc.fRadius = 1.f;
-		//ShapeData.pShapeDesc = &SphereDesc;
-		//ActorDesc.ShapeDatas.push_back(ShapeData);
-
-		/* 충돌 필터에 대한 세팅 ()*/
-		ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
-		ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER_PROJECTILE;
-
-		pDesc->pActorDesc = &ActorDesc;
-
+		if (FAILED(Ready_ActorDesc(pDesc)))
+			return E_FAIL;
 	}
-
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
+	if (m_is2D)
+	{
+		if (FAILED(Ready_Components()))
+			return E_FAIL;
+	}
+
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
@@ -156,57 +127,20 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 		m_eInteractID = INTERACT_ID::NPC;
 	}
 
-	//CActor::ACTOR_DESC ActorDesc;
-	//
-	///* Actor의 주인 오브젝트 포인터 */
-	//ActorDesc.pOwner = this;
-	//
-	///* Actor의 회전축을 고정하는 파라미터 */
-	//ActorDesc.FreezeRotation_XYZ[0] = false;
-	//ActorDesc.FreezeRotation_XYZ[1] = false;
-	//ActorDesc.FreezeRotation_XYZ[2] = false;
-	//
-	///* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
-	//ActorDesc.FreezePosition_XYZ[0] = false;
-	//ActorDesc.FreezePosition_XYZ[1] = false;
-	//ActorDesc.FreezePosition_XYZ[2] = false;
-	//
-	///* 사용하려는 Shape의 형태를 정의 */
-	//SHAPE_CAPSULE_DESC ShapeDesc = {};
-	//ShapeDesc.fHalfHeight = 0.25f;
-	//ShapeDesc.fRadius = 0.25f;
-	//
-	///* 해당 Shape의 Flag에 대한 Data 정의 */
-	//SHAPE_DATA ShapeData;
-	//ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-	//ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-	//ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-	//ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-	//XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
-	//
-	///* 최종으로 결정 된 ShapeData를 PushBack */
-	//ActorDesc.ShapeDatas.push_back(ShapeData);
-	//
-	///* 만약, Shape을 여러개 사용하고싶다면, 아래와 같이 별도의 Shape에 대한 정보를 추가하여 push_back() */
-	//ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
-	//ShapeData.isTrigger = true;                     // Trigger로 사용하겠다.
-	//XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, 0.5, 0)); //여기임
-	//SHAPE_SPHERE_DESC SphereDesc = {};
-	//SphereDesc.fRadius = 1.f;
-	//ShapeData.pShapeDesc = &SphereDesc;
-	//ActorDesc.ShapeDatas.push_back(ShapeData);
-	//
-	///* 충돌 필터에 대한 세팅 ()*/
-	//ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER;
-	//ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::MONSTER_PROJECTILE;
-	//
-	//pDesc->pActorDesc = &ActorDesc;
-	//
-	//
-	//__super::Initialize(pDesc);
-	//Ready_PartObjects();
-	
+	if (!m_is2D)
+	{
+		for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
+		{
+			Safe_Delete(pDesc->pActorDesc->ShapeDatas[i].pShapeDesc);
+		}
+		Safe_Delete(pDesc->pActorDesc);
 
+
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(0.f, 0.f, -6.f, 1.f));
+		m_pControllerTransform->Set_Scale(COORDINATE_3D, _float3(1.5f, 1.5f, 1.5f));
+		m_pControllerTransform->Rotation(XMConvertToRadians(pDesc->fRotateAngle), XMVectorSet(0.f, 1.f, 0.f, 0.f));
+		
+	}
 
 	return S_OK;
 }
@@ -238,16 +172,6 @@ void CNPC_Social::Update(_float _fTimeDelta)
 		m_isPlayDisplay = false;
 		
 	}
-
-
-	//if (m_strDialogueID == TEXT("C01_Humgrump_01"))
-	//{
-	//	if (true == m_isPlayDisplay && false == Uimgr->Get_DisplayDialogue())
-	//	{
-	//		//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation()
-	//	}
-	//}
-	//
 }
 
 void CNPC_Social::Late_Update(_float _fTimeDelta)
@@ -262,6 +186,13 @@ void CNPC_Social::Late_Update(_float _fTimeDelta)
 	if (false == m_isColPlayer && true == m_isThrow)
 	{
 		m_isThrow = false;
+	}
+
+
+
+	if (!m_is2D)
+	{
+		m_pGameInstance->Add_RenderObject_New(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY, this);
 	}
 
 
@@ -348,12 +279,24 @@ HRESULT CNPC_Social::Ready_ActorDesc(void* _pArg)
 
 	/* 사용하려는 Shape의 형태를 정의 */
 	SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-	ShapeDesc->fHalfHeight = 0.5f;
-	ShapeDesc->fRadius = 0.5f;
+	ShapeDesc->fHalfHeight = m_fNPCCollsionHalfHeight;
+	ShapeDesc->fRadius = m_fNPCCollisionRadius;
 
 	/* 해당 Shape의 Flag에 대한 Data 정의 */
 	SHAPE_DATA* ShapeData = new SHAPE_DATA;
 	ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+	ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+	ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+	ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+	XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+	/* 최종으로 결정 된 ShapeData를 PushBack */
+	ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+	SHAPE_CAPSULE_DESC* ShapeDesc2 = new SHAPE_CAPSULE_DESC;
+	ShapeDesc2->fHalfHeight = m_fNPCCollsionHalfHeight;
+	ShapeDesc2->fRadius = m_fNPCTriggerRadius;
+	ShapeData->pShapeDesc = ShapeDesc2;              // 위에서 정의한 ShapeDesc의 주소를 저장.
 	ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
 	ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
 	ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
@@ -362,9 +305,10 @@ HRESULT CNPC_Social::Ready_ActorDesc(void* _pArg)
 	/* 최종으로 결정 된 ShapeData를 PushBack */
 	ActorDesc->ShapeDatas.push_back(*ShapeData);
 
+
 	/* 충돌 필터에 대한 세팅 ()*/
-	ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
-	ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
+	ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
+	ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::EXPLOSION | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER;
 
 	/* Actor Component Finished */
 	pDesc->pActorDesc = ActorDesc;
@@ -428,7 +372,7 @@ HRESULT CNPC_Social::Ready_PartObjects()
 	if (false == m_is2D)
 	{
 		NPCBodyDesc.strModelPrototypeTag_3D = m_strAnimaionName;
-		NPCBodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+		NPCBodyDesc.iModelPrototypeLevelID_3D = 1;
 	}
 	
 	NPCBodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
@@ -457,9 +401,20 @@ HRESULT CNPC_Social::Ready_PartObjects()
 
 }
 
+void CNPC_Social::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+	int a = 0;
+}
+
 void CNPC_Social::Interact(CPlayer* _pUser)
 {
+	if(m_is2D)
 	m_isColPlayer = true;
+
+	else if (!m_is2D)
+	{
+		//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->
+	}
 }
 
 _bool CNPC_Social::Is_Interactable(CPlayer* _pUser)
