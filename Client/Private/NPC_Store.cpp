@@ -43,6 +43,9 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	m_iSubIndex = pDesc->iSubIndex;
 	
 
+	_float2 vPos = _float2(pDesc->vPos.x, pDesc->vPos.y);
+
+
 	//if (FAILED(Ready_ActorDesc(pDesc)))
 	//	return E_FAIL;
 
@@ -58,7 +61,13 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 
 	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), this);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), this);
+
+
+	
+
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strCurSecion, this, SECTION_2D_PLAYMAP_OBJECT);
 
 	CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
@@ -73,7 +82,7 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Store::On_AnimEnd, this , placeholders::_1, placeholders::_2));
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(0.f, 0.f, 0.f, 1.f));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(vPos.x, vPos.y, 0.f, 1.f));
 
 	
 	//CActor::ACTOR_DESC ActorDesc;

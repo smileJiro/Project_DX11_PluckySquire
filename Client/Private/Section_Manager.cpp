@@ -284,6 +284,13 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 		Main_Section_Active_Process(m_pCurSection->Get_SectionName());
 
 
+		CSection_2D_Narration* pNarrationSection = static_cast<CSection_2D_Narration*>(pSection_2D);
+
+		if (nullptr == pNarrationSection)
+			return S_OK;
+
+		pNarrationSection->Start_Narration();
+
 
 		return S_OK;
 	}

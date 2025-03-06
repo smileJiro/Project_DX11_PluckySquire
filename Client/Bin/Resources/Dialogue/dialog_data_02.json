@@ -1192,23 +1192,6 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "전 마르티나라고 해요... 만나서 반가워요!",
-					"Red": 255,
-					"Green": 224,
-					"Blue": 136
-				},
-				{
-					"Portrait": 2,
-					"Talker": "마르티나",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"iAnimationIndex": 9,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
 					"text": "새 물건이 들어왔어요. 한번 보세요!",
 					"Red": 255,
 					"Green": 224,

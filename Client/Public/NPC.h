@@ -21,6 +21,7 @@ public:
 		_uint	iSubIndex = 0;
 		_tchar	strDialogueIndex[MAX_PATH] = L"";
 		_tchar	strLocateSection[MAX_PATH] = L"";
+		_float2	vPos = { 0.f, 0.f };
 
 	}NPC_DESC;
 

@@ -86,7 +86,7 @@
 
 
 		"Section_File_Name": "Chapter2_P0304.m2chc",
-
+		"Section_Start": true,
 		"Section_BackGround_Name": "Chapter2_P0304_BackGround",
 		"Section_Type": 0,
 		"Section_Default": 0,
@@ -100,7 +100,7 @@
 		"Section_BackGround_Name": "Chapter2_P0506_BackGround",
 		"Section_Type": 1,
 		"Section_Default": 0,
-		"Section_Start": true,
+
 
 		"Section_Info": {
 			"Next_Page_Tag": "Chapter2_P0708",

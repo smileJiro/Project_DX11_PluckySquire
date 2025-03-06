@@ -544,6 +544,9 @@
     <Filter Include="02.GameObjects\UI\98. Narration_Manager">
       <UniqueIdentifier>{e2af4f22-9c13-4cde-8ff9-a81afbee81ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\97. Shop_Manager">
+      <UniqueIdentifier>{a93fd688-0c28-4e4b-923f-ad1624a22d74}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
