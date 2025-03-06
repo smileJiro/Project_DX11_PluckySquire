@@ -353,6 +353,11 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 						dialogLine.isPortrait = line["isPortrait"].get<_bool>();
 					}
 
+					if (line.contains("isLineEnter") && line["isLineEnter"].is_boolean())
+					{
+						dialogLine.isLineEnter = line["isLineEnter"].get<_bool>();
+					}
+
 					if (line.contains("iAnimationIndex") && line["iAnimationIndex"].is_number_integer())
 					{
 						dialogLine.iAnimationIndex = line["iAnimationIndex"].get<int>();
@@ -449,11 +454,6 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	}
 
 
-
-	//static _wstring strDisplaytext;
-	//static _float fWaitTime = 0.0f;
-	//static _int iPreviousLineIndex = -1;
-
 	// 라인이 변경되었을 때 초기화
 	if (iPreviousLineIndex != m_iCurrentLineIndex)
 	{
@@ -503,8 +503,16 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 				pGameInstance->Render_Font(TEXT("Font28"), m_tFont, _float2(vTextPos3D.x, vTextPos3D.y), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 
 				// 대화 내용 출력
-				wsprintf(m_tFont, strDisplaytext.c_str());
-				pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 120.f, vTextPos3D.y + 70.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+				if (false == Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].isLineEnter)
+				{
+					wsprintf(m_tFont, strDisplaytext.c_str());
+					pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 110.f, vTextPos3D.y + 70.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+				}
+				else if (true == Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].isLineEnter)
+				{
+					wsprintf(m_tFont, strDisplaytext.c_str());
+					pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 110.f, vTextPos3D.y + 50.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+				}
 
 				Safe_Release(pGameInstance);
 				return S_OK;

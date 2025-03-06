@@ -982,6 +982,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1051,6 +1052,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1067,6 +1069,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
 
             "duration": 1000,
@@ -1084,6 +1087,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1116,6 +1120,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1169,6 +1174,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1185,6 +1191,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1201,6 +1208,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1338,6 +1346,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1402,6 +1411,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1450,6 +1460,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1535,6 +1546,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1551,6 +1563,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1583,6 +1596,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1647,6 +1661,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1704,7 +1719,7 @@
             "duration": 1000,
             "speed": 350
           },
-          "text": "관련 상품도 엄청나게 팔리고, 각종 유명 브랜드와의 콜라보는 말할 것도 없죠!",
+          "text": "관련 상품도 엄청나게 팔리고,\n각종 유명 브랜드와의 콜라보는 말할 것도 없죠!",
           "Red": 0,
           "Green": 0,
           "Blue": 0
@@ -1732,6 +1747,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1753,6 +1769,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1806,6 +1823,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1822,6 +1840,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1838,6 +1857,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
