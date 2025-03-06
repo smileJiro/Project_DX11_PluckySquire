@@ -37,13 +37,13 @@ HRESULT CZippy::Initialize(void* _pArg)
     pDesc->fAttack2DRange = 300.f;
     pDesc->fDelayTime = 2.f;
 
-    m_fSpeed = pDesc->tTransform2DDesc.fSpeedPerSec;
-    m_fDashDistance = 200.f;
-    m_fElecTime = 5.f;
-
     pDesc->_tStat.iHP = 5;
     pDesc->_tStat.iMaxHP = 5;
     pDesc->_tStat.iDamg = 1;
+
+    m_fSpeed = pDesc->tTransform2DDesc.fSpeedPerSec;
+    m_fDashDistance = 200.f;
+    m_fElecTime = 5.f;
 
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;

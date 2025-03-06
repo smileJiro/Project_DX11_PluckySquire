@@ -47,6 +47,10 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     pDesc->iObjectGroupID = OBJECT_GROUP::BOSS;
 
+    m_tStat.iHP = 100;
+    m_tStat.iMaxHP = 100;
+    m_tStat.iDamg = 1;
+
     m_fDelayTime = 0.5f;
     m_fCoolTime = 3.f;
 
@@ -70,11 +74,12 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::TRANSITION);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
     //m_pBossFSM->Add_State((_uint)BOSS_STATE::ENERGYBALL);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::PURPLEBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
     //m_pBossFSM->Add_State((_uint)BOSS_STATE::ROCKVOLLEY);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::SHIELD);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::SHIELD);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HIT);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::DEAD);
 
@@ -83,6 +88,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, FIREBALL_SPIT_LOOP, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WINGSHIELD_ROCK_VOLLEY_LOOP, true);
     pModelObject->Set_Animation(IDLE);
 
@@ -123,10 +129,6 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     }
 
     Safe_AddRef(m_pTarget);
-
-
-    m_tStat.iHP = 100;
-    m_tStat.iMaxHP = 100;
 
     return S_OK;
 }
@@ -243,7 +245,10 @@ void CButterGrump::Change_Animation()
             break;
 
         case BOSS_STATE::HOMINGBALL:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_SMALL);
+            if (false == m_isPhase2)
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_SMALL);
+            else
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_BIG);
             break;
 
         case BOSS_STATE::YELLOWBALL:
@@ -251,7 +256,7 @@ void CButterGrump::Change_Animation()
             break;
 
         case BOSS_STATE::PURPLEBALL:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_SMALL);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_INTO);
             break;
 
         case BOSS_STATE::WINGSLAM:
@@ -259,7 +264,10 @@ void CButterGrump::Change_Animation()
             break;
 
         case BOSS_STATE::ROCKVOLLEY:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_INTO);
+            if(false == m_isPhase2)
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_BIG);
+            else
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_INTO);
             break;
 
         case BOSS_STATE::SHIELD:
@@ -286,10 +294,12 @@ void CButterGrump::Attack()
 
     _float3 vScale, vPosition;
     _float4 vRotation;
-    //_matrix matMuzzle = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[BOSSPART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("buttergrump_rigtonsils_01_01")) * Get_FinalWorldMatrix();
-    _matrix matMuzzle = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[BOSSPART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("buttergrump_righead_tongue_10")) * Get_FinalWorldMatrix();
+    _matrix matMuzzle = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[BOSSPART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("buttergrump_rigtonsils_01_03")) * Get_FinalWorldMatrix();
+    //_matrix matMuzzle = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[BOSSPART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("buttergrump_righead_tongue_10")) * Get_FinalWorldMatrix();
     //if (false == m_pGameInstance->MatrixDecompose(nullptr, nullptr, &vPosition, matMuzzle))
-    XMStoreFloat3(&vPosition, matMuzzle.r[3]);
+
+    //목젖 기준이므로 룩 벡터만큼 앞으로 공격위치 조정함
+    XMStoreFloat3(&vPosition, matMuzzle.r[3] + XMVector3Normalize(Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK)) * 5.f);
     if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, nullptr, Get_FinalWorldMatrix()))
         return;
 
@@ -325,7 +335,8 @@ void CButterGrump::Attack()
         _vector vRight = XMVector3Normalize(XMVector3Cross(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f)));
         _vector vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
 
-        vScale = { 0.2f, 0.2f, 1.f };
+        //vScale = { 0.2f, 0.2f, 1.f };
+        vScale = { 2.f, 2.f, 10.f };
 
         if(false == m_isPhase2)
         {
@@ -355,7 +366,7 @@ void CButterGrump::Attack()
         else if (true == m_isPhase2)
         {
             _float Vertical_Angle_Array[5] = {30.f, 15.f, 15.f, -15.f, -15.f};
-            _float Horizontal_Angle_Array[5] = {0.f, 15.f, -15.f, 15.f, -15.f };
+            _float Horizontal_Angle_Array[5] = {0.f, 20.f, -20.f, 15.f, -15.f };
             for (_uint i = 0; i < 5; i++)
             {
                 fVerticalAngle = XMConvertToRadians(Vertical_Angle_Array[i]);
@@ -398,13 +409,14 @@ void CButterGrump::Attack()
 
         vPosition.y += vScale.y * 0.5f;
 
+        _float fAngle = 15.f;
         _float Array[8] = { 1,0,-1,0,1,1,-1,-1 };
         _float Array2[8] = { 0,1,0,-1,1,-1,1,-1 };
         for (_uint i = 0; i < 8; i++)
         {
             _float4 vRot;
             _float3 vPos=vPosition;
-            Rot = XMQuaternionMultiply(XMLoadFloat4(&vRotation), XMQuaternionRotationAxis(XMVectorSet(Array[i], Array2[i], 0.f, 0.f), XMConvertToRadians(15.f)));
+            Rot = XMQuaternionMultiply(XMLoadFloat4(&vRotation), XMQuaternionRotationAxis(XMVectorSet(Array[i], Array2[i], 0.f, 0.f), XMConvertToRadians(fAngle)));
             XMStoreFloat4(&vRot, Rot);
             /*vPos.x += 2.f * Array[i];
             vPos.y += 2.f * Array2[i];*/
@@ -439,27 +451,56 @@ void CButterGrump::Attack()
 
     case BOSS_STATE::PURPLEBALL:
     {
-        _vector Rot;
+        _float fVerticalAngle = 0.f;
+        _float fHorizontalAngle = 0.f;
+
+        _vector vLook = { 0.f,0.f,1.f };
+        //쿼터니언을 통해 룩벡터 구함
+        vLook = XMVector3Rotate(vLook, XMLoadFloat4(&vRotation));
+        //업벡터와 외적으로 수직 벡터 구하고 회전축으로 씀
+        _vector vRight = XMVector3Normalize(XMVector3Cross(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f)));
+        _vector vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
 
         vPosition.y += vScale.y * 0.5f;
 
-        _float Array[8] = { 1,0,-1,0,1,1,-1,-1 };
-        _float Array2[8] = { 0,1,0,-1,1,-1,1,-1 };
-        for (_uint i = 0; i < 8; i++)
+        //_float Array[8] = { 1,0,-1,0,1,1,-1,-1 };
+        //_float Array2[8] = { 0,1,0,-1,1,-1,1,-1 };
+        //for (_uint i = 0; i < 8; i++)
+        //{
+        //    _float4 vRot;
+        //    _float3 vPos = vPosition;
+        //    Rot = XMQuaternionMultiply(XMLoadFloat4(&vRotation), XMQuaternionRotationAxis(XMVectorSet(Array[i], Array2[i], 0.f, 0.f), XMConvertToRadians(10.f)));
+        //    XMStoreFloat4(&vRot, Rot);
+        //    /*vPos.x += 2.f * Array[i];
+        //    vPos.y += 2.f * Array2[i];*/
+        //    CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_PurpleBall"),COORDINATE_3D ,&vPos, &vRot);
+        //}
+
+        _float Vertical_Angle_Array[3] = { 5.f, -5.f, -5.f, };
+        _float Horizontal_Angle_Array[3] = { 0.f, 5.f, -5.f };
+        _float fRadius = 3.f;
+        _float fAngleOffset = 20.f;
+        for (_uint i = 0; i < 3; i++)
         {
-            _float4 vRot;
-            _float3 vPos = vPosition;
-            Rot = XMQuaternionMultiply(XMLoadFloat4(&vRotation), XMQuaternionRotationAxis(XMVectorSet(Array[i], Array2[i], 0.f, 0.f), XMConvertToRadians(20.f)));
-            XMStoreFloat4(&vRot, Rot);
-            /*vPos.x += 2.f * Array[i];
-            vPos.y += 2.f * Array2[i];*/
-            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_PurpleBall"),COORDINATE_3D ,&vPos, &vRot);
+            fVerticalAngle = XMConvertToRadians(Vertical_Angle_Array[i]);
+            fHorizontalAngle = XMConvertToRadians(Horizontal_Angle_Array[i]);
+
+            //x, y 위치만 조정
+            _float3 fOffSet = { cos(XMConvertToRadians(120.f * (_float)i + fAngleOffset * m_iAttackCount)), sin(XMConvertToRadians(120.f * (_float)i + fAngleOffset * m_iAttackCount)), 0.f };
+			_float3 vPos; XMStoreFloat3(&vPos, XMLoadFloat3(&vPosition) + fRadius * XMVector3Rotate(XMLoadFloat3(&fOffSet), XMLoadFloat4(&vRotation)));
+
+            //설정한 수평,수직 각도만큼 회전
+            _vector vRot = XMQuaternionMultiply(XMQuaternionRotationAxis(vRight, fVerticalAngle), XMQuaternionRotationAxis(vUp, fHorizontalAngle));
+            _float4 vQuat; XMStoreFloat4(&vQuat, XMQuaternionMultiply(vRot, XMLoadFloat4(&vRotation)));
+
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_PurpleBall"), COORDINATE_3D, &vPos, &vRotation);
         }
 
         ++m_iAttackCount;
 
         if (m_iNumAttack <= m_iAttackCount)
         {
+            pModelObject->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_OUT);
             m_iAttackCount = 0;
             m_isAttack = false;
         }
@@ -479,35 +520,55 @@ void CButterGrump::Attack()
 
     case BOSS_STATE::ROCKVOLLEY:
     {
-		_vector vLook = { 0.f,0.f,1.f };
+        _vector vLook = { 0.f,0.f,1.f };
         //쿼터니언을 통해 룩벡터 구함
-		vLook = XMVector3Rotate(vLook, XMLoadFloat4(&vRotation));
+        vLook = XMVector3Rotate(vLook, XMLoadFloat4(&vRotation));
         //업벡터와 외적으로 수직 벡터 구하고 회전축으로 씀
         _vector vRight = XMVector3Normalize(XMVector3Cross(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f)));
         _vector vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
 
-		for (_int i = 0; i < 3; ++i)
-        {
-            _float fVerticalAngle = XMConvertToRadians(m_pGameInstance->Compute_Random(-15.f, 15.f));
-            _float fHorizontalAngle = XMConvertToRadians(m_pGameInstance->Compute_Random(-15.f, 15.f));
-            //_vector vVerticalRot = XMQuaternionRotationAxis(vRight, fVerticalAngle);
-            //_vector vHorizontalRot = XMQuaternionRotationAxis(vUp, fHorizontalAngle);
-            _vector vRot = XMQuaternionMultiply(XMQuaternionRotationAxis(vRight, fVerticalAngle), XMQuaternionRotationAxis(vUp, fHorizontalAngle));
-            _float4 vQuat; XMStoreFloat4(&vQuat, XMQuaternionMultiply(vRot, XMLoadFloat4(&vRotation)));
 
-            //_float3 vPos; XMStoreFloat3(&vPos, XMLoadFloat3(&vPosition));
-            //vPos.x += m_pGameInstance->Compute_Random(-5.f, 5.f);
-            //vPos.y += m_pGameInstance->Compute_Random(-5.f, 5.f);
-            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_Rock"), COORDINATE_3D, &vPosition, &vQuat);
+        if (false == m_isPhase2)
+        {
+            for (_int i = 0; i < 10; ++i)
+            {
+                _float fVerticalAngle = XMConvertToRadians(m_pGameInstance->Compute_Random(-20.f, 20.f));
+                _float fHorizontalAngle = XMConvertToRadians(m_pGameInstance->Compute_Random(-20.f, 20.f));
+
+                _vector vRot = XMQuaternionMultiply(XMQuaternionRotationAxis(vRight, fVerticalAngle), XMQuaternionRotationAxis(vUp, fHorizontalAngle));
+                _float4 vQuat; XMStoreFloat4(&vQuat, XMQuaternionMultiply(vRot, XMLoadFloat4(&vRotation)));
+
+                CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_Rock"), COORDINATE_3D, &vPosition, &vQuat);
+            }
+        }
+
+        else if(true == m_isPhase2)
+        {
+            for (_int i = 0; i < 3; ++i)
+            {
+                _float fVerticalAngle = XMConvertToRadians(m_pGameInstance->Compute_Random(-15.f, 15.f));
+                _float fHorizontalAngle = XMConvertToRadians(m_pGameInstance->Compute_Random(-15.f, 15.f));
+                //_vector vVerticalRot = XMQuaternionRotationAxis(vRight, fVerticalAngle);
+                //_vector vHorizontalRot = XMQuaternionRotationAxis(vUp, fHorizontalAngle);
+                _vector vRot = XMQuaternionMultiply(XMQuaternionRotationAxis(vRight, fVerticalAngle), XMQuaternionRotationAxis(vUp, fHorizontalAngle));
+                _float4 vQuat; XMStoreFloat4(&vQuat, XMQuaternionMultiply(vRot, XMLoadFloat4(&vRotation)));
+
+                //_float3 vPos; XMStoreFloat3(&vPos, XMLoadFloat3(&vPosition));
+                //vPos.x += m_pGameInstance->Compute_Random(-5.f, 5.f);
+                //vPos.y += m_pGameInstance->Compute_Random(-5.f, 5.f);
+                CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_Rock"), COORDINATE_3D, &vPosition, &vQuat);
+            }
         }
 
         ++m_iAttackCount;
 
         if (m_iNumAttack <= m_iAttackCount)
         {
-            pModelObject->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_OUT);
             m_iAttackCount = 0;
             m_isAttack = false;
+
+            if (true == m_isPhase2)
+                pModelObject->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_OUT);
         }
         else
         {
@@ -570,7 +631,8 @@ void CButterGrump::On_Attack()
         break;
 
     case BOSS_STATE::PURPLEBALL:
-        m_fDelayTime = 0.3f;
+        m_fDelayTime = 0.2f;
+        m_iNumAttack = 50;
         break;
 
     case BOSS_STATE::WINGSLAM:
@@ -578,8 +640,16 @@ void CButterGrump::On_Attack()
         break;
 
     case BOSS_STATE::ROCKVOLLEY:
-        m_fDelayTime = 0.3f;
-        m_iNumAttack = 30;
+        if (false == m_isPhase2)
+        {
+            m_fDelayTime = 0.f;
+            m_iNumAttack = 2;
+        }
+        else
+        {
+            m_fDelayTime = 0.3f;
+            m_iNumAttack = 30;
+        }
         break;
 
     case BOSS_STATE::SHIELD:
@@ -640,6 +710,10 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         Set_AnimChangeable(true);
         break;
 
+    case FIREBALL_SPIT_BIG:
+        Set_AnimChangeable(true);
+        break;
+
     case WING_SLAM_INTO:
         pModelObject->Switch_Animation(WING_SLAM_OUT);
         break;
@@ -659,6 +733,8 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
     case ROAR:
         Set_AnimChangeable(true);
+        if (true == m_isConverse)
+            m_isConverse = false;
         break;
 
     case RECEIVE_DAMAGE:
@@ -712,7 +788,10 @@ void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
     }
     else if (m_tStat.iMaxHP * 0.5 >= m_tStat.iHP)
     {
-        m_isEnforce = true;
+        if(false == m_isEnforce)
+            m_isEnforce = true;
+        if (false == m_isConverse)
+            m_isConverse = true;
     }
 }
 
@@ -934,6 +1013,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     pHomingBallDesc->isCoordChangeEnable = false;
     pHomingBallDesc->iCurLevelID = m_iCurLevelID;
 
+    pHomingBallDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
     pHomingBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(30.f);
     pHomingBallDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 
@@ -978,7 +1058,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     pPurpleBallDesc->iCurLevelID = m_iCurLevelID;
 
     pPurpleBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pPurpleBallDesc->tTransform3DDesc.fSpeedPerSec = 15.f;
+    pPurpleBallDesc->tTransform3DDesc.fSpeedPerSec = 30.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_PurpleBall"), Pooling_Desc, pPurpleBallDesc);
 
@@ -995,6 +1075,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     pWingSlamDesc->tTransform3DDesc.fSpeedPerSec = 70.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_WingSlam"), Pooling_Desc, pWingSlamDesc);
+
 
 
 
