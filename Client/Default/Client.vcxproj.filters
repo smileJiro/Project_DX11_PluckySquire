@@ -1443,6 +1443,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_TransformIn.h" />
     <ClInclude Include="..\Public\CandleGame.h" />
+    <ClInclude Include="..\Public\Portal_Default.h">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Portal_Immediately.h">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Portal_JumpOut.h">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2308,6 +2317,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_TransformIn.cpp" />
     <ClCompile Include="..\Private\CandleGame.cpp" />
+    <ClCompile Include="..\Private\Portal_Default.cpp">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Portal_Immediately.cpp">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Portal_JumpOut.cpp">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

@@ -67,7 +67,7 @@ private:
 	HRESULT Load_Dirctory_Models(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix);
 	HRESULT Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath);
 	// 경로에 있는 3D 모델파일을 전부 불러온다.
-	HRESULT Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix);
+	HRESULT Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix, _bool _isCollider = false);
 	// 경로에 있는 2D 모델파일을 전부 불러온다.
 	HRESULT Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _szDirPath);
 	// Json에 적혀있는 모델 파일만 불러온다.
