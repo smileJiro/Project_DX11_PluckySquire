@@ -617,13 +617,13 @@ HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, cons
     break;
     case Client::C3DMapSkspObject::SKSP_TUB:
     {
-        iFlag = RT_RENDER_UVRENDER;
+        iFlag = RT_RENDER_UVRENDER_FRAC;
 
         CMesh* pLeftMesh = p3DModel->Get_Mesh(1);
-        CMesh* pRightMesh = p3DModel->Get_Mesh(2);
+        CMesh* pRightMesh = p3DModel->Get_Mesh(2);                          
 
-        _float2 vStartCoord = { 0.f,-0.64f };
-        _float2 vEndCoord = { 0.51f,3.03f };
+        _float2 vStartCoord = { 0.f,-2.542f };
+        _float2 vEndCoord = { 0.51f,1.0314f };
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
 
@@ -632,8 +632,10 @@ HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, cons
         pLeftMesh->Bind_BufferDesc();
         pLeftMesh->Render();
 
-        vStartCoord = { 0.5f,-0.64f };
-        vEndCoord = { 1.01f,3.03f };
+        //vStartCoord = { 0.5f,-0.64f };
+        //vEndCoord = { 1.01f,3.03f };
+        vStartCoord = { 0.5f,-2.542f };
+        vEndCoord = { 1.01f,1.0314f };
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
         m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
@@ -687,23 +689,20 @@ HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, cons
     {
         iFlag = RT_RENDER_DEAFULT;
 
-
-        if (m_strRenderSectionTag == L"Chapter4_SKSP_06")
+        if (
+            m_strRenderSectionTag == L"Chapter4_SKSP_03"
+            ||
+            m_strRenderSectionTag == L"Chapter4_SKSP_04"
+            ||
+            m_strRenderSectionTag == L"Chapter4_SKSP_06")
         {
-            iFlag = RT_RENDER_UVRENDER_FRAC;
+            iFlag = RT_RENDER_FRAC;
             _float2 vStartCoord = { 0.f, 0.0f };
             _float2 vEndCoord = { 1.f,1.f };
             m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
             m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
         }
-        if (m_strRenderSectionTag == L"Chapter6_SKSP_07")
-        {
-            iFlag = RT_RENDER_UVRENDER_FRAC;
-            _float2 vStartCoord = { 0.5f, 0.50f };
-            _float2 vEndCoord = { 2.f,2.f };
-            m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
-            m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
-        }
+      
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
         p3DModel->Render(m_pShaderComs[COORDINATE_3D], (_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
     }
