@@ -35,7 +35,7 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 
 
 
-
+	m_is2D = pDesc->is2D;
 	m_strAnimaionName = pDesc->strAnimationName;
 	m_iCreateSection = pDesc->strCreateSection;
 	m_strDialogueID = pDesc->strDialogueId;
@@ -46,7 +46,14 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	m_isInteractable = pDesc->isInteractable;
 	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 
-	pDesc->eStartCoord = COORDINATE_2D;
+
+	true == pDesc->is2D ? pDesc->eStartCoord = COORDINATE_2D : pDesc->eStartCoord = COORDINATE_3D;
+
+	//if (true == pDesc->is2D)
+	//	pDesc->eStartCoord = COORDINATE_2D;
+
+
+	
 	pDesc->isCoordChangeEnable = true;
 	pDesc->iNumPartObjects = PART_END;
 
@@ -65,6 +72,56 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 
 	//if (FAILED(Ready_ActorDesc(pDesc)))
 	//	return E_FAIL;
+	if (false == pDesc->is2D)
+	{
+		CActor::ACTOR_DESC ActorDesc;
+
+		/* Actor의 주인 오브젝트 포인터 */
+		ActorDesc.pOwner = this;
+
+		/* Actor의 회전축을 고정하는 파라미터 */
+		ActorDesc.FreezeRotation_XYZ[0] = false; 
+		ActorDesc.FreezeRotation_XYZ[1] = false;
+		ActorDesc.FreezeRotation_XYZ[2] = false;
+
+		/* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
+		ActorDesc.FreezePosition_XYZ[0] = false;
+		ActorDesc.FreezePosition_XYZ[1] = false;
+		ActorDesc.FreezePosition_XYZ[2] = false;
+
+		/* 사용하려는 Shape의 형태를 정의 */
+		SHAPE_CAPSULE_DESC ShapeDesc = {};
+		ShapeDesc.fHalfHeight = 0.25f;
+		ShapeDesc.fRadius = 0.25f;
+
+		/* 해당 Shape의 Flag에 대한 Data 정의 */
+		SHAPE_DATA ShapeData;
+		ShapeData.pShapeDesc = &ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+		ShapeData.eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+		ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것
+		ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+		XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+		/* 최종으로 결정 된 ShapeData를 PushBack */
+		ActorDesc.ShapeDatas.push_back(ShapeData);
+
+		/* 만약, Shape을 여러개 사용하고싶다면, 아래와 같이 별도의 Shape에 대한 정보를 추가하여 push_back() */
+		//ShapeData.eShapeType = SHAPE_TYPE::SPHERE;
+		//ShapeData.isTrigger = true;                     // Trigger로 사용하겠다.
+		//XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, 0.5, 0)); //여기임
+		//SHAPE_SPHERE_DESC SphereDesc = {};
+		//SphereDesc.fRadius = 1.f;
+		//ShapeData.pShapeDesc = &SphereDesc;
+		//ActorDesc.ShapeDatas.push_back(ShapeData);
+
+		/* 충돌 필터에 대한 세팅 ()*/
+		ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::INTERACTION_OBEJCT;
+		ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER_PROJECTILE;
+
+		pDesc->pActorDesc = &ActorDesc;
+
+	}
+
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -76,30 +133,29 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 		return E_FAIL;
 
 	
+	if (true == pDesc->is2D)
+	{
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionid, this, SECTION_2D_PLAYMAP_OBJECT);
+		wsprintf(m_strCurSecion, pDesc->strSectionid.c_str());
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionid, this, SECTION_2D_PLAYMAP_OBJECT);
+		CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
-	wsprintf(m_strCurSecion, pDesc->strSectionid.c_str());
+		pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, m_iStartAnimation, true);
+		pModelObject->Set_Animation(m_iStartAnimation);
 
-	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+		CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
+		tAnimEventDesc.pReceiver = this;
+		tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
+		m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, m_strAnimaionName, &tAnimEventDesc));
+		Safe_AddRef(m_pAnimEventGenerator);
+		Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
+		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Social::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z, 1.f));
 
-	CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+		m_eInteractID = INTERACT_ID::NPC;
+	}
 
-	pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, m_iStartAnimation, true);
-	pModelObject->Set_Animation(m_iStartAnimation);
-
-	CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
-	tAnimEventDesc.pReceiver = this;
-	tAnimEventDesc.pSenderModel = static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D);
-	m_pAnimEventGenerator = static_cast<CAnimEventGenerator*> (m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_iCurLevelID, m_strAnimaionName, &tAnimEventDesc));
-	Safe_AddRef(m_pAnimEventGenerator);
-	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
-
-	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Social::On_AnimEnd, this , placeholders::_1, placeholders::_2));
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z, 1.f));
-
-	m_eInteractID = INTERACT_ID::NPC;
 	//CActor::ACTOR_DESC ActorDesc;
 	//
 	///* Actor의 주인 오브젝트 포인터 */
@@ -157,7 +213,7 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 
 void CNPC_Social::Priority_Update(_float _fTimeDelta)
 {
-	__super::Priority_Update(_fTimeDelta);
+     	__super::Priority_Update(_fTimeDelta);
 }
 
 void CNPC_Social::Update(_float _fTimeDelta)
@@ -367,10 +423,14 @@ HRESULT CNPC_Social::Ready_PartObjects()
 	NPCBodyDesc.iCurLevelID = m_iCurLevelID;
 	NPCBodyDesc.isCoordChangeEnable = false;
 	NPCBodyDesc.strModelPrototypeTag_2D = m_strAnimaionName;
-	//NPCBodyDesc.strModelPrototypeTag_3D = TEXT("barfBug_Rig");
 	NPCBodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
-	//NPCBodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-
+	
+	if (false == m_is2D)
+	{
+		NPCBodyDesc.strModelPrototypeTag_3D = m_strAnimaionName;
+		NPCBodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+	}
+	
 	NPCBodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
 	NPCBodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
@@ -379,10 +439,15 @@ HRESULT CNPC_Social::Ready_PartObjects()
 	NPCBodyDesc.tTransform2DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_RotationPerSec();
 	NPCBodyDesc.tTransform2DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_SpeedPerSec();
 
-	//NPCBodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-	//NPCBodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
-	//NPCBodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
-	//NPCBodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+	
+	if (false == m_is2D)
+	{
+		NPCBodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+		NPCBodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+		NPCBodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+		NPCBodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+	}
+
 
 	m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_NPC_Body"), &NPCBodyDesc));
 	if (nullptr == m_PartObjects[PART_BODY])

@@ -41,8 +41,9 @@ HRESULT CZippy::Initialize(void* _pArg)
     m_fDashDistance = 200.f;
     m_fElecTime = 5.f;
 
-    m_tStat.iHP = 5;
-    m_tStat.iMaxHP = 5;
+    pDesc->_tStat.iHP = 5;
+    pDesc->_tStat.iMaxHP = 5;
+    pDesc->_tStat.iDamg = 1;
 
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;

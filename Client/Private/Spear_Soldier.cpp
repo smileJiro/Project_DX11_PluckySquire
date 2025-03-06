@@ -41,8 +41,9 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
 
     pDesc->fCoolTime = 2.f;
 
-    m_tStat.iHP = 5;
-    m_tStat.iMaxHP = 5;
+    pDesc->_tStat.iHP = 5;
+    pDesc->_tStat.iMaxHP = 5;
+    pDesc->_tStat.iDamg = 1;
 
     m_fDashDistance = 10.f;
 

@@ -116,10 +116,12 @@ void CShopPanel::Late_Update(_float _fTimeDelta)
 		}
 
 	}
-	else
-	{
+
 		__super::Late_Update(_fTimeDelta);
-	}
+
+		if (CSection_Manager::GetInstance()->Is_CurSection(this))
+			CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+
 
 }
 
@@ -136,33 +138,49 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 
 		_float2 BGPos = Uimgr->Get_ShopPos();
 		/* TODO :: 나중에 수정 필요 */
-		_float2 vMiddlePoint = { RTSIZE_BOOK2D_X / 2 , RTSIZE_BOOK2D_Y / 2 };
+
+		_float2 vRTSize = _float2(0.f, 0.f);
+
+		vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
+
+
+
+		_float2 vMiddlePoint = { vRTSize.x / 2 , vRTSize.y / 2 };
 		_float2 vCalPos = { 0.f, 0.f };
+		_float2 vBulbPos = { 0.f, 0.f };
 		/* TODO :: 나중에 수정 필요 */
-		_float2 vRTSize = { RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y };
+		
 
 
 		_float2 vPos = { 0.f, 0.f };
 
-		vPos.x = BGPos.x + vRTSize.x * 0.12f;
-		vPos.y = BGPos.y + vRTSize.y * 0.28f;
+		vPos.x = BGPos.x + vRTSize.x * 0.06f;
+		vPos.y = BGPos.y + vRTSize.y * 0.137f;
 
-		vCalPos.x = vMiddlePoint.x + vPos.x;
-		vCalPos.y = vMiddlePoint.y - vPos.y;
+		vBulbPos.x = vMiddlePoint.x + vPos.x;
+		vBulbPos.y = vMiddlePoint.y - vPos.y;
 
 		
 		_wstring szBulbCount = to_wstring(CPlayerData_Manager::GetInstance()->Get_BulbCount());
 		wsprintf(m_tFont, szBulbCount.c_str());
+		
 
-		m_pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vBulbPos.x, vBulbPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
 
-		vPos.x = BGPos.x - vRTSize.x * 0.075f;
-		vPos.y = BGPos.y - vRTSize.y * 0.4f;
+		vPos.x = BGPos.x + vRTSize.x * 0.045f;
+		vPos.y = BGPos.y - vRTSize.y * 0.075f;
 
 		vCalPos.x = vMiddlePoint.x + vPos.x;
 		vCalPos.y = vMiddlePoint.y - vPos.y;
 
+
+		vPos.x = BGPos.x - vRTSize.x * 0.036f;
+		vPos.y = BGPos.y - vRTSize.y * 0.2f;
+
+
+		vCalPos.x = vMiddlePoint.x + vPos.x;
+		vCalPos.y = vMiddlePoint.y - vPos.y;
 
 		wsprintf(m_tFont, TEXT("취소"));
 		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x - 2.5f, vCalPos.y),			XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
@@ -171,7 +189,7 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y + 2.5f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x ,		vCalPos.y),			XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
-		vPos.x = BGPos.x + vRTSize.x * 0.07f;
+		vPos.x = BGPos.x + vRTSize.x * 0.035f;
 		vCalPos.x = vMiddlePoint.x + vPos.x;
 
 		wsprintf(m_tFont, TEXT("선택"));
@@ -181,7 +199,12 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y + 2.5f),	XMVectorSet(0.f, 0.f, 0.f, 1.0f));
 		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y),			XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
+
+
+		m_pGameInstance->Render_Font(TEXT("Font30"), m_strName.c_str(), _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+
 	}
+
 
 	if (true == CUI_Manager::GetInstance()->Get_ConfirmStore())
 	{
@@ -189,16 +212,20 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 
 		_float2 BGPos = Uimgr->Get_ShopPos();
 		/* 나중에 수정 필요 */
-		_float2 vMiddlePoint = { RTSIZE_BOOK2D_X / 2 , RTSIZE_BOOK2D_Y / 2 };
+		_float2 vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
+
+
+
+		_float2 vMiddlePoint = { vRTSize.x / 2 , vRTSize.y / 2 };
 		_float2 vCalPos = { 0.f, 0.f };
 		/* 나중에 수정 필요 */
-		_float2 vRTSize = { RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y };
+
 
 
 		_float2 vPos = { 0.f, 0.f };
 
-		vPos.x = BGPos.x + vRTSize.x * 0.085f;
-		vPos.y = BGPos.y - vRTSize.y * 0.153f;
+		vPos.x = BGPos.x + vRTSize.x * 0.045f;
+		vPos.y = BGPos.y - vRTSize.y * 0.075f;
 
 		vCalPos.x = vMiddlePoint.x + vPos.x;
 		vCalPos.y = vMiddlePoint.y - vPos.y;
@@ -211,8 +238,8 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 			m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 			wsprintf(m_tFont, TEXT("아니요"));
 
-			vPos.x = BGPos.x + vRTSize.x * 0.085f;
-			vPos.y = BGPos.y - vRTSize.y * 0.215f;
+			vPos.x = BGPos.x + vRTSize.x * 0.045f;
+			vPos.y = BGPos.y - vRTSize.y * 0.11f;
 
 			vCalPos.x = vMiddlePoint.x + vPos.x;
 			vCalPos.y = vMiddlePoint.y - vPos.y;
@@ -226,8 +253,8 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 			m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 			wsprintf(m_tFont, TEXT("아니요"));
 
-			vPos.x = BGPos.x + vRTSize.x * 0.085f;
-			vPos.y = BGPos.y - vRTSize.y * 0.215f;
+			vPos.x = BGPos.x + vRTSize.x * 0.045f;
+			vPos.y = BGPos.y - vRTSize.y * 0.11f;
 
 			vCalPos.x = vMiddlePoint.x + vPos.x;
 			vCalPos.y = vMiddlePoint.y - vPos.y;
@@ -235,7 +262,13 @@ HRESULT CShopPanel::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 
 			m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		}
+
+		
 	}
+	//m_pGameInstance->Render_Font(TEXT("Font30"), m_strName.c_str(), _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+	//m_strName
+
+
 
 
 	return S_OK;
@@ -664,6 +697,7 @@ void CShopPanel::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				}
 
 				Uimgr->Get_ShopItems()[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
+				Uimgr->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
 			}
 			
 		}
@@ -688,6 +722,7 @@ void CShopPanel::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				}
 
 				Uimgr->Get_ShopItems()[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
+				Uimgr->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
 			}
 		}
 		else if (2 == i)
@@ -711,6 +746,7 @@ void CShopPanel::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				}
 
 				Uimgr->Get_ShopItems()[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
+				Uimgr->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
 			}
 		}
 	}
@@ -753,7 +789,7 @@ HRESULT CShopPanel::Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag
 		for (_uint i = 0; i < 5; ++i)
 		{
 			CGameObject* pShopItem = { nullptr };
-			CUI::UIOBJDESC eShopDesc;
+			ShopUI eShopDesc;
 
 
 			switch (i)
@@ -787,6 +823,8 @@ HRESULT CShopPanel::Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag
 				eShopDesc.iSkillLevel = 0;
 				eShopDesc.isChooseItem = true;
 				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_SCROLLITEM;
+				eShopDesc.iPrice = 10;
+				eShopDesc.strName = TEXT("그림 두루마리");
 
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
 					return E_FAIL;
@@ -815,7 +853,7 @@ HRESULT CShopPanel::Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag
 
 			}
 			break;
-			
+
 			case 1:
 			{
 				vector<CShopItemBG*> _vItemBG;
@@ -827,13 +865,13 @@ HRESULT CShopPanel::Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag
 				eShopDesc.iShopItemCount = i;
 				eShopDesc.iSkillLevel = 0;
 				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BG;
-			
+
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
 					return E_FAIL;
-			
+
 				CShopItemBG* pItemBG = static_cast<CShopItemBG*>(pShopItem);
 				_vItemBG.push_back(pItemBG);
-			
+
 				eShopDesc.iCurLevelID = iCurLevel;
 				eShopDesc.fX = 0.f;
 				eShopDesc.fY = 0.f;
@@ -842,14 +880,15 @@ HRESULT CShopPanel::Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag
 				eShopDesc.iShopItemCount = i;
 				eShopDesc.iSkillLevel = 2;
 				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_ATTACKPLUSBADGE;
-			
+				eShopDesc.strName = TEXT("회전 공격");
+
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
 					return E_FAIL;
-			
+
 				pItemBG = static_cast<CShopItemBG*>(pShopItem);
 				_vItemBG.push_back(pItemBG);
-			
-			
+
+
 				eShopDesc.iCurLevelID = iCurLevel;
 				eShopDesc.fX = 0.f;
 				eShopDesc.fY = 0.f;
@@ -858,19 +897,19 @@ HRESULT CShopPanel::Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag
 				eShopDesc.iShopItemCount = i;
 				eShopDesc.iSkillLevel = 0;
 				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BULB;
-			
+
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
 					return E_FAIL;
-			
+
 				pItemBG = static_cast<CShopItemBG*>(pShopItem);
 				_vItemBG.push_back(pItemBG);
-			
-			
+
+
 				CUI_Manager::GetInstance()->pushBack_ShopItem(_vItemBG);
-			
+
 			}
 			break;
-			
+
 			case 2:
 			{
 				vector<CShopItemBG*> _vItemBG;
@@ -882,15 +921,15 @@ HRESULT CShopPanel::Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag
 				eShopDesc.iShopItemCount = i;
 				eShopDesc.iSkillLevel = 0;
 				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BG;
-			
+
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
 					return E_FAIL;
-			
+
 				CShopItemBG* pItemBG = static_cast<CShopItemBG*>(pShopItem);
 				_vItemBG.push_back(pItemBG);
-			
-			
-			
+
+
+
 				eShopDesc.iCurLevelID = iCurLevel;
 				eShopDesc.fX = 0.f;
 				eShopDesc.fY = 0.f;
@@ -899,16 +938,17 @@ HRESULT CShopPanel::Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag
 				eShopDesc.iShopItemCount = i;
 				eShopDesc.iSkillLevel = 0;
 				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_JUMPATTACKBADGE;
-			
+				eShopDesc.strName = TEXT("점프 공격");
+
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
 					return E_FAIL;
-			
+
 				pItemBG = static_cast<CShopItemBG*>(pShopItem);
 				_vItemBG.push_back(pItemBG);
-			
-			
-			
-			
+
+
+
+
 				eShopDesc.iCurLevelID = iCurLevel;
 				eShopDesc.fX = 0.f;
 				eShopDesc.fY = 0.f;
@@ -917,37 +957,20 @@ HRESULT CShopPanel::Ready_Item(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag
 				eShopDesc.iShopItemCount = i;
 				eShopDesc.iSkillLevel = 0;
 				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BULB;
-			
+
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
 					return E_FAIL;
-			
+
 				pItemBG = static_cast<CShopItemBG*>(pShopItem);
 				_vItemBG.push_back(pItemBG);
-			
-			
-				CUI_Manager::GetInstance()->pushBack_ShopItem(_vItemBG);
-			
-			}
-			break;
-			
-			case 3:
-			{
-				vector<CShopItemBG*> _vItemBG;
-			
-			}
-			break;
-			
-			case 4:
-			{
-				vector<CShopItemBG*> _vItemBG;
-			
-			}
-			break;
-			
-			}
-			
-		}
 
+
+				CUI_Manager::GetInstance()->pushBack_ShopItem(_vItemBG);
+
+			}
+			break;
+			}
+		}
 		
 	}
 	return S_OK;

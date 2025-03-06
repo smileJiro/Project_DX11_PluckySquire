@@ -93,14 +93,16 @@ void CInteraction_E::Late_Update(_float _fTimeDelta)
 
 		}
 
-		if (true == pInteractableObject->Is_UIPlayerHeadUp())
-		{
-			Cal_PlayerHighPos();
-		}
-		else if (false == pInteractableObject->Is_UIPlayerHeadUp())
-		{
-			Cal_ObjectPos(pGameObejct);
-		}
+		// 무조건 플레이어 머리 위에만 띄운다로 스펙 변경 됨.
+		
+		//if (true == pInteractableObject->Is_UIPlayerHeadUp())
+		//{
+			Cal_PlayerHighPos(pGameObejct);
+			//}
+			//else if (false == pInteractableObject->Is_UIPlayerHeadUp())
+			//{
+			//	Cal_ObjectPos(pGameObejct);
+			//}
 
 	}
 }
@@ -231,28 +233,77 @@ HRESULT CInteraction_E::Cleanup_DeadReferences()
 	return S_OK;
 }
 
-void CInteraction_E::Cal_PlayerHighPos()
+void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 {
 	// 포탈 및 점프
 
 	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
-		// TODO :: 해당 부분은 가변적이다. 추후 변경해야한다.
-		_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
+		//TODO::해당 부분은 가변적이다.추후 변경해야한다.
+			_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
 
 		_float2 vPlayerPos = _float2(Uimgr->Get_Player()->Get_BodyPosition().m128_f32[0], Uimgr->Get_Player()->Get_BodyPosition().m128_f32[1]);
 
 		_float2 vCalPos = { 0.f, 0.f };
 
 		vCalPos.x = vPlayerPos.x;
-		vCalPos.y = vPlayerPos.y + RTSize.y * 0.3f;
+		vCalPos.y = vPlayerPos.y + RTSize.y * 0.1f;
 
 		m_vObejctPos = _float3(vCalPos.x, vCalPos.y, 1.f);
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f));
+		m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+
 
 		if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
 			CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+
+
+
+
+
+		//_float3 vObjectPos = { 0.f, 0.f, 0.f };
+		//
+		//_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
+		//
+		//
+		//_bool isColumn = { false };
+		//
+		//// 세로가 더 기나요?
+		//if (RTSize.x < RTSize.y)
+		//{
+		//	// 세로가 더 길어요!
+		//	isColumn = true;
+		//}
+		//
+		//// 오브젝트의 위치
+		//
+		//
+		//if (false == isColumn)
+		//{
+		//	vObjectPos.x = _pGameObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0];
+		//	vObjectPos.y = _pGameObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1];
+		//
+		//	// 노출되는  UI의 최종 위치
+		//	m_vObejctPos = _float3(vObjectPos.x, vObjectPos.y + RTSize.y * 0.47f, 1.f);
+		//
+		//	if (m_vObejctPos.y <= 300.f)
+		//	{
+		//		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, m_vObejctPos.y, 0.f, 1.f));
+		//		m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+		//	}
+		//
+		//	else
+		//	{
+		//		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, m_vObejctPos.y - RTSize.y * 0.35f, 0.f, 1.f));
+		//		m_vObejctPos.y = m_vObejctPos.y - RTSize.y * 0.35f;
+		//	}
+		//
+		//
+		//
+		//}
+
+
 	}
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
@@ -262,8 +313,8 @@ void CInteraction_E::Cal_PlayerHighPos()
 
 
 
-		_float CalX = vCalx.x - 800.f;
-		_float CalY = vCalx.y - 400.f;
+		_float CalX = vCalx.x - g_iWinSizeX / 2.f;
+		_float CalY = vCalx.y - g_iWinSizeY / 2.f;
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(CalX, CalY, 0.f, 1.f));
 		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX, m_fSizeY, 1.f));
@@ -424,13 +475,13 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 
 		if (false == isColumn)
 		{
-			vTextPos.x = m_vObejctPos.x + vMiddlePos.x - vMiddlePos.x * 0.01f;
-			vTextPos.y = vMiddlePos.y - m_vObejctPos.y - _vRTSize.y * 0.02f;
+			vTextPos.x = m_vObejctPos.x + vMiddlePos.x - vMiddlePos.x * 0.001f;
+			vTextPos.y = vMiddlePos.y - m_vObejctPos.y - _vRTSize.y * 0.01f;
 		}
 		else
 		{
 			vTextPos.x = m_vObejctPos.x + vMiddlePos.x - vMiddlePos.x * 0.01f;
-			vTextPos.y = vMiddlePos.y - m_vObejctPos.y - _vRTSize.y * 0.003f;
+			vTextPos.y = vMiddlePos.y - m_vObejctPos.y - _vRTSize.y * 0.003;
 		}
 
 		m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
@@ -446,10 +497,10 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		if (nullptr == pInteractableObject)
 			return;
 
-		if (false == pInteractableObject->Is_UIPlayerHeadUp())
-			m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y - 315.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
-		else
-			m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x - 10.f, vTextPos.y - 65.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		//if (false == pInteractableObject->Is_UIPlayerHeadUp())
+		//	m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y - 315.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		//else
+			m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y - g_iWinSizeY / 55.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
 }

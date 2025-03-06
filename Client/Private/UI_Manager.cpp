@@ -50,8 +50,10 @@ void CUI_Manager::Delete_ShopItems(_uint _index)
 	//fIdx2 = -fIdx2 + g_iWinSizeY * 0.5f;
 
 
+
 	for (int i = 0; i < m_ShopItems[_index].size(); ++i)
 	{
+
 		Event_DeleteObject(m_ShopItems[_index][i]);
 		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_ShopItems[_index][i]);
 	}

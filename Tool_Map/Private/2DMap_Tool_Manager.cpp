@@ -118,6 +118,27 @@ void C2DMap_Tool_Manager::Update_Imgui_Logic()
 	TriggerSetting_Imgui();
 	TriggerEvent_Imgui();
 	BlockerSetting_Imgui();
+
+
+	ImGui::Begin("FullScreen",nullptr, ImGuiWindowFlags_HorizontalScrollbar);
+	{
+			ID3D11ShaderResourceView* pSelectImage = m_pGameInstance->Get_RT_SRV(L"Target_2D");
+	
+			static _float fDefualtWidth = 2400.f;
+			if (pSelectImage)
+			{
+				_float2 fRenderTargetSize = m_DefaultRenderObject->Get_Texture_Size();
+				
+				_float fYRatio = fRenderTargetSize.y * (fDefualtWidth / (_float)fRenderTargetSize.x);
+				ImVec2 imageSize(1600, 900);
+
+				imageSize = { fDefualtWidth, fYRatio };
+				if (nullptr != pSelectImage)
+					ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+			}
+			ImGui::DragFloat("Width", &fDefualtWidth);
+	}
+	ImGui::End();
 }
 
 
@@ -1587,8 +1608,10 @@ void C2DMap_Tool_Manager::BlockerSetting_Imgui(_bool bLock)
 {
 	ImGui::Begin("Blocker");
 	{
+		static _int iBlockerListCount = 5;
+		ImGui::DragInt("Line", &iBlockerListCount, 1.f, 1, 999);
 		ImGui::SeparatorText("Blocker List");
-		if (ImGui::BeginListBox("##Blocker List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+		if (ImGui::BeginListBox("##Blocker List", ImVec2(-FLT_MIN, iBlockerListCount * ImGui::GetTextLineHeightWithSpacing())))
 		{
 			auto pLayer = m_pGameInstance->Find_Layer(LEVEL_TOOL_2D_MAP, L"Layer_Blocker");
 			if (pLayer)

@@ -42,8 +42,9 @@ HRESULT CCrossBow_Soldier::Initialize(void* _pArg)
 
     pDesc->fCoolTime = 3.f;
 
-    m_tStat.iHP = 5;
-    m_tStat.iMaxHP = 5;
+    pDesc->_tStat.iHP = 5;
+    pDesc->_tStat.iMaxHP = 5;
+    pDesc->_tStat.iDamg = 1;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
