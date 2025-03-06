@@ -122,7 +122,7 @@ VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
     matWVP = mul(matWV, g_ProjMatrix);
 
     
-    float2 vTexCoord = In.vTexcoord;
+    float2 vTexCoord = saturate(In.vTexcoord);
     
     
     //0~1 사이로 전환.
@@ -131,7 +131,7 @@ VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
         vTexCoord = frac(In.vTexcoord);
     }
     
-    float4 vNDCCoord = float4(vTexCoord, 0.0f, 1.0f);
+    float4 vNDCCoord = float4(vTexCoord.x, vTexCoord.y, 0.0f, 1.0f);
 
     //Start와 End를 사용함.
     if (g_iFlag == RT_RENDER_UVRENDER || g_iFlag == RT_RENDER_UVRENDER_FRAC)
