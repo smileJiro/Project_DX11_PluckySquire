@@ -214,6 +214,7 @@
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
     <ClInclude Include="..\Public\DefenderPlayer.h" />
     <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
+    <ClInclude Include="..\Public\Defender_Monster.h" />
     <ClInclude Include="..\Public\Minigame_Defender.h" />
     <ClInclude Include="..\Public\Detonator.h" />
     <ClInclude Include="..\public\Door_2D.h" />
@@ -240,6 +241,7 @@
     <ClInclude Include="..\public\Sneak_Default_Tile.h" />
     <ClInclude Include="..\public\Sneak_Trap_Tile.h" />
     <ClInclude Include="..\public\Sneak_Tile.h" />
+    <ClInclude Include="..\Public\PlayerState_TransformIn.h" />
     <ClInclude Include="..\Public\Zipline.h" />
     <ClInclude Include="..\Public\MudPit.h" />
     <ClInclude Include="..\Public\Narration_Manager.h" />
@@ -517,6 +519,7 @@
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
     <ClCompile Include="..\Private\DefenderPlayer.cpp" />
     <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
+    <ClCompile Include="..\Private\Defender_Monster.cpp" />
     <ClCompile Include="..\Private\Minigame_Defender.cpp" />
     <ClCompile Include="..\Private\Detonator.cpp" />
     <ClCompile Include="..\private\Door_2D.cpp" />
@@ -540,6 +543,7 @@
     <ClCompile Include="..\private\Sneak_Default_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Trap_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Tile.cpp" />
+    <ClCompile Include="..\Private\PlayerState_TransformIn.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\Private\MudPit.cpp" />
     <ClCompile Include="..\Private\Narration_Manager.cpp" />

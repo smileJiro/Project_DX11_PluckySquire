@@ -143,6 +143,7 @@ public:
 		BOMBER,
 		ERASE_PALM,
 		GET_ITEM,
+		TRANSFORM_IN,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -460,6 +461,21 @@ public:
 		,LATCH_ANIM_JUMPATTACK_FALL =103
 		,LATCH_ANIM_JUMPATTACK_LAND_GT_EDIT
 		,LATCH_ANIM_JUMPATTACK_RISE  = 105
+		,CYBERJOT_ANIM_DEATH
+		,CYBERJOT_ANIM_FLYING_DOWN
+		,CYBERJOT_ANIM_FLYING_DOWN_DASH
+		,CYBERJOT_ANIM_FLYING_IDLE
+		,CYBERJOT_ANIM_FLYING_LEFT
+		,CYBERJOT_ANIM_FLYING_LEFT_DASH
+		,CYBERJOT_ANIM_FLYING_RIGHT
+		,CYBERJOT_ANIM_FLYING_RIGHT_DASH
+		,CYBERJOT_ANIM_FLYING_UP
+		,CYBERJOT_ANIM_FLYING_UP_DASH
+		,CYBERJOT_ANIM_SHOOT
+		,CYBERJOT_CINE_D09_LB_OUTRO
+		,CYBERJOT_CINE_DO9_LB_ENGAGE_SH01
+		,CYBERJOT_CINE_DO9_LB_ENGAGE_SH02
+		,CYBERJOT_ANIM_HIT_EDIT
 		,LATCH_ANIM_LAST
 	};
 private:
@@ -515,6 +531,8 @@ public:
 	void Revive();
 	void ReFuel();
 	void ZetPropel(_float _fTimeDelta);
+	void Transform_In_CyberJot();
+	void Transform_Out_CyberJot();
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
 
 	void Start_Portal(CPortal* _pPortal);
@@ -534,6 +552,7 @@ public:
 	_bool Is_AttackTriggerActive();
 	_bool Is_DetonationMode();
 	_bool Is_ZetPackMode();
+	_bool Is_CyvberJot() { return m_bCyberJot; }
 
 	_bool Is_PlayingAnim();
 	_bool Has_InteractObject() { return nullptr != m_pInteractableObject; }
@@ -675,6 +694,7 @@ private:
 	_float m_fInvincibleTIme = 1.5f;
 	_float m_fInvincibleTImeAcc = 0.f;
 	_bool m_bInvincible = false;
+	_bool m_bCyberJot = false;
 
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
 	ATTACK_TRIGGER_DESC m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST][(_uint)F_DIRECTION::F_DIR_LAST];// = { 93.f, 93.f, 120.f };
