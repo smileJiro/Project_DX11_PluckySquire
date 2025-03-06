@@ -670,8 +670,6 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 				}
 				if (FAILED(SetActive_Section(pSection, false)))
 					return E_FAIL;
-
-
 				if (pSection->Is_Rotation())
 				{
 					CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, L"Layer_Book", 0);
