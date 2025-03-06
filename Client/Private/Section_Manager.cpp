@@ -268,12 +268,15 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 
 	if (nullptr != pTargetSection)
 	{
+		_wstring strPreSectionTag = L"";
 		// 현재 활성화된 섹션이 있는지 검사한다.
 		if (nullptr != m_pCurSection)
 		{
+			strPreSectionTag = m_pCurSection->Get_SectionName();
 			//활성화된 섹션 제거 로직을 돌린다.
 			if (FAILED(SetActive_Section(m_pCurSection, false)))
 				return E_FAIL;
+			m_pCurSection->Section_Exit(_strSectionKey);
 			//TODO:: CollMgr 정리로직 추가 필요
 		}
 
@@ -284,8 +287,7 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 			return E_FAIL;
 		m_pCurSection = pSection_2D;
 
-
-		//
+		m_pCurSection->Section_Enter(strPreSectionTag);
 		Main_Section_Active_Process(m_pCurSection->Get_SectionName());
 
 

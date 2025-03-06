@@ -241,6 +241,16 @@ HRESULT CSection_2D_MiniGame_Pip::Section_AddRenderGroup_Process()
 	return S_OK;
 }
 
+HRESULT CSection_2D_MiniGame_Pip::Section_Enter(const _wstring& _strPreSectionTag)
+{
+	return S_OK;
+}
+
+HRESULT CSection_2D_MiniGame_Pip::Section_Exit(const _wstring& _strNextSectionTag)
+{
+	return S_OK;
+}
+
 
 CSection_2D_MiniGame_Pip* CSection_2D_MiniGame_Pip::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pDesc)
 {

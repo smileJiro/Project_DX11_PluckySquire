@@ -144,6 +144,21 @@ public:
 			return nullptr;
 		return m_pMap->Get_WorldTexture();
 	}
+
+	/// <summary>
+	/// 이 섹션이 책의 메인 섹션이 되었을 때 호출. 해당 섹션의 Object가 모두 활성화되기 전에 호출된다
+	/// 호출시점 CSection_Manager::Change_CurSection() 참조
+	/// </summary>
+	/// <param name="_strPreSectionTag">활성화 전 책의 Main Section Tag</param>
+	virtual HRESULT						Section_Enter(const _wstring& _strPreSectionTag) { return S_OK; }
+	/// <summary>
+	/// 이 섹션이 책의 메인 섹션이 아니게 되었을때 . 해당 섹션의 Object가 모두 비활성화되기 전에 호출된다
+	/// 호출시점 CSection_Manager::Change_CurSection() 참조
+	/// </summary>
+	/// <param name="_strPreSectionTag">다음 활성화할 책의 Main Section Tag</param>
+	virtual HRESULT						Section_Exit(const _wstring& _strNextSectionTag) { return S_OK; }
+
+
 public:
 	HRESULT					Register_WorldCapture(CModelObject* _pModel);
 
