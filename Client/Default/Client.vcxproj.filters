@@ -565,6 +565,12 @@
     <Filter Include="04.Section\Section_2D\MiniGame_2D\Pip">
       <UniqueIdentifier>{a5584601-2683-4eae-9a4f-60e52d0e3bd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\97. Shop_Manager">
+      <UniqueIdentifier>{a93fd688-0c28-4e4b-923f-ad1624a22d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Zipline">
+      <UniqueIdentifier>{31354166-28a5-4b4b-83ee-4b75d84b007a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1371,7 +1377,6 @@
     <ClInclude Include="..\public\Door_Red.h">
       <Filter>02.GameObjects\Door_2D\Door\Red</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Zipline.h" />
     <ClInclude Include="..\public\3DMapEmissiveObject.h">
       <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClInclude>
@@ -1443,14 +1448,8 @@
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_TransformIn.h" />
     <ClInclude Include="..\Public\CandleGame.h" />
-    <ClInclude Include="..\Public\Portal_Default.h">
-      <Filter>02.GameObjects\Portal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Portal_Immediately.h">
-      <Filter>02.GameObjects\Portal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Portal_JumpOut.h">
-      <Filter>02.GameObjects\Portal</Filter>
+    <ClInclude Include="..\Public\Zipline.h">
+      <Filter>02.GameObjects\Zipline</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2245,7 +2244,6 @@
     <ClCompile Include="..\private\Door_Red.cpp">
       <Filter>02.GameObjects\Door_2D\Door\Red</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\private\3DMapEmissiveObject.cpp">
       <Filter>02.GameObjects\MapObject\3D</Filter>
     </ClCompile>
@@ -2317,14 +2315,8 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_TransformIn.cpp" />
     <ClCompile Include="..\Private\CandleGame.cpp" />
-    <ClCompile Include="..\Private\Portal_Default.cpp">
-      <Filter>02.GameObjects\Portal</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Portal_Immediately.cpp">
-      <Filter>02.GameObjects\Portal</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Portal_JumpOut.cpp">
-      <Filter>02.GameObjects\Portal</Filter>
+    <ClCompile Include="..\Private\Zipline.cpp">
+      <Filter>02.GameObjects\Zipline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

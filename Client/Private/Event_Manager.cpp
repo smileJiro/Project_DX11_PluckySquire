@@ -641,10 +641,16 @@ HRESULT CEvent_Manager::Execute_Trigger_Enter(const EVENT& _tEvent)
 	{
 		if (true == CCamera_Manager::GetInstance()->Set_NextArmData(*pStr, iTriggerID)) {
 
-			if(CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CurCameraMode())
+			_uint iCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
+
+			switch (iCameraType) {
+			case CCamera_Manager::TARGET:
 				CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
-			else if(CCamera_Manager::TARGET_2D == CCamera_Manager::GetInstance()->Get_CurCameraMode())
+				break;
+			case CCamera_Manager::TARGET_2D:
 				CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::MOVE_TO_NEXTARM);
+				break;
+			}
 		}
 	}
 		break;
@@ -800,8 +806,18 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent)
 	{
 		CCamera_Manager::GetInstance()->Set_PreArmDataState(iTriggerID, isReturn);
 
-		if (true == isReturn)
-			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::RETURN_TO_PREARM);
+		if (true == isReturn) {
+			_uint iCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
+
+			switch (iCameraType) {
+			case CCamera_Manager::TARGET:
+				CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::RETURN_TO_PREARM);
+				break;
+			case CCamera_Manager::TARGET_2D:
+				CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::RETURN_TO_PREARM);
+				break;
+			}
+		}
 	}
 
 		break;
