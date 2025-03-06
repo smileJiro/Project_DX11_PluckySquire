@@ -127,11 +127,11 @@ private:
 	_int												m_iTriggerID = {};
 	_bool												m_isEventEnd = { false };
 private:
-	void						Register_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger);
+	void						Register_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger, _uint _iCoordinateType);
 	void						Register_Trigger_Action();
 
 	_uint						Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box);
-	//_uint						Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box);
+	_uint						Calculate_ExitDir(_float2 _vPos, _float2 _vOtherPos, _float2 _myExtents);
 
 	void						Execute_Trigger_Event();
 

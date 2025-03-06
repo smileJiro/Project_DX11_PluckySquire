@@ -159,5 +159,28 @@
         "Trigger_Coordinate": 0,
         "Trigger_EventTag": "Chapter6_Sksp5_Corner",
         "Trigger_Type": 1
+    },
+    {
+        "Arm_Info": {
+          "Exit_Return_Mask": {
+          "ReturnMask": 8
+          }
+        },
+        "Collider_Info": {
+            "Position": [
+                248.0,
+                855.0
+            ],
+            "Scale": [
+                222.0,
+                42.0
+            ]
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Trigger_ConditionType": 0,
+        "Trigger_Coordinate": 0,
+        "Trigger_EventTag": "Chapter6_Sksp5_Up_1",
+        "Trigger_Type": 1
     }
 ]

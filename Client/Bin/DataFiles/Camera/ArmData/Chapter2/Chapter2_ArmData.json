@@ -958,7 +958,7 @@
         0.0
       ],
       "Arm_MoveTime_AxisY": [
-        0.0,
+        1.2,
         0.0
       ],
       "Arm_RotationPerSec_AxisRight": [
@@ -970,7 +970,7 @@
         0.0
       ],
       "Arm_Time": [
-        0.0,
+        1.2,
         0.0
       ],
       "Desire_Arm": [
@@ -979,9 +979,19 @@
         -0.74
       ]
     },
-    "Arm_Tag": "Default",
+    "Arm_Tag": "Chapter2_Default",
     "Sub_Data": {
-      "Use_SubData": false
+      "AtOffset": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "AtOffset_RatioType": 3,
+      "AtOffset_Time": 1.2000000476837158,
+      "Use_SubData": true,
+      "Zoom_Level": 5,
+      "Zoom_RatioType": 3,
+      "Zoom_Time": 1.2000000476837158
     }
   }
 ]
