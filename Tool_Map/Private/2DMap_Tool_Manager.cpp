@@ -1398,6 +1398,7 @@ void C2DMap_Tool_Manager::TriggerSetting_Imgui(_bool bLock)
 				{
 					Event_DeleteObject(m_pPickingTrigger);
 					m_pPickingTrigger = nullptr;
+					m_SelectTriggerEventIdx = -1;
 				}
 
 				ImGui::CloseCurrentPopup();

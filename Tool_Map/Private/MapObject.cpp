@@ -67,76 +67,74 @@ HRESULT CMapObject::Initialize(void* _pArg)
 
     if (p3DModel->Has_CookingCollider())
     {
-        //_uint iColliderType = p3DModel->Get_CookingColliderType();
-        //MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
+        _uint iColliderType = p3DModel->Get_CookingColliderType();
+        MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
 
-        //pDesc->eActorType = ACTOR_TYPE::STATIC;
+        pDesc->eActorType = ACTOR_TYPE::STATIC;
 
-        //ActorDesc.pOwner = this;
+        ActorDesc.pOwner = this;
 
-        //ActorDesc.FreezeRotation_XYZ[0] = true;
-        //ActorDesc.FreezeRotation_XYZ[1] = true;
-        //ActorDesc.FreezeRotation_XYZ[2] = true;
+        ActorDesc.FreezeRotation_XYZ[0] = true;
+        ActorDesc.FreezeRotation_XYZ[1] = true;
+        ActorDesc.FreezeRotation_XYZ[2] = true;
 
-        //ActorDesc.FreezePosition_XYZ[0] = false;
-        //ActorDesc.FreezePosition_XYZ[1] = false;
-        //ActorDesc.FreezePosition_XYZ[2] = false;
-        //ActorDesc.isAddActorToScene = true;
-
-
-
-        //_float3 fScale =
-        //    _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[0]))),
-        //        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[1]))),
-        //        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[2]))));
-        //_matrix matScale = XMMatrixScaling(fScale.x, fScale.y, fScale.z);
-
-        //switch (iColliderType)
-        //{
-        //case 0:
-        //case 1:
-        //{
-        //    vecShapeData.resize(1);
-        //    vecShapeCookingDesc.resize(1);
-        //    vecShapeData[0].eShapeType = SHAPE_TYPE::COOKING;
-        //    vecShapeData[0].eMaterial = ACTOR_MATERIAL::DEFAULT;
-        //    vecShapeData[0].pShapeDesc = &vecShapeCookingDesc[0];
-        //    vecShapeData[0].isTrigger = false;
-        //    vecShapeData[0].isVisual = true;
-        //    XMStoreFloat4x4(&vecShapeData[0].LocalOffsetMatrix, matScale);
-        //    break;
-        //}
-        //case 2:
-        //case 3:
-        //{
-        //    _uint iMeshSize = (_uint)p3DModel->Get_Meshes().size();
-        //    vecShapeData.resize(iMeshSize);
-        //    vecShapeCookingDesc.resize(iMeshSize);
-        //    SHAPE_DATA tempShapeData = {};
-        //    tempShapeData.eShapeType = SHAPE_TYPE::COOKING;
-        //    tempShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
-        //    tempShapeData.isTrigger = false;
-        //    tempShapeData.isVisual = true;
-        //    XMStoreFloat4x4(&tempShapeData.LocalOffsetMatrix, matScale);
-
-        //    fill(vecShapeData.begin(), vecShapeData.end(), tempShapeData);
-        //    _uint iMeshIndex = 0;
-        //    for (_uint i = 0; i < iMeshSize; ++i)
-        //    {
-        //        vecShapeCookingDesc[i].iShapeIndex = i;
-        //        vecShapeData[i].pShapeDesc = &vecShapeCookingDesc[i];
-        //    }
-        //    break;
-        //}
-        //default:
-        //    break;
-        //}
-
-        //ActorDesc.ShapeDatas.insert(ActorDesc.ShapeDatas.end(), vecShapeData.begin(), vecShapeData.end());
+        ActorDesc.FreezePosition_XYZ[0] = false;
+        ActorDesc.FreezePosition_XYZ[1] = false;
+        ActorDesc.FreezePosition_XYZ[2] = false;
+        ActorDesc.isAddActorToScene = true;
 
 
 
-        //pDesc->pActorDesc = &ActorDesc;
+        _float3 fScale =
+            _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[0]))),
+                XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[1]))),
+                XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_matWorld.m[2]))));
+        _matrix matScale = XMMatrixScaling(fScale.x, fScale.y, fScale.z);
+
+        switch (iColliderType)
+        {
+        case 0:
+        case 1:
+        {
+            vecShapeData.resize(1);
+            vecShapeCookingDesc.resize(1);
+            vecShapeData[0].eShapeType = SHAPE_TYPE::COOKING;
+            vecShapeData[0].eMaterial = ACTOR_MATERIAL::DEFAULT;
+            vecShapeData[0].pShapeDesc = &vecShapeCookingDesc[0];
+            vecShapeData[0].isTrigger = false;
+            vecShapeData[0].isVisual = true;
+            XMStoreFloat4x4(&vecShapeData[0].LocalOffsetMatrix, matScale);
+            break;
+        }
+        case 2:
+        case 3:
+        {
+            _uint iMeshSize = (_uint)p3DModel->Get_Meshes().size();
+            vecShapeData.resize(iMeshSize);
+            vecShapeCookingDesc.resize(iMeshSize);
+            SHAPE_DATA tempShapeData = {};
+            tempShapeData.eShapeType = SHAPE_TYPE::COOKING;
+            tempShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
+            tempShapeData.isTrigger = false;
+            tempShapeData.isVisual = true;
+            XMStoreFloat4x4(&tempShapeData.LocalOffsetMatrix, matScale);
+
+            fill(vecShapeData.begin(), vecShapeData.end(), tempShapeData);
+            _uint iMeshIndex = 0;
+            for (_uint i = 0; i < iMeshSize; ++i)
+            {
+                vecShapeCookingDesc[i].iShapeIndex = i;
+                vecShapeData[i].pShapeDesc = &vecShapeCookingDesc[i];
+            }
+            break;
+        }
+        default:
+            break;
+        }
+
+        ActorDesc.ShapeDatas.insert(ActorDesc.ShapeDatas.end(), vecShapeData.begin(), vecShapeData.end());
+
+        pDesc->pActorDesc = &ActorDesc;
 
     }
 

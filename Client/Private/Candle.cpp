@@ -2,6 +2,7 @@
 #include "Candle.h"
 #include "GameInstance.h"
 #include "Candle_Body.h"
+#include "Candle_UI.h"
 #include "Player.h"
 
 CCandle::CCandle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -21,7 +22,7 @@ HRESULT CCandle::Initialize_Prototype()
 
 HRESULT CCandle::Initialize(void* _pArg)
 {
-    CCandle::CONTAINEROBJ_DESC* pDesc = static_cast<CCandle::CONTAINEROBJ_DESC*>(_pArg);
+    CCandle::CANDLE_DESC* pDesc = static_cast<CCandle::CANDLE_DESC*>(_pArg);
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
     pDesc->iNumPartObjects = (_uint)CANDLE_PART::CANDLE_LAST;
@@ -55,11 +56,13 @@ HRESULT CCandle::Initialize(void* _pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-    if (FAILED(Ready_PartObjects()))
+    if (FAILED(Ready_PartObjects(pDesc)))
         return E_FAIL;
 
     if (FAILED(Ready_TargetLight()))
         return E_FAIL;
+
+    m_eCurState = STATE_IDLE;
     return S_OK;
 }
 
@@ -73,10 +76,10 @@ void CCandle::Update(_float _fTimeDelta)
 {
     if (KEY_DOWN(KEY::I))
     {
-        if (STATE_TURNON == m_eCurState)
-            m_eCurState = STATE_TURNOFF;
-        else
+        if (STATE_TURNOFF == m_eCurState)
             m_eCurState = STATE_TURNON;
+        else
+            m_eCurState = STATE_TURNOFF;
     }
 
 
@@ -204,22 +207,27 @@ void CCandle::State_Change()
 void CCandle::State_Change_Idle()
 {
     static_cast<CCandle_Body*>(m_PartObjects[CANDLE_BODY])->State_Change_Idle();
+    static_cast<CCandle_UI*>(m_PartObjects[CANDLE_UI ])->State_Change_Idle();
 }
 
 void CCandle::State_Change_TurnOn()
 {
     static_cast<CCandle_Body*>(m_PartObjects[CANDLE_BODY])->State_Change_TurnOn();
+    static_cast<CCandle_UI*>(m_PartObjects[CANDLE_UI])->State_Change_TurnOn();
     Event_SetActive(m_pTargetLight, true);
+
 }
 
 void CCandle::State_Change_FlameLoop()
 {
     static_cast<CCandle_Body*>(m_PartObjects[CANDLE_BODY])->State_Change_FlameLoop();
+    static_cast<CCandle_UI*>(m_PartObjects[CANDLE_UI])->State_Change_FlameLoop();
 }
 
 void CCandle::State_Change_TurnOff()
 {
     static_cast<CCandle_Body*>(m_PartObjects[CANDLE_BODY])->State_Change_TurnOff();
+    static_cast<CCandle_UI*>(m_PartObjects[CANDLE_UI])->State_Change_TurnOff();
     Event_SetActive(m_pTargetLight, false);
 }
 
@@ -266,7 +274,7 @@ HRESULT CCandle::Ready_Components()
     return S_OK;
 }
 
-HRESULT CCandle::Ready_PartObjects()
+HRESULT CCandle::Ready_PartObjects(CANDLE_DESC* _pDesc)
 {
     // 1. Body 
     /* Part Body */
@@ -275,11 +283,21 @@ HRESULT CCandle::Ready_PartObjects()
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     BodyDesc.Build_3D_Transform(_float3(0.0f, 0.0f, 0.0f), _float3(1.0f, 1.0f, 1.0f), _float3(0.0f, 0.0f, 0.0f));
     m_PartObjects[CANDLE_PART::CANDLE_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_Candle_Body"), &BodyDesc));
-    if (nullptr == m_PartObjects[PART_BODY])
+    if (nullptr == m_PartObjects[CANDLE_PART::CANDLE_BODY])
         return E_FAIL;
 
     // 2. UI
+    CCandle_UI::CANDLE_UI_DESC UIDesc{};
+    UIDesc.iCurLevelID = m_iCurLevelID;
+    UIDesc.iCurLevelID = m_iCurLevelID;
+    UIDesc.fX = _pDesc->vCandleUIDesc.x;
+    UIDesc.fY = _pDesc->vCandleUIDesc.y;
+    UIDesc.fSizeX = _pDesc->vCandleUIDesc.z;
+    UIDesc.fSizeY = _pDesc->vCandleUIDesc.w;
 
+    m_PartObjects[CANDLE_PART::CANDLE_UI] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_Candle_UI"), &UIDesc));
+    if (nullptr == m_PartObjects[CANDLE_PART::CANDLE_UI])
+        return E_FAIL;
 
     return S_OK;
 }

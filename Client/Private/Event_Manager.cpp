@@ -639,8 +639,13 @@ HRESULT CEvent_Manager::Execute_Trigger_Enter(const EVENT& _tEvent)
 	switch (iCameraTriggerType) {
 	case (_uint)TRIGGER_TYPE::ARM_TRIGGER:
 	{
-		if (true == CCamera_Manager::GetInstance()->Set_NextArmData(*pStr, iTriggerID))
-			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+		if (true == CCamera_Manager::GetInstance()->Set_NextArmData(*pStr, iTriggerID)) {
+
+			if(CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CurCameraMode())
+				CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+			else if(CCamera_Manager::TARGET_2D == CCamera_Manager::GetInstance()->Get_CurCameraMode())
+				CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::MOVE_TO_NEXTARM);
+		}
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::CUTSCENE_TRIGGER:
@@ -780,7 +785,7 @@ HRESULT CEvent_Manager::Execute_Trigger_LookAtEnter(const EVENT& _tEvent)
 
 	break;
 	}
-
+	Safe_Delete(pStr);
 	return S_OK;
 }
 

@@ -771,11 +771,14 @@ HRESULT CTask_Manager::Cooking(const _string& _strCookingPath, CMapObject* _pMap
 	_uint iNumMeshes = pModel->Get_NumMeshes();
 
 	_string strCookingPath = _strCookingPath;
+	
+	_string strReturnText = "";
 
 	switch (_eMode)
 	{
 	case Map_Tool::CTask_Manager::COOKING_CONVEX:
 	{
+		strReturnText = "Convex";
 		CMesh* pMesh = pModel->Get_Mesh(0);
 
 		PxConvexMeshDesc  meshDesc;
@@ -807,6 +810,7 @@ HRESULT CTask_Manager::Cooking(const _string& _strCookingPath, CMapObject* _pMap
 		break;
 	case Map_Tool::CTask_Manager::COOKING_TRI:
 	{
+		strReturnText = "Triangle";
 
 		CMesh* pMesh = pModel->Get_Mesh(0);
 
@@ -842,6 +846,7 @@ HRESULT CTask_Manager::Cooking(const _string& _strCookingPath, CMapObject* _pMap
 	{
 
 #pragma region 복수메쉬
+		strReturnText = "Muiti-Convex";
 
 		_uint iMeshMaxSize = 0;
 
@@ -887,6 +892,7 @@ HRESULT CTask_Manager::Cooking(const _string& _strCookingPath, CMapObject* _pMap
 	{
 
 #pragma region 복수메쉬
+		strReturnText = "Muitl-Triangle";
 
 		_uint iMeshMaxSize = 0;
 
@@ -933,6 +939,9 @@ HRESULT CTask_Manager::Cooking(const _string& _strCookingPath, CMapObject* _pMap
 		break;
 
 	}
+
+
+	LOG_TYPE("Collider Cooking Comp! ["+ strReturnText+ "]", LOG_SAVE);
 
 	return S_OK;
 
