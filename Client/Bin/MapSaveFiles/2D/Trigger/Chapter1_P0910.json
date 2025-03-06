@@ -10,8 +10,8 @@
                 82.0
             ]
         },
-        "Fillter_MyGroup": 2,
-        "Fillter_OtherGroupMask": 128,
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
         "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 0,
         "Trigger_EventTag": "BookSectionChange_Prev",

@@ -780,7 +780,7 @@ HRESULT CEvent_Manager::Execute_Trigger_LookAtEnter(const EVENT& _tEvent)
 
 	break;
 	}
-
+	Safe_Delete(pStr);
 	return S_OK;
 }
 
