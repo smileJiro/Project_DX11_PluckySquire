@@ -507,7 +507,9 @@ void CTrigger_Manager::Register_Trigger_Action()
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_BlockPlayerInput(true);
 			
 		CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
+
 		CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 0.f, 6.f, EASE_IN_OUT);
+		
 		auto Arm = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_Arm();
 		Arm->Turn_ArmY(XMConvertToRadians(45.f));
 		Arm->Turn_ArmX(XMConvertToRadians(20.f));
@@ -515,7 +517,6 @@ void CTrigger_Manager::Register_Trigger_Action()
 	
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) 
 		{
-
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_ITEM_GET_NEWRIG);
 		CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
 		};
