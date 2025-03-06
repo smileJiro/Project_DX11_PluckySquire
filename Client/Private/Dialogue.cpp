@@ -232,12 +232,17 @@ HRESULT CDialog::NextLevelLoadJson(_int _iNextLevel)
 {
 	if (3 == (_int)_iNextLevel)
 	{
-		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data.json"))))
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_Chapter_02.json"))))
+			return E_FAIL;
+	}
+	else if (4 == _iNextLevel)
+	{
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_Chapter_04.json"))))
 			return E_FAIL;
 	}
 	else if (5 == _iNextLevel)
 	{
-		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_02.json"))))
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_Chapter_06.json"))))
 			return E_FAIL;
 	}
 

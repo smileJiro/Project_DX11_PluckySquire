@@ -79,6 +79,11 @@ HRESULT CNPC_OnlySocial::NextLevelLoadJson(_int _iNextLevel)
 		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/NPC/Create_NPC_Information.json"))))
 			return E_FAIL;
 	}
+	else if (4 == (_int)_iNextLevel)
+	{
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/NPC/Create_NPC_Information_Chapter4.json"))))
+			return E_FAIL;
+	}
 	else if (5 == _iNextLevel)
 	{
 		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/NPC/Create_NPC_Information_Chapter6.json"))))

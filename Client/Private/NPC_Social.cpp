@@ -136,10 +136,15 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 		Safe_Delete(pDesc->pActorDesc);
 
 
-		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(0.f, 0.f, -6.f, 1.f));
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(pDesc->vPositionX, pDesc->vPositionY, pDesc->vPositionZ, 1.f));
 		m_pControllerTransform->Set_Scale(COORDINATE_3D, _float3(1.5f, 1.5f, 1.5f));
 		m_pControllerTransform->Rotation(XMConvertToRadians(pDesc->fRotateAngle), XMVectorSet(0.f, 1.f, 0.f, 0.f));
-		
+
+
+		CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+		pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, m_iStartAnimation, true);
+		pModelObject->Set_Animation(m_iStartAnimation);
+		pModelObject->Set_PlayingAnim(false);
 	}
 
 	return S_OK;
@@ -172,33 +177,38 @@ void CNPC_Social::Update(_float _fTimeDelta)
 		m_isPlayDisplay = false;
 		
 	}
+
+
+	
+
 }
 
 void CNPC_Social::Late_Update(_float _fTimeDelta)
 {
-	if (false == m_isThrow && true == m_isColPlayer && true == m_isHaveDialog)
+	if (false == m_isThrow && true == m_isColPlayer && true == m_isHaveDialog && true == m_is2D)
 	{
 		Throw_Dialogue();
 		m_isThrow = true;
 		m_isPlayDisplay = true;
 	}
 	
-	if (false == m_isColPlayer && true == m_isThrow)
+	if (false == m_isColPlayer && true == m_isThrow && true == m_is2D)
 	{
 		m_isThrow = false;
 	}
 
-
-
 	if (!m_is2D)
 	{
 		m_pGameInstance->Add_RenderObject_New(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY, this);
-	}
 
+		CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+		if (true == pModelObject->Is_PlayingAnim() && false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+			pModelObject->Set_PlayingAnim(false);
+	}
 
 	__super::Late_Update(_fTimeDelta);
 
-	
 }
 
 HRESULT CNPC_Social::Render()
@@ -413,7 +423,11 @@ void CNPC_Social::Interact(CPlayer* _pUser)
 
 	else if (!m_is2D)
 	{
-		//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->
+		CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+		CDialog_Manager::GetInstance()->Set_DialogId(m_strDialogueIndex);
+		pModelObject->Set_PlayingAnim(true);
+		//pModelObject->Set_AnimationLoop(COORDINATE_3D, 0, true);
 	}
 }
 
