@@ -1198,6 +1198,372 @@
 					"Blue": 136
 				}
 			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_01",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "있잖아, 이 근처에 네 도움이 필요한 친구가 있어.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "머그잔처럼 생긴 행성에 사는 꼬마 로켓이지.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "책상 한가운데로 가면, 내가 말한 행성을\n찾을 수 있을 거야.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_02",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "안녕. 아빠 로켓의 부품을 찾고 있지?",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "왼쪽 높은 곳에서 하나 본 것 같아.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "고소 공포증은 없다면 좋겠네.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_03",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "안녕, 친구. 아빠 로켓의 부품을 찾을려면\n위로 올라가야 할 거야.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "여기 있는 발판들을 쓰면 되는데,\n내 뒤에 있는 발판부터 시작하면 돼.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "고소 공포증은 없다면 좋겠네.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_04",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "안녕. 아빠 로켓의 잃어버린 부품이 근처에 있어.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "부품을 찾으려면 이 위험천만한 우주를\n제트팩으로 가로질러야 돼.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "인생이란 원래 그런 법이지.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_05",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이 근처 나무로 된 곳 안에 양초가 있어.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "책상 맨 끝에서 찾을 수 있지.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "촛불을 켜려면 너 자신을 믿고 그 안으로 뛰어내려 봐.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_06",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "별일 없지? 이 근처에 양초가 두 개 있어.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "두 개 다 높은 곳에 있지.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "위로 올라가 보라고!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_07",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "어디 보자...",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "지금 잘하고 있는 것 같네.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
 		}
 	]
 }
