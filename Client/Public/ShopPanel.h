@@ -12,6 +12,14 @@ BEGIN(Client)
 
 class CShopPanel : public CUI
 {
+public:
+	struct ShopUI : public tagUIDesc
+	{
+		_int	iSkillLevel = { 0 };
+		_int	iPrice = { 0 };
+		_wstring	strName = TEXT(" ");
+		_wstring	strDialogue = TEXT(" ");
+	};
 
 
 protected:

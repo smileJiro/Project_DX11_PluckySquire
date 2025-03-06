@@ -38,8 +38,13 @@ HRESULT CNarration::Initialize(void* _pArg)
 		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Narration/Level_Chapter_02_Narration.json"))))
 			return E_FAIL;
 
-		//if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Narration/Level_Chapter_06_Narration.json"))))
-		//	return E_FAIL;
+
+	}
+
+	else if (LEVEL_CHAPTER_6 == pDesc->iCurLevelID)
+	{
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Narration/Level_Chapter_06_Narration.json"))))
+			return E_FAIL;
 	}
 
 	_float2 vCalScale = { 0.f, 0.f };
@@ -308,6 +313,9 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 							// 생성한 애니메이션 객체 넣기
 							CNarration_Anim* pAnim;
 							pAnim = static_cast<CNarration_Anim*>(pObject);
+
+							if (nullptr == pAnim)
+								return E_FAIL;
 
 							// 누수 의심 코드
 							

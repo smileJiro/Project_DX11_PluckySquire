@@ -119,6 +119,7 @@ private:
 	_bool						m_isFreezeOffsetReturn = { false };
 	_float2						m_fFreezeOffsetTime = { 4.f, 0.f };
 	_float2						m_fFreezeExitReturnTime = { 5.f, 0.f };
+	_bool						m_isUsingFreezeOffset = { true };
 
 	// LookAt
 	_bool						m_isEnableLookAt = { true };

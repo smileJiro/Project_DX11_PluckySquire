@@ -72,6 +72,7 @@ public:
 
         _bool is2D;
         _bool isPortrait;
+        _bool isLineEnter = { false };
         _int  iAnimationIndex = { -1 };
 
         _float3 vFontColor = _float3(0.f, 0.f, 0.f);

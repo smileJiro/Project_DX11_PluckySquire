@@ -21,6 +21,9 @@ public:
 	virtual HRESULT						Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex) override;
 	virtual HRESULT						Section_AddRenderGroup_Process() override;
 
+	virtual HRESULT						Section_Enter(const _wstring& _strPreSectionTag) override;
+	virtual HRESULT						Section_Exit(const _wstring& _strNextSectionTag) override;
+
 
 public:
 	static CSection_2D_MiniGame_Pip* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pDesc);

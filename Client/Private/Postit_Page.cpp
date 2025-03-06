@@ -43,7 +43,7 @@ HRESULT CPostit_Page::Initialize(void* _pArg)
 void CPostit_Page::Anim_Action(POSTIT_PAGE_ANIM_TYPE eType, _bool _isLoop)
 {
     Set_PlayingAnim(true);
-    Set_Animation(eType);
+    Switch_Animation(eType);
     Set_AnimationLoop(COORDINATE_2D, eType, _isLoop);
 }
 

@@ -20,7 +20,7 @@ private:
 public:
 	void					State_Change_Idle();		// 자체적인 State 관리용이 아닌 컨테이너 호출용 
 	void					State_Change_TurnOn();		// 자체적인 State 관리용이 아닌 컨테이너 호출용 
-	void					State_Change_FlameLoop();	// 자체적인 State 관리용이 아닌 컨테이너 호출용 
+	void					State_Change_FlameLoop();	// 사실 FlameLoop는 필요가없어.그냥 애니메이션 재생용이지.
 	void					State_Change_TurnOff();		// 자체적인 State 관리용이 아닌 컨테이너 호출용 
 
 public:

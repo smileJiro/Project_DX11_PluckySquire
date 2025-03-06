@@ -8,6 +8,7 @@ class CModel;
 class CVIBuffer_Collider;
 END
 
+BEGIN(Client)
 class CShopItemBG : public CShopPanel
 {
 
@@ -31,7 +32,7 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
-	SKILLSHOP				Get_SkillShopIcon() { return m_eSkillShopIcon; }
+	void					Set_Pos(_float2 _vPos) { m_vShopBGPos = _vPos; }
 
 private:
 	void					isRender();
@@ -54,9 +55,18 @@ protected:
 
 private:
 	_float					m_fOpaque = { 0.0f };
-	_float2					m_fShopBGPos = { 0.f, 0.f };
+	_float2					m_vShopBGPos = { 0.f, 0.f };
+	_int					m_iPrice = { 0 };
+	_wstring				m_strName = TEXT(" ");
+	_wstring				m_strDialog = TEXT(" ");
+
+
+
+	SKILLSHOP			m_eSkillShopIcon = SKILLSHOP_END;
+	_bool				m_isChooseItem = { false };
+
 
 
 
 };
-
+END

@@ -8,6 +8,7 @@
 #include "Trigger_Manager.h"
 #include "Player.h"
 #include "NPC.h"
+#include "UI_Manager.h"
 
 
 CSection_2D_Narration::CSection_2D_Narration(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -82,6 +83,18 @@ HRESULT CSection_2D_Narration::Remove_GameObject_ToSectionLayer(CGameObject* _pG
 
 
 	return hr;
+}
+HRESULT CSection_2D_Narration::Start_Narration()
+{
+	// 나레이션 매니져에서 가져와서 해당 나레이션이 재생 되었는지 판별해야한다.
+
+	//if (Get_SectionName() == L"Chapter2_P0506")
+	//	CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter2_P0506_Narration_01"));
+	//
+	//if (Get_SectionName() == L"Chapter6_P0304")
+	//	CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter6_P0304_Narration_01"));
+
+	return S_OK;
 }
 ;
 

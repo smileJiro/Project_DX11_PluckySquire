@@ -67,6 +67,7 @@
 #include "NPC.h"
 #include "Loader.h"
 #include "Candle.h"
+#include "CandleGame.h"
 
 
 CLevel_Chapter_06::CLevel_Chapter_06(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -166,14 +167,22 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	}
 
 	/* Test Candle */
-	CCandle::CONTAINEROBJ_DESC CandleDesc;
-	CandleDesc.iCurLevelID = LEVEL_CHAPTER_6;
-	CandleDesc.Build_3D_Transform(_float3(0.0f, 1.0f, -7.0f));
+	CCandleGame::CANDLEGAME_DESC CandleGameDesc;
+	CandleGameDesc.iCurLevelID = LEVEL_CHAPTER_6;
+	CandleGameDesc.Build_3D_Transform(_float3(0.0f, 0.0f, 0.0f));
+	CandleGameDesc.eStartCoord = COORDINATE_3D;
+	CandleGameDesc.isCoordChangeEnable = false;
+	
+	for (_uint i = 0; i < 5; ++i)
+	{
+		CandleGameDesc.CandlePositions.push_back(_float3(i * 5.0f, 1.0f, -10.f));
+	}
+	
 	CGameObject* pGameObject = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Candle"), LEVEL_CHAPTER_6, TEXT("Layer_Candle"), &pGameObject, &CandleDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_CandleGame"), LEVEL_CHAPTER_6, TEXT("Layer_CandleGame"), &pGameObject, &CandleGameDesc)))
 		return E_FAIL;
-	m_pCandle = static_cast<CCandle*>(pGameObject);
-	Safe_AddRef(m_pCandle);
+	m_pCandleGame = static_cast<CCandleGame*>(pGameObject);
+	Safe_AddRef(m_pCandleGame);
 
 	if (FAILED(Ready_Layer_Defender()))
 	{
@@ -702,6 +711,16 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Book"), m_eLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+	//CGameObject* pInteractionE;
+	//
+	//pDesc.fSizeX = 360.f / 2.f;
+	//pDesc.fSizeY = 149.f / 2.f;
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
+	//	return E_FAIL;
+	//
+	//Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pInteractionE));
+
 
 #pragma endregion InterAction UI
 
@@ -952,11 +971,11 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 
 	CGameObject* pGameObject;
-
-
+	
+	
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
 		return E_FAIL;
-
+	
 	Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
 
 	return S_OK;
@@ -1007,7 +1026,8 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	NPCDesc.iNumPartObjects = 3;
 	NPCDesc.iMainIndex = 0;
 	NPCDesc.iSubIndex = 0;
-	//wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
+	NPCDesc.vPos = _float2{ 347.9f, 353.3f };
+	wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_OnlySocial"), NPCDesc.iCurLevelID, _strLayerTag, &pGameObject, &NPCDesc)))
 		return E_FAIL;
 
@@ -1015,6 +1035,27 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 
 	return S_OK;
+
+
+	//NPCDesc.iCurLevelID = m_eLevelID;
+	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//NPCDesc.iNumPartObjects = 3;
+	//NPCDesc.iMainIndex = 0;
+	//NPCDesc.iSubIndex = 0;
+	//wsprintf(NPCDesc.strLocateSection, TEXT("Chapter5_P0102"));
+	////wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+	//	return E_FAIL;
+
+
+
+
+
+
+
+	return S_OK;
+
 }
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
@@ -1311,7 +1352,7 @@ CLevel_Chapter_06* CLevel_Chapter_06::Create(ID3D11Device* _pDevice, ID3D11Devic
 }
 void CLevel_Chapter_06::Free()
 {
-	Safe_Release(m_pCandle);
+	Safe_Release(m_pCandleGame);
 	m_pGameInstance->End_BGM();
 
 	__super::Free();

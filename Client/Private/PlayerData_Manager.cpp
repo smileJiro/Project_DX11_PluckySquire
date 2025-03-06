@@ -178,6 +178,7 @@ void CPlayerData_Manager::Set_CurrentPlayer(PLAYALBE_ID _ePlayableID)
 	m_pCurrentPlayer->Set_BlockPlayerInput(false);
 	m_pCurrentPlayer->Set_Active(true);
 	Safe_AddRef(m_pCurrentPlayer);
+	m_pCurrentPlayer->On_CurrentPlayable();
 }
 
 
