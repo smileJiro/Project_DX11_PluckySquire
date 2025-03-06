@@ -55,6 +55,7 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 			_string strFileName = pDesc->SectionJson["Section_File_Name"];
 
 			_wstring strSectionPath = MAP_2D_DEFAULT_PATH;
+			strSectionPath += L"MapRawData/";
 			strSectionPath += StringToWstring(strFileName);
 
 			HANDLE	hFile = CreateFile(strSectionPath.c_str(),

@@ -1492,11 +1492,25 @@ void C2DMap_Tool_Manager::TriggerEvent_Imgui(_bool bLock)
 		string m_strConditionNames[] = { "Collision Enter",
 											"Collision",
 											"Collision Exit", };
-
-		string m_strEventNames[] = { "CutScene Event",
-									"Object Spawn",
-										"Map_Change",
-										"Popup_UI",
+		//EVENT_TRIGGER,
+		//ARM_TRIGGER,
+		//CUTSCENE_TRIGGER,
+		//FREEZE_X_TRIGGER,
+		//FREEZE_Z_TRIGGER,
+		//TELEPORT_TRIGGER,
+		//SECTION_CHANGE_TRIGGER,
+		//DEFAULT_TRIGGER,
+		//ENABLE_LOOKAT_TRIGGER,
+		string m_strEventNames[] = { 
+			"EVENT_TRIGGER",
+			"ARM_TRIGGER",
+			"CUTSCENE_TRIGGER",
+			"FREEZE_X_TRIGGER",
+			"FREEZE_Z_TRIGGER",
+			"TELEPORT_TRIGGER",
+			"SECTION_CHANGE_TRIGGER",
+			"DEFAULT_TRIGGER",
+			"ENABLE_LOOKAT_TRIGGER",
 		};
 
 
@@ -2310,11 +2324,21 @@ _int C2DMap_Tool_Manager::Find_Event(const _string& _strTag)
 	_wstring strEventTag = StringToWstring(_strTag);
 	
 	_int iIndex = -1;
-	auto iter = find_if(m_TriggerEvents.begin(), m_TriggerEvents.end(), [&iIndex,&_strTag](const TRIGGER_EVENT& tEvent)->bool {
-		iIndex++;
-		return tEvent.strEventName == _strTag;
+
+	for (_uint i = 0; i < (_uint)m_TriggerEvents.size(); ++i)
+	{
+
+		if (m_TriggerEvents[i].strEventName == _strTag)
+			return i;
+	}
+	return -1;
+	/*auto iter = find_if(m_TriggerEvents.begin(), m_TriggerEvents.end(), [&iIndex,&_strTag](const TRIGGER_EVENT& tEvent)->bool {
+		_bool isReturn = tEvent.strEventName == _strTag;
+		if(!isReturn)
+			iIndex++;
+		return isReturn;
 		});
-	return iIndex;
+	return iIndex;*/
 }
 
 HRESULT C2DMap_Tool_Manager::Update_Model_Index()
@@ -2913,6 +2937,7 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 	log = "Load Start... File Name : ";
 	log += filename;
 	_wstring strFullFilePath = MAP_2D_DEFAULT_PATH;
+	strFullFilePath += L"MapRawData/";
 	strFullFilePath += m_arrSelectName[SAVE_LIST] + L".m2chc";
 
 
@@ -3255,6 +3280,7 @@ void C2DMap_Tool_Manager::Load_Trigger()
 				static_cast<C2DTrigger_Sample*>(pGameObject)->Set_TriggerKey(m_TriggerEvents[iEventIndex].strEventName);
 			}
 		}
+		inputFile.close();
 	}
 
 }
