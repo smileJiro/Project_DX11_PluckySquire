@@ -67,6 +67,7 @@
 #include "NPC.h"
 #include "Loader.h"
 #include "Candle.h"
+#include "CandleGame.h"
 
 
 CLevel_Chapter_06::CLevel_Chapter_06(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -166,14 +167,22 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	}
 
 	/* Test Candle */
-	CCandle::CONTAINEROBJ_DESC CandleDesc;
-	CandleDesc.iCurLevelID = LEVEL_CHAPTER_6;
-	CandleDesc.Build_3D_Transform(_float3(0.0f, 1.0f, -7.0f));
+	CCandleGame::CANDLEGAME_DESC CandleGameDesc;
+	CandleGameDesc.iCurLevelID = LEVEL_CHAPTER_6;
+	CandleGameDesc.Build_3D_Transform(_float3(0.0f, 0.0f, 0.0f));
+	CandleGameDesc.eStartCoord = COORDINATE_3D;
+	CandleGameDesc.isCoordChangeEnable = false;
+	
+	for (_uint i = 0; i < 5; ++i)
+	{
+		CandleGameDesc.CandlePositions.push_back(_float3(i * 5.0f, 1.0f, -10.f));
+	}
+	
 	CGameObject* pGameObject = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Candle"), LEVEL_CHAPTER_6, TEXT("Layer_Candle"), &pGameObject, &CandleDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_CandleGame"), LEVEL_CHAPTER_6, TEXT("Layer_CandleGame"), &pGameObject, &CandleGameDesc)))
 		return E_FAIL;
-	m_pCandle = static_cast<CCandle*>(pGameObject);
-	Safe_AddRef(m_pCandle);
+	m_pCandleGame = static_cast<CCandleGame*>(pGameObject);
+	Safe_AddRef(m_pCandleGame);
 
 	if (FAILED(Ready_Layer_Defender()))
 	{
@@ -1343,7 +1352,7 @@ CLevel_Chapter_06* CLevel_Chapter_06::Create(ID3D11Device* _pDevice, ID3D11Devic
 }
 void CLevel_Chapter_06::Free()
 {
-	Safe_Release(m_pCandle);
+	Safe_Release(m_pCandleGame);
 	m_pGameInstance->End_BGM();
 
 	__super::Free();

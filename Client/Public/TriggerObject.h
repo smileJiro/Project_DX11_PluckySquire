@@ -78,11 +78,12 @@ public:
 	void						Set_CustomData(_wstring _Key, any _pValue);
 	any							Get_CustomData(_wstring _Key);
 
-	void						Resister_EnterHandler(function<void(_uint, _int, _wstring)> _Handler);
-	void						Resister_StayHandler(function<void(_uint, _int, _wstring)> _Handler);
-	void						Resister_ExitHandler(function<void(_uint, _int, _wstring)> _Handler);
-	void						Resister_EnterHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler);
-	void						Resister_ExitHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler);
+	void						Register_EnterHandler(function<void(_uint, _int, _wstring)> _Handler);
+	void						Register_StayHandler(function<void(_uint, _int, _wstring)> _Handler);
+	void						Register_ExitHandler(function<void(_uint, _int, _wstring)> _Handler);
+	void						Register_EnterHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler);
+	void						Register_ExitHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler);
+	void						Register_ExitHandler_ByCollision2D(function<void(_uint, _int, CCollider* _pMyCollider, CCollider* _pOtherCollider)> _Handler);
 
 public:
 	virtual void				OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
@@ -116,6 +117,8 @@ protected:
 	
 	function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)>	m_CollisionEnterHandler;
 	function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> m_CollisionExitHandler;
+
+	function<void(_uint, _int, CCollider* _pMyCollider, CCollider* _pOtherCollider)> m_Collision2DExitHandler;
 
 
 private:

@@ -226,6 +226,276 @@
   },
   {
     "Arm_Data": {
+      "Arm_Length": 7.4,
+      "Arm_Length_RatioType": 3,
+      "Arm_MoveTime_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_MoveTime_AxisY": [
+        1.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisY": [
+        0.0,
+        0.0
+      ],
+      "Arm_Time": [
+        1.0,
+        0.0
+      ],
+      "Desire_Arm": [
+        -0.6890,
+        0.7245,
+        0.0155
+      ]
+    },
+    "Arm_Tag": "Chapter6_Sksp5_Left_1",
+    "Sub_Data": {
+      "AtOffset": [
+        0.0,
+        1.2,
+        0.0
+      ],
+      "AtOffset_RatioType": 3,
+      "AtOffset_Time": 1.0,
+      "Use_SubData": true,
+      "Zoom_Level": 4,
+      "Zoom_RatioType": 3,
+      "Zoom_Time": 1.0
+    }
+  },
+  {
+    "Arm_Data": {
+      "Arm_Length": 7.4,
+      "Arm_Length_RatioType": 3,
+      "Arm_MoveTime_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_MoveTime_AxisY": [
+        1.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisY": [
+        0.0,
+        0.0
+      ],
+      "Arm_Time": [
+        1.0,
+        0.0
+      ],
+      "Desire_Arm": [
+        -0.7737,
+        0.6332,
+        0.0174
+      ]
+    },
+    "Arm_Tag": "Chapter6_Sksp5_Left_2",
+    "Sub_Data": {
+      "AtOffset": [
+        0.0,
+        1.2,
+        0.0
+      ],
+      "AtOffset_RatioType": 3,
+      "AtOffset_Time": 1.0,
+      "Use_SubData": true,
+      "Zoom_Level": 4,
+      "Zoom_RatioType": 3,
+      "Zoom_Time": 1.0
+    }
+  },
+  {
+    "Arm_Data": {
+      "Arm_Length": 7.4,
+      "Arm_Length_RatioType": 3,
+      "Arm_MoveTime_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_MoveTime_AxisY": [
+        1.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisY": [
+        0.0,
+        0.0
+      ],
+      "Arm_Time": [
+        1.0,
+        0.0
+      ],
+      "Desire_Arm": [
+        -0.9832,
+        0.1807,
+        0.0221
+      ]
+    },
+    "Arm_Tag": "Chapter6_Sksp5_Left_3",
+    "Sub_Data": {
+      "AtOffset": [
+        0.0,
+        1.2,
+        0.0
+      ],
+      "AtOffset_RatioType": 3,
+      "AtOffset_Time": 1.0,
+      "Use_SubData": true,
+      "Zoom_Level": 4,
+      "Zoom_RatioType": 3,
+      "Zoom_Time": 1.0
+    }
+  },
+  {
+    "Arm_Data": {
+      "Arm_Length": 7.4,
+      "Arm_Length_RatioType": 3,
+      "Arm_MoveTime_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_MoveTime_AxisY": [
+        1.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisY": [
+        0.0,
+        0.0
+      ],
+      "Arm_Time": [
+        1.0,
+        0.0
+      ],
+      "Desire_Arm": [
+        0.77580,
+        0.6275,
+        -0.0647
+      ]
+    },
+    "Arm_Tag": "Chapter6_Sksp5_Right_2",
+    "Sub_Data": {
+      "AtOffset": [
+        0.0,
+        1.2,
+        0.0
+      ],
+      "AtOffset_RatioType": 3,
+      "AtOffset_Time": 1.0,
+      "Use_SubData": true,
+      "Zoom_Level": 4,
+      "Zoom_RatioType": 3,
+      "Zoom_Time": 1.0
+    }
+  },
+  {
+    "Arm_Data": {
+      "Arm_Length": 7.4,
+      "Arm_Length_RatioType": 3,
+      "Arm_MoveTime_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_MoveTime_AxisY": [
+        1.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisY": [
+        0.0,
+        0.0
+      ],
+      "Arm_Time": [
+        1.0,
+        0.0
+      ],
+      "Desire_Arm": [
+        0.0672,
+        0.2408,
+        -0.0807
+      ]
+    },
+    "Arm_Tag": "Chapter6_Sksp5_Right_3",
+    "Sub_Data": {
+      "AtOffset": [
+        0.0,
+        1.2,
+        0.0
+      ],
+      "AtOffset_RatioType": 3,
+      "AtOffset_Time": 1.0,
+      "Use_SubData": true,
+      "Zoom_Level": 4,
+      "Zoom_RatioType": 3,
+      "Zoom_Time": 1.0
+    }
+  },
+  {
+    "Arm_Data": {
+      "Arm_Length": 7.4,
+      "Arm_Length_RatioType": 3,
+      "Arm_MoveTime_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_MoveTime_AxisY": [
+        1.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisY": [
+        0.0,
+        0.0
+      ],
+      "Arm_Time": [
+        1.0,
+        0.0
+      ],
+      "Desire_Arm": [
+        -0.1011,
+        0.2408,
+        -0.9652
+      ]
+    },
+    "Arm_Tag": "Chapter6_Sksp5_Corner",
+    "Sub_Data": {
+      "AtOffset": [
+        0.0,
+        1.2,
+        0.0
+      ],
+      "AtOffset_RatioType": 3,
+      "AtOffset_Time": 1.0,
+      "Use_SubData": true,
+      "Zoom_Level": 4,
+      "Zoom_RatioType": 3,
+      "Zoom_Time": 1.0
+    }
+  },
+  {
+    "Arm_Data": {
       "Arm_Length": 12.5,
       "Arm_Length_RatioType": 3,
       "Arm_MoveTime_AxisRight": [

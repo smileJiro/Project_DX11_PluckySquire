@@ -105,6 +105,7 @@ protected:
 	_bool						m_isRender = true;
 	_bool						m_isPooling = false;
 	_bool						m_isFrustumCulling = false;
+
 protected:
 	map<const _wstring, CComponent*> m_Components;
 

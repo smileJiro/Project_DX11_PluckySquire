@@ -350,8 +350,20 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTrigge
 			}
 		}
 		break;
+		case (_uint)TRIGGER_TYPE::ARM_TRIGGER:
+		{
+			if (_TriggerJson.contains("Arm_Info")) {
+				json exitReturnMask = _TriggerJson["Arm_Info"]["Exit_Return_Mask"];
+				_uint iReturnMask = {};
+				for (auto& [key, value] : exitReturnMask.items()) {
+					szKey = key;
+					iReturnMask = value;
+				}
 
-
+				dynamic_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(m_pGameInstance->StringToWString(szKey), iReturnMask);
+			}
+		}
+		break;
 	}
 
 	if (nullptr != _pSection)
@@ -377,11 +389,11 @@ void CTrigger_Manager::Register_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	switch (_iTriggerType) {
 	case (_uint)TRIGGER_TYPE::ARM_TRIGGER:
 	{
-		_pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+		_pTrigger->Register_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
 			});
 
-		_pTrigger->Resister_ExitHandler_ByCollision([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, const COLL_INFO& _My, const COLL_INFO& _Other) {
+		_pTrigger->Register_ExitHandler_ByCollision([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, const COLL_INFO& _My, const COLL_INFO& _Other) {
 			
 			_vector vOtherPos = _Other.pActorUserData->pOwner->Get_ControllerTransform()->Get_Transform()->Get_State(CTransform::STATE_POSITION);
 			_vector vPos = _My.pActorUserData->pOwner->Get_ControllerTransform()->Get_Transform()->Get_State(CTransform::STATE_POSITION);
@@ -397,34 +409,38 @@ void CTrigger_Manager::Register_Event_Handler(_uint _iTriggerType, CTriggerObjec
 			Event_Trigger_Exit_ByCollision(_iTriggerType, _iTriggerID, isReturn);
 			});
 
+		_pTrigger->Register_ExitHandler_ByCollision2D([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, CCollider* _pMyCollider, CCollider* _pOtherCollider) {
+
+			});
+
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::CUTSCENE_TRIGGER:
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
 	{
-		_pTrigger->Resister_EnterHandler([_pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+		_pTrigger->Register_EnterHandler([_pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 			
 			_float3 vFreezeExitArm = any_cast<_float3>(_pTrigger->Get_CustomData(TEXT("FreezeExitArm")));
 			
 			Event_Trigger_FreezeEnter(_iTriggerType, _iTriggerID, _szEventTag, vFreezeExitArm);
 			});
 
-		_pTrigger->Resister_ExitHandler([_pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+		_pTrigger->Register_ExitHandler([_pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 			Event_Trigger_Exit(_iTriggerType, _iTriggerID, _szEventTag);
 		});
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::FREEZE_Z_TRIGGER:
 	{
-		_pTrigger->Resister_EnterHandler([_pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+		_pTrigger->Register_EnterHandler([_pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 
 			_float3 vFreezeExitArm = any_cast<_float3>(_pTrigger->Get_CustomData(TEXT("FreezeExitArm")));
 
 			Event_Trigger_FreezeEnter(_iTriggerType, _iTriggerID, _szEventTag, vFreezeExitArm);
 			});
 
-		_pTrigger->Resister_ExitHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+		_pTrigger->Register_ExitHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 			Event_Trigger_Exit(_iTriggerType, _iTriggerID, _szEventTag);
 			});
 	}
@@ -432,7 +448,7 @@ void CTrigger_Manager::Register_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
 		break;
 	case (_uint)TRIGGER_TYPE::SECTION_CHANGE_TRIGGER:
-		_pTrigger->Resister_EnterHandler([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+		_pTrigger->Register_EnterHandler([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 			_float3 fNextPosition = any_cast<_float3>(_pTrigger->Get_CustomData(TEXT("Next_Position")));
 
 			if (_wstring::npos != _szEventTag.rfind(L"Next"))
@@ -450,21 +466,21 @@ void CTrigger_Manager::Register_Event_Handler(_uint _iTriggerType, CTriggerObjec
 		break;
 	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
 	{
-		_pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+		_pTrigger->Register_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
 			});
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::ENABLE_LOOKAT_TRIGGER:
 	{
-		_pTrigger->Resister_EnterHandler([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+		_pTrigger->Register_EnterHandler([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 
 			_bool iReturnMask = any_cast<_bool>(_pTrigger->Get_CustomData(TEXT("IsLookAt")));
 			Event_Trigger_LookAtEnter(_iTriggerType, _iTriggerID, _szEventTag, iReturnMask);
 
 			});
 
-		_pTrigger->Resister_ExitHandler_ByCollision([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, const COLL_INFO& _My, const COLL_INFO& _Other) {
+		_pTrigger->Register_ExitHandler_ByCollision([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, const COLL_INFO& _My, const COLL_INFO& _Other) {
 
 			_vector vOtherPos = _Other.pActorUserData->pOwner->Get_ControllerTransform()->Get_Transform()->Get_State(CTransform::STATE_POSITION);
 			_vector vPos = _My.pActorUserData->pOwner->Get_ControllerTransform()->Get_Transform()->Get_State(CTransform::STATE_POSITION);
