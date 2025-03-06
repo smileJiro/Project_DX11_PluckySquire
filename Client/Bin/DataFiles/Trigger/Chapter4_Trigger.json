@@ -821,5 +821,33 @@
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeX_9",
         "Trigger_Type": 3
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                0.5,
+                2.5,
+                3.0999999046325684
+            ],
+            "Position": [
+                34.59358215332031,
+                17.28499984741211,
+                9.112000465393066
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                0.0,
+                -35.599998474121094,
+                0.0
+            ],
+            "ShapeType": 0
+        },
+        "Trigger_Reusable" : false,
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter4_Event_Flag",
+        "Trigger_Type": 0
     }
 ]

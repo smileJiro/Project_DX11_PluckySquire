@@ -24,6 +24,7 @@ public:
 		PLAYMAP,
 		NARRAION,
 		SKSP,
+		MINIGAME,
 		SECTION_2D_PLAY_TYPE_LAST
 	};
 

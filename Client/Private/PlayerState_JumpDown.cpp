@@ -6,6 +6,7 @@
 #include "Interactable.h"
 #include "Effect_Manager.h"
 #include "ModelObject.h"
+#include "PlayerBody.h"
 
 CPlayerState_JumpDown::CPlayerState_JumpDown(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::JUMP_DOWN)

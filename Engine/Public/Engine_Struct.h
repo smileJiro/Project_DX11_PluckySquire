@@ -405,6 +405,7 @@ namespace Engine
 	{
 		_float2				fTotalTime = {};
 		_uint				iNextCameraType = {};
+		_bool				isPause = { false };		// 끝나고 대기할지 말지
 	} CUTSCENE_SUB_DATA;
 
 	typedef struct tagInitialData

@@ -14,6 +14,7 @@ class CCharacter abstract : public CContainerObject, public IStoppable
 public:
 	typedef struct tagCharacterDesc : public CContainerObject::CONTAINEROBJ_DESC
 	{
+		STAT _tStat;
 		_float _fStepSlopeThreshold = 0.35f;
 		_float _fStepHeightThreshold =0.35f;
 	}CHARACTER_DESC;

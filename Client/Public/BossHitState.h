@@ -18,9 +18,6 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
-private:
-	_float m_fCoolTime = { 0.f };
-
 public:
 	static CBossHitState* Create(void* _pArg);
 

@@ -2,6 +2,7 @@
 #include "PlayerState_Drag.h"
 #include "DraggableObject.h"
 #include "Actor_Dynamic.h"
+#include "PlayerBody.h"
 
 CPlayerState_Drag::CPlayerState_Drag(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::DRAG)

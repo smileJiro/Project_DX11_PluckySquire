@@ -54,7 +54,7 @@ void CGameEventExecuter::GameEvent_End()
 
 CPlayer* CGameEventExecuter::Get_Player()
 {
-	return CPlayerData_Manager::GetInstance()->Get_Player_Ptr();
+	return CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 	/*CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
 	if (nullptr == pGameObject)
 		return nullptr;

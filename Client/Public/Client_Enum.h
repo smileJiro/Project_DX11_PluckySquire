@@ -214,7 +214,9 @@ namespace Client
 	enum class BOSS_STATE
 	{
 		SCENE,
+		TRANSITION,
 		IDLE,
+
 		ATTACK,
 		ENERGYBALL,
 		HOMINGBALL,

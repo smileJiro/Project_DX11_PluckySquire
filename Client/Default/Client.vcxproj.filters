@@ -541,6 +541,33 @@
     <Filter Include="02.GameObjects\MapObject\Book">
       <UniqueIdentifier>{8bf5a38a-cd6a-4ee8-b268-00e43d9656dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="90. Minigame_Sneak">
+      <UniqueIdentifier>{fa690acd-ae0f-4182-89a0-5fe73843553f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects">
+      <UniqueIdentifier>{cab1d124-560b-4b6f-9de4-6ba7f2182691}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak">
+      <UniqueIdentifier>{227de015-2046-431b-8a29-398d60912fb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Tile">
+      <UniqueIdentifier>{10d2a6a6-6aac-4da1-9cf5-f5b87a49f10b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Tile\Default">
+      <UniqueIdentifier>{cff21b72-01f2-41c0-b6c9-85d95de3dd2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Tile\Trap">
+      <UniqueIdentifier>{60ba1fac-436c-4f94-bf84-e2e833d8a327}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Section\Section_2D\MiniGame_2D">
+      <UniqueIdentifier>{c1bd15de-5410-4959-a197-e6ced944b97d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Section\Section_2D\MiniGame_2D\Pip">
+      <UniqueIdentifier>{a5584601-2683-4eae-9a4f-60e52d0e3bd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\97. Shop_Manager">
+      <UniqueIdentifier>{a93fd688-0c28-4e4b-923f-ad1624a22d74}</UniqueIdentifier>
+    </Filter>
     <Filter Include="05.MiniGames">
       <UniqueIdentifier>{2dd2ae67-e5e0-4698-b68e-1ff50813780d}</UniqueIdentifier>
     </Filter>
@@ -1396,6 +1423,39 @@
     <ClInclude Include="..\Public\Level_Chapter_08.h">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_MiniGame.h">
+      <Filter>04.Section\Section_2D\MiniGame_2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Section_2D_MiniGame_Pip.h">
+      <Filter>04.Section\Section_2D\MiniGame_2D\Pip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Minigame_Sneak.h">
+      <Filter>90. Minigame_Sneak</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Candle.h" />
+    <ClInclude Include="..\public\Candle_Body.h" />
+    <ClInclude Include="..\public\Candle_UI.h" />
+    <ClInclude Include="..\Public\Narration_Manager.h" />
+    <ClInclude Include="..\Public\Narration_New.h" />
+    <ClInclude Include="..\public\Sneak_Default_Tile.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_Tile.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_Trap_Tile.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Trap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderPlayer.h" />
+    <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
+    <ClInclude Include="..\Public\Minigame_Defender.h" />
+    <ClInclude Include="..\Public\Playable.h" />
+    <ClInclude Include="..\Public\BossDeadState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossTransitionState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Narration_Manager.h" />
     <ClInclude Include="..\Public\Narration_New.h" />
     <ClInclude Include="..\public\Candle.h">
@@ -2236,6 +2296,39 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_Chapter_08.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Candle.cpp" />
+    <ClCompile Include="..\private\Candle_Body.cpp" />
+    <ClCompile Include="..\private\Candle_UI.cpp" />
+    <ClCompile Include="..\Private\Narration_Manager.cpp" />
+    <ClCompile Include="..\Private\Narration_New.cpp" />
+    <ClCompile Include="..\Private\Section_2D_MiniGame.cpp">
+      <Filter>04.Section\Section_2D\MiniGame_2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Section_2D_MiniGame_Pip.cpp">
+      <Filter>04.Section\Section_2D\MiniGame_2D\Pip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Minigame_Sneak.cpp">
+      <Filter>90. Minigame_Sneak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_Default_Tile.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_Tile.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_Trap_Tile.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Trap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderPlayer.cpp" />
+    <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
+    <ClCompile Include="..\Private\Minigame_Defender.cpp" />
+    <ClCompile Include="..\Private\Playable.cpp" />
+    <ClCompile Include="..\Private\BossDeadState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossTransitionState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Narration_Manager.cpp" />
     <ClCompile Include="..\Private\Narration_New.cpp" />

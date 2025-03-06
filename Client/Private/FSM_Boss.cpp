@@ -3,6 +3,7 @@
 #include "Monster.h"
 
 #include "BossSceneState.h"
+#include "BossTransitionState.h"
 #include "BossIdleState.h"
 #include "BossHomingBallState.h"
 #include "BossEnergyBallState.h"
@@ -11,6 +12,7 @@
 #include "BossRockVolleyState.h"
 #include "BossShieldState.h"
 #include "BossHitState.h"
+#include "BossDeadState.h"
 
 CFSM_Boss::CFSM_Boss(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CFSM(_pDevice, _pContext)
@@ -78,6 +80,16 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 		}*/
 		break;
 	}
+
+	case Client::BOSS_STATE::TRANSITION:
+		pState = CBossTransitionState::Create(&Desc);
+
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)BOSS_STATE::TRANSITION, pState);
+		break;
 	
 	case Client::BOSS_STATE::IDLE:
 		pState = CBossIdleState::Create(&Desc);
@@ -159,6 +171,16 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 		m_States.emplace((_uint)BOSS_STATE::HIT, pState);
 		break;
 
+	case Client::BOSS_STATE::DEAD:
+		pState = CBossDeadState::Create(&Desc);
+
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)BOSS_STATE::DEAD, pState);
+		break;
+
 	case Client::BOSS_STATE::LAST:
 		break;
 	default:
@@ -220,18 +242,19 @@ _uint CFSM_Boss::Determine_NextAttack()
 	//ATTACK 이후에 여러 패턴 enum으로 놨음.
 	if ((_uint)BOSS_STATE::ATTACK > m_iAttackIdx)
 		return 0;
-	//조건 체크 후 인덱스 증가하기 때문에 ATTACK으로 설정
-	if ((_uint)BOSS_STATE::LAST <= m_iAttackIdx)
-		m_iAttackIdx = (_uint)BOSS_STATE::ATTACK;
-	
+
 	++m_iAttackIdx;
+
+	if ((_uint)BOSS_STATE::HIT <= m_iAttackIdx)
+		m_iAttackIdx = (_uint)BOSS_STATE::ATTACK + 1;
+	
 
 #ifdef _DEBUG
 	while(nullptr == m_States[m_iAttackIdx])
 	{
 		++m_iAttackIdx;
 
-		if ((_uint)BOSS_STATE::LAST <= m_iAttackIdx)
+		if ((_uint)BOSS_STATE::HIT <= m_iAttackIdx)
 			m_iAttackIdx = (_uint)BOSS_STATE::ATTACK + 1;
 	}
 #endif // _DEBUG

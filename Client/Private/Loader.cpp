@@ -118,6 +118,12 @@
 #include "Rubboink_Tiny.h"
 #include "MudPit.h"
 #include "Zipline.h"
+#include "DefenderPlayer.h"
+#include "DefenderPlayerProjectile.h"
+#include "Minigame_Defender.h"
+
+#include "Sneak_Default_Tile.h"
+#include "Sneak_Trap_Tile.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -1229,7 +1235,7 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			CBoss_TennisBall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+		_matrix matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),
 			C3DModel::Create(m_pDevice, m_pContext,
@@ -1316,7 +1322,9 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 	#pragma region Chapter 6 - Component Load
 
 		lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
-
+		//if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_DefenderPlayerAnimGenerator"),
+		//	CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter6/DefenderPlayer/defenderplayeranimevts.animevt"))))
+		//	return E_FAIL;
 
 	#pragma endregion
 
@@ -1378,6 +1386,15 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_TiltSwapPusher"),
 			CTiltSwapPusher::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Minigame_Defender"),
+			CMiniGame_Defender::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderPlayer"),
+			CDefenderPlayer::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderPlayerProjectile"),
+			CDefenderPlayerProjectile::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 		/* Monster */
 
@@ -1521,7 +1538,13 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	/* Monster */
 
 	/* Etc */
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakDefaultTile"),
+		CSneak_Default_Tile::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakTrapTile"),
+		CSneak_Trap_Tile::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 #pragma endregion
 

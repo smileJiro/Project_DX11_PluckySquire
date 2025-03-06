@@ -17,6 +17,7 @@
 #include "CubeMap.h"
 #include "MainTable.h"
 #include "Player.h"
+#include "DefenderPlayer.h"
 #include "Beetle.h"
 #include "BirdMonster.h"
 #include "Projectile_BirdMonster.h"
@@ -37,6 +38,8 @@
 #include "MudPit.h"
 #include "Book.h"
 
+//DEFENDER
+#include "Minigame_Defender.h"
 
 #include "RayShape.h"
 #include "CarriableObject.h"
@@ -181,6 +184,11 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pCandleGame = static_cast<CCandleGame*>(pGameObject);
 	Safe_AddRef(m_pCandleGame);
 
+	if (FAILED(Ready_Layer_Defender()))
+	{
+		MSG_BOX(" Failed Ready_Layer_Defender (Level_Chapter_06::Initialize)");
+		assert(nullptr);
+	}
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
@@ -609,6 +617,28 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	return S_OK;
 }
 
+HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
+{
+	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+
+
+	CDefenderPlayer::DEFENDERPLAYER_DESC tDeffenderPlayerDesc = {};
+	tDeffenderPlayerDesc.iCurLevelID = m_eLevelID;
+	CDefenderPlayer* pPlayer = static_cast<CDefenderPlayer*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderPlayer"), &tDeffenderPlayerDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pPlayer);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
+	pPlayer->Set_Active(false);
+
+	CMiniGame_Defender::DEFENDER_CONTROLLTOWER_DESC tDesc = {};
+	tDesc.iCurLevelID = m_eLevelID;
+	tDesc.tTransform2DDesc.vInitialPosition = { -500.f, 0.35f, 0.f };   // TODO ::임시 위치
+	CMiniGame_Defender* pTower = static_cast<CMiniGame_Defender*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Minigame_Defender"), &tDesc));;
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pTower);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pTower, SECTION_2D_PLAYMAP_OBJECT);
+
+	return S_OK;
+}
+
 HRESULT CLevel_Chapter_06::Ready_Layer_Book(const _wstring& _strLayerTag)
 {
 	//TODO :: SAMPLE
@@ -680,6 +710,16 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Book"), m_eLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
+
+	//CGameObject* pInteractionE;
+	//
+	//pDesc.fSizeX = 360.f / 2.f;
+	//pDesc.fSizeY = 149.f / 2.f;
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
+	//	return E_FAIL;
+	//
+	//Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pInteractionE));
 
 
 #pragma endregion InterAction UI
@@ -931,11 +971,11 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 
 	CGameObject* pGameObject;
-
-
+	
+	
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
 		return E_FAIL;
-
+	
 	Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
 
 	return S_OK;
@@ -986,7 +1026,8 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	NPCDesc.iNumPartObjects = 3;
 	NPCDesc.iMainIndex = 0;
 	NPCDesc.iSubIndex = 0;
-	//wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
+	NPCDesc.vPos = _float2{ 347.9f, 353.3f };
+	wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_OnlySocial"), NPCDesc.iCurLevelID, _strLayerTag, &pGameObject, &NPCDesc)))
 		return E_FAIL;
 
@@ -996,6 +1037,16 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	return S_OK;
 
 
+	//NPCDesc.iCurLevelID = m_eLevelID;
+	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//NPCDesc.iNumPartObjects = 3;
+	//NPCDesc.iMainIndex = 0;
+	//NPCDesc.iSubIndex = 0;
+	//wsprintf(NPCDesc.strLocateSection, TEXT("Chapter5_P0102"));
+	////wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+	//	return E_FAIL;
 
 
 

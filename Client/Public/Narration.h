@@ -118,7 +118,7 @@ private:
 	NarrationData                           m_NarrationData;
 	vector<NarrationData>                   m_NarrationDatas;
     vector<CNarration_Anim*>                m_vecAnimation;
-    vector<CNarration_Anim*>                m_pCurrentAnimObj = { nullptr };
+    vector<CNarration_Anim*>                m_pCurrentAnimObj;
     map<_uint, vector<CNarration_Anim*>>    m_vAnimObjectsByLine;
 
     _bool                                   m_isLeftRight; // 카메라를 위한 레프트 라이트

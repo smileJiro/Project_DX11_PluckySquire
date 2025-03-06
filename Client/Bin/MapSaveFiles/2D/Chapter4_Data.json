@@ -38,7 +38,7 @@
 		},
 		"Minigame_Info" : 
 		{
-			"Minigame_Type" : "Word",
+			"Minigame_Type" : 0,
 			"Minigame_Name" : "WordGame_01"
 		}
 	},
@@ -60,9 +60,9 @@
 			"Pre_Page_Tag": "Chapter4_P0304",
 			"Next_Page_Tag": "Chapter4_P0708"
 		},
-		"Minigame_Info": {
-			"Minigame_Type": "Word",
-			"Minigame_Name": "WordGame_02"
+		"MiniGame_Info": {
+			"MiniGame_Type": 0,
+			"MiniGame_Name": "WordGame_02"
 		}
 	}
 	,

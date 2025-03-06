@@ -107,6 +107,7 @@ HRESULT CSection_2D::Import(void* _pDesc)
 	{
 		case Client::CSection_2D::NARRAION:
 		case Client::CSection_2D::PLAYMAP:
+		case Client::CSection_2D::MINIGAME:
 		{
 			if (pDesc->SectionJson.contains("Section_Info"))
 			{
