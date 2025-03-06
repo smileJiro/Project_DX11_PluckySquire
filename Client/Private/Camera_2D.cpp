@@ -42,7 +42,7 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_fBasicRatio[HORIZON_NON_SCALE] = { 0.25f, 0.f };
-	m_fBasicRatio[HORIZON_SCALE] = { 0.1f, 0.1f };
+	m_fBasicRatio[HORIZON_SCALE] = { 0.15f, 0.25f };
 	m_fBasicRatio[VERTICAL_NONE_SCALE] = { 0.f, 0.05f };
 	m_fBasicRatio[VERTICAL_SCALE] = { 0.f, 0.1f };
 
@@ -152,7 +152,10 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 			pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
 
 			if (VERTICAL == m_eDirectionType) {
-				pData = Find_ArmData(TEXT("Book_Vertical"));
+				if (1.f == m_fOriginLengthValue)
+					Set_NextArmData(TEXT("Book_Vertical"), 0);
+				else
+					Set_NextArmData(TEXT("Book_Vertical_Ratio"), 0);
 			}
 			else {
 				pData = Find_ArmData(TEXT("Book_Horizon"));
@@ -522,7 +525,11 @@ void CCamera_2D::Action_SetUp_ByMode()
 			Set_LengthValue(m_fLengthValue, m_fOriginLengthValue);
 
 			if (VERTICAL == m_eDirectionType) {
-				Set_NextArmData(TEXT("Book_Vertical"), 0);
+
+				if(1.f == m_fOriginLengthValue)
+					Set_NextArmData(TEXT("Book_Vertical"), 0);
+				else
+					Set_NextArmData(TEXT("Book_Vertical_Ratio"), 0);
 			}
 			else {
 				Set_NextArmData(TEXT("Book_Horizon"), 0);

@@ -66,7 +66,7 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 
 	m_pActorCom->Add_Shape(ShapeData);
 
-	this->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+	this->Register_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
 		Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
 		});
 

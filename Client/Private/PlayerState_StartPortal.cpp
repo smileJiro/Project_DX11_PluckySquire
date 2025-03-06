@@ -64,24 +64,32 @@ void CPlayerState_StartPortal::Enter()
 	}
 	else
 	{
-		F_DIRECTION eFDir = To_FDirection(vDir);
-		E_DIRECTION eEDIr = FDir_To_EDir(eFDir);
-		m_pOwner->Set_2DDirection(eEDIr);
-		switch (eFDir)
+		if (m_pOwner->Is_CyvberJot())
 		{
-		case Client::F_DIRECTION::LEFT:
-		case Client::F_DIRECTION::RIGHT:
-			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_BOOKEXIT_RIGHT);
-			break;
-		case Client::F_DIRECTION::UP:
-			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_BOOKEXIT_UP);
-			break;
-		case Client::F_DIRECTION::DOWN:
-			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_BOOKEXIT_DOWN);
-			break;
-		default:
-			break;
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CYBERJOTLITE_BOOKEXIT_DOWN);
 		}
+		else
+		{
+			F_DIRECTION eFDir = To_FDirection(vDir);
+			E_DIRECTION eEDIr = FDir_To_EDir(eFDir);
+			m_pOwner->Set_2DDirection(eEDIr);
+			switch (eFDir)
+			{
+			case Client::F_DIRECTION::LEFT:
+			case Client::F_DIRECTION::RIGHT:
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_BOOKEXIT_RIGHT);
+				break;
+			case Client::F_DIRECTION::UP:
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_BOOKEXIT_UP);
+				break;
+			case Client::F_DIRECTION::DOWN:
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_BOOKEXIT_DOWN);
+				break;
+			default:
+				break;
+			}
+		}
+
 	}
 
 	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_start_entering_portal-") + to_wstring(rand() % 5), 50.f);

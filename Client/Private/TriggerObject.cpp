@@ -185,29 +185,34 @@ any CTriggerObject::Get_CustomData(_wstring _Key)
     return nullptr;
 }
 
-void CTriggerObject::Resister_EnterHandler(function<void(_uint, _int, _wstring)> _Handler)
+void CTriggerObject::Register_EnterHandler(function<void(_uint, _int, _wstring)> _Handler)
 {
     m_EnterHandler = _Handler;
 }
 
-void CTriggerObject::Resister_StayHandler(function<void(_uint, _int, _wstring)> _Handler)
+void CTriggerObject::Register_StayHandler(function<void(_uint, _int, _wstring)> _Handler)
 {
     m_StayHandler = _Handler;
 }
 
-void CTriggerObject::Resister_ExitHandler(function<void(_uint, _int, _wstring)> _Handler)
+void CTriggerObject::Register_ExitHandler(function<void(_uint, _int, _wstring)> _Handler)
 {
     m_ExitHandler = _Handler;
 }
 
-void CTriggerObject::Resister_EnterHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler)
+void CTriggerObject::Register_EnterHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler)
 {
     m_CollisionEnterHandler = _Handler;
 }
 
-void CTriggerObject::Resister_ExitHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler)
+void CTriggerObject::Register_ExitHandler_ByCollision(function<void(_uint, _int, const COLL_INFO&, const COLL_INFO&)> _Handler)
 {
     m_CollisionExitHandler = _Handler;
+}
+
+void CTriggerObject::Register_ExitHandler_ByCollision2D(function<void(_uint, _int, CCollider* _pMyCollider, CCollider* _pOtherCollider)> _Handler)
+{
+    m_Collision2DExitHandler = _Handler;
 }
 
 void CTriggerObject::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -257,6 +262,7 @@ void CTriggerObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _p
     if (m_EnterHandler) {
         m_EnterHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
+
     if (!m_isReusable)
         Event_DeleteObject(this);
 }
@@ -273,6 +279,11 @@ void CTriggerObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pO
     if (m_ExitHandler) {
         m_ExitHandler(m_iTriggerType, m_iTriggerID, m_szEventTag);
     }
+
+    if (m_Collision2DExitHandler) {
+        m_Collision2DExitHandler(m_iTriggerType, m_iTriggerID, _pMyCollider, _pOtherCollider);
+    }
+
     if (!m_isReusable)
         Event_DeleteObject(this);
 }

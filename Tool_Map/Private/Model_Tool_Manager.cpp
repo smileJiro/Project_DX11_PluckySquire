@@ -278,31 +278,47 @@ void CModel_Tool_Manager::Model_Collider_Imgui(_bool _bLock)
 							m_pCurObject = static_cast<CMapObject*>(pGameObject);
 					}
 					End_Draw_ColorButton();
+
+					static CTask_Manager::COOKING_MODE eMode = CTask_Manager::COOKING_MODE::COOKING_CONVEX;
+
 					Begin_Draw_ColorButton("##Cooking", ImVec4(0.663f, 0.922f, 0.647f, 1.0f));
-					if (StyleButton(ALIGN_SQUARE, "Cooking Collider", 2.f))
+					if (StartPopupButton(ALIGN_SQUARE, "Cooking Collider"))
 					{
-						if (m_pCurObject)
-							Event_DeleteObject(m_pCurObject);
+						if (ImGui::RadioButton("Convex", CTask_Manager::COOKING_MODE::COOKING_CONVEX == eMode))
+							eMode = CTask_Manager::COOKING_MODE::COOKING_CONVEX;
+						if (ImGui::RadioButton("Triangle", CTask_Manager::COOKING_MODE::COOKING_TRI == eMode))
+							eMode = CTask_Manager::COOKING_MODE::COOKING_TRI;
+						if (ImGui::RadioButton("Muitl-Convex", CTask_Manager::COOKING_MODE::COOKING_MULTI_CONVEX == eMode))
+							eMode = CTask_Manager::COOKING_MODE::COOKING_MULTI_CONVEX;
+						if (ImGui::RadioButton("Muitl-Triangle", CTask_Manager::COOKING_MODE::COOKING_MULTI_TRI == eMode))
+							eMode = CTask_Manager::COOKING_MODE::COOKING_MULTI_TRI;
 
-						CMapObject::MAPOBJ_DESC NormalDesc = {};
-						lstrcpy(NormalDesc.szModelName, pPreviewModelName.c_str());
-						NormalDesc.eCreateType = CMapObject::OBJ_CREATE;
-						NormalDesc.iCurLevelID = LEVEL_TOOL_3D_MODEL;
-						NormalDesc.iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MODEL;
-						CGameObject* pGameObject = nullptr;
-						m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
-							LEVEL_TOOL_3D_MODEL,
-							L"Layer_EditMapObject",
-							&pGameObject,
-							(void*)&NormalDesc);
+						if (StyleButton(MINI, "Cookcing"))
+						{
+							if (m_pCurObject)
+								Event_DeleteObject(m_pCurObject);
+							CMapObject::MAPOBJ_DESC NormalDesc = {};
+							lstrcpy(NormalDesc.szModelName, pPreviewModelName.c_str());
+							NormalDesc.eCreateType = CMapObject::OBJ_CREATE;
+							NormalDesc.iCurLevelID = LEVEL_TOOL_3D_MODEL;
+							NormalDesc.iModelPrototypeLevelID_3D = LEVEL_TOOL_3D_MODEL;
+							CGameObject* pGameObject = nullptr;
+							m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MapObject"),
+								LEVEL_TOOL_3D_MODEL,
+								L"Layer_EditMapObject",
+								&pGameObject,
+								(void*)&NormalDesc);
 
-						if (pGameObject)
-							m_pCurObject = static_cast<CMapObject*>(pGameObject);
+							if (pGameObject)
+								m_pCurObject = static_cast<CMapObject*>(pGameObject);
 
-						_string strPath = WstringToString(strfilePath);
-						strPath += "/";
-						strPath += WstringToString(m_pCurObject->Get_ModelName());
-						m_pTaskManager->Cooking(strPath, m_pCurObject, CTask_Manager::COOKING_MODE::COOKING_MULTI_TRI);
+							_string strPath = WstringToString(strfilePath);
+							strPath += "/";
+							strPath += WstringToString(m_pCurObject->Get_ModelName());
+							m_pTaskManager->Cooking(strPath, m_pCurObject, eMode);
+
+						}
+						ImGui::EndPopup();
 					}
 					End_Draw_ColorButton();
 				}

@@ -285,12 +285,13 @@ void CDefenderPlayer::Shoot()
 	_vector v2DPosition = Get_FinalPosition();
 	v2DPosition += m_fBarrelOffset;
 	CDefenderPlayerProjectile::DEFENDERPLAYER_PROJECTILE_DESC tProjectileDesc{};
+	tProjectileDesc.eStartCoord = COORDINATE_2D;
 	tProjectileDesc.tTransform2DDesc.vInitialPosition = _float3(XMVectorGetX(v2DPosition), XMVectorGetY(v2DPosition), 0.0f);
 	tProjectileDesc.iCurLevelID = m_iCurLevelID;
 	tProjectileDesc._eTDirection = m_eTDirection;
 	CDefenderPlayerProjectile* pProjectile = static_cast<CDefenderPlayerProjectile*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_DefenderPlayerProjectile"), &tProjectileDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_PlayerSubs"), pProjectile);
-	m_pSection_Manager->Add_GameObject_ToSectionLayer(m_pSection_Manager->Get_Cur_Section_Key(), pProjectile, SECTION_2D_PLAYMAP_OBJECT);
+	m_pSection_Manager->Add_GameObject_ToSectionLayer(m_strSectionName, pProjectile, SECTION_2D_PLAYMAP_OBJECT);
 }
 
 CDefenderPlayer* CDefenderPlayer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

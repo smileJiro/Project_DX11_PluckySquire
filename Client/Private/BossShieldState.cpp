@@ -35,31 +35,11 @@ void CBossShieldState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
-	//공격
-	//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
-	//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
-
-	//10개 뿜고 공격 종료
-
 	if (m_pOwner->Get_AnimChangeable())
 	{
 		Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
 	}
 
-	//if (m_iNumAttack <= m_iAttackCount)
-	//{
-	//	Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
-	//}
-	//else
-	//{
-	//	if (false == m_isDelay)
-	//	{
-	//		m_pOwner->Attack();
-	//		++m_iAttackCount;
-	//		Delay_On();
-	//	}
-	//}
 	
 }
 

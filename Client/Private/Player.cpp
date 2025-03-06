@@ -31,6 +31,7 @@
 #include "PlayerState_Bomber.h"
 #include "PlayerState_ErasePalmDecal.h"
 #include "PlayerState_GetItem.h"
+#include "PlayerState_TransformIn.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -1381,6 +1382,16 @@ void CPlayer::ZetPropel(_float _fTimeDelta)
 	}
 }
 
+void CPlayer::Transform_In_CyberJot()
+{
+    m_bCyberJot = true;
+}
+
+void CPlayer::Transform_Out_CyberJot()
+{
+    m_bCyberJot = false;
+}
+
 
 //아무런 상호작용 중이 아닐 때에는 그냥 가장 가까운 애로 교체.
 //포탈, 끌고다니기 등 상호작용 중일 때는 교체 불가.
@@ -1788,6 +1799,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::GET_ITEM:
         m_pStateMachine->Transition_To(new CPlayerState_GetItem(this));
+        break;
+    case Client::CPlayer::TRANSFORM_IN:
+        m_pStateMachine->Transition_To(new CPlayerState_TransformIn(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;

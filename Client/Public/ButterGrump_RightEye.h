@@ -30,6 +30,8 @@ public:
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
+	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
+
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
 

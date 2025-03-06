@@ -22,7 +22,7 @@ public:
 		LOAD_2D,
 		LOAD_RAW2D,
 		LOAD_LAST
-	};;
+	};
 private:
 	CLevel_AnimTool(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CLevel_AnimTool() = default;

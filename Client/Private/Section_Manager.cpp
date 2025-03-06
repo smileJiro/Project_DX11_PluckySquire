@@ -289,6 +289,13 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 		Main_Section_Active_Process(m_pCurSection->Get_SectionName());
 
 
+		CSection_2D_Narration* pNarrationSection = static_cast<CSection_2D_Narration*>(pSection_2D);
+
+		if (nullptr == pNarrationSection)
+			return S_OK;
+
+		pNarrationSection->Start_Narration();
+
 
 		return S_OK;
 	}
@@ -663,8 +670,6 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 				}
 				if (FAILED(SetActive_Section(pSection, false)))
 					return E_FAIL;
-
-
 				if (pSection->Is_Rotation())
 				{
 					CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, L"Layer_Book", 0);
