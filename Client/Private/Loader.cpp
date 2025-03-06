@@ -174,8 +174,10 @@
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
+#include "CandleGame.h"
 #include "Candle.h"
 #include "Candle_Body.h"
+#include "Candle_UI.h"
 
 // Player Effect 
 #include "Effect_Trail.h"
@@ -1227,7 +1229,7 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			CBoss_TennisBall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+		XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),
 			C3DModel::Create(m_pDevice, m_pContext,
@@ -1386,6 +1388,13 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			CCollapseBlock::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		/* For. Prototype_GameObject_CandleGame */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_CandleGame"),
+			CCandleGame::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		
+
+
 		/* For. Prototype_GameObject_Candle */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Candle"),
 			CCandle::Create(m_pDevice, m_pContext))))
@@ -1395,6 +1404,12 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Candle_Body"),
 			CCandle_Body::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+
+		/* For. Prototype_GameObject_Candle_UI */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Candle_UI"),
+			CCandle_UI::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		
 	#pragma endregion
 
 	#pragma region Chapter 6 - Effect Load

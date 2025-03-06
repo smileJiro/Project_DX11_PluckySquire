@@ -206,6 +206,7 @@
     <ClInclude Include="..\Public\ButterGrump_Shield.h" />
     <ClInclude Include="..\Public\ButterGrump_Tongue.h" />
     <ClInclude Include="..\public\Candle.h" />
+    <ClInclude Include="..\public\CandleGame.h" />
     <ClInclude Include="..\public\Candle_Body.h" />
     <ClInclude Include="..\public\Candle_UI.h" />
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
@@ -495,6 +496,7 @@
     <ClCompile Include="..\Private\ButterGrump_Shield.cpp" />
     <ClCompile Include="..\Private\ButterGrump_Tongue.cpp" />
     <ClCompile Include="..\private\Candle.cpp" />
+    <ClCompile Include="..\private\CandleGame.cpp" />
     <ClCompile Include="..\private\Candle_Body.cpp" />
     <ClCompile Include="..\private\Candle_UI.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
