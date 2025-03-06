@@ -48,6 +48,10 @@ void CBossIdleState::State_Update(_float _fTimeDelta)
 			Event_ChangeBossState((BOSS_STATE)m_pOwner->Get_PreState(), m_pFSM);
 		}
 	}
+	else if (true == pBoss->Is_Converse())
+	{
+		Event_ChangeBossState(BOSS_STATE::SHIELD, m_pFSM);
+	}
 	else
 	{
 		if (m_fAccTime >= m_fCoolTime)
