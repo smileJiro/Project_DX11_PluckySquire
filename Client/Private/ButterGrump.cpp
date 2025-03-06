@@ -566,7 +566,7 @@ void CButterGrump::On_Attack()
         m_iNumAttack = 1;
         m_isAttackChained = true;
         m_iNumAttackChain = 3;
-        m_fChainDelayTime = 0.2f;
+        m_fChainDelayTime = 1.2f;
         break;
 
     case BOSS_STATE::PURPLEBALL:

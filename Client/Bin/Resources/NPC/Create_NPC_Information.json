@@ -73,6 +73,21 @@
 			"isInteractable": false,
 			"isDialog": false,
 			"is2D": true
+		},
+		{
+			"strSectionid": "Chapter2_P0102",
+			"strAnimaionName": "MTM",
+			"strCreateSection": 1,
+			"strDialogueId": "",
+			"iStartAnimation": 0,
+			"vPositionX": 100.0,
+			"vPositionY": 0.0,
+			"vPositionZ": 0.0,
+			"CollisionScaleX": 70.0,
+			"CollisionScaleY": 70.0,
+			"isInteractable": true,
+			"isDialog": true,
+			"is2D": false
 		}
 	]
 }

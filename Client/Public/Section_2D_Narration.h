@@ -21,6 +21,8 @@ public:
 	virtual HRESULT				Section_AddRenderGroup_Process() override;
 	virtual HRESULT				Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex) override;
 	virtual HRESULT				Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject) override;
+	HRESULT						Start_Narration();
+
 
 
 	// 맵 연결 생각안해놨는데, 일단 해보자.

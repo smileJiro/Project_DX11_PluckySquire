@@ -88,6 +88,9 @@ public:
 		SKILLSHOP		eShopSkillKind = { SKILLSHOP_END }; // 어떤 스킬이니?
 		_bool			isChooseItem = { false };			// 너가 선택되어있니?
 
+		_wstring		strName = TEXT(" ");
+		_wstring		strItemInfomation = TEXT(" ");
+
 	}UIOBJDESC;
 
 public:

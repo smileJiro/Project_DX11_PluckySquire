@@ -565,6 +565,9 @@
     <Filter Include="04.Section\Section_2D\MiniGame_2D\Pip">
       <UniqueIdentifier>{a5584601-2683-4eae-9a4f-60e52d0e3bd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\97. Shop_Manager">
+      <UniqueIdentifier>{a93fd688-0c28-4e4b-923f-ad1624a22d74}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
