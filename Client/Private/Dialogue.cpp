@@ -232,12 +232,17 @@ HRESULT CDialog::NextLevelLoadJson(_int _iNextLevel)
 {
 	if (3 == (_int)_iNextLevel)
 	{
-		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data.json"))))
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_Chapter_02.json"))))
+			return E_FAIL;
+	}
+	else if (4 == _iNextLevel)
+	{
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_Chapter_04.json"))))
 			return E_FAIL;
 	}
 	else if (5 == _iNextLevel)
 	{
-		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_02.json"))))
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_Chapter_06.json"))))
 			return E_FAIL;
 	}
 
@@ -506,12 +511,12 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 				if (false == Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].isLineEnter)
 				{
 					wsprintf(m_tFont, strDisplaytext.c_str());
-					pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 110.f, vTextPos3D.y + 70.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+					pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 65.f, vTextPos3D.y + 70.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 				}
 				else if (true == Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].isLineEnter)
 				{
 					wsprintf(m_tFont, strDisplaytext.c_str());
-					pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 110.f, vTextPos3D.y + 50.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+					pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 65.f, vTextPos3D.y + 50.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 				}
 
 				Safe_Release(pGameInstance);

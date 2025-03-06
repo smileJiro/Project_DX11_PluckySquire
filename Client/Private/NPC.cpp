@@ -96,11 +96,11 @@ void CNPC::Throw_Dialogue()
 			m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_State(CTransform::STATE_POSITION).m128_f32[2]);
 	}
 
-
+	CDialog_Manager::GetInstance()->Set_NPC(this);
 	CDialog_Manager::GetInstance()->Set_DialoguePos(vPos);
 	//Uimgr->Set_DialoguePos(vPos);
 	CDialog_Manager::GetInstance()->Set_DisPlayDialogue(true);
-	CDialog_Manager::GetInstance()->Set_NPC(this);
+	
 	//Uimgr->Set_PortraitRender(true);
 
 

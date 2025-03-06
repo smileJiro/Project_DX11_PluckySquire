@@ -16,8 +16,14 @@ BEGIN(Map_Tool)
 
 class C2DMapObject final : public CModelObject
 {
-public :
-
+public:
+	enum PORTAL_TYPE
+	{
+		PORTAL_DEFAULT,
+		PORTAL_IMMEDIATELY,
+		PORTAL_JUMPOUT,
+		PORTAL_LAST
+	};
 public:
 	typedef struct tag2DMapObjectDesc : CModelObject::MODELOBJECT_DESC
 	{
@@ -59,21 +65,35 @@ public:
 	void						Set_DefaultPosition(_float2 _fPosition) { m_fDefaultPosition = _fPosition; }
 	_float2						Get_DefaultPosition() { return m_fDefaultPosition; }
 
+
+	PORTAL_TYPE					Get_PortalType() { return m_ePortalType; }
+	void						Set_PortalType(PORTAL_TYPE _eType) { m_ePortalType = _eType; }
+	
+	_bool						Is_FirstActive() { return m_isFirstActive; }	
+	void						Set_FirstActive(_bool _isFirstActive) { m_isFirstActive = _isFirstActive; }
+
+	void						Set_Portal(_bool _isPortal) { m_isPortal = _isPortal; }
+	bool						Is_Portal() { return m_isPortal; }
 private:
 	_float4x4 m_ProjMatrix, m_ViewMatrix;
 	C2DMapObjectInfo* m_pModelInfo = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
 
-	_wstring		m_strKey = {};
-	_wstring		m_strModelName = {};
-	_float2			m_fTextureOffsetSize;
-	_float2			m_fRenderTargetSize; 
-	_bool			m_isModelLoad = false;
+	_wstring			m_strKey = {};
+	_wstring			m_strModelName = {};
+	_float2				m_fTextureOffsetSize;
+	_float2				m_fRenderTargetSize; 
+	_bool				m_isModelLoad = false;
 	
-	_float2			m_fDefaultPosition = {};
+	_float2				m_fDefaultPosition = {};
 
-	_int			m_iRenderGroupID;
-	_int			m_iPriorityID;
+	_int				m_iRenderGroupID;
+	_int				m_iPriorityID;
+
+	_bool				m_isPortal = false;
+	_bool				m_isFirstActive = false;
+	PORTAL_TYPE			m_ePortalType = PORTAL_LAST;
+
 private:
 	static _uint				g_iTmpCount;
 public:

@@ -238,6 +238,9 @@
     <ClInclude Include="..\public\Minigame_Sneak.h" />
     <ClInclude Include="..\Public\PlayerState_GetItem.h" />
     <ClInclude Include="..\Public\PlayerState_TransformIn.h" />
+    <ClInclude Include="..\Public\Portal_Default.h" />
+    <ClInclude Include="..\Public\Portal_Immediately.h" />
+    <ClInclude Include="..\Public\Portal_JumpOut.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame_Pip.h" />
     <ClInclude Include="..\public\Sneak_Default_Tile.h" />
@@ -541,6 +544,9 @@
     <ClCompile Include="..\private\Minigame_Sneak.cpp" />
     <ClCompile Include="..\Private\PlayerState_GetItem.cpp" />
     <ClCompile Include="..\Private\PlayerState_TransformIn.cpp" />
+    <ClCompile Include="..\Private\Portal_Default.cpp" />
+    <ClCompile Include="..\Private\Portal_Immediately.cpp" />
+    <ClCompile Include="..\Private\Portal_JumpOut.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame_Pip.cpp" />
     <ClCompile Include="..\private\Sneak_Default_Tile.cpp" />

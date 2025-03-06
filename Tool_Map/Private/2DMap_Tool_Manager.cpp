@@ -1864,15 +1864,23 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 		WriteFile(hFile, &iPortalCnt, sizeof(_uint), &dwByte, nullptr);
 		for (auto& pObject : PortalObjects)
 		{
-			// 6. 위치랑 스케일만 잡아주자(기찬으니 스케일은 직접해주자.. 
-			_vector vPos = pObject->Get_FinalPosition();
-			_float3 vScale = pObject->Get_FinalScale();
-			_float2		fPos = { XMVectorGetX(vPos), XMVectorGetY(vPos) };
-			_float2		fScale = { vScale.x,vScale.y };
+			C2DMapObject* pPortalObject = static_cast<C2DMapObject*>(pObject);
 
+			// 6. 포탈 타입, 처음 활성화 여부, 
+			// 위치랑 스케일만 잡아주자(기찬으니 스케일은 직접해주자.. 
+			_uint		ePortalType = pPortalObject->Get_PortalType();
+			_bool		isFIrstActive = pPortalObject->Is_FirstActive();
+			
+			_vector		vPos	= pObject->Get_FinalPosition();
+			_float3		vScale	= pObject->Get_FinalScale();
+
+			_float2		fPos =	{ XMVectorGetX(vPos), XMVectorGetY(vPos) };
+			_float2		fScale	= { vScale.x,vScale.y };
+
+			WriteFile(hFile, &ePortalType, sizeof(_uint), &dwByte, nullptr);
+			WriteFile(hFile, &isFIrstActive, sizeof(_bool), &dwByte, nullptr);
 			WriteFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
 			WriteFile(hFile, &fScale, sizeof(_float2), &dwByte, nullptr);
-
 		}
 	}
 	else 
