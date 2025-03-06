@@ -8,9 +8,16 @@
 
 
 #define RT_RENDER_DEAFULT 0
+// uv를 돌려서 렌더. 종맵
 #define RT_RENDER_ROTATE  1
+// Start End를 사용한다.
 #define RT_RENDER_UVRENDER  2
-#define RT_RENDER_UVRENDER_OVERUV  3
+// 0~1 사이로 고정한다.
+#define RT_RENDER_FRAC  3
+// Start End를 사용하고 0~1 사이로 고정한다.
+#define RT_RENDER_UVRENDER_FRAC  4
+// Start -> X Offset, End -> Y Offset으로 사용하여 보간한다.
+#define RT_RENDER_UV_OFFSET  5
 
 /* Normal Enum Flag */
 #define NONEWRITE_NORMAL -1

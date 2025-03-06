@@ -19,7 +19,7 @@ HRESULT CToolAnimation3D::Initialize(ifstream& inFile, const C3DModel* pModel)
 	inFile.read(reinterpret_cast<char*>(&m_iNameLength), sizeof(_uint));
 	inFile.read(m_szName, m_iNameLength);
 	m_szName[m_iNameLength] = '\0';
-	//cout << m_szName << endl;
+	cout << m_szName << endl;
 
 
 	double dValue = 0.0;

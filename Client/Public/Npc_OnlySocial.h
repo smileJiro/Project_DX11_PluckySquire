@@ -24,6 +24,11 @@ public:
 		_bool		isInteractable;
 		_bool		isDialog;
 		_bool		is2D;
+		_float		fCollisionHalfHeight	= { 0.f };
+		_float		fCollisionRadius		= { 0.f };
+		_float		fTriggerRadius			= { 0.f };
+		_float		fRotateAngle			= { 0.f };
+
 	};
 
 

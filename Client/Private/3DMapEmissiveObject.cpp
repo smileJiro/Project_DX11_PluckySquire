@@ -27,6 +27,9 @@ HRESULT C3DMapEmissiveObject::Initialize(void* _pArg)
     //m_vColor = pDesc->m_vColor;
     //m_vBloomColor = pDesc->m_vBloomColor;
 
+    if (FAILED(Ready_TargetLight()))
+        return E_FAIL;
+
     // 나중에 지우도록 하죠라..
     m_iShaderPasses[COORDINATE_3D] = (_uint)(PASS_VTXMESH::EMISSIVE_COLOR); 
     m_iPriorityID_3D = PR3D_EFFECT;
@@ -35,10 +38,17 @@ HRESULT C3DMapEmissiveObject::Initialize(void* _pArg)
 
 void C3DMapEmissiveObject::Late_Update(_float _fTimeDelta)
 {
+
+
     /* Add Render Group */
     if (false == m_isCulling || false == m_isFrustumCulling)
     {
-        Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
+        Event_SetActive(m_pTargetLight, true);
+        Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_EFFECT);
+    }
+    else
+    {
+        Event_SetActive(m_pTargetLight, false);
     }
 
     CGameObject::Late_Update_Component(_fTimeDelta);
@@ -53,6 +63,29 @@ HRESULT C3DMapEmissiveObject::Render()
 
     m_pControllerModel->Render_Default(m_pShaderComs[COORDINATE_3D], m_iShaderPasses[COORDINATE_3D]);
 
+    return S_OK;
+}
+
+HRESULT C3DMapEmissiveObject::Ready_TargetLight()
+{
+    ///* 점광원 */
+    CONST_LIGHT LightDesc = {};
+    LightDesc.vPosition = _float3(0.0f, 0.0f, 0.0f);
+    LightDesc.fFallOutStart = 0.0f;
+    LightDesc.fFallOutEnd = 1.0f;
+    LightDesc.vRadiance = _float3(4.0f, 4.0f, 4.0f);
+    LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.2f, 1.f);
+    LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+    LightDesc.vSpecular = _float4(0.0f,0.0f,0.0f,1.0f);
+
+    _vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
+    _float3 vOffset = {};
+    XMStoreFloat3(&vOffset, vLook * 0.05f);
+    if (FAILED(m_pGameInstance->Add_Light_Target(LightDesc, LIGHT_TYPE::POINT, this, vOffset, &m_pTargetLight, true)))
+        return E_FAIL;
+
+    Safe_AddRef(m_pTargetLight);
+    m_pTargetLight->Set_Active(false);
     return S_OK;
 }
 
@@ -92,6 +125,7 @@ CGameObject* C3DMapEmissiveObject::Clone(void* _pArg)
 
 void C3DMapEmissiveObject::Free()
 {
-    __super::Free();
 
+    Safe_Release(m_pTargetLight);
+    __super::Free();
 }

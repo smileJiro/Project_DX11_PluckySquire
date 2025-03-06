@@ -21,6 +21,9 @@ public:
 	PLAYALBE_ID Get_PlayableID() { return m_ePlayableID; }
 	//SET
 	void Set_BlockPlayerInput(_bool _bBlock) { m_bBlockInput = _bBlock; }
+
+public:
+	virtual void On_CurrentPlayable() {};
 private:
 	PLAYALBE_ID m_ePlayableID = PLAYALBE_ID::LAST;
 	_bool m_bBlockInput = false;

@@ -74,10 +74,8 @@ void CMiniGame_Defender::Late_Update(_float _fTimeDelta)
 
 HRESULT CMiniGame_Defender::Render()
 {
-#ifdef _DEBUG
-    if (m_p2DColliderComs[0]->Is_Active())
-        m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
-#endif // _DEBUG
+    //if (m_p2DColliderComs[0]->Is_Active())
+    //    m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
 	return __super::Render();
 }
 

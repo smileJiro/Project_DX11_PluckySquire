@@ -141,7 +141,7 @@ HRESULT CBoss_WingSlam::Ready_ActorDesc(void* _pArg)
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
     ShapeDesc->fRadius = 2.f;
-    ShapeDesc->fHalfHeight = 10.f;
+    ShapeDesc->fHalfHeight = 20.f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;

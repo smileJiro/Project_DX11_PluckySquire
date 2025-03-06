@@ -136,6 +136,11 @@ void CPlayerState_Run::Exit()
 
 void CPlayerState_Run::Switch_RunAnimation2D(F_DIRECTION _eFDir)
 {
+	if (m_pOwner->Is_CyvberJot())
+	{
+		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CYBERJOTLITE_RUN_RIGHT);
+		return;
+	}
 	_bool bSword = m_pOwner->Is_SwordHandling();
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
 	if (m_bPlatformerMode)

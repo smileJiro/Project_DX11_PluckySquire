@@ -242,7 +242,7 @@ void CLevel_AnimTool::Update_AnimationEditImgui()
 
 
 		_uint iAnimIdx = 0;
-		if (ImGui::BeginListBox("AnimationList"))
+		if (ImGui::BeginListBox("AnimationList", { 500, 800}))
 		{
 			list<string> AnimNames;
 			m_pTestModelObj->Get_AnimatinNames(AnimNames);

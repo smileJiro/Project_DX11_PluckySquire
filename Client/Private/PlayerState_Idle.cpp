@@ -14,6 +14,7 @@ CPlayerState_Idle::CPlayerState_Idle(CPlayer* _pOwner)
 
 void CPlayerState_Idle::Update(_float _fTimeDelta)
 {
+
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 	if (COORDINATE_3D == eCoord)
@@ -41,6 +42,14 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 	if(INTERACT_RESULT::FAIL == eResult
 		|| INTERACT_RESULT::NO_INPUT == eResult)
 	{
+		if (m_pOwner->Is_CyvberJot())
+		{
+			if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
+			{
+				m_pOwner->Set_State(CPlayer::RUN);
+			}
+			return;
+		}
 		if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_SPINATTACK])
@@ -87,6 +96,8 @@ void CPlayerState_Idle::Exit()
 
 void CPlayerState_Idle::Switch_IdleAnimation2D(F_DIRECTION _eFDir)
 {
+	if (m_pOwner->Is_CyvberJot())
+		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CYBERJOTLITE_RUN_IDLE_TEMP);
 	_bool bSword = m_pOwner->Is_SwordHandling();
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
 	if (m_bPlatformerMode)

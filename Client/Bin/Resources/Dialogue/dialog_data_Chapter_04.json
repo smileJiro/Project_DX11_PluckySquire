@@ -1,0 +1,300 @@
+{
+	"dialogs": [
+		{
+			"id": "3D_MiniBeard_Dialog_01",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "안녕. 나야, 미니수염.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "정확히 말하면 '수다쟁이 미니 수염' 이지.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "난 '견습 기사 모험기'라는 책의 캐릭터인\n'미니 수염'을 토대로 만들어진 장난감이야.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "갑자기 뭔소린가 싶지만\n내가 주는 팁은 아주 유용할 거야.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "자, 그러면 얼른 이동해봐!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Dialog_02",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "별일 없지? 저 위로 올라가야 하니까\n기어오를 블록을 찾아봐.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "분명 이 근처에 하나 있을 거야.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "난 플라스틱 블록 근처에 있으면 엄청 예민해지거든...",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "우리 가족 다 그래.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Dialog_03",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "반가워. 저 성 문을 지날려면 열쇠가 필요해.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "성 옆쪽에서 열쇠를 하나 본 것 같거든?",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "벽에 그려진 그림을 한번 조사해 봐.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "조사야말로 문제를 해결할 열쇠라고.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Dialog_04",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "자, 이 근처에 구석진 곳이 있을 거야.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "튀어오르는 발판을 설치할 수 있는 곳 말이야.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "거기로 가려면 모퉁이를 한번 돌아 봐.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "모퉁이를 돌면 늘 도움이 된다니까?",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		}
+	]
+}
