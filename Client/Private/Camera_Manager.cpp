@@ -77,9 +77,9 @@ _uint CCamera_Manager::Get_CurCameraMode()
 		return INT16_MAX;
 
 	if (TARGET == m_eCurrentCameraType)
-		return dynamic_cast<CCamera_Target*>(m_Cameras[TARGET])->Get_CameraMode();
+		return static_cast<CCamera_Target*>(m_Cameras[TARGET])->Get_CameraMode();
 	else if (TARGET_2D == m_eCurrentCameraType)
-		return dynamic_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Get_CameraMode();
+		return static_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Get_CameraMode();
 
 	return _uint();
 }
@@ -368,22 +368,25 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInit
 	m_eCurrentCameraType = _iCurrentCameraType;
 }
 
-void CCamera_Manager::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix)
+void CCamera_Manager::Change_CameraTarget(const _float4x4* _pTargetWorldMatrix, _float _fChangingTime)
 {
-	m_Cameras[m_eCurrentCameraType]->Change_Target(_pTargetWorldMatrix);
+	m_Cameras[m_eCurrentCameraType]->Change_Target(_pTargetWorldMatrix, _fChangingTime);
 }
 
-void CCamera_Manager::Change_CameraTarget(CGameObject* _pTarget)
+void CCamera_Manager::Change_CameraTarget(CGameObject* _pTarget, _float _fChangingTime)
 {
-	m_Cameras[m_eCurrentCameraType]->Change_Target(_pTarget);
+	m_Cameras[m_eCurrentCameraType]->Change_Target(_pTarget, _fChangingTime);
 }
 
 _bool CCamera_Manager::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
 {
-	if (nullptr == m_Cameras[TARGET])
+	if (nullptr == m_Cameras[m_eCurrentCameraType])
 		return false;
 
-	return static_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(_wszNextArmName, _iTriggerID);
+	if(TARGET == m_eCurrentCameraType)
+		return static_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_NextArmData(_wszNextArmName, _iTriggerID);
+	else
+		return static_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Set_NextArmData(_wszNextArmName, _iTriggerID);
 }
 
 _bool CCamera_Manager::Set_NextCutSceneData(_wstring _wszCutSceneName)
@@ -541,6 +544,14 @@ void CCamera_Manager::Start_FadeOut(_float _fFadeTime)
 	m_Cameras[m_eCurrentCameraType]->Start_PostProcessing_Fade(CCamera::FADE_OUT, _fFadeTime);
 }
 
+void CCamera_Manager::Set_FadeRatio(_uint _eCameraType, _float _fFadeRatio, _bool _isUpdate)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	m_Cameras[_eCameraType]->Set_FadeRatio(_fFadeRatio, _isUpdate);
+}
+
 void CCamera_Manager::Load_ArmData(LEVEL_ID _eLevelID)
 {
 	_wstring szArmFileName, sz2DArmFileName;
@@ -555,6 +566,10 @@ void CCamera_Manager::Load_ArmData(LEVEL_ID _eLevelID)
 		sz2DArmFileName = TEXT("Chapter4/Chapter4_2D_ArmData.json");
 		break;
 	case LEVEL_CHAPTER_6:
+		szArmFileName = TEXT("Chapter6/Chapter6_ArmData.json");
+		sz2DArmFileName = TEXT("Chapter6/Chapter6_2D_ArmData.json");
+		break;
+	case LEVEL_CHAPTER_8:
 		szArmFileName = TEXT("Chapter6/Chapter6_ArmData.json");
 		sz2DArmFileName = TEXT("Chapter6/Chapter6_2D_ArmData.json");
 		break;
@@ -584,6 +599,9 @@ void CCamera_Manager::Load_CutSceneData(LEVEL_ID _eLevelID)
 	case LEVEL_CHAPTER_6:
 		szFileName = TEXT("Chapter6/Chapter6_CutScene.json");
 		break;
+	case LEVEL_CHAPTER_8:
+		szFileName = TEXT("Chapter6/Chapter6_CutScene.json");
+		break;
 	}
 
 	_wstring wszLoadPath = L"../Bin/DataFiles/Camera/CutSceneData/" + szFileName;
@@ -611,7 +629,10 @@ void CCamera_Manager::Load_CutSceneData(LEVEL_ID _eLevelID)
 			CutSceneData.first.fTotalTime = { CutScene_json["CutScene_Time"][0].get<_float>(), CutScene_json["CutScene_Time"][1].get<_float>() };
 			// Next CameraType
 			CutSceneData.first.iNextCameraType = CutScene_json["CutScene_Next_CameraType"];
-
+			// 대기할지 말지(false가 defualt, true면 json에 그냥 넣자)
+			if (CutScene_json.contains("Pause_After_CutScene"))
+				CutSceneData.first.isPause = CutScene_json["Pause_After_CutScene"];
+			
 			// CutScene Data 읽기
 			if (CutScene_json["Datas"].is_array()) {
 				for (auto& Data : CutScene_json["Datas"]) {

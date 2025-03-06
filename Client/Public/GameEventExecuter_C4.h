@@ -41,7 +41,7 @@
 BEGIN(Client)
 
 class CPlayer;
-class CSampleBook;
+class CBook;
 
 class CGameEventExecuter_C4 : public CGameEventExecuter
 {
@@ -56,6 +56,8 @@ public:
 	virtual void					Late_Update(_float _fTimeDelta) override;
 
 private:
+	void							Chapter4_Ride_Zipline(_float _fTimeDelta);
+	void							Chapter4_Event_Flag(_float _fTimeDelta);
 
 public:
 	static CGameEventExecuter_C4* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

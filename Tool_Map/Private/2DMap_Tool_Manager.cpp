@@ -118,6 +118,27 @@ void C2DMap_Tool_Manager::Update_Imgui_Logic()
 	TriggerSetting_Imgui();
 	TriggerEvent_Imgui();
 	BlockerSetting_Imgui();
+
+
+	//ImGui::Begin("FullScreen");
+	//{
+	//		ID3D11ShaderResourceView* pSelectImage = m_pGameInstance->Get_RT_SRV(L"Target_2D");
+	//
+	//		static _float fDefualtWidth = 2400.f;
+	//		if (pSelectImage)
+	//		{
+	//			_float2 fRenderTargetSize = m_DefaultRenderObject->Get_Texture_Size();
+	//			
+	//			_float fYRatio = fRenderTargetSize.y * (fDefualtWidth / (_float)fRenderTargetSize.x);
+	//			ImVec2 imageSize(1600, 900);
+
+	//			imageSize = { fDefualtWidth, fYRatio };
+	//			if (nullptr != pSelectImage)
+	//				ImGui::Image((ImTextureID)(uintptr_t)pSelectImage, imageSize);
+	//		}
+	//		ImGui::DragFloat("Width", &fDefualtWidth);
+	//}
+	//ImGui::End();
 }
 
 

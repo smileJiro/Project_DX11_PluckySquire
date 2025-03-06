@@ -6,6 +6,7 @@
 #include "Section_2D_PlayMap_Book.h"
 #include "Section_2D_PlayMap_Sksp.h"
 #include "Section_2D_Narration.h"
+#include "Section_2D_MiniGame_Pip.h"
 #include "UI_Manager.h"
 
 
@@ -102,6 +103,10 @@ HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
 		break;
 	case Client::LEVEL_CHAPTER_6:
 		strJsonPath = L"Chapter6";
+		isSectionLoading = true;
+		break;
+	case Client::LEVEL_CHAPTER_8:
+		strJsonPath = L"Chapter8";
 		isSectionLoading = true;
 		break;
 	case Client::LEVEL_CAMERA_TOOL: // 효림 임시...
@@ -466,8 +471,8 @@ void CSection_Manager::Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPo
 	if (FAILED(m_pContext->Map(m_pBookWorldPosMap, 0, D3D11_MAP_READ, 0, &mappedResource)))
 		return;
 	// 2D Transform 위치를 픽셀 좌표계로 변환. 해당 텍스쳐의 가로 세로 사이즈를 알아야함.
-	m_vBookWorldPixelSize.x = mappedResource.RowPitch / sizeof(_float) / 4;
-	m_vBookWorldPixelSize.y = mappedResource.DepthPitch / mappedResource.RowPitch;
+	m_vBookWorldPixelSize.x = mappedResource.RowPitch / sizeof(_float) / (_float)4;
+	m_vBookWorldPixelSize.y = (_float)mappedResource.DepthPitch / (_float)mappedResource.RowPitch;
 
 	_uint iLeftBotIndex = m_vBookWorldPixelSize.x * (m_vBookWorldPixelSize.y - 1) * 4;
 	_uint iRightTopIndex = (m_vBookWorldPixelSize.x - 2) * 4;
@@ -712,6 +717,54 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 					return E_FAIL;
 			}
 			break;
+			case Client::CSection_2D::MINIGAME:
+			{
+				if (!ChildJson.contains("MiniGame_Info"))
+					return E_FAIL;
+
+
+				CSection_2D_MiniGame::SECTION_2D_MINIGAME_DESC Desc = {};
+				Desc.iPriorityID = m_iPriorityGenKey;
+				Desc.SectionJson = ChildJson;
+				Desc.isImport = true;
+
+
+				auto& SectionMiniGameInfo = ChildJson["MiniGame_Info"];
+
+				_string strMiniGameName = "";
+
+				if (SectionMiniGameInfo.contains("MiniGame_Type")
+					&& SectionMiniGameInfo["MiniGame_Type"].is_number_unsigned())
+				{
+					Desc.eMiniGameType = SectionMiniGameInfo["MiniGame_Type"];
+				}
+				if (SectionMiniGameInfo.contains("MiniGame_Name")) 
+				{
+					strMiniGameName = SectionMiniGameInfo["MiniGame_Name"];
+					Desc.strMiniGameName = StringToWstring(strMiniGameName);
+				}
+
+				switch (Desc.eMiniGameType)
+				{
+				case CSection_2D_MiniGame::SECTION_2D_MINIGAME_TYPE::PIP:
+				{
+					pSection = CSection_2D_MiniGame_Pip::Create(m_pDevice, m_pContext, &Desc);
+					break;
+				}
+				default:
+					break;
+				}
+
+
+				if (nullptr == pSection)
+				{
+					MSG_BOX("Failed Create CSection_2D_PlayMap_Sksp");
+					return E_FAIL;
+				}
+				if (FAILED(SetActive_Section(pSection, true)))
+					return E_FAIL;
+			}
+			break;
 			case Client::CSection_2D::SECTION_2D_PLAY_TYPE_LAST:
 			default:
 			{
@@ -727,21 +780,20 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 				strStartSectionKey = pSection->Get_SectionName();
 			m_CurLevelSections.try_emplace(pSection->Get_SectionName(), pSection);
 
-			if (nullptr != pSection && ChildJson.contains("Minigame_Info"))
+			if (nullptr != pSection && ChildJson.contains("MiniGame_Info"))
 			{
-				auto& MiniGameJson = ChildJson["Minigame_Info"];
+				auto& MiniGameJson = ChildJson["MiniGame_Info"];
 
 				if (
-					MiniGameJson.contains("Minigame_Type")
+					MiniGameJson.contains("MiniGame_Type")
 					&&
-					MiniGameJson.contains("Minigame_Name")
-
+					MiniGameJson.contains("MiniGame_Name")
 					)
 				{
-					_string strType = MiniGameJson["Minigame_Type"];
-					_string strName = MiniGameJson["Minigame_Name"];
+					_uint eType = MiniGameJson["MiniGame_Type"];
+					_string strName = MiniGameJson["MiniGame_Name"];
 
-					if (strType == "Word")
+					if (eType == CSection_2D_MiniGame::WORD)
 					{
 						m_pWordGameGenerator->WordGame_Generate(pSection, StringToWstring(strName));
 					}

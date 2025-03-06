@@ -45,7 +45,6 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 void CCamera_Target::Priority_Update(_float fTimeDelta)
 {
-
 }
 
 void CCamera_Target::Update(_float fTimeDelta)
@@ -173,21 +172,24 @@ void CCamera_Target::Set_EnableLookAt(_bool _isEnableLookAt)
 	m_isEnableLookAt = _isEnableLookAt;
 }
 
-void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
+void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix, _float _fChangingTime)
 {
 	m_pTargetWorldMatrix = _pTargetWorldMatrix;
+	m_fTargetChangingTime = { _fChangingTime, 0.f };
 }
 
-void CCamera_Target::Change_Target(CGameObject* _pTarget)
+void CCamera_Target::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
 {
 	m_pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 	m_eTargetCoordinate = _pTarget->Get_CurCoord();
 	m_isTargetChanged = true;
 
-	_vector vStartPos = XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos) + XMLoadFloat3(&m_vFreezeOffset), 1.f);
-	XMStoreFloat3(&m_vStartPos, vStartPos);
+	//_vector vStartPos = XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos) + XMLoadFloat3(&m_vPreFreezeOffset), 1.f);
+	//XMStoreFloat3(&m_vStartPos, vStartPos);
+	m_vStartPos = m_vPreTargetPos;
 
 	m_szTargetSectionTag = _pTarget->Get_Include_Section_Name();
+	m_fTargetChangingTime = { _fChangingTime, 0.f };
 }
 
 void CCamera_Target::Turn_AxisY(_float _fTimeDelta)
@@ -612,6 +614,14 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 
 	if ((true == m_isEnableLookAt) && (false == m_isExitLookAt)) {
 		_vector vFreezeOffset = -XMLoadFloat3(&m_vPreFreezeOffset);
+
+		switch (m_eTargetCoordinate) {
+		case COORDINATE_3D:
+			break;
+		case COORDINATE_2D:
+			vFreezeOffset = XMVectorZero();
+			break;
+		}
 		_vector vAt = _vTargetPos + vFreezeOffset + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 		m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 	}
@@ -708,9 +718,21 @@ _vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fT
 
 	// Target Change가 안 됐을 때는 시간 제한 없이 Smooth를 한다
 	if (false == m_isTargetChanged) {
-		vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f), vTargetPos + XMLoadFloat3(&m_vFreezeOffset), m_fSmoothSpeed * _fTimeDelta);
-		vCurFreezeOffset = XMVectorLerp(XMLoadFloat3(&m_vPreFreezeOffset), XMLoadFloat3(&m_vFreezeOffset), m_fSmoothSpeed * _fTimeDelta);
+		switch (m_eTargetCoordinate)
+		{
+		case COORDINATE_3D:
+		{
+			vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f), vTargetPos + XMLoadFloat3(&m_vFreezeOffset), m_fSmoothSpeed * _fTimeDelta);
+		}
+			break;
+		case COORDINATE_2D:
+		{
+			vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vPreTargetPos), 1.f), vTargetPos, m_fSmoothSpeed * _fTimeDelta);
+		}
+			break;
+		}
 
+		vCurFreezeOffset = XMVectorLerp(XMLoadFloat3(&m_vPreFreezeOffset), XMLoadFloat3(&m_vFreezeOffset), m_fSmoothSpeed * _fTimeDelta);
 		XMStoreFloat3(&m_vPreFreezeOffset, vCurFreezeOffset);
 	}
 	// Target Change일 땐 지정된 시간만큼 바뀐 Target으로 이동한다
@@ -718,11 +740,11 @@ _vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fT
 		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fTargetChangingTime, _fTimeDelta, EASE_IN_OUT);
 
 		if (fRatio >= (1.f - EPSILON)) {
-			vCurPos = vTargetPos;
+			vCurPos = vTargetPos + XMLoadFloat3(&m_vPreFreezeOffset);
 			m_isTargetChanged = false;
 		}
 
-		vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), vTargetPos, fRatio);
+		vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), vTargetPos + XMLoadFloat3(&m_vPreFreezeOffset), fRatio);
 	}
 
 	vCurPos = XMVectorSetW(vCurPos, 1.f);
@@ -911,12 +933,12 @@ void CCamera_Target::Imgui(_float _fTimeDelta)
 
 	ImGui::SameLine();
 	if (ImGui::Button("- Length") || ImGui::IsItemActive()) {// 누르고 있는 동안 계속 동작
-		fArmLength -= 0.1;
+		fArmLength -= 0.1f;
 		m_pCurArm->Set_Length(fArmLength);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("+ Length") || ImGui::IsItemActive()) {
-		fArmLength += 0.1;
+		fArmLength += 0.1f;
 		m_pCurArm->Set_Length(fArmLength);
 	}
 
@@ -1009,6 +1031,9 @@ void CCamera_Target::Load_InitialArmTag()
 		szFileName = TEXT("Chapter4/Chapter4_SketchSpace_InitialTag.json");
 		break;
 	case LEVEL_CHAPTER_6:
+		szFileName = TEXT("Chapter6/Chapter6_SketchSpace_InitialTag.json");
+		break;
+	case LEVEL_CHAPTER_8:
 		szFileName = TEXT("Chapter6/Chapter6_SketchSpace_InitialTag.json");
 		break;
 	}

@@ -11,18 +11,18 @@ class CCamera_2D : public CCamera
 public:
 	enum TARGET_STATE { TARGET_RIGHT, TARGET_UP, TARGET_LOOK, TARGET_POS, TARGET_STATE_END };
 
-	enum CAMERA_2D_MODE 
-	{ 
-		DEFAULT, 
-		MOVE_TO_NEXTARM, 
-		MOVE_TO_CUSTOMARM, 
+	enum CAMERA_2D_MODE
+	{
+		DEFAULT,
+		MOVE_TO_NEXTARM,
+		MOVE_TO_CUSTOMARM,
 		FLIPPING_UP,
-		FLIPPING_PAUSE,
+		PAUSE,
 		FLIPPING_DOWN,
 		NARRATION,
 		RESET_TO_SETTINGPOINT,
-		FREEZE,
-		CAMERA_2D_MODE_END 
+		ZIPLINE,
+		CAMERA_2D_MODE_END
 	};
 
 	enum DIRECTION_TYPE
@@ -58,13 +58,21 @@ public:
 		NORMAL_TYPE_END
 	};
 
+	enum FLIPPING_STATE
+	{
+		FLIPPING_NONE = 0x00,
+		TURN_ARM = 0x01,
+		CHANGE_LENGTH = 0x02,
+		ALL_DONE = TURN_ARM | CHANGE_LENGTH
+	};
+
 	typedef struct tagCamera2DDesc : public CCamera::CAMERA_DESC
 	{
 		CAMERA_2D_MODE			eCameraMode = { DEFAULT };
 		_float3					vAtOffset = { 0.f, 0.f, 0.f };
 		_float					fSmoothSpeed = {};
 
-		const _float4x4*				pTargetWorldMatrix = { nullptr };
+		const _float4x4* pTargetWorldMatrix = { nullptr };
 	}CAMERA_2D_DESC;
 
 private:
@@ -88,6 +96,7 @@ public:
 	void						Set_InitialData(_fvector _vArm, _float _fLength, _fvector _vOffset, _uint _iZoomLevel);
 	void						Set_InitialData(pair<ARM_DATA*, SUB_DATA*>* pData);
 	void						Set_InitialData(_wstring _szSectionTag);
+	void						Set_TrackingTime(_float _fTrackingTime) { m_fTrackingTime.x = _fTrackingTime; }
 
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
@@ -97,15 +106,15 @@ public:
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
-	virtual void				Change_Target(const _float4x4* _pTargetMatrix) { m_pTargetWorldMatrix = _pTargetMatrix; }
-	virtual void				Change_Target(CGameObject* _pTarget);
+	virtual void				Change_Target(const _float4x4* _pTargetMatrix, _float _fChangingTime = 1.f) { m_pTargetWorldMatrix = _pTargetMatrix; m_fTargetChangingTime = { _fChangingTime, 0.f }; }
+	virtual void				Change_Target(CGameObject* _pTarget, _float _fChangingTime = 1.f);
 	virtual void				Turn_AxisY(_float _fTimeDelta) override;
 	virtual void				Turn_AxisRight(_float _fTimeDelta) override;
 	virtual void				Change_Length(_float _fTimeDelta) override;
 	virtual void				Start_ResetArm_To_SettingPoint(_float _fResetTime) override;
 
 private:
-	const _float4x4* 			m_pTargetWorldMatrix = { nullptr };
+	const _float4x4*			m_pTargetWorldMatrix = { nullptr };
 	CAMERA_2D_MODE				m_eCameraMode = { CAMERA_2D_MODE_END };
 	CAMERA_2D_MODE				m_ePreCameraMode = { DEFAULT };
 	COORDINATE					m_eTargetCoordinate = { COORDINATE_2D };
@@ -122,7 +131,7 @@ private:
 	_float2						m_v2DdMatrixPos = {};
 
 	_float2						m_fTrackingTime = { 0.5f, 0.f };
-	
+
 	DIRECTION_TYPE				m_eDirectionType = { HORIZON };
 
 	// Book
@@ -135,6 +144,11 @@ private:
 	_float2						m_fBasicRatio[MAGNIFICATION_END] = {};	// 렌더 타겟의 어느 정도 비율로 고정할 것인지 결정, 기본적으로 해야 함
 	_uint						m_iFreezeMask = { NONE };
 	MAGNIFICATION_TYPE			m_eMagnificationType = {};
+	_float						m_fLengthValue = { 1.f };				// 보간해서 Camera Pos 길이 계산에 쓸 Value
+	_float						m_fStartLengthValue = { 1.f };			// 보간 때 쓰는 첫 시작 Value
+	_float						m_fOriginLengthValue = { 1.f };			// Section에서 받은 진짜 Length Value
+	_float2						m_fLengthValueTime = { 0.5f, 0.f };		// 
+	_uint						m_FlippingFlag = { FLIPPING_NONE };
 
 	_uint						m_iPlayType = {};
 	_bool						m_iNarrationPosType = { false };		// 나중에 int로 바꾸기, 지금은 true면 left
@@ -148,6 +162,9 @@ private:
 	// Normal
 	map<_wstring, _float3>		m_NormalTargets;
 
+	// Zipline
+	_float2						m_fZiplineTime = { 4.5f, 0.f };
+
 private:
 	void						Action_Mode(_float _fTimeDelta);
 	void						Action_SetUp_ByMode();
@@ -156,20 +173,28 @@ private:
 	void						Move_To_NextArm(_float _fTimeDelta);
 	void						Move_To_CustomArm(_float _fTimeDelta);
 	void						Flipping_Up(_float _fTimeDelta);
-	void						Flipping_Pause(_float _fTimeDelta);
+	void						Pause(_float _fTimeDelta);
 	void						Flipping_Down(_float _fTimeDelta);
 	void						Play_Narration(_float _fTimeDelta);
 	void						Reset_To_SettingPoint(_float _fTimeDelta);
-	void						Freeze(_float _fTimeDelta);
+	void						Zipline(_float _fTimeDelta);
 	
 	void						Look_Target(_float fTimeDelta);
 	_vector						Calculate_CameraPos(_float _fTimeDelta);
 	void						Calculate_Book_Scroll();
+	_bool						Change_LengthValue(_float _fTimeDelta);
 
 	virtual	void				Switching(_float _fTimeDelta) override;
 	void						Find_TargetPos();
 	void						Check_MagnificationType();
 	_bool						Is_Target_In_SketchSpace();
+
+private:
+	void						Set_LengthValue(_float _fStartLengthValue, _float _fOriginLengthValue) 
+	{ 
+		m_fStartLengthValue = _fStartLengthValue; 
+		m_fOriginLengthValue = _fOriginLengthValue;
+	};
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);

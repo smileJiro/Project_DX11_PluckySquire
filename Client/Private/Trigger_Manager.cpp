@@ -14,7 +14,7 @@
 #include "PlayerData_Manager.h"
 #include "GameEventExecuter.h"
 #include "Effect_Manager.h"
-#include "SampleBook.h"
+#include "Book.h"
 #include "PlayerItem.h"
 #include "Magic_Hand.h"
 
@@ -38,7 +38,7 @@ HRESULT CTrigger_Manager::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
 
-	Resister_Trigger_Action();
+	Register_Trigger_Action();
 	Mapping_ExecuterTag();
     return S_OK;
 
@@ -64,6 +64,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER2_BETTLE_PAGE] = L"Chapter2_Bettle_Page";
 	m_EventExecuterTags[CHAPTER2_OPENBOOKEVENT] = L"Chapter2_OpenBookEvent";
 	m_EventExecuterTags[CHAPTER2_STORYSEQUENCE] = L"Chapter2_StorySequence";
+	m_EventExecuterTags[CHAPTER4_RIDE_ZIPLINE] = L"Chapter4_Ride_Zipline";
+	m_EventExecuterTags[CHAPTER4_EVENT_FLAG] = L"Chapter4_Event_Flag";
 
 	return S_OK;
 }
@@ -161,7 +163,7 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 		#pragma endregion
 
 		#pragma region 5. 핸들러 등록
-			Resister_Event_Handler(Desc.iTriggerType, dynamic_cast<CTriggerObject*>(pTrigger));
+			Register_Event_Handler(Desc.iTriggerType, dynamic_cast<CTriggerObject*>(pTrigger));
 		#pragma endregion
 
 	}
@@ -215,7 +217,7 @@ void CTrigger_Manager::On_End(_wstring _szEventTag)
 		m_isEventEnd = true;
 }
 
-void CTrigger_Manager::Resister_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID)
+void CTrigger_Manager::Register_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID)
 {
 	auto iterator = m_TriggerEvents.find(_TriggerEventTag);
 
@@ -357,7 +359,7 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTrigge
 	return S_OK;
 }
 
-void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger)
+void CTrigger_Manager::Register_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger)
 {
 	// Handler 추가
 	//pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
@@ -482,7 +484,7 @@ void CTrigger_Manager::Resister_Event_Handler(_uint _iTriggerType, CTriggerObjec
 	}
 }
 
-void CTrigger_Manager::Resister_Trigger_Action()
+void CTrigger_Manager::Register_Trigger_Action()
 {
 	m_Actions[TEXT("Camera_Arm_Move")] = [this](_wstring _wszEventTag) {
 		if (true == CCamera_Manager::GetInstance()->Set_NextArmData(_wszEventTag, m_iTriggerID))
@@ -502,7 +504,8 @@ void CTrigger_Manager::Resister_Trigger_Action()
 		// 1. 플레이어 잠그기.
 		// 2. 애니메이션 재생하기컷씬 카메라 위치로 고정하기
 		
-		CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Set_BlockPlayerInput(true);
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_BlockPlayerInput(true);
+			
 		CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
 		CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 0.f, 6.f, EASE_IN_OUT);
 		auto Arm = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_Arm();
@@ -513,14 +516,14 @@ void CTrigger_Manager::Resister_Trigger_Action()
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) 
 		{
 
-		CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_ITEM_GET_NEWRIG);
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_ITEM_GET_NEWRIG);
 		CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
 		};
 	
 	m_Actions[TEXT("Glove_Get_After")] = [this](_wstring _wszEventTag) 
 {
-		CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Set_BlockPlayerInput(false);
-		CPlayerData_Manager::GetInstance()->Get_Player_Ptr()->Set_State(CPlayer::STATE::IDLE);
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_BlockPlayerInput(false);
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_State(CPlayer::STATE::IDLE);
 		CPlayerData_Manager::GetInstance()->Change_PlayerItemMode(_wszEventTag, CPlayerItem::DISAPPEAR);
 		};
 
@@ -531,7 +534,7 @@ void CTrigger_Manager::Resister_Trigger_Action()
 
 	m_Actions[TEXT("Active_BookMagicDust")] = [this](_wstring _wszEventTag) 
 {
-		static_cast<CSampleBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
+		static_cast<CBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0))->Execute_AnimEvent(5);
 		};
 	m_Actions[TEXT("Active_MagicHand")] = [this](_wstring _wszEventTag) 
 {

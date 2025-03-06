@@ -30,6 +30,7 @@ public:
 	virtual void Active_OnDisable() override;
 
 private:
+	virtual HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
 

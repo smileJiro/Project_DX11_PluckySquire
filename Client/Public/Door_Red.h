@@ -7,7 +7,7 @@ class CDoor_Red : public CDoor_2D
 public:
 	typedef struct tagDoorRedDesc : public CDoor_2D::DOOR_2D_DESC
 	{
-		_float		     fTargetDiff = 10.f;
+		_float		     fTargetDiff = -1.f;
 		_wstring		 strLayerTag;
 	}DOOR_RED_DESC;
 private:
@@ -25,7 +25,7 @@ public:
 
 private:
 	_bool					m_isStartOpen = { false };
-	_float					m_fTargetDiff = { 10.f };
+	_float					m_fTargetDiff = { -1.f };
 	_wstring				m_strLayerTag;
 
 private:

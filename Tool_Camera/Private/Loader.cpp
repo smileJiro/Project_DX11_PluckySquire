@@ -22,7 +22,7 @@
 #include "MainTable.h"
 #include "Bulb.h"
 
-#include "SampleBook.h"
+#include "Book.h"
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : m_pDevice(_pDevice)
@@ -315,9 +315,9 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         CCamera_CutScene::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
-    /* For. Prototype_GameObject_SampleBook */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_SampleBook"),
-        CSampleBook::Create(m_pDevice, m_pContext))))
+    /* For. Prototype_GameObject_Book */
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_Book"),
+        CBook::Create(m_pDevice, m_pContext))))
         return E_FAIL;
 
     Map_Object_Create(LEVEL_CAMERA_TOOL, LEVEL_CAMERA_TOOL, L"Chapter_02_Play_Desk.mchc");
@@ -346,7 +346,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/SM_desk_split_topboard_02/SM_desk_split_topboard_02.model", matPretransform))))
         return E_FAIL;
 
-    if (FAILED(Load_Models_FromJson(LEVEL_TRIGGER_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_02_Play_Desk.json", matPretransform)))
+    if (FAILED(Load_Models_FromJson(LEVEL_TRIGGER_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_04_Play_Desk.json", matPretransform)))
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TRIGGER_TOOL,
@@ -402,11 +402,11 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
 
 
     /* For. Prototype_GameObject_MapObject */
-    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TRIGGER_TOOL, TEXT("Prototype_GameObject_SampleBook"),
-    //    CSampleBook::Create(m_pDevice, m_pContext))))
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TRIGGER_TOOL, TEXT("Prototype_GameObject_Book"),
+    //    CBook::Create(m_pDevice, m_pContext))))
     //    return E_FAIL;
 
-    Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_02_Play_Desk.mchc");
+    Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_04_Play_Desk.mchc");
 
     //Map_Object_Create(LEVEL_STATIC, LEVEL_TRIGGER_TOOL, L"Room_Enviroment.mchc");
 

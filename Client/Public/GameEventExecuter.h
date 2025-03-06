@@ -41,7 +41,7 @@
 BEGIN(Client)
 
 class CPlayer;
-class CSampleBook;
+class CBook;
 
 class CGameEventExecuter abstract : public CGameObject
 {
@@ -108,7 +108,7 @@ protected:
 	_bool Step_Check(STEP_TYPE _eType) { return _eType == m_iStep; }
 	
 	CPlayer* Get_Player();
-	CSampleBook* Get_Book();
+	CBook* Get_Book();
 
 #pragma endregion
 

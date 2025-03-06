@@ -2907,7 +2907,17 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 0.0
+    },
+    "Collider_Radius": 434.0
+   },
+   "ColliderType": 0
+  },
   "ModelType": 0,
   "SearchTag": "artia_fountain",
   "Sorting": false,
@@ -2961,7 +2971,20 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 68.0,
+     "Y": 68.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 6.0,
+     "Y": 360.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 0,
   "SearchTag": "TD_Tree_BP",
   "Sorting": false,
@@ -2970,7 +2993,20 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 68.0,
+     "Y": 68.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 360.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 0,
   "SearchTag": "artia_tree_02_Sprite",
   "Sorting": false,
@@ -2979,7 +3015,20 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 68.0,
+     "Y": 68.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 360.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 0,
   "SearchTag": "artia_tree_03_Sprite",
   "Sorting": false,
@@ -2988,7 +3037,20 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 68.0,
+     "Y": 68.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 360.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 0,
   "SearchTag": "artia_tree_04_Sprite",
   "Sorting": false,
@@ -2997,7 +3059,20 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 68.0,
+     "Y": 68.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 363.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 0,
   "SearchTag": "artia_tree_05_Sprite",
   "Sorting": false,
@@ -3006,7 +3081,20 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 68.0,
+     "Y": 68.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 359.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 0,
   "SearchTag": "artia_tree_06_Sprite",
   "Sorting": false,
@@ -3024,7 +3112,20 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 68.0,
+     "Y": 68.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 360.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 0,
   "SearchTag": "artia_tree_08",
   "Sorting": false,
@@ -3049,8 +3150,8 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": 1534.0,
-     "Y": 1534.0
+     "X": 1293.0,
+     "Y": 1293.0
     },
     "Collider_Offset_Pos": {
      "X": 0.0,
@@ -3161,12 +3262,12 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": 726.0,
-     "Y": 726.0
+     "X": 309.0,
+     "Y": 309.0
     },
     "Collider_Offset_Pos": {
-     "X": 0.0,
-     "Y": 0.0
+     "X": 43.0,
+     "Y": 140.0
     }
    },
    "ColliderType": 1
@@ -3267,12 +3368,12 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": 1229.0,
-     "Y": 1229.0
+     "X": 804.0,
+     "Y": 804.0
     },
     "Collider_Offset_Pos": {
      "X": 0.0,
-     "Y": 0.0
+     "Y": 82.0
     }
    },
    "ColliderType": 1
@@ -3320,9 +3421,9 @@
    "ColliderInfo": {
     "Collider_Offset_Pos": {
      "X": 0.0,
-     "Y": 269.0
+     "Y": 302.0
     },
-    "Collider_Radius": 350.0
+    "Collider_Radius": 317.0
    },
    "ColliderType": 0
   },
@@ -3378,9 +3479,9 @@
    "ColliderInfo": {
     "Collider_Offset_Pos": {
      "X": 0.0,
-     "Y": 495.0
+     "Y": 540.0
     },
-    "Collider_Radius": 494.0
+    "Collider_Radius": 343.0
    },
    "ColliderType": 0
   },
@@ -3435,12 +3536,12 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": 537.0,
-     "Y": 537.0
+     "X": 292.0,
+     "Y": 292.0
     },
     "Collider_Offset_Pos": {
      "X": 0.0,
-     "Y": 553.0
+     "Y": 614.0
     }
    },
    "ColliderType": 1
@@ -3559,10 +3660,10 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Offset_Pos": {
-     "X": -170.0,
-     "Y": 315.0
+     "X": -247.0,
+     "Y": 342.0
     },
-    "Collider_Radius": 412.0
+    "Collider_Radius": 205.0
    },
    "ColliderType": 0
   },
@@ -3619,7 +3720,17 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 18.0
+    },
+    "Collider_Radius": 252.0
+   },
+   "ColliderType": 0
+  },
   "ModelType": 0,
   "SearchTag": "pumpkin",
   "Sorting": false,
@@ -3654,9 +3765,9 @@
    "ColliderInfo": {
     "Collider_Offset_Pos": {
      "X": 0.0,
-     "Y": 232.0
+     "Y": 296.0
     },
-    "Collider_Radius": 403.0
+    "Collider_Radius": 239.0
    },
    "ColliderType": 0
   },
@@ -3821,7 +3932,20 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 76.0,
+     "Y": 76.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 4.0,
+     "Y": 321.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 0,
   "SearchTag": "TD_Paint_Post",
   "Sorting": false,

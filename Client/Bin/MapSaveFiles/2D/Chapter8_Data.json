@@ -1,0 +1,23 @@
+[
+	{
+		"Section_Name": "Chapter8_P0506",
+		"Section_BackGround_Name": "Chapter8_P0506_BackGround",
+		"Section_Type": 1,
+		"Section_Default": 0,
+		"Section_Info": {
+			"Next_Page_Tag": "Chapter8_P0506"
+		}
+	},
+	{
+	
+	"Section_Name": "Chapter8_P1718",
+	"Section_Start": true,
+	"Section_Default": 0,
+	"Section_BackGround_Name": "Chapter8_P1718_BackGround",
+	"Section_Type": 3,
+		"MiniGame_Info": {
+			"MiniGame_Type": 1,
+			"MiniGame_Name": "Pip_01"
+		}
+	}
+]

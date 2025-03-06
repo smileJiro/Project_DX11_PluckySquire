@@ -4,7 +4,7 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"
 #include "Trigger_Manager.h"
-#include "SampleBook.h"
+#include "Book.h"
 #include "Effect_Manager.h"
 #include "UI_Manager.h"
 #include "Target_Manager.h"
@@ -76,6 +76,7 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 	Imgui(fTimeDelta);
 #endif
 
+	//m_eCameraMode = DEFAULT;
 	Switching(fTimeDelta);
 
 	Action_SetUp_ByMode();
@@ -119,6 +120,11 @@ _bool CCamera_2D::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
 	m_pCurArm->Set_NextArmData(pData->first, _iTriggerID);
 	m_szEventTag = _wszNextArmName;
 
+	if (nullptr != pData->second) {
+		Start_Zoom(pData->second->fZoomTime, (CCamera::ZOOM_LEVEL)pData->second->iZoomLevel, (RATIO_TYPE)pData->second->iZoomRatioType);
+		Start_Changing_AtOffset(pData->second->fAtOffsetTime, XMLoadFloat3(&pData->second->vAtOffset), pData->second->iAtRatioType);
+	}
+
 	return _bool();
 }
 
@@ -135,12 +141,36 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
 		m_iPlayType = static_cast<CSection_2D*>(pSection)->Get_Section_2D_PlayType();
 
-#pragma region Narration || Book
-		if (CSection_2D::NARRAION == m_iPlayType || CSection_2D::PLAYMAP == m_iPlayType) { // 일단 Narration이랑 Book이랑 같이 처리
+		Check_MagnificationType();
+
+#pragma region Book
+		if (CSection_2D::PLAYMAP == m_iPlayType) { // 일단 Narration이랑 Book이랑 같이 처리
+			
+			// 처음 들어올 땐 이렇게 해도 상관없음
+			m_fLengthValue = m_fOriginLengthValue;
+
+			pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+
+			if (VERTICAL == m_eDirectionType) {
+				pData = Find_ArmData(TEXT("Book_Vertical"));
+			}
+			else {
+				pData = Find_ArmData(TEXT("Book_Horizon"));
+			}
+
+			if (nullptr != pData)
+				Set_InitialData(pData);
+		}
+#pragma endregion
+
+#pragma region Narration
+		if (CSection_2D::NARRAION == m_iPlayType) { // 일단 Narration이랑 Book이랑 같이 처리
+
 			pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
 			pData = Find_ArmData(TEXT("Book_Horizon"));
 
-			m_pCurArm->Set_ArmVector(XMLoadFloat3(&pData->first->vDesireArm));
+			if (nullptr != pData)
+				Set_InitialData(pData);
 		}
 #pragma endregion
 
@@ -213,7 +243,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		// Initial Data가 없어서 TargetPos + vArm * Length로 초기 위치를 바로 잡아주기
 		if (nullptr == _pInitialData) {
 			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
-			_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+			_vector vCameraPos = vTargetPos + ((m_pCurArm->Get_Length() / m_fLengthValue) * m_pCurArm->Get_ArmVector());
 			XMStoreFloat3(&m_v2DPreTargetWorldPos, vTargetPos);
 			XMStoreFloat3(&m_v2DFixedPos, vTargetPos);
 
@@ -245,13 +275,10 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 			//m_iCurZoomLevel = m_tInitialData.iZoomLevel;
 			m_fFovy = m_ZoomLevels[m_tInitialData.iZoomLevel];
 		}
-
-		Check_MagnificationType();
-
 	}
 }
 
-void CCamera_2D::Change_Target(CGameObject* _pTarget)
+void CCamera_2D::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
 {
 	m_pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 	m_eTargetCoordinate = _pTarget->Get_CurCoord();
@@ -310,6 +337,10 @@ INITIAL_DATA CCamera_2D::Get_InitialData()
 
 	tData.iZoomLevel = m_iCurZoomLevel;
 
+	// 2D에서 나갈 때 무조건 Value 1.f로 맞추기
+	// 만약 책으로 들어온다면 가장 처음에 Section에 맞춰서 바꿔 주니까
+	m_fLengthValue = 1.f;
+
 	return tData;
 }
 
@@ -342,7 +373,7 @@ void CCamera_2D::Set_InitialData(_wstring _szSectionTag)
 
 	if (TEXT("Chapter4_SKSP_02") == _szSectionTag) {
 		pData = Find_ArmData(TEXT("Custom_Flag"));
-		m_eCameraMode = FREEZE;
+		m_eCameraMode = PAUSE;
 	}
 	else if (TEXT("Chapter4_SKSP_07") == _szSectionTag) {
 		pData = Find_ArmData(TEXT("Custom_Stair"));
@@ -420,8 +451,8 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	case FLIPPING_UP:
 		Flipping_Up(_fTimeDelta);
 		break;
-	case FLIPPING_PAUSE:
-		//Flipping_Pause(_fTimeDelta);
+	case PAUSE:
+		Pause(_fTimeDelta);
 		break;
 	case FLIPPING_DOWN:
 		Flipping_Down(_fTimeDelta);
@@ -429,8 +460,11 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	case RESET_TO_SETTINGPOINT:
 		Reset_To_SettingPoint(_fTimeDelta);
 		break;
-	case FREEZE:
-		Freeze(_fTimeDelta);
+	case NARRATION:
+		Play_Narration(_fTimeDelta);
+		break;
+	case ZIPLINE:
+		Zipline(_fTimeDelta);
 		break;
 	}
 }
@@ -456,17 +490,24 @@ void CCamera_2D::Action_SetUp_ByMode()
 			Set_NextArmData(TEXT("BookFlipping_Horizon"), 0);
 			
 			CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Book"), 0);
-			Change_Target(pBook);		
+			Change_Target(pBook);
+
+			// LengthValue를 1.f로 맞춰야 함
+			Set_LengthValue(m_fLengthValue, 1.f);
 		}
 			break;
 		case FLIPPING_DOWN:
 		{
+			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
+			m_iPlayType = static_cast<CSection_2D*>(pSection)->Get_Section_2D_PlayType();
+
 			Check_MagnificationType();
+
+			// LengthValue 보간을 위해 맞춰 줌
+			Set_LengthValue(m_fLengthValue, m_fOriginLengthValue);
 
 			if (VERTICAL == m_eDirectionType) {
 				Set_NextArmData(TEXT("Book_Vertical"), 0);
-				// 지금은 종모드면 무조건 줌
-				Start_Zoom(0.5f, (ZOOM_LEVEL)3, EASE_IN_OUT);
 			}
 			else {
 				Set_NextArmData(TEXT("Book_Horizon"), 0);
@@ -489,10 +530,11 @@ void CCamera_2D::Action_SetUp_ByMode()
 				break;
 			}
 
-			// 어디 볼지는 지금은 무조건 player 위치인데 위치랑 카메라가 못 가는 곳에 따라서
-			// 조정이 필요함
-		/*	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
-			XMStoreFloat3(&m_v2DPreTargetWorldPos, vTargetPos);*/
+		}
+			break;
+		case ZIPLINE:
+		{
+			m_vStartPos = m_v2DPreTargetWorldPos;
 		}
 			break;
 		}
@@ -538,8 +580,21 @@ void CCamera_2D::Move_To_CustomArm(_float _fTimeDelta)
 
 void CCamera_2D::Flipping_Up(_float _fTimeDelta)
 {	
-	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta, true)) {
-		m_eCameraMode = FLIPPING_PAUSE;
+	if (FLIPPING_STATE::TURN_ARM != (m_FlippingFlag & FLIPPING_STATE::TURN_ARM)) {
+		if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta, true)) {
+			m_FlippingFlag |= FLIPPING_STATE::TURN_ARM;
+		}
+	}
+
+	if (FLIPPING_STATE::CHANGE_LENGTH != (m_FlippingFlag & FLIPPING_STATE::CHANGE_LENGTH)) {
+		if (true == Change_LengthValue(_fTimeDelta)) {
+			m_FlippingFlag |= FLIPPING_STATE::CHANGE_LENGTH;
+		}
+	}
+
+	if (FLIPPING_STATE::ALL_DONE == m_FlippingFlag) {
+		m_eCameraMode = PAUSE;
+		m_FlippingFlag = FLIPPING_STATE::FLIPPING_NONE;
 	}
 
 	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
@@ -548,18 +603,31 @@ void CCamera_2D::Flipping_Up(_float _fTimeDelta)
 	Look_Target(_fTimeDelta);
 }
 
-void CCamera_2D::Flipping_Pause(_float _fTimeDelta)
+void CCamera_2D::Pause(_float _fTimeDelta)
 {
 }
 
 void CCamera_2D::Flipping_Down(_float _fTimeDelta)
 {
-	if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta, true)) {
-		
+	if (FLIPPING_STATE::TURN_ARM != (m_FlippingFlag & FLIPPING_STATE::TURN_ARM)) {
+		if (true == m_pCurArm->Move_To_NextArm_ByVector(_fTimeDelta, true)) {
+			m_FlippingFlag |= FLIPPING_STATE::TURN_ARM;
+		}
+	}
+
+	if (FLIPPING_STATE::CHANGE_LENGTH != (m_FlippingFlag & FLIPPING_STATE::CHANGE_LENGTH)) {
+		if (true == Change_LengthValue(_fTimeDelta)) {
+			m_FlippingFlag |= FLIPPING_STATE::CHANGE_LENGTH;
+		}
+	}
+
+	if (FLIPPING_STATE::ALL_DONE == m_FlippingFlag) {
 		if (CSection_2D::NARRAION == m_iPlayType)
 			m_eCameraMode = NARRATION;
 		else
 			m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
+
+		m_FlippingFlag = FLIPPING_STATE::FLIPPING_NONE;
 	}
 
 	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
@@ -598,8 +666,29 @@ void CCamera_2D::Reset_To_SettingPoint(_float _fTimeDelta)
 	Look_Target(_fTimeDelta);
 }
 
-void CCamera_2D::Freeze(_float _fTimeDelta)
+void CCamera_2D::Zipline(_float _fTimeDelta)
 {
+	static _uint iStep = 0;
+
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fZiplineTime, _fTimeDelta, EASE_OUT);
+
+	if (fRatio >= (1.f - EPSILON)) {
+
+		m_eCameraMode = PAUSE;
+		m_fTrackingTime.x = 0.5f;
+		return;
+	}
+
+	if (0.56f < fRatio && 0 == iStep) {
+		if (true == Turn_Camera_AxisY(XMConvertToRadians(-60.f), 2.0f, _fTimeDelta, EASE_IN_OUT)) {
+			iStep++;
+		}
+	}
+
+	// ZipLine 멈춤 없이 부드럽게 가기 위해서 Position 따로 계산
+	_vector vZiplineTargetPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMVectorSet(-17.2633266f, 16.9958153f, 13.7984772, 0.f), fRatio);
+	_vector vPos = XMVectorSetW(vZiplineTargetPos, 1.f) + (m_pCurArm->Get_ArmVector() * m_pCurArm->Get_Length());
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
 }
 
 void CCamera_2D::Look_Target(_float fTimeDelta)
@@ -643,7 +732,7 @@ _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
 		vCurPos = XMVectorSetW(vCurPos, 1.f);
 	}
 	
-	_vector vCameraPos = vCurPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+	_vector vCameraPos = vCurPos + ((m_pCurArm->Get_Length() / m_fLengthValue) * m_pCurArm->Get_ArmVector());
 
 	XMStoreFloat3(&m_v2DPreTargetWorldPos, vCurPos);
 	m_v2DFixedPos = m_v2DTargetWorldPos;
@@ -664,7 +753,7 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 
 	if (fRatio >= (1.f - EPSILON)) {
 		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
-		_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+		_vector vCameraPos = vTargetPos + ((m_pCurArm->Get_Length() / m_fLengthValue) * m_pCurArm->Get_ArmVector());
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
 
 		m_fFixedY = XMVectorGetY(vTargetPos);
@@ -689,7 +778,7 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 		vTargetPos = XMLoadFloat3(&m_v2DPreTargetWorldPos);
 	}
 
-	_vector vCameraPos = vTargetPos + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());
+	_vector vCameraPos = vTargetPos + ((m_pCurArm->Get_Length() / m_fLengthValue) * m_pCurArm->Get_ArmVector());
 	_vector vResulPos = XMVectorLerp(XMLoadFloat3(&m_tInitialData.vPosition), vCameraPos, fRatio);
 
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vResulPos, 1.f));
@@ -942,17 +1031,34 @@ void CCamera_2D::Calculate_Book_Scroll()
 	XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 }
 
+_bool CCamera_2D::Change_LengthValue(_float _fTimeDelta)
+{
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fLengthValueTime, _fTimeDelta, LERP);
+
+	if (fRatio >= (1.f - EPSILON)) {
+		m_fLengthValue = m_fOriginLengthValue;
+		m_fLengthValueTime.y = 0.f;
+
+		return true;
+	}
+
+	m_fLengthValue = m_pGameInstance->Lerp(m_fStartLengthValue, m_fOriginLengthValue, fRatio);
+	
+	return false;
+}
+
 void CCamera_2D::Check_MagnificationType()
 {
 	if (CSection_2D::PLAYMAP != m_iPlayType)
 		return;
 
 	CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
+	m_fOriginLengthValue = static_cast<CSection_2D*>(pSection)->Get_CameraRatio();
 
 	// 종
 	if (true == static_cast<CSection_2D*>(pSection)->Is_Rotation()) {
 		// 배율
-		if (1.f == 1.f) {
+		if (1.f == m_fOriginLengthValue) {
 			m_eMagnificationType = VERTICAL_NONE_SCALE;
 			m_iFreezeMask = FREEZE_X;
 		}
@@ -968,7 +1074,7 @@ void CCamera_2D::Check_MagnificationType()
 
 		_float fRatio = static_cast<CSection_2D*>(pSection)->Get_CameraRatio();
 
-		if (1.f == 1.f) {
+		if (1.f == m_fOriginLengthValue) {
 			m_eMagnificationType = HORIZON_NON_SCALE;
 			m_iFreezeMask = FREEZE_Z;
 		}
@@ -1107,12 +1213,12 @@ void CCamera_2D::Imgui(_float _fTimeDelta)
 
 	ImGui::SameLine();
 	if (ImGui::Button("- Length") || ImGui::IsItemActive()) {// 누르고 있는 동안 계속 동작
-		fArmLength -= 0.1;
+		fArmLength -= 0.1f;
 		m_pCurArm->Set_Length(fArmLength);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("+ Length") || ImGui::IsItemActive()) {
-		fArmLength += 0.1;
+		fArmLength += 0.1f;
 		m_pCurArm->Set_Length(fArmLength);
 	}
 

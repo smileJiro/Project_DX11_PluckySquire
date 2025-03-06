@@ -18,6 +18,7 @@ CCharacter::CCharacter(const CCharacter& _Prototype)
 HRESULT CCharacter::Initialize(void* _pArg)
 {
 	CHARACTER_DESC* pDesc = static_cast<CHARACTER_DESC*>(_pArg);
+    m_tStat = pDesc->_tStat;
 	m_fStepSlopeThreshold = pDesc->_fStepSlopeThreshold;
 	m_fStepHeightThreshold = pDesc->_fStepHeightThreshold;
     m_fGravity = m_pGameInstance->Get_Gravity();
@@ -501,7 +502,7 @@ _vector CCharacter::StepAssist(_fvector _vVelocity,_float _fTimeDelta)
 
 void CCharacter::Move(_fvector _vForce, _float _fTimeDelta)
 {
-    ACTOR_TYPE eActorType = Get_ActorType();
+
 
     if (COORDINATE_3D == Get_CurCoord())
     {
@@ -521,7 +522,6 @@ void CCharacter::Move(_fvector _vForce, _float _fTimeDelta)
         {
             m_pControllerTransform->Go_Direction(_vForce,_fTimeDelta);
         }
-
 
     }
     else

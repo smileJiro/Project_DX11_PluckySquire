@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "PlayerState_TurnBook.h"
-#include "SampleBook.h"
+#include "Book.h"
 
 CPlayerState_TurnBook::CPlayerState_TurnBook(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::TURN_BOOK)
@@ -16,7 +16,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 	if (tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_END])
 	{
 		m_pBook->Set_PlayingAnim(true);
-		m_pBook->Switch_Animation(CSampleBook::IDLE);
+		m_pBook->Switch_Animation(CBook::IDLE);
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;
 	}
@@ -34,13 +34,13 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 			if (tKeyResult.bInputStates[PLAYER_INPUT_TILTBOOK_LEFT])
 			{
 				Set_State(BOOK_STATE::TILT_RToL);
-				m_pBook->Switch_Animation(CSampleBook::BOOK_ANIMATION::CLOSE_R_TO_L);
+				m_pBook->Switch_Animation(CBook::BOOK_ANIMATION::CLOSE_R_TO_L);
 				m_pBook->Set_ReverseAnimation(false);
 			}
 			else if (tKeyResult.bInputStates[PLAYER_INPUT_TILTBOOK_RIGHT])
 			{
 				Set_State(BOOK_STATE::TILT_LToR);
-				m_pBook->Switch_Animation(CSampleBook::BOOK_ANIMATION::CLOSE_L_TO_R);
+				m_pBook->Switch_Animation(CBook::BOOK_ANIMATION::CLOSE_L_TO_R);
 				m_pBook->Set_ReverseAnimation(false);
 			}
 		}
@@ -50,7 +50,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 		if (tKeyResult.bInputStates[PLAYER_INPUT_TILTBOOK_RIGHT])
 		{
 			Set_State(BOOK_STATE::TILT_LToR);
-			//m_pBook->Set_Animation(CSampleBook::BOOK_ANIMATION::CLOSE_L_TO_R);
+			//m_pBook->Set_Animation(CBook::BOOK_ANIMATION::CLOSE_L_TO_R);
 		}
 	}
 	else if (CLOSED_RIGHT == m_eBookState)
@@ -58,12 +58,12 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 		if (tKeyResult.bInputStates[PLAYER_INPUT_TILTBOOK_LEFT])
 		{
 			Set_State(BOOK_STATE::TILT_RToL);
-			//m_pBook->Set_Animation(CSampleBook::BOOK_ANIMATION::CLOSE_R_TO_L);
+			//m_pBook->Set_Animation(CBook::BOOK_ANIMATION::CLOSE_R_TO_L);
 		}
 	}
 	else if (TURN_LEFT == m_eBookState || TURN_RIGHT == m_eBookState)
 	{
-		if (CSampleBook::BOOK_PAGE_ACTION::ACTION_LAST == m_pBook->Get_ActionType())
+		if (CBook::BOOK_PAGE_ACTION::ACTION_LAST == m_pBook->Get_ActionType())
 		{
 			if (tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT])
 			{
@@ -93,7 +93,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 			m_pBook->Set_PlayingAnim(true);
 
 			//반대 면이 기울어져있었으면?
-			if (CSampleBook::BOOK_ANIMATION::CLOSE_R_TO_L == iBookAnim)
+			if (CBook::BOOK_ANIMATION::CLOSE_R_TO_L == iBookAnim)
 			{
 				m_pBook->Set_ReverseAnimation(true);
 				//넘기는 중에 다 펼쳐지면? 
@@ -104,7 +104,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 				}
 			}
 			// 정상 기울이기면?
-			else if (CSampleBook::BOOK_ANIMATION::CLOSE_L_TO_R == iBookAnim)
+			else if (CBook::BOOK_ANIMATION::CLOSE_L_TO_R == iBookAnim)
 			{
 				m_pBook->Set_ReverseAnimation(false);
 				//기울이는 중에 특정 진행도를 넘으면?
@@ -130,7 +130,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 			m_pBook->Set_PlayingAnim(true);
 
 			//반대 면이 기울어져있었으면?
-			if (CSampleBook::BOOK_ANIMATION::CLOSE_L_TO_R == iBookAnim)
+			if (CBook::BOOK_ANIMATION::CLOSE_L_TO_R == iBookAnim)
 			{
 				m_pBook->Set_ReverseAnimation(true);
 				//넘기는 중에 다 펼쳐지면? 
@@ -141,7 +141,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 				}
 			}
 			// 정상 기울이기면?
-			else if (CSampleBook::BOOK_ANIMATION::CLOSE_R_TO_L == iBookAnim)
+			else if (CBook::BOOK_ANIMATION::CLOSE_R_TO_L == iBookAnim)
 			{
 				m_pBook->Set_ReverseAnimation(false);
 				//기울이는 중에 특정 진행도를 넘으면?
@@ -162,7 +162,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 
 void CPlayerState_TurnBook::Enter()
 {
-	m_pBook = dynamic_cast<CSampleBook*>( m_pOwner->Get_InteractableObject());
+	m_pBook = dynamic_cast<CBook*>( m_pOwner->Get_InteractableObject());
 	if (nullptr == m_pBook)
 	{
 		m_pOwner->Set_State(CPlayer::IDLE);
@@ -201,7 +201,7 @@ void CPlayerState_TurnBook::On_StateChange(BOOK_STATE _eNewState)
 
 			break;
 		case Client::CPlayerState_TurnBook::TILT_RToL:
-			//m_pBook->Switch_Animation(CSampleBook::BOOK_ANIMATION::CLOSE_R_TO_L);
+			//m_pBook->Switch_Animation(CBook::BOOK_ANIMATION::CLOSE_R_TO_L);
 			break;
 		case Client::CPlayerState_TurnBook::CLOSED_LEFT:
 		default:
@@ -221,7 +221,7 @@ void CPlayerState_TurnBook::On_StateChange(BOOK_STATE _eNewState)
 
 			break;
 		case Client::CPlayerState_TurnBook::TILT_LToR:
-			//m_pBook->Switch_Animation(CSampleBook::BOOK_ANIMATION::CLOSE_L_TO_R);
+			//m_pBook->Switch_Animation(CBook::BOOK_ANIMATION::CLOSE_L_TO_R);
 			break;
 		case Client::CPlayerState_TurnBook::CLOSED_RIGHT:
 		default:
@@ -236,7 +236,7 @@ void CPlayerState_TurnBook::On_StateChange(BOOK_STATE _eNewState)
 	case Client::CPlayerState_TurnBook::TRANSFORM_CENTER:
 	{
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_TURN_MID);
-		m_pBook->Switch_Animation(CSampleBook::IDLE);
+		m_pBook->Switch_Animation(CBook::IDLE);
 		m_fTiltIdleTimeAcc = 0.f;
 		break;
 	}

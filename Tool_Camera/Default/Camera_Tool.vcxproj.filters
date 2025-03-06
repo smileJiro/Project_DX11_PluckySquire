@@ -139,7 +139,7 @@
     <Filter Include="02. GameObjects\MapObject\MainTable">
       <UniqueIdentifier>{6a3bda51-a29a-4f4c-9f8a-3673de2faf99}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\SampleBook">
+    <Filter Include="02. GameObjects\Book">
       <UniqueIdentifier>{7649f605-da1e-4467-9ebc-b13f1a97bc97}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObjects\MagicHand">
@@ -276,8 +276,8 @@
     <ClInclude Include="..\Public\RenderGroup_PostProcessing.h">
       <Filter>03. RenderGroup</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\SampleBook.h">
-      <Filter>02. GameObjects\SampleBook</Filter>
+    <ClInclude Include="..\Public\Book.h">
+      <Filter>02. GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -401,8 +401,8 @@
     <ClCompile Include="..\Private\RenderGroup_PostProcessing.cpp">
       <Filter>03. RenderGroup</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\SampleBook.cpp">
-      <Filter>02. GameObjects\SampleBook</Filter>
+    <ClCompile Include="..\Private\Book.cpp">
+      <Filter>02. GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

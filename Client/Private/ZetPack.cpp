@@ -149,7 +149,8 @@ void CZetPack::Switch_State(ZET_STATE _eState)
         }
         else
         {
-
+            CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip"), false, &m_WorldMatrices[COORDINATE_3D], 1);
+            Event_SetActive(m_pTargetLight, true);
         }
 		break;
 	default:
