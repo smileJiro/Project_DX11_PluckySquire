@@ -157,6 +157,7 @@
 #include "Boss_YellowBall.h"
 #include "Boss_PurpleBall.h"
 #include "Boss_WingSlam.h"
+#include "Boss_WingSlice.h"
 #include "Boss_Rock.h"
 #include "Boss_Crystal.h"
 #include "Boss_TennisBall.h"
@@ -1223,6 +1224,10 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			CBoss_WingSlam::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_WingSlice"),
+			CBoss_WingSlice::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_Rock"),
 			CBoss_Rock::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
@@ -1246,6 +1251,12 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_HalfSphere_01_2"),
 			C3DModel::Create(m_pDevice, m_pContext,
 				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_HalfSphere_01_2.model"
+					), matPretransform))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sonic_02"),
+			C3DModel::Create(m_pDevice, m_pContext,
+				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sonic_02.model"
 					), matPretransform))))
 			return E_FAIL;
 
@@ -1612,6 +1623,10 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		CBoss_WingSlam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_WingSlice"),
+		CBoss_WingSlice::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_Rock"),
 		CBoss_Rock::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -1627,6 +1642,12 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_HalfSphere_01_2"),
 		C3DModel::Create(m_pDevice, m_pContext,
 			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_HalfSphere_01_2.model"
+				), matPretransform))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sonic_02"),
+		C3DModel::Create(m_pDevice, m_pContext,
+			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sonic_02.model"
 				), matPretransform))))
 		return E_FAIL;
 

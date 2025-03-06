@@ -1443,6 +1443,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_TransformIn.h" />
     <ClInclude Include="..\Public\CandleGame.h" />
+    <ClInclude Include="..\Public\BossWingSliceState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2308,6 +2311,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_TransformIn.cpp" />
     <ClCompile Include="..\Private\CandleGame.cpp" />
+    <ClCompile Include="..\Private\BossWingSliceState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
