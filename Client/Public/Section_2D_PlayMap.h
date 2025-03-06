@@ -29,6 +29,8 @@ public:
 	virtual HRESULT						Initialize(void* _pDesc);
 	virtual HRESULT						Ready_Objects(void* _pDesc);
 
+
+
 public:
 	virtual HRESULT						Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex) override;
 	virtual HRESULT						Section_AddRenderGroup_Process() override;

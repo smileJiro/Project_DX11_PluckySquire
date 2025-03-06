@@ -686,8 +686,8 @@ HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, cons
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fStartUV", &vStartCoord, sizeof(_float2));
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fEndUV", &vEndCoord, sizeof(_float2));
         if(m_strRenderSectionTag == L"Chapter4_SKSP_06"
-            ||
-            m_strRenderSectionTag == L"Chapter6_SKSP_07"
+            //||
+            //m_strRenderSectionTag == L"Chapter6_SKSP_07"
             )
             iFlag = 3;
         else
