@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Sneak_Default_Tile.h"
 #include "GameInstance.h"
+#include "Section_Manager.h"
 
 CSneak_Default_Tile::CSneak_Default_Tile(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CSneak_Tile(_pDevice, _pContext)
@@ -18,11 +19,14 @@ HRESULT CSneak_Default_Tile::Initialize(void* _pArg)
 	
 	pDesc->strModelPrototypeTag_2D = TEXT("Sneak_Tile");
 
+	//pDesc->tTransform2DDesc.vInitialPosition = { 0.f, 0.f, 0.f };
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
-
 	m_eTileType = DEFAULT;
+	
+	//TEMP
+	Switch_Animation(DEFAULT_CLOSED);
 
     return S_OK;
 }

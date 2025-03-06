@@ -1,8 +1,20 @@
 #pragma once
 #include "Section_2D_MiniGame.h"
+
 BEGIN(Client)
+class CSneak_Tile;
 class CSection_2D_MiniGame_Pip final : public CSection_2D_MiniGame
 {
+public:
+	enum SECTION_PIP_RENDERGROUP
+	{
+		SECTION_PIP_TILE,
+		SECTION_PIP_MAPOBJECT,
+		SECTION_PIP_MAPOBJECT_2,
+		SECTION_PIP_MOVEOBJECT,
+
+	};
+
 public:
 	typedef struct tagSection2DDesc : public CSection_2D_MiniGame::SECTION_2D_MINIGAME_DESC
 	{

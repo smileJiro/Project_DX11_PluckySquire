@@ -19,6 +19,7 @@ HRESULT CSneak_Tile::Initialize(void* _pArg)
 
 	SNEAK_TILEDESC* pDesc = static_cast<SNEAK_TILEDESC*>(_pArg);
 
+
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable = false;
 	pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
@@ -28,13 +29,17 @@ HRESULT CSneak_Tile::Initialize(void* _pArg)
 	
 	pDesc->eActorType = ACTOR_TYPE::LAST;
 	pDesc->pActorDesc = nullptr;
-	pDesc->iModelPrototypeLevelID_2D = m_iCurLevelID;
-
+	pDesc->iModelPrototypeLevelID_2D = pDesc->iCurLevelID;
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
-
 	m_iTileIndex = m_iTileIndex;
+	for (_int i = 0; i < LAST; ++i)
+	{
+		m_AdjacentTiles[i] = pDesc->iAdjacents[i];
+	}
+	m_vTilePosition = _float2(pDesc->tTransform2DDesc.vInitialPosition.x, pDesc->tTransform2DDesc.vInitialPosition.y);
+
 
 	return S_OK;
 }

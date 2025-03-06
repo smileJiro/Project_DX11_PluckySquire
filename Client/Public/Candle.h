@@ -39,7 +39,7 @@ private:
 	STATE							m_eCurState = STATE::STATE_LAST;
 
 private:
-	CLight_Target*					m_pTargetLight;
+	CLight_Target* m_pTargetLight = { nullptr };
 private:
 	void							State_Change();
 

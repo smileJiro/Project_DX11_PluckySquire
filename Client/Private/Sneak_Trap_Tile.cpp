@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Sneak_Trap_Tile.h"
 #include "GameInstance.h"
-
+#include "Section_Manager.h"
 CSneak_Trap_Tile::CSneak_Trap_Tile(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CSneak_Tile(_pDevice, _pContext)
 {
@@ -23,6 +23,7 @@ HRESULT CSneak_Trap_Tile::Initialize(void* _pArg)
 
 	m_eTileType = TRAP;
 
+	Switch_Animation(TRAP_CLOSED);
 
 	return S_OK;
 }

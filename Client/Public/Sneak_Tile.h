@@ -1,21 +1,20 @@
 #pragma once
 #include "ModelObject.h"
 
-BEGIN(Engine)
-class C2DModel;
-END
+BEGIN(Client)
 
 class CSneak_Tile : public CModelObject
 {
 public:
 	enum TILE_ANIMATION 
 	{ DEFAULT_CLOSE, DEFAULT_CLOSED, DEFAULT_OPENED, DEFAULT_OPEN,
-		TRAP_CLOSE, TRAP_CLOSED, TRAP_OPEN, TRAP_OPENDED, DEFAULT_YELLOW, DEFAULT_RED, TRAP_YELLOW };
+		TRAP_CLOSE, TRAP_CLOSED, TRAP_OPEN, TRAP_OPENDED, DEFAULT_RED, DEFAULT_YELLOW, TRAP_YELLOW };
 	enum SNEAK_TILE_TYPE { DEFAULT, TRAP };
-	enum TILE_DIRECTION {LEFT, RIGHT, UP, DOWN, LAST };
+	enum TILE_DIRECTION { RIGHT, DOWN, LEFT, UP, LAST };
 	typedef struct tagSneakTileDesc : public CModelObject::MODELOBJECT_DESC
 	{
-		_int	_iTileIndex;
+		_int	iTileIndex;
+		_int	iAdjacents[LAST] = { -1, -1, -1, -1 };
 	}SNEAK_TILEDESC;
 
 protected:
@@ -28,13 +27,14 @@ public:
 
 
 public:
-	void		 Set_AdjacentTiles(TILE_DIRECTION _eDir, CSneak_Tile* _pTile) { if (_eDir >= LAST) return; m_AdjacentTiles[_eDir] = _pTile; }
-	CSneak_Tile* Get_AdjacentTiles(TILE_DIRECTION _eDir) { return m_AdjacentTiles[_eDir]; }
-
+	void		 Set_AdjacentTiles(TILE_DIRECTION _eDir, _int _iTileIndex) { if (_eDir >= LAST) return; m_AdjacentTiles[_eDir] = _iTileIndex; }
+	_int		 Get_AdjacentTiles(TILE_DIRECTION _eDir) const { return m_AdjacentTiles[_eDir]; }
+	_int		 Get_TileIndex() const { return m_iTileIndex; }
+	_float2		 Get_TilePosition() const { return m_vTilePosition; }
 
 protected:
-	CSneak_Tile*			m_AdjacentTiles[LAST] = { nullptr, nullptr, nullptr, nullptr };
-
+	_int			m_AdjacentTiles[LAST] = { -1, -1, -1, -1 };
+	_float2			m_vTilePosition = { 0.f, 0.f };
 protected:
 	_int					m_iTileIndex = { 0 };
 	SNEAK_TILE_TYPE			m_eTileType = { DEFAULT };
@@ -43,3 +43,4 @@ public:
 	virtual void Free() override;
 };
 
+END

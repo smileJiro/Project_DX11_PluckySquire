@@ -1,0 +1,238 @@
+[
+    [
+        {
+            "Index": 0,
+            "Position": [
+                -1050.0,
+                180.0
+            ],
+            "Adjacent": [
+                1,
+                5,
+                -1,
+                -1
+            ],
+            "Default": true
+        },
+        {
+            "Index": 1,
+            "Adjacent": [
+                2,
+                -1,
+                0,
+                -1
+            ],
+            "Default": true
+        },
+        {
+            "Index": 2,
+            "Adjacent": [
+                3,
+                6,
+                1,
+                -1
+            ],
+            "Default": true
+        },
+        {
+            "Index": 3,
+            "Adjacent": [
+                4,
+                -1,
+                2,
+                -1
+            ],
+            "Default": true
+        },
+        {
+            "Index": 4,
+            "Adjacent": [
+                -1,
+                7,
+                3,
+                -1
+            ],
+            "Default": true
+        },
+        {
+            "Index": 5,
+            "Adjacent": [
+                -1,
+                8,
+                -1,
+                0
+            ],
+            "Default": true
+        },
+        {
+            "Index": 6,
+            "Adjacent": [
+                -1,
+                10,
+                -1,
+                2
+            ],
+            "Default": true
+        },
+        {
+            "Index": 7,
+            "Adjacent": [
+                -1,
+                12,
+                -1,
+                4
+            ],
+            "Default": true
+        },
+        {
+            "Index": 8,
+            "Adjacent": [
+                9,
+                -1,
+                -1,
+                5
+            ],
+            "Default": true
+        },
+        {
+            "Index": 9,
+            "Adjacent": [
+                10,
+                13,
+                8,
+                -1
+            ],
+            "Default": true
+        },
+        {
+            "Index": 10,
+            "Adjacent": [
+                11,
+                -1,
+                9,
+                6
+            ],
+            "Default": false
+        },
+        {
+            "Index": 11,
+            "Adjacent": [
+                12,
+                -1,
+                10,
+                -1
+            ],
+            "Default": true
+        },
+        {
+            "Index": 12,
+            "Adjacent": [
+                -1,
+                -1,
+                11,
+                7
+            ],
+            "Default": true
+        },
+        {
+            "Index": 13,
+            "Adjacent": [
+                -1,
+                14,
+                -1,
+                9
+            ],
+            "Default": true
+        },
+        {
+            "Index": 14,
+            "Adjacent": [
+                15,
+                -1,
+                -1,
+                13
+            ],
+            "Default": true
+        },
+        {
+            "Index": 15,
+            "Adjacent": [
+                -1,
+                16,
+                14,
+                -1
+            ],
+            "Default": false
+        },
+        {
+            "Index": 16,
+            "Adjacent": [
+                17,
+                19,
+                -1,
+                15
+            ],
+            "Default": true
+        },
+        {
+            "Index": 17,
+            "Adjacent": [
+                18,
+                -1,
+                16,
+                -1
+            ],
+            "Default": true
+        },
+        {
+            "Index": 18,
+            "Adjacent": [
+                -1,
+                -1,
+                17,
+                -1
+            ],
+            "Default": true
+        },
+        {
+            "Index": 19,
+            "Adjacent": [
+                -1,
+                20,
+                -1,
+                16
+            ],
+            "Default": true
+        },
+        {
+            "Index": 20,
+            "Adjacent": [
+                21,
+                -1,
+                -1,
+                19
+            ],
+            "Default": true
+        },
+        {
+            "Index": 21,
+            "Adjacent": [
+                22,
+                -1,
+                20,
+                -1
+            ],
+            "Default": true
+        },
+        {
+            "Index": 22,
+            "Adjacent": [
+                -1,
+                -1,
+                21,
+                -1
+            ],
+            "Default": true
+        }
+    ]    
+]

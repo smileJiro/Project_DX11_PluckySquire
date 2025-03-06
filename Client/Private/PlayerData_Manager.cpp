@@ -159,14 +159,14 @@ void CPlayerData_Manager::Change_PlayerItemMode(_wstring _strItemTag, _uint _iIt
 	}
 }
 
-void CPlayerData_Manager::Register_Player(PLAYALBE_ID _ePlayableID, CPlayable* _pPlayer)
+void CPlayerData_Manager::Register_Player(PLAYABLE_ID _ePlayableID, CPlayable* _pPlayer)
 {
 	Safe_Release(m_pPlayers[(_uint)_ePlayableID]);
 	m_pPlayers[(_uint)_ePlayableID] = _pPlayer;
 	Safe_AddRef(m_pPlayers[(_uint)_ePlayableID]);
 }
 
-void CPlayerData_Manager::Set_CurrentPlayer(PLAYALBE_ID _ePlayableID)
+void CPlayerData_Manager::Set_CurrentPlayer(PLAYABLE_ID _ePlayableID)
 {
 	if(m_pCurrentPlayer)
 	{

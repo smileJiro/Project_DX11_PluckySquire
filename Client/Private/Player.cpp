@@ -55,7 +55,7 @@
 #include "Book.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    :CPlayable(_pDevice, _pContext, PLAYALBE_ID::NORMAL)
+    :CPlayable(_pDevice, _pContext, PLAYABLE_ID::NORMAL)
 {
 }
 
@@ -246,7 +246,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
     Set_State(CPlayer::IDLE);
 
     // PlayerData Manager µî·Ï
-    CPlayerData_Manager::GetInstance()->Register_Player(PLAYALBE_ID::NORMAL,    this);
+    CPlayerData_Manager::GetInstance()->Register_Player(PLAYABLE_ID::NORMAL,    this);
 
     return S_OK;
 }

@@ -10,7 +10,7 @@
 #include "PlayerData_Manager.h"
 
 CDefenderPlayer::CDefenderPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CPlayable(_pDevice, _pContext,PLAYALBE_ID::DEFENDER)
+	: CPlayable(_pDevice, _pContext,PLAYABLE_ID::DEFENDER)
 {
 }
 
@@ -57,7 +57,7 @@ HRESULT CDefenderPlayer::Initialize(void* _pArg)
 		return E_FAIL;
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CDefenderPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-	CPlayerData_Manager::GetInstance()->Register_Player(PLAYALBE_ID::DEFENDER, this);
+	CPlayerData_Manager::GetInstance()->Register_Player(PLAYABLE_ID::DEFENDER, this);
 	return S_OK;
 }
 
@@ -233,7 +233,7 @@ void CDefenderPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_IDLE);
 		m_pCrossHair->Set_Active(true);
 		CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
-		pPDM->Set_CurrentPlayer(PLAYALBE_ID::DEFENDER);
+		pPDM->Set_CurrentPlayer(PLAYABLE_ID::DEFENDER);
 
 	}
 	else if ((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_SHOT == iAnimIdx)

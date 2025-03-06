@@ -63,8 +63,7 @@
 
 #include "NPC.h"
 #include "Loader.h"
-
-#include "Sneak_Default_Tile.h"
+#include "Minigame_Sneak.h"
 
 
 CLevel_Chapter_08::CLevel_Chapter_08(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -605,12 +604,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Book(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
-
-	//// TEMP
-	//CSneak_Default_Tile::SNEAK_TILEDESC TileDesc = {};
-	//TileDesc.
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
-	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -1277,6 +1270,8 @@ CLevel_Chapter_08* CLevel_Chapter_08::Create(ID3D11Device* _pDevice, ID3D11Devic
 void CLevel_Chapter_08::Free()
 {
 	m_pGameInstance->End_BGM();
+
+	CMinigame_Sneak::GetInstance()->DestroyInstance();
 
 	__super::Free();
 }
