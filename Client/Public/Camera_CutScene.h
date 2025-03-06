@@ -26,6 +26,10 @@ public:
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
 	virtual INITIAL_DATA		Get_InitialData() override;
 
+public:
+	void						Set_Pause_After_CutScene(_bool _isPause);
+	_bool						Is_Finish_CutScene() { return m_isFinishCutScene; }
+
 private:
 	map<_wstring, pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA*>>>	m_CutSceneDatas;	// Sector -> CUTSCENE_DATA
 	pair<CUTSCENE_SUB_DATA, vector<CUTSCENE_DATA*>>*		m_pCurCutScene = { nullptr };

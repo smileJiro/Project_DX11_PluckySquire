@@ -73,11 +73,11 @@ void CCamera_Target::Add_Arm(CCameraArm* _pCameraArm)
 
 	m_pArm = _pCameraArm;
 }
-
-void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
-{
-	m_pTargetWorldMatrix = _pTargetWorldMatrix;
-}
+//
+//void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix)
+//{
+//	m_pTargetWorldMatrix = _pTargetWorldMatrix;
+//}
 
 void CCamera_Target::Key_Input(_float _fTimeDelta)
 {

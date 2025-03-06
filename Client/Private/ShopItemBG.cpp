@@ -23,9 +23,9 @@ HRESULT CShopItemBG::Initialize_Prototype()
 
 HRESULT CShopItemBG::Initialize(void* _pArg)
 {
-	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
-
+	ShopUI* pDesc = static_cast<ShopUI*>(_pArg);
 	m_vOriginSize = _float2(pDesc->fSizeX, pDesc->fSizeY);
+	m_strName = pDesc->strName;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -42,7 +42,6 @@ HRESULT CShopItemBG::Initialize(void* _pArg)
 	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
 
 	m_pControllerTransform->Set_Scale(vCalScale.x, vCalScale.y, 1.f);
-	m_fShopBGPos = Uimgr->Get_ShopPos();
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;

@@ -1,5 +1,8 @@
 #pragma once
 #include "3DMapObject.h"
+BEGIN(Engine)
+class CLight_Target;
+END
 
 BEGIN(Client)
 class C3DMapEmissiveObject : public C3DMapObject
@@ -22,9 +25,13 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	_float4		m_vColor = {0.7f, 0.7f, 0.2f, 1.f};
-	_float4		m_vBloomColor = {0.8f, 0.8f, 0.6f, 1.f};
+	_float4		m_vColor = { 0.8f, 0.8f, 0.6f, 1.f };
+	_float4		m_vBloomColor = { 0.7f, 0.7f, 0.2f, 1.f }; 
 
+private: /* ÅÂ¿õ Ãß°¡ Target Light */
+	HRESULT			Ready_TargetLight();
+private:
+	CLight_Target*	m_pTargetLight = nullptr;
 private:
 	HRESULT			Bind_ShaderResources();
 

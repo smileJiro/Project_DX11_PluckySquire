@@ -250,6 +250,11 @@ _vector CController_Transform::Get_State(CTransform::STATE _eState) const
 	return m_pTransforms[m_eCurCoord]->Get_State(_eState);
 }
 
+_vector CController_Transform::Get_State(COORDINATE _eCoord, CTransform::STATE _eState) const
+{
+	return m_pTransforms[_eCoord]->Get_State(_eState);
+}
+
 _float CController_Transform::Get_SpeedPerSec() const
 {
 	return m_pTransforms[m_eCurCoord]->Get_SpeedPerSec();

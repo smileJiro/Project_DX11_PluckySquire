@@ -47,7 +47,8 @@ public :
 		CHAPTER2_BETTLE_PAGE,
 		CHAPTER2_OPENBOOKEVENT,
 		CHAPTER2_STORYSEQUENCE,
-		CHAPTER4_RIDE_ZIPLINE,
+		CHAPTER4_RIDE_ZIPLINE,		// Zipline 타기
+		CHAPTER4_EVENT_FLAG,		// Zipline 들어가기 전 이벤트
 
 		EVENT_EXECUTER_ACTION_TYPE_LAST
 	};
@@ -130,6 +131,7 @@ private:
 	void						Register_Trigger_Action();
 
 	_uint						Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box);
+	//_uint						Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box);
 
 	void						Execute_Trigger_Event();
 

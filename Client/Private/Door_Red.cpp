@@ -38,6 +38,18 @@ HRESULT CDoor_Red::Initialize(void* _pArg)
 
 void CDoor_Red::Update(_float _fTimeDelta)
 {
+#ifdef _DEBUG
+    if (KEY_PRESSING(KEY::CTRL) && KEY_DOWN(KEY::NUM0))
+    {
+        m_isStartOpen = false;
+        m_eDoorState = CLOSED;
+        Switch_Animation_By_State();
+    }
+
+
+#endif
+
+
     if (CLOSED == m_eDoorState)
     {
         _bool isEmpty = true;
@@ -46,7 +58,7 @@ void CDoor_Red::Update(_float _fTimeDelta)
 
         // TEMP
         // Target을 나로 해줘.
-        if (isEmpty)
+        if (isEmpty && (false == m_isStartOpen))
         {
             // Target 설정.
             if (0.f < m_fTargetDiff)
@@ -93,7 +105,7 @@ void CDoor_Red::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         Switch_Animation_By_State();
 
         if (0.f < m_fTargetDiff)
-            CCamera_Manager::GetInstance()->Change_CameraTarget(CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr());
+            CCamera_Manager::GetInstance()->Change_CameraTarget(CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr());
     }
 
 }

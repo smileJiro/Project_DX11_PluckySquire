@@ -193,9 +193,11 @@
     <ClInclude Include="..\Public\Bombable.h" />
     <ClInclude Include="..\Public\BombableObject.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
+    <ClInclude Include="..\Public\BossDeadState.h" />
     <ClInclude Include="..\Public\BossHitState.h" />
     <ClInclude Include="..\Public\BossRockVolleyState.h" />
     <ClInclude Include="..\Public\BossShieldState.h" />
+    <ClInclude Include="..\Public\BossTransitionState.h" />
     <ClInclude Include="..\Public\BossWingSlamState.h" />
     <ClInclude Include="..\Public\Boss_Crystal.h" />
     <ClInclude Include="..\Public\Boss_Rock.h" />
@@ -206,6 +208,7 @@
     <ClInclude Include="..\Public\ButterGrump_Shield.h" />
     <ClInclude Include="..\Public\ButterGrump_Tongue.h" />
     <ClInclude Include="..\public\Candle.h" />
+    <ClInclude Include="..\public\CandleGame.h" />
     <ClInclude Include="..\public\Candle_Body.h" />
     <ClInclude Include="..\public\Candle_UI.h" />
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
@@ -231,7 +234,13 @@
     <ClInclude Include="..\Public\Level_Chapter_06.h" />
     <ClInclude Include="..\Public\Level_Chapter_08.h" />
     <ClInclude Include="..\Public\Playable.h" />
+    <ClInclude Include="..\public\Minigame_Sneak.h" />
     <ClInclude Include="..\Public\PlayerState_GetItem.h" />
+    <ClInclude Include="..\Public\Section_2D_MiniGame.h" />
+    <ClInclude Include="..\Public\Section_2D_MiniGame_Pip.h" />
+    <ClInclude Include="..\public\Sneak_Default_Tile.h" />
+    <ClInclude Include="..\public\Sneak_Trap_Tile.h" />
+    <ClInclude Include="..\public\Sneak_Tile.h" />
     <ClInclude Include="..\Public\PlayerState_TransformIn.h" />
     <ClInclude Include="..\Public\Zipline.h" />
     <ClInclude Include="..\Public\MudPit.h" />
@@ -488,9 +497,11 @@
     <ClCompile Include="..\Private\Bombable.cpp" />
     <ClCompile Include="..\Private\BombableObject.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
+    <ClCompile Include="..\Private\BossDeadState.cpp" />
     <ClCompile Include="..\Private\BossHitState.cpp" />
     <ClCompile Include="..\Private\BossRockVolleyState.cpp" />
     <ClCompile Include="..\Private\BossShieldState.cpp" />
+    <ClCompile Include="..\Private\BossTransitionState.cpp" />
     <ClCompile Include="..\Private\BossWingSlamState.cpp" />
     <ClCompile Include="..\Private\Boss_Crystal.cpp" />
     <ClCompile Include="..\Private\Boss_Rock.cpp" />
@@ -501,6 +512,7 @@
     <ClCompile Include="..\Private\ButterGrump_Shield.cpp" />
     <ClCompile Include="..\Private\ButterGrump_Tongue.cpp" />
     <ClCompile Include="..\private\Candle.cpp" />
+    <ClCompile Include="..\private\CandleGame.cpp" />
     <ClCompile Include="..\private\Candle_Body.cpp" />
     <ClCompile Include="..\private\Candle_UI.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
@@ -524,7 +536,13 @@
     <ClCompile Include="..\Private\Level_Chapter_06.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_08.cpp" />
     <ClCompile Include="..\Private\Playable.cpp" />
+    <ClCompile Include="..\private\Minigame_Sneak.cpp" />
     <ClCompile Include="..\Private\PlayerState_GetItem.cpp" />
+    <ClCompile Include="..\Private\Section_2D_MiniGame.cpp" />
+    <ClCompile Include="..\Private\Section_2D_MiniGame_Pip.cpp" />
+    <ClCompile Include="..\private\Sneak_Default_Tile.cpp" />
+    <ClCompile Include="..\private\Sneak_Trap_Tile.cpp" />
+    <ClCompile Include="..\private\Sneak_Tile.cpp" />
     <ClCompile Include="..\Private\PlayerState_TransformIn.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\Private\MudPit.cpp" />
