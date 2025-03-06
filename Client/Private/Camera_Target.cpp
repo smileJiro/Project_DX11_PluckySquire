@@ -490,7 +490,7 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 	pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(-0.7f, 2.f, 0.f, 0.f), EASE_IN_OUT);*/
 #pragma endregion
 
-	//Imgui(_fTimeDelta);
+	Imgui(_fTimeDelta);
 
 #endif
 }
@@ -1025,7 +1025,7 @@ void CCamera_Target::Reset_To_SettingPoint(_float _fTimeDelta)
 		m_fResetTime.y = 0.f;
 		m_eCameraMode = DEFAULT;
 
-		m_pCurArm->Set_ArmVector(XMVector3Normalize(XMLoadFloat3(&m_ResetArmData.vPreArm)));
+		m_pCurArm->Reset_To_SettingPoint(fRatio, XMLoadFloat3(&m_ResetArmData.vPreArm), m_ResetArmData.fPreLength);
 
 		return;
 	}

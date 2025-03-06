@@ -131,7 +131,7 @@ private:
 	void						Register_Trigger_Action();
 
 	_uint						Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box);
-	_uint						Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box);
+	//_uint						Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, PxBoxGeometry& _Box);
 
 	void						Execute_Trigger_Event();
 
