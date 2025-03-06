@@ -73,6 +73,8 @@ private:
 	_wstring					m_strMRTKey;
 
 	_wstring					m_strWorldRTKey = L"";
+	_wstring					m_strWorldMRTKey = L"";
+	_wstring					m_strWorldDSVKey = L"";
 	_int						m_iWorldRenderGroupID;
 	_int						m_iWorldPriorityID;
 	
