@@ -72,7 +72,7 @@ void CButterGrump_Shield::Update(_float _fTimeDelta)
     //        }
     //    }
     //}
-    cout << Get_FinalPosition().m128_f32[0] << "  " << Get_FinalPosition().m128_f32[1] << "  " << Get_FinalPosition().m128_f32[2] << endl;
+
     __super::Update(_fTimeDelta);
 }
 
