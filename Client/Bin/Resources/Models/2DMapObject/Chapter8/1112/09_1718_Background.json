@@ -1,0 +1,39 @@
+[
+  {
+    "Type": "Texture2D",
+    "Name": "09_1718_Background",
+    "Class": "UScriptClass'Texture2D'",
+    "Properties": {
+      "ImportedSize": {
+        "X": 7680,
+        "Y": 2160
+      },
+      "LightingGuid": "F3B63A54-4FA66693-A889DC89-8DBFC161",
+      "LODGroup": "TEXTUREGROUP_Pixels2D",
+      "Downscale": {
+        "bCooked": true,
+        "Default": 0.0,
+        "Value": 0.0
+      },
+      "NeverStream": true
+    },
+    "SizeX": 7680,
+    "SizeY": 2160,
+    "PackedData": 1,
+    "PixelFormat": "PF_DXT1",
+    "FirstMipToSerialize": 0,
+    "Mips": [
+      {
+        "BulkData": {
+          "BulkDataFlags": "BULKDATA_SingleUse | BULKDATA_ForceInlinePayload",
+          "ElementCount": 8294400,
+          "SizeOnDisk": 8294400,
+          "OffsetInFile": "0x7E9930"
+        },
+        "SizeX": 7680,
+        "SizeY": 2160,
+        "SizeZ": 1
+      }
+    ]
+  }
+]
