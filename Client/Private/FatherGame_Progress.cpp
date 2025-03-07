@@ -30,6 +30,7 @@ void CFatherGame_Progress::Active_OnDisable()
 
 void CFatherGame_Progress::Free()
 {
+
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);
     Safe_Release(m_pDevice);

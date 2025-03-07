@@ -31,8 +31,8 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 		return E_FAIL;
 
 	pProgressStart->Set_Active(true);
-	m_Progress.push_back(pProgressStart);
-	Safe_AddRef(pProgressStart);
+	m_Progress.push_back(pProgressStart); // 여기가 원본임. AddRef x
+
 
 	m_ProgressClear.push_back(false);
 
