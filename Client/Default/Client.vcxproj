@@ -212,6 +212,7 @@
     <ClInclude Include="..\public\Candle_Body.h" />
     <ClInclude Include="..\public\Candle_UI.h" />
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
+    <ClInclude Include="..\Public\CyberPlayerBullet.h" />
     <ClInclude Include="..\Public\DefenderPlayer.h" />
     <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
     <ClInclude Include="..\Public\Defender_Monster.h" />
@@ -235,6 +236,8 @@
     <ClInclude Include="..\Public\Level_Chapter_08.h" />
     <ClInclude Include="..\Public\Playable.h" />
     <ClInclude Include="..\public\Minigame_Sneak.h" />
+    <ClInclude Include="..\Public\PlayerRifle.h" />
+    <ClInclude Include="..\Public\PlayerState_CyberIdle.h" />
     <ClInclude Include="..\Public\PlayerState_GetItem.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame_Pip.h" />
@@ -517,6 +520,7 @@
     <ClCompile Include="..\private\Candle_UI.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
+    <ClCompile Include="..\Private\CyberPlayerBullet.cpp" />
     <ClCompile Include="..\Private\DefenderPlayer.cpp" />
     <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
     <ClCompile Include="..\Private\Defender_Monster.cpp" />
@@ -537,6 +541,8 @@
     <ClCompile Include="..\Private\Level_Chapter_08.cpp" />
     <ClCompile Include="..\Private\Playable.cpp" />
     <ClCompile Include="..\private\Minigame_Sneak.cpp" />
+    <ClCompile Include="..\Private\PlayerRifle.cpp" />
+    <ClCompile Include="..\Private\PlayerState_CyberIdle.cpp" />
     <ClCompile Include="..\Private\PlayerState_GetItem.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame_Pip.cpp" />

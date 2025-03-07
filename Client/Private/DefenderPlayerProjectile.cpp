@@ -97,6 +97,7 @@ void CDefenderPlayerProjectile::On_Collision2D_Enter(CCollider* _pMyCollider, CC
 	if (OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
 	{
 		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, _vector{0.f,0.f,0.f});
+		Event_DeleteObject(this);
 	}
 }
 

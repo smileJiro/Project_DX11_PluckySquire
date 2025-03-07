@@ -792,8 +792,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
-	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_NORMAL);
-	pPlayer->UnEquip_All();
+	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
+	//pPlayer->UnEquip_All();
 
 	return S_OK;
 }
@@ -1267,8 +1267,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
-
-
 
 	Goblin_Desc.iCurLevelID = m_eLevelID;
 	Goblin_Desc.eStartCoord = COORDINATE_2D;

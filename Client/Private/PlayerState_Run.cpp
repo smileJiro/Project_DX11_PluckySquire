@@ -136,7 +136,7 @@ void CPlayerState_Run::Exit()
 
 void CPlayerState_Run::Switch_RunAnimation2D(F_DIRECTION _eFDir)
 {
-	if (m_pOwner->Is_CyvberJot())
+	if (m_pOwner->Is_CyvberJotMode())
 	{
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CYBERJOTLITE_RUN_RIGHT);
 		return;

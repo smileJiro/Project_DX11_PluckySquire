@@ -1511,6 +1511,9 @@
     <ClInclude Include="..\Public\Playable.h">
       <Filter>02.GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerRifle.h" />
+    <ClInclude Include="..\Public\PlayerState_CyberIdle.h" />
+    <ClInclude Include="..\Public\CyberPlayerBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2414,6 +2417,9 @@
     <ClCompile Include="..\Private\Playable.cpp">
       <Filter>02.GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerRifle.cpp" />
+    <ClCompile Include="..\Private\PlayerState_CyberIdle.cpp" />
+    <ClCompile Include="..\Private\CyberPlayerBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
