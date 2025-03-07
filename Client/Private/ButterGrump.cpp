@@ -41,8 +41,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = false;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
+    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+    pDesc->tTransform3DDesc.fSpeedPerSec = 30.f;
 
     pDesc->iNumPartObjects = BOSSPART_END;
 
@@ -55,6 +55,9 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_fDelayTime = 0.5f;
     m_fCoolTime = 3.f;
 
+    m_fMoveHPRatio_Phase1_1 = 0.7f;
+    m_fMoveHPRatio_Phase1_2 = 0.3f;
+    m_fMoveHPRatio_Phase2 = 0.4f;
 
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;
@@ -74,6 +77,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SCENE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::TRANSITION);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::MOVE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::ENERGYBALL);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
@@ -119,6 +123,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     m_PartObjects[BOSSPART_SHIELD]->Get_ControllerTransform()->RotationXYZ(_float3(0.f, 90.f, 0.f));
     m_PartObjects[BOSSPART_SHIELD]->Set_Active(false);
+
+    Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
 
     //플레이어 위치 가져오기
     m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
@@ -181,7 +187,7 @@ void CButterGrump::Update(_float _fTimeDelta)
     {
         if(KEY_DOWN(KEY::NUMPAD2))
         {
-            Event_Hit(this, this, 50, XMVectorZero());
+            Event_Hit(this, this, 30, XMVectorZero());
         }
     }
 
@@ -240,6 +246,23 @@ void CButterGrump::Change_Animation()
 
         case BOSS_STATE::IDLE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            break;
+
+        case BOSS_STATE::MOVE:
+            switch (m_iCurMoveIndex)
+            {
+            case 0:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_LEFT);
+                break;
+
+            case 1:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_RIGHT);
+                break;
+
+            case 2:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_LEFT);
+                break;
+            }
             break;
 
         case BOSS_STATE::ENERGYBALL:
@@ -714,6 +737,14 @@ void CButterGrump::Shield_Break()
     Event_ChangeBossState(BOSS_STATE::HIT, m_pBossFSM);
 }
 
+void CButterGrump::Activate_Invinciblility(_bool _isActivate)
+{
+    m_isInvincible = _isActivate;
+    m_PartObjects[BOSSPART_LEFTEYE]->Set_Active(_isActivate);
+    m_PartObjects[BOSSPART_RIGHTEYE]->Set_Active(_isActivate);
+    m_PartObjects[BOSSPART_TONGUE]->Set_Active(_isActivate);
+}
+
 void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
@@ -744,6 +775,14 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case EXPLOSION_FALL:
+        break;
+
+    case DASH_DOWN:
+    case DASH_LEFT:
+    case DASH_RIGHT:
+    case DASH_UP:
+        m_isMove = false;
+        Set_AnimChangeable(true);
         break;
 
     case FIREBALL_SPIT_SMALL:
@@ -825,6 +864,7 @@ void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
         {
             m_tStat.iHP = m_tStat.iMaxHP;
             m_isPhase2 = true;
+            m_isConverse = false;
             Hit();
             Event_ChangeBossState(BOSS_STATE::TRANSITION, m_pBossFSM);
         }
@@ -840,6 +880,35 @@ void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
             m_isEnforce = true;
         if (false == Is_Converse())
             m_isConverse = true;
+    }
+    
+    //일정 체력이하일 때 한번 씩 움직임
+    if (false == Is_Phase2())
+    {
+        if (m_tStat.iMaxHP * m_fMoveHPRatio_Phase1_2 >= m_tStat.iHP)
+        {
+            if(true == m_isAlreadyMove)
+            {
+                m_isMove = true;
+                m_isAlreadyMove = false;
+            }
+        }
+
+        else if (m_tStat.iMaxHP * m_fMoveHPRatio_Phase1_1 >= m_tStat.iHP)
+        {
+            if(false == m_isAlreadyMove)
+            {
+                m_isMove = true;
+                m_isAlreadyMove = true;
+            }
+        }
+    }
+    else if (true == Is_Phase2())
+    {
+        if (m_tStat.iMaxHP * 0.4 >= m_tStat.iHP)
+        {
+            m_isMove = true;
+        }
     }
 }
 
