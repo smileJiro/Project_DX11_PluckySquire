@@ -497,6 +497,23 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 		i->Enter_Section(_strIncludeSectionName);
     }
 
+    if (Is_CarryingObject())
+    {
+        _int eCoord = m_pCarryingObject->Get_CurCoord();
+        eCoord ^= 1;
+        m_pCarryingObject->Change_Coordinate((COORDINATE)eCoord);
+        if (COORDINATE_2D == eCoord)
+        {
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCarryingObject);
+        }
+        else
+        {
+            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pCarryingObject);
+        }
+
+    }
+
+
 
     auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
 
@@ -521,6 +538,25 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
     else
     {
         static_cast<CCollider_Circle*>(m_pBody2DTriggerCom)->Set_Radius(m_f2DInteractRange);
+    }
+}
+
+void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
+{
+    if (Is_CarryingObject())
+    {
+        _int eCoord =  m_pCarryingObject->Get_CurCoord();
+        eCoord ^= 1;
+        m_pCarryingObject->Change_Coordinate((COORDINATE)eCoord);
+        if (COORDINATE_2D == eCoord)
+        {
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCarryingObject);
+        }
+        else
+        {
+            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pCarryingObject);
+        }
+
     }
 }
 
@@ -1040,20 +1076,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
     m_pInteractableObject = nullptr;
-    if (Is_CarryingObject())
-    {
-        m_pCarryingObject->Change_Coordinate(_eCoordinate);
-        if (COORDINATE_2D == _eCoordinate)
-        {
-            //m_pCarryingObject->Enter_Section(m_strSectionName);
-            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCarryingObject);
-        }
-        else
-        {
-            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pCarryingObject);
-        }
 
-    }
     End_Attack();
     if (COORDINATE_2D == _eCoordinate)
     {

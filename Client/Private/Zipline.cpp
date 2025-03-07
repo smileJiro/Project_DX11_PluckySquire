@@ -127,7 +127,7 @@ void CZipline::Ride_Down(_float _fTimeDelta)
 	if (fRatio >= (1.f - EPSILON)) {
 		// Player ¶³¾îÁö±â
 		m_pRidingObject->Set_GravityCompOn(true);
-
+		m_fZiplineTime.y = 0.f;
 		this->Set_Active(false);
 	}
 

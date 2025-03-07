@@ -9,6 +9,7 @@
 
 #include "Camera_Manager.h"
 #include "Camera_2D.h"
+#include "Camera_Target.h"
 #include "Player.h"
 #include "CarriableObject.h"
 #include "Detonator.h"
@@ -104,7 +105,7 @@ HRESULT CBook::Initialize(void* _pArg)
 
 	//책주변에는 없고 위에 플레이어가 있는지 감지하기
 	SHAPE_BOX_DESC BoxDesc3 = {};
-	BoxDesc3.vHalfExtents = { 19.8f, 1.2f, 5.6f };
+	BoxDesc3.vHalfExtents = { 19.8f, 3.5f, 5.6f };
 	SHAPE_DATA ShapeData3;
 	ShapeData3.pShapeDesc = &BoxDesc3;
 	ShapeData3.eShapeType = SHAPE_TYPE::BOX;
@@ -643,8 +644,13 @@ void CBook::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 		{
 			if(_My.pShapeUserData->iShapeIndex == 1)
 				m_isPlayerAround = true;
-			else if (_My.pShapeUserData->iShapeIndex == 2)
+			else if (_My.pShapeUserData->iShapeIndex == 2) {
 				m_isPlayerAbove = true;
+
+				// Player가 책 위에 있을 때 Camera Arm 조정하기
+				CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(20.f), XMConvertToRadians(30.f));
+				cout << "Enter" << endl;
+			}
 		}
 		break;
 	}
@@ -665,8 +671,13 @@ void CBook::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 		{
 			if (_My.pShapeUserData->iShapeIndex == 1)
 				m_isPlayerAround = false;
-			else if (_My.pShapeUserData->iShapeIndex == 2)
+			else if (_My.pShapeUserData->iShapeIndex == 2) {
 				m_isPlayerAbove = false;
+
+				// Player가 책 위에서 내려갈 때 Camera Arm 조정하기
+				CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, -XMConvertToRadians(20.f), -XMConvertToRadians(30.f));
+				cout << "Exit" << endl;
+			}
 		}
 		break;
 	}
