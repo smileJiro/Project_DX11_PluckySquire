@@ -26,7 +26,7 @@ void CTimer::Update_Timer(void)
 	/* 아래 코드는 요즘 같은 경우 불필요하다. QuadPart가 늘 고정값이기 때문,.*/
 	if (m_FrameTime.QuadPart - m_FixTime.QuadPart >= m_CpuTick.QuadPart)
 	{
-		// 현재 프레임 - 기준 프레임이 1000만을 넘었을때,sa
+		// 현재 프레임 - 기준 프레임이 1000만을 넘었을때,
 		// CpuTick 다시계산 후 
 		QueryPerformanceFrequency(&m_CpuTick);
 		// FixTime 수정.
