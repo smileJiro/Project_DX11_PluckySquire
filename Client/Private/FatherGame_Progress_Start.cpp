@@ -35,11 +35,12 @@ HRESULT CFatherGame_Progress_Start::Progress_Enter()
     GoblinDesc.iCurLevelID = LEVEL_CHAPTER_6;
     GoblinDesc.Build_3D_Transform(_float3(-5.0f, 1.0f, 0.0f));
     GoblinDesc.eStartCoord = COORDINATE_3D;
-    
+    GoblinDesc.isCoordChangeEnable = false;
 
-    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), LEVEL_CHAPTER_6, TEXT("Layer_Monster"),&pGameObject, &GoblinDesc)))
+    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, m_strMonsterPrototypeTag, LEVEL_CHAPTER_6, TEXT("Layer_Monster"),&pGameObject, &GoblinDesc)))
         return E_FAIL;
     m_pMonsters.push_back(static_cast<CMonster*>(pGameObject));
+    Safe_AddRef(pGameObject);
     /* 2. PortalDefender 4곳에 생성 */
 
     return S_OK;
