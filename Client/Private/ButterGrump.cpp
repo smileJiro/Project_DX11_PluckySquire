@@ -4,6 +4,7 @@
 #include "FSM.h"
 #include "ModelObject.h"
 #include "Pooling_Manager.h"
+#include "PlayerData_Manager.h"
 #include "Projectile_BarfBug.h"
 #include "Boss_HomingBall.h"
 #include "Boss_EnergyBall.h"
@@ -101,6 +102,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pModelObject->Register_OnAnimEndCallBack(bind(&CButterGrump::Animation_End, this, placeholders::_1, placeholders::_2));
 
     Bind_AnimEventFunc("On_Attack", bind(&CButterGrump::On_Attack, this));
+    Bind_AnimEventFunc("On_Move", bind(&CButterGrump::On_Move, this));
 
     /* Com_AnimEventGenerator */
     CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
@@ -127,7 +129,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
 
     //플레이어 위치 가져오기
-    m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
+    m_pTarget = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
     if (nullptr == m_pTarget)
     {
 #ifdef _DEBUG
@@ -729,6 +731,11 @@ void CButterGrump::On_Attack()
     }
 }
 
+void CButterGrump::On_Move()
+{
+    m_isOnMove = true;
+}
+
 void CButterGrump::Shield_Break()
 {
     //쉴드 끄고 애니메이션 전환
@@ -878,8 +885,23 @@ void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
     {
         if(false == Is_Enforce())
             m_isEnforce = true;
-        if (false == Is_Converse())
-            m_isConverse = true;
+
+        if(false == Is_Phase2())
+        {
+            if (0 == m_iNumConverse)
+            {
+                ++m_iNumConverse;
+                m_isConverse = true;
+            }
+        }
+        else if (true == Is_Phase2())
+        {
+            if (1 == m_iNumConverse)
+            {
+                ++m_iNumConverse;
+                m_isConverse = true;
+            }
+        }
     }
     
     //일정 체력이하일 때 한번 씩 움직임

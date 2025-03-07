@@ -27,9 +27,9 @@ HRESULT CBossMoveState::Initialize(void* _pArg)
 void CBossMoveState::State_Enter()
 {
 	//테스트 위해 지정 포인트가 아닌 오프셋으로 적용
-	XMStoreFloat3(&m_vecMovePoints[0], m_pOwner->Get_FinalPosition() + (XMLoadFloat3(&m_vecMovePoints[0]) - XMLoadFloat3(&m_vecMovePoints[2])));
-	XMStoreFloat3(&m_vecMovePoints[1], m_pOwner->Get_FinalPosition() + (XMLoadFloat3(&m_vecMovePoints[1]) - XMLoadFloat3(&m_vecMovePoints[2])));
-	XMStoreFloat3(&m_vecMovePoints[2], m_pOwner->Get_FinalPosition());
+	//XMStoreFloat3(&m_vecMovePoints[0], m_pOwner->Get_FinalPosition() + (XMLoadFloat3(&m_vecMovePoints[0]) - XMLoadFloat3(&m_vecMovePoints[2])));
+	//XMStoreFloat3(&m_vecMovePoints[1], m_pOwner->Get_FinalPosition() + (XMLoadFloat3(&m_vecMovePoints[1]) - XMLoadFloat3(&m_vecMovePoints[2])));
+	//XMStoreFloat3(&m_vecMovePoints[2], m_pOwner->Get_FinalPosition());
 
 
 	m_pOwner->Set_AnimChangeable(false);
@@ -43,6 +43,7 @@ void CBossMoveState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
+
 	_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
 
 	m_pOwner->Get_ControllerTransform()->Turn_To_DesireDir(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec() * _fTimeDelta);
@@ -50,8 +51,17 @@ void CBossMoveState::State_Update(_float _fTimeDelta)
 	//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
 	//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
 
-	//지정 위치에 도착하면
-	if (m_pOwner->Get_ControllerTransform()->MoveTo(XMLoadFloat3(&m_vecMovePoints[m_iMoveIndex]), _fTimeDelta))
+	CButterGrump* pBoss = static_cast<CButterGrump*>(m_pOwner);
+
+	if(true == pBoss->Is_OnMove())
+	{
+		//지정 위치에 도착하면
+		if (m_pOwner->Get_ControllerTransform()->MoveTo(XMLoadFloat3(&m_vecMovePoints[m_iMoveIndex]), _fTimeDelta))
+		{
+			pBoss->Set_OnMove(false);
+		}
+	}
+	else
 	{
 		if (true == m_pOwner->Get_AnimChangeable())
 		{
