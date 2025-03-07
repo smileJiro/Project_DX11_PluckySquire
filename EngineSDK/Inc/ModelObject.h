@@ -7,6 +7,7 @@ class CController_Model;
 class ENGINE_DLL CModelObject : public CPartObject
 {
 public:
+	enum SPRITE2D_FADEALPHA_STATE { FADEALPHA_DEFAULT, FADEALPHA_IN, FADEALPHA_OUT, FADEALPHA_LAST };
 	typedef struct tagModelObjectDesc : public CPartObject::PARTOBJECT_DESC
 	{
 		_uint iModelPrototypeLevelID_2D;
@@ -88,6 +89,12 @@ public:
 	//const _float4x4* Find_BoneMatrix(const _char* _pBoneName) const;
 	void Register_OnAnimEndCallBack(const function<void(COORDINATE,_uint)>& fCallback);
 	virtual void Check_FrustumCulling();
+
+public:
+	void Start_FadeAlphaIn(); // ¹à¾ÆÁö´Â°Å
+	void Start_FadeAlphaOut(); // ¹à¾ÆÁö´Â°Å
+	void Action_Fade(_float _fTimeDelta);
+
 public:
 	// Get
 	_uint	Get_ShaderPassIndex(COORDINATE _eCurCoord) { return m_iShaderPasses[_eCurCoord]; }
@@ -141,6 +148,10 @@ protected:
 	_uint					m_iPriorityID_3D = 0;
 	_bool					m_bPlayingAnim = true;	
 	_bool					m_bReverseAnimation = false;
+
+protected:
+	SPRITE2D_FADEALPHA_STATE m_eFadeAlphaState = SPRITE2D_FADEALPHA_STATE::FADEALPHA_DEFAULT;
+	_float2					m_vFadeAlpha = { 1.0f, 1.0f };
 
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();

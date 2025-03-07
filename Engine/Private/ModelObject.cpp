@@ -63,6 +63,8 @@ void CModelObject::Late_Update(_float _fTimeDelta)
         }
     }
 
+    /* Update 2D Object FadeAlpha Effect :: еб©У*/
+    Action_Fade(_fTimeDelta);
     /* Update Parent Matrix */
     __super::Late_Update(_fTimeDelta);
 }
@@ -102,6 +104,12 @@ HRESULT CModelObject::Render()
 	_uint iShaderPass = m_iShaderPasses[eCoord];
     if (COORDINATE_3D == eCoord)
         pShader->Bind_RawValue("g_fFarZ", m_pGameInstance->Get_FarZ(), sizeof(_float));
+    else if(COORDINATE_2D == eCoord)
+    {
+        _float fFadeAlphaRatio = m_vFadeAlpha.y / m_vFadeAlpha.x;
+        pShader->Bind_RawValue("g_fSprite2DFadeAlphaRatio", &fFadeAlphaRatio, sizeof(_float));
+    }
+
     m_pControllerModel->Render(pShader, iShaderPass);
 
     return S_OK;
@@ -271,6 +279,58 @@ void CModelObject::Check_FrustumCulling()
         m_isFrustumCulling = !m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 10.f);
     else
         m_isFrustumCulling = false;
+}
+
+void CModelObject::Start_FadeAlphaIn()
+{
+    if (COORDINATE_2D != Get_CurCoord())
+        return;
+
+    m_eFadeAlphaState = FADEALPHA_IN;
+    m_vFadeAlpha.y = 0.0f;
+}
+
+void CModelObject::Start_FadeAlphaOut()
+{
+    if (COORDINATE_2D != Get_CurCoord())
+        return;
+
+    m_eFadeAlphaState = FADEALPHA_OUT;
+    m_vFadeAlpha.y = 1.0f;
+}
+
+void CModelObject::Action_Fade(_float _fTimeDelta)
+{
+    if (COORDINATE_2D != Get_CurCoord())
+        return;
+
+    switch (m_eFadeAlphaState)
+    {
+    case Engine::CModelObject::FADEALPHA_DEFAULT:
+        break;
+    case Engine::CModelObject::FADEALPHA_IN:
+    {
+        m_vFadeAlpha.y += _fTimeDelta;
+        if (m_vFadeAlpha.x <= m_vFadeAlpha.y)
+        {
+            m_vFadeAlpha.y = 1.0f;
+            m_eFadeAlphaState = FADEALPHA_DEFAULT;
+        }
+    }
+        break;
+    case Engine::CModelObject::FADEALPHA_OUT:
+    {
+        m_vFadeAlpha.y -= _fTimeDelta;
+        if (m_vFadeAlpha.x <= m_vFadeAlpha.y)
+        {
+            m_vFadeAlpha.y = 0.0f;
+            m_eFadeAlphaState = FADEALPHA_DEFAULT;
+        }
+    }
+        break;
+    default:
+        break;
+    }
 }
 
 void CModelObject::Update(_float _fTimeDelta)
