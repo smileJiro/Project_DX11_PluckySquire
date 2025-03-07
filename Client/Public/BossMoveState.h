@@ -4,11 +4,11 @@
 BEGIN(Client)
 
 
-class CBossIdleState final : public CBossState
+class CBossMoveState final : public CBossState
 {
 private:
-	CBossIdleState();
-	virtual ~CBossIdleState() = default;
+	CBossMoveState();
+	virtual ~CBossMoveState() = default;
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -19,7 +19,7 @@ public:
 	virtual void State_Exit() override;
 
 public:
-	static CBossIdleState* Create(void* _pArg);
+	static CBossMoveState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;

@@ -1276,12 +1276,6 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 					), matPretransform))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("HomingBall"),
-			C3DModel::Create(m_pDevice, m_pContext,
-				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/HomingBall.model"
-					), matPretransform))))
-			return E_FAIL;
-
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Crystal_01_LowPoly"),
 			C3DModel::Create(m_pDevice, m_pContext,
 				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/Crystal_01_LowPoly.model"
@@ -1641,7 +1635,15 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		CBoss_Rock::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_Crystal"),
+		CBoss_Crystal::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_TennisBall"),
+		CBoss_TennisBall::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	_matrix matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),
 		C3DModel::Create(m_pDevice, m_pContext,
@@ -1664,12 +1666,6 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sonic_03"),
 		C3DModel::Create(m_pDevice, m_pContext,
 			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sonic_03.model"
-				), matPretransform))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("HomingBall"),
-		C3DModel::Create(m_pDevice, m_pContext,
-			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/HomingBall.model"
 				), matPretransform))))
 		return E_FAIL;
 

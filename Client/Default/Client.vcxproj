@@ -195,6 +195,7 @@
     <ClInclude Include="..\Public\BombStamp.h" />
     <ClInclude Include="..\Public\BossDeadState.h" />
     <ClInclude Include="..\Public\BossHitState.h" />
+    <ClInclude Include="..\Public\BossMoveState.h" />
     <ClInclude Include="..\Public\BossRockVolleyState.h" />
     <ClInclude Include="..\Public\BossShieldState.h" />
     <ClInclude Include="..\Public\BossTransitionState.h" />
@@ -503,6 +504,7 @@
     <ClCompile Include="..\Private\BombStamp.cpp" />
     <ClCompile Include="..\Private\BossDeadState.cpp" />
     <ClCompile Include="..\Private\BossHitState.cpp" />
+    <ClCompile Include="..\Private\BossMoveState.cpp" />
     <ClCompile Include="..\Private\BossRockVolleyState.cpp" />
     <ClCompile Include="..\Private\BossShieldState.cpp" />
     <ClCompile Include="..\Private\BossTransitionState.cpp" />
