@@ -1836,7 +1836,11 @@ void CPlayer::Set_State(STATE _eState)
         m_pStateMachine->Transition_To(new CPlayerState_Attack(this));
         break;
     case Client::CPlayer::ROLL:
-        m_pStateMachine->Transition_To(new CPlayerState_Roll(this));
+    case Client::CPlayer::CYBER_DASH :
+        if (Is_CyvberJotMode())
+            m_pStateMachine->Transition_To(new CPlayerState_CyberDash(this));
+        else        
+            m_pStateMachine->Transition_To(new CPlayerState_Roll(this));
 		break;
     case Client::CPlayer::THROWSWORD:
         m_pStateMachine->Transition_To(new CPlayerState_ThrowSword(this));
