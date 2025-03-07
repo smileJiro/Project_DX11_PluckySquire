@@ -160,8 +160,8 @@ void CGameEventExecuter_C4::Chapter4_StorySequence(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			// ¾Ï 5 ¶¯±â±â
-			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
-				15.f, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET,1.f,
+				10.f, EASE_IN_OUT);
 			//CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET, 5.f,
 			//	1.f, EASE_IN_OUT);
 			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(20.f), XMConvertToRadians(5.f));
