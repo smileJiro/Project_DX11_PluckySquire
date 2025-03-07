@@ -17,7 +17,7 @@ float g_fPixelsPerUnrealUnit;
 float4 g_vColors;
 int g_iFlag = 0;
 float g_fOpaque;
-
+float g_fSprite2DFadeAlphaRatio = 1.0f;
 
 /* ±¸Á¶Ã¼ */
 struct VS_IN
@@ -96,6 +96,19 @@ PS_OUT PS_MAIN(PS_IN In)
     
     Out.vColor = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0);
     
+    if (Out.vColor.a < 0.1f)
+        discard;
+    
+    return Out;
+}
+
+PS_OUT PS_SPRITE2D(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    Out.vColor = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0);
+    
+    Out.vColor.a *= g_fSprite2DFadeAlphaRatio;
     if (Out.vColor.a < 0.1f)
         discard;
     
@@ -234,10 +247,10 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         VertexShader = compile vs_5_0 VS_SPRITE2D();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN();
+        PixelShader = compile ps_5_0 PS_SPRITE2D();
     }
 
     pass UI_POINTSAMPLE  // 5

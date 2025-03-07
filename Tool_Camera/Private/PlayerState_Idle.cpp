@@ -59,6 +59,7 @@ void CPlayerState_Idle::Enter()
 
 	if (COORDINATE_2D == eCoord)
 	{
+
 		F_DIRECTION eOldDir = m_pOwner->Get_2DDirection();
 		switch (eOldDir)
 		{

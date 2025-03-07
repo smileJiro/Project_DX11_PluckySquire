@@ -218,6 +218,20 @@ void CTrigger_Manager::On_End(_wstring _szEventTag)
 		m_isEventEnd = true;
 }
 
+_int CTrigger_Manager::Get_Running_EventExecuterAction()
+{
+	_uint iCount = 0;
+
+	for (auto& EventExecuterTag : m_EventExecuterTags) {
+		if (true == m_isRunningEvents[iCount]) {
+			return iCount;
+		}
+		++iCount;
+	}
+	
+	return -1;
+}
+
 void CTrigger_Manager::Register_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID)
 {
 	auto iterator = m_TriggerEvents.find(_TriggerEventTag);
@@ -227,6 +241,18 @@ void CTrigger_Manager::Register_TriggerEvent(_wstring _TriggerEventTag, _int _iT
 	}
 
 	m_iTriggerID = _iTriggerID;
+
+	// 진행할 이벤트를 True로 만들어 준다
+	_uint iCount = 0;
+
+	for (auto& EventExecuterTag : m_EventExecuterTags) {
+		if (EventExecuterTag == _TriggerEventTag) {
+			m_isRunningEvents[iCount] = true;
+			return;
+		}
+
+		++iCount;
+	}
 }
 
 HRESULT CTrigger_Manager::Fill_Trigger_3D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
@@ -544,8 +570,8 @@ void CTrigger_Manager::Register_Trigger_Action()
 	
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) 
 		{
-		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_ITEM_GET_NEWRIG);
-		CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
+			CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_State(CPlayer::STATE::GET_ITEM);
+			CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
 		};
 	
 	m_Actions[TEXT("Glove_Get_After")] = [this](_wstring _wszEventTag) 

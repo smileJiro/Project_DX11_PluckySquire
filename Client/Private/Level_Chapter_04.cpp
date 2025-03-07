@@ -626,7 +626,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 		CUI_Manager::GetInstance()->Set_Player(pPlayer);
 
 	
-
+	pPlayer->Set_Mode(CPlayer::PLAYER_MODE::PLAYER_MODE_SWORD);
 
 
 	return S_OK;
@@ -1408,7 +1408,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
 	DoorRedDesc.strSectionTag = L"Chapter4_SKSP_05";
 	DoorRedDesc.strLayerTag = L"Layer_Monster_Door2";
-	DoorRedDesc.fTargetDiff = -1.f;
+	DoorRedDesc.fTargetDiff = 15.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
 		m_eLevelID, _strLayerTag, &DoorRedDesc)))

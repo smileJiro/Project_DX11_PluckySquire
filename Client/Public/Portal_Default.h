@@ -26,12 +26,14 @@ public:
 	virtual _bool			Is_Interactable(CPlayer* _pUser);
 	virtual _float			Get_Distance(COORDINATE _eCoord, CPlayer* _pUser);
 
+
 	virtual void			Active_OnDisable() override;
 	virtual void			Active_OnEnable() override;
 
 protected:
 	HRESULT					Ready_PartObjects(PORTAL_DESC* _pDesc);
 	virtual void			On_InteractionStart(CPlayer* _pPlayer)override;
+	virtual void			On_InteractionCancel(CPlayer* _pPlayer) override;
 	virtual void			On_InteractionEnd(CPlayer* _pPlayer) override;
 
 

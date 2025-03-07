@@ -72,6 +72,7 @@ void CPlayerState_Idle::Enter()
 	if (COORDINATE_2D == eCoord)
 	{
 		m_bPlatformerMode = m_pOwner->Is_PlatformerMode();
+
 		F_DIRECTION eFDir = EDir_To_FDir( m_pOwner->Get_2DDirection());
 		Switch_IdleAnimation2D(eFDir);
 	}

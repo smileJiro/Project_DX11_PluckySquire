@@ -166,6 +166,7 @@ void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix, _float 
 {
 	m_pTargetWorldMatrix = _pTargetWorldMatrix;
 	m_fTargetChangingTime = { _fChangingTime, 0.f };
+	m_isTargetChanged = true;
 }
 
 void CCamera_Target::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
@@ -494,7 +495,7 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 	pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(-0.7f, 2.f, 0.f, 0.f), EASE_IN_OUT);*/
 #pragma endregion
 	 
-	//Imgui(_fTimeDelta);
+	Imgui(_fTimeDelta);
 
 #endif
 }

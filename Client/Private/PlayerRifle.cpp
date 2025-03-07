@@ -61,9 +61,10 @@ void CPlayerRifle::Shoot()
 		//ROT
 		_vector vLook = m_pPlayer->Get_LookDirection();
 	
-		_vector vBase = _vector{ -1.f,0.f,0.f,0.f };
+		_vector vBase = _vector{ 0.f,0.f,1.f,0.f };
 		_vector vAxis;
-		if (XMVectorNearEqual(vLook, vBase, XMVectorReplicate( 0.001f)).m128_f32[0] > 0)
+		//_vector vEqual = XMVectorNearEqual(vLook, vBase, XMVectorReplicate(0.001f));
+		if (XMVector4EqualInt(vLook, vBase))
 			vAxis = _vector{ 0.f,1.f,0.f,0.f };
 		else
 			vAxis= XMVector3Cross(vBase, vLook);
@@ -71,9 +72,7 @@ void CPlayerRifle::Shoot()
 		_float fAngle = acosf(XMVectorGetX(XMVector3Dot(vBase, vLook)));
 		_float4 vRot; XMStoreFloat4(&vRot, XMQuaternionRotationAxis(vAxis, fAngle));
 
-		cout << "vRot : " << vRot.x <<", "<< vRot.y << ", " << vRot.z << vRot.w <<endl;
 		m_pPoolMgr->Create_Object(TEXT("Pooling_Projectile_CyberPlayerBullet"), COORDINATE_3D, &vPos, &vRot);
-
 	}
 }
 
