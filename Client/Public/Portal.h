@@ -14,8 +14,8 @@ public :
 	enum PORTAL_TYPE
 	{
 		PORTAL_DEFAULT,
-		PORTAL_IMMEDIATELY,
-		PORTAL_JUMPOUT,
+		PORTAL_ARROW,
+		PORTAL_CANNON,
 		PORTAL_LAST
 	};
 protected : 
@@ -52,7 +52,7 @@ public:
 	virtual HRESULT			Init_Actor();
 	void					Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal);
 protected:
-	HRESULT					Ready_Components(PORTAL_DESC* _pDesc);
+	virtual HRESULT					Ready_Components(PORTAL_DESC* _pDesc);
 	HRESULT					Ready_Particle();
 
 	HRESULT					Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition) override;

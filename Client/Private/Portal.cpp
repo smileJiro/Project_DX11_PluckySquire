@@ -71,6 +71,10 @@ HRESULT CPortal::Render()
     if (m_pActorCom)
         m_pActorCom->Render();
 #endif // _DEBUG
+#ifdef _DEBUG
+    if (!m_p2DColliderComs.empty())
+        m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+#endif // _DEBUG
 
     return __super::Render();
 }
@@ -184,7 +188,7 @@ HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
     CircleDesc.fRadius = 100.f;
-    CircleDesc.vScale = { 1.0f, 1.0f };
+    CircleDesc.vScale = { 1.f, 1.f };
     CircleDesc.isBlock = false;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),

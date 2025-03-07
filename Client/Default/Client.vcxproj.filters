@@ -1352,7 +1352,6 @@
     <ClInclude Include="..\Public\BossWingSlamState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Postit_Page.h" />
     <ClInclude Include="..\Public\Boss_Rock.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
@@ -1450,6 +1449,18 @@
     <ClInclude Include="..\Public\CandleGame.h" />
     <ClInclude Include="..\Public\Zipline.h">
       <Filter>02.GameObjects\Zipline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Portal_Default.h">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Portal_Arrow.h">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Portal_Cannon.h">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Postit_Page.h">
+      <Filter>02.GameObjects\Portal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2222,7 +2233,6 @@
     <ClCompile Include="..\Private\BossWingSlamState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Postit_Page.cpp" />
     <ClCompile Include="..\Private\Boss_Rock.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
@@ -2317,6 +2327,18 @@
     <ClCompile Include="..\Private\CandleGame.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp">
       <Filter>02.GameObjects\Zipline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Portal_Default.cpp">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Portal_Arrow.cpp">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Portal_Cannon.cpp">
+      <Filter>02.GameObjects\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Postit_Page.cpp">
+      <Filter>02.GameObjects\Portal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

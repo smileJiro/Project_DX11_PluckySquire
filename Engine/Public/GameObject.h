@@ -60,6 +60,7 @@ public:
 	virtual _vector				Get_FinalPosition(COORDINATE _eCoord) const { return m_pControllerTransform->Get_State(_eCoord, CTransform::STATE_POSITION); }
  	virtual _vector				Get_FinalPosition() const						{ return m_pControllerTransform->Get_State(CTransform::STATE_POSITION); }
 	virtual _float3				Get_FinalScale() const							{ return m_pControllerTransform->Get_Scale(); }
+	virtual _float3				Get_FinalScale(COORDINATE _eCoord) const							{ return m_pControllerTransform->Get_Scale(_eCoord); }
 	_bool						Is_Dead() const									{ return m_isDead; }
 	_bool						Is_Render() const								{ return m_isRender; }
 	_bool						Is_Pooling() const								{ return m_isPooling; }

@@ -7,13 +7,13 @@ class CEffect_System;
 END
 
 BEGIN(Client)
-class CPortal_JumpOut final : public CPortal, public virtual IInteractable
+class CPortal_Cannon final : public CPortal, public virtual IInteractable
 {
 
 private:
-	CPortal_JumpOut(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	CPortal_JumpOut(const CPortal_JumpOut& _Prototype);
-	virtual ~CPortal_JumpOut() = default;
+	CPortal_Cannon(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CPortal_Cannon(const CPortal_Cannon& _Prototype);
+	virtual ~CPortal_Cannon() = default;
 
 public:
 	virtual HRESULT			Initialize_Prototype();
@@ -39,7 +39,7 @@ protected:
 
 
 public:
-	static CPortal_JumpOut* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CPortal_Cannon* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CGameObject*			Clone(void* _pArg) override;
 	void					Free() override;
 };
