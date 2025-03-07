@@ -178,7 +178,7 @@ void CPlayerState_TurnBook::Enter()
 
 	// Camera Target Book으로 바꿈(효림)
 	CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Book"), 0);
-	CCamera_Manager::GetInstance()->Change_CameraTarget(qpBook);
+	CCamera_Manager::GetInstance()->Change_CameraTarget(pBook);
 	CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
 	CCamera_Manager::GetInstance()->Set_NextArmData(TEXT("BookFlipping_Horizon"), 0);
 	CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
@@ -186,8 +186,8 @@ void CPlayerState_TurnBook::Enter()
 
 void CPlayerState_TurnBook::Exit()
 {
-	// Camera Target Book으로 바꿈(효림)
-	CCamera_Manager::GetInstance()->Change_CamerqaTarget(m_pOwner);
+	// Camera Target Player로 바꿈(효림)
+	CCamera_Manager::GetInstance()->Change_CameraTarget(m_pOwner);
 	CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.f);
 }
 
