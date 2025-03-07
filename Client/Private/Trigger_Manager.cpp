@@ -218,6 +218,20 @@ void CTrigger_Manager::On_End(_wstring _szEventTag)
 		m_isEventEnd = true;
 }
 
+_int CTrigger_Manager::Get_Running_EventExecuterAction()
+{
+	_uint iCount = 0;
+
+	for (auto& EventExecuterTag : m_EventExecuterTags) {
+		if (true == m_isRunningEvents[iCount]) {
+			return iCount;
+		}
+		++iCount;
+	}
+	
+	return -1;
+}
+
 void CTrigger_Manager::Register_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID)
 {
 	auto iterator = m_TriggerEvents.find(_TriggerEventTag);
