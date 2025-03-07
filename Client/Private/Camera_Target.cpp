@@ -273,7 +273,11 @@ void CCamera_Target::Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex
 		Set_InitialData(XMVectorSet(0.f, 0.67f, -0.74f, 0.f), 7.f, XMVectorZero(), ZOOM_LEVEL::LEVEL_6);
 		return;
 	}
-		
+	
+	if ((_uint)(*iter).second.size() < _iPortalIndex + 1) {
+		_iPortalIndex = 0;
+	}
+
 	pData = Find_ArmData((*iter).second[_iPortalIndex]);
 
 	if (nullptr == pData)
@@ -489,7 +493,7 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 	pCamera->Start_Shake_ByCount(0.2f, 0.1f, 10, CCamera::SHAKE_XY);
 	pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(-0.7f, 2.f, 0.f, 0.f), EASE_IN_OUT);*/
 #pragma endregion
-
+	 
 	//Imgui(_fTimeDelta);
 
 #endif

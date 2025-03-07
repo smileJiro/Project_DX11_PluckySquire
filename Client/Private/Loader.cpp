@@ -176,7 +176,9 @@
 #include "RayShape.h"
 #include "Dice.h"
 #include "Domino.h"
-#include "Portal.h"
+#include "Portal_Default.h"
+#include "Portal_Immediately.h"
+#include "Portal_JumpOut.h"
 #include "Word.h"
 
 // Etc
@@ -631,8 +633,16 @@ HRESULT CLoader::Loading_Level_Static()
 		CRayShape::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Portal"),
-		CPortal::Create(m_pDevice, m_pContext))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Portal_Default"),
+		CPortal_Default::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Portal_Immediately"),
+		CPortal_Immediately::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Portal_JumpOut"),
+		CPortal_JumpOut::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Word_Container"),
@@ -1872,7 +1882,7 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 
 	// 3D NonAnim Obj Load
 	if (FAILED(Load_Dirctory_Models_Recursive(_eLoadLevelID,
-		arrPaths[PATH_3D_NONANIM_OBJECT].c_str(), matPretransform)))
+		arrPaths[PATH_3D_NONANIM_OBJECT].c_str(), matPretransform, true)))
 		return E_FAIL;
 
 	std::cout << "=============== [" << arrLevelTexts[_eLoadLevelID] << "] 3D NonAnim Object Load Complete!" << endl;
@@ -2272,7 +2282,7 @@ HRESULT CLoader::Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath)
 	return S_OK;
 }
 
-HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix)
+HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _szDirPath, _fmatrix _PreTransformMatrix, _bool _isCollider)
 {
 	std::filesystem::path path;
 	path = _szDirPath;
@@ -2281,7 +2291,7 @@ HRESULT CLoader::Load_Dirctory_Models_Recursive(_uint _iLevId, const _tchar* _sz
 			//cout << entry.path().string() << endl;
 
 			if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
-				C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix))))
+				C3DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _PreTransformMatrix, _isCollider))))
 			{
 				string str = "Failed to Create 3DModel";
 				str += entry.path().filename().replace_extension().string();

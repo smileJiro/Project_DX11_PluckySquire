@@ -17,9 +17,7 @@ CSection_2D_PlayMap::CSection_2D_PlayMap(ID3D11Device* _pDevice, ID3D11DeviceCon
 
 void CSection_2D_PlayMap::Set_WorldTexture(ID3D11Texture2D* _pTexture)
 {
-	
 	__super::Set_WorldTexture(_pTexture);
-
 
 	CLayer* pTargetLayer = m_Layers[SECTION_2D_PLAYMAP_PORTAL];
 
@@ -31,7 +29,7 @@ void CSection_2D_PlayMap::Set_WorldTexture(ID3D11Texture2D* _pTexture)
 			CPortal* pPortal = dynamic_cast<CPortal*>(pGameObject);
 			
 			if(nullptr != pPortal)
-				pPortal->Init_Actor();
+				pPortal->Setup_3D_Postion();
 			});
 	}
 }
@@ -57,6 +55,7 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 			_string strFileName = pDesc->SectionJson["Section_File_Name"];
 
 			_wstring strSectionPath = MAP_2D_DEFAULT_PATH;
+			strSectionPath += L"MapRawData/";
 			strSectionPath += StringToWstring(strFileName);
 
 			HANDLE	hFile = CreateFile(strSectionPath.c_str(),
@@ -121,7 +120,7 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 				Desc.Build_2D_Transform(fPos, fScale);
 
 				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
-					L"Prototype_GameObject_Portal",
+					L"Prototype_GameObject_Portal_Default",
 					Desc.iCurLevelID,
 					L"Layer_Portal",
 					&pGameObject,
@@ -184,6 +183,11 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 	
 
 	return S_OK;
+}
+CGameObject* CSection_2D_PlayMap::Get_Portal(_uint _iPortalIndex)
+{
+	_uint iPortalCnt = 0;
+	return nullptr;
 }
 HRESULT CSection_2D_PlayMap::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
 {

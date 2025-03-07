@@ -159,6 +159,9 @@ HRESULT CMap_2D::Register_WorldCapture(CModelObject* _pModel)
 	_wstring strWorldRVTag = m_strRTKey + L"_WorldPosMap";
 	_wstring strWorldMRTTag = m_strMRTKey + L"_WorldPosMap";
 	_wstring strWorldDSVTag = m_strDSVKey + L"_WorldPosMap";
+	m_strWorldRTKey = strWorldRVTag;
+	m_strWorldMRTKey = strWorldMRTTag;
+	m_strWorldDSVKey = strWorldDSVTag;
 
 	_uint iRenderGroupID = RG_WORLDPOSMAP;
 	_uint iPriorityID = SECTION_MGR->Generate_WorldPos_Priority_ID();
@@ -203,7 +206,6 @@ HRESULT CMap_2D::Register_WorldCapture(CModelObject* _pModel)
 
 	m_pGameInstance->Add_RenderObject_New(iRenderGroupID, iPriorityID, _pModel);
 
-	m_strWorldRTKey = strWorldRVTag;
 	m_iWorldRenderGroupID = iRenderGroupID;
 	m_iWorldPriorityID = iPriorityID;
 
@@ -250,9 +252,17 @@ void CMap_2D::Free()
 {
 	m_pGameInstance->Erase_RenderGroup_New(RENDERGROUP::RG_2D,m_iPriorityID);
 	m_pGameInstance->Erase_DSV_ToRenderer(m_strDSVKey);
-	// TODO :: 0131 박예슬 m_pGameInstance->rt, mrt 삭제필요
 	m_pGameInstance->Erase_RenderTarget(m_strRTKey);
 	m_pGameInstance->Erase_MRT(m_strMRTKey);
+
+	if (L"" != m_strWorldRTKey)
+	{
+		m_pGameInstance->Erase_RenderGroup_New(m_iWorldRenderGroupID, m_iWorldPriorityID);
+		m_pGameInstance->Erase_RenderTarget(m_strWorldRTKey);
+		m_pGameInstance->Erase_DSV_ToRenderer(m_strWorldDSVKey);
+		m_pGameInstance->Erase_MRT(m_strWorldMRTKey);
+	}
+
 	Safe_Release(m_pDSV);
 	Safe_Release(m_pRenderTarget);
 	Safe_Release(m_pTextureCom);

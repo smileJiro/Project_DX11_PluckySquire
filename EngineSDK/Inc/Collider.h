@@ -50,7 +50,7 @@ public:
 public:
 	// Get
 	TYPE					Get_Type() const { return m_eType; }
-	_uint						Get_CollisionGroupID() { return m_iCollisionGroupID; }
+	_uint					Get_CollisionGroupID() { return m_iCollisionGroupID; }
 	_uint					Get_ColliderID() const { return m_iColliderID; }
 	_uint					Get_ColliderUse() const { return m_iColliderUse; }
 	CGameObject*			Get_Owner() const { return m_pOwner; }

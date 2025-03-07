@@ -1,0 +1,61 @@
+{
+	"NPC_OnlySocial": [
+		{
+			"strSectionid": "Chapter2_P0102",
+			"strAnimaionName": "MTM",
+			"strCreateSection": 4,
+			"strDialogueId": "3D_MiniBeard_Dialog_01",
+			"iStartAnimation": 0,
+			"vPositionX": 17.91,
+			"vPositionY": 0.35,
+			"vPositionZ": -2.58,
+			"CollisionScaleX": 70.0,
+			"CollisionScaleY": 70.0,
+			"isInteractable": true,
+			"isDialog": true,
+			"is2D": false,
+			"fCollisionHalfHeight": 2.0,
+			"fCollisionRadius": 1.0,
+			"fTriggerRadius": 1.5,
+			"fRotateAngle": 200.0
+		},
+		{
+			"strSectionid": "Chapter2_P0102",
+			"strAnimaionName": "MTM",
+			"strCreateSection": 4,
+			"strDialogueId": "3D_MiniBeard_Dialog_03",
+			"iStartAnimation": 0,
+			"vPositionX": -53.3,
+			"vPositionY": 9.74,
+			"vPositionZ": -4.56,
+			"CollisionScaleX": 70.0,
+			"CollisionScaleY": 70.0,
+			"isInteractable": true,
+			"isDialog": true,
+			"is2D": false,
+			"fCollisionHalfHeight": 2.0,
+			"fCollisionRadius": 1.0,
+			"fTriggerRadius": 1.5,
+			"fRotateAngle": 100.0
+		},
+		{
+			"strSectionid": "Chapter2_P0102",
+			"strAnimaionName": "MTM",
+			"strCreateSection": 4,
+			"strDialogueId": "3D_MiniBeard_Dialog_02",
+			"iStartAnimation": 0,
+			"vPositionX": -52.0,
+			"vPositionY": 21.37,
+			"vPositionZ": 27.89,
+			"CollisionScaleX": 70.0,
+			"CollisionScaleY": 70.0,
+			"isInteractable": true,
+			"isDialog": true,
+			"is2D": false,
+			"fCollisionHalfHeight": 2.0,
+			"fCollisionRadius": 1.0,
+			"fTriggerRadius": 1.5,
+			"fRotateAngle": 150.0
+		}
+	]
+}

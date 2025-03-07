@@ -77,7 +77,7 @@
 		{
 			"strSectionid": "Chapter2_P0102",
 			"strAnimaionName": "MTM",
-			"strCreateSection": 1,
+			"strCreateSection": 3,
 			"strDialogueId": "",
 			"iStartAnimation": 0,
 			"vPositionX": 100.0,
@@ -85,9 +85,13 @@
 			"vPositionZ": 0.0,
 			"CollisionScaleX": 70.0,
 			"CollisionScaleY": 70.0,
-			"isInteractable": true,
-			"isDialog": true,
-			"is2D": false
+			"isInteractable": false,
+			"isDialog": false,
+			"is2D": false,
+			"fCollisionHalfHeight": 2.0,
+			"fCollisionRadius": 1.0,
+			"fTriggerRadius": 1.5,
+			"fRotateAngle": 90.0
 		}
 	]
 }
