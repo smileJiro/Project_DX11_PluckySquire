@@ -130,7 +130,7 @@ HRESULT CNpc_Rabbit::Initialize(void* _pArg)
 	//__super::Initialize(pDesc);
 	//Ready_PartObjects();
 	
-
+	m_eInteractID = INTERACT_ID::NPC;
 
 	return S_OK;
 }
@@ -173,13 +173,13 @@ void CNpc_Rabbit::Late_Update(_float _fTimeDelta)
 	//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_MenuOpen);
 	//}
 	//
-	if (true == m_isColPlayer)
-	{
-		m_isDialoging = true;
-		Throw_Dialogue();
-		//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
-	}
-	//
+	//if (true == m_isColPlayer)
+	//{
+	//	m_isDialoging = true;
+	//	//Throw_Dialogue();
+	//	//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
+	//}
+	////
 	//ChangeState_Panel();
 
 
@@ -285,7 +285,7 @@ void CNpc_Rabbit::ChangeState_Panel()
 
 void CNpc_Rabbit::Interact(CPlayer* _pUser)
 {
-	Throw_Dialogue();
+	//Throw_Dialogue();
 }
 
 _bool CNpc_Rabbit::Is_Interactable(CPlayer* _pUser)

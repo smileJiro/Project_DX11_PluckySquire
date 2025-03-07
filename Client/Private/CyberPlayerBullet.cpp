@@ -2,14 +2,16 @@
 #include "CyberPlayerBullet.h"
 #include "Character.h"
 #include "3DModel.h"
+#include "ModelObject.h"
+#include "GameInstance.h"
 
 CCyberPlayerBullet::CCyberPlayerBullet(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CModelObject(_pDevice, _pContext)
+	: CContainerObject(_pDevice, _pContext)
 {
 }
 
 CCyberPlayerBullet::CCyberPlayerBullet(const CCyberPlayerBullet& _Prototype)
-	: CModelObject(_Prototype)
+	: CContainerObject(_Prototype)
 {
 }
 
@@ -21,19 +23,13 @@ HRESULT CCyberPlayerBullet::Initialize_Prototype()
 HRESULT CCyberPlayerBullet::Initialize(void* _pArg)
 {
 	CYBERPLAYER_PROJECTILE_DESC* pDesc = static_cast<CYBERPLAYER_PROJECTILE_DESC*>(_pArg);
-
+	pDesc->iNumPartObjects = 1;
 	pDesc->iObjectGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
 	m_iCurLevelID = pDesc->iCurLevelID;
+	pDesc->eStartCoord = COORDINATE_3D;
 	pDesc->isCoordChangeEnable = false;
-
-	pDesc->iModelPrototypeLevelID_3D = m_iCurLevelID;
-	pDesc->strModelPrototypeTag_3D = TEXT("Lego_Piece_02");
-	pDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 	pDesc->tTransform3DDesc.vInitialScaling = _float3(1, 1, 1);
 	pDesc->tTransform3DDesc.fSpeedPerSec = m_fSpeed;
-	pDesc->iRenderGroupID_3D = RG_3D;
-	pDesc->iPriorityID_3D = PR3D_GEOMETRY;
 
     pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
     CActor::ACTOR_DESC ActorDesc;
@@ -65,7 +61,7 @@ HRESULT CCyberPlayerBullet::Initialize(void* _pArg)
     tBodyShapeData.isTrigger = false;                  
     tBodyShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_PROJECTILE;
 	tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE;
-    XMStoreFloat4x4(&tBodyShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+	XMStoreFloat4x4(&tBodyShapeData.LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.f, 0.0f));
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas[tBodyShapeData.iShapeUse] = tBodyShapeData;
@@ -78,9 +74,29 @@ HRESULT CCyberPlayerBullet::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
+	CModelObject::MODELOBJECT_DESC tModelDesc{};
+	tModelDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("CyberPlayerBullet");
+	tModelDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+	tModelDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+	tModelDesc.iRenderGroupID_3D = RG_3D;
+	tModelDesc.iPriorityID_3D = PR3D_GEOMETRY;
+	tModelDesc.eStartCoord = COORDINATE_3D;
+	tModelDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+	m_PartObjects[PART_BODY] = m_pModel= static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tModelDesc));
+	if (nullptr == m_PartObjects[PART_BODY])
+	{
+		MSG_BOX("CPlayer VISOR Creation Failed");
+		return E_FAIL;
+	}
+	Safe_AddRef(m_pModel);
+	m_PartObjects[PART_BODY]->Set_Position({ 0.f,0.f,0.f });
+	m_PartObjects[PART_BODY]->Get_ControllerTransform()->Rotation(XMConvertToRadians(90.f), _vector{ 0.f,1.f,0.f,0.f });
+	Set_PartActive(PART_BODY, true);
+
 	m_vLookDIr = XMVector3Normalize( m_pControllerTransform->Get_WorldMatrix().r[2]);
-	//static_cast<C3DModel*>(this->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_UseAlbedoMap(0, false, true);
-	//static_cast<C3DModel*>(this->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 1.f, 1.f, 1.f), true);
+	static_cast<C3DModel*>(m_pModel->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_UseAlbedoMap(0, false, true);
+	static_cast<C3DModel*>(m_pModel->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 1.f, 1.f, 1.f), true);
 	return S_OK;
 }
 
@@ -134,5 +150,6 @@ CGameObject* CCyberPlayerBullet::Clone(void* _pArg)
 
 void CCyberPlayerBullet::Free()
 {
+	Safe_Release(m_pModel);
 	__super::Free();
 }

@@ -181,6 +181,8 @@
 #include "Portal_Cannon.h"
 #include "Word.h"
 
+#include "PortalLocker.h" // 태웅
+
 // Etc
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
@@ -449,6 +451,11 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_E"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Interact_E.dds"), 1))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Book"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard_Book_%d.dds"), 2))))
+		return E_FAIL;
+
 #pragma endregion
 
 #pragma region Static - Sound Load
@@ -576,6 +583,11 @@ HRESULT CLoader::Loading_Level_Static()
 #pragma region Static - Object Load
 
 	lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+	/* For. Prototype_GameObject_PortalLocker */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker"),
+		CPortalLocker::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For. Prototype_GameObject_Effect2D */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Effect2D"),
@@ -1171,6 +1183,12 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 	#pragma region Chapter 4 - Object Load
 
 		lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+		/* For. Prototype_GameObject_Postit_Page */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Postit_Page"),
+			CPostit_Page::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 
 		/* For. Prototype_GameObject_FallingRock */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_FallingRock"),

@@ -47,6 +47,7 @@ void CGameEventExecuter::GameEvent_End()
 	if (!Is_Dead())
 	{
 		CTrigger_Manager::GetInstance()->On_End(m_strEventTag);
+		CTrigger_Manager::GetInstance()->On_End(m_iEventExcuterAction);
 		Event_DeleteObject(this);
 	}
 }

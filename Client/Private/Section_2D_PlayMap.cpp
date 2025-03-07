@@ -138,8 +138,9 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 
 
 				Desc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
-				Desc.fTriggerRadius = 0.45f;
+				Desc.fTriggerRadius = 1.0f;
 				Desc.iPortalIndex = i;
+				Desc.isFirstActive = isFIrstActive;
 				Desc.Build_2D_Transform(fPos, fScale);
 
 				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
@@ -209,8 +210,36 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 }
 CGameObject* CSection_2D_PlayMap::Get_Portal(_uint _iPortalIndex)
 {
-	_uint iPortalCnt = 0;
+	CLayer* pTargetLayer = m_Layers[SECTION_2D_PLAYMAP_PORTAL];
+
+	if (nullptr != pTargetLayer)
+	{
+		const auto& GameObjects = pTargetLayer->Get_GameObjects();
+		auto iter = find_if(GameObjects.begin(), GameObjects.end(), [&_iPortalIndex](CGameObject* pGameObject)->_bool {
+			CPortal* pPortal = dynamic_cast<CPortal*>(pGameObject);
+			return _iPortalIndex == pPortal->Get_PortalIndex();
+			});
+		if (iter != GameObjects.end())
+			return *iter;
+	}
 	return nullptr;
+}
+void CSection_2D_PlayMap::Set_PortalActive(_bool _isFirstActive)
+{
+	CLayer* pTargetLayer = m_Layers[SECTION_2D_PLAYMAP_PORTAL];
+
+	if (nullptr != pTargetLayer)
+	{
+		const auto& GameObjects = pTargetLayer->Get_GameObjects();
+
+		for_each(GameObjects.begin(), GameObjects.end(), [](CGameObject* pGameObject) {
+			CPortal* pPortal = dynamic_cast<CPortal*>(pGameObject);
+
+			if (nullptr != pPortal)
+				pPortal->Set_FirstActive(true);
+			});
+	}
+
 }
 HRESULT CSection_2D_PlayMap::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
 {

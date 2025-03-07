@@ -46,6 +46,9 @@ HRESULT CPortal_Default::Initialize(void* _pArg)
     m_eInteractID = INTERACT_ID::PORTAL;
     m_bUIPlayerHeadUp = true;
 
+
+
+
     return S_OK;
 }
 
@@ -106,7 +109,7 @@ void CPortal_Default::Active_OnEnable()
 
 void CPortal_Default::Active_OnDisable()
 {
-    __super::Active_OnEnable();
+    __super::Active_OnDisable();
     if (m_pEffectSystem && m_pEffectSystem->Is_Active())
     {
         m_pEffectSystem->Inactive_All();
@@ -139,6 +142,10 @@ HRESULT CPortal_Default::Ready_PartObjects(PORTAL_DESC* _pDesc)
 void CPortal_Default::On_InteractionStart(CPlayer* _pPlayer)
 {
     _pPlayer->Start_Portal(this);
+}
+
+void CPortal_Default::On_InteractionCancel(CPlayer* _pPlayer)
+{
 }
 
 void CPortal_Default::On_InteractionEnd(CPlayer* _pPlayer)

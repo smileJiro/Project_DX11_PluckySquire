@@ -16,6 +16,7 @@
 #include "ModelObject.h"
 #include "3DMapObject.h"
 #include "MapObjectFactory.h"
+#include "Book.h"
 
 #include "UI_Manager.h"
 
@@ -113,10 +114,10 @@ void CLevel_Camera_Tool_Client::Update(_float _fTimeDelta)
 	}
 
 
-	Show_CameraTool();
-	//Show_CutSceneTool(_fTimeDelta);
-	Show_ArmInfo();
-	//Show_CutSceneInfo();
+	//Show_CameraTool();
+	Show_CutSceneTool(_fTimeDelta);
+	//Show_ArmInfo();
+	Show_CutSceneInfo();
 	Show_SaveLoadFileWindow();
 
 	Show_AnimModel(_fTimeDelta);
@@ -305,12 +306,13 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	//m_pSimulationCube->Set_Active(false);
 
 	// Book
-	//CModelObject::MODELOBJECT_DESC BookDesc = {};
-	//BookDesc.iCurLevelID = m_eLevelID;
+	CBook::BOOK_DESC BookDesc = {};
+	BookDesc.iCurLevelID = m_eLevelID;
+	BookDesc.isInitOverride = false;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
-	//	m_eLevelID, L"_strLayerTag", reinterpret_cast<CGameObject**>(&pOut), &BookDesc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
+		m_eLevelID, L"_strLayerTag", reinterpret_cast<CGameObject**>(&pOut), &BookDesc)))
+		return E_FAIL;
 
 	//pOut->Set_Active(false);
 	//m_ModelObjects.push_back(pOut);
@@ -338,28 +340,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	////pOut->Set_Active(false);
 	//m_ModelObjects.push_back(pOut);
 
-	// Player
-	//Desc.eStartCoord = COORDINATE_3D;
-	//Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	//Desc.isCoordChangeEnable = false;
-	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	//Desc.strModelPrototypeTag_3D = L"Latch_SkelMesh_NewRig";
-	//Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
-	//Desc.iShaderPass_3D = 0;
-	//Desc.iPriorityID_3D = PR3D_BLEND;
-	//Desc.iRenderGroupID_3D = RG_3D;
-	//Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
-	////Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 0.352f, -21.02f };
-	//Desc.tTransform3DDesc.vInitialPosition = { 2.94290805f, 0.351999998f, -21.1068630f };
-	//Desc.tTransform3DDesc.vInitialRotation = { 0.f, XMConvertToRadians(180.f), 0.f };
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
-	//	LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
-	//	return E_FAIL;
-
-	//pOut->Set_Active(false);
-	
+	// Player	
 	CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0));
 	CModelObject* pPlayerBody = static_cast<CModelObject*>(pPlayer->Get_PlayerPartObject(CPlayer::PLAYER_PART_BODY));
 	m_ModelObjects.push_back(pPlayerBody);
@@ -1666,7 +1647,7 @@ void CLevel_Camera_Tool_Client::Set_MovementInfo()
 		Show_ComboBox();
 
 		if (ImGui::Button("Play Movement")) {
-			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+			//CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
 			CCamera_Manager::GetInstance()->Set_NextArmData(m_ArmNames[m_iSelectedArmNum], 0);
 		}
 	}
@@ -2351,7 +2332,7 @@ void CLevel_Camera_Tool_Client::Create_Sector()
 	ImGui::SetNextItemWidth(-1);
 	ImGui::InputText("##CutScene Tag", m_szCutSceneTag, MAX_PATH);
 
-	ImGui::Text("CutScene Next CameraType: ", m_tCutSceneSubData.iNextCameraType);
+	ImGui::Text("CutScene Next CameraType: %d", m_tCutSceneSubData.iNextCameraType);
 	ImGui::SameLine();
 	if (ImGui::Button("2D")) {
 		m_tCutSceneSubData.iNextCameraType = CCamera_Manager::TARGET_2D;

@@ -124,7 +124,7 @@
       },
       {
         "ActionTag": "Dialogue",
-        "EventTag": "Gauntlet_Acquire_01",
+        "EventTag": "Gauntlet_Acquire_Flipping",
         "Is_Sequence": true
       },
       {

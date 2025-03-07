@@ -107,7 +107,7 @@ void CPortal_Cannon::Active_OnEnable()
 
 void CPortal_Cannon::Active_OnDisable()
 {
-    __super::Active_OnEnable();
+    __super::Active_OnDisable();
     if (m_pEffectSystem && m_pEffectSystem->Is_Active())
     {
         m_pEffectSystem->Inactive_All();

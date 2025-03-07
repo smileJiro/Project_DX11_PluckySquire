@@ -52,15 +52,25 @@ void CPortal_Arrow::Update(_float _fTimeDelta)
 
 void CPortal_Arrow::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+
 	if (OBJECT_GROUP::PLAYER == _pOtherObject->Get_ObjectGroupID() ) 
 	{
 		CPlayer* pPlayer = static_cast<CPlayer*>(_pOtherObject);
 
-        NORMAL_DIRECTION eNormal;
-		Use_Portal(pPlayer, &eNormal);
 
-		pPlayer->Set_PortalNormal(eNormal);
+        if (COORDINATE_2D == pPlayer->Get_CurCoord()) {
+            static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET))->Set_InitialData(m_strSectionName, m_iPortalIndex);
+        }
+        else if (COORDINATE_3D == pPlayer->Get_CurCoord()) {
+            static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D))->Set_Current_PortalID(m_iPortalIndex);
+        }
 
+
+  //      NORMAL_DIRECTION eNormal = Get_PortalNormal();
+		//Use_Portal(pPlayer);
+
+		//pPlayer->Set_PortalNormal(eNormal);
+        pPlayer->Exit_Portal(this);
 	}
 }
 
@@ -121,7 +131,7 @@ HRESULT CPortal_Arrow::Ready_Components(PORTAL_DESC* _pDesc)
 
 void CPortal_Arrow::Active_OnDisable()
 {
-    __super::Active_OnEnable();
+    __super::Active_OnDisable();
 }
 
 CPortal_Arrow* CPortal_Arrow::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

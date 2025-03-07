@@ -16,20 +16,17 @@ void CPlayerState_JumpToPortal::Update(_float _fTimeDelta)
 {
     if (m_bPortaled)
     {
-        m_pOwner->Set_State(CPlayer::EXIT_PORTAL);
+
         return;
     }
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-	NORMAL_DIRECTION eNormal;
+	NORMAL_DIRECTION eNormal = m_pPortal->Get_PortalNormal();
     if (COORDINATE_2D == eCoord)
     {
         _float fProgress = m_pOwner->Get_AnimProgress();
         if (fProgress >= 0.86f)
         {
-            m_pPortal->Use_Portal(m_pOwner,&eNormal);
-            m_pOwner->Set_PortalNormal(eNormal);
-            m_bPortaled = true;
-     
+            m_pOwner->Set_State(CPlayer::EXIT_PORTAL);
             return;
         }
 	}
@@ -37,8 +34,8 @@ void CPlayerState_JumpToPortal::Update(_float _fTimeDelta)
     {
         if(m_pPortal->Get_Distance(eCoord, m_pOwner) <= m_f3DDistanceThreshold)
 		{
-			m_pPortal->Use_Portal(m_pOwner, &eNormal);
-            m_pOwner->Set_PortalNormal(eNormal);
+
+            m_pOwner->Set_State(CPlayer::EXIT_PORTAL);
 			m_bPortaled = true;
 			return;
 		}
@@ -85,9 +82,7 @@ void CPlayerState_JumpToPortal::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
             || (_uint)CPlayer::ANIM_STATE_2D::PLAYER_BOOKEXIT_UP == iAnimIdx
             || (_uint)CPlayer::ANIM_STATE_2D::PLAYER_BOOKEXIT_DOWN == iAnimIdx)
 		{
-            NORMAL_DIRECTION eNormal;
-            m_pPortal->Use_Portal(m_pOwner, &eNormal);
-			m_pOwner->Set_PortalNormal(eNormal);
+            m_pPortal->Use_Portal(m_pOwner);
 		}
 	}
 }

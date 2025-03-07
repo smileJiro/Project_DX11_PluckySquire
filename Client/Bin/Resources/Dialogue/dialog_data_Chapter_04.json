@@ -295,6 +295,166 @@
 					"Blue": 234
 				}
 			]
-		}
+		},
+	{
+      "id": "Gauntlet_Acquire_Tilting",
+      "lines": [
+        {
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트가 기울이기 건틀릿을 찾았습니다!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+		  "isLineEnter":true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이 신비한 장갑이 있으면\n세상을 통째로 움직일 수 있습니다!",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+		{
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "[Z], [X]를 이용해 책을 움직여 보세요.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+	 {
+      "id": "Postit_Page_01",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "건틀릿을 하나 더 찾으셨네요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+		  "isLineEnter":true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그나저나... 아무래도 험그럼프가 책 바깥까지 손아귀를\n 뻗은 것 같네요...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "느낌이 안 좋아요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+		  "isLineEnter":true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "하지만 당신은 책에 나오는 캐릭터에요...\n이렇게 나와 있으면 안 된다고요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+		  "isLineEnter":true,
+          "animation": {
+
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "자, 이 포스트잇으로 뛰어드세요...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+		  "isLineEnter":true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "책상으로 내려가서 책으로 돌아갈 수 있을 거에요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    }
 	]
 }

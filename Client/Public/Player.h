@@ -2,6 +2,7 @@
 #include "Playable.h"
 #include "AnimEventReceiver.h"
 #include "Interactable.h"
+#include "Gravity.h"
 
 BEGIN(Engine)
 class CAnimEventGenerator;
@@ -151,6 +152,7 @@ public:
 		TRANSFORM_IN,
 		CYBER_IDLE,
 		CYBER_FLY,
+		CYBER_DASH,
 		CYBER_HIT,
 		STATE_LAST
 	};
@@ -547,6 +549,7 @@ public:
 
 	void Start_Portal(CPortal* _pPortal);
 	void JumpTo_Portal(CPortal* _pPortal);
+	void Exit_Portal(CPortal* _pPortal);
 	void Set_PlayingAnim(_bool _bPlaying);
 	void Start_Invinciblity();
 	// interact 함수가 호출되면 true 반환.
@@ -604,7 +607,7 @@ public:
 	CPlayerBody* Get_Body() { return m_pBody; }
 	CPartObject* Get_PlayerPartObject(PLAYER_PART _ePartId) { return m_PartObjects[(_uint)_ePartId]; }
 	_vector Get_RootBonePosition();
-	NORMAL_DIRECTION Get_PortalNormal() { return m_e3DPortalNormal; }
+	//NORMAL_DIRECTION Get_PortalNormal() { return m_e3DPortalNormal; }
 	const ATTACK_TRIGGER_DESC& Get_AttackTriggerDesc(ATTACK_TYPE _eAttackType, F_DIRECTION _eFDir) {return m_f2DAttackTriggerDesc[_eAttackType][(_uint)_eFDir];}
 	const SHAPE_DATA& Get_BodyShapeData() { return m_tBodyShapeData; }
 	PLAYER_PART Get_CurrentStampType() { return m_eCurrentStamp; }
@@ -628,8 +631,8 @@ public:
 	//진짜 포인터만 셋팅하는 함수
 	void Set_CarryingObject(CCarriableObject* _pCarryingObject);
 	void Set_InteractObject(IInteractable* _pInteractable) { m_pInteractableObject = _pInteractable; }
-	NORMAL_DIRECTION Set_PortalNormal(NORMAL_DIRECTION _eNormal) { return m_e3DPortalNormal = _eNormal; }
-	void Set_GravityCompOn(_bool _bOn);
+//	NORMAL_DIRECTION Set_PortalNormal(NORMAL_DIRECTION _eNormal) { return m_e3DPortalNormal = _eNormal; }
+	void Set_GravityCompOn(_bool _bOn, CGravity::STATE _eGravityState = CGravity::STATE_FALLDOWN);
 
 	void Set_CurrentStampType(PLAYER_PART _eStamp) { m_eCurrentStamp = _eStamp; }
 
@@ -651,6 +654,7 @@ private:
 
 public:
 	virtual void			Enter_Section(const _wstring _strIncludeSectionName);
+	virtual void			Exit_Section(const _wstring _strIncludeSectionName);
 private:
 	//Variables
 	_float m_f3DCenterYOffset = 0.5f;
@@ -685,7 +689,7 @@ private:
 
 	_float4x4 m_mat3DCarryingOffset = {};
 	PLAYER_MODE m_ePlayerMode = PLAYER_MODE_NORMAL;
-	NORMAL_DIRECTION m_e3DPortalNormal= NORMAL_DIRECTION::LAST;
+	//NORMAL_DIRECTION m_e3DPortalNormal = NORMAL_DIRECTION::LAST; 
 
 
 	//2D전용

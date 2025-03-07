@@ -58,7 +58,7 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
-
+	m_eInteractID = INTERACT_ID::NPC;
 	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
 	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), this);

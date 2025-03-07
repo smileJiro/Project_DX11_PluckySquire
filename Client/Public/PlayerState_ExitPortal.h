@@ -14,10 +14,14 @@ public:
     virtual void Enter() override;
     virtual void Exit() override;
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
+
+    void Shoot_Player3D();
 private:
-    _float m_f3DJumpDistance = 5.f;
+    CPortal* m_pPortal = nullptr;
     NORMAL_DIRECTION m_ePortalNormal;
-	_bool m_bWaitFirstFrame = false;
+    _float m_f3DJumpDistance = 5.f;
+	_bool m_bFirstFrame = true;
+    _bool m_bSecondFrame = false;
 };
 
 END
