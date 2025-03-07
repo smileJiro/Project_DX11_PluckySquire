@@ -144,6 +144,7 @@ _bool CCamera_2D::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
 		m_PreSubArms.push_back(make_pair(tSubData, false));
 		return true;
 	}
+	return false;
 }
 
 void CCamera_2D::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
@@ -766,7 +767,7 @@ void CCamera_2D::Zipline(_float _fTimeDelta)
 	}
 
 	// ZipLine 멈춤 없이 부드럽게 가기 위해서 Position 따로 계산
-	_vector vZiplineTargetPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMVectorSet(-17.2633266f, 16.9958153f, 13.7984772, 0.f), fRatio);
+	_vector vZiplineTargetPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMVectorSet(-17.2633266f, 16.9958153f, 13.7984772f, 0.f), fRatio);
 	_vector vPos = XMVectorSetW(vZiplineTargetPos, 1.f) + (m_pCurArm->Get_ArmVector() * m_pCurArm->Get_Length());
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
 }

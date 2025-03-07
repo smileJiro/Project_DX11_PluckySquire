@@ -97,7 +97,8 @@
 			"LevelSizePixels": {
 				"X": 7680.0,
 				"Y": 5376.0
-			}
+			},
+			"Platformer" : true
 		}
 	},
 	{
@@ -150,6 +151,7 @@
 				"X": 18432.0,
 				"Y": 8192.0
 			},
+			"Platformer" : true,
 			"Override_Normal": 1
 		}
 	},
@@ -184,7 +186,8 @@
 			"LevelSizePixels": {
 				"X": 3840.0,
 				"Y": 4608.0
-			}
+			},
+			"Platformer" : true
 		}
 	}
 ]

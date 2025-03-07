@@ -31,7 +31,7 @@ public:
 
 
 	CGameObject*						Get_Portal(_uint _iPortalIndex);
-
+	void								Set_PortalActive(_bool _isFirstActive);
 public:
 	virtual HRESULT						Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex) override;
 	virtual HRESULT						Section_AddRenderGroup_Process() override;

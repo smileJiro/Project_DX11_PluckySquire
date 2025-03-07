@@ -93,6 +93,7 @@ public:
 	const _float4x4* Get_WorldMatrix_Ptr() const;
 	const _float4x4* Get_WorldMatrix_Ptr(COORDINATE _eCoordinate) const;
 	_float3					Get_Scale() const;
+	_float3					Get_Scale(COORDINATE _eCoord) const;
 	_vector					Get_State(CTransform::STATE _eState) const;
 	_vector					Get_State(COORDINATE _eCoord, CTransform::STATE _eState) const;
 	_float					Get_SpeedPerSec() const;

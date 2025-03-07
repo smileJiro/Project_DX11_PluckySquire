@@ -66,6 +66,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER2_STORYSEQUENCE] = L"Chapter2_StorySequence";
 	m_EventExecuterTags[CHAPTER4_RIDE_ZIPLINE] = L"Chapter4_Ride_Zipline";
 	m_EventExecuterTags[CHAPTER4_EVENT_FLAG] = L"Chapter4_Event_Flag";
+	m_EventExecuterTags[CHAPTER4_STORYSEQUENCE] = L"Chapter4_StorySequence";
 
 	return S_OK;
 }
@@ -543,8 +544,8 @@ void CTrigger_Manager::Register_Trigger_Action()
 	
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) 
 		{
-		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_ITEM_GET_NEWRIG);
-		CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
+			CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_State(CPlayer::STATE::GET_ITEM);
+			CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
 		};
 	
 	m_Actions[TEXT("Glove_Get_After")] = [this](_wstring _wszEventTag) 

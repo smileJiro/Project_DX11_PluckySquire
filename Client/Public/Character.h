@@ -17,6 +17,7 @@ public:
 		STAT _tStat;
 		_float _fStepSlopeThreshold = 0.35f;
 		_float _fStepHeightThreshold =0.35f;
+		_bool _isIgnoreGround = false;
 	}CHARACTER_DESC;
 
 protected:
@@ -81,6 +82,8 @@ protected:
 	_float4x4 m_matQueryShapeOffset;
 	_vector m_vFloorNormal;
 	_float m_fGravity = 0.f;
+
+	_bool m_isIgnoreGround = { false };
 
 public:	
 	virtual void Free() override;

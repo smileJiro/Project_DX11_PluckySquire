@@ -14,8 +14,8 @@ public :
 	enum PORTAL_TYPE
 	{
 		PORTAL_DEFAULT,
-		PORTAL_IMMEDIATELY,
-		PORTAL_JUMPOUT,
+		PORTAL_ARROW,
+		PORTAL_CANNON,
 		PORTAL_LAST
 	};
 protected : 
@@ -32,6 +32,7 @@ public :
 	{
 		_float	fTriggerRadius;
 		_uint	iPortalIndex = {};
+		_bool   isFirstActive = false;
 	}PORTAL_DESC;
 protected:
 	CPortal(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -52,13 +53,14 @@ public:
 	virtual HRESULT			Init_Actor();
 	void					Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal);
 protected:
-	HRESULT					Ready_Components(PORTAL_DESC* _pDesc);
+	virtual HRESULT			Ready_Components(PORTAL_DESC* _pDesc);
 	HRESULT					Ready_Particle();
 
 	HRESULT					Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition) override;
 
 	virtual void			Active_OnDisable() override;
 	virtual void			Active_OnEnable() override;
+
 
 	// intractable ÇÔ¼ö, 
 public :
@@ -69,6 +71,11 @@ public :
 	virtual void			On_InteractionStart(CPlayer* _pPlayer)override {}
 	virtual void			On_InteractionEnd(CPlayer* _pPlayer) override {}
 
+	_bool					Is_FirstActive() { return m_isFirstActive; }
+	void					Set_FirstActive(_bool _bFirstActive);
+
+	_uint					Get_PortalIndex() { return m_iPortalIndex; };
+	void					Set_PortalIndex(_uint _iIndex) { m_iPortalIndex = _iIndex; }
 protected :
 
 	PORTAL_TYPE				m_ePortalType = PORTAL_LAST;
@@ -76,6 +83,7 @@ protected :
 	CCollider*				m_pColliderCom = { nullptr };
 
 	_bool					m_isReady_3D = false;
+	_bool					m_isFirstActive = true;	
 	_float					m_fTriggerRadius = {};
 	_uint					m_iPortalIndex = {};
 	CEffect_System*			m_pEffectSystem = { nullptr };

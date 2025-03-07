@@ -32,6 +32,7 @@
 #include "PlayerState_ErasePalmDecal.h"
 #include "PlayerState_GetItem.h"
 #include "PlayerState_TransformIn.h"
+#include "PlayerState_CyberIdle.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -39,6 +40,7 @@
 #include "BombStamp.h"
 #include "Detonator.h"
 #include "ZetPack.h"
+#include "PlayerRifle.h"
 #include "Section_Manager.h"
 #include "UI_Manager.h"
 #include "Effect2D_Manager.h"
@@ -414,8 +416,43 @@ HRESULT CPlayer::Ready_PartObjects()
     m_PartObjects[PLAYER_PART_ZETPACK]->Set_Position({ 0.f,-0.1f,0.5f });
     Set_PartActive(PLAYER_PART_ZETPACK, false);
     
+    //RIFLE
+	CPlayerRifle::PLAYER_RIFLE_DESC tRifleDesc{};
+    tRifleDesc.pPlayer = this;
+	tRifleDesc.iCurLevelID = m_iCurLevelID;
+    tRifleDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    m_PartObjects[PLAYER_PART_RIFLE] = m_pRifle = static_cast<CPlayerRifle*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerRifle"), &tRifleDesc));
+    if (nullptr == m_PartObjects[PLAYER_PART_RIFLE])
+    {
+        MSG_BOX("CPlayer RIFLE Creation Failed");
+        return E_FAIL;
+    }
+    Safe_AddRef(m_pRifle);
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_RIFLE])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r")); /**/
+    m_PartObjects[PLAYER_PART_RIFLE]->Set_Position({ 0.f,0.1f,-0.16f });
+    Set_PartActive(PLAYER_PART_RIFLE, true);
 
-
+    //VISOR
+    CModelObject::MODELOBJECT_DESC tVisorDesc{};
+    tVisorDesc.iCurLevelID = m_iCurLevelID;
+    tVisorDesc.eStartCoord = COORDINATE_3D;
+    tVisorDesc.isCoordChangeEnable = false;
+    tVisorDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+    tVisorDesc.strModelPrototypeTag_3D = TEXT("Visor_CyberJot");
+    tVisorDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+    tVisorDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    tVisorDesc.iRenderGroupID_3D = RG_3D;
+    tVisorDesc.iPriorityID_3D = PR3D_GEOMETRY;
+    tVisorDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+    m_PartObjects[PLAYER_PART_VISOR] = static_cast<CPlayerRifle*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tVisorDesc));
+    if (nullptr == m_PartObjects[PLAYER_PART_VISOR])
+    {
+        MSG_BOX("CPlayer VISOR Creation Failed");
+        return E_FAIL;
+    }
+    static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_VISOR])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_head")); /**/
+    m_PartObjects[PLAYER_PART_VISOR]->Set_Position({ 0.f,0.225f,-0.225f });
+    Set_PartActive(PLAYER_PART_VISOR, true);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
@@ -459,14 +496,23 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 			continue;
 		i->Enter_Section(_strIncludeSectionName);
     }
+
+
+    auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
+
+    if (static_cast<CSection_2D*>(pSection)->Is_Platformer())
+    {
+        Set_PlatformerMode(true);
+    }
+    else 
+    {
+        Set_PlatformerMode(false);
+    }
+    
     if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
     {
         m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, 2800.f, 0.0f, 0.0f));
-        Set_PlatformerMode(true);
-
     }
-    else
-        Set_PlatformerMode(false);
 
     if (TEXT("Chapter2_P1314") == _strIncludeSectionName)
     {
@@ -965,11 +1011,9 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
     if (m_bInvincible)
     {
-        cout << "no damg" << endl;
         return;
     }
     m_tStat.iHP -= _iDamg;
-    cout << " Player HP" << m_tStat.iHP << endl;
 	COORDINATE eCoord = Get_CurCoord();
 
     Uimgr->Set_PlayerOnHit(true);
@@ -1018,7 +1062,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     else
     {
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
-		m_bPlatformerMode = false;
+        Set_PlatformerMode(false);
     }
 
     switch (m_ePlayerMode)
@@ -1228,7 +1272,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
             tResult.bInputStates[PLAYER_INPUT_ROLL] = true;
     }
 
-	if (Is_ZetPackMode())
+	if (Is_ZetPackEquipped())
 	{
 		if (KEY_PRESSING(KEY::SPACE))
 			tResult.bInputStates[PLAYER_INPUT_ZETPROPEL] = true;
@@ -1364,6 +1408,41 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_ControlBook()
     return tResult;
 }
 
+
+PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_CyberJot()
+{
+
+	PLAYER_INPUT_RESULT tResult;
+    if (Is_PlayerInputBlocked())
+        return tResult;
+	//기본공격
+    if(MOUSE_PRESSING(MOUSE_KEY::LB))
+		tResult.bInputStates[PLAYER_INPUT_ATTACK] = true;
+
+
+	//대쉬
+	if (KEY_DOWN(KEY::LSHIFT))
+		tResult.bInputStates[PLAYER_INPUT_ROLL] = true;
+	//이동
+	if (KEY_PRESSING(KEY::W))
+		tResult.vDir += _vector{ 0.f, 1.f, 0.f,0.f };
+	if (KEY_PRESSING(KEY::A))
+		tResult.vDir += _vector{ -1.f, 0.f, 0.f,0.f };
+	if (KEY_PRESSING(KEY::S))
+		tResult.vDir += _vector{ 0.f, -1.f, 0.f,0.f };
+	if (KEY_PRESSING(KEY::D))
+		tResult.vDir += _vector{ 1.f, 0.f, 0.f,0.f };
+    if (KEY_PRESSING(KEY::Q))
+        tResult.vDir += _vector{ 0.f, 0.f, -1.f,0.f };
+    if (KEY_PRESSING(KEY::E))
+        tResult.vDir += _vector{ 0.f, 0.f, 1.f,0.f };
+
+	tResult.vMoveDir = tResult.vDir;
+	tResult.bInputStates[PLAYER_INPUT_MOVE] = false == XMVector3Equal(tResult.vMoveDir, XMVectorZero());
+
+
+	return tResult;
+}
 void CPlayer::Revive()
 {
 	m_tStat.iHP = m_tStat.iMaxHP;
@@ -1377,21 +1456,19 @@ void CPlayer::ReFuel()
 
 void CPlayer::ZetPropel(_float _fTimeDelta)
 {
-	if (Is_ZetPackMode() )
+	if (Is_ZetPackEquipped() )
 	{
 		m_pZetPack->Propel(_fTimeDelta);
 	}
 }
 
-void CPlayer::Transform_In_CyberJot()
+void CPlayer::Shoot_Rifle()
 {
-    m_bCyberJot = true;
+	if (nullptr == m_pRifle)
+		return;
+	m_pRifle->Shoot();
 }
 
-void CPlayer::Transform_Out_CyberJot()
-{
-    m_bCyberJot = false;
-}
 
 
 //아무런 상호작용 중이 아닐 때에는 그냥 가장 가까운 애로 교체.
@@ -1563,7 +1640,7 @@ _bool CPlayer::Is_DetonationMode()
     return m_pDetonator->Is_DetonationMode();
 }
 
-_bool CPlayer::Is_ZetPackMode()
+_bool CPlayer::Is_ZetPackEquipped()
 {
     return m_PartObjects[PLAYER_PART_ZETPACK]->Is_Active(); 
 }
@@ -1719,14 +1796,32 @@ void CPlayer::Set_State(STATE _eState)
     switch (_eState)
     {
     case Client::CPlayer::IDLE:
+    case Client::CPlayer::CYBER_IDLE:
         //cout << "IDLE" << endl;
-        m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
-        if (Is_ZetPackMode())
-            m_pZetPack->Switch_State(CZetPack::STATE_IDLE);
+        if (Is_CyvberJotMode())
+        {
+            m_pStateMachine->Transition_To(new CPlayerState_CyberIdle(this));
+        }
+        else
+        {
+            m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
+            if (Is_ZetPackEquipped())
+                m_pZetPack->Switch_State(CZetPack::STATE_IDLE);
+        }
+
         break;
     case Client::CPlayer::RUN:
+    case Client::CPlayer::CYBER_FLY:
         //cout << "Run" << endl;
-        m_pStateMachine->Transition_To(new CPlayerState_Run(this));
+        if (Is_CyvberJotMode())
+        {
+            m_pStateMachine->Transition_To(new CPlayerState_CyberFly(this));
+        }
+        else
+        {
+            m_pStateMachine->Transition_To(new CPlayerState_Run(this));
+        }
+
         break;
     case Client::CPlayer::JUMP_UP:
         //cout << "JUMPUP" << endl;
@@ -1819,13 +1914,23 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
         switch (m_ePlayerMode)
         {
         case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_NORMAL:
+            Set_Kinematic(false);
 			UnEquip_Part(PLAYER_PART_SWORD);
             break;
         case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SWORD:
+            Set_Kinematic(false);
 			Equip_Part(PLAYER_PART_SWORD);
             break;
         case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SNEAK:
+            Set_Kinematic(false);
             UnEquip_Part(PLAYER_PART_SWORD);
+            break;
+        case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_CYBERJOT:
+            Equip_Part(PLAYER_PART_RIFLE);
+            Equip_Part(PLAYER_PART_VISOR);
+            Equip_Part(PLAYER_PART_ZETPACK);
+            Set_State(STATE::CYBER_IDLE);
+            Set_Kinematic(true);
             break;
         default:
             break;
@@ -2283,6 +2388,7 @@ void CPlayer::Free()
 	Safe_Release(m_pStopStmap);
 	Safe_Release(m_pDetonator);
 	Safe_Release(m_pZetPack);
+	Safe_Release(m_pRifle);
 
     Safe_Release(m_pCarryingObject);
     

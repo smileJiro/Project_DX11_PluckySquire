@@ -19,10 +19,16 @@ HRESULT CCharacter::Initialize(void* _pArg)
 {
 	CHARACTER_DESC* pDesc = static_cast<CHARACTER_DESC*>(_pArg);
     m_tStat = pDesc->_tStat;
-	m_fStepSlopeThreshold = pDesc->_fStepSlopeThreshold;
-	m_fStepHeightThreshold = pDesc->_fStepHeightThreshold;
-    m_fGravity = m_pGameInstance->Get_Gravity();
-    XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixRotationZ(XMConvertToRadians(90.f)));
+    m_isIgnoreGround = pDesc->_isIgnoreGround;
+
+    if(false == m_isIgnoreGround)
+    {
+        m_fStepSlopeThreshold = pDesc->_fStepSlopeThreshold;
+        m_fStepHeightThreshold = pDesc->_fStepHeightThreshold;
+        m_fGravity = m_pGameInstance->Get_Gravity();
+        XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixRotationZ(XMConvertToRadians(90.f)));
+    }
+
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
     return S_OK;
@@ -32,53 +38,57 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
 {
 
     __super::Priority_Update(_fTimeDelta);
-    COORDINATE eCoord = Get_CurCoord();
-    _bool bOldGround = m_bOnGround;
-    if (COORDINATE_2D == eCoord)
-    {
-        if (m_bPlatformerMode)
-        {
-            Move(_vector{ 0.f,1.f,0.f } *m_f2DUpForce, _fTimeDelta);
-        }
-        else
-        {
-            m_f2DUpForce -= 9.8f * _fTimeDelta * 180;
 
-            m_f2DFloorDistance += m_f2DUpForce * _fTimeDelta;
-            if (0 > m_f2DFloorDistance)
+    if(false == m_isIgnoreGround)
+    {
+        COORDINATE eCoord = Get_CurCoord();
+        _bool bOldGround = m_bOnGround;
+        if (COORDINATE_2D == eCoord)
+        {
+            if (m_bPlatformerMode)
             {
-                m_f2DFloorDistance = 0;
-                m_bOnGround = true;
-                m_f2DUpForce = 0;
+                Move(_vector{ 0.f,1.f,0.f } *m_f2DUpForce, _fTimeDelta);
             }
-            else if (0 == m_f2DFloorDistance)
-                m_bOnGround = true;
             else
-                m_bOnGround = false;
+            {
+                m_f2DUpForce -= 9.8f * _fTimeDelta * 180;
 
-        }
+                m_f2DFloorDistance += m_f2DUpForce * _fTimeDelta;
+                if (0 > m_f2DFloorDistance)
+                {
+                    m_f2DFloorDistance = 0;
+                    m_bOnGround = true;
+                    m_f2DUpForce = 0;
+                }
+                else if (0 == m_f2DFloorDistance)
+                    m_bOnGround = true;
+                else
+                    m_bOnGround = false;
 
-    }
-    else
-    {
-        Measure_FloorDistance();
+            }
 
-        if (m_f3DFloorDistance > -1)
-        {
-            if (m_f3DFloorDistance < m_fStepHeightThreshold)
-                m_bOnGround = true;
-            else
-                m_bOnGround = false;
         }
         else
         {
-            m_f3DFloorDistance = -1;
-            m_bOnGround = false;
+            Measure_FloorDistance();
+
+            if (m_f3DFloorDistance > -1)
+            {
+                if (m_f3DFloorDistance < m_fStepHeightThreshold)
+                    m_bOnGround = true;
+                else
+                    m_bOnGround = false;
+            }
+            else
+            {
+                m_f3DFloorDistance = -1;
+                m_bOnGround = false;
+            }
+            //경사가 너ㅏ무 급하면 무시
         }
-        //경사가 너ㅏ무 급하면 무시
+        if (bOldGround == false && m_bOnGround == true)
+            On_Land();
     }
-    if (bOldGround == false && m_bOnGround == true)
-        On_Land();
 }
 
 void CCharacter::Update(_float _fTimeDelta)
@@ -120,6 +130,9 @@ void CCharacter::Late_Update(_float _fTimeDelta)
 
 void CCharacter::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)
 {
+    if (true == m_isIgnoreGround)
+        return;
+
 	if (_bIm0)
 		_ModifiableContacts.Set_InvInertiaScale0(0.f);
 	else

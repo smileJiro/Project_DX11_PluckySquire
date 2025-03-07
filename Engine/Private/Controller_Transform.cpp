@@ -245,6 +245,11 @@ _float3 CController_Transform::Get_Scale() const
 	return m_pTransforms[m_eCurCoord]->Get_Scale();
 }
 
+_float3 CController_Transform::Get_Scale(COORDINATE _eCoordinate) const
+{
+	return m_pTransforms[_eCoordinate]->Get_Scale();
+}
+
 _vector CController_Transform::Get_State(CTransform::STATE _eState) const
 {
 	return m_pTransforms[m_eCurCoord]->Get_State(_eState);

@@ -119,6 +119,7 @@ public:
 
 	_bool								Is_Rotation() { return m_isRotation; }
 	_bool								Is_Override_WorldTex() { return m_isOverride_WorldTex; }
+	_bool								Is_Platformer() { return m_isPlatformer; }
 	_uint								Get_Override_Normal() { return m_iOverride_Normal; }
 
 	HRESULT								Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType);
@@ -181,7 +182,7 @@ protected:
 	_wstring				m_strPrePageTag = L"";
 
 	_bool					m_isScrolling = false;// ÄÅ, tub - 6Ã©ÅÍ µµ´Â°Å.
-	_bool					m_isSideScroll;
+	_bool					m_isPlatformer = false;
 	_bool					m_isRotation = false;
 	_bool					m_isOverride_WorldTex = false;
 	_uint					m_iOverride_Normal = { 0 };
