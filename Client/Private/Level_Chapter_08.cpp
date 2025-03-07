@@ -17,6 +17,7 @@
 #include "CubeMap.h"
 #include "MainTable.h"
 #include "Player.h"
+#include "CyberPlayerBullet.h"
 #include "Beetle.h"
 #include "Book.h"
 #include "BirdMonster.h"
@@ -336,6 +337,22 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 		int a = 0;
 	}
 
+
+	if (KEY_PRESSING(KEY::CTRL))
+	{
+		if (KEY_DOWN(KEY::NUMPAD5))
+		{
+			CButterGrump::MONSTER_DESC Boss_Desc;
+			Boss_Desc.iCurLevelID = m_eLevelID;
+			Boss_Desc.eStartCoord = COORDINATE_3D;
+			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
+				return;
+		}
+	}
+
 }
 
 HRESULT CLevel_Chapter_08::Render()
@@ -585,11 +602,21 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	_int iCurCoord = (COORDINATE_2D);
 	_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
-	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
-	pPlayer->Equip_Part(CPlayer::PLAYER_PART_ZETPACK);
+	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_CYBERJOT);
+	//pPlayer->Equip_Part(CPlayer::PLAYER_PART_ZETPACK);
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 	
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = m_eLevelID;
+	Pooling_Desc.strLayerTag = TEXT("Layer_CyberPlayerBullet");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_CyberPlayerBullet");
+
+	CCyberPlayerBullet::CYBERPLAYER_PROJECTILE_DESC* pBulletDesc = new CCyberPlayerBullet::CYBERPLAYER_PROJECTILE_DESC;
+	pBulletDesc->iCurLevelID = m_eLevelID;
+	pBulletDesc->eStartCoord = COORDINATE_3D;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_CyberPlayerBullet"), Pooling_Desc, pBulletDesc);
 
 	return S_OK;
 }
@@ -1027,6 +1054,17 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
+	//	return E_FAIL;
+
+
+
+	//CButterGrump::MONSTER_DESC Boss_Desc;
+	//Boss_Desc.iCurLevelID = m_eLevelID;
+	//Boss_Desc.eStartCoord = COORDINATE_3D;
+	//Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
 	//	return E_FAIL;
 
 	return S_OK;

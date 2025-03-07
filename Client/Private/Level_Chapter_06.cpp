@@ -67,6 +67,7 @@
 #include "NPC.h"
 #include "Loader.h"
 #include "Candle.h"
+#include "FatherGame.h"
 #include "CandleGame.h"
 
 
@@ -166,29 +167,17 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-	/* Test Candle */
-	CCandleGame::CANDLEGAME_DESC CandleGameDesc;
-	CandleGameDesc.iCurLevelID = LEVEL_CHAPTER_6;
-	CandleGameDesc.Build_3D_Transform(_float3(0.0f, 0.0f, 0.0f));
-	CandleGameDesc.eStartCoord = COORDINATE_3D;
-	CandleGameDesc.isCoordChangeEnable = false;
-	
-	for (_uint i = 0; i < 5; ++i)
-	{
-		CandleGameDesc.CandlePositions.push_back(_float3(i * 5.0f, 1.0f, -10.f));
-	}
-	
-	CGameObject* pGameObject = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_CandleGame"), LEVEL_CHAPTER_6, TEXT("Layer_CandleGame"), &pGameObject, &CandleGameDesc)))
-		return E_FAIL;
-	m_pCandleGame = static_cast<CCandleGame*>(pGameObject);
-	Safe_AddRef(m_pCandleGame);
-
 	if (FAILED(Ready_Layer_Defender()))
 	{
 		MSG_BOX(" Failed Ready_Layer_Defender (Level_Chapter_06::Initialize)");
 		assert(nullptr);
 	}
+
+
+
+
+
+
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
@@ -244,12 +233,38 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
+
+
+
+		///* Test Candle */
+	//CCandleGame::CANDLEGAME_DESC CandleGameDesc;
+	//CandleGameDesc.iCurLevelID = LEVEL_CHAPTER_6;
+	//CandleGameDesc.Build_3D_Transform(_float3(0.0f, 0.0f, 0.0f));
+	//CandleGameDesc.eStartCoord = COORDINATE_3D;
+	//CandleGameDesc.isCoordChangeEnable = false;
+	//
+	//for (_uint i = 0; i < 5; ++i)
+	//{
+	//	CandleGameDesc.CandlePositions.push_back(_float3(i * 5.0f, 1.0f, -10.f));
+	//}
+	//
+	//CGameObject* pGameObject = nullptr;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_CandleGame"), LEVEL_CHAPTER_6, TEXT("Layer_CandleGame"), &pGameObject, &CandleGameDesc)))
+	//	return E_FAIL;
+	//m_pCandleGame = static_cast<CCandleGame*>(pGameObject);
+	//Safe_AddRef(m_pCandleGame);
+
+
+	/* Test FatherGame Progress */
+	if (FAILED(CFatherGame::GetInstance()->Start_Game(m_pDevice, m_pContext)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 void CLevel_Chapter_06::Update(_float _fTimeDelta)
 {
-
+	CFatherGame::GetInstance()->Update();
 	Uimgr->UI_Update();
 
 	// 피직스 업데이트 
@@ -628,7 +643,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 {
 	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
-
 
 	CDefenderPlayer::DEFENDERPLAYER_DESC tDeffenderPlayerDesc = {};
 	tDeffenderPlayerDesc.iCurLevelID = m_eLevelID;
@@ -1360,7 +1374,9 @@ CLevel_Chapter_06* CLevel_Chapter_06::Create(ID3D11Device* _pDevice, ID3D11Devic
 }
 void CLevel_Chapter_06::Free()
 {
-	Safe_Release(m_pCandleGame);
+	//Safe_Release(m_pCandleGame);
+	CFatherGame::GetInstance()->DestroyInstance();
+
 	m_pGameInstance->End_BGM();
 
 	__super::Free();

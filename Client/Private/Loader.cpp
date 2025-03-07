@@ -84,6 +84,8 @@
 #include "PlayerBomb.h"
 #include "Detonator.h"
 #include "ZetPack.h"
+#include "PlayerRifle.h"
+#include "CyberPlayerBullet.h"
 #include "PalmMarker.h"
 #include "PalmDecal.h"
 #include "TestTerrain.h"
@@ -157,6 +159,7 @@
 #include "Boss_YellowBall.h"
 #include "Boss_PurpleBall.h"
 #include "Boss_WingSlam.h"
+#include "Boss_WingSlice.h"
 #include "Boss_Rock.h"
 #include "Boss_Crystal.h"
 #include "Boss_TennisBall.h"
@@ -736,6 +739,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ZetPack"),
 		CZetPack::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerRifle"),
+		CPlayerRifle::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"),
 		CPlayerBody::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -1239,6 +1245,10 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			CBoss_WingSlam::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_WingSlice"),
+			CBoss_WingSlice::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_Rock"),
 			CBoss_Rock::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
@@ -1265,15 +1275,15 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 					), matPretransform))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sonic_03"),
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sonic_02"),
 			C3DModel::Create(m_pDevice, m_pContext,
-				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sonic_03.model"
+				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sonic_02.model"
 					), matPretransform))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("HomingBall"),
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sonic_03"),
 			C3DModel::Create(m_pDevice, m_pContext,
-				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/HomingBall.model"
+				("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sonic_03.model"
 					), matPretransform))))
 			return E_FAIL;
 
@@ -1561,7 +1571,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakTrapTile"),
 		CSneak_Trap_Tile::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_CyberPlayerBullet"),
+		CCyberPlayerBullet::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 #pragma endregion
 
 #pragma region Chapter 8 - Effect Load
@@ -1628,11 +1640,23 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		CBoss_WingSlam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_WingSlice"),
+		CBoss_WingSlice::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_Rock"),
 		CBoss_Rock::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_Crystal"),
+		CBoss_Crystal::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_TennisBall"),
+		CBoss_TennisBall::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	_matrix matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sphere_01"),
 		C3DModel::Create(m_pDevice, m_pContext,
@@ -1646,15 +1670,15 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 				), matPretransform))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sonic_03"),
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sonic_02"),
 		C3DModel::Create(m_pDevice, m_pContext,
-			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sonic_03.model"
+			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sonic_02.model"
 				), matPretransform))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("HomingBall"),
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("S_FX_CMN_Sonic_03"),
 		C3DModel::Create(m_pDevice, m_pContext,
-			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/HomingBall.model"
+			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/Projectiles/S_FX_CMN_Sonic_03.model"
 				), matPretransform))))
 		return E_FAIL;
 

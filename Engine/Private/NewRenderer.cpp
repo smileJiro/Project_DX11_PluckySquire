@@ -114,10 +114,15 @@ HRESULT CNewRenderer::Draw_RenderObject()
 	{
 		m_isDebugRender ^= 1;
 		m_pGameInstance->Set_Physx_DebugRender(m_isDebugRender);
-		if (KEY_PRESSING(KEY::ALT))
+
+	}
+	if (KEY_PRESSING(KEY::ALT))
+	{
+		if (KEY_DOWN(KEY::NUM6))
 		{
 			m_isDebugBase ^= 1;
 		}
+
 	}
 
 #endif

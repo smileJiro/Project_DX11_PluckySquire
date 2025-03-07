@@ -1192,6 +1192,17 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(CGameObject** _ppout)
 	//	return E_FAIL;
 
 
+	//CGoblin::MONSTER_DESC Goblin_Desc;
+	//Goblin_Desc.iCurLevelID = m_eLevelID;
+	//Goblin_Desc.eStartCoord = COORDINATE_3D;
+	//Goblin_Desc.isCoordChangeEnable = false;
+
+	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(1.5f, 0.85f, -5.f);
+	//Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, TEXT("Monster"), &pObject, &Goblin_Desc)))
+	//return E_FAIL;
+
 	//CButterGrump::MONSTER_DESC Boss_Desc;
 	//Boss_Desc.iCurLevelID = m_eLevelID;
 	//Boss_Desc.eStartCoord = COORDINATE_3D;

@@ -9,6 +9,7 @@
 #include "Effect2D_Manager.h"
 #include "Pooling_Manager.h"
 #include "Section_2D_PlayMap.h"
+#include "PlayerData_Manager.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -52,7 +53,7 @@ HRESULT CMonster::Initialize(void* _pArg)
 		return E_FAIL;
 
 	//플레이어 위치 가져오기
-	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
+	m_pTarget = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 	if (nullptr == m_pTarget)
 	{
 	#ifdef _DEBUG
@@ -174,6 +175,8 @@ void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherC
 {
 	if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
 	{
+		if (nullptr == m_pTarget)
+			m_pTarget = CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr();
 		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), Get_Stat().iDamg, XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 300.f);
 	}
 }

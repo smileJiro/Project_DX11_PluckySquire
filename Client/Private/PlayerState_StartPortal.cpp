@@ -64,7 +64,7 @@ void CPlayerState_StartPortal::Enter()
 	}
 	else
 	{
-		if (m_pOwner->Is_CyvberJot())
+		if (m_pOwner->Is_CyvberJotMode())
 		{
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CYBERJOTLITE_BOOKEXIT_DOWN);
 		}

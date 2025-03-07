@@ -23,6 +23,7 @@ class CPlayerBomb;
 class CZetPack;
 class CPlayerBody;
 class CDefenderPlayer;
+class CPlayerRifle;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -85,6 +86,7 @@ public:
 		PLAYER_MODE_NORMAL,
 		PLAYER_MODE_SWORD,
 		PLAYER_MODE_SNEAK,
+		PLAYER_MODE_CYBERJOT,
 		PLAYER_MODE_LAST
 	};
 
@@ -95,24 +97,27 @@ public:
 		PLAYER_PART_GLOVE,
 		PLAYER_PART_STOP_STMAP,
 		PLAYER_PART_BOMB_STMAP,
-		PLAYER_PART_DETONATOR = 5,
+		PLAYER_PART_RIFLE,
+		PLAYER_PART_DETONATOR = 6,
 		PLAYER_PART_ZETPACK,
-		PLAYER_PART_CYBERBODY2D,
+		PLAYER_PART_VISOR,
 		PLAYER_PART_LAST
 	};
 
 	enum PLAYER_MAIN_EQUIP
 	{
-		PLAYER_MAIN_EQUIP_SWORD = 1,
+		PLAYER_MAIN_EQUIP_SWORD = PLAYER_PART_SWORD,
 		PLAYER_MAIN_EQUIP_GLOVE,
 		PLAYER_MAIN_EQUIP_STOP_STMAP,
 		PLAYER_MAIN_EQUIP_BOMB_STMAP,
+		PLAYER_MAIN_EQUIP_RIFLE,
 		PLAYER_MAIN_EQUIP_LAST
 	};
 	enum PLAYER_SUB_EQUIP
 	{
-		PLAYER_SUB_EQUIP_DETONATOR = 5,
-		PLAYER_SUB_EQUIP_ZETPACK
+		PLAYER_SUB_EQUIP_DETONATOR = PLAYER_PART_DETONATOR,
+		PLAYER_SUB_EQUIP_ZETPACK,
+		PLAYER_SUB_EQUIP_VISOR,
 	};
 
 	enum STATE
@@ -144,6 +149,9 @@ public:
 		ERASE_PALM,
 		GET_ITEM,
 		TRANSFORM_IN,
+		CYBER_IDLE,
+		CYBER_FLY,
+		CYBER_HIT,
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -461,6 +469,7 @@ public:
 		,LATCH_ANIM_JUMPATTACK_FALL =103
 		,LATCH_ANIM_JUMPATTACK_LAND_GT_EDIT
 		,LATCH_ANIM_JUMPATTACK_RISE  = 105
+		,LATCH_CANNON
 		,CYBERJOT_ANIM_DEATH
 		,CYBERJOT_ANIM_FLYING_DOWN
 		,CYBERJOT_ANIM_FLYING_DOWN_DASH
@@ -528,11 +537,12 @@ public:
 	PLAYER_INPUT_RESULT Player_KeyInput();
 	PLAYER_INPUT_RESULT Player_KeyInput_Stamp();
 	PLAYER_INPUT_RESULT Player_KeyInput_ControlBook();
+	PLAYER_INPUT_RESULT Player_KeyInput_CyberJot();
 	void Revive();
 	void ReFuel();
 	void ZetPropel(_float _fTimeDelta);
-	void Transform_In_CyberJot();
-	void Transform_Out_CyberJot();
+	void Shoot_Rifle();
+
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
 
 	void Start_Portal(CPortal* _pPortal);
@@ -545,14 +555,14 @@ public:
 	//Get
 	_bool Is_ZetPack_Idle();
 	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
-	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
+	_bool Is_CyvberJotMode() { return PLAYER_MODE_CYBERJOT == m_ePlayerMode; }
+	_bool Is_ZetPackEquipped();
+	_bool Is_Sneaking();//소리가 안나면 true 나면 false
 	_bool Is_SwordHandling();
 	_bool Is_CarryingObject(){ return nullptr != m_pCarryingObject; }
 	_bool Is_AttackTriggerActive();
 	_bool Is_DetonationMode();
-	_bool Is_ZetPackMode();
-	_bool Is_CyvberJot() { return m_bCyberJot; }
 
 	_bool Is_PlayingAnim();
 	_bool Has_InteractObject() { return nullptr != m_pInteractableObject; }
@@ -664,7 +674,9 @@ private:
 	_float m_f3DPickupRange = 1.3f;
 	_float m_f3DKnockBackPower = 10.f;
 
+
 	_bool m_bAttackTrigger = false;
+
 
 	_uint m_iSpinAttackLevel = 4;
 	_vector m_vClamberEndPosition = { 0.f,0.f,0.f,1.f };//벽타기 끝날 위치
@@ -694,7 +706,6 @@ private:
 	_float m_fInvincibleTIme = 1.5f;
 	_float m_fInvincibleTImeAcc = 0.f;
 	_bool m_bInvincible = false;
-	_bool m_bCyberJot = false;
 
 	ATTACK_TYPE m_eCurAttackType = ATTACK_TYPE_NORMAL1;
 	ATTACK_TRIGGER_DESC m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST][(_uint)F_DIRECTION::F_DIR_LAST];// = { 93.f, 93.f, 120.f };
@@ -718,6 +729,7 @@ private:
 	PLAYER_PART m_eCurrentStamp = PLAYER_PART::PLAYER_PART_BOMB_STMAP;
 	CDetonator* m_pDetonator = nullptr;
 	CZetPack* m_pZetPack = nullptr;
+	CPlayerRifle* m_pRifle = nullptr;
 
 	//기타 관계된 오브젝트
 	CCarriableObject* m_pCarryingObject = nullptr;

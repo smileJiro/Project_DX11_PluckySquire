@@ -571,6 +571,45 @@
     <Filter Include="02.GameObjects\Zipline">
       <UniqueIdentifier>{31354166-28a5-4b4b-83ee-4b75d84b007a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.MiniGames">
+      <UniqueIdentifier>{6e50ea30-0272-4949-9224-53482deb41ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\CandleGame">
+      <UniqueIdentifier>{ebc1a475-d868-4875-a26e-f88134d3c5a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\CandleGame\Candle">
+      <UniqueIdentifier>{03c2394a-370a-4b15-b834-631ab47aee5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\CandleGame\Candle\Body">
+      <UniqueIdentifier>{392d9546-4653-4ccd-99e4-e5312cab9089}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\CandleGame\Candle\UI">
+      <UniqueIdentifier>{c6f102e6-811e-4077-b3f5-7415d4e4f6ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame">
+      <UniqueIdentifier>{5625b912-57bb-4f04-8012-85e85aee663d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Progress">
+      <UniqueIdentifier>{2eb32f34-15a4-4370-b56d-5317f923c2bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Progress\01.Start">
+      <UniqueIdentifier>{fd2e315d-a74a-4266-8dd9-e3d7f67e222a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Progress\02.ZetPack">
+      <UniqueIdentifier>{42ae0673-85a0-443d-86e2-94b0057e6d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Progress\03.PartBody">
+      <UniqueIdentifier>{d5632670-9ce9-409b-8e41-60ff5ef970bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Progress\03.PartWing">
+      <UniqueIdentifier>{23008288-9be9-4c61-9e6c-6f621a3b6b4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Progress\04.PartHead">
+      <UniqueIdentifier>{4a6c456e-782f-4ad3-8fc5-e90bff457a9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Progress\05.MakeFather">
+      <UniqueIdentifier>{b28fc545-b17b-4e68-8eed-9c77917e5ef7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1418,9 +1457,6 @@
     <ClInclude Include="..\public\Minigame_Sneak.h">
       <Filter>90. Minigame_Sneak</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Candle.h" />
-    <ClInclude Include="..\public\Candle_Body.h" />
-    <ClInclude Include="..\public\Candle_UI.h" />
     <ClInclude Include="..\Public\Narration_Manager.h" />
     <ClInclude Include="..\Public\Narration_New.h" />
     <ClInclude Include="..\public\Sneak_Default_Tile.h">
@@ -1446,7 +1482,6 @@
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_TransformIn.h" />
-    <ClInclude Include="..\Public\CandleGame.h" />
     <ClInclude Include="..\Public\Zipline.h">
       <Filter>02.GameObjects\Zipline</Filter>
     </ClInclude>
@@ -1462,6 +1497,38 @@
     <ClInclude Include="..\Public\Postit_Page.h">
       <Filter>02.GameObjects\Portal</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Minigame_Defender.h" />
+    <ClInclude Include="..\Public\CandleGame.h">
+      <Filter>05.MiniGames\CandleGame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Candle.h">
+      <Filter>05.MiniGames\CandleGame\Candle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Candle_Body.h">
+      <Filter>05.MiniGames\CandleGame\Candle\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Candle_UI.h">
+      <Filter>05.MiniGames\CandleGame\Candle\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FatherGame.h">
+      <Filter>05.MiniGames\FatherGame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FatherGame_Progress.h">
+      <Filter>05.MiniGames\FatherGame\Progress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FatherGame_Progress_Start.h">
+      <Filter>05.MiniGames\FatherGame\Progress\01.Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CandleGame.h" />
+    <ClInclude Include="..\Public\BossMoveState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossWingSliceState.h">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerRifle.h" />
+    <ClInclude Include="..\Public\PlayerState_CyberIdle.h" />
+    <ClInclude Include="..\Public\CyberPlayerBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2287,9 +2354,6 @@
     <ClCompile Include="..\Private\Level_Chapter_08.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Candle.cpp" />
-    <ClCompile Include="..\private\Candle_Body.cpp" />
-    <ClCompile Include="..\private\Candle_UI.cpp" />
     <ClCompile Include="..\Private\Narration_Manager.cpp" />
     <ClCompile Include="..\Private\Narration_New.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame.cpp">
@@ -2324,7 +2388,6 @@
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_TransformIn.cpp" />
-    <ClCompile Include="..\Private\CandleGame.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp">
       <Filter>02.GameObjects\Zipline</Filter>
     </ClCompile>
@@ -2340,6 +2403,38 @@
     <ClCompile Include="..\Private\Postit_Page.cpp">
       <Filter>02.GameObjects\Portal</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Minigame_Defender.cpp" />
+    <ClCompile Include="..\Private\CandleGame.cpp">
+      <Filter>05.MiniGames\CandleGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Candle.cpp">
+      <Filter>05.MiniGames\CandleGame\Candle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Candle_Body.cpp">
+      <Filter>05.MiniGames\CandleGame\Candle\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Candle_UI.cpp">
+      <Filter>05.MiniGames\CandleGame\Candle\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FatherGame.cpp">
+      <Filter>05.MiniGames\FatherGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FatherGame_Progress.cpp">
+      <Filter>05.MiniGames\FatherGame\Progress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FatherGame_Progress_Start.cpp">
+      <Filter>05.MiniGames\FatherGame\Progress\01.Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CandleGame.cpp" />
+    <ClCompile Include="..\Private\BossMoveState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossWingSliceState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerRifle.cpp" />
+    <ClCompile Include="..\Private\PlayerState_CyberIdle.cpp" />
+    <ClCompile Include="..\Private\CyberPlayerBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
