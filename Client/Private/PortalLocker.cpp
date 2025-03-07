@@ -54,6 +54,7 @@ HRESULT CPortalLocker::Initialize(void* _pArg)
 
 	/* Set Anim End */
 	Register_OnAnimEndCallBack(bind(&CPortalLocker::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+
 	return S_OK;
 }
 
@@ -144,7 +145,6 @@ void CPortalLocker::Action_State_Lock(_float _fTimeDelta)
 
 	if (true == m_pTargetPortal->Is_Active())
 	{
-
 		Event_SetActive(m_pTargetPortal, false);
 	}
 }
@@ -157,19 +157,22 @@ void CPortalLocker::Action_State_Open(_float _fTimeDelta)
 
 void CPortalLocker::Action_State_Dead(_float _fTimeDelta)
 {
-	m_pTargetPortal->Set_FirstActive(true);
-	//f (FADEALPHA_DEFAULT == m_eFadeAlphaState)
-	//
-	//	if (m_vFadeAlpha.y == 0.0f)
-	//	{
-	//		/* Fade Out이 종료되었다는 체크 */
-	//		Event_DeleteObject(this);
-	//		if (false == m_pTargetPortal->Is_Active())
-	//		{
-	//			Event_SetActive(m_pTargetPortal, true);
-	//		}
-	//	}
-	//
+	//Event_SetActive(m_pTargetPortal, true);
+	if (FADEALPHA_DEFAULT == m_eFadeAlphaState)
+	{
+		if (m_vFadeAlpha.y == 1.0f)
+		{
+			/* Fade Out이 종료되었다는 체크 */
+			Event_DeleteObject(this);
+			if (false == m_pTargetPortal->Is_Active())
+			{
+				m_pTargetPortal->Set_FirstActive(true);
+				//Event_SetActive(m_pTargetPortal, true);
+			}
+		}
+	}
+
+	
 
 }
 

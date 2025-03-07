@@ -107,6 +107,21 @@ HRESULT CModelObject::Render()
     else if(COORDINATE_2D == eCoord)
     {
         _float fFadeAlphaRatio = m_vFadeAlpha.y / m_vFadeAlpha.x;
+        switch (m_eFadeAlphaState)
+        {
+        case Engine::CModelObject::FADEALPHA_DEFAULT:
+            fFadeAlphaRatio = 1.0f;
+            break;
+        case Engine::CModelObject::FADEALPHA_IN:
+            fFadeAlphaRatio = m_vFadeAlpha.y / m_vFadeAlpha.x;
+            break;
+        case Engine::CModelObject::FADEALPHA_OUT:
+            fFadeAlphaRatio = 1.0f - (m_vFadeAlpha.y / m_vFadeAlpha.x);
+            break;
+        default:
+            break;
+        }
+        
         pShader->Bind_RawValue("g_fSprite2DFadeAlphaRatio", &fFadeAlphaRatio, sizeof(_float));
     }
 
@@ -296,7 +311,7 @@ void CModelObject::Start_FadeAlphaOut()
         return;
 
     m_eFadeAlphaState = FADEALPHA_OUT;
-    m_vFadeAlpha.y = 1.0f;
+    m_vFadeAlpha.y = 0.0f;
 }
 
 void CModelObject::Action_Fade(_float _fTimeDelta)
@@ -320,10 +335,10 @@ void CModelObject::Action_Fade(_float _fTimeDelta)
         break;
     case Engine::CModelObject::FADEALPHA_OUT:
     {
-        m_vFadeAlpha.y -= _fTimeDelta;
+        m_vFadeAlpha.y += _fTimeDelta;
         if (m_vFadeAlpha.x <= m_vFadeAlpha.y)
         {
-            m_vFadeAlpha.y = 0.0f;
+            m_vFadeAlpha.y = 1.0f;
             m_eFadeAlphaState = FADEALPHA_DEFAULT;
         }
     }
