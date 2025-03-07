@@ -217,6 +217,9 @@
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
     <ClInclude Include="..\Public\DefenderPlayer.h" />
     <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
+    <ClInclude Include="..\public\FatherGame.h" />
+    <ClInclude Include="..\public\FatherGame_Progress.h" />
+    <ClInclude Include="..\public\FatherGame_Progress_Start.h" />
     <ClInclude Include="..\Public\Minigame_Defender.h" />
     <ClInclude Include="..\Public\Detonator.h" />
     <ClInclude Include="..\public\Door_2D.h" />
@@ -240,8 +243,8 @@
     <ClInclude Include="..\Public\PlayerState_GetItem.h" />
     <ClInclude Include="..\Public\PlayerState_TransformIn.h" />
     <ClInclude Include="..\Public\Portal_Default.h" />
-    <ClInclude Include="..\Public\Portal_Immediately.h" />
-    <ClInclude Include="..\Public\Portal_JumpOut.h" />
+    <ClInclude Include="..\Public\Portal_Arrow.h" />
+    <ClInclude Include="..\Public\Portal_Cannon.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame_Pip.h" />
     <ClInclude Include="..\public\Sneak_Default_Tile.h" />
@@ -527,6 +530,9 @@
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
     <ClCompile Include="..\Private\DefenderPlayer.cpp" />
     <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
+    <ClCompile Include="..\private\FatherGame.cpp" />
+    <ClCompile Include="..\private\FatherGame_Progress.cpp" />
+    <ClCompile Include="..\private\FatherGame_Progress_Start.cpp" />
     <ClCompile Include="..\Private\Minigame_Defender.cpp" />
     <ClCompile Include="..\Private\Detonator.cpp" />
     <ClCompile Include="..\private\Door_2D.cpp" />
@@ -547,8 +553,8 @@
     <ClCompile Include="..\Private\PlayerState_GetItem.cpp" />
     <ClCompile Include="..\Private\PlayerState_TransformIn.cpp" />
     <ClCompile Include="..\Private\Portal_Default.cpp" />
-    <ClCompile Include="..\Private\Portal_Immediately.cpp" />
-    <ClCompile Include="..\Private\Portal_JumpOut.cpp" />
+    <ClCompile Include="..\Private\Portal_Arrow.cpp" />
+    <ClCompile Include="..\Private\Portal_Cannon.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame_Pip.cpp" />
     <ClCompile Include="..\private\Sneak_Default_Tile.cpp" />

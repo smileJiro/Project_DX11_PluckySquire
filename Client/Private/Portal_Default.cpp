@@ -130,6 +130,9 @@ HRESULT CPortal_Default::Ready_PartObjects(PORTAL_DESC* _pDesc)
         MSG_BOX("Portal 2D Sprite Model Creation Failed");
         return E_FAIL;
     }
+
+    ((CModelObject*)m_PartObjects[PORTAL_PART_2D])->Set_AnimationLoop(COORDINATE_2D, 0, true);
+    ((CModelObject*)m_PartObjects[PORTAL_PART_2D])->Switch_Animation(0);
     return S_OK;
 }
 

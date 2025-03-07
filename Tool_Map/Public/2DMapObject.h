@@ -20,8 +20,8 @@ public:
 	enum PORTAL_TYPE
 	{
 		PORTAL_DEFAULT,
-		PORTAL_IMMEDIATELY,
-		PORTAL_JUMPOUT,
+		PORTAL_ARROW,
+		PORTAL_CANNON,
 		PORTAL_LAST
 	};
 public:
@@ -91,7 +91,7 @@ private:
 	_int				m_iPriorityID;
 
 	_bool				m_isPortal = false;
-	_bool				m_isFirstActive = false;
+	_bool				m_isFirstActive = true;
 	PORTAL_TYPE			m_ePortalType = PORTAL_LAST;
 
 private:

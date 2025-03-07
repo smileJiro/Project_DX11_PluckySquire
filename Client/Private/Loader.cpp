@@ -175,8 +175,8 @@
 #include "Dice.h"
 #include "Domino.h"
 #include "Portal_Default.h"
-#include "Portal_Immediately.h"
-#include "Portal_JumpOut.h"
+#include "Portal_Arrow.h"
+#include "Portal_Cannon.h"
 #include "Word.h"
 
 // Etc
@@ -635,12 +635,12 @@ HRESULT CLoader::Loading_Level_Static()
 		CPortal_Default::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Portal_Immediately"),
-		CPortal_Immediately::Create(m_pDevice, m_pContext))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Portal_Arrow"),
+		CPortal_Arrow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Portal_JumpOut"),
-		CPortal_JumpOut::Create(m_pDevice, m_pContext))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Portal_Cannon"),
+		CPortal_Cannon::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Word_Container"),

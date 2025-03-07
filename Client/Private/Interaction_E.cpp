@@ -481,7 +481,7 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		else
 		{
 			vTextPos.x = m_vObejctPos.x + vMiddlePos.x - vMiddlePos.x * 0.01f;
-			vTextPos.y = vMiddlePos.y - m_vObejctPos.y - _vRTSize.y * 0.003;
+			vTextPos.y = vMiddlePos.y - m_vObejctPos.y - _vRTSize.y * 0.003f;
 		}
 
 		m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));

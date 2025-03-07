@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Portal_JumpOut.h"
+#include "Portal_Cannon.h"
 #include "GameInstance.h"
 #include "ModelObject.h"
 #include "Section_Manager.h"
@@ -9,25 +9,25 @@
 #include "Camera_Target.h"
 #include "Camera_2D.h"
 
-CPortal_JumpOut::CPortal_JumpOut(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CPortal_Cannon::CPortal_Cannon(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CPortal(_pDevice, _pContext)
 {
 }
 
-CPortal_JumpOut::CPortal_JumpOut(const CPortal_JumpOut& _Prototype)
+CPortal_Cannon::CPortal_Cannon(const CPortal_Cannon& _Prototype)
     :CPortal(_Prototype)
 {
 }
 
-HRESULT CPortal_JumpOut::Initialize_Prototype()
+HRESULT CPortal_Cannon::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CPortal_JumpOut::Initialize(void* _pArg)
+HRESULT CPortal_Cannon::Initialize(void* _pArg)
 {
 
-    m_ePortalType = PORTAL_JUMPOUT;
+    m_ePortalType = PORTAL_CANNON;
 
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -51,7 +51,7 @@ HRESULT CPortal_JumpOut::Initialize(void* _pArg)
 }
 
 
-HRESULT CPortal_JumpOut::Setup_3D_Postion()
+HRESULT CPortal_Cannon::Setup_3D_Postion()
 {
     HRESULT hr = __super::Setup_3D_Postion();
 
@@ -64,14 +64,14 @@ HRESULT CPortal_JumpOut::Setup_3D_Postion()
     return hr;
 }
 
-HRESULT CPortal_JumpOut::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
+HRESULT CPortal_Cannon::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
     if (FAILED(m_pControllerTransform->Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
     return S_OK;
 }
 
-void CPortal_JumpOut::Interact(CPlayer* _pUser)
+void CPortal_Cannon::Interact(CPlayer* _pUser)
 {
     //if (COORDINATE_2D == _pUser->Get_CurCoord()) {
     //    static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET))->Set_InitialData(m_strSectionName, m_iPortalIndex);
@@ -83,19 +83,19 @@ void CPortal_JumpOut::Interact(CPlayer* _pUser)
     //_pUser->JumpTo_Portal(this);
 }
 
-_bool CPortal_JumpOut::Is_Interactable(CPlayer* _pUser)
+_bool CPortal_Cannon::Is_Interactable(CPlayer* _pUser)
 {
     return true;
 }
 
-_float CPortal_JumpOut::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
+_float CPortal_Cannon::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 {
     return XMVector3Length(m_pControllerTransform->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)
         - _pUser->Get_ControllerTransform()->Get_Transform(_eCoord)->Get_State(CTransform::STATE_POSITION)).m128_f32[0];
 
 }
 
-void CPortal_JumpOut::Active_OnEnable()
+void CPortal_Cannon::Active_OnEnable()
 {
     __super::Active_OnEnable();
     if (m_pEffectSystem)
@@ -105,7 +105,7 @@ void CPortal_JumpOut::Active_OnEnable()
     }
 }
 
-void CPortal_JumpOut::Active_OnDisable()
+void CPortal_Cannon::Active_OnDisable()
 {
     __super::Active_OnEnable();
     if (m_pEffectSystem && m_pEffectSystem->Is_Active())
@@ -114,7 +114,7 @@ void CPortal_JumpOut::Active_OnDisable()
     }
 }
 
-HRESULT CPortal_JumpOut::Ready_PartObjects(PORTAL_DESC* _pDesc)
+HRESULT CPortal_Cannon::Ready_PartObjects(PORTAL_DESC* _pDesc)
 {
 
     CModelObject::MODELOBJECT_DESC ModelDesc{};
@@ -135,22 +135,22 @@ HRESULT CPortal_JumpOut::Ready_PartObjects(PORTAL_DESC* _pDesc)
     return S_OK;
 }
 
-void CPortal_JumpOut::On_InteractionStart(CPlayer* _pPlayer)
+void CPortal_Cannon::On_InteractionStart(CPlayer* _pPlayer)
 {
     _pPlayer->Start_Portal(this);
 }
 
-void CPortal_JumpOut::On_InteractionEnd(CPlayer* _pPlayer)
+void CPortal_Cannon::On_InteractionEnd(CPlayer* _pPlayer)
 {
 }
 
-CPortal_JumpOut* CPortal_JumpOut::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CPortal_Cannon* CPortal_Cannon::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    CPortal_JumpOut* pInstance = new CPortal_JumpOut(_pDevice, _pContext);
+    CPortal_Cannon* pInstance = new CPortal_Cannon(_pDevice, _pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Created CPortal_JumpOut Failed");
+        MSG_BOX("Created CPortal_Cannon Failed");
         Safe_Release(pInstance);
         return nullptr;
     }
@@ -158,13 +158,13 @@ CPortal_JumpOut* CPortal_JumpOut::Create(ID3D11Device* _pDevice, ID3D11DeviceCon
     return pInstance;
 }
 
-CGameObject* CPortal_JumpOut::Clone(void* _pArg)
+CGameObject* CPortal_Cannon::Clone(void* _pArg)
 {
-    CPortal_JumpOut* pInstance = new CPortal_JumpOut(*this);
+    CPortal_Cannon* pInstance = new CPortal_Cannon(*this);
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Clone CPortal_JumpOut Failed");
+        MSG_BOX("Clone CPortal_Cannon Failed");
         Safe_Release(pInstance);
         return nullptr;
     }
@@ -172,7 +172,7 @@ CGameObject* CPortal_JumpOut::Clone(void* _pArg)
     return pInstance;
 }
 
-void CPortal_JumpOut::Free()
+void CPortal_Cannon::Free()
 {
     Safe_Release(m_pColliderCom);
     Safe_Release(m_pEffectSystem);
