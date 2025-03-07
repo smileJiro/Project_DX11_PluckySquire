@@ -458,14 +458,23 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 			continue;
 		i->Enter_Section(_strIncludeSectionName);
     }
+
+
+    auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
+
+    if (static_cast<CSection_2D*>(pSection)->Is_Platformer())
+    {
+        Set_PlatformerMode(true);
+    }
+    else 
+    {
+        Set_PlatformerMode(false);
+    }
+    
     if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
     {
         m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, 2800.f, 0.0f, 0.0f));
-        Set_PlatformerMode(true);
-
     }
-    else
-        Set_PlatformerMode(false);
 
     if (TEXT("Chapter2_P1314") == _strIncludeSectionName)
     {

@@ -121,7 +121,7 @@ HRESULT CPortal_Arrow::Ready_Components(PORTAL_DESC* _pDesc)
 
 void CPortal_Arrow::Active_OnDisable()
 {
-    __super::Active_OnEnable();
+    __super::Active_OnDisable();
 }
 
 CPortal_Arrow* CPortal_Arrow::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
