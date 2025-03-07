@@ -42,7 +42,6 @@ protected:
 protected:
 	_bool					m_isClearProgress = false;
 
-
 private:
 	void					Active_OnEnable() override;
 	void					Active_OnDisable() override;

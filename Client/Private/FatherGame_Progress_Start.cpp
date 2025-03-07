@@ -2,6 +2,7 @@
 #include "FatherGame_Progress_Start.h"
 #include "GameInstance.h"
 #include "Goblin.h"
+#include "Section_Manager.h"
 
 CFatherGame_Progress_Start::CFatherGame_Progress_Start(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CFatherGame_Progress(_pDevice, _pContext)
@@ -33,16 +34,30 @@ HRESULT CFatherGame_Progress_Start::Progress_Enter()
 
     CGoblin::MONSTER_DESC GoblinDesc;
     GoblinDesc.iCurLevelID = LEVEL_CHAPTER_6;
-    GoblinDesc.Build_3D_Transform(_float3(-5.0f, 1.0f, 0.0f));
     GoblinDesc.eStartCoord = COORDINATE_3D;
     GoblinDesc.isCoordChangeEnable = false;
 
-    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, m_strMonsterPrototypeTag, LEVEL_CHAPTER_6, TEXT("Layer_Monster"),&pGameObject, &GoblinDesc)))
-        return E_FAIL;
-    m_pMonsters.push_back(static_cast<CMonster*>(pGameObject));
-    Safe_AddRef(pGameObject);
-    /* 2. PortalDefender 4곳에 생성 */
+    for (_uint i = 0; i < m_iNumMonsters; ++i)
+    {
+        _float3 vRandomPos = { 0.0f, 0.4f, 0.0f };
+        vRandomPos.x = m_pGameInstance->Compute_Random(-5.0f, 5.0f);
+        vRandomPos.z = m_pGameInstance->Compute_Random(-5.0f, -7.0f);
+        GoblinDesc.Build_3D_Transform(vRandomPos);
 
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, m_strMonsterPrototypeTag, LEVEL_CHAPTER_6, TEXT("Layer_Monster"), &pGameObject, &GoblinDesc)))
+            return E_FAIL;
+
+        m_pMonsters.push_back(static_cast<CMonster*>(pGameObject));
+        Safe_AddRef(pGameObject);
+    }
+
+    /* 2. PortalDefender 3곳에 생성 */
+    //CSection_Manager::GetInstance().portal
+    // 1. 모성 
+
+#ifdef _DEBUG
+    cout << "FatherGame Progress_Start Start" << endl;
+#endif // _DEBUG
     return S_OK;
 }
 
@@ -80,6 +95,9 @@ HRESULT CFatherGame_Progress_Start::Progress_Clear()
 
         /* 2. 자기 자신의 Active 상태를 False로 변경 */
         Event_SetActive(this, false);
+#ifdef _DEBUG
+        cout << "FatherGame Progress_Start Clear" << endl;
+#endif // _DEBUG
     }
 
     return S_OK;
@@ -94,7 +112,9 @@ HRESULT CFatherGame_Progress_Start::Progress_Exit()
     {
 
     }
-
+#ifdef _DEBUG
+    cout << "FatherGame Progress_Start Exit" << endl;
+#endif // _DEBUG
     return S_OK;
 }
 

@@ -65,13 +65,15 @@ void CFatherGame::Update()
 
 	/* Game End Check */
 	m_iClearCount = 0;
-	for (_bool isClear : m_ProgressClear)
+	for (_uint i = 0; i < m_Progress.size(); ++i)
 	{
-		if (true == isClear)
+		if (true == m_ProgressClear[i] && false == m_Progress[i]->Is_Active())
 		{
 			++m_iClearCount;
 		}
+
 	}
+
 	if (m_Progress.size() == m_iClearCount)
 	{
 		End_Game();
@@ -88,6 +90,10 @@ HRESULT CFatherGame::End_Game()
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
+
+#ifdef _DEBUG
+	cout << "FatherGame End" << endl;
+#endif // _DEBUG
 
 	return S_OK;
 }
