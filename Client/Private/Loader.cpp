@@ -179,6 +179,8 @@
 #include "Portal_Cannon.h"
 #include "Word.h"
 
+#include "PortalLocker.h" // 태웅
+
 // Etc
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
@@ -574,6 +576,11 @@ HRESULT CLoader::Loading_Level_Static()
 #pragma region Static - Object Load
 
 	lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+	/* For. Prototype_GameObject_PortalLocker */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker"),
+		CPortalLocker::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For. Prototype_GameObject_Effect2D */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Effect2D"),

@@ -242,6 +242,7 @@
     <ClInclude Include="..\public\Minigame_Sneak.h" />
     <ClInclude Include="..\Public\PlayerState_GetItem.h" />
     <ClInclude Include="..\Public\PlayerState_TransformIn.h" />
+    <ClInclude Include="..\public\PortalLocker.h" />
     <ClInclude Include="..\Public\Portal_Default.h" />
     <ClInclude Include="..\Public\Portal_Arrow.h" />
     <ClInclude Include="..\Public\Portal_Cannon.h" />
@@ -552,6 +553,7 @@
     <ClCompile Include="..\private\Minigame_Sneak.cpp" />
     <ClCompile Include="..\Private\PlayerState_GetItem.cpp" />
     <ClCompile Include="..\Private\PlayerState_TransformIn.cpp" />
+    <ClCompile Include="..\private\PortalLocker.cpp" />
     <ClCompile Include="..\Private\Portal_Default.cpp" />
     <ClCompile Include="..\Private\Portal_Arrow.cpp" />
     <ClCompile Include="..\Private\Portal_Cannon.cpp" />
