@@ -6,12 +6,12 @@
 #include "Section_Manager.h"
 
 CProjectile_Monster::CProjectile_Monster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CContainerObject(_pDevice, _pContext)
+	: CCharacter(_pDevice, _pContext)
 {
 }
 
 CProjectile_Monster::CProjectile_Monster(const CProjectile_Monster& _Prototype)
-	: CContainerObject(_Prototype)
+	: CCharacter(_Prototype)
 {
 }
 
@@ -25,6 +25,7 @@ HRESULT CProjectile_Monster::Initialize(void* _pArg)
     PROJECTILE_MONSTER_DESC* pDesc = static_cast<PROJECTILE_MONSTER_DESC*>(_pArg);
     pDesc->iNumPartObjects = PART_END;
     pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
+    pDesc->_isIgnoreGround = true;
 
     m_fLifeTime = pDesc->fLifeTime;
 

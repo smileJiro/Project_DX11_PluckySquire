@@ -10,6 +10,7 @@
 #include "BossYellowBallState.h"
 #include "BossPurpleBallState.h"
 #include "BossWingSlamState.h"
+#include "BossWingSliceState.h"
 #include "BossRockVolleyState.h"
 #include "BossShieldState.h"
 #include "BossHitState.h"
@@ -160,6 +161,16 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
 		m_States.emplace((_uint)BOSS_STATE::ROCKVOLLEY, pState);
+		break;
+
+	case Client::BOSS_STATE::WINGSLICE:
+		pState = CBossWingSliceState::Create(&Desc);
+
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)BOSS_STATE::WINGSLICE, pState);
 		break;
 
 	case Client::BOSS_STATE::SHIELD:

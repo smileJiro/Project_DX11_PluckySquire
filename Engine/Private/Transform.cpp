@@ -268,11 +268,18 @@ void CTransform::RotationQuaternion(const _float3& _vRadianXYZ)
 
 void CTransform::RotationQuaternionW(const _float4& _vQuaternion)
 {
-    _matrix WorldMatrix = XMMatrixIdentity();
     _vector vQuaternion = XMLoadFloat4(&_vQuaternion);
-	WorldMatrix = Get_WorldMatrix() * XMMatrixRotationQuaternion(vQuaternion);
+    _float3 vScale = Get_Scale();
 
-    Set_WorldMatrix(WorldMatrix);
+	_matrix matQuaternion = XMMatrixRotationQuaternion(vQuaternion);
+    _vector vRight = matQuaternion.r[0] * vScale.x;
+    _vector vUp = matQuaternion.r[1] * vScale.y;
+    _vector vLook = matQuaternion.r[2] * vScale.z;
+
+    Set_State(STATE::STATE_RIGHT, vRight);
+    Set_State(STATE::STATE_UP, vUp);
+    Set_State(STATE::STATE_LOOK, vLook);
+
 }
 
 

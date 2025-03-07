@@ -3,6 +3,7 @@
 #include "Monster.h"
 #include "GameInstance.h"
 #include "DebugDraw_For_Client.h"
+#include "PlayerData_Manager.h"
 
 CDetectionField::CDetectionField(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
@@ -29,8 +30,15 @@ HRESULT CDetectionField::Initialize(void* _pArg)
 	m_pOwner = pDesc->pOwner;
 	m_pTarget = pDesc->pTarget;
 
-	if (nullptr != m_pTarget)
+	if (nullptr == m_pTarget)
+	{
+		m_pTarget = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 		Safe_AddRef(m_pTarget);
+	}
+	else
+	{
+		Safe_AddRef(m_pTarget);
+	}
 
 #ifdef _DEBUG
 	m_pDraw = pDesc->pDraw;
@@ -81,7 +89,10 @@ _bool CDetectionField::IsTarget_In_Detection()
 	if (nullptr == m_pOwner)
 		return false;
 	if (nullptr == m_pTarget)
-		return false;
+	{
+		m_pTarget = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+		Safe_AddRef(m_pTarget);
+	}
 
 	//거리 먼저 판단(일단 오프셋 적용안했음)
 	if (m_fRange >= m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition()))

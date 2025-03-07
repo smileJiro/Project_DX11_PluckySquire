@@ -18,5 +18,35 @@
         "Is_Sequence": true
       }
     ]
+  },
+{
+    "Trigger_EventTag": "Get_Tilting_Glove",
+    "Actions": [
+      {
+        "ActionTag": "Glove_Get_Before",
+        "EventTag": "Tilting_Glove",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Get_PlayerItem",
+        "EventTag": "Tilting_Glove",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Dialogue",
+        "EventTag": "Gauntlet_Acquire_Tilting",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Glove_Get_After",
+        "EventTag": "Tilting_Glove",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter4_StorySequence",
+        "Is_Sequence": true
+      }
+    ]
   }
 ]
