@@ -333,6 +333,8 @@ void CCamera_2D::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
 	m_isTargetChanged = true;
 
 	m_vStartPos = m_v2DPreTargetWorldPos;
+
+	m_strSectionName = _pTarget->Get_Include_Section_Name();
 }
 
 void CCamera_2D::Turn_AxisY(_float _fTimeDelta)
@@ -739,6 +741,12 @@ void CCamera_2D::Zipline(_float _fTimeDelta)
 
 		m_eCameraMode = PAUSE;
 		m_fTrackingTime.x = 0.5f;
+
+		_vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
+		_vector vAt = m_pControllerTransform->Get_State(CTransform::STATE_POSITION) + (vLook * 20.f);
+
+		XMStoreFloat3(&m_v2DPreTargetWorldPos, XMVectorSetW(vAt, 1.f));
+
 		return;
 	}
 
