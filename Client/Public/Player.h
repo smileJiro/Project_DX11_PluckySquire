@@ -2,6 +2,7 @@
 #include "Playable.h"
 #include "AnimEventReceiver.h"
 #include "Interactable.h"
+#include "Gravity.h"
 
 BEGIN(Engine)
 class CAnimEventGenerator;
@@ -630,7 +631,7 @@ public:
 	void Set_CarryingObject(CCarriableObject* _pCarryingObject);
 	void Set_InteractObject(IInteractable* _pInteractable) { m_pInteractableObject = _pInteractable; }
 	NORMAL_DIRECTION Set_PortalNormal(NORMAL_DIRECTION _eNormal) { return m_e3DPortalNormal = _eNormal; }
-	void Set_GravityCompOn(_bool _bOn);
+	void Set_GravityCompOn(_bool _bOn, CGravity::STATE _eGravityState = CGravity::STATE_FALLDOWN);
 
 	void Set_CurrentStampType(PLAYER_PART _eStamp) { m_eCurrentStamp = _eStamp; }
 
