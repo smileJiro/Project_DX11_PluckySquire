@@ -1,9 +1,9 @@
 {
-    "fExposure": 3.7367000579833984,
-    "fGamma": 3.967400074005127,
+    "fExposure": 1.0,
+    "fGamma": 2.200000047683716,
     "fHDRMaxLuminance": 1000.0,
-    "fRoughnessToMipFactor": 4.860899925231934,
-    "fStrengthIBL": 0.0,
-    "iSpecularBaseMipLevel": 1,
-    "iToneMappingFlag": 2
+    "fRoughnessToMipFactor": 5.0,
+    "fStrengthIBL": 0.5,
+    "iSpecularBaseMipLevel": 2,
+    "iToneMappingFlag": 0
 }

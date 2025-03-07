@@ -57,7 +57,7 @@ HRESULT CMainApp::Initialize()
 #ifdef _DEBUG
 	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
 #elif NDEBUG
-	EngineDesc.eImportMode |= NONE_IMPORT | IMPORT_IMGUI;
+	EngineDesc.eImportMode |= NONE_IMPORT; // | IMPORT_IMGUI;
 #endif
 	
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
@@ -155,7 +155,7 @@ void CMainApp::Imgui_FPS(_float _fTimeDelta)
 	static _int iSelectLevelID = LEVEL_LOGO;
 	
 
-	const char* pLevels[] = { "LEVEL_LOGO", "LEVEL_CHAPTER_2", "LEVEL_CHAPTER_4", "LEVEL_CHAPTER_TEST", "LEVEL_CAMERA_TOOL" };
+	const char* pLevels[] = { "LEVEL_LOGO", "LEVEL_CHAPTER_2", "LEVEL_CHAPTER_4", "LEVEL_CHAPTER_6", "LEVEL_CHAPTER_8", "LEVEL_CHAPTER_TEST", "LEVEL_CAMERA_TOOL"};
 	ImGui::Combo("Select Action", &iSelectLevelID, pLevels, IM_ARRAYSIZE(pLevels));
 
 	if (ImGui::Button("Level_Change"))

@@ -33,6 +33,7 @@
 #include "JumpPad.h"
 #include "Zipline.h"
 #include "Door_Red.h"
+#include "Postit_Page.h"
 
 #include "RayShape.h"
 #include "FallingRock.h"
@@ -201,6 +202,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	/* Load Trigger*/
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger.json"));
 	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger_Events.json"));
+	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Tilting_Glove"), _float3(-3.59f, 29.89f, 27.14f));
 
 	/* Blur RenderGroupOn */
 	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
@@ -994,6 +996,13 @@ HRESULT CLevel_Chapter_04::Ready_Layer_NPC(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
+
+
+	CPostit_Page::POSTIT_PAGE_DESC PostitDesc = {};
+	PostitDesc.strInitSkspName = L"Chapter4_SKSP_Postit";
+	PostitDesc.Build_2D_Transform({ 510.f, 100.f }, { 2.2f,2.2f });
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Postit_Page"), m_eLevelID, _strLayerTag, &PostitDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

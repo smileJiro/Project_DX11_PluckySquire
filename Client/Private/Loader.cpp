@@ -1172,6 +1172,12 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 
 		lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
+		/* For. Prototype_GameObject_Postit_Page */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Postit_Page"),
+			CPostit_Page::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+
 		/* For. Prototype_GameObject_FallingRock */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_FallingRock"),
 			CFallingRock::Create(m_pDevice, m_pContext))))

@@ -34,7 +34,8 @@ HRESULT CPortal::Initialize(void* _pArg)
     pDesc->eStartCoord = COORDINATE_2D;
     pDesc->isCoordChangeEnable = true;
     pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
-    m_fTriggerRadius =  pDesc->fTriggerRadius;
+    m_isFirstActive = pDesc->isFirstActive;
+    m_fTriggerRadius = pDesc->fTriggerRadius;
 
     m_iPortalIndex =  pDesc->iPortalIndex;
     // Actor Object는 차후에, ReadyObject 를 따로 불러 생성.
@@ -43,6 +44,10 @@ HRESULT CPortal::Initialize(void* _pArg)
 
     if (FAILED(Ready_Components(pDesc)))
         return E_FAIL;
+
+    if (!m_isFirstActive)
+        Set_Active(false);
+    
 
 	return S_OK;
 }
@@ -139,8 +144,8 @@ HRESULT CPortal::Init_Actor()
     ActorObjectDesc.pActorDesc = &ActorDesc;
     HRESULT hr = CActorObject::Ready_Components(&ActorObjectDesc);
     
-    if (SUCCEEDED(hr))
-        Active_OnEnable();
+    //if (SUCCEEDED(hr))
+    //    Active_OnEnable();
 
     Change_Coordinate(COORDINATE_2D, nullptr);
     return hr;
@@ -148,9 +153,9 @@ HRESULT CPortal::Init_Actor()
 
 void CPortal::Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal)
 {
-    _vector vPos = Get_ControllerTransform()[COORDINATE_2D].Get_State(CTransform::STATE_POSITION);
+    _vector vPos = Get_FinalPosition(COORDINATE_2D);
 
-    _vector v3DPos = SECTION_MGR->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { XMVectorGetX(vPos),XMVectorGetY(vPos) });
+    _vector v3DPos = Get_FinalPosition(COORDINATE_3D);
 
     *_pOutNormal = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW( v3DPos))); /* 추후 노말을 기준으로 힘의 방향을 결정해도 돼*/
 
@@ -289,12 +294,25 @@ HRESULT CPortal::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 
 void CPortal::Active_OnEnable()
 {
-    __super::Active_OnEnable();
-    if (m_pEffectSystem)
+    if (m_isFirstActive)
     {
-        //m_pEffectSystem->Set_Active(true);
-        m_pEffectSystem->Active_Effect(false, 0);
+        __super::Active_OnEnable();
+        if (m_pEffectSystem)
+        {
+            //m_pEffectSystem->Set_Active(true);
+            m_pEffectSystem->Active_Effect(false, 0);
+        }
     }
+    else
+    {
+		Set_Active(false);
+    }
+}
+
+void CPortal::Set_FirstActive(_bool _bFirstActive)
+{
+    m_isFirstActive = _bFirstActive; 
+    Set_Active(m_isFirstActive);
 }
 
 void CPortal::Active_OnDisable()
