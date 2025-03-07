@@ -211,12 +211,15 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
+
+	m_pSneakMinigameManager = CMinigame_Sneak::GetInstance();
+
 	return S_OK;
 }
 
 void CLevel_Chapter_08::Update(_float _fTimeDelta)
 {
-
+	m_pSneakMinigameManager->Update(_fTimeDelta);
 	Uimgr->UI_Update();
 
 	// 피직스 업데이트 
@@ -588,6 +591,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	pPlayer->Equip_Part(CPlayer::PLAYER_PART_ZETPACK);
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
+	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
 	
 
 	return S_OK;
@@ -1271,7 +1275,7 @@ void CLevel_Chapter_08::Free()
 {
 	m_pGameInstance->End_BGM();
 
-	CMinigame_Sneak::GetInstance()->DestroyInstance();
+	Safe_Release(m_pSneakMinigameManager);
 
 	__super::Free();
 }

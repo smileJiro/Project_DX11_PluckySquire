@@ -73,7 +73,7 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 #ifdef _DEBUG
-	Imgui(fTimeDelta);
+	//Imgui(fTimeDelta);
 #endif
 
 	//m_eCameraMode = DEFAULT;

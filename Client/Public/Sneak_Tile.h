@@ -10,11 +10,10 @@ public:
 	{ DEFAULT_CLOSE, DEFAULT_CLOSED, DEFAULT_OPENED, DEFAULT_OPEN,
 		TRAP_CLOSE, TRAP_CLOSED, TRAP_OPEN, TRAP_OPENDED, DEFAULT_RED, DEFAULT_YELLOW, TRAP_YELLOW };
 	enum SNEAK_TILE_TYPE { DEFAULT, TRAP };
-	enum TILE_DIRECTION { RIGHT, DOWN, LEFT, UP, LAST };
 	typedef struct tagSneakTileDesc : public CModelObject::MODELOBJECT_DESC
 	{
 		_int	iTileIndex;
-		_int	iAdjacents[LAST] = { -1, -1, -1, -1 };
+		_int	iAdjacents[(_uint)(F_DIRECTION::F_DIR_LAST)] = { -1, -1, -1, -1 };
 	}SNEAK_TILEDESC;
 
 protected:
@@ -27,13 +26,19 @@ public:
 
 
 public:
-	void		 Set_AdjacentTiles(TILE_DIRECTION _eDir, _int _iTileIndex) { if (_eDir >= LAST) return; m_AdjacentTiles[_eDir] = _iTileIndex; }
-	_int		 Get_AdjacentTiles(TILE_DIRECTION _eDir) const { return m_AdjacentTiles[_eDir]; }
+	void		 Set_AdjacentTiles(F_DIRECTION _eDir, _int _iTileIndex) 
+	{ 
+		if (_eDir >= F_DIRECTION::F_DIR_LAST) 
+			return; 
+		_int iDir = (_int)(_eDir);
+		m_AdjacentTiles[iDir] = _iTileIndex;
+	}
+	_int		 Get_AdjacentTiles(F_DIRECTION _eDir) const { return m_AdjacentTiles[(_uint)(_eDir)]; }
 	_int		 Get_TileIndex() const { return m_iTileIndex; }
 	_float2		 Get_TilePosition() const { return m_vTilePosition; }
 
 protected:
-	_int			m_AdjacentTiles[LAST] = { -1, -1, -1, -1 };
+	_int			m_AdjacentTiles[(_uint)(F_DIRECTION::F_DIR_LAST)] = { -1, -1, -1, -1 };
 	_float2			m_vTilePosition = { 0.f, 0.f };
 protected:
 	_int					m_iTileIndex = { 0 };

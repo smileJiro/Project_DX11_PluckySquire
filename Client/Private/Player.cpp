@@ -247,7 +247,8 @@ HRESULT CPlayer::Initialize(void* _pArg)
     Set_State(CPlayer::IDLE);
 
     // PlayerData Manager µî·Ï
-    CPlayerData_Manager::GetInstance()->Register_Player(PLAYABLE_ID::NORMAL,    this);
+    CPlayerData_Manager::GetInstance()->Register_Player(PLAYABLE_ID::NORMAL, this);
+
 
     return S_OK;
 }

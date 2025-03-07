@@ -14,6 +14,7 @@
 #include "Sneak_Default_Tile.h"
 #include "Sneak_DefaultObject.h"
 #include "Sneak_Drawer.h"
+#include "Pip_Player.h"
 
 CSection_2D_MiniGame_Pip::CSection_2D_MiniGame_Pip(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSection_2D_MiniGame(_pDevice, _pContext, MINIGAME, SECTION_2D_BOOK)
@@ -82,7 +83,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 				TileDesc.iAdjacents[k] = (*pjsonTileInfo)[i][j]["Adjacent"][k];
 			}
 
-			for (_int k = 0; k < CSneak_Tile::LAST; ++k)
+			for (_int k = 0; k < (_int)F_DIRECTION::F_DIR_LAST; ++k)
 			{
 				if (-1 == TileDesc.iAdjacents[k] || TileDesc.iAdjacents[k] >= Tiles.size())
 					continue;
@@ -94,19 +95,19 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 				switch (k)
 				{
-				case CSneak_Tile::LEFT:
+				case (_int)F_DIRECTION::LEFT:
 					TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x + 65.f;
 					TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
 					break;
-				case CSneak_Tile::RIGHT:
+				case (_int)F_DIRECTION::RIGHT:
 					TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x - 65.f;
 					TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
 					break;
-				case CSneak_Tile::UP:
+				case (_int)F_DIRECTION::UP:
 					TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
 					TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y - 65.f;
 					break;
-				case CSneak_Tile::DOWN:
+				case (_int)F_DIRECTION::DOWN:
 					TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
 					TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y + 65.f;
 					break;
@@ -142,7 +143,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 		StageTiles.push_back(Tiles);
 	}	
 
-	CMinigame_Sneak::GetInstance()->Set_Tiles(StageTiles);
+	CMinigame_Sneak::GetInstance()->Register_Tiles(StageTiles);
 #pragma endregion TILE
 
 #pragma region SNEAK OBJECT
@@ -205,7 +206,23 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 		StageObjects.push_back(Objects);
 	}
-	CMinigame_Sneak::GetInstance()->Set_Objects(StageObjects);
+	CMinigame_Sneak::GetInstance()->Register_Objects(StageObjects);
+#pragma endregion
+
+#pragma region PIP_PLAYER
+	CPip_Player::PIP_DESC PipDesc = {};
+	CPip_Player* pPlayer = { nullptr };
+
+	PipDesc.iCurLevelID = LEVEL_CHAPTER_8;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_PipPlayer"), LEVEL_CHAPTER_8
+		, TEXT("Layer_Sneak_Player"), reinterpret_cast<CGameObject**>(&pPlayer), &PipDesc)))
+		return E_FAIL;
+
+	if (nullptr != pPlayer)
+		Add_GameObject_ToSectionLayer(pPlayer, SECTION_PIP_MOVEOBJECT);
+
+	CMinigame_Sneak::GetInstance()->Register_Player(pPlayer);
 #pragma endregion
 
 	//	Section_Level_Enter End
@@ -243,6 +260,8 @@ HRESULT CSection_2D_MiniGame_Pip::Section_AddRenderGroup_Process()
 
 HRESULT CSection_2D_MiniGame_Pip::Section_Enter(const _wstring& _strPreSectionTag)
 {
+	CMinigame_Sneak::GetInstance()->Start_Game();
+
 	return S_OK;
 }
 

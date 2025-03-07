@@ -795,6 +795,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_NORMAL);
 	pPlayer->UnEquip_All();
 
+	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
+
 	return S_OK;
 }
 

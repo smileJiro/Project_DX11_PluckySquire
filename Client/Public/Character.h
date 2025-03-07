@@ -43,7 +43,7 @@ public:
 	void Stop_Move();
 	void Stop_MoveXZ();
 
-	void Move(_fvector _vForce, _float _fTimeDelta);
+	void Move(_fvector _vVelocity, _float _fTimeDelta);
 	_bool Move_To(_fvector _vPosition, _float _fEpsilon = 0.5f, _bool _FreezeY = true);
 	_bool Check_Arrival(_fvector _vPosition, _float _fEpsilon = 0.5f);
 	//캐릭터 기준 _vDir 방향을 바라보게 하는 함수. Y축으로만 회전함.

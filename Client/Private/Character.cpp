@@ -500,15 +500,15 @@ _vector CCharacter::StepAssist(_fvector _vVelocity,_float _fTimeDelta)
 }
 
 
-void CCharacter::Move(_fvector _vForce, _float _fTimeDelta)
+void CCharacter::Move(_fvector _vVelocity, _float _fTimeDelta)
 {
 
 
     if (COORDINATE_3D == Get_CurCoord())
     {
-        m_v3DTargetDirection = XMVector4Normalize(_vForce);
+        m_v3DTargetDirection = XMVector4Normalize(_vVelocity);
         CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-        _vector vVeclocity = _vForce /** m_tStat[COORDINATE_3D].fMoveSpeed*/  /** fDot*/;
+        _vector vVeclocity = _vVelocity /** m_tStat[COORDINATE_3D].fMoveSpeed*/  /** fDot*/;
 
         vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
 
@@ -520,13 +520,13 @@ void CCharacter::Move(_fvector _vForce, _float _fTimeDelta)
         }
         else
         {
-            m_pControllerTransform->Go_Direction(_vForce,_fTimeDelta);
+            m_pControllerTransform->Go_Direction(_vVelocity,_fTimeDelta);
         }
 
     }
     else
     {
-        m_pControllerTransform->Go_Direction(_vForce, XMVectorGetX(XMVector3Length(_vForce)), _fTimeDelta);
+        m_pControllerTransform->Go_Direction(_vVelocity, XMVectorGetX(XMVector3Length(_vVelocity)), _fTimeDelta);
 
         if (m_bScrollingMode)
         {

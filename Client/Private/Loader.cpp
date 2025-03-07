@@ -126,6 +126,7 @@
 #include "Sneak_Trap_Tile.h"
 #include "Sneak_DefaultObject.h"
 #include "Sneak_Drawer.h"
+#include "Pip_Player.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -1537,6 +1538,12 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		CGameEventExecuter_C8::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* Pip_Player */
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_PipPlayer"),
+		CPip_Player::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* Monster */
 
 	/* Etc */
@@ -1555,6 +1562,7 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakDrawer"),
 		CSneak_Drawer::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
 
 #pragma endregion
 

@@ -34,7 +34,7 @@ HRESULT CSneak_Tile::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_iTileIndex = m_iTileIndex;
-	for (_int i = 0; i < LAST; ++i)
+	for (_int i = 0; i < (_int)F_DIRECTION::F_DIR_LAST; ++i)
 	{
 		m_AdjacentTiles[i] = pDesc->iAdjacents[i];
 	}

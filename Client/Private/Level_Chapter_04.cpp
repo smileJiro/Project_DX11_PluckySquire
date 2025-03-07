@@ -621,7 +621,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	if (nullptr == Uimgr->Get_Player())
 		CUI_Manager::GetInstance()->Set_Player(pPlayer);
 
-	
+	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
 
 
 
