@@ -65,8 +65,9 @@ void CPortal_Arrow::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pO
             static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D))->Set_Current_PortalID(m_iPortalIndex);
         }
 
-        NORMAL_DIRECTION eNormal;
-		Use_Portal(pPlayer, &eNormal);
+
+        NORMAL_DIRECTION eNormal = Get_PortalNormal();
+		Use_Portal(pPlayer);
 
 		pPlayer->Set_PortalNormal(eNormal);
 

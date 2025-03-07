@@ -429,7 +429,7 @@ HRESULT CPlayer::Ready_PartObjects()
     Safe_AddRef(m_pRifle);
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_RIFLE])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_hand_attach_r")); /**/
     m_PartObjects[PLAYER_PART_RIFLE]->Set_Position({ 0.f,0.1f,-0.16f });
-    Set_PartActive(PLAYER_PART_RIFLE, true);
+    Set_PartActive(PLAYER_PART_RIFLE, false);
 
     //VISOR
     CModelObject::MODELOBJECT_DESC tVisorDesc{};
@@ -451,7 +451,7 @@ HRESULT CPlayer::Ready_PartObjects()
     }
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_VISOR])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_head")); /**/
     m_PartObjects[PLAYER_PART_VISOR]->Set_Position({ 0.f,0.225f,-0.225f });
-    Set_PartActive(PLAYER_PART_VISOR, true);
+    Set_PartActive(PLAYER_PART_VISOR, false);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
@@ -482,6 +482,7 @@ HRESULT CPlayer::Ready_PartObjects()
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_TURN_MID, 0.178f);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_IDLE_NERVOUS_01_GT, 0.f);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_BOOKOUT_01_GT, 0.f);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_LUNCHBOX_POSE_02_LOOP_GT, 2.f);
     return S_OK;
 }
 
@@ -653,6 +654,7 @@ void CPlayer::Update(_float _fTimeDelta)
             m_fInvincibleTImeAcc = 0;
 		}
 	}
+
     __super::Update(_fTimeDelta); /* Part Object Update */
     if (m_pInteractableObject && false == dynamic_cast<CBase*>(m_pInteractableObject)->Is_Active())
         m_pInteractableObject = nullptr;
@@ -1563,7 +1565,7 @@ INTERACT_RESULT CPlayer::Try_Interact(_float _fTimeDelta)
 		}
 		else if (KEY_UP(eInteractKey))
 		{
-			m_pInteractableObject->End_Interact(this);
+			m_pInteractableObject->Cancel_Interact(this);
             return INTERACT_RESULT::CHARGE_CANCEL;
 		}
         break;
@@ -1836,7 +1838,11 @@ void CPlayer::Set_State(STATE _eState)
         m_pStateMachine->Transition_To(new CPlayerState_Attack(this));
         break;
     case Client::CPlayer::ROLL:
-        m_pStateMachine->Transition_To(new CPlayerState_Roll(this));
+    case Client::CPlayer::CYBER_DASH :
+        if (Is_CyvberJotMode())
+            m_pStateMachine->Transition_To(new CPlayerState_CyberDash(this));
+        else        
+            m_pStateMachine->Transition_To(new CPlayerState_Roll(this));
 		break;
     case Client::CPlayer::THROWSWORD:
         m_pStateMachine->Transition_To(new CPlayerState_ThrowSword(this));
@@ -1914,15 +1920,18 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
         {
         case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_NORMAL:
             Set_Kinematic(false);
-			UnEquip_Part(PLAYER_PART_SWORD);
+            UnEquip_All();
+            Set_State(STATE::IDLE);
             break;
         case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SWORD:
             Set_Kinematic(false);
 			Equip_Part(PLAYER_PART_SWORD);
+            Set_State(STATE::IDLE);
             break;
         case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SNEAK:
             Set_Kinematic(false);
-            UnEquip_Part(PLAYER_PART_SWORD);
+            UnEquip_All();
+            Set_State(STATE::IDLE);
             break;
         case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_CYBERJOT:
             Equip_Part(PLAYER_PART_RIFLE);
