@@ -17,13 +17,17 @@ HRESULT CSneak_Trap_Tile::Initialize(void* _pArg)
 	SNEAK_TILEDESC* pDesc = static_cast<SNEAK_TILEDESC*>(_pArg);
 
 	pDesc->strModelPrototypeTag_2D = TEXT("Sneak_Tile");
+	pDesc->_iInitAnim = TRAP_CLOSED;
+	pDesc->_iFlipAnim1 = TRAP_CLOSE;
+	pDesc->_iFlipAnim1End = TRAP_CLOSED;
+	pDesc->_iFlipAnim2 = TRAP_OPEN;
+	pDesc->_iFlipAnim2End = TRAP_OPENDED;
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
 	m_eTileType = TRAP;
 
-	Switch_Animation(TRAP_CLOSED);
 
 	return S_OK;
 }

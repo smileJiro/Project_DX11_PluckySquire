@@ -571,11 +571,17 @@
     <Filter Include="02.GameObjects\Zipline">
       <UniqueIdentifier>{31354166-28a5-4b4b-83ee-4b75d84b007a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\SneakDefault">
-      <UniqueIdentifier>{5d2fcc59-f588-44b9-b1f3-0a1b44151b6e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Player">
       <UniqueIdentifier>{ae520257-cbad-4889-8d1c-db59ed2b3cd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Sneak_MapObject">
+      <UniqueIdentifier>{5d2fcc59-f588-44b9-b1f3-0a1b44151b6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Sneak_InteractObject">
+      <UniqueIdentifier>{47775f02-6e83-48c4-8ed8-cd319761c708}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\FlipObject">
+      <UniqueIdentifier>{4b5e4b32-7d42-4fc8-bada-df264d8a9263}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1461,14 +1467,23 @@
     <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
     <ClInclude Include="..\Public\Minigame_Defender.h" />
     <ClInclude Include="..\Public\Playable.h" />
-    <ClInclude Include="..\public\Sneak_DefaultObject.h">
-      <Filter>02.GameObjects\MiniGameObjects\Sneak\SneakDefault</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Sneak_Drawer.h">
-      <Filter>02.GameObjects\MiniGameObjects\Sneak\SneakDefault</Filter>
+    <ClInclude Include="..\public\Sneak_MapObject.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_MapObject</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Pip_Player.h">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Portal_Default.h" />
+    <ClInclude Include="..\Public\Portal_Immediately.h" />
+    <ClInclude Include="..\Public\Portal_JumpOut.h" />
+    <ClInclude Include="..\public\Sneak_InteractObject.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_InteractObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Flippable.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\FlipObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_FlipObject.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\FlipObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2341,14 +2356,23 @@
     <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
     <ClCompile Include="..\Private\Minigame_Defender.cpp" />
     <ClCompile Include="..\Private\Playable.cpp" />
-    <ClCompile Include="..\private\Sneak_DefaultObject.cpp">
-      <Filter>02.GameObjects\MiniGameObjects\Sneak\SneakDefault</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Sneak_Drawer.cpp">
-      <Filter>02.GameObjects\MiniGameObjects\Sneak\SneakDefault</Filter>
+    <ClCompile Include="..\private\Sneak_MapObject.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_MapObject</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Pip_Player.cpp">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Portal_Default.cpp" />
+    <ClCompile Include="..\Private\Portal_Immediately.cpp" />
+    <ClCompile Include="..\Private\Portal_JumpOut.cpp" />
+    <ClCompile Include="..\private\Sneak_InteractObject.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_InteractObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Flippable.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\FlipObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_FlipObject.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\FlipObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

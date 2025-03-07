@@ -215,6 +215,7 @@
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
     <ClInclude Include="..\Public\DefenderPlayer.h" />
     <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
+    <ClInclude Include="..\public\Flippable.h" />
     <ClInclude Include="..\Public\Minigame_Defender.h" />
     <ClInclude Include="..\Public\Detonator.h" />
     <ClInclude Include="..\public\Door_2D.h" />
@@ -243,9 +244,10 @@
     <ClInclude Include="..\Public\Portal_JumpOut.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame_Pip.h" />
-    <ClInclude Include="..\public\Sneak_DefaultObject.h" />
+    <ClInclude Include="..\public\Sneak_MapObject.h" />
     <ClInclude Include="..\public\Sneak_Default_Tile.h" />
-    <ClInclude Include="..\public\Sneak_Drawer.h" />
+    <ClInclude Include="..\public\Sneak_FlipObject.h" />
+    <ClInclude Include="..\public\Sneak_InteractObject.h" />
     <ClInclude Include="..\public\Sneak_Trap_Tile.h" />
     <ClInclude Include="..\public\Sneak_Tile.h" />
     <ClInclude Include="..\Public\Zipline.h" />
@@ -526,6 +528,7 @@
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
     <ClCompile Include="..\Private\DefenderPlayer.cpp" />
     <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
+    <ClCompile Include="..\private\Flippable.cpp" />
     <ClCompile Include="..\Private\Minigame_Defender.cpp" />
     <ClCompile Include="..\Private\Detonator.cpp" />
     <ClCompile Include="..\private\Door_2D.cpp" />
@@ -551,9 +554,10 @@
     <ClCompile Include="..\Private\Portal_JumpOut.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame_Pip.cpp" />
-    <ClCompile Include="..\private\Sneak_DefaultObject.cpp" />
+    <ClCompile Include="..\private\Sneak_MapObject.cpp" />
     <ClCompile Include="..\private\Sneak_Default_Tile.cpp" />
-    <ClCompile Include="..\private\Sneak_Drawer.cpp" />
+    <ClCompile Include="..\private\Sneak_FlipObject.cpp" />
+    <ClCompile Include="..\private\Sneak_InteractObject.cpp" />
     <ClCompile Include="..\private\Sneak_Trap_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Tile.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />

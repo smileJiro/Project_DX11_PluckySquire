@@ -85,6 +85,7 @@ HRESULT CPip_Player::Render()
 void CPip_Player::Start_Stage(_float2 _vPosition)
 {
 	m_iCurTileIndex = 0;
+	m_iTargetTileIndex = 0;
 	
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(_vPosition.x, _vPosition.y, 0.f, 1.f));
 }
@@ -96,7 +97,7 @@ void CPip_Player::Action_Move(_int _iTileIndex, _float2 _vPosition)
 	m_eInputDirection = F_DIRECTION::F_DIR_LAST;
 	
 	m_vTargetPosition = _vPosition;
-	m_iCurTileIndex = _iTileIndex;
+	m_iTargetTileIndex = _iTileIndex;
 
 	Switch_Animation_ByState();
 }
@@ -225,18 +226,20 @@ void CPip_Player::Dir_Move(_float _fTimeDelta)
 		m_eCurAction = IDLE;
 
 		Switch_Animation_ByState();
+
+		m_pSneakGameManager->Reach_Destination(m_iCurTileIndex, m_iTargetTileIndex);
+		m_iCurTileIndex = m_iTargetTileIndex;
 	}
 
 }
 
 void CPip_Player::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
-	int a = 3;
 }
 
 void CPip_Player::Key_Input()
 {		
-	if (F_DIRECTION::F_DIR_LAST != m_eInputDirection)
+	if (m_pSneakGameManager->Is_InputTime() &&  F_DIRECTION::F_DIR_LAST != m_eInputDirection || MOVE == m_eCurAction)
 		return;
 
 	if (KEY_DOWN(KEY::W))

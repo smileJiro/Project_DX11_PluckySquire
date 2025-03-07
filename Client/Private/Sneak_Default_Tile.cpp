@@ -18,16 +18,17 @@ HRESULT CSneak_Default_Tile::Initialize(void* _pArg)
 	SNEAK_TILEDESC* pDesc = static_cast<SNEAK_TILEDESC*>(_pArg);
 	
 	pDesc->strModelPrototypeTag_2D = TEXT("Sneak_Tile");
+	pDesc->_iInitAnim = DEFAULT_CLOSED;
+	pDesc->_iFlipAnim1 = DEFAULT_CLOSE;
+	pDesc->_iFlipAnim1End = DEFAULT_CLOSED;
+	pDesc->_iFlipAnim2 = DEFAULT_OPEN;
+	pDesc->_iFlipAnim2End = DEFAULT_OPENED;
 
-	//pDesc->tTransform2DDesc.vInitialPosition = { 0.f, 0.f, 0.f };
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
 	m_eTileType = DEFAULT;
 	
-	//TEMP
-	Switch_Animation(DEFAULT_CLOSED);
-
     return S_OK;
 }
 

@@ -12,8 +12,8 @@
 
 #include "Minigame_Sneak.h"
 #include "Sneak_Default_Tile.h"
-#include "Sneak_DefaultObject.h"
-#include "Sneak_Drawer.h"
+#include "Sneak_MapObject.h"
+#include "Sneak_InteractObject.h"
 #include "Pip_Player.h"
 
 CSection_2D_MiniGame_Pip::CSection_2D_MiniGame_Pip(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -44,170 +44,274 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 	//						=> 여기!
 
 #pragma region TILE
-	const json* pjsonTileInfo = m_pGameInstance->Find_Json_InLevel(TEXT("SneakTile"), LEVEL_CHAPTER_8);
-	if (nullptr == pjsonTileInfo)
-		return E_FAIL;
-
-	CSneak_Default_Tile::SNEAK_TILEDESC TileDesc = {};
-	CSneak_Tile* pTileOut = { nullptr };
-	_int iStageSize = pjsonTileInfo->size();
-	vector<vector<CSneak_Tile*>> StageTiles;
-
-	for (_int i = 0; i < iStageSize; ++i)
 	{
-		vector<CSneak_Tile*> Tiles;
-		Tiles.resize((*pjsonTileInfo)[i].size(), nullptr);
-		
-		_float2 vPosition = { 0.f, 0.f };
-		if ((*pjsonTileInfo)[i][0].contains("Position"))
+		const json* pjsonTileInfo = m_pGameInstance->Find_Json_InLevel(TEXT("SneakTile"), LEVEL_CHAPTER_8);
+		if (nullptr == pjsonTileInfo)
+			return E_FAIL;
+
+		CSneak_Default_Tile::SNEAK_TILEDESC TileDesc = {};
+		CSneak_Tile* pTileOut = { nullptr };
+		_int iStageSize = pjsonTileInfo->size();
+		vector<vector<CSneak_Tile*>> StageTiles;
+
+		for (_int i = 0; i < iStageSize; ++i)
 		{
-			vPosition.x = (*pjsonTileInfo)[i][0]["Position"][0];
-			vPosition.y = (*pjsonTileInfo)[i][0]["Position"][1];
-		}
+			vector<CSneak_Tile*> Tiles;
+			Tiles.resize((*pjsonTileInfo)[i].size(), nullptr);
 
-		TileDesc.iCurLevelID = LEVEL_CHAPTER_8;
-
-		TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
-		TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
-		TileDesc.tTransform2DDesc.vInitialPosition.z = 0.f;
-
-		for (_int j = 0; j < (*pjsonTileInfo)[i].size(); ++j)
-		{
-			if (nullptr != Tiles[j])
-				continue;
-
-			TileDesc.iTileIndex = (*pjsonTileInfo)[i][j]["Index"];
-			
-			for (_int k = 0; k < (*pjsonTileInfo)[i][j]["Adjacent"].size(); ++k)
+			_float2 vPosition = { 0.f, 0.f };
+			if ((*pjsonTileInfo)[i][0].contains("Position"))
 			{
-				TileDesc.iAdjacents[k] = (*pjsonTileInfo)[i][j]["Adjacent"][k];
+				vPosition.x = (*pjsonTileInfo)[i][0]["Position"][0];
+				vPosition.y = (*pjsonTileInfo)[i][0]["Position"][1];
 			}
 
-			for (_int k = 0; k < (_int)F_DIRECTION::F_DIR_LAST; ++k)
+			TileDesc.iCurLevelID = LEVEL_CHAPTER_8;
+
+			TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
+			TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
+			TileDesc.tTransform2DDesc.vInitialPosition.z = 0.f;
+
+			for (_int j = 0; j < (*pjsonTileInfo)[i].size(); ++j)
 			{
-				if (-1 == TileDesc.iAdjacents[k] || TileDesc.iAdjacents[k] >= Tiles.size())
+				if (nullptr != Tiles[j])
 					continue;
 
-				if (nullptr == Tiles[TileDesc.iAdjacents[k]])
-					continue;
+				TileDesc.iTileIndex = (*pjsonTileInfo)[i][j]["Index"];
 
-				vPosition = Tiles[TileDesc.iAdjacents[k]]->Get_TilePosition();
-
-				switch (k)
+				for (_int k = 0; k < (*pjsonTileInfo)[i][j]["Adjacent"].size(); ++k)
 				{
-				case (_int)F_DIRECTION::LEFT:
-					TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x + 65.f;
-					TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
-					break;
-				case (_int)F_DIRECTION::RIGHT:
-					TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x - 65.f;
-					TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
-					break;
-				case (_int)F_DIRECTION::UP:
-					TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
-					TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y - 65.f;
-					break;
-				case (_int)F_DIRECTION::DOWN:
-					TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
-					TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y + 65.f;
-					break;
-				default:
+					TileDesc.iAdjacents[k] = (*pjsonTileInfo)[i][j]["Adjacent"][k];
+				}
+
+				for (_int k = 0; k < (_int)F_DIRECTION::F_DIR_LAST; ++k)
+				{
+					if (-1 == TileDesc.iAdjacents[k] || TileDesc.iAdjacents[k] >= Tiles.size())
+						continue;
+
+					if (nullptr == Tiles[TileDesc.iAdjacents[k]])
+						continue;
+
+					vPosition = Tiles[TileDesc.iAdjacents[k]]->Get_TilePosition();
+
+					switch (k)
+					{
+					case (_int)F_DIRECTION::LEFT:
+						TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x + 65.f;
+						TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
+						break;
+					case (_int)F_DIRECTION::RIGHT:
+						TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x - 65.f;
+						TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
+						break;
+					case (_int)F_DIRECTION::UP:
+						TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
+						TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y - 65.f;
+						break;
+					case (_int)F_DIRECTION::DOWN:
+						TileDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
+						TileDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y + 65.f;
+						break;
+					default:
+						break;
+					}
+
 					break;
 				}
 
-				break;
-			}
+				// Trap
+				if (false == (*pjsonTileInfo)[i][j]["Default"])
+				{
+					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakTrapTile"), LEVEL_CHAPTER_8
+						, TEXT("Layer_Sneak_Tile"), reinterpret_cast<CGameObject**>(&pTileOut), &TileDesc)))
+						return E_FAIL;
+				}
+				// Default
+				else
+				{
+					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakDefaultTile"), LEVEL_CHAPTER_8
+						, TEXT("Layer_Sneak_Tile"), reinterpret_cast<CGameObject**>(&pTileOut), &TileDesc)))
+						return E_FAIL;
+				}
 
-			// Trap
-			if (false == (*pjsonTileInfo)[i][j]["Default"])
-			{
-				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakTrapTile"), LEVEL_CHAPTER_8
-					, TEXT("Layer_Sneak_Tile"), reinterpret_cast<CGameObject**>(&pTileOut), &TileDesc)))
-					return E_FAIL;
-			}
-			// Default
-			else
-			{
-				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakDefaultTile"), LEVEL_CHAPTER_8
-					, TEXT("Layer_Sneak_Tile"), reinterpret_cast<CGameObject**>(&pTileOut), &TileDesc)))
-					return E_FAIL;
-			}
+				if (nullptr != pTileOut)
+				{
+					Add_GameObject_ToSectionLayer(pTileOut, SECTION_PIP_TILE);
+					Tiles[j] = pTileOut;
+				}
 
-			if (nullptr != pTileOut)
-			{
-				Add_GameObject_ToSectionLayer(pTileOut, SECTION_PIP_TILE);
-				Tiles[j] = pTileOut;
 			}
-
+			StageTiles.push_back(Tiles);
 		}
-		StageTiles.push_back(Tiles);
-	}	
 
-	CMinigame_Sneak::GetInstance()->Register_Tiles(StageTiles);
+		CMinigame_Sneak::GetInstance()->Register_Tiles(StageTiles);
+	}	
 #pragma endregion TILE
 
+
+
 #pragma region SNEAK OBJECT
-	const json* pjsonObjectsInfo = m_pGameInstance->Find_Json_InLevel(TEXT("SneakObjects"), LEVEL_CHAPTER_8);
-
-	if (nullptr == pjsonObjectsInfo)
-		return E_FAIL;
-
-	CSneak_DefaultObject::MODELOBJECT_DESC ObjDesc = {};
-	CSneak_DefaultObject* pObjectOut = { nullptr };
-	iStageSize = pjsonObjectsInfo->size();
-	vector<vector<CSneak_DefaultObject*>> StageObjects;
-
-	for (_int i = 0; i < iStageSize; ++i)
 	{
-		vector<CSneak_DefaultObject*> Objects;
+		const json* pjsonObjectsInfo = m_pGameInstance->Find_Json_InLevel(TEXT("SneakObjects"), LEVEL_CHAPTER_8);
 
-		for (_int j = 0; j < (*pjsonObjectsInfo)[i].size(); ++j)
+		if (nullptr == pjsonObjectsInfo)
+			return E_FAIL;
+
+		CSneak_MapObject::FLIPOBJECT_DESC ObjDesc = {};
+		CSneak_MapObject* pObjectOut = { nullptr };
+		_int iStageSize = pjsonObjectsInfo->size();
+		vector<vector<CSneak_MapObject*>> StageObjects;
+
+		for (_int i = 0; i < iStageSize; ++i)
 		{
-			if ((*pjsonObjectsInfo)[i][j].contains("Model"))
-				ObjDesc.strModelPrototypeTag_2D = STRINGTOWSTRING((*pjsonObjectsInfo)[i][j]["Model"]);
+			vector<CSneak_MapObject*> Objects;
 
-			ObjDesc.tTransform2DDesc.vInitialPosition.x = (*pjsonObjectsInfo)[i][j]["Position"][0];
-			ObjDesc.tTransform2DDesc.vInitialPosition.y = (*pjsonObjectsInfo)[i][j]["Position"][1];
-
-			ObjDesc.iCurLevelID = LEVEL_CHAPTER_8;
-
-			if ((*pjsonObjectsInfo)[i][j].contains("Drawer"))
+			for (_int j = 0; j < (*pjsonObjectsInfo)[i].size(); ++j)
 			{
-				CSneak_Drawer::DRAWER_DESC DrawerDesc = {};
-				DrawerDesc.iCurLevelID = LEVEL_CHAPTER_8;
-				DrawerDesc.tTransform2DDesc = ObjDesc.tTransform2DDesc;
-				DrawerDesc.isBright = (*pjsonObjectsInfo)[i][j]["Drawer"];
+				if ((*pjsonObjectsInfo)[i][j].contains("Model"))
+					ObjDesc.strModelPrototypeTag_2D = STRINGTOWSTRING((*pjsonObjectsInfo)[i][j]["Model"]);
 
-				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakDrawer"), LEVEL_CHAPTER_8
-					, TEXT("Layer_Sneak_Objects"), reinterpret_cast<CGameObject**>(&pObjectOut), &DrawerDesc)))
-					return E_FAIL;
-			}
+				ObjDesc.tTransform2DDesc.vInitialPosition.x = (*pjsonObjectsInfo)[i][j]["Position"][0];
+				ObjDesc.tTransform2DDesc.vInitialPosition.y = (*pjsonObjectsInfo)[i][j]["Position"][1];
 
-			else
-			{
+				ObjDesc.iCurLevelID = LEVEL_CHAPTER_8;
+
+				if ((*pjsonObjectsInfo)[i][j].contains("Animation"))
+				{
+					ObjDesc._iInitAnim = (*pjsonObjectsInfo)[i][j]["Animation"][0];
+					ObjDesc._iFlipAnim1 = (*pjsonObjectsInfo)[i][j]["Animation"][1];
+					ObjDesc._iFlipAnim1End = (*pjsonObjectsInfo)[i][j]["Animation"][2];
+					ObjDesc._iFlipAnim2 = (*pjsonObjectsInfo)[i][j]["Animation"][3];
+					ObjDesc._iFlipAnim2End = (*pjsonObjectsInfo)[i][j]["Animation"][4];
+				}
+
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakMapObject"), LEVEL_CHAPTER_8
 					, TEXT("Layer_Sneak_Objects"), reinterpret_cast<CGameObject**>(&pObjectOut), &ObjDesc)))
 					return E_FAIL;
-			}
 
 
-			if (nullptr != pObjectOut)
-			{
-				if ((*pjsonObjectsInfo)[i][j].contains("NextGroup"))
+				if (nullptr != pObjectOut)
 				{
-					Add_GameObject_ToSectionLayer(pObjectOut, SECTION_PIP_MAPOBJECT_2);
+					if ((*pjsonObjectsInfo)[i][j].contains("NextGroup"))
+					{
+						Add_GameObject_ToSectionLayer(pObjectOut, SECTION_PIP_MAPOBJECT_2);
+					}
+					else
+						Add_GameObject_ToSectionLayer(pObjectOut, SECTION_PIP_MAPOBJECT);
+
+					Objects.push_back(pObjectOut);
 				}
-				else
-					Add_GameObject_ToSectionLayer(pObjectOut, SECTION_PIP_MAPOBJECT);
-
-				Objects.push_back(pObjectOut);
 			}
-		}
 
-		StageObjects.push_back(Objects);
-	}
-	CMinigame_Sneak::GetInstance()->Register_Objects(StageObjects);
+			StageObjects.push_back(Objects);
+		}
+		CMinigame_Sneak::GetInstance()->Register_Objects(StageObjects);
+	}	
 #pragma endregion
+
+#pragma region INTERACT_OBJECT
+	{
+		const json* pjsonInteractsInfo = m_pGameInstance->Find_Json_InLevel(TEXT("SneakInteracts"), LEVEL_CHAPTER_8);
+
+		if (nullptr == pjsonInteractsInfo)
+			return E_FAIL;
+
+		CSneak_InteractObject::SNEAK_INTERACTOBJECT_DESC InteractDesc = {};
+		CSneak_InteractObject* pInteractOut = { nullptr };
+		_int iStageSize = pjsonInteractsInfo->size();
+		vector<vector<CSneak_InteractObject*>> InteractObjects;
+
+		for (_int i = 0; i < iStageSize; ++i)
+		{
+			vector<CSneak_InteractObject*> Objects;
+
+			for (_int j = 0; j < (*pjsonInteractsInfo)[i].size(); ++j)
+			{
+				InteractDesc.iCurLevelID = LEVEL_CHAPTER_8;
+
+				// Tile에 따른 위치 설정.
+				if ((*pjsonInteractsInfo)[i][j].contains("TileIndex"))
+				{
+					InteractDesc._iTileIndex = (*pjsonInteractsInfo)[i][j]["TileIndex"];
+				}
+
+				_float2 vPosition = CMinigame_Sneak::GetInstance()->Get_TilePosition(i, InteractDesc._iTileIndex);
+
+				InteractDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
+				InteractDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
+				// TODO: 문같은 경우. Offset 줘야함.
+
+				if ((*pjsonInteractsInfo)[i][j].contains("Model"))
+				{
+					CSneak_InteractObject::INTERACTOBJECT_TYPE eType = (*pjsonInteractsInfo)[i][j]["Model"];
+
+					// 감압판.
+					if (CSneak_InteractObject::PRESSURE_PLATE == eType)
+					{
+						InteractDesc.strModelPrototypeTag_2D = TEXT("Sneak_PressurePlate");
+						InteractDesc._isBlocked = false;
+						InteractDesc._isBlockChangable = false;
+						InteractDesc._isPlayerInteractable = false;
+						InteractDesc._isCollisionInteractable = true;
+
+						InteractDesc._iInitAnim = 2;
+						InteractDesc._iFlipAnim1 = 0;
+						InteractDesc._iFlipAnim1End = 1;
+						InteractDesc._iFlipAnim2 = 3;
+						InteractDesc._iFlipAnim2End = 2;
+					}
+					// 스위치
+					else if (CSneak_InteractObject::SWITCH == eType)
+					{
+						InteractDesc.strModelPrototypeTag_2D = TEXT("Sneak_Switch");
+						InteractDesc._isBlocked = true;
+						InteractDesc._isBlockChangable = false;
+						InteractDesc._isPlayerInteractable = true;
+						InteractDesc._isCollisionInteractable = true;
+
+						InteractDesc._iInitAnim = 2;
+						InteractDesc._iFlipAnim1 = 1;
+						InteractDesc._iFlipAnim1End = 3;
+						InteractDesc._iFlipAnim2 = 0;
+						InteractDesc._iFlipAnim2End = 1;
+					}
+					// TODO: 더 추가
+
+				}
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakInteractObject"), LEVEL_CHAPTER_8
+					, TEXT("Layer_Sneak_Interacts"), reinterpret_cast<CGameObject**>(&pInteractOut), &InteractDesc)))
+					return E_FAIL;
+
+				if (nullptr != pInteractOut)
+				{
+					// 해당 오브젝트에 다른 Interacts가 포함되어 있거나, Tile을 알아야 할 경우.
+					if ((*pjsonInteractsInfo)[i][j].contains("Tiles"))
+					{
+						for (_int k = 0; k < (*pjsonInteractsInfo)[i][j]["Tiles"].size(); ++k)
+						{
+							_int iTileIndex = (*pjsonInteractsInfo)[i][j]["Tiles"][k];
+
+							CSneak_Tile* pTile = CMinigame_Sneak::GetInstance()->Get_Tile(i, iTileIndex);
+							if (nullptr != pTile)
+								pInteractOut->Register_Tiles(pTile);
+						}
+					}
+
+
+					Add_GameObject_ToSectionLayer(pInteractOut, SECTION_PIP_MAPOBJECT_2);
+					Objects.push_back(pInteractOut);
+				}
+			}
+
+			InteractObjects.push_back(Objects);
+		}
+		CMinigame_Sneak::GetInstance()->Register_Interacts(InteractObjects);
+	}
+	
+
+#pragma endregion INTERACT_OBJECT
+
 
 #pragma region PIP_PLAYER
 	CPip_Player::PIP_DESC PipDesc = {};

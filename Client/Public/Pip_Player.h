@@ -41,7 +41,7 @@ public:
 
 public:
 	F_DIRECTION Get_InputDirection() const { return m_eInputDirection; }
-	_int		Get_CurTile() const { return m_iCurTileIndex; }
+	_int		Get_CurTile() const { return m_iTargetTileIndex; }
 
 public:
 	void Start_Stage(_float2 _vPosition);
@@ -61,6 +61,7 @@ public:
 private:
 	class CMinigame_Sneak*	m_pSneakGameManager = { nullptr };
 	_int					m_iCurTileIndex = { 0 };
+	_int					m_iTargetTileIndex = { 0 };
 	_float2					m_vTargetPosition = {0.f, 0.f};
 
 private:

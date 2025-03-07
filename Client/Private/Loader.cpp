@@ -124,8 +124,9 @@
 
 #include "Sneak_Default_Tile.h"
 #include "Sneak_Trap_Tile.h"
-#include "Sneak_DefaultObject.h"
-#include "Sneak_Drawer.h"
+#include "Sneak_FlipObject.h"
+#include "Sneak_MapObject.h"
+#include "Sneak_InteractObject.h"
 #include "Pip_Player.h"
 
 /* For. Monster */
@@ -1566,12 +1567,14 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakMapObject"),
-		CSneak_DefaultObject::Create(m_pDevice, m_pContext))))
+		CSneak_MapObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakDrawer"),
-		CSneak_Drawer::Create(m_pDevice, m_pContext))))
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakInteractObject"),
+		CSneak_InteractObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+
 
 
 #pragma endregion
@@ -1595,6 +1598,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakObjects.json"), TEXT("SneakObjects"), _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakInteracts.json"), TEXT("SneakInteracts"), _eLoadLevelID)))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

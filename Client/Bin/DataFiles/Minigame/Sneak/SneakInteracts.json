@@ -1,0 +1,18 @@
+[
+    [
+        {
+            "Model": "PRESSURE_PLATE",
+            "TileIndex": 7,
+            "Tiles": [
+                10
+            ]
+        },
+        {
+            "Model": "SWITCH",
+            "TileIndex": 18,
+            "Tiles": [
+                15
+            ]
+        }
+    ]    
+]
