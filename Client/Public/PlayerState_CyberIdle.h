@@ -55,7 +55,7 @@ public:
 private:
     _bool m_bRifleTriggered = false;
     _float m_f3DCyberDashSpeed = 20.f;
-    F_DIRECTION m_eFDir = F_DIRECTION::F_DIR_LAST;
+	_vector m_vDashDirection = { 0.f,0.f,0.f };
 };
 
 END

@@ -47,6 +47,9 @@ private: /* FatherGame Condition */
 	vector<CFatherGame_Progress*>		m_Progress;
 	vector<_bool>						m_ProgressClear;
 	_uint								m_iClearCount = 0;
+
+private: /* PortalLocker */
+
 private: /* FatherGame UI */
 	
 public:

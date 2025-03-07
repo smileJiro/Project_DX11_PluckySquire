@@ -626,7 +626,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 		CUI_Manager::GetInstance()->Set_Player(pPlayer);
 
 	
-
+	pPlayer->Set_Mode(CPlayer::PLAYER_MODE::PLAYER_MODE_SWORD);
 
 
 	return S_OK;

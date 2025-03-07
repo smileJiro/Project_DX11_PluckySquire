@@ -59,7 +59,7 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 	m_p2DColliderComs.resize(1);
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
-    CircleDesc.fRadius = 0.33f;
+    CircleDesc.fRadius = 40.f;
     CircleDesc.vScale = { 1.0f, 1.0f };
     CircleDesc.vOffsetPosition = { 0.f, 0.f };
     CircleDesc.isBlock = false;
@@ -102,6 +102,8 @@ void CCarriableObject::Update(_float _fTimeDelta)
 		matWorld.r[3] += matBody.r[3];
 		matWorld.r[3].m128_f32[3] = 1.f;
 		XMStoreFloat4x4(&m_WorldMatrices[eCurCoord], matWorld);
+
+
 	}
 }
 

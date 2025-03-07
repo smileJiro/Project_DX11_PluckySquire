@@ -151,6 +151,7 @@ public:
 		TRANSFORM_IN,
 		CYBER_IDLE,
 		CYBER_FLY,
+		CYBER_DASH,
 		CYBER_HIT,
 		STATE_LAST
 	};
@@ -651,6 +652,7 @@ private:
 
 public:
 	virtual void			Enter_Section(const _wstring _strIncludeSectionName);
+	virtual void			Exit_Section(const _wstring _strIncludeSectionName);
 private:
 	//Variables
 	_float m_f3DCenterYOffset = 0.5f;

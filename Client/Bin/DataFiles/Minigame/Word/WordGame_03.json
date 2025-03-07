@@ -3,7 +3,7 @@
   {
     "Word_Object_List": [
       {
-        "Word_Object_Tag": "lilypad",
+        "Word_Object_Tag": "Gate",
         "Position": [
           -601.0,
           92.0
@@ -14,10 +14,10 @@
         ],
         "Image_Tag_List": [
           {
-            "ImagePath": "C04_0910_lilypad_01_png"
+            "ImagePath": "09_0910_GateClosed_Sprite"
           },
           {
-            "ImagePath": "C04_0910_lilypad_02_png1"
+            "ImagePath": "09_0910_GateOpen_Sprite"
           }
         ],
         "Word_Action_List": [

@@ -1,8 +1,11 @@
 #include "stdafx.h"
 #include "FatherGame_Progress_Start.h"
 #include "GameInstance.h"
-#include "Goblin.h"
 #include "Section_Manager.h"
+#include "Section_2D_PlayMap.h"
+#include "Goblin.h"
+#include "PortalLocker.h"
+#include "Portal_Default.h"
 
 CFatherGame_Progress_Start::CFatherGame_Progress_Start(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CFatherGame_Progress(_pDevice, _pContext)
@@ -52,7 +55,52 @@ HRESULT CFatherGame_Progress_Start::Progress_Enter()
     }
 
     /* 2. PortalDefender 3곳에 생성 */
-    //CSection_Manager::GetInstance().portal
+    m_PortalLockers.resize((size_t)LOCKER_LAST);
+
+
+    
+    {/* PortalLocker ZetPack */
+        CGameObject* pGameObject = nullptr;
+        CPortalLocker::PORTALLOCKER_DESC PortalLockerDesc;
+        CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_SKSP_01")))->Get_Portal(0));
+        if (nullptr == pTargetPortal)
+            return E_FAIL;
+        PortalLockerDesc.pTargetPortal = pTargetPortal;
+        PortalLockerDesc.ePortalLockerType = CPortalLocker::TYPE_PURPLE;
+        PortalLockerDesc.strSectionKey = TEXT("Chapter6_SKSP_01");
+
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker"), LEVEL_CHAPTER_6, TEXT("Layer_PortalLocker"), &pGameObject, &PortalLockerDesc)))
+            return E_FAIL;
+
+        m_PortalLockers[LOCKER_ZETPACK] = static_cast<CPortalLocker*>(pGameObject);
+        Safe_AddRef(m_PortalLockers[LOCKER_ZETPACK]);
+        if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(PortalLockerDesc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
+            return E_FAIL;
+    }/* PortalLocker ZetPack */
+    
+
+    {/* PortalLocker PartHead */
+        CGameObject* pGameObject = nullptr;
+        CPortalLocker::PORTALLOCKER_DESC PortalLockerDesc;
+        CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_SKSP_04")))->Get_Portal(0));
+        if (nullptr == pTargetPortal)
+            return E_FAIL;
+        PortalLockerDesc.pTargetPortal = pTargetPortal;
+        PortalLockerDesc.ePortalLockerType = CPortalLocker::TYPE_YELLOW;
+        PortalLockerDesc.strSectionKey = TEXT("Chapter6_SKSP_04");
+
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker"), LEVEL_CHAPTER_6, TEXT("Layer_PortalLocker"), &pGameObject, &PortalLockerDesc)))
+            return E_FAIL;
+
+        m_PortalLockers[LOCKER_PARTHEAD] = static_cast<CPortalLocker*>(pGameObject);
+        Safe_AddRef(m_PortalLockers[LOCKER_PARTHEAD]);
+
+        if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(PortalLockerDesc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
+            return E_FAIL;
+    }/* PortalLocker PartHead */
+    
+    
+
     // 1. 모성 
 
 #ifdef _DEBUG
@@ -66,6 +114,14 @@ void CFatherGame_Progress_Start::Progress_Update()
     if (true == m_isClearProgress)
         return;
 
+    if(KEY_DOWN(KEY::I))
+    {
+        m_PortalLockers[0]->Start_FadeAlphaOut();
+    }
+    if (KEY_DOWN(KEY::J))
+    {
+        m_PortalLockers[0]->Start_FadeAlphaIn();
+    }
     /* 1. Monster의 Dead를 체크하고, Dead 상태라면, vector에서 제거 후 KillCount 증가. */
     for (_uint i = 0; i < m_pMonsters.size(); ++i)
     {
@@ -91,6 +147,8 @@ HRESULT CFatherGame_Progress_Start::Progress_Clear()
     {
         m_isClearProgress = true;
 
+        /* 0. Locker On */
+        m_PortalLockers[LOCKER_ZETPACK]->Open_Locker();
         /* 1. Clear 이벤트 호출 */
 
         /* 2. 자기 자신의 Active 상태를 False로 변경 */
@@ -133,6 +191,12 @@ CFatherGame_Progress_Start* CFatherGame_Progress_Start::Create(ID3D11Device* _pD
 
 void CFatherGame_Progress_Start::Free()
 {
+    if (false == m_isClearProgress)
+    {
+        Safe_Release(m_PortalLockers[LOCKER_ZETPACK]);
+        Safe_Release(m_PortalLockers[LOCKER_PARTHEAD]);
+    }
+
     for (auto& pMonster : m_pMonsters)
         Safe_Release(pMonster);
     m_pMonsters.clear();
