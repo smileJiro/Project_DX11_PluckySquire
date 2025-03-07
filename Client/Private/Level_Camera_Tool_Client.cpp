@@ -1647,7 +1647,7 @@ void CLevel_Camera_Tool_Client::Set_MovementInfo()
 		Show_ComboBox();
 
 		if (ImGui::Button("Play Movement")) {
-			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+			//CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
 			CCamera_Manager::GetInstance()->Set_NextArmData(m_ArmNames[m_iSelectedArmNum], 0);
 		}
 	}

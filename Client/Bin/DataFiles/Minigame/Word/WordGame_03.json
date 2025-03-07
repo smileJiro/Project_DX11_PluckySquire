@@ -1,0 +1,86 @@
+[
+
+  {
+    "Word_Object_List": [
+      {
+        "Word_Object_Tag": "lilypad",
+        "Position": [
+          -601.0,
+          92.0
+        ],
+        "Scale": [
+          1.0,
+          1.0
+        ],
+        "Image_Tag_List": [
+          {
+            "ImagePath": "C04_0910_lilypad_01_png"
+          },
+          {
+            "ImagePath": "C04_0910_lilypad_02_png1"
+          }
+        ],
+        "Word_Action_List": [
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 2,
+            "Action_Type": 0,
+            "Param": 0
+          },
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 1,
+            "Action_Type": 0,
+            "Param": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Controller_List": [
+      {
+        "Controller_Index": 0,
+        "Text": "반항하는 백성 중에는\n한심한 견습 기사 저트가 있었습니다\n파멸의 구덩이에서도\n가장 깊은 감방에\n갇혀 있었지요\n그래도 싼 녀석이니까요",
+        "Init_Word_Type": [ 2 ],
+        "Position": [
+          -505.0,
+          -400.0
+        ],
+        "Scale": [
+          1.0,
+          1.0
+        ]
+      },
+		{
+        "Controller_Index": 0,
+        "Text": "## 벽은\n다른 감방으로\n이어질 뿐이었죠, 하하!",
+        "Init_Word_Type": [ 0 ],
+        "Position": [
+          -505.0,
+          -400.0
+        ],
+        "Scale": [
+          1.0,
+          1.0
+        ]
+      },		
+	  {
+        "Controller_Index": 0,
+        "Text": "커다란 철문은\n 완전히 ## 상태였어요.",
+        "Init_Word_Type": [ 1 ],
+        "Position": [
+          -505.0,
+          -400.0
+        ],
+        "Scale": [
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  
+]
