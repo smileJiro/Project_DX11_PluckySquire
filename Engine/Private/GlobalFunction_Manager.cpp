@@ -194,14 +194,15 @@ _fvector CGlobalFunction_Manager::Rotate_Vector(_fvector _vAxis, _fvector _vVect
 _fvector CGlobalFunction_Manager::Direction_To_Quaternion(_fvector _vDefaulfDir, _fvector _vDirection)
 {
 	_vector vDirection = XMVector3Normalize(_vDirection);
-	_vector vAxis = XMVector3Normalize(XMVector3Cross(_vDefaulfDir, vDirection));
+	_vector vDefaulfDir = XMVector3Normalize(_vDefaulfDir);
+	_vector vAxis = XMVector3Normalize(XMVector3Cross(vDefaulfDir, vDirection));
 
-	_float RotAngle = acosf(XMVectorGetX(XMVector3Dot(_vDefaulfDir, vDirection)));
+	_float RotAngle = acosf(XMVectorGetX(XMVector3Dot(vDefaulfDir, vDirection)));
 
-	if (XMVectorGetX(XMVector3Dot(vAxis, XMVectorSet(0.f, 1.f, 0.f, 0.f))) < 0)
-	{
-		RotAngle = -1.f * RotAngle;
-	}
+	//if (XMVectorGetX(XMVector3Dot(vAxis, XMVectorSet(0.f, 1.f, 0.f, 0.f))) < 0)
+	//{
+	//	RotAngle = -1.f * RotAngle;
+	//}
 
 	if (RotAngle < 0.0001f)
 	{
