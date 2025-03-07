@@ -201,7 +201,7 @@ void CLight_Manager::Clear_Load()
 		}
 
 		CONST_LIGHT tLightDesc = pLight->Get_LightDesc();
-		if (true == tLightDesc.isShadow)
+		if (true == (_bool)tLightDesc.isShadow)
 		{
 			_int iShadowLightID = pLight->Get_ShadowLightID();
 			m_pGameInstance->Remove_ShadowLight(iShadowLightID);
@@ -224,9 +224,9 @@ void CLight_Manager::Clear()
 	for (auto& pLight : m_Lights)
 	{
 		CONST_LIGHT tLightDesc = pLight->Get_LightDesc();
-		if (true == tLightDesc.isShadow)
+		if (true == (_bool)tLightDesc.isShadow)
 		{
-			_int iShadowLightID = pLight->Get_ShadowLightID();
+			_int iShadowLightID = pLight->Get_ShadowLightID();(_bool)
 			m_pGameInstance->Remove_ShadowLight(iShadowLightID);
 		}
 		Safe_Release(pLight);

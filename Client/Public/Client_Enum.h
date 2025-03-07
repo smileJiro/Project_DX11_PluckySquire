@@ -224,6 +224,7 @@ namespace Client
 		PURPLEBALL,
 		WINGSLAM,
 		ROCKVOLLEY,
+		WINGSLICE,
 		SHIELD,
 
 		HIT,

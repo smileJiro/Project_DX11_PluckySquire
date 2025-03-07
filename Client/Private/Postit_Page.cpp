@@ -26,7 +26,7 @@ HRESULT CPostit_Page::Initialize(void* _pArg)
         (_uint)PASS_VTXPOSTEX::SPRITE2D,
         false);
     pDesc->iModelPrototypeLevelID_2D = LEVEL_STATIC;
-    pDesc->Build_2D_Transform({ -510.f, 100.f }, {2.2f,2.2f});
+    //pDesc->Build_2D_Transform({ -510.f, 100.f }, {2.2f,2.2f});
 
     HRESULT hr = __super::Initialize(_pArg);
 

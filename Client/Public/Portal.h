@@ -8,8 +8,17 @@ class CEffect_System;
 END
 
 BEGIN(Client)
-class CPortal final : public CContainerObject, public virtual IInteractable
+class CPortal abstract : public CContainerObject, public virtual IInteractable
 {
+public :
+	enum PORTAL_TYPE
+	{
+		PORTAL_DEFAULT,
+		PORTAL_ARROW,
+		PORTAL_CANNON,
+		PORTAL_LAST
+	};
+protected : 
 	enum PORTAL_PART
 	{
 		PORTAL_PART_2D = 1,
@@ -23,9 +32,9 @@ public :
 	{
 		_float	fTriggerRadius;
 		_uint	iPortalIndex = {};
-
+		_bool   isFirstActive = false;
 	}PORTAL_DESC;
-private:
+protected:
 	CPortal(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CPortal(const CPortal& _Prototype);
 	virtual ~CPortal() = default;
@@ -38,38 +47,48 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
-	HRESULT					Init_Actor();
+
+	// 해당 포탈이 들어있는 섹션의 worldPostionMap이 설정되었을 때 호출되는 함수
+	virtual HRESULT			Setup_3D_Postion();
+	virtual HRESULT			Init_Actor();
 	void					Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal);
-private:
-	HRESULT					Ready_Components(PORTAL_DESC* _pDesc);
-	HRESULT					Ready_PartObjects(PORTAL_DESC* _pDesc);
-public:
-	void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
-	virtual void				OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
-	virtual void				OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other) override;
+protected:
+	virtual HRESULT			Ready_Components(PORTAL_DESC* _pDesc);
+	HRESULT					Ready_Particle();
+
 	HRESULT					Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition) override;
 
-	virtual void			Interact(CPlayer* _pUser);
-	virtual _bool			Is_Interactable(CPlayer* _pUser);
-	virtual _float			Get_Distance(COORDINATE _eCoord, CPlayer* _pUser);
+	virtual void			Active_OnDisable() override;
+	virtual void			Active_OnEnable() override;
 
-	virtual void Active_OnDisable() override;
-	virtual void Active_OnEnable() override;
 
-protected:
-	virtual void	On_InteractionStart(CPlayer* _pPlayer)override;
-	virtual void	On_InteractionEnd(CPlayer* _pPlayer) override;
-private :
-	CCollider*	m_pColliderCom = { nullptr };
+	// intractable 함수, 
+public :
+	virtual void			Interact(CPlayer* _pUser) {}
+	virtual _bool			Is_Interactable(CPlayer* _pUser) { return false; }
+	virtual _float			Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) { return 0.f; }
 
-	_float		m_fTriggerRadius = {};
-	_uint		m_iPortalIndex = {};
-	CEffect_System* m_pEffectSystem = { nullptr };
+	virtual void			On_InteractionStart(CPlayer* _pPlayer)override {}
+	virtual void			On_InteractionEnd(CPlayer* _pPlayer) override {}
 
+	_bool					Is_FirstActive() { return m_isFirstActive; }
+	void					Set_FirstActive(_bool _bFirstActive);
+
+	_uint					Get_PortalIndex() { return m_iPortalIndex; };
+	void					Set_PortalIndex(_uint _iIndex) { m_iPortalIndex = _iIndex; }
+protected :
+
+	PORTAL_TYPE				m_ePortalType = PORTAL_LAST;
+
+	CCollider*				m_pColliderCom = { nullptr };
+
+	_bool					m_isReady_3D = false;
+	_bool					m_isFirstActive = true;	
+	_float					m_fTriggerRadius = {};
+	_uint					m_iPortalIndex = {};
+	CEffect_System*			m_pEffectSystem = { nullptr };
 
 public:
-	static CPortal* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	CGameObject* Clone(void* _pArg) override;
 	void					Free() override;
 };
 

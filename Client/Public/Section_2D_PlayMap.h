@@ -30,7 +30,8 @@ public:
 	virtual HRESULT						Ready_Objects(void* _pDesc);
 
 
-
+	CGameObject*						Get_Portal(_uint _iPortalIndex);
+	void								Set_PortalActive(_bool _isFirstActive);
 public:
 	virtual HRESULT						Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex) override;
 	virtual HRESULT						Section_AddRenderGroup_Process() override;
@@ -38,8 +39,6 @@ public:
 	virtual _uint						Get_MonsterCount() { return m_iMonsterCount; }
 	virtual void						Add_MonsterCount() { m_iMonsterCount++; }
 	virtual void						Reduce_MonsterCount() { m_iMonsterCount--; }
-
-
 
 private :	
 	_uint m_iMonsterCount = 0;

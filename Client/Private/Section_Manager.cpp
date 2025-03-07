@@ -476,8 +476,8 @@ void CSection_Manager::Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPo
 	m_vBookWorldPixelSize.x = mappedResource.RowPitch / sizeof(_float) / (_float)4;
 	m_vBookWorldPixelSize.y = (_float)mappedResource.DepthPitch / (_float)mappedResource.RowPitch;
 
-	_uint iLeftBotIndex = m_vBookWorldPixelSize.x * (m_vBookWorldPixelSize.y - 1) * 4;
-	_uint iRightTopIndex = (m_vBookWorldPixelSize.x - 2) * 4;
+	_uint iLeftBotIndex = (_uint)m_vBookWorldPixelSize.x * ((_uint)m_vBookWorldPixelSize.y - 1) * 4;
+	_uint iRightTopIndex = ((_uint)m_vBookWorldPixelSize.x - 2) * 4;
 	// float4 데이터 읽기
 	_float* fData = static_cast<_float*>(mappedResource.pData);
 	m_vBookWorldMin = { fData[iLeftBotIndex],fData[iLeftBotIndex + 1],fData[iLeftBotIndex + 2] };

@@ -10,6 +10,7 @@
 #include "Boss_YellowBall.h"
 #include "Boss_PurpleBall.h"
 #include "Boss_WingSlam.h"
+#include "Boss_WingSlice.h"
 #include "Boss_Rock.h"
 #include "FSM_Boss.h"
 #include "ButterGrump_LeftEye.h"
@@ -73,12 +74,13 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SCENE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::TRANSITION);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::ENERGYBALL);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::PURPLEBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::ENERGYBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::PURPLEBALL);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::ROCKVOLLEY);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::ROCKVOLLEY);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLICE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SHIELD);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HIT);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::DEAD);
@@ -245,7 +247,7 @@ void CButterGrump::Change_Animation()
             break;
 
         case BOSS_STATE::HOMINGBALL:
-            if (false == m_isPhase2)
+            if (false == Is_Phase2())
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_SMALL);
             else
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_BIG);
@@ -264,10 +266,14 @@ void CButterGrump::Change_Animation()
             break;
 
         case BOSS_STATE::ROCKVOLLEY:
-            if(false == m_isPhase2)
+            if(false == Is_Phase2())
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_BIG);
             else
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_INTO);
+            break;
+
+        case BOSS_STATE::WINGSLICE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WING_SLICE_INTO);
             break;
 
         case BOSS_STATE::SHIELD:
@@ -298,10 +304,14 @@ void CButterGrump::Attack()
     //_matrix matMuzzle = XMLoadFloat4x4(static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[BOSSPART_BODY])->Get_Model(COORDINATE_3D))->Get_BoneMatrix("buttergrump_righead_tongue_10")) * Get_FinalWorldMatrix();
     //if (false == m_pGameInstance->MatrixDecompose(nullptr, nullptr, &vPosition, matMuzzle))
 
-    //목젖 기준이므로 룩 벡터만큼 앞으로 공격위치 조정함
-    XMStoreFloat3(&vPosition, matMuzzle.r[3] + XMVector3Normalize(Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK)) * 5.f);
+    _vector vUp = XMVector3Cross(XMVector3Normalize(Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK)), XMVector3Normalize(Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT)));
+
+    //목젖 기준이므로 룩 벡터만큼 앞으로 공격위치 조정함(투사체 점진적으로 크게 만들거면 수정)
+	XMStoreFloat3(&vPosition, matMuzzle.r[3] + XMVector3Normalize(Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK)) * 7.f - XMVector3Normalize(vUp) * 3.f);
     if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, nullptr, Get_FinalWorldMatrix()))
         return;
+
+    XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
 
     switch ((BOSS_STATE)m_iState)
     {
@@ -338,7 +348,7 @@ void CButterGrump::Attack()
         //vScale = { 0.2f, 0.2f, 1.f };
         vScale = { 2.f, 2.f, 10.f };
 
-        if(false == m_isPhase2)
+        if(false == Is_Phase2())
         {
             switch ((_uint)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
             {
@@ -363,7 +373,7 @@ void CButterGrump::Attack()
 
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_HomingBall"), COORDINATE_3D, &vPosition, &vQuat, &vScale);
         }
-        else if (true == m_isPhase2)
+        else if (true == Is_Phase2())
         {
             _float Vertical_Angle_Array[5] = {30.f, 15.f, 15.f, -15.f, -15.f};
             _float Horizontal_Angle_Array[5] = {0.f, 20.f, -20.f, 15.f, -15.f };
@@ -407,7 +417,7 @@ void CButterGrump::Attack()
     {
         _vector Rot;
 
-        vPosition.y += vScale.y * 0.5f;
+        //vPosition.y += vScale.y * 0.5f;
 
         _float fAngle = 15.f;
         _float Array[8] = { 1,0,-1,0,1,1,-1,-1 };
@@ -461,7 +471,7 @@ void CButterGrump::Attack()
         _vector vRight = XMVector3Normalize(XMVector3Cross(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f)));
         _vector vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
 
-        vPosition.y += vScale.y * 0.5f;
+        //vPosition.y += vScale.y * 0.5f;
 
         //_float Array[8] = { 1,0,-1,0,1,1,-1,-1 };
         //_float Array2[8] = { 0,1,0,-1,1,-1,1,-1 };
@@ -513,7 +523,18 @@ void CButterGrump::Attack()
 
     case BOSS_STATE::WINGSLAM:
     {
+        _float4 vRot;
+        XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlam"), COORDINATE_3D, &vPosition, &vRotation);
+        m_isAttack = false;
+        break;
+    }
+
+    case BOSS_STATE::WINGSLICE:
+    {
+        _float4 vRot;
+		XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlice"), COORDINATE_3D, &vPosition, &vRotation);
         m_isAttack = false;
         break;
     }
@@ -528,7 +549,7 @@ void CButterGrump::Attack()
         _vector vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
 
 
-        if (false == m_isPhase2)
+        if (false == Is_Phase2())
         {
             for (_int i = 0; i < 10; ++i)
             {
@@ -542,7 +563,7 @@ void CButterGrump::Attack()
             }
         }
 
-        else if(true == m_isPhase2)
+        else if(true == Is_Phase2())
         {
             for (_int i = 0; i < 3; ++i)
             {
@@ -567,7 +588,7 @@ void CButterGrump::Attack()
             m_iAttackCount = 0;
             m_isAttack = false;
 
-            if (true == m_isPhase2)
+            if (true == Is_Phase2())
                 pModelObject->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_OUT);
         }
         else
@@ -609,9 +630,12 @@ void CButterGrump::On_Attack()
 
     case BOSS_STATE::HOMINGBALL:
         m_fDelayTime = 0.5f;
-        if (false == m_isPhase2)
+        if (false == Is_Phase2())
         {
-            m_iNumAttack = 1;
+            if (false == Is_Enforce())
+                m_iNumAttack = 1;
+            else
+                m_iNumAttack = 3;
         }
         else
         {
@@ -625,14 +649,26 @@ void CButterGrump::On_Attack()
     case BOSS_STATE::YELLOWBALL:
         m_fDelayTime = 0.5f;
         m_iNumAttack = 1;
-        m_isAttackChained = true;
-        m_iNumAttackChain = 3;
-        m_fChainDelayTime = 1.2f;
+        
+        if (true == Is_Enforce() || true == Is_Phase2())
+        {
+            m_isAttackChained = true;
+            m_iNumAttackChain = 3;
+            m_fChainDelayTime = 1.2f;
+        }
         break;
 
     case BOSS_STATE::PURPLEBALL:
-        m_fDelayTime = 0.2f;
-        m_iNumAttack = 50;
+		if (false == Is_Phase2())
+        {
+            m_fDelayTime = 0.2f;
+            m_iNumAttack = 50;
+        }
+        else
+        {
+            m_fDelayTime = 0.2f;
+            m_iNumAttack = 50;
+        }
         break;
 
     case BOSS_STATE::WINGSLAM:
@@ -640,9 +676,9 @@ void CButterGrump::On_Attack()
         break;
 
     case BOSS_STATE::ROCKVOLLEY:
-        if (false == m_isPhase2)
+        if (false == Is_Phase2())
         {
-            m_fDelayTime = 0.f;
+            m_fDelayTime = 0.2f;
             m_iNumAttack = 2;
         }
         else
@@ -650,6 +686,10 @@ void CButterGrump::On_Attack()
             m_fDelayTime = 0.3f;
             m_iNumAttack = 30;
         }
+        break;
+
+    case BOSS_STATE::WINGSLICE:
+        m_iNumAttack = 1;
         break;
 
     case BOSS_STATE::SHIELD:
@@ -722,6 +762,14 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         Set_AnimChangeable(true);
         break;
 
+    case WING_SLICE_INTO:
+        pModelObject->Switch_Animation(WING_SLICE_OUT);
+        break;
+
+    case WING_SLICE_OUT:
+        Set_AnimChangeable(true);
+        break;
+
     case WINGSHIELD_ROCK_VOLLEY_INTO:
         pModelObject->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_LOOP);
         On_Attack();
@@ -733,7 +781,7 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
     case ROAR:
         Set_AnimChangeable(true);
-        if (true == m_isConverse)
+        if (true == Is_Converse())
             m_isConverse = false;
         break;
 
@@ -773,7 +821,7 @@ void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
     cout << "BOSS_HP : " << m_tStat.iHP << endl;
     if (0 >= m_tStat.iHP)
     {
-        if(false == m_isPhase2)
+        if(false == Is_Phase2())
         {
             m_tStat.iHP = m_tStat.iMaxHP;
             m_isPhase2 = true;
@@ -788,9 +836,9 @@ void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
     }
     else if (m_tStat.iMaxHP * 0.5 >= m_tStat.iHP)
     {
-        if(false == m_isEnforce)
+        if(false == Is_Enforce())
             m_isEnforce = true;
-        if (false == m_isConverse)
+        if (false == Is_Converse())
             m_isConverse = true;
     }
 }
@@ -1076,6 +1124,18 @@ HRESULT CButterGrump::Ready_Projectiles()
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_WingSlam"), Pooling_Desc, pWingSlamDesc);
 
+
+    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_WingSlice");
+    CBoss_WingSlice::PROJECTILE_MONSTER_DESC* pWingSliceDesc = new CBoss_WingSlice::PROJECTILE_MONSTER_DESC;
+    pWingSliceDesc->fLifeTime = 3.f;
+    pWingSliceDesc->eStartCoord = COORDINATE_3D;
+    pWingSliceDesc->isCoordChangeEnable = false;
+    pWingSliceDesc->iCurLevelID = m_iCurLevelID;
+
+    pWingSliceDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
+    pWingSliceDesc->tTransform3DDesc.fSpeedPerSec = 70.f;
+
+    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_WingSlice"), Pooling_Desc, pWingSliceDesc);
 
 
 
