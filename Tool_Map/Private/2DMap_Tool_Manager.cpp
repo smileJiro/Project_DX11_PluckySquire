@@ -288,6 +288,7 @@ void C2DMap_Tool_Manager::Map_Import_Imgui(_bool _bLock)
 		Begin_Draw_ColorButton("OK_Style", (ImVec4)ImColor::HSV(0.5f, 0.6f, 0.6f));
 		if (ImGui::Button("OK"))
 		{
+			m_pPickingObject = nullptr;
 			Object_Clear(L"Layer_2DMapObject");
 			ImGui::CloseCurrentPopup();
 		}
