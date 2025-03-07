@@ -51,12 +51,21 @@ HRESULT CPortalLocker::Initialize(void* _pArg)
 
 	m_eCurState = STATE_LOCK;
 	State_Change();
-	//m_pControllerModel->Switch_Animation((_uint)m_ePortalLockerType + (_uint)m_eCurState);
+
+	/* Set Anim End */
+	Register_OnAnimEndCallBack(bind(&CPortalLocker::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+
 	return S_OK;
 }
 
 void CPortalLocker::Priority_Update(_float _fTimeDelta)
 {
+	if (true == m_pTargetPortal->Is_Dead())
+	{
+		Safe_Release(m_pTargetPortal);
+		m_pTargetPortal = nullptr;
+	}
+
 	__super::Priority_Update(_fTimeDelta);
 }
 
@@ -97,42 +106,132 @@ void CPortalLocker::State_Change()
 
 void CPortalLocker::State_Change_Lock()
 {
+	m_pControllerModel->Switch_Animation((_uint)m_ePortalLockerType + (_uint)m_eCurState);
 }
 
 void CPortalLocker::State_Change_Open()
 {
+	m_pControllerModel->Switch_Animation((_uint)m_ePortalLockerType + (_uint)m_eCurState);
 }
 
 void CPortalLocker::State_Change_Dead()
 {
+	Start_FadeAlphaOut();
 }
 
 void CPortalLocker::Action_State(_float _fTimeDelta)
 {
+	switch (m_eCurState)
+	{
+	case Client::CPortalLocker::STATE_LOCK:
+		Action_State_Lock(_fTimeDelta);
+		break;
+	case Client::CPortalLocker::STATE_OPEN:
+		Action_State_Open(_fTimeDelta);
+		break;
+	case Client::CPortalLocker::STATE_DEAD:
+		Action_State_Dead(_fTimeDelta);
+		break;
+
+	default:
+		break;
+	}
 }
 
 void CPortalLocker::Action_State_Lock(_float _fTimeDelta)
 {
+	if (nullptr == m_pTargetPortal)
+		return;
+
+	if (true == m_pTargetPortal->Is_Active())
+	{
+		Event_SetActive(m_pTargetPortal, false);
+	}
 }
 
 void CPortalLocker::Action_State_Open(_float _fTimeDelta)
 {
+	if (nullptr == m_pTargetPortal)
+		return;
 }
 
 void CPortalLocker::Action_State_Dead(_float _fTimeDelta)
 {
+	//Event_SetActive(m_pTargetPortal, true);
+	if (FADEALPHA_DEFAULT == m_eFadeAlphaState)
+	{
+		if (m_vFadeAlpha.y == 1.0f)
+		{
+			/* Fade Out이 종료되었다는 체크 */
+			Event_DeleteObject(this);
+			if (false == m_pTargetPortal->Is_Active())
+			{
+				m_pTargetPortal->Set_FirstActive(true);
+				//Event_SetActive(m_pTargetPortal, true);
+			}
+		}
+	}
+
+	
+
+}
+
+void CPortalLocker::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
+{
+	switch (_iAnimIdx)
+	{
+	case 0: /* 보라색 + Lock */
+		break;
+	case 1: /* 보라색 + Open */
+	{
+		m_eCurState = STATE_DEAD;
+	}
+		break;
+	case 2: /* 노란색 + Lock */
+		break;
+	case 3: /* 노란색 + Open */
+	{
+		m_eCurState = STATE_DEAD;
+	}
+		break;
+	case 4: /* Effect */
+		break;
+	default:
+		break;
+	}
 }
 
 CPortalLocker* CPortalLocker::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	return nullptr;
+	CPortalLocker* pInstance = new CPortalLocker(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Created Failed : CPortalLocker");
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
 }
 
 CPortalLocker* CPortalLocker::Clone(void* _pArg)
 {
-	return nullptr;
+	CPortalLocker* pInstance = new CPortalLocker(*this);
+
+	if (FAILED(pInstance->Initialize(_pArg)))
+	{
+		MSG_BOX("Clone Failed : CPortalLocker");
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
 }
 
 void CPortalLocker::Free()
 {
+	Safe_Release(m_pTargetPortal);
+
+	__super::Free();
 }

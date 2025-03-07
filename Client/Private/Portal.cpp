@@ -10,18 +10,18 @@
 #include "Camera_2D.h"
 
 CPortal::CPortal(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:CContainerObject(_pDevice, _pContext)
+    :CContainerObject(_pDevice, _pContext)
 {
 }
 
 CPortal::CPortal(const CPortal& _Prototype)
-	:CContainerObject(_Prototype)
+    :CContainerObject(_Prototype)
 {
 }
 
 HRESULT CPortal::Initialize_Prototype()
 {
-	return S_OK;
+    return S_OK;
 }
 
 HRESULT CPortal::Initialize(void* _pArg)
@@ -29,15 +29,19 @@ HRESULT CPortal::Initialize(void* _pArg)
     if (nullptr == _pArg)
         return E_FAIL;
 
+    m_fInteractChargeTime = 1.f;
+    m_eInteractType = INTERACT_TYPE::CHARGE;
+    m_eInteractID = INTERACT_ID::PORTAL;
+
     PORTAL_DESC* pDesc = static_cast<PORTAL_DESC*>(_pArg);
     pDesc->iNumPartObjects = PORTAL_PART_LAST;
-    pDesc->eStartCoord = COORDINATE_2D;
+    pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = true;
     pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
     m_isFirstActive = pDesc->isFirstActive;
     m_fTriggerRadius = pDesc->fTriggerRadius;
 
-    m_iPortalIndex =  pDesc->iPortalIndex;
+    m_iPortalIndex = pDesc->iPortalIndex;
     // Actor Object는 차후에, ReadyObject 를 따로 불러 생성.
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -47,9 +51,9 @@ HRESULT CPortal::Initialize(void* _pArg)
 
     if (!m_isFirstActive)
         Set_Active(false);
-    
 
-	return S_OK;
+
+    return S_OK;
 }
 
 void CPortal::Priority_Update(_float _fTimeDelta)
@@ -131,34 +135,32 @@ HRESULT CPortal::Init_Actor()
     ShapeData.isTrigger = false;
     ShapeData.isSceneQuery = false;
     ShapeData.iShapeUse = true;
-    
+
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas.push_back(ShapeData);
 
     /* 충돌 필터에 대한 세팅 ()*/
-    
+
     ActorDesc.tFilterData.MyGroup = m_iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
     ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_TRIGGER;
 
     ActorObjectDesc.pActorDesc = &ActorDesc;
     HRESULT hr = CActorObject::Ready_Components(&ActorObjectDesc);
-    
+
     //if (SUCCEEDED(hr))
     //    Active_OnEnable();
 
-    Change_Coordinate(COORDINATE_2D, nullptr);
+    //Change_Coordinate(COORDINATE_2D, nullptr);
     return hr;
 }
 
-void CPortal::Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal)
+void CPortal::Use_Portal(CPlayer* _pUser)
 {
     _vector vPos = Get_FinalPosition(COORDINATE_2D);
 
     _vector v3DPos = Get_FinalPosition(COORDINATE_3D);
-
-    *_pOutNormal = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW( v3DPos))); /* 추후 노말을 기준으로 힘의 방향을 결정해도 돼*/
-
+    
     _int iCurCoord = (_int)_pUser->Get_CurCoord();
     (_int)iCurCoord ^= 1;
     _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
@@ -187,7 +189,7 @@ void CPortal::Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal)
 }
 
 HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
-{ 
+{
     CCollider* pCollider = nullptr;
     /* Test 2D Collider */
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
@@ -309,20 +311,32 @@ void CPortal::Active_OnEnable()
     }
 }
 
-void CPortal::Set_FirstActive(_bool _bFirstActive)
+
+NORMAL_DIRECTION CPortal::Get_PortalNormal()
 {
-    m_isFirstActive = _bFirstActive; 
-    Set_Active(m_isFirstActive);
+    _vector v3DPos = Get_FinalPosition(COORDINATE_3D);
+
+    return (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(v3DPos))); /* 추후 노말을 기준으로 힘의 방향을 결정해도 돼*/
+
 }
 
 void CPortal::Active_OnDisable()
 {
-    __super::Active_OnEnable();
+    __super::Active_OnDisable();
     if (m_pEffectSystem && m_pEffectSystem->Is_Active())
     {
         m_pEffectSystem->Inactive_All();
     }
 }
+
+void CPortal::Set_FirstActive(_bool _bFirstActive)
+{
+    m_isFirstActive = _bFirstActive;
+    Set_Active(m_isFirstActive);
+    static_cast<CModelObject*>(m_PartObjects[PORTAL_PART_2D])->Start_FadeAlphaIn();
+
+}
+
 
 void CPortal::Free()
 {

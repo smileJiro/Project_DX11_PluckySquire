@@ -186,7 +186,7 @@ void CPlayerState_TurnBook::Enter()
 
 void CPlayerState_TurnBook::Exit()
 {
-	// Camera Target Book으로 바꿈(효림)
+	// Camera Target Player로 바꿈(효림)
 	CCamera_Manager::GetInstance()->Change_CameraTarget(m_pOwner);
 	CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.f);
 }

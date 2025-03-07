@@ -110,6 +110,22 @@ HRESULT CKey::Initialize(void* _pArg)
 void CKey::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
+	if (nullptr != m_pParentBodyMatrices[COORDINATE_2D] && COORDINATE_2D == Get_CurCoord())
+	{
+		_matrix matWorld = XMLoadFloat4x4(&m_WorldMatrices[COORDINATE_2D]);
+		_float2 vPos; XMStoreFloat2(&vPos, matWorld.r[3]);
+		for (auto& pCollider : m_p2DColliderComs)
+		{
+			pCollider->Set_Offset(vPos);
+		}
+	}
+	else
+	{
+		for (auto& pCollider : m_p2DColliderComs)
+		{
+			pCollider->Set_Offset({0.f,0.f});
+		}
+	}
 }
 
 void CKey::Late_Update(_float _fTimeDelta)

@@ -438,6 +438,9 @@ void CCamera_2D::Set_InitialData(_wstring _szSectionTag)
 		pData = Find_ArmData(TEXT("Custom_Flag"));
 		m_eCameraMode = PAUSE;
 	}
+	else if (TEXT("Chapter4_SKSP_04") == _szSectionTag) {
+		pData = Find_ArmData(TEXT("Custom_Door"));
+	}
 	else if (TEXT("Chapter4_SKSP_07") == _szSectionTag) {
 		pData = Find_ArmData(TEXT("Custom_Stair"));
 	}

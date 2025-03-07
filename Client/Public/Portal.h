@@ -51,7 +51,7 @@ public:
 	// 해당 포탈이 들어있는 섹션의 worldPostionMap이 설정되었을 때 호출되는 함수
 	virtual HRESULT			Setup_3D_Postion();
 	virtual HRESULT			Init_Actor();
-	void					Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal);
+	void					Use_Portal(CPlayer* _pUser);
 protected:
 	virtual HRESULT			Ready_Components(PORTAL_DESC* _pDesc);
 	HRESULT					Ready_Particle();
@@ -76,7 +76,8 @@ public :
 
 	_uint					Get_PortalIndex() { return m_iPortalIndex; };
 	void					Set_PortalIndex(_uint _iIndex) { m_iPortalIndex = _iIndex; }
-protected :
+
+	NORMAL_DIRECTION		Get_PortalNormal();
 
 	PORTAL_TYPE				m_ePortalType = PORTAL_LAST;
 
