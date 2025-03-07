@@ -28,6 +28,7 @@ namespace Client
 	void Event_ChangeBossState(BOSS_STATE _eState, CFSM* _pFSM);
 	void Event_Change_Coordinate(CActorObject* _pActorObject, COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr);
 	void Event_Set_Kinematic(CActor_Dynamic* _pActorObject, _bool _bValue);
+	void Event_Register_Trigger(_wstring& _szEventTag);
 	void Event_Trigger_Enter(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag);
 	void Event_Trigger_Stay(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag);
 	void Event_Trigger_Exit(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag);

@@ -51,6 +51,8 @@ private:
 	HRESULT	Execute_Trigger_FreezeEnter(const EVENT& _tEvent);
 	HRESULT	Execute_Trigger_LookAtEnter(const EVENT& _tEvent);
 	HRESULT	Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent);
+
+	HRESULT Execute_Trigger_Event(const EVENT& _tEvent);		// Trigger Object 없이 Trigger Event 실행
 	
 	HRESULT	Execute_Book_Main_Section_Change_Start(const EVENT& _tEvent);
 	HRESULT	Execute_Book_Main_Section_Change_End(const EVENT& _tEvent);
