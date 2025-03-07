@@ -17,9 +17,7 @@ CSection_2D_PlayMap::CSection_2D_PlayMap(ID3D11Device* _pDevice, ID3D11DeviceCon
 
 void CSection_2D_PlayMap::Set_WorldTexture(ID3D11Texture2D* _pTexture)
 {
-	
 	__super::Set_WorldTexture(_pTexture);
-
 
 	CLayer* pTargetLayer = m_Layers[SECTION_2D_PLAYMAP_PORTAL];
 
@@ -31,7 +29,7 @@ void CSection_2D_PlayMap::Set_WorldTexture(ID3D11Texture2D* _pTexture)
 			CPortal* pPortal = dynamic_cast<CPortal*>(pGameObject);
 			
 			if(nullptr != pPortal)
-				pPortal->Init_Actor();
+				pPortal->Setup_3D_Postion();
 			});
 	}
 }
@@ -57,6 +55,7 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 			_string strFileName = pDesc->SectionJson["Section_File_Name"];
 
 			_wstring strSectionPath = MAP_2D_DEFAULT_PATH;
+			strSectionPath += L"MapRawData/";
 			strSectionPath += StringToWstring(strFileName);
 
 			HANDLE	hFile = CreateFile(strSectionPath.c_str(),
@@ -105,8 +104,13 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 			ReadFile(hFile, &iPortalCnt, sizeof(_uint), &dwByte, nullptr);
 			for (_uint i = 0;i < iPortalCnt; ++i)
 			{
+				_uint		ePortalType = 0;
+				_bool		isFIrstActive = false;
 				_float2		fPos = {};
 				_float2		fScale = {};
+
+				ReadFile(hFile, &ePortalType, sizeof(_uint), &dwByte, nullptr);
+				ReadFile(hFile, &isFIrstActive, sizeof(_bool), &dwByte, nullptr);
 				ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
 				ReadFile(hFile, &fScale, sizeof(_float2), &dwByte, nullptr);
 
@@ -115,13 +119,31 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 
 				CPortal::PORTAL_DESC Desc = {};
 
+				_wstring strPortalPrototypeTag = L"";
+
+
+				switch (ePortalType)
+				{
+				case CPortal::PORTAL_ARROW:
+					strPortalPrototypeTag = L"Prototype_GameObject_Portal_Arrow";
+					break;
+				case CPortal::PORTAL_CANNON:
+					strPortalPrototypeTag = L"Prototype_GameObject_Portal_Cannon";
+					break;
+				case CPortal::PORTAL_DEFAULT:
+					strPortalPrototypeTag = L"Prototype_GameObject_Portal_Default";
+				default:
+					break;
+				}
+
+
 				Desc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
 				Desc.fTriggerRadius = 0.45f;
 				Desc.iPortalIndex = i;
 				Desc.Build_2D_Transform(fPos, fScale);
 
 				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
-					L"Prototype_GameObject_Portal",
+					strPortalPrototypeTag,
 					Desc.iCurLevelID,
 					L"Layer_Portal",
 					&pGameObject,
@@ -184,6 +206,11 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 	
 
 	return S_OK;
+}
+CGameObject* CSection_2D_PlayMap::Get_Portal(_uint _iPortalIndex)
+{
+	_uint iPortalCnt = 0;
+	return nullptr;
 }
 HRESULT CSection_2D_PlayMap::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
 {

@@ -22,6 +22,16 @@ public :
 
 	};
 
+	enum SKSP_RENDER_PLAG
+	{
+		RT_RENDER_DEAFULT 
+		,RT_RENDER_ROTATE 
+		,RT_RENDER_UVRENDER 
+		,RT_RENDER_FRAC 
+		,RT_RENDER_UVRENDER_FRAC
+		,RT_RENDER_LAST
+	};
+
 private:
 	C3DMapSkspObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	C3DMapSkspObject(const C3DMapSkspObject& _Prototype);

@@ -80,7 +80,7 @@ void CCandleGame::ClearGame()
 
 HRESULT CCandleGame::Ready_Candles(CANDLEGAME_DESC* _pDesc)
 {
-    _uint iNumCandles = _pDesc->CandlePositions.size();
+    _uint iNumCandles = (_uint)_pDesc->CandlePositions.size();
     m_Candles.resize(iNumCandles);
 
     /* 1. Äµµé °´Ã¼ »ý¼º. */

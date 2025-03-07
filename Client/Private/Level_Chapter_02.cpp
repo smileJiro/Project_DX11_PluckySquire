@@ -689,7 +689,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::FREE, static_cast<CCamera*>(pCamera));
 
-	// Target Camera
+	// Target Camera 
 	CCamera_Target::CAMERA_TARGET_DESC TargetDesc{};
 	TargetDesc.iCurLevelID = m_eLevelID;
 

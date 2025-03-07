@@ -1,12 +1,12 @@
 #pragma once
-#include "Monster.h"
+#include "Character.h"
 #include "Client_Defines.h"
 
 BEGIN(Client)
-class CProjectile_Monster abstract : public CContainerObject
+class CProjectile_Monster abstract : public CCharacter
 {
 public:
-	typedef struct tagProjectile_Monster_Desc : public CContainerObject::CONTAINEROBJ_DESC
+	typedef struct tagProjectile_Monster_Desc : public CCharacter::CHARACTER_DESC
 	{
 		_float fLifeTime;
 	}PROJECTILE_MONSTER_DESC;

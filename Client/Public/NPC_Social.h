@@ -57,14 +57,18 @@ public:
 	virtual CGameObject*		Clone(void* _pArg) override; // Clone() 프로토 타입이나 객체의 복사시 사용된다.
 	virtual void				Free() override;
 	virtual HRESULT				Cleanup_DeadReferences() override; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
+	_bool						is_2D() { return m_is2D; }
+
 
 private:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
 protected:
+	virtual void			OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other) override;
 	virtual void Interact(CPlayer* _pUser);
 	virtual _bool Is_Interactable(CPlayer* _pUser);
 	virtual _float Get_Distance(COORDINATE _eCOord, CPlayer* _pUser);
+
 
 
 private:
@@ -81,6 +85,10 @@ private:
 
 	_bool			m_isInteractable = { false };
 	_bool			m_is2D = { true };
+
+	_float			m_fNPCCollsionHalfHeight	= { 0.f };
+	_float			m_fNPCCollisionRadius		= { 0.f };
+	_float			m_fNPCTriggerRadius		= { 0.f };
 
 
 

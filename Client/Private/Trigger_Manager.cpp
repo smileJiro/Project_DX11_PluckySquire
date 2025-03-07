@@ -163,7 +163,7 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 		#pragma endregion
 
 		#pragma region 5. 핸들러 등록
-			Register_Event_Handler(Desc.iTriggerType, dynamic_cast<CTriggerObject*>(pTrigger));
+			Register_Event_Handler(Desc.iTriggerType, dynamic_cast<CTriggerObject*>(pTrigger), Desc.eStartCoord);
 		#pragma endregion
 
 	}
@@ -371,7 +371,7 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTrigge
 	return S_OK;
 }
 
-void CTrigger_Manager::Register_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger)
+void CTrigger_Manager::Register_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger, _uint _iCoordinateType)
 {
 	// Handler 추가
 	//pTrigger->Resister_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
@@ -393,26 +393,36 @@ void CTrigger_Manager::Register_Event_Handler(_uint _iTriggerType, CTriggerObjec
 			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
 			});
 
-		_pTrigger->Register_ExitHandler_ByCollision([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, const COLL_INFO& _My, const COLL_INFO& _Other) {
-			
-			_vector vOtherPos = _Other.pActorUserData->pOwner->Get_ControllerTransform()->Get_Transform()->Get_State(CTransform::STATE_POSITION);
-			_vector vPos = _My.pActorUserData->pOwner->Get_ControllerTransform()->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+		// Trigger 3D일 때
+		if (COORDINATE_3D == _iCoordinateType) {
+			_pTrigger->Register_ExitHandler_ByCollision([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, const COLL_INFO& _My, const COLL_INFO& _Other) {
 
-			PxBoxGeometry Box;
-			_My.pActorUserData->pOwner->Get_ActorCom()->Get_Shapes()[0]->getBoxGeometry(Box);
+				_vector vOtherPos = _Other.pActorUserData->pOwner->Get_ControllerTransform()->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+				_vector vPos = _My.pActorUserData->pOwner->Get_ControllerTransform()->Get_Transform()->Get_State(CTransform::STATE_POSITION);
 
-			_uint iExitDir = this->Calculate_ExitDir(vPos, vOtherPos, Box);
-			_uint iReturnMask = any_cast<_uint>(_pTrigger->Get_CustomData(TEXT("ReturnMask")));
+				PxBoxGeometry Box;
+				_My.pActorUserData->pOwner->Get_ActorCom()->Get_Shapes()[0]->getBoxGeometry(Box);
 
-			_bool isReturn = iReturnMask & iExitDir;
-			
-			Event_Trigger_Exit_ByCollision(_iTriggerType, _iTriggerID, isReturn);
-			});
+				_uint iExitDir = this->Calculate_ExitDir(vPos, vOtherPos, Box);
+				_uint iReturnMask = any_cast<_uint>(_pTrigger->Get_CustomData(TEXT("ReturnMask")));
 
-		_pTrigger->Register_ExitHandler_ByCollision2D([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, CCollider* _pMyCollider, CCollider* _pOtherCollider) {
+				_bool isReturn = iReturnMask & iExitDir;
 
-			});
+				Event_Trigger_Exit_ByCollision(_iTriggerType, _iTriggerID, isReturn);
+				});
+		}
+		// Trigger 2D일 때
+		else if (COORDINATE_2D == _iCoordinateType) {
+			_pTrigger->Register_ExitHandler_ByCollision2D([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, CCollider* _pMyCollider, CCollider* _pOtherCollider) {
 
+				_uint iExitDir = this->Calculate_ExitDir(_pMyCollider->Get_Position(), _pOtherCollider->Get_Position(), static_cast<CCollider_AABB*>(_pMyCollider)->Get_FinalExtents());
+				_uint iReturnMask = any_cast<_uint>(_pTrigger->Get_CustomData(TEXT("ReturnMask")));
+
+				_bool isReturn = iReturnMask & iExitDir;
+
+				Event_Trigger_Exit_ByCollision(_iTriggerType, _iTriggerID, isReturn);
+				});
+		}
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::CUTSCENE_TRIGGER:
@@ -596,6 +606,40 @@ _uint CTrigger_Manager::Calculate_ExitDir(_fvector _vPos, _fvector _vOtherPos, P
 	if (XMVectorGetZ(_vPos) - _Box.halfExtents.z >= XMVectorGetZ(_vOtherPos)
 		&& XMVectorGetX(_vPos) + _Box.halfExtents.x >= XMVectorGetX(_vOtherPos)
 		&& XMVectorGetX(_vPos) - _Box.halfExtents.x <= XMVectorGetX(_vOtherPos)) {
+		return EXIT_RETURN_MASK::DOWN;
+	}
+
+	return EXIT_RETURN_MASK::NONE;
+}
+
+_uint CTrigger_Manager::Calculate_ExitDir(_float2 _vPos, _float2 _vOtherPos, _float2 _myExtents)
+{
+
+	// Right
+	if (_vPos.x + _myExtents.x <= _vOtherPos.x
+		&& _vPos.y + _myExtents.y >= _vOtherPos.y
+		&& _vPos.y - _myExtents.y <= _vOtherPos.y) {
+		return EXIT_RETURN_MASK::RIGHT;
+	}
+
+	// LEFT
+	if (_vPos.x - _myExtents.x >= _vOtherPos.x
+		&& _vPos.y + _myExtents.y >= _vOtherPos.y
+		&& _vPos.y - _myExtents.y <= _vOtherPos.y) {
+		return EXIT_RETURN_MASK::LEFT;
+	}
+
+	// UP
+	if (_vPos.y + _myExtents.y <= _vOtherPos.y
+		&& _vPos.x + _myExtents.x >= _vOtherPos.x
+		&& _vPos.x - _myExtents.x <= _vOtherPos.x) {
+		return EXIT_RETURN_MASK::UP;
+	}
+
+	// DOWN
+	if (_vPos.y - _myExtents.y >= _vOtherPos.y
+		&& _vPos.x + _myExtents.x >= _vOtherPos.x
+		&& _vPos.x - _myExtents.x <= _vOtherPos.x) {
 		return EXIT_RETURN_MASK::DOWN;
 	}
 

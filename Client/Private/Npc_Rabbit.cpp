@@ -76,7 +76,7 @@ HRESULT CNpc_Rabbit::Initialize(void* _pArg)
 	Safe_AddRef(m_pAnimEventGenerator);
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
-	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNpc_Rabbit::On_AnimEnd, this , placeholders::_1, placeholders::_2));
+	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNpc_Rabbit::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(-322.9f, -617.3f, 0.f, 1.f));
 
 	
@@ -175,9 +175,9 @@ void CNpc_Rabbit::Late_Update(_float _fTimeDelta)
 	//
 	if (true == m_isColPlayer)
 	{
-	//	m_isDialoging = true;
-	//	Throw_Dialogue();
-	//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
+		m_isDialoging = true;
+		Throw_Dialogue();
+		//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
 	}
 	//
 	//ChangeState_Panel();
@@ -285,7 +285,7 @@ void CNpc_Rabbit::ChangeState_Panel()
 
 void CNpc_Rabbit::Interact(CPlayer* _pUser)
 {
-	m_isColPlayer = true;
+	Throw_Dialogue();
 }
 
 _bool CNpc_Rabbit::Is_Interactable(CPlayer* _pUser)

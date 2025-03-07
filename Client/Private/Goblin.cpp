@@ -28,13 +28,29 @@ HRESULT CGoblin::Initialize(void* _pArg)
 {
     CGoblin::MONSTER_DESC* pDesc = static_cast<CGoblin::MONSTER_DESC*>(_pArg);
     //pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->isCoordChangeEnable = true;
+    //pDesc->isCoordChangeEnable = true;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 4.f;
+    if (false == pDesc->isCoordChangeEnable)
+    {
+        if (COORDINATE_3D == pDesc->eStartCoord)
+        {
+            pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720.f);
+            pDesc->tTransform3DDesc.fSpeedPerSec = 4.f;
+        }
+        else
+        {
+            pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+            pDesc->tTransform2DDesc.fSpeedPerSec = 80.f;
+        }
+    }
+    else
+    {
+        pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720.f);
+        pDesc->tTransform3DDesc.fSpeedPerSec = 4.f;
 
-    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
-    pDesc->tTransform2DDesc.fSpeedPerSec = 80.f;
+        pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+        pDesc->tTransform2DDesc.fSpeedPerSec = 80.f;
+    }
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 10.f;
@@ -69,19 +85,45 @@ HRESULT CGoblin::Initialize(void* _pArg)
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, PATROL, true);
+    if(false == Get_ControllerTransform()->Is_CoordChangeEnable())
+    {
+        if (COORDINATE_3D == Get_CurCoord())
+        {
+            pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
+            pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
+            pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, PATROL, true);
+        }
 
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_DOWN, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_RIGHT, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_UP, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL_DOWN, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL_RIGHT, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL_UP, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_DOWN, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_RIGHT, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_UP, true);
+        else if (COORDINATE_2D == Get_CurCoord())
+        {
+            pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_DOWN, true);
+            pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_RIGHT, true);
+            pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_UP, true);
+            pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL_DOWN, true);
+            pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL_RIGHT, true);
+            pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL_UP, true);
+            pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_DOWN, true);
+            pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_RIGHT, true);
+            pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_UP, true);
+        }
+    }
+
+    else
+    {
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, PATROL, true);
+
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_DOWN, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_RIGHT, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_UP, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL_DOWN, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL_RIGHT, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL_UP, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_DOWN, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_RIGHT, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_UP, true);
+    }
 
     if (COORDINATE_3D == Get_CurCoord())
         pModelObject->Set_Animation(Animation::IDLE);
@@ -486,6 +528,9 @@ HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
 {
     CGoblin::MONSTER_DESC* pDesc = static_cast<CGoblin::MONSTER_DESC*>(_pArg);
 
+    //if (COORDINATE_2D == pDesc->eStartCoord)
+    //    return S_OK;
+
     pDesc->eActorType = ACTOR_TYPE::DYNAMIC;
     CActor::ACTOR_DESC* ActorDesc = new CActor::ACTOR_DESC;
 
@@ -603,19 +648,22 @@ HRESULT CGoblin::Ready_Components()
         TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
         return E_FAIL;
 
-    /* 2D Collider */
-    m_p2DColliderComs.resize(1);
+	if (false == Get_ControllerTransform()->Is_CoordChangeEnable() && COORDINATE_2D == Get_CurCoord())
+    {
+        /* 2D Collider */
+        m_p2DColliderComs.resize(1);
 
-    CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
-    CircleDesc.pOwner = this;
-    CircleDesc.fRadius = { 40.f };
-    CircleDesc.vScale = { 1.0f, 1.0f };
-    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
-    CircleDesc.isBlock = false;
-    CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
-    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
-        return E_FAIL;
+        CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+        CircleDesc.pOwner = this;
+        CircleDesc.fRadius = { 40.f };
+        CircleDesc.vScale = { 1.0f, 1.0f };
+        CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
+        CircleDesc.isBlock = false;
+        CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
+        if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+            TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
+            return E_FAIL;
+    }
 
     return S_OK;
 }
@@ -629,26 +677,60 @@ HRESULT CGoblin::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
-    BodyDesc.strModelPrototypeTag_3D = TEXT("goblin_Rig");
-	BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+    if (false == BodyDesc.isCoordChangeEnable)
+    {
+        if (COORDINATE_3D == Get_CurCoord())
+        {
+            BodyDesc.strModelPrototypeTag_3D = TEXT("goblin_Rig");
+            BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
 
-    BodyDesc.strModelPrototypeTag_2D = TEXT("Goblin");
-    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+            BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
-    BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
-    BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+            BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+            BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 
-    BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+            BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+            BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+        }
 
-    BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+        else
+        {
+            BodyDesc.strModelPrototypeTag_2D = TEXT("Goblin");
+            BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
 
-    BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
-    BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+            BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
 
-    BodyDesc.tTransform2DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_RotationPerSec();
-    BodyDesc.tTransform2DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_SpeedPerSec();
+            BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+            BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+
+            BodyDesc.tTransform2DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_RotationPerSec();
+            BodyDesc.tTransform2DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_SpeedPerSec();
+        }
+    }
+    else
+    {
+        BodyDesc.strModelPrototypeTag_3D = TEXT("goblin_Rig");
+        BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+
+        BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+
+        BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+        BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+
+        BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
+        BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
+
+        BodyDesc.strModelPrototypeTag_2D = TEXT("Goblin");
+        BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+
+        BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+
+        BodyDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+        BodyDesc.tTransform2DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
+
+        BodyDesc.tTransform2DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_RotationPerSec();
+        BodyDesc.tTransform2DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_SpeedPerSec();
+    }
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])

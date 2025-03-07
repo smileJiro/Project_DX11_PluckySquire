@@ -62,6 +62,7 @@ void CPlayerState_JumpToPortal::Enter()
         if (false == static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(m_vPortalPos, fYRadian))
         {
 			m_pOwner->Set_State(CPlayer::IDLE);
+            return;
         }
 	}
     else

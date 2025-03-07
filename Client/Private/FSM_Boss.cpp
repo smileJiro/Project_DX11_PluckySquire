@@ -8,7 +8,9 @@
 #include "BossHomingBallState.h"
 #include "BossEnergyBallState.h"
 #include "BossYellowBallState.h"
+#include "BossPurpleBallState.h"
 #include "BossWingSlamState.h"
+#include "BossWingSliceState.h"
 #include "BossRockVolleyState.h"
 #include "BossShieldState.h"
 #include "BossHitState.h"
@@ -131,6 +133,16 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 		m_States.emplace((_uint)BOSS_STATE::YELLOWBALL, pState);
 		break;
 
+	case Client::BOSS_STATE::PURPLEBALL:
+		pState = CBossPurpleBallState::Create(&Desc);
+
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)BOSS_STATE::PURPLEBALL, pState);
+		break;
+
 	case Client::BOSS_STATE::WINGSLAM:
 		pState = CBossWingSlamState::Create(&Desc);
 
@@ -149,6 +161,16 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
 		m_States.emplace((_uint)BOSS_STATE::ROCKVOLLEY, pState);
+		break;
+
+	case Client::BOSS_STATE::WINGSLICE:
+		pState = CBossWingSliceState::Create(&Desc);
+
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)BOSS_STATE::WINGSLICE, pState);
 		break;
 
 	case Client::BOSS_STATE::SHIELD:
@@ -245,7 +267,7 @@ _uint CFSM_Boss::Determine_NextAttack()
 
 	++m_iAttackIdx;
 
-	if ((_uint)BOSS_STATE::HIT <= m_iAttackIdx)
+	if ((_uint)BOSS_STATE::SHIELD <= m_iAttackIdx)
 		m_iAttackIdx = (_uint)BOSS_STATE::ATTACK + 1;
 	
 
@@ -254,7 +276,7 @@ _uint CFSM_Boss::Determine_NextAttack()
 	{
 		++m_iAttackIdx;
 
-		if ((_uint)BOSS_STATE::HIT <= m_iAttackIdx)
+		if ((_uint)BOSS_STATE::SHIELD <= m_iAttackIdx)
 			m_iAttackIdx = (_uint)BOSS_STATE::ATTACK + 1;
 	}
 #endif // _DEBUG

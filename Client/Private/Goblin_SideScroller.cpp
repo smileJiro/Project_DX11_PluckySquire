@@ -31,8 +31,8 @@ HRESULT CGoblin_SideScroller::Initialize(void* _pArg)
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
-    pDesc->_tStat.iHP = 5;
-    pDesc->_tStat.iMaxHP = 5;
+    pDesc->_tStat.iHP = 1;
+    pDesc->_tStat.iMaxHP = 1;
     pDesc->_tStat.iDamg = 1;
 
     m_eSideScroll_Bound = pDesc->eSideScroll_Bound;
