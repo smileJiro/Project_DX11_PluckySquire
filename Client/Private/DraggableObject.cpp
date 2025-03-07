@@ -19,6 +19,8 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 {
 	DRAGGABLE_DESC* pDesc = static_cast<DRAGGABLE_DESC*>(_pArg);
 
+	m_eInteractID = INTERACT_ID::DRAGGABLE;
+
 	pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 	pDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
 	pDesc->isCoordChangeEnable = false;
@@ -133,7 +135,7 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 	}
 
 
-
+	
 
 
 	return S_OK;
