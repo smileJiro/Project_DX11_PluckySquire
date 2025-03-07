@@ -305,7 +305,7 @@ void CPortal::Active_OnEnable()
     }
     else
     {
-        Set_Active(false);
+		Set_Active(false);
     }
 }
 
@@ -322,6 +322,8 @@ void CPortal::Set_FirstActive(_bool _bFirstActive)
 {
     m_isFirstActive = _bFirstActive;
     Set_Active(m_isFirstActive);
+    static_cast<CModelObject*>(m_PartObjects[PORTAL_PART_2D])->Start_FadeAlphaIn();
+
 }
 
 
