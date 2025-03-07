@@ -29,6 +29,8 @@ public:
 	virtual void				Update(_float _fTimeDelta) override;
 	virtual void				Late_Update(_float _fTimeDelta) override;
 
+public:
+	void						Open_Locker() { m_eCurState = STATE_OPEN; State_Change(); }
 
 private:
 	CPortal*					m_pTargetPortal = nullptr;
@@ -50,7 +52,8 @@ private:
 	void						Action_State_Open(_float _fTimeDelta);
 	void						Action_State_Dead(_float _fTimeDelta);
 	
-	
+private:
+	void						On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx);
 public:
 	static CPortalLocker*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CPortalLocker*				Clone(void* _pArg);

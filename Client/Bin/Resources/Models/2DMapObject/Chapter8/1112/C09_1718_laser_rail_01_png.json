@@ -1,0 +1,101 @@
+[
+  {
+    "Type": "BodySetup",
+    "Name": "BodySetup_1",
+    "Outer": "C09_1718_laser_rail_01_png",
+    "Class": "UScriptClass'BodySetup'",
+    "Properties": {
+      "AggGeom": {
+        "BoxElems": [
+          {
+            "Center": {
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0
+            },
+            "Rotation": {
+              "Pitch": 0.0,
+              "Yaw": 0.0,
+              "Roll": 0.0
+            },
+            "X": 3048.0,
+            "Y": 10.0,
+            "Z": 308.0,
+            "RestOffset": 0.0,
+            "Name": "None",
+            "bContributeToMass": true,
+            "CollisionEnabled": "ECollisionEnabled::QueryAndPhysics"
+          }
+        ]
+      },
+      "DefaultInstance": {
+        "ObjectType": "ECC_WorldDynamic",
+        "CollisionProfileName": "BlockAllDynamic"
+      },
+      "CollisionTraceFlag": "CTF_UseSimpleAsComplex"
+    },
+    "BodySetupGuid": "A821B477455F1A3A899511B329539DD5"
+  },
+  {
+    "Type": "PaperSprite",
+    "Name": "C09_1718_laser_rail_01_png",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1.0,
+        "Y": 3101.0
+      },
+      "BakedSourceDimension": {
+        "X": 3048.0,
+        "Y": 308.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'C09_1718-0'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_09/C09_1718/Texture/Textures/C09_1718-0.0"
+      },
+      "PixelsPerUnrealUnit": 1.0,
+      "BodySetup": {
+        "ObjectName": "BodySetup'C09_1718_laser_rail_01_png:BodySetup_1'",
+        "ObjectPath": "/Game/Map/Objects/Chapter_09/C09_1718/Texture/Frames/C09_1718_laser_rail_01_png.0"
+      },
+      "BakedRenderData": [
+        {
+          "X": 1524.0,
+          "Y": 154.0,
+          "Z": 0.74438477,
+          "W": 0.7570801
+        },
+        {
+          "X": -1524.0,
+          "Y": 154.0,
+          "Z": 0.00024414062,
+          "W": 0.7570801
+        },
+        {
+          "X": -1524.0,
+          "Y": -154.0,
+          "Z": 0.00024414062,
+          "W": 0.8322754
+        },
+        {
+          "X": 1524.0,
+          "Y": -154.0,
+          "Z": 0.74438477,
+          "W": 0.8322754
+        },
+        {
+          "X": 1524.0,
+          "Y": 154.0,
+          "Z": 0.74438477,
+          "W": 0.7570801
+        },
+        {
+          "X": -1524.0,
+          "Y": -154.0,
+          "Z": 0.00024414062,
+          "W": 0.8322754
+        }
+      ]
+    }
+  }
+]
