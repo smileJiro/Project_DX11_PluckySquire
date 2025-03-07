@@ -18,6 +18,10 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
+private:
+	vector<_float3> m_vecMovePoints;
+	_uint m_iMoveIndex = { 0 };
+
 public:
 	static CBossMoveState* Create(void* _pArg);
 

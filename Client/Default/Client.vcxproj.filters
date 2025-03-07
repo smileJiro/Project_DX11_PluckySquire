@@ -610,6 +610,24 @@
     <Filter Include="05.MiniGames\FatherGame\Progress\05.MakeFather">
       <UniqueIdentifier>{b28fc545-b17b-4e68-8eed-9c77917e5ef7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Boss\State\Idle">
+      <UniqueIdentifier>{edaca362-ca96-4e92-be97-a85f992a9227}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Boss\State\Move">
+      <UniqueIdentifier>{9ec40ac5-9496-4531-86c6-a6b1590247fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Boss\State\Attack">
+      <UniqueIdentifier>{d744dc79-8bea-4290-8325-1c59a404782d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Boss\State\Hit">
+      <UniqueIdentifier>{620ac6ba-e861-49aa-8e01-6ed65ee6d850}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Boss\State\Dead">
+      <UniqueIdentifier>{5ec720a3-bee2-48bd-8616-cfc2dbfaf35a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Monster\Boss\State\Shield">
+      <UniqueIdentifier>{99e41a64-88de-4e8d-9b0c-e130965d310f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -782,20 +800,8 @@
     <ClInclude Include="..\Public\Boss_EnergyBall.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BossIdleState.h">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossHomingBallState.h">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossEnergyBallState.h">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Boss_YellowBall.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossYellowBallState.h">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BossState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
@@ -805,9 +811,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Boss_PurpleBall.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossPurpleBallState.h">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Goblin.h">
       <Filter>02.GameObjects\Monster\Goblin</Filter>
@@ -1388,14 +1391,8 @@
     <ClInclude Include="..\Public\Boss_WingSlam.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BossWingSlamState.h">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Boss_Rock.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossRockVolleyState.h">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\GameEventExecuter.h">
       <Filter>02.GameObjects\GameEventExecuter</Filter>
@@ -1439,12 +1436,6 @@
     <ClInclude Include="..\Public\SideScroll_PatrolState.h">
       <Filter>03.Components\FSM\State\SideScroll</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BossHitState.h">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossShieldState.h">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Level_Chapter_08.h">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClInclude>
@@ -1472,9 +1463,6 @@
     <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
     <ClInclude Include="..\Public\Minigame_Defender.h" />
     <ClInclude Include="..\Public\Playable.h" />
-    <ClInclude Include="..\Public\BossDeadState.h">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\BossTransitionState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
@@ -1520,11 +1508,41 @@
       <Filter>05.MiniGames\FatherGame\Progress\01.Start</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CandleGame.h" />
+    <ClInclude Include="..\Public\BossIdleState.h">
+      <Filter>02.GameObjects\Monster\Boss\State\Idle</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\BossMoveState.h">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+      <Filter>02.GameObjects\Monster\Boss\State\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossHitState.h">
+      <Filter>02.GameObjects\Monster\Boss\State\Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossDeadState.h">
+      <Filter>02.GameObjects\Monster\Boss\State\Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossEnergyBallState.h">
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossHomingBallState.h">
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossPurpleBallState.h">
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossRockVolleyState.h">
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossWingSlamState.h">
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BossWingSliceState.h">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossYellowBallState.h">
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossShieldState.h">
+      <Filter>02.GameObjects\Monster\Boss\State\Shield</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1695,29 +1713,14 @@
     <ClCompile Include="..\Private\Boss_EnergyBall.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BossIdleState.cpp">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossHomingBallState.cpp">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossEnergyBallState.cpp">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Boss_YellowBall.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossYellowBallState.cpp">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Boss_PurpleBall.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossPurpleBallState.cpp">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Goblin.cpp">
       <Filter>02.GameObjects\Monster\Goblin</Filter>
@@ -2294,14 +2297,8 @@
     <ClCompile Include="..\Private\Boss_WingSlam.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BossWingSlamState.cpp">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Boss_Rock.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossRockVolleyState.cpp">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\GameEventExecuter_C2.cpp">
       <Filter>02.GameObjects\GameEventExecuter\Chapter</Filter>
@@ -2342,12 +2339,6 @@
     <ClCompile Include="..\Private\SideScroll_PatrolState.cpp">
       <Filter>03.Components\FSM\State\SideScroll</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BossHitState.cpp">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossShieldState.cpp">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Level_Chapter_08.cpp">
       <Filter>01.Levels\03.GamePlay</Filter>
     </ClCompile>
@@ -2375,9 +2366,6 @@
     <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
     <ClCompile Include="..\Private\Minigame_Defender.cpp" />
     <ClCompile Include="..\Private\Playable.cpp" />
-    <ClCompile Include="..\Private\BossDeadState.cpp">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\BossTransitionState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
@@ -2423,11 +2411,41 @@
       <Filter>05.MiniGames\FatherGame\Progress\01.Start</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CandleGame.cpp" />
+    <ClCompile Include="..\Private\BossIdleState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State\Idle</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\BossMoveState.cpp">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+      <Filter>02.GameObjects\Monster\Boss\State\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossHitState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State\Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossDeadState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State\Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossEnergyBallState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossHomingBallState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossPurpleBallState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossRockVolleyState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossWingSlamState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossWingSliceState.cpp">
-      <Filter>02.GameObjects\Monster\Boss\State</Filter>
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossYellowBallState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossShieldState.cpp">
+      <Filter>02.GameObjects\Monster\Boss\State\Shield</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
