@@ -84,6 +84,8 @@
 #include "PlayerBomb.h"
 #include "Detonator.h"
 #include "ZetPack.h"
+#include "PlayerRifle.h"
+#include "CyberPlayerBullet.h"
 #include "PalmMarker.h"
 #include "PalmDecal.h"
 #include "TestTerrain.h"
@@ -744,6 +746,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ZetPack"),
 		CZetPack::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerRifle"),
+		CPlayerRifle::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"),
 		CPlayerBody::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -1174,6 +1179,12 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 
 		lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
+		/* For. Prototype_GameObject_Postit_Page */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Postit_Page"),
+			CPostit_Page::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+
 		/* For. Prototype_GameObject_FallingRock */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_FallingRock"),
 			CFallingRock::Create(m_pDevice, m_pContext))))
@@ -1567,7 +1578,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakTrapTile"),
 		CSneak_Trap_Tile::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_CyberPlayerBullet"),
+		CCyberPlayerBullet::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 #pragma endregion
 
 #pragma region Chapter 8 - Effect Load

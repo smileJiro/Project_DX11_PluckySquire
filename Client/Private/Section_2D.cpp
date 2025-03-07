@@ -78,6 +78,9 @@ HRESULT CSection_2D::Import(void* _pDesc)
 		if (SectionInfo.contains("Scrolling"))
 			m_isScrolling = SectionInfo["Scrolling"];
 		
+		if (SectionInfo.contains("Platformer"))
+			m_isPlatformer = SectionInfo["Platformer"];
+		
 		if (SectionInfo.contains("Override_Normal"))
 			m_iOverride_Normal = SectionInfo["Override_Normal"];
 

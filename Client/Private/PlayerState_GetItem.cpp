@@ -16,6 +16,7 @@ void CPlayerState_GetItem::Enter()
 	switch (eCoord)
 	{
 	case Engine::COORDINATE_2D:
+		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ITEM_RETRIEVE);
 		break;
 	case Engine::COORDINATE_3D:
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_ITEM_GET_NEWRIG);

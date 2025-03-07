@@ -1526,6 +1526,9 @@
     <ClInclude Include="..\Public\BossWingSliceState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerRifle.h" />
+    <ClInclude Include="..\Public\PlayerState_CyberIdle.h" />
+    <ClInclude Include="..\Public\CyberPlayerBullet.h" />
     <ClInclude Include="..\public\PortalLocker.h">
       <Filter>02.GameObjects\Portal\PortalLocker</Filter>
     </ClInclude>
@@ -2432,6 +2435,9 @@
     <ClCompile Include="..\Private\BossWingSliceState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerRifle.cpp" />
+    <ClCompile Include="..\Private\PlayerState_CyberIdle.cpp" />
+    <ClCompile Include="..\Private\CyberPlayerBullet.cpp" />
     <ClCompile Include="..\private\PortalLocker.cpp">
       <Filter>02.GameObjects\Portal\PortalLocker</Filter>
     </ClCompile>

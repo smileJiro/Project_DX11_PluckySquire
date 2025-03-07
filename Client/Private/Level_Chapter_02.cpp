@@ -792,8 +792,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
-	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_NORMAL);
-	pPlayer->UnEquip_All();
+	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
+	//pPlayer->UnEquip_All();
 
 	return S_OK;
 }
@@ -1210,6 +1210,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 	CPostit_Page::POSTIT_PAGE_DESC PostitDesc = {};
 	PostitDesc.strInitSkspName = L"Chapter2_SKSP_Postit";
+	PostitDesc.Build_2D_Transform({ -510.f, 100.f }, { 2.2f,2.2f });
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Postit_Page"), m_eLevelID, _strLayerTag, &PostitDesc)))
 		return E_FAIL;
 
@@ -1267,8 +1268,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
-
-
 
 	Goblin_Desc.iCurLevelID = m_eLevelID;
 	Goblin_Desc.eStartCoord = COORDINATE_2D;
