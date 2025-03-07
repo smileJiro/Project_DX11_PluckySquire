@@ -68,6 +68,32 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 		if (true == pBook->Get_PlayerAround() && CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
 		{
 			m_isRender = true;
+
+			if (CPlayer::STATE::TURN_BOOK == Uimgr->Get_Player()->Get_CurrentStateID())
+			{
+				// 텍스쳐 변경, 글자 변경
+				if (false == m_isBookInteract)
+				{
+					m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(144.f, 72.f, 1.f));
+					m_isBookInteract = true;
+					m_iTextureNum = 1;
+					wsprintf(m_tFont, L"책 기울이기");
+				}
+			}
+			else
+			{
+				// 텍스쳐 변경, 글자 변경
+
+				if (true == m_isBookInteract)
+				{
+					m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(72.f, 72.f, 1.f));
+					m_isBookInteract = false;
+					m_iTextureNum = 0;
+					wsprintf(m_tFont, L"조종");
+				}
+				
+			}
+
 		}
 		else
 		{
@@ -79,6 +105,9 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 		if (true == m_isRender)
 			m_isRender = false;
 	}
+
+
+	
 
 
 	
@@ -94,18 +123,27 @@ HRESULT CUI_Interaction_Book::Render()
 {
 	if (true == m_isRender && false == CUI_Manager::GetInstance()->Get_isESC())
 	{
-		__super::Render();
+		__super::Render(m_iTextureNum);
 
-		//fX = g_iWinSizeX / 2.f - g_iWinSizeX / 20.f;
-		//fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+		if (false == m_isBookInteract)
+		{
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.9f - 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.9f + 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.9f, g_iWinSizeY - g_iWinSizeY / 12.f - 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.9f - 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f + 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
 
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.9f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+		else
+		{
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.95f - 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.95f + 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.95f, g_iWinSizeY - g_iWinSizeY / 12.f - 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.95f - 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f + 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.95f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		}
 		
-		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.9f - 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.9f + 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.9f, g_iWinSizeY - g_iWinSizeY / 12.f - 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.9f - 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f + 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-
-		m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.9f, g_iWinSizeY - g_iWinSizeY / 12.f) , XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 		
 
@@ -126,10 +164,9 @@ HRESULT CUI_Interaction_Book::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_KEYQ"),
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Book"),
 		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
-
 
 	return S_OK;
 }
