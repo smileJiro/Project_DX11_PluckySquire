@@ -1519,11 +1519,13 @@ _bool CPlayer::Check_ReplaceInteractObject(IInteractable* _pObj)
 
 void CPlayer::Start_Portal(CPortal* _pPortal)
 {
+	m_pInteractableObject = _pPortal;
     Set_State(START_PORTAL);
 }
 
 void CPlayer::JumpTo_Portal(CPortal* _pPortal)
 {
+    m_pInteractableObject = _pPortal;
 	Set_State(JUMPTO_PORTAL);
 }
 
@@ -2029,7 +2031,7 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
     if (true == _bPlatformerMode)
     {
         Event_SetActive(m_pGravityCom, true);
-        m_pGravityCom->Set_Active(false);
+        //m_pGravityCom->Set_Active(false);
         m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
         CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
 
@@ -2039,7 +2041,7 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
     else
     {
         Event_SetActive(m_pGravityCom, false);
-        m_pGravityCom->Set_Active(true);
+        //m_pGravityCom->Set_Active(true);
         m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
         CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
         pCollider->Set_Radius(m_f2DColliderBodyRadius);
@@ -2112,10 +2114,10 @@ void CPlayer::Set_CarryingObject(CCarriableObject* _pCarryingObject)
     return;
 }
 
-void CPlayer::Set_GravityCompOn(_bool _bOn)
+void CPlayer::Set_GravityCompOn(_bool _bOn, CGravity::STATE _eGravityState)
 {
-	m_pGravityCom->Set_Active(_bOn);
-    m_pGravityCom->Change_State(_bOn ?  CGravity::STATE_FALLDOWN : CGravity::STATE_FLOOR);
+    m_pGravityCom->Set_Active(_bOn);
+    m_pGravityCom->Change_State(_eGravityState);
 }
 
 void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
