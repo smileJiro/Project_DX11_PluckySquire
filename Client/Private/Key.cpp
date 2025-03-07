@@ -84,7 +84,7 @@ HRESULT CKey::Initialize(void* _pArg)
 	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
 
 	AABBDesc.pOwner = this;
-	AABBDesc.vExtents = _float2(1.f, 1.f);
+	AABBDesc.vExtents = _float2(20.f, 50.f);
 	AABBDesc.vScale = { 1.0f, 1.0f };
 	AABBDesc.vOffsetPosition = { 0.f, 0.f };
 	AABBDesc.isBlock = false;
@@ -158,14 +158,14 @@ void CKey::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColli
 				Set_ParentBodyMatrix(COORDINATE_3D, nullptr);
 				Set_ParentBodyMatrix(COORDINATE_2D, nullptr);
 
-				Set_Position(vPosition + XMVectorSet(0.f, -10.f, 0.f, 0.f));
-				Switch_Animation(OPEN);
-
 				Set_Carrier(nullptr);
-				for (auto& iter : m_p2DColliderComs)
-				{
-					Event_SetActive(iter, false);
-				}
+			}
+
+			Set_Position(vPosition + XMVectorSet(0.f, -10.f, 0.f, 0.f));
+			Switch_Animation(OPEN);
+			for (auto& iter : m_p2DColliderComs)
+			{
+				Event_SetActive(iter, false);
 			}
 
 		}

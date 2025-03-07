@@ -1350,13 +1350,13 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"), m_eLevelID, _strLayerTag, &tCarriableDesc)))
 		return E_FAIL;
 
-	tCarriableDesc.eStartCoord = COORDINATE_2D;
+	/*tCarriableDesc.eStartCoord = COORDINATE_2D;
 	tCarriableDesc.iCurLevelID = m_eLevelID;
 	tCarriableDesc.tTransform2DDesc.vInitialPosition = _float3(-650.f, -340.f, 0.f);
 	tCarriableDesc.strInitialSectionTag = L"Chapter4_SKSP_05";
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"), m_eLevelID, _strLayerTag, &tCarriableDesc)))
-		return E_FAIL;
+		return E_FAIL;*/
 
 	return S_OK;
 }
