@@ -292,6 +292,14 @@ HRESULT CPortal::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 }
 
 
+
+void CPortal::Set_FirstActive(_bool _bFirstActive)
+{
+    m_isFirstActive = _bFirstActive; 
+    Set_Active(m_isFirstActive);
+    
+}
+
 void CPortal::Active_OnEnable()
 {
     if (m_isFirstActive)
@@ -305,23 +313,17 @@ void CPortal::Active_OnEnable()
     }
     else
     {
-		Set_Active(false);
+        Set_Active(false);
     }
 }
-
-void CPortal::Set_FirstActive(_bool _bFirstActive)
-{
-    m_isFirstActive = _bFirstActive; 
-    Set_Active(m_isFirstActive);
-}
-
 void CPortal::Active_OnDisable()
 {
-    __super::Active_OnEnable();
     if (m_pEffectSystem && m_pEffectSystem->Is_Active())
     {
         m_pEffectSystem->Inactive_All();
     }
+
+    __super::Active_OnEnable();
 }
 
 void CPortal::Free()
