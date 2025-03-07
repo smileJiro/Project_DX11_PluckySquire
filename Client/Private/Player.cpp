@@ -1529,6 +1529,12 @@ void CPlayer::JumpTo_Portal(CPortal* _pPortal)
 	Set_State(JUMPTO_PORTAL);
 }
 
+void CPlayer::Exit_Portal(CPortal* _pPortal)
+{
+    m_pInteractableObject = _pPortal;
+    Set_State(EXIT_PORTAL);
+}
+
 void CPlayer::Set_PlayingAnim(_bool _bPlaying)
 {
     m_pBody->Set_PlayingAnim(_bPlaying);

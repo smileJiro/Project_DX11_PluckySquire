@@ -70,7 +70,7 @@ void CPortal_Arrow::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pO
 		//Use_Portal(pPlayer);
 
 		//pPlayer->Set_PortalNormal(eNormal);
-        pPlayer->JumpTo_Portal(this);
+        pPlayer->Exit_Portal(this);
 	}
 }
 
