@@ -268,12 +268,15 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 
 	if (nullptr != pTargetSection)
 	{
+		_wstring strPreSectionTag = L"";
 		// 현재 활성화된 섹션이 있는지 검사한다.
 		if (nullptr != m_pCurSection)
 		{
+			strPreSectionTag = m_pCurSection->Get_SectionName();
 			//활성화된 섹션 제거 로직을 돌린다.
 			if (FAILED(SetActive_Section(m_pCurSection, false)))
 				return E_FAIL;
+			m_pCurSection->Section_Exit(_strSectionKey);
 			//TODO:: CollMgr 정리로직 추가 필요
 		}
 
@@ -284,8 +287,7 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 			return E_FAIL;
 		m_pCurSection = pSection_2D;
 
-
-		//
+		m_pCurSection->Section_Enter(strPreSectionTag);
 		Main_Section_Active_Process(m_pCurSection->Get_SectionName());
 
 
@@ -474,8 +476,8 @@ void CSection_Manager::Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPo
 	m_vBookWorldPixelSize.x = mappedResource.RowPitch / sizeof(_float) / (_float)4;
 	m_vBookWorldPixelSize.y = (_float)mappedResource.DepthPitch / (_float)mappedResource.RowPitch;
 
-	_uint iLeftBotIndex = m_vBookWorldPixelSize.x * (m_vBookWorldPixelSize.y - 1) * 4;
-	_uint iRightTopIndex = (m_vBookWorldPixelSize.x - 2) * 4;
+	_uint iLeftBotIndex = (_uint)m_vBookWorldPixelSize.x * ((_uint)m_vBookWorldPixelSize.y - 1) * 4;
+	_uint iRightTopIndex = ((_uint)m_vBookWorldPixelSize.x - 2) * 4;
 	// float4 데이터 읽기
 	_float* fData = static_cast<_float*>(mappedResource.pData);
 	m_vBookWorldMin = { fData[iLeftBotIndex],fData[iLeftBotIndex + 1],fData[iLeftBotIndex + 2] };

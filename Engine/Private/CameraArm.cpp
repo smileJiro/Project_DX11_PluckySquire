@@ -147,6 +147,8 @@ void CCameraArm::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
                 m_fStartLength = m_fLength;
                 m_iCurTriggerID = _iTriggerID;
                 iterator->second = true;        // Return 중이란 의미
+
+                m_fReturnTime.y = 0.f;
                 return;
             }
         }
@@ -379,7 +381,7 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
                 m_iMovementFlags |= DONE_Y_ROTATE;
             }
 
-            _vector vArm = XMVectorLerp(XMLoadFloat3(&m_vStartArm), XMLoadFloat3(&m_pNextArmData->vDesireArm), fRatio);
+            _vector vArm = XMVector3Normalize(XMVectorLerp(XMLoadFloat3(&m_vStartArm), XMLoadFloat3(&m_pNextArmData->vDesireArm), fRatio));
 
             XMStoreFloat3(&m_vArm, vArm);
             m_pTransform->Set_Look(vArm);

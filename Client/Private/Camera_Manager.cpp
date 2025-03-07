@@ -399,10 +399,13 @@ _bool CCamera_Manager::Set_NextCutSceneData(_wstring _wszCutSceneName)
 
 void CCamera_Manager::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 {
-	if (nullptr == m_Cameras[TARGET])
+	if (nullptr == m_Cameras[m_eCurrentCameraType])
 		return;
 
-	static_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_PreArmDataState(_iTriggerID, _isReturn);
+	if (TARGET == m_eCurrentCameraType)
+		static_cast<CCamera_Target*>(m_Cameras[TARGET])->Set_PreArmDataState(_iTriggerID, _isReturn);
+	else
+		return static_cast<CCamera_2D*>(m_Cameras[TARGET_2D])->Set_PreArmDataState(_iTriggerID, _isReturn);
 }
 
 void CCamera_Manager::Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _int _iTriggerID)

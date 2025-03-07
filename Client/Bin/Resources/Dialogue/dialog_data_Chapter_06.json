@@ -1,0 +1,1569 @@
+{
+	"dialogs": [
+		{
+			"id": "Pandi_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "판디",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그쪽이 그 유명하다는 용감한 견습 기사인가?",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "판디",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "할 수만 있다면 당신 얼굴을 수천 장이라도 그리고 싶어.",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				}
+			]
+		},
+		{
+			"id": "Risa_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "리사",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "용감한 견습 기사군요! 여기서 만나게 되다니, 반가워요.",
+					"Red": 255,
+					"Green": 202,
+					"Blue": 154
+				},
+				{
+					"Portrait": 2,
+					"Talker": "리사",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "여기에 제 미소를 보러오는 사람이 많답니다.",
+					"Red": 255,
+					"Green": 202,
+					"Blue": 154
+				},
+				{
+					"Portrait": 2,
+					"Talker": "리사",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "하지만 그걸 너무 의식하진 않으려고 해요.",
+					"Red": 255,
+					"Green": 202,
+					"Blue": 154
+				}
+			]
+		},
+		{
+			"id": "Swal_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "스월",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 3,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "난 나비 그리는게 너무 좋아!",
+					"Red": 255,
+					"Green": 243,
+					"Blue": 111
+				},
+				{
+					"Portrait": 2,
+					"Talker": "리사",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 3,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그런데 왜 고양이도 나비라고 부르는 걸까?",
+					"Red": 255,
+					"Green": 243,
+					"Blue": 111
+				}
+			]
+		},
+		{
+			"id": "Yayo_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "야요",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "뭐든지 점으로 뒤덮으면 더 멋있어져.",
+					"Red": 255,
+					"Green": 208,
+					"Blue": 82
+				},
+				{
+					"Portrait": 2,
+					"Talker": "야요",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "내 계획은 아르티아를 점으로 덮는 거야...",
+					"Red": 255,
+					"Green": 208,
+					"Blue": 82
+				},
+				{
+					"Portrait": 2,
+					"Talker": "야요",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그런데 관리인이 허락을 안 해 주네.",
+					"Red": 255,
+					"Green": 208,
+					"Blue": 82
+				}
+			]
+		},
+		{
+			"id": "Larva_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "애벌레",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "호박에서 사는 곳도 의외로 괜찮아.",
+					"Red": 255,
+					"Green": 84,
+					"Blue": 140
+				},
+				{
+					"Portrait": 2,
+					"Talker": "애벌레",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "배고프면 안에 있는 가구를 먹으면 되거든.",
+					"Red": 255,
+					"Green": 84,
+					"Blue": 140
+				}
+			]
+		},
+		{
+			"id": "Mo_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "모",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "물을 그려야지... 예쁘고 파란 물 말이야.",
+					"Red": 253,
+					"Green": 182,
+					"Blue": 194
+				},
+				{
+					"Portrait": 2,
+					"Talker": "모",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그리고 연잎도. 나는 연잎이 좋더라.",
+					"Red": 253,
+					"Green": 182,
+					"Blue": 194
+				}
+			]
+		},
+		{
+			"id": "Magri_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "마그리",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 5,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "전 여기 없는 겁니다.",
+					"Red": 198,
+					"Green": 119,
+					"Blue": 108
+				}
+			]
+		},
+		{
+			"id": "Bin_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "빈",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "해바라기가 아름답군. 자연을 진정으로 사랑한다면,",
+					"Red": 255,
+					"Green": 220,
+					"Blue": 95
+				},
+				{
+					"Portrait": 2,
+					"Talker": "빈",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "어디서나 아름다움을 찾을 수 있어.",
+					"Red": 255,
+					"Green": 220,
+					"Blue": 95
+				}
+			]
+		},
+		{
+			"id": "Rex_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "렉스",
+					"BG": 0,
+					"location": 1,
+					"iAnimationIndex": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그르르르라아아아!",
+					"Red": 190,
+					"Green": 127,
+					"Blue": 215
+				}
+			]
+		},
+		{
+			"id": "Jang_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "장",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "시내에서 이 구역이 제일 마음에 들어.",
+					"Red": 255,
+					"Green": 102,
+					"Blue": 182
+				},
+				{
+					"Portrait": 2,
+					"Talker": "장",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "시간 되면 그림으로 남겨 볼까 싶어.",
+					"Red": 255,
+					"Green": 102,
+					"Blue": 182
+				}
+			]
+		},
+		{
+			"id": "Jojia_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "조지아",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "뭘 읽고 있냐고요? 견습기사 모험기지. 뭐 겠어요!",
+					"Red": 236,
+					"Green": 165,
+					"Blue": 158
+				},
+				{
+					"Portrait": 2,
+					"Talker": "조지아",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이 왕국에서 제일가는 화제작이잖아요.",
+					"Red": 236,
+					"Green": 165,
+					"Blue": 158
+				},
+				{
+					"Portrait": 2,
+					"Talker": "조지아",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "언젠가 주인공인 견습기사를 직접 만나 봤으면 좋겠어요.",
+					"Red": 236,
+					"Green": 165,
+					"Blue": 158
+				}
+			]
+		},
+		{
+			"id": "Pastel_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "파스텔",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이따가 붓을 사러 갈 거야.",
+					"Red": 66,
+					"Green": 203,
+					"Blue": 202
+				},
+				{
+					"Portrait": 2,
+					"Talker": "파스텔",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "미술용품을 새로 장만하면 기분이 정말 좋아지거든!",
+					"Red": 66,
+					"Green": 203,
+					"Blue": 202
+				}
+			]
+		},
+		{
+			"id": "Jame_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "제임",
+					"BG": 0,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "아르티아에는 온갖 예술가들이 살아.",
+					"Red": 255,
+					"Green": 95,
+					"Blue": 168
+				},
+				{
+					"Portrait": 2,
+					"Talker": "제임",
+					"BG": 0,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "난 사람들이 즐길 수 있는 게임을 그리는 걸 좋아하지.",
+					"Red": 255,
+					"Green": 95,
+					"Blue": 168
+				}
+			]
+		},
+		{
+			"id": "Evise_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "에비스",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이 조각의 제목은... '땅 위로'!",
+					"Red": 255,
+					"Green": 247,
+					"Blue": 115
+				}
+			]
+		},
+		{
+			"id": "GlitchBird_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "글리치버드",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "아르티아에서 휴가를 즐기고 있어요.",
+					"Red": 253,
+					"Green": 113,
+					"Blue": 95
+				},
+				{
+					"Portrait": 2,
+					"Talker": "글리치버드",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "예술이란 영혼을 풍족하게 해 준다는 걸 알았죠.",
+					"Red": 253,
+					"Green": 113,
+					"Blue": 95
+				}
+			]
+		},
+		{
+			"id": "MrScream_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "미스터 스크림",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 4,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "으으으으으으으!",
+					"Red": 255,
+					"Green": 214,
+					"Blue": 160
+				},
+				{
+					"Portrait": 2,
+					"Talker": "미스터 스크림",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 4,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이 조각상 너무 무서워!",
+					"Red": 255,
+					"Green": 214,
+					"Blue": 160
+				}
+			]
+		},
+		{
+			"id": "Hans_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "한스",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "뭘 그리냐고?",
+					"Red": 190,
+					"Green": 221,
+					"Blue": 229
+				},
+				{
+					"Portrait": 2,
+					"Talker": "한스",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "번들거리는 형체... 반짝이는 입술... 두개골에 갈비뼈까지!",
+					"Red": 190,
+					"Green": 221,
+					"Blue": 229
+				},
+				{
+					"Portrait": 2,
+					"Talker": "한스",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "사실... 친구한테 줄 생일 카드야.",
+					"Red": 190,
+					"Green": 221,
+					"Blue": 229
+				}
+			]
+		},
+		{
+			"id": "Banks_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "뱅크스",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "쉿 난 못 본 걸로 해 줘.",
+					"Red": 139,
+					"Green": 128,
+					"Blue": 134
+				}
+			]
+		},
+		{
+			"id": "Pika_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "피카",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "난 아르티아 시민들을 그리는 게 좋아.",
+					"Red": 116,
+					"Green": 194,
+					"Blue": 226
+				},
+				{
+					"Portrait": 2,
+					"Talker": "피카",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "다만 눈이 아니라 마음에 보이는 대로 그리지!",
+					"Red": 116,
+					"Green": 194,
+					"Blue": 226
+				}
+			]
+		},
+		{
+			"id": "Pree_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "프리",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "제 꽃이 마음에 드세요?",
+					"Red": 0,
+					"Green": 253,
+					"Blue": 182
+				},
+				{
+					"Portrait": 2,
+					"Talker": "프리",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이 아이들만 보면 기쁨이 차올라요.",
+					"Red": 0,
+					"Green": 253,
+					"Blue": 182
+				},
+				{
+					"Portrait": 2,
+					"Talker": "프리",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "꽃의 영혼을 알아봐 주는 건 오직 다른 꽃들뿐이랍니다.",
+					"Red": 0,
+					"Green": 253,
+					"Blue": 182
+				}
+			]
+		},
+		{
+			"id": "Esh_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "에쉬",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "안녕! 난 지금 자화상을 그리고 있단다.",
+					"Red": 142,
+					"Green": 129,
+					"Blue": 133
+				},
+				{
+					"Portrait": 2,
+					"Talker": "에쉬",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "가만 생각해보면...",
+					"Red": 142,
+					"Green": 129,
+					"Blue": 133
+				},
+				{
+					"Portrait": 2,
+					"Talker": "에쉬",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "자기 자화상을 그릴 수 있는 사람은 자신뿐이지.",
+					"Red": 142,
+					"Green": 129,
+					"Blue": 133
+				}
+			]
+		},
+		{
+			"id": "Brisle_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "브리슬",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 3,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "용감한 견습기사다! 여...영광이에요!",
+					"Red": 240,
+					"Green": 76,
+					"Blue": 122
+				},
+				{
+					"Portrait": 2,
+					"Talker": "브리슬",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 3,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "말 더듬어서 죄송해요...",
+					"Red": 240,
+					"Green": 76,
+					"Blue": 122
+				},
+				{
+					"Portrait": 2,
+					"Talker": "브리슬",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 3,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그게... 유명인 만날 일이 잘 없어서요!",
+					"Red": 240,
+					"Green": 76,
+					"Blue": 122
+				}
+			]
+		},
+		{
+			"id": "Riza_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "리자",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이번 시즌에는 강렬한 색을 입을까 봐요.",
+					"Red": 85,
+					"Green": 237,
+					"Blue": 224
+				}
+			]
+		},
+		{
+			"id": "Ren_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "렌",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "난 개가 아니야.",
+					"Red": 250,
+					"Green": 191,
+					"Blue": 161
+				}
+			]
+		},
+		{
+			"id": "Warhall_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "워홀",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "나는 원본의 복제품일 뿐이야.",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 240
+				},
+				{
+					"Portrait": 2,
+					"Talker": "워홀",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "아니, 그 반대인 걸까? 어느 쪽이든 상관은 없지만.",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 240
+				}
+			]
+		},
+		{
+			"id": "Dave_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "데이브",
+					"BG": 0,
+					"location": 6,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이 주스 진짜 맛있다.",
+					"Red": 255,
+					"Green": 238,
+					"Blue": 189
+				},
+				{
+					"Portrait": 2,
+					"Talker": "데이브",
+					"BG": 0,
+					"location": 6,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "물감에 염료로 넣어도 좋을 것 같은데?",
+					"Red": 255,
+					"Green": 238,
+					"Blue": 189
+				}
+			]
+		},
+		{
+			"id": "Berry_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "베리",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "과일은 건강과 행복의 지름길!",
+					"Red": 137,
+					"Green": 186,
+					"Blue": 232
+				}
+			]
+		},
+		{
+			"id": "Eve_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "이브",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "요즘 이 피라미드의 수수께끼에 푹 빠져 있어.",
+					"Red": 255,
+					"Green": 235,
+					"Blue": 175
+				},
+				{
+					"Portrait": 2,
+					"Talker": "이브",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "여기서 벌써 사흘째 피라미드만 바라보고 있지.",
+					"Red": 255,
+					"Green": 235,
+					"Blue": 175
+				}
+			]
+		},
+		{
+			"id": "Sal_Dialogue_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "살",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "축하하네! 아주 놀라운 발견을 했군.",
+					"Red": 254,
+					"Green": 86,
+					"Blue": 140
+				},
+				{
+					"Portrait": 2,
+					"Talker": "살",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "바로 나를 말이야!",
+					"Red": 254,
+					"Green": 86,
+					"Blue": 140
+				}
+			]
+		},
+		{
+			"id": "Store_Dialog_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "마르티나",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"iAnimationIndex": 3,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "안녕하세요, 용감한 용사 여러분!",
+					"Red": 255,
+					"Green": 224,
+					"Blue": 136
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마르티나",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"iAnimationIndex": 9,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "새 물건이 들어왔어요. 한번 보세요!",
+					"Red": 255,
+					"Green": 224,
+					"Blue": 136
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_01",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "있잖아, 이 근처에 네 도움이 필요한 친구가 있어.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "머그잔처럼 생긴 행성에 사는 꼬마 로켓이지.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "책상 한가운데로 가면, 내가 말한 행성을\n찾을 수 있을 거야.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_02",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "안녕. 아빠 로켓의 부품을 찾고 있지?",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "왼쪽 높은 곳에서 하나 본 것 같아.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "고소 공포증은 없다면 좋겠네.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_03",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "안녕, 친구. 아빠 로켓의 부품을 찾을려면\n위로 올라가야 할 거야.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "여기 있는 발판들을 쓰면 되는데,\n내 뒤에 있는 발판부터 시작하면 돼.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "고소 공포증은 없다면 좋겠네.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_04",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "안녕. 아빠 로켓의 잃어버린 부품이 근처에 있어.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "부품을 찾으려면 이 위험천만한 우주를\n제트팩으로 가로질러야 돼.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "인생이란 원래 그런 법이지.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_05",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이 근처 나무로 된 곳 안에 양초가 있어.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "책상 맨 끝에서 찾을 수 있지.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "촛불을 켜려면 너 자신을 믿고 그 안으로 뛰어내려 봐.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_06",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "별일 없지? 이 근처에 양초가 두 개 있어.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "두 개 다 높은 곳에 있지.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "위로 올라가 보라고!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "3D_MiniBeard_Chapter_6_Dialog_07",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "어디 보자...",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "미니 수염",
+					"BG": 14,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "지금 잘하고 있는 것 같네.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		}
+	]
+}

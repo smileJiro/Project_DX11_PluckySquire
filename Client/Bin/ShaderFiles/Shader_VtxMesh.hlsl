@@ -122,18 +122,20 @@ VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
     matWVP = mul(matWV, g_ProjMatrix);
 
     
-    float2 vTexCoord = frac(In.vTexcoord);
-    float4 vNDCCoord = float4(vTexCoord, 0.0f, 1.0f);
-
-    if (g_iFlag == RT_RENDER_UVRENDER)
+    float2 vTexCoord = saturate(In.vTexcoord);
+    
+    
+    //0~1 사이로 전환.
+    if (g_iFlag == RT_RENDER_FRAC || g_iFlag == RT_RENDER_UVRENDER_FRAC)
     {
-        float2 vUV = lerp(g_fStartUV, g_fEndUV, vTexCoord);
-        vNDCCoord.xy = vUV.xy;
+        vTexCoord = frac(In.vTexcoord);
     }
-    if (g_iFlag == RT_RENDER_UVRENDER_OVERUV)
+    
+    float4 vNDCCoord = float4(vTexCoord.x, vTexCoord.y, 0.0f, 1.0f);
+
+    //Start와 End를 사용함.
+    if (g_iFlag == RT_RENDER_UVRENDER || g_iFlag == RT_RENDER_UVRENDER_FRAC)
     {
-        vTexCoord = In.vTexcoord; // 다시 원복시켜
-        vNDCCoord = float4(vTexCoord, 0.0f, 1.0f);
         float2 vUV = lerp(g_fStartUV, g_fEndUV, vTexCoord);
         vNDCCoord.xy = vUV.xy;
     }

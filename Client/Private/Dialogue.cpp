@@ -78,7 +78,7 @@ void CDialog::Update(_float _fTimeDelta)
 	// TODO :: 어찌해야할지?
 	if (m_isDisplayDialogue && KEY_DOWN(KEY::B))
 	{
-		_float2 vRTSize = SECTION_MGR->Get_Section_RenderTarget_Size(SECTION_MGR->Get_Cur_Section_Key());
+		_float2 vRTSize = SECTION_MGR->Get_Section_RenderTarget_Size(Get_Dialogue(m_tDialogIndex)[0].Section);
 		NextDialogue(vRTSize); // 다음 다이얼로그의 위치를 변경한다.
 	}
 
@@ -143,7 +143,7 @@ HRESULT CDialog::Render()
 			//_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 
 
-			_float2 vRTSize = SECTION_MGR->Get_Section_RenderTarget_Size(SECTION_MGR->Get_Cur_Section_Key());
+			_float2 vRTSize = SECTION_MGR->Get_Section_RenderTarget_Size(Get_Dialogue(m_tDialogIndex)[0].Section);
 
 			FirstCalPos(vRTSize);
 		}
@@ -173,7 +173,7 @@ HRESULT CDialog::Render()
 		{
 			// TODO :: 나중에 바꿔야함, 해당 값은 가변적이다.
 			//_float2 vRTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
-			_float2 vRTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
+			_float2 vRTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(Get_Dialogue(m_tDialogIndex)[0].Section));
 			m_vFontColor = Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].vFontColor;
 
 			//vRTSize = _float2(2680.f, 4440.f);
@@ -232,12 +232,17 @@ HRESULT CDialog::NextLevelLoadJson(_int _iNextLevel)
 {
 	if (3 == (_int)_iNextLevel)
 	{
-		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data.json"))))
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_Chapter_02.json"))))
+			return E_FAIL;
+	}
+	else if (4 == _iNextLevel)
+	{
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_Chapter_04.json"))))
 			return E_FAIL;
 	}
 	else if (5 == _iNextLevel)
 	{
-		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_02.json"))))
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_Chapter_06.json"))))
 			return E_FAIL;
 	}
 
@@ -506,12 +511,12 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 				if (false == Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].isLineEnter)
 				{
 					wsprintf(m_tFont, strDisplaytext.c_str());
-					pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 110.f, vTextPos3D.y + 70.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+					pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 65.f, vTextPos3D.y + 70.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 				}
 				else if (true == Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].isLineEnter)
 				{
 					wsprintf(m_tFont, strDisplaytext.c_str());
-					pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 110.f, vTextPos3D.y + 50.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+					pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 65.f, vTextPos3D.y + 50.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 				}
 
 				Safe_Release(pGameInstance);
@@ -535,13 +540,28 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		}
 		else if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
 		{
-			_float2 vPos = { 0.f , 0.f };
 
-			vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
-			vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
+			if (false == isColumn)
+			{
+				_float2 vPos = { 0.f , 0.f };
+
+				vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+				vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
 
 
-			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+				vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+			}
+			else if (true == isColumn)
+			{
+				_float2 vPos = { 0.f , 0.f };
+
+				vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+				vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
+
+
+				vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+			}
+
 		}
 	}
 	break;
@@ -558,9 +578,13 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		else if (true == isColumn)
 		{
 
-			vPos.x = vTextPos2D.x - _vRTSize.x * 0.135f;
-			vPos.y = vTextPos2D.y + _vRTSize.y * 0.012f;
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
 			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+
+			//vPos.x = vTextPos2D.x - _vRTSize.x * 0.135f ;
+			//vPos.y = vTextPos2D.y + _vRTSize.y * 0.012f ;
+			//vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 
 
 		}
@@ -593,24 +617,24 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		else if (true == isColumn)
 		{
 
-			vPos.x = vTextPos2D.x - _vRTSize.x * 0.135f;
-			vPos.y = vTextPos2D.y + _vRTSize.y * 0.012f;
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f  / fScaleX;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f  / fScaleY;
 			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 
 
 
-			wsprintf(m_tFont, currentLine.Talker.c_str());
-			pGameInstance->Render_Font(TEXT("Font20"), m_tFont, _float2(vTextPos2D.x, vTextPos2D.y), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
-
-
-			//vCalPos.x += _vRTSize.x * 0.03f;
-			//vCalPos.y += +_vRTSize.y * 0.1f;
-
-			// 대화 내용 출력
-			wsprintf(m_tFont, strDisplaytext.c_str());
-			pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vTextPos2D.x - 50.f, vTextPos2D.y + 50.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
-			Safe_Release(pGameInstance);
-			return S_OK;
+			//wsprintf(m_tFont, currentLine.Talker.c_str());
+			//pGameInstance->Render_Font(TEXT("Font20"), m_tFont, _float2(vTextPos2D.x, vTextPos2D.y), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+			//
+			//
+			////vCalPos.x += _vRTSize.x * 0.03f;
+			////vCalPos.y += +_vRTSize.y * 0.1f;
+			//
+			//// 대화 내용 출력
+			//wsprintf(m_tFont, strDisplaytext.c_str());
+			//pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vTextPos2D.x - 50.f, vTextPos2D.y + 50.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+			//Safe_Release(pGameInstance);
+			//return S_OK;
 
 		}
 	}

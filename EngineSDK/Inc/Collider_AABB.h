@@ -42,6 +42,7 @@ private:
 public:
 	_float2					Get_LT();
 	_float2					Get_RB();
+	_float2					Get_Extents() { return m_vExtents; }
 
 public:
 	// Get 

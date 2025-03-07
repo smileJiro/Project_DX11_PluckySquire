@@ -139,6 +139,7 @@ void CBoss_HomingBall::Homing(_float _fTimeDelta)
     //}
     //else
     //{
+    // 
     //    m_pControllerTransform->Set_AutoRotationYDirection(vDir);
     //    m_pControllerTransform->Update_AutoRotation(_fTimeDelta);
     //    m_pControllerTransform->Go_Direction(vDir, _fTimeDelta);
@@ -146,6 +147,7 @@ void CBoss_HomingBall::Homing(_float _fTimeDelta)
 
     if (false == m_isHoming)
     {
+        _vector vLook = Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
         if (1.f <= m_fAccTime)
         {
             m_isHoming = true;
@@ -163,7 +165,8 @@ void CBoss_HomingBall::Homing(_float _fTimeDelta)
         }
 
         _vector vLook = Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
-        Get_ControllerTransform()->Set_State(CTransform::STATE_LOOK, XMVectorLerp(vLook, XMLoadFloat3(&m_vDir), 0.1f));
+		_float fScaleZ = Get_ControllerTransform()->Get_Scale().z;
+		Get_ControllerTransform()->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(XMVectorLerp(XMVector3Normalize(vLook), XMLoadFloat3(&m_vDir), 0.2f)) * fScaleZ);
     }
 
     m_pControllerTransform->Go_Straight(_fTimeDelta);
@@ -180,9 +183,9 @@ HRESULT CBoss_HomingBall::Ready_ActorDesc(void* _pArg)
     ActorDesc->pOwner = this;
 
     /* Actor의 회전축을 고정하는 파라미터 */
-    ActorDesc->FreezeRotation_XYZ[0] = true;
+    ActorDesc->FreezeRotation_XYZ[0] = false;
     ActorDesc->FreezeRotation_XYZ[1] = false;
-    ActorDesc->FreezeRotation_XYZ[2] = true;
+    ActorDesc->FreezeRotation_XYZ[2] = false;
 
     /* Actor의 이동축을 고정하는 파라미터 (이걸 고정하면 중력도 영향을 받지 않음. 아예 해당 축으로의 이동을 제한하는)*/
     ActorDesc->FreezePosition_XYZ[0] = false;
@@ -191,7 +194,7 @@ HRESULT CBoss_HomingBall::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_CAPSULE_DESC* ShapeDesc = new SHAPE_CAPSULE_DESC;
-    ShapeDesc->fRadius = 1.f;
+    ShapeDesc->fRadius = 2.f;
     ShapeDesc->fHalfHeight = 2.f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
@@ -201,7 +204,8 @@ HRESULT CBoss_HomingBall::Ready_ActorDesc(void* _pArg)
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
     ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fRadius + ShapeDesc->fHalfHeight, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(ShapeDesc->fHalfHeight, ShapeDesc->fRadius + ShapeDesc->fHalfHeight, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+	XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.f, 0.f, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
@@ -245,7 +249,7 @@ HRESULT CBoss_HomingBall::Ready_PartObjects()
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     BodyDesc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
-    BodyDesc.tTransform3DDesc.vInitialScaling = _float3(10.f, 10.f, 10.f);
+    BodyDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
     BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 

@@ -123,9 +123,53 @@ _bool CCamera_2D::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
 	if (nullptr != pData->second) {
 		Start_Zoom(pData->second->fZoomTime, (CCamera::ZOOM_LEVEL)pData->second->iZoomLevel, (RATIO_TYPE)pData->second->iZoomRatioType);
 		Start_Changing_AtOffset(pData->second->fAtOffsetTime, XMLoadFloat3(&pData->second->vAtOffset), pData->second->iAtRatioType);
+
+		for (auto& PreArm : m_PreSubArms) {
+			if (_iTriggerID == PreArm.first.iTriggerID) {
+				if (true == PreArm.second) {    // Return 중이라면?
+					PreArm.second = false;
+					return true;
+				}
+
+				return true;
+			}
+		}
+
+		RETURN_ARMDATA tSubData;
+
+		tSubData.iZoomLevel = m_iPreZoomLevel;
+		tSubData.vAtOffset = m_vAtOffset;
+		tSubData.iTriggerID = _iTriggerID;
+
+		m_PreSubArms.push_back(make_pair(tSubData, false));
+		return true;
+	}
+	return false;
+}
+
+void CCamera_2D::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
+{
+	if (nullptr == m_pCurArm)
+		return;
+	int a = 0;
+	m_pCurArm->Set_PreArmDataState(_iTriggerID, _isReturn);
+
+	if (true == _isReturn) {
+		for (auto& PreArm : m_PreSubArms) {
+			if (_iTriggerID == PreArm.first.iTriggerID) {
+				Start_Zoom(m_pCurArm->Get_ReturnTime(), (ZOOM_LEVEL)(PreArm.first.iZoomLevel), EASE_IN);
+				Start_Changing_AtOffset(m_pCurArm->Get_ReturnTime(), XMLoadFloat3(&PreArm.first.vAtOffset), EASE_IN);
+
+				PreArm.second = true; // Return 중
+			}
+		}
+	}
+	else {
+		// 안 빼고 남긴다
+		// 값을 바꾸지도 않는다
 	}
 
-	return _bool();
+	m_iCurTriggerID = _iTriggerID;
 }
 
 void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
@@ -285,6 +329,7 @@ void CCamera_2D::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
 {
 	m_pTargetWorldMatrix = _pTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 	m_eTargetCoordinate = _pTarget->Get_CurCoord();
+	m_fTargetChangingTime = { _fChangingTime, 0.f };
 	m_isTargetChanged = true;
 
 	m_vStartPos = m_v2DPreTargetWorldPos;
@@ -384,8 +429,14 @@ void CCamera_2D::Set_InitialData(_wstring _szSectionTag)
 	else if (TEXT("Chapter6_SKSP_05") == _szSectionTag) {
 		switch (m_iPortalID) {
 		case 0:
+		{
+			pData = Find_ArmData(TEXT("Custom_Box_3"));
+		}
 			break;
 		case 1:
+		{
+			pData = Find_ArmData(TEXT("Custom_Box_1"));
+		}
 			break;
 		case 2:
 		{
@@ -404,33 +455,6 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	if (true == m_isInitialData)
 		return;
 
-#pragma region Arm Debuging 코드
-	//static _bool isDebug = true;
-	//int a = 0;
-	////isDebug = false;
-	//if (false == isDebug) {
-	//	ARM_DATA tData = {};
-	//	tData.fMoveTimeAxisRight = { 1.5f, 0.f };
-	//	tData.fRotationPerSecAxisRight = { XMConvertToRadians(-11.f), XMConvertToRadians(-1.f) };
-	//	tData.iRotationRatioType = EASE_IN_OUT;
-	//	tData.fLength = 9.f;
-	//	tData.fLengthTime = { 1.5f, 0.f };
-	//	tData.iLengthRatioType = EASE_IN_OUT;
-	
-	//	Add_CustomArm(tData);
-	//	m_eCameraMode = MOVE_TO_CUSTOMARM;
-	//	Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, -3.f, 0.f), EASE_IN_OUT);
-	//	Start_Zoom(1.5f, (ZOOM_LEVEL)LEVEL_5, EASE_IN_OUT);
-	//	//Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);
-	
-	//	isDebug = true;
-	//}
-	
-	/*Start_Zoom(1.5f, (ZOOM_LEVEL)LEVEL_6, EASE_IN_OUT);
-	Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, 0.f, 0.f), EASE_IN_OUT);*/
-#pragma endregion
-
-//	m_eCameraMode = DEFAULT;
 	Find_TargetPos();
 
 	Action_Zoom(_fTimeDelta);
@@ -447,6 +471,9 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 		break;
 	case MOVE_TO_NEXTARM:
 		Move_To_NextArm(_fTimeDelta);
+		break;
+	case RETURN_TO_PREARM:
+		Move_To_PreArm(_fTimeDelta);
 		break;
 	case MOVE_TO_CUSTOMARM:
 		Move_To_CustomArm(_fTimeDelta);
@@ -572,15 +599,41 @@ void CCamera_2D::Move_To_NextArm(_float _fTimeDelta)
 	Look_Target(_fTimeDelta);
 }
 
+void CCamera_2D::Move_To_PreArm(_float _fTimeDelta)
+{
+	if (true == m_pCurArm->Move_To_PreArm(_fTimeDelta)) {
+		m_eCameraMode = DEFAULT;
+		//return;
+
+		for (auto& iter = m_PreSubArms.begin(); iter != m_PreSubArms.end();) {
+			if (m_iCurTriggerID == (*iter).first.iTriggerID) {
+				m_fFovy = m_ZoomLevels[(*iter).first.iZoomLevel];
+				m_iCurZoomLevel = (*iter).first.iZoomLevel;
+				m_vAtOffset = (*iter).first.vAtOffset;
+
+				iter = m_PreSubArms.erase(iter);
+			}
+			else
+				++iter;
+		}
+	}
+
+	_vector vCameraPos = Calculate_CameraPos(_fTimeDelta);
+
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
+
+	Look_Target(_fTimeDelta);
+}
+
 void CCamera_2D::Move_To_CustomArm(_float _fTimeDelta)
 {
 	if (true == m_pCurArm->Move_To_CustomArm(&m_CustomArmData, _fTimeDelta)) {
 		m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 	}
 
-	_vector vCamerPos = Calculate_CameraPos(_fTimeDelta);
+	_vector vCameraPos = Calculate_CameraPos(_fTimeDelta);
 
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCamerPos, 1.f));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
 
 	Look_Target(_fTimeDelta);
 }
@@ -693,7 +746,7 @@ void CCamera_2D::Zipline(_float _fTimeDelta)
 	}
 
 	// ZipLine 멈춤 없이 부드럽게 가기 위해서 Position 따로 계산
-	_vector vZiplineTargetPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMVectorSet(-17.2633266f, 16.9958153f, 13.7984772, 0.f), fRatio);
+	_vector vZiplineTargetPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMVectorSet(-17.2633266f, 16.9958153f, 13.7984772f, 0.f), fRatio);
 	_vector vPos = XMVectorSetW(vZiplineTargetPos, 1.f) + (m_pCurArm->Get_ArmVector() * m_pCurArm->Get_Length());
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
 }
@@ -728,10 +781,10 @@ _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
 	// Target Change일 땐 지정된 시간만큼 바뀐 Target으로 이동한다
 	else {
 
-		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fTrackingTime, _fTimeDelta, EASE_IN_OUT);
+		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fTargetChangingTime, _fTimeDelta, EASE_IN_OUT);
 
 		if (fRatio >= (1.f - EPSILON)) {
-			m_fTrackingTime.y = 0.f;
+			m_fTargetChangingTime.y = 0.f;
 			m_isTargetChanged = false;
 		}
 
@@ -1294,6 +1347,16 @@ void CCamera_2D::Imgui(_float _fTimeDelta)
 	if (ImGui::Button("Set CurArm To InputArm")) {
 		vInputArm = vCurArm;
 	}
+
+	ImGui::Text("Fovy: %.2f", m_fFovy);
+	ImGui::Text("PreTargetPos: %.2f  %.2f  %.2f", m_v2DPreTargetWorldPos.x, m_v2DPreTargetWorldPos.y, m_v2DPreTargetWorldPos.z);
+	
+	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+
+	ImGui::Text("RealTargetPos: %.2f  %.2f  %.2f", XMVectorGetX(vTargetPos), XMVectorGetY(vTargetPos), XMVectorGetZ(vTargetPos));
+
+	_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+	ImGui::Text("CamPos: %.2f  %.2f  %.2f", XMVectorGetX(vPos), XMVectorGetY(vPos), XMVectorGetZ(vPos));
 
 	ImGui::End();
 }

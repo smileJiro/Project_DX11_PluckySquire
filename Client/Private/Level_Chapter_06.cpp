@@ -466,6 +466,14 @@ HRESULT CLevel_Chapter_06::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &Desc)))
 		return E_FAIL;
 
+	Desc = {};
+	Desc.isOverride = true;
+	Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 17.25f, 47.f);
+	Desc.vHalfExtents = { 40.f, 1.f, 12.f };
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
 	return S_OK;
 }
 
@@ -530,14 +538,14 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	TargetDesc.fSmoothSpeed = 7.f;
 	TargetDesc.eCameraMode = CCamera_Target::DEFAULT;
-	TargetDesc.vAtOffset = _float3(0.0f, 1.f, 0.0f);
+	TargetDesc.vAtOffset = _float3(0.0f, 1.5f, 0.0f);
 	TargetDesc.pTargetWorldMatrix = pPlayer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE::COORDINATE_3D);
 
 	TargetDesc.fFovy = XMConvertToRadians(60.f);
 	TargetDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
 	TargetDesc.vEye = _float3(0.f, 10.f, -7.f);
 	TargetDesc.vAt = _float3(0.f, 0.f, 0.f);
-	TargetDesc.eZoomLevel = CCamera::LEVEL_6;
+	TargetDesc.eZoomLevel = CCamera::LEVEL_5;
 	TargetDesc.iCameraType = CCamera_Manager::TARGET;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),

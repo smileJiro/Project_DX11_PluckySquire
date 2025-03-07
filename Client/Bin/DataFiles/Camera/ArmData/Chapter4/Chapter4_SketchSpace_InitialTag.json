@@ -39,11 +39,35 @@
           "Chapter4_Portal6_End"
         ]
     },
-      {
+    {
         "Section_Tag": "Chapter4_SKSP_07",
         "Arm_Tag": [
           "Chapter4_Portal7_Start",
           "Chapter4_Portal7_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter4_P0102",
+        "Arm_Tag": [
+          "Chapter4_Default"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter4_P0304",
+        "Arm_Tag": [
+          "Chapter4_Default"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter4_P0506",
+        "Arm_Tag": [
+          "Chapter4_Default"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter4_P0708",
+        "Arm_Tag": [
+          "Chapter4_Default"
         ]
     }
 ]

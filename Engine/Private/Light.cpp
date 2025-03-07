@@ -274,7 +274,7 @@ void CLight::Free()
 	Safe_Delete(m_pEffect);
 #endif // _DEBUG
 
-	if (true == m_tLightConstData.isShadow)
+	if (true == (_bool)m_tLightConstData.isShadow)
 	{
 		_wstring strShadowRTTag = TEXT("Target_Shadow_");
 		strShadowRTTag += to_wstring(m_iShadowLightID);

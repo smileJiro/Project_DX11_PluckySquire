@@ -15,6 +15,7 @@ public:
 	{
 		DEFAULT,
 		MOVE_TO_NEXTARM,
+		RETURN_TO_PREARM,
 		MOVE_TO_CUSTOMARM,
 		FLIPPING_UP,
 		PAUSE,
@@ -104,6 +105,7 @@ public:
 	void						Add_CustomArm(ARM_DATA _tArmData);
 
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
+	void						Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);
 
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
 	virtual void				Change_Target(const _float4x4* _pTargetMatrix, _float _fChangingTime = 1.f) { m_pTargetWorldMatrix = _pTargetMatrix; m_fTargetChangingTime = { _fChangingTime, 0.f }; }
@@ -130,7 +132,7 @@ private:
 	// 이전 2D 좌표계 저장, 000일 때를 구하기 위해서
 	_float2						m_v2DdMatrixPos = {};
 
-	_float2						m_fTrackingTime = { 0.5f, 0.f };
+	_float2						m_fTrackingTime = { 0.3f, 0.f };
 
 	DIRECTION_TYPE				m_eDirectionType = { HORIZON };
 
@@ -156,6 +158,10 @@ private:
 	// Arm
 	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>	m_ArmDatas;
 
+	// PreArm Return // SubData를 Target이 쓰고 있는데 ArmData에도 들어 있음... 그냥 이거 쓸까?
+	list<pair<RETURN_ARMDATA, _bool>> m_PreSubArms;
+	_int						m_iCurTriggerID = {};
+
 	// Portal ID
 	_uint						m_iPortalID = {};
 
@@ -171,6 +177,7 @@ private:
 
 	void						Defualt_Move(_float _fTimeDelta);
 	void						Move_To_NextArm(_float _fTimeDelta);
+	void						Move_To_PreArm(_float _fTimeDelta);
 	void						Move_To_CustomArm(_float _fTimeDelta);
 	void						Flipping_Up(_float _fTimeDelta);
 	void						Pause(_float _fTimeDelta);
