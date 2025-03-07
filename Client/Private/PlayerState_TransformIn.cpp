@@ -15,9 +15,10 @@ void CPlayerState_TransformIn::Enter()
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	if (COORDINATE_2D == eCoord)
 	{
-		m_pOwner->Transform_Out_CyberJot();
+		m_pOwner->Set_Mode(CPlayer::PLAYER_MODE_CYBERJOT);
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CYBERJOTLITE_TRANSFORM);
 	}
+
 
 }
 

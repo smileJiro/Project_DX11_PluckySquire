@@ -42,14 +42,7 @@ void CPlayerState_Idle::Update(_float _fTimeDelta)
 	if(INTERACT_RESULT::FAIL == eResult
 		|| INTERACT_RESULT::NO_INPUT == eResult)
 	{
-		if (m_pOwner->Is_CyvberJot())
-		{
-			if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
-			{
-				m_pOwner->Set_State(CPlayer::RUN);
-			}
-			return;
-		}
+
 		if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 			m_pOwner->Set_State(CPlayer::ATTACK);
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_SPINATTACK])
@@ -96,7 +89,7 @@ void CPlayerState_Idle::Exit()
 
 void CPlayerState_Idle::Switch_IdleAnimation2D(F_DIRECTION _eFDir)
 {
-	if (m_pOwner->Is_CyvberJot())
+	if (m_pOwner->Is_CyvberJotMode())
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CYBERJOTLITE_RUN_IDLE_TEMP);
 	_bool bSword = m_pOwner->Is_SwordHandling();
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
