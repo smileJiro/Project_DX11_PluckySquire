@@ -4250,5 +4250,128 @@
   "SearchTag": "Postit_03",
   "Sorting": false,
   "TextureName": "Postit_03"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 6
+  },
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "09_0910_01_Sprite",
+  "Sorting": false,
+  "TextureName": "09_0910_01_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_1112_pipe_png",
+  "Sorting": false,
+  "TextureName": "C09_1112_pipe_png"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 6
+  },
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "09_1112_01_Sprite",
+  "Sorting": false,
+  "TextureName": "09_1112_01_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_1718_window_overlay_Extension",
+  "Sorting": false,
+  "TextureName": "C09_1718_window_overlay_Extension"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_1718_vent_overlay_png",
+  "Sorting": false,
+  "TextureName": "C09_1718_vent_overlay_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_2728_fg_pipe_01_png",
+  "Sorting": false,
+  "TextureName": "C09_2728_fg_pipe_01_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_2728_fg_pipe_03_png",
+  "Sorting": false,
+  "TextureName": "C09_2728_fg_pipe_03_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_2728_fg_pipe_04_png",
+  "Sorting": false,
+  "TextureName": "C09_2728_fg_pipe_04_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_2728_bed_png",
+  "Sorting": false,
+  "TextureName": "C09_2728_bed_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_4142_fg_01",
+  "Sorting": false,
+  "TextureName": "C09_4142_fg_01"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_4142_fg_02",
+  "Sorting": false,
+  "TextureName": "C09_4142_fg_02"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_4142_fg_03",
+  "Sorting": false,
+  "TextureName": "C09_4142_fg_03"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_4142_fg_04",
+  "Sorting": false,
+  "TextureName": "C09_4142_fg_04"
  }
 ]
