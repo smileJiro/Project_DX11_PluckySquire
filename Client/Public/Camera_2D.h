@@ -167,6 +167,7 @@ private:
 
 	// Normal
 	map<_wstring, _float3>		m_NormalTargets;
+	_uint						m_iNormalType = {};			// Sksp 어느 normal을 쓸 것인지
 
 	// Zipline
 	_float2						m_fZiplineTime = { 4.5f, 0.f };
