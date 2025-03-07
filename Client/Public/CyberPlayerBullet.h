@@ -1,12 +1,14 @@
 #pragma once
-#include "ModelObject.h"
-
+#include "ContainerObject.h"
+BEGIN(Engine)
+class CModelObject;
+END
 BEGIN(Client)
 class CCyberPlayerBullet :
-    public CModelObject
+    public CContainerObject
 {
 public:
-	typedef struct tagCyberPlayerProjectileDesc : public CModelObject::MODELOBJECT_DESC
+	typedef struct tagCyberPlayerProjectileDesc : public CContainerObject::CONTAINEROBJ_DESC
 	{
 
 	}CYBERPLAYER_PROJECTILE_DESC;
@@ -27,6 +29,7 @@ public:
 	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 
 private:
+	CModelObject* m_pModel = nullptr;
 	_vector m_vLookDIr = { 0.f,0.f,0.f,0.f };
 	_float m_fLifeTime = 10.f;
 	_float m_fLifeTimeAcc = 0.f;

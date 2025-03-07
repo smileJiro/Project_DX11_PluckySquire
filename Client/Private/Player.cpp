@@ -1061,7 +1061,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     else
     {
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
-		m_bPlatformerMode = false;
+        Set_PlatformerMode(false);
     }
 
     switch (m_ePlayerMode)
