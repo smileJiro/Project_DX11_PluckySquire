@@ -29,6 +29,10 @@ HRESULT CPortal::Initialize(void* _pArg)
     if (nullptr == _pArg)
         return E_FAIL;
 
+    m_fInteractChargeTime = 1.f;
+    m_eInteractType = INTERACT_TYPE::CHARGE;
+    m_eInteractID = INTERACT_ID::PORTAL;
+
     PORTAL_DESC* pDesc = static_cast<PORTAL_DESC*>(_pArg);
     pDesc->iNumPartObjects = PORTAL_PART_LAST;
     pDesc->eStartCoord = COORDINATE_2D;
@@ -151,14 +155,12 @@ HRESULT CPortal::Init_Actor()
     return hr;
 }
 
-void CPortal::Use_Portal(CPlayer* _pUser, NORMAL_DIRECTION* _pOutNormal)
+void CPortal::Use_Portal(CPlayer* _pUser)
 {
     _vector vPos = Get_FinalPosition(COORDINATE_2D);
 
     _vector v3DPos = Get_FinalPosition(COORDINATE_3D);
-
-    *_pOutNormal = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW( v3DPos))); /* 추후 노말을 기준으로 힘의 방향을 결정해도 돼*/
-
+    
     _int iCurCoord = (_int)_pUser->Get_CurCoord();
     (_int)iCurCoord ^= 1;
     _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
@@ -313,6 +315,14 @@ void CPortal::Set_FirstActive(_bool _bFirstActive)
 {
     m_isFirstActive = _bFirstActive; 
     Set_Active(m_isFirstActive);
+}
+
+NORMAL_DIRECTION CPortal::Get_PortalNormal()
+{
+    _vector v3DPos = Get_FinalPosition(COORDINATE_3D);
+
+    return (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(v3DPos))); /* 추후 노말을 기준으로 힘의 방향을 결정해도 돼*/
+
 }
 
 void CPortal::Active_OnDisable()

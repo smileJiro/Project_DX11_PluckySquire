@@ -56,8 +56,8 @@ void CPortal_Arrow::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pO
 	{
 		CPlayer* pPlayer = static_cast<CPlayer*>(_pOtherObject);
 
-        NORMAL_DIRECTION eNormal;
-		Use_Portal(pPlayer, &eNormal);
+        NORMAL_DIRECTION eNormal = Get_PortalNormal();
+		Use_Portal(pPlayer);
 
 		pPlayer->Set_PortalNormal(eNormal);
 

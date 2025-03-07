@@ -138,7 +138,7 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 
 
 				Desc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
-				Desc.fTriggerRadius = 0.45f;
+				Desc.fTriggerRadius = 1.0f;
 				Desc.iPortalIndex = i;
 				Desc.isFirstActive = isFIrstActive;
 				Desc.Build_2D_Transform(fPos, fScale);
