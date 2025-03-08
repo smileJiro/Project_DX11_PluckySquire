@@ -42,6 +42,7 @@ public:
 	HRESULT					Bind_Material(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex = 0);
 	HRESULT					Bind_Matrices(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex);
 	virtual _bool			Play_Animation(_float fTimeDelta, _bool bReverse = false) override;
+
 	HRESULT					Bind_Material_PixelConstBuffer(_uint _iMaterialIndex,  CShader* _pShader);
 public:
 	// Get
@@ -67,12 +68,12 @@ public:
 	// Set
 	virtual void			Set_AnimationLoop(_uint iIdx, _bool bIsLoop)override;
 	virtual void			Set_Animation(_uint iIdx, _bool _bReverse = false)override;
-	void						Set_AnimationTransitionTime(_uint iIdx, _float _fTime);
+	void					Set_AnimationTransitionTime(_uint iIdx, _float _fTime);
 	virtual void			Switch_Animation(_uint iIdx, _bool _bReverse = false)override;
 	virtual void			Switch_Reverse(_uint iIdx, _bool _bReverse = false) override;
 	virtual void			To_NextAnimation() override;
 	virtual void			Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) override;
-
+	_bool Is_AnimTransition() { return m_iCurrentAnimIndex != m_iPrevAnimIndex; }
 	// Material Get, Set 
 
 	// Get

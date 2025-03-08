@@ -172,10 +172,13 @@ void CLayer::Clear_GameObjects()
 
 void CLayer::Check_FrustumCulling()
 {
-    for (auto& pGameObject : m_GameObjects)
+    if (true == m_isLayerCulling)
     {
-        if (true == pGameObject->Is_Active())
-            pGameObject->Check_FrustumCulling();
+        for (auto& pGameObject : m_GameObjects)
+        {
+            if (true == pGameObject->Is_Active())
+                pGameObject->Check_FrustumCulling();
+        }
     }
 }
 
@@ -198,6 +201,17 @@ CGameObject* CLayer::Get_GameObject_Ptr(_int _iObjectIndex)
     }
 
     return *iter;
+}
+
+void CLayer::Set_LayerCulling(_bool _isCulling)
+{
+    m_isLayerCulling = _isCulling;
+
+    // 한번 초기화 시켜주기. 
+    if(false == _isCulling)
+        for (auto& pGameObject : m_GameObjects)
+            pGameObject->Set_FrustumCulling(false);
+
 }
 
 

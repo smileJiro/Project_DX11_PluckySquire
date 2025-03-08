@@ -99,12 +99,6 @@ void CButterGrump_Shield::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO&
         _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
         Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), m_pParent->Get_Stat().iDamg, vRepulse);
     }
-
-    if (OBJECT_GROUP::PLAYER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
-    {
-        //플레이어 총알 사라질 때 코드 호출 하도록 해야함
-        //Event_DeleteObject(_Other.pActorUserData->pOwner);
-    }
 }
 
 void CButterGrump_Shield::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)

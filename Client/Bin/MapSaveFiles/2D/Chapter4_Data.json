@@ -8,12 +8,12 @@
 		"Section_Info": {
 			"Camera_Zoom_Ratio": 2.0,
 			"RenderResolution": {
-				"X": 5119.0,
-				"Y": 1439.0
+				"X": 5120.0,
+				"Y": 1440.0
 			},
 			"LevelSizePixels": {
-				"X": 5119.0,
-				"Y": 1439.0
+				"X": 5120.0,
+				"Y": 1440.0
 			},
 			"Next_Page_Tag": "Chapter4_P0304"
 		}
@@ -26,12 +26,12 @@
 		"Section_Info": {
 			"Camera_Zoom_Ratio": 1.5,
 			"RenderResolution": {
-				"X": 3839.0,
-				"Y": 1079.0
+				"X": 3840.0,
+				"Y": 1080.0
 			},
 			"LevelSizePixels": {
-				"X": 3839.0,
-				"Y": 1079.0
+				"X": 3840.0,
+				"Y": 1080.0
 			},
 			"Pre_Page_Tag": "Chapter4_P0102",
 			"Next_Page_Tag": "Chapter4_P0506"
@@ -50,12 +50,12 @@
 		"Section_Info": {
 			"Camera_Zoom_Ratio": 1.5,
 			"RenderResolution": {
-				"X": 3839.0,
-				"Y": 1079.0
+				"X": 3840.0,
+				"Y": 1080.0
 			},
 			"LevelSizePixels": {
-				"X": 3839.0,
-				"Y": 1079.0
+				"X": 3840.0,
+				"Y": 1080.0
 			},
 			"Pre_Page_Tag": "Chapter4_P0304",
 			"Next_Page_Tag": "Chapter4_P0708"
@@ -80,16 +80,16 @@
 		"Section_BackGround_Name": "Chapter4_SKSP_01_BackGround",
 		"Section_File_Name": "Chapter4_SKSP_01.m2chc",
 		"Section_Type": 2,
-		"Section_Info": {
-			"RenderResolution": {
-				"X": 5120.0,
-				"Y": 2048.0
-			},
-			"LevelSizePixels": {
-				"X": 7680.0,
-				"Y": 3072.0
+			"Section_Info": {
+				"RenderResolution": {
+					"X": 7682.0,
+					"Y": 3073.0
+				},
+				"LevelSizePixels": {
+					"X": 7680.0,
+					"Y": 3073.0
+				}
 			}
-		}
 	},
 	{
 		"Section_Name": "Chapter4_SKSP_02",
@@ -120,7 +120,7 @@
         "Y": 3072.0
       },
       "LevelSizePixels": {
-        "X": 14336.0,
+        "X": 10752.0,
         "Y": 3072.0
 		}
 	}

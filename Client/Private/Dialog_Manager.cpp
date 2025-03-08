@@ -55,6 +55,15 @@ void CDialog_Manager::Set_DialogEnd()
 
 }
 
+_int CDialog_Manager::Get_CurrentLineIndex()
+{
+	if (nullptr != m_pDialogue)
+		return m_pDialogue->Get_CurrentLineIndex();
+	else
+		assert(nullptr);
+
+}
+
 HRESULT CDialog_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID)
 {
 	if (nullptr != m_pDialogue)

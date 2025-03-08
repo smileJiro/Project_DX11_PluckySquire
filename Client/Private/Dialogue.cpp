@@ -93,7 +93,7 @@ void CDialog::Update(_float _fTimeDelta)
 	// ->Get_DialogId());
 	//}
 
-
+	
 
 }
 
@@ -1561,6 +1561,14 @@ CDialog::DialogLine CDialog::Get_DialogueLine(const _wstring& _id, _int _LineInd
 	}
 
 	return CDialog::DialogLine{};
+}
+
+_int CDialog::Get_CurrentLineIndex()
+{
+	if (false == m_isDisplayDialogue)
+		return -1;
+
+	return m_iCurrentLineIndex;
 }
 
 

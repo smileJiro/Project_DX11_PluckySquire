@@ -84,6 +84,10 @@ public:
 	virtual void				Enter_Section(const _wstring _strIncludeSectionName) { m_strSectionName = _strIncludeSectionName; }
 	virtual void				Exit_Section(const _wstring _strIncludeSectionName)	{ m_strSectionName = L""; }
 	
+	_bool						Is_FrustumCulling() { return m_isFrustumCulling; }
+	void						Set_FrustumCulling(_bool _isFrustumCulling) { m_isFrustumCulling = _isFrustumCulling; }
+
+
 protected:
 	ID3D11Device*				m_pDevice = nullptr;
 	ID3D11DeviceContext*		m_pContext = nullptr;

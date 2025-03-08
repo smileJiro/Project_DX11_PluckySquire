@@ -340,13 +340,13 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 
 	if (KEY_PRESSING(KEY::CTRL))
 	{
-		if (KEY_DOWN(KEY::NUMPAD5))
+		if (KEY_DOWN(KEY::NUM5))
 		{
 			CButterGrump::MONSTER_DESC Boss_Desc;
 			Boss_Desc.iCurLevelID = m_eLevelID;
 			Boss_Desc.eStartCoord = COORDINATE_3D;
 			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
+			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, 78.0f);
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
 				return;
@@ -701,6 +701,16 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Book"), m_eLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+	CGameObject* pGameObject;
+
+	pDesc.fSizeX = 360.f / 2.f;
+	pDesc.fSizeY = 149.f / 2.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
+		return E_FAIL;
+
+	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pGameObject));
+
 
 #pragma endregion InterAction UI
 
@@ -950,13 +960,13 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
-	CGameObject* pGameObject;
+	CGameObject* pInteractionE;
 
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
 		return E_FAIL;
 
-	Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
+	Uimgr->Set_Narration(static_cast<CNarration*>(pInteractionE));
 
 	return S_OK;
 }
@@ -1227,7 +1237,6 @@ void CLevel_Chapter_08::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 	Desc.vArm = _vArm;
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
 	Desc.fLength = _fLength;
-	Desc.wszArmTag = TEXT("Player_Arm");
 
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 

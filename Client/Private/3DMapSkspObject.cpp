@@ -555,13 +555,6 @@ void C3DMapSkspObject::Change_RenderState(RT_RENDERSTATE _eRenderState, _bool _i
     m_eCurRenderState = _eRenderState;
 }
 
-void C3DMapSkspObject::Check_FrustumCulling()
-{
-    if (COORDINATE_3D == Get_CurCoord() && true == m_isCulling)
-        m_isFrustumCulling = !m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 10.f);
-    else
-        m_isFrustumCulling = false;
-}
 
 HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag)
 {
