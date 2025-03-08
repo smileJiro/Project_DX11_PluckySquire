@@ -1093,27 +1093,15 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     {
         Set_2DDirection(E_DIRECTION::DOWN);
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
+        UnEquip_All();
     }
     else
     {
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
         Set_PlatformerMode(false);
+		Set_Mode(m_ePlayerMode);
     }
 
-    switch (m_ePlayerMode)
-    {
-    case Client::CPlayer::PLAYER_MODE_NORMAL:
-		UnEquip_Part(PLAYER_PART_SWORD);
-        break;
-    case Client::CPlayer::PLAYER_MODE_SWORD:
-		Equip_Part(PLAYER_PART_SWORD);
-        break;
-    case Client::CPlayer::PLAYER_MODE_SNEAK:
-        UnEquip_Part(PLAYER_PART_SWORD);
-        break;
-    default:
-        break;
-    }
     m_pSword->Set_AttackEnable(false);
 
     return S_OK;
@@ -1945,45 +1933,60 @@ void CPlayer::Set_State(STATE _eState)
 
 void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 {
-    if (m_ePlayerMode != _eNewMode)
+
+    m_ePlayerMode = _eNewMode;
+    switch (m_ePlayerMode)
     {
-        m_ePlayerMode = _eNewMode;
-        switch (m_ePlayerMode)
+    case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SWORD:
+        Set_Kinematic(false);
+        Get_ActorDynamic()->Set_Gravity(true);
+        Get_ActorDynamic()->Set_LinearDamping(0.f);
+        if (COORDINATE_3D == Get_CurCoord())
         {
-        case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_NORMAL:
-            Set_Kinematic(false);
-            Get_ActorDynamic()->Set_Gravity(true);
-            Get_ActorDynamic()->Set_LinearDamping(0.f);
             UnEquip_All();
-            Set_State(STATE::IDLE);
-            break;
-        case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SWORD:
-            Set_Kinematic(false);
-            Get_ActorDynamic()->Set_Gravity(true);
-            Get_ActorDynamic()->Set_LinearDamping(0.f);
-			Equip_Part(PLAYER_PART_SWORD);
-            Set_State(STATE::IDLE);
-            break;
-        case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SNEAK:
-            Set_Kinematic(false);
-            Get_ActorDynamic()->Set_Gravity(true);
-            Get_ActorDynamic()->Set_LinearDamping(0.f);
+            Equip_Part(PLAYER_PART_SWORD);
+        }
+        Set_State(STATE::IDLE);
+        break;
+    case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SNEAK:
+        Set_Kinematic(false);
+        Get_ActorDynamic()->Set_Gravity(true);
+        Get_ActorDynamic()->Set_LinearDamping(0.f);
+        if (COORDINATE_3D == Get_CurCoord())
+        {
             UnEquip_All();
-            Set_State(STATE::IDLE);
-            break;
-        case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_CYBERJOT:
-            Set_Kinematic(false);
-            Get_ActorDynamic()->Set_Gravity(false);
-            Get_ActorDynamic()->Set_LinearDamping(2.f);
+        }
+        Set_State(STATE::IDLE);
+        break;
+    case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_ZETPACK:
+        Set_Kinematic(false);
+        Get_ActorDynamic()->Set_Gravity(true);
+        Get_ActorDynamic()->Set_LinearDamping(0.f);
+        if (COORDINATE_3D == Get_CurCoord())
+        {
+            UnEquip_All();
+            Equip_Part(PLAYER_PART_SWORD);
+            Equip_Part(PLAYER_PART_ZETPACK);
+        }
+        Set_State(STATE::IDLE);
+        break;
+    case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_CYBERJOT:
+        Set_Kinematic(false);
+        Get_ActorDynamic()->Set_Gravity(false);
+        Get_ActorDynamic()->Set_LinearDamping(2.f);
+        if (COORDINATE_3D == Get_CurCoord())
+        {
+            UnEquip_All();
             Equip_Part(PLAYER_PART_RIFLE);
             Equip_Part(PLAYER_PART_VISOR);
             Equip_Part(PLAYER_PART_ZETPACK);
-            Set_State(STATE::CYBER_IDLE);
-            break;
-        default:
-            break;
         }
+        Set_State(STATE::CYBER_IDLE);
+        break;
+    default:
+        break;
     }
+    
 }
 
 void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
@@ -2185,6 +2188,7 @@ void CPlayer::Equip_Part(PLAYER_PART _ePartId)
             break;
         }
     }
+
     if(COORDINATE_3D == Get_CurCoord())
 	    Set_PartActive(_ePartId, true);
 }

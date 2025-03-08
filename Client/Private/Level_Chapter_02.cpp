@@ -792,7 +792,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
-	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
+	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SNEAK);
 	//pPlayer->UnEquip_All();
 
 	return S_OK;

@@ -61,7 +61,7 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
     CircleDesc.pOwner = this;
     CircleDesc.fRadius = 20.f;
 	_float3 vScale = m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_Scale();
-    CircleDesc.vScale = { 1/ vScale.x, 1/ vScale.y };
+    CircleDesc.vScale = { 1.f/ vScale.x, 1.f/ vScale.y };
     CircleDesc.vOffsetPosition = { 0.f, 0.f };
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;

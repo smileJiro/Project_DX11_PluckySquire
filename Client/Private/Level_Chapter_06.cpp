@@ -632,8 +632,8 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	_int iCurCoord = (COORDINATE_2D);
 	_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
-	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
-	pPlayer->Equip_Part(CPlayer::PLAYER_PART_ZETPACK);
+	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_ZETPACK);
+	
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 
@@ -648,15 +648,15 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 	tDeffenderPlayerDesc.iCurLevelID = m_eLevelID;
 	CDefenderPlayer* pPlayer = static_cast<CDefenderPlayer*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderPlayer"), &tDeffenderPlayerDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pPlayer);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Active(false);
 
 	CMiniGame_Defender::DEFENDER_CONTROLLTOWER_DESC tDesc = {};
 	tDesc.iCurLevelID = m_eLevelID;
-	tDesc.tTransform2DDesc.vInitialPosition = { -500.f, 0.35f, 0.f };   // TODO ::임시 위치
+	tDesc.tTransform2DDesc.vInitialPosition = { -2020.f, -80.f, 0.f };   // TODO ::임시 위치
 	CMiniGame_Defender* pTower = static_cast<CMiniGame_Defender*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Minigame_Defender"), &tDesc));;
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pTower);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pTower, SECTION_2D_PLAYMAP_OBJECT);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pTower, SECTION_2D_PLAYMAP_OBJECT);
 
 	return S_OK;
 }
