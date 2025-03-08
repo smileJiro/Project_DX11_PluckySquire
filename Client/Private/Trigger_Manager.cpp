@@ -50,6 +50,11 @@ void CTrigger_Manager::Update()
 	Execute_Trigger_Event();
 }
 
+void CTrigger_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
+{
+	m_TriggerEvents.clear();
+}
+
 HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 {
 	m_EventExecuterTags.resize(EVENT_EXECUTER_ACTION_TYPE_LAST);
@@ -67,6 +72,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER4_RIDE_ZIPLINE] = L"Chapter4_Ride_Zipline";
 	m_EventExecuterTags[CHAPTER4_EVENT_FLAG] = L"Chapter4_Event_Flag";
 	m_EventExecuterTags[CHAPTER4_STORYSEQUENCE] = L"Chapter4_StorySequence";
+	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR] = L"Chapter6_FatherGame_Progress_Start_Clear";
 
 	return S_OK;
 }

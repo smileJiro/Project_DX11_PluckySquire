@@ -33,7 +33,7 @@ HRESULT CPortalLocker::Initialize(void* _pArg)
 	m_ePortalLockerType = pDesc->ePortalLockerType;
 
 	// Add
-	_vector vPortalPos = m_pTargetPortal->Get_FinalPosition();
+	_vector vPortalPos = m_pTargetPortal->Get_FinalPosition(COORDINATE_2D);
 	pDesc->Build_2D_Transform(_float2(XMVectorGetX(vPortalPos), XMVectorGetY(vPortalPos)));
 
 	pDesc->isCoordChangeEnable = false;
@@ -81,6 +81,12 @@ void CPortalLocker::Late_Update(_float _fTimeDelta)
 	__super::Late_Update(_fTimeDelta);
 }
 
+HRESULT CPortalLocker::Render()
+{
+	__super::Render();
+	return S_OK;
+}
+
 void CPortalLocker::State_Change()
 {
 	if (m_ePreState == m_eCurState)
@@ -116,7 +122,7 @@ void CPortalLocker::State_Change_Open()
 
 void CPortalLocker::State_Change_Dead()
 {
-	Start_FadeAlphaOut();
+	Start_FadeAlphaOut(1.0f);
 }
 
 void CPortalLocker::Action_State(_float _fTimeDelta)
@@ -157,10 +163,12 @@ void CPortalLocker::Action_State_Open(_float _fTimeDelta)
 
 void CPortalLocker::Action_State_Dead(_float _fTimeDelta)
 {
+	if (true == Is_Dead())
+		return;
 	//Event_SetActive(m_pTargetPortal, true);
 	if (FADEALPHA_DEFAULT == m_eFadeAlphaState)
 	{
-		if (m_vFadeAlpha.y == 1.0f)
+		if (m_vFadeAlpha.y / m_vFadeAlpha.x >= 1.0f)
 		{
 			/* Fade Out이 종료되었다는 체크 */
 			Event_DeleteObject(this);
