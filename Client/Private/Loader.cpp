@@ -1390,6 +1390,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0910_2_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_ToSeeTheAftermath_KR.wav"));
 		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0910_2_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheArmyOfArtia_KR.wav"));
 
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AndNowHumgrump_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_ToClaimHisRightfulRole_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_3"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AsTheGrandRuler_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/A_sfx_c08_Artian_Throne.wav"));
+
 	#pragma endregion
 
 	#pragma region Chapter 6 - Model Load
@@ -1544,10 +1549,7 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	
 
-	m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AndNowHumgrump_KR.wav"));
-	m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_ToClaimHisRightfulRole_KR.wav"));
-	m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_3"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AsTheGrandRuler_KR.wav"));
-	m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/A_sfx_c08_Artian_Throne.wav"));
+
 	// 나레이션 관련
 
 #pragma endregion

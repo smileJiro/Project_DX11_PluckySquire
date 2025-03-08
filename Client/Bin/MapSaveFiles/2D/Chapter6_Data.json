@@ -73,7 +73,17 @@
 		"Section_Type": 1,
 		"Section_Default": 0,
 		"Section_Info": {
-			"Pre_Page_Tag": "Chapter6_P0708"
+			"Pre_Page_Tag": "Chapter6_P0708",
+			"Next_Page_Tag": "Chapter6_P1516"
+		}
+	},
+	{
+		"Section_Name": "Chapter6_P1516",
+		"Section_BackGround_Name": "Chapter6_P1516_BackGround",
+		"Section_Type": 1,
+		"Section_Default": 0,
+		"Section_Info": {
+			"Pre_Page_Tag": "Chapter6_P0910"
 		}
 	},
 	{

@@ -953,11 +953,15 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+	CGameObject* pHeartObject;
+
 	pDesc.fSizeX = 256.f / 4.f;
 	pDesc.fSizeY = 256.f / 4.f;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pHeartObject, &pDesc)))
 		return E_FAIL;
+
+	Uimgr->Set_InterActionHeart(static_cast<CInteraction_Heart*>(pHeartObject));
 
 
 	CGameObject* pInteractionE;

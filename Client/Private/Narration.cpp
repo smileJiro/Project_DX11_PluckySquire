@@ -37,13 +37,17 @@ HRESULT CNarration::Initialize(void* _pArg)
 	{
 		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Narration/Level_Chapter_02_Narration.json"))))
 			return E_FAIL;
-
-
 	}
 
 	else if (LEVEL_CHAPTER_6 == pDesc->iCurLevelID)
 	{
 		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Narration/Level_Chapter_06_Narration.json"))))
+			return E_FAIL;
+	}
+
+	else if (LEVEL_CHAPTER_8 == pDesc->iCurLevelID)
+	{
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Narration/Level_Chapter_08_Narration.json"))))
 			return E_FAIL;
 	}
 

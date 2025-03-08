@@ -7,6 +7,7 @@ class CModel;
 class CVIBuffer_Collider;
 END
 
+BEGIN(Client)
 class CInteraction_Heart : public CUI
 {
 
@@ -24,11 +25,15 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
+	_bool					Get_InteractionHeartRender() { return m_isDeleteRender; }
+
 private:
 	_int					m_PlayerHP = { 0 };
 	_int					m_PrePlayerHP = { 0 };
 	_vector					m_vPlayerPos = {};
 	_float					m_fRenderTime = { 0.f };
+	wstring					m_preSectionName = { TEXT(" ") };
+	_bool					m_isDeleteRender = { false };
 
 protected:
 	virtual HRESULT			Ready_Components() override;
@@ -45,3 +50,4 @@ private:
 
 };
 
+END

@@ -455,6 +455,99 @@
 					]
 				}
 			]
+		},
+		{
+			"strSectionid": "Chapter6_P1516",
+			"strid": "Chapter6_P1516_Narration_01",
+			"CurlevelId": 5,
+			"bTerminal": false,
+			"lines": [
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "그렇게 험그럼프는#아르티아의 왕좌에#올랐고",
+					"strSFX": "Chapter6_P0708_1_1",
+					"strSubSFX": "Chapter6_P0708_1_1_Sub",
+					"fLineHeight": 50.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 2.2,
+					"fscale": 1.5,
+					"isLeft": true,
+					"fposX": 270.0,
+					"fposY": 100.0,
+					"fwaitingTime": 2.2,
+					"NarAnim": [
+						{
+							"strAnimationid": "C08_P0708_Humgrump",
+							"AnimationIndex": 4,
+							"isLoop": false,
+							"strSectionid": "Chapter6_P1516",
+							"fPosX": 1280.0,
+							"fPosY": 360.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "자신의 정당한#자리를 차지해",
+					"strSFX": "Chapter6_P0708_1_2",
+					"strSubSFX": "",
+					"fLineHeight": 50.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 1.1,
+					"fscale": 1.5,
+					"isLeft": true,
+					"fposX": 270.0,
+					"fposY": 380.0,
+					"fwaitingTime": 1.1,
+					"NarAnim": [
+						{
+							"strAnimationid": "C08_P0708_Humgrump",
+							"AnimationIndex": 6,
+							"isLoop": false,
+							"strSectionid": "Chapter6_P1516",
+							"fPosX": 1280.0,
+							"fPosY": 360.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				},
+				{
+					"iduration": 1000,
+					"ispeed": 200,
+					"strtext": "{150}온 모조 왕국{100}을 다스리는#{150}위대한 통치자가#되었습니다.",
+					"strSFX": "Chapter6_P0708_1_3",
+					"strSubSFX": "",
+					"fLineHeight": 63.0,
+					"fFadeDuration": 2.0,
+					"fDelayNextLine": 2.6,
+					"fscale": 1.5,
+					"isLeft": true,
+					"fposX": 650.0,
+					"fposY": 250.0,
+					"fwaitingTime": 2.6,
+					"isFinishedThisLine": true,
+					"NarAnim": [
+						{
+							"strAnimationid": "C08_P0708_Humgrump",
+							"AnimationIndex": 0,
+							"isLoop": false,
+							"strSectionid": "Chapter6_P1516",
+							"fPosX": 1280.0,
+							"fPosY": 360.0,
+							"vAnimationScaleX": -1.1,
+							"vAnimationScaleY": 1.1,
+							"fwaitingTime": 5.0
+						}
+					]
+				}
+			]
 		}
 	]
 }
