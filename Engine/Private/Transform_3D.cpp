@@ -30,12 +30,22 @@ HRESULT CTransform_3D::Initialize(void* _pArg)
     return S_OK;
 }
 
+_bool CTransform_3D::Check_Arrival(_fvector _vTargetPos, _float _fEpsilon)
+{
+    _float fLength = XMVectorGetX(XMVector3Length(_vTargetPos - Get_State(STATE_POSITION)));
+    if (_fEpsilon >= fLength)
+    {
+        return true;
+    }
+    else
+        return false;
+}
+
 _bool CTransform_3D::MoveToTarget(_fvector _vTargetPos, _float _fTimeDelta)
 {
     static _float fEpsilon = 0.5f;
     _vector vPos = Get_State(STATE_POSITION);
-    _float fLength = XMVectorGetX(XMVector3Length(_vTargetPos - vPos));
-    if (fEpsilon >= fLength)
+    if (true == Check_Arrival(_vTargetPos, fEpsilon))
     {
         Set_State(CTransform_3D::STATE_POSITION, XMVectorSetW(_vTargetPos, 1.0f));
         return true;
@@ -44,6 +54,25 @@ _bool CTransform_3D::MoveToTarget(_fvector _vTargetPos, _float _fTimeDelta)
     _vector vDirection = XMVector3Normalize(XMVectorSetY(_vTargetPos - vPos, 0.0f));
     Set_AutoRotationYDirection(vDirection);
     Go_Straight(_fTimeDelta);
+
+    return false;
+}
+
+_bool CTransform_3D::MoveTo(_fvector _vTargetPos, _float _fTimeDelta)
+{
+    static _float fEpsilon = 0.5f;
+    _vector vPos = Get_State(STATE_POSITION);
+    if (true == Check_Arrival(_vTargetPos, fEpsilon))
+    {
+        Set_State(CTransform_3D::STATE_POSITION, XMVectorSetW(_vTargetPos, 1.0f));
+        return true;
+    }
+
+	//_vector vFinalPos = vPos + XMVectorSet(-1.f, 0.f, 0.f, 0.f) * m_fSpeedPerSec * _fTimeDelta;
+    _vector vDir = XMVectorSetW(XMVector3Normalize(_vTargetPos - vPos), 0.f);
+	_vector vFinalPos = vPos + vDir * m_fSpeedPerSec * _fTimeDelta;
+
+    Set_State(STATE::STATE_POSITION, vFinalPos);
 
     return false;
 }

@@ -35,6 +35,15 @@ HRESULT CBoss_PurpleBall::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
+
+    /* Actor Desc 채울 때 쓴 데이터 할당해제 */
+
+    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
+    {
+        Safe_Delete(pDesc->pActorDesc->ShapeDatas[i].pShapeDesc);
+    }
+    Safe_Delete(pDesc->pActorDesc);
+
 	return S_OK;
 }
 

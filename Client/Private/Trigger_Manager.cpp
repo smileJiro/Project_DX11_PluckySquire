@@ -574,7 +574,7 @@ void CTrigger_Manager::Register_Trigger_Action()
 			CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_State(CPlayer::STATE::GET_ITEM);
 			CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
 		};
-	
+	;
 	m_Actions[TEXT("Glove_Get_After")] = [this](_wstring _wszEventTag) 
 {
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_BlockPlayerInput(false);
