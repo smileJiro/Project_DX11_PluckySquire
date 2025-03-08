@@ -241,7 +241,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/Models/2DAnim/Chapter2/Player/player.model2d")))))
+        C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/Models/2DAnim/Chapter2/Player/player.model2d"), LEVEL_CAMERA_TOOL))))
         return E_FAIL;
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
@@ -507,7 +507,7 @@ HRESULT CLoader::Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath)
         filename = filename.substr(0, lastDot); // 확장자 제거
 
         if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
-            C2DModel::Create(m_pDevice, m_pContext, str.c_str()))))
+            C2DModel::Create(m_pDevice, m_pContext, str.c_str(), _iLevId))))
         {
             wstring str = TEXT("Failed to Create 2DModel");
             str += filename;
@@ -553,7 +553,7 @@ HRESULT CLoader::Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _
             //cout << entry.path().string() << endl;
 
             if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
-                C2DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str()))))
+                C2DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _iLevId))))
             {
                 string str = "Failed to Create 2DModel";
                 str += entry.path().filename().replace_extension().string();

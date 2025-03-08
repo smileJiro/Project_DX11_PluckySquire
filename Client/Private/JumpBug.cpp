@@ -40,8 +40,8 @@ HRESULT CJumpBug::Initialize(void* _pArg)
     pDesc->fChase2DRange = 0.f;
     pDesc->fAttack2DRange = 0.f;
 
-    pDesc->_tStat.iHP = 5;
-    pDesc->_tStat.iMaxHP = 5;
+    pDesc->_tStat.iHP = 3;
+    pDesc->_tStat.iMaxHP = 3;
     pDesc->_tStat.iDamg = 1;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
@@ -392,7 +392,7 @@ HRESULT CJumpBug::Ready_ActorDesc(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER | OBJECT_GROUP::EXPLOSION;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER | OBJECT_GROUP::EXPLOSION | OBJECT_GROUP::DYNAMIC_OBJECT;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;

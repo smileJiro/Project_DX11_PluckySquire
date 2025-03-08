@@ -36,7 +36,7 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
     pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     pDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
 
-    pDesc->tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+    pDesc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
     pDesc->pActorDesc = nullptr;
 
@@ -48,7 +48,7 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
     /* Test 2D Collider */
     CCollider_AABB::COLLIDER_AABB_DESC tAABBDesc = {};
     tAABBDesc.pOwner = this;
-    tAABBDesc.vExtents = { 100.f , 100.f};
+    tAABBDesc.vExtents = { 100.f , 300.f};
     tAABBDesc.vScale = { 1.0f, 1.0f };
     tAABBDesc.vOffsetPosition = { 0.f,0.f };
     tAABBDesc.isBlock = false;
@@ -74,8 +74,10 @@ void CMiniGame_Defender::Late_Update(_float _fTimeDelta)
 
 HRESULT CMiniGame_Defender::Render()
 {
-    //if (m_p2DColliderComs[0]->Is_Active())
-    //    m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+#ifdef _DEBUG
+    if (m_p2DColliderComs[0]->Is_Active())
+        m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+#endif
 	return __super::Render();
 }
 

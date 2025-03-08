@@ -31,8 +31,6 @@ HRESULT CInteraction_Heart::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
-
 	return S_OK;
 }
 
@@ -44,9 +42,19 @@ void CInteraction_Heart::Priority_Update(_float _fTimeDelta)
 void CInteraction_Heart::Update(_float _fTimeDelta)
 {
 	// 캐릭터를 따라다니는 하트 // 타격받았을때만 노출되게 변경해야한다.
+	__super::Update(_fTimeDelta);
+}
 
-	if (true == Uimgr->Get_PlayerOnHit())
+void CInteraction_Heart::Late_Update(_float _fTimeDelta)
+{
+
+	if (true == m_isRender && COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
+		__super::Late_Update(_fTimeDelta);
+	}
+
+	//if (true == Uimgr->Get_PlayerOnHit())
+	//{
 		m_PlayerHP = Uimgr->Get_Player()->Get_Stat().iHP;
 
 		if (m_PrePlayerHP != m_PlayerHP)
@@ -54,23 +62,41 @@ void CInteraction_Heart::Update(_float _fTimeDelta)
 			m_isRender = true;
 			m_PrePlayerHP = m_PlayerHP;
 
-			if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
-				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+			if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+			{
+				if (true == m_isDeleteRender)
+					m_isDeleteRender = false;
+
+
+				if (nullptr != CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player()))
+				{
+					auto CurSection = CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player());
+					m_strSectionName = *(CurSection);
+					if (m_preSectionName != m_strSectionName)
+					{
+
+						CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(*(CurSection), this, SECTION_2D_PLAYMAP_UI);
+						m_preSectionName = m_strSectionName;
+					}
+				}
+
+			}
+			else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+			{
+				if (false == m_isDeleteRender)
+				{
+					SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
+
+					m_preSectionName = TEXT(" ");
+					m_isDeleteRender = true;
+				}
+			}
 
 		}
 
 		Cal_HeartPos();
 		Cal_RenderTime(_fTimeDelta, m_PlayerHP);
-
-	}
-
-	__super::Update(_fTimeDelta);
-
-}
-
-void CInteraction_Heart::Late_Update(_float _fTimeDelta)
-{
-
+	//}
 } 
 
 HRESULT CInteraction_Heart::Render()
@@ -81,6 +107,25 @@ HRESULT CInteraction_Heart::Render()
 		// TODO :: 일단은...
 
 		__super::Render(m_PlayerHP);
+	}
+	else if (true == m_isRender  && COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+			return E_FAIL;
+
+
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+			return E_FAIL;
+
+		if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", m_PlayerHP)))
+			return E_FAIL;
+
+		m_pShaderCom->Begin((_uint)0);
+		m_pVIBufferCom->Bind_BufferDesc();
+		m_pVIBufferCom->Render();
 	}
 
 
@@ -148,23 +193,32 @@ HRESULT CInteraction_Heart::Cleanup_DeadReferences()
 	return S_OK;
 }
 
+
+
 void CInteraction_Heart::Cal_HeartPos()
 {
 	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
+
+
 		// TODO :: 해당 부분은 가변적이다. 추후 변경해야한다.
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
-
-		
-
 		_float2 vPlayerPos = _float2(Uimgr->Get_Player()->Get_BodyPosition().m128_f32[0], Uimgr->Get_Player()->Get_BodyPosition().m128_f32[1]);
-
 		_float2 vCalPos = { 0.f, 0.f };
 
 		vCalPos.x = vPlayerPos.x;
 		vCalPos.y = vPlayerPos.y + RTSize.y * 0.175f;
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f));
+	}
+	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		//TODO :: 3D 어떻게 표현할것인가?
+		_float2 vCalx = __super::WorldToSceen(Uimgr->Get_Player()->Get_WorldMatrix());
+		_float CalX = vCalx.x - g_iWinSizeX / 2.f;
+		_float CalY = -(vCalx.y - g_iWinSizeY / 1.55f);
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(CalX, CalY, 0.f, 1.f));
+		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX, m_fSizeY, 1.f));
 	}
 }
 
@@ -177,7 +231,6 @@ void CInteraction_Heart::Cal_RenderTime(_float _fTimeDelta, _int _iPlayerHP)
 		m_isRender = false;
 		m_fRenderTime = 0.f;
 		Uimgr->Set_PlayerOnHit(false);
-		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 	}
 }
 

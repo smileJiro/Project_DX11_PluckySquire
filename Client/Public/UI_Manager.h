@@ -7,6 +7,7 @@
 #include "Logo_Props.h"
 #include "Narration.h"
 #include "Interaction_E.h"
+#include "Interaction_Heart.h"
 
 
 
@@ -27,6 +28,7 @@ private:
 	CPlayer* m_pPlayer = { nullptr };
 	CDialog* m_pDiagloue = { nullptr };
 	CInteraction_E* m_pInteractionE = { nullptr };
+	CInteraction_Heart* m_pInteractionHeart = { nullptr };
 	
 
 	map<_uint, CSettingPanelBG*>		m_pSettingPanels;
@@ -84,13 +86,15 @@ private:
 
 public:
 	void								Set_InterActionE(CInteraction_E* _interactionE) { m_pInteractionE = _interactionE; Safe_AddRef(_interactionE); }
+	void								Set_InterActionHeart(CInteraction_Heart* _interactionHeart) { m_pInteractionHeart = _interactionHeart; Safe_AddRef(_interactionHeart); }
 	STAMP								Get_StampIndex() { return m_eStampIndex; }
 	void								Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
 	CPlayer*							Get_Player() { return m_pPlayer; }
 	void								Set_Player(CPlayer* _Player) { m_pPlayer = _Player; Safe_AddRef(_Player); }
 	void								Set_Dialogue(CDialog* _Dialogue) { m_pDiagloue = _Dialogue; Safe_AddRef(_Dialogue); }
 	CDialog*							Get_pDialogue() { return m_pDiagloue; }
-	_bool								Get_PlayerOnHit() { return m_isOnHitPlayer; }
+	_bool								Get_PlayerOnHit() { return 
+		m_isOnHitPlayer; }
 	void								Set_PlayerOnHit(_bool _Hit) { m_isOnHitPlayer = _Hit; }
 	void								Emplace_SettingPanels(_uint _ePanel, CSettingPanelBG* _pPanel);
 	void								Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG* _pPanel);
@@ -156,7 +160,7 @@ public:
 	CNarration*							Get_Narration() { return m_pNarration; }
 	void								Set_VioletMeet(_bool _meet) { m_isVioletMeet = _meet; }
 	_bool								Get_VioletMeet() { return m_isVioletMeet; }
-	void								Set_PlayNarration(const _wstring& _strid) { m_pNarration->CBase::Set_Active(true); wsprintf(m_strNarrationID, _strid.c_str()); m_isPlayerNarration = true; }
+	void								Set_PlayNarration(const _wstring& _strid);
 	_tchar*								Get_strNarrationID() { return m_strNarrationID; }
 	_bool								Get_PlayNarration() { return m_isPlayerNarration; }
 	void								Set_TurnoffPlayNarration(_bool _Turnoff) { m_isPlayerNarration = _Turnoff; }

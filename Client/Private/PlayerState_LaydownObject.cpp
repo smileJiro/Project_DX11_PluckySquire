@@ -133,8 +133,6 @@ void CPlayerState_LaydownObject::Enter()
 
 void CPlayerState_LaydownObject::Exit()
 {
-	if(m_pOwner->Is_SwordMode())
-		m_pOwner->Equip_Part(CPlayer::PLAYER_PART_SWORD);
 
 	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{

@@ -1,68 +1,88 @@
 [
-  {
-    "Section_Name": "Chapter8_P0506",
-    "Section_BackGround_Name": "Chapter8_P0506_BackGround",
-    "Section_Type": 0,
-    "Section_Default": 0,
-    "Section_Info": {
-      "Next_Page_Tag": "Chapter8_P0708"
-    }
-  },
-  {
-    "Section_Name": "Chapter8_P0708",
-    "Section_BackGround_Name": "Chapter8_P0708_BackGround",
-    "Section_Type": 0,
-    "Section_Default": 0,
-    "Section_Info": {
-      "Pre_Page_Tag": "Chapter8_P0506",
-      "Next_Page_Tag": "Chapter8_P1112"
-    }
-  },
-  {
-    "Section_Name": "Chapter8_P1112",
-    "Section_BackGround_Name": "Chapter8_P1112_BackGround",
-    "Section_Type": 0,
-    "Section_Default": 0,
-    "Section_Info": {
-      "Pre_Page_Tag": "Chapter8_P0708",
-      "Next_Page_Tag": "Chapter8_P1516"
-    }
-  },
-  {
+	{
+		"Section_Name": "Chapter8_P0102",
+		"Section_BackGround_Name": "Chapter8_P0102_BackGround",
+		"Section_Start": true,
+		"Section_Type": 1,
+		"Section_Default": 0,
+		"Section_Info": {
+			"Next_Page_Tag": "Chapter8_P0304"
+		}
+	},
+	{
+		"Section_Name": "Chapter8_P0304",
+		"Section_BackGround_Name": "Chapter8_P0304_BackGround",
+		"Section_Type": 1,
+		"Section_Default": 0,
+		"Section_Info": {
+			"Pre_Page_Tag": "Chapter8_P0102",
+			"Next_Page_Tag": "Chapter8_P0506"
+		}
+	},
+	{
+		"Section_Name": "Chapter8_P0506",
+		"Section_BackGround_Name": "Chapter8_P0506_BackGround",
+		"Section_Type": 0,
+		"Section_Default": 0,
+		"Section_Info": {
+			"Next_Page_Tag": "Chapter8_P0708"
+		}
+	},
+	{
+		"Section_Name": "Chapter8_P0708",
+		"Section_BackGround_Name": "Chapter8_P0708_BackGround",
+		"Section_Type": 0,
+		"Section_Default": 0,
+		"Section_Info": {
+			"Pre_Page_Tag": "Chapter8_P0506",
+			"Next_Page_Tag": "Chapter8_P1112"
+		}
+	},
+	{
+		"Section_Name": "Chapter8_P1112",
+		"Section_BackGround_Name": "Chapter8_P1112_BackGround",
+		"Section_Type": 0,
+		"Section_Default": 0,
+		"Section_Info": {
+			"Pre_Page_Tag": "Chapter8_P0708",
+			"Next_Page_Tag": "Chapter8_P1516"
+		}
+	},
+	{
 
-    "Section_Name": "Chapter8_P1516",
-    "Section_Start": true,
-    "Section_Default": 0,
-    "Section_BackGround_Name": "Chapter8_P1516_BackGround",
-    "Section_Type": 3,
-    "MiniGame_Info": {
-      "MiniGame_Type": 1,
-      "MiniGame_Name": "Pip_01"
-    },
-    "Section_Info": {
-      "Pre_Page_Tag": "Chapter8_P1112",
-      "Next_Page_Tag": "Chapter8_P1718"
-    }
-  },
-  {
-    "Section_Name": "Chapter8_P1718",
-    "Section_BackGround_Name": "Chapter8_P1718_BackGround",
-    "Section_Type": 0,
-    "Section_Default": 0,
-    "Section_Info": {
-      "Pre_Page_Tag": "Chapter8_P1112",
-      "Next_Page_Tag": "Chapter8_P1920"
-    }
-  },
-  {
-    "Section_Name": "Chapter8_P1920",
-    "Section_BackGround_Name": "Chapter8_P1920_BackGround",
-    "Section_Type": 0,
-    "Section_Default": 0,
-    "Section_Info": {
-      "Pre_Page_Tag": "Chapter8_P1718"
-    }
-  },
+		"Section_Name": "Chapter8_P1516",
+		"Section_Start": true,
+		"Section_Default": 0,
+		"Section_BackGround_Name": "Chapter8_P1516_BackGround",
+		"Section_Type": 3,
+		"MiniGame_Info": {
+			"MiniGame_Type": 1,
+			"MiniGame_Name": "Pip_01"
+		},
+		"Section_Info": {
+			"Pre_Page_Tag": "Chapter8_P1112",
+			"Next_Page_Tag": "Chapter8_P1718"
+		}
+	},
+	{
+		"Section_Name": "Chapter8_P1718",
+		"Section_BackGround_Name": "Chapter8_P1718_BackGround",
+		"Section_Type": 0,
+		"Section_Default": 0,
+		"Section_Info": {
+			"Pre_Page_Tag": "Chapter8_P1112",
+			"Next_Page_Tag": "Chapter8_P1920"
+		}
+	},
+	{
+		"Section_Name": "Chapter8_P1920",
+		"Section_BackGround_Name": "Chapter8_P1920_BackGround",
+		"Section_Type": 0,
+		"Section_Default": 0,
+		"Section_Info": {
+			"Pre_Page_Tag": "Chapter8_P1718"
+		}
+	},
 	{
 		"Section_Name": "Chapter8_SKSP_01",
 		"Section_BackGround_Name": "Chapter8_SKSP_01_BackGround",
@@ -70,12 +90,12 @@
 		"Section_Type": 2,
 		"Section_Info": {
 			"RenderResolution": {
-					"X": 1536.0,
-					"Y": 3072.0
+				"X": 1536.0,
+				"Y": 3072.0
 			},
 			"LevelSizePixels": {
-					"X": 1536.0,
-					"Y": 3072.0
+				"X": 1536.0,
+				"Y": 3072.0
 			}
 		}
 	},
@@ -86,12 +106,12 @@
 		"Section_Type": 2,
 		"Section_Info": {
 			"RenderResolution": {
-					"X": 3072.0,
-					"Y": 9216.0
+				"X": 3072.0,
+				"Y": 9216.0
 			},
 			"LevelSizePixels": {
-					"X": 3072.0,
-					"Y": 9216.0
+				"X": 3072.0,
+				"Y": 9216.0
 			}
 		}
 	},
@@ -102,12 +122,12 @@
 		"Section_Type": 2,
 		"Section_Info": {
 			"RenderResolution": {
-					"X": 4095.0,
-					"Y": 3072.0
+				"X": 4095.0,
+				"Y": 3072.0
 			},
 			"LevelSizePixels": {
-					"X": 4095.0,
-					"Y": 3072.0
+				"X": 4095.0,
+				"Y": 3072.0
 			}
 		}
 	},
@@ -118,12 +138,12 @@
 		"Section_Type": 2,
 		"Section_Info": {
 			"RenderResolution": {
-						"X": 1536.0,
-						"Y": 4608.0
+				"X": 1536.0,
+				"Y": 4608.0
 			},
 			"LevelSizePixels": {
-						"X": 1536.0,
-						"Y": 4608.0
+				"X": 1536.0,
+				"Y": 4608.0
 			}
 		}
 	},
@@ -134,12 +154,12 @@
 		"Section_Type": 2,
 		"Section_Info": {
 			"RenderResolution": {
-						"X": 2304.0,
-						"Y": 9216.0
+				"X": 2304.0,
+				"Y": 9216.0
 			},
 			"LevelSizePixels": {
-						"X": 2304.0,
-						"Y": 9216.0
+				"X": 2304.0,
+				"Y": 9216.0
 			}
 		}
 	},
@@ -150,12 +170,12 @@
 		"Section_Type": 2,
 		"Section_Info": {
 			"RenderResolution": {
-						"X": 5376.0,
-						"Y": 2304.0
+				"X": 5376.0,
+				"Y": 2304.0
 			},
 			"LevelSizePixels": {
-						"X": 5376.0,
-						"Y": 2304.0
+				"X": 5376.0,
+				"Y": 2304.0
 			}
 		}
 	},
@@ -166,12 +186,12 @@
 		"Section_Type": 2,
 		"Section_Info": {
 			"RenderResolution": {
-					"X": 1536.0,
-					"Y": 3072.0
+				"X": 1536.0,
+				"Y": 3072.0
 			},
 			"LevelSizePixels": {
-					"X": 1536.0,
-					"Y": 3072.0
+				"X": 1536.0,
+				"Y": 3072.0
 			}
 		}
 	},
@@ -182,12 +202,12 @@
 		"Section_Type": 2,
 		"Section_Info": {
 			"RenderResolution": {
-					"X": 1536.0,
-					"Y": 6144.0
+				"X": 1536.0,
+				"Y": 6144.0
 			},
 			"LevelSizePixels": {
-					"X": 1536.0,
-					"Y": 6144.0
+				"X": 1536.0,
+				"Y": 6144.0
 			}
 		}
 	},
@@ -198,12 +218,12 @@
 		"Section_Type": 2,
 		"Section_Info": {
 			"RenderResolution": {
-        "X": 8448.0,
-        "Y": 6144.0
+				"X": 8448.0,
+				"Y": 6144.0
 			},
 			"LevelSizePixels": {
-        "X": 8448.0,
-        "Y": 6144.0
+				"X": 8448.0,
+				"Y": 6144.0
 			}
 		}
 	},
@@ -214,12 +234,12 @@
 		"Section_Type": 2,
 		"Section_Info": {
 			"RenderResolution": {
-        "X": 6144.0,
-        "Y": 4608.0
+				"X": 6144.0,
+				"Y": 4608.0
 			},
 			"LevelSizePixels": {
-        "X": 6144.0,
-        "Y": 4608.0
+				"X": 6144.0,
+				"Y": 4608.0
 			}
 		}
 	},

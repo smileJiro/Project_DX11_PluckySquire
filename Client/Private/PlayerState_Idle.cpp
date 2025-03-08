@@ -94,6 +94,7 @@ void CPlayerState_Idle::Switch_IdleAnimation2D(F_DIRECTION _eFDir)
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CYBERJOTLITE_RUN_IDLE_TEMP);
 	_bool bSword = m_pOwner->Is_SwordHandling();
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
+	_bool bCyber = m_pOwner->Is_CyvberJotMode();
 	if (m_bPlatformerMode)
 	{
 		if (F_DIRECTION::UP == _eFDir)
