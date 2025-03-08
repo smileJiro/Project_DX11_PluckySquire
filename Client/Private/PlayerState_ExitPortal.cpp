@@ -143,32 +143,36 @@ void CPlayerState_ExitPortal::Shoot_Player3D()
 	_float3 vPos;
 	XMStoreFloat3(&vPos, vPlayerPos + vImpulse * 0.5f);
 	m_pOwner->Get_ActorCom()->Set_GlobalPose(vPos);
-
-
-	//2D상태일 때 카메라의 방향 구하기
-	_vector vCamLook = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
-	vCamLook = -XMVectorSetY(vCamLook, 0.f);
-	if (abs(vCamLook.m128_f32[0]) > abs(vCamLook.m128_f32[2]))
-	{
-		vCamLook.m128_f32[2] = 0.f;
-		vCamLook.m128_f32[0] /= vCamLook.m128_f32[0];
-	}
+	if(vImpulse.m128_f32[0] == 0)
+		m_pOwner->LookDirectionXZ_Dynamic(vImpulse);
 	else
 	{
-		vCamLook.m128_f32[0] = 0.f;
-		vCamLook.m128_f32[2] /= vCamLook.m128_f32[2];
-	}
-	//2D상태일 때 플레이어의 3D좌표계방향 구하기
-	_vector vNewLookDIr = FDir_To_Vector(EDir_To_FDir(m_pOwner->Get_2DDirection()));
-	vNewLookDIr = XMVectorSetZ(vNewLookDIr, XMVectorGetY(vNewLookDIr));
-	vNewLookDIr = XMVectorSetY(vNewLookDIr, 0.f);
 
-	//2D 상태일 때 카메라의 방향이 z+가 아니라면?
-	//카메라 방향 :100 -> 001
-	//플레이어 방향 : 
-	vNewLookDIr += (vCamLook - _vector{ 0.f,0.f,1.f });
-	vNewLookDIr = XMVector3Normalize(vNewLookDIr);
-	m_pOwner->LookDirectionXZ_Dynamic(vNewLookDIr);
-	//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(vTargetPos, XMConvertToRadians(45.f));
+		//2D상태일 때 카메라의 방향 구하기
+		_vector vCamLook = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
+		vCamLook = -XMVectorSetY(vCamLook, 0.f);
+		if (abs(vCamLook.m128_f32[0]) > abs(vCamLook.m128_f32[2]))
+		{
+			vCamLook.m128_f32[2] = 0.f;
+			vCamLook.m128_f32[0] /= vCamLook.m128_f32[0];
+		}
+		else
+		{
+			vCamLook.m128_f32[0] = 0.f;
+			vCamLook.m128_f32[2] /= vCamLook.m128_f32[2];
+		}
+		//2D상태일 때 플레이어의 3D좌표계방향 구하기
+		_vector vNewLookDIr = FDir_To_Vector(EDir_To_FDir(m_pOwner->Get_2DDirection()));
+		vNewLookDIr = XMVectorSetZ(vNewLookDIr, XMVectorGetY(vNewLookDIr));
+		vNewLookDIr = XMVectorSetY(vNewLookDIr, 0.f);
+
+		//2D 상태일 때 카메라의 방향이 z+가 아니라면?
+		//카메라 방향 :100 -> 001
+		//플레이어 방향 : 
+		vNewLookDIr += (vCamLook - _vector{ 0.f,0.f,1.f });
+		vNewLookDIr = XMVector3Normalize(vNewLookDIr);
+		//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(vTargetPos, XMConvertToRadians(45.f));
+		m_pOwner->LookDirectionXZ_Dynamic(vNewLookDIr);
+	}
 
 }

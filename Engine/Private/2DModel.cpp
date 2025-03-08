@@ -23,6 +23,104 @@ C2DModel::C2DModel(const C2DModel& _Prototype)
 
 }
 
+HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath, _uint _iLevelIdx, _bool _bNoJson)
+{
+
+	if (_bNoJson)
+	{
+		m_eAnimType = NONANIM;
+		filesystem::path path = (_szModel2DFilePath);
+		CTexture* pTexture = Load_Texture(path, _iLevelIdx);
+
+		if (nullptr == pTexture)
+		{
+			cout << "Failed Create Texture : " << _szModel2DFilePath << endl;
+			return E_FAIL;
+		}
+		string strTextureKey = path.filename().replace_extension().string().c_str();
+		m_Textures.insert({ strTextureKey,pTexture });
+
+		m_pNonAnimSprite = CSpriteFrame::Create(m_pDevice, m_pContext, strTextureKey.c_str(), m_Textures);
+		if (nullptr == m_pNonAnimSprite)
+		{
+			return E_FAIL;
+		}
+		return S_OK;
+	}
+	std::ifstream inFile(_szModel2DFilePath, std::ios::binary);
+	if (!inFile) {
+		string str = "파일을 열 수 없습니다.";
+		str += _szModel2DFilePath;
+		MessageBoxA(NULL, str.c_str(), "에러", MB_OK);
+		inFile.close();
+		return E_FAIL;
+	}
+	_char		szDrive[MAX_PATH] = "";
+	_char		szDirectory[MAX_PATH] = "";
+	_splitpath_s(_szModel2DFilePath, szDrive, MAX_PATH, szDirectory, MAX_PATH, nullptr, 0, nullptr, 0);
+	strcat_s(szDrive, szDirectory);
+
+	//AllTextures
+	_uint iCount = 0;//TextureCount
+	inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
+	for (_uint i = 0; i < iCount; i++)
+	{
+		//TextureName Length
+		_uint iLength = 0;
+		inFile.read(reinterpret_cast<char*>(&iLength), sizeof(_uint));
+		_char szTextureName[MAX_PATH] = "";
+		inFile.read(szTextureName, iLength);
+		szTextureName[iLength] = '\0';
+
+		//이미 있으미ㅕㄴ 넘어감.
+		if (m_Textures.find(szTextureName) != m_Textures.end())
+			continue;
+		std::filesystem::path path = szDrive;
+		path += szTextureName;
+		path += ".dds";
+		CTexture* pTexture = Load_Texture(path,_iLevelIdx);
+
+		if (nullptr == pTexture)
+		{
+			inFile.close();
+			cout << "Failed Create Texture : " << szTextureName << endl;
+			return E_FAIL;
+		}
+		m_Textures.insert({ szTextureName,pTexture });
+	}
+	inFile.read(reinterpret_cast<char*>(&m_eAnimType), sizeof(_uint));
+
+	//Animation2Ds
+	if (ANIM == m_eAnimType)
+	{
+		inFile.read(reinterpret_cast<char*>(&iCount), sizeof(_uint));
+		m_Animation2Ds.reserve(iCount);
+		for (_uint i = 0; i < iCount; i++)
+		{
+			CAnimation2D* pAnimation = CAnimation2D::Create(m_pDevice, m_pContext, szDrive, inFile, m_Textures);
+			if (nullptr == pAnimation)
+			{
+				inFile.close();
+				return E_FAIL;
+			}
+			m_Animation2Ds.push_back(pAnimation);
+		}
+	}
+	//NonANimSpritek
+	else if (NONANIM == m_eAnimType)
+	{
+		m_pNonAnimSprite = CSpriteFrame::Create(m_pDevice, m_pContext, szDrive, inFile, m_Textures);
+		if (nullptr == m_pNonAnimSprite)
+		{
+			inFile.close();
+			return E_FAIL;
+		}
+	}
+	inFile.close();
+	return S_OK;
+}
+
+
 HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath, _bool _bNoJson)
 {
 	if (_bNoJson)
@@ -36,7 +134,7 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath, _bool _b
 			return E_FAIL;
 		}
 		string strTextureKey = path.filename().replace_extension().string().c_str();
-		m_Textures.insert({ strTextureKey,pTexture});
+		m_Textures.insert({ strTextureKey,pTexture });
 
 		m_pNonAnimSprite = CSpriteFrame::Create(m_pDevice, m_pContext, strTextureKey.c_str(), m_Textures);
 		if (nullptr == m_pNonAnimSprite)
@@ -78,7 +176,7 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath, _bool _b
 		if (nullptr == pTexture)
 		{
 			inFile.close();
-			cout << "Failed Create Texture : " << path << endl;
+			cout << "Failed Create Texture : " << szTextureName << endl;
 			return E_FAIL;
 		}
 		m_Textures.insert({ szTextureName,pTexture });
@@ -114,7 +212,6 @@ HRESULT C2DModel::Initialize_Prototype(const _char* _szModel2DFilePath, _bool _b
 	inFile.close();
 	return S_OK;
 }
-
 HRESULT C2DModel::Initialize(void* _pDesc)
 {
 	if (FAILED(__super::Initialize(_pDesc)))
@@ -168,6 +265,22 @@ void C2DModel::Switch_Reverse(_uint iIdx, _bool _bReverse)
 }
 
 #ifdef _DEBUG
+
+CTexture* C2DModel::Load_Texture(filesystem::path _path, _uint _iLevelIdx)
+{
+
+	//먼저 프로토타입을 찾음
+	CTexture* pTexture = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, _iLevelIdx, _path.filename(), nullptr));
+	//프로토타입 없으면 파일로 만듦.
+	if (nullptr == pTexture)
+	{
+		pTexture = CTexture::Create(m_pDevice, m_pContext, _path.c_str(), 1, true);
+		if (FAILED(m_pGameInstance->Add_Prototype(_iLevelIdx, _path.filename(), pTexture)))
+			return nullptr;
+		pTexture = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, _iLevelIdx, _path.filename(), nullptr));
+	}
+	return pTexture;
+}
 
 const CSpriteFrame* C2DModel::Get_SpriteFrame()
 {
@@ -261,6 +374,20 @@ _bool C2DModel::Play_Animation(_float _fTimeDelta, _bool _bReverse)
 	else
 		m_bDuringAnimation = false;
 	return false;
+}
+
+
+
+C2DModel* C2DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _uint _iLevelIdx, _bool _bNoJson)
+{
+	C2DModel* pInstance = new C2DModel(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, _iLevelIdx,_bNoJson)))
+	{
+		MSG_BOX("Failed to Created : 2DModel");
+		Safe_Release(pInstance);
+	}
+	return pInstance;
 }
 
 C2DModel* C2DModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _bool _bNoJson)

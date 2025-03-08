@@ -18,7 +18,6 @@ public:
     virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 private:
     CPortal* m_pPortal = nullptr;
-    _bool m_bPortaled = false;
 	_vector m_vPortalPos = {};
 	_float m_f3DDistanceThreshold = 0.5f;
     _float m_f3DJumpRadianMin =XMConvertToRadians(45.f);
