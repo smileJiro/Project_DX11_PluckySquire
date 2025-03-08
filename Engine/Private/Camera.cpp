@@ -220,9 +220,11 @@ void CCamera::Start_Turn_AxisY(_float _fTurnTime, _float _fAngle, _uint _iRatioT
 	if (nullptr == m_pCurArm)
 		return;
 
-	m_isTurnAxisY = true;
+	m_isTurnAxisY_Angle = true;
 	m_fTurnAngle = _fAngle;
 	m_iTurnAngleRatioType = _iRatioType;
+	m_pCurArm->Set_PreArmAngle(0.f);
+	m_pCurArm->Set_ArmTurnTime({ _fTurnTime, 0.f });
 }
 
 void CCamera::Start_Turn_AxisRight(_float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec)
@@ -240,9 +242,11 @@ void CCamera::Start_Turn_AxisRight(_float _fTurnTime, _float _fAngle, _uint _iRa
 	if (nullptr == m_pCurArm)
 		return;
 
-	m_isTurnAxisRight = true;
+	m_isTurnAxisRight_Angle = true;
 	m_fTurnAngle = _fAngle;
 	m_iTurnAngleRatioType = _iRatioType;
+	m_pCurArm->Set_PreArmAngle(0.f);
+	m_pCurArm->Set_ArmTurnTime({ _fTurnTime, 0.f });
 }
 
 void CCamera::Start_Changing_ArmLength(_float _fLengthTime, _float _fLength, RATIO_TYPE _eRatioType)

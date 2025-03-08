@@ -101,7 +101,7 @@ void CCamera_2D::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA*
 	m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
 }
 
-void CCamera_2D::Add_CustomArm(ARM_DATA _tArmData)
+void CCamera_2D::Set_CustomArmData(ARM_DATA& _tArmData)
 {
 	m_CustomArmData = _tArmData;
 	m_pCurArm->Set_StartInfo();
@@ -334,7 +334,8 @@ void CCamera_2D::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
 
 	m_vStartPos = m_v2DPreTargetWorldPos;
 
-	m_strSectionName = _pTarget->Get_Include_Section_Name();
+	if(L"" != _pTarget->Get_Include_Section_Name())
+		m_strSectionName = _pTarget->Get_Include_Section_Name();
 }
 
 void CCamera_2D::Start_ResetArm_To_SettingPoint(_float _fResetTime)
@@ -967,7 +968,7 @@ void CCamera_2D::Find_TargetPos()
 				_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
 				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
 
-				Set_InitialData(vDir, 6.5f, XMVectorZero(), 5);
+				m_pCurArm->Set_ArmVector(vDir);
 			}
 		}
 #pragma endregion

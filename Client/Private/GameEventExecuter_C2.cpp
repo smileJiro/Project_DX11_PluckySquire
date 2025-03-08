@@ -251,7 +251,7 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 			tData.fLengthTime = { 5.f, 0.f };
 			tData.iLengthRatioType = EASE_OUT;
 
-			pCamera->Add_CustomArm(tData);
+			pCamera->Set_CustomArmData(tData);
 
 			pCamera->Start_Shake_ByCount(0.2f, 0.1f, 10, CCamera::SHAKE_XY);
 			pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(-0.7f, 2.f, 0.f, 0.f), EASE_IN_OUT);
@@ -409,7 +409,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			tData.fLengthTime = { 1.5f, 0.f };
 			tData.iLengthRatioType = EASE_IN_OUT;
 
-			pCamera->Add_CustomArm(tData);
+			pCamera->Set_CustomArmData(tData);
 			pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_CUSTOMARM);
 			pCamera->Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, -3.f, 0.f), EASE_IN_OUT);
 			pCamera->Start_Zoom(1.5f, (CCamera::ZOOM_LEVEL)CCamera::LEVEL_5, EASE_IN_OUT);

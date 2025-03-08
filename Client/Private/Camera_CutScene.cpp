@@ -71,6 +71,8 @@ _bool CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName)
 	m_isFinishCutScene = false;
 	m_szEventTag = _wszCutSceneName;
 
+	m_pGameInstance->Set_Layer_Culling(m_pGameInstance->Get_CurLevelID(), L"Layer_MapObject", false);
+
 	return true;
 }
 
@@ -232,6 +234,9 @@ void CCamera_CutScene::After_CutScene(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraType(m_pCurCutScene->first.iNextCameraType);
 		m_isFinishCutScene = false;
 		m_pCurCutScene = nullptr;
+	
+		m_pGameInstance->Set_Layer_Culling(m_pGameInstance->Get_CurLevelID(), L"Layer_MapObject", true);
+	
 	}
 }
 

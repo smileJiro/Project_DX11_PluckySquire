@@ -1118,15 +1118,15 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	//CGameObject* pGameObject;
-	//
-	//pDesc.fSizeX = 360.f / 2.f;
-	//pDesc.fSizeY = 149.f / 2.f;
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
-	//	return E_FAIL;
-	//
-	//Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pGameObject));
+	CGameObject* pGameObject;
+	
+	pDesc.fSizeX = 360.f / 2.f;
+	pDesc.fSizeY = 149.f / 2.f;
+	
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
+		return E_FAIL;
+	
+	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pGameObject));
 	
 	
 
@@ -1777,7 +1777,6 @@ void CLevel_Chapter_02::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 	Desc.vArm = _vArm;
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
 	Desc.fLength = _fLength;
-	Desc.wszArmTag = TEXT("Player_Arm");
 
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 

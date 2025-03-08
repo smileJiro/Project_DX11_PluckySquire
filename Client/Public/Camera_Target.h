@@ -9,7 +9,7 @@ BEGIN(Client)
 class CCamera_Target  : public CCamera
 {
 public:
-	enum CAMERA_MODE { DEFAULT, MOVE_TO_NEXTARM, RETURN_TO_PREARM, RETURN_TO_DEFUALT, MOVE_TO_CUSTOMARM, RESET_TO_SETTINGPOINT, CAMERA_MODE_END };
+	enum CAMERA_MODE { DEFAULT, MOVE_TO_NEXTARM, RETURN_TO_PREARM, RETURN_TO_DEFUALT, MOVE_TO_CUSTOMARM, RESET_TO_SETTINGPOINT, BOSS, CAMERA_MODE_END };
 	enum TARGET_STATE { TARGET_RIGHT, TARGET_UP, TARGET_LOOK, TARGET_POS, TARGET_STATE_END };
 
 	typedef struct tagCameraTargetDesc : public CCamera::CAMERA_DESC
@@ -72,11 +72,12 @@ public:
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
 	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
-	void						Add_CustomArm(ARM_DATA _tArmData);
 
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 	void						Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);
-	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
+	void						Set_CustomArmData(ARM_DATA& _tArmData);
+
+	void						Set_CameraMode(_uint _iCameraMode) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; }
 	void						Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _int _iTriggerID);
 	void						Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID);
 	void						Set_EnableLookAt(_bool _isEnableLookAt);
@@ -89,7 +90,8 @@ public:
 	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix, _float _fChangingTime = 1.f) override;
 	virtual void				Change_Target(CGameObject* _pTarget, _float _fChangingTime = 1.f) override;
 	virtual void				Start_ResetArm_To_SettingPoint(_float _fResetTime) override;
-
+	virtual void				Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType) override;
+	
 	void						Load_InitialArmTag();
 
 private:
@@ -101,7 +103,6 @@ private:
 
 	CAMERA_MODE					m_eCameraMode = { CAMERA_MODE_END };
 	CAMERA_MODE					m_ePreCameraMode = { DEFAULT };
-	_int						m_iNextCameraMode = { -1 };
 
 	_float						m_fSmoothSpeed = {};
 
@@ -139,6 +140,10 @@ private:
 	_wstring					m_szTargetSectionTag;
 	_float3						m_vStartPos = {};			// Target 바뀌었을 때 Lerp하기 위한 변수
 
+	// Boss
+	const _float4x4*			m_pPivotWorldMatrix = { nullptr };		// WorldMatrirx를 구할 수 없을 때 사용
+	_float						m_fPivotRatio = {};
+
 #pragma region Tool용
 	_bool						m_isLookAt = { true };
 #pragma endregion
@@ -155,6 +160,8 @@ private:
 	void						Move_To_CustomArm(_float _fTimeDelta);
 	void						Move_To_ExitArm(_float _fTimeDelta);
 	void						Reset_To_SettingPoint(_float _fTimeDelta);
+
+	void						Move_In_BossStage(_float _fTimeDelta);
 
 	_vector						Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fTimeDelta);
 	void						Calculate_FreezeOffset(_vector* _pTargetPos);

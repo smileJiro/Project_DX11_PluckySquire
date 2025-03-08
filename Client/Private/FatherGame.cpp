@@ -59,7 +59,7 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 		m_PortalLockers[LOCKER_ZETPACK] = static_cast<CPortalLocker*>(pGameObject);
 		Safe_AddRef(m_PortalLockers[LOCKER_ZETPACK]);
 		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(PortalLockerDesc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
-			return E_FAIL;
+			return E_FAIL;		
 	}/* PortalLocker ZetPack */
 
 

@@ -114,13 +114,11 @@ HRESULT CInteraction_E::Render()
 		return S_OK;
 
 
-	CGameObject* pGameObject = dynamic_cast<CGameObject*>(pInteractableObject);
-
 	if (true == m_isRender /* && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord()*/)
 	{
 		// TODO :: 일단은...
 
-		if (COORDINATE_3D == pGameObject->Get_CurCoord())
+		if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 		{
 			if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 				return E_FAIL;
@@ -128,10 +126,17 @@ HRESULT CInteraction_E::Render()
 
 			if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
 				return E_FAIL;
-
+			
 			if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 				return E_FAIL;
 
+			// 현재 카메라의 뷰 투영 /////////
+			//if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW))))
+			//	return E_FAIL;
+			//
+			//if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ))))
+			//	return E_FAIL;
+			////////////////////////////////
 
 			if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 0)))
 				return E_FAIL;
@@ -149,7 +154,7 @@ HRESULT CInteraction_E::Render()
 
 		if (nullptr != CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player()))
 		{
-			auto CurSection = CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player());
+			 auto CurSection = CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player());
 			RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(*(CurSection)));
 
 		}
@@ -266,8 +271,8 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 
 		m_vObejctPos = _float3(vCalPos.x, vCalPos.y, 1.f);
 
-		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f));
-		m_pControllerTransform->Set_Scale(m_fSizeX * fScaleX, m_fSizeY * fScaleY, 1.f);
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_vObejctPos.x, vCalPos.y, 0.f, 1.f));
+		m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
 
 	}
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
@@ -276,11 +281,12 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 
 		_float2 vCalx = __super::WorldToSceen(Uimgr->Get_Player()->Get_WorldMatrix());
 		_float CalX = vCalx.x - g_iWinSizeX / 2.f;
-		_float CalY = vCalx.y - g_iWinSizeY / 2.f;
+		_float CalY = -(vCalx.y - g_iWinSizeY / 1.4f);
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(CalX, CalY, 0.f, 1.f));
 		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX, m_fSizeY, 1.f));
-		m_vObejctPos = _float3(vCalx.x, g_iWinSizeY - vCalx.y, 0.f);
+		//m_vObejctPos = _float3(vCalx.x, g_iWinSizeY - vCalx.y, 0.f);
+		m_vObejctPos = _float3(vCalx.x, vCalx.y, 0.f);
 
 		if (false == m_isDeleteRender)
 		{
@@ -468,7 +474,7 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 	// 이건 3D에요
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
-		vTextPos = _float3(m_vObejctPos.x, m_vObejctPos.y, m_vObejctPos.z);
+		vTextPos = _float3(m_vObejctPos.x, m_vObejctPos.y - g_iWinSizeY * 0.215f, m_vObejctPos.z);
 
 		IInteractable* pInteractableObject = Uimgr->Get_Player()->Get_InteractableObject();
 
