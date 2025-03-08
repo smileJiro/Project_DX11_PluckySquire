@@ -75,6 +75,7 @@ void CPlayerState_ExitPortal::Enter()
 
 void CPlayerState_ExitPortal::Exit()
 {
+	static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
 }
 
 void CPlayerState_ExitPortal::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
