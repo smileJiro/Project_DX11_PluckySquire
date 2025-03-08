@@ -483,6 +483,15 @@ HRESULT CPlayer::Ready_PartObjects()
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_IDLE_NERVOUS_01_GT, 0.f);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_BOOKOUT_01_GT, 0.f);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_LUNCHBOX_POSE_02_LOOP_GT, 2.f);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_LEFT, 1.f);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_RIGHT, 1.f);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_UP, 1.f);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_DOWN, 1.f);
+    /*static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_LEFT_DASH, 1.f);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_RIGHT_DASH, 1.f);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_UP_DASH, 1.f);
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_DOWN_DASH, 1.f);*/
+    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_IDLE, 1.f);
     return S_OK;
 }
 
@@ -1840,20 +1849,11 @@ void CPlayer::Set_State(STATE _eState)
             if (Is_ZetPackEquipped())
                 m_pZetPack->Switch_State(CZetPack::STATE_IDLE);
         }
-
         break;
     case Client::CPlayer::RUN:
     case Client::CPlayer::CYBER_FLY:
         //cout << "Run" << endl;
-        if (Is_CyvberJotMode())
-        {
-            m_pStateMachine->Transition_To(new CPlayerState_CyberFly(this));
-        }
-        else
-        {
-            m_pStateMachine->Transition_To(new CPlayerState_Run(this));
-        }
-
+        m_pStateMachine->Transition_To(new CPlayerState_Run(this));
         break;
     case Client::CPlayer::JUMP_UP:
         //cout << "JUMPUP" << endl;
@@ -1870,11 +1870,7 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::ROLL:
     case Client::CPlayer::CYBER_DASH :
-        if (Is_CyvberJotMode())
-            m_pStateMachine->Transition_To(new CPlayerState_CyberDash(this));
-        else        
-            m_pStateMachine->Transition_To(new CPlayerState_Roll(this));
-		break;
+        m_pStateMachine->Transition_To(new CPlayerState_Roll(this));
     case Client::CPlayer::THROWSWORD:
         m_pStateMachine->Transition_To(new CPlayerState_ThrowSword(this));
         break;
@@ -1951,25 +1947,33 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
         {
         case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_NORMAL:
             Set_Kinematic(false);
+            Get_ActorDynamic()->Set_Gravity(true);
+            Get_ActorDynamic()->Set_LinearDamping(0.f);
             UnEquip_All();
             Set_State(STATE::IDLE);
             break;
         case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SWORD:
             Set_Kinematic(false);
+            Get_ActorDynamic()->Set_Gravity(true);
+            Get_ActorDynamic()->Set_LinearDamping(0.f);
 			Equip_Part(PLAYER_PART_SWORD);
             Set_State(STATE::IDLE);
             break;
         case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SNEAK:
             Set_Kinematic(false);
+            Get_ActorDynamic()->Set_Gravity(true);
+            Get_ActorDynamic()->Set_LinearDamping(0.f);
             UnEquip_All();
             Set_State(STATE::IDLE);
             break;
         case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_CYBERJOT:
+            Set_Kinematic(false);
+            Get_ActorDynamic()->Set_Gravity(false);
+            Get_ActorDynamic()->Set_LinearDamping(2.f);
             Equip_Part(PLAYER_PART_RIFLE);
             Equip_Part(PLAYER_PART_VISOR);
             Equip_Part(PLAYER_PART_ZETPACK);
             Set_State(STATE::CYBER_IDLE);
-            Set_Kinematic(true);
             break;
         default:
             break;
