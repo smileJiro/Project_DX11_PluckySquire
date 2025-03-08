@@ -291,7 +291,7 @@ void CModelObject::Register_OnAnimEndCallBack( const function<void(COORDINATE,_u
 void CModelObject::Check_FrustumCulling()
 {
     if (COORDINATE_3D == Get_CurCoord())
-        m_isFrustumCulling = !m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 10.f);
+        m_isFrustumCulling = !m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.f);
     else
         m_isFrustumCulling = false;
 }

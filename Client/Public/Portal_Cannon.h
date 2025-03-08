@@ -7,7 +7,7 @@ class CEffect_System;
 END
 
 BEGIN(Client)
-class CPortal_Cannon final : public CPortal, public virtual IInteractable
+class CPortal_Cannon final : public CPortal
 {
 
 private:

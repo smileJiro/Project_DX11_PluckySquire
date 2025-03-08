@@ -4,7 +4,7 @@
 
 
 BEGIN(Client)
-class CPortal_Default final : public CPortal, public virtual IInteractable
+class CPortal_Default final : public CPortal
 {
 
 private:
