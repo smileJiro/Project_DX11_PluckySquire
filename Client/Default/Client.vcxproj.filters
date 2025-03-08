@@ -634,11 +634,11 @@
     <Filter Include="05.MiniGames\FatherGame\Object">
       <UniqueIdentifier>{8654e79f-74b6-48f0-9130-ce992e9fef1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05.MiniGames\FatherGame\Object\Child_ZetPack">
-      <UniqueIdentifier>{3c0763fb-8635-4e97-b386-f99444eb1a98}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05.MiniGames\MiniGame_Npc">
       <UniqueIdentifier>{2f689928-b051-4f83-b757-8d5c6b5f9a9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Object\ZetPack_Child">
+      <UniqueIdentifier>{3c0763fb-8635-4e97-b386-f99444eb1a98}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1565,7 +1565,9 @@
     <ClInclude Include="..\Public\FatherGame_Progress_ZetPack.h">
       <Filter>05.MiniGames\FatherGame\Progress\02.ZetPack</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ZetPack_Child.h" />
+    <ClInclude Include="..\public\ZetPack_Child.h">
+      <Filter>05.MiniGames\FatherGame\Object\ZetPack_Child</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2478,7 +2480,9 @@
     <ClCompile Include="..\Private\FatherGame_Progress_ZetPack.cpp">
       <Filter>05.MiniGames\FatherGame\Progress\02.ZetPack</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ZetPack_Child.cpp" />
+    <ClCompile Include="..\private\ZetPack_Child.cpp">
+      <Filter>05.MiniGames\FatherGame\Object\ZetPack_Child</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

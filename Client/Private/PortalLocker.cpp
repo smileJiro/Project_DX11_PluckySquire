@@ -72,14 +72,7 @@ void CPortalLocker::Priority_Update(_float _fTimeDelta)
 void CPortalLocker::Update(_float _fTimeDelta)
 {
 	Action_State(_fTimeDelta);
-	if (KEY_DOWN(KEY::I))
-	{
-		Start_FadeAlphaOut(5.0f);
-	}
-	if (KEY_DOWN(KEY::J))
-	{
-		Start_FadeAlphaIn(5.0f);
-	}
+
 	__super::Update(_fTimeDelta);
 }
 
@@ -129,7 +122,7 @@ void CPortalLocker::State_Change_Open()
 
 void CPortalLocker::State_Change_Dead()
 {
-	Start_FadeAlphaOut(5.0f);
+	Start_FadeAlphaOut(1.0f);
 }
 
 void CPortalLocker::Action_State(_float _fTimeDelta)
