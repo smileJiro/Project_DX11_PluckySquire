@@ -1306,7 +1306,7 @@ void CLevel_Chapter_06::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 		return;
 	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_Transform((COORDINATE)_iCoordinateType)->Get_State(CTransform::STATE_LOOK);
 
-	CCameraArm::CAMERA_ARM_DESC Desc{};
+	CCameraArm::CAMERA_ARM_DESC Desc = {};
 
 	Desc.vArm = _vArm;
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };

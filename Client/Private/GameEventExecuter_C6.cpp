@@ -9,7 +9,11 @@
 #include "Camera_Manager.h"
 #include "Effect2D_Manager.h"
 #include "FatherGame.h"
+/* Section */
+#include "Section_2D_PlayMap.h"
+
 /* Object */
+#include "Portal_Default.h"
 #include "Player.h"
 #include "PortalLocker.h"
 
@@ -65,15 +69,26 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Start_Clear(_float _fTi
 {
 	m_fTimer += _fTimeDelta;
 	CCamera_Manager::CAMERA_TYPE eCamType = CCamera_Manager::TARGET;
+	CPlayer* pPlayer = Get_Player();
+	if (nullptr == pPlayer)
+	{
+		GameEvent_End();
+		return;
+	}
+	/* 플레이어 인풋락  */
+	pPlayer->Set_BlockPlayerInput(true);
+
 	if (Step_Check(STEP_0))
 	{
 
 		if (Is_Start())
 		{
-			CPortalLocker* pPortalLocker = CFatherGame::GetInstance()->Get_PortalLocker(CFatherGame::LOCKER_ZETPACK);
 
-			if(nullptr == pPortalLocker)
+			CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_SKSP_01")))->Get_Portal(0));
+			if(nullptr == pTargetPortal)
 			{
+				/* 플레이어 인풋락 해제 */
+				pPlayer->Set_BlockPlayerInput(false);
 				GameEvent_End();
 				return;
 			}
@@ -88,7 +103,7 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Start_Clear(_float _fTi
 
 			/* 3. Target Change */
 			_float2 v2DPos = {};
-			XMStoreFloat2(&v2DPos, pPortalLocker->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
+			XMStoreFloat2(&v2DPos, pTargetPortal->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION));
 			_vector vPortalLockerWorldPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(TEXT("Chapter6_SKSP_01"), v2DPos);
 			XMStoreFloat4x4(&m_TargetWorldMatrix, XMMatrixTranslationFromVector(XMVectorSetW(vPortalLockerWorldPos, 1.0f)));
 			CCamera_Manager::GetInstance()->Change_CameraTarget(&m_TargetWorldMatrix, fTime);
@@ -102,11 +117,6 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Start_Clear(_float _fTi
 	{
 		if (Is_Start())
 		{
-			CPlayer* pPlayer = Get_Player();
-
-			if (nullptr == pPlayer)
-				GameEvent_End();
-
 			CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer, 1.0f);
 			//CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(eCamType, 1.0f, 5.0f, RATIO_TYPE::EASE_OUT);
 			CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
@@ -115,6 +125,7 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Start_Clear(_float _fTi
 	}
 	else
 	{
+		pPlayer->Set_BlockPlayerInput(false);
 		GameEvent_End();
 	}
 }

@@ -282,6 +282,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 				_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
 				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
 
+
 				Set_InitialData(vDir, 6.5f, XMVectorZero(), 5);
 			}
 		}
@@ -345,6 +346,13 @@ void CCamera_2D::Start_ResetArm_To_SettingPoint(_float _fResetTime)
 	Start_Zoom(_fResetTime, (ZOOM_LEVEL)m_ResetArmData.iZoomLevel, EASE_IN);
 	m_eCameraMode = RESET_TO_SETTINGPOINT;
 	m_fResetTime = { _fResetTime, 0.f };
+}
+
+void CCamera_2D::Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType)
+{
+	__super::Start_Changing_ArmVector(_fChangingTime, _vNextArm, _eRatioType);
+
+	m_eCameraMode = DEFAULT;
 }
 
 INITIAL_DATA CCamera_2D::Get_InitialData()

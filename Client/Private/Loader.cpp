@@ -639,6 +639,11 @@ HRESULT CLoader::Loading_Level_Static()
 		CCamera_2D::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For. Prototype_GameObject_CameraPivot */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CameraPivot"),
+		CCameraPivot::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	// ============ Triger
 	/* For. Prototype_GameObject_TriggerObject */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TriggerObject"),
