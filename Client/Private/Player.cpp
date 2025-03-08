@@ -1869,8 +1869,8 @@ void CPlayer::Set_State(STATE _eState)
         m_pStateMachine->Transition_To(new CPlayerState_Attack(this));
         break;
     case Client::CPlayer::ROLL:
-    case Client::CPlayer::CYBER_DASH :
         m_pStateMachine->Transition_To(new CPlayerState_Roll(this));
+        break;
     case Client::CPlayer::THROWSWORD:
         m_pStateMachine->Transition_To(new CPlayerState_ThrowSword(this));
         break;
@@ -1930,6 +1930,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::TRANSFORM_IN:
         m_pStateMachine->Transition_To(new CPlayerState_TransformIn(this));
+        break;
+    case Client::CPlayer::CYBER_DASH:
+        m_pStateMachine->Transition_To(new CPlayerState_CyberDash(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;
