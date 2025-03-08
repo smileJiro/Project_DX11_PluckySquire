@@ -18,7 +18,7 @@ CMinigame_Sneak::CMinigame_Sneak()
 
 void CMinigame_Sneak::Start_Game()
 {
-	m_isStartGame = true;
+	m_eGameState = START;
 
 	for (_int i = 0; i < m_StageTiles.size(); ++i)
 	{
@@ -45,46 +45,57 @@ void CMinigame_Sneak::Start_Game()
 
 void CMinigame_Sneak::Update(_float _fTimeDelta)
 {
-	if (false == m_isStartGame)
+	if (NONE == m_eGameState)
 		return;
 
-	if (KEY_PRESSING(KEY::CTRL) && KEY_DOWN(KEY::R))
-	{
-		Restart_Game();
-	}
+	//if (KEY_PRESSING(KEY::CTRL) && KEY_DOWN(KEY::R))
+	//{
+	//	//Restart_Game();
+	//}
 
 	m_fAccTime += _fTimeDelta;
 
-	if (m_isRestartGame)
+	switch (m_eGameState)
 	{
-		if (1.f <= m_fAccTime)
-		{
-			m_isRestartGame = false;
-			
-			m_fAccTime = 0.f;
-		}
-	}
-	else
+	case START:
 	{
 		// 처음 시작
-		if (-1 == m_iNowStage && 1.5f <= m_fAccTime)
+		if (1.5f <= m_fAccTime)
 		{
-			m_iNowStage = 0;
+			++m_iNowStage;
 			m_fAccTime = 0.f;
 			Start_Stage();
 		}
-		else if (0 <= m_iNowStage)
-		{
-			if (0.495f <= m_fAccTime)
-			{
-				// 행동
-				Before_Action();
-				Action();
-
-				m_fAccTime = 0.5f - m_fAccTime;
-			}
-		}
+		break;
 	}
+	case PROGRESS:
+	{
+		if (0 <= m_iNowStage && 0.495f <= m_fAccTime)
+		{
+			// 행동
+			Before_Action();
+			Action();
+
+			m_fAccTime = 0.5f - m_fAccTime;
+		}
+		break;
+	}
+	case RESTART:
+	{
+		break;
+	}
+	}
+
+	//if (m_isRestartGame)
+	//{
+	//	if (1.f <= m_fAccTime)
+	//	{
+	//		m_isRestartGame = false;
+	//		
+	//		m_fAccTime = 0.f;
+	//	}
+	//}
+
 
 	
 }
@@ -110,35 +121,41 @@ void CMinigame_Sneak::Reach_Destination(_int _iPreIndex, _int _iDestIndex)
 	// TODO : Is Interact -> After Action
 }
 
-void CMinigame_Sneak::Restart_Game()
+void CMinigame_Sneak::GameOver()
 {
-	if (m_iNowStage < m_StageTiles.size())
-	{
-		for (auto& iter : m_StageTiles[m_iNowStage])
-		{
-			iter->Restart();
-		}
-	}
+	// BGM 끄기, 게임오버 SFX, FADE OUT
 
-	if (m_iNowStage < m_StageInteracts.size())
-	{
-		for (auto& iter : m_StageInteracts[m_iNowStage])
-		{
-			iter->Restart();
-		}
 
-		if (m_pPlayer)
-		{
-			_float2 vStartPosition = Get_TilePosition(m_iNowStage, 0);
-			m_pPlayer->Restart(vStartPosition);
-		}
-	}
-
-	m_isRestartGame = true;
-	m_fAccTime = 0.f;
-
-	// TODO: End BGM, Start SFX, Fade inout .
 }
+
+//void CMinigame_Sneak::Restart_Game()
+//{
+//	if (m_iNowStage < m_StageTiles.size())
+//	{
+//		for (auto& iter : m_StageTiles[m_iNowStage])
+//		{
+//			iter->Restart();
+//		}
+//	}
+//
+//	if (m_iNowStage < m_StageInteracts.size())
+//	{
+//		for (auto& iter : m_StageInteracts[m_iNowStage])
+//		{
+//			iter->Restart();
+//		}
+//
+//		if (m_pPlayer)
+//		{
+//			_float2 vStartPosition = Get_TilePosition(m_iNowStage, 0);
+//			m_pPlayer->Restart(vStartPosition);
+//		}
+//	}
+//
+//	m_isRestartGame = true;
+//	m_fAccTime = 0.f;
+//
+//}
 
 HRESULT CMinigame_Sneak::Register_Tiles(vector<vector<CSneak_Tile*>>& _Tiles)
 {
@@ -270,6 +287,7 @@ void CMinigame_Sneak::Start_Stage()
 	
 	m_iFlipTime = 0;
 
+	m_eGameState = PROGRESS;
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C09_P2122_STEALTHMINIGAME_LOOP3_FULL"), 30.f);
 
 }

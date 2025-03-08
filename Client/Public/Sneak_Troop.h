@@ -18,12 +18,12 @@ public:
 	enum TROOP_ANIM 
 	{
 		ALERT_DOWN = 0, ALERT_RIGHT, ALERT_UP,
-		FALL = 6,
+		FALL_DOWN = 6,
 		FLIP_DOWN = 7, FLIP_RIGHT, FLIP_UP,
 		IDLE_DOWN = 10, IDLE_RIGHT, IDLE_UP,
 		MOVE_DOWN = 13, MOVE_RIGHT, MOVE_UP
 	};
-	enum TROOP_STATE
+	enum TROOP_ACTION
 	{
 		IDLE, MOVE, TURN, CATCH, FALL
 	};
@@ -51,7 +51,7 @@ private:
 
 private:
 	F_DIRECTION	  m_eCurDirection = { F_DIRECTION::F_DIR_LAST };
-	TROOP_STATE	  m_eCurState = IDLE;
+	TROOP_ACTION  m_eCurAction = IDLE;
 
 private:
 	HRESULT Ready_PartObjects();

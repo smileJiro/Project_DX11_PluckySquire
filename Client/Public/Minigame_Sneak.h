@@ -17,7 +17,7 @@ class CMinigame_Sneak : public CBase
 {
 	DECLARE_SINGLETON(CMinigame_Sneak)
 public:
-	
+	enum SNEAK_GAME_STATE { NONE, START, PROGRESS, GAME_OVER, RESTART, GAME_END };
 private:
 	CMinigame_Sneak();
 	virtual ~CMinigame_Sneak() = default;
@@ -28,8 +28,9 @@ public:
 
 public:
 	void	Reach_Destination(_int _iPreIndex, _int _iDestIndex);
-	void	Restart_Game();
-
+	//void	Restart_Game();
+	void	GameOver();		// 
+		
 public:
 	HRESULT Register_Tiles(vector<vector<CSneak_Tile*>>& _Tiles);
 	HRESULT Register_Objects(vector<vector<CSneak_MapObject*>>& _Objects);
@@ -45,8 +46,10 @@ public:
 
 
 private:
-	_bool	m_isStartGame = { false };
-	_bool	m_isRestartGame = { false };
+	//_bool	m_isStartGame = { false };
+	//_bool	m_isRestartGame = { false };
+	
+	SNEAK_GAME_STATE m_eGameState = { NONE };
 	_int	m_iNowStage = -1;
 	_int	m_iFlipTime = 0;
 	_float	m_fAccTime = 0.f;
@@ -68,6 +71,7 @@ private:
 
 	_bool	Is_Moveable(_int _iTileIndex);
 	_bool	Is_Blocked(_int _iCurIndex, _int _iNextIndex, F_DIRECTION _eMoveDir, _Out_ class CSneak_InteractObject** _ppOutObject);
+
 public:
 	virtual void Free() override;
 };

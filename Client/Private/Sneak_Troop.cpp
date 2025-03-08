@@ -81,7 +81,52 @@ void CSneak_Troop::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CSneak_Troop::Switch_Animation_ByState()
 {
+	if (nullptr == m_pBody)
+		return;
 
+	_vector vRight = { 1.f, 0.f, 0.f, 0.f };
+
+	if (IDLE == m_eCurAction)
+	{
+		if (F_DIRECTION::UP == m_eCurDirection)
+			m_pBody->Switch_Animation(IDLE_UP);
+		else if (F_DIRECTION::DOWN == m_eCurDirection)
+			m_pBody->Switch_Animation(IDLE_DOWN);
+		else
+			m_pBody->Switch_Animation(IDLE_RIGHT);
+	}
+	else if (MOVE == m_eCurAction)
+	{
+		if (F_DIRECTION::UP == m_eCurDirection)
+			m_pBody->Switch_Animation(MOVE_UP);
+		else if(F_DIRECTION::DOWN == m_eCurDirection)
+			m_pBody->Switch_Animation(MOVE_DOWN);
+		else
+			m_pBody->Switch_Animation(MOVE_RIGHT);
+	}
+	else if (CATCH == m_eCurAction)
+	{
+		if (F_DIRECTION::UP == m_eCurDirection)
+			m_pBody->Switch_Animation(ALERT_UP);
+		else if (F_DIRECTION::DOWN == m_eCurDirection)
+			m_pBody->Switch_Animation(ALERT_DOWN);
+		else
+			m_pBody->Switch_Animation(ALERT_RIGHT);		
+	}
+	// TODO :  RIGHT 설정에 대한 추가적인 작업
+	else if (TURN == m_eCurAction)
+	{
+		if (F_DIRECTION::UP == m_eCurDirection)
+			m_pBody->Switch_Animation(FLIP_UP);
+		else if (F_DIRECTION::DOWN == m_eCurDirection)
+			m_pBody->Switch_Animation(FLIP_DOWN);
+		else
+			m_pBody->Switch_Animation(FLIP_RIGHT);
+	}
+	else if (FALL == m_eCurAction)
+	{
+		m_pBody->Switch_Animation(FALL_DOWN);
+	}
 }
 
 HRESULT CSneak_Troop::Ready_PartObjects()
@@ -120,7 +165,7 @@ HRESULT CSneak_Troop::Ready_PartObjects()
 	m_pBody->Set_AnimationLoop(COORDINATE_2D, ALERT_DOWN, false);
 	m_pBody->Set_AnimationLoop(COORDINATE_2D, ALERT_RIGHT, false);
 	m_pBody->Set_AnimationLoop(COORDINATE_2D, ALERT_UP, false);
-	m_pBody->Set_AnimationLoop(COORDINATE_2D, FALL, false);
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, FALL_DOWN, false);
 
 	return S_OK;
 }
