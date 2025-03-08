@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "UI_Manager.h"
 #include "Narration_Manager.h"
+#include "Dialog_Manager.h"
 
 IMPLEMENT_SINGLETON(CUI_Manager)
 

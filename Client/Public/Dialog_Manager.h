@@ -34,6 +34,8 @@ public:
 	void								Set_DialogEnd();
 	void								Set_DialoguePos(_float3 _vPos) { m_pDialogue->Set_DialoguePos(_vPos); }
 
+	_int								Get_CurrentLineIndex();
+
 public:
 	HRESULT								Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID);
 	HRESULT								Level_Logo_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
