@@ -40,6 +40,7 @@ public:
 	TILE_STATE	 Get_TileState() const { return m_eCurState; }
 
 	void		 Interact();
+	void		 FadeOut();
 	void		 Restart();
 
 protected:

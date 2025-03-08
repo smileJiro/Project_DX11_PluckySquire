@@ -38,9 +38,13 @@ public:
 public:
 	void	Register_Tiles(class CSneak_Tile* _pTile);
 	void	Register_Objects(class CSneak_InteractObject* _pObject);
+	
+public:
 	void	Interact();
+	void	FadeOut();
 	void	Restart();
 
+public:
 	_bool	Is_Interactable() const { return m_isInteractable; }
 	_bool	Is_CollisionInteractable() const { return m_isCollisionInteractable; }
 	_bool	Is_Blocked() const { return m_isBlocked; }

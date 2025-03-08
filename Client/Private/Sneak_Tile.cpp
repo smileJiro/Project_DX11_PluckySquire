@@ -59,6 +59,11 @@ void CSneak_Tile::Interact()
 	Flip();
 }
 
+void CSneak_Tile::FadeOut()
+{
+	Start_FadeAlphaOut();
+}
+
 void CSneak_Tile::Restart()
 {
 	if (OPEN == m_eCurState)

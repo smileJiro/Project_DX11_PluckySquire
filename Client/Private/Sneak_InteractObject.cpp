@@ -62,6 +62,11 @@ void CSneak_InteractObject::Interact()
 		iter->Interact();
 }
 
+void CSneak_InteractObject::FadeOut()
+{
+	Start_FadeAlphaOut();
+}
+
 void CSneak_InteractObject::Restart()
 {
 	if (m_isFlipped)

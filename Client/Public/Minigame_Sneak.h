@@ -45,10 +45,7 @@ public:
 
 
 
-private:
-	//_bool	m_isStartGame = { false };
-	//_bool	m_isRestartGame = { false };
-	
+private:	
 	SNEAK_GAME_STATE m_eGameState = { NONE };
 	_int	m_iNowStage = -1;
 	_int	m_iFlipTime = 0;

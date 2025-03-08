@@ -36,11 +36,18 @@ void CMinigame_Sneak::Start_Game()
 		}
 	}
 
+	for (_int i = 0; i < m_StageInteracts.size(); ++i)
+	{
+		for (auto& iter : m_StageInteracts[i])
+		{
+			iter->Set_Active(false);
+		}
+	}
+
 	m_pPlayer->Set_Active(false);
 
 	// Start Music
 	m_pGameInstance->End_BGM();
-	//m_pGameInstance->Start_SFX(TEXT("Sneak_FailureSting"), 50.f);
 }
 
 void CMinigame_Sneak::Update(_float _fTimeDelta)
@@ -48,10 +55,10 @@ void CMinigame_Sneak::Update(_float _fTimeDelta)
 	if (NONE == m_eGameState)
 		return;
 
-	//if (KEY_PRESSING(KEY::CTRL) && KEY_DOWN(KEY::R))
-	//{
-	//	//Restart_Game();
-	//}
+	if (KEY_PRESSING(KEY::CTRL) && KEY_DOWN(KEY::R))
+	{
+		GameOver();
+	}
 
 	m_fAccTime += _fTimeDelta;
 
@@ -82,6 +89,11 @@ void CMinigame_Sneak::Update(_float _fTimeDelta)
 	}
 	case RESTART:
 	{
+		break;
+	}
+	case GAME_OVER:
+	{
+
 		break;
 	}
 	}
@@ -124,8 +136,33 @@ void CMinigame_Sneak::Reach_Destination(_int _iPreIndex, _int _iDestIndex)
 void CMinigame_Sneak::GameOver()
 {
 	// BGM 끄기, 게임오버 SFX, FADE OUT
+	m_pGameInstance->End_BGM();
+	m_pGameInstance->Start_SFX_Delay(TEXT("Sneak_FailureSting"), 0.25f, 50.f);
 
+	if (m_iNowStage < m_StageTiles.size())
+	{
+		for (auto& iter : m_StageTiles[m_iNowStage])
+		{
+			iter->FadeOut();
+		}
+	}
+	
+	if (m_iNowStage < m_StageInteracts.size())
+	{
+		for (auto& iter : m_StageInteracts[m_iNowStage])
+		{
+			iter->FadeOut();
+		}
+	
+		if (m_pPlayer)
+		{
+			//_float2 vStartPosition = Get_TilePosition(m_iNowStage, 0);
+			//m_pPlayer->Action_Caught();
+		}
+	}
 
+	m_fAccTime = 0.f;
+	m_eGameState = GAME_OVER;
 }
 
 //void CMinigame_Sneak::Restart_Game()
@@ -271,6 +308,11 @@ void CMinigame_Sneak::Start_Stage()
 	}
 
 	for (auto& iter : m_StageObjects[m_iNowStage])
+	{
+		iter->Set_Active(true);
+	}
+
+	for (auto& iter : m_StageInteracts[m_iNowStage])
 	{
 		iter->Set_Active(true);
 	}
