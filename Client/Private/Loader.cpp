@@ -1124,6 +1124,15 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 	#pragma endregion
 
+#pragma region Chapter 2 - Monster Load
+
+		lstrcpy(m_szLoadingText, TEXT("Level 2 몬스터 로딩중입니다."));
+
+		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter2_Monsters.json"), TEXT("Chapter2_Monsters"), _eLoadLevelID)))
+			return E_FAIL;
+
+#pragma endregion
+
 	#pragma region Chapter 2 - Effect Load
 
 		lstrcpy(m_szLoadingText, TEXT("Level2 이펙트 로딩중입니다."));
@@ -1878,12 +1887,12 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 	case LEVEL_CHAPTER_8:
 		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
 		strChapterName += L"Chapter8";
+		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter_Boss.json", matPretransform, true)))
+			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:
 		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
 		strChapterName += L"Chapter8";
-		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter_Boss.json", matPretransform, true)))
-			return E_FAIL;
 		break;
 	default:
 		return S_OK;
@@ -2513,7 +2522,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
 				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
 					(LEVEL_ID)_eObjectLevelId,
 					m_pGameInstance,
-					hFile, false, true, true);
+					hFile, false, false, true);
 			if (nullptr != pGameObject)
 				m_pGameInstance->Add_GameObject_ToLayer(_eObjectLevelId, strLayerTag.c_str(), pGameObject);
 		}

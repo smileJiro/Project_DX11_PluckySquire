@@ -342,6 +342,8 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 	{
 		if (KEY_DOWN(KEY::NUM5))
 		{
+			Event_ChangeMapObject(m_eLevelID, L"Chapter_Boss.mchc", L"Layer_MapObject");
+
 			CGameObject* pBoss = nullptr; 
 			CButterGrump::MONSTER_DESC Boss_Desc;
 			Boss_Desc.iCurLevelID = m_eLevelID;

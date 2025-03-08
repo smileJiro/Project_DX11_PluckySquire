@@ -653,8 +653,8 @@ private:
 	HRESULT					Ready_PartObjects();
 
 public:
-	virtual void			Enter_Section(const _wstring _strIncludeSectionName);
-	virtual void			Exit_Section(const _wstring _strIncludeSectionName);
+	virtual void			Enter_Section(const _wstring _strIncludeSectionName) override;
+	virtual void			Exit_Section(const _wstring _strIncludeSectionName) override;
 private:
 	//Variables
 	_float m_f3DCenterYOffset = 0.5f;
