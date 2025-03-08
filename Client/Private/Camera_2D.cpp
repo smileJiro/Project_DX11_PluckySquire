@@ -334,7 +334,8 @@ void CCamera_2D::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
 
 	m_vStartPos = m_v2DPreTargetWorldPos;
 
-	m_strSectionName = _pTarget->Get_Include_Section_Name();
+	if(L"" != _pTarget->Get_Include_Section_Name())
+		m_strSectionName = _pTarget->Get_Include_Section_Name();
 }
 
 void CCamera_2D::Start_ResetArm_To_SettingPoint(_float _fResetTime)

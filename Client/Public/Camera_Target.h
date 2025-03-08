@@ -9,7 +9,7 @@ BEGIN(Client)
 class CCamera_Target  : public CCamera
 {
 public:
-	enum CAMERA_MODE { DEFAULT, MOVE_TO_NEXTARM, RETURN_TO_PREARM, RETURN_TO_DEFUALT, MOVE_TO_CUSTOMARM, RESET_TO_SETTINGPOINT, CAMERA_MODE_END };
+	enum CAMERA_MODE { DEFAULT, MOVE_TO_NEXTARM, RETURN_TO_PREARM, RETURN_TO_DEFUALT, MOVE_TO_CUSTOMARM, RESET_TO_SETTINGPOINT, BOSS, CAMERA_MODE_END };
 	enum TARGET_STATE { TARGET_RIGHT, TARGET_UP, TARGET_LOOK, TARGET_POS, TARGET_STATE_END };
 
 	typedef struct tagCameraTargetDesc : public CCamera::CAMERA_DESC
@@ -139,6 +139,10 @@ private:
 	// 2D 객체 Target Change 하기 위한 변수
 	_wstring					m_szTargetSectionTag;
 	_float3						m_vStartPos = {};			// Target 바뀌었을 때 Lerp하기 위한 변수
+
+	// Boss
+	const _float4x4*			m_pPivotWorldMatrix = { nullptr };		// WorldMatrirx를 구할 수 없을 때 사용
+	_float						m_fPivotRatio = {};
 
 #pragma region Tool용
 	_bool						m_isLookAt = { true };
