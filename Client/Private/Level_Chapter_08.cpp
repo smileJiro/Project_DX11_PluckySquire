@@ -340,7 +340,7 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 
 	if (KEY_PRESSING(KEY::CTRL))
 	{
-		if (KEY_DOWN(KEY::NUMPAD5))
+		if (KEY_DOWN(KEY::NUM5))
 		{
 			CButterGrump::MONSTER_DESC Boss_Desc;
 			Boss_Desc.iCurLevelID = m_eLevelID;
