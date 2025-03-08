@@ -128,6 +128,13 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
 
+
+    m_fMoveAnimationProgress[DASH_DOWN] = 0.9f-0.285f;
+    m_fMoveAnimationProgress[DASH_LEFT] = 0.76f-0.345f;
+    m_fMoveAnimationProgress[DASH_RIGHT] = 0.76f-0.345f;
+    m_fMoveAnimationProgress[DASH_UP] = 0.705f-0.343f;
+
+
     //플레이어 위치 가져오기
     m_pTarget = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
     if (nullptr == m_pTarget)
@@ -179,6 +186,7 @@ void CButterGrump::Update(_float _fTimeDelta)
     //    Set_AnimChangeable(true);
     //    m_pBossFSM->Change_State((_uint)BOSS_STATE::SCENE);
     //}
+
     if (KEY_DOWN(KEY::F5))
     {
         m_isInvincible ^= 1;
@@ -937,6 +945,7 @@ void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 void CButterGrump::Hit()
 {
     m_isAttack = false;
+    m_isAttackChained = false;
     m_isSpawnOrb = false;
     Set_AnimChangeable(true);
 }

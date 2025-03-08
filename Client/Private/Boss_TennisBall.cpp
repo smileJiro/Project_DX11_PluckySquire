@@ -25,6 +25,10 @@ HRESULT CBoss_TennisBall::Initialize(void* _pArg)
 {
     BOSS_TENNISBALL_DESC* pDesc = static_cast<BOSS_TENNISBALL_DESC*>(_pArg);
 
+    pDesc->_tStat.iMaxHP = 30;
+    pDesc->_tStat.iHP = 30;
+    pDesc->_tStat.iDamg = 1;
+
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;
 
@@ -101,7 +105,7 @@ void CBoss_TennisBall::Shoot()
     //회전
 }
 
-void CBoss_TennisBall::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+void CBoss_TennisBall::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
     if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
     {
@@ -116,16 +120,27 @@ void CBoss_TennisBall::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _O
 
     if (OBJECT_GROUP::PLAYER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
     {
-        if(true == m_isShoot)
+        if (true == m_isShoot)
         {
-            m_iHp -= 1;
-            if (0 >= m_iHp)
+            m_tStat.iHP -= 1;
+            if (0 >= m_tStat.iHP)
             {
                 m_isShoot = true;
             }
         }
     }
+}
 
+void CBoss_TennisBall::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+}
+
+void CBoss_TennisBall::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
+{
+}
+
+void CBoss_TennisBall::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
     if (OBJECT_GROUP::BOSS & _Other.pActorUserData->iObjectGroup)
     {
         if ((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeIndex)
@@ -139,9 +154,6 @@ void CBoss_TennisBall::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _O
         }
         
     }
-
-    //if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
-    //    Event_DeleteObject(this);
 }
 
 void CBoss_TennisBall::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -178,7 +190,7 @@ void CBoss_TennisBall::Active_OnEnable()
 {
     __super::Active_OnEnable();
 
-    m_iHp = 30;
+    m_tStat.iHP = m_tStat.iMaxHP;
     m_isShoot = false;
 }
 
@@ -213,16 +225,30 @@ HRESULT CBoss_TennisBall::Ready_ActorDesc(void* _pArg)
     ActorDesc->FreezePosition_XYZ[2] = false;
 
     /* 사용하려는 Shape의 형태를 정의 */
-    SHAPE_SPHERE_DESC* ShapeDesc = new SHAPE_SPHERE_DESC;
-    ShapeDesc->fRadius = 3.f;
+    SHAPE_SPHERE_DESC* ShapeBodyDesc = new SHAPE_SPHERE_DESC;
+    ShapeBodyDesc->fRadius = 3.f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
-    ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData->pShapeDesc = ShapeBodyDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
+    ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+    /* 사용하려는 Shape의 형태를 정의 */
+    SHAPE_SPHERE_DESC* ShapeTriggerDesc = new SHAPE_SPHERE_DESC;
+    ShapeTriggerDesc->fRadius = 2.5f;
+
+    ShapeData->pShapeDesc = ShapeTriggerDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-    ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
+    ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
     XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
