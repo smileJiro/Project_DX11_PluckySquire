@@ -104,7 +104,7 @@ void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_D
 	}
 }
 
-void CCamera_Target::Add_CustomArm(ARM_DATA _tArmData)
+void CCamera_Target::Set_CustomArmData(ARM_DATA& _tArmData)
 {
 	m_CustomArmData = _tArmData;
 	m_pCurArm->Set_StartInfo();
@@ -193,6 +193,13 @@ void CCamera_Target::Start_ResetArm_To_SettingPoint(_float _fResetTime)
 	Start_Zoom(_fResetTime, (ZOOM_LEVEL)m_ResetArmData.iZoomLevel, EASE_IN);
 	m_eCameraMode = RESET_TO_SETTINGPOINT;
 	m_fResetTime = { _fResetTime, 0.f };
+}
+
+void CCamera_Target::Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType)
+{
+	__super::Start_Changing_ArmVector(_fChangingTime, _vNextArm, _eRatioType);
+
+	m_eCameraMode = DEFAULT;
 }
 
 void CCamera_Target::Switch_CameraView(INITIAL_DATA* _pInitialData)

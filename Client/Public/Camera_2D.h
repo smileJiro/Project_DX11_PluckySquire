@@ -102,10 +102,10 @@ public:
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
 	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
-	void						Add_CustomArm(ARM_DATA _tArmData);
 
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 	void						Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);
+	void						Set_CustomArmData(ARM_DATA& _tArmData);
 
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
 	virtual void				Change_Target(const _float4x4* _pTargetMatrix, _float _fChangingTime = 1.f) { m_pTargetWorldMatrix = _pTargetMatrix; m_fTargetChangingTime = { _fChangingTime, 0.f }; }
@@ -136,8 +136,13 @@ private:
 	// Book
 	_float						m_fFixedY = {};
 
-	// Sketch Space
+	// Sketch Space Normal
+	map<_wstring, _float3>		m_NormalTargets;
+	_uint						m_iNormalType = {};			// Sksp 어느 normal을 쓸 것인지
 	NORMAL_DIRECTION			m_eCurSpaceDir = { NORMAL_DIRECTION::NONEWRITE_NORMAL };
+
+	// Portal ID
+	_uint						m_iPortalID = {};
 
 	// 카메라 위치 고정
 	_float2						m_fBasicRatio[MAGNIFICATION_END] = {};	// 렌더 타겟의 어느 정도 비율로 고정할 것인지 결정, 기본적으로 해야 함
@@ -158,13 +163,6 @@ private:
 	// PreArm Return // SubData를 Target이 쓰고 있는데 ArmData에도 들어 있음... 그냥 이거 쓸까?
 	list<pair<RETURN_ARMDATA, _bool>> m_PreSubArms;
 	_int						m_iCurTriggerID = {};
-
-	// Portal ID
-	_uint						m_iPortalID = {};
-
-	// Normal
-	map<_wstring, _float3>		m_NormalTargets;
-	_uint						m_iNormalType = {};			// Sksp 어느 normal을 쓸 것인지
 
 	// Zipline
 	_float2						m_fZiplineTime = { 4.5f, 0.f };

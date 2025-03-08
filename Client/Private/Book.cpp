@@ -648,7 +648,7 @@ void CBook::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 				m_isPlayerAbove = true;
 
 				// Player가 책 위에 있을 때 Camera Arm 조정하기
-				CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f, XMVectorSet(0.0f, 0.9514f, -0.3080f, 0.f), EASE_IN);
+				CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.2f, XMVectorSet(0.0f, 0.9514f, -0.3080f, 0.f), EASE_IN_OUT);
 				//cout << "Enter" << endl;
 			}
 		}

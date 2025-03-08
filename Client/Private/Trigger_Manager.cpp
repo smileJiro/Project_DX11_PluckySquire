@@ -569,9 +569,11 @@ void CTrigger_Manager::Register_Trigger_Action()
 
 		CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 0.f, 6.f, EASE_IN_OUT);
 		
-		auto Arm = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_Arm();
-		Arm->Turn_ArmY(XMConvertToRadians(45.f));
-		Arm->Turn_ArmX(XMConvertToRadians(20.f));
+		CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 0.f, XMConvertToRadians(45.f));
+		CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 0.f, XMConvertToRadians(20.f));
+		//auto Arm = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_Arm();
+		//Arm->Turn_ArmY(XMConvertToRadians(45.f));
+		//Arm->Turn_ArmX(XMConvertToRadians(20.f));
 		};
 	
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) 
