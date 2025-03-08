@@ -26,15 +26,20 @@ protected:
 public:
 	virtual HRESULT					Initialize_Prototype() override;
 	virtual HRESULT					Initialize(void* _pArg) override;
+
+
+	virtual void					After_Initialize() override;
+
+
 	virtual void					Priority_Update(_float _fTimeDelta) override;
 	virtual void					Update(_float _fTimeDelta) override;
 	virtual void					Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT					Render() override;
 
 	virtual void					Check_FrustumCulling() override;
-
-	virtual void					Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, Engine::C3DModel::COLOR_SHADER_MODE _eColorMode, _float4 _fAlbedoColor);
-
+																																									// 서브스레드를 쓰는 경우, Const Buffer를 Unmap하는 행위가 스레드 언세이프하므로, 추후에 해줘야함. 
+	virtual void					Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, Engine::C3DModel::COLOR_SHADER_MODE _eColorMode, _float4 _fAlbedoColor, _bool _isUpdate = true);
+	virtual void					Update_ConstBuffer();
 protected:
 	_uint							m_iDiffuseIndex = 0;
 

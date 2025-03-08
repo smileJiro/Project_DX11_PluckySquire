@@ -7,7 +7,6 @@
 #include "Engine_Macro.h"
 #include "MapObjectFactory.h"
 #include "Trigger_Manager.h"
-#include "Player.h"
 
 CSection_2D_PlayMap_Sksp::CSection_2D_PlayMap_Sksp(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSection_2D_PlayMap(_pDevice, _pContext, SKSP, SECTION_2D_SKSP)
@@ -26,16 +25,16 @@ HRESULT CSection_2D_PlayMap_Sksp::Add_GameObject_ToSectionLayer(CGameObject* _pG
 {
 	HRESULT hr = __super::Add_GameObject_ToSectionLayer(_pGameObject, _iLayerIndex);
 
-	if (m_isScrolling)
-	{
-		CPlayer* pPlayer = dynamic_cast<CPlayer*>(_pGameObject);
+	//if (m_isScrolling)
+	//{
+	//	CCa* pPlayer = dynamic_cast<CPlayer*>(_pGameObject);
 
-		if (nullptr != pPlayer)
-		{
-			pPlayer->Set_ScrollingMode(true);
-		
-		}
-	}
+	//	if (nullptr != pPlayer)
+	//	{
+	//		pPlayer->Set_ScrollingMode(true);
+	//	
+	//	}
+	//}
 
 	return hr;
 }
@@ -44,15 +43,15 @@ HRESULT CSection_2D_PlayMap_Sksp::Remove_GameObject_ToSectionLayer(CGameObject* 
 {
 	HRESULT hr = __super::Remove_GameObject_ToSectionLayer(_pGameObject);
 
-	if (m_isScrolling)
-	{
-		CPlayer* pPlayer = dynamic_cast<CPlayer*>(_pGameObject);
+	//if (m_isScrolling)
+	//{
+	//	CPlayer* pPlayer = dynamic_cast<CPlayer*>(_pGameObject);
 
-		if (nullptr != pPlayer)
-		{
-			pPlayer->Set_ScrollingMode(false);
-		}
-	}
+	//	if (nullptr != pPlayer)
+	//	{
+	//		pPlayer->Set_ScrollingMode(false);
+	//	}
+	//}
 	return hr;
 }
 HRESULT CSection_2D_PlayMap_Sksp::Section_AddRenderGroup_Process()
