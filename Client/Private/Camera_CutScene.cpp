@@ -243,7 +243,7 @@ void CCamera_CutScene::Switching(_float _fTimeDelta)
 	// Initial 데이터랑 KeyFrame 혹은 vector<m_CutSceneDatas> 첫 번째 값을 보간함
 	CUTSCENE_DATA* tData = m_pCurCutScene->second[0];
 
-	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
 
 	if (fRatio >= (1.f - EPSILON)) {
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&tData->vPosition), 1.f));
