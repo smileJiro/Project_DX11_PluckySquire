@@ -48,7 +48,7 @@ HRESULT CJumpPad::Initialize(void* _pArg)
 	ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
 	ShapeData.isTrigger = false;
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
+	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 
