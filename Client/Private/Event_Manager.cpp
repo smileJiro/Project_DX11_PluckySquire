@@ -23,6 +23,7 @@
 #include "FSM.h"
 #include "FSM_Boss.h"
 #include "ActorObject.h"
+#include "MapObject.h"
 #include "Actor_Dynamic.h"
 
 #include "Camera_Manager.h"
@@ -67,10 +68,35 @@ void CEvent_Manager::Update(_float _fTimeDelta)
 	{
 		m_isCreateFinished = false;
 		/* 쓰레드에서 모든 맵오브젝트 로드가 끝이났다면 이때 AddActorTOScene*/
-		for (auto& pActorObject : m_ThreadCreateMapObjects)
+
+		/*
+			박예슬 0308 추가
+			문제상황 : 
+				기존 맵오브젝트 생성 과정에서 스레드에 언세이프한 작업은 액터를 씬에 추가하는 것밖에 없었음.
+				그래서 서브스레드에서 생성해온 맵오브젝트를 ActorObject로 캐스팅하여 
+				이벤트 매니저에 담고, 액터를 씬에 추가해줬는데
+				맵 오브젝트 한정(아마...)으로 스레드에 언세이프한 작업이 추가됨.
+				맵툴 용으로 작업되었을,
+				외부에서 Const Buffer 정보를 지정한 뒤 Const Buffer를 Unmap하여 Update하는 메소드를
+				클라이언트에서 그대로 쓰다보니 서브 스레드에서 Context를 사용하는 상황이 발생.
+			
+			변경점 :
+				1. 이벤트 매니저에 담아주는 객체 자료형을 MapObject로 내림.
+				
+				2. 맵오브젝트 생성 함수인 Bulid_3DObject의 매개변수 중 
+					기존에 사용하던 _isActorToScene 변수를 _isMainThread 로 변경, 
+					서브 스레드일 경우 스레드에 언세이프한 작업을 미뤄둠.
+				
+				3. 맵 오브젝트에 메인스레드 전용 초기화 메소드 
+					CMapObject::After_Initialize() 선언
+								(실제 구현은 C3DMapObject::After_Initialize() override 참조)
+					CActorObject::AddActorTOScene() 등 스레드에 언세이프한 작업들을 
+					메인스레드 전용 초기화 메소드에서 호출함.
+		*/ 
+		for (auto& pMapObject : m_ThreadCreateMapObjects)
 		{
-			pActorObject->Add_ActorToScene();
-			Safe_Release(pActorObject);
+			pMapObject->After_Initialize();
+			Safe_Release(pMapObject);
 		}
 		m_ThreadCreateMapObjects.clear();
 	}
@@ -1059,13 +1085,13 @@ HRESULT CEvent_Manager::Map_Object_Create(const _wstring& _strFileName, _uint _i
 				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
 					(LEVEL_ID)_iCurLevelID,
 					m_pGameInstance,
-					hFile, true, false);
+					hFile, true, false, false);
 
 			if (nullptr != pGameObject)
 			{
 				m_pGameInstance->Add_GameObject_ToLayer(_iCurLevelID, wstrLayerTag.c_str(), pGameObject);
 				// 쓰레드를 통해 생성된 맵오브젝트들을 별도 저장. 
-				m_ThreadCreateMapObjects.push_back(static_cast<CActorObject*>(pGameObject));
+				m_ThreadCreateMapObjects.push_back(static_cast<CMapObject*>(pGameObject));
 				Safe_AddRef(m_ThreadCreateMapObjects[i]);
 			}
 
