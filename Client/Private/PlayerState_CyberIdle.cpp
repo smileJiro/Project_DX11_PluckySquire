@@ -70,8 +70,6 @@ void CPlayerState_CyberIdle::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		|| (_uint)CPlayer::ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_LEFT_DASH == iAnimIdx
 		|| (_uint)CPlayer::ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_DOWN_DASH== iAnimIdx)
 	{
-
-		cout << " AnimEnd" << endl;
 		Set_VeloState(m_pDynamicActor->Get_LinearVelocity());
 	}
 
@@ -113,7 +111,6 @@ void CPlayerState_CyberIdle::Set_VeloState(_fvector _vVelocity)
 	if(m_pOwner->Get_Body()->Is_AnimTransition())
 		return;
 	m_eVelocityState = eNewVeloState;
-	cout << "m_eVelocityState" << m_eVelocityState << endl;
 	switch (m_eVelocityState)
 	{
 	case Client::CPlayerState_CyberIdle::VELOCITY_IDLE:

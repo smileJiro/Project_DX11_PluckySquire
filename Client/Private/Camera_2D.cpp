@@ -101,7 +101,7 @@ void CCamera_2D::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA*
 	m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
 }
 
-void CCamera_2D::Add_CustomArm(ARM_DATA _tArmData)
+void CCamera_2D::Set_CustomArmData(ARM_DATA& _tArmData)
 {
 	m_CustomArmData = _tArmData;
 	m_pCurArm->Set_StartInfo();

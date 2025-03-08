@@ -72,11 +72,12 @@ public:
 public:
 	void						Add_CurArm(CCameraArm* _pCameraArm);
 	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
-	void						Add_CustomArm(ARM_DATA _tArmData);
 
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
 	void						Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);
-	void						Set_CameraMode(_uint _iCameraMode, _int iNextCameraMode = -1) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; m_iNextCameraMode = iNextCameraMode; }
+	void						Set_CustomArmData(ARM_DATA& _tArmData);
+
+	void						Set_CameraMode(_uint _iCameraMode) { m_eCameraMode = (CAMERA_MODE)_iCameraMode; }
 	void						Set_FreezeEnter(_uint _iFreezeMask, _fvector _vExitArm, _int _iTriggerID);
 	void						Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID);
 	void						Set_EnableLookAt(_bool _isEnableLookAt);
@@ -89,7 +90,8 @@ public:
 	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix, _float _fChangingTime = 1.f) override;
 	virtual void				Change_Target(CGameObject* _pTarget, _float _fChangingTime = 1.f) override;
 	virtual void				Start_ResetArm_To_SettingPoint(_float _fResetTime) override;
-
+	virtual void				Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType) override;
+	
 	void						Load_InitialArmTag();
 
 private:
@@ -101,7 +103,6 @@ private:
 
 	CAMERA_MODE					m_eCameraMode = { CAMERA_MODE_END };
 	CAMERA_MODE					m_ePreCameraMode = { DEFAULT };
-	_int						m_iNextCameraMode = { -1 };
 
 	_float						m_fSmoothSpeed = {};
 

@@ -119,7 +119,7 @@ public:
 	void		Start_Turn_AxisRight(_float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec);
 	void		Start_Turn_AxisRight(_float _fTurnTime, _float _fAngle, _uint _iRatioType);
 	void		Start_Changing_ArmLength(_float _fLengthTime, _float _fLength, RATIO_TYPE _eRatioType);
-	void		Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType);
+	virtual void		Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType);
 	virtual void		Start_ResetArm_To_SettingPoint(_float _fResetTime) {};
 
 	void		Set_ResetData();

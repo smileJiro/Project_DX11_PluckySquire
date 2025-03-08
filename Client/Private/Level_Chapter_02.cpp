@@ -1118,15 +1118,15 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	//CGameObject* pGameObject;
-	//
-	//pDesc.fSizeX = 360.f / 2.f;
-	//pDesc.fSizeY = 149.f / 2.f;
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
-	//	return E_FAIL;
-	//
-	//Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pGameObject));
+	CGameObject* pGameObject;
+	
+	pDesc.fSizeX = 360.f / 2.f;
+	pDesc.fSizeY = 149.f / 2.f;
+	
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
+		return E_FAIL;
+	
+	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pGameObject));
 	
 	
 
@@ -1221,124 +1221,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
 {
 	CGameObject* pObject = nullptr;
-
-
-	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters"), m_eLevelID);
-
-	if (nullptr == pJson)
-		return E_FAIL;
-
-	CMonster::MONSTER_DESC MonsterDesc2D = {};
-
-	MonsterDesc2D.iCurLevelID = m_eLevelID;
-	MonsterDesc2D.eStartCoord = COORDINATE_2D;
-
-	if (pJson->contains("2D"))
-	{
-		_wstring strLayerTag = L"Layer_Monster";
-		_wstring strSectionTag = L"";
-		_wstring strMonsterTag = L"";
-
-		for (_int i = 0; i < (*pJson)["2D"].size(); ++i)
-		{
-			if ((*pJson)["2D"][i].contains("Position"))
-			{
-				for (_int j = 0; j < 3; ++j)
-				{
-					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialPosition) + j) = (*pJson)["2D"][i]["Position"][j];
-				}
-			}
-			if ((*pJson)["2D"][i].contains("Scaling"))
-			{
-				for (_int j = 0; j < 3; ++j)
-				{
-					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialScaling) + j) = (*pJson)["2D"][i]["Scaling"][j];
-				}
-			}
-			if ((*pJson)["2D"][i].contains("LayerTag"))
-			{
-				strLayerTag = STRINGTOWSTRING((*pJson)["2D"][i]["LayerTag"]);
-			}
-
-			if ((*pJson)["2D"][i].contains("SectionTag"))
-			{
-				strSectionTag = STRINGTOWSTRING((*pJson)["2D"][i]["SectionTag"]);
-			}
-			else
-				return E_FAIL;
-
-			if ((*pJson)["2D"][i].contains("MonsterTag"))
-			{
-				strMonsterTag = STRINGTOWSTRING((*pJson)["2D"][i]["MonsterTag"]);
-			}
-			else
-				return E_FAIL;
-
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc2D)))
-				return E_FAIL;
-			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionTag, pObject);
-		}
-	}
-
-	CMonster::MONSTER_DESC MonsterDesc3D = {};
-
-	MonsterDesc3D.iCurLevelID = m_eLevelID;
-	MonsterDesc3D.eStartCoord = COORDINATE_3D;
-
-	if (pJson->contains("3D"))
-	{
-		_wstring strLayerTag = L"Layer_Monster";
-		_wstring strMonsterTag = L"";
-
-		for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
-		{
-			if ((*pJson)["3D"][i].contains("Position"))
-			{
-				for (_int j = 0; j < 3; ++j)
-				{
-					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
-				}
-			}
-			if ((*pJson)["3D"][i].contains("Scaling"))
-			{
-				for (_int j = 0; j < 3; ++j)
-				{
-					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
-				}
-			}
-			if ((*pJson)["3D"][i].contains("LayerTag"))
-			{
-				strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
-			}
-
-			if ((*pJson)["3D"][i].contains("MonsterTag"))
-			{
-				strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
-			}
-			else
-				return E_FAIL;
-
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
-				return E_FAIL;
-
-		}
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	CBeetle::MONSTER_DESC Beetle_Desc;
 	Beetle_Desc.iCurLevelID = m_eLevelID;
@@ -1799,7 +1681,6 @@ void CLevel_Chapter_02::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 	Desc.vArm = _vArm;
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
 	Desc.fLength = _fLength;
-	Desc.wszArmTag = TEXT("Player_Arm");
 
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 
