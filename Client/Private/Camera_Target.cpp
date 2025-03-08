@@ -167,6 +167,8 @@ void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix, _float 
 	m_pTargetWorldMatrix = _pTargetWorldMatrix;
 	m_fTargetChangingTime = { _fChangingTime, 0.f };
 	m_isTargetChanged = true;
+
+	m_vStartPos = m_vPreTargetPos;
 }
 
 void CCamera_Target::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
