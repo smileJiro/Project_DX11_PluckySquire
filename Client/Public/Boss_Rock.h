@@ -25,9 +25,9 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
-	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
-	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
-	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 
 public:
 	HRESULT Cleanup_DeadReferences() override;
@@ -38,9 +38,6 @@ private:
 	virtual HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
-
-private:
-	_uint m_iHp = { 0 };
 
 public:
 	static CBoss_Rock* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

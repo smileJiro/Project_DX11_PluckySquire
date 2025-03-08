@@ -186,36 +186,6 @@ void CCamera_Target::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
 		m_isUsingFreezeOffset = false;
 }
 
-void CCamera_Target::Turn_AxisY(_float _fTimeDelta)
-{
-	if (false == m_isTurnAxisY)
-		return;
-
-	if (true == m_pCurArm->Turn_AxisY(&m_CustomArmData, _fTimeDelta)) {
-		m_isTurnAxisY = false;
-	}
-}
-
-void CCamera_Target::Turn_AxisRight(_float _fTimeDelta)
-{
-	if (false == m_isTurnAxisRight)
-		return;
-
-	if (true == m_pCurArm->Turn_AxisRight(&m_CustomArmData, _fTimeDelta)) {
-		m_isTurnAxisRight = false;
-	}
-}
-
-void CCamera_Target::Change_Length(_float _fTimeDelta)
-{
-	if (false == m_isChangingLength)
-		return;
-
-	if (true == m_pCurArm->Change_Length(&m_CustomArmData, _fTimeDelta)) {
-		m_isChangingLength = false;
-	}
-}
-
 void CCamera_Target::Start_ResetArm_To_SettingPoint(_float _fResetTime)
 {
 	m_pCurArm->Set_StartInfo();
@@ -285,6 +255,9 @@ void CCamera_Target::Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex
 		return;
 
 	Set_InitialData(pData);
+
+	// 책 밖으로 나왔을 때, Book 나올 떄 하는 Set Next Arm이 안 먹히게 하기 위해서 추가 
+	m_eCameraMode = DEFAULT;
 }
 
 void CCamera_Target::Set_InitialData(pair<ARM_DATA*, SUB_DATA*>* pData)
@@ -332,6 +305,28 @@ INITIAL_DATA CCamera_Target::Get_InitialData()
 	m_vFreezeOffset = { 0.f, 0.f, 0.f };
 
 	return tData;
+}
+
+_wstring CCamera_Target::Get_DefaultArm_Tag()
+{
+	_wstring szLevelName;
+
+	switch (m_iCurLevelID) {
+	case LEVEL_CHAPTER_2:
+		szLevelName = TEXT("Chapter2_");
+		break;
+	case LEVEL_CHAPTER_4:
+		szLevelName = TEXT("Chapter4_");
+		break;
+	case LEVEL_CHAPTER_6:
+		szLevelName = TEXT("Chapter6_");
+		break;
+	case LEVEL_CHAPTER_8:
+		szLevelName = TEXT("Chapter8_");
+		break;
+	}
+
+	return szLevelName + TEXT("Default");
 }
 
 _bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
@@ -510,7 +505,10 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 	Change_AtOffset(_fTimeDelta);
 
 	Turn_AxisY(_fTimeDelta);
+	Turn_AxisY_Angle(_fTimeDelta);
 	Turn_AxisRight(_fTimeDelta);
+	Turn_AxisRight_Angle(_fTimeDelta);
+	Turn_Vector(_fTimeDelta);
 	Change_Length(_fTimeDelta);
 
 	Change_FreezeOffset(_fTimeDelta);
@@ -790,7 +788,7 @@ void CCamera_Target::Switching(_float _fTimeDelta)
 	if (false == m_isInitialData)
 		return;
 
-	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
 
 	if (fRatio >= (1.f - EPSILON)) {
 		_vector vTargetPos;

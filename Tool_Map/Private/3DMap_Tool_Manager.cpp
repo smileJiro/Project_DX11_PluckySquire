@@ -463,6 +463,10 @@ void C3DMap_Tool_Manager::Object_Create_Imgui(_bool _bLock)
 
 			pPickingObj->Imgui_Render_ObjectInfos();
 
+			_bool isCulling = pPickingObj->Is_Culling();
+
+			if (ImGui::Checkbox("Culling", &isCulling))
+				pPickingObj->Set_Culling(isCulling);
 
 			_uint iSksp = pPickingObj->Get_SkspType();
 			if (ImGui::RadioButton("None", iSksp == SKSP_NONE))
@@ -1455,6 +1459,7 @@ void C3DMap_Tool_Manager::Save(_bool _bSelected)
 			for_each(ObjList.begin(), ObjList.end(), [&vecSaveModelProtos, &_bSelected, &log, &iCount, &hFile, &dwByte, &szSaveMeshName, this](CGameObject* pGameObject)
 				{
 					CMapObject* pObject = static_cast<CMapObject*>(pGameObject);
+					_bool isCulling = pObject->Is_Culling();
 					_string strModelName = m_pGameInstance->WStringToString(pObject->Get_ModelName()).c_str();
 					strcpy_s(szSaveMeshName, strModelName.c_str());
 
@@ -1468,11 +1473,15 @@ void C3DMap_Tool_Manager::Save(_bool _bSelected)
 					WriteFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 					//	세이브 파라미터 4. 월드 매트릭스
 					WriteFile(hFile, &pObject->Get_WorldMatrix(), sizeof(_float4x4), &dwByte, nullptr);
-					// 세이브 파라미터 5. 스케치스페이스
+					// 세이브 파라미터	5. 컬링 여부
+					WriteFile(hFile, &isCulling, sizeof(_bool), &dwByte, nullptr);
+					
+					
+					// 세이브 파라미터 6. 스케치스페이스
 					pObject->Save_Sksp(hFile);
-					//	세이브 파라미터 6. 컬러
+					//	세이브 파라미터 7. 컬러
 					pObject->Save_Override_Color(hFile);
-					// 세이브 파라미터 7. 마테리얼 오버라이드
+					// 세이브 파라미터 8. 마테리얼 오버라이드
 					pObject->Save_Override_Material(hFile);
 					iCount++;
 					log = "Save... Save Object Count :  ";
@@ -1628,10 +1637,11 @@ void C3DMap_Tool_Manager::Load(_bool _bSelected)
 		{
 			_char		szSaveMeshName[MAX_PATH];
 			_float4x4	vWorld = {};
-
+			_bool		isCulling = false;
 
 			ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 			ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
+			ReadFile(hFile, &isCulling, sizeof(_bool), &dwByte, nullptr);
 
 			CMapObject::MAPOBJ_DESC NormalDesc = {};
 			lstrcpy(NormalDesc.szModelName, m_pGameInstance->StringToWString(szSaveMeshName).c_str());
@@ -1655,6 +1665,7 @@ void C3DMap_Tool_Manager::Load(_bool _bSelected)
 				static_cast<CMapObject*>(pGameObject)->Load_Sksp(hFile);
 				static_cast<CMapObject*>(pGameObject)->Load_Override_Color(hFile);
 				static_cast<CMapObject*>(pGameObject)->Load_Override_Material(hFile);
+				static_cast<CMapObject*>(pGameObject)->Set_Culling(isCulling);
 
 				iCount++;
 				log = "Load... Loading Object Count :  ";

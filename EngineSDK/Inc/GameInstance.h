@@ -65,6 +65,8 @@ public: /* For. Object_Manager */
 	HRESULT				Add_GameObject_ToLayer(_uint _iPrototypeLevelID, const _wstring& _strPrototypeTag, _uint _iLevelID, const _wstring& _strLayerTag, void* pArg = nullptr); // Default
 	HRESULT				Add_GameObject_ToLayer(_uint _iPrototypeLevelID, const _wstring& _strPrototypeTag, _uint _iLevelID, const _wstring& _strLayerTag, CGameObject** _ppOut, void* pArg = nullptr); // Add Object甫 Return
 	HRESULT				Add_GameObject_ToLayer(_uint _iLevelID, const _wstring& _strLayerTag, class CGameObject* _pGameObject); // Add Object甫 流立 积己 饶 Add To Layer
+	
+	void				Set_Layer_Culling(_uint _iLevelID, const _wstring& _strLayerTag, _bool _isCulling); 
 
 	_bool				Is_EmptyLayer(_uint _iLevelID, const _wstring& _strLayerTag);
 	class CLayer*		Find_Layer(_uint _iLevelID, const _wstring& _strLayerTag);

@@ -71,6 +71,8 @@ _bool CCamera_CutScene::Set_NextCutScene(_wstring _wszCutSceneName)
 	m_isFinishCutScene = false;
 	m_szEventTag = _wszCutSceneName;
 
+	m_pGameInstance->Set_Layer_Culling(m_pGameInstance->Get_CurLevelID(), L"Layer_MapObject", false);
+
 	return true;
 }
 
@@ -232,6 +234,9 @@ void CCamera_CutScene::After_CutScene(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraType(m_pCurCutScene->first.iNextCameraType);
 		m_isFinishCutScene = false;
 		m_pCurCutScene = nullptr;
+	
+		m_pGameInstance->Set_Layer_Culling(m_pGameInstance->Get_CurLevelID(), L"Layer_MapObject", true);
+	
 	}
 }
 
@@ -243,7 +248,7 @@ void CCamera_CutScene::Switching(_float _fTimeDelta)
 	// Initial 데이터랑 KeyFrame 혹은 vector<m_CutSceneDatas> 첫 번째 값을 보간함
 	CUTSCENE_DATA* tData = m_pCurCutScene->second[0];
 
-	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
 
 	if (fRatio >= (1.f - EPSILON)) {
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&tData->vPosition), 1.f));

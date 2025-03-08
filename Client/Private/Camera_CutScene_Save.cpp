@@ -336,7 +336,7 @@ void CCamera_CutScene_Save::Action_LookAt(_float _fTimeDelta)
 	if (false == m_isChangingLookAt)
 		return;
 	
-	_float fRatio = Calculate_Ratio(&m_fLookAtTime, _fTimeDelta, m_iLookAtRatioType);
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fLookAtTime, _fTimeDelta, m_iLookAtRatioType);
 
 	if (fRatio >= (1.f - EPSILON)) {
 		m_isChangingLookAt = false;

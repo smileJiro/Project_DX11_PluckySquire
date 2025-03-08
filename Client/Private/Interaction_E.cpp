@@ -154,7 +154,7 @@ HRESULT CInteraction_E::Render()
 
 		if (nullptr != CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player()))
 		{
-			auto CurSection = CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player());
+			 auto CurSection = CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player());
 			RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(*(CurSection)));
 
 		}

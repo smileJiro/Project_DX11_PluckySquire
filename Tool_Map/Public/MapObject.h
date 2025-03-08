@@ -6,8 +6,6 @@ BEGIN(Map_Tool)
 
 class CMapObject final :  public CModelObject
 {
-
-
 public:
 	enum MODE
 	{
@@ -104,6 +102,10 @@ public:
 
 	_uint					Get_MaterialCount();
 
+	_bool					Is_Culling() { return m_isCulling; }
+	void					Set_Culling(_bool _isCulling) { m_isCulling = _isCulling; }
+
+
 
 #endif // _DEBUG
 
@@ -124,6 +126,7 @@ private :
 	_uint					m_iDiffuseIndex = 0;
 	_uint					m_iSkspType = 0;
 	_string					m_strSpskTag = "";
+	_bool					m_isCulling = true;
 
 	vector<C3DModel::COLOR_SHADER_MODE>		m_eColorShaderModes;
 

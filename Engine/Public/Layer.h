@@ -35,9 +35,16 @@ public:
 	// Get
 	const list<class CGameObject*>& Get_GameObjects() { return m_GameObjects; }
 	CGameObject* Get_GameObject_Ptr(_int _iObjectIndex);
+
+
+	void				Set_LayerCulling(_bool _isCulling);
+	_bool				Is_LayerCulling() { return m_isLayerCulling; };
+
+
 private:
 	CGameInstance* m_pGameInstance = nullptr;
 private:
+	_bool								m_isLayerCulling = true;
 	_wstring							m_strName{}; // 이름추가하고, 디버깅좀하자. TODO:: 0224
 	list<class CGameObject*>			m_GameObjects{};
 

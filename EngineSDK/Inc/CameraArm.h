@@ -73,13 +73,14 @@ public:
 
 	_bool				Move_To_NextArm(_float _fTimeDelta);
 	_bool				Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook = false);
-	_bool				Move_To_CustomArm(ARM_DATA* _pCustomData, _float _fTimeDelta);
+	_bool				Move_To_CustomArm(ARM_DATA* _pCustomData, _float _fTimeDelta, _bool _isUsingVector = false);
 	_bool				Move_To_PreArm(_float _fTimeDelta);						// Stack에 저장해둔 Arm으로
 	_bool				Move_To_FreezeExitArm(_float _fRatio, _fvector _vFreezeExitArm, _float _fFreezeExitLength);
 	void				Turn_ArmX(_float fAngle);
 	void				Turn_ArmY(_float fAngle);
 	_bool				Reset_To_SettingPoint(_float _fRatio, _fvector _vSettingPoint, _float _fSettingLength);
 
+	_bool				Turn_Vector(ARM_DATA* _pCustomData, _float _fTimeDelta = 1.f);
 	_bool				Turn_AxisY(ARM_DATA* _pCustomData, _float _fTimeDelta);
 	_bool				Turn_AxisRight(ARM_DATA* _pCustomData, _float _fTimeDelta);
 	_bool				Turn_AxisY(_float _fAngle, _float _fTurnTime = 1.f, _float _fTimeDelta = 1.f, _uint _iRatioType = LERP);

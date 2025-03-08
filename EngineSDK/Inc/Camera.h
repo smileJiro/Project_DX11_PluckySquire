@@ -115,8 +115,11 @@ public:
 	void		Set_FadeRatio(_float _fFadeRatio, _bool _isUpdate = false);
 
 	void		Start_Turn_AxisY(_float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec);
+	void		Start_Turn_AxisY(_float _fTurnTime, _float _fAngle, _uint _iRatioType);
 	void		Start_Turn_AxisRight(_float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec);
+	void		Start_Turn_AxisRight(_float _fTurnTime, _float _fAngle, _uint _iRatioType);
 	void		Start_Changing_ArmLength(_float _fLengthTime, _float _fLength, RATIO_TYPE _eRatioType);
+	void		Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType);
 	virtual void		Start_ResetArm_To_SettingPoint(_float _fResetTime) {};
 
 	void		Set_ResetData();
@@ -135,12 +138,13 @@ protected:
 	void			Action_Shake(_float _fTimeDelta);
 	void			Action_PostProcessing_Fade(_float _fTimeDelta);
 	
-	virtual void	Turn_AxisY(_float _fTimeDelta) {};
-	virtual void	Turn_AxisRight(_float _fTimeDelta) {};
-	virtual void	Change_Length(_float _fTimeDelta) {};
+	virtual void	Turn_AxisY(_float _fTimeDelta);
+	virtual void	Turn_AxisY_Angle(_float _fTimeDelta);
+	virtual void	Turn_AxisRight(_float _fTimeDelta);
+	virtual void	Turn_AxisRight_Angle(_float _fTimeDelta);
+	virtual void	Turn_Vector(_float _fTimeDelta);
+	virtual void	Change_Length(_float _fTimeDelta);
 	virtual void	Reset_To_SettingPoint(_float _fTimeDelta) {};
-	
-	_float			Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
 
 	virtual void	Switching(_float _fTimeDelta) {};
 
@@ -199,13 +203,18 @@ protected:
 	_float2						m_vFadeTime = { 1.0f, 0.0f };
 
 protected:
-	class CCameraArm* m_pCurArm = { nullptr };
+	class CCameraArm*			m_pCurArm = { nullptr };
 	_bool						m_isChangingLength = { false };
 	_bool						m_isTurnAxisY = { false };
+	_bool						m_isTurnAxisY_Angle = { false };
 	_bool						m_isTurnAxisRight = { false };
+	_bool						m_isTurnAxisRight_Angle = { false };
+	_bool						m_isTurnVector = { false };
 
 	// CustomArm
 	ARM_DATA					m_CustomArmData = {};
+	_float						m_fTurnAngle = {};			// 원하는 각도로 돌기 위한 변수
+	_uint						m_iTurnAngleRatioType = {};
 
 	// 해당 지점으로 카메라 복구
 	RETURN_ARMDATA				m_ResetArmData = {};
@@ -216,6 +225,7 @@ protected:
 	_float						m_fPreLookAngle = {};
 	_float2						m_fCameraTurnTime = {};
 	_bool						m_isStartTurn = { false };
+
 
 private:
 	HRESULT						Ready_DofConstData(CAMERA_DESC* _pDesc);
