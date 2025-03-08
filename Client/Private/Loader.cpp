@@ -639,6 +639,11 @@ HRESULT CLoader::Loading_Level_Static()
 		CCamera_2D::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For. Prototype_GameObject_CameraPivot */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CameraPivot"),
+		CCameraPivot::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	// ============ Triger
 	/* For. Prototype_GameObject_TriggerObject */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TriggerObject"),
@@ -1398,6 +1403,16 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_C6_TheGiantTracks.wav"));
 		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub2"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_And_Exploded_On_The_Ground_Below.wav"));
 
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0910_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheGangArrived_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0910_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/A_sfx_C8_TheGangArrivedAtArtia.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0910_2_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_ToSeeTheAftermath_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0910_2_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheArmyOfArtia_KR.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AndNowHumgrump_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_ToClaimHisRightfulRole_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_3"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AsTheGrandRuler_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/A_sfx_c08_Artian_Throne.wav"));
+
 	#pragma endregion
 
 	#pragma region Chapter 6 - Model Load
@@ -1553,15 +1568,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_APlanQuiteObviouslyDoomed_KR.wav"));
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/A_sfx_C9_TheTraiterousRodent.wav"));
 
-	m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheGangArrived_KR.wav"));
-	m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/A_sfx_C8_TheGangArrivedAtArtia.wav"));
-	m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_2_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_ToSeeTheAftermath_KR.wav"));
-	m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_2_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheArmyOfArtia_KR.wav"));
+	
 
-	m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AndNowHumgrump_KR.wav"));
-	m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_ToClaimHisRightfulRole_KR.wav"));
-	m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_3"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AsTheGrandRuler_KR.wav"));
-	m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/A_sfx_c08_Artian_Throne.wav"));
+
 	// 나레이션 관련
 
 #pragma endregion

@@ -41,6 +41,7 @@
 #include "Camera_Free.h"
 #include "CameraArm.h"
 #include "CutScene_Sector.h"
+#include "CameraPivot.h"
 
 /* Object */
 #include "MeshEffect_Emitter.h"

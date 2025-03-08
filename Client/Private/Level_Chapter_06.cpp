@@ -1009,11 +1009,15 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+	CGameObject* pHeartObject;
+
 	pDesc.fSizeX = 256.f / 4.f;
 	pDesc.fSizeY = 256.f / 4.f;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pHeartObject, &pDesc)))
 		return E_FAIL;
+
+	Uimgr->Set_InterActionHeart(static_cast<CInteraction_Heart*>(pHeartObject));
 
 
 	CGameObject* pGameObject;
@@ -1306,7 +1310,7 @@ void CLevel_Chapter_06::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 		return;
 	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_Transform((COORDINATE)_iCoordinateType)->Get_State(CTransform::STATE_LOOK);
 
-	CCameraArm::CAMERA_ARM_DESC Desc{};
+	CCameraArm::CAMERA_ARM_DESC Desc = {};
 
 	Desc.vArm = _vArm;
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };

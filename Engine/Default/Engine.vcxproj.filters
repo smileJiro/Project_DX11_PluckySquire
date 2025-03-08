@@ -322,6 +322,9 @@
     <Filter Include="01.Utility\07.Lights\Target">
       <UniqueIdentifier>{724612e5-0fda-437f-bdee-5e2f03b6a4bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03.Objects\Camera\CameraPivot">
+      <UniqueIdentifier>{7ccb863f-8ab5-4f40-95a3-2c2ed66b520c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -660,6 +663,9 @@
     <ClInclude Include="..\public\Light_Target.h">
       <Filter>01.Utility\07.Lights\Target</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CameraPivot.h">
+      <Filter>01.Utility\03.Objects\Camera\CameraPivot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -985,6 +991,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Light_Target.cpp">
       <Filter>01.Utility\07.Lights\Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CameraPivot.cpp">
+      <Filter>01.Utility\03.Objects\Camera\CameraPivot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
