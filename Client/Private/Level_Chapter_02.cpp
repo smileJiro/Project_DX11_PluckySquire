@@ -1223,7 +1223,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	CGameObject* pObject = nullptr;
 
 
-	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters"), m_eLevelID);
+	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter2_Monsters"), m_eLevelID);
 
 	if (nullptr == pJson)
 		return E_FAIL;
@@ -1290,37 +1290,47 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		_wstring strLayerTag = L"Layer_Monster";
 		_wstring strMonsterTag = L"";
 
-		for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
+		for (auto Json : (*pJson)["3D"])
 		{
-			if ((*pJson)["3D"][i].contains("Position"))
+			if (Json.contains("Position"))
 			{
 				for (_int j = 0; j < 3; ++j)
 				{
-					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
+					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = Json["Position"][j];
 				}
 			}
-			if ((*pJson)["3D"][i].contains("Scaling"))
+			if (Json.contains("Scaling"))
 			{
 				for (_int j = 0; j < 3; ++j)
 				{
-					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
+					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = Json["Scaling"][j];
 				}
 			}
-			if ((*pJson)["3D"][i].contains("LayerTag"))
+			if (Json.contains("LayerTag"))
 			{
-				strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
+				strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
 			}
 
-			if ((*pJson)["3D"][i].contains("MonsterTag"))
+			if (Json.contains("MonsterTag"))
 			{
-				strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
+				strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
 			}
 			else
 				return E_FAIL;
 
+			if (Json.contains("SneakMode"))
+			{
+				if (Json.contains("SneakWayPointIndex"))
+				{
+					MonsterDesc3D.eWayIndex= Json["SneakWayPointIndex"];
+				}
+				else
+					return E_FAIL;
+				MonsterDesc3D.isSneakMode = Json["SneakMode"];
+			}
+
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
 				return E_FAIL;
-
 		}
 	}
 
@@ -1328,88 +1338,56 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 
 
+	//CBeetle::MONSTER_DESC Beetle_Desc;
+	//Beetle_Desc.iCurLevelID = m_eLevelID;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 6.56f, 22.6f);
+	//Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_1;
+	//Beetle_Desc.isSneakMode = true;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	//	return E_FAIL;
+
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(32.15f, 0.35f, 1.66f);
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_2;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	//	return E_FAIL;
+
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(39.5f, 0.35f, 10.5f);
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_2_2;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	//	return E_FAIL;
+
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(46.f, 0.35f, -0.5f);
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_3;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	//	return E_FAIL;
 
 
 
+	//CGoblin::MONSTER_DESC Goblin_Desc;
+	//Goblin_Desc.iCurLevelID = m_eLevelID;
+	//Goblin_Desc.eStartCoord = COORDINATE_2D;
+	//Goblin_Desc.tTransform2DDesc.vInitialPosition = _float3(460.0f, 100.f, 0.f);
+	//Goblin_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
+	//	return E_FAIL;
 
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
 
+	//Goblin_Desc.iCurLevelID = m_eLevelID;
+	//Goblin_Desc.eStartCoord = COORDINATE_2D;
+	//Goblin_Desc.tTransform2DDesc.vInitialPosition = _float3(700.0f, 20.f, 0.f);
+	//Goblin_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
+	//	return E_FAIL;
 
-
-
-
-
-	CBeetle::MONSTER_DESC Beetle_Desc;
-	Beetle_Desc.iCurLevelID = m_eLevelID;
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 6.56f, 22.6f);
-	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_1;
-	Beetle_Desc.isSneakMode = true;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
-
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(32.15f, 0.35f, 1.66f);
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_2;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
-
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(39.5f, 0.35f, 10.5f);
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_2_2;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
-
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(46.f, 0.35f, -0.5f);
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_3;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
-
-
-	//Pooling_DESC Pooling_Desc;
-	//Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	//Pooling_Desc.strLayerTag = _strLayerTag;
-	//Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Goblin");
-	//Pooling_Desc.eSection2DRenderGroup = SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT;
-
-
-	CGoblin::MONSTER_DESC Goblin_Desc;
-	Goblin_Desc.iCurLevelID = m_eLevelID;
-	Goblin_Desc.eStartCoord = COORDINATE_2D;
-	Goblin_Desc.tTransform2DDesc.vInitialPosition = _float3(460.0f, 100.f, 0.f);
-	Goblin_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
-
-	Goblin_Desc.iCurLevelID = m_eLevelID;
-	Goblin_Desc.eStartCoord = COORDINATE_2D;
-	Goblin_Desc.tTransform2DDesc.vInitialPosition = _float3(700.0f, 20.f, 0.f);
-	Goblin_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
-
-
-	//CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Goblin"), Pooling_Desc, pGoblin_Desc);
-
-	////CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
-
-	//_float3 vPos = { 460.0f, 100.f, 0.f };
-	//_wstring strSectionKey = TEXT("Chapter1_P0708");
-
-	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Goblin"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
-
-	//vPos = { 700.0f, 20.f, 0.f };
-
-	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Goblin"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSectionKey);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
 
 
 	CGoblin_SideScroller::SIDESCROLLDESC Goblin_SideScroller_Desc;
