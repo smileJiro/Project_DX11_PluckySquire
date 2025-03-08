@@ -179,9 +179,10 @@ void CRabbitLunch::Late_Update(_float _fTimeDelta)
 
 HRESULT CRabbitLunch::Render()
 {
+#ifdef _DEBUG
 	if (m_pBody2DColliderCom->Is_Active())
 		m_pBody2DColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
-
+#endif
 	return __super::Render();
 }
 
