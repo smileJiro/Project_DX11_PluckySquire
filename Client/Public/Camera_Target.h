@@ -161,6 +161,8 @@ private:
 	void						Move_To_ExitArm(_float _fTimeDelta);
 	void						Reset_To_SettingPoint(_float _fTimeDelta);
 
+	void						Move_In_BossStage(_float _fTimeDelta);
+
 	_vector						Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fTimeDelta);
 	void						Calculate_FreezeOffset(_vector* _pTargetPos);
 	void						Look_Target(_fvector _vTargetPos, _float _fTimeDelta);

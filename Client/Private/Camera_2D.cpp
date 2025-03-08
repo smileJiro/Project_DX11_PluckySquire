@@ -968,7 +968,7 @@ void CCamera_2D::Find_TargetPos()
 				_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
 				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
 
-				Set_InitialData(vDir, 6.5f, XMVectorZero(), 5);
+				m_pCurArm->Set_ArmVector(vDir);
 			}
 		}
 #pragma endregion

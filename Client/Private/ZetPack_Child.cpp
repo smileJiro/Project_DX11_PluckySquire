@@ -404,7 +404,6 @@ void CZetPack_Child::Finished_DialogueAction()
 			/* 4. Change CameraTarget */
 			CCamera_Manager::GetInstance()->Change_CameraTarget(m_pPlayer, 1.0f);
 
-			CCamera_Manager::GetInstance()->Start_ZoomOut(CCamera_Manager::TARGET_2D, 1.0f, RATIO_TYPE::EASE_OUT);
 			_uint iZoomLevel = CCamera_Manager::GetInstance()->Get_CurrentCamera()->Get_CurrentZoomLevel();
 			CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET_2D, 1.0f, iZoomLevel + 2,RATIO_TYPE::EASE_OUT);
 
