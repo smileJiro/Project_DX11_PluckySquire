@@ -64,7 +64,9 @@ public:
 	// 3. EASE_IN: 점점 빠르게, EASE_OUT: 점점 느리게, LERP: 기본 보간, EASE_IN_OUT: 빨라지다가 다시 느리게
 	void				Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType);
 	void				Start_ZoomIn(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iRatioType);
+	void				Start_ZoomIn(_float _fZoomTime, _uint _iRatioType);
 	void				Start_ZoomOut(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iRatioType);
+	void				Start_ZoomOut(_float _fZoomTime, _uint _iRatioType);
 
 	// AtOffset
 	// 1. Target Camera는 기본적으로 Target을 바라보지만, 타겟을 기준으로 해당 Offset만큼 떨어진 곳을 보도록 조절한다
