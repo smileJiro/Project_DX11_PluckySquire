@@ -36,10 +36,11 @@ HRESULT CCameraArm::Initialize(void* pArg)
     if (nullptr == m_pTransform)
         return E_FAIL;
 
-    if (FAILED(m_pTransform->Initialize(&pDesc)))
+    if (FAILED(m_pTransform->Initialize(pDesc)))
         return E_FAIL;
 
     m_pTransform->Set_Look(XMLoadFloat3(&m_vArm));
+    //Set_ArmVector(XMLoadFloat3(&m_vArm));
 
     return S_OK;
 }

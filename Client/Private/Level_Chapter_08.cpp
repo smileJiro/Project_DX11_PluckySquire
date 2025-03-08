@@ -342,14 +342,22 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 	{
 		if (KEY_DOWN(KEY::NUM5))
 		{
+			CGameObject* pBoss = nullptr; 
 			CButterGrump::MONSTER_DESC Boss_Desc;
 			Boss_Desc.iCurLevelID = m_eLevelID;
 			Boss_Desc.eStartCoord = COORDINATE_3D;
 			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, 78.0f);
 
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &pBoss, &Boss_Desc)))
 				return;
+
+
+			// Pivot에 Boss 넣기(효림)
+			CCameraPivot* pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_CameraPivot"), 0));
+			pPivot->Set_MainTarget(pBoss);
+			pPivot->Set_Active(true);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pPivot);
 		}
 	}
 
@@ -482,6 +490,21 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	if (nullptr == pPlayer)
 		return E_FAIL;
 
+	/* CameraPivot */
+	CCameraPivot::CAMERAPIVOT_DESC PivotDesc{};
+	PivotDesc.pMainTaget = nullptr;			// Boss가 아직 안 만들어져 있음
+	PivotDesc.pSubTarget = pPlayer;
+	PivotDesc.fRatio = 0.15f;
+
+	CGameObject* pPivot = nullptr;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CameraPivot"),
+		m_eLevelID, TEXT("Layer_CameraPivot"), &pPivot, &PivotDesc)))
+		return E_FAIL;
+
+	pPivot->Set_Active(false);
+
+	/* Camera */
 	CGameObject* pCamera = nullptr;
 
 	// Free Camera
@@ -1232,7 +1255,7 @@ void CLevel_Chapter_08::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 		return;
 	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_Transform((COORDINATE)_iCoordinateType)->Get_State(CTransform::STATE_LOOK);
 
-	CCameraArm::CAMERA_ARM_DESC Desc{};
+	CCameraArm::CAMERA_ARM_DESC Desc = {};
 
 	Desc.vArm = _vArm;
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
