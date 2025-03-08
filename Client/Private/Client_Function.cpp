@@ -149,7 +149,7 @@ namespace Client
 
 	}
 
-	void Event_Register_Trigger(_wstring& _szEventTag)
+	void Event_Register_Trigger(const _wstring& _szEventTag)
 	{
 		EVENT tEvent;
 		tEvent.eType = EVENT_TYPE::REGISTER_TRIGGER_EVENT;

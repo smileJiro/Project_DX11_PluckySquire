@@ -296,21 +296,23 @@ void CModelObject::Check_FrustumCulling()
         m_isFrustumCulling = false;
 }
 
-void CModelObject::Start_FadeAlphaIn()
+void CModelObject::Start_FadeAlphaIn(_float _fFadeAlphaTime)
 {
     if (COORDINATE_2D != Get_CurCoord())
         return;
 
     m_eFadeAlphaState = FADEALPHA_IN;
+    m_vFadeAlpha.x = _fFadeAlphaTime;
     m_vFadeAlpha.y = 0.0f;
 }
 
-void CModelObject::Start_FadeAlphaOut()
+void CModelObject::Start_FadeAlphaOut(_float _fFadeAlphaTime)
 {
     if (COORDINATE_2D != Get_CurCoord())
         return;
 
     m_eFadeAlphaState = FADEALPHA_OUT;
+    m_vFadeAlpha.x = _fFadeAlphaTime;
     m_vFadeAlpha.y = 0.0f;
 }
 
@@ -328,7 +330,7 @@ void CModelObject::Action_Fade(_float _fTimeDelta)
         m_vFadeAlpha.y += _fTimeDelta;
         if (m_vFadeAlpha.x <= m_vFadeAlpha.y)
         {
-            m_vFadeAlpha.y = 1.0f;
+            m_vFadeAlpha.y = m_vFadeAlpha.x;
             m_eFadeAlphaState = FADEALPHA_DEFAULT;
         }
     }
@@ -338,8 +340,8 @@ void CModelObject::Action_Fade(_float _fTimeDelta)
         m_vFadeAlpha.y += _fTimeDelta;
         if (m_vFadeAlpha.x <= m_vFadeAlpha.y)
         {
-            m_vFadeAlpha.y = 1.0f;
-            m_eFadeAlphaState = FADEALPHA_DEFAULT;
+            m_vFadeAlpha.y = m_vFadeAlpha.x;
+            //m_eFadeAlphaState = FADEALPHA_DEFAULT;
         }
     }
         break;

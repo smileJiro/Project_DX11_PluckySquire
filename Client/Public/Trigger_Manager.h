@@ -39,6 +39,7 @@ public :
 	{
 		C02P0910_LIGHTNING_BOLT_SPAWN,
 		C02P0910_MONSTER_SPAWN,
+
 		CHAPTER2_BOOKMAGIC,
 		CHAPTER2_INTRO,
 		CHAPTER2_HUMGRUMP,
@@ -47,9 +48,14 @@ public :
 		CHAPTER2_BETTLE_PAGE,		// 비틀 조우 직전의 책벌레
 		CHAPTER2_OPENBOOKEVENT,		// 2챕터 큰 책 앞에 도달한 책벌레
 		CHAPTER2_STORYSEQUENCE,		// 글로브 습득 후, 스케치스페이스 이벤트
+
 		CHAPTER4_RIDE_ZIPLINE,		// Zipline 타기
 		CHAPTER4_EVENT_FLAG,		// Zipline 들어가기 전 이벤트
 		CHAPTER4_STORYSEQUENCE,		// 글로브 습득 후, 스케치스페이스 이벤트
+
+		/* Father Game Start */
+		CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR,
+		/* Father Game End */
 
 		EVENT_EXECUTER_ACTION_TYPE_LAST
 	};
