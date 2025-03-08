@@ -346,7 +346,7 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			Boss_Desc.iCurLevelID = m_eLevelID;
 			Boss_Desc.eStartCoord = COORDINATE_3D;
 			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
+			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, 78.0f);
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
 				return;
