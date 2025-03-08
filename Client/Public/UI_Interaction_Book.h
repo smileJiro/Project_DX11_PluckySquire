@@ -34,5 +34,9 @@ public:
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override;
 
+
+private:
+	_int					m_iTextureNum = { 0 };
+	_bool					m_isBookInteract = { false };
 };
 

@@ -217,6 +217,7 @@ namespace Client
 		SCENE,
 		TRANSITION,
 		IDLE,
+		MOVE,
 
 		ATTACK,
 		ENERGYBALL,

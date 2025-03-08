@@ -35,8 +35,11 @@ void CBossIdleState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
-	m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
+	//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
+	//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
+	_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
+
+	m_pOwner->Get_ControllerTransform()->Turn_To_DesireDir(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec() * _fTimeDelta);
 
 	CButterGrump* pBoss = static_cast<CButterGrump*>(m_pOwner);
 
@@ -51,6 +54,10 @@ void CBossIdleState::State_Update(_float _fTimeDelta)
 	else if (true == pBoss->Is_Converse())
 	{
 		Event_ChangeBossState(BOSS_STATE::SHIELD, m_pFSM);
+	}
+	else if (true == pBoss->Is_Move())
+	{
+		Event_ChangeBossState(BOSS_STATE::MOVE, m_pFSM);
 	}
 	else
 	{

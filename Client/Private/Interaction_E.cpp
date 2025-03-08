@@ -86,24 +86,16 @@ void CInteraction_E::Late_Update(_float _fTimeDelta)
 		CGameObject* pGameObejct = dynamic_cast<CGameObject*>(pInteractableObject);
 
 		// 현재 섹션에 오브젝트가 없다면
-		if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
-		{
-			if (false == CSection_Manager::GetInstance()->Is_CurSection(pGameObejct))
-				return;
-
-		}
+		//if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+		//{
+		//	if (false == CSection_Manager::GetInstance()->Is_CurSection(pGameObejct))
+		//		return;
+		//
+		//}
 
 		// 무조건 플레이어 머리 위에만 띄운다로 스펙 변경 됨.
-		
-		//if (true == pInteractableObject->Is_UIPlayerHeadUp())
-		//{
-			Cal_PlayerHighPos(pGameObejct);
-			//}
-			//else if (false == pInteractableObject->Is_UIPlayerHeadUp())
-			//{
-			//	Cal_ObjectPos(pGameObejct);
-			//}
 
+		Cal_PlayerHighPos(pGameObejct);
 	}
 }
 
@@ -114,11 +106,6 @@ HRESULT CInteraction_E::Render()
 	// 다이얼로그 중일땐 랜더 끄기
 	if (true == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
 		return S_OK;
-
-
-
-
-
 
 	// 인터렉션 진행 중일 때 랜더 끄기
 
@@ -158,8 +145,14 @@ HRESULT CInteraction_E::Render()
 			__super::Render();
 		}
 
+		_float2 RTSize = _float2(0.f, 0.f);
 
-		_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
+		if (nullptr != CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player()))
+		{
+			auto CurSection = CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player());
+			RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(*(CurSection)));
+
+		}
 		//Display_Text(RTSize);
 
 		if (nullptr == Uimgr->Get_Player()->Get_InteractableObject())
@@ -240,69 +233,41 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 		//TODO::해당 부분은 가변적이다.추후 변경해야한다.
-			_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
 
+		if (true == m_isDeleteRender)
+			m_isDeleteRender = false;
+
+		_float2 RTSize = _float2(0.f, 0.f);
+
+		if (nullptr != CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player()))
+		{
+			auto CurSection = CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player());
+			RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(*(CurSection)));
+
+			m_strSectionName = *(CurSection);
+
+			if (m_preSectionName != m_strSectionName)
+			{
+				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(*(CurSection), this, SECTION_2D_PLAYMAP_UI);
+				m_preSectionName = m_strSectionName;
+			}
+		}
+
+		_float fScaleX = RTSize.x / RTSIZE_BOOK2D_X;
+		_float fScaleY = RTSize.y / RTSIZE_BOOK2D_Y;
 		_float2 vPlayerPos = _float2(Uimgr->Get_Player()->Get_BodyPosition().m128_f32[0], Uimgr->Get_Player()->Get_BodyPosition().m128_f32[1]);
 
 		_float2 vCalPos = { 0.f, 0.f };
 
-		vCalPos.x = vPlayerPos.x;
-		vCalPos.y = vPlayerPos.y + RTSize.y * 0.1f;
+		vCalPos = vPlayerPos;
+
+		vCalPos.x;
+		vCalPos.y += RTSize.y * 0.15f / fScaleY;
 
 		m_vObejctPos = _float3(vCalPos.x, vCalPos.y, 1.f);
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f));
-		m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
-
-
-		if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
-			CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
-
-
-
-
-
-		//_float3 vObjectPos = { 0.f, 0.f, 0.f };
-		//
-		//_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
-		//
-		//
-		//_bool isColumn = { false };
-		//
-		//// 세로가 더 기나요?
-		//if (RTSize.x < RTSize.y)
-		//{
-		//	// 세로가 더 길어요!
-		//	isColumn = true;
-		//}
-		//
-		//// 오브젝트의 위치
-		//
-		//
-		//if (false == isColumn)
-		//{
-		//	vObjectPos.x = _pGameObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0];
-		//	vObjectPos.y = _pGameObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1];
-		//
-		//	// 노출되는  UI의 최종 위치
-		//	m_vObejctPos = _float3(vObjectPos.x, vObjectPos.y + RTSize.y * 0.47f, 1.f);
-		//
-		//	if (m_vObejctPos.y <= 300.f)
-		//	{
-		//		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, m_vObejctPos.y, 0.f, 1.f));
-		//		m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
-		//	}
-		//
-		//	else
-		//	{
-		//		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vObjectPos.x, m_vObejctPos.y - RTSize.y * 0.35f, 0.f, 1.f));
-		//		m_vObejctPos.y = m_vObejctPos.y - RTSize.y * 0.35f;
-		//	}
-		//
-		//
-		//
-		//}
-
+		m_pControllerTransform->Set_Scale(m_fSizeX * fScaleX, m_fSizeY * fScaleY, 1.f);
 
 	}
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
@@ -310,20 +275,20 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 		//TODO :: 3D 어떻게 표현할것인가?
 
 		_float2 vCalx = __super::WorldToSceen(Uimgr->Get_Player()->Get_WorldMatrix());
-
-
-
 		_float CalX = vCalx.x - g_iWinSizeX / 2.f;
 		_float CalY = vCalx.y - g_iWinSizeY / 2.f;
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(CalX, CalY, 0.f, 1.f));
 		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX, m_fSizeY, 1.f));
-		//m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(800.f, 800.f, 1.f));
 		m_vObejctPos = _float3(vCalx.x, g_iWinSizeY - vCalx.y, 0.f);
 
-		if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
-			SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
-		
+		if (false == m_isDeleteRender)
+		{
+			SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
+
+			m_preSectionName = TEXT(" ");
+			m_isDeleteRender = true;
+		}
 	}
 }
 
@@ -338,8 +303,6 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 		_float2 RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key()));
-
-
 		_bool isColumn = { false };
 
 		// 세로가 더 기나요?
@@ -386,14 +349,8 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 
 		}
 
-
-
-		//m_strIntaractName = Uimgr->Get_Player()->Get_InteractableObject()->Get_InteractID();
-
 		if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
 			CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
-
-		//Display_Text(m_vObejctPos, RTSize);
 	}
 
 	//////////////////////////////////////// 3D //////////////////////////////////////////
@@ -410,7 +367,6 @@ void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
 
 		if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
 			SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
-
 	}
 
 }
@@ -443,6 +399,10 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		m_strDisplayText = TEXT("이동");
 		break;
 
+	case INTERACT_ID::DRAGGABLE:
+		m_strDisplayText = TEXT("끌기");
+		break;
+
 	case INTERACT_ID::BOOK:
 		m_strDisplayText = TEXT("북");
 		break;
@@ -459,12 +419,16 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 	// 위치로 어디로 띄울껀가요?
 	// 이건 2D에요
 
-	_float2 vTextPos = { 0.f, 0.f };
+	_float3 vTextPos = m_vObejctPos;
 
 	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
+		_float fScaleX = _vRTSize.x / RTSIZE_BOOK2D_X;
+		_float fScaleY = _vRTSize.y / RTSIZE_BOOK2D_Y;
+
 
 		_float2 vMiddlePos = { _vRTSize.x / 2.f, _vRTSize.y / 2.f };
+		_float2 vPos = { 0.f, 0.f };
 
 		_bool isColumn = { false };
 
@@ -475,21 +439,36 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 
 		if (false == isColumn)
 		{
-			vTextPos.x = m_vObejctPos.x + vMiddlePos.x - vMiddlePos.x * 0.001f;
-			vTextPos.y = vMiddlePos.y - m_vObejctPos.y - _vRTSize.y * 0.01f;
+			vPos.x = vTextPos.x;
+			vPos.y = vTextPos.y + _vRTSize.y * 0.02f / fScaleY;
 		}
 		else
 		{
-			vTextPos.x = m_vObejctPos.x + vMiddlePos.x - vMiddlePos.x * 0.01f;
-			vTextPos.y = vMiddlePos.y - m_vObejctPos.y - _vRTSize.y * 0.003f;
+			vPos.x = vTextPos.x;
+			vPos.y = vTextPos.y + _vRTSize.y * 0.02f / fScaleY;
 		}
 
-		m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		vPos.x = vMiddlePos.x + vPos.x;
+		vPos.y = vMiddlePos.y - vPos.y;
+
+		//if (false == isColumn)
+		//{
+		//	vTextPos.x = m_vObejctPos.x + vMiddlePos.x - vMiddlePos.x * 0.001f;
+		//	vTextPos.y = vMiddlePos.y - m_vObejctPos.y - _vRTSize.y * 0.01f;
+		//}
+		//else
+		//{
+		//	vTextPos.x = m_vObejctPos.x + vMiddlePos.x - vMiddlePos.x * 0.01f;
+		//	vTextPos.y = vMiddlePos.y - m_vObejctPos.y - _vRTSize.y * 0.003f;
+		//}
+
+		//m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vPos.x, vPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 	// 이건 3D에요
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
 	{
-		vTextPos = _float2(m_vObejctPos.x, m_vObejctPos.y);
+		vTextPos = _float3(m_vObejctPos.x, m_vObejctPos.y, m_vObejctPos.z);
 
 		IInteractable* pInteractableObject = Uimgr->Get_Player()->Get_InteractableObject();
 

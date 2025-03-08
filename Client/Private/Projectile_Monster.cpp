@@ -2,6 +2,7 @@
 #include "Projectile_Monster.h"
 #include "ModelObject.h"
 #include "Pooling_Manager.h"
+#include "PlayerData_Manager.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
 
@@ -44,7 +45,7 @@ HRESULT CProjectile_Monster::Initialize(void* _pArg)
 
 
     //플레이어 위치 가져오기
-    m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Player"), 0);
+    m_pTarget = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
     if (nullptr == m_pTarget)
     {
 #ifdef _DEBUG

@@ -53,6 +53,9 @@ private:
 
 	_float					m_screenX;
 	_float					m_screenY;
+	wstring					m_preSectionName = { TEXT(" ") };
+
+	_bool					m_isDeleteRender = { false };
 
 
 };

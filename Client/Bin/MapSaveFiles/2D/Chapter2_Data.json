@@ -70,6 +70,7 @@
 		"Section_Info": {
 			"Camera_Zoom_Ratio": 2.0,
 			"Rotation": true,
+			"Platformer" : true,
 			"RenderResolution": {
 				"X": 1440.0,
 				"Y": 5120.0
