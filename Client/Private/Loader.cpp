@@ -181,12 +181,16 @@
 #include "Portal_Cannon.h"
 #include "Word.h"
 
-#include "PortalLocker.h" // еб©У
+
 
 // Etc
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
+
+// Father Game 
+#include "PortalLocker.h" 
+#include "ZetPack_Child.h" 
 #include "CandleGame.h"
 #include "Candle.h"
 #include "Candle_Body.h"
@@ -1410,7 +1414,10 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			CGameEventExecuter_C6::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-
+		/* Chapter 6 FatherGame */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Child"),
+			CZetPack_Child::Create(m_pDevice, m_pContext))))
+		
 		/* Chapter 6 Npc */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_StoreNPC"),
 			CNPC_Store::Create(m_pDevice, m_pContext))))
