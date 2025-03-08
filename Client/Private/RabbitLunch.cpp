@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "RabbitLunch.h"
 #include "GameInstance.h"
-
+#include "Section_Manager.h"
 CRabbitLunch::CRabbitLunch(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CCarriableObject(_pDevice, _pContext)
 {
@@ -179,6 +179,9 @@ void CRabbitLunch::Late_Update(_float _fTimeDelta)
 
 HRESULT CRabbitLunch::Render()
 {
+	if (m_pBody2DColliderCom->Is_Active())
+		m_pBody2DColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+
 	return __super::Render();
 }
 
