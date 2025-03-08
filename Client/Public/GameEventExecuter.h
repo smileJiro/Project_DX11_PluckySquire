@@ -80,7 +80,7 @@ public :
 #pragma region 내부 구현할때 편하게 쓰라고 만듬
 
 protected:
-	_bool Is_Start()
+	_bool Is_Start() //  1 회 호출 
 	{
 		if (!m_isStart)
 		{
@@ -89,7 +89,7 @@ protected:
 		}
 		return false;
 	}
-	_bool  Next_Step(_bool _isNextStep)
+	_bool  Next_Step(_bool _isNextStep) // 곧바로 다음 스텝으로 이동
 	{
 		if (_isNextStep)
 		{
@@ -100,12 +100,12 @@ protected:
 		}
 		return _isNextStep;
 	}
-	_bool  Next_Step_Over(_float _fMaxTime)
+	_bool  Next_Step_Over(_float _fMaxTime) // x 초 후 다음 스텝으로 이동
 	{
 		return Next_Step(m_fTimer > _fMaxTime);
 	}
 	
-	_bool Step_Check(STEP_TYPE _eType) { return _eType == m_iStep; }
+	_bool Step_Check(STEP_TYPE _eType) { return _eType == m_iStep; } // 현재 스텝 검사
 	
 	CPlayer* Get_Player();
 	CBook* Get_Book();

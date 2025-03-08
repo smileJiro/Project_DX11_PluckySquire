@@ -28,7 +28,7 @@ public:
 	virtual void				Priority_Update(_float _fTimeDelta) override;
 	virtual void				Update(_float _fTimeDelta) override;
 	virtual void				Late_Update(_float _fTimeDelta) override;
-
+	virtual HRESULT				Render() override;
 public:
 	void						Open_Locker() { m_eCurState = STATE_OPEN; State_Change(); }
 

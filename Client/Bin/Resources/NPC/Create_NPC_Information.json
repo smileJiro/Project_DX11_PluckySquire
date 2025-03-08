@@ -75,23 +75,19 @@
 			"is2D": true
 		},
 		{
-			"strSectionid": "Chapter2_P0102",
-			"strAnimaionName": "MTM",
+			"strSectionid": "Chapter2_P1112",
+			"strAnimaionName": "Postit_Page",
 			"strCreateSection": 3,
-			"strDialogueId": "",
-			"iStartAnimation": 0,
-			"vPositionX": 100.0,
-			"vPositionY": 0.0,
+			"strDialogueId": "Page_First_Dialog_01",
+			"iStartAnimation": 3,
+			"vPositionX": 157.8,
+			"vPositionY": -183.0,
 			"vPositionZ": 0.0,
-			"CollisionScaleX": 70.0,
-			"CollisionScaleY": 70.0,
-			"isInteractable": false,
-			"isDialog": false,
-			"is2D": false,
-			"fCollisionHalfHeight": 2.0,
-			"fCollisionRadius": 1.0,
-			"fTriggerRadius": 1.5,
-			"fRotateAngle": 90.0
+			"CollisionScaleX": 20.0,
+			"CollisionScaleY": 20.0,
+			"isInteractable": true,
+			"isDialog": true,
+			"is2D": true
 		}
 	]
 }

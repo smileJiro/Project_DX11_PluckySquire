@@ -71,9 +71,12 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 
 			if (CPlayer::STATE::TURN_BOOK == Uimgr->Get_Player()->Get_CurrentStateID())
 			{
-				// 텍스쳐 변경, 글자 변경
+ 				_float fX = g_iWinSizeX / 2.f - g_iWinSizeX / 12.f;
+				_float fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+
 				if (false == m_isBookInteract)
 				{
+					m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(fX - g_iWinSizeX * 0.5f, -fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 					m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(144.f, 72.f, 1.f));
 					m_isBookInteract = true;
 					m_iTextureNum = 1;
@@ -82,18 +85,18 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 			}
 			else
 			{
-				// 텍스쳐 변경, 글자 변경
-
 				if (true == m_isBookInteract)
 				{
+					_float fX = g_iWinSizeX / 2.f - g_iWinSizeX / 20.f;
+					_float fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+
+					m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(fX - g_iWinSizeX * 0.5f, -fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 					m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(72.f, 72.f, 1.f));
 					m_isBookInteract = false;
 					m_iTextureNum = 0;
 					wsprintf(m_tFont, L"조종");
 				}
-				
 			}
-
 		}
 		else
 		{
@@ -105,12 +108,6 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 		if (true == m_isRender)
 			m_isRender = false;
 	}
-
-
-	
-
-
-	
 }
 
 void CUI_Interaction_Book::Late_Update(_float _fTimeDelta)
@@ -136,17 +133,15 @@ HRESULT CUI_Interaction_Book::Render()
 		}
 		else
 		{
-			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.95f - 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.95f + 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.95f, g_iWinSizeY - g_iWinSizeY / 12.f - 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.95f - 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f + 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-
-			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.95f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.84f - 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.84f + 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.84f, g_iWinSizeY - g_iWinSizeY / 12.f - 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.84f - 2.5f, g_iWinSizeY - g_iWinSizeY / 12.f + 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+																										 
+			m_pGameInstance->Render_Font(TEXT("Font38"), m_tFont, _float2(g_iWinSizeX - g_iWinSizeX / 1.84f, g_iWinSizeY - g_iWinSizeY / 12.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		}
-		
 	}
 		
-
 	return S_OK;
 }
 
@@ -209,9 +204,3 @@ HRESULT CUI_Interaction_Book::Cleanup_DeadReferences()
 {
 	return S_OK;
 }
-
-//HRESULT CUI_Interaction_Book::Cleanup_DeadReferences()
-//{
-//	return S_OK;
-//}
-
