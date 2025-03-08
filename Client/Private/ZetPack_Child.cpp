@@ -69,6 +69,7 @@ void CZetPack_Child::Late_Update(_float _fTimeDelta)
 {
 	State_Change();
 
+
 	__super::Late_Update(_fTimeDelta);
 }
 
@@ -147,12 +148,14 @@ void CZetPack_Child::State_Change_Talk()
 	_wstring str = TEXT("ZetPack_Child_");
 	str += to_wstring(m_iDialogueIndex);
 	CDialog_Manager::GetInstance()->Set_DialogId(str.c_str());
+
 	/* 3. Player Input 막기. */
 	if (nullptr != m_pPlayer)
 	{
 		m_pPlayer->Set_BlockPlayerInput(true);
 		m_pPlayer->Set_2DDirection(E_DIRECTION::UP);
 	}
+
 	/* 4. Change CameraTarget */
 	CCamera_Manager::GetInstance()->Change_CameraTarget(this, 1.0f);
 	_uint iZoomLevel = CCamera_Manager::GetInstance()->Get_CurrentCamera()->Get_CurrentZoomLevel();
@@ -166,10 +169,26 @@ void CZetPack_Child::State_Change_Chase()
 
 void CZetPack_Child::State_Change_PortalOut()
 {
+	_wstring strSectionTag = Get_Include_Section_Name();
+	CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(strSectionTag, this);
 }
 
 void CZetPack_Child::State_Change_PortalIn()
 {
+	_wstring strPlayerSectionTag = m_pPlayer->Get_Include_Section_Name();
+	CSection_2D* pSection = static_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(strPlayerSectionTag));
+	if (false == pSection->Is_Platformer())
+	{
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strPlayerSectionTag, this);
+
+		_vector vPlayerPos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPlayerPos);
+	}
+	else
+	{
+		/* 만약 플랫포머라면, 포탈에 들어가지않는다. */
+	}
+	
 }
 
 void CZetPack_Child::Action_State(_float _fTimeDelta)
@@ -201,6 +220,12 @@ void CZetPack_Child::Action_State_Idle(_float _fTimeDelta)
 {
 	if (false == m_isContactPlayer)
 		return;
+
+	if (COORDINATE_3D == m_pPlayer->Get_CurCoord())
+	{
+		m_eCurState = STATE_PORTALOUT;
+		return;
+	}
 
 	CTransform* pTransform2D = Get_ControllerTransform()->Get_Transform(COORDINATE_2D);
 	_vector vPos = pTransform2D->Get_State(CTransform::STATE_POSITION);
@@ -234,10 +259,16 @@ void CZetPack_Child::Action_State_Chase(_float _fTimeDelta)
 
 void CZetPack_Child::Action_State_PortalOut(_float _fTimeDelta)
 {
+	if (COORDINATE_2D == m_pPlayer->Get_CurCoord())
+	{
+		m_eCurState = STATE_PORTALIN;
+		return;
+	}
 }
 
 void CZetPack_Child::Action_State_PortalIn(_float _fTimeDelta)
 {
+	m_eCurState = STATE_CHASE;
 }
 
 void CZetPack_Child::Update_AnimationDirection()
@@ -404,16 +435,12 @@ void CZetPack_Child::Finished_DialogueAction()
 			/* 4. Change CameraTarget */
 			CCamera_Manager::GetInstance()->Change_CameraTarget(m_pPlayer, 1.0f);
 
-			CCamera_Manager::GetInstance()->Start_ZoomOut(CCamera_Manager::TARGET_2D, 1.0f, RATIO_TYPE::EASE_OUT);
 			_uint iZoomLevel = CCamera_Manager::GetInstance()->Get_CurrentCamera()->Get_CurrentZoomLevel();
 			CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET_2D, 1.0f, iZoomLevel + 2,RATIO_TYPE::EASE_OUT);
 
-			/* 5. 전구 생성 */
-			_float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition() + XMVectorSet(100.f, 0.0f, 0.0f, 0.0f));
-			_wstring strCurSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
-			CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_2DBulb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strCurSection);
 
-
+			Make_JusinBulb("../Bin/DataFiles/JusinBulb/Chapter6_FatherGame_ZetPack_BulbPos.json");
+			
 			m_isContactPlayer = true;
 			m_eCurState = STATE_CHASE;
 		}
@@ -422,6 +449,36 @@ void CZetPack_Child::Finished_DialogueAction()
 	default:
 		break;
 	}
+}
+
+HRESULT CZetPack_Child::Make_JusinBulb(_string _strJsonPath)
+{
+
+	const std::string filePathLights = _strJsonPath;
+	std::ifstream inputFile(filePathLights);
+	if (!inputFile.is_open()) {
+		throw std::runtime_error("파일을 열 수 없습니다: " + filePathLights);
+		return E_FAIL;
+	}
+	json jsonBulbs;
+	inputFile >> jsonBulbs;
+
+	_uint iNumBulbs = (_uint)jsonBulbs.size();
+	for (_uint i = 0; i < iNumBulbs; ++i)
+	{
+		/* 5. 전구 생성 */
+		_float3 vPos = {};
+		vPos.x = jsonBulbs[i]["vPos"]["x"];
+		vPos.y = jsonBulbs[i]["vPos"]["y"];
+		_wstring strCurSection = Get_Include_Section_Name();
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_2DBulb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strCurSection);
+	}
+
+	inputFile.close();
+
+
+
+	return S_OK;
 }
 
 HRESULT CZetPack_Child::Ready_Components(ZETPACK_CHILD_DESC* _pDesc)
