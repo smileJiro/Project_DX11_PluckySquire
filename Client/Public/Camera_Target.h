@@ -57,6 +57,7 @@ public:
 public:
 	virtual _uint				Get_CameraMode() { return m_eCameraMode; }
 	virtual INITIAL_DATA		Get_InitialData() override;
+	_wstring					Get_DefaultArm_Tag();
 
 #pragma region Tool¿ë
 	void						Set_LookAt(_bool _isLookAt)

@@ -2281,11 +2281,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         if (iCurCoord == COORDINATE_2D)
         {
             CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_OBJECT);
-
-            static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET))->Set_InitialData(m_strSectionName, 0);
         }
         else
         {
+            static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET))->Set_InitialData(m_strSectionName, 0);
             CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
         }
 

@@ -255,6 +255,9 @@ void CCamera_Target::Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex
 		return;
 
 	Set_InitialData(pData);
+
+	// 책 밖으로 나왔을 때, Book 나올 떄 하는 Set Next Arm이 안 먹히게 하기 위해서 추가 
+	m_eCameraMode = DEFAULT;
 }
 
 void CCamera_Target::Set_InitialData(pair<ARM_DATA*, SUB_DATA*>* pData)
@@ -302,6 +305,28 @@ INITIAL_DATA CCamera_Target::Get_InitialData()
 	m_vFreezeOffset = { 0.f, 0.f, 0.f };
 
 	return tData;
+}
+
+_wstring CCamera_Target::Get_DefaultArm_Tag()
+{
+	_wstring szLevelName;
+
+	switch (m_iCurLevelID) {
+	case LEVEL_CHAPTER_2:
+		szLevelName = TEXT("Chapter2_");
+		break;
+	case LEVEL_CHAPTER_4:
+		szLevelName = TEXT("Chapter4_");
+		break;
+	case LEVEL_CHAPTER_6:
+		szLevelName = TEXT("Chapter6_");
+		break;
+	case LEVEL_CHAPTER_8:
+		szLevelName = TEXT("Chapter8_");
+		break;
+	}
+
+	return szLevelName + TEXT("Default");
 }
 
 _bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
