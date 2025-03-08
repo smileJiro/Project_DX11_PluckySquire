@@ -120,6 +120,7 @@ public:
 	_bool								Is_Rotation() { return m_isRotation; }
 	_bool								Is_Override_WorldTex() { return m_isOverride_WorldTex; }
 	_bool								Is_Platformer() { return m_isPlatformer; }
+	_bool								Is_Scrolling() { return m_isScrolling; }
 	_uint								Get_Override_Normal() { return m_iOverride_Normal; }
 
 	HRESULT								Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType);

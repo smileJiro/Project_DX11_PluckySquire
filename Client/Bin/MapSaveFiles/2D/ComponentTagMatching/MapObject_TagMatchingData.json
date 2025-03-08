@@ -142,7 +142,7 @@
    "ColliderType": 1
   },
   "ModelType": 1,
-  "SearchTag": "Barrel",
+  "SearchTag": "Default_Barrel",
   "Sorting": true,
   "SortingPropertis": {
    "Sorting_Offset_Pos": {
@@ -4373,5 +4373,194 @@
   "SearchTag": "C09_4142_fg_04",
   "Sorting": false,
   "TextureName": "C09_4142_fg_04"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "Barrel",
+  "Sorting": false,
+  "TextureName": "C08_Barrel"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "SpikeTrap",
+  "Sorting": false,
+  "TextureName": "C08_Spike"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP10",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_01"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP11",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_02"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP12",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_03"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP13",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_04"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP14",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_05"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP15",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_06"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP16",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_07"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP17",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_08"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP18",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_09"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP_4",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_10"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP2",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_11"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP3",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_12"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP4",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_13"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP5",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_14"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP6",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_15"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP7",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_16"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP8",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_17"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TopDownProp_BP9",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_03_Wall_18"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "Desk_C09_SKSP_01_Sign",
+  "Sorting": false,
+  "TextureName": "Desk_C09_SKSP_01_Sign"
  }
 ]

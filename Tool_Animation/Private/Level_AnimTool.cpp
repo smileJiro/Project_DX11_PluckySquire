@@ -472,7 +472,7 @@ HRESULT CLevel_AnimTool::Create_Camera(const _wstring& _strLayerTag, CGameObject
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
 	Desc.vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
 	Desc.fLength = 10.f;
-	Desc.wszArmTag = TEXT("Cam_Arm");
+	//Desc.wszArmTag = TEXT("Cam_Arm");
 
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 

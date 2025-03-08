@@ -53,6 +53,10 @@ public:
 	virtual void							Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT							Render() override;
 
+public:
+	void									On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
+	void									On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
+	void									On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 private:
 	CPlayer*								m_pPlayer = nullptr;
 
@@ -61,6 +65,12 @@ private:
 	STATE									m_eCurState = STATE::STATE_LAST;
 	DIRECTION								m_eDirection = DIRECTION::DIR_DOWN;
 
+private:
+	_bool									m_isContactPlayer = false; /* 플레이어와의 첫 만남을 판별 */
+	_float									m_fChaseInterval = 60.f;
+
+private:
+	_int									m_iDialogueIndex = 0;
 	
 private:
 	void									State_Change();
@@ -79,7 +89,14 @@ private:
 	void									Action_State_PortalIn(_float _fTimeDelta);
 
 private:
+	void									Update_AnimationDirection();
 	void									ChaseToTarget(_float _fTimeDelta);
+	void									Finished_DialogueAction();
+
+private:
+	HRESULT									Make_JusinBulb(_string _strJsonPath);
+private:
+	HRESULT									Ready_Components(ZETPACK_CHILD_DESC* _pDesc);
 
 public:
 	static CZetPack_Child*					Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

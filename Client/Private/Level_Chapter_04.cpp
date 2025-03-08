@@ -1520,7 +1520,7 @@ void CLevel_Chapter_04::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 		return;
 	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_Transform((COORDINATE)_iCoordinateType)->Get_State(CTransform::STATE_LOOK);
 
-	CCameraArm::CAMERA_ARM_DESC Desc{};
+	CCameraArm::CAMERA_ARM_DESC Desc = {};
 
 	//XMStoreFloat3(&Desc.vArm, -vPlayerLook);
 	Desc.vArm = _vRotation;

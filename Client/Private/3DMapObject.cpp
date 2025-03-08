@@ -161,6 +161,14 @@ HRESULT C3DMapObject::Initialize(void* _pArg)
     return S_OK;
 }
 
+void C3DMapObject::After_Initialize()
+{
+    // 1 액터를 씬에 추가한다. 
+    Add_ActorToScene();
+    // 2 Const Buffer를 Update 한다. 
+    Update_ConstBuffer();
+}
+
 void C3DMapObject::Priority_Update(_float _fTimeDelta)
 {
     CPartObject::Priority_Update(_fTimeDelta);
@@ -212,7 +220,7 @@ void C3DMapObject::Check_FrustumCulling()
         m_isFrustumCulling = false;
 }
 
-void C3DMapObject::Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, C3DModel::COLOR_SHADER_MODE _eColorMode, _float4 _fAlbedoColor)
+void C3DMapObject::Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, C3DModel::COLOR_SHADER_MODE _eColorMode, _float4 _fAlbedoColor, _bool _isUpdate)
 {
     CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
     if (nullptr == pModel)
@@ -226,16 +234,30 @@ void C3DMapObject::Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, C3DMode
         {
         case Engine::C3DModel::COLOR_DEFAULT:
             p3DModel->Set_MaterialConstBuffer_UseAlbedoMap(_iMaterialIndex, false, false);
-            p3DModel->Set_MaterialConstBuffer_Albedo(_iMaterialIndex, _fAlbedoColor, true);
+            p3DModel->Set_MaterialConstBuffer_Albedo(_iMaterialIndex, _fAlbedoColor, _isUpdate);
             break;
         case Engine::C3DModel::MIX_DIFFUSE:
             p3DModel->Set_MaterialConstBuffer_UseAlbedoMap(_iMaterialIndex, true, false);
-            p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, _fAlbedoColor, true);
+            p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, _fAlbedoColor, _isUpdate);
             break;
         default:
             break;
         }
     }
+}
+
+void C3DMapObject::Update_ConstBuffer()
+{
+    CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
+    if (nullptr == pModel)
+        return;
+
+    if (pModel)
+    {
+        C3DModel* p3DModel = static_cast<C3DModel*>(pModel);
+        p3DModel->Update_ConstBuffer();
+    }
+
 }
 
 void C3DMapObject::Free()

@@ -499,6 +499,13 @@ HRESULT CPlayer::Ready_PartObjects()
 
 void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 {
+    // TODO ::0308 스크롤링모드 샘플코드. 박예슬 
+    auto Section =     SECTION_MGR->Find_Section(_strIncludeSectionName);
+    if (nullptr != Section && static_cast<CSection_2D*>(Section)->Is_Scrolling())
+        Set_ScrollingMode(true);
+    // END
+    
+    
     /* 태웅 : */
     __super::Enter_Section(_strIncludeSectionName);
     for (auto& i : m_PartObjects)
