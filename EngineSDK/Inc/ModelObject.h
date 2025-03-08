@@ -91,8 +91,8 @@ public:
 	virtual void Check_FrustumCulling();
 
 public:
-	void Start_FadeAlphaIn(); // 밝아지는거
-	void Start_FadeAlphaOut(); // 밝아지는거
+	void Start_FadeAlphaIn(_float _fFadeAlphaTime = 1.0f); // 밝아지는거
+	void Start_FadeAlphaOut(_float _fFadeAlphaTime = 1.0f); // 밝아지는거
 	void Action_Fade(_float _fTimeDelta);
 
 public:
