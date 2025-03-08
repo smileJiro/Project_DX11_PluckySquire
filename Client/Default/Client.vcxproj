@@ -252,6 +252,11 @@
     <ClInclude Include="..\Public\Portal_Cannon.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame_Pip.h" />
+    <ClInclude Include="..\Public\ShopItemBG_New.h" />
+    <ClInclude Include="..\Public\ShopPanel_BG_New.h" />
+    <ClInclude Include="..\Public\ShopPanel_New.h" />
+    <ClInclude Include="..\Public\ShopPanel_YesNo_New.h" />
+    <ClInclude Include="..\Public\Shop_Manager.h" />
     <ClInclude Include="..\public\Sneak_Default_Tile.h" />
     <ClInclude Include="..\public\Sneak_Trap_Tile.h" />
     <ClInclude Include="..\public\Sneak_Tile.h" />
@@ -568,6 +573,11 @@
     <ClCompile Include="..\Private\Portal_Cannon.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame_Pip.cpp" />
+    <ClCompile Include="..\Private\ShopItemBG_New.cpp" />
+    <ClCompile Include="..\Private\ShopPanel_BG_New.cpp" />
+    <ClCompile Include="..\Private\ShopPanel_New.cpp" />
+    <ClCompile Include="..\Private\ShopPanel_YesNo_New.cpp" />
+    <ClCompile Include="..\Private\Shop_Manager.cpp" />
     <ClCompile Include="..\private\Sneak_Default_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Trap_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Tile.cpp" />

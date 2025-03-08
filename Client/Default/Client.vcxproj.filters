@@ -1568,6 +1568,21 @@
     <ClInclude Include="..\public\ZetPack_Child.h">
       <Filter>05.MiniGames\FatherGame\Object\ZetPack_Child</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Shop_Manager.h">
+      <Filter>02.GameObjects\UI\97. Shop_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ShopPanel_New.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ShopPanel_BG_New.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\00. ShopPanel_BGs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ShopPanel_YesNo_New.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\01. YesNo_Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ShopItemBG_New.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2482,6 +2497,21 @@
     </ClCompile>
     <ClCompile Include="..\private\ZetPack_Child.cpp">
       <Filter>05.MiniGames\FatherGame\Object\ZetPack_Child</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Shop_Manager.cpp">
+      <Filter>02.GameObjects\UI\97. Shop_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ShopPanel_New.cpp">
+      <Filter>02.GameObjects\UI\02. ShopPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ShopPanel_BG_New.cpp">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\00. ShopPanel_BGs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ShopItemBG_New.cpp">
+      <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ShopPanel_YesNo_New.cpp">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\01. YesNo_Panel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

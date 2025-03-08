@@ -6,22 +6,22 @@
 
 
 
-CShopPanel_BG::CShopPanel_BG(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CShopPanel(_pDevice, _pContext)
+CShopPanel_BG_New::CShopPanel_BG_New(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+	: CShopPanel_New(_pDevice, _pContext)
 {
 }
 
-CShopPanel_BG::CShopPanel_BG(const CShopPanel_BG& _Prototype)
-	: CShopPanel(_Prototype)
+CShopPanel_BG_New::CShopPanel_BG_New(const CShopPanel_BG_New& _Prototype)
+	: CShopPanel_New(_Prototype)
 {
 }
 
-HRESULT CShopPanel_BG::Initialize_Prototype()
+HRESULT CShopPanel_BG_New::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CShopPanel_BG::Initialize(void* _pArg)
+HRESULT CShopPanel_BG_New::Initialize(void* _pArg)
 {
 	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
 
@@ -47,16 +47,15 @@ HRESULT CShopPanel_BG::Initialize(void* _pArg)
 	return S_OK;
 }
 
-void CShopPanel_BG::Priority_Update(_float _fTimeDelta)
+void CShopPanel_BG_New::Priority_Update(_float _fTimeDelta)
 {
 }
 
-void CShopPanel_BG::Child_Update(_float _fTimeDelta)
+void CShopPanel_BG_New::Update(_float _fTimeDelta)
 {
-	isRender();
 }
 
-void CShopPanel_BG::Child_LateUpdate(_float _fTimeDelta)
+void CShopPanel_BG_New::Late_Update(_float _fTimeDelta)
 {
 	if (true == m_isRender)
 	{
@@ -77,7 +76,8 @@ void CShopPanel_BG::Child_LateUpdate(_float _fTimeDelta)
 	}
 }
 
-HRESULT CShopPanel_BG::Render()
+
+HRESULT CShopPanel_BG_New::Render()
 {
 	if (true == m_isRender)
 		__super::Render(0, PASS_VTXPOSTEX::DEFAULT);
@@ -85,7 +85,7 @@ HRESULT CShopPanel_BG::Render()
 	return S_OK;
 }
 
-void CShopPanel_BG::isRender()
+void CShopPanel_BG_New::isRender()
 {
 	if (m_isRender == false)
 	{
@@ -106,7 +106,7 @@ void CShopPanel_BG::isRender()
 		
 }
 
-void CShopPanel_BG::Cal_ShopBGPos(_float2 _vRTSize)
+void CShopPanel_BG_New::Cal_ShopBGPos(_float2 _vRTSize)
 {
 	// 플레이어 Position
 	_float2 vPos = { 0.f, 0.f };
@@ -120,7 +120,7 @@ void CShopPanel_BG::Cal_ShopBGPos(_float2 _vRTSize)
 	Uimgr->Set_ShopPos(vPos);
 }
 
-void CShopPanel_BG::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
+void CShopPanel_BG_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 {
 	_float2 vPos = { 0.f, 0.f };
 
@@ -199,7 +199,7 @@ void CShopPanel_BG::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 
 }
 
-HRESULT CShopPanel_BG::Ready_Components()
+HRESULT CShopPanel_BG_New::Ready_Components()
 {
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
 		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
@@ -286,13 +286,13 @@ HRESULT CShopPanel_BG::Ready_Components()
 }
 
 
-CShopPanel_BG* CShopPanel_BG::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CShopPanel_BG_New* CShopPanel_BG_New::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	CShopPanel_BG* pInstance = new CShopPanel_BG(_pDevice, _pContext);
+	CShopPanel_BG_New* pInstance = new CShopPanel_BG_New(_pDevice, _pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Created CShopPanel_BG Failed");
+		MSG_BOX("Created CShopPanel_BG_New Failed");
 		Safe_Release(pInstance);
 		return nullptr;
 	}
@@ -300,13 +300,13 @@ CShopPanel_BG* CShopPanel_BG::Create(ID3D11Device* _pDevice, ID3D11DeviceContext
 	return pInstance;
 }
 
-CGameObject* CShopPanel_BG::Clone(void* _pArg)
+CGameObject* CShopPanel_BG_New::Clone(void* _pArg)
 {
-	CShopPanel_BG* pInstance = new CShopPanel_BG(*this);
+	CShopPanel_BG_New* pInstance = new CShopPanel_BG_New(*this);
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Clone CShopPanel_BG Failed");
+		MSG_BOX("Clone CShopPanel_BG_New Failed");
 		Safe_Release(pInstance);
 		return nullptr;
 	}
@@ -314,7 +314,7 @@ CGameObject* CShopPanel_BG::Clone(void* _pArg)
 	return pInstance;
 }
 
-void CShopPanel_BG::Free()
+void CShopPanel_BG_New::Free()
 {
 	//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 	__super::Free();
@@ -322,7 +322,7 @@ void CShopPanel_BG::Free()
 
 
 
-HRESULT CShopPanel_BG::Cleanup_DeadReferences()
+HRESULT CShopPanel_BG_New::Cleanup_DeadReferences()
 {
 	return S_OK;
 }

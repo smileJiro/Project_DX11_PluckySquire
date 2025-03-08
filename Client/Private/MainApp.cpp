@@ -7,6 +7,7 @@
 #include "Event_Manager.h"
 #include "Pooling_Manager.h"
 #include "UI_Manager.h"
+#include "Shop_Manager.h"
 #include "Dialog_Manager.h"
 #include "Narration_Manager.h"
 #include "NPC_Manager.h"
@@ -711,6 +712,7 @@ void CMainApp::Free()
 	CCamera_Manager::DestroyInstance();
 	CPooling_Manager::DestroyInstance();
 	CUI_Manager::DestroyInstance();
+	CShop_Manager::DestroyInstance();
 	CDialog_Manager::DestroyInstance();
 	CNarration_Manager::DestroyInstance();
 	CNPC_Manager::DestroyInstance();
