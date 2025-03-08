@@ -221,7 +221,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 	// Trigger
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter6_Trigger.json"));
-	//CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter6_Trigger_Events.json"));
+	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter6_Trigger_Events.json"));
 
 	// BGM ½ÃÀÛ
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
@@ -733,15 +733,15 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Book"), m_eLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-//	CGameObject* pInteractionE;
-//
-//	pDesc.fSizeX = 360.f / 2.f;
-//	pDesc.fSizeY = 149.f / 2.f;
-//
-//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
-//		return E_FAIL;
-//
-//	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pInteractionE));
+	//CGameObject* pInteractionE;
+	//
+	//pDesc.fSizeX = 360.f / 2.f;
+	//pDesc.fSizeY = 149.f / 2.f;
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
+	//	return E_FAIL;
+	//
+	//Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pInteractionE));
 
 
 #pragma endregion InterAction UI

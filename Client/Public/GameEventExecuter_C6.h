@@ -56,7 +56,10 @@ public:
 	virtual void					Late_Update(_float _fTimeDelta) override;
 
 private:
+	void							Chapter6_FatherGame_Progress_Start_Clear(_float _fTimeDelta);
 
+private:
+	_float4x4						m_TargetWorldMatrix = {};
 public:
 	static CGameEventExecuter_C6* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void Free();

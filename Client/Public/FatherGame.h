@@ -7,16 +7,19 @@
 /* 4. 즉 각각의 이벤트에 대한 클리어 현황을 체크하고 이를 기반으로 작업을 수행 */
 BEGIN(Engine)
 class CGameInstance;
+
 END
 
 BEGIN(Client)
 class CFatherGame_Progress;
+class CPortalLocker;
 class CFatherGame final : public CBase
 {
 	DECLARE_SINGLETON(CFatherGame)
 public:
 	enum GAME_STATE { GAME_NONE, GAME_PLAYING, GAME_END, GAME_LAST };
 	enum FATHER_PART { FATHER_BODY, FATHER_WING, FATER_HEAD, FATHER_LAST };
+	enum PORTALLOCKER { LOCKER_ZETPACK, LOCKER_PARTHEAD, LOCKER_LAST };
 	enum FATHER_PROGRESS
 	{
 		FATHER_PROGRESS_START,			// 고블린과의 전투 후 제트팩 모성의 포탈 디펜더를 여는 것까지.
@@ -35,8 +38,19 @@ public:
 	HRESULT								Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext); // 게임 시작 알림.
 	void								Update();
 private:
-	HRESULT								End_Game(); 
+	HRESULT								End_Game();
+	void								DeadCheck_ReferenceObject();
+public:
+	void								OpenPortalLocker(PORTALLOCKER _ePortalLockerIndex);
 
+public:
+	// Get
+	CPortalLocker* Get_PortalLocker(PORTALLOCKER _ePortalLockerIndex) {
+		if (PORTALLOCKER::LOCKER_LAST <= _ePortalLockerIndex)
+			return nullptr;
+		return m_PortalLockers[_ePortalLockerIndex];
+	}
+	// Set
 private:
 	CGameInstance*						m_pGameInstance = nullptr;
 	ID3D11Device*						m_pDevice = nullptr;
@@ -49,7 +63,7 @@ private: /* FatherGame Condition */
 	_uint								m_iClearCount = 0;
 
 private: /* PortalLocker */
-
+	vector<CPortalLocker*>				m_PortalLockers;
 private: /* FatherGame UI */
 	
 public:
