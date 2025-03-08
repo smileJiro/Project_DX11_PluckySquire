@@ -1870,6 +1870,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 	case LEVEL_CAMERA_TOOL:
 		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
 		strChapterName += L"Chapter8";
+		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter_Boss.json", matPretransform, true)))
+			return E_FAIL;
 		break;
 	default:
 		return S_OK;
