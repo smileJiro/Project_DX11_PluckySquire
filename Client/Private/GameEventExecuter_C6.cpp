@@ -88,7 +88,7 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Start_Clear(_float _fTi
 
 			/* 3. Target Change */
 			_float2 v2DPos = {};
-			XMStoreFloat2(&v2DPos, pPortalLocker->Get_FinalPosition());
+			XMStoreFloat2(&v2DPos, pPortalLocker->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION));
 			_vector vPortalLockerWorldPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(TEXT("Chapter6_SKSP_01"), v2DPos);
 			XMStoreFloat4x4(&m_TargetWorldMatrix, XMMatrixTranslationFromVector(XMVectorSetW(vPortalLockerWorldPos, 1.0f)));
 			CCamera_Manager::GetInstance()->Change_CameraTarget(&m_TargetWorldMatrix, fTime);
