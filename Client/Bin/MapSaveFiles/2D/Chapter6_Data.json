@@ -63,7 +63,17 @@
 		"Section_Type": 1,
 		"Section_Default": 0,
 		"Section_Info": {
-			"Pre_Page_Tag": "Chapter6_P0506"
+			"Pre_Page_Tag": "Chapter6_P0506",
+			"Next_Page_Tag": "Chapter6_P0910"
+		}
+	},
+	{
+		"Section_Name": "Chapter6_P0910",
+		"Section_BackGround_Name": "Chapter6_P0910_BackGround",
+		"Section_Type": 1,
+		"Section_Default": 0,
+		"Section_Info": {
+			"Pre_Page_Tag": "Chapter6_P0708"
 		}
 	},
 	{
@@ -98,7 +108,7 @@
 				"X": 7680.0,
 				"Y": 5376.0
 			},
-			"Platformer" : true
+			"Platformer": true
 		}
 	},
 	{
@@ -151,7 +161,7 @@
 				"X": 18432.0,
 				"Y": 8192.0
 			},
-			"Platformer" : true,
+			"Platformer": true,
 			"Override_Normal": 1
 		}
 	},
@@ -187,7 +197,7 @@
 				"X": 3840.0,
 				"Y": 4608.0
 			},
-			"Platformer" : true
+			"Platformer": true
 		}
 	}
 ]
