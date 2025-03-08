@@ -79,7 +79,7 @@ HRESULT CBoss_Crystal::Render()
     return S_OK;
 }
 
-void CBoss_Crystal::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+void CBoss_Crystal::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
     if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
     {
@@ -100,19 +100,13 @@ void CBoss_Crystal::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Othe
             Event_DeleteObject(this);
         }
     }
-
-    //if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
-    //{
-    //    
-    //    Event_DeleteObject(this);
-    //}
 }
 
-void CBoss_Crystal::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
+void CBoss_Crystal::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
 }
 
-void CBoss_Crystal::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
+void CBoss_Crystal::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
 }
 
@@ -189,14 +183,14 @@ HRESULT CBoss_Crystal::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC* ShapeDesc = new SHAPE_SPHERE_DESC;
-    ShapeDesc->fRadius = 20.f;
+    ShapeDesc->fRadius = 10.f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
@@ -205,7 +199,7 @@ HRESULT CBoss_Crystal::Ready_ActorDesc(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER_PROJECTILE;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;

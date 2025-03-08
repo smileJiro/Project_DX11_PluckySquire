@@ -31,6 +31,7 @@ public:
 	virtual void					Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT					Render() override;
 
+	virtual void					Check_FrustumCulling() override;
 
 	virtual void					Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, Engine::C3DModel::COLOR_SHADER_MODE _eColorMode, _float4 _fAlbedoColor);
 

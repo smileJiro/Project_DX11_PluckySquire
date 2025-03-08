@@ -48,7 +48,6 @@ public :
 
 private :
 	void					Change_RenderState(RT_RENDERSTATE _eRenderState, _bool _isMapped);
-	virtual void			Check_FrustumCulling() override;
 
 
 	HRESULT					Render_Default();

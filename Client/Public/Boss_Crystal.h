@@ -28,9 +28,9 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
-	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
-	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
-	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 
 public:
 	HRESULT Cleanup_DeadReferences() override;

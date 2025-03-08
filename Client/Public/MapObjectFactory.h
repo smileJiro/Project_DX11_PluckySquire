@@ -116,10 +116,11 @@ public:
 
 		_char		szSaveMeshName[MAX_PATH];
 		_float4x4	vWorld = {};
-
-
+		_bool isCulling = false;
+		// 기본 정보 로드 - 메쉬 이름, 월드 매트릭스, 컬링 여부
 		ReadFile(_hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 		ReadFile(_hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
+		ReadFile(_hFile, &isCulling, sizeof(_bool), &dwByte, nullptr);
 
 
 		T::MAPOBJ_3D_DESC NormalDesc = {};
@@ -129,9 +130,10 @@ public:
 			L"Prototype_Component_Shader_VtxMesh"
 			);
 		NormalDesc.iModelPrototypeLevelID_3D = _isStatic ? LEVEL_STATIC : NormalDesc.iModelPrototypeLevelID_3D;
-		NormalDesc.isCulling = _isCulling;
 		NormalDesc.Build_3D_Transform(vWorld);
 		NormalDesc.isAddActorToScene = _isActorToScene;
+		// 일괄적으로 컬링을 끄는 세이브데이터는 꺼주고, 아니면 각 객체마다 차등 적용하자. 
+		NormalDesc.isCulling = false == _isCulling ? false : isCulling; 
 		CBase* pBase = nullptr;
 
 		// 1 스케치스페이스 사용여부?
