@@ -137,7 +137,7 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(pDesc->vPositionX, pDesc->vPositionY, pDesc->vPositionZ, 1.f));
-		m_pControllerTransform->Set_Scale(COORDINATE_3D, _float3(1.5f, 1.5f, 1.5f));
+		m_pControllerTransform->Set_Scale(COORDINATE_3D, _float3(1.f, 1.f, 1.f));
 		m_pControllerTransform->Rotation(XMConvertToRadians(pDesc->fRotateAngle), XMVectorSet(0.f, 1.f, 0.f, 0.f));
 
 

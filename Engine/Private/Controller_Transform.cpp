@@ -209,6 +209,28 @@ _bool CController_Transform::MoveToTarget(_fvector _vTargetPos, _float _fTimeDel
 	return static_cast<CTransform_3D*>(m_pTransforms[m_eCurCoord])->MoveToTarget(_vTargetPos, _fTimeDelta);
 }
 
+_bool CController_Transform::MoveTo(_fvector _vTargetPos, _float _fTimeDelta)
+{
+	if (COORDINATE_2D == m_eCurCoord)
+		return false;
+
+	if (nullptr == m_pTransforms[m_eCurCoord])
+		return false;
+
+	return static_cast<CTransform_3D*>(m_pTransforms[m_eCurCoord])->MoveTo(_vTargetPos, _fTimeDelta);
+}
+
+_bool CController_Transform::Turn_To_DesireDir(_fvector _vStartDir, _fvector _vDesireDir, _float _fRatio)
+{
+	if (COORDINATE_2D == m_eCurCoord)
+		return false;
+
+	if (nullptr == m_pTransforms[m_eCurCoord])
+		return false;
+
+	return m_pTransforms[m_eCurCoord]->Turn_To_DesireDir(_vStartDir, _vDesireDir, _fRatio);
+}
+
 CTransform* CController_Transform::Get_Transform() const
 {
 	return m_pTransforms[m_eCurCoord];
