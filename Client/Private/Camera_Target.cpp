@@ -167,6 +167,8 @@ void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix, _float 
 	m_pTargetWorldMatrix = _pTargetWorldMatrix;
 	m_fTargetChangingTime = { _fChangingTime, 0.f };
 	m_isTargetChanged = true;
+
+	m_vStartPos = m_vPreTargetPos;
 }
 
 void CCamera_Target::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
@@ -559,6 +561,11 @@ void CCamera_Target::Action_SetUp_ByMode()
 
 		}
 		break;
+		case BOSS:
+		{
+
+		}
+		break;
 		}
 
 		m_ePreCameraMode = m_eCameraMode;
@@ -651,13 +658,8 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 
 		m_pControllerTransform->Get_Transform()->Set_Look(vLook);
 	}
-	//else {
-	//	if (DEFAULT != m_eCameraMode) {
-	//		_vector vFreezeOffset = -XMLoadFloat3(&m_vPreFreezeOffset);
-	//		_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
-	//		m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
-	//	}
-	//}
+
+
 }
 
 void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
@@ -1048,6 +1050,10 @@ void CCamera_Target::Reset_To_SettingPoint(_float _fTimeDelta)
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
 	Look_Target(vTargetPos, _fTimeDelta);
+}
+
+void CCamera_Target::Move_In_BossStage(_float _fTimeDelta)
+{
 }
 
 pair<ARM_DATA*, SUB_DATA*>* CCamera_Target::Find_ArmData(_wstring _wszArmTag)

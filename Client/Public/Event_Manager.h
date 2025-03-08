@@ -10,6 +10,7 @@ END
 
 BEGIN(Client)
 class CUI_Fade;
+class CMapObject;
 typedef struct tagEvent_Desc
 {
 	EVENT_TYPE eType = EVENT_TYPE::LAST;
@@ -85,7 +86,7 @@ private:
 	ID3D11DeviceContext* m_pContext = nullptr;
 
 private:
-	vector<CActorObject*> m_ThreadCreateMapObjects;
+	vector<CMapObject*> m_ThreadCreateMapObjects;
 	_bool m_isCreateFinished = false;
 public:
 	_wstring* m_pMapObjectFilePath = nullptr;

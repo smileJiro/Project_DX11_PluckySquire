@@ -141,7 +141,8 @@ private:
 	_float3						m_vStartPos = {};			// Target 바뀌었을 때 Lerp하기 위한 변수
 
 	// Boss
-	const _float4x4*			m_pPivotWorldMatrix = { nullptr };		// WorldMatri
+	const _float4x4*			m_pPivotWorldMatrix = { nullptr };		// WorldMatrirx를 구할 수 없을 때 사용
+	_float						m_fPivotRatio = {};
 
 #pragma region Tool용
 	_bool						m_isLookAt = { true };
@@ -159,6 +160,8 @@ private:
 	void						Move_To_CustomArm(_float _fTimeDelta);
 	void						Move_To_ExitArm(_float _fTimeDelta);
 	void						Reset_To_SettingPoint(_float _fTimeDelta);
+
+	void						Move_In_BossStage(_float _fTimeDelta);
 
 	_vector						Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fTimeDelta);
 	void						Calculate_FreezeOffset(_vector* _pTargetPos);

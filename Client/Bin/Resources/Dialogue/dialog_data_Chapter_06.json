@@ -1564,6 +1564,232 @@
 					"Blue": 234
 				}
 			]
+		},
+		{
+			"id": "ZetPack_Child_0",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "어, 안녕!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "너 안테나 멋지다... 보송거리고 하늘거리는 게 말이야!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "난 찌릿이야. 만나서 반가워...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "...아, 네 이름은 저트인데, 무슨 물건을 찾고 있다고?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그럼 우리 아빠가 도와줄 수 있을지 몰라... \n아주 똑똑한 분이거든.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그런데 아빠는 지금 조각조각 흩어져 있어.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "어떤 못돼 먹은 병사들이 이 작은 행성에 쳐들어와서는 \n아빠를 산산조각 냈거든!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그러고는 조각을 챙기고 사라졌어... \n그러는 게 어디 있냐고!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "있잖아, 우리 아빠를 조립하는 걸 도와주면 \n아빠도 네가 물건을 찾을 수 있도록 도와주실 거야!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "내 제트 추진 실력이 좀 불안하긴 하지만 \n힘을 합치면 해낼 수 있을거야...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "어때?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "이 행성에서 나갈 때, 내가 네 등 위에 올라탈게!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그러면 함께 아빠의 조각을 찾을 수 있을거야!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
 		}
 	]
 }

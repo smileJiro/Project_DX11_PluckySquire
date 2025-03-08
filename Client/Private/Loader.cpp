@@ -181,12 +181,16 @@
 #include "Portal_Cannon.h"
 #include "Word.h"
 
-#include "PortalLocker.h" // 태웅
+
 
 // Etc
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
+
+// Father Game 
+#include "PortalLocker.h" 
+#include "ZetPack_Child.h" 
 #include "CandleGame.h"
 #include "Candle.h"
 #include "Candle_Body.h"
@@ -1115,6 +1119,15 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 	#pragma endregion
 
+#pragma region Chapter 2 - Monster Load
+
+		lstrcpy(m_szLoadingText, TEXT("Level 2 몬스터 로딩중입니다."));
+
+		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter2_Monsters.json"), TEXT("Chapter2_Monsters"), _eLoadLevelID)))
+			return E_FAIL;
+
+#pragma endregion
+
 	#pragma region Chapter 2 - Effect Load
 
 		lstrcpy(m_szLoadingText, TEXT("Level2 이펙트 로딩중입니다."));
@@ -1410,7 +1423,10 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			CGameEventExecuter_C6::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-
+		/* Chapter 6 FatherGame */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Child"),
+			CZetPack_Child::Create(m_pDevice, m_pContext))))
+		
 		/* Chapter 6 Npc */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_StoreNPC"),
 			CNPC_Store::Create(m_pDevice, m_pContext))))
@@ -1866,6 +1882,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 	case LEVEL_CHAPTER_8:
 		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
 		strChapterName += L"Chapter8";
+		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter_Boss.json", matPretransform, true)))
+			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:
 		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
@@ -2499,7 +2517,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
 				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
 					(LEVEL_ID)_eObjectLevelId,
 					m_pGameInstance,
-					hFile, false, true, true);
+					hFile, false, false, true);
 			if (nullptr != pGameObject)
 				m_pGameInstance->Add_GameObject_ToLayer(_eObjectLevelId, strLayerTag.c_str(), pGameObject);
 		}

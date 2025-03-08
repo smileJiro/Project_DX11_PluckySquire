@@ -22,7 +22,7 @@ BEGIN(Client)
 class CMapObjectFactory {
 public:
 	template<typename T, typename std::enable_if<std::is_base_of<Client::CMapObject, T>::value, _int>::type = 0>
-	static T* Bulid_2DObject(LEVEL_ID _eLevelID, CGameInstance* _pGameInstance, HANDLE& _hFile)
+	static T* Bulid_2DObject(LEVEL_ID _eLevelID, CGameInstance* _pGameInstance, HANDLE& _hFile, _bool _isMainThread = true)
 	{
 		DWORD	dwByte(0);
 
@@ -110,7 +110,7 @@ public:
 	}
 
 	template<typename T, typename std::enable_if<std::is_base_of<Client::CMapObject, T>::value, _int>::type = 0>
-	static T* Bulid_3DObject(LEVEL_ID _eLevelID, CGameInstance* _pGameInstance, HANDLE& _hFile, _bool _isCulling = true, _bool _isActorToScene = true, _bool _isStatic = false)
+	static T* Bulid_3DObject(LEVEL_ID _eLevelID, CGameInstance* _pGameInstance, HANDLE& _hFile, _bool _isCulling = true, _bool _isMainThread = true, _bool _isStatic = false)
 	{
 		DWORD	dwByte(0);
 
@@ -131,7 +131,7 @@ public:
 			);
 		NormalDesc.iModelPrototypeLevelID_3D = _isStatic ? LEVEL_STATIC : NormalDesc.iModelPrototypeLevelID_3D;
 		NormalDesc.Build_3D_Transform(vWorld);
-		NormalDesc.isAddActorToScene = _isActorToScene;
+		NormalDesc.isAddActorToScene = _isMainThread;
 		// 일괄적으로 컬링을 끄는 세이브데이터는 꺼주고, 아니면 각 객체마다 차등 적용하자. 
 		NormalDesc.isCulling = false == _isCulling ? false : isCulling; 
 		CBase* pBase = nullptr;
@@ -239,7 +239,7 @@ public:
 				if (nullptr != pBase)
 				{
 					T* pMapObject = static_cast<T*>(pBase);
-					pMapObject->Set_MaterialConstBuffer_Albedo(tColorInfo.iMaterialIndex, tColorInfo.eColorMode, tColorInfo.fDiffuseColor);
+					pMapObject->Set_MaterialConstBuffer_Albedo(tColorInfo.iMaterialIndex, tColorInfo.eColorMode, tColorInfo.fDiffuseColor, _isMainThread);
 				}
 			}
 		}

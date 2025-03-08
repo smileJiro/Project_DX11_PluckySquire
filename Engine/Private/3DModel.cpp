@@ -481,7 +481,7 @@ void C3DModel::Set_Animation(_uint iIdx, _bool _bReverse)
 	}
 	m_iCurrentAnimIndex = iIdx;
 	m_iPrevAnimIndex = iIdx;
-	//m_Animations[m_iCurrentAnimIndex]->Reset(_bReverse);
+	m_Animations[m_iCurrentAnimIndex]->Reset(_bReverse);
 }
 
 void C3DModel::Set_AnimationTransitionTime(_uint iIdx, _float _fTime)
@@ -597,6 +597,12 @@ void C3DModel::Set_MaterialConstBuffer_Metallic(_uint _iMaterialIndex, _float _f
 void C3DModel::Set_MaterialConstBuffer_AO(_uint _iMaterialIndex, _float _fAO, _bool _isUpdate)
 {
 	m_Materials[_iMaterialIndex]->Set_AO(_fAO, _isUpdate);
+}
+
+void C3DModel::Update_ConstBuffer()
+{
+	for (auto* pMaterial : m_Materials)
+		pMaterial->Update_PixelConstBuffer();
 }
 
 _uint C3DModel::Get_AnimCount()
