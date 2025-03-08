@@ -2,7 +2,7 @@
 #include "PlayerState_CyberIdle.h"
 #include "GameInstance.h"
 #include "Actor_Dynamic.h"
-
+#include "PlayerBody.h"
 
 CPlayerState_CyberIdle::CPlayerState_CyberIdle(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::CYBER_IDLE)
@@ -109,6 +109,8 @@ void CPlayerState_CyberIdle::Set_VeloState(_fvector _vVelocity)
 
 
 	if (m_eVelocityState == eNewVeloState)
+		return;
+	if(m_pOwner->Get_Body()->Is_AnimTransition())
 		return;
 	m_eVelocityState = eNewVeloState;
 	cout << "m_eVelocityState" << m_eVelocityState << endl;

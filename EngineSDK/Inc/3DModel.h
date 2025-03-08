@@ -73,7 +73,7 @@ public:
 	virtual void			Switch_Reverse(_uint iIdx, _bool _bReverse = false) override;
 	virtual void			To_NextAnimation() override;
 	virtual void			Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) override;
-
+	_bool Is_AnimTransition() { return m_iCurrentAnimIndex != m_iPrevAnimIndex; }
 	// Material Get, Set 
 
 	// Get

@@ -46,25 +46,9 @@ void CBossEnergyBallState::State_Update(_float _fTimeDelta)
 		}
 	}
 
-	//m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
-	//공격
-	//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
-	//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
+	_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
 
-	//10개 뿜고 공격 종료
-	//if (m_iNumAttack <= m_iAttackCount)
-	//{
-	//	Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
-	//}
-	//else
-	//{
-	//	if (false == m_isDelay)
-	//	{
-	//		m_pOwner->Attack();
-	//		++m_iAttackCount;
-	//		Delay_On();
-	//	}
-	//}
+	m_pOwner->Get_ControllerTransform()->Turn_To_DesireDir(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec() * _fTimeDelta);
 
 	if (m_pOwner->Get_AnimChangeable())
 	{

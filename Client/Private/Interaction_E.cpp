@@ -267,7 +267,7 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 		m_vObejctPos = _float3(vCalPos.x, vCalPos.y, 1.f);
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f));
-		m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+		m_pControllerTransform->Set_Scale(m_fSizeX * fScaleX, m_fSizeY * fScaleY, 1.f);
 
 	}
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())

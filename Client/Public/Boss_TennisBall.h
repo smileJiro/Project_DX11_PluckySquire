@@ -31,6 +31,10 @@ public:
 	void Shoot();
 
 public:
+	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
@@ -46,7 +50,6 @@ private:
 	virtual HRESULT					Ready_PartObjects();
 
 private:
-	_uint m_iHp = { 0 };
 	_bool m_isShoot = { false };
 	CButterGrump* m_pSpawner = { nullptr };
 

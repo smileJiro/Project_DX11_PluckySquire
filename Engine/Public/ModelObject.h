@@ -75,7 +75,7 @@ public:
 	virtual HRESULT Initialize_Prototype(); // 프로토 타입 전용 Initialize
 	virtual HRESULT Initialize(void* _pArg); // 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
 	virtual void	Priority_Update(_float _fTimeDelta) override;
-	virtual void	Update(_float fTimeDelta) override;
+	virtual void	Update(_float _fTimeDelta) override;
 	virtual void	Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT	Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag);
 	virtual HRESULT	Render() override;
@@ -91,8 +91,8 @@ public:
 	virtual void Check_FrustumCulling();
 
 public:
-	void Start_FadeAlphaIn(); // 밝아지는거
-	void Start_FadeAlphaOut(); // 밝아지는거
+	void Start_FadeAlphaIn(_float _fFadeAlphaTime = 1.0f); // 밝아지는거
+	void Start_FadeAlphaOut(_float _fFadeAlphaTime = 1.0f); // 밝아지는거
 	void Action_Fade(_float _fTimeDelta);
 
 public:
@@ -109,6 +109,8 @@ public:
 	_bool	Is_DuringAnimation();
 	//애니메이션이 재생중인지 반환
 	_bool	Is_PlayingAnim() { return m_bPlayingAnim; }
+	_bool Is_AnimTransition();
+
 	// Set
 	void	Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
 	void	Set_Animation(_uint iIdx);

@@ -70,6 +70,20 @@ public:
 	{
 		return m_isPhase2;
 	}
+	_bool Is_Move()
+	{
+		return m_isMove;
+	}
+	_bool Is_OnMove()
+	{
+		return m_isOnMove;
+	}
+
+	void Set_OnMove(_bool _isOnMove)
+	{
+		m_isOnMove = _isOnMove;
+	}
+
 	_bool Is_Converse()
 	{
 		return m_isConverse;
@@ -97,6 +111,16 @@ public:
 	{
 		return m_fChainDelayTime;
 	}
+
+	void Set_CurMoveIndex(_uint _iMoveIndex)
+	{
+		m_iCurMoveIndex = _iMoveIndex;
+	}
+
+	_uint Get_CurMoveIndex()
+	{
+		return m_iCurMoveIndex;
+	}
 	
 public:
 	virtual HRESULT			Initialize_Prototype() override;
@@ -111,7 +135,9 @@ public:
 	virtual void Change_Animation() override;
 	virtual void Attack() override;
 	virtual void On_Attack();
+	virtual void On_Move();
 	void Shield_Break();
+	void Activate_Invinciblility(_bool _isActivate);
 	void	Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 	void Play_Intro();
 
@@ -128,14 +154,26 @@ private:
 	CFSM_Boss* m_pBossFSM = { nullptr };
 
 	_bool m_isInvincible = { false };
-	_bool m_isConverse = { false };
-	_bool m_isEnforce = { false };
+	_bool m_isMove = { false };
+	_bool m_isOnMove = { false };
+	_bool m_isAlreadyMove = { false };
+	_bool m_isConverse = { false };		//쉴드 패턴 전환
+	_bool m_isEnforce = { false };			//패턴 강화
 	_bool m_isPhase2 = { false };
 	_bool m_isAttack = { false };
 	_bool m_isAttackChained = { false };
 	_uint m_iNumAttack = { 0 };
 	_uint m_iNumAttackChain = { 0 };
 	_uint m_iAttackChainCount = { 0 };
+	_uint m_iCurMoveIndex = { 0 };
+	_uint m_iNumConverse = { 0 };
+
+	_float m_fMoveHPRatio_Phase1_1 = { 0.f };		//이동 패턴 쓸 체력 구간
+	_float m_fMoveHPRatio_Phase1_2 = { 0.f };
+
+	_float m_fMoveHPRatio_Phase2 = { 0.f };
+
+	_float m_fMoveAnimationProgress[4] = {};
 
 	//연속 패턴에서 다음 공격으로 이어지기 까지의 딜레이(애니메이션 전환 시간)
 	_float m_fChainDelayTime = { 0.f };

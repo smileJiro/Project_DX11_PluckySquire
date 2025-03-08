@@ -56,6 +56,6 @@ private:
     CActor_Dynamic* m_pDynamicActor = nullptr;
     _float m_f3DCyberDashForce = 15.f;
 
-    _float m_fEndDashVelocityThreshold = 3.f;
+    _float m_fEndDashVelocityThreshold = 5.f;
 };
 END

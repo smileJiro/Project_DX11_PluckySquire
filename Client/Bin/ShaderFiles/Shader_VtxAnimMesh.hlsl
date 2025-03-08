@@ -277,6 +277,38 @@ PS_OUT PS_MAIN(PS_IN In)
     
     return Out;
 }
+PS_OUT PS_MAIN_NONDISCARD(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    // 조명에 대한 방향벡터를 뒤집은 후, 노말벡터와의 내적을 통해,
+    // shade 값을 구한다. 여기에 Ambient color 역시 더한다. 
+    float4 vAlbedo = useAlbedoMap ? g_AlbedoTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f) : Material.Albedo;
+    float3 vNormal = useNormalMap ? Get_WorldNormal(g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz, In.vNormal.xyz, In.vTangent.xyz, 0) : In.vNormal.xyz;
+    float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
+    float fSpecular = useSpecularMap ? g_SpecularTexture.Sample(LinearSampler, In.vTexcoord).r : 0.0f;
+    float fEmissive = useEmissiveMap ? g_EmissiveTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Emissive;
+    
+    if (false == useORMHMap)
+    {
+        vORMH.r = useAOMap ? g_AOTexture.Sample(LinearSampler, In.vTexcoord).r : Material.AO;
+        vORMH.g = useRoughnessMap ? g_RoughnessTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Roughness;
+        vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
+    }
+    
+    Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
+    // 1,0,0 
+    // 1, 0.5, 0.5 (양의 x 축)
+    // 0, 0.5, 0.5 (음의 x 축)
+    Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
+    Out.vORMH = vORMH;
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 1.0f);
+    
+    float3 vEmissiveColor = Material.EmissiveColor * fEmissive;
+    Out.vEtc = float4(vEmissiveColor, fSpecular /**/);
+    
+    return Out;
+}
 
 PS_ONLYALBEDO_OUT PS_ONLYALBEDO(PS_IN In) // 포스트 프로세싱 이후에 그리는
 {
@@ -454,7 +486,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         VertexShader = compile vs_5_0 VS_MAIN_RENDERTARGET_UV();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN_NONDISCARD();
     }
 
     pass RenderTargetMappingPass_AfterPostProcessing // 5

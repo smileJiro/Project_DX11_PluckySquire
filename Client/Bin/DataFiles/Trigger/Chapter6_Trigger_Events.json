@@ -1,2 +1,12 @@
 [
+  {
+    "Trigger_EventTag": "Chapter6_FatherGame_Progress_Start_Clear",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter6_FatherGame_Progress_Start_Clear",
+        "Is_Sequence": true
+      }
+    ]
+  }
 ]
