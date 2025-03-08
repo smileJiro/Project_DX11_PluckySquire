@@ -78,12 +78,13 @@ HRESULT CDice::Initialize(void* _pArg)
 
 	// 2D 충돌용 콜라이더 추가.
 	m_p2DColliderComs.resize(2);
-
+	//static_cast<CCollider_Circle*> (m_p2DColliderComs[1])->Set_Radius();
 	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
 
 	CircleDesc.pOwner = this;
-	CircleDesc.fRadius = 0.2f;
-	CircleDesc.vScale = { 1.0f, 1.0f };
+	CircleDesc.fRadius = 20.f;
+	_float3 vScale = m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_Scale();
+	CircleDesc.vScale = { 1 / vScale.x, 1 / vScale.y };
 	CircleDesc.vOffsetPosition = { 0.f, 0.f };
 	CircleDesc.isBlock = false;
 	CircleDesc.isTrigger = true;
@@ -109,10 +110,10 @@ void CDice::Late_Update(_float _fTimeDelta)
 
 HRESULT CDice::Render()
 {
-//#ifdef _DEBUG
-//	if (COORDINATE_2D == Get_CurCoord() && 2 <= m_p2DColliderComs.size() && nullptr != m_p2DColliderComs[1])
-//		m_p2DColliderComs[1]->Render();
-//#endif
+#ifdef _DEBUG
+	if (COORDINATE_2D == Get_CurCoord() && 2 <= m_p2DColliderComs.size() && nullptr != m_p2DColliderComs[1])
+		m_p2DColliderComs[1]->Render();
+#endif
 	return __super::Render();
 }
 

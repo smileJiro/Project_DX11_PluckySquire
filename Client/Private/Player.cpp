@@ -945,9 +945,9 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
         {
             IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
 			if (nullptr != pInteractable && static_cast<CCollider_Circle*>( _pMyCollider)->Is_ContainsPoint(_pOtherCollider->Get_Position()))
-            if (Check_ReplaceInteractObject(pInteractable))
             {
-                m_pInteractableObject = pInteractable;
+                if (Check_ReplaceInteractObject(pInteractable))
+                    m_pInteractableObject = pInteractable;
             }
         }
         
