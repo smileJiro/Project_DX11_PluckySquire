@@ -195,6 +195,7 @@ HRESULT CGoblin::Render()
     if (COORDINATE_3D == Get_CurCoord())
         m_pDetectionField->Render();
 
+
     __super::Render();
 #endif
 
@@ -648,22 +649,25 @@ HRESULT CGoblin::Ready_Components()
         TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
         return E_FAIL;
 
-	if (false == Get_ControllerTransform()->Is_CoordChangeEnable() && COORDINATE_2D == Get_CurCoord())
-    {
-        /* 2D Collider */
-        m_p2DColliderComs.resize(1);
 
-        CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
-        CircleDesc.pOwner = this;
-        CircleDesc.fRadius = { 40.f };
-        CircleDesc.vScale = { 1.0f, 1.0f };
-        CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
-        CircleDesc.isBlock = false;
-        CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
-        if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-            TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
-            return E_FAIL;
-    }
+
+    if (false == Get_ControllerTransform()->Is_CoordChangeEnable() && COORDINATE_3D == Get_CurCoord())
+        return S_OK;
+
+    /* 2D Collider */
+    m_p2DColliderComs.resize(1);
+
+    CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+    CircleDesc.pOwner = this;
+    CircleDesc.fRadius = { 40.f };
+    CircleDesc.vScale = { 1.0f, 1.0f };
+    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
+    CircleDesc.isBlock = false;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
+        return E_FAIL;
+
 
     return S_OK;
 }
