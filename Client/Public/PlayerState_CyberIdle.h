@@ -1,10 +1,23 @@
 #pragma once
 #include "PlayerState.h"
+BEGIN(Engine)
+class CActor_Dynamic;
+END
 BEGIN(Client)
-
 class CPlayerState_CyberIdle :
     public CPlayerState
 {
+public:
+    enum VELOCITY_STATE
+    {
+        VELOCITY_IDLE,
+        VELOCITY_RUN_RIGHT,
+        VELOCITY_RUN_LEFT,
+        VELOCITY_RUN_UP,
+        VELOCITY_RUN_DOWN,
+        VELOCITY_DASH,
+        VELOCITY_LAST
+    };
 public:
     CPlayerState_CyberIdle(CPlayer* _pOwner);
 
@@ -14,32 +27,20 @@ public:
     virtual void Exit() override;
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 
+    void Set_VeloState(_fvector _vVelocity);
 private:
+    CActor_Dynamic* m_pDynamicActor = nullptr;
     _bool m_bRifleTriggered = false;
-};
+    _float m_f3DCyberFlySpeed = 5.f;
 
-class CPlayerState_CyberFly :
-    public CPlayerState
-{
-public:
-    CPlayerState_CyberFly(CPlayer* _pOwner);
+	VELOCITY_STATE m_eVelocityState = VELOCITY_LAST;
 
-    // CPlayerState을(를) 통해 상속됨
-    void Update(_float _fTimeDelta) override;
-    virtual void Enter() override;
-    virtual void Exit() override;
-    virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
+    _float m_fRunVelocityThreshold = 3.f;
 
-
-private:
-	_bool m_bRifleTriggered = false;
-    _float m_f3DCyberFlySpeed = 10.f;
-	F_DIRECTION m_eFDir = F_DIRECTION::F_DIR_LAST;
 };
 
 
-
-class CPlayerState_CyberDash :
+class CPlayerState_CyberDash:
     public CPlayerState
 {
 public:
@@ -51,11 +52,10 @@ public:
     virtual void Exit() override;
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 
-
 private:
-    _bool m_bRifleTriggered = false;
-    _float m_f3DCyberDashSpeed = 20.f;
-	_vector m_vDashDirection = { 0.f,0.f,0.f };
-};
+    CActor_Dynamic* m_pDynamicActor = nullptr;
+    _float m_f3DCyberDashForce = 15.f;
 
+    _float m_fEndDashVelocityThreshold = 5.f;
+};
 END

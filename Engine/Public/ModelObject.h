@@ -109,6 +109,8 @@ public:
 	_bool	Is_DuringAnimation();
 	//애니메이션이 재생중인지 반환
 	_bool	Is_PlayingAnim() { return m_bPlayingAnim; }
+	_bool Is_AnimTransition();
+
 	// Set
 	void	Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
 	void	Set_Animation(_uint iIdx);

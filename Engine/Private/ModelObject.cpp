@@ -547,6 +547,14 @@ _bool CModelObject::Is_DuringAnimation()
     return m_pControllerModel->Get_Model(Get_CurCoord())->Is_DuringAnimation();
 }
 
+_bool CModelObject::Is_AnimTransition()
+{
+    if (COORDINATE_2D == Get_CurCoord())
+        return false;
+    else
+        return static_cast<C3DModel*> (m_pControllerModel->Get_Model(COORDINATE_3D))->Is_AnimTransition();
+}
+
 void CModelObject::Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)
 {
     if (m_pControllerModel)

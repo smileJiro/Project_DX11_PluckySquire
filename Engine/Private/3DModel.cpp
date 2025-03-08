@@ -481,7 +481,7 @@ void C3DModel::Set_Animation(_uint iIdx, _bool _bReverse)
 	}
 	m_iCurrentAnimIndex = iIdx;
 	m_iPrevAnimIndex = iIdx;
-	m_Animations[m_iCurrentAnimIndex]->Reset(_bReverse);
+	//m_Animations[m_iCurrentAnimIndex]->Reset(_bReverse);
 }
 
 void C3DModel::Set_AnimationTransitionTime(_uint iIdx, _float _fTime)
