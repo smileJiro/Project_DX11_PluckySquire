@@ -92,6 +92,9 @@ private:
 	void									Update_AnimationDirection();
 	void									ChaseToTarget(_float _fTimeDelta);
 	void									Finished_DialogueAction();
+
+private:
+	HRESULT									Make_JusinBulb(_string _strJsonPath);
 private:
 	HRESULT									Ready_Components(ZETPACK_CHILD_DESC* _pDesc);
 

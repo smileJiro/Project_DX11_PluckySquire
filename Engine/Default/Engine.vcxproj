@@ -207,6 +207,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\Camera.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\Public\Camera_Manager_Engine.h" />
+    <ClInclude Include="..\Public\CameraPivot.h" />
     <ClInclude Include="..\public\Channel.h" />
     <ClInclude Include="..\public\Actor.h" />
     <ClInclude Include="..\public\Collider.h" />
@@ -326,6 +327,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\Camera.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Manager_Engine.cpp" />
+    <ClCompile Include="..\Private\CameraPivot.cpp" />
     <ClCompile Include="..\private\Channel.cpp" />
     <ClCompile Include="..\private\Actor.cpp" />
     <ClCompile Include="..\private\Collider.cpp" />
