@@ -98,7 +98,7 @@ void CFatherGame::Update()
 		return;
 
 	/* ÂüÁ¶ °´Ã¼ Dead Check */
-
+	DeadCheck_ReferenceObject();
 
 
 
@@ -157,6 +157,9 @@ void CFatherGame::DeadCheck_ReferenceObject()
 {
 	for (_uint i = 0; i < PORTALLOCKER::LOCKER_LAST; ++i)
 	{
+		if (nullptr == m_PortalLockers[i])
+			continue;
+
 		if (true == m_PortalLockers[i]->Is_Dead())
 		{
 			Safe_Release(m_PortalLockers[i]);
