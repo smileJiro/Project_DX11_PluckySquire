@@ -204,6 +204,14 @@ HRESULT C3DMapObject::Render()
     return CModelObject::Render();
 }
 
+void C3DMapObject::Check_FrustumCulling()
+{
+    if (true == m_isCulling)
+        m_isFrustumCulling = !m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.f);
+    else
+        m_isFrustumCulling = false;
+}
+
 void C3DMapObject::Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, C3DModel::COLOR_SHADER_MODE _eColorMode, _float4 _fAlbedoColor)
 {
     CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);

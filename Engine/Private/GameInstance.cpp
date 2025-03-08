@@ -400,6 +400,13 @@ HRESULT CGameInstance::Add_GameObject_ToLayer(_uint _iLevelID, const _wstring& _
 	return m_pObject_Manager->Add_GameObject_ToLayer(_iLevelID, _strLayerTag, _pGameObject);
 }
 
+void CGameInstance::Set_Layer_Culling(_uint _iLevelID, const _wstring& _strLayerTag, _bool _isCulling)
+{
+	if (nullptr == m_pObject_Manager)
+		return;
+	return m_pObject_Manager->Set_Layer_Culling(_iLevelID, _strLayerTag, _isCulling);
+}
+
 _bool CGameInstance::Is_EmptyLayer(_uint _iLevelID, const _wstring& _strLayerTag)
 {
 	if (nullptr == m_pObject_Manager)

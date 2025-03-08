@@ -36,6 +36,11 @@ public:
 	HRESULT Add_GameObject_ToLayer(_uint _iPrototypeLevelID, const _wstring& _strPrototypeTag, _uint _iLevelID, const _wstring& _strLayerTag, CGameObject** _ppOut, void* pArg = nullptr);
 	HRESULT Add_GameObject_ToLayer(_uint _iLevelID, const _wstring& _strLayerTag, CGameObject* _pGameObject); // 사본객체 생성 후 던지는.
 
+
+
+	void	Set_Layer_Culling(_uint _iLevelID, const _wstring& _strLayerTag, _bool _isCulling);
+
+
 public:
 	CGameObject* Get_PickingModelObjectByCursor(_uint _iLevelID, const _wstring& _strLayerTag, _float2 _fCursorPos);
 	/* Scale이 고려 된, 가장 가까운 오브젝트를 찾고 리턴하는 함수. */
