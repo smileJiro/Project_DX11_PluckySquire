@@ -16,10 +16,8 @@ CCameraArm::CCameraArm(const CCameraArm& Prototype)
     , m_pContext(Prototype.m_pContext)
     , m_pGameInstance(Prototype.m_pGameInstance)
     , m_vArm(Prototype.m_vArm)
-    , m_wszArmTag(TEXT("CopyArm"))
     , m_vRotation(Prototype.m_vRotation)
     , m_fLength(Prototype.m_fLength)
-    //, m_pTargetWorldMatrix(Prototype.m_pTargetWorldMatrix)
 {
     Safe_AddRef(m_pDevice);
     Safe_AddRef(m_pContext);
@@ -33,9 +31,6 @@ HRESULT CCameraArm::Initialize(void* pArg)
     m_vArm = pDesc->vArm;
     m_vRotation = pDesc->vRotation;
     m_fLength = pDesc->fLength;
-    m_wszArmTag = pDesc->wszArmTag;
-
-    //m_pTargetWorldMatrix = pDesc->pTargetWorldMatrix;
 
     m_pTransform = CTransform_3D::Create(m_pDevice, m_pContext);
     if (nullptr == m_pTransform)
@@ -44,10 +39,7 @@ HRESULT CCameraArm::Initialize(void* pArg)
     if (FAILED(m_pTransform->Initialize(&pDesc)))
         return E_FAIL;
 
-    Set_WorldMatrix();
-
-  /*  Turn_ArmX(m_vRotation.x);
-    Turn_ArmY(m_vRotation.y);*/
+    m_pTransform->Set_Look(XMLoadFloat3(&m_vArm));
 
     return S_OK;
 }
@@ -67,24 +59,6 @@ void CCameraArm::Update(_float fTimeDelta)
 
 void CCameraArm::Late_Update(_float fTimeDelta)
 {
-}
-
-void CCameraArm::Set_WorldMatrix()
-{
-    _vector vLook = XMLoadFloat3(&m_vArm);
-    _vector vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
-    _vector vUp = XMVector3Cross(vLook, vRight);
-
-    m_pTransform->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight));
-    m_pTransform->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp));
-    m_pTransform->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
-
-    //// 초기 회전
-    _vector vCrossX = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMLoadFloat3(&m_vArm));
-    m_pTransform->TurnAngle(m_vRotation.x, vCrossX);
-    m_pTransform->TurnAngle(m_vRotation.y);
-
-    XMStoreFloat3(&m_vArm, m_pTransform->Get_State(CTransform::STATE_LOOK));
 }
 
 _bool CCameraArm::Get_IsInPreArmData(_int _iTriggerID, pair<RETURN_ARMDATA, _bool>* _pPreArmData)
@@ -197,162 +171,6 @@ void CCameraArm::Set_StartInfo()
     m_fStartLength = m_fLength;
 }
 
-void CCameraArm::Turn_ArmX(_float fAngle)
-{
-    // Right축
-    _vector vCrossX = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMLoadFloat3(&m_vArm));
-    _matrix RotationMatrix;
-
-    if (0 < XMVectorGetY(vCrossX)) {
-        RotationMatrix = XMMatrixRotationAxis(vCrossX, -fAngle);
-        cout << "fAngle+++++++++++++++" << endl;
-    }
-    else {
-        RotationMatrix = XMMatrixRotationAxis(vCrossX, +fAngle);
-        cout << "fAngle----------------" << endl;
-    }
-
-    _vector vRoatateArm = XMVector3TransformNormal(XMLoadFloat3(&m_vArm), RotationMatrix);
-    XMStoreFloat3(&m_vArm, vRoatateArm);
-
-
-}
-
-void CCameraArm::Turn_ArmY(_float fAngle)
-{
-    // Y축
-    _matrix	RotationMatrix = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), fAngle);
-
-    _vector vRoatateArm = XMVector3TransformNormal(XMLoadFloat3(&m_vArm), RotationMatrix);
-    XMStoreFloat3(&m_vArm, vRoatateArm);
-}
-
-_float CCameraArm::Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType)
-{
-    _float fRatio = {};
-
-    _fTime->y += _fTimeDelta;
-    fRatio = _fTime->y / _fTime->x;
-    fRatio = clamp(fRatio, 0.f, 1.f);
-
-    switch (_iRatioType) {
-    case (_uint)RATIO_TYPE::EASE_IN:
-        fRatio = (fRatio + (_float)pow((_double)fRatio, (_double)2.f)) * 0.5f;
-        //fRatio = fRatio * fRatio;
-        break;
-    case (_uint)RATIO_TYPE::EASE_OUT:
-        //fRatio = 1.0f - ((1.0f - fRatio) + (_float)pow((_double)(1.0f - fRatio), 2.f)) * 0.5f;
-        fRatio = 1.0f - (1.0f - fRatio) * (1.0f - fRatio);
-        break;
-    case (_uint)RATIO_TYPE::LERP:
-        break;
-    case (_uint)RATIO_TYPE::EASE_IN_OUT:
-        fRatio = fRatio * fRatio * (3 - 2 * fRatio);
-        break;
-    }
-
-    return fRatio;
-}
-
-_bool CCameraArm::Check_IsNear_ToDesireArm(_float _fTimeDelta)
-{
-    _float fDot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(XMLoadFloat3(&m_vArm)), XMVector3Normalize(XMLoadFloat3(&m_pNextArmData->vDesireArm))));
-    _float fAngle = acos(fDot);
-    _float f = XMConvertToDegrees(fAngle);
- 
-    if (XMConvertToDegrees(fAngle) < 10.f) {
-        _vector vArm = XMVector3Normalize(XMVectorLerp(XMLoadFloat3(&m_vArm), XMLoadFloat3(&m_pNextArmData->vDesireArm), 0.05f));
-        XMStoreFloat3(&m_vArm, (vArm));
-        m_pTransform->Set_Look(vArm);
-
-        return true;
-    }
-
-    return false;
-}
-
-#pragma region 폐기
-_bool CCameraArm::Move_To_NextArm(_float _fTimeDelta)
-{
-    _bool isNear = Check_IsNear_ToDesireArm(_fTimeDelta);
-
-    if (true == isNear) {
-        m_iMovementFlags |= DONE_Y_ROTATE;
-        m_iMovementFlags |= DONE_RIGHT_ROTATE;
-        m_pNextArmData->fMoveTimeAxisY.y = 0.f;
-        m_pNextArmData->fMoveTimeAxisRight.y = 0.f;
-    }
-
-    // Y축 회전
-    if (!(m_iMovementFlags & DONE_Y_ROTATE)) { // 안 끝났을 때
-
-        m_pNextArmData->fMoveTimeAxisY.y += _fTimeDelta;
-        _float fRatio = m_pNextArmData->fMoveTimeAxisY.y / m_pNextArmData->fMoveTimeAxisY.x;
-
-        if (m_pNextArmData->fMoveTimeAxisY.y >= m_pNextArmData->fMoveTimeAxisY.x) {
-            m_pNextArmData->fMoveTimeAxisY.y = 0.f;
-            m_iMovementFlags |= DONE_Y_ROTATE;
-        }
-        else {
-            _float fRotationPerSec = m_pGameInstance->Lerp(m_pNextArmData->fRotationPerSecAxisY.x, m_pNextArmData->fRotationPerSecAxisY.y, fRatio);
-            m_pTransform->Set_RotationPerSec(fRotationPerSec);
-
-            m_pTransform->Turn(_fTimeDelta, XMVectorSet(0.0f, 1.f, 0.f, 0.f));
-
-            _vector vLook = m_pTransform->Get_State(CTransform::STATE_LOOK);
-            XMStoreFloat3(&m_vArm, vLook);
-        }
-    }
-
-    // Right 축 회전
-    if (!(m_iMovementFlags & DONE_RIGHT_ROTATE)) {
-
-        m_pNextArmData->fMoveTimeAxisRight.y += _fTimeDelta;
-        _float fRatio = m_pNextArmData->fMoveTimeAxisRight.y / m_pNextArmData->fMoveTimeAxisRight.x;
-
-        if (m_pNextArmData->fMoveTimeAxisRight.y >= m_pNextArmData->fMoveTimeAxisRight.x) {
-            m_pNextArmData->fMoveTimeAxisRight.y = 0.f;
-            m_iMovementFlags |= DONE_RIGHT_ROTATE;
-        }
-        else {
-            _float fRotationPerSec = m_pGameInstance->Lerp(m_pNextArmData->fRotationPerSecAxisRight.x, m_pNextArmData->fRotationPerSecAxisRight.y, fRatio);
-            m_pTransform->Set_RotationPerSec(fRotationPerSec);
-
-            _vector vCross = XMVector3Cross(XMLoadFloat3(&m_vArm), XMVectorSet(0.f, 1.f, 0.f, 0.f));
-
-            m_pTransform->Turn(_fTimeDelta, vCross);
-
-            _vector vLook = m_pTransform->Get_State(CTransform::STATE_LOOK);
-            XMStoreFloat3(&m_vArm, vLook);
-        }
-    }
-
-    // Length 이동
-    if (!(m_iMovementFlags & DONE_LENGTH_MOVE)) {
-
-        _float fRatio = Calculate_Ratio(&m_pNextArmData->fLengthTime, _fTimeDelta, m_pNextArmData->iLengthRatioType);
-
-        if (m_pNextArmData->fLengthTime.y >= m_pNextArmData->fLengthTime.x) {
-            m_pNextArmData->fLengthTime.y = 0.f;
-            m_iMovementFlags |= DONE_LENGTH_MOVE;
-        }
-        else {
-            m_fLength = m_pGameInstance->Lerp(m_fLength, m_pNextArmData->fLength, fRatio);
-        }
-    }
-
-    if ((ALL_DONE_MOVEMENT == (m_iMovementFlags & ALL_DONE_MOVEMENT))) {
-        m_iMovementFlags = RESET_FLAG;
-        m_pNextArmData->fMoveTimeAxisY.y = 0.f;
-        m_pNextArmData->fMoveTimeAxisRight.y = 0.f;
-
-        return true;
-    }
-
-    return false;
-}
-#pragma endregion
-
 _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
 {
     if (nullptr == m_pNextArmData)
@@ -390,8 +208,8 @@ _bool CCameraArm::Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook)
 
     // Length 이동
     if (!(m_iMovementFlags & DONE_LENGTH_MOVE)) {
-
-        _float fRatio = Calculate_Ratio(&m_pNextArmData->fLengthTime, _fTimeDelta, m_pNextArmData->iLengthRatioType);
+        
+        _float fRatio = m_pGameInstance->Calculate_Ratio(&m_pNextArmData->fLengthTime, _fTimeDelta, m_pNextArmData->iLengthRatioType);
 
         if (m_pNextArmData->fLengthTime.y >= m_pNextArmData->fLengthTime.x) {
             m_pNextArmData->fLengthTime.y = 0.f;
@@ -497,7 +315,7 @@ _bool CCameraArm::Move_To_CustomArm(ARM_DATA* _pCustomData, _float _fTimeDelta, 
     // Length 이동
     if (!(m_iMovementFlags & DONE_LENGTH_MOVE)) {
 
-        _float fRatio = Calculate_Ratio(&_pCustomData->fLengthTime, _fTimeDelta, _pCustomData->iLengthRatioType);
+        _float fRatio = m_pGameInstance->Calculate_Ratio(&_pCustomData->fLengthTime, _fTimeDelta, _pCustomData->iLengthRatioType);
 
         if (_pCustomData->fLengthTime.y >= _pCustomData->fLengthTime.x) {
             _pCustomData->fLengthTime.y = 0.f;
@@ -522,7 +340,7 @@ _bool CCameraArm::Move_To_CustomArm(ARM_DATA* _pCustomData, _float _fTimeDelta, 
 
 _bool CCameraArm::Move_To_PreArm(_float _fTimeDelta)
 {
-    _float fRatio = Calculate_Ratio(&m_fReturnTime, _fTimeDelta, RATIO_TYPE::EASE_IN);
+    _float fRatio = m_pGameInstance->Calculate_Ratio(&m_fReturnTime, _fTimeDelta, RATIO_TYPE::EASE_IN);
 
     if (fRatio >= (1.f - EPSILON)) {
         m_fReturnTime.y = 0.f;
@@ -645,14 +463,8 @@ _bool CCameraArm::Turn_AxisRight(ARM_DATA* _pCustomData, _float _fTimeDelta)
     return false;
 }
 
-_bool CCameraArm::Turn_AxisY(_float _fAngle, _float _fTurnTime, _float _fTimeDelta, _uint _iRatioType)
+_bool CCameraArm::Turn_AxisY(_float _fAngle, _float _fTimeDelta, _uint _iRatioType)
 {
-    if (false == m_isStartTurn) {
-        m_fArmTurnTime = { _fTurnTime, 0.f };
-        m_fPreArmAngle = 0.f;
-        m_isStartTurn = true;
-    }
-
     _float fRatio = m_pGameInstance->Calculate_Ratio(&m_fArmTurnTime, _fTimeDelta, _iRatioType);
 
     if (fRatio >= (1.f - EPSILON)) {
@@ -661,7 +473,6 @@ _bool CCameraArm::Turn_AxisY(_float _fAngle, _float _fTurnTime, _float _fTimeDel
         
         m_fArmTurnTime.y = 0.f;
         m_fPreArmAngle = 0.f;
-        m_isStartTurn = false;
 
         return true;
     }
@@ -677,14 +488,8 @@ _bool CCameraArm::Turn_AxisY(_float _fAngle, _float _fTurnTime, _float _fTimeDel
     return false;
 }
 
-_bool CCameraArm::Turn_AxisRight(_float _fAngle, _float _fTurnTime, _float _fTimeDelta, _uint _iRatioType)
+_bool CCameraArm::Turn_AxisRight(_float _fAngle, _float _fTimeDelta, _uint _iRatioType)
 {
-    if (false == m_isStartTurn) {
-        m_fArmTurnTime = { _fTurnTime, 0.f };
-        m_fPreArmAngle = 0.f;
-        m_isStartTurn = true;
-    }
-
     _float fRatio = m_pGameInstance->Calculate_Ratio(&m_fArmTurnTime, _fTimeDelta, _iRatioType);
 
     if (fRatio >= (1.f - EPSILON)) {
@@ -693,7 +498,6 @@ _bool CCameraArm::Turn_AxisRight(_float _fAngle, _float _fTurnTime, _float _fTim
 
         m_fArmTurnTime.y = 0.f;
         m_fPreArmAngle = 0.f;
-        m_isStartTurn = false;
 
         return true;
     }
@@ -712,7 +516,7 @@ _bool CCameraArm::Turn_AxisRight(_float _fAngle, _float _fTurnTime, _float _fTim
 
 _bool CCameraArm::Change_Length(ARM_DATA* _pCustomData, _float _fTimeDelta)
 {
-    _float fRatio = Calculate_Ratio(&_pCustomData->fLengthTime, _fTimeDelta, _pCustomData->iLengthRatioType);
+    _float fRatio = m_pGameInstance->Calculate_Ratio(&_pCustomData->fLengthTime, _fTimeDelta, _pCustomData->iLengthRatioType);
 
     if (fRatio >= (1.f - EPSILON)) {
         _pCustomData->fLengthTime.y = 0.f;
