@@ -57,6 +57,8 @@
 #include "DraggableObject.h"
 #include "Book.h"
 
+#include "Camera_Target.h"
+
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CPlayable(_pDevice, _pContext, PLAYALBE_ID::NORMAL)
 {
@@ -2273,6 +2275,8 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         if (iCurCoord == COORDINATE_2D)
         {
             CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_OBJECT);
+
+            static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET))->Set_InitialData(m_strSectionName, 0);
         }
         else
         {

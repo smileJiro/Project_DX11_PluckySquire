@@ -87,9 +87,6 @@ public:
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
 	virtual void				Change_Target(const _float4x4* _pTargetWorldMatrix, _float _fChangingTime = 1.f) override;
 	virtual void				Change_Target(CGameObject* _pTarget, _float _fChangingTime = 1.f) override;
-	virtual void				Turn_AxisY(_float _fTimeDelta) override;
-	virtual void				Turn_AxisRight(_float _fTimeDelta) override;
-	virtual void				Change_Length(_float _fTimeDelta) override;
 	virtual void				Start_ResetArm_To_SettingPoint(_float _fResetTime) override;
 
 	void						Load_InitialArmTag();

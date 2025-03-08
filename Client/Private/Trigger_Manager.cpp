@@ -50,6 +50,11 @@ void CTrigger_Manager::Update()
 	Execute_Trigger_Event();
 }
 
+void CTrigger_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
+{
+	m_TriggerEvents.clear();
+}
+
 HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 {
 	m_EventExecuterTags.resize(EVENT_EXECUTER_ACTION_TYPE_LAST);

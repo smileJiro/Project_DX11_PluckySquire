@@ -186,36 +186,6 @@ void CCamera_Target::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
 		m_isUsingFreezeOffset = false;
 }
 
-void CCamera_Target::Turn_AxisY(_float _fTimeDelta)
-{
-	if (false == m_isTurnAxisY)
-		return;
-
-	if (true == m_pCurArm->Turn_AxisY(&m_CustomArmData, _fTimeDelta)) {
-		m_isTurnAxisY = false;
-	}
-}
-
-void CCamera_Target::Turn_AxisRight(_float _fTimeDelta)
-{
-	if (false == m_isTurnAxisRight)
-		return;
-
-	if (true == m_pCurArm->Turn_AxisRight(&m_CustomArmData, _fTimeDelta)) {
-		m_isTurnAxisRight = false;
-	}
-}
-
-void CCamera_Target::Change_Length(_float _fTimeDelta)
-{
-	if (false == m_isChangingLength)
-		return;
-
-	if (true == m_pCurArm->Change_Length(&m_CustomArmData, _fTimeDelta)) {
-		m_isChangingLength = false;
-	}
-}
-
 void CCamera_Target::Start_ResetArm_To_SettingPoint(_float _fResetTime)
 {
 	m_pCurArm->Set_StartInfo();
@@ -510,7 +480,10 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 	Change_AtOffset(_fTimeDelta);
 
 	Turn_AxisY(_fTimeDelta);
+	Turn_AxisY_Angle(_fTimeDelta);
 	Turn_AxisRight(_fTimeDelta);
+	Turn_AxisRight_Angle(_fTimeDelta);
+	Turn_Vector(_fTimeDelta);
 	Change_Length(_fTimeDelta);
 
 	Change_FreezeOffset(_fTimeDelta);
@@ -790,7 +763,7 @@ void CCamera_Target::Switching(_float _fTimeDelta)
 	if (false == m_isInitialData)
 		return;
 
-	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
 
 	if (fRatio >= (1.f - EPSILON)) {
 		_vector vTargetPos;

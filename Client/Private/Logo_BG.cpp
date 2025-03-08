@@ -77,11 +77,6 @@ void CLogo_BG::Update(_float _fTimeDelta)
 		Uimgr->Set_LogoChangeState(true);
 		m_vColor = { 246.f / 255.f , 127.f / 255.f, 98.f / 255.f, 1.f };
 	}
-
-	// Camera_Tool로 이동하기(효림)
-	if (KEY_DOWN(KEY::F1)) {
-		Event_LevelChange(LEVEL_LOADING, LEVEL_CAMERA_TOOL);
-	}
 	
 }
 

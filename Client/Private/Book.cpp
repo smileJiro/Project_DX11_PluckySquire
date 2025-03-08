@@ -648,8 +648,8 @@ void CBook::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 				m_isPlayerAbove = true;
 
 				// Player가 책 위에 있을 때 Camera Arm 조정하기
-				CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(20.f), XMConvertToRadians(30.f));
-				cout << "Enter" << endl;
+	/*			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(20.f), XMConvertToRadians(30.f));
+				cout << "Enter" << endl;*/
 			}
 		}
 		break;
@@ -675,8 +675,8 @@ void CBook::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 				m_isPlayerAbove = false;
 
 				// Player가 책 위에서 내려갈 때 Camera Arm 조정하기
-				CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, -XMConvertToRadians(20.f), -XMConvertToRadians(30.f));
-				cout << "Exit" << endl;
+				//CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, -XMConvertToRadians(20.f), -XMConvertToRadians(30.f));
+				//cout << "Exit" << endl;
 			}
 		}
 		break;

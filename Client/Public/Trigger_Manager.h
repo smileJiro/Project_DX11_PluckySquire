@@ -84,10 +84,11 @@ public:
 	HRESULT						Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	void						Update();
 
+public:
+	void						Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
 
 	HRESULT						Mapping_ExecuterTag();
 	EVENT_EXECUTER_ACTION_TYPE	Find_ExecuterAction(const _wstring& _strTag);
-
 
 public:
 	HRESULT						Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath, CSection* _pSection = nullptr);
