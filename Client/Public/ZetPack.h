@@ -52,6 +52,11 @@ public:
 	void Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
+public:
+	virtual void			Enter_Section(const _wstring _strIncludeSectionName) override;
+	virtual void			Exit_Section(const _wstring _strIncludeSectionName) override;
+public:
+
 	void ReFuel();
 	_bool Is_FuelEmpty() { return m_fFuel <= 0.f; }
 	//ÃßÁø

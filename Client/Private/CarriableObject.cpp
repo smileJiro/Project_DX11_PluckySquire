@@ -38,10 +38,7 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 		matHeadUpRotationMatrix
 		* XMMatrixTranslation(pDesc->vHeadUpOffset3D.x, pDesc->vHeadUpOffset3D.y, pDesc->vHeadUpOffset3D.z));
 
-
-
     //pDesc->eStartCoord  = COORDINATE_3D;
-
 
     pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
     pDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;

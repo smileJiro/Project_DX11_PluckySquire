@@ -656,7 +656,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	_int iCurCoord = (COORDINATE_2D);
 	_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
-	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_ZETPACK);
+	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
 	
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
