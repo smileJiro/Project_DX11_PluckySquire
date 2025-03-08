@@ -144,6 +144,10 @@ void CPortal_Default::On_InteractionStart(CPlayer* _pPlayer)
     _pPlayer->Start_Portal(this);
 }
 
+void CPortal_Default::On_InteractionCancel(CPlayer* _pPlayer)
+{
+}
+
 void CPortal_Default::On_InteractionEnd(CPlayer* _pPlayer)
 {
 }

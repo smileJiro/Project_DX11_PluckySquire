@@ -67,6 +67,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER4_RIDE_ZIPLINE] = L"Chapter4_Ride_Zipline";
 	m_EventExecuterTags[CHAPTER4_EVENT_FLAG] = L"Chapter4_Event_Flag";
 	m_EventExecuterTags[CHAPTER4_STORYSEQUENCE] = L"Chapter4_StorySequence";
+	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR] = L"Chapter6_FatherGame_Progress_Start_Clear";
 
 	return S_OK;
 }
@@ -218,6 +219,20 @@ void CTrigger_Manager::On_End(_wstring _szEventTag)
 		m_isEventEnd = true;
 }
 
+_int CTrigger_Manager::Get_Running_EventExecuterAction()
+{
+	_uint iCount = 0;
+
+	for (auto& EventExecuterTag : m_EventExecuterTags) {
+		if (true == m_isRunningEvents[iCount]) {
+			return iCount;
+		}
+		++iCount;
+	}
+	
+	return -1;
+}
+
 void CTrigger_Manager::Register_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID)
 {
 	auto iterator = m_TriggerEvents.find(_TriggerEventTag);
@@ -227,6 +242,18 @@ void CTrigger_Manager::Register_TriggerEvent(_wstring _TriggerEventTag, _int _iT
 	}
 
 	m_iTriggerID = _iTriggerID;
+
+	// 진행할 이벤트를 True로 만들어 준다
+	_uint iCount = 0;
+
+	for (auto& EventExecuterTag : m_EventExecuterTags) {
+		if (EventExecuterTag == _TriggerEventTag) {
+			m_isRunningEvents[iCount] = true;
+			return;
+		}
+
+		++iCount;
+	}
 }
 
 HRESULT CTrigger_Manager::Fill_Trigger_3D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
@@ -547,7 +574,7 @@ void CTrigger_Manager::Register_Trigger_Action()
 			CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_State(CPlayer::STATE::GET_ITEM);
 			CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
 		};
-	
+	;
 	m_Actions[TEXT("Glove_Get_After")] = [this](_wstring _wszEventTag) 
 {
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_BlockPlayerInput(false);

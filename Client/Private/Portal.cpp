@@ -312,6 +312,7 @@ void CPortal::Active_OnEnable()
 }
 
 
+
 NORMAL_DIRECTION CPortal::Get_PortalNormal()
 {
     _vector v3DPos = Get_FinalPosition(COORDINATE_3D);
@@ -328,6 +329,7 @@ void CPortal::Active_OnDisable()
         m_pEffectSystem->Inactive_All();
     }
 }
+
 
 void CPortal::Set_FirstActive(_bool _bFirstActive)
 {

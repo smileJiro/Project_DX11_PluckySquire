@@ -1121,7 +1121,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	//CGameObject* pGameObject;
-	
+	//
 	//pDesc.fSizeX = 360.f / 2.f;
 	//pDesc.fSizeY = 149.f / 2.f;
 	//

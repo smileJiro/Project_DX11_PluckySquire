@@ -239,11 +239,11 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 #pragma region Sketch Space
 		else if (CSection_2D::SKSP == m_iPlayType) {
 
-			_uint iNormalType = static_cast<CSection_2D*>(pSection)->Get_Override_Normal();
+			m_iNormalType = static_cast<CSection_2D*>(pSection)->Get_Override_Normal();
 
 			// Sketch Space의 Normal Type에 따라 Arm 결정하기
 			/* 기존 Normal*/
-			if (ARM_NORMAL_TYPE::DEFAULT_NORMAL == iNormalType) {
+			if (ARM_NORMAL_TYPE::DEFAULT_NORMAL == m_iNormalType) {
 				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
 
 				m_eCurSpaceDir = (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)));
@@ -283,10 +283,10 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 				if (nullptr != pData)
 					Set_InitialData(pData);
 			}
-			else if (ARM_NORMAL_TYPE::CUSTOM_NORMAL == iNormalType){
+			else if (ARM_NORMAL_TYPE::CUSTOM_NORMAL == m_iNormalType){
 				Set_InitialData(m_strSectionName);
 			}
-			else if (ARM_NORMAL_TYPE::NORMAL_MAP == iNormalType) {	
+			else if (ARM_NORMAL_TYPE::NORMAL_MAP == m_iNormalType) {
 				auto& iter = m_NormalTargets.find(m_strSectionName);
 
 				if (iter == m_NormalTargets.end())
@@ -348,6 +348,8 @@ void CCamera_2D::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
 	m_isTargetChanged = true;
 
 	m_vStartPos = m_v2DPreTargetWorldPos;
+
+	m_strSectionName = _pTarget->Get_Include_Section_Name();
 }
 
 void CCamera_2D::Turn_AxisY(_float _fTimeDelta)
@@ -760,6 +762,12 @@ void CCamera_2D::Zipline(_float _fTimeDelta)
 
 		m_eCameraMode = PAUSE;
 		m_fTrackingTime.x = 0.5f;
+
+		_vector vLook = m_pControllerTransform->Get_State(CTransform::STATE_LOOK);
+		_vector vAt = m_pControllerTransform->Get_State(CTransform::STATE_POSITION) + (vLook * 20.f);
+
+		XMStoreFloat3(&m_v2DPreTargetWorldPos, XMVectorSetW(vAt, 1.f));
+
 		return;
 	}
 
@@ -832,6 +840,26 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 {
 	if (false == m_isInitialData)
 		return;
+
+#pragma region NORMAL_MAP Type일 경우
+	// 만약 Sksp의 Normal을 직접 구해야 하는 상황이라면? (머그)
+	/*CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
+	_uint iNormalType = static_cast<CSection_2D*>(pSection)->Get_Override_Normal();*/
+
+	if (ARM_NORMAL_TYPE::NORMAL_MAP == m_iNormalType) {
+		auto& iter = m_NormalTargets.find(m_strSectionName);
+
+		if (iter == m_NormalTargets.end())
+			return;
+
+		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+
+		_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
+		vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
+
+		Set_InitialData(vDir, 6.5f, XMVectorZero(), 5);
+	}
+#pragma endregion
 
 	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
 
@@ -936,11 +964,11 @@ void CCamera_2D::Find_TargetPos()
 				break;
 
 			// Sketch Space의 Normal Type에 따라 Arm 결정하기
-			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
-			_uint iNormalType = static_cast<CSection_2D*>(pSection)->Get_Override_Normal();
+			//CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
+			//_uint iNormalType = static_cast<CSection_2D*>(pSection)->Get_Override_Normal();
 
 			/* 기존 Normal*/
-			if (ARM_NORMAL_TYPE::DEFAULT_NORMAL == iNormalType) {
+			if (ARM_NORMAL_TYPE::DEFAULT_NORMAL == m_iNormalType) {
 				if (m_eCurSpaceDir != (NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(vTargetPos)))) {
 
 					switch (((_int)roundf(XMVectorGetW(vTargetPos)))) {
@@ -986,14 +1014,14 @@ void CCamera_2D::Find_TargetPos()
 			}
 
 			/* Custom Normal*/
-			else if (ARM_NORMAL_TYPE::CUSTOM_NORMAL == iNormalType) {
+			else if (ARM_NORMAL_TYPE::CUSTOM_NORMAL == m_iNormalType) {
 
 				
 
 			}
 
 			/* Normal Map */
-			else if (ARM_NORMAL_TYPE::NORMAL_MAP == iNormalType) {
+			else if (ARM_NORMAL_TYPE::NORMAL_MAP == m_iNormalType) {
 				auto& iter = m_NormalTargets.find(m_strSectionName);
 
 				if (iter == m_NormalTargets.end())

@@ -154,6 +154,11 @@ HRESULT CEvent_Manager::Execute(const EVENT& _tEvent)
 		Execute_Set_Kinematic(_tEvent);
 	}
 		break;
+	case Client::EVENT_TYPE::REGISTER_TRIGGER_EVENT:
+	{
+		Execute_Trigger_Event(_tEvent);
+	}
+	break;
 	case Client::EVENT_TYPE::TRIGGER_ENTER_EVENT:
 	{
 		Execute_Trigger_Enter(_tEvent);
@@ -829,6 +834,23 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent)
 
 	break;
 	}
+
+	return S_OK;
+}
+
+HRESULT CEvent_Manager::Execute_Trigger_Event(const EVENT& _tEvent)
+{
+	// Trigger 객체 없이 Event를 발동시킨다
+	// json에 저장된 Tag 이름으로 호출한다
+
+	_wstring* pStr = (_wstring*)_tEvent.Parameters[0];
+
+	if (nullptr == pStr)
+		return E_FAIL;
+
+	CTrigger_Manager::GetInstance()->Register_TriggerEvent(*pStr, 0);
+
+	Safe_Delete(pStr);
 
 	return S_OK;
 }

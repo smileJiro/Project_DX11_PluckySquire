@@ -5,6 +5,7 @@
 #include "BossSceneState.h"
 #include "BossTransitionState.h"
 #include "BossIdleState.h"
+#include "BossMoveState.h"
 #include "BossHomingBallState.h"
 #include "BossEnergyBallState.h"
 #include "BossYellowBallState.h"
@@ -101,6 +102,16 @@ HRESULT CFSM_Boss::Add_State(_uint _iState)
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
 		m_States.emplace((_uint)BOSS_STATE::IDLE, pState);
+		break;
+
+	case Client::BOSS_STATE::MOVE:
+		pState = CBossMoveState::Create(&Desc);
+
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)BOSS_STATE::MOVE, pState);
 		break;
 
 	case Client::BOSS_STATE::HOMINGBALL:

@@ -64,12 +64,13 @@ protected:
 
 	// intractable ÇÔ¼ö, 
 public :
-	virtual void			Interact(CPlayer* _pUser) {}
+	virtual void			Interact(CPlayer* _pUser) {};
 	virtual _bool			Is_Interactable(CPlayer* _pUser) { return false; }
 	virtual _float			Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) { return 0.f; }
 
 	virtual void			On_InteractionStart(CPlayer* _pPlayer)override {}
 	virtual void			On_InteractionEnd(CPlayer* _pPlayer) override {}
+	virtual void			On_InteractionCancel(CPlayer* _pPlayer) override {}
 
 	_bool					Is_FirstActive() { return m_isFirstActive; }
 	void					Set_FirstActive(_bool _bFirstActive);

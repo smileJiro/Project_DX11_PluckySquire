@@ -351,7 +351,8 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 			Boss_Desc.iCurLevelID = m_eLevelID;
 			Boss_Desc.eStartCoord = COORDINATE_3D;
 			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
+			//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
+			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
 				return;
@@ -1407,7 +1408,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
 	DoorRedDesc.strSectionTag = L"Chapter4_SKSP_05";
 	DoorRedDesc.strLayerTag = L"Layer_Monster_Door2";
-	DoorRedDesc.fTargetDiff = -1.f;
+	DoorRedDesc.fTargetDiff = 15.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
 		m_eLevelID, _strLayerTag, &DoorRedDesc)))

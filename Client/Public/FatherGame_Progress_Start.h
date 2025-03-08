@@ -18,7 +18,7 @@ public:
 		_uint	iNumMonsters = 0;
 		_wstring strMonsterPrototypeTag;
 	}FATHERGAME_PROGRESS_START_DESC;
-	enum PORTALLOCKER { LOCKER_ZETPACK, LOCKER_PARTHEAD, LOCKER_LAST };
+
 private:
 	CFatherGame_Progress_Start(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual ~CFatherGame_Progress_Start() = default;
@@ -36,8 +36,7 @@ private:
 	vector<CMonster*>		m_pMonsters;
 	_uint					m_iKillCount = 0;
 
-private:
-	vector<CPortalLocker*>	m_PortalLockers;
+
 
 public:
 	static CFatherGame_Progress_Start* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pArg);

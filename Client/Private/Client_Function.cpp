@@ -90,6 +90,10 @@ namespace Client
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
+	void Event_Setup_SimulationFiltering(_uint _MyGroup, _uint _OtherGroupMask)
+	{
+	}
+
 	void Event_ChangeMonsterState(MONSTER_STATE _eState, CFSM* _pFSM)
 	{
 		EVENT tEvent;
@@ -143,6 +147,17 @@ namespace Client
 		tEvent.Parameters[1] = (DWORD_PTR)_bValue;
 		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 
+	}
+
+	void Event_Register_Trigger(const _wstring& _szEventTag)
+	{
+		EVENT tEvent;
+		tEvent.eType = EVENT_TYPE::REGISTER_TRIGGER_EVENT;
+		tEvent.Parameters.resize(1);
+
+		tEvent.Parameters[0] = (DWORD_PTR)new _wstring(_szEventTag);
+
+		CEvent_Manager::GetInstance()->AddEvent(tEvent);
 	}
 
 	void Event_Trigger_Enter(_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag)

@@ -39,6 +39,7 @@ public :
 	{
 		C02P0910_LIGHTNING_BOLT_SPAWN,
 		C02P0910_MONSTER_SPAWN,
+
 		CHAPTER2_BOOKMAGIC,
 		CHAPTER2_INTRO,
 		CHAPTER2_HUMGRUMP,
@@ -47,9 +48,14 @@ public :
 		CHAPTER2_BETTLE_PAGE,		// 비틀 조우 직전의 책벌레
 		CHAPTER2_OPENBOOKEVENT,		// 2챕터 큰 책 앞에 도달한 책벌레
 		CHAPTER2_STORYSEQUENCE,		// 글로브 습득 후, 스케치스페이스 이벤트
+
 		CHAPTER4_RIDE_ZIPLINE,		// Zipline 타기
 		CHAPTER4_EVENT_FLAG,		// Zipline 들어가기 전 이벤트
 		CHAPTER4_STORYSEQUENCE,		// 글로브 습득 후, 스케치스페이스 이벤트
+
+		/* Father Game Start */
+		CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR,
+		/* Father Game End */
 
 		EVENT_EXECUTER_ACTION_TYPE_LAST
 	};
@@ -96,6 +102,10 @@ public:
 public:
 	// Event Trigger
 	void						On_End(_wstring _szEventTag);	// 끝나는 Action의 EventTag를 넘겨주고 현재 실행 중인 Action인지 확인(ex CutScene_1)
+	void						On_End(_int _iEventExecuterActionType) { m_isRunningEvents[_iEventExecuterActionType] = false; }
+	_bool						Is_EventExecuter_Running(_int _iEventExecuterActionType) { return m_isRunningEvents[_iEventExecuterActionType]; }
+
+	_int						Get_Running_EventExecuterAction(); // 현재 진행 중인 EventExecuterActionType이 뭔지 리턴한다, 없다면  -1을 리턴함
 
 	void						Register_TriggerEvent(_wstring _TriggerEventTag, _int _iTriggerID);
 
@@ -127,6 +137,9 @@ private:
 
 	_int												m_iTriggerID = {};
 	_bool												m_isEventEnd = { false };
+
+	_bool												m_isRunningEvents[EVENT_EXECUTER_ACTION_TYPE_LAST] = { false };
+
 private:
 	void						Register_Event_Handler(_uint _iTriggerType, CTriggerObject* _pTrigger, _uint _iCoordinateType);
 	void						Register_Trigger_Action();

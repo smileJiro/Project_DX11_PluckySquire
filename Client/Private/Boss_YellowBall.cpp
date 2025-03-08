@@ -37,11 +37,11 @@ HRESULT CBoss_YellowBall::Initialize(void* _pArg)
 
     /* Actor Desc 채울 때 쓴 데이터 할당해제 */
 
-    //for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
-    //{
-    //    Safe_Delete(pDesc->pActorDesc->ShapeDatas[i].pShapeDesc);
-    //}
-    //Safe_Delete(pDesc->pActorDesc);
+    for (_uint i = 0; i < pDesc->pActorDesc->ShapeDatas.size(); i++)
+    {
+        Safe_Delete(pDesc->pActorDesc->ShapeDatas[i].pShapeDesc);
+    }
+    Safe_Delete(pDesc->pActorDesc);
 
 	return S_OK;
 }

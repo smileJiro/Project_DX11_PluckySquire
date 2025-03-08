@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "FatherGame.h"
 #include "GameInstance.h"
-
+#include "PortalLocker.h"
+#include "Section_Manager.h"
+#include "Section_2D_PlayMap.h"
+#include "Portal_Default.h"
 /* Progress */
 #include "FatherGame_Progress_Start.h"
 
@@ -32,10 +35,57 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 
 	pProgressStart->Set_Active(true);
 	m_Progress.push_back(pProgressStart); // 여기가 원본임. AddRef x
-
-
 	m_ProgressClear.push_back(false);
 
+
+	/* 2. PortalDefender 3곳에 생성 */
+	m_PortalLockers.resize((size_t)LOCKER_LAST);
+
+
+
+	{/* PortalLocker ZetPack */
+		CGameObject* pGameObject = nullptr;
+		CPortalLocker::PORTALLOCKER_DESC PortalLockerDesc;
+		CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_SKSP_01")))->Get_Portal(0));
+		if (nullptr == pTargetPortal)
+			return E_FAIL;
+		PortalLockerDesc.pTargetPortal = pTargetPortal;
+		PortalLockerDesc.ePortalLockerType = CPortalLocker::TYPE_PURPLE;
+		PortalLockerDesc.strSectionKey = TEXT("Chapter6_SKSP_01");
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker"), LEVEL_CHAPTER_6, TEXT("Layer_PortalLocker"), &pGameObject, &PortalLockerDesc)))
+			return E_FAIL;
+
+		m_PortalLockers[LOCKER_ZETPACK] = static_cast<CPortalLocker*>(pGameObject);
+		Safe_AddRef(m_PortalLockers[LOCKER_ZETPACK]);
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(PortalLockerDesc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
+			return E_FAIL;
+	}/* PortalLocker ZetPack */
+
+
+	//{/* PortalLocker PartHead */
+	//	CGameObject* pGameObject = nullptr;
+	//	CPortalLocker::PORTALLOCKER_DESC PortalLockerDesc;
+	//	CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_SKSP_04")))->Get_Portal(0));
+	//	if (nullptr == pTargetPortal)
+	//		return E_FAIL;
+	//	PortalLockerDesc.pTargetPortal = pTargetPortal;
+	//	PortalLockerDesc.ePortalLockerType = CPortalLocker::TYPE_YELLOW;
+	//	PortalLockerDesc.strSectionKey = TEXT("Chapter6_SKSP_04");
+	//
+	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker"), LEVEL_CHAPTER_6, TEXT("Layer_PortalLocker"), &pGameObject, &PortalLockerDesc)))
+	//		return E_FAIL;
+	//
+	//	m_PortalLockers[LOCKER_PARTHEAD] = static_cast<CPortalLocker*>(pGameObject);
+	//	Safe_AddRef(m_PortalLockers[LOCKER_PARTHEAD]);
+	//
+	//	if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(PortalLockerDesc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
+	//		return E_FAIL;
+	//}/* PortalLocker PartHead */
+
+
+
+	// 1. 모성 
 
 	m_eGameState = GAME_PLAYING;
 
@@ -46,6 +96,11 @@ void CFatherGame::Update()
 {
 	if (GAME_PLAYING != m_eGameState)
 		return;
+
+	/* 참조 객체 Dead Check */
+
+
+
 
 	for (_uint i = 0; i < m_Progress.size(); ++i)
 	{
@@ -98,8 +153,42 @@ HRESULT CFatherGame::End_Game()
 	return S_OK;
 }
 
+void CFatherGame::DeadCheck_ReferenceObject()
+{
+	for (_uint i = 0; i < PORTALLOCKER::LOCKER_LAST; ++i)
+	{
+		if (true == m_PortalLockers[i]->Is_Dead())
+		{
+			Safe_Release(m_PortalLockers[i]);
+			m_PortalLockers[i] = nullptr;
+		}
+	}
+
+	
+}
+
+void CFatherGame::OpenPortalLocker(PORTALLOCKER _ePortalLockerIndex)
+{
+	if (PORTALLOCKER::LOCKER_LAST <= _ePortalLockerIndex)
+		return;
+
+	if (nullptr == m_PortalLockers[_ePortalLockerIndex])
+		return;
+
+	m_PortalLockers[_ePortalLockerIndex]->Open_Locker();
+}
+
 void CFatherGame::Free()
 {
+	if (false == m_ProgressClear[FATHER_PROGRESS_START])
+	{
+		Safe_Release(m_PortalLockers[LOCKER_ZETPACK]);
+	}
+	//if (false == m_ProgressClear[FATHER_PROGRESS_PARTHEAD])
+	//{
+	//	Safe_Release(m_PortalLockers[LOCKER_PARTHEAD]);
+	//}
+
 	if (GAME_END != m_eGameState)
 	{
 		/* 정상적으로 게임 엔드가 호출되지 않은 경우에만 릴리즈 */
