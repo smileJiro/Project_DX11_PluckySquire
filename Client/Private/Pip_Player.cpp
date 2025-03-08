@@ -48,12 +48,13 @@ HRESULT CPip_Player::Initialize(void* _pArg)
 		return E_FAIL;
 
 	static_cast<CModelObject*>(m_PartObjects[PIP_BODY])->Register_OnAnimEndCallBack(bind(&CPip_Player::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+
 	CPlayerData_Manager::GetInstance()->Register_Player(PLAYABLE_ID::PIP, this);
+
 
 	Switch_Animation_ByState();
 
 	m_pSneakGameManager = CMinigame_Sneak::GetInstance();
-
 	return S_OK;
 }
 
@@ -90,6 +91,20 @@ void CPip_Player::Start_Stage(_float2 _vPosition)
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(_vPosition.x, _vPosition.y, 0.f, 1.f));
 }
 
+void CPip_Player::Restart(_float2 _vStartPosition)
+{
+	m_iCurTileIndex = 0;
+	m_iTargetTileIndex = 0;
+
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(_vStartPosition.x, _vStartPosition.y, 0.f, 1.f));
+
+	m_eCurAction = IDLE;
+	m_eCurDirection = F_DIRECTION::RIGHT;
+	m_eInputDirection = F_DIRECTION::F_DIR_LAST;
+
+	Switch_Animation_ByState();
+}
+
 void CPip_Player::Action_Move(_int _iTileIndex, _float2 _vPosition)
 {
 	m_eCurAction = MOVE;
@@ -111,6 +126,16 @@ void CPip_Player::Action_None()
 
 	m_eCurAction = IDLE;
 	m_eCurDirection = m_eInputDirection;
+	m_eInputDirection = F_DIRECTION::F_DIR_LAST;
+
+	Switch_Animation_ByState();
+}
+
+void CPip_Player::Action_Flip()
+{
+	m_eCurAction = FLIP;
+	if (F_DIRECTION::F_DIR_LAST != m_eInputDirection)
+		m_eCurDirection = m_eInputDirection;
 	m_eInputDirection = F_DIRECTION::F_DIR_LAST;
 
 	Switch_Animation_ByState();
@@ -190,6 +215,8 @@ void CPip_Player::Do_Action(_float _fTimeDelta)
 		break;
 	case CAUGHT:
 		break;
+	case FLIP:
+		break;
 	}
 }
 
@@ -235,11 +262,17 @@ void CPip_Player::Dir_Move(_float _fTimeDelta)
 
 void CPip_Player::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
+	if (FLIP == m_eCurAction)
+	{
+		m_eCurAction = IDLE;
+	}
+
+	Switch_Animation_ByState();
 }
 
 void CPip_Player::Key_Input()
 {		
-	if (m_pSneakGameManager->Is_InputTime() &&  F_DIRECTION::F_DIR_LAST != m_eInputDirection || MOVE == m_eCurAction)
+	if (m_pSneakGameManager->Is_InputTime()/* &&  F_DIRECTION::F_DIR_LAST != m_eInputDirection || MOVE == m_eCurAction*/)
 		return;
 
 	if (KEY_DOWN(KEY::W))
@@ -287,7 +320,16 @@ HRESULT CPip_Player::Ready_PartObjects()
 	m_pBody->Set_AnimationLoop(COORDINATE_2D, IDLE_DOWN, true);
 	m_pBody->Set_AnimationLoop(COORDINATE_2D, IDLE_UP, true);
 	m_pBody->Set_AnimationLoop(COORDINATE_2D, DANCE_DOWN, true);
-
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, MOVE_DOWN, false);
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, MOVE_RIGHT, false);
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, MOVE_UP, false);
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, ANIM_VICTORY, false);
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, FLIP_DOWN, false);
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, FLIP_RIGHT, false);
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, FLIP_UP, false);
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, CAUGHT_DOWN, false);
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, CAUGHT_RIGHT, false);
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, CAUGHT_UP, false);
 
 	return S_OK;
 }

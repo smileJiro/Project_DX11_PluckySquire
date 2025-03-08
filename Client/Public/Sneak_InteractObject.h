@@ -21,8 +21,9 @@ public:
 		_int _iTileIndex = { -1 };
 		_bool _isBlocked = { false };
 		_bool _isBlockChangable = { false };
-		_bool _isPlayerInteractable = { false };
+		_bool _isInteractable = { false };
 		_bool _isCollisionInteractable = { false };
+		F_DIRECTION _eBlockDirection = F_DIRECTION::F_DIR_LAST;
 	}SNEAK_INTERACTOBJECT_DESC;
 
 private:
@@ -38,15 +39,23 @@ public:
 	void	Register_Tiles(class CSneak_Tile* _pTile);
 	void	Register_Objects(class CSneak_InteractObject* _pObject);
 	void	Interact();
+	void	Restart();
 
+	_bool	Is_Interactable() const { return m_isInteractable; }
 	_bool	Is_CollisionInteractable() const { return m_isCollisionInteractable; }
+	_bool	Is_Blocked() const { return m_isBlocked; }
+	F_DIRECTION Get_BlockDirection() const { return m_eBlockDirection; }
 	_int	Get_TileIndex() const { return m_iTileIndex; }
+
 private:
+	
+	_bool	m_isInteractable = { false };
+	_bool	m_isCollisionInteractable = { false };
 	_bool	m_isFlipped = { false };
+	
 	_bool	m_isBlocked = { false };
 	_bool	m_isBlockChangable = { false };
-	_bool	m_isPlayerInteractable = { false };
-	_bool	m_isCollisionInteractable = { false };
+	F_DIRECTION m_eBlockDirection = { F_DIRECTION::F_DIR_LAST };
 
 	_int	m_iTileIndex = { -1 };
 	

@@ -28,6 +28,7 @@ public:
 
 public:
 	void	Reach_Destination(_int _iPreIndex, _int _iDestIndex);
+	void	Restart_Game();
 
 public:
 	HRESULT Register_Tiles(vector<vector<CSneak_Tile*>>& _Tiles);
@@ -35,14 +36,19 @@ public:
 	HRESULT Register_Player(class CPip_Player* _pPlayer);
 	HRESULT Register_Interacts(vector<vector<CSneak_InteractObject*>> _Interacts);
 
-	_bool	Is_InputTime() { return (0 <= m_iNowStage && 0.35f <= m_fAccTime); }
-	_float2 Get_TilePosition(_int _iStage, _int _iIndex);
-	class CSneak_Tile* Get_Tile(_int _iStage, _int _iIndex);
+public:
+	_bool							Is_InputTime() { return (0 <= m_iNowStage && 0.4f <= m_fAccTime); }
+	_float2							Get_TilePosition(_int _iStage, _int _iIndex);
+	class CSneak_Tile*				Get_Tile(_int _iStage, _int _iIndex);
+	class CSneak_InteractObject*	Get_InteractObject(_int _iStage, _int _iIndex);
+
+
 
 private:
+	_bool	m_isStartGame = { false };
+	_bool	m_isRestartGame = { false };
 	_int	m_iNowStage = -1;
 	_int	m_iFlipTime = 0;
-	_bool	m_isStartGame = { false };
 	_float	m_fAccTime = 0.f;
 
 private:
@@ -58,7 +64,10 @@ private:
 
 	void	Before_Action();
 	void	Action();
+	void	Action_Player();
 
+	_bool	Is_Moveable(_int _iTileIndex);
+	_bool	Is_Blocked(_int _iCurIndex, _int _iNextIndex, F_DIRECTION _eMoveDir, _Out_ class CSneak_InteractObject** _ppOutObject);
 public:
 	virtual void Free() override;
 };

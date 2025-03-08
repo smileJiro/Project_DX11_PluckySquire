@@ -251,7 +251,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 						InteractDesc.strModelPrototypeTag_2D = TEXT("Sneak_PressurePlate");
 						InteractDesc._isBlocked = false;
 						InteractDesc._isBlockChangable = false;
-						InteractDesc._isPlayerInteractable = false;
+						InteractDesc._isInteractable = false;
 						InteractDesc._isCollisionInteractable = true;
 
 						InteractDesc._iInitAnim = 2;
@@ -259,6 +259,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 						InteractDesc._iFlipAnim1End = 1;
 						InteractDesc._iFlipAnim2 = 3;
 						InteractDesc._iFlipAnim2End = 2;
+						
 					}
 					// 스위치
 					else if (CSneak_InteractObject::SWITCH == eType)
@@ -266,18 +267,20 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 						InteractDesc.strModelPrototypeTag_2D = TEXT("Sneak_Switch");
 						InteractDesc._isBlocked = true;
 						InteractDesc._isBlockChangable = false;
-						InteractDesc._isPlayerInteractable = true;
-						InteractDesc._isCollisionInteractable = true;
+						InteractDesc._eBlockDirection = F_DIRECTION::F_DIR_LAST;
+						InteractDesc._isInteractable = true;
+						InteractDesc._isCollisionInteractable = false;
 
 						InteractDesc._iInitAnim = 2;
 						InteractDesc._iFlipAnim1 = 1;
 						InteractDesc._iFlipAnim1End = 3;
 						InteractDesc._iFlipAnim2 = 0;
-						InteractDesc._iFlipAnim2End = 1;
+						InteractDesc._iFlipAnim2End = 2;
 					}
 					// TODO: 더 추가
 
 				}
+
 
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakInteractObject"), LEVEL_CHAPTER_8
 					, TEXT("Layer_Sneak_Interacts"), reinterpret_cast<CGameObject**>(&pInteractOut), &InteractDesc)))

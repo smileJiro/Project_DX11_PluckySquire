@@ -26,8 +26,9 @@ HRESULT CSneak_InteractObject::Initialize(void* _pArg)
 	m_iTileIndex = pDesc->_iTileIndex;
 	m_isBlocked = pDesc->_isBlocked;
 	m_isBlockChangable = pDesc->_isBlockChangable;
-	m_isPlayerInteractable = pDesc->_isPlayerInteractable;
+	m_isInteractable = pDesc->_isInteractable;
 	m_isCollisionInteractable = pDesc->_isCollisionInteractable;
+	m_eBlockDirection = pDesc->_eBlockDirection;
 
 	return S_OK;
 }
@@ -59,6 +60,15 @@ void CSneak_InteractObject::Interact()
 		iter->Interact();
 	for (auto& iter : m_pTiles)
 		iter->Interact();
+}
+
+void CSneak_InteractObject::Restart()
+{
+	if (m_isFlipped)
+	{
+		m_isFlipped = false;
+		Flip();
+	}
 }
 
 

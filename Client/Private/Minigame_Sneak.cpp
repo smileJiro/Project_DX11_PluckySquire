@@ -48,30 +48,45 @@ void CMinigame_Sneak::Update(_float _fTimeDelta)
 	if (false == m_isStartGame)
 		return;
 
+	if (KEY_PRESSING(KEY::CTRL) && KEY_DOWN(KEY::R))
+	{
+		Restart_Game();
+	}
+
 	m_fAccTime += _fTimeDelta;
 
-	// 처음 시작
-	if (-1 == m_iNowStage && 1.5f <= m_fAccTime)
+	if (m_isRestartGame)
 	{
-		m_iNowStage = 0;
-		m_fAccTime = 0.f;
-		Start_Stage();
-	}
-	else if (0 <= m_iNowStage)
-	{
-#ifdef _DEBUG
-		if (0.49f <= m_fAccTime)
-#else
-		if (0.495f <= m_fAccTime)
-#endif
+		if (1.f <= m_fAccTime)
 		{
-			// 행동
-			Before_Action();
-			Action();
-
-			m_fAccTime = 0.5f - m_fAccTime;
+			m_isRestartGame = false;
+			
+			m_fAccTime = 0.f;
 		}
 	}
+	else
+	{
+		// 처음 시작
+		if (-1 == m_iNowStage && 1.5f <= m_fAccTime)
+		{
+			m_iNowStage = 0;
+			m_fAccTime = 0.f;
+			Start_Stage();
+		}
+		else if (0 <= m_iNowStage)
+		{
+			if (0.495f <= m_fAccTime)
+			{
+				// 행동
+				Before_Action();
+				Action();
+
+				m_fAccTime = 0.5f - m_fAccTime;
+			}
+		}
+	}
+
+	
 }
 
 void CMinigame_Sneak::Reach_Destination(_int _iPreIndex, _int _iDestIndex)
@@ -92,7 +107,37 @@ void CMinigame_Sneak::Reach_Destination(_int _iPreIndex, _int _iDestIndex)
 		}
 	}
 
-	// TODO : Is Interact
+	// TODO : Is Interact -> After Action
+}
+
+void CMinigame_Sneak::Restart_Game()
+{
+	if (m_iNowStage < m_StageTiles.size())
+	{
+		for (auto& iter : m_StageTiles[m_iNowStage])
+		{
+			iter->Restart();
+		}
+	}
+
+	if (m_iNowStage < m_StageInteracts.size())
+	{
+		for (auto& iter : m_StageInteracts[m_iNowStage])
+		{
+			iter->Restart();
+		}
+
+		if (m_pPlayer)
+		{
+			_float2 vStartPosition = Get_TilePosition(m_iNowStage, 0);
+			m_pPlayer->Restart(vStartPosition);
+		}
+	}
+
+	m_isRestartGame = true;
+	m_fAccTime = 0.f;
+
+	// TODO: End BGM, Start SFX, Fade inout .
 }
 
 HRESULT CMinigame_Sneak::Register_Tiles(vector<vector<CSneak_Tile*>>& _Tiles)
@@ -166,7 +211,7 @@ HRESULT CMinigame_Sneak::Register_Interacts(vector<vector<CSneak_InteractObject*
 
 _float2 CMinigame_Sneak::Get_TilePosition(_int _iStage, _int _iIndex)
 {
-	if (_iStage >= m_StageTiles.size())
+	if (0 > _iStage || _iStage >= m_StageTiles.size())
 		return _float2(0.f, 0.f);
 	if (_iIndex >= m_StageTiles[_iStage].size())
 		return _float2(0.f, 0.f);
@@ -176,12 +221,26 @@ _float2 CMinigame_Sneak::Get_TilePosition(_int _iStage, _int _iIndex)
 
 CSneak_Tile* CMinigame_Sneak::Get_Tile(_int _iStage, _int _iIndex)
 {
-	if (_iStage >= m_StageTiles.size())
+	if (0 > _iStage || _iStage >= m_StageTiles.size())
 		return nullptr;
 	if (_iIndex >= m_StageTiles[_iStage].size())
 		return nullptr;
 
 	return m_StageTiles[_iStage][_iIndex];
+}
+
+CSneak_InteractObject* CMinigame_Sneak::Get_InteractObject(_int _iStage, _int _iIndex)
+{
+	if (0 > _iStage || _iStage >= m_StageInteracts.size())
+		return nullptr;
+
+	for (auto& iter : m_StageInteracts[_iStage])
+	{
+		if (_iIndex == iter->Get_TileIndex())
+			return iter;
+	}
+
+	return nullptr;
 }
 
 void CMinigame_Sneak::Start_Stage()
@@ -223,7 +282,6 @@ void CMinigame_Sneak::Action()
 {
 	// 맵 오브젝트들 움직임.
 	++m_iFlipTime;
-
 	if (2 <= m_iFlipTime && m_StageObjects.size() > m_iNowStage)
 	{
 		for (auto& iter : m_StageObjects[m_iNowStage])
@@ -236,37 +294,171 @@ void CMinigame_Sneak::Action()
 	// 플레이어 움직임.
 	if (nullptr != m_pPlayer)
 	{
-		F_DIRECTION eDir = m_pPlayer->Get_InputDirection();
-		if (F_DIRECTION::F_DIR_LAST == eDir)
-			return;
+		Action_Player();
+	}
+}
 
-		_int iPlayerTile = m_pPlayer->Get_CurTile();
+void CMinigame_Sneak::Action_Player()
+{
+	F_DIRECTION eDir = m_pPlayer->Get_InputDirection();
+	if (F_DIRECTION::F_DIR_LAST == eDir)
+		return;
 
-		if (m_StageTiles.size() <= m_iNowStage)
-			return;
-		if (iPlayerTile >= m_StageTiles[m_iNowStage].size())
-			return;
+	_int iPlayerTile = m_pPlayer->Get_CurTile();
 
-		_int iNextTile = m_StageTiles[m_iNowStage][iPlayerTile]->Get_AdjacentTiles(eDir);
+	if (m_StageTiles.size() <= m_iNowStage)
+		return;
+	if (iPlayerTile >= m_StageTiles[m_iNowStage].size())
+		return;
 
+	_int iNextTile = m_StageTiles[m_iNowStage][iPlayerTile]->Get_AdjacentTiles(eDir);
 
+	// 이동 X
+	if (0 > iNextTile || false == Is_Moveable(iNextTile))
+	{
+		m_pPlayer->Action_None();
+	}
+	// 일단 이동 가능한 타일이 존재, Block이 있는지 확인하고 이동하기.
+	else
+	{
+		CSneak_InteractObject* pOutObject = { nullptr };
+		// Block 상태 확인
+		_bool isBlocked = Is_Blocked(iPlayerTile, iNextTile, eDir, &pOutObject);
 
-		// 이동 X
-		if (0 > iNextTile)
+		// 이동 불가 .
+		if (isBlocked)
 		{
-			m_pPlayer->Action_None();
+			if (nullptr != pOutObject)
+			{
+				if (pOutObject->Is_Interactable())
+				{
+					pOutObject->Interact();
+					m_pPlayer->Action_Flip();
+				}
+			}
 		}
-
-		// 이동 O
+		// 이동 가능 !
 		else
 		{
 			_float2 vTargetPosition = m_StageTiles[m_iNowStage][iNextTile]->Get_TilePosition();
-
 			m_pPlayer->Action_Move(iNextTile, vTargetPosition);
 		}
-
 	}
+
+	//// Player Interact
+	//if (isPlayerInteract)
+	//	m_pPlayer->Action_Flip();
+
 }
+
+_bool CMinigame_Sneak::Is_Moveable(_int _iTileIndex)
+{
+	if (0 > m_iNowStage || m_StageTiles.size() <= m_iNowStage)
+		return false;
+	if (0 > _iTileIndex || m_StageTiles[m_iNowStage].size() <= _iTileIndex)
+		return false;
+
+	return (m_StageTiles[m_iNowStage][_iTileIndex]->Get_TileState() == CSneak_Tile::OPEN) ? false : true;
+}
+
+_bool CMinigame_Sneak::Is_Blocked(_int _iCurIndex, _int _iNextIndex, F_DIRECTION _eMoveDir, _Out_ CSneak_InteractObject** _ppOutObject)
+{
+	_bool isBlocked = { false };
+	F_DIRECTION eBlockDir = F_DIRECTION::F_DIR_LAST;
+
+	// Interact Object가 있나?
+	CSneak_InteractObject* pInteract = Get_InteractObject(m_iNowStage, _iNextIndex);
+
+	if (nullptr != pInteract)
+	{
+		// Block 확인!
+		if (pInteract->Is_Blocked())
+		{
+			isBlocked = true;
+			eBlockDir = pInteract->Get_BlockDirection();
+
+			// 최종 Block 확인
+			if (F_DIRECTION::F_DIR_LAST == eBlockDir)
+			{
+				isBlocked = true;
+			}
+			else if (F_DIRECTION::LEFT == eBlockDir)
+			{
+				if (F_DIRECTION::RIGHT == _eMoveDir)
+					isBlocked = true;
+				else
+					isBlocked = false;
+			}
+			else if (F_DIRECTION::RIGHT == eBlockDir)
+			{
+				if (F_DIRECTION::LEFT == _eMoveDir)
+					isBlocked = true;
+				else
+					isBlocked = false;
+			}
+			else if (F_DIRECTION::UP == eBlockDir)
+			{
+				if (F_DIRECTION::DOWN == _eMoveDir)
+					isBlocked = true;
+				else
+					isBlocked = false;
+			}
+			else if (F_DIRECTION::DOWN == eBlockDir)
+			{
+				if (F_DIRECTION::UP == _eMoveDir)
+					isBlocked = true;
+				else
+					isBlocked = false;
+			}
+
+			if (isBlocked)
+			{
+				if (nullptr != _ppOutObject)
+					*_ppOutObject = pInteract;
+				return isBlocked;
+			}
+		}
+	}
+
+	// 현재 Tile에 Block 있나? 
+	pInteract = nullptr;
+	pInteract = Get_InteractObject(m_iNowStage, _iCurIndex);
+
+	if (nullptr != pInteract)
+	{
+		// Block 확인!
+		if (pInteract->Is_Blocked())
+		{
+			isBlocked = true;
+			eBlockDir = pInteract->Get_BlockDirection();
+
+			// 최종 Block 확인
+			if (F_DIRECTION::F_DIR_LAST == eBlockDir)
+			{
+				isBlocked = true;
+			}
+			else if (eBlockDir == _eMoveDir)
+			{
+				isBlocked = true;
+			}
+			else
+			{
+				isBlocked = false;
+			}
+
+			if (isBlocked)
+			{
+				if (nullptr != _ppOutObject)
+					*_ppOutObject = pInteract;
+				return isBlocked;
+			}
+		}
+	}
+
+	return false;
+}
+
+
 
 void CMinigame_Sneak::Free()
 {

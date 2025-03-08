@@ -59,6 +59,15 @@ void CSneak_Tile::Interact()
 	Flip();
 }
 
+void CSneak_Tile::Restart()
+{
+	if (OPEN == m_eCurState)
+	{
+		m_eCurState = CLOSE;
+		Flip();
+	}
+}
+
 
 void CSneak_Tile::Free()
 {

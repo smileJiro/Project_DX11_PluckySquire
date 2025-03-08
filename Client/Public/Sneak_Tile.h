@@ -40,7 +40,7 @@ public:
 	TILE_STATE	 Get_TileState() const { return m_eCurState; }
 
 	void		 Interact();
-
+	void		 Restart();
 
 protected:
 	SNEAK_TILE_TYPE			m_eTileType = { DEFAULT };

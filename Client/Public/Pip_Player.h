@@ -45,9 +45,12 @@ public:
 
 public:
 	void Start_Stage(_float2 _vPosition);
+	void Restart(_float2 _vStartPosition);
 
 	void Action_Move(_int _iTileIndex, _float2 _vPosition);
 	void Action_None();
+	void Action_Flip();
+
 	void Switch_Animation_ByState();
 public:
 	void Do_Action(_float _fTimeDelta);

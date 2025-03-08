@@ -613,9 +613,6 @@
     <Filter Include="02.GameObjects\Portal\PortalLocker">
       <UniqueIdentifier>{bea16204-1d70-4911-927d-ade5f27f70be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Player">
-      <UniqueIdentifier>{ae520257-cbad-4889-8d1c-db59ed2b3cd0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Sneak_MapObject">
       <UniqueIdentifier>{5d2fcc59-f588-44b9-b1f3-0a1b44151b6e}</UniqueIdentifier>
     </Filter>
@@ -624,6 +621,15 @@
     </Filter>
     <Filter Include="02.GameObjects\MiniGameObjects\Sneak\FlipObject">
       <UniqueIdentifier>{4b5e4b32-7d42-4fc8-bada-df264d8a9263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Character">
+      <UniqueIdentifier>{f3cb8e3c-cd8f-46d8-b483-0c89aeb93a28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Character\Player">
+      <UniqueIdentifier>{ae520257-cbad-4889-8d1c-db59ed2b3cd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Character\Troop">
+      <UniqueIdentifier>{3bdb0bbd-3be0-47d0-973e-b80870ab764a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1551,7 +1557,7 @@
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_MapObject</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Pip_Player.h">
-      <Filter>02.GameObjects\MiniGameObjects\Sneak\Player</Filter>
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Sneak_InteractObject.h">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_InteractObject</Filter>
@@ -1561,6 +1567,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Sneak_FlipObject.h">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\FlipObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_Troop.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Troop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2471,11 +2480,11 @@
     <ClCompile Include="..\Private\CandleGame.cpp">
       <Filter>05.MiniGames\CandleGame</Filter>
     </ClCompile>
-     <ClCompile Include="..\private\Sneak_MapObject.cpp">
+    <ClCompile Include="..\private\Sneak_MapObject.cpp">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_MapObject</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Pip_Player.cpp">
-      <Filter>02.GameObjects\MiniGameObjects\Sneak\Player</Filter>
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Sneak_InteractObject.cpp">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_InteractObject</Filter>
@@ -2485,6 +2494,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Sneak_FlipObject.cpp">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\FlipObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_Troop.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Troop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
