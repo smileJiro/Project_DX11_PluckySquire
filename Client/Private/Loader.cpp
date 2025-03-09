@@ -40,6 +40,9 @@
 #include "ArrowForStamp.h"
 #include "ESC_HeartPoint.h"
 #include "UI_Interaction_Book.h"
+#include "ShopPanel_BG_New.h"
+#include "ShopItemBG_New.h"
+#include "ShopPanel_YesNo_New.h"
 #include "ShopPanel_BG.h"
 #include "Logo_BG.h"
 #include "ShopItemBG.h"
@@ -1441,6 +1444,7 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		/* Chapter 6 FatherGame */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Child"),
 			CZetPack_Child::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 		
 		/* Chapter 6 Npc */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_StoreNPC"),
@@ -2112,18 +2116,32 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 		CUI_Interaction_Book::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ParentShopPannel"),
-		CShopPanel::Create(m_pDevice, m_pContext))))
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ParentShopPannel"),
+	//	CShopPanel::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannel"),
+		CShopPanel_New::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelBG"),
-		CShopPanel_BG::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelYesNo"),
-		CShopPanel_YesNo::Create(m_pDevice, m_pContext))))
+		CShopPanel_BG_New::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopItem"),
-		CShopItemBG::Create(m_pDevice, m_pContext))))
+		CShopItemBG_New::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelYesNo"),
+		CShopPanel_YesNo_New::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelBG"),
+	//	CShopPanel_BG::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelYesNo"),
+	//	CShopPanel_YesNo::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopItem"),
+	//	CShopItemBG::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"),
 		CInteraction_Heart::Create(m_pDevice, m_pContext))))
 		return E_FAIL;

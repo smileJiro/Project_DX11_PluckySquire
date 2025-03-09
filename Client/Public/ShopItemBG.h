@@ -31,6 +31,7 @@ public:
 	virtual void			Child_LateUpdate(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
+
 public:
 	void					Set_Pos(_float2 _vPos) { m_vShopBGPos = _vPos; }
 

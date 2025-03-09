@@ -768,17 +768,19 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pInteractionE));
 
 
+
+
 #pragma endregion InterAction UI
 
-	_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
+	//_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
+	//
+	//if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
+	//{
+	//	
+	//}
 
-	if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
-	{
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ParentShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
-			return E_FAIL;
-	}
-
-
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
 #pragma region SettingPanel UI
 
 	_uint SettingPanelUICount = CUI::SETTINGPANEL::SETTING_END;
@@ -1082,9 +1084,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
-
-
-	return S_OK;
 
 
 	//NPCDesc.iCurLevelID = m_eLevelID;

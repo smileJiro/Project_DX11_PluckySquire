@@ -102,34 +102,7 @@ void CUI_Manager::pushBack_ShopItem(vector<CShopItemBG*> _ItemBGs)
 		Safe_AddRef(pShopItemBG);
 	}
 }
-void CUI_Manager::Set_ChooseItem(_int _iIndex)
-{
-	if (-1 == _iIndex)
-	{
-		return;
-	}
-	
-	if (m_iPreIndex == _iIndex && 1 != m_ShopItems.size())
-	{
-		return;
-	}
-	else if (m_iPreIndex != _iIndex || 1 == m_ShopItems.size())
-	{
-		for (_int i = 0; i < m_ShopItems.size(); ++i)
-		{
-			for (_int j = 0; j < m_ShopItems.size(); ++j)
-			{
-				m_ShopItems[i][j]->Set_isChooseItem(false);
-			}
-		}
-	
-		for (_int i = 0; i <= _iIndex; ++i)
-		{
-			m_ShopItems[_iIndex][i]->Set_isChooseItem(true);
-		}
-		m_iPreIndex = _iIndex;
-	}
-}
+
 
 vector<CDialog::DialogData> CUI_Manager::Get_Dialogue(const _wstring& _id)
 {
