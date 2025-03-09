@@ -13,11 +13,13 @@ CShop_Manager::CShop_Manager()
 HRESULT CShop_Manager::Create_ShopPanel(_int _iChangeLevel, wstring _strLayerTag)
 {
 
-	if (LEVEL_CHAPTER_2 != _iChangeLevel &&  LEVEL_CHAPTER_4 != _iChangeLevel && LEVEL_CHAPTER_6 != _iChangeLevel &&  LEVEL_CHAPTER_8 != _iChangeLevel)
-	{
-		return E_FAIL;
-	}
+	//if (LEVEL_CHAPTER_2 != _iChangeLevel &&  LEVEL_CHAPTER_4 != _iChangeLevel && LEVEL_CHAPTER_6 != _iChangeLevel &&  LEVEL_CHAPTER_8 != _iChangeLevel)
+	//{
+	//	return E_FAIL;
+	//}
 
+	if (LEVEL_CHAPTER_6 != _iChangeLevel)
+		return S_OK;
 
 	CUI::UIOBJDESC pDesc = {};
 	CUI::UIOBJDESC pShopDescs[CUI::SHOPPANEL::SHOP_END] = {};
