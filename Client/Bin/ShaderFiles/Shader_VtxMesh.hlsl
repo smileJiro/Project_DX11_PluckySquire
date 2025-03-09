@@ -140,6 +140,15 @@ VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
         vNDCCoord.xy = vUV.xy;
     }
     
+    if (g_iFlag == RT_RENDER_ROTATE)
+    {
+        float temp = vNDCCoord.x;
+        vNDCCoord.x = 1.f - vNDCCoord.y;
+        vNDCCoord.y = temp;
+    }
+
+    
+    
     vNDCCoord = float4(vNDCCoord.xy * 2.0f - 1.0f, 0.0f, 1.0f);
     vNDCCoord.y *= -1.0f;
     Out.vPosition = vNDCCoord;
@@ -220,7 +229,7 @@ PS_OUT PS_MAIN(PS_IN In)
         vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
     }
     
-   if (vAlbedo.a < 0.01f)
+   if (vAlbedo.a < 0.1f)
        discard;
     
     Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;

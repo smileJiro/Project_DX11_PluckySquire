@@ -11,8 +11,11 @@ class CGameInstance;
 END
 
 BEGIN(Client)
+class CSimple_UI;
 class CFatherGame_Progress;
 class CPortalLocker;
+class CZetPack_Child;
+class CMug_Alien;
 class CFatherGame final : public CBase
 {
 	DECLARE_SINGLETON(CFatherGame)
@@ -37,10 +40,13 @@ private:
 public:
 	HRESULT								Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext); // 게임 시작 알림.
 	void								Update();
+
 private:
 	HRESULT								End_Game();
 	void								DeadCheck_ReferenceObject();
+		
 public:
+	void								Start_Progress(FATHER_PROGRESS _eStartProgress);
 	void								OpenPortalLocker(PORTALLOCKER _ePortalLockerIndex);
 
 public:
@@ -50,7 +56,12 @@ public:
 			return nullptr;
 		return m_PortalLockers[_ePortalLockerIndex];
 	}
+	CZetPack_Child* Get_ZetPack_Child() { return m_pZetPack_Child; }
 	// Set
+	void			Set_ZetPack_Child(CZetPack_Child* _pZetPack_Child);
+	void			Set_Mug_Alien(CMug_Alien* _pZetPack_Child);
+
+
 private:
 	CGameInstance*						m_pGameInstance = nullptr;
 	ID3D11Device*						m_pDevice = nullptr;
@@ -64,6 +75,20 @@ private: /* FatherGame Condition */
 
 private: /* PortalLocker */
 	vector<CPortalLocker*>				m_PortalLockers;
+
+private: /* ZetPack_Child */
+	CZetPack_Child*						m_pZetPack_Child = nullptr;
+
+private: /* Mug_Alien */
+	CMug_Alien*							m_pMugAlien = nullptr;
+
+public:
+	void								Set_Active_FatherParts_UIs(_bool _isActive);
+	void								Pickup_FatherPart(FATHER_PART _eFatherPart);
+
+private: /* FatherParts_UI */
+	vector<CSimple_UI*>					m_FatherParts_UIs;
+	vector<_bool>						m_FatherPartsCondition;
 private: /* FatherGame UI */
 	
 public:

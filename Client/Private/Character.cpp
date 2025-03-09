@@ -198,7 +198,16 @@ void CCharacter::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, c
 }
 
 void CCharacter::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
-{
+{  
+}
+
+void CCharacter::Enter_Section(const _wstring _strIncludeSectionName)
+{ 
+    auto Section = SECTION_MGR->Find_Section(_strIncludeSectionName);
+    if (nullptr != Section && static_cast<CSection_2D*>(Section)->Is_Scrolling())
+        Set_ScrollingMode(true);
+
+    __super::Enter_Section(_strIncludeSectionName);
 }
 
 _bool CCharacter::Is_OnGround()
@@ -358,6 +367,11 @@ void CCharacter::KnockBack(_fvector _vForce)
             m_isKnockBack = true;
         }
     }
+}
+
+void CCharacter::Set_ScrollingMode(_bool _bScrollingMode)
+{
+    m_bScrollingMode = _bScrollingMode;
 }
 
 _float CCharacter::Measure_FloorDistance()

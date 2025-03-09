@@ -342,7 +342,6 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 	{
 		if (KEY_DOWN(KEY::NUM5))
 		{
-			Event_ChangeMapObject(m_eLevelID, L"Chapter_Boss.mchc", L"Layer_MapObject");
 
 			CGameObject* pBoss = nullptr; 
 			CButterGrump::MONSTER_DESC Boss_Desc;
@@ -359,7 +358,25 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			CCameraPivot* pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_CameraPivot"), 0));
 			pPivot->Set_MainTarget(pBoss);
 			pPivot->Set_Active(true);
-			CCamera_Manager::GetInstance()->Change_CameraTarget(pPivot);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pPivot, 1.f);
+
+
+			Event_ChangeMapObject(m_eLevelID, L"Chapter_Boss.mchc", L"Layer_MapObject");
+
+
+			//m_pGameInstance->Get_ThreadPool()->EnqueueJob([]()
+			//	{
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_01");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_02");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_03");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_04");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_05");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_06");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_07");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_08");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_09");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_10");
+				//});
 		}
 	}
 
@@ -445,6 +462,15 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 	Desc.isOverride = true;
 	Desc.tTransform3DDesc.vInitialPosition = _float3(-104.5f, 59.9f, 21.f);
 	Desc.vHalfExtents = { 20.f, 5.f, 10.f };
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+	
+	Desc = {};
+	Desc.isOverride = true;
+	Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 17.25f, 47.f);
+	Desc.vHalfExtents = { 60.f, 1.f, 12.f };
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
 		m_eLevelID, _strLayerTag, &Desc)))
@@ -739,13 +765,13 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 #pragma endregion InterAction UI
 
-	_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
-
-	if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
-	{
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ParentShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
-			return E_FAIL;
-	}
+	//_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
+	//
+	//if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
+	//{
+	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ParentShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	//		return E_FAIL;
+	//}
 
 
 #pragma region SettingPanel UI

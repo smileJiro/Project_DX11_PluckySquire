@@ -244,8 +244,6 @@ HRESULT CPlayer::Initialize(void* _pArg)
         return E_FAIL;
  
 
-
-
     Set_PlatformerMode(false);
 
 	m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD,false);
@@ -500,13 +498,6 @@ HRESULT CPlayer::Ready_PartObjects()
 
 void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 {
-    // TODO ::0308 스크롤링모드 샘플코드. 박예슬 
-    auto Section =     SECTION_MGR->Find_Section(_strIncludeSectionName);
-    if (nullptr != Section && static_cast<CSection_2D*>(Section)->Is_Scrolling())
-        Set_ScrollingMode(true);
-    // END
-    
-    
     /* 태웅 : */
     __super::Enter_Section(_strIncludeSectionName);
     for (auto& i : m_PartObjects)
@@ -622,7 +613,7 @@ HRESULT CPlayer::Ready_Components()
 
 
 	m_p2DColliderComs.resize(3);
-   /* Test 2D Collider */
+   //몸통 콜라이더
    CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
    CircleDesc.pOwner = this;
    CircleDesc.fRadius = 20.f;
@@ -638,6 +629,7 @@ HRESULT CPlayer::Ready_Components()
    m_pBody2DColliderCom = m_p2DColliderComs[0];
    Safe_AddRef(m_pBody2DColliderCom);
 
+   //상호작용 콜라이더
    CircleDesc.pOwner = this;
    CircleDesc.fRadius = m_f2DInteractRange;
    CircleDesc.vScale = { 1.0f, 1.0f };
@@ -651,6 +643,7 @@ HRESULT CPlayer::Ready_Components()
    m_pBody2DTriggerCom = m_p2DColliderComs[1];
    Safe_AddRef(m_pBody2DTriggerCom);
 
+   //공격용 콜라이더
    CCollider_AABB::COLLIDER_AABB_DESC BoxDesc = {};
    BoxDesc.pOwner = this;
    BoxDesc.vExtents = m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL1][(_uint)F_DIRECTION::DOWN].vExtents;
@@ -2077,10 +2070,7 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
     }
 }
 
-void CPlayer::Set_ScrollingMode(_bool _bScrollingMode)
-{
-    m_bScrollingMode = _bScrollingMode;
-}
+
 
 void CPlayer::Set_Upforce(_float _fForce)
 {

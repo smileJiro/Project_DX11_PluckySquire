@@ -40,6 +40,9 @@
 #include "ArrowForStamp.h"
 #include "ESC_HeartPoint.h"
 #include "UI_Interaction_Book.h"
+#include "ShopPanel_BG_New.h"
+#include "ShopItemBG_New.h"
+#include "ShopPanel_YesNo_New.h"
 #include "ShopPanel_BG.h"
 #include "Logo_BG.h"
 #include "ShopItemBG.h"
@@ -70,8 +73,6 @@
 #include "NPC_Thrash.h"
 #include "Npc_Rabbit.h"
 #include "Postit_Page.h"
-
-
 
 #include "ModelObject.h"
 #include "CarriableObject.h"
@@ -122,6 +123,8 @@
 #include "Zipline.h"
 #include "DefenderPlayer.h"
 #include "DefenderPlayerProjectile.h"
+#include "DefenderSpawner.h"
+#include "DefenderSmShip.h"
 #include "Minigame_Defender.h"
 
 #include "Sneak_Default_Tile.h"
@@ -187,14 +190,18 @@
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
+#include "Room_Door.h"
+#include "Room_Door_Body.h"
 
 // Father Game 
 #include "PortalLocker.h" 
 #include "ZetPack_Child.h" 
+#include "Mug_Alien.h" 
 #include "CandleGame.h"
 #include "Candle.h"
 #include "Candle_Body.h"
 #include "Candle_UI.h"
+#include "Simple_UI.h"
 
 // Player Effect 
 #include "Effect_Trail.h"
@@ -588,6 +595,11 @@ HRESULT CLoader::Loading_Level_Static()
 
 	lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
+	/* For. Prototype_GameObject_Simple_UI */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Simple_UI"),
+		CSimple_UI::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For. Prototype_GameObject_PortalLocker */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker"),
 		CPortalLocker::Create(m_pDevice, m_pContext))))
@@ -906,6 +918,16 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_EffectBeam"),
 		CEffect_Beam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/* For. Prototype_GameObject_Room_Door */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Room_Door"),
+		CRoom_Door::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Room_Door_Body"),
+		CRoom_Door_Body::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 #pragma endregion
 
 #pragma region Static - Effect Load
@@ -1147,7 +1169,10 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 	#pragma region Chapter 2 - Object Create
 
-		if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Small.mchc")))
+		//if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Small.mchc")))
+		//	return E_FAIL;
+
+		if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Intro.mchc")))
 			return E_FAIL;
 
 	#pragma endregion
@@ -1441,6 +1466,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		/* Chapter 6 FatherGame */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Child"),
 			CZetPack_Child::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Mug_Alien"),
+			CMug_Alien::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 		
 		/* Chapter 6 Npc */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_StoreNPC"),
@@ -1464,6 +1494,12 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderPlayerProjectile"),
 			CDefenderPlayerProjectile::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderSpawner"),
+			CDefenderSpawner::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderSmShip"),
+			CDefenderSmShip::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 		/* Monster */
 
@@ -1824,14 +1860,14 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 	// 3D Map Load
 	if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL,
 		MAP_3D_DEFAULT_PATH,
-		L"Chapter_06_Play_Desk.json",
+		L"Chapter_02_Play_Desk.json",
 		matPretransform, true)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_6);
+	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_2);
 
 
-	return Loading_Level_Chapter_6(LEVEL_CAMERA_TOOL);
+	return Loading_Level_Chapter_2(LEVEL_CAMERA_TOOL);
 }
 
 HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
@@ -1881,7 +1917,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 	switch (_eResourceLevelID)
 	{
 	case LEVEL_STATIC:
-		str3DMapProtoJsonName = L"Room_Enviroment_Small.json";
+		str3DMapProtoJsonName = L"Room_Enviroment_Intro.json";
+		//str3DMapProtoJsonName = L"Room_Enviroment_Small.json";
 		strChapterName = L"Static";
 		isStatic2DLoad = false;
 		break;
@@ -1904,8 +1941,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:
-		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
-		strChapterName += L"Chapter8";
+		str3DMapProtoJsonName = L"Chapter_02_Play_Desk.json";
+		strChapterName += L"Chapter2";
 		break;
 	default:
 		return S_OK;
@@ -1954,9 +1991,6 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 
 	if (LEVEL_STATIC != _eResourceLevelID)
 	{		
-
-
-
 		std::cout << "=============== [" << arrLevelTexts[_eLoadLevelID] << "] 2D Map Load Start..." << endl;
 
 		// 3D Map Load
@@ -2094,6 +2128,10 @@ HRESULT CLoader::UI_Texture_Load(LEVEL_ID _eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Enter.dds"), 1))))
 		return E_FAIL;
 
+	// Father Game FatherParts
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_FatherParts_UI"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/FatherParts_%d.dds"), 6))))
+		return E_FAIL;
 	
 	return S_OK;
 }
@@ -2121,18 +2159,32 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 		CUI_Interaction_Book::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ParentShopPannel"),
-		CShopPanel::Create(m_pDevice, m_pContext))))
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ParentShopPannel"),
+	//	CShopPanel::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannel"),
+		CShopPanel_New::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelBG"),
-		CShopPanel_BG::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelYesNo"),
-		CShopPanel_YesNo::Create(m_pDevice, m_pContext))))
+		CShopPanel_BG_New::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopItem"),
-		CShopItemBG::Create(m_pDevice, m_pContext))))
+		CShopItemBG_New::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelYesNo"),
+		CShopPanel_YesNo_New::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelBG"),
+	//	CShopPanel_BG::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelYesNo"),
+	//	CShopPanel_YesNo::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopItem"),
+	//	CShopItemBG::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"),
 		CInteraction_Heart::Create(m_pDevice, m_pContext))))
 		return E_FAIL;

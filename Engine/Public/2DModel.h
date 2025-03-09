@@ -38,9 +38,6 @@ public:
     virtual void Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) override;
 
 
-private:
-    CTexture* Load_Texture(filesystem::path _path, _uint _iLevelIdx);
-
 #ifdef _DEBUG
     const CSpriteFrame* Get_SpriteFrame();
     CTexture* Get_Texture() {
@@ -49,6 +46,10 @@ private:
         return (*m_Textures.begin()).second;
     };
 #endif // _DEBUG
+
+private:
+    CTexture* Load_Texture(filesystem::path _path, _uint _iLevelIdx);
+
 
 
 protected:

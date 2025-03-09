@@ -56,14 +56,16 @@ HRESULT CPortal_Default::Initialize(void* _pArg)
 HRESULT CPortal_Default::Setup_3D_Postion()
 {
     HRESULT hr = __super::Setup_3D_Postion();
-    
+
+    if (FAILED(hr))
+        return S_OK;
     
     if (FAILED(Init_Actor()))
         return E_FAIL;
     if(FAILED(Ready_Particle()))
         return E_FAIL;
 
-    return hr;
+    return S_OK;
 }
 
 HRESULT CPortal_Default::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)

@@ -148,6 +148,30 @@ CSection* CSection_Manager::Find_Section(const _wstring& _strSectionTag)
 	return (*iter).second;
 }
 
+HRESULT CSection_Manager::Remove_Section(const _wstring& _strSectionTag)
+{
+	// 현재 맨 위에 활성화중인 책 섹션은 지울 수 없도록.
+	if (m_pCurSection->Get_SectionName() == _strSectionTag)
+		return E_FAIL;
+
+	auto pSection = Find_Section(_strSectionTag);
+
+	// 없는 섹션 Remove 호출
+	if (nullptr == pSection)
+		return E_FAIL;
+
+
+	if (FAILED(pSection->CleanUp_Section()))
+		return E_FAIL;
+
+
+	m_CurLevelSections.erase(_strSectionTag);
+	
+	Safe_Release(pSection);
+
+	return S_OK;
+}
+
 
 HRESULT CSection_Manager::Add_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject, _uint _iLayerIndex)
 {

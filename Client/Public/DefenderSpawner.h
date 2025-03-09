@@ -1,0 +1,89 @@
+#pragma once
+#include "Base.h"
+#include "DefenderMonster.h"
+#include "Pooling_Manager.h"
+BEGIN(Client)
+enum SPAWN_PATTERN
+{
+	SPAWN_PATTERN_DOT,
+	SPAWN_PATTERN_DOT_SEQUENCE,
+	SPAWN_PATTERN_ARROW,
+	SPAWN_PATTERN_VERTICAL,
+	SPAWN_PATTERN_RANDOM,
+	SPAWN_PATTERN_LAST,
+};
+class CSection_Manager;
+class CDefenderPlayer;
+struct SPAWN_DESC
+{
+	friend class CDefenderSpawner;
+
+	_float fPatternTimeStep = 0.f;
+	SPAWN_PATTERN ePattern = SPAWN_PATTERN_DOT;
+	T_DIRECTION eDirection = T_DIRECTION::RIGHT;
+	_bool bAbsolutePosition = false;
+	_vector vPosition = { 0.f,0.f,0.f };
+	_float fPlayerDistance = 0.f;
+	_float fHeight = 0.f;
+	_uint iSpawnCount = 1;
+
+	//Auto Àü¿ë
+	_float fAutoCycleTime = -1.f;
+
+private: 
+	void Update(_float _fTimeDelta);
+	
+	_bool Is_SpawnEnd() { return iCurrentSpawnCount >= iSpawnCount; }
+	_bool Is_Auto() { return fAutoCycleTime >= 0.f; }
+private:
+	_uint iCurrentSpawnCount = 0;
+	_float fPatternTimeStepAcc = 0.f;
+	_float fCycleTimeAcc = 0.f;
+	_float fPatternTimeAcc = 0.f;
+};
+class CDefenderSpawner :
+    public CGameObject
+{
+public:
+
+	typedef struct tagDefenderSpawnerDesc : CGameObject::GAMEOBJECT_DESC
+	{
+		_wstring strPoolTag = TEXT("");
+		_wstring strSectionName = TEXT("");
+		CDefenderPlayer* pPlayer = nullptr;
+	}DEFENDER_SPAWNER_DESC;
+private:
+	CDefenderSpawner(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CDefenderSpawner(const CDefenderSpawner& _Prototype);
+	virtual ~CDefenderSpawner() = default;
+
+public:
+	virtual HRESULT Initialize_Prototype();
+	virtual HRESULT Initialize(void* _pArg);
+	virtual void	Update(_float _fTimeDelta);
+
+public:
+	void Add_Spawn(SPAWN_DESC tDesc);
+
+private: 
+	void Spawn_Single(T_DIRECTION _eDirection, _vector _vPos = { 0.f,0.f,0.f });
+
+private:
+	CSection_Manager* m_pSection_Manager = nullptr;
+	class CPooling_Manager* m_pPoolMgr = nullptr;
+	_wstring m_strPoolTag = TEXT("");
+	CDefenderPlayer* m_pPlayer = nullptr;
+
+	_uint m_iDotSequenceCount = 6;
+
+	//Que
+	list<SPAWN_DESC> m_SpawnList = {};
+public:
+	static CDefenderSpawner* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CGameObject* Clone(void* _pArg) override;
+	HRESULT Cleanup_DeadReferences() override;
+	virtual void Free() override;
+};
+
+
+END

@@ -55,8 +55,11 @@ public:
 	virtual void					Update(_float _fTimeDelta) override;
 	virtual void					Late_Update(_float _fTimeDelta) override;
 
-private:
+private:/* FatherGame */
 	void							Chapter6_FatherGame_Progress_Start_Clear(_float _fTimeDelta);
+	void							Chapter6_FatherGame_Progress_ZetPack_Clear(_float _fTimeDelta);
+
+private:
 
 private:
 	_float4x4						m_TargetWorldMatrix = {};

@@ -37,6 +37,13 @@ public:
 	CSection*						Find_Section(const _wstring& _strSectionTag);
 
 	/// <summary>
+	/// 섹션 키로 등록되어 있는 섹션을 삭제한다(안의 오브젝트도 모두 정리됨.)
+	/// </summary>
+	/// <param name="_strSectionTag">섹션 키</param>
+	HRESULT						Remove_Section(const _wstring& _strSectionTag);
+
+
+	/// <summary>
 	/// 섹션 키로 해당 섹션에 오브젝트를 추가한다.
 	/// </summary>
 	/// <param name="_strSectionTag">섹션 키</param>
@@ -199,7 +206,7 @@ public:
 	_vector Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* _pTargetTexture, _float2 _v2DTransformPosition);
 
 
-	_bool	is_WordPos_Capcher() { return m_pBookWorldPosMap != nullptr; }
+	_bool	Is_WordPos_Capcher() { return m_pBookWorldPosMap != nullptr; }
 
 	/// <summary>
 	/// 월드맵 Priority ID를 발급한다.

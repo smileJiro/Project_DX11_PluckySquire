@@ -47,6 +47,7 @@ namespace Client
 
 		PR3D_UI = 140,
 
+		PR3D_FINAL = 998,
 		PR3D_LAST = 999
 	};
 

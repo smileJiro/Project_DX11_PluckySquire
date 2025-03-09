@@ -3,7 +3,7 @@
 
 BEGIN(Client)
 
-class CRenderGroup_Final final : public CRenderGroup_MRT
+class CRenderGroup_Final final : public CRenderGroup
 {
 private:
 	CRenderGroup_Final(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

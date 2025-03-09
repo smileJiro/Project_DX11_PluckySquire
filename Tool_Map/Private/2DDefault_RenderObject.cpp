@@ -173,6 +173,7 @@ void C2DDefault_RenderObject::Set_Texture_Mode(const _string& _strTextureName)
 	m_isDefaultRenderMode = false;
 	// 텍스쳐 불러오는 코드
 	_wstring strPath = L"../../Client/Bin/Resources/Textures/Map/" + StringToWstring(_strTextureName);
+	//m_pTextureCom = CTexture::Create(m_pDevice, m_pContext, strPath.c_str(), 1, true, false);
 	m_pTextureCom = CTexture::Create(m_pDevice, m_pContext, strPath.c_str());
 
 	if (nullptr == m_pTextureCom)

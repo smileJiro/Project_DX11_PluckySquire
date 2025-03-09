@@ -841,8 +841,6 @@ PS_OUT PS_AFTER_EFFECT(PS_IN In)
     vFinal.rgb = vFinal.rgb * fRevealage + vParticle.rgb * (1 - fRevealage);
     vFinal.rgb = vFinal.rgb + vBloomColor.rgb;
 
-    
-    vFinal.rgb *= c_DofVariable.fFadeRatio;
     Out.vColor = vFinal;
     
         
@@ -934,6 +932,19 @@ PS_OUT PS_PBR_BLUR_UP(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_FINAL(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    float4 vFinal = g_FinalTexture.Sample(LinearSampler, In.vTexcoord);
+
+    //if (vFinal.a < 0.01f)
+    //    discard;
+    
+    vFinal.rgb *= c_DofVariable.fFadeRatio;
+
+    Out.vColor = vFinal;
+    return Out;
+}
 
 // Debug PixelShader 
 PS_OUT PS_MAIN_DEBUG(PS_IN In)
@@ -1072,7 +1083,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_PBR_LIGHT_DIRECTIONAL();
     }
 
-    pass PBR_Spot // 9
+    pass PBR_Spot // 10
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -1083,7 +1094,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_PBR_LIGHT_SPOT();
     }
 
-    pass PBR_BLUR_DOWN // 10
+    pass PBR_BLUR_DOWN // 11
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -1096,7 +1107,7 @@ technique11 DefaultTechnique
 
     }
 
-    pass PBR_BLUR_UP // 10
+    pass PBR_BLUR_UP // 12
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -1109,7 +1120,7 @@ technique11 DefaultTechnique
 
     }
 
-    pass PBR_Blur_Final // 11
+    pass PBR_Blur_Final // 13
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -1118,5 +1129,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_PBR_BLUR_FINAL();
+    }
+
+    pass Final // 14
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_FINAL();
     }
 }

@@ -25,9 +25,11 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
+public:
+	void					isRender();
 
 private:
-	void					isRender();
+	
 	void					Cal_ShopYesNOPos(_float2 _vRTSize, _float2 _vBGPos);
 
 protected:

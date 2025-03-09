@@ -38,8 +38,7 @@ public:
 	MAPOBJ_2D_ACTION_TYPE			Get_ActionType() { return m_eType; }
 
 	void							Ready_Action();
-
-
+	void							MapActionObject_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
 public:
 	virtual void					On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;

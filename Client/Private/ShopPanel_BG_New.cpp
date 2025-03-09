@@ -2,6 +2,7 @@
 #include "ShopPanel_BG_New.h"
 #include "Section_2D.h"
 #include "UI_Manager.h"
+#include "Shop_Manager.h"
 
 
 
@@ -42,7 +43,8 @@ HRESULT CShopPanel_BG_New::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	
+	//if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), this, SECTION_2D_PLAYMAP_UI)))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -53,6 +55,14 @@ void CShopPanel_BG_New::Priority_Update(_float _fTimeDelta)
 
 void CShopPanel_BG_New::Update(_float _fTimeDelta)
 {
+	int a = 0;
+
+	if (SHOP_BG == m_eShopPanel)
+	{
+		// 플레이어의 좌표를 가져와서 계산한다.
+		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+		Cal_ShopBGPos(RTSize);
+	}
 }
 
 void CShopPanel_BG_New::Late_Update(_float _fTimeDelta)
@@ -62,15 +72,11 @@ void CShopPanel_BG_New::Late_Update(_float _fTimeDelta)
 
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 
-		if (SHOP_BG == m_eShopPanel)
-		{
-			// 플레이어의 좌표를 가져와서 계산한다.
-			Cal_ShopBGPos(RTSize);
-		}
-		else if (SHOP_BG != m_eShopPanel)
+		
+		if (SHOP_BG != m_eShopPanel)
 		{
 			// shop_bg의 위치를 가져온다.
-			Cal_ShopPartPos(RTSize, Uimgr->Get_ShopPos());
+			Cal_ShopPartPos(RTSize, CShop_Manager::GetInstance()->Get_ShopBGPos());
 
 		}
 	}
@@ -80,7 +86,7 @@ void CShopPanel_BG_New::Late_Update(_float _fTimeDelta)
 HRESULT CShopPanel_BG_New::Render()
 {
 	if (true == m_isRender)
-		__super::Render(0, PASS_VTXPOSTEX::DEFAULT);
+		__super::ShopRender(0, PASS_VTXPOSTEX::DEFAULT);
 
 	return S_OK;
 }
@@ -94,17 +100,18 @@ void CShopPanel_BG_New::isRender()
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 
 		m_isRender = true;
-		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+		
 		Change_BookScale_ForShop(RTSize);	
+
 
 	}
 	else if (m_isRender == true)
 	{
 		m_isRender = false;
-		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 	}
 		
 }
+
 
 void CShopPanel_BG_New::Cal_ShopBGPos(_float2 _vRTSize)
 {
@@ -117,7 +124,7 @@ void CShopPanel_BG_New::Cal_ShopBGPos(_float2 _vRTSize)
 	vPos.y += _vRTSize.y * 0.11f;
 
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
-	Uimgr->Set_ShopPos(vPos);
+	CShop_Manager::GetInstance()->Set_ShopBGPos(vPos);
 }
 
 void CShopPanel_BG_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)

@@ -34,7 +34,7 @@ public:
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render(_int _iTextureindex = 0, PASS_VTXPOSTEX _eShaderPass = PASS_VTXPOSTEX::DEFAULT) override;
-
+	virtual HRESULT			ShopRender(_int _iTextureindex = 0, PASS_VTXPOSTEX _eShaderPass = PASS_VTXPOSTEX::DEFAULT);
 
 private:
 	//_uint					m_iPanelUI[SETTINGPANEL::SETTING_END];
@@ -42,11 +42,12 @@ private:
 private:
 	void					isRender() { false == m_isRender ? m_isRender = true : m_isRender = false; };
 	void					isFontPrint() { false == m_isOpenPanel ? m_isOpenPanel = true : m_isOpenPanel = false; };
-	_bool					isInPanel(_float2 _vMousePos);
-	_int					isInPanelItem(_float2 _vMousePos);
-	void					Update_KeyInput(_float _fTimeDelta, _int _index = -1);
+	//_bool					isInPanel(_float2 _vMousePos);
+	//_int					isInPanelItem(_float2 _vMousePos);
+	void					Update_KeyInput(_float _fTimeDelta);
 	void					ChangeState_Panel(_float _fTimeDelta, _bool _isOpenState);
-	HRESULT					Ready_ShopPannel(LEVEL_ID _eCurLevel, const _wstring& _strLayerTag, _float2 _vRTSize);
+
+protected:
 	void					Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos);
 
 	
@@ -66,9 +67,8 @@ public:
 	HRESULT					Cleanup_DeadReferences() { return S_OK; };
 
 public:
-
 	_bool					Get_isChooseItem() { return m_isChooseItem; }
-	void					Set_isChooseItem(_bool _Choose) { m_isChooseItem = _Choose; }
+
 
 
 
@@ -86,9 +86,14 @@ private:
 	_bool				m_isConfirmItem = { false };
 	_uint				m_iConfirmItemIndex = { 0 };
 
+	_uint				m_iChooseIndex = { 0 };
+	_bool               m_isOpenConfirmUI = { false };
 
 
 
+	/* 테스트 용도*/
+protected:
+	_int				m_iItemCount = { -1 };
 
 };
 
