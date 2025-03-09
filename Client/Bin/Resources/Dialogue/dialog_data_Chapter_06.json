@@ -1985,6 +1985,96 @@
 					"Blue": 0
 				}
 			]
+		},
+		{
+			"id": "Mug_Alien_0",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "테리",
+					"BG": 19,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "앗, 손님이다!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "테리",
+					"BG": 19,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "안녕! 난 테리야.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "테리",
+					"BG": 19,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "생명체가 여길 찾아오다니 별일이네.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "테리",
+					"BG": 19,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "아, 어디 가기 전에 말이야...\n내가 반짝반짝한 걸 찾았어!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "테리",
+					"BG": 19,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "나중에 이 테리를 기억할 기념품으로 가져가는 게 어때?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
 		}
 	]
 }
