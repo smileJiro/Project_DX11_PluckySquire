@@ -264,6 +264,22 @@ void C2DModel::Switch_Reverse(_uint iIdx, _bool _bReverse)
 {
 }
 
+CTexture* C2DModel::Load_Texture(filesystem::path _path, _uint _iLevelIdx)
+{
+
+	//먼저 프로토타입을 찾음
+	CTexture* pTexture = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, _iLevelIdx, _path, nullptr));
+	//프로토타입 없으면 파일로 만듦.
+	if (nullptr == pTexture)
+	{
+		pTexture = CTexture::Create(m_pDevice, m_pContext, _path.c_str(), 1, true);
+		if (FAILED(m_pGameInstance->Add_Prototype(_iLevelIdx, _path, pTexture)))
+			return nullptr;
+		pTexture = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, _iLevelIdx, _path, nullptr));
+	}
+	return pTexture;
+}
+
 #ifdef _DEBUG
 
 const CSpriteFrame* C2DModel::Get_SpriteFrame()
@@ -276,26 +292,10 @@ const CSpriteFrame* C2DModel::Get_SpriteFrame()
 		return pAnim->GetCurrentSprite();
 	}
 	else
-		return m_pNonAnimSprite;
+		return m_pNonAnimSprite; 
 }
 
 #endif // _DEBUG
-
-CTexture* C2DModel::Load_Texture(filesystem::path _path, _uint _iLevelIdx)
-{
-
-	//먼저 프로토타입을 찾음
-	CTexture* pTexture = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, _iLevelIdx, _path.filename(), nullptr));
-	//프로토타입 없으면 파일로 만듦.
-	if (nullptr == pTexture)
-	{
-		pTexture = CTexture::Create(m_pDevice, m_pContext, _path.c_str(), 1, true);
-		if (FAILED(m_pGameInstance->Add_Prototype(_iLevelIdx, _path.filename(), pTexture)))
-			return nullptr;
-		pTexture = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, _iLevelIdx, _path.filename(), nullptr));
-	}
-	return pTexture;
-}
 
 
 void C2DModel::To_NextAnimation()

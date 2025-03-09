@@ -1,7 +1,9 @@
 #pragma once
 #include "ModelObject.h"
-
+#include "DefenderMonster.h"
 BEGIN(Client)
+class CDefenderSpawner;
+class CDefenderPlayer;
 class CMiniGame_Defender :
     public CModelObject
 {
@@ -28,7 +30,19 @@ public:
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
 private:
+	HRESULT Ready_Spanwer();
+	virtual void Enter_Section(const _wstring _strIncludeSectionName)override;
+private:
+	map<DEFENDER_MONSTER_ID, wstring> m_mapMonsterPrototypeTag;
+	CDefenderPlayer* m_pDefenderPlayer = nullptr;
 	_bool m_bGameStart = false;
+
+	_float m_fSpawnDistance = 1000.f;//플레이어와의 거리
+	map< DEFENDER_MONSTER_ID, CDefenderSpawner*> m_Spawners;
+
+
+	_float m_fSpawnTimeAcc = 0.f;
+	_float m_fSpawnTime= 5.f;
 public:
 	static CMiniGame_Defender* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

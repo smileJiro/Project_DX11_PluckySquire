@@ -5,12 +5,12 @@
 #include "Character.h"
 
 CDefenderPlayerProjectile::CDefenderPlayerProjectile(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CModelObject(_pDevice, _pContext)
+	: CScrollModelObject(_pDevice, _pContext)
 {
 }
 
 CDefenderPlayerProjectile::CDefenderPlayerProjectile(const CDefenderPlayerProjectile& _Prototype)
-	: CModelObject(_Prototype)
+	: CScrollModelObject(_Prototype)
 {
 }
 
@@ -22,9 +22,9 @@ HRESULT CDefenderPlayerProjectile::Initialize_Prototype()
 HRESULT CDefenderPlayerProjectile::Initialize(void* _pArg)
 {
 	DEFENDERPLAYER_PROJECTILE_DESC* pDesc = static_cast<DEFENDERPLAYER_PROJECTILE_DESC*>(_pArg);
-	m_eTDirection = pDesc->_eTDirection;
 	pDesc->iObjectGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
 	m_iCurLevelID = pDesc->iCurLevelID;
+	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable = false;
 
 	pDesc->iModelPrototypeLevelID_2D = m_iCurLevelID;
@@ -53,7 +53,7 @@ HRESULT CDefenderPlayerProjectile::Initialize(void* _pArg)
 	AABBDesc.vOffsetPosition = { 0.f,0.f };
 	AABBDesc.isBlock = false;
 	AABBDesc.isTrigger = true;
-	AABBDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_TRIGGER;
+	AABBDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
 		return E_FAIL;
@@ -68,14 +68,16 @@ void CDefenderPlayerProjectile::Priority_Update(_float _fTimeDelta)
 
 void CDefenderPlayerProjectile::Update(_float _fTimeDelta)
 {
-	if (m_eTDirection == T_DIRECTION::LEFT)
-		m_pControllerTransform->Go_Left(_fTimeDelta);
-	else
-		m_pControllerTransform->Go_Right(_fTimeDelta);
+	m_pControllerTransform->Go_Right(_fTimeDelta);
 	m_fLifeTimeAcc += _fTimeDelta;
 	if (m_fLifeTimeAcc >= m_fLifeTime)
+	{
 		Event_DeleteObject(this);
+		m_fLifeTimeAcc = 0.f;
+	}
 	__super::Update(_fTimeDelta);  
+
+	
 }
 
 void CDefenderPlayerProjectile::Late_Update(_float _fTimeDelta)

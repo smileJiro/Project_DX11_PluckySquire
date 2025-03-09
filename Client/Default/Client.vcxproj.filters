@@ -1492,14 +1492,12 @@
     <ClInclude Include="..\public\Sneak_Trap_Tile.h">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Trap</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Playable.h" />
     <ClInclude Include="..\Public\BossTransitionState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Boss_WingSlice.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_TransformIn.h" />
     <ClInclude Include="..\Public\Zipline.h">
       <Filter>02.GameObjects\Zipline</Filter>
     </ClInclude>
@@ -1570,9 +1568,6 @@
     <ClInclude Include="..\Public\BossShieldState.h">
       <Filter>02.GameObjects\Monster\Boss\State\Shield</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerRifle.h" />
-    <ClInclude Include="..\Public\PlayerState_CyberIdle.h" />
-    <ClInclude Include="..\Public\CyberPlayerBullet.h" />
     <ClInclude Include="..\public\PortalLocker.h">
       <Filter>02.GameObjects\Portal\PortalLocker</Filter>
     </ClInclude>
@@ -1618,6 +1613,33 @@
     </ClInclude>
     <ClInclude Include="..\public\Simple_UI.h">
       <Filter>05.MiniGames\FatherGame\Object\Simple_UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderSmShip.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderMonster.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_TransformIn.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_CyberIdle.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerRifle.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Playable.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CyberPlayerBullet.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ScrollModelObject.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderSpawner.h">
+      <Filter>05.MiniGames\Defender</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CandleGame.h">
       <Filter>05.MiniGames\FatherGame\CandleGame</Filter>
@@ -2449,14 +2471,12 @@
     <ClCompile Include="..\private\Sneak_Trap_Tile.cpp">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Trap</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Playable.cpp" />
     <ClCompile Include="..\Private\BossTransitionState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Boss_WingSlice.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_TransformIn.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp">
       <Filter>02.GameObjects\Zipline</Filter>
     </ClCompile>
@@ -2527,9 +2547,6 @@
     <ClCompile Include="..\Private\BossShieldState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State\Shield</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerRifle.cpp" />
-    <ClCompile Include="..\Private\PlayerState_CyberIdle.cpp" />
-    <ClCompile Include="..\Private\CyberPlayerBullet.cpp" />
     <ClCompile Include="..\private\PortalLocker.cpp">
       <Filter>02.GameObjects\Portal\PortalLocker</Filter>
     </ClCompile>
@@ -2566,6 +2583,9 @@
     <ClCompile Include="..\Private\Minigame_Defender.cpp">
       <Filter>05.MiniGames\Defender</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\DefenderSmShip.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\DefenderMonster.cpp" />
     <ClCompile Include="..\Private\Room_Door.cpp">
       <Filter>02.GameObjects\Room_Door</Filter>
@@ -2575,6 +2595,30 @@
     </ClCompile>
     <ClCompile Include="..\private\Simple_UI.cpp">
       <Filter>05.MiniGames\FatherGame\Object\Simple_UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_CyberIdle.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_TransformIn.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerRifle.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Playable.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CyberPlayerBullet.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ScrollModelObject.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderSpawner.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderMonster.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CandleGame.cpp">
       <Filter>05.MiniGames\FatherGame\CandleGame</Filter>
