@@ -1110,6 +1110,135 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
 {
+	CGameObject* pObject = nullptr;
+
+
+	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter6_Monsters"), m_eLevelID);
+
+	if (nullptr == pJson)
+		return E_FAIL;
+
+	if (pJson->contains("2D"))
+	{
+		_wstring strLayerTag = L"Layer_Monster";
+		_wstring strSectionTag = L"";
+		_wstring strMonsterTag = L"";
+
+		for (auto Json : (*pJson)["2D"])
+		{
+			CMonster::MONSTER_DESC MonsterDesc2D = {};
+
+			MonsterDesc2D.iCurLevelID = m_eLevelID;
+			MonsterDesc2D.eStartCoord = COORDINATE_2D;
+
+			if (Json.contains("Position"))
+			{
+				for (_int j = 0; j < 3; ++j)
+				{
+					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialPosition) + j) = Json["Position"][j];
+				}
+			}
+			if (Json.contains("Scaling"))
+			{
+				for (_int j = 0; j < 3; ++j)
+				{
+					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialScaling) + j) = Json["Scaling"][j];
+				}
+			}
+			if (Json.contains("LayerTag"))
+			{
+				strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
+			}
+
+			if (Json.contains("SectionTag"))
+			{
+				strSectionTag = STRINGTOWSTRING(Json["SectionTag"]);
+			}
+			else
+				return E_FAIL;
+
+			if (Json.contains("MonsterTag"))
+			{
+				strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
+			}
+			else
+				return E_FAIL;
+
+			if (Json.contains("IsStay"))
+			{
+				MonsterDesc2D.isStay = Json["IsStay"];
+			}
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc2D)))
+				return E_FAIL;
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionTag, pObject);
+		}
+	}
+
+	if (pJson->contains("3D"))
+	{
+		_wstring strLayerTag = L"Layer_Monster";
+		_wstring strMonsterTag = L"";
+
+		for (auto Json : (*pJson)["3D"])
+		{
+			CMonster::MONSTER_DESC MonsterDesc3D = {};
+
+			MonsterDesc3D.iCurLevelID = m_eLevelID;
+			MonsterDesc3D.eStartCoord = COORDINATE_3D;
+
+			if (Json.contains("Position"))
+			{
+				for (_int j = 0; j < 3; ++j)
+				{
+					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = Json["Position"][j];
+				}
+			}
+			if (Json.contains("Scaling"))
+			{
+				for (_int j = 0; j < 3; ++j)
+				{
+					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = Json["Scaling"][j];
+				}
+			}
+			if (Json.contains("LayerTag"))
+			{
+				strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
+			}
+
+			if (Json.contains("MonsterTag"))
+			{
+				strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
+			}
+			else
+				return E_FAIL;
+
+			if (Json.contains("SneakMode"))
+			{
+				if (Json.contains("SneakWayPointIndex"))
+				{
+					MonsterDesc3D.eWayIndex = Json["SneakWayPointIndex"];
+				}
+				else
+					return E_FAIL;
+				MonsterDesc3D.isSneakMode = Json["SneakMode"];
+			}
+
+			if (Json.contains("IsStay"))
+			{
+				MonsterDesc3D.isStay = Json["IsStay"];
+			}
+
+			if (Json.contains("IsIgnoreGround"))
+			{
+				MonsterDesc3D._isIgnoreGround = Json["IsIgnoreGround"];
+			}
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
+				return E_FAIL;
+		}
+	}
+
 	//CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
 	//Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
 	//Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;

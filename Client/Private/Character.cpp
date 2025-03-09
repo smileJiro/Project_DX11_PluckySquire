@@ -26,7 +26,6 @@ HRESULT CCharacter::Initialize(void* _pArg)
         m_fStepSlopeThreshold = pDesc->_fStepSlopeThreshold;
         m_fStepHeightThreshold = pDesc->_fStepHeightThreshold;
         m_fGravity = m_pGameInstance->Get_Gravity();
-        XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixRotationZ(XMConvertToRadians(90.f)));
     }
 
 	if (FAILED(__super::Initialize(_pArg)))

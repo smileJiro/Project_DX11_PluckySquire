@@ -1131,6 +1131,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(CGameObject** _ppout)
 		}
 	}
 
+
 	//// 2D
 	//CBarfBug::MONSTER_DESC BarfBug_Desc;
 	//BarfBug_Desc.iCurLevelID = m_eLevelID;

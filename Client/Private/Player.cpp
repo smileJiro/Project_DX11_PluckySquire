@@ -229,6 +229,8 @@ HRESULT CPlayer::Initialize(void* _pArg)
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
 
+    XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixRotationZ(XMConvertToRadians(90.f)));
+
     if (FAILED(__super::Initialize(pDesc)))
     {
         MSG_BOX("CPlayer super Initialize Failed");

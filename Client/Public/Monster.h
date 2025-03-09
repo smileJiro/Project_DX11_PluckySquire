@@ -29,6 +29,7 @@ public:
 		_float fHP;
 		_float fFOVX;
 		_float fFOVY;
+		_bool isStay = false;
 		_bool isSneakMode = false;
 		SNEAKWAYPOINTINDEX eWayIndex = SNEAKWAYPOINTINDEX::LAST;
 	}MONSTER_DESC;
@@ -105,6 +106,14 @@ public:
 	{
 		return m_isPreAttack;
 	}
+	void Set_Stay(_bool _isStay)
+	{
+		m_isStay = _isStay;
+	}
+	_bool Is_Stay()
+	{
+		return m_isStay;
+	}
 
 	_float3 Get_RayOffset() const
 	{
@@ -145,7 +154,9 @@ protected:
 
 public:
 	virtual void Attack();
-	virtual void Monster_Move(_fvector _vDirection);
+	virtual void Move(_fvector _vForce, _float _fTimeDelta) override;
+	virtual void Monster_Move(_fvector _vDirection) {};
+	virtual void Monster_MoveTo(_fvector _vPosition, _float _fTimeDelta);
 	virtual void Turn_Animation(_bool _isCW) {};
 
 	//해당 상태의 애니메이션이 존재하는 지 확인(상태 전용 애니메이션이 없는 경우 false)
@@ -213,6 +224,9 @@ protected:
 	_uint	 m_iAttackCount = { 0 };
 
 	_bool m_isPreAttack = { false };
+
+	//Idle에서 정지해있음
+	_bool m_isStay = { false };
 
 	//시야각
 	_float m_fFOVX = { 0.f };

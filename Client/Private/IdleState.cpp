@@ -34,7 +34,10 @@ void CIdleState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	m_fAccTime += _fTimeDelta;
+	if(false == m_pOwner->Is_Stay())
+	{
+		m_fAccTime += _fTimeDelta;
+	}
 
 	if (nullptr != m_pTarget)
 	{

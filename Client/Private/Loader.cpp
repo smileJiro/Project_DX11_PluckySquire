@@ -1498,6 +1498,15 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		
 	#pragma endregion
 
+#pragma region Chapter 6 - Monster Load
+
+		lstrcpy(m_szLoadingText, TEXT("Level 6 몬스터 로딩중입니다."));
+
+		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter6_Monsters.json"), TEXT("Chapter6_Monsters"), _eLoadLevelID)))
+			return E_FAIL;
+
+#pragma endregion
+
 	#pragma region Chapter 6 - Effect Load
 
 		lstrcpy(m_szLoadingText, TEXT("Level6 이펙트 로딩중입니다."));

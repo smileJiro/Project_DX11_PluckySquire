@@ -43,6 +43,8 @@ HRESULT CMonster::Initialize(void* _pArg)
 	m_fFOVY = pDesc->fFOVY;
 	m_eWayIndex = pDesc->eWayIndex;
 
+	if (true == pDesc->isStay)
+		m_isStay = true;
 	if (true == pDesc->isSneakMode)
 		m_isSneakMode = true;
 
@@ -297,8 +299,46 @@ void CMonster::Attack()
 {
 }
 
-void CMonster::Monster_Move(_fvector _vDirection)
+void CMonster::Move(_fvector _vForce, _float _fTimeDelta)
 {
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+		_vector vVeclocity = _vForce;
+
+		vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
+
+		if (pDynamicActor->Is_Dynamic())
+		{
+			if (true == Is_OnGround())
+				vVeclocity = StepAssist(vVeclocity, _fTimeDelta);
+			pDynamicActor->Set_LinearVelocity(vVeclocity);
+		}
+	}
+}
+
+void CMonster::Monster_MoveTo(_fvector _vPosition, _float _fTimeDelta)
+{
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+
+		//위치로 이동하는 속도를 세팅하고 StepAssist 수행
+		if (true == Move_To(_vPosition))
+			return; 
+		_vector vVeclocity = pDynamicActor->Get_LinearVelocity();
+
+		//vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
+
+		if (pDynamicActor->Is_Dynamic())
+		{
+			if (true == Is_OnGround())
+			{
+				vVeclocity = StepAssist(vVeclocity, _fTimeDelta);
+				pDynamicActor->Set_LinearVelocity(vVeclocity);
+			}
+		}
+	}
 }
 
 HRESULT CMonster::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)

@@ -41,8 +41,8 @@ HRESULT CRat::Initialize(void* _pArg)
     pDesc->fChase2DRange = 0.f;
     pDesc->fAttack2DRange = 0.f;
 
-    pDesc->_tStat.iHP = 5;
-    pDesc->_tStat.iMaxHP = 5;
+    pDesc->_tStat.iHP = 3;
+    pDesc->_tStat.iMaxHP = 3;
     pDesc->_tStat.iDamg = 1;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
@@ -386,10 +386,10 @@ HRESULT CRat::Ready_PartObjects()
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strModelPrototypeTag_3D = TEXT("Rat_Rig");
-	BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+	BodyDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
 
     BodyDesc.strModelPrototypeTag_2D = TEXT("Rat");
-    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
