@@ -70,26 +70,26 @@ void CCollider_AABB::Late_Update(_float _fTimeDelta)
 #ifdef _DEBUG
 HRESULT CCollider_AABB::Render(_float2 _fRenderTargetSize)
 {
-    //if (COORDINATE_2D != m_pOwner->Get_CurCoord())
-    //    return E_FAIL;
-    //
-    //m_pEffect->SetWorld(XMMatrixIdentity());
-    //m_pEffect->SetView(XMMatrixIdentity());
-    //// 지금 플레이어의 섹션의 해상도를 가져올 방법이 없어 //
+    if (COORDINATE_2D != m_pOwner->Get_CurCoord())
+        return E_FAIL;
+    
+    m_pEffect->SetWorld(XMMatrixIdentity());
+    m_pEffect->SetView(XMMatrixIdentity());
+    // 지금 플레이어의 섹션의 해상도를 가져올 방법이 없어 //
 
-    //
-    //m_pEffect->SetProjection(XMMatrixOrthographicLH(_fRenderTargetSize.x, _fRenderTargetSize.y, 0.0f, 1.0f));
-    //m_pEffect->Apply(m_pContext);
-    //m_pContext->IASetInputLayout(m_pInputLayout);
+    
+    m_pEffect->SetProjection(XMMatrixOrthographicLH(_fRenderTargetSize.x, _fRenderTargetSize.y, 0.0f, 1.0f));
+    m_pEffect->Apply(m_pContext);
+    m_pContext->IASetInputLayout(m_pInputLayout);
 
-    //m_pBatch->Begin();
+    m_pBatch->Begin();
 
-    //static BoundingBox BoundingBox = {};
-    //BoundingBox.Center = _float3(m_vPosition.x, m_vPosition.y, 0.0f);
-    //BoundingBox.Extents = _float3(m_vFinalExtents.x, m_vFinalExtents.y, 0.0f);
-    //DX::Draw(m_pBatch, BoundingBox, XMLoadFloat4(&m_vDebugColor));
+    static BoundingBox BoundingBox = {};
+    BoundingBox.Center = _float3(m_vPosition.x, m_vPosition.y, 0.0f);
+    BoundingBox.Extents = _float3(m_vFinalExtents.x, m_vFinalExtents.y, 0.0f);
+    DX::Draw(m_pBatch, BoundingBox, XMLoadFloat4(&m_vDebugColor));
 
-    //m_pBatch->End();
+    m_pBatch->End();
 
     return S_OK;
 }

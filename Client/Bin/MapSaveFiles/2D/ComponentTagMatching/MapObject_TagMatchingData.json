@@ -4375,9 +4375,22 @@
   "TextureName": "C09_4142_fg_04"
  },
  {
-  "Active": false,
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 0
+  },
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Offset_Pos": {
+     "X": -1.0,
+     "Y": 0.0
+    },
+    "Collider_Radius": 94.0
+   },
+   "ColliderType": 0
+  },
   "ModelType": 1,
   "SearchTag": "Barrel",
   "Sorting": false,
@@ -4593,9 +4606,22 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 260.0,
+     "Y": 450.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": -20.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 0,
-  "SearchTag": "TopDownProp_SKSPBed",
+  "SearchTag": "D09_SKSP06_bed",
   "Sorting": false,
   "TextureName": "D09_SKSP06_bed"
  },
@@ -4611,9 +4637,22 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 220.0,
+     "Y": 255.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": -25.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 0,
-  "SearchTag": "TopDownProp_SKSPCrate",
+  "SearchTag": "D09_SKSP06_crate_01",
   "Sorting": false,
   "TextureName": "D09_SKSP06_crate_01"
  },
@@ -4629,7 +4668,20 @@
  {
   "Active": false,
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 430.0,
+     "Y": 350.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": -50.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 0,
   "SearchTag": "TopDownProp_SKSPCratesStacked",
   "Sorting": false,
