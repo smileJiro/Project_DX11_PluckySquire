@@ -206,7 +206,7 @@ public:
 	_vector Get_WorldPosition_FromWorldPosMap(ID3D11Texture2D* _pTargetTexture, _float2 _v2DTransformPosition);
 
 
-	_bool	is_WordPos_Capcher() { return m_pBookWorldPosMap != nullptr; }
+	_bool	Is_WordPos_Capcher() { return m_pBookWorldPosMap != nullptr; }
 
 	/// <summary>
 	/// 월드맵 Priority ID를 발급한다.
