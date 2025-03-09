@@ -1239,6 +1239,16 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		}
 	}
 
+	CBirdMonster::MONSTER_DESC BirdMonster_Desc;
+	BirdMonster_Desc.iCurLevelID = m_eLevelID;
+	BirdMonster_Desc.eStartCoord = COORDINATE_3D;
+	BirdMonster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	BirdMonster_Desc.tTransform3DDesc.vInitialPosition = _float3(-18.5f, 6.55f, 21.0f);
+	
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BirdMonster"), m_eLevelID, _strLayerTag, &BirdMonster_Desc)))
+		return E_FAIL;
+
+
 	//CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
 	//Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
 	//Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;

@@ -156,7 +156,7 @@ public:
 	virtual void Attack();
 	virtual void Move(_fvector _vForce, _float _fTimeDelta) override;
 	virtual void Monster_Move(_fvector _vDirection) {};
-	virtual void Monster_MoveTo(_fvector _vPosition, _float _fTimeDelta);
+	virtual _bool Monster_MoveTo(_fvector _vPosition, _float _fTimeDelta);
 	virtual void Turn_Animation(_bool _isCW) {};
 
 	//해당 상태의 애니메이션이 존재하는 지 확인(상태 전용 애니메이션이 없는 경우 false)
@@ -171,6 +171,11 @@ public:
 	_float						Restrict_2DRangeAttack_Angle(_float _fDegrees);
 	virtual void				Enter_Section(const _wstring _strIncludeSectionName) override;
 	virtual void				Exit_Section(const _wstring _strIncludeSectionName) override;
+	_bool						Check_InAir_Next(_float _fTimeDelta);	// 다음 위치가 공중인지 체크
+	_bool						Check_InAir_Next(_fvector _vForce, _float _fTimeDelta);	// 다음 위치가 공중인지 체크
+	_bool						Check_Block_Next(_float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
+	_bool						Check_Block_Next(_fvector _vForce, _float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
+
 protected:
 	void Delay_On() 
 	{ 
@@ -231,6 +236,8 @@ protected:
 	//시야각
 	_float m_fFOVX = { 0.f };
 	_float m_fFOVY = { 0.f };
+
+	_float m_fHalfBodySize = { 0.f };
 
 	_float3 m_vRayOffset = { 0.f,0.f,0.f };
 	_float m_fRayHalfWidth = {};

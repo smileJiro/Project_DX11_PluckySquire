@@ -65,6 +65,8 @@ void CChaseAttackState::State_Update(_float _fTimeDelta)
 		{
 			//ÃßÀû
 			m_pOwner->Monster_MoveTo(m_pTarget->Get_FinalPosition(), _fTimeDelta);
+			if (true == m_pOwner->Check_InAir_Next(_fTimeDelta))
+				m_pOwner->Stop_Move();
 			//m_pOwner->Move_To(m_pTarget->Get_FinalPosition());
 			//m_pOwner->Move(static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Get_LinearVelocity(), _fTimeDelta);
 			m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());

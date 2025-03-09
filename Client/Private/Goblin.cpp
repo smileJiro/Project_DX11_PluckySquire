@@ -67,9 +67,7 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->_tStat.iMaxHP = 5;
     pDesc->_tStat.iDamg = 1;
 
-    pDesc->_fStepHeightThreshold = 0.2f;
-    pDesc->_fStepSlopeThreshold = 0.45f;
-    XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixIdentity());
+	m_fHalfBodySize = 0.5f;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -83,6 +81,8 @@ HRESULT CGoblin::Initialize(void* _pArg)
 
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
+
+    XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixIdentity());
 
     m_pFSM->Add_Chase_NoneAttackState();
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
@@ -182,6 +182,8 @@ void CGoblin::Update(_float _fTimeDelta)
     //    Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
     //}
 #endif // _DEBUG
+
+    Check_InAir_Next(_fTimeDelta);
 
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -571,6 +573,8 @@ HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+    m_fHalfBodySize = ShapeDesc->fRadius;
 
     //쿼리를 켜기 위한 트리거
     SHAPE_SPHERE_DESC* TriggerDesc = new SHAPE_SPHERE_DESC;
