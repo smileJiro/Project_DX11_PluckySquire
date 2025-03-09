@@ -14,11 +14,6 @@ CPlayerState_JumpToPortal::CPlayerState_JumpToPortal(CPlayer* _pOwner)
 
 void CPlayerState_JumpToPortal::Update(_float _fTimeDelta)
 {
-    if (m_bPortaled)
-    {
-
-        return;
-    }
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	NORMAL_DIRECTION eNormal = m_pPortal->Get_PortalNormal();
     if (COORDINATE_2D == eCoord)
@@ -36,7 +31,6 @@ void CPlayerState_JumpToPortal::Update(_float _fTimeDelta)
 		{
 
             m_pOwner->Set_State(CPlayer::EXIT_PORTAL);
-			m_bPortaled = true;
 			return;
 		}
     }
@@ -55,6 +49,12 @@ void CPlayerState_JumpToPortal::Enter()
 
     if (COORDINATE_3D == eCoord)
     {
+        if (m_pPortal->Get_Distance(eCoord, m_pOwner) <= m_f3DDistanceThreshold)
+        {
+
+            m_pOwner->Set_State(CPlayer::EXIT_PORTAL);
+            return;
+        }
         static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY,false);
         if (false == static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(m_vPortalPos, fYRadian))
         {

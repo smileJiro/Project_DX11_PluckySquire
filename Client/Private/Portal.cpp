@@ -97,7 +97,7 @@ HRESULT CPortal::Setup_3D_Postion()
 
     if (m_pActorCom != nullptr || true == XMVector3Equal(f3DPosition, XMVectorZero()))
     {
-        return S_OK;
+        return E_FAIL;
     }
 
     _float4 fStorePostion = {};

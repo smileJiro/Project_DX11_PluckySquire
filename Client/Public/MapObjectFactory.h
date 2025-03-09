@@ -191,23 +191,17 @@ public:
 						reinterpret_cast<void*>(&NormalDesc));
 			}
 				break;
-				// Sksp
-			case 1 :
-			case 2 :
-			case 3 :
-			case 4 :
-			case 5 :
-			case 6 :
-				{
-					pBase = _pGameInstance->
-						Clone_Prototype(
-							PROTOTYPE::PROTO_GAMEOBJ,
-							LEVEL_STATIC,
-							L"Prototype_GameObject_3DMap_SkspObject",
-							reinterpret_cast<void*>(&NormalDesc));
-				}
-				break;
+			// 0 아니면 다 스케치스페이스.
 			default:
+
+			{
+				pBase = _pGameInstance->
+					Clone_Prototype(
+						PROTOTYPE::PROTO_GAMEOBJ,
+						LEVEL_STATIC,
+						L"Prototype_GameObject_3DMap_SkspObject",
+						reinterpret_cast<void*>(&NormalDesc));
+			}
 				break;
 		}
 

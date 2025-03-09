@@ -88,7 +88,6 @@ void CZetPack::Enter_Section(const _wstring _strIncludeSectionName)
     __super::Enter_Section(_strIncludeSectionName);
     auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
 
-    Set_Active(static_cast<CSection_2D*>(pSection)->Is_Platformer());
 
 }
 

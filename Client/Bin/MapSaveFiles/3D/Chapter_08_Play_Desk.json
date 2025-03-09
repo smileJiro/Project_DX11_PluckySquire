@@ -95,7 +95,6 @@
   "SewingKit_03",
   "Sharpener_01",
   "Shoe_Box",
-  "Desk_C09_Sketchspace_07_02",
   "Desk_C09_Sketchspace_11_02",
   "SM_9V_Battery",
   "SM_Battery",
@@ -157,7 +156,6 @@
   "SM_Mug_02",
   "SM_Old_Clock",
   "SM_Paint_Container_1_A",
-    "SM_Watercolor_Bottle_A",
   "SM_Watercolor_Bottle_D",
   "SM_Paint_Container_1_D",
   "SM_Watercolor_Bottle_C",
@@ -257,6 +255,20 @@
   "Wristband_03",
   "Wristband_02",
   "Wristband_01",
-  "SM_sticky_notes_a"
+  "SM_sticky_notes_a",
+  "CardboardTube_A_03",
+  "Desk_C09_Sketchspace_Batch_02_01_02",
+  "Desk_C09_Sketchspace_01_02",
+  "Desk_C09_Sketchspace_01_01",
+  "Desk_C09_Sketchspace_05",
+  "Desk_C09_Sketchspace_07_01",
+  "Desk_C09_Sketchspace_07_02",
+  "Desk_C09_Sketchspace_08",
+  "Desk_C09_Sketchspace_09_04",
+  "Desk_C09_Sketchspace_09_02",
+  "Desk_C09_Sketchspace_09_01",
+  "Desk_C09_Sketchspace_11_01",
+  "Desk_C09_Sketchspace_12",
+  "Desk_C09_Sketchspace_Batch_02_02"
  ]
 }

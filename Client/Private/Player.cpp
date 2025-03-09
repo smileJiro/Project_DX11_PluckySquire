@@ -534,9 +534,14 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 
     auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
 
-    Set_PlatformerMode(static_cast<CSection_2D*>(pSection)->Is_Platformer());
+    _bool bPlatformer = static_cast<CSection_2D*>(pSection)->Is_Platformer();
+    Set_PlatformerMode(bPlatformer);
 
-    
+    if (Is_ZetPackMode() && bPlatformer)
+        Equip_Part(PLAYER_PART_ZETPACK);
+    else
+        UnEquip_Part(PLAYER_PART_ZETPACK);
+
     if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
     {
         m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, 2800.f, 0.0f, 0.0f));
@@ -569,6 +574,8 @@ void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
         }
 
     }
+    if (Is_ZetPackMode())
+        Equip_Part(PLAYER_PART_ZETPACK);
 }
 
 
@@ -1088,18 +1095,15 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         return E_FAIL;
     m_pInteractableObject = nullptr;
 
-    End_Attack();
     if (COORDINATE_2D == _eCoordinate)
     {
         Set_2DDirection(E_DIRECTION::DOWN);
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
-        //UnEquip_All();
     }
     else
     {
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
         Set_PlatformerMode(false);
-		Set_Mode(m_ePlayerMode);
     }
 
 
@@ -2058,8 +2062,7 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
         pCollider->Set_Offset(_float2(0.0f, m_f2DColliderBodyRadius * 2.0f * 1.0f));
         //6챕터 플랫포머에 들어가면 제트팩 모드임
         //컵3개 (플랫포머가 아님)에서는 등에서 떼어버림
-        if(Is_ZetPackMode())
-			Equip_Part(PLAYER_PART_ZETPACK);
+
     }
     else
     {
@@ -2069,8 +2072,6 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
         CCollider_Circle* pCollider = static_cast<CCollider_Circle*>(m_pBody2DColliderCom);
         pCollider->Set_Radius(m_f2DColliderBodyRadius);
         pCollider->Set_Offset(_float2(0.0f, m_f2DColliderBodyRadius * 0.5f));
-        if (Is_ZetPackMode())
-            UnEquip_Part(PLAYER_PART_ZETPACK);
     }
 }
 
@@ -2345,6 +2346,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         PLAYER_MODE eNextMode = (PLAYER_MODE)((m_ePlayerMode + 1) % PLAYER_MODE_LAST);
         Set_Mode(eNextMode);
+        Set_State(IDLE);
     }
 
     if (KEY_DOWN(KEY::F4))

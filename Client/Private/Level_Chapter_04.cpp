@@ -1078,6 +1078,9 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(CGameObject** _ppout)
 			else
 				return E_FAIL;
 
+			if (strMonsterTag == L"Prototype_GameObject_Goblin")
+				int a = 1;
+
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc2D)))
 				return E_FAIL;
 			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionTag, pObject);
