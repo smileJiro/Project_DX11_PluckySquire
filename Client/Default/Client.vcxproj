@@ -214,6 +214,7 @@
     <ClInclude Include="..\Public\CandleGame.h" />
     <ClInclude Include="..\public\Candle_Body.h" />
     <ClInclude Include="..\public\Candle_UI.h" />
+    <ClInclude Include="..\Public\Room_Door.h" />
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
     <ClInclude Include="..\Public\CyberPlayerBullet.h" />
     <ClInclude Include="..\Public\DefenderMonster.h" />
@@ -252,6 +253,7 @@
     <ClInclude Include="..\Public\Portal_Default.h" />
     <ClInclude Include="..\Public\Portal_Arrow.h" />
     <ClInclude Include="..\Public\Portal_Cannon.h" />
+    <ClInclude Include="..\Public\Room_Door_Body.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame_Pip.h" />
     <ClInclude Include="..\Public\ShopItemBG_New.h" />
@@ -540,6 +542,7 @@
     <ClCompile Include="..\private\Candle_Body.cpp" />
     <ClCompile Include="..\private\Candle_UI.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
+    <ClCompile Include="..\Private\Room_Door.cpp" />
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
     <ClCompile Include="..\Private\CyberPlayerBullet.cpp" />
     <ClCompile Include="..\Private\DefenderMonster.cpp" />
@@ -575,6 +578,7 @@
     <ClCompile Include="..\Private\Portal_Default.cpp" />
     <ClCompile Include="..\Private\Portal_Arrow.cpp" />
     <ClCompile Include="..\Private\Portal_Cannon.cpp" />
+    <ClCompile Include="..\Private\Room_Door_Body.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame_Pip.cpp" />
     <ClCompile Include="..\Private\ShopItemBG_New.cpp" />
