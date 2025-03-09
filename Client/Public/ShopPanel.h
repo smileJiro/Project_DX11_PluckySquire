@@ -69,7 +69,7 @@ public:
 public:
 
 	_bool					Get_isChooseItem() { return m_isChooseItem; }
-	void					Set_isChooseItem(_bool _Choose) { m_isChooseItem = _Choose; }
+	//void					Set_isChooseItem(_bool _Choose) { m_isChooseItem = _Choose; }
 
 
 

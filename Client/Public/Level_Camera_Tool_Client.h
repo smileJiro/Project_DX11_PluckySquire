@@ -37,6 +37,7 @@ public:
 	HRESULT				Ready_Layer_TestTerrain(const _wstring& _strLayerTag, CGameObject* _pPlayer);
 	HRESULT				Ready_Layer_MainTable(const _wstring& _strLayerTag);
 	HRESULT				Ready_DataFiles();
+	HRESULT				Ready_Layer_RoomDoor(const _wstring& _strLayerTag);
 
 private:
 	_float				m_fLengthValue = { 0.1f };

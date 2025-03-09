@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ShopPanel_YesNo_New.h"
 #include "UI_Manager.h"
+#include "Shop_Manager.h"
 
 
 
@@ -40,6 +41,8 @@ HRESULT CShopPanel_YesNo_New::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	//if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), this, SECTION_2D_PLAYMAP_UI)))
+	//	return E_FAIL;
 	
 
 	return S_OK;
@@ -51,24 +54,101 @@ void CShopPanel_YesNo_New::Priority_Update(_float _fTimeDelta)
 
 void CShopPanel_YesNo_New::Update(_float _fTimeDelta)
 {
+
 }
 
 void CShopPanel_YesNo_New::Late_Update(_float _fTimeDelta)
 {
-	if (true == Uimgr->Get_StoreYesOrno())
+	if (true == CShop_Manager::GetInstance()->Get_Confirm())
 	{
 		// TODO :: 나중에 수정해야한다. 각 넓이는 가변적이기 때문에.
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 
-		Cal_ShopYesNOPos(RTSize, Uimgr->Get_ShopPos());
+		Cal_ShopYesNOPos(RTSize, CShop_Manager::GetInstance()->Get_ShopBGPos());
+
+		if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
+			CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+	}
+	else
+	{
+		if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
+			CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 	}
 }
 
 
 HRESULT CShopPanel_YesNo_New::Render()
 {
-	if (true == m_isRender && true == Uimgr->Get_ConfirmStore())
-		__super::Render(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+	if (true == m_isRender && true == CShop_Manager::GetInstance()->Get_OpenConfirmUI())
+	{
+		__super::ShopRender(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+
+		CShop_Manager* pShopManager = CShop_Manager::GetInstance();
+
+		if (true == pShopManager->Get_Confirm())
+		{
+			//_bool YesorNo = pShopManager >Get_OpenConfirmUI();
+
+			_float2 BGPos = pShopManager->Get_ShopBGPos();
+			/* 나중에 수정 필요 */
+			_float2 vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
+
+
+
+			_float2 vMiddlePoint = { vRTSize.x / 2 , vRTSize.y / 2 };
+			_float2 vCalPos = { 0.f, 0.f };
+			/* 나중에 수정 필요 */
+
+
+
+			_float2 vPos = { 0.f, 0.f };
+
+			vPos.x = BGPos.x + vRTSize.x * 0.045f;
+			vPos.y = BGPos.y - vRTSize.y * 0.075f;
+
+			vCalPos.x = vMiddlePoint.x + vPos.x;
+			vCalPos.y = vMiddlePoint.y - vPos.y;
+
+
+
+			if (true == pShopManager->Get_isPurchase())
+			{
+				wsprintf(m_tFont, TEXT("예"));
+				m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+				wsprintf(m_tFont, TEXT("아니요"));
+
+				vPos.x = BGPos.x + vRTSize.x * 0.045f;
+				vPos.y = BGPos.y - vRTSize.y * 0.11f;
+
+				vCalPos.x = vMiddlePoint.x + vPos.x;
+				vCalPos.y = vMiddlePoint.y - vPos.y;
+
+
+				m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+			}
+			else if (false == pShopManager->Get_isPurchase())
+			{
+				wsprintf(m_tFont, TEXT("예"));
+				m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+				wsprintf(m_tFont, TEXT("아니요"));
+
+				vPos.x = BGPos.x + vRTSize.x * 0.045f;
+				vPos.y = BGPos.y - vRTSize.y * 0.11f;
+
+				vCalPos.x = vMiddlePoint.x + vPos.x;
+				vCalPos.y = vMiddlePoint.y - vPos.y;
+
+
+				m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+			}
+
+
+		}
+
+	}
+		
+
+	
 
 	return S_OK;
 }
@@ -78,12 +158,10 @@ void CShopPanel_YesNo_New::isRender()
 	if (m_isRender == false)
 	{
 		m_isRender = true;
-		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 	}
 	else if (m_isRender == true)
 	{
 		m_isRender = false;
-		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 	}
 }
 

@@ -32,9 +32,9 @@ HRESULT CShopPanel::Initialize(void* _pArg)
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 
 
-		Uimgr->Set_isMakeItem(true);
-		Ready_ShopPannel(LEVEL_ID(pDesc->iCurLevelID), pDesc->strLayerTag, RTSize);
-		Ready_Item(LEVEL_ID(pDesc->iCurLevelID), pDesc->strLayerTag);
+		//Uimgr->Set_isMakeItem(true);
+		//Ready_ShopPannel(LEVEL_ID(pDesc->iCurLevelID), pDesc->strLayerTag, RTSize);
+		//Ready_Item(LEVEL_ID(pDesc->iCurLevelID), pDesc->strLayerTag);
 	}
 
 	return S_OK;
@@ -74,7 +74,7 @@ void CShopPanel::Update(_float _fTimeDelta)
 	// 해당 인덱스를 체크해서 true로한다.
 	if (iIndex != -1 && iIndex != m_iPreindex)
 	{
-		CUI_Manager::GetInstance()->Set_ChooseItem(iIndex);
+		//CUI_Manager::GetInstance()->Set_ChooseItem(iIndex);
 		m_iPreindex = iIndex;
 	}
 

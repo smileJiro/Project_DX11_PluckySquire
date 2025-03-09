@@ -82,7 +82,7 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Store::On_AnimEnd, this , placeholders::_1, placeholders::_2));
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(vPos.x, vPos.y, 0.f, 1.f));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(-150.f, 50.f, 0.f, 1.f));
 
 	
 	//CActor::ACTOR_DESC ActorDesc;
@@ -165,8 +165,7 @@ void CNPC_Store::Late_Update(_float _fTimeDelta)
 
 	if (/*KEY_DOWN(KEY::E) && */true == m_isColPlayer && false == m_isDialoging)
 	{
-		m_isDialoging = true;
-		Throw_Dialogue();
+		
 		//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Martina_talk);
 	}
 
@@ -249,6 +248,8 @@ void CNPC_Store::ChangeState_Panel()
 void CNPC_Store::Interact(CPlayer* _pUser)
 {
 	m_isColPlayer = true;
+	m_isDialoging = true;
+	Throw_Dialogue();
 }
 
 _bool CNPC_Store::Is_Interactable(CPlayer* _pUser)

@@ -46,7 +46,6 @@ HRESULT CShopItemBG::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	
 
 	
 
@@ -98,6 +97,8 @@ HRESULT CShopItemBG::Render()
 
 	return S_OK;
 }
+
+
 
 void CShopItemBG::isRender()
 {

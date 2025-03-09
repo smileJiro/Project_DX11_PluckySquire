@@ -229,7 +229,7 @@ PS_OUT PS_MAIN(PS_IN In)
         vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
     }
     
-   if (vAlbedo.a < 0.01f)
+   if (vAlbedo.a < 0.1f)
        discard;
     
     Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
