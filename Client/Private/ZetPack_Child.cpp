@@ -6,6 +6,7 @@
 #include "Dialog_Manager.h"
 #include "Camera_Manager.h"
 #include "Pooling_Manager.h"
+#include "FatherGame.h"
 
 CZetPack_Child::CZetPack_Child(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -175,6 +176,9 @@ void CZetPack_Child::State_Change_PortalOut()
 	{
 		m_pPlayer->Set_Mode(CPlayer::PLAYER_MODE_ZETPACK);
 	}
+
+	// 공통처리 Father Game에서의 플레이어의 상태를 추적하는 ZetPack_Child가 대부분의 조작을 담당한다 ui 켜고 끄고까지
+	CFatherGame::GetInstance()->Set_Active_FatherParts_UIs(true);
 }
 
 void CZetPack_Child::State_Change_PortalIn()
@@ -193,6 +197,8 @@ void CZetPack_Child::State_Change_PortalIn()
 		/* 만약 플랫포머라면, 포탈에 들어가지않는다. */
 	}
 	
+	// 공통처리 Father Game에서의 플레이어의 상태를 추적하는 ZetPack_Child가 대부분의 조작을 담당한다 ui 켜고 끄고까지
+	CFatherGame::GetInstance()->Set_Active_FatherParts_UIs(false);
 }
 
 void CZetPack_Child::Action_State(_float _fTimeDelta)
