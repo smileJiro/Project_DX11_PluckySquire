@@ -342,7 +342,6 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 	{
 		if (KEY_DOWN(KEY::NUM5))
 		{
-			Event_ChangeMapObject(m_eLevelID, L"Chapter_Boss.mchc", L"Layer_MapObject");
 
 			CGameObject* pBoss = nullptr; 
 			CButterGrump::MONSTER_DESC Boss_Desc;
@@ -360,6 +359,24 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			pPivot->Set_MainTarget(pBoss);
 			pPivot->Set_Active(true);
 			CCamera_Manager::GetInstance()->Change_CameraTarget(pPivot, 1.f);
+
+
+			Event_ChangeMapObject(m_eLevelID, L"Chapter_Boss.mchc", L"Layer_MapObject");
+
+
+			//m_pGameInstance->Get_ThreadPool()->EnqueueJob([]()
+			//	{
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_01");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_02");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_03");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_04");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_05");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_06");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_07");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_08");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_09");
+			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_10");
+				//});
 		}
 	}
 
@@ -453,7 +470,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 	Desc = {};
 	Desc.isOverride = true;
 	Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 17.25f, 47.f);
-	Desc.vHalfExtents = { 40.f, 1.f, 12.f };
+	Desc.vHalfExtents = { 60.f, 1.f, 12.f };
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
 		m_eLevelID, _strLayerTag, &Desc)))
