@@ -30,10 +30,16 @@ HRESULT CSneak_Troop::Initialize(void* _pArg)
 	pDesc->isCoordChangeEnable = false;
 	pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
-	// TEMP
-	//pDesc->tTransform2DDesc.vInitialPosition = { -1050.f, 180.f, 0.f };
-
+	m_pSneakGameManager = CMinigame_Sneak::GetInstance();
+	
 	pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER;
+	m_eInitDirection = m_eCurDirection = pDesc->_eCurDirection;
+	m_iTargetTileIndex = m_iInitTileIndex = m_iCurTileIndex = pDesc->_iTileIndex;
+	m_isMoveable = pDesc->_isMoveable;
+	m_eTurnDirection = pDesc->_eTurnDirection;
+
+	// 처음 위치는 밖에서 정해주자. 
+	// _float2 vInitPosition = m_pSneakGameManager->Get_TilePosition()
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
@@ -41,17 +47,12 @@ HRESULT CSneak_Troop::Initialize(void* _pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Components()))
-	//	return E_FAIL;
-
 	static_cast<CModelObject*>(m_PartObjects[TROOP_BODY])->Register_OnAnimEndCallBack(bind(&CSneak_Troop::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-	
 
-	m_eCurDirection = pDesc->_eCurDirection;
+	m_eCurAction = IDLE;
 
 	Switch_Animation_ByState();
 	
-	m_pSneakGameManager = CMinigame_Sneak::GetInstance();
 	return S_OK;
 }
 
@@ -62,6 +63,8 @@ void CSneak_Troop::Priority_Update(_float _fTimeDelta)
 
 void CSneak_Troop::Update(_float _fTimeDelta)
 {
+	Do_Action(_fTimeDelta);
+
 	__super::Update(_fTimeDelta);
 }
 
@@ -75,8 +78,280 @@ HRESULT CSneak_Troop::Render()
 	return __super::Render();
 }
 
+void CSneak_Troop::Action_Move(_int _iTileIndex, _float2 _vPosition)
+{
+	if (FALL == m_eCurAction)
+		return;
+
+	m_eCurAction = MOVE;
+	m_vTargetPosition = _vPosition;
+	m_iTargetTileIndex = _iTileIndex;
+
+	Switch_Animation_ByState();
+}
+
+void CSneak_Troop::Action_Turn()
+{
+	if (FALL == m_eCurAction)
+		return;
+
+	// 회전하지 않는 친구.
+	if (F_DIRECTION::F_DIR_LAST == m_eTurnDirection)
+		return;
+	
+	// 설정될 방향
+	F_DIRECTION eTargetDirection = F_DIRECTION::F_DIR_LAST;
+
+	// 하드코딩 아쉽네.
+	if (F_DIRECTION::LEFT == m_eTurnDirection)
+	{
+		if (F_DIRECTION::RIGHT == m_eCurDirection)
+			eTargetDirection = F_DIRECTION::UP;
+		else if (F_DIRECTION::UP == m_eCurDirection)
+			eTargetDirection = F_DIRECTION::LEFT;
+		else if (F_DIRECTION::LEFT == m_eCurDirection)
+			eTargetDirection = F_DIRECTION::DOWN;
+		else if (F_DIRECTION::DOWN == m_eCurDirection)
+			eTargetDirection = F_DIRECTION::RIGHT;
+	}
+	else if (F_DIRECTION::RIGHT == m_eTurnDirection)
+	{
+		if (F_DIRECTION::RIGHT == m_eCurDirection)
+			eTargetDirection = F_DIRECTION::DOWN;
+		else if (F_DIRECTION::UP == m_eCurDirection)
+			eTargetDirection = F_DIRECTION::RIGHT;
+		else if (F_DIRECTION::LEFT == m_eCurDirection)
+			eTargetDirection = F_DIRECTION::UP;
+		else if (F_DIRECTION::DOWN == m_eCurDirection)
+			eTargetDirection = F_DIRECTION::LEFT;
+	}
+	else if (F_DIRECTION::DOWN == m_eTurnDirection || F_DIRECTION::UP == m_eTurnDirection)
+	{
+		if (F_DIRECTION::RIGHT == m_eCurDirection)
+			eTargetDirection = F_DIRECTION::LEFT;
+		else if (F_DIRECTION::UP == m_eCurDirection)
+			eTargetDirection = F_DIRECTION::DOWN;
+		else if (F_DIRECTION::LEFT == m_eCurDirection)
+			eTargetDirection = F_DIRECTION::RIGHT;
+		else if (F_DIRECTION::DOWN == m_eCurDirection)
+			eTargetDirection = F_DIRECTION::UP;
+	}
+
+	if (nullptr != m_pSneakGameManager)
+	{
+		_int iTurnTile = m_pSneakGameManager->Get_NextTile(m_iCurTileIndex, eTargetDirection);
+		if (-1 == iTurnTile)
+		{
+			if (F_DIRECTION::RIGHT == eTargetDirection)
+				eTargetDirection = F_DIRECTION::LEFT;
+			else if (F_DIRECTION::UP == eTargetDirection)
+				eTargetDirection = F_DIRECTION::DOWN;
+			else if (F_DIRECTION::LEFT == eTargetDirection)
+				eTargetDirection = F_DIRECTION::RIGHT;
+			else if (F_DIRECTION::DOWN == eTargetDirection)
+				eTargetDirection = F_DIRECTION::UP;
+		}
+	}
+
+	Switch_TurnAnimation(eTargetDirection);
+	m_eCurDirection = eTargetDirection;
+}
+
+void CSneak_Troop::Action_Fall()
+{
+	if (false == m_isActive || FALL == m_eCurAction)
+		return; 
+
+	m_eCurDirection = F_DIRECTION::RIGHT;
+	m_eCurAction = FALL;
+
+	if (nullptr != m_pSneakGameManager)
+		m_pSneakGameManager->DetectOff_Tiles(m_DetectedTiles, 3);
+
+	Switch_Animation_ByState();
+}
+
+void CSneak_Troop::Action_Catch()
+{
+	// 안에 있으면 잡는다.
+	if (nullptr != m_pSneakGameManager)
+	{
+		_int iPlayerIndex = m_pSneakGameManager->Get_PlayerTile();
+		if (-1 == iPlayerIndex)
+			return;
+
+		for (_int i = 0; i < 3; ++i)
+		{
+			// 잡았다!
+			if (iPlayerIndex == m_DetectedTiles[i])
+			{
+				m_eCurAction = CATCH;
+				Switch_Animation_ByState();
+				// 과연
+				m_pSneakGameManager->GameOver();
+			}
+		}
+
+	}
+
+
+}
+
+void CSneak_Troop::GameStart()
+{
+	m_eCurDirection = m_eInitDirection;
+	m_iCurTileIndex = m_iInitTileIndex;
+	m_iTargetTileIndex = m_iInitTileIndex;
+
+	_float2 vStartPosition = { 0.f, 0.f };
+	if (nullptr != m_pSneakGameManager)
+		vStartPosition = m_pSneakGameManager->Get_CurStageTilePosition(m_iCurTileIndex);
+	
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vStartPosition.x, vStartPosition.y, 0.f, 1.f));
+
+	m_eCurAction = IDLE;
+
+	Switch_Animation_ByState();
+
+	for (_int i = 0; i < 3; ++i)
+		m_DetectedTiles[i] = -1;
+
+	if (nullptr != m_pSneakGameManager)
+	{
+		m_pSneakGameManager->Detect_Tiles(m_DetectedTiles, 3, m_iCurTileIndex, m_eCurDirection);
+	}
+
+	Event_SetActive(this, true);
+}
+
+void CSneak_Troop::FadeIn(_float _fTimeDelta)
+{
+	if (nullptr != m_pBody)
+		m_pBody->Start_FadeAlphaIn(_fTimeDelta);
+}
+
+void CSneak_Troop::FadeOut(_float _fTimeDelta)
+{
+	if (nullptr != m_pBody)
+		m_pBody->Start_FadeAlphaOut(_fTimeDelta);
+
+}
+
+void CSneak_Troop::Switch_TurnAnimation(F_DIRECTION _eTargetDirection)
+{
+	if (nullptr == m_pBody)
+		return;
+
+	_bool	isReverse = { false };
+	TROOP_ANIM eAnim = FLIP_UD;
+
+	if (F_DIRECTION::LEFT == m_eCurDirection)
+	{
+		if (F_DIRECTION::RIGHT == _eTargetDirection)
+		{
+			eAnim = FLIP_LR;
+		}
+		else if (F_DIRECTION::UP == _eTargetDirection)
+		{
+			eAnim = FLIP_LU;
+		}
+		else if (F_DIRECTION::LEFT == _eTargetDirection)
+		{
+			return;
+		}
+		else if (F_DIRECTION::DOWN == _eTargetDirection)
+		{
+			eAnim = FLIP_LD;
+		}
+	}
+	else if (F_DIRECTION::RIGHT == m_eCurDirection)
+	{
+		if (F_DIRECTION::RIGHT == _eTargetDirection)
+		{
+			return;
+		}
+		else if (F_DIRECTION::UP == _eTargetDirection)
+		{
+			eAnim = FLIP_RU;
+		}
+		else if (F_DIRECTION::LEFT == _eTargetDirection)
+		{
+			eAnim = FLIP_LR;
+			isReverse = true;
+		}
+		else if (F_DIRECTION::DOWN == _eTargetDirection)
+		{
+			eAnim = FLIP_RD;
+		}
+	}
+	else if (F_DIRECTION::UP == m_eCurDirection)
+	{
+		if (F_DIRECTION::RIGHT == _eTargetDirection)
+		{
+			eAnim = FLIP_UR;
+		}
+		else if (F_DIRECTION::UP == _eTargetDirection)
+		{
+			return;
+		}
+		else if (F_DIRECTION::LEFT == _eTargetDirection)
+		{
+			eAnim = FLIP_LU;
+			isReverse = true;
+		}
+		else if (F_DIRECTION::DOWN == _eTargetDirection)
+		{
+			eAnim = FLIP_UD;
+		}
+	}
+	else if (F_DIRECTION::DOWN == m_eCurDirection)
+	{
+		if (F_DIRECTION::RIGHT == _eTargetDirection)
+		{
+			eAnim = FLIP_DR;
+		}
+		else if (F_DIRECTION::UP == _eTargetDirection)
+		{
+			eAnim = FLIP_DU;
+		}
+		else if (F_DIRECTION::LEFT == _eTargetDirection)
+		{
+			eAnim = FLIP_LD;
+			isReverse = true;
+		}
+		else if (F_DIRECTION::DOWN == _eTargetDirection)
+		{
+			return;
+		}
+	}
+
+	m_pBody->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorSet(1.0f, 0.f, 0.f, 0.f));
+	m_pBody->Set_ReverseAnimation(isReverse);
+	m_pBody->Switch_Animation(eAnim);
+
+
+	m_eCurAction = TURN;
+}
+
 void CSneak_Troop::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
+	if (TURN == m_eCurAction)
+	{
+		if (nullptr == m_pBody)
+			return;
+		
+		m_eCurAction = IDLE;
+		Switch_Animation_ByState();
+
+		// Tile Detction;
+		if (nullptr != m_pSneakGameManager)
+			m_pSneakGameManager->Detect_Tiles(m_DetectedTiles, 3, m_iCurTileIndex, m_eCurDirection);
+
+	}
+	else if (FALL == m_eCurAction)
+	{
+		Event_SetActive(this, false);
+	}
 }
 
 void CSneak_Troop::Switch_Animation_ByState()
@@ -84,6 +359,7 @@ void CSneak_Troop::Switch_Animation_ByState()
 	if (nullptr == m_pBody)
 		return;
 
+	m_pBody->Set_ReverseAnimation(false);
 	_vector vRight = { 1.f, 0.f, 0.f, 0.f };
 
 	if (IDLE == m_eCurAction)
@@ -113,19 +389,76 @@ void CSneak_Troop::Switch_Animation_ByState()
 		else
 			m_pBody->Switch_Animation(ALERT_RIGHT);		
 	}
-	// TODO :  RIGHT 설정에 대한 추가적인 작업
-	else if (TURN == m_eCurAction)
-	{
-		if (F_DIRECTION::UP == m_eCurDirection)
-			m_pBody->Switch_Animation(FLIP_UP);
-		else if (F_DIRECTION::DOWN == m_eCurDirection)
-			m_pBody->Switch_Animation(FLIP_DOWN);
-		else
-			m_pBody->Switch_Animation(FLIP_RIGHT);
-	}
 	else if (FALL == m_eCurAction)
 	{
 		m_pBody->Switch_Animation(FALL_DOWN);
+	}
+
+	if (F_DIRECTION::LEFT == m_eCurDirection)
+		vRight = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
+
+	m_pBody->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, vRight);
+}
+
+void CSneak_Troop::Do_Action(_float _fTimeDelta)
+{
+	switch (m_eCurAction)
+	{
+	case MOVE:
+		Dir_Move(_fTimeDelta);
+		break;
+	case IDLE:
+		break;
+	case TURN:
+		break;
+	case CATCH:
+		break;
+	case FALL:
+		break;
+	}
+}
+
+void CSneak_Troop::Dir_Move(_float _fTimeDelta)
+{
+	_vector vDir = { 0.f, 0.f, 0.f, 0.f };
+
+	switch (m_eCurDirection)
+	{
+	case F_DIRECTION::LEFT:
+		vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
+		break;
+	case F_DIRECTION::RIGHT:
+		vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+		break;
+	case F_DIRECTION::UP:
+		vDir = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+		break;
+	case F_DIRECTION::DOWN:
+		vDir = XMVectorSet(0.f, -1.f, 0.f, 0.f);
+		break;
+	default:
+		break;
+	}
+
+	Move(vDir * 1000.f, _fTimeDelta);
+
+	_vector vPosition = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+	_vector vTarget = XMVectorSetW(XMLoadFloat2(&m_vTargetPosition), 1.f);
+
+	if (8.f > XMVectorGetX(XMVector3Length(vPosition - vTarget)))
+	{
+		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vTarget);
+		m_eCurAction = IDLE;
+
+		Switch_Animation_ByState();
+
+
+		m_pSneakGameManager->Reach_Destination(m_iCurTileIndex, m_iTargetTileIndex);
+		m_iCurTileIndex = m_iTargetTileIndex;
+
+		// Tile Detction;
+		if (nullptr != m_pSneakGameManager)
+			m_pSneakGameManager->Detect_Tiles(m_DetectedTiles, 3, m_iCurTileIndex, m_eCurDirection);
 	}
 }
 
@@ -159,9 +492,9 @@ HRESULT CSneak_Troop::Ready_PartObjects()
 	m_pBody->Set_AnimationLoop(COORDINATE_2D, MOVE_DOWN, false);
 	m_pBody->Set_AnimationLoop(COORDINATE_2D, MOVE_RIGHT, false);
 	m_pBody->Set_AnimationLoop(COORDINATE_2D, MOVE_UP, false);
-	m_pBody->Set_AnimationLoop(COORDINATE_2D, FLIP_DOWN, false);
-	m_pBody->Set_AnimationLoop(COORDINATE_2D, FLIP_RIGHT, false);
-	m_pBody->Set_AnimationLoop(COORDINATE_2D, FLIP_UP, false);
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, FLIP_UD, false);
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, FLIP_LR, false);
+	m_pBody->Set_AnimationLoop(COORDINATE_2D, FLIP_DU, false);
 	m_pBody->Set_AnimationLoop(COORDINATE_2D, ALERT_DOWN, false);
 	m_pBody->Set_AnimationLoop(COORDINATE_2D, ALERT_RIGHT, false);
 	m_pBody->Set_AnimationLoop(COORDINATE_2D, ALERT_UP, false);

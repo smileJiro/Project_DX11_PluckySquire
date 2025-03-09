@@ -40,38 +40,33 @@ HRESULT CSneak_Tile::Initialize(void* _pArg)
 	}
 	m_vTilePosition = _float2(pDesc->tTransform2DDesc.vInitialPosition.x, pDesc->tTransform2DDesc.vInitialPosition.y);
 
-
 	return S_OK;
 }
 
 
 void CSneak_Tile::Interact()
 {
-	if (CLOSE == m_eCurState)
-	{
-		m_eCurState = OPEN;
-	}
-	else if (OPEN == m_eCurState)
-	{
-		m_eCurState = CLOSE;
-	}
+	//if (CLOSE == m_eCurState)
+	//{
+	//	m_eCurState = OPEN;
+	//}
+	//else if (OPEN == m_eCurState)
+	//{
+	//	m_eCurState = CLOSE;
+	//}
 
 	Flip();
 }
 
-void CSneak_Tile::FadeOut()
-{
-	Start_FadeAlphaOut();
-}
 
-void CSneak_Tile::Restart()
-{
-	if (OPEN == m_eCurState)
-	{
-		m_eCurState = CLOSE;
-		Flip();
-	}
-}
+//void CSneak_Tile::Restart()
+//{
+//	if (CLOSE == m_eCurState)
+//	{
+//		m_eCurState = CLOSE;
+//		Flip();
+//	}
+//}
 
 
 void CSneak_Tile::Free()

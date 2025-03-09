@@ -14,6 +14,7 @@
 #include "Sneak_Default_Tile.h"
 #include "Sneak_MapObject.h"
 #include "Sneak_InteractObject.h"
+#include "Sneak_Troop.h"
 #include "Pip_Player.h"
 
 CSection_2D_MiniGame_Pip::CSection_2D_MiniGame_Pip(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -259,7 +260,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 						InteractDesc._iFlipAnim1End = 1;
 						InteractDesc._iFlipAnim2 = 3;
 						InteractDesc._iFlipAnim2End = 2;
-						
+
 					}
 					// 스위치
 					else if (CSneak_InteractObject::SWITCH == eType)
@@ -277,7 +278,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 						InteractDesc._iFlipAnim2 = 0;
 						InteractDesc._iFlipAnim2End = 2;
 					}
-					// TODO: 더 추가
+					// TODO: 문 추가
 
 				}
 
@@ -311,9 +312,70 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 		}
 		CMinigame_Sneak::GetInstance()->Register_Interacts(InteractObjects);
 	}
-	
+
 
 #pragma endregion INTERACT_OBJECT
+
+#pragma region TROOPS
+	{
+		const json* pjsonTroopInfo = m_pGameInstance->Find_Json_InLevel(TEXT("SneakTroops"), LEVEL_CHAPTER_8);
+
+		if (nullptr == pjsonTroopInfo)
+			return E_FAIL;
+
+		CSneak_Troop::SNEAK_TROOP_DESC TroopDesc = {};
+		CSneak_Troop* pTroopOut = { nullptr };
+		_int iStageSize = pjsonTroopInfo->size();
+		vector<vector<CSneak_Troop*>> StageTroops;
+
+		for (_int i = 0; i < iStageSize; ++i)
+		{
+			vector<CSneak_Troop*> Troops;
+
+			for (_int j = 0; j < (*pjsonTroopInfo)[i].size(); ++j)
+			{
+				TroopDesc.iCurLevelID = LEVEL_CHAPTER_8;
+
+				// Tile에 따른 위치 설정.
+				if ((*pjsonTroopInfo)[i][j].contains("TileIndex"))
+				{
+					TroopDesc._iTileIndex = (*pjsonTroopInfo)[i][j]["TileIndex"];
+				}
+
+				_float2 vPosition = CMinigame_Sneak::GetInstance()->Get_TilePosition(i, TroopDesc._iTileIndex);
+
+				TroopDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
+				TroopDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
+
+				if ((*pjsonTroopInfo)[i][j].contains("Model"))
+				{
+					// TROOP Or SENTRY TROOP
+				}
+
+				if ((*pjsonTroopInfo)[i][j].contains("Moveable"))
+					TroopDesc._isMoveable = (*pjsonTroopInfo)[i][j]["Moveable"];
+				if ((*pjsonTroopInfo)[i][j].contains("Direction"))
+					TroopDesc._eCurDirection = (*pjsonTroopInfo)[i][j]["Direction"];
+				if ((*pjsonTroopInfo)[i][j].contains("TurnDirection"))
+					TroopDesc._eTurnDirection = (*pjsonTroopInfo)[i][j]["TurnDirection"];
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakTroop"), LEVEL_CHAPTER_8
+					, TEXT("Layer_Sneak_Troops"), reinterpret_cast<CGameObject**>(&pTroopOut), &TroopDesc)))
+					return E_FAIL;
+
+				if (nullptr != pTroopOut)
+				{
+					Add_GameObject_ToSectionLayer(pTroopOut, SECTION_PIP_MOVEOBJECT);
+					Troops.push_back(pTroopOut);
+				}
+			}
+
+			StageTroops.push_back(Troops);
+		}
+		CMinigame_Sneak::GetInstance()->Register_Troops(StageTroops);
+	}
+
+#pragma endregion TROOPS
 
 
 #pragma region PIP_PLAYER

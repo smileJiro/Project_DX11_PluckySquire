@@ -10,7 +10,7 @@ public:
 	{ DEFAULT_CLOSE, DEFAULT_CLOSED, DEFAULT_OPENED, DEFAULT_OPEN,
 		TRAP_CLOSE, TRAP_CLOSED, TRAP_OPEN, TRAP_OPENDED, DEFAULT_RED, DEFAULT_YELLOW, TRAP_YELLOW };
 	enum SNEAK_TILE_TYPE { DEFAULT, TRAP };
-	enum TILE_STATE { CLOSE, OPEN };
+	enum TILE_STATE { CLOSE, OPEN, YELLOW, RED };
 	typedef struct tagSneakTileDesc : public CSneak_FlipObject::FLIPOBJECT_DESC
 	{
 		_int	iTileIndex;
@@ -24,6 +24,14 @@ protected:
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
+	
+public:
+	virtual void			Restart() = 0;
+	void					Interact();
+	
+	void					Add_Detector() { ++m_iDetectorCount; Active_Detection(); }
+	void					Delete_Dector() { --m_iDetectorCount; Active_Detection(); }
+
 
 
 public:
@@ -39,17 +47,16 @@ public:
 	_float2		 Get_TilePosition() const { return m_vTilePosition; }
 	TILE_STATE	 Get_TileState() const { return m_eCurState; }
 
-	void		 Interact();
-	void		 FadeOut();
-	void		 Restart();
 
 protected:
 	SNEAK_TILE_TYPE			m_eTileType = { DEFAULT };
 	TILE_STATE				m_eCurState = { CLOSE };
+	_int					m_iDetectorCount = { 0 };
 	_int					m_iTileIndex = { 0 };
-	_int			m_AdjacentTiles[(_uint)(F_DIRECTION::F_DIR_LAST)] = { -1, -1, -1, -1 };
-	_float2			m_vTilePosition = { 0.f, 0.f };
+	_int					m_AdjacentTiles[(_uint)(F_DIRECTION::F_DIR_LAST)] = { -1, -1, -1, -1 };
+	_float2					m_vTilePosition = { 0.f, 0.f };
 
+	virtual void			Active_Detection() = 0;
 
 public:
 	virtual void Free() override;

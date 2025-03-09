@@ -1,9 +1,8 @@
 #pragma once
 #include "ModelObject.h"
-#include "Flippable.h"
 
 BEGIN(Client)
-class CSneak_FlipObject : public CModelObject, CFlippable
+class CSneak_FlipObject : public CModelObject
 {
 public:
 	typedef struct tagFlipObject : public CModelObject::MODELOBJECT_DESC
@@ -26,6 +25,13 @@ public:
 public:
 	virtual void On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx);
 	virtual void Flip();
+
+protected:
+	_int	m_iFlipAnim1 = { 0 };
+	_int	m_iFlipAnim1End = { 0 };
+	_int	m_iFlipAnim2 = { 0 };
+	_int	m_iFlipAnim2End = { 0 };
+	_int	m_iCurAnim = { 0 };
 
 public:
 	static CSneak_FlipObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

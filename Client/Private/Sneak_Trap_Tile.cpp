@@ -25,11 +25,56 @@ HRESULT CSneak_Trap_Tile::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
+	Register_OnAnimEndCallBack(bind(&CSneak_Trap_Tile::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 
 	m_eTileType = TRAP;
 
 
 	return S_OK;
+}
+
+void CSneak_Trap_Tile::Restart()
+{
+	m_eCurState = CLOSE;
+	m_iDetectorCount = 0;
+
+	m_iCurAnim = TRAP_CLOSED;
+	Switch_Animation(TRAP_CLOSED);
+}
+
+void CSneak_Trap_Tile::Active_Detection()
+{
+	if (OPEN == m_eCurState || TRAP_OPEN == m_iCurAnim || TRAP_OPENDED == m_iCurAnim)
+		return;
+
+	// TODO: RED Detection 魄窜
+	if (m_eCurState != YELLOW && 0 < m_iDetectorCount)
+	{
+		m_eCurState = YELLOW;
+		//m_iCurAnim = DEFAULT_CLOSED;
+		Switch_Animation(TRAP_YELLOW);
+	}
+	else if (m_eCurState == YELLOW && 0 >= m_iDetectorCount)
+	{
+		m_eCurState = CLOSE;
+		Switch_Animation(TRAP_CLOSED);
+	}
+}
+
+void CSneak_Trap_Tile::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+	if (TRAP_CLOSE == iAnimIdx)
+	{
+		m_eCurState = CLOSE;
+		// TODO : Sneak_Manager 贸府
+	}
+	else if (TRAP_OPEN == iAnimIdx)
+	{
+		m_eCurState = OPEN;
+		// TODO : Sneak_Manager 贸府
+	}
+
+	__super::On_AnimEnd(_eCoord, iAnimIdx);
 }
 
 

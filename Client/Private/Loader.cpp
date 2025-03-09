@@ -130,6 +130,7 @@
 #include "Sneak_MapObject.h"
 #include "Sneak_InteractObject.h"
 #include "Pip_Player.h"
+#include "Sneak_Troop.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -1584,6 +1585,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 
 	/* Monster */
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakTroop"),
+		CSneak_Troop::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* Etc */
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakDefaultTile"),
@@ -1630,6 +1634,12 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakInteracts.json"), TEXT("SneakInteracts"), _eLoadLevelID)))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakTroops.json"), TEXT("SneakTroops"), _eLoadLevelID)))
+		return E_FAIL;
+
+
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 	m_isFinished = true;

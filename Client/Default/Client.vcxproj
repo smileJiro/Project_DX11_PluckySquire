@@ -218,7 +218,6 @@
     <ClInclude Include="..\Public\CyberPlayerBullet.h" />
     <ClInclude Include="..\Public\DefenderPlayer.h" />
     <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
-    <ClInclude Include="..\public\Flippable.h" />
     <ClInclude Include="..\public\FatherGame.h" />
     <ClInclude Include="..\public\FatherGame_Progress.h" />
     <ClInclude Include="..\public\FatherGame_Progress_Start.h" />
@@ -543,7 +542,6 @@
     <ClCompile Include="..\Private\CyberPlayerBullet.cpp" />
     <ClCompile Include="..\Private\DefenderPlayer.cpp" />
     <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
-    <ClCompile Include="..\private\Flippable.cpp" />
     <ClCompile Include="..\private\FatherGame.cpp" />
     <ClCompile Include="..\private\FatherGame_Progress.cpp" />
     <ClCompile Include="..\private\FatherGame_Progress_Start.cpp" />

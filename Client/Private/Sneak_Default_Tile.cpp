@@ -27,9 +27,56 @@ HRESULT CSneak_Default_Tile::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
+	Register_OnAnimEndCallBack(bind(&CSneak_Default_Tile::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+
+
 	m_eTileType = DEFAULT;
 	
     return S_OK;
+}
+
+void CSneak_Default_Tile::Restart()
+{
+	m_eCurState = CLOSE;
+	m_iDetectorCount = 0;
+
+	m_iCurAnim = DEFAULT_CLOSED;
+	Switch_Animation(DEFAULT_CLOSED);
+}
+
+void CSneak_Default_Tile::Active_Detection()
+{
+	if (OPEN == m_eCurState)
+		return;
+
+	// TODO: RED Detection 魄窜
+	if (m_eCurState != YELLOW && 0 < m_iDetectorCount)
+	{
+		m_eCurState = YELLOW;
+		//m_iCurAnim = DEFAULT_CLOSED;
+		Switch_Animation(DEFAULT_YELLOW);
+	}
+	else if (m_eCurState == YELLOW && 0 >= m_iDetectorCount)
+	{
+		m_eCurState = CLOSE;
+		Switch_Animation(DEFAULT_CLOSED);
+	}
+}
+
+void CSneak_Default_Tile::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+	if (DEFAULT_CLOSE == iAnimIdx)
+	{
+		m_eCurState = CLOSE;
+		// TODO : Sneak_Manager 贸府
+	}
+	else if (DEFAULT_OPEN == iAnimIdx)
+	{
+		m_eCurState = OPEN;		
+		// TODO : Sneak_Manager 贸府
+	}
+
+	__super::On_AnimEnd(_eCoord, iAnimIdx);
 }
 
 CSneak_Default_Tile* CSneak_Default_Tile::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

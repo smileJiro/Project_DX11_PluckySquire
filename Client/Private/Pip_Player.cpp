@@ -66,7 +66,7 @@ void CPip_Player::Priority_Update(_float _fTimeDelta)
 void CPip_Player::Update(_float _fTimeDelta)
 {
 	if (false == Is_PlayerInputBlocked())
-		Key_Input();
+		Key_Input(_fTimeDelta);
 
 	Do_Action(_fTimeDelta);
 
@@ -103,6 +103,8 @@ void CPip_Player::Restart(_float2 _vStartPosition)
 	m_eInputDirection = F_DIRECTION::F_DIR_LAST;
 
 	Switch_Animation_ByState();
+
+	m_pBody->Start_FadeAlphaIn(0.5f);
 }
 
 void CPip_Player::Action_Move(_int _iTileIndex, _float2 _vPosition)
@@ -137,6 +139,16 @@ void CPip_Player::Action_Flip()
 	if (F_DIRECTION::F_DIR_LAST != m_eInputDirection)
 		m_eCurDirection = m_eInputDirection;
 	m_eInputDirection = F_DIRECTION::F_DIR_LAST;
+
+	Switch_Animation_ByState();
+}
+
+void CPip_Player::Action_Caught()
+{
+	m_eCurAction = CAUGHT;
+	m_eInputDirection = F_DIRECTION::F_DIR_LAST;
+
+	m_pBody->Start_FadeAlphaOut(0.5f);
 
 	Switch_Animation_ByState();
 }
@@ -202,6 +214,17 @@ void CPip_Player::Switch_Animation_ByState()
 	m_pBody->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, vRight);
 }
 
+
+void CPip_Player::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+	if (FLIP == m_eCurAction)
+	{
+		m_eCurAction = IDLE;
+	}
+
+	Switch_Animation_ByState();
+}
+
 void CPip_Player::Do_Action(_float _fTimeDelta)
 {
 	switch (m_eCurAction)
@@ -260,30 +283,32 @@ void CPip_Player::Dir_Move(_float _fTimeDelta)
 
 }
 
-void CPip_Player::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+void CPip_Player::Key_Input(_float _fTimeDelta)
 {
-	if (FLIP == m_eCurAction)
-	{
-		m_eCurAction = IDLE;
-	}
-
-	Switch_Animation_ByState();
-}
-
-void CPip_Player::Key_Input()
-{		
-	if (m_pSneakGameManager->Is_InputTime()/* &&  F_DIRECTION::F_DIR_LAST != m_eInputDirection || MOVE == m_eCurAction*/)
+#ifdef _DEBUG
+	if (KEY_DOWN(KEY::W) || KEY_DOWN(KEY::S) || KEY_DOWN(KEY::A) || KEY_DOWN(KEY::D))
+		cout << m_pSneakGameManager->Get_InputTime() << endl;
+#endif
+	if (false == (m_pSneakGameManager->Is_InputTime(_fTimeDelta)) || F_DIRECTION::F_DIR_LAST != m_eInputDirection)/* || MOVE == m_eCurAction*/
 		return;
 
 	if (KEY_DOWN(KEY::W))
+	{
 		m_eInputDirection = F_DIRECTION::UP;
+	}
 	else if (KEY_DOWN(KEY::S))
+	{
 		m_eInputDirection = F_DIRECTION::DOWN;
+	}
 	else if (KEY_DOWN(KEY::A))
+	{
 		m_eInputDirection = F_DIRECTION::LEFT;
+	}
 	else if (KEY_DOWN(KEY::D))
+	{
 		m_eInputDirection = F_DIRECTION::RIGHT;
 
+	}
 }
 
 HRESULT CPip_Player::Ready_Components()

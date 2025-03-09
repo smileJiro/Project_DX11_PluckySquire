@@ -41,7 +41,6 @@ public:
 	
 public:
 	void	Interact();
-	void	FadeOut();
 	void	Restart();
 
 public:

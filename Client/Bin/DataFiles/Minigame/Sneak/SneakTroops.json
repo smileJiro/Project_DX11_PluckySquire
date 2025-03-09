@@ -1,0 +1,18 @@
+[
+    [
+        {
+            "Model": "TROOP",
+            "TileIndex": 10,
+            "Moveable": false,
+            "Direction": "F_UP",
+            "TurnDirection": "F_LEFT"
+        },
+        {
+            "Model": "TROOP",
+            "TileIndex": 15,
+            "Moveable": true,
+            "Direction": "F_UP",
+            "TurnDirection": "F_DOWN"
+        }
+    ]    
+]

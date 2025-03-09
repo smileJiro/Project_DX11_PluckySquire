@@ -12,6 +12,7 @@ BEGIN(Client)
 class CSneak_Tile;
 class CSneak_MapObject;
 class CSneak_InteractObject;
+class CSneak_Troop;
 
 class CMinigame_Sneak : public CBase
 {
@@ -28,26 +29,34 @@ public:
 
 public:
 	void	Reach_Destination(_int _iPreIndex, _int _iDestIndex);
-	//void	Restart_Game();
+	void	Restart_Game();
 	void	GameOver();		// 
 		
 public:
 	HRESULT Register_Tiles(vector<vector<CSneak_Tile*>>& _Tiles);
 	HRESULT Register_Objects(vector<vector<CSneak_MapObject*>>& _Objects);
 	HRESULT Register_Player(class CPip_Player* _pPlayer);
-	HRESULT Register_Interacts(vector<vector<CSneak_InteractObject*>> _Interacts);
+	HRESULT Register_Interacts(vector<vector<CSneak_InteractObject*>>& _Interacts);
+	HRESULT Register_Troops(vector<vector<CSneak_Troop*>>& _Troops);
 
 public:
-	_bool							Is_InputTime() { return (0 <= m_iNowStage && 0.4f <= m_fAccTime); }
+#ifdef _DEBUG
+	_float							Get_InputTime() const { return m_fAccTime; }
+#endif
+	_bool							Is_InputTime(_float _fTimeDelta) { if (0 <= m_iCurStage && 0.4f <= m_fAccTime + _fTimeDelta) return true; return false; }
+	_int							Get_NextTile(_int _iCurTile, F_DIRECTION _eDirection);
 	_float2							Get_TilePosition(_int _iStage, _int _iIndex);
+	_float2							Get_CurStageTilePosition(_int _iIndex);
 	class CSneak_Tile*				Get_Tile(_int _iStage, _int _iIndex);
 	class CSneak_InteractObject*	Get_InteractObject(_int _iStage, _int _iIndex);
-
-
+	void							Detect_Tiles(_Inout_ _int* _pTiles, _int _iDetectCount, _int _iCurIndex, F_DIRECTION _eDirection);
+	void							DetectOff_Tiles(_Inout_ _int* _pTiles, _int _iDetectCount);
+	_int							Get_PlayerTile();
 
 private:	
 	SNEAK_GAME_STATE m_eGameState = { NONE };
-	_int	m_iNowStage = -1;
+	_bool	m_isAction = { false };
+	_int	m_iCurStage = -1;
 	_int	m_iFlipTime = 0;
 	_float	m_fAccTime = 0.f;
 
@@ -58,15 +67,18 @@ private:
 	vector<vector<CSneak_Tile*>> m_StageTiles;
 	vector<vector<CSneak_MapObject*>> m_StageObjects;
 	vector<vector<CSneak_InteractObject*>> m_StageInteracts;
+	vector<vector<CSneak_Troop*>> m_StageTroops;
 
 private:
 	void	Start_Stage();
 
-	void	Before_Action();
+	void	After_Action();
 	void	Action();
 	void	Action_Player();
+	void	Action_Troops();
 
-	_bool	Is_Moveable(_int _iTileIndex);
+	_bool	Is_Troops(_int _iTileIndex);
+	_bool	Is_MoveableTile(_int _iTileIndex);
 	_bool	Is_Blocked(_int _iCurIndex, _int _iNextIndex, F_DIRECTION _eMoveDir, _Out_ class CSneak_InteractObject** _ppOutObject);
 
 public:

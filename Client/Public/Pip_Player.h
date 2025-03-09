@@ -50,11 +50,12 @@ public:
 	void Action_Move(_int _iTileIndex, _float2 _vPosition);
 	void Action_None();
 	void Action_Flip();
+	void Action_Caught();
 
 	void Switch_Animation_ByState();
+
 public:
-	void Do_Action(_float _fTimeDelta);
-	void Dir_Move(_float _fTimeDelta);
+
 
 
 public:
@@ -74,7 +75,11 @@ private:
 	PIP_ACTION	  m_eCurAction = IDLE;
 
 private:
-	void	Key_Input();
+	void Do_Action(_float _fTimeDelta);
+	void Dir_Move(_float _fTimeDelta);
+
+	void	Key_Input(_float _fTimeDelta);
+
 
 	HRESULT	Ready_Components();
 	HRESULT	Ready_PartObjects();

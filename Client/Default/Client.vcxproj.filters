@@ -1589,9 +1589,6 @@
     <ClInclude Include="..\public\Sneak_InteractObject.h">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_InteractObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Flippable.h">
-      <Filter>02.GameObjects\MiniGameObjects\Sneak\FlipObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Sneak_FlipObject.h">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\FlipObject</Filter>
     </ClInclude>
@@ -2521,9 +2518,6 @@
     </ClCompile>
     <ClCompile Include="..\private\Sneak_InteractObject.cpp">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_InteractObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Flippable.cpp">
-      <Filter>02.GameObjects\MiniGameObjects\Sneak\FlipObject</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Sneak_FlipObject.cpp">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\FlipObject</Filter>
