@@ -187,6 +187,8 @@
 #include "Magic_Hand.h"
 #include "Magic_Hand_Body.h"
 #include "Effect2D.h"
+#include "Room_Door.h"
+#include "Room_Door_Body.h"
 
 // Father Game 
 #include "PortalLocker.h" 
@@ -906,6 +908,16 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_EffectBeam"),
 		CEffect_Beam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/* For. Prototype_GameObject_Room_Door */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Room_Door"),
+		CRoom_Door::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Room_Door_Body"),
+		CRoom_Door_Body::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 #pragma endregion
 
 #pragma region Static - Effect Load
@@ -1149,6 +1161,9 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 		if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Small.mchc")))
 			return E_FAIL;
+
+		/*if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment.mchc")))
+			return E_FAIL;*/
 
 	#pragma endregion
 
@@ -1869,6 +1884,7 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 	{
 	case LEVEL_STATIC:
 		str3DMapProtoJsonName = L"Room_Enviroment_Small.json";
+		//str3DMapProtoJsonName = L"Room_Enviroment.json";
 		strChapterName = L"Static";
 		isStatic2DLoad = false;
 		break;

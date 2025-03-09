@@ -412,6 +412,11 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 		_float3 vPos = { 5.f, 0.35f, -3.f };
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
 	}
+
+	if (KEY_DOWN(KEY::L)) {
+		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter6_Intro"));
+		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
+	}
 }
 
 HRESULT CLevel_Chapter_06::Render()

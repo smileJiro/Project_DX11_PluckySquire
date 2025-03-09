@@ -640,6 +640,12 @@
     <Filter Include="05.MiniGames\FatherGame\Object\ZetPack_Child">
       <UniqueIdentifier>{3c0763fb-8635-4e97-b386-f99444eb1a98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Room_Door">
+      <UniqueIdentifier>{f3af74e8-a0bf-4968-b73c-a84dd4becc16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Room_Door\Body">
+      <UniqueIdentifier>{d8713437-96d1-4389-a0bb-53ac902ee48e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1568,6 +1574,12 @@
     <ClInclude Include="..\public\ZetPack_Child.h">
       <Filter>05.MiniGames\FatherGame\Object\ZetPack_Child</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Room_Door.h">
+      <Filter>02.GameObjects\Room_Door</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Room_Door_Body.h">
+      <Filter>02.GameObjects\Room_Door\Body</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2482,6 +2494,12 @@
     </ClCompile>
     <ClCompile Include="..\private\ZetPack_Child.cpp">
       <Filter>05.MiniGames\FatherGame\Object\ZetPack_Child</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Room_Door.cpp">
+      <Filter>02.GameObjects\Room_Door</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Room_Door_Body.cpp">
+      <Filter>02.GameObjects\Room_Door\Body</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

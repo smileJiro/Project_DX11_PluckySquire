@@ -648,7 +648,7 @@ void CBook::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 				m_isPlayerAbove = true;
 
 				// Player가 책 위에 있을 때 Camera Arm 조정하기
-				CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.2f, XMVectorSet(0.0f, 0.9514f, -0.3080f, 0.f), EASE_IN_OUT);
+				//CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.2f, XMVectorSet(0.0f, 0.9514f, -0.3080f, 0.f), EASE_IN_OUT);
 				//cout << "Enter" << endl;
 			}
 		}
@@ -675,9 +675,9 @@ void CBook::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 				m_isPlayerAbove = false;
 
 				// Player가 책 위에서 내려갈 때 Camera Arm 조정하기
-				CCamera_Target* pTarget = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+			/*	CCamera_Target* pTarget = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
 				CCamera_Manager::GetInstance()->Set_NextArmData(pTarget->Get_DefaultArm_Tag(), 0);
-				CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+				CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);*/
 				//cout << "Exit" << endl;
 			}
 		}
