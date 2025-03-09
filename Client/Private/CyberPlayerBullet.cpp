@@ -50,12 +50,11 @@ HRESULT CCyberPlayerBullet::Initialize(void* _pArg)
     /* 사용하려는 Shape의 형태를 정의 */
     ActorDesc.ShapeDatas.resize(1);
 
-	SHAPE_CAPSULE_DESC tBodyShapeDesc = {};
+	SHAPE_SPHERE_DESC tBodyShapeDesc = {};
      tBodyShapeDesc.fRadius = 0.25f;
-	 tBodyShapeDesc.fHalfHeight = 1.0f;
 	SHAPE_DATA tBodyShapeData = {};
     tBodyShapeData.pShapeDesc = &tBodyShapeDesc;       
-    tBodyShapeData.eShapeType = SHAPE_TYPE::CAPSULE;   
+    tBodyShapeData.eShapeType = SHAPE_TYPE::SPHERE;   
     tBodyShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;  
     tBodyShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     tBodyShapeData.isTrigger = false;                  

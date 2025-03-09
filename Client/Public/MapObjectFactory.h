@@ -22,7 +22,7 @@ BEGIN(Client)
 class CMapObjectFactory {
 public:
 	template<typename T, typename std::enable_if<std::is_base_of<Client::CMapObject, T>::value, _int>::type = 0>
-	static T* Bulid_2DObject(LEVEL_ID _eLevelID, CGameInstance* _pGameInstance, HANDLE& _hFile)
+	static T* Bulid_2DObject(LEVEL_ID _eLevelID, CGameInstance* _pGameInstance, HANDLE& _hFile, _bool _isMainThread = true)
 	{
 		DWORD	dwByte(0);
 
@@ -110,16 +110,17 @@ public:
 	}
 
 	template<typename T, typename std::enable_if<std::is_base_of<Client::CMapObject, T>::value, _int>::type = 0>
-	static T* Bulid_3DObject(LEVEL_ID _eLevelID, CGameInstance* _pGameInstance, HANDLE& _hFile, _bool _isCulling = true, _bool _isActorToScene = true, _bool _isStatic = false)
+	static T* Bulid_3DObject(LEVEL_ID _eLevelID, CGameInstance* _pGameInstance, HANDLE& _hFile, _bool _isCulling = true, _bool _isMainThread = true, _bool _isStatic = false)
 	{
 		DWORD	dwByte(0);
 
 		_char		szSaveMeshName[MAX_PATH];
 		_float4x4	vWorld = {};
-
-
+		_bool isCulling = false;
+		// 기본 정보 로드 - 메쉬 이름, 월드 매트릭스, 컬링 여부
 		ReadFile(_hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 		ReadFile(_hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
+		ReadFile(_hFile, &isCulling, sizeof(_bool), &dwByte, nullptr);
 
 
 		T::MAPOBJ_3D_DESC NormalDesc = {};
@@ -129,9 +130,10 @@ public:
 			L"Prototype_Component_Shader_VtxMesh"
 			);
 		NormalDesc.iModelPrototypeLevelID_3D = _isStatic ? LEVEL_STATIC : NormalDesc.iModelPrototypeLevelID_3D;
-		NormalDesc.isCulling = _isCulling;
 		NormalDesc.Build_3D_Transform(vWorld);
-		NormalDesc.isAddActorToScene = _isActorToScene;
+		NormalDesc.isAddActorToScene = _isMainThread;
+		// 일괄적으로 컬링을 끄는 세이브데이터는 꺼주고, 아니면 각 객체마다 차등 적용하자. 
+		NormalDesc.isCulling = false == _isCulling ? false : isCulling; 
 		CBase* pBase = nullptr;
 
 		// 1 스케치스페이스 사용여부?
@@ -189,23 +191,17 @@ public:
 						reinterpret_cast<void*>(&NormalDesc));
 			}
 				break;
-				// Sksp
-			case 1 :
-			case 2 :
-			case 3 :
-			case 4 :
-			case 5 :
-			case 6 :
-				{
-					pBase = _pGameInstance->
-						Clone_Prototype(
-							PROTOTYPE::PROTO_GAMEOBJ,
-							LEVEL_STATIC,
-							L"Prototype_GameObject_3DMap_SkspObject",
-							reinterpret_cast<void*>(&NormalDesc));
-				}
-				break;
+			// 0 아니면 다 스케치스페이스.
 			default:
+
+			{
+				pBase = _pGameInstance->
+					Clone_Prototype(
+						PROTOTYPE::PROTO_GAMEOBJ,
+						LEVEL_STATIC,
+						L"Prototype_GameObject_3DMap_SkspObject",
+						reinterpret_cast<void*>(&NormalDesc));
+			}
 				break;
 		}
 
@@ -237,7 +233,7 @@ public:
 				if (nullptr != pBase)
 				{
 					T* pMapObject = static_cast<T*>(pBase);
-					pMapObject->Set_MaterialConstBuffer_Albedo(tColorInfo.iMaterialIndex, tColorInfo.eColorMode, tColorInfo.fDiffuseColor);
+					pMapObject->Set_MaterialConstBuffer_Albedo(tColorInfo.iMaterialIndex, tColorInfo.eColorMode, tColorInfo.fDiffuseColor, _isMainThread);
 				}
 			}
 		}

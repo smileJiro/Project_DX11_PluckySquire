@@ -50,8 +50,10 @@ HRESULT CBarfBug::Initialize(void* _pArg)
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 30.f;
 
-    m_tStat.iHP = 5;
-    m_tStat.iMaxHP = 5;
+
+    pDesc->_tStat.iMaxHP = 5;
+    pDesc->_tStat.iHP = 5;
+    pDesc->_tStat.iDamg = 1;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -603,7 +605,7 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
 
        /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER | OBJECT_GROUP::EXPLOSION;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE | OBJECT_GROUP::MONSTER | OBJECT_GROUP::EXPLOSION | OBJECT_GROUP::DYNAMIC_OBJECT;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;

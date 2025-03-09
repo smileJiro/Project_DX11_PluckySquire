@@ -104,7 +104,7 @@ void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_D
 	}
 }
 
-void CCamera_Target::Add_CustomArm(ARM_DATA _tArmData)
+void CCamera_Target::Set_CustomArmData(ARM_DATA& _tArmData)
 {
 	m_CustomArmData = _tArmData;
 	m_pCurArm->Set_StartInfo();
@@ -167,6 +167,8 @@ void CCamera_Target::Change_Target(const _float4x4* _pTargetWorldMatrix, _float 
 	m_pTargetWorldMatrix = _pTargetWorldMatrix;
 	m_fTargetChangingTime = { _fChangingTime, 0.f };
 	m_isTargetChanged = true;
+
+	m_vStartPos = m_vPreTargetPos;
 }
 
 void CCamera_Target::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
@@ -186,36 +188,6 @@ void CCamera_Target::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
 		m_isUsingFreezeOffset = false;
 }
 
-void CCamera_Target::Turn_AxisY(_float _fTimeDelta)
-{
-	if (false == m_isTurnAxisY)
-		return;
-
-	if (true == m_pCurArm->Turn_AxisY(&m_CustomArmData, _fTimeDelta)) {
-		m_isTurnAxisY = false;
-	}
-}
-
-void CCamera_Target::Turn_AxisRight(_float _fTimeDelta)
-{
-	if (false == m_isTurnAxisRight)
-		return;
-
-	if (true == m_pCurArm->Turn_AxisRight(&m_CustomArmData, _fTimeDelta)) {
-		m_isTurnAxisRight = false;
-	}
-}
-
-void CCamera_Target::Change_Length(_float _fTimeDelta)
-{
-	if (false == m_isChangingLength)
-		return;
-
-	if (true == m_pCurArm->Change_Length(&m_CustomArmData, _fTimeDelta)) {
-		m_isChangingLength = false;
-	}
-}
-
 void CCamera_Target::Start_ResetArm_To_SettingPoint(_float _fResetTime)
 {
 	m_pCurArm->Set_StartInfo();
@@ -223,6 +195,13 @@ void CCamera_Target::Start_ResetArm_To_SettingPoint(_float _fResetTime)
 	Start_Zoom(_fResetTime, (ZOOM_LEVEL)m_ResetArmData.iZoomLevel, EASE_IN);
 	m_eCameraMode = RESET_TO_SETTINGPOINT;
 	m_fResetTime = { _fResetTime, 0.f };
+}
+
+void CCamera_Target::Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType)
+{
+	__super::Start_Changing_ArmVector(_fChangingTime, _vNextArm, _eRatioType);
+
+	m_eCameraMode = DEFAULT;
 }
 
 void CCamera_Target::Switch_CameraView(INITIAL_DATA* _pInitialData)
@@ -285,6 +264,9 @@ void CCamera_Target::Set_InitialData(_wstring _szSectionTag, _uint _iPortalIndex
 		return;
 
 	Set_InitialData(pData);
+
+	// 책 밖으로 나왔을 때, Book 나올 떄 하는 Set Next Arm이 안 먹히게 하기 위해서 추가 
+	m_eCameraMode = DEFAULT;
 }
 
 void CCamera_Target::Set_InitialData(pair<ARM_DATA*, SUB_DATA*>* pData)
@@ -332,6 +314,28 @@ INITIAL_DATA CCamera_Target::Get_InitialData()
 	m_vFreezeOffset = { 0.f, 0.f, 0.f };
 
 	return tData;
+}
+
+_wstring CCamera_Target::Get_DefaultArm_Tag()
+{
+	_wstring szLevelName;
+
+	switch (m_iCurLevelID) {
+	case LEVEL_CHAPTER_2:
+		szLevelName = TEXT("Chapter2_");
+		break;
+	case LEVEL_CHAPTER_4:
+		szLevelName = TEXT("Chapter4_");
+		break;
+	case LEVEL_CHAPTER_6:
+		szLevelName = TEXT("Chapter6_");
+		break;
+	case LEVEL_CHAPTER_8:
+		szLevelName = TEXT("Chapter8_");
+		break;
+	}
+
+	return szLevelName + TEXT("Default");
 }
 
 _bool CCamera_Target::Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID)
@@ -510,7 +514,10 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 	Change_AtOffset(_fTimeDelta);
 
 	Turn_AxisY(_fTimeDelta);
+	Turn_AxisY_Angle(_fTimeDelta);
 	Turn_AxisRight(_fTimeDelta);
+	Turn_AxisRight_Angle(_fTimeDelta);
+	Turn_Vector(_fTimeDelta);
 	Change_Length(_fTimeDelta);
 
 	Change_FreezeOffset(_fTimeDelta);
@@ -550,6 +557,11 @@ void CCamera_Target::Action_SetUp_ByMode()
 		}
 		break;
 		case RETURN_TO_PREARM:
+		{
+
+		}
+		break;
+		case BOSS:
 		{
 
 		}
@@ -646,13 +658,8 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 
 		m_pControllerTransform->Get_Transform()->Set_Look(vLook);
 	}
-	//else {
-	//	if (DEFAULT != m_eCameraMode) {
-	//		_vector vFreezeOffset = -XMLoadFloat3(&m_vPreFreezeOffset);
-	//		_vector vAt = _vTargetPos + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
-	//		m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
-	//	}
-	//}
+
+
 }
 
 void CCamera_Target::Move_To_PreArm(_float _fTimeDelta)
@@ -790,7 +797,7 @@ void CCamera_Target::Switching(_float _fTimeDelta)
 	if (false == m_isInitialData)
 		return;
 
-	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
 
 	if (fRatio >= (1.f - EPSILON)) {
 		_vector vTargetPos;
@@ -1043,6 +1050,10 @@ void CCamera_Target::Reset_To_SettingPoint(_float _fTimeDelta)
 	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
 
 	Look_Target(vTargetPos, _fTimeDelta);
+}
+
+void CCamera_Target::Move_In_BossStage(_float _fTimeDelta)
+{
 }
 
 pair<ARM_DATA*, SUB_DATA*>* CCamera_Target::Find_ArmData(_wstring _wszArmTag)

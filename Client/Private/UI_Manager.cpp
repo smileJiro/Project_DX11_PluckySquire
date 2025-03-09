@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "UI_Manager.h"
 #include "Narration_Manager.h"
+#include "Dialog_Manager.h"
 
 IMPLEMENT_SINGLETON(CUI_Manager)
 
@@ -208,6 +209,16 @@ void CUI_Manager::Pushback_Dialogue(CDialog::DialogData _DialogData)
 	m_DialogDatas.push_back(_DialogData);
 }
 
+void CUI_Manager::Set_PlayNarration(const _wstring& _strid)
+{
+	if (nullptr == m_pNarration)
+		assert(nullptr);
+
+	m_pNarration->CBase::Set_Active(true);
+	wsprintf(m_strNarrationID, _strid.c_str());
+	m_isPlayerNarration = true;
+}
+
 _bool CUI_Manager::isLeft_Right()
 {
 	assert(m_pNarration);
@@ -243,6 +254,18 @@ void CUI_Manager::UI_Update()
 				m_pInteractionE->CBase::Set_Active(true);
 		}
 	}
+
+	if (nullptr != m_pInteractionHeart)
+	{
+		if (false == m_pInteractionHeart->CBase::Is_Active())
+		{
+			if (true == m_pInteractionHeart->Get_InteractionHeartRender())
+				return;
+			else
+				m_pInteractionHeart->CBase::Set_Active(true);
+		}
+	}
+
 
 	//if (true == CNarration_Manager::GetInstance()->Get_Playing())
 	//{
@@ -309,6 +332,12 @@ HRESULT CUI_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iN
 	{
 		Safe_Release(m_pNarration);
 		m_pNarration = nullptr;
+	}
+
+	if (nullptr != m_pInteractionHeart)
+	{
+		Safe_Release(m_pInteractionHeart);
+		m_pInteractionHeart = nullptr;
 	}
 
 
@@ -378,6 +407,8 @@ void CUI_Manager::Free()
 	Safe_Release(m_pGameInstance);
 
 	Safe_Release(m_pNarration);
+
+	Safe_Release(m_pInteractionHeart);
 
 	__super::Free();
 }

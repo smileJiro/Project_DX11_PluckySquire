@@ -211,6 +211,15 @@ HRESULT CObject_Manager::Add_GameObject_ToLayer(_uint _iLevelID, const _wstring&
     return S_OK;
 }
 
+void CObject_Manager::Set_Layer_Culling(_uint _iLevelID, const _wstring& _strLayerTag, _bool _isCulling)
+{
+    CLayer* pLayer = Find_Layer(_iLevelID, _strLayerTag);
+    if (nullptr == pLayer)
+        return;
+
+    pLayer->Set_LayerCulling(_isCulling);
+}
+
 CGameObject* CObject_Manager::Get_PickingModelObjectByCursor(_uint _iLevelID, const _wstring& _strLayerTag, _float2 _fCursorPos)
 {
     if (_iLevelID > m_iNumLevels)

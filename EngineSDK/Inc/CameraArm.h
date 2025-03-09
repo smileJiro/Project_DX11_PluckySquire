@@ -26,10 +26,6 @@ public:
 		_float3				vPosOffset = { 0.f, 0.f, 0.f };
 		_float3				vRotation;
 		_float				fLength = 1.f;
-		_wstring			wszArmTag = {};
-		//ARM_TYPE			eArmType = { DEFAULT };
-
-		//const _float4x4*	pTargetWorldMatrix = { nullptr };
 	}CAMERA_ARM_DESC;
 
 #ifdef _DEBUG
@@ -57,12 +53,12 @@ public:
 
 	void				Set_Rotation(_vector _vRotation);
 	void				Set_Length(_float _fLength) { m_fLength = _fLength; }
-	void				Set_ArmTag(_wstring _wszArmTag) { m_wszArmTag = _wszArmTag; }
 	void				Set_ArmVector(_vector _vArm);
 	void				Set_StartInfo();
+	void				Set_PreArmAngle(_float _fAngle) { m_fPreArmAngle = _fAngle; }
+	void				Set_ArmTurnTime(_float2 _fArmTurnTime) { m_fArmTurnTime = _fArmTurnTime; }
 
 public:
-	_wstring			Get_ArmTag() { return m_wszArmTag; }
 	_vector				Get_ArmVector() { return XMLoadFloat3(&m_vArm); }
 	CTransform_3D*		Get_TransformCom() { return m_pTransform; }
 	_float				Get_ReturnTime() { return m_fReturnTime.x; }
@@ -71,19 +67,17 @@ public:
 	void				Set_NextArmData(ARM_DATA* _pData, _int _iTriggerID);
 	void				Set_PreArmDataState(_int _iTriggerID, _bool _isReturn);	// 돌아갈지 안 돌아갈지에 따라 삭제 혹은 이동
 
-	_bool				Move_To_NextArm(_float _fTimeDelta);
 	_bool				Move_To_NextArm_ByVector(_float _fTimeDelta, _bool _isBook = false);
-	_bool				Move_To_CustomArm(ARM_DATA* _pCustomData, _float _fTimeDelta);
+	_bool				Move_To_CustomArm(ARM_DATA* _pCustomData, _float _fTimeDelta, _bool _isUsingVector = false);
 	_bool				Move_To_PreArm(_float _fTimeDelta);						// Stack에 저장해둔 Arm으로
 	_bool				Move_To_FreezeExitArm(_float _fRatio, _fvector _vFreezeExitArm, _float _fFreezeExitLength);
-	void				Turn_ArmX(_float fAngle);
-	void				Turn_ArmY(_float fAngle);
 	_bool				Reset_To_SettingPoint(_float _fRatio, _fvector _vSettingPoint, _float _fSettingLength);
 
+	_bool				Turn_Vector(ARM_DATA* _pCustomData, _float _fTimeDelta = 1.f);
 	_bool				Turn_AxisY(ARM_DATA* _pCustomData, _float _fTimeDelta);
 	_bool				Turn_AxisRight(ARM_DATA* _pCustomData, _float _fTimeDelta);
-	_bool				Turn_AxisY(_float _fAngle, _float _fTurnTime = 1.f, _float _fTimeDelta = 1.f, _uint _iRatioType = LERP);
-	_bool				Turn_AxisRight(_float _fAngle, _float _fTurnTime = 1.f, _float _fTimeDelta = 1.f, _uint _iRatioType = LERP);
+	_bool				Turn_AxisY(_float _fAngle, _float _fTimeDelta = 1.f, _uint _iRatioType = LERP);
+	_bool				Turn_AxisRight(_float _fAngle, _float _fTimeDelta = 1.f, _uint _iRatioType = LERP);
 	_bool				Change_Length(ARM_DATA* _pCustomData, _float _fTimeDelta);
 
 private:
@@ -93,16 +87,12 @@ private:
 	CTransform_3D*		m_pTransform = { nullptr };
 
 private:
-	// 이거 나중에 Target 월드 행렬 받으려면 Target File Tag 같은 거 필요할 수도
-	//const _float4x4*	m_pTargetWorldMatrix = { nullptr };
-
-	_wstring			m_wszArmTag = {};
 	_float3				m_vArm = {};
 	_float3				m_vRotation = {};
 	_float				m_fLength = {};
 
 	_float				m_fStartLength = {};
-	_float3				m_vStartArm = {};;
+	_float3				m_vStartArm = {};
 
 	// Desire Arm
 	ARM_DATA*			m_pNextArmData = { nullptr };
@@ -112,20 +102,12 @@ private:
 
 	// Return
 	deque<pair<RETURN_ARMDATA, _bool>> m_PreArms;		// Return Data, 현재 Return 중인지 아닌지 Check
-	_float2				m_fReturnTime = { 0.8f, 0.f };
+	_float2				m_fReturnTime = { 1.2f, 0.f };
 	_int				m_iCurTriggerID = {};
 
 	// Arm 회전
 	_float				m_fPreArmAngle = {};
 	_float2				m_fArmTurnTime = {};
-	_bool				m_isStartTurn = { false };
-
-private:
-	void				Set_WorldMatrix();
-
-
-	_float				Calculate_Ratio(_float2* _fTime, _float _fTimeDelta, _uint _iRatioType);
-	_bool				Check_IsNear_ToDesireArm(_float _fTimeDelta);
 
 public:
 	static CCameraArm*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* pArg);

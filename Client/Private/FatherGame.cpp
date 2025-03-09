@@ -59,7 +59,7 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 		m_PortalLockers[LOCKER_ZETPACK] = static_cast<CPortalLocker*>(pGameObject);
 		Safe_AddRef(m_PortalLockers[LOCKER_ZETPACK]);
 		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(PortalLockerDesc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
-			return E_FAIL;
+			return E_FAIL;		
 	}/* PortalLocker ZetPack */
 
 
@@ -97,11 +97,6 @@ void CFatherGame::Update()
 	if (GAME_PLAYING != m_eGameState)
 		return;
 
-	/* ÂüÁ¶ °´Ã¼ Dead Check */
-
-
-
-
 	for (_uint i = 0; i < m_Progress.size(); ++i)
 	{
 		/* Update */
@@ -133,6 +128,7 @@ void CFatherGame::Update()
 	{
 		End_Game();
 	}
+
 }
 
 HRESULT CFatherGame::End_Game()
@@ -157,14 +153,15 @@ void CFatherGame::DeadCheck_ReferenceObject()
 {
 	for (_uint i = 0; i < PORTALLOCKER::LOCKER_LAST; ++i)
 	{
+		if (nullptr == m_PortalLockers[i])
+			continue;
+
 		if (true == m_PortalLockers[i]->Is_Dead())
 		{
 			Safe_Release(m_PortalLockers[i]);
 			m_PortalLockers[i] = nullptr;
 		}
 	}
-
-	
 }
 
 void CFatherGame::OpenPortalLocker(PORTALLOCKER _ePortalLockerIndex)
@@ -176,18 +173,17 @@ void CFatherGame::OpenPortalLocker(PORTALLOCKER _ePortalLockerIndex)
 		return;
 
 	m_PortalLockers[_ePortalLockerIndex]->Open_Locker();
+	Safe_Release(m_PortalLockers[_ePortalLockerIndex]);
+	m_PortalLockers[_ePortalLockerIndex] = nullptr;
 }
 
 void CFatherGame::Free()
 {
-	if (false == m_ProgressClear[FATHER_PROGRESS_START])
+	for (auto& pPortalLocker : m_PortalLockers)
 	{
-		Safe_Release(m_PortalLockers[LOCKER_ZETPACK]);
+		Safe_Release(pPortalLocker);
 	}
-	//if (false == m_ProgressClear[FATHER_PROGRESS_PARTHEAD])
-	//{
-	//	Safe_Release(m_PortalLockers[LOCKER_PARTHEAD]);
-	//}
+	m_PortalLockers.clear();
 
 	if (GAME_END != m_eGameState)
 	{

@@ -23,6 +23,10 @@ HRESULT CBoss_Rock::Initialize(void* _pArg)
 {
     PROJECTILE_MONSTER_DESC* pDesc = static_cast<PROJECTILE_MONSTER_DESC*>(_pArg);
 
+    pDesc->_tStat.iMaxHP = 10;
+    pDesc->_tStat.iHP = 10;
+    pDesc->_tStat.iDamg = 1;
+
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;
 
@@ -74,7 +78,7 @@ HRESULT CBoss_Rock::Render()
     return S_OK;
 }
 
-void CBoss_Rock::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+void CBoss_Rock::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
     if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
     {
@@ -82,30 +86,30 @@ void CBoss_Rock::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
         {
             _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
             XMVectorSetY(vRepulse, -1.f);
-            Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), 1, vRepulse);
+            Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), Get_Stat().iDamg, vRepulse);
             //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
             Event_DeleteObject(this);
         }
     }
 
-    if (OBJECT_GROUP::PLAYER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
+    else if (OBJECT_GROUP::PLAYER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
     {
-        m_iHp -= 1;
-        if (0 >= m_iHp)
+        m_tStat.iHP -= 1;
+        if (0 >= m_tStat.iHP)
         {
             Event_DeleteObject(this);
         }
     }
 
-    if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+    else if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
         Event_DeleteObject(this);
 }
 
-void CBoss_Rock::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
+void CBoss_Rock::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
 }
 
-void CBoss_Rock::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
+void CBoss_Rock::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
 }
 
@@ -135,7 +139,7 @@ void CBoss_Rock::Active_OnEnable()
 {
     __super::Active_OnEnable();
 
-    m_iHp = 10;
+    m_tStat.iHP = m_tStat.iMaxHP;
 }
 
 void CBoss_Rock::Active_OnDisable()
@@ -172,7 +176,7 @@ HRESULT CBoss_Rock::Ready_ActorDesc(void* _pArg)
     ShapeData->pShapeDesc = ShapeDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
     ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
     ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
@@ -181,7 +185,7 @@ HRESULT CBoss_Rock::Ready_ActorDesc(void* _pArg)
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER_PROJECTILE;
-    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER;
+    ActorDesc->tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = ActorDesc;

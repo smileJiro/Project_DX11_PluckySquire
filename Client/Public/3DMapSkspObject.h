@@ -18,6 +18,8 @@ public :
 		SKSP_PLAG,
 		SKSP_STORAGE,
 		SKSP_POSTIT,
+		SKSP_C09_ROTATE,
+		SKSP_C09_TUBE,
 		SKSP_LAST
 
 	};
@@ -48,7 +50,6 @@ public :
 
 private :
 	void					Change_RenderState(RT_RENDERSTATE _eRenderState, _bool _isMapped);
-	virtual void			Check_FrustumCulling() override;
 
 
 	HRESULT					Render_Default();

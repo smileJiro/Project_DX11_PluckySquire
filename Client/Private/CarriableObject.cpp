@@ -38,10 +38,7 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 		matHeadUpRotationMatrix
 		* XMMatrixTranslation(pDesc->vHeadUpOffset3D.x, pDesc->vHeadUpOffset3D.y, pDesc->vHeadUpOffset3D.z));
 
-
-
     //pDesc->eStartCoord  = COORDINATE_3D;
-
 
     pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
     pDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
@@ -59,8 +56,9 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 	m_p2DColliderComs.resize(1);
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
-    CircleDesc.fRadius = 40.f;
-    CircleDesc.vScale = { 1.0f, 1.0f };
+    CircleDesc.fRadius = 20.f;
+	_float3 vScale = m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_Scale();
+    CircleDesc.vScale = { 1.f/ vScale.x, 1.f/ vScale.y };
     CircleDesc.vOffsetPosition = { 0.f, 0.f };
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;

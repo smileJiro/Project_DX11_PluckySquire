@@ -148,6 +148,7 @@ private:
         m_vDialoguePos.w = 1.f;
     }
 
+    _int                               Get_CurrentLineIndex();
 
 
 private:

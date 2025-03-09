@@ -187,9 +187,7 @@ HRESULT CLoader::Loading_Level_AnimTool()
     lstrcpy(m_szLoadingText, TEXT("쉐이더를 로딩중입니다."));
 
     lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_ANIMTOOL, TEXT("Prototype_Component_Background"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Background.png"), true))))
-        return E_FAIL;
+
     lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
 
@@ -297,7 +295,7 @@ HRESULT CLoader::Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath)
         filename = filename.substr(0, lastDot); // 확장자 제거
 
         if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
-            C2DModel::Create(m_pDevice, m_pContext, str.c_str()))))
+            C2DModel::Create(m_pDevice, m_pContext, str.c_str(), LEVEL_STATIC))))
             return E_FAIL;
 
     } while (FindNextFile(hFind, &FindFileData));

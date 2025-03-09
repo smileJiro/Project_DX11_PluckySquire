@@ -291,7 +291,7 @@ void CModelObject::Register_OnAnimEndCallBack( const function<void(COORDINATE,_u
 void CModelObject::Check_FrustumCulling()
 {
     if (COORDINATE_3D == Get_CurCoord())
-        m_isFrustumCulling = !m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 10.f);
+        m_isFrustumCulling = !m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 5.f);
     else
         m_isFrustumCulling = false;
 }
@@ -545,6 +545,14 @@ void CModelObject::Set_ReverseAnimation(_bool _bReverse)
 _bool CModelObject::Is_DuringAnimation()
 {
     return m_pControllerModel->Get_Model(Get_CurCoord())->Is_DuringAnimation();
+}
+
+_bool CModelObject::Is_AnimTransition()
+{
+    if (COORDINATE_2D == Get_CurCoord())
+        return false;
+    else
+        return static_cast<C3DModel*> (m_pControllerModel->Get_Model(COORDINATE_3D))->Is_AnimTransition();
 }
 
 void CModelObject::Change_TextureIdx(_uint _iIndex, _uint _eTextureType, _uint _iMaterialIndex)

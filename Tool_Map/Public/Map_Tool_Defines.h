@@ -48,6 +48,9 @@ namespace Map_Tool
 		SKSP_TUB,
 		SKSP_PLAG,
 		SKSP_STORAGE,
+		SKSP_POSTIT,
+		SKSP_C09_ROTATE,
+		SKSP_C09_TUBE,
 		SKSP_LAST
 	
 	};

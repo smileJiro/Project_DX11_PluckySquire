@@ -214,6 +214,8 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 
 void CLevel_Chapter_04::Update(_float _fTimeDelta)
 {
+
+	Uimgr->UI_Update();
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
 
@@ -345,7 +347,7 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 
 	if (KEY_PRESSING(KEY::CTRL))
 	{
-		if (KEY_DOWN(KEY::NUMPAD5))
+		if (KEY_DOWN(KEY::NUM5))
 		{
 			CButterGrump::MONSTER_DESC Boss_Desc;
 			Boss_Desc.iCurLevelID = m_eLevelID;
@@ -703,6 +705,15 @@ HRESULT CLevel_Chapter_04::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Book"), m_eLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+	CGameObject* pInteractionE;
+
+	pDesc.fSizeX = 360.f / 2.f;
+	pDesc.fSizeY = 149.f / 2.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
+		return E_FAIL;
+
+	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pInteractionE));
 
 #pragma endregion InterAction UI
 
@@ -937,11 +948,15 @@ HRESULT CLevel_Chapter_04::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+	CGameObject* pHeartObject;
+
 	pDesc.fSizeX = 256.f / 4.f;
 	pDesc.fSizeY = 256.f / 4.f;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pHeartObject, &pDesc)))
 		return E_FAIL;
+
+	Uimgr->Set_InterActionHeart(static_cast<CInteraction_Heart*>(pHeartObject));
 
 
 	return S_OK;
@@ -1061,6 +1076,9 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(CGameObject** _ppout)
 			}
 			else
 				return E_FAIL;
+
+			if (strMonsterTag == L"Prototype_GameObject_Goblin")
+				int a = 1;
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc2D)))
 				return E_FAIL;
@@ -1504,13 +1522,12 @@ void CLevel_Chapter_04::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 		return;
 	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_Transform((COORDINATE)_iCoordinateType)->Get_State(CTransform::STATE_LOOK);
 
-	CCameraArm::CAMERA_ARM_DESC Desc{};
+	CCameraArm::CAMERA_ARM_DESC Desc = {};
 
 	//XMStoreFloat3(&Desc.vArm, -vPlayerLook);
 	Desc.vArm = _vRotation;
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
 	Desc.fLength = _fLength;
-	Desc.wszArmTag = TEXT("Player_Arm");
 
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 

@@ -80,6 +80,7 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	m_iMainIndex = pDesc->iMainIndex;
 	m_iSubIndex = pDesc->iSubIndex;
 
+	m_eInteractID = INTERACT_ID::NPC;
 	m_iPreState = 3;
 
 	wsprintf(m_strCurSecion, pDesc->strSectionid.c_str());
@@ -124,7 +125,7 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Social::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z, 1.f));
 
-		m_eInteractID = INTERACT_ID::NPC;
+		
 	}
 
 	if (!m_is2D)

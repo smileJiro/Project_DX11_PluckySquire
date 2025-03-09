@@ -101,7 +101,7 @@ void CCamera_2D::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA*
 	m_ArmDatas.emplace(_wszArmTag, make_pair(_pArmData, _pSubData));
 }
 
-void CCamera_2D::Add_CustomArm(ARM_DATA _tArmData)
+void CCamera_2D::Set_CustomArmData(ARM_DATA& _tArmData)
 {
 	m_CustomArmData = _tArmData;
 	m_pCurArm->Set_StartInfo();
@@ -297,6 +297,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 				_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
 				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
 
+
 				Set_InitialData(vDir, 6.5f, XMVectorZero(), 5);
 			}
 		}
@@ -349,37 +350,8 @@ void CCamera_2D::Change_Target(CGameObject* _pTarget, _float _fChangingTime)
 
 	m_vStartPos = m_v2DPreTargetWorldPos;
 
-	m_strSectionName = _pTarget->Get_Include_Section_Name();
-}
-
-void CCamera_2D::Turn_AxisY(_float _fTimeDelta)
-{
-	if (false == m_isTurnAxisY)
-		return;
-
-	if (true == m_pCurArm->Turn_AxisY(&m_CustomArmData, _fTimeDelta)) {
-		m_isTurnAxisY = false;
-	}
-}
-
-void CCamera_2D::Turn_AxisRight(_float _fTimeDelta)
-{
-	if (false == m_isTurnAxisRight)
-		return;
-
-	if (true == m_pCurArm->Turn_AxisRight(&m_CustomArmData, _fTimeDelta)) {
-		m_isTurnAxisRight = false;
-	}
-}
-
-void CCamera_2D::Change_Length(_float _fTimeDelta)
-{
-	if (false == m_isChangingLength)
-		return;
-
-	if (true == m_pCurArm->Change_Length(&m_CustomArmData, _fTimeDelta)) {
-		m_isChangingLength = false;
-	}
+	if(L"" != _pTarget->Get_Include_Section_Name())
+		m_strSectionName = _pTarget->Get_Include_Section_Name();
 }
 
 void CCamera_2D::Start_ResetArm_To_SettingPoint(_float _fResetTime)
@@ -389,6 +361,13 @@ void CCamera_2D::Start_ResetArm_To_SettingPoint(_float _fResetTime)
 	Start_Zoom(_fResetTime, (ZOOM_LEVEL)m_ResetArmData.iZoomLevel, EASE_IN);
 	m_eCameraMode = RESET_TO_SETTINGPOINT;
 	m_fResetTime = { _fResetTime, 0.f };
+}
+
+void CCamera_2D::Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType)
+{
+	__super::Start_Changing_ArmVector(_fChangingTime, _vNextArm, _eRatioType);
+
+	m_eCameraMode = DEFAULT;
 }
 
 INITIAL_DATA CCamera_2D::Get_InitialData()
@@ -482,7 +461,10 @@ void CCamera_2D::Action_Mode(_float _fTimeDelta)
 	Change_AtOffset(_fTimeDelta);
 
 	Turn_AxisY(_fTimeDelta);
+	Turn_AxisY_Angle(_fTimeDelta);
 	Turn_AxisRight(_fTimeDelta);
+	Turn_AxisRight_Angle(_fTimeDelta);
+	Turn_Vector(_fTimeDelta);
 	Change_Length(_fTimeDelta);
 
 	switch (m_eCameraMode) {
@@ -540,7 +522,7 @@ void CCamera_2D::Action_SetUp_ByMode()
 			Set_NextArmData(TEXT("BookFlipping_Horizon"), 0);
 			
 			CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Book"), 0);
-			Change_Target(pBook);
+			Change_Target(pBook, 0.5f);
 
 			// LengthValue를 1.f로 맞춰야 함
 			Set_LengthValue(m_fLengthValue, 1.f);
@@ -572,7 +554,7 @@ void CCamera_2D::Action_SetUp_ByMode()
 			case CSection_2D::PLAYMAP:
 			{
 				CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
-				Change_Target(pPlayer);
+				Change_Target(pPlayer, 0.5f);
 			}
 				break;
 			case CSection_2D::MINIGAME:
@@ -861,7 +843,7 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 	}
 #pragma endregion
 
-	_float fRatio = Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
 
 	if (fRatio >= (1.f - EPSILON)) {
 		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
@@ -1032,7 +1014,7 @@ void CCamera_2D::Find_TargetPos()
 				_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
 				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
 
-				Set_InitialData(vDir, 6.5f, XMVectorZero(), 5);
+				m_pCurArm->Set_ArmVector(vDir);
 			}
 		}
 #pragma endregion

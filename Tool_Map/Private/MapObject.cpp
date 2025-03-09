@@ -65,7 +65,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
     vector<SHAPE_DATA>  vecShapeData;
     C3DModel* p3DModel = static_cast<C3DModel*>(pBase);
 
-    if (p3DModel->Has_CookingCollider())
+   /* if (p3DModel->Has_CookingCollider())
     {
         _uint iColliderType = p3DModel->Get_CookingColliderType();
         MAPOBJ_DESC* pDesc = static_cast<MAPOBJ_DESC*>(_pArg);
@@ -136,7 +136,7 @@ HRESULT CMapObject::Initialize(void* _pArg)
 
         pDesc->pActorDesc = &ActorDesc;
 
-    }
+    }*/
 
 
 

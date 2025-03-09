@@ -84,9 +84,9 @@ public:
 	};
 	enum PLAYER_MODE
 	{
-		PLAYER_MODE_NORMAL,
 		PLAYER_MODE_SWORD,
 		PLAYER_MODE_SNEAK,
+		PLAYER_MODE_ZETPACK,
 		PLAYER_MODE_CYBERJOT,
 		PLAYER_MODE_LAST
 	};
@@ -559,6 +559,7 @@ public:
 	_bool Is_ZetPack_Idle();
 	_bool Is_SneakMode() {return PLAYER_MODE_SNEAK == m_ePlayerMode;}
 	_bool Is_SwordMode() { return PLAYER_MODE_SWORD == m_ePlayerMode; }
+	_bool Is_ZetPackMode() { return PLAYER_MODE_ZETPACK == m_ePlayerMode; }
 	_bool Is_CyvberJotMode() { return PLAYER_MODE_CYBERJOT == m_ePlayerMode; }
 	_bool Is_ZetPackEquipped();
 	_bool Is_Sneaking();//소리가 안나면 true 나면 false
@@ -653,8 +654,8 @@ private:
 	HRESULT					Ready_PartObjects();
 
 public:
-	virtual void			Enter_Section(const _wstring _strIncludeSectionName);
-	virtual void			Exit_Section(const _wstring _strIncludeSectionName);
+	virtual void			Enter_Section(const _wstring _strIncludeSectionName) override;
+	virtual void			Exit_Section(const _wstring _strIncludeSectionName) override;
 private:
 	//Variables
 	_float m_f3DCenterYOffset = 0.5f;
@@ -688,7 +689,7 @@ private:
 
 
 	_float4x4 m_mat3DCarryingOffset = {};
-	PLAYER_MODE m_ePlayerMode = PLAYER_MODE_NORMAL;
+	PLAYER_MODE m_ePlayerMode = PLAYER_MODE_SWORD;
 	//NORMAL_DIRECTION m_e3DPortalNormal = NORMAL_DIRECTION::LAST; 
 
 

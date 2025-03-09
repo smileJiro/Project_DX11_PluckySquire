@@ -299,10 +299,10 @@ void CCamera_Manager::Load_ArmData(_uint _iCameraType, _wstring _szFilePath)
 	}
 }
 
-void CCamera_Manager::Change_CameraMode(_uint _iCameraMode, _int _iNextMode)
+void CCamera_Manager::Change_CameraMode(_uint _iCameraMode)
 {
 	if (TARGET == m_eCurrentCameraType) {
-		static_cast<CCamera_Target*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode, _iNextMode);
+		static_cast<CCamera_Target*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode);
 	}
 	else if (TARGET_2D == m_eCurrentCameraType) {
 		static_cast<CCamera_2D*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode);
@@ -436,11 +436,25 @@ void CCamera_Manager::Start_ZoomIn(CAMERA_TYPE _eCameraType, _float _fZoomTime, 
 	m_Cameras[_eCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)(iCurZoomLevel - 1), (RATIO_TYPE)_iRatioType);
 }
 
+void CCamera_Manager::Start_ZoomIn(_float _fZoomTime, _uint _iRatioType)
+{
+	_uint iCurZoomLevel = m_Cameras[m_eCurrentCameraType]->Get_CurrentZoomLevel();
+
+	m_Cameras[m_eCurrentCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)(iCurZoomLevel - 1), (RATIO_TYPE)_iRatioType);
+}
+
 void CCamera_Manager::Start_ZoomOut(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iRatioType)
 {
 	_uint iCurZoomLevel = m_Cameras[_eCameraType]->Get_CurrentZoomLevel();
 
 	m_Cameras[_eCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)(iCurZoomLevel + 1), (RATIO_TYPE)_iRatioType);
+}
+
+void CCamera_Manager::Start_ZoomOut(_float _fZoomTime, _uint _iRatioType)
+{
+	_uint iCurZoomLevel = m_Cameras[m_eCurrentCameraType]->Get_CurrentZoomLevel();
+
+	m_Cameras[m_eCurrentCameraType]->Start_Zoom(_fZoomTime, (CCamera::ZOOM_LEVEL)(iCurZoomLevel + 1), (RATIO_TYPE)_iRatioType);
 }
 
 void CCamera_Manager::Start_Changing_AtOffset(CAMERA_TYPE _eCameraType, _float _fOffsetTime, _vector _vNextOffset, _uint _iRatioType)
@@ -475,12 +489,36 @@ void CCamera_Manager::Start_Turn_AxisY(CAMERA_TYPE _eCameraType, _float _fTurnTi
 	m_Cameras[_eCameraType]->Start_Turn_AxisY(_fTurnTime, _fMinRotationPerSec, _fMaxRotationPerSec);
 }
 
+void CCamera_Manager::Start_Turn_AxisY(CAMERA_TYPE _eCameraType, _float _fTurnTime, _float _fAngle, _uint _iRatioType)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	m_Cameras[_eCameraType]->Start_Turn_AxisY(_fTurnTime, _fAngle, _iRatioType);
+}
+
 void CCamera_Manager::Start_Turn_AxisRight(CAMERA_TYPE _eCameraType, _float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec)
 {
 	if (nullptr == m_Cameras[_eCameraType])
 		return;
 
 	m_Cameras[_eCameraType]->Start_Turn_AxisRight(_fTurnTime, _fMinRotationPerSec, _fMaxRotationPerSec);
+}
+
+void CCamera_Manager::Start_Turn_AxisRight(CAMERA_TYPE _eCameraType, _float _fTurnTime, _float _fAngle, _uint _iRatioType)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	m_Cameras[_eCameraType]->Start_Turn_AxisRight(_fTurnTime, _fAngle, _iRatioType);
+}
+
+void CCamera_Manager::Start_Turn_ArmVector(CAMERA_TYPE _eCameraType, _float _fTurnTime, _fvector _vNextVector, _uint _iRatioType)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	m_Cameras[_eCameraType]->Start_Changing_ArmVector(_fTurnTime, _vNextVector, (RATIO_TYPE)_iRatioType);
 }
 
 void CCamera_Manager::Start_Changing_ArmLength(CAMERA_TYPE _eCameraType, _float _fLengthTime, _float _fLength, _uint _iRatioType)

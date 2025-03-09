@@ -66,9 +66,12 @@
 
 #include "NPC.h"
 #include "Loader.h"
-#include "Candle.h"
+
+// FatherGame
 #include "FatherGame.h"
+#include "Candle.h"
 #include "CandleGame.h"
+#include "ZetPack_Child.h"
 
 
 CLevel_Chapter_06::CLevel_Chapter_06(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -190,6 +193,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FALLINGROCK_BASIC);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::SLIPPERY);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::NPC_EVENT); // ZetPack
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
@@ -204,8 +208,9 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
+	
 
-
+	
 	/* 돌덩이 */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::BLOCKER);
 
@@ -236,7 +241,24 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 
 
-		///* Test Candle */
+#pragma region TestCode
+	
+	/* Test ZetPackChild */
+
+	CZetPack_Child::ZETPACK_CHILD_DESC ZetPackDesc = {};
+	ZetPackDesc.pPlayer = dynamic_cast<CPlayer*>(pCameraTarget);
+	assert(ZetPackDesc.pPlayer);
+
+	ZetPackDesc.iCurLevelID = LEVEL_CHAPTER_6;
+	ZetPackDesc.Build_2D_Transform(_float2(-300.0f, 0.0f), _float2(1.0f, 1.0f), 200.f);
+	CGameObject* pGameObject = nullptr;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Child"), LEVEL_CHAPTER_6, TEXT("Layer_ZetPack_Child"), &pGameObject, &ZetPackDesc)))
+		return E_FAIL;
+
+	if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_01"), pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
+		return E_FAIL;
+
+	///* Test Candle */
 	//CCandleGame::CANDLEGAME_DESC CandleGameDesc;
 	//CandleGameDesc.iCurLevelID = LEVEL_CHAPTER_6;
 	//CandleGameDesc.Build_3D_Transform(_float3(0.0f, 0.0f, 0.0f));
@@ -258,6 +280,8 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	/* Test FatherGame Progress */
 	if (FAILED(CFatherGame::GetInstance()->Start_Game(m_pDevice, m_pContext)))
 		return E_FAIL;
+#pragma endregion // TestCode
+
 
 	return S_OK;
 }
@@ -633,7 +657,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
-	pPlayer->Equip_Part(CPlayer::PLAYER_PART_ZETPACK);
+	
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
@@ -649,15 +673,15 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 	tDeffenderPlayerDesc.iCurLevelID = m_eLevelID;
 	CDefenderPlayer* pPlayer = static_cast<CDefenderPlayer*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderPlayer"), &tDeffenderPlayerDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pPlayer);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Active(false);
 
 	CMiniGame_Defender::DEFENDER_CONTROLLTOWER_DESC tDesc = {};
 	tDesc.iCurLevelID = m_eLevelID;
-	tDesc.tTransform2DDesc.vInitialPosition = { -500.f, 0.35f, 0.f };   // TODO ::임시 위치
+	tDesc.tTransform2DDesc.vInitialPosition = { -2020.f, -80.f, 0.f };   // TODO ::임시 위치
 	CMiniGame_Defender* pTower = static_cast<CMiniGame_Defender*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Minigame_Defender"), &tDesc));;
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pTower);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pTower, SECTION_2D_PLAYMAP_OBJECT);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pTower, SECTION_2D_PLAYMAP_OBJECT);
 
 	return S_OK;
 }
@@ -734,15 +758,15 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Book"), m_eLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	//CGameObject* pInteractionE;
-	//
-	//pDesc.fSizeX = 360.f / 2.f;
-	//pDesc.fSizeY = 149.f / 2.f;
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
-	//	return E_FAIL;
-	//
-	//Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pInteractionE));
+	CGameObject* pInteractionE;
+
+	pDesc.fSizeX = 360.f / 2.f;
+	pDesc.fSizeY = 149.f / 2.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
+		return E_FAIL;
+
+	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pInteractionE));
 
 
 #pragma endregion InterAction UI
@@ -986,11 +1010,15 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+	CGameObject* pHeartObject;
+
 	pDesc.fSizeX = 256.f / 4.f;
 	pDesc.fSizeY = 256.f / 4.f;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"), pDesc.iCurLevelID, _strLayerTag, &pHeartObject, &pDesc)))
 		return E_FAIL;
+
+	Uimgr->Set_InterActionHeart(static_cast<CInteraction_Heart*>(pHeartObject));
 
 
 	CGameObject* pGameObject;
@@ -1283,12 +1311,11 @@ void CLevel_Chapter_06::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 		return;
 	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_Transform((COORDINATE)_iCoordinateType)->Get_State(CTransform::STATE_LOOK);
 
-	CCameraArm::CAMERA_ARM_DESC Desc{};
+	CCameraArm::CAMERA_ARM_DESC Desc = {};
 
 	Desc.vArm = _vArm;
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
 	Desc.fLength = _fLength;
-	Desc.wszArmTag = TEXT("Player_Arm");
 
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 

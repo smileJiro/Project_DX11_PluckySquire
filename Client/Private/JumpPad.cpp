@@ -48,7 +48,7 @@ HRESULT CJumpPad::Initialize(void* _pArg)
 	ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
 	ShapeData.isTrigger = false;
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
+	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 
@@ -118,11 +118,12 @@ HRESULT CJumpPad::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosit
 
 void CJumpPad::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	if((_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse)
+ 	if((_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse)
 	{
 		for (auto& point : _ContactPointDatas)
 		{
-			if (point.normal.y <= m_fCollisionSlopeThreshold)
+			if (abs(point.normal.y) >= abs(m_fCollisionSlopeThreshold)
+				&& Get_FinalPosition().m128_f32[1] <= _Other.pActorUserData->pOwner->Get_FinalPosition().m128_f32[1])
 			{
 				if (OBJECT_GROUP::PLAYER == _Other.pActorUserData->iObjectGroup)
 				{

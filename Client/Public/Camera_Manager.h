@@ -46,7 +46,7 @@ public:
 public:
 	void				Add_Camera(_uint _iCurrentCameraType, CCamera* _pCamera);			// Free Camera, Target Camera 셋팅(처음 한 번)
 	
-	void				Change_CameraMode(_uint _iCameraMode, _int _iNextMode = -1);		// 카메라 모드 전환(아마 Target Camera만 적용)							
+	void				Change_CameraMode(_uint _iCameraMode);		// 카메라 모드 전환(아마 Target Camera만 적용)							
 	void				Change_CameraType(_uint _iCurrentCameraType, _bool _isInitialData = false, _float _fInitialTime = 0.3f);
 	void				Change_CameraTarget(const _float4x4* _pTargetWorldMatrix, _float _fChangingTime = 1.f);
 	void				Change_CameraTarget(CGameObject* _pTarget, _float _fChangingTime = 1.f);
@@ -64,7 +64,9 @@ public:
 	// 3. EASE_IN: 점점 빠르게, EASE_OUT: 점점 느리게, LERP: 기본 보간, EASE_IN_OUT: 빨라지다가 다시 느리게
 	void				Start_Zoom(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iZoomLevel, _uint _iRatioType);
 	void				Start_ZoomIn(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iRatioType);
+	void				Start_ZoomIn(_float _fZoomTime, _uint _iRatioType);
 	void				Start_ZoomOut(CAMERA_TYPE _eCameraType, _float _fZoomTime, _uint _iRatioType);
+	void				Start_ZoomOut(_float _fZoomTime, _uint _iRatioType);
 
 	// AtOffset
 	// 1. Target Camera는 기본적으로 Target을 바라보지만, 타겟을 기준으로 해당 Offset만큼 떨어진 곳을 보도록 조절한다
@@ -84,8 +86,15 @@ public:
 	// 2. 내가 설정한 시간만큼 회전을 한다
 	// 3. 회전하는 속도를 RotationPerSec를 인자로 받아서 설정한다(Min 20, Max 30일 경우 점점 빠르게 회전하며 반대일 경우 점점 느리게 회전한다)
 	// 4. 반대로 돌고 싶은 경우 -를 붙인다
+
+	// 1. 원하는 각도를 원하는 시간 동안 돌린다
 	void				Start_Turn_AxisY(CAMERA_TYPE _eCameraType, _float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec);
+	void				Start_Turn_AxisY(CAMERA_TYPE _eCameraType, _float _fTurnTime, _float _fAngle, _uint _iRatioType = LERP);
 	void				Start_Turn_AxisRight(CAMERA_TYPE _eCameraType, _float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec);
+	void				Start_Turn_AxisRight(CAMERA_TYPE _eCameraType, _float _fTurnTime, _float _fAngle, _uint _iRatioType = LERP);
+
+	// ArmVector 변경
+	void				Start_Turn_ArmVector(CAMERA_TYPE _eCameraType, _float _fTurnTime, _fvector _vNextVector, _uint _iRatioType);
 
 	// Length 조절
 	// 1. 정해진 시간만큼 Length를 조절한다

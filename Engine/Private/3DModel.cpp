@@ -599,6 +599,12 @@ void C3DModel::Set_MaterialConstBuffer_AO(_uint _iMaterialIndex, _float _fAO, _b
 	m_Materials[_iMaterialIndex]->Set_AO(_fAO, _isUpdate);
 }
 
+void C3DModel::Update_ConstBuffer()
+{
+	for (auto* pMaterial : m_Materials)
+		pMaterial->Update_PixelConstBuffer();
+}
+
 _uint C3DModel::Get_AnimCount()
 {
 	return (_uint)m_Animations.size();
