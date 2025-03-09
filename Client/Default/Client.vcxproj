@@ -216,6 +216,7 @@
     <ClInclude Include="..\public\Candle_UI.h" />
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
     <ClInclude Include="..\Public\CyberPlayerBullet.h" />
+    <ClInclude Include="..\Public\DefenderMonster.h" />
     <ClInclude Include="..\Public\DefenderPlayer.h" />
     <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
     <ClInclude Include="..\public\FatherGame.h" />
@@ -535,6 +536,7 @@
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
     <ClCompile Include="..\Private\CyberPlayerBullet.cpp" />
+    <ClCompile Include="..\Private\DefenderMonster.cpp" />
     <ClCompile Include="..\Private\DefenderPlayer.cpp" />
     <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
     <ClCompile Include="..\private\FatherGame.cpp" />
