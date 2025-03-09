@@ -96,7 +96,10 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
     }
 
 	SPAWN_DESC tSpawnDesc = {};
-	tSpawnDesc.fAutoCycleTime = 1.f;
+	tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_ARROW;
+	tSpawnDesc.fAutoCycleTime = 5.f;
+	tSpawnDesc.fUnitDelay = 0.5f;
+    tSpawnDesc.iSpawnCount = 5;
     tSpawnDesc.bAbsolutePosition = true;
 	tSpawnDesc.eDirection = T_DIRECTION::RIGHT;
     _vector vPosition = { 0.f,0.f,0.f };
