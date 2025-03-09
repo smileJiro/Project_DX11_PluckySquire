@@ -6216,5 +6216,311 @@
   "SearchTag": "C09_129130_base_03",
   "Sorting": false,
   "TextureName": "C09_129130_base_03"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Brush_Post_01",
+  "Sorting": false,
+  "TextureName": "brush_post_01"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Brush_Post_02",
+  "Sorting": false,
+  "TextureName": "brush_post_02"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Brush_Post_03",
+  "Sorting": false,
+  "TextureName": "brush_post_03"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Brush_Post_04",
+  "Sorting": false,
+  "TextureName": "brush_post_04"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Brush_Post_05",
+  "Sorting": false,
+  "TextureName": "brush_post_05"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Brush_Post_06",
+  "Sorting": false,
+  "TextureName": "brush_post_06"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Brush_Post_07",
+  "Sorting": false,
+  "TextureName": "brush_post_07"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Brush_Post_08",
+  "Sorting": false,
+  "TextureName": "brush_post_08"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Brush_Post_Rope",
+  "Sorting": false,
+  "TextureName": "brush_post_rope"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "brush_post_shadow",
+  "Sorting": false,
+  "TextureName": "brush_post_shadow"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "paint_brush_01",
+  "Sorting": false,
+  "TextureName": "paint_brush_01"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "paint_brush_01_shadow",
+  "Sorting": false,
+  "TextureName": "paint_brush_01_shadow"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "paint_brush_02",
+  "Sorting": false,
+  "TextureName": "paint_brush_02"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "paint_brush_02_shadow",
+  "Sorting": false,
+  "TextureName": "paint_brush_02_shadow"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "TD_Sharpener",
+  "Sorting": false,
+  "TextureName": "sharpener"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "sharpener_shadow",
+  "Sorting": false,
+  "TextureName": "sharpener_shadow"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "Fire_BP",
+  "Sorting": false,
+  "TextureName": "Fire_Small_Blue_A"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Cage_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Cage_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Entrance_light_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Entrance_light_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "Decal_Guard",
+  "Sorting": false,
+  "TextureName": "C08_1112_Guard_01_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Guard_02_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Guard_02_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Hole_light_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Hole_light_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "Decal_Rubble",
+  "Sorting": false,
+  "TextureName": "C08_1112_Rubble_01_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Rubble_02_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Rubble_02_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Rubble_03_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Rubble_03_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Rubble_04_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Rubble_04_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Rubble_05_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Rubble_05_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Rubble_06_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Rubble_06_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Rubble_07_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Rubble_07_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Rubble_08_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Rubble_08_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Rubble_09_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Rubble_09_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Rubble_10_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Rubble_10_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Rubble_11_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Rubble_11_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_1112_Rubble_12_png",
+  "Sorting": false,
+  "TextureName": "C08_1112_Rubble_12_png"
  }
 ]
