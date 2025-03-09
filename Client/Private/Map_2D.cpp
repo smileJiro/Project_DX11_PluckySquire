@@ -151,7 +151,7 @@ HRESULT CMap_2D::Register_WorldCapture(CModelObject* _pModel)
 	// 덧그리는 건 알바 없음임. 안그렇게 디자인 했겠지. 클리어는 안해주므로, 상관없음.
 	if (L"" != m_strWorldRTKey)
 	{
-		//m_pGameInstance->Add_RenderObject_New(m_iWorldRenderGroupID, m_iWorldPriorityID, _pModel);
+		m_pGameInstance->Add_RenderObject_New(m_iWorldRenderGroupID, m_iWorldPriorityID, _pModel);
 		return S_OK;
 	
 	}
