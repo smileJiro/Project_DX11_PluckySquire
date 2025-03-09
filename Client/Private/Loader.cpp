@@ -1945,9 +1945,6 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 
 	if (LEVEL_STATIC != _eResourceLevelID)
 	{		
-
-
-
 		std::cout << "=============== [" << arrLevelTexts[_eLoadLevelID] << "] 2D Map Load Start..." << endl;
 
 		// 3D Map Load
