@@ -99,21 +99,26 @@ void C3DMapSkspObject::Late_Update(_float _fTimeDelta)
     CGameObject::Late_Update_Component(_fTimeDelta);
 
     /* Add Render Group */
-    if (false == m_isFrustumCulling)
-    {
+    //if (false == m_isFrustumCulling)
+    //{
         Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
         SECTION_MGR->SetActive_Section(m_strRenderSectionTag, true);
-    }
-    else
-    {
-        SECTION_MGR->SetActive_Section(m_strRenderSectionTag, false);
-    }
+    //}
+    //else
+    //{
+    //    SECTION_MGR->SetActive_Section(m_strRenderSectionTag, false);
+    //}
 
 }
 
 HRESULT C3DMapSkspObject::Render()
 {
-
+    if (m_iInstanceID == 90)
+    {
+        int a = 0;
+        a = 2;
+        a = 1;
+    }
     switch (m_eSkspType)
     {
     case Client::C3DMapSkspObject::SKSP_DEFAULT:
@@ -138,6 +143,14 @@ HRESULT C3DMapSkspObject::Render()
         break;
     case Client::C3DMapSkspObject::SKSP_STORAGE:
         if (FAILED(Render_Storage()))
+            return E_FAIL;
+        break;
+    case Client::C3DMapSkspObject::SKSP_C09_ROTATE:
+        if (FAILED(Render_Rotate()))
+            return E_FAIL;
+        break;
+    case Client::C3DMapSkspObject::SKSP_C09_TUBE:
+        if (FAILED(Render_Tube()))
             return E_FAIL;
         break;
     default:
@@ -536,6 +549,139 @@ HRESULT C3DMapSkspObject::Render_Storage()
     return S_OK;
 }
 
+HRESULT C3DMapSkspObject::Render_Rotate()
+{
+    if (FAILED(Bind_ShaderResources_WVP()))
+        return E_FAIL;
+    COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+    CShader* pShader = m_pShaderComs[eCoord];
+    _uint iShaderPass = m_iShaderPasses[eCoord];
+    C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
+
+    _uint iFlag = RT_RENDER_ROTATE;
+    ID3D11ShaderResourceView* pResourceView = nullptr;
+
+    pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(m_strRenderSectionTag);
+    if (FAILED(pShader->Bind_SRV("g_AlbedoTexture", pResourceView)))
+        return E_FAIL;
+
+    m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+
+    for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
+    {
+        _uint iShaderPass = (_uint)PASS_VTXMESH::DEFAULT;
+        auto pMesh = pModel->Get_Mesh(i);
+        _uint iMaterialIndex = pMesh->Get_MaterialIndex();
+        if (FAILED(pModel->Bind_Material_PixelConstBuffer(iMaterialIndex, pShader)))
+            return E_FAIL;
+
+        _float2 fStartUV = {};
+        _float2 fEndUV = {};
+        fStartUV = { 0.f,0.f };
+        fEndUV = { 1.f,1.f };
+
+        if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fStartUV, sizeof(_float2))))
+            return E_FAIL;
+        if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fEndUV, sizeof(_float2))))
+            return E_FAIL;
+        iShaderPass = (_uint)PASS_VTXMESH::RENDERTARGET_MAPP;
+
+        if (FAILED(pShader->Bind_SRV("g_AlbedoTexture", pResourceView)))
+            return E_FAIL;
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_NormalTexture", i, aiTextureType_NORMALS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_ORMHTexture", i, aiTextureType_BASE_COLOR, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_MetallicTexture", i, aiTextureType_METALNESS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_RoughnessTexture", i, aiTextureType_DIFFUSE_ROUGHNESS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_AOTexture", i, aiTextureType_AMBIENT_OCCLUSION, 0)))
+        {
+        }
+
+        pShader->Begin(iShaderPass);
+        pMesh->Bind_BufferDesc();
+        pMesh->Render();
+    }
+    return S_OK;
+}
+
+HRESULT C3DMapSkspObject::Render_Tube()
+{
+    if (FAILED(Bind_ShaderResources_WVP()))
+        return E_FAIL;
+    COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+    CShader* pShader = m_pShaderComs[eCoord];
+    C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
+
+    _bool iFlag = false;
+
+    m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+
+    for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
+    {
+
+        _uint iShaderPass = (_uint)PASS_VTXMESH::DEFAULT;
+        auto pMesh = pModel->Get_Mesh(i);
+        _uint iMaterialIndex = pMesh->Get_MaterialIndex();
+
+        if (FAILED(pModel->Bind_Material_PixelConstBuffer(iMaterialIndex, pShader)))
+            return E_FAIL;
+
+        if (1 == i)
+        {
+            ID3D11ShaderResourceView* pResourceView = nullptr;
+            pResourceView = SECTION_MGR->Get_SRV_FromRenderTarget(m_strRenderSectionTag);
+            if (FAILED(pShader->Bind_SRV("g_AlbedoTexture", pResourceView)))
+                return E_FAIL;
+        }
+        else
+        {
+
+            if (FAILED(pModel->Bind_Material(pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, 0)))
+            {
+                int a = 0;
+            }
+
+        }
+
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_NormalTexture", i, aiTextureType_NORMALS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_ORMHTexture", i, aiTextureType_BASE_COLOR, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_MetallicTexture", i, aiTextureType_METALNESS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_RoughnessTexture", i, aiTextureType_DIFFUSE_ROUGHNESS, 0)))
+        {
+        }
+
+        if (FAILED(pModel->Bind_Material(pShader, "g_AOTexture", i, aiTextureType_AMBIENT_OCCLUSION, 0)))
+        {
+        }
+        pShader->Begin(iShaderPass);
+        pMesh->Bind_BufferDesc();
+        pMesh->Render();
+    }
+    return S_OK;
+}
+
 void C3DMapSkspObject::Change_RenderState(RT_RENDERSTATE _eRenderState, _bool _isMapped)
 {
     switch (_eRenderState)
@@ -668,6 +814,17 @@ HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, cons
     case Client::C3DMapSkspObject::SKSP_CUP:
     {
         iFlag = RT_RENDER_DEAFULT;
+
+        CMesh* pMesh = p3DModel->Get_Mesh(0);
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+        m_pShaderComs[COORDINATE_3D]->Begin((_uint)PASS_VTXMESH::WORLDPOSMAP_BOOK);
+        pMesh->Bind_BufferDesc();
+        pMesh->Render();
+    }
+    break;
+    case Client::C3DMapSkspObject::SKSP_C09_ROTATE:
+    {
+        iFlag = RT_RENDER_ROTATE;
 
         CMesh* pMesh = p3DModel->Get_Mesh(0);
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));

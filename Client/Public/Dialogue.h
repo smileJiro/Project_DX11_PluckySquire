@@ -173,6 +173,8 @@ private:
 
 
 
+
+
 /* UI_manager에서 이동*/
 private:
 

@@ -3,7 +3,7 @@
 #include "GameInstance.h"
 
 CRenderGroup_Final::CRenderGroup_Final(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    :CRenderGroup_MRT(_pDevice, _pContext)
+    :CRenderGroup(_pDevice, _pContext)
 {
 }
 
@@ -17,43 +17,21 @@ HRESULT CRenderGroup_Final::Initialize(void* _pArg)
 
 HRESULT CRenderGroup_Final::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuffer)
 {
-    /* 1. 최종 화면을 그려내는 단계  */
-    if (FAILED(m_pGameInstance->Begin_MRT(m_strMRTTag, m_pDSV, m_isClear)))
-        return E_FAIL;
-
     /* 2. 직교투영 Matrix 정보 전달. */
     _pRTShader->Bind_Matrix("g_WorldMatrix", m_pGameInstance->Get_WorldMatrix_Renderer());
     _pRTShader->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_ViewMatrix_Renderer());
     _pRTShader->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_ProjMatrix_Renderer());
 
-    /* 픽셀을 월드위치까지 변환하기 위한 역행렬 바인딩 */
-    _pRTShader->Bind_Matrix("g_ViewMatrixInv", &m_pGameInstance->Get_TransformInverseFloat4x4(CPipeLine::D3DTS_VIEW));
-    _pRTShader->Bind_Matrix("g_ProjMatrixInv", &m_pGameInstance->Get_TransformInverseFloat4x4(CPipeLine::D3DTS_PROJ));
-
     /* Diffuse 와 Shade RTV를 바인드하고 이제 이 두 데이터를 가지고 최종 화면을 그려낼 것 이다. */
-    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_AlbedoTexture", TEXT("Target_Albedo"))))
+    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_FinalTexture", TEXT("Target_Final"))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_ShadeTexture", TEXT("Target_Shade"))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_SpecularTexture", TEXT("Target_Specular"))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_LightDepthTexture", TEXT("Target_LightDepth"))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(_pRTShader, "g_DepthTexture", TEXT("Target_Depth"))))
-        return E_FAIL;
-
-    _pRTShader->Begin((_uint)PASS_DEFERRED::LIGHTING);
+    _pRTShader->Begin((_uint)PASS_DEFERRED::FINAL);
 
     _pRTBuffer->Bind_BufferDesc();
 
     _pRTBuffer->Render();
 
-    if (FAILED(m_pGameInstance->End_MRT()))
-        return E_FAIL;
 
     return S_OK;
 }

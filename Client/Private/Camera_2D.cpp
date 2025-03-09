@@ -180,7 +180,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 	m_eCameraMode = CAMERA_2D_MODE::DEFAULT;
 
 	// Sketch Space 면에 따라서 Arm 바꿔 주기
-	if (CSection_Manager::GetInstance()->is_WordPos_Capcher()) 
+	if (CSection_Manager::GetInstance()->Is_WordPos_Capcher())
 	{
 		CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
 		m_iPlayType = static_cast<CSection_2D*>(pSection)->Get_Section_2D_PlayType();

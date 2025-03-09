@@ -501,6 +501,18 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 	 
 	//Imgui(_fTimeDelta);
 
+	if (KEY_DOWN(KEY::Y)) {
+		Set_FreezeEnter(FREEZE_X, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
+		//Set_FreezeEnter(FREEZE_Z, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
+		Set_FreezeEnter(FREEZE_Y, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
+		m_isUsingFreezeOffset = true;
+	}
+	if (KEY_DOWN(KEY::I)) {
+		Set_FreezeExit(FREEZE_X, 0);
+		//Set_FreezeExit(FREEZE_Z, 0);
+		Set_FreezeExit(FREEZE_Y, 0);
+	}
+
 #endif
 }
 
@@ -746,13 +758,15 @@ _vector CCamera_Target::Calculate_CameraPos(_vector* _pLerpTargetPos, _float _fT
 			}
 			m_isTargetChanged = false;
 		}
-
-		if (true == m_isUsingFreezeOffset) {
-			vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), vTargetPos + XMLoadFloat3(&m_vFreezeOffset), fRatio);
-		}
 		else {
-			vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), vTargetPos, fRatio);
+			if (true == m_isUsingFreezeOffset) {
+				vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), vTargetPos + XMLoadFloat3(&m_vFreezeOffset), fRatio);
+			}
+			else {
+				vCurPos = XMVectorLerp(XMVectorSetW(XMLoadFloat3(&m_vStartPos), 1.f), vTargetPos, fRatio);
+			}
 		}
+		
 	}
 
 	vCurPos = XMVectorSetW(vCurPos, 1.f);
@@ -789,6 +803,9 @@ void CCamera_Target::Calculate_FreezeOffset(_vector* _pTargetPos)
 	}
 	if (FREEZE_Z == (m_iFreezeMask & FREEZE_Z)) {
 		m_vFreezeOffset.z = m_vFreezeEnterPos.z - XMVectorGetZ(*_pTargetPos);
+	}
+	if (FREEZE_Y == (m_iFreezeMask & FREEZE_Y)) {
+		m_vFreezeOffset.y = m_vFreezeEnterPos.y - XMVectorGetY(*_pTargetPos);
 	}
 }
 
@@ -884,6 +901,20 @@ void CCamera_Target::Imgui(_float _fTimeDelta)
 		m_pCurArm->Set_Length(fArmLength);
 	}
 
+	_float fCameraMoveSpeed = m_pControllerTransform->Get_SpeedPerSec();
+
+	ImGui::Text("CameraSpeed: %.2f", fCameraMoveSpeed);
+	ImGui::SameLine();
+	if (ImGui::Button("- Speed") || ImGui::IsItemActive()) {// 누르고 있는 동안 계속 동작
+		fCameraMoveSpeed -= 1.f;
+		m_pControllerTransform->Set_SpeedPerSec(fCameraMoveSpeed);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("+ Speed") || ImGui::IsItemActive()) {
+		fCameraMoveSpeed += 1.f;
+		m_pControllerTransform->Set_SpeedPerSec(fCameraMoveSpeed);
+	}
+
 	_float3 vTargetPos = {};
 	_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 	_float3 vDebugArm = {};
@@ -976,7 +1007,7 @@ void CCamera_Target::Load_InitialArmTag()
 		szFileName = TEXT("Chapter6/Chapter6_SketchSpace_InitialTag.json");
 		break;
 	case LEVEL_CHAPTER_8:
-		szFileName = TEXT("Chapter6/Chapter6_SketchSpace_InitialTag.json");
+		szFileName = TEXT("Chapter8/Chapter8_SketchSpace_InitialTag.json");
 		break;
 	}
 

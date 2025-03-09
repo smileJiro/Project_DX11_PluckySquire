@@ -231,8 +231,8 @@ HRESULT CMainApp::Ready_RenderGroup()
 	CRenderGroup_MRT::RG_MRT_DESC RGPriorityDesc;
 	RGPriorityDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RGPriorityDesc.iPriorityID = PRIORITY_3D::PR3D_PRIORITY;
-	RGPriorityDesc.strMRTTag = TEXT("MRT_Lighting");
-	RGPriorityDesc.pDSV = m_pGameInstance->Find_DSV(TEXT("Target_Lighting"));
+	RGPriorityDesc.strMRTTag = TEXT("MRT_Final");
+	RGPriorityDesc.isClear = true;
 	pRenderGroup_MRT = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RGPriorityDesc);
 	if (nullptr == pRenderGroup_MRT)
 	{
@@ -486,20 +486,38 @@ HRESULT CMainApp::Ready_RenderGroup()
 
 
 	/* RG_3D, PR3D_UI */
-	CRenderGroup::RG_DESC RG_UIDesc;
+	CRenderGroup_MRT::RG_MRT_DESC RG_UIDesc;
 	RG_UIDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RG_UIDesc.iPriorityID = PRIORITY_3D::PR3D_UI;
-	pRenderGroup = CRenderGroup::Create(m_pDevice, m_pContext, &RG_UIDesc);
-	if (nullptr == pRenderGroup)
+	RG_UIDesc.isClear = false;
+	RG_UIDesc.strMRTTag = TEXT("MRT_Final");
+	CRenderGroup_MRT* pRenderGroup_UI = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_UIDesc);
+	if (nullptr == pRenderGroup_UI)
 	{
 		MSG_BOX("Failed Create PR3D_UI");
 		return E_FAIL;
 	}
-	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup->Get_RenderGroupID(), pRenderGroup->Get_PriorityID(), pRenderGroup)))
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_UI->Get_RenderGroupID(), pRenderGroup_UI->Get_PriorityID(), pRenderGroup_UI)))
 		return E_FAIL;
-	Safe_Release(pRenderGroup);
-	pRenderGroup = nullptr;
+	Safe_Release(pRenderGroup_UI);
+	pRenderGroup_UI = nullptr;
 
+	/* RG_3D, PR3D_FINAL */
+	CRenderGroup_Final::RG_DESC RG_FinalDesc;
+	RG_FinalDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_FinalDesc.iPriorityID = PRIORITY_3D::PR3D_FINAL;
+	CRenderGroup_Final* pRenderGroup_Final = CRenderGroup_Final::Create(m_pDevice, m_pContext, &RG_FinalDesc);
+	if (nullptr == pRenderGroup_Final)
+	{
+		MSG_BOX("Failed Create PR3D_FINAL");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Final->Get_RenderGroupID(), pRenderGroup_Final->Get_PriorityID(), pRenderGroup_Final)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_Final);
+	pRenderGroup_Final = nullptr;
+
+	
 	return S_OK;
 }
 
@@ -577,11 +595,17 @@ HRESULT CMainApp::Ready_RenderTargets()
 	/* Target_ParticleAccumulate */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_ParticleAccumulate"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.0f, 0.0f, 0.0f))))
 		return E_FAIL;
+
 	/* Target_ParticleRevealage */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_ParticleRevelage"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16_FLOAT, _float4(1.0f, 0.f, 0.0f, 0.0f))))
 		return E_FAIL;
+
 	/* Target_ParticleBloom */
 	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_ParticleBloom"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R16G16B16A16_FLOAT, _float4(0.0f, 0.f, 0.0f, 0.0f))))
+		return E_FAIL;
+
+	/* Target_Final */
+	if (FAILED(m_pGameInstance->Add_RenderTarget(TEXT("Target_Final"), (_uint)g_iWinSizeX, (_uint)g_iWinSizeY, DXGI_FORMAT_R8G8B8A8_UNORM, _float4(0.0f, 0.f, 0.0f, 0.0f))))
 		return E_FAIL;
 
 	/* RTV를 모아두는 MRT를 세팅 */
@@ -601,17 +625,7 @@ HRESULT CMainApp::Ready_RenderTargets()
 	/* MRT_PlayerDepth */
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_PlayerDepth"), TEXT("Target_PlayerDepth"))))
 		return E_FAIL;
-#pragma region LightAcc(Old)
-	///* MRT_LightAcc */
-//if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Shade"))))
-//	return E_FAIL;
-//if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Specular"))))
-//	return E_FAIL;
-//
-///* MRT_Shadow */
-//if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Shadow"), TEXT("Target_LightDepth"))))
-//	return E_FAIL;
-#pragma endregion
+
 	/* MRT_DirectLightAcc*/
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_DirectLightAcc"), TEXT("Target_DirectLightAcc"))))
 		return E_FAIL;
@@ -659,6 +673,10 @@ HRESULT CMainApp::Ready_RenderTargets()
 
 	/* MRT_AfterParticle */
 	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_AfterParticle"), TEXT("Target_Bloom"))))
+		return E_FAIL;
+
+	/* MRT_Final */
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_Final"), TEXT("Target_Final"))))
 		return E_FAIL;
 
 	/* Settiong DSV */

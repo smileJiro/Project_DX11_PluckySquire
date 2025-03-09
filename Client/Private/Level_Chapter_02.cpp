@@ -50,6 +50,8 @@
 
 #include "Door_Yellow.h"
 
+#include "Room_Door.h"
+
 //#include "UI.h"
 #include "UI_Manager.h"
 #include "Dialog_Manager.h"
@@ -194,8 +196,13 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
+	if (FAILED(Ready_Layer_RoomDoor(TEXT("Layer_RoomDoor"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_RoomDoor (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 
-
+	
 
 
 	///* Pooling Test */
@@ -258,10 +265,8 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	// BGM ½ÃÀÛ
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
 
-
-
-	//CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_Intro"),
-	//	50);
+	//Event_Register_Trigger(TEXT("Chapter2_Intro"));
+	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
@@ -722,9 +727,9 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	CutSceneDesc.fFovy = XMConvertToRadians(60.f);
 	CutSceneDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	CutSceneDesc.vEye = _float3(0.f, 10.f, -7.f);
-	CutSceneDesc.vAt = _float3(0.f, 0.f, 0.f);
-	CutSceneDesc.eZoomLevel = CCamera::LEVEL_6;
+	CutSceneDesc.vEye = _float3(462.94415283203125f, 39.79984664916992f, -157.9098663330078f);
+	CutSceneDesc.vAt = _float3(-27.738893508911133f, 33.2850341796875f, -152.47311401367188f);
+	CutSceneDesc.eZoomLevel = CCamera::LEVEL_4;
 	CutSceneDesc.iCameraType = CCamera_Manager::CUTSCENE;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_CutScene"),
@@ -756,13 +761,14 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, static_cast<CCamera*>(pCamera));
 
 	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
-	//vRotation = { XMConvertToRadians(-79.2f), XMConvertToRadians(0.f), 0.f };
 	fLength = 12.5f;
 	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
 
 	// Load CutSceneData, ArmData
 	CCamera_Manager::GetInstance()->Load_CutSceneData(m_eLevelID);
 	CCamera_Manager::GetInstance()->Load_ArmData(m_eLevelID);
+
+	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 
 	return S_OK;
 }
@@ -875,13 +881,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 #pragma endregion InterAction UI
 
-	_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
-
-	if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
-	{
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ParentShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
-			return E_FAIL;
-	}
+	//_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
+	//
+	//if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
+	//{
+	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ParentShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	//		return E_FAIL;
+	//}
 
 
 #pragma region SettingPanel UI
@@ -1764,6 +1770,18 @@ HRESULT CLevel_Chapter_02::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	Desc.strSectionTag = L"Chapter2_SKSP_03";
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_RoomDoor(const _wstring& _strLayerTag)
+{
+	CRoom_Door::CONTAINEROBJ_DESC Desc = {};
+	Desc.iCurLevelID = m_eLevelID;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Room_Door"),
 		m_eLevelID, _strLayerTag, &Desc)))
 		return E_FAIL;
 

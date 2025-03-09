@@ -8,6 +8,7 @@
 #include "DefenderPlayerProjectile.h"
 #include "Section_Manager.h"
 #include "PlayerData_Manager.h"
+#include "Pooling_Manager.h"
 
 CDefenderPlayer::CDefenderPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CPlayable(_pDevice, _pContext,PLAYABLE_ID::DEFENDER)
@@ -29,6 +30,7 @@ HRESULT CDefenderPlayer::Initialize_Prototype()
 HRESULT CDefenderPlayer::Initialize(void* _pArg)
 {
 	m_pSection_Manager = CSection_Manager::GetInstance();
+	m_pPoolMgr = CPooling_Manager::GetInstance();
 
 	CDefenderPlayer::DEFENDERPLAYER_DESC* pDesc = static_cast<DEFENDERPLAYER_DESC*>(_pArg);
 
@@ -56,8 +58,12 @@ HRESULT CDefenderPlayer::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CDefenderPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-	CPlayerData_Manager::GetInstance()->Register_Player(PLAYABLE_ID::DEFENDER, this);
+	CPlayerData_Manager::GetInstance()->Register_Player(PLAYALBE_ID::DEFENDER, this);
+
+
+
 	return S_OK;
 }
 
@@ -108,6 +114,25 @@ HRESULT CDefenderPlayer::Ready_PartObjects()
 	}
 	Safe_AddRef(m_pCrossHair);
 	m_pCrossHair->Set_Active(false);
+	return S_OK;
+}
+HRESULT CDefenderPlayer::Ready_BulletPool()
+{
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = m_iCurLevelID;
+	Pooling_Desc.strLayerTag = TEXT("Layer_PlayerProjectiles");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_DefenderPlayerProjectile");
+	Pooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
+
+	CDefenderPlayerProjectile::DEFENDERPLAYER_PROJECTILE_DESC* pBulletDesc = new CDefenderPlayerProjectile::DEFENDERPLAYER_PROJECTILE_DESC;
+	pBulletDesc->iCurLevelID = m_iCurLevelID;
+	pBulletDesc->vSectionSize = m_pSection_Manager->Get_Section_RenderTarget_Size(m_strSectionName);
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_DefenderPlayerBullet"), Pooling_Desc, pBulletDesc);
+
+	XMStoreFloat4(&m_vLeftShootQuaternion, XMQuaternionRotationRollPitchYaw(0.f, 0.f, XMConvertToRadians(180.f)));
+	XMStoreFloat4(& m_vRightShootQuaternion, XMQuaternionRotationRollPitchYaw(0.f, 0.f, 0.f));
+
 	return S_OK;
 }
 HRESULT CDefenderPlayer::Ready_Components()
@@ -214,6 +239,9 @@ void CDefenderPlayer::Key_Input(_float _fTimeDelta)
 
 void CDefenderPlayer::Start_Game()
 {
+
+	if (FAILED(Ready_BulletPool()))
+		return ;
 	m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_TRANSFORM_IN);
 
 	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
@@ -282,16 +310,16 @@ void CDefenderPlayer::Shoot()
 {
 	m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_SHOT);
 
-	_vector v2DPosition = Get_FinalPosition();
-	v2DPosition += m_fBarrelOffset;
-	CDefenderPlayerProjectile::DEFENDERPLAYER_PROJECTILE_DESC tProjectileDesc{};
-	tProjectileDesc.eStartCoord = COORDINATE_2D;
-	tProjectileDesc.tTransform2DDesc.vInitialPosition = _float3(XMVectorGetX(v2DPosition), XMVectorGetY(v2DPosition), 0.0f);
-	tProjectileDesc.iCurLevelID = m_iCurLevelID;
-	tProjectileDesc._eTDirection = m_eTDirection;
-	CDefenderPlayerProjectile* pProjectile = static_cast<CDefenderPlayerProjectile*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_DefenderPlayerProjectile"), &tProjectileDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_PlayerSubs"), pProjectile);
-	m_pSection_Manager->Add_GameObject_ToSectionLayer(m_strSectionName, pProjectile, SECTION_2D_PLAYMAP_OBJECT);
+	_float3 v2DPosition;
+	XMStoreFloat3(&v2DPosition, Get_FinalPosition() + m_fBarrelOffset);
+
+	m_pPoolMgr->Create_Object(TEXT("Pooling_Projectile_DefenderPlayerBullet"), 
+		COORDINATE_2D, 
+		&v2DPosition,
+		T_DIRECTION::RIGHT == m_eTDirection ? &m_vRightShootQuaternion : &m_vLeftShootQuaternion,
+		(_float3*)nullptr,
+		&m_strSectionName);
+
 }
 
 CDefenderPlayer* CDefenderPlayer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

@@ -8,5 +8,15 @@
         "Is_Sequence": true
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "Chapter6_FatherGame_Progress_ZetPack_Clear",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter6_FatherGame_Progress_ZetPack_Clear",
+        "Is_Sequence": true
+      }
+    ]
   }
 ]

@@ -57,6 +57,8 @@ private :
 	HRESULT					Render_Cup();
 	HRESULT					Render_Tub();
 	HRESULT					Render_Storage();
+	HRESULT					Render_Rotate();
+	HRESULT					Render_Tube();
 
 private :
 	_wstring			m_strRenderSectionTag = L"";

@@ -17,7 +17,6 @@
 #include "CubeMap.h"
 #include "MainTable.h"
 #include "Player.h"
-#include "DefenderPlayer.h"
 #include "Beetle.h"
 #include "BirdMonster.h"
 #include "Projectile_BirdMonster.h"
@@ -39,7 +38,11 @@
 #include "Book.h"
 
 //DEFENDER
+#include "DefenderPlayer.h"
 #include "Minigame_Defender.h"
+#include "DefenderSpawner.h"
+#include "DefenderSmShip.h"
+#include "DefenderPlayerProjectile.h"
 
 #include "RayShape.h"
 #include "CarriableObject.h"
@@ -243,20 +246,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 #pragma region TestCode
 	
-	/* Test ZetPackChild */
-
-	CZetPack_Child::ZETPACK_CHILD_DESC ZetPackDesc = {};
-	ZetPackDesc.pPlayer = dynamic_cast<CPlayer*>(pCameraTarget);
-	assert(ZetPackDesc.pPlayer);
-
-	ZetPackDesc.iCurLevelID = LEVEL_CHAPTER_6;
-	ZetPackDesc.Build_2D_Transform(_float2(-300.0f, 0.0f), _float2(1.0f, 1.0f), 200.f);
-	CGameObject* pGameObject = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Child"), LEVEL_CHAPTER_6, TEXT("Layer_ZetPack_Child"), &pGameObject, &ZetPackDesc)))
-		return E_FAIL;
-
-	if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_01"), pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
-		return E_FAIL;
+	
 
 	///* Test Candle */
 	//CCandleGame::CANDLEGAME_DESC CandleGameDesc;
@@ -411,6 +401,11 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 	{
 		_float3 vPos = { 5.f, 0.35f, -3.f };
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+	}
+
+	if (KEY_DOWN(KEY::L)) {
+		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter6_Intro"));
+		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
 	}
 }
 
@@ -683,6 +678,15 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pTower);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pTower, SECTION_2D_PLAYMAP_OBJECT);
 
+	CDefenderSmShip::DEFENDER_MONSTER_DESC tMonsterDesc = {};
+	tMonsterDesc.eTDirection = T_DIRECTION::RIGHT;
+	tMonsterDesc.iCurLevelID = m_eLevelID;
+	tMonsterDesc.tTransform2DDesc.vInitialPosition = { -0.f, 0.f, 0.f };   // TODO ::임시 위치
+	CDefenderSmShip* pMonster = static_cast<CDefenderSmShip*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderSmShip"), &tMonsterDesc));;
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pMonster);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pMonster, SECTION_2D_PLAYMAP_OBJECT);
+
+
 	return S_OK;
 }
 
@@ -769,17 +773,19 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pInteractionE));
 
 
+
+
 #pragma endregion InterAction UI
 
-	_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
+	//_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
+	//
+	//if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
+	//{
+	//	
+	//}
 
-	if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
-	{
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ParentShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
-			return E_FAIL;
-	}
-
-
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
 #pragma region SettingPanel UI
 
 	_uint SettingPanelUICount = CUI::SETTINGPANEL::SETTING_END;
@@ -1083,9 +1089,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
-
-
-	return S_OK;
 
 
 	//NPCDesc.iCurLevelID = m_eLevelID;
