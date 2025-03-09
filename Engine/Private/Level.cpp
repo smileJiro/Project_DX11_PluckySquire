@@ -30,6 +30,22 @@ HRESULT CLevel::Render()
 }
 
 
+HRESULT CLevel::Ready_DeafultCameraSet()
+{
+    CONST_DOF tDefaultSet = {};
+
+
+    ID3D11Buffer* pBuffer = nullptr;
+    if (FAILED(m_pGameInstance->CreateConstBuffer(tDefaultSet, D3D11_USAGE_DYNAMIC, &pBuffer)))
+        return E_FAIL;
+
+    m_pGameInstance->Bind_DofConstBuffer("DofConstData", pBuffer);
+
+    Safe_Release(pBuffer);
+
+    return S_OK;
+}
+
 void CLevel::Free()
 {
     // Free()의 역할 : 소멸자는 소멸자 코드

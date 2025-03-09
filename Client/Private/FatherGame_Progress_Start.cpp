@@ -99,6 +99,9 @@ HRESULT CFatherGame_Progress_Start::Progress_Clear()
         Event_Register_Trigger(TEXT("Chapter6_FatherGame_Progress_Start_Clear"));
         /* 2. 자기 자신의 Active 상태를 False로 변경 */
         Event_SetActive(this, false);
+
+        /* 3. ZetPack Progress 시작 */
+        CFatherGame::GetInstance()->Start_Progress(CFatherGame::FATHER_PROGRESS_ZETPACK);
 #ifdef _DEBUG
         cout << "FatherGame Progress_Start Clear" << endl;
 #endif // _DEBUG

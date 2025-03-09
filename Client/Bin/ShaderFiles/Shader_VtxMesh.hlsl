@@ -140,6 +140,15 @@ VS_WORLDOUT VS_BOOKWORLDPOSMAP(VS_IN In)
         vNDCCoord.xy = vUV.xy;
     }
     
+    if (g_iFlag == RT_RENDER_ROTATE)
+    {
+        float temp = vNDCCoord.x;
+        vNDCCoord.x = 1.f - vNDCCoord.y;
+        vNDCCoord.y = temp;
+    }
+
+    
+    
     vNDCCoord = float4(vNDCCoord.xy * 2.0f - 1.0f, 0.0f, 1.0f);
     vNDCCoord.y *= -1.0f;
     Out.vPosition = vNDCCoord;
