@@ -640,6 +640,9 @@
     <Filter Include="05.MiniGames\FatherGame\Object\ZetPack_Child">
       <UniqueIdentifier>{3c0763fb-8635-4e97-b386-f99444eb1a98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.MiniGames\Defender">
+      <UniqueIdentifier>{2764025e-f374-438b-9250-708a1326cdea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1471,9 +1474,6 @@
     <ClInclude Include="..\public\Sneak_Trap_Tile.h">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Trap</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\DefenderPlayer.h" />
-    <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
-    <ClInclude Include="..\Public\Minigame_Defender.h" />
     <ClInclude Include="..\Public\Playable.h" />
     <ClInclude Include="..\Public\BossTransitionState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
@@ -1583,6 +1583,16 @@
     <ClInclude Include="..\Public\ShopItemBG_New.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\DefenderPlayer.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderPlayerProjectile.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Minigame_Defender.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderMonster.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2401,9 +2411,6 @@
     <ClCompile Include="..\private\Sneak_Trap_Tile.cpp">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Trap</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\DefenderPlayer.cpp" />
-    <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
-    <ClCompile Include="..\Private\Minigame_Defender.cpp" />
     <ClCompile Include="..\Private\Playable.cpp" />
     <ClCompile Include="..\Private\BossTransitionState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
@@ -2513,6 +2520,16 @@
     <ClCompile Include="..\Private\ShopPanel_YesNo_New.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\01. YesNo_Panel</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\DefenderPlayer.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Minigame_Defender.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderMonster.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
