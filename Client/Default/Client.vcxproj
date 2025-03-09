@@ -219,6 +219,8 @@
     <ClInclude Include="..\Public\DefenderMonster.h" />
     <ClInclude Include="..\Public\DefenderPlayer.h" />
     <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
+    <ClInclude Include="..\Public\DefenderSmShip.h" />
+    <ClInclude Include="..\Public\DefenderSpawner.h" />
     <ClInclude Include="..\public\FatherGame.h" />
     <ClInclude Include="..\public\FatherGame_Progress.h" />
     <ClInclude Include="..\public\FatherGame_Progress_Start.h" />
@@ -251,6 +253,7 @@
     <ClInclude Include="..\Public\Portal_Default.h" />
     <ClInclude Include="..\Public\Portal_Arrow.h" />
     <ClInclude Include="..\Public\Portal_Cannon.h" />
+    <ClInclude Include="..\Public\ScrollModelObject.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame_Pip.h" />
     <ClInclude Include="..\Public\ShopItemBG_New.h" />
@@ -544,6 +547,8 @@
     <ClCompile Include="..\Private\DefenderMonster.cpp" />
     <ClCompile Include="..\Private\DefenderPlayer.cpp" />
     <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
+    <ClCompile Include="..\Private\DefenderSmShip.cpp" />
+    <ClCompile Include="..\Private\DefenderSpawner.cpp" />
     <ClCompile Include="..\private\FatherGame.cpp" />
     <ClCompile Include="..\private\FatherGame_Progress.cpp" />
     <ClCompile Include="..\private\FatherGame_Progress_Start.cpp" />
@@ -573,6 +578,7 @@
     <ClCompile Include="..\Private\Portal_Default.cpp" />
     <ClCompile Include="..\Private\Portal_Arrow.cpp" />
     <ClCompile Include="..\Private\Portal_Cannon.cpp" />
+    <ClCompile Include="..\Private\ScrollModelObject.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame_Pip.cpp" />
     <ClCompile Include="..\Private\ShopItemBG_New.cpp" />

@@ -1,14 +1,14 @@
 #pragma once
-#include "ModelObject.h"
+#include "ScrollModelObject.h"
 
 BEGIN(Client)
 class CDefenderPlayerProjectile :
-    public CModelObject
+    public CScrollModelObject
 {
 public:
-	typedef struct tagDefenderPlayerProjectileDesc : public CModelObject::MODELOBJECT_DESC
+	typedef struct tagDefenderPlayerProjectileDesc : public CScrollModelObject::SCROLLMODELOBJ_DESC
 	{
-		T_DIRECTION _eTDirection = T_DIRECTION::RIGHT;
+
 	}DEFENDERPLAYER_PROJECTILE_DESC;
 
 private:
@@ -30,8 +30,8 @@ public:
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
 private:
-	T_DIRECTION m_eTDirection = T_DIRECTION::RIGHT;
-	_float m_fLifeTime = 5.f;
+
+	_float m_fLifeTime = 2.f;
 	_float m_fLifeTimeAcc = 0.f;
 public:
 	static CDefenderPlayerProjectile* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
