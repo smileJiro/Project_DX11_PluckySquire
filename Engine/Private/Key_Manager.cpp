@@ -58,14 +58,15 @@ int g_ArrDK[(int)KEY::LAST] = {
     DIK_C,
     DIK_V,
     DIK_B,
+    DIK_L,
     DIK_LALT,     // ALT,
     DIK_LCONTROL, // CTRL,
     DIK_LSHIFT,   // LSHIFT,
     DIK_SPACE,    // SPACE,
     DIK_RETURN,   // ENTER,
     DIK_ESCAPE,   // ESC,
-    DIK_TAB       // TAB,
-
+    DIK_TAB,       // TAB,
+    DIK_BACKSPACE // BACKSPACE
 
     // LAST // 끝을 알리는.
 };

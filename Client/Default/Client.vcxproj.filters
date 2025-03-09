@@ -643,6 +643,12 @@
     <Filter Include="05.MiniGames\Defender">
       <UniqueIdentifier>{2764025e-f374-438b-9250-708a1326cdea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Room_Door">
+      <UniqueIdentifier>{f3af74e8-a0bf-4968-b73c-a84dd4becc16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Room_Door\Body">
+      <UniqueIdentifier>{d8713437-96d1-4389-a0bb-53ac902ee48e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1593,6 +1599,12 @@
       <Filter>05.MiniGames\Defender</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\DefenderMonster.h" />
+    <ClInclude Include="..\Public\Room_Door.h">
+      <Filter>02.GameObjects\Room_Door</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Room_Door_Body.h">
+      <Filter>02.GameObjects\Room_Door\Body</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2530,6 +2542,12 @@
       <Filter>05.MiniGames\Defender</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DefenderMonster.cpp" />
+    <ClCompile Include="..\Private\Room_Door.cpp">
+      <Filter>02.GameObjects\Room_Door</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Room_Door_Body.cpp">
+      <Filter>02.GameObjects\Room_Door\Body</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

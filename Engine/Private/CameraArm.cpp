@@ -407,7 +407,10 @@ _bool CCameraArm::Turn_Vector(ARM_DATA* _pCustomData, _float _fTimeDelta)
 
     if (fRatio >= (1.f - EPSILON)) {
 
-        XMStoreFloat3(&m_vArm, m_pTransform->Get_State(CTransform::STATE_LOOK));
+        m_vArm = _pCustomData->vDesireArm;
+        m_pTransform->Set_Look(XMLoadFloat3(&m_vArm));
+
+        //XMStoreFloat3(&m_vArm, m_pTransform->Get_State(CTransform::STATE_LOOK));
         _pCustomData->fMoveTimeAxisY.y = 0.f;
         return true;
     }

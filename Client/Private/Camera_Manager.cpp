@@ -611,8 +611,8 @@ void CCamera_Manager::Load_ArmData(LEVEL_ID _eLevelID)
 		sz2DArmFileName = TEXT("Chapter6/Chapter6_2D_ArmData.json");
 		break;
 	case LEVEL_CHAPTER_8:
-		szArmFileName = TEXT("Chapter6/Chapter6_ArmData.json");
-		sz2DArmFileName = TEXT("Chapter6/Chapter6_2D_ArmData.json");
+		szArmFileName = TEXT("Chapter8/Chapter8_ArmData.json");
+		sz2DArmFileName = TEXT("Chapter8/Chapter8_2D_ArmData.json");
 		break;
 	}
 

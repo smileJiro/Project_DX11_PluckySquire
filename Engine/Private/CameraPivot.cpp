@@ -50,11 +50,11 @@ void CCameraPivot::Priority_Update(_float _fTimeDelta)
 
 void CCameraPivot::Update(_float _fTimeDelta)
 {
+    Calculate_FinalPosition();
 }
 
 void CCameraPivot::Late_Update(_float _fTimeDelta)
 {
-    Calculate_FinalPosition();
 }
 
 HRESULT CCameraPivot::Render()
@@ -69,6 +69,8 @@ void CCameraPivot::Set_MainTarget(CGameObject* _pMainTarget)
     m_pMainTarget = _pMainTarget;
 
     Safe_AddRef(m_pMainTarget);
+
+    Calculate_FinalPosition();
 }
 
 void CCameraPivot::Set_SubTarget(CGameObject* _pSubTarget)
@@ -78,10 +80,14 @@ void CCameraPivot::Set_SubTarget(CGameObject* _pSubTarget)
     m_pSubTarget = _pSubTarget;
 
     Safe_AddRef(m_pSubTarget);
+
+    Calculate_FinalPosition();
 }
 
 void CCameraPivot::Calculate_FinalPosition()
 {
+    m_fRatio = 0.7f;
+
     if (nullptr == m_pMainTarget || nullptr == m_pSubTarget)
         return;
 
@@ -89,8 +95,9 @@ void CCameraPivot::Calculate_FinalPosition()
     _vector vSubTargetPos = m_pSubTarget->Get_FinalPosition();
 
     _vector vDir = XMVector3Normalize(vSubTargetPos - vMainTargetPos);
+    _float vDistance = XMVectorGetX(XMVector3Length(vSubTargetPos - vMainTargetPos));
 
-    _vector vPivotPos = vMainTargetPos + (vDir * m_fRatio);
+    _vector vPivotPos = vMainTargetPos + (vDir * (vDistance * m_fRatio));
 
     m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vPivotPos, 1.f));
 }

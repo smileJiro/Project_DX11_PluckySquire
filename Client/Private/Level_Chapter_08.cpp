@@ -359,7 +359,7 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			CCameraPivot* pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_CameraPivot"), 0));
 			pPivot->Set_MainTarget(pBoss);
 			pPivot->Set_Active(true);
-			CCamera_Manager::GetInstance()->Change_CameraTarget(pPivot);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pPivot, 1.f);
 		}
 	}
 

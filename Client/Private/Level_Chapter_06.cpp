@@ -243,20 +243,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 #pragma region TestCode
 	
-	/* Test ZetPackChild */
-
-	CZetPack_Child::ZETPACK_CHILD_DESC ZetPackDesc = {};
-	ZetPackDesc.pPlayer = dynamic_cast<CPlayer*>(pCameraTarget);
-	assert(ZetPackDesc.pPlayer);
-
-	ZetPackDesc.iCurLevelID = LEVEL_CHAPTER_6;
-	ZetPackDesc.Build_2D_Transform(_float2(-300.0f, 0.0f), _float2(1.0f, 1.0f), 200.f);
-	CGameObject* pGameObject = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Child"), LEVEL_CHAPTER_6, TEXT("Layer_ZetPack_Child"), &pGameObject, &ZetPackDesc)))
-		return E_FAIL;
-
-	if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_01"), pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
-		return E_FAIL;
+	
 
 	///* Test Candle */
 	//CCandleGame::CANDLEGAME_DESC CandleGameDesc;
@@ -411,6 +398,11 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 	{
 		_float3 vPos = { 5.f, 0.35f, -3.f };
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+	}
+
+	if (KEY_DOWN(KEY::L)) {
+		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter6_Intro"));
+		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
 	}
 }
 
