@@ -6054,5 +6054,167 @@
   "SearchTag": "train_tracks_Night",
   "Sorting": false,
   "TextureName": "train_tracks_Night"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_0708_graffiti_png",
+  "Sorting": false,
+  "TextureName": "C08_0708_graffiti_png"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_0708_tanks_track_01_png",
+  "Sorting": false,
+  "TextureName": "C08_0708_tanks_track_01_png"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_0708_tanks_track_02_png",
+  "Sorting": false,
+  "TextureName": "C08_0708_tanks_track_02_png"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_0708_tanks_track_03_png",
+  "Sorting": false,
+  "TextureName": "C08_0708_tanks_track_03_png"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_0708_tanks_track_04_png",
+  "Sorting": false,
+  "TextureName": "C08_0708_tanks_track_04_png"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_0708_tanks_track_05_png",
+  "Sorting": false,
+  "TextureName": "C08_0708_tanks_track_05_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_0708_tank_01_png",
+  "Sorting": false,
+  "TextureName": "C08_0708_tank_01_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_0708_tank_01_shadow_png",
+  "Sorting": false,
+  "TextureName": "C08_0708_tank_01_shadow_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_0708_tank_02_png",
+  "Sorting": false,
+  "TextureName": "C08_0708_tank_02_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C08_0708_tank_03_png",
+  "Sorting": false,
+  "TextureName": "C08_0708_tank_03_png"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "Fire_Large_A",
+  "Sorting": false,
+  "TextureName": "Fire_Large_A"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "Fire_Large_B",
+  "Sorting": false,
+  "TextureName": "Fire_Large_B"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "Fire_Small_A",
+  "Sorting": false,
+  "TextureName": "Fire_Small_A"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "Fire_Small_B",
+  "Sorting": false,
+  "TextureName": "Fire_Small_B"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 6
+  },
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_129130_base_01",
+  "Sorting": false,
+  "TextureName": "C09_129130_base_01"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 6
+  },
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_129130_base_02",
+  "Sorting": false,
+  "TextureName": "C09_129130_base_02"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 6
+  },
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_129130_base_03",
+  "Sorting": false,
+  "TextureName": "C09_129130_base_03"
  }
 ]
