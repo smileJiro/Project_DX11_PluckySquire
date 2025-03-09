@@ -449,6 +449,15 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
 		m_eLevelID, _strLayerTag, &Desc)))
 		return E_FAIL;
+	
+	Desc = {};
+	Desc.isOverride = true;
+	Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 17.25f, 47.f);
+	Desc.vHalfExtents = { 40.f, 1.f, 12.f };
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }
