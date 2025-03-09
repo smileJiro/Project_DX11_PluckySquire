@@ -78,9 +78,12 @@ HRESULT CFatherGame_Progress_ZetPack::Progress_Clear()
         /* 1. Claer 이벤트 호출 */
         Event_Register_Trigger(TEXT("Chapter6_FatherGame_Progress_ZetPack_Clear"));
         /* 2. 아빠부품 ui on */
-        CFatherGame::GetInstance()->Set_Active_FatherParts_UIs();
+        CFatherGame::GetInstance()->Set_Active_FatherParts_UIs(true);
         /* 3. 자기 자신의 Active 상태를 False로 변경 */
         Event_SetActive(this, false);
+
+        /* 4. PartBody, PartWing Progress */
+        CFatherGame::GetInstance()->Start_Progress(CFatherGame::FATHER_PROGRESS_PARTBODY);
 #ifdef _DEBUG
         cout << "FatherGame Progress_ZetPack Clear" << endl;
 #endif // _DEBUG

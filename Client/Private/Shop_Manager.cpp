@@ -444,10 +444,10 @@ HRESULT CShop_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _
 
 HRESULT CShop_Manager::Level_Enter(_int _iChangeLevelID)
 {
-	if(FAILED(Create_ShopPanel(_iChangeLevelID, TEXT("Layer_Shopanel"))));
+	if(FAILED(Create_ShopPanel(_iChangeLevelID, TEXT("Layer_Shopanel"))))
 		return E_FAIL;
 
-	if(FAILED(Create_Item(_iChangeLevelID, TEXT("Layer_ShopItem"))));
+	if(FAILED(Create_Item(_iChangeLevelID, TEXT("Layer_ShopItem"))))
 		return E_FAIL;
 
 	return S_OK;
