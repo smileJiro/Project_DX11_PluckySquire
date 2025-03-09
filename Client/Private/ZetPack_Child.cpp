@@ -171,6 +171,10 @@ void CZetPack_Child::State_Change_PortalOut()
 {
 	_wstring strSectionTag = Get_Include_Section_Name();
 	CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(strSectionTag, this);
+	if (CPlayer::PLAYER_MODE_ZETPACK != m_pPlayer->Get_PlayerMode())
+	{
+		m_pPlayer->Set_Mode(CPlayer::PLAYER_MODE_ZETPACK);
+	}
 }
 
 void CZetPack_Child::State_Change_PortalIn()
@@ -254,6 +258,12 @@ void CZetPack_Child::Action_State_Talk(_float _fTimeDelta)
 
 void CZetPack_Child::Action_State_Chase(_float _fTimeDelta)
 {
+	if (COORDINATE_3D == m_pPlayer->Get_CurCoord())
+	{
+		m_eCurState = STATE_PORTALOUT;
+		return;
+	}
+
 	ChaseToTarget(_fTimeDelta);
 }
 
@@ -443,6 +453,8 @@ void CZetPack_Child::Finished_DialogueAction()
 			
 			m_isContactPlayer = true;
 			m_eCurState = STATE_CHASE;
+
+			++m_iDialogueIndex;
 		}
 	}
 		break;

@@ -15,6 +15,7 @@
 
 #include "Pooling_Manager.h"
 #include "UI_Manager.h"
+#include "Shop_Manager.h"
 #include "NPC_Manager.h"
 #include "Dialog_Manager.h"
 #include "PlayerData_Manager.h"
@@ -1004,6 +1005,7 @@ HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 {
 	CPooling_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CEffect2D_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
+	CShop_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CDialog_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CNPC_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	return S_OK;
@@ -1022,6 +1024,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 
 	CEffect2D_Manager::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	Uimgr->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
+	CShop_Manager::GetInstance()->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 	CDialog_Manager::GetInstance()->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 	CNPC_Manager::GetInstance()->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 

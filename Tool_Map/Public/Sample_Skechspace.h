@@ -23,6 +23,7 @@ public:
 	HRESULT					Render_Plag();
 	HRESULT					Render_Cup();
 	HRESULT					Render_Tub();
+	HRESULT					Render_Tube();
 	HRESULT					Render_Storage();
 public :
 	_bool					m_isPreView = false;

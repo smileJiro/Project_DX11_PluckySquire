@@ -1,0 +1,478 @@
+#include "stdafx.h"
+#include "Shop_Manager.h"
+
+
+IMPLEMENT_SINGLETON(CShop_Manager)
+
+CShop_Manager::CShop_Manager()
+	:m_pGameInstance(CGameInstance::GetInstance())
+{
+	Safe_AddRef(m_pGameInstance);
+}
+
+HRESULT CShop_Manager::Create_ShopPanel(_int _iChangeLevel, wstring _strLayerTag)
+{
+
+	if (LEVEL_CHAPTER_2 != _iChangeLevel &&  LEVEL_CHAPTER_4 != _iChangeLevel && LEVEL_CHAPTER_6 != _iChangeLevel &&  LEVEL_CHAPTER_8 != _iChangeLevel)
+	{
+		return E_FAIL;
+	}
+
+
+	CUI::UIOBJDESC pDesc = {};
+	CUI::UIOBJDESC pShopDescs[CUI::SHOPPANEL::SHOP_END] = {};
+	CUI::UIOBJDESC pShopYesNo = {};
+	_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
+
+
+	pDesc.iCurLevelID = _iChangeLevel;
+
+	for (_uint i = 0; i < CUI::SHOPPANEL::SHOP_END; ++i)
+	{
+		pShopDescs[i].iCurLevelID = _iChangeLevel;
+	}
+
+	//if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
+	//{
+	for (_uint i = 0; i < CUI::SHOPPANEL::SHOP_END; ++i)
+	{
+		CGameObject* pShopPanel = { nullptr };
+		CUI::UIOBJDESC pShopPanelDesc{};
+
+
+		switch (i)
+		{
+		case CUI::SHOPPANEL::SHOP_BG:
+		{
+			pShopDescs[CUI::SHOPPANEL::SHOP_BG].fX = DEFAULT_SIZE_BOOK2D_X;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BG].fY = DEFAULT_SIZE_BOOK2D_Y;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BG].fSizeX = 2344.f * 0.8f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BG].fSizeY = 1544.f * 0.8f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BG;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BG].eShopPanelKind = CUI::SHOPPANEL::SHOP_BG;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_BG].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_BG])))
+				return E_FAIL;
+
+			Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_BG].iTextureCount, static_cast<CShopPanel_BG_New*>(pShopPanel));
+		}
+		break;
+
+		case CUI::SHOPPANEL::SHOP_DIALOGUEBG:
+		{
+			pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fX = DEFAULT_SIZE_BOOK2D_X;
+			pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fY = DEFAULT_SIZE_BOOK2D_Y;
+			pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fSizeX = 2320.f * 0.8f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].fSizeY = 424.f * 0.8f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_DIALOGUEBG;
+			pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].eShopPanelKind = CUI::SHOPPANEL::SHOP_DIALOGUEBG;
+
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[i].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG])))
+				return E_FAIL;
+
+			Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_DIALOGUEBG].iTextureCount, static_cast<CShopPanel_BG_New*>(pShopPanel));
+		}
+		break;
+
+		case CUI::SHOPPANEL::SHOP_CHOOSEBG:
+		{
+			CGameObject* pShopYesOrNo = { nullptr };
+			pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].iCurLevelID = _iChangeLevel;
+			pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fX = DEFAULT_SIZE_BOOK2D_X;
+			pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fY = DEFAULT_SIZE_BOOK2D_Y;
+			pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fSizeX = 800.f * 0.8f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].fSizeY = 416.f * 0.8f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_CHOOSEBG;
+			pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].eShopPanelKind = CUI::SHOPPANEL::SHOP_CHOOSEBG;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelYesNo"), pShopDescs[i].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG])))
+				return E_FAIL;
+
+			Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_CHOOSEBG].iTextureCount, static_cast<CShopPanel_BG_New*>(pShopPanel));
+		}
+		break;
+
+		case CUI::SHOPPANEL::SHOP_BULB:
+		{
+			pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fX = DEFAULT_SIZE_BOOK2D_X;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fY = DEFAULT_SIZE_BOOK2D_Y;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fSizeX = 640.f * 0.8f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BULB].fSizeY = 272.f * 0.8f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BULB].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BULB;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BULB].eShopPanelKind = CUI::SHOPPANEL::SHOP_BULB;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_BULB].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_BULB])))
+				return E_FAIL;
+
+			Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_BULB].iTextureCount, static_cast<CShopPanel_BG_New*>(pShopPanel));
+		}
+		break;
+
+		case CUI::SHOPPANEL::SHOP_BACKESC:
+		{
+			pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fX = DEFAULT_SIZE_BOOK2D_X;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fY = DEFAULT_SIZE_BOOK2D_Y;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fSizeX = 72.f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].fSizeY = 72.f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_ESCBG;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].eShopPanelKind = CUI::SHOPPANEL::SHOP_ESCBG;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG])))
+				return E_FAIL;
+
+			Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_ESCBG].iTextureCount, static_cast<CShopPanel_BG_New*>(pShopPanel));
+
+			pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fX = DEFAULT_SIZE_BOOK2D_X;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fY = DEFAULT_SIZE_BOOK2D_Y;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fSizeX = 144.f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].fSizeY = 144.f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BACKESC;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].eShopPanelKind = CUI::SHOPPANEL::SHOP_BACKESC;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC])))
+				return E_FAIL;
+
+			Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_BACKESC].iTextureCount, static_cast<CShopPanel_BG_New*>(pShopPanel));
+		}
+		break;
+
+		case CUI::SHOPPANEL::SHOP_BACKARROW:
+		{
+			pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fX = DEFAULT_SIZE_BOOK2D_X;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fY = DEFAULT_SIZE_BOOK2D_Y;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fSizeX = 72.f * 1.2f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].fSizeY = 72.f * 1.2f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_BACKARROW;
+			pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].eShopPanelKind = CUI::SHOPPANEL::SHOP_BACKARROW;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW])))
+				return E_FAIL;
+
+			Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_BACKARROW].iTextureCount, static_cast<CShopPanel_BG_New*>(pShopPanel));
+		}
+		break;
+
+
+		case CUI::SHOPPANEL::SHOP_ENTER:
+		{
+			pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fX = DEFAULT_SIZE_BOOK2D_X;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fY = DEFAULT_SIZE_BOOK2D_Y;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fSizeX = 72.f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].fSizeY = 72.f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_ENTERBG;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].eShopPanelKind = CUI::SHOPPANEL::SHOP_ENTERBG;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG])))
+				return E_FAIL;
+
+			Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_ENTERBG].iTextureCount, static_cast<CShopPanel_BG_New*>(pShopPanel));
+
+			pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fX = DEFAULT_SIZE_BOOK2D_X;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fY = DEFAULT_SIZE_BOOK2D_Y;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fSizeX = 144.f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].fSizeY = 144.f;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].iTextureCount = (_uint)CUI::SHOPPANEL::SHOP_ENTER;
+			pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].eShopPanelKind = CUI::SHOPPANEL::SHOP_ENTER;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pShopDescs[i].iCurLevelID, TEXT("Prototype_GameObject_ShopPannelBG"), pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].iCurLevelID, _strLayerTag, &pShopPanel, &pShopDescs[CUI::SHOPPANEL::SHOP_ENTER])))
+				return E_FAIL;
+
+			Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_ENTER].iTextureCount, static_cast<CShopPanel_BG_New*>(pShopPanel));
+		}
+		break;
+		//
+		//default:
+		//	break;
+		}
+	}
+
+	return S_OK;
+}
+
+HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
+{
+
+	if (LEVEL_CHAPTER_2 != _iChangeLevel && LEVEL_CHAPTER_4 != _iChangeLevel &&
+		LEVEL_CHAPTER_6 != _iChangeLevel && LEVEL_CHAPTER_8 != _iChangeLevel)
+	{
+		return S_OK;
+	}
+
+	_uint iCurLevel = _iChangeLevel;
+
+	for (_uint i = 0; i < 5; ++i)
+	{
+		CGameObject* pShopItem = { nullptr };
+		CShopPanel_New::ShopUI eShopDesc;
+
+		switch (i)
+		{
+		case 0:
+		{
+			vector<CShopItemBG_New*> _vItemBG;
+			eShopDesc.iCurLevelID = iCurLevel;
+			eShopDesc.fX = 0.f;
+			eShopDesc.fY = 0.f;
+			eShopDesc.fSizeX = 1720.f * 0.8f;
+			eShopDesc.fSizeY = 220.f * 0.8f;
+			eShopDesc.iShopItemCount = i;
+			eShopDesc.iSkillLevel = 0;
+			eShopDesc.isChooseItem = true;
+			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BG;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+				return E_FAIL;
+
+			CShopItemBG_New* pItemBG = static_cast<CShopItemBG_New*>(pShopItem);
+
+			_vItemBG.push_back(pItemBG);
+
+			eShopDesc.iCurLevelID = iCurLevel;
+			eShopDesc.fX = 0.f;
+			eShopDesc.fY = 0.f;
+			eShopDesc.fSizeX = 256.f * 0.8f;
+			eShopDesc.fSizeY = 256.f * 0.8f;
+			eShopDesc.iShopItemCount = i;
+			eShopDesc.iSkillLevel = 0;
+			eShopDesc.isChooseItem = true;
+			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_ATTACKPLUSBADGE;
+			eShopDesc.iPrice = 10;
+			eShopDesc.strName = TEXT("공격력 증가");
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+				return E_FAIL;
+
+			pItemBG = static_cast<CShopItemBG_New*>(pShopItem);
+
+			_vItemBG.push_back(pItemBG);
+
+			eShopDesc.iCurLevelID = iCurLevel;
+			eShopDesc.fX = 0.f;
+			eShopDesc.fY = 0.f;
+			eShopDesc.fSizeX = 120.f * 0.8f;
+			eShopDesc.fSizeY = 144.f * 0.8f;
+			eShopDesc.iShopItemCount = i;
+			eShopDesc.iSkillLevel = 0;
+			eShopDesc.isChooseItem = true;
+			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BULB;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+				return E_FAIL;
+
+			pItemBG = static_cast<CShopItemBG_New*>(pShopItem);
+
+			_vItemBG.push_back(pItemBG);
+			pushBack_ShopItem(_vItemBG);
+
+		}
+		break;
+
+		case 1:
+		{
+			vector<CShopItemBG_New*> _vItemBG;
+			eShopDesc.iCurLevelID = iCurLevel;
+			eShopDesc.fX = 0.f;
+			eShopDesc.fY = 0.f;
+			eShopDesc.fSizeX = 1720.f * 0.8f;
+			eShopDesc.fSizeY = 220.f * 0.8f;
+			eShopDesc.iShopItemCount = i;
+			eShopDesc.iSkillLevel = 0;
+			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BG;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+				return E_FAIL;
+
+			CShopItemBG_New* pItemBG = static_cast<CShopItemBG_New*>(pShopItem);
+			_vItemBG.push_back(pItemBG);
+
+			eShopDesc.iCurLevelID = iCurLevel;
+			eShopDesc.fX = 0.f;
+			eShopDesc.fY = 0.f;
+			eShopDesc.fSizeX = 256.f * 0.8f;
+			eShopDesc.fSizeY = 256.f * 0.8f;
+			eShopDesc.iShopItemCount = i;
+			eShopDesc.iSkillLevel = m_iSpinAttackLevel;
+			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_ATTACKPLUSBADGE;
+			eShopDesc.strName = TEXT("회전 공격");
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+				return E_FAIL;
+
+			pItemBG = static_cast<CShopItemBG_New*>(pShopItem);
+			_vItemBG.push_back(pItemBG);
+
+
+			eShopDesc.iCurLevelID = iCurLevel;
+			eShopDesc.fX = 0.f;
+			eShopDesc.fY = 0.f;
+			eShopDesc.fSizeX = 120.f * 0.8f;
+			eShopDesc.fSizeY = 144.f * 0.8f;
+			eShopDesc.iShopItemCount = i;
+			eShopDesc.iSkillLevel = 0;
+			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BULB;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+				return E_FAIL;
+
+			pItemBG = static_cast<CShopItemBG_New*>(pShopItem);
+			_vItemBG.push_back(pItemBG);
+
+
+			pushBack_ShopItem(_vItemBG);
+
+		}
+		break;
+
+		case 2:
+		{
+			vector<CShopItemBG_New*> _vItemBG;
+			eShopDesc.iCurLevelID = iCurLevel;
+			eShopDesc.fX = 0.f;
+			eShopDesc.fY = 0.f;
+			eShopDesc.fSizeX = 1720.f * 0.8f;
+			eShopDesc.fSizeY = 220.f * 0.8f;
+			eShopDesc.iShopItemCount = i;
+			eShopDesc.iSkillLevel = 0;
+			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BG;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+				return E_FAIL;
+
+			CShopItemBG_New* pItemBG = static_cast<CShopItemBG_New*>(pShopItem);
+			_vItemBG.push_back(pItemBG);
+
+			eShopDesc.iCurLevelID = iCurLevel;
+			eShopDesc.fX = 0.f;
+			eShopDesc.fY = 0.f;
+			eShopDesc.fSizeX = 256.f * 0.8f;
+			eShopDesc.fSizeY = 256.f * 0.8f;
+			eShopDesc.iShopItemCount = i;
+			eShopDesc.iSkillLevel = m_iJumpAttackLevel;
+			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_JUMPATTACKBADGE;
+			eShopDesc.strName = TEXT("점프 공격");
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+				return E_FAIL;
+
+			pItemBG = static_cast<CShopItemBG_New*>(pShopItem);
+			_vItemBG.push_back(pItemBG);
+
+			eShopDesc.iCurLevelID = iCurLevel;
+			eShopDesc.fX = 0.f;
+			eShopDesc.fY = 0.f;
+			eShopDesc.fSizeX = 120.f * 0.8f;
+			eShopDesc.fSizeY = 144.f * 0.8f;
+			eShopDesc.iShopItemCount = i;
+			eShopDesc.iSkillLevel = 0;
+			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_BULB;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
+				return E_FAIL;
+
+			pItemBG = static_cast<CShopItemBG_New*>(pShopItem);
+			_vItemBG.push_back(pItemBG);
+
+			pushBack_ShopItem(_vItemBG);
+
+		}
+		break;
+		}
+	}
+	
+	return S_OK;
+
+}
+
+void CShop_Manager::OpenClose_Shop()
+{
+	for (auto iter : m_pShopPanels)
+	{
+		if (CUI::SHOP_END != iter.second->Get_ShopPanel())
+		{
+			iter.second->Is_Render();
+		}
+	}
+
+	for (int i = 0; i < m_ShopItems.size(); ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			m_ShopItems[i][j]->Is_Render();
+		}
+	}
+
+
+
+}
+
+void CShop_Manager::Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG_New* _pPanel)
+{
+	m_pShopPanels.emplace(_ePanel, _pPanel);
+	Safe_AddRef(_pPanel);
+}
+
+void CShop_Manager::pushBack_ShopItem(vector<CShopItemBG_New*> _ItemBGs)
+{
+	m_ShopItems.push_back(_ItemBGs);
+
+	for (auto& pShopItemBG : _ItemBGs)
+	{
+		Safe_AddRef(pShopItemBG);
+	}
+}
+
+HRESULT CShop_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID)
+{
+	for (auto& i : m_ShopItems)
+	{
+		for (auto& j : i)
+		{
+			Safe_Release(j);
+		}
+	}
+	m_ShopItems.clear();
+
+	for (auto iter : m_pShopPanels)
+	{
+		Safe_Release(iter.second);
+	}
+	m_pShopPanels.clear();
+
+	return S_OK;
+}
+
+HRESULT CShop_Manager::Level_Enter(_int _iChangeLevelID)
+{
+	if(FAILED(Create_ShopPanel(_iChangeLevelID, TEXT("Layer_Shopanel"))));
+		return E_FAIL;
+
+	if(FAILED(Create_Item(_iChangeLevelID, TEXT("Layer_ShopItem"))));
+		return E_FAIL;
+
+	return S_OK;
+}
+
+
+void CShop_Manager::Free()
+{
+	for (auto& i : m_ShopItems)
+	{
+		for (auto& j : i)
+		{
+			Safe_Release(j);
+		}
+	}
+	m_ShopItems.clear();
+
+	for (auto iter : m_pShopPanels)
+	{
+		Safe_Release(iter.second);
+	}
+	m_pShopPanels.clear();
+
+
+	Safe_Release(m_pGameInstance);
+	__super::Free();
+}
+

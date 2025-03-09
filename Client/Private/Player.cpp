@@ -243,7 +243,6 @@ HRESULT CPlayer::Initialize(void* _pArg)
  
 
 
-	m_ePlayerMode = PLAYER_MODE_NORMAL;
 
     Set_PlatformerMode(false);
 
@@ -535,15 +534,14 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 
     auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
 
-    if (static_cast<CSection_2D*>(pSection)->Is_Platformer())
-    {
-        Set_PlatformerMode(true);
-    }
-    else 
-    {
-        Set_PlatformerMode(false);
-    }
-    
+    _bool bPlatformer = static_cast<CSection_2D*>(pSection)->Is_Platformer();
+    Set_PlatformerMode(bPlatformer);
+
+    if (Is_ZetPackMode() && bPlatformer)
+        Equip_Part(PLAYER_PART_ZETPACK);
+    else
+        UnEquip_Part(PLAYER_PART_ZETPACK);
+
     if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
     {
         m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, 2800.f, 0.0f, 0.0f));
@@ -576,6 +574,8 @@ void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
         }
 
     }
+    if (Is_ZetPackMode())
+        Equip_Part(PLAYER_PART_ZETPACK);
 }
 
 
@@ -952,9 +952,9 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
         {
             IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
 			if (nullptr != pInteractable && static_cast<CCollider_Circle*>( _pMyCollider)->Is_ContainsPoint(_pOtherCollider->Get_Position()))
-            if (Check_ReplaceInteractObject(pInteractable))
             {
-                m_pInteractableObject = pInteractable;
+                if (Check_ReplaceInteractObject(pInteractable))
+                    m_pInteractableObject = pInteractable;
             }
         }
         
@@ -1095,7 +1095,6 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         return E_FAIL;
     m_pInteractableObject = nullptr;
 
-    End_Attack();
     if (COORDINATE_2D == _eCoordinate)
     {
         Set_2DDirection(E_DIRECTION::DOWN);
@@ -1107,21 +1106,6 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
         Set_PlatformerMode(false);
     }
 
-    switch (m_ePlayerMode)
-    {
-    case Client::CPlayer::PLAYER_MODE_NORMAL:
-		UnEquip_Part(PLAYER_PART_SWORD);
-        break;
-    case Client::CPlayer::PLAYER_MODE_SWORD:
-		Equip_Part(PLAYER_PART_SWORD);
-        break;
-    case Client::CPlayer::PLAYER_MODE_SNEAK:
-        UnEquip_Part(PLAYER_PART_SWORD);
-        break;
-    default:
-        break;
-    }
-    m_pSword->Set_AttackEnable(false);
 
     return S_OK;
 }
@@ -1730,7 +1714,8 @@ _float CPlayer::Get_AnimProgress()
 
 _bool CPlayer::Is_SwordHandling()
 {
-    return Is_SwordMode()&& (m_pSword->Is_SwordHandling());
+    return (m_pSword->Is_SwordHandling()) 
+        && (PLAYER_MODE_SWORD== m_ePlayerMode || PLAYER_MODE_ZETPACK == m_ePlayerMode);
 }
 
 _float CPlayer::Get_AnimationTIme()
@@ -1848,7 +1833,7 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::IDLE:
     case Client::CPlayer::CYBER_IDLE:
         //cout << "IDLE" << endl;
-        if (Is_CyvberJotMode())
+        if (COORDINATE_3D == Get_CurCoord() && Is_CyvberJotMode())
         {
             m_pStateMachine->Transition_To(new CPlayerState_CyberIdle(this));
         }
@@ -1952,45 +1937,61 @@ void CPlayer::Set_State(STATE _eState)
 
 void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 {
-    if (m_ePlayerMode != _eNewMode)
+    COORDINATE eCoord = Get_CurCoord();
+    m_ePlayerMode = _eNewMode;
+
+    switch (m_ePlayerMode)
     {
-        m_ePlayerMode = _eNewMode;
-        switch (m_ePlayerMode)
+    case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SWORD:
+        UnEquip_All();
+        cout << "PLAYER_MODE_SWORD" << endl;
+        if (COORDINATE_3D == eCoord)
         {
-        case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_NORMAL:
             Set_Kinematic(false);
             Get_ActorDynamic()->Set_Gravity(true);
             Get_ActorDynamic()->Set_LinearDamping(0.f);
-            UnEquip_All();
-            Set_State(STATE::IDLE);
-            break;
-        case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SWORD:
-            Set_Kinematic(false);
-            Get_ActorDynamic()->Set_Gravity(true);
-            Get_ActorDynamic()->Set_LinearDamping(0.f);
-			Equip_Part(PLAYER_PART_SWORD);
-            Set_State(STATE::IDLE);
-            break;
-        case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SNEAK:
-            Set_Kinematic(false);
-            Get_ActorDynamic()->Set_Gravity(true);
-            Get_ActorDynamic()->Set_LinearDamping(0.f);
-            UnEquip_All();
-            Set_State(STATE::IDLE);
-            break;
-        case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_CYBERJOT:
-            Set_Kinematic(false);
-            Get_ActorDynamic()->Set_Gravity(false);
-            Get_ActorDynamic()->Set_LinearDamping(2.f);
-            Equip_Part(PLAYER_PART_RIFLE);
-            Equip_Part(PLAYER_PART_VISOR);
-            Equip_Part(PLAYER_PART_ZETPACK);
-            Set_State(STATE::CYBER_IDLE);
-            break;
-        default:
-            break;
+            Equip_Part(PLAYER_PART_SWORD);
         }
+        break;
+    case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_SNEAK:
+        UnEquip_All();
+        cout << "PLAYER_MODE_SNEAK" << endl;
+        if (COORDINATE_3D == eCoord)
+        {
+            Set_Kinematic(false);
+            Get_ActorDynamic()->Set_Gravity(true);
+            Get_ActorDynamic()->Set_LinearDamping(0.f);
+        }
+
+        break;
+    case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_ZETPACK:
+        UnEquip_All();
+        cout << "PLAYER_MODE_ZETPACK" << endl;
+        if (COORDINATE_3D == eCoord)
+        {
+            Set_Kinematic(false);
+            Get_ActorDynamic()->Set_Gravity(true);
+            Get_ActorDynamic()->Set_LinearDamping(0.f);
+            Equip_Part(PLAYER_PART_SWORD);
+        }
+        Equip_Part(PLAYER_PART_ZETPACK);
+        break;
+    case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_CYBERJOT:
+        UnEquip_All();
+        if (COORDINATE_2D == eCoord)
+            break;
+        cout << "PLAYER_MODE_CYBERJOT" << endl;
+        Set_Kinematic(false);
+        Get_ActorDynamic()->Set_Gravity(false);
+        Get_ActorDynamic()->Set_LinearDamping(2.f);
+        Equip_Part(PLAYER_PART_RIFLE);
+        Equip_Part(PLAYER_PART_VISOR);
+        Equip_Part(PLAYER_PART_ZETPACK);
+        break;
+    default:
+        break;
     }
+    //Set_State(STATE::IDLE);
 }
 
 void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
@@ -2059,6 +2060,9 @@ void CPlayer::Set_PlatformerMode(_bool _bPlatformerMode)
 
         pCollider->Set_Radius(m_f2DColliderBodyRadius * 2.f);
         pCollider->Set_Offset(_float2(0.0f, m_f2DColliderBodyRadius * 2.0f * 1.0f));
+        //6Ã©ÅÍ ÇÃ·§Æ÷¸Ó¿¡ µé¾î°¡¸é Á¦Æ®ÆÑ ¸ðµåÀÓ
+        //ÄÅ3°³ (ÇÃ·§Æ÷¸Ó°¡ ¾Æ´Ô)¿¡¼­´Â µî¿¡¼­ ¶¼¾î¹ö¸²
+
     }
     else
     {
@@ -2192,8 +2196,8 @@ void CPlayer::Equip_Part(PLAYER_PART _ePartId)
             break;
         }
     }
-    if(COORDINATE_3D == Get_CurCoord())
-	    Set_PartActive(_ePartId, true);
+
+	Set_PartActive(_ePartId, true);
 }
 
 void CPlayer::UnEquip_Part(PLAYER_PART _ePartId)
@@ -2342,6 +2346,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         PLAYER_MODE eNextMode = (PLAYER_MODE)((m_ePlayerMode + 1) % PLAYER_MODE_LAST);
         Set_Mode(eNextMode);
+        Set_State(IDLE);
     }
 
     if (KEY_DOWN(KEY::F4))

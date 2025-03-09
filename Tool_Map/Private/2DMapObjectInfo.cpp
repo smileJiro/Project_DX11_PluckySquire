@@ -134,7 +134,7 @@ HRESULT C2DMapObjectInfo::Export(json& _OutputJson)
 			switch (m_eColliderType)
 			{
 			case CCollider::AABB_2D:
-				_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Extent"]["X"] = m_fColliderExtent.y;
+				_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Extent"]["X"] = m_fColliderExtent.x;
 				_OutputJson["ColliderPropertis"]["ColliderInfo"]["Collider_Extent"]["Y"] = m_fColliderExtent.y;
 				break;
 			case CCollider::CIRCLE_2D:

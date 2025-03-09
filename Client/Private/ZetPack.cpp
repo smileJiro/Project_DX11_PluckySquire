@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Actor_Dynamic.h"
 #include "Effect_Manager.h"
+#include "Section_Manager.h"
 
 
 CZetPack::CZetPack(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -80,6 +81,19 @@ HRESULT CZetPack::Render()
 {
  //   cout << m_pControllerModel->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex() << endl;
 	return __super::Render();
+}
+
+void CZetPack::Enter_Section(const _wstring _strIncludeSectionName)
+{
+    __super::Enter_Section(_strIncludeSectionName);
+    auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
+
+
+}
+
+void CZetPack::Exit_Section(const _wstring _strIncludeSectionName)
+{
+    __super::Exit_Section(_strIncludeSectionName);
 }
 
 void CZetPack::ReFuel()

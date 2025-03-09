@@ -5,8 +5,10 @@
 #include "Section_Manager.h"
 #include "Section_2D_PlayMap.h"
 #include "Portal_Default.h"
+#include "ZetPack_Child.h"
 /* Progress */
 #include "FatherGame_Progress_Start.h"
+#include "FatherGame_Progress_ZetPack.h"
 
 IMPLEMENT_SINGLETON(CFatherGame)
 CFatherGame::CFatherGame()
@@ -23,25 +25,38 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 	m_pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(m_pGameInstance);
 
-	m_Progress.reserve((size_t)FATHER_PROGRESS_START + 1);
+	m_Progress.reserve((size_t)FATHER_PROGRESS::FATHER_PROGRESS_ZETPACK + 1);
 
 	/* 2. Progress 생성 후 Vector에 저장. */
-	CFatherGame_Progress_Start::FATHERGAME_PROGRESS_START_DESC ProgressStartDesc = {};
-	ProgressStartDesc.iNumMonsters = 3;
-	ProgressStartDesc.strMonsterPrototypeTag = TEXT("Prototype_GameObject_Goblin");
-	CFatherGame_Progress* pProgressStart = CFatherGame_Progress_Start::Create(m_pDevice, m_pContext, &ProgressStartDesc);
-	if (nullptr == pProgressStart)
-		return E_FAIL;
 
-	pProgressStart->Set_Active(true);
-	m_Progress.push_back(pProgressStart); // 여기가 원본임. AddRef x
-	m_ProgressClear.push_back(false);
+	
+	{/* Progress Start */
+		CFatherGame_Progress_Start::FATHERGAME_PROGRESS_START_DESC ProgressStartDesc = {};
+		ProgressStartDesc.iNumMonsters = 3;
+		ProgressStartDesc.strMonsterPrototypeTag = TEXT("Prototype_GameObject_Goblin");
+		CFatherGame_Progress* pProgressStart = CFatherGame_Progress_Start::Create(m_pDevice, m_pContext, &ProgressStartDesc);
+		if (nullptr == pProgressStart)
+			return E_FAIL;
+		pProgressStart->Set_Active(true);
+		m_Progress.push_back(pProgressStart); // 여기가 원본임. AddRef x
+		m_ProgressClear.push_back(false);
+	}/* Progress Start */
+
+	
+	{/* Progress ZetPack */
+		CFatherGame_Progress_ZetPack::FATHERGAME_PROGRESS_ZETPACK_DESC ProgressJetPackDesc = {};
+		CFatherGame_Progress* pProgressZetPack = CFatherGame_Progress_ZetPack::Create(m_pDevice, m_pContext, &ProgressJetPackDesc);
+		if (nullptr == pProgressZetPack)
+			return E_FAIL;
+		pProgressZetPack->Set_Active(false);
+		m_Progress.push_back(pProgressZetPack); // 여기가 원본임. AddRef x
+		m_ProgressClear.push_back(false);
+	}/* Progress ZetPack */
+
 
 
 	/* 2. PortalDefender 3곳에 생성 */
 	m_PortalLockers.resize((size_t)LOCKER_LAST);
-
-
 
 	{/* PortalLocker ZetPack */
 		CGameObject* pGameObject = nullptr;
@@ -134,6 +149,8 @@ void CFatherGame::Update()
 HRESULT CFatherGame::End_Game()
 {
 	m_eGameState = GAME_END;
+
+	Safe_Release(m_pZetPack_Child);
 	for (auto& pProgress : m_Progress)
 		Safe_Release(pProgress);
 	m_Progress.clear();
@@ -164,6 +181,16 @@ void CFatherGame::DeadCheck_ReferenceObject()
 	}
 }
 
+void CFatherGame::Start_Progress(FATHER_PROGRESS _eStartProgress)
+{
+	if (true == m_ProgressClear[_eStartProgress])
+		assert(nullptr);
+	if (nullptr == m_Progress[_eStartProgress])
+		assert(nullptr);
+
+	Event_SetActive(m_Progress[_eStartProgress], true);
+}
+
 void CFatherGame::OpenPortalLocker(PORTALLOCKER _ePortalLockerIndex)
 {
 	if (PORTALLOCKER::LOCKER_LAST <= _ePortalLockerIndex)
@@ -177,6 +204,14 @@ void CFatherGame::OpenPortalLocker(PORTALLOCKER _ePortalLockerIndex)
 	m_PortalLockers[_ePortalLockerIndex] = nullptr;
 }
 
+void CFatherGame::Set_ZetPack_Child(CZetPack_Child* _pZetPack_Child)
+{
+	assert(_pZetPack_Child);
+	assert(!m_pZetPack_Child);
+	m_pZetPack_Child = _pZetPack_Child;
+	Safe_AddRef(m_pZetPack_Child);
+};
+
 void CFatherGame::Free()
 {
 	for (auto& pPortalLocker : m_PortalLockers)
@@ -188,6 +223,8 @@ void CFatherGame::Free()
 	if (GAME_END != m_eGameState)
 	{
 		/* 정상적으로 게임 엔드가 호출되지 않은 경우에만 릴리즈 */
+		Safe_Release(m_pZetPack_Child);
+
 		for (auto& pProgress : m_Progress)
 			Safe_Release(pProgress);
 		m_Progress.clear();

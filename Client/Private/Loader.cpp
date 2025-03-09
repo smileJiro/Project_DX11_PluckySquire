@@ -541,7 +541,7 @@ HRESULT CLoader::Loading_Level_Static()
 
 	/* 개별 모델 로드 - dds 로드 */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Model2D_Bulb"),
-		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Static/bulb/pickup_bulb_01.dds", true))))
+		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Static/bulb/pickup_bulb_01.dds", LEVEL_STATIC, true))))
 		return E_FAIL;
 
 
@@ -973,7 +973,7 @@ HRESULT CLoader::Loading_Level_Logo()
 #pragma region Logo - Model Load
 	lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_NPC_Pip_2DAnimation"),
-		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Logo/NPC/Pip/Pip.model2D")))))
+		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Logo/NPC/Pip/Pip.model2D"), (_uint)LEVEL_LOGO))))
 		return E_FAIL;
 #pragma endregion
 
@@ -1064,17 +1064,17 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 		// 2D Model 개별 로드 - Model 경로 다름
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("dice_pink_03"),
-			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/dice_01/dice_pink_03.dds", true))))
+			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/dice_01/dice_pink_03.dds", _eLoadLevelID,true))))
 			return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("sketchspace_rabbit_carrot"),
-			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/Carrots_Carrot_01/sketchspace_rabbit_carrot.dds", true))))
+			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/Carrots_Carrot_01/sketchspace_rabbit_carrot.dds", _eLoadLevelID, true))))
 			return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Grape_Green"),
-			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/Grapes_Grape_01/Grape_Green.dds", true))))
+			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/Grapes_Grape_01/Grape_Green.dds", _eLoadLevelID, true))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_FallingRockShadow"),
-			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Chapter2/FallingRockShadow/FallingRockShadow.dds", true))))
+			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Chapter2/FallingRockShadow/FallingRockShadow.dds", _eLoadLevelID,true))))
 			return E_FAIL;
 	#pragma endregion
 
@@ -1209,7 +1209,7 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 		//_matrix matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_FallingRockShadow"),
-			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Chapter2/FallingRockShadow/FallingRockShadow.dds", true))))
+			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Chapter2/FallingRockShadow/FallingRockShadow.dds", _eLoadLevelID,true))))
 			return E_FAIL;
 	#pragma endregion
 
@@ -1418,6 +1418,16 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub1"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_C6_TheGiantTracks.wav"));
 		m_pGameInstance->Load_SFX(TEXT("C6_P6768_01_Sub2"),		TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter6_P0304/A_sfx_And_Exploded_On_The_Ground_Below.wav"));
 
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0910_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheGangArrived_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0910_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/A_sfx_C8_TheGangArrivedAtArtia.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0910_2_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_ToSeeTheAftermath_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0910_2_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheArmyOfArtia_KR.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AndNowHumgrump_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_ToClaimHisRightfulRole_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_3"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AsTheGrandRuler_KR.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/A_sfx_c08_Artian_Throne.wav"));
+
 	#pragma endregion
 
 	#pragma region Chapter 6 - Model Load
@@ -1573,15 +1583,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_APlanQuiteObviouslyDoomed_KR.wav"));
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/A_sfx_C9_TheTraiterousRodent.wav"));
 
-	m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheGangArrived_KR.wav"));
-	m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/A_sfx_C8_TheGangArrivedAtArtia.wav"));
-	m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_2_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_ToSeeTheAftermath_KR.wav"));
-	m_pGameInstance->Load_SFX(TEXT("Chapter8_P0102_2_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_P0102/P0304_TheArmyOfArtia_KR.wav"));
+	
 
-	m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AndNowHumgrump_KR.wav"));
-	m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_ToClaimHisRightfulRole_KR.wav"));
-	m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_3"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AsTheGrandRuler_KR.wav"));
-	m_pGameInstance->Load_SFX(TEXT("C8_P0708_1_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/A_sfx_c08_Artian_Throne.wav"));
+
 	// 나레이션 관련
 
 #pragma endregion
@@ -1957,9 +1961,6 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 
 	if (LEVEL_STATIC != _eResourceLevelID)
 	{		
-
-
-
 		std::cout << "=============== [" << arrLevelTexts[_eLoadLevelID] << "] 2D Map Load Start..." << endl;
 
 		// 3D Map Load
@@ -2320,7 +2321,7 @@ HRESULT CLoader::Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath)
 		filename = filename.substr(0, lastDot); // 확장자 제거
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
-			C2DModel::Create(m_pDevice, m_pContext, str.c_str()))))
+			C2DModel::Create(m_pDevice, m_pContext, str.c_str(), _iLevId))))
 		{
 			wstring str = TEXT("Failed to Create 2DModel");
 			str += filename;
@@ -2365,7 +2366,7 @@ HRESULT CLoader::Load_Dirctory_2DModels_Recursive(_uint _iLevId, const _tchar* _
 			//cout << entry.path().string() << endl;
 
 			if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, entry.path().filename().replace_extension(),
-				C2DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str()))))
+				C2DModel::Create(m_pDevice, m_pContext, entry.path().string().c_str(), _iLevId))))
 			{
 				string str = "Failed to Create 2DModel : ";
 				str += entry.path().filename().replace_extension().string();

@@ -13,6 +13,7 @@ END
 BEGIN(Client)
 class CFatherGame_Progress;
 class CPortalLocker;
+class CZetPack_Child;
 class CFatherGame final : public CBase
 {
 	DECLARE_SINGLETON(CFatherGame)
@@ -37,10 +38,13 @@ private:
 public:
 	HRESULT								Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext); // 게임 시작 알림.
 	void								Update();
+
 private:
 	HRESULT								End_Game();
 	void								DeadCheck_ReferenceObject();
+		
 public:
+	void								Start_Progress(FATHER_PROGRESS _eStartProgress);
 	void								OpenPortalLocker(PORTALLOCKER _ePortalLockerIndex);
 
 public:
@@ -64,6 +68,17 @@ private: /* FatherGame Condition */
 
 private: /* PortalLocker */
 	vector<CPortalLocker*>				m_PortalLockers;
+
+public:
+	// Get
+	CZetPack_Child* Get_ZetPack_Child() { return m_pZetPack_Child; }
+
+	// Set
+	void								Set_ZetPack_Child(CZetPack_Child* _pZetPack_Child);
+
+
+private:
+	CZetPack_Child*						m_pZetPack_Child = nullptr;
 private: /* FatherGame UI */
 	
 public:

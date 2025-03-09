@@ -18,6 +18,8 @@ public :
 		SKSP_PLAG,
 		SKSP_STORAGE,
 		SKSP_POSTIT,
+		SKSP_C09_ROTATE,
+		SKSP_C09_TUBE,
 		SKSP_LAST
 
 	};
@@ -55,6 +57,8 @@ private :
 	HRESULT					Render_Cup();
 	HRESULT					Render_Tub();
 	HRESULT					Render_Storage();
+	HRESULT					Render_Rotate();
+	HRESULT					Render_Tube();
 
 private :
 	_wstring			m_strRenderSectionTag = L"";

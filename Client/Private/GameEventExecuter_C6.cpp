@@ -16,6 +16,7 @@
 #include "Portal_Default.h"
 #include "Player.h"
 #include "PortalLocker.h"
+#include "ZetPack_Child.h"
 
 CGameEventExecuter_C6::CGameEventExecuter_C6(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -53,6 +54,9 @@ void CGameEventExecuter_C6::Update(_float _fTimeDelta)
 		{
 		case Client::CTrigger_Manager::CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR:
 			Chapter6_FatherGame_Progress_Start_Clear(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER6_FATHERGAME_PROGRESS_ZETPACK_CLEAR:
+			Chapter6_FatherGame_Progress_ZetPack_Clear(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -123,6 +127,229 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Start_Clear(_float _fTi
 		}
 		Next_Step_Over(1.5f);
 	}
+	else
+	{
+		pPlayer->Set_BlockPlayerInput(false);
+		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_ZetPack_Clear(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	CCamera_Manager::CAMERA_TYPE eCamType = CCamera_Manager::TARGET;
+	CPlayer* pPlayer = Get_Player();
+	CZetPack_Child* pZetPack_Child = CFatherGame::GetInstance()->Get_ZetPack_Child();
+	if (nullptr == pPlayer)
+	{
+		GameEvent_End();
+		return;
+	}
+	/* 플레이어 인풋락  */
+	pPlayer->Set_BlockPlayerInput(true);
+
+	if (Step_Check(STEP_0))
+	{
+		/* 1. Save Reset ArmData */
+		CCamera_Manager::GetInstance()->Set_ResetData(eCamType);
+		_float fTime = 1.0f;
+		/* 4. Change Camera Length */
+		CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(eCamType, fTime, 3.0f, RATIO_TYPE::EASE_IN);
+		Next_Step_Over(2.0f);
+	}
+	else if (Step_Check(STEP_1)) // 1. 카메라 이동 
+	{
+		if (Is_Start())
+		{
+			/* 2. Change Arm Vector  */
+			//CCamera_Manager::GetInstance()->Get_Camera();
+			_float fTime = 2.0f;
+			CCamera_Manager::GetInstance()->Start_Turn_AxisY(eCamType, fTime, XMConvertToRadians(75.f) / fTime, XMConvertToRadians(75.f) / fTime);
+			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(eCamType, fTime, XMConvertToRadians(-15.f) / fTime, XMConvertToRadians(-15.f) / fTime);
+
+			/* 4. Change Camera Length */
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(eCamType, fTime, 7.5f, RATIO_TYPE::EASE_IN);
+		}
+
+
+		Next_Step_Over(2.5f);
+	}
+	else if (Step_Check(STEP_2)) // 2. 찌릿이 대화 + 페이드 아웃
+	{
+		if (Is_Start())
+		{		
+			/* 5. 다이얼로그 재생. */
+			_int iDialogueIndex = pZetPack_Child->Get_DialogueIndex();
+			_wstring strDialogueTag = TEXT("ZetPack_Child_");
+			strDialogueTag += to_wstring(iDialogueIndex);
+			CDialog_Manager::GetInstance()->Set_DialogId(strDialogueTag.c_str());
+			pZetPack_Child->Plus_DialogueIndex();
+		}
+
+
+		/* 6. 다이얼로그 종료 체크 */
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+		{
+			static bool isFirst = false;
+			if(false == isFirst)
+			{
+				isFirst = true;
+				CCamera_Manager::GetInstance()->Start_FadeOut(0.5f);
+				m_fTimer = 0.0f;
+			}
+			Next_Step_Over(0.6f);
+		}
+		
+	}
+	else if (Step_Check(STEP_3)) // 3. PartBody Cup CutScene
+	{
+		if (Is_Start())
+		{
+			CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_SKSP_03")))->Get_Portal(0));
+			if (nullptr == pTargetPortal)
+			{
+				/* 플레이어 인풋락 해제 */
+				pPlayer->Set_BlockPlayerInput(false);
+				GameEvent_End();
+				return;
+			}
+			/* 3. Target Change */
+			_float2 v2DPos = {};
+			XMStoreFloat2(&v2DPos, pTargetPortal->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION));
+			_vector vPortalLockerWorldPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(TEXT("Chapter6_SKSP_03"), v2DPos);
+			XMStoreFloat4x4(&m_TargetWorldMatrix, XMMatrixTranslationFromVector(XMVectorSetW(vPortalLockerWorldPos, 1.0f)));
+			CCamera_Manager::GetInstance()->Change_CameraTarget(&m_TargetWorldMatrix, 0.0f);
+
+			/* 4. Change Camera Length */
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(eCamType, 0.0f, 50.0f, RATIO_TYPE::EASE_IN);
+
+			/* 5. Change Camera Arm */
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(eCamType, 0.0f, XMVector3Normalize(XMVectorSet(0.0f, 0.25f, -1.0f, 0.0f)), RATIO_TYPE::LERP);
+			
+			/* 6. FadeIn */
+			CCamera_Manager::GetInstance()->Start_FadeIn();
+
+			/* 7. Play Dialogue */
+			_int iDialogueIndex = pZetPack_Child->Get_DialogueIndex();
+			_wstring strDialogueTag = TEXT("ZetPack_Child_");
+			strDialogueTag += to_wstring(iDialogueIndex);
+			CDialog_Manager::GetInstance()->Set_DialogId(strDialogueTag.c_str());
+			pZetPack_Child->Plus_DialogueIndex();
+		}
+
+		/* 8. 다이얼로그 종료 체크 */
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+		{
+			static bool isFirst = false;
+			if (false == isFirst)
+			{
+				isFirst = true;
+				CCamera_Manager::GetInstance()->Start_FadeOut(0.5f);
+				m_fTimer = 0.0f;
+			}
+			Next_Step_Over(0.6f);
+		}
+	}
+	else if (Step_Check(STEP_4)) // 4. 캔들게임 컵 촬영 
+	{
+		if (Is_Start())
+		{
+			CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_SKSP_06")))->Get_Portal(0));
+			if (nullptr == pTargetPortal)
+			{
+				/* 플레이어 인풋락 해제 */
+				pPlayer->Set_BlockPlayerInput(false);
+				GameEvent_End();
+				return;
+			}
+			/* 3. Target Change */
+			_float2 v2DPos = {};
+			XMStoreFloat2(&v2DPos, pTargetPortal->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION));
+			_vector vPortalLockerWorldPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(TEXT("Chapter6_SKSP_06"), v2DPos);
+			XMStoreFloat4x4(&m_TargetWorldMatrix, XMMatrixTranslationFromVector(XMVectorSetW(vPortalLockerWorldPos, 1.0f)));
+			CCamera_Manager::GetInstance()->Change_CameraTarget(&m_TargetWorldMatrix, 0.0f);
+
+			/* 4. Change Camera Length */
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(eCamType, 0.0f, 26.0f, RATIO_TYPE::EASE_IN);
+
+			/* 5. Change Camera Arm */
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(eCamType, 0.0f, XMVector3Normalize(XMVectorSet(-1.0f, 0.8f, -1.0f, 0.0f)), RATIO_TYPE::LERP);
+
+			/* 6. FadeIn */
+			CCamera_Manager::GetInstance()->Start_FadeIn();
+
+			/* 7. Play Dialogue */
+			_int iDialogueIndex = pZetPack_Child->Get_DialogueIndex();
+			_wstring strDialogueTag = TEXT("ZetPack_Child_");
+			strDialogueTag += to_wstring(iDialogueIndex);
+			CDialog_Manager::GetInstance()->Set_DialogId(strDialogueTag.c_str());
+			pZetPack_Child->Plus_DialogueIndex();
+		}
+
+		/* 8. 다이얼로그 종료 체크 */
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+		{
+			static bool isFirst = false;
+			if (false == isFirst)
+			{
+				isFirst = true;
+				CCamera_Manager::GetInstance()->Start_FadeOut(0.5f);
+				m_fTimer = 0.0f;
+			}
+			Next_Step_Over(0.6f);
+		}
+	}
+	else if (Step_Check(STEP_5)) // 4. 중앙 컵 촬영 
+	{
+		if (Is_Start())
+		{
+			CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_SKSP_04")))->Get_Portal(0));
+			if (nullptr == pTargetPortal)
+			{
+				/* 플레이어 인풋락 해제 */
+				pPlayer->Set_BlockPlayerInput(false);
+				GameEvent_End();
+				return;
+			}
+			/* 3. Target Change */
+			_float2 v2DPos = {};
+			XMStoreFloat2(&v2DPos, pTargetPortal->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION));
+			_vector vPortalLockerWorldPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(TEXT("Chapter6_SKSP_04"), v2DPos);
+			XMStoreFloat4x4(&m_TargetWorldMatrix, XMMatrixTranslationFromVector(XMVectorSetW(vPortalLockerWorldPos, 1.0f)));
+			CCamera_Manager::GetInstance()->Change_CameraTarget(&m_TargetWorldMatrix, 0.0f);
+
+			/* 4. Change Camera Length */
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(eCamType, 0.0f, 30.0f, RATIO_TYPE::EASE_IN);
+
+			/* 5. Change Camera Arm */
+			_vector vNegativeZ = { 0.0f, 0.0f, -1.0f, 0.0f };
+			vNegativeZ = XMVector3TransformNormal(vNegativeZ, XMMatrixRotationY(PI * -0.25f));
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(eCamType, 0.0f, XMVector3Normalize(vNegativeZ), RATIO_TYPE::LERP);
+
+			/* 6. FadeIn */
+			CCamera_Manager::GetInstance()->Start_FadeIn();
+
+			/* 7. Play Dialogue */
+			_int iDialogueIndex = pZetPack_Child->Get_DialogueIndex();
+			_wstring strDialogueTag = TEXT("ZetPack_Child_");
+			strDialogueTag += to_wstring(iDialogueIndex);
+			CDialog_Manager::GetInstance()->Set_DialogId(strDialogueTag.c_str());
+			pZetPack_Child->Plus_DialogueIndex();
+		}
+
+		/* 8. 다이얼로그 종료 체크 */
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+		{
+			static bool isFirst = false;
+			if (false == isFirst)
+			{
+				isFirst = true;
+				CCamera_Manager::GetInstance()->Start_FadeOut(0.5f);
+				m_fTimer = 0.0f;
+			}
+			Next_Step_Over(0.6f);
+		}
+		}
 	else
 	{
 		pPlayer->Set_BlockPlayerInput(false);

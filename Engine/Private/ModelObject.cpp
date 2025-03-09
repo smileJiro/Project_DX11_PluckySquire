@@ -89,7 +89,7 @@ HRESULT CModelObject::Render()
 {
 
 #ifdef _DEBUG
-    if (m_iInstanceID == 1400)
+    if (m_iInstanceID == 90)
     {
         int a = 0;
         a = 2;

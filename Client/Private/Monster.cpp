@@ -238,24 +238,24 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 
 			_wstring strFXTag = L"Hit_FX";
 			strFXTag += to_wstring((_int)ceil(m_pGameInstance->Compute_Random(0.f, 5.f)));
-			CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+			CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, Get_Include_Section_Name(), matFX);
 			matFX.r[0] = XMVectorSet(1.f, 0.f, 0.f, 0.f);
 			switch ((_uint)ceil(m_pGameInstance->Compute_Random(0.f, 4.f)))
 			{
 			case 1:
-				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words1"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words1"), Get_Include_Section_Name(), matFX);
 				break;
 
 			case 2:
-				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words2"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words2"), Get_Include_Section_Name(), matFX);
 				break;
 
 			case 3:
-				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words4"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words4"), Get_Include_Section_Name(), matFX);
 				break;
 
 			case 4:
-				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words5"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_Words5"), Get_Include_Section_Name(), matFX);
 				break;
 			}
 		}
@@ -279,13 +279,13 @@ void CMonster::Monster_Death()
 	}
 	else if (COORDINATE_2D == Get_CurCoord())
 	{
-		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
+		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), Get_Include_Section_Name(), Get_ControllerTransform()->Get_WorldMatrix());
 
 		//확률로 전구 생성
 		if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
 		{
 			_float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
-			_wstring strCurSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+			_wstring strCurSection = Get_Include_Section_Name();
 			CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_2DBulb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strCurSection);
 		}
 	}

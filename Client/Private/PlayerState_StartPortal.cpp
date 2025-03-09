@@ -29,7 +29,6 @@ void CPlayerState_StartPortal::Update(_float _fTimeDelta)
 		|| INTERACT_RESULT::NO_INPUT == eResult
 		|| INTERACT_RESULT::CHARGE_CANCEL == eResult)
 	{
-
 		m_pOwner->Set_State(CPlayer::IDLE);
 
 		return;

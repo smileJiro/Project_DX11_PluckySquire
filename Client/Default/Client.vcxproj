@@ -217,6 +217,7 @@
     <ClInclude Include="..\Public\Room_Door.h" />
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
     <ClInclude Include="..\Public\CyberPlayerBullet.h" />
+    <ClInclude Include="..\Public\DefenderMonster.h" />
     <ClInclude Include="..\Public\DefenderPlayer.h" />
     <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
     <ClInclude Include="..\public\FatherGame.h" />
@@ -254,6 +255,11 @@
     <ClInclude Include="..\Public\Room_Door_Body.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame.h" />
     <ClInclude Include="..\Public\Section_2D_MiniGame_Pip.h" />
+    <ClInclude Include="..\Public\ShopItemBG_New.h" />
+    <ClInclude Include="..\Public\ShopPanel_BG_New.h" />
+    <ClInclude Include="..\Public\ShopPanel_New.h" />
+    <ClInclude Include="..\Public\ShopPanel_YesNo_New.h" />
+    <ClInclude Include="..\Public\Shop_Manager.h" />
     <ClInclude Include="..\public\Sneak_Default_Tile.h" />
     <ClInclude Include="..\public\Sneak_Trap_Tile.h" />
     <ClInclude Include="..\public\Sneak_Tile.h" />
@@ -538,6 +544,7 @@
     <ClCompile Include="..\Private\Room_Door.cpp" />
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
     <ClCompile Include="..\Private\CyberPlayerBullet.cpp" />
+    <ClCompile Include="..\Private\DefenderMonster.cpp" />
     <ClCompile Include="..\Private\DefenderPlayer.cpp" />
     <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
     <ClCompile Include="..\private\FatherGame.cpp" />
@@ -572,6 +579,11 @@
     <ClCompile Include="..\Private\Room_Door_Body.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame.cpp" />
     <ClCompile Include="..\Private\Section_2D_MiniGame_Pip.cpp" />
+    <ClCompile Include="..\Private\ShopItemBG_New.cpp" />
+    <ClCompile Include="..\Private\ShopPanel_BG_New.cpp" />
+    <ClCompile Include="..\Private\ShopPanel_New.cpp" />
+    <ClCompile Include="..\Private\ShopPanel_YesNo_New.cpp" />
+    <ClCompile Include="..\Private\Shop_Manager.cpp" />
     <ClCompile Include="..\private\Sneak_Default_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Trap_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Tile.cpp" />
