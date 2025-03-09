@@ -45,6 +45,8 @@ HRESULT CSample_Skechspace::Initialize(void* _pArg)
 		m_eSkspType = SKSP_PLAG;
 	if (m_strModelPrototypeTag[COORDINATE_3D] == L"Mug")
 		m_eSkspType = SKSP_CUP;
+	if(m_strModelPrototypeTag[COORDINATE_3D] == L"CardboardTube_A_03")
+		m_eSkspType = SKSP_C09_TUBE;
 	if (m_strModelPrototypeTag[COORDINATE_3D] == L"SM_Toy_Tub")
 		m_eSkspType = SKSP_TUB;
 	if (m_strModelPrototypeTag[COORDINATE_3D] == L"Desk_C06_StorageBox_Sketchspace_01")
@@ -90,6 +92,8 @@ HRESULT CSample_Skechspace::Render()
 		return Render_Cup();
 	case Map_Tool::SKSP_TUB:
 		return Render_Tub();
+	case Map_Tool::SKSP_C09_TUBE:
+		return Render_Tube();
 	case Map_Tool::SKSP_PLAG:
 		return Render_Plag();
 	case Map_Tool::SKSP_STORAGE:
@@ -117,6 +121,20 @@ HRESULT CSample_Skechspace::Render()
 			}
 			else
 			{
+				//_uint iFlag = 1;
+				//m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+
+				//_float2 fStartUV = {};
+				//_float2 fEndUV = {};
+				//fStartUV = { 0.f,0.f };
+				//fEndUV = { 1.f,1.f };
+				//if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fStartUV, sizeof(_float2))))
+				//	return E_FAIL;
+				//if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fEndUV, sizeof(_float2))))
+				//	return E_FAIL;
+				//iShaderPass = (_uint)PASS_VTXMESH::RENDERTARGET_MAPP;
+
+
 				if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_AlbedoTexture", TEXT("Target_2D"))))
 					return E_FAIL;
 			}
@@ -280,6 +298,47 @@ HRESULT CSample_Skechspace::Render_Tub()
 				return E_FAIL;
 
 
+		}
+		else
+		{
+
+			if (FAILED(pModel->Bind_Material(pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, 0)))
+			{
+				int a = 0;
+			}
+
+		}
+
+		pShader->Begin(iShaderPass);
+		pMesh->Bind_BufferDesc();
+		pMesh->Render();
+	}
+	return S_OK;
+}
+
+HRESULT CSample_Skechspace::Render_Tube()
+{
+	if (FAILED(Bind_ShaderResources_WVP()))
+		return E_FAIL;
+	COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+	CShader* pShader = m_pShaderComs[eCoord];
+	_uint iShaderPass = m_iShaderPasses[eCoord];
+	C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
+
+	_bool iFlag = false;
+
+	m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
+
+	for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
+	{
+		_uint iShaderPass = (_uint)PASS_VTXMESH::DEFAULT;
+		auto pMesh = pModel->Get_Mesh(i);
+		_uint iMaterialIndex = pMesh->Get_MaterialIndex();
+
+		if (1 == i)
+		{
+			if (FAILED(m_pGameInstance->Bind_RT_ShaderResource(pShader, "g_AlbedoTexture", TEXT("Target_2D"))))
+				return E_FAIL;
 		}
 		else
 		{

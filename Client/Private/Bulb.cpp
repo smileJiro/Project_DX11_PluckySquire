@@ -232,6 +232,14 @@ void CBulb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColl
 				m_isSticking = true;
 			}
 		}
+		//if ((OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE) & _pOtherObject->Get_ObjectGroupID())
+		//{
+		//	if (BULB_2DCOLLIDER_USE::BULB_STICKING == _pMyCollider->Get_ColliderUse())
+		//	{
+		//		m_pTargetWorld = _pOtherObject->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+		//		m_isSticking = true;
+		//	}
+		//}
 	}
 }
 

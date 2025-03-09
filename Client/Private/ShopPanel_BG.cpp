@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ShopPanel_BG.h"
+#include "ShopPanel_BG_New.h"
 #include "Section_2D.h"
 #include "UI_Manager.h"
 
