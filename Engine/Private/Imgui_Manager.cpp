@@ -667,7 +667,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 			break;
 		}
 
-		if (ImGui::DragFloat3("Position##Light", &tConstLightData.vPosition.x, 0.1f, -200.f, 200.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
+		if (ImGui::DragFloat3("Position##Light", &tConstLightData.vPosition.x, 0.1f, -200.f, 300.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 			(*Selectiter)->Compute_ViewProjMatrix();

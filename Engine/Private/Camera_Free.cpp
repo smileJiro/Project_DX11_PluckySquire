@@ -55,6 +55,7 @@ void CCamera_Free::Priority_Update(_float fTimeDelta)
 
 void CCamera_Free::Update(_float fTimeDelta)
 {
+	//m_pControllerTransform->Set_SpeedPerSec(10.f);
 	Action_Zoom(fTimeDelta);
 	Action_Shake(fTimeDelta);
 	Change_AtOffset(fTimeDelta);

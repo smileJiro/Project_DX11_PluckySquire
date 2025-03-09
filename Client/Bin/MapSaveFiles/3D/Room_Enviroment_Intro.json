@@ -5,6 +5,7 @@
  "data": [
 	"SM_door",
   "SM_Doorknob",
+  "door_plaque",
   "alphabet_blocks_a_mesh",
   "alphabet_blocks_b_mesh",
   "AstronautToy",

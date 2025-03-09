@@ -1159,11 +1159,11 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 	#pragma region Chapter 2 - Object Create
 
-		if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Small.mchc")))
-			return E_FAIL;
+		//if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Small.mchc")))
+		//	return E_FAIL;
 
-		/*if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment.mchc")))
-			return E_FAIL;*/
+		if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Intro.mchc")))
+			return E_FAIL;
 
 	#pragma endregion
 
@@ -1830,14 +1830,14 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 	// 3D Map Load
 	if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL,
 		MAP_3D_DEFAULT_PATH,
-		L"Chapter_06_Play_Desk.json",
+		L"Chapter_02_Play_Desk.json",
 		matPretransform, true)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_6);
+	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_2);
 
 
-	return Loading_Level_Chapter_6(LEVEL_CAMERA_TOOL);
+	return Loading_Level_Chapter_2(LEVEL_CAMERA_TOOL);
 }
 
 HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
@@ -1887,8 +1887,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 	switch (_eResourceLevelID)
 	{
 	case LEVEL_STATIC:
-		str3DMapProtoJsonName = L"Room_Enviroment_Small.json";
-		//str3DMapProtoJsonName = L"Room_Enviroment.json";
+		str3DMapProtoJsonName = L"Room_Enviroment_Intro.json";
+		//str3DMapProtoJsonName = L"Room_Enviroment_Small.json";
 		strChapterName = L"Static";
 		isStatic2DLoad = false;
 		break;
@@ -1911,8 +1911,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:
-		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
-		strChapterName += L"Chapter8";
+		str3DMapProtoJsonName = L"Chapter_02_Play_Desk.json";
+		strChapterName += L"Chapter2";
 		break;
 	default:
 		return S_OK;

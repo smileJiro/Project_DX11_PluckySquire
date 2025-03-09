@@ -17,6 +17,7 @@
 #include "3DMapObject.h"
 #include "MapObjectFactory.h"
 #include "Book.h"
+#include "Room_Door.h"
 
 #include "UI_Manager.h"
 
@@ -60,6 +61,9 @@ HRESULT CLevel_Camera_Tool_Client::Initialize(LEVEL_ID _eLevelID)
 	if (FAILED(Ready_Layer_TestTerrain(TEXT("Layer_Terrain"), pCameraTarget)))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_RoomDoor(TEXT("Layer_RoomDoor"))))
+		return E_FAIL;
+
 	Ready_DataFiles();
 
 	m_fFovys[0] = 8.f;
@@ -82,6 +86,14 @@ HRESULT CLevel_Camera_Tool_Client::Initialize(LEVEL_ID _eLevelID)
 
 void CLevel_Camera_Tool_Client::Update(_float _fTimeDelta)
 {
+	CGameObject* pDoor = m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_RoomDoor"), 0.f);
+	if (KEY_DOWN(KEY::L)) {
+		static_cast<CRoom_Door*>(pDoor)->Start_Turn_Door(true);
+	}
+	if (KEY_DOWN(KEY::I)) {
+		static_cast<CRoom_Door*>(pDoor)->Start_Turn_DoorKnob(true);
+	}
+
 	// 피직스 업데이트 
 	m_pGameInstance->Physx_Update(_fTimeDelta);
 
@@ -155,8 +167,8 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Lights()
 
 HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Map()
 {
-	//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
-	//	return E_FAIL;
+	if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+		return E_FAIL;
 	//if (FAILED(Map_Object_Create(L"Chapter_06_Play_Desk.mchc")))
 	//	return E_FAIL;
 
@@ -315,7 +327,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 		return E_FAIL;
 
 	//pOut->Set_Active(false);
-	//m_ModelObjects.push_back(pOut);
+	m_ModelObjects.push_back(pOut);
 	//
 	//// Hand
 	//Desc.eStartCoord = COORDINATE_3D;
@@ -393,6 +405,18 @@ HRESULT CLevel_Camera_Tool_Client::Ready_DataFiles()
 			m_JsonFilePaths.push_back(entry.path().string());
 		}
 	}
+
+	return S_OK;
+}
+
+HRESULT CLevel_Camera_Tool_Client::Ready_Layer_RoomDoor(const _wstring& _strLayerTag)
+{
+	CRoom_Door::CONTAINEROBJ_DESC Desc = {};
+	Desc.iCurLevelID = m_eLevelID;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Room_Door"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }
