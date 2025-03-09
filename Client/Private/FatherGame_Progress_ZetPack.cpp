@@ -78,7 +78,7 @@ HRESULT CFatherGame_Progress_ZetPack::Progress_Clear()
         /* 1. Claer 이벤트 호출 */
         Event_Register_Trigger(TEXT("Chapter6_FatherGame_Progress_ZetPack_Clear"));
         /* 2. 아빠부품 ui on */
-
+        CFatherGame::GetInstance()->Set_Active_FatherParts_UIs();
         /* 3. 자기 자신의 Active 상태를 False로 변경 */
         Event_SetActive(this, false);
 #ifdef _DEBUG
