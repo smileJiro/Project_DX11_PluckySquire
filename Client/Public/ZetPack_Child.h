@@ -57,6 +57,14 @@ public:
 	void									On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 	void									On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 	void									On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
+
+public:
+	// Get
+	STATE									Get_CurState() const { return m_eCurState; }
+	_int									Get_DialogueIndex() const { return m_iDialogueIndex; }
+	// Set
+	void									Set_DialogueIndex(_int _iIndex) { m_iDialogueIndex = _iIndex; }
+	void									Plus_DialogueIndex() { ++m_iDialogueIndex; }
 private:
 	CPlayer*								m_pPlayer = nullptr;
 

@@ -10,6 +10,7 @@
 BEGIN(Client)
 class CMonster;
 class CPortalLocker;
+class CZetPack_Child;
 class CFatherGame_Progress_ZetPack : public CFatherGame_Progress
 {
 public:
@@ -30,10 +31,7 @@ public:
 	HRESULT					Progress_Exit() override;		// Active OnDisable 에서 호출.
 
 private:
-	_uint					m_iNumMonsters = 0;
-	_wstring				m_strMonsterPrototypeTag;
-	vector<CMonster*>		m_pMonsters;
-	_uint					m_iKillCount = 0;
+	CZetPack_Child*			m_pZetPack_Child = nullptr;
 
 
 
