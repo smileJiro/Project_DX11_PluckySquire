@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ShopPanel_YesNo.h"
 #include "UI_Manager.h"
-
+#include "Shop_Manager.h"
 
 
 
@@ -68,7 +68,7 @@ void CShopPanel_YesNo::Child_LateUpdate(_float _fTimeDelta)
 
 HRESULT CShopPanel_YesNo::Render()
 {
-	if (true == m_isRender && true == Uimgr->Get_ConfirmStore())
+	if (true == m_isRender && true == CShop_Manager::GetInstance()->Get_OpenConfirmUI())
 		__super::Render(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
 
 	return S_OK;
@@ -97,6 +97,7 @@ void CShopPanel_YesNo::Cal_ShopYesNOPos(_float2 _vRTSize, _float2 _vBGPos)
 
 	Get_Transform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
 }
+
 
 HRESULT CShopPanel_YesNo::Ready_Components()
 {

@@ -60,6 +60,7 @@ public:
 private:
 	HRESULT	Ready_Components();
 	HRESULT	Ready_PartObjects();
+	HRESULT	Ready_BulletPool();
 public:
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
@@ -78,6 +79,9 @@ private:
 	T_DIRECTION m_eTDirection = T_DIRECTION::RIGHT;
 	CPlayer* m_pOriginalPlayer = nullptr;
 	CSection_Manager* m_pSection_Manager = nullptr;
+	class CPooling_Manager* m_pPoolMgr = nullptr;
+	_float4 m_vRightShootQuaternion = { 0.f,0.f,0.f,1.f };
+	_float4 m_vLeftShootQuaternion = { 0.f,0.f,0.f,1.f };
 	//PARTS
 	CModelObject* m_pBody = nullptr;
 	CModelObject* m_pCrossHair = nullptr;

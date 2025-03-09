@@ -6,9 +6,12 @@
 #include "Section_2D_PlayMap.h"
 #include "Portal_Default.h"
 #include "ZetPack_Child.h"
+#include "Simple_UI.h"
+#include "Mug_Alien.h"
 /* Progress */
 #include "FatherGame_Progress_Start.h"
 #include "FatherGame_Progress_ZetPack.h"
+#include "FatherGame_Progress_PartBody.h"
 
 IMPLEMENT_SINGLETON(CFatherGame)
 CFatherGame::CFatherGame()
@@ -31,28 +34,37 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 
 	
 	{/* Progress Start */
-		CFatherGame_Progress_Start::FATHERGAME_PROGRESS_START_DESC ProgressStartDesc = {};
-		ProgressStartDesc.iNumMonsters = 3;
-		ProgressStartDesc.strMonsterPrototypeTag = TEXT("Prototype_GameObject_Goblin");
-		CFatherGame_Progress* pProgressStart = CFatherGame_Progress_Start::Create(m_pDevice, m_pContext, &ProgressStartDesc);
-		if (nullptr == pProgressStart)
+		CFatherGame_Progress_Start::FATHERGAME_PROGRESS_START_DESC ProgressDesc = {};
+		ProgressDesc.iNumMonsters = 3;
+		ProgressDesc.strMonsterPrototypeTag = TEXT("Prototype_GameObject_Goblin");
+		CFatherGame_Progress* pProgress = CFatherGame_Progress_Start::Create(m_pDevice, m_pContext, &ProgressDesc);
+		if (nullptr == pProgress)
 			return E_FAIL;
-		pProgressStart->Set_Active(true);
-		m_Progress.push_back(pProgressStart); // 여기가 원본임. AddRef x
+		pProgress->Set_Active(true);
+		m_Progress.push_back(pProgress); // 여기가 원본임. AddRef x
 		m_ProgressClear.push_back(false);
 	}/* Progress Start */
 
 	
 	{/* Progress ZetPack */
-		CFatherGame_Progress_ZetPack::FATHERGAME_PROGRESS_ZETPACK_DESC ProgressJetPackDesc = {};
-		CFatherGame_Progress* pProgressZetPack = CFatherGame_Progress_ZetPack::Create(m_pDevice, m_pContext, &ProgressJetPackDesc);
-		if (nullptr == pProgressZetPack)
+		CFatherGame_Progress_ZetPack::FATHERGAME_PROGRESS_ZETPACK_DESC ProgressDesc = {};
+		CFatherGame_Progress* pProgress = CFatherGame_Progress_ZetPack::Create(m_pDevice, m_pContext, &ProgressDesc);
+		if (nullptr == pProgress)
 			return E_FAIL;
-		pProgressZetPack->Set_Active(false);
-		m_Progress.push_back(pProgressZetPack); // 여기가 원본임. AddRef x
+		pProgress->Set_Active(false);
+		m_Progress.push_back(pProgress); // 여기가 원본임. AddRef x
 		m_ProgressClear.push_back(false);
 	}/* Progress ZetPack */
 
+	{/* Progress PartBody */
+		CFatherGame_Progress_PartBody::FATHERGAME_PROGRESS_PARTBODY_DESC ProgressDesc = {};
+		CFatherGame_Progress* pProgress = CFatherGame_Progress_PartBody::Create(m_pDevice, m_pContext, &ProgressDesc);
+		if (nullptr == pProgress)
+			return E_FAIL;
+		pProgress->Set_Active(false);
+		m_Progress.push_back(pProgress); // 여기가 원본임. AddRef x
+		m_ProgressClear.push_back(false);
+	}/* Progress PartBody */
 
 
 	/* 2. PortalDefender 3곳에 생성 */
@@ -98,9 +110,52 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 	//		return E_FAIL;
 	//}/* PortalLocker PartHead */
 
+	/* FatherParts Condition */
+	m_FatherPartsCondition.resize((size_t)FATHER_PART::FATHER_LAST);
+	for (_uint i = 0; i < (_uint)FATHER_PART::FATHER_LAST; ++i)
+		m_FatherPartsCondition[i] = false;
 
+	m_FatherParts_UIs.resize((size_t)FATHER_PART::FATHER_LAST);
+	/* FatherParts UI */
+	{
+		
+		CGameObject* pGameObject = nullptr;
+		CSimple_UI::SIMPLE_UI_DESC SimpleUI_Desc{};
+		_float fY = g_iWinSizeX * 0.05f;
+		_float fSizeX = 48.f;
+		_float fSizeY = 48.f;
+		_float fInterval = 10.f;
+		_float fStartPosX = g_iWinSizeX * 0.5f - fSizeX - fInterval;
+		_float fTextureAspect = 112.f / 116.f;
+		SimpleUI_Desc.vUIInfo = { fStartPosX, fY , fSizeX * fTextureAspect, fSizeY };
+		SimpleUI_Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_FatherParts_UI");
+		SimpleUI_Desc.ePassIndex = PASS_VTXPOSTEX::DEFAULT;
+		SimpleUI_Desc.iCurLevelID = LEVEL_CHAPTER_6;
+		SimpleUI_Desc.iTextureIndex = FATHER_PART::FATHER_BODY * 2;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Simple_UI"), LEVEL_CHAPTER_6, TEXT("Layer_FatherParts_UI"), &pGameObject, &SimpleUI_Desc)))
+			return E_FAIL;
+		m_FatherParts_UIs[(_uint)FATHER_PART::FATHER_BODY] = static_cast<CSimple_UI*>(pGameObject);
+		m_FatherParts_UIs[(_uint)FATHER_PART::FATHER_BODY]->Set_Active(false);
 
-	// 1. 모성 
+		pGameObject = nullptr;
+		fTextureAspect = 88.f / 136.f;
+		SimpleUI_Desc.vUIInfo = { fStartPosX + 1 * (fSizeX + fInterval), fY , fSizeX * fTextureAspect , fSizeY };
+		SimpleUI_Desc.iTextureIndex = FATHER_PART::FATHER_WING * 2;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Simple_UI"), LEVEL_CHAPTER_6, TEXT("Layer_FatherParts_UI"), &pGameObject, &SimpleUI_Desc)))
+			return E_FAIL;
+		m_FatherParts_UIs[(_uint)FATHER_PART::FATHER_WING] = static_cast<CSimple_UI*>(pGameObject);
+		m_FatherParts_UIs[(_uint)FATHER_PART::FATHER_WING]->Set_Active(false);
+
+		pGameObject = nullptr;
+		fTextureAspect = 120.f / 120.f;
+		SimpleUI_Desc.vUIInfo = { fStartPosX + 2 * (fSizeX + fInterval), fY , fSizeX * fTextureAspect, fSizeY };
+		SimpleUI_Desc.iTextureIndex = FATHER_PART::FATER_HEAD * 2;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Simple_UI"), LEVEL_CHAPTER_6, TEXT("Layer_FatherParts_UI"), &pGameObject, &SimpleUI_Desc)))
+			return E_FAIL;
+		m_FatherParts_UIs[(_uint)FATHER_PART::FATER_HEAD] = static_cast<CSimple_UI*>(pGameObject);
+		m_FatherParts_UIs[(_uint)FATHER_PART::FATER_HEAD]->Set_Active(false);
+	}
+
 
 	m_eGameState = GAME_PLAYING;
 
@@ -111,7 +166,10 @@ void CFatherGame::Update()
 {
 	if (GAME_PLAYING != m_eGameState)
 		return;
-
+	if (KEY_DOWN(KEY::K))
+	{
+		Pickup_FatherPart(FATHER_WING);
+	}
 	for (_uint i = 0; i < m_Progress.size(); ++i)
 	{
 		/* Update */
@@ -210,7 +268,33 @@ void CFatherGame::Set_ZetPack_Child(CZetPack_Child* _pZetPack_Child)
 	assert(!m_pZetPack_Child);
 	m_pZetPack_Child = _pZetPack_Child;
 	Safe_AddRef(m_pZetPack_Child);
-};
+}
+void CFatherGame::Set_Mug_Alien(CMug_Alien* _pMugAlien)
+{
+	assert(_pMugAlien);
+	assert(!m_pMugAlien);
+	m_pMugAlien = _pMugAlien;
+	Safe_AddRef(m_pMugAlien);
+}
+
+void CFatherGame::Set_Active_FatherParts_UIs(_bool _isActive)
+{
+	if (false == m_ProgressClear[FATHER_PROGRESS_START])
+		return;
+
+	for (_uint i = 0; i < FATHER_PART::FATHER_LAST; ++i)
+	{
+		Event_SetActive(m_FatherParts_UIs[i], _isActive);
+	}
+}
+
+void CFatherGame::Pickup_FatherPart(FATHER_PART _eFatherPart)
+{
+	if (true == m_FatherPartsCondition[_eFatherPart])
+		return;
+	m_FatherPartsCondition[_eFatherPart] = true;
+	m_FatherParts_UIs[_eFatherPart]->Set_TextureIndex((_uint)_eFatherPart * 2 + 1);
+}
 
 void CFatherGame::Free()
 {
@@ -223,7 +307,14 @@ void CFatherGame::Free()
 	if (GAME_END != m_eGameState)
 	{
 		/* 정상적으로 게임 엔드가 호출되지 않은 경우에만 릴리즈 */
+		Safe_Release(m_pMugAlien);
 		Safe_Release(m_pZetPack_Child);
+
+		for (_uint i = 0; i < (_uint)FATHER_PART::FATHER_LAST; ++i)
+		{
+			Safe_Release(m_FatherParts_UIs[i]);
+		}
+		m_FatherParts_UIs.clear();
 
 		for (auto& pProgress : m_Progress)
 			Safe_Release(pProgress);

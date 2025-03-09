@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "DefenderPlayer.h"
 #include "Section_Manager.h"
+#include "GameInstance.h"
+#include "DefenderSpawner.h"
 
 CMiniGame_Defender::CMiniGame_Defender(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -24,6 +26,11 @@ HRESULT CMiniGame_Defender::Initialize_Prototype()
 
 HRESULT CMiniGame_Defender::Initialize(void* _pArg)
 {
+    m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::SM_SHIP, _wstring(L"Prototype_GameObject_DefenderSmShip")));
+    m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::TURRET, _wstring(L"Prototype_GameObject_DefenderTurret")));
+    m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::MESSHIP, _wstring(L"Prototype_GameObject_DefenderMesShip")));
+
+
 	DEFENDER_CONTROLLTOWER_DESC* pDesc =static_cast<DEFENDER_CONTROLLTOWER_DESC*> (_pArg);
     m_iCurLevelID = pDesc->iCurLevelID;
 
@@ -61,10 +68,53 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
 
 	return S_OK;
 }
+HRESULT CMiniGame_Defender::Ready_Spanwer()
+{
+    Pooling_DESC Pooling_Desc;
+    Pooling_Desc.iPrototypeLevelID = m_iCurLevelID;
+    Pooling_Desc.strLayerTag = TEXT("Layer_PlayerProjectiles");
+    Pooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
 
+    for (auto& pairMonster : m_mapMonsterPrototypeTag)
+    {
+        Pooling_Desc.strPrototypeTag = pairMonster.second;
+        CDefenderMonster::DEFENDER_MONSTER_DESC* pMonsterDesc = new CDefenderMonster::DEFENDER_MONSTER_DESC;
+        pMonsterDesc->iCurLevelID = m_iCurLevelID;
+		_wstring strPoolTag = pairMonster.second + TEXT("_Pool");
+        CPooling_Manager::GetInstance()->Register_PoolingObject(strPoolTag, Pooling_Desc, pMonsterDesc);
+
+
+        CDefenderSpawner::DEFENDER_SPAWNER_DESC tDesc = {};
+        tDesc.iCurLevelID = m_iCurLevelID;
+        tDesc.strSectionName = m_strSectionName;
+        tDesc.strPoolTag = strPoolTag;
+        tDesc.pPlayer = m_pDefenderPlayer;
+
+        m_Spawners[pairMonster.first] = static_cast<CDefenderSpawner*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_DefenderSpawner"), &tDesc));
+        Safe_AddRef(m_Spawners[pairMonster.first]);
+		m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_Defender"), m_Spawners[pairMonster.first]);
+    }
+
+	SPAWN_DESC tSpawnDesc = {};
+	tSpawnDesc.fAutoCycleTime = 1.f;
+    tSpawnDesc.bAbsolutePosition = true;
+	tSpawnDesc.eDirection = T_DIRECTION::RIGHT;
+    _vector vPosition = { 0.f,0.f,0.f };
+
+    m_Spawners[DEFENDER_MONSTER_ID::SM_SHIP]->Add_Spawn(tSpawnDesc);
+    return S_OK;
+}
+void CMiniGame_Defender::Enter_Section(const _wstring _strIncludeSectionName)
+{
+    __super::Enter_Section(_strIncludeSectionName);
+
+}
 void CMiniGame_Defender::Update(_float _fTimeDelta)
 {
+
 	__super::Update(_fTimeDelta);
+    if(false == m_bGameStart)
+		return;
 }
 
 void CMiniGame_Defender::Late_Update(_float _fTimeDelta)
@@ -88,12 +138,15 @@ void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
         m_bGameStart = true;
         CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
         CPlayer* pNormalPlayer =  pPDM->Get_NormalPlayer_Ptr();
-        CDefenderPlayer* pDefenderPlayer =  pPDM->Get_DefenderPlayer_Ptr();
-
+        m_pDefenderPlayer =  pPDM->Get_DefenderPlayer_Ptr();
+		Safe_AddRef(m_pDefenderPlayer);
         _vector vNormalPlayerPos = pNormalPlayer->Get_FinalPosition();
-        pDefenderPlayer->Set_Position(vNormalPlayerPos);
+        m_pDefenderPlayer->Set_Position(vNormalPlayerPos);
 
-        pDefenderPlayer->Start_Game();
+        m_pDefenderPlayer->Start_Game();
+
+        if (FAILED(Ready_Spanwer()))
+            return;
     }
 }
 
@@ -104,6 +157,8 @@ void CMiniGame_Defender::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider*
 void CMiniGame_Defender::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 }
+
+
 
 CMiniGame_Defender* CMiniGame_Defender::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
@@ -133,5 +188,11 @@ CGameObject* CMiniGame_Defender::Clone(void* _pArg)
 
 void CMiniGame_Defender::Free()
 {
+	Safe_Release(m_pDefenderPlayer);
+    for (auto& pSpawner : m_Spawners)
+    {
+		Safe_Release(pSpawner.second);
+    }
+    m_Spawners.clear();
 	__super::Free();
 }

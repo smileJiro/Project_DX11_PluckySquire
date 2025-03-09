@@ -16,6 +16,7 @@ CLevel_Loading::CLevel_Loading(ID3D11Device* _pDevice, ID3D11DeviceContext* _pCo
 HRESULT CLevel_Loading::Initialize(LEVEL_ID _eNextLevelID)
 {
     m_eNextLevelID = _eNextLevelID;
+    Ready_DeafultCameraSet();
 
     m_pLoader = CLoader::Create(m_pDevice, m_pContext, m_eNextLevelID);
     if (nullptr == m_pLoader)

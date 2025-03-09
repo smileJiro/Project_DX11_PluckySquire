@@ -14,10 +14,13 @@ CLevel_Logo::CLevel_Logo(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 HRESULT CLevel_Logo::Initialize()
 {
+	Ready_DeafultCameraSet();
+
 	Ready_Layer_UI(TEXT("Layer_UI"));
 
 	// BGM ½ÃÀÛ
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_UIMUSIC_FULL_LOOP"), 20.f);
+
  	return S_OK;
 }
 
@@ -76,6 +79,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	return S_OK;
 }
+
 
 
 

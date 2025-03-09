@@ -100,7 +100,47 @@
 		"Section_Type": 0,
 		"Section_Default": 0,
 		"Section_Info": {
-			"Pre_Page_Tag": "Chapter8_P1718"
+			"Pre_Page_Tag": "Chapter8_P1718",
+			"Next_Page_Tag": "Chapter8_P2122"
+		}
+	},
+	{
+		"Section_Name": "Chapter8_P2122",
+		"Section_File_Name": "Chapter8_P2122.m2chc",
+		"Section_BackGround_Name": "Chapter8_P2122_BackGround",
+		"Section_Type": 0,
+		"Section_Info": {
+			"Camera_Zoom_Ratio": 1.5,
+			"Rotation": true,
+			"RenderResolution": {
+				"X": 1080.0,
+				"Y": 3840.0
+			},
+			"LevelSizePixels": {
+				"X": 1080.0,
+				"Y": 3840.0
+			},
+			"Pre_Page_Tag": "Chapter8_P1920",
+			"Next_Page_Tag": "Chapter8_P2324"
+
+		}
+	},
+		{
+		"Section_Name": "Chapter8_P2324",
+		"Section_File_Name": "Chapter8_P2324.m2chc",
+		"Section_BackGround_Name": "Chapter8_P2324_BackGround",
+		"Section_Type": 0,
+		"Section_Info": {
+			"Camera_Zoom_Ratio": 1.5,
+			"RenderResolution": {
+				"X": 3839.0,
+				"Y": 1079.0
+			},
+			"LevelSizePixels": {
+				"X": 3839.0,
+				"Y": 1079.0
+			},
+			"Pre_Page_Tag": "Chapter8_P2122"
 		}
 	},
 	{

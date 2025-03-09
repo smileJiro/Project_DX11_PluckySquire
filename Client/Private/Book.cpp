@@ -629,6 +629,10 @@ HRESULT CBook::Init_RT_RenderPos_Capcher()
 	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0304", this);
 	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0506", this);
 	SECTION_MGR->Register_WorldCapture(L"Chapter5_P0102", this);
+	SECTION_MGR->Register_WorldCapture(L"Chapter6_P1112", this);
+	SECTION_MGR->Register_WorldCapture(L"Chapter6_P1314", this);
+	SECTION_MGR->Register_WorldCapture(L"Chapter8_P2122", this);
+	SECTION_MGR->Register_WorldCapture(L"Chapter8_P2324", this);
 
 	return S_OK;
 }
