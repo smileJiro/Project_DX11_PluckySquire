@@ -23,7 +23,6 @@ public:
 private:
 	HRESULT	Ready_PartObjects();
 private:
-	_vector m_vMoveDir = { 0.f,0.f,0.f };
 	_float m_fMoveSpeed = 500.f;
 
 public:
