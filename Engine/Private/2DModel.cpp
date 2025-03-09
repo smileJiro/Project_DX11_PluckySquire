@@ -264,23 +264,6 @@ void C2DModel::Switch_Reverse(_uint iIdx, _bool _bReverse)
 {
 }
 
-#ifdef _DEBUG
-
-const CSpriteFrame* C2DModel::Get_SpriteFrame()
-{
-	if (Is_AnimModel())
-	{
-		if (m_iCurAnimIdx >= (_uint)m_Animation2Ds.size() || nullptr == m_Animation2Ds[m_iCurAnimIdx])
-			return nullptr;
-		auto pAnim = m_Animation2Ds[m_iCurAnimIdx];
-		return pAnim->GetCurrentSprite();
-	}
-	else
-		return m_pNonAnimSprite;
-}
-
-#endif // _DEBUG
-
 CTexture* C2DModel::Load_Texture(filesystem::path _path, _uint _iLevelIdx)
 {
 
@@ -296,6 +279,23 @@ CTexture* C2DModel::Load_Texture(filesystem::path _path, _uint _iLevelIdx)
 	}
 	return pTexture;
 }
+
+#ifdef _DEBUG
+
+const CSpriteFrame* C2DModel::Get_SpriteFrame()
+{
+	if (Is_AnimModel())
+	{
+		if (m_iCurAnimIdx >= (_uint)m_Animation2Ds.size() || nullptr == m_Animation2Ds[m_iCurAnimIdx])
+			return nullptr;
+		auto pAnim = m_Animation2Ds[m_iCurAnimIdx];
+		return pAnim->GetCurrentSprite();
+	}
+	else
+		return m_pNonAnimSprite; 
+}
+
+#endif // _DEBUG
 
 
 void C2DModel::To_NextAnimation()

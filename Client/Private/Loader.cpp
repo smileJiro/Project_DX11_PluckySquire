@@ -71,8 +71,6 @@
 #include "Npc_Rabbit.h"
 #include "Postit_Page.h"
 
-
-
 #include "ModelObject.h"
 #include "CarriableObject.h"
 #include "DraggableObject.h"
@@ -122,6 +120,8 @@
 #include "Zipline.h"
 #include "DefenderPlayer.h"
 #include "DefenderPlayerProjectile.h"
+#include "DefenderSpawner.h"
+#include "DefenderSmShip.h"
 #include "Minigame_Defender.h"
 
 #include "Sneak_Default_Tile.h"
@@ -1485,6 +1485,12 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderPlayerProjectile"),
 			CDefenderPlayerProjectile::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderSpawner"),
+			CDefenderSpawner::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderSmShip"),
+			CDefenderSmShip::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 		/* Monster */
 

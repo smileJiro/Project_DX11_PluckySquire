@@ -17,7 +17,6 @@
 #include "CubeMap.h"
 #include "MainTable.h"
 #include "Player.h"
-#include "DefenderPlayer.h"
 #include "Beetle.h"
 #include "BirdMonster.h"
 #include "Projectile_BirdMonster.h"
@@ -39,7 +38,11 @@
 #include "Book.h"
 
 //DEFENDER
+#include "DefenderPlayer.h"
 #include "Minigame_Defender.h"
+#include "DefenderSpawner.h"
+#include "DefenderSmShip.h"
+#include "DefenderPlayerProjectile.h"
 
 #include "RayShape.h"
 #include "CarriableObject.h"
@@ -673,6 +676,15 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 	CMiniGame_Defender* pTower = static_cast<CMiniGame_Defender*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Minigame_Defender"), &tDesc));;
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pTower);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pTower, SECTION_2D_PLAYMAP_OBJECT);
+
+	CDefenderSmShip::DEFENDER_MONSTER_DESC tMonsterDesc = {};
+	tMonsterDesc.eTDirection = T_DIRECTION::RIGHT;
+	tMonsterDesc.iCurLevelID = m_eLevelID;
+	tMonsterDesc.tTransform2DDesc.vInitialPosition = { -0.f, 0.f, 0.f };   // TODO ::임시 위치
+	CDefenderSmShip* pMonster = static_cast<CDefenderSmShip*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderSmShip"), &tMonsterDesc));;
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pMonster);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pMonster, SECTION_2D_PLAYMAP_OBJECT);
+
 
 	return S_OK;
 }
