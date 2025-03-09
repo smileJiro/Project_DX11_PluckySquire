@@ -24,9 +24,7 @@ HRESULT CDefenderSpawner::Initialize_Prototype()
 HRESULT CDefenderSpawner::Initialize(void* _pArg)
 {
 	m_pSection_Manager = CSection_Manager::GetInstance();
-	Safe_AddRef(m_pSection_Manager);
 	m_pPoolMgr = CPooling_Manager::GetInstance();
-	Safe_AddRef(m_pPoolMgr);
 
 	DEFENDER_SPAWNER_DESC* pDesc = static_cast<DEFENDER_SPAWNER_DESC*>(_pArg);
 	m_strSectionName = pDesc->strSectionName;
@@ -50,7 +48,7 @@ void CDefenderSpawner::Update(_float _fTimeDelta)
 
 	for (auto& tSpawn : m_SpawnList)
 	{
-		tSpawn.Update(_fTimeDelta, m_pPoolMgr, m_strPoolTag, m_strSectionName);
+		tSpawn.Update(_fTimeDelta);
 
 	}
 	for (auto& tSpawn : m_SpawnList)
@@ -74,6 +72,21 @@ void CDefenderSpawner::Add_Spawn(SPAWN_DESC tDesc)
 	}
 
 	m_SpawnList.push_back(tDesc);
+}
+
+void CDefenderSpawner::Spawn_Single(T_DIRECTION _eDirection, _vector _vPos)
+{
+	_float3 vPos; XMStoreFloat3(&vPos, _vPos);
+	CDefenderMonster* pMonster = nullptr;
+	m_pPoolMgr->Create_Object(m_strPoolTag,
+		COORDINATE_2D,
+		(CGameObject**)&pMonster,
+		&vPos,
+		(_float4*)nullptr,
+		(_float3*)nullptr,
+		&m_strSectionName);
+	if (pMonster)
+		pMonster->Set_Direction(_eDirection);
 }
 
 
@@ -103,7 +116,6 @@ CGameObject* CDefenderSpawner::Clone(void* _pArg)
 }
 void CDefenderSpawner::Free()
 {
-	Safe_Release(m_pSection_Manager);
 	Safe_Release(m_pPoolMgr);
 	Safe_Release(m_pPlayer);
 	__super::Free();
@@ -115,7 +127,7 @@ HRESULT CDefenderSpawner::Cleanup_DeadReferences()
 }
 
 
-void SPAWN_DESC::Update(_float _fTimeDelta, CPooling_Manager* _pPool, _wstring _strPoolTag, _wstring _strSectionName)
+void SPAWN_DESC::Update(_float _fTimeDelta)
 {
 	fPatternTimeAcc += _fTimeDelta;
 	fPatternTimeAcc += _fTimeDelta;
@@ -144,17 +156,3 @@ void SPAWN_DESC::Update(_float _fTimeDelta, CPooling_Manager* _pPool, _wstring _
 	//}
 }
 
-void SPAWN_DESC::Spawn_Single(class CPooling_Manager* _pPool, _wstring _strPoolTag, _wstring _strSectionName,T_DIRECTION _eDirection, _vector _vPos)
-{
-	_float3 vPos; XMStoreFloat3(&vPos, _vPos);
-	CDefenderMonster* pMonster = nullptr;
-	_pPool->Create_Object(_strPoolTag,
-		COORDINATE_2D,
-		(CGameObject**)&pMonster,
-		&vPos,
-		(_float4*)nullptr,
-		(_float3*)nullptr,
-		&_strSectionName);
-	if (pMonster)
-		pMonster->Set_Direction(_eDirection);
-}

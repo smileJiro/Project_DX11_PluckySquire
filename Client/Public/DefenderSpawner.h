@@ -31,8 +31,8 @@ struct SPAWN_DESC
 	_float fAutoCycleTime = -1.f;
 
 private: 
-	void Update(_float _fTimeDelta, class CPooling_Manager* _pPool, _wstring _strPoolTag, _wstring _strSectionName);
-	void Spawn_Single(class CPooling_Manager* _pPool, _wstring _strPoolTag, _wstring _strSectionName, T_DIRECTION _eDirection, _vector _vPos = { 0.f,0.f,0.f });
+	void Update(_float _fTimeDelta);
+	
 	_bool Is_SpawnEnd() { return iCurrentSpawnCount >= iSpawnCount; }
 	_bool Is_Auto() { return fAutoCycleTime >= 0.f; }
 private:
@@ -66,7 +66,7 @@ public:
 	void Add_Spawn(SPAWN_DESC tDesc);
 
 private: 
-
+	void Spawn_Single(T_DIRECTION _eDirection, _vector _vPos = { 0.f,0.f,0.f });
 
 private:
 	CSection_Manager* m_pSection_Manager = nullptr;
