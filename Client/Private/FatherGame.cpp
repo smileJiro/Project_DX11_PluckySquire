@@ -6,6 +6,7 @@
 #include "Section_2D_PlayMap.h"
 #include "Portal_Default.h"
 #include "ZetPack_Child.h"
+#include "Simple_UI.h"
 /* Progress */
 #include "FatherGame_Progress_Start.h"
 #include "FatherGame_Progress_ZetPack.h"
@@ -99,8 +100,46 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 	//}/* PortalLocker PartHead */
 
 
+	/* FatherParts UI */
+	{
+		m_FatherParts_UIs.resize((size_t)FATHER_PART::FATHER_LAST);
+		CGameObject* pGameObject = nullptr;
+		CSimple_UI::SIMPLE_UI_DESC SimpleUI_Desc{};
+		_float fY = g_iWinSizeX * 0.05f;
+		_float fSizeX = 48.f;
+		_float fSizeY = 48.f;
+		_float fInterval = 10.f;
+		_float fStartPosX = g_iWinSizeX * 0.5f - fSizeX - fInterval;
+		_float fTextureAspect = 112.f / 116.f;
+		SimpleUI_Desc.vUIInfo = { fStartPosX, fY , fSizeX * fTextureAspect, fSizeY };
+		SimpleUI_Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_FatherParts_UI");
+		SimpleUI_Desc.ePassIndex = PASS_VTXPOSTEX::DEFAULT;
+		SimpleUI_Desc.iCurLevelID = LEVEL_CHAPTER_6;
+		SimpleUI_Desc.iTextureIndex = FATHER_PART::FATHER_BODY * 2;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Simple_UI"), LEVEL_CHAPTER_6, TEXT("Layer_FatherParts_UI"), &pGameObject, &SimpleUI_Desc)))
+			return E_FAIL;
+		m_FatherParts_UIs[(_uint)FATHER_PART::FATHER_BODY] = static_cast<CSimple_UI*>(pGameObject);
+		m_FatherParts_UIs[(_uint)FATHER_PART::FATHER_BODY]->Set_Active(false);
 
-	// 1. 모성 
+		pGameObject = nullptr;
+		fTextureAspect = 88.f / 136.f;
+		SimpleUI_Desc.vUIInfo = { fStartPosX + 1 * (fSizeX + fInterval), fY , fSizeX * fTextureAspect , fSizeY };
+		SimpleUI_Desc.iTextureIndex = FATHER_PART::FATHER_WING * 2;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Simple_UI"), LEVEL_CHAPTER_6, TEXT("Layer_FatherParts_UI"), &pGameObject, &SimpleUI_Desc)))
+			return E_FAIL;
+		m_FatherParts_UIs[(_uint)FATHER_PART::FATHER_WING] = static_cast<CSimple_UI*>(pGameObject);
+		m_FatherParts_UIs[(_uint)FATHER_PART::FATHER_WING]->Set_Active(false);
+
+		pGameObject = nullptr;
+		fTextureAspect = 120.f / 120.f;
+		SimpleUI_Desc.vUIInfo = { fStartPosX + 2 * (fSizeX + fInterval), fY , fSizeX * fTextureAspect, fSizeY };
+		SimpleUI_Desc.iTextureIndex = FATHER_PART::FATER_HEAD * 2;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Simple_UI"), LEVEL_CHAPTER_6, TEXT("Layer_FatherParts_UI"), &pGameObject, &SimpleUI_Desc)))
+			return E_FAIL;
+		m_FatherParts_UIs[(_uint)FATHER_PART::FATER_HEAD] = static_cast<CSimple_UI*>(pGameObject);
+		m_FatherParts_UIs[(_uint)FATHER_PART::FATER_HEAD]->Set_Active(false);
+	}
+
 
 	m_eGameState = GAME_PLAYING;
 
@@ -212,6 +251,14 @@ void CFatherGame::Set_ZetPack_Child(CZetPack_Child* _pZetPack_Child)
 	Safe_AddRef(m_pZetPack_Child);
 };
 
+void CFatherGame::Set_Active_FatherParts_UIs()
+{
+	for (_uint i = 0; i < FATHER_PART::FATHER_LAST; ++i)
+	{
+		Event_SetActive(m_FatherParts_UIs[i], true);
+	}
+}
+
 void CFatherGame::Free()
 {
 	for (auto& pPortalLocker : m_PortalLockers)
@@ -224,6 +271,12 @@ void CFatherGame::Free()
 	{
 		/* 정상적으로 게임 엔드가 호출되지 않은 경우에만 릴리즈 */
 		Safe_Release(m_pZetPack_Child);
+
+		for (_uint i = 0; i < (_uint)FATHER_PART::FATHER_LAST; ++i)
+		{
+			Safe_Release(m_FatherParts_UIs[i]);
+		}
+		m_FatherParts_UIs.clear();
 
 		for (auto& pProgress : m_Progress)
 			Safe_Release(pProgress);

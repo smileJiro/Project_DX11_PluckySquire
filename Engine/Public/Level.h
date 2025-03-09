@@ -22,7 +22,8 @@ protected:
 	ID3D11Device* m_pDevice = nullptr;
 	ID3D11DeviceContext* m_pContext = nullptr;
 	class CGameInstance* m_pGameInstance = nullptr; // class 를 붙이는 이유, 일종의 전방선언.
-
+protected:
+	HRESULT Ready_DeafultCameraSet();
 public:
 	virtual void Free() override; // virtual : 가상 함수다, override : 재정의 한다.
 	// virtual : Base class 에서 함수를 가상 함수로 선언하기 위함.

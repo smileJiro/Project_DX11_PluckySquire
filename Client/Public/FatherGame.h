@@ -11,6 +11,7 @@ class CGameInstance;
 END
 
 BEGIN(Client)
+class CSimple_UI;
 class CFatherGame_Progress;
 class CPortalLocker;
 class CZetPack_Child;
@@ -54,7 +55,11 @@ public:
 			return nullptr;
 		return m_PortalLockers[_ePortalLockerIndex];
 	}
+	CZetPack_Child* Get_ZetPack_Child() { return m_pZetPack_Child; }
 	// Set
+	void								Set_ZetPack_Child(CZetPack_Child* _pZetPack_Child);
+
+
 private:
 	CGameInstance*						m_pGameInstance = nullptr;
 	ID3D11Device*						m_pDevice = nullptr;
@@ -69,16 +74,15 @@ private: /* FatherGame Condition */
 private: /* PortalLocker */
 	vector<CPortalLocker*>				m_PortalLockers;
 
-public:
-	// Get
-	CZetPack_Child* Get_ZetPack_Child() { return m_pZetPack_Child; }
-
-	// Set
-	void								Set_ZetPack_Child(CZetPack_Child* _pZetPack_Child);
-
-
-private:
+private: /* ZetPack_Child */
 	CZetPack_Child*						m_pZetPack_Child = nullptr;
+
+public:
+	void								Set_Active_FatherParts_UIs();
+private: /* FatherParts_UI */
+	vector<CSimple_UI*>					m_FatherParts_UIs;
+
+
 private: /* FatherGame UI */
 	
 public:

@@ -197,7 +197,7 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_ZetPack_Clear(_float _f
 				CCamera_Manager::GetInstance()->Start_FadeOut(0.5f);
 				m_fTimer = 0.0f;
 			}
-			Next_Step_Over(0.6f);
+			Next_Step_Over(0.7f);
 		}
 		
 	}
@@ -247,7 +247,7 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_ZetPack_Clear(_float _f
 				CCamera_Manager::GetInstance()->Start_FadeOut(0.5f);
 				m_fTimer = 0.0f;
 			}
-			Next_Step_Over(0.6f);
+			Next_Step_Over(0.7f);
 		}
 	}
 	else if (Step_Check(STEP_4)) // 4. Äµµé°ÔÀÓ ÄÅ ÃÔ¿µ 
@@ -296,7 +296,7 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_ZetPack_Clear(_float _f
 				CCamera_Manager::GetInstance()->Start_FadeOut(0.5f);
 				m_fTimer = 0.0f;
 			}
-			Next_Step_Over(0.6f);
+			Next_Step_Over(0.7f);
 		}
 	}
 	else if (Step_Check(STEP_5)) // 4. Áß¾Ó ÄÅ ÃÔ¿µ 
@@ -323,7 +323,7 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_ZetPack_Clear(_float _f
 
 			/* 5. Change Camera Arm */
 			_vector vNegativeZ = { 0.0f, 0.0f, -1.0f, 0.0f };
-			vNegativeZ = XMVector3TransformNormal(vNegativeZ, XMMatrixRotationY(PI * -0.25f));
+			vNegativeZ = XMVector3TransformNormal(vNegativeZ, XMMatrixRotationY(PI * -0.2f) * XMMatrixRotationX(XMConvertToRadians(10.f)));
 			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(eCamType, 0.0f, XMVector3Normalize(vNegativeZ), RATIO_TYPE::LERP);
 
 			/* 6. FadeIn */
@@ -347,9 +347,48 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_ZetPack_Clear(_float _f
 				CCamera_Manager::GetInstance()->Start_FadeOut(0.5f);
 				m_fTimer = 0.0f;
 			}
-			Next_Step_Over(0.6f);
+			Next_Step_Over(0.7f);
 		}
+	}
+	else if (Step_Check(STEP_6)) // 5. ´Ù½Ã ÇÃ·¹ÀÌ¾î
+	{
+		if (Is_Start())
+		{
+			/* 3. Target Change */
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer, 0.0f);
+
+			/* 4. Change Camera Length */
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(eCamType, 0.0f, 5.5f, RATIO_TYPE::EASE_IN);
+
+			/* 5. Change Camera Arm */
+			_vector vNegativeZ = { 0.0f, 0.0f, -1.0f, 0.0f };
+			vNegativeZ = XMVector3TransformNormal(vNegativeZ, XMMatrixRotationY(PI * 0.3f) * XMMatrixRotationX(PI * 0.12f));
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(eCamType, 0.0f, XMVector3Normalize(vNegativeZ), RATIO_TYPE::LERP);
+
+			/* 6. FadeIn */
+			CCamera_Manager::GetInstance()->Start_FadeIn();
+
+			/* 7. Play Dialogue */
+			_int iDialogueIndex = pZetPack_Child->Get_DialogueIndex();
+			_wstring strDialogueTag = TEXT("ZetPack_Child_");
+			strDialogueTag += to_wstring(iDialogueIndex);
+			CDialog_Manager::GetInstance()->Set_DialogId(strDialogueTag.c_str());
+			pZetPack_Child->Plus_DialogueIndex();
 		}
+
+		/* 8. ´ÙÀÌ¾ó·Î±× Á¾·á Ã¼Å© */
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+		{
+			static bool isFirst = false;
+			if (false == isFirst)
+			{
+				isFirst = true;
+				CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
+				m_fTimer = 0.0f;
+			}
+			Next_Step_Over(1.0f);
+		}
+	}
 	else
 	{
 		pPlayer->Set_BlockPlayerInput(false);

@@ -17,6 +17,9 @@ HRESULT CRenderGroup_AfterEffect::Initialize(void* _pArg)
 
 HRESULT CRenderGroup_AfterEffect::Render(CShader* _pRTShader, CVIBuffer_Rect* _pRTBuffer)
 {
+    if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Final"), nullptr, false)))
+        return E_FAIL;
+
     _pRTShader->Bind_Matrix("g_WorldMatrix", m_pGameInstance->Get_WorldMatrix_Renderer());
     _pRTShader->Bind_Matrix("g_ViewMatrix", m_pGameInstance->Get_ViewMatrix_Renderer());
     _pRTShader->Bind_Matrix("g_ProjMatrix", m_pGameInstance->Get_ProjMatrix_Renderer());
@@ -48,6 +51,10 @@ HRESULT CRenderGroup_AfterEffect::Render(CShader* _pRTShader, CVIBuffer_Rect* _p
     _pRTBuffer->Bind_BufferDesc();
 
     _pRTBuffer->Render();
+
+
+    if (FAILED(m_pGameInstance->End_MRT()))
+        return E_FAIL;
 
     return S_OK;
 }

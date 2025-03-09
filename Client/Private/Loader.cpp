@@ -197,6 +197,7 @@
 #include "Candle.h"
 #include "Candle_Body.h"
 #include "Candle_UI.h"
+#include "Simple_UI.h"
 
 // Player Effect 
 #include "Effect_Trail.h"
@@ -589,6 +590,11 @@ HRESULT CLoader::Loading_Level_Static()
 #pragma region Static - Object Load
 
 	lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
+
+	/* For. Prototype_GameObject_Simple_UI */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Simple_UI"),
+		CSimple_UI::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For. Prototype_GameObject_PortalLocker */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker"),
@@ -2098,6 +2104,10 @@ HRESULT CLoader::UI_Texture_Load(LEVEL_ID _eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard/keyboard_Enter.dds"), 1))))
 		return E_FAIL;
 
+	// Father Game FatherParts
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_FatherParts_UI"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/FatherParts_%d.dds"), 6))))
+		return E_FAIL;
 	
 	return S_OK;
 }

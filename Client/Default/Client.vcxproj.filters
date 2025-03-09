@@ -574,18 +574,6 @@
     <Filter Include="05.MiniGames">
       <UniqueIdentifier>{6e50ea30-0272-4949-9224-53482deb41ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05.MiniGames\CandleGame">
-      <UniqueIdentifier>{ebc1a475-d868-4875-a26e-f88134d3c5a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05.MiniGames\CandleGame\Candle">
-      <UniqueIdentifier>{03c2394a-370a-4b15-b834-631ab47aee5d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05.MiniGames\CandleGame\Candle\Body">
-      <UniqueIdentifier>{392d9546-4653-4ccd-99e4-e5312cab9089}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05.MiniGames\CandleGame\Candle\UI">
-      <UniqueIdentifier>{c6f102e6-811e-4077-b3f5-7415d4e4f6ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05.MiniGames\FatherGame">
       <UniqueIdentifier>{5625b912-57bb-4f04-8012-85e85aee663d}</UniqueIdentifier>
     </Filter>
@@ -648,6 +636,33 @@
     </Filter>
     <Filter Include="02.GameObjects\Room_Door\Body">
       <UniqueIdentifier>{d8713437-96d1-4389-a0bb-53ac902ee48e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Object\FatherPart">
+      <UniqueIdentifier>{f2a2666a-67fb-4296-b88a-0f8b032c446c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\CandleGame">
+      <UniqueIdentifier>{ebc1a475-d868-4875-a26e-f88134d3c5a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\CandleGame\Candle">
+      <UniqueIdentifier>{03c2394a-370a-4b15-b834-631ab47aee5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\CandleGame\Candle\Body">
+      <UniqueIdentifier>{392d9546-4653-4ccd-99e4-e5312cab9089}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\CandleGame\Candle\UI">
+      <UniqueIdentifier>{c6f102e6-811e-4077-b3f5-7415d4e4f6ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Object\FatherPart\UI">
+      <UniqueIdentifier>{b0922a1d-0dfb-458f-8e34-d9736ee87396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Object\FatherPart\Prop">
+      <UniqueIdentifier>{664ec185-6b5e-4179-a597-461410a3b9ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Object\Simple_UI">
+      <UniqueIdentifier>{3169a174-8206-4115-bb91-868b726bef1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Final">
+      <UniqueIdentifier>{0497025c-5693-4401-b3c5-28025c6f9798}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1505,13 +1520,13 @@
     </ClInclude>
     <ClInclude Include="..\Public\Minigame_Defender.h" />
     <ClInclude Include="..\public\Candle.h">
-      <Filter>05.MiniGames\CandleGame\Candle</Filter>
+      <Filter>05.MiniGames\FatherGame\CandleGame\Candle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Candle_Body.h">
-      <Filter>05.MiniGames\CandleGame\Candle\Body</Filter>
+      <Filter>05.MiniGames\FatherGame\CandleGame\Candle\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Candle_UI.h">
-      <Filter>05.MiniGames\CandleGame\Candle\UI</Filter>
+      <Filter>05.MiniGames\FatherGame\CandleGame\Candle\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FatherGame.h">
       <Filter>05.MiniGames\FatherGame</Filter>
@@ -1604,6 +1619,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Room_Door_Body.h">
       <Filter>02.GameObjects\Room_Door\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Simple_UI.h">
+      <Filter>05.MiniGames\FatherGame\Object\Simple_UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2448,13 +2466,13 @@
     </ClCompile>
     <ClCompile Include="..\Private\Minigame_Defender.cpp" />
     <ClCompile Include="..\private\Candle.cpp">
-      <Filter>05.MiniGames\CandleGame\Candle</Filter>
+      <Filter>05.MiniGames\FatherGame\CandleGame\Candle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Candle_Body.cpp">
-      <Filter>05.MiniGames\CandleGame\Candle\Body</Filter>
+      <Filter>05.MiniGames\FatherGame\CandleGame\Candle\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Candle_UI.cpp">
-      <Filter>05.MiniGames\CandleGame\Candle\UI</Filter>
+      <Filter>05.MiniGames\FatherGame\CandleGame\Candle\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FatherGame.cpp">
       <Filter>05.MiniGames\FatherGame</Filter>
@@ -2547,6 +2565,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Room_Door_Body.cpp">
       <Filter>02.GameObjects\Room_Door\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Simple_UI.cpp">
+      <Filter>05.MiniGames\FatherGame\Object\Simple_UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
