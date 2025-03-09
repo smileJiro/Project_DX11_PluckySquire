@@ -66,12 +66,22 @@ HRESULT C2DMapActionObject::Initialize(void* _pArg)
         Set_PlayingAnim(false);
         Set_AnimationLoop(COORDINATE_2D,0,false);
         break;
+
+    case Client::C2DMapActionObject::ACTIVE_TYPE_SKSP_HUMGRUMP:
+        Set_PlayingAnim(false);
+        Set_AnimationLoop(COORDINATE_2D, 0, false);
+        Set_AnimationLoop(COORDINATE_2D, 1, false);
+        Set_AnimationLoop(COORDINATE_2D, 2, false);
+        Set_AnimationLoop(COORDINATE_2D, 3, false);
+        Switch_Animation(3);
+        break;
     default:
         break;
     }
 
 #pragma endregion
 
+    Register_OnAnimEndCallBack(bind(&C2DMapActionObject::MapActionObject_AnimEnd, this, placeholders::_1, placeholders::_2));
 
 
     //Ready_MapActionObjectSetting();
@@ -112,6 +122,7 @@ void C2DMapActionObject::Update(_float _fTimeDelta)
         }
         break;
     case Client::C2DMapActionObject::ACTIVE_TYPE_DAMEGED:
+        
         break;
     case Client::C2DMapActionObject::ACTIVE_TYPE_LAST:
         break;
@@ -193,6 +204,28 @@ void C2DMapActionObject::Ready_Action()
     }
 }
 
+void C2DMapActionObject::MapActionObject_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    switch (m_eType)
+    {
+    case Client::C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND:
+        m_isAction = true;
+        m_fAlpha = 1.f;
+        m_fFadeOutSecond = 2.f;
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM:
+        Set_PlayingAnim(true);
+        break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_SKSP_HUMGRUMP:
+        if (Get_CurrentAnimIndex() == 0)
+        {
+        
+        }
+        Switch_Animation(3);
+        break;
+    }
+}
+
 void C2DMapActionObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
     switch (m_eType)
@@ -247,6 +280,15 @@ void C2DMapActionObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
     }
     break;
     case Client::C2DMapActionObject::ACTIVE_TYPE_LAST:
+        break;
+
+    case Client::C2DMapActionObject::ACTIVE_TYPE_SKSP_HUMGRUMP:
+        Set_PlayingAnim(false);
+        Set_AnimationLoop(COORDINATE_2D, 0, false);
+        Set_AnimationLoop(COORDINATE_2D, 1, false);
+        Set_AnimationLoop(COORDINATE_2D, 2, false);
+        Set_AnimationLoop(COORDINATE_2D, 3, false);
+        Switch_Animation(3);
         break;
     default:
         break;

@@ -142,6 +142,19 @@ void CSection::Clear_GameObjects(_bool _isAllClear, _uint _iLayerIndex)
 
 }
 
+HRESULT CSection::CleanUp_Section()
+{
+    for (_uint i = 0; i < m_iLayerGroupCount; i++)
+    {
+        auto GameObjects = m_Layers[i]->Get_GameObjects();
+
+        for (auto& pGameObject : GameObjects)
+            Event_DeleteObject(pGameObject);
+        m_Layers[i]->Clear_GameObjects();
+    }
+    return S_OK;
+}
+
 _bool CSection::Is_CurSection(CGameObject* _pGameObject)
 {
     auto pLayer = Get_Include_Layer(_pGameObject);

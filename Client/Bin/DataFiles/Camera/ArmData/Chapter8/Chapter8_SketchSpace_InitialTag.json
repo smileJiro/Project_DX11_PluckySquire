@@ -1,0 +1,118 @@
+[
+    {
+        "Section_Tag": "Chapter6_SKSP_01",
+        "Arm_Tag": [
+          "Chapter6_Portal1_Start"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_SKSP_02",
+        "Arm_Tag": [
+          "Chapter6_Portal2_Start",
+          "Chapter6_Portal2_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_SKSP_03",
+        "Arm_Tag": [
+          "Chapter6_Portal3_Start"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_SKSP_04",
+        "Arm_Tag": [
+          "Chapter6_Portal4_Start"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_SKSP_05",
+        "Arm_Tag": [
+          "Chapter6_Portal5_Start",
+          "Chapter6_Portal5_Middle",
+          "Chapter6_Portal5_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_SKSP_06",
+        "Arm_Tag": [
+          "Chapter6_Portal6_Start"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_SKSP_07",
+        "Arm_Tag": [
+         "Chapter6_Portal7_Start",
+         "Chapter6_Portal7_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter5_P0102",
+        "Arm_Tag": [
+         "Chapter6_Portal7_Start",
+         "Chapter6_Portal7_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter5_P0304",
+        "Arm_Tag": [
+         "Chapter6_Portal7_Start",
+         "Chapter6_Portal7_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_P0102",
+        "Arm_Tag": [
+         "Chapter6_Portal7_Start",
+         "Chapter6_Portal7_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_P0304",
+        "Arm_Tag": [
+         "Chapter6_Portal7_Start",
+         "Chapter6_Portal7_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_P0506",
+        "Arm_Tag": [
+         "Chapter6_Portal7_Start",
+         "Chapter6_Portal7_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_P0708",
+        "Arm_Tag": [
+         "Chapter6_Portal7_Start",
+         "Chapter6_Portal7_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_P0910",
+        "Arm_Tag": [
+         "Chapter6_Portal7_Start",
+         "Chapter6_Portal7_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_P1112",
+        "Arm_Tag": [
+         "Chapter6_Portal7_Start",
+         "Chapter6_Portal7_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_P1314",
+        "Arm_Tag": [
+         "Chapter6_Portal7_Start",
+         "Chapter6_Portal7_End"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter6_P1516",
+        "Arm_Tag": [
+         "Chapter6_Portal7_Start",
+         "Chapter6_Portal7_End"
+        ]
+    }
+]

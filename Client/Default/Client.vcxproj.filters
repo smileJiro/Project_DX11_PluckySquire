@@ -574,18 +574,6 @@
     <Filter Include="05.MiniGames">
       <UniqueIdentifier>{6e50ea30-0272-4949-9224-53482deb41ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05.MiniGames\CandleGame">
-      <UniqueIdentifier>{ebc1a475-d868-4875-a26e-f88134d3c5a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05.MiniGames\CandleGame\Candle">
-      <UniqueIdentifier>{03c2394a-370a-4b15-b834-631ab47aee5d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05.MiniGames\CandleGame\Candle\Body">
-      <UniqueIdentifier>{392d9546-4653-4ccd-99e4-e5312cab9089}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05.MiniGames\CandleGame\Candle\UI">
-      <UniqueIdentifier>{c6f102e6-811e-4077-b3f5-7415d4e4f6ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05.MiniGames\FatherGame">
       <UniqueIdentifier>{5625b912-57bb-4f04-8012-85e85aee663d}</UniqueIdentifier>
     </Filter>
@@ -634,11 +622,44 @@
     <Filter Include="05.MiniGames\FatherGame\Object">
       <UniqueIdentifier>{8654e79f-74b6-48f0-9130-ce992e9fef1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05.MiniGames\MiniGame_Npc">
-      <UniqueIdentifier>{2f689928-b051-4f83-b757-8d5c6b5f9a9b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05.MiniGames\FatherGame\Object\ZetPack_Child">
       <UniqueIdentifier>{3c0763fb-8635-4e97-b386-f99444eb1a98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\Defender">
+      <UniqueIdentifier>{2764025e-f374-438b-9250-708a1326cdea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Room_Door">
+      <UniqueIdentifier>{f3af74e8-a0bf-4968-b73c-a84dd4becc16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Room_Door\Body">
+      <UniqueIdentifier>{d8713437-96d1-4389-a0bb-53ac902ee48e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Object\FatherPart">
+      <UniqueIdentifier>{f2a2666a-67fb-4296-b88a-0f8b032c446c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\CandleGame">
+      <UniqueIdentifier>{ebc1a475-d868-4875-a26e-f88134d3c5a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\CandleGame\Candle">
+      <UniqueIdentifier>{03c2394a-370a-4b15-b834-631ab47aee5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\CandleGame\Candle\Body">
+      <UniqueIdentifier>{392d9546-4653-4ccd-99e4-e5312cab9089}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\CandleGame\Candle\UI">
+      <UniqueIdentifier>{c6f102e6-811e-4077-b3f5-7415d4e4f6ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Object\FatherPart\Prop">
+      <UniqueIdentifier>{664ec185-6b5e-4179-a597-461410a3b9ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Object\Simple_UI">
+      <UniqueIdentifier>{3169a174-8206-4115-bb91-868b726bef1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.RenderGroups%28Custom%29\Final">
+      <UniqueIdentifier>{0497025c-5693-4401-b3c5-28025c6f9798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Object\Mug_Alien">
+      <UniqueIdentifier>{b6fb3ea4-2c99-4c9b-8755-f2af185042c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1471,17 +1492,12 @@
     <ClInclude Include="..\public\Sneak_Trap_Tile.h">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Trap</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\DefenderPlayer.h" />
-    <ClInclude Include="..\Public\DefenderPlayerProjectile.h" />
-    <ClInclude Include="..\Public\Minigame_Defender.h" />
-    <ClInclude Include="..\Public\Playable.h" />
     <ClInclude Include="..\Public\BossTransitionState.h">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Boss_WingSlice.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerState_TransformIn.h" />
     <ClInclude Include="..\Public\Zipline.h">
       <Filter>02.GameObjects\Zipline</Filter>
     </ClInclude>
@@ -1499,13 +1515,13 @@
     </ClInclude>
     <ClInclude Include="..\Public\Minigame_Defender.h" />
     <ClInclude Include="..\public\Candle.h">
-      <Filter>05.MiniGames\CandleGame\Candle</Filter>
+      <Filter>05.MiniGames\FatherGame\CandleGame\Candle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Candle_Body.h">
-      <Filter>05.MiniGames\CandleGame\Candle\Body</Filter>
+      <Filter>05.MiniGames\FatherGame\CandleGame\Candle\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Candle_UI.h">
-      <Filter>05.MiniGames\CandleGame\Candle\UI</Filter>
+      <Filter>05.MiniGames\FatherGame\CandleGame\Candle\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\public\FatherGame.h">
       <Filter>05.MiniGames\FatherGame</Filter>
@@ -1516,7 +1532,6 @@
     <ClInclude Include="..\public\FatherGame_Progress_Start.h">
       <Filter>05.MiniGames\FatherGame\Progress\01.Start</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CandleGame.h" />
     <ClInclude Include="..\Public\BossIdleState.h">
       <Filter>02.GameObjects\Monster\Boss\State\Idle</Filter>
     </ClInclude>
@@ -1553,9 +1568,6 @@
     <ClInclude Include="..\Public\BossShieldState.h">
       <Filter>02.GameObjects\Monster\Boss\State\Shield</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerRifle.h" />
-    <ClInclude Include="..\Public\PlayerState_CyberIdle.h" />
-    <ClInclude Include="..\Public\CyberPlayerBullet.h" />
     <ClInclude Include="..\public\PortalLocker.h">
       <Filter>02.GameObjects\Portal\PortalLocker</Filter>
     </ClInclude>
@@ -1582,6 +1594,64 @@
     </ClInclude>
     <ClInclude Include="..\Public\ShopItemBG_New.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderPlayer.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderPlayerProjectile.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Minigame_Defender.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderMonster.h" />
+    <ClInclude Include="..\Public\Room_Door.h">
+      <Filter>02.GameObjects\Room_Door</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Room_Door_Body.h">
+      <Filter>02.GameObjects\Room_Door\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Simple_UI.h">
+      <Filter>05.MiniGames\FatherGame\Object\Simple_UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderSmShip.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderMonster.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_TransformIn.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_CyberIdle.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerRifle.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Playable.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CyberPlayerBullet.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ScrollModelObject.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderSpawner.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CandleGame.h">
+      <Filter>05.MiniGames\FatherGame\CandleGame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Mug_Alien.h">
+      <Filter>05.MiniGames\FatherGame\Object\Mug_Alien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FatherGame_Progress_PartBody.h">
+      <Filter>05.MiniGames\FatherGame\Progress\03.PartBody</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FatherPart_Prop.h">
+      <Filter>05.MiniGames\FatherGame\Object\FatherPart</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2401,17 +2471,12 @@
     <ClCompile Include="..\private\Sneak_Trap_Tile.cpp">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Trap</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\DefenderPlayer.cpp" />
-    <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp" />
-    <ClCompile Include="..\Private\Minigame_Defender.cpp" />
-    <ClCompile Include="..\Private\Playable.cpp" />
     <ClCompile Include="..\Private\BossTransitionState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Boss_WingSlice.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerState_TransformIn.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp">
       <Filter>02.GameObjects\Zipline</Filter>
     </ClCompile>
@@ -2429,13 +2494,13 @@
     </ClCompile>
     <ClCompile Include="..\Private\Minigame_Defender.cpp" />
     <ClCompile Include="..\private\Candle.cpp">
-      <Filter>05.MiniGames\CandleGame\Candle</Filter>
+      <Filter>05.MiniGames\FatherGame\CandleGame\Candle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Candle_Body.cpp">
-      <Filter>05.MiniGames\CandleGame\Candle\Body</Filter>
+      <Filter>05.MiniGames\FatherGame\CandleGame\Candle\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Candle_UI.cpp">
-      <Filter>05.MiniGames\CandleGame\Candle\UI</Filter>
+      <Filter>05.MiniGames\FatherGame\CandleGame\Candle\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\private\FatherGame.cpp">
       <Filter>05.MiniGames\FatherGame</Filter>
@@ -2446,7 +2511,6 @@
     <ClCompile Include="..\private\FatherGame_Progress_Start.cpp">
       <Filter>05.MiniGames\FatherGame\Progress\01.Start</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CandleGame.cpp" />
     <ClCompile Include="..\Private\BossIdleState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State\Idle</Filter>
     </ClCompile>
@@ -2483,9 +2547,6 @@
     <ClCompile Include="..\Private\BossShieldState.cpp">
       <Filter>02.GameObjects\Monster\Boss\State\Shield</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerRifle.cpp" />
-    <ClCompile Include="..\Private\PlayerState_CyberIdle.cpp" />
-    <ClCompile Include="..\Private\CyberPlayerBullet.cpp" />
     <ClCompile Include="..\private\PortalLocker.cpp">
       <Filter>02.GameObjects\Portal\PortalLocker</Filter>
     </ClCompile>
@@ -2512,6 +2573,64 @@
     </ClCompile>
     <ClCompile Include="..\Private\ShopPanel_YesNo_New.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\01. YesNo_Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderPlayer.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderPlayerProjectile.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Minigame_Defender.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderSmShip.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderMonster.cpp" />
+    <ClCompile Include="..\Private\Room_Door.cpp">
+      <Filter>02.GameObjects\Room_Door</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Room_Door_Body.cpp">
+      <Filter>02.GameObjects\Room_Door\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Simple_UI.cpp">
+      <Filter>05.MiniGames\FatherGame\Object\Simple_UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_CyberIdle.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_TransformIn.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerRifle.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Playable.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CyberPlayerBullet.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ScrollModelObject.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderSpawner.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderMonster.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CandleGame.cpp">
+      <Filter>05.MiniGames\FatherGame\CandleGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Mug_Alien.cpp">
+      <Filter>05.MiniGames\FatherGame\Object\Mug_Alien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FatherGame_Progress_PartBody.cpp">
+      <Filter>05.MiniGames\FatherGame\Progress\03.PartBody</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FatherPart_Prop.cpp">
+      <Filter>05.MiniGames\FatherGame\Object\FatherPart</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

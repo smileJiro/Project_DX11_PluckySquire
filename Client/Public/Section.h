@@ -34,17 +34,17 @@ public: /* Object Layer와의 상호 작용 */
 
 public: // 왜 private?
 	// 2. Section Layer에 Object의 Active를 변경하는 기능. (o)
-	HRESULT SetActive_GameObjects(_bool _isActive, _bool _isAllActive = true, _uint _iLayerIndex = 0);
-
-public:
+	HRESULT			SetActive_GameObjects(_bool _isActive, _bool _isAllActive = true, _uint _iLayerIndex = 0);
 	// 3. Section Layer에 Object를 Renderer의 자신의 그룹에 Add 하는 기능.(x)
-	HRESULT Add_RenderGroup_GameObjects();
-
+	HRESULT			Add_RenderGroup_GameObjects();
 	// 4. Section Layer에 Object의 DeadCheck를 하는 기능. (o)
-	HRESULT Cleanup_DeadReferences(_bool _isAllCheck = true, _uint _iLayerIndex = 0);
-
+	HRESULT			Cleanup_DeadReferences(_bool _isAllCheck = true, _uint _iLayerIndex = 0);
 	// 5. Section Layer를 Clear 하는 기능. (o)
 	void	Clear_GameObjects(_bool _isAllClear = true, _uint _iLayerIndex = 0);
+	// 6. Section Layer 내부의 Object를 전부 Event_Delete 호출 후, Clear 하는 기능
+	virtual HRESULT	CleanUp_Section();
+	
+	
 
 	_bool	Get_RenderGroupKey(_uint& _iOutputGroupID, _uint& _iOutputPriorityID) { 
 		_iOutputGroupID = m_iGroupID; 

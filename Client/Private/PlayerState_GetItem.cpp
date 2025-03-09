@@ -34,4 +34,15 @@ void CPlayerState_GetItem::Exit()
 
 void CPlayerState_GetItem::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
+	switch (_eCoord)
+	{
+	case Engine::COORDINATE_2D:
+		if (iAnimIdx == (_uint)CPlayer::ANIM_STATE_2D::PLAYER_ITEM_RETRIEVE)
+		{
+			m_pOwner->Set_State(CPlayer::IDLE);
+		}
+		break;
+	default:
+		break;
+	}
 }

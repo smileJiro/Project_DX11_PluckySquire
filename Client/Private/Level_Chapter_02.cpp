@@ -50,6 +50,8 @@
 
 #include "Door_Yellow.h"
 
+#include "Room_Door.h"
+
 //#include "UI.h"
 #include "UI_Manager.h"
 #include "Dialog_Manager.h"
@@ -194,8 +196,13 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
+	//if (FAILED(Ready_Layer_RoomDoor(TEXT("Layer_RoomDoor"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_RoomDoor (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 
-
+	
 
 
 	///* Pooling Test */
@@ -1762,6 +1769,18 @@ HRESULT CLevel_Chapter_02::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	Desc.strSectionTag = L"Chapter2_SKSP_03";
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_RoomDoor(const _wstring& _strLayerTag)
+{
+	CRoom_Door::CONTAINEROBJ_DESC Desc = {};
+	Desc.iCurLevelID = m_eLevelID;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Room_Door"),
 		m_eLevelID, _strLayerTag, &Desc)))
 		return E_FAIL;
 

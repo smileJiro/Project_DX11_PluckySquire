@@ -34,11 +34,8 @@ public:
 	virtual void OnContact_Modify(const COLL_INFO& _My, const COLL_INFO& _Other, CModifiableContacts& _ModifiableContacts, _bool _bIm0)override;	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
+	virtual void Enter_Section(const _wstring _strIncludeSectionName) override;
 public:
-	_bool Is_OnGround();
-	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
-	STAT& Get_Stat() { return m_tStat; }
-	_float Get_StepSlopeThreshold() { return m_fStepSlopeThreshold; }
 
 	void Stop_Rotate();
 	void Stop_Move();
@@ -57,6 +54,15 @@ public:
 	void KnockBack(_fvector _vForce);
 
 	virtual void On_Land() {};
+
+public:
+	//GET
+	_bool Is_OnGround();
+	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
+	STAT& Get_Stat() { return m_tStat; }
+	_float Get_StepSlopeThreshold() { return m_fStepSlopeThreshold; }
+	//SET
+	void Set_ScrollingMode(_bool _bScrollingMode);
 protected:
 	_float Measure_FloorDistance();
 	_vector StepAssist(_fvector _vVelocity, _float _fTimeDelta);

@@ -72,6 +72,7 @@ enum class KEY // 자체적으로 지원 할 키 종류
 	C,
 	V,
 	B,
+	L,
 	ALT,
 	CTRL,
 	LSHIFT,
@@ -79,6 +80,7 @@ enum class KEY // 자체적으로 지원 할 키 종류
 	ENTER,
 	ESC,
 	TAB,
+	BACKSPACE,
 	LAST, // 끝을 알리는.
 };
 

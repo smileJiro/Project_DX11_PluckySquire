@@ -233,6 +233,19 @@ HRESULT C2DMapObject::Import(HANDLE hFile, vector<C2DMapObjectInfo*>& _ModelInfo
 	if (_ModelInfos.size() < iModelIndex)
 		return E_FAIL;
 	m_pModelInfo = _ModelInfos[iModelIndex];
+	//_string strModelName = m_pModelInfo->Get_ModelName();
+	//strModelName += "_Night";
+	//
+	//auto iter = find_if(_ModelInfos.begin(), _ModelInfos.end(), [&strModelName](C2DMapObjectInfo* pInfo) {
+	//	return strModelName == pInfo->Get_ModelName();
+	//	});
+	//if (_ModelInfos.end() != iter)
+	//{
+	//	m_pModelInfo = *iter;
+	//	m_pModelInfo->Get_ModelIndex();
+	//}
+
+
 	m_strModelName = StringToWstring(_ModelInfos[iModelIndex]->Get_ModelName());
 	Desc.Build_2D_Model(
 	LEVEL_TOOL_2D_MAP,

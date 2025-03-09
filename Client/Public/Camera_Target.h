@@ -26,6 +26,8 @@ public:
 		RESET = 0x00,
 		FREEZE_X = 0x01,
 		FREEZE_Z = 0x02,
+		FREEZE_Y = 0x04,
+
 		FREEZE_END
 	};
 

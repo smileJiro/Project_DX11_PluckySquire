@@ -69,7 +69,7 @@ void CCollider_Circle::Late_Update(_float _fTimeDelta)
 
 HRESULT CCollider_Circle::Render(_float2 _fRenderTargetSize)
 {
-    m_pEffect->SetWorld(XMMatrixIdentity());
+   /* m_pEffect->SetWorld(XMMatrixIdentity());
     m_pEffect->SetView(XMMatrixIdentity());
     m_pEffect->SetProjection(XMMatrixOrthographicLH(_fRenderTargetSize.x, _fRenderTargetSize.y, 0.0f, 1.0f));
     m_pEffect->Apply(m_pContext);
@@ -82,7 +82,7 @@ HRESULT CCollider_Circle::Render(_float2 _fRenderTargetSize)
     BoundingSphere.Radius = m_fFinalRadius;
     DX::Draw(m_pBatch, BoundingSphere, XMLoadFloat4(&m_vDebugColor));
 
-    m_pBatch->End();
+    m_pBatch->End();*/
 
     return S_OK;
 }

@@ -104,6 +104,7 @@ public:
 	_float	Get_CurrentAnimationProgress() ;
 	_uint	Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex = aiTextureType_DIFFUSE);
 	_uint	Get_CurrentAnimIndex();
+	_wstring Get_ModelPrototypeTag(COORDINATE _eCurCoord) { return m_strModelPrototypeTag[_eCurCoord]; }
 	_bool	Is_ReverseAnimation() { return m_bReverseAnimation; }
 	//애니메이션 진행도가 0~1 사이인지 반환
 	_bool	Is_DuringAnimation();

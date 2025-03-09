@@ -627,7 +627,6 @@ public:
 	void Set_SwordGrip(_bool _bForehand);
 	void Set_Kinematic(_bool _bKinematic);
 	void Set_PlatformerMode(_bool _bPlatformerMode);
-	void Set_ScrollingMode(_bool _bScrollingMode);
 	void Set_Upforce(_float _fForce);
 	//진짜 포인터만 셋팅하는 함수
 	void Set_CarryingObject(CCarriableObject* _pCarryingObject);
