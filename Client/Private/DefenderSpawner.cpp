@@ -3,7 +3,7 @@
 #include "DefenderSmShip.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
-
+#include "DefenderPlayer.h"
 
 
 CDefenderSpawner::CDefenderSpawner(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -31,6 +31,8 @@ HRESULT CDefenderSpawner::Initialize(void* _pArg)
 	DEFENDER_SPAWNER_DESC* pDesc = static_cast<DEFENDER_SPAWNER_DESC*>(_pArg);
 	m_strSectionName = pDesc->strSectionName;
 	m_strPoolTag = pDesc->strPoolTag;
+	m_pPlayer = pDesc->pPlayer;
+	Safe_AddRef(m_pPlayer);
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable = false;
 	if (FAILED(__super::Initialize(_pArg)))
@@ -45,49 +47,36 @@ HRESULT CDefenderSpawner::Initialize(void* _pArg)
 void CDefenderSpawner::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
-}
 
-void CDefenderSpawner::Spawn(SPAWN_PATTERN _ePattern, T_DIRECTION _eDirection, _float _fTimeStep)
-{
-	switch (_ePattern)
+	for (auto& tSpawn : m_SpawnList)
 	{
-	case Client::CDefenderSpawner::PATTERN_DOT:
-		Spawn_Dot(_eDirection);
-		break;
-	case Client::CDefenderSpawner::PATTERN_DOT_SEQUENCE:
-		Spawn_Dot_Sequence(_eDirection, _fTimeStep);
-		break;
-	case Client::CDefenderSpawner::PATTERN_ARROW:
-		break;
-	case Client::CDefenderSpawner::PATTERN_VERTICAL:
-		break;
-	case Client::CDefenderSpawner::PATTERN_RANDOM:
-		break;
-	default:
-		break;
+		tSpawn.Update(_fTimeDelta, m_pPoolMgr, m_strPoolTag, m_strSectionName);
+
+	}
+	for (auto& tSpawn : m_SpawnList)
+	{
+		if (tSpawn.Is_SpawnEnd())
+		{
+			if (tSpawn.Is_Auto())
+				tSpawn.fCycleTimeAcc = 0.f;
+
+		}
 	}
 }
 
-void CDefenderSpawner::Spawn_Dot(T_DIRECTION _eDirection, _vector _vPosOffset)
+void CDefenderSpawner::Add_Spawn(SPAWN_DESC tDesc)
 {
-	_float3 v2DPosition;
-	XMStoreFloat3(&v2DPosition, Get_FinalPosition() + _vPosOffset);
+	_vector v2DPosition;
+	if (false == tDesc.bAbsolutePosition)
+	{
+		tDesc.vPosition = m_pPlayer->Get_FinalPosition();
+		tDesc.vPosition += _vector{ T_DIRECTION::LEFT == tDesc.eDirection ? tDesc.fPlayerDistance : -tDesc.fPlayerDistance, tDesc.fHeight, 0.f };
+	}
 
-	CDefenderMonster* pMonster = nullptr;
-	m_pPoolMgr->Create_Object(m_strPoolTag,
-		COORDINATE_2D,
-		(CGameObject**)&pMonster,
-		&v2DPosition,
-		(_float4*)nullptr,
-		(_float3*)nullptr,
-		&m_strSectionName);
-	if(pMonster)
-		pMonster->Set_Direction(_eDirection);
+	m_SpawnList.push_back(tDesc);
 }
 
-void CDefenderSpawner::Spawn_Dot_Sequence(T_DIRECTION _eDirection, _float _fTimeStep, _vector _vPosOffset)
-{
-}
+
 
 
 CDefenderSpawner* CDefenderSpawner::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -116,10 +105,56 @@ void CDefenderSpawner::Free()
 {
 	Safe_Release(m_pSection_Manager);
 	Safe_Release(m_pPoolMgr);
+	Safe_Release(m_pPlayer);
 	__super::Free();
 }
 
 HRESULT CDefenderSpawner::Cleanup_DeadReferences()
 {
 	return S_OK;
+}
+
+
+void SPAWN_DESC::Update(_float _fTimeDelta, CPooling_Manager* _pPool, _wstring _strPoolTag, _wstring _strSectionName)
+{
+	fPatternTimeAcc += _fTimeDelta;
+	fPatternTimeAcc += _fTimeDelta;
+	fCycleTimeAcc += _fTimeDelta;
+
+	//if (fAutoCycleTime < 0.f)
+	//{
+	//	if (Is_SpawnEnd())
+	//		return;
+	//	if (fPatternTimeAcc >= fPatternTime)
+	//	{
+	//		Spawn_Single(_pPool, _strPoolTag, _strSectionName, eDirection, vPosition);
+	//		fPatternTimeAcc = 0.f;
+	//	}
+	//}
+
+	//if (fCycleTimeAcc >= fAutoCycleTime)
+	//{
+	//	fCycleTimeAcc = 0.f;
+	//	iCurrentSpawnCount = 0;
+	//}
+	//if (fPatternTimeAcc >= fPatternTime)
+	//{
+	//	fPatternTimeAcc = 0.f;
+	//	iCurrentSpawnCount++;
+	//}
+}
+
+void SPAWN_DESC::Spawn_Single(class CPooling_Manager* _pPool, _wstring _strPoolTag, _wstring _strSectionName,T_DIRECTION _eDirection, _vector _vPos)
+{
+	_float3 vPos; XMStoreFloat3(&vPos, _vPos);
+	CDefenderMonster* pMonster = nullptr;
+	_pPool->Create_Object(_strPoolTag,
+		COORDINATE_2D,
+		(CGameObject**)&pMonster,
+		&vPos,
+		(_float4*)nullptr,
+		(_float3*)nullptr,
+		&_strSectionName);
+	if (pMonster)
+		pMonster->Set_Direction(_eDirection);
 }

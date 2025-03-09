@@ -31,19 +31,6 @@ HRESULT CDefenderSmShip::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-	switch (m_eTDirection)
-	{
-	case Client::T_DIRECTION::LEFT:
-		m_vMoveDir = _vector{ -1.f, 0.f, 0.f };
-		break;
-	case Client::T_DIRECTION::RIGHT:
-		m_vMoveDir = _vector{ 1.f, 0.f, 0.f};
-		break;
-	default:
-		break;
-	}
-	m_vMoveDir = XMVector3Normalize( m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
-	m_vMoveDir.m128_f32[3] = 0.f;
 	return S_OK;
 }
 
