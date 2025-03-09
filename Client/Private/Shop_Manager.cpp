@@ -13,11 +13,13 @@ CShop_Manager::CShop_Manager()
 HRESULT CShop_Manager::Create_ShopPanel(_int _iChangeLevel, wstring _strLayerTag)
 {
 
-	if (LEVEL_CHAPTER_2 != _iChangeLevel &&  LEVEL_CHAPTER_4 != _iChangeLevel && LEVEL_CHAPTER_6 != _iChangeLevel &&  LEVEL_CHAPTER_8 != _iChangeLevel)
-	{
-		return E_FAIL;
-	}
+	//if (LEVEL_CHAPTER_2 != _iChangeLevel &&  LEVEL_CHAPTER_4 != _iChangeLevel && LEVEL_CHAPTER_6 != _iChangeLevel &&  LEVEL_CHAPTER_8 != _iChangeLevel)
+	//{
+	//	return E_FAIL;
+	//}
 
+	if (LEVEL_CHAPTER_6 != _iChangeLevel)
+		return S_OK;
 
 	CUI::UIOBJDESC pDesc = {};
 	CUI::UIOBJDESC pShopDescs[CUI::SHOPPANEL::SHOP_END] = {};
@@ -193,15 +195,20 @@ HRESULT CShop_Manager::Create_ShopPanel(_int _iChangeLevel, wstring _strLayerTag
 HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
 {
 
-	if (LEVEL_CHAPTER_2 != _iChangeLevel && LEVEL_CHAPTER_4 != _iChangeLevel &&
-		LEVEL_CHAPTER_6 != _iChangeLevel && LEVEL_CHAPTER_8 != _iChangeLevel)
-	{
+	//if (LEVEL_CHAPTER_2 != _iChangeLevel && LEVEL_CHAPTER_4 != _iChangeLevel &&
+	//	LEVEL_CHAPTER_6 != _iChangeLevel && LEVEL_CHAPTER_8 != _iChangeLevel)
+	//{
+	//	return S_OK;
+	//}
+
+
+	if (LEVEL_CHAPTER_6 != _iChangeLevel)
 		return S_OK;
-	}
+
 
 	_uint iCurLevel = _iChangeLevel;
 
-	for (_uint i = 0; i < 5; ++i)
+	for (_uint i = 0; i < 4; ++i)
 	{
 		CGameObject* pShopItem = { nullptr };
 		CShopPanel_New::ShopUI eShopDesc;
@@ -293,7 +300,7 @@ HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
 			eShopDesc.fSizeY = 256.f * 0.8f;
 			eShopDesc.iShopItemCount = i;
 			eShopDesc.iSkillLevel = m_iSpinAttackLevel;
-			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_ATTACKPLUSBADGE;
+			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_THROWATTBADGE;
 			eShopDesc.strName = TEXT("회전 공격");
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
@@ -349,7 +356,7 @@ HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
 			eShopDesc.fSizeY = 256.f * 0.8f;
 			eShopDesc.iShopItemCount = i;
 			eShopDesc.iSkillLevel = m_iJumpAttackLevel;
-			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_JUMPATTACKBADGE;
+			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_SCROLLITEM;
 			eShopDesc.strName = TEXT("점프 공격");
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
@@ -384,13 +391,32 @@ HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
 
 }
 
+void CShop_Manager::Delete_ShopItems(_uint _index)
+{
+	for (int i = 0; i < m_ShopItems[_index].size(); ++i)
+	{
+
+ 		Event_DeleteObject(m_ShopItems[_index][i]);
+		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_ShopItems[_index][i]);
+		Safe_Release(m_ShopItems[_index][i]);
+		//CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(TEXT("Chapter5_P0102"), m_ShopItems[_index][i]);
+	}
+
+	m_ShopItems.erase(m_ShopItems.begin() + _index);
+	//m_isUpdateShopPanel = true;
+	int a = 0;
+}
+
 void CShop_Manager::OpenClose_Shop()
 {
 	for (auto iter : m_pShopPanels)
 	{
 		if (CUI::SHOP_END != iter.second->Get_ShopPanel())
 		{
-			iter.second->Is_Render();
+			iter.second->isRender();
+
+			if (false == CSection_Manager::GetInstance()->Is_CurSection(iter.second))
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(iter.second, 8);
 		}
 	}
 
@@ -398,12 +424,43 @@ void CShop_Manager::OpenClose_Shop()
 	{
 		for (int j = 0; j < 3; ++j)
 		{
-			m_ShopItems[i][j]->Is_Render();
+			m_ShopItems[i][j]->isRender();
+			if (false == CSection_Manager::GetInstance()->Is_CurSection(m_ShopItems[i][j]))
+				CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_ShopItems[i][j], 8);
 		}
 	}
 
+	false == m_isOpenShop ? m_isOpenShop = true : m_isOpenShop = false;
 
+}
 
+void CShop_Manager::Set_ChooseItem(_int _iIndex)
+{
+	if (-1 == _iIndex)
+	{
+		return;
+	}
+
+	if (m_iPreIndex == _iIndex && 1 != m_ShopItems.size())
+	{
+		return;
+	}
+	else if (m_iPreIndex != _iIndex || 1 == m_ShopItems.size())
+	{
+		for (_int i = 0; i < m_ShopItems.size(); ++i)
+		{
+			for (_int j = 0; j < m_ShopItems[i].size(); ++j)
+			{
+				m_ShopItems[i][j]->Set_isChooseItem(false);
+			} 
+		}
+
+		for (_int i = 0; i <= m_ShopItems[_iIndex].size() - 1; ++i)
+		{
+			m_ShopItems[_iIndex][i]->Set_isChooseItem(true);
+		}
+		m_iPreIndex = _iIndex;
+	}
 }
 
 void CShop_Manager::Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG_New* _pPanel)
@@ -444,6 +501,7 @@ HRESULT CShop_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _
 
 HRESULT CShop_Manager::Level_Enter(_int _iChangeLevelID)
 {
+
 	if(FAILED(Create_ShopPanel(_iChangeLevelID, TEXT("Layer_Shopanel"))))
 		return E_FAIL;
 

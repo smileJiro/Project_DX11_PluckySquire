@@ -33,10 +33,16 @@ HRESULT CShopPanel_New::Initialize(void* _pArg)
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 
 
-		Uimgr->Set_isMakeItem(true);
+		//Uimgr->Set_isMakeItem(true);
 	}
 
-	return S_OK;
+
+	//if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), this)))
+	//	return E_FAIL;
+
+
+
+ 	return S_OK;
 }
 
 void CShopPanel_New::Priority_Update(_float _fTimeDelta)
@@ -46,61 +52,54 @@ void CShopPanel_New::Priority_Update(_float _fTimeDelta)
 void CShopPanel_New::Update(_float _fTimeDelta)
 {
 
-	if (false == Uimgr->Get_DialogueFinishShopPanel())
-		return;
-
-
-
-	
-	_float2 cursorPos = m_pGameInstance->Get_CursorPos();
-	_int iIndex = isInPanelItem(cursorPos);
-	
 	// 다이얼로그가 끝나면 상점을 오픈 시킨다.
 	if (true == Uimgr->Get_DialogueFinishShopPanel())
 	{
 		//Update_KeyInput(_fTimeDelta, iIndex);
 		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
+		m_isOpenPanel = true;
 	}
 
 	// 해당 인덱스를 체크해서 true로한다.
-	if (iIndex != -1 && iIndex != m_iPreindex)
-	{
-		CUI_Manager::GetInstance()->Set_ChooseItem(iIndex);
-		m_iPreindex = iIndex;
-	}
 
-	_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
-	if (true == Uimgr->Get_ShopUpdate() || true == m_isRender)
+
+	//_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+
+	_float2 RTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
+	if (true == m_isRender)
 	{
-		Cal_ShopPartPos(RTSize, Uimgr->Get_ShopPos());
-		Uimgr->Set_ShopUpdate(false);
+		Cal_ShopPartPos(RTSize, CShop_Manager::GetInstance()->Get_ShopBGPos());
 	}
 
 	
-	if (isInPanel(cursorPos))
-	{
-		Update_KeyInput(_fTimeDelta, iIndex);
-		return;
-	}
+	
+		Update_KeyInput(_fTimeDelta);
+		if (m_iChooseIndex != -1 && m_iChooseIndex != m_iPreindex)
+		{
+			CShop_Manager::GetInstance()->Set_ChooseItem(m_iChooseIndex);
+			m_iPreindex = m_iChooseIndex;
+		}
+		else if (m_iChooseIndex == CShop_Manager::GetInstance()->Get_ShopItems().size() - 1)
+		{
+			CShop_Manager::GetInstance()->Set_ChooseItem(m_iChooseIndex);
+		}
 	
 }
 
 void CShopPanel_New::Late_Update(_float _fTimeDelta)
 {
+	__super::Late_Update(_fTimeDelta);
 
-
-		__super::Late_Update(_fTimeDelta);
-
-		if (CSection_Manager::GetInstance()->Is_CurSection(this))
-			CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
-
-
+	if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 }
 
 HRESULT CShopPanel_New::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 {
-	if (true == m_isRender)
-		__super::Render(_iTextureindex, _eShaderPass);
+	//if (true == m_isRender)
+	//	__super::Render(_iTextureindex, _eShaderPass);
+
+	CShop_Manager* pShopManager = CShop_Manager::GetInstance();
 
 	if (true == m_isRender)
 	{
@@ -108,14 +107,12 @@ HRESULT CShopPanel_New::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 
 		/* RTSIZE 를 가져올 수 있는 방법을 논의해봐야한다. */
 
-		_float2 BGPos = Uimgr->Get_ShopPos();
+		_float2 BGPos = pShopManager->Get_ShopBGPos();
 		/* TODO :: 나중에 수정 필요 */
 
 		_float2 vRTSize = _float2(0.f, 0.f);
 
 		vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
-
-
 
 		_float2 vMiddlePoint = { vRTSize.x / 2 , vRTSize.y / 2 };
 		_float2 vCalPos = { 0.f, 0.f };
@@ -177,171 +174,22 @@ HRESULT CShopPanel_New::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 
 	}
 
+	return S_OK;
+}
 
-	if (true == CUI_Manager::GetInstance()->Get_ConfirmStore())
-	{
-		_bool YesorNo = CUI_Manager::GetInstance()->Get_StoreYesOrno();
-
-		_float2 BGPos = Uimgr->Get_ShopPos();
-		/* 나중에 수정 필요 */
-		_float2 vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
-
-
-
-		_float2 vMiddlePoint = { vRTSize.x / 2 , vRTSize.y / 2 };
-		_float2 vCalPos = { 0.f, 0.f };
-		/* 나중에 수정 필요 */
-
-
-
-		_float2 vPos = { 0.f, 0.f };
-
-		vPos.x = BGPos.x + vRTSize.x * 0.045f;
-		vPos.y = BGPos.y - vRTSize.y * 0.075f;
-
-		vCalPos.x = vMiddlePoint.x + vPos.x;
-		vCalPos.y = vMiddlePoint.y - vPos.y;
-
-
-
-		if (true == YesorNo)
-		{
-			wsprintf(m_tFont, TEXT("예"));
-			m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
-			wsprintf(m_tFont, TEXT("아니요"));
-
-			vPos.x = BGPos.x + vRTSize.x * 0.045f;
-			vPos.y = BGPos.y - vRTSize.y * 0.11f;
-
-			vCalPos.x = vMiddlePoint.x + vPos.x;
-			vCalPos.y = vMiddlePoint.y - vPos.y;
-
-
-			m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
-		}
-		else if (false == YesorNo)
-		{
-			wsprintf(m_tFont, TEXT("예"));
-			m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
-			wsprintf(m_tFont, TEXT("아니요"));
-
-			vPos.x = BGPos.x + vRTSize.x * 0.045f;
-			vPos.y = BGPos.y - vRTSize.y * 0.11f;
-
-			vCalPos.x = vMiddlePoint.x + vPos.x;
-			vCalPos.y = vMiddlePoint.y - vPos.y;
-
-
-			m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
-		}
-
-		
-	}
-	//m_pGameInstance->Render_Font(TEXT("Font30"), m_strName.c_str(), _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
-	//m_strName
-
-
-
+HRESULT CShopPanel_New::ShopRender(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
+{
+	if (true == m_isRender)
+		__super::Render(_iTextureindex, _eShaderPass);
 
 	return S_OK;
 }
 
 
-
-_bool CShopPanel_New::isInPanel(_float2 _vMousePos)
+void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 {
 	
-
-	if (349 <= _vMousePos.x && 1252 >= _vMousePos.x && 56 <= _vMousePos.y && 797 >= _vMousePos.y)
-	{
-		return true;
-	}
-	else
-		return false;
-}
-
-_int CShopPanel_New::isInPanelItem(_float2 _vMousePos)
-{
- 	_int iItemCounts = (_uint)CUI_Manager::GetInstance()->Get_ShopItems().size();
-
-	if (373 <= _vMousePos.x && 1228 >= _vMousePos.x)
-	{
-
-		// 0개
-		if (171 <= _vMousePos.y && 278 >= _vMousePos.y)
-		{
-			if (0 >= iItemCounts)
-			{
-				return -1;
-			}
-
-			cout << 0 << endl;
-			return 0;
-		}
-		else if (279 <= _vMousePos.y && 305 >= _vMousePos.y)
-		{
-			if (0 >= iItemCounts)
-			{
-				return -1;
-			}
-
-			cout << -1 << endl;
-			return -1;
-		}
-		// 1개
-		else if (306 <= _vMousePos.y && 413 >= _vMousePos.y)
-		{
-			if (1 >= iItemCounts)
-			{
-				return -1;
-			}
-
-			cout << 1 << endl;
-			return 1;
-		}
-		else if (414 <= _vMousePos.y && 440 >= _vMousePos.y)
-		{
-			if (1 >= iItemCounts)
-			{
-				return -1;
-			}
-
-			cout << -1 << endl;
-			return -1;
-		}
-		// 2개
-		else if (441 <= _vMousePos.y && 548 >= _vMousePos.y)
-		{
-			if (2 >= iItemCounts)
-			{
-				return -1;
-			}
-
-			cout << 2 << endl;
-			return 2;
-		}
-		else if (549 <= _vMousePos.y)
-		{
-			if (2 >= iItemCounts)
-			{
-				return -1;
-			}
-
-			cout << -1 << endl;
-			return -1;
-		}
-	}
-	else
-		return -1;
-
-
-	return -1;
-
-}
-
-void CShopPanel_New::Update_KeyInput(_float _fTimeDelta, _int _index)
-{
-	
+	CShop_Manager* pShopManager = CShop_Manager::GetInstance();
 
 	// SHOP  패널 오픈 기능
 	
@@ -349,101 +197,98 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta, _int _index)
 	bool iskeyESC = KEY_DOWN(KEY::ESC);
 	bool iskeyE = KEY_DOWN(KEY::E);
 
-	//if (true == iskeyI) /* && SHOP_END != m_eShopPanel*/
-	//{
-	//	if (true == Uimgr->Get_isESC())
-	//		return;
-	//
-	//	isFontPrint();
-	//
-	//	for (auto iter : Uimgr->Get_ShopPanels())
-	//	{
-	//		if (SHOP_END != iter.second->Get_ShopPanel())
-	//		{
-	//			iter.second->Child_Update(_fTimeDelta);
-	//		}
-	//	}
-	//
-	//
-	//	for (int i = 0; i < Uimgr->Get_ShopItems().size(); ++i)
-	//	{
-	//		for (int j = 0; j < 3; ++j)
-	//		{
-	//			Uimgr->Get_ShopItems()[i][j]->Child_Update(_fTimeDelta);
-	//		}
-	//	}
-	//}
-
-	if (false == m_isOpenPanel)
+	if (false == pShopManager->Get_isOpenShop())
 		return;
 
 
-	if (true == iskeyI && true == Uimgr->Get_ConfirmStore())
+	// 인덱스 변경 키
+	if (KEY_DOWN(KEY::DOWN))
 	{
-		Uimgr->Set_ConfirmStore(false);
-		m_iConfirmItemIndex = 0;
-		Uimgr->Set_StoreYesOrno(true);
-	}
-	if (true == iskeyESC && true == Uimgr->Get_ConfirmStore())
-	{
-		Uimgr->Set_ConfirmStore(false);
-		m_iConfirmItemIndex = 0;
-		Uimgr->Set_StoreYesOrno(true);
+		if (true == pShopManager->Get_Confirm())
+		{
+			if (true == pShopManager->Get_isPurchase())
+				pShopManager->Set_isPurchase(false);
+			return;
+		}
+			
+
+		if (m_iChooseIndex == pShopManager->Get_ShopItems().size() - 1)
+			return;
+
+		++m_iChooseIndex;
 	}
 
+	if (KEY_DOWN(KEY::UP))
+	{
+		if (true == pShopManager->Get_Confirm())
+		{
+			if (false == pShopManager->Get_isPurchase())
+				pShopManager->Set_isPurchase(true);
+			return;
+		}
+
+		if (m_iChooseIndex == 0)
+			return;
+
+		--m_iChooseIndex;
+	}
+
+
+
+
+	// 아이템 선택 후 정말로 구매할거에요? 노출
 	_bool isYesorNo = Uimgr->Get_StoreYesOrno();
-
 	if (true == m_isOpenPanel)
 	{
 
-		_float2 CursorPos = m_pGameInstance->Get_CursorPos();
-		_int index = isInPanelItem(CursorPos);
-
-		if (true == iskeyE && false == Uimgr->Get_ConfirmStore())
+		if (KEY_DOWN(KEY::ENTER) && false == pShopManager->Get_Confirm())
 		{
-			if (-1 != index)
+			if (-1 != m_iChooseIndex)
 			{
-				m_iConfirmItemIndex = index;
-				Uimgr->Set_ConfirmStore(true);
-				Uimgr->Set_StoreYesOrno(true);
+				m_iConfirmItemIndex = m_iChooseIndex;
+				pShopManager->Set_Confirm(true);
+				pShopManager->Set_OpenConfirmUI(true);
 			}
 		}
-		else if (true == iskeyE && true == Uimgr->Get_ConfirmStore())
+		else if (KEY_DOWN(KEY::ENTER) && true == pShopManager->Get_Confirm())
 		{
-			if (true == isYesorNo)
+			if (true == pShopManager->Get_OpenConfirmUI())
 			{
-				Uimgr->Delete_ShopItems(m_iConfirmItemIndex);
+				if (true == pShopManager->Get_isPurchase())
+				{
+					pShopManager->Delete_ShopItems(m_iChooseIndex);
+
+					if (m_iChooseIndex == pShopManager->Get_ShopItems().size() - 1)
+					{
+						if (0 == m_iChooseIndex)
+							return;
+
+						else
+							--m_iChooseIndex;
+					}
+				}
+				
 				m_iConfirmItemIndex = 0;
-				Uimgr->Set_ConfirmStore(false);
+				pShopManager->Set_Confirm(false);
+				pShopManager->Set_OpenConfirmUI(false);
+				pShopManager->Set_isPurchase(false);
 			}
-			else if (false == isYesorNo)
+			else if (false == pShopManager->Get_OpenConfirmUI())
 			{
-				Uimgr->Set_ConfirmStore(false);
-				Uimgr->Set_StoreYesOrno(true);
+				pShopManager->Set_Confirm(false);
+				pShopManager->Set_OpenConfirmUI(true);
 			}
 
 		}
 	}
 
-	if (KEY_DOWN(KEY::UP) && true == Uimgr->Get_ConfirmStore())
-	{
-
-		CUI_Manager::GetInstance()->Set_StoreYesOrno(true);
-
-	}
-
-	if (KEY_DOWN(KEY::DOWN) && true == Uimgr->Get_ConfirmStore())
-	{
-
-		CUI_Manager::GetInstance()->Set_StoreYesOrno(false);
-
-	}
 
 	if (KEY_DOWN(KEY::K))
 	{
 		Uimgr->Set_DialogueFinishShopPanel(false);
-		CShop_Manager::GetInstance()->OpenClose_Shop();
-		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
+		pShopManager->OpenClose_Shop();
+		//ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
+		m_isOpenPanel = false;
 	}
 
 }
@@ -459,6 +304,10 @@ void CShopPanel_New::ChangeState_Panel(_float _fTimeDelta, _bool _isOpenState)
 		if (true == isDialogueFinishShopPanel) /* && SHOP_END != m_eShopPanel*/
 		{
 			CShop_Manager::GetInstance()->OpenClose_Shop();
+
+			false == Uimgr->Get_DialogueFinishShopPanel() ? Uimgr->Set_DialogueFinishShopPanel(true) : Uimgr->Set_DialogueFinishShopPanel(false);
+			m_isPreState = Uimgr->Get_DialogueFinishShopPanel();
+			//Uimgr->Set_DialogueFinishShopPanel(false);
 		}
 	}
 }
@@ -469,60 +318,67 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 
 	_float2 vCalPos = { 0.f, 0.f };
 
-	for (_int i = 0; i < Uimgr->Get_ShopItems().size(); ++i)
+	auto& ShopItems = CShop_Manager::GetInstance()->Get_ShopItems();
+
+	if (nullptr == &ShopItems)
+		assert(nullptr);
+
+	for (_int i = 0; i < ShopItems.size(); ++i)
 	{
 		if (0 == i)
 		{
-			for (int j = 0; j < Uimgr->Get_ShopItems()[i].size(); ++j)
+
+
+			for (int j = 0; j < ShopItems[i].size(); ++j)
 			{
 				if (0 == j)
 				{
 					vCalPos.x = _vBGPos.x;
-					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.15f;
+					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.07f;
 				}
 				else if (1 == j)
 				{
-					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.07f;
-					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.15f;
+					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.035f;
+					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.07f;
 				}
 				else if (2 == j)
 				{
-					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.05f;
-					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.15f;
+					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.02f;
+					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.07f;
 				}
 
-				Uimgr->Get_ShopItems()[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
-				Uimgr->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
+				ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
+				CShop_Manager::GetInstance()->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
 			}
 			
 		}
 		else if (1 == i)
 		{
-			for (int j = 0; j < Uimgr->Get_ShopItems()[i].size(); ++j)
+			for (int j = 0; j < ShopItems[i].size(); ++j)
 			{
 				if (0 == j)
 				{
 					vCalPos.x = _vBGPos.x;
-					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.03f;
+					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.005f;
 				}
 				else if (1 == j)
 				{
-					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.07f;
-					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.03f;
+					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.035f;
+					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.005f;
 				}
 				else if (2 == j)
 				{
-					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.05f;
-					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.03f;
+					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.02f;
+					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.005f;
 				}
 
-				Uimgr->Get_ShopItems()[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
-				Uimgr->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
+				ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
+				CShop_Manager::GetInstance()->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
 			}
 		}
 		else if (2 == i)
 		{
-			for (int j = 0; j < Uimgr->Get_ShopItems()[i].size(); ++j)
+			for (int j = 0; j < ShopItems[i].size(); ++j)
 			{
 				if (0 == j)
 				{
@@ -531,17 +387,17 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				}
 				else if (1 == j)
 				{
-					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.07f;
+					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.035f;
 					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.08f;
 				}
 				else if (2 == j)
 				{
-					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.05f;
+					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.02f;
 					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.08f;
 				}
 
-				Uimgr->Get_ShopItems()[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
-				Uimgr->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
+				ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
+				CShop_Manager::GetInstance()->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
 			}
 		}
 	}

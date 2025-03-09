@@ -765,13 +765,13 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 #pragma endregion InterAction UI
 
-	_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
-
-	if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
-	{
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ParentShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
-			return E_FAIL;
-	}
+	//_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
+	//
+	//if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
+	//{
+	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ParentShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	//		return E_FAIL;
+	//}
 
 
 #pragma region SettingPanel UI

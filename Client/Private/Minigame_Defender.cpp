@@ -88,37 +88,33 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
         tDesc.iCurLevelID = m_iCurLevelID;
         tDesc.strSectionName = m_strSectionName;
         tDesc.strPoolTag = strPoolTag;
+        tDesc.pPlayer = m_pDefenderPlayer;
 
         m_Spawners[pairMonster.first] = static_cast<CDefenderSpawner*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_DefenderSpawner"), &tDesc));
         Safe_AddRef(m_Spawners[pairMonster.first]);
+		m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_Defender"), m_Spawners[pairMonster.first]);
     }
 
+	SPAWN_DESC tSpawnDesc = {};
+	tSpawnDesc.fAutoCycleTime = 1.f;
+    tSpawnDesc.bAbsolutePosition = true;
+	tSpawnDesc.eDirection = T_DIRECTION::RIGHT;
+    _vector vPosition = { 0.f,0.f,0.f };
+
+    m_Spawners[DEFENDER_MONSTER_ID::SM_SHIP]->Add_Spawn(tSpawnDesc);
     return S_OK;
 }
 void CMiniGame_Defender::Enter_Section(const _wstring _strIncludeSectionName)
 {
     __super::Enter_Section(_strIncludeSectionName);
-    if (FAILED(Ready_Spanwer()))
-        return ;
+
 }
 void CMiniGame_Defender::Update(_float _fTimeDelta)
 {
-    if(m_bGameStart)
-    {
-        m_fSpawnTimeAcc += _fTimeDelta;
-        if (m_fSpawnTimeAcc >= m_fSpawnTime)
-        {
-            m_fSpawnTimeAcc = 0.f;
-            _vector vPlayerPos = m_pDefenderPlayer->Get_FinalPosition();
-			for (auto& pSpawner : m_Spawners)
-			{
-				pSpawner.second->Set_Position(vPlayerPos);
-				pSpawner.second->Spawn(CDefenderSpawner::PATTERN_DOT,T_DIRECTION::LEFT);
-			}
-        }
-    }
 
 	__super::Update(_fTimeDelta);
+    if(false == m_bGameStart)
+		return;
 }
 
 void CMiniGame_Defender::Late_Update(_float _fTimeDelta)
@@ -148,6 +144,9 @@ void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
         m_pDefenderPlayer->Set_Position(vNormalPlayerPos);
 
         m_pDefenderPlayer->Start_Game();
+
+        if (FAILED(Ready_Spanwer()))
+            return;
     }
 }
 

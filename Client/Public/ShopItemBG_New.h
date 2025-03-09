@@ -32,10 +32,9 @@ public:
 
 public:
 	void					Set_Pos(_float2 _vPos) { m_vShopBGPos = _vPos; }
-
-private:
 	void					isRender();
-	
+	void					Set_isChooseItem(_bool _Choose);
+
 	
 
 protected:

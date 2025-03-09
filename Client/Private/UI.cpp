@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "UI.h"
 #include "UI_Manager.h"
+#include "Shop_Manager.h"
 
 
 
@@ -128,8 +129,8 @@ void CUI::Change_BookScale_ForShop(_float2 _vRTSize)
 	if (SHOPPANEL::SHOP_BG != m_eShopPanel)
 	{
 		_float2 BGPos = { 0.f, 0.f };
-		BGPos.x = Uimgr->Get_ShopPanels()[0]->Get_FX();
-		BGPos.y = Uimgr->Get_ShopPanels()[0]->Get_FY();
+		BGPos.x = CShop_Manager::GetInstance()->Get_ShopPanels()[0]->Get_FX();
+		BGPos.y = CShop_Manager::GetInstance()->Get_ShopPanels()[0]->Get_FY();
 
 
 		switch ((_uint)m_eShopPanel)

@@ -26,9 +26,11 @@ public:
 
 	virtual HRESULT			Render() override;
 
+public:
+	void					isRender();
 
 private:
-	void					isRender();
+	
 	void					Cal_ShopBGPos(_float2 _vRTSize);
 	void					Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos);
 
