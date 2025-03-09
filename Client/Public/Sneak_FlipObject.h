@@ -27,6 +27,8 @@ public:
 	virtual void Flip();
 
 protected:
+	_bool	m_isFlipped = { false };
+	_int	m_iInitAnim = { 0 };
 	_int	m_iFlipAnim1 = { 0 };
 	_int	m_iFlipAnim1End = { 0 };
 	_int	m_iFlipAnim2 = { 0 };

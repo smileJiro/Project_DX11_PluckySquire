@@ -295,7 +295,7 @@ HRESULT CLoader::Load_Dirctory_2DModels(_uint _iLevId, const _tchar* _szDirPath)
         filename = filename.substr(0, lastDot); // 확장자 제거
 
         if (FAILED(m_pGameInstance->Add_Prototype(_iLevId, filename.c_str(),
-            C2DModel::Create(m_pDevice, m_pContext, str.c_str(), LEVEL_STATIC))))
+            C2DModel::Create(m_pDevice, m_pContext, str.c_str(), (_uint)LEVEL_STATIC))))
             return E_FAIL;
 
     } while (FindNextFile(hFind, &FindFileData));

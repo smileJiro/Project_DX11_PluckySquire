@@ -120,20 +120,31 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 					break;
 				}
 
-				// Trap
-				if (false == (*pjsonTileInfo)[i][j]["Default"])
+				if ((*pjsonTileInfo)[i][j].contains("Default"))
 				{
-					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakTrapTile"), LEVEL_CHAPTER_8
-						, TEXT("Layer_Sneak_Tile"), reinterpret_cast<CGameObject**>(&pTileOut), &TileDesc)))
-						return E_FAIL;
+					// Trap
+					if (false == (*pjsonTileInfo)[i][j]["Default"])
+					{
+						if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakTrapTile"), LEVEL_CHAPTER_8
+							, TEXT("Layer_Sneak_Tile"), reinterpret_cast<CGameObject**>(&pTileOut), &TileDesc)))
+							return E_FAIL;
+					}
+					// Default
+					else
+					{
+						if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakDefaultTile"), LEVEL_CHAPTER_8
+							, TEXT("Layer_Sneak_Tile"), reinterpret_cast<CGameObject**>(&pTileOut), &TileDesc)))
+							return E_FAIL;
+					}
 				}
-				// Default
 				else
 				{
 					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakDefaultTile"), LEVEL_CHAPTER_8
 						, TEXT("Layer_Sneak_Tile"), reinterpret_cast<CGameObject**>(&pTileOut), &TileDesc)))
 						return E_FAIL;
 				}
+
+			
 
 				if (nullptr != pTileOut)
 				{
@@ -185,6 +196,14 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 					ObjDesc._iFlipAnim2 = (*pjsonObjectsInfo)[i][j]["Animation"][3];
 					ObjDesc._iFlipAnim2End = (*pjsonObjectsInfo)[i][j]["Animation"][4];
 				}
+				else
+				{
+					ObjDesc._iInitAnim = -1;
+					ObjDesc._iFlipAnim1 = -1;
+					ObjDesc._iFlipAnim1End = -1;
+					ObjDesc._iFlipAnim2 = -1;
+					ObjDesc._iFlipAnim2End = -1;
+				}
 
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakMapObject"), LEVEL_CHAPTER_8
 					, TEXT("Layer_Sneak_Objects"), reinterpret_cast<CGameObject**>(&pObjectOut), &ObjDesc)))
@@ -195,7 +214,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 				{
 					if ((*pjsonObjectsInfo)[i][j].contains("NextGroup"))
 					{
-						Add_GameObject_ToSectionLayer(pObjectOut, SECTION_PIP_MAPOBJECT_2);
+						Add_GameObject_ToSectionLayer(pObjectOut, SECTION_PIP_MOVEMAPOBJECT); 
 					}
 					else
 						Add_GameObject_ToSectionLayer(pObjectOut, SECTION_PIP_MAPOBJECT);
@@ -240,7 +259,6 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 				InteractDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
 				InteractDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
-				// TODO: 문같은 경우. Offset 줘야함.
 
 				if ((*pjsonInteractsInfo)[i][j].contains("Model"))
 				{
@@ -278,10 +296,54 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 						InteractDesc._iFlipAnim2 = 0;
 						InteractDesc._iFlipAnim2End = 2;
 					}
-					// TODO: 문 추가
+					// V_DOOR
+					else if (CSneak_InteractObject::V_DOOR == eType)
+					{
+						InteractDesc.strModelPrototypeTag_2D = TEXT("Sneak_Door");
+						InteractDesc._isBlocked = (*pjsonInteractsInfo)[i][j]["Blocked"];
+						InteractDesc._isBlockChangable = true;
+						InteractDesc._eBlockDirection = F_DIRECTION::LEFT;
+						InteractDesc._isInteractable = false;
+						InteractDesc._isCollisionInteractable = false;
 
+						if (InteractDesc._isBlocked)
+							InteractDesc._iInitAnim = 1;
+						else
+							InteractDesc._iInitAnim = 3;
+
+						InteractDesc._iFlipAnim1 = 0;
+						InteractDesc._iFlipAnim1End = 1;
+						InteractDesc._iFlipAnim2 = 2;
+						InteractDesc._iFlipAnim2End = 3;
+
+						InteractDesc.tTransform2DDesc.vInitialPosition.x -= 26.f;
+						InteractDesc.tTransform2DDesc.vInitialPosition.y += 28.f;
+					}
+					// H_DOOR
+					else if (CSneak_InteractObject::H_DOOR == eType)
+					{
+						InteractDesc.strModelPrototypeTag_2D = TEXT("Sneak_Door");
+						InteractDesc._isBlocked = (*pjsonInteractsInfo)[i][j]["Blocked"];
+						InteractDesc._isBlockChangable = true;
+						InteractDesc._eBlockDirection = F_DIRECTION::UP;
+						InteractDesc._isInteractable = false;
+						InteractDesc._isCollisionInteractable = false;
+
+						if (InteractDesc._isBlocked)
+							InteractDesc._iInitAnim = 5;
+						else
+							InteractDesc._iInitAnim = 7;
+
+
+						InteractDesc._iFlipAnim1 = 4;
+						InteractDesc._iFlipAnim1End = 5;
+						InteractDesc._iFlipAnim2 = 6;
+						InteractDesc._iFlipAnim2End = 7;
+
+						InteractDesc.tTransform2DDesc.vInitialPosition.x -= 0.f;
+						InteractDesc.tTransform2DDesc.vInitialPosition.y += 55.f;
+					}
 				}
-
 
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakInteractObject"), LEVEL_CHAPTER_8
 					, TEXT("Layer_Sneak_Interacts"), reinterpret_cast<CGameObject**>(&pInteractOut), &InteractDesc)))
@@ -302,8 +364,130 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 						}
 					}
 
+					if ((*pjsonInteractsInfo)[i][j].contains("Objects"))
+					{
+						for (_int k = 0; k < (*pjsonInteractsInfo)[i][j]["Objects"].size(); ++k)
+						{
+							CSneak_InteractObject* pSubOut = { nullptr };
 
-					Add_GameObject_ToSectionLayer(pInteractOut, SECTION_PIP_MAPOBJECT_2);
+							// Tile에 따른 위치 설정.
+							if ((*pjsonInteractsInfo)[i][j]["Objects"][k].contains("TileIndex"))
+							{
+								InteractDesc._iTileIndex = (*pjsonInteractsInfo)[i][j]["Objects"][k]["TileIndex"];
+							}
+
+							_float2 vPosition = CMinigame_Sneak::GetInstance()->Get_TilePosition(i, InteractDesc._iTileIndex);
+
+							InteractDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
+							InteractDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
+							
+							// TODO: Offset 줘야함.
+							if ((*pjsonInteractsInfo)[i][j]["Objects"][k].contains("Model"))
+							{
+								CSneak_InteractObject::INTERACTOBJECT_TYPE eType = (*pjsonInteractsInfo)[i][j]["Objects"][k]["Model"];
+
+								// 감압판.
+								if (CSneak_InteractObject::PRESSURE_PLATE == eType)
+								{
+									InteractDesc.strModelPrototypeTag_2D = TEXT("Sneak_PressurePlate");
+									InteractDesc._isBlocked = false;
+									InteractDesc._isBlockChangable = false;
+									InteractDesc._isInteractable = false;
+									InteractDesc._isCollisionInteractable = true;
+
+									InteractDesc._iInitAnim = 2;
+									InteractDesc._iFlipAnim1 = 0;
+									InteractDesc._iFlipAnim1End = 1;
+									InteractDesc._iFlipAnim2 = 3;
+									InteractDesc._iFlipAnim2End = 2;
+
+								}
+								// 스위치
+								else if (CSneak_InteractObject::SWITCH == eType)
+								{
+									InteractDesc.strModelPrototypeTag_2D = TEXT("Sneak_Switch");
+									InteractDesc._isBlocked = true;
+									InteractDesc._isBlockChangable = false;
+									InteractDesc._eBlockDirection = F_DIRECTION::F_DIR_LAST;
+									InteractDesc._isInteractable = true;
+									InteractDesc._isCollisionInteractable = false;
+
+									InteractDesc._iInitAnim = 2;
+									InteractDesc._iFlipAnim1 = 1;
+									InteractDesc._iFlipAnim1End = 3;
+									InteractDesc._iFlipAnim2 = 0;
+									InteractDesc._iFlipAnim2End = 2;
+								}
+								// V_Door
+								else if (CSneak_InteractObject::V_DOOR == eType)
+								{
+									InteractDesc.strModelPrototypeTag_2D = TEXT("Sneak_Door");
+									InteractDesc._isBlocked = (*pjsonInteractsInfo)[i][j]["Objects"][k]["Blocked"];
+									InteractDesc._isBlockChangable = true;
+									InteractDesc._eBlockDirection = F_DIRECTION::LEFT;
+									InteractDesc._isInteractable = false;
+									InteractDesc._isCollisionInteractable = false;
+
+									if (InteractDesc._isBlocked)
+										InteractDesc._iInitAnim = 1;
+									else
+										InteractDesc._iInitAnim = 3;
+
+
+									InteractDesc._iFlipAnim1 = 0;
+									InteractDesc._iFlipAnim1End = 1;
+									InteractDesc._iFlipAnim2 = 2;
+									InteractDesc._iFlipAnim2End = 3;
+
+									InteractDesc.tTransform2DDesc.vInitialPosition.x -= 26.f;
+									InteractDesc.tTransform2DDesc.vInitialPosition.y += 28.f;
+								}
+								// H_Door
+								else if (CSneak_InteractObject::H_DOOR == eType)
+								{
+									InteractDesc.strModelPrototypeTag_2D = TEXT("Sneak_Door");
+									InteractDesc._isBlocked = (*pjsonInteractsInfo)[i][j]["Objects"][k]["Blocked"];
+									InteractDesc._isBlockChangable = true;
+									InteractDesc._eBlockDirection = F_DIRECTION::UP;
+									InteractDesc._isInteractable = false;
+									InteractDesc._isCollisionInteractable = false;
+
+									if (InteractDesc._isBlocked)
+										InteractDesc._iInitAnim = 5;
+									else
+										InteractDesc._iInitAnim = 7;
+
+
+									InteractDesc._iFlipAnim1 = 4;
+									InteractDesc._iFlipAnim1End = 5;
+									InteractDesc._iFlipAnim2 = 6;
+									InteractDesc._iFlipAnim2End = 7;
+
+									InteractDesc.tTransform2DDesc.vInitialPosition.x -= 0.f;
+									InteractDesc.tTransform2DDesc.vInitialPosition.y += 55.f;
+								}
+							}
+
+							if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakInteractObject"), LEVEL_CHAPTER_8
+								, TEXT("Layer_Sneak_Interacts"), reinterpret_cast<CGameObject**>(&pSubOut), &InteractDesc)))
+								return E_FAIL;
+
+							if (nullptr != pSubOut)
+							{
+								if ((*pjsonInteractsInfo)[i][j]["Objects"][k].contains("NextGroup"))
+									Add_GameObject_ToSectionLayer(pSubOut, SECTION_PIP_MOVEOBJECT);
+								else
+									Add_GameObject_ToSectionLayer(pSubOut, SECTION_PIP_MOVEMAPOBJECT);
+								Objects.push_back(pSubOut);
+								pInteractOut->Register_Objects(pSubOut);
+							}
+						}
+					}
+
+					if ((*pjsonInteractsInfo)[i][j].contains("NextGroup"))
+						Add_GameObject_ToSectionLayer(pInteractOut, SECTION_PIP_MOVEOBJECT);
+					else
+						Add_GameObject_ToSectionLayer(pInteractOut, SECTION_PIP_MOVEMAPOBJECT);
 					Objects.push_back(pInteractOut);
 				}
 			}
@@ -358,6 +542,12 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 					TroopDesc._eCurDirection = (*pjsonTroopInfo)[i][j]["Direction"];
 				if ((*pjsonTroopInfo)[i][j].contains("TurnDirection"))
 					TroopDesc._eTurnDirection = (*pjsonTroopInfo)[i][j]["TurnDirection"];
+				if ((*pjsonTroopInfo)[i][j].contains("SecondDirection"))
+					TroopDesc._eSecondTurnDirection = (*pjsonTroopInfo)[i][j]["SecondDirection"];
+				else
+					TroopDesc._eSecondTurnDirection = F_DIRECTION::F_DIR_LAST;
+
+
 
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakTroop"), LEVEL_CHAPTER_8
 					, TEXT("Layer_Sneak_Troops"), reinterpret_cast<CGameObject**>(&pTroopOut), &TroopDesc)))
@@ -417,8 +607,17 @@ HRESULT CSection_2D_MiniGame_Pip::Section_AddRenderGroup_Process()
 	
 	// 오브젝트 그룹 소트
 	Sort_Layer([](const CGameObject* pLeftGameObject, const CGameObject* pRightGameObject)->_bool {
+		return XMVectorGetY(pLeftGameObject->Get_FinalPosition()) < XMVectorGetY(pRightGameObject->Get_FinalPosition());
+		}, SECTION_PIP_MAPOBJECT);
+
+	Sort_Layer([](const CGameObject* pLeftGameObject, const CGameObject* pRightGameObject)->_bool {
+		return XMVectorGetY(pLeftGameObject->Get_FinalPosition()) >XMVectorGetY(pRightGameObject->Get_FinalPosition());
+		}, SECTION_PIP_MOVEMAPOBJECT);
+
+
+	Sort_Layer([](const CGameObject* pLeftGameObject, const CGameObject* pRightGameObject)->_bool {
 		return XMVectorGetY(pLeftGameObject->Get_FinalPosition()) > XMVectorGetY(pRightGameObject->Get_FinalPosition());
-		}, SECTION_2D_PLAYMAP_OBJECT);
+		}, SECTION_PIP_MOVEOBJECT);
 
 	// 레이어 렌더러 삽입
 	if (FAILED(Add_RenderGroup_GameObjects()))

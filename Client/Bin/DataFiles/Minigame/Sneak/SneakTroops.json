@@ -14,5 +14,66 @@
             "Direction": "F_UP",
             "TurnDirection": "F_DOWN"
         }
-    ]    
+    ],
+    [
+        {
+            "Model": "TROOP",
+            "TileIndex": 3,
+            "Moveable": true,
+            "Direction": "F_LEFT",
+            "TurnDirection": "F_DOWN"
+        },
+        {
+            "Model": "TROOP",
+            "TileIndex": 9,
+            "Moveable": true,
+            "Direction": "F_RIGHT",
+            "TurnDirection": "F_DOWN"
+        },
+        {
+            "Model": "TROOP",
+            "TileIndex": 14,
+            "Moveable": true,
+            "Direction": "F_LEFT",
+            "TurnDirection": "F_DOWN"
+        },
+        {
+            "Model": "TROOP",
+            "TileIndex": 20,
+            "Moveable": true,
+            "Direction": "F_RIGHT",
+            "TurnDirection": "F_DOWN"
+        }
+    ],
+    [
+        {
+            "Model": "TROOP",
+            "TileIndex": 27,
+            "Moveable": true,
+            "Direction": "F_DOWN",
+            "TurnDirection": "F_DOWN"
+        },
+        {
+            "Model": "TROOP",
+            "TileIndex": 40,
+            "Moveable": true,
+            "Direction": "F_UP",
+            "TurnDirection": "F_DOWN"
+        },
+        {
+            "Model": "TROOP",
+            "TileIndex": 33,
+            "Moveable": true,
+            "Direction": "F_DOWN",
+            "TurnDirection": "F_DOWN"
+        },
+        {
+            "Model": "TROOP",
+            "TileIndex": 71,
+            "Moveable": false,
+            "Direction": "F_LEFT",
+            "TurnDirection": "F_RIGHT",
+            "SecondDirection": "F_LEFT"
+        }
+    ]
 ]

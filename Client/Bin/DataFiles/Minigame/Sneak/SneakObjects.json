@@ -139,8 +139,124 @@
             ],
             "NextGroup": true,
             "Animation": [
-                1, 0, 1, 3, 2
+                1,
+                0,
+                1,
+                3,
+                2
             ]
         }
-    ]    
+    ],
+    [
+        {
+            "Model": "Sneak_cabinet_02",
+            "Position": [
+                -485.0,
+                235.0
+            ],
+            "NextGroup": true
+        },
+        {
+            "Model": "Sneak_cabinet_06",
+            "Position": [
+                -485.0,
+                185.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                -420.0,
+                185.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_02",
+            "Position": [
+                -290.0,
+                185.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_06",
+            "Position": [
+                -225.0,
+                185.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_02",
+            "Position": [
+                -225.0,
+                235.0
+            ],
+            "NextGroup": true
+        },
+        {
+            "Model": "Sneak_cabinet_06",
+            "Position": [
+                -160.0,
+                235.0
+            ],
+            "NextGroup": true
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                -160.0,
+                185.0
+            ]
+        },
+        {
+            "Model": "Sneak_Drawer",
+            "Position": [
+                -159.0,
+                264.0
+            ],
+            "NextGroup": true,
+            "Animation": [
+                2,
+                0,
+                1,
+                3,
+                2
+            ]
+        },
+        {
+            "Model": "Sneak_line_01",
+            "Position": [
+                -585,
+                -300.0
+            ]
+        },
+        {
+            "Model": "Sneak_light_01",
+            "Position": [
+                -565.0,
+                -300.0
+            ]
+        },
+        {
+            "Model": "Sneak_line_02",
+            "Position": [
+                -125.0,
+                155.0
+            ]
+        },
+        {
+            "Model": "Sneak_light_02",
+            "Position": [
+                -160.0,
+                155.0
+            ]
+        },
+        {
+            "Model": "Sneak_mug",
+            "Position": [
+                -290.0,
+                265.0
+            ],
+            "NextGroup": true
+        }
+    ]
 ]

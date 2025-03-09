@@ -16,6 +16,7 @@ public:
 		_int		_iTileIndex = { -1 };
 		F_DIRECTION _eCurDirection = F_DIRECTION::F_DIR_LAST;
 		F_DIRECTION _eTurnDirection = F_DIRECTION::F_DIR_LAST;
+		F_DIRECTION _eSecondTurnDirection = F_DIRECTION::F_DIR_LAST;
 	} SNEAK_TROOP_DESC;
 	enum TROOP_ANIM 
 	{
@@ -33,7 +34,7 @@ public:
 	};
 	enum TROOP_PART { TROOP_BODY, TROOP_LAST };
 
-private:
+protected:
 	CSneak_Troop(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CSneak_Troop(const CSneak_Troop& _Prototype);
 	virtual ~CSneak_Troop() = default;
@@ -48,12 +49,14 @@ public:
 
 public:
 	_bool			Is_Moveable() const { return m_isMoveable; }
+	_int			Predict_Route() const;
 	F_DIRECTION		Get_CurrentDirection() const { return m_eCurDirection; }
 	_int			Get_CurTile() const { return m_iTargetTileIndex; }
 
 
 
 public:
+	void Update_Detection();
 	void Action_Move(_int _iTileIndex, _float2 _vPosition);
 	void Action_Turn();
 	void Action_Fall();
@@ -70,15 +73,17 @@ public:
 
 
 
-private:
+protected:
 	class CMinigame_Sneak* m_pSneakGameManager = { nullptr };
-
 	CModelObject* m_pBody = nullptr;
 
-private:
+protected:
 	// 이동 가능 여부, Turn Direction
 	_bool		  m_isMoveable = { false };
+	F_DIRECTION	  m_eCurTurnDirection = { F_DIRECTION::F_DIR_LAST };
 	F_DIRECTION	  m_eTurnDirection = { F_DIRECTION::F_DIR_LAST };
+	F_DIRECTION	  m_eSecondTurnDirection = { F_DIRECTION::F_DIR_LAST };
+
 	// 시작 타일 위치, 시작 방향
 	_int		  m_iInitTileIndex = { -1 };
 	F_DIRECTION	  m_eInitDirection = { F_DIRECTION::F_DIR_LAST };
@@ -90,16 +95,16 @@ private:
 	// 타겟 타일 위치, 타겟 위치
 	_int				m_iTargetTileIndex = { 0 };
 	_float2				m_vTargetPosition = { 0.f, 0.f };
-	TROOP_ACTION  m_eCurAction = IDLE;
+	TROOP_ACTION		m_eCurAction = IDLE;
 
 	// Detect 타일 위치
 	_int				m_DetectedTiles[3];
 
-private:
+protected:
 	void Do_Action(_float _fTimeDelta);
 	void Dir_Move(_float _fTimeDelta);
 
-	HRESULT Ready_PartObjects();
+	virtual HRESULT Ready_PartObjects();
 
 public:
 	static CSneak_Troop* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

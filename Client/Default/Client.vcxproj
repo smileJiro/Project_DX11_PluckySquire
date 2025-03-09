@@ -262,6 +262,7 @@
     <ClInclude Include="..\public\Sneak_Default_Tile.h" />
     <ClInclude Include="..\public\Sneak_FlipObject.h" />
     <ClInclude Include="..\public\Sneak_InteractObject.h" />
+    <ClInclude Include="..\public\Sneak_SentryTroop.h" />
     <ClInclude Include="..\public\Sneak_Trap_Tile.h" />
     <ClInclude Include="..\public\Sneak_Tile.h" />
     <ClInclude Include="..\public\Sneak_Troop.h" />
@@ -588,6 +589,7 @@
     <ClCompile Include="..\private\Sneak_Default_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_FlipObject.cpp" />
     <ClCompile Include="..\private\Sneak_InteractObject.cpp" />
+    <ClCompile Include="..\private\Sneak_SentryTroop.cpp" />
     <ClCompile Include="..\private\Sneak_Trap_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Troop.cpp" />

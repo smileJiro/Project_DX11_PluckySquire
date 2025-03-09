@@ -14,5 +14,115 @@
                 15
             ]
         }
-    ]    
+    ],
+    [
+        {
+            "Model": "PRESSURE_PLATE",
+            "TileIndex": 3,
+            "Tiles": [
+                6
+            ]
+        },
+        {
+            "Model": "PRESSURE_PLATE",
+            "TileIndex": 9,
+            "Tiles": [
+                11
+            ]
+        },
+        {
+            "Model": "PRESSURE_PLATE",
+            "TileIndex": 18,
+            "Tiles": [
+                14,
+                20
+            ]
+        },
+        {
+            "Model": "SWITCH",
+            "TileIndex": 22,
+            "Objects": [
+                {
+                    "Model": "V_DOOR",
+                    "TileIndex": 21,
+                    "Blocked": true
+                }
+            ]
+        }
+    ],
+    [
+        {
+            "Model": "PRESSURE_PLATE",
+            "TileIndex": 3,
+            "Objects": [
+                {
+                    "Model": "V_DOOR",
+                    "TileIndex": 6,
+                    "Blocked": false
+                }
+            ]
+        },
+        {
+            "Model": "PRESSURE_PLATE",
+            "TileIndex": 15,
+            "Objects": [
+                {
+                    "Model": "H_DOOR",
+                    "TileIndex": 23,
+                    "Blocked": true,
+                    "NextGroup": true
+                }
+            ]
+        },
+        {
+            "Model": "PRESSURE_PLATE",
+            "TileIndex": 17,
+            "Objects": [
+                {
+                    "Model": "H_DOOR",
+                    "TileIndex": 24,
+                    "Blocked": true,
+                    "NextGroup": true
+
+                }
+            ]
+        },
+        {
+            "Model": "PRESSURE_PLATE",
+            "TileIndex": 46,
+            "Objects": [
+                {
+                    "Model": "H_DOOR",
+                    "TileIndex": 46,
+                    "Blocked": true,
+                    "NextGroup": true
+
+                },
+                {
+                    "Model": "H_DOOR",
+                    "TileIndex": 52,
+                    "Blocked": true,
+                    "NextGroup": true
+                }
+            ]
+        },
+        {
+            "Model": "PRESSURE_PLATE",
+            "TileIndex": 56,
+            "Objects": [
+                {
+                    "Model": "V_DOOR",
+                    "TileIndex": 36,
+                    "Blocked": false
+                }
+            ]
+        },
+        {
+            "Model": "PRESSURE_PLATE",
+            "TileIndex": 74,
+            "Tiles": [
+                38
+            ]
+        }
+    ]
 ]

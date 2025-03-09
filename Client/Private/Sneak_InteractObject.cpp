@@ -2,6 +2,7 @@
 #include "Sneak_InteractObject.h"
 #include "GameInstance.h"
 #include "Sneak_Tile.h"
+#include "Minigame_Sneak.h"
 
 CSneak_InteractObject::CSneak_InteractObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CSneak_FlipObject(_pDevice, _pContext)
@@ -24,11 +25,15 @@ HRESULT CSneak_InteractObject::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_iTileIndex = pDesc->_iTileIndex;
-	m_isBlocked = pDesc->_isBlocked;
+	/*m_isInitBlocked = */m_isBlocked = pDesc->_isBlocked;
 	m_isBlockChangable = pDesc->_isBlockChangable;
 	m_isInteractable = pDesc->_isInteractable;
 	m_isCollisionInteractable = pDesc->_isCollisionInteractable;
 	m_eBlockDirection = pDesc->_eBlockDirection;
+
+	Register_OnAnimEndCallBack(bind(&CSneak_InteractObject::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+
+	m_pSneakGameManager = CMinigame_Sneak::GetInstance();
 
 	return S_OK;
 }
@@ -53,7 +58,6 @@ void CSneak_InteractObject::Register_Objects(CSneak_InteractObject* _pObject)
 
 void CSneak_InteractObject::Interact()
 {
-	m_isFlipped = !m_isFlipped;
 	Flip();
 
 	for (auto& iter : m_pInteractObjects)
@@ -66,9 +70,21 @@ void CSneak_InteractObject::Restart()
 {
 	if (m_isFlipped)
 	{
-		m_isFlipped = false;
 		Flip();
 	}
+
+
+}
+
+void CSneak_InteractObject::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+	if (m_isBlockChangable && (iAnimIdx == m_iFlipAnim1 || iAnimIdx == m_iFlipAnim2))
+	{
+		m_isBlocked = !m_isBlocked;
+		m_pSneakGameManager->Update_DetectionField();
+	}
+
+	__super::On_AnimEnd(_eCoord, iAnimIdx);
 }
 
 

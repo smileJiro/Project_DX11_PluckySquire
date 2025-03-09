@@ -45,12 +45,13 @@ public:
 
 public:
 	void Start_Stage(_float2 _vPosition);
-	void Restart(_float2 _vStartPosition);
+	void FadeIn(_float _fTime);
 
 	void Action_Move(_int _iTileIndex, _float2 _vPosition);
 	void Action_None();
 	void Action_Flip();
 	void Action_Caught();
+	void Action_Victory();
 
 	void Switch_Animation_ByState();
 

@@ -27,7 +27,8 @@ void CMinigame_Sneak::Start_Game()
 	{
 		for (auto& iter : m_StageTiles[i])
 		{
-			iter->Set_Active(false);
+			Event_SetActive(iter, false);
+			//iter->Set_Active(false);
 		}
 	}
 
@@ -35,7 +36,8 @@ void CMinigame_Sneak::Start_Game()
 	{
 		for (auto& iter : m_StageObjects[i])
 		{
-			iter->Set_Active(false);
+			Event_SetActive(iter, false);
+			//iter->Set_Active(false);
 		}
 	}
 
@@ -43,20 +45,23 @@ void CMinigame_Sneak::Start_Game()
 	{
 		for (auto& iter : m_StageInteracts[i])
 		{
-			iter->Set_Active(false);
+			Event_SetActive(iter, false);
+			//iter->Set_Active(false);
 		}
 	}
 
-	for (_int i = 0; i < m_StageInteracts.size(); ++i)
+	for (_int i = 0; i < m_StageTroops.size(); ++i)
 	{
 		for (auto& iter : m_StageTroops[i])
 		{
-			iter->Set_Active(false);
+			Event_SetActive(iter, false);
+			//iter->Set_Active(false);
 		}
 
 	}
 
-	m_pPlayer->Set_Active(false);
+	Event_SetActive(m_pPlayer, false);
+	//m_pPlayer->Set_Active(false);
 
 	// Start Music
 	m_pGameInstance->End_BGM();
@@ -67,11 +72,20 @@ void CMinigame_Sneak::Update(_float _fTimeDelta)
 	if (NONE == m_eGameState)
 		return;
 
+#ifdef _DEBUG
 	if (KEY_PRESSING(KEY::CTRL) && KEY_DOWN(KEY::R))
 	{
 		GameOver();
 	}
 
+	// 다음 스테이지
+	if (KEY_PRESSING(KEY::CTRL) && KEY_DOWN(KEY::T))
+	{
+		++m_iCurStage;
+		Start_Stage();
+		m_fAccTime = 0.f;
+	}
+#endif
 	m_fAccTime += _fTimeDelta;
 
 	switch (m_eGameState)
@@ -92,16 +106,12 @@ void CMinigame_Sneak::Update(_float _fTimeDelta)
 		if (0 <= m_iCurStage)
 		{
 			// 행동
-			if ((0.4f <= m_fAccTime && nullptr != m_pPlayer && F_DIRECTION::F_DIR_LAST != m_pPlayer->Get_InputDirection()) || 0.6f <= m_fAccTime)
+			if ((0.32f <= m_fAccTime && nullptr != m_pPlayer && F_DIRECTION::F_DIR_LAST != m_pPlayer->Get_InputDirection()) || 0.62f <= m_fAccTime)
 			{
+				// 게임 진행 먼저 판단.
+				Before_Action();
 				Action();
 				m_fAccTime = m_fAccTime - 0.5f;
-			}
-
-			// 행동 이후 게임 진행 판단.
-			if (m_isAction && 0.25f <= m_fAccTime)
-			{
-				After_Action();
 			}
 		}
 		break;
@@ -122,7 +132,16 @@ void CMinigame_Sneak::Update(_float _fTimeDelta)
 		if (1.f <= m_fAccTime)
 		{
 			Restart_Game();
-
+		}
+		break;
+	}
+	case STAGE_VICTORY:
+	{
+		if (1.5f <= m_fAccTime)
+		{
+			++m_iCurStage;
+			Start_Stage();
+			m_fAccTime = 0.f;
 		}
 		break;
 	}
@@ -199,7 +218,9 @@ void CMinigame_Sneak::Restart_Game()
 	if (m_pPlayer)
 	{
 		_float2 vStartPosition = Get_TilePosition(m_iCurStage, 0);
-		m_pPlayer->Restart(vStartPosition);
+
+		m_pPlayer->Start_Stage(vStartPosition);
+		m_pPlayer->FadeIn(0.25f);
 	}
 
 	
@@ -407,6 +428,15 @@ CSneak_InteractObject* CMinigame_Sneak::Get_InteractObject(_int _iStage, _int _i
 	return nullptr;
 }
 
+void CMinigame_Sneak::Update_DetectionField()
+{
+	if (0 <= m_iCurStage && m_StageTroops.size() > m_iCurStage)
+	{
+		for (auto& iter : m_StageTroops[m_iCurStage])
+			iter->Update_Detection();
+	}
+}
+
 void CMinigame_Sneak::Detect_Tiles(_Inout_ _int* _pTiles, _int _iDetectCount, _int _iCurIndex, F_DIRECTION _eDirection)
 {
 	if (nullptr != _pTiles || 0 < _iDetectCount || F_DIRECTION::F_DIR_LAST != _eDirection)
@@ -426,6 +456,16 @@ void CMinigame_Sneak::Detect_Tiles(_Inout_ _int* _pTiles, _int _iDetectCount, _i
 			_int iNextTile = Get_NextTile(_iCurIndex, _eDirection);
 			if (-1 == iNextTile) // 이제 Detect 불가.
 				break;
+
+			// Block 영역이 막고 있는지 확인.
+			if (0 <= m_iCurStage && m_StageInteracts.size() > m_iCurStage)
+			{
+				if (Is_Blocked(_iCurIndex, iNextTile, _eDirection, nullptr))
+				{
+					break;
+				}
+			}
+
 
 			m_StageTiles[m_iCurStage][iNextTile]->Add_Detector();
 			_iCurIndex = iNextTile;
@@ -459,45 +499,71 @@ _int CMinigame_Sneak::Get_PlayerTile()
 	return -1;
 }
 
+_bool CMinigame_Sneak::Is_MoveableTile(_int _iTileIndex)
+{
+	if (0 > m_iCurStage || m_StageTiles.size() <= m_iCurStage)
+		return false;
+	if (0 > _iTileIndex || m_StageTiles[m_iCurStage].size() <= _iTileIndex)
+		return false;
+
+	return (m_StageTiles[m_iCurStage][_iTileIndex]->Get_TileState() == CSneak_Tile::OPEN) ? false : true;
+}
+
 
 void CMinigame_Sneak::Start_Stage()
 {
-	if (0 > m_iCurStage || m_StageTiles.size() < m_iCurStage)
-		return;
-
-	for (auto& iter : m_StageObjects[m_iCurStage])
+	if (0 <= m_iCurStage && m_StageObjects.size() > m_iCurStage)
 	{
-		Event_SetActive(iter, true);
-		//iter->Set_Active(true);
+		for (auto& iter : m_StageObjects[m_iCurStage])
+		{
+			Event_SetActive(iter, true);
+			iter->Start_FadeAlphaIn(0.25f);
+			//iter->Set_Active(true);
+		}
 	}
 
-	for (auto& iter : m_StageInteracts[m_iCurStage])
+	if (0 <= m_iCurStage && m_StageTiles.size() > m_iCurStage)
 	{
-		Event_SetActive(iter, true);
-		//iter->Set_Active(true);
+		for (auto& iter : m_StageTiles[m_iCurStage])
+		{
+			Event_SetActive(iter, true);
+			iter->Start_FadeAlphaIn(0.25f);
+			//iter->Set_Active(true);
+		}
 	}
 
-	for (auto& iter : m_StageTroops[m_iCurStage])
+	if (0 <= m_iCurStage && m_StageInteracts.size() > m_iCurStage)
 	{
-		//iter->Set_Active(true);
-		iter->GameStart();
-	}
-	
-	for (auto& iter : m_StageTiles[m_iCurStage])
-	{
-		Event_SetActive(iter, true);
-		//iter->Set_Active(true);
+		for (auto& iter : m_StageInteracts[m_iCurStage])
+		{
+			Event_SetActive(iter, true);
+			iter->Start_FadeAlphaIn(0.25f);
+			//iter->Set_Active(true);
+		}
 	}
 
-	if (nullptr != m_pPlayer && false == m_pPlayer->Is_Active())
+	if (0 <= m_iCurStage && m_StageTroops.size() > m_iCurStage)
 	{
-		CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::PIP);
-		// TEMP;
-		CCamera_Manager::GetInstance()->Change_CameraTarget(m_pPlayer);
+		for (auto& iter : m_StageTroops[m_iCurStage])
+		{
+			iter->GameStart();
+		}
 	}
 
-	if (m_StageTiles.size() > m_iCurStage)
-		m_pPlayer->Start_Stage(m_StageTiles[m_iCurStage][0]->Get_TilePosition());
+	if (nullptr != m_pPlayer)
+	{
+		if (false == m_pPlayer->Is_Active())
+		{
+			CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::PIP);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(m_pPlayer);
+			m_pPlayer->FadeIn(0.25f);
+		}
+		if (0 <= m_iCurStage && m_StageTiles.size() > m_iCurStage)
+			m_pPlayer->Start_Stage(m_StageTiles[m_iCurStage][0]->Get_TilePosition());
+
+	}
+
+
 	
 	m_iFlipTime = 0;
 
@@ -506,15 +572,29 @@ void CMinigame_Sneak::Start_Stage()
 
 }
 
-void CMinigame_Sneak::After_Action()
+void CMinigame_Sneak::Before_Action()
 {
-	m_isAction = false;
-
 	/*
 	* 0. 승리 판단.
 	* 1. Troop Fall 판단.
 	* 2. Player Caught 판단 -> 게임종료
 	*/
+
+	// 0. 승리 판단.
+	if (nullptr != m_pPlayer)
+	{
+		_int iTileIndex = m_pPlayer->Get_CurTile();
+
+		if (0 <= m_iCurStage && m_StageTiles.size() > m_iCurStage && m_StageTiles[m_iCurStage].size() - 1 == iTileIndex)
+		{
+			m_pPlayer->Action_Victory();
+			m_eGameState = STAGE_VICTORY;
+			m_fAccTime = 0.5f; // m_fAccTime = m_fAccTime - 0.5f에서 m_fAccTime 0.f로 만들기 위해서..
+
+			m_pGameInstance->End_BGM();
+			return;
+		}
+	}
 
 	// 1. Troop Fall 판단.
 	if (0 <= m_iCurStage && m_StageTroops.size() > m_iCurStage)
@@ -524,6 +604,7 @@ void CMinigame_Sneak::After_Action()
 			_int iTileIndex = iter->Get_CurTile();
 
 			CSneak_Tile* pTile = Get_Tile(m_iCurStage, iTileIndex);
+			// Troop이 존재하는 타일이 열려있는 타일일 경우.
 			if (nullptr != pTile && CSneak_Tile::OPEN == pTile->Get_TileState())
 			{
 				iter->Action_Fall();
@@ -545,6 +626,10 @@ void CMinigame_Sneak::After_Action()
 
 void CMinigame_Sneak::Action()
 {
+	// Game Over 여부 판단.
+	if (GAME_OVER == m_eGameState)
+		return;
+
 	// 맵 오브젝트들 움직임.
 	++m_iFlipTime;
 	if (2 <= m_iFlipTime && m_StageObjects.size() > m_iCurStage)
@@ -563,8 +648,6 @@ void CMinigame_Sneak::Action()
 	}
 	// Troop들 행동.
 	Action_Troops();
-
-	m_isAction = true;
 }
 
 void CMinigame_Sneak::Action_Player()
@@ -578,7 +661,7 @@ void CMinigame_Sneak::Action_Player()
 	_int iNextTile = Get_NextTile(iPlayerTile, eDir);
 
 	// 이동 X ( 타일이 없다 & 이동 불가능 타일 & )
-	if (0 > iNextTile || false == Is_MoveableTile(iNextTile))
+	if (0 > iNextTile || false == Is_MoveableTile(iNextTile) || Is_TroopsBlocked(iNextTile))
 	{
 		m_pPlayer->Action_None();
 	}
@@ -598,6 +681,10 @@ void CMinigame_Sneak::Action_Player()
 				{
 					pOutObject->Interact();
 					m_pPlayer->Action_Flip();
+				}
+				else
+				{
+					m_pPlayer->Action_None();
 				}
 			}
 		}
@@ -625,11 +712,13 @@ void CMinigame_Sneak::Action_Troops()
 		{
 			_bool isMove = { true };
 			_int  iNextTile = { -1 };
+			_int  iCurTile = { -1 };
+			F_DIRECTION eCurDirection = F_DIRECTION::F_DIR_LAST;
 			// 이동할 수 있는 Troop -> 이동 여부 확인하고 이동
 			if (iter->Is_Moveable())
 			{
-				F_DIRECTION eCurDirection = iter->Get_CurrentDirection();
-				_int		iCurTile = iter->Get_CurTile();
+				eCurDirection = iter->Get_CurrentDirection();
+				iCurTile = iter->Get_CurTile();
 				iNextTile = Get_NextTile(iCurTile, eCurDirection);
 
 				// 이동 불가 판단. (없는 타일 & 현재 이동 불가능 타일)
@@ -647,10 +736,35 @@ void CMinigame_Sneak::Action_Troops()
 			{
 				// 근데 플레이어가 가는 타일이다 -> 이동 X Turn X 
 				if (nullptr != m_pPlayer && (m_pPlayer->Get_CurTile() == iNextTile))
-					return;
+					continue;
 
-				_float2 vTargetPosition = Get_TilePosition(m_iCurStage, iNextTile);
-				iter->Action_Move(iNextTile, vTargetPosition);
+				// 거기에 더해 Blocked한 타일인지 판단하자.
+				CSneak_InteractObject* pOutObject = { nullptr };
+				// Block 상태 확인
+				_bool isBlocked = Is_Blocked(iCurTile, iNextTile, eCurDirection, &pOutObject);
+
+				// 이동 불가 .
+				if (isBlocked)
+				{
+					if (nullptr != pOutObject)
+					{
+						if (pOutObject->Is_Interactable())
+						{
+							pOutObject->Interact();
+						}
+						else
+						{
+							iter->Action_Turn();
+						}
+					}
+				}
+				else
+				{
+
+					_float2 vTargetPosition = Get_TilePosition(m_iCurStage, iNextTile);
+					iter->Action_Move(iNextTile, vTargetPosition);
+				}
+
 			}
 			// 혹은 Turn
 			else
@@ -662,29 +776,20 @@ void CMinigame_Sneak::Action_Troops()
 	}
 }
 
-_bool CMinigame_Sneak::Is_Troops(_int _iTileIndex)
+
+// Troop의 예상경로에 존재하나 ? 
+_bool CMinigame_Sneak::Is_TroopsBlocked(_int _iTileIndex)
 {
-	if (0 > m_iCurStage || m_StageTroops.size() <= m_iCurStage)
-		return false;
-	
-	for (auto& iter : m_StageTroops[m_iCurStage])
+	if (0 <= m_iCurStage && m_StageTroops.size() > m_iCurStage)
 	{
-		if (iter->Get_CurTile() == _iTileIndex)
-			return true;
+		for (auto& iter : m_StageTroops[m_iCurStage])
+		{
+			if (_iTileIndex == iter->Predict_Route())
+				return true;
+		}
+
 	}
-
 	return false;
-
-}
-
-_bool CMinigame_Sneak::Is_MoveableTile(_int _iTileIndex)
-{
-	if (0 > m_iCurStage || m_StageTiles.size() <= m_iCurStage)
-		return false;
-	if (0 > _iTileIndex || m_StageTiles[m_iCurStage].size() <= _iTileIndex)
-		return false;
-
-	return (m_StageTiles[m_iCurStage][_iTileIndex]->Get_TileState() == CSneak_Tile::OPEN) ? false : true;
 }
 
 _bool CMinigame_Sneak::Is_Blocked(_int _iCurIndex, _int _iNextIndex, F_DIRECTION _eMoveDir, _Out_ CSneak_InteractObject** _ppOutObject)

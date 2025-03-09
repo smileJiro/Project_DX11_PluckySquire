@@ -1616,6 +1616,9 @@
     <ClInclude Include="..\Public\ShopItemBG_New.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\01. ShopItem\00. ShopItemBG</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Sneak_SentryTroop.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Troop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2560,6 +2563,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ShopPanel_YesNo_New.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\01. YesNo_Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_SentryTroop.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Troop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

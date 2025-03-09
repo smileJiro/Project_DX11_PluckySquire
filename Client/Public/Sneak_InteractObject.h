@@ -42,6 +42,7 @@ public:
 public:
 	void	Interact();
 	void	Restart();
+	virtual void			On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 
 public:
 	_bool	Is_Interactable() const { return m_isInteractable; }
@@ -50,11 +51,11 @@ public:
 	F_DIRECTION Get_BlockDirection() const { return m_eBlockDirection; }
 	_int	Get_TileIndex() const { return m_iTileIndex; }
 
+
 private:
-	
+	class	CMinigame_Sneak* m_pSneakGameManager = { nullptr };
 	_bool	m_isInteractable = { false };
 	_bool	m_isCollisionInteractable = { false };
-	_bool	m_isFlipped = { false };
 	
 	_bool	m_isBlocked = { false };
 	_bool	m_isBlockChangable = { false };

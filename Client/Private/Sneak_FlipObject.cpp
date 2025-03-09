@@ -30,7 +30,8 @@ HRESULT CSneak_FlipObject::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
-	m_iCurAnim = pDesc->_iInitAnim;
+	
+	m_iInitAnim = m_iCurAnim = pDesc->_iInitAnim;
 	m_iFlipAnim1 = pDesc->_iFlipAnim1;
 	m_iFlipAnim2 = pDesc->_iFlipAnim2;
 	m_iFlipAnim1End = pDesc->_iFlipAnim1End;
@@ -49,11 +50,15 @@ void CSneak_FlipObject::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
 
 	if (_iAnimIdx == m_iFlipAnim1)
 	{
+		//m_isFlipped = !m_isFlipped;
+
 		Switch_Animation(m_iFlipAnim1End);
 		m_iCurAnim = m_iFlipAnim1End;
 	}
 	if (_iAnimIdx == m_iFlipAnim2)
 	{
+		//m_isFlipped = !m_isFlipped;
+
 		Switch_Animation(m_iFlipAnim2End);
 		m_iCurAnim = m_iFlipAnim2End;
 
@@ -75,7 +80,8 @@ void CSneak_FlipObject::Flip()
 	{
 		m_iCurAnim = m_iFlipAnim1;
 	}
-
+	
+	m_isFlipped = !m_isFlipped;
 	Switch_Animation(m_iCurAnim);
 }
 

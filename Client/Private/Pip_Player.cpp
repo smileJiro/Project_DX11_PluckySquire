@@ -87,24 +87,20 @@ void CPip_Player::Start_Stage(_float2 _vPosition)
 {
 	m_iCurTileIndex = 0;
 	m_iTargetTileIndex = 0;
-	
+
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(_vPosition.x, _vPosition.y, 0.f, 1.f));
-}
-
-void CPip_Player::Restart(_float2 _vStartPosition)
-{
-	m_iCurTileIndex = 0;
-	m_iTargetTileIndex = 0;
-
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(_vStartPosition.x, _vStartPosition.y, 0.f, 1.f));
 
 	m_eCurAction = IDLE;
 	m_eCurDirection = F_DIRECTION::RIGHT;
 	m_eInputDirection = F_DIRECTION::F_DIR_LAST;
 
 	Switch_Animation_ByState();
+}
 
-	m_pBody->Start_FadeAlphaIn(0.5f);
+
+void CPip_Player::FadeIn(_float _fTime)
+{
+	m_pBody->Start_FadeAlphaIn(_fTime);
 }
 
 void CPip_Player::Action_Move(_int _iTileIndex, _float2 _vPosition)
@@ -149,6 +145,13 @@ void CPip_Player::Action_Caught()
 	m_eInputDirection = F_DIRECTION::F_DIR_LAST;
 
 	m_pBody->Start_FadeAlphaOut(0.5f);
+
+	Switch_Animation_ByState();
+}
+
+void CPip_Player::Action_Victory()
+{
+	m_eCurAction = VICTORY;
 
 	Switch_Animation_ByState();
 }
@@ -219,10 +222,14 @@ void CPip_Player::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	if (FLIP == m_eCurAction)
 	{
-		m_eCurAction = IDLE;
+		m_eCurAction = IDLE;	
+		Switch_Animation_ByState();
 	}
-
-	Switch_Animation_ByState();
+	else if (VICTORY == m_eCurAction)
+	{
+		m_eCurAction = IDLE;
+		Switch_Animation_ByState();
+	}
 }
 
 void CPip_Player::Do_Action(_float _fTimeDelta)

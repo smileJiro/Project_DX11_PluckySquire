@@ -2,6 +2,8 @@
 #include "Sneak_Trap_Tile.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "Minigame_Sneak.h"
+
 CSneak_Trap_Tile::CSneak_Trap_Tile(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CSneak_Tile(_pDevice, _pContext)
 {

@@ -36,7 +36,8 @@ HRESULT CSneak_Troop::Initialize(void* _pArg)
 	m_eInitDirection = m_eCurDirection = pDesc->_eCurDirection;
 	m_iTargetTileIndex = m_iInitTileIndex = m_iCurTileIndex = pDesc->_iTileIndex;
 	m_isMoveable = pDesc->_isMoveable;
-	m_eTurnDirection = pDesc->_eTurnDirection;
+	m_eCurTurnDirection = m_eTurnDirection = pDesc->_eTurnDirection;
+	m_eSecondTurnDirection = pDesc->_eSecondTurnDirection;
 
 	// 처음 위치는 밖에서 정해주자. 
 	// _float2 vInitPosition = m_pSneakGameManager->Get_TilePosition()
@@ -78,6 +79,45 @@ HRESULT CSneak_Troop::Render()
 	return __super::Render();
 }
 
+_int CSneak_Troop::Predict_Route() const
+{
+	// 이미 죽은 애는 경로에서 제외되어야 한다.
+	if (FALL == m_eCurAction)
+		return -1;
+	// 이동하지 않는 애는 굳이 경로 계산 안해도 된다.
+	if (false == m_isMoveable )
+		return m_iCurTileIndex;
+
+	// 이동하는 친구.
+	else
+	{
+		if (nullptr != m_pSneakGameManager)
+		{;
+			_int iNextTile = m_pSneakGameManager->Get_NextTile(m_iCurTileIndex, m_eCurDirection);
+
+			// 이동 불가 판단. (없는 타일 & 현재 이동 불가능 타일)
+			if (0 > iNextTile || false == m_pSneakGameManager->Is_MoveableTile(iNextTile))
+			{
+				return m_iCurTileIndex;
+			}
+			else
+			{
+				return iNextTile;
+			}
+		}
+	}
+
+	return m_iCurTileIndex;
+}
+
+void CSneak_Troop::Update_Detection()
+{
+	if (FALL == m_eCurAction)
+		return;
+
+	m_pSneakGameManager->Detect_Tiles(m_DetectedTiles, 3, m_iCurTileIndex, m_eCurDirection);
+}
+
 void CSneak_Troop::Action_Move(_int _iTileIndex, _float2 _vPosition)
 {
 	if (FALL == m_eCurAction)
@@ -96,14 +136,14 @@ void CSneak_Troop::Action_Turn()
 		return;
 
 	// 회전하지 않는 친구.
-	if (F_DIRECTION::F_DIR_LAST == m_eTurnDirection)
+	if (F_DIRECTION::F_DIR_LAST == m_eCurTurnDirection)
 		return;
 	
 	// 설정될 방향
 	F_DIRECTION eTargetDirection = F_DIRECTION::F_DIR_LAST;
 
 	// 하드코딩 아쉽네.
-	if (F_DIRECTION::LEFT == m_eTurnDirection)
+	if (F_DIRECTION::LEFT == m_eCurTurnDirection)
 	{
 		if (F_DIRECTION::RIGHT == m_eCurDirection)
 			eTargetDirection = F_DIRECTION::UP;
@@ -114,7 +154,7 @@ void CSneak_Troop::Action_Turn()
 		else if (F_DIRECTION::DOWN == m_eCurDirection)
 			eTargetDirection = F_DIRECTION::RIGHT;
 	}
-	else if (F_DIRECTION::RIGHT == m_eTurnDirection)
+	else if (F_DIRECTION::RIGHT == m_eCurTurnDirection)
 	{
 		if (F_DIRECTION::RIGHT == m_eCurDirection)
 			eTargetDirection = F_DIRECTION::DOWN;
@@ -125,7 +165,7 @@ void CSneak_Troop::Action_Turn()
 		else if (F_DIRECTION::DOWN == m_eCurDirection)
 			eTargetDirection = F_DIRECTION::LEFT;
 	}
-	else if (F_DIRECTION::DOWN == m_eTurnDirection || F_DIRECTION::UP == m_eTurnDirection)
+	else if (F_DIRECTION::DOWN == m_eCurTurnDirection || F_DIRECTION::UP == m_eCurTurnDirection)
 	{
 		if (F_DIRECTION::RIGHT == m_eCurDirection)
 			eTargetDirection = F_DIRECTION::LEFT;
@@ -140,16 +180,34 @@ void CSneak_Troop::Action_Turn()
 	if (nullptr != m_pSneakGameManager)
 	{
 		_int iTurnTile = m_pSneakGameManager->Get_NextTile(m_iCurTileIndex, eTargetDirection);
+		// Turn 했을 때 아무것도 없을 때.
 		if (-1 == iTurnTile)
 		{
-			if (F_DIRECTION::RIGHT == eTargetDirection)
-				eTargetDirection = F_DIRECTION::LEFT;
-			else if (F_DIRECTION::UP == eTargetDirection)
-				eTargetDirection = F_DIRECTION::DOWN;
-			else if (F_DIRECTION::LEFT == eTargetDirection)
-				eTargetDirection = F_DIRECTION::RIGHT;
-			else if (F_DIRECTION::DOWN == eTargetDirection)
-				eTargetDirection = F_DIRECTION::UP;
+			// Second Turn Direction이 있을 때
+			if (F_DIRECTION::F_DIR_LAST != m_eSecondTurnDirection)
+			{
+				if (m_eCurTurnDirection == m_eTurnDirection)
+					eTargetDirection = m_eSecondTurnDirection;
+				else
+					eTargetDirection = m_eTurnDirection;
+
+
+				m_eCurTurnDirection = eTargetDirection;
+				Action_Turn();
+				return;
+			}
+
+			else
+			{
+				if (F_DIRECTION::RIGHT == eTargetDirection)
+					eTargetDirection = F_DIRECTION::LEFT;
+				else if (F_DIRECTION::UP == eTargetDirection)
+					eTargetDirection = F_DIRECTION::DOWN;
+				else if (F_DIRECTION::LEFT == eTargetDirection)
+					eTargetDirection = F_DIRECTION::RIGHT;
+				else if (F_DIRECTION::DOWN == eTargetDirection)
+					eTargetDirection = F_DIRECTION::UP;
+			}
 		}
 	}
 
@@ -173,7 +231,7 @@ void CSneak_Troop::Action_Fall()
 
 void CSneak_Troop::Action_Catch()
 {
-	// 안에 있으면 잡는다.
+	// Detection 안에 있으면 잡는다.
 	if (nullptr != m_pSneakGameManager)
 	{
 		_int iPlayerIndex = m_pSneakGameManager->Get_PlayerTile();
@@ -187,7 +245,6 @@ void CSneak_Troop::Action_Catch()
 			{
 				m_eCurAction = CATCH;
 				Switch_Animation_ByState();
-				// 과연
 				m_pSneakGameManager->GameOver();
 			}
 		}
@@ -202,6 +259,7 @@ void CSneak_Troop::GameStart()
 	m_eCurDirection = m_eInitDirection;
 	m_iCurTileIndex = m_iInitTileIndex;
 	m_iTargetTileIndex = m_iInitTileIndex;
+	m_eCurTurnDirection = m_eTurnDirection;
 
 	_float2 vStartPosition = { 0.f, 0.f };
 	if (nullptr != m_pSneakGameManager)
@@ -219,6 +277,7 @@ void CSneak_Troop::GameStart()
 	if (nullptr != m_pSneakGameManager)
 	{
 		m_pSneakGameManager->Detect_Tiles(m_DetectedTiles, 3, m_iCurTileIndex, m_eCurDirection);
+		m_pSneakGameManager->Reach_Destination(m_iCurTileIndex, m_iCurTileIndex);
 	}
 
 	Event_SetActive(this, true);
