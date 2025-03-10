@@ -141,7 +141,9 @@ void CSketchSpace_Alien::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case DEATH_RIGHT:
-        Monster_Death();
+        Set_AnimChangeable(true);
+        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), Get_Include_Section_Name(), Get_ControllerTransform()->Get_WorldMatrix());
+        Event_DeleteObject(this);
         break;
 
     default:
@@ -208,50 +210,6 @@ void CSketchSpace_Alien::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider*
 
 void CSketchSpace_Alien::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
-    {
-        if (true == m_isContactToTarget)
-        {
-            m_isContactToTarget = false;
-        }
-    }
-
-    if (OBJECT_GROUP::BLOCKER  &  _pOtherCollider->Get_CollisionGroupID())
-    {
-        //CCollider_AABB* pOtherCol = static_cast<CCollider_AABB*>(_pOtherCollider);
-        //_float2 fLT = pOtherCol->Get_LT();
-        //_float2 fRB = pOtherCol->Get_RB();
-        //_float3 vPos;  XMStoreFloat3(&vPos, Get_FinalPosition());
-
-
-        //m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
-        //F_DIRECTION eDir = Get_2DDirection();
-        ////Set_2D_Direction(eDir);
-        //
-        ////왼쪽 끝이고 왼쪽 방향으로 가고 있었으면
-        //_float fEpsilon = 0.1f;
-        //_float fOffsetX = 30.f;
-        //_float2 vBound_LR = { fLT.x + fOffsetX , fRB.x - fOffsetX };
-        ////if(false == static_cast<CBlocker*> (_pOtherObject)->Is_Floor())
-        //if (vBound_LR.x >= vPos.x /*&& XMVector3Equal(Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT), XMVectorSet(0.f, -1.f, 0.f, 0.f))*/)
-        //{
-        //    Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vBound_LR.x + fEpsilon, fLT.y, 0.f, 1.f));
-        //    Set_2D_Direction(F_DIRECTION::RIGHT);
-        //    m_p2DColliderComs[0]->Update_OwnerTransform();
-        //}
-        ////오른쪽 끝이고 오른쪽 방향으로 가고 있었으면
-        //else if (vBound_LR.y <= vPos.x /*&& XMVector3Equal(Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT), XMVectorSet(0.f, 1.f, 0.f, 0.f)*/)
-        //{
-        //    Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vBound_LR.y - fEpsilon, fLT.y, 0.f, 1.f));
-        //    Set_2D_Direction(F_DIRECTION::LEFT);
-        //    m_p2DColliderComs[0]->Update_OwnerTransform();
-        //}
-
-        //if(F_DIRECTION::RIGHT==Get_2DDirection())
-        //    Set_2D_Direction(F_DIRECTION::LEFT);
-        //else if (F_DIRECTION::LEFT == Get_2DDirection())
-        //    Set_2D_Direction(F_DIRECTION::RIGHT);
-    }
 }
 
 void CSketchSpace_Alien::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
@@ -289,28 +247,17 @@ HRESULT CSketchSpace_Alien::Ready_Components()
         return E_FAIL;
 
     /* 2D Collider */
-    m_p2DColliderComs.resize(2);
+    m_p2DColliderComs.resize(1);
 
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
     CircleDesc.fRadius = { 20.f };
     CircleDesc.vScale = { 1.0f, 1.0f };
-    CircleDesc.vOffsetPosition = { 0.f, 0.f };
+    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
     CircleDesc.isBlock = true;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
-        return E_FAIL;
-
-
-    CircleDesc.fRadius = { 5.f };
-    CircleDesc.vScale = { 1.0f, 1.0f };
-    CircleDesc.vOffsetPosition = { 0.f, 20.f };
-    CircleDesc.isBlock = false;
-    CircleDesc.isTrigger = true;
-    CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
-    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-        TEXT("Com_ColliderHead"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
         return E_FAIL;
 
     /* Com_Gravity */

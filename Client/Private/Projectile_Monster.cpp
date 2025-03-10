@@ -115,10 +115,12 @@ HRESULT CProjectile_Monster::Change_Coordinate(COORDINATE _eCoordinate, _float3*
 
     if (COORDINATE_2D == _eCoordinate)
     {
-        CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
+        CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(Get_Include_Section_Name(), this);
+        //CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
     }
     else
-        CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
+        CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(Get_Include_Section_Name(), this);
+        //CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 
     return S_OK;
 }
@@ -157,11 +159,14 @@ void CProjectile_Monster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& 
 
 void CProjectile_Monster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID() || OBJECT_GROUP::MAPOBJECT & _pOtherObject->Get_ObjectGroupID() || OBJECT_GROUP::BLOCKER & _pOtherObject->Get_ObjectGroupID())
+    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
     {
         Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, XMVectorZero());
         m_isStop = true;
-
+    }
+    else if (OBJECT_GROUP::MAPOBJECT & _pOtherObject->Get_ObjectGroupID() || OBJECT_GROUP::BLOCKER & _pOtherObject->Get_ObjectGroupID())
+    {
+        m_isStop = true;
     }
 }
 

@@ -159,6 +159,7 @@
 #include "Monster_Body.h"
 #include "Goblin_SideScroller.h"
 #include "SketchSpace_Alien.h"
+#include "SketchSpace_SpikeBall.h"
 
 /* For. Boss */
 #include "ButterGrump.h"
@@ -1295,10 +1296,6 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			CBoss_HomingBall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_EnergyBall"),
-			CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_YellowBall"),
 			CBoss_YellowBall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
@@ -1584,6 +1581,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			CSketchSpace_Alien::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		/* For. Prototype_GameObject_SketchSpace_SpikeBall */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"),
+			CSketchSpace_SpikeBall::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 #pragma endregion
 
 	#pragma region Chapter 6 - Effect Load
@@ -1785,10 +1787,6 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_HomingBall"),
 		CBoss_HomingBall::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_EnergyBall"),
-		CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_YellowBall"),

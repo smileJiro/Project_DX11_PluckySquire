@@ -857,9 +857,6 @@
     <ClInclude Include="..\Public\ESC_Goblin.h">
       <Filter>02.GameObjects\UI\01. SettingPanel\01. SettingGoblin</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Boss_EnergyBall.h">
-      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Boss_YellowBall.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
@@ -1699,6 +1696,20 @@
     <ClInclude Include="..\Public\SketchSpace_Alien.h">
       <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Pip_Player.h" />
+    <ClInclude Include="..\public\Sneak_MapObject.h" />
+    <ClInclude Include="..\public\Sneak_FlipObject.h" />
+    <ClInclude Include="..\public\Sneak_InteractObject.h" />
+    <ClInclude Include="..\public\Sneak_Troop.h" />
+    <ClInclude Include="..\Public\SketchSpace_SpikeBall.h">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SketchSpace_UFO.h">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Projectile_SketchSpace_UFO.h">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1864,9 +1875,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\ESC_Goblin.cpp">
       <Filter>02.GameObjects\UI\01. SettingPanel\01. SettingGoblin</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Boss_EnergyBall.cpp">
-      <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Boss_YellowBall.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
@@ -2695,6 +2703,20 @@
     </ClCompile>
     <ClCompile Include="..\Private\CandleGame.cpp" />
     <ClCompile Include="..\Private\SketchSpace_Alien.cpp">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Pip_Player.cpp" />
+    <ClCompile Include="..\private\Sneak_MapObject.cpp" />
+    <ClCompile Include="..\private\Sneak_FlipObject.cpp" />
+    <ClCompile Include="..\private\Sneak_InteractObject.cpp" />
+    <ClCompile Include="..\private\Sneak_Troop.cpp" />
+    <ClCompile Include="..\Private\SketchSpace_SpikeBall.cpp">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SketchSpace_UFO.cpp">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Projectile_SketchSpace_UFO.cpp">
       <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
     </ClCompile>
   </ItemGroup>

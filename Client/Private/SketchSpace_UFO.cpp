@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Goblin_SideScroller.h"
+#include "SketchSpace_UFO.h"
 #include "GameInstance.h"
 #include "FSM.h"
 #include "ModelObject.h"
@@ -8,24 +8,24 @@
 #include "Effect2D_Manager.h"
 #include "Player.h"
 
-CGoblin_SideScroller::CGoblin_SideScroller(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CSketchSpace_UFO::CSketchSpace_UFO(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
 {
 }
 
-CGoblin_SideScroller::CGoblin_SideScroller(const CGoblin_SideScroller& _Prototype)
+CSketchSpace_UFO::CSketchSpace_UFO(const CSketchSpace_UFO& _Prototype)
     : CMonster(_Prototype)
 {
 }
 
-HRESULT CGoblin_SideScroller::Initialize_Prototype()
+HRESULT CSketchSpace_UFO::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CGoblin_SideScroller::Initialize(void* _pArg)
+HRESULT CSketchSpace_UFO::Initialize(void* _pArg)
 {
-    CGoblin_SideScroller::SIDESCROLLDESC* pDesc = static_cast<CGoblin_SideScroller::SIDESCROLLDESC*>(_pArg);
+    CSketchSpace_UFO::SIDESCROLLDESC* pDesc = static_cast<CSketchSpace_UFO::SIDESCROLLDESC*>(_pArg);
     pDesc->isCoordChangeEnable = false;
 
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
@@ -47,37 +47,48 @@ HRESULT CGoblin_SideScroller::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pFSM->Add_State((_uint)MONSTER_STATE::SIDESCROLL_PATROL);
+    if (true == Is_Stay())
+    {
+        m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
+        m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+    }
+    else
+    {
+        m_pFSM->Add_State((_uint)MONSTER_STATE::SIDESCROLL_PATROL);
+        m_pFSM->Set_State((_uint)MONSTER_STATE::SIDESCROLL_PATROL);
+    }
+
+    m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
     m_pFSM->Add_State((_uint)MONSTER_STATE::SIDESCROLL_HIT);
     m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
-    m_pFSM->Set_State((_uint)MONSTER_STATE::SIDESCROLL_PATROL);
+
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, PATROL, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE, true);
+    
+    pModelObject->Set_Animation(IDLE);
 
-    pModelObject->Set_Animation(PATROL);
-
-    pModelObject->Register_OnAnimEndCallBack(bind(&CGoblin_SideScroller::Animation_End, this, placeholders::_1, placeholders::_2));
+    pModelObject->Register_OnAnimEndCallBack(bind(&CSketchSpace_UFO::Animation_End, this, placeholders::_1, placeholders::_2));
 
     return S_OK;
 }
 
-void CGoblin_SideScroller::Priority_Update(_float _fTimeDelta)
+void CSketchSpace_UFO::Priority_Update(_float _fTimeDelta)
 {
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
-void CGoblin_SideScroller::Update(_float _fTimeDelta)
+void CSketchSpace_UFO::Update(_float _fTimeDelta)
 {
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
-void CGoblin_SideScroller::Late_Update(_float _fTimeDelta)
+void CSketchSpace_UFO::Late_Update(_float _fTimeDelta)
 {
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
-HRESULT CGoblin_SideScroller::Render()
+HRESULT CSketchSpace_UFO::Render()
 {
     /* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
 
@@ -90,30 +101,38 @@ HRESULT CGoblin_SideScroller::Render()
     return S_OK;
 }
 
-void CGoblin_SideScroller::Attack()
+void CSketchSpace_UFO::Attack()
 {
 }
 
-void CGoblin_SideScroller::Change_Animation()
+void CSketchSpace_UFO::Change_Animation()
 {
     if (COORDINATE_3D == Get_CurCoord())
         return;
 
     if (m_iState != m_iPreState)
     {
-		CGoblin_SideScroller::Animation2D eAnim = ANIM2D_LAST;
+		CSketchSpace_UFO::Animation2D eAnim = ANIM2D_LAST;
 		switch (MONSTER_STATE(m_iState))
 		{
+        case Client::MONSTER_STATE::IDLE:
+            eAnim = IDLE;
+            break;
+
         case Client::MONSTER_STATE::PATROL:
-            eAnim = PATROL;
+            eAnim = IDLE;
 			break;
 
+        case Client::MONSTER_STATE::ATTACK:
+            eAnim = ATTACK;
+            break;
+
 		case Client::MONSTER_STATE::HIT:
-				eAnim = HIT;
+			eAnim = HIT;
 			break;
 
 		case Client::MONSTER_STATE::DEAD:
-				eAnim = DEATH;
+			eAnim = DIE;
 			break;
 		default:
 			break;
@@ -126,20 +145,20 @@ void CGoblin_SideScroller::Change_Animation()
     }
 }
 
-void CGoblin_SideScroller::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
+void CSketchSpace_UFO::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     if (COORDINATE_3D == Get_CurCoord())
         return;
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
-    switch ((CGoblin_SideScroller::Animation2D)pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+    switch ((CSketchSpace_UFO::Animation2D)pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
     {
     case HIT:
         Set_AnimChangeable(true);
         break;
 
-    case DEATH:
+    case DIE:
         Set_AnimChangeable(true);
         CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), Get_Include_Section_Name(), Get_ControllerTransform()->Get_WorldMatrix());
         Event_DeleteObject(this);
@@ -150,7 +169,7 @@ void CGoblin_SideScroller::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     }
 }
 
-void CGoblin_SideScroller::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+void CSketchSpace_UFO::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
     if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
     {
@@ -203,64 +222,20 @@ void CGoblin_SideScroller::On_Collision2D_Enter(CCollider* _pMyCollider, CCollid
 
 }
 
-void CGoblin_SideScroller::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+void CSketchSpace_UFO::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 }
 
-void CGoblin_SideScroller::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+void CSketchSpace_UFO::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
-    {
-        if (true == m_isContactToTarget)
-        {
-            m_isContactToTarget = false;
-        }
-    }
-
-    if (OBJECT_GROUP::BLOCKER  ==  _pOtherCollider->Get_CollisionGroupID())
-    {
-        //CCollider_AABB* pOtherCol = static_cast<CCollider_AABB*>(_pOtherCollider);
-        //_float2 fLT = pOtherCol->Get_LT();
-        //_float2 fRB = pOtherCol->Get_RB();
-        //_float3 vPos;  XMStoreFloat3(&vPos, Get_FinalPosition());
-
-
-        //m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
-        //F_DIRECTION eDir = Get_2DDirection();
-        ////Set_2D_Direction(eDir);
-        //
-        ////왼쪽 끝이고 왼쪽 방향으로 가고 있었으면
-        //_float fEpsilon = 0.1f;
-        //_float fOffsetX = 30.f;
-        //_float2 vBound_LR = { fLT.x + fOffsetX , fRB.x - fOffsetX };
-        ////if(false == static_cast<CBlocker*> (_pOtherObject)->Is_Floor())
-        //if (vBound_LR.x >= vPos.x /*&& XMVector3Equal(Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT), XMVectorSet(0.f, -1.f, 0.f, 0.f))*/)
-        //{
-        //    Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vBound_LR.x + fEpsilon, fLT.y, 0.f, 1.f));
-        //    Set_2D_Direction(F_DIRECTION::RIGHT);
-        //    m_p2DColliderComs[0]->Update_OwnerTransform();
-        //}
-        ////오른쪽 끝이고 오른쪽 방향으로 가고 있었으면
-        //else if (vBound_LR.y <= vPos.x /*&& XMVector3Equal(Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT), XMVectorSet(0.f, 1.f, 0.f, 0.f)*/)
-        //{
-        //    Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vBound_LR.y - fEpsilon, fLT.y, 0.f, 1.f));
-        //    Set_2D_Direction(F_DIRECTION::LEFT);
-        //    m_p2DColliderComs[0]->Update_OwnerTransform();
-        //}
-
-        //if(F_DIRECTION::RIGHT==Get_2DDirection())
-        //    Set_2D_Direction(F_DIRECTION::LEFT);
-        //else if (F_DIRECTION::LEFT == Get_2DDirection())
-        //    Set_2D_Direction(F_DIRECTION::RIGHT);
-    }
 }
 
-void CGoblin_SideScroller::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+void CSketchSpace_UFO::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
     __super::On_Hit(_pHitter, _iDamg, _vForce);
 }
 
-void CGoblin_SideScroller::Enter_Section(const _wstring _strIncludeSectionName)
+void CSketchSpace_UFO::Enter_Section(const _wstring _strIncludeSectionName)
 {
     __super::Enter_Section(_strIncludeSectionName);
 
@@ -270,7 +245,7 @@ void CGoblin_SideScroller::Enter_Section(const _wstring _strIncludeSectionName)
     //}
 }
 
-HRESULT CGoblin_SideScroller::Ready_Components()
+HRESULT CSketchSpace_UFO::Ready_Components()
 {
     /* Com_FSM */
     CFSM::FSMDESC FSMDesc;
@@ -283,14 +258,13 @@ HRESULT CGoblin_SideScroller::Ready_Components()
     FSMDesc.pOwner = this;
     FSMDesc.iCurLevel = m_iCurLevelID;
     FSMDesc.isMelee = true;
-    FSMDesc.eSideScroll_Bound = m_eSideScroll_Bound;
 
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
         return E_FAIL;
 
     /* 2D Collider */
-    m_p2DColliderComs.resize(2);
+    m_p2DColliderComs.resize(1);
 
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
@@ -317,7 +291,7 @@ HRESULT CGoblin_SideScroller::Ready_Components()
     return S_OK;
 }
 
-HRESULT CGoblin_SideScroller::Ready_PartObjects()
+HRESULT CSketchSpace_UFO::Ready_PartObjects()
 {
     /* Part Body */
     CModelObject::MODELOBJECT_DESC BodyDesc{};
@@ -326,8 +300,8 @@ HRESULT CGoblin_SideScroller::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
-    BodyDesc.strModelPrototypeTag_2D = TEXT("Goblin_SideScroller");
-    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+    BodyDesc.strModelPrototypeTag_2D = TEXT("SketchspaceUFO");
+    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
 
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
 
@@ -344,33 +318,33 @@ HRESULT CGoblin_SideScroller::Ready_PartObjects()
     return S_OK;
 }
 
-CGoblin_SideScroller* CGoblin_SideScroller::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CSketchSpace_UFO* CSketchSpace_UFO::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-    CGoblin_SideScroller* pInstance = new CGoblin_SideScroller(_pDevice, _pContext);
+    CSketchSpace_UFO* pInstance = new CSketchSpace_UFO(_pDevice, _pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CGoblin_SideScroller");
+        MSG_BOX("Failed to Created : CSketchSpace_UFO");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CGoblin_SideScroller::Clone(void* _pArg)
+CGameObject* CSketchSpace_UFO::Clone(void* _pArg)
 {
-    CGoblin_SideScroller* pInstance = new CGoblin_SideScroller(*this);
+    CSketchSpace_UFO* pInstance = new CSketchSpace_UFO(*this);
 
     if (FAILED(pInstance->Initialize(_pArg)))
     {
-        MSG_BOX("Failed to Cloned : CGoblin_SideScroller");
+        MSG_BOX("Failed to Cloned : CSketchSpace_UFO");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CGoblin_SideScroller::Free()
+void CSketchSpace_UFO::Free()
 {
 
     __super::Free();
