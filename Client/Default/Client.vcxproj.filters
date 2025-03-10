@@ -1707,6 +1707,18 @@
     <ClInclude Include="..\Public\FatherGame_Progress_PartHead.h">
       <Filter>05.MiniGames\FatherGame\Progress\04.PartHead</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Projectile_SketchSpace_UFO.h">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SketchSpace_Alien.h">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SketchSpace_SpikeBall.h">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SketchSpace_UFO.h">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2712,6 +2724,18 @@
     <ClCompile Include="..\private\Sneak_Troop.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_PartHead.cpp">
       <Filter>05.MiniGames\FatherGame\Progress\04.PartHead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Projectile_SketchSpace_UFO.cpp">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SketchSpace_Alien.cpp">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SketchSpace_SpikeBall.cpp">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SketchSpace_UFO.cpp">
+      <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
