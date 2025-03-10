@@ -800,7 +800,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SNEAK);
 	//pPlayer->UnEquip_All();
-
+	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYALBE_ID::NORMAL);
 	return S_OK;
 }
 

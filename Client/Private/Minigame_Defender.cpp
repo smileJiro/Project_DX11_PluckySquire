@@ -96,16 +96,43 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
 		m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_Defender"), m_Spawners[pairMonster.first]);
     }
 
+
+    //SPAWNS================================================================================================================
 	SPAWN_DESC tSpawnDesc = {};
+    tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_RANDOM;
+    tSpawnDesc.eDirection = T_DIRECTION::LEFT;
+    tSpawnDesc.fAutoCycleTime = 13.f;
+    tSpawnDesc.fUnitDelay = 0.f;
+    tSpawnDesc.iSpawnCount = 6;
+    tSpawnDesc.bAbsolutePosition = false;
+    tSpawnDesc.fPlayerDistance = m_fSpawnDistance;
+    tSpawnDesc.fHeight = 0;
+    m_Spawners[DEFENDER_MONSTER_ID::SM_SHIP]->Add_Spawn(tSpawnDesc);
+
 	tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_DOT;
-	tSpawnDesc.fAutoCycleTime = 5.f;
+	tSpawnDesc.eDirection = T_DIRECTION::RIGHT;
+	tSpawnDesc.fPatternStartDelay = 3.5f;
+	tSpawnDesc.fAutoCycleTime = 15.f;
 	tSpawnDesc.fUnitDelay = 0.5f;
     tSpawnDesc.iSpawnCount = 5;
-    tSpawnDesc.bAbsolutePosition = true;
-	tSpawnDesc.eDirection = T_DIRECTION::RIGHT;
-
+    tSpawnDesc.bAbsolutePosition = false;
+	tSpawnDesc.fPlayerDistance = m_fSpawnDistance;
+	tSpawnDesc.fHeight = 0;
     m_Spawners[DEFENDER_MONSTER_ID::MED_SHIP_UP]->Add_Spawn(tSpawnDesc);
     m_Spawners[DEFENDER_MONSTER_ID::MED_SHIP_DOWN]->Add_Spawn(tSpawnDesc);
+
+
+    tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_ARROW;
+    tSpawnDesc.eDirection = T_DIRECTION::LEFT;
+    tSpawnDesc.fPatternStartDelay = 7.f;
+    tSpawnDesc.fAutoCycleTime = 13.f;
+    tSpawnDesc.fUnitDelay = 0.1f;
+    tSpawnDesc.iSpawnCount = 5;
+    tSpawnDesc.bAbsolutePosition = false;
+    tSpawnDesc.fPlayerDistance = m_fSpawnDistance;
+    tSpawnDesc.fHeight = 0;
+    m_Spawners[DEFENDER_MONSTER_ID::SM_SHIP]->Add_Spawn(tSpawnDesc);
+
 
     return S_OK;
 }

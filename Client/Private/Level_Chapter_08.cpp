@@ -668,7 +668,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	pBulletDesc->eStartCoord = COORDINATE_3D;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_CyberPlayerBullet"), Pooling_Desc, pBulletDesc);
-
+	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYALBE_ID::NORMAL);
 	return S_OK;
 }
 

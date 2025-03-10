@@ -65,10 +65,13 @@ void CDefenderSpawner::Update(_float _fTimeDelta)
 	for (auto& tSpawn : m_SpawnList)
 	{
 		tSpawn.Update(_fTimeDelta);
-		while( tSpawn.Is_UnitSpawnReady())
+		if (tSpawn.Is_PatternStartDelayEnd())
 		{
-			Spawn(tSpawn);
-			tSpawn.Reset_Unit();
+			while (tSpawn.Is_UnitSpawnReady())
+			{
+				Spawn(tSpawn);
+				tSpawn.Reset_Unit();
+			}
 		}
 	}
 
@@ -77,11 +80,12 @@ void CDefenderSpawner::Update(_float _fTimeDelta)
 
 void CDefenderSpawner::Add_Spawn(SPAWN_DESC tDesc)
 {
-	_vector v2DPosition;
+	//_vector v2DPosition;
 	if (false == tDesc.bAbsolutePosition)
 	{
 		tDesc.vPosition = m_pPlayer->Get_FinalPosition();
-		tDesc.vPosition += _vector{ T_DIRECTION::LEFT == tDesc.eDirection ? tDesc.fPlayerDistance : -tDesc.fPlayerDistance, tDesc.fHeight, 0.f };
+		tDesc.vPosition += _vector{ T_DIRECTION::LEFT == tDesc.eDirection ? tDesc.fPlayerDistance : -tDesc.fPlayerDistance,0.f, 0.f };
+		tDesc.vPosition.m128_f32[1] = tDesc.fHeight;
 	}
 	tDesc.fUnitTimeAcc = tDesc.fUnitDelay;
 	m_SpawnList.push_back(tDesc);
@@ -218,6 +222,11 @@ HRESULT CDefenderSpawner::Cleanup_DeadReferences()
 
 void SPAWN_DESC::Update(_float _fTimeDelta)
 {
+	if(false == Is_PatternStartDelayEnd())
+	{
+		fPatternStartTimeAcc += _fTimeDelta;
+		return;
+	}
 	fUnitTimeAcc += _fTimeDelta;
 	fUnitTimeAcc += _fTimeDelta;
 	fCycleTimeAcc += _fTimeDelta;

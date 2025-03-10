@@ -19,6 +19,7 @@ struct SPAWN_DESC
 	friend class CDefenderSpawner;
 	SPAWN_PATTERN ePattern = SPAWN_PATTERN_DOT;
 	T_DIRECTION eDirection = T_DIRECTION::RIGHT;
+	_float fPatternStartDelay = 0.f;
 	//À¯´Ö »ý»ê È½¼ö
 	_uint iSpawnCount = 1; 
 	//ÇÑ ¹øÀÇ À¯´Ö »ý»ê µô·¹ÀÌ.
@@ -38,6 +39,7 @@ public:
 	void Update(_float _fTimeDelta);
 	void Reset_Cycle() { iCurrentSpawnCount = 0; fCycleTimeAcc = 0.f; fUnitTimeAcc = 0.f; }
 	void Reset_Unit() { fUnitTimeAcc = 0.f; }
+	_bool Is_PatternStartDelayEnd() { return fPatternStartDelay <= fPatternStartTimeAcc; }
 	_bool Is_UnitSpawnReady() { return false == Is_PatternEnd() && fUnitTimeAcc >= fUnitDelay; }
 	_bool Is_PatternEnd() { return iCurrentSpawnCount >= iSpawnCount; }
 
@@ -47,6 +49,7 @@ private:
 	_uint iCurrentSpawnCount = 0;
 	_float fCycleTimeAcc = 0.f;
 	_float fUnitTimeAcc = 0.f;
+	_float fPatternStartTimeAcc = 0.f;
 };
 class CDefenderSpawner :
     public CGameObject

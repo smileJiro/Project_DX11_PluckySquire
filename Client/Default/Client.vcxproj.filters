@@ -1651,7 +1651,9 @@
       <Filter>05.MiniGames\FatherGame\Object\FatherPart</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CandleGame.h" />
-    <ClInclude Include="..\Public\DefenderMedShip.h" />
+    <ClInclude Include="..\Public\DefenderMedShip.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2629,7 +2631,9 @@
       <Filter>05.MiniGames\FatherGame\Object\FatherPart</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CandleGame.cpp" />
-    <ClCompile Include="..\Private\DefenderMedShip.cpp" />
+    <ClCompile Include="..\Private\DefenderMedShip.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
