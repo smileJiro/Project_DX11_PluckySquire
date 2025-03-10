@@ -523,13 +523,13 @@ void CSection_Manager::Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPo
 
 }
 
-HRESULT CSection_Manager::Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType)
+HRESULT CSection_Manager::Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType, _bool _isRegistered)
 {
 	CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(Find_Section(_strSectionTag));
 	if (nullptr == pSection_2D)
 		return E_FAIL;
 
-	return pSection_2D->Word_Action_To_Section(_strSectionTag, _iControllerIndex, _iContainerIndex, _iWordType);
+	return pSection_2D->Word_Action_To_Section(_strSectionTag, _iControllerIndex, _iContainerIndex, _iWordType, _isRegistered);
 }
 
 HRESULT CSection_Manager::Register_WorldCapture(const _wstring& _strSectionTag, CModelObject* _pObject)

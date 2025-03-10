@@ -26,6 +26,11 @@
 		"Section_Info": {
 			"Pre_Page_Tag": "Chapter8_P0304",
 			"Next_Page_Tag": "Chapter8_P0708"
+		},
+		"MiniGame_Info" : 
+		{
+			"MiniGame_Type" : 0,
+			"MiniGame_Name" : "WordGame_03"
 		}
 	},
 	{

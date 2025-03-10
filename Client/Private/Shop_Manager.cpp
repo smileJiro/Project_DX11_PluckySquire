@@ -241,11 +241,11 @@ HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
 			eShopDesc.fSizeX = 256.f * 0.8f;
 			eShopDesc.fSizeY = 256.f * 0.8f;
 			eShopDesc.iShopItemCount = i;
-			eShopDesc.iSkillLevel = 0;
+			eShopDesc.iSkillLevel = m_iAttackPlusLevel;
 			eShopDesc.isChooseItem = true;
 			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_ATTACKPLUSBADGE;
 			eShopDesc.iPrice = 10;
-			eShopDesc.strName = TEXT("공격력 증가");
+			eShopDesc.strName = TEXT("검 공격력 강화");
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
 				return E_FAIL;
@@ -301,7 +301,8 @@ HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
 			eShopDesc.iShopItemCount = i;
 			eShopDesc.iSkillLevel = m_iSpinAttackLevel;
 			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_THROWATTBADGE;
-			eShopDesc.strName = TEXT("회전 공격");
+			eShopDesc.iPrice = 20;
+			eShopDesc.strName = TEXT("검 던지기 배지");
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
 				return E_FAIL;
@@ -356,8 +357,11 @@ HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
 			eShopDesc.fSizeY = 256.f * 0.8f;
 			eShopDesc.iShopItemCount = i;
 			eShopDesc.iSkillLevel = m_iJumpAttackLevel;
-			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_SCROLLITEM;
-			eShopDesc.strName = TEXT("점프 공격");
+			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_SPINATTACKBADGE;
+			eShopDesc.iPrice = 30;
+			eShopDesc.strName = TEXT("회전 공격 배지");
+
+			
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
 				return E_FAIL;
@@ -393,6 +397,8 @@ HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
 
 void CShop_Manager::Delete_ShopItems(_uint _index)
 {
+	Skill_LevelUp(_index);
+
 	for (int i = 0; i < m_ShopItems[_index].size(); ++i)
 	{
 
@@ -403,8 +409,57 @@ void CShop_Manager::Delete_ShopItems(_uint _index)
 	}
 
 	m_ShopItems.erase(m_ShopItems.begin() + _index);
+
+	// 뱃지 포지션 파악
+	m_BadgePositions.erase(m_BadgePositions.begin() + _index);
+
+	if (0 < m_ShopItems.size())
+	{
+		if (1 == m_ShopItems.size())
+		{
+			for (int i = 0; i < m_ShopItems[0].size(); ++i)
+			{
+				m_ShopItems[0][i]->Set_isChooseItem(true);
+			}
+			return;
+		}
+
+		for (int i = 0; i < m_ShopItems[_index].size(); ++i)
+		{
+			m_ShopItems[_index][i]->Set_isChooseItem(true);
+		}
+	}
+
+
+		
 	//m_isUpdateShopPanel = true;
 	int a = 0;
+}
+
+void CShop_Manager::Skill_LevelUp(_uint _index)
+{
+	_int iLevel = m_ShopItems[_index][1]->Get_SkillLevel();
+	CUI::SKILLSHOP eSkillIcon = m_ShopItems[_index][1]->Get_SkillShopIcon();
+
+	switch (eSkillIcon)
+	{
+	case CUI::SKILLSHOP::SKILLSHOP_JUMPATTACKBADGE:
+		++m_iJumpAttackLevel;
+		break;
+
+	case CUI::SKILLSHOP::SKILLSHOP_SPINATTACKBADGE:
+		++m_iSpinAttackLevel;
+		break;
+
+	case CUI::SKILLSHOP::SKILLSHOP_ATTACKPLUSBADGE:
+		++m_iAttackPlusLevel;
+		break;
+
+	case CUI::SKILLSHOP::SKILLSHOP_THROWATTBADGE:
+		++m_iThrowAttackLevel;
+		break;
+
+	}
 }
 
 void CShop_Manager::OpenClose_Shop()

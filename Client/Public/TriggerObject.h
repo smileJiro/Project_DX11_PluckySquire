@@ -32,15 +32,14 @@ public:
 		_wstring					szEventTag = {};
 		TRIGGER_CONDITION			eConditionType = { CONDITION_END };
 
+		_bool						isReusable = true;
+
 		// Model 상속을 위한 추가 데이터
 		_uint						iActorType = { (_uint)ACTOR_TYPE::STATIC };
 		_bool						isTrigger = { true };
 		_float3						vLocalPosOffset = {};
 		_bool						FreezeRotation[3] = { true, false, true };
 		_uint						iShapeUse = { 0 };
-
-		_bool						isReusable = true;
-
 	}TRIGGEROBJECT_DESC;
 
 protected:

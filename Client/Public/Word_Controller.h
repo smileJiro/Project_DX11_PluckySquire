@@ -37,9 +37,16 @@ public :
 	vector<_float2>			Get_PatternPositions(_float2 _fProjPos, _float2 _fWindowInPos);
 	virtual void			Enter_Section(const _wstring _strIncludeSectionName) override;
 
+	void					Active_OnEnable() override;
+	void					Active_OnDisable() override;
+
 private:
+	_bool					m_isWordControllerPopup = false;	
+	_bool					m_isFadeIn = false;
+
 	_uint					m_iControllerIndex = 0;
 	_uint					m_iWordCount = {};
+	_float					m_fAmount = { 0.f };
 
 	_wstring				m_strOriginText;
 	_wstring				m_strRenderText;

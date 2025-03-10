@@ -4,6 +4,7 @@
 #include "FloorWord.h"
 #include "Section_Manager.h"
 #include "Word_Container.h"
+#include "PlayerData_Manager.h"
 #include <regex>
 
 CWord_Controller::CWord_Controller(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -28,9 +29,6 @@ HRESULT CWord_Controller::Initialize(void* _pArg)
 
 HRESULT CWord_Controller::Import(CSection_2D* _pSection, json _ControllerJson)
 {
-
-
-
 	// 컨트롤러  인덱스. 
 	m_iControllerIndex = _ControllerJson["Controller_Index"];
 	// 풀 텍스트
@@ -46,6 +44,10 @@ HRESULT CWord_Controller::Import(CSection_2D* _pSection, json _ControllerJson)
 	CContainerObject::CONTAINEROBJ_DESC Desc = {};
 	Desc.Build_2D_Transform(fPos, fScale);
 	Desc.eStartCoord = COORDINATE_2D;
+
+
+	if (_ControllerJson.contains("FadeIn"))
+		m_isWordControllerPopup = !((_bool)_ControllerJson["FadeIn"]);
 
 
 	if (FAILED(__super::Initialize(&Desc)))
@@ -109,7 +111,7 @@ HRESULT CWord_Controller::Import(CSection_2D* _pSection, json _ControllerJson)
 				auto pGenerator = SECTION_MGR->Get_Word_Generator();
 				CWord* pWord = pGenerator->Find_Word(iWordIndex);
 
-				static_cast<CWord_Container*>(m_PartObjects[iIndex])->Set_Word(pWord, CWord::WORD_MODE_SETUP);
+				static_cast<CWord_Container*>(m_PartObjects[iIndex])->Set_Word(pWord, CWord::WORD_MODE_SETUP, false);
 			}
 			iIndex++;
 		}
@@ -120,6 +122,15 @@ HRESULT CWord_Controller::Import(CSection_2D* _pSection, json _ControllerJson)
 
 	if (FAILED(Update_Text()))
 		return E_FAIL;
+
+	if (m_isWordControllerPopup)
+	{
+		Set_Render(false);
+		for (auto pCollider : m_p2DColliderComs)
+			pCollider->Set_Active(true);
+		for (auto pPartObject : m_PartObjects)
+			pPartObject->Set_Active(false);
+	}
 
 	return S_OK;
 
@@ -133,6 +144,39 @@ void CWord_Controller::Priority_Update(_float _fTimeDelta)
 void CWord_Controller::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
+
+	if (false == m_isWordControllerPopup)
+	{
+		auto pPlayer = CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr();
+
+		if (nullptr != pPlayer && COORDINATE_2D == pPlayer->Get_CurCoord() )
+		{
+			_vector vControllerPos  = Get_FinalPosition(COORDINATE_2D);
+			_vector vPlayerPos  = pPlayer->Get_FinalPosition(COORDINATE_2D);
+			_float fLength = XMVectorGetX(XMVector2Length(vControllerPos - vPlayerPos));
+
+			if (250.f > fabs(fLength))
+			{
+				m_isWordControllerPopup = true;
+				Set_Render(true);
+				for (auto pCollider : m_p2DColliderComs)
+					pCollider->Set_Active(true);
+				for (auto pPartObject : m_PartObjects)
+					pPartObject->Set_Active(true);
+			}
+		}
+	}
+	else if (false == m_isFadeIn)
+	{
+		m_fAmount += _fTimeDelta * 1.8f;
+
+		if (m_fAmount > 1.f)
+		{
+			m_fAmount = 1.f;
+			m_isFadeIn = true;
+		}
+	
+	}
 }
 
 void CWord_Controller::Late_Update(_float _fTimeDelta)
@@ -145,27 +189,30 @@ void CWord_Controller::Late_Update(_float _fTimeDelta)
 
 HRESULT CWord_Controller::Render()
 {
-	_vector vPosition = Get_FinalPosition();
-	_float2 fPos = { XMVectorGetX(vPosition),XMVectorGetY(vPosition) };
-
-	_float2 fSize = SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName);
-	_float2 fScale = SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName);
-
-	fPos = Convert_Pos_ToWindow(fPos, fSize);
-	fPos.x -= m_fRenderSize.x * 0.5f;
-	fPos.y -= m_fRenderSize.y * 0.5f;
-
-
-	m_pGameInstance->Render_Font(L"Font28", m_strRenderText.c_str(), fPos,
-		XMVectorSet(0.f, 0.f, 0.f, 1.f));
-
-
-	for (auto& pPartObj : m_PartObjects)
+	if (m_isWordControllerPopup)
 	{
-		if (nullptr != pPartObj && true == pPartObj->Is_Active())
-			pPartObj->Render();
-	}
+		_vector vPosition = Get_FinalPosition();
+		_float2 fPos = { XMVectorGetX(vPosition),XMVectorGetY(vPosition) };
 
+		_float2 fSize = SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName);
+		_float2 fScale = SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName);
+
+		fPos = Convert_Pos_ToWindow(fPos, fSize);
+		fPos.x -= m_fRenderSize.x * 0.5f;
+		fPos.y -= m_fRenderSize.y * 0.5f;
+
+
+		m_pGameInstance->Render_Font(L"Font28", m_strRenderText.c_str(), fPos,
+			XMVectorSet(0.f, 0.f, 0.f, m_fAmount));
+
+
+		for (auto& pPartObj : m_PartObjects)
+		{
+			if (nullptr != pPartObj && true == pPartObj->Is_Active())
+				pPartObj->Render();
+		}
+		
+	}
 	return __super::Render();
 }
 
@@ -285,6 +332,26 @@ void CWord_Controller::Enter_Section(const _wstring _strIncludeSectionName)
 		if(nullptr != pController)
 			pController->Enter_Section(_strIncludeSectionName);
 	}
+}
+
+void CWord_Controller::Active_OnEnable()
+{
+	__super::Active_OnEnable();
+
+	if (false == m_isWordControllerPopup)
+	{
+		Set_Render(false);
+		for (auto pCollider : m_p2DColliderComs)
+			pCollider->Set_Active(true);
+		for (auto pPartObject : m_PartObjects)
+			pPartObject->Set_Active(false);
+	}
+
+}
+
+void CWord_Controller::Active_OnDisable()
+{
+	__super::Active_OnDisable();
 }
 
 CWord_Controller* CWord_Controller::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, CSection_2D* _pSection, json _ControllerJson)

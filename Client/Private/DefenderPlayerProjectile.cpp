@@ -3,6 +3,7 @@
 #include "Collider_AABB.h"
 #include "Section_Manager.h"
 #include "Character.h"
+#include "Effect2D_Manager.h"
 
 CDefenderPlayerProjectile::CDefenderPlayerProjectile(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CScrollModelObject(_pDevice, _pContext)
@@ -54,6 +55,7 @@ HRESULT CDefenderPlayerProjectile::Initialize(void* _pArg)
 	AABBDesc.isBlock = false;
 	AABBDesc.isTrigger = true;
 	AABBDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
+	AABBDesc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_TRIGGER;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
 		return E_FAIL;
@@ -96,10 +98,16 @@ HRESULT CDefenderPlayerProjectile::Render()
 
 void CDefenderPlayerProjectile::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if (OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
+	if (OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID()
+		&& (_uint)COLLIDER2D_USE::COLLIDER2D_BODY == _pOtherCollider->Get_ColliderUse())
 	{
 		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, _vector{0.f,0.f,0.f});
 		Event_DeleteObject(this);
+		//CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefPlayerHit"), m_strSectionName, m_pControllerTransform-> );
+		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefPlayerHit"), Get_Include_Section_Name()
+			, Get_FinalWorldMatrix(), 0.f
+			,rand()%2, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
+
 	}
 }
 

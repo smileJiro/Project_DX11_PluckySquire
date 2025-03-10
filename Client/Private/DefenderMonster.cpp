@@ -35,21 +35,6 @@ HRESULT CDefenderMonster::Initialize(void* _pArg)
 
 	Set_Direction(m_eTDirection);
 
-	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
-	CircleDesc.pOwner = this;
-	CircleDesc.fRadius = pDesc->fBodyRadius;
-	CircleDesc.vScale = { 1.0f, 1.0f };
-	CircleDesc.vOffsetPosition = { 0.f, 0.f};
-	CircleDesc.isBlock = false;
-	CircleDesc.isTrigger = false;
-	CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
-	CircleDesc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_pBodyCollider), &CircleDesc)))
-		return E_FAIL;
-
-	m_p2DColliderComs.push_back(m_pBodyCollider);
-	Safe_AddRef(m_pBodyCollider);
 
 	return S_OK;
 }
@@ -61,6 +46,7 @@ void CDefenderMonster::Update(_float _fTimeDelta)
 	{
 		Event_DeleteObject(this);
 		m_fLifeTimeAcc = 0.f;
+		On_LifeTimeOut();
 	}
 	__super::Update(_fTimeDelta);
 }
@@ -70,7 +56,9 @@ void CDefenderMonster::Update(_float _fTimeDelta)
 void CDefenderMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 	if(OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
-		Event_Hit(this, static_cast<CCharacter*>( _pOtherObject), m_tStat.iDamg,_vector{0.f,0.f,0.f});
+	{
+		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), m_tStat.iDamg, _vector{ 0.f,0.f,0.f });
+	}
 }
 
 void CDefenderMonster::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -88,6 +76,7 @@ void CDefenderMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vFor
 	if (m_tStat.iHP <= 0)
 	{
 		Event_DeleteObject(this);
+		On_Explode();
 		m_tStat.iHP = m_tStat.iMaxHP;
 		return;
 	}
@@ -143,6 +132,5 @@ CGameObject* CDefenderMonster::Clone(void* _pArg)
 
 void CDefenderMonster::Free()
 {
-	Safe_Release(m_pBodyCollider);
 	__super::Free();
 }

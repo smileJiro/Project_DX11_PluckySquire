@@ -347,21 +347,6 @@
 		},
 		{
 			"strSectionid": "Chapter5_P0102",
-			"strAnimaionName": "Atria_Rev_04",
-			"strCreateSection": 5,
-			"strDialogueId": "Ren_Dialogue_01",
-			"iStartAnimation": 0,
-			"vPositionX": -1247.0,
-			"vPositionY": -436.0,
-			"vPositionZ": 0.0,
-			"CollisionScaleX": 20.0,
-			"CollisionScaleY": 15.0,
-			"isInteractable": true,
-			"isDialog": true,
-			"is2D": true
-		},
-		{
-			"strSectionid": "Chapter5_P0102",
 			"strAnimaionName": "Artia_Pandy",
 			"strCreateSection": 5,
 			"strDialogueId": "Warhall_Dialogue_01",

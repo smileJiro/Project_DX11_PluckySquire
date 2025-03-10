@@ -2,6 +2,7 @@
 #include "DefenderSmShip.h"
 #include "ModelObject.h"
 #include "GameInstance.h"
+#include "Effect2D_Manager.h"
 
 CDefenderSmShip::CDefenderSmShip(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CDefenderMonster(_pDevice, _pContext)
@@ -17,6 +18,7 @@ CDefenderSmShip::CDefenderSmShip(const CDefenderSmShip& _Prototype)
 HRESULT CDefenderSmShip::Initialize(void* _pArg)
 {
 	DEFENDER_MONSTER_DESC* pDesc = static_cast<DEFENDER_MONSTER_DESC*>(_pArg);
+	pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER;
 	pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	pDesc->tTransform2DDesc.fSpeedPerSec = m_fMoveSpeed;
 	pDesc->iNumPartObjects = 1;
@@ -31,6 +33,23 @@ HRESULT CDefenderSmShip::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
+
+	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+	CircleDesc.pOwner = this;
+	CircleDesc.fRadius = 10.f;
+	CircleDesc.vScale = { 1.0f, 1.0f };
+	CircleDesc.vOffsetPosition = { 0.f, 0.f };
+	CircleDesc.isBlock = false;
+	CircleDesc.isTrigger = false;
+	CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
+	CircleDesc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_pBodyCollider), &CircleDesc)))
+		return E_FAIL;
+
+	m_p2DColliderComs.push_back(m_pBodyCollider);
+	Safe_AddRef(m_pBodyCollider);
+
 	return S_OK;
 }
 
@@ -43,7 +62,12 @@ void CDefenderSmShip::Update(_float _fTimeDelta)
 
 void CDefenderSmShip::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	__super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
+	if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID()
+		&& (_uint)COLLIDER2D_USE::COLLIDER2D_BODY == _pOtherCollider->Get_ColliderUse())
+	{
+		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), m_tStat.iDamg, _vector{ 0.f,0.f,0.f });
+		Event_DeleteObject(this);
+	}
 }
 
 void CDefenderSmShip::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -60,6 +84,31 @@ void CDefenderSmShip::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForc
 {
 	__super::On_Hit(_pHitter, _iDamg, _vForce);
 
+}
+
+void CDefenderSmShip::On_Explode()
+{
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefDebrisFSmall"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, rand() % 2, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
+
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefExplosionSmall"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, rand() % 4, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
+}
+
+void CDefenderSmShip::On_Spawned()
+{
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, 2, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
+}
+
+void CDefenderSmShip::On_LifeTimeOut()
+{
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, 5, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
 }
 
 HRESULT CDefenderSmShip::Ready_PartObjects()
@@ -112,5 +161,6 @@ CGameObject* CDefenderSmShip::Clone(void* _pArg)
 
 void CDefenderSmShip::Free()
 {
+	Safe_Release(m_pBodyCollider);
 	__super::Free();
 }

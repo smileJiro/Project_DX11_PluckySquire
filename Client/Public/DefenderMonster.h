@@ -8,7 +8,9 @@ enum class DEFENDER_MONSTER_ID
 {
 	SM_SHIP,
 	TURRET,
-	MESSHIP,
+	MED_SHIP_UP,
+	MED_SHIP_DOWN,
+	PERSON_CAPSULE,
 	LAST
 };
 class CDefenderMonster :
@@ -18,7 +20,6 @@ public:
 	typedef struct tagDefenderMonsterDesc : public CCharacter::CHARACTER_DESC
 	{
 		T_DIRECTION eTDirection = T_DIRECTION::RIGHT;
-		_float fBodyRadius = 10.f;
 	}DEFENDER_MONSTER_DESC;
 protected:
 	CDefenderMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -32,11 +33,16 @@ public:
 	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce);
+	virtual void On_Explode() {};
+	virtual void On_Spawned() {};
+	virtual void On_LifeTimeOut() {};
 
 	void Set_Direction(T_DIRECTION _eDirection);
+	void Set_MoveSpeed(_float _fSpeed) { m_fMoveSpeed = _fSpeed; }
 protected:
 
 protected:
+	_float m_fMoveSpeed = 100.f;
 	T_DIRECTION m_eTDirection = T_DIRECTION::RIGHT;
 	CCollider_Circle* m_pBodyCollider = nullptr;
 	_float m_fLifeTime = 10.f;

@@ -274,8 +274,18 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::T))
 	{
-		//CLoader::Create(m_pDevice, m_pContext, LEVEL_CHAPTER_4);
-		//Event_ChangeMapObject(m_eLevelID, TEXT("Chapter_04_Default_Desk.mchc"), TEXT("Layer_MapObject"), true);
+		//CTriggerObject::TRIGGEROBJECT_DESC DescA = {};
+		//DescA.vHalfExtents = { 10.f, 10.f, 0.f };
+		//DescA.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+		//DescA.szEventTag = TEXT("Chapter2_Intro");
+		//DescA.eConditionType = CTriggerObject::TRIGGER_ENTER;
+		//DescA.isReusable = false; // 한 번 하고 삭제할 때
+		//DescA.eStartCoord = COORDINATE_2D;
+		//DescA.tTransform2DDesc.vInitialPosition = { 0.f, 0.f, 0.f };
+
+		//_wstring wsSectionKey = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+		//CSection* pSection = CSection_Manager::GetInstance()->Find_Section(wsSectionKey);
+		//CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &DescA, pSection);
 	}
 
 	Uimgr->UI_Update();
@@ -503,8 +513,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Map()
 	switch (eLevelID)
 	{
 	case Client::LEVEL_CHAPTER_2:
-		//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
-			//return E_FAIL;
+		if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_4:
 		if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
@@ -799,7 +809,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	//pPlayer->UnEquip_All();
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
-
 	return S_OK;
 }
 

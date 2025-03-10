@@ -44,7 +44,7 @@ public:
 	virtual void			On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 	
 	CWord*	Get_Word() { return m_pMyWord; };
-	void	Set_Word(CWord* _pWord, CWord::WORD_MODE _eMode = CWord::WORD_MODE_ENTER_SETUP);
+	void	Set_Word(CWord* _pWord, CWord::WORD_MODE _eMode = CWord::WORD_MODE_ENTER_SETUP, _bool isWordActionRegister = true);
 	void	Pop_Word(_float3 _fDir);
 	
 	void	Set_ControllerIndex(_uint _iIndex) { m_iControllerIndex = _iIndex; }
@@ -54,6 +54,8 @@ private:
 	_uint				m_iControllerIndex = {};
 	_uint				m_iContainerIndex = {};
 	CWord*				m_pMyWord = nullptr;
+	_float				m_fEffectInterval = 2.f;
+	_float				m_fEffectAccTime = 0.f;
 	CWord_Controller*	m_pOnwer;
 public:
 	static CWord_Container* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

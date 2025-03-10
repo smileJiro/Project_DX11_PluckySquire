@@ -2,6 +2,8 @@
 #include "2DMapWordObject.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "Camera_Manager.h"
+#include "PlayerData_Manager.h"
 
 
 C2DMapWordObject::C2DMapWordObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -38,6 +40,11 @@ HRESULT C2DMapWordObject::Initialize(void* _pArg)
         WordObjectJson["Scale"][1].get<_float>() };
 
     pDesc->Build_2D_Transform(fPos, fScale);
+
+    if (WordObjectJson.contains("TargetDiff"))
+        m_fTargetDiff = WordObjectJson["TargetDiff"];
+    else
+        m_fTargetDiff = 13.f;
 
     if(WordObjectJson.contains("Image_Tag_List") 
         && WordObjectJson["Image_Tag_List"].is_array())
@@ -132,12 +139,7 @@ HRESULT C2DMapWordObject::Initialize(void* _pArg)
 		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 			TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
 			return E_FAIL;
-
-
-
 	}
-
-
     return S_OK; /* hr */
 }
 
@@ -147,6 +149,9 @@ void C2DMapWordObject::Priority_Update(_float _fTimeDelta)
 }
 void C2DMapWordObject::Update(_float _fTimeDelta)
 {
+
+    Action_Process(_fTimeDelta);
+
     __super::Update(_fTimeDelta);
 
 }
@@ -165,6 +170,40 @@ HRESULT C2DMapWordObject::Render()
     return __super::Render();
 }
 
+_bool C2DMapWordObject::Check_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
+{
+    _bool isExecute = false;
+
+    if (m_iControllerIndex == _iControllerIndex
+        && m_iContainerIndex == _iContainerIndex
+        && m_iWordIndex == _iWordIndex)
+        return false;
+
+    auto iter = find_if(m_Actions.begin(), m_Actions.end(), [this,&isExecute, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]
+    (WORD_ACTION& tAction){
+            return (tAction.iControllerIndex == _iControllerIndex
+                && tAction.iContainerIndex == _iContainerIndex
+                && tAction.iWordType == _iWordIndex);
+        });
+
+    return iter != m_Actions.end();
+}
+
+_bool C2DMapWordObject::Register_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
+{
+	m_isRegistered = true;
+
+	m_iContainerIndex = _iContainerIndex;
+	m_iControllerIndex = _iControllerIndex;
+    m_iWordIndex = _iWordIndex;
+    
+    m_isStartChase = false;
+    m_isStartAction = false;
+    m_fActionIntervalSecond = 2.f;
+    m_fAccTime = 0.f;
+    return true;
+}
+
 _bool C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
 {
     _bool isExecute = false;
@@ -175,7 +214,9 @@ _bool C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContaine
                 && tAction.iWordType == _iWordIndex)
             {
                 isExecute = true;
-
+                m_iContainerIndex = _iContainerIndex;
+                m_iControllerIndex = _iControllerIndex;
+                m_iWordIndex = _iWordIndex;
                 switch (tAction.eAction)
                 {
                 case IMAGE_CHANGE:
@@ -255,6 +296,70 @@ const C2DMapWordObject::WORD_ACTION* C2DMapWordObject::Find_Action(_uint _iContr
     }
 
     return nullptr;
+}
+
+void C2DMapWordObject::Action_Process(_float _fTimeDelta)
+{
+	if (false == m_isRegistered)
+        return;
+
+    if (false == m_isStartChase)
+    {
+        CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr()->Set_BlockPlayerInput(true);
+
+        CCamera_Manager::GetInstance()->Change_CameraTarget(this);
+        CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(
+            (CCamera_Manager::CAMERA_TYPE)CCamera_Manager::GetInstance()->Get_CameraType(),
+            1.f,
+            5.f,
+            EASE_IN_OUT
+        );
+        m_isStartChase = true;
+    }
+    else if(false == m_isStartAction)
+    {
+        _vector v3DPosition = SECTION_MGR->Get_WorldPosition_FromWorldPosMap(m_strSectionName,
+            _float2(XMVectorGetX(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)), XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION))));
+
+        _vector vCamPosition = CCamera_Manager::GetInstance()->Get_CameraVector(CTransform::STATE_POSITION);
+
+        if (XMVectorGetX(XMVector3Length(v3DPosition - vCamPosition)) < m_fTargetDiff)
+            m_isStartAction = true;
+    }
+    else 
+    {
+        if (0.f < m_fActionIntervalSecond)
+        {
+            m_fAccTime += _fTimeDelta;
+        
+			if (m_fAccTime >= m_fActionIntervalSecond)
+			{
+                m_fActionIntervalSecond *= -1.f;
+                m_fActionIntervalSecond += 1.5f;
+                m_fAccTime = 0.f;
+				SECTION_MGR->Word_Action_To_Section(m_strSectionName, m_iControllerIndex, m_iContainerIndex, m_iWordIndex, false);
+			}
+        }
+        else 
+        {
+            m_fAccTime -= _fTimeDelta;
+
+            if (m_fAccTime <= m_fActionIntervalSecond)
+            {
+                // Time Interval
+                auto pPlayer = CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr();
+                CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer);
+                CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr()->Set_BlockPlayerInput(false);
+                CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(
+                    (CCamera_Manager::CAMERA_TYPE)CCamera_Manager::GetInstance()->Get_CameraType(),
+                    1.f,
+                    5.f,
+                    EASE_IN_OUT
+                );
+                m_isRegistered = false;
+            }
+        }
+    }
 }
 
 void C2DMapWordObject::Active_OnEnable()

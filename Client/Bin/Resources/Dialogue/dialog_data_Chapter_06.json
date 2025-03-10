@@ -2075,6 +2075,243 @@
 					"Blue": 0
 				}
 			]
+		},
+		{
+			"id": "ZetPack_Child_6",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "좋았어!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "아빠 부품을 하나 찾았네...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "하지만 은하계에 부품이 아직 두 개나 남았어...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "힘내보자!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "JellyKing_0",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "제럴도",
+					"BG": 6,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "안녕하신가!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "제럴도",
+					"BG": 6,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "짐은 젤리 왕 제럴도라고 하네, 호호!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "제럴도",
+					"BG": 6,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "오늘은 짐의 생일이야... 올해로 60살이지!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "제럴도",
+					"BG": 6,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "아, 촛불에 불을 켜고 생일을 축하할 수 있다면 얼마나 좋을까...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "제럴도",
+					"BG": 6,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "이 탱글탱글한 몸이 보낸 10년이란 세월마다 \n촛불을 하나씩 켜고 말이야...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "제럴도",
+					"BG": 6,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "마침 이 근처 어딘가에 양초 여섯 개가 놓여 있거든?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "제럴도",
+					"BG": 6,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그 양초에 전부 불을 붙여서 \n이 나이 든 왕을 기쁘게 만들어 주겠나?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+
+			]
+		},
+		{
+			"id": "JellyKing_1",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "제럴도",
+					"BG": 6,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "이 친구들, 정말로 해냈군!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "제럴도",
+					"BG": 6,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "친애하는 백성들이여, 이리 와서 왕의 선물을 받게나.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
 		}
 	]
 }

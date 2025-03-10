@@ -248,23 +248,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	
 	
 
-	///* Test Candle */
-	//CCandleGame::CANDLEGAME_DESC CandleGameDesc;
-	//CandleGameDesc.iCurLevelID = LEVEL_CHAPTER_6;
-	//CandleGameDesc.Build_3D_Transform(_float3(0.0f, 0.0f, 0.0f));
-	//CandleGameDesc.eStartCoord = COORDINATE_3D;
-	//CandleGameDesc.isCoordChangeEnable = false;
-	//
-	//for (_uint i = 0; i < 5; ++i)
-	//{
-	//	CandleGameDesc.CandlePositions.push_back(_float3(i * 5.0f, 1.0f, -10.f));
-	//}
-	//
-	//CGameObject* pGameObject = nullptr;
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_CandleGame"), LEVEL_CHAPTER_6, TEXT("Layer_CandleGame"), &pGameObject, &CandleGameDesc)))
-	//	return E_FAIL;
-	//m_pCandleGame = static_cast<CCandleGame*>(pGameObject);
-	//Safe_AddRef(m_pCandleGame);
+	
 
 
 	/* Test FatherGame Progress */
@@ -652,24 +636,16 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
-	
+
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
-
 	return S_OK;
 }
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 {
 	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
-
-	CDefenderPlayer::DEFENDERPLAYER_DESC tDeffenderPlayerDesc = {};
-	tDeffenderPlayerDesc.iCurLevelID = m_eLevelID;
-	CDefenderPlayer* pPlayer = static_cast<CDefenderPlayer*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderPlayer"), &tDeffenderPlayerDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pPlayer);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
-	pPlayer->Set_Active(false);
 
 	CMiniGame_Defender::DEFENDER_CONTROLLTOWER_DESC tDesc = {};
 	tDesc.iCurLevelID = m_eLevelID;
@@ -678,14 +654,13 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pTower);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pTower, SECTION_2D_PLAYMAP_OBJECT);
 
-	CDefenderSmShip::DEFENDER_MONSTER_DESC tMonsterDesc = {};
-	tMonsterDesc.eTDirection = T_DIRECTION::RIGHT;
-	tMonsterDesc.iCurLevelID = m_eLevelID;
-	tMonsterDesc.tTransform2DDesc.vInitialPosition = { -0.f, 0.f, 0.f };   // TODO ::임시 위치
-	CDefenderSmShip* pMonster = static_cast<CDefenderSmShip*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderSmShip"), &tMonsterDesc));;
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pMonster);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pMonster, SECTION_2D_PLAYMAP_OBJECT);
-
+	CDefenderPlayer::DEFENDERPLAYER_DESC tDeffenderPlayerDesc = {};
+	tDeffenderPlayerDesc.iCurLevelID = m_eLevelID;
+	tDeffenderPlayerDesc.pMinigame = pTower;
+	CDefenderPlayer* pPlayer = static_cast<CDefenderPlayer*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderPlayer"), &tDeffenderPlayerDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pPlayer);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
+	pPlayer->Set_Active(false);
 
 	return S_OK;
 }
@@ -786,6 +761,11 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannelRenderFont"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
 #pragma region SettingPanel UI
 
 	_uint SettingPanelUICount = CUI::SETTINGPANEL::SETTING_END;
@@ -1409,6 +1389,18 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("health_pickup_large"), LEVEL_STATIC, 3);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Player2dJumpAttackFX"), LEVEL_STATIC, 1);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefDebrisFSmall"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefDebrisMed"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefDebrisTurret"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionMed"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionSmall"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionTurret"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPersonFX"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefRedBullet"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPlayerHit"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefTeleport"), LEVEL_CHAPTER_6, 10);
+
 
 	return S_OK;
 }

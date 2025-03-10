@@ -415,6 +415,12 @@ void CGameEventExecuter_C2::Chapter2_Intro(_float _fTimeDelta)
 			Next_Step(true);
 		}
 	}
+	else if (Step_Check(STEP_6)) {
+		if (m_fTimer >= 0.9f) {
+			CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
+			Next_Step(true);
+		}
+	}
 	else {
 		GameEvent_End();
 	}

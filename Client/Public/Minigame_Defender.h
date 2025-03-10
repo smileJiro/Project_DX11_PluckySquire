@@ -31,6 +31,9 @@ public:
 	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
+public:
+	void Start_Game();
+	void Restart_Game();
 private:
 	HRESULT Ready_Spanwer();
 	virtual void Enter_Section(const _wstring _strIncludeSectionName)override;
@@ -46,6 +49,9 @@ private:
 	_float m_fFloorHeight = -350.f;
 	_float m_fSpawnDistance = 1000.f;//플레이어와의 거리
 	_float m_fTimeAcc = 0.f;
+
+
+
 public:
 	static CMiniGame_Defender* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

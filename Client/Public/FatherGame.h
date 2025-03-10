@@ -16,6 +16,8 @@ class CFatherGame_Progress;
 class CPortalLocker;
 class CZetPack_Child;
 class CMug_Alien;
+class CFatherPart_Prop;
+class CJellyKing;
 class CFatherGame final : public CBase
 {
 	DECLARE_SINGLETON(CFatherGame)
@@ -59,7 +61,8 @@ public:
 	CZetPack_Child* Get_ZetPack_Child() { return m_pZetPack_Child; }
 	// Set
 	void			Set_ZetPack_Child(CZetPack_Child* _pZetPack_Child);
-	void			Set_Mug_Alien(CMug_Alien* _pZetPack_Child);
+	void			Set_Mug_Alien(CMug_Alien* _pMugAlien);
+	void			Set_JellyKing(CJellyKing* _pZellyKing);
 
 
 private:
@@ -82,14 +85,18 @@ private: /* ZetPack_Child */
 private: /* Mug_Alien */
 	CMug_Alien*							m_pMugAlien = nullptr;
 
+private: /* ZellyKing*/
+	CJellyKing*							m_pJellyKing = nullptr;
+	
 public:
 	void								Set_Active_FatherParts_UIs(_bool _isActive);
 	void								Pickup_FatherPart(FATHER_PART _eFatherPart);
-
+	_uint								Check_FatherPartsCondition_Count();
+	_bool								Check_FatherPartsCondition(CFatherGame::FATHER_PART _ePartIndex);
 private: /* FatherParts_UI */
 	vector<CSimple_UI*>					m_FatherParts_UIs;
 	vector<_bool>						m_FatherPartsCondition;
-private: /* FatherGame UI */
+
 	
 public:
 	virtual void Free() override;

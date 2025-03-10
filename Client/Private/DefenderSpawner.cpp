@@ -44,38 +44,51 @@ HRESULT CDefenderSpawner::Initialize(void* _pArg)
 
 void CDefenderSpawner::Update(_float _fTimeDelta)
 {
-	__super::Update(_fTimeDelta);
 
+	for (auto& iter = m_SpawnList.begin(); iter != m_SpawnList.end(); )
+	{
+		if (iter->Is_PatternEnd())
+		{
+			if (iter->Is_Auto() )
+			{
+				if(iter->Is_CycleEnd())
+					iter->Reset_Cycle();
+			}
+			else
+			{
+				iter = m_SpawnList.erase(iter);
+				continue;
+			}
+		}
+		iter++;
+	}
 	for (auto& tSpawn : m_SpawnList)
 	{
 		tSpawn.Update(_fTimeDelta);
-
-	}
-	for (auto& tSpawn : m_SpawnList)
-	{
-		if (tSpawn.Is_SpawnEnd())
+		if (tSpawn.Is_PatternStartDelayEnd())
 		{
-			if (tSpawn.Is_Auto())
-				tSpawn.fCycleTimeAcc = 0.f;
-
+			while (tSpawn.Is_UnitSpawnReady())
+			{
+				Spawn(tSpawn);
+				tSpawn.Reset_Unit();
+			}
 		}
 	}
+
+	__super::Update(_fTimeDelta);
 }
 
 void CDefenderSpawner::Add_Spawn(SPAWN_DESC tDesc)
 {
 	//_vector v2DPosition;
-	if (false == tDesc.bAbsolutePosition)
-	{
-		tDesc.vPosition = m_pPlayer->Get_FinalPosition();
-		tDesc.vPosition += _vector{ T_DIRECTION::LEFT == tDesc.eDirection ? tDesc.fPlayerDistance : -tDesc.fPlayerDistance, tDesc.fHeight, 0.f };
-	}
 
+	tDesc.fUnitTimeAcc = tDesc.fUnitDelay;
 	m_SpawnList.push_back(tDesc);
 }
 
-void CDefenderSpawner::Spawn_Single(T_DIRECTION _eDirection, _vector _vPos)
+void CDefenderSpawner::Spawn_Single(T_DIRECTION _eDirection, _vector _vPos,_float _fMoveSpeed)
 {
+
 	_float3 vPos; XMStoreFloat3(&vPos, _vPos);
 	CDefenderMonster* pMonster = nullptr;
 	m_pPoolMgr->Create_Object(m_strPoolTag,
@@ -86,7 +99,96 @@ void CDefenderSpawner::Spawn_Single(T_DIRECTION _eDirection, _vector _vPos)
 		(_float3*)nullptr,
 		&m_strSectionName);
 	if (pMonster)
+	{
 		pMonster->Set_Direction(_eDirection);
+		pMonster->Set_MoveSpeed(_fMoveSpeed);
+	}
+}
+
+void CDefenderSpawner::Spawn(SPAWN_DESC& tDesc)
+{
+	if (false == tDesc.bAbsolutePosition)
+	{
+		tDesc.vPosition = m_pPlayer->Get_FinalPosition();
+		tDesc.vPosition += _vector{ T_DIRECTION::LEFT == tDesc.eDirection ? tDesc.fPlayerDistance : -tDesc.fPlayerDistance,0.f, 0.f };
+		tDesc.vPosition.m128_f32[1] = tDesc.fHeight;
+	}
+	switch (tDesc.ePattern)
+	{
+	case SPAWN_PATTERN_DOT :
+		Spawn_Dot(tDesc);
+		break;
+	case SPAWN_PATTERN_ARROW :
+		Spawn_Arrow(tDesc);
+		break;
+	case SPAWN_PATTERN_VERTICAL_UP:
+		Spawn_Vertical(tDesc, true);
+		break;
+	case SPAWN_PATTERN_VERTICAL_DOWN:
+		Spawn_Vertical(tDesc,false);
+		break;
+	case SPAWN_PATTERN_RANDOM :
+		Spawn_Random(tDesc);
+		break;
+	default:
+		break;
+	}
+	tDesc.iCurrentSpawnCount++;
+	tDesc.fUnitTimeAcc = 0.f;
+}
+
+void CDefenderSpawner::Spawn_Dot(SPAWN_DESC& _tDesc)
+{
+
+	Spawn_Single(_tDesc.eDirection, _tDesc.vPosition, _tDesc.fMoveSpeed);
+	
+}
+
+void CDefenderSpawner::Spawn_Arrow(SPAWN_DESC& _tDesc)
+{
+	_float fSeqXDistance = 30.f;
+	_float fSeqYDistance = 30.f;
+
+
+	_vector vPosition1 = _tDesc.vPosition;
+
+	vPosition1 += _vector{
+		(_int)_tDesc.iCurrentSpawnCount * (T_DIRECTION::LEFT == _tDesc.eDirection ? fSeqXDistance : -fSeqXDistance)
+		, (_int)_tDesc.iCurrentSpawnCount * fSeqYDistance
+		, 0.f };
+	Spawn_Single(_tDesc.eDirection, vPosition1, _tDesc.fMoveSpeed);
+	if (_tDesc.iCurrentSpawnCount > 0)
+	{
+		_vector vPosition2 = _tDesc.vPosition;
+		vPosition2 += _vector{
+			(_int)_tDesc.iCurrentSpawnCount * (T_DIRECTION::LEFT == _tDesc.eDirection ? fSeqXDistance : -fSeqXDistance)
+			, (_int)_tDesc.iCurrentSpawnCount * -fSeqYDistance
+			, 0.f };
+		Spawn_Single(_tDesc.eDirection, vPosition2, _tDesc.fMoveSpeed);
+	}
+}
+
+void CDefenderSpawner::Spawn_Vertical(SPAWN_DESC& _tDesc, _bool _bUp)
+{
+	_float fSeqYDistance = 30.f;
+	_vector vPosition1 = _tDesc.vPosition;
+
+	if(_bUp)
+		vPosition1 += _vector{0.f, (_int)_tDesc.iCurrentSpawnCount * fSeqYDistance, 0.f };
+	else
+		vPosition1 -= _vector{0.f, (_int)_tDesc.iCurrentSpawnCount * fSeqYDistance, 0.f };
+	Spawn_Single(_tDesc.eDirection, vPosition1, _tDesc.fMoveSpeed);
+}
+
+void CDefenderSpawner::Spawn_Random(SPAWN_DESC& _tDesc)
+{
+	_vector vPosition1 = _tDesc.vPosition;
+
+	_float fRandomRange = 400.f;
+	_float fRandomX = (_float)rand()/(_float)RAND_MAX * fRandomRange - fRandomRange*0.5f;
+	_float fRandomY = (_float)rand() / (_float)RAND_MAX * fRandomRange - fRandomRange * 0.5f;
+	vPosition1 += _vector{fRandomX, fRandomY, 0.f };
+	Spawn_Single(_tDesc.eDirection, vPosition1, _tDesc.fMoveSpeed);
 }
 
 
@@ -129,30 +231,13 @@ HRESULT CDefenderSpawner::Cleanup_DeadReferences()
 
 void SPAWN_DESC::Update(_float _fTimeDelta)
 {
-	fPatternTimeAcc += _fTimeDelta;
-	fPatternTimeAcc += _fTimeDelta;
+	if(false == Is_PatternStartDelayEnd())
+	{
+		fPatternStartTimeAcc += _fTimeDelta;
+		return;
+	}
+	fUnitTimeAcc += _fTimeDelta;
+	fUnitTimeAcc += _fTimeDelta;
 	fCycleTimeAcc += _fTimeDelta;
-
-	//if (fAutoCycleTime < 0.f)
-	//{
-	//	if (Is_SpawnEnd())
-	//		return;
-	//	if (fPatternTimeAcc >= fPatternTime)
-	//	{
-	//		Spawn_Single(_pPool, _strPoolTag, _strSectionName, eDirection, vPosition);
-	//		fPatternTimeAcc = 0.f;
-	//	}
-	//}
-
-	//if (fCycleTimeAcc >= fAutoCycleTime)
-	//{
-	//	fCycleTimeAcc = 0.f;
-	//	iCurrentSpawnCount = 0;
-	//}
-	//if (fPatternTimeAcc >= fPatternTime)
-	//{
-	//	fPatternTimeAcc = 0.f;
-	//	iCurrentSpawnCount++;
-	//}
 }
 
