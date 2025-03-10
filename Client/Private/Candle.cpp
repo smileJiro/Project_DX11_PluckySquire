@@ -178,6 +178,14 @@ void CCandle::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
     }*/
 }
 
+void CCandle::OnOff_Candle_UI(_bool _isOnOff)
+{
+    if (nullptr == m_PartObjects[CANDLE_PART::CANDLE_UI])
+        return;
+
+    static_cast<CCandle_UI*>(m_PartObjects[CANDLE_PART::CANDLE_UI])->OnOff_CandleUI(_isOnOff);
+}
+
 void CCandle::State_Change()
 {
     if (m_ePreState == m_eCurState)
