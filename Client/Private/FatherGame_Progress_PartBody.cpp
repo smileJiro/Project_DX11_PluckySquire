@@ -76,22 +76,29 @@ HRESULT CFatherGame_Progress_PartBody::Progress_Clear()
         m_isClearProgress = true;
 
         /* 1. Claer 이벤트 호출 >>> 현재 보유중인 아빠 파츠의 개수에 따라 다른 이벤트 호출. */
-        if (true)
+        _uint iConditionCount = CFatherGame::GetInstance()->Check_FatherPartsCondition_Count();
+        switch (iConditionCount)
         {
-            Event_Register_Trigger(TEXT("Chapter6_FatherGame_Progress_PartHead"));
-        }
-        else /* 2. 그게 아니라면, 일반 이벤트 호출. */
-        {
-            Event_Register_Trigger(TEXT("Chapter6_FatherGame_Progress_PartBody_Clear"));
+        case 0:
+            assert(nullptr);
+            break;
+        case 1:
+            Event_Register_Trigger(TEXT("Chapter6_FatherGame_Progress_Fatherpart_1"));
+            break;
+        case 2:
+            Event_Register_Trigger(TEXT("Chapter6_FatherGame_Progress_Fatherpart_2"));
+            break;
+        case 3:
+            assert(nullptr);
+            break;
+        default:
+            break;
         }
 
-        
-        /* 2. 아빠부품 ui on */
-        CFatherGame::GetInstance()->Set_Active_FatherParts_UIs(true);
         /* 3. 자기 자신의 Active 상태를 False로 변경 */
         Event_SetActive(this, false);
 #ifdef _DEBUG
-        cout << "FatherGame Progress_ZetPack Clear" << endl;
+        cout << "FatherGame Progress_PartBody Clear" << endl;
 #endif // _DEBUG
     }
 
@@ -108,7 +115,7 @@ HRESULT CFatherGame_Progress_PartBody::Progress_Exit()
 
     }
 #ifdef _DEBUG
-    cout << "FatherGame Progress_ZetPack Exit" << endl;
+    cout << "FatherGame Progress_PartBody Exit" << endl;
 #endif // _DEBUG
     return S_OK;
 }

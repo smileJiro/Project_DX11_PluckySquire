@@ -214,7 +214,9 @@
     <ClInclude Include="..\Public\CandleGame.h" />
     <ClInclude Include="..\public\Candle_Body.h" />
     <ClInclude Include="..\public\Candle_UI.h" />
+    <ClInclude Include="..\Public\DefenderMedShip.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_PartBody.h" />
+    <ClInclude Include="..\Public\FatherGame_Progress_PartWing.h" />
     <ClInclude Include="..\public\FatherPart_Prop.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
     <ClInclude Include="..\Public\Room_Door.h" />
@@ -276,6 +278,7 @@
     <ClInclude Include="..\public\Sneak_Trap_Tile.h" />
     <ClInclude Include="..\public\Sneak_Tile.h" />
     <ClInclude Include="..\public\Sneak_Troop.h" />
+    <ClInclude Include="..\Public\JellyKing.h" />
     <ClInclude Include="..\public\ZetPack_Child.h" />
     <ClInclude Include="..\Public\Zipline.h" />
     <ClInclude Include="..\Public\MudPit.h" />
@@ -554,7 +557,9 @@
     <ClCompile Include="..\private\Candle_Body.cpp" />
     <ClCompile Include="..\private\Candle_UI.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
+    <ClCompile Include="..\Private\DefenderMedShip.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_PartBody.cpp" />
+    <ClCompile Include="..\Private\FatherGame_Progress_PartWing.cpp" />
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
     <ClCompile Include="..\Private\Room_Door.cpp" />
@@ -613,6 +618,7 @@
     <ClCompile Include="..\private\Sneak_Trap_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Troop.cpp" />
+    <ClCompile Include="..\Private\JellyKing.cpp" />
     <ClCompile Include="..\private\ZetPack_Child.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\Private\MudPit.cpp" />

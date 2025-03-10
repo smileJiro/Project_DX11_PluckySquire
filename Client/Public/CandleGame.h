@@ -26,6 +26,11 @@ public:
 	virtual HRESULT				Initialize_Prototype();				
 	virtual HRESULT				Initialize(void* _pArg);			
 	virtual void				Priority_Update(_float _fTimeDelta);
+public:
+	void						OnOffCandleUIs(_bool _isOnOff);
+public:
+	// Get
+	_bool						Is_ClearGame() const { return m_isClearGame; }
 
 private:
 	void						Check_Clear(_float _fTimeDelta);	// 게임 클리어를 검사하는 함수.
@@ -41,6 +46,7 @@ private:
 private:
 	HRESULT						Ready_Candles(CANDLEGAME_DESC* _pDesc);
 
+	
 public:
 	static	CCandleGame*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CCandleGame*				Clone(void* _pArg);

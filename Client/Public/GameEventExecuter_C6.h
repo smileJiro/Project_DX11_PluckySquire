@@ -58,6 +58,9 @@ public:
 private:/* FatherGame */
 	void							Chapter6_FatherGame_Progress_Start_Clear(_float _fTimeDelta);
 	void							Chapter6_FatherGame_Progress_ZetPack_Clear(_float _fTimeDelta);
+	void							Chapter6_FatherGame_Progress_Fatherpart_1(_float _fTimeDelta);
+	void							Chapter6_FatherGame_Progress_Fatherpart_2(_float _fTimeDelta);
+	void							Chapter6_FatherGame_Progress_Fatherpart_3(_float _fTimeDelta);
 
 private:
 

@@ -9,6 +9,7 @@ class CModelObject;
 END
 
 BEGIN(Client)
+class CMiniGame_Defender;
 class CSection_Manager;
 class CPlayer;
 class CDefenderPlayer :
@@ -39,6 +40,7 @@ public:
 	};
 	typedef struct tagDefenderPlayerDesc : public CCharacter::CHARACTER_DESC
 	{
+		CMiniGame_Defender* pMinigame = nullptr;
 		CPlayer* pOriginalPlayer = nullptr;
 	}DEFENDERPLAYER_DESC;
 private:
@@ -56,7 +58,7 @@ public:
 
 	void Set_Direction(T_DIRECTION _eTDir);
 	void Key_Input(_float _fTimeDelta);
-	void Start_Game();
+	void Start_Transform();
 private:
 	HRESULT	Ready_Components();
 	HRESULT	Ready_PartObjects();
@@ -72,7 +74,7 @@ public:
 	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-
+	virtual void On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
 public:
 	void Shoot();
 private:
@@ -80,6 +82,7 @@ private:
 	CPlayer* m_pOriginalPlayer = nullptr;
 	CSection_Manager* m_pSection_Manager = nullptr;
 	class CPooling_Manager* m_pPoolMgr = nullptr;
+	CMiniGame_Defender* m_pMinigame = nullptr;
 	_float4 m_vRightShootQuaternion = { 0.f,0.f,0.f,1.f };
 	_float4 m_vLeftShootQuaternion = { 0.f,0.f,0.f,1.f };
 	//PARTS

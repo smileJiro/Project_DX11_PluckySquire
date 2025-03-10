@@ -32,6 +32,8 @@ public:
 	void					State_Change_FlameLoop();	// 자체적인 State 관리용이 아닌 컨테이너 호출용 
 	void					State_Change_TurnOff();		// 자체적인 State 관리용이 아닌 컨테이너 호출용 
 
+public:
+	void					OnOff_CandleUI(_bool _isOnOff);
 private:
 	void					On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx);
 

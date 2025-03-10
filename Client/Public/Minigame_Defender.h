@@ -31,6 +31,9 @@ public:
 	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
+public:
+	void Start_Game();
+	void Restart_Game();
 private:
 	HRESULT Ready_Spanwer();
 	virtual void Enter_Section(const _wstring _strIncludeSectionName)override;
