@@ -54,7 +54,9 @@ public: // ¿Ö private?
 	_bool			Is_CurSection(CGameObject* _pGameObject);
 
 
-	const _wstring& Get_SectionName() { return m_strName; }
+	const _wstring& Get_SectionName() { 
+		return m_strName; 
+	}
 
 	template <typename Comparator>
 	void	Sort_Layer(Comparator _funcCompair, _uint _iLayerIndex = 0)

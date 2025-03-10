@@ -130,6 +130,12 @@
 
 #include "Sneak_Default_Tile.h"
 #include "Sneak_Trap_Tile.h"
+#include "Sneak_FlipObject.h"
+#include "Sneak_MapObject.h"
+#include "Sneak_InteractObject.h"
+#include "Pip_Player.h"
+#include "Sneak_Troop.h"
+#include "Sneak_SentryTroop.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -1651,7 +1657,19 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		CGameEventExecuter_C8::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* Pip_Player */
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_PipPlayer"),
+		CPip_Player::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* Monster */
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakTroop"),
+		CSneak_Troop::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakSentryTroop"),
+		CSneak_SentryTroop::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* Etc */
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakDefaultTile"),
@@ -1661,6 +1679,15 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakTrapTile"),
 		CSneak_Trap_Tile::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakMapObject"),
+		CSneak_MapObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakInteractObject"),
+		CSneak_InteractObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_CyberPlayerBullet"),
 		CCyberPlayerBullet::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -1678,6 +1705,23 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 
 #pragma endregion
+
+	/*Ready Minigame Info*/
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakTile.json"), TEXT("SneakTile"), _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakObjects.json"), TEXT("SneakObjects"), _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakInteracts.json"), TEXT("SneakInteracts"), _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakTroops.json"), TEXT("SneakTroops"), _eLoadLevelID)))
+		return E_FAIL;
+
+
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 	m_isFinished = true;
@@ -1797,6 +1841,8 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/buttergrump_Rig.model"
 				), matPretransform))))
 		return E_FAIL;
+
+
 
 	return S_OK;
 }

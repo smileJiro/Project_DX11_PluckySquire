@@ -12,7 +12,7 @@
 #include "Minigame_Defender.h"
 
 CDefenderPlayer::CDefenderPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CPlayable(_pDevice, _pContext,PLAYALBE_ID::DEFENDER)
+	: CPlayable(_pDevice, _pContext,PLAYABLE_ID::DEFENDER)
 {
 }
 
@@ -61,7 +61,7 @@ HRESULT CDefenderPlayer::Initialize(void* _pArg)
 
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CDefenderPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-	CPlayerData_Manager::GetInstance()->Register_Player(PLAYALBE_ID::DEFENDER, this);
+	CPlayerData_Manager::GetInstance()->Register_Player(PLAYABLE_ID::DEFENDER, this);
 
 
 

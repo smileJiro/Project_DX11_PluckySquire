@@ -167,8 +167,8 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Lights()
 
 HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Map()
 {
-	if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
-		return E_FAIL;
+	//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+	//	return E_FAIL;
 	//if (FAILED(Map_Object_Create(L"Chapter_06_Play_Desk.mchc")))
 	//	return E_FAIL;
 

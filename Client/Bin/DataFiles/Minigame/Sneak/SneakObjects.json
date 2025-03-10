@@ -1,0 +1,498 @@
+[
+    [
+        {
+            "Model": "Sneak_line_01",
+            "Position": [
+                -1085.0,
+                180.0
+            ]
+        },
+        {
+            "Model": "Sneak_line_02",
+            "Position": [
+                -762.0,
+                -275.0
+            ]
+        },
+        {
+            "Model": "Sneak_light_01",
+            "Position": [
+                -1065.0,
+                180.0
+            ]
+        },
+        {
+            "Model": "Sneak_light_02",
+            "Position": [
+                -800.0,
+                -275.0
+            ]
+        },
+        {
+            "Model": "Sneak_box",
+            "Position": [
+                -985.0,
+                125.0
+            ]
+        },
+        {
+            "Model": "Sneak_box",
+            "Position": [
+                -855.0,
+                125.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                -1050.0,
+                250.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_02",
+            "Position": [
+                -1050.0,
+                200.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_03",
+            "Position": [
+                -985.0,
+                250.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_02",
+            "Position": [
+                -985.0,
+                200.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                -920.0,
+                250.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_05",
+            "Position": [
+                -920.0,
+                200.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_02",
+            "Position": [
+                -855.0,
+                250.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                -855.0,
+                200.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_06",
+            "Position": [
+                -790.0,
+                200.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                -855.0,
+                -115.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_05",
+            "Position": [
+                -790.0,
+                -115.0
+            ]
+        },
+        {
+            "Model": "Sneak_pen",
+            "Position": [
+                -855.0,
+                -35.0
+            ]
+        },
+        {
+            "Model": "Sneak_Drawer",
+            "Position": [
+                -854.0,
+                279.0
+            ],
+            "Animation": [
+                1,
+                0,
+                1,
+                3,
+                2
+            ]
+        }
+    ],
+    [
+        {
+            "Model": "Sneak_cabinet_02",
+            "Position": [
+                -485.0,
+                235.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_06",
+            "Position": [
+                -485.0,
+                185.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                -420.0,
+                185.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_02",
+            "Position": [
+                -290.0,
+                185.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_06",
+            "Position": [
+                -225.0,
+                185.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_02",
+            "Position": [
+                -225.0,
+                235.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_06",
+            "Position": [
+                -160.0,
+                235.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                -160.0,
+                185.0
+            ]
+        },
+        {
+            "Model": "Sneak_Drawer",
+            "Position": [
+                -159.0,
+                264.0
+            ],
+            "Animation": [
+                2,
+                0,
+                1,
+                3,
+                2
+            ]
+        },
+        {
+            "Model": "Sneak_line_01",
+            "Position": [
+                -585,
+                -300.0
+            ]
+        },
+        {
+            "Model": "Sneak_light_01",
+            "Position": [
+                -565.0,
+                -300.0
+            ]
+        },
+        {
+            "Model": "Sneak_line_02",
+            "Position": [
+                -125.0,
+                155.0
+            ]
+        },
+        {
+            "Model": "Sneak_light_02",
+            "Position": [
+                -160.0,
+                155.0
+            ]
+        },
+        {
+            "Model": "Sneak_mug",
+            "Position": [
+                -290.0,
+                265.0
+            ]
+        }
+    ],
+    [
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                245.0,
+                95.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                245.0,
+                145.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                245.0,
+                195.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_05",
+            "Position": [
+                310.0,
+                95.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_05",
+            "Position": [
+                310.0,
+                145.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_07",
+            "Position": [
+                310.0,
+                195.0
+            ]
+        },
+        {
+            "Model": "Sneak_Drawer",
+            "Position": [
+                375.0,
+                224.0
+            ],
+            "Animation": [
+                5,
+                4,
+                5,
+                6,
+                7
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_02",
+            "Position": [
+                375.0,
+                95.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                375.0,
+                145.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_06",
+            "Position": [
+                375.0,
+                195.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_05",
+            "Position": [
+                440.0,
+                95.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_05",
+            "Position": [
+                440.0,
+                145.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                440.0,
+                195.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_05",
+            "Position": [
+                505.0,
+                95.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                505.0,
+                145.0
+            ]
+        },
+        {
+            "Model": "Sneak_Drawer",
+            "Position": [
+                505.0,
+                174.0
+            ],
+            "Animation": [
+                1,
+                0,
+                1,
+                3,
+                2
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_06",
+            "Position": [
+                505.0,
+                195.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_01",
+            "Position": [
+                570.0,
+                95.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_07",
+            "Position": [
+                570.0,
+                145.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_05",
+            "Position": [
+                570.0,
+                195.0
+            ]
+        },
+        {
+            "Model": "Sneak_Drawer",
+            "Position": [
+                570.0,
+                224.0
+            ],
+            "Animation": [
+                2,
+                0,
+                1,
+                3,
+                2
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_02",
+            "Position": [
+                635.0,
+                95.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_08",
+            "Position": [
+                635.0,
+                145.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_05",
+            "Position": [
+                635.0,
+                195.0
+            ]
+        },
+        {
+            "Model": "Sneak_box",
+            "Position": [
+                960.0,
+                140.0
+            ]
+        },
+        {
+            "Model": "Sneak_box",
+            "Position": [
+                1085.0,
+                140.0
+            ]
+        },
+        {
+            "Model": "Sneak_cabinet_02",
+            "Position": [
+                960.0,
+                225.0
+            ]
+        },
+        {
+            "Model": "Sneak_helmet",
+            "Position": [
+                960.0,
+                315.0
+            ]
+        },
+        {
+            "Model": "Sneak_line_01",
+            "Position": [
+                15,
+                0.0
+            ]
+        },
+        {
+            "Model": "Sneak_light_01",
+            "Position": [
+                35.0,
+                0.0
+            ]
+        },
+        {
+            "Model": "Sneak_line_02",
+            "Position": [
+                1180.0,
+                -130.0
+            ]
+        },
+        {
+            "Model": "Sneak_light_02",
+            "Position": [
+                1145.0,
+                -130.0
+            ]
+        }
+    ]
+]

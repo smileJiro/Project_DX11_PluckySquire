@@ -169,7 +169,7 @@ void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
 		
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_pCurCutScene->second[iLastIndex]->vPosition), 1.f));
 		_vector vAt = XMLoadFloat3(&m_pCurCutScene->second[iLastIndex]->vAt);
-
+		XMStoreFloat3(&m_vAt, vAt);
 		m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 		m_fFovy = m_pCurCutScene->second[iLastIndex]->fFovy;
 
@@ -181,11 +181,15 @@ void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
 		return;
 	}
 	
-	_uint iIndex = (_uint)m_pGameInstance->Lerp(0, (_float)(m_pCurCutScene->second.size()), fRatio);
-	
+	_uint iIndex = (_uint)(m_pGameInstance->Lerp(0, (_float)(m_pCurCutScene->second.size()), fRatio));
+	cout << "INDEX: " << iIndex << endl;
+	cout << "fTimeDelta: " << _fTimeDelta << endl;
+	cout << "fRatio: " << fRatio << endl;
+	cout << "====================" << endl;
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_pCurCutScene->second[iIndex]->vPosition), 1.f));
 	_vector vAt = XMLoadFloat3(&m_pCurCutScene->second[iIndex]->vAt); // 나중에 Shake 넣기 02.26
-
+	
+	XMStoreFloat3(&m_vAt, vAt);
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 	m_fFovy = m_pCurCutScene->second[iIndex]->fFovy;
 }
@@ -214,8 +218,20 @@ void CCamera_CutScene::Before_CutScene(_float _fTimeDelta)
 		return;
 
 	// 일단 안 함 이전 동작
-	m_isStartCutScene = false;
+	//m_isStartCutScene = false;
 
+	if (-1 == m_pCurCutScene->first.iDelayFrame) {
+		m_isStartCutScene = false;
+	}
+	else {
+		if (m_iFrameCount == m_pCurCutScene->first.iDelayFrame) {
+			m_isStartCutScene = false;
+			m_iFrameCount = 0;
+		}
+		else {
+			m_iFrameCount++;
+		}
+	}
 }
 
 void CCamera_CutScene::After_CutScene(_float _fTimeDelta)

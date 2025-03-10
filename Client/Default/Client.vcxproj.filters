@@ -601,6 +601,24 @@
     <Filter Include="02.GameObjects\Portal\PortalLocker">
       <UniqueIdentifier>{bea16204-1d70-4911-927d-ade5f27f70be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Sneak_MapObject">
+      <UniqueIdentifier>{5d2fcc59-f588-44b9-b1f3-0a1b44151b6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Sneak_InteractObject">
+      <UniqueIdentifier>{47775f02-6e83-48c4-8ed8-cd319761c708}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\FlipObject">
+      <UniqueIdentifier>{4b5e4b32-7d42-4fc8-bada-df264d8a9263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Character">
+      <UniqueIdentifier>{f3cb8e3c-cd8f-46d8-b483-0c89aeb93a28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Character\Player">
+      <UniqueIdentifier>{ae520257-cbad-4889-8d1c-db59ed2b3cd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MiniGameObjects\Sneak\Character\Troop">
+      <UniqueIdentifier>{3bdb0bbd-3be0-47d0-973e-b80870ab764a}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Monster\Boss\State\Idle">
       <UniqueIdentifier>{edaca362-ca96-4e92-be97-a85f992a9227}</UniqueIdentifier>
     </Filter>
@@ -1571,6 +1589,24 @@
     <ClInclude Include="..\public\PortalLocker.h">
       <Filter>02.GameObjects\Portal\PortalLocker</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CandleGame.h">
+      <Filter>05.MiniGames\CandleGame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_MapObject.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Pip_Player.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_InteractObject.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_InteractObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_FlipObject.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\FlipObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_Troop.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Troop</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\FatherGame_Progress_ZetPack.h">
       <Filter>05.MiniGames\FatherGame\Progress\02.ZetPack</Filter>
     </ClInclude>
@@ -1649,6 +1685,9 @@
     </ClInclude>
     <ClInclude Include="..\public\FatherPart_Prop.h">
       <Filter>05.MiniGames\FatherGame\Object\FatherPart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_SentryTroop.h">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Troop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CandleGame.h" />
     <ClInclude Include="..\Public\DefenderMedShip.h">
@@ -2551,6 +2590,24 @@
     <ClCompile Include="..\private\PortalLocker.cpp">
       <Filter>02.GameObjects\Portal\PortalLocker</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CandleGame.cpp">
+      <Filter>05.MiniGames\CandleGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_MapObject.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Pip_Player.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_InteractObject.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Sneak_InteractObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_FlipObject.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\FlipObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_Troop.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Troop</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\FatherGame_Progress_ZetPack.cpp">
       <Filter>05.MiniGames\FatherGame\Progress\02.ZetPack</Filter>
     </ClCompile>
@@ -2629,6 +2686,9 @@
     </ClCompile>
     <ClCompile Include="..\private\FatherPart_Prop.cpp">
       <Filter>05.MiniGames\FatherGame\Object\FatherPart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_SentryTroop.cpp">
+      <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Troop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CandleGame.cpp" />
     <ClCompile Include="..\Private\DefenderMedShip.cpp">

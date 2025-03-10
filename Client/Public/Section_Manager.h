@@ -252,7 +252,7 @@ public:
 	#pragma region ≥π∏ª ∆€¡Ò
 public :
 	CWordGame_Generator* Get_Word_Generator() { return m_pWordGameGenerator; }
-	HRESULT				Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType);
+	HRESULT				Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType, _bool _isRegistered = true);
 #pragma endregion
 
 
