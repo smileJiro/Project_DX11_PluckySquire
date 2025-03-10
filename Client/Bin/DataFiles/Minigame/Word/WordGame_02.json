@@ -12,6 +12,16 @@
           1.0,
           1.0
         ],
+		"Collider_Info": {
+          "Collider_Extent": [
+            600.0,
+            350.0
+          ],
+		"Collider_Offset": [
+            0.0,
+            0.0
+          ]
+        },
         "Image_Tag_List": [
           {
             "ImagePath": "C04_0910_lilypad_01_png"
@@ -34,6 +44,20 @@
             "Word_Type": 1,
             "Action_Type": 0,
             "Param": 1
+          },
+		  {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 2,
+            "Action_Type": 5,
+            "Param": true
+          },
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 1,
+            "Action_Type": 5,
+            "Param": false
           }
         ]
       }

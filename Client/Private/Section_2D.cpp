@@ -205,7 +205,7 @@ HRESULT CSection_2D::Word_Action_To_Section(const _wstring& _strSectionTag, _uin
 			for_each(GameObjects.begin(), GameObjects.end(), [&pExecuteGameObject, &_iControllerIndex, &_iContainerIndex, &_iWordType](CGameObject* pGameObject) {
 				C2DMapWordObject* pWordObj = dynamic_cast<C2DMapWordObject*>(pGameObject);
 
-				if (nullptr != pWordObj->Find_Action(_iControllerIndex, _iContainerIndex, _iWordType))
+				if (true == pWordObj->Check_Action(_iControllerIndex, _iContainerIndex, _iWordType))
 					pExecuteGameObject = pWordObj;
 				});
 

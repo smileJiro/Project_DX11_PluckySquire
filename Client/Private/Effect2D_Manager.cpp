@@ -122,7 +122,7 @@ HRESULT CEffect2D_Manager::Pooling_Effects(const _wstring& _strEffectModelTag, _
 	return S_OK;
 }
 
-HRESULT CEffect2D_Manager::Play_Effect(const _wstring& _strEffectModelTag, const _wstring& _strSectionKey, _fmatrix _2DWorldMatrix, _float _fDelayTime, _uint _iAnimIndex, _bool _isLoop, _float _fLifeTime, _uint _iSectionLayerGroup)
+HRESULT CEffect2D_Manager::Play_Effect(const _wstring& _strEffectModelTag, const _wstring& _strSectionKey, _fmatrix _2DWorldMatrix, _float _fDelayTime, _uint _iAnimIndex, _bool _isLoop, _float _fLifeTime, _uint _iSectionLayerGroup, CGameObject** _ppOut)
 {
 	vector<CEffect2D*>* pEffectPool = Find_EffectPool(_strEffectModelTag);
 	if (nullptr == pEffectPool)
@@ -132,6 +132,8 @@ HRESULT CEffect2D_Manager::Play_Effect(const _wstring& _strEffectModelTag, const
 	{
 		if (false == pEffect->Is_Active())
 		{
+			if (nullptr != _ppOut)
+				*_ppOut = pEffect;
 			pEffect->Play_Effect(_strSectionKey, _2DWorldMatrix, _fDelayTime, _iAnimIndex, _isLoop, _fLifeTime, _iSectionLayerGroup);
 			return S_OK;
 		}

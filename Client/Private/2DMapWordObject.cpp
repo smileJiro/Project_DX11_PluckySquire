@@ -170,18 +170,24 @@ HRESULT C2DMapWordObject::Render()
     return __super::Render();
 }
 
-//_bool C2DMapWordObject::Check_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
-//{
-//    _bool isExecute = false;
-//    find_if(m_Actions.begin(), m_Actions.end(), [this,&isExecute, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]
-//    (WORD_ACTION& tAction){
-//            return (tAction.iControllerIndex == _iControllerIndex
-//                && tAction.iContainerIndex == _iContainerIndex
-//                && tAction.iWordType == _iWordIndex);
-//        });
-//
-//    return isExecute;
-//}
+_bool C2DMapWordObject::Check_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
+{
+    _bool isExecute = false;
+
+    if (m_iControllerIndex == _iControllerIndex
+        && m_iContainerIndex == _iContainerIndex
+        && m_iWordIndex == _iWordIndex)
+        return false;
+
+    auto iter = find_if(m_Actions.begin(), m_Actions.end(), [this,&isExecute, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]
+    (WORD_ACTION& tAction){
+            return (tAction.iControllerIndex == _iControllerIndex
+                && tAction.iContainerIndex == _iContainerIndex
+                && tAction.iWordType == _iWordIndex);
+        });
+
+    return iter != m_Actions.end();
+}
 
 _bool C2DMapWordObject::Register_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
 {
@@ -193,7 +199,7 @@ _bool C2DMapWordObject::Register_Action(_uint _iControllerIndex, _uint _iContain
     
     m_isStartChase = false;
     m_isStartAction = false;
-    m_fActionIntervalSecond = 0.5f;
+    m_fActionIntervalSecond = 2.f;
     m_fAccTime = 0.f;
     return true;
 }
@@ -208,7 +214,9 @@ _bool C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContaine
                 && tAction.iWordType == _iWordIndex)
             {
                 isExecute = true;
-
+                m_iContainerIndex = _iContainerIndex;
+                m_iControllerIndex = _iControllerIndex;
+                m_iWordIndex = _iWordIndex;
                 switch (tAction.eAction)
                 {
                 case IMAGE_CHANGE:
@@ -297,7 +305,15 @@ void C2DMapWordObject::Action_Process(_float _fTimeDelta)
 
     if (false == m_isStartChase)
     {
+        CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr()->Set_BlockPlayerInput(true);
+
         CCamera_Manager::GetInstance()->Change_CameraTarget(this);
+        CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(
+            (CCamera_Manager::CAMERA_TYPE)CCamera_Manager::GetInstance()->Get_CameraType(),
+            1.f,
+            5.f,
+            EASE_IN_OUT
+        );
         m_isStartChase = true;
     }
     else if(false == m_isStartAction)
@@ -319,6 +335,7 @@ void C2DMapWordObject::Action_Process(_float _fTimeDelta)
 			if (m_fAccTime >= m_fActionIntervalSecond)
 			{
                 m_fActionIntervalSecond *= -1.f;
+                m_fActionIntervalSecond += 1.5f;
                 m_fAccTime = 0.f;
 				SECTION_MGR->Word_Action_To_Section(m_strSectionName, m_iControllerIndex, m_iContainerIndex, m_iWordIndex, false);
 			}
@@ -332,7 +349,14 @@ void C2DMapWordObject::Action_Process(_float _fTimeDelta)
                 // Time Interval
                 auto pPlayer = CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr();
                 CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer);
-                m_isRegistered = true;
+                CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr()->Set_BlockPlayerInput(false);
+                CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(
+                    (CCamera_Manager::CAMERA_TYPE)CCamera_Manager::GetInstance()->Get_CameraType(),
+                    1.f,
+                    5.f,
+                    EASE_IN_OUT
+                );
+                m_isRegistered = false;
             }
         }
     }
