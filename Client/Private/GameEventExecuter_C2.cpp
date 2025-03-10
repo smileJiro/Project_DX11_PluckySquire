@@ -100,11 +100,6 @@ void CGameEventExecuter_C2::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER2_STORYSEQUENCE:
 			Chapter2_StorySequence(_fTimeDelta);
 			break;
-
-
-
-
-
 		default:
 			break;
 		}
