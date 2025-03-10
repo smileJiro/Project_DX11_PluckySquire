@@ -1461,11 +1461,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Body.dds"), (_uint)LEVEL_CHAPTER_6, true))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Head"),
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Wing"),
 			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Wing.dds"), (_uint)LEVEL_CHAPTER_6, true))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Wing"),
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Head"),
 			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Head.dds"), (_uint)LEVEL_CHAPTER_6, true))))
 			return E_FAIL;
 	#pragma endregion

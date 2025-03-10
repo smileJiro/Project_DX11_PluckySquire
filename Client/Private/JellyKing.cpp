@@ -84,12 +84,8 @@ void CJellyKing::Priority_Update(_float _fTimeDelta)
 
 			if (true == m_pCandleGame->Is_ClearGame())
 			{
-				m_pCandleGame->OnOffCandleUIs(false);
-				Safe_Release(m_pCandleGame);
-				m_pCandleGame = nullptr;
 				m_eCurState = STATE_CHEER;
-				m_pCandleGame = false;
-
+				m_isCandleGame = false;
 			}
 		}
 	}
@@ -149,6 +145,16 @@ void CJellyKing::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 	}
 	
+}
+
+void CJellyKing::Active_OnEnable()
+{
+	// actor 켜거나 끄지 않는다.	
+}
+
+void CJellyKing::Active_OnDisable()
+{
+	// actor 켜거나 끄지 않는다.
 }
 
 
@@ -385,6 +391,25 @@ void CJellyKing::Finished_DialogueAction()
 			/* 2. Change Zoom Level */
 			CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.0f);
 
+
+			// 부품 생성 
+			CFatherPart_Prop::FATHERPART_PROP_DESC Desc{};
+			Desc.iCurLevelID = m_iCurLevelID;
+			Desc.iFatherPartID = CFatherGame::FATHER_PART::FATHER_WING;
+			Desc.Build_2D_Transform(_float2(150.f, -160.f), _float2(200.0f, 200.0f));
+			CGameObject* pGameObject = nullptr;
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"), LEVEL_CHAPTER_6, TEXT("Layer_FatherPart_Prop"), &pGameObject, &Desc)))
+				assert(nullptr);
+
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+
+			/* 캔들게임 종료 및 ui 끄기 */
+			m_pCandleGame->OnOffCandleUIs(false);
+			Safe_Release(m_pCandleGame);
+			m_pCandleGame = nullptr;
+
+
+			m_eCurState = STATE_IDLE;
 		}
 	}
 	break;

@@ -1685,6 +1685,14 @@
     <ClInclude Include="..\Public\DefenderMedShip.h">
       <Filter>05.MiniGames\Defender</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Pip_Player.h" />
+    <ClInclude Include="..\public\Sneak_MapObject.h" />
+    <ClInclude Include="..\public\Sneak_FlipObject.h" />
+    <ClInclude Include="..\public\Sneak_InteractObject.h" />
+    <ClInclude Include="..\public\Sneak_Troop.h" />
+    <ClInclude Include="..\Public\FatherGame_Progress_PartHead.h">
+      <Filter>05.MiniGames\FatherGame\Progress\04.PartHead</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2674,6 +2682,14 @@
     <ClCompile Include="..\Private\CandleGame.cpp" />
     <ClCompile Include="..\Private\DefenderMedShip.cpp">
       <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Pip_Player.cpp" />
+    <ClCompile Include="..\private\Sneak_MapObject.cpp" />
+    <ClCompile Include="..\private\Sneak_FlipObject.cpp" />
+    <ClCompile Include="..\private\Sneak_InteractObject.cpp" />
+    <ClCompile Include="..\private\Sneak_Troop.cpp" />
+    <ClCompile Include="..\Private\FatherGame_Progress_PartHead.cpp">
+      <Filter>05.MiniGames\FatherGame\Progress\04.PartHead</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
