@@ -204,22 +204,28 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 	// 인덱스 변경 키
 	if (KEY_DOWN(KEY::DOWN))
 	{
+		if (0 == pShopManager->Get_ShopItems().size())
+			return;
+
 		if (true == pShopManager->Get_Confirm())
 		{
 			if (true == pShopManager->Get_isPurchase())
 				pShopManager->Set_isPurchase(false);
 			return;
 		}
-			
-
+		
 		if (m_iChooseIndex == pShopManager->Get_ShopItems().size() - 1)
 			return;
 
 		++m_iChooseIndex;
+		pShopManager->Set_ChooseIndex(m_iChooseIndex);
 	}
 
 	if (KEY_DOWN(KEY::UP))
 	{
+		if (0 == pShopManager->Get_ShopItems().size())
+			return;
+
 		if (true == pShopManager->Get_Confirm())
 		{
 			if (false == pShopManager->Get_isPurchase())
@@ -228,21 +234,27 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 		}
 
 		if (m_iChooseIndex == 0)
+		{
+			pShopManager->Set_ChooseIndex(m_iChooseIndex);
 			return;
-
+		}
+	
 		--m_iChooseIndex;
+		pShopManager->Set_ChooseIndex(m_iChooseIndex);
 	}
-
-
 
 
 	// 아이템 선택 후 정말로 구매할거에요? 노출
 	_bool isYesorNo = Uimgr->Get_StoreYesOrno();
 	if (true == m_isOpenPanel)
 	{
+		
 
 		if (KEY_DOWN(KEY::ENTER) && false == pShopManager->Get_Confirm())
 		{
+			if (0 == pShopManager->Get_ShopItems().size())
+				return;
+
 			if (-1 != m_iChooseIndex)
 			{
 				m_iConfirmItemIndex = m_iChooseIndex;
@@ -252,6 +264,7 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 		}
 		else if (KEY_DOWN(KEY::ENTER) && true == pShopManager->Get_Confirm())
 		{
+
 			if (true == pShopManager->Get_OpenConfirmUI())
 			{
 				// 아이템 구매 관련
@@ -263,35 +276,57 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 					// 가격이 부족하면 리턴
 					if (iPrice > iPlayerBulb)
 					{
-						//pShopManager->Set_Confirm(false);
-						//pShopManager->Set_OpenConfirmUI(false);
-						// pShopManager->Set_isPurchase(true);
-						//m_iConfirmItemIndex = 0;
-						//return;
+						pShopManager->Set_Confirm(false);
+						pShopManager->Set_OpenConfirmUI(false);
+						 pShopManager->Set_isPurchase(true);
+						m_iConfirmItemIndex = 0;
+						return;
 					}
 					else
 					{
 						// 가격이 있으면 구매진행
-						//CPlayerData_Manager::GetInstance()->Set_BulbCount(iPrice);
+						CPlayerData_Manager::GetInstance()->Set_BulbCount(iPrice);
 						pShopManager->Delete_ShopItems(m_iChooseIndex);
 
-					}
-
-					// 구매성공 시 Choose 값을 위로 올려줍니다.
-					if (m_iChooseIndex <= pShopManager->Get_ShopItems().size() - 1)
-					{
 						if (0 == m_iChooseIndex)
 						{
 							m_iConfirmItemIndex = 0;
 							pShopManager->Set_Confirm(false);
 							pShopManager->Set_OpenConfirmUI(false);
 							pShopManager->Set_isPurchase(true);
+							pShopManager->Set_ChooseIndex(m_iChooseIndex);
+							m_iChooseIndex = 0;
 							return;
 						}
 
 						else
+						{
 							--m_iChooseIndex;
+							pShopManager->Set_ChooseIndex(m_iChooseIndex);
+						}
+
 					}
+
+					// 구매성공 시 Choose 값을 위로 올려줍니다.
+					//if (m_iChooseIndex <= pShopManager->Get_ShopItems().size() - 1)
+					//{
+					//	if (0 == m_iChooseIndex)
+					//	{
+					//		m_iConfirmItemIndex = 0;
+					//		pShopManager->Set_Confirm(false);
+					//		pShopManager->Set_OpenConfirmUI(false);
+					//		pShopManager->Set_isPurchase(true);
+					//		pShopManager->Set_ChooseIndex(m_iChooseIndex);
+					//		return;
+					//	}
+					//
+					//	else
+					//	{
+					//		--m_iChooseIndex;
+					//		pShopManager->Set_ChooseIndex(m_iChooseIndex);
+					//	}
+					//		
+					//}
 				}
 				
 				m_iConfirmItemIndex = 0;
