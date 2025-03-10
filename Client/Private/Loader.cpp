@@ -44,6 +44,7 @@
 #include "ShopItemBG_New.h"
 #include "ShopPanel_YesNo_New.h"
 #include "ShopPanel_BG.h"
+#include "ShopPanel_RenderFont.h"
 #include "Logo_BG.h"
 #include "ShopItemBG.h"
 #include "Interaction_Heart.h"
@@ -2257,6 +2258,13 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelYesNo"),
 		CShopPanel_YesNo_New::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelRenderFont"),
+		CShopPanel_RenderFont::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 
 	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelBG"),
 	//	CShopPanel_BG::Create(m_pDevice, m_pContext))))

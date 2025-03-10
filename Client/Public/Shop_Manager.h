@@ -55,8 +55,13 @@ public:
 	void									Set_OpenConfirmUI(_bool _isOpenConfirmUI) { m_isOpenConfirmUI = _isOpenConfirmUI; }
 	_bool									Get_isPurchase() { return m_isPurchase; }
 	void									Set_isPurchase(_bool _isPurchase) { m_isPurchase = _isPurchase; }
-
-
+	_float2									Get_BadgePos() { return m_vBadgePos; }
+	void									Set_BadgePos(_float2 _BadgePos) { m_vBadgePos = _BadgePos; }
+	void									pushBack_BadgePos(_float2 _vBadgePos) { m_BadgePositions.push_back(_vBadgePos); }
+	vector<_float2>							Get_BadgePositions() { 
+		return m_BadgePositions; 
+	}
+	void									Set_BadgePositions(_int _index, _float2 _vPos) { m_BadgePositions[_index] = _vPos; }
 	HRESULT									Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID);
 	HRESULT									Level_Enter(_int _iChangeLevelID);
 	
@@ -79,6 +84,9 @@ private:
 	_bool									m_isConfirm = { false };
 	_bool									m_isOpenConfirmUI = { false };
 	_bool									m_isPurchase = { true };
+
+	vector<_float2>							m_BadgePositions;
+	_float2									m_vBadgePos = { 0.f, 0.f };
 
 	
 
