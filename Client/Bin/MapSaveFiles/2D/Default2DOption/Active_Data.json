@@ -26,7 +26,10 @@
   {
     "ActiveName": "ActiveType_Action_Anim"
   },
-    {
+  {
     "ActiveName": "ActiveType_Sksp_Humgrump"
+  },
+  {
+    "ActiveName": "ActiveType_Model_Close_Delete"
   }
 ]

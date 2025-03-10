@@ -18,7 +18,7 @@ class CMinigame_Sneak : public CBase
 {
 	DECLARE_SINGLETON(CMinigame_Sneak)
 public:
-	enum SNEAK_GAME_STATE { NONE, START, PROGRESS, GAME_OVER, RESTART, STAGE_VICTORY, GAME_END };
+	enum SNEAK_GAME_STATE { NONE, START, PROGRESS, GAME_OVER, RESTART, STAGE_VICTORY };
 private:
 	CMinigame_Sneak();
 	virtual ~CMinigame_Sneak() = default;
@@ -44,6 +44,7 @@ public:
 #ifdef _DEBUG
 	_float							Get_InputTime() const { return m_fAccTime; }
 #endif
+	_bool							Is_StartGame() { if (SNEAK_GAME_STATE::NONE == m_eGameState) return false; else return true; }
 	_bool							Is_InputTime(_float _fTimeDelta) { if (PROGRESS == m_eGameState && 0 <= m_iCurStage && 0.32f <= m_fAccTime + _fTimeDelta) return true; return false; }
 	_int							Get_NextTile(_int _iCurTile, F_DIRECTION _eDirection);
 	_float2							Get_TilePosition(_int _iStage, _int _iIndex);

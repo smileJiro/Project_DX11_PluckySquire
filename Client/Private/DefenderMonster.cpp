@@ -46,6 +46,7 @@ void CDefenderMonster::Update(_float _fTimeDelta)
 	{
 		Event_DeleteObject(this);
 		m_fLifeTimeAcc = 0.f;
+		On_LifeTimeOut();
 	}
 	__super::Update(_fTimeDelta);
 }
@@ -75,6 +76,7 @@ void CDefenderMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vFor
 	if (m_tStat.iHP <= 0)
 	{
 		Event_DeleteObject(this);
+		On_Explode();
 		m_tStat.iHP = m_tStat.iMaxHP;
 		return;
 	}

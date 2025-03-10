@@ -5,16 +5,27 @@
       {
         "Word_Object_Tag": "Gate",
         "Position": [
-          -601.0,
-          92.0
+          0.0,
+          242.0
         ],
         "Scale": [
           1.0,
           1.0
         ],
+        "Collider_Info": {
+          "Collider_Extent": [
+            250.0,
+            100.0
+          ],
+		"Collider_Offset": [
+            0.0,
+            50.0
+          ]
+		},
         "Image_Tag_List": [
           {
             "ImagePath": "09_0910_GateClosed_Sprite"
+			  
           },
           {
             "ImagePath": "09_0910_GateOpen_Sprite"
@@ -24,7 +35,7 @@
           {
             "Controller_Index": 0,
             "Container_Index": 0,
-            "Word_Type": 2,
+            "Word_Type": 0,
             "Action_Type": 0,
             "Param": 0
           },
@@ -34,6 +45,34 @@
             "Word_Type": 1,
             "Action_Type": 0,
             "Param": 1
+          },
+		  {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 0,
+            "Action_Type": 5,
+            "Param": true
+          },
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 1,
+            "Action_Type": 5,
+            "Param": false
+          },
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 0,
+            "Action_Type": 4,
+            "Param": 242.0
+          },
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 1,
+            "Action_Type": 4,
+            "Param": 252.0
           }
         ]
       }
@@ -45,39 +84,48 @@
         "Controller_Index": 0,
         "Text": "반항하는 백성 중에는\n한심한 견습 기사 저트가 있었습니다\n파멸의 구덩이에서도\n가장 깊은 감방에\n갇혀 있었지요\n그래도 싼 녀석이니까요",
         "Position": [
-          -505.0,
-          -400.0
+          7.0,
+          -95.0
         ],
         "Scale": [
           1.0,
           1.0
-        ]
+        ],
+		"ColorReversal" : true
       },
 		{
         "Controller_Index": 0,
         "Text": "## 벽은\n다른 감방으로\n이어질 뿐이었죠, 하하!",
-        "Init_Word_Type": [ 0 ],
+        "Init_Word_Type": [ 1 ],
         "Position": [
-          -505.0,
-          -400.0
+		  -685.0,
+			117.0
         ],
         "Scale": [
           1.0,
           1.0
-        ]
+        ],
+		"FadeIn" : true,
+		"FadeInLength" : 230.0,
+		"ColorReversal" : true
+
       },		
 	  {
         "Controller_Index": 0,
-        "Text": "커다란 철문은\n 완전히 ## 상태였어요.",
-        "Init_Word_Type": [ 1 ],
+        "Text": "커다란 철문은\n완전히 ## 상태였어요.",
+        "Init_Word_Type": [ 0 ],
         "Position": [
-          -505.0,
-          -400.0
+			7.0,
+			148.0
         ],
         "Scale": [
           1.0,
           1.0
-        ]
+        ],
+		"FadeIn" : true,
+		"FadeInLength" : 100.0,
+		"ColorReversal" : true
+
       }
     ]
   }
