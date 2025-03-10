@@ -15,8 +15,8 @@ class CShopPanel_New : public CUI
 public:
 	struct ShopUI : public tagUIDesc
 	{
-		_int	iSkillLevel = { 0 };
-		_int	iPrice = { 0 };
+		_int		iSkillLevel = { 0 };
+		_int		iPrice = { -1 };
 		_wstring	strName = TEXT(" ");
 		_wstring	strDialogue = TEXT(" ");
 	};

@@ -40,7 +40,7 @@ HRESULT CShopPanel_New::Initialize(void* _pArg)
 	//if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), this)))
 	//	return E_FAIL;
 
-
+	
 
  	return S_OK;
 }
@@ -73,17 +73,17 @@ void CShopPanel_New::Update(_float _fTimeDelta)
 
 	
 	
-		Update_KeyInput(_fTimeDelta);
-		if (m_iChooseIndex != -1 && m_iChooseIndex != m_iPreindex)
-		{
-			CShop_Manager::GetInstance()->Set_ChooseItem(m_iChooseIndex);
-			m_iPreindex = m_iChooseIndex;
-		}
-		else if (m_iChooseIndex == CShop_Manager::GetInstance()->Get_ShopItems().size() - 1)
-		{
-			CShop_Manager::GetInstance()->Set_ChooseItem(m_iChooseIndex);
-		}
-	
+	Update_KeyInput(_fTimeDelta);
+	if (m_iChooseIndex != -1 && m_iChooseIndex != m_iPreindex)
+	{
+		CShop_Manager::GetInstance()->Set_ChooseItem(m_iChooseIndex);
+		m_iPreindex = m_iChooseIndex;
+	}
+	else if (m_iChooseIndex == CShop_Manager::GetInstance()->Get_ShopItems().size() - 1)
+	{
+		CShop_Manager::GetInstance()->Set_ChooseItem(m_iChooseIndex);
+	}
+
 }
 
 void CShopPanel_New::Late_Update(_float _fTimeDelta)
@@ -99,80 +99,80 @@ HRESULT CShopPanel_New::Render(_int _iTextureindex, PASS_VTXPOSTEX _eShaderPass)
 	//if (true == m_isRender)
 	//	__super::Render(_iTextureindex, _eShaderPass);
 
-	CShop_Manager* pShopManager = CShop_Manager::GetInstance();
-
-	if (true == m_isRender)
-	{
-		//__super::Render(_iTextureindex, _eShaderPass);
-
-		/* RTSIZE 를 가져올 수 있는 방법을 논의해봐야한다. */
-
-		_float2 BGPos = pShopManager->Get_ShopBGPos();
-		/* TODO :: 나중에 수정 필요 */
-
-		_float2 vRTSize = _float2(0.f, 0.f);
-
-		vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
-
-		_float2 vMiddlePoint = { vRTSize.x / 2 , vRTSize.y / 2 };
-		_float2 vCalPos = { 0.f, 0.f };
-		_float2 vBulbPos = { 0.f, 0.f };
-		/* TODO :: 나중에 수정 필요 */
-		
-
-
-		_float2 vPos = { 0.f, 0.f };
-
-		vPos.x = BGPos.x + vRTSize.x * 0.06f;
-		vPos.y = BGPos.y + vRTSize.y * 0.137f;
-
-		vBulbPos.x = vMiddlePoint.x + vPos.x;
-		vBulbPos.y = vMiddlePoint.y - vPos.y;
-
-		
-		_wstring szBulbCount = to_wstring(CPlayerData_Manager::GetInstance()->Get_BulbCount());
-		wsprintf(m_tFont, szBulbCount.c_str());
-		
-
-		m_pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vBulbPos.x, vBulbPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
-
-
-		vPos.x = BGPos.x + vRTSize.x * 0.045f;
-		vPos.y = BGPos.y - vRTSize.y * 0.075f;
-
-		vCalPos.x = vMiddlePoint.x + vPos.x;
-		vCalPos.y = vMiddlePoint.y - vPos.y;
-
-
-		vPos.x = BGPos.x - vRTSize.x * 0.036f;
-		vPos.y = BGPos.y - vRTSize.y * 0.2f;
-
-
-		vCalPos.x = vMiddlePoint.x + vPos.x;
-		vCalPos.y = vMiddlePoint.y - vPos.y;
-
-		wsprintf(m_tFont, TEXT("취소"));
-		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x - 2.5f, vCalPos.y),			XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
-		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x + 2.5f, vCalPos.y),			XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
-		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y - 2.5f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
-		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y + 2.5f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
-		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x ,		vCalPos.y),			XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
-
-		vPos.x = BGPos.x + vRTSize.x * 0.035f;
-		vCalPos.x = vMiddlePoint.x + vPos.x;
-
-		wsprintf(m_tFont, TEXT("선택"));
-		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x - 2.5f,	vCalPos.y),			XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x + 2.5f,	vCalPos.y),			XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y - 2.5f),	XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y + 2.5f),	XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y),			XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
-
-
-
-		m_pGameInstance->Render_Font(TEXT("Font30"), m_strName.c_str(), _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
-
-	}
+	//CShop_Manager* pShopManager = CShop_Manager::GetInstance();
+	//
+	//if (true == m_isRender)
+	//{
+	//	//__super::Render(_iTextureindex, _eShaderPass);
+	//
+	//	/* RTSIZE 를 가져올 수 있는 방법을 논의해봐야한다. */
+	//
+	//	_float2 BGPos = pShopManager->Get_ShopBGPos();
+	//	/* TODO :: 나중에 수정 필요 */
+	//
+	//	_float2 vRTSize = _float2(0.f, 0.f);
+	//
+	//	vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
+	//
+	//	_float2 vMiddlePoint = { vRTSize.x / 2 , vRTSize.y / 2 };
+	//	_float2 vCalPos = { 0.f, 0.f };
+	//	_float2 vBulbPos = { 0.f, 0.f };
+	//	/* TODO :: 나중에 수정 필요 */
+	//	
+	//
+	//
+	//	_float2 vPos = { 0.f, 0.f };
+	//
+	//	vPos.x = BGPos.x + vRTSize.x * 0.06f;
+	//	vPos.y = BGPos.y + vRTSize.y * 0.137f;
+	//
+	//	vBulbPos.x = vMiddlePoint.x + vPos.x;
+	//	vBulbPos.y = vMiddlePoint.y - vPos.y;
+	//
+	//	
+	//	_wstring szBulbCount = to_wstring(CPlayerData_Manager::GetInstance()->Get_BulbCount());
+	//	wsprintf(m_tFont, szBulbCount.c_str());
+	//	
+	//
+	//	m_pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vBulbPos.x, vBulbPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+	//
+	//
+	//	vPos.x = BGPos.x + vRTSize.x * 0.045f;
+	//	vPos.y = BGPos.y - vRTSize.y * 0.075f;
+	//
+	//	vCalPos.x = vMiddlePoint.x + vPos.x;
+	//	vCalPos.y = vMiddlePoint.y - vPos.y;
+	//
+	//
+	//	vPos.x = BGPos.x - vRTSize.x * 0.036f;
+	//	vPos.y = BGPos.y - vRTSize.y * 0.2f;
+	//
+	//
+	//	vCalPos.x = vMiddlePoint.x + vPos.x;
+	//	vCalPos.y = vMiddlePoint.y - vPos.y;
+	//
+	//	wsprintf(m_tFont, TEXT("취소"));
+	//	m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x - 2.5f, vCalPos.y),			XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+	//	m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x + 2.5f, vCalPos.y),			XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+	//	m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y - 2.5f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+	//	m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y + 2.5f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+	//	m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x ,		vCalPos.y),			XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+	//
+	//	vPos.x = BGPos.x + vRTSize.x * 0.035f;
+	//	vCalPos.x = vMiddlePoint.x + vPos.x;
+	//
+	//	wsprintf(m_tFont, TEXT("선택"));
+	//	m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x - 2.5f,	vCalPos.y),			XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+	//	m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x + 2.5f,	vCalPos.y),			XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+	//	m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y - 2.5f),	XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+	//	m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y + 2.5f),	XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+	//	m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x,		vCalPos.y),			XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+	//
+	//
+	//
+	//	m_pGameInstance->Render_Font(TEXT("Font30"), m_strName.c_str(), _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+	//
+	//}
 
 	return S_OK;
 }
@@ -254,14 +254,40 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 		{
 			if (true == pShopManager->Get_OpenConfirmUI())
 			{
+				// 아이템 구매 관련
 				if (true == pShopManager->Get_isPurchase())
 				{
-					pShopManager->Delete_ShopItems(m_iChooseIndex);
+					_int iPrice = pShopManager->Get_ShopItems()[m_iChooseIndex][1]->Get_Price();
+					_int iPlayerBulb = CPlayerData_Manager::GetInstance()->Get_BulbCount();
 
-					if (m_iChooseIndex == pShopManager->Get_ShopItems().size() - 1)
+					// 가격이 부족하면 리턴
+					if (iPrice > iPlayerBulb)
+					{
+						//pShopManager->Set_Confirm(false);
+						//pShopManager->Set_OpenConfirmUI(false);
+						// pShopManager->Set_isPurchase(true);
+						//m_iConfirmItemIndex = 0;
+						//return;
+					}
+					else
+					{
+						// 가격이 있으면 구매진행
+						//CPlayerData_Manager::GetInstance()->Set_BulbCount(iPrice);
+						pShopManager->Delete_ShopItems(m_iChooseIndex);
+
+					}
+
+					// 구매성공 시 Choose 값을 위로 올려줍니다.
+					if (m_iChooseIndex <= pShopManager->Get_ShopItems().size() - 1)
 					{
 						if (0 == m_iChooseIndex)
+						{
+							m_iConfirmItemIndex = 0;
+							pShopManager->Set_Confirm(false);
+							pShopManager->Set_OpenConfirmUI(false);
+							pShopManager->Set_isPurchase(true);
 							return;
+						}
 
 						else
 							--m_iChooseIndex;
@@ -271,7 +297,7 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 				m_iConfirmItemIndex = 0;
 				pShopManager->Set_Confirm(false);
 				pShopManager->Set_OpenConfirmUI(false);
-				pShopManager->Set_isPurchase(false);
+				pShopManager->Set_isPurchase(true);
 			}
 			else if (false == pShopManager->Get_OpenConfirmUI())
 			{
@@ -318,6 +344,7 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 
 	_float2 vCalPos = { 0.f, 0.f };
 
+	CShop_Manager* pShopManager = CShop_Manager::GetInstance();
 	auto& ShopItems = CShop_Manager::GetInstance()->Get_ShopItems();
 
 	if (nullptr == &ShopItems)
@@ -340,6 +367,16 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				{
 					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.035f;
 					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.07f;
+
+
+					if (2 >=pShopManager->Get_BadgePositions().size())
+					{
+						pShopManager->pushBack_BadgePos(vCalPos);
+					}
+					else
+						pShopManager->Set_BadgePositions(i, vCalPos);
+					
+
 				}
 				else if (2 == j)
 				{
@@ -348,7 +385,7 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				}
 
 				ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
-				CShop_Manager::GetInstance()->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
+				pShopManager->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
 			}
 			
 		}
@@ -365,6 +402,13 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				{
 					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.035f;
 					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.005f;
+
+					if (2 >= pShopManager->Get_BadgePositions().size())
+					{
+						pShopManager->pushBack_BadgePos(vCalPos);
+					}
+					else
+						pShopManager->Set_BadgePositions(i, vCalPos);
 				}
 				else if (2 == j)
 				{
@@ -373,7 +417,7 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				}
 
 				ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
-				CShop_Manager::GetInstance()->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
+				pShopManager->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
 			}
 		}
 		else if (2 == i)
@@ -389,6 +433,13 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				{
 					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.035f;
 					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.08f;
+
+					if (2 >= pShopManager->Get_BadgePositions().size())
+					{
+						pShopManager->pushBack_BadgePos(vCalPos);
+					}
+					else
+						pShopManager->Set_BadgePositions(i, vCalPos);
 				}
 				else if (2 == j)
 				{
@@ -397,7 +448,7 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				}
 
 				ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
-				CShop_Manager::GetInstance()->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
+				pShopManager->Get_ShopItems()[i][j]->Set_Pos(vCalPos);
 			}
 		}
 	}

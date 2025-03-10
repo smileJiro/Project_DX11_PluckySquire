@@ -47,7 +47,44 @@ void CInteraction_E::Priority_Update(_float _fTimeDelta)
 
 void CInteraction_E::Update(_float _fTimeDelta)
 {
-	
+	//IInteractable* pInteractableObject = Uimgr->Get_Player()->Get_InteractableObject();
+	//
+	//if (nullptr == pInteractableObject)
+	//{
+	//	if (true == m_isRender)
+	//		m_isRender = false;
+	//
+	//	return;
+	//}
+	//else
+	//{
+	//	// TODO :: 일단 북이면
+	//	if (INTERACT_ID::BOOK == pInteractableObject->Get_InteractID())
+	//	{
+	//		if (true == m_isRender)
+	//			m_isRender = false;
+	//
+	//		return;
+	//	}
+	//
+	//
+	//	if (false == m_isRender)
+	//		m_isRender = true;
+	//
+	//	CGameObject* pGameObejct = dynamic_cast<CGameObject*>(pInteractableObject);
+	//
+	//	// 현재 섹션에 오브젝트가 없다면
+	//	//if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	//	//{
+	//	//	if (false == CSection_Manager::GetInstance()->Is_CurSection(pGameObejct))
+	//	//		return;
+	//	//
+	//	//}
+	//
+	//	// 무조건 플레이어 머리 위에만 띄운다로 스펙 변경 됨.
+	//
+	//	Cal_PlayerHighPos(pGameObejct);
+	//}
 	
 }
 
@@ -60,12 +97,12 @@ void CInteraction_E::Late_Update(_float _fTimeDelta)
 
 
 	IInteractable* pInteractableObject = Uimgr->Get_Player()->Get_InteractableObject();
-
+	
 	if (nullptr == pInteractableObject)
 	{
 		if (true == m_isRender)
 			m_isRender = false;
-
+	
 		return;
 	}
 	else
@@ -75,16 +112,16 @@ void CInteraction_E::Late_Update(_float _fTimeDelta)
 		{
 			if (true == m_isRender)
 				m_isRender = false;
-
+	
 			return;
 		}
-
-
+	
+	
 		if (false == m_isRender)
 			m_isRender = true;
-
+	
 		CGameObject* pGameObejct = dynamic_cast<CGameObject*>(pInteractableObject);
-
+	
 		// 현재 섹션에 오브젝트가 없다면
 		//if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 		//{
@@ -92,9 +129,9 @@ void CInteraction_E::Late_Update(_float _fTimeDelta)
 		//		return;
 		//
 		//}
-
+	
 		// 무조건 플레이어 머리 위에만 띄운다로 스펙 변경 됨.
-
+	
 		Cal_PlayerHighPos(pGameObejct);
 	}
 }
@@ -103,6 +140,12 @@ void CInteraction_E::Late_Update(_float _fTimeDelta)
 
 HRESULT CInteraction_E::Render()
 {
+
+	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+
+	}
+
 	// 다이얼로그 중일땐 랜더 끄기
 	if (true == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
 		return S_OK;
@@ -234,19 +277,26 @@ HRESULT CInteraction_E::Cleanup_DeadReferences()
 void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 {
 	// 포탈 및 점프
+	CPlayer* pPlayer = Uimgr->Get_Player();
 
-	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	if (COORDINATE_2D == pPlayer->Get_CurCoord())
 	{
 		//TODO::해당 부분은 가변적이다.추후 변경해야한다.
+
+		if (m_ePrePlayerCoord != pPlayer->Get_CurCoord())
+		{
+			m_ePrePlayerCoord = pPlayer->Get_CurCoord();
+			return;
+		}
 
 		if (true == m_isDeleteRender)
 			m_isDeleteRender = false;
 
 		_float2 RTSize = _float2(0.f, 0.f);
 
-		if (nullptr != CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player()))
+		if (nullptr != CSection_Manager::GetInstance()->Get_SectionKey(pPlayer))
 		{
-			auto CurSection = CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player());
+			auto CurSection = CSection_Manager::GetInstance()->Get_SectionKey(pPlayer);
 			RTSize = _float2(CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(*(CurSection)));
 
 			m_strSectionName = *(CurSection);
@@ -260,7 +310,7 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 
 		_float fScaleX = RTSize.x / RTSIZE_BOOK2D_X;
 		_float fScaleY = RTSize.y / RTSIZE_BOOK2D_Y;
-		_float2 vPlayerPos = _float2(Uimgr->Get_Player()->Get_BodyPosition().m128_f32[0], Uimgr->Get_Player()->Get_BodyPosition().m128_f32[1]);
+		_float2 vPlayerPos = _float2(pPlayer->Get_BodyPosition().m128_f32[0], pPlayer->Get_BodyPosition().m128_f32[1]);
 
 		_float2 vCalPos = { 0.f, 0.f };
 
@@ -275,22 +325,34 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 		m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
 
 	}
-	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	else if (COORDINATE_3D == pPlayer->Get_CurCoord())
 	{
 		//TODO :: 3D 어떻게 표현할것인가?
 
-		_float2 vCalx = __super::WorldToSceen(Uimgr->Get_Player()->Get_WorldMatrix());
+		_float2 vCalx = __super::WorldToSceen(pPlayer->Get_WorldMatrix());
 		_float CalX = vCalx.x - g_iWinSizeX / 2.f;
 		_float CalY = -(vCalx.y - g_iWinSizeY / 1.4f);
+
+		if (m_ePrePlayerCoord != pPlayer->Get_CurCoord())
+		{
+			m_ePrePlayerCoord = pPlayer->Get_CurCoord();
+			if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
+				SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
+			return;
+		}
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(CalX, CalY, 0.f, 1.f));
 		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX, m_fSizeY, 1.f));
 		//m_vObejctPos = _float3(vCalx.x, g_iWinSizeY - vCalx.y, 0.f);
 		m_vObejctPos = _float3(vCalx.x, vCalx.y, 0.f);
 
+		if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
+			SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
+
+
 		if (false == m_isDeleteRender)
 		{
-			SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
+			//SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
 
 			m_preSectionName = TEXT(" ");
 			m_isDeleteRender = true;
@@ -400,6 +462,10 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 	case INTERACT_ID::CARRIABLE:
 		m_strDisplayText = TEXT("줍기");
 		break;
+
+	//case INTERACT_ID::WORD:
+	//	m_strDisplayText = TEXT("줍기");
+	//	break;
 
 	case INTERACT_ID::PORTAL:
 		m_strDisplayText = TEXT("이동");

@@ -146,9 +146,6 @@ HRESULT CShopPanel_YesNo_New::Render()
 		}
 
 	}
-		
-
-	
 
 	return S_OK;
 }

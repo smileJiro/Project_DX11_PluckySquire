@@ -682,6 +682,9 @@
     <Filter Include="05.MiniGames\FatherGame\Object\JellyKing">
       <UniqueIdentifier>{7edd7fcc-4e17-4097-9fc7-febc8206d504}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\02. Shop_RenderFont">
+      <UniqueIdentifier>{46234954-8f61-4262-bb44-9e2700108a00}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1685,6 +1688,10 @@
     <ClInclude Include="..\Public\DefenderMedShip.h">
       <Filter>05.MiniGames\Defender</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CandleGame.h" />
+    <ClInclude Include="..\Public\ShopPanel_RenderFont.h">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\02. Shop_RenderFont</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2674,6 +2681,10 @@
     <ClCompile Include="..\Private\CandleGame.cpp" />
     <ClCompile Include="..\Private\DefenderMedShip.cpp">
       <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CandleGame.cpp" />
+    <ClCompile Include="..\Private\ShopPanel_RenderFont.cpp">
+      <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\02. Shop_RenderFont</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
