@@ -287,12 +287,6 @@ void CCamera_CutScene::Switching(_float _fTimeDelta)
 
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vPos, 1.f));
 	m_fFovy = fFovy;
-
-	static _uint iCount = 0;
-	cout << "iCount: " << iCount << endl;
-	cout << "fRatio: " << fRatio << endl;
-	cout << "============" << endl;
-	iCount++;
 }
 
 CCamera_CutScene* CCamera_CutScene::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
