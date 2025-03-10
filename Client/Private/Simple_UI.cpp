@@ -94,6 +94,10 @@ HRESULT CSimple_UI::Render()
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", m_iTextureIndex)))
 		return E_FAIL;
 
+	_float fFadeAlphaRatio = 1.0f;
+
+	m_pShaderCom->Bind_RawValue("g_fSprite2DFadeAlphaRatio", &fFadeAlphaRatio, sizeof(_float));
+
 	m_pShaderCom->Begin((_uint)m_ePassIndex);
 
 	// Buffer정보 전달

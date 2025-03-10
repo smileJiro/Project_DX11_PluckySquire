@@ -218,6 +218,7 @@
     <ClInclude Include="..\Public\DefenderMedShip.h" />
     <ClInclude Include="..\Public\DefenderPerson.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_PartBody.h" />
+    <ClInclude Include="..\Public\FatherGame_Progress_PartHead.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_PartWing.h" />
     <ClInclude Include="..\public\FatherPart_Prop.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
@@ -564,6 +565,7 @@
     <ClCompile Include="..\Private\DefenderMedShip.cpp" />
     <ClCompile Include="..\Private\DefenderPerson.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_PartBody.cpp" />
+    <ClCompile Include="..\Private\FatherGame_Progress_PartHead.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_PartWing.cpp" />
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
