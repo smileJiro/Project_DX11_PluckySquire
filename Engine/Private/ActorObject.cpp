@@ -109,7 +109,6 @@ void CActorObject::Active_OnEnable()
     {
         m_pActorCom->Set_Active(true);
     }
-
 }
 
 void CActorObject::Active_OnDisable()

@@ -248,23 +248,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	
 	
 
-	///* Test Candle */
-	//CCandleGame::CANDLEGAME_DESC CandleGameDesc;
-	//CandleGameDesc.iCurLevelID = LEVEL_CHAPTER_6;
-	//CandleGameDesc.Build_3D_Transform(_float3(0.0f, 0.0f, 0.0f));
-	//CandleGameDesc.eStartCoord = COORDINATE_3D;
-	//CandleGameDesc.isCoordChangeEnable = false;
-	//
-	//for (_uint i = 0; i < 5; ++i)
-	//{
-	//	CandleGameDesc.CandlePositions.push_back(_float3(i * 5.0f, 1.0f, -10.f));
-	//}
-	//
-	//CGameObject* pGameObject = nullptr;
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_CandleGame"), LEVEL_CHAPTER_6, TEXT("Layer_CandleGame"), &pGameObject, &CandleGameDesc)))
-	//	return E_FAIL;
-	//m_pCandleGame = static_cast<CCandleGame*>(pGameObject);
-	//Safe_AddRef(m_pCandleGame);
+	
 
 
 	/* Test FatherGame Progress */

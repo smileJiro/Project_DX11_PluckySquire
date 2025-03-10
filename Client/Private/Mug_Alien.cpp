@@ -5,6 +5,8 @@
 #include "Camera_Manager.h"
 #include "PlayerData_Manager.h"
 #include "Section_Manager.h"
+#include "FatherPart_Prop.h"
+#include "FatherGame.h"
 
 CMug_Alien::CMug_Alien(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -32,6 +34,8 @@ HRESULT CMug_Alien::Initialize(void* _pArg)
 	if (FAILED(Ready_Components(pDesc)))
 		return E_FAIL;
 
+	m_pControllerModel->Set_AnimationLoop(COORDINATE_2D, STATE::STATE_IDLE, true);
+	m_pControllerModel->Set_AnimationLoop(COORDINATE_2D, STATE::STATE_TALK, true);
 	m_eCurState = STATE_IDLE;
 	State_Change();
     return S_OK;
@@ -77,7 +81,10 @@ void CMug_Alien::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOthe
 	if (OBJECT_GROUP::PLAYER == (OBJECT_GROUP)iCollisionGroupID)
 	{
 		/* 대화 시작 */
-		m_eCurState = STATE_TALK;
+		if (m_iDialogueIndex < 1)
+		{
+			m_eCurState = STATE_TALK;
+		}
 	}
 }
 
@@ -185,6 +192,17 @@ void CMug_Alien::Finished_DialogueAction()
 
 			m_eCurState = STATE_IDLE;
 			++m_iDialogueIndex;
+
+			/* 4. 파트 바디 생성 */
+			CFatherPart_Prop::FATHERPART_PROP_DESC Desc{};
+			Desc.iCurLevelID = m_iCurLevelID;
+			Desc.iFatherPartID = CFatherGame::FATHER_BODY;
+			Desc.Build_2D_Transform(_float2(-100.f, -120.f), _float2(200.0f, 200.0f));
+			CGameObject* pGameObject = nullptr;
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"), LEVEL_CHAPTER_6, TEXT("Layer_FatherPart_Prop"), &pGameObject, &Desc)))
+				assert(nullptr);
+
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
 		}
 	}
 	break;

@@ -210,7 +210,7 @@ HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
 	PxPhysics* pPhysic = m_pGameInstance->Get_Physics();
 	PxTransform Transform = PxTransform();
 	//_vector vOwnerPos = m_pOwner->Get_Position();
-	_matrix OwnerWorldMatrix = m_pOwner->Get_WorldMatrix();
+	_matrix OwnerWorldMatrix = m_pOwner->Get_WorldMatrix();//->Get_Transform(COORDINATE_3D)->Get_WorldMatrix();
 	_vector vScale = {};
 	_vector vPosition = {};
 	_vector vQuat = {};

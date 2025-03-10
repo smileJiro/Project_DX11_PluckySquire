@@ -22,7 +22,6 @@ HRESULT CPalmDecal::Initialize(void* _pArg)
     m_eInteractID = INTERACT_ID::PALMDECAL;
     m_eInteractKey = KEY::Q;
 
-
     CModelObject::MODELOBJECT_DESC* pBodyDesc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
 
     pBodyDesc->eStartCoord = COORDINATE_2D;

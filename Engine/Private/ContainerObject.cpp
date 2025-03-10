@@ -96,8 +96,11 @@ HRESULT CContainerObject::Register_RenderGroup(_uint _iGroupId, _uint _iPriority
     {
         if (nullptr != pPartObject)
         {
-            if (FAILED(pPartObject->Register_RenderGroup(_iGroupId, _iPriorityID)))
-                return E_FAIL;
+            if (true == pPartObject->Is_Active())
+            {
+                if (FAILED(pPartObject->Register_RenderGroup(_iGroupId, _iPriorityID)))
+                    return E_FAIL;
+            }
         }
     }
 
