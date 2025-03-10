@@ -117,7 +117,7 @@ void C2DMapActionObject::Update(_float _fTimeDelta)
         if (true == m_isFadeOut)
         {
             m_fAlpha = std::fmax(m_fAlpha - (_fTimeDelta / m_fFadeOutSecond), 0.f);
-            if (0.f >= m_fAlpha )
+            if (0.f >= m_fAlpha && false == Is_Dead())
             {
                 Event_DeleteObject(this);
             }
@@ -324,7 +324,6 @@ void C2DMapActionObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider*
     case Client::C2DMapActionObject::ACTIVE_TYPE_DIALOG:
         break;
     case Client::C2DMapActionObject::ACTIVE_TYPE_MODEL_CLOSE:
-    case Client::C2DMapActionObject::ACTIVE_TYPE_MODEL_CLOSE_DELETE:
     {
         m_isFadeOut = false;
         m_fAlpha = 1.f;
