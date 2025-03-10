@@ -26,10 +26,12 @@ public:
 	virtual HRESULT				Initialize_Prototype();				
 	virtual HRESULT				Initialize(void* _pArg);			
 	virtual void				Priority_Update(_float _fTimeDelta);
-
+public:
+	void						OnOffCandleUIs(_bool _isOnOff);
 public:
 	// Get
 	_bool						Is_ClearGame() const { return m_isClearGame; }
+
 private:
 	void						Check_Clear(_float _fTimeDelta);	// 게임 클리어를 검사하는 함수.
 	void						ClearGame();	// 게임 클리어 시 1회 호출되는 함수.

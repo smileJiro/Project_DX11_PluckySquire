@@ -72,10 +72,10 @@ HRESULT CJellyKing::Initialize(void* _pArg)
 
 void CJellyKing::Priority_Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::K))
-	{
-		Set_Position(XMVectorSet(314, -54,0,1));
-	}
+	//if (KEY_DOWN(KEY::K))
+	//{
+	//	Set_Position(XMVectorSet(314, -54,0,1));
+	//}
 
 	if (nullptr != m_pCandleGame)
 	{
@@ -84,10 +84,12 @@ void CJellyKing::Priority_Update(_float _fTimeDelta)
 
 			if (true == m_pCandleGame->Is_ClearGame())
 			{
+				m_pCandleGame->OnOffCandleUIs(false);
 				Safe_Release(m_pCandleGame);
 				m_pCandleGame = nullptr;
 				m_eCurState = STATE_CHEER;
 				m_pCandleGame = false;
+
 			}
 		}
 	}
