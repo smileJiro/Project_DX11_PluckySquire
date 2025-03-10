@@ -50,6 +50,24 @@ void CSideScroll_PatrolState::Initialize_SideScroll_PatrolBound(SIDESCROLL_PATRO
 		m_tPatrolBound.fMinX = -650.f;
 		m_tPatrolBound.fMaxX = -440.f;
 		break;
+
+	case Client::SIDESCROLL_PATROLBOUND::CHAPTER6_1_1:
+		m_tPatrolBound.fMinX = -977.f;
+		m_tPatrolBound.fMaxX = -570.f;
+		break;
+	case Client::SIDESCROLL_PATROLBOUND::CHAPTER6_1_2:
+		m_tPatrolBound.fMinX = -522.f;
+		m_tPatrolBound.fMaxX = -115.f;
+		break;
+	case Client::SIDESCROLL_PATROLBOUND::CHAPTER6_1_3:
+		m_tPatrolBound.fMinX = 121.f;
+		m_tPatrolBound.fMaxX = 868.f;
+		break;
+
+	case Client::SIDESCROLL_PATROLBOUND::CHAPTER6_1_4:
+		m_tPatrolBound.fMinX = 484.f;
+		m_tPatrolBound.fMaxX = 841.f;
+		break;
 	}
 }
 

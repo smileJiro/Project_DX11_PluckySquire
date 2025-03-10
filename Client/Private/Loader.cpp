@@ -1579,7 +1579,7 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 
 		/* For. Prototype_GameObject_SketchSpace_Alien */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_SketchSpace_Alien"),
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_Alien"),
 			CSketchSpace_Alien::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 

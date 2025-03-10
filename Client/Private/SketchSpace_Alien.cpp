@@ -141,12 +141,7 @@ void CSketchSpace_Alien::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case DEATH_RIGHT:
-        Set_AnimChangeable(true);
-        //풀링에 넣을 시 변경
-        //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
-        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
-
-        Event_DeleteObject(this);
+        Monster_Death();
         break;
 
     default:
@@ -341,8 +336,8 @@ HRESULT CSketchSpace_Alien::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
-    BodyDesc.strModelPrototypeTag_2D = TEXT("SketchSpace_Alien");
-    BodyDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+    BodyDesc.strModelPrototypeTag_2D = TEXT("SketchspaceAlien");
+    BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
 
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
 

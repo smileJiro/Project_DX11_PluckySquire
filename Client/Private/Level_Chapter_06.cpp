@@ -27,6 +27,7 @@
 #include "Soldier_Shield.h"
 #include "Soldier_CrossBow.h"
 #include "CrossBow_Arrow.h"
+#include "SketchSpace_Alien.h"
 #include "Bomb.h"
 #include "SlipperyObject.h"
 #include "LightningBolt.h"
@@ -1266,6 +1267,27 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//	return E_FAIL;
 
 
+	/*CSketchSpace_Alien::SIDESCROLLDESC SketchSpace_Alien_Desc;
+	SketchSpace_Alien_Desc.iCurLevelID = m_eLevelID;
+	SketchSpace_Alien_Desc.eStartCoord = COORDINATE_2D;
+	SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(-570.f, -44.8f, 0.0f);
+	SketchSpace_Alien_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_1;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+
+	SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(-977.f, -44.8f, 0.0f);
+	SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_2;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);*/
+
 
 	//alien
 	//.tTransform2DDesc.vInitialPosition = _float3(-570.f, -44.8f, 0.0f); //-977.f, -44.8f
@@ -1273,14 +1295,20 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//.tTransform2DDesc.vInitialPosition = _float3(-522.f, 605.1f, 0.0f);
 	//.tTransform2DDesc.vInitialPosition = _float3(-115.f, 605.1f, 0.0f);
 
+	//.tTransform2DDesc.vInitialPosition = _float3(121.f, -812.f, 0.0f);
+	//.tTransform2DDesc.vInitialPosition = _float3(868.f, -812.f, 0.0f);
+
 	//spikeball
 	//.tTransform2DDesc.vInitialPosition = _float3(-69.f, -219.f, 0.0f);
 	//.tTransform2DDesc.vInitialPosition = _float3(-40.f, -219.f, 0.0f);
+
+	//.tTransform2DDesc.vInitialPosition = _float3(484.f, 303.f, 0.0f); // ~841.f
 
 	//ufo
 	//.tTransform2DDesc.vInitialPosition = _float3(-750.f, -300.f, 0.0f);
 	// 
 	//.tTransform2DDesc.vInitialPosition = _float3(350.f, -370.f, 0.0f);
+	//.tTransform2DDesc.vInitialPosition = _float3(1074.f, -99.f, 0.0f);
 
 
 	return S_OK;

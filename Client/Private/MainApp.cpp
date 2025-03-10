@@ -56,7 +56,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 	EngineDesc.isNewRenderer = true;
 #ifdef _DEBUG
-	EngineDesc.eImportMode |= NONE_IMPORT | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
+	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
 #elif NDEBUG
 	EngineDesc.eImportMode |= NONE_IMPORT; // | IMPORT_IMGUI;
 #endif

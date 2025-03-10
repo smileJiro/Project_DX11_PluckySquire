@@ -140,12 +140,7 @@ void CGoblin_SideScroller::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case DEATH:
-        Set_AnimChangeable(true);
-        //풀링에 넣을 시 변경
-        //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
-        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
-
-        Event_DeleteObject(this);
+        Monster_Death();
         break;
 
     default:
