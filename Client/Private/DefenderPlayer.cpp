@@ -257,7 +257,7 @@ void CDefenderPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_IDLE);
 		m_pCrossHair->Set_Active(true);
 		CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
-		pPDM->Set_CurrentPlayer(PLAYALBE_ID::DEFENDER);
+		pPDM->Set_CurrentPlayer(PLAYABLE_ID::DEFENDER);
 		Set_BlockPlayerInput(false);
 		m_pMinigame->Start_Game();
 	}

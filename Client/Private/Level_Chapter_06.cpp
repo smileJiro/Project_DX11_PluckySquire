@@ -655,7 +655,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
-	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYALBE_ID::NORMAL);
+	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
 	return S_OK;
 }
 
