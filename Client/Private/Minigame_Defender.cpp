@@ -7,6 +7,8 @@
 #include "Section_Manager.h"
 #include "GameInstance.h"
 #include "DefenderSpawner.h"
+#include "Camera_Manager.h"
+#include "Camera_Target.h"
 
 CMiniGame_Defender::CMiniGame_Defender(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -65,7 +67,6 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDesc)))
         return E_FAIL;
-
 
 	return S_OK;
 }
@@ -180,6 +181,7 @@ void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
         m_pDefenderPlayer->Set_Position(vNormalPlayerPos);
 		m_pDefenderPlayer->Start_Transform();
 
+        static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(m_pDefenderPlayer);
     }
 }
 
