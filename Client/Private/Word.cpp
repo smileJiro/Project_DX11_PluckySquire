@@ -133,7 +133,13 @@ HRESULT CWord::Render()
 	{
 	case Engine::COORDINATE_2D:
 	{
-		m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
+		_vector vPos = Get_FinalPosition(COORDINATE_2D);
+		_float2 fPos = Convert_Pos_ToWindow({ XMVectorGetX(vPos), XMVectorGetY(vPos) }, SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+		fPos.x -= 40.f;
+		fPos.y -= 20.f;
+		m_pGameInstance->Render_Font(L"Font28", m_strText.c_str(), fPos,
+			XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		//m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
 	}
 	break;
 	case Engine::COORDINATE_3D:
@@ -146,13 +152,15 @@ HRESULT CWord::Render()
 
 		m_pShaderComs[COORDINATE_2D]->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
 
+		m_pVIBufferCom->Bind_BufferDesc();
+		m_pVIBufferCom->Render();
 	}
 	break;
 	}
 
 
-	m_pVIBufferCom->Bind_BufferDesc();
-	m_pVIBufferCom->Render();
+	//m_pVIBufferCom->Bind_BufferDesc();
+	//m_pVIBufferCom->Render();
 #ifdef _DEBUG
 	if(!m_p2DColliderComs.empty())
 		m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
@@ -216,7 +224,7 @@ void CWord::Execute_WordMode_Action(_float _fTimeDelta)
 			{
 				_vector vTargetDir = XMLoadFloat3(&m_fOutputDir);
 				m_fOutputSecond -= _fTimeDelta;
-				m_pControllerTransform->Go_Direction(vTargetDir, m_fOutputSecond * 1000.f ,_fTimeDelta);
+				m_pControllerTransform->Go_Direction(vTargetDir, m_fOutputSecond * 1500.f ,_fTimeDelta);
 			}
 
 			break;

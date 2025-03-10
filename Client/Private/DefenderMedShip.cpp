@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 #include "Collider_Circle.h"
 #include "Section_Manager.h"
+#include "Effect2D_Manager.h"
 
 CDefenderMedShip::CDefenderMedShip(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CDefenderMonster(_pDevice, _pContext)
@@ -128,14 +129,32 @@ void CDefenderMedShip::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _
 
 void CDefenderMedShip::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
-	m_tStat.iHP -= _iDamg;
-	COORDINATE eCoord = Get_CurCoord();
-	if (m_tStat.iHP <= 0)
-	{
-		Event_DeleteObject(this);
-		m_tStat.iHP = m_tStat.iMaxHP;
-		return;
-	}
+	__super::On_Hit(_pHitter, _iDamg, _vForce);
+}
+
+void CDefenderMedShip::On_Explode()
+{
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefDebrisMed"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, rand() % 4, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
+
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefExplosionMed"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, rand() % 4, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
+}
+
+void CDefenderMedShip::On_Spawned()
+{
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, 2, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
+}
+
+void CDefenderMedShip::On_LifeTimeOut()
+{
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, 5, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
 }
 
 

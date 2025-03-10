@@ -10,6 +10,8 @@
 #include "Sneak_InteractObject.h"
 #include "Sneak_Troop.h"
 #include "Pip_Player.h"
+#include "Section_2D_MiniGame_Pip.h"
+#include "Section_Manager.h"
 
 IMPLEMENT_SINGLETON(CMinigame_Sneak)
 
@@ -24,44 +26,44 @@ void CMinigame_Sneak::Start_Game()
 	m_eGameState = START;
 	m_iCurStage = 0;
 
-	for (_int i = 0; i < m_StageTiles.size(); ++i)
-	{
-		for (auto& iter : m_StageTiles[i])
-		{
-			//Event_SetActive(iter, false);
-			iter->Set_Active(false);
-		}
-	}
+	//for (_int i = 0; i < m_StageTiles.size(); ++i)
+	//{
+	//	for (auto& iter : m_StageTiles[i])
+	//	{
+	//		//Event_SetActive(iter, false);
+	//		iter->Set_Active(false);
+	//	}
+	//}
 
-	for (_int i = 0; i < m_StageObjects.size(); ++i)
-	{
-		for (auto& iter : m_StageObjects[i])
-		{
-			//Event_SetActive(iter, false);
-			iter->Set_Active(false);
-		}
-	}
+	//for (_int i = 0; i < m_StageObjects.size(); ++i)
+	//{
+	//	for (auto& iter : m_StageObjects[i])
+	//	{
+	//		//Event_SetActive(iter, false);
+	//		iter->Set_Active(false);
+	//	}
+	//}
 
-	for (_int i = 0; i < m_StageInteracts.size(); ++i)
-	{
-		for (auto& iter : m_StageInteracts[i])
-		{
-			//Event_SetActive(iter, false);
-			iter->Set_Active(false);
-		}
-	}
+	//for (_int i = 0; i < m_StageInteracts.size(); ++i)
+	//{
+	//	for (auto& iter : m_StageInteracts[i])
+	//	{
+	//		//Event_SetActive(iter, false);
+	//		iter->Set_Active(false);
+	//	}
+	//}
 
-	for (_int i = 0; i < m_StageTroops.size(); ++i)
-	{
-		for (auto& iter : m_StageTroops[i])
-		{
-			//Event_SetActive(iter, false);
-			iter->Set_Active(false);
-		}
+	//for (_int i = 0; i < m_StageTroops.size(); ++i)
+	//{
+	//	for (auto& iter : m_StageTroops[i])
+	//	{
+	//		//Event_SetActive(iter, false);
+	//		iter->Set_Active(false);
+	//	}
 
-	}
-	if (nullptr != m_pPlayer)
-		m_pPlayer->Set_Active(false);
+	//}
+	//if (nullptr != m_pPlayer)
+	//	m_pPlayer->Set_Active(false);
 		//Event_SetActive(m_pPlayer, false);
 
 	// Start Music
@@ -70,7 +72,7 @@ void CMinigame_Sneak::Start_Game()
 
 void CMinigame_Sneak::Update(_float _fTimeDelta)
 {
-	if (NONE == m_eGameState || GAME_END == m_eGameState)
+	if (NONE == m_eGameState)
 		return;
 
 #ifdef _DEBUG
@@ -108,7 +110,7 @@ void CMinigame_Sneak::Update(_float _fTimeDelta)
 		if (0 <= m_iCurStage)
 		{
 			// 행동
-			if ((0.32f <= m_fAccTime && nullptr != m_pPlayer && F_DIRECTION::F_DIR_LAST != m_pPlayer->Get_InputDirection()) || 0.62f <= m_fAccTime)
+			if ((0.22f <= m_fAccTime && nullptr != m_pPlayer && F_DIRECTION::F_DIR_LAST != m_pPlayer->Get_InputDirection()) || 0.72f <= m_fAccTime)
 			{
 				// 게임 진행 먼저 판단.
 				Before_Action();
@@ -238,7 +240,7 @@ void CMinigame_Sneak::GameOver()
 {
 	// BGM 끄기, 게임오버 SFX, FADE OUT
 	m_pGameInstance->End_BGM();
-	m_pGameInstance->Start_SFX_Delay(TEXT("Sneak_FailureSting"), 0.25f, 50.f);
+	m_pGameInstance->Start_SFX_Delay(TEXT("Sneak_FailureSting"), 0.1f, 50.f);
 	
 	// Tile
 	if (0 <= m_iCurStage && m_StageTiles.size() > m_iCurStage)
@@ -293,48 +295,75 @@ void CMinigame_Sneak::GameOver()
 void CMinigame_Sneak::EndGame()
 {
 	// BGM 끄기? 
-	m_eGameState = GAME_END;
+	m_eGameState = NONE;
 	
 	// 페이지 전환.
 	_float3 fDefaultPos = { };
-
 	Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
+	
+	// 모든 오브젝트 끄기.
+	for (_int i = 0; i < m_StageObjects.size(); ++i)
+	{
+		for (auto& Objects : m_StageObjects[i])
+			Objects->Set_Active(false);
+	}
+	for (_int i = 0; i < m_StageTiles.size(); ++i)
+	{
+		for (auto& Objects : m_StageTiles[i])
+			Objects->Set_Active(false);
+
+	}
+	for (_int i = 0; i < m_StageInteracts.size(); ++i)
+	{
+		for (auto& Objects : m_StageInteracts[i])
+			Objects->Set_Active(false);
+	}
+	for (_int i = 0; i < m_StageTroops.size(); ++i)
+	{
+		for (auto& Objects : m_StageTroops[i])
+			Objects->Set_Active(false);
+	}
+
 
 }
 
 
 HRESULT CMinigame_Sneak::Register_Tiles(vector<vector<CSneak_Tile*>>& _Tiles)
 {
-	m_StageTiles = _Tiles;
-
-	for (_int i = 0; i < m_StageTiles.size(); ++i)
+	for (_int i = 0; i < _Tiles.size(); ++i)
 	{
-		for (auto& iter : m_StageTiles[i])
+		vector<CSneak_Tile*> Tiles;
+		for (auto& iter : _Tiles[i])
 		{
 			if (nullptr == iter)
 				return E_FAIL;
 
 			Safe_AddRef(iter);
 			iter->Set_Active(false);
+
+			Tiles.push_back(iter);
 		}
+		m_StageTiles.push_back(Tiles);
 	}
 	return S_OK;
 }
 
 HRESULT CMinigame_Sneak::Register_Objects(vector<vector<CSneak_MapObject*>>& _Objects)
 {
-	m_StageObjects = _Objects;
-
-	for (_int i = 0; i < m_StageObjects.size(); ++i)
+	for (_int i = 0; i < _Objects.size(); ++i)
 	{
-		for (auto& iter : m_StageObjects[i])
+		vector<CSneak_MapObject*> Objects;
+		for (auto& iter : _Objects[i])
 		{
 			if (nullptr == iter)
 				return E_FAIL;
 
 			Safe_AddRef(iter);
 			iter->Set_Active(false);
+			
+			Objects.push_back(iter);
 		}
+		m_StageObjects.push_back(Objects);
 	}
 	return S_OK;
 }
@@ -355,18 +384,20 @@ HRESULT CMinigame_Sneak::Register_Player(CPip_Player* _pPlayer)
 
 HRESULT CMinigame_Sneak::Register_Interacts(vector<vector<CSneak_InteractObject*>>& _Interacts)
 {
-	m_StageInteracts = _Interacts;
-
-	for (_int i = 0; i < m_StageInteracts.size(); ++i)
+	for (_int i = 0; i < _Interacts.size(); ++i)
 	{
-		for (auto& iter : m_StageInteracts[i])
+		vector<CSneak_InteractObject*> Interacts;
+		for (auto& iter : _Interacts[i])
 		{
 			if (nullptr == iter)
 				return E_FAIL;
 
 			Safe_AddRef(iter);
 			iter->Set_Active(false);
+
+			Interacts.push_back(iter);
 		}
+		m_StageInteracts.push_back(Interacts);
 	}
 
 	return S_OK;
@@ -374,18 +405,20 @@ HRESULT CMinigame_Sneak::Register_Interacts(vector<vector<CSneak_InteractObject*
 
 HRESULT CMinigame_Sneak::Register_Troops(vector<vector<CSneak_Troop*>>& _Troops)
 {
-	m_StageTroops = _Troops;
 
-	for (_int i = 0; i < m_StageTroops.size(); ++i)
+	for (_int i = 0; i < _Troops.size(); ++i)
 	{
-		for (auto& iter : m_StageTroops[i])
+		vector<CSneak_Troop*> Troops;
+		for (auto& iter : _Troops[i])
 		{
 			if (nullptr == iter)
 				return E_FAIL;
 
 			Safe_AddRef(iter);
 			iter->Set_Active(false);
+			Troops.push_back(iter);
 		}
+		m_StageTroops.push_back(Troops);
 	}
 
 	return S_OK;
@@ -536,6 +569,8 @@ void CMinigame_Sneak::Start_Stage()
 		{
 			Event_SetActive(iter, true);
 			iter->Start_FadeAlphaIn(0.25f);
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P1516"), iter, CSection_2D_MiniGame_Pip::SECTION_PIP_MAPOBJECT);
+
 			//iter->Set_Active(true);
 		}
 	}
@@ -546,6 +581,8 @@ void CMinigame_Sneak::Start_Stage()
 		{
 			Event_SetActive(iter, true);
 			iter->Start_FadeAlphaIn(0.25f);
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P1516"), iter, CSection_2D_MiniGame_Pip::SECTION_PIP_TILE);
+
 			//iter->Set_Active(true);
 		}
 	}
@@ -556,6 +593,11 @@ void CMinigame_Sneak::Start_Stage()
 		{
 			Event_SetActive(iter, true);
 			iter->Start_FadeAlphaIn(0.25f);
+			if (iter->Is_Nextgroup())
+				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P1516"), iter, CSection_2D_MiniGame_Pip::SECTION_PIP_MOVEOBJECT);
+			else
+				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P1516"), iter, CSection_2D_MiniGame_Pip::SECTION_PIP_MOVEMAPOBJECT);
+
 			//iter->Set_Active(true);
 		}
 	}
@@ -565,6 +607,8 @@ void CMinigame_Sneak::Start_Stage()
 		for (auto& iter : m_StageTroops[m_iCurStage])
 		{
 			iter->GameStart();
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P1516"), iter, CSection_2D_MiniGame_Pip::SECTION_PIP_MOVEOBJECT);
+
 		}
 	}
 
@@ -574,6 +618,8 @@ void CMinigame_Sneak::Start_Stage()
 		{
 			CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::PIP);
 			CCamera_Manager::GetInstance()->Change_CameraTarget(m_pPlayer);
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P1516"), m_pPlayer, CSection_2D_MiniGame_Pip::SECTION_PIP_MOVEOBJECT);
+
 			m_pPlayer->FadeIn(0.25f);
 		}
 		if (0 <= m_iCurStage && m_StageTiles.size() > m_iCurStage)
@@ -609,7 +655,8 @@ void CMinigame_Sneak::Before_Action()
 			m_eGameState = STAGE_VICTORY;
 			m_fAccTime = 0.5f; // m_fAccTime = m_fAccTime - 0.5f에서 m_fAccTime 0.f로 만들기 위해서..
 
-			m_pGameInstance->End_BGM();
+			m_pGameInstance->Start_SFX(TEXT("A_sfx_ReachFinalRoomExit"), 50.f);
+			//m_pGameInstance->End_BGM();
 			return;
 		}
 	}
@@ -920,6 +967,7 @@ void CMinigame_Sneak::Free()
 		{
 			Safe_Release(iter);
 		}
+		m_StageTiles[i].clear();
 	}
 	m_StageTiles.clear();
 
@@ -929,6 +977,7 @@ void CMinigame_Sneak::Free()
 		{
 			Safe_Release(iter);
 		}
+		m_StageObjects[i].clear();
 	}
 	m_StageObjects.clear();
 
@@ -938,6 +987,7 @@ void CMinigame_Sneak::Free()
 		{
 			Safe_Release(iter);
 		}
+		m_StageInteracts[i].clear();
 	}
 	m_StageInteracts.clear();
 

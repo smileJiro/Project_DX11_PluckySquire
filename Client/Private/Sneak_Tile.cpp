@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Sneak_Tile.h"
 #include "GameInstance.h"
+#include "Minigame_Sneak.h"
 
 CSneak_Tile::CSneak_Tile(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CSneak_FlipObject(_pDevice, _pContext)
@@ -40,7 +41,22 @@ HRESULT CSneak_Tile::Initialize(void* _pArg)
 	}
 	m_vTilePosition = _float2(pDesc->tTransform2DDesc.vInitialPosition.x, pDesc->tTransform2DDesc.vInitialPosition.y);
 
+	m_pSneakGameManager = CMinigame_Sneak::GetInstance();
+
 	return S_OK;
+}
+
+HRESULT CSneak_Tile::Render()
+{
+	if (nullptr != m_pSneakGameManager)
+	{
+		if (m_pSneakGameManager->Is_StartGame())
+			return __super::Render();
+		else
+			return S_OK;
+	}
+	else
+		return __super::Render();
 }
 
 
@@ -56,6 +72,11 @@ void CSneak_Tile::Interact()
 	//}
 
 	Flip();
+
+	if (m_isFlipped)
+		m_pGameInstance->Start_SFX(TEXT("A_sfx_pit_activate"), 50.f);
+	else
+		m_pGameInstance->Start_SFX(TEXT("A_sfx_pit_deactivate"), 50.f);
 }
 
 

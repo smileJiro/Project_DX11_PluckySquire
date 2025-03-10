@@ -24,6 +24,7 @@ protected:
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
+	virtual HRESULT Render() override;
 	
 public:
 	virtual void			Restart() = 0;
@@ -49,6 +50,7 @@ public:
 
 
 protected:
+	class CMinigame_Sneak*	m_pSneakGameManager = { nullptr };
 	SNEAK_TILE_TYPE			m_eTileType = { DEFAULT };
 	TILE_STATE				m_eCurState = { CLOSE };
 	//_int					m_iYellowDetectorCount = { 0 };

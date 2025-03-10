@@ -54,6 +54,8 @@ private:
 	_uint				m_iControllerIndex = {};
 	_uint				m_iContainerIndex = {};
 	CWord*				m_pMyWord = nullptr;
+	_float				m_fEffectInterval = 2.f;
+	_float				m_fEffectAccTime = 0.f;
 	CWord_Controller*	m_pOnwer;
 public:
 	static CWord_Container* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

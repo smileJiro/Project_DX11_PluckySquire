@@ -19,6 +19,7 @@ public:
 	typedef struct tagSneakInteractObjectDesc : public CSneak_FlipObject::FLIPOBJECT_DESC
 	{
 		_int _iTileIndex = { -1 };
+		_bool _isNextGroup = { false };
 		_bool _isBlocked = { false };
 		_bool _isBlockChangable = { false };
 		_bool _isInteractable = { false };
@@ -34,7 +35,7 @@ private:
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
-
+	virtual HRESULT Render() override;
 public:
 	void	Register_Tiles(class CSneak_Tile* _pTile);
 	void	Register_Objects(class CSneak_InteractObject* _pObject);
@@ -45,6 +46,7 @@ public:
 	virtual void			On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 
 public:
+	_bool	Is_Nextgroup() const { return m_isNextGroup; }
 	_bool	Is_Interactable() const { return m_isInteractable; }
 	_bool	Is_CollisionInteractable() const { return m_isCollisionInteractable; }
 	_bool	Is_Blocked() const { return m_isBlocked; }
@@ -54,6 +56,7 @@ public:
 
 private:
 	class	CMinigame_Sneak* m_pSneakGameManager = { nullptr };
+	_bool	m_isNextGroup = { false };
 	_bool	m_isInteractable = { false };
 	_bool	m_isCollisionInteractable = { false };
 	

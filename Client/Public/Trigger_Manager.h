@@ -49,6 +49,7 @@ public :
 		CHAPTER2_OPENBOOKEVENT,		// 2챕터 큰 책 앞에 도달한 책벌레
 		CHAPTER2_STORYSEQUENCE,		// 글로브 습득 후, 스케치스페이스 이벤트
 
+		CHAPTER4_INTRO,
 		CHAPTER4_RIDE_ZIPLINE,		// Zipline 타기
 		CHAPTER4_EVENT_FLAG,		// Zipline 들어가기 전 이벤트
 		CHAPTER4_STORYSEQUENCE,		// 글로브 습득 후, 스케치스페이스 이벤트
@@ -104,6 +105,7 @@ public:
 	HRESULT						Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, _wstring _szFilePath, CSection* _pSection = nullptr);
 	HRESULT						Load_TriggerEvents(_wstring _szFilePath);
 
+	HRESULT						Create_TriggerObject(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, void* _pArg, CSection* _pSection = nullptr, any _any = -1);
 public:
 	// Event Trigger
 	void						On_End(_wstring _szEventTag);	// 끝나는 Action의 EventTag를 넘겨주고 현재 실행 중인 Action인지 확인(ex CutScene_1)
@@ -119,9 +121,11 @@ public:
 private :
 	HRESULT						Fill_Trigger_3D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc);
 	HRESULT						After_Initialize_Trigger_3D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc);
+	HRESULT						After_Initialize_Trigger_3D(CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC* _pDesc, any _any = -1);
 
 	HRESULT						Fill_Trigger_2D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc);
 	HRESULT						After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc, CSection* _pSection);
+	HRESULT						After_Initialize_Trigger_2D(CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC* _pDesc, CSection* _pSection, any _any = -1);
 #pragma endregion
 
 	

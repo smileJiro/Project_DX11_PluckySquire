@@ -6,6 +6,7 @@
 //#include "Collider_Circle.h"
 #include "Collider_AABB.h"
 #include "Word_Controller.h"
+#include "Effect2D_Manager.h"
 
 CWord_Container::CWord_Container(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CPartObject(_pDevice,_pContext)
@@ -61,6 +62,26 @@ void CWord_Container::Priority_Update(_float _fTimeDelta)
 
 void CWord_Container::Update(_float _fTimeDelta)
 {
+	__super::Update(_fTimeDelta);
+
+	if (nullptr != m_pMyWord && m_isRender)
+	{
+		m_fEffectAccTime += _fTimeDelta;
+		if (m_fEffectAccTime > m_fEffectInterval)
+		{
+			_vector vPos = Get_FinalPosition();
+			_matrix matFX = XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos),0.f);
+			//_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
+			_wstring strFXTag = L"Word_HitEffect";
+			CEffect2D_Manager::GetInstance()->Play_Effect(
+				strFXTag,
+				m_strSectionName, 
+				matFX,
+				0.f,
+				2);
+			m_fEffectAccTime = 0.f;
+		}
+	}
 
 	//if (nullptr != m_pMyWord)
 	//{
@@ -91,7 +112,6 @@ void CWord_Container::Update(_float _fTimeDelta)
 
 	//}
 
-	__super::Update(_fTimeDelta);
 }
 
 void CWord_Container::Late_Update(_float _fTimeDelta)
@@ -233,6 +253,7 @@ void CWord_Container::Set_Word(CWord* _pWord, CWord::WORD_MODE _eMode, _bool _is
 	// 단어를 비활성화한다.
 	Safe_Release(m_pMyWord);
 
+	m_fEffectAccTime = 0.f;
 
 	m_pMyWord = _pWord;
 	Safe_AddRef(m_pMyWord);

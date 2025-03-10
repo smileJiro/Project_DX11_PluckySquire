@@ -85,7 +85,15 @@ void CSneak_Troop::Late_Update(_float _fTimeDelta)
 
 HRESULT CSneak_Troop::Render()
 {
-	return __super::Render();
+	if (nullptr != m_pSneakGameManager)
+	{
+		if (m_pSneakGameManager->Is_StartGame())
+			return __super::Render();
+		else
+			return S_OK;
+	}
+	else
+		return __super::Render();
 }
 
 _int CSneak_Troop::Predict_Route() const
@@ -222,6 +230,8 @@ void CSneak_Troop::Action_Turn()
 
 	Switch_TurnAnimation(eTargetDirection);
 	m_eCurDirection = eTargetDirection;
+	m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_enemy_rotate-") + to_wstring(rand() % 4), 0.1f, 15.f);
+
 }
 
 void CSneak_Troop::Action_Fall()
@@ -234,6 +244,8 @@ void CSneak_Troop::Action_Fall()
 
 	if (nullptr != m_pSneakGameManager)
 		m_pSneakGameManager->DetectOff_Tiles(m_pDetected, m_iDetectCount, m_isRedDetect);
+
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_FallInPit-") + to_wstring(rand() % 3), 50.f);
 
 	Switch_Animation_ByState();
 }
@@ -255,10 +267,11 @@ void CSneak_Troop::Action_Catch()
 				m_eCurAction = CATCH;
 				Switch_Animation_ByState();
 				m_pSneakGameManager->GameOver();
+				m_pGameInstance->Start_SFX(TEXT("A_sfx_spotted"), 50.f);
 			}
 		}
-
 	}
+
 
 
 }
