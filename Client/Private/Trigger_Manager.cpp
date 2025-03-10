@@ -75,6 +75,9 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER4_STORYSEQUENCE] = L"Chapter4_StorySequence";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR] = L"Chapter6_FatherGame_Progress_Start_Clear";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_ZETPACK_CLEAR] = L"Chapter6_FatherGame_Progress_ZetPack_Clear";
+	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_1] = L"Chapter6_FatherGame_Progress_Fatherpart_1";
+	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_2] = L"Chapter6_FatherGame_Progress_Fatherpart_2";
+	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_3] = L"Chapter6_FatherGame_Progress_Fatherpart_3";
 
 	return S_OK;
 }

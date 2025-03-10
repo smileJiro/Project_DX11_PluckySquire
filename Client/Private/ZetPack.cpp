@@ -193,6 +193,16 @@ HRESULT CZetPack::Ready_TargetLight()
     return S_OK;
 }
 
+void CZetPack::Active_OnEnable()
+{
+    __super::Active_OnEnable();
+}
+
+void CZetPack::Active_OnDisable()
+{
+    __super::Active_OnDisable();
+}
+
 CZetPack* CZetPack::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
     CZetPack* pInstance = new CZetPack(_pDevice, _pContext);

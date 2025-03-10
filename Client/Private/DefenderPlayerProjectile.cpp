@@ -54,6 +54,7 @@ HRESULT CDefenderPlayerProjectile::Initialize(void* _pArg)
 	AABBDesc.isBlock = false;
 	AABBDesc.isTrigger = true;
 	AABBDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
+	AABBDesc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_TRIGGER;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
 		return E_FAIL;
@@ -96,7 +97,8 @@ HRESULT CDefenderPlayerProjectile::Render()
 
 void CDefenderPlayerProjectile::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if (OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
+	if (OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID()
+		&& (_uint)COLLIDER2D_USE::COLLIDER2D_BODY == _pOtherCollider->Get_ColliderUse())
 	{
 		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, _vector{0.f,0.f,0.f});
 		Event_DeleteObject(this);

@@ -8,7 +8,8 @@ enum class DEFENDER_MONSTER_ID
 {
 	SM_SHIP,
 	TURRET,
-	MESSHIP,
+	MED_SHIP_UP,
+	MED_SHIP_DOWN,
 	LAST
 };
 class CDefenderMonster :
@@ -18,7 +19,6 @@ public:
 	typedef struct tagDefenderMonsterDesc : public CCharacter::CHARACTER_DESC
 	{
 		T_DIRECTION eTDirection = T_DIRECTION::RIGHT;
-		_float fBodyRadius = 10.f;
 	}DEFENDER_MONSTER_DESC;
 protected:
 	CDefenderMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

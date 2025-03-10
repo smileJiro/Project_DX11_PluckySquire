@@ -51,10 +51,18 @@ public:
 	virtual void					Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT					Render() override;
 
-	virtual HRESULT					Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
+	virtual _bool					Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
+	//virtual _bool					Check_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
+	virtual _bool					Register_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
 	const WORD_ACTION*				Find_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
-	virtual void Active_OnEnable();
-	virtual void Active_OnDisable();
+	virtual void					Action_Process(_float _fTimeDelta);
+	
+	
+	virtual void					Active_OnEnable();
+	virtual void					Active_OnDisable();
+
+
+
 private :
 	_wstring				m_strWordObjectTag;
 	_uint					m_iModelIndex = 0 ;
@@ -62,6 +70,18 @@ private :
 	vector <WORD_ACTION>	m_Actions;
 
 	
+	_bool					m_isRegistered = false;
+	_uint					m_iControllerIndex = 0;	
+	_uint					m_iContainerIndex = 0;
+	_uint					m_iWordIndex = 0;
+
+
+	_bool					m_isStartChase = { false };
+	_bool					m_isStartAction = { false };
+	_float					m_fTargetDiff = { -1.f };
+	_float					m_fActionIntervalSecond = { 0.5f };
+	_float					m_fAccTime = { 0.f };
+
 
 	_bool					m_IsWordActive = true;
 	_bool					m_IsWordRender = true;

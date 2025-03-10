@@ -60,7 +60,7 @@
 #include "Camera_Target.h"
 
 CPlayer::CPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    :CPlayable(_pDevice, _pContext, PLAYALBE_ID::NORMAL)
+    :CPlayable(_pDevice, _pContext, PLAYABLE_ID::NORMAL)
 {
 }
 
@@ -250,7 +250,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
     Set_State(CPlayer::IDLE);
 
     // PlayerData Manager ╣Н╥о
-    CPlayerData_Manager::GetInstance()->Register_Player(PLAYALBE_ID::NORMAL,    this);
+    CPlayerData_Manager::GetInstance()->Register_Player(PLAYABLE_ID::NORMAL, this);
+
+
 
     return S_OK;
 }
@@ -500,13 +502,6 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 {
     /* еб©У : */
     __super::Enter_Section(_strIncludeSectionName);
-    for (auto& i : m_PartObjects)
-    {
-		if(nullptr == i)
-			continue;
-		i->Enter_Section(_strIncludeSectionName);
-    }
-
     if (Is_CarryingObject())
     {
         _int eCoord = m_pCarryingObject->Get_CurCoord();

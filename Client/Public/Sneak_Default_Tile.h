@@ -12,7 +12,11 @@ private:
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
 
+	virtual void			Restart();
+	virtual void			On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
+private:
+	virtual void			Active_Detection();
 
 public:
 	static CSneak_Default_Tile* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

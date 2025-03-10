@@ -40,6 +40,14 @@ void CCandleGame::Priority_Update(_float _fTimeDelta)
     Check_Clear(_fTimeDelta);
 }
 
+void CCandleGame::OnOffCandleUIs(_bool _isOnOff)
+{
+    for (auto& pCandle : m_Candles)
+    {
+        pCandle->OnOff_Candle_UI(_isOnOff);
+    }
+}
+
 void CCandleGame::Check_Clear(_float _fTimeDelta)
 {
     if (true == m_isClearGame)
@@ -66,16 +74,22 @@ void CCandleGame::Check_Clear(_float _fTimeDelta)
 
     if (m_Candles.size() == iFlameCount)
     {
-        /* 캔들의 개수와 Flame Count가 같다면, 클리어 한 것을 본다. */
-        m_isClearGame = true;
-        m_vClearCheckCycleTime.y = 0.0f;
-        cout << "Clear Game" << endl;
+
         ClearGame();
     }
 }
 
 void CCandleGame::ClearGame()
 {
+    /* 캔들의 개수와 Flame Count가 같다면, 클리어 한 것을 본다. */
+    m_isClearGame = true;
+    m_vClearCheckCycleTime.y = 0.0f;
+
+#ifdef _DEBUG
+    cout << "Clear Game" << endl;
+#endif // _DEBUG
+
+
 }
 
 HRESULT CCandleGame::Ready_Candles(CANDLEGAME_DESC* _pDesc)

@@ -140,7 +140,7 @@ void CGameEventExecuter_C4::Chapter4_Event_Flag(_float _fTimeDelta)
 
 		
 	}
-	// 2. CutScene이 끝났다면 CutScene 카메라로 FadeOut 시작
+	// 2. CutScene이 끝났다면 CutScene 카메라로 GameOver 시작
 	else if (Step_Check(STEP_1)) {
 		if (Is_Start()) {
 			CCamera_Manager::GetInstance()->Start_FadeOut(0.3f);

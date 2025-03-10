@@ -34,7 +34,9 @@ public:
 	void					Set_Pos(_float2 _vPos) { m_vShopBGPos = _vPos; }
 	void					isRender();
 	void					Set_isChooseItem(_bool _Choose);
-
+	_wstring				Get_strName() { return m_strName; }
+	_wstring				Get_strDialog() { return m_strDialog; }
+	_int					Get_Price() { return m_iPrice; }
 	
 
 protected:

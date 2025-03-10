@@ -57,6 +57,8 @@ private:
 
 	_bool					m_isDeleteRender = { false };
 
+	COORDINATE				m_ePrePlayerCoord = { COORDINATE_LAST };
+
 
 };
 
