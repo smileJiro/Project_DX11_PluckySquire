@@ -197,9 +197,9 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 
 			if (VERTICAL == m_eDirectionType) {
 				if (1.f == m_fOriginLengthValue)
-					Set_NextArmData(TEXT("Book_Vertical"), 0);
+					pData = Find_ArmData(TEXT("Book_Vertical"));
 				else
-					Set_NextArmData(TEXT("Book_Vertical_Ratio"), 0);
+					pData = Find_ArmData(TEXT("Book_Vertical_Ratio"));
 			}
 			else {
 				pData = Find_ArmData(TEXT("Book_Horizon"));

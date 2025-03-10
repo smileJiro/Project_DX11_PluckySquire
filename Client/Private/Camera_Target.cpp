@@ -209,7 +209,7 @@ void CCamera_Target::Switch_CameraView(INITIAL_DATA* _pInitialData)
 	if (nullptr == m_pCurArm)
 		return;
 
-	// Initial Data가 없어서 TargetPos + vArm * Length로 초기 위치를 바로 잡아주기
+	// Initial Data가 없어서 TwargetPos + vArm * Length로 초기 위치를 바로 잡아주기
 	if (nullptr == _pInitialData) {
 		memcpy(&m_vPreTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
 		_vector vCameraPos = XMLoadFloat3(&m_vPreTargetPos) + (m_pCurArm->Get_Length() * m_pCurArm->Get_ArmVector());

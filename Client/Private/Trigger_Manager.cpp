@@ -69,6 +69,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER2_BETTLE_PAGE] = L"Chapter2_Bettle_Page";
 	m_EventExecuterTags[CHAPTER2_OPENBOOKEVENT] = L"Chapter2_OpenBookEvent";
 	m_EventExecuterTags[CHAPTER2_STORYSEQUENCE] = L"Chapter2_StorySequence";
+	m_EventExecuterTags[CHAPTER4_INTRO] = L"Chapter4_Intro";
 	m_EventExecuterTags[CHAPTER4_RIDE_ZIPLINE] = L"Chapter4_Ride_Zipline";
 	m_EventExecuterTags[CHAPTER4_EVENT_FLAG] = L"Chapter4_Event_Flag";
 	m_EventExecuterTags[CHAPTER4_STORYSEQUENCE] = L"Chapter4_StorySequence";
@@ -216,6 +217,84 @@ HRESULT CTrigger_Manager::Load_TriggerEvents(_wstring _szFilePath)
 	return S_OK;
 }
 
+HRESULT CTrigger_Manager::Create_TriggerObject(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLevelId, void* _pArg, CSection* _pSection, any _any)
+{
+	CTriggerObject::TRIGGEROBJECT_DESC* pDesc = static_cast<CTriggerObject::TRIGGEROBJECT_DESC*>(_pArg);
+
+#pragma region 예시
+
+	//CTriggerObject::TRIGGEROBJECT_DESC DescA = {};
+	//DescA.vHalfExtents = {};
+	//DescA.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+	//DescA.szEventTag = TEXT("Chapter2_Intro");
+	//DescA.eConditionType = CTriggerObject::TRIGGER_ENTER;
+	//DescA.isReusable = false; // 한 번 하고 삭제할 때
+	
+	//// 기본적인 EventTrigger 3D 생성할 때
+	//DescA.tTransform3DDesc.vInitialPosition = {};
+	//DescA.eStartCoord = COORDINATE_3D; 
+	//CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &DescA);
+
+	//// 기본적인 EventTrigger 2D 생성할 때
+	//DescA.tTransform2DDesc.vInitialPosition = {};
+	// DescA.eStartCoord = COORDINATE_2D;
+	//_wstring wsSectionKey = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+	//CSection* pSection = CSection_Manager::GetInstance()->Find_Section(wsSectionKey);
+	//CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &DescA, pSection);
+
+	// Custom 데이터가 필요한 경우 any에 알아서 값 넣는다
+#pragma endregion
+
+#pragma region 1. Trigger 공통 정보 로드
+	pDesc->eShapeType = SHAPE_TYPE::BOX;
+	pDesc->iFillterMyGroup = OBJECT_GROUP::TRIGGER_OBJECT;
+	pDesc->iFillterOtherGroupMask = OBJECT_GROUP::PLAYER;
+#pragma endregion
+
+#pragma region 2. Coord별 Desc 편집
+	if (COORDINATE_3D == pDesc->eStartCoord)
+	{
+		
+	}
+	else if (COORDINATE_2D == pDesc->eStartCoord)
+	{
+		pDesc->tTransform2DDesc.vInitialScaling = { pDesc->vHalfExtents.x * 2.f, pDesc->vHalfExtents.y * 2.f, 0.f};
+
+	}
+#pragma endregion
+
+#pragma region 3. 트리거 객체 생성
+	CGameObject* pTrigger = nullptr;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(_eProtoLevelId, TEXT("Prototype_GameObject_TriggerObject"), _eObjectLevelId, TEXT("Layer_Trigger"), &pTrigger, pDesc))) {
+		MSG_BOX("Failed To Load TriggerObject");
+		return E_FAIL;
+	}
+#pragma endregion
+
+#pragma region 4. 객체 외부초기화
+	if (nullptr != pTrigger)
+	{
+		if (COORDINATE_3D == pDesc->eStartCoord)
+		{														// 무조건 CTriggerObject가 부모라고 판단. 
+			if (FAILED(After_Initialize_Trigger_3D(static_cast<CTriggerObject*>(pTrigger), pDesc, _any)))
+				return E_FAIL;
+		}
+		else if (COORDINATE_2D == pDesc->eStartCoord)
+		{
+			if (FAILED(After_Initialize_Trigger_2D(static_cast<CTriggerObject*>(pTrigger), pDesc, _pSection, _any)))
+				return E_FAIL;
+		}
+	}
+#pragma endregion
+
+#pragma region 5. 핸들러 등록
+	Register_Event_Handler(pDesc->iTriggerType, dynamic_cast<CTriggerObject*>(pTrigger), pDesc->eStartCoord);
+#pragma endregion
+
+	return S_OK;
+}
+
 void CTrigger_Manager::On_End(_wstring _szEventTag)
 {
 	if (m_CurTriggerEvent.size() <= 0)
@@ -273,7 +352,7 @@ HRESULT CTrigger_Manager::Fill_Trigger_3D_Desc(json _TriggerJson, CTriggerObject
 	_tDesc.fRadius = ColliderInfoJson["Radius"];
 
 	return S_OK;
-} 
+}
 
 HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
 {
@@ -356,6 +435,39 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(json _TriggerJson, CTrigge
 	return S_OK;
 }
 
+HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC* _pDesc, any _any)
+{
+	// Custom Data
+	_string szKey;
+	_uint iReturnMask;
+	_float3 vFreezeExitArm;
+
+	switch (_pDesc->iTriggerType) {
+	case (_uint)TRIGGER_TYPE::ARM_TRIGGER:
+	{
+		dynamic_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(TEXT("Exit_Return_Mask"), _any);
+	}
+	break;
+	case (_uint)TRIGGER_TYPE::FREEZE_X_TRIGGER:
+	{
+		dynamic_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(TEXT("Freeze_Exit_Arm"), _any);
+	}
+	break;
+	case (_uint)TRIGGER_TYPE::FREEZE_Z_TRIGGER:
+	{
+		dynamic_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(TEXT("Freeze_Exit_Arm"), vFreezeExitArm);
+	}
+	break;
+
+	case (_uint)TRIGGER_TYPE::ENABLE_LOOKAT_TRIGGER:
+	{
+	}
+	break;
+	}
+
+	return S_OK;
+}
+
 
 HRESULT CTrigger_Manager::Fill_Trigger_2D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
 {
@@ -366,7 +478,6 @@ HRESULT CTrigger_Manager::Fill_Trigger_2D_Desc(json _TriggerJson, CTriggerObject
 
 	return S_OK;
 }
-
 
 HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc, CSection* _pSection)
 {
@@ -402,6 +513,30 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(json _TriggerJson, CTrigge
 
 	if (nullptr != _pSection)
 		_pSection->Add_GameObject_ToSectionLayer(_pTriggerObject, SECTION_2D_PLAYMAP_TRIGGER);
+	return S_OK;
+}
+
+HRESULT CTrigger_Manager::After_Initialize_Trigger_2D(CTriggerObject* _pTriggerObject, CTriggerObject::TRIGGEROBJECT_DESC* _pDesc, CSection* _pSection, any _any)
+{
+	_string szKey = "Next_Position";
+
+	switch (_pDesc->iTriggerType) {
+
+	case (_uint)TRIGGER_TYPE::SECTION_CHANGE_TRIGGER:
+	{
+		static_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(TEXT("Next_Position"), _any);
+	}
+	break;
+	case (_uint)TRIGGER_TYPE::ARM_TRIGGER:
+	{
+		static_cast<CTriggerObject*>(_pTriggerObject)->Set_CustomData(TEXT("Exit_Return_Mask"), _any);
+	}
+	break;
+	}
+
+	if (nullptr != _pSection)
+		_pSection->Add_GameObject_ToSectionLayer(_pTriggerObject, SECTION_2D_PLAYMAP_TRIGGER);
+
 	return S_OK;
 }
 

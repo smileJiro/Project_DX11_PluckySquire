@@ -48,6 +48,9 @@ void CGameEventExecuter_C4::Update(_float _fTimeDelta)
 		{
 		case Client::CTrigger_Manager::C02P0910_LIGHTNING_BOLT_SPAWN:
 			break;
+		case Client::CTrigger_Manager::CHAPTER4_INTRO:
+			Chapter4_Intro(_fTimeDelta);
+			break;
 		case Client::CTrigger_Manager::CHAPTER4_RIDE_ZIPLINE:
 			Chapter4_Ride_Zipline(_fTimeDelta);
 			break;
@@ -61,11 +64,31 @@ void CGameEventExecuter_C4::Update(_float _fTimeDelta)
 			break;
 		}
 	}
-
 }
 
 void CGameEventExecuter_C4::Late_Update(_float _fTimeDelta)
 {
+}
+
+void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0))
+	{
+		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_1)) {
+		if (m_fTimer >= 0.5f) {
+			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Intro"));
+			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
+			Next_Step(true);
+		}
+	}
+	else
+		GameEvent_End();
 }
 
 void CGameEventExecuter_C4::Chapter4_Ride_Zipline(_float _fTimeDelta)

@@ -209,6 +209,10 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(1.0f, 0.24f, 0.4666f), true);
+
+	/* Chapter4 Intro Trigger 동적 생성 임시 코드*/
+	Create_IntroTrigger();
+
 	return S_OK;
 }
 
@@ -1556,6 +1560,21 @@ void CLevel_Chapter_04::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 		dynamic_cast<CCamera_2D*>(_pCamera)->Add_CurArm(pArm);
 		break;
 	}
+}
+
+void CLevel_Chapter_04::Create_IntroTrigger()
+{
+	CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+	Desc.vHalfExtents = { 35.f, 35.f, 0.f };
+	Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+	Desc.szEventTag = TEXT("Chapter4_Intro");
+	Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+	Desc.isReusable = false; // 한 번 하고 삭제할 때
+	Desc.eStartCoord = COORDINATE_2D;
+	Desc.tTransform2DDesc.vInitialPosition = { -568.347412f,-22.5205593f, 0.f };
+
+	CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter4_P0708"));
+	CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pSection);
 }
 
 HRESULT CLevel_Chapter_04::Map_Object_Create(_wstring _strFileName)
