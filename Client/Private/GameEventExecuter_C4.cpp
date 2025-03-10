@@ -81,7 +81,7 @@ void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
 		}
 	}
 	else if (Step_Check(STEP_1)) {
-		if (m_fTimer >= 0.5f) {
+		if (m_fTimer >= 2.5f) {
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Intro"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
 			Next_Step(true);

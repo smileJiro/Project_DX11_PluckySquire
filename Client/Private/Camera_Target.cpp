@@ -856,6 +856,8 @@ void CCamera_Target::Switching(_float _fTimeDelta)
 	// Zoom Level
 	_float fFovy = m_pGameInstance->Lerp(m_ZoomLevels[m_tInitialData.iZoomLevel], m_ZoomLevels[m_iCurZoomLevel], fRatio);
 	m_fFovy = fFovy;
+
+	memcpy(&m_vPreTargetPos, m_pTargetWorldMatrix->m[3], sizeof(_float3));
 }
 
 void CCamera_Target::Change_FreezeOffset(_float _fTimeDelta)
