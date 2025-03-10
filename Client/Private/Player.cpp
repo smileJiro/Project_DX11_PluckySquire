@@ -500,13 +500,6 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 {
     /* еб©У : */
     __super::Enter_Section(_strIncludeSectionName);
-    for (auto& i : m_PartObjects)
-    {
-		if(nullptr == i)
-			continue;
-		i->Enter_Section(_strIncludeSectionName);
-    }
-
     if (Is_CarryingObject())
     {
         _int eCoord = m_pCarryingObject->Get_CurCoord();

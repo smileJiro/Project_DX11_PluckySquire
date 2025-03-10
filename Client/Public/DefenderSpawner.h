@@ -7,7 +7,8 @@ enum SPAWN_PATTERN
 {
 	SPAWN_PATTERN_DOT,
 	SPAWN_PATTERN_ARROW,
-	SPAWN_PATTERN_VERTICAL,
+	SPAWN_PATTERN_VERTICAL_UP,
+	SPAWN_PATTERN_VERTICAL_DOWN,
 	SPAWN_PATTERN_RANDOM,
 	SPAWN_PATTERN_LAST,
 };
@@ -76,7 +77,7 @@ private:
 	void Spawn(SPAWN_DESC& _tDesc);
 	void Spawn_Dot(SPAWN_DESC& _tDesc);
 	void Spawn_Arrow(SPAWN_DESC& _tDesc);
-	void Spawn_Vertical(SPAWN_DESC& _tDesc);
+	void Spawn_Vertical(SPAWN_DESC& _tDesc, _bool _bUp);
 	void Spawn_Random(SPAWN_DESC& _tDesc);
 private:
 	CSection_Manager* m_pSection_Manager = nullptr;

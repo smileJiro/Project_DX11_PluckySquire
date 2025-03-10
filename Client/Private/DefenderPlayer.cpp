@@ -9,6 +9,7 @@
 #include "Section_Manager.h"
 #include "PlayerData_Manager.h"
 #include "Pooling_Manager.h"
+#include "Minigame_Defender.h"
 
 CDefenderPlayer::CDefenderPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CPlayable(_pDevice, _pContext,PLAYALBE_ID::DEFENDER)
@@ -31,9 +32,9 @@ HRESULT CDefenderPlayer::Initialize(void* _pArg)
 {
 	m_pSection_Manager = CSection_Manager::GetInstance();
 	m_pPoolMgr = CPooling_Manager::GetInstance();
-
 	CDefenderPlayer::DEFENDERPLAYER_DESC* pDesc = static_cast<DEFENDERPLAYER_DESC*>(_pArg);
 
+	m_pMinigame = pDesc->pMinigame;
 	m_iCurLevelID = pDesc->iCurLevelID;
 	m_pOriginalPlayer = pDesc->pOriginalPlayer;
 	Safe_AddRef(m_pOriginalPlayer);
@@ -148,6 +149,7 @@ HRESULT CDefenderPlayer::Ready_Components()
 	CircleDesc.isBlock = false;
 	CircleDesc.isTrigger = false;
 	CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER;
+	CircleDesc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
 		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
 		return E_FAIL;
@@ -237,18 +239,12 @@ void CDefenderPlayer::Key_Input(_float _fTimeDelta)
 	}
 }
 
-void CDefenderPlayer::Start_Game()
+void CDefenderPlayer::Start_Transform()
 {
 
 	if (FAILED(Ready_BulletPool()))
 		return ;
 	m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_TRANSFORM_IN);
-
-	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
-	CPlayer* pNormalPlayer = pPDM->Get_NormalPlayer_Ptr();
-
-	pNormalPlayer->Set_Active(false);
-	Set_Active(true);
 	Set_BlockPlayerInput(true);
 }
 
@@ -262,11 +258,17 @@ void CDefenderPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		m_pCrossHair->Set_Active(true);
 		CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 		pPDM->Set_CurrentPlayer(PLAYALBE_ID::DEFENDER);
-
+		Set_BlockPlayerInput(false);
+		m_pMinigame->Start_Game();
 	}
 	else if ((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_SHOT == iAnimIdx)
 	{
 		m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_IDLE);
+	}
+	else if ((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_DEATH == iAnimIdx)
+	{
+		m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_IDLE);
+		m_pMinigame->Restart_Game();
 	}
 }
 
@@ -304,6 +306,20 @@ void CDefenderPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _p
 
 void CDefenderPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+}
+
+void CDefenderPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+	m_tStat.iHP -= _iDamg;
+
+	if (m_tStat.iHP <= 0)
+	{
+		m_tStat.iHP = 0;
+		Set_BlockPlayerInput(true);
+		m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_DEATH);
+		return;
+	}
+
 }
 
 void CDefenderPlayer::Shoot()

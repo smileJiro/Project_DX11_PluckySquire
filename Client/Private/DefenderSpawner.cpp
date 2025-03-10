@@ -112,8 +112,11 @@ void CDefenderSpawner::Spawn(SPAWN_DESC& tDesc)
 	case SPAWN_PATTERN_ARROW :
 		Spawn_Arrow(tDesc);
 		break;
-	case SPAWN_PATTERN_VERTICAL :
-		Spawn_Vertical(tDesc);
+	case SPAWN_PATTERN_VERTICAL_UP:
+		Spawn_Vertical(tDesc, true);
+		break;
+	case SPAWN_PATTERN_VERTICAL_DOWN:
+		Spawn_Vertical(tDesc,false);
 		break;
 	case SPAWN_PATTERN_RANDOM :
 		Spawn_Random(tDesc);
@@ -154,14 +157,14 @@ void CDefenderSpawner::Spawn_Arrow(SPAWN_DESC& _tDesc)
 	}
 }
 
-void CDefenderSpawner::Spawn_Vertical(SPAWN_DESC& _tDesc)
+void CDefenderSpawner::Spawn_Vertical(SPAWN_DESC& _tDesc, _bool _bUp)
 {
 	_float fSeqYDistance = 30.f;
 	_vector vPosition1 = _tDesc.vPosition;
-	vPosition1 += _vector{
-		0.f
-		, (_int)_tDesc.iCurrentSpawnCount * fSeqYDistance
-		, 0.f };
+	if(_bUp)
+		vPosition1 += _vector{0.f, (_int)_tDesc.iCurrentSpawnCount * fSeqYDistance, 0.f };
+	else
+		vPosition1 -= _vector{0.f, (_int)_tDesc.iCurrentSpawnCount * fSeqYDistance, 0.f };
 	Spawn_Single(_tDesc.eDirection, vPosition1);
 }
 
