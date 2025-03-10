@@ -29,8 +29,8 @@ public:
 	virtual void			Restart() = 0;
 	void					Interact();
 	
-	void					Add_Detector() { ++m_iDetectorCount; Active_Detection(); }
-	void					Delete_Dector() { --m_iDetectorCount; Active_Detection(); }
+	void					Add_Detector(_bool _isRed) { if (_isRed) m_isRedDetect = true; else m_isYellowDetect = true; Active_Detection(); }
+	void					Delete_Dector(_bool _isRed) { if (_isRed) m_isRedDetect = false; else m_isYellowDetect = false; Active_Detection(); }
 
 
 
@@ -51,7 +51,10 @@ public:
 protected:
 	SNEAK_TILE_TYPE			m_eTileType = { DEFAULT };
 	TILE_STATE				m_eCurState = { CLOSE };
-	_int					m_iDetectorCount = { 0 };
+	//_int					m_iYellowDetectorCount = { 0 };
+	//_int					m_iRedDetectorCount = { 0 };
+	_bool					m_isYellowDetect = { false };
+	_bool					m_isRedDetect = { false };
 	_int					m_iTileIndex = { 0 };
 	_int					m_AdjacentTiles[(_uint)(F_DIRECTION::F_DIR_LAST)] = { -1, -1, -1, -1 };
 	_float2					m_vTilePosition = { 0.f, 0.f };

@@ -51,6 +51,15 @@ HRESULT CSneak_Troop::Initialize(void* _pArg)
 	static_cast<CModelObject*>(m_PartObjects[TROOP_BODY])->Register_OnAnimEndCallBack(bind(&CSneak_Troop::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 
 	m_eCurAction = IDLE;
+	
+	// Detect Tile.
+	m_iDetectCount = pDesc->_iDetectCount;
+	if (0 < m_iDetectCount)
+		m_pDetected = new _int[m_iDetectCount];
+	for (_int i = 0; i < m_iDetectCount; ++i)
+		m_pDetected[i] = -1;
+
+	m_isRedDetect = pDesc->_isRedDetect;
 
 	Switch_Animation_ByState();
 	
@@ -115,7 +124,7 @@ void CSneak_Troop::Update_Detection()
 	if (FALL == m_eCurAction)
 		return;
 
-	m_pSneakGameManager->Detect_Tiles(m_DetectedTiles, 3, m_iCurTileIndex, m_eCurDirection);
+	m_pSneakGameManager->Detect_Tiles(m_pDetected, m_iDetectCount, m_iCurTileIndex, m_eCurDirection, m_isRedDetect);
 }
 
 void CSneak_Troop::Action_Move(_int _iTileIndex, _float2 _vPosition)
@@ -224,7 +233,7 @@ void CSneak_Troop::Action_Fall()
 	m_eCurAction = FALL;
 
 	if (nullptr != m_pSneakGameManager)
-		m_pSneakGameManager->DetectOff_Tiles(m_DetectedTiles, 3);
+		m_pSneakGameManager->DetectOff_Tiles(m_pDetected, m_iDetectCount, m_isRedDetect);
 
 	Switch_Animation_ByState();
 }
@@ -238,10 +247,10 @@ void CSneak_Troop::Action_Catch()
 		if (-1 == iPlayerIndex)
 			return;
 
-		for (_int i = 0; i < 3; ++i)
+		for (_int i = 0; i < m_iDetectCount; ++i)
 		{
 			// Àâ¾Ò´Ù!
-			if (iPlayerIndex == m_DetectedTiles[i])
+			if (iPlayerIndex == m_pDetected[i])
 			{
 				m_eCurAction = CATCH;
 				Switch_Animation_ByState();
@@ -252,6 +261,10 @@ void CSneak_Troop::Action_Catch()
 	}
 
 
+}
+
+void CSneak_Troop::Action_Scout()
+{
 }
 
 void CSneak_Troop::GameStart()
@@ -271,12 +284,12 @@ void CSneak_Troop::GameStart()
 
 	Switch_Animation_ByState();
 
-	for (_int i = 0; i < 3; ++i)
-		m_DetectedTiles[i] = -1;
+	for (_int i = 0; i < m_iDetectCount; ++i)
+		m_pDetected[i] = -1;
 
 	if (nullptr != m_pSneakGameManager)
 	{
-		m_pSneakGameManager->Detect_Tiles(m_DetectedTiles, 3, m_iCurTileIndex, m_eCurDirection);
+		m_pSneakGameManager->Detect_Tiles(m_pDetected, m_iDetectCount, m_iCurTileIndex, m_eCurDirection);
 		m_pSneakGameManager->Reach_Destination(m_iCurTileIndex, m_iCurTileIndex);
 	}
 
@@ -404,7 +417,7 @@ void CSneak_Troop::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 		// Tile Detction;
 		if (nullptr != m_pSneakGameManager)
-			m_pSneakGameManager->Detect_Tiles(m_DetectedTiles, 3, m_iCurTileIndex, m_eCurDirection);
+			m_pSneakGameManager->Detect_Tiles(m_pDetected, m_iDetectCount, m_iCurTileIndex, m_eCurDirection);
 
 	}
 	else if (FALL == m_eCurAction)
@@ -474,6 +487,8 @@ void CSneak_Troop::Do_Action(_float _fTimeDelta)
 		break;
 	case FALL:
 		break;
+	case SCOUT:
+		break;
 	}
 }
 
@@ -517,7 +532,7 @@ void CSneak_Troop::Dir_Move(_float _fTimeDelta)
 
 		// Tile Detction;
 		if (nullptr != m_pSneakGameManager)
-			m_pSneakGameManager->Detect_Tiles(m_DetectedTiles, 3, m_iCurTileIndex, m_eCurDirection);
+			m_pSneakGameManager->Detect_Tiles(m_pDetected, m_iDetectCount, m_iCurTileIndex, m_eCurDirection);
 	}
 }
 
@@ -591,6 +606,7 @@ CGameObject* CSneak_Troop::Clone(void* _pArg)
 void CSneak_Troop::Free()
 {
 	Safe_Release(m_pBody);
+	Safe_Delete_Array(m_pDetected);
 
 	__super::Free();
 }

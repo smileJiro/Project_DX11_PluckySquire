@@ -38,7 +38,8 @@ HRESULT CSneak_Default_Tile::Initialize(void* _pArg)
 void CSneak_Default_Tile::Restart()
 {
 	m_eCurState = CLOSE;
-	m_iDetectorCount = 0;
+	m_isYellowDetect = false;
+	m_isRedDetect = false;
 
 	m_iCurAnim = DEFAULT_CLOSED;
 	Switch_Animation(DEFAULT_CLOSED);
@@ -49,14 +50,22 @@ void CSneak_Default_Tile::Active_Detection()
 	if (OPEN == m_eCurState)
 		return;
 
-	// TODO: RED Detection ÆÇ´Ü
-	if (m_eCurState != YELLOW && 0 < m_iDetectorCount)
+	//if (0 > m_iRedDetectorCount)
+	//	m_iRedDetectorCount = 0;
+	//if (0 > m_iYellowDetectorCount)
+	//	m_iYellowDetectorCount = 0;
+
+	if (m_isRedDetect)
+	{
+		m_eCurState = RED;
+		Switch_Animation(DEFAULT_RED);
+	}
+	else if (m_isYellowDetect)
 	{
 		m_eCurState = YELLOW;
-		//m_iCurAnim = DEFAULT_CLOSED;
 		Switch_Animation(DEFAULT_YELLOW);
 	}
-	else if (m_eCurState == YELLOW && 0 >= m_iDetectorCount)
+	else
 	{
 		m_eCurState = CLOSE;
 		Switch_Animation(DEFAULT_CLOSED);

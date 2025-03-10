@@ -16,6 +16,7 @@
 #include "Sneak_InteractObject.h"
 #include "Sneak_Troop.h"
 #include "Pip_Player.h"
+#include "PlayerData_Manager.h"
 
 CSection_2D_MiniGame_Pip::CSection_2D_MiniGame_Pip(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSection_2D_MiniGame(_pDevice, _pContext, MINIGAME, SECTION_2D_BOOK)
@@ -212,12 +213,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 				if (nullptr != pObjectOut)
 				{
-					if ((*pjsonObjectsInfo)[i][j].contains("NextGroup"))
-					{
-						Add_GameObject_ToSectionLayer(pObjectOut, SECTION_PIP_MOVEMAPOBJECT); 
-					}
-					else
-						Add_GameObject_ToSectionLayer(pObjectOut, SECTION_PIP_MAPOBJECT);
+					Add_GameObject_ToSectionLayer(pObjectOut, SECTION_PIP_MAPOBJECT);
 
 					Objects.push_back(pObjectOut);
 				}
@@ -531,27 +527,48 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 				TroopDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
 				TroopDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
 
-				if ((*pjsonTroopInfo)[i][j].contains("Model"))
-				{
-					// TROOP Or SENTRY TROOP
-				}
 
 				if ((*pjsonTroopInfo)[i][j].contains("Moveable"))
 					TroopDesc._isMoveable = (*pjsonTroopInfo)[i][j]["Moveable"];
+
 				if ((*pjsonTroopInfo)[i][j].contains("Direction"))
 					TroopDesc._eCurDirection = (*pjsonTroopInfo)[i][j]["Direction"];
+
 				if ((*pjsonTroopInfo)[i][j].contains("TurnDirection"))
 					TroopDesc._eTurnDirection = (*pjsonTroopInfo)[i][j]["TurnDirection"];
+				else TroopDesc._eTurnDirection = F_DIRECTION::F_DIR_LAST;
+
+				if ((*pjsonTroopInfo)[i][j].contains("RedDetect"))
+					TroopDesc._isRedDetect = (*pjsonTroopInfo)[i][j]["RedDetect"];
+				else
+					TroopDesc._isRedDetect = false;
+
+				if ((*pjsonTroopInfo)[i][j].contains("DetectCount"))
+					TroopDesc._iDetectCount = (*pjsonTroopInfo)[i][j]["DetectCount"];
+				else
+					TroopDesc._iDetectCount = 3;
+
+
 				if ((*pjsonTroopInfo)[i][j].contains("SecondDirection"))
 					TroopDesc._eSecondTurnDirection = (*pjsonTroopInfo)[i][j]["SecondDirection"];
 				else
 					TroopDesc._eSecondTurnDirection = F_DIRECTION::F_DIR_LAST;
 
 
+				if (TroopDesc._isRedDetect)
+				{
+					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakSentryTroop"), LEVEL_CHAPTER_8
+						, TEXT("Layer_Sneak_Troops"), reinterpret_cast<CGameObject**>(&pTroopOut), &TroopDesc)))
+						return E_FAIL;
 
-				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakTroop"), LEVEL_CHAPTER_8
-					, TEXT("Layer_Sneak_Troops"), reinterpret_cast<CGameObject**>(&pTroopOut), &TroopDesc)))
-					return E_FAIL;
+				}
+				else
+				{
+					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_SneakTroop"), LEVEL_CHAPTER_8
+						, TEXT("Layer_Sneak_Troops"), reinterpret_cast<CGameObject**>(&pTroopOut), &TroopDesc)))
+						return E_FAIL;
+
+				}
 
 				if (nullptr != pTroopOut)
 				{
@@ -635,6 +652,7 @@ HRESULT CSection_2D_MiniGame_Pip::Section_Enter(const _wstring& _strPreSectionTa
 
 HRESULT CSection_2D_MiniGame_Pip::Section_Exit(const _wstring& _strNextSectionTag)
 {
+	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
 	return S_OK;
 }
 

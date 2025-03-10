@@ -17,6 +17,10 @@ public:
 		F_DIRECTION _eCurDirection = F_DIRECTION::F_DIR_LAST;
 		F_DIRECTION _eTurnDirection = F_DIRECTION::F_DIR_LAST;
 		F_DIRECTION _eSecondTurnDirection = F_DIRECTION::F_DIR_LAST;
+
+		_int		_iDetectCount = { 3 };
+		_bool		_isRedDetect = { false };
+
 	} SNEAK_TROOP_DESC;
 	enum TROOP_ANIM 
 	{
@@ -30,7 +34,7 @@ public:
 	};
 	enum TROOP_ACTION
 	{
-		IDLE, MOVE, TURN, CATCH, FALL
+		IDLE, MOVE, TURN, CATCH, FALL, SCOUT
 	};
 	enum TROOP_PART { TROOP_BODY, TROOP_LAST };
 
@@ -52,23 +56,24 @@ public:
 	_int			Predict_Route() const;
 	F_DIRECTION		Get_CurrentDirection() const { return m_eCurDirection; }
 	_int			Get_CurTile() const { return m_iTargetTileIndex; }
-
+	TROOP_ACTION	Get_TroopState() const { return m_eCurAction; }
 
 
 public:
 	void Update_Detection();
 	void Action_Move(_int _iTileIndex, _float2 _vPosition);
 	void Action_Turn();
-	void Action_Fall();
+	virtual void Action_Fall();
 	void Action_Catch();
-	void GameStart();
+	virtual void Action_Scout();
+	virtual void GameStart();
 
 	void FadeIn(_float _fTimeDelta);
 	void FadeOut(_float _fTimeDelta);
 
 	void Switch_TurnAnimation(F_DIRECTION _eTargetDirection);
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-	void Switch_Animation_ByState();
+	virtual void Switch_Animation_ByState();
 
 
 
@@ -97,8 +102,10 @@ protected:
 	_float2				m_vTargetPosition = { 0.f, 0.f };
 	TROOP_ACTION		m_eCurAction = IDLE;
 
-	// Detect 타일 위치
-	_int				m_DetectedTiles[3];
+	// Detect 타일 개수, 타일 위치, Detect Type.
+	_bool				m_isRedDetect = { false };
+	_int				m_iDetectCount = { 3 };
+	_int*				m_pDetected = { nullptr };
 
 protected:
 	void Do_Action(_float _fTimeDelta);

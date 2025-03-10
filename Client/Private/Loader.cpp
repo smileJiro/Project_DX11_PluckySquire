@@ -134,6 +134,7 @@
 #include "Sneak_InteractObject.h"
 #include "Pip_Player.h"
 #include "Sneak_Troop.h"
+#include "Sneak_SentryTroop.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -1648,6 +1649,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	/* Monster */
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakTroop"),
 		CSneak_Troop::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakSentryTroop"),
+		CSneak_SentryTroop::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* Etc */

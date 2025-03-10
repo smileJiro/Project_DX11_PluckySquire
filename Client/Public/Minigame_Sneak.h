@@ -31,6 +31,7 @@ public:
 	void	Reach_Destination(_int _iPreIndex, _int _iDestIndex);
 	void	Restart_Game();
 	void	GameOver();		// 
+	void	EndGame();
 		
 public:
 	HRESULT Register_Tiles(vector<vector<CSneak_Tile*>>& _Tiles);
@@ -50,8 +51,8 @@ public:
 	class CSneak_Tile*				Get_Tile(_int _iStage, _int _iIndex);
 	class CSneak_InteractObject*	Get_InteractObject(_int _iStage, _int _iIndex);
 	void							Update_DetectionField();
-	void							Detect_Tiles(_Inout_ _int* _pTiles, _int _iDetectCount, _int _iCurIndex, F_DIRECTION _eDirection);
-	void							DetectOff_Tiles(_Inout_ _int* _pTiles, _int _iDetectCount);
+	void							Detect_Tiles(_Inout_ _int* _pTiles, _int _iDetectCount, _int _iCurIndex, F_DIRECTION _eDirection, _bool _isRed = false);
+	void							DetectOff_Tiles(_Inout_ _int* _pTiles, _int _iDetectCount, _bool _isRed = false);
 	_int							Get_PlayerTile();
 	_bool							Is_MoveableTile(_int _iTileIndex);
 

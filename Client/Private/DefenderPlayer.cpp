@@ -60,7 +60,7 @@ HRESULT CDefenderPlayer::Initialize(void* _pArg)
 
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CDefenderPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-	CPlayerData_Manager::GetInstance()->Register_Player(PLAYALBE_ID::DEFENDER, this);
+	CPlayerData_Manager::GetInstance()->Register_Player(PLAYABLE_ID::DEFENDER, this);
 
 
 

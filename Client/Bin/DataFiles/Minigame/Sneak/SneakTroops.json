@@ -54,26 +54,30 @@
             "TurnDirection": "F_DOWN"
         },
         {
-            "Model": "TROOP",
             "TileIndex": 40,
             "Moveable": true,
             "Direction": "F_UP",
             "TurnDirection": "F_DOWN"
         },
         {
-            "Model": "TROOP",
             "TileIndex": 33,
             "Moveable": true,
             "Direction": "F_DOWN",
             "TurnDirection": "F_DOWN"
         },
         {
-            "Model": "TROOP",
             "TileIndex": 71,
             "Moveable": false,
             "Direction": "F_LEFT",
             "TurnDirection": "F_RIGHT",
             "SecondDirection": "F_LEFT"
+        },
+        {
+            "TileIndex": 38,
+            "Moveable": false,
+            "Direction": "F_LEFT",
+            "RedDetect": true,
+            "DetectCount": 16
         }
     ]
 ]

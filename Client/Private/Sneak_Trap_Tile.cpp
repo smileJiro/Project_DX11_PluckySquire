@@ -38,7 +38,8 @@ HRESULT CSneak_Trap_Tile::Initialize(void* _pArg)
 void CSneak_Trap_Tile::Restart()
 {
 	m_eCurState = CLOSE;
-	m_iDetectorCount = 0;
+	m_isRedDetect = false;
+	m_isYellowDetect = false;
 
 	m_iCurAnim = TRAP_CLOSED;
 	Switch_Animation(TRAP_CLOSED);
@@ -50,17 +51,22 @@ void CSneak_Trap_Tile::Active_Detection()
 		return;
 
 	// TODO: RED Detection 판단
-	if (m_eCurState != YELLOW && 0 < m_iDetectorCount)
+	if (m_isRedDetect)
+	{
+		m_eCurState = RED;
+		// 애니메이션 없음.
+	}
+	else if (m_isYellowDetect)
 	{
 		m_eCurState = YELLOW;
-		//m_iCurAnim = DEFAULT_CLOSED;
 		Switch_Animation(TRAP_YELLOW);
 	}
-	else if (m_eCurState == YELLOW && 0 >= m_iDetectorCount)
+	else
 	{
 		m_eCurState = CLOSE;
 		Switch_Animation(TRAP_CLOSED);
 	}
+
 }
 
 void CSneak_Trap_Tile::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
