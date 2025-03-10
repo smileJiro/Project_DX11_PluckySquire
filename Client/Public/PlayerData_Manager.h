@@ -45,6 +45,7 @@ public:
 
 public:
 	_uint					Get_BulbCount() { return m_iBulbCount; }
+	void					Set_BulbCount(_uint _BulbCount) { m_iBulbCount -= _BulbCount; }
 	_bool					Is_Own(PLAYERITEM_TYPE _eItemType);
 
 public:

@@ -28,6 +28,16 @@ HRESULT CShopItemBG_New::Initialize(void* _pArg)
 	m_vOriginSize = _float2(pDesc->fSizeX, pDesc->fSizeY);
 	m_strName = pDesc->strName;
 
+	if (m_strName == TEXT("검 공격력 강화"))
+		m_strDialog = TEXT("저트가 지닌 검의 위력이 높아집니다.\n검을 이용한 모든 공격에 적용 됩니다.");
+
+	else if (m_strName == TEXT("회전 공격 배지"))
+		m_strDialog = TEXT("충전 후 발동하면, 강력한 회전 공격으로\n모여 있는 적을 손쉽게 처치할 수 있습니다.");
+
+	else if (m_strName == TEXT("검 던지기 배지"))
+		m_strDialog = TEXT("검을 던져 적을 공격합니다.");
+
+
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
@@ -37,6 +47,9 @@ HRESULT CShopItemBG_New::Initialize(void* _pArg)
 	m_vColor = { 227.f / 255.f , 37.f / 255.f,82.f / 255.f, 1.f };
 	m_fOpaque = 0.3f;
 	m_isChooseItem = pDesc->isChooseItem;
+	m_iPrice = pDesc->iPrice;
+
+	
 
 	_float2 vCalScale = { 0.f, 0.f };
 	vCalScale.x = m_vOriginSize.x * RATIO_BOOK2D_X;

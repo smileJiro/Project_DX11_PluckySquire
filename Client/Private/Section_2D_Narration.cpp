@@ -90,26 +90,29 @@ HRESULT CSection_2D_Narration::Start_Narration()
 
 	//if (nullptr != Uimgr->Get_Narration())
 	//{
-	//if (Get_SectionName() == L"Chapter2_P0506")
-	//	CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter2_P0506_Narration_01"));
+	//	if (Get_SectionName() == L"Chapter1_P1112")
+	//		CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P1112_Narration_01"));
 	//
-	//else if (Get_SectionName() == L"Chapter6_P0304")
-	//	CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter6_P0304_Narration_01"));
+	//	else if (Get_SectionName() == L"Chapter2_P0506")
+	//		CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter2_P0506_Narration_01"));
 	//
-	//else if (Get_SectionName() == L"Chapter6_P0910")
-	//	CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter6_P0910_Narration_01"));
+	//	else if (Get_SectionName() == L"Chapter6_P0304")
+	//		CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter6_P0304_Narration_01"));
 	//
-	//else if (Get_SectionName() == L"Chapter6_P1516")
-	//	CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter6_P1516_Narration_01"));
+	//	else if (Get_SectionName() == L"Chapter6_P0910")
+	//		CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter6_P0910_Narration_01"));
 	//
-	//else if (Get_SectionName() == L"Chapter8_P0102")
-	//	CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter8_P0102_Narration_01"));
+	//	else if (Get_SectionName() == L"Chapter6_P1516")
+	//		CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter6_P1516_Narration_01"));
 	//
-	//else if (Get_SectionName() == L"Chapter8_P0910")
-	//	CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter8_P0910_Narration_01"));
+	//	else if (Get_SectionName() == L"Chapter8_P0102")
+	//		CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter8_P0102_Narration_01"));
 	//
-	//else if (Get_SectionName() == L"Chapter8_P1314")
-	//	CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("CChapter8_P1314_Narration_01"));
+	//	else if (Get_SectionName() == L"Chapter8_P0910")
+	//		CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter8_P0910_Narration_01"));
+	//
+	//	else if (Get_SectionName() == L"Chapter8_P1314")
+	//		CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("CChapter8_P1314_Narration_01"));
 	//}
 
 	return S_OK;
