@@ -66,11 +66,11 @@ void CNeutral_PatrolState::State_Update(_float _fTimeDelta)
 		Determine_Direction();
 	}
 	
-	if(true == m_isBound)
-	{
-		//다음 위치가 구역을 벗어나는지 체크 후 벗어나면 정지 후 반대방향으로 진행
-		Check_Bound(_fTimeDelta);
-	}
+	//if(true == m_isBound)
+	//{
+	//	//다음 위치가 구역을 벗어나는지 체크 후 벗어나면 정지 후 반대방향으로 진행
+	//	Check_Bound(_fTimeDelta);
+	//}
 
 	//이동
 	PatrolMove(_fTimeDelta, m_iDir);
@@ -119,6 +119,11 @@ void CNeutral_PatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 		{
 			//m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 			m_pOwner->Move(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), _fTimeDelta);
+			if (true == m_pOwner->Check_InAir_Next(_fTimeDelta) || m_pOwner->Check_Block(_fTimeDelta))
+			{
+				m_pOwner->Stop_Move();
+				Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+			}
 		}
 	}
 

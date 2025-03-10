@@ -32,7 +32,7 @@ public:
 
 private:
 	void PatrolMove(_float _fTimeDelta, _int _iDir);
-	void Determine_Direction();
+	void Determine_Direction(_float _fTimeDelta);
 	_vector Set_PatrolDirection(_int _iDir);
 	void Check_Bound(_float _fTimeDelta);
 

@@ -578,7 +578,7 @@ HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
 
     //쿼리를 켜기 위한 트리거
     SHAPE_SPHERE_DESC* TriggerDesc = new SHAPE_SPHERE_DESC;
-    TriggerDesc->fRadius = 0.6f;
+    TriggerDesc->fRadius = pDesc->fAlertRange;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     ShapeData->pShapeDesc = TriggerDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.

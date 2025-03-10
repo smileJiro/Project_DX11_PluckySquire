@@ -50,7 +50,7 @@ HRESULT CMonster::Initialize(void* _pArg)
 
 	pDesc->_fStepHeightThreshold = 0.2f;
 	pDesc->_fStepSlopeThreshold = 0.45f;
-	//XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixIdentity());
 
 	// Add Desc
 	pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER;
@@ -483,6 +483,7 @@ _bool CMonster::Check_InAir_Next(_fvector _vForce, _float _fTimeDelta)
 	_vector vDir = XMVectorSetW(_vForce, 0.f);
 	//다음 예상위치 + 몸 크기 의 위치에서 스윕해서 자연스럽게 보이도록
 	XMStoreFloat3(&vOrigin, Get_FinalPosition() + vDir * _fTimeDelta + XMVector3Normalize(vDir) * m_fHalfBodySize);
+	//XMStoreFloat3(&vOrigin, Get_FinalPosition() + XMVector3Normalize(vDir) * m_fHalfBodySize);
 
 	PxGeometryHolder pxGeomHolder = m_pActorCom->Get_Shapes()[(_uint)SHAPE_USE::SHAPE_BODY]->getGeometry().any();
 	PxGeometryType::Enum eGeomType = pxGeomHolder.getType();
@@ -504,7 +505,7 @@ _bool CMonster::Check_InAir_Next(_fvector _vForce, _float _fTimeDelta)
 	}
 
 	//임계값보다 큰 길이로 스윕
-	if (false == m_pGameInstance->SingleSweep(&pxGeomHolder.any(), vOrigin, vRayDir, m_fStepHeightThreshold + 0.5f))
+	if (false == m_pGameInstance->SingleSweep_GroupFilter(&pxGeomHolder.any(), m_matQueryShapeOffset, vOrigin, vRayDir, m_fStepHeightThreshold + 0.1f, OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
 	{
 		return true;
 	}
@@ -512,28 +513,32 @@ _bool CMonster::Check_InAir_Next(_fvector _vForce, _float _fTimeDelta)
 	return false;
 }
 
-_bool CMonster::Check_Block_Next(_float _fTimeDelta)
+_bool CMonster::Check_Block(_float _fTimeDelta)
 {
 	if (COORDINATE_3D != Get_CurCoord())
 		return false;
 
 	_vector vVelocity = XMVectorSetW(static_cast<CActor_Dynamic*>(Get_ActorCom())->Get_LinearVelocity(), 0.f);
 
-	return Check_Block_Next(vVelocity, _fTimeDelta);
+	return Check_Block(vVelocity, _fTimeDelta);
 }
 
-_bool CMonster::Check_Block_Next(_fvector _vForce, _float _fTimeDelta)
+_bool CMonster::Check_Block(_fvector _vForce, _float _fTimeDelta)
 {
 	if (COORDINATE_3D != Get_CurCoord())
 		return false;
 
 	//현재 위치에서 앞으로 레이를 쏴서 장애물이 앞에 있는지 체크
 	_float3 vOrigin;
-	_float3 vRayDir = { 0.f,-1.f,0.f };
+	XMStoreFloat3(&vOrigin, Get_FinalPosition());
+	_float3 vRayDir;
+	XMStoreFloat3(&vRayDir, XMVector3Normalize(XMVectorSetW(_vForce, 0.f)));
 
-	_vector vDir = XMVectorSetW(_vForce, 0.f);
-	//현재 위치 + 몸 크기 에서 레이쏨
-	//XMStoreFloat3(&vOrigin, Get_FinalPosition() + vDir * _fTimeDelta + XMVector3Normalize(vDir) * m_fHalfBodySize);
+	vOrigin.y += 0.5f * m_fHalfBodySize;
+
+	_float fDistance = Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta + m_fHalfBodySize;
+
+	return m_pGameInstance->RayCast_Nearest_GroupFilter(vOrigin, vRayDir, fDistance, OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE);
 }
 
 void CMonster::Set_2D_Direction(F_DIRECTION _eDir)
