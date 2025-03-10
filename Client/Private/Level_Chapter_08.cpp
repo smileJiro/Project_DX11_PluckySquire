@@ -64,8 +64,7 @@
 
 #include "NPC.h"
 #include "Loader.h"
-
-#include "Sneak_Default_Tile.h"
+#include "Minigame_Sneak.h"
 
 
 CLevel_Chapter_08::CLevel_Chapter_08(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -213,12 +212,15 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
+
+	m_pSneakMinigameManager = CMinigame_Sneak::GetInstance();
+
 	return S_OK;
 }
 
 void CLevel_Chapter_08::Update(_float _fTimeDelta)
 {
-
+	m_pSneakMinigameManager->Update(_fTimeDelta);
 	Uimgr->UI_Update();
 
 	// 피직스 업데이트 
@@ -657,6 +659,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	//pPlayer->Equip_Part(CPlayer::PLAYER_PART_ZETPACK);
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
+	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
 	
 	Pooling_DESC Pooling_Desc;
 	Pooling_Desc.iPrototypeLevelID = m_eLevelID;
@@ -683,12 +686,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Book(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
 		m_eLevelID, L"Layer_Book", &Desc)))
 		return E_FAIL;
-
-	//// TEMP
-	//CSneak_Default_Tile::SNEAK_TILEDESC TileDesc = {};
-	//TileDesc.
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
-	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -1379,6 +1376,8 @@ CLevel_Chapter_08* CLevel_Chapter_08::Create(ID3D11Device* _pDevice, ID3D11Devic
 void CLevel_Chapter_08::Free()
 {
 	m_pGameInstance->End_BGM();
+
+	Safe_Release(m_pSneakMinigameManager);
 
 	__super::Free();
 }

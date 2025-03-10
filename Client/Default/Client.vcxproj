@@ -248,6 +248,7 @@
     <ClInclude Include="..\public\Key.h" />
     <ClInclude Include="..\Public\Level_Chapter_06.h" />
     <ClInclude Include="..\Public\Level_Chapter_08.h" />
+    <ClInclude Include="..\public\Pip_Player.h" />
     <ClInclude Include="..\Public\Playable.h" />
     <ClInclude Include="..\public\Minigame_Sneak.h" />
     <ClInclude Include="..\Public\PlayerRifle.h" />
@@ -267,9 +268,14 @@
     <ClInclude Include="..\Public\ShopPanel_New.h" />
     <ClInclude Include="..\Public\ShopPanel_YesNo_New.h" />
     <ClInclude Include="..\Public\Shop_Manager.h" />
+    <ClInclude Include="..\public\Sneak_MapObject.h" />
     <ClInclude Include="..\public\Sneak_Default_Tile.h" />
+    <ClInclude Include="..\public\Sneak_FlipObject.h" />
+    <ClInclude Include="..\public\Sneak_InteractObject.h" />
+    <ClInclude Include="..\public\Sneak_SentryTroop.h" />
     <ClInclude Include="..\public\Sneak_Trap_Tile.h" />
     <ClInclude Include="..\public\Sneak_Tile.h" />
+    <ClInclude Include="..\public\Sneak_Troop.h" />
     <ClInclude Include="..\public\ZetPack_Child.h" />
     <ClInclude Include="..\Public\Zipline.h" />
     <ClInclude Include="..\Public\MudPit.h" />
@@ -579,6 +585,7 @@
     <ClCompile Include="..\private\Key.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_06.cpp" />
     <ClCompile Include="..\Private\Level_Chapter_08.cpp" />
+    <ClCompile Include="..\private\Pip_Player.cpp" />
     <ClCompile Include="..\Private\Playable.cpp" />
     <ClCompile Include="..\private\Minigame_Sneak.cpp" />
     <ClCompile Include="..\Private\PlayerRifle.cpp" />
@@ -598,9 +605,14 @@
     <ClCompile Include="..\Private\ShopPanel_New.cpp" />
     <ClCompile Include="..\Private\ShopPanel_YesNo_New.cpp" />
     <ClCompile Include="..\Private\Shop_Manager.cpp" />
+    <ClCompile Include="..\private\Sneak_MapObject.cpp" />
     <ClCompile Include="..\private\Sneak_Default_Tile.cpp" />
+    <ClCompile Include="..\private\Sneak_FlipObject.cpp" />
+    <ClCompile Include="..\private\Sneak_InteractObject.cpp" />
+    <ClCompile Include="..\private\Sneak_SentryTroop.cpp" />
     <ClCompile Include="..\private\Sneak_Trap_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Tile.cpp" />
+    <ClCompile Include="..\private\Sneak_Troop.cpp" />
     <ClCompile Include="..\private\ZetPack_Child.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\Private\MudPit.cpp" />

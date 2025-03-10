@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Sneak_Default_Tile.h"
 #include "GameInstance.h"
+#include "Section_Manager.h"
 
 CSneak_Default_Tile::CSneak_Default_Tile(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CSneak_Tile(_pDevice, _pContext)
@@ -17,14 +18,74 @@ HRESULT CSneak_Default_Tile::Initialize(void* _pArg)
 	SNEAK_TILEDESC* pDesc = static_cast<SNEAK_TILEDESC*>(_pArg);
 	
 	pDesc->strModelPrototypeTag_2D = TEXT("Sneak_Tile");
+	pDesc->_iInitAnim = DEFAULT_CLOSED;
+	pDesc->_iFlipAnim1 = DEFAULT_CLOSE;
+	pDesc->_iFlipAnim1End = DEFAULT_CLOSED;
+	pDesc->_iFlipAnim2 = DEFAULT_OPEN;
+	pDesc->_iFlipAnim2End = DEFAULT_OPENED;
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
+	Register_OnAnimEndCallBack(bind(&CSneak_Default_Tile::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+
 
 	m_eTileType = DEFAULT;
-
+	
     return S_OK;
+}
+
+void CSneak_Default_Tile::Restart()
+{
+	m_eCurState = CLOSE;
+	m_isYellowDetect = false;
+	m_isRedDetect = false;
+
+	m_iCurAnim = DEFAULT_CLOSED;
+	Switch_Animation(DEFAULT_CLOSED);
+}
+
+void CSneak_Default_Tile::Active_Detection()
+{
+	if (OPEN == m_eCurState)
+		return;
+
+	//if (0 > m_iRedDetectorCount)
+	//	m_iRedDetectorCount = 0;
+	//if (0 > m_iYellowDetectorCount)
+	//	m_iYellowDetectorCount = 0;
+
+	if (m_isRedDetect)
+	{
+		m_eCurState = RED;
+		Switch_Animation(DEFAULT_RED);
+	}
+	else if (m_isYellowDetect)
+	{
+		m_eCurState = YELLOW;
+		Switch_Animation(DEFAULT_YELLOW);
+	}
+	else
+	{
+		m_eCurState = CLOSE;
+		Switch_Animation(DEFAULT_CLOSED);
+	}
+}
+
+void CSneak_Default_Tile::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+	if (DEFAULT_CLOSE == iAnimIdx)
+	{
+		m_eCurState = CLOSE;
+		// TODO : Sneak_Manager 贸府
+	}
+	else if (DEFAULT_OPEN == iAnimIdx)
+	{
+		m_eCurState = OPEN;		
+		// TODO : Sneak_Manager 贸府
+	}
+
+	__super::On_AnimEnd(_eCoord, iAnimIdx);
 }
 
 CSneak_Default_Tile* CSneak_Default_Tile::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
