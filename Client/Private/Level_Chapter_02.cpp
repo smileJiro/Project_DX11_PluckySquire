@@ -799,7 +799,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	//pPlayer->UnEquip_All();
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
-
 	return S_OK;
 }
 

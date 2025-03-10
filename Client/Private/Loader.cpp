@@ -125,6 +125,7 @@
 #include "DefenderPlayerProjectile.h"
 #include "DefenderSpawner.h"
 #include "DefenderSmShip.h"
+#include "DefenderMedShip.h"
 #include "Minigame_Defender.h"
 
 #include "Sneak_Default_Tile.h"
@@ -1529,6 +1530,13 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderSmShip"),
 			CDefenderSmShip::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderMedShip_UP"),
+			CDefenderMedShip::Create(m_pDevice, m_pContext, true))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderMedShip_DOWN"),
+			CDefenderMedShip::Create(m_pDevice, m_pContext, false))))
+			return E_FAIL;
+
 		/* Monster */
 
 		/* Etc */

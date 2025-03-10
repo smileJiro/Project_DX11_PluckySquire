@@ -98,6 +98,8 @@ private: /* ÅÂ¿õ Ãß°¡ Target Light */
 	HRESULT Ready_TargetLight();
 private:
 	CLight_Target* m_pTargetLight = nullptr;
+	virtual void Active_OnEnable();
+	virtual void Active_OnDisable() ;
 public:
 	static CZetPack* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

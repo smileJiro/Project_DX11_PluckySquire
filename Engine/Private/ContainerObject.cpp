@@ -112,6 +112,30 @@ HRESULT CContainerObject::Register_RenderGroup(_uint _iGroupId, _uint _iPriority
     return S_OK;
 }
 
+void CContainerObject::Enter_Section(const _wstring _strIncludeSectionName)
+{ 
+    m_strSectionName = _strIncludeSectionName; 
+    for (CGameObject* pPartObject : m_PartObjects)
+    {
+        if (nullptr != pPartObject)
+        {
+            pPartObject->Enter_Section(_strIncludeSectionName);
+        }
+    }
+}
+
+void CContainerObject::Exit_Section(const _wstring _strIncludeSectionName)
+{
+    m_strSectionName = L"";
+    for (CGameObject* pPartObject : m_PartObjects)
+    {
+        if (nullptr != pPartObject)
+        {
+            pPartObject->Exit_Section(_strIncludeSectionName);
+        }
+    }
+}
+
 CComponent* CContainerObject::Find_Part_Component(_uint _iPartObjectIndex, const _wstring& _strPartComponentTag)
 {
     if (_iPartObjectIndex >= m_PartObjects.size())

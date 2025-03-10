@@ -1682,6 +1682,9 @@
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Troop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CandleGame.h" />
+    <ClInclude Include="..\Public\DefenderMedShip.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2669,6 +2672,9 @@
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Character\Troop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CandleGame.cpp" />
+    <ClCompile Include="..\Private\DefenderMedShip.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

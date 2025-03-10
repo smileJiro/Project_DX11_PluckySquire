@@ -17,6 +17,7 @@ CDefenderSmShip::CDefenderSmShip(const CDefenderSmShip& _Prototype)
 HRESULT CDefenderSmShip::Initialize(void* _pArg)
 {
 	DEFENDER_MONSTER_DESC* pDesc = static_cast<DEFENDER_MONSTER_DESC*>(_pArg);
+	pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER;
 	pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	pDesc->tTransform2DDesc.fSpeedPerSec = m_fMoveSpeed;
 	pDesc->iNumPartObjects = 1;
@@ -31,6 +32,23 @@ HRESULT CDefenderSmShip::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
+
+	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+	CircleDesc.pOwner = this;
+	CircleDesc.fRadius = 10.f;
+	CircleDesc.vScale = { 1.0f, 1.0f };
+	CircleDesc.vOffsetPosition = { 0.f, 0.f };
+	CircleDesc.isBlock = false;
+	CircleDesc.isTrigger = false;
+	CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
+	CircleDesc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_pBodyCollider), &CircleDesc)))
+		return E_FAIL;
+
+	m_p2DColliderComs.push_back(m_pBodyCollider);
+	Safe_AddRef(m_pBodyCollider);
+
 	return S_OK;
 }
 
@@ -43,7 +61,12 @@ void CDefenderSmShip::Update(_float _fTimeDelta)
 
 void CDefenderSmShip::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	__super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
+	if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID()
+		&& (_uint)COLLIDER2D_USE::COLLIDER2D_BODY == _pOtherCollider->Get_ColliderUse())
+	{
+		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), m_tStat.iDamg, _vector{ 0.f,0.f,0.f });
+		Event_DeleteObject(this);
+	}
 }
 
 void CDefenderSmShip::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -112,5 +135,6 @@ CGameObject* CDefenderSmShip::Clone(void* _pArg)
 
 void CDefenderSmShip::Free()
 {
+	Safe_Release(m_pBodyCollider);
 	__super::Free();
 }
