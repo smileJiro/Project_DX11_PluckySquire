@@ -165,14 +165,17 @@ HRESULT C2DMapWordObject::Render()
     return __super::Render();
 }
 
-HRESULT C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
+_bool C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
 {
-    for_each(m_Actions.begin(), m_Actions.end(), [this, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]
+    _bool isExecute = false;
+    for_each(m_Actions.begin(), m_Actions.end(), [this,&isExecute, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]
     (WORD_ACTION& tAction){
             if (tAction.iControllerIndex == _iControllerIndex
                 && tAction.iContainerIndex == _iContainerIndex
                 && tAction.iWordType == _iWordIndex)
             {
+                isExecute = true;
+
                 switch (tAction.eAction)
                 {
                 case IMAGE_CHANGE:
@@ -227,12 +230,13 @@ HRESULT C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContai
                 }
                 break;
                 default:
+					assert(nullptr);
                     break;
                 }
-            
+
             }
         });
-    return S_OK;
+    return isExecute;
 }
 
 const C2DMapWordObject::WORD_ACTION* C2DMapWordObject::Find_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)

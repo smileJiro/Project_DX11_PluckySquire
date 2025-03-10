@@ -51,10 +51,10 @@ public:
 	virtual void					Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT					Render() override;
 
-	virtual HRESULT					Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
+	virtual _bool					Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
 	const WORD_ACTION*				Find_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
-	virtual void Active_OnEnable();
-	virtual void Active_OnDisable();
+	virtual void					Active_OnEnable();
+	virtual void					Active_OnDisable();
 private :
 	_wstring				m_strWordObjectTag;
 	_uint					m_iModelIndex = 0 ;
