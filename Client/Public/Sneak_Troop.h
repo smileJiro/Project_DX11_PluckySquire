@@ -63,7 +63,7 @@ public:
 	void Update_Detection();
 	void Action_Move(_int _iTileIndex, _float2 _vPosition);
 	void Action_Turn();
-	virtual void Action_Fall();
+	void Action_Fall();
 	void Action_Catch();
 	virtual void Action_Scout();
 	virtual void GameStart();

@@ -149,7 +149,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 				if (nullptr != pTileOut)
 				{
-					Add_GameObject_ToSectionLayer(pTileOut, SECTION_PIP_TILE);
+					//Add_GameObject_ToSectionLayer(pTileOut, SECTION_PIP_TILE);
 					Tiles[j] = pTileOut;
 				}
 
@@ -213,7 +213,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 				if (nullptr != pObjectOut)
 				{
-					Add_GameObject_ToSectionLayer(pObjectOut, SECTION_PIP_MAPOBJECT);
+					//Add_GameObject_ToSectionLayer(pObjectOut, SECTION_PIP_MAPOBJECT);
 
 					Objects.push_back(pObjectOut);
 				}
@@ -256,6 +256,11 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 				InteractDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
 				InteractDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
 
+				if ((*pjsonInteractsInfo)[i][j].contains("NextGroup"))
+					InteractDesc._isNextGroup = true;
+				else
+					InteractDesc._isNextGroup = false;
+
 				if ((*pjsonInteractsInfo)[i][j].contains("Model"))
 				{
 					CSneak_InteractObject::INTERACTOBJECT_TYPE eType = (*pjsonInteractsInfo)[i][j]["Model"];
@@ -275,6 +280,9 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 						InteractDesc._iFlipAnim2 = 3;
 						InteractDesc._iFlipAnim2End = 2;
 
+
+						InteractDesc._strFlip1Sound = L"A_sfx_Plate_Activate";
+						InteractDesc._strFlip2Sound = L"A_sfx_Plate_Deactivate";
 					}
 					// 스위치
 					else if (CSneak_InteractObject::SWITCH == eType)
@@ -291,6 +299,9 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 						InteractDesc._iFlipAnim1End = 3;
 						InteractDesc._iFlipAnim2 = 0;
 						InteractDesc._iFlipAnim2End = 2;
+
+						InteractDesc._strFlip1Sound = L"A_sfx_switch_activate";
+						InteractDesc._strFlip2Sound = L"A_sfx_switch_deactivate";
 					}
 					// V_DOOR
 					else if (CSneak_InteractObject::V_DOOR == eType)
@@ -314,6 +325,9 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 						InteractDesc.tTransform2DDesc.vInitialPosition.x -= 26.f;
 						InteractDesc.tTransform2DDesc.vInitialPosition.y += 28.f;
+						
+						InteractDesc._strFlip1Sound = L"A_sfx_door_activate";
+						InteractDesc._strFlip2Sound = L"A_sfx_door_deactivate";
 					}
 					// H_DOOR
 					else if (CSneak_InteractObject::H_DOOR == eType)
@@ -337,7 +351,10 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 						InteractDesc._iFlipAnim2End = 7;
 
 						InteractDesc.tTransform2DDesc.vInitialPosition.x -= 0.f;
-						InteractDesc.tTransform2DDesc.vInitialPosition.y += 55.f;
+						InteractDesc.tTransform2DDesc.vInitialPosition.y += 50.f;
+
+						InteractDesc._strFlip1Sound = L"A_sfx_door_activate";
+						InteractDesc._strFlip2Sound = L"A_sfx_door_deactivate";
 					}
 				}
 
@@ -377,6 +394,11 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 							InteractDesc.tTransform2DDesc.vInitialPosition.x = vPosition.x;
 							InteractDesc.tTransform2DDesc.vInitialPosition.y = vPosition.y;
 							
+							if ((*pjsonInteractsInfo)[i][j]["Objects"][k].contains("NextGroup"))
+								InteractDesc._isNextGroup = true;
+							else
+								InteractDesc._isNextGroup = false;
+								
 							// TODO: Offset 줘야함.
 							if ((*pjsonInteractsInfo)[i][j]["Objects"][k].contains("Model"))
 							{
@@ -397,6 +419,9 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 									InteractDesc._iFlipAnim2 = 3;
 									InteractDesc._iFlipAnim2End = 2;
 
+									InteractDesc._strFlip1Sound = L"A_sfx_Plate_Activate";
+									InteractDesc._strFlip2Sound = L"A_sfx_Plate_Deactivate";
+
 								}
 								// 스위치
 								else if (CSneak_InteractObject::SWITCH == eType)
@@ -413,6 +438,9 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 									InteractDesc._iFlipAnim1End = 3;
 									InteractDesc._iFlipAnim2 = 0;
 									InteractDesc._iFlipAnim2End = 2;
+
+									InteractDesc._strFlip1Sound = L"A_sfx_switch_activate";
+									InteractDesc._strFlip2Sound = L"A_sfx_switch_deactivate";
 								}
 								// V_Door
 								else if (CSneak_InteractObject::V_DOOR == eType)
@@ -437,6 +465,9 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 									InteractDesc.tTransform2DDesc.vInitialPosition.x -= 26.f;
 									InteractDesc.tTransform2DDesc.vInitialPosition.y += 28.f;
+
+									InteractDesc._strFlip1Sound = L"A_sfx_door_activate";
+									InteractDesc._strFlip2Sound = L"A_sfx_door_deactivate";
 								}
 								// H_Door
 								else if (CSneak_InteractObject::H_DOOR == eType)
@@ -460,7 +491,10 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 									InteractDesc._iFlipAnim2End = 7;
 
 									InteractDesc.tTransform2DDesc.vInitialPosition.x -= 0.f;
-									InteractDesc.tTransform2DDesc.vInitialPosition.y += 55.f;
+									InteractDesc.tTransform2DDesc.vInitialPosition.y += 50.f;
+
+									InteractDesc._strFlip1Sound = L"A_sfx_door_activate";
+									InteractDesc._strFlip2Sound = L"A_sfx_door_deactivate";
 								}
 							}
 
@@ -470,20 +504,20 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 							if (nullptr != pSubOut)
 							{
-								if ((*pjsonInteractsInfo)[i][j]["Objects"][k].contains("NextGroup"))
+								/*if ((*pjsonInteractsInfo)[i][j]["Objects"][k].contains("NextGroup"))
 									Add_GameObject_ToSectionLayer(pSubOut, SECTION_PIP_MOVEOBJECT);
 								else
-									Add_GameObject_ToSectionLayer(pSubOut, SECTION_PIP_MOVEMAPOBJECT);
+									Add_GameObject_ToSectionLayer(pSubOut, SECTION_PIP_MOVEMAPOBJECT);*/
 								Objects.push_back(pSubOut);
 								pInteractOut->Register_Objects(pSubOut);
 							}
 						}
 					}
 
-					if ((*pjsonInteractsInfo)[i][j].contains("NextGroup"))
-						Add_GameObject_ToSectionLayer(pInteractOut, SECTION_PIP_MOVEOBJECT);
-					else
-						Add_GameObject_ToSectionLayer(pInteractOut, SECTION_PIP_MOVEMAPOBJECT);
+					//if ((*pjsonInteractsInfo)[i][j].contains("NextGroup"))
+					//	Add_GameObject_ToSectionLayer(pInteractOut, SECTION_PIP_MOVEOBJECT);
+					//else
+					//	Add_GameObject_ToSectionLayer(pInteractOut, SECTION_PIP_MOVEMAPOBJECT);
 					Objects.push_back(pInteractOut);
 				}
 			}
@@ -572,7 +606,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 				if (nullptr != pTroopOut)
 				{
-					Add_GameObject_ToSectionLayer(pTroopOut, SECTION_PIP_MOVEOBJECT);
+					//Add_GameObject_ToSectionLayer(pTroopOut, SECTION_PIP_MOVEOBJECT);
 					Troops.push_back(pTroopOut);
 				}
 			}
@@ -596,9 +630,12 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 		return E_FAIL;
 
 	if (nullptr != pPlayer)
-		Add_GameObject_ToSectionLayer(pPlayer, SECTION_PIP_MOVEOBJECT);
+	{
+		//	Add_GameObject_ToSectionLayer(pPlayer, SECTION_PIP_MOVEOBJECT);
+		CMinigame_Sneak::GetInstance()->Register_Player(pPlayer);
+	}
 
-	CMinigame_Sneak::GetInstance()->Register_Player(pPlayer);
+
 #pragma endregion
 
 	//	Section_Level_Enter End

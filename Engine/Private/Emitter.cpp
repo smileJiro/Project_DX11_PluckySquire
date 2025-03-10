@@ -168,7 +168,6 @@ void CEmitter::Update(_float _fTimeDelta)
 	if (m_isActive)
 	{
 		m_fAccTime += _fTimeDelta;
-		_float fResetTime = 0.f;
 
 		// Delay 시간 적용
 		if (0 >= m_iAccLoop && m_fSpawnDelayTime <= m_fAccTime)
@@ -176,7 +175,6 @@ void CEmitter::Update(_float _fTimeDelta)
 			++m_iAccLoop;
 			m_fAccTime = 0.f;
 			// 왜 이걸 하지 않으면 파티클이 보이지 안흘까..
-			fResetTime += 0.05f;
 
 			Set_Matrix();
 		}
@@ -199,7 +197,7 @@ void CEmitter::Update(_float _fTimeDelta)
 				m_fAccTime = 0.f;
 			}			
 
-			Update_Emitter(_fTimeDelta + fResetTime);
+			Update_Emitter(_fTimeDelta);
 		}
 
 		if (STOP_SPAWN == m_eNowEvent)

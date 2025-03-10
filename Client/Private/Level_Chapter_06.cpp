@@ -662,16 +662,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Active(false);
 
-
-	CDefenderSmShip::DEFENDER_MONSTER_DESC tMonsterDesc = {};
-	tMonsterDesc.eTDirection = T_DIRECTION::RIGHT;
-	tMonsterDesc.iCurLevelID = m_eLevelID;
-	tMonsterDesc.tTransform2DDesc.vInitialPosition = { -0.f, 0.f, 0.f };   // TODO ::임시 위치
-	CDefenderSmShip* pMonster = static_cast<CDefenderSmShip*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderSmShip"), &tMonsterDesc));;
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pMonster);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pMonster, SECTION_2D_PLAYMAP_OBJECT);
-
-
 	return S_OK;
 }
 
@@ -1399,6 +1389,18 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("health_pickup_large"), LEVEL_STATIC, 3);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Player2dJumpAttackFX"), LEVEL_STATIC, 1);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefDebrisFSmall"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefDebrisMed"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefDebrisTurret"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionMed"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionSmall"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionTurret"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPersonFX"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefRedBullet"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPlayerHit"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefTeleport"), LEVEL_CHAPTER_6, 10);
+
 
 	return S_OK;
 }

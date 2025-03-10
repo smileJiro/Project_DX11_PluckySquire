@@ -25,6 +25,7 @@ struct SPAWN_DESC
 	//ÇÑ ¹øÀÇ À¯´Ö »ý»ê µô·¹ÀÌ.
 	_float fUnitDelay = 0.f;
 
+	_float fMoveSpeed = 100.f;
 	_bool bAbsolutePosition = false;
 	_vector vPosition = { 0.f,0.f,0.f };
 
@@ -76,7 +77,7 @@ public:
 	void Add_Spawn(SPAWN_DESC tDesc);
 
 private: 
-	void Spawn_Single(T_DIRECTION _eDirection, _vector _vPos = { 0.f,0.f,0.f });
+	void Spawn_Single(T_DIRECTION _eDirection, _vector _vPos = { 0.f,0.f,0.f }, _float _fMoveSpeed = 100.f);
 	void Spawn(SPAWN_DESC& _tDesc);
 	void Spawn_Dot(SPAWN_DESC& _tDesc);
 	void Spawn_Arrow(SPAWN_DESC& _tDesc);

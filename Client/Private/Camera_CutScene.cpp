@@ -182,10 +182,10 @@ void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
 	}
 	
 	_uint iIndex = (_uint)(m_pGameInstance->Lerp(0, (_float)(m_pCurCutScene->second.size()), fRatio));
-	cout << "INDEX: " << iIndex << endl;
-	cout << "fTimeDelta: " << _fTimeDelta << endl;
-	cout << "fRatio: " << fRatio << endl;
-	cout << "====================" << endl;
+	//cout << "INDEX: " << iIndex << endl;
+	//cout << "fTimeDelta: " << _fTimeDelta << endl;
+	//cout << "fRatio: " << fRatio << endl;
+	//cout << "====================" << endl;
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_pCurCutScene->second[iIndex]->vPosition), 1.f));
 	_vector vAt = XMLoadFloat3(&m_pCurCutScene->second[iIndex]->vAt); // 나중에 Shake 넣기 02.26
 	
@@ -287,6 +287,12 @@ void CCamera_CutScene::Switching(_float _fTimeDelta)
 
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vPos, 1.f));
 	m_fFovy = fFovy;
+
+	static _uint iCount = 0;
+	cout << "iCount: " << iCount << endl;
+	cout << "fRatio: " << fRatio << endl;
+	cout << "============" << endl;
+	iCount++;
 }
 
 CCamera_CutScene* CCamera_CutScene::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

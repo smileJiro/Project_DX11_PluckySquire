@@ -127,6 +127,7 @@
 #include "DefenderSpawner.h"
 #include "DefenderSmShip.h"
 #include "DefenderMedShip.h"
+#include "DefenderCapsule.h"
 #include "Minigame_Defender.h"
 
 #include "Sneak_Default_Tile.h"
@@ -957,6 +958,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Common"))))
 		return E_FAIL;
 
+	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level8"))))
+		return E_FAIL;
+
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -1537,7 +1541,10 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderMedShip_DOWN"),
 			CDefenderMedShip::Create(m_pDevice, m_pContext, false))))
 			return E_FAIL;
-
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_PersonCapsule"),
+			CDefenderCapsule::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		
 		/* Monster */
 
 		/* Etc */
@@ -1649,8 +1656,6 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_TheTraitorousRodentPrepared_KR.wav"));
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_APlanQuiteObviouslyDoomed_KR.wav"));
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/A_sfx_C9_TheTraiterousRodent.wav"));
-
-	
 
 
 	// 나레이션 관련
