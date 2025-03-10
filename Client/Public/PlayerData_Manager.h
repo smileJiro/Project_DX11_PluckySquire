@@ -78,7 +78,7 @@ private:
 	map<_wstring, pair<_bool, class CPlayerItem*>>	m_ItemState;
 	class CPlayerItem*					m_pCurItem = { nullptr };
 
-	_uint								m_iBulbCount = {};
+	_uint								m_iBulbCount = {500};
 
 	// 이름 저장용
 	pair<_wstring, _wstring>			m_ItemTags[ITEM_END] = {}; // first -> 구분용 이름, second -> model용 이름

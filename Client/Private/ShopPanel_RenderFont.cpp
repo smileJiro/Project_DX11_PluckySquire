@@ -155,7 +155,7 @@ HRESULT CShopPanel_RenderFont::Render()
 
 
 		Render_ItemInfo();
-
+		Render_ItemDialog();
 	}
 
 	return S_OK;
@@ -176,15 +176,12 @@ void CShopPanel_RenderFont::Render_ItemInfo()
 
 	for (int i = 0; i < pShopManager->Get_ShopItems().size(); ++i)
 	{
-		
 		_float2 vBadgePos = pShopManager->Get_BadgePositions()[i];
 		/* 나중에 수정 필요 */
 
 		_float2 vMiddlePoint = { vRTSize.x / 2 , vRTSize.y / 2 };
 		_float2 vCalPos = { 0.f, 0.f };
 		/* 나중에 수정 필요 */
-
-
 
 		_float2 vPos = { 0.f, 0.f };
 
@@ -194,15 +191,9 @@ void CShopPanel_RenderFont::Render_ItemInfo()
 		vCalPos.x = vMiddlePoint.x + vPos.x;
 		vCalPos.y = vMiddlePoint.y - vPos.y;
 
-
 		//이름 노출
 		_wstring strName = pShopManager->Get_ShopItems()[i][1]->Get_strName();
 		m_pGameInstance->Render_Font(TEXT("Font30"), strName.c_str(), _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-
-
-
-
-
 
 		// 가격 노출
 		vPos.x = vBadgePos.x + vRTSize.x * 0.06f;
@@ -214,19 +205,60 @@ void CShopPanel_RenderFont::Render_ItemInfo()
 		_wstring szBulbCount = to_wstring(pShopManager->Get_ShopItems()[i][1]->Get_Price());
 
 		m_pGameInstance->Render_Font(TEXT("Font24"), szBulbCount.c_str(), _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
-
-
 	}
-
-	
-	
-
-
-
 }
 
 void CShopPanel_RenderFont::Render_ItemDialog()
 {
+	CShop_Manager* pShopManager = CShop_Manager::GetInstance();
+	assert(pShopManager);
+
+	_int iChooseIndex = pShopManager->Get_ChooseIndex();
+	_float2 vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
+	_float2 vBGPos = pShopManager->Get_ShopBGPos();
+	_float2 vMiddlePoint = { vRTSize.x / 2 , vRTSize.y / 2 };
+	_float2 vCalPos = { 0.f, 0.f };
+	/* 나중에 수정 필요 */
+
+
+
+	_float2 vPos = { 0.f, 0.f };
+
+	if (0 == pShopManager->Get_ShopItems().size())
+	{
+		vPos.x = vBGPos.x - vRTSize.x * 0.03f;
+		vPos.y = vBGPos.y - vRTSize.y * 0.13f;
+
+		vCalPos.x = vMiddlePoint.x + vPos.x;
+		vCalPos.y = vMiddlePoint.y - vPos.y;
+
+		m_pGameInstance->Render_Font(TEXT("Font30"), TEXT("아이템을 전부 구매했어요!\n다음에도 이용해주세요!"), _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+	}
+	else if (true == pShopManager->Get_Confirm())
+	{
+		vPos.x = vBGPos.x - vRTSize.x * 0.03f;
+		vPos.y = vBGPos.y - vRTSize.y * 0.145f;
+
+		vCalPos.x = vMiddlePoint.x + vPos.x;
+		vCalPos.y = vMiddlePoint.y - vPos.y;
+
+		m_pGameInstance->Render_Font(TEXT("Font30"), TEXT("정말로 구매 하시겠어요?"), _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+	}
+	else if (false == pShopManager->Get_Confirm())
+	{
+		if (0 < pShopManager->Get_ShopItems().size())
+		{
+			vPos.x = vBGPos.x - vRTSize.x * 0.04f;
+			vPos.y = vBGPos.y - vRTSize.y * 0.13f;
+
+			vCalPos.x = vMiddlePoint.x + vPos.x;
+			vCalPos.y = vMiddlePoint.y - vPos.y;
+
+			_wstring strDialog = pShopManager->Get_ShopItems()[iChooseIndex][1]->Get_strDialog();
+
+			m_pGameInstance->Render_Font(TEXT("Font30"), strDialog.c_str(), _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+		}
+	}
 }
 
 void CShopPanel_RenderFont::Cal_ShopYesNOPos(_float2 _vRTSize, _float2 _vBGPos)
