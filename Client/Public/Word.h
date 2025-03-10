@@ -26,7 +26,15 @@ public:
 		WORD_CLOSE,
 		WORD_OPEN,
 		WORD_EMPTY,
-		WORD_LAST,
+		WORD_LAST
+	};
+	enum WORD_MODE
+	{
+		WORD_MODE_LAND,
+		WORD_MODE_ENTER_SETUP,
+		WORD_MODE_EXIT_SETUP,
+		WORD_MODE_SETUP,
+		WORD_MODE_LAST
 	};
 
 public :
@@ -46,7 +54,7 @@ protected:
 	virtual ~CWord() = default;
 
 public:
-	HRESULT		Initialize(void* _pArg);
+	HRESULT				Initialize(void* _pArg);
 
 	virtual void		Update(_float _fTimeDelta) override;
 	virtual void		Late_Update(_float _fTimeDelta) override;
@@ -60,13 +68,30 @@ public:
 	virtual _float		Get_Distance(COORDINATE _eCOord, CPlayer* _pUser) override;
 
 public :
-	_wstring Get_Text() { return m_strText; }
-	WORD_TYPE Get_WordType() { return m_eWordType; }
-	_bool Is_LayedDown() { return m_bLaydown; }
+	_wstring	Get_Text()			{ return m_strText; }
+	WORD_TYPE	Get_WordType()	{ return m_eWordType; }
+	_bool		Is_LayedDown()		{ return m_bLaydown; }
 
-	void Set_LayDown(_bool _bLayDown) { m_bLaydown = _bLayDown; }
+	void		Set_LayDown(_bool _bLayDown) { m_bLaydown = _bLayDown; }
+
+	// 튕겨나가거나, 들어가는 행위 작성
+	void		Execute_WordMode_Action(_float _fTimeDelta);
+
+	void		Set_OutputDirection(_float3 _fDir) { m_fOutputDir = _fDir; }
+	void		Set_OutputSecond(_float _fSecond) { m_fOutputSecond = _fSecond; }
+	void		Set_ContainorPosition(_float3 _fPos) { m_fContainorPosition = _fPos; }
+	_bool		Is_Complete() { return m_isActionComplete; }
+
+	WORD_MODE		Get_WordMode() { return m_eWordMode; }
+	void			Set_WordMode(CWord::WORD_MODE _eMode = CWord::WORD_MODE_SETUP) 
+	{ 
+		m_eWordMode = _eMode;
+		m_isActionComplete = false;
+		m_fOutputSecond = 0.3f;
+	}
+
 public :
-	HRESULT Ready_Components();
+	HRESULT		Ready_Components();
 
 protected:
 	virtual void On_LayDownEnd(_fmatrix _matWoroverride) override;
@@ -80,8 +105,14 @@ private :
 
 	_wstring					m_strText;
 	_float2						m_fSize;
+	WORD_MODE					m_eWordMode = WORD_MODE_LAST;
+	_bool						m_bLaydown = false;
 
-	_bool m_bLaydown = false;
+	_float3						m_fOutputDir = {};
+	_float						m_fOutputSecond = {};
+	_float3						m_fContainorPosition = {};
+
+	_bool						m_isActionComplete = false;
 
 public:
 	static	CWord*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

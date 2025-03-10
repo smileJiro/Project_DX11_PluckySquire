@@ -21,9 +21,9 @@ HRESULT CDefenderSmShip::Initialize(void* _pArg)
 	pDesc->tTransform2DDesc.fSpeedPerSec = m_fMoveSpeed;
 	pDesc->iNumPartObjects = 1;
 
-	pDesc->_tStat.iHP = 1.f;
-	pDesc->_tStat.iMaxHP = 1.f;
-	pDesc->_tStat.iDamg = 1.f;
+	pDesc->_tStat.iHP = 1;
+	pDesc->_tStat.iMaxHP = 1;
+	pDesc->_tStat.iDamg = 1;
 
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;

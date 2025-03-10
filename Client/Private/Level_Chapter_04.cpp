@@ -626,10 +626,15 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
 
 	if (nullptr == Uimgr->Get_Player())
+	{
 		CUI_Manager::GetInstance()->Set_Player(pPlayer);
+	}
+	_int iCurCoord = (COORDINATE_2D);
+	_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
+	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
 
-	
-	pPlayer->Set_Mode(CPlayer::PLAYER_MODE::PLAYER_MODE_SWORD);
+	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 
 	return S_OK;

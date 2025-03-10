@@ -528,12 +528,13 @@ _bool CMonster::Check_Block_Next(_fvector _vForce, _float _fTimeDelta)
 		return false;
 
 	//현재 위치에서 앞으로 레이를 쏴서 장애물이 앞에 있는지 체크
-	_float3 vOrigin;
+	//_float3 vOrigin;
 	_float3 vRayDir = { 0.f,-1.f,0.f };
 
 	_vector vDir = XMVectorSetW(_vForce, 0.f);
 	//현재 위치 + 몸 크기 에서 레이쏨
 	//XMStoreFloat3(&vOrigin, Get_FinalPosition() + vDir * _fTimeDelta + XMVector3Normalize(vDir) * m_fHalfBodySize);
+	return true;
 }
 
 void CMonster::Set_2D_Direction(F_DIRECTION _eDir)

@@ -20,9 +20,6 @@ CWord_Container::CWord_Container(const CWord_Container& _Prototype)
 
 HRESULT CWord_Container::Initialize_Prototype()
 {
-
-
-
 	return __super::Initialize_Prototype();
 }
 
@@ -43,7 +40,7 @@ HRESULT CWord_Container::Initialize(void* _pArg)
 	m_p2DColliderComs.resize(1);
 	CCollider_AABB::COLLIDER_AABB_DESC CircleDesc = {};
 	CircleDesc.pOwner = this;
-	CircleDesc.vExtents = {20.f,20.f};
+	CircleDesc.vExtents = {40.f,30.f};
 	CircleDesc.vScale = { 1.0f, 1.0f };
 	CircleDesc.vOffsetPosition = { 0.f, 0.f };
 	CircleDesc.isBlock = false;
@@ -64,6 +61,36 @@ void CWord_Container::Priority_Update(_float _fTimeDelta)
 
 void CWord_Container::Update(_float _fTimeDelta)
 {
+
+	//if (nullptr != m_pMyWord)
+	//{
+	//	CWord::WORD_MODE eMode = m_pMyWord->Get_WordMode();
+	//	_bool isComplete = m_pMyWord->Is_Complete();
+
+	//	switch (eMode)
+	//	{
+	//		case Client::CWord::WORD_MODE_ENTER_SETUP:
+	//			if (isComplete)
+	//			{
+	//				m_pMyWord->Set_WordMode();
+	//				SECTION_MGR->Word_Action_To_Section(m_strSectionName, m_iControllerIndex, m_iContainerIndex, m_pMyWord->Get_WordType());
+	//				SECTION_MGR->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pMyWord);
+	//				m_pMyWord->Set_Active(false);
+	//				m_pOnwer->Update_Text();
+	//			}
+	//			break;
+	//		case Client::CWord::WORD_MODE_EXIT_SETUP:
+	//			
+	//			break;
+	//		default:
+	//			break;
+	//	}
+
+
+	//	
+
+	//}
+
 	__super::Update(_fTimeDelta);
 }
 
@@ -90,9 +117,13 @@ void CWord_Container::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _p
 		{
 			if (pWord->Is_LayedDown())
 			{
+				_vector fDir = XMVector2Normalize(XMLoadFloat2(&_pMyCollider->Get_Position()) - XMLoadFloat2(&_pOtherCollider->Get_Position()));
+				_float3 fPos = {};
+				XMStoreFloat3(&fPos, fDir);
+				// 위 치 설 정 
+				Pop_Word(fPos);
 				Set_Word(pWord);
 				pWord->Set_LayDown(false);
-				m_pOnwer->Update_Text();
 			}
 		}
 	}
@@ -179,32 +210,41 @@ void CWord_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _
 	{
 		if (m_pMyWord != nullptr)
 		{
-			Pop_Word();
-		
+			// 위 치 설 정 
+			_vector fDir = XMVector2Normalize(XMLoadFloat2(&_pMyCollider->Get_Position()) - XMLoadFloat2(&_pOtherCollider->Get_Position()));
+			_float3 fPos = {};
+			XMStoreFloat3(&fPos, fDir);
+			// 위 치 설 정 
+			Pop_Word(fPos);
 			m_pOnwer->Update_Text();
 		}
 	}
 
 }
 
-void CWord_Container::Set_Word(CWord* _pWord)
+void CWord_Container::Set_Word(CWord* _pWord, CWord::WORD_MODE _eMode)
 {
-	// 있는 단어가 있으면, 뺀다.
+
+
+	// 있는 단어가 있으면, 지운다.
 	// 단어를 넣는다.
 	// 단어 교체 액션을 실행한다.
 	// 단어를 섹션에서 제거한다.
 	// 단어를 비활성화한다.
-	if (nullptr != m_pMyWord)
-		Pop_Word();
+	Safe_Release(m_pMyWord);
+
 
 	m_pMyWord = _pWord;
 	Safe_AddRef(m_pMyWord);
 	SECTION_MGR->Word_Action_To_Section(m_strSectionName, m_iControllerIndex, m_iContainerIndex, m_pMyWord->Get_WordType());
 	SECTION_MGR->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pMyWord);
+	m_pMyWord->Set_WordMode();
 	m_pMyWord->Set_Active(false);
+	m_pOnwer->Update_Text();
+
 }
 
-void CWord_Container::Pop_Word()
+void CWord_Container::Pop_Word(_float3 _fDir)
 {
 	//단어가 있다면, 활성화한다
 	// 단어를 현재 섹션에 추가한다.
@@ -213,11 +253,13 @@ void CWord_Container::Pop_Word()
 		m_pMyWord->Set_Active(true);
 		SECTION_MGR->Add_GameObject_ToSectionLayer(m_strSectionName, m_pMyWord, SECTION_2D_PLAYMAP_WORD);
 		
-		
 		_vector vPos = Get_FinalPosition();
 		vPos = XMVectorSetX(vPos, XMVectorGetX(vPos) + 10.f);
 		vPos = XMVectorSetY(vPos, XMVectorGetY(vPos) - 10.f);
 		m_pMyWord->Set_Position(vPos);
+		m_pMyWord->Set_WordMode(CWord::WORD_MODE_EXIT_SETUP);
+		m_pMyWord->Set_OutputDirection(_fDir);
+		
 		Safe_Release(m_pMyWord);
 		m_pMyWord = nullptr;
 	}
