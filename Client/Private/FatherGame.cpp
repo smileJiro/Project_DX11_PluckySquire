@@ -189,6 +189,11 @@ void CFatherGame::Update()
 	if (GAME_PLAYING != m_eGameState)
 		return;
 
+	if (KEY_DOWN(KEY::F))
+	{
+		OpenPortalLocker(PORTALLOCKER::LOCKER_PARTHEAD);
+	}
+
 	for (_uint i = 0; i < m_Progress.size(); ++i)
 	{
 		/* Update */
