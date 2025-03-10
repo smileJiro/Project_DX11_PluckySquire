@@ -39,11 +39,10 @@ private:
 	_bool										m_isStartCutScene = { false };
 	_bool										m_isFinishCutScene = { false };
 
-	// Target
-	// _float3									m_vTargetPos = {};
-
 	_float3										m_vAt = {};
 	_wstring									m_szCurCutSceneName = {};
+
+	_int										m_iFrameCount = {};
 
 private:
 	void						Play_CutScene(_float _fTimeDelta);

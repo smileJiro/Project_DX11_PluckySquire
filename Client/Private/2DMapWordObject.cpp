@@ -2,6 +2,8 @@
 #include "2DMapWordObject.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "Camera_Manager.h"
+#include "PlayerData_Manager.h"
 
 
 C2DMapWordObject::C2DMapWordObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -38,6 +40,11 @@ HRESULT C2DMapWordObject::Initialize(void* _pArg)
         WordObjectJson["Scale"][1].get<_float>() };
 
     pDesc->Build_2D_Transform(fPos, fScale);
+
+    if (WordObjectJson.contains("TargetDiff"))
+        m_fTargetDiff = WordObjectJson["TargetDiff"];
+    else
+        m_fTargetDiff = 13.f;
 
     if(WordObjectJson.contains("Image_Tag_List") 
         && WordObjectJson["Image_Tag_List"].is_array())
@@ -101,34 +108,38 @@ HRESULT C2DMapWordObject::Initialize(void* _pArg)
 
 
 
-    if (WordObjectJson.contains("Collider_Info"))
-    {
-        if (WordObjectJson["Collider_Info"].contains("Collider_Extent"))
+	if (WordObjectJson.contains("Collider_Info"))
+	{
+		_float2 fExtent = {};
+		_float2 fOffset = {0.f,0.f};
+		if (WordObjectJson["Collider_Info"].contains("Collider_Extent"))
+		{
+			fExtent = { WordObjectJson["Collider_Info"]["Collider_Extent"][0].get<_float>(),
+				WordObjectJson["Collider_Info"]["Collider_Extent"][1].get<_float>() };
+		}
+        if (WordObjectJson["Collider_Info"].contains("Collider_Offset"))
         {
-            _float2 fExtent = { WordObjectJson["Collider_Info"]["Collider_Extent"][0].get<_float>(),
-            WordObjectJson["Collider_Info"]["Collider_Extent"][1].get<_float>() };
-
-
-
-            /* Test 2D Collider */
-            m_p2DColliderComs.resize(1);
-            CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
-            AABBDesc.pOwner = this;
-            AABBDesc.vExtents = fExtent;
-            AABBDesc.vScale = {1.f,1.f};
-            AABBDesc.vOffsetPosition = {0.f,0.f};
-            AABBDesc.isBlock = true;
-            AABBDesc.iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
-            CCollider_AABB* pCollider = nullptr;
-            if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-                TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
-                return E_FAIL;
-
+            fOffset = { WordObjectJson["Collider_Info"]["Collider_Offset"][0].get<_float>(),
+                WordObjectJson["Collider_Info"]["Collider_Offset"][1].get<_float>() };
         }
-    
-    }
 
 
+
+
+		/* Test 2D Collider */
+		m_p2DColliderComs.resize(1);
+		CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
+		AABBDesc.pOwner = this;
+		AABBDesc.vExtents = fExtent;
+		AABBDesc.vScale = { 1.f,1.f };
+		AABBDesc.vOffsetPosition = fOffset;
+		AABBDesc.isBlock = true;
+		AABBDesc.iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
+		CCollider_AABB* pCollider = nullptr;
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+			TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
+			return E_FAIL;
+	}
     return S_OK; /* hr */
 }
 
@@ -138,6 +149,9 @@ void C2DMapWordObject::Priority_Update(_float _fTimeDelta)
 }
 void C2DMapWordObject::Update(_float _fTimeDelta)
 {
+
+    Action_Process(_fTimeDelta);
+
     __super::Update(_fTimeDelta);
 
 }
@@ -156,14 +170,45 @@ HRESULT C2DMapWordObject::Render()
     return __super::Render();
 }
 
-HRESULT C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
+//_bool C2DMapWordObject::Check_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
+//{
+//    _bool isExecute = false;
+//    find_if(m_Actions.begin(), m_Actions.end(), [this,&isExecute, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]
+//    (WORD_ACTION& tAction){
+//            return (tAction.iControllerIndex == _iControllerIndex
+//                && tAction.iContainerIndex == _iContainerIndex
+//                && tAction.iWordType == _iWordIndex);
+//        });
+//
+//    return isExecute;
+//}
+
+_bool C2DMapWordObject::Register_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
 {
-    for_each(m_Actions.begin(), m_Actions.end(), [this, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]
+	m_isRegistered = true;
+
+	m_iContainerIndex = _iContainerIndex;
+	m_iControllerIndex = _iControllerIndex;
+    m_iWordIndex = _iWordIndex;
+    
+    m_isStartChase = false;
+    m_isStartAction = false;
+    m_fActionIntervalSecond = 0.5f;
+    m_fAccTime = 0.f;
+    return true;
+}
+
+_bool C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
+{
+    _bool isExecute = false;
+    for_each(m_Actions.begin(), m_Actions.end(), [this,&isExecute, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]
     (WORD_ACTION& tAction){
             if (tAction.iControllerIndex == _iControllerIndex
                 && tAction.iContainerIndex == _iContainerIndex
                 && tAction.iWordType == _iWordIndex)
             {
+                isExecute = true;
+
                 switch (tAction.eAction)
                 {
                 case IMAGE_CHANGE:
@@ -210,13 +255,21 @@ HRESULT C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContai
                         m_p2DColliderComs[0]->Set_Active(isActive);
                 }
                 break;
+                case WORD_OBJECT_RENDER:
+                {
+                    _bool isRender = any_cast<_bool>(tAction.anyParam);
+                    m_IsWordRender = isRender;
+                    Set_Render(m_IsWordRender);
+                }
+                break;
                 default:
+					assert(nullptr);
                     break;
                 }
-            
+
             }
         });
-    return S_OK;
+    return isExecute;
 }
 
 const C2DMapWordObject::WORD_ACTION* C2DMapWordObject::Find_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
@@ -235,6 +288,54 @@ const C2DMapWordObject::WORD_ACTION* C2DMapWordObject::Find_Action(_uint _iContr
     }
 
     return nullptr;
+}
+
+void C2DMapWordObject::Action_Process(_float _fTimeDelta)
+{
+	if (false == m_isRegistered)
+        return;
+
+    if (false == m_isStartChase)
+    {
+        CCamera_Manager::GetInstance()->Change_CameraTarget(this);
+        m_isStartChase = true;
+    }
+    else if(false == m_isStartAction)
+    {
+        _vector v3DPosition = SECTION_MGR->Get_WorldPosition_FromWorldPosMap(m_strSectionName,
+            _float2(XMVectorGetX(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)), XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION))));
+
+        _vector vCamPosition = CCamera_Manager::GetInstance()->Get_CameraVector(CTransform::STATE_POSITION);
+
+        if (XMVectorGetX(XMVector3Length(v3DPosition - vCamPosition)) < m_fTargetDiff)
+            m_isStartAction = true;
+    }
+    else 
+    {
+        if (0.f < m_fActionIntervalSecond)
+        {
+            m_fAccTime += _fTimeDelta;
+        
+			if (m_fAccTime >= m_fActionIntervalSecond)
+			{
+                m_fActionIntervalSecond *= -1.f;
+                m_fAccTime = 0.f;
+				SECTION_MGR->Word_Action_To_Section(m_strSectionName, m_iControllerIndex, m_iContainerIndex, m_iWordIndex, false);
+			}
+        }
+        else 
+        {
+            m_fAccTime -= _fTimeDelta;
+
+            if (m_fAccTime <= m_fActionIntervalSecond)
+            {
+                // Time Interval
+                auto pPlayer = CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr();
+                CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer);
+                m_isRegistered = true;
+            }
+        }
+    }
 }
 
 void C2DMapWordObject::Active_OnEnable()

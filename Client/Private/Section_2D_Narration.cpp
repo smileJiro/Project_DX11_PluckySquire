@@ -117,7 +117,6 @@ HRESULT CSection_2D_Narration::Start_Narration()
 
 	return S_OK;
 }
-;
 
 CSection_2D_Narration* CSection_2D_Narration::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pDesc)
 {

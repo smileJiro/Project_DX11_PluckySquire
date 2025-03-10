@@ -73,7 +73,7 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 #ifdef _DEBUG
-	Imgui(fTimeDelta);
+	//Imgui(fTimeDelta);
 #endif
 
 	//m_eCameraMode = DEFAULT;
@@ -210,8 +210,23 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		}
 #pragma endregion
 
+#pragma region Book
+		else if (CSection_2D::MINIGAME == m_iPlayType) { // 일단 Narration이랑 Book이랑 같이 처리
+
+			// 처음 들어올 땐 이렇게 해도 상관없음
+			//m_fLengthValue = m_fOriginLengthValue;
+
+			pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+
+			pData = Find_ArmData(TEXT("Book_Horizon"));
+
+			if (nullptr != pData)
+				Set_InitialData(pData);
+		}
+#pragma endregion
+
 #pragma region Narration
-		if (CSection_2D::NARRAION == m_iPlayType) { // 일단 Narration이랑 Book이랑 같이 처리
+		else if (CSection_2D::NARRAION == m_iPlayType) { // 일단 Narration이랑 Book이랑 같이 처리
 
 			pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
 			pData = Find_ArmData(TEXT("Book_Horizon"));
@@ -542,6 +557,12 @@ void CCamera_2D::Action_SetUp_ByMode()
 				Change_Target(pPlayer, 0.5f);
 			}
 				break;
+			case CSection_2D::MINIGAME:
+			{
+				CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
+				Change_Target(pPlayer);
+			}
+			break;
 			case CSection_2D::NARRAION:
 			{
 				m_eTargetCoordinate = COORDINATE_2D;
@@ -892,6 +913,23 @@ void CCamera_2D::Find_TargetPos()
 		}
 #pragma endregion
 
+#pragma region MiniGame
+		if (CSection_2D::MINIGAME == m_iPlayType) {
+
+			if (false == Is_Target_In_SketchSpace())
+				break;
+
+			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+
+			if (!XMVector3Equal(vTargetPos, XMVectorZero())) {
+				XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
+				m_v2DdMatrixPos = { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 };
+			}
+			else
+				break;
+		}
+#pragma endregion
+
 #pragma region Sketch Space
 		else if (CSection_2D::SKSP == m_iPlayType) {
 
@@ -991,7 +1029,7 @@ void CCamera_2D::Find_TargetPos()
 				m_vStartPos = m_v2DPreTargetWorldPos;
 			}
 
-			m_iNarrationPosType = false; //Uimgr->isLeft_Right();	// true면 left
+			m_iNarrationPosType = Uimgr->isLeft_Right();	// true면 left
 
 			if (true == m_iNarrationPosType)
 				vPos = { fSectionSize.x * 0.25f, fSectionSize.y * 0.5f };
@@ -1017,7 +1055,7 @@ void CCamera_2D::Find_TargetPos()
 
 void CCamera_2D::Calculate_Book_Scroll()
 {
-	if (CSection_2D::PLAYMAP != m_iPlayType || COORDINATE_3D == m_eTargetCoordinate)
+	if ((CSection_2D::PLAYMAP != m_iPlayType && CSection_2D::MINIGAME != m_iPlayType)|| COORDINATE_3D == m_eTargetCoordinate )
 		return;
 
 	_float2 fSectionSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(m_strSectionName);
@@ -1122,7 +1160,7 @@ _bool CCamera_2D::Change_LengthValue(_float _fTimeDelta)
 
 void CCamera_2D::Check_MagnificationType()
 {
-	if (CSection_2D::PLAYMAP != m_iPlayType)
+	if (CSection_2D::PLAYMAP != m_iPlayType && CSection_2D::MINIGAME != m_iPlayType)
 		return;
 
 	CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);

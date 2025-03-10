@@ -33,6 +33,9 @@ public:
 	HRESULT					Ready_Layer_Effects(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Effects2D(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Slippery();
+
+private:
+	class CMinigame_Sneak* m_pSneakMinigameManager = { nullptr };
 private:
 	void					Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength);
 

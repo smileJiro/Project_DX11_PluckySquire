@@ -18,5 +18,35 @@
         "Is_Sequence": true
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "Chapter6_FatherGame_Progress_Fatherpart_1",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter6_FatherGame_Progress_Fatherpart_1",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter6_FatherGame_Progress_Fatherpart_2",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter6_FatherGame_Progress_Fatherpart_2",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter6_FatherGame_Progress_Fatherpart_3",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter6_FatherGame_Progress_Fatherpart_3",
+        "Is_Sequence": true
+      }
+    ]
   }
 ]

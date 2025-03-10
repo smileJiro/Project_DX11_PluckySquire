@@ -365,7 +365,7 @@ _vector CPatrolState::Set_PatrolDirection(_int _iDir)
 
 void CPatrolState::Check_Bound(_float _fTimeDelta)
 {
-	_float3 vPos;
+	//_float3 vPos;
 	//다음 위치가 공중이거나 장애물이 있을 때 막기
 	_bool isOut = m_pOwner->Check_InAir_Next(_fTimeDelta);
 	//델타타임으로 다음 위치 예상해서 막기

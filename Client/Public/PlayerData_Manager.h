@@ -60,11 +60,11 @@ public:
 	void					Change_PlayerItemMode(_wstring _strItemTag, _uint _iItemMode);
 
 public:
-	void					Register_Player(PLAYALBE_ID _ePlayableID,  CPlayable* _pPlayer);
-	void					Set_CurrentPlayer(PLAYALBE_ID _ePlayableID);
+	void					Register_Player(PLAYABLE_ID _ePlayableID,  CPlayable* _pPlayer);
+	void					Set_CurrentPlayer(PLAYABLE_ID _ePlayableID);
 	CPlayable*				Get_CurrentPlayer_Ptr() { return m_pCurrentPlayer; }
-	CPlayer*				Get_NormalPlayer_Ptr() { return static_cast<CPlayer*>(m_pPlayers[(_uint)PLAYALBE_ID::NORMAL]); }
-	CDefenderPlayer*		Get_DefenderPlayer_Ptr() { return static_cast<CDefenderPlayer*>(m_pPlayers[(_uint)PLAYALBE_ID::DEFENDER]); }
+	CPlayer*				Get_NormalPlayer_Ptr() { return static_cast<CPlayer*>(m_pPlayers[(_uint)PLAYABLE_ID::NORMAL]); }
+	CDefenderPlayer*		Get_DefenderPlayer_Ptr() { return static_cast<CDefenderPlayer*>(m_pPlayers[(_uint)PLAYABLE_ID::DEFENDER]); }
 
 private: 
 	CGameInstance*						m_pGameInstance = { nullptr };
@@ -73,7 +73,7 @@ private:
 
 private:
 	CPlayable*							m_pCurrentPlayer = { nullptr };
-	CPlayable*							m_pPlayers[(_uint)PLAYALBE_ID::LAST] = { nullptr, nullptr };
+	CPlayable*							m_pPlayers[(_uint)PLAYABLE_ID::LAST] = { nullptr, nullptr, nullptr };
 
 	map<_wstring, pair<_bool, class CPlayerItem*>>	m_ItemState;
 	class CPlayerItem*					m_pCurItem = { nullptr };

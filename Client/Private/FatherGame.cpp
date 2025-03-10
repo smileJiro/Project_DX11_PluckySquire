@@ -8,10 +8,12 @@
 #include "ZetPack_Child.h"
 #include "Simple_UI.h"
 #include "Mug_Alien.h"
+#include "JellyKing.h"
 /* Progress */
 #include "FatherGame_Progress_Start.h"
 #include "FatherGame_Progress_ZetPack.h"
 #include "FatherGame_Progress_PartBody.h"
+#include "FatherGame_Progress_PartWing.h"
 
 IMPLEMENT_SINGLETON(CFatherGame)
 CFatherGame::CFatherGame()
@@ -65,6 +67,16 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 		m_Progress.push_back(pProgress); // 여기가 원본임. AddRef x
 		m_ProgressClear.push_back(false);
 	}/* Progress PartBody */
+
+	{/* Progress PartWing */
+		CFatherGame_Progress_PartWing::FATHERGAME_PROGRESS_PARTWING_DESC ProgressDesc = {};
+		CFatherGame_Progress* pProgress = CFatherGame_Progress_PartWing::Create(m_pDevice, m_pContext, &ProgressDesc);
+		if (nullptr == pProgress)
+			return E_FAIL;
+		pProgress->Set_Active(false);
+		m_Progress.push_back(pProgress); // 여기가 원본임. AddRef x
+		m_ProgressClear.push_back(false);
+	}/* Progress PartWing */
 
 
 	/* 2. PortalDefender 3곳에 생성 */
@@ -166,10 +178,7 @@ void CFatherGame::Update()
 {
 	if (GAME_PLAYING != m_eGameState)
 		return;
-	if (KEY_DOWN(KEY::K))
-	{
-		Pickup_FatherPart(FATHER_WING);
-	}
+
 	for (_uint i = 0; i < m_Progress.size(); ++i)
 	{
 		/* Update */
@@ -277,6 +286,14 @@ void CFatherGame::Set_Mug_Alien(CMug_Alien* _pMugAlien)
 	Safe_AddRef(m_pMugAlien);
 }
 
+void CFatherGame::Set_JellyKing(CJellyKing* _pJellyKing)
+{
+	assert(_pJellyKing);
+	assert(!m_pJellyKing);
+	m_pJellyKing = _pJellyKing;
+	Safe_AddRef(m_pJellyKing);
+}
+
 void CFatherGame::Set_Active_FatherParts_UIs(_bool _isActive)
 {
 	if (false == m_ProgressClear[FATHER_PROGRESS_START])
@@ -296,6 +313,22 @@ void CFatherGame::Pickup_FatherPart(FATHER_PART _eFatherPart)
 	m_FatherParts_UIs[_eFatherPart]->Set_TextureIndex((_uint)_eFatherPart * 2 + 1);
 }
 
+_uint CFatherGame::Check_FatherPartsCondition_Count()
+{
+	_uint iCount = 0;
+	for (_bool isCondition : m_FatherPartsCondition)
+	{
+		if (true == isCondition)
+			++iCount;
+	}
+	return iCount;
+}
+
+_bool CFatherGame::Check_FatherPartsCondition(CFatherGame::FATHER_PART _ePartIndex)
+{
+	return m_FatherPartsCondition[_ePartIndex];
+}
+
 void CFatherGame::Free()
 {
 	for (auto& pPortalLocker : m_PortalLockers)
@@ -309,6 +342,7 @@ void CFatherGame::Free()
 		/* 정상적으로 게임 엔드가 호출되지 않은 경우에만 릴리즈 */
 		Safe_Release(m_pMugAlien);
 		Safe_Release(m_pZetPack_Child);
+		Safe_Release(m_pJellyKing);
 
 		for (_uint i = 0; i < (_uint)FATHER_PART::FATHER_LAST; ++i)
 		{
