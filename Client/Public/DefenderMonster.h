@@ -10,6 +10,7 @@ enum class DEFENDER_MONSTER_ID
 	TURRET,
 	MED_SHIP_UP,
 	MED_SHIP_DOWN,
+	PERSON_CAPSULE,
 	LAST
 };
 class CDefenderMonster :

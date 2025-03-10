@@ -1692,6 +1692,13 @@
     <ClInclude Include="..\Public\ShopPanel_RenderFont.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\02. Shop_RenderFont</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Pip_Player.h" />
+    <ClInclude Include="..\public\Sneak_MapObject.h" />
+    <ClInclude Include="..\public\Sneak_FlipObject.h" />
+    <ClInclude Include="..\public\Sneak_InteractObject.h" />
+    <ClInclude Include="..\public\Sneak_Troop.h" />
+    <ClInclude Include="..\Public\DefenderCapsule.h" />
+    <ClInclude Include="..\Public\DefenderPerson.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2686,6 +2693,13 @@
     <ClCompile Include="..\Private\ShopPanel_RenderFont.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\02. Shop_RenderFont</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Pip_Player.cpp" />
+    <ClCompile Include="..\private\Sneak_MapObject.cpp" />
+    <ClCompile Include="..\private\Sneak_FlipObject.cpp" />
+    <ClCompile Include="..\private\Sneak_InteractObject.cpp" />
+    <ClCompile Include="..\private\Sneak_Troop.cpp" />
+    <ClCompile Include="..\Private\DefenderCapsule.cpp" />
+    <ClCompile Include="..\Private\DefenderPerson.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

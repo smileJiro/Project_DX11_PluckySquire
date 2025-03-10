@@ -129,14 +129,7 @@ void CDefenderMedShip::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _
 
 void CDefenderMedShip::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
-	m_tStat.iHP -= _iDamg;
-	COORDINATE eCoord = Get_CurCoord();
-	if (m_tStat.iHP <= 0)
-	{
-		Event_DeleteObject(this);
-		m_tStat.iHP = m_tStat.iMaxHP;
-		return;
-	}
+	__super::On_Hit(_pHitter, _iDamg, _vForce);
 }
 
 void CDefenderMedShip::On_Explode()
