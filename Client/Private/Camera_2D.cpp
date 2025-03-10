@@ -991,7 +991,7 @@ void CCamera_2D::Find_TargetPos()
 				m_vStartPos = m_v2DPreTargetWorldPos;
 			}
 
-			m_iNarrationPosType = false; //Uimgr->isLeft_Right();	// true¸é left
+			m_iNarrationPosType = Uimgr->isLeft_Right();	// true¸é left
 
 			if (true == m_iNarrationPosType)
 				vPos = { fSectionSize.x * 0.25f, fSectionSize.y * 0.5f };
