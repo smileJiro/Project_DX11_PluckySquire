@@ -113,6 +113,16 @@ void C2DMapActionObject::Update(_float _fTimeDelta)
             m_fAlpha = std::fmax(m_fAlpha - (_fTimeDelta / m_fFadeOutSecond), 0.f);
         }
         break;
+    case Client::C2DMapActionObject::ACTIVE_TYPE_MODEL_CLOSE_DELETE:
+        if (true == m_isFadeOut)
+        {
+            m_fAlpha = std::fmax(m_fAlpha - (_fTimeDelta / m_fFadeOutSecond), 0.f);
+            if (0.f >= m_fAlpha && false == Is_Dead())
+            {
+                Event_DeleteObject(this);
+            }
+        }
+        break;
     case Client::C2DMapActionObject::ACTIVE_TYPE_DROPBLOCK:
         break;
     case Client::C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND:
@@ -150,6 +160,7 @@ HRESULT C2DMapActionObject::Render()
     case Client::C2DMapActionObject::ACTIVE_TYPE_DIALOG:
         break;
     case Client::C2DMapActionObject::ACTIVE_TYPE_MODEL_CLOSE:
+    case Client::C2DMapActionObject::ACTIVE_TYPE_MODEL_CLOSE_DELETE:
         {
             _float4 fColor = { 0.f,0.f,0.f,m_fAlpha };
             _uint iFlag = 0;
@@ -274,6 +285,7 @@ void C2DMapActionObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
     }
         break;
     case Client::C2DMapActionObject::ACTIVE_TYPE_MODEL_CLOSE:
+    case Client::C2DMapActionObject::ACTIVE_TYPE_MODEL_CLOSE_DELETE:
     {
         m_isFadeOut = true;
         m_fAlpha = 1.f;

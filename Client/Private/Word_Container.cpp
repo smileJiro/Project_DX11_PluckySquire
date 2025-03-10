@@ -37,15 +37,16 @@ HRESULT CWord_Container::Initialize(void* _pArg)
 	m_iControllerIndex = pDesc->iControllerIndex;
 	m_pOnwer = pDesc->pOnwer;
 
-
+	
+	m_eInteractID = INTERACT_ID::WORD_CONTAINER;
 	m_p2DColliderComs.resize(1);
 	CCollider_AABB::COLLIDER_AABB_DESC CircleDesc = {};
 	CircleDesc.pOwner = this;
-	CircleDesc.vExtents = {40.f,30.f};
+	CircleDesc.vExtents = {30.f,20.f};
 	CircleDesc.vScale = { 1.0f, 1.0f };
 	CircleDesc.vOffsetPosition = { 0.f, 0.f };
 	CircleDesc.isBlock = false;
-	CircleDesc.isTrigger = true;
+	CircleDesc.isTrigger = false;
 	CircleDesc.iCollisionGroupID = OBJECT_GROUP::WORD_GAME;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 		TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
@@ -64,7 +65,7 @@ void CWord_Container::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
 
-	if (nullptr != m_pMyWord)
+	if (nullptr != m_pMyWord && m_isRender)
 	{
 		m_fEffectAccTime += _fTimeDelta;
 		if (m_fEffectAccTime > m_fEffectInterval)
@@ -73,7 +74,12 @@ void CWord_Container::Update(_float _fTimeDelta)
 			_matrix matFX = XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos),0.f);
 			//_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
 			_wstring strFXTag = L"Word_HitEffect";
-			CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, m_strSectionName, matFX,0.f,3,false, SECTION_2D_PLAYMAP_EFFECT);
+			CEffect2D_Manager::GetInstance()->Play_Effect(
+				strFXTag,
+				m_strSectionName, 
+				matFX,
+				0.f,
+				2);
 			m_fEffectAccTime = 0.f;
 		}
 	}
@@ -200,17 +206,30 @@ void CWord_Container::Interact(CPlayer* _pUser)
 	}
 	else 
 	{
-		/*if (nullptr != m_pMyWord)
+		if (nullptr != m_pMyWord)
 		{
-			Pop_Word();
-			_pUser->Set_CarryingObject(m_pMyWord);
-		}*/
+			CWord* pWord = m_pMyWord;
+			Pop_Word({0.f,1.f,0.f});
+			_pUser->CarryObject(pWord);
+			/*
+			_matrix mat = XMMatrixIdentity();
+			m_pMyWord->Pick(_pUser, mat);*/
+			//_pUser->Set_CarryingObject(m_pMyWord);
+		}
 	}
 }
 
 _bool CWord_Container::Is_Interactable(CPlayer* _pUser)
 {
-	return false;//_pUser->Is_CarryingObject();
+	if (false == _pUser->Is_CarryingObject() && // 손에 암것도 들고 잇지 안음
+		CPlayer::PLAYER_MODE_SNEAK == _pUser->Get_PlayerMode() &&// 잡입 모드
+		nullptr != m_pMyWord
+		)
+	{
+		return true;
+	
+	}
+	return false;//
 }
 
 _float CWord_Container::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
@@ -278,5 +297,6 @@ void CWord_Container::Pop_Word(_float3 _fDir)
 		
 		Safe_Release(m_pMyWord);
 		m_pMyWord = nullptr;
+		m_pOnwer->Update_Text();
 	}
 }

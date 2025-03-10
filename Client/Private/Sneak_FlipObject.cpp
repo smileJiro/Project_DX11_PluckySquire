@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Sneak_FlipObject.h"
 #include "GameInstance.h"
+#include "Minigame_Sneak.h"
 
 CSneak_FlipObject::CSneak_FlipObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -36,11 +37,28 @@ HRESULT CSneak_FlipObject::Initialize(void* _pArg)
 	m_iFlipAnim2 = pDesc->_iFlipAnim2;
 	m_iFlipAnim1End = pDesc->_iFlipAnim1End;
 	m_iFlipAnim2End = pDesc->_iFlipAnim2End;
+	m_strFlip1Sound = pDesc->_strFlip1Sound;
+	m_strFlip2Sound = pDesc->_strFlip2Sound;
 
 	if (0 <= m_iCurAnim)
 		Switch_Animation(m_iCurAnim);
 
+	m_pSneakGameManager = CMinigame_Sneak::GetInstance();
+
 	return S_OK;
+}
+
+HRESULT CSneak_FlipObject::Render()
+{
+	if (nullptr != m_pSneakGameManager)
+	{
+		if (m_pSneakGameManager->Is_StartGame())
+			return __super::Render();
+		else
+			return S_OK;
+	}
+	else
+		return __super::Render();
 }
 
 void CSneak_FlipObject::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)

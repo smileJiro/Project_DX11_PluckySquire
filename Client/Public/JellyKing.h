@@ -69,6 +69,12 @@ private:
 	void									Action_State_Panic(_float _fTimeDelta); // X
 
 private:
+	/* Active 변경시 호출되는 함수 추가. */
+
+	virtual void							Active_OnEnable();
+	virtual void							Active_OnDisable();
+
+private:
 	void									Finished_DialogueAction();
 
 private:

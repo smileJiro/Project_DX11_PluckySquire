@@ -14,6 +14,7 @@
 #include "FatherGame_Progress_ZetPack.h"
 #include "FatherGame_Progress_PartBody.h"
 #include "FatherGame_Progress_PartWing.h"
+#include "FatherGame_Progress_PartHead.h"
 
 IMPLEMENT_SINGLETON(CFatherGame)
 CFatherGame::CFatherGame()
@@ -30,7 +31,7 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 	m_pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(m_pGameInstance);
 
-	m_Progress.reserve((size_t)FATHER_PROGRESS::FATHER_PROGRESS_ZETPACK + 1);
+	m_Progress.reserve((size_t)FATHER_PROGRESS::FATHER_PROGRESS_LAST);
 
 	/* 2. Progress 생성 후 Vector에 저장. */
 
@@ -78,7 +79,16 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 		m_ProgressClear.push_back(false);
 	}/* Progress PartWing */
 
-
+	{/* Progress PartHead */
+		CFatherGame_Progress_PartHead::FATHERGAME_PROGRESS_PARTHEAD_DESC ProgressDesc = {};
+		CFatherGame_Progress* pProgress = CFatherGame_Progress_PartHead::Create(m_pDevice, m_pContext, &ProgressDesc);
+		if (nullptr == pProgress)
+			return E_FAIL;
+		pProgress->Set_Active(false);
+		m_Progress.push_back(pProgress); // 여기가 원본임. AddRef x
+		m_ProgressClear.push_back(false);
+	}/* Progress PartHead */
+	
 	/* 2. PortalDefender 3곳에 생성 */
 	m_PortalLockers.resize((size_t)LOCKER_LAST);
 
@@ -102,25 +112,25 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 	}/* PortalLocker ZetPack */
 
 
-	//{/* PortalLocker PartHead */
-	//	CGameObject* pGameObject = nullptr;
-	//	CPortalLocker::PORTALLOCKER_DESC PortalLockerDesc;
-	//	CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_SKSP_04")))->Get_Portal(0));
-	//	if (nullptr == pTargetPortal)
-	//		return E_FAIL;
-	//	PortalLockerDesc.pTargetPortal = pTargetPortal;
-	//	PortalLockerDesc.ePortalLockerType = CPortalLocker::TYPE_YELLOW;
-	//	PortalLockerDesc.strSectionKey = TEXT("Chapter6_SKSP_04");
-	//
-	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker"), LEVEL_CHAPTER_6, TEXT("Layer_PortalLocker"), &pGameObject, &PortalLockerDesc)))
-	//		return E_FAIL;
-	//
-	//	m_PortalLockers[LOCKER_PARTHEAD] = static_cast<CPortalLocker*>(pGameObject);
-	//	Safe_AddRef(m_PortalLockers[LOCKER_PARTHEAD]);
-	//
-	//	if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(PortalLockerDesc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
-	//		return E_FAIL;
-	//}/* PortalLocker PartHead */
+	{/* PortalLocker PartHead */
+		CGameObject* pGameObject = nullptr;
+		CPortalLocker::PORTALLOCKER_DESC PortalLockerDesc;
+		CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_SKSP_04")))->Get_Portal(0));
+		if (nullptr == pTargetPortal)
+			return E_FAIL;
+		PortalLockerDesc.pTargetPortal = pTargetPortal;
+		PortalLockerDesc.ePortalLockerType = CPortalLocker::TYPE_YELLOW;
+		PortalLockerDesc.strSectionKey = TEXT("Chapter6_SKSP_04");
+	
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker"), LEVEL_CHAPTER_6, TEXT("Layer_PortalLocker"), &pGameObject, &PortalLockerDesc)))
+			return E_FAIL;
+	
+		m_PortalLockers[LOCKER_PARTHEAD] = static_cast<CPortalLocker*>(pGameObject);
+		Safe_AddRef(m_PortalLockers[LOCKER_PARTHEAD]);
+	
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(PortalLockerDesc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
+			return E_FAIL;
+	}/* PortalLocker PartHead */
 
 	/* FatherParts Condition */
 	m_FatherPartsCondition.resize((size_t)FATHER_PART::FATHER_LAST);
@@ -178,6 +188,11 @@ void CFatherGame::Update()
 {
 	if (GAME_PLAYING != m_eGameState)
 		return;
+
+	if (KEY_DOWN(KEY::F))
+	{
+		OpenPortalLocker(PORTALLOCKER::LOCKER_PARTHEAD);
+	}
 
 	for (_uint i = 0; i < m_Progress.size(); ++i)
 	{

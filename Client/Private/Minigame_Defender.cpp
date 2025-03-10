@@ -7,6 +7,8 @@
 #include "Section_Manager.h"
 #include "GameInstance.h"
 #include "DefenderSpawner.h"
+#include "Camera_Manager.h"
+#include "Camera_Target.h"
 
 CMiniGame_Defender::CMiniGame_Defender(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -27,10 +29,10 @@ HRESULT CMiniGame_Defender::Initialize_Prototype()
 HRESULT CMiniGame_Defender::Initialize(void* _pArg)
 {
     m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::SM_SHIP, _wstring(L"Prototype_GameObject_DefenderSmShip")));
-    m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::TURRET, _wstring(L"Prototype_GameObject_DefenderTurret")));
+   //m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::TURRET, _wstring(L"Prototype_GameObject_DefenderTurret")));
     m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::MED_SHIP_UP, _wstring(L"Prototype_GameObject_DefenderMedShip_UP")));
     m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::MED_SHIP_DOWN, _wstring(L"Prototype_GameObject_DefenderMedShip_DOWN")));
-
+    m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::PERSON_CAPSULE, _wstring(L"Prototype_GameObject_PersonCapsule")));
 
 	DEFENDER_CONTROLLTOWER_DESC* pDesc =static_cast<DEFENDER_CONTROLLTOWER_DESC*> (_pArg);
     m_iCurLevelID = pDesc->iCurLevelID;
@@ -66,7 +68,6 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDesc)))
         return E_FAIL;
 
-
 	return S_OK;
 }
 HRESULT CMiniGame_Defender::Ready_Spanwer()
@@ -99,6 +100,25 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
 
     //SPAWNS================================================================================================================
 	SPAWN_DESC tSpawnDesc = {};
+    tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_DOT;
+    tSpawnDesc.eDirection = T_DIRECTION::LEFT;
+    tSpawnDesc.fPatternStartDelay = 15.f;
+    tSpawnDesc.fAutoCycleTime = -1.f;
+    tSpawnDesc.fUnitDelay = 0.f;
+    tSpawnDesc.iSpawnCount = 1;
+    tSpawnDesc.fMoveSpeed = 0.f;
+    tSpawnDesc.bAbsolutePosition = true;
+    tSpawnDesc.vPosition = { 0.f,0.f };
+    m_Spawners[DEFENDER_MONSTER_ID::PERSON_CAPSULE]->Add_Spawn(tSpawnDesc);
+    tSpawnDesc.fPatternStartDelay = 30.f;
+    tSpawnDesc.vPosition = { 1000.f,0.f };
+    m_Spawners[DEFENDER_MONSTER_ID::PERSON_CAPSULE]->Add_Spawn(tSpawnDesc);
+    tSpawnDesc.fPatternStartDelay = 45.f;
+    tSpawnDesc.vPosition = { -1000.f,0.f };
+    m_Spawners[DEFENDER_MONSTER_ID::PERSON_CAPSULE]->Add_Spawn(tSpawnDesc);
+
+
+
     tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_RANDOM;
     tSpawnDesc.eDirection = T_DIRECTION::LEFT;
     tSpawnDesc.fAutoCycleTime = 13.f;
@@ -115,12 +135,12 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
 	tSpawnDesc.fAutoCycleTime = 15.f;
 	tSpawnDesc.fUnitDelay = 0.5f;
     tSpawnDesc.iSpawnCount = 5;
+    tSpawnDesc.fMoveSpeed = 300.f;
     tSpawnDesc.bAbsolutePosition = false;
 	tSpawnDesc.fPlayerDistance = m_fSpawnDistance;
 	tSpawnDesc.fHeight = 0;
     m_Spawners[DEFENDER_MONSTER_ID::MED_SHIP_UP]->Add_Spawn(tSpawnDesc);
     m_Spawners[DEFENDER_MONSTER_ID::MED_SHIP_DOWN]->Add_Spawn(tSpawnDesc);
-
 
     tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_ARROW;
     tSpawnDesc.eDirection = T_DIRECTION::LEFT;
@@ -128,11 +148,24 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
     tSpawnDesc.fAutoCycleTime = 13.f;
     tSpawnDesc.fUnitDelay = 0.1f;
     tSpawnDesc.iSpawnCount = 5;
+    tSpawnDesc.fMoveSpeed = 200.f;
     tSpawnDesc.bAbsolutePosition = false;
     tSpawnDesc.fPlayerDistance = m_fSpawnDistance;
     tSpawnDesc.fHeight = 0;
     m_Spawners[DEFENDER_MONSTER_ID::SM_SHIP]->Add_Spawn(tSpawnDesc);
 
+    tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_DOT;
+    tSpawnDesc.eDirection = T_DIRECTION::LEFT;
+    tSpawnDesc.fPatternStartDelay = 10.5f;
+    tSpawnDesc.fAutoCycleTime = 15.f;
+    tSpawnDesc.fUnitDelay = 0.5f;
+    tSpawnDesc.iSpawnCount = 5;
+    tSpawnDesc.fMoveSpeed = 300.f;
+    tSpawnDesc.bAbsolutePosition = false;
+    tSpawnDesc.fPlayerDistance = m_fSpawnDistance;
+    tSpawnDesc.fHeight = 0;
+    m_Spawners[DEFENDER_MONSTER_ID::MED_SHIP_UP]->Add_Spawn(tSpawnDesc);
+    m_Spawners[DEFENDER_MONSTER_ID::MED_SHIP_DOWN]->Add_Spawn(tSpawnDesc);
 
     return S_OK;
 }
@@ -180,6 +213,7 @@ void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
         m_pDefenderPlayer->Set_Position(vNormalPlayerPos);
 		m_pDefenderPlayer->Start_Transform();
 
+        static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(m_pDefenderPlayer);
     }
 }
 

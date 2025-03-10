@@ -52,7 +52,7 @@ public:
 	virtual HRESULT					Render() override;
 
 	virtual _bool					Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
-	//virtual _bool					Check_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
+	virtual _bool					Check_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
 	virtual _bool					Register_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
 	const WORD_ACTION*				Find_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
 	virtual void					Action_Process(_float _fTimeDelta);
@@ -79,7 +79,7 @@ private :
 	_bool					m_isStartChase = { false };
 	_bool					m_isStartAction = { false };
 	_float					m_fTargetDiff = { -1.f };
-	_float					m_fActionIntervalSecond = { 0.5f };
+	_float					m_fActionIntervalSecond = { 2.f };
 	_float					m_fAccTime = { 0.f };
 
 

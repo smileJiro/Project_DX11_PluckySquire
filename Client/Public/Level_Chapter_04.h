@@ -34,8 +34,12 @@ public:
 	HRESULT					Ready_Layer_Carriable(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_MapGimmick(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Spawner(const _wstring& _strLayerTag);
+
+
 private:
 	void					Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vRotation, _float _fLength);
+	// Chapter4 폭탄으로 길 뚫는 이벤트 만들어지기 전에 임시로 해 놓은 코드 (0310, 효림)
+	void					Create_IntroTrigger();
 
 	HRESULT Map_Object_Create(_wstring _strFileName);
 
