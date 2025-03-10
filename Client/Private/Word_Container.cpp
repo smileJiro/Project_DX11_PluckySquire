@@ -222,7 +222,7 @@ void CWord_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _
 
 }
 
-void CWord_Container::Set_Word(CWord* _pWord, CWord::WORD_MODE _eMode)
+void CWord_Container::Set_Word(CWord* _pWord, CWord::WORD_MODE _eMode, _bool _isWordActionRegister)
 {
 
 
@@ -236,7 +236,7 @@ void CWord_Container::Set_Word(CWord* _pWord, CWord::WORD_MODE _eMode)
 
 	m_pMyWord = _pWord;
 	Safe_AddRef(m_pMyWord);
-	SECTION_MGR->Word_Action_To_Section(m_strSectionName, m_iControllerIndex, m_iContainerIndex, m_pMyWord->Get_WordType());
+	SECTION_MGR->Word_Action_To_Section(m_strSectionName, m_iControllerIndex, m_iContainerIndex, m_pMyWord->Get_WordType(), _isWordActionRegister);
 	SECTION_MGR->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pMyWord);
 	m_pMyWord->Set_WordMode();
 	m_pMyWord->Set_Active(false);
