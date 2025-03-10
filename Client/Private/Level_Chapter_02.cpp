@@ -202,9 +202,6 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-	
-
-
 	///* Pooling Test */
 	//Pooling_DESC Pooling_Desc;
 	//Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
@@ -265,7 +262,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	// BGM 시작
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
 
-	//Event_Register_Trigger(TEXT("Chapter2_Intro"));
+	// Intro 시작
 	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);
 
 	/* Set Shader PlayerHideColor */
@@ -506,8 +503,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Map()
 	switch (eLevelID)
 	{
 	case Client::LEVEL_CHAPTER_2:
-		if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
-			return E_FAIL;
+		//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+			//return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_4:
 		if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
@@ -801,6 +798,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SNEAK);
 	//pPlayer->UnEquip_All();
 
+	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
 	return S_OK;
 }
 
@@ -1139,10 +1137,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	
 	
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
-	//	return E_FAIL;
-	//
-	//Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
+		return E_FAIL;
+	
+	Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
 
 	return S_OK;
 }

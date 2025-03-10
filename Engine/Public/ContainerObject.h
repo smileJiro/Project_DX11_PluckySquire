@@ -31,6 +31,8 @@ public:
 public:
 	virtual HRESULT		Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	HRESULT				Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID) override;
+	virtual void		Enter_Section(const _wstring _strIncludeSectionName) override;
+	virtual void		Exit_Section(const _wstring _strIncludeSectionName) override;
 
 public:
 	CComponent*			Find_Part_Component(_uint _iPartObjectIndex, const _wstring& _strPartComponentTag);

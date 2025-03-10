@@ -53,6 +53,7 @@ private:
 
 private:
 	void									Finished_DialogueAction();
+
 private:
 	HRESULT									Ready_Components(MUG_ALIEN_DESC* _pDesc);
 

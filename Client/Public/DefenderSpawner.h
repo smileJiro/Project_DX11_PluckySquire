@@ -6,9 +6,9 @@ BEGIN(Client)
 enum SPAWN_PATTERN
 {
 	SPAWN_PATTERN_DOT,
-	SPAWN_PATTERN_DOT_SEQUENCE,
 	SPAWN_PATTERN_ARROW,
-	SPAWN_PATTERN_VERTICAL,
+	SPAWN_PATTERN_VERTICAL_UP,
+	SPAWN_PATTERN_VERTICAL_DOWN,
 	SPAWN_PATTERN_RANDOM,
 	SPAWN_PATTERN_LAST,
 };
@@ -17,29 +17,39 @@ class CDefenderPlayer;
 struct SPAWN_DESC
 {
 	friend class CDefenderSpawner;
-
-	_float fPatternTimeStep = 0.f;
 	SPAWN_PATTERN ePattern = SPAWN_PATTERN_DOT;
 	T_DIRECTION eDirection = T_DIRECTION::RIGHT;
+	_float fPatternStartDelay = 0.f;
+	//À¯´Ö »ý»ê È½¼ö
+	_uint iSpawnCount = 1; 
+	//ÇÑ ¹øÀÇ À¯´Ö »ý»ê µô·¹ÀÌ.
+	_float fUnitDelay = 0.f;
+
 	_bool bAbsolutePosition = false;
 	_vector vPosition = { 0.f,0.f,0.f };
+
 	_float fPlayerDistance = 0.f;
 	_float fHeight = 0.f;
-	_uint iSpawnCount = 1;
+
 
 	//Auto Àü¿ë
 	_float fAutoCycleTime = -1.f;
 
-private: 
+public: 
 	void Update(_float _fTimeDelta);
-	
-	_bool Is_SpawnEnd() { return iCurrentSpawnCount >= iSpawnCount; }
+	void Reset_Cycle() { iCurrentSpawnCount = 0; fCycleTimeAcc = 0.f; fUnitTimeAcc = 0.f; }
+	void Reset_Unit() { fUnitTimeAcc = 0.f; }
+	_bool Is_PatternStartDelayEnd() { return fPatternStartDelay <= fPatternStartTimeAcc; }
+	_bool Is_UnitSpawnReady() { return false == Is_PatternEnd() && fUnitTimeAcc >= fUnitDelay; }
+	_bool Is_PatternEnd() { return iCurrentSpawnCount >= iSpawnCount; }
+
 	_bool Is_Auto() { return fAutoCycleTime >= 0.f; }
+	_bool Is_CycleEnd() { return fCycleTimeAcc >= fAutoCycleTime; }
 private:
 	_uint iCurrentSpawnCount = 0;
-	_float fPatternTimeStepAcc = 0.f;
 	_float fCycleTimeAcc = 0.f;
-	_float fPatternTimeAcc = 0.f;
+	_float fUnitTimeAcc = 0.f;
+	_float fPatternStartTimeAcc = 0.f;
 };
 class CDefenderSpawner :
     public CGameObject
@@ -67,7 +77,11 @@ public:
 
 private: 
 	void Spawn_Single(T_DIRECTION _eDirection, _vector _vPos = { 0.f,0.f,0.f });
-
+	void Spawn(SPAWN_DESC& _tDesc);
+	void Spawn_Dot(SPAWN_DESC& _tDesc);
+	void Spawn_Arrow(SPAWN_DESC& _tDesc);
+	void Spawn_Vertical(SPAWN_DESC& _tDesc, _bool _bUp);
+	void Spawn_Random(SPAWN_DESC& _tDesc);
 private:
 	CSection_Manager* m_pSection_Manager = nullptr;
 	class CPooling_Manager* m_pPoolMgr = nullptr;

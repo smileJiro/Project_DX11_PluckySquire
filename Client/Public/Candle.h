@@ -41,6 +41,8 @@ public:
 	virtual void					OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other);
 	virtual void					OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other);
 
+public: /* Candle UI Off */
+	void							OnOff_Candle_UI(_bool _isOnOff);
 public:
 	// Get
 	STATE							Get_CurState() const { return m_eCurState; }

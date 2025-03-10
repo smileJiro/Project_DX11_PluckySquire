@@ -50,6 +50,9 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 	pDesc->pActorDesc->pOwner = this;
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
+	//ActorObject¿¡¼­ ¿Å°Ü¿È.
+	if (nullptr != m_pActorCom && COORDINATE_2D == pDesc->eStartCoord)
+    m_pActorCom->Set_Active(false);
     //m_pActorCom-> Set_ShapeEnable(0, true);
 
        /* Test 2D Collider */

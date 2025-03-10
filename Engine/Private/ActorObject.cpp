@@ -109,7 +109,6 @@ void CActorObject::Active_OnEnable()
     {
         m_pActorCom->Set_Active(true);
     }
-
 }
 
 void CActorObject::Active_OnDisable()
@@ -149,8 +148,9 @@ HRESULT CActorObject::Ready_Components(ACTOROBJECT_DESC* _pDesc)
         break;
     }
 
-    if (nullptr != m_pActorCom && COORDINATE_2D == _pDesc->eStartCoord)
-        m_pActorCom->Set_Active(false);
+    //Carriable이 2D에서 시작했는데도 3D랑 충돌돼서 2D면 false해줌.
+    //if (nullptr != m_pActorCom && COORDINATE_2D == _pDesc->eStartCoord)
+    //    m_pActorCom->Set_Active(false);
 
     return S_OK;
 }

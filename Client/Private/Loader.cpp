@@ -125,10 +125,17 @@
 #include "DefenderPlayerProjectile.h"
 #include "DefenderSpawner.h"
 #include "DefenderSmShip.h"
+#include "DefenderMedShip.h"
 #include "Minigame_Defender.h"
 
 #include "Sneak_Default_Tile.h"
 #include "Sneak_Trap_Tile.h"
+#include "Sneak_FlipObject.h"
+#include "Sneak_MapObject.h"
+#include "Sneak_InteractObject.h"
+#include "Pip_Player.h"
+#include "Sneak_Troop.h"
+#include "Sneak_SentryTroop.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -198,11 +205,13 @@
 #include "PortalLocker.h" 
 #include "ZetPack_Child.h" 
 #include "Mug_Alien.h" 
+#include "JellyKing.h" 
 #include "CandleGame.h"
 #include "Candle.h"
 #include "Candle_Body.h"
 #include "Candle_UI.h"
 #include "Simple_UI.h"
+#include "FatherPart_Prop.h"
 
 // Player Effect 
 #include "Effect_Trail.h"
@@ -1449,6 +1458,17 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(Model_Load(eResourceLevelID, _eLoadLevelID)))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Body"),
+			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Body.dds"), (_uint)LEVEL_CHAPTER_6, true))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Head"),
+			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Wing.dds"), (_uint)LEVEL_CHAPTER_6, true))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Wing"),
+			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Head.dds"), (_uint)LEVEL_CHAPTER_6, true))))
+			return E_FAIL;
 	#pragma endregion
 
 	#pragma region Chapter 6 - Object Load
@@ -1465,12 +1485,21 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 
 		/* Chapter 6 FatherGame */
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"),
+			CFatherPart_Prop::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Child"),
 			CZetPack_Child::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Mug_Alien"),
 			CMug_Alien::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_JellyKing"),
+			CJellyKing::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 		
 		/* Chapter 6 Npc */
@@ -1502,6 +1531,13 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderSmShip"),
 			CDefenderSmShip::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderMedShip_UP"),
+			CDefenderMedShip::Create(m_pDevice, m_pContext, true))))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderMedShip_DOWN"),
+			CDefenderMedShip::Create(m_pDevice, m_pContext, false))))
+			return E_FAIL;
+
 		/* Monster */
 
 		/* Etc */
@@ -1649,7 +1685,19 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		CGameEventExecuter_C8::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* Pip_Player */
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_PipPlayer"),
+		CPip_Player::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* Monster */
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakTroop"),
+		CSneak_Troop::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakSentryTroop"),
+		CSneak_SentryTroop::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* Etc */
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakDefaultTile"),
@@ -1659,6 +1707,15 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakTrapTile"),
 		CSneak_Trap_Tile::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakMapObject"),
+		CSneak_MapObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakInteractObject"),
+		CSneak_InteractObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_CyberPlayerBullet"),
 		CCyberPlayerBullet::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -1676,6 +1733,23 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 
 #pragma endregion
+
+	/*Ready Minigame Info*/
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakTile.json"), TEXT("SneakTile"), _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakObjects.json"), TEXT("SneakObjects"), _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakInteracts.json"), TEXT("SneakInteracts"), _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakTroops.json"), TEXT("SneakTroops"), _eLoadLevelID)))
+		return E_FAIL;
+
+
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 	m_isFinished = true;
@@ -1795,6 +1869,8 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 			("../Bin/Resources/Models/3DAnim/Chapter8/buttergrump_Rig/buttergrump_Rig.model"
 				), matPretransform))))
 		return E_FAIL;
+
+
 
 	return S_OK;
 }

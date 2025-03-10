@@ -6574,5 +6574,14 @@
   "SearchTag": "C08_1112_Rubble_12_png",
   "Sorting": false,
   "TextureName": "C08_1112_Rubble_12_png"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "jk_throne_Sprite",
+  "Sorting": false,
+  "TextureName": "jk_throne_Sprite"
  }
 ]

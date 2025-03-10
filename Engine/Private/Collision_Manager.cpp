@@ -52,7 +52,7 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
     map<_ulonglong, _bool>::iterator iter;
 
     for (_uint i = 0; i < LeftColliders.size(); ++i)
-    {
+    { 
 
         for (_uint j = 0; j < RightColliders.size(); ++j)
         {

@@ -103,6 +103,11 @@ void CCandle_UI::State_Change_TurnOff()
 	m_pControllerModel->Switch_Animation((_uint)STATE_TURNOFF, false);
 }
 
+void CCandle_UI::OnOff_CandleUI(_bool _isOnOff)
+{
+	_isOnOff == true ? Start_FadeAlphaIn() : Start_FadeAlphaOut();
+}
+
 void CCandle_UI::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
 {
 	switch ((STATE)_iAnimIdx)

@@ -84,6 +84,7 @@ HRESULT CFatherGame_Progress_ZetPack::Progress_Clear()
 
         /* 4. PartBody, PartWing Progress */
         CFatherGame::GetInstance()->Start_Progress(CFatherGame::FATHER_PROGRESS_PARTBODY);
+        CFatherGame::GetInstance()->Start_Progress(CFatherGame::FATHER_PROGRESS_PARTWING);
 #ifdef _DEBUG
         cout << "FatherGame Progress_ZetPack Clear" << endl;
 #endif // _DEBUG

@@ -2,16 +2,14 @@
 #include "ModelObject.h"
 
 BEGIN(Engine)
-class CTexture;
-class CShader;
-class CVIBuffer_Rect;
+
 END
 
 BEGIN(Client)
 class CFatherPart_Prop final : public CModelObject
 {
 public:
-	typedef struct tagFatherPartPropDesc : public CGameObject::GAMEOBJECT_DESC
+	typedef struct tagFatherPartPropDesc : public CModelObject::MODELOBJECT_DESC
 	{
 		_uint iFatherPartID = 0;
 
@@ -30,9 +28,30 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta);
 	virtual HRESULT				Render();
 
+public:
+	void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
+
+public:
+	// Get
+	STATE						Get_CurState() const { return m_eCurState; }
+	
 private:
 	STATE						m_ePreState = STATE::STATE_LAST;
 	STATE						m_eCurState = STATE::STATE_LAST;
+
+	_uint						m_iFatherPart = 0;
+private:
+	void						State_Change();
+	void						State_Change_Idle();
+	void						State_Change_Pickup();
+
+private:
+	void						Action_State(_float _fTimeDelta);
+	void						Action_State_Idle(_float _fTimeDelta);
+	void						Action_State_Pickup(_float _fTimeDelta);
+
+private:
+	HRESULT						Ready_Components(FATHERPART_PROP_DESC* _pDesc);
 
 public:
 	static CFatherPart_Prop*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext); 
