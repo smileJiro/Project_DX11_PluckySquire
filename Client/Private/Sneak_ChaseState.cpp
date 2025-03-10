@@ -117,7 +117,8 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 		//이동
 		if (true == m_isMove)
 		{
-			static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+			//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+			m_pOwner->Move(XMLoadFloat3(&m_vDir) * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), _fTimeDelta);
 
 			//이미 경로가 있을때
 			if (true == m_isOnWay && false == m_isPathFind)

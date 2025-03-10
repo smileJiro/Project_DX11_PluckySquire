@@ -3,7 +3,8 @@
 #include "Section_Manager.h"
 #include "Player.h"
 #include "Collider.h"
-#include "Collider_Circle.h"
+//#include "Collider_Circle.h"
+#include "Collider_AABB.h"
 #include "Word_Controller.h"
 
 CWord_Container::CWord_Container(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -40,15 +41,15 @@ HRESULT CWord_Container::Initialize(void* _pArg)
 
 
 	m_p2DColliderComs.resize(1);
-	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+	CCollider_AABB::COLLIDER_AABB_DESC CircleDesc = {};
 	CircleDesc.pOwner = this;
-	CircleDesc.fRadius = 40.f;
+	CircleDesc.vExtents = {20.f,20.f};
 	CircleDesc.vScale = { 1.0f, 1.0f };
 	CircleDesc.vOffsetPosition = { 0.f, 0.f };
 	CircleDesc.isBlock = false;
 	CircleDesc.isTrigger = true;
 	CircleDesc.iCollisionGroupID = OBJECT_GROUP::WORD_GAME;
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 		TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
 		return E_FAIL;
 

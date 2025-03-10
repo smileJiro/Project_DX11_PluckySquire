@@ -43,8 +43,14 @@ HRESULT CMonster::Initialize(void* _pArg)
 	m_fFOVY = pDesc->fFOVY;
 	m_eWayIndex = pDesc->eWayIndex;
 
+	if (true == pDesc->isStay)
+		m_isStay = true;
 	if (true == pDesc->isSneakMode)
 		m_isSneakMode = true;
+
+	pDesc->_fStepHeightThreshold = 0.2f;
+	pDesc->_fStepSlopeThreshold = 0.45f;
+	//XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixIdentity());
 
 	// Add Desc
 	pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER;
@@ -297,8 +303,47 @@ void CMonster::Attack()
 {
 }
 
-void CMonster::Monster_Move(_fvector _vDirection)
+void CMonster::Move(_fvector _vForce, _float _fTimeDelta)
 {
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+		_vector vVeclocity = _vForce;
+
+		vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
+
+		if (pDynamicActor->Is_Dynamic())
+		{
+			if (true == Is_OnGround())
+				vVeclocity = StepAssist(vVeclocity, _fTimeDelta);
+			pDynamicActor->Set_LinearVelocity(vVeclocity);
+		}
+	}
+}
+
+_bool CMonster::Monster_MoveTo(_fvector _vPosition, _float _fTimeDelta)
+{
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+
+		//위치로 이동하는 속도를 세팅하고 StepAssist 수행
+		if (true == Move_To(_vPosition))
+			return true; 
+		_vector vVeclocity = pDynamicActor->Get_LinearVelocity();
+
+		//vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
+
+		if (pDynamicActor->Is_Dynamic())
+		{
+			if (true == Is_OnGround())
+			{
+				vVeclocity = StepAssist(vVeclocity, _fTimeDelta);
+				pDynamicActor->Set_LinearVelocity(vVeclocity);
+			}
+		}
+	}
+	return false;
 }
 
 HRESULT CMonster::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -414,6 +459,81 @@ void CMonster::Exit_Section(const _wstring _strIncludeSectionName)
 		if (nullptr != pPlaySection)
 			pPlaySection->Reduce_MonsterCount();
 	}
+}
+
+_bool CMonster::Check_InAir_Next(_float _fTimeDelta)
+{
+	if (COORDINATE_3D != Get_CurCoord())
+		return false;
+
+	_vector vVelocity = XMVectorSetW(static_cast<CActor_Dynamic*>(Get_ActorCom())->Get_LinearVelocity(), 0.f);
+
+	return Check_InAir_Next(vVelocity, _fTimeDelta);
+}
+
+_bool CMonster::Check_InAir_Next(_fvector _vForce, _float _fTimeDelta)
+{
+	if (COORDINATE_3D != Get_CurCoord())
+		return false;
+
+	//다음 예상위치에서 아래로 스윕해서 공중인지 체크
+	_float3 vOrigin;
+	_float3 vRayDir = { 0.f,-1.f,0.f };
+
+	_vector vDir = XMVectorSetW(_vForce, 0.f);
+	//다음 예상위치 + 몸 크기 의 위치에서 스윕해서 자연스럽게 보이도록
+	XMStoreFloat3(&vOrigin, Get_FinalPosition() + vDir * _fTimeDelta + XMVector3Normalize(vDir) * m_fHalfBodySize);
+
+	PxGeometryHolder pxGeomHolder = m_pActorCom->Get_Shapes()[(_uint)SHAPE_USE::SHAPE_BODY]->getGeometry().any();
+	PxGeometryType::Enum eGeomType = pxGeomHolder.getType();
+	if (PxGeometryType::eCAPSULE == eGeomType)
+	{
+		PxCapsuleGeometry& pxCapsule = pxGeomHolder.capsule();
+		//pxCapsule.radius *= 0.5f;
+		//vOrigin.y += (m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
+	}
+	else if (PxGeometryType::eBOX == eGeomType)
+	{
+		PxBoxGeometry& pxBox = pxGeomHolder.box();
+		//vOrigin.y += (m_fStepHeightThreshold + pxBox.halfExtents.y);
+	}
+	else if (PxGeometryType::eSPHERE == eGeomType)
+	{
+		PxSphereGeometry& pxSphere = pxGeomHolder.sphere();
+		//vOrigin.y += (m_fStepHeightThreshold + pxSphere.radius);
+	}
+
+	//임계값보다 큰 길이로 스윕
+	if (false == m_pGameInstance->SingleSweep(&pxGeomHolder.any(), vOrigin, vRayDir, m_fStepHeightThreshold + 0.5f))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+_bool CMonster::Check_Block_Next(_float _fTimeDelta)
+{
+	if (COORDINATE_3D != Get_CurCoord())
+		return false;
+
+	_vector vVelocity = XMVectorSetW(static_cast<CActor_Dynamic*>(Get_ActorCom())->Get_LinearVelocity(), 0.f);
+
+	return Check_Block_Next(vVelocity, _fTimeDelta);
+}
+
+_bool CMonster::Check_Block_Next(_fvector _vForce, _float _fTimeDelta)
+{
+	if (COORDINATE_3D != Get_CurCoord())
+		return false;
+
+	//현재 위치에서 앞으로 레이를 쏴서 장애물이 앞에 있는지 체크
+	_float3 vOrigin;
+	_float3 vRayDir = { 0.f,-1.f,0.f };
+
+	_vector vDir = XMVectorSetW(_vForce, 0.f);
+	//현재 위치 + 몸 크기 에서 레이쏨
+	//XMStoreFloat3(&vOrigin, Get_FinalPosition() + vDir * _fTimeDelta + XMVector3Normalize(vDir) * m_fHalfBodySize);
 }
 
 void CMonster::Set_2D_Direction(F_DIRECTION _eDir)

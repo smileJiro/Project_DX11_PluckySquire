@@ -28,6 +28,7 @@ HRESULT CSneak_AwareState::Initialize(void* _pArg)
 void CSneak_AwareState::State_Enter()
 {
 	m_pOwner->Set_AnimChangeable(false);
+	m_pOwner->Stop_Move();
 	m_isConvert = false;
 	m_fAccTime = 0.f;
 	m_isRenew = false;

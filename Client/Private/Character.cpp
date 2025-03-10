@@ -26,7 +26,6 @@ HRESULT CCharacter::Initialize(void* _pArg)
         m_fStepSlopeThreshold = pDesc->_fStepSlopeThreshold;
         m_fStepHeightThreshold = pDesc->_fStepHeightThreshold;
         m_fGravity = m_pGameInstance->Get_Gravity();
-        XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixRotationZ(XMConvertToRadians(90.f)));
     }
 
 	if (FAILED(__super::Initialize(_pArg)))
@@ -84,7 +83,7 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
                 m_f3DFloorDistance = -1;
                 m_bOnGround = false;
             }
-            //경사가 너ㅏ무 급하면 무시
+            //경사가 너무 급하면 무시
         }
         if (bOldGround == false && m_bOnGround == true)
             On_Land();
@@ -391,8 +390,18 @@ _float CCharacter::Measure_FloorDistance()
     if (PxGeometryType::eCAPSULE == eGeomType)
     {
         PxCapsuleGeometry& pxCapsule = pxGeomHolder.capsule();
-        pxCapsule.radius *= 0.5f;
-        vOrigin.y += (m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
+
+        //캡슐의 경우 y축 아니면 z축 회전하므로 y축 회전했을 때를 따로 처리
+        if (1.f == m_matQueryShapeOffset._22)
+        {
+            vOrigin.y += (m_fStepHeightThreshold + pxCapsule.radius);
+        }
+        //기본을 z축 기준 90도 회전으로 생각
+        else
+        {
+            pxCapsule.radius *= 0.5f;
+            vOrigin.y += (m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
+        }
     }
     else if (PxGeometryType::eBOX == eGeomType)
     {
