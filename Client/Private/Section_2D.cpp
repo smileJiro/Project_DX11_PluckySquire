@@ -191,35 +191,46 @@ _float2 CSection_2D::Get_RenderTarget_Size()
 	return m_pMap->Get_RenderTarget_Size();
 }
 
-HRESULT CSection_2D::Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType)
+HRESULT CSection_2D::Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType, _bool _isRegistered)
 {
 
 	CLayer* pTargetLayer = m_Layers[SECTION_2D_PLAYMAP_WORDOBJ];
-
 	if (nullptr != pTargetLayer)
 	{
 		const auto& GameObjects = pTargetLayer->Get_GameObjects();
-		C2DMapWordObject* pExecuteGameObject = nullptr;
-		for_each(GameObjects.begin(), GameObjects.end(), [&pExecuteGameObject, &_iControllerIndex ,&_iContainerIndex,&_iWordType](CGameObject* pGameObject) {
-			C2DMapWordObject* pWordObj = dynamic_cast<C2DMapWordObject*>(pGameObject);
 
-			if (true == pWordObj->Action_Execute(_iControllerIndex, _iContainerIndex, _iWordType))
-				pExecuteGameObject = pWordObj;
-			});
-
-		if (nullptr != pExecuteGameObject)
+		if (_isRegistered)
 		{
-			// Action_Execute에서 실제 액션 발생 코드 뺀다,
-			// 이벤트 발생.
-			// param - pExecuteGameObject, _iControllerIndex,  _iContainerIndex,  _iWordType
-			
-			// pExecuteGameObject에 카메라 이동, 0.3초정도 인터벌 뒤 액션 실행 코드 삽입,
-			//						//이를 위해서, Check_Action()을 추가해서 액션 실행 코드랑 검사 코드를 분리해도 좋을 듯.
-			
-			//	이후 다시 플레이어 타겟(무조건 2D로 가정)
+			C2DMapWordObject* pExecuteGameObject = nullptr;
+			for_each(GameObjects.begin(), GameObjects.end(), [&pExecuteGameObject, &_iControllerIndex, &_iContainerIndex, &_iWordType](CGameObject* pGameObject) {
+				C2DMapWordObject* pWordObj = dynamic_cast<C2DMapWordObject*>(pGameObject);
+
+				if (nullptr != pWordObj->Find_Action(_iControllerIndex, _iContainerIndex, _iWordType))
+					pExecuteGameObject = pWordObj;
+				});
+
+			if (nullptr != pExecuteGameObject)
+			{
+				pExecuteGameObject->Register_Action(_iControllerIndex, _iContainerIndex, _iWordType);
+				// Action_Execute에서 실제 액션 발생 코드 뺀다,
+				// 이벤트 발생.
+				// param - pExecuteGameObject, _iControllerIndex,  _iContainerIndex,  _iWordType
+
+				// pExecuteGameObject에 카메라 이동, 0.3초정도 인터벌 뒤 액션 실행 코드 삽입,
+				//						//이를 위해서, Check_Action()을 추가해서 액션 실행 코드랑 검사 코드를 분리해도 좋을 듯.
+
+				//	이후 다시 플레이어 타겟(무조건 2D로 가정)
+			}
 		}
+		else 
+		{
+			for_each(GameObjects.begin(), GameObjects.end(), [&_iControllerIndex, &_iContainerIndex, &_iWordType](CGameObject* pGameObject) {
+				C2DMapWordObject* pWordObj = dynamic_cast<C2DMapWordObject*>(pGameObject);
 
-
+				if (nullptr != pWordObj)
+					pWordObj->Action_Execute(_iControllerIndex, _iContainerIndex, _iWordType);
+				});
+		}
 	}
 
 	return S_OK;
