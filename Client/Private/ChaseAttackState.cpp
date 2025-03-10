@@ -51,7 +51,7 @@ void CChaseAttackState::State_Update(_float _fTimeDelta)
 		Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
 
 	_vector vDir = m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition();
-	_float fDis = XMVectorGetX(XMVector3Length((vDir)));	//3D상에서 y값도 더해서 거리 계산하는거 주의
+	_float fDis = XMVectorGetX(XMVector3Length((vDir)));
 	XMVectorSetY(vDir, XMVectorGetY(m_pOwner->Get_FinalPosition()));
 
 	//추적 범위 벗어나면 IDLE 전환
@@ -64,7 +64,11 @@ void CChaseAttackState::State_Update(_float _fTimeDelta)
 		if(COORDINATE_3D == m_pOwner->Get_CurCoord())
 		{
 			//추적
-			m_pOwner->Move_To(m_pTarget->Get_FinalPosition());
+			m_pOwner->Monster_MoveTo(m_pTarget->Get_FinalPosition(), _fTimeDelta);
+			if (true == m_pOwner->Check_InAir_Next(_fTimeDelta))
+				m_pOwner->Stop_Move();
+			//m_pOwner->Move_To(m_pTarget->Get_FinalPosition());
+			//m_pOwner->Move(static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Get_LinearVelocity(), _fTimeDelta);
 			m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
 		}
 		else if (COORDINATE_2D == m_pOwner->Get_CurCoord())

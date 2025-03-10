@@ -137,7 +137,7 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 	if(true == m_isBound)
 	{
 		//다음 위치가 구역을 벗어나는지 체크 후 벗어나면 정지 후 반대방향으로 진행
-		//Check_Bound(_fTimeDelta);
+		Check_Bound(_fTimeDelta);
 	}
 
 	//이동
@@ -155,7 +155,6 @@ void CPatrolState::State_Exit()
 
 void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 {
-	//회전중인 거도 해야할듯 일단 이동만 해봄
 	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
 		if (0 > _iDir || 7 < _iDir)
@@ -185,10 +184,8 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 
 		if (true == m_isMove)
 		{
-			//m_pOwner->Get_ControllerTransform()->LookAt_3D(vDir + m_pOwner->Get_FinalPosition());
-			//m_pOwner->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
-			//m_pOwner->Add_Force(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
-			m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec()); //임시 속도
+			//m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+			m_pOwner->Move(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), _fTimeDelta);
 		}
 	}
 
@@ -369,26 +366,26 @@ _vector CPatrolState::Set_PatrolDirection(_int _iDir)
 void CPatrolState::Check_Bound(_float _fTimeDelta)
 {
 	_float3 vPos;
-	_bool isOut = false;
+	//다음 위치가 공중이거나 장애물이 있을 때 막기
+	_bool isOut = m_pOwner->Check_InAir_Next(_fTimeDelta);
 	//델타타임으로 다음 위치 예상해서 막기
-	XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition() + Set_PatrolDirection(m_iDir) * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta);
-	//나갔을 때 반대방향으로
-	//XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
-	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
-	{
-		if (m_tPatrolBound.vMin.x > vPos.x || m_tPatrolBound.vMax.x < vPos.x || m_tPatrolBound.vMin.z > vPos.z || m_tPatrolBound.vMax.z < vPos.z)
-		{
-			isOut = true;
-		}
-	}
-	else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
-	{
-		//일단 2D는 처리안해놓음
-		/*if (m_tPatrolBound.vMin.x > vPos.x || m_tPatrolBound.vMax.x < vPos.x || m_tPatrolBound.vMin.y > vPos.y || m_tPatrolBound.vMax.y < vPos.y)
-		{
-			isOut = true;
-		}*/
-	}
+	//XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition() + Set_PatrolDirection(m_iDir) * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta);
+	////나갔을 때 반대방향으로
+	//if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+	//{
+	//	if (m_tPatrolBound.vMin.x > vPos.x || m_tPatrolBound.vMax.x < vPos.x || m_tPatrolBound.vMin.z > vPos.z || m_tPatrolBound.vMax.z < vPos.z)
+	//	{
+	//		isOut = true;
+	//	}
+	//}
+	//else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+	//{
+	//	//일단 2D는 처리안해놓음
+	//	/*if (m_tPatrolBound.vMin.x > vPos.x || m_tPatrolBound.vMax.x < vPos.x || m_tPatrolBound.vMin.y > vPos.y || m_tPatrolBound.vMax.y < vPos.y)
+	//	{
+	//		isOut = true;
+	//	}*/
+	//}
 
 	if (true == isOut)
 	{

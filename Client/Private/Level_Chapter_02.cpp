@@ -1237,62 +1237,62 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	if (nullptr == pJson)
 		return E_FAIL;
 
-	CMonster::MONSTER_DESC MonsterDesc2D = {};
-
-	MonsterDesc2D.iCurLevelID = m_eLevelID;
-	MonsterDesc2D.eStartCoord = COORDINATE_2D;
-
 	if (pJson->contains("2D"))
 	{
 		_wstring strLayerTag = L"Layer_Monster";
 		_wstring strSectionTag = L"";
 		_wstring strMonsterTag = L"";
 
-		for (_int i = 0; i < (*pJson)["2D"].size(); ++i)
+		for (auto Json : (*pJson)["2D"])
 		{
-			if ((*pJson)["2D"][i].contains("Position"))
+			CMonster::MONSTER_DESC MonsterDesc2D = {};
+
+			MonsterDesc2D.iCurLevelID = m_eLevelID;
+			MonsterDesc2D.eStartCoord = COORDINATE_2D;
+
+			if (Json.contains("Position"))
 			{
 				for (_int j = 0; j < 3; ++j)
 				{
-					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialPosition) + j) = (*pJson)["2D"][i]["Position"][j];
+					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialPosition) + j) = Json["Position"][j];
 				}
 			}
-			if ((*pJson)["2D"][i].contains("Scaling"))
+			if (Json.contains("Scaling"))
 			{
 				for (_int j = 0; j < 3; ++j)
 				{
-					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialScaling) + j) = (*pJson)["2D"][i]["Scaling"][j];
+					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialScaling) + j) = Json["Scaling"][j];
 				}
 			}
-			if ((*pJson)["2D"][i].contains("LayerTag"))
+			if (Json.contains("LayerTag"))
 			{
-				strLayerTag = STRINGTOWSTRING((*pJson)["2D"][i]["LayerTag"]);
+				strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
 			}
 
-			if ((*pJson)["2D"][i].contains("SectionTag"))
+			if (Json.contains("SectionTag"))
 			{
-				strSectionTag = STRINGTOWSTRING((*pJson)["2D"][i]["SectionTag"]);
+				strSectionTag = STRINGTOWSTRING(Json["SectionTag"]);
 			}
 			else
 				return E_FAIL;
 
-			if ((*pJson)["2D"][i].contains("MonsterTag"))
+			if (Json.contains("MonsterTag"))
 			{
-				strMonsterTag = STRINGTOWSTRING((*pJson)["2D"][i]["MonsterTag"]);
+				strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
 			}
 			else
 				return E_FAIL;
+
+			if (Json.contains("IsStay"))
+			{
+				MonsterDesc2D.isStay = Json["IsStay"];
+			}
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc2D)))
 				return E_FAIL;
 			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionTag, pObject);
 		}
 	}
-
-	CMonster::MONSTER_DESC MonsterDesc3D = {};
-
-	MonsterDesc3D.iCurLevelID = m_eLevelID;
-	MonsterDesc3D.eStartCoord = COORDINATE_3D;
 
 	if (pJson->contains("3D"))
 	{
@@ -1301,6 +1301,11 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 		for (auto Json : (*pJson)["3D"])
 		{
+			CMonster::MONSTER_DESC MonsterDesc3D = {};
+
+			MonsterDesc3D.iCurLevelID = m_eLevelID;
+			MonsterDesc3D.eStartCoord = COORDINATE_3D;
+
 			if (Json.contains("Position"))
 			{
 				for (_int j = 0; j < 3; ++j)
@@ -1336,6 +1341,16 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 				else
 					return E_FAIL;
 				MonsterDesc3D.isSneakMode = Json["SneakMode"];
+			}
+
+			if (Json.contains("IsStay"))
+			{
+				MonsterDesc3D.isStay = Json["IsStay"];
+			}
+
+			if (Json.contains("IsIgnoreGround"))
+			{
+				MonsterDesc3D._isIgnoreGround = Json["IsIgnoreGround"];
 			}
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
