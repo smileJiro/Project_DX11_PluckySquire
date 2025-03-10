@@ -573,6 +573,8 @@ HRESULT CBarfBug::Ready_ActorDesc(void* _pArg)
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
+    m_matQueryShapeOffset = ShapeData->LocalOffsetMatrix;
+
     m_fHalfBodySize = ShapeDesc->fRadius;
 
     //마찰용 박스

@@ -267,6 +267,7 @@
     <ClInclude Include="..\Public\ShopPanel_New.h" />
     <ClInclude Include="..\Public\ShopPanel_YesNo_New.h" />
     <ClInclude Include="..\Public\Shop_Manager.h" />
+    <ClInclude Include="..\Public\SketchSpace_Alien.h" />
     <ClInclude Include="..\public\Sneak_Default_Tile.h" />
     <ClInclude Include="..\public\Sneak_Trap_Tile.h" />
     <ClInclude Include="..\public\Sneak_Tile.h" />
@@ -598,6 +599,7 @@
     <ClCompile Include="..\Private\ShopPanel_New.cpp" />
     <ClCompile Include="..\Private\ShopPanel_YesNo_New.cpp" />
     <ClCompile Include="..\Private\Shop_Manager.cpp" />
+    <ClCompile Include="..\Private\SketchSpace_Alien.cpp" />
     <ClCompile Include="..\private\Sneak_Default_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Trap_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Tile.cpp" />

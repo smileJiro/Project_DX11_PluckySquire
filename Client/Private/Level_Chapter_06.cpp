@@ -1116,7 +1116,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	CGameObject* pObject = nullptr;
 
 
-	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter6_Monsters"), m_eLevelID);
+	/*const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter6_Monsters"), m_eLevelID);
 
 	if (nullptr == pJson)
 		return E_FAIL;
@@ -1240,7 +1240,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
 				return E_FAIL;
 		}
-	}
+	}*/
 
 	CBirdMonster::MONSTER_DESC BirdMonster_Desc;
 	BirdMonster_Desc.iCurLevelID = m_eLevelID;
@@ -1278,6 +1278,24 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
 	//	return E_FAIL;
+
+
+
+	//alien
+	//.tTransform2DDesc.vInitialPosition = _float3(-570.f, -44.8f, 0.0f); //-977.f, -44.8f
+	// 
+	//.tTransform2DDesc.vInitialPosition = _float3(-522.f, 605.1f, 0.0f);
+	//.tTransform2DDesc.vInitialPosition = _float3(-115.f, 605.1f, 0.0f);
+
+	//spikeball
+	//.tTransform2DDesc.vInitialPosition = _float3(-69.f, -219.f, 0.0f);
+	//.tTransform2DDesc.vInitialPosition = _float3(-40.f, -219.f, 0.0f);
+
+	//ufo
+	//.tTransform2DDesc.vInitialPosition = _float3(-750.f, -300.f, 0.0f);
+	// 
+	//.tTransform2DDesc.vInitialPosition = _float3(350.f, -370.f, 0.0f);
+
 
 	return S_OK;
 }

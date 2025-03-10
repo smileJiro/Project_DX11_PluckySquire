@@ -50,7 +50,7 @@ HRESULT CMonster::Initialize(void* _pArg)
 
 	pDesc->_fStepHeightThreshold = 0.2f;
 	pDesc->_fStepSlopeThreshold = 0.45f;
-	XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixIdentity());
+	//XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixIdentity());
 
 	// Add Desc
 	pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER;

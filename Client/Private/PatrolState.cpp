@@ -270,7 +270,7 @@ void CPatrolState::Determine_Direction(_float _fTimeDelta)
 		m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 4.f)));
 	}
 
-	m_fMoveDistance = m_pGameInstance->Compute_Random(0.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+	m_fMoveDistance = m_pGameInstance->Compute_Random(0.7f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.4f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 
 	m_isTurn = true;
 
