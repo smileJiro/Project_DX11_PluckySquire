@@ -673,6 +673,9 @@ void CCamera_Manager::Load_CutSceneData(LEVEL_ID _eLevelID)
 			// 대기할지 말지(false가 defualt, true면 json에 그냥 넣자)
 			if (CutScene_json.contains("Pause_After_CutScene"))
 				CutSceneData.first.isPause = CutScene_json["Pause_After_CutScene"];
+			// 대기하고 시작할지 말지(-1이 Default)
+			if (CutScene_json.contains("Delay_Frame_Before_CutScene"))
+				CutSceneData.first.iDelayFrame = CutScene_json["Delay_Frame_Before_CutScene"];
 			
 			// CutScene Data 읽기
 			if (CutScene_json["Datas"].is_array()) {
