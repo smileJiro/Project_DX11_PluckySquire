@@ -6216,5 +6216,14 @@
   "SearchTag": "C09_129130_base_03",
   "Sorting": false,
   "TextureName": "C09_129130_base_03"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "jk_throne_Sprite",
+  "Sorting": false,
+  "TextureName": "jk_throne_Sprite"
  }
 ]

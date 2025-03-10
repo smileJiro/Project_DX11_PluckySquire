@@ -109,7 +109,6 @@ void CActorObject::Active_OnEnable()
     {
         m_pActorCom->Set_Active(true);
     }
-
 }
 
 void CActorObject::Active_OnDisable()
@@ -149,8 +148,8 @@ HRESULT CActorObject::Ready_Components(ACTOROBJECT_DESC* _pDesc)
         break;
     }
 
-    if (nullptr != m_pActorCom && COORDINATE_2D == _pDesc->eStartCoord)
-        m_pActorCom->Set_Active(false);
+    //if (nullptr != m_pActorCom && COORDINATE_2D == _pDesc->eStartCoord)
+    //    m_pActorCom->Set_Active(false);
 
     return S_OK;
 }

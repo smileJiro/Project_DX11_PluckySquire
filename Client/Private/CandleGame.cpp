@@ -66,16 +66,18 @@ void CCandleGame::Check_Clear(_float _fTimeDelta)
 
     if (m_Candles.size() == iFlameCount)
     {
-        /* 캔들의 개수와 Flame Count가 같다면, 클리어 한 것을 본다. */
-        m_isClearGame = true;
-        m_vClearCheckCycleTime.y = 0.0f;
-        cout << "Clear Game" << endl;
+
         ClearGame();
     }
 }
 
 void CCandleGame::ClearGame()
 {
+    /* 캔들의 개수와 Flame Count가 같다면, 클리어 한 것을 본다. */
+    m_isClearGame = true;
+    m_vClearCheckCycleTime.y = 0.0f;
+    cout << "Clear Game" << endl;
+
 }
 
 HRESULT CCandleGame::Ready_Candles(CANDLEGAME_DESC* _pDesc)

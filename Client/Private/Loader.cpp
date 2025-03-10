@@ -194,11 +194,13 @@
 #include "PortalLocker.h" 
 #include "ZetPack_Child.h" 
 #include "Mug_Alien.h" 
+#include "JellyKing.h" 
 #include "CandleGame.h"
 #include "Candle.h"
 #include "Candle_Body.h"
 #include "Candle_UI.h"
 #include "Simple_UI.h"
+#include "FatherPart_Prop.h"
 
 // Player Effect 
 #include "Effect_Trail.h"
@@ -1445,6 +1447,17 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(Model_Load(eResourceLevelID, _eLoadLevelID)))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Body"),
+			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Body.dds"), (_uint)LEVEL_CHAPTER_6, true))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Head"),
+			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Wing.dds"), (_uint)LEVEL_CHAPTER_6, true))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Wing"),
+			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Head.dds"), (_uint)LEVEL_CHAPTER_6, true))))
+			return E_FAIL;
 	#pragma endregion
 
 	#pragma region Chapter 6 - Object Load
@@ -1461,12 +1474,21 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 
 		/* Chapter 6 FatherGame */
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"),
+			CFatherPart_Prop::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Child"),
 			CZetPack_Child::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Mug_Alien"),
 			CMug_Alien::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_JellyKing"),
+			CJellyKing::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 		
 		/* Chapter 6 Npc */

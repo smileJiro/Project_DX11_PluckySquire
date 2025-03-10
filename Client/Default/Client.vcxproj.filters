@@ -661,6 +661,9 @@
     <Filter Include="05.MiniGames\FatherGame\Object\Mug_Alien">
       <UniqueIdentifier>{b6fb3ea4-2c99-4c9b-8755-f2af185042c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.MiniGames\FatherGame\Object\JellyKing">
+      <UniqueIdentifier>{7edd7fcc-4e17-4097-9fc7-febc8206d504}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1571,9 +1574,6 @@
     <ClInclude Include="..\public\PortalLocker.h">
       <Filter>02.GameObjects\Portal\PortalLocker</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CandleGame.h">
-      <Filter>05.MiniGames\CandleGame</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\FatherGame_Progress_ZetPack.h">
       <Filter>05.MiniGames\FatherGame\Progress\02.ZetPack</Filter>
     </ClInclude>
@@ -1650,8 +1650,15 @@
     <ClInclude Include="..\Public\FatherGame_Progress_PartBody.h">
       <Filter>05.MiniGames\FatherGame\Progress\03.PartBody</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CandleGame.h" />
     <ClInclude Include="..\public\FatherPart_Prop.h">
-      <Filter>05.MiniGames\FatherGame\Object\FatherPart</Filter>
+      <Filter>05.MiniGames\FatherGame\Object\FatherPart\Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FatherGame_Progress_PartWing.h">
+      <Filter>05.MiniGames\FatherGame\Progress\03.PartWing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\JellyKing.h">
+      <Filter>05.MiniGames\FatherGame\Object\JellyKing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2550,9 +2557,6 @@
     <ClCompile Include="..\private\PortalLocker.cpp">
       <Filter>02.GameObjects\Portal\PortalLocker</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CandleGame.cpp">
-      <Filter>05.MiniGames\CandleGame</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\FatherGame_Progress_ZetPack.cpp">
       <Filter>05.MiniGames\FatherGame\Progress\02.ZetPack</Filter>
     </ClCompile>
@@ -2629,8 +2633,15 @@
     <ClCompile Include="..\Private\FatherGame_Progress_PartBody.cpp">
       <Filter>05.MiniGames\FatherGame\Progress\03.PartBody</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CandleGame.cpp" />
     <ClCompile Include="..\private\FatherPart_Prop.cpp">
-      <Filter>05.MiniGames\FatherGame\Object\FatherPart</Filter>
+      <Filter>05.MiniGames\FatherGame\Object\FatherPart\Prop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FatherGame_Progress_PartWing.cpp">
+      <Filter>05.MiniGames\FatherGame\Progress\03.PartWing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\JellyKing.cpp">
+      <Filter>05.MiniGames\FatherGame\Object\JellyKing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
