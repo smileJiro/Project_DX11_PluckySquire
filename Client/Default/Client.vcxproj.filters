@@ -1571,9 +1571,6 @@
     <ClInclude Include="..\public\PortalLocker.h">
       <Filter>02.GameObjects\Portal\PortalLocker</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CandleGame.h">
-      <Filter>05.MiniGames\CandleGame</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\FatherGame_Progress_ZetPack.h">
       <Filter>05.MiniGames\FatherGame\Progress\02.ZetPack</Filter>
     </ClInclude>
@@ -1653,6 +1650,7 @@
     <ClInclude Include="..\public\FatherPart_Prop.h">
       <Filter>05.MiniGames\FatherGame\Object\FatherPart</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CandleGame.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2550,9 +2548,6 @@
     <ClCompile Include="..\private\PortalLocker.cpp">
       <Filter>02.GameObjects\Portal\PortalLocker</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CandleGame.cpp">
-      <Filter>05.MiniGames\CandleGame</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\FatherGame_Progress_ZetPack.cpp">
       <Filter>05.MiniGames\FatherGame\Progress\02.ZetPack</Filter>
     </ClCompile>
@@ -2632,6 +2627,7 @@
     <ClCompile Include="..\private\FatherPart_Prop.cpp">
       <Filter>05.MiniGames\FatherGame\Object\FatherPart</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CandleGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

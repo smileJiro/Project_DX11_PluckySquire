@@ -45,7 +45,7 @@ HRESULT CWord::Initialize(void* _pArg)
 	m_strText = pDesc->strText;
 	m_fSize.x *= 0.9f;
 	m_fSize.y *= 0.9f;
-	pDesc->Build_2D_Transform({ 0.f,0.f }, m_fSize);
+	pDesc->Build_2D_Transform({ 0.f,0.f }, m_fSize, 100.f);
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable = true;
 	CActor::ACTOR_DESC ActorDesc;
@@ -87,6 +87,7 @@ HRESULT CWord::Initialize(void* _pArg)
 	m_eCarriableId = WORD;
 
 	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+	m_eInteractID = INTERACT_ID::CARRIABLE;
 
 	if (FAILED(CActorObject::Initialize(pDesc)))
 		return E_FAIL;
@@ -164,7 +165,7 @@ HRESULT CWord::Render()
 void CWord::Update(_float _fTimeDelta)
 {
 	m_pControllerTransform->Get_Transform(COORDINATE_3D)->Rotation(XMConvertToRadians(90.f), XMVectorSet(1.f, 0.f, 0.f, 0.f));
-
+	Execute_WordMode_Action(_fTimeDelta);
 	__super::Update(_fTimeDelta);
 }
 
@@ -192,6 +193,41 @@ HRESULT CWord::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition
 
 }
 
+
+void CWord::Execute_WordMode_Action(_float _fTimeDelta)
+{
+	switch (m_eWordMode)
+	{
+		//case Client::CWord::WORD_MODE_ENTER_SETUP:
+		//
+		//	_vector vTargetPos = XMLoadFloat3(&m_fContainorPosition);
+		//	_vector vPos = Get_FinalPosition(COORDINATE_2D);
+		//	if (true == m_pControllerTransform->MoveToTarget(vTargetPos, _fTimeDelta))
+		//		m_isActionComplete = true;
+  //			break;
+
+		case Client::CWord::WORD_MODE_EXIT_SETUP:
+		{
+			if (0.f > m_fOutputSecond)
+			{
+				Set_WordMode();
+			}
+			else
+			{
+				_vector vTargetDir = XMLoadFloat3(&m_fOutputDir);
+				m_fOutputSecond -= _fTimeDelta;
+				m_pControllerTransform->Go_Direction(vTargetDir, m_fOutputSecond * 1000.f ,_fTimeDelta);
+			}
+
+			break;
+		}
+		case Client::CWord::WORD_MODE_SETUP:
+		case Client::CWord::WORD_MODE_LAND:
+		default:
+			break;
+	}
+
+}
 
 HRESULT CWord::Ready_Components()
 {

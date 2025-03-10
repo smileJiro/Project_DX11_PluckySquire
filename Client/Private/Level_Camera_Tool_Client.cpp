@@ -86,7 +86,7 @@ HRESULT CLevel_Camera_Tool_Client::Initialize(LEVEL_ID _eLevelID)
 
 void CLevel_Camera_Tool_Client::Update(_float _fTimeDelta)
 {
-	CGameObject* pDoor = m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_RoomDoor"), 0.f);
+	CGameObject* pDoor = m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_RoomDoor"), 0);
 	if (KEY_DOWN(KEY::L)) {
 		static_cast<CRoom_Door*>(pDoor)->Start_Turn_Door(true);
 	}

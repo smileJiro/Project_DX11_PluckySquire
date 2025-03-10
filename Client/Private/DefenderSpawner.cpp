@@ -64,7 +64,7 @@ void CDefenderSpawner::Update(_float _fTimeDelta)
 
 void CDefenderSpawner::Add_Spawn(SPAWN_DESC tDesc)
 {
-	_vector v2DPosition;
+	//_vector v2DPosition;
 	if (false == tDesc.bAbsolutePosition)
 	{
 		tDesc.vPosition = m_pPlayer->Get_FinalPosition();

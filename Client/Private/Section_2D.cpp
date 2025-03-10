@@ -199,13 +199,19 @@ HRESULT CSection_2D::Word_Action_To_Section(const _wstring& _strSectionTag, _uin
 	if (nullptr != pTargetLayer)
 	{
 		const auto& GameObjects = pTargetLayer->Get_GameObjects();
-
-		for_each(GameObjects.begin(), GameObjects.end(), [&_iControllerIndex ,&_iContainerIndex,&_iWordType](CGameObject* pGameObject) {
+		C2DMapWordObject* pExecuteGameObject = nullptr;
+		for_each(GameObjects.begin(), GameObjects.end(), [&pExecuteGameObject, &_iControllerIndex ,&_iContainerIndex,&_iWordType](CGameObject* pGameObject) {
 			C2DMapWordObject* pWordObj = dynamic_cast<C2DMapWordObject*>(pGameObject);
 
-			if (nullptr != pWordObj)
-				pWordObj->Action_Execute(_iControllerIndex, _iContainerIndex, _iWordType);
+			if (pWordObj->Action_Execute(_iControllerIndex, _iContainerIndex, _iWordType))
+				pExecuteGameObject = pWordObj;
 			});
+
+		if (nullptr != pExecuteGameObject)
+		{
+		}
+
+
 	}
 
 	return S_OK;
