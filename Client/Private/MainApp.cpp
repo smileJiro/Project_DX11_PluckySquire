@@ -56,9 +56,9 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 	EngineDesc.isNewRenderer = true;
 #ifdef _DEBUG
-	EngineDesc.eImportMode |= NONE_IMPORT | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
+	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
 #elif NDEBUG
-	EngineDesc.eImportMode |= NONE_IMPORT; // | IMPORT_IMGUI;
+	EngineDesc.eImportMode |= IMPORT_IMGUI; // | IMPORT_IMGUI;
 #endif
 	
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
