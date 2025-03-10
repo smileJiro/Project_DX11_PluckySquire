@@ -49,9 +49,10 @@ void CDefenderSpawner::Update(_float _fTimeDelta)
 	{
 		if (iter->Is_PatternEnd())
 		{
-			if (iter->Is_Auto() && iter->Is_CycleEnd())
+			if (iter->Is_Auto() )
 			{
-				iter->Reset_Cycle();
+				if(iter->Is_CycleEnd())
+					iter->Reset_Cycle();
 			}
 			else
 			{
@@ -64,7 +65,7 @@ void CDefenderSpawner::Update(_float _fTimeDelta)
 	for (auto& tSpawn : m_SpawnList)
 	{
 		tSpawn.Update(_fTimeDelta);
-		if( tSpawn.Is_UnitSpawnReady())
+		while( tSpawn.Is_UnitSpawnReady())
 		{
 			Spawn(tSpawn);
 			tSpawn.Reset_Unit();
@@ -126,7 +127,9 @@ void CDefenderSpawner::Spawn(SPAWN_DESC& tDesc)
 
 void CDefenderSpawner::Spawn_Dot(SPAWN_DESC& _tDesc)
 {
+
 	Spawn_Single(_tDesc.eDirection, _tDesc.vPosition);
+	
 }
 
 void CDefenderSpawner::Spawn_Arrow(SPAWN_DESC& _tDesc)
@@ -153,10 +156,23 @@ void CDefenderSpawner::Spawn_Arrow(SPAWN_DESC& _tDesc)
 
 void CDefenderSpawner::Spawn_Vertical(SPAWN_DESC& _tDesc)
 {
+	_float fSeqYDistance = 30.f;
+	_vector vPosition1 = _tDesc.vPosition;
+	vPosition1 += _vector{
+		0.f
+		, (_int)_tDesc.iCurrentSpawnCount * fSeqYDistance
+		, 0.f };
+	Spawn_Single(_tDesc.eDirection, vPosition1);
 }
 
 void CDefenderSpawner::Spawn_Random(SPAWN_DESC& _tDesc)
 {
+	_float fRandomRange = 400.f;
+	_float fRandomX = (_float)rand()/(_float)RAND_MAX * fRandomRange - fRandomRange*0.5f;
+	_float fRandomY = (_float)rand() / (_float)RAND_MAX * fRandomRange - fRandomRange * 0.5f;
+	_vector vPosition1 = _tDesc.vPosition;
+	vPosition1 += _vector{fRandomX, fRandomY, 0.f };
+	Spawn_Single(_tDesc.eDirection, vPosition1);
 }
 
 

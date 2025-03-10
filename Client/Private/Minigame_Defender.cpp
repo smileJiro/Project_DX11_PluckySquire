@@ -102,7 +102,35 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
     tSpawnDesc.iSpawnCount = 5;
     tSpawnDesc.bAbsolutePosition = true;
 	tSpawnDesc.eDirection = T_DIRECTION::RIGHT;
-    _vector vPosition = { 0.f,0.f,0.f };
+
+    m_Spawners[DEFENDER_MONSTER_ID::SM_SHIP]->Add_Spawn(tSpawnDesc);
+
+    tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_VERTICAL;
+    tSpawnDesc.fAutoCycleTime = 5.f;
+    tSpawnDesc.fUnitDelay = 0.f;
+    tSpawnDesc.iSpawnCount = 5;
+    tSpawnDesc.bAbsolutePosition = true;
+    tSpawnDesc.eDirection = T_DIRECTION::RIGHT;
+
+    m_Spawners[DEFENDER_MONSTER_ID::SM_SHIP]->Add_Spawn(tSpawnDesc);
+
+
+    tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_RANDOM;
+    tSpawnDesc.fAutoCycleTime = 5.f;
+    tSpawnDesc.fUnitDelay = 0.f;
+    tSpawnDesc.iSpawnCount = 5;
+    tSpawnDesc.bAbsolutePosition = true;
+    tSpawnDesc.eDirection = T_DIRECTION::RIGHT;
+
+    m_Spawners[DEFENDER_MONSTER_ID::SM_SHIP]->Add_Spawn(tSpawnDesc);
+
+
+    tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_DOT;
+    tSpawnDesc.fAutoCycleTime = 5.f;
+    tSpawnDesc.fUnitDelay = 0.3f;
+    tSpawnDesc.iSpawnCount = 5;
+    tSpawnDesc.bAbsolutePosition = true;
+    tSpawnDesc.eDirection = T_DIRECTION::RIGHT;
 
     m_Spawners[DEFENDER_MONSTER_ID::SM_SHIP]->Add_Spawn(tSpawnDesc);
     return S_OK;

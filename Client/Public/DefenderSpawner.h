@@ -37,7 +37,7 @@ public:
 	void Update(_float _fTimeDelta);
 	void Reset_Cycle() { iCurrentSpawnCount = 0; fCycleTimeAcc = 0.f; fUnitTimeAcc = 0.f; }
 	void Reset_Unit() { fUnitTimeAcc = 0.f; }
-	_bool Is_UnitSpawnReady() { return fUnitTimeAcc >= fUnitDelay; }
+	_bool Is_UnitSpawnReady() { return false == Is_PatternEnd() && fUnitTimeAcc >= fUnitDelay; }
 	_bool Is_PatternEnd() { return iCurrentSpawnCount >= iSpawnCount; }
 
 	_bool Is_Auto() { return fAutoCycleTime >= 0.f; }
