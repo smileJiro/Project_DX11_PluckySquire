@@ -81,6 +81,12 @@ _vector CPartObject::Get_FinalPosition() const
     return XMLoadFloat4((_float4*)&m_WorldMatrices[eCurCoord].m[3]);
 }
 
+_vector CPartObject::Get_FinalPosition(COORDINATE _eCoord) const
+{
+    COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
+    return XMLoadFloat4((_float4*)&m_WorldMatrices[_eCoord].m[3]);
+}
+
 _float3 CPartObject::Get_FinalScale() const
 {
     COORDINATE eCurCoord = m_pControllerTransform->Get_CurCoord();
@@ -89,6 +95,14 @@ _float3 CPartObject::Get_FinalScale() const
     return _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_WorldMatrices[eCurCoord].m[0]))),
                    XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_WorldMatrices[eCurCoord].m[1]))),
                    XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_WorldMatrices[eCurCoord].m[2]))));
+}
+
+_float3 CPartObject::Get_FinalScale(COORDINATE _eCoord) const
+{
+    // warning C4172: 지역 변수 또는 임시의 주소를 반환하고 있습니다.
+    return _float3(XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_WorldMatrices[_eCoord].m[0]))),
+        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_WorldMatrices[_eCoord].m[1]))),
+        XMVectorGetX(XMVector3Length(XMLoadFloat3((_float3*)&m_WorldMatrices[_eCoord].m[2]))));
 }
 
 _matrix CPartObject::Get_FinalWorldMatrix()

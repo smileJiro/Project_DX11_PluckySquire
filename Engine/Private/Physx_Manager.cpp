@@ -373,12 +373,23 @@ _bool CPhysx_Manager::SingleSweep(PxGeometry* pxGeom, const _float3& _vOrigin, c
 		*pxGeom, pxPose, vRayDir, _fDistance,hitResult
 	);
 	
-	const PxSweepHit& tHit = hitResult.getAnyHit(0);
-	PxRigidActor* pActor = tHit.actor;
-	ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
-	_ppOutActor = nullptr != pActorUserData ? &pActorUserData->pOwner : nullptr;
-	_pOutHit->vNormal = _float3{ tHit.normal.x,tHit.normal.y,tHit.normal.z };
-	_pOutHit->vPosition = _float3{ tHit.position.x,tHit.position.y, tHit.position.z };
+	if(true == hasHit)
+	{
+		const PxSweepHit& tHit = hitResult.getAnyHit(0);
+		PxRigidActor* pActor = tHit.actor;
+		ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+
+		if (nullptr != _ppOutActor)
+		{
+			_ppOutActor = nullptr != pActorUserData ? &pActorUserData->pOwner : nullptr;
+		}
+
+		if (nullptr != _pOutHit)
+		{
+			_pOutHit->vNormal = _float3{ tHit.normal.x,tHit.normal.y,tHit.normal.z };
+			_pOutHit->vPosition = _float3{ tHit.position.x,tHit.position.y, tHit.position.z };
+		}
+	}
 
 	return hasHit;
 }

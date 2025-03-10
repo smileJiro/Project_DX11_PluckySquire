@@ -109,7 +109,7 @@ HRESULT CWord_Controller::Import(CSection_2D* _pSection, json _ControllerJson)
 				auto pGenerator = SECTION_MGR->Get_Word_Generator();
 				CWord* pWord = pGenerator->Find_Word(iWordIndex);
 
-				static_cast<CWord_Container*>(m_PartObjects[iIndex])->Set_Word(pWord);
+				static_cast<CWord_Container*>(m_PartObjects[iIndex])->Set_Word(pWord, CWord::WORD_MODE_SETUP);
 			}
 			iIndex++;
 		}
@@ -178,7 +178,7 @@ vector<_float2> CWord_Controller::Get_PatternPositions(_float2 _fProjPos, _float
 	auto words_begin = std::wsregex_iterator(m_strOriginText.begin(), m_strOriginText.end(), pattern);
 	auto words_end = std::wsregex_iterator();
 
-	_float fLine = 28.f;
+	_float fLine = 36.f;
 
 	_float x = _fWindowInPos.x; 
 	_float y = _fWindowInPos.y; 
@@ -213,8 +213,8 @@ vector<_float2> CWord_Controller::Get_PatternPositions(_float2 _fProjPos, _float
 
 	_float2 fCenter = _fWindowInPos;
 
-	fCenter.x += XMVectorGetX(fScale) * 0.5f;
-	fCenter.y += XMVectorGetY(fScale) * 0.5f;
+	fCenter.x += XMVectorGetX(fScale) * 0.333f;
+	fCenter.y += XMVectorGetY(fScale) * 0.333f;
 	
 
 	for (auto& fPos : PatternPositions)

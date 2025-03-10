@@ -229,6 +229,8 @@ HRESULT CPlayer::Initialize(void* _pArg)
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
 
+    XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixRotationZ(XMConvertToRadians(90.f)));
+
     if (FAILED(__super::Initialize(pDesc)))
     {
         MSG_BOX("CPlayer super Initialize Failed");
@@ -519,8 +521,9 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
         {
             CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pCarryingObject);
         }
-
     }
+    
+
 
 
 
@@ -1093,6 +1096,8 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
     {
         Set_2DDirection(E_DIRECTION::DOWN);
         CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
+        if (nullptr != m_pAttack2DTriggerCom)
+            m_pAttack2DTriggerCom->Set_Active(false);
     }
     else
     {

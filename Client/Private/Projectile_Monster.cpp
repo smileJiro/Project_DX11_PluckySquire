@@ -143,8 +143,8 @@ void CProjectile_Monster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
 
     }
 
-    if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
-        Event_DeleteObject(this);
+    //if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+    //    Event_DeleteObject(this);
 }
 
 void CProjectile_Monster::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)

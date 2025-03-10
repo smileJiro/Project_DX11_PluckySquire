@@ -155,7 +155,6 @@ void CProjectile_BirdMonster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_I
         if((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
         {
             //effect, sound
-
         }
 
     }

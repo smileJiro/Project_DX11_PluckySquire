@@ -34,6 +34,7 @@
         {
             "MonsterTag": "Prototype_GameObject_Bomb_Soldier",
             "LayerTag": "Layer_Monster",
+            "IsStay" : true,
             "Position": [
                 23.5,
                 2.17,
@@ -48,6 +49,7 @@
         {
             "MonsterTag": "Prototype_GameObject_Bomb_Soldier",
             "LayerTag": "Layer_Monster",
+            "IsStay" : true,
             "Position": [
                 21.37,
                 5.0,
@@ -62,6 +64,7 @@
         {
             "MonsterTag": "Prototype_GameObject_CrossBow_Soldier",
             "LayerTag": "Layer_Monster",
+            "IsStay" : true,
             "Position": [
                 19.3,
                 5.0,
@@ -104,6 +107,7 @@
         {
             "MonsterTag": "Prototype_GameObject_Bomb_Soldier",
             "LayerTag": "Layer_Monster",
+            "IsStay" : true,
             "Position": [
                 50.5,
                 6.2,
@@ -146,6 +150,7 @@
         {
             "MonsterTag": "Prototype_GameObject_CrossBow_Soldier",
             "LayerTag": "Layer_Monster",
+            "IsStay" : true,
             "Position": [
                 69.2,
                 4.94,
@@ -160,6 +165,7 @@
         {
             "MonsterTag": "Prototype_GameObject_CrossBow_Soldier",
             "LayerTag": "Layer_Monster",
+            "IsStay" : true,
             "Position": [
                 80.5,
                 8.64,
@@ -336,10 +342,220 @@
                 4.41
             ],
             "Scaling": [
+                0.75,
+                0.75,
+                0.75
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_JumpBug",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -41.0,
+                0.35,
+                -7.41
+            ],
+            "Scaling": [
+                0.75,
+                0.75,
+                0.75
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_BarfBug",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -48.0,
+                0.35,
+                -13.5
+            ],
+            "Scaling": [
+                0.75,
+                0.75,
+                0.75
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -31.8,
+                0.35,
+                -29.5
+            ],
+            "Scaling": [
                 1.0,
                 1.0,
                 1.0
             ]
         },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -61.2,
+                0.35,
+                -22.6
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -74.0,
+                6.35,
+                -15.6
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -54.5,
+                12.35,
+                -24.0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -52.0,
+                12.35,
+                -22.3
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -72.0,
+                24.46,
+                5.1
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_JumpBug",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -77.7,
+                8.25,
+                7.7
+            ],
+            "Scaling": [
+                0.75,
+                0.75,
+                0.75
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_JumpBug",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -77.7,
+                8.25,
+                7.7
+            ],
+            "Scaling": [
+                0.75,
+                0.75,
+                0.75
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Rat",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -73.0,
+                8.25,
+                14.4
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Rat",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -64.2,
+                8.29,
+                20.5
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_BarfBug",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -61.2,
+                2.29,
+                4.0
+            ],
+            "Scaling": [
+                0.75,
+                0.75,
+                0.75
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Rat",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -31.3,
+                0.35,
+                6.37
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Rat",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -40.6,
+                0.35,
+                11.17
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
     ]
 }

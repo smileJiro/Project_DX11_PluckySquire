@@ -16,10 +16,12 @@
 #include "Section_2D.h"
 #include "MapObject.h"
 #include "Camera_Target.h"
+#include "Camera_CutScene.h"
 #include "2DMapActionObject.h"
 #include "Postit_Page.h"
 
 #include "Zippy.h"
+#include "Room_Door.h"
 
 CGameEventExecuter_C2::CGameEventExecuter_C2(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -98,11 +100,6 @@ void CGameEventExecuter_C2::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER2_STORYSEQUENCE:
 			Chapter2_StorySequence(_fTimeDelta);
 			break;
-
-
-
-
-
 		default:
 			break;
 		}
@@ -358,25 +355,65 @@ void CGameEventExecuter_C2::Chapter2_Intro(_float _fTimeDelta)
 	m_fTimer += _fTimeDelta;
 	if (Step_Check(STEP_0))
 	{
-
 		if (Is_Start())
 		{
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter2_Intro"));
 
-			CCamera_Manager::GetInstance()->Get_CurrentCamera()->Start_PostProcessing_Fade(CCamera::FADE_IN, 2.f);
 		}
 
-		Next_Step_Over(7.f);
+		if (CSection_Manager::GetInstance()->Is_WordPos_Capcher()) {
+			CBook* pBook = static_cast<CBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0));
+			pBook->Set_Animation(CBook::CLOSED_IDLE);
+
+			Next_Step(true);
+		}
 	}
 	else if (Step_Check(STEP_1))
 	{
+		Next_Step_Over(2.8f);
+	}
+	else if (Step_Check(STEP_2))
+	{
 		if (Is_Start())
 		{
-			//CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter1_P0102_Narration_01"));
-			m_iStep++;
+			CRoom_Door* pDoor = static_cast<CRoom_Door*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_RoomDoor"), 0));
+			pDoor->Start_Turn_DoorKnob(true);
 		}
-		Next_Step(true);
+		Next_Step_Over(0.5f);
+	}
+	else if(Step_Check(STEP_3))
+	{
+		CRoom_Door* pDoor = static_cast<CRoom_Door*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_RoomDoor"), 0));
+
+		if (Is_Start())
+		{
+			pDoor->Start_Turn_Door(true);
+		}
+		
+		if (false == pDoor->Is_Turn_DoorKnob()) {
+			pDoor->Start_Turn_DoorKnob(true);
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_4)) {
+
+		CCamera_CutScene* pCamera = static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CUTSCENE));
+
+		if (true == pCamera->Is_Finish_CutScene()) {
+			if (m_fTimer >= 1.3f) {
+				CBook* pBook = static_cast<CBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0));
+				pBook->Set_Animation(CBook::OPEN_TO_FLAT);
+				Next_Step(true);
+			}
+		}
+	}
+	else if(Step_Check(STEP_5)) {
+		
+		if (m_fTimer >= 3.f) {
+			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 0.5f);
+			Next_Step(true);
+		}
 	}
 	else {
 		GameEvent_End();

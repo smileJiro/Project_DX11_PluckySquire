@@ -108,6 +108,16 @@
           1.0,
           1.0
         ],
+		  "Collider_Info": {
+          "Collider_Extent": [
+            180.0,
+            100.0
+          ],
+		"Collider_Offset": [
+            0.0,
+            0.0
+          ]
+        },
         "Image_Tag_List": [
           {
             "ImagePath": "C04_0506_water_04_png"
@@ -118,15 +128,29 @@
             "Controller_Index": 4,
             "Container_Index": 0,
             "Word_Type": 0,
-            "Action_Type": 1,
+            "Action_Type": 6,
             "Param": true
           },
           {
             "Controller_Index": 4,
             "Container_Index": 0,
             "Word_Type": 5,
-            "Action_Type": 1,
+            "Action_Type": 6,
             "Param": false
+          },
+		  {
+            "Controller_Index": 4,
+            "Container_Index": 0,
+            "Word_Type": 0,
+            "Action_Type": 5,
+            "Param": false
+          },
+          {
+            "Controller_Index": 4,
+            "Container_Index": 0,
+            "Word_Type": 5,
+            "Action_Type": 5,
+            "Param": true
           }
         ]
       },
@@ -142,7 +166,11 @@
         ],
         "Collider_Info": {
           "Collider_Extent": [
-            200.0,
+            150.0,
+            100.0
+          ],
+		"Collider_Offset": [
+            0.0,
             100.0
           ]
         },
@@ -211,7 +239,11 @@
         ],
         "Collider_Info": {
           "Collider_Extent": [
-            300.0,
+            200.0,
+            100.0
+          ],
+		"Collider_Offset": [
+            0.0,
             100.0
           ]
         },
@@ -342,7 +374,7 @@
       },
       {
         "Controller_Index": 3,
-        "Text": "녹슨 문이 ##\n 있습니다.",
+        "Text": "녹슨 문이 ##\n있습니다.",
         "Init_Word_Type": [ 3 ],
         "Position": [
           -1800.0,

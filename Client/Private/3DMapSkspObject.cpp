@@ -99,15 +99,15 @@ void C3DMapSkspObject::Late_Update(_float _fTimeDelta)
     CGameObject::Late_Update_Component(_fTimeDelta);
 
     /* Add Render Group */
-    //if (false == m_isFrustumCulling)
-    //{
+    if (false == m_isFrustumCulling)
+    {
         Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
         SECTION_MGR->SetActive_Section(m_strRenderSectionTag, true);
-    //}
-    //else
-    //{
-    //    SECTION_MGR->SetActive_Section(m_strRenderSectionTag, false);
-    //}
+    }
+    else
+    {
+        SECTION_MGR->SetActive_Section(m_strRenderSectionTag, false);
+    }
 
 }
 

@@ -12,13 +12,14 @@ class C2DMapWordObject final : public C2DMapObject
 {
 	enum WORD_ACTION_TYPE
 	{
-		IMAGE_CHANGE,
-		WORD_OBJECT_ACTIVE,
-		ANIMATION_CHANGE,
-		POSITION_CHANGE_X,
-		POSITION_CHANGE_Y,
-		COLLIDER_ACTIVE,
-		WORD_ACTION_LAST
+		IMAGE_CHANGE,			//0
+		WORD_OBJECT_ACTIVE,		//1
+		ANIMATION_CHANGE,		//2
+		POSITION_CHANGE_X,		//3
+		POSITION_CHANGE_Y,		//4
+		COLLIDER_ACTIVE,		//5
+		WORD_OBJECT_RENDER,		//6
+		WORD_ACTION_LAST		//7
 	};
 
 public :
@@ -50,10 +51,10 @@ public:
 	virtual void					Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT					Render() override;
 
-	virtual HRESULT					Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
+	virtual _bool					Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
 	const WORD_ACTION*				Find_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
-	virtual void Active_OnEnable();
-	virtual void Active_OnDisable();
+	virtual void					Active_OnEnable();
+	virtual void					Active_OnDisable();
 private :
 	_wstring				m_strWordObjectTag;
 	_uint					m_iModelIndex = 0 ;
@@ -63,6 +64,7 @@ private :
 	
 
 	_bool					m_IsWordActive = true;
+	_bool					m_IsWordRender = true;
 
 
 public:
