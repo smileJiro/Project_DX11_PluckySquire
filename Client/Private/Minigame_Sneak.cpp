@@ -108,7 +108,7 @@ void CMinigame_Sneak::Update(_float _fTimeDelta)
 		if (0 <= m_iCurStage)
 		{
 			// 행동
-			if ((0.32f <= m_fAccTime && nullptr != m_pPlayer && F_DIRECTION::F_DIR_LAST != m_pPlayer->Get_InputDirection()) || 0.62f <= m_fAccTime)
+			if ((0.22f <= m_fAccTime && nullptr != m_pPlayer && F_DIRECTION::F_DIR_LAST != m_pPlayer->Get_InputDirection()) || 0.72f <= m_fAccTime)
 			{
 				// 게임 진행 먼저 판단.
 				Before_Action();

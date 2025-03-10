@@ -78,6 +78,7 @@ void CEffect2D::Priority_Update(_float _fTimeDelta)
 	}
 
 
+
 	__super::Priority_Update(_fTimeDelta);
 }
 

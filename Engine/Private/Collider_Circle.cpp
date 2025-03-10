@@ -123,10 +123,10 @@ _bool CCollider_Circle::Is_ContainsPoint(_float2 _vPosition)
 
 void CCollider_Circle::Update_OwnerTransform()
 {
-    _vector vOwnerPos = m_pOwner->Get_FinalPosition();
+    _vector vOwnerPos = m_pOwner->Get_FinalPosition(COORDINATE_2D);
     XMStoreFloat2(&m_vPosition, XMLoadFloat2(&m_vOffsetPosition) + vOwnerPos);
 
-    _float3 vOwnerScale = m_pOwner->Get_FinalScale();
+    _float3 vOwnerScale = m_pOwner->Get_FinalScale(COORDINATE_2D);
     m_fFinalRadius = m_fRadius * m_vScale.x * vOwnerScale.x;
 }
 
