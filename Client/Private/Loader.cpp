@@ -40,6 +40,9 @@
 #include "ArrowForStamp.h"
 #include "ESC_HeartPoint.h"
 #include "UI_Interaction_Book.h"
+#include "ShopPanel_BG_New.h"
+#include "ShopItemBG_New.h"
+#include "ShopPanel_YesNo_New.h"
 #include "ShopPanel_BG.h"
 #include "Logo_BG.h"
 #include "ShopItemBG.h"
@@ -126,6 +129,12 @@
 
 #include "Sneak_Default_Tile.h"
 #include "Sneak_Trap_Tile.h"
+#include "Sneak_FlipObject.h"
+#include "Sneak_MapObject.h"
+#include "Sneak_InteractObject.h"
+#include "Pip_Player.h"
+#include "Sneak_Troop.h"
+#include "Sneak_SentryTroop.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -1168,11 +1177,11 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 	#pragma region Chapter 2 - Object Create
 
-		if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Small.mchc")))
-			return E_FAIL;
+		//if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Small.mchc")))
+		//	return E_FAIL;
 
-		/*if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment.mchc")))
-			return E_FAIL;*/
+		if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Intro.mchc")))
+			return E_FAIL;
 
 	#pragma endregion
 
@@ -1553,6 +1562,15 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		
 	#pragma endregion
 
+#pragma region Chapter 6 - Monster Load
+
+		lstrcpy(m_szLoadingText, TEXT("Level 6 몬스터 로딩중입니다."));
+
+		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter6_Monsters.json"), TEXT("Chapter6_Monsters"), _eLoadLevelID)))
+			return E_FAIL;
+
+#pragma endregion
+
 	#pragma region Chapter 6 - Effect Load
 
 		lstrcpy(m_szLoadingText, TEXT("Level6 이펙트 로딩중입니다."));
@@ -1653,7 +1671,19 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		CGameEventExecuter_C8::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* Pip_Player */
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_PipPlayer"),
+		CPip_Player::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* Monster */
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakTroop"),
+		CSneak_Troop::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakSentryTroop"),
+		CSneak_SentryTroop::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* Etc */
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakDefaultTile"),
@@ -1663,6 +1693,15 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakTrapTile"),
 		CSneak_Trap_Tile::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakMapObject"),
+		CSneak_MapObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_SneakInteractObject"),
+		CSneak_InteractObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_CyberPlayerBullet"),
 		CCyberPlayerBullet::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -1680,6 +1719,23 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 
 #pragma endregion
+
+	/*Ready Minigame Info*/
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakTile.json"), TEXT("SneakTile"), _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakObjects.json"), TEXT("SneakObjects"), _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakInteracts.json"), TEXT("SneakInteracts"), _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Minigame/Sneak/SneakTroops.json"), TEXT("SneakTroops"), _eLoadLevelID)))
+		return E_FAIL;
+
+
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 	m_isFinished = true;
@@ -1800,6 +1856,8 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 				), matPretransform))))
 		return E_FAIL;
 
+
+
 	return S_OK;
 }
 
@@ -1870,14 +1928,14 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 	// 3D Map Load
 	if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL,
 		MAP_3D_DEFAULT_PATH,
-		L"Chapter_06_Play_Desk.json",
+		L"Chapter_02_Play_Desk.json",
 		matPretransform, true)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_6);
+	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_2);
 
 
-	return Loading_Level_Chapter_6(LEVEL_CAMERA_TOOL);
+	return Loading_Level_Chapter_2(LEVEL_CAMERA_TOOL);
 }
 
 HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
@@ -1927,8 +1985,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 	switch (_eResourceLevelID)
 	{
 	case LEVEL_STATIC:
-		str3DMapProtoJsonName = L"Room_Enviroment_Small.json";
-		//str3DMapProtoJsonName = L"Room_Enviroment.json";
+		str3DMapProtoJsonName = L"Room_Enviroment_Intro.json";
+		//str3DMapProtoJsonName = L"Room_Enviroment_Small.json";
 		strChapterName = L"Static";
 		isStatic2DLoad = false;
 		break;
@@ -1951,8 +2009,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:
-		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
-		strChapterName += L"Chapter8";
+		str3DMapProtoJsonName = L"Chapter_02_Play_Desk.json";
+		strChapterName += L"Chapter2";
 		break;
 	default:
 		return S_OK;
@@ -2169,18 +2227,32 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 		CUI_Interaction_Book::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ParentShopPannel"),
-		CShopPanel::Create(m_pDevice, m_pContext))))
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ParentShopPannel"),
+	//	CShopPanel::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannel"),
+		CShopPanel_New::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelBG"),
-		CShopPanel_BG::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelYesNo"),
-		CShopPanel_YesNo::Create(m_pDevice, m_pContext))))
+		CShopPanel_BG_New::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopItem"),
-		CShopItemBG::Create(m_pDevice, m_pContext))))
+		CShopItemBG_New::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelYesNo"),
+		CShopPanel_YesNo_New::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelBG"),
+	//	CShopPanel_BG::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopPannelYesNo"),
+	//	CShopPanel_YesNo::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ShopItem"),
+	//	CShopItemBG::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_Interaction_Heart"),
 		CInteraction_Heart::Create(m_pDevice, m_pContext))))
 		return E_FAIL;

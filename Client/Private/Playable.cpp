@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Playable.h"
 
-CPlayable::CPlayable(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, PLAYALBE_ID _ePlayableID)
+CPlayable::CPlayable(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, PLAYABLE_ID _ePlayableID)
 	:CCharacter(_pDevice, _pContext)
 	, m_ePlayableID(_ePlayableID)
 {

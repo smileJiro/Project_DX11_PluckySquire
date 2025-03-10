@@ -118,7 +118,6 @@ public:
 	_bool								Get_ShopUpdate() { return m_isUpdateShopPanel; }
 	void								Set_ShopUpdate(_bool _isUpdate) { m_isUpdateShopPanel = _isUpdate; }
 	void								pushBack_ShopItem(vector<CShopItemBG*> _ItemBGs);
-	void								Set_ChooseItem(_int _iIndex);
 	_bool								Get_LogoChanseStage() { return m_isLogoChooseStage; }
 	void								Set_LogoChangeState(_bool _LogoChooseStage) { m_isLogoChooseStage = _LogoChooseStage; }
 

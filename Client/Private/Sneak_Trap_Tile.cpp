@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Sneak_Trap_Tile.h"
 #include "GameInstance.h"
+#include "Section_Manager.h"
+#include "Minigame_Sneak.h"
 
 CSneak_Trap_Tile::CSneak_Trap_Tile(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CSneak_Tile(_pDevice, _pContext)
@@ -17,14 +19,70 @@ HRESULT CSneak_Trap_Tile::Initialize(void* _pArg)
 	SNEAK_TILEDESC* pDesc = static_cast<SNEAK_TILEDESC*>(_pArg);
 
 	pDesc->strModelPrototypeTag_2D = TEXT("Sneak_Tile");
+	pDesc->_iInitAnim = TRAP_CLOSED;
+	pDesc->_iFlipAnim1 = TRAP_CLOSE;
+	pDesc->_iFlipAnim1End = TRAP_CLOSED;
+	pDesc->_iFlipAnim2 = TRAP_OPEN;
+	pDesc->_iFlipAnim2End = TRAP_OPENDED;
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
+	Register_OnAnimEndCallBack(bind(&CSneak_Trap_Tile::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 
 	m_eTileType = TRAP;
 
 
 	return S_OK;
+}
+
+void CSneak_Trap_Tile::Restart()
+{
+	m_eCurState = CLOSE;
+	m_isRedDetect = false;
+	m_isYellowDetect = false;
+
+	m_iCurAnim = TRAP_CLOSED;
+	Switch_Animation(TRAP_CLOSED);
+}
+
+void CSneak_Trap_Tile::Active_Detection()
+{
+	if (OPEN == m_eCurState || TRAP_OPEN == m_iCurAnim || TRAP_OPENDED == m_iCurAnim)
+		return;
+
+	// TODO: RED Detection 판단
+	if (m_isRedDetect)
+	{
+		m_eCurState = RED;
+		// 애니메이션 없음.
+	}
+	else if (m_isYellowDetect)
+	{
+		m_eCurState = YELLOW;
+		Switch_Animation(TRAP_YELLOW);
+	}
+	else
+	{
+		m_eCurState = CLOSE;
+		Switch_Animation(TRAP_CLOSED);
+	}
+
+}
+
+void CSneak_Trap_Tile::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+	if (TRAP_CLOSE == iAnimIdx)
+	{
+		m_eCurState = CLOSE;
+		// TODO : Sneak_Manager 처리
+	}
+	else if (TRAP_OPEN == iAnimIdx)
+	{
+		m_eCurState = OPEN;
+		// TODO : Sneak_Manager 처리
+	}
+
+	__super::On_AnimEnd(_eCoord, iAnimIdx);
 }
 
 

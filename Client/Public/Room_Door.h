@@ -10,8 +10,22 @@ public:
 	{
 		DOOR_PART_DOOR = 0,
 		DOOR_PART_KNOB = 1,
-		DOOR_PART_DOORPLATE = 2,
-
+		DOOR_PART_DOORPLAQUE = 2,
+		//DOOR_PART_STICKER_ZAP,	// ¸Õ°¡ ¸¹À½ ÇÕÃÄÁ® ÀÖÀ½
+		DOOR_PART_STICKER_01,	// ¼Ò¼¼Áö
+		DOOR_PART_STICKER_02,	// ÇØ°ñ
+		DOOR_PART_STICKER_04,	// ÀÌ»óÇÑ ¾ÆÀú¾¾
+		DOOR_PART_STICKER_05,	// °ø·æ
+		DOOR_PART_STICKER_05_2,	// °ø·æ
+		DOOR_PART_STICKER_07,	// Hey
+		DOOR_PART_STICKER_09,	// µÅÁö
+		DOOR_PART_STICKER_09_2,	// µÅÁö
+		DOOR_PART_STICKER_09_3,	// µÅÁö
+		DOOR_PART_STICKER_09_4,	// µÅÁö
+		DOOR_PART_STICKER_10,	// ·ÎÄÏ
+		DOOR_PART_STICKER_11,	// ÇÒ¹è
+		//DOOR_PART_STICKER_12,	// ¸ð¸£°Ô¾¸
+	
 		DOOR_PART_END
 	};
 
@@ -29,15 +43,28 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
-	//HRESULT					Add_PartObject(CPartObject* _pPartObject);
+	_bool					Is_Turn_DoorKnob() { return m_isTurnDoorKnob; }
+
+	void					Start_Turn_Door(_bool _isTurnDoor) { m_isTurnDoor = _isTurnDoor; }
+	void					Start_Turn_DoorKnob(_bool _isTurnDoor) { m_isTurnDoorKnob = _isTurnDoor; }
 
 public:
-//	void					Start_Turn_Knob();
-//	void					Start_Turn_Door();
-//
-//private:
-//	_bool					m_isTurnKnob = { false };
-//	_bool					m_isTurnDoor = { false };
+	void					Turn_Door(_float _fTimeDelta);
+	void					Turn_DoorKnob(_float _fTimeDelta);
+
+private:
+	_bool					m_isTurnDoorKnob = { false };
+	_bool					m_isTurnDoor = { false };
+
+	_float2					m_fTurnDoorTime = { 2.35f, 0.f };
+	_float2					m_fTurnDoorKnobTime = { 0.7f, 0.f };
+
+	_float					m_fTurnDoorAngle = { 110.f };
+	_float					m_fTurnDoorKnobAngle = { 45.f };
+	_float					m_fPreAngle = { 0.f };
+	_float					m_fPreKnobAngle = { 0.f };
+
+	_bool					m_isKnobDown = { false };
 
 private:
 	HRESULT					Ready_Components();

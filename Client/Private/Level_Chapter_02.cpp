@@ -196,14 +196,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	//if (FAILED(Ready_Layer_RoomDoor(TEXT("Layer_RoomDoor"))))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_RoomDoor (Level_Chapter_02::Initialize)");
-	//	assert(nullptr);
-	//}
-
-	
-
+	if (FAILED(Ready_Layer_RoomDoor(TEXT("Layer_RoomDoor"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_RoomDoor (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 
 	///* Pooling Test */
 	//Pooling_DESC Pooling_Desc;
@@ -265,10 +262,8 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	// BGM 시작
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
 
-
-
-	//CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_Intro"),
-	//	50);
+	// Intro 시작
+	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
@@ -508,8 +503,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Map()
 	switch (eLevelID)
 	{
 	case Client::LEVEL_CHAPTER_2:
-		if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
-			return E_FAIL;
+		//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+			//return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_4:
 		if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
@@ -729,9 +724,9 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 
 	CutSceneDesc.fFovy = XMConvertToRadians(60.f);
 	CutSceneDesc.fAspect = static_cast<_float>(g_iWinSizeX) / g_iWinSizeY;
-	CutSceneDesc.vEye = _float3(0.f, 10.f, -7.f);
-	CutSceneDesc.vAt = _float3(0.f, 0.f, 0.f);
-	CutSceneDesc.eZoomLevel = CCamera::LEVEL_6;
+	CutSceneDesc.vEye = _float3(462.94415283203125f, 39.79984664916992f, -157.9098663330078f);
+	CutSceneDesc.vAt = _float3(-27.738893508911133f, 33.2850341796875f, -152.47311401367188f);
+	CutSceneDesc.eZoomLevel = CCamera::LEVEL_4;
 	CutSceneDesc.iCameraType = CCamera_Manager::CUTSCENE;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_CutScene"),
@@ -763,13 +758,14 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, static_cast<CCamera*>(pCamera));
 
 	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
-	//vRotation = { XMConvertToRadians(-79.2f), XMConvertToRadians(0.f), 0.f };
 	fLength = 12.5f;
 	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
 
 	// Load CutSceneData, ArmData
 	CCamera_Manager::GetInstance()->Load_CutSceneData(m_eLevelID);
 	CCamera_Manager::GetInstance()->Load_ArmData(m_eLevelID);
+
+	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 
 	return S_OK;
 }
@@ -801,6 +797,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SNEAK);
 	//pPlayer->UnEquip_All();
+
+	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
 
 	return S_OK;
 }
@@ -880,13 +878,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 #pragma endregion InterAction UI
 
-	_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
-
-	if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
-	{
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ParentShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
-			return E_FAIL;
-	}
+	//_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
+	//
+	//if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
+	//{
+	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ParentShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	//		return E_FAIL;
+	//}
 
 
 #pragma region SettingPanel UI
@@ -1140,10 +1138,10 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	
 	
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
-	//	return E_FAIL;
-	//
-	//Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
+		return E_FAIL;
+	
+	Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
 
 	return S_OK;
 }
@@ -1238,62 +1236,62 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	if (nullptr == pJson)
 		return E_FAIL;
 
-	CMonster::MONSTER_DESC MonsterDesc2D = {};
-
-	MonsterDesc2D.iCurLevelID = m_eLevelID;
-	MonsterDesc2D.eStartCoord = COORDINATE_2D;
-
 	if (pJson->contains("2D"))
 	{
 		_wstring strLayerTag = L"Layer_Monster";
 		_wstring strSectionTag = L"";
 		_wstring strMonsterTag = L"";
 
-		for (_int i = 0; i < (*pJson)["2D"].size(); ++i)
+		for (auto Json : (*pJson)["2D"])
 		{
-			if ((*pJson)["2D"][i].contains("Position"))
+			CMonster::MONSTER_DESC MonsterDesc2D = {};
+
+			MonsterDesc2D.iCurLevelID = m_eLevelID;
+			MonsterDesc2D.eStartCoord = COORDINATE_2D;
+
+			if (Json.contains("Position"))
 			{
 				for (_int j = 0; j < 3; ++j)
 				{
-					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialPosition) + j) = (*pJson)["2D"][i]["Position"][j];
+					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialPosition) + j) = Json["Position"][j];
 				}
 			}
-			if ((*pJson)["2D"][i].contains("Scaling"))
+			if (Json.contains("Scaling"))
 			{
 				for (_int j = 0; j < 3; ++j)
 				{
-					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialScaling) + j) = (*pJson)["2D"][i]["Scaling"][j];
+					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialScaling) + j) = Json["Scaling"][j];
 				}
 			}
-			if ((*pJson)["2D"][i].contains("LayerTag"))
+			if (Json.contains("LayerTag"))
 			{
-				strLayerTag = STRINGTOWSTRING((*pJson)["2D"][i]["LayerTag"]);
+				strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
 			}
 
-			if ((*pJson)["2D"][i].contains("SectionTag"))
+			if (Json.contains("SectionTag"))
 			{
-				strSectionTag = STRINGTOWSTRING((*pJson)["2D"][i]["SectionTag"]);
+				strSectionTag = STRINGTOWSTRING(Json["SectionTag"]);
 			}
 			else
 				return E_FAIL;
 
-			if ((*pJson)["2D"][i].contains("MonsterTag"))
+			if (Json.contains("MonsterTag"))
 			{
-				strMonsterTag = STRINGTOWSTRING((*pJson)["2D"][i]["MonsterTag"]);
+				strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
 			}
 			else
 				return E_FAIL;
+
+			if (Json.contains("IsStay"))
+			{
+				MonsterDesc2D.isStay = Json["IsStay"];
+			}
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc2D)))
 				return E_FAIL;
 			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionTag, pObject);
 		}
 	}
-
-	CMonster::MONSTER_DESC MonsterDesc3D = {};
-
-	MonsterDesc3D.iCurLevelID = m_eLevelID;
-	MonsterDesc3D.eStartCoord = COORDINATE_3D;
 
 	if (pJson->contains("3D"))
 	{
@@ -1302,6 +1300,11 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 		for (auto Json : (*pJson)["3D"])
 		{
+			CMonster::MONSTER_DESC MonsterDesc3D = {};
+
+			MonsterDesc3D.iCurLevelID = m_eLevelID;
+			MonsterDesc3D.eStartCoord = COORDINATE_3D;
+
 			if (Json.contains("Position"))
 			{
 				for (_int j = 0; j < 3; ++j)
@@ -1337,6 +1340,16 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 				else
 					return E_FAIL;
 				MonsterDesc3D.isSneakMode = Json["SneakMode"];
+			}
+
+			if (Json.contains("IsStay"))
+			{
+				MonsterDesc3D.isStay = Json["IsStay"];
+			}
+
+			if (Json.contains("IsIgnoreGround"))
+			{
+				MonsterDesc3D._isIgnoreGround = Json["IsIgnoreGround"];
 			}
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc3D)))

@@ -1130,6 +1130,10 @@ void CDialog::NextDialogue(_float2 _RTSize)
 
 			m_pPortrait->Set_PortraitRender(false);
 
+			CPlayer* pPlayer = Uimgr->Get_Player();
+			assert(pPlayer);
+			pPlayer->Set_BlockPlayerInput(false);
+
 
 			//wsprintf(m_strCurrentSection, L"");
 
@@ -1147,6 +1151,13 @@ void CDialog::NextDialogue(_float2 _RTSize)
 // 처음 다이얼로그 입장 시 위치 계산해주는 함수
 void CDialog::FirstCalPos(_float2 _RTSize)
 {
+
+	CPlayer* pPlayer = Uimgr->Get_Player();
+	assert(pPlayer);
+
+	pPlayer->Set_BlockPlayerInput(true);
+
+
 	// 현재 섹션의 렌더 사이즈
 	m_vRTSize = _RTSize;
 

@@ -2,6 +2,7 @@
 #include "ShopItemBG_New.h"
 #include "Section_2D.h"
 #include "UI_Manager.h"
+#include "Shop_Manager.h"
 
 
 
@@ -46,9 +47,17 @@ HRESULT CShopItemBG_New::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	//m_strSectionName = TEXT("Chapter5_P0102");
+	//if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), this, SECTION_2D_PLAYMAP_UI)))
+	//	return E_FAIL;
 	
+	if (SKILLSHOP_BG == m_eSkillShopIcon)
+	{
+		m_iItemCount = CShop_Manager::GetInstance()->Get_ItemCount();
+		CShop_Manager::GetInstance()->Set_ItemCount(++m_iItemCount);
+	}
 
-	
+
 
 	return S_OK;
 }
@@ -59,24 +68,40 @@ void CShopItemBG_New::Priority_Update(_float _fTimeDelta)
 
 void CShopItemBG_New::Update(_float _fTimeDelta)
 {
+
+	_float2 vRTSize = _float2(0.f, 0.f);
+
+	vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
+
+	Cal_ShopPartPos(vRTSize, CShop_Manager::GetInstance()->Get_ShopBGPos());
 }
 
 void CShopItemBG_New::Late_Update(_float _fTimeDelta)
 {
+
 }
 
 
 HRESULT CShopItemBG_New::Render()
 {
-	if (true == m_isRender && SKILLSHOP_BG != m_eSkillShopIcon)
+	if (false == m_isRender)
+		return S_OK;
+
+
+	_int itextcount = m_iItemCount;
+
+
+
+
+	if (SKILLSHOP_BG != m_eSkillShopIcon)
 	{
-		__super::Render(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+		__super::ShopRender(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
 	}
 	else if (true == m_isRender && SKILLSHOP_BG == m_eSkillShopIcon)
 	{
 		if (true == m_isChooseItem)
 		{
-			__super::Render(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
+			__super::ShopRender(0, PASS_VTXPOSTEX::UI_POINTSAMPLE);
 		}
 		else if (false == m_isChooseItem)
 		{
@@ -84,7 +109,26 @@ HRESULT CShopItemBG_New::Render()
 			if (FAILED(m_pShaderCom->Bind_RawValue("g_fOpaque", &m_fOpaque, sizeof(_float))))
 				return E_FAIL;
 
-			__super::Render(0, PASS_VTXPOSTEX::UI_ALPHA);
+			//__super::Render(0, PASS_VTXPOSTEX::UI_ALPHA);
+
+			if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+				return E_FAIL;
+
+			if (L"" == m_strSectionName)
+			{
+				if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+					return E_FAIL;
+
+				if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+					return E_FAIL;
+			}
+
+			if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 0)))
+				return E_FAIL;
+
+			m_pShaderCom->Begin((_uint)PASS_VTXPOSTEX::UI_ALPHA);
+			m_pVIBufferCom->Bind_BufferDesc();
+			m_pVIBufferCom->Render();
 		}
 	}
 		
@@ -98,31 +142,20 @@ void CShopItemBG_New::isRender()
 		m_isRender = true;
 		/* 변경해야함. */
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
-		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
+		
+
 	}
 	else if (m_isRender == true)
 	{
 		m_isRender = false;
-		CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 	}
 		
 }
 
-//void CShopItemBG_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
-//{
-//	if (0 < Uimgr->Get_ShopItemBGs().size())
-//	{
-//		if (SKILLSHOP_BG == Uimgr->Get_ShopItems()[0][0]->Get_SkillShopIcon())
-//		{
-//			
-//		}
-//	}
-//
-//	
-//	
-//
-//
-//}
+void CShopItemBG_New::Set_isChooseItem(_bool _Choose)
+{
+	m_isChooseItem = _Choose;
+}
 
 HRESULT CShopItemBG_New::Ready_Components()
 {
@@ -218,7 +251,6 @@ HRESULT CShopItemBG_New::Ready_Components()
 	return S_OK;
 }
 
-
 CShopItemBG_New* CShopItemBG_New::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CShopItemBG_New* pInstance = new CShopItemBG_New(_pDevice, _pContext);
@@ -252,8 +284,6 @@ void CShopItemBG_New::Free()
 	//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
 	__super::Free();
 }
-
-
 
 HRESULT CShopItemBG_New::Cleanup_DeadReferences()
 {

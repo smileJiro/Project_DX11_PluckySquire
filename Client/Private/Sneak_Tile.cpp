@@ -3,12 +3,12 @@
 #include "GameInstance.h"
 
 CSneak_Tile::CSneak_Tile(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	: CModelObject(_pDevice, _pContext)
+	: CSneak_FlipObject(_pDevice, _pContext)
 {
 }
 
 CSneak_Tile::CSneak_Tile(const CSneak_Tile& _Prototype)
-	: CModelObject(_Prototype)
+	: CSneak_FlipObject(_Prototype)
 {
 }
 
@@ -28,15 +28,34 @@ HRESULT CSneak_Tile::Initialize(void* _pArg)
 	
 	pDesc->eActorType = ACTOR_TYPE::LAST;
 	pDesc->pActorDesc = nullptr;
-	pDesc->iModelPrototypeLevelID_2D = m_iCurLevelID;
+	pDesc->iModelPrototypeLevelID_2D = pDesc->iCurLevelID;
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
-
-	m_iTileIndex = m_iTileIndex;
+	m_iTileIndex = pDesc->iTileIndex;
+	for (_int i = 0; i < (_int)F_DIRECTION::F_DIR_LAST; ++i)
+	{
+		m_AdjacentTiles[i] = pDesc->iAdjacents[i];
+	}
+	m_vTilePosition = _float2(pDesc->tTransform2DDesc.vInitialPosition.x, pDesc->tTransform2DDesc.vInitialPosition.y);
 
 	return S_OK;
+}
+
+
+void CSneak_Tile::Interact()
+{
+	//if (CLOSE == m_eCurState)
+	//{
+	//	m_eCurState = OPEN;
+	//}
+	//else if (OPEN == m_eCurState)
+	//{
+	//	m_eCurState = CLOSE;
+	//}
+
+	Flip();
 }
 
 

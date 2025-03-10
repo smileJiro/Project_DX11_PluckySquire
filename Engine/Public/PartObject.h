@@ -28,9 +28,10 @@ public:
 
 public:
 	_vector					Get_FinalPosition() const override; // PartObject는 최종 매트릭스에서 위치값 추출해서 리턴.
-
+	virtual _vector			Get_FinalPosition(COORDINATE _eCoord) const override;
 
 	_float3					Get_FinalScale() const override; // PartObject는 최종 매트릭스에서 위치값 추출해서 리턴.
+	virtual _float3			Get_FinalScale(COORDINATE _eCoord) const override;
 	const _float4x4*		Get_FinalWorldMatrix_Ptr(COORDINATE _eCoord) { return &m_WorldMatrices[_eCoord]; }
 	virtual _matrix		Get_FinalWorldMatrix() override;
 	void Set_SocketMatrix(COORDINATE _eCoord, const _float4x4* _pSocketMatrix) { m_pSocketMatrix[_eCoord] = _pSocketMatrix; }

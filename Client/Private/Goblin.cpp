@@ -67,6 +67,8 @@ HRESULT CGoblin::Initialize(void* _pArg)
     pDesc->_tStat.iMaxHP = 5;
     pDesc->_tStat.iDamg = 1;
 
+	m_fHalfBodySize = 0.5f;
+
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;
@@ -79,6 +81,8 @@ HRESULT CGoblin::Initialize(void* _pArg)
 
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
+
+    XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixIdentity());
 
     m_pFSM->Add_Chase_NoneAttackState();
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
@@ -178,6 +182,8 @@ void CGoblin::Update(_float _fTimeDelta)
     //    Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
     //}
 #endif // _DEBUG
+
+    Check_InAir_Next(_fTimeDelta);
 
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
@@ -478,15 +484,19 @@ void CGoblin::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
             Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), Get_Stat().iDamg, vRepulse);
             Attack();
         }
+
+        __super::OnTrigger_Enter(_My, _Other);
     }
 }
 
 void CGoblin::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+    __super::OnTrigger_Stay(_My, _Other);
 }
 
 void CGoblin::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+    __super::OnTrigger_Exit(_My, _Other);
 }
 
 void CGoblin::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -564,20 +574,25 @@ HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
-    ////마찰용 박스
-    //SHAPE_BOX_DESC* BoxDesc = new SHAPE_BOX_DESC;
-    //BoxDesc->vHalfExtents = { ShapeDesc->fRadius - 0.1f, ShapeDesc->fRadius - 0.1f, ShapeDesc->fRadius - 0.1f };
+    m_fHalfBodySize = ShapeDesc->fRadius;
 
-    ///* 해당 Shape의 Flag에 대한 Data 정의 */
-    ////SHAPE_DATA* ShapeData = new SHAPE_DATA;
-    //ShapeData->pShapeDesc = BoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    //ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
-    //ShapeData->eMaterial = ACTOR_MATERIAL::NORESTITUTION; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    //ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, BoxDesc->vHalfExtents.y, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    //쿼리를 켜기 위한 트리거
+    SHAPE_SPHERE_DESC* TriggerDesc = new SHAPE_SPHERE_DESC;
+    TriggerDesc->fRadius = 0.6f;
 
-    ///* 최종으로 결정 된 ShapeData를 PushBack */
-    //ActorDesc->ShapeDatas.push_back(*ShapeData);
+    /* 해당 Shape의 Flag에 대한 Data 정의 */
+    ShapeData->pShapeDesc = TriggerDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+    ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
+    ShapeData->eMaterial = ACTOR_MATERIAL::DEFAULT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+    ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
+    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.0f, TriggerDesc->fRadius * 0.5f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+    ShapeData->FilterData.MyGroup = OBJECT_GROUP::RAY_TRIGGER;
+    ShapeData->FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::INTERACTION_OBEJCT;
+
+    /* 최종으로 결정 된 ShapeData를 PushBack */
+    ActorDesc->ShapeDatas.push_back(*ShapeData);
+
 
     //공격용 구
     ///* 사용하려는 Shape의 형태를 정의 */

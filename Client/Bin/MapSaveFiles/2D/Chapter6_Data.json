@@ -1,6 +1,7 @@
 [
 	{
 		"Section_Name": "Chapter5_P0102",
+		"Section_Start": true,
 		"Section_BackGround_Name": "Chapter5_P0102_BackGround",
 		"Section_File_Name": "Chapter5_P0102.m2chc",
 		"Section_Type": 0,
@@ -20,7 +21,7 @@
 	{
 		"Section_Name": "Chapter5_P0304",
 		"Section_BackGround_Name": "Chapter5_P0304_BackGround",
-		"Section_Type": 1,
+		"Section_Type": 0,
 		"Section_Default": 0,
 		"Section_Info": {
 			"Pre_Page_Tag": "Chapter5_P0102",
@@ -30,7 +31,7 @@
 	{
 		"Section_Name": "Chapter6_P0102",
 		"Section_BackGround_Name": "Chapter6_P0102_BackGround",
-		"Section_Type": 1,
+		"Section_Type": 0,
 		"Section_Default": 0,
 		"Section_Info": {
 			"Pre_Page_Tag": "Chapter5_P0304",
@@ -50,7 +51,7 @@
 	{
 		"Section_Name": "Chapter6_P0506",
 		"Section_BackGround_Name": "Chapter6_P0506_BackGround",
-		"Section_Type": 1,
+		"Section_Type": 0,
 		"Section_Default": 0,
 		"Section_Info": {
 			"Pre_Page_Tag": "Chapter6_P0102",
@@ -60,7 +61,7 @@
 	{
 		"Section_Name": "Chapter6_P0708",
 		"Section_BackGround_Name": "Chapter6_P0708_BackGround",
-		"Section_Type": 1,
+		"Section_Type": 0,
 		"Section_Default": 0,
 		"Section_Info": {
 			"Pre_Page_Tag": "Chapter6_P0506",
@@ -93,6 +94,25 @@
 				"Y": 1440.0
 			},
 			"Pre_Page_Tag": "Chapter6_P0910",
+			"Next_Page_Tag": "Chapter6_P1314"
+		}
+	},
+		{
+		"Section_Name": "Chapter6_P1314",
+		"Section_BackGround_Name": "Chapter6_P1314_BackGround",
+		"Section_File_Name": "Chapter6_P1314.m2chc",
+		"Section_Type": 0,
+		"Section_Info": {
+			"Camera_Zoom_Ratio": 2.0,
+			"RenderResolution": {
+				"X": 5119.0,
+				"Y": 1439.0
+			},
+			"LevelSizePixels": {
+				"X": 5119.0,
+				"Y": 1439.0
+			},
+			"Pre_Page_Tag": "Chapter6_P1112",
 			"Next_Page_Tag": "Chapter6_P1516"
 		}
 	},

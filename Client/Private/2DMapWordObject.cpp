@@ -101,32 +101,41 @@ HRESULT C2DMapWordObject::Initialize(void* _pArg)
 
 
 
-    if (WordObjectJson.contains("Collider_Info"))
-    {
-        if (WordObjectJson["Collider_Info"].contains("Collider_Extent"))
+	if (WordObjectJson.contains("Collider_Info"))
+	{
+		_float2 fExtent = {};
+		_float2 fOffset = {0.f,0.f};
+		if (WordObjectJson["Collider_Info"].contains("Collider_Extent"))
+		{
+			fExtent = { WordObjectJson["Collider_Info"]["Collider_Extent"][0].get<_float>(),
+				WordObjectJson["Collider_Info"]["Collider_Extent"][1].get<_float>() };
+		}
+        if (WordObjectJson["Collider_Info"].contains("Collider_Offset"))
         {
-            _float2 fExtent = { WordObjectJson["Collider_Info"]["Collider_Extent"][0].get<_float>(),
-            WordObjectJson["Collider_Info"]["Collider_Extent"][1].get<_float>() };
-
-
-
-            /* Test 2D Collider */
-            m_p2DColliderComs.resize(1);
-            CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
-            AABBDesc.pOwner = this;
-            AABBDesc.vExtents = fExtent;
-            AABBDesc.vScale = {1.f,1.f};
-            AABBDesc.vOffsetPosition = {0.f,0.f};
-            AABBDesc.isBlock = true;
-            AABBDesc.iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
-            CCollider_AABB* pCollider = nullptr;
-            if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-                TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
-                return E_FAIL;
-
+            fOffset = { WordObjectJson["Collider_Info"]["Collider_Offset"][0].get<_float>(),
+                WordObjectJson["Collider_Info"]["Collider_Offset"][1].get<_float>() };
         }
-    
-    }
+
+
+
+
+		/* Test 2D Collider */
+		m_p2DColliderComs.resize(1);
+		CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
+		AABBDesc.pOwner = this;
+		AABBDesc.vExtents = fExtent;
+		AABBDesc.vScale = { 1.f,1.f };
+		AABBDesc.vOffsetPosition = fOffset;
+		AABBDesc.isBlock = true;
+		AABBDesc.iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
+		CCollider_AABB* pCollider = nullptr;
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+			TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
+			return E_FAIL;
+
+
+
+	}
 
 
     return S_OK; /* hr */
@@ -156,14 +165,17 @@ HRESULT C2DMapWordObject::Render()
     return __super::Render();
 }
 
-HRESULT C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
+_bool C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
 {
-    for_each(m_Actions.begin(), m_Actions.end(), [this, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]
+    _bool isExecute = false;
+    for_each(m_Actions.begin(), m_Actions.end(), [this,&isExecute, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]
     (WORD_ACTION& tAction){
             if (tAction.iControllerIndex == _iControllerIndex
                 && tAction.iContainerIndex == _iContainerIndex
                 && tAction.iWordType == _iWordIndex)
             {
+                isExecute = true;
+
                 switch (tAction.eAction)
                 {
                 case IMAGE_CHANGE:
@@ -210,13 +222,21 @@ HRESULT C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContai
                         m_p2DColliderComs[0]->Set_Active(isActive);
                 }
                 break;
+                case WORD_OBJECT_RENDER:
+                {
+                    _bool isRender = any_cast<_bool>(tAction.anyParam);
+                    m_IsWordRender = isRender;
+                    Set_Render(m_IsWordRender);
+                }
+                break;
                 default:
+					assert(nullptr);
                     break;
                 }
-            
+
             }
         });
-    return S_OK;
+    return isExecute;
 }
 
 const C2DMapWordObject::WORD_ACTION* C2DMapWordObject::Find_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
