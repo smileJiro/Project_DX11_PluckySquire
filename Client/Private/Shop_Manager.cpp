@@ -397,6 +397,8 @@ HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
 
 void CShop_Manager::Delete_ShopItems(_uint _index)
 {
+	Skill_LevelUp(_index);
+
 	for (int i = 0; i < m_ShopItems[_index].size(); ++i)
 	{
 
@@ -410,8 +412,54 @@ void CShop_Manager::Delete_ShopItems(_uint _index)
 
 	// ¹îÁö Æ÷Áö¼Ç ÆÄ¾Ç
 	m_BadgePositions.erase(m_BadgePositions.begin() + _index);
+
+	if (0 < m_ShopItems.size())
+	{
+		if (1 == m_ShopItems.size())
+		{
+			for (int i = 0; i < m_ShopItems[0].size(); ++i)
+			{
+				m_ShopItems[0][i]->Set_isChooseItem(true);
+			}
+			return;
+		}
+
+		for (int i = 0; i < m_ShopItems[_index].size(); ++i)
+		{
+			m_ShopItems[_index][i]->Set_isChooseItem(true);
+		}
+	}
+
+
+		
 	//m_isUpdateShopPanel = true;
 	int a = 0;
+}
+
+void CShop_Manager::Skill_LevelUp(_uint _index)
+{
+	_int iLevel = m_ShopItems[_index][1]->Get_SkillLevel();
+	CUI::SKILLSHOP eSkillIcon = m_ShopItems[_index][1]->Get_SkillShopIcon();
+
+	switch (eSkillIcon)
+	{
+	case CUI::SKILLSHOP::SKILLSHOP_JUMPATTACKBADGE:
+		++m_iJumpAttackLevel;
+		break;
+
+	case CUI::SKILLSHOP::SKILLSHOP_SPINATTACKBADGE:
+		++m_iSpinAttackLevel;
+		break;
+
+	case CUI::SKILLSHOP::SKILLSHOP_ATTACKPLUSBADGE:
+		++m_iAttackPlusLevel;
+		break;
+
+	case CUI::SKILLSHOP::SKILLSHOP_THROWATTBADGE:
+		++m_iThrowAttackLevel;
+		break;
+
+	}
 }
 
 void CShop_Manager::OpenClose_Shop()

@@ -40,6 +40,7 @@ public:
 	}
 	_bool									Get_isOpenShop() { return m_isOpenShop; }
 	void									Delete_ShopItems(_uint _index);
+	void									Skill_LevelUp(_uint _index);
 
 	void									OpenClose_Shop();
 	void									Set_ChooseItem(_int _iIndex);
@@ -62,6 +63,12 @@ public:
 		return m_BadgePositions; 
 	}
 	void									Set_BadgePositions(_int _index, _float2 _vPos) { m_BadgePositions[_index] = _vPos; }
+	_int									Get_ChooseIndex() { return m_iChooseIndex; }
+	void									Set_ChooseIndex(_int _ChooseIdx) { m_iChooseIndex = _ChooseIdx; }
+	
+	
+	
+	
 	HRESULT									Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID);
 	HRESULT									Level_Enter(_int _iChangeLevelID);
 	
@@ -87,6 +94,7 @@ private:
 
 	vector<_float2>							m_BadgePositions;
 	_float2									m_vBadgePos = { 0.f, 0.f };
+	_int									m_iChooseIndex = { 0 };
 
 	
 

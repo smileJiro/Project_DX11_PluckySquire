@@ -68,19 +68,19 @@ public:
 	virtual _float		Get_Distance(COORDINATE _eCOord, CPlayer* _pUser) override;
 
 public :
-	_wstring	Get_Text()			{ return m_strText; }
-	WORD_TYPE	Get_WordType()	{ return m_eWordType; }
-	_bool		Is_LayedDown()		{ return m_bLaydown; }
+	_wstring		Get_Text()			{ return m_strText; }
+	WORD_TYPE		Get_WordType()	{ return m_eWordType; }
+	_bool			Is_LayedDown()		{ return m_bLaydown; }
 
-	void		Set_LayDown(_bool _bLayDown) { m_bLaydown = _bLayDown; }
+	void			Set_LayDown(_bool _bLayDown) { m_bLaydown = _bLayDown; }
 
 	// 튕겨나가거나, 들어가는 행위 작성
-	void		Execute_WordMode_Action(_float _fTimeDelta);
+	void			Execute_WordMode_Action(_float _fTimeDelta);
 
-	void		Set_OutputDirection(_float3 _fDir) { m_fOutputDir = _fDir; }
-	void		Set_OutputSecond(_float _fSecond) { m_fOutputSecond = _fSecond; }
-	void		Set_ContainorPosition(_float3 _fPos) { m_fContainorPosition = _fPos; }
-	_bool		Is_Complete() { return m_isActionComplete; }
+	void			Set_OutputDirection(_float3 _fDir) { m_fOutputDir = _fDir; }
+	void			Set_OutputSecond(_float _fSecond) { m_fOutputSecond = _fSecond; }
+	void			Set_ContainorPosition(_float3 _fPos) { m_fContainorPosition = _fPos; }
+	_bool			Is_Complete() { return m_isActionComplete; }
 
 	WORD_MODE		Get_WordMode() { return m_eWordMode; }
 	void			Set_WordMode(CWord::WORD_MODE _eMode = CWord::WORD_MODE_SETUP) 

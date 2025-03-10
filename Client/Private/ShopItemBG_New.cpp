@@ -35,7 +35,7 @@ HRESULT CShopItemBG_New::Initialize(void* _pArg)
 		m_strDialog = TEXT("충전 후 발동하면, 강력한 회전 공격으로\n모여 있는 적을 손쉽게 처치할 수 있습니다.");
 
 	else if (m_strName == TEXT("검 던지기 배지"))
-		m_strDialog = TEXT("검을 던져 적을 공격합니다.");
+		m_strDialog = TEXT("검을 던져 적을 공격합니다.\n원거리에 있는 적을 쉽게 타격할 수 있습니다.");
 
 
 	if (FAILED(__super::Initialize(pDesc)))

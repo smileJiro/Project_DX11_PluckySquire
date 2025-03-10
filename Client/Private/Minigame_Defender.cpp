@@ -29,11 +29,10 @@ HRESULT CMiniGame_Defender::Initialize_Prototype()
 HRESULT CMiniGame_Defender::Initialize(void* _pArg)
 {
     m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::SM_SHIP, _wstring(L"Prototype_GameObject_DefenderSmShip")));
-    m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::TURRET, _wstring(L"Prototype_GameObject_DefenderTurret")));
+   //m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::TURRET, _wstring(L"Prototype_GameObject_DefenderTurret")));
     m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::MED_SHIP_UP, _wstring(L"Prototype_GameObject_DefenderMedShip_UP")));
     m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::MED_SHIP_DOWN, _wstring(L"Prototype_GameObject_DefenderMedShip_DOWN")));
     m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::PERSON_CAPSULE, _wstring(L"Prototype_GameObject_PersonCapsule")));
-
 
 	DEFENDER_CONTROLLTOWER_DESC* pDesc =static_cast<DEFENDER_CONTROLLTOWER_DESC*> (_pArg);
     m_iCurLevelID = pDesc->iCurLevelID;

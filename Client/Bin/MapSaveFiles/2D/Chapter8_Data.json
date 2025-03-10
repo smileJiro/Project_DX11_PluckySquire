@@ -1,7 +1,6 @@
 [
 	{
 		"Section_Name": "Chapter8_P0102",
-		"Section_Start": true,
 		"Section_BackGround_Name": "Chapter8_P0102_BackGround",
 		"Section_Type": 1,
 		"Section_Default": 0,
@@ -27,6 +26,11 @@
 		"Section_Info": {
 			"Pre_Page_Tag": "Chapter8_P0304",
 			"Next_Page_Tag": "Chapter8_P0708"
+		},
+		"MiniGame_Info" : 
+		{
+			"MiniGame_Type" : 0,
+			"MiniGame_Name" : "WordGame_03"
 		}
 	},
 	{
@@ -74,6 +78,7 @@
 		"Section_Default": 0,
 		"Section_BackGround_Name": "Chapter8_P1516_BackGround",
 		"Section_Type": 3,
+		"Section_Start": true,
 		"MiniGame_Info": {
 			"MiniGame_Type": 1,
 			"MiniGame_Name": "Pip_01"

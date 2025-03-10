@@ -64,7 +64,7 @@ void CWord_Container::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
 
-	if (nullptr != m_pMyWord)
+	if (nullptr != m_pMyWord && m_isRender)
 	{
 		m_fEffectAccTime += _fTimeDelta;
 		if (m_fEffectAccTime > m_fEffectInterval)
@@ -73,7 +73,12 @@ void CWord_Container::Update(_float _fTimeDelta)
 			_matrix matFX = XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos),0.f);
 			//_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
 			_wstring strFXTag = L"Word_HitEffect";
-			CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, m_strSectionName, matFX,0.f,3,false, SECTION_2D_PLAYMAP_EFFECT);
+			CEffect2D_Manager::GetInstance()->Play_Effect(
+				strFXTag,
+				m_strSectionName, 
+				matFX,
+				0.f,
+				2);
 			m_fEffectAccTime = 0.f;
 		}
 	}

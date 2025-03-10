@@ -37,6 +37,8 @@ public:
 	_wstring				Get_strName() { return m_strName; }
 	_wstring				Get_strDialog() { return m_strDialog; }
 	_int					Get_Price() { return m_iPrice; }
+	_int					Get_SkillLevel() { return m_iSkillLevel; }
+	SKILLSHOP				Get_SkillShopIcon() { return m_eSkillShopIcon; }
 	
 
 protected:
