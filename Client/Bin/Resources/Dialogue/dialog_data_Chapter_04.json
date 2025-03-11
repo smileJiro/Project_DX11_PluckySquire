@@ -203,6 +203,63 @@
 			]
 		},
 		{
+			"id": "Store_Dialog_01",
+			"Section": "Chapter4_P0506",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "마르티나",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"iAnimationIndex": 3,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "안녕하세요, 용감한 용사 여러분!",
+					"Red": 255,
+					"Green": 224,
+					"Blue": 136
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마르티나",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"iAnimationIndex": 9,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "다리가 끊어져 있지만, 건널 수 있을거에요.",
+					"Red": 255,
+					"Green": 224,
+					"Blue": 136
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마르티나",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"iAnimationIndex": 9,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "새로운 상품을 한번 봐보세요!",
+					"Red": 255,
+					"Green": 224,
+					"Blue": 136
+				}
+			]
+		},
+		{
 			"id": "3D_MiniBeard_Dialog_01",
 			"lines": [
 				{
