@@ -27,7 +27,6 @@ public:
 
 private:
 
-
 protected:
 	virtual HRESULT			Ready_Components() override;
 
@@ -59,6 +58,9 @@ private:
 
 	COORDINATE				m_ePrePlayerCoord = { COORDINATE_LAST };
 
+private: /* ÅÂ¿õ Ãß°¡ */
+	_float4					m_vInteractionColor = { 45.f / 255.f, 210.f / 255.f, 56.f / 255.f, 1.0f };
+	_float					m_fInteractionRatio = 0.0f;
 
 };
 

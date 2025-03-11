@@ -4181,7 +4181,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "Desk_C06_Pad_Sprite",

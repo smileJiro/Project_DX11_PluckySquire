@@ -39,6 +39,7 @@
 #include "Effect_Manager.h"
 #include "3DMapObject.h"
 #include "MapObjectFactory.h"
+#include "FatherGame.h"
 
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
@@ -1028,6 +1029,8 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 	CDialog_Manager::GetInstance()->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 	CNPC_Manager::GetInstance()->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 
+	if(iCurLevelID == LEVEL_CHAPTER_6)
+		CFatherGame::GetInstance()->DestroyInstance();
 	return S_OK;
 }
 
