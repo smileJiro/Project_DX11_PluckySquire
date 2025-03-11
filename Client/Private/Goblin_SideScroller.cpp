@@ -290,7 +290,7 @@ HRESULT CGoblin_SideScroller::Ready_Components()
         return E_FAIL;
 
     /* 2D Collider */
-    m_p2DColliderComs.resize(2);
+    m_p2DColliderComs.resize(1);
 
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;

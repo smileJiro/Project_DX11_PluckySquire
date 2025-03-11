@@ -59,15 +59,8 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_eInteractID = INTERACT_ID::NPC;
-	//CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), this);
-
-
-	
-
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strCurSecion, this, SECTION_2D_PLAYMAP_OBJECT);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strLocateSection, this, SECTION_2D_PLAYMAP_OBJECT);
 
 	CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
@@ -82,7 +75,7 @@ HRESULT CNPC_Store::Initialize(void* _pArg)
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Store::On_AnimEnd, this , placeholders::_1, placeholders::_2));
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(-150.f, 50.f, 0.f, 1.f));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(pDesc->vPos.x, pDesc->vPos.y, 0.f, 1.f));
 
 	
 	//CActor::ACTOR_DESC ActorDesc;

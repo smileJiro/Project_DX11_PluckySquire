@@ -36,7 +36,6 @@ HRESULT CShopPanel_New::Initialize(void* _pArg)
 		//Uimgr->Set_isMakeItem(true);
 	}
 
-
 	//if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), this)))
 	//	return E_FAIL;
 

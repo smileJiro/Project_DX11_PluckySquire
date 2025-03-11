@@ -469,7 +469,13 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 	//	break;
 
 	case INTERACT_ID::PORTAL:
-		m_strDisplayText = TEXT("이동");
+	{
+		if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+			m_strDisplayText = TEXT("들어가기");
+		else
+			m_strDisplayText = TEXT("나가기");
+	}
+		
 		break;
 
 	case INTERACT_ID::DRAGGABLE:
