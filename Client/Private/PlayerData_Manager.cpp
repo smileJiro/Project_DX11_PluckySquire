@@ -61,6 +61,16 @@ HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _i
 	// ItemState
 	// ItemState[Flipping_Glove].first: bool		ItemState[Filiping_Glove].second: GameObject*
 
+	_wstring strPrevText = L"Get_";
+	switch (_iLevelID)
+	{
+	case Client::LEVEL_CHAPTER_8:
+		strPrevText = L"Get_C08_";
+		break;
+	default:
+		break;
+	}
+
 	CPlayerItem::PLAYERITEM_DESC Desc = {};
 
 	Desc.iCurLevelID = _iLevelID;
@@ -71,7 +81,7 @@ HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _i
 		if (ItemTag.first == _szItemTag) {
 			Desc.szModelTag = ItemTag.second;
 			Desc.szItemTag = ItemTag.first;
-			Desc.szEventTag = TEXT("Get_") + ItemTag.first;
+			Desc.szEventTag = strPrevText + ItemTag.first;
 			break;
 		}
 	}
@@ -189,6 +199,7 @@ void CPlayerData_Manager::Set_Tags()
 	m_ItemTags[TILTING_GLOVE] = { TEXT("Tilting_Glove"), TEXT("latch_glove") };
 	m_ItemTags[STOP_STAMP] = { TEXT("Stop_Stamp"), TEXT("Stop_Stamp") };
 	m_ItemTags[BOMB_STAMP] = { TEXT("Bomb_Stamp"), TEXT("Bomb_Stamp") };
+	m_ItemTags[SWORD] = { TEXT("Sword"), TEXT("latch_sword") };
 
 	for (_uint i = 0; i < ITEM_END; ++i) {
 		m_ItemState[m_ItemTags[i].first] = { false, nullptr };

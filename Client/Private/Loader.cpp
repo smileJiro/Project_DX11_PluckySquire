@@ -1706,6 +1706,11 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		CGameEventExecuter_C8::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For. Prototype_GameObject_Postit_Page */
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Postit_Page"),
+		CPostit_Page::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* Pip_Player */
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_PipPlayer"),

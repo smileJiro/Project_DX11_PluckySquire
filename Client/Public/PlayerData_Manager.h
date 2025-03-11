@@ -29,7 +29,7 @@ public:
 		TILTING_GLOVE,
 		STOP_STAMP,
 		BOMB_STAMP,
-
+		SWORD,
 		ITEM_END
 	};
 
