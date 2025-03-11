@@ -678,6 +678,22 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
+
+
+	//3D Bulb
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_CHAPTER_8;
+	Pooling_Desc.strLayerTag = _strLayerTag;
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_CyberPlayerBullet");
+
+	CCyberPlayerBullet::CYBERPLAYER_PROJECTILE_DESC* pBulletDsc = new CCyberPlayerBullet::CYBERPLAYER_PROJECTILE_DESC;
+	pBulletDsc->eStartCoord = COORDINATE_3D;
+	pBulletDsc->iCurLevelID = m_eLevelID;
+	pBulletDsc->tTransform2DDesc.vInitialScaling = { 1.f,1.f,1.f };
+	pBulletDsc->iObjectGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
+	
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_CyberPlayerBullet"), Pooling_Desc, pBulletDsc);
+
 	return S_OK;
 }
 

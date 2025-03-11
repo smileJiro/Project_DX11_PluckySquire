@@ -144,7 +144,7 @@ HRESULT CEffect2D_Manager::Play_Effect(const _wstring& _strEffectModelTag, const
 		return E_FAIL;
 
 	/* 다시한번 호출하여 재귀적으로 새로 생성된 이펙트를 만든다. */
-	Play_Effect(_strEffectModelTag, _strSectionKey, _2DWorldMatrix, _fDelayTime, _iAnimIndex, _isLoop, _fLifeTime, _iSectionLayerGroup);
+	Play_Effect(_strEffectModelTag, _strSectionKey, _2DWorldMatrix, _fDelayTime, _iAnimIndex, _isLoop, _fLifeTime, _iSectionLayerGroup, _ppOut);
 
 	return S_OK;
 }

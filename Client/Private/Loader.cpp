@@ -76,6 +76,7 @@
 #include "Postit_Page.h"
 
 #include "ModelObject.h"
+#include "ScrollModelObject.h"
 #include "CarriableObject.h"
 #include "DraggableObject.h"
 #include "Player.h"
@@ -128,6 +129,7 @@
 #include "DefenderSmShip.h"
 #include "DefenderMedShip.h"
 #include "DefenderCapsule.h"
+#include "DefenderPerson.h"
 #include "Minigame_Defender.h"
 
 #include "Sneak_Default_Tile.h"
@@ -722,6 +724,9 @@ HRESULT CLoader::Loading_Level_Static()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
 		CModelObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ScrollModelObject"),
+		CScrollModelObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CarrieableObject"),
 		CCarriableObject::Create(m_pDevice, m_pContext))))
@@ -1561,7 +1566,9 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_PersonCapsule"),
 			CDefenderCapsule::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
-		
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderPerson"),
+			CDefenderPerson::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 		/* Monster */
 				/* For. Prototype_GameObject_SketchSpace_Alien */
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_Alien"),
@@ -2182,7 +2189,7 @@ HRESULT CLoader::UI_Texture_Load(LEVEL_ID _eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_panel_bulb.dds"), 1))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_DialogueBG"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Dialogue/dialogue_%d.dds"), 27))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Dialogue/dialogue_%d.dds"), 28))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_DialoguePortrait"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Character_Icon/dialogue_icon_%d.dds"), 17))))
