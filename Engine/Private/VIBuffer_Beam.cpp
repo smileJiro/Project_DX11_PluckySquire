@@ -202,7 +202,7 @@ void CVIBuffer_Beam::End_Update()
 	m_isUpdate = false;
 }
 
-void CVIBuffer_Beam::Update_StartPosition(_fvector _vStartPosition)
+void CVIBuffer_Beam::Set_StartPosition(_fvector _vStartPosition, _bool _isUpdateAll)
 {
 	if (false == m_isUpdate)
 		Begin_Update();
@@ -211,12 +211,13 @@ void CVIBuffer_Beam::Update_StartPosition(_fvector _vStartPosition)
 
 	m_pVertices[0].vPosition = m_pUpdateVertices[0].vPosition;
 
-	Update_RandomPoints();
+	if (_isUpdateAll)
+		Update_RandomPoints();
 
 	End_Update();
 }
 
-void CVIBuffer_Beam::Update_EndPosition(_fvector _vEndPosition)
+void CVIBuffer_Beam::Set_EndPosition(_fvector _vEndPosition, _bool _isUpdateAll)
 {
 	if (false == m_isUpdate)
 		Begin_Update();
@@ -224,11 +225,13 @@ void CVIBuffer_Beam::Update_EndPosition(_fvector _vEndPosition)
 	XMStoreFloat3(&m_pUpdateVertices[m_iNumVertices - 1].vPosition, _vEndPosition);
 
 	m_pVertices[m_iNumVertices - 1].vPosition = m_pUpdateVertices[m_iNumVertices - 1].vPosition;
-
-	Update_RandomPoints();
+	
+	if (_isUpdateAll)
+		Update_RandomPoints();
 
 	End_Update();
 }
+
 
 void CVIBuffer_Beam::Reset_Positions()
 {

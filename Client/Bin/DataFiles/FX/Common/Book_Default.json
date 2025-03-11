@@ -4,9 +4,9 @@
             "Buffer": {
                 "Color": {
                     "Arg1": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.8199999928474426,
+                        0.6499999761581421,
+                        0.10000000149011612,
                         1.5
                     ],
                     "Arg2": [
@@ -19,8 +19,8 @@
                 },
                 "Count": 256,
                 "LifeTime": {
-                    "Arg1": 3.0,
-                    "Arg2": 4.0,
+                    "Arg1": 1.2000000476837158,
+                    "Arg2": 1.600000023841858,
                     "SetType": "RANDOMLINEAR"
                 },
                 "Position": {
@@ -51,13 +51,13 @@
                 },
                 "Scale": {
                     "Arg1": [
-                        0.800000011920929,
-                        0.800000011920929,
+                        2.0,
+                        2.0,
                         1.0
                     ],
                     "Arg2": [
-                        1.2000000476837158,
-                        1.2000000476837158,
+                        3.0,
+                        3.0,
                         1.0
                     ],
                     "SetType": "RANDOMLINEAR"
@@ -80,7 +80,7 @@
                         0.0
                     ],
                     "Scale": [
-                        4.0,
+                        1.0,
                         1.0,
                         1.0
                     ],
@@ -95,7 +95,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.0,
+            "DelayTime": 0.07999999821186066,
             "Event": 0,
             "Float": [
                 {
@@ -116,7 +116,7 @@
                 },
                 {
                     "Name": "SpawnRate",
-                    "Value": 1800.0
+                    "Value": 1200.0
                 }
             ],
             "Float4": [
@@ -133,32 +133,13 @@
             "LoopTime": 1,
             "Modules": [
                 {
-                    "Apply": "TRANSLATION",
-                    "Datas": {
-                        "Float3": [
-                            {
-                                "Name": "Amount",
-                                "Value": [
-                                    0.0,
-                                    1.2000000476837158,
-                                    0.0
-                                ]
-                            }
-                        ]
-                    },
-                    "Init": true,
-                    "Module": "LINEAR_VELOCITY",
-                    "Order": 0,
-                    "Type": "MODULE_TRANSLATION"
-                },
-                {
                     "Apply": "SCALE",
                     "Init": false,
                     "Keyframe": [
                         {
                             "Data": [
-                                1.0,
-                                1.0,
+                                0.800000011920929,
+                                0.800000011920929,
                                 1.0,
                                 1.0
                             ],
@@ -175,8 +156,8 @@
                         },
                         {
                             "Data": [
-                                1.0,
-                                1.0,
+                                1.2999999523162842,
+                                1.2999999523162842,
                                 1.0,
                                 1.0
                             ],
@@ -195,13 +176,53 @@
                     "Module": "SCALE_KEYFRAME",
                     "Order": 1,
                     "Type": "MODULE_KEYFRAME"
+                },
+                {
+                    "Apply": "TRANSLATION",
+                    "Datas": {
+                        "Float": [
+                            {
+                                "Name": "Amount",
+                                "Value": 0.15000000596046448
+                            }
+                        ],
+                        "Float3": [
+                            {
+                                "Name": "Origin",
+                                "Value": [
+                                    0.0,
+                                    -1.0,
+                                    0.0
+                                ]
+                            }
+                        ]
+                    },
+                    "Init": true,
+                    "Module": "POINT_VELOCITY",
+                    "Order": 1,
+                    "Type": "MODULE_TRANSLATION"
+                },
+                {
+                    "Apply": "TRANSLATION",
+                    "Datas": {
+                        "Float": [
+                            {
+                                "Name": "Amount",
+                                "Value": 0.25
+                            }
+                        ]
+                    },
+                    "Init": false,
+                    "Module": "DRAG",
+                    "Order": 2,
+                    "Type": "MODULE_TRANSLATION"
                 }
             ],
             "Pooling": "REVIVE",
             "ShaderPass": "DEFAULT_BLOOM",
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "SPAWN_RATE",
-            "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Flash_01.dds",
+            "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Flash_02.dds",
             "Time": 3.4028234663852886e+38,
             "Transform": [
                 1.0,

@@ -231,6 +231,17 @@ _bool CController_Transform::Turn_To_DesireDir(_fvector _vStartDir, _fvector _vD
 	return m_pTransforms[m_eCurCoord]->Turn_To_DesireDir(_vStartDir, _vDesireDir, _fRatio);
 }
 
+void CController_Transform::Set_Look(_fvector _vDir)
+{
+	if (COORDINATE_2D == m_eCurCoord)
+		return;
+
+	if (nullptr == m_pTransforms[m_eCurCoord])
+		return;
+
+	m_pTransforms[m_eCurCoord]->Set_Look(_vDir);
+}
+
 CTransform* CController_Transform::Get_Transform() const
 {
 	return m_pTransforms[m_eCurCoord];

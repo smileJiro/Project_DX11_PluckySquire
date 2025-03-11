@@ -359,10 +359,24 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			Boss_Desc.iCurLevelID = m_eLevelID;
 			Boss_Desc.eStartCoord = COORDINATE_3D;
 			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, 78.0f);
+			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &pBoss, &Boss_Desc)))
 				return;
+
+			CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+			if (nullptr != pPlayer)
+			{
+				_float3 vPos = { -5.5f, 70.f, -71.f };
+				if(ACTOR_TYPE::DYNAMIC==pPlayer->Get_ActorCom()->Get_ActorType())
+				{
+					pPlayer->Get_ActorCom()->Set_GlobalPose(vPos);
+				}
+				else if (ACTOR_TYPE::KINEMATIC == pPlayer->Get_ActorCom()->Get_ActorType())
+				{
+					pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, vPos.z, 1.f));
+				}
+			}
 
 
 			// Pivot에 Boss 넣기(효림)
@@ -670,6 +684,22 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
+
+
+	//3D Bulb
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_CHAPTER_8;
+	Pooling_Desc.strLayerTag = _strLayerTag;
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_CyberPlayerBullet");
+
+	CCyberPlayerBullet::CYBERPLAYER_PROJECTILE_DESC* pBulletDsc = new CCyberPlayerBullet::CYBERPLAYER_PROJECTILE_DESC;
+	pBulletDsc->eStartCoord = COORDINATE_3D;
+	pBulletDsc->iCurLevelID = m_eLevelID;
+	pBulletDsc->tTransform2DDesc.vInitialScaling = { 1.f,1.f,1.f };
+	pBulletDsc->iObjectGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
+	
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_CyberPlayerBullet"), Pooling_Desc, pBulletDsc);
+
 	return S_OK;
 }
 
@@ -1377,8 +1407,8 @@ void CLevel_Chapter_08::Free()
 {
 	m_pGameInstance->End_BGM();
 
-	//CMinigame_Sneak::GetInstance()->DestroyInstance();
-	Safe_Release(m_pSneakMinigameManager);
+	CMinigame_Sneak::GetInstance()->DestroyInstance();
+	//Safe_Release(m_pSneakMinigameManager);
 
 	__super::Free();
 }

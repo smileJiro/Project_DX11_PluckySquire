@@ -76,6 +76,7 @@
 #include "Postit_Page.h"
 
 #include "ModelObject.h"
+#include "ScrollModelObject.h"
 #include "CarriableObject.h"
 #include "DraggableObject.h"
 #include "Player.h"
@@ -128,6 +129,7 @@
 #include "DefenderSmShip.h"
 #include "DefenderMedShip.h"
 #include "DefenderCapsule.h"
+#include "DefenderPerson.h"
 #include "Minigame_Defender.h"
 
 #include "Sneak_Default_Tile.h"
@@ -161,6 +163,8 @@
 #include "Goblin_SideScroller.h"
 #include "SketchSpace_Alien.h"
 #include "SketchSpace_SpikeBall.h"
+#include "SketchSpace_UFO.h"
+#include "Projectile_SketchSpace_UFO.h"
 
 /* For. Boss */
 #include "ButterGrump.h"
@@ -220,6 +224,7 @@
 // Player Effect 
 #include "Effect_Trail.h"
 #include "Effect_Beam.h"
+#include "TurnBookEffect.h"
 
 
 
@@ -466,8 +471,8 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Trail"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Trail_03.dds"), 1))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Grad04"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Grad_04.dds"), 1))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Grad01_180"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Grad_01_180.dds"), 1))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Glow01"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Glow_01.dds"), 1))))
@@ -720,6 +725,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
 		CModelObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ScrollModelObject"),
+		CScrollModelObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CarrieableObject"),
 		CCarriableObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -791,6 +799,9 @@ HRESULT CLoader::Loading_Level_Static()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"),
 		CPlayerBody::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TurnBookEffect"),
+		CTurnBookEffect::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	/* Monster */
 
@@ -1555,8 +1566,30 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_PersonCapsule"),
 			CDefenderCapsule::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
-		
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderPerson"),
+			CDefenderPerson::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 		/* Monster */
+				/* For. Prototype_GameObject_SketchSpace_Alien */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_Alien"),
+			CSketchSpace_Alien::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_SketchSpace_SpikeBall */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"),
+			CSketchSpace_SpikeBall::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_SketchSpace_UFO */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_UFO"),
+			CSketchSpace_UFO::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_Projectile_SketchSpace_UFO */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Projectile_SketchSpace_UFO"),
+			CProjectile_SketchSpace_UFO::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 
 		/* Etc */
 
@@ -1594,16 +1627,6 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		lstrcpy(m_szLoadingText, TEXT("Level 6 몬스터 로딩중입니다."));
 
 		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter6_Monsters.json"), TEXT("Chapter6_Monsters"), _eLoadLevelID)))
-			return E_FAIL;
-
-		/* For. Prototype_GameObject_SketchSpace_Alien */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_Alien"),
-			CSketchSpace_Alien::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		/* For. Prototype_GameObject_SketchSpace_SpikeBall */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"),
-			CSketchSpace_SpikeBall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 #pragma endregion
@@ -2171,7 +2194,7 @@ HRESULT CLoader::UI_Texture_Load(LEVEL_ID _eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_panel_bulb.dds"), 1))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_DialogueBG"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Dialogue/dialogue_%d.dds"), 27))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Dialogue/dialogue_%d.dds"), 28))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_DialoguePortrait"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Character_Icon/dialogue_icon_%d.dds"), 17))))

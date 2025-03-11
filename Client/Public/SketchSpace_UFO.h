@@ -36,6 +36,8 @@ public:
 	virtual void Change_Animation() override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
+	virtual void Monster_Move(_fvector _vDirection) override;
+
 public:
 	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void	On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
@@ -51,6 +53,8 @@ private:
 	virtual HRESULT					Ready_PartObjects();
 
 private:
+	_float3		m_vCenter = {};
+	_float		m_fAngle = { 0.f };
 	SIDESCROLL_PATROLBOUND m_eSideScroll_Bound = {};
 
 public:

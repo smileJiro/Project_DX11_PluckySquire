@@ -788,7 +788,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
-	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SNEAK);
+	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
 	//pPlayer->UnEquip_All();
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);

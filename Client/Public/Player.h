@@ -25,6 +25,7 @@ class CZetPack;
 class CPlayerBody;
 class CDefenderPlayer;
 class CPlayerRifle;
+class CTurnBookEffect;
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -102,6 +103,7 @@ public:
 		PLAYER_PART_DETONATOR = 6,
 		PLAYER_PART_ZETPACK,
 		PLAYER_PART_VISOR,
+		PLAYER_PART_TURNBOOKEFFECT,
 		PLAYER_PART_LAST
 	};
 
@@ -613,7 +615,7 @@ public:
 	const SHAPE_DATA& Get_BodyShapeData() { return m_tBodyShapeData; }
 	PLAYER_PART Get_CurrentStampType() { return m_eCurrentStamp; }
 	CActor_Dynamic* Get_ActorDynamic();
-
+	class CTurnBookEffect* Get_TurnBookEffect() { return m_pTurnBookEffect; }
 
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
@@ -744,6 +746,9 @@ private:
 
 	SHAPE_CAPSULE_DESC m_tBodyShapeDesc = {};
 	SHAPE_DATA m_tBodyShapeData = {};
+
+	// Turn Book ÇÒ ¶§ Effect
+	class CTurnBookEffect*		m_pTurnBookEffect = { nullptr };
 
 
 public:

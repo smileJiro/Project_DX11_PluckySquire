@@ -453,7 +453,7 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(CTriggerObject* _pTriggerO
 {
 	// Custom Data
 	_string szKey;
-	_uint iReturnMask;
+	//_uint iReturnMask;
 	_float3 vFreezeExitArm;
 
 	switch (_pDesc->iTriggerType) {

@@ -84,6 +84,8 @@ HRESULT CBirdMonster::Initialize(void* _pArg)
 
     Safe_Delete(pDesc->pActorDesc);
 
+    static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Gravity(false);
+
     return S_OK;
 }
 
