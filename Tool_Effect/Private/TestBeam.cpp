@@ -37,8 +37,8 @@ HRESULT CTestBeam::Initialize(void* _pArg)
     m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(0.f, 0.f, 0.f, 1.f));
 
     //m_pBufferCom->Begin_Update();
-    //m_pBufferCom->Update_StartPosition(XMVectorSet(0.f, 0.f, 0.f, 1.f));
-    //m_pBufferCom->Update_EndPosition(XMVectorSet(5.f, 5.f, 5.f, 1.f));
+    //m_pBufferCom->Set_StartPosition(XMVectorSet(0.f, 0.f, 0.f, 1.f));
+    //m_pBufferCom->Set_EndPosition(XMVectorSet(5.f, 5.f, 5.f, 1.f));
     //m_pBufferCom->End_Update();
 
     m_pBufferCom->Set_RandomMin(_float3(-2.f, 0.f, -2.f));
@@ -59,14 +59,14 @@ void CTestBeam::Update(_float _fTimeDelta)
     if (ImGui::DragFloat3("StartPos", (_float*)&vStartPos, 0.01f))
     {
         m_pBufferCom->Begin_Update();
-        m_pBufferCom->Update_StartPosition(XMLoadFloat3(&vStartPos));
+        m_pBufferCom->Set_StartPosition(XMLoadFloat3(&vStartPos));
         m_pBufferCom->End_Update();
     }
 
     if (ImGui::DragFloat3("EndPos", (_float*)&vEndPos, 0.01f))
     {
         m_pBufferCom->Begin_Update();
-        m_pBufferCom->Update_EndPosition(XMLoadFloat3(&vEndPos));
+        m_pBufferCom->Set_EndPosition(XMLoadFloat3(&vEndPos));
         m_pBufferCom->End_Update();
     }
 

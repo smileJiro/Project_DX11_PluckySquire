@@ -880,7 +880,6 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
-					"isLineEnter":true,
           "animation": {
 
             "duration": 1000,
@@ -898,7 +897,6 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
-		  "isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350

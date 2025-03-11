@@ -2,6 +2,7 @@
 #include "PlayerState.h"
 BEGIN(Client)
 class CBook;
+class CTurnBookEffect;
 class CPlayerState_TurnBook :
     public CPlayerState
 {
@@ -62,5 +63,8 @@ private:
 	_float m_fTiltIdleTime = 0.5f;
 	_float m_fTiltIdleTimeAcc = 0.f;
 	_float m_fSlidProgress = 0.16f;
+private:
+	CTurnBookEffect* m_pTurnBookEffect = { nullptr };
+
 };
 END

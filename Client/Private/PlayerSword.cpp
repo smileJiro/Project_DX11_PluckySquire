@@ -156,21 +156,10 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     EffectSystemDesc.iCurLevelID = m_iCurLevelID;
     EffectSystemDesc.isCoordChangeEnable = false;
     EffectSystemDesc.iSpriteShaderLevel = LEVEL_STATIC;
-    EffectSystemDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
-    
-    EffectSystemDesc.iModelShaderLevel = LEVEL_STATIC;
-    EffectSystemDesc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
-    
+    EffectSystemDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";    
     EffectSystemDesc.iEffectShaderLevel = LEVEL_STATIC;
-    EffectSystemDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
-    
-    EffectSystemDesc.iSingleSpriteShaderLevel = LEVEL_STATIC;
-    EffectSystemDesc.szSingleSpriteShaderTags = L"Prototype_Component_Shader_VtxPoint";
-    EffectSystemDesc.iSingleSpriteBufferLevel = LEVEL_STATIC;
-    EffectSystemDesc.szSingleSpriteBufferTags = L"Prototype_Component_VIBuffer_Point";
-    
+    EffectSystemDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";    
     EffectSystemDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
-    EffectSystemDesc.szMeshComputeShaderTag = L"Prototype_Component_Compute_Shader_MeshInstance";
 
     m_pThrowTrailEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("SwordThrowTrail2.json"), &EffectSystemDesc));
     if (nullptr == m_pThrowTrailEffect)
@@ -183,7 +172,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     EffectBeamDesc.isCoordChangeEnable = false;
     EffectBeamDesc.eStartCoord = COORDINATE_3D;
     EffectBeamDesc.szBufferTag = L"Prototype_Component_VIBuffer_Beam16";
-    EffectBeamDesc.szTextureTag = L"Prototype_Component_Texture_Grad04";
+    EffectBeamDesc.szTextureTag = L"Prototype_Component_Texture_Grad01_180";
     EffectBeamDesc.vRandomMin = _float3(-0.5f, -0.5f, 0.f);
     EffectBeamDesc.vRandomMax = _float3(0.5f, 0.5f, 0.f);
     EffectBeamDesc.fWidth = 0.08f;

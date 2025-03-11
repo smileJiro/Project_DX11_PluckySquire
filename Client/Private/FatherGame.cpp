@@ -10,6 +10,10 @@
 #include "Mug_Alien.h"
 #include "JellyKing.h"
 #include "ZetPack_Father.h"
+#include "Mat.h"
+#include "PlayerData_Manager.h"
+#include "PlayerItem.h"
+
 /* Progress */
 #include "FatherGame_Progress_Start.h"
 #include "FatherGame_Progress_ZetPack.h"
@@ -193,7 +197,23 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 		m_FatherParts_UIs[(_uint)FATHER_PART::FATER_HEAD]->Set_Active(false);
 	}
 
+	{ /* Mat */
+		CMat::MODELOBJECT_DESC Desc;
+		Desc.Build_3D_Transform(_float3(2.11f, 5.87f, -0.39f), _float3(0.61f, 1.0f, 0.61f));
+		Desc.iCurLevelID = LEVEL_CHAPTER_6;
 
+		CGameObject* pGameObject = nullptr;
+		if(FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Mat"), LEVEL_CHAPTER_6, TEXT("Layer_Mat"), &pGameObject, &Desc)))
+			return E_FAIL;
+		m_pMat = static_cast<CMat*>(pGameObject);
+		Safe_AddRef(m_pMat);
+	}/* Mat */
+
+	{ /* Item StopStamp */
+		if(FAILED(CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)LEVEL_CHAPTER_6, TEXT("Stop_Stamp"), _float3(2.11f, 3.87f, -0.39f))))
+			return E_FAIL;
+
+	}/* Item StopStamp */
 	m_eGameState = GAME_PLAYING;
 
 	return S_OK;
@@ -207,6 +227,10 @@ void CFatherGame::Update()
 	if (KEY_DOWN(KEY::F))
 	{
 		OpenPortalLocker(PORTALLOCKER::LOCKER_PARTHEAD);
+	}
+	if (KEY_DOWN(KEY::U))
+	{
+		Start_StopStampMoveWork();
 	}
 
 	for (_uint i = 0; i < m_Progress.size(); ++i)
@@ -247,6 +271,8 @@ HRESULT CFatherGame::End_Game()
 {
 	m_eGameState = GAME_END;
 
+	Safe_Release(m_pMat);
+	m_pMat = nullptr;
 	Safe_Release(m_pMugAlien);
 	m_pMugAlien = nullptr;
 	Safe_Release(m_pZetPack_Child);
@@ -320,6 +346,15 @@ void CFatherGame::OpenPortalLocker(PORTALLOCKER _ePortalLockerIndex)
 	m_PortalLockers[_ePortalLockerIndex]->Open_Locker();
 	Safe_Release(m_PortalLockers[_ePortalLockerIndex]);
 	m_PortalLockers[_ePortalLockerIndex] = nullptr;
+}
+
+void CFatherGame::Start_StopStampMoveWork()
+{
+	m_pMat->Get_ActorCom()->Add_Impulse(_float3(0.0f, 20.0f, 0.0f));
+	m_pMat->Get_ActorCom()->Set_AngularVelocity(_float3(10.f, 0.0f, 0.0f));
+
+	CPlayerItem* pPlayerItem = CPlayerData_Manager::GetInstance()->Get_PlayerItem_Ptr(TEXT("Stop_Stamp"));
+	pPlayerItem->Get_ActorCom()->Add_Impulse(_float3(0.0f, 20.0f, 5.0f));
 }
 
 void CFatherGame::Set_ZetPack_Child(CZetPack_Child* _pZetPack_Child)
@@ -399,6 +434,7 @@ void CFatherGame::Free()
 	if (GAME_END != m_eGameState)
 	{
 		/* 정상적으로 게임 엔드가 호출되지 않은 경우에만 릴리즈 */
+		Safe_Release(m_pMat);
 		Safe_Release(m_pMugAlien);
 		Safe_Release(m_pZetPack_Child);
 		Safe_Release(m_pJellyKing);

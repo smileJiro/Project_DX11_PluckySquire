@@ -74,9 +74,9 @@ void CSneak_Tile::Interact()
 	Flip();
 
 	if (m_isFlipped)
-		m_pGameInstance->Start_SFX(TEXT("A_sfx_pit_activate"), 50.f);
+		m_pGameInstance->Start_SFX(TEXT("A_sfx_pit_activate"), 20.f);
 	else
-		m_pGameInstance->Start_SFX(TEXT("A_sfx_pit_deactivate"), 50.f);
+		m_pGameInstance->Start_SFX(TEXT("A_sfx_pit_deactivate"), 20.f);
 }
 
 

@@ -3,6 +3,9 @@
 #include "Collider_Circle.h"
 #include "Collider_AABB.h"
 #include "Section_Manager.h"
+#include "Effect2D_Manager.h"
+#include "ModelObject.h"
+#include "2DModel.h"
 
 CDefenderMonster::CDefenderMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CCharacter(_pDevice, _pContext)
@@ -41,6 +44,16 @@ HRESULT CDefenderMonster::Initialize(void* _pArg)
 
 void CDefenderMonster::Update(_float _fTimeDelta)
 {
+	if (false == m_bSpawned  && m_pTeleportFX
+		&& static_cast<C2DModel*>(m_pTeleportFX->Get_Model(COORDINATE_2D))->Get_Animation(m_iFXTeleportInIdx)->Get_Progress() >= 0.5f)
+	{
+		Safe_Release(m_pTeleportFX);
+		m_pTeleportFX = nullptr;
+		m_bSpawned = true;
+		m_PartObjects[PART_BODY]->Set_Active(true);
+
+		On_Spawned();
+	}
 	m_fLifeTimeAcc += _fTimeDelta;
 	if (m_fLifeTimeAcc >= m_fLifeTime)
 	{
@@ -80,6 +93,30 @@ void CDefenderMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vFor
 		m_tStat.iHP = m_tStat.iMaxHP;
 		return;
 	}
+}
+
+void CDefenderMonster::On_Explode()
+{
+}
+
+void CDefenderMonster::On_Teleport()
+{
+	m_bSpawned = false;
+	m_PartObjects[PART_BODY]->Set_Active(false);
+	if (m_pTeleportFX)
+		Safe_Release(m_pTeleportFX);
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, m_iFXTeleportInIdx, false, 0.f, SECTION_2D_PLAYMAP_EFFECT, (CGameObject**)&m_pTeleportFX);
+	Safe_AddRef(m_pTeleportFX);
+	static_cast<C2DModel*>(m_pTeleportFX->Get_Model(COORDINATE_2D))->Get_Animation(m_iFXTeleportInIdx)->Reset();
+}
+
+void CDefenderMonster::On_LifeTimeOut()
+{
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, m_iFXTeleportOutIdx, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
 }
 
 void CDefenderMonster::Set_Direction(T_DIRECTION _eDirection)
@@ -132,5 +169,6 @@ CGameObject* CDefenderMonster::Clone(void* _pArg)
 
 void CDefenderMonster::Free()
 {
+	Safe_Release(m_pTeleportFX);
 	__super::Free();
 }

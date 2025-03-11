@@ -218,20 +218,29 @@ void CDialog::UpdateDialogueLine()
 
 HRESULT CDialog::NextLevelLoadJson(_int _iNextLevel)
 {
-	if (3 == (_int)_iNextLevel)
+	LEVEL_ID eId = (LEVEL_ID)_iNextLevel;
+
+	switch (eId)
 	{
+	case Client::LEVEL_CHAPTER_2:
 		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_Chapter_02.json"))))
 			return E_FAIL;
-	}
-	else if (4 == _iNextLevel)
-	{
+		break;
+	case Client::LEVEL_CHAPTER_4:
 		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_Chapter_04.json"))))
 			return E_FAIL;
-	}
-	else if (5 == _iNextLevel)
-	{
+		break;
+	case Client::LEVEL_CHAPTER_6:
 		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_Chapter_06.json"))))
 			return E_FAIL;
+		break;
+	case Client::LEVEL_CHAPTER_8:
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/Dialogue/dialog_data_Chapter_08.json"))))
+			return E_FAIL;
+		break;
+	default:
+		break;
+
 	}
 
 	return S_OK;

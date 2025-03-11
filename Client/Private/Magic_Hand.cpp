@@ -55,7 +55,7 @@ void CMagic_Hand::Update(_float _fTimeDelta)
 //    if (ImGui::Button("Replay All"))
 //    {
 //        m_pMagicHandbody->Set_Animation(0);
-//        m_pEffectSystem->Active_All(true);
+//        m_pDefaultEffect->Active_All(true);
 //    }
 //
 //    ImGui::End();

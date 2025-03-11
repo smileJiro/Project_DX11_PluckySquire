@@ -1,0 +1,30 @@
+[
+  {
+    "Collider_Info": {
+      "HalfExtents": [
+        1.0999999046325684,
+        3.799999952316284,
+        3.099999999999999999
+      ],
+      "Position": [
+        -115.94,
+        64.43,
+        23.53
+      ],
+      "Radius": 0.5,
+      "Rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "ShapeType": 0
+    },
+    "Trigger_Reusable": false,
+    "Fillter_MyGroup": 128,
+    "Fillter_OtherGroupMask": 2,
+    "Trigger_ConditionType": 3,
+    "Trigger_Coordinate": 1,
+    "Trigger_EventTag": "Chapter8_Intro_Postit_Sequence",
+    "Trigger_Type": 0
+  }
+]

@@ -44,6 +44,7 @@ private:
 	_float					m_fAmount = { 0.f };
 	_bool					m_isFadeIn = { false };
 	_bool					m_isFadeInComplete = { false };
+	wstring					m_strSFX = { TEXT("") };
 };
 
 END

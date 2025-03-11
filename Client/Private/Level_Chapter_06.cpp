@@ -202,10 +202,12 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FALLINGROCK_BASIC);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::SLIPPERY);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::NPC_EVENT); // ZetPack
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::GIMMICK_OBJECT); // 
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER_PROJECTILE);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::TRIGGER_OBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::BLOCKER);
 
@@ -654,7 +656,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 {
 	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
 
-	CMiniGame_Defender::DEFENDER_CONTROLLTOWER_DESC tDesc = {};
+	CMiniGame_Defender::DEFENDER_DESC tDesc = {};
 	tDesc.iCurLevelID = m_eLevelID;
 	tDesc.tTransform2DDesc.vInitialPosition = { -2020.f, -80.f, 0.f };   // TODO ::임시 위치
 	CMiniGame_Defender* pTower = static_cast<CMiniGame_Defender*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Minigame_Defender"), &tDesc));;
@@ -1552,10 +1554,9 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionMed"), LEVEL_CHAPTER_6, 10);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionSmall"), LEVEL_CHAPTER_6, 10);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionTurret"), LEVEL_CHAPTER_6, 10);
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPersonFX"), LEVEL_CHAPTER_6, 10);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefRedBullet"), LEVEL_CHAPTER_6, 10);
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPlayerHit"), LEVEL_CHAPTER_6, 10);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefTeleport"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPlayerHit"), LEVEL_CHAPTER_6, 1);
 
 
 	return S_OK;
@@ -1679,14 +1680,18 @@ HRESULT CLevel_Chapter_06::Map_Object_Create(_wstring _strFileName)
 				int a = 1;
 
 			}
-
+			_wstring strIncludeLayerTag = wstrLayerTag;
 			C3DMapObject* pGameObject =
 				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
 					(LEVEL_ID)m_eLevelID,
 					m_pGameInstance,
 					hFile);
 			if (nullptr != pGameObject)
-				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, wstrLayerTag.c_str(), pGameObject);
+			{
+				if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
+					strIncludeLayerTag = L"Layer_Postit";
+				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, strIncludeLayerTag.c_str(), pGameObject);
+			}
 		}
 	}
 	CloseHandle(hFile);

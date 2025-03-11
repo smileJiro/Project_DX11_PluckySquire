@@ -9,7 +9,7 @@ BEGIN(Client)
 class CCamera_Target  : public CCamera
 {
 public:
-	enum CAMERA_MODE { DEFAULT, MOVE_TO_NEXTARM, RETURN_TO_PREARM, RETURN_TO_DEFUALT, MOVE_TO_CUSTOMARM, RESET_TO_SETTINGPOINT, BOSS, CAMERA_MODE_END };
+	enum CAMERA_MODE { DEFAULT, MOVE_TO_NEXTARM, RETURN_TO_PREARM, RETURN_TO_DEFUALT, MOVE_TO_CUSTOMARM, RESET_TO_SETTINGPOINT, LOAD_SAVED_ARMDATA, BOSS, CAMERA_MODE_END };
 	enum TARGET_STATE { TARGET_RIGHT, TARGET_UP, TARGET_LOOK, TARGET_POS, TARGET_STATE_END };
 
 	typedef struct tagCameraTargetDesc : public CCamera::CAMERA_DESC
@@ -93,6 +93,7 @@ public:
 	virtual void				Change_Target(CGameObject* _pTarget, _float _fChangingTime = 1.f) override;
 	virtual void				Start_ResetArm_To_SettingPoint(_float _fResetTime) override;
 	virtual void				Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType) override;
+	virtual void				Load_SavedArmData(_float _fLoadTime);
 	
 	void						Load_InitialArmTag();
 
@@ -161,7 +162,8 @@ private:
 	void						Move_To_PreArm(_float _fTimeDelta);
 	void						Move_To_CustomArm(_float _fTimeDelta);
 	void						Move_To_ExitArm(_float _fTimeDelta);
-	void						Reset_To_SettingPoint(_float _fTimeDelta);
+	virtual void				Reset_To_SettingPoint(_float _fTimeDelta) override;
+	virtual void				Action_Load_SavedArmData(_float _fTimeDelta) override;
 
 	void						Move_In_BossStage(_float _fTimeDelta);
 
