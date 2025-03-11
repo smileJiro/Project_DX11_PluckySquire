@@ -79,8 +79,8 @@ void CPrintFloorWord::Update(_float _fTimeDelta)
 		m_isFadeIn = true;
 		
 		// NOTWORD 소리가 나면 안되는 floorword
-		if (TEXT("NOTWORD") != m_strSFX)
-			m_pGameInstance->Start_SFX_Delay(m_strSFX, 0.f, 30.f, false);
+		//if (TEXT("NOTWORD") != m_strSFX)
+		//	m_pGameInstance->Start_SFX_Delay(m_strSFX, 0.f, 30.f, false);
 
 	}
 
