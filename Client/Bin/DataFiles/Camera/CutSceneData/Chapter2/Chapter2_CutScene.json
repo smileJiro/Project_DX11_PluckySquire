@@ -18112,7 +18112,7 @@
     {
         "CutScene_Next_CameraType": 3,
         "Pause_After_CutScene" :  true,
-        "Delay_Frame_Before_CutScene" :  3,
+        "Delay_Frame_Before_CutScene" :  7,
         "CutScene_Tag": "Chapter2_Intro",
         "CutScene_Time": [
             12.399999618530273,

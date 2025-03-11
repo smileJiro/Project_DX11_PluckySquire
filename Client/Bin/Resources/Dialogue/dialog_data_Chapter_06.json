@@ -1175,7 +1175,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "안녕하세요, 용감한 용사 여러분!",
+					"text": "안녕하세요, 용감한 견습 기사님!",
 					"Red": 255,
 					"Green": 224,
 					"Blue": 136
@@ -2641,6 +2641,114 @@
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "DEFENDER_Dialogue_01",
+			"Section": "Chapter6_SKSP_04",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "왜 이렇게 늦었나, 병사!",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "자네가 밖에서 빈둥대는 동안, 우린 스크렐을\n상대하느라 눈코 뜰 새가 없었단 말이다!",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "녀석들이 쳐들어와서 우리의 우수한 과학자들을\n훔쳐 갔다.",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그 샌님들은 하나같이 약골에 겁쟁이지만\n전쟁에 이기려면 녀석들이 필요하단 말이다!",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "얼른 가서 그 과학자들을 구하고... 나한테 데려와!",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그리고, 한 가지 더. 절대 죽지 마라.",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
 				}
 			]
 		}

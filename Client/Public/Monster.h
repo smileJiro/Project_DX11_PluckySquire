@@ -26,10 +26,10 @@ public:
 		_float fAttack2DRange;
 		_float fDelayTime;
 		_float fCoolTime;
-		_float fHP;
 		_float fFOVX;
 		_float fFOVY;
 		_bool isStay = false;
+		_float3 vLook = { 0.f,0.f,-1.f };
 		_bool isSneakMode = false;
 		SNEAKWAYPOINTINDEX eWayIndex = SNEAKWAYPOINTINDEX::LAST;
 	}MONSTER_DESC;

@@ -102,15 +102,15 @@ HRESULT CShopPanel_RenderFont::Render()
 		_float2 vRTSize = _float2(0.f, 0.f);
 
 		vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
-
+		_float2 vRatio = _float2(vRTSize.x / RTSIZE_BOOK2D_X, vRTSize.y / RTSIZE_BOOK2D_Y);
 		_float2 vMiddlePoint = { vRTSize.x / 2 , vRTSize.y / 2 };
 		_float2 vCalPos = { 0.f, 0.f };
 		_float2 vBulbPos = { 0.f, 0.f };
 
 		_float2 vPos = { 0.f, 0.f };
 
-		vPos.x = BGPos.x + vRTSize.x * 0.06f;
-		vPos.y = BGPos.y + vRTSize.y * 0.137f;
+		vPos.x = BGPos.x + vRTSize.x * 0.115f / vRatio.x;
+		vPos.y = BGPos.y + vRTSize.y * 0.28f / vRatio.y;
 
 		vBulbPos.x = vMiddlePoint.x + vPos.x;
 		vBulbPos.y = vMiddlePoint.y - vPos.y;
@@ -120,15 +120,15 @@ HRESULT CShopPanel_RenderFont::Render()
 
 		m_pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vBulbPos.x, vBulbPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
-		vPos.x = BGPos.x + vRTSize.x * 0.045f;
-		vPos.y = BGPos.y - vRTSize.y * 0.075f;
+		//vPos.x = BGPos.x + vRTSize.x * 0.045f;
+		//vPos.y = BGPos.y - vRTSize.y * 0.075f;
+		//
+		//vCalPos.x = vMiddlePoint.x + vPos.x;
+		//vCalPos.y = vMiddlePoint.y - vPos.y;
 
-		vCalPos.x = vMiddlePoint.x + vPos.x;
-		vCalPos.y = vMiddlePoint.y - vPos.y;
 
-
-		vPos.x = BGPos.x - vRTSize.x * 0.036f;
-		vPos.y = BGPos.y - vRTSize.y * 0.2f;
+		vPos.x = BGPos.x - vRTSize.x * 0.07f / vRatio.x;
+		vPos.y = BGPos.y - vRTSize.y * 0.405f / vRatio.y;
 
 
 		vCalPos.x = vMiddlePoint.x + vPos.x;
@@ -141,7 +141,7 @@ HRESULT CShopPanel_RenderFont::Render()
 		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y + 2.5f), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 		m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
-		vPos.x = BGPos.x + vRTSize.x * 0.035f;
+		vPos.x = BGPos.x + vRTSize.x * 0.07f / vRatio.x;
 		vCalPos.x = vMiddlePoint.x + vPos.x;
 
 		wsprintf(m_tFont, TEXT("선택"));
@@ -165,11 +165,13 @@ HRESULT CShopPanel_RenderFont::Render()
 void CShopPanel_RenderFont::Render_ItemInfo()
 {
 	
+
 	CShop_Manager* pShopManager = CShop_Manager::GetInstance();
 	assert(pShopManager);
 
 	_float2 vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
 	
+	_float2 vRatio = _float2(vRTSize.x / RTSIZE_BOOK2D_X, vRTSize.y / RTSIZE_BOOK2D_Y);
 
 	if (0 == pShopManager->Get_ShopItems().size())
 		return;
@@ -185,8 +187,8 @@ void CShopPanel_RenderFont::Render_ItemInfo()
 
 		_float2 vPos = { 0.f, 0.f };
 
-		vPos.x = vBadgePos.x + vRTSize.x * 0.01f;
-		vPos.y = vBadgePos.y + vRTSize.y * 0.015f;
+		vPos.x = vBadgePos.x + vRTSize.x * 0.02f / vRatio.x;
+		vPos.y = vBadgePos.y + vRTSize.y * 0.03f / vRatio.y;
 
 		vCalPos.x = vMiddlePoint.x + vPos.x;
 		vCalPos.y = vMiddlePoint.y - vPos.y;
@@ -196,8 +198,8 @@ void CShopPanel_RenderFont::Render_ItemInfo()
 		m_pGameInstance->Render_Font(TEXT("Font30"), strName.c_str(), _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
 
 		// 가격 노출
-		vPos.x = vBadgePos.x + vRTSize.x * 0.06f;
-		vPos.y = vBadgePos.y + vRTSize.y * 0.013f;
+		vPos.x = vBadgePos.x + vRTSize.x * 0.125f / vRatio.x;
+		vPos.y = vBadgePos.y + vRTSize.y * 0.029f / vRatio.y;
 
 		vCalPos.x = vMiddlePoint.x + vPos.x;
 		vCalPos.y = vMiddlePoint.y - vPos.y;
@@ -210,11 +212,15 @@ void CShopPanel_RenderFont::Render_ItemInfo()
 
 void CShopPanel_RenderFont::Render_ItemDialog()
 {
+	
+
+
 	CShop_Manager* pShopManager = CShop_Manager::GetInstance();
 	assert(pShopManager);
 
 	_int iChooseIndex = pShopManager->Get_ChooseIndex();
 	_float2 vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
+	_float2 vRatio = _float2(vRTSize.x / RTSIZE_BOOK2D_X, vRTSize.y / RTSIZE_BOOK2D_Y);
 	_float2 vBGPos = pShopManager->Get_ShopBGPos();
 	_float2 vMiddlePoint = { vRTSize.x / 2 , vRTSize.y / 2 };
 	_float2 vCalPos = { 0.f, 0.f };
@@ -226,8 +232,8 @@ void CShopPanel_RenderFont::Render_ItemDialog()
 
 	if (0 == pShopManager->Get_ShopItems().size())
 	{
-		vPos.x = vBGPos.x - vRTSize.x * 0.03f;
-		vPos.y = vBGPos.y - vRTSize.y * 0.13f;
+		vPos.x = vBGPos.x - vRTSize.x * 0.055f / vRatio.x;
+		vPos.y = vBGPos.y - vRTSize.y * 0.255f / vRatio.y;
 
 		vCalPos.x = vMiddlePoint.x + vPos.x;
 		vCalPos.y = vMiddlePoint.y - vPos.y;
@@ -236,8 +242,8 @@ void CShopPanel_RenderFont::Render_ItemDialog()
 	}
 	else if (true == pShopManager->Get_Confirm())
 	{
-		vPos.x = vBGPos.x - vRTSize.x * 0.03f;
-		vPos.y = vBGPos.y - vRTSize.y * 0.145f;
+		vPos.x = vBGPos.x - vRTSize.x * 0.055f / vRatio.x;
+		vPos.y = vBGPos.y - vRTSize.y * 0.29f / vRatio.y;
 
 		vCalPos.x = vMiddlePoint.x + vPos.x;
 		vCalPos.y = vMiddlePoint.y - vPos.y;
@@ -248,8 +254,8 @@ void CShopPanel_RenderFont::Render_ItemDialog()
 	{
 		if (0 < pShopManager->Get_ShopItems().size())
 		{
-			vPos.x = vBGPos.x - vRTSize.x * 0.04f;
-			vPos.y = vBGPos.y - vRTSize.y * 0.13f;
+			vPos.x = vBGPos.x - vRTSize.x * 0.075f / vRatio.x;
+			vPos.y = vBGPos.y - vRTSize.y * 0.255f / vRatio.y;
 
 			vCalPos.x = vMiddlePoint.x + vPos.x;
 			vCalPos.y = vMiddlePoint.y - vPos.y;

@@ -688,6 +688,9 @@
     <Filter Include="02.GameObjects\Monster\C6_SketchSpace">
       <UniqueIdentifier>{8841a22f-be45-4324-8f1e-9db21363e7e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Effect\Etc">
+      <UniqueIdentifier>{a2878a22-cd5b-40ea-973b-eb5e1cffba7f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="05.MiniGames\FatherGame\Object\ZetPack_Father">
       <UniqueIdentifier>{f515fe26-a3e1-4f36-a8b2-7cabed20cb32}</UniqueIdentifier>
     </Filter>
@@ -1725,6 +1728,15 @@
     <ClInclude Include="..\Public\SketchSpace_UFO.h">
       <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\TurnBookEffect.h">
+      <Filter>02.GameObjects\Effect\Etc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SideScroll_IdleState.h">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SideScroll_AttackState.h">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CandleGame.h">
       <Filter>05.MiniGames\FatherGame\CandleGame</Filter>
     </ClInclude>
@@ -2751,6 +2763,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\SketchSpace_UFO.cpp">
       <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TurnBookEffect.cpp">
+      <Filter>02.GameObjects\Effect\Etc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SideScroll_IdleState.cpp">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SideScroll_AttackState.cpp">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CandleGame.cpp">
       <Filter>05.MiniGames\FatherGame\CandleGame</Filter>

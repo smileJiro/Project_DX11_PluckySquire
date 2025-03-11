@@ -56,6 +56,8 @@
 #include "Dialog_Manager.h"
 #include "NPC_Manager.h"
 #include "NPC.h"
+#include "Shop_Manager.h"
+#include "ShopPanel_New.h"
 
 
 CLevel_Chapter_04::CLevel_Chapter_04(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -203,6 +205,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger.json"));
 	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger_Events.json"));
 	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Tilting_Glove"), _float3(-3.59f, 29.89f, 27.14f));
+	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Bomb_Stamp"), _float3(-45.9f, 10.83f, 8.21f), {1.f,1.f,1.f});
 
 	/* Blur RenderGroupOn */
 	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
@@ -736,6 +739,17 @@ HRESULT CLevel_Chapter_04::Ready_Layer_UI(const _wstring& _strLayerTag)
 	//		return E_FAIL;
 	//}
 
+	CGameObject* pShop;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pShop, &pDesc)))
+		return E_FAIL;
+
+	CShop_Manager::GetInstance()->Set_Shop(static_cast<CShopPanel_New*>(pShop));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannelRenderFont"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
 
 #pragma region SettingPanel UI
 
@@ -1023,12 +1037,24 @@ HRESULT CLevel_Chapter_04::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
 
+	NPCDesc.iCurLevelID = m_eLevelID;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iNumPartObjects = 3;
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	wsprintf(NPCDesc.strLocateSection, TEXT("Chapter4_P0506"));
+	NPCDesc.vPos = _float2(239.0f, -99.1f);
+	wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
+
 
 	CPostit_Page::POSTIT_PAGE_DESC PostitDesc = {};
 	PostitDesc.strInitSkspName = L"Chapter4_SKSP_Postit";
-	PostitDesc.Build_2D_Transform({ 510.f, 100.f }, { 2.2f,2.2f });
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Postit_Page"), m_eLevelID, _strLayerTag, &PostitDesc)))
 		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -1377,7 +1403,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 
 	tJumpPadDesc.iCurLevelID = m_eLevelID;
 	tJumpPadDesc.eStartCoord = COORDINATE_2D;
-	tJumpPadDesc.tTransform2DDesc.vInitialPosition = { -600.f, 218.5f, 0.f };
+	tJumpPadDesc.tTransform2DDesc.vInitialPosition = { -920.f, 305.5f, 0.f };
 	tJumpPadDesc.strInitialSectionTag = L"Chapter4_SKSP_01";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpPad"),
 		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
@@ -1401,13 +1427,13 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"), m_eLevelID, _strLayerTag, &tCarriableDesc)))
 		return E_FAIL;
 
-	/*tCarriableDesc.eStartCoord = COORDINATE_2D;
+	tCarriableDesc.eStartCoord = COORDINATE_2D;
 	tCarriableDesc.iCurLevelID = m_eLevelID;
 	tCarriableDesc.tTransform2DDesc.vInitialPosition = _float3(-650.f, -340.f, 0.f);
 	tCarriableDesc.strInitialSectionTag = L"Chapter4_SKSP_05";
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"), m_eLevelID, _strLayerTag, &tCarriableDesc)))
-		return E_FAIL;*/
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -1465,10 +1491,10 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &DoorRedDesc)))
 		return E_FAIL;
 
-	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-342.f, 50.f, 0.f);
+	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-515.f, 80.f, 0.f);
 	DoorRedDesc.iCurLevelID = m_eLevelID;
 	DoorRedDesc.isHorizontal = true;
-	DoorRedDesc.eSize = CDoor_2D::SMALL;
+	DoorRedDesc.eSize = CDoor_2D::MED;
 	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
 	DoorRedDesc.strSectionTag = L"Chapter4_SKSP_01";
 	DoorRedDesc.strLayerTag = L"Layer_Monster_Door3";
@@ -1625,6 +1651,8 @@ HRESULT CLevel_Chapter_04::Map_Object_Create(_wstring _strFileName)
 		isTempReturn = ReadFile(hFile, &szLayerTag, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 		isTempReturn = ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
 		strLayerTag = szLayerTag;
+
+
 		wstrLayerTag = m_pGameInstance->StringToWString(strLayerTag);
 
 		for (size_t i = 0; i < iObjectCnt; i++)
@@ -1634,14 +1662,18 @@ HRESULT CLevel_Chapter_04::Map_Object_Create(_wstring _strFileName)
 				int a = 1;
 
 			}
-
+			_wstring strIncludeLayerTag = wstrLayerTag;
 			C3DMapObject* pGameObject =
 				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
 					(LEVEL_ID)m_eLevelID,
 					m_pGameInstance,
 					hFile);
 			if (nullptr != pGameObject)
-				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, wstrLayerTag.c_str(), pGameObject);
+			{
+				if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
+					strIncludeLayerTag = L"Layer_Postit";
+				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, strIncludeLayerTag.c_str(), pGameObject);
+			}
 		}
 	}
 	CloseHandle(hFile);

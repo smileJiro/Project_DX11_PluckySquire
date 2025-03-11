@@ -318,7 +318,7 @@ HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
 			eShopDesc.fSizeX = 256.f * 0.8f;
 			eShopDesc.fSizeY = 256.f * 0.8f;
 			eShopDesc.iShopItemCount = i;
-			eShopDesc.iSkillLevel = m_iSpinAttackLevel;
+			eShopDesc.iSkillLevel = m_iThrowAttackLevel;
 			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_THROWATTBADGE;
 			eShopDesc.iPrice = 20;
 			eShopDesc.strName = TEXT("검 던지기 배지");
@@ -375,7 +375,7 @@ HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
 			eShopDesc.fSizeX = 256.f * 0.8f;
 			eShopDesc.fSizeY = 256.f * 0.8f;
 			eShopDesc.iShopItemCount = i;
-			eShopDesc.iSkillLevel = m_iJumpAttackLevel;
+			eShopDesc.iSkillLevel = m_iSpinAttackLevel;
 			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_SPINATTACKBADGE;
 			eShopDesc.iPrice = 30;
 			eShopDesc.strName = TEXT("회전 공격 배지");
@@ -443,10 +443,21 @@ void CShop_Manager::Delete_ShopItems(_uint _index)
 			return;
 		}
 
-		for (int i = 0; i < m_ShopItems[_index].size(); ++i)
+		if (0 < _index)
 		{
-			m_ShopItems[_index][i]->Set_isChooseItem(true);
+			for (int i = 0; i < m_ShopItems[_index - 1].size(); ++i)
+			{
+				m_ShopItems[_index - 1][i]->Set_isChooseItem(true);
+			}
 		}
+		else if (0 == _index)
+		{
+			for (int i = 0; i < m_ShopItems[_index].size(); ++i)
+			{
+				m_ShopItems[_index][i]->Set_isChooseItem(true);
+			}
+		}
+		
 	}
 
 
@@ -570,6 +581,20 @@ HRESULT CShop_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _
 	}
 	m_pShopPanels.clear();
 
+	if (nullptr != m_pShop)
+	{
+		Safe_Release(m_pShop);
+		m_pShop = nullptr;
+	}
+
+
+	m_isOpenShop = false;
+	m_iPreIndex = 0;
+	m_isConfirm = false;
+	m_isOpenConfirmUI = false;
+	m_isPurchase = true;
+
+
 	return S_OK;
 }
 
@@ -606,5 +631,7 @@ void CShop_Manager::Free()
 
 	Safe_Release(m_pGameInstance);
 	__super::Free();
+
+	Safe_Release(m_pShop);
 }
 

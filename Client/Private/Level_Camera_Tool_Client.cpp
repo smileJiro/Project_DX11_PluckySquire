@@ -126,10 +126,10 @@ void CLevel_Camera_Tool_Client::Update(_float _fTimeDelta)
 	}
 
 
-	//Show_CameraTool();
-	Show_CutSceneTool(_fTimeDelta);
-	//Show_ArmInfo();
-	Show_CutSceneInfo();
+	Show_CameraTool();
+	//Show_CutSceneTool(_fTimeDelta);
+	Show_ArmInfo();
+	//Show_CutSceneInfo();
 	Show_SaveLoadFileWindow();
 
 	Show_AnimModel(_fTimeDelta);
@@ -169,8 +169,8 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Map()
 {
 	//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
 	//	return E_FAIL;
-	//if (FAILED(Map_Object_Create(L"Chapter_06_Play_Desk.mchc")))
-	//	return E_FAIL;
+	if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -318,16 +318,16 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	//m_pSimulationCube->Set_Active(false);
 
 	// Book
-	CBook::BOOK_DESC BookDesc = {};
-	BookDesc.iCurLevelID = m_eLevelID;
-	BookDesc.isInitOverride = false;
+	//CBook::BOOK_DESC BookDesc = {};
+	//BookDesc.iCurLevelID = m_eLevelID;
+	//BookDesc.isInitOverride = false;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
-		m_eLevelID, L"_strLayerTag", reinterpret_cast<CGameObject**>(&pOut), &BookDesc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
+	//	m_eLevelID, L"_strLayerTag", reinterpret_cast<CGameObject**>(&pOut), &BookDesc)))
+	//	return E_FAIL;
 
-	//pOut->Set_Active(false);
-	m_ModelObjects.push_back(pOut);
+	////pOut->Set_Active(false);
+	//m_ModelObjects.push_back(pOut);
 	//
 	//// Hand
 	//Desc.eStartCoord = COORDINATE_3D;

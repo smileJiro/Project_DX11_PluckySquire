@@ -12,6 +12,7 @@ BEGIN(Client)
 class CMiniGame_Defender;
 class CSection_Manager;
 class CPlayer;
+class CDefenderPerson;
 class CDefenderPlayer :
     public CPlayable
 {
@@ -56,27 +57,23 @@ public:
 	virtual void		Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT		Render() override;
 
-	void Set_Direction(T_DIRECTION _eTDir);
-	void Key_Input(_float _fTimeDelta);
-	void Start_Transform();
 private:
 	HRESULT	Ready_Components();
 	HRESULT	Ready_PartObjects();
 	HRESULT	Ready_BulletPool();
 public:
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
-	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
-	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
-	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
-	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
-	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
 public:
+	void Set_Direction(T_DIRECTION _eTDir);
+	void Key_Input(_float _fTimeDelta);
+	void Start_Transform();
 	void Shoot();
+	void Remove_Follower(CDefenderPerson* _pPerson);
+	void Recover();
 private:
 	T_DIRECTION m_eTDirection = T_DIRECTION::RIGHT;
 	CPlayer* m_pOriginalPlayer = nullptr;
@@ -103,10 +100,15 @@ private:
 	_float m_fCrossHairPosition = 0.f;
 	_float m_fCrossHairYOffset = 20.f;
 	_vector m_fBarrelOffset = { 80.f, 20.f };
+
+	//PERSON
+	list<CDefenderPerson*> m_Followers;
 public:
 	static CDefenderPlayer* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void Free() override;
+	virtual HRESULT	Cleanup_DeadReferences()override; 
+
 };
 
 END

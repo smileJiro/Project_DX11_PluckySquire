@@ -238,6 +238,8 @@
     <ClInclude Include="..\public\FatherGame_Progress_Start.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_ZetPack.h" />
     <ClInclude Include="..\Public\ShopPanel_RenderFont.h" />
+    <ClInclude Include="..\Public\SideScroll_AttackState.h" />
+    <ClInclude Include="..\Public\SideScroll_IdleState.h" />
     <ClInclude Include="..\public\Simple_UI.h" />
     <ClInclude Include="..\Public\Minigame_Defender.h" />
     <ClInclude Include="..\Public\Detonator.h" />
@@ -289,6 +291,7 @@
     <ClInclude Include="..\public\Sneak_Tile.h" />
     <ClInclude Include="..\public\Sneak_Troop.h" />
     <ClInclude Include="..\Public\JellyKing.h" />
+    <ClInclude Include="..\public\TurnBookEffect.h" />
     <ClInclude Include="..\public\ZetPack_Child.h" />
     <ClInclude Include="..\Public\ZetPack_Father.h" />
     <ClInclude Include="..\Public\Zipline.h" />
@@ -591,6 +594,8 @@
     <ClCompile Include="..\private\FatherGame_Progress_Start.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_ZetPack.cpp" />
     <ClCompile Include="..\Private\ShopPanel_RenderFont.cpp" />
+    <ClCompile Include="..\Private\SideScroll_AttackState.cpp" />
+    <ClCompile Include="..\Private\SideScroll_IdleState.cpp" />
     <ClCompile Include="..\private\Simple_UI.cpp" />
     <ClCompile Include="..\Private\Minigame_Defender.cpp" />
     <ClCompile Include="..\Private\Detonator.cpp" />
@@ -639,6 +644,7 @@
     <ClCompile Include="..\private\Sneak_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Troop.cpp" />
     <ClCompile Include="..\Private\JellyKing.cpp" />
+    <ClCompile Include="..\private\TurnBookEffect.cpp" />
     <ClCompile Include="..\private\ZetPack_Child.cpp" />
     <ClCompile Include="..\Private\ZetPack_Father.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />

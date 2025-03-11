@@ -62,6 +62,8 @@
 #include "MapObjectFactory.h"
 #include "Interaction_E.h"
 #include "NPC_Manager.h"
+#include "ShopPanel_New.h"
+#include "Shop_Manager.h"
 
 #include "NPC.h"
 #include "Loader.h"
@@ -264,6 +266,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 	// Intro ½ÃÀÛ
 	//CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);
+	//CCamera_Manager::GetInstance()->Start_FadeIn(2.f);
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
@@ -348,26 +351,6 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::O))
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
-
-	if (KEY_DOWN(KEY::I))
-	{
-		CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter2_SKSP_Postit"));
-		auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_BACKGROUND);
-
-		CGameObject* pGameObject = nullptr;
-		const auto& Objects = pLayer->Get_GameObjects();
-		if (Objects.size() != 1)
-			assert(nullptr);
-		pGameObject = Objects.front();
-		if (nullptr == pGameObject)
-			assert(nullptr);
-
-		CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(pGameObject);
-		if (nullptr != pPage)
-		{
-			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_APPEAR, false);
-		}
-	}
 
 #endif // _DEBUG
 
@@ -805,7 +788,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
-	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SNEAK);
+	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
 	//pPlayer->UnEquip_All();
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
@@ -887,8 +870,12 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 #pragma endregion InterAction UI
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	CGameObject* pShop;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pShop, &pDesc)))
 		return E_FAIL;
+
+	CShop_Manager::GetInstance()->Set_Shop(static_cast<CShopPanel_New*>(pShop));
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannelRenderFont"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
@@ -1204,17 +1191,17 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
 
-	//NPCDesc.iCurLevelID = m_eLevelID;
-	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//NPCDesc.iNumPartObjects = 3;
-	//NPCDesc.iMainIndex = 0;
-	//NPCDesc.iSubIndex = 0;
-	//wsprintf(NPCDesc.strLocateSection, TEXT("Chapter2_P1112"));
-	//NPCDesc.vPos = _float2(157.8f, -183.0f);
-	//wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
-	//	return E_FAIL;
+	NPCDesc.iCurLevelID = m_eLevelID;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iNumPartObjects = 3;
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	wsprintf(NPCDesc.strLocateSection, TEXT("Chapter2_P1112"));
+	NPCDesc.vPos = _float2(71.0f, -11.1f);
+	wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
 
 
 
@@ -1242,7 +1229,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 	CPostit_Page::POSTIT_PAGE_DESC PostitDesc = {};
 	PostitDesc.strInitSkspName = L"Chapter2_SKSP_Postit";
-	PostitDesc.Build_2D_Transform({ -510.f, 100.f }, { 2.2f,2.2f });
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Postit_Page"), m_eLevelID, _strLayerTag, &PostitDesc)))
 		return E_FAIL;
 
@@ -1894,14 +1880,18 @@ HRESULT CLevel_Chapter_02::Map_Object_Create(_wstring _strFileName)
 				int a = 1;
 
 			}
-
+			_wstring strIncludeLayerTag = wstrLayerTag;
 			C3DMapObject* pGameObject =
 				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
 					(LEVEL_ID)m_eLevelID,
 					m_pGameInstance,
 					hFile);
 			if (nullptr != pGameObject)
-				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, wstrLayerTag.c_str(), pGameObject);
+			{
+				if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
+					strIncludeLayerTag = L"Layer_Postit";
+				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, strIncludeLayerTag.c_str(), pGameObject);
+			}
 		}
 	}
 	CloseHandle(hFile);

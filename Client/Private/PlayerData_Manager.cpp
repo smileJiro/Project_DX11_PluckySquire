@@ -53,7 +53,7 @@ _bool CPlayerData_Manager::Is_Own(PLAYERITEM_TYPE _eItemType)
 	return m_ItemState[wszItemTag].first;
 }
 
-HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos)
+HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos, _float3 _vScale)
 {
 	// ItemTag
 	// first: Flipping_Glove						second: latch_glove
@@ -61,16 +61,27 @@ HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _i
 	// ItemState
 	// ItemState[Flipping_Glove].first: bool		ItemState[Filiping_Glove].second: GameObject*
 
+	_wstring strPrevText = L"Get_";
+	switch (_iLevelID)
+	{
+	case Client::LEVEL_CHAPTER_8:
+		strPrevText = L"Get_C08_";
+		break;
+	default:
+		break;
+	}
+
 	CPlayerItem::PLAYERITEM_DESC Desc = {};
 
 	Desc.iCurLevelID = _iLevelID;
 	Desc.tTransform3DDesc.vInitialPosition = _vPos;
+	Desc.tTransform3DDesc.vInitialScaling = _vScale;
 
 	for (auto& ItemTag : m_ItemTags) {
 		if (ItemTag.first == _szItemTag) {
 			Desc.szModelTag = ItemTag.second;
 			Desc.szItemTag = ItemTag.first;
-			Desc.szEventTag = TEXT("Get_") + ItemTag.first;
+			Desc.szEventTag = strPrevText + ItemTag.first;
 			break;
 		}
 	}
@@ -78,7 +89,7 @@ HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _i
 	CGameObject* pPlayerItem;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(_iPrototypeLevelID, TEXT("Prototype_GameObject_PlayerItem"),
-		_iLevelID, TEXT("Layer_Terrain"), &pPlayerItem, &Desc)))
+		_iLevelID, TEXT("Layer_PlayerItem"), &pPlayerItem, &Desc)))
 		return E_FAIL;
 
 	m_ItemState[_szItemTag].second = dynamic_cast<CPlayerItem*>(pPlayerItem);
@@ -193,6 +204,7 @@ void CPlayerData_Manager::Set_Tags()
 	m_ItemTags[TILTING_GLOVE] = { TEXT("Tilting_Glove"), TEXT("latch_glove") };
 	m_ItemTags[STOP_STAMP] = { TEXT("Stop_Stamp"), TEXT("Stop_Stamp") };
 	m_ItemTags[BOMB_STAMP] = { TEXT("Bomb_Stamp"), TEXT("Bomb_Stamp") };
+	m_ItemTags[SWORD] = { TEXT("Sword"), TEXT("latch_sword") };
 
 	for (_uint i = 0; i < ITEM_END; ++i) {
 		m_ItemState[m_ItemTags[i].first] = { false, nullptr };

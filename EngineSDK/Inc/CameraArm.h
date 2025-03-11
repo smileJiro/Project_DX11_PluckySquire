@@ -80,6 +80,8 @@ public:
 	_bool				Turn_AxisRight(_float _fAngle, _float _fTimeDelta = 1.f, _uint _iRatioType = LERP);
 	_bool				Change_Length(ARM_DATA* _pCustomData, _float _fTimeDelta);
 
+	_bool				Turn_AxisRight_Angle(_float _fAngle);
+
 private:
 	ID3D11Device*		m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };

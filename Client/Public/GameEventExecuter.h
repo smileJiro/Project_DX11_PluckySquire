@@ -1,10 +1,11 @@
 #pragma once
 
 #include "GameObject.h"
+#include "Postit_Page.h"
 
 /*
 * 
-* 
+*
 *	흐름
 	
 	0. Client\Bin\DataFiles\Trigger_Events.json
@@ -107,8 +108,38 @@ protected:
 	
 	_bool Step_Check(STEP_TYPE _eType) { return _eType == m_iStep; } // 현재 스텝 검사
 	
-	CPlayer* Get_Player();
-	CBook* Get_Book();
+	_bool Postit_Process(const _wstring& _strPostItSectionTag,  // 포스트잇이 어느 섹션에 있니?
+									const _wstring& _strPostItDialogTag,  // 실행할 다이얼로그는 무엇이니?
+									_float _fStartChaseCameraTime = 1.f, // 몇초동안 포스트잇을 타게팅하러 움직일거니?
+									CPostit_Page::POSTIT_PAGE_POSTION_TYPE _ePostionType							//
+										= CPostit_Page::POSTIT_PAGE_POSTION_TYPE::POSTIT_PAGE_POSTION_TYPE_A,	// 책벌레가 섹션 내부 어디에 호출될거니?
+									_bool _isResetStart = true, // 포스트잇 실행 전에 특수한 카메라 움직임이 있었니?
+									function<void()> _FirstCamFunc = nullptr); // 카메라가 타게팅 뒤 특수한 카메라 처리가 필요하니?
+
+
+	_bool Postit_Process_Start(const _wstring& _strPostItSectionTag,	
+		_float _fStartChaseCameraTime = 1.f,
+		_bool _isResetStart = true,											
+		function<void()> _FirstCamFunc = nullptr);							
+
+	_bool Postit_Process_PageAppear(
+		CPostit_Page::POSTIT_PAGE_POSTION_TYPE _ePostionType
+		= CPostit_Page::POSTIT_PAGE_POSTION_TYPE::POSTIT_PAGE_POSTION_TYPE_A);
+	
+	_bool Postit_Process_PageTalk(const _wstring& _strPostItDialogTag,
+		CPostit_Page::POSTIT_PAGE_POSTION_TYPE _ePostionType
+		= CPostit_Page::POSTIT_PAGE_POSTION_TYPE::POSTIT_PAGE_POSTION_TYPE_A
+	);
+
+	_bool Postit_Process_End(_float _fStartChaseCameraTime);
+
+
+
+	CGameObject* Find_Postit();
+	CPlayer*	Get_Player();
+	CBook*		Get_Book();
+
+	_bool Setting_Postit_Page(const _wstring& _strPostItSectionTag);
 
 #pragma endregion
 
@@ -131,7 +162,8 @@ protected:
 	//임시 데이터들 ...
 	_bool			m_isPlag = { false };
 	CGameObject*	m_pTargetObject = nullptr;
-	_int		m_iEventExcuterAction = -1;
+	CPostit_Page*	m_pPostitPage = nullptr;
+	_int			m_iEventExcuterAction = -1;
 
 public:
 	virtual void Free();

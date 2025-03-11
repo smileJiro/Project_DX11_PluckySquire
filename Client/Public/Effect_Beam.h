@@ -26,6 +26,7 @@ public:
 		const _tchar* szPointTextureTag = L"";
 		const _tchar* szTextureTag = L"";
 		const _tchar* szBufferTag = L"";
+		const _float4x4* pStartPointBoneMatrix = nullptr;
 	}EFFECTBEAM_DESC;
 private:
 	CEffect_Beam(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -39,8 +40,8 @@ public:
 	virtual HRESULT				Render() override;
 
 public:
-	void	Set_StartPosition(_fvector _vStartPosition);
-	void	Set_EndPosition(_fvector _vEndPosition);
+	void	Set_StartPosition(_fvector _vStartPosition, _bool _isUpdateAll = true);
+	void	Set_EndPosition(_fvector _vEndPosition, _bool _isUpdateAll = true);
 
 private:
 	CShader* m_pShaderCom = { nullptr };
@@ -56,6 +57,7 @@ private:
 	_float	m_fConvergeSpeed = { 1.f };
 	_float4 m_vColor = _float4(1.f, 1.f, 1.f, 1.f);
 	_float4 m_vPointColor = _float4(1.f, 1.f, 1.f, 1.f);
+	const _float4x4* m_pStartPointBoneMatrix = { nullptr };
 
 private:
 	HRESULT Bind_ShaderResources();
