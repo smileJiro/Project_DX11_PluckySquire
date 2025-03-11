@@ -14,10 +14,19 @@ class CDefenderPerson;
 class CScrollModelObject;
 class CSection_Manager;
 class CDefenderCapsule;
+class CDialog_Manager;
 class CMiniGame_Defender :
     public CContainerObject
 {
 public:
+	enum DEFENDER_PROGRESS_STATE
+	{
+		DEFENDER_PROG_NONE,
+		DEFENDER_PROG_START_DIALOG,
+		DEFENDER_PROG_GAME,
+		DEFENDER_PROG_END_DIALOG,
+
+	};
 	enum DEFENDER_PART_ID
 	{
 		DEFENDER_PART_TOWER,
@@ -63,6 +72,8 @@ public:
 
 	_bool Is_Cleared() { return m_bClear; }
 private:
+
+private:
 	HRESULT Ready_ControllTower();
 	HRESULT Ready_Spanwer();
 	HRESULT Ready_UI();
@@ -78,7 +89,8 @@ private:
 private:
 	CSection_Manager* m_pSectionManager = nullptr;
 	CDefenderPlayer* m_pDefenderPlayer = nullptr;
-	_bool m_bGameStart = false;
+	CDialog_Manager* m_pDialogManager = nullptr;
+	DEFENDER_PROGRESS_STATE m_eGameState = DEFENDER_PROGRESS_STATE::DEFENDER_PROG_NONE;
 
 	map<DEFENDER_MONSTER_ID, wstring> m_mapMonsterPrototypeTag;
 	map< DEFENDER_MONSTER_ID, CDefenderSpawner*> m_Spawners;
@@ -104,6 +116,7 @@ private:
 	CModelObject* m_pPersonCounter[10] = { nullptr, };
 
 	_bool m_bClear = false;
+
 public:
 	static CMiniGame_Defender* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

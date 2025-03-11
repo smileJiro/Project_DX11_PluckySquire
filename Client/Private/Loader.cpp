@@ -2173,7 +2173,7 @@ HRESULT CLoader::UI_Texture_Load(LEVEL_ID _eLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_panel_bulb.dds"), 1))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_DialogueBG"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Dialogue/dialogue_%d.dds"), 27))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Dialogue/dialogue_%d.dds"), 28))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_DialoguePortrait"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Dialogue/Dialogue_BG/Character_Icon/dialogue_icon_%d.dds"), 17))))

@@ -13,6 +13,8 @@
 #include "DefenderPerson.h"
 #include "ScrollModelObject.h"
 #include "ModelObject.h"
+#include "Dialog_Manager.h"
+#include "Dialogue.h"
 
 CMiniGame_Defender::CMiniGame_Defender(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CContainerObject(_pDevice, _pContext)
@@ -57,7 +59,7 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
 	if (FAILED(Ready_ControllTower()))
 		return E_FAIL;
 
-    m_p2DColliderComs.resize(1);
+    m_p2DColliderComs.resize(2);
     /* Test 2D Collider */
     CCollider_AABB::COLLIDER_AABB_DESC tAABBDesc = {};
     tAABBDesc.pOwner = this;
@@ -72,7 +74,19 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDesc)))
         return E_FAIL;
 
-
+    /* Test 2D Collider */
+    CCollider_AABB::COLLIDER_AABB_DESC tAABBDesc2 = {};
+    tAABBDesc2.pOwner = this;
+    tAABBDesc2.vExtents = { 50.f , 300.f };
+    tAABBDesc2.vScale = { 1.0f, 1.0f };
+    tAABBDesc2.vOffsetPosition = { 0.f,0.f };
+    tAABBDesc2.isBlock = false;
+    tAABBDesc2.isTrigger = true;
+    tAABBDesc2.iCollisionGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
+    tAABBDesc2.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_TRIGGER;
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+        TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &tAABBDesc2)))
+        return E_FAIL;
 
 	return S_OK;
 }
@@ -348,47 +362,56 @@ void CMiniGame_Defender::Update(_float _fTimeDelta)
 {
 
 	__super::Update(_fTimeDelta);
-    if(false == m_bGameStart)
-		return;
-	m_fTimeAcc += _fTimeDelta;
 
-    if (m_fTimeAcc - m_fLastCapsuleDestroyTime >= m_fCapsuleSpawnTerm)
+    if (DEFENDER_PROG_START_DIALOG == m_eGameState
+        && false == m_pDialogManager->Get_DisPlayDialogue())
     {
-
-        if (nullptr == m_pCurrentCapsule && m_iSpawnedPersonCount < m_iMaxPersonCount)
-        {
-            CDefenderCapsule::DEFENDER_CAPSULE_DESC tDesc = {};
-            tDesc.iCurLevelID = m_iCurLevelID;
-            tDesc.iPersonCount = m_iCapsuleSpawnedCount;
-            tDesc.tTransform2DDesc.vInitialPosition = _float3{ m_iCapsuleSpawnedCount * 1000.f,0.f,0.f };
-            m_pCurrentCapsule = static_cast<CDefenderCapsule*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_PersonCapsule"), &tDesc));
-            m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_Defender"), m_pCurrentCapsule);
-            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCurrentCapsule, SECTION_2D_PLAYMAP_OBJECT);
-
-            m_iSpawnedPersonCount += tDesc.iPersonCount;
-            m_iCapsuleSpawnedCount++;
-        }
+        m_eGameState = DEFENDER_PROG_GAME;
     }
-    if (m_pCurrentCapsule && false == m_pCurrentCapsule->Is_Dead())
+    if (DEFENDER_PROG_GAME == m_eGameState)
     {
-       _vector vCapsulePos = Get_ScrolledPosition( m_pCurrentCapsule->Get_FinalPosition());
-        if (Is_InsideScreen(vCapsulePos))
+
+        m_fTimeAcc += _fTimeDelta;
+
+        if (m_fTimeAcc - m_fLastCapsuleDestroyTime >= m_fCapsuleSpawnTerm)
         {
-            m_pSidePersonUI->Set_Active(false);
+
+            if (nullptr == m_pCurrentCapsule && m_iSpawnedPersonCount < m_iMaxPersonCount)
+            {
+                CDefenderCapsule::DEFENDER_CAPSULE_DESC tDesc = {};
+                tDesc.iCurLevelID = m_iCurLevelID;
+                tDesc.iPersonCount = m_iCapsuleSpawnedCount;
+                tDesc.tTransform2DDesc.vInitialPosition = _float3{ m_iCapsuleSpawnedCount * 1000.f,0.f,0.f };
+                m_pCurrentCapsule = static_cast<CDefenderCapsule*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_PersonCapsule"), &tDesc));
+                m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_Defender"), m_pCurrentCapsule);
+                CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCurrentCapsule, SECTION_2D_PLAYMAP_OBJECT);
+
+                m_iSpawnedPersonCount += tDesc.iPersonCount;
+                m_iCapsuleSpawnedCount++;
+            }
+        }
+        if (m_pCurrentCapsule && false == m_pCurrentCapsule->Is_Dead())
+        {
+            _vector vCapsulePos = Get_ScrolledPosition(m_pCurrentCapsule->Get_FinalPosition());
+            if (Is_InsideScreen(vCapsulePos))
+            {
+                m_pSidePersonUI->Set_Active(false);
+            }
+            else
+            {
+                m_pSidePersonUI->Set_Active(true);
+                _bool bLeft = Is_LeftSide(vCapsulePos);
+                _vector vUIPos = Get_SidePosition(bLeft ? T_DIRECTION::LEFT : T_DIRECTION::RIGHT);
+                m_pSidePersonUI->Set_Position(vUIPos);
+                m_pSidePersonUI->Set_Direction(bLeft ? T_DIRECTION::LEFT : T_DIRECTION::RIGHT);
+            }
         }
         else
         {
-            m_pSidePersonUI->Set_Active(true);
-            _bool bLeft = Is_LeftSide(vCapsulePos);
-            _vector vUIPos = Get_SidePosition(bLeft ? T_DIRECTION::LEFT : T_DIRECTION::RIGHT);
-            m_pSidePersonUI->Set_Position(vUIPos);
-            m_pSidePersonUI->Set_Direction(bLeft ? T_DIRECTION::LEFT : T_DIRECTION::RIGHT);
+            m_pSidePersonUI->Set_Active(false);
         }
     }
-    else
-    {
-        m_pSidePersonUI->Set_Active(false);
-    }
+
 }
 
 void CMiniGame_Defender::Late_Update(_float _fTimeDelta)
@@ -407,9 +430,28 @@ HRESULT CMiniGame_Defender::Render()
 
 void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (false == m_bGameStart && OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
+    //Dialog Start
+	if (DEFENDER_PROG_NONE == m_eGameState
+        && OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID()
+        && m_p2DColliderComs[1] == _pMyCollider)
     {
-        m_bGameStart = true;
+        m_eGameState = DEFENDER_PROG_START_DIALOG;
+        //DIALOG
+        m_pDialogManager->Set_DialogId(TEXT("DEFENDER_Dialogue_01"), m_strSectionName.c_str());
+        //Uimgr->Set_DialogId(m_strDialogueIndex, m_strCurSecion);
+
+        _vector vPos = Get_FinalPosition();
+        _float3 vPosition; XMStoreFloat3(&vPosition, vPos);
+        m_pDialogManager->Set_DialoguePos(vPosition);
+        //Uimgr->Set_DialoguePos(vPos);
+        m_pDialogManager->Set_DisPlayDialogue(true);
+    }
+    //GameStart
+    if (DEFENDER_PROG_START_DIALOG == m_eGameState
+        && OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID()
+        && m_p2DColliderComs[0] == _pMyCollider)
+    {
+		m_eGameState = DEFENDER_PROG_GAME;
         CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
         CPlayer* pNormalPlayer =  pPDM->Get_NormalPlayer_Ptr();
         m_pDefenderPlayer =  pPDM->Get_DefenderPlayer_Ptr();
@@ -423,6 +465,7 @@ void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
 		m_pDefenderPlayer->Start_Transform();
 
         static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(m_pDefenderPlayer);
+
     }
 
 	if (OBJECT_GROUP::GIMMICK_OBJECT & _pOtherObject->Get_ObjectGroupID())
