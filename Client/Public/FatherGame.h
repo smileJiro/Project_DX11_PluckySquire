@@ -18,6 +18,7 @@ class CZetPack_Child;
 class CMug_Alien;
 class CFatherPart_Prop;
 class CJellyKing;
+class CZetPack_Father;
 class CFatherGame final : public CBase
 {
 	DECLARE_SINGLETON(CFatherGame)
@@ -59,10 +60,12 @@ public:
 		return m_PortalLockers[_ePortalLockerIndex];
 	}
 	CZetPack_Child* Get_ZetPack_Child() { return m_pZetPack_Child; }
+	CZetPack_Father* Get_ZetPack_Father() { return m_pZetPack_Father; }
 	// Set
 	void			Set_ZetPack_Child(CZetPack_Child* _pZetPack_Child);
 	void			Set_Mug_Alien(CMug_Alien* _pMugAlien);
 	void			Set_JellyKing(CJellyKing* _pZellyKing);
+	void			Set_ZetPack_Father(CZetPack_Father* _pZetPack_Father);
 
 
 private:
@@ -87,7 +90,10 @@ private: /* Mug_Alien */
 
 private: /* ZellyKing*/
 	CJellyKing*							m_pJellyKing = nullptr;
-	
+
+private: /* ZetPack_Father */
+	CZetPack_Father*					m_pZetPack_Father = nullptr;
+
 public:
 	void								Set_Active_FatherParts_UIs(_bool _isActive);
 	void								Pickup_FatherPart(FATHER_PART _eFatherPart);

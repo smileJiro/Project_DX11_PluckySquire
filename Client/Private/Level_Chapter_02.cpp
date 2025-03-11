@@ -1160,8 +1160,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Item(const _wstring& _strLayerTag)
 	// Test(PlayerItem: Glove, Stamp)
 	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(62.31f, 6.28f, -21.097f));
 	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
-
-
+	
 
 	//3D Bulb
 	Pooling_DESC Pooling_Desc;

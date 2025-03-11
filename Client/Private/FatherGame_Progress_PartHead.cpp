@@ -73,7 +73,7 @@ HRESULT CFatherGame_Progress_PartHead::Progress_Clear()
 
         /* 1. Claer 이벤트 호출 >>> 현재 보유중인 아빠 파츠의 개수에 따라 다른 이벤트 호출. */
         Event_Register_Trigger(TEXT("Chapter6_FatherGame_Progress_Fatherpart_3"));
-
+        CFatherGame::GetInstance()->Start_Progress(CFatherGame::FATHER_PROGRESS_MAKEFATHER);
         /* 3. 자기 자신의 Active 상태를 False로 변경 */
         Event_SetActive(this, false);
 #ifdef _DEBUG
