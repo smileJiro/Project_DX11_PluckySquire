@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Martina_MenuExit_WaveLoop_0005_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 1339.0,
+        "Y": 907.0
+      },
+      "BakedSourceDimension": {
+        "X": 311.0,
+        "Y": 295.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'martina-0'",
+        "ObjectPath": "/Game/Characters/Friends/Martina/Textures/martina-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 150.0,
+          "Y": 271.0,
+          "Z": 0.4025879,
+          "W": 0.22167969
+        },
+        {
+          "X": -159.0,
+          "Y": 271.0,
+          "Z": 0.32714844,
+          "W": 0.22167969
+        },
+        {
+          "X": -159.0,
+          "Y": -22.0,
+          "Z": 0.32714844,
+          "W": 0.2932129
+        },
+        {
+          "X": 150.0,
+          "Y": -22.0,
+          "Z": 0.4025879,
+          "W": 0.2932129
+        },
+        {
+          "X": 150.0,
+          "Y": 271.0,
+          "Z": 0.4025879,
+          "W": 0.22167969
+        },
+        {
+          "X": -159.0,
+          "Y": -22.0,
+          "Z": 0.32714844,
+          "W": 0.2932129
+        }
+      ]
+    }
+  }
+]

@@ -83,18 +83,6 @@ void CDialog::Update(_float _fTimeDelta)
 	}
 
 
-
-
-	// 다이얼로그 변경 시 이용 스위치이나 뭘듯 해야할듯
-	//if (true == m_isRender)
-	//{
-	//	Uimgr->Set_DialogId(TEXT("dialog_01"));
-	//	wsprintf(m_tDialogIndex, 
-	// ->Get_DialogId());
-	//}
-
-	
-
 }
 
 void CDialog::Late_Update(_float _fTimeDelta)

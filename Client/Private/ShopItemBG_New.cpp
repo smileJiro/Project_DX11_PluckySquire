@@ -36,7 +36,8 @@ HRESULT CShopItemBG_New::Initialize(void* _pArg)
 
 	else if (m_strName == TEXT("검 던지기 배지"))
 		m_strDialog = TEXT("검을 던져 적을 공격합니다.\n원거리에 있는 적을 쉽게 타격할 수 있습니다.");
-
+	else if (m_strName == TEXT("점프 공격 배지"))
+		m_strDialog = TEXT("점프 후 공중에서 검을 내리쳐서\n강력한 불시의 일격을 날립니다.");
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -210,7 +211,7 @@ HRESULT CShopItemBG_New::Ready_Components()
 
 		_tchar wSkillShop[MAX_PATH] = {};
 
-		wsprintf(wSkillShop, TEXT("Prototype_Component_Texture_JumpAttack%d"), m_iSkillLevel);
+		wsprintf(wSkillShop, TEXT("Prototype_Component_Texture_SpinAttack%d"), m_iSkillLevel);
 
 		if (FAILED(Add_Component(m_iCurLevelID, wSkillShop,
 			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
@@ -223,7 +224,7 @@ HRESULT CShopItemBG_New::Ready_Components()
 
 		_tchar wSkillShop[MAX_PATH] = {};
 
-		wsprintf(wSkillShop, TEXT("Prototype_Component_Texture_SpinAttack%d"), m_iSkillLevel);
+		wsprintf(wSkillShop, TEXT("Prototype_Component_Texture_AttackPlus%d"), m_iSkillLevel);
 
 		if (FAILED(Add_Component(m_iCurLevelID, wSkillShop,
 			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
@@ -235,7 +236,7 @@ HRESULT CShopItemBG_New::Ready_Components()
 	{
 		_tchar wSkillShop[MAX_PATH] = {};
 
-		wsprintf(wSkillShop, TEXT("Prototype_Component_Texture_JumpAttack%d"), m_iSkillLevel);
+		wsprintf(wSkillShop, TEXT("Prototype_Component_Texture_ThrowAttack%d"), m_iSkillLevel);
 
 		if (FAILED(Add_Component(m_iCurLevelID, wSkillShop,
 			TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))

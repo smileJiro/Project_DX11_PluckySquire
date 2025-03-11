@@ -121,7 +121,10 @@ void CInteraction_E::Late_Update(_float _fTimeDelta)
 			m_isRender = true;
 	
 		CGameObject* pGameObejct = dynamic_cast<CGameObject*>(pInteractableObject);
-	
+		
+		m_fInteractionRatio = pInteractableObject->Get_ChargeProgress();
+
+
 		// 현재 섹션에 오브젝트가 없다면
 		//if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 		//{
@@ -184,13 +187,26 @@ HRESULT CInteraction_E::Render()
 			if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 0)))
 				return E_FAIL;
 
-			m_pShaderCom->Begin((_uint)0);
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_vColors", &m_vInteractionColor, sizeof(_float4))))
+				return E_FAIL;
+
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_fInteractionRatio", &m_fInteractionRatio, sizeof(_float))))
+				return E_FAIL;
+			
+
+			m_pShaderCom->Begin((_uint)PASS_VTXPOSTEX::RATIO_BOTTOM_UP);
 			m_pVIBufferCom->Bind_BufferDesc();
 			m_pVIBufferCom->Render();
 		}
 		else
 		{
-			__super::Render();
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_vColors", &m_vInteractionColor, sizeof(_float4))))
+				return E_FAIL;
+
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_fInteractionRatio", &m_fInteractionRatio, sizeof(_float))))
+				return E_FAIL;
+
+			__super::Render(0, PASS_VTXPOSTEX::RATIO_BOTTOM_UP);
 		}
 
 		_float2 RTSize = _float2(0.f, 0.f);
@@ -469,7 +485,13 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 	//	break;
 
 	case INTERACT_ID::PORTAL:
-		m_strDisplayText = TEXT("이동");
+	{
+		if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+			m_strDisplayText = TEXT("들어가기");
+		else
+			m_strDisplayText = TEXT("나가기");
+	}
+		
 		break;
 
 	case INTERACT_ID::DRAGGABLE:

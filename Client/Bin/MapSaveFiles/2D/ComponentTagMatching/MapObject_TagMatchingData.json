@@ -2264,7 +2264,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "TopDownDecal_steps_1",
@@ -2273,7 +2273,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "TopDownDecal_steps_2",
@@ -2282,7 +2282,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "TopDownDecal_steps_3",
@@ -4181,7 +4181,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "Desk_C06_Pad_Sprite",
@@ -6596,5 +6596,32 @@
   "SearchTag": "jk_throne_Sprite",
   "Sorting": false,
   "TextureName": "jk_throne_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "stairs_03_Sprite",
+  "Sorting": false,
+  "TextureName": "stairs_03_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "stairs_03_mask_Sprite",
+  "Sorting": false,
+  "TextureName": "stairs_03_mask_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "stairs_03_mask_island_Sprite",
+  "Sorting": false,
+  "TextureName": "stairs_03_mask_island_Sprite"
  }
 ]

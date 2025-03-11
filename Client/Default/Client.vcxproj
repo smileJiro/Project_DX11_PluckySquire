@@ -217,6 +217,7 @@
     <ClInclude Include="..\Public\DefenderCapsule.h" />
     <ClInclude Include="..\Public\DefenderMedShip.h" />
     <ClInclude Include="..\Public\DefenderPerson.h" />
+    <ClInclude Include="..\Public\FatherGame_Progress_MakeFather.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_PartBody.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_PartHead.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_PartWing.h" />
@@ -290,6 +291,7 @@
     <ClInclude Include="..\public\Sneak_Troop.h" />
     <ClInclude Include="..\Public\JellyKing.h" />
     <ClInclude Include="..\public\ZetPack_Child.h" />
+    <ClInclude Include="..\Public\ZetPack_Father.h" />
     <ClInclude Include="..\Public\Zipline.h" />
     <ClInclude Include="..\Public\MudPit.h" />
     <ClInclude Include="..\Public\Narration_Manager.h" />
@@ -569,6 +571,7 @@
     <ClCompile Include="..\Private\DefenderCapsule.cpp" />
     <ClCompile Include="..\Private\DefenderMedShip.cpp" />
     <ClCompile Include="..\Private\DefenderPerson.cpp" />
+    <ClCompile Include="..\Private\FatherGame_Progress_MakeFather.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_PartBody.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_PartHead.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_PartWing.cpp" />
@@ -639,6 +642,7 @@
     <ClCompile Include="..\private\Sneak_Troop.cpp" />
     <ClCompile Include="..\Private\JellyKing.cpp" />
     <ClCompile Include="..\private\ZetPack_Child.cpp" />
+    <ClCompile Include="..\Private\ZetPack_Father.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\Private\MudPit.cpp" />
     <ClCompile Include="..\Private\Narration_Manager.cpp" />
