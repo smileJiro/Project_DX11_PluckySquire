@@ -297,7 +297,7 @@ void CDefenderPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _
 		else
 			pFollowObj = this;
 
-		pPerson->Set_FollowObject(pFollowObj);
+		pPerson->Start_FollowObject(pFollowObj);
 		m_Followers.push_back(pPerson);
 		Safe_AddRef(pPerson);
 	}
@@ -349,7 +349,7 @@ void CDefenderPlayer::Remove_Follower(CDefenderPerson* _pPerson)
 	CGameObject* pFollowObj = this;
 	for (auto& pFollower : m_Followers)
 	{
-		pFollower->Set_FollowObject(pFollowObj);
+		pFollower->Start_FollowObject(pFollowObj);
 		pFollowObj = pFollower;
 	}
 }

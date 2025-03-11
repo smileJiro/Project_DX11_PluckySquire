@@ -55,9 +55,10 @@ HRESULT CDefenderSmShip::Initialize(void* _pArg)
 
 void CDefenderSmShip::Update(_float _fTimeDelta)
 {
+	
+	if (m_bSpawned)
+		Move(XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_RIGHT)) * m_fMoveSpeed , _fTimeDelta);
 	__super::Update(_fTimeDelta);
-
-	Move(XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_RIGHT)) * m_fMoveSpeed , _fTimeDelta);
 }
 
 void CDefenderSmShip::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -97,19 +98,6 @@ void CDefenderSmShip::On_Explode()
 		, rand() % 4, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
 }
 
-void CDefenderSmShip::On_Spawned()
-{
-	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
-		, Get_FinalWorldMatrix(), 0.f
-		, 2, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
-}
-
-void CDefenderSmShip::On_LifeTimeOut()
-{
-	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
-		, Get_FinalWorldMatrix(), 0.f
-		, 5, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
-}
 
 HRESULT CDefenderSmShip::Ready_PartObjects()
 {
@@ -129,6 +117,7 @@ HRESULT CDefenderSmShip::Ready_PartObjects()
 	if (nullptr == m_PartObjects[PART_BODY])
 		return E_FAIL;
 
+	m_PartObjects[PART_BODY]->Set_Active(false);
 
 	return S_OK;
 }
