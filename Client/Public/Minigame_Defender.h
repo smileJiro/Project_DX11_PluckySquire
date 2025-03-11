@@ -1,7 +1,12 @@
 #pragma once
-#include "ModelObject.h"
+#include "ContainerObject.h"
 #include "DefenderMonster.h"
 #include "DefenderSpawner.h"
+
+BEGIN(Engine)
+class CModelObject;
+END
+
 BEGIN(Client)
 class CDefenderSpawner;
 class CDefenderPlayer;
@@ -10,13 +15,28 @@ class CScrollModelObject;
 class CSection_Manager;
 class CDefenderCapsule;
 class CMiniGame_Defender :
-    public CModelObject
+    public CContainerObject
 {
 public:
-
-	typedef struct tagDefender_ControllTowerDesc : public CModelObject::MODELOBJECT_DESC
+	enum DEFENDER_PART_ID
 	{
-	}DEFENDER_CONTROLLTOWER_DESC;
+		DEFENDER_PART_TOWER,
+		DEFENDER_PART_COUNTER_BACK,
+		DEFENDER_PART_COUNTER_0,
+		DEFENDER_PART_COUNTER_1,
+		DEFENDER_PART_COUNTER_2,
+		DEFENDER_PART_COUNTER_3,
+		DEFENDER_PART_COUNTER_4,
+		DEFENDER_PART_COUNTER_5,
+		DEFENDER_PART_COUNTER_6,
+		DEFENDER_PART_COUNTER_7,
+		DEFENDER_PART_COUNTER_8,
+		DEFENDER_PART_COUNTER_9,
+		DEFENDER_PART_LAST
+	};
+	typedef struct tagDefender_Desc : public CContainerObject::CONTAINEROBJ_DESC
+	{
+	}DEFENDER_DESC;
 private:
 	explicit CMiniGame_Defender(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	explicit CMiniGame_Defender(const CMiniGame_Defender& _Prototype);
@@ -43,6 +63,7 @@ public:
 
 	_bool Is_Cleared() { return m_bClear; }
 private:
+	HRESULT Ready_ControllTower();
 	HRESULT Ready_Spanwer();
 	HRESULT Ready_UI();
 	virtual void Enter_Section(const _wstring _strIncludeSectionName)override;
@@ -53,6 +74,7 @@ private:
 	_float Get_ScrolledDistance(_vector _vPos);
 	_float Get_RightScreenDistance(_vector _vPos);
 	_float Get_LeftScreenDistance(_vector _vPos);
+	void Set_LeftPersonCount(_uint _iCount);
 private:
 	CSection_Manager* m_pSectionManager = nullptr;
 	CDefenderPlayer* m_pDefenderPlayer = nullptr;
@@ -75,9 +97,11 @@ private:
 	_uint m_iCapsuleSpawnedCount = 0;
 	CDefenderCapsule* m_pCurrentCapsule = nullptr;
 
-	_uint m_iPersonCount = 0;
-	_uint m_iMaxPersonCount = 7;
+	_uint m_iPersonLeft = 9;
+	_uint m_iMaxPersonCount = 9;
 	_uint m_iSpawnedPersonCount = 0;
+	CModelObject* m_pPersonCounterBack = nullptr;
+	CModelObject* m_pPersonCounter[10] = { nullptr, };
 
 	_bool m_bClear = false;
 public:

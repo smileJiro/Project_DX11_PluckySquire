@@ -61,7 +61,8 @@ public:
 	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
 	STAT& Get_Stat() { return m_tStat; }
 	_float Get_StepSlopeThreshold() { return m_fStepSlopeThreshold; }
-	_vector Get_ScrolledFinalPosition();
+	_vector Get_ScrolledPosition();
+	_vector Get_ScrolledPosition(_vector _vPosition);
 	//SET
 	void Set_ScrollingMode(_bool _bScrollingMode);
 protected:
@@ -69,7 +70,6 @@ protected:
 	_vector StepAssist(_fvector _vVelocity, _float _fTimeDelta);
 protected:
 	STAT m_tStat;
-
 
 	_float m_fKnockBackForce = {};
 	_float m_fKnockBackAccTime = {};

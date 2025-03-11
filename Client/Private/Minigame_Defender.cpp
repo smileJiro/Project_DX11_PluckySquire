@@ -12,14 +12,15 @@
 #include "Camera_Target.h"
 #include "DefenderPerson.h"
 #include "ScrollModelObject.h"
+#include "ModelObject.h"
 
 CMiniGame_Defender::CMiniGame_Defender(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:CModelObject(_pDevice, _pContext)
+	:CContainerObject(_pDevice, _pContext)
 {
 }
 
 CMiniGame_Defender::CMiniGame_Defender(const CMiniGame_Defender& _Prototype)
-	:CModelObject(_Prototype)
+	:CContainerObject(_Prototype)
 {
 }
 
@@ -39,25 +40,22 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
     m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::MED_SHIP_DOWN, _wstring(L"Prototype_GameObject_DefenderMedShip_DOWN")));
     m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::PERSON_CAPSULE, _wstring(L"Prototype_GameObject_PersonCapsule")));
 
-	DEFENDER_CONTROLLTOWER_DESC* pDesc =static_cast<DEFENDER_CONTROLLTOWER_DESC*> (_pArg);
+
+    DEFENDER_DESC* pDesc = static_cast<DEFENDER_DESC*> (_pArg);
     m_iCurLevelID = pDesc->iCurLevelID;
 
     pDesc->iObjectGroupID = OBJECT_GROUP::MAPOBJECT;
     pDesc->eStartCoord = COORDINATE_2D;
     pDesc->isCoordChangeEnable = false;
-
-    pDesc->iModelPrototypeLevelID_2D = m_iCurLevelID;
-    pDesc->strModelPrototypeTag_2D = TEXT("DefenderBase_Sprite");
-    pDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-    pDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
+    pDesc->iNumPartObjects = DEFENDER_PART_LAST;
 
     pDesc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
     pDesc->pActorDesc = nullptr;
-
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
-
+	if (FAILED(Ready_ControllTower()))
+		return E_FAIL;
 
     m_p2DColliderComs.resize(1);
     /* Test 2D Collider */
@@ -86,6 +84,63 @@ void CMiniGame_Defender::Priority_Update(_float _fTimeDelta)
         m_pCurrentCapsule = nullptr;
         m_fLastCapsuleDestroyTime = m_fTimeAcc;
     }
+}
+HRESULT CMiniGame_Defender::Ready_ControllTower()
+{
+	CModelObject::MODELOBJECT_DESC tModelDesc = {};
+    tModelDesc.iObjectGroupID = OBJECT_GROUP::MAPOBJECT;
+    tModelDesc.eStartCoord = COORDINATE_2D;
+    tModelDesc.isCoordChangeEnable = false;
+    tModelDesc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+    tModelDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+    tModelDesc.strModelPrototypeTag_2D = TEXT("DefenderBase_Sprite");
+    tModelDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+    tModelDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+    tModelDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
+    m_PartObjects[DEFENDER_PART_TOWER] = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tModelDesc));
+    if (nullptr == m_PartObjects[DEFENDER_PART_TOWER])
+        return E_FAIL;
+
+    CModelObject::MODELOBJECT_DESC tModelDesc2 = {};
+    tModelDesc2.iObjectGroupID = OBJECT_GROUP::MAPOBJECT;
+    tModelDesc2.eStartCoord = COORDINATE_2D;
+    tModelDesc2.isCoordChangeEnable = false;
+    tModelDesc2.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+    tModelDesc2.iModelPrototypeLevelID_2D = m_iCurLevelID;
+    tModelDesc2.strModelPrototypeTag_2D = TEXT("DefenderCounter_Sprite");
+    tModelDesc2.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+    tModelDesc2.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+    tModelDesc2.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
+    m_PartObjects[DEFENDER_PART_COUNTER_BACK] = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tModelDesc2));
+    if (nullptr == m_PartObjects[DEFENDER_PART_COUNTER_BACK])
+        return E_FAIL;
+    m_PartObjects[DEFENDER_PART_COUNTER_BACK]->Set_Active(false);
+    m_PartObjects[DEFENDER_PART_COUNTER_BACK]->Set_Position(_vector{0.f,100.f,0.f});
+
+    for (_uint i = 0; i < 10; i++)
+    {
+        CModelObject::MODELOBJECT_DESC tModelDesc3 = {};
+        tModelDesc3.iObjectGroupID = OBJECT_GROUP::MAPOBJECT;
+        tModelDesc3.eStartCoord = COORDINATE_2D;
+        tModelDesc3.isCoordChangeEnable = false;
+        tModelDesc3.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+        tModelDesc3.iModelPrototypeLevelID_2D = m_iCurLevelID;
+        tModelDesc3.strModelPrototypeTag_2D = TEXT("DefenderCounter_");
+		tModelDesc3.strModelPrototypeTag_2D += to_wstring(i);
+		tModelDesc3.strModelPrototypeTag_2D += TEXT("_Sprite");
+        tModelDesc3.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+        tModelDesc3.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+        tModelDesc3.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
+        m_PartObjects[DEFENDER_PART_COUNTER_0 + i] = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tModelDesc3));
+        if (nullptr == m_PartObjects[DEFENDER_PART_COUNTER_0 + i])
+            return E_FAIL;
+        m_PartObjects[DEFENDER_PART_COUNTER_0 + i]->Set_Active(false);
+        m_PartObjects[DEFENDER_PART_COUNTER_0 + i]->Set_Position(_vector{ 0.f, 100.f,0.f });
+
+    }
+
+
+    return S_OK;
 }
 HRESULT CMiniGame_Defender::Ready_Spanwer()
 {
@@ -280,6 +335,15 @@ _float CMiniGame_Defender::Get_LeftScreenDistance(_vector _vPos)
 {
     return _vPos.m128_f32[0] + m_vSectionSize.x * 0.5f;
 }
+void CMiniGame_Defender::Set_LeftPersonCount(_uint _iCount)
+{
+    m_iPersonLeft = _iCount;
+	for (_uint i = 0; i < 10; i++)
+	{
+		m_PartObjects[DEFENDER_PART_COUNTER_0 + i]->Set_Active(false);
+	}
+    m_PartObjects[DEFENDER_PART_COUNTER_0 + _iCount]->Set_Active(true);
+}
 void CMiniGame_Defender::Update(_float _fTimeDelta)
 {
 
@@ -381,6 +445,8 @@ void CMiniGame_Defender::Start_Gamde()
 {
     if (FAILED(Ready_Spanwer()))
         return;
+    m_PartObjects[DEFENDER_PART_COUNTER_BACK]->Set_Active(true);
+	Set_LeftPersonCount(m_iMaxPersonCount);
 }
 
 void CMiniGame_Defender::Restart_Game()
@@ -390,10 +456,11 @@ void CMiniGame_Defender::Restart_Game()
 
 void CMiniGame_Defender::Rescue_Person(CDefenderPerson* _pPerson)
 {
-	m_iPersonCount++;
+	m_iPersonLeft--;
+    Set_LeftPersonCount(m_iPersonLeft);
 	m_pDefenderPlayer->Remove_Follower(_pPerson);
     _pPerson->Dissapear();
-    if (m_iPersonCount >= m_iMaxPersonCount)
+    if (m_iPersonLeft <= 0)
         Clear_Game();
 }
 

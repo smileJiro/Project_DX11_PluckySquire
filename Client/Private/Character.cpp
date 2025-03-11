@@ -369,7 +369,7 @@ void CCharacter::KnockBack(_fvector _vForce)
     }
 }
 
-_vector CCharacter::Get_ScrolledFinalPosition()
+_vector CCharacter::Get_ScrolledPosition()
 {
     _float2 fSize = SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName);
     _float fDefaultWitdh = (fSize.x * 0.5f);
@@ -384,6 +384,22 @@ _vector CCharacter::Get_ScrolledFinalPosition()
         vPos =XMVectorSetX(vPos, vPos.m128_f32[0] - fSize.x);
     }
     return vPos;
+}
+
+_vector CCharacter::Get_ScrolledPosition(_vector _vPosition)
+{
+    _float2 fSize = SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName);
+    _float fDefaultWitdh = (fSize.x * 0.5f);
+
+    if (-fDefaultWitdh > _vPosition.m128_f32[0])
+    {
+        _vPosition = XMVectorSetX(_vPosition, _vPosition.m128_f32[0] + fSize.x);
+    }
+    if (fDefaultWitdh < _vPosition.m128_f32[0])
+    {
+        _vPosition = XMVectorSetX(_vPosition, _vPosition.m128_f32[0] - fSize.x);
+    }
+    return _vPosition;
 }
 
 void CCharacter::Set_ScrollingMode(_bool _bScrollingMode)
@@ -583,7 +599,7 @@ void CCharacter::Move(_fvector _vVelocity, _float _fTimeDelta)
 
         if (m_bScrollingMode)
         {
-            Set_Position(Get_ScrolledFinalPosition());
+            Set_Position(Get_ScrolledPosition());
         }
     }
 }

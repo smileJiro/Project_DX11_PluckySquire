@@ -654,7 +654,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 {
 	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
 
-	CMiniGame_Defender::DEFENDER_CONTROLLTOWER_DESC tDesc = {};
+	CMiniGame_Defender::DEFENDER_DESC tDesc = {};
 	tDesc.iCurLevelID = m_eLevelID;
 	tDesc.tTransform2DDesc.vInitialPosition = { -2020.f, -80.f, 0.f };   // TODO ::임시 위치
 	CMiniGame_Defender* pTower = static_cast<CMiniGame_Defender*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Minigame_Defender"), &tDesc));;

@@ -188,7 +188,11 @@ HRESULT CDefenderPlayer::Render()
 	if (m_p2DColliderComs[0]->Is_Active())
 		m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
 #endif // _DEBUG
-	return __super::Render();
+
+
+	if (FAILED(__super::Render()))
+		return E_FAIL;
+
 }
 
 void CDefenderPlayer::Set_Direction(T_DIRECTION _eTDir)
