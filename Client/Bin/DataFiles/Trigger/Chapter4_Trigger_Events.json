@@ -9,6 +9,21 @@
       }
     ]
   },
+	{
+    "Trigger_EventTag": "Chapter4_StorySequence_01",
+    "Actions": [
+      {
+        "ActionTag": "Use_Portal",
+        "EventTag": "Chapter4_P0102",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Dialogue",
+        "EventTag": "Chapter4_StorySequence_01",
+        "Is_Sequence": true
+      }
+    ]
+  },
   {
     "Trigger_EventTag": "Chapter4_Ride_Zipline",
     "Actions": [
@@ -29,11 +44,36 @@
       }
     ]
   },
+    {
+    "Trigger_EventTag": "Get_Bomb_Stamp",
+    "Actions": [
+      {
+        "ActionTag": "Get_PlayerItem_Before",
+        "EventTag": "Bomb_Stamp",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Get_PlayerItem",
+        "EventTag": "Bomb_Stamp",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Dialogue",
+        "EventTag": "Stamp_Acquire_Bomb",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Get_PlayerItem_After_End",
+        "EventTag": "Bomb_Stamp",
+        "Is_Sequence": false
+      }
+    ]
+  },
   {
     "Trigger_EventTag": "Get_Tilting_Glove",
     "Actions": [
       {
-        "ActionTag": "Glove_Get_Before",
+        "ActionTag": "Get_PlayerItem_Before",
         "EventTag": "Tilting_Glove",
         "Is_Sequence": false
       },
@@ -48,7 +88,7 @@
         "Is_Sequence": true
       },
       {
-        "ActionTag": "Glove_Get_After",
+        "ActionTag": "Get_PlayerItem_After",
         "EventTag": "Tilting_Glove",
         "Is_Sequence": false
       },
