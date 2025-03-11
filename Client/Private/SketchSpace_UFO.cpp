@@ -7,6 +7,8 @@
 #include "Blocker.h"
 #include "Effect2D_Manager.h"
 #include "Player.h"
+#include "Projectile_SketchSpace_UFO.h"
+#include "Pooling_Manager.h"
 
 CSketchSpace_UFO::CSketchSpace_UFO(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -28,10 +30,11 @@ HRESULT CSketchSpace_UFO::Initialize(void* _pArg)
     CSketchSpace_UFO::SIDESCROLLDESC* pDesc = static_cast<CSketchSpace_UFO::SIDESCROLLDESC*>(_pArg);
     pDesc->isCoordChangeEnable = false;
 
-    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
-    pDesc->fAttack2DRange = 500.f;
+    pDesc->fAttack2DRange = 600.f;
+    pDesc->fDelayTime = 2.f;
 
     pDesc->_tStat.iHP = 1;
     pDesc->_tStat.iMaxHP = 1;
@@ -39,6 +42,7 @@ HRESULT CSketchSpace_UFO::Initialize(void* _pArg)
 
     m_eSideScroll_Bound = pDesc->eSideScroll_Bound;
 
+    m_vCenter = pDesc->tTransform2DDesc.vInitialPosition;
 
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
@@ -49,20 +53,13 @@ HRESULT CSketchSpace_UFO::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    if (true == Is_Stay())
-    {
-        m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
-        m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
-    }
-    else
-    {
-        m_pFSM->Add_State((_uint)MONSTER_STATE::SIDESCROLL_PATROL);
-        m_pFSM->Set_State((_uint)MONSTER_STATE::SIDESCROLL_PATROL);
-    }
 
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::SIDESCROLL_IDLE);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::SIDESCROLL_PATROL);
+    m_pFSM->Add_State((_uint)MONSTER_STATE::SIDESCROLL_ATTACK);
     m_pFSM->Add_State((_uint)MONSTER_STATE::SIDESCROLL_HIT);
     m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
+    m_pFSM->Set_State((_uint)MONSTER_STATE::SIDESCROLL_IDLE);
 
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
@@ -77,11 +74,31 @@ HRESULT CSketchSpace_UFO::Initialize(void* _pArg)
 
 void CSketchSpace_UFO::Priority_Update(_float _fTimeDelta)
 {
+    if (true == IsDelay())
+    {
+        m_fAccTime += _fTimeDelta;
+        if (m_fDelayTime <= m_fAccTime)
+        {
+            Delay_Off();
+        }
+    }
+
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
 void CSketchSpace_UFO::Update(_float _fTimeDelta)
 {
+    if (false == m_isStay)
+    {
+        m_fAngle += Get_ControllerTransform()->Get_RotationPerSec()* _fTimeDelta;
+        if (m_fAngle >= XMConvertToRadians(360.f))
+        {
+            m_fAngle -= XMConvertToRadians(360.f);
+        }
+        _float fRadius = 100.f;
+		Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_vCenter.x + fRadius * 1.2f * cos(m_fAngle), m_vCenter.y + fRadius * 0.7f * sin(m_fAngle), 0.f, 1.f));
+    }
+
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 
@@ -105,6 +122,14 @@ HRESULT CSketchSpace_UFO::Render()
 
 void CSketchSpace_UFO::Attack()
 {
+    _float3 vPosition;
+    _float4 vRotation;
+    XMStoreFloat3(&vPosition, Get_FinalPosition());
+
+    XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_FinalPosition() - Get_FinalPosition()));
+    CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_SketchSpace_UFO"), COORDINATE_2D, &vPosition, &vRotation, nullptr, &m_strSectionName);
+
+    Delay_On();
 }
 
 void CSketchSpace_UFO::Change_Animation()
@@ -117,19 +142,19 @@ void CSketchSpace_UFO::Change_Animation()
 		CSketchSpace_UFO::Animation2D eAnim = ANIM2D_LAST;
 		switch (MONSTER_STATE(m_iState))
 		{
-        case Client::MONSTER_STATE::IDLE:
+        case Client::MONSTER_STATE::SIDESCROLL_IDLE:
             eAnim = IDLE;
             break;
 
-        case Client::MONSTER_STATE::PATROL:
+        case Client::MONSTER_STATE::SIDESCROLL_PATROL:
             eAnim = IDLE;
 			break;
 
-        case Client::MONSTER_STATE::ATTACK:
+        case Client::MONSTER_STATE::SIDESCROLL_ATTACK:
             eAnim = ATTACK;
             break;
 
-		case Client::MONSTER_STATE::HIT:
+		case Client::MONSTER_STATE::SIDESCROLL_HIT:
 			eAnim = HIT;
 			break;
 
@@ -173,6 +198,11 @@ void CSketchSpace_UFO::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     default:
         break;
     }
+}
+
+void CSketchSpace_UFO::Monster_Move(_fvector _vDirection)
+{
+
 }
 
 void CSketchSpace_UFO::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -263,7 +293,7 @@ HRESULT CSketchSpace_UFO::Ready_Components()
     FSMDesc.fAttack2DRange = m_fAttack2DRange;
     FSMDesc.pOwner = this;
     FSMDesc.iCurLevel = m_iCurLevelID;
-    FSMDesc.isMelee = true;
+    FSMDesc.isMelee = false;
 
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
@@ -274,9 +304,9 @@ HRESULT CSketchSpace_UFO::Ready_Components()
 
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
-    CircleDesc.fRadius = { 20.f };
+    CircleDesc.fRadius = { 40.f };
     CircleDesc.vScale = { 1.0f, 1.0f };
-    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
+    CircleDesc.vOffsetPosition = { 0.f, 0.f };
     CircleDesc.isBlock = true;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
@@ -306,7 +336,7 @@ HRESULT CSketchSpace_UFO::Ready_PartObjects()
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
-    BodyDesc.strModelPrototypeTag_2D = TEXT("SketchspaceUFO");
+    BodyDesc.strModelPrototypeTag_2D = TEXT("sketchspace_UFO");
     BodyDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
 
     BodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);

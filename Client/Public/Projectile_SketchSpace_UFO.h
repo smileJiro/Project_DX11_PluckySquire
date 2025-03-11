@@ -6,9 +6,6 @@ BEGIN(Client)
 class CProjectile_SketchSpace_UFO final : public CProjectile_Monster
 {
 public:
-	typedef struct tagProjectile_SketchSpace_UFO_Desc : public CProjectile_Monster::PROJECTILE_MONSTER_DESC
-	{
-	}PROJECTILE_BARFBUG_DESC;
 
 	enum Animation2D
 	{

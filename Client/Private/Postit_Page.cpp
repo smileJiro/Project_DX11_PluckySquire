@@ -9,10 +9,20 @@ CPostit_Page::CPostit_Page(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 }
 
 CPostit_Page::CPostit_Page(const CPostit_Page& _Prototype)
-    : CModelObject(_Prototype)
+    : m_eAnimAction(_Prototype.m_eAnimAction),
+    CModelObject(_Prototype)
 {
+    std::copy(begin(_Prototype.m_Positions), end(_Prototype.m_Positions), m_Positions);
 }
 
+
+HRESULT CPostit_Page::Initialize_Prototype()
+{
+    // °Á ½á¾ßÇÒ¶§ Ãß°¡ÇÏÀÚ ±ÍÂú´Ù
+    m_Positions[POSTIT_PAGE_POSTION_TYPE_A] = { -510.f, 100.f };
+    m_Positions[POSTIT_PAGE_POSTION_TYPE_D] = { 510.f, 100.f };
+    return S_OK;
+}
 
 HRESULT CPostit_Page::Initialize(void* _pArg)
 {
@@ -26,7 +36,8 @@ HRESULT CPostit_Page::Initialize(void* _pArg)
         (_uint)PASS_VTXPOSTEX::SPRITE2D,
         false);
     pDesc->iModelPrototypeLevelID_2D = LEVEL_STATIC;
-    //pDesc->Build_2D_Transform({ -510.f, 100.f }, {2.2f,2.2f});
+    m_ePosition = pDesc->eFirstPostion;
+    pDesc->Build_2D_Transform(m_Positions[m_ePosition], { 2.2f,2.2f });
 
     HRESULT hr = __super::Initialize(_pArg);
 
@@ -36,15 +47,47 @@ HRESULT CPostit_Page::Initialize(void* _pArg)
         Set_PlayingAnim(false);
         Set_Render(false);
     }
+    Register_OnAnimEndCallBack(bind(&CPostit_Page::Anim_Action_End, this, placeholders::_1, placeholders::_2));
+
+
     return hr;
 
 }
 
-void CPostit_Page::Anim_Action(POSTIT_PAGE_ANIM_TYPE eType, _bool _isLoop)
+void CPostit_Page::Anim_Action(POSTIT_PAGE_ANIM_TYPE eType, _bool _isLoop, POSTIT_PAGE_POSTION_TYPE _ePostionType)
 {
+    m_eAnimAction = eType;
+    switch (eType)
+    {
+    case Client::CPostit_Page::POSTIT_PAGE_APPEAR:
+        Set_Render(true);
+        break;
+    default:
+        break;
+    }
+
+    if (_ePostionType != m_ePosition)
+    {
+        m_ePosition = _ePostionType;
+        _vector vNewPos = XMLoadFloat2(&m_Positions[m_ePosition]);
+        Set_Position(vNewPos);
+    }
+
     Set_PlayingAnim(true);
     Switch_Animation(eType);
     Set_AnimationLoop(COORDINATE_2D, eType, _isLoop);
+}
+
+void CPostit_Page::Anim_Action_End(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    switch (m_eAnimAction)
+    {
+    case Client::CPostit_Page::POSTIT_PAGE_DISAPPEAR:
+        Set_Render(false);
+        break;
+    default:
+        break;
+    }
 }
 
 

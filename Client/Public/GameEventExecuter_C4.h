@@ -57,6 +57,7 @@ public:
 
 private:
 	void							Chapter4_Intro(_float _fTimeDelta);
+	void							Chapter4_Intro_Postit_Sequence(_float _fTimeDelta);
 	void							Chapter4_Ride_Zipline(_float _fTimeDelta);
 	void							Chapter4_Event_Flag(_float _fTimeDelta);
 	void							Chapter4_StorySequence(_float _fTimeDelta);

@@ -29,6 +29,7 @@ CGameEventExecuter_C6::CGameEventExecuter_C6(ID3D11Device* _pDevice, ID3D11Devic
 
 HRESULT CGameEventExecuter_C6::Initialize(void* _pArg)
 {
+	m_iCurLevelID = LEVEL_CHAPTER_6;
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 

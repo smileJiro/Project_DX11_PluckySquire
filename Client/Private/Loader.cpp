@@ -163,6 +163,8 @@
 #include "Goblin_SideScroller.h"
 #include "SketchSpace_Alien.h"
 #include "SketchSpace_SpikeBall.h"
+#include "SketchSpace_UFO.h"
+#include "Projectile_SketchSpace_UFO.h"
 
 /* For. Boss */
 #include "ButterGrump.h"
@@ -1564,6 +1566,26 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			CDefenderPerson::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 		/* Monster */
+				/* For. Prototype_GameObject_SketchSpace_Alien */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_Alien"),
+			CSketchSpace_Alien::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_SketchSpace_SpikeBall */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"),
+			CSketchSpace_SpikeBall::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_SketchSpace_UFO */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_UFO"),
+			CSketchSpace_UFO::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_Projectile_SketchSpace_UFO */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Projectile_SketchSpace_UFO"),
+			CProjectile_SketchSpace_UFO::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 
 		/* Etc */
 
@@ -1601,16 +1623,6 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		lstrcpy(m_szLoadingText, TEXT("Level 6 몬스터 로딩중입니다."));
 
 		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter6_Monsters.json"), TEXT("Chapter6_Monsters"), _eLoadLevelID)))
-			return E_FAIL;
-
-		/* For. Prototype_GameObject_SketchSpace_Alien */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_Alien"),
-			CSketchSpace_Alien::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		/* For. Prototype_GameObject_SketchSpace_SpikeBall */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"),
-			CSketchSpace_SpikeBall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 #pragma endregion

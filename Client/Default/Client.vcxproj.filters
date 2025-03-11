@@ -1722,6 +1722,12 @@
     <ClInclude Include="..\Public\SketchSpace_UFO.h">
       <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\SideScroll_IdleState.h">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SideScroll_AttackState.h">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CandleGame.h">
       <Filter>05.MiniGames\FatherGame\CandleGame</Filter>
     </ClInclude>
@@ -2745,6 +2751,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\SketchSpace_UFO.cpp">
       <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SideScroll_IdleState.cpp">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SideScroll_AttackState.cpp">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CandleGame.cpp">
       <Filter>05.MiniGames\FatherGame\CandleGame</Filter>
