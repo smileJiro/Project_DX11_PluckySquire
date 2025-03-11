@@ -58,6 +58,7 @@ public :
 		_string strEventName = "";
 		_uint	uTriggerCondition = 0;
 		_uint	uTriggerEvent = 0;
+		map<_string, vector<any>> pParams;
 	}TRIGGER_EVENT;
 private:
 	C2DMap_Tool_Manager(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
