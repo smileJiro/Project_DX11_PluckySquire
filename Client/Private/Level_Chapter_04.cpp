@@ -56,6 +56,8 @@
 #include "Dialog_Manager.h"
 #include "NPC_Manager.h"
 #include "NPC.h"
+#include "Shop_Manager.h"
+#include "ShopPanel_New.h"
 
 
 CLevel_Chapter_04::CLevel_Chapter_04(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -737,6 +739,17 @@ HRESULT CLevel_Chapter_04::Ready_Layer_UI(const _wstring& _strLayerTag)
 	//		return E_FAIL;
 	//}
 
+	CGameObject* pShop;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pShop, &pDesc)))
+		return E_FAIL;
+
+	CShop_Manager::GetInstance()->Set_Shop(static_cast<CShopPanel_New*>(pShop));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannelRenderFont"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
 
 #pragma region SettingPanel UI
 
@@ -1023,6 +1036,18 @@ HRESULT CLevel_Chapter_04::Ready_Layer_NPC(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
+
+	NPCDesc.iCurLevelID = m_eLevelID;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iNumPartObjects = 3;
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	wsprintf(NPCDesc.strLocateSection, TEXT("Chapter4_P0506"));
+	NPCDesc.vPos = _float2(239.0f, -99.1f);
+	wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
 
 
 	CPostit_Page::POSTIT_PAGE_DESC PostitDesc = {};

@@ -68,7 +68,8 @@
 #include "ESC_HeartPoint.h"
 #include "ShopItemBG.h"
 #include "MapObjectFactory.h"
-
+#include "Shop_Manager.h"
+#include "ShopPanel_New.h"
 #include "NPC.h"
 #include "Loader.h"
 
@@ -257,7 +258,9 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	if (FAILED(CFatherGame::GetInstance()->Start_Game(m_pDevice, m_pContext)))
 		return E_FAIL;
 #pragma endregion // TestCode
-
+	
+	/* Chapter6 Intro Trigger 동적 생성 임시 코드*/
+	Create_IntroTrigger();
 
 	return S_OK;
 }
@@ -761,8 +764,12 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 	//	
 	//}
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	CGameObject* pShop;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pShop, &pDesc)))
 		return E_FAIL;
+
+	CShop_Manager::GetInstance()->Set_Shop(static_cast<CShopPanel_New*>(pShop));
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannelRenderFont"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
@@ -1073,16 +1080,16 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
 
 
-	//NPCDesc.iCurLevelID = m_eLevelID;
-	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//NPCDesc.iNumPartObjects = 3;
-	//NPCDesc.iMainIndex = 0;
-	//NPCDesc.iSubIndex = 0;
-	//wsprintf(NPCDesc.strLocateSection, TEXT("Chapter5_P0102"));
-	//wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
-	//	return E_FAIL;
+	NPCDesc.iCurLevelID = m_eLevelID;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iNumPartObjects = 3;
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	wsprintf(NPCDesc.strLocateSection, TEXT("Chapter5_P0102"));
+	wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
 
 
 
@@ -1560,6 +1567,21 @@ void CLevel_Chapter_06::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 		dynamic_cast<CCamera_2D*>(_pCamera)->Add_CurArm(pArm);
 		break;
 	}
+}
+
+void CLevel_Chapter_06::Create_IntroTrigger()
+{
+	CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+	Desc.vHalfExtents = { 35.f, 35.f, 0.f };
+	Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+	Desc.szEventTag = TEXT("Chapter6_Intro");
+	Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+	Desc.isReusable = false; // 한 번 하고 삭제할 때
+	Desc.eStartCoord = COORDINATE_2D;
+	Desc.tTransform2DDesc.vInitialPosition = { 1170.09f, -156.f, 0.f };
+
+	CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_P0102"));
+	CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc, pSection);
 }
 
 HRESULT CLevel_Chapter_06::Map_Object_Create(_wstring _strFileName)

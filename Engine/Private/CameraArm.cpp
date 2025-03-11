@@ -497,7 +497,8 @@ _bool CCameraArm::Turn_AxisRight(_float _fAngle, _float _fTimeDelta, _uint _iRat
     _float fRatio = m_pGameInstance->Calculate_Ratio(&m_fArmTurnTime, _fTimeDelta, _iRatioType);
 
     if (fRatio >= (1.f - EPSILON)) {
-        m_pTransform->TurnAngle(_fAngle - m_fPreArmAngle);
+        _vector vCrossX = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMLoadFloat3(&m_vArm));
+        m_pTransform->TurnAngle(_fAngle - m_fPreArmAngle, vCrossX);
         XMStoreFloat3(&m_vArm, m_pTransform->Get_State(CTransform::STATE_LOOK));
 
         m_fArmTurnTime.y = 0.f;
@@ -532,6 +533,15 @@ _bool CCameraArm::Change_Length(ARM_DATA* _pCustomData, _float _fTimeDelta)
     }
 
     return false;
+}
+
+_bool CCameraArm::Turn_AxisRight_Angle(_float _fAngle)
+{
+    _vector vCrossX = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMLoadFloat3(&m_vArm));
+    m_pTransform->TurnAngle(_fAngle, vCrossX);
+    XMStoreFloat3(&m_vArm, m_pTransform->Get_State(CTransform::STATE_LOOK));
+
+    return true;
 }
 
 CCameraArm* CCameraArm::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* pArg)

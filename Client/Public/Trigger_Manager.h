@@ -55,6 +55,7 @@ public :
 		CHAPTER4_EVENT_FLAG,		// Zipline 들어가기 전 이벤트
 		CHAPTER4_STORYSEQUENCE,		// 글로브 습득 후, 스케치스페이스 이벤트
 
+		CHAPTER6_INTRO,				// Intro
 		/* Father Game Start */
 		CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR,
 		CHAPTER6_FATHERGAME_PROGRESS_ZETPACK_CLEAR,

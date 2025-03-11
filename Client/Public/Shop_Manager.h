@@ -46,6 +46,8 @@ public:
 	void									Set_ChooseItem(_int _iIndex);
 
 	// GET SET
+	CShopPanel_New*							Get_Shop() { return m_pShop; }
+	void									Set_Shop(CShopPanel_New* _pShop) { m_pShop = _pShop; Safe_AddRef(_pShop); }
 	_float2									Get_ShopBGPos() { 
 		return m_vShopPos; 
 	}
@@ -83,6 +85,7 @@ public:
 
 private:
 	CGameInstance*							m_pGameInstance;
+	CShopPanel_New*							m_pShop = { nullptr };
 	vector<vector<CShopItemBG_New*>>		m_ShopItems;
 	map<_uint, CShopPanel_BG_New*>			m_pShopPanels;
 	_float2									m_vShopPos = { _float2(0.f, 0.f) };

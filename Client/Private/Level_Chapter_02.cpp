@@ -62,6 +62,8 @@
 #include "MapObjectFactory.h"
 #include "Interaction_E.h"
 #include "NPC_Manager.h"
+#include "ShopPanel_New.h"
+#include "Shop_Manager.h"
 
 #include "NPC.h"
 #include "Loader.h"
@@ -264,6 +266,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 	// Intro ½ÃÀÛ
 	//CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);
+	//CCamera_Manager::GetInstance()->Start_FadeIn(2.f);
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
@@ -867,8 +870,12 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 #pragma endregion InterAction UI
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	CGameObject* pShop;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pShop, &pDesc)))
 		return E_FAIL;
+
+	CShop_Manager::GetInstance()->Set_Shop(static_cast<CShopPanel_New*>(pShop));
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannelRenderFont"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
@@ -1184,17 +1191,17 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
 
-	//NPCDesc.iCurLevelID = m_eLevelID;
-	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//NPCDesc.iNumPartObjects = 3;
-	//NPCDesc.iMainIndex = 0;
-	//NPCDesc.iSubIndex = 0;
-	//wsprintf(NPCDesc.strLocateSection, TEXT("Chapter2_P1112"));
-	//NPCDesc.vPos = _float2(157.8f, -183.0f);
-	//wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
-	//	return E_FAIL;
+	NPCDesc.iCurLevelID = m_eLevelID;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iNumPartObjects = 3;
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	wsprintf(NPCDesc.strLocateSection, TEXT("Chapter2_P1112"));
+	NPCDesc.vPos = _float2(71.0f, -11.1f);
+	wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
 
 
 

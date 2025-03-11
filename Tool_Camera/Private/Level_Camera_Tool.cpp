@@ -483,7 +483,7 @@ void CLevel_Camera_Tool::Create_Arms()
 	Desc.vPosOffset = { 0.f, 0.f, 0.f };
 	//Desc.vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
 	Desc.fLength = 14.6f;
-	Desc.wszArmTag = TEXT("Player_Arm");
+	//Desc.wszArmTag = TEXT("Player_Arm");
 
 	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
 

@@ -91,6 +91,31 @@ void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
 			Next_Step(true);
 		}
 	}
+	else if (Step_Check(STEP_2)) {
+		CCamera_CutScene* pCamera = static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
+		if (true == pCamera->Is_Finish_CutScene()) {
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_3)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeOut(0.7f);
+		}
+
+		// 3. FadeOut이 끝난 후 CutScene Camera -> Target Camera로 전환
+		if (m_fTimer > 0.7f) {
+			static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CUTSCENE))->Set_Pause_After_CutScene(false);
+			Next_Step(true);
+		}
+	}
+	// 4. 전환 후 Target Camera로(다음 프레임) FadeIn 시작 + 기존 CutScene Camera를 다시 밝게 만들기
+	else if (Step_Check(STEP_4)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeIn(0.7f);
+			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+			Next_Step(true);
+		}
+	}
 	else
 		GameEvent_End();
 }

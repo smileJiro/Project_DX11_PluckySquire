@@ -313,7 +313,7 @@ HRESULT CNPC_Store::Ready_Components()
 
 	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
 	AABBDesc.pOwner = this;
-	AABBDesc.vExtents = { 70.f, 70.f };
+	AABBDesc.vExtents = { 30.f, 30.f };
 	AABBDesc.vScale = { 1.0f, 1.0f };
 	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.5f };
 	AABBDesc.isBlock = true;
