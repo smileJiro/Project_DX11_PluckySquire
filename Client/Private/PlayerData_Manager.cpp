@@ -192,6 +192,11 @@ void CPlayerData_Manager::Set_CurrentPlayer(PLAYABLE_ID _ePlayableID)
 	m_pCurrentPlayer->On_CurrentPlayable();
 }
 
+CPlayerItem* CPlayerData_Manager::Get_PlayerItem_Ptr(const _wstring& _strItemTag)
+{
+	return m_ItemState[_strItemTag].second;
+}
+
 
 void CPlayerData_Manager::Set_Tags()
 {

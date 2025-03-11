@@ -152,9 +152,17 @@ HRESULT CFloorWord::Load_Json(const wstring& filePath, const _wstring& _strLayer
 		tFloorText.fPosX = text["PosX"].get<_float>();
 		tFloorText.fPosY = text["PosY"].get<_float>();
 		tFloorText.strText = StringToWstring(text["Text"]);
+		
+		tFloorText.strSFX = StringToWstring(text["strSFX"]);
+		if (L"" == tFloorText.strSFX)
+		{
+			tFloorText.strSFX = TEXT("NOTWORD");
+		}
+
 		tFloorText.tHightLight.strSubstring = StringToWstring(text["highlight"]["substring"]);
 		tFloorText.tHightLight.fDefultSize = text["highlight"]["defaultSize"].get<_float>();
 		tFloorText.tHightLight.fHighlightSize = text["highlight"]["highlightSize"].get<_float>();
+		
 
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_PrintFloorWord"), m_iCurLevelID, _strLayerTag, &pGameObject, &tFloorText)))
 			return E_FAIL;

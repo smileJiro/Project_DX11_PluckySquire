@@ -35,6 +35,7 @@ public:
 		float fPosY;			// Y
 		wstring strText;		// 노출할 텍스쳐
 		Highlight tHightLight;	// 하이라이트 인데 미사용
+		wstring strSFX = { TEXT("NOTWORD") };
 
 	};
 
