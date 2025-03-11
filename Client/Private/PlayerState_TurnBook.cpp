@@ -7,10 +7,12 @@
 #include "Camera_Target.h"
 
 #include "Effect_Manager.h"
+#include "TurnBookEffect.h"
 
 CPlayerState_TurnBook::CPlayerState_TurnBook(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::TURN_BOOK)
 {
+	m_pTurnBookEffect = _pOwner->Get_TurnBookEffect();
 }
 
 void CPlayerState_TurnBook::Update(_float _fTimeDelta)
@@ -163,7 +165,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 			m_pBook->Set_PlayingAnim(false);
 	}
 
-
+	
 }
 
 void CPlayerState_TurnBook::Enter()
@@ -185,6 +187,10 @@ void CPlayerState_TurnBook::Enter()
 	CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
 	CCamera_Manager::GetInstance()->Set_NextArmData(TEXT("BookFlipping_Horizon"), 0);
 	CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+
+	if (nullptr != m_pTurnBookEffect)
+		m_pTurnBookEffect->Set_Active(true);
+	m_pTurnBookEffect->Set_BookPosition(m_pBook->Get_FinalPosition() + XMVectorSet(0.f, 0.7f, 0.f, 0.f));
 }
 
 void CPlayerState_TurnBook::Exit()
@@ -194,6 +200,9 @@ void CPlayerState_TurnBook::Exit()
 	CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.f);
 
 	CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("Book_Default"), 4.f);
+
+	if (nullptr != m_pTurnBookEffect)
+		m_pTurnBookEffect->Set_Active(false);
 }
 
 void CPlayerState_TurnBook::Switch_PlayerAnimation(_bool _bLeft)

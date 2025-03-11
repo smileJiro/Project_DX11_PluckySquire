@@ -688,6 +688,9 @@
     <Filter Include="02.GameObjects\Monster\C6_SketchSpace">
       <UniqueIdentifier>{8841a22f-be45-4324-8f1e-9db21363e7e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Effect\Etc">
+      <UniqueIdentifier>{a2878a22-cd5b-40ea-973b-eb5e1cffba7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1719,6 +1722,9 @@
     <ClInclude Include="..\Public\SketchSpace_UFO.h">
       <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\TurnBookEffect.h">
+      <Filter>02.GameObjects\Effect\Etc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2736,6 +2742,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\SketchSpace_UFO.cpp">
       <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TurnBookEffect.cpp">
+      <Filter>02.GameObjects\Effect\Etc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

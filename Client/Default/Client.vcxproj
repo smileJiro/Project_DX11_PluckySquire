@@ -287,6 +287,7 @@
     <ClInclude Include="..\public\Sneak_Tile.h" />
     <ClInclude Include="..\public\Sneak_Troop.h" />
     <ClInclude Include="..\Public\JellyKing.h" />
+    <ClInclude Include="..\public\TurnBookEffect.h" />
     <ClInclude Include="..\public\ZetPack_Child.h" />
     <ClInclude Include="..\Public\Zipline.h" />
     <ClInclude Include="..\Public\MudPit.h" />
@@ -634,6 +635,7 @@
     <ClCompile Include="..\private\Sneak_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Troop.cpp" />
     <ClCompile Include="..\Private\JellyKing.cpp" />
+    <ClCompile Include="..\private\TurnBookEffect.cpp" />
     <ClCompile Include="..\private\ZetPack_Child.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />
     <ClCompile Include="..\Private\MudPit.cpp" />

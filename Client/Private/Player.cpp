@@ -56,6 +56,7 @@
 #include "Portal.h"
 #include "DraggableObject.h"
 #include "Book.h"
+#include "TurnBookEffect.h"
 
 #include "Camera_Target.h"
 
@@ -456,6 +457,24 @@ HRESULT CPlayer::Ready_PartObjects()
     m_PartObjects[PLAYER_PART_VISOR]->Set_Position({ 0.f,0.225f,-0.225f });
     Set_PartActive(PLAYER_PART_VISOR, false);
 
+    // TurnBook BeamEffect
+    CTurnBookEffect::TURNBOOKEFFECT_DESC TURNBOOKEFFECT_DESC = {};
+    TURNBOOKEFFECT_DESC.iCurLevelID = m_iCurLevelID;
+    TURNBOOKEFFECT_DESC.isCoordChangeEnable = false;
+    TURNBOOKEFFECT_DESC.eStartCoord = COORDINATE_3D;  
+    TURNBOOKEFFECT_DESC.pBodyMatrix = m_pControllerTransform->Get_WorldMatrix_Ptr();
+
+    if (nullptr != m_pBody)
+    {
+        TURNBOOKEFFECT_DESC.pLHandMatrix = static_cast<C3DModel*>(m_pBody->Get_Model(COORDINATE_3D))->Get_Bone("j_hand_l")->Get_CombinedTransformationFloat4x4();
+        TURNBOOKEFFECT_DESC.pRHandMatrix = static_cast<C3DModel*>(m_pBody->Get_Model(COORDINATE_3D))->Get_Bone("j_hand_r")->Get_CombinedTransformationFloat4x4();
+    }
+
+    m_PartObjects[PLAYER_PART_TURNBOOKEFFECT] = m_pTurnBookEffect = static_cast<CTurnBookEffect*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_TurnBookEffect"), &TURNBOOKEFFECT_DESC));
+    if (nullptr == m_pTurnBookEffect)
+        return E_FAIL;
+    m_pTurnBookEffect->Set_Active(false);
+
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_UP, true);
@@ -723,7 +742,6 @@ void CPlayer::Late_Update(_float _fTimeDelta)
         }
     }
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
-
 
     //cout << endl;
 
@@ -1804,6 +1822,8 @@ CActor_Dynamic* CPlayer::Get_ActorDynamic()
     return static_cast<CActor_Dynamic*>(m_pActorCom);
 }
 
+
+
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
 
@@ -2442,6 +2462,7 @@ void CPlayer::Free()
 	Safe_Release(m_pRifle);
 
     Safe_Release(m_pCarryingObject);
+    Safe_Release(m_pTurnBookEffect);
     
     __super::Free();
 }
