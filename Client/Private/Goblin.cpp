@@ -82,8 +82,6 @@ HRESULT CGoblin::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixIdentity());
-
     m_pFSM->Add_Chase_NoneAttackState();
     m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
@@ -574,11 +572,13 @@ HRESULT CGoblin::Ready_ActorDesc(void* _pArg)
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
+    m_matQueryShapeOffset = ShapeData->LocalOffsetMatrix;
+
     m_fHalfBodySize = ShapeDesc->fRadius;
 
     //쿼리를 켜기 위한 트리거
     SHAPE_SPHERE_DESC* TriggerDesc = new SHAPE_SPHERE_DESC;
-    TriggerDesc->fRadius = 0.6f;
+    TriggerDesc->fRadius = 0.6f; //pDesc->fAlertRange;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     ShapeData->pShapeDesc = TriggerDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.

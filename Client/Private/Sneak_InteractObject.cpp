@@ -30,12 +30,26 @@ HRESULT CSneak_InteractObject::Initialize(void* _pArg)
 	m_isInteractable = pDesc->_isInteractable;
 	m_isCollisionInteractable = pDesc->_isCollisionInteractable;
 	m_eBlockDirection = pDesc->_eBlockDirection;
+	m_isNextGroup = pDesc->_isNextGroup;
 
 	Register_OnAnimEndCallBack(bind(&CSneak_InteractObject::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 
 	m_pSneakGameManager = CMinigame_Sneak::GetInstance();
 
 	return S_OK;
+}
+
+HRESULT CSneak_InteractObject::Render()
+{
+	if (nullptr != m_pSneakGameManager)
+	{
+		if (m_pSneakGameManager->Is_StartGame())
+			return __super::Render();
+		else
+			return S_OK;
+	}
+	else
+		return __super::Render();
 }
 
 void CSneak_InteractObject::Register_Tiles(CSneak_Tile* _pTile)
@@ -60,6 +74,11 @@ void CSneak_InteractObject::Interact()
 {
 	Flip();
 
+	if (m_isFlipped)
+		m_pGameInstance->Start_SFX(m_strFlip1Sound, 50.f);
+	else
+		m_pGameInstance->Start_SFX(m_strFlip2Sound, 50.f);
+
 	for (auto& iter : m_pInteractObjects)
 		iter->Interact();
 	for (auto& iter : m_pTiles)
@@ -72,8 +91,6 @@ void CSneak_InteractObject::Restart()
 	{
 		Flip();
 	}
-
-
 }
 
 void CSneak_InteractObject::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

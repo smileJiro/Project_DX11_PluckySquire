@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Dialog_Manager.h"
+#include "UI_Manager.h"
 
 IMPLEMENT_SINGLETON(CDialog_Manager)
 
@@ -13,6 +14,7 @@ CDialog_Manager::CDialog_Manager()
 
 void CDialog_Manager::Set_DialogId(const _tchar* _id, const _tchar* _strCurSection, _bool _DisplayDialogue, _bool _DisPlayPortrait)
 {
+	CPlayer* pPlayer = Uimgr->Get_Player();
 
 	if (nullptr == m_pDialogue)
 		return;
@@ -27,7 +29,20 @@ void CDialog_Manager::Set_DialogId(const _tchar* _id, const _tchar* _strCurSecti
 
 	if (nullptr == _strCurSection)
 	{
+
 		m_pDialogue->Set_strCurSection(TEXT("NOTWORD"));
+		
+		if (COORDINATE_2D == pPlayer->Get_CurCoord())
+		{
+			_float2 vPlayerPos = _float2(pPlayer->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0], 
+										pPlayer->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
+			
+			Set_DialoguePos(_float3(vPlayerPos.x, vPlayerPos.y, 0.f));
+		}
+		else if (COORDINATE_3D == pPlayer->Get_CurCoord())
+		{
+			// 여기에 들어오는게 어떻게 들어오나..?
+		}
 	}
 	else
 	{

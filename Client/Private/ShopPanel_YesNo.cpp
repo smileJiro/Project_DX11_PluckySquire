@@ -60,8 +60,8 @@ void CShopPanel_YesNo::Child_LateUpdate(_float _fTimeDelta)
 	{
 
 		// TODO :: 나중에 수정해야한다. 각 넓이는 가변적이기 때문에.
-		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
-
+		//_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+		_float2 RTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
 		Cal_ShopYesNOPos(RTSize, Uimgr->Get_ShopPos());
 	}
 }

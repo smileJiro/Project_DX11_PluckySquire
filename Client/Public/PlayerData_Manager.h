@@ -49,7 +49,7 @@ public:
 	_bool					Is_Own(PLAYERITEM_TYPE _eItemType);
 
 public:
-	HRESULT					Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos);
+	HRESULT					Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos, _float3 _vScale = {4.f,4.f,4.f});
 	HRESULT					Spawn_Bulb(_uint _iPrototypeLevelID, _uint _iLevelID);
 	
 	void					Get_PlayerItem(_wstring _szItemTag);
@@ -82,6 +82,12 @@ private:
 
 	// 이름 저장용
 	pair<_wstring, _wstring>			m_ItemTags[ITEM_END] = {}; // first -> 구분용 이름, second -> model용 이름
+
+	//스킬 레벨 용도
+	_int								m_iJumpSkill;
+	_int								m_iThorowSkill;
+	_int								m_iWhirlSkill;
+	_int								m_iAttackDamagePlus;
 
 private:
 	void					Set_Tags();

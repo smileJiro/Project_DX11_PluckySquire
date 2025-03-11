@@ -62,6 +62,8 @@
 #include "MapObjectFactory.h"
 #include "Interaction_E.h"
 #include "NPC_Manager.h"
+#include "ShopPanel_New.h"
+#include "Shop_Manager.h"
 
 #include "NPC.h"
 #include "Loader.h"
@@ -263,7 +265,8 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
 
 	// Intro ½ÃÀÛ
-	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);
+	//CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);
+	//CCamera_Manager::GetInstance()->Start_FadeIn(2.f);
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
@@ -887,13 +890,15 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 #pragma endregion InterAction UI
 
-	//_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
-	//
-	//if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
-	//{
-	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ParentShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
-	//		return E_FAIL;
-	//}
+	CGameObject* pShop;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pShop, &pDesc)))
+		return E_FAIL;
+
+	CShop_Manager::GetInstance()->Set_Shop(static_cast<CShopPanel_New*>(pShop));
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannelRenderFont"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
 
 
 #pragma region SettingPanel UI
@@ -1160,8 +1165,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Item(const _wstring& _strLayerTag)
 	// Test(PlayerItem: Glove, Stamp)
 	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(62.31f, 6.28f, -21.097f));
 	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
-
-
+	
 
 	//3D Bulb
 	Pooling_DESC Pooling_Desc;
@@ -1200,12 +1204,30 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	NPCDesc.iNumPartObjects = 3;
 	NPCDesc.iMainIndex = 0;
 	NPCDesc.iSubIndex = 0;
+
 	//wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_OnlySocial"), NPCDesc.iCurLevelID, _strLayerTag, &pGameObject, &NPCDesc)))
 		return E_FAIL;
 
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
 
+	NPCDesc.iCurLevelID = m_eLevelID;
+	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	NPCDesc.iNumPartObjects = 3;
+	NPCDesc.iMainIndex = 0;
+	NPCDesc.iSubIndex = 0;
+	wsprintf(NPCDesc.strLocateSection, TEXT("Chapter2_P1112"));
+	NPCDesc.vPos = _float2(71.0f, -11.1f);
+	wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
+
+
+
+
+
+	wsprintf(NPCDesc.strDialogueIndex, TEXT(""));
 
 	wsprintf(NPCDesc.strDialogueIndex, L"");
 	NPCDesc.iCurLevelID = m_eLevelID;

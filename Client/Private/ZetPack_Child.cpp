@@ -7,6 +7,7 @@
 #include "Camera_Manager.h"
 #include "Pooling_Manager.h"
 #include "FatherGame.h"
+#include "ZetPack_Father.h"
 
 CZetPack_Child::CZetPack_Child(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -129,6 +130,9 @@ void CZetPack_Child::State_Change()
 	case Client::CZetPack_Child::STATE_PORTALIN:
 		State_Change_PortalIn();
 		break;
+	case Client::CZetPack_Child::STATE_MAKEFATHER:
+		State_Change_MakeFather();
+		break;
 	default:
 		break;
 	}
@@ -143,7 +147,16 @@ void CZetPack_Child::State_Change_Idle()
 void CZetPack_Child::State_Change_Talk()
 {
 	/* 1. 애니메이션 방향 체크 */
-	Update_AnimationDirection();
+	if (STATE::STATE_MAKEFATHER == m_ePreState)
+	{
+		m_eDirection = DIR_DOWN;
+		m_pControllerModel->Switch_Animation((_uint)ANIMINDEX::TALK_DOWN);
+	}
+	else
+	{
+		Update_AnimationDirection();
+	}
+
 
 	/* 2. Dialogue 재생 */
 	_wstring str = TEXT("ZetPack_Child_");
@@ -201,6 +214,16 @@ void CZetPack_Child::State_Change_PortalIn()
 	CFatherGame::GetInstance()->Set_Active_FatherParts_UIs(false);
 }
 
+void CZetPack_Child::State_Change_MakeFather()
+{
+	// 1. 미리 지정해둔 좌표로 이동하며, 아래를 본 상태에서 Talk State로 변경할 것이다.
+	if (nullptr == m_pPlayer)
+		return;
+
+	m_pPlayer->Set_BlockPlayerInput(true);
+	m_pPlayer->Set_2DDirection(E_DIRECTION::UP);
+}
+
 void CZetPack_Child::Action_State(_float _fTimeDelta)
 {
 	switch (m_eCurState)
@@ -219,6 +242,9 @@ void CZetPack_Child::Action_State(_float _fTimeDelta)
 		break;
 	case Client::CZetPack_Child::STATE_PORTALIN:
 		Action_State_PortalIn(_fTimeDelta);
+		break;
+	case Client::CZetPack_Child::STATE_MAKEFATHER:
+		Action_State_MakeFather(_fTimeDelta);
 		break;
 
 	default:
@@ -285,6 +311,11 @@ void CZetPack_Child::Action_State_PortalOut(_float _fTimeDelta)
 void CZetPack_Child::Action_State_PortalIn(_float _fTimeDelta)
 {
 	m_eCurState = STATE_CHASE;
+}
+
+void CZetPack_Child::Action_State_MakeFather(_float _fTimeDelta)
+{
+	ChaseToTargetPosition(m_vMakeFatherPosition, _fTimeDelta);
 }
 
 void CZetPack_Child::Update_AnimationDirection()
@@ -436,6 +467,31 @@ void CZetPack_Child::ChaseToTarget(_float _fTimeDelta)
 	Update_AnimationDirection();
 }
 
+void CZetPack_Child::ChaseToTargetPosition(_float2 _vTargetPosition, _float _fTimeDelta)
+{
+	CTransform* pTransform2D = Get_ControllerTransform()->Get_Transform(COORDINATE_2D);
+	_vector vPos = pTransform2D->Get_State(CTransform::STATE_POSITION);
+	_vector vTargetPos = XMVectorSetW(XMLoadFloat2(&_vTargetPosition), 1.0f);
+	_vector vDir = vTargetPos - vPos;
+	_float fDiff = XMVectorGetX(XMVector3Length(vDir));
+	vDir /= fDiff;
+
+	/* 1. Player 방향으로의 이동. */
+	pTransform2D->Go_Direction(vDir, _fTimeDelta);
+
+	/* 2. 방향에 맞게 애니메이션 변경 */
+	Update_AnimationDirection();
+
+	/* 0. 플레이어와의 거리를 기반으로 더 갈지 말지 판별 */
+	if (3.f > fDiff)
+	{
+		m_eCurState = STATE_TALK;
+		return;
+	}
+
+
+}
+
 void CZetPack_Child::Finished_DialogueAction()
 {
 	switch (m_iDialogueIndex)
@@ -460,13 +516,21 @@ void CZetPack_Child::Finished_DialogueAction()
 			m_isContactPlayer = true;
 			m_eCurState = STATE_CHASE;
 
-			++m_iDialogueIndex;
+
 		}
 	}
 		break;
+	case 9: // 아빠 조립 
+	{
+		CZetPack_Father* pFather = CFatherGame::GetInstance()->Get_ZetPack_Father();
+		pFather->Set_CurState(CZetPack_Father::STATE_REASSEMBLE);
+		m_eCurState = STATE_CHASE;
+	}
+	break;
 	default:
 		break;
 	}
+	++m_iDialogueIndex;
 }
 
 HRESULT CZetPack_Child::Make_JusinBulb(_string _strJsonPath)

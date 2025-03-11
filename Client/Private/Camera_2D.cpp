@@ -73,7 +73,7 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 #ifdef _DEBUG
-	//Imgui(fTimeDelta);
+	Imgui(fTimeDelta);
 #endif
 
 	//m_eCameraMode = DEFAULT;
@@ -292,13 +292,24 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 				if (iter == m_NormalTargets.end())
 					return;
 				
-				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+				_float3 TargetFixedY = {};
+				memcpy(&TargetFixedY, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+				TargetFixedY.y = 0.f;
+
+				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { TargetFixedY.x, TargetFixedY.y });
+				XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 
 				_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
 				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
 
 
-				Set_InitialData(vDir, 6.5f, XMVectorZero(), 5);
+				Set_InitialData(vDir, 5.5f, XMVectorZero(), 5);
+
+				m_pCurArm->Turn_AxisRight_Angle(XMConvertToRadians(15.f));
+
+				if (TEXT("Chapter6_SKSP_04") == m_strSectionName) {
+					m_pCurArm->Set_Length(6.5f);
+				}
 			}
 		}
 #pragma endregion
@@ -823,6 +834,10 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 	if (false == m_isInitialData)
 		return;
 
+	// Normal일 경우 y로 고정해야 하기 때문
+	_float2 vTargetWorldPos = { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 };
+
+
 #pragma region NORMAL_MAP Type일 경우
 	// 만약 Sksp의 Normal을 직접 구해야 하는 상황이라면? (머그)
 	/*CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
@@ -834,19 +849,26 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 		if (iter == m_NormalTargets.end())
 			return;
 
-		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+		vTargetWorldPos.y = 0.f;
+		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { vTargetWorldPos.x, vTargetWorldPos.y });
 
 		_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
 		vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
 
-		Set_InitialData(vDir, 6.5f, XMVectorZero(), 5);
+		m_pCurArm->Set_ArmVector(vDir);
+		//Set_InitialData(vDir, 5.5f, XMVectorZero(), 5);
+		m_pCurArm->Turn_AxisRight_Angle(XMConvertToRadians(15.f));
+
+		//if (TEXT("Chapter6_SKSP_04") == m_strSectionName) {
+		//	m_pCurArm->Set_Length(6.5f);
+		//}
 	}
 #pragma endregion
 
 	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_InitialTime, _fTimeDelta, EASE_IN_OUT);
 
 	if (fRatio >= (1.f - EPSILON)) {
-		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ vTargetWorldPos.x, vTargetWorldPos.y });
 		_vector vCameraPos = vTargetPos + ((m_pCurArm->Get_Length() / m_fLengthValue) * m_pCurArm->Get_ArmVector());
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vCameraPos, 1.f));
 
@@ -867,7 +889,7 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 	}
 
 	// Pos
-	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+	_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName,{ vTargetWorldPos.x, vTargetWorldPos.y });
 	if (true == XMVector3Equal(vTargetPos, XMVectorZero())) {
 		vTargetPos = XMLoadFloat3(&m_v2DPreTargetWorldPos);
 	}
@@ -1009,12 +1031,19 @@ void CCamera_2D::Find_TargetPos()
 				if (iter == m_NormalTargets.end())
 					return;
 
-				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
+				_float3 TargetFixedY = {};
+				memcpy(&TargetFixedY, m_pTargetWorldMatrix->m[3], sizeof(_float3));
+				TargetFixedY.y = 0.f;
+
+				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { TargetFixedY.x, TargetFixedY.y });
+
+				XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
 
 				_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
 				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
 
 				m_pCurArm->Set_ArmVector(vDir);
+				m_pCurArm->Turn_AxisRight_Angle(XMConvertToRadians(15.f));
 			}
 		}
 #pragma endregion

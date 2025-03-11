@@ -36,7 +36,6 @@ HRESULT CShopPanel_New::Initialize(void* _pArg)
 		//Uimgr->Set_isMakeItem(true);
 	}
 
-
 	//if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), this)))
 	//	return E_FAIL;
 
@@ -382,6 +381,8 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 	CShop_Manager* pShopManager = CShop_Manager::GetInstance();
 	auto& ShopItems = CShop_Manager::GetInstance()->Get_ShopItems();
 
+	_float2 vRatio = _float2(_vRTSize.x / RTSIZE_BOOK2D_X, _vRTSize.y / RTSIZE_BOOK2D_Y);
+
 	if (nullptr == &ShopItems)
 		assert(nullptr);
 
@@ -389,19 +390,17 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 	{
 		if (0 == i)
 		{
-
-
 			for (int j = 0; j < ShopItems[i].size(); ++j)
 			{
 				if (0 == j)
 				{
 					vCalPos.x = _vBGPos.x;
-					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.07f;
+					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.15f / vRatio.y;
 				}
 				else if (1 == j)
 				{
-					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.035f;
-					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.07f;
+					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.07f / vRatio.x;
+					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.15f / vRatio.y;
 
 
 					if (2 >=pShopManager->Get_BadgePositions().size())
@@ -415,8 +414,8 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				}
 				else if (2 == j)
 				{
-					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.02f;
-					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.07f;
+					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.04f / vRatio.x;
+					vCalPos.y = _vBGPos.y + _vRTSize.y * 0.15f / vRatio.y;
 				}
 
 				ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
@@ -431,12 +430,12 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				if (0 == j)
 				{
 					vCalPos.x = _vBGPos.x;
-					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.005f;
+					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.005f / vRatio.y;
 				}
 				else if (1 == j)
 				{
-					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.035f;
-					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.005f;
+					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.07f / vRatio.x;
+					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.005f / vRatio.y;
 
 					if (2 >= pShopManager->Get_BadgePositions().size())
 					{
@@ -447,8 +446,8 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				}
 				else if (2 == j)
 				{
-					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.02f;
-					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.005f;
+					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.04f / vRatio.x;
+					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.005f / vRatio.y;
 				}
 
 				ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));
@@ -462,12 +461,12 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				if (0 == j)
 				{
 					vCalPos.x = _vBGPos.x;
-					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.08f;
+					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.16f / vRatio.y;
 				}
 				else if (1 == j)
 				{
-					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.035f;
-					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.08f;
+					vCalPos.x = _vBGPos.x - _vRTSize.x * 0.07f / vRatio.x;
+					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.16f / vRatio.y;
 
 					if (2 >= pShopManager->Get_BadgePositions().size())
 					{
@@ -478,8 +477,8 @@ void CShopPanel_New::Cal_ShopPartPos(_float2 _vRTSize, _float2 _vBGPos)
 				}
 				else if (2 == j)
 				{
-					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.02f;
-					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.08f;
+					vCalPos.x = _vBGPos.x + _vRTSize.x * 0.04f / vRatio.x;
+					vCalPos.y = _vBGPos.y - _vRTSize.y * 0.16f / vRatio.y;
 				}
 
 				ShopItems[i][j]->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float4(vCalPos.x, vCalPos.y, 0.f, 1.f));

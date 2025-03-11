@@ -43,10 +43,11 @@ public :
 private:
 	_bool					m_isWordControllerPopup = false;	
 	_bool					m_isFadeIn = false;
+	_float					m_fFadeInLength = 250.f;
 
 	_uint					m_iControllerIndex = 0;
 	_uint					m_iWordCount = {};
-	_float					m_fAmount = { 0.f };
+	_float					m_fAmount =  0.f ;
 
 	_wstring				m_strOriginText;
 	_wstring				m_strRenderText;

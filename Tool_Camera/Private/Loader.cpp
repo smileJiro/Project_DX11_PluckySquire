@@ -241,7 +241,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/Models/2DAnim/Chapter2/Player/player.model2d"), LEVEL_CAMERA_TOOL))))
+        C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/Models/2DAnim/Chapter2/Player/player.model2d"), (_uint)LEVEL_CAMERA_TOOL))))
         return E_FAIL;
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
@@ -346,7 +346,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/SM_desk_split_topboard_02/SM_desk_split_topboard_02.model", matPretransform))))
         return E_FAIL;
 
-    if (FAILED(Load_Models_FromJson(LEVEL_TRIGGER_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_04_Play_Desk.json", matPretransform)))
+    if (FAILED(Load_Models_FromJson(LEVEL_TRIGGER_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_08_Play_Desk.json", matPretransform)))
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TRIGGER_TOOL,
@@ -406,7 +406,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
     //    CBook::Create(m_pDevice, m_pContext))))
     //    return E_FAIL;
 
-    Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_04_Play_Desk.mchc");
+    Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_08_Play_Desk.mchc");
 
     //Map_Object_Create(LEVEL_STATIC, LEVEL_TRIGGER_TOOL, L"Room_Enviroment.mchc");
 
@@ -645,12 +645,15 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
         strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
         for (size_t i = 0; i < iObjectCnt; i++)
         {
+            cout << i << endl;
             _char		szSaveMeshName[MAX_PATH];
             _float4x4	vWorld = {};
+            _bool isCulling = false;
 
 
             isTempReturn = ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
             isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
+            isTempReturn = ReadFile(hFile, &isCulling, sizeof(_bool), &dwByte, nullptr);
 
 
             CModelObject::MODELOBJECT_DESC NormalDesc = {};

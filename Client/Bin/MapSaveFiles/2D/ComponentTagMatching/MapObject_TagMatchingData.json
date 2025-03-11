@@ -2264,7 +2264,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "TopDownDecal_steps_1",
@@ -2273,7 +2273,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "TopDownDecal_steps_2",
@@ -2282,7 +2282,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "TopDownDecal_steps_3",
@@ -4181,7 +4181,7 @@
  },
  {
   "Active": false,
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "Desk_C06_Pad_Sprite",
@@ -4254,10 +4254,23 @@
  {
   "Active": true,
   "ActivePropertis": {
-   "ActiveType": 6
+   "ActiveType": 10
   },
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 800.0,
+     "Y": 1695.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 154.0,
+     "Y": 182.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 0,
   "SearchTag": "09_0910_01_Sprite",
   "Sorting": false,
@@ -4275,7 +4288,7 @@
  {
   "Active": true,
   "ActivePropertis": {
-   "ActiveType": 6
+   "ActiveType": 10
   },
   "BackGround": false,
   "Collider": false,
@@ -6583,5 +6596,32 @@
   "SearchTag": "jk_throne_Sprite",
   "Sorting": false,
   "TextureName": "jk_throne_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "stairs_03_Sprite",
+  "Sorting": false,
+  "TextureName": "stairs_03_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "stairs_03_mask_Sprite",
+  "Sorting": false,
+  "TextureName": "stairs_03_mask_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "stairs_03_mask_island_Sprite",
+  "Sorting": false,
+  "TextureName": "stairs_03_mask_island_Sprite"
  }
 ]

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ #include "stdafx.h"
 #include "2DMapWordObject.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
@@ -320,10 +320,11 @@ void C2DMapWordObject::Action_Process(_float _fTimeDelta)
     {
         _vector v3DPosition = SECTION_MGR->Get_WorldPosition_FromWorldPosMap(m_strSectionName,
             _float2(XMVectorGetX(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)), XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION))));
-
+        v3DPosition = XMVectorSetY(v3DPosition, XMVectorGetZ(v3DPosition));
         _vector vCamPosition = CCamera_Manager::GetInstance()->Get_CameraVector(CTransform::STATE_POSITION);
+        vCamPosition = XMVectorSetY(vCamPosition, XMVectorGetZ(vCamPosition));
 
-        if (XMVectorGetX(XMVector3Length(v3DPosition - vCamPosition)) < m_fTargetDiff)
+        if (XMVectorGetX(XMVector2Length(v3DPosition - vCamPosition)) < m_fTargetDiff)
             m_isStartAction = true;
     }
     else 

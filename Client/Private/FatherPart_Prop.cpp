@@ -197,7 +197,7 @@ HRESULT CFatherPart_Prop::Ready_Components(FATHERPART_PROP_DESC* _pDesc)
 	m_p2DColliderComs.resize(1);
 	CCollider_Circle::COLLIDER_CIRCLE_DESC Desc = {};
 	Desc.pOwner = this;
-	Desc.fRadius = 50.f;
+	Desc.fRadius = 0.5f;
 	Desc.vScale = { 1.0f, 1.0f };
 	Desc.vOffsetPosition = { 0.0f, 0.0f };
 	Desc.isBlock = false;

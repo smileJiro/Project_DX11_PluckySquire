@@ -121,7 +121,10 @@ void CInteraction_E::Late_Update(_float _fTimeDelta)
 			m_isRender = true;
 	
 		CGameObject* pGameObejct = dynamic_cast<CGameObject*>(pInteractableObject);
-	
+		
+		m_fInteractionRatio = pInteractableObject->Get_ChargeProgress();
+
+
 		// 현재 섹션에 오브젝트가 없다면
 		//if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 		//{
@@ -184,13 +187,26 @@ HRESULT CInteraction_E::Render()
 			if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", 0)))
 				return E_FAIL;
 
-			m_pShaderCom->Begin((_uint)0);
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_vColors", &m_vInteractionColor, sizeof(_float4))))
+				return E_FAIL;
+
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_fInteractionRatio", &m_fInteractionRatio, sizeof(_float))))
+				return E_FAIL;
+			
+
+			m_pShaderCom->Begin((_uint)PASS_VTXPOSTEX::RATIO_BOTTOM_UP);
 			m_pVIBufferCom->Bind_BufferDesc();
 			m_pVIBufferCom->Render();
 		}
 		else
 		{
-			__super::Render();
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_vColors", &m_vInteractionColor, sizeof(_float4))))
+				return E_FAIL;
+
+			if (FAILED(m_pShaderCom->Bind_RawValue("g_fInteractionRatio", &m_fInteractionRatio, sizeof(_float))))
+				return E_FAIL;
+
+			__super::Render(0, PASS_VTXPOSTEX::RATIO_BOTTOM_UP);
 		}
 
 		_float2 RTSize = _float2(0.f, 0.f);
@@ -333,30 +349,46 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 		_float CalX = vCalx.x - g_iWinSizeX / 2.f;
 		_float CalY = -(vCalx.y - g_iWinSizeY / 1.4f);
 
-		if (m_ePrePlayerCoord != pPlayer->Get_CurCoord())
+		if (COORDINATE_3D == pPlayer->Get_CurCoord())
 		{
-			m_ePrePlayerCoord = pPlayer->Get_CurCoord();
-			if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
-				SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
-			return;
+			if (false == m_isDeleteRender)
+			{
+				SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
+
+				m_preSectionName = TEXT(" ");
+				m_isDeleteRender = true;
+			}
 		}
 
+
+		//if (m_ePrePlayerCoord != pPlayer->Get_CurCoord())
+		//{
+		//	m_ePrePlayerCoord = pPlayer->Get_CurCoord();
+		//	if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
+		//		SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
+		//		//SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
+		//	return;
+		//}
+		//
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(CalX, CalY, 0.f, 1.f));
 		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX, m_fSizeY, 1.f));
 		//m_vObejctPos = _float3(vCalx.x, g_iWinSizeY - vCalx.y, 0.f);
 		m_vObejctPos = _float3(vCalx.x, vCalx.y, 0.f);
+		//
+		//if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
+		//{
+		//	SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
+		//}
+			
 
-		if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
-			SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
 
-
-		if (false == m_isDeleteRender)
-		{
-			//SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
-
-			m_preSectionName = TEXT(" ");
-			m_isDeleteRender = true;
-		}
+		//if (false == m_isDeleteRender)
+		//{
+		//	//SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
+		//
+		//	m_preSectionName = TEXT(" ");
+		//	m_isDeleteRender = true;
+		//}
 	}
 }
 
@@ -460,6 +492,7 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		break;
 
 	case INTERACT_ID::CARRIABLE:
+	case INTERACT_ID::WORD_CONTAINER:
 		m_strDisplayText = TEXT("줍기");
 		break;
 
@@ -468,7 +501,13 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 	//	break;
 
 	case INTERACT_ID::PORTAL:
-		m_strDisplayText = TEXT("이동");
+	{
+		if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+			m_strDisplayText = TEXT("들어가기");
+		else
+			m_strDisplayText = TEXT("나가기");
+	}
+		
 		break;
 
 	case INTERACT_ID::DRAGGABLE:

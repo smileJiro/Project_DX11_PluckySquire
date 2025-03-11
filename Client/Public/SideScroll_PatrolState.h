@@ -27,23 +27,7 @@ public:
 	virtual void State_Exit() override;
 
 private:
-	_float m_fAccTime = { 0.f };
-	_float m_fDelayTime = {};
-	_float m_fAccDistance = { 0.f };
-	_float m_fMoveDistance = {};
-	_float m_fPatrolOffset = {};
-	_float m_fPatrol2DOffset = {};
 	PATROLBOUND m_tPatrolBound = {};
-	_int m_iPrevDir = {};
-	_int m_iDir = {};
-	F_DIRECTION m_eDir = {};
-	_bool m_isDelay = { false };
-	_bool m_isMove = { false };
-	_bool m_isTurn = { false };
-	_bool m_isBack = { false };
-	_float3 m_vRotate = {};
-
-	_bool m_isBound = { false };
 
 public:
 	static CSideScroll_PatrolState* Create(void* _pArg);

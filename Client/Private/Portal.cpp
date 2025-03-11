@@ -214,7 +214,6 @@ HRESULT CPortal::Ready_Particle()
 
     _vector f3DPosition = Get_FinalPosition(COORDINATE_3D);
 
-
     // Æ÷Å» ÀÌÆåÆ® »ý¼º.
     m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_WorldMatrix_Ptr();
 
@@ -279,10 +278,10 @@ HRESULT CPortal::Ready_Particle()
     WorldMatrix.r[3] = XMVectorSetW(f3DPosition, 1.f);
 
     m_pEffectSystem->Set_EffectMatrix(WorldMatrix);
-    m_PartObjects[PORTAL_PART_3D] = m_pEffectSystem;
+    m_PartObjects[PORTAL_PART_EFFECT] = m_pEffectSystem;
 
-    Safe_AddRef(m_pEffectSystem);
-    return E_NOTIMPL;
+    //Safe_AddRef(m_pEffectSystem);
+    return S_OK;
 }
 
 
@@ -343,6 +342,6 @@ void CPortal::Set_FirstActive(_bool _bFirstActive)
 void CPortal::Free()
 {
     Safe_Release(m_pColliderCom);
-    Safe_Release(m_pEffectSystem);
+    //Safe_Release(m_pEffectSystem);
     __super::Free();
 }

@@ -58,8 +58,6 @@ HRESULT CRat::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixRotationY(XMConvertToRadians(90.f)));
-
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
@@ -330,6 +328,8 @@ HRESULT CRat::Ready_ActorDesc(void* _pArg)
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+    m_matQueryShapeOffset = ShapeData->LocalOffsetMatrix;
 
 	m_fHalfBodySize = ShapeDesc->fHalfHeight + ShapeDesc->fRadius;
 

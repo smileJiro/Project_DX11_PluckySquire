@@ -79,6 +79,7 @@ public:
 	}
 
 	class CCameraArm* Get_Arm() { return m_pCurArm; }
+	_bool	Is_Switching() { return m_isInitialData; }
 
 	// Set
 	void Set_DofBufferData(const CONST_DOF& _tDofConstData, _bool _isUpdate = false);

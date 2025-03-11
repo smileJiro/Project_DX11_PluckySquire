@@ -12,6 +12,7 @@ public:
 		STATE_CHASE,
 		STATE_PORTALOUT, // 플레이어의 상태를 추적하여 플레이어가 포탈밖으로 나갔다면, 자기 자신의 렌더를 종료함
 		STATE_PORTALIN, // 플레이어의 상태를 추적하여 플레이어가 포탈안으로 들어갔다면, 자기자신을 플레이어와 같은 섹션에 넣음.
+		STATE_MAKEFATHER, // 아빠충돌체에 충돌되었을때만 이 상태로 전환된다.
 		STATE_LAST
 	};
 	enum ANIMINDEX
@@ -59,10 +60,13 @@ public:
 	void									On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 
 public:
+public:
 	// Get
 	STATE									Get_CurState() const { return m_eCurState; }
 	_int									Get_DialogueIndex() const { return m_iDialogueIndex; }
+
 	// Set
+	void									Set_CurState(STATE _eState) { m_eCurState = _eState; }
 	void									Set_DialogueIndex(_int _iIndex) { m_iDialogueIndex = _iIndex; }
 	void									Plus_DialogueIndex() { ++m_iDialogueIndex; }
 private:
@@ -80,6 +84,11 @@ private:
 private:
 	_int									m_iDialogueIndex = 0;
 	
+private: /* Make Father */
+	_float2									m_vMakeFatherPosition = { 45.f, -100.f };
+
+private:
+
 private:
 	void									State_Change();
 	void									State_Change_Idle();
@@ -87,6 +96,7 @@ private:
 	void									State_Change_Chase();
 	void									State_Change_PortalOut();
 	void									State_Change_PortalIn();
+	void									State_Change_MakeFather();
 
 private:
 	void									Action_State(_float _fTimeDelta);
@@ -95,10 +105,12 @@ private:
 	void									Action_State_Chase(_float _fTimeDelta);
 	void									Action_State_PortalOut(_float _fTimeDelta);
 	void									Action_State_PortalIn(_float _fTimeDelta);
+	void									Action_State_MakeFather(_float _fTimeDelta);
 
 private:
 	void									Update_AnimationDirection();
 	void									ChaseToTarget(_float _fTimeDelta);
+	void									ChaseToTargetPosition(_float2 _vTargetPosition, _float _fTimeDelta);
 	void									Finished_DialogueAction();
 
 private:

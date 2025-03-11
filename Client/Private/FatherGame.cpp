@@ -9,11 +9,14 @@
 #include "Simple_UI.h"
 #include "Mug_Alien.h"
 #include "JellyKing.h"
+#include "ZetPack_Father.h"
 /* Progress */
 #include "FatherGame_Progress_Start.h"
 #include "FatherGame_Progress_ZetPack.h"
 #include "FatherGame_Progress_PartBody.h"
 #include "FatherGame_Progress_PartWing.h"
+#include "FatherGame_Progress_PartHead.h"
+#include "FatherGame_Progress_MakeFather.h"
 
 IMPLEMENT_SINGLETON(CFatherGame)
 CFatherGame::CFatherGame()
@@ -30,7 +33,7 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 	m_pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(m_pGameInstance);
 
-	m_Progress.reserve((size_t)FATHER_PROGRESS::FATHER_PROGRESS_ZETPACK + 1);
+	m_Progress.reserve((size_t)FATHER_PROGRESS::FATHER_PROGRESS_LAST);
 
 	/* 2. Progress 생성 후 Vector에 저장. */
 
@@ -78,7 +81,27 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 		m_ProgressClear.push_back(false);
 	}/* Progress PartWing */
 
+	{/* Progress PartHead */
+		CFatherGame_Progress_PartHead::FATHERGAME_PROGRESS_PARTHEAD_DESC ProgressDesc = {};
+		CFatherGame_Progress* pProgress = CFatherGame_Progress_PartHead::Create(m_pDevice, m_pContext, &ProgressDesc);
+		if (nullptr == pProgress)
+			return E_FAIL;
+		pProgress->Set_Active(false);
+		m_Progress.push_back(pProgress); // 여기가 원본임. AddRef x
+		m_ProgressClear.push_back(false);
+	}/* Progress PartHead */
 
+
+	{/* Progress MakeFather */
+		CFatherGame_Progress_MakeFather::FATHERGAME_PROGRESS_MAKEFATHER_DESC ProgressDesc = {};
+		CFatherGame_Progress* pProgress = CFatherGame_Progress_MakeFather::Create(m_pDevice, m_pContext, &ProgressDesc);
+		if (nullptr == pProgress)
+			return E_FAIL;
+		pProgress->Set_Active(false);
+		m_Progress.push_back(pProgress); // 여기가 원본임. AddRef x
+		m_ProgressClear.push_back(false);
+	}/* Progress MakeFather */
+	
 	/* 2. PortalDefender 3곳에 생성 */
 	m_PortalLockers.resize((size_t)LOCKER_LAST);
 
@@ -102,25 +125,25 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 	}/* PortalLocker ZetPack */
 
 
-	//{/* PortalLocker PartHead */
-	//	CGameObject* pGameObject = nullptr;
-	//	CPortalLocker::PORTALLOCKER_DESC PortalLockerDesc;
-	//	CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_SKSP_04")))->Get_Portal(0));
-	//	if (nullptr == pTargetPortal)
-	//		return E_FAIL;
-	//	PortalLockerDesc.pTargetPortal = pTargetPortal;
-	//	PortalLockerDesc.ePortalLockerType = CPortalLocker::TYPE_YELLOW;
-	//	PortalLockerDesc.strSectionKey = TEXT("Chapter6_SKSP_04");
-	//
-	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker"), LEVEL_CHAPTER_6, TEXT("Layer_PortalLocker"), &pGameObject, &PortalLockerDesc)))
-	//		return E_FAIL;
-	//
-	//	m_PortalLockers[LOCKER_PARTHEAD] = static_cast<CPortalLocker*>(pGameObject);
-	//	Safe_AddRef(m_PortalLockers[LOCKER_PARTHEAD]);
-	//
-	//	if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(PortalLockerDesc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
-	//		return E_FAIL;
-	//}/* PortalLocker PartHead */
+	{/* PortalLocker PartHead */
+		CGameObject* pGameObject = nullptr;
+		CPortalLocker::PORTALLOCKER_DESC PortalLockerDesc;
+		CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_SKSP_04")))->Get_Portal(0));
+		if (nullptr == pTargetPortal)
+			return E_FAIL;
+		PortalLockerDesc.pTargetPortal = pTargetPortal;
+		PortalLockerDesc.ePortalLockerType = CPortalLocker::TYPE_YELLOW;
+		PortalLockerDesc.strSectionKey = TEXT("Chapter6_SKSP_04");
+	
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker"), LEVEL_CHAPTER_6, TEXT("Layer_PortalLocker"), &pGameObject, &PortalLockerDesc)))
+			return E_FAIL;
+	
+		m_PortalLockers[LOCKER_PARTHEAD] = static_cast<CPortalLocker*>(pGameObject);
+		Safe_AddRef(m_PortalLockers[LOCKER_PARTHEAD]);
+	
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(PortalLockerDesc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
+			return E_FAIL;
+	}/* PortalLocker PartHead */
 
 	/* FatherParts Condition */
 	m_FatherPartsCondition.resize((size_t)FATHER_PART::FATHER_LAST);
@@ -146,15 +169,16 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 		SimpleUI_Desc.iTextureIndex = FATHER_PART::FATHER_BODY * 2;
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Simple_UI"), LEVEL_CHAPTER_6, TEXT("Layer_FatherParts_UI"), &pGameObject, &SimpleUI_Desc)))
 			return E_FAIL;
+		Safe_AddRef(pGameObject);
 		m_FatherParts_UIs[(_uint)FATHER_PART::FATHER_BODY] = static_cast<CSimple_UI*>(pGameObject);
 		m_FatherParts_UIs[(_uint)FATHER_PART::FATHER_BODY]->Set_Active(false);
-
 		pGameObject = nullptr;
 		fTextureAspect = 88.f / 136.f;
 		SimpleUI_Desc.vUIInfo = { fStartPosX + 1 * (fSizeX + fInterval), fY , fSizeX * fTextureAspect , fSizeY };
 		SimpleUI_Desc.iTextureIndex = FATHER_PART::FATHER_WING * 2;
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Simple_UI"), LEVEL_CHAPTER_6, TEXT("Layer_FatherParts_UI"), &pGameObject, &SimpleUI_Desc)))
 			return E_FAIL;
+		Safe_AddRef(pGameObject);
 		m_FatherParts_UIs[(_uint)FATHER_PART::FATHER_WING] = static_cast<CSimple_UI*>(pGameObject);
 		m_FatherParts_UIs[(_uint)FATHER_PART::FATHER_WING]->Set_Active(false);
 
@@ -164,6 +188,7 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 		SimpleUI_Desc.iTextureIndex = FATHER_PART::FATER_HEAD * 2;
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Simple_UI"), LEVEL_CHAPTER_6, TEXT("Layer_FatherParts_UI"), &pGameObject, &SimpleUI_Desc)))
 			return E_FAIL;
+		Safe_AddRef(pGameObject);
 		m_FatherParts_UIs[(_uint)FATHER_PART::FATER_HEAD] = static_cast<CSimple_UI*>(pGameObject);
 		m_FatherParts_UIs[(_uint)FATHER_PART::FATER_HEAD]->Set_Active(false);
 	}
@@ -178,6 +203,11 @@ void CFatherGame::Update()
 {
 	if (GAME_PLAYING != m_eGameState)
 		return;
+
+	if (KEY_DOWN(KEY::F))
+	{
+		OpenPortalLocker(PORTALLOCKER::LOCKER_PARTHEAD);
+	}
 
 	for (_uint i = 0; i < m_Progress.size(); ++i)
 	{
@@ -217,7 +247,28 @@ HRESULT CFatherGame::End_Game()
 {
 	m_eGameState = GAME_END;
 
+	Safe_Release(m_pMugAlien);
+	m_pMugAlien = nullptr;
 	Safe_Release(m_pZetPack_Child);
+	m_pZetPack_Child = nullptr;
+	Safe_Release(m_pJellyKing);
+	m_pJellyKing = nullptr;
+	Safe_Release(m_pZetPack_Father);
+	m_pZetPack_Father = nullptr;
+
+	for (auto& pPortalLocker : m_PortalLockers)
+	{
+		Safe_Release(pPortalLocker);
+	}
+	m_PortalLockers.clear();
+
+	for (_uint i = 0; i < (_uint)FATHER_PART::FATHER_LAST; ++i)
+	{
+		Safe_Release(m_FatherParts_UIs[i]);
+		Event_DeleteObject(m_FatherParts_UIs[i]);
+	}
+	m_FatherParts_UIs.clear();
+
 	for (auto& pProgress : m_Progress)
 		Safe_Release(pProgress);
 	m_Progress.clear();
@@ -292,6 +343,14 @@ void CFatherGame::Set_JellyKing(CJellyKing* _pJellyKing)
 	assert(!m_pJellyKing);
 	m_pJellyKing = _pJellyKing;
 	Safe_AddRef(m_pJellyKing);
+}
+
+void CFatherGame::Set_ZetPack_Father(CZetPack_Father* _pZetPack_Father)
+{
+	assert(_pZetPack_Father);
+	assert(!m_pZetPack_Father);
+	m_pZetPack_Father = _pZetPack_Father;
+	Safe_AddRef(m_pZetPack_Father);
 }
 
 void CFatherGame::Set_Active_FatherParts_UIs(_bool _isActive)

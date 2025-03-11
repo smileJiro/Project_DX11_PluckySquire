@@ -148,6 +148,11 @@ void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 		else
 			++iter;
 	}
+
+	// 만약 0 0 0이라면 arm  return 안 함
+	//if (true == XMVector3Equal(XMVectorZero(), XMLoadFloat3(&m_vCurFreezeExitData.vFreezeExitArm))) {
+	//	m_isFreezeOffsetReturn = false;  0 0 0 때 Return 안 하기 위한 거
+	//}
 }
 
 void CCamera_Target::Set_EnableLookAt(_bool _isEnableLookAt)
@@ -869,9 +874,12 @@ void CCamera_Target::Change_FreezeOffset(_float _fTimeDelta)
 
 	if (fRatio >= (1.f - EPSILON)) {
 		m_fFreezeOffsetTime.y = 0.f;
-		//m_isFreezeExit = false;
 		m_vFreezeOffset = { 0.f, 0.f, 0.f };
 		m_isFreezeOffsetReturn = false;
+
+		
+	/*	if(false == m_isFreezeExitReturn)
+			m_isFreezeExit = false; 0 0 0 때 Return 안 하기 위한 거 */
 
 		return;
 	}

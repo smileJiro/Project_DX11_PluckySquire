@@ -12,6 +12,8 @@ public:
 		_int _iFlipAnim1End = -1;
 		_int _iFlipAnim2 = -1;
 		_int _iFlipAnim2End = -1;
+		_wstring _strFlip1Sound = L"";
+		_wstring _strFlip2Sound = L"";
 	}FLIPOBJECT_DESC;
 
 protected:
@@ -21,6 +23,7 @@ protected:
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
+	virtual HRESULT Render() override;
 
 public:
 	virtual void On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx);
@@ -34,6 +37,9 @@ protected:
 	_int	m_iFlipAnim2 = { 0 };
 	_int	m_iFlipAnim2End = { 0 };
 	_int	m_iCurAnim = { 0 };
+	_wstring m_strFlip1Sound = L"";
+	_wstring m_strFlip2Sound = L"";
+	class CMinigame_Sneak* m_pSneakGameManager = { nullptr };
 
 public:
 	static CSneak_FlipObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

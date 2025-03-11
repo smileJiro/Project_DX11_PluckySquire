@@ -161,6 +161,8 @@
 #include "Popuff.h"
 #include "Monster_Body.h"
 #include "Goblin_SideScroller.h"
+#include "SketchSpace_Alien.h"
+#include "SketchSpace_SpikeBall.h"
 
 /* For. Boss */
 #include "ButterGrump.h"
@@ -207,6 +209,7 @@
 // Father Game 
 #include "PortalLocker.h" 
 #include "ZetPack_Child.h" 
+#include "ZetPack_Father.h" 
 #include "Mug_Alien.h" 
 #include "JellyKing.h" 
 #include "CandleGame.h"
@@ -963,6 +966,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Common"))))
 		return E_FAIL;
 
+	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level8"))))
+		return E_FAIL;
+
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -1117,6 +1123,10 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 				CPostit_Page::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+			if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_StoreNPC"),
+				CNPC_Store::Create(m_pDevice, m_pContext))))
+				return E_FAIL;
+
 		/* For. Prototype_GameObject_GameEventExecuter */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_GameEventExecuter"),
 			CGameEventExecuter_C2::Create(m_pDevice, m_pContext))))
@@ -1248,6 +1258,10 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			CPostit_Page::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_StoreNPC"),
+			CNPC_Store::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 
 		/* For. Prototype_GameObject_FallingRock */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_FallingRock"),
@@ -1298,10 +1312,6 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_HomingBall"),
 			CBoss_HomingBall::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_EnergyBall"),
-			CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_YellowBall"),
@@ -1468,11 +1478,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Body.dds"), (_uint)LEVEL_CHAPTER_6, true))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Head"),
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Wing"),
 			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Wing.dds"), (_uint)LEVEL_CHAPTER_6, true))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Wing"),
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Head"),
 			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Head.dds"), (_uint)LEVEL_CHAPTER_6, true))))
 			return E_FAIL;
 	#pragma endregion
@@ -1498,6 +1508,10 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Child"),
 			CZetPack_Child::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Father"),
+			CZetPack_Father::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Mug_Alien"),
@@ -1589,6 +1603,16 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter6_Monsters.json"), TEXT("Chapter6_Monsters"), _eLoadLevelID)))
 			return E_FAIL;
 
+		/* For. Prototype_GameObject_SketchSpace_Alien */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_Alien"),
+			CSketchSpace_Alien::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_SketchSpace_SpikeBall */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"),
+			CSketchSpace_SpikeBall::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 #pragma endregion
 
 	#pragma region Chapter 6 - Effect Load
@@ -1660,8 +1684,6 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_TheTraitorousRodentPrepared_KR.wav"));
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_APlanQuiteObviouslyDoomed_KR.wav"));
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/A_sfx_C9_TheTraiterousRodent.wav"));
-
-	
 
 
 	// 나레이션 관련
@@ -1790,10 +1812,6 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_HomingBall"),
 		CBoss_HomingBall::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_EnergyBall"),
-		CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_YellowBall"),
@@ -1948,14 +1966,14 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 	// 3D Map Load
 	if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL,
 		MAP_3D_DEFAULT_PATH,
-		L"Chapter_02_Play_Desk.json",
+		L"Chapter_08_Play_Desk.json",
 		matPretransform, true)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_2);
+	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_8);
 
 
-	return Loading_Level_Chapter_2(LEVEL_CAMERA_TOOL);
+	return Loading_Level_Chapter_8(LEVEL_CAMERA_TOOL);
 }
 
 HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
@@ -2029,8 +2047,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:
-		str3DMapProtoJsonName = L"Chapter_02_Play_Desk.json";
-		strChapterName += L"Chapter2";
+		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
+		strChapterName += L"Chapter8";
 		break;
 	default:
 		return S_OK;
@@ -2178,13 +2196,13 @@ HRESULT CLoader::UI_Texture_Load(LEVEL_ID _eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_SpinAttack3"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_spin_upgrade_3.dds"), 1))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_AttackPlus1"),
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_AttackPlus0"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_sword_upgrade_1.dds"), 1))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_AttackPlus2"),
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_AttackPlus1"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_sword_upgrade_2.dds"), 1))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_AttackPlus3"),
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_AttackPlus2"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/ItemIcon/shop_ui_icon_item_sword_upgrade_3.dds"), 1))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_ThrowAttack0"),
