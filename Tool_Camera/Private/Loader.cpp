@@ -241,7 +241,7 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CAMERA_TOOL, TEXT("Prototype_Component_player2DAnimation"),
-        C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/Models/2DAnim/Chapter2/Player/player.model2d"), LEVEL_CAMERA_TOOL))))
+        C2DModel::Create(m_pDevice, m_pContext, ("../../Client/Bin/Resources/Models/2DAnim/Chapter2/Player/player.model2d"), (_uint)LEVEL_CAMERA_TOOL))))
         return E_FAIL;
 
     XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
@@ -645,6 +645,7 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
         strLayerTag = m_pGameInstance->StringToWString(szLayerTag);
         for (size_t i = 0; i < iObjectCnt; i++)
         {
+            cout << i << endl;
             _char		szSaveMeshName[MAX_PATH];
             _float4x4	vWorld = {};
 
