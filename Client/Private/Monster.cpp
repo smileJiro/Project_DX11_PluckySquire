@@ -58,6 +58,18 @@ HRESULT CMonster::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
+
+	if (true == m_isStay)
+	{
+		if (COORDINATE_3D == Get_CurCoord())
+		{
+			if (ACTOR_TYPE::DYNAMIC == Get_ActorType())
+				static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Rotation(XMLoadFloat3(&pDesc->vLook));
+			else if (ACTOR_TYPE::KINEMATIC == Get_ActorType())
+				Get_ControllerTransform()->Set_Look(XMLoadFloat3(&pDesc->vLook));
+		}
+	}
+
 	//플레이어 위치 가져오기
 	m_pTarget = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 	if (nullptr == m_pTarget)
@@ -274,7 +286,8 @@ void CMonster::Monster_Death()
 
 	if(COORDINATE_3D == Get_CurCoord())
 	{
-		CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+		//CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("MonsterDead"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
 
 		//확률로 전구 생성
 			if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))

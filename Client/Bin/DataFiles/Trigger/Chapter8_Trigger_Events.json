@@ -1,0 +1,142 @@
+[    
+{
+    "Trigger_EventTag": "Chapter8_Intro_Postit_Sequence",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Intro_Postit_Sequence",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter8_Outro_Postit_Sequence",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Outro_Postit_Sequence",
+        "Is_Sequence": true
+      }
+    ]
+  },
+{
+    "Trigger_EventTag": "Get_C08_Sword",
+    "Actions": [
+      {
+        "ActionTag": "Get_PlayerItem_Before",
+        "EventTag": "Sword",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Get_PlayerItem",
+        "EventTag": "Sword",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Dialogue",
+        "EventTag": "Sword_Acquire",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Get_PlayerItem_After",
+        "EventTag": "Sword",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Sword",
+        "Is_Sequence": true
+      }
+    ]
+  },
+    {
+    "Trigger_EventTag": "Get_C08_Stop_Stamp",
+    "Actions": [
+      {
+        "ActionTag": "Get_PlayerItem_Before",
+        "EventTag": "Stop_Stamp",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Get_PlayerItem",
+        "EventTag": "Stop_Stamp",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Dialogue",
+        "EventTag": "Stamp_Acquire_Stop",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Get_PlayerItem_After",
+        "EventTag": "Stop_Stamp",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Stop_Stamp",
+        "Is_Sequence": true
+      }
+    ]
+  },
+    {
+    "Trigger_EventTag": "Get_C08_Bomb_Stamp",
+    "Actions": [
+      {
+        "ActionTag": "Get_PlayerItem_Before",
+        "EventTag": "Bomb_Stamp",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Get_PlayerItem",
+        "EventTag": "Bomb_Stamp",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Dialogue",
+        "EventTag": "Stamp_Acquire_Bomb",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Get_PlayerItem_After",
+        "EventTag": "Bomb_Stamp",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Bomb_Stamp",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Get_C08_Tilting_Glove",
+    "Actions": [
+      {
+        "ActionTag": "Get_PlayerItem_Before",
+        "EventTag": "Tilting_Glove",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Get_PlayerItem",
+        "EventTag": "Tilting_Glove",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Dialogue",
+        "EventTag": "Gauntlet_Acquire_Tilting",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Get_PlayerItem_After",
+        "EventTag": "Tilting_Glove",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Tilting_Glove",
+        "Is_Sequence": true
+      }
+    ]
+  }
+]

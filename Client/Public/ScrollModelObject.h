@@ -18,9 +18,9 @@ protected:
 public:
 	virtual HRESULT		Initialize(void* _pArg) override;
 	virtual void Update(_float _fTimeDelta) override;
+	void Set_Direction(T_DIRECTION _eTDir);
 private:
 	void Scroll(_float _fTimeDelta);
-
 private:
 	_float2 m_fSectionSize = {};
 };

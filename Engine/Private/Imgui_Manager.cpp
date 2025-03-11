@@ -767,6 +767,10 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 				LIGHT_TYPE eType = (*Saveiter)->Get_Type();
 				json LightJson;
 
+				if (nullptr != dynamic_cast<CLight_Target*>(*Saveiter))
+				{
+					continue;
+				}
 				switch (eType)
 				{
 				case Engine::LIGHT_TYPE::POINT:

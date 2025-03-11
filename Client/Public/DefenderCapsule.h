@@ -8,6 +8,11 @@ class CDefenderCapsule :
     public CDefenderMonster
 {
 public:
+	typedef struct tagDefenderCapsuleDesc : public CDefenderMonster::DEFENDER_MONSTER_DESC
+	{
+		_uint iPersonCount = 1;
+	}DEFENDER_CAPSULE_DESC;
+public:
 	enum ANIM_STATE
 	{
 		VORTEX_INTO,
@@ -16,6 +21,12 @@ public:
 		SPHERE_APPEAR_FAST,
 		SPHERE_BREAK,
 		SPHERE_LOOP,
+	};
+	enum DEFENDEDRCAPSULE_PART_ID
+	{
+		DEFENDER_CAPSULE_PART_BODY,
+		DEFENDER_CAPSULE_PART_UI,
+		DEFENDER_CAPSULE_PART_LAST
 	};
 private:
 	CDefenderCapsule(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -33,12 +44,16 @@ public:
 	virtual void On_Spawned()override;
 	virtual void On_LifeTimeOut()override;
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+
 public:
 
 private:
 	HRESULT	Ready_PartObjects();
 private:
 	CModelObject* m_pBody = nullptr;
+	CModelObject* m_pUI= nullptr;
+
+	_uint m_iPersonCount = 1;
 public:
 	static CDefenderCapsule* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

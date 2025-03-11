@@ -714,200 +714,292 @@
 				}
 			]
 		},
+	{
+      "id": "Gauntlet_Acquire_Tilting",
+      "lines": [
+        {
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트가 기울이기 건틀릿을 찾았습니다!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+					"isLineEnter":true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이 신비한 장갑이 있으면\n세상을 통째로 움직일 수 있습니다!",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
 		{
-			"id": "Gauntlet_Acquire_Tilting",
-			"lines": [
-				{
-					"Portrait": 16,
-					"Talker": "",
-					"BG": 9,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "저트가 기울이기 건틀릿을 찾았습니다!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 16,
-					"Talker": "",
-					"BG": 9,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "이 신비한 장갑이 있으면\n세상을 통째로 움직일 수 있습니다!",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 16,
-					"Talker": "",
-					"BG": 9,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "[Z], [X]를 이용해 책을 움직여 보세요.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "[Z], [X]를 이용해 책을 움직여 보세요.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+	{
+      "id": "Stamp_Acquire_Bomb",
+      "lines": [
+        {
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트가 폭탄 도장을 얻었습니다!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "책 위에서 [Q]를 누르면 페이지 안에 폭탄을 만듭니다.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
 		{
-			"id": "Stamp_Acquire_Bomb",
-			"lines": [
-				{
-					"Portrait": 16,
-					"Talker": "",
-					"BG": 9,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "저트가 폭탄 도장을 얻었습니다!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 16,
-					"Talker": "",
-					"BG": 9,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "책 위에서 [Q]를 누르면 페이지 안에 폭탄을 만듭니다.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 16,
-					"Talker": "",
-					"BG": 9,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "장애물과 적을 날려 버릴 수 있답니다!",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "Postit_Page_01",
-			"lines": [
-				{
-					"Portrait": 1,
-					"Talker": "페이지",
-					"BG": 7,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "건틀릿을 하나 더 찾으셨네요!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "페이지",
-					"BG": 7,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "그나저나... 아무래도 험그럼프가 책 바깥까지 손아귀를\n 뻗은 것 같네요...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "페이지",
-					"BG": 7,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "느낌이 안 좋아요!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "페이지",
-					"BG": 7,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "자, 이 포스트잇으로 뛰어드세요...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "페이지",
-					"BG": 7,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "책상으로 내려가서 책으로 돌아갈 수 있을 거에요!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		}
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "장애물과 적을 날려 버릴 수 있답니다!",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+	 {
+      "id": "Postit_Page_01",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "건틀릿을 하나 더 찾으셨네요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+		  "isLineEnter":true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그나저나... 아무래도 험그럼프가 책 바깥까지 손아귀를\n 뻗은 것 같네요...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "느낌이 안 좋아요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "자, 이 포스트잇으로 뛰어드세요...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "책상으로 내려가서 책으로 돌아갈 수 있을 거에요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+	 {
+      "id": "Postit_Page_02",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트! 이렇게 또 만나네요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+		  "isLineEnter":true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "하지만 어쩌죠? 앞에 위험이 도사리고 있어요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+	 {
+      "id": "Postit_Page_03",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "시의 늪에서도 가장 끔찍한 괴물들이 책에서 빠져나왔어요...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "하지만 이번에는 알맞은 장비를 착용하신 것 같네요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+		  "isLineEnter":true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저 척추 없는 괴물들을 무찔러 주세요!\n돌격 앞으로!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    }
 	]
 }

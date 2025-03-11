@@ -29,6 +29,8 @@
 #include "CrossBow_Arrow.h"
 #include "SketchSpace_Alien.h"
 #include "SketchSpace_SpikeBall.h"
+#include "SketchSpace_UFO.h"
+#include "Projectile_SketchSpace_UFO.h"
 #include "Bomb.h"
 #include "SlipperyObject.h"
 #include "LightningBolt.h"
@@ -200,10 +202,12 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FALLINGROCK_BASIC);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::SLIPPERY);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::NPC_EVENT); // ZetPack
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::GIMMICK_OBJECT); // 
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER_PROJECTILE);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::TRIGGER_OBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::BLOCKER);
 
@@ -652,7 +656,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 {
 	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
 
-	CMiniGame_Defender::DEFENDER_CONTROLLTOWER_DESC tDesc = {};
+	CMiniGame_Defender::DEFENDER_DESC tDesc = {};
 	tDesc.iCurLevelID = m_eLevelID;
 	tDesc.tTransform2DDesc.vInitialPosition = { -2020.f, -80.f, 0.f };   // TODO ::임시 위치
 	CMiniGame_Defender* pTower = static_cast<CMiniGame_Defender*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Minigame_Defender"), &tDesc));;
@@ -1106,131 +1110,138 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	CGameObject* pObject = nullptr;
 
 
-	/*const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter6_Monsters"), m_eLevelID);
+	//const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter6_Monsters"), m_eLevelID);
 
-	if (nullptr == pJson)
-		return E_FAIL;
+	//if (nullptr == pJson)
+	//	return E_FAIL;
 
-	if (pJson->contains("2D"))
-	{
-		_wstring strLayerTag = L"Layer_Monster";
-		_wstring strSectionTag = L"";
-		_wstring strMonsterTag = L"";
+	//if (pJson->contains("2D"))
+	//{
+	//	_wstring strLayerTag = L"Layer_Monster";
+	//	_wstring strSectionTag = L"";
+	//	_wstring strMonsterTag = L"";
 
-		for (auto Json : (*pJson)["2D"])
-		{
-			CMonster::MONSTER_DESC MonsterDesc2D = {};
+	//	for (auto Json : (*pJson)["2D"])
+	//	{
+	//		CMonster::MONSTER_DESC MonsterDesc2D = {};
 
-			MonsterDesc2D.iCurLevelID = m_eLevelID;
-			MonsterDesc2D.eStartCoord = COORDINATE_2D;
+	//		MonsterDesc2D.iCurLevelID = m_eLevelID;
+	//		MonsterDesc2D.eStartCoord = COORDINATE_2D;
 
-			if (Json.contains("Position"))
-			{
-				for (_int j = 0; j < 3; ++j)
-				{
-					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialPosition) + j) = Json["Position"][j];
-				}
-			}
-			if (Json.contains("Scaling"))
-			{
-				for (_int j = 0; j < 3; ++j)
-				{
-					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialScaling) + j) = Json["Scaling"][j];
-				}
-			}
-			if (Json.contains("LayerTag"))
-			{
-				strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
-			}
+	//		if (Json.contains("Position"))
+	//		{
+	//			for (_int j = 0; j < 3; ++j)
+	//			{
+	//				*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialPosition) + j) = Json["Position"][j];
+	//			}
+	//		}
+	//		if (Json.contains("Scaling"))
+	//		{
+	//			for (_int j = 0; j < 3; ++j)
+	//			{
+	//				*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialScaling) + j) = Json["Scaling"][j];
+	//			}
+	//		}
+	//		if (Json.contains("LayerTag"))
+	//		{
+	//			strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
+	//		}
 
-			if (Json.contains("SectionTag"))
-			{
-				strSectionTag = STRINGTOWSTRING(Json["SectionTag"]);
-			}
-			else
-				return E_FAIL;
+	//		if (Json.contains("SectionTag"))
+	//		{
+	//			strSectionTag = STRINGTOWSTRING(Json["SectionTag"]);
+	//		}
+	//		else
+	//			return E_FAIL;
 
-			if (Json.contains("MonsterTag"))
-			{
-				strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
-			}
-			else
-				return E_FAIL;
+	//		if (Json.contains("MonsterTag"))
+	//		{
+	//			strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
+	//		}
+	//		else
+	//			return E_FAIL;
 
-			if (Json.contains("IsStay"))
-			{
-				MonsterDesc2D.isStay = Json["IsStay"];
-			}
+	//		if (Json.contains("IsStay"))
+	//		{
+	//			MonsterDesc2D.isStay = Json["IsStay"];
+	//		}
 
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc2D)))
-				return E_FAIL;
-			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionTag, pObject);
-		}
-	}
+	//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc2D)))
+	//			return E_FAIL;
+	//		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionTag, pObject);
+	//	}
+	//}
 
-	if (pJson->contains("3D"))
-	{
-		_wstring strLayerTag = L"Layer_Monster";
-		_wstring strMonsterTag = L"";
+	//if (pJson->contains("3D"))
+	//{
+	//	_wstring strLayerTag = L"Layer_Monster";
+	//	_wstring strMonsterTag = L"";
 
-		for (auto Json : (*pJson)["3D"])
-		{
-			CMonster::MONSTER_DESC MonsterDesc3D = {};
+	//	for (auto Json : (*pJson)["3D"])
+	//	{
+	//		CMonster::MONSTER_DESC MonsterDesc3D = {};
 
-			MonsterDesc3D.iCurLevelID = m_eLevelID;
-			MonsterDesc3D.eStartCoord = COORDINATE_3D;
+	//		MonsterDesc3D.iCurLevelID = m_eLevelID;
+	//		MonsterDesc3D.eStartCoord = COORDINATE_3D;
 
-			if (Json.contains("Position"))
-			{
-				for (_int j = 0; j < 3; ++j)
-				{
-					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = Json["Position"][j];
-				}
-			}
-			if (Json.contains("Scaling"))
-			{
-				for (_int j = 0; j < 3; ++j)
-				{
-					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = Json["Scaling"][j];
-				}
-			}
-			if (Json.contains("LayerTag"))
-			{
-				strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
-			}
+	//		if (Json.contains("Position"))
+	//		{
+	//			for (_int j = 0; j < 3; ++j)
+	//			{
+	//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = Json["Position"][j];
+	//			}
+	//		}
+	//		if (Json.contains("Scaling"))
+	//		{
+	//			for (_int j = 0; j < 3; ++j)
+	//			{
+	//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = Json["Scaling"][j];
+	//			}
+	//		}
+	//		if (Json.contains("LayerTag"))
+	//		{
+	//			strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
+	//		}
 
-			if (Json.contains("MonsterTag"))
-			{
-				strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
-			}
-			else
-				return E_FAIL;
+	//		if (Json.contains("MonsterTag"))
+	//		{
+	//			strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
+	//		}
+	//		else
+	//			return E_FAIL;
 
-			if (Json.contains("SneakMode"))
-			{
-				if (Json.contains("SneakWayPointIndex"))
-				{
-					MonsterDesc3D.eWayIndex = Json["SneakWayPointIndex"];
-				}
-				else
-					return E_FAIL;
-				MonsterDesc3D.isSneakMode = Json["SneakMode"];
-			}
+	//		if (Json.contains("SneakMode"))
+	//		{
+	//			if (Json.contains("SneakWayPointIndex"))
+	//			{
+	//				MonsterDesc3D.eWayIndex = Json["SneakWayPointIndex"];
+	//			}
+	//			else
+	//				return E_FAIL;
+	//			MonsterDesc3D.isSneakMode = Json["SneakMode"];
+	//		}
 
-			if (Json.contains("IsStay"))
-			{
-				MonsterDesc3D.isStay = Json["IsStay"];
-			}
+	//		if (Json.contains("IsStay"))
+	//		{
+	//			MonsterDesc3D.isStay = Json["IsStay"];
+	//			if (Json.contains("vLook"))
+	//			{
+	//				for (_int j = 0; j < 3; ++j)
+	//				{
+	//					*(((_float*)&MonsterDesc3D.vLook) + j) = Json["vLook"][j];
+	//				}
+	//			}
+	//		}
 
-			if (Json.contains("IsIgnoreGround"))
-			{
-				MonsterDesc3D._isIgnoreGround = Json["IsIgnoreGround"];
-			}
+	//		if (Json.contains("IsIgnoreGround"))
+	//		{
+	//			MonsterDesc3D._isIgnoreGround = Json["IsIgnoreGround"];
+	//		}
 
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
-				return E_FAIL;
-		}
-	}*/
+	//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
+	//			return E_FAIL;
+	//	}
+	//}
 
 	//CBirdMonster::MONSTER_DESC BirdMonster_Desc;
 	//BirdMonster_Desc.iCurLevelID = m_eLevelID;
@@ -1255,7 +1266,9 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//CrossBow_Soldier_Desc.iCurLevelID = m_eLevelID;
 	//CrossBow_Soldier_Desc.eStartCoord = COORDINATE_3D;
 	//CrossBow_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//CrossBow_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 0.35f, -23.0f);
+	//CrossBow_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(4.5f, 0.35f, -31.0f);
+	//CrossBow_Soldier_Desc.isStay = true;
+	//CrossBow_Soldier_Desc.vLook = { -1.f,0.f,1.f };
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"), m_eLevelID, _strLayerTag, &CrossBow_Soldier_Desc)))
 	//	return E_FAIL;
@@ -1270,50 +1283,50 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//	return E_FAIL;
 
 
-	//CSketchSpace_Alien::SIDESCROLLDESC SketchSpace_Alien_Desc;
-	//SketchSpace_Alien_Desc.iCurLevelID = m_eLevelID;
-	//SketchSpace_Alien_Desc.eStartCoord = COORDINATE_2D;
-	//SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(-580.f, -44.8f, 0.0f);
-	//SketchSpace_Alien_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_1;
+	CSketchSpace_Alien::SIDESCROLLDESC SketchSpace_Alien_Desc;
+	SketchSpace_Alien_Desc.iCurLevelID = m_eLevelID;
+	SketchSpace_Alien_Desc.eStartCoord = COORDINATE_2D;
+	SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(-580.f, -44.8f, 0.0f);
+	SketchSpace_Alien_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_1;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
+		return E_FAIL;
 
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
 
 
-	//SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(-510.f, 605.1f, 0.0f);
-	//SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_2;
+	SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(-510.f, 605.1f, 0.0f);
+	SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_2;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
+		return E_FAIL;
 
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
 
-	//SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(-120.f, 605.1f, 0.0f);
-	//SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_2;
+	SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(-120.f, 605.1f, 0.0f);
+	SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_2;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
+		return E_FAIL;
 
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
 
-	//SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(130.f, -812.f, 0.0f);
-	//SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_3;
+	SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(130.f, -812.f, 0.0f);
+	SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_3;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
+		return E_FAIL;
 
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
 
-	//SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(860.f, -812.f, 0.0f);
-	//SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_3;
+	SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(860.f, -812.f, 0.0f);
+	SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_3;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
+		return E_FAIL;
 
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
 
 	CSketchSpace_SpikeBall::SIDESCROLLDESC SketchSpace_SpikeBall_Desc;
 	SketchSpace_SpikeBall_Desc.iCurLevelID = m_eLevelID;
@@ -1322,7 +1335,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	SketchSpace_SpikeBall_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	SketchSpace_SpikeBall_Desc.isStay = true;
 
-	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_SpikeBall_Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_SpikeBall_Desc)))
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
@@ -1332,7 +1345,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_SpikeBall_Desc)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);*/
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
 
 
 	SketchSpace_SpikeBall_Desc.tTransform2DDesc.vInitialPosition = _float3(500.f, 303.f, 0.0f);
@@ -1343,6 +1356,35 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+
+	CSketchSpace_UFO::SIDESCROLLDESC SketchSpace_UFO_Desc;
+	SketchSpace_UFO_Desc.iCurLevelID = m_eLevelID;
+	SketchSpace_UFO_Desc.eStartCoord = COORDINATE_2D;
+	SketchSpace_UFO_Desc.tTransform2DDesc.vInitialPosition = _float3(-750.f, -300.f, 0.0f);
+	SketchSpace_UFO_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_UFO"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_UFO_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+	SketchSpace_UFO_Desc.tTransform2DDesc.vInitialPosition = _float3(350.f, -370.f, 0.0f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_UFO"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_UFO_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+
+	SketchSpace_UFO_Desc.tTransform2DDesc.vInitialPosition = _float3(1074.f, -99.f, 0.0f);
+	SketchSpace_UFO_Desc.isStay = true;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_UFO"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_UFO_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
 
 	//alien
 	//.tTransform2DDesc.vInitialPosition = _float3(-570.f, -44.8f, 0.0f); //-977.f, -44.8f
@@ -1403,6 +1445,16 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster_Projectile(const _wstring& _strLa
 	BombDesc->iCurLevelID = m_eLevelID;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Bomb"), Pooling_Desc, BombDesc);
+
+	Pooling_Desc.iPrototypeLevelID = m_eLevelID;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_SketchSpace_UFO");
+
+	CProjectile_SketchSpace_UFO::PROJECTILE_MONSTER_DESC* pUFOProjDesc = new CProjectile_SketchSpace_UFO::PROJECTILE_MONSTER_DESC;
+	pUFOProjDesc->iCurLevelID = m_eLevelID;
+	pUFOProjDesc->eStartCoord = COORDINATE_2D;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_SketchSpace_UFO"), Pooling_Desc, pUFOProjDesc);
 
 	return S_OK;
 }
@@ -1502,10 +1554,9 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionMed"), LEVEL_CHAPTER_6, 10);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionSmall"), LEVEL_CHAPTER_6, 10);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionTurret"), LEVEL_CHAPTER_6, 10);
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPersonFX"), LEVEL_CHAPTER_6, 10);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefRedBullet"), LEVEL_CHAPTER_6, 10);
-	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPlayerHit"), LEVEL_CHAPTER_6, 10);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefTeleport"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPlayerHit"), LEVEL_CHAPTER_6, 1);
 
 
 	return S_OK;
@@ -1629,14 +1680,18 @@ HRESULT CLevel_Chapter_06::Map_Object_Create(_wstring _strFileName)
 				int a = 1;
 
 			}
-
+			_wstring strIncludeLayerTag = wstrLayerTag;
 			C3DMapObject* pGameObject =
 				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
 					(LEVEL_ID)m_eLevelID,
 					m_pGameInstance,
 					hFile);
 			if (nullptr != pGameObject)
-				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, wstrLayerTag.c_str(), pGameObject);
+			{
+				if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
+					strIncludeLayerTag = L"Layer_Postit";
+				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, strIncludeLayerTag.c_str(), pGameObject);
+			}
 		}
 	}
 	CloseHandle(hFile);

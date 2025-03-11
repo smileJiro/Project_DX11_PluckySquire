@@ -9,6 +9,16 @@
       }
     ]
   },
+  {
+    "Trigger_EventTag": "Chapter4_Intro_Postit_Sequence",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter4_Intro_Postit_Sequence",
+        "Is_Sequence": true
+      }
+    ]
+  },
 	{
     "Trigger_EventTag": "Chapter4_StorySequence_01",
     "Actions": [

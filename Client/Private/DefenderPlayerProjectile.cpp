@@ -104,10 +104,32 @@ void CDefenderPlayerProjectile::On_Collision2D_Enter(CCollider* _pMyCollider, CC
 		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, _vector{0.f,0.f,0.f});
 		Event_DeleteObject(this);
 		//CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefPlayerHit"), m_strSectionName, m_pControllerTransform-> );
+		CGameObject* pEffect;
 		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefPlayerHit"), Get_Include_Section_Name()
 			, Get_FinalWorldMatrix(), 0.f
-			,rand()%2, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
-
+			,rand()%2, false, 0.f, SECTION_2D_PLAYMAP_EFFECT, (CGameObject**)&pEffect);
+		_vector vMyRight = XMVector3Normalize( m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
+		vMyRight.m128_f32[3] = 0.f;
+		T_DIRECTION eTDir = T_DIRECTION::RIGHT;
+		if(vMyRight.m128_f32[0] < 0.f || vMyRight.m128_f32[1] < 0.f || vMyRight.m128_f32[2] < 0.f)
+			eTDir = T_DIRECTION::LEFT;
+		CController_Transform* pBopdyTransform = pEffect->Get_ControllerTransform();
+		_vector vRight = pBopdyTransform->Get_State(CTransform::STATE_RIGHT);
+		switch (eTDir)
+		{
+		case Client::T_DIRECTION::LEFT:
+			pBopdyTransform->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+			break;
+		case Client::T_DIRECTION::RIGHT:
+			pBopdyTransform->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+			break;
+		case Client::T_DIRECTION::NONE:
+			break;
+		case Client::T_DIRECTION::T_DIR_LAST:
+			break;
+		default:
+			break;
+		}
 	}
 }
 

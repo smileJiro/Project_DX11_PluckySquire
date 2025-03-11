@@ -1,0 +1,129 @@
+{
+    "Emitters": [
+        {
+            "Color": [
+                1.0,
+                0.6499999761581421,
+                0.0,
+                1.0
+            ],
+            "DelayTime": 0.0,
+            "Event": 0,
+            "Float": [
+                {
+                    "Name": "AlphaTest",
+                    "Value": 0.019999999552965164
+                },
+                {
+                    "Name": "AlphaValue",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "BloomThreshold",
+                    "Value": 0.029999999329447746
+                },
+                {
+                    "Name": "ColorTest",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "DissolveEdge",
+                    "Value": 0.6700000166893005
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": 1.1100000143051147
+                },
+                {
+                    "Name": "DissolveTimeFactor",
+                    "Value": 0.0
+                }
+            ],
+            "Float4": [
+                {
+                    "Name": "DissolveEdgeColor",
+                    "Value": [
+                        1.0,
+                        0.30000001192092896,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "MaskUVScale",
+                    "Value": [
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        1.0,
+                        2.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "LoopTime": 1,
+            "Model": "../Bin/Resources/Models/FX/S_FX_CMN_Sphere_03.model",
+            "Pooling": "KILL",
+            "PreTransform": [
+                0.0,
+                -0.006666666828095913,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.006666666828095913,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "ShaderPass": "BLOOM_DISSOLVE",
+            "SpawnPosition": "FOLLOW_PARENT",
+            "SpawnType": "SPAWN_RATE",
+            "Textures": [
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_08_s.dds",
+                    "Type": "MASK"
+                },
+                {
+                    "Path": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_01_90.dds",
+                    "Type": "NOISE"
+                }
+            ],
+            "Time": 3.4028234663852886e+38,
+            "Transform": [
+                0.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Type": "EFFECT"
+        }
+    ],
+    "Name": "TurnBookRing",
+    "ToolLoopTime": 3.0
+}

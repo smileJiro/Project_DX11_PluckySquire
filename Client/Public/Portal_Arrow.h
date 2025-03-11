@@ -22,7 +22,7 @@ public:
 
 public:
 	HRESULT					Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition) override;
-
+	virtual HRESULT			Setup_3D_Postion();
 	virtual void			Active_OnDisable() override;
 	virtual void			Active_OnEnable() override;
 

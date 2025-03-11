@@ -19,6 +19,7 @@ class CMug_Alien;
 class CFatherPart_Prop;
 class CJellyKing;
 class CZetPack_Father;
+class CMat;
 class CFatherGame final : public CBase
 {
 	DECLARE_SINGLETON(CFatherGame)
@@ -52,6 +53,8 @@ public:
 	void								Start_Progress(FATHER_PROGRESS _eStartProgress);
 	void								OpenPortalLocker(PORTALLOCKER _ePortalLockerIndex);
 
+public:
+	void								Start_StopStampMoveWork();
 public:
 	// Get
 	CPortalLocker* Get_PortalLocker(PORTALLOCKER _ePortalLockerIndex) {
@@ -94,6 +97,8 @@ private: /* ZellyKing*/
 private: /* ZetPack_Father */
 	CZetPack_Father*					m_pZetPack_Father = nullptr;
 
+private: /* Mat (cup ¶Ñ²±) */
+	CMat*								m_pMat = nullptr;
 public:
 	void								Set_Active_FatherParts_UIs(_bool _isActive);
 	void								Pickup_FatherPart(FATHER_PART _eFatherPart);

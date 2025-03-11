@@ -29,8 +29,8 @@ public:
 public:
 	void			Begin_Update();
 	void			End_Update();
-	void			Update_StartPosition(_fvector _vStartPosition);		// Beam의 처음 위치 설정
-	void			Update_EndPosition(_fvector _vEndPosition);			// Beam의 마지막 위치 설정
+	void			Set_StartPosition(_fvector _vStartPosition, _bool _isUpdateAll = true);		// Beam의 처음 위치 설정
+	void			Set_EndPosition(_fvector _vEndPosition, _bool _isUpdateAll = true);			// Beam의 마지막 위치 설정
 	void			Reset_Positions();
 
 	void			Update_RandomPoints();

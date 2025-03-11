@@ -69,16 +69,26 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER2_BETTLE_PAGE] = L"Chapter2_Bettle_Page";
 	m_EventExecuterTags[CHAPTER2_OPENBOOKEVENT] = L"Chapter2_OpenBookEvent";
 	m_EventExecuterTags[CHAPTER2_STORYSEQUENCE] = L"Chapter2_StorySequence";
+
 	m_EventExecuterTags[CHAPTER4_INTRO] = L"Chapter4_Intro";
+	m_EventExecuterTags[CHAPTER4_INTRO_POSTIT_SEQUENCE] = L"Chapter4_Intro_Postit_Sequence";
 	m_EventExecuterTags[CHAPTER4_RIDE_ZIPLINE] = L"Chapter4_Ride_Zipline";
 	m_EventExecuterTags[CHAPTER4_EVENT_FLAG] = L"Chapter4_Event_Flag";
 	m_EventExecuterTags[CHAPTER4_STORYSEQUENCE] = L"Chapter4_StorySequence";
-	m_EventExecuterTags[CHAPTER6_INTRO] = L"Chapter6_Intro";
+
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR] = L"Chapter6_FatherGame_Progress_Start_Clear";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_ZETPACK_CLEAR] = L"Chapter6_FatherGame_Progress_ZetPack_Clear";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_1] = L"Chapter6_FatherGame_Progress_Fatherpart_1";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_2] = L"Chapter6_FatherGame_Progress_Fatherpart_2";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_3] = L"Chapter6_FatherGame_Progress_Fatherpart_3";
+
+
+	m_EventExecuterTags[CHAPTER8_INTRO_POSTIT_SEQUENCE] = L"Chapter8_Intro_Postit_Sequence";
+	m_EventExecuterTags[CHAPTER8_SWORD] = 	L"Chapter8_Sword";
+	m_EventExecuterTags[CHAPTER8_STOP_STAMP] = 	L"Chapter8_Stop_Stamp";
+	m_EventExecuterTags[CHAPTER8_BOMB_STAMP] = 	L"Chapter8_Bomb_Stamp";
+	m_EventExecuterTags[CHAPTER8_TILTING_GLOVE] = 	L"Chapter8_Tilting_Glove";
+	m_EventExecuterTags[CHAPTER8_OUTRO_POSTIT_SEQUENCE] = 	L"Chapter8_Outro_Postit_Sequence";
 
 	return S_OK;
 }
@@ -443,7 +453,7 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(CTriggerObject* _pTriggerO
 {
 	// Custom Data
 	_string szKey;
-	_uint iReturnMask;
+	//_uint iReturnMask;
 	_float3 vFreezeExitArm;
 
 	switch (_pDesc->iTriggerType) {
@@ -741,19 +751,21 @@ void CTrigger_Manager::Register_Trigger_Action()
 			CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
 		};
 	;
+	// 습득후 이벤트 추가하고싶을때 쓰고있음. 아이템 습득 카메라로부터 원복 안시키게
 	m_Actions[TEXT("Get_PlayerItem_After")] = [this](_wstring _wszEventTag) 
 {
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_BlockPlayerInput(false);
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_State(CPlayer::STATE::IDLE);
 		CPlayerData_Manager::GetInstance()->Change_PlayerItemMode(_wszEventTag, CPlayerItem::DISAPPEAR);
 		};
-		m_Actions[TEXT("Get_PlayerItem_After_End")] = [this](_wstring _wszEventTag) 
-{
+	// 습득후 이벤트 가 없을때 카메라 원복,
+	m_Actions[TEXT("Get_PlayerItem_After_End")] = [this](_wstring _wszEventTag) 
+	{
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_BlockPlayerInput(false);
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_State(CPlayer::STATE::IDLE);
 		CPlayerData_Manager::GetInstance()->Change_PlayerItemMode(_wszEventTag, CPlayerItem::DISAPPEAR);
 		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.f);
-		};
+	};
 
 	m_Actions[TEXT("Active_MagicDust")] = [this](_wstring _wszEventTag) 
 	{
