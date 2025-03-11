@@ -284,6 +284,7 @@ namespace Client
 		CHAPTER2_2,
 		CHAPTER2_2_2,
 		CHAPTER2_3,
+		CHAPTER8_1,
 		LAST
 	};
 

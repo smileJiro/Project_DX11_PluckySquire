@@ -24,6 +24,7 @@ public:
 		_float fDelayTime;
 		_float fCoolTime;
 		_int iCurLevel;
+		CMonster* pOwner = nullptr;
 	}STATEDESC;
 
 protected:
