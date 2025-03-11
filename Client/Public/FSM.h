@@ -17,7 +17,7 @@ public:
 		_float fAttackRange;
 		_float fAlert2DRange;
 		_float fChase2DRange;
-		_float fAttack2DRange;
+		_float fAttack2DRange = -1.f;
 		_float fDelayTime = -1.f;
 		_float fCoolTime = -1.f;
 		CMonster* pOwner;

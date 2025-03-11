@@ -22,7 +22,9 @@
 #include "Sneak_InvestigateState.h"
 #include "Sneak_ChaseState.h"
 #include "Sneak_AttackState.h"
+#include "SideScroll_IdleState.h"
 #include "SideScroll_PatrolState.h"
+#include "SideScroll_AttackState.h"
 #include "SideScroll_HitState.h"
 #include "Neutral_IdleState.h"
 #include "Neutral_PatrolState.h"
@@ -200,6 +202,15 @@ HRESULT CFSM::Add_State(_uint _iState)
 		m_States.emplace((_uint)MONSTER_STATE::DEAD, pState);
 		break;
 
+	case Client::MONSTER_STATE::SIDESCROLL_IDLE:
+		pState = CSideScroll_IdleState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::SIDESCROLL_IDLE, pState);
+		break;
+
 	case Client::MONSTER_STATE::SIDESCROLL_PATROL:
 		pState = CSideScroll_PatrolState::Create(&Desc);
 		if (nullptr == pState)
@@ -208,6 +219,15 @@ HRESULT CFSM::Add_State(_uint _iState)
 		pState->Set_FSM(this);
 		m_States.emplace((_uint)MONSTER_STATE::SIDESCROLL_PATROL, pState);
 		Set_SideScroll_PatrolBound();
+		break;
+
+	case Client::MONSTER_STATE::SIDESCROLL_ATTACK:
+		pState = CSideScroll_AttackState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::SIDESCROLL_ATTACK, pState);
 		break;
 
 	case Client::MONSTER_STATE::SIDESCROLL_HIT:

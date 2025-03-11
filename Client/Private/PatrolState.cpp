@@ -201,6 +201,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 
 		if (true == m_isTurn)
 		{
+			Set_PatrolDirection(_iDir);
 			m_pOwner->Set_2D_Direction(m_eDir);
 
 			m_isTurn = false;
@@ -209,7 +210,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 
 		if (true == m_isMove)
 		{
-			m_pOwner->Get_ControllerTransform()->Go_Direction(Set_PatrolDirection(_iDir), _fTimeDelta);
+			//m_pOwner->Get_ControllerTransform()->Go_Direction(Set_PatrolDirection(_iDir), _fTimeDelta);
 			
 			switch (m_eDir)
 			{
@@ -262,17 +263,30 @@ void CPatrolState::Determine_Direction(_float _fTimeDelta)
 	{
 		//8 방향 중 랜덤 방향 지정
 		m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 8.f)));
+
+		m_fMoveDistance = m_pGameInstance->Compute_Random(0.7f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.4f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+
+		m_isTurn = true;
 	}
 
 	else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
 	{
-		//4 방향 중 랜덤 방향 지정
-		m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 4.f)));
+		while(true)
+		{
+			//4 방향 중 랜덤 방향 지정
+			m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 4.f)));
+			if (m_iDir != m_iPrevDir || 0 > m_iPrevDir)	//직전에 갔던 방향은 가지 않음
+			{
+				m_iPrevDir = m_iDir;
+
+				m_fMoveDistance = m_pGameInstance->Compute_Random(0.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+
+				m_isTurn = true;
+				break;
+			}
+		}
+
 	}
-
-	m_fMoveDistance = m_pGameInstance->Compute_Random(0.7f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.4f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
-
-	m_isTurn = true;
 
 	//while (true)
 	//{

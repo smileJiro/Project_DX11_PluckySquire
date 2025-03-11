@@ -556,6 +556,20 @@
                 1.0,
                 1.0
             ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_CrossBow_Soldier",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -40.0,
+                21.5,
+                24.24
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
         }
     ]
 }

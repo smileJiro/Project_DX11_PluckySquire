@@ -22,7 +22,7 @@ HRESULT CProjectile_SketchSpace_UFO::Initialize_Prototype()
 
 HRESULT CProjectile_SketchSpace_UFO::Initialize(void* _pArg)
 {
-    PROJECTILE_BARFBUG_DESC* pDesc = static_cast<PROJECTILE_BARFBUG_DESC*>(_pArg);
+    PROJECTILE_MONSTER_DESC* pDesc = static_cast<PROJECTILE_MONSTER_DESC*>(_pArg);
 
     //투사체는 쓰는 객체가 Desc 넣어줌.
     pDesc->isCoordChangeEnable = false;
@@ -60,11 +60,8 @@ void CProjectile_SketchSpace_UFO::Priority_Update(_float _fTimeDelta)
 
 void CProjectile_SketchSpace_UFO::Update(_float _fTimeDelta)
 {
-	if (COORDINATE_2D == Get_CurCoord())
-    {
-        if (false == m_isStop)
-            m_pControllerTransform->Go_Up(_fTimeDelta);
-    }
+    if (false == m_isStop)
+        m_pControllerTransform->Go_Up(_fTimeDelta);
 
     __super::Update(_fTimeDelta);
 }

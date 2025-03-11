@@ -196,36 +196,6 @@
                 1.0
             ]
         },
-        {
-            "MonsterTag": "Prototype_GameObject_JumpBug",
-            "SectionTag": "Chapter4_P0102",
-            "LayerTag": "Layer_Monster",
-            "Position": [
-               1424.0,
-                -250.0,
-                0
-            ],
-            "Scaling": [
-                1.0,
-                1.0,
-                1.0
-            ]
-        },
-        {
-            "MonsterTag": "Prototype_GameObject_JumpBug",
-            "SectionTag": "Chapter4_P0102",
-            "LayerTag": "Layer_Monster",
-            "Position": [
-               270.0,
-                -350.0,
-                0
-            ],
-            "Scaling": [
-                1.0,
-                1.0,
-                1.0
-            ]
-        },
 
         {
             "MonsterTag": "Prototype_GameObject_BarfBug",

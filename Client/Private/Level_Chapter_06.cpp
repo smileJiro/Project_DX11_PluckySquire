@@ -29,6 +29,8 @@
 #include "CrossBow_Arrow.h"
 #include "SketchSpace_Alien.h"
 #include "SketchSpace_SpikeBall.h"
+#include "SketchSpace_UFO.h"
+#include "Projectile_SketchSpace_UFO.h"
 #include "Bomb.h"
 #include "SlipperyObject.h"
 #include "LightningBolt.h"
@@ -1328,14 +1330,43 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);*/
 
 
-	SketchSpace_SpikeBall_Desc.tTransform2DDesc.vInitialPosition = _float3(500.f, 303.f, 0.0f);
-	SketchSpace_SpikeBall_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_4;
-	SketchSpace_SpikeBall_Desc.isStay = false;
+	//SketchSpace_SpikeBall_Desc.tTransform2DDesc.vInitialPosition = _float3(500.f, 303.f, 0.0f);
+	//SketchSpace_SpikeBall_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_4;
+	//SketchSpace_SpikeBall_Desc.isStay = false;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_SpikeBall_Desc)))
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_SpikeBall_Desc)))
+	//	return E_FAIL;
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+
+	CSketchSpace_UFO::SIDESCROLLDESC SketchSpace_UFO_Desc;
+	SketchSpace_UFO_Desc.iCurLevelID = m_eLevelID;
+	SketchSpace_UFO_Desc.eStartCoord = COORDINATE_2D;
+	SketchSpace_UFO_Desc.tTransform2DDesc.vInitialPosition = _float3(-750.f, -300.f, 0.0f);
+	SketchSpace_UFO_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_UFO"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_UFO_Desc)))
 		return E_FAIL;
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+	SketchSpace_UFO_Desc.tTransform2DDesc.vInitialPosition = _float3(350.f, -370.f, 0.0f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_UFO"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_UFO_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+
+	SketchSpace_UFO_Desc.tTransform2DDesc.vInitialPosition = _float3(1074.f, -99.f, 0.0f);
+	SketchSpace_UFO_Desc.isStay = true;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_UFO"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_UFO_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
 
 	//alien
 	//.tTransform2DDesc.vInitialPosition = _float3(-570.f, -44.8f, 0.0f); //-977.f, -44.8f
@@ -1396,6 +1427,16 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster_Projectile(const _wstring& _strLa
 	BombDesc->iCurLevelID = m_eLevelID;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Bomb"), Pooling_Desc, BombDesc);
+
+	Pooling_Desc.iPrototypeLevelID = m_eLevelID;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_SketchSpace_UFO");
+
+	CProjectile_SketchSpace_UFO::PROJECTILE_MONSTER_DESC* pUFOProjDesc = new CProjectile_SketchSpace_UFO::PROJECTILE_MONSTER_DESC;
+	pUFOProjDesc->iCurLevelID = m_eLevelID;
+	pUFOProjDesc->eStartCoord = COORDINATE_2D;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_SketchSpace_UFO"), Pooling_Desc, pUFOProjDesc);
 
 	return S_OK;
 }
