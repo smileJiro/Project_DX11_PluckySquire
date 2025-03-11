@@ -2,11 +2,11 @@
     {
         "Collider_Info": {
             "Position": [
-                -548.0,
-                558.0
+                -453.0,
+                541.0
             ],
             "Scale": [
-                62.0,
+                10.0,
                 30.0
             ]
         },
@@ -36,9 +36,29 @@
         },
         "Fillter_MyGroup": 2,
         "Fillter_OtherGroupMask": 128,
+		"Trigger_Reusable" : false,
         "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 0,
-        "Trigger_EventTag": "Chapter4_Intro",
+        "Trigger_EventTag": "Chapter4_2D_Intro",
         "Trigger_Type": 9
+    },
+	{
+        "Collider_Info": {
+            "Position": [
+                -283.0,
+                327.0
+            ],
+            "Scale": [
+                107.0,
+                77.0
+            ]
+        },
+        "Fillter_MyGroup": 2,
+        "Fillter_OtherGroupMask": 128,
+		"Trigger_Reusable" : false,
+        "Trigger_ConditionType": 0,
+        "Trigger_Coordinate": 0,
+        "Trigger_EventTag": "Chapter4_StorySequence_01",
+        "Trigger_Type": 0
     }
 ]

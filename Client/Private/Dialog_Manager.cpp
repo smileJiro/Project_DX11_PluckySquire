@@ -29,6 +29,7 @@ void CDialog_Manager::Set_DialogId(const _tchar* _id, const _tchar* _strCurSecti
 
 	if (nullptr == _strCurSection)
 	{
+
 		m_pDialogue->Set_strCurSection(TEXT("NOTWORD"));
 		
 		if (COORDINATE_2D == pPlayer->Get_CurCoord())

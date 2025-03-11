@@ -15,6 +15,7 @@ float g_fPixelsPerUnrealUnit;
 
 // Color
 float4 g_vColors;
+float g_fInteractionRatio;
 int g_iFlag = 0;
 float g_fOpaque;
 float g_fSprite2DFadeAlphaRatio = 1.0f;
@@ -196,6 +197,21 @@ PS_OUT PS_MIX_COLOR(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_RATIO_BOTTOM_UP(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    float4 vDiffuse = g_DiffuseTexture.Sample(PointSampler, In.vTexcoord);
+
+    float fRatio = 1.0f - g_fInteractionRatio;
+    vDiffuse = fRatio < In.vTexcoord.y ? vDiffuse * g_vColors : vDiffuse;
+
+    if (0.01f > vDiffuse.a)
+        discard;
+    
+    Out.vColor = vDiffuse;
+    return Out;
+}
+
 
 // technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
 // pass : technique에 포함된 하위 개념으로 개별 렌더링 작업에 대한 구체적인 설정을 정의한다.
@@ -291,5 +307,15 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_DIALOGUE_BG_COLOR();
+    }
+
+    pass RATIO_BOTTOM_UP // 9
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend_OnlyDiffuse, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_RATIO_BOTTOM_UP();
     }
 }

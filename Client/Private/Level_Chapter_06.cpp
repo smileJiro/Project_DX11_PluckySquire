@@ -258,7 +258,9 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	if (FAILED(CFatherGame::GetInstance()->Start_Game(m_pDevice, m_pContext)))
 		return E_FAIL;
 #pragma endregion // TestCode
-
+	
+	/* Chapter6 Intro Trigger 동적 생성 임시 코드*/
+	Create_IntroTrigger();
 
 	return S_OK;
 }
@@ -1565,6 +1567,21 @@ void CLevel_Chapter_06::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera
 		dynamic_cast<CCamera_2D*>(_pCamera)->Add_CurArm(pArm);
 		break;
 	}
+}
+
+void CLevel_Chapter_06::Create_IntroTrigger()
+{
+	CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+	Desc.vHalfExtents = { 35.f, 35.f, 0.f };
+	Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+	Desc.szEventTag = TEXT("Chapter6_Intro");
+	Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+	Desc.isReusable = false; // 한 번 하고 삭제할 때
+	Desc.eStartCoord = COORDINATE_2D;
+	Desc.tTransform2DDesc.vInitialPosition = { 1170.09f, -156.f, 0.f };
+
+	CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_P0102"));
+	CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc, pSection);
 }
 
 HRESULT CLevel_Chapter_06::Map_Object_Create(_wstring _strFileName)

@@ -28,7 +28,7 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 	pDesc->isCoordChangeEnable = false;
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
 	pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
-
+ 	m_fOriginScale = pDesc->tTransform3DDesc.vInitialScaling.x;
 	pDesc->iActorType = (_uint)ACTOR_TYPE::DYNAMIC;
 	pDesc->isTrigger = false;
 	pDesc->eShapeType = (SHAPE_TYPE)SHAPE_TYPE::SPHERE;
@@ -70,7 +70,7 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 		Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
 		});
 
-	m_pControllerTransform->Set_Scale(4.f, 4.f, 4.f);
+	//m_pControllerTransform->Set_Scale(4.f, 4.f, 4.f);
 	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(45.f));
 	//m_pActorCom->Set_AngularVelocity({ 0.f, 0.f, XMConvertToRadians(45.f) });
 
