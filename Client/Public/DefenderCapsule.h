@@ -8,6 +8,8 @@ class CDefenderCapsule :
     public CDefenderMonster
 {
 public:
+	
+public:
 	enum ANIM_STATE
 	{
 		VORTEX_INTO,
@@ -33,6 +35,7 @@ public:
 	virtual void On_Spawned()override;
 	virtual void On_LifeTimeOut()override;
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+
 public:
 
 private:

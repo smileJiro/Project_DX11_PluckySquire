@@ -5,6 +5,7 @@
 #include "Effect2D_Manager.h"
 #include "3DModel.h"
 #include "Section_Manager.h"
+#include "ScrollModelObject.h"
 
 CDefenderCapsule::CDefenderCapsule(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CDefenderMonster(_pDevice, _pContext)
@@ -110,6 +111,15 @@ void CDefenderCapsule::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vFor
 void CDefenderCapsule::On_Explode()
 {
 	m_pBody->Switch_Animation(SPHERE_BREAK);
+
+	CScrollModelObject::SCROLLMODELOBJ_DESC tDesc = {};
+	tDesc.iCurLevelID = m_iCurLevelID;
+	XMStoreFloat3(&tDesc.tTransform2DDesc.vInitialPosition, Get_FinalPosition());
+	CGameObject* pPerson = nullptr;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_DefenderPerson"), m_iCurLevelID, TEXT("Layer_Defender"),(CGameObject**)&pPerson, &tDesc)))
+		return ;
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, pPerson, SECTION_2D_PLAYMAP_OBJECT);
+
 }
 
 void CDefenderCapsule::On_Spawned()
@@ -133,6 +143,8 @@ void CDefenderCapsule::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		break;
 	}
 }
+
+
 
 
 CDefenderCapsule* CDefenderCapsule::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

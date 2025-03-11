@@ -9,6 +9,7 @@
 #include "DefenderSpawner.h"
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
+#include "DefenderPerson.h"
 
 CMiniGame_Defender::CMiniGame_Defender(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -58,12 +59,13 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
     /* Test 2D Collider */
     CCollider_AABB::COLLIDER_AABB_DESC tAABBDesc = {};
     tAABBDesc.pOwner = this;
-    tAABBDesc.vExtents = { 100.f , 300.f};
+    tAABBDesc.vExtents = { 50.f , 300.f};
     tAABBDesc.vScale = { 1.0f, 1.0f };
     tAABBDesc.vOffsetPosition = { 0.f,0.f };
     tAABBDesc.isBlock = false;
     tAABBDesc.isTrigger = true;
     tAABBDesc.iCollisionGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
+    tAABBDesc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDesc)))
         return E_FAIL;
@@ -102,7 +104,7 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
 	SPAWN_DESC tSpawnDesc = {};
     tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_DOT;
     tSpawnDesc.eDirection = T_DIRECTION::LEFT;
-    tSpawnDesc.fPatternStartDelay = 15.f;
+    tSpawnDesc.fPatternStartDelay = 0.f;
     tSpawnDesc.fAutoCycleTime = -1.f;
     tSpawnDesc.fUnitDelay = 0.f;
     tSpawnDesc.iSpawnCount = 1;
@@ -110,10 +112,10 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
     tSpawnDesc.bAbsolutePosition = true;
     tSpawnDesc.vPosition = { 0.f,0.f };
     m_Spawners[DEFENDER_MONSTER_ID::PERSON_CAPSULE]->Add_Spawn(tSpawnDesc);
-    tSpawnDesc.fPatternStartDelay = 30.f;
+    //tSpawnDesc.fPatternStartDelay = 30.f;
     tSpawnDesc.vPosition = { 1000.f,0.f };
     m_Spawners[DEFENDER_MONSTER_ID::PERSON_CAPSULE]->Add_Spawn(tSpawnDesc);
-    tSpawnDesc.fPatternStartDelay = 45.f;
+    //tSpawnDesc.fPatternStartDelay = 45.f;
     tSpawnDesc.vPosition = { -1000.f,0.f };
     m_Spawners[DEFENDER_MONSTER_ID::PERSON_CAPSULE]->Add_Spawn(tSpawnDesc);
 
@@ -124,6 +126,7 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
     tSpawnDesc.fAutoCycleTime = 13.f;
     tSpawnDesc.fUnitDelay = 0.f;
     tSpawnDesc.iSpawnCount = 6;
+    tSpawnDesc.fMoveSpeed = 200.f;
     tSpawnDesc.bAbsolutePosition = false;
     tSpawnDesc.fPlayerDistance = m_fSpawnDistance;
     tSpawnDesc.fHeight = 0;
@@ -215,6 +218,13 @@ void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
 
         static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(m_pDefenderPlayer);
     }
+
+	if (OBJECT_GROUP::GIMMICK_OBJECT & _pOtherObject->Get_ObjectGroupID())
+	{
+		CDefenderPerson* pPerson = dynamic_cast<CDefenderPerson*>(_pOtherObject);
+        if(pPerson)
+            Rescue_Person(pPerson);
+	}
 }
 
 void CMiniGame_Defender::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -233,6 +243,20 @@ void CMiniGame_Defender::Start_Game()
 
 void CMiniGame_Defender::Restart_Game()
 {
+}
+
+void CMiniGame_Defender::Rescue_Person(CDefenderPerson* _pPerson)
+{
+	m_iPersonCount++;
+	m_pDefenderPlayer->Remove_Follower(_pPerson);
+    _pPerson->Dissapear();
+    if (m_iPersonCount >= m_iMaxPersonCount)
+        Clear_Game();
+}
+
+void CMiniGame_Defender::Clear_Game()
+{
+    m_bClear = true;
 }
 
 
