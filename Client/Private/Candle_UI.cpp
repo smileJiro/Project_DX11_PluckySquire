@@ -61,10 +61,6 @@ void CCandle_UI::Priority_Update(_float _fTimeDelta)
 
 void CCandle_UI::Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::K))
-	{
-		Start_FadeAlphaOut();
-	}
 	__super::Update(_fTimeDelta);
 }
 

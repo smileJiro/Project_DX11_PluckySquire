@@ -18,8 +18,8 @@ public:
 		_float fAlert2DRange;
 		_float fChase2DRange;
 		_float fAttack2DRange;
-		_float fDelayTime;
-		_float fCoolTime;
+		_float fDelayTime = -1.f;
+		_float fCoolTime = -1.f;
 		CMonster* pOwner;
 		SNEAKWAYPOINTINDEX eWayIndex = SNEAKWAYPOINTINDEX::LAST;
 		SIDESCROLL_PATROLBOUND eSideScroll_Bound = SIDESCROLL_PATROLBOUND::LAST;

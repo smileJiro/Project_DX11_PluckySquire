@@ -222,6 +222,7 @@
     <ClInclude Include="..\Public\FatherGame_Progress_PartWing.h" />
     <ClInclude Include="..\public\FatherPart_Prop.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
+    <ClInclude Include="..\Public\Projectile_SketchSpace_UFO.h" />
     <ClInclude Include="..\Public\Room_Door.h" />
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
     <ClInclude Include="..\Public\CyberPlayerBullet.h" />
@@ -274,7 +275,10 @@
     <ClInclude Include="..\Public\ShopPanel_New.h" />
     <ClInclude Include="..\Public\ShopPanel_YesNo_New.h" />
     <ClInclude Include="..\Public\Shop_Manager.h" />
+    <ClInclude Include="..\Public\SketchSpace_SpikeBall.h" />
+    <ClInclude Include="..\Public\SketchSpace_UFO.h" />
     <ClInclude Include="..\public\Sneak_MapObject.h" />
+    <ClInclude Include="..\Public\SketchSpace_Alien.h" />
     <ClInclude Include="..\public\Sneak_Default_Tile.h" />
     <ClInclude Include="..\public\Sneak_FlipObject.h" />
     <ClInclude Include="..\public\Sneak_InteractObject.h" />
@@ -322,7 +326,6 @@
     <ClInclude Include="..\Public\BossSceneState.h" />
     <ClInclude Include="..\Public\BossState.h" />
     <ClInclude Include="..\Public\BossYellowBallState.h" />
-    <ClInclude Include="..\Public\Boss_EnergyBall.h" />
     <ClInclude Include="..\Public\Boss_HomingBall.h" />
     <ClInclude Include="..\Public\Boss_PurpleBall.h" />
     <ClInclude Include="..\Public\Boss_YellowBall.h" />
@@ -569,6 +572,7 @@
     <ClCompile Include="..\Private\FatherGame_Progress_PartWing.cpp" />
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
+    <ClCompile Include="..\Private\Projectile_SketchSpace_UFO.cpp" />
     <ClCompile Include="..\Private\Room_Door.cpp" />
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
     <ClCompile Include="..\Private\CyberPlayerBullet.cpp" />
@@ -618,7 +622,10 @@
     <ClCompile Include="..\Private\ShopPanel_New.cpp" />
     <ClCompile Include="..\Private\ShopPanel_YesNo_New.cpp" />
     <ClCompile Include="..\Private\Shop_Manager.cpp" />
+    <ClCompile Include="..\Private\SketchSpace_SpikeBall.cpp" />
+    <ClCompile Include="..\Private\SketchSpace_UFO.cpp" />
     <ClCompile Include="..\private\Sneak_MapObject.cpp" />
+    <ClCompile Include="..\Private\SketchSpace_Alien.cpp" />
     <ClCompile Include="..\private\Sneak_Default_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_FlipObject.cpp" />
     <ClCompile Include="..\private\Sneak_InteractObject.cpp" />
@@ -669,7 +676,6 @@
     <ClCompile Include="..\Private\BossSceneState.cpp" />
     <ClCompile Include="..\Private\BossState.cpp" />
     <ClCompile Include="..\Private\BossYellowBallState.cpp" />
-    <ClCompile Include="..\Private\Boss_EnergyBall.cpp" />
     <ClCompile Include="..\Private\Boss_HomingBall.cpp" />
     <ClCompile Include="..\Private\Boss_PurpleBall.cpp" />
     <ClCompile Include="..\Private\Boss_YellowBall.cpp" />

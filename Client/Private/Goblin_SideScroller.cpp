@@ -141,10 +141,7 @@ void CGoblin_SideScroller::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
     case DEATH:
         Set_AnimChangeable(true);
-        //풀링에 넣을 시 변경
-        //Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
-        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
-
+        CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), Get_Include_Section_Name(), Get_ControllerTransform()->Get_WorldMatrix());
         Event_DeleteObject(this);
         break;
 
@@ -299,22 +296,11 @@ HRESULT CGoblin_SideScroller::Ready_Components()
     CircleDesc.pOwner = this;
     CircleDesc.fRadius = { 20.f };
     CircleDesc.vScale = { 1.0f, 1.0f };
-    CircleDesc.vOffsetPosition = { 0.f, 0.f };
+    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
     CircleDesc.isBlock = true;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
-        return E_FAIL;
-
-
-    CircleDesc.fRadius = { 5.f };
-    CircleDesc.vScale = { 1.0f, 1.0f };
-    CircleDesc.vOffsetPosition = { 0.f, 20.f };
-    CircleDesc.isBlock = false;
-    CircleDesc.isTrigger = true;
-    CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
-    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-        TEXT("Com_ColliderHead"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
         return E_FAIL;
 
     /* Com_Gravity */

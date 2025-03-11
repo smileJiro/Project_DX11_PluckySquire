@@ -628,6 +628,9 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Fatherpart_2(_float _fT
 
 void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Fatherpart_3(_float _fTimeDelta)
 {
+
+
+	GameEvent_End();
 }
 
 

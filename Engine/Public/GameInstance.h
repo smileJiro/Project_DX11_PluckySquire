@@ -277,6 +277,8 @@ public: /* For. Physx_Manager*/
 	_bool Overlap(PxGeometry* pxGeom, _fvector _vPos, list<CActorObject*>& _OutActors);
 	//가장 먼저 충돌된 물체만 검출
 	_bool SingleSweep(PxGeometry* pxGeom, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, CActorObject** _ppOutActor = nullptr, RAYCASTHIT* _pOutHit = nullptr);
+	_bool SingleSweep(PxGeometry* pxGeom, const _float4x4& _matShpeOffsetMatrix, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, CActorObject** _ppOutActor = nullptr, RAYCASTHIT* _pOutHit = nullptr);
+	_bool SingleSweep_GroupFilter(PxGeometry* pxGeom, const _float4x4& _matShpeOffsetMatrix, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, _int _iGroupNum, CActorObject** _ppOutActor = nullptr, RAYCASTHIT* _pOutHit = nullptr);
 	//모든(최대 10개) 충돌된 물체 검출
 	_bool MultiSweep(PxGeometry* pxGeom, const _float4x4& _matShpeOffsetMatrix,const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits);
 
