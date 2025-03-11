@@ -1365,8 +1365,8 @@ void CLevel_Chapter_08::Free()
 {
 	m_pGameInstance->End_BGM();
 
-	//CMinigame_Sneak::GetInstance()->DestroyInstance();
-	Safe_Release(m_pSneakMinigameManager);
+	CMinigame_Sneak::GetInstance()->DestroyInstance();
+	//Safe_Release(m_pSneakMinigameManager);
 
 	__super::Free();
 }

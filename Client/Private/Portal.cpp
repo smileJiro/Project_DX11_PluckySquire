@@ -63,8 +63,8 @@ void CPortal::Priority_Update(_float _fTimeDelta)
 
 void CPortal::Update(_float fTimeDelta)
 {
-    if (nullptr != m_pEffectSystem && false == m_pEffectSystem->Is_Active())
-        m_pEffectSystem->Active_Effect(true);
+    //if (nullptr != m_pDefaultEffect && false == m_pDefaultEffect->Is_Active())
+    //    m_pDefaultEffect->Active_Effect(true);
 
     __super::Update(fTimeDelta);
 }
@@ -184,8 +184,8 @@ void CPortal::Use_Portal(CPlayer* _pUser)
 
     Event_Change_Coordinate(_pUser, (COORDINATE)iCurCoord, &vNewPos);
 
-    if (m_pEffectSystem)
-        m_pEffectSystem->Active_Effect(true, 1);
+    if (nullptr != m_pInOutEffect)
+        m_pInOutEffect->Active_Effect(false, 1);
 }
 
 HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
@@ -207,7 +207,7 @@ HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
     return S_OK;
 }
 
-HRESULT CPortal::Ready_Particle()
+HRESULT CPortal::Ready_DefaultParticle()
 {
     if (false == m_isReady_3D)
         return E_FAIL;
@@ -222,24 +222,13 @@ HRESULT CPortal::Ready_Particle()
     EffectDesc.isCoordChangeEnable = false;
     EffectDesc.iSpriteShaderLevel = LEVEL_STATIC;
     EffectDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
-
-    EffectDesc.iModelShaderLevel = LEVEL_STATIC;
-    EffectDesc.szModelShaderTags = L"Prototype_Component_Shader_VtxMeshInstance";
-
     EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
     EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
-
-    EffectDesc.iSingleSpriteShaderLevel = LEVEL_STATIC;
-    EffectDesc.szSingleSpriteShaderTags = L"Prototype_Component_Shader_VtxPoint";
-    EffectDesc.iSingleSpriteBufferLevel = LEVEL_STATIC;
-    EffectDesc.szSingleSpriteBufferTags = L"Prototype_Component_VIBuffer_Point";
-
     EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
-    EffectDesc.szMeshComputeShaderTag = L"Prototype_Component_Compute_Shader_MeshInstance";
 
-    m_pEffectSystem = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Portal.json"), &EffectDesc));
-    if (nullptr == m_pEffectSystem)
-        return E_FAIL;
+    m_pDefaultEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Portal.json"), &EffectDesc));
+    if (nullptr == m_pDefaultEffect)
+        return E_FAIL;    
 
     _matrix WorldMatrix = XMMatrixIdentity();
     switch ((NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(f3DPosition))))
@@ -277,10 +266,85 @@ HRESULT CPortal::Ready_Particle()
     }
     WorldMatrix.r[3] = XMVectorSetW(f3DPosition, 1.f);
 
-    m_pEffectSystem->Set_EffectMatrix(WorldMatrix);
-    m_PartObjects[PORTAL_PART_EFFECT] = m_pEffectSystem;
+    if (nullptr != m_pDefaultEffect)
+    {
+        m_pDefaultEffect->Set_EffectMatrix(WorldMatrix);
+        m_PartObjects[PORTAL_PART_DEFAULTEFFECT] = m_pDefaultEffect;
+        Safe_AddRef(m_pDefaultEffect);
+    }
 
-    //Safe_AddRef(m_pEffectSystem);
+
+    return S_OK;
+}
+
+HRESULT CPortal::Ready_InOutParticle()
+{
+    if (false == m_isReady_3D)
+        return E_FAIL;
+
+    _vector f3DPosition = Get_FinalPosition(COORDINATE_3D);
+
+    // Æ÷Å» ÀÌÆåÆ® »ý¼º.
+    m_pControllerTransform->Get_Transform(COORDINATE_3D)->Get_WorldMatrix_Ptr();
+
+    CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
+    EffectDesc.eStartCoord = COORDINATE_3D;
+    EffectDesc.isCoordChangeEnable = false;
+    EffectDesc.iSpriteShaderLevel = LEVEL_STATIC;
+    EffectDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+    EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
+    EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+    EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+
+    m_pInOutEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("PortalOut.json"), &EffectDesc));
+    if (nullptr == m_pInOutEffect)
+        return E_FAIL;
+
+
+    _matrix WorldMatrix = XMMatrixIdentity();
+    switch ((NORMAL_DIRECTION)((_int)roundf(XMVectorGetW(f3DPosition))))
+    {
+    case NORMAL_DIRECTION::POSITIVE_X:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(-90.f));
+        break;
+    }
+    case NORMAL_DIRECTION::NEGATIVE_X:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(90.f));
+        break;
+    }
+    case NORMAL_DIRECTION::POSITIVE_Y:
+    {
+        WorldMatrix = XMMatrixIdentity();
+        break;
+    }
+    case NORMAL_DIRECTION::NEGATIVE_Y:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(180.f));
+        break;
+    }
+    case NORMAL_DIRECTION::POSITIVE_Z:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(90.f));
+        break;
+    }
+    case NORMAL_DIRECTION::NEGATIVE_Z:
+    {
+        WorldMatrix = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(-90.f));
+        break;
+    }
+    }
+    WorldMatrix.r[3] = XMVectorSetW(f3DPosition, 1.f);
+
+
+    if (nullptr != m_pInOutEffect)
+    {
+        m_pInOutEffect->Set_EffectMatrix(WorldMatrix);
+        m_PartObjects[PORTAL_PART_INOUTEFFECT] = m_pInOutEffect;
+        Safe_AddRef(m_pInOutEffect);
+    }
+
     return S_OK;
 }
 
@@ -298,10 +362,10 @@ void CPortal::Active_OnEnable()
     if (m_isFirstActive)
     {
         __super::Active_OnEnable();
-        if (m_pEffectSystem)
+        if (m_pDefaultEffect)
         {
-            //m_pEffectSystem->Set_Active(true);
-            m_pEffectSystem->Active_Effect(false, 0);
+            //m_pDefaultEffect->Set_Active(true);
+            m_pDefaultEffect->Active_Effect(false, 0);
         }
     }
     else
@@ -323,10 +387,16 @@ NORMAL_DIRECTION CPortal::Get_PortalNormal()
 void CPortal::Active_OnDisable()
 {
     __super::Active_OnDisable();
-    if (m_pEffectSystem && m_pEffectSystem->Is_Active())
+    if (m_pDefaultEffect && m_pDefaultEffect->Is_Active())
     {
-        m_pEffectSystem->Inactive_All();
+        m_pDefaultEffect->Inactive_All();
     }
+
+    if (m_pInOutEffect && m_pInOutEffect->Is_Active())
+    {
+        m_pInOutEffect->Inactive_All();
+    }
+
 }
 
 
@@ -342,6 +412,8 @@ void CPortal::Set_FirstActive(_bool _bFirstActive)
 void CPortal::Free()
 {
     Safe_Release(m_pColliderCom);
-    //Safe_Release(m_pEffectSystem);
+    
+    Safe_Release(m_pInOutEffect);
+    Safe_Release(m_pDefaultEffect);
     __super::Free();
 }

@@ -278,7 +278,7 @@ void CPip_Player::Dir_Move(_float _fTimeDelta)
 	_vector vPosition = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 	_vector vTarget = XMVectorSetW(XMLoadFloat2(&m_vTargetPosition), 1.f);
 
-	if (8.f > XMVectorGetX(XMVector3Length(vPosition - vTarget)))
+	if (10.f > XMVectorGetX(XMVector3Length(vPosition - vTarget)))
 	{
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vTarget);
 		m_eCurAction = IDLE;

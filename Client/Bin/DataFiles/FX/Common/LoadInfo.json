@@ -11,6 +11,7 @@
         "../Bin/DataFiles/FX/Common/MonsterDead.json",
         "../Bin/DataFiles/FX/Common/MonsterHit.json",
         "../Bin/DataFiles/FX/Common/Portal.json",
+        "../Bin/DataFiles/FX/Common/PortalOut.json",
         "../Bin/DataFiles/FX/Common/SwordCombo.json",
         "../Bin/DataFiles/FX/Common/SwordJumpAttack.json",
         "../Bin/DataFiles/FX/Common/SwordThrowBlock.json",

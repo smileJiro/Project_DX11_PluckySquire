@@ -5,6 +5,9 @@
 #include "GameInstance.h"
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
+
+#include "Effect_Manager.h"
+
 CPlayerState_TurnBook::CPlayerState_TurnBook(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::TURN_BOOK)
 {
@@ -189,6 +192,8 @@ void CPlayerState_TurnBook::Exit()
 	// Camera Target Player·Î ¹Ù²Þ(È¿¸²)
 	CCamera_Manager::GetInstance()->Change_CameraTarget(m_pOwner);
 	CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.f);
+
+	CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("Book_Default"), 4.f);
 }
 
 void CPlayerState_TurnBook::Switch_PlayerAnimation(_bool _bLeft)

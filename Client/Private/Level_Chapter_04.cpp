@@ -1369,7 +1369,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 
 	tJumpPadDesc.iCurLevelID = m_eLevelID;
 	tJumpPadDesc.eStartCoord = COORDINATE_2D;
-	tJumpPadDesc.tTransform2DDesc.vInitialPosition = { -600.f, 218.5f, 0.f };
+	tJumpPadDesc.tTransform2DDesc.vInitialPosition = { -920.f, 305.5f, 0.f };
 	tJumpPadDesc.strInitialSectionTag = L"Chapter4_SKSP_01";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpPad"),
 		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
@@ -1393,13 +1393,13 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"), m_eLevelID, _strLayerTag, &tCarriableDesc)))
 		return E_FAIL;
 
-	/*tCarriableDesc.eStartCoord = COORDINATE_2D;
+	tCarriableDesc.eStartCoord = COORDINATE_2D;
 	tCarriableDesc.iCurLevelID = m_eLevelID;
 	tCarriableDesc.tTransform2DDesc.vInitialPosition = _float3(-650.f, -340.f, 0.f);
 	tCarriableDesc.strInitialSectionTag = L"Chapter4_SKSP_05";
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Key"), m_eLevelID, _strLayerTag, &tCarriableDesc)))
-		return E_FAIL;*/
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -1457,10 +1457,10 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &DoorRedDesc)))
 		return E_FAIL;
 
-	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-342.f, 50.f, 0.f);
+	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-515.f, 80.f, 0.f);
 	DoorRedDesc.iCurLevelID = m_eLevelID;
 	DoorRedDesc.isHorizontal = true;
-	DoorRedDesc.eSize = CDoor_2D::SMALL;
+	DoorRedDesc.eSize = CDoor_2D::MED;
 	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
 	DoorRedDesc.strSectionTag = L"Chapter4_SKSP_01";
 	DoorRedDesc.strLayerTag = L"Layer_Monster_Door3";
