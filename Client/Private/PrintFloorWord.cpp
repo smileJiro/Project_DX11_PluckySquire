@@ -29,6 +29,7 @@ HRESULT CPrintFloorWord::Initialize(void* _pArg)
 
 	m_vRenderPos.x = pDesc->fPosX;
 	m_vRenderPos.y = pDesc->fPosY;
+	m_strSFX = pDesc->strSFX;
 
 	wsprintf(m_tFloorWord, pDesc->strText.c_str());
 
@@ -70,9 +71,17 @@ void CPrintFloorWord::Update(_float _fTimeDelta)
 	_float fPlayerPosX = pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0];
 	_float fPlayerPosY = pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1];
 	
-	if (250.f > fabs(fThisPosX - fPlayerPosX) && 250.f > fabs(fThisPosY - fPlayerPosY) &&COORDINATE_2D == pPlayer->Get_CurCoord())
+	if (250.f > fabs(fThisPosX - fPlayerPosX) && 
+		250.f > fabs(fThisPosY - fPlayerPosY) && 
+		COORDINATE_2D == pPlayer->Get_CurCoord() && 
+		false == m_isFadeIn)
 	{
 		m_isFadeIn = true;
+		
+		// NOTWORD 소리가 나면 안되는 floorword
+		//if (TEXT("NOTWORD") != m_strSFX)
+		//	m_pGameInstance->Start_SFX_Delay(m_strSFX, 0.f, 30.f, false);
+
 	}
 
 	Add_Amount(_fTimeDelta);

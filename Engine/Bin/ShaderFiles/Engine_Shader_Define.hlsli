@@ -29,6 +29,10 @@
 /* Shadow Flag */
 #define IS_SHADOWLIGHT 1
 
+/* Sksp */
+#define SAVEBRDF 1
+
+
 struct Material_PS
 {
     float4 Albedo; // baseColor

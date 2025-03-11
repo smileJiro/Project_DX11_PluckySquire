@@ -23,7 +23,8 @@ protected :
 	{
 		PORTAL_PART_2D = 1,
 		PORTAL_PART_3D, // ¾È¾µµí !? 
-		PORTAL_PART_EFFECT,
+		PORTAL_PART_DEFAULTEFFECT,
+		PORTAL_PART_INOUTEFFECT,
 		PORTAL_PART_LAST
 	};
 
@@ -54,7 +55,8 @@ public:
 	void					Use_Portal(CPlayer* _pUser);
 protected:
 	virtual HRESULT			Ready_Components(PORTAL_DESC* _pDesc);
-	HRESULT					Ready_Particle();
+	HRESULT					Ready_DefaultParticle();
+	HRESULT					Ready_InOutParticle();
 
 	HRESULT					Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition) override;
 
@@ -88,7 +90,8 @@ public :
 	_bool					m_isFirstActive = true;	
 	_float					m_fTriggerRadius = {};
 	_uint					m_iPortalIndex = {};
-	CEffect_System*			m_pEffectSystem = { nullptr };
+	CEffect_System*			m_pDefaultEffect = { nullptr };
+	CEffect_System*			m_pInOutEffect = { nullptr };
 
 public:
 	void					Free() override;

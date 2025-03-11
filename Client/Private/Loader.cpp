@@ -209,6 +209,7 @@
 #include "Room_Door_Body.h"
 
 // Father Game 
+#include "Mat.h" 
 #include "PortalLocker.h" 
 #include "ZetPack_Child.h" 
 #include "ZetPack_Father.h" 
@@ -224,6 +225,7 @@
 // Player Effect 
 #include "Effect_Trail.h"
 #include "Effect_Beam.h"
+#include "TurnBookEffect.h"
 
 
 
@@ -470,8 +472,8 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Trail"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Trail_03.dds"), 1))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Grad04"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Grad_04.dds"), 1))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Grad01_180"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Grad_01_180.dds"), 1))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Glow01"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Glow_01.dds"), 1))))
@@ -799,6 +801,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBody"),
 		CPlayerBody::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TurnBookEffect"),
+		CTurnBookEffect::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	/* Monster */
 
 	/* For. Prototype_GameObject_Monster_Body */
@@ -1076,6 +1081,11 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 		m_pGameInstance->Load_SFX(TEXT("P1920_01_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1920/P1920_01_01.wav"));
 		m_pGameInstance->Load_SFX(TEXT("P1920_01_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1920/P1920_01_02.wav"));
 		m_pGameInstance->Load_SFX(TEXT("P1920_02_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter2/C1920/P1920_02_01.wav"));
+
+		m_pGameInstance->Load_SFX(TEXT("Chapter1_P0506_1"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_2/Chapter1_P0506_1.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter1_P0506_2"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_2/Chapter1_P0506_2.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter1_P0708_1"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_2/Chapter1_P0708_1.wav"));
+		m_pGameInstance->Load_SFX(TEXT("Chapter2_P0708_1"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_2/Chapter2_P0708_1.wav"));
 
 	#pragma endregion
 
@@ -1466,6 +1476,7 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_3"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/P1314_AsTheGrandRuler_KR.wav"));
 		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0708_1_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/Chapter8_0708/A_sfx_c08_Artian_Throne.wav"));
 
+		m_pGameInstance->Load_SFX(TEXT("Chapter6_P0102_1"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_6/Chapter6_P0102.wav"));
 	#pragma endregion
 
 	#pragma region Chapter 6 - Model Load
@@ -1503,6 +1514,10 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 
 		/* Chapter 6 FatherGame */
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Mat"),
+			CMat::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"),
 			CFatherPart_Prop::Create(m_pDevice, m_pContext))))
@@ -1697,7 +1712,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_APlanQuiteObviouslyDoomed_KR.wav"));
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/A_sfx_C9_TheTraiterousRodent.wav"));
 
-
+	m_pGameInstance->Load_SFX(TEXT("Chapter8_P0506"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_8/Chapter8_P0506.wav"));
+	m_pGameInstance->Load_SFX(TEXT("Chapter8_P1112"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_8/Chapter8_P1112.wav"));
+	m_pGameInstance->Load_SFX(TEXT("Chapter8_P1920"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_8/Chapter8_P1920.wav"));
 	// 나레이션 관련
 
 #pragma endregion
@@ -1723,6 +1740,11 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	/* For. Prototype_GameObject_GameEventExecuter */
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_GameEventExecuter"),
 		CGameEventExecuter_C8::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_Postit_Page */
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Postit_Page"),
+		CPostit_Page::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* Pip_Player */

@@ -81,6 +81,21 @@ HRESULT CPortal_Arrow::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNew
     return S_OK;
 }
 
+HRESULT CPortal_Arrow::Setup_3D_Postion()
+{
+    HRESULT hr = __super::Setup_3D_Postion();
+
+    if (FAILED(hr))
+        return S_OK;
+
+    // OutEffect만 나옵니다.
+
+    if (FAILED(Ready_InOutParticle()))
+        return E_FAIL;
+
+    return S_OK;
+}
+
 
 void CPortal_Arrow::Active_OnEnable()
 {
@@ -164,7 +179,5 @@ CGameObject* CPortal_Arrow::Clone(void* _pArg)
 
 void CPortal_Arrow::Free()
 {
-    Safe_Release(m_pColliderCom);
-    Safe_Release(m_pEffectSystem);
     __super::Free();
 }

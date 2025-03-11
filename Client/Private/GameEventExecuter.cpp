@@ -100,12 +100,22 @@ _bool CGameEventExecuter::Postit_Process_Start(const _wstring& _strPostItSection
 		CGameObject* pTargetPostit = Find_Postit();
 		if (nullptr == pTargetPostit)
 			assert(nullptr);
+
+		// 카메라를 _fStartChaseCameraTime 만큼 포스트잇으로 땡긴다.
 		CCamera_Manager::GetInstance()->Change_CameraTarget(pTargetPostit, _fStartChaseCameraTime);
 
 		// 땡긴 후 추가액션이 세팅되어 있다면 실행한다
 		if (nullptr != _FirstCamFunc)
 			_FirstCamFunc();
-
+		//CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-40.f), XMConvertToRadians(-25.f));
+		//// 암 3.f 줄이기, 1초동안
+		//CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET, 1.f,
+		//	3.f, EASE_IN_OUT);
+		//// 타겟 오프셋 y -2.f
+		//CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+		//	1.f,
+		//	XMVectorSet(0.f, -2.f, 0.f, 0.f),
+		//	EASE_IN_OUT);
 	}
 
 	return Next_Step_Over(_fStartChaseCameraTime);

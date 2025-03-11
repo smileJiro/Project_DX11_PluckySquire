@@ -140,7 +140,6 @@ protected:
 	_string						m_strColliderPath = "";	
 	_char*						m_arrCookingColliderData = nullptr;
 
-
 protected:
 	virtual HRESULT Ready_Bones(ifstream& inFile, _uint iParentBoneIndex);
 	virtual HRESULT Ready_Meshes(ifstream& inFile);

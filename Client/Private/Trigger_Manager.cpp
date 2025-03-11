@@ -82,6 +82,14 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_2] = L"Chapter6_FatherGame_Progress_Fatherpart_2";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_3] = L"Chapter6_FatherGame_Progress_Fatherpart_3";
 
+
+	m_EventExecuterTags[CHAPTER8_INTRO_POSTIT_SEQUENCE] = L"Chapter8_Intro_Postit_Sequence";
+	m_EventExecuterTags[CHAPTER8_SWORD] = 	L"Chapter8_Sword";
+	m_EventExecuterTags[CHAPTER8_STOP_STAMP] = 	L"Chapter8_Stop_Stamp";
+	m_EventExecuterTags[CHAPTER8_BOMB_STAMP] = 	L"Chapter8_Bomb_Stamp";
+	m_EventExecuterTags[CHAPTER8_TILTING_GLOVE] = 	L"Chapter8_Tilting_Glove";
+	m_EventExecuterTags[CHAPTER8_OUTRO_POSTIT_SEQUENCE] = 	L"Chapter8_Outro_Postit_Sequence";
+
 	return S_OK;
 }
 
@@ -445,7 +453,7 @@ HRESULT CTrigger_Manager::After_Initialize_Trigger_3D(CTriggerObject* _pTriggerO
 {
 	// Custom Data
 	_string szKey;
-	_uint iReturnMask;
+	//_uint iReturnMask;
 	_float3 vFreezeExitArm;
 
 	switch (_pDesc->iTriggerType) {
