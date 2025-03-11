@@ -31,6 +31,8 @@ HRESULT CSketchSpace_UFO::Initialize(void* _pArg)
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 100.f;
 
+    pDesc->fAttack2DRange = 500.f;
+
     pDesc->_tStat.iHP = 1;
     pDesc->_tStat.iMaxHP = 1;
     pDesc->_tStat.iDamg = 1;
@@ -154,6 +156,10 @@ void CSketchSpace_UFO::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
     switch ((CSketchSpace_UFO::Animation2D)pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
     {
+    case ATTACK:
+        Set_AnimChangeable(true);
+        break;
+
     case HIT:
         Set_AnimChangeable(true);
         break;
