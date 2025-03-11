@@ -2031,7 +2031,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "안녕하세요, 용감한 용사 여러분!",
+					"text": "안녕하세요, 용감한 견습 기사님!",
 					"Red": 255,
 					"Green": 224,
 					"Blue": 136
@@ -2048,7 +2048,24 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "새 물건이 들어왔어요. 한번 보세요!",
+					"text": "여기는 책의 탑에 입구에요. 험그럼프는 맨 꼭대기에 있어요.",
+					"Red": 255,
+					"Green": 224,
+					"Blue": 136
+				},
+				{
+					"Portrait": 2,
+					"Talker": "마르티나",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"iAnimationIndex": 9,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "험그럼프가 이상한 책을 들고 있더라구요, 조심하세요!",
 					"Red": 255,
 					"Green": 224,
 					"Blue": 136

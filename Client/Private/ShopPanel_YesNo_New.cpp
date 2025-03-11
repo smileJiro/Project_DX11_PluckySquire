@@ -36,6 +36,11 @@ HRESULT CShopPanel_YesNo_New::Initialize(void* _pArg)
 	vCalScale.x = m_vOriginSize.x * RATIO_BOOK2D_X;
 	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
 
+
+
+
+
+
 	m_pControllerTransform->Set_Scale(vCalScale.x, vCalScale.y, 1.f);
 
 	if (FAILED(Ready_Components()))
@@ -62,7 +67,10 @@ void CShopPanel_YesNo_New::Late_Update(_float _fTimeDelta)
 	if (true == CShop_Manager::GetInstance()->Get_Confirm())
 	{
 		// TODO :: 나중에 수정해야한다. 각 넓이는 가변적이기 때문에.
-		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+
+		_float2 RTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
+
+		//_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
 
 		Cal_ShopYesNOPos(RTSize, CShop_Manager::GetInstance()->Get_ShopBGPos());
 
@@ -93,7 +101,7 @@ HRESULT CShopPanel_YesNo_New::Render()
 			/* 나중에 수정 필요 */
 			_float2 vRTSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(CSection_Manager::GetInstance()->Get_Cur_Section_Key());
 
-
+			_float2 vRatio = _float2(vRTSize.x / RTSIZE_BOOK2D_X, vRTSize.y / RTSIZE_BOOK2D_Y);
 
 			_float2 vMiddlePoint = { vRTSize.x / 2 , vRTSize.y / 2 };
 			_float2 vCalPos = { 0.f, 0.f };
@@ -103,8 +111,8 @@ HRESULT CShopPanel_YesNo_New::Render()
 
 			_float2 vPos = { 0.f, 0.f };
 
-			vPos.x = BGPos.x + vRTSize.x * 0.045f;
-			vPos.y = BGPos.y - vRTSize.y * 0.075f;
+			vPos.x = BGPos.x + vRTSize.x * 0.085f / vRatio.x;
+			vPos.y = BGPos.y - vRTSize.y * 0.15f / vRatio.y;
 
 			vCalPos.x = vMiddlePoint.x + vPos.x;
 			vCalPos.y = vMiddlePoint.y - vPos.y;
@@ -117,8 +125,8 @@ HRESULT CShopPanel_YesNo_New::Render()
 				m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 				wsprintf(m_tFont, TEXT("아니요"));
 
-				vPos.x = BGPos.x + vRTSize.x * 0.045f;
-				vPos.y = BGPos.y - vRTSize.y * 0.11f;
+				vPos.x = BGPos.x + vRTSize.x * 0.085f / vRatio.x;
+				vPos.y = BGPos.y - vRTSize.y * 0.21f / vRatio.y;
 
 				vCalPos.x = vMiddlePoint.x + vPos.x;
 				vCalPos.y = vMiddlePoint.y - vPos.y;
@@ -132,8 +140,8 @@ HRESULT CShopPanel_YesNo_New::Render()
 				m_pGameInstance->Render_Font(TEXT("Font30"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 				wsprintf(m_tFont, TEXT("아니요"));
 
-				vPos.x = BGPos.x + vRTSize.x * 0.045f;
-				vPos.y = BGPos.y - vRTSize.y * 0.11f;
+				vPos.x = BGPos.x + vRTSize.x * 0.085f / vRatio.x;
+				vPos.y = BGPos.y - vRTSize.y * 0.21f / vRatio.y;
 
 				vCalPos.x = vMiddlePoint.x + vPos.x;
 				vCalPos.y = vMiddlePoint.y - vPos.y;
@@ -166,8 +174,11 @@ void CShopPanel_YesNo_New::Cal_ShopYesNOPos(_float2 _vRTSize, _float2 _vBGPos)
 {
 	_float2 vPos = { 0.f, 0.f };
 
-	vPos.x = _vBGPos.x + _vRTSize.x * 0.10f;
-	vPos.y = _vBGPos.y - _vRTSize.x * 0.06f;
+	_float2 vRatio = _float2(_vRTSize.x / RTSIZE_BOOK2D_X, _vRTSize.y / RTSIZE_BOOK2D_Y);
+
+
+	vPos.x = _vBGPos.x + _vRTSize.x * 0.10f / vRatio.x;
+	vPos.y = _vBGPos.y - _vRTSize.x * 0.06f / vRatio.y;
 
 	Get_Transform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
 }

@@ -1265,6 +1265,8 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 
 				if (TEXT("NOTWORD") == strSectionID)
 				{
+
+
 					CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this, SECTION_2D_PLAYMAP_UI);
 				}
 				else
