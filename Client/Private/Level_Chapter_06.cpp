@@ -27,6 +27,8 @@
 #include "Soldier_Shield.h"
 #include "Soldier_CrossBow.h"
 #include "CrossBow_Arrow.h"
+#include "SketchSpace_Alien.h"
+#include "SketchSpace_SpikeBall.h"
 #include "Bomb.h"
 #include "SlipperyObject.h"
 #include "LightningBolt.h"
@@ -126,11 +128,11 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_06::Initialize)");
 		assert(nullptr);
 	}
-	//if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_06::Initialize)");
-	//	assert(nullptr);
-	//}
+	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_06::Initialize)");
+		assert(nullptr);
+	}
 	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_06::Initialize)");
@@ -662,16 +664,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Active(false);
 
-
-	CDefenderSmShip::DEFENDER_MONSTER_DESC tMonsterDesc = {};
-	tMonsterDesc.eTDirection = T_DIRECTION::RIGHT;
-	tMonsterDesc.iCurLevelID = m_eLevelID;
-	tMonsterDesc.tTransform2DDesc.vInitialPosition = { -0.f, 0.f, 0.f };   // TODO ::임시 위치
-	CDefenderSmShip* pMonster = static_cast<CDefenderSmShip*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderSmShip"), &tMonsterDesc));;
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pMonster);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pMonster, SECTION_2D_PLAYMAP_OBJECT);
-
-
 	return S_OK;
 }
 
@@ -1107,7 +1099,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	CGameObject* pObject = nullptr;
 
 
-	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter6_Monsters"), m_eLevelID);
+	/*const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter6_Monsters"), m_eLevelID);
 
 	if (nullptr == pJson)
 		return E_FAIL;
@@ -1231,16 +1223,16 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
 				return E_FAIL;
 		}
-	}
+	}*/
 
-	CBirdMonster::MONSTER_DESC BirdMonster_Desc;
-	BirdMonster_Desc.iCurLevelID = m_eLevelID;
-	BirdMonster_Desc.eStartCoord = COORDINATE_3D;
-	BirdMonster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	BirdMonster_Desc.tTransform3DDesc.vInitialPosition = _float3(-18.5f, 6.55f, 21.0f);
-	
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BirdMonster"), m_eLevelID, _strLayerTag, &BirdMonster_Desc)))
-		return E_FAIL;
+	//CBirdMonster::MONSTER_DESC BirdMonster_Desc;
+	//BirdMonster_Desc.iCurLevelID = m_eLevelID;
+	//BirdMonster_Desc.eStartCoord = COORDINATE_3D;
+	//BirdMonster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//BirdMonster_Desc.tTransform3DDesc.vInitialPosition = _float3(-18.5f, 6.55f, 21.0f);
+	//
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BirdMonster"), m_eLevelID, _strLayerTag, &BirdMonster_Desc)))
+	//	return E_FAIL;
 
 
 	//CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
@@ -1269,6 +1261,103 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
 	//	return E_FAIL;
+
+
+	//CSketchSpace_Alien::SIDESCROLLDESC SketchSpace_Alien_Desc;
+	//SketchSpace_Alien_Desc.iCurLevelID = m_eLevelID;
+	//SketchSpace_Alien_Desc.eStartCoord = COORDINATE_2D;
+	//SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(-580.f, -44.8f, 0.0f);
+	//SketchSpace_Alien_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_1;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
+	//	return E_FAIL;
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+
+	//SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(-510.f, 605.1f, 0.0f);
+	//SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_2;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
+	//	return E_FAIL;
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+	//SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(-120.f, 605.1f, 0.0f);
+	//SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_2;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
+	//	return E_FAIL;
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+	//SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(130.f, -812.f, 0.0f);
+	//SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_3;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
+	//	return E_FAIL;
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+	//SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(860.f, -812.f, 0.0f);
+	//SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_3;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
+	//	return E_FAIL;
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+	CSketchSpace_SpikeBall::SIDESCROLLDESC SketchSpace_SpikeBall_Desc;
+	SketchSpace_SpikeBall_Desc.iCurLevelID = m_eLevelID;
+	SketchSpace_SpikeBall_Desc.eStartCoord = COORDINATE_2D;
+	SketchSpace_SpikeBall_Desc.tTransform2DDesc.vInitialPosition = _float3(-50.f, -180.f, 0.0f);
+	SketchSpace_SpikeBall_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	SketchSpace_SpikeBall_Desc.isStay = true;
+
+	/*if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_SpikeBall_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+	SketchSpace_SpikeBall_Desc.tTransform2DDesc.vInitialPosition = _float3(50.f, -180.f, 0.0f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_SpikeBall_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);*/
+
+
+	SketchSpace_SpikeBall_Desc.tTransform2DDesc.vInitialPosition = _float3(500.f, 303.f, 0.0f);
+	SketchSpace_SpikeBall_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_1_4;
+	SketchSpace_SpikeBall_Desc.isStay = false;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_SpikeBall_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
+
+	//alien
+	//.tTransform2DDesc.vInitialPosition = _float3(-570.f, -44.8f, 0.0f); //-977.f, -44.8f
+	// 
+	//.tTransform2DDesc.vInitialPosition = _float3(-522.f, 605.1f, 0.0f);
+	//.tTransform2DDesc.vInitialPosition = _float3(-115.f, 605.1f, 0.0f);
+
+	//.tTransform2DDesc.vInitialPosition = _float3(121.f, -812.f, 0.0f);
+	//.tTransform2DDesc.vInitialPosition = _float3(868.f, -812.f, 0.0f);
+
+	//spikeball
+	//.tTransform2DDesc.vInitialPosition = _float3(-50.f, -180.f, 0.0f);
+	//.tTransform2DDesc.vInitialPosition = _float3(50.f, -180.f, 0.0f);
+
+	//.tTransform2DDesc.vInitialPosition = _float3(484.f, 303.f, 0.0f); // ~841.f
+
+	//ufo
+	//.tTransform2DDesc.vInitialPosition = _float3(-750.f, -300.f, 0.0f);
+	// 
+	//.tTransform2DDesc.vInitialPosition = _float3(350.f, -370.f, 0.0f);
+	//.tTransform2DDesc.vInitialPosition = _float3(1074.f, -99.f, 0.0f);
+
 
 	return S_OK;
 }
@@ -1399,6 +1488,18 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("health_pickup_large"), LEVEL_STATIC, 3);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Player2dJumpAttackFX"), LEVEL_STATIC, 1);
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefDebrisFSmall"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefDebrisMed"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefDebrisTurret"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionMed"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionSmall"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefExplosionTurret"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPersonFX"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefRedBullet"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPlayerHit"), LEVEL_CHAPTER_6, 10);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefTeleport"), LEVEL_CHAPTER_6, 10);
+
 
 	return S_OK;
 }

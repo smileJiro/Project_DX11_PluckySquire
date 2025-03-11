@@ -237,6 +237,9 @@ HRESULT CGameObject::Imgui_Render_ObjectInfos()
     }
     ImGui::Text(strCurCoord.c_str());
 
+    ImGui::Text("Section Tag");
+    ImGui::SameLine();
+    ImGui::Text(L"" == m_strSectionName ? "empty" : WSTRINGTOSTRING(m_strSectionName).c_str());
 
     /* Coordinate Change Enable */
     _bool isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();

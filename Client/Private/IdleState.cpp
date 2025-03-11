@@ -15,10 +15,17 @@ HRESULT CIdleState::Initialize(void* _pArg)
 	m_fAlertRange = pDesc->fAlertRange;
 	m_fAlert2DRange = pDesc->fAlert2DRange;
 
+	if (0 <= pDesc->fDelayTime)
+	{
+		m_fDelayTime = pDesc->fDelayTime;
+	}
+	else
+	{
+		m_fDelayTime = 3.f;
+	}
+
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
-
-	m_fDelayTime = 3.f;
 
 	return S_OK;
 }
@@ -34,10 +41,8 @@ void CIdleState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	if(false == m_pOwner->Is_Stay())
-	{
+	if (false == m_pOwner->Is_Stay())
 		m_fAccTime += _fTimeDelta;
-	}
 
 	if (nullptr != m_pTarget)
 	{

@@ -79,7 +79,6 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::TRANSITION);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::MOVE);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::ENERGYBALL);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::PURPLEBALL);
@@ -348,17 +347,13 @@ void CButterGrump::Attack()
 
     switch ((BOSS_STATE)m_iState)
     {
-    case BOSS_STATE::ENERGYBALL:
-    {
-        //vPosition.y += vScale.y * 0.5f;
-        //vPosition.x += m_pGameInstance->Compute_Random(-5.f, 5.f);
-        //vPosition.y += m_pGameInstance->Compute_Random(-5.f, 5.f);
-        //vPosition.z += m_pGameInstance->Compute_Random(-5.f, 5.f);
-        //XMQuaternionMultiply(XMLoadFloat4(&vRotation), )
-        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_EnergyBall"), COORDINATE_3D,  &vPosition, &vRotation);
-        m_isAttack = false;
-        break;
-    }
+    //case BOSS_STATE::ENERGYBALL:
+    //{
+    //    //vPosition.y += vScale.y * 0.5f;
+    //    CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_EnergyBall"), COORDINATE_3D,  &vPosition, &vRotation);
+    //    m_isAttack = false;
+    //    break;
+    //}
 
     case BOSS_STATE::HOMINGBALL:
     {
@@ -656,10 +651,10 @@ void CButterGrump::On_Attack()
 
     switch ((BOSS_STATE)m_iState)
     {
-    case BOSS_STATE::ENERGYBALL:
-        m_fDelayTime = 0.3f;
-        m_iNumAttack = 10;
-        break;
+    //case BOSS_STATE::ENERGYBALL:
+    //    m_fDelayTime = 0.3f;
+    //    m_iNumAttack = 10;
+    //    break;
 
     case BOSS_STATE::HOMINGBALL:
         m_fDelayTime = 0.5f;
@@ -1170,7 +1165,7 @@ HRESULT CButterGrump::Ready_Projectiles()
 
 
 
-    Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_EnergyBall");
+    /*Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_EnergyBall");
     CBoss_EnergyBall::PROJECTILE_MONSTER_DESC* pEnergyBallDesc = new CBoss_EnergyBall::PROJECTILE_MONSTER_DESC;
     pEnergyBallDesc->fLifeTime = 5.f;
     pEnergyBallDesc->eStartCoord = COORDINATE_3D;
@@ -1180,7 +1175,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     pEnergyBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     pEnergyBallDesc->tTransform3DDesc.fSpeedPerSec = 15.f;
 
-    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_EnergyBall"), Pooling_Desc, pEnergyBallDesc);
+    CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_EnergyBall"), Pooling_Desc, pEnergyBallDesc);*/
 
 
 

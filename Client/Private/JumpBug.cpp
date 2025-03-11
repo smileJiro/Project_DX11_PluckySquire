@@ -390,6 +390,9 @@ HRESULT CJumpBug::Ready_ActorDesc(void* _pArg)
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
+    m_matQueryShapeOffset = ShapeData->LocalOffsetMatrix;
+
+    m_fHalfBodySize = ShapeDesc->fRadius;
 
     //쿼리를 켜기 위한 트리거
     SHAPE_SPHERE_DESC* TriggerDesc = new SHAPE_SPHERE_DESC;
@@ -407,8 +410,6 @@ HRESULT CJumpBug::Ready_ActorDesc(void* _pArg)
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
-
-    m_fHalfBodySize = ShapeDesc->fRadius;
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;

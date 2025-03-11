@@ -3,6 +3,7 @@
 #include "Collider_AABB.h"
 #include "Section_Manager.h"
 #include "Character.h"
+#include "Effect2D_Manager.h"
 
 CDefenderPlayerProjectile::CDefenderPlayerProjectile(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CScrollModelObject(_pDevice, _pContext)
@@ -102,6 +103,11 @@ void CDefenderPlayerProjectile::On_Collision2D_Enter(CCollider* _pMyCollider, CC
 	{
 		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, _vector{0.f,0.f,0.f});
 		Event_DeleteObject(this);
+		//CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefPlayerHit"), m_strSectionName, m_pControllerTransform-> );
+		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefPlayerHit"), Get_Include_Section_Name()
+			, Get_FinalWorldMatrix(), 0.f
+			,rand()%2, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
+
 	}
 }
 

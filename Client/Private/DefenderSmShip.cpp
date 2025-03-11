@@ -2,6 +2,7 @@
 #include "DefenderSmShip.h"
 #include "ModelObject.h"
 #include "GameInstance.h"
+#include "Effect2D_Manager.h"
 
 CDefenderSmShip::CDefenderSmShip(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CDefenderMonster(_pDevice, _pContext)
@@ -83,6 +84,31 @@ void CDefenderSmShip::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForc
 {
 	__super::On_Hit(_pHitter, _iDamg, _vForce);
 
+}
+
+void CDefenderSmShip::On_Explode()
+{
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefDebrisFSmall"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, rand() % 2, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
+
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefExplosionSmall"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, rand() % 4, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
+}
+
+void CDefenderSmShip::On_Spawned()
+{
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, 2, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
+}
+
+void CDefenderSmShip::On_LifeTimeOut()
+{
+	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
+		, Get_FinalWorldMatrix(), 0.f
+		, 5, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
 }
 
 HRESULT CDefenderSmShip::Ready_PartObjects()

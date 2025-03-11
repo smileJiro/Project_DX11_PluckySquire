@@ -127,6 +127,7 @@
 #include "DefenderSpawner.h"
 #include "DefenderSmShip.h"
 #include "DefenderMedShip.h"
+#include "DefenderCapsule.h"
 #include "Minigame_Defender.h"
 
 #include "Sneak_Default_Tile.h"
@@ -158,6 +159,8 @@
 #include "Popuff.h"
 #include "Monster_Body.h"
 #include "Goblin_SideScroller.h"
+#include "SketchSpace_Alien.h"
+#include "SketchSpace_SpikeBall.h"
 
 /* For. Boss */
 #include "ButterGrump.h"
@@ -957,6 +960,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Common"))))
 		return E_FAIL;
 
+	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level8"))))
+		return E_FAIL;
+
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -1302,10 +1308,6 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			CBoss_HomingBall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_EnergyBall"),
-			CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_YellowBall"),
 			CBoss_YellowBall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
@@ -1470,11 +1472,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Body.dds"), (_uint)LEVEL_CHAPTER_6, true))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Head"),
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Wing"),
 			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Wing.dds"), (_uint)LEVEL_CHAPTER_6, true))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Wing"),
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("FatherParts_Prop_Head"),
 			C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Textures/UI/GamePlay/Object/MiniGame/FatherParts/Prop/FatherParts_Prop_Head.dds"), (_uint)LEVEL_CHAPTER_6, true))))
 			return E_FAIL;
 	#pragma endregion
@@ -1545,7 +1547,10 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderMedShip_DOWN"),
 			CDefenderMedShip::Create(m_pDevice, m_pContext, false))))
 			return E_FAIL;
-
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_PersonCapsule"),
+			CDefenderCapsule::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		
 		/* Monster */
 
 		/* Etc */
@@ -1584,6 +1589,16 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		lstrcpy(m_szLoadingText, TEXT("Level 6 몬스터 로딩중입니다."));
 
 		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter6_Monsters.json"), TEXT("Chapter6_Monsters"), _eLoadLevelID)))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_SketchSpace_Alien */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_Alien"),
+			CSketchSpace_Alien::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_SketchSpace_SpikeBall */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"),
+			CSketchSpace_SpikeBall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 #pragma endregion
@@ -1657,8 +1672,6 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_TheTraitorousRodentPrepared_KR.wav"));
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_2"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/P1920a_APlanQuiteObviouslyDoomed_KR.wav"));
 	m_pGameInstance->Load_SFX(TEXT("C8_P2122_02_1_Sub"), TEXT("../Bin/Resources/Audio/Narration/Chapter6/C8_P2122/A_sfx_C9_TheTraiterousRodent.wav"));
-
-	
 
 
 	// 나레이션 관련
@@ -1787,10 +1800,6 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_HomingBall"),
 		CBoss_HomingBall::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_EnergyBall"),
-		CBoss_EnergyBall::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_YellowBall"),

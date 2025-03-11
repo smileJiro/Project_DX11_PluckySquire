@@ -72,37 +72,38 @@ void CFatherGame_Progress_PartWing::Progress_Update()
 HRESULT CFatherGame_Progress_PartWing::Progress_Clear()
 {
     /* 1. 찌리의 대화 가 종료되었고,  */
-//    CZetPack_Child* pZetPack_Child = CFatherGame::GetInstance()->Get_ZetPack_Child();
-//    if (0 < m_pMugAlien->Get_DialogueIndex() && CZetPack_Child::STATE_PORTALOUT == pZetPack_Child->Get_CurState())
-//    {
-//        m_isClearProgress = true;
-//
-//        /* 1. Claer 이벤트 호출 >>> 현재 보유중인 아빠 파츠의 개수에 따라 다른 이벤트 호출. */
-//        _uint iConditionCount = CFatherGame::GetInstance()->Check_FatherPartsCondition_Count();
-//        switch (iConditionCount)
-//        {
-//        case 0:
-//            assert(nullptr);
-//            break;
-//        case 1:
-//            Event_Register_Trigger(TEXT("Chapter6_FatherGame_Progress_Fatherpart_1"));
-//            break;
-//        case 2:
-//            Event_Register_Trigger(TEXT("Chapter6_FatherGame_Progress_Fatherpart_2"));
-//            break;
-//        case 3:
-//            assert(nullptr);
-//            break;
-//        default:
-//            break;
-//        }
-//
-//        /* 3. 자기 자신의 Active 상태를 False로 변경 */
-//        Event_SetActive(this, false);
-//#ifdef _DEBUG
-//        cout << "FatherGame Progress_PartWing Clear" << endl;
-//#endif // _DEBUG
-//    }
+    CZetPack_Child* pZetPack_Child = CFatherGame::GetInstance()->Get_ZetPack_Child();
+    if (1 < m_pJellyKing->Get_DialogueIndex() && CFatherGame::GetInstance()->Check_FatherPartsCondition(CFatherGame::FATHER_WING) && CZetPack_Child::STATE_PORTALOUT == pZetPack_Child->Get_CurState())
+    {
+        m_isClearProgress = true;
+
+        /* 1. Claer 이벤트 호출 >>> 현재 보유중인 아빠 파츠의 개수에 따라 다른 이벤트 호출. */
+        _uint iConditionCount = CFatherGame::GetInstance()->Check_FatherPartsCondition_Count();
+        switch (iConditionCount)
+        {
+        case 0:
+            assert(nullptr);
+            break;
+        case 1:
+            Event_Register_Trigger(TEXT("Chapter6_FatherGame_Progress_Fatherpart_1"));
+            break;
+        case 2:
+            Event_Register_Trigger(TEXT("Chapter6_FatherGame_Progress_Fatherpart_2"));
+            CFatherGame::GetInstance()->Start_Progress(CFatherGame::FATHER_PROGRESS_PARTHEAD);
+            break;
+        case 3:
+            assert(nullptr);
+            break;
+        default:
+            break;
+        }
+
+        /* 3. 자기 자신의 Active 상태를 False로 변경 */
+        Event_SetActive(this, false);
+#ifdef _DEBUG
+        cout << "FatherGame Progress_PartWing Clear" << endl;
+#endif // _DEBUG
+    }
 
     return S_OK;
 }

@@ -157,6 +157,13 @@ HRESULT CPartObject::Imgui_Render_ObjectInfos()
         strCoordChangeEnable += "false";
     ImGui::Text(strCoordChangeEnable.c_str());
 
+    if (COORDINATE_2D == eCurCoord)
+    {
+        ImGui::Text("Section Tag : ");
+        ImGui::SameLine();
+        ImGui::Text(L"" == m_strSectionName ? "Empty" : WSTRINGTOSTRING(m_strSectionName).c_str());
+    }
+
 
     /* Active */
     _bool isActive = Is_Active();

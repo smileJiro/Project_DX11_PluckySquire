@@ -460,6 +460,7 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		break;
 
 	case INTERACT_ID::CARRIABLE:
+	case INTERACT_ID::WORD_CONTAINER:
 		m_strDisplayText = TEXT("ащ╠Б");
 		break;
 
