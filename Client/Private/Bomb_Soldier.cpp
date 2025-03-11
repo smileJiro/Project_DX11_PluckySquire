@@ -60,8 +60,6 @@ HRESULT CBomb_Soldier::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixRotationZ(XMConvertToRadians(90.f)));
-
     m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
     m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
     m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
@@ -335,6 +333,8 @@ HRESULT CBomb_Soldier::Ready_ActorDesc(void* _pArg)
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
+
+    m_matQueryShapeOffset = ShapeData->LocalOffsetMatrix;
 
     m_fHalfBodySize = ShapeDesc->fRadius;
 

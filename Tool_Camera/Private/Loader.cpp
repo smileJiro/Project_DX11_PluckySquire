@@ -647,10 +647,12 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
         {
             _char		szSaveMeshName[MAX_PATH];
             _float4x4	vWorld = {};
+            _bool isCulling = false;
 
 
             isTempReturn = ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
             isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
+            isTempReturn = ReadFile(hFile, &isCulling, sizeof(_bool), &dwByte, nullptr);
 
 
             CModelObject::MODELOBJECT_DESC NormalDesc = {};

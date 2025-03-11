@@ -48,6 +48,9 @@ HRESULT CWord_Controller::Import(CSection_2D* _pSection, json _ControllerJson)
 
 	if (_ControllerJson.contains("FadeIn"))
 		m_isWordControllerPopup = !((_bool)_ControllerJson["FadeIn"]);
+	
+	if (_ControllerJson.contains("FadeInLength"))
+		m_fFadeInLength = _ControllerJson["FadeInLength"];
 
 
 	if (FAILED(__super::Initialize(&Desc)))
@@ -123,13 +126,18 @@ HRESULT CWord_Controller::Import(CSection_2D* _pSection, json _ControllerJson)
 	if (FAILED(Update_Text()))
 		return E_FAIL;
 
-	if (m_isWordControllerPopup)
+	if (false == m_isWordControllerPopup)
 	{
 		Set_Render(false);
 		for (auto pCollider : m_p2DColliderComs)
 			pCollider->Set_Active(true);
 		for (auto pPartObject : m_PartObjects)
 			pPartObject->Set_Active(false);
+	}
+	else 
+	{
+		m_fAmount = 1.f;
+		m_isFadeIn = true;
 	}
 
 	return S_OK;

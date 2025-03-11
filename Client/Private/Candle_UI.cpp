@@ -61,7 +61,6 @@ void CCandle_UI::Priority_Update(_float _fTimeDelta)
 
 void CCandle_UI::Update(_float _fTimeDelta)
 {
-
 	__super::Update(_fTimeDelta);
 }
 
@@ -76,8 +75,25 @@ HRESULT CCandle_UI::Render()
 {
 	if (FAILED(Bind_ShaderResources_WVP()))
 		return E_FAIL;
-
 	COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
+	_float fFadeAlphaRatio = m_vFadeAlpha.y / m_vFadeAlpha.x;
+	switch (m_eFadeAlphaState)
+	{
+	case Engine::CModelObject::FADEALPHA_DEFAULT:
+		fFadeAlphaRatio = 1.0f;
+		break;
+	case Engine::CModelObject::FADEALPHA_IN:
+		fFadeAlphaRatio = m_vFadeAlpha.y / m_vFadeAlpha.x;
+		break;
+	case Engine::CModelObject::FADEALPHA_OUT:
+		fFadeAlphaRatio = 1.0f - (m_vFadeAlpha.y / m_vFadeAlpha.x);
+		break;
+	default:
+		break;
+	}
+
+	m_pShaderComs[eCoord]->Bind_RawValue("g_fSprite2DFadeAlphaRatio", &fFadeAlphaRatio, sizeof(_float));
+
 	m_pControllerModel->Render(m_pShaderComs[eCoord], m_iShaderPasses[eCoord]);
 
 	return S_OK;

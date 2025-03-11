@@ -100,8 +100,10 @@ HRESULT CFSM::Initialize(void* _pArg)
 
 void CFSM::Update(_float _fTimeDelta)
 {
-	m_pCurState->State_Update(_fTimeDelta);
-
+	if (nullptr != m_pCurState)
+	{
+		m_pCurState->State_Update(_fTimeDelta);
+	}
 }
 
 HRESULT CFSM::Add_State(_uint _iState)

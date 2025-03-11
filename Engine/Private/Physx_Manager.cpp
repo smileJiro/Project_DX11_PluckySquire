@@ -370,6 +370,48 @@ _bool CPhysx_Manager::SingleSweep(PxGeometry* pxGeom, const _float3& _vOrigin, c
 	PxTransform pxPose(vOrigin, PxQuat(PxIdentity));
 
 	_bool hasHit = m_pPxScene->sweep(
+		*pxGeom, pxPose, vRayDir, _fDistance, hitResult
+	);
+
+	if (true == hasHit)
+	{
+		const PxSweepHit& tHit = hitResult.getAnyHit(0);
+		PxRigidActor* pActor = tHit.actor;
+		ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+
+		if (nullptr != _ppOutActor)
+		{
+			_ppOutActor = nullptr != pActorUserData ? &pActorUserData->pOwner : nullptr;
+		}
+
+		if (nullptr != _pOutHit)
+		{
+			_pOutHit->vNormal = _float3{ tHit.normal.x,tHit.normal.y,tHit.normal.z };
+			_pOutHit->vPosition = _float3{ tHit.position.x,tHit.position.y, tHit.position.z };
+		}
+	}
+
+	return hasHit;
+}
+
+_bool CPhysx_Manager::SingleSweep(PxGeometry* pxGeom, const _float4x4& _matShpeOffsetMatrix, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, CActorObject** _ppOutActor, RAYCASTHIT* _pOutHit)
+{
+	PxSweepBuffer hitResult;
+	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
+	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
+
+	_float3 vScale;
+	_float4 vQuat;
+	_float3 vPosition;
+	if (false == m_pGameInstance->MatrixDecompose(&vScale, &vQuat, &vPosition, XMLoadFloat4x4(&_matShpeOffsetMatrix)))
+		return false;
+	vOrigin.x += vPosition.x;
+	vOrigin.y += vPosition.y;
+	vOrigin.z += vPosition.z;
+	PxTransform pxPose(vOrigin, PxQuat(vQuat.x, vQuat.y, vQuat.z, vQuat.w));
+
+
+	_bool hasHit = m_pPxScene->sweep(
 		*pxGeom, pxPose, vRayDir, _fDistance,hitResult
 	);
 	
@@ -391,6 +433,58 @@ _bool CPhysx_Manager::SingleSweep(PxGeometry* pxGeom, const _float3& _vOrigin, c
 		}
 	}
 
+	return hasHit;
+}
+
+_bool CPhysx_Manager::SingleSweep_GroupFilter(PxGeometry* pxGeom, const _float4x4& _matShpeOffsetMatrix, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, _int _iGroupNum, CActorObject** _ppOutActor, RAYCASTHIT* _pOutHit)
+{
+	PxSweepHit pxhits[10];
+	memset(&pxhits, 0, sizeof(PxSweepHit) * 10);
+	PxSweepBuffer pxSweepBuffer(pxhits, 10);
+	PxVec3 vOrigin = { _vOrigin.x,_vOrigin.y, _vOrigin.z };
+	PxVec3 vRayDir = { _vRayDir.x, _vRayDir.y, _vRayDir.z };
+	_float3 vScale;
+	_float4 vQuat;
+	_float3 vPosition;
+	if (false == m_pGameInstance->MatrixDecompose(&vScale, &vQuat, &vPosition, XMLoadFloat4x4(&_matShpeOffsetMatrix)))
+		return false;
+	vOrigin.x += vPosition.x;
+	vOrigin.y += vPosition.y;
+	vOrigin.z += vPosition.z;
+	PxTransform pxPose(vOrigin, PxQuat(vQuat.x, vQuat.y, vQuat.z, vQuat.w));
+
+	_bool hasHit = m_pPxScene->sweep(
+		*pxGeom, pxPose, vRayDir.getNormalized(), _fDistance, pxSweepBuffer,
+		PxHitFlag::ePOSITION | PxHitFlag::eNORMAL
+	);
+
+	if (true == hasHit) 
+	{
+		_uint numHits = pxSweepBuffer.getNbAnyHits(); // 충돌 개수
+
+		for (_uint i = 0; i < numHits; i++) 
+		{
+			PxRigidActor* pActor = pxSweepBuffer.touches[i].actor;
+			ACTOR_USERDATA* pActorUserData = reinterpret_cast<ACTOR_USERDATA*>(pActor->userData);
+
+			//지정된 그룹 제외
+			if (_iGroupNum & pActorUserData->iObjectGroup)
+			{
+				hasHit = false;
+			}
+
+			if (nullptr != _ppOutActor)
+			{
+				_ppOutActor = nullptr != pActorUserData ? &pActorUserData->pOwner : nullptr;
+			}
+
+			if (nullptr != _pOutHit)
+			{
+				_pOutHit->vPosition = _float3{ pxSweepBuffer.touches[i].position.x,pxSweepBuffer.touches[i].position.y, pxSweepBuffer.touches[i].position.z };
+				_pOutHit->vNormal = _float3{ pxSweepBuffer.touches[i].normal.x,pxSweepBuffer.touches[i].normal.y,pxSweepBuffer.touches[i].normal.z };
+			}
+		}
+	}
 	return hasHit;
 }
 

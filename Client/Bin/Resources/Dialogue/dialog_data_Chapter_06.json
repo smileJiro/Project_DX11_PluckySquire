@@ -2312,6 +2312,62 @@
 					"Blue": 0
 				}
 			]
+		},
+		{
+			"id": "ZetPack_Child_7",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "됐어, 저트! 아빠 조각이 이제 두 개야!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "전쟁 구역에 들어갈 준비가 된 것 같아.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "얼른 가자!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
 		}
 	]
 }

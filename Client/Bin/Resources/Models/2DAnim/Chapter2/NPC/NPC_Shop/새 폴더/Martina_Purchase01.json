@@ -1,0 +1,173 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Martina_Purchase01",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0001_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0001_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0002_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0002_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0003_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0003_X04.0"
+          },
+          "FrameRun": 4
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0004_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0004_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0005_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0005_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0006_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0006_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0007_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0007_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0008_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0008_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0009_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0009_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0010_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0010_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0011_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0011_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0012_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0012_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0013_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0013_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0014_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0014_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0015_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0015_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0016_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0016_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0017_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0017_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0018_X01'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0018_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0019_X02'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0019_X02.0"
+          },
+          "FrameRun": 2
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0020_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0020_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0021_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0021_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0022_X03'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0022_X03.0"
+          },
+          "FrameRun": 3
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Martina_Purchase01_0023_X04'",
+            "ObjectPath": "/Game/Characters/Friends/Martina/Frames/Martina_Purchase01_0023_X04.0"
+          },
+          "FrameRun": 4
+        }
+      ]
+    }
+  }
+]
