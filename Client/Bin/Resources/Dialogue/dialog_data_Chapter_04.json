@@ -1,14 +1,14 @@
 {
 	"dialogs": [
 				{
-			"id": "Chapter4_Intro",
+			"id": "Chapter4_2D_Intro",
 			"Section": "Chapter4_P0102",
 			"lines": [
 				{
 					"Portrait": 7,
 					"Talker": "달수염",
 					"BG": 0,
-					"location": 0,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
 					"animation": {
@@ -40,7 +40,7 @@
 					"Portrait": 7,
 					"Talker": "달수염",
 					"BG": 0,
-					"location": 0,
+					"location": 1,
 					"is2D": true,
 					"isLineEnter": true,
 					"isPortrait": true,
@@ -57,7 +57,7 @@
 					"Portrait": 7,
 					"Talker": "달수염",
 					"BG": 0,
-					"location": 0,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
 					"isLineEnter": true,
@@ -74,7 +74,7 @@
 					"Portrait": 7,
 					"Talker": "달수염",
 					"BG": 0,
-					"location": 0,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
 					"isLineEnter": true,
@@ -91,7 +91,7 @@
 					"Portrait": 7,
 					"Talker": "달수염",
 					"BG": 0,
-					"location": 0,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
 					"animation": {
@@ -107,7 +107,7 @@
 					"Portrait": 7,
 					"Talker": "달수염",
 					"BG": 0,
-					"location": 0,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
 					"animation": {
@@ -123,7 +123,7 @@
 					"Portrait": 7,
 					"Talker": "달수염",
 					"BG": 0,
-					"location": 0,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
 					"animation": {
@@ -139,7 +139,7 @@
 					"Portrait": 7,
 					"Talker": "달수염",
 					"BG": 0,
-					"location": 0,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
 					"animation": {
@@ -196,6 +196,166 @@
 						"speed": 350
 					},
 					"text": "가자, 저트!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "Chapter4_StorySequence_01",
+			"Section": "Chapter4_P0102",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그러니까 이게...\n달수염 할아버지가 말씀하신 차원문이구나...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},				
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "저트 너는...\n이걸 통해서 우리 세상 밖으로 나갈 수 있다는 거지?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+								{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "누군가의... 방에 있는 책상으로??",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},				
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "와, 진짜 대박이다.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "...미안. 아직 받아들이기가 힘드네.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+				{
+			"id": "Chapter4_StorySequence_02",
+			"Section": "Chapter4_P0102",
+			"lines": [
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "저트가 사라졌어!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "지금은 다른 세계에 있을 거야.\n아직도 우리가 보이려나...?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+				,
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "저트한테 우리는... 종이에 그린 그림처럼 보이겠지?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "대박이네.",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
@@ -266,7 +426,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "갑자기 뭔소린가 싶지만\n내가 주는 팁은 아주 유용할 거야.",
+					"text": "갑자기 뭔 소린가 싶지만\n내가 주는 팁은 아주 유용할 거야.",
 					"Red": 161,
 					"Green": 210,
 					"Blue": 234
@@ -305,7 +465,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "별일 없지? 저 위로 올라가야 하니까\n기어오를 블록을 찾아봐.",
+					"text": "별 일 없지? 저 위로 올라가야 하니까\n기어오를 블록을 찾아봐.",
 					"Red": 161,
 					"Green": 210,
 					"Blue": 234
@@ -374,7 +534,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "반가워. 저 성 문을 지날려면 열쇠가 필요해.",
+					"text": "반가워. 저 성 문을 지나려면 열쇠가 필요해.",
 					"Red": 161,
 					"Green": 210,
 					"Blue": 234
@@ -524,7 +684,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
-		  "isLineEnter":true,
+					"isLineEnter":true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -546,6 +706,59 @@
             "speed": 350
           },
           "text": "[Z], [X]를 이용해 책을 움직여 보세요.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+	{
+      "id": "Stamp_Acquire_Bomb",
+      "lines": [
+        {
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트가 폭탄 도장을 얻었습니다!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "책 위에서 [Q]를 누르면 페이지 안에 폭탄을 만듭니다.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+		{
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "장애물과 적을 날려 버릴 수 있답니다!",
           "Red": 161,
           "Green": 210,
           "Blue": 234
@@ -611,24 +824,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
-		  "isLineEnter":true,
-          "animation": {
-            "duration": 1000,
-            "speed": 350
-          },
-          "text": "하지만 당신은 책에 나오는 캐릭터에요...\n이렇게 나와 있으면 안 된다고요.",
-          "Red": 0,
-          "Green": 0,
-          "Blue": 0
-        },
-        {
-          "Portrait": 1,
-          "Talker": "페이지",
-          "BG": 7,
-          "location": 0,
-          "is2D": false,
-          "isPortrait": false,
-		  "isLineEnter":true,
+					"isLineEnter":true,
           "animation": {
 
             "duration": 1000,

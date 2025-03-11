@@ -710,8 +710,15 @@ void CTrigger_Manager::Register_Trigger_Action()
 	m_Actions[TEXT("Dialogue")] = [this](_wstring _wszEventTag) {
 		CDialog_Manager::GetInstance()->Set_DialogId(_wszEventTag.c_str());
 		};
+	m_Actions[TEXT("Use_Portal")] = [this](_wstring _wszEventTag) {
 
-	m_Actions[TEXT("Glove_Get_Before")] = [this](_wstring _wszEventTag) {
+		CSection* pSection = SECTION_MGR->Find_Section(_wszEventTag);
+
+		if (nullptr != pSection)
+			static_cast<CSection_2D_PlayMap*>(pSection)->Set_PortalActive(true);
+		};
+
+	m_Actions[TEXT("Get_PlayerItem_Before")] = [this](_wstring _wszEventTag) {
 		// 1. 플레이어 잠그기.
 		// 2. 애니메이션 재생하기컷씬 카메라 위치로 고정하기
 		
@@ -734,11 +741,18 @@ void CTrigger_Manager::Register_Trigger_Action()
 			CPlayerData_Manager::GetInstance()->Get_PlayerItem(_wszEventTag);
 		};
 	;
-	m_Actions[TEXT("Glove_Get_After")] = [this](_wstring _wszEventTag) 
+	m_Actions[TEXT("Get_PlayerItem_After")] = [this](_wstring _wszEventTag) 
 {
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_BlockPlayerInput(false);
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_State(CPlayer::STATE::IDLE);
 		CPlayerData_Manager::GetInstance()->Change_PlayerItemMode(_wszEventTag, CPlayerItem::DISAPPEAR);
+		};
+		m_Actions[TEXT("Get_PlayerItem_After_End")] = [this](_wstring _wszEventTag) 
+{
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_BlockPlayerInput(false);
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_State(CPlayer::STATE::IDLE);
+		CPlayerData_Manager::GetInstance()->Change_PlayerItemMode(_wszEventTag, CPlayerItem::DISAPPEAR);
+		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.f);
 		};
 
 	m_Actions[TEXT("Active_MagicDust")] = [this](_wstring _wszEventTag) 

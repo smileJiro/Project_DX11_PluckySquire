@@ -207,6 +207,7 @@
 // Father Game 
 #include "PortalLocker.h" 
 #include "ZetPack_Child.h" 
+#include "ZetPack_Father.h" 
 #include "Mug_Alien.h" 
 #include "JellyKing.h" 
 #include "CandleGame.h"
@@ -1502,6 +1503,10 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Child"),
 			CZetPack_Child::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Father"),
+			CZetPack_Father::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Mug_Alien"),

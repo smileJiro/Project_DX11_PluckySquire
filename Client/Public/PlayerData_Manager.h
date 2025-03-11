@@ -49,7 +49,7 @@ public:
 	_bool					Is_Own(PLAYERITEM_TYPE _eItemType);
 
 public:
-	HRESULT					Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos);
+	HRESULT					Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos, _float3 _vScale = {4.f,4.f,4.f});
 	HRESULT					Spawn_Bulb(_uint _iPrototypeLevelID, _uint _iLevelID);
 	
 	void					Get_PlayerItem(_wstring _szItemTag);
