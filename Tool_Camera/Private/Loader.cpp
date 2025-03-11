@@ -346,7 +346,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/SM_desk_split_topboard_02/SM_desk_split_topboard_02.model", matPretransform))))
         return E_FAIL;
 
-    if (FAILED(Load_Models_FromJson(LEVEL_TRIGGER_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_04_Play_Desk.json", matPretransform)))
+    if (FAILED(Load_Models_FromJson(LEVEL_TRIGGER_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_08_Play_Desk.json", matPretransform)))
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TRIGGER_TOOL,
@@ -406,7 +406,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
     //    CBook::Create(m_pDevice, m_pContext))))
     //    return E_FAIL;
 
-    Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_04_Play_Desk.mchc");
+    Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_08_Play_Desk.mchc");
 
     //Map_Object_Create(LEVEL_STATIC, LEVEL_TRIGGER_TOOL, L"Room_Enviroment.mchc");
 
@@ -648,10 +648,12 @@ HRESULT CLoader::Map_Object_Create(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjectLev
             cout << i << endl;
             _char		szSaveMeshName[MAX_PATH];
             _float4x4	vWorld = {};
+            _bool isCulling = false;
 
 
             isTempReturn = ReadFile(hFile, &szSaveMeshName, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
             isTempReturn = ReadFile(hFile, &vWorld, sizeof(_float4x4), &dwByte, nullptr);
+            isTempReturn = ReadFile(hFile, &isCulling, sizeof(_bool), &dwByte, nullptr);
 
 
             CModelObject::MODELOBJECT_DESC NormalDesc = {};

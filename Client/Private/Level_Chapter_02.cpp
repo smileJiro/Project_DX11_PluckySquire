@@ -888,13 +888,11 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 #pragma endregion InterAction UI
 
-	//_uint ShopPanelUICount = { CUI::SHOPPANEL::SHOP_END };
-	//
-	//if (ShopPanelUICount != CUI_Manager::GetInstance()->Get_ShopPanels().size())
-	//{
-	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ParentShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
-	//		return E_FAIL;
-	//}
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannel"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(pDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopPannelRenderFont"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
 
 
 #pragma region SettingPanel UI
@@ -1201,12 +1199,30 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	NPCDesc.iNumPartObjects = 3;
 	NPCDesc.iMainIndex = 0;
 	NPCDesc.iSubIndex = 0;
+
 	//wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_OnlySocial"), NPCDesc.iCurLevelID, _strLayerTag, &pGameObject, &NPCDesc)))
 		return E_FAIL;
 
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
 
+	//NPCDesc.iCurLevelID = m_eLevelID;
+	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//NPCDesc.iNumPartObjects = 3;
+	//NPCDesc.iMainIndex = 0;
+	//NPCDesc.iSubIndex = 0;
+	//wsprintf(NPCDesc.strLocateSection, TEXT("Chapter2_P1112"));
+	//NPCDesc.vPos = _float2(157.8f, -183.0f);
+	//wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+	//	return E_FAIL;
+
+
+
+
+
+	wsprintf(NPCDesc.strDialogueIndex, TEXT(""));
 
 	wsprintf(NPCDesc.strDialogueIndex, L"");
 	NPCDesc.iCurLevelID = m_eLevelID;

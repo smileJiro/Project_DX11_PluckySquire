@@ -680,6 +680,18 @@ void CTrigger_Manager::Register_Event_Handler(_uint _iTriggerType, CTriggerObjec
 			});
 	}
 		break;
+	case (_uint)TRIGGER_TYPE::DIALOG_TRIGGER:
+	{
+		_pTrigger->Register_EnterHandler([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+			CDialog_Manager::GetInstance()->Set_DialogId(_szEventTag.c_str());
+			});
+
+		//_pTrigger->Register_ExitHandler_ByCollision([this, _pTrigger](_uint _iTriggerType, _int _iTriggerID, const COLL_INFO& _My, const COLL_INFO& _Other) {
+		//	CDialog_Manager::GetInstance()->Set_DialogId(_szEventTag.c_str());
+		//	});
+	}
+	break;
+
 	}
 }
 

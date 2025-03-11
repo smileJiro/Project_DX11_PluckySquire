@@ -1432,6 +1432,22 @@ _bool CGameInstance::SingleSweep(PxGeometry* pxGeom, const _float3& _vOrigin, co
 	return m_pPhysx_Manager->SingleSweep(pxGeom, _vOrigin, _vRayDir, _fDistance, _ppOutActor, _pOutHit);
 }
 
+_bool CGameInstance::SingleSweep(PxGeometry* pxGeom, const _float4x4& _matShpeOffsetMatrix, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, CActorObject** _ppOutActor, RAYCASTHIT* _pOutHit)
+{
+	if (nullptr == m_pPhysx_Manager)
+		assert(nullptr);
+
+	return m_pPhysx_Manager->SingleSweep(pxGeom, _matShpeOffsetMatrix, _vOrigin, _vRayDir, _fDistance, _ppOutActor, _pOutHit);
+}
+
+_bool CGameInstance::SingleSweep_GroupFilter(PxGeometry* pxGeom, const _float4x4& _matShpeOffsetMatrix, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, _int _iGroupNum, CActorObject** _ppOutActor, RAYCASTHIT* _pOutHit)
+{
+	if (nullptr == m_pPhysx_Manager)
+		assert(nullptr);
+
+	return m_pPhysx_Manager->SingleSweep_GroupFilter(pxGeom, _matShpeOffsetMatrix, _vOrigin, _vRayDir, _fDistance, _iGroupNum, _ppOutActor, _pOutHit);
+}
+
 _bool CGameInstance::MultiSweep(PxGeometry* pxGeom, const _float4x4& _matShpeOffsetMatrix, const _float3& _vOrigin, const _float3& _vRayDir, _float _fDistance, list<CActorObject*>& _OutActors, list<RAYCASTHIT>& _OutRaycastHits)
 {
 	if (nullptr == m_pPhysx_Manager)

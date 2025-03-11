@@ -1,5 +1,207 @@
 {
 	"dialogs": [
+				{
+			"id": "Chapter4_Intro",
+			"Section": "Chapter4_P0102",
+			"lines": [
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "안녕 얘들아, 들리니? ",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "달수염 할아버지? 할아버지 맞아요???",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isLineEnter": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그렇단다! 지금 룬투스 헤드셋이라는 장비로\n말을 걸고 있단다.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "아주 기이한 마법의 소통 장치지...\n이름하여 '스피커폰' 이라고 한단다.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "잘 들으렴, 얘들아.\n이 앞은 '시의 늪' 이라는 위험 지역이야.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "사람이 살지 않고, 몬스터가 많은 곳이지.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "모쪼록 조즈즈즈크브츠츠츠",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "즈즈드브브브브브브브",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "브브브드드츠 연결이 안 좋아!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "달수염 할아버지?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "끊겼나 봐...\n이 앞은 우리들끼리 헤쳐나가야 할 것 같아!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "가자, 저트!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
 		{
 			"id": "3D_MiniBeard_Dialog_01",
 			"lines": [

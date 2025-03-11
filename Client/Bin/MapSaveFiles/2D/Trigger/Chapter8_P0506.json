@@ -1,0 +1,68 @@
+[
+    {
+        "Collider_Info": {
+            "Position": [
+                0.0,
+                366.0
+            ],
+            "Scale": [
+                215.0,
+                18.0
+            ]
+        },
+        "Fillter_MyGroup": 2,
+        "Fillter_OtherGroupMask": 128,
+        "Trigger_ConditionType": 0,
+        "Trigger_Coordinate": 0,
+        "Trigger_EventTag": "BookSectionChange_Next",
+        "Trigger_Type": 6,
+		 "MapTrigger_Info": {
+		"Next_Position": [
+                -780.0,
+                -313.0
+		]
+		}
+    },
+	{
+        "Collider_Info": {
+            "Position": [
+                0.0,
+                366.0
+            ],
+            "Scale": [
+                215.0,
+                18.0
+            ]
+        },
+        "Fillter_MyGroup": 2,
+        "Fillter_OtherGroupMask": 128,
+        "Trigger_ConditionType": 0,
+        "Trigger_Coordinate": 0,
+        "Trigger_EventTag": "Chapter4_Intro",
+        "Trigger_Type": 6,
+		 "MapTrigger_Info": {
+		"Next_Position": [
+                -780.0,
+                -313.0
+		]
+		}
+    }
+	,{
+        "Collider_Info": {
+            "Position": [
+                -1955.0,
+                -524.0
+            ],
+            "Scale": [
+                100.0,
+                20.0
+            ]
+        },
+        "Fillter_MyGroup": 2,
+        "Fillter_OtherGroupMask": 128,
+        "Trigger_ConditionType": 0,
+        "Trigger_Coordinate": 0,
+        "Trigger_EventTag": "Chapter4_Intro",
+        "Trigger_Type": 6
+    }
+]

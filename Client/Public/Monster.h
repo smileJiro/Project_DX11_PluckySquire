@@ -173,8 +173,8 @@ public:
 	virtual void				Exit_Section(const _wstring _strIncludeSectionName) override;
 	_bool						Check_InAir_Next(_float _fTimeDelta);	// 다음 위치가 공중인지 체크
 	_bool						Check_InAir_Next(_fvector _vForce, _float _fTimeDelta);	// 다음 위치가 공중인지 체크
-	_bool						Check_Block_Next(_float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
-	_bool						Check_Block_Next(_fvector _vForce, _float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
+	_bool						Check_Block(_float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
+	_bool						Check_Block(_fvector _vForce, _float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
 
 protected:
 	void Delay_On() 

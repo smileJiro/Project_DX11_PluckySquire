@@ -131,14 +131,14 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 	
 	if (false == m_isTurn && false == m_isMove)
 	{
-		Determine_Direction();
+		Determine_Direction(_fTimeDelta);
 	}
 	
-	if(true == m_isBound)
-	{
-		//다음 위치가 구역을 벗어나는지 체크 후 벗어나면 정지 후 반대방향으로 진행
-		Check_Bound(_fTimeDelta);
-	}
+	//if(true == m_isBound)
+	//{
+	//	//다음 위치가 구역을 벗어나는지 체크 후 벗어나면 정지 후 반대방향으로 진행
+	//	Check_Bound(_fTimeDelta);
+	//}
 
 	//이동
 	PatrolMove(_fTimeDelta, m_iDir);
@@ -186,6 +186,11 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 		{
 			//m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 			m_pOwner->Move(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), _fTimeDelta);
+			if (true == m_pOwner->Check_InAir_Next(_fTimeDelta) || m_pOwner->Check_Block(_fTimeDelta))
+			{
+				m_pOwner->Stop_Move();
+				Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+			}
 		}
 	}
 
@@ -248,35 +253,66 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 	}
 }
 
-void CPatrolState::Determine_Direction()
+void CPatrolState::Determine_Direction(_float _fTimeDelta)
 {
 	if (COORDINATE::COORDINATE_LAST == m_pOwner->Get_CurCoord())
 		return;
 
-	while (true)
+	if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
 	{
-		if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
-		{
-			//8 방향 중 랜덤 방향 지정
-			m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 8.f)));
-		}
-
-		else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
-		{
-			//4 방향 중 랜덤 방향 지정
-			m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 4.f)));
-		}
-
-		if (m_iDir != m_iPrevDir || 0 > m_iPrevDir)	//직전에 갔던 방향은 가지 않음
-		{
-			m_iPrevDir = m_iDir;
-
-			m_fMoveDistance = m_pGameInstance->Compute_Random(0.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
-			
-			m_isTurn = true;
-			break;
-		}
+		//8 방향 중 랜덤 방향 지정
+		m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 8.f)));
 	}
+
+	else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
+	{
+		//4 방향 중 랜덤 방향 지정
+		m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 4.f)));
+	}
+
+	m_fMoveDistance = m_pGameInstance->Compute_Random(0.7f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.4f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+
+	m_isTurn = true;
+
+	//while (true)
+	//{
+	//	if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
+	//	{
+	//		//8 방향 중 랜덤 방향 지정
+	//		m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 8.f)));
+	//	}
+
+	//	else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
+	//	{
+	//		//4 방향 중 랜덤 방향 지정
+	//		m_iDir = static_cast<_int>(floor(m_pGameInstance->Compute_Random(0.f, 4.f)));
+	//	}
+
+	//	m_fMoveDistance = m_pGameInstance->Compute_Random(0.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+	//
+	//	m_isTurn = true;
+
+	//	//다음 위치가 공중이 아니고 장애물이 없으면
+	//	//if (false == m_pOwner->Check_InAir_Next(Set_PatrolDirection(m_iDir) * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), _fTimeDelta))
+	//	//{
+	//	//	m_iPrevDir = m_iDir;
+
+	//	//	m_fMoveDistance = m_pGameInstance->Compute_Random(0.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+
+	//	//	m_isTurn = true;
+	//	//	break;
+	//	//}
+
+	//	if (m_iDir != m_iPrevDir || 0 > m_iPrevDir)	//직전에 갔던 방향은 가지 않음
+	//	{
+	//		m_iPrevDir = m_iDir;
+
+	//		m_fMoveDistance = m_pGameInstance->Compute_Random(0.5f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), 1.f * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+	//		
+	//		m_isTurn = true;
+	//		break;
+	//	}
+	//}
 }
 
 _vector CPatrolState::Set_PatrolDirection(_int _iDir)
