@@ -135,7 +135,7 @@
         "Trigger_ConditionType": 3,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeZ_1",
-        "Trigger_Type": 4
+        "Trigger_Type": 5
     },
     {
         "Arm_Info": {
@@ -411,7 +411,7 @@
         "Trigger_ConditionType": 3,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeZ_2",
-        "Trigger_Type": 4
+        "Trigger_Type": 5
     },
     {
         "Arm_Info": {

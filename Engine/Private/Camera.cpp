@@ -284,6 +284,16 @@ void CCamera::Set_ResetData()
 	m_ResetArmData.vAtOffset = m_vAtOffset;
 }
 
+void CCamera::Save_ArmData()
+{
+	if (nullptr == m_pCurArm)
+		return;
+
+	XMStoreFloat3(&m_SaveArmData.vPreArm, m_pCurArm->Get_ArmVector());
+	m_SaveArmData.fPreLength = m_pCurArm->Get_Length();
+	m_SaveArmData.iZoomLevel = m_iCurZoomLevel;
+	m_SaveArmData.vAtOffset = m_vAtOffset;
+}
 
 HRESULT CCamera::Bind_DofConstBuffer()
 {

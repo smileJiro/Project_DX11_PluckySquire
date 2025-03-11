@@ -158,7 +158,7 @@ void CCamera_Target::Set_FreezeExit(_uint _iFreezeMask, _int _iTriggerID)
 void CCamera_Target::Set_EnableLookAt(_bool _isEnableLookAt)
 {
 	if (true == _isEnableLookAt && false == m_isEnableLookAt) {
-		// false이다가 m_isExitLookAt으로 돌아간 것
+		// false이다가 m_isExaitLookAt으로 돌아간 것
 		m_isExitLookAt = true;
 		m_fLookTime.y = 0.f;
 		XMStoreFloat3(&m_vStartLookVector, m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
@@ -207,6 +207,15 @@ void CCamera_Target::Start_Changing_ArmVector(_float _fChangingTime, _fvector _v
 	__super::Start_Changing_ArmVector(_fChangingTime, _vNextArm, _eRatioType);
 
 	m_eCameraMode = DEFAULT;
+}
+
+void CCamera_Target::Load_SavedArmData(_float _fLoadTime)
+{
+	m_pCurArm->Set_StartInfo();
+	Start_Changing_AtOffset(_fLoadTime, XMLoadFloat3(&m_ResetArmData.vAtOffset), EASE_IN);
+	Start_Zoom(_fLoadTime, (ZOOM_LEVEL)m_ResetArmData.iZoomLevel, EASE_IN);
+	m_eCameraMode = LOAD_SAVED_ARMDATA;
+	m_fLoadTime = { _fLoadTime, 0.f };
 }
 
 void CCamera_Target::Switch_CameraView(INITIAL_DATA* _pInitialData)
@@ -506,17 +515,30 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 	 
 	//Imgui(_fTimeDelta);
 
-	if (KEY_DOWN(KEY::Y)) {
-		Set_FreezeEnter(FREEZE_X, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
-		//Set_FreezeEnter(FREEZE_Z, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
-		Set_FreezeEnter(FREEZE_Y, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
-		m_isUsingFreezeOffset = true;
-	}
-	if (KEY_DOWN(KEY::I)) {
-		Set_FreezeExit(FREEZE_X, 0);
-		//Set_FreezeExit(FREEZE_Z, 0);
-		Set_FreezeExit(FREEZE_Y, 0);
-	}
+	//if (KEY_DOWN(KEY::Y)) {
+	//	Set_FreezeEnter(FREEZE_X, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
+	//	//Set_FreezeEnter(FREEZE_Z, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
+	//	Set_FreezeEnter(FREEZE_Y, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
+	//	m_isUsingFreezeOffset = true;
+	//}
+	//if (KEY_DOWN(KEY::I)) {
+	//	Set_FreezeExit(FREEZE_X, 0);
+	//	//Set_FreezeExit(FREEZE_Z, 0);
+	//	Set_FreezeExit(FREEZE_Y, 0);
+	//}
+
+	//if (KEY_DOWN(KEY::Y)) {
+	//	Set_ResetData();
+	//}
+	//if (KEY_DOWN(KEY::I)) {
+	//	Save_ArmData();
+	//}
+	//if (KEY_DOWN(KEY::K)) {
+	//	Load_SavedArmData(1.f);
+	//}
+	//if (KEY_DOWN(KEY::J)) {
+	//	Start_ResetArm_To_SettingPoint(1.f);
+	//}
 
 #endif
 }
@@ -557,6 +579,9 @@ void CCamera_Target::Action_Mode(_float _fTimeDelta)
 		break;
 	case RESET_TO_SETTINGPOINT:
 		Reset_To_SettingPoint(_fTimeDelta);
+		break;
+	case LOAD_SAVED_ARMDATA:
+		Action_Load_SavedArmData(_fTimeDelta);
 		break;
 	}
 }
@@ -1084,6 +1109,29 @@ void CCamera_Target::Reset_To_SettingPoint(_float _fTimeDelta)
 	}
 
 	m_pCurArm->Reset_To_SettingPoint(fRatio, XMLoadFloat3(&m_ResetArmData.vPreArm), m_ResetArmData.fPreLength);
+
+	_vector vTargetPos;
+	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);	// 목표 위치 + Arm -> 최종 결과물
+
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vCameraPos);
+
+	Look_Target(vTargetPos, _fTimeDelta);
+}
+
+void CCamera_Target::Action_Load_SavedArmData(_float _fTimeDelta)
+{
+	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fLoadTime, _fTimeDelta, EASE_IN_OUT);
+
+	if (fRatio >= (1.f - EPSILON)) {
+		m_fLoadTime.y = 0.f;
+		m_eCameraMode = DEFAULT;
+
+		m_pCurArm->Reset_To_SettingPoint(fRatio, XMLoadFloat3(&m_SaveArmData.vPreArm), m_SaveArmData.fPreLength);
+
+		return;
+	}
+
+	m_pCurArm->Reset_To_SettingPoint(fRatio, XMLoadFloat3(&m_SaveArmData.vPreArm), m_SaveArmData.fPreLength);
 
 	_vector vTargetPos;
 	_vector vCameraPos = Calculate_CameraPos(&vTargetPos, _fTimeDelta);	// 목표 위치 + Arm -> 최종 결과물
