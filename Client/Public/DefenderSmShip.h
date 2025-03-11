@@ -20,14 +20,12 @@ public:
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce) override;
 	virtual void On_Explode()override;
-	virtual void On_Spawned()override;
-	virtual void On_LifeTimeOut()override;
+
 
 public:
 
 private:
 	HRESULT	Ready_PartObjects();
-private:
 
 public:
 	static CDefenderSmShip* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

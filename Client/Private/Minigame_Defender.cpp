@@ -35,7 +35,7 @@ HRESULT CMiniGame_Defender::Initialize_Prototype()
 HRESULT CMiniGame_Defender::Initialize(void* _pArg)
 {
     m_pSectionManager = SECTION_MGR;
-
+    m_pDialogManager = CDialog_Manager::GetInstance();
     m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::SM_SHIP, _wstring(L"Prototype_GameObject_DefenderSmShip")));
    //m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::TURRET, _wstring(L"Prototype_GameObject_DefenderTurret")));
     m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::MED_SHIP_UP, _wstring(L"Prototype_GameObject_DefenderMedShip_UP")));
@@ -65,19 +65,19 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
     tAABBDesc.pOwner = this;
     tAABBDesc.vExtents = { 50.f , 300.f};
     tAABBDesc.vScale = { 1.0f, 1.0f };
-    tAABBDesc.vOffsetPosition = { 0.f,0.f };
+    tAABBDesc.vOffsetPosition = { 200.f,0.f };
     tAABBDesc.isBlock = false;
     tAABBDesc.isTrigger = true;
     tAABBDesc.iCollisionGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
     tAABBDesc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-        TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDesc)))
+        TEXT("Com_TowerCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDesc)))
         return E_FAIL;
 
     /* Test 2D Collider */
     CCollider_AABB::COLLIDER_AABB_DESC tAABBDesc2 = {};
     tAABBDesc2.pOwner = this;
-    tAABBDesc2.vExtents = { 50.f , 300.f };
+    tAABBDesc2.vExtents = {150.f , 300.f };
     tAABBDesc2.vScale = { 1.0f, 1.0f };
     tAABBDesc2.vOffsetPosition = { 0.f,0.f };
     tAABBDesc2.isBlock = false;
@@ -85,7 +85,7 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
     tAABBDesc2.iCollisionGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
     tAABBDesc2.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_TRIGGER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-        TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &tAABBDesc2)))
+        TEXT("Com_DialogCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &tAABBDesc2)))
         return E_FAIL;
 
 	return S_OK;
@@ -189,9 +189,9 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
 
     tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_RANDOM;
     tSpawnDesc.eDirection = T_DIRECTION::LEFT;
-    tSpawnDesc.fAutoCycleTime = 13.f;
+    tSpawnDesc.fAutoCycleTime = 13.f;//13
     tSpawnDesc.fUnitDelay = 0.f;
-    tSpawnDesc.iSpawnCount = 6;
+    tSpawnDesc.iSpawnCount = 6;//6
     tSpawnDesc.fMoveSpeed = 200.f;
     tSpawnDesc.bAbsolutePosition = false;
     tSpawnDesc.fPlayerDistance = m_fSpawnDistance;
@@ -201,7 +201,7 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
 	tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_DOT;
 	tSpawnDesc.eDirection = T_DIRECTION::RIGHT;
 	tSpawnDesc.fPatternStartDelay = 3.5f;
-	tSpawnDesc.fAutoCycleTime = 15.f;
+	tSpawnDesc.fAutoCycleTime = 15.f;//15
 	tSpawnDesc.fUnitDelay = 0.5f;
     tSpawnDesc.iSpawnCount = 5;
     tSpawnDesc.fMoveSpeed = 300.f;
@@ -213,14 +213,16 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
 
     tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_ARROW;
     tSpawnDesc.eDirection = T_DIRECTION::LEFT;
-    tSpawnDesc.fPatternStartDelay = 7.f;
-    tSpawnDesc.fAutoCycleTime = 13.f;
+    tSpawnDesc.fPatternStartDelay = 7.f;//7
+    tSpawnDesc.fAutoCycleTime = 13.f;//13
     tSpawnDesc.fUnitDelay = 0.1f;
     tSpawnDesc.iSpawnCount = 5;
     tSpawnDesc.fMoveSpeed = 200.f;
     tSpawnDesc.bAbsolutePosition = false;
-    tSpawnDesc.fPlayerDistance = m_fSpawnDistance;
+    tSpawnDesc.fPlayerDistance = m_fSpawnDistance* 0.7f;
     tSpawnDesc.fHeight = 0;
+    m_Spawners[DEFENDER_MONSTER_ID::SM_SHIP]->Add_Spawn(tSpawnDesc);
+    tSpawnDesc.eDirection = T_DIRECTION::RIGHT;
     m_Spawners[DEFENDER_MONSTER_ID::SM_SHIP]->Add_Spawn(tSpawnDesc);
 
     tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_DOT;
@@ -236,7 +238,17 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
     m_Spawners[DEFENDER_MONSTER_ID::MED_SHIP_UP]->Add_Spawn(tSpawnDesc);
     m_Spawners[DEFENDER_MONSTER_ID::MED_SHIP_DOWN]->Add_Spawn(tSpawnDesc);
 
-
+    tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_ARROW;
+    tSpawnDesc.eDirection = T_DIRECTION::RIGHT;
+    tSpawnDesc.fPatternStartDelay = 13.f;
+    tSpawnDesc.fAutoCycleTime = 13.f;
+    tSpawnDesc.fUnitDelay = 0.1f;
+    tSpawnDesc.iSpawnCount = 5;
+    tSpawnDesc.fMoveSpeed = 200.f;
+    tSpawnDesc.bAbsolutePosition = false;
+    tSpawnDesc.fPlayerDistance = m_fSpawnDistance * 0.5f;
+    tSpawnDesc.fHeight = 0;
+    m_Spawners[DEFENDER_MONSTER_ID::SM_SHIP]->Add_Spawn(tSpawnDesc);
 
     return S_OK;
 }
@@ -366,7 +378,7 @@ void CMiniGame_Defender::Update(_float _fTimeDelta)
     if (DEFENDER_PROG_START_DIALOG == m_eGameState
         && false == m_pDialogManager->Get_DisPlayDialogue())
     {
-        m_eGameState = DEFENDER_PROG_GAME;
+       
     }
     if (DEFENDER_PROG_GAME == m_eGameState)
     {
@@ -376,18 +388,18 @@ void CMiniGame_Defender::Update(_float _fTimeDelta)
         if (m_fTimeAcc - m_fLastCapsuleDestroyTime >= m_fCapsuleSpawnTerm)
         {
 
-            if (nullptr == m_pCurrentCapsule && m_iSpawnedPersonCount < m_iMaxPersonCount)
+            if (nullptr == m_pCurrentCapsule && m_iCapsuleSpawnCount < m_iMaxCapsuleSpawnCount)
             {
+     
                 CDefenderCapsule::DEFENDER_CAPSULE_DESC tDesc = {};
                 tDesc.iCurLevelID = m_iCurLevelID;
-                tDesc.iPersonCount = m_iCapsuleSpawnedCount;
-                tDesc.tTransform2DDesc.vInitialPosition = _float3{ m_iCapsuleSpawnedCount * 1000.f,0.f,0.f };
+                tDesc.iPersonCount = m_iCapsulePersonCount[m_iCapsuleSpawnCount];
+				XMStoreFloat3(&tDesc.tTransform2DDesc.vInitialPosition, Get_ScrolledPosition(_vector{ m_iCapsuleSpawnCount * 800.f,0.f,0.f }));
                 m_pCurrentCapsule = static_cast<CDefenderCapsule*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_PersonCapsule"), &tDesc));
                 m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_Defender"), m_pCurrentCapsule);
                 CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCurrentCapsule, SECTION_2D_PLAYMAP_OBJECT);
 
-                m_iSpawnedPersonCount += tDesc.iPersonCount;
-                m_iCapsuleSpawnedCount++;
+                m_iCapsuleSpawnCount++;
             }
         }
         if (m_pCurrentCapsule && false == m_pCurrentCapsule->Is_Dead())
@@ -445,30 +457,33 @@ void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
         m_pDialogManager->Set_DialoguePos(vPosition);
         //Uimgr->Set_DialoguePos(vPos);
         m_pDialogManager->Set_DisPlayDialogue(true);
+
     }
     //GameStart
-    if (DEFENDER_PROG_START_DIALOG == m_eGameState
+    else if (DEFENDER_PROG_START_DIALOG == m_eGameState
         && OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID()
         && m_p2DColliderComs[0] == _pMyCollider)
     {
-		m_eGameState = DEFENDER_PROG_GAME;
+        m_eGameState = DEFENDER_PROG_GAME;
+
         CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
-        CPlayer* pNormalPlayer =  pPDM->Get_NormalPlayer_Ptr();
-        m_pDefenderPlayer =  pPDM->Get_DefenderPlayer_Ptr();
-		Safe_AddRef(m_pDefenderPlayer);
+        CPlayer* pNormalPlayer = pPDM->Get_NormalPlayer_Ptr();
+        m_pDefenderPlayer = pPDM->Get_DefenderPlayer_Ptr();
+        Safe_AddRef(m_pDefenderPlayer);
 
         pNormalPlayer->Set_Active(false);
         m_pDefenderPlayer->Set_Active(true);
 
         _vector vNormalPlayerPos = pNormalPlayer->Get_FinalPosition();
         m_pDefenderPlayer->Set_Position(vNormalPlayerPos);
-		m_pDefenderPlayer->Start_Transform();
+        m_pDefenderPlayer->Start_Transform();
 
         static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(m_pDefenderPlayer);
-
+        m_p2DColliderComs[0]->Set_Offset(_float2{ 0.f,0.f });
     }
 
-	if (OBJECT_GROUP::GIMMICK_OBJECT & _pOtherObject->Get_ObjectGroupID())
+	if (OBJECT_GROUP::GIMMICK_OBJECT & _pOtherObject->Get_ObjectGroupID()
+        && m_p2DColliderComs[0] == _pMyCollider)
 	{
 		CDefenderPerson* pPerson = dynamic_cast<CDefenderPerson*>(_pOtherObject);
         if(pPerson)

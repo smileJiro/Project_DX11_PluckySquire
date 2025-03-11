@@ -77,24 +77,29 @@ HRESULT CDefenderMedShip::Ready_PartObjects()
 
 	m_PartObjects[0] = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tModelDesc));
 	if (nullptr == m_PartObjects[0])
-		return E_FAIL;	return S_OK;
+		return E_FAIL;	
+	m_PartObjects[0]->Set_Active(false);
+	return S_OK;
 }
 
 void CDefenderMedShip::Update(_float _fTimeDelta)
 {
-	m_fTimeAcc += _fTimeDelta;
-	Move(XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_RIGHT)) * m_fMoveSpeed ,_fTimeDelta);
-	_vector vPosition = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-	if (m_bUpSide)
-		vPosition = XMVectorSetY(vPosition, m_fVerticalMoveRange * sinf(m_fTimeAcc * m_fVerticalMoveSpeed));
-	else
-		vPosition = XMVectorSetY(vPosition, m_fVerticalMoveRange * -sinf(m_fTimeAcc * m_fVerticalMoveSpeed));
-	Set_Position(vPosition);
+	if (m_bSpawned)
+	{
+		m_fTimeAcc += _fTimeDelta;
+		Move(XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_RIGHT)) * m_fMoveSpeed, _fTimeDelta);
+		_vector vPosition = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+		if (m_bUpSide)
+			vPosition = XMVectorSetY(vPosition, m_fVerticalMoveRange * sinf(m_fTimeAcc * m_fVerticalMoveSpeed));
+		else
+			vPosition = XMVectorSetY(vPosition, m_fVerticalMoveRange * -sinf(m_fTimeAcc * m_fVerticalMoveSpeed));
+		Set_Position(vPosition);
+
+	}
 
 
 	__super::Update(_fTimeDelta);
-	if (false == m_PartObjects[0]->Is_Active() && false == m_PartObjects[1]->Is_Active())
-		Event_DeleteObject(this);
+
 
 }
 
@@ -145,16 +150,8 @@ void CDefenderMedShip::On_Explode()
 
 void CDefenderMedShip::On_Spawned()
 {
-	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
-		, Get_FinalWorldMatrix(), 0.f
-		, 2, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
-}
-
-void CDefenderMedShip::On_LifeTimeOut()
-{
-	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
-		, Get_FinalWorldMatrix(), 0.f
-		, 5, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
+	m_bSpawned = true;
+	m_PartObjects[PART_BODY]->Set_Active(true);
 }
 
 

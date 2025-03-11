@@ -180,7 +180,7 @@ void CDefenderPerson::Enter_Section(const _wstring _strIncludeSectionName)
 
 }
 
-void CDefenderPerson::Set_FollowObject(CGameObject* _pObject)
+void CDefenderPerson::Start_FollowObject(CGameObject* _pObject)
 {
 	m_pFX->Set_Active(false);
 	m_pShield->Set_Active(true);
@@ -189,7 +189,7 @@ void CDefenderPerson::Set_FollowObject(CGameObject* _pObject)
 
 void CDefenderPerson::Dissapear()
 {
-	Set_FollowObject(nullptr);
+	m_pFollowObject = nullptr;
 	m_pBody->Set_Active(false);
 	m_pShield->Set_Active(false);
 	m_pFX->Set_Active(true);

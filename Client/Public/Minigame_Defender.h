@@ -102,16 +102,17 @@ private:
 	_float2 m_vSectionSize = {};
 	_float m_fCenterHeight = 0.f;
 	_float m_fFloorHeight = -350.f;
-	_float m_fSpawnDistance = 1000.f;//플레이어와의 거리
+	_float m_fSpawnDistance = 600.f;//플레이어와의 거리
 	_float m_fTimeAcc = 0.f;
 	_float m_fLastCapsuleDestroyTime = 0.f;
-	_float m_fCapsuleSpawnTerm = 15.f;
-	_uint m_iCapsuleSpawnedCount = 0;
+	_float m_fCapsuleSpawnTerm = 7.5f;
 	CDefenderCapsule* m_pCurrentCapsule = nullptr;
 
 	_uint m_iPersonLeft = 9;
 	_uint m_iMaxPersonCount = 9;
-	_uint m_iSpawnedPersonCount = 0;
+	_uint m_iCapsuleSpawnCount = 0;
+	_uint m_iMaxCapsuleSpawnCount = 5;
+	_uint m_iCapsulePersonCount[5] = { 1,1,2,2,3 };//캡슐에 들어있는 사람 수
 	CModelObject* m_pPersonCounterBack = nullptr;
 	CModelObject* m_pPersonCounter[10] = { nullptr, };
 

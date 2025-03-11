@@ -42,6 +42,7 @@ public:
 	virtual void On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce) override;
 	virtual void On_Explode()override;
 	virtual void On_Spawned()override;
+	virtual void On_Teleport()override;
 	virtual void On_LifeTimeOut()override;
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
