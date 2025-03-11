@@ -10,6 +10,7 @@
 #include "PlayerData_Manager.h"
 #include "Pooling_Manager.h"
 #include "Minigame_Defender.h"
+#include "DefenderPerson.h"
 
 CDefenderPlayer::CDefenderPlayer(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CPlayable(_pDevice, _pContext,PLAYABLE_ID::DEFENDER)
@@ -187,7 +188,11 @@ HRESULT CDefenderPlayer::Render()
 	if (m_p2DColliderComs[0]->Is_Active())
 		m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
 #endif // _DEBUG
-	return __super::Render();
+
+
+	if (FAILED(__super::Render()))
+		return E_FAIL;
+
 }
 
 void CDefenderPlayer::Set_Direction(T_DIRECTION _eTDir)
@@ -259,7 +264,7 @@ void CDefenderPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 		pPDM->Set_CurrentPlayer(PLAYABLE_ID::DEFENDER);
 		Set_BlockPlayerInput(false);
-		m_pMinigame->Start_Game();
+		m_pMinigame->Start_Gamde();
 	}
 	else if ((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_SHOT == iAnimIdx)
 	{
@@ -272,32 +277,31 @@ void CDefenderPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	}
 }
 
-void CDefenderPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
-{
-}
-
-void CDefenderPlayer::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
-{
-}
-
-void CDefenderPlayer::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
-{
-}
-
-void CDefenderPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
-{
-}
-
-void CDefenderPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
-{
-}
-
-void CDefenderPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
-{
-}
-
 void CDefenderPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+
+	if (OBJECT_GROUP::GIMMICK_OBJECT & _pOtherCollider->Get_CollisionGroupID()
+		&& (_uint)COLLIDER2D_USE::COLLIDER2D_BODY == _pOtherCollider->Get_ColliderUse())
+	{
+		CDefenderPerson* pPerson = dynamic_cast<CDefenderPerson*>(_pOtherObject);
+		if (nullptr == pPerson)
+			return;
+	
+		for (auto& pFollower : m_Followers)
+			if (pFollower == pPerson)
+				return;
+
+		CGameObject* pFollowObj = nullptr;
+		if (m_Followers.size() > 0)
+			pFollowObj = m_Followers.back();
+		else
+			pFollowObj = this;
+
+		pPerson->Start_FollowObject(pFollowObj);
+		m_Followers.push_back(pPerson);
+		Safe_AddRef(pPerson);
+	}
+
 }
 
 void CDefenderPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -338,6 +342,23 @@ void CDefenderPlayer::Shoot()
 
 }
 
+void CDefenderPlayer::Remove_Follower(CDefenderPerson* _pPerson)
+{
+	m_Followers.remove(_pPerson);
+	Safe_Release(_pPerson);
+	CGameObject* pFollowObj = this;
+	for (auto& pFollower : m_Followers)
+	{
+		pFollower->Start_FollowObject(pFollowObj);
+		pFollowObj = pFollower;
+	}
+}
+
+void CDefenderPlayer::Recover()
+{
+	m_tStat.iHP = m_tStat.iMaxHP;
+}
+
 CDefenderPlayer* CDefenderPlayer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CDefenderPlayer* pInstance = new CDefenderPlayer(_pDevice, _pContext);
@@ -369,5 +390,24 @@ void CDefenderPlayer::Free()
 	Safe_Release(m_pCrossHair);
 	Safe_Release(m_pBody2DColliderCom);
 	Safe_Release(m_pOriginalPlayer);
+	for (auto& pFollower : m_Followers)
+	{
+		Safe_Release(pFollower);
+	}
+	m_Followers.clear();
 	__super::Free();
+}
+
+HRESULT CDefenderPlayer::Cleanup_DeadReferences()
+{
+	__super::Cleanup_DeadReferences();
+	for (auto& pFollower : m_Followers)
+	{
+		if (pFollower->Is_Dead())
+		{
+			m_Followers.remove(pFollower);
+			Safe_Release(pFollower);
+		}
+	}
+	return S_OK;
 }

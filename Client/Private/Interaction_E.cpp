@@ -344,35 +344,58 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 	else if (COORDINATE_3D == pPlayer->Get_CurCoord())
 	{
 		//TODO :: 3D 어떻게 표현할것인가?
+		_matrix CalPosMatrix;
+		_vector PlayerWorldMatrix = pPlayer->Get_WorldMatrix().r[3];
+		_float3 PlayerPos = _float3(PlayerWorldMatrix.m128_f32[0], PlayerWorldMatrix.m128_f32[1] - 0.5f, PlayerWorldMatrix.m128_f32[2]);
+		
+		CalPosMatrix = XMMatrixTranslationFromVector(XMLoadFloat3(&PlayerPos));
 
-		_float2 vCalx = __super::WorldToSceen(pPlayer->Get_WorldMatrix());
+		_float2 vCalx = __super::WorldToSceen(CalPosMatrix);
+
+		//_float2 vCalx = __super::WorldToSceen(pPlayer->Get_WorldMatrix());
 		_float CalX = vCalx.x - g_iWinSizeX / 2.f;
 		_float CalY = -(vCalx.y - g_iWinSizeY / 1.4f);
 
-		if (m_ePrePlayerCoord != pPlayer->Get_CurCoord())
+		if (COORDINATE_3D == pPlayer->Get_CurCoord())
 		{
-			m_ePrePlayerCoord = pPlayer->Get_CurCoord();
-			if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
-				SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
-			return;
+			if (false == m_isDeleteRender)
+			{
+				SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
+
+				m_preSectionName = TEXT(" ");
+				m_isDeleteRender = true;
+			}
 		}
 
+
+		//if (m_ePrePlayerCoord != pPlayer->Get_CurCoord())
+		//{
+		//	m_ePrePlayerCoord = pPlayer->Get_CurCoord();
+		//	if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
+		//		SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
+		//		//SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
+		//	return;
+		//}
+		//
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(CalX, CalY, 0.f, 1.f));
 		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(m_fSizeX, m_fSizeY, 1.f));
 		//m_vObejctPos = _float3(vCalx.x, g_iWinSizeY - vCalx.y, 0.f);
 		m_vObejctPos = _float3(vCalx.x, vCalx.y, 0.f);
+		//
+		//if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
+		//{
+		//	SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
+		//}
+			
 
-		if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
-			SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
 
-
-		if (false == m_isDeleteRender)
-		{
-			//SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
-
-			m_preSectionName = TEXT(" ");
-			m_isDeleteRender = true;
-		}
+		//if (false == m_isDeleteRender)
+		//{
+		//	//SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
+		//
+		//	m_preSectionName = TEXT(" ");
+		//	m_isDeleteRender = true;
+		//}
 	}
 }
 

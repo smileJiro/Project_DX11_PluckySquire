@@ -14,7 +14,7 @@
 #include "CarriableObject.h"
 #include "Detonator.h"
 #include "SlipperyObject.h"
-
+#include "Effect_Manager.h"
 
 CBook::CBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -692,8 +692,11 @@ void CBook::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 }
 void CBook::Interact(CPlayer* _pUser)
 {
-	if(m_isPlayerAround)
+	if (m_isPlayerAround)
+	{
 		_pUser->Set_State(CPlayer::TURN_BOOK);
+		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_Default"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+	}
 	else if (m_isPlayerAbove)
 	{
 		if (_pUser->Is_DetonationMode())

@@ -4198,7 +4198,10 @@
   "TextureName": "D06_SKSP_SIGN_Sprite"
  },
  {
-  "Active": false,
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 5
+  },
   "BackGround": false,
   "Collider": false,
   "ModelType": 0,

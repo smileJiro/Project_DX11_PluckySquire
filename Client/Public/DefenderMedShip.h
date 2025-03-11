@@ -31,7 +31,7 @@ public:
 	virtual void On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
 	virtual void On_Explode()override;
 	virtual void On_Spawned()override;
-	virtual void On_LifeTimeOut()override;
+
 public:
 	void Set_UpSide(_bool _bUp) { m_bUpSide = _bUp; }
 private:

@@ -42,3 +42,24 @@ void CScrollModelObject::Scroll(_float _fTimeDelta)
 		Set_Position(XMVectorSetX(vPos, fPlayerPos.x - m_fSectionSize.x));
 	}
 }
+
+void CScrollModelObject::Set_Direction(T_DIRECTION _eTDir)
+{
+	switch (_eTDir)
+	{
+	case Client::T_DIRECTION::LEFT:
+	{
+		_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+		Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+		break;
+	}
+	case Client::T_DIRECTION::RIGHT:
+	{
+		_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+		Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+		break;
+	}
+	default:
+		break;
+	}
+}

@@ -38,21 +38,23 @@ HRESULT CEffect_Beam::Initialize(void* _pArg)
 	m_isRenderPoint = pDesc->isRenderPoint;
 	m_fPointSize = pDesc->fPointSize;
 	m_vPointColor = pDesc->vPointColor;
+	m_pStartPointBoneMatrix = pDesc->pStartPointBoneMatrix;
+
 	return S_OK;
 }
 
 void CEffect_Beam::Update(_float _fTimeDelta)
 {
 
-//#ifdef _DEBUG
-//	ImGui::Begin("Beam");
-//	ImGui::DragFloat4("Color", (_float*)&m_vColor, 0.01f);
-//	ImGui::DragFloat("Width", &m_fWidth, 0.01f);
-//	ImGui::DragFloat4("PointColor", (_float*)&m_vPointColor, 0.01f);
-//	ImGui::DragFloat("PointSize", &m_fPointSize, 0.01f);
-//
-//	ImGui::End();
-//#endif 
+#ifdef _DEBUG
+	ImGui::Begin("Beam");
+	ImGui::DragFloat4("Color", (_float*)&m_vColor, 0.01f);
+	ImGui::DragFloat("Width", &m_fWidth, 0.01f);
+	ImGui::DragFloat4("PointColor", (_float*)&m_vPointColor, 0.01f);
+	ImGui::DragFloat("PointSize", &m_fPointSize, 0.01f);
+
+	ImGui::End();
+#endif 
 	if (false == m_isActive)
 		return;
 
@@ -68,6 +70,13 @@ void CEffect_Beam::Late_Update(_float _fTimeDelta)
 		return;
 
 	__super::Late_Update(_fTimeDelta);
+
+	if (m_pStartPointBoneMatrix)
+	{
+		_matrix matWorld = XMLoadFloat4x4(m_pStartPointBoneMatrix) * XMLoadFloat4x4(&m_WorldMatrices[COORDINATE_3D]);
+
+		m_pBufferCom->Set_StartPosition(XMVectorSetW(matWorld.r[3], 1.f), true);
+	}
 	
 	m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_PARTICLE, this);
 }
@@ -104,14 +113,14 @@ HRESULT CEffect_Beam::Render()
 	return S_OK;
 }
 
-void CEffect_Beam::Set_StartPosition(_fvector _vStartPosition)
+void CEffect_Beam::Set_StartPosition(_fvector _vStartPosition, _bool _isUpdateAll)
 {
-	m_pBufferCom->Update_StartPosition(_vStartPosition);
+	m_pBufferCom->Set_StartPosition(_vStartPosition, _isUpdateAll);
 }
 
-void CEffect_Beam::Set_EndPosition(_fvector _vEndPosition)
+void CEffect_Beam::Set_EndPosition(_fvector _vEndPosition, _bool _isUpdateAll)
 {
-	m_pBufferCom->Update_EndPosition(_vEndPosition);
+	m_pBufferCom->Set_EndPosition(_vEndPosition, _isUpdateAll);
 }
 
 
@@ -132,9 +141,6 @@ HRESULT CEffect_Beam::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vLook", &vLook, sizeof(_float4))))
 		return E_FAIL;
 
-
-	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW))))
 		return E_FAIL;

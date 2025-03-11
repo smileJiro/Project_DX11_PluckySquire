@@ -688,11 +688,17 @@
     <Filter Include="02.GameObjects\Monster\C6_SketchSpace">
       <UniqueIdentifier>{8841a22f-be45-4324-8f1e-9db21363e7e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Effect\Etc">
+      <UniqueIdentifier>{a2878a22-cd5b-40ea-973b-eb5e1cffba7f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="05.MiniGames\FatherGame\Object\ZetPack_Father">
       <UniqueIdentifier>{f515fe26-a3e1-4f36-a8b2-7cabed20cb32}</UniqueIdentifier>
     </Filter>
     <Filter Include="05.MiniGames\FatherGame\Progress\MakeFather">
       <UniqueIdentifier>{a48c3c0f-3f0d-4bde-bad1-bd281241b415}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\MapObject\Mat">
+      <UniqueIdentifier>{5d4653fd-40ed-4898-9ecd-d808d3e141d3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1722,6 +1728,15 @@
     <ClInclude Include="..\Public\SketchSpace_UFO.h">
       <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\TurnBookEffect.h">
+      <Filter>02.GameObjects\Effect\Etc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SideScroll_IdleState.h">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SideScroll_AttackState.h">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CandleGame.h">
       <Filter>05.MiniGames\FatherGame\CandleGame</Filter>
     </ClInclude>
@@ -1730,6 +1745,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\FatherGame_Progress_MakeFather.h">
       <Filter>05.MiniGames\FatherGame\Progress\MakeFather</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Mat.h">
+      <Filter>02.GameObjects\MapObject\Mat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2746,6 +2764,15 @@
     <ClCompile Include="..\Private\SketchSpace_UFO.cpp">
       <Filter>02.GameObjects\Monster\C6_SketchSpace</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\TurnBookEffect.cpp">
+      <Filter>02.GameObjects\Effect\Etc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SideScroll_IdleState.cpp">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SideScroll_AttackState.cpp">
+      <Filter>03.Components\FSM\State\SideScroll</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\CandleGame.cpp">
       <Filter>05.MiniGames\FatherGame\CandleGame</Filter>
     </ClCompile>
@@ -2754,6 +2781,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\FatherGame_Progress_MakeFather.cpp">
       <Filter>05.MiniGames\FatherGame\Progress\MakeFather</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Mat.cpp">
+      <Filter>02.GameObjects\MapObject\Mat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

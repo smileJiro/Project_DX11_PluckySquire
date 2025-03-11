@@ -319,12 +319,15 @@ HRESULT C3DMapSkspObject::Render_Cup()
 {
     if (FAILED(Bind_ShaderResources_WVP()))
         return E_FAIL;
+
     COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
     CShader* pShader = m_pShaderComs[eCoord];
     C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
 
     _bool iFlag = false;
 
+    _int iRenderFlag = 1;
+    m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iRenderFlag", &iRenderFlag, sizeof(_int));
     m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iFlag", &iFlag, sizeof(_uint));
 
     for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
@@ -333,7 +336,6 @@ HRESULT C3DMapSkspObject::Render_Cup()
         _uint iShaderPass = (_uint)PASS_VTXMESH::DEFAULT;
         auto pMesh = pModel->Get_Mesh(i);
         _uint iMaterialIndex = pMesh->Get_MaterialIndex();
-
         if (FAILED(pModel->Bind_Material_PixelConstBuffer(iMaterialIndex, pShader)))
             return E_FAIL;
 
@@ -378,6 +380,10 @@ HRESULT C3DMapSkspObject::Render_Cup()
         pMesh->Bind_BufferDesc();
         pMesh->Render();
     }
+
+
+    iRenderFlag = 0;
+    m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iRenderFlag", &iRenderFlag, sizeof(_uint));
     return S_OK;
 }
 
@@ -396,12 +402,16 @@ HRESULT C3DMapSkspObject::Render_Tub()
 
     if (nullptr == pResourceView)
         return E_FAIL;
+    
+    _int iRenderFlag = 1;
+    m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iRenderFlag", &iRenderFlag, sizeof(_int));
 
     for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
     {
         auto pMesh = pModel->Get_Mesh(i);
         _uint iMaterialIndex = pMesh->Get_MaterialIndex();
 
+        
         if (FAILED(pModel->Bind_Material_PixelConstBuffer(iMaterialIndex, pShader)))
             return E_FAIL;
 
@@ -471,6 +481,9 @@ HRESULT C3DMapSkspObject::Render_Tub()
 
         pMesh->Render();
     }
+
+    iRenderFlag = 0;
+    m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_iRenderFlag", &iRenderFlag, sizeof(_int));
     return S_OK;
 }
 

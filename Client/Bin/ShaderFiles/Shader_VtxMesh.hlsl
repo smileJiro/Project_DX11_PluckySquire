@@ -44,6 +44,7 @@ Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_
 
 float g_fFarZ = 500.f;
 int g_iFlag = 0;
+int g_iRenderFlag = 0;
 
 float4 g_vCamPosition;
 float4 g_vDefaultDiffuseColor;
@@ -242,7 +243,13 @@ PS_OUT PS_MAIN(PS_IN In)
     //vORMH.g = 0.02f;// TestCode
     //vORMH.b = 1.00f;// TestCode
     Out.vORMH = vORMH;
-    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 1.0f);
+    float fRenderFlag = (float)g_iRenderFlag;
+    if (g_iRenderFlag & SAVEBRDF != 0)
+    {
+
+        fSpecular = 1.0f;
+    }
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, fRenderFlag, 1.0f);
     float3 vEmissiveColor = Material.EmissiveColor * fEmissive;
     Out.vEtc = float4(vEmissiveColor, fSpecular);
     

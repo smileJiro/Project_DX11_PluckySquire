@@ -37,6 +37,7 @@
 #include "RabbitLunch.h"
 #include "TiltSwapPusher.h"
 #include "MudPit.h"
+#include "Postit_Page.h"
 
 
 #include "RayShape.h"
@@ -203,11 +204,16 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 
 	// Trigger
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter8_Trigger.json"));
-	//CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter6_Trigger_Events.json"));
+	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter8_Test_Trigger.json"));
+	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter8_Trigger_Events.json"));
 
 	// BGM 시작
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
 
+	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Bomb_Stamp"), _float3(-15.54f,26.06f,16.56f), { 1.f,1.f,1.f });
+	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Sword"), _float3(42.22f, 15.82f, -0.45f), { 2.f,2.f,2.f });
+	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Stop_Stamp"), _float3(45.13f,50.24f,23.34f), { 1.f,1.f,1.f });
+	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
 
 
 	//CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_Intro"),
@@ -353,10 +359,24 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			Boss_Desc.iCurLevelID = m_eLevelID;
 			Boss_Desc.eStartCoord = COORDINATE_3D;
 			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, 78.0f);
+			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &pBoss, &Boss_Desc)))
 				return;
+
+			CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+			if (nullptr != pPlayer)
+			{
+				_float3 vPos = { -5.5f, 70.f, -71.f };
+				if(ACTOR_TYPE::DYNAMIC==pPlayer->Get_ActorCom()->Get_ActorType())
+				{
+					pPlayer->Get_ActorCom()->Set_GlobalPose(vPos);
+				}
+				else if (ACTOR_TYPE::KINEMATIC == pPlayer->Get_ActorCom()->Get_ActorType())
+				{
+					pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, vPos.z, 1.f));
+				}
+			}
 
 
 			// Pivot에 Boss 넣기(효림)
@@ -664,6 +684,22 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
+
+
+	//3D Bulb
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_CHAPTER_8;
+	Pooling_Desc.strLayerTag = _strLayerTag;
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Boss_CyberPlayerBullet");
+
+	CCyberPlayerBullet::CYBERPLAYER_PROJECTILE_DESC* pBulletDsc = new CCyberPlayerBullet::CYBERPLAYER_PROJECTILE_DESC;
+	pBulletDsc->eStartCoord = COORDINATE_3D;
+	pBulletDsc->iCurLevelID = m_eLevelID;
+	pBulletDsc->tTransform2DDesc.vInitialScaling = { 1.f,1.f,1.f };
+	pBulletDsc->iObjectGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
+	
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_CyberPlayerBullet"), Pooling_Desc, pBulletDsc);
+
 	return S_OK;
 }
 
@@ -1067,15 +1103,12 @@ HRESULT CLevel_Chapter_08::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
 
 
-	return S_OK;
 
 
-
-
-
-
-
-
+	CPostit_Page::POSTIT_PAGE_DESC PostitDesc = {};
+	PostitDesc.strInitSkspName = L"Chapter8_SKSP_Postit";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Postit_Page"), m_eLevelID, _strLayerTag, &PostitDesc)))
+		return E_FAIL;
 
 	return S_OK;
 
@@ -1340,14 +1373,18 @@ HRESULT CLevel_Chapter_08::Map_Object_Create(_wstring _strFileName)
 				int a = 1;
 
 			}
-
+			_wstring strIncludeLayerTag = wstrLayerTag;
 			C3DMapObject* pGameObject =
 				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
 					(LEVEL_ID)m_eLevelID,
 					m_pGameInstance,
 					hFile);
 			if (nullptr != pGameObject)
-				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, wstrLayerTag.c_str(), pGameObject);
+			{
+				if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
+					strIncludeLayerTag = L"Layer_Postit";
+				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, strIncludeLayerTag.c_str(), pGameObject);
+			}
 		}
 	}
 	CloseHandle(hFile);
@@ -1370,8 +1407,8 @@ void CLevel_Chapter_08::Free()
 {
 	m_pGameInstance->End_BGM();
 
-	//CMinigame_Sneak::GetInstance()->DestroyInstance();
-	Safe_Release(m_pSneakMinigameManager);
+	CMinigame_Sneak::GetInstance()->DestroyInstance();
+	//Safe_Release(m_pSneakMinigameManager);
 
 	__super::Free();
 }

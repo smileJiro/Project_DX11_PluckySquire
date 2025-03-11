@@ -56,6 +56,7 @@
 #include "Portal.h"
 #include "DraggableObject.h"
 #include "Book.h"
+#include "TurnBookEffect.h"
 
 #include "Camera_Target.h"
 
@@ -136,7 +137,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	pDesc->_fStepSlopeThreshold = 0.45f;
 
     pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
-    pDesc->eStartCoord = COORDINATE_3D;
+    pDesc->eStartCoord = COORDINATE_2D;
     pDesc->isCoordChangeEnable = true;
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 500.f;
@@ -323,7 +324,7 @@ HRESULT CPlayer::Ready_PartObjects()
     //Part Glove
 	CModelObject::MODELOBJECT_DESC GloveDesc{};
 
-    GloveDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
+    GloveDesc.eStartCoord = COORDINATE_3D;
     GloveDesc.iCurLevelID = m_iCurLevelID;
     GloveDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
@@ -354,6 +355,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
     //Part STOP STAMP
     CStopStamp::STOP_STAMP_DESC StopStampDesc{};
+    StopStampDesc.eStartCoord = COORDINATE_3D;
     StopStampDesc.iCurLevelID = m_iCurLevelID;
     StopStampDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     m_PartObjects[PLAYER_PART_STOP_STMAP] = m_pStopStmap = static_cast<CStopStamp*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_StopStamp"), &StopStampDesc));
@@ -370,6 +372,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
     //Part BOMB STAMP
 	CBombStamp::BOMB_STAMP_DESC BombStampDesc{};
+    BombStampDesc.eStartCoord = COORDINATE_3D;
     BombStampDesc.iCurLevelID = m_iCurLevelID;
     BombStampDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     m_PartObjects[PLAYER_PART_BOMB_STMAP] = m_pBombStmap =  static_cast<CBombStamp*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_BombStamp"), &BombStampDesc));
@@ -387,6 +390,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	//Part DETONATOR
     CDetonator::DETONATOR_DESC tDetonatorDesc{};
+    tDetonatorDesc.eStartCoord = COORDINATE_3D;
     tDetonatorDesc.iCurLevelID = m_iCurLevelID;
     tDetonatorDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     m_PartObjects[PLAYER_PART_DETONATOR] = m_pDetonator = static_cast<CDetonator*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Detonator"), &tDetonatorDesc));
@@ -401,6 +405,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
     //Part ZETPACK
     CZetPack::ZETPACK_DESC tZetPackDesc{};
+    tZetPackDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     tZetPackDesc.pPlayer = this;
     tZetPackDesc.iCurLevelID = m_iCurLevelID;
     tZetPackDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
@@ -420,6 +425,7 @@ HRESULT CPlayer::Ready_PartObjects()
     
     //RIFLE
 	CPlayerRifle::PLAYER_RIFLE_DESC tRifleDesc{};
+    tRifleDesc.eStartCoord = COORDINATE_3D;
     tRifleDesc.pPlayer = this;
 	tRifleDesc.iCurLevelID = m_iCurLevelID;
     tRifleDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
@@ -436,6 +442,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
     //VISOR
     CModelObject::MODELOBJECT_DESC tVisorDesc{};
+
     tVisorDesc.iCurLevelID = m_iCurLevelID;
     tVisorDesc.eStartCoord = COORDINATE_3D;
     tVisorDesc.isCoordChangeEnable = false;
@@ -455,6 +462,24 @@ HRESULT CPlayer::Ready_PartObjects()
     static_cast<CPartObject*>(m_PartObjects[PLAYER_PART_VISOR])->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("j_head")); /**/
     m_PartObjects[PLAYER_PART_VISOR]->Set_Position({ 0.f,0.225f,-0.225f });
     Set_PartActive(PLAYER_PART_VISOR, false);
+
+    // TurnBook BeamEffect
+    CTurnBookEffect::TURNBOOKEFFECT_DESC TURNBOOKEFFECT_DESC = {};
+    TURNBOOKEFFECT_DESC.iCurLevelID = m_iCurLevelID;
+    TURNBOOKEFFECT_DESC.isCoordChangeEnable = false;
+    TURNBOOKEFFECT_DESC.eStartCoord = COORDINATE_3D;  
+    TURNBOOKEFFECT_DESC.pBodyMatrix = m_pControllerTransform->Get_WorldMatrix_Ptr();
+
+    if (nullptr != m_pBody)
+    {
+        TURNBOOKEFFECT_DESC.pLHandMatrix = static_cast<C3DModel*>(m_pBody->Get_Model(COORDINATE_3D))->Get_Bone("j_hand_l")->Get_CombinedTransformationFloat4x4();
+        TURNBOOKEFFECT_DESC.pRHandMatrix = static_cast<C3DModel*>(m_pBody->Get_Model(COORDINATE_3D))->Get_Bone("j_hand_r")->Get_CombinedTransformationFloat4x4();
+    }
+
+    m_PartObjects[PLAYER_PART_TURNBOOKEFFECT] = m_pTurnBookEffect = static_cast<CTurnBookEffect*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_TurnBookEffect"), &TURNBOOKEFFECT_DESC));
+    if (nullptr == m_pTurnBookEffect)
+        return E_FAIL;
+    m_pTurnBookEffect->Set_Active(false);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
@@ -723,7 +748,6 @@ void CPlayer::Late_Update(_float _fTimeDelta)
         }
     }
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
-
 
     //cout << endl;
 
@@ -1804,6 +1828,8 @@ CActor_Dynamic* CPlayer::Get_ActorDynamic()
     return static_cast<CActor_Dynamic*>(m_pActorCom);
 }
 
+
+
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
 
@@ -2442,6 +2468,7 @@ void CPlayer::Free()
 	Safe_Release(m_pRifle);
 
     Safe_Release(m_pCarryingObject);
+    Safe_Release(m_pTurnBookEffect);
     
     __super::Free();
 }

@@ -58,7 +58,7 @@ HRESULT CPortal_Cannon::Setup_3D_Postion()
 
     if (FAILED(Init_Actor()))
         return E_FAIL;
-    if (FAILED(Ready_Particle()))
+    if (FAILED(Ready_DefaultParticle()))
         return E_FAIL;
 
     return hr;
@@ -98,19 +98,19 @@ _float CPortal_Cannon::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 void CPortal_Cannon::Active_OnEnable()
 {
     __super::Active_OnEnable();
-    if (m_pEffectSystem)
+    if (m_pDefaultEffect)
     {
-        //m_pEffectSystem->Set_Active(true);
-        m_pEffectSystem->Active_Effect(false, 0);
+        //m_pDefaultEffect->Set_Active(true);
+        m_pDefaultEffect->Active_Effect(false, 0);
     }
 }
 
 void CPortal_Cannon::Active_OnDisable()
 {
     __super::Active_OnDisable();
-    if (m_pEffectSystem && m_pEffectSystem->Is_Active())
+    if (m_pDefaultEffect && m_pDefaultEffect->Is_Active())
     {
-        m_pEffectSystem->Inactive_All();
+        m_pDefaultEffect->Inactive_All();
     }
 }
 
@@ -174,7 +174,5 @@ CGameObject* CPortal_Cannon::Clone(void* _pArg)
 
 void CPortal_Cannon::Free()
 {
-    Safe_Release(m_pColliderCom);
-    Safe_Release(m_pEffectSystem);
     __super::Free();
 }

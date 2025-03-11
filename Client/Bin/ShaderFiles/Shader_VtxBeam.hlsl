@@ -54,12 +54,7 @@ struct PS_OUT
 VS_OUT VS_MAIN(VS_IN In)
 {
     VS_OUT Out = (VS_OUT) 0;
-
-    matrix matDirection;
-    
-    matDirection = float4x4(g_WorldMatrix._11_12_13_14, g_WorldMatrix._21_22_23_24, g_WorldMatrix._31_32_33_34, float4(0.f, 0.f, 0.f, 1.f));
-        
-    Out.vPosition = mul(float4(In.vPosition, 1.f), matDirection);
+      
     Out.vPosition = float4(In.vPosition, 1.f);
     Out.fIndex = In.fIndex;
     return Out;

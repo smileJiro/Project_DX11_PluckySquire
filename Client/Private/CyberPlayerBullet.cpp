@@ -128,7 +128,7 @@ void CCyberPlayerBullet::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& 
 CCyberPlayerBullet* CCyberPlayerBullet::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CCyberPlayerBullet* pInstance = new CCyberPlayerBullet(_pDevice, _pContext);
-	if (nullptr == pInstance)
+	if (FAILED(pInstance->Initialize_Prototype()))
 	{
 		MSG_BOX("Failed to Create CyberPlayerBullet");
 		Safe_Release(pInstance);
