@@ -161,6 +161,8 @@
 #include "Goblin_SideScroller.h"
 #include "SketchSpace_Alien.h"
 #include "SketchSpace_SpikeBall.h"
+#include "SketchSpace_UFO.h"
+#include "Projectile_SketchSpace_UFO.h"
 
 /* For. Boss */
 #include "ButterGrump.h"
@@ -207,6 +209,7 @@
 // Father Game 
 #include "PortalLocker.h" 
 #include "ZetPack_Child.h" 
+#include "ZetPack_Father.h" 
 #include "Mug_Alien.h" 
 #include "JellyKing.h" 
 #include "CandleGame.h"
@@ -1508,6 +1511,10 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			CZetPack_Child::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_ZetPack_Father"),
+			CZetPack_Father::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Mug_Alien"),
 			CMug_Alien::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
@@ -1556,6 +1563,26 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 		
 		/* Monster */
+				/* For. Prototype_GameObject_SketchSpace_Alien */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_Alien"),
+			CSketchSpace_Alien::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_SketchSpace_SpikeBall */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"),
+			CSketchSpace_SpikeBall::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_SketchSpace_UFO */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_UFO"),
+			CSketchSpace_UFO::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_Projectile_SketchSpace_UFO */
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Projectile_SketchSpace_UFO"),
+			CProjectile_SketchSpace_UFO::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 
 		/* Etc */
 
@@ -1593,16 +1620,6 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		lstrcpy(m_szLoadingText, TEXT("Level 6 몬스터 로딩중입니다."));
 
 		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter6_Monsters.json"), TEXT("Chapter6_Monsters"), _eLoadLevelID)))
-			return E_FAIL;
-
-		/* For. Prototype_GameObject_SketchSpace_Alien */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_Alien"),
-			CSketchSpace_Alien::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
-
-		/* For. Prototype_GameObject_SketchSpace_SpikeBall */
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"),
-			CSketchSpace_SpikeBall::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 #pragma endregion
@@ -1958,14 +1975,14 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 	// 3D Map Load
 	if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL,
 		MAP_3D_DEFAULT_PATH,
-		L"Chapter_02_Play_Desk.json",
+		L"Chapter_08_Play_Desk.json",
 		matPretransform, true)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_2);
+	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_8);
 
 
-	return Loading_Level_Chapter_2(LEVEL_CAMERA_TOOL);
+	return Loading_Level_Chapter_8(LEVEL_CAMERA_TOOL);
 }
 
 HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
@@ -2039,8 +2056,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:
-		str3DMapProtoJsonName = L"Chapter_02_Play_Desk.json";
-		strChapterName += L"Chapter2";
+		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
+		strChapterName += L"Chapter8";
 		break;
 	default:
 		return S_OK;

@@ -49,7 +49,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 	{
 		const json* pjsonTileInfo = m_pGameInstance->Find_Json_InLevel(TEXT("SneakTile"), LEVEL_CHAPTER_8);
 		if (nullptr == pjsonTileInfo)
-			return E_FAIL;
+			return S_OK;
 
 		CSneak_Default_Tile::SNEAK_TILEDESC TileDesc = {};
 		CSneak_Tile* pTileOut = { nullptr };

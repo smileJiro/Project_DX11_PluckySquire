@@ -86,6 +86,8 @@ public: /* 3D */
 
 	_bool					Turn_To_DesireDir(_fvector _vStartDir, _fvector _vDesireDir, _float _fRatio);
 
+	void					Set_Look(_fvector _vDir);
+
 public:
 	// Get
 	COORDINATE				Get_CurCoord() const { return m_eCurCoord; }

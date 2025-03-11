@@ -1,5 +1,15 @@
 [
   {
+    "Trigger_EventTag": "Chapter6_Intro",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter6_Intro",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Chapter6_FatherGame_Progress_Start_Clear",
     "Actions": [
       {

@@ -58,6 +58,18 @@ HRESULT CMonster::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
+
+	if (true == m_isStay)
+	{
+		if (COORDINATE_3D == Get_CurCoord())
+		{
+			if (ACTOR_TYPE::DYNAMIC == Get_ActorType())
+				static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Rotation(XMLoadFloat3(&pDesc->vLook));
+			else if (ACTOR_TYPE::KINEMATIC == Get_ActorType())
+				Get_ControllerTransform()->Set_Look(XMLoadFloat3(&pDesc->vLook));
+		}
+	}
+
 	//플레이어 위치 가져오기
 	m_pTarget = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 	if (nullptr == m_pTarget)

@@ -2,6 +2,7 @@
 #include "UI_Manager.h"
 #include "Narration_Manager.h"
 #include "Dialog_Manager.h"
+#include "Shop_Manager.h"
 
 IMPLEMENT_SINGLETON(CUI_Manager)
 
@@ -214,7 +215,6 @@ void CUI_Manager::UI_Update()
 		}
 	}
 
-
 	if (nullptr != m_pInteractionE)
 	{
 		if (false == m_pInteractionE->CBase::Is_Active())
@@ -239,11 +239,53 @@ void CUI_Manager::UI_Update()
 		}
 	}
 
+	CShop_Manager* pShopManager = CShop_Manager::GetInstance();
+	assert(pShopManager);
 
-	//if (true == CNarration_Manager::GetInstance()->Get_Playing())
-	//{
-	//	CNarration_Manager::GetInstance()->NarrationActive();
-	//}
+	if (nullptr != pShopManager->Get_Shop())
+	{
+		if (TEXT("Chapter2_P1112") == SECTION_MGR->Get_Cur_Section_Key() ||
+			TEXT("Chapter5_P0102") == SECTION_MGR->Get_Cur_Section_Key())
+		{
+			if (false == pShopManager->Get_Shop()->CBase::Is_Active())
+			{
+				pShopManager->Get_Shop()->CBase::Set_Active(true);
+			}
+		}
+	}
+
+	if (nullptr != pShopManager->Get_Shop())
+	{
+		if (TEXT("Chapter2_P1112") == SECTION_MGR->Get_Cur_Section_Key() ||
+			TEXT("Chapter5_P0102") == SECTION_MGR->Get_Cur_Section_Key() ||
+			TEXT("Chapter4_P0506") == SECTION_MGR->Get_Cur_Section_Key())
+		{
+			if (false == pShopManager->Get_Shop()->CBase::Is_Active())
+			{
+				pShopManager->Get_Shop()->CBase::Set_Active(true);
+			}
+
+			for (int i = 0; i < pShopManager->Get_ShopItems().size(); ++i)
+			{
+				for (int j = 0; j < pShopManager->Get_ShopItems()[i].size(); ++j)
+				{
+					if (false == pShopManager->Get_ShopItems()[i][j]->CBase::Is_Active())
+					{
+						pShopManager->Get_ShopItems()[i][j]->CBase::Set_Active(true);
+					}
+				}
+			}
+
+			for (auto& pShopPanel : pShopManager->Get_ShopPanels())
+			{
+				if (false == pShopPanel.second->CBase::Is_Active())
+				{
+					pShopManager->CBase::Set_Active(true);
+				}
+			}
+		}
+	}
+
 
 }
 

@@ -1175,7 +1175,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "안녕하세요, 용감한 용사 여러분!",
+					"text": "안녕하세요, 용감한 견습 기사님!",
 					"Red": 255,
 					"Green": 224,
 					"Blue": 136
@@ -2363,6 +2363,281 @@
 						"speed": 500
 					},
 					"text": "얼른 가자!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "ZetPack_Child_8",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "해냈어! 우리가 은하계 전투에서 이겼다고!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "너 레이저 쏘는 거 진짜 멋있더라!\n내 추진 솜씨는 어땠어?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "빨리 아빠한테 말해 주고 싶다!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "자, 이제 내 모성으로 돌아가서 아빠를 조립하자!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "우리가 처음으로 만난 머그잔 모양의 행성이야!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "ZetPack_Child_9",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "찌릿",
+					"BG": 23,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "좋아, 이제 아빠를 조립하자!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "ZetPack_Father_0",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "짜릿",
+					"BG": 22,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "아, 이제야 좀 살 것 같군!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "짜릿",
+					"BG": 22,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "혹시 조각난 적이 있는가 모르겠다만 \n남들한테 권하고 싶은 경험은 아니야.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "짜릿",
+					"BG": 22,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "뭐? 어떤 물건을 찾고 있다고?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "짜릿",
+					"BG": 22,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "이 행성의 핵 안에 별난 물건이 하나 있긴 하다만...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "짜릿",
+					"BG": 22,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "내 안테나가 말하길, 그게 네가 찾는 물건일지도 \n모르겠다고 하는구나.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "짜릿",
+					"BG": 22,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "어디 꺼낼 수 있을지 한번 보자구나.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "ZetPack_Father_1",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "짜릿",
+					"BG": 22,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "추진 장치를 스트레칭하니까 기분 최고야.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "짜릿",
+					"BG": 22,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그 이상한 물건이 네가 찾던 것이길 바라마.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "짜릿",
+					"BG": 22,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "고맙다, 젊은 전사 친구. 그리고 찌릿이 너도... \n네가 정말 자랑스러워!",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0

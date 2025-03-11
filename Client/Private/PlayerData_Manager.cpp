@@ -53,7 +53,7 @@ _bool CPlayerData_Manager::Is_Own(PLAYERITEM_TYPE _eItemType)
 	return m_ItemState[wszItemTag].first;
 }
 
-HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos)
+HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _iLevelID, _wstring _szItemTag, _float3 _vPos, _float3 _vScale)
 {
 	// ItemTag
 	// first: Flipping_Glove						second: latch_glove
@@ -65,6 +65,7 @@ HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _i
 
 	Desc.iCurLevelID = _iLevelID;
 	Desc.tTransform3DDesc.vInitialPosition = _vPos;
+	Desc.tTransform3DDesc.vInitialScaling = _vScale;
 
 	for (auto& ItemTag : m_ItemTags) {
 		if (ItemTag.first == _szItemTag) {
@@ -78,7 +79,7 @@ HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _i
 	CGameObject* pPlayerItem;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(_iPrototypeLevelID, TEXT("Prototype_GameObject_PlayerItem"),
-		_iLevelID, TEXT("Layer_Terrain"), &pPlayerItem, &Desc)))
+		_iLevelID, TEXT("Layer_PlayerItem"), &pPlayerItem, &Desc)))
 		return E_FAIL;
 
 	m_ItemState[_szItemTag].second = dynamic_cast<CPlayerItem*>(pPlayerItem);

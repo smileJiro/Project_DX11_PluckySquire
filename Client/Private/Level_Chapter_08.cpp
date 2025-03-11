@@ -202,7 +202,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Set_Active_RenderGroup_New(RENDERGROUP::RG_3D, PR3D_POSTPROCESSING, true);
 
 	// Trigger
-	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter6_Trigger.json"));
+	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter8_Trigger.json"));
 	//CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter6_Trigger_Events.json"));
 
 	// BGM 시작
@@ -353,10 +353,24 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			Boss_Desc.iCurLevelID = m_eLevelID;
 			Boss_Desc.eStartCoord = COORDINATE_3D;
 			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, 78.0f);
+			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &pBoss, &Boss_Desc)))
 				return;
+
+			CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+			if (nullptr != pPlayer)
+			{
+				_float3 vPos = { -5.5f, 70.f, -71.f };
+				if(ACTOR_TYPE::DYNAMIC==pPlayer->Get_ActorCom()->Get_ActorType())
+				{
+					pPlayer->Get_ActorCom()->Set_GlobalPose(vPos);
+				}
+				else if (ACTOR_TYPE::KINEMATIC == pPlayer->Get_ActorCom()->Get_ActorType())
+				{
+					pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, vPos.z, 1.f));
+				}
+			}
 
 
 			// Pivot에 Boss 넣기(효림)
