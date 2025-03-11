@@ -344,10 +344,15 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 	else if (COORDINATE_3D == pPlayer->Get_CurCoord())
 	{
 		//TODO :: 3D 어떻게 표현할것인가?
-
+		_matrix CalPosMatrix;
+		_vector PlayerWorldMatrix = pPlayer->Get_WorldMatrix().r[3];
+		_float3 PlayerPos = _float3(PlayerWorldMatrix.m128_f32[0], PlayerWorldMatrix.m128_f32[1] - 0.5f, PlayerWorldMatrix.m128_f32[2]);
 		
+		CalPosMatrix = XMMatrixTranslationFromVector(XMLoadFloat3(&PlayerPos));
 
-		_float2 vCalx = __super::WorldToSceen(pPlayer->Get_WorldMatrix());
+		_float2 vCalx = __super::WorldToSceen(CalPosMatrix);
+
+		//_float2 vCalx = __super::WorldToSceen(pPlayer->Get_WorldMatrix());
 		_float CalX = vCalx.x - g_iWinSizeX / 2.f;
 		_float CalY = -(vCalx.y - g_iWinSizeY / 1.4f);
 
