@@ -4,12 +4,14 @@
 #include "PlayerData_Manager.h"
 #include "Player.h"
 #include "DefenderPlayer.h"
+#include "DefenderCapsule.h"
 #include "Section_Manager.h"
 #include "GameInstance.h"
 #include "DefenderSpawner.h"
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
 #include "DefenderPerson.h"
+#include "ScrollModelObject.h"
 
 CMiniGame_Defender::CMiniGame_Defender(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -29,6 +31,8 @@ HRESULT CMiniGame_Defender::Initialize_Prototype()
 
 HRESULT CMiniGame_Defender::Initialize(void* _pArg)
 {
+    m_pSectionManager = SECTION_MGR;
+
     m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::SM_SHIP, _wstring(L"Prototype_GameObject_DefenderSmShip")));
    //m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::TURRET, _wstring(L"Prototype_GameObject_DefenderTurret")));
     m_mapMonsterPrototypeTag.insert(make_pair(DEFENDER_MONSTER_ID::MED_SHIP_UP, _wstring(L"Prototype_GameObject_DefenderMedShip_UP")));
@@ -70,7 +74,18 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDesc)))
         return E_FAIL;
 
+
+
 	return S_OK;
+}
+void CMiniGame_Defender::Priority_Update(_float _fTimeDelta)
+{
+	__super::Priority_Update(_fTimeDelta);
+    if (m_pCurrentCapsule && m_pCurrentCapsule->Is_Dead())
+    {
+        m_pCurrentCapsule = nullptr;
+        m_fLastCapsuleDestroyTime = m_fTimeAcc;
+    }
 }
 HRESULT CMiniGame_Defender::Ready_Spanwer()
 {
@@ -100,26 +115,8 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
     }
 
 
-    //SPAWNS================================================================================================================
+    //MONSTER SPAWNS================================================================================================================
 	SPAWN_DESC tSpawnDesc = {};
-    tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_DOT;
-    tSpawnDesc.eDirection = T_DIRECTION::LEFT;
-    tSpawnDesc.fPatternStartDelay = 0.f;
-    tSpawnDesc.fAutoCycleTime = -1.f;
-    tSpawnDesc.fUnitDelay = 0.f;
-    tSpawnDesc.iSpawnCount = 1;
-    tSpawnDesc.fMoveSpeed = 0.f;
-    tSpawnDesc.bAbsolutePosition = true;
-    tSpawnDesc.vPosition = { 0.f,0.f };
-    m_Spawners[DEFENDER_MONSTER_ID::PERSON_CAPSULE]->Add_Spawn(tSpawnDesc);
-    //tSpawnDesc.fPatternStartDelay = 30.f;
-    tSpawnDesc.vPosition = { 1000.f,0.f };
-    m_Spawners[DEFENDER_MONSTER_ID::PERSON_CAPSULE]->Add_Spawn(tSpawnDesc);
-    //tSpawnDesc.fPatternStartDelay = 45.f;
-    tSpawnDesc.vPosition = { -1000.f,0.f };
-    m_Spawners[DEFENDER_MONSTER_ID::PERSON_CAPSULE]->Add_Spawn(tSpawnDesc);
-
-
 
     tSpawnDesc.ePattern = SPAWN_PATTERN::SPAWN_PATTERN_RANDOM;
     tSpawnDesc.eDirection = T_DIRECTION::LEFT;
@@ -170,12 +167,118 @@ HRESULT CMiniGame_Defender::Ready_Spanwer()
     m_Spawners[DEFENDER_MONSTER_ID::MED_SHIP_UP]->Add_Spawn(tSpawnDesc);
     m_Spawners[DEFENDER_MONSTER_ID::MED_SHIP_DOWN]->Add_Spawn(tSpawnDesc);
 
+
+
+    return S_OK;
+}
+HRESULT CMiniGame_Defender::Ready_UI()
+{
+
+    CScrollModelObject::SCROLLMODELOBJ_DESC tScrollDesc = {};
+    tScrollDesc.eStartCoord = COORDINATE_2D;
+    tScrollDesc.iCurLevelID = m_iCurLevelID;
+    tScrollDesc.isCoordChangeEnable = false;
+    tScrollDesc.iModelPrototypeLevelID_2D = m_iCurLevelID;
+    tScrollDesc.strModelPrototypeTag_2D = TEXT("icon_scientist_Sprite");
+    tScrollDesc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+    tScrollDesc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
+    tScrollDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+    tScrollDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+
+    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ScrollModelObject"), m_iCurLevelID, TEXT("Layer_Defender"), (CGameObject**)&m_pSidePersonUI, &tScrollDesc)))
+        return E_FAIL;
+    Safe_AddRef(m_pSidePersonUI);
+    m_pSidePersonUI->Set_Active(false);
+    CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pSidePersonUI, SECTION_2D_PLAYMAP_UI);
+
     return S_OK;
 }
 void CMiniGame_Defender::Enter_Section(const _wstring _strIncludeSectionName)
 {
     __super::Enter_Section(_strIncludeSectionName);
+    m_vSectionSize = m_pSectionManager->Get_Section_RenderTarget_Size(m_strSectionName);
+    if (FAILED(Ready_UI()))
+        return;
 
+}
+_vector CMiniGame_Defender::Get_SidePosition(T_DIRECTION _eDirection)
+{
+    _vector vPlayerPos = m_pDefenderPlayer->Get_FinalPosition();
+    _vector vSidePos = vPlayerPos + _vector{T_DIRECTION::LEFT == _eDirection ? -m_fSideUIDIstance : m_fSideUIDIstance ,0.f,0.f};
+	vSidePos = XMVectorSetY(vSidePos, m_fCenterHeight);
+    return Get_ScrolledPosition(vSidePos);
+}
+_vector CMiniGame_Defender::Get_ScrolledPosition(_vector _vPosition)
+{
+
+    _float fDefaultWitdh = (m_vSectionSize.x * 0.5f);
+
+    if (-fDefaultWitdh > _vPosition.m128_f32[0])
+    {
+        _vPosition = XMVectorSetX(_vPosition, _vPosition.m128_f32[0] + m_vSectionSize.x);
+    }
+    if (fDefaultWitdh < _vPosition.m128_f32[0])
+    {
+        _vPosition = XMVectorSetX(_vPosition, _vPosition.m128_f32[0] - m_vSectionSize.x);
+    }
+    return _vPosition;
+}
+_bool CMiniGame_Defender::Is_LeftSide(_vector _vPos)
+{
+	//평면 상에서 vPos가 플레이어보다 왼쪽에 있으면
+	//PlayerX - PosX 거리와 SectionSizeX -PlayerX + PosX 거리를 비교해서
+    //전자가 짧으면 LEFT
+    //평면 상에서 vPos가 플레이어보다 오른쪽에 있으면
+	//PlayerX - PosX 거리와 PlayerX + SectionSizeX - PosX 거리를 비교해서
+	_vector vPlayerPos = m_pDefenderPlayer->Get_FinalPosition();
+	_float fDistance = abs(vPlayerPos.m128_f32[0] - _vPos.m128_f32[0]);
+	_float fRightScreenDistance = Get_RightScreenDistance(_vPos);
+	_float fLeftScreenDistance = Get_LeftScreenDistance(_vPos);
+    //일단 오른쪾에 있으면?
+	if (vPlayerPos.m128_f32[0] < _vPos.m128_f32[0])
+	{
+        if (fDistance < Get_LeftScreenDistance(vPlayerPos) + Get_RightScreenDistance(_vPos))
+			return false;
+		else
+			return true;
+	}
+    else
+    {
+        if (fDistance < Get_LeftScreenDistance(_vPos) + Get_RightScreenDistance(vPlayerPos))
+            return true;
+        else
+            return false;
+    }
+}
+_bool CMiniGame_Defender::Is_InsideScreen(_vector _vPos)
+{
+    _float fDistance = Get_ScrolledDistance(_vPos);
+	if (fDistance > m_fHalfScreenRange)
+		return false;
+	else
+        return true;
+}
+_float CMiniGame_Defender::Get_ScrolledDistance(_vector _vPos)
+{
+    _vector vPlayerPos = m_pDefenderPlayer->Get_FinalPosition();
+    _float fDistance = abs(vPlayerPos.m128_f32[0] - _vPos.m128_f32[0]);
+    _float fOverDistance = 0.f;
+
+    //오른쪾에있으미ㅕㄴ
+    if (vPlayerPos.m128_f32[0] < _vPos.m128_f32[0])
+        fOverDistance = Get_RightScreenDistance(_vPos) + Get_LeftScreenDistance(vPlayerPos);
+    else
+        fOverDistance = Get_RightScreenDistance(vPlayerPos) + Get_LeftScreenDistance(_vPos);
+
+    return  min(fDistance, fOverDistance);
+}
+_float CMiniGame_Defender::Get_RightScreenDistance(_vector _vPos)
+{
+    return m_vSectionSize.x*0.5f - _vPos.m128_f32[0];
+}
+_float CMiniGame_Defender::Get_LeftScreenDistance(_vector _vPos)
+{
+    return _vPos.m128_f32[0] + m_vSectionSize.x * 0.5f;
 }
 void CMiniGame_Defender::Update(_float _fTimeDelta)
 {
@@ -183,6 +286,45 @@ void CMiniGame_Defender::Update(_float _fTimeDelta)
 	__super::Update(_fTimeDelta);
     if(false == m_bGameStart)
 		return;
+	m_fTimeAcc += _fTimeDelta;
+
+    if (m_fTimeAcc - m_fLastCapsuleDestroyTime >= m_fCapsuleSpawnTerm)
+    {
+
+        if (nullptr == m_pCurrentCapsule && m_iSpawnedPersonCount < m_iMaxPersonCount)
+        {
+            CDefenderCapsule::DEFENDER_CAPSULE_DESC tDesc = {};
+            tDesc.iCurLevelID = m_iCurLevelID;
+            tDesc.iPersonCount = m_iCapsuleSpawnedCount;
+            tDesc.tTransform2DDesc.vInitialPosition = _float3{ m_iCapsuleSpawnedCount * 1000.f,0.f,0.f };
+            m_pCurrentCapsule = static_cast<CDefenderCapsule*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_PersonCapsule"), &tDesc));
+            m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Layer_Defender"), m_pCurrentCapsule);
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCurrentCapsule, SECTION_2D_PLAYMAP_OBJECT);
+
+            m_iSpawnedPersonCount += tDesc.iPersonCount;
+            m_iCapsuleSpawnedCount++;
+        }
+    }
+    if (m_pCurrentCapsule && false == m_pCurrentCapsule->Is_Dead())
+    {
+       _vector vCapsulePos = Get_ScrolledPosition( m_pCurrentCapsule->Get_FinalPosition());
+        if (Is_InsideScreen(vCapsulePos))
+        {
+            m_pSidePersonUI->Set_Active(false);
+        }
+        else
+        {
+            m_pSidePersonUI->Set_Active(true);
+            _bool bLeft = Is_LeftSide(vCapsulePos);
+            _vector vUIPos = Get_SidePosition(bLeft ? T_DIRECTION::LEFT : T_DIRECTION::RIGHT);
+            m_pSidePersonUI->Set_Position(vUIPos);
+            m_pSidePersonUI->Set_Direction(bLeft ? T_DIRECTION::LEFT : T_DIRECTION::RIGHT);
+        }
+    }
+    else
+    {
+        m_pSidePersonUI->Set_Active(false);
+    }
 }
 
 void CMiniGame_Defender::Late_Update(_float _fTimeDelta)
@@ -235,7 +377,7 @@ void CMiniGame_Defender::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider*
 {
 }
 
-void CMiniGame_Defender::Start_Game()
+void CMiniGame_Defender::Start_Gamde()
 {
     if (FAILED(Ready_Spanwer()))
         return;
@@ -243,6 +385,7 @@ void CMiniGame_Defender::Start_Game()
 
 void CMiniGame_Defender::Restart_Game()
 {
+    
 }
 
 void CMiniGame_Defender::Rescue_Person(CDefenderPerson* _pPerson)
@@ -289,6 +432,7 @@ CGameObject* CMiniGame_Defender::Clone(void* _pArg)
 
 void CMiniGame_Defender::Free()
 {
+	Safe_Release(m_pSidePersonUI);
 	Safe_Release(m_pDefenderPlayer);
     for (auto& pSpawner : m_Spawners)
     {
@@ -296,4 +440,15 @@ void CMiniGame_Defender::Free()
     }
     m_Spawners.clear();
 	__super::Free();
+}
+
+HRESULT CMiniGame_Defender::Cleanup_DeadReferences()
+{
+    __super::Cleanup_DeadReferences();
+    if(m_pCurrentCapsule->Is_Dead())
+    {
+        m_pCurrentCapsule = nullptr;
+        m_fLastCapsuleDestroyTime = m_fTimeAcc;
+    }
+    return S_OK;
 }

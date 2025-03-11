@@ -51,12 +51,14 @@ public:
 
 	void On_BodyAnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	void On_FXAnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+	_vector Get_ScrolledPosition(_vector _vPosition);
 private:
+	class CSection_Manager* m_pSectionManager = nullptr;
 	_float m_fMoveSpeed = 500.f;
 	CCollider_Circle* m_pBodyCollider = nullptr;
 	CGameObject* m_pFollowObject = nullptr;
 	_float m_fFollowDistance = 70.f;
-	_float m_fArrivalDistance = 10.f;
+	_float m_fArrivalDistance = 30.f;
 
 	FOLLOW_STATE m_eFollowState = STOP;
 

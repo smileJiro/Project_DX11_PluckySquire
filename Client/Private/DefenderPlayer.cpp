@@ -260,7 +260,7 @@ void CDefenderPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 		pPDM->Set_CurrentPlayer(PLAYABLE_ID::DEFENDER);
 		Set_BlockPlayerInput(false);
-		m_pMinigame->Start_Game();
+		m_pMinigame->Start_Gamde();
 	}
 	else if ((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_SHOT == iAnimIdx)
 	{
@@ -348,6 +348,11 @@ void CDefenderPlayer::Remove_Follower(CDefenderPerson* _pPerson)
 		pFollower->Set_FollowObject(pFollowObj);
 		pFollowObj = pFollower;
 	}
+}
+
+void CDefenderPlayer::Recover()
+{
+	m_tStat.iHP = m_tStat.iMaxHP;
 }
 
 CDefenderPlayer* CDefenderPlayer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

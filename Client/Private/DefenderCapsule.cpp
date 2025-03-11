@@ -19,14 +19,15 @@ CDefenderCapsule::CDefenderCapsule(const CDefenderCapsule& _Prototype)
 
 HRESULT CDefenderCapsule::Initialize(void* _pArg)
 {
-	DEFENDER_MONSTER_DESC* pDesc = static_cast<DEFENDER_MONSTER_DESC*>(_pArg);
+	m_fLifeTime = 9999.f;
+	DEFENDER_CAPSULE_DESC* pDesc = static_cast<DEFENDER_CAPSULE_DESC*>(_pArg);
+	m_iPersonCount = pDesc->iPersonCount;
 	pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER;
-	pDesc->iNumPartObjects = 1;
+	pDesc->iNumPartObjects = 2;
 
 	pDesc->_tStat.iHP = 20;
 	pDesc->_tStat.iMaxHP = 20;
 	pDesc->_tStat.iDamg = 0;
-	m_fLifeTime = 9999.f;
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
@@ -66,13 +67,32 @@ HRESULT CDefenderCapsule::Ready_PartObjects()
 	tModelDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
 	tModelDesc.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
 
-	m_PartObjects[PART_BODY] = m_pBody = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tModelDesc));
-	if (nullptr == m_PartObjects[PART_BODY])
+	m_PartObjects[DEFENDER_CAPSULE_PART_BODY] = m_pBody = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tModelDesc));
+	if (nullptr == m_PartObjects[DEFENDER_CAPSULE_PART_BODY])
 		return E_FAIL;
 	Safe_AddRef(m_pBody);
 
 	m_pBody->Register_OnAnimEndCallBack(bind(&CDefenderCapsule::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 	m_pBody->Switch_Animation(SPHERE_APPEAR_FAST);
+
+	CModelObject::MODELOBJECT_DESC tModelDesc2 = {};
+	tModelDesc2.eStartCoord = COORDINATE_2D;
+	tModelDesc2.iCurLevelID = m_iCurLevelID;
+	tModelDesc2.isCoordChangeEnable = false;
+	tModelDesc2.iModelPrototypeLevelID_2D = m_iCurLevelID;
+	tModelDesc2.strModelPrototypeTag_2D = TEXT("PersonBlinkerUI");
+	tModelDesc2.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+	tModelDesc2.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
+	tModelDesc2.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+	tModelDesc2.tTransform2DDesc.vInitialPosition = _float3(0.0f, 0.0f, 0.0f);
+	tModelDesc2.tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
+
+	m_PartObjects[DEFENDER_CAPSULE_PART_UI] = m_pUI = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tModelDesc2));
+	if (nullptr == m_PartObjects[DEFENDER_CAPSULE_PART_UI])
+		return E_FAIL;
+	Safe_AddRef(m_pUI);
+
+
 	return S_OK;
 }
 void CDefenderCapsule::Update(_float _fTimeDelta)
@@ -177,5 +197,6 @@ void CDefenderCapsule::Free()
 {
 	Safe_Release(m_pBodyCollider);
 	Safe_Release(m_pBody);
+	Safe_Release(m_pUI);
 	__super::Free();
 }

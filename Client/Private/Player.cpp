@@ -136,7 +136,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	pDesc->_fStepSlopeThreshold = 0.45f;
 
     pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
-    pDesc->eStartCoord = COORDINATE_3D;
+    pDesc->eStartCoord = COORDINATE_2D;
     pDesc->isCoordChangeEnable = true;
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 500.f;
@@ -323,7 +323,7 @@ HRESULT CPlayer::Ready_PartObjects()
     //Part Glove
 	CModelObject::MODELOBJECT_DESC GloveDesc{};
 
-    GloveDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
+    GloveDesc.eStartCoord = COORDINATE_3D;
     GloveDesc.iCurLevelID = m_iCurLevelID;
     GloveDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
@@ -354,6 +354,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
     //Part STOP STAMP
     CStopStamp::STOP_STAMP_DESC StopStampDesc{};
+    StopStampDesc.eStartCoord = COORDINATE_3D;
     StopStampDesc.iCurLevelID = m_iCurLevelID;
     StopStampDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     m_PartObjects[PLAYER_PART_STOP_STMAP] = m_pStopStmap = static_cast<CStopStamp*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_StopStamp"), &StopStampDesc));
@@ -370,6 +371,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
     //Part BOMB STAMP
 	CBombStamp::BOMB_STAMP_DESC BombStampDesc{};
+    BombStampDesc.eStartCoord = COORDINATE_3D;
     BombStampDesc.iCurLevelID = m_iCurLevelID;
     BombStampDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     m_PartObjects[PLAYER_PART_BOMB_STMAP] = m_pBombStmap =  static_cast<CBombStamp*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_BombStamp"), &BombStampDesc));
@@ -387,6 +389,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
 	//Part DETONATOR
     CDetonator::DETONATOR_DESC tDetonatorDesc{};
+    tDetonatorDesc.eStartCoord = COORDINATE_3D;
     tDetonatorDesc.iCurLevelID = m_iCurLevelID;
     tDetonatorDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
     m_PartObjects[PLAYER_PART_DETONATOR] = m_pDetonator = static_cast<CDetonator*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Detonator"), &tDetonatorDesc));
@@ -401,6 +404,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
     //Part ZETPACK
     CZetPack::ZETPACK_DESC tZetPackDesc{};
+    tZetPackDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     tZetPackDesc.pPlayer = this;
     tZetPackDesc.iCurLevelID = m_iCurLevelID;
     tZetPackDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
@@ -420,6 +424,7 @@ HRESULT CPlayer::Ready_PartObjects()
     
     //RIFLE
 	CPlayerRifle::PLAYER_RIFLE_DESC tRifleDesc{};
+    tRifleDesc.eStartCoord = COORDINATE_3D;
     tRifleDesc.pPlayer = this;
 	tRifleDesc.iCurLevelID = m_iCurLevelID;
     tRifleDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
@@ -436,6 +441,7 @@ HRESULT CPlayer::Ready_PartObjects()
 
     //VISOR
     CModelObject::MODELOBJECT_DESC tVisorDesc{};
+
     tVisorDesc.iCurLevelID = m_iCurLevelID;
     tVisorDesc.eStartCoord = COORDINATE_3D;
     tVisorDesc.isCoordChangeEnable = false;

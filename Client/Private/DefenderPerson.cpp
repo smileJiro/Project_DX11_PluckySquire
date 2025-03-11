@@ -4,6 +4,9 @@
 #include "Collider_Circle.h"
 #include "Effect2D_Manager.h"
 #include "ModelObject.h"
+#include "Section_Manager.h"
+#include "ScrollModelObject.h"
+
 
 CDefenderPerson::CDefenderPerson(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CCharacter(_pDevice, _pContext)
@@ -17,6 +20,7 @@ CDefenderPerson::CDefenderPerson(const CDefenderPerson& _Prototype)
 
 HRESULT CDefenderPerson::Initialize(void* _pArg)
 {
+	m_pSectionManager = CSection_Manager::GetInstance();
 	CCharacter::CHARACTER_DESC* pDesc = static_cast<CCharacter::CHARACTER_DESC*>(_pArg);
 
 	m_iCurLevelID = pDesc->iCurLevelID;
@@ -25,13 +29,10 @@ HRESULT CDefenderPerson::Initialize(void* _pArg)
 	pDesc->isCoordChangeEnable = false;
 	pDesc->iNumPartObjects = 3;
 
-
 	pDesc->tTransform2DDesc.vInitialScaling = _float3(1, 1, 1);
-
 
 	pDesc->eActorType = ACTOR_TYPE::LAST;
 	pDesc->pActorDesc = nullptr;
-
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
@@ -42,32 +43,10 @@ HRESULT CDefenderPerson::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+
 	return S_OK;
 }
 
-void CDefenderPerson::Update(_float _fTimeDelta)
-{
-	if (m_pFollowObject)
-	{
-		_vector vFollowPos = m_pFollowObject->Get_FinalPosition();
-		_vector vMyPos = Get_FinalPosition();
-		_vector vDir = XMVector3Normalize( vFollowPos - vMyPos);
-		_float fDistance = XMVector3Length(vFollowPos - vMyPos).m128_f32[0];
-		if (STOP == m_eFollowState)
-		{
-			if (fDistance > m_fFollowDistance)
-				m_eFollowState = FOLLOW;
-		}
-		else if (FOLLOW == m_eFollowState)
-		{
-			m_pControllerTransform->Go_Direction(vDir, m_fMoveSpeed, _fTimeDelta);
-			if (fDistance < m_fArrivalDistance)
-				m_eFollowState = STOP;
-		}
-
-	}
-	__super::Update(_fTimeDelta);
-}
 
 HRESULT CDefenderPerson::Ready_PartObjects()
 {
@@ -154,6 +133,32 @@ HRESULT CDefenderPerson::Ready_Components()
 	return S_OK;
 }
 
+void CDefenderPerson::Update(_float _fTimeDelta)
+{
+	if (m_pFollowObject)
+	{
+		_vector vFollowPos = m_pFollowObject->Get_FinalPosition();
+		_vector vMyPos = Get_FinalPosition();
+		_vector vDir = XMVector3Normalize(vFollowPos - vMyPos);
+		_float fDistance = XMVector3Length(vFollowPos - vMyPos).m128_f32[0];
+		_float2 vSectionSize = m_pSectionManager->Get_Section_RenderTarget_Size(m_strSectionName);
+		if (fDistance > vSectionSize.x * 0.5f)
+			vDir *= -1.f;
+		if (STOP == m_eFollowState)
+		{
+			if (fDistance > m_fFollowDistance)
+				m_eFollowState = FOLLOW;
+		}
+		else if (FOLLOW == m_eFollowState)
+		{
+			Move(vDir * m_fMoveSpeed, _fTimeDelta);
+			if (fDistance < m_fArrivalDistance)
+				m_eFollowState = STOP;
+		}
+
+	}
+	__super::Update(_fTimeDelta);
+}
 void CDefenderPerson::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 
@@ -206,6 +211,22 @@ void CDefenderPerson::On_FXAnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 		Event_DeleteObject(this);
 	}
+}
+
+_vector CDefenderPerson::Get_ScrolledPosition(_vector _vPosition)
+{
+	_float2 fSize = m_pSectionManager->Get_Section_RenderTarget_Size(m_strSectionName);
+	_float fDefaultWitdh = (fSize.x * 0.5f);
+
+	if (-fDefaultWitdh > _vPosition.m128_f32[0])
+	{
+		_vPosition = XMVectorSetX(_vPosition, _vPosition.m128_f32[0] + fSize.x);
+	}
+	if (fDefaultWitdh < _vPosition.m128_f32[0])
+	{
+		_vPosition = XMVectorSetX(_vPosition, _vPosition.m128_f32[0] - fSize.x);
+	}
+	return _vPosition;
 }
 
 CDefenderPerson* CDefenderPerson::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

@@ -61,6 +61,7 @@ public:
 	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
 	STAT& Get_Stat() { return m_tStat; }
 	_float Get_StepSlopeThreshold() { return m_fStepSlopeThreshold; }
+	_vector Get_ScrolledFinalPosition();
 	//SET
 	void Set_ScrollingMode(_bool _bScrollingMode);
 protected:

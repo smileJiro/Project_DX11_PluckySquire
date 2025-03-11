@@ -73,6 +73,7 @@ public:
 	void Start_Transform();
 	void Shoot();
 	void Remove_Follower(CDefenderPerson* _pPerson);
+	void Recover();
 private:
 	T_DIRECTION m_eTDirection = T_DIRECTION::RIGHT;
 	CPlayer* m_pOriginalPlayer = nullptr;

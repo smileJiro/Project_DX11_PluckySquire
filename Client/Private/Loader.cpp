@@ -76,6 +76,7 @@
 #include "Postit_Page.h"
 
 #include "ModelObject.h"
+#include "ScrollModelObject.h"
 #include "CarriableObject.h"
 #include "DraggableObject.h"
 #include "Player.h"
@@ -717,6 +718,9 @@ HRESULT CLoader::Loading_Level_Static()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
 		CModelObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ScrollModelObject"),
+		CScrollModelObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CarrieableObject"),
 		CCarriableObject::Create(m_pDevice, m_pContext))))
