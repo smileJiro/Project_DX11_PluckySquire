@@ -1074,7 +1074,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	NPCDesc.iMainIndex = 0;
 	NPCDesc.iSubIndex = 0;
 	NPCDesc.vPos = _float2{ 347.9f, 353.3f };
-	wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
+	//wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_OnlySocial"), NPCDesc.iCurLevelID, _strLayerTag, &pGameObject, &NPCDesc)))
 		return E_FAIL;
 
@@ -1088,7 +1088,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	//NPCDesc.iMainIndex = 0;
 	//NPCDesc.iSubIndex = 0;
 	//wsprintf(NPCDesc.strLocateSection, TEXT("Chapter5_P0102"));
-	////wsprintf(NPCDesc.strDialogueIndex, TEXT("DJ_Moobeard_Dialogue_01"));
+	//wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 	//	return E_FAIL;
 

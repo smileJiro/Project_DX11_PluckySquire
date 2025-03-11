@@ -17,9 +17,12 @@ HRESULT CShop_Manager::Create_ShopPanel(_int _iChangeLevel, wstring _strLayerTag
 	//{
 	//	return E_FAIL;
 	//}
-
-	if (LEVEL_CHAPTER_6 != _iChangeLevel)
+	if (LEVEL_CHAPTER_6 != _iChangeLevel &&
+		LEVEL_CHAPTER_2 != _iChangeLevel &&
+		LEVEL_CHAPTER_4 != _iChangeLevel)
 		return S_OK;
+
+
 
 	CUI::UIOBJDESC pDesc = {};
 	CUI::UIOBJDESC pShopDescs[CUI::SHOPPANEL::SHOP_END] = {};
@@ -202,7 +205,9 @@ HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
 	//}
 
 
-	if (LEVEL_CHAPTER_6 != _iChangeLevel)
+	if (LEVEL_CHAPTER_6 != _iChangeLevel &&
+		LEVEL_CHAPTER_2 != _iChangeLevel &&
+		LEVEL_CHAPTER_4 != _iChangeLevel)
 		return S_OK;
 
 
@@ -243,9 +248,23 @@ HRESULT CShop_Manager::Create_Item(_int _iChangeLevel, wstring _strLayerTag)
 			eShopDesc.iShopItemCount = i;
 			eShopDesc.iSkillLevel = m_iAttackPlusLevel;
 			eShopDesc.isChooseItem = true;
-			eShopDesc.eShopSkillKind = CUI::SKILLSHOP_ATTACKPLUSBADGE;
-			eShopDesc.iPrice = 10;
-			eShopDesc.strName = TEXT("검 공격력 강화");
+
+			if (0 == m_iJumpAttackLevel)
+			{
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_JUMPATTACKBADGE;
+				eShopDesc.iPrice = 10;
+				eShopDesc.strName = TEXT("점프 공격 배지");
+				eShopDesc.iSkillLevel = m_iJumpAttackLevel;
+
+			}
+			else
+			{
+				eShopDesc.eShopSkillKind = CUI::SKILLSHOP_ATTACKPLUSBADGE;
+				eShopDesc.iPrice = 10;
+				eShopDesc.strName = TEXT("검 공격력 강화");
+				eShopDesc.iSkillLevel = m_iAttackPlusLevel;
+			}
+
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eShopDesc.iCurLevelID, TEXT("Prototype_GameObject_ShopItem"), eShopDesc.iCurLevelID, _strLayerTag, &pShopItem, &eShopDesc)))
 				return E_FAIL;
