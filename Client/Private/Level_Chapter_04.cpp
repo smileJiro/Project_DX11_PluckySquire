@@ -200,7 +200,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	/* µ¹µ¢ÀÌ */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::FALLINGROCK_BASIC, OBJECT_GROUP::BLOCKER);
 	/* Load Trigger*/
-	//CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger.json"));
+	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger.json"));
 	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter4_Trigger_Events.json"));
 	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Tilting_Glove"), _float3(-3.59f, 29.89f, 27.14f));
 	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Bomb_Stamp"), _float3(-45.9f, 10.83f, 8.21f), {1.f,1.f,1.f});
@@ -1027,9 +1027,9 @@ HRESULT CLevel_Chapter_04::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 	CPostit_Page::POSTIT_PAGE_DESC PostitDesc = {};
 	PostitDesc.strInitSkspName = L"Chapter4_SKSP_Postit";
-	PostitDesc.Build_2D_Transform({ 510.f, 100.f }, { 2.2f,2.2f });
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Postit_Page"), m_eLevelID, _strLayerTag, &PostitDesc)))
 		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -1626,6 +1626,8 @@ HRESULT CLevel_Chapter_04::Map_Object_Create(_wstring _strFileName)
 		isTempReturn = ReadFile(hFile, &szLayerTag, (DWORD)(sizeof(_char) * MAX_PATH), &dwByte, nullptr);
 		isTempReturn = ReadFile(hFile, &iObjectCnt, sizeof(_uint), &dwByte, nullptr);
 		strLayerTag = szLayerTag;
+
+
 		wstrLayerTag = m_pGameInstance->StringToWString(strLayerTag);
 
 		for (size_t i = 0; i < iObjectCnt; i++)
@@ -1635,14 +1637,18 @@ HRESULT CLevel_Chapter_04::Map_Object_Create(_wstring _strFileName)
 				int a = 1;
 
 			}
-
+			_wstring strIncludeLayerTag = wstrLayerTag;
 			C3DMapObject* pGameObject =
 				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
 					(LEVEL_ID)m_eLevelID,
 					m_pGameInstance,
 					hFile);
 			if (nullptr != pGameObject)
-				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, wstrLayerTag.c_str(), pGameObject);
+			{
+				if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
+					strIncludeLayerTag = L"Layer_Postit";
+				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, strIncludeLayerTag.c_str(), pGameObject);
+			}
 		}
 	}
 	CloseHandle(hFile);

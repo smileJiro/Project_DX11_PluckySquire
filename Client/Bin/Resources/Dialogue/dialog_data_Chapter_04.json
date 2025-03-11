@@ -853,6 +853,99 @@
           "Blue": 0
         }
       ]
+    },
+	 {
+      "id": "Postit_Page_02",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트! 이렇게 또 만나네요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+		  "isLineEnter":true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "하지만 어쩌죠? 앞에 위험이 도사리고 있어요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+	 {
+      "id": "Postit_Page_03",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "시의 늪에서도 가장 끔찍한 괴물들이 책에서 빠져나왔어요...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "하지만 이번에는 알맞은 장비를 착용하신 것 같네요!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "페이지",
+          "BG": 7,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+		  "isLineEnter":true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저 척추 없는 괴물들을 무찔러 주세요!\n돌격 앞으로!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
     }
 	]
 }
