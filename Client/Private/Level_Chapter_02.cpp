@@ -264,6 +264,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 	// Intro ½ÃÀÛ
 	//CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);
+	//CCamera_Manager::GetInstance()->Start_FadeIn(2.f);
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
