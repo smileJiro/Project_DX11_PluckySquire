@@ -205,6 +205,7 @@
 #include "Room_Door_Body.h"
 
 // Father Game 
+#include "Mat.h" 
 #include "PortalLocker.h" 
 #include "ZetPack_Child.h" 
 #include "ZetPack_Father.h" 
@@ -1496,6 +1497,10 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 
 		/* Chapter 6 FatherGame */
+
+		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Mat"),
+			CMat::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"),
 			CFatherPart_Prop::Create(m_pDevice, m_pContext))))

@@ -9,7 +9,7 @@ class CGameObject;
 END
 
 BEGIN(Client)
-
+class CPlayerItem;
 class CPlayerData_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CPlayerData_Manager)
@@ -71,6 +71,8 @@ private:
 	ID3D11Device*						m_pDevice = { nullptr };
 	ID3D11DeviceContext*				m_pContext = { nullptr };
 
+public:
+	CPlayerItem*			Get_PlayerItem_Ptr(const _wstring& _strItemTag);
 private:
 	CPlayable*							m_pCurrentPlayer = { nullptr };
 	CPlayable*							m_pPlayers[(_uint)PLAYABLE_ID::LAST] = { nullptr, nullptr, nullptr };
