@@ -1557,6 +1557,7 @@ void C2DMap_Tool_Manager::TriggerEvent_Imgui(_bool bLock)
 			"SECTION_CHANGE_TRIGGER",
 			"DEFAULT_TRIGGER",
 			"ENABLE_LOOKAT_TRIGGER",
+			"DIALOG_TRIGGER",
 		};
 
 

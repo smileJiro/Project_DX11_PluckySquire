@@ -3,7 +3,7 @@
         "Collider_Info": {
             "Position": [
                 1091.0,
-                363.0
+                211.0
             ],
             "Scale": [
                 63.0,
@@ -18,7 +18,7 @@
         "Trigger_Type": 6,
 		 "MapTrigger_Info": {
 		"Next_Position": [
-                657.0,
+                781.0,
                 -333.0
 		]
 		}

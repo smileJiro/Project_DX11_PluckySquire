@@ -12,16 +12,9 @@ CSideScroll_PatrolState::CSideScroll_PatrolState()
 HRESULT CSideScroll_PatrolState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
-	m_fAlertRange = pDesc->fAlertRange;
-	m_fAlert2DRange = pDesc->fAlert2DRange;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
-
-	m_iPrevDir = -1;
-	m_iDir = -1;
-	m_eDir = F_DIRECTION::F_DIR_LAST;
-	m_fDelayTime = 1.f;
 		
 	return S_OK;
 }
@@ -50,13 +43,30 @@ void CSideScroll_PatrolState::Initialize_SideScroll_PatrolBound(SIDESCROLL_PATRO
 		m_tPatrolBound.fMinX = -650.f;
 		m_tPatrolBound.fMaxX = -440.f;
 		break;
+
+	case Client::SIDESCROLL_PATROLBOUND::CHAPTER6_1_1:
+		m_tPatrolBound.fMinX = -977.f;
+		m_tPatrolBound.fMaxX = -570.f;
+		break;
+	case Client::SIDESCROLL_PATROLBOUND::CHAPTER6_1_2:
+		m_tPatrolBound.fMinX = -522.f;
+		m_tPatrolBound.fMaxX = -115.f;
+		break;
+	case Client::SIDESCROLL_PATROLBOUND::CHAPTER6_1_3:
+		m_tPatrolBound.fMinX = 121.f;
+		m_tPatrolBound.fMaxX = 868.f;
+		break;
+
+	case Client::SIDESCROLL_PATROLBOUND::CHAPTER6_1_4:
+		m_tPatrolBound.fMinX = 500.f;
+		m_tPatrolBound.fMaxX = 800.f;
+		break;
 	}
 }
 
 
 void CSideScroll_PatrolState::State_Enter()
 {
-	m_fAccTime = 0.f;
 }
 
 void CSideScroll_PatrolState::State_Update(_float _fTimeDelta)
@@ -85,11 +95,6 @@ void CSideScroll_PatrolState::State_Update(_float _fTimeDelta)
 
 void CSideScroll_PatrolState::State_Exit()
 {
-	m_fAccTime = 0.f;
-	m_fAccDistance = 0.f;
-	m_fMoveDistance = 0.f;
-	m_isTurn = false;
-	m_isMove = false;
 }
 
 CSideScroll_PatrolState* CSideScroll_PatrolState::Create(void* _pArg)

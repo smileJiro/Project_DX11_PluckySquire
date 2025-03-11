@@ -118,6 +118,11 @@ void CNeutral_Patrol_JumpState::PatrolMove(_float _fTimeDelta, _int _iDir)
 		if (true == m_isMove)
 		{
 			m_pOwner->Monster_Move(vDir);
+			if (true == m_pOwner->Check_Block(_fTimeDelta))
+			{
+				m_pOwner->Stop_Move();
+				Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+			}
 		}
 	}
 
