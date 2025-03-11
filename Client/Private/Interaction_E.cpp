@@ -345,6 +345,8 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 	{
 		//TODO :: 3D 어떻게 표현할것인가?
 
+		
+
 		_float2 vCalx = __super::WorldToSceen(pPlayer->Get_WorldMatrix());
 		_float CalX = vCalx.x - g_iWinSizeX / 2.f;
 		_float CalY = -(vCalx.y - g_iWinSizeY / 1.4f);
