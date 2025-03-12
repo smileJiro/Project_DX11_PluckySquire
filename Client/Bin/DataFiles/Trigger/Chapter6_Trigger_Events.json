@@ -58,5 +58,30 @@
         "Is_Sequence": true
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "Get_Stop_Stamp",
+    "Actions": [
+      {
+        "ActionTag": "Get_PlayerItem_Before",
+        "EventTag": "Stop_Stamp",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Get_PlayerItem",
+        "EventTag": "Stop_Stamp",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Dialogue",
+        "EventTag": "Stamp_Acquire_Stop",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Get_PlayerItem_After_End",
+        "EventTag": "Stop_Stamp",
+        "Is_Sequence": false
+      }
+    ]
   }
 ]

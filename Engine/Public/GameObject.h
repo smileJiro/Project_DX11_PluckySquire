@@ -68,6 +68,7 @@ public:
 	_uint						Get_GameObjectInstanceID() const				{ return m_iInstanceID; }
 	const _wstring&				Get_Include_Section_Name()						{ return m_strSectionName; }
 	_uint						Get_ObjectGroupID() const { return m_iObjectGroupID; }
+	_bool						Is_ValidGameObject(); // 자기 자신이 유효한 오브젝트인지, 검사하여 리턴(액티브true, dead 아니면 true)
 
 	//Set
 	void						Set_Name(const _wstring& _strName)				{ m_strName = _strName; }

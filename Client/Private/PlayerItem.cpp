@@ -32,7 +32,7 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 	pDesc->iActorType = (_uint)ACTOR_TYPE::DYNAMIC;
 	pDesc->isTrigger = false;
 	pDesc->eShapeType = (SHAPE_TYPE)SHAPE_TYPE::SPHERE;
-	pDesc->fRadius = .5f;
+	pDesc->fRadius = 0.8f;
 
 	pDesc->iFillterMyGroup = OBJECT_GROUP::TRIGGER_OBJECT;
 	pDesc->iFillterOtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::MAPOBJECT;
@@ -86,7 +86,7 @@ void CPlayerItem::Priority_Update(_float _fTimeDelta)
 
 void CPlayerItem::Update(_float _fTimeDelta)
 {
-	if (m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 2.f))
+	if (m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 6.f))
 	{
 		if (false == m_isInFrustum)
 		{
@@ -122,10 +122,9 @@ void CPlayerItem::Update(_float _fTimeDelta)
 
 void CPlayerItem::Late_Update(_float _fTimeDelta)
 {
-	if (false == m_isInFrustum)
-		return;
 
-	m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_GEOMETRY, this);
+	if(false == m_isFrustumCulling)
+		m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_GEOMETRY, this);
 
 	__super::Late_Update(_fTimeDelta);
 }

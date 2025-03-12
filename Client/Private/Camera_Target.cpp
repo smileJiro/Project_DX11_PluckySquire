@@ -209,11 +209,13 @@ void CCamera_Target::Start_Changing_ArmVector(_float _fChangingTime, _fvector _v
 	m_eCameraMode = DEFAULT;
 }
 
-void CCamera_Target::Load_SavedArmData(_float _fLoadTime)
+void CCamera_Target::Load_SavedArmData(RETURN_ARMDATA& _tSavedData, _float _fLoadTime)
 {
+	m_SaveArmData = _tSavedData;
+
 	m_pCurArm->Set_StartInfo();
-	Start_Changing_AtOffset(_fLoadTime, XMLoadFloat3(&m_ResetArmData.vAtOffset), EASE_IN);
-	Start_Zoom(_fLoadTime, (ZOOM_LEVEL)m_ResetArmData.iZoomLevel, EASE_IN);
+	Start_Changing_AtOffset(_fLoadTime, XMLoadFloat3(&m_SaveArmData.vAtOffset), EASE_IN_OUT);
+	Start_Zoom(_fLoadTime, (ZOOM_LEVEL)m_SaveArmData.iZoomLevel, EASE_IN_OUT);
 	m_eCameraMode = LOAD_SAVED_ARMDATA;
 	m_fLoadTime = { _fLoadTime, 0.f };
 }
@@ -527,14 +529,22 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 	//	Set_FreezeExit(FREEZE_Y, 0);
 	//}
 
+	//static RETURN_ARMDATA tData = {};
+	//static RETURN_ARMDATA tData1 = {};
 	//if (KEY_DOWN(KEY::Y)) {
 	//	Set_ResetData();
 	//}
 	//if (KEY_DOWN(KEY::I)) {
-	//	Save_ArmData();
+	//	tData = Save_ArmData();
+	//}
+	//if (KEY_DOWN(KEY::G)) {
+	//	tData1 = Save_ArmData();
 	//}
 	//if (KEY_DOWN(KEY::K)) {
-	//	Load_SavedArmData(1.f);
+	//	Load_SavedArmData(tData, 1.f);
+	//}
+	//if (KEY_DOWN(KEY::F)) {
+	//	Load_SavedArmData(tData1, 1.f);
 	//}
 	//if (KEY_DOWN(KEY::J)) {
 	//	Start_ResetArm_To_SettingPoint(1.f);

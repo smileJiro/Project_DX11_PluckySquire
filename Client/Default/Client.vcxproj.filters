@@ -700,6 +700,9 @@
     <Filter Include="02.GameObjects\MapObject\Mat">
       <UniqueIdentifier>{5d4653fd-40ed-4898-9ecd-d808d3e141d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Portal\PortalLocker\MonsterCount">
+      <UniqueIdentifier>{07a12f08-94a2-4b76-a9a9-440425e711a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1749,6 +1752,9 @@
     <ClInclude Include="..\public\Mat.h">
       <Filter>02.GameObjects\MapObject\Mat</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\PortalLocker_LayerCount.h">
+      <Filter>02.GameObjects\Portal\PortalLocker\MonsterCount</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2784,6 +2790,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Mat.cpp">
       <Filter>02.GameObjects\MapObject\Mat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PortalLocker_LayerCount.cpp">
+      <Filter>02.GameObjects\Portal\PortalLocker\MonsterCount</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
