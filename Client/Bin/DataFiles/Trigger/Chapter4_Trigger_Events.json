@@ -1,10 +1,40 @@
 [
   {
-    "Trigger_EventTag": "Chapter4_Intro",
+    "Trigger_EventTag": "Chapter4_3D_Out_01",
     "Actions": [
       {
         "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter4_3D_Out_01",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter4_3D_Out_02",
+    "Actions": [
+      {
+        "ActionTag": "Use_Portal",
+        "EventTag": "Chapter4_P0708",
+        "Is_Sequence": false
+      },
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter4_3D_Out_02",
+        "Is_Sequence": true
+      },
+      {
+        "ActionTag": "Create_EventExecuter",
         "EventTag": "Chapter4_Intro",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter4_2D_In",
+    "Actions": [
+      {
+        "ActionTag": "Dialogue",
+        "EventTag": "Chapter4_2D_In",
         "Is_Sequence": true
       }
     ]
@@ -19,7 +49,7 @@
       }
     ]
   },
-	{
+  {
     "Trigger_EventTag": "Chapter4_StorySequence_01",
     "Actions": [
       {
@@ -54,7 +84,7 @@
       }
     ]
   },
-    {
+  {
     "Trigger_EventTag": "Get_Bomb_Stamp",
     "Actions": [
       {
