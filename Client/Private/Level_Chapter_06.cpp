@@ -302,6 +302,10 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 		int a = 0;
 	}
 
+	if (KEY_DOWN(KEY::I))
+	{
+		CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
+	}
 	// Change Camera Free  Or Target
 	if (KEY_DOWN(KEY::C)) {
 		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
@@ -615,6 +619,16 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CCamera_Manager::GetInstance()->Load_CutSceneData(m_eLevelID);
 	CCamera_Manager::GetInstance()->Load_ArmData(m_eLevelID);
 
+	COORDINATE eCoord = pPlayer->Get_CurCoord();
+
+	if (COORDINATE_2D == eCoord)
+	{
+		auto pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D);
+		pCamera->Enter_Section(pPlayer->Get_Include_Section_Name());
+		pCamera->Switch_CameraView(nullptr);
+	}
+	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
+
 	return S_OK;
 }
 
@@ -624,7 +638,8 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
-	Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	Desc.eStartCoord = COORDINATE_2D;
+	Desc.tTransform2DDesc.vInitialPosition = { 0.f, 400.f, 0.f };   // TODO ::임시 위치
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -634,15 +649,10 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
 
 	if (nullptr == Uimgr->Get_Player())
-	{
 		CUI_Manager::GetInstance()->Set_Player(pPlayer);
-	}
-	_int iCurCoord = (COORDINATE_2D);
-	_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
+
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
-
-	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
 	return S_OK;

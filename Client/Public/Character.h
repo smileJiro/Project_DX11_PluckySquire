@@ -25,6 +25,7 @@ enum class AUTOMOVE_TYPE
 };
 typedef struct tagAutoMoveCommand
 {
+	friend class CCharacter;
 	enum STATE
 	{
 		STATE_START,
@@ -43,7 +44,7 @@ typedef struct tagAutoMoveCommand
 	//후딜레이
 	_float fPostDelayTime = 0.f;
 
-public:
+private:
 	void Update(_float _fTimeDelta) 
 	{
 		fTimeAcc += _fTimeDelta; 
@@ -144,10 +145,13 @@ protected:
 
 //AUTO MOVE
 public:
-	void Enque_AutoMove(AUTOMOVE_COMMAND _pCommand);
+	//COMMAND를 넣은 순서대로 실행됨.
+	void Add_AutoMoveCommand(AUTOMOVE_COMMAND _pCommand);
 	/// <param name="_bAutoClearQue"> : 큐에 든 모든 AutoMove가 완료되면 자동으로 큐를 비우기</param>
 	void Start_AutoMove(_bool _bAutoClearQue);
+	void Stop_AutoMove();
 	void Clear_AutoMove();
+	_bool Is_AutoMoving() { return m_bAutoMoving; }
 	virtual void On_StartAutoMove() {};
 	virtual void On_EndAutoMove() {};
 private:

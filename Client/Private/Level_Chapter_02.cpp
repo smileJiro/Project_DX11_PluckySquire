@@ -347,6 +347,10 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 #ifdef _DEBUG
 	if (KEY_DOWN(KEY::P))
 		CCamera_Manager::GetInstance()->Start_ZoomIn();
+	if (KEY_DOWN(KEY::I))
+	{
+		CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event",0);
+	}
 
 
 	if (KEY_DOWN(KEY::O))

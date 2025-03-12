@@ -251,7 +251,6 @@ HRESULT CBook::Render()
 		return E_FAIL;
 	COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
 	CShader* pShader = m_pShaderComs[eCoord];
-	_uint iShaderPass = m_iShaderPasses[eCoord];
 	C3DModel* pModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(Get_CurCoord()));
 
 	_float2 fLeftStartUV = { 0.f, 0.f };
@@ -261,6 +260,7 @@ HRESULT CBook::Render()
 
 	for (_uint i = 0; i < (_uint)pModel->Get_Meshes().size(); ++i)
 	{
+		_uint iShaderPass = m_iShaderPasses[eCoord];
 		_uint iRotateFlag = 0;
 		//_uint iShaderPass = (_uint)PASS_VTXANIMMESH::RENDERTARGET_MAPP;
 		auto pMesh = pModel->Get_Mesh(i);
@@ -361,6 +361,13 @@ HRESULT CBook::Render()
 		}
 		break;
 		default:
+		{
+			_float2 fDefaultStart = { 0.f,0.f };
+			_float2 fDefaultEnd = { 1.f,1.f };
+			if (FAILED(pShader->Bind_RawValue("g_fStartUV", &fDefaultStart, sizeof(_float2))))
+				return E_FAIL;
+			if (FAILED(pShader->Bind_RawValue("g_fEndUV", &fDefaultEnd, sizeof(_float2))))
+				return E_FAIL;
 			if (FAILED(pModel->Bind_Material(pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, 0)))
 			{
 				continue;
@@ -385,6 +392,7 @@ HRESULT CBook::Render()
 			{
 				int a = 0;
 			}
+		}
 			
 			break;
 		}
