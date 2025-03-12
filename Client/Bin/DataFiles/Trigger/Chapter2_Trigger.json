@@ -66,7 +66,7 @@
     "Trigger_ConditionType": 3,
     "Trigger_Coordinate": 1,
     "Trigger_EventTag": "Chapter2_FreezeZ_1",
-    "Trigger_Type": 4
+    "Trigger_Type": 5
   },
   {
     "Arm_Info": {
@@ -278,7 +278,7 @@
     "Trigger_ConditionType": 3,
     "Trigger_Coordinate": 1,
     "Trigger_EventTag": "Chapter2_FreezeZ_2",
-    "Trigger_Type": 4
+    "Trigger_Type": 5
   },
   {
     "Collider_Info": {
@@ -315,7 +315,7 @@
     "Trigger_ConditionType": 3,
     "Trigger_Coordinate": 1,
     "Trigger_EventTag": "Chapter2_FreezeZ_3",
-    "Trigger_Type": 4
+    "Trigger_Type": 5
   },
   {
     "Collider_Info": {
@@ -352,7 +352,7 @@
     "Trigger_ConditionType": 3,
     "Trigger_Coordinate": 1,
     "Trigger_EventTag": "Chapter2_FreezeZ_4",
-    "Trigger_Type": 4
+    "Trigger_Type": 5
   },
   {
     "Collider_Info": {
@@ -494,7 +494,7 @@
     "Trigger_ConditionType": 3,
     "Trigger_Coordinate": 1,
     "Trigger_EventTag": "Chapter2_FreezeZ_5",
-    "Trigger_Type": 4
+    "Trigger_Type": 5
   },
   {
     "Arm_Info": {
@@ -847,7 +847,7 @@
     "Trigger_ConditionType": 3,
     "Trigger_Coordinate": 1,
     "Trigger_EventTag": "Chapter2_FreezeZ_6",
-    "Trigger_Type": 4
+    "Trigger_Type": 5
   },
   {
     "Collider_Info": {

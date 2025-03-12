@@ -102,6 +102,7 @@ void CDefenderSpawner::Spawn_Single(T_DIRECTION _eDirection, _vector _vPos,_floa
 	{
 		pMonster->Set_Direction(_eDirection);
 		pMonster->Set_MoveSpeed(_fMoveSpeed);
+		pMonster->On_Teleport();
 	}
 }
 

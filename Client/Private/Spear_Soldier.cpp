@@ -5,6 +5,7 @@
 #include "Soldier_Spear.h"
 #include "Soldier_Shield.h"
 #include "DetectionField.h"
+#include "Sneak_DetectionField.h"
 
 CSpear_Soldier::CSpear_Soldier(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -60,22 +61,32 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
-    m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
-
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
-    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, BLOCK_HOLD_LOOP, true);
+
+    if(false == m_isSneakMode)
+    {
+        m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
+        m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
+        m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
+        m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
+        m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
+        m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+        m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
+        m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
+
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, BLOCK_HOLD_LOOP, true);
+    }
+    else if(true == m_isSneakMode)
+    {
+        m_pFSM->Add_SneakState();
+    }
+
+    m_pFSM->Set_State((_uint)MONSTER_STATE::SNEAK_IDLE);
+
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CSpear_Soldier::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -215,6 +226,27 @@ void CSpear_Soldier::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_STARTUP);
             break;
 
+        case MONSTER_STATE::SNEAK_IDLE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            break;
+
+        case MONSTER_STATE::SNEAK_PATROL:
+        case MONSTER_STATE::SNEAK_BACK:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
+            break;
+
+        case MONSTER_STATE::SNEAK_AWARE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            break;
+
+        case MONSTER_STATE::SNEAK_INVESTIGATE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
+            break;
+
+        case MONSTER_STATE::SNEAK_ALERT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ARREST);
+            break;
+
         case MONSTER_STATE::HIT:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT_FRONT);
             break;
@@ -255,6 +287,10 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
     case BLOCK_HOLD_UP:
         pModelObject->Switch_Animation(BLOCK_HOLD_LOOP);
+        break;
+
+    case ARREST:
+        Set_AnimChangeable(true);
         break;
 
     case HIT_FRONT:
@@ -311,23 +347,49 @@ HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)
     m_fHalfBodySize = ShapeDesc->fRadius;
 
 
-    //쿼리를 켜기 위한 트리거
-    SHAPE_CAPSULE_DESC* TriggerDesc = new SHAPE_CAPSULE_DESC;
-    TriggerDesc->fRadius = 0.3f;
-    TriggerDesc->fHalfHeight = 0.6f;
+    if(false == pDesc->isSneakMode)
+    {
+        //쿼리를 켜기 위한 트리거
+        SHAPE_CAPSULE_DESC* TriggerDesc = new SHAPE_CAPSULE_DESC;
+        TriggerDesc->fRadius = 0.3f;
+        TriggerDesc->fHalfHeight = 0.6f;
 
-    /* 해당 Shape의 Flag에 대한 Data 정의 */
-    ShapeData->pShapeDesc = TriggerDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-    ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
-    ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
-    ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-    ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, TriggerDesc->fHalfHeight + TriggerDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
-    ShapeData->FilterData.MyGroup = OBJECT_GROUP::RAY_TRIGGER;
-    ShapeData->FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::INTERACTION_OBEJCT;
+        /* 해당 Shape의 Flag에 대한 Data 정의 */
+        ShapeData->pShapeDesc = TriggerDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+        ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
+        ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+        ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+        ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
+        XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, TriggerDesc->fHalfHeight + TriggerDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+        ShapeData->FilterData.MyGroup = OBJECT_GROUP::RAY_TRIGGER;
+        ShapeData->FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::INTERACTION_OBEJCT;
 
-    /* 최종으로 결정 된 ShapeData를 PushBack */
-    ActorDesc->ShapeDatas.push_back(*ShapeData);
+        /* 최종으로 결정 된 ShapeData를 PushBack */
+        ActorDesc->ShapeDatas.push_back(*ShapeData);
+    }
+    else if(true == pDesc->isSneakMode)
+    {
+        m_vRayOffset.y = ShapeDesc->fRadius - 0.1f;
+        m_vRayOffset.z = ShapeDesc->fRadius + ShapeDesc->fHalfHeight - 0.1f;
+
+        m_fRayHalfWidth = ShapeDesc->fRadius - 0.1f;
+
+        //닿은 물체의 씬 쿼리를 켜는 트리거
+        SHAPE_BOX_DESC* RayBoxDesc = new SHAPE_BOX_DESC;
+        RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(XMConvertToRadians(pDesc->fFOVX * 0.5f)) * 0.5f, 1.f, pDesc->fAlertRange * 0.5f };
+        //RayBoxDesc->vHalfExtents = { ShapeDesc->fRadius, 0.1f, pDesc->fAlertRange * 0.5f };
+
+        /* 해당 Shape의 Flag에 대한 Data 정의 */
+        //SHAPE_DATA* ShapeData = new SHAPE_DATA;
+        ShapeData->pShapeDesc = RayBoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+        ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
+        ShapeData->eMaterial = ACTOR_MATERIAL::NORESTITUTION; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+        ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+        XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, RayBoxDesc->vHalfExtents.z)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+        /* 최종으로 결정 된 ShapeData를 PushBack */
+        ActorDesc->ShapeDatas.push_back(*ShapeData);
+    }
 
     /* 충돌 필터에 대한 세팅 ()*/
     ActorDesc->tFilterData.MyGroup = OBJECT_GROUP::MONSTER;
@@ -355,6 +417,7 @@ HRESULT CSpear_Soldier::Ready_Components()
     FSMDesc.isMelee = true;
     FSMDesc.pOwner = this;
     FSMDesc.iCurLevel = m_iCurLevelID;
+    FSMDesc.eWayIndex = m_eWayIndex;
 
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_FSM"),
         TEXT("Com_FSM"), reinterpret_cast<CComponent**>(&m_pFSM), &FSMDesc)))
@@ -382,6 +445,23 @@ HRESULT CSpear_Soldier::Ready_Components()
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_DetectionField"),
         TEXT("Com_DetectionField"), reinterpret_cast<CComponent**>(&m_pDetectionField), &DetectionDesc)))
         return E_FAIL;
+
+    if(true == m_isSneakMode)
+    {
+        /* Com_Sneak_DetectionField */
+        CSneak_DetectionField::SNEAKDETECTIONFIELDDESC Sneak_DetectionDesc;
+        Sneak_DetectionDesc.fRadius = 8.f;
+        Sneak_DetectionDesc.fOffset = 0.f;
+        Sneak_DetectionDesc.pOwner = this;
+        Sneak_DetectionDesc.pTarget = m_pTarget;
+#ifdef _DEBUG
+        Sneak_DetectionDesc.pDraw = m_pDraw;
+#endif // _DEBUG
+
+        if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Sneak_DetectionField"),
+            TEXT("Com_Sneak_DetectionField"), reinterpret_cast<CComponent**>(&m_pSneak_DetectionField), &Sneak_DetectionDesc)))
+            return E_FAIL;
+    }
 
     return S_OK;
 }

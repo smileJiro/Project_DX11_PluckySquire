@@ -478,6 +478,7 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
     //float3 F0 = lerp(Fdielectric, vAlbedo, fMetallic); // fMetallic 값을 가지고 보간한다. FDielectric은 0.04f;
     float F = SchlickFresnel(F0, dot(vHalfway, vPixelToEye));
     float3 kd = lerp(float3(1.0f, 1.0f, 1.0f) - F, float3(0.0f, 0.0f, 0.0f), fMetallic); // 물체의 확산반사계수 : 메탈릭 수치에 따라 보정되는 값임 >>> F로 반사되는 에너지를 제외한 에너지를 확산반사의 양으로 사용함.
+
     float3 vDiffuseBRDF = kd * vAlbedo;
     
     float D = NdfGGX(NdotH, fRoughness);
@@ -486,9 +487,9 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
 
     //float fAttenuation = pow(saturate((c_DirectLight.fFallOutEnd - fLightDist) / (c_DirectLight.fFallOutEnd - c_DirectLight.fFallOutStart)), 2.0f); //saturate((c_DirectLight.fFallOutEnd - fLightDist) / (c_DirectLight.fFallOutEnd - c_DirectLight.fFallOutStart));
     //float3 vFinalRadiance = ;
-    
+
     float3 DirectLighting = ((vDiffuseBRDF * c_DirectLight.vDiffuse.rgb) + (vSpecularBRDf * c_DirectLight.vSpecular.rgb)) * c_DirectLight.vRadiance * NdotI;
-    
+
     // Shadow Factor 계산
     float fShadowFactor = 0.0f;
     if (c_DirectLight.isShadow & 1)
@@ -520,11 +521,12 @@ PS_OUT PS_PBR_LIGHT_DIRECTIONAL(PS_IN In)
         //    fShadowFactor = 0.0f;
     }
 
-    
-    
-    
-    
     Out.vColor = float4(max(DirectLighting.rgb * (1 - fShadowFactor), 0.0f), 1.0f);
+    int iFlag = round(vDepthDesc.b);
+    if ((iFlag & SAVEBRDF) != 0)
+    {
+        Out.vColor.rgb = max(Out.vColor.rgb, (vDiffuseBRDF + vSpecularBRDf) * 0.3f);
+    }
     return Out;
 }
 
@@ -610,7 +612,7 @@ PS_OUT PS_PBR_LIGHT_SPOT(PS_IN In)
     }
 
     Out.vColor = float4(max(DirectLighting.rgb * (1 - fShadowFactor), 0.0f), 1.0f);
-    
+
     return Out;
 }
 
@@ -660,10 +662,11 @@ PS_OUT PS_MAIN_LIGHTING(PS_IN In)
     SumSSAO = 1.0f - SumSSAO;
     vAmbientLighting *= pow(SumSSAO, 4);
     
-    
+
     //Out.vColor = float4(SumSSAO, SumSSAO, SumSSAO /*+ vEmmision*/, 1.0f);
     Out.vColor = float4(max(vAmbientLighting, 0.0f) + vDirectLighting /*+ vEmissiveColor*/, 1.0f);
     Out.vColor = clamp(Out.vColor, 0.0f, c_GlobalIBLVariable.fHDRMaxLuminance);
+
     return Out;
 }
 PS_OUT PS_PBR_BLUR_FINAL(PS_IN In)

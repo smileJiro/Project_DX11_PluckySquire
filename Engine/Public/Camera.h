@@ -126,6 +126,9 @@ public:
 	void		Set_ResetData();
 	//void		Reset_CameraArm();
 
+	RETURN_ARMDATA		Save_ArmData();
+	virtual void		Load_SavedArmData(RETURN_ARMDATA& _tSavedData, _float _fLoadTime) {};
+
 public:/* Dof 값 조절 후 Bind_DofBuffer() 호출 시 적용 */
 	HRESULT		Compute_FocalLength();
 	HRESULT		Bind_DofConstBuffer();
@@ -146,6 +149,7 @@ protected:
 	virtual void	Turn_Vector(_float _fTimeDelta);
 	virtual void	Change_Length(_float _fTimeDelta);
 	virtual void	Reset_To_SettingPoint(_float _fTimeDelta) {};
+	virtual void	Action_Load_SavedArmData(_float _fTimeDelta) {};
 
 	virtual void	Switching(_float _fTimeDelta) {};
 
@@ -220,6 +224,10 @@ protected:
 	// 해당 지점으로 카메라 복구
 	RETURN_ARMDATA				m_ResetArmData = {};
 	_float2						m_fResetTime = {};
+
+	// Save 기능
+	RETURN_ARMDATA				m_SaveArmData = {};
+	_float2						m_fLoadTime = {};
 
 protected:
 	// Camera 회전

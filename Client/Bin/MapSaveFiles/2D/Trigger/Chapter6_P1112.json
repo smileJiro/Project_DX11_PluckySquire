@@ -1,0 +1,26 @@
+[
+    {
+        "Collider_Info": {
+          "Position": [
+            -8.0,
+            361.0
+          ],
+          "Scale": [
+            61.0,
+            7.0
+          ]
+        },
+        "Fillter_MyGroup": 2,
+        "Fillter_OtherGroupMask": 128,
+        "Trigger_ConditionType": 0,
+        "Trigger_Coordinate": 0,
+        "Trigger_EventTag": "BookSectionChange_Next",
+        "Trigger_Type": 6,
+		  "MapTrigger_Info": {
+        "Next_Position": [
+            0.0,
+            -690.0
+        ]
+		}
+    }
+]

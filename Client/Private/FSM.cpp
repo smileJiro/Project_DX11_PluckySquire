@@ -305,6 +305,7 @@ HRESULT CFSM::Add_SneakState()
 	Desc.fAttack2DRange = m_fAttack2DRange;
 	Desc.iCurLevel = m_iCurLevel;
 	Desc.eWayIndex = m_eWayIndex;
+	Desc.pOwner = m_pOwner;
 	
 	pState = CSneak_IdleState::Create(&Desc);
 	if (nullptr == pState)
@@ -319,7 +320,6 @@ HRESULT CFSM::Add_SneakState()
 	pState->Set_Owner(m_pOwner);
 	pState->Set_FSM(this);
 	m_States.emplace((_uint)MONSTER_STATE::SNEAK_PATROL, pState);
-	Set_PatrolBound();
 
 	pState = CSneak_BackState::Create(&Desc);
 	if (nullptr == pState)
@@ -327,7 +327,6 @@ HRESULT CFSM::Add_SneakState()
 	pState->Set_Owner(m_pOwner);
 	pState->Set_FSM(this);
 	m_States.emplace((_uint)MONSTER_STATE::SNEAK_BACK, pState);
-	Set_PatrolBound();
 
 	pState = CSneak_AwareState::Create(&Desc);
 	if (nullptr == pState)

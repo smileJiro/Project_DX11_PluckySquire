@@ -6,7 +6,6 @@
 #include "Camera_Target.h"
 #include "Camera_2D.h"
 #include "Camera_CutScene.h"
-#include "Postit_Page.h"
 #include "Player.h"
 #include "Section_2D_PlayMap.h"
 #include "Section_Manager.h"

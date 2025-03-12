@@ -270,7 +270,7 @@ PS_OUT PS_MAIN(PS_IN In)
     // 0, 0.5, 0.5 (음의 x 축)
     Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
     Out.vORMH = vORMH;
-    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 1.0f);
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, /*렌더플래그자리*/0.0f, 1.0f);
     
     float3 vEmissiveColor = Material.EmissiveColor * fEmissive;
     Out.vEtc = float4(vEmissiveColor, fSpecular /**/);

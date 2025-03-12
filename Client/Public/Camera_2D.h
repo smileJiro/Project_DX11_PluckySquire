@@ -180,7 +180,7 @@ private:
 	void						Pause(_float _fTimeDelta);
 	void						Flipping_Down(_float _fTimeDelta);
 	void						Play_Narration(_float _fTimeDelta);
-	void						Reset_To_SettingPoint(_float _fTimeDelta);
+	virtual void				Reset_To_SettingPoint(_float _fTimeDelta) override;
 	void						Zipline(_float _fTimeDelta);
 	
 	void						Look_Target(_float fTimeDelta);
