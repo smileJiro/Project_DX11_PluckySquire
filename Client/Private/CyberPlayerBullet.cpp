@@ -59,14 +59,14 @@ HRESULT CCyberPlayerBullet::Initialize(void* _pArg)
     tBodyShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     tBodyShapeData.isTrigger = true;                  
     tBodyShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_PROJECTILE;
-	tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE;
+	tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::BOSS | OBJECT_GROUP::BOSS_PROJECTILE;
 	XMStoreFloat4x4(&tBodyShapeData.LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.f, 0.0f));
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas[tBodyShapeData.iShapeUse] = tBodyShapeData;
 
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER_PROJECTILE;
-    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE ;
+    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::BOSS | OBJECT_GROUP::BOSS_PROJECTILE ;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
@@ -118,8 +118,8 @@ void CCyberPlayerBullet::Update(_float _fTimeDelta)
 
 void CCyberPlayerBullet::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {	//여긴 MONSTER 아니면 MONSTER_PROJECTILE만 충돌됨.
-	if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup
-		|| OBJECT_GROUP::MONSTER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
+	if (OBJECT_GROUP::BOSS & _Other.pActorUserData->iObjectGroup
+		|| OBJECT_GROUP::BOSS_PROJECTILE & _Other.pActorUserData->iObjectGroup)
 	{
 		Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), m_iDamg, _vector{ 0.f,0.f,0.f });
 		Event_DeleteObject(this);
