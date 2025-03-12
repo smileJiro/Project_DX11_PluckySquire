@@ -464,11 +464,11 @@
                         0.0
                     ],
                     "Arg2": [
-                        0.0,
+                        360.0,
                         0.0,
                         0.0
                     ],
-                    "SetType": "UNSET"
+                    "SetType": "RANDOMLINEAR"
                 },
                 "Scale": {
                     "Arg1": [
@@ -630,7 +630,7 @@
                 }
             ],
             "Pooling": "KILL",
-            "ShaderPass": "DEFAULT_BLOOM",
+            "ShaderPass": "ROTATION_BILLBOARD_BLOOM",
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "BURST_SPAWN",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Star_01.dds",

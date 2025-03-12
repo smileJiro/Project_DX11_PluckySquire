@@ -1,7 +1,12 @@
 #pragma once
 #include "ModelObject.h"
+BEGIN(Engine)
+class CEffect_System;
+END
 BEGIN(Client)
 class CPlayer;
+
+
 class CPlayerRifle :
     public CModelObject
 {
@@ -27,6 +32,9 @@ private:
 	_float m_fShootTimeAcc = 0.f;
 	_vector m_vBarrelOffset = { 0.f,0.f,0.f };
 	class CPooling_Manager* m_pPoolMgr = nullptr;
+
+	class CEffect_System* m_pShotEffect = { nullptr };
+
 public:
 	static CPlayerRifle* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

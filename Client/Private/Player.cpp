@@ -480,6 +480,7 @@ HRESULT CPlayer::Ready_PartObjects()
     if (nullptr == m_pTurnBookEffect)
         return E_FAIL;
     m_pTurnBookEffect->Set_Active(false);
+    Safe_AddRef(m_pTurnBookEffect);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);

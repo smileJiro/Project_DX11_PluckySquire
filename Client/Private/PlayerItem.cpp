@@ -91,7 +91,7 @@ void CPlayerItem::Update(_float _fTimeDelta)
 		if (false == m_isInFrustum)
 		{
 			// temp
-			CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Guntlet1"), true, Get_FinalPosition());
+			CEffect_Manager::GetInstance()->Active_Effect(TEXT("Guntlet1"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
 			m_isInFrustum = true;
 		}
 		
@@ -140,6 +140,19 @@ HRESULT CPlayerItem::Render()
 	m_pModelCom->Render(m_pShaderCom, (_uint)PASS_VTXMESH::DEFAULT);
 
 	return S_OK;
+}
+
+void CPlayerItem::Change_Mode(_uint _iItemMode)
+{
+	m_iItemMode = _iItemMode;
+
+	if (GETTING == m_iItemMode)
+	{
+		// ÀÌÆåÆ® ÆÎ
+		CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Guntlet1"), true, m_pControllerTransform->Get_WorldMatrix_Ptr(), 1);
+
+		//CEffect_Manager::GetInstance()->Active_EffectPositionID(TEXT("Guntlet1"), true, Get_FinalPosition(), 1);
+	}
 }
 
 HRESULT CPlayerItem::Ready_Components(PLAYERITEM_DESC* _pArg)
@@ -245,9 +258,8 @@ void CPlayerItem::Action_Disappear(_float _fTimeDelta)
 	this->Set_Active(false);
 	m_isStop = false; 
 
-	// ÀÌÆåÆ® ÆÎ
-	CEffect_Manager::GetInstance()->Active_EffectPositionID(TEXT("Guntlet1"), true, Get_FinalPosition(), 1);
 	CEffect_Manager::GetInstance()->InActive_EffectID(TEXT("Guntlet1"), 0);
+
 }
 
 void CPlayerItem::Check_PosY()

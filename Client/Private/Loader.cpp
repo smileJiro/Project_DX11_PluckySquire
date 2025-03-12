@@ -1767,8 +1767,13 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 #pragma region Chapter 8 - Effect Load
 
-	lstrcpy(m_szLoadingText, TEXT("Level6 이펙트 로딩중입니다."));
+	lstrcpy(m_szLoadingText, TEXT("Level8 이펙트 로딩중입니다."));
 
+	if (FAILED(Load_Directory_Effects(LEVEL_CHAPTER_8, TEXT("../Bin/DataFiles/FX/Level8/LoadInfo.json"))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/FX/FX_Level8.json"), TEXT("FX_Level8"), LEVEL_CHAPTER_8)))
+		return E_FAIL;
 #pragma endregion
 
 #pragma region Chapter 8 - Object Create

@@ -3,6 +3,7 @@
 #include "Pooling_Manager.h"
 #include "Player.h"
 #include "GameInstance.h"
+#include "Effect_Manager.h"
 
 CPlayerRifle::CPlayerRifle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -37,6 +38,21 @@ HRESULT CPlayerRifle::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
+
+	// Effect »ý¼º.
+	CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
+	EffectDesc.eStartCoord = COORDINATE_3D;
+	EffectDesc.isCoordChangeEnable = false;
+	EffectDesc.iSpriteShaderLevel = LEVEL_STATIC;
+	EffectDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+	EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
+	EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+	EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+
+	m_pShotEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("CyberShot.json"), &EffectDesc));
+	//if (nullptr == m_pShotEffect)
+	//	return E_FAIL;
+
 	return S_OK;
 }
 
@@ -50,7 +66,6 @@ void CPlayerRifle::Update(_float _fTimeDelta)
 
 void CPlayerRifle::Shoot()
 {
-
 	if (m_fShhotDelay <= m_fShootTimeAcc)
 	{
 		m_fShootTimeAcc = 0.f;
@@ -73,6 +88,17 @@ void CPlayerRifle::Shoot()
 		_float4 vRot; XMStoreFloat4(&vRot, XMQuaternionRotationAxis(vAxis, fAngle));
 
 		m_pPoolMgr->Create_Object(TEXT("Pooling_Projectile_CyberPlayerBullet"), COORDINATE_3D, &vPos, &vRot);
+
+		// TEMP
+		//CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("CyberShot"), false, vFirePosition);
+		//CEffect_Manager::GetInstance()->Active_Effect(TEXT("CyberShot"), true, &m_WorldMatrices[COORDINATE_3D]);
+		//CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("CyberShot"), 0.5f);
+		
+		if (nullptr != m_pShotEffect)
+		{
+			m_pShotEffect
+		}
+
 	}
 }
 
@@ -100,5 +126,7 @@ CGameObject* CPlayerRifle::Clone(void* _pArg)
 
 void CPlayerRifle::Free()
 {
+	Safe_Release(m_pShotEffect);
+
 	__super::Free();
 }

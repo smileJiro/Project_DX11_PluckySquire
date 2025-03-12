@@ -182,7 +182,13 @@ void CMeshEffect_Emitter::Update_Emitter(_float _fTimeDelta)
 
 			else if (CEffect_Module::DATA_APPLY::SCALE == eData)
 			{
-				pModule->Update_ScaleKeyframe(m_fAccTime, ((_float4*)(&m_WorldMatrices[COORDINATE_3D])), ((_float4*)(&m_WorldMatrices[COORDINATE_3D])+1), ((_float4*)(&m_WorldMatrices[COORDINATE_3D]) + 2));
+				if (FOLLOW_PARENT != m_eSpawnPosition)
+					pModule->Update_ScaleKeyframe(m_fAccTime, ((_float4*)(&m_WorldMatrices[COORDINATE_3D])), ((_float4*)(&m_WorldMatrices[COORDINATE_3D])+1), ((_float4*)(&m_WorldMatrices[COORDINATE_3D]) + 2));
+				else
+				{
+					const _float4x4* pMatrix = m_pControllerTransform->Get_WorldMatrix_Ptr();
+					pModule->Update_ScaleKeyframe(m_fAccTime, ((_float4*)(pMatrix)), ((_float4*)(pMatrix) + 1), ((_float4*)(pMatrix) + 2));
+				}
 			}
 		}
 		else if (CEffect_Module::MODULE_TYPE::MODULE_TRANSLATION == eType)
