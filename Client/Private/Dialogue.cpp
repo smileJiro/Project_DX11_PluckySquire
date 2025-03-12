@@ -526,17 +526,37 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 			}
 			else
 			{
-				vTextPos3D = _float3(g_iWinSizeX / 3.25f, g_iWinSizeY - g_iWinSizeY / 4.5f, 0.f);
-				// 대상 이름 출력
-				wsprintf(m_tFont, currentLine.Talker.c_str());
-				pGameInstance->Render_Font(TEXT("Font28"), m_tFont, _float2(vTextPos3D.x, vTextPos3D.y), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 
-				// 대화 내용 출력
-				wsprintf(m_tFont, strDisplaytext.c_str());
-				pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 120.f, vTextPos3D.y + 55.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+				if (true == Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].isLineEnter)
+				{
+					vTextPos3D = _float3(g_iWinSizeX / 3.25f, g_iWinSizeY - g_iWinSizeY / 4.2f, 0.f);
+					// 대상 이름 출력
+					wsprintf(m_tFont, currentLine.Talker.c_str());
+					pGameInstance->Render_Font(TEXT("Font28"), m_tFont, _float2(vTextPos3D.x, vTextPos3D.y), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 
-				Safe_Release(pGameInstance);
-				return S_OK;
+					// 대화 내용 출력
+					wsprintf(m_tFont, strDisplaytext.c_str());
+					pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 120.f, vTextPos3D.y + 55.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+
+					Safe_Release(pGameInstance);
+					return S_OK;
+				}
+				else
+				{
+					vTextPos3D = _float3(g_iWinSizeX / 3.25f, g_iWinSizeY - g_iWinSizeY / 4.5f, 0.f);
+					// 대상 이름 출력
+					wsprintf(m_tFont, currentLine.Talker.c_str());
+					pGameInstance->Render_Font(TEXT("Font28"), m_tFont, _float2(vTextPos3D.x, vTextPos3D.y), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+
+					// 대화 내용 출력
+					wsprintf(m_tFont, strDisplaytext.c_str());
+					pGameInstance->Render_Font(TEXT("Font35"), m_tFont, _float2(vTextPos3D.x - 120.f, vTextPos3D.y + 55.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+
+					Safe_Release(pGameInstance);
+					return S_OK;
+				}
+
+				
 			}
 
 		}
