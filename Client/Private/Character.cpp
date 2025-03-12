@@ -36,9 +36,6 @@ HRESULT CCharacter::Initialize(void* _pArg)
 
 void CCharacter::Priority_Update(_float _fTimeDelta)
 {
-
-    __super::Priority_Update(_fTimeDelta);
-
     if(false == m_isIgnoreGround)
     {
         COORDINATE eCoord = Get_CurCoord();
@@ -89,6 +86,10 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
         if (bOldGround == false && m_bOnGround == true)
             On_Land();
     }
+
+
+    __super::Priority_Update(_fTimeDelta);
+
 }
 
 void CCharacter::Update(_float _fTimeDelta)

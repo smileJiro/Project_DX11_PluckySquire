@@ -100,7 +100,7 @@ HRESULT CFallingRock::Initialize(void* _pArg)
 
 void CFallingRock::Priority_Update(_float _fTimeDelta)
 {
-
+	
 	__super::Priority_Update(_fTimeDelta);
 }
 
@@ -501,7 +501,29 @@ void CFallingRock::Action_ColBound_2D(_float _fTimeDelta)
 		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 		vPos += XMLoadFloat2(&m_vColBoundDirection) * m_fJumpForcePerSec * _fTimeDelta;
 		Set_Position(vPos);
+
+
+		if (1.0f < m_vLifeTimeAcc.y)
+		{
+			// 만약 스크린 밖으로 나갔다면 삭제?
+			_matrix matView = XMMatrixIdentity();
+			_float2 vSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(m_strSectionName);
+			_matrix matProj = XMMatrixOrthographicLH(vSize.x, vSize.y, 0.f, 1.f);
+			matView *= matProj;
+
+			_vector vNDCPos = XMVector3TransformCoord(vPos, matView);
+
+			_float fNDCX = XMVectorGetX(vNDCPos);
+			_float fNDCY = XMVectorGetY(vNDCPos);
+			if (fNDCX < -1.0f || fNDCX > 1.0f)
+			{
+				Event_DeleteObject(this);
+			}
+		}
+		
 	}
+
+	
 
 }
 
