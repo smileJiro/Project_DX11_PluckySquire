@@ -652,25 +652,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
 
-
-	_vector vPalyerPos = pPlayer->Get_FinalPosition();
-	AUTOMOVE_COMMAND tCommand{};
-	tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
-	tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_RIGHT;
-	tCommand.fPreDelayTime = 4.f;
-	tCommand.vTarget = vPalyerPos += { 500.f, 0.f, 0.f };
-	pPlayer->Add_AutoMoveCommand(tCommand);
-	tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_DOWN;
-	tCommand.vTarget += { 0.f, -500.f, 0.f };
-	pPlayer->Add_AutoMoveCommand(tCommand);
-	tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_C08V02_LOOKUPLEFT;
-	tCommand.vTarget += { -500.f, 0.f, 0.f };
-	pPlayer->Add_AutoMoveCommand(tCommand);
-	tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_UP;
-	tCommand.vTarget += { 0.f, 500.f, 0.f };
-	pPlayer->Add_AutoMoveCommand(tCommand);
-
-	pPlayer->Start_AutoMove(true);
 	return S_OK;
 }
 
