@@ -450,13 +450,21 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 		_vector vToNext = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - m_pOwner->Get_FinalPosition(), 0.f);
 		_float3 vToNextDir; XMStoreFloat3(&vToNextDir, XMVector3Normalize(vToNext));
 		
-		if(false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vToNextDir, XMVectorGetX(XMVector3Length(vToNext)), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+
+		//다음 점이 막혀있거나 거리가 더 길면 시작점으로 감
+		if (true == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vToNextDir, XMVectorGetX(XMVector3Length(vToNext)), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE)
+			|| 2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
 		{
-			if (2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
-			{
-				m_Ways.push_back(iStartIndex);
-			}
+			m_Ways.push_back(iStartIndex);
 		}
+
+		//if(false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vToNextDir, XMVectorGetX(XMVector3Length(vToNext)), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+		//{
+		//	if (2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
+		//	{
+		//		m_Ways.push_back(iStartIndex);
+		//	}
+		//}
 		
 		reverse(m_Ways.begin(), m_Ways.end());
 		m_iCurWayIndex = 0;

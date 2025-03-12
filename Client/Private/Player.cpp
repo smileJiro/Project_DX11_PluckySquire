@@ -1140,6 +1140,16 @@ void CPlayer::On_Change2DDirection(E_DIRECTION _eCurrentDir)
     m_pBody2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir) + m_f2DCenterYOffset });
 }
 
+void CPlayer::On_StartAutoMove()
+{
+	Set_BlockPlayerInput(true);
+}
+
+void CPlayer::On_EndAutoMove()
+{
+	Set_BlockPlayerInput(false);
+}
+
 
 void CPlayer::Move_Attack_3D()
 {

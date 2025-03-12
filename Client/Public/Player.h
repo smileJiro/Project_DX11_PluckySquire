@@ -519,8 +519,10 @@ public:
 	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	virtual void On_Land() override;
 	virtual void On_Change2DDirection(E_DIRECTION _eCurrentDir) override;
-public:
+	virtual void On_StartAutoMove() override;
+	virtual void On_EndAutoMove() override;
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+public:
 
 	void Move_Attack_3D();
 	void StampSmash();
