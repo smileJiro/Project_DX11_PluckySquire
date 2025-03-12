@@ -274,7 +274,7 @@ void CPooling_Manager::Delete_Pool(const _wstring& _strPoolingTag)
 		return;
 	for (auto& pGameObject : *pGameObjects)
 	{
-		Event_DeleteObject( pGameObject);
+		Event_DeleteObject(pGameObject);
 	}
 
 }
