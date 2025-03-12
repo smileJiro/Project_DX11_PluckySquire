@@ -871,11 +871,6 @@ _bool CCharacter::Process_AutoMove_MoveToward(const AUTOMOVE_COMMAND& _pCommand,
 
 _bool CCharacter::Process_AutoMove_LookDirection(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta)
 {
-    return _bool();
-}
-
-_bool CCharacter::Process_AutoMove_ChangeAnimation(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta)
-{
     COORDINATE eCoord = Get_CurCoord();
     _vector vDir = XMVector3Normalize(_pCommand.vTarget);
     if (COORDINATE_2D == eCoord)
@@ -887,6 +882,11 @@ _bool CCharacter::Process_AutoMove_ChangeAnimation(const AUTOMOVE_COMMAND& _pCom
     {
         return Rotate_To_Radians(vDir, m_pControllerTransform->Get_RotationPerSec());
     }
+}
+
+_bool CCharacter::Process_AutoMove_ChangeAnimation(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta)
+{
+    return false;
 }
 
 _bool CCharacter::Process_AutoMove_Wait(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta)
