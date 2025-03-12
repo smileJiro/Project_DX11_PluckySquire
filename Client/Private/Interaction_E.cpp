@@ -348,7 +348,7 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 			}
 			else if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
 			{
-				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(*(CurSection), this, SECTION_2D_PLAYMAP_UI);
+				//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(*(CurSection), this, SECTION_2D_PLAYMAP_UI);
 			}
 		}
 
@@ -544,11 +544,14 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		else
 			m_strDisplayText = TEXT("나가기");
 	}
-		
 		break;
 
 	case INTERACT_ID::DRAGGABLE:
 		m_strDisplayText = TEXT("끌기");
+		break;
+
+	case INTERACT_ID::LUNCHBOX:
+		m_strDisplayText = TEXT("열기");
 		break;
 
 	case INTERACT_ID::BOOK:
