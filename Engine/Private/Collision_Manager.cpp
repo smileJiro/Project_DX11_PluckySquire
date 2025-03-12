@@ -100,7 +100,7 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
 
                         if (true == pLeftCollider->Is_Block() && false == pRightCollider->Is_Trigger())
                             pLeftCollider->Block(pRightCollider);
-                        if (true == pRightCollider->Is_Block() && false == pLeftCollider->Is_Trigger())
+                        else if (true == pRightCollider->Is_Block() && false == pLeftCollider->Is_Trigger())
                             pRightCollider->Block(pLeftCollider);
                     }
                 }
@@ -116,7 +116,7 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
 
                         if (true == pLeftCollider->Is_Block() && false == pRightCollider->Is_Trigger())
                             pLeftCollider->Block(pRightCollider);
-                        if (true == pRightCollider->Is_Block() && false == pLeftCollider->Is_Trigger())
+                        else if (true == pRightCollider->Is_Block() && false == pLeftCollider->Is_Trigger())
                             pRightCollider->Block(pLeftCollider);
                     }
                 }

@@ -16,6 +16,11 @@ class CScrollModelObject;
 class CSection_Manager;
 class CDefenderCapsule;
 class CDialog_Manager;
+//포탈에 입장하면 포탈 사라짐. 
+//BlockoInput 후 Dialog 시작
+//lDialog 끝나면 캐릭터가 앞으로 걸어가다가 TransformIn
+
+
 //다 구하면
 //몬스터들 다 사라짐
 //임무 완료 폰트가 지나감
@@ -32,7 +37,9 @@ public:
 	enum DEFENDER_PROGRESS_STATE
 	{
 		DEFENDER_PROG_NONE,
+		DEFENDER_PROG_ENTERED,
 		DEFENDER_PROG_BEGINNING_DIALOG,
+		DEFENDER_PROG_TRANSFORM_IN,
 		DEFENDER_PROG_GAME,
 		DEFENDER_PROG_MISSION_COMPLETE_FONT,
 		DEFENDER_PROG_MISSION_COMPLETE_FADEOUT,
@@ -88,6 +95,8 @@ public:
 
 
 	_bool Is_Cleared() { return m_bClear; }
+
+	void Set_GameState(DEFENDER_PROGRESS_STATE _eState);
 private:
 
 private:
@@ -140,6 +149,11 @@ private:
 	_float m_fMissionClearFontTImeAcc= 0.f;
 	CCustomFont* m_pMissionCompleteFont = nullptr;
 	_bool m_bClear = false;
+
+	_vector m_vTransformIn_Position = { -1820.f, -180.f, 0.f };
+	_vector m_vStart_Position = { -2400.f, -290.f, 0.f };
+	_float m_fCamTargetChangeTime = 1.f;
+	_float m_fCamTargetChangeTimeAcc = 0.f;
 
 public:
 	static CMiniGame_Defender* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
