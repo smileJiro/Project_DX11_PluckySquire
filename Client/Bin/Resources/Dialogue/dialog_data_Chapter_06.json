@@ -2655,6 +2655,7 @@
 					"location": 8,
 					"is2D": true,
 					"isPortrait": false,
+					"isDefender": true,
 					"iAnimationIndex": -1,
 					"animation": {
 						"duration": 1000,
@@ -2672,6 +2673,7 @@
 					"location": 8,
 					"is2D": true,
 					"isPortrait": false,
+					"isDefender": true,
 					"iAnimationIndex": -1,
 					"animation": {
 						"duration": 1000,
@@ -2689,6 +2691,7 @@
 					"location": 8,
 					"is2D": true,
 					"isPortrait": false,
+					"isDefender": true,
 					"iAnimationIndex": -1,
 					"animation": {
 						"duration": 1000,
@@ -2706,6 +2709,7 @@
 					"location": 8,
 					"is2D": true,
 					"isPortrait": false,
+					"isDefender": true,
 					"iAnimationIndex": -1,
 					"animation": {
 						"duration": 1000,
@@ -2723,6 +2727,7 @@
 					"location": 8,
 					"is2D": true,
 					"isPortrait": false,
+					"isDefender": true,
 					"iAnimationIndex": -1,
 					"animation": {
 						"duration": 1000,
@@ -2740,12 +2745,104 @@
 					"location": 8,
 					"is2D": true,
 					"isPortrait": false,
+					"isDefender": true,
 					"iAnimationIndex": -1,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
 					},
 					"text": "그리고, 한 가지 더. 절대 죽지 마라.",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				}
+			]
+		},
+		{
+			"id": "DEFENDER_Dialogue_02",
+			"Section": "Chapter6_SKSP_04",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "마지막 과학자까지 전부 데려왔군.",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이제 기지에 범생이들이 꽉 찼어.",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "다들 다음 무기를 개발하느라 정신없이 일하고 있지!",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "잘했다 병사!",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "다음 임무는 이 고철 덩어리를 다른 곳으로\n가져가는 거다!",
 					"Red": 255,
 					"Green": 255,
 					"Blue": 242

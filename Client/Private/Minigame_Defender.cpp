@@ -10,11 +10,15 @@
 #include "DefenderSpawner.h"
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
+#include "Camera_2D.h"
 #include "DefenderPerson.h"
 #include "ScrollModelObject.h"
 #include "ModelObject.h"
 #include "Dialog_Manager.h"
 #include "Dialogue.h"
+#include "Camera_Manager.h"
+#include "FatherPart_Prop.h"
+#include "FatherGame.h"
 
 CMiniGame_Defender::CMiniGame_Defender(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CContainerObject(_pDevice, _pContext)
@@ -370,17 +374,43 @@ void CMiniGame_Defender::Set_LeftPersonCount(_uint _iCount)
 	}
     m_PartObjects[DEFENDER_PART_COUNTER_0 + _iCount]->Set_Active(true);
 }
+void CMiniGame_Defender::On_PlayerAnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    if (DEFENDER_PROG_TRANSFORM_OUT == m_eGameState 
+        &&(_uint)CDefenderPlayer::ANIM_STATE_CYBERJOT2D::CYBER2D_TRANSFORM_OUT == iAnimIdx)
+    {
+        CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+        CPlayer* pNormalPlayer = pPDM->Get_NormalPlayer_Ptr();
+		pNormalPlayer->Set_Active(true);
+		m_pDefenderPlayer->Set_Active(false);
+		pPDM->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
+        pNormalPlayer->Set_Mode(CPlayer::PLAYER_MODE_ZETPACK);
+		pNormalPlayer->Set_State(CPlayer::IDLE);
+        pNormalPlayer->Set_BlockPlayerInput(true);
+
+        m_eGameState = DEFENDER_PROG_ENDING_DIALOG;
+        static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(this);
+        //DIALOG
+        m_pDialogManager->Set_DialogId(TEXT("DEFENDER_Dialogue_02"), m_strSectionName.c_str());
+
+        _vector vPos = Get_FinalPosition();
+        _float3 vPosition; XMStoreFloat3(&vPosition, vPos);
+        m_pDialogManager->Set_DialoguePos(vPosition);
+        m_pDialogManager->Set_DisPlayDialogue(true);
+
+    }
+}
 void CMiniGame_Defender::Update(_float _fTimeDelta)
 {
 
 	__super::Update(_fTimeDelta);
 
-    if (DEFENDER_PROG_START_DIALOG == m_eGameState
+    if (DEFENDER_PROG_BEGINNING_DIALOG == m_eGameState
         && false == m_pDialogManager->Get_DisPlayDialogue())
     {
        
     }
-    if (DEFENDER_PROG_GAME == m_eGameState)
+    else if (DEFENDER_PROG_GAME == m_eGameState)
     {
 
         m_fTimeAcc += _fTimeDelta;
@@ -423,7 +453,68 @@ void CMiniGame_Defender::Update(_float _fTimeDelta)
             m_pSidePersonUI->Set_Active(false);
         }
     }
+    else if (DEFENDER_PROG_MISSION_COMPLETE_FONT == m_eGameState)
+    {
+        m_fMissionClearFontTImeAcc += _fTimeDelta;
+		if (m_fMissionClearFontTImeAcc >= m_fMissionClearFontTIme)
+		{
+			m_eGameState = DEFENDER_PROG_MISSION_COMPLETE_FADEOUT;
+			CCamera_Manager::GetInstance()->Start_FadeOut();
+            m_pDefenderPlayer->Set_BlockPlayerInput(true);
+		}
+    }
+	else if (DEFENDER_PROG_MISSION_COMPLETE_FADEOUT == m_eGameState)
+	{
+        //카메라 FadeOut 끝인지 확인
+        if (0.f >= static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_DofBufferData().fFadeRatio)
+        {
+			m_eGameState = DEFENDER_PROG_MISSION_COMPLETE_FADEIN;
+            CCamera_Manager::GetInstance()->Start_FadeIn();
+			m_pSidePersonUI->Set_Active(false);
+            for (_uint i = DEFENDER_PART_COUNTER_BACK; i < DEFENDER_PART_LAST; i++)
+            {
+			    m_PartObjects[i]->Set_Active(false);
+            }
+        }
 
+
+	}
+    else	if (DEFENDER_PROG_MISSION_COMPLETE_FADEIN == m_eGameState)
+    {
+        if (1.f >= static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_DofBufferData().fFadeRatio)
+        {
+            m_eGameState = DEFENDER_PROG_TRANSFORM_OUT;
+            m_pDefenderPlayer->Switch_Animation(CDefenderPlayer::ANIM_STATE_CYBERJOT2D::CYBER2D_TRANSFORM_OUT);
+        }
+
+    }
+	else if (DEFENDER_PROG_TRANSFORM_OUT == m_eGameState)
+	{
+
+	}
+	else if (DEFENDER_PROG_ENDING_DIALOG == m_eGameState)
+	{
+		if (false == m_pDialogManager->Get_DisPlayDialogue())
+		{
+            m_eGameState = DEFENDER_PROG_REWARDING;
+			
+            //아빠머ㅏ리 만들기
+            CFatherPart_Prop::FATHERPART_PROP_DESC Desc{};
+            Desc.iCurLevelID = m_iCurLevelID;
+            Desc.iFatherPartID = CFatherGame::FATER_HEAD;
+            Desc.Build_2D_Transform(_float2(-1685.0, -229.0), _float2(150.0f, 150.0f));
+            CGameObject* pGameObject = nullptr;
+            if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"), LEVEL_CHAPTER_6, TEXT("Layer_FatherPart_Prop"), &pGameObject, &Desc)))
+                assert(nullptr);
+
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+        }
+	}
+
+	if (KEY_DOWN(KEY::Z))
+	{
+        Mission_Complete();
+	}
 }
 
 void CMiniGame_Defender::Late_Update(_float _fTimeDelta)
@@ -447,7 +538,7 @@ void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
         && OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID()
         && m_p2DColliderComs[1] == _pMyCollider)
     {
-        m_eGameState = DEFENDER_PROG_START_DIALOG;
+        m_eGameState = DEFENDER_PROG_BEGINNING_DIALOG;
         //DIALOG
         m_pDialogManager->Set_DialogId(TEXT("DEFENDER_Dialogue_01"), m_strSectionName.c_str());
         //Uimgr->Set_DialogId(m_strDialogueIndex, m_strCurSecion);
@@ -460,7 +551,7 @@ void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
 
     }
     //GameStart
-    else if (DEFENDER_PROG_START_DIALOG == m_eGameState
+    else if (DEFENDER_PROG_BEGINNING_DIALOG == m_eGameState
         && OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID()
         && m_p2DColliderComs[0] == _pMyCollider)
     {
@@ -470,7 +561,7 @@ void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
         CPlayer* pNormalPlayer = pPDM->Get_NormalPlayer_Ptr();
         m_pDefenderPlayer = pPDM->Get_DefenderPlayer_Ptr();
         Safe_AddRef(m_pDefenderPlayer);
-
+		m_pDefenderPlayer->Register_AnimEndCallback(bind(&CMiniGame_Defender::On_PlayerAnimEnd, this, placeholders::_1, placeholders::_2));
         pNormalPlayer->Set_Active(false);
         m_pDefenderPlayer->Set_Active(true);
 
@@ -519,12 +610,22 @@ void CMiniGame_Defender::Rescue_Person(CDefenderPerson* _pPerson)
 	m_pDefenderPlayer->Remove_Follower(_pPerson);
     _pPerson->Dissapear();
     if (m_iPersonLeft <= 0)
-        Clear_Game();
+        Mission_Complete();
 }
 
-void CMiniGame_Defender::Clear_Game()
+void CMiniGame_Defender::Mission_Complete()
 {
     m_bClear = true;
+    for (auto& pSpawner : m_Spawners)
+    {
+        pSpawner.second->Delete_Pool();
+        pSpawner.second->Set_Dead();
+        Safe_Release(pSpawner.second);
+    }
+    m_Spawners.clear();
+	m_eGameState = DEFENDER_PROG_MISSION_COMPLETE_FONT;
+    if(m_pMissionCompleteFont)
+	    m_pMissionCompleteFont->Set_Active(true);
 }
 
 
