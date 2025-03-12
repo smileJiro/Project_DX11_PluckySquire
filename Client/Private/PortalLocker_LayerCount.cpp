@@ -108,6 +108,5 @@ CGameObject* CPortalLocker_LayerCount::Clone(void* _pArg)
 
 void CPortalLocker_LayerCount::Free()
 {
-
     __super::Free();
 }

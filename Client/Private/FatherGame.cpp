@@ -225,10 +225,6 @@ void CFatherGame::Update()
 	if (GAME_PLAYING != m_eGameState)
 		return;
 
-	if (KEY_DOWN(KEY::F))
-	{
-		OpenPortalLocker(PORTALLOCKER::LOCKER_PARTHEAD);
-	}
 	if (KEY_DOWN(KEY::U))
 	{
 		Start_StopStampMoveWork();
