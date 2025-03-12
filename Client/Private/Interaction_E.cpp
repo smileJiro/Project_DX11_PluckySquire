@@ -525,9 +525,11 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		m_strDisplayText = TEXT("북");
 		break;
 
-	case INTERACT_ID::LUNCHBOX:
-		m_strDisplayText = TEXT("열기");
+	case INTERACT_ID::ZIPLINE:
+		m_strDisplayText = TEXT("타기");
 		break;
+
+
 
 	default:
 		break;
@@ -581,7 +583,7 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		//}
 
 		//m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
-		m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vPos.x, vPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font20"), m_strDisplayText.c_str(), _float2(vPos.x, vPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 	// 이건 3D에요
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
