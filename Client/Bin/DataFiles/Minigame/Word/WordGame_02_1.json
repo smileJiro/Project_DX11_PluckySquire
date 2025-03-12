@@ -1,0 +1,66 @@
+[
+
+  {
+    "Word_Object_List": [
+      {
+        "Word_Object_Tag": "BoomBox",
+        "Position": [
+          651.0,
+          103.0
+        ],
+        "Scale": [
+          1.0,
+          1.0
+        ],
+        "Collider_Info": {
+          "Collider_Extent": [
+            100.0,
+            100.0
+          ],
+          "Collider_Offset": [
+            0.0,
+            0.0
+          ]
+        },
+        "Image_Tag_List": [
+          {
+            "ImagePath": "BoomBox"
+          }
+        ],
+        "Word_Action_List": [
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 7,
+            "Action_Type": 2,
+            "Param": 4
+          },
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 6,
+            "Action_Type": 2,
+            "Param": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Controller_List": [
+      {
+        "Controller_Index": 0,
+        "Text": "## 상자가\n일행을 가로막았습니다.",
+        "Init_Word_Type": [ 7 ],
+        "Position": [
+          651.0,
+          -140.0
+        ],
+        "Scale": [
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  }
+]

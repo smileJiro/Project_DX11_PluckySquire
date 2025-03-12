@@ -6631,7 +6631,10 @@
   "TextureName": "stairs_03_mask_island_Sprite"
  },
  {
-  "Active": false,
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 8
+  },
   "BackGround": false,
   "Collider": false,
   "ModelType": 1,
@@ -6642,7 +6645,7 @@
  {
   "Active": true,
   "ActivePropertis": {
-   "ActiveType": 6
+   "ActiveType": 8
   },
   "BackGround": false,
   "Collider": false,
