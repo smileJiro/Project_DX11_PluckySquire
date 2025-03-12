@@ -115,6 +115,8 @@ void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
     {
     case Client::CMiniGame_Defender::DEFENDER_PROG_NONE:
         break;
+    case Client::CMiniGame_Defender::DEFENDER_PROG_ENTERED:
+        break;
     case Client::CMiniGame_Defender::DEFENDER_PROG_BEGINNING_DIALOG:
     {
         CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName))->Get_Portal(0));
