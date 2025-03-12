@@ -341,8 +341,8 @@ HRESULT CTask_Manager::Parsing()
 					}
 					if (fColor.x != 0.f)
 					{
-						pMapObject->Set_Color_Shader_Mode(0,C3DModel::COLOR_DEFAULT);
-						pMapObject->Set_Diffuse_Color(0,fColor);
+						pMapObject->Set_Color_Shader_Mode(0,C3DModel::COLOR_DEFAULT, false);
+						pMapObject->Set_Diffuse_Color(0,fColor, false);
 					}
 
 					continue;
@@ -540,7 +540,7 @@ HRESULT CTask_Manager::Find_Override_Material_Color(CMapObject* _pMapObject, jso
 {
 	string arrColorKey[4] = { "R","G","B","A" };
 	const _string strColorTag = "VectorParameterValues";
-	/*if (_jsonObj.is_array())
+	if (_jsonObj.is_array())
 	{
 		if (_jsonObj.contains("Properties") || _jsonObj.contains(strColorTag))
 		{
@@ -570,8 +570,8 @@ HRESULT CTask_Manager::Find_Override_Material_Color(CMapObject* _pMapObject, jso
 										fValue /= 150.f;
 										memcpy(((&fColor.x) + i), &fValue, sizeof(_float));
 									}
-									_pMapObject->Set_Diffuse_Color(fColor);
-									_pMapObject->Set_Color_Shader_Mode(CMapObject::MIX_DIFFUSE);
+									_pMapObject->Set_Diffuse_Color(0, fColor, false);
+									_pMapObject->Set_Color_Shader_Mode(0, C3DModel::COLOR_DEFAULT);
 								}
 							}
 						}
@@ -592,7 +592,7 @@ HRESULT CTask_Manager::Find_Override_Material_Color(CMapObject* _pMapObject, jso
 	else if (_jsonObj.is_array())
 		for (const auto& item : _jsonObj)
 			if (SUCCEEDED(Find_Override_Material_Color(_pMapObject, item)))
-				return S_OK;*/
+				return S_OK;
 
 	if (_jsonObj.is_object()) 
 	{

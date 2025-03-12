@@ -234,13 +234,16 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Camera(const _wstring& _strLayerT
 	TargetDesc.eZoomLevel = CCamera::LEVEL_6;
 	TargetDesc.iCameraType = CCamera_Manager::TARGET;
 
+	XMStoreFloat3(&TargetDesc.vArm, XMVector3Normalize(XMVectorSet(0.0f, 0.67f, -0.74f, 0.f)));
+	TargetDesc.fLength = { 14.6f };
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
 		LEVEL_CAMERA_TOOL, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
-	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
+	XMStoreFloat3(&m_vFirstResetArm, XMVector3Normalize(XMVectorSet(0.0f, 0.67f, -0.74f, 0.f)));
 
-	Create_Arms();
+	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, dynamic_cast<CCamera*>(pCamera));
 
 	// CutScene Camera
 	CCamera_CutScene_Save::CAMERA_DESC CutSceneDesc{};
@@ -524,27 +527,6 @@ void CLevel_Camera_Tool_Client::Show_CutSceneInfo()
 	Show_KeyFrameInfo();
 
 	ImGui::End();
-}
-
-void CLevel_Camera_Tool_Client::Create_Arms()
-{
-	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0);
-	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
-
-	CCameraArm::CAMERA_ARM_DESC Desc{};
-
-	XMStoreFloat3(&Desc.vArm, -vPlayerLook);
-	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	//Desc.vRotation = { XMConvertToRadians(-30.f), XMConvertToRadians(0.f), 0.f };
-	Desc.fLength = 14.6f;
-
-	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
-
-	CCamera_Target* pTarget = dynamic_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-
-	pTarget->Add_CurArm(pArm);
-	pTarget->Get_Arm()->Set_ArmVector(XMVectorSet(0.0f, 0.67f, -0.74f, 0.f));
-	XMStoreFloat3(&m_vFirstResetArm, pTarget->Get_Arm()->Get_ArmVector());
 }
 
 void CLevel_Camera_Tool_Client::Show_ComboBox()

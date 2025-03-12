@@ -40,9 +40,8 @@ public:
 	HRESULT					Ready_Layer_Draggable(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_MapGimmick(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_RoomDoor(const _wstring& _strLayerTag);
+
 private:
-	void					Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength);
- 
 	HRESULT					Map_Object_Create(_wstring _strFileName);
 
 	LEVEL_ID				m_eLevelID;

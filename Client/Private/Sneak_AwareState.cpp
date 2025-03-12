@@ -32,6 +32,7 @@ void CSneak_AwareState::State_Enter()
 	m_isConvert = false;
 	m_fAccTime = 0.f;
 	m_isRenew = false;
+	cout << "Aware" << endl;
 }
 
 void CSneak_AwareState::State_Update(_float _fTimeDelta)
@@ -70,7 +71,7 @@ void CSneak_AwareState::State_Update(_float _fTimeDelta)
 			return;
 		}
 
-		//인식 되지 않고 소리도 안나면 idle 전환 (지금 애니메이션 재생동안은 전환 안되니까)
+		//인식 되지 않고 소리도 안나면 복귀상태로 전환 (지금 애니메이션 재생동안은 전환 안되니까)
 		else
 		{
 			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_BACK, m_pFSM);

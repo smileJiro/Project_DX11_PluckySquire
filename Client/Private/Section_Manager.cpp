@@ -513,7 +513,7 @@ void CSection_Manager::Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPo
 		if (nullptr != SectionPair.second)
 		{
 			CSection_2D* pSection2D = static_cast<CSection_2D*>(SectionPair.second);
-			if (!pSection2D->Is_Override_WorldTex())
+			if (pSection2D->Get_Section_2D_RenderType() == CSection_2D::SECTION_2D_BOOK && !pSection2D->Is_Override_WorldTex())
 			{
 				pSection2D->Set_WorldTexture(m_pBookWorldPosMap);
 				Safe_AddRef(m_pBookWorldPosMap);

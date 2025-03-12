@@ -169,10 +169,10 @@ HRESULT CState_Sneak::Initialize_WayPoints(SNEAKWAYPOINTINDEX _eWayIndex)
 
 
 	case SNEAKWAYPOINTINDEX::CHAPTER8_1:
-		m_WayPoints.push_back({ _float3(12.63f, 21.58f, 5.5f) });
-		m_WayPoints.push_back({ _float3(9.63f, 21.58f, 5.5f) });
-		m_WayPoints.push_back({ _float3(9.63f, 21.58f, 2.14f) });
-		m_WayPoints.push_back({ _float3(12.63f, 21.58f, 2.14f) });
+		m_WayPoints.push_back({ _float3(13.f, 21.58f, 5.5f) });
+		m_WayPoints.push_back({ _float3(9.3f, 21.58f, 5.5f) });
+		m_WayPoints.push_back({ _float3(9.3f, 21.58f, 2.14f) });
+		m_WayPoints.push_back({ _float3(13.f, 21.58f, 2.14f) });
 		m_WayPoints.push_back({ _float3(7.47f, 21.58f, 1.f) });
 
 		m_WayPoints[0].Neighbors.push_back(1);
@@ -358,6 +358,10 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 			if (1 == m_pGameInstance->Compare_VectorLength(XMLoadFloat3(&vPoint), vPositionToPointDis))
 			{
 				_float3 vPosTo; XMStoreFloat3(&vPosTo, XMVector3Normalize(vPositionToPointDis));
+
+				//추가
+				vPos.y += 0.1f;
+
 				//가는길에 장애물 없으면
 				if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vPosTo, XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_WayPoints[Index].vPosition) - XMLoadFloat3(&vPos))), 
 					OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
@@ -446,13 +450,21 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 		_vector vToNext = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - m_pOwner->Get_FinalPosition(), 0.f);
 		_float3 vToNextDir; XMStoreFloat3(&vToNextDir, XMVector3Normalize(vToNext));
 		
-		if(false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vToNextDir, XMVectorGetX(XMVector3Length(vToNext)), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+
+		//다음 점이 막혀있거나 거리가 더 길면 시작점으로 감
+		if (true == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vToNextDir, XMVectorGetX(XMVector3Length(vToNext)), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE)
+			|| 2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
 		{
-			if (2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
-			{
-				m_Ways.push_back(iStartIndex);
-			}
+			m_Ways.push_back(iStartIndex);
 		}
+
+		//if(false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vToNextDir, XMVectorGetX(XMVector3Length(vToNext)), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+		//{
+		//	if (2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
+		//	{
+		//		m_Ways.push_back(iStartIndex);
+		//	}
+		//}
 		
 		reverse(m_Ways.begin(), m_Ways.end());
 		m_iCurWayIndex = 0;

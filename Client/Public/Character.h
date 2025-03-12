@@ -9,6 +9,71 @@ typedef struct tagCharacterStat
 	_int iHP = 12;
 	_int iMaxHP = 12;
 }STAT;
+enum class AUTOMOVE_TYPE
+{
+	//임의의 지점까지 이동하기
+	MOVE_TO,
+	//특정 방향으로 이동하기
+	MOVE_TOWARD,
+	//보는 방향만 바꾸기
+	LOOK_DIRECTION,
+	//애니메이션만 바꾸기
+	CHANGE_ANIMATION,
+	//그냥 대기하기
+	WAIT,
+	LAST
+};
+typedef struct tagAutoMoveCommand
+{
+	enum STATE
+	{
+		STATE_START,
+		STATE_PREDELAY,
+		STATE_RUN,
+		STATE_POSTDELAY,
+		STATE_END,
+		STATE_LAST
+	};
+	AUTOMOVE_TYPE eType;
+	_uint iAnimIndex;
+	//보는 방향, 이동 지점
+	_vector vTarget;
+	//선딜레이
+	_float fPreDelayTime = 0.f;
+	//후딜레이
+	_float fPostDelayTime = 0.f;
+
+public:
+	void Update(_float _fTimeDelta) 
+	{
+		fTimeAcc += _fTimeDelta; 
+		if (Is_Start())
+			eState = STATE_PREDELAY;
+		else if (Is_PreDelayTime() && fTimeAcc >= fPreDelayTime)
+		{
+			eState = STATE_RUN;
+			fTimeAcc = 0.f;
+		}
+		else if (Is_RunTime())
+		{
+		}
+		else if (Is_PostDelayTime() && fTimeAcc >= fPostDelayTime)
+		{
+			eState = STATE_END;
+		}
+	}
+	_bool Is_Start() { return STATE_START == eState;  }
+	_bool Is_PreDelayTime() { return STATE_PREDELAY== eState;}
+	_bool Is_RunTime() {return STATE_RUN == eState;}
+	_bool Is_PostDelayTime() { return STATE_POSTDELAY == eState; }
+	_bool Is_End() { return STATE_END == eState; }
+	void Complete_Command() {eState = STATE_POSTDELAY; fTimeAcc = 0.f;}
+
+private: 
+	STATE eState = STATE_START;
+	_float fTimeAcc = 0.f;
+}AUTOMOVE_COMMAND;
+
 class CCharacter abstract : public CContainerObject, public IStoppable
 {
 public:
@@ -42,8 +107,10 @@ public:
 	void Stop_MoveXZ();
 
 	virtual void Move(_fvector _vVelocity, _float _fTimeDelta);
-	_bool Move_To(_fvector _vPosition, _float _fEpsilon = 0.5f, _bool _FreezeY = true);
+	_bool Move_To_3D(_fvector _vPosition, _float _fEpsilon = 0.5f, _bool _FreezeY = true);
+	_bool Move_To(_fvector _vPosition, _float _fTimeDelta);
 	_bool Check_Arrival(_fvector _vPosition, _float _fEpsilon = 0.5f);
+	//_bool Check_Arrival(_fvector _vPrevPosition, _fvector _vNextPosition, _fvector _vTargetPosition);
 	//캐릭터 기준 _vDir 방향을 바라보게 하는 함수. Y축으로만 회전함.
 	void LookDirectionXZ_Kinematic(_fvector _vDir);
 	void LookDirectionXZ_Dynamic(_fvector _vDir);
@@ -54,8 +121,7 @@ public:
 	void KnockBack(_fvector _vForce);
 
 	virtual void On_Land() {};
-
-	//void Start_AutoMove(_uint _iAnimIndex, _vector _vTargetPos, );
+	virtual void On_Change2DDirection(E_DIRECTION _eCurrentDir) {};
 
 public:
 	//GET
@@ -65,11 +131,33 @@ public:
 	_float Get_StepSlopeThreshold() { return m_fStepSlopeThreshold; }
 	_vector Get_ScrolledPosition();
 	_vector Get_ScrolledPosition(_vector _vPosition);
+	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	//SET
 	void Set_ScrollingMode(_bool _bScrollingMode);
+	virtual void Set_2DDirection(E_DIRECTION _eEDir);
+	virtual void Set_2DDirection(F_DIRECTION _eEDir);
+
+	
 protected:
 	_float Measure_FloorDistance();
 	_vector StepAssist(_fvector _vVelocity, _float _fTimeDelta);
+
+//AUTO MOVE
+public:
+	void Enque_AutoMove(AUTOMOVE_COMMAND _pCommand);
+	/// <param name="_bAutoClearQue"> : 큐에 든 모든 AutoMove가 완료되면 자동으로 큐를 비우기</param>
+	void Start_AutoMove(_bool _bAutoClearQue);
+	void Clear_AutoMove();
+	virtual void On_StartAutoMove() {};
+	virtual void On_EndAutoMove() {};
+private:
+
+	_bool Process_AutoMove(_float _fTimeDelta);
+	_bool Process_AutoMove_MoveTo(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta);
+	_bool Process_AutoMove_MoveToward(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta);
+	_bool Process_AutoMove_LookDirection(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta);
+	_bool Process_AutoMove_ChangeAnimation(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta);
+	_bool Process_AutoMove_Wait(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta);
 protected:
 	STAT m_tStat;
 
@@ -94,6 +182,13 @@ protected:
 
 	_bool m_isIgnoreGround = { false };
 
+	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
+	//MOVE TO
+
+	//AUTOMOVE
+	queue<AUTOMOVE_COMMAND> m_AutoMoveQue;
+	_bool m_bAutoMoving = false;
+	_bool m_bAutoClearAutoMoves = false;
 public:	
 	virtual void Free() override;
 
