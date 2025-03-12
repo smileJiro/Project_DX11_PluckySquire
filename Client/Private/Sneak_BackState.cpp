@@ -51,7 +51,7 @@ void CSneak_BackState::State_Enter()
 	m_isTurn = false;
 	m_isMove = false;
 	m_isPathFind = true;
-	cout << "Back" << endl;
+	//cout << "Back" << endl;
 }
 
 void CSneak_BackState::State_Update(_float _fTimeDelta)
