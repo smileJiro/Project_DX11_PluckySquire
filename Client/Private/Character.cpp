@@ -36,9 +36,6 @@ HRESULT CCharacter::Initialize(void* _pArg)
 
 void CCharacter::Priority_Update(_float _fTimeDelta)
 {
-
-    __super::Priority_Update(_fTimeDelta);
-
     if(false == m_isIgnoreGround)
     {
         COORDINATE eCoord = Get_CurCoord();
@@ -89,6 +86,10 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
         if (bOldGround == false && m_bOnGround == true)
             On_Land();
     }
+
+
+    __super::Priority_Update(_fTimeDelta);
+
 }
 
 void CCharacter::Update(_float _fTimeDelta)
@@ -222,6 +223,11 @@ void CCharacter::Enter_Section(const _wstring _strIncludeSectionName)
         Set_ScrollingMode(true);
 
     __super::Enter_Section(_strIncludeSectionName);
+}
+
+_bool CCharacter::Is_Dynamic()
+{
+    return static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Dynamic();
 }
 
 _bool CCharacter::Is_OnGround()
@@ -692,6 +698,11 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta)
 	_float fEpsilon = COORDINATE_2D == eCoord ? 10.f : 0.3f;
 	if (Check_Arrival(_vPosition, fEpsilon))
 	{
+        if(Is_Dynamic())
+        {
+			_float3 vPos; XMStoreFloat3(&vPos, _vPosition);
+            m_pActorCom->Set_GlobalPose(vPos);
+        }
 		Set_Position(_vPosition);
 		return true;
 	}
@@ -867,6 +878,8 @@ _bool CCharacter::Process_AutoMove_MoveTo(const AUTOMOVE_COMMAND& _pCommand, _fl
         Rotate_To_Radians(vDir, m_pControllerTransform->Get_RotationPerSec());
     }
     _bool _bResult = Move_To(_pCommand.vTarget, _fTimeDelta);
+    if (_bResult)
+        Stop_Move();
     return _bResult;
 }
 

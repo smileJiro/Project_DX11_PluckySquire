@@ -192,34 +192,48 @@ void CCollider_AABB::Block_AABB(CCollider_AABB* _pOther)
     // 밀어낸 것을 콜라이더에 반영. 컴포넌트 업데이트 순서때문에 이걸 한번 업데이트를 여기서 돌려줘야함
     _pOther->Update_OwnerTransform();
 }
-
 void CCollider_AABB::Block_Circle(CCollider_Circle* _pOther)
 {
-    // 1. circle 기준 aabb 에 가장 가까운 점을 찾는다. 
-    _float2 vLT = Get_LT(); // Min
-    _float2 vRB = Get_RB(); // Max
+    _float2 vLT = Get_LT(); // AABB Min
+    _float2 vRB = Get_RB(); // AABB Max
 
     _float2 vOtherPosition = _pOther->Get_Position();
     _float fOtherFinalRadius = _pOther->Get_FinalRadius();
 
-    // 1. Clamp를 통해 AABB에 가장 가까운 점을 찾는다.
+    // AABB 경계에서 가장 가까운 점 찾기
     _float2 vNearestPoint = {};
     vNearestPoint.x = clamp(vOtherPosition.x, vLT.x, vRB.x);
     vNearestPoint.y = clamp(vOtherPosition.y, vRB.y, vLT.y);
-    // 2. circle의 중점에서부터 aabb에 가장 가까운 점까지의 거리를 구한다. (밀려나야 할 축으로도 사용가능하다 뒤집으면 )
+
     _vector vDiff = XMLoadFloat2(&vOtherPosition) - XMLoadFloat2(&vNearestPoint);
     _float fDiffLen = XMVectorGetX(XMVector2Length(vDiff));
     _vector vDirection = XMVector2Normalize(vDiff);
-    // 3. radius - 2번길이 == 밀려나야할 길이. 
     _float fOverLapLen = fOtherFinalRadius - fDiffLen;
-    // 4. 3번의 길이만큼 2번의 벡터를 뒤집은 방향으로 밀어낸다.
+
+    // 원의 중심이 AABB 내부에 완전히 포함된 경우 -> 밀어내는 방향 강제 지정
+    if (vOtherPosition.x >= vLT.x && vOtherPosition.x <= vRB.x &&
+        vOtherPosition.y >= vRB.y && vOtherPosition.y <= vLT.y)
+    {
+        _float2 vDistances = {
+            min(abs(vOtherPosition.x - vLT.x), abs(vOtherPosition.x - vRB.x)), // X축 최소 거리
+            min(abs(vOtherPosition.y - vRB.y), abs(vOtherPosition.y - vLT.y))  // Y축 최소 거리
+        };
+
+        if (vDistances.x < vDistances.y)
+            vDirection = XMVectorSet((vOtherPosition.x < (vLT.x + vRB.x) * 0.5f) ? -1.0f : 1.0f, 0.0f, 0.0f, 0.0f);
+        else
+            vDirection = XMVectorSet(0.0f, (vOtherPosition.y < (vRB.y + vLT.y) * 0.5f) ? -1.0f : 1.0f, 0.0f, 0.0f);
+
+        fOverLapLen = fOtherFinalRadius;
+    }
+
     _vector vOtherPos = _pOther->Get_Owner()->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
-    _vector vOtherFinalPos = {};
-    vOtherFinalPos = vOtherPos + fOverLapLen * vDirection;
+    _vector vOtherFinalPos = vOtherPos + fOverLapLen * vDirection;
 
     _pOther->Get_Owner()->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(vOtherFinalPos, 1.0f));
     _pOther->Update_OwnerTransform();
 }
+
 
 void CCollider_AABB::Update_OwnerTransform()
 {

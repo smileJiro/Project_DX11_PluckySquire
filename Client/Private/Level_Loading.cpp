@@ -37,6 +37,7 @@ void CLevel_Loading::Update(_float _fTimeDelta)
 
 HRESULT CLevel_Loading::Render()
 {
+    
 #ifdef _DEBUG
     m_pLoader->Show_Debug();
 #endif

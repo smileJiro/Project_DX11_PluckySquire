@@ -1031,6 +1031,10 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 
 	if(iCurLevelID == LEVEL_CHAPTER_6)
 		CFatherGame::GetInstance()->DestroyInstance();
+
+	m_pGameInstance->Set_Transform(CPipeLine::D3DTS_VIEW, XMMatrixInverse(nullptr, XMMatrixIdentity()));
+	m_pGameInstance->Set_Transform(CPipeLine::D3DTS_PROJ, XMMatrixPerspectiveFovLH(XMConvertToRadians(60.f), g_iWinSizeX  / g_iWinSizeY, 0.1f, 10.f));
+
 	return S_OK;
 }
 
