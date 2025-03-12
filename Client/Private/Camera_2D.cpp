@@ -58,6 +58,7 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_04"), _float3(1.72f, 18.65f, 30.10f));
 	m_NormalTargets.emplace(TEXT("Chapter8_SKSP_10"), _float3(-32.3f, 8.54f, 31.65f));
 
+
 	return S_OK;
 }
 
