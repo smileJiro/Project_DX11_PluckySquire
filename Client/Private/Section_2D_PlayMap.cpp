@@ -87,7 +87,8 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 						hFile);
 				if (nullptr != pGameObject)
 				{
-					Event_CreateObject(pGameObject->Get_CurLevelID(), L"Layer_2DMapObject", pGameObject);
+					m_pGameInstance->Add_GameObject_ToLayer(pGameObject->Get_CurLevelID(), L"Layer_2DMapObject", pGameObject);
+					//Event_CreateObject(pGameObject->Get_CurLevelID(), L"Layer_2DMapObject", pGameObject);
 
 					auto eRenderLayer = SECTION_2D_PLAYMAP_OBJECT;
 
