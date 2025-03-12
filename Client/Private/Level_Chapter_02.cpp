@@ -118,7 +118,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	if (FAILED(Ready_Layer_Monster()))
 	{
 		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
 		assert(nullptr);
@@ -1237,6 +1237,27 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 
 	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Monster()
+{
+	if (FAILED(Ready_Layer_Monster_2D()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Monster_3D()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Monster_2D()
+{
+	return E_NOTIMPL;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Monster_3D()
+{
+	return E_NOTIMPL;
 }
 
 HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
