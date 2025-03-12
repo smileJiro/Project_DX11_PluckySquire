@@ -1120,7 +1120,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
 	Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
 	Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(12.63f, 21.58f, 5.5f);
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(13.f, 21.58f, 5.5f);
 	Spear_Soldier_Desc.isSneakMode = true;
 	Spear_Soldier_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
 
