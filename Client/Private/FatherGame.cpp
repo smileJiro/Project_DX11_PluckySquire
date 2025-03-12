@@ -107,7 +107,7 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 		m_ProgressClear.push_back(false);
 	}/* Progress MakeFather */
 	
-	/* 2. PortalDefender 3镑俊 积己 */
+	/* 2. PortalLocker 3镑俊 积己 */
 	m_PortalLockers.resize((size_t)LOCKER_LAST);
 
 	{/* PortalLocker ZetPack */
