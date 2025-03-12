@@ -440,6 +440,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 
 			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
 			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
+			
 
 			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
 
@@ -456,9 +457,15 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			pCamera->Start_Changing_AtOffset(1.5f, XMVectorSet(0.f, 0.f, -3.f, 0.f), EASE_IN_OUT);
 			pCamera->Start_Zoom(1.5f, (CCamera::ZOOM_LEVEL)CCamera::LEVEL_5, EASE_IN_OUT);
 			//pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
+			m_isPlag = false;
 
 		}
-
+		if (m_fTimer > 1.f && m_isPlag == false)
+		{
+			m_isPlag = true;
+			
+			Event_ChangeMapObject(LEVEL_CHAPTER_2, L"Chapter_02_Play_Desk.mchc", L"Layer_MapObject");
+		}
 		CPlayer* pPlayer = Get_Player();
 
 		if (COORDINATE_3D == pPlayer->Get_CurCoord())

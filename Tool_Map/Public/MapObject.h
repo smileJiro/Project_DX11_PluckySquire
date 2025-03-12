@@ -78,10 +78,10 @@ public:
 	const wstring&			Get_ModelName() { return m_strModelName; }
 
 
-	virtual void					Set_Diffuse_Color(_uint _iMaterialIndex, const _float4 _fDiffuseColor);
+	virtual void					Set_Diffuse_Color(_uint _iMaterialIndex, const _float4 _fDiffuseColor, _bool _isUpdate = true);
 	virtual const _float4			Get_Diffuse_Color(_uint _iMaterialIndex);
 
-	void							Set_Color_Shader_Mode(_uint _iMaterialIndex, C3DModel::COLOR_SHADER_MODE _eMode);
+	void							Set_Color_Shader_Mode(_uint _iMaterialIndex, C3DModel::COLOR_SHADER_MODE _eMode, _bool _isUpdate = true);
 	C3DModel::COLOR_SHADER_MODE		Get_Color_Shader_Mode(_uint _iMaterialIndex);
 
 #ifdef _DEBUG

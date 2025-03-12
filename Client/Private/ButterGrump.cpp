@@ -49,8 +49,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     pDesc->iObjectGroupID = OBJECT_GROUP::BOSS;
 
-    m_tStat.iHP = 100;
-    m_tStat.iMaxHP = 100;
+    m_tStat.iHP = 500;
+    m_tStat.iMaxHP = 500;
     m_tStat.iDamg = 1;
 
     m_fDelayTime = 0.5f;

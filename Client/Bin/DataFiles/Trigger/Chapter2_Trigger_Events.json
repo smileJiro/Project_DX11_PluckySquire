@@ -113,7 +113,7 @@
     "Trigger_EventTag": "Get_Flipping_Glove",
     "Actions": [
       {
-        "ActionTag": "Glove_Get_Before",
+        "ActionTag": "Get_PlayerItem_Before",
         "EventTag": "Flipping_Glove",
         "Is_Sequence": false
       },
@@ -128,7 +128,7 @@
         "Is_Sequence": true
       },
       {
-        "ActionTag": "Glove_Get_After",
+        "ActionTag": "Get_PlayerItem_After",
         "EventTag": "Flipping_Glove",
         "Is_Sequence": false
       },

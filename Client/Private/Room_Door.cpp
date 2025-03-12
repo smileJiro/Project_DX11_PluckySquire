@@ -178,7 +178,7 @@ HRESULT CRoom_Door::Ready_PartObjects()
 
 	m_PartObjects[DOOR_PART_KNOB] = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &Desc));
 
-	/* Door_plaue*/
+	/* Door_plaque*/
 	Desc.strModelPrototypeTag_3D = TEXT("door_plaque");
 	Desc.tTransform3DDesc.vInitialPosition = _float3(4.f, 93.f, -30.f);
 	Desc.tTransform3DDesc.vInitialRotation = _float3(0.f, XMConvertToRadians(-90.f), 0.f);

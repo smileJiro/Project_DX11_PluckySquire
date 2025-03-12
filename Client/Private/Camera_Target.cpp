@@ -86,14 +86,6 @@ void CCamera_Target::Get_ArmNames(vector<_wstring>* _vecArmNames)
 }
 #pragma endregion
 
-void CCamera_Target::Add_CurArm(CCameraArm* _pCameraArm)
-{
-	if (nullptr == _pCameraArm)
-		return;
-
-	m_pCurArm = _pCameraArm;
-}
-
 void CCamera_Target::Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData)
 {
 	if (nullptr == Find_ArmData(_wszArmTag))
@@ -219,6 +211,7 @@ void CCamera_Target::Load_SavedArmData(RETURN_ARMDATA& _tSavedData, _float _fLoa
 	m_eCameraMode = LOAD_SAVED_ARMDATA;
 	m_fLoadTime = { _fLoadTime, 0.f };
 }
+
 
 void CCamera_Target::Switch_CameraView(INITIAL_DATA* _pInitialData)
 {
