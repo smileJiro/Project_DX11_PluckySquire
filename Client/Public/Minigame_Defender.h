@@ -5,6 +5,7 @@
 
 BEGIN(Engine)
 class CModelObject;
+class CCustomFont;
 END
 
 BEGIN(Client)
@@ -15,6 +16,15 @@ class CScrollModelObject;
 class CSection_Manager;
 class CDefenderCapsule;
 class CDialog_Manager;
+//다 구하면
+//몬스터들 다 사라짐
+//임무 완료 폰트가 지나감
+//다지나가면 잠깐 페이드아웃&인
+//BlockInput되면서 Trasnform OUt
+//TransformOut 끝나면 관제탑으로 카메라타겟 전환 &  End Dialog 시작
+//EndDIJalog 끝나면 아빠 머리 생성하고 카메라 타겟 전환
+//아빠 머리까지 다가가서 충돌되면 GetItem 상태로 전환.
+//GetItem 상태 끝나면 진짜 끝/
 class CMiniGame_Defender :
     public CContainerObject
 {
@@ -22,9 +32,15 @@ public:
 	enum DEFENDER_PROGRESS_STATE
 	{
 		DEFENDER_PROG_NONE,
-		DEFENDER_PROG_START_DIALOG,
+		DEFENDER_PROG_BEGINNING_DIALOG,
 		DEFENDER_PROG_GAME,
-		DEFENDER_PROG_END_DIALOG,
+		DEFENDER_PROG_MISSION_COMPLETE_FONT,
+		DEFENDER_PROG_MISSION_COMPLETE_FADEOUT,
+		DEFENDER_PROG_MISSION_COMPLETE_FADEIN,
+		DEFENDER_PROG_TRANSFORM_OUT,
+		DEFENDER_PROG_ENDING_DIALOG,
+		DEFENDER_PROG_REWARDING,
+		DEFENDER_PROG_CLEAR,
 
 	};
 	enum DEFENDER_PART_ID
@@ -68,7 +84,8 @@ public:
 	void Start_Gamde();
 	void Restart_Game();
 	void Rescue_Person(CDefenderPerson* _pPerson);
-	void Clear_Game();
+	void Mission_Complete();
+
 
 	_bool Is_Cleared() { return m_bClear; }
 private:
@@ -86,6 +103,8 @@ private:
 	_float Get_RightScreenDistance(_vector _vPos);
 	_float Get_LeftScreenDistance(_vector _vPos);
 	void Set_LeftPersonCount(_uint _iCount);
+
+	void On_PlayerAnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 private:
 	CSection_Manager* m_pSectionManager = nullptr;
 	CDefenderPlayer* m_pDefenderPlayer = nullptr;
@@ -116,6 +135,10 @@ private:
 	CModelObject* m_pPersonCounterBack = nullptr;
 	CModelObject* m_pPersonCounter[10] = { nullptr, };
 
+
+	_float m_fMissionClearFontTIme = 1.5f;
+	_float m_fMissionClearFontTImeAcc= 0.f;
+	CCustomFont* m_pMissionCompleteFont = nullptr;
 	_bool m_bClear = false;
 
 public:

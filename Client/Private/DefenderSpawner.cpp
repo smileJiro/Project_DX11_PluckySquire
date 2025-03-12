@@ -64,9 +64,16 @@ void CDefenderSpawner::Update(_float _fTimeDelta)
 	}
 	for (auto& tSpawn : m_SpawnList)
 	{
+		_bool bPaterrnStartDelayEndBefore = tSpawn.Is_PatternStartDelayEnd();
 		tSpawn.Update(_fTimeDelta);
 		if (tSpawn.Is_PatternStartDelayEnd())
 		{
+			if (false == bPaterrnStartDelayEndBefore && false == tSpawn.bAbsolutePosition)
+			{
+				tSpawn.vPosition = m_pPlayer->Get_FinalPosition();
+				tSpawn.vPosition += _vector{ T_DIRECTION::LEFT == tSpawn.eDirection ? tSpawn.fPlayerDistance : -tSpawn.fPlayerDistance,0.f, 0.f };
+				tSpawn.vPosition.m128_f32[1] = tSpawn.fHeight;
+			}
 			while (tSpawn.Is_UnitSpawnReady())
 			{
 				Spawn(tSpawn);
@@ -108,12 +115,7 @@ void CDefenderSpawner::Spawn_Single(T_DIRECTION _eDirection, _vector _vPos,_floa
 
 void CDefenderSpawner::Spawn(SPAWN_DESC& tDesc)
 {
-	if (false == tDesc.bAbsolutePosition)
-	{
-		tDesc.vPosition = m_pPlayer->Get_FinalPosition();
-		tDesc.vPosition += _vector{ T_DIRECTION::LEFT == tDesc.eDirection ? tDesc.fPlayerDistance : -tDesc.fPlayerDistance,0.f, 0.f };
-		tDesc.vPosition.m128_f32[1] = tDesc.fHeight;
-	}
+
 	switch (tDesc.ePattern)
 	{
 	case SPAWN_PATTERN_DOT :
@@ -219,7 +221,7 @@ CGameObject* CDefenderSpawner::Clone(void* _pArg)
 }
 void CDefenderSpawner::Free()
 {
-	Safe_Release(m_pPoolMgr);
+	m_pPoolMgr->Delete_Pool(m_strPoolTag);
 	Safe_Release(m_pPlayer);
 	__super::Free();
 }
@@ -235,6 +237,7 @@ void SPAWN_DESC::Update(_float _fTimeDelta)
 	if(false == Is_PatternStartDelayEnd())
 	{
 		fPatternStartTimeAcc += _fTimeDelta;
+
 		return;
 	}
 	fUnitTimeAcc += _fTimeDelta;

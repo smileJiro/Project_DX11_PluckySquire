@@ -204,7 +204,6 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 
 	// Trigger
 	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter8_Trigger.json"));
-	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter8_Test_Trigger.json"));
 	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter8_Trigger_Events.json"));
 
 	// BGM 시작
@@ -662,6 +661,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
+	Desc.eStartCoord = COORDINATE_3D;
 	Desc.tTransform3DDesc.vInitialPosition = { -90.f, 67.f, 18.3f };   // TODO ::임시 위치
 	Desc.tTransform2DDesc.vInitialPosition = { 409.f, 102.f, 0.f };   // TODO ::임시 위치
 

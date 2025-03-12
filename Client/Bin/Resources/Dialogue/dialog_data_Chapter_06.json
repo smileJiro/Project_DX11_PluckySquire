@@ -2757,6 +2757,166 @@
 					"Blue": 242
 				}
 			]
+		},
+		{
+			"id": "DEFENDER_Dialogue_02",
+			"Section": "Chapter6_SKSP_04",
+			"lines": [
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "마지막 과학자까지 전부 데려왔군.",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이제 기지에 범생이들이 꽉 찼어.",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "다들 다음 무기를 개발하느라 정신없이 일하고 있지!",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "잘했다 병사!",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				},
+				{
+					"Portrait": 2,
+					"Talker": "위버",
+					"BG": 27,
+					"location": 8,
+					"is2D": true,
+					"isPortrait": false,
+					"iAnimationIndex": -1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "다음 임무는 이 고철 덩어리를 다른 곳으로\n가져가는 거다!",
+					"Red": 255,
+					"Green": 255,
+					"Blue": 242
+				}
+			]
+		},
+		{
+			"id": "Stamp_Acquire_Stop",
+			"lines": [
+				{
+					"Portrait": 16,
+					"Talker": "",
+					"BG": 9,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "저트가 멈춰 도장을 얻었습니다!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 16,
+					"Talker": "",
+					"BG": 9,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "멈춰 도장을 사용하면, 책 페이지에 \n마법의 손 아이콘을 찍을 수 있습니다!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 16,
+					"Talker": "",
+					"BG": 9,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이 아이콘이 찍힌 대상은 무엇이든 멈추게 됩니다.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 16,
+					"Talker": "",
+					"BG": 9,
+					"location": 0,
+					"is2D": false,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "[Q]를 눌러서 도장을 찍으세요.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
 		}
 	]
 }
