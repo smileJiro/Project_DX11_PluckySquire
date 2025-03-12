@@ -58,6 +58,8 @@ HRESULT CCamera::Initialize(void* _pArg)
 	m_pGameInstance->Set_NearFarZ(_float2(m_fNear, m_fFar));
 
 	Ready_DofConstData(pDesc);
+	Create_Arm(pDesc);
+
 	return S_OK;
 }
 
@@ -139,6 +141,20 @@ void CCamera::Set_DofBufferData(const CONST_DOF& _tDofConstData, _bool _isUpdate
 		Compute_FocalLength();
 		m_pGameInstance->UpdateConstBuffer(_tDofConstData, m_pConstDofBuffer);
 		m_pGameInstance->Bind_DofConstBuffer("DofConstData", m_pConstDofBuffer);
+	}
+}
+
+void CCamera::Create_Arm(CAMERA_DESC* _pDesc)
+{
+	CCameraArm::CAMERA_ARM_DESC Desc = {};
+
+	Desc.vArm = _pDesc->vArm;;
+	Desc.fLength = _pDesc->fLength;
+	
+	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
+
+	if (nullptr != pArm) {
+		m_pCurArm = pArm;
 	}
 }
 
