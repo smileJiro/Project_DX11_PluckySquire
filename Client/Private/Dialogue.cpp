@@ -298,6 +298,11 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 						dialogLine.portrait = static_cast<PORTRAITNAME>(line["Portrait"].get<int>());
 					}
 
+					if (line.contains("isDefender") && line["isDefender"].is_boolean())
+					{
+						dialogLine.isDefender = line["isDefender"].get<_bool>();
+					}
+
 					// 말하는 대상
 					if (line.contains("Talker") && line["Talker"].is_string())
 					{
@@ -691,11 +696,26 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	{
 		_float2 vPos = { 0.f , 0.f };
 
-		vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
-		vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
+		if (true == Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].isDefender)
+		{
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.05f / fScaleY;
 
 
-		vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+		}
+		else
+		{
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
+
+
+			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
+		}
+
+		
+
+
 	}
 
 
@@ -712,19 +732,52 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	if (isColumn == false)
 	{
 		_float2 vMidPoint = { _vRTSize.x / 2.f, _vRTSize.y / 2.f };
-
+		
 		vCalPos.x = vMidPoint.x + vTextPos2D.x;
 		vCalPos.y = vMidPoint.y - vTextPos2D.y;
 
 		// 대상 이름 출력
-		wsprintf(m_tFont, currentLine.Talker.c_str());
-		pGameInstance->Render_Font(TEXT("Font20"), m_tFont, _float2(vCalPos.x, vCalPos.y ), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+		//wsprintf(m_tFont, currentLine.Talker.c_str());
+		//pGameInstance->Render_Font(TEXT("Font20"), m_tFont, _float2(vCalPos.x, vCalPos.y ), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+		//
+		//
+		//
+		//// 대화 내용 출력
+		//wsprintf(m_tFont, strDisplaytext.c_str());
+		//pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2((vCalPos.x - 50.f), (vCalPos.y + 45.f)), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+
+		if (true == Get_Dialogue(m_tDialogIndex)[0].lines[m_iCurrentLineIndex].isDefender)
+		{
+			//_float2 vMidPoint = { _vRTSize.x / 2.f, _vRTSize.y / 2.f };
+			//
+			//vCalPos.x = vMidPoint.x + vTextPos2D.x;
+			//vCalPos.y = vMidPoint.y - vTextPos2D.y;
+
+			wsprintf(m_tFont, currentLine.Talker.c_str());
+			pGameInstance->Render_Font(TEXT("Font16"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 
 
+			// 대화 내용 출력
+			wsprintf(m_tFont, strDisplaytext.c_str());
+			pGameInstance->Render_Font(TEXT("Font18"), m_tFont, _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 
-		// 대화 내용 출력
-		wsprintf(m_tFont, strDisplaytext.c_str());
-		pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2((vCalPos.x - 50.f), (vCalPos.y + 45.f)), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+		}
+		else
+		{
+			//_float2 vMidPoint = { _vRTSize.x / 2.f, _vRTSize.y / 2.f };
+			//
+			//vCalPos.x = vMidPoint.x + vTextPos2D.x;
+			//vCalPos.y = vMidPoint.y - vTextPos2D.y;
+
+			wsprintf(m_tFont, currentLine.Talker.c_str());
+			pGameInstance->Render_Font(TEXT("Font20"), m_tFont, _float2(vCalPos.x, vCalPos.y), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+
+
+			// 대화 내용 출력
+			wsprintf(m_tFont, strDisplaytext.c_str());
+			pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2((vCalPos.x - 50.f), (vCalPos.y + 45.f)), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+		}
+
 
 	}
 	else if (isColumn == true)
@@ -1467,6 +1520,7 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 			{
 				_tchar	strSectionID[MAX_PATH];
 				wsprintf(strSectionID, m_strCurrentSection);
+
 
 				if (TEXT("NOTWORD") == strSectionID)
 				{
