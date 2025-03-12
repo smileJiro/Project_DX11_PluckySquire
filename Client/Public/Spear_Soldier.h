@@ -4,6 +4,11 @@ BEGIN(Client)
 class CSpear_Soldier final : public CMonster
 {
 public:
+	typedef struct tagSpear_SoldierDesc : public CMonster::MONSTER_DESC
+	{
+		_bool isC6BossMode = false;
+	}SPEARSOLDIER_DESC;
+
 	enum Animation
 	{
 		ALERT = 13,
@@ -151,6 +156,8 @@ private:
 	_float m_fDashDistance = { 0.f };
 	_float m_fAccDistance = { 0.f };
 	_float3 m_vDir = {};
+
+	_bool m_isC6BossMode = { false };
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);

@@ -24,7 +24,7 @@ HRESULT CSpear_Soldier::Initialize_Prototype()
 
 HRESULT CSpear_Soldier::Initialize(void* _pArg)
 {
-    CSpear_Soldier::MONSTER_DESC* pDesc = static_cast<CSpear_Soldier::MONSTER_DESC*>(_pArg);
+    CSpear_Soldier::SPEARSOLDIER_DESC* pDesc = static_cast<CSpear_Soldier::SPEARSOLDIER_DESC*>(_pArg);
     //pDesc->isCoordChangeEnable = true;
 
     if(false == pDesc->isCoordChangeEnable)
@@ -76,6 +76,10 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
+
+	if (false == pDesc->isC6BossMode)
+        m_isC6BossMode = pDesc->isC6BossMode;
+
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
@@ -94,17 +98,30 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
 
     if(false == m_isSneakMode)
     {
-        m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
-        m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+        if(false == m_isC6BossMode)
+        {
+            m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
+            m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+        }
+        else
+        {
+            //점프가 추가될 예정 -> 점프 장소까지 이동 후 블록커와 충돌을 순간 끄고 점프가 끝나면 다시 켜는 작업을 수행
 
-        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, BLOCK_HOLD_LOOP, true);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
+            m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+        }
     }
     else if(true == m_isSneakMode)
     {
@@ -112,8 +129,29 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
         m_pFSM->Set_State((_uint)MONSTER_STATE::SNEAK_IDLE);
     }
 
-    
-    pModelObject->Set_Animation(IDLE);
+
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, BLOCK_HOLD_LOOP, true);
+
+        pModelObject->Set_Animation(IDLE);
+    }
+    else if (COORDINATE_2D == Get_CurCoord())
+    {
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_DOWN, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_RIGHT, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_UP, true);
+
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_DOWN, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_RIGHT, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_UP, true);
+
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, WALK_DOWN, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, WALK_RIGHT, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, WALK_UP, true);
+
+        pModelObject->Set_Animation(IDLE_DOWN);
+    }
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CSpear_Soldier::Animation_End, this, placeholders::_1, placeholders::_2));
 

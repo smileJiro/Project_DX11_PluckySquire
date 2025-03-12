@@ -148,6 +148,9 @@ public:
 
 	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
 
+
+	virtual void On_Change2DDirection(E_DIRECTION _eCurrentDir)override;
+
 protected:
 	void Monster_Death();
 
