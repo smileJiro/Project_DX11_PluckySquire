@@ -19,6 +19,8 @@
 #include "Camera_Manager.h"
 #include "FatherPart_Prop.h"
 #include "FatherGame.h"
+#include "Portal_Default.h"
+#include "Section_2D_PlayMap.h"
 
 CMiniGame_Defender::CMiniGame_Defender(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CContainerObject(_pDevice, _pContext)
@@ -81,7 +83,7 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
     /* Test 2D Collider */
     CCollider_AABB::COLLIDER_AABB_DESC tAABBDesc2 = {};
     tAABBDesc2.pOwner = this;
-    tAABBDesc2.vExtents = {150.f , 300.f };
+    tAABBDesc2.vExtents = {1500.f , 300.f };
     tAABBDesc2.vScale = { 1.0f, 1.0f };
     tAABBDesc2.vOffsetPosition = { 0.f,0.f };
     tAABBDesc2.isBlock = false;
@@ -101,6 +103,147 @@ void CMiniGame_Defender::Priority_Update(_float _fTimeDelta)
     {
         m_pCurrentCapsule = nullptr;
         m_fLastCapsuleDestroyTime = m_fTimeAcc;
+    }
+}
+void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
+{
+
+	if (m_eGameState == _eState)
+		return;
+    m_eGameState = _eState;
+    switch (m_eGameState)
+    {
+    case Client::CMiniGame_Defender::DEFENDER_PROG_NONE:
+        break;
+    case Client::CMiniGame_Defender::DEFENDER_PROG_ENTERED:
+        break;
+    case Client::CMiniGame_Defender::DEFENDER_PROG_BEGINNING_DIALOG:
+    {
+        CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName))->Get_Portal(0));
+		if (pTargetPortal)
+			pTargetPortal->Set_Active(false);
+
+        static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(this);
+
+        //DIALOG
+        m_pDialogManager->Set_DialogId(TEXT("DEFENDER_Dialogue_01"), m_strSectionName.c_str());
+        //Uimgr->Set_DialogId(m_strDialogueIndex, m_strCurSecion);
+
+        _vector vPos = Get_FinalPosition();
+        _float3 vPosition; XMStoreFloat3(&vPosition, vPos);
+        m_pDialogManager->Set_DialoguePos(vPosition);
+        //Uimgr->Set_DialoguePos(vPos);
+        m_pDialogManager->Set_DisPlayDialogue(true);
+
+
+        break;
+    }
+    case Client::CMiniGame_Defender::DEFENDER_PROG_TRANSFORM_IN:
+    {
+        CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+        CPlayer* pNormalPlayer = pPDM->Get_NormalPlayer_Ptr();
+        m_pDefenderPlayer = pPDM->Get_DefenderPlayer_Ptr();
+        Safe_AddRef(m_pDefenderPlayer);
+        m_pDefenderPlayer->Register_AnimEndCallback(bind(&CMiniGame_Defender::On_PlayerAnimEnd, this, placeholders::_1, placeholders::_2));
+        pNormalPlayer->Set_Active(false);
+        m_pDefenderPlayer->Set_Active(true);
+
+        _vector vNormalPlayerPos = pNormalPlayer->Get_FinalPosition();
+        m_pDefenderPlayer->Set_Position(vNormalPlayerPos);
+        m_pDefenderPlayer->Start_Transform();
+
+        static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(m_pDefenderPlayer);
+        m_p2DColliderComs[0]->Set_Offset(_float2{ 0.f,0.f });
+
+        break;
+    }
+    case Client::CMiniGame_Defender::DEFENDER_PROG_GAME:
+        break;
+    case Client::CMiniGame_Defender::DEFENDER_PROG_MISSION_COMPLETE_FONT:
+        break;
+    case Client::CMiniGame_Defender::DEFENDER_PROG_MISSION_COMPLETE_FADEOUT:
+    {
+        CCamera_Manager::GetInstance()->Start_FadeOut();
+        m_pDefenderPlayer->Set_BlockPlayerInput(true);
+        break;
+    }
+    case Client::CMiniGame_Defender::DEFENDER_PROG_MISSION_COMPLETE_FADEIN:
+    {
+        CCamera_Manager::GetInstance()->Start_FadeIn();
+        m_pSidePersonUI->Set_Active(false);
+        m_pDefenderPlayer->Set_Position(m_vStart_Position);
+		
+        for (_uint i = DEFENDER_PART_COUNTER_BACK; i < DEFENDER_PART_LAST; i++)
+        {
+            m_PartObjects[i]->Set_Active(false);
+        }
+        break;
+    }
+    case Client::CMiniGame_Defender::DEFENDER_PROG_TRANSFORM_OUT:
+    {
+        m_pDefenderPlayer->Switch_Animation(CDefenderPlayer::ANIM_STATE_CYBERJOT2D::CYBER2D_TRANSFORM_OUT);
+		m_pDefenderPlayer->Set_Direction(T_DIRECTION::LEFT);
+        break;
+    }
+    case Client::CMiniGame_Defender::DEFENDER_PROG_ENDING_DIALOG:
+    {
+        CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+        CPlayer* pNormalPlayer = pPDM->Get_NormalPlayer_Ptr();
+        pNormalPlayer->Set_Active(true);
+        m_pDefenderPlayer->Set_Active(false);
+        pPDM->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
+        pNormalPlayer->Set_Mode(CPlayer::PLAYER_MODE_ZETPACK);
+        pNormalPlayer->Set_State(CPlayer::IDLE);
+        pNormalPlayer->Set_BlockPlayerInput(true);
+        pNormalPlayer->Set_Position(m_vStart_Position);
+        pNormalPlayer->Set_2DDirection(E_DIRECTION::RIGHT);
+
+        static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(this);
+        //DIALOG
+        m_pDialogManager->Set_DialogId(TEXT("DEFENDER_Dialogue_02"), m_strSectionName.c_str());
+
+        _vector vPos = Get_FinalPosition();
+        _float3 vPosition; XMStoreFloat3(&vPosition, vPos);
+        m_pDialogManager->Set_DialoguePos(vPosition);
+        m_pDialogManager->Set_DisPlayDialogue(true);
+        break;
+    }
+    case Client::CMiniGame_Defender::DEFENDER_PROG_REWARDING:
+    {
+
+
+        //아빠머ㅏ리 만들기
+        CFatherPart_Prop::FATHERPART_PROP_DESC Desc{};
+        Desc.iCurLevelID = m_iCurLevelID;
+        Desc.iFatherPartID = CFatherGame::FATER_HEAD;
+        Desc.Build_2D_Transform(_float2(-1685.0, -229.0), _float2(150.0f, 150.0f));
+        CGameObject* pGameObject = nullptr;
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"), LEVEL_CHAPTER_6, TEXT("Layer_FatherPart_Prop"), &pGameObject, &Desc)))
+            assert(nullptr);
+
+        CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+        static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(pGameObject);
+        break;
+    }
+    case Client::CMiniGame_Defender::DEFENDER_PROG_CLEAR:
+    {
+        //포탈 켜기
+        CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName))->Get_Portal(0));
+        if (pTargetPortal)
+            pTargetPortal->Set_Active(true);
+
+        //플레이어 바라보고 움직일 수 있게 하기
+        CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+        CPlayer* pNormalPlayer = pPDM->Get_NormalPlayer_Ptr();
+        static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(pNormalPlayer);
+        pNormalPlayer->Set_BlockPlayerInput(false);
+
+        CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, pNormalPlayer, SECTION_2D_PLAYMAP_TRIGGER);
+
+        break;
+    }
+    default:
+        break;
     }
 }
 HRESULT CMiniGame_Defender::Ready_ControllTower()
@@ -379,24 +522,9 @@ void CMiniGame_Defender::On_PlayerAnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
     if (DEFENDER_PROG_TRANSFORM_OUT == m_eGameState 
         &&(_uint)CDefenderPlayer::ANIM_STATE_CYBERJOT2D::CYBER2D_TRANSFORM_OUT == iAnimIdx)
     {
-        CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
-        CPlayer* pNormalPlayer = pPDM->Get_NormalPlayer_Ptr();
-		pNormalPlayer->Set_Active(true);
-		m_pDefenderPlayer->Set_Active(false);
-		pPDM->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
-        pNormalPlayer->Set_Mode(CPlayer::PLAYER_MODE_ZETPACK);
-		pNormalPlayer->Set_State(CPlayer::IDLE);
-        pNormalPlayer->Set_BlockPlayerInput(true);
+        Set_GameState(DEFENDER_PROG_ENDING_DIALOG);
 
-        m_eGameState = DEFENDER_PROG_ENDING_DIALOG;
-        static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(this);
-        //DIALOG
-        m_pDialogManager->Set_DialogId(TEXT("DEFENDER_Dialogue_02"), m_strSectionName.c_str());
 
-        _vector vPos = Get_FinalPosition();
-        _float3 vPosition; XMStoreFloat3(&vPosition, vPos);
-        m_pDialogManager->Set_DialoguePos(vPosition);
-        m_pDialogManager->Set_DisPlayDialogue(true);
 
     }
 }
@@ -458,9 +586,8 @@ void CMiniGame_Defender::Update(_float _fTimeDelta)
         m_fMissionClearFontTImeAcc += _fTimeDelta;
 		if (m_fMissionClearFontTImeAcc >= m_fMissionClearFontTIme)
 		{
-			m_eGameState = DEFENDER_PROG_MISSION_COMPLETE_FADEOUT;
-			CCamera_Manager::GetInstance()->Start_FadeOut();
-            m_pDefenderPlayer->Set_BlockPlayerInput(true);
+			Set_GameState(DEFENDER_PROG_MISSION_COMPLETE_FADEOUT);
+
 		}
     }
 	else if (DEFENDER_PROG_MISSION_COMPLETE_FADEOUT == m_eGameState)
@@ -468,13 +595,8 @@ void CMiniGame_Defender::Update(_float _fTimeDelta)
         //카메라 FadeOut 끝인지 확인
         if (0.f >= static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_DofBufferData().fFadeRatio)
         {
-			m_eGameState = DEFENDER_PROG_MISSION_COMPLETE_FADEIN;
-            CCamera_Manager::GetInstance()->Start_FadeIn();
-			m_pSidePersonUI->Set_Active(false);
-            for (_uint i = DEFENDER_PART_COUNTER_BACK; i < DEFENDER_PART_LAST; i++)
-            {
-			    m_PartObjects[i]->Set_Active(false);
-            }
+			Set_GameState(DEFENDER_PROG_MISSION_COMPLETE_FADEIN);
+   
         }
 
 
@@ -483,8 +605,8 @@ void CMiniGame_Defender::Update(_float _fTimeDelta)
     {
         if (1.f >= static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_DofBufferData().fFadeRatio)
         {
-            m_eGameState = DEFENDER_PROG_TRANSFORM_OUT;
-            m_pDefenderPlayer->Switch_Animation(CDefenderPlayer::ANIM_STATE_CYBERJOT2D::CYBER2D_TRANSFORM_OUT);
+			Set_GameState(DEFENDER_PROG_TRANSFORM_OUT);
+         
         }
 
     }
@@ -496,20 +618,18 @@ void CMiniGame_Defender::Update(_float _fTimeDelta)
 	{
 		if (false == m_pDialogManager->Get_DisPlayDialogue())
 		{
-            m_eGameState = DEFENDER_PROG_REWARDING;
-			
-            //아빠머ㅏ리 만들기
-            CFatherPart_Prop::FATHERPART_PROP_DESC Desc{};
-            Desc.iCurLevelID = m_iCurLevelID;
-            Desc.iFatherPartID = CFatherGame::FATER_HEAD;
-            Desc.Build_2D_Transform(_float2(-1685.0, -229.0), _float2(150.0f, 150.0f));
-            CGameObject* pGameObject = nullptr;
-            if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"), LEVEL_CHAPTER_6, TEXT("Layer_FatherPart_Prop"), &pGameObject, &Desc)))
-                assert(nullptr);
-
-            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+			Set_GameState(DEFENDER_PROG_REWARDING);
         }
 	}
+    else if (DEFENDER_PROG_REWARDING == m_eGameState)
+    {
+		m_fCamTargetChangeTimeAcc += _fTimeDelta;
+        if(m_fCamTargetChangeTimeAcc >= m_fCamTargetChangeTime)
+        {
+            m_fCamTargetChangeTimeAcc = 0.f;
+            Set_GameState(DEFENDER_PROG_CLEAR);
+        }
+    }
 
 	if (KEY_DOWN(KEY::Z))
 	{
@@ -538,16 +658,8 @@ void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
         && OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID()
         && m_p2DColliderComs[1] == _pMyCollider)
     {
-        m_eGameState = DEFENDER_PROG_BEGINNING_DIALOG;
-        //DIALOG
-        m_pDialogManager->Set_DialogId(TEXT("DEFENDER_Dialogue_01"), m_strSectionName.c_str());
-        //Uimgr->Set_DialogId(m_strDialogueIndex, m_strCurSecion);
 
-        _vector vPos = Get_FinalPosition();
-        _float3 vPosition; XMStoreFloat3(&vPosition, vPos);
-        m_pDialogManager->Set_DialoguePos(vPosition);
-        //Uimgr->Set_DialoguePos(vPos);
-        m_pDialogManager->Set_DisPlayDialogue(true);
+		Set_GameState(DEFENDER_PROG_BEGINNING_DIALOG);
 
     }
     //GameStart
@@ -555,22 +667,7 @@ void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
         && OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID()
         && m_p2DColliderComs[0] == _pMyCollider)
     {
-        m_eGameState = DEFENDER_PROG_GAME;
-
-        CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
-        CPlayer* pNormalPlayer = pPDM->Get_NormalPlayer_Ptr();
-        m_pDefenderPlayer = pPDM->Get_DefenderPlayer_Ptr();
-        Safe_AddRef(m_pDefenderPlayer);
-		m_pDefenderPlayer->Register_AnimEndCallback(bind(&CMiniGame_Defender::On_PlayerAnimEnd, this, placeholders::_1, placeholders::_2));
-        pNormalPlayer->Set_Active(false);
-        m_pDefenderPlayer->Set_Active(true);
-
-        _vector vNormalPlayerPos = pNormalPlayer->Get_FinalPosition();
-        m_pDefenderPlayer->Set_Position(vNormalPlayerPos);
-        m_pDefenderPlayer->Start_Transform();
-
-        static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(m_pDefenderPlayer);
-        m_p2DColliderComs[0]->Set_Offset(_float2{ 0.f,0.f });
+		Set_GameState(DEFENDER_PROG_TRANSFORM_IN);
     }
 
 	if (OBJECT_GROUP::GIMMICK_OBJECT & _pOtherObject->Get_ObjectGroupID()
@@ -623,7 +720,7 @@ void CMiniGame_Defender::Mission_Complete()
         Safe_Release(pSpawner.second);
     }
     m_Spawners.clear();
-	m_eGameState = DEFENDER_PROG_MISSION_COMPLETE_FONT;
+    Set_GameState(DEFENDER_PROG_MISSION_COMPLETE_FONT);
     if(m_pMissionCompleteFont)
 	    m_pMissionCompleteFont->Set_Active(true);
 }

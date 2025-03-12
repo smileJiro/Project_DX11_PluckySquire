@@ -1,7 +1,7 @@
 [
   {
     "Arm_Data": {
-      "Arm_Length": 12.5,
+      "Arm_Length": 11.0,
       "Arm_Length_RatioType": 3,
       "Arm_MoveTime_AxisRight": [
         0.0,
@@ -46,7 +46,7 @@
   },
   {
     "Arm_Data": {
-      "Arm_Length": 12.5,
+      "Arm_Length": 11.3,
       "Arm_Length_RatioType": 3,
       "Arm_MoveTime_AxisRight": [
         0.0,
@@ -91,7 +91,7 @@
   },
   {
     "Arm_Data": {
-      "Arm_Length": 12.5,
+      "Arm_Length": 11.0,
       "Arm_Length_RatioType": 3,
       "Arm_MoveTime_AxisRight": [
         0.0,
@@ -114,9 +114,9 @@
         0.0
       ],
       "Desire_Arm": [
-        0.499,
-        0.630,
-        -0.595
+        0.999,
+        0.0075,
+        0.0124
       ]
     },
     "Arm_Tag": "Default_Positive_X",
@@ -129,7 +129,142 @@
       "AtOffset_RatioType": 3,
       "AtOffset_Time": 1.0,
       "Use_SubData": true,
-      "Zoom_Level": 5,
+      "Zoom_Level": 4,
+      "Zoom_RatioType": 3,
+      "Zoom_Time": 1.0
+    }
+  },
+  {
+    "Arm_Data": {
+      "Arm_Length": 11.0,
+      "Arm_Length_RatioType": 3,
+      "Arm_MoveTime_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_MoveTime_AxisY": [
+        1.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisY": [
+        0.0,
+        0.0
+      ],
+      "Arm_Time": [
+        1.0,
+        0.0
+      ],
+      "Desire_Arm": [
+        -0.0441,
+        0.1249,
+        0.9912
+      ]
+    },
+    "Arm_Tag": "Default_Positive_Z",
+    "Sub_Data": {
+      "AtOffset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "AtOffset_RatioType": 3,
+      "AtOffset_Time": 1.0,
+      "Use_SubData": true,
+      "Zoom_Level": 4,
+      "Zoom_RatioType": 3,
+      "Zoom_Time": 1.0
+    }
+  },
+  {
+    "Arm_Data": {
+      "Arm_Length": 11.0,
+      "Arm_Length_RatioType": 3,
+      "Arm_MoveTime_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_MoveTime_AxisY": [
+        1.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisY": [
+        0.0,
+        0.0
+      ],
+      "Arm_Time": [
+        1.0,
+        0.0
+      ],
+      "Desire_Arm": [
+        0.00,
+        0.4570,
+        -0.895
+      ]
+    },
+    "Arm_Tag": "Custom_Sksp5",
+    "Sub_Data": {
+      "AtOffset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "AtOffset_RatioType": 3,
+      "AtOffset_Time": 1.0,
+      "Use_SubData": true,
+      "Zoom_Level": 4,
+      "Zoom_RatioType": 3,
+      "Zoom_Time": 1.0
+    }
+  },
+  {
+    "Arm_Data": {
+      "Arm_Length": 10.8,
+      "Arm_Length_RatioType": 3,
+      "Arm_MoveTime_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_MoveTime_AxisY": [
+        1.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisRight": [
+        0.0,
+        0.0
+      ],
+      "Arm_RotationPerSec_AxisY": [
+        0.0,
+        0.0
+      ],
+      "Arm_Time": [
+        1.0,
+        0.0
+      ],
+      "Desire_Arm": [
+        -0.3093,
+        0.1062,
+        -0.9450
+      ]
+    },
+    "Arm_Tag": "Custom_Sksp6",
+    "Sub_Data": {
+      "AtOffset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "AtOffset_RatioType": 3,
+      "AtOffset_Time": 1.0,
+      "Use_SubData": true,
+      "Zoom_Level": 4,
       "Zoom_RatioType": 3,
       "Zoom_Time": 1.0
     }

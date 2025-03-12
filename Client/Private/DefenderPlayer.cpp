@@ -281,15 +281,7 @@ void CDefenderPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	{
 		m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_IDLE);
 	}
-	else if ((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_DEATH == iAnimIdx)
-	{
-		m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_IDLE);
-		m_pMinigame->Restart_Game();
-	}
-	else	if ((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_TRANSFORM_OUT == iAnimIdx)
-	{
 
-	}
 }
 
 void CDefenderPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)

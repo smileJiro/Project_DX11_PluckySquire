@@ -56,6 +56,7 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_06"), _float3(44.53f, 0.40f, 1.21f));
 	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_03"), _float3(-37.8f, 29.89f, 41.25f));
 	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_04"), _float3(1.72f, 18.65f, 30.10f));
+	m_NormalTargets.emplace(TEXT("Chapter8_SKSP_10"), _float3(-32.3f, 8.54f, 31.65f));
 
 
 	return S_OK;
@@ -299,6 +300,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 
 				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { TargetFixedY.x, TargetFixedY.y });
 				XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
+				XMStoreFloat3(&m_v2DPreTargetWorldPos, vTargetPos);
 
 				_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
 				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
@@ -456,7 +458,13 @@ void CCamera_2D::Set_InitialData(_wstring _szSectionTag)
 			break;
 		}
 	}
-
+	else if (TEXT("Chapter8_SKSP_05") == _szSectionTag) {
+		pData = Find_ArmData(TEXT("Custom_Sksp5"));
+	}
+	else if (TEXT("Chapter8_SKSP_06") == _szSectionTag) {
+		pData = Find_ArmData(TEXT("Custom_Sksp6"));
+	}
+	
 	if (nullptr != pData) 
 		Set_InitialData(pData);
 }
@@ -814,6 +822,8 @@ _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
 			m_isTargetChanged = false;
 		}
 
+		cout << XMVectorGetX(vCurPos) << ", " << XMVectorGetY(vCurPos) << ", " << XMVectorGetZ(vCurPos) << ", " << endl;
+
 		vCurPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMLoadFloat3(&m_v2DTargetWorldPos), fRatio);
 		vCurPos = XMVectorSetW(vCurPos, 1.f);
 	}
@@ -882,6 +892,9 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 
 		XMStoreFloat3(&m_v2DPreTargetWorldPos, vTargetPos);
 		XMStoreFloat3(&m_v2DFixedPos, vTargetPos);
+		if (true == m_isTargetChanged) {
+			m_vStartPos = m_v2DPreTargetWorldPos;
+		}
 
 		m_InitialTime.y = 0.f;
 		m_isInitialData = false;

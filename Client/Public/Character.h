@@ -55,6 +55,8 @@ public:
 
 	virtual void On_Land() {};
 
+	//void Start_AutoMove(_uint _iAnimIndex, _vector _vTargetPos, );
+
 public:
 	//GET
 	_bool Is_OnGround();

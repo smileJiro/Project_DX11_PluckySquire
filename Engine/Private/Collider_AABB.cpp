@@ -147,6 +147,7 @@ void CCollider_AABB::Block(CCollider* _pOther)
 
 void CCollider_AABB::Block_AABB(CCollider_AABB* _pOther)
 {
+    /* 1차적으로 Other의 이전프레임 위치를 체크한다. >>> 그리고 */
     _float fWidth = m_vFinalExtents.x * 2.0f;
     _float fHeight = m_vFinalExtents.y * 2.0f;
     _float2 vLT = Get_LT();
