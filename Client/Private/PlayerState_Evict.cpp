@@ -41,6 +41,8 @@ void CPlayerState_Evict::Update(_float _fTimeDelta)
 			if (nullptr != pMagicHand)
 				pMagicHand->Show_3DHand();
 
+			CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_pOwner);
+
 		}
 	}
 	else if (BOOKOUT == m_eCurState)

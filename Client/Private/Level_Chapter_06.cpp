@@ -185,10 +185,6 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	}
 
 
-
-
-
-
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
@@ -645,6 +641,26 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
+
+
+	_vector vPalyerPos = pPlayer->Get_FinalPosition();
+	AUTOMOVE_COMMAND tCommand{};
+	tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+	tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_RIGHT;
+	tCommand.fPreDelayTime = 4.f;
+	tCommand.vTarget = vPalyerPos += { 500.f, 0.f, 0.f };
+	pPlayer->Add_AutoMoveCommand(tCommand);
+	tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_DOWN;
+	tCommand.vTarget += { 0.f, -500.f, 0.f };
+	pPlayer->Add_AutoMoveCommand(tCommand);
+	tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_C08V02_LOOKUPLEFT;
+	tCommand.vTarget += { -500.f, 0.f, 0.f };
+	pPlayer->Add_AutoMoveCommand(tCommand);
+	tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_UP;
+	tCommand.vTarget += { 0.f, 500.f, 0.f };
+	pPlayer->Add_AutoMoveCommand(tCommand);
+
+	pPlayer->Start_AutoMove(true);
 	return S_OK;
 }
 

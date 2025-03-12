@@ -574,6 +574,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 
 void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
 {
+    __super::Exit_Section(_strIncludeSectionName);
     if (Is_CarryingObject())
     {
         _int eCoord =  m_pCarryingObject->Get_CurCoord();

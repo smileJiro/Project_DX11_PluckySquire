@@ -689,10 +689,9 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta)
 {
     COORDINATE eCoord = Get_CurCoord();
 	_vector vCurrentPos = Get_FinalPosition();
-	_float fEpsilon = COORDINATE_2D == eCoord ? 0.3f : 10.f;
+	_float fEpsilon = COORDINATE_2D == eCoord ? 0.3f : 100.f;
 	if (Check_Arrival(_vPosition, fEpsilon))
 	{
-
 		Set_Position(_vPosition);
 		return true;
 	}
@@ -723,6 +722,12 @@ _bool CCharacter::Check_Arrival(_fvector _vPosition, _float _fEpsilon)
         return true;
     }
     return false;
+}
+
+_bool CCharacter::Check_Arrival(_fvector _vPrevPosition, _fvector _vNextPosition, _fvector _vTargetPosition)
+{
+
+    return _bool();
 }
 
 
@@ -787,9 +792,8 @@ _bool CCharacter::Process_AutoMove(_float _fTimeDelta)
     assert(m_bAutoMoving);
 
     AUTOMOVE_COMMAND& tCommand = m_AutoMoveQue.front();
-    //첫 시작
-    if (tCommand.Is_Start())
-        static_cast<CModelObject*>(m_PartObjects[0])->Switch_Animation(tCommand.iAnimIndex);
+
+    _bool bRuntimeBefore = tCommand.Is_RunTime();
     tCommand.Update(_fTimeDelta);
     //선딜레이
     if (tCommand.Is_PreDelayTime())
@@ -799,6 +803,8 @@ _bool CCharacter::Process_AutoMove(_float _fTimeDelta)
     //실행중
     else if (tCommand.Is_RunTime())
     {
+        if(false == bRuntimeBefore)
+            static_cast<CModelObject*>(m_PartObjects[0])->Switch_Animation(tCommand.iAnimIndex);
         switch (tCommand.eType)
         {
         case AUTOMOVE_TYPE::MOVE_TO:
