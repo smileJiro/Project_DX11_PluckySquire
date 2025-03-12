@@ -25,16 +25,16 @@ HRESULT CObject_Manager::Initialize(_uint _iNumLevels)
 
 void CObject_Manager::Priority_Update(_float _fTimeDelta)
 {
-    //m_pGameInstance->Get_ThreadPool()->EnqueueJob([this]()
-    //    {
-    //        for (_uint i = 0; i < m_iNumLevels; ++i)
-    //        {
-    //            for (auto& Pair : m_pLayers[i])
-    //            {
-    //                Pair.second->Check_FrustumCulling();
-    //            }
-    //        }
-    //    });
+    m_pGameInstance->Get_ThreadPool()->EnqueueJob([this]()
+        {
+            for (_uint i = 0; i < m_iNumLevels; ++i)
+            {
+                for (auto& Pair : m_pLayers[i])
+                {
+                    Pair.second->Check_FrustumCulling();
+                }
+            }
+        });
 
     for (_uint i = 0; i < m_iNumLevels; ++i)
     {

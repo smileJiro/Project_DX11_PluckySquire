@@ -26,7 +26,7 @@ private:
 
 private:
 	_wstring							m_strCountingLayerTag;
-	CLayer*								m_pCountingLayer = nullptr;
+	// CLayer*								m_pCountingLayer = nullptr; // Layer는 객체 수명관리에 어려움이 있다. 직접 참조는 x
 
 private:
 	_int								m_iAliveObjectCount = 0;
