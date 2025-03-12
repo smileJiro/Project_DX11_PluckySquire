@@ -171,7 +171,7 @@ void CDefenderPlayer::Update(_float _fTimeDelta)
 		Key_Input(_fTimeDelta);
 
 	m_pCrossHair->Set_Position(_vector{ m_fCrossHairPosition, m_fCrossHairYOffset, 0.f });
-	Set_Direction(m_fCrossHairPosition >= 0.f ? T_DIRECTION::RIGHT : T_DIRECTION::LEFT);
+
 
 	m_fShootTimeAcc += _fTimeDelta;
 	__super::Update(_fTimeDelta);
@@ -242,8 +242,14 @@ void CDefenderPlayer::Key_Input(_float _fTimeDelta)
 	vMoveDir = XMVector2Normalize(vMoveDir);
 	Move(vMoveDir * m_fMoveSpeed, _fTimeDelta);
 
+	_bool _bCorssHairLeftBefore = m_fCrossHairPosition < 0.f;
 	m_fCrossHairPosition += (_float)m_pGameInstance->GetDIMouseMove(MOUSE_AXIS::X) * _fTimeDelta * m_fCrossHairMoveSpeed;
 	m_fCrossHairPosition = max(-m_fCrossHairMoveRange, min(m_fCrossHairMoveRange, m_fCrossHairPosition));
+	_bool _bCorssHairLeftCurrent = m_fCrossHairPosition < 0.f;
+	if (_bCorssHairLeftCurrent != _bCorssHairLeftBefore)
+	{
+		Set_Direction(m_fCrossHairPosition >= 0.f ? T_DIRECTION::RIGHT : T_DIRECTION::LEFT);
+	}
 
 	if (MOUSE_PRESSING(MOUSE_KEY::LB))
 	{
@@ -275,7 +281,7 @@ void CDefenderPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 		pPDM->Set_CurrentPlayer(PLAYABLE_ID::DEFENDER);
 		Set_BlockPlayerInput(false);
-		m_pMinigame->Start_Gamde();
+		m_pMinigame->Start_Game();
 	}
 	else if ((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_SHOT == iAnimIdx)
 	{
