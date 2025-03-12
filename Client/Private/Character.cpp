@@ -224,6 +224,11 @@ void CCharacter::Enter_Section(const _wstring _strIncludeSectionName)
     __super::Enter_Section(_strIncludeSectionName);
 }
 
+_bool CCharacter::Is_Dynamic()
+{
+    return static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Dynamic();
+}
+
 _bool CCharacter::Is_OnGround()
 {
     if (Is_PlatformerMode())
@@ -689,10 +694,14 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta)
 {
     COORDINATE eCoord = Get_CurCoord();
 	_vector vCurrentPos = Get_FinalPosition();
-	_float fEpsilon = COORDINATE_2D == eCoord ? 0.3f : 10.f;
+	_float fEpsilon = COORDINATE_2D == eCoord ? 10.f : 0.3f;
 	if (Check_Arrival(_vPosition, fEpsilon))
 	{
-
+        if(Is_Dynamic())
+        {
+			_float3 vPos; XMStoreFloat3(&vPos, _vPosition);
+            m_pActorCom->Set_GlobalPose(vPos);
+        }
 		Set_Position(_vPosition);
 		return true;
 	}
@@ -723,6 +732,12 @@ _bool CCharacter::Check_Arrival(_fvector _vPosition, _float _fEpsilon)
         return true;
     }
     return false;
+}
+
+_bool CCharacter::Check_Arrival(_fvector _vPrevPosition, _fvector _vNextPosition, _fvector _vTargetPosition)
+{
+
+    return _bool();
 }
 
 
@@ -787,9 +802,8 @@ _bool CCharacter::Process_AutoMove(_float _fTimeDelta)
     assert(m_bAutoMoving);
 
     AUTOMOVE_COMMAND& tCommand = m_AutoMoveQue.front();
-    //첫 시작
-    if (tCommand.Is_Start())
-        static_cast<CModelObject*>(m_PartObjects[0])->Switch_Animation(tCommand.iAnimIndex);
+
+    _bool bRuntimeBefore = tCommand.Is_RunTime();
     tCommand.Update(_fTimeDelta);
     //선딜레이
     if (tCommand.Is_PreDelayTime())
@@ -799,6 +813,8 @@ _bool CCharacter::Process_AutoMove(_float _fTimeDelta)
     //실행중
     else if (tCommand.Is_RunTime())
     {
+        if(false == bRuntimeBefore)
+            static_cast<CModelObject*>(m_PartObjects[0])->Switch_Animation(tCommand.iAnimIndex);
         switch (tCommand.eType)
         {
         case AUTOMOVE_TYPE::MOVE_TO:
@@ -861,6 +877,8 @@ _bool CCharacter::Process_AutoMove_MoveTo(const AUTOMOVE_COMMAND& _pCommand, _fl
         Rotate_To_Radians(vDir, m_pControllerTransform->Get_RotationPerSec());
     }
     _bool _bResult = Move_To(_pCommand.vTarget, _fTimeDelta);
+    if (_bResult)
+        Stop_Move();
     return _bResult;
 }
 

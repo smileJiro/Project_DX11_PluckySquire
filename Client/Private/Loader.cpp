@@ -1195,7 +1195,10 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 		lstrcpy(m_szLoadingText, TEXT("Level 2 몬스터 로딩중입니다."));
 
-		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter2_Monsters.json"), TEXT("Chapter2_Monsters"), _eLoadLevelID)))
+		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter2_Monsters_2D.json"), TEXT("Chapter2_Monsters_2D"), _eLoadLevelID)))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter2_Monsters_3D.json"), TEXT("Chapter2_Monsters_3D"), _eLoadLevelID)))
 			return E_FAIL;
 
 #pragma endregion
@@ -1417,7 +1420,10 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			CZipline::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter4_Monsters.json"), TEXT("Chapter4_Monsters"), _eLoadLevelID)))
+		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter4_Monsters_2D.json"), TEXT("Chapter4_Monsters_2D"), _eLoadLevelID)))
+			return E_FAIL;
+		
+		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter4_Monsters_3D.json"), TEXT("Chapter4_Monsters_3D"), _eLoadLevelID)))
 			return E_FAIL;
 
 	#pragma endregion
@@ -1649,7 +1655,10 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		lstrcpy(m_szLoadingText, TEXT("Level 6 몬스터 로딩중입니다."));
 
-		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter6_Monsters.json"), TEXT("Chapter6_Monsters"), _eLoadLevelID)))
+		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter6_Monsters_2D.json"), TEXT("Chapter6_Monsters_2D"), _eLoadLevelID)))
+			return E_FAIL;
+		
+		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter6_Monsters_3D.json"), TEXT("Chapter6_Monsters_3D"), _eLoadLevelID)))
 			return E_FAIL;
 
 #pragma endregion

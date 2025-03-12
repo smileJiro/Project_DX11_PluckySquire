@@ -111,7 +111,7 @@ public:
 	_bool Move_To_3D(_fvector _vPosition, _float _fEpsilon = 0.5f, _bool _FreezeY = true);
 	_bool Move_To(_fvector _vPosition, _float _fTimeDelta);
 	_bool Check_Arrival(_fvector _vPosition, _float _fEpsilon = 0.5f);
-	//_bool Check_Arrival(_fvector _vPrevPosition, _fvector _vNextPosition, _fvector _vTargetPosition);
+	_bool Check_Arrival(_fvector _vPrevPosition, _fvector _vNextPosition, _fvector _vTargetPosition);
 	//캐릭터 기준 _vDir 방향을 바라보게 하는 함수. Y축으로만 회전함.
 	void LookDirectionXZ_Kinematic(_fvector _vDir);
 	void LookDirectionXZ_Dynamic(_fvector _vDir);
@@ -126,6 +126,7 @@ public:
 
 public:
 	//GET
+	_bool Is_Dynamic();
 	_bool Is_OnGround();
 	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
 	STAT& Get_Stat() { return m_tStat; }

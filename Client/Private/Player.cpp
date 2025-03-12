@@ -574,6 +574,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 
 void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
 {
+    __super::Exit_Section(_strIncludeSectionName);
     if (Is_CarryingObject())
     {
         _int eCoord =  m_pCarryingObject->Get_CurCoord();
@@ -2373,7 +2374,24 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 
        // }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
-		Set_BlockPlayerInput(!Is_PlayerInputBlocked());
+        //_vector vPalyerPos = Get_FinalPosition();
+        //AUTOMOVE_COMMAND tCommand{};
+        //tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+        //tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT;
+        //tCommand.fPreDelayTime = 4.f;
+        //tCommand.vTarget = vPalyerPos += { 2.f, 0.f, 0.f };
+        //Add_AutoMoveCommand(tCommand);
+        //tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT;
+        //tCommand.vTarget += { 0.f, 0.f, 2.f };
+        //Add_AutoMoveCommand(tCommand);
+        //tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT;
+        //tCommand.vTarget += { -2.f, 0.f, 0.f };
+        //Add_AutoMoveCommand(tCommand);
+        //tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT;
+        //tCommand.vTarget += { 0.f, 0.f, -2.f };
+        //Add_AutoMoveCommand(tCommand);
+
+        //Start_AutoMove(true);
     }
     if (m_pActorCom->Is_Kinematic())
     {
