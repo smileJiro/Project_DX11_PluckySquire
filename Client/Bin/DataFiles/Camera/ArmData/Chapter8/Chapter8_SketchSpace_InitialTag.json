@@ -1,45 +1,76 @@
 [
     {
-        "Section_Tag": "Chapter6_SKSP_01",
+        "Section_Tag": "Chapter8_SKSP_01",
         "Arm_Tag": [
-          "Chapter6_Portal1_Start"
+          "Chapter8_Default",
+          "Chapter8_2"
         ]
     },
     {
-        "Section_Tag": "Chapter6_SKSP_02",
+        "Section_Tag": "Chapter8_SKSP_02",
         "Arm_Tag": [
-          "Chapter6_Portal2_Start",
-          "Chapter6_Portal2_End"
+          "Chapter8_3",
+          "Chapter8_4"
         ]
     },
     {
-        "Section_Tag": "Chapter6_SKSP_03",
+        "Section_Tag": "Chapter8_SKSP_03",
         "Arm_Tag": [
-          "Chapter6_Portal3_Start"
+          "Chapter8_10",
+          "Chapter8_9"
         ]
     },
     {
-        "Section_Tag": "Chapter6_SKSP_04",
+        "Section_Tag": "Chapter8_SKSP_04",
         "Arm_Tag": [
-          "Chapter6_Portal4_Start"
+          "Chapter8_12",
+          "Chapter8_11"
         ]
     },
     {
-        "Section_Tag": "Chapter6_SKSP_05",
+        "Section_Tag": "Chapter8_SKSP_05",
         "Arm_Tag": [
-          "Chapter6_Portal5_Start",
-          "Chapter6_Portal5_Middle",
-          "Chapter6_Portal5_End"
+          "Chapter8_11",
+          "Chapter8_18"
         ]
     },
     {
-        "Section_Tag": "Chapter6_SKSP_06",
+        "Section_Tag": "Chapter8_SKSP_06",
         "Arm_Tag": [
-          "Chapter6_Portal6_Start"
+          "Chapter8_17",
+          "Chapter8_16"
         ]
     },
     {
-        "Section_Tag": "Chapter6_SKSP_07",
+        "Section_Tag": "Chapter8_SKSP_07",
+        "Arm_Tag": [
+         "Chapter8_23",
+         "Chapter8_22"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter8_SKSP_08",
+        "Arm_Tag": [
+         "Chapter8_4",
+         "Chapter8_24"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter8_SKSP_09",
+        "Arm_Tag": [
+         "Chapter8_25",
+         "Chapter8_26"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter8_SKSP_10",
+        "Arm_Tag": [
+         "Chapter8_2",
+         "Chapter8_27"
+        ]
+    },
+    {
+        "Section_Tag": "Chapter8_SKSP_11",
         "Arm_Tag": [
          "Chapter6_Portal7_Start",
          "Chapter6_Portal7_End"

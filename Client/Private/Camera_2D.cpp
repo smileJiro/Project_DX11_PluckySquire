@@ -56,6 +56,7 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_06"), _float3(44.53f, 0.40f, 1.21f));
 	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_03"), _float3(-37.8f, 29.89f, 41.25f));
 	m_NormalTargets.emplace(TEXT("Chapter6_SKSP_04"), _float3(1.72f, 18.65f, 30.10f));
+	m_NormalTargets.emplace(TEXT("Chapter8_SKSP_10"), _float3(-32.3f, 8.54f, 31.65f));
 
 	return S_OK;
 }
@@ -455,7 +456,13 @@ void CCamera_2D::Set_InitialData(_wstring _szSectionTag)
 			break;
 		}
 	}
-
+	else if (TEXT("Chapter8_SKSP_05") == _szSectionTag) {
+		pData = Find_ArmData(TEXT("Custom_Sksp5"));
+	}
+	else if (TEXT("Chapter8_SKSP_06") == _szSectionTag) {
+		pData = Find_ArmData(TEXT("Custom_Sksp6"));
+	}
+	
 	if (nullptr != pData) 
 		Set_InitialData(pData);
 }
