@@ -214,8 +214,8 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Set_PlayerHideColor(_float3(1.0f, 0.24f, 0.4666f), true);
 
 	/* Chapter4 Intro Trigger 동적 생성 임시 코드*/
-	Create_IntroTrigger();
-
+	//Create_IntroTrigger();
+	// 내거 -> Chapter4_Intro
 	return S_OK;
 }
 
@@ -281,16 +281,6 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	if (KEY_DOWN(KEY::O))
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
 #endif // _DEBUG
-
-	if (KEY_DOWN(KEY::I)) {
-		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Intro"));
-		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
-	}
-
-	if (KEY_DOWN(KEY::J)) {
-		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Flag"));
-		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
-	}
 
 	static _float3 vOutPos = {};
 
@@ -614,6 +604,18 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CCamera_Manager::GetInstance()->Load_CutSceneData(m_eLevelID);
 	CCamera_Manager::GetInstance()->Load_ArmData(m_eLevelID);
 
+	COORDINATE eCoord = pPlayer->Get_CurCoord();
+
+	if (COORDINATE_2D == eCoord)
+	{
+		auto pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D);
+		pCamera->Enter_Section(pPlayer->Get_Include_Section_Name());
+		pCamera->Switch_CameraView(nullptr);
+	}
+	
+
+
+
 	return S_OK;
 }
 
@@ -623,8 +625,9 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
-	Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
-	//Desc.tTransform3DDesc.vInitialPosition = { -1954, -725.f, 0.f};   // TODO ::임시 위치
+	//Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	Desc.eStartCoord = COORDINATE_2D;
+	Desc.tTransform2DDesc.vInitialPosition = { -1954, -690.f, 0.f };   // TODO ::임시 위치
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -637,12 +640,11 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	{
 		CUI_Manager::GetInstance()->Set_Player(pPlayer);
 	}
-	_int iCurCoord = (COORDINATE_2D);
-	_float3 vNewPos = _float3(-1954, -690.f, 0.f);
+	//_int iCurCoord = (COORDINATE_2D);
+	//_float3 vNewPos = _float3(-1954, -690.f, 0.f);
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
-
-	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
+	//Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
 	return S_OK;
@@ -721,8 +723,8 @@ HRESULT CLevel_Chapter_04::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	CGameObject* pInteractionE;
 
-	pDesc.fSizeX = 360.f / 2.f;
-	pDesc.fSizeY = 149.f / 2.f;
+	pDesc.fSizeX = 360.f / 3.f;
+	pDesc.fSizeY = 149.f / 3.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
 		return E_FAIL;
@@ -1394,12 +1396,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 HRESULT CLevel_Chapter_04::Ready_Layer_Carriable(const _wstring& _strLayerTag)
 {
 	CJumpPad::tagJumpPadDesc tJumpPadDesc = {};
-	tJumpPadDesc.iCurLevelID = m_eLevelID;
-	tJumpPadDesc.eStartCoord = COORDINATE_3D;
-	tJumpPadDesc.tTransform3DDesc.vInitialPosition = { 0.f, 5.82f, 0.f };
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpPad"),
-		m_eLevelID, _strLayerTag, &tJumpPadDesc)))
-		return E_FAIL;
 
 	tJumpPadDesc.iCurLevelID = m_eLevelID;
 	tJumpPadDesc.eStartCoord = COORDINATE_2D;

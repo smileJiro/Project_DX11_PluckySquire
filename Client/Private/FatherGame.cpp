@@ -11,9 +11,10 @@
 #include "JellyKing.h"
 #include "ZetPack_Father.h"
 #include "Mat.h"
-#include "PlayerData_Manager.h"
 #include "PlayerItem.h"
 
+#include "PlayerData_Manager.h"
+#include "Camera_Manager.h"
 /* Progress */
 #include "FatherGame_Progress_Start.h"
 #include "FatherGame_Progress_ZetPack.h"
@@ -106,7 +107,7 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 		m_ProgressClear.push_back(false);
 	}/* Progress MakeFather */
 	
-	/* 2. PortalDefender 3镑俊 积己 */
+	/* 2. PortalLocker 3镑俊 积己 */
 	m_PortalLockers.resize((size_t)LOCKER_LAST);
 
 	{/* PortalLocker ZetPack */
@@ -210,7 +211,7 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 	}/* Mat */
 
 	{ /* Item StopStamp */
-		if(FAILED(CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)LEVEL_CHAPTER_6, TEXT("Stop_Stamp"), _float3(2.11f, 3.87f, -0.39f))))
+		if(FAILED(CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)LEVEL_CHAPTER_6, TEXT("Stop_Stamp"), _float3(2.11f, 3.87f, -0.39f), _float3(1.0f, 1.0f, 1.0f))))
 			return E_FAIL;
 
 	}/* Item StopStamp */
@@ -224,10 +225,6 @@ void CFatherGame::Update()
 	if (GAME_PLAYING != m_eGameState)
 		return;
 
-	if (KEY_DOWN(KEY::F))
-	{
-		OpenPortalLocker(PORTALLOCKER::LOCKER_PARTHEAD);
-	}
 	if (KEY_DOWN(KEY::U))
 	{
 		Start_StopStampMoveWork();
@@ -354,7 +351,10 @@ void CFatherGame::Start_StopStampMoveWork()
 	m_pMat->Get_ActorCom()->Set_AngularVelocity(_float3(10.f, 0.0f, 0.0f));
 
 	CPlayerItem* pPlayerItem = CPlayerData_Manager::GetInstance()->Get_PlayerItem_Ptr(TEXT("Stop_Stamp"));
-	pPlayerItem->Get_ActorCom()->Add_Impulse(_float3(0.0f, 20.0f, 5.0f));
+	static_cast<CActor_Dynamic*>(pPlayerItem->Get_ActorCom())->Set_Gravity(true);
+	pPlayerItem->Get_ActorCom()->Add_Impulse(_float3(0.0f, 18.0f, -3.5f));
+
+	CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.3f, 0.1f, 50, CCamera::SHAKE_XY, 0.0f);
 }
 
 void CFatherGame::Set_ZetPack_Child(CZetPack_Child* _pZetPack_Child)
@@ -437,13 +437,18 @@ void CFatherGame::Free()
 		Safe_Release(m_pMat);
 		Safe_Release(m_pMugAlien);
 		Safe_Release(m_pZetPack_Child);
+		Safe_Release(m_pZetPack_Father);
 		Safe_Release(m_pJellyKing);
 
-		for (_uint i = 0; i < (_uint)FATHER_PART::FATHER_LAST; ++i)
+		
+		if (false == m_FatherParts_UIs.empty())
 		{
-			Safe_Release(m_FatherParts_UIs[i]);
+			for (_uint i = 0; i < (_uint)FATHER_PART::FATHER_LAST; ++i)
+			{
+				Safe_Release(m_FatherParts_UIs[i]);
+			}
+			m_FatherParts_UIs.clear();
 		}
-		m_FatherParts_UIs.clear();
 
 		for (auto& pProgress : m_Progress)
 			Safe_Release(pProgress);

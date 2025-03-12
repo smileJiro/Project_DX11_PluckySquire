@@ -20,6 +20,7 @@ HRESULT CCamera::Initialize_Prototype()
 
 HRESULT CCamera::Initialize(void* _pArg)
 {
+
 	/* Zoom Level */
 	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_1] = XMConvertToRadians(8.f);
 	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_2] = XMConvertToRadians(25.f);
@@ -284,15 +285,19 @@ void CCamera::Set_ResetData()
 	m_ResetArmData.vAtOffset = m_vAtOffset;
 }
 
-void CCamera::Save_ArmData()
+RETURN_ARMDATA CCamera::Save_ArmData()
 {
 	if (nullptr == m_pCurArm)
-		return;
+		return RETURN_ARMDATA{};
 
-	XMStoreFloat3(&m_SaveArmData.vPreArm, m_pCurArm->Get_ArmVector());
-	m_SaveArmData.fPreLength = m_pCurArm->Get_Length();
-	m_SaveArmData.iZoomLevel = m_iCurZoomLevel;
-	m_SaveArmData.vAtOffset = m_vAtOffset;
+	RETURN_ARMDATA tSavedData = {};
+
+	XMStoreFloat3(&tSavedData.vPreArm, m_pCurArm->Get_ArmVector());
+	tSavedData.fPreLength = m_pCurArm->Get_Length();
+	tSavedData.iZoomLevel = m_iCurZoomLevel;
+	tSavedData.vAtOffset = m_vAtOffset;
+
+	return tSavedData;
 }
 
 HRESULT CCamera::Bind_DofConstBuffer()

@@ -211,6 +211,7 @@
 // Father Game 
 #include "Mat.h" 
 #include "PortalLocker.h" 
+#include "PortalLocker_LayerCount.h" 
 #include "ZetPack_Child.h" 
 #include "ZetPack_Father.h" 
 #include "Mug_Alien.h" 
@@ -620,11 +621,17 @@ HRESULT CLoader::Loading_Level_Static()
 		CSimple_UI::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+
+	/* For. Prototype_GameObject_PortalLocker_LayerCount */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker_LayerCount"),
+		CPortalLocker_LayerCount::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For. Prototype_GameObject_PortalLocker */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker"),
 		CPortalLocker::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
+	
 	/* For. Prototype_GameObject_Effect2D */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Effect2D"),
 		CEffect2D::Create(m_pDevice, m_pContext))))

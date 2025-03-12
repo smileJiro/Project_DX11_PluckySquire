@@ -75,7 +75,7 @@ public:
 
 public:
 	void Add_Spawn(SPAWN_DESC tDesc);
-
+	void Delete_Pool();
 private: 
 	void Spawn_Single(T_DIRECTION _eDirection, _vector _vPos = { 0.f,0.f,0.f }, _float _fMoveSpeed = 100.f);
 	void Spawn(SPAWN_DESC& _tDesc);

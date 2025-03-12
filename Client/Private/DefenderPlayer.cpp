@@ -216,6 +216,17 @@ void CDefenderPlayer::Set_Direction(T_DIRECTION _eTDir)
 
 }
 
+void CDefenderPlayer::Switch_Animation(ANIM_STATE_CYBERJOT2D _eAnim)
+{
+	m_pBody->Switch_Animation((_uint)_eAnim);
+}
+
+void CDefenderPlayer::Register_AnimEndCallback(const function<void(COORDINATE, _uint)>& fCallback)
+{
+	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(fCallback);
+
+}
+
 void CDefenderPlayer::Key_Input(_float _fTimeDelta)
 {
 	_vector vMoveDir = {};
@@ -270,11 +281,7 @@ void CDefenderPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	{
 		m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_IDLE);
 	}
-	else if ((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_DEATH == iAnimIdx)
-	{
-		m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_IDLE);
-		m_pMinigame->Restart_Game();
-	}
+
 }
 
 void CDefenderPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)

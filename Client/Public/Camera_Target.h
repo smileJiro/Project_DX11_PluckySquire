@@ -93,7 +93,7 @@ public:
 	virtual void				Change_Target(CGameObject* _pTarget, _float _fChangingTime = 1.f) override;
 	virtual void				Start_ResetArm_To_SettingPoint(_float _fResetTime) override;
 	virtual void				Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType) override;
-	virtual void				Load_SavedArmData(_float _fLoadTime);
+	virtual void				Load_SavedArmData(RETURN_ARMDATA& _tSavedData, _float _fLoadTime);
 	
 	void						Load_InitialArmTag();
 

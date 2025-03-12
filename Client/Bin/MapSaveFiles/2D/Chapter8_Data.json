@@ -229,7 +229,8 @@
 			"LevelSizePixels": {
 				"X": 2304.0,
 				"Y": 9216.0
-			}
+			},
+			"Override_Normal": 1
 		}
 	},
 	{
@@ -245,7 +246,8 @@
 			"LevelSizePixels": {
 				"X": 5376.0,
 				"Y": 2304.0
-			}
+			},
+			"Override_Normal": 1
 		}
 	},
 	{
@@ -309,7 +311,8 @@
 			"LevelSizePixels": {
 				"X": 6144.0,
 				"Y": 4608.0
-			}
+			},
+			"Override_Normal": 2
 		}
 	},
 		{

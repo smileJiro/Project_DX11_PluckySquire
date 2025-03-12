@@ -580,12 +580,12 @@ void CBook::PageAction_Call_PlayerEvent()
 		_wstring strMoveSectionName = L"";
 		if (FAILED(SECTION_MGR->Remove_GameObject_FromSectionLayer(pGameObject->Get_Include_Section_Name(),pGameObject)))
 			return;
-		CCarriableObject* pCarryingObj = static_cast<CPlayer*>(pGameObject)->Get_CarryingObject();
-		if (pCarryingObj)
-		{
-			if (FAILED(SECTION_MGR->Remove_GameObject_FromSectionLayer(pCarryingObj->Get_Include_Section_Name(), pCarryingObj)))
-				return;
-		}
+		//CCarriableObject* pCarryingObj = static_cast<CPlayer*>(pGameObject)->Get_CarryingObject();
+		//if (pCarryingObj)
+		//{
+		//	if (FAILED(SECTION_MGR->Remove_GameObject_FromSectionLayer(pCarryingObj->Get_Include_Section_Name(), pCarryingObj)))
+		//		return;
+		//}
 		if (NEXT == m_eCurAction)
 		{
 			if (SECTION_MGR->Has_Next_Section())
@@ -605,11 +605,11 @@ void CBook::PageAction_Call_PlayerEvent()
 
 			if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(strMoveSectionName, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
 				return;
-			if(pCarryingObj)
-			{
-				if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(strMoveSectionName, pCarryingObj, SECTION_2D_PLAYMAP_OBJECT)))
-					return;
-			}
+			//if(pCarryingObj)
+			//{
+			//	if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(strMoveSectionName, pCarryingObj, SECTION_2D_PLAYMAP_OBJECT)))
+			//		return;
+			//}
 			if (CCamera_Manager::CAMERA_TYPE::TARGET_2D == CCamera_Manager::GetInstance()->Get_CameraType())
 			{
 				CCamera* pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D);
@@ -651,9 +651,11 @@ void CBook::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 			else if (_My.pShapeUserData->iShapeIndex == 2) {
 				m_isPlayerAbove = true;
 
-				// Player가 책 위에 있을 때 Camera Arm 조정하기
-				CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.2f, XMVectorSet(0.0f, 0.9514f, -0.3080f, 0.f), EASE_IN_OUT);
-				//cout << "Enter" << endl;
+				if (LEVEL_CHAPTER_8 != m_iCurLevelID) {
+					// Player가 책 위에 있을 때 Camera Arm 조정하기
+					CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.2f, XMVectorSet(0.0f, 0.9514f, -0.3080f, 0.f), EASE_IN_OUT);
+
+				}
 			}
 		}
 		break;
@@ -678,13 +680,15 @@ void CBook::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 			else if (_My.pShapeUserData->iShapeIndex == 2) {
 				m_isPlayerAbove = false;
 
-				// Player가 책 위에서 내려갈 때 Camera Arm 조정하기
-				CCamera_Target* pTarget = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-				CCamera_Manager::GetInstance()->Set_NextArmData(pTarget->Get_DefaultArm_Tag(), 0);
 
-				if(CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType())
-					CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
-				//cout << "Exit" << endl;
+				if (LEVEL_CHAPTER_8 != m_iCurLevelID) {
+					// Player가 책 위에서 내려갈 때 Camera Arm 조정하기
+					CCamera_Target* pTarget = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+					CCamera_Manager::GetInstance()->Set_NextArmData(pTarget->Get_DefaultArm_Tag(), 0);
+
+					if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType())
+						CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+				}
 			}
 		}
 		break;

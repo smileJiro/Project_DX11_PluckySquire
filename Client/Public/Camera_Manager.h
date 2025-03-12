@@ -113,10 +113,10 @@ public:
 
 	// Camera 중간 저장
 	// 1. 중간 저장하고 싶은 시점에 Save_ArmData 함수를 호출해서 현재 상태를 저장한다
-	void				Save_ArmData(CAMERA_TYPE _eCameraType = TARGET);
+	RETURN_ARMDATA		Save_ArmData(CAMERA_TYPE _eCameraType = TARGET);
 
 	// 2. 원하는 시점으로 _fLoadTime 동안 원복하고 싶을 때 호출한다
-	void				Load_SavedArmData(_float _fLoadTime, CAMERA_TYPE _eCameraType = TARGET);
+	void				Load_SavedArmData(RETURN_ARMDATA& _tSavedData, _float _fLoadTime, CAMERA_TYPE _eCameraType = TARGET);
 
 
 	void				Start_FadeIn(_float _fFadeTime = 1.0f);

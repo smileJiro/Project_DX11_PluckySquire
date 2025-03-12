@@ -328,8 +328,6 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInit
 		else
 		{
 			Camera->Set_Active(false);
-			Camera->Compute_FocalLength();
-			Camera->Bind_DofConstBuffer();
 		}
 
 	}
@@ -575,20 +573,20 @@ void CCamera_Manager::Start_ResetArm_To_SettingPoint(CAMERA_TYPE _eCameraType, _
 	m_Cameras[_eCameraType]->Start_ResetArm_To_SettingPoint(_fResetTime);
 }
 
-void CCamera_Manager::Save_ArmData(CAMERA_TYPE _eCameraType)
+RETURN_ARMDATA CCamera_Manager::Save_ArmData(CAMERA_TYPE _eCameraType)
 {
 	if (nullptr == m_Cameras[_eCameraType])
-		return;
+		return RETURN_ARMDATA{};
 
-	m_Cameras[_eCameraType]->Save_ArmData();
+	return m_Cameras[_eCameraType]->Save_ArmData();
 }
 
-void CCamera_Manager::Load_SavedArmData(_float _fLoadTime, CAMERA_TYPE _eCameraType)
+void CCamera_Manager::Load_SavedArmData(RETURN_ARMDATA& _tSavedData, _float _fLoadTime, CAMERA_TYPE _eCameraType)
 {
 	if (nullptr == m_Cameras[_eCameraType])
 		return;
 
-	m_Cameras[_eCameraType]->Load_SavedArmData(_fLoadTime);
+	m_Cameras[_eCameraType]->Load_SavedArmData(_tSavedData, _fLoadTime);
 }
 
 void CCamera_Manager::Start_FadeIn(_float _fFadeTime)

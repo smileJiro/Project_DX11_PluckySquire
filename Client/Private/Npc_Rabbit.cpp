@@ -77,8 +77,8 @@ HRESULT CNpc_Rabbit::Initialize(void* _pArg)
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNpc_Rabbit::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(-322.9f, -617.3f, 0.f, 1.f));
-
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(-484.0f, -911.0f, 0.f, 1.f));
+	m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(1.5f, 1.5f, 0.f));
 	
 	//CActor::ACTOR_DESC ActorDesc;
 	//
@@ -247,7 +247,7 @@ void CNpc_Rabbit::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		
 		case ANIM_2D::sketchspace_rabbit_jump:
 		{
-			m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, _float4(-175.f, -620.f, 0.f, 1.f));
+			m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, _float4(-268.f, -911.f, 0.f, 1.f));
 			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(sketchspace_rabbit_idle);
 		}
 			

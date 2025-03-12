@@ -126,8 +126,8 @@ public:
 	void		Set_ResetData();
 	//void		Reset_CameraArm();
 
-	void		Save_ArmData();
-	virtual void		Load_SavedArmData(_float _fLoadTime) {};
+	RETURN_ARMDATA		Save_ArmData();
+	virtual void		Load_SavedArmData(RETURN_ARMDATA& _tSavedData, _float _fLoadTime) {};
 
 public:/* Dof 값 조절 후 Bind_DofBuffer() 호출 시 적용 */
 	HRESULT		Compute_FocalLength();

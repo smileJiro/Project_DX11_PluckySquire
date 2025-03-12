@@ -80,6 +80,8 @@ public:
         LOC  location = LOC_MIDHIGH;    // 위치 설정
         PORTRAITNAME portrait = PORTRAITNAME_DEFAULT;
         Animation animation;   // 애니메이션 정보
+
+        _bool     isDefender = { false };
         wstring Section;
     };
 
