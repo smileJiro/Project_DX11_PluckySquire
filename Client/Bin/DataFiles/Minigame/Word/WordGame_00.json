@@ -1,0 +1,35 @@
+[
+  {
+    "Controller_List": [
+      {
+        "Controller_Index": 0,
+        "Text": "저트 일행은\n낡고 ##\n건물 사이를\n걸어갔습니다.",
+        "Init_Word_Type": [ 6 ],
+        "Position": [
+          -1929.0,
+          381.0
+        ],
+        "Scale": [
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },  
+  {
+    "Controller_List": [
+      {
+        "Controller_Index": 0,
+        "Text": "아주 불쾌하게\n생긴 벌레가\n나타났습니다",
+        "Position": [
+          -1941.0,
+          -275.0
+        ],
+        "Scale": [
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  }
+]
