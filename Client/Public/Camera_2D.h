@@ -108,7 +108,10 @@ public:
 	void						Set_CustomArmData(ARM_DATA& _tArmData);
 
 	virtual void				Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) override;
-	virtual void				Change_Target(const _float4x4* _pTargetMatrix, _float _fChangingTime = 1.f) { m_pTargetWorldMatrix = _pTargetMatrix; m_fTargetChangingTime = { _fChangingTime, 0.f }; }
+	virtual void				Change_Target(const _float4x4* _pTargetMatrix, _float _fChangingTime = 1.f)
+	{ 
+		m_pTargetWorldMatrix = _pTargetMatrix; m_fTargetChangingTime = { _fChangingTime, 0.f }; 
+	}
 	virtual void				Change_Target(CGameObject* _pTarget, _float _fChangingTime = 1.f);
 	virtual void				Start_ResetArm_To_SettingPoint(_float _fResetTime) override;
 	virtual void				Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType) override;

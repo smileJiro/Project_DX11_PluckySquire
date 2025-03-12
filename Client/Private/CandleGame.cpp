@@ -102,7 +102,7 @@ HRESULT CCandleGame::Ready_Candles(CANDLEGAME_DESC* _pDesc)
     _float fModelSizeX = 100.f; // 추측 픽셀 사이즈
     _float fStartX = (g_iWinSizeX - fModelSizeX * iNumCandles) * 0.5f + fModelSizeX * 0.5f;
 
-    for (_uint i = 0; i < iNumCandles; ++i)
+    for (_uint i = 0; i < iNumCandles; ++i) //
     {
         /* Test Candle */
         CCandle::CANDLE_DESC CandleDesc;

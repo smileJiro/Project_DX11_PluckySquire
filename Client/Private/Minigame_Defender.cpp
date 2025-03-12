@@ -618,6 +618,7 @@ void CMiniGame_Defender::Mission_Complete()
     m_bClear = true;
     for (auto& pSpawner : m_Spawners)
     {
+        pSpawner.second->Delete_Pool();
         pSpawner.second->Set_Dead();
         Safe_Release(pSpawner.second);
     }
