@@ -748,8 +748,8 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	CGameObject* pInteractionE;
 
-	pDesc.fSizeX = 360.f / 2.f;
-	pDesc.fSizeY = 149.f / 2.f;
+	pDesc.fSizeX = 360.f / 3.f;
+	pDesc.fSizeY = 149.f / 3.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
 		return E_FAIL;

@@ -67,6 +67,9 @@
 #include "Loader.h"
 #include "Minigame_Sneak.h"
 
+#include "PortalLocker_LayerCount.h"
+#include "Portal_Default.h"
+#include "Section_2D_PlayMap.h"
 
 CLevel_Chapter_08::CLevel_Chapter_08(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -158,7 +161,12 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Map (Level_Chapter_08::Initialize)");
 		assert(nullptr);
 	}
-
+	if (FAILED(Ready_Layer_PortalLocker(TEXT("Layer_PortalLocker"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_PortalLocker (Level_Chapter_08::Initialize)");
+		assert(nullptr);
+	}
+	
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
@@ -661,7 +669,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
-	Desc.eStartCoord = COORDINATE_2D;
+	Desc.eStartCoord = COORDINATE_3D;
 	Desc.tTransform3DDesc.vInitialPosition = { -90.f, 67.f, 18.3f };   // TODO ::임시 위치
 	Desc.tTransform2DDesc.vInitialPosition = { 409.f, 102.f, 0.f };   // TODO ::임시 위치
 
@@ -779,8 +787,8 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	CGameObject* pGameObject;
 
-	pDesc.fSizeX = 360.f / 2.f;
-	pDesc.fSizeY = 149.f / 2.f;
+	pDesc.fSizeX = 360.f / 3.f;
+	pDesc.fSizeY = 149.f / 3.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
 		return E_FAIL;
@@ -1321,6 +1329,33 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Slippery()
 	CTiltSwapPusher* pTSP = static_cast<CTiltSwapPusher*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_TiltSwapPusher"), &tTiltSwapPusherDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pTSP);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pTSP, SECTION_2D_PLAYMAP_OBJECT);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_08::Ready_Layer_PortalLocker(const _wstring& _strLayerTag)
+{
+	{/* PortalLocker_LayerCount 1 */
+		CGameObject* pGameObject = nullptr;
+		CPortalLocker_LayerCount::PORTALLOCKER_LAYER_DESC Desc;
+		CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter8_SKSP_08")))->Get_Portal(0));
+
+		if (nullptr == pTargetPortal)
+			return E_FAIL;
+		Desc.iCurLevelID = LEVEL_CHAPTER_8;
+		Desc.pTargetPortal = pTargetPortal;
+		Desc.ePortalLockerType = CPortalLocker::TYPE_PURPLE;
+		Desc.strSectionKey = TEXT("Chapter8_SKSP_08");
+		Desc.strCountingLayerTag = TEXT("Layer_Player");
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker_LayerCount"), LEVEL_CHAPTER_8, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(Desc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
+			return E_FAIL;
+
+	}/* PortalLocker_LayerCount 1 */
+
 
 	return S_OK;
 }

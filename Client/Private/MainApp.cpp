@@ -198,6 +198,8 @@ HRESULT CMainApp::Initialize_Client_Manager()
 
 HRESULT CMainApp::Ready_Font()
 {
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font16"), TEXT("../Bin/Resources/Fonts/YangRound16.spritefont"))))
+		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font18"), TEXT("../Bin/Resources/Fonts/YangRound18.spritefont"))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Font20"), TEXT("../Bin/Resources/Fonts/YangRound20.spritefont"))))

@@ -517,7 +517,8 @@ public:
 
 	virtual void On_Hit(CGameObject* _pHitter, _int _fDamg, _fvector _vForce) override;
 	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
-	virtual void On_Land();
+	virtual void On_Land() override;
+	virtual void On_Change2DDirection(E_DIRECTION _eCurrentDir) override;
 public:
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
@@ -601,7 +602,6 @@ public:
 	_vector Get_BodyPosition();
 	IInteractable* Get_InteractableObject() { return m_pInteractableObject; }
 	STATE Get_CurrentStateID();
-	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	PLAYER_MODE Get_PlayerMode() { return m_ePlayerMode; }
 	CController_Transform* Get_Transform() { return m_pControllerTransform; }
 	CCarriableObject* Get_CarryingObject() { return m_pCarryingObject; }
@@ -617,12 +617,12 @@ public:
 	CActor_Dynamic* Get_ActorDynamic();
 	class CTurnBookEffect* Get_TurnBookEffect() { return m_pTurnBookEffect; }
 
+
 	//Set
 	void Switch_Animation(_uint _iAnimIndex);
 	void Set_Animation(_uint _iAnimIndex);
 	void Set_State(STATE _eState);
 	void Set_Mode(PLAYER_MODE _eNewMode);
-	void Set_2DDirection(E_DIRECTION _eEDir);
 	void Set_3DTargetDirection(_fvector _vDir);
 	void Set_WallNormal(_fvector _vNormal) { m_vWallNormal = _vNormal; }
 	void Set_ClamberEndPosition(_fvector _vPos) { m_vClamberEndPosition = _vPos; }
@@ -717,7 +717,7 @@ private:
 	ATTACK_TRIGGER_DESC m_f2DAttackTriggerDesc[ATTACK_TYPE_LAST][(_uint)F_DIRECTION::F_DIR_LAST];// = { 93.f, 93.f, 120.f };
 	//ATTACK_TRIGGER_DESC_2D m_f2DAttackAngle[ATTACK_TYPE_LAST];// = { 110.f, 110.f,45.f };
 	_float m_f2DAirRunSpeed = 300.f;
-	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
+
 	//Components
 	CStateMachine* m_pStateMachine = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;

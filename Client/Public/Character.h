@@ -9,6 +9,52 @@ typedef struct tagCharacterStat
 	_int iHP = 12;
 	_int iMaxHP = 12;
 }STAT;
+enum class AUTOMOVE_TYPE
+{
+	//임의의 지점까지 이동하기
+	MOVE_TO,
+	//특정 방향으로 이동하기
+	MOVE_TOWARD,
+	//보는 방향만 바꾸기
+	LOOK_DIRECTION,
+	//애니메이션만 바꾸기
+	CHANGE_ANIMATION,
+	//그냥 대기하기
+	WAIT,
+	LAST
+};
+typedef struct tagAutoMoveCommand
+{
+	AUTOMOVE_TYPE eType;
+	_uint iAnimIndex;
+	//보는 방향, 이동 지점
+	_vector vTarget;
+	//선딜레이
+	_float fPreDelayTime = 0.f;
+	//실행 시간
+	_float fRunTime = 0.f;
+	//후딜레이
+	_float fPostDelayTime = 0.f;
+
+public:
+	void Update(_float _fTimeDelta) { fTimeAcc += _fTimeDelta; }
+	_bool Is_Start() { return 0.f == fTimeAcc; }
+	_bool Is_PreDelayTime() { 
+		return fPreDelayTime >= fTimeAcc; 
+	}
+	_bool Is_RunTime() {
+		return fRunTime + fPreDelayTime >= fTimeAcc
+			&& false == Is_PreDelayTime();
+	}
+	_bool Is_PostDelayTime() { 
+		return fPostDelayTime + fRunTime + fPreDelayTime >= fTimeAcc
+		&& false == Is_RunTime();
+	}
+	_bool Is_End() { return fPostDelayTime + fRunTime + fPreDelayTime < fTimeAcc; }
+private: 
+	_float fTimeAcc = 0.f;
+}AUTOMOVE_COMMAND;
+
 class CCharacter abstract : public CContainerObject, public IStoppable
 {
 public:
@@ -42,8 +88,10 @@ public:
 	void Stop_MoveXZ();
 
 	virtual void Move(_fvector _vVelocity, _float _fTimeDelta);
-	_bool Move_To(_fvector _vPosition, _float _fEpsilon = 0.5f, _bool _FreezeY = true);
+	_bool Move_To_3D(_fvector _vPosition, _float _fEpsilon = 0.5f, _bool _FreezeY = true);
+	_bool Move_To(_fvector _vPosition, _float _fTimeDelta);
 	_bool Check_Arrival(_fvector _vPosition, _float _fEpsilon = 0.5f);
+	_bool Check_Arrival(_fvector _vPrevPosition, _fvector _vNextPosition, _fvector _vTargetPosition);
 	//캐릭터 기준 _vDir 방향을 바라보게 하는 함수. Y축으로만 회전함.
 	void LookDirectionXZ_Kinematic(_fvector _vDir);
 	void LookDirectionXZ_Dynamic(_fvector _vDir);
@@ -54,6 +102,7 @@ public:
 	void KnockBack(_fvector _vForce);
 
 	virtual void On_Land() {};
+	virtual void On_Change2DDirection(E_DIRECTION _eCurrentDir) {};
 
 public:
 	//GET
@@ -63,11 +112,32 @@ public:
 	_float Get_StepSlopeThreshold() { return m_fStepSlopeThreshold; }
 	_vector Get_ScrolledPosition();
 	_vector Get_ScrolledPosition(_vector _vPosition);
+	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	//SET
 	void Set_ScrollingMode(_bool _bScrollingMode);
+	virtual void Set_2DDirection(E_DIRECTION _eEDir);
+	virtual void Set_2DDirection(F_DIRECTION _eEDir);
+
+	
 protected:
 	_float Measure_FloorDistance();
 	_vector StepAssist(_fvector _vVelocity, _float _fTimeDelta);
+
+//AUTO MOVE
+public:
+	void Enque_AutoMove(AUTOMOVE_COMMAND _pCommand);
+
+	/// <param name="_bAutoClearQue"> : 큐에 든 모든 AutoMove가 완료되면 자동으로 큐를 비우기</param>
+	void Start_AutoMove(_bool _bAutoClearQue);
+	void Clear_AutoMove();
+private:
+
+	_bool Process_AutoMove(_float _fTimeDelta);
+	void Process_AutoMove_MoveTo(AUTOMOVE_COMMAND _pCommand);
+	void Process_AutoMove_MoveToward(AUTOMOVE_COMMAND _pCommand);
+	void Process_AutoMove_LookDirection(AUTOMOVE_COMMAND _pCommand);
+	void Process_AutoMove_ChangeAnimation(AUTOMOVE_COMMAND _pCommand);
+	void Process_AutoMove_Wait(AUTOMOVE_COMMAND _pCommand);
 protected:
 	STAT m_tStat;
 
@@ -92,6 +162,13 @@ protected:
 
 	_bool m_isIgnoreGround = { false };
 
+	E_DIRECTION m_e2DDirection_E = E_DIRECTION::E_DIR_LAST;
+	//AUTOMOVE
+	queue<AUTOMOVE_COMMAND> m_AutoMoveQue;
+	_bool m_bAutoMoving = false;
+	_bool m_bAutoClearAutoMoves = false;
+	_bool m_bMoveTo = false;
+	_vector m_PositionBefore[COORDINATE_LAST] = {};
 public:	
 	virtual void Free() override;
 

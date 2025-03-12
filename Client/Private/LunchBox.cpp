@@ -102,8 +102,6 @@ HRESULT CLunchBox::Initialize(void* _pArg)
     
     m_vInteractionPointOffset = { 0.f, -ShapeDesc.vHalfExtents.z , -ShapeDesc.vHalfExtents.y *2.f - 0.7f};
 
-
-
     Bind_AnimEventFunc("LunchBoxOpen", bind(&CLunchBox::LunchBoxOpen, this));
 
     CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};

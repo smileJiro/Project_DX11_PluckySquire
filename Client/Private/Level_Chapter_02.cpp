@@ -424,11 +424,13 @@ HRESULT CLevel_Chapter_02::Render()
 HRESULT CLevel_Chapter_02::Ready_Lights()
 {
 #ifdef _DEBUG
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
+	//m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
 #elif NDEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Bright.json"));
 #endif // _DEBUG
 
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
 	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
 
 	//CONST_LIGHT LightDesc{};
@@ -1122,8 +1124,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	CGameObject* pGameObject;
 	
-	pDesc.fSizeX = 360.f / 2.f;
-	pDesc.fSizeY = 149.f / 2.f;
+	pDesc.fSizeX = 360.f / 3.f;
+	pDesc.fSizeY = 149.f / 3.f;
 	
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
 		return E_FAIL;

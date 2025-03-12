@@ -1134,6 +1134,13 @@ void CPlayer::On_Land()
     //cout << "Player Landed" << endl;
 }
 
+void CPlayer::On_Change2DDirection(E_DIRECTION _eCurrentDir)
+{
+    _vector vTmpDir = EDir_To_Vector(m_e2DDirection_E);
+    _vector  vDir = vTmpDir * m_f2DInteractOffset;
+    m_pBody2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir) + m_f2DCenterYOffset });
+}
+
 
 void CPlayer::Move_Attack_3D()
 {
@@ -2019,37 +2026,7 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
     //Set_State(STATE::IDLE);
 }
 
-void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
-{
 
-    m_e2DDirection_E = _eEDir;
-    switch (m_e2DDirection_E)
-    {
-    case Client::E_DIRECTION::LEFT:
-    case Client::E_DIRECTION::LEFT_UP:
-    case Client::E_DIRECTION::LEFT_DOWN:
-    {
-        _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-        m_pBody->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-        break;
-    }
-    case Client::E_DIRECTION::RIGHT:
-    case Client::E_DIRECTION::RIGHT_UP:
-    case Client::E_DIRECTION::RIGHT_DOWN:
-    {
-        _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-        m_pBody->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
-        break;
-    }
-    default:
-        break;
-    }
-    _vector vTmpDir = EDir_To_Vector(m_e2DDirection_E);
-    _vector  vDir = vTmpDir * m_f2DInteractOffset;
-    m_pBody2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir) +  m_f2DCenterYOffset});
-
-    
-}
 
 void CPlayer::Set_3DTargetDirection(_fvector _vDir)
 {

@@ -7,6 +7,7 @@
 #include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
 #include "Character.h"
+#include "PlayerData_Manager.h"
 
 
 CFallingRock::CFallingRock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -406,7 +407,15 @@ void CFallingRock::Action_FallDown(_float _fTimeDelta)
 	if (m_fFallDownEndY >= XMVectorGetY(Get_FinalPosition()))
 	{
 		m_eCurState = STATE::STATE_BOUND_2D;
-		CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.1f, 0.2f, 20, CCamera::SHAKE_Y);
+		CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+		if (nullptr != pPlayer && false == pPlayer->Is_Dead())
+		{
+			_wstring strPlayerSectionName = pPlayer->Get_Include_Section_Name();
+			if (strPlayerSectionName == m_strSectionName)
+			{
+				CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.1f, 0.2f, 20, CCamera::SHAKE_Y);
+			}
+		}
 	}
 
 	_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
@@ -439,7 +448,16 @@ void CFallingRock::Action_Bound_2D(_float _fTimeDelta)
 		m_vJumpTime.y = 0.0f;
 
 		/* 3. 카메라 셰이크 */
-		CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.1f, 0.01f, 30, CCamera::SHAKE_XY);
+		CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+		if (nullptr != pPlayer && false == pPlayer->Is_Dead())
+		{
+			_wstring strPlayerSectionName = pPlayer->Get_Include_Section_Name();
+			if (strPlayerSectionName == m_strSectionName)
+			{
+				CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.1f, 0.01f, 30, CCamera::SHAKE_XY);
+			}
+		}
+
 	}
 	else
 	{

@@ -1,26 +1,64 @@
 [
-    {
-        "Collider_Info": {
-            "Position": [
-                657.0,
-                -383.0
-            ],
-            "Scale": [
-                160.0,
-                30.0
-            ]
-        },
-        "Fillter_MyGroup": 2,
-        "Fillter_OtherGroupMask": 128,
-        "Trigger_ConditionType": 0,
-        "Trigger_Coordinate": 0,
-        "Trigger_EventTag": "BookSectionChange_Prev",
-        "Trigger_Type": 6,
-		 "MapTrigger_Info": {
-		"Next_Position": [
-                179.0,
-                510.0
-		]
-		}
+  {
+    "Collider_Info": {
+      "Position": [
+        657.0,
+        -383.0
+      ],
+      "Scale": [
+        160.0,
+        30.0
+      ]
+    },
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "BookSectionChange_Prev",
+    "Trigger_Type": 6,
+    "MapTrigger_Info": {
+      "Next_Position": [
+        179.0,
+        490.0
+      ]
     }
+  },
+  {
+    "Collider_Info": {
+      "Position": [
+        657.0,
+        -69.0
+      ],
+      "Scale": [
+        170.0,
+        100.0
+      ]
+    },
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_Reusable": false,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "Chapter4_3D_Out_01",
+    "Trigger_Type": 0
+  },
+  {
+    "Collider_Info": {
+      "Position": [
+        -484.0,
+        -8.0
+      ],
+      "Scale": [
+        100.0,
+        100.0
+      ]
+    },
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_Reusable": false,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "Chapter4_3D_Out_02",
+    "Trigger_Type": 0
+  }
 ]

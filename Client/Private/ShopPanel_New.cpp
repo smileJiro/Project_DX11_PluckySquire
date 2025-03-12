@@ -343,7 +343,7 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 	}
 
 
-	if (KEY_DOWN(KEY::K))
+	if (KEY_DOWN(KEY::BACKSPACE))
 	{
 		Uimgr->Set_DialogueFinishShopPanel(false);
 		pShopManager->OpenClose_Shop();

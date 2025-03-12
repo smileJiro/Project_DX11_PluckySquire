@@ -267,6 +267,18 @@ HRESULT CPooling_Manager::Create_Objects(const _wstring& _strPoolingTag, _uint i
 	return S_OK;
 }
 
+void CPooling_Manager::Delete_Pool(const _wstring& _strPoolingTag)
+{
+	vector<CGameObject*>* pGameObjects = Find_PoolingObjects(_strPoolingTag);
+	if (nullptr == pGameObjects)
+		return;
+	for (auto& pGameObject : *pGameObjects)
+	{
+		Event_DeleteObject(pGameObject);
+	}
+
+}
+
 HRESULT CPooling_Manager::Pooling_Objects(const _wstring& _strPoolingTag, _uint _iNumPoolingObjects)
 {
 	pair<Pooling_DESC, CGameObject::GAMEOBJECT_DESC*>* pPair = Find_PoolingDesc(_strPoolingTag);

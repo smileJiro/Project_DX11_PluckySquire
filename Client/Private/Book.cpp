@@ -580,12 +580,12 @@ void CBook::PageAction_Call_PlayerEvent()
 		_wstring strMoveSectionName = L"";
 		if (FAILED(SECTION_MGR->Remove_GameObject_FromSectionLayer(pGameObject->Get_Include_Section_Name(),pGameObject)))
 			return;
-		CCarriableObject* pCarryingObj = static_cast<CPlayer*>(pGameObject)->Get_CarryingObject();
-		if (pCarryingObj)
-		{
-			if (FAILED(SECTION_MGR->Remove_GameObject_FromSectionLayer(pCarryingObj->Get_Include_Section_Name(), pCarryingObj)))
-				return;
-		}
+		//CCarriableObject* pCarryingObj = static_cast<CPlayer*>(pGameObject)->Get_CarryingObject();
+		//if (pCarryingObj)
+		//{
+		//	if (FAILED(SECTION_MGR->Remove_GameObject_FromSectionLayer(pCarryingObj->Get_Include_Section_Name(), pCarryingObj)))
+		//		return;
+		//}
 		if (NEXT == m_eCurAction)
 		{
 			if (SECTION_MGR->Has_Next_Section())
@@ -605,11 +605,11 @@ void CBook::PageAction_Call_PlayerEvent()
 
 			if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(strMoveSectionName, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
 				return;
-			if(pCarryingObj)
-			{
-				if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(strMoveSectionName, pCarryingObj, SECTION_2D_PLAYMAP_OBJECT)))
-					return;
-			}
+			//if(pCarryingObj)
+			//{
+			//	if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(strMoveSectionName, pCarryingObj, SECTION_2D_PLAYMAP_OBJECT)))
+			//		return;
+			//}
 			if (CCamera_Manager::CAMERA_TYPE::TARGET_2D == CCamera_Manager::GetInstance()->Get_CameraType())
 			{
 				CCamera* pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D);

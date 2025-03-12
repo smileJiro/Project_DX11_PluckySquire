@@ -4,7 +4,7 @@
 #include "UI_Manager.h"
 #include "Section_2D.h"
 #include "UI_Manager.h"
-
+#include "Section_Manager.h"
 
 
 CPrintFloorWord::CPrintFloorWord(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -25,11 +25,12 @@ HRESULT CPrintFloorWord::Initialize_Prototype()
 
 HRESULT CPrintFloorWord::Initialize(void* _pArg)
 {
- 	FLOORTEXT* pDesc = static_cast<FLOORTEXT*>(_pArg);
+ 	CFloorWord::FLOORTEXT* pDesc = static_cast<FLOORTEXT*>(_pArg);
 
 	m_vRenderPos.x = pDesc->fPosX;
 	m_vRenderPos.y = pDesc->fPosY;
 	m_strSFX = pDesc->strSFX;
+	m_strSection = pDesc->strSection;
 
 	wsprintf(m_tFloorWord, pDesc->strText.c_str());
 
@@ -39,7 +40,7 @@ HRESULT CPrintFloorWord::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSection, this, SECTION_2D_PLAYMAP_BACKGROUND);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSection, this, SECTION_2D_PLAYMAP_BACKGROUND);
 
 	return S_OK;
 }
@@ -71,16 +72,32 @@ void CPrintFloorWord::Update(_float _fTimeDelta)
 	_float fPlayerPosX = pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0];
 	_float fPlayerPosY = pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1];
 	
-	if (250.f > fabs(fThisPosX - fPlayerPosX) && 
-		250.f > fabs(fThisPosY - fPlayerPosY) && 
+	
+	
+	_bool isSameSection = { false };
+	
+	if (nullptr != CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player()))
+	{
+		auto pPlayerCurSection = CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player());
+		wstring strPlayerCurSection = *(pPlayerCurSection);
+
+		if (m_strSection == strPlayerCurSection)
+		{
+			isSameSection = true;
+		}
+	}
+	
+
+	if (180.f > fabs(fThisPosX - fPlayerPosX) && 
+		180.f > fabs(fThisPosY - fPlayerPosY) && 
 		COORDINATE_2D == pPlayer->Get_CurCoord() && 
-		false == m_isFadeIn)
+		false == m_isFadeIn && true == isSameSection )
 	{
 		m_isFadeIn = true;
 		
 		// NOTWORD 소리가 나면 안되는 floorword
-		//if (TEXT("NOTWORD") != m_strSFX)
-		//	m_pGameInstance->Start_SFX_Delay(m_strSFX, 0.f, 30.f, false);
+		if (TEXT("NOTWORD") != m_strSFX)
+			m_pGameInstance->Start_SFX_Delay(m_strSFX, 0.f, 30.f, false);
 
 	}
 

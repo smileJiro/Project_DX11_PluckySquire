@@ -2763,10 +2763,20 @@
  {
   "Active": true,
   "ActivePropertis": {
-   "ActiveType": 4
+   "ActiveType": 10
   },
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 0.0
+    },
+    "Collider_Radius": 530.0
+   },
+   "ColliderType": 0
+  },
   "ModelType": 0,
   "SearchTag": "castle_turret_02_Sprite",
   "Sorting": false,
@@ -6629,5 +6639,29 @@
   "SearchTag": "stairs_03_mask_island_Sprite",
   "Sorting": false,
   "TextureName": "stairs_03_mask_island_Sprite"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 8
+  },
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "Left_WaterLog",
+  "Sorting": false,
+  "TextureName": "Left_WaterLog"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 8
+  },
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "Right_WaterLog",
+  "Sorting": false,
+  "TextureName": "Right_WaterLog"
  }
 ]

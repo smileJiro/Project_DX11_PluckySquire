@@ -58,7 +58,7 @@ HRESULT CCyberPlayerBullet::Initialize(void* _pArg)
     tBodyShapeData.eShapeType = SHAPE_TYPE::SPHERE;   
     tBodyShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;  
     tBodyShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
-    tBodyShapeData.isTrigger = false;                  
+    tBodyShapeData.isTrigger = true;                  
     tBodyShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_PROJECTILE;
 	tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE;
 	XMStoreFloat4x4(&tBodyShapeData.LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.f, 0.0f));
@@ -117,13 +117,16 @@ void CCyberPlayerBullet::Update(_float _fTimeDelta)
 	__super::Update(_fTimeDelta);
 }
 
-void CCyberPlayerBullet::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
-{
-	//여긴 MONSTER 아니면 MONSTER_PROJECTILE만 충돌됨.
-	Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), m_iDamg, _vector{ 0.f,0.f,0.f });
-	Event_DeleteObject(this);
+void CCyberPlayerBullet::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{	//여긴 MONSTER 아니면 MONSTER_PROJECTILE만 충돌됨.
+	if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup
+		|| OBJECT_GROUP::MONSTER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
+	{
+		Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), m_iDamg, _vector{ 0.f,0.f,0.f });
+		Event_DeleteObject(this);
 
-	CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("CyberBulletHit"), true, Get_FinalPosition());
+		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("CyberBulletHit"), true, Get_FinalPosition());
+	}
 }
 
 
