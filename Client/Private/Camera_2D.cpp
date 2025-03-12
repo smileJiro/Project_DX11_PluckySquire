@@ -295,7 +295,9 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 				
 				_float3 TargetFixedY = {};
 				memcpy(&TargetFixedY, m_pTargetWorldMatrix->m[3], sizeof(_float3));
-				TargetFixedY.y = 0.f;
+
+				if (TEXT("Chapter8_SKSP_10") != m_strSectionName)
+					TargetFixedY.y = 0.f;
 
 				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { TargetFixedY.x, TargetFixedY.y });
 				XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
@@ -307,7 +309,8 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 
 				Set_InitialData(vDir, 5.5f, XMVectorZero(), 5);
 
-				m_pCurArm->Turn_AxisRight_Angle(XMConvertToRadians(15.f));
+				if (TEXT("Chapter8_SKSP_10") != m_strSectionName)
+					m_pCurArm->Turn_AxisRight_Angle(XMConvertToRadians(15.f));
 
 				if (TEXT("Chapter6_SKSP_04") == m_strSectionName) {
 					m_pCurArm->Set_Length(6.5f);
@@ -859,7 +862,9 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 		if (iter == m_NormalTargets.end())
 			return;
 
-		vTargetWorldPos.y = 0.f;
+		if (TEXT("Chapter8_SKSP_10") != m_strSectionName)
+			vTargetWorldPos.y = 0.f;
+
 		_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { vTargetWorldPos.x, vTargetWorldPos.y });
 
 		_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
@@ -867,7 +872,8 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 
 		m_pCurArm->Set_ArmVector(vDir);
 		//Set_InitialData(vDir, 5.5f, XMVectorZero(), 5);
-		m_pCurArm->Turn_AxisRight_Angle(XMConvertToRadians(15.f));
+		if (TEXT("Chapter8_SKSP_10") != m_strSectionName)
+			m_pCurArm->Turn_AxisRight_Angle(XMConvertToRadians(15.f));
 
 		//if (TEXT("Chapter6_SKSP_04") == m_strSectionName) {
 		//	m_pCurArm->Set_Length(6.5f);
@@ -1017,6 +1023,7 @@ void CCamera_2D::Find_TargetPos()
 					case (_int)NORMAL_DIRECTION::NEGATIVE_Y:
 						break;
 					case (_int)NORMAL_DIRECTION::POSITIVE_Z:
+						Set_NextArmData(TEXT("Default_Positive_Z"), 0);
 						break;
 					case (_int)NORMAL_DIRECTION::NEGATIVE_Z:
 					{
@@ -1046,7 +1053,9 @@ void CCamera_2D::Find_TargetPos()
 
 				_float3 TargetFixedY = {};
 				memcpy(&TargetFixedY, m_pTargetWorldMatrix->m[3], sizeof(_float3));
-				TargetFixedY.y = 0.f;
+
+				if(TEXT("Chapter8_SKSP_10") !=  m_strSectionName)
+					TargetFixedY.y = 0.f;
 
 				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { TargetFixedY.x, TargetFixedY.y });
 
@@ -1056,7 +1065,9 @@ void CCamera_2D::Find_TargetPos()
 				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
 
 				m_pCurArm->Set_ArmVector(vDir);
-				m_pCurArm->Turn_AxisRight_Angle(XMConvertToRadians(15.f));
+				
+				if (TEXT("Chapter8_SKSP_10") != m_strSectionName)
+					m_pCurArm->Turn_AxisRight_Angle(XMConvertToRadians(15.f));
 			}
 		}
 #pragma endregion
