@@ -866,7 +866,14 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			}
 		}
 
-
+		if (m_iCurrentLineIndex == Get_Dialogue(_strDialogue)[0].lines.size() - 1)
+		{
+			m_isLastDialogLine = true;
+		}
+		else
+		{
+			m_isLastDialogLine = false;
+		}
 
 
 
@@ -1197,6 +1204,8 @@ void CDialog::NextDialogue(_float2 _RTSize)
 
 			m_iCurrentLineIndex = 0;
 			m_isDisplayDialogue = false;
+			m_isLastDialogLine = false;
+
 
 			m_pPortrait->Set_PortraitRender(false);
 

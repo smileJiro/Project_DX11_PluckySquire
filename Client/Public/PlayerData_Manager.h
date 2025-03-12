@@ -86,10 +86,10 @@ private:
 	pair<_wstring, _wstring>			m_ItemTags[ITEM_END] = {}; // first -> 구분용 이름, second -> model용 이름
 
 	//스킬 레벨 용도
-	_int								m_iJumpSkill;
-	_int								m_iThorowSkill;
-	_int								m_iWhirlSkill;
-	_int								m_iAttackDamagePlus;
+	_int								m_iJumpSkill = { 0 };
+	_int								m_iThorowSkill = { 0 };
+	_int								m_iWhirlSkill = { 0 };
+	_int								m_iAttackDamagePlus = { 0 };
 
 private:
 	void					Set_Tags();
