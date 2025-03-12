@@ -341,7 +341,7 @@ _bool CMonster::Monster_MoveTo(_fvector _vPosition, _float _fTimeDelta)
 		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 
 		//위치로 이동하는 속도를 세팅하고 StepAssist 수행
-		if (true == Move_To(_vPosition))
+		if (true == Move_To_3D(_vPosition))
 			return true; 
 		_vector vVeclocity = pDynamicActor->Get_LinearVelocity();
 
