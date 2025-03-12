@@ -19,7 +19,7 @@
           ],
           "Collider_Offset": [
             0.0,
-            0.0
+            50.0
           ]
         },
         "Image_Tag_List": [
@@ -54,7 +54,7 @@
         "Init_Word_Type": [ 7 ],
         "Position": [
           651.0,
-          -140.0
+          21.0
         ],
         "Scale": [
           1.0,

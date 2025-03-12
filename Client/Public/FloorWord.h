@@ -65,6 +65,7 @@ public:
 	HRESULT					Cleanup_DeadReferences() override;
 
 private:
+	HRESULT					Create_PrintFloorWord(_int _CurLevel, _wstring strLayerTag);
 	HRESULT					Load_Json(const wstring& filePath, const _wstring& _strLayerTag);
 
 
