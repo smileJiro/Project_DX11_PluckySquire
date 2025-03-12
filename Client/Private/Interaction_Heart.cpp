@@ -27,6 +27,7 @@ HRESULT CInteraction_Heart::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_isRender = false;
+	m_PrePlayerHP = 12;
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -47,30 +48,33 @@ void CInteraction_Heart::Update(_float _fTimeDelta)
 
 void CInteraction_Heart::Late_Update(_float _fTimeDelta)
 {
+	CPlayer* pPlayer = Uimgr->Get_Player();
 
-	if (true == m_isRender && COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	if (true == m_isRender && COORDINATE_3D == pPlayer->Get_CurCoord())
 	{
 		__super::Late_Update(_fTimeDelta);
 	}
 
 	//if (true == Uimgr->Get_PlayerOnHit())
 	//{
-		m_PlayerHP = Uimgr->Get_Player()->Get_Stat().iHP;
+		
+		
+		m_PlayerHP = pPlayer->Get_Stat().iHP;
 
 		if (m_PrePlayerHP != m_PlayerHP)
 		{
 			m_isRender = true;
 			m_PrePlayerHP = m_PlayerHP;
 
-			if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+			if (COORDINATE_2D == pPlayer->Get_CurCoord())
 			{
 				if (true == m_isDeleteRender)
 					m_isDeleteRender = false;
 
 
-				if (nullptr != CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player()))
+				if (nullptr != CSection_Manager::GetInstance()->Get_SectionKey(pPlayer))
 				{
-					auto CurSection = CSection_Manager::GetInstance()->Get_SectionKey(Uimgr->Get_Player());
+					auto CurSection = CSection_Manager::GetInstance()->Get_SectionKey(pPlayer);
 					m_strSectionName = *(CurSection);
 					if (m_preSectionName != m_strSectionName)
 					{
@@ -81,7 +85,7 @@ void CInteraction_Heart::Late_Update(_float _fTimeDelta)
 				}
 
 			}
-			else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+			else if (COORDINATE_3D == pPlayer->Get_CurCoord())
 			{
 				if (false == m_isDeleteRender)
 				{
@@ -197,13 +201,16 @@ HRESULT CInteraction_Heart::Cleanup_DeadReferences()
 
 void CInteraction_Heart::Cal_HeartPos()
 {
-	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
+	CPlayer* pPlayer = Uimgr->Get_Player();
+
+
+	if (COORDINATE_2D == pPlayer->Get_CurCoord())
 	{
 
 
 		// TODO :: 해당 부분은 가변적이다. 추후 변경해야한다.
 		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
-		_float2 vPlayerPos = _float2(Uimgr->Get_Player()->Get_BodyPosition().m128_f32[0], Uimgr->Get_Player()->Get_BodyPosition().m128_f32[1]);
+		_float2 vPlayerPos = _float2(pPlayer->Get_BodyPosition().m128_f32[0], pPlayer->Get_BodyPosition().m128_f32[1]);
 		_float2 vCalPos = { 0.f, 0.f };
 
 		vCalPos.x = vPlayerPos.x;
@@ -211,10 +218,10 @@ void CInteraction_Heart::Cal_HeartPos()
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f));
 	}
-	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	else if (COORDINATE_3D == pPlayer->Get_CurCoord())
 	{
 		//TODO :: 3D 어떻게 표현할것인가?
-		_float2 vCalx = __super::WorldToSceen(Uimgr->Get_Player()->Get_WorldMatrix());
+		_float2 vCalx = __super::WorldToSceen(pPlayer->Get_WorldMatrix());
 		_float CalX = vCalx.x - g_iWinSizeX / 2.f;
 		_float CalY = -(vCalx.y - g_iWinSizeY / 1.55f);
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(CalX, CalY, 0.f, 1.f));
