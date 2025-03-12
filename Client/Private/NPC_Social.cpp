@@ -158,6 +158,17 @@ void CNPC_Social::Priority_Update(_float _fTimeDelta)
 
 void CNPC_Social::Update(_float _fTimeDelta)
 {
+
+	_bool		texttext = { false };
+
+	if (true == CDialog_Manager::GetInstance()->Get_isLastDialog())
+	{
+		texttext = true;
+
+		int a = 0;
+	}
+
+
 	__super::Update(_fTimeDelta);
 
 

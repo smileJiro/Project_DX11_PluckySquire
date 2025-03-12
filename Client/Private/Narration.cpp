@@ -321,27 +321,20 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 							if (nullptr == pAnim)
 								return E_FAIL;
 
-							// 누수 의심 코드
+							// 250312::박상욱
 							
-							Safe_Release(pObject);
+							//Safe_Release(pObject);
+							//
+							//pAnimation.push_back(pAnim);
+							//Safe_AddRef(pAnim);
 
-							pAnimation.push_back(pAnim);
-							Safe_AddRef(pAnim);
+							//
 
 							// 원본 DialogueData에도 해당 애니메이션 데이터를 저장(필요에 따라 사용)
 							DialogueData.NarAnim.push_back(Animation);
 						}
 					}
 					// 애니메이션 처리 후, 완성된 대화 데이터를 NarData에 추가한다.
-
-
-					//m_vAnimObjectsByLine.emplace(iLine, pAnimation);
-
-					// TODO :: 누수 예상 - 박상욱
-					//for (_int i = 0; i < pAnimation.size(); ++i)
-					//{
-					//	Safe_AddRef(pAnimation[i]);
-					//}
 
 					NarData.lines.push_back(DialogueData);
 					++iLine;

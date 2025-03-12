@@ -32,6 +32,8 @@ private:
 	_bool					m_isBig = { false };
 	bool					m_isScaling = { false };
 
+	_bool					m_isFirstPositionAdjusted = { false };
+
 private:
 	void					ChangeStamp(_float _fTimeDelta);
 
