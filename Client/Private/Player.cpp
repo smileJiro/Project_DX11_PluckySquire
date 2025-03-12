@@ -2397,13 +2397,16 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         if (STATE::STAMP == Get_CurrentStateID())
             Equip_Part(PLAYER_PART_BOMB_STMAP);
     }
-    if (KEY_DOWN(KEY::H))
+	if (KEY_PRESSING(KEY::CTRL))
     {
-        //m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
-        //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
-        //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
-        //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
-        m_pActorCom->Set_GlobalPose(_float3(18.36f, 21.58f, 1.11f));
+        if (KEY_DOWN(KEY::H))
+        {
+            //m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
+            //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
+            //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
+            //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
+            m_pActorCom->Set_GlobalPose(_float3(18.36f, 21.58f, 1.11f));
+        }
     }
     //if (KEY_DOWN(KEY::J))
     //{
