@@ -62,6 +62,8 @@ HRESULT CZipline::Initialize(void* _pArg)
 
 	m_vDestination = { -1922.93f, 278.69f, 0.f };
 
+	m_eInteractID = INTERACT_ID::ZIPLINE;
+
     return S_OK;
 }
 

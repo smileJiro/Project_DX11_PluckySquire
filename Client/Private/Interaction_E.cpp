@@ -85,6 +85,30 @@ void CInteraction_E::Update(_float _fTimeDelta)
 	//
 	//	Cal_PlayerHighPos(pGameObejct);
 	//}
+
+	if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
+	{
+		//if (false == m_isDeleteRender)
+		//{	
+			if (true == CSection_Manager::GetInstance()->Is_CurSection(this))
+			{
+				if (TEXT(" ") != m_preSectionName)
+				{
+					SECTION_MGR->Remove_GameObject_FromSectionLayer(m_preSectionName, this);
+					m_preSectionName = TEXT(" ");
+				}
+				else
+				{
+					SECTION_MGR->Remove_GameObject_ToCurSectionLayer(this);
+					
+				}
+					
+				
+
+				m_isDeleteRender = true;
+			}
+		//}
+	}
 	
 }
 
@@ -322,7 +346,13 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(*(CurSection), this, SECTION_2D_PLAYMAP_UI);
 				m_preSectionName = m_strSectionName;
 			}
+			else if (false == CSection_Manager::GetInstance()->Is_CurSection(this))
+			{
+				//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(*(CurSection), this, SECTION_2D_PLAYMAP_UI);
+			}
 		}
+
+		
 
 		_float fScaleX = RTSize.x / RTSIZE_BOOK2D_X;
 		_float fScaleY = RTSize.y / RTSIZE_BOOK2D_Y;
@@ -514,20 +544,25 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		else
 			m_strDisplayText = TEXT("나가기");
 	}
-		
 		break;
 
 	case INTERACT_ID::DRAGGABLE:
 		m_strDisplayText = TEXT("끌기");
 		break;
 
+	case INTERACT_ID::LUNCHBOX:
+		m_strDisplayText = TEXT("열기");
+		break;
+
 	case INTERACT_ID::BOOK:
 		m_strDisplayText = TEXT("북");
 		break;
 
-	case INTERACT_ID::LUNCHBOX:
-		m_strDisplayText = TEXT("열기");
+	case INTERACT_ID::ZIPLINE:
+		m_strDisplayText = TEXT("타기");
 		break;
+
+
 
 	default:
 		break;
@@ -558,12 +593,12 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		if (false == isColumn)
 		{
 			vPos.x = vTextPos.x;
-			vPos.y = vTextPos.y + _vRTSize.y * 0.02f / fScaleY;
+			vPos.y = vTextPos.y + _vRTSize.y * 0.015f / fScaleY;
 		}
 		else
 		{
 			vPos.x = vTextPos.x;
-			vPos.y = vTextPos.y + _vRTSize.y * 0.02f / fScaleY;
+			vPos.y = vTextPos.y + _vRTSize.y * 0.015f / fScaleY;
 		}
 
 		vPos.x = vMiddlePos.x + vPos.x;
@@ -581,7 +616,7 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		//}
 
 		//m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
-		m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vPos.x, vPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pGameInstance->Render_Font(TEXT("Font18"), m_strDisplayText.c_str(), _float2(vPos.x, vPos.y), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 	// 이건 3D에요
 	else if (COORDINATE_3D == Uimgr->Get_Player()->Get_CurCoord())
@@ -597,7 +632,12 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		//if (false == pInteractableObject->Is_UIPlayerHeadUp())
 		//	m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y - 315.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		//else
-			m_pGameInstance->Render_Font(TEXT("Font24"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y - g_iWinSizeY / 55.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		if (m_strDisplayText == TEXT("들어가기"))
+		{
+			m_pGameInstance->Render_Font(TEXT("Font18"), m_strDisplayText.c_str(), _float2(vTextPos.x - g_iWinSizeY / 80.f, vTextPos.y - g_iWinSizeY / 80.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+		else
+			m_pGameInstance->Render_Font(TEXT("Font18"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y - g_iWinSizeY / 80.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
 }
