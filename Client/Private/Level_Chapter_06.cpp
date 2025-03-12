@@ -131,7 +131,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_06::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	if (FAILED(Ready_Layer_Monster()))
 	{
 		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_06::Initialize)");
 		assert(nullptr);
