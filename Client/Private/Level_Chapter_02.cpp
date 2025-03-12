@@ -498,7 +498,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Map()
 	switch (eLevelID)
 	{
 	case Client::LEVEL_CHAPTER_2:
-		if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+		if (FAILED(Map_Object_Create(L"Chapter_Intro.mchc")))
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_4:

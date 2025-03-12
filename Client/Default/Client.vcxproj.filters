@@ -703,6 +703,9 @@
     <Filter Include="02.GameObjects\Portal\PortalLocker\MonsterCount">
       <UniqueIdentifier>{07a12f08-94a2-4b76-a9a9-440425e711a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Bombable">
+      <UniqueIdentifier>{305d89b8-b0f9-4915-aab8-7d3d28fe2a10}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1490,12 +1493,6 @@
     <ClInclude Include="..\Public\PlayerState_GetItem.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BombableObject.h">
-      <Filter>02.GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\TiltSwapPusher.h">
-      <Filter>02.GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Boss_Crystal.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
@@ -1754,6 +1751,15 @@
     </ClInclude>
     <ClInclude Include="..\public\PortalLocker_LayerCount.h">
       <Filter>02.GameObjects\Portal\PortalLocker\MonsterCount</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BombableObject.h">
+      <Filter>02.GameObjects\Bombable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TiltSwapPusher.h">
+      <Filter>02.GameObjects\Bombable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BombableBox.h">
+      <Filter>02.GameObjects\Bombable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2529,12 +2535,6 @@
     <ClCompile Include="..\Private\PlayerState_GetItem.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BombableObject.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\TiltSwapPusher.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Boss_Crystal.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
@@ -2793,6 +2793,15 @@
     </ClCompile>
     <ClCompile Include="..\private\PortalLocker_LayerCount.cpp">
       <Filter>02.GameObjects\Portal\PortalLocker\MonsterCount</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BombableObject.cpp">
+      <Filter>02.GameObjects\Bombable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TiltSwapPusher.cpp">
+      <Filter>02.GameObjects\Bombable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BombableBox.cpp">
+      <Filter>02.GameObjects\Bombable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

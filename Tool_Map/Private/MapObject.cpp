@@ -389,7 +389,7 @@ HRESULT	CMapObject::Push_Texture(const _string _strTextureName, _uint _eTextureT
     return E_FAIL;
 }
 
-void CMapObject::Set_Diffuse_Color(_uint _iMaterialIndex, const _float4 _fDiffuseColor)
+void CMapObject::Set_Diffuse_Color(_uint _iMaterialIndex, const _float4 _fDiffuseColor, _bool _isUpdate)
 {
     CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
     if (pModel)
@@ -399,10 +399,10 @@ void CMapObject::Set_Diffuse_Color(_uint _iMaterialIndex, const _float4 _fDiffus
         switch (m_eColorShaderModes[_iMaterialIndex])
         {
         case Engine::C3DModel::COLOR_DEFAULT:
-            p3DModel->Set_MaterialConstBuffer_Albedo(_iMaterialIndex, _fDiffuseColor,true);
+            p3DModel->Set_MaterialConstBuffer_Albedo(_iMaterialIndex, _fDiffuseColor, _isUpdate);
             break;
         case Engine::C3DModel::MIX_DIFFUSE:
-            p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, _fDiffuseColor,true);
+            p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, _fDiffuseColor, _isUpdate);
             break;
         }
     }
@@ -433,7 +433,7 @@ const _float4 CMapObject::Get_Diffuse_Color(_uint _iMaterialIndex)
     return fReturnColor;
 }
 
-void CMapObject::Set_Color_Shader_Mode(_uint _iMaterialIndex, C3DModel::COLOR_SHADER_MODE _eMode)
+void CMapObject::Set_Color_Shader_Mode(_uint _iMaterialIndex, C3DModel::COLOR_SHADER_MODE _eMode, _bool _isUpdate)
 {
     CModel* pModel = m_pControllerModel->Get_Model(COORDINATE_3D);
     _float4 fColor = {};
@@ -446,32 +446,32 @@ void CMapObject::Set_Color_Shader_Mode(_uint _iMaterialIndex, C3DModel::COLOR_SH
         case Engine::C3DModel::COLOR_NONE:
             // 알베도맵 사용함.
             // mix color를 초기화시켜줌.
-			p3DModel->Set_MaterialConstBuffer_UseAlbedoMap(_iMaterialIndex, true, true );
-			p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, _float4(1.f, 1.f, 1.f, 1.f), true);
+			p3DModel->Set_MaterialConstBuffer_UseAlbedoMap(_iMaterialIndex, true, _isUpdate);
+            p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, _float4(1.f, 1.f, 1.f, 1.f), _isUpdate);
             break;
         case Engine::C3DModel::COLOR_DEFAULT:
             // 알베도맵 사용하지 않음.
             // 전에 mix color를 사용중이었다면, 가져와서 default color에 적용한 후,
 			// mix color를 초기화.
-			p3DModel->Set_MaterialConstBuffer_UseAlbedoMap(_iMaterialIndex, false, true );
+			p3DModel->Set_MaterialConstBuffer_UseAlbedoMap(_iMaterialIndex, false, _isUpdate);
             
             if (m_eColorShaderModes[_iMaterialIndex] == Engine::C3DModel::COLOR_DEFAULT)
             {
                 fColor = Get_Diffuse_Color(_iMaterialIndex);
-                p3DModel->Set_MaterialConstBuffer_Albedo(_iMaterialIndex, fColor, true);
+                p3DModel->Set_MaterialConstBuffer_Albedo(_iMaterialIndex, fColor, _isUpdate);
             }
             
-            p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, _float4(1.f, 1.f, 1.f, 1.f), true);
+            p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, _float4(1.f, 1.f, 1.f, 1.f), _isUpdate);
             break;
         case Engine::C3DModel::MIX_DIFFUSE:
             // 알베도맵 사용함.
             // 전에 default color를 사용중이었다면, 가져와서 mix color에 적용함.
-            p3DModel->Set_MaterialConstBuffer_UseAlbedoMap(_iMaterialIndex, true, true);
+            p3DModel->Set_MaterialConstBuffer_UseAlbedoMap(_iMaterialIndex, true, _isUpdate);
             
             if (m_eColorShaderModes[_iMaterialIndex] == Engine::C3DModel::COLOR_DEFAULT)
             {
 			    fColor = Get_Diffuse_Color(_iMaterialIndex);
-				p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, fColor, true);
+				p3DModel->Set_MaterialConstBuffer_MultipleAlbedo(_iMaterialIndex, fColor, _isUpdate);
             }
             
             break;
