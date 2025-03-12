@@ -299,6 +299,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 
 				_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { TargetFixedY.x, TargetFixedY.y });
 				XMStoreFloat3(&m_v2DTargetWorldPos, vTargetPos);
+				XMStoreFloat3(&m_v2DPreTargetWorldPos, vTargetPos);
 
 				_vector vDir = vTargetPos - XMLoadFloat3(&(*iter).second);
 				vDir = XMVector3Normalize(XMVectorSetY(vDir, 1.f));
@@ -890,6 +891,9 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 
 		XMStoreFloat3(&m_v2DPreTargetWorldPos, vTargetPos);
 		XMStoreFloat3(&m_v2DFixedPos, vTargetPos);
+		if (true == m_isTargetChanged) {
+			m_vStartPos = m_v2DPreTargetWorldPos;
+		}
 
 		m_InitialTime.y = 0.f;
 		m_isInitialData = false;
