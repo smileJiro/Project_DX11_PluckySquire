@@ -39,6 +39,9 @@ private:
 	vector<vector<CShopItemBG*>>		m_ShopItems;
 	vector<CLogo_Props*>				m_LogoProps;
 
+	// 0π¯ -> ∆¯≈∫, 1π¯ -> ∏ÿ√Á!
+	_bool								m_PlayerStampHaves[2] = { false, false };
+
 	CNarration*							m_pNarration = { nullptr };
 	_tchar								m_strNarrationID[MAX_PATH];
 	_bool								m_isPlayerNarration = { false };
@@ -89,6 +92,10 @@ public:
 	void								Set_InterActionHeart(CInteraction_Heart* _interactionHeart) { m_pInteractionHeart = _interactionHeart; Safe_AddRef(_interactionHeart); }
 	STAMP								Get_StampIndex() { return m_eStampIndex; }
 	void								Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
+
+	void								Set_StampHave(_uint _index, _bool _isHave) { m_PlayerStampHaves[_index] = _isHave; }
+	_bool								Get_StampHave(_uint _index) { return m_PlayerStampHaves[_index]; }
+
 	CPlayer*							Get_Player() { return m_pPlayer; }
 	void								Set_Player(CPlayer* _Player) { m_pPlayer = _Player; Safe_AddRef(_Player); }
 	void								Set_Dialogue(CDialog* _Dialogue) { m_pDiagloue = _Dialogue; Safe_AddRef(_Dialogue); }
