@@ -96,7 +96,8 @@ void CPlayerRifle::Shoot()
 		
 		if (nullptr != m_pShotEffect)
 		{
-			m_pShotEffect
+			//m_pShotEffect->Set_SpawnMatrix()
+			//m_pShotEffect->Active_Effect(false);
 		}
 
 	}
