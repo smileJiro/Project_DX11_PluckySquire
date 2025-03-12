@@ -1760,6 +1760,7 @@ void C2DMap_Tool_Manager::BlockerSetting_Imgui(_bool bLock)
 		if (nullptr != m_pPickingBlocker)
 		{
 			_bool	isFloor = m_pPickingBlocker->Is_Floor();
+			_bool	isJumpPass = m_pPickingBlocker->Is_JumpPass();
 			_vector vPos = m_pPickingBlocker->Get_FinalPosition();
 			_float2 fPos = { XMVectorGetX(vPos),XMVectorGetY(vPos) };
 			_float3 fScale = m_pPickingBlocker->Get_FinalScale();
@@ -1792,8 +1793,12 @@ void C2DMap_Tool_Manager::BlockerSetting_Imgui(_bool bLock)
 
 			ImGui::Text("Floor?");
 			ImGui::SameLine();
-			if (ImGui::Checkbox("##isStatic", &isFloor))
+			if (ImGui::Checkbox("##isFloor", &isFloor))
 				m_pPickingBlocker->Set_Floor(isFloor);
+			ImGui::Text("JumpPass?");
+			ImGui::SameLine();
+			if (ImGui::Checkbox("##isJumpPass", &isJumpPass))
+				m_pPickingBlocker->Set_JumpPass(isJumpPass);
 		}
 	}
 
@@ -1971,10 +1976,12 @@ void C2DMap_Tool_Manager::Save(_bool _bSelected)
 			_float2		fPos = { XMVectorGetX(vPos), XMVectorGetY(vPos) };
 			_float2		fScale = { vScale.x,vScale.y };
 			_bool		isFloor = static_cast<C2DTrigger_Sample*>(pObject)->Is_Floor();
+			_bool		isJumpPass = static_cast<C2DTrigger_Sample*>(pObject)->Is_JumpPass();
 
 			WriteFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
 			WriteFile(hFile, &fScale, sizeof(_float2), &dwByte, nullptr);
 			WriteFile(hFile, &isFloor, sizeof(_bool), &dwByte, nullptr);
+			WriteFile(hFile, &isJumpPass, sizeof(_bool), &dwByte, nullptr);
 		}
 	}
 	else
@@ -3123,9 +3130,11 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 		_float2		fPos = {};
 		_float2		fScale = {};
 		_bool		isFloor = false;
+		_bool		isJumpPass = false;
 		ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
 		ReadFile(hFile, &fScale, sizeof(_float2), &dwByte, nullptr);
 		ReadFile(hFile, &isFloor, sizeof(_bool), &dwByte, nullptr);
+		ReadFile(hFile, &isJumpPass, sizeof(_bool), &dwByte, nullptr);
 
 		C2DTrigger_Sample::TRIGGER_2D_DESC NormalDesc = { };
 		NormalDesc.iCurLevelID = LEVEL_TOOL_2D_MAP;
@@ -3152,6 +3161,7 @@ void C2DMap_Tool_Manager::Load(_bool _bSelected)
 			pBlocker->Set_Name(strNewName);
 			pBlocker->Change_Color(C2DTrigger_Sample::DEFAULT_COLOR);
 			pBlocker->Set_Floor(isFloor);
+			pBlocker->Set_JumpPass(isJumpPass);
 		}
 	}
 

@@ -163,14 +163,17 @@ HRESULT CSection_2D_PlayMap::Ready_Objects(void* _pDesc)
 				_float2		fPos = {};
 				_float2		fScale = {};
 				_bool		isFloor = {};
+				_bool		isJumpPass = {};
 				ReadFile(hFile, &fPos, sizeof(_float2), &dwByte, nullptr);
 				ReadFile(hFile, &fScale, sizeof(_float2), &dwByte, nullptr);
 				ReadFile(hFile, &isFloor, sizeof(_bool), &dwByte, nullptr);
+				ReadFile(hFile, &isJumpPass, sizeof(_bool), &dwByte, nullptr);
 
 				CGameObject* pGameObject = nullptr;
 				CBlocker::BLOCKER2D_DESC Desc = {};
 				Desc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
 				Desc.isFloor = isFloor;
+				Desc.isJumpPass = isJumpPass;
 				Desc.vColliderExtents = { 1.f, 1.f };
 				Desc.vColliderScale = { 1.f, 1.f };
 				Desc.Build_2D_Transform(fPos, fScale);
