@@ -61,7 +61,6 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 	{
 		m_pOwner->Stop_Rotate();
 		m_pOwner->Stop_Move();
-		//공격 준비로 전환
 		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ATTACK, m_pFSM);
 		return;
 	}

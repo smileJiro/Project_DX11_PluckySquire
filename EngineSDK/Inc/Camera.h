@@ -25,6 +25,10 @@ public:
 		_float			fNear = { 0.1f };
 		_float			fFar = { 500.f };
 
+		// Arm
+		_float3			vArm = {};
+		_float			fLength = {};
+
 		// Dof 기본값 
 		_float			fSensorHeight = 24.0f;
 		_float			fAperture = 2.8f; // 조리개 크기
@@ -95,6 +99,8 @@ public:
 	virtual void	Switch_CameraView(INITIAL_DATA* _pInitialData = nullptr) {};
 	virtual INITIAL_DATA Get_InitialData() { return INITIAL_DATA(); };
 	virtual _uint	Get_CameraMode() { return _uint(); }
+
+	void			Create_Arm(CAMERA_DESC* _pDesc);
 
 protected:
 	/* 뷰, 투영 행렬을 구성하는 기능 */

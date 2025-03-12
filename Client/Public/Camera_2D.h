@@ -59,14 +59,6 @@ public:
 		NORMAL_TYPE_END
 	};
 
-	enum FLIPPING_STATE
-	{
-		FLIPPING_NONE = 0x00,
-		TURN_ARM = 0x01,
-		CHANGE_LENGTH = 0x02,
-		ALL_DONE = TURN_ARM | CHANGE_LENGTH
-	};
-
 	typedef struct tagCamera2DDesc : public CCamera::CAMERA_DESC
 	{
 		CAMERA_2D_MODE			eCameraMode = { DEFAULT };
@@ -99,8 +91,9 @@ public:
 	void						Set_InitialData(_wstring _szSectionTag);
 	void						Set_TrackingTime(_float _fTrackingTime) { m_fTrackingTime.x = _fTrackingTime; }
 
+	void						SetUp_InitialPos();
+
 public:
-	void						Add_CurArm(CCameraArm* _pCameraArm);
 	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
 
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
@@ -156,7 +149,7 @@ private:
 	_float						m_fStartLengthValue = { 1.f };			// 보간 때 쓰는 첫 시작 Value
 	_float						m_fOriginLengthValue = { 1.f };			// Section에서 받은 진짜 Length Value
 	_float2						m_fLengthValueTime = { 0.5f, 0.f };		// 
-	_uint						m_FlippingFlag = { FLIPPING_NONE };
+	_bool						m_isChangingLengthValue = { false };
 
 	_uint						m_iPlayType = {};
 	_bool						m_iNarrationPosType = { false };		// 나중에 int로 바꾸기, 지금은 true면 left
@@ -170,6 +163,9 @@ private:
 
 	// Zipline
 	_float2						m_fZiplineTime = { 4.5f, 0.f };
+
+	// Section Capture			
+	_bool						m_isWolrdPosChaptured = { false };
 
 private:
 	void						Action_Mode(_float _fTimeDelta);
@@ -189,7 +185,7 @@ private:
 	void						Look_Target(_float fTimeDelta);
 	_vector						Calculate_CameraPos(_float _fTimeDelta);
 	void						Calculate_Book_Scroll();
-	_bool						Change_LengthValue(_float _fTimeDelta);
+	void						Change_LengthValue(_float _fTimeDelta);
 
 	virtual	void				Switching(_float _fTimeDelta) override;
 	void						Find_TargetPos();
@@ -197,16 +193,14 @@ private:
 	_bool						Is_Target_In_SketchSpace();
 
 private:
-	void						Set_LengthValue(_float _fStartLengthValue, _float _fOriginLengthValue) 
-	{ 
-		m_fStartLengthValue = _fStartLengthValue; 
-		m_fOriginLengthValue = _fOriginLengthValue;
-	};
+	void						Start_Changing_LengthValue(_float _fStartLengthValue, _float _fOriginLengthValue, _float _fLengthValueTime = 0.5f);
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);
 
 	void						Key_Input(_float _fTimeDelta);
+	void						Check_WorldPosChaptured();
+
 #ifdef _DEBUG
 	void						Imgui(_float _fTimeDelta);
 #endif

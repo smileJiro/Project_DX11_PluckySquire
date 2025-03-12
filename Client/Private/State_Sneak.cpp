@@ -169,10 +169,10 @@ HRESULT CState_Sneak::Initialize_WayPoints(SNEAKWAYPOINTINDEX _eWayIndex)
 
 
 	case SNEAKWAYPOINTINDEX::CHAPTER8_1:
-		m_WayPoints.push_back({ _float3(12.63f, 21.58f, 5.5f) });
-		m_WayPoints.push_back({ _float3(9.63f, 21.58f, 5.5f) });
-		m_WayPoints.push_back({ _float3(9.63f, 21.58f, 2.14f) });
-		m_WayPoints.push_back({ _float3(12.63f, 21.58f, 2.14f) });
+		m_WayPoints.push_back({ _float3(13.f, 21.58f, 5.5f) });
+		m_WayPoints.push_back({ _float3(9.3f, 21.58f, 5.5f) });
+		m_WayPoints.push_back({ _float3(9.3f, 21.58f, 2.14f) });
+		m_WayPoints.push_back({ _float3(13.f, 21.58f, 2.14f) });
 		m_WayPoints.push_back({ _float3(7.47f, 21.58f, 1.f) });
 
 		m_WayPoints[0].Neighbors.push_back(1);
@@ -358,6 +358,10 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 			if (1 == m_pGameInstance->Compare_VectorLength(XMLoadFloat3(&vPoint), vPositionToPointDis))
 			{
 				_float3 vPosTo; XMStoreFloat3(&vPosTo, XMVector3Normalize(vPositionToPointDis));
+
+				//추가
+				vPos.y += 0.1f;
+
 				//가는길에 장애물 없으면
 				if (false == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vPosTo, XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_WayPoints[Index].vPosition) - XMLoadFloat3(&vPos))), 
 					OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))

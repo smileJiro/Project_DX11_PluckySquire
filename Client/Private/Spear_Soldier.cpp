@@ -77,15 +77,17 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
         m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
         m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
         m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
+        m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
 
         pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, BLOCK_HOLD_LOOP, true);
     }
     else if(true == m_isSneakMode)
     {
         m_pFSM->Add_SneakState();
+        m_pFSM->Set_State((_uint)MONSTER_STATE::SNEAK_IDLE);
     }
 
-    m_pFSM->Set_State((_uint)MONSTER_STATE::SNEAK_IDLE);
+    
 
     pModelObject->Set_Animation(IDLE);
 
@@ -227,7 +229,7 @@ void CSpear_Soldier::Change_Animation()
             break;
 
         case MONSTER_STATE::SNEAK_IDLE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);  
             break;
 
         case MONSTER_STATE::SNEAK_PATROL:
@@ -237,6 +239,7 @@ void CSpear_Soldier::Change_Animation()
 
         case MONSTER_STATE::SNEAK_AWARE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            Set_AnimChangeable(true);
             break;
 
         case MONSTER_STATE::SNEAK_INVESTIGATE:
@@ -370,13 +373,14 @@ HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)
     else if(true == pDesc->isSneakMode)
     {
         m_vRayOffset.y = ShapeDesc->fRadius - 0.1f;
-        m_vRayOffset.z = ShapeDesc->fRadius + ShapeDesc->fHalfHeight - 0.1f;
+        m_vRayOffset.z = ShapeDesc->fRadius - 0.1f;
 
-        m_fRayHalfWidth = ShapeDesc->fRadius - 0.1f;
+        m_fRayHalfWidth = ShapeDesc->fRadius;
 
         //닿은 물체의 씬 쿼리를 켜는 트리거
         SHAPE_BOX_DESC* RayBoxDesc = new SHAPE_BOX_DESC;
-        RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(XMConvertToRadians(pDesc->fFOVX * 0.5f)) * 0.5f, 1.f, pDesc->fAlertRange * 0.5f };
+        //RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(XMConvertToRadians(pDesc->fFOVX * 0.5f)) * 0.5f, 1.f, pDesc->fAlertRange * 0.5f };
+        RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(XMConvertToRadians(pDesc->fFOVX * 0.5f)), 1.f, pDesc->fAlertRange };
         //RayBoxDesc->vHalfExtents = { ShapeDesc->fRadius, 0.1f, pDesc->fAlertRange * 0.5f };
 
         /* 해당 Shape의 Flag에 대한 Data 정의 */
@@ -385,7 +389,8 @@ HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)
         ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
         ShapeData->eMaterial = ACTOR_MATERIAL::NORESTITUTION; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
         ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-        XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, RayBoxDesc->vHalfExtents.z)); // Shape의 LocalOffset을 행렬정보로 저장.
+        //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, RayBoxDesc->vHalfExtents.z)); // Shape의 LocalOffset을 행렬정보로 저장.
+        XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
         /* 최종으로 결정 된 ShapeData를 PushBack */
         ActorDesc->ShapeDatas.push_back(*ShapeData);
