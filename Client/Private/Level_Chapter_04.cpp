@@ -1061,12 +1061,22 @@ HRESULT CLevel_Chapter_04::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Chapter_04::Ready_Layer_Monster(CGameObject** _ppout)
+HRESULT CLevel_Chapter_04::Ready_Layer_Monster()
 {
+
+	if (FAILED(Ready_Layer_Monster_2D()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Monster_3D()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_Monster_2D()
+{
+	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters_2D"), m_eLevelID);
 	CGameObject* pObject;
-
-	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters"), m_eLevelID);
-
 	if (nullptr == pJson)
 		return E_FAIL;
 
@@ -1121,6 +1131,15 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(CGameObject** _ppout)
 			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionTag, pObject);
 		}
 	}
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_Monster_3D()
+{
+	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters_3D"), m_eLevelID);
+
+	CGameObject* pObject;
+
 
 	CMonster::MONSTER_DESC MonsterDesc3D = {};
 
@@ -1165,128 +1184,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(CGameObject** _ppout)
 
 		}
 	}
-
-
-	//// 2D
-	//CBarfBug::MONSTER_DESC BarfBug_Desc;
-	//BarfBug_Desc.iCurLevelID = m_eLevelID;
-	//BarfBug_Desc.eStartCoord = COORDINATE_2D;
-	//BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(-1000.0f, 150.f, 0.f);
-	//BarfBug_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	//_wstring strSectionKey = TEXT("Chapter4_P0304");
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
-	//
-	//BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(-650.0f, -75.f, 0.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
-
-	//BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(400.0f, 180.f, 0.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
-
-	//BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(900.0f, 200.f, 0.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
-
-	//BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(600.0f, -50.f, 0.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
-
-
-	//// 3D
-
-	//BarfBug_Desc.iCurLevelID = m_eLevelID;
-	//BarfBug_Desc.eStartCoord = COORDINATE_3D;
-
-	//BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(35.0f, 4.89f, -2.8f);
-	//BarfBug_Desc.tTransform3DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CGoblin::MONSTER_DESC Goblin_Desc;
-	//Goblin_Desc.iCurLevelID = m_eLevelID;
-	//Goblin_Desc.eStartCoord = COORDINATE_3D;
-
-	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(32.5f, 4.85f, 0.f);
-	//Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
-	//	return E_FAIL;
-
-	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(41.5f, 4.92f, -4.5f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
-	//	return E_FAIL;
-
-	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(43.5f, 4.23f, 5.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
-	//	return E_FAIL;
-
-	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(49.f, 4.29f, 6.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
-	//	return E_FAIL;
-
-
-	//CGoblin::MONSTER_DESC Goblin_Desc;
-	//Goblin_Desc.iCurLevelID = m_eLevelID;
-	//Goblin_Desc.eStartCoord = COORDINATE_3D;
-	//Goblin_Desc.isCoordChangeEnable = false;
-
-	////Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(-1.5f, 0.85f, -3.f);
-	////Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(30.94f, 4.87f, -5.62f);
-	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(23.12f, 4.18f, -5.72f);
-	//Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, TEXT("Monster"), &pObject, &Goblin_Desc)))
-	//return E_FAIL;
-
-	////Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(-1.5f, 0.85f, -3.f);
-	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(30.94f, 4.87f, -5.62f);
-	////Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(23.12f, 4.18f, -5.72f);
-	//Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, TEXT("Monster"), &pObject, &Goblin_Desc)))
-	//	return E_FAIL;
-
-	//CBarfBug::MONSTER_DESC BarfBug_Desc;
-	//BarfBug_Desc.iCurLevelID = m_eLevelID;
-	//BarfBug_Desc.eStartCoord = COORDINATE_3D;
-
-	//BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(23.12f, 4.18f, -5.72f);
-	//BarfBug_Desc.tTransform3DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, TEXT("Monster"), &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CButterGrump::MONSTER_DESC Boss_Desc;
-	//Boss_Desc.iCurLevelID = m_eLevelID;
-	//Boss_Desc.eStartCoord = COORDINATE_3D;
-	//Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
-	//	return E_FAIL;
-
 	return S_OK;
 }
 
