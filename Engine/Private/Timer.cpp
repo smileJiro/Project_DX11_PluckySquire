@@ -40,11 +40,9 @@ void CTimer::Update_Timer(void)
 	{
 		m_fTimeDelta = (1.f / 60.f);
 	}
-	m_LastTime = m_FrameTime;
 #endif
 
-
-
+	m_LastTime = m_FrameTime;
 	Compute_FPS();
 }
 
