@@ -25,11 +25,28 @@ HRESULT CSpear_Soldier::Initialize_Prototype()
 HRESULT CSpear_Soldier::Initialize(void* _pArg)
 {
     CSpear_Soldier::MONSTER_DESC* pDesc = static_cast<CSpear_Soldier::MONSTER_DESC*>(_pArg);
-    pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->isCoordChangeEnable = false;
+    //pDesc->isCoordChangeEnable = true;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+    if(false == pDesc->isCoordChangeEnable)
+    {
+        if (COORDINATE_3D == pDesc->eStartCoord)
+        {
+            pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+            pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+        }
+        else
+        {
+            pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+            pDesc->tTransform2DDesc.fSpeedPerSec = 80.f;
+        }
+    }
+    else
+    {
+        pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+        pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+        pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+        pDesc->tTransform2DDesc.fSpeedPerSec = 80.f;
+    }
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
@@ -45,8 +62,6 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
     pDesc->_tStat.iHP = 5;
     pDesc->_tStat.iMaxHP = 5;
     pDesc->_tStat.iDamg = 1;
-
-    m_fDashDistance = 10.f;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -66,6 +81,16 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
+
+
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        m_fDashDistance = 10.f;
+    }
+    else if (COORDINATE_2D == Get_CurCoord())
+    {
+        m_fDashDistance = 200.f;
+    }
 
     if(false == m_isSneakMode)
     {
@@ -88,7 +113,6 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
     }
 
     
-
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CSpear_Soldier::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -248,6 +272,10 @@ void CSpear_Soldier::Change_Animation()
 
         case MONSTER_STATE::SNEAK_ALERT:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ARREST);
+            break;
+
+        case MONSTER_STATE::SNEAK_CHASE:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
             break;
 
         case MONSTER_STATE::HIT:
