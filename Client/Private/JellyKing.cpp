@@ -356,11 +356,18 @@ void CJellyKing::Finished_DialogueAction()
 			CandleGameDesc.Build_3D_Transform(_float3(0.0f, 0.0f, 0.0f));
 			CandleGameDesc.eStartCoord = COORDINATE_3D;
 			CandleGameDesc.isCoordChangeEnable = false;
-			for (_uint i = 0; i < 5; ++i)
-			{
-				CandleGameDesc.CandlePositions.push_back(_float3(i * 5.0f, 1.0f, -10.f));
-			}
-			
+
+			// (1). 감옥 양초
+			CandleGameDesc.CandlePositions.push_back(_float3(74.f, 1.5f, -2.f));
+			// (2). 우측 상단
+			CandleGameDesc.CandlePositions.push_back(_float3(77.f, 23.9f, 35.6f));
+			// (3). 창문 근처
+			CandleGameDesc.CandlePositions.push_back(_float3(43.9f, 36.1f, 29.f));
+			// (4). 낙사 구간
+			CandleGameDesc.CandlePositions.push_back(_float3(45.f, 2.43f, -31.3f));
+			// (5). 꼭대기
+			CandleGameDesc.CandlePositions.push_back(_float3(69.68f, 16.64f, -19.4f));
+
 			CGameObject* pGameObject = nullptr;
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_CandleGame"), LEVEL_CHAPTER_6, TEXT("Layer_CandleGame"), &pGameObject, &CandleGameDesc)))
 			{

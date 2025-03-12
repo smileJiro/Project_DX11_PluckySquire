@@ -7,7 +7,6 @@
 #include "Section_Manager.h"
 
 
-
 CPrintFloorWord::CPrintFloorWord(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CFloorWord(_pDevice, _pContext)
 {
@@ -26,7 +25,7 @@ HRESULT CPrintFloorWord::Initialize_Prototype()
 
 HRESULT CPrintFloorWord::Initialize(void* _pArg)
 {
- 	FLOORTEXT* pDesc = static_cast<FLOORTEXT*>(_pArg);
+ 	CFloorWord::FLOORTEXT* pDesc = static_cast<FLOORTEXT*>(_pArg);
 
 	m_vRenderPos.x = pDesc->fPosX;
 	m_vRenderPos.y = pDesc->fPosY;
@@ -89,12 +88,8 @@ void CPrintFloorWord::Update(_float _fTimeDelta)
 	}
 	
 
-	
-
-
-
-	if (250.f > fabs(fThisPosX - fPlayerPosX) && 
-		250.f > fabs(fThisPosY - fPlayerPosY) && 
+	if (180.f > fabs(fThisPosX - fPlayerPosX) && 
+		180.f > fabs(fThisPosY - fPlayerPosY) && 
 		COORDINATE_2D == pPlayer->Get_CurCoord() && 
 		false == m_isFadeIn && true == isSameSection )
 	{
