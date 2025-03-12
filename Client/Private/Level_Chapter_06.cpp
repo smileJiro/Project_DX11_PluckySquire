@@ -655,7 +655,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	_vector vPalyerPos = pPlayer->Get_FinalPosition();
 	AUTOMOVE_COMMAND tCommand{};
-	tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+	tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
 	tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_RIGHT;
 	tCommand.fPreDelayTime = 4.f;
 	tCommand.vTarget = vPalyerPos += { 500.f, 0.f, 0.f };

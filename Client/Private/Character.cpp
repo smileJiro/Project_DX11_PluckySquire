@@ -689,7 +689,7 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta)
 {
     COORDINATE eCoord = Get_CurCoord();
 	_vector vCurrentPos = Get_FinalPosition();
-	_float fEpsilon = COORDINATE_2D == eCoord ? 0.3f : 100.f;
+	_float fEpsilon = COORDINATE_2D == eCoord ? 10.f : 0.3f;
 	if (Check_Arrival(_vPosition, fEpsilon))
 	{
 		Set_Position(_vPosition);
