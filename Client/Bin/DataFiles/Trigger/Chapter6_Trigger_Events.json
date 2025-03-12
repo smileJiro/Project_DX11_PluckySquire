@@ -1,5 +1,15 @@
 [
   {
+    "Trigger_EventTag": "Next_Chapter_Event",
+    "Actions": [
+      {
+        "ActionTag": "Next_Chapter_Event",
+        "EventTag": "Chapter8",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Chapter6_Intro",
     "Actions": [
       {

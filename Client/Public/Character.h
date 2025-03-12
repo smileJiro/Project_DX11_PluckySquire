@@ -25,6 +25,7 @@ enum class AUTOMOVE_TYPE
 };
 typedef struct tagAutoMoveCommand
 {
+	friend class CCharacter;
 	enum STATE
 	{
 		STATE_START,
@@ -43,7 +44,7 @@ typedef struct tagAutoMoveCommand
 	//후딜레이
 	_float fPostDelayTime = 0.f;
 
-public:
+private:
 	void Update(_float _fTimeDelta) 
 	{
 		fTimeAcc += _fTimeDelta; 
@@ -110,7 +111,7 @@ public:
 	_bool Move_To_3D(_fvector _vPosition, _float _fEpsilon = 0.5f, _bool _FreezeY = true);
 	_bool Move_To(_fvector _vPosition, _float _fTimeDelta);
 	_bool Check_Arrival(_fvector _vPosition, _float _fEpsilon = 0.5f);
-	//_bool Check_Arrival(_fvector _vPrevPosition, _fvector _vNextPosition, _fvector _vTargetPosition);
+	_bool Check_Arrival(_fvector _vPrevPosition, _fvector _vNextPosition, _fvector _vTargetPosition);
 	//캐릭터 기준 _vDir 방향을 바라보게 하는 함수. Y축으로만 회전함.
 	void LookDirectionXZ_Kinematic(_fvector _vDir);
 	void LookDirectionXZ_Dynamic(_fvector _vDir);
@@ -144,10 +145,13 @@ protected:
 
 //AUTO MOVE
 public:
-	void Enque_AutoMove(AUTOMOVE_COMMAND _pCommand);
+	//COMMAND를 넣은 순서대로 실행됨.
+	void Add_AutoMoveCommand(AUTOMOVE_COMMAND _pCommand);
 	/// <param name="_bAutoClearQue"> : 큐에 든 모든 AutoMove가 완료되면 자동으로 큐를 비우기</param>
 	void Start_AutoMove(_bool _bAutoClearQue);
+	void Stop_AutoMove();
 	void Clear_AutoMove();
+	_bool Is_AutoMoving() { return m_bAutoMoving; }
 	virtual void On_StartAutoMove() {};
 	virtual void On_EndAutoMove() {};
 private:

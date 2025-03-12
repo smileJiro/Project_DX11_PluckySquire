@@ -12,6 +12,14 @@ CDialog_Manager::CDialog_Manager()
 
 
 
+_bool CDialog_Manager::Get_isLastDialog()
+{
+	if (nullptr == m_pDialogue)
+		assert(nullptr);
+
+	return m_pDialogue->Get_isLastDialogLine();
+}
+
 void CDialog_Manager::Set_DialogId(const _tchar* _id, const _tchar* _strCurSection, _bool _DisplayDialogue, _bool _DisPlayPortrait)
 {
 	CPlayer* pPlayer = Uimgr->Get_Player();

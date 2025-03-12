@@ -97,6 +97,10 @@ void CCharacter::Update(_float _fTimeDelta)
     {
         if (Process_AutoMove(_fTimeDelta))
         {
+            if (m_bAutoClearAutoMoves)
+            {
+                Clear_AutoMove();
+            }
             m_bAutoMoving = false;
             On_EndAutoMove();
         }
@@ -685,15 +689,14 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta)
 {
     COORDINATE eCoord = Get_CurCoord();
 	_vector vCurrentPos = Get_FinalPosition();
-	_float fEpsilon = COORDINATE_2D == eCoord ? 0.3f : 10.f;
+	_float fEpsilon = COORDINATE_2D == eCoord ? 10.f : 0.3f;
 	if (Check_Arrival(_vPosition, fEpsilon))
 	{
-
 		Set_Position(_vPosition);
 		return true;
 	}
 	_float fMoveSpeed = m_pControllerTransform->Get_SpeedPerSec();
-	_vector vDir = _vPosition - vCurrentPos;
+	_vector vDir = XMVector3Normalize( _vPosition - vCurrentPos);
 
     Move(vDir * fMoveSpeed, _fTimeDelta);
     return false;
@@ -719,6 +722,12 @@ _bool CCharacter::Check_Arrival(_fvector _vPosition, _float _fEpsilon)
         return true;
     }
     return false;
+}
+
+_bool CCharacter::Check_Arrival(_fvector _vPrevPosition, _fvector _vNextPosition, _fvector _vTargetPosition)
+{
+
+    return _bool();
 }
 
 
@@ -747,7 +756,7 @@ void CCharacter::Free()
 
 
 
-void CCharacter::Enque_AutoMove(AUTOMOVE_COMMAND _pCommand)
+void CCharacter::Add_AutoMoveCommand(AUTOMOVE_COMMAND _pCommand)
 {
 	m_AutoMoveQue.push(_pCommand);
 }
@@ -764,8 +773,14 @@ void CCharacter::Start_AutoMove(_bool _bAutoClear)
 
 }
 
+void CCharacter::Stop_AutoMove()
+{
+    m_bAutoMoving = false;
+}
+
 void CCharacter::Clear_AutoMove()
 {
+    m_bAutoMoving = false;
 	while (false == m_AutoMoveQue.empty())
 		m_AutoMoveQue.pop();
 }
@@ -776,10 +791,9 @@ _bool CCharacter::Process_AutoMove(_float _fTimeDelta)
     assert(false == m_AutoMoveQue.empty());
     assert(m_bAutoMoving);
 
-    AUTOMOVE_COMMAND tCommand = m_AutoMoveQue.front();
-    //첫 시작
-    if (tCommand.Is_Start())
-        static_cast<CModelObject*>(m_PartObjects[0])->Switch_Animation(tCommand.iAnimIndex);
+    AUTOMOVE_COMMAND& tCommand = m_AutoMoveQue.front();
+
+    _bool bRuntimeBefore = tCommand.Is_RunTime();
     tCommand.Update(_fTimeDelta);
     //선딜레이
     if (tCommand.Is_PreDelayTime())
@@ -789,6 +803,8 @@ _bool CCharacter::Process_AutoMove(_float _fTimeDelta)
     //실행중
     else if (tCommand.Is_RunTime())
     {
+        if(false == bRuntimeBefore)
+            static_cast<CModelObject*>(m_PartObjects[0])->Switch_Animation(tCommand.iAnimIndex);
         switch (tCommand.eType)
         {
         case AUTOMOVE_TYPE::MOVE_TO:
@@ -861,12 +877,22 @@ _bool CCharacter::Process_AutoMove_MoveToward(const AUTOMOVE_COMMAND& _pCommand,
 
 _bool CCharacter::Process_AutoMove_LookDirection(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta)
 {
-    return _bool();
+    COORDINATE eCoord = Get_CurCoord();
+    _vector vDir = XMVector3Normalize(_pCommand.vTarget);
+    if (COORDINATE_2D == eCoord)
+    {
+        Set_2DDirection(To_EDirection(vDir));
+        return true;
+    }
+    else
+    {
+        return Rotate_To_Radians(vDir, m_pControllerTransform->Get_RotationPerSec());
+    }
 }
 
 _bool CCharacter::Process_AutoMove_ChangeAnimation(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta)
 {
-    return _bool();
+    return false;
 }
 
 _bool CCharacter::Process_AutoMove_Wait(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta)

@@ -43,11 +43,15 @@ public:
 
 	_bool					Is_Floor() { return m_isFloor; }
 	void					Set_Floor(_bool _isFloor) { m_isFloor = _isFloor; }
+
+	_bool					Is_JumpPass() { return m_isJumpPass; }
+	void					Set_JumpPass(_bool _isJumpPass) { m_isJumpPass = _isJumpPass; }
 private:
 	_float4x4				m_matWorld;
 	_string					m_strTriggerKey;
 	_float2					m_fRenderTargetSize = {};
 	_bool					m_isFloor = false;
+	_bool					m_isJumpPass = false;
 private:
 	class CCollider*		m_pColliderCom = nullptr;
 

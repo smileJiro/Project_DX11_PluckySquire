@@ -790,7 +790,15 @@ void CTrigger_Manager::Register_Trigger_Action()
 			m_pGameInstance->Get_CurLevelID(), L"Layer_Event_Executer", &Desc)))
 			return;
 	};
-
+	m_Actions[TEXT("Next_Chapter_Event")] = [this](_wstring _wszEventTag)
+		{
+			CGameEventExecuter::EVENT_EXECUTER_DESC Desc = {};
+			Desc.strEventTag = _wszEventTag;
+			Desc.isChapterChangeEvent = true;
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_GameEventExecuter"),
+				m_pGameInstance->Get_CurLevelID(), L"Layer_Event_Executer", &Desc)))
+				return;
+		};
 
 }
 
