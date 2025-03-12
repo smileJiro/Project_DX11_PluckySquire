@@ -40,6 +40,7 @@ public:
 	_bool					Is_Floor() const { return m_isFloor; }
 private:
 	_bool					m_isFloor = false;
+	_bool					m_isJumpPass = false;
 
 private:
 	HRESULT					Ready_Component(BLOCKER_DESC* _pDesc);

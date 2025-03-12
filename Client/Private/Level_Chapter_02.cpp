@@ -118,9 +118,9 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	if (FAILED(Ready_Layer_Monster()))
 	{
-		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
+		MSG_BOX(" Failed Ready_Layer_Monster (CLevel_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
 	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
@@ -703,16 +703,14 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	TargetDesc.eZoomLevel = CCamera::LEVEL_6;
 	TargetDesc.iCameraType = CCamera_Manager::TARGET;
 
+	XMStoreFloat3(&TargetDesc.vArm, XMVector3Normalize(XMVectorSet(0.f, 0.67f, -0.74f, 0.f)));
+	TargetDesc.fLength = { 14.6f };
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
 		m_eLevelID, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, static_cast<CCamera*>(pCamera));
-
-	_float3 vArm;
-	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.67f, -0.74f, 0.f)));
-	_float fLength = 14.6f;
-	Create_Arm((_uint)COORDINATE_3D, pCamera, vArm, fLength);
 
 	// CutScene Camera
 	CCamera_CutScene::CAMERA_DESC CutSceneDesc{};
@@ -746,16 +744,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	Target2DDesc.vAt = _float3(0.f, 0.f, 0.f);
 	Target2DDesc.eZoomLevel = CCamera::LEVEL_6;
 	Target2DDesc.iCameraType = CCamera_Manager::TARGET_2D;
-
+	XMStoreFloat3(&Target2DDesc.vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
+	Target2DDesc.fLength = { 12.5f };
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_2D"),
 		m_eLevelID, _strLayerTag, &pCamera, &Target2DDesc)))
 		return E_FAIL;
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, static_cast<CCamera*>(pCamera));
-
-	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
-	fLength = 12.5f;
-	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
 
 	// Load CutSceneData, ArmData
 	CCamera_Manager::GetInstance()->Load_CutSceneData(m_eLevelID);
@@ -1239,15 +1234,29 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
+HRESULT CLevel_Chapter_02::Ready_Layer_Monster()
 {
-	CGameObject* pObject = nullptr;
 
+	if (FAILED(Ready_Layer_Monster_2D()))
+		return E_FAIL;
 
-	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter2_Monsters"), m_eLevelID);
+	if (FAILED(Ready_Layer_Monster_3D()))
+		return E_FAIL;
 
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Monster_2D()
+{
+	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter2_Monsters_2D"), m_eLevelID);
+	CGameObject* pObject;
 	if (nullptr == pJson)
 		return E_FAIL;
+
+	CMonster::MONSTER_DESC MonsterDesc2D = {};
+
+	MonsterDesc2D.iCurLevelID = m_eLevelID;
+	MonsterDesc2D.eStartCoord = COORDINATE_2D;
 
 	if (pJson->contains("2D"))
 	{
@@ -1255,246 +1264,102 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		_wstring strSectionTag = L"";
 		_wstring strMonsterTag = L"";
 
-		for (auto Json : (*pJson)["2D"])
+		for (_int i = 0; i < (*pJson)["2D"].size(); ++i)
 		{
-			CMonster::MONSTER_DESC MonsterDesc2D = {};
-
-			MonsterDesc2D.iCurLevelID = m_eLevelID;
-			MonsterDesc2D.eStartCoord = COORDINATE_2D;
-
-			if (Json.contains("Position"))
+			if ((*pJson)["2D"][i].contains("Position"))
 			{
 				for (_int j = 0; j < 3; ++j)
 				{
-					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialPosition) + j) = Json["Position"][j];
+					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialPosition) + j) = (*pJson)["2D"][i]["Position"][j];
 				}
 			}
-			if (Json.contains("Scaling"))
+			if ((*pJson)["2D"][i].contains("Scaling"))
 			{
 				for (_int j = 0; j < 3; ++j)
 				{
-					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialScaling) + j) = Json["Scaling"][j];
+					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialScaling) + j) = (*pJson)["2D"][i]["Scaling"][j];
 				}
 			}
-			if (Json.contains("LayerTag"))
+			if ((*pJson)["2D"][i].contains("LayerTag"))
 			{
-				strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
+				strLayerTag = STRINGTOWSTRING((*pJson)["2D"][i]["LayerTag"]);
 			}
 
-			if (Json.contains("SectionTag"))
+			if ((*pJson)["2D"][i].contains("SectionTag"))
 			{
-				strSectionTag = STRINGTOWSTRING(Json["SectionTag"]);
+				strSectionTag = STRINGTOWSTRING((*pJson)["2D"][i]["SectionTag"]);
 			}
 			else
 				return E_FAIL;
 
-			if (Json.contains("MonsterTag"))
+			if ((*pJson)["2D"][i].contains("MonsterTag"))
 			{
-				strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
+				strMonsterTag = STRINGTOWSTRING((*pJson)["2D"][i]["MonsterTag"]);
 			}
 			else
 				return E_FAIL;
-
-			if (Json.contains("IsStay"))
-			{
-				MonsterDesc2D.isStay = Json["IsStay"];
-			}
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc2D)))
 				return E_FAIL;
 			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionTag, pObject);
 		}
 	}
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Monster_3D()
+{
+	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter2_Monsters_3D"), m_eLevelID);
+
+	CGameObject* pObject;
+
+
+	CMonster::MONSTER_DESC MonsterDesc3D = {};
+
+	MonsterDesc3D.iCurLevelID = m_eLevelID;
+	MonsterDesc3D.eStartCoord = COORDINATE_3D;
 
 	if (pJson->contains("3D"))
 	{
 		_wstring strLayerTag = L"Layer_Monster";
 		_wstring strMonsterTag = L"";
 
-		for (auto Json : (*pJson)["3D"])
+		for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
 		{
-			CMonster::MONSTER_DESC MonsterDesc3D = {};
-
-			MonsterDesc3D.iCurLevelID = m_eLevelID;
-			MonsterDesc3D.eStartCoord = COORDINATE_3D;
-
-			if (Json.contains("Position"))
+			if ((*pJson)["3D"][i].contains("Position"))
 			{
 				for (_int j = 0; j < 3; ++j)
 				{
-					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = Json["Position"][j];
+					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
 				}
 			}
-			if (Json.contains("Scaling"))
+			if ((*pJson)["3D"][i].contains("Scaling"))
 			{
 				for (_int j = 0; j < 3; ++j)
 				{
-					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = Json["Scaling"][j];
+					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
 				}
 			}
-			if (Json.contains("LayerTag"))
+			if ((*pJson)["3D"][i].contains("LayerTag"))
 			{
-				strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
+				strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
 			}
 
-			if (Json.contains("MonsterTag"))
+			if ((*pJson)["3D"][i].contains("MonsterTag"))
 			{
-				strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
+				strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
 			}
 			else
 				return E_FAIL;
 
-			if (Json.contains("SneakMode"))
-			{
-				if (Json.contains("SneakWayPointIndex"))
-				{
-					MonsterDesc3D.eWayIndex= Json["SneakWayPointIndex"];
-				}
-				else
-					return E_FAIL;
-				MonsterDesc3D.isSneakMode = Json["SneakMode"];
-			}
-
-			if (Json.contains("IsStay"))
-			{
-				MonsterDesc3D.isStay = Json["IsStay"];
-			}
-
-			if (Json.contains("IsIgnoreGround"))
-			{
-				MonsterDesc3D._isIgnoreGround = Json["IsIgnoreGround"];
-			}
-
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
 				return E_FAIL;
+
 		}
 	}
-
-
-
-
-
-	//CBeetle::MONSTER_DESC Beetle_Desc;
-	//Beetle_Desc.iCurLevelID = m_eLevelID;
-	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 6.56f, 22.6f);
-	//Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_1;
-	//Beetle_Desc.isSneakMode = true;
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-	//	return E_FAIL;
-
-	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(32.15f, 0.35f, 1.66f);
-	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_2;
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-	//	return E_FAIL;
-
-	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(39.5f, 0.35f, 10.5f);
-	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_2_2;
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-	//	return E_FAIL;
-
-	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(46.f, 0.35f, -0.5f);
-	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_3;
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-	//	return E_FAIL;
-
-
-
-	//CGoblin::MONSTER_DESC Goblin_Desc;
-	//Goblin_Desc.iCurLevelID = m_eLevelID;
-	//Goblin_Desc.eStartCoord = COORDINATE_2D;
-	//Goblin_Desc.tTransform2DDesc.vInitialPosition = _float3(460.0f, 100.f, 0.f);
-	//Goblin_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
-
-	//Goblin_Desc.iCurLevelID = m_eLevelID;
-	//Goblin_Desc.eStartCoord = COORDINATE_2D;
-	//Goblin_Desc.tTransform2DDesc.vInitialPosition = _float3(700.0f, 20.f, 0.f);
-	//Goblin_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pObject);
-
-
-	CGoblin_SideScroller::SIDESCROLLDESC Goblin_SideScroller_Desc;
-	Goblin_SideScroller_Desc.iCurLevelID = m_eLevelID;
-	Goblin_SideScroller_Desc.eStartCoord = COORDINATE_2D;
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(210.0f, 1203.f, 0.f); //  150   480
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_1;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
-
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(400.0f, 1203.f, 0.f); //  150   480
-	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_1;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
-
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-400.0f, 211.1f, 0.f); //  -500   -320
-	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_2;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
-
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-247.0f, -1086.f, 0.f); //  -400   -130
-	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_3;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-600.0f, -1244.f, 0.f); //  -650   -520
-	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_4;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-600.0f, -1695.f, 0.f); //  -650   -440
-	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_5;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
-	Pooling_DESC Pooling_Desc;
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = _strLayerTag;
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_LightningBolt");
-	Pooling_Desc.eSection2DRenderGroup = SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT;
-
-
-	CLightningBolt::LIGHTNINGBOLT_DESC* pProjDesc = new CLightningBolt::LIGHTNINGBOLT_DESC;
-	pProjDesc->iCurLevelID = m_eLevelID;
-
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_LightningBolt"), Pooling_Desc, pProjDesc);
-
 	return S_OK;
 }
+
 
 HRESULT CLevel_Chapter_02::Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut)
 {
@@ -1813,30 +1678,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_RoomDoor(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-void CLevel_Chapter_02::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength)
-{
-	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0);
-	if (nullptr == pPlayer)
-		return;
-	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_Transform((COORDINATE)_iCoordinateType)->Get_State(CTransform::STATE_LOOK);
-
-	CCameraArm::CAMERA_ARM_DESC Desc = {};
-
-	Desc.vArm = _vArm;
-	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	Desc.fLength = _fLength;
-
-	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
-
-	switch (_iCoordinateType) {
-	case (_uint)COORDINATE_3D:
-		dynamic_cast<CCamera_Target*>(_pCamera)->Add_CurArm(pArm);
-		break;
-	case (_uint)COORDINATE_2D:
-		dynamic_cast<CCamera_2D*>(_pCamera)->Add_CurArm(pArm);
-		break;
-	}
-}
 
 HRESULT CLevel_Chapter_02::Map_Object_Create(_wstring _strFileName)
 {
