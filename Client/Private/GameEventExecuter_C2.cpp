@@ -19,6 +19,7 @@
 #include "Camera_CutScene.h"
 #include "2DMapActionObject.h"
 #include "Postit_Page.h"
+#include "CarriableObject.h"
 
 #include "Zippy.h"
 #include "Room_Door.h"
@@ -59,7 +60,7 @@ HRESULT CGameEventExecuter_C2::Initialize(void* _pArg)
 
 void CGameEventExecuter_C2::Priority_Update(_float _fTimeDelta)
 {
-	_wstring strEventTag;
+	__super::Priority_Update(_fTimeDelta);
 }
 
 void CGameEventExecuter_C2::Update(_float _fTimeDelta)
@@ -440,6 +441,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 
 			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
 			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
+			
 
 			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
 
@@ -458,6 +460,137 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			//pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
 
 		}
+		if (m_fTimer > 1.f && 0 == m_iSubStep)
+		{
+			m_iSubStep++;
+			Event_ChangeMapObject(LEVEL_CHAPTER_2, L"Chapter_02_Play_Desk.mchc", L"Layer_MapObject");
+		}
+		if (m_fTimer > 1.1f && 1 == m_iSubStep)
+		{
+			m_iSubStep++;
+			CGameObject* pObject = nullptr;
+			const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter2_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
+
+			if (nullptr == pJson)
+				return;
+			if (pJson->contains("3D"))
+			{
+				_wstring strLayerTag = L"Layer_Monster";
+				_wstring strMonsterTag = L"";
+
+				for (auto Json : (*pJson)["3D"])
+				{
+					CMonster::MONSTER_DESC MonsterDesc3D = {};
+
+					MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+					MonsterDesc3D.eStartCoord = COORDINATE_3D;
+
+					if (Json.contains("Position"))
+					{
+						for (_int j = 0; j < 3; ++j)
+						{
+							*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = Json["Position"][j];
+						}
+					}
+					if (Json.contains("Scaling"))
+					{
+						for (_int j = 0; j < 3; ++j)
+						{
+							*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = Json["Scaling"][j];
+						}
+					}
+					if (Json.contains("LayerTag"))
+					{
+						strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
+					}
+
+					if (Json.contains("MonsterTag"))
+					{
+						strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
+					}
+
+					if (Json.contains("SneakMode"))
+					{
+						if (Json.contains("SneakWayPointIndex"))
+						{
+							MonsterDesc3D.eWayIndex = Json["SneakWayPointIndex"];
+						}
+						MonsterDesc3D.isSneakMode = Json["SneakMode"];
+					}
+
+					if (Json.contains("IsStay"))
+					{
+						MonsterDesc3D.isStay = Json["IsStay"];
+					}
+
+					if (Json.contains("IsIgnoreGround"))
+					{
+						MonsterDesc3D._isIgnoreGround = Json["IsIgnoreGround"];
+					}
+
+					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
+						return;
+				}
+			}
+		}
+		if (m_fTimer > 1.2f && 2 == m_iSubStep)
+		{
+			m_iSubStep++;
+			//임시로 주사위 만들어 봄.
+			CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
+			tCarriableDesc.eStartCoord = COORDINATE_3D;
+			tCarriableDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+			tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.8f, 21.5f);
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Dice"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tCarriableDesc)))
+				return;
+			CModelObject::MODELOBJECT_DESC tModelDesc{};
+			tModelDesc.eStartCoord = COORDINATE_3D;
+			tModelDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+			_float fDominoXPosition = 14.47f;
+			_float fDominoYPosition = 1.31f;
+			_float fDominoZPosition = 24.3f;
+			_float fDominoXPositionStep = -3.5f;
+			tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
+			tModelDesc.tTransform3DDesc.vInitialScaling = _float3(1.5f, 1.5f, 1.5f);
+
+			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_4");
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+				return;
+			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_2");
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+				return;
+			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+			tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001f;
+			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+				return;
+			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+				return;
+
+			//2번째 도미노
+			tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(48.13f, 2.61f, -5.02f);
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Dice"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tCarriableDesc)))
+				return;
+
+			fDominoXPosition = 64.5f;
+			fDominoYPosition = 0.0;
+			fDominoZPosition = -0.54f;
+			fDominoXPositionStep = -3.5f;
+			tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
+			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+				return;
+
+
+			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+				return;
+		}
+
 
 		CPlayer* pPlayer = Get_Player();
 

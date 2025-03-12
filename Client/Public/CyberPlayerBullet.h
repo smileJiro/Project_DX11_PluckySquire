@@ -26,8 +26,7 @@ public:
 
 
 public:
-	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
-
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 private:
 	CModelObject* m_pModel = nullptr;
 	_vector m_vLookDIr = { 0.f,0.f,0.f,0.f };

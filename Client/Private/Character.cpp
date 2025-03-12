@@ -3,6 +3,7 @@
 #include "Actor_Dynamic.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "ModelObject.h"
 
 CCharacter::CCharacter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice, _pContext)
@@ -93,6 +94,19 @@ void CCharacter::Priority_Update(_float _fTimeDelta)
 
 void CCharacter::Update(_float _fTimeDelta)
 {
+    if (m_bAutoMoving)
+    {
+        if (Process_AutoMove(_fTimeDelta))
+        {
+            if (m_bAutoClearAutoMoves)
+            {
+                Clear_AutoMove();
+            }
+            m_bAutoMoving = false;
+            On_EndAutoMove();
+        }
+    }
+
     if (COORDINATE_3D == Get_CurCoord() || false == Is_Stopped())
     {
         __super::Update(_fTimeDelta);
@@ -209,6 +223,11 @@ void CCharacter::Enter_Section(const _wstring _strIncludeSectionName)
         Set_ScrollingMode(true);
 
     __super::Enter_Section(_strIncludeSectionName);
+}
+
+_bool CCharacter::Is_Dynamic()
+{
+    return static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Dynamic();
 }
 
 _bool CCharacter::Is_OnGround()
@@ -370,6 +389,8 @@ void CCharacter::KnockBack(_fvector _vForce)
     }
 }
 
+
+
 _vector CCharacter::Get_ScrolledPosition()
 {
     _float2 fSize = SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName);
@@ -407,6 +428,44 @@ void CCharacter::Set_ScrollingMode(_bool _bScrollingMode)
 {
     m_bScrollingMode = _bScrollingMode;
 }
+
+void CCharacter::Set_2DDirection(E_DIRECTION _eEDir)
+{
+
+    if (m_e2DDirection_E != _eEDir) 
+    {
+        switch (_eEDir)
+        {
+        case Client::E_DIRECTION::LEFT:
+        case Client::E_DIRECTION::LEFT_UP:
+        case Client::E_DIRECTION::LEFT_DOWN:
+        {
+            _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+            m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+            break;
+        }
+        case Client::E_DIRECTION::RIGHT:
+        case Client::E_DIRECTION::RIGHT_UP:
+        case Client::E_DIRECTION::RIGHT_DOWN:
+        {
+            _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+            m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
+            break;
+        }
+        default:
+            break;
+        }
+        m_e2DDirection_E = _eEDir;
+        On_Change2DDirection(m_e2DDirection_E);
+    }
+}
+
+void CCharacter::Set_2DDirection(F_DIRECTION _eEDir)
+{
+	Set_2DDirection( FDir_To_EDir(_eEDir));
+}
+
+
 
 _float CCharacter::Measure_FloorDistance()
 {
@@ -605,7 +664,7 @@ void CCharacter::Move(_fvector _vVelocity, _float _fTimeDelta)
     }
 }
 
-_bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon, _bool _FreezeY)
+_bool CCharacter::Move_To_3D(_fvector _vPosition, _float _fEpsilon, _bool _FreezeY)
 {
     CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
     _vector vDir = _vPosition - Get_FinalPosition();
@@ -620,6 +679,37 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fEpsilon, _bool _FreezeY)
 
     pDynamicActor->Set_LinearVelocity(XMVector3Normalize(vDir), m_pControllerTransform->Get_SpeedPerSec());
 
+    return false;
+}
+//이전 프레임의 위치는 언제 업데이트 해야할까?
+// 오븨젝트이 Updaet ->충돌처리(피직스,콜라이더)->lateUpdate 
+// 
+//이전 프레임의 위치를 저장해 놓고, 
+//이전 프레임 위치와 이번 프레임의 위치를 비교하여
+//목표 지점을 넘어갔으면 멈춤.
+//목표 지점을 못 넘어갔으면?
+// -> 이동
+//만약 첫 번째 프레임이면? 이전 프레임의 위치가 없을 것.
+// ->일단 이동하고, 
+_bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta)
+{
+    COORDINATE eCoord = Get_CurCoord();
+	_vector vCurrentPos = Get_FinalPosition();
+	_float fEpsilon = COORDINATE_2D == eCoord ? 10.f : 0.3f;
+	if (Check_Arrival(_vPosition, fEpsilon))
+	{
+        if(Is_Dynamic())
+        {
+			_float3 vPos; XMStoreFloat3(&vPos, _vPosition);
+            m_pActorCom->Set_GlobalPose(vPos);
+        }
+		Set_Position(_vPosition);
+		return true;
+	}
+	_float fMoveSpeed = m_pControllerTransform->Get_SpeedPerSec();
+	_vector vDir = XMVector3Normalize( _vPosition - vCurrentPos);
+
+    Move(vDir * fMoveSpeed, _fTimeDelta);
     return false;
 }
 
@@ -645,6 +735,13 @@ _bool CCharacter::Check_Arrival(_fvector _vPosition, _float _fEpsilon)
     return false;
 }
 
+_bool CCharacter::Check_Arrival(_fvector _vPrevPosition, _fvector _vNextPosition, _fvector _vTargetPosition)
+{
+
+    return _bool();
+}
+
+
 void CCharacter::LookDirectionXZ_Kinematic(_fvector _vDir)
 {
 	_vector vDir = XMVector3Normalize(_vDir);
@@ -665,5 +762,154 @@ void CCharacter::LookDirectionXZ_Dynamic(_fvector _vDir)
 void CCharacter::Free()
 {
 	__super::Free();
+}
+
+
+
+
+void CCharacter::Add_AutoMoveCommand(AUTOMOVE_COMMAND _pCommand)
+{
+	m_AutoMoveQue.push(_pCommand);
+}
+
+void CCharacter::Start_AutoMove(_bool _bAutoClear)
+{
+	if (m_AutoMoveQue.empty())
+    {
+        m_bAutoMoving = false;
+        return;
+    }
+    m_bAutoMoving = true;
+    On_StartAutoMove();
+
+}
+
+void CCharacter::Stop_AutoMove()
+{
+    m_bAutoMoving = false;
+}
+
+void CCharacter::Clear_AutoMove()
+{
+    m_bAutoMoving = false;
+	while (false == m_AutoMoveQue.empty())
+		m_AutoMoveQue.pop();
+}
+
+
+_bool CCharacter::Process_AutoMove(_float _fTimeDelta)
+{
+    assert(false == m_AutoMoveQue.empty());
+    assert(m_bAutoMoving);
+
+    AUTOMOVE_COMMAND& tCommand = m_AutoMoveQue.front();
+
+    _bool bRuntimeBefore = tCommand.Is_RunTime();
+    tCommand.Update(_fTimeDelta);
+    //선딜레이
+    if (tCommand.Is_PreDelayTime())
+    {
+
+	}
+    //실행중
+    else if (tCommand.Is_RunTime())
+    {
+        if(false == bRuntimeBefore)
+            static_cast<CModelObject*>(m_PartObjects[0])->Switch_Animation(tCommand.iAnimIndex);
+        switch (tCommand.eType)
+        {
+        case AUTOMOVE_TYPE::MOVE_TO:
+        {
+            if(Process_AutoMove_MoveTo(tCommand, _fTimeDelta))
+				tCommand.Complete_Command();
+            break;
+        }
+        case AUTOMOVE_TYPE::MOVE_TOWARD:
+        {
+            if(Process_AutoMove_MoveToward(tCommand, _fTimeDelta))
+                tCommand.Complete_Command();
+            break;
+        }
+        case AUTOMOVE_TYPE::LOOK_DIRECTION:
+        {
+            if(Process_AutoMove_LookDirection(tCommand, _fTimeDelta))
+                tCommand.Complete_Command();
+            break;
+        }
+        case AUTOMOVE_TYPE::CHANGE_ANIMATION:
+        {
+            if (Process_AutoMove_ChangeAnimation(tCommand, _fTimeDelta))
+                tCommand.Complete_Command();
+            break;
+        }
+        case AUTOMOVE_TYPE::WAIT:
+        {
+            if(Process_AutoMove_Wait(tCommand, _fTimeDelta))
+                tCommand.Complete_Command();
+            break;
+        }
+        }
+    }
+    //후딜레이
+	else if (tCommand.Is_PostDelayTime())
+    {
+
+    }
+    if (tCommand.Is_End())
+    {
+        m_AutoMoveQue.pop();
+    }
+   
+    return m_AutoMoveQue.empty();
+}
+
+_bool CCharacter::Process_AutoMove_MoveTo(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta)
+{
+    _vector vPosition = Get_FinalPosition();
+    _vector vDir = XMVector3Normalize(_pCommand.vTarget - vPosition);
+
+    COORDINATE eCoord = Get_CurCoord();
+    if (COORDINATE_2D == eCoord)
+    {
+        Set_2DDirection(To_EDirection(vDir));
+    }
+    else
+    {
+        Rotate_To_Radians(vDir, m_pControllerTransform->Get_RotationPerSec());
+    }
+    _bool _bResult = Move_To(_pCommand.vTarget, _fTimeDelta);
+    if (_bResult)
+        Stop_Move();
+    return _bResult;
+}
+
+_bool CCharacter::Process_AutoMove_MoveToward(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta)
+{
+    return _bool();
+}
+
+_bool CCharacter::Process_AutoMove_LookDirection(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta)
+{
+    COORDINATE eCoord = Get_CurCoord();
+    _vector vDir = XMVector3Normalize(_pCommand.vTarget);
+    if (COORDINATE_2D == eCoord)
+    {
+        Set_2DDirection(To_EDirection(vDir));
+        return true;
+    }
+    else
+    {
+        return Rotate_To_Radians(vDir, m_pControllerTransform->Get_RotationPerSec());
+    }
+}
+
+_bool CCharacter::Process_AutoMove_ChangeAnimation(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta)
+{
+    return false;
+}
+
+_bool CCharacter::Process_AutoMove_Wait(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta)
+{
+    return _bool();
 }
 

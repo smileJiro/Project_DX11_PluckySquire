@@ -182,10 +182,7 @@ void CCamera_CutScene::Play_CutScene(_float _fTimeDelta)
 	}
 	
 	_uint iIndex = (_uint)(m_pGameInstance->Lerp(0, (_float)(m_pCurCutScene->second.size()), fRatio));
-	cout << "INDEX: " << iIndex << endl;
-	cout << "fTimeDelta: " << _fTimeDelta << endl;
-	cout << "fRatio: " << fRatio << endl;
-	cout << "====================" << endl;
+
 	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_pCurCutScene->second[iIndex]->vPosition), 1.f));
 	_vector vAt = XMLoadFloat3(&m_pCurCutScene->second[iIndex]->vAt); // 나중에 Shake 넣기 02.26
 	

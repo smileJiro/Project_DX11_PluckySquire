@@ -27,7 +27,22 @@ HRESULT CSneak_PatrolState::Initialize(void* _pArg)
 	if(false == m_pOwner->Is_Stay())
 		Initialize_PatrolPoints(pDesc->eWayIndex);
 	Initialize_PatrolDirections(pDesc->eWayIndex);
-		
+	
+	if (1 < m_PatrolWays.size())
+	{
+		if (1 < m_PatrolDirections.size())
+		{
+			m_isMoveRotate = true;
+		}
+		else
+		{
+			m_isMoveOnly = true;
+		}
+	}
+	else
+		m_isRotateOnly = true;
+
+
 	return S_OK;
 }
 
@@ -52,6 +67,7 @@ void CSneak_PatrolState::State_Enter()
 	m_isToWay = false;
 	m_isTurn = false;
 	m_isMove = false;
+	cout << "Patrol" << endl;
 }
 
 void CSneak_PatrolState::State_Update(_float _fTimeDelta)
@@ -113,7 +129,7 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 	if (m_PatrolWays.size() <= m_iCurWayIndex)
 		return;
 
-	if(false == m_PatrolWays.empty())
+	if (true == m_isMoveOnly)
 	{
 		_vector vDir = XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition();
 		if (0.1f >= XMVectorGetX(XMVector3Length(vDir)))
@@ -127,56 +143,116 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 		}
 	}
 
-	//회전
-	if (true == m_isTurn && false == m_isMove)
-	{
-		if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
-		{
-			//정찰 경로가 없는 경우 회전만 하고 idle 전환
-			if (1 >= m_PatrolWays.size())
-			{
-				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
-			}
 
-			else
+	if (true == m_isMoveOnly)
+	{
+		//회전
+		if (true == m_isTurn && false == m_isMove)
+		{
+			if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 			{
 				m_isMove = true;
 				m_pOwner->Change_Animation();
 			}
+			else
+			{
+				_bool isCW = true;
+				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vDir)));
+				if (fResult < 0)
+					isCW = false;
 
+				m_pOwner->Turn_Animation(isCW);
+			}
 		}
-		else
-		{
-			_bool isCW = true;
-			_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vDir)));
-			if (fResult < 0)
-				isCW = false;
 
-			m_pOwner->Turn_Animation(isCW);
+		//이동
+		if (true == m_isMove)
+		{
+			//m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+			//웨이포인트 도달 했는지 체크 후 도달 했으면 idle로 전환
+
+			//Determine_AvoidDirection(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]), &m_vDir);
+			//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
+
+			//if (m_pOwner->Move_To(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition), 0.3f))
+			if (m_pOwner->Monster_MoveTo(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition), 0.3f))
+			{
+				m_pOwner->Stop_Rotate();
+				m_pOwner->Stop_Move();
+				m_isTurn = false;
+				m_isMove = false;
+
+				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+			}
 		}
 	}
 
-	//이동
-	if (true == m_isMove)
+	else if (true == m_isMoveRotate)
 	{
-		//m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
-		//웨이포인트 도달 했는지 체크 후 도달 했으면 idle로 전환
-		
-		//Determine_AvoidDirection(XMLoadFloat3(&m_PatrolWaypoints[m_iCurWayIndex]), &m_vDir);
-		//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_LinearVelocity(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
-
-		//if (m_pOwner->Move_To(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition), 0.3f))
-		if (m_pOwner->Monster_MoveTo(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition), 0.3f))
+		//회전
+		if (true == m_isTurn && false == m_isMove)
 		{
-			m_pOwner->Stop_Rotate();
-			m_pOwner->Stop_Move();
-			m_isTurn = false;
-			m_isMove = false;
+			if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+			{
+				m_isMove = true;
+				m_pOwner->Change_Animation();
+			}
+			else
+			{
+				_bool isCW = true;
+				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vDir)));
+				if (fResult < 0)
+					isCW = false;
 
-			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+				m_pOwner->Turn_Animation(isCW);
+			}
+		}
+
+		//이동
+		if (true == m_isMove)
+		{
+			//도착 시 방향으로 회전
+			if (m_pOwner->Monster_MoveTo(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition), 0.3f))
+			{
+				m_pOwner->Stop_Rotate();
+				m_pOwner->Stop_Move();
+
+				//현재 이동과 회전 같이 하는 경우 정찰 경로와 인덱스 같으므로 그냥 현재 경로 인덱스로 처리
+				if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_PatrolDirections[m_iCurWayIndex]), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+				{
+					m_pOwner->Stop_Rotate();
+					m_pOwner->Stop_Move();
+					m_isTurn = false;
+					m_isMove = false;
+
+					Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+				}
+			}
 		}
 	}
 
+	
+	else if (true == m_isRotateOnly)
+	{
+		//회전
+		if (true == m_isTurn)
+		{
+			if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+			{
+				m_pOwner->Change_Animation();
+				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+			}
+			else
+			{
+				_bool isCW = true;
+				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vDir)));
+				if (fResult < 0)
+					isCW = false;
+
+				m_pOwner->Turn_Animation(isCW);
+			}
+		}
+	}
 }
 
 void CSneak_PatrolState::Determine_Direction()
@@ -184,8 +260,8 @@ void CSneak_PatrolState::Determine_Direction()
 	if (COORDINATE::COORDINATE_LAST == m_pOwner->Get_CurCoord())
 		return;
 
-	//정찰 경로가 있을 때
-	if (1 < m_PatrolWays.size())
+	//이동 이후 회전없는 경우
+	if (true == m_isMoveOnly || true == m_isMoveRotate)
 	{
 		//다음 웨이 포인트로 넘어감.
 		if (false == m_isBack)
@@ -229,54 +305,54 @@ void CSneak_PatrolState::Determine_Direction()
 		if (m_vDir.y > 0.f)
 			int a = 10;
 	}
-	//정찰 경로가 없을 때
-	else
+	
+	//이동 없이 회전만 하는 경우
+	else if (true == m_isRotateOnly)
 	{
-
-	}
-
-	if (1 < m_PatrolDirections.size())
-	{
-		if (false == m_isDirBack)
+		if (1 < m_PatrolDirections.size())
 		{
-			++m_iCurDirectionIndex;
-
-			if (m_PatrolWays.size() - 1 == m_iCurDirectionIndex)
-				m_isDirBack = true;
-
-			//예외처리
-			if (m_PatrolWays.size() - 1 < m_iCurDirectionIndex)
+			if (false == m_isDirBack)
 			{
-				m_iCurDirectionIndex = (_int)m_PatrolWays.size() - 1;
-				m_isDirBack = true;
+				++m_iCurDirectionIndex;
+
+				if (m_PatrolWays.size() - 1 == m_iCurDirectionIndex)
+					m_isDirBack = true;
+
+				//예외처리
+				if (m_PatrolWays.size() - 1 < m_iCurDirectionIndex)
+				{
+					m_iCurDirectionIndex = (_int)m_PatrolWays.size() - 1;
+					m_isDirBack = true;
+				}
 			}
-		}
-		else
-		{
-			--m_iCurDirectionIndex;
-
-			if (0 == m_iCurDirectionIndex)
-				m_isDirBack = false;
-
-			//예외처리
-			if (0 > m_iCurDirectionIndex)
+			else
 			{
-				m_iCurDirectionIndex = 0;
-				m_isDirBack = false;
+				--m_iCurDirectionIndex;
+
+				if (0 == m_iCurDirectionIndex)
+					m_isDirBack = false;
+
+				//예외처리
+				if (0 > m_iCurDirectionIndex)
+				{
+					m_iCurDirectionIndex = 0;
+					m_isDirBack = false;
+				}
 			}
+
+			if (true == m_PatrolWays.empty())
+			{
+				m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(2.5f, 3.f));
+			}
+
+			m_vDir = m_PatrolDirections[m_iCurDirectionIndex];
 		}
 
-		if (true == m_PatrolWays.empty())
+		else if (1 == m_PatrolDirections.size())
 		{
-			m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(2.5f, 3.f));
+			m_iCurDirectionIndex = 0;
+			m_vDir = m_PatrolDirections[m_iCurDirectionIndex];
 		}
-
-		m_vDir = m_PatrolDirections[m_iCurDirectionIndex];
-	}
-	else if (1 == m_PatrolDirections.size())
-	{
-		m_iCurDirectionIndex = 0;
-		m_vDir = m_PatrolDirections[m_iCurDirectionIndex];
 	}
 }
 

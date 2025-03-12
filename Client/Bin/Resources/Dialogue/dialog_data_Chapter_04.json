@@ -1,720 +1,1003 @@
 {
-	"dialogs": [
-		{
-			"id": "Chapter4_2D_Intro",
-			"Section": "Chapter4_P0102",
-			"lines": [
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "안녕 얘들아, 들리니? ",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"BG": 2,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "달수염 할아버지? 할아버지 맞아요???",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isLineEnter": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "그렇단다! 지금 룬투스 헤드셋이라는 장비로\n말을 걸고 있단다.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "아주 기이한 마법의 소통 장치지...\n이름하여 '스피커폰' 이라고 한단다.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "잘 들으렴, 얘들아.\n이 앞은 '시의 늪' 이라는 위험 지역이야.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "사람이 살지 않고, 몬스터가 많은 곳이지.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "모쪼록 조즈즈즈크브츠츠츠",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "즈즈드브브브브브브브",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "브브브드드츠 연결이 안 좋아!",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"BG": 2,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "달수염 할아버지?",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 13,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": true,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "끊겼나 봐...\n이 앞은 우리들끼리 헤쳐나가야 할 것 같아!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 13,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "가자, 저트!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "Chapter4_StorySequence_01",
-			"Section": "Chapter4_P0102",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 13,
-					"location": 5,
-					"is2D": true,
-					"isPortrait": true,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "그러니까 이게...\n달수염 할아버지가 말씀하신 차원문이구나...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 13,
-					"location": 5,
-					"is2D": true,
-					"isPortrait": true,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "저트 너는...\n이걸 통해서 우리 세상 밖으로 나갈 수 있다는 거지?",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 13,
-					"location": 5,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "누군가의... 방에 있는 책상으로??",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"BG": 2,
-					"location": 4,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "와, 진짜 대박이다.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 13,
-					"location": 5,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "...미안. 아직 받아들이기가 힘드네.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "Chapter4_StorySequence_02",
-			"Section": "Chapter4_P0102",
-			"lines": [
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"BG": 2,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "저트가 사라졌어!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 13,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "지금은 다른 세계에 있을 거야.\n아직도 우리가 보이려나...?",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 13,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "저트한테 우리는... 종이에 그린 그림처럼 보이겠지?",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"BG": 2,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "대박이네.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "Store_Dialog_01",
-			"Section": "Chapter4_P0506",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "마르티나",
-					"BG": 0,
-					"location": 4,
-					"is2D": true,
-					"isPortrait": true,
-					"iAnimationIndex": 3,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "안녕하세요, 견습 기사님!",
-					"Red": 255,
-					"Green": 224,
-					"Blue": 136
-				},
-				{
-					"Portrait": 2,
-					"Talker": "마르티나",
-					"BG": 0,
-					"location": 5,
-					"is2D": true,
-					"isPortrait": true,
-					"iAnimationIndex": 9,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "다리가 끊어져 있지만, 다른 방법으로 건널 수 있을거에요.",
-					"Red": 255,
-					"Green": 224,
-					"Blue": 136
-				},
-				{
-					"Portrait": 2,
-					"Talker": "마르티나",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"iAnimationIndex": 9,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "새로운 상품을 한번 봐보세요!",
-					"Red": 255,
-					"Green": 224,
-					"Blue": 136
-				}
-			]
-		},
-		{
-			"id": "3D_MiniBeard_Dialog_01",
-			"lines": [
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "안녕. 나야, 미니수염.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "정확히 말하면 '수다쟁이 미니 수염' 이지.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "난 '견습 기사 모험기'라는 책의 캐릭터인\n'미니 수염'을 토대로 만들어진 장난감이야.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "갑자기 뭔 소린가 싶지만\n내가 주는 팁은 아주 유용할 거야.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "자, 그러면 얼른 이동해봐!",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "3D_MiniBeard_Dialog_02",
-			"Section": "Chapter1_P0506",
-			"lines": [
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "별 일 없지? 저 위로 올라가야 하니까\n기어오를 블록을 찾아봐.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "분명 이 근처에 하나 있을 거야.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "난 플라스틱 블록 근처에 있으면 엄청 예민해지거든...",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "우리 가족 다 그래.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "3D_MiniBeard_Dialog_03",
-			"lines": [
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "반가워. 저 성 문을 지나려면 열쇠가 필요해.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "성 옆쪽에서 열쇠를 하나 본 것 같거든?",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "벽에 그려진 그림을 한번 조사해 봐.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "조사야말로 문제를 해결할 열쇠라고.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "3D_MiniBeard_Dialog_04",
-			"lines": [
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "자, 이 근처에 구석진 곳이 있을 거야.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "튀어오르는 발판을 설치할 수 있는 곳 말이야.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "거기로 가려면 모퉁이를 한번 돌아 봐.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "모퉁이를 돌면 늘 도움이 된다니까?",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-	{
+  "dialogs": [
+    {
+      "id": "Chapter4_2D_Intro",
+      "Section": "Chapter4_P0102",
+      "lines": [
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "안녕 얘들아, 들리니? ",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "달수염 할아버지? 할아버지 맞아요???",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isLineEnter": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그렇단다! 지금 룬투스 헤드셋이라는 장비로\n말을 걸고 있단다.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "아주 기이한 마법의 소통 장치지...\n이름하여 '스피커폰' 이라고 한단다.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "잘 들으렴, 얘들아.\n이 앞은 '시의 늪' 이라는 위험 지역이야.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "사람이 살지 않고, 몬스터가 많은 곳이지.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "모쪼록 조즈즈즈크브츠츠츠",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "즈즈드브브브브브브브",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "브브브드드츠 연결이 안 좋아!",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "달수염 할아버지?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "끊겼나 봐...\n이 앞은 우리들끼리 헤쳐나가야 할 것 같아!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "가자, 저트!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "Chapter4_StorySequence_01",
+      "Section": "Chapter4_P0102",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 5,
+          "is2D": true,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그러니까 이게...\n달수염 할아버지가 말씀하신 차원문이구나...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 5,
+          "is2D": true,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트 너는...\n이걸 통해서 우리 세상 밖으로 나갈 수 있다는 거지?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 5,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "누군가의... 방에 있는 책상으로??",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 4,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "와, 진짜 대박이다.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 5,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "...미안. 아직 받아들이기가 힘드네.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "Chapter4_StorySequence_02",
+      "Section": "Chapter4_P0102",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트가 사라졌어!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "지금은 다른 세계에 있을 거야.\n아직도 우리가 보이려나...?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트한테 우리는... 종이에 그린 그림처럼 보이겠지?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "대박이네.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "Store_Dialog_01",
+      "Section": "Chapter4_P0506",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "마르티나",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "iAnimationIndex": 3,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "안녕하세요, 견습 기사님!",
+          "Red": 255,
+          "Green": 224,
+          "Blue": 136
+        },
+        {
+          "Portrait": 2,
+          "Talker": "마르티나",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "iAnimationIndex": 9,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "다리가 끊어져 있지만, 다른 방법으로 건널 수 있을 거에요.",
+          "Red": 255,
+          "Green": 224,
+          "Blue": 136
+        },
+        {
+          "Portrait": 2,
+          "Talker": "마르티나",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "iAnimationIndex": 9,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "새로운 상품을 한번 봐 주세요!",
+          "Red": 255,
+          "Green": 224,
+          "Blue": 136
+        }
+      ]
+    },
+    {
+      "id": "Chapter4_3D_Out_01_Dialog_01",
+      "Section": "Chapter4_P0708",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "엄청 큰 상자네! 어떻게 지나가지?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "어떻게든 치우거나 부술 수 있으면 좋을 텐데...\n 어디 한번 찾아볼까?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "어라... 여기 물속에 뭔가 끼어 있어.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "마법으로... 꺼낼 수 있지 않을까...?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이런 건 잘 못하긴 하는데...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "뭐... 누구나... 처음부터 잘하는 건 아니니까...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "자... 간다!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "Chapter4_3D_Out_01_Dialog_02",
+      "Section": "Chapter4_P0708",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "웬일이야 웬일이야!!! 진짜로 됐어!!!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "어... 그러니까...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "짜잔!! 멋지지?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "대박이네...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "Chapter4_3D_Out_02_Dialog_01",
+      "Section": "Chapter4_P0708",
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "바이올렛",
+          "BG": 2,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "차원문이다!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저기 말이야, 아무래도 여기 늪지대에\n저걸 치울 만한 게 있을 거 같진 않아.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "오는 길에 다 무너진 건물밖에 없었잖아.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "하지만 혹시... 다른 세계로 가면...\n뭔가 찾을 수 있지 않을까?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "Chapter4_2D_In",
+      "Section": "Chapter4_P0708",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트! 돌아왔구나! 필요한 물건은 찾았어?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "3D_MiniBeard_Dialog_01",
+      "lines": [
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "안녕. 나야, 미니수염.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "정확히 말하면 '수다쟁이 미니 수염' 이지.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "난 '견습 기사 모험기'라는 책의 캐릭터인\n'미니 수염'을 토대로 만들어진 장난감이야.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "갑자기 무슨 소린가 싶지만\n내가 주는 팁은 아주 유용할 거야.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "자, 그러면 얼른 이동해 봐!",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
+      "id": "3D_MiniBeard_Dialog_02",
+      "Section": "Chapter1_P0506",
+      "lines": [
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "별 일 없지? 저 위로 올라가야 하니까\n기어오를 블록을 찾아 봐.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "분명 이 근처에 하나 있을 거야.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "난 플라스틱 블록 근처에 있으면 엄청 예민해지거든...",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "우리 가족 다 그래.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
+      "id": "3D_MiniBeard_Dialog_03",
+      "lines": [
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "반가워. 저 성 문을 지나려면 열쇠가 필요해.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "성 옆쪽에서 열쇠를 하나 본 것 같거든?",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "벽에 그려진 그림을 한번 조사해 봐.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "조사야말로 문제를 해결할 열쇠라고.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
+      "id": "3D_MiniBeard_Dialog_04",
+      "lines": [
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "자, 이 근처에 구석진 곳이 있을 거야.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "튀어오르는 발판을 설치할 수 있는 곳 말이야.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "거기로 가려면 모퉁이를 한번 돌아 봐.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "모퉁이를 돌면 늘 도움이 된다니까?",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
       "id": "Gauntlet_Acquire_Tilting",
       "lines": [
         {
@@ -740,7 +1023,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
-					"isLineEnter":true,
+          "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -750,7 +1033,7 @@
           "Green": 210,
           "Blue": 234
         },
-		{
+        {
           "Portrait": 16,
           "Talker": "",
           "BG": 9,
@@ -768,7 +1051,7 @@
         }
       ]
     },
-	{
+    {
       "id": "Stamp_Acquire_Bomb",
       "lines": [
         {
@@ -803,7 +1086,7 @@
           "Green": 210,
           "Blue": 234
         },
-		{
+        {
           "Portrait": 16,
           "Talker": "",
           "BG": 9,
@@ -821,7 +1104,7 @@
         }
       ]
     },
-	 {
+    {
       "id": "Postit_Page_01",
       "lines": [
         {
@@ -847,12 +1130,12 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
-		  "isLineEnter":true,
+          "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 350
           },
-          "text": "그나저나... 아무래도 험그럼프가 책 바깥까지 손아귀를\n 뻗은 것 같네요...",
+          "text": "그나저나... 아무래도 험그럼프가 책 바깥까지 손아귀를\n뻗은 것 같네요...",
           "Red": 0,
           "Green": 0,
           "Blue": 0
@@ -908,7 +1191,7 @@
         }
       ]
     },
-	 {
+    {
       "id": "Postit_Page_02",
       "lines": [
         {
@@ -934,7 +1217,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
-		  "isLineEnter":true,
+          "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -946,7 +1229,7 @@
         }
       ]
     },
-	 {
+    {
       "id": "Postit_Page_03",
       "lines": [
         {
@@ -989,7 +1272,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
-		  "isLineEnter":true,
+          "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1001,5 +1284,5 @@
         }
       ]
     }
-	]
+  ]
 }

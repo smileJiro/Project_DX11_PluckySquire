@@ -574,6 +574,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 
 void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
 {
+    __super::Exit_Section(_strIncludeSectionName);
     if (Is_CarryingObject())
     {
         _int eCoord =  m_pCarryingObject->Get_CurCoord();
@@ -1147,6 +1148,23 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 void CPlayer::On_Land()
 {
     //cout << "Player Landed" << endl;
+}
+
+void CPlayer::On_Change2DDirection(E_DIRECTION _eCurrentDir)
+{
+    _vector vTmpDir = EDir_To_Vector(m_e2DDirection_E);
+    _vector  vDir = vTmpDir * m_f2DInteractOffset;
+    m_pBody2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir) + m_f2DCenterYOffset });
+}
+
+void CPlayer::On_StartAutoMove()
+{
+	Set_BlockPlayerInput(true);
+}
+
+void CPlayer::On_EndAutoMove()
+{
+	Set_BlockPlayerInput(false);
 }
 
 
@@ -2030,37 +2048,7 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
     //Set_State(STATE::IDLE);
 }
 
-void CPlayer::Set_2DDirection(E_DIRECTION _eEDir)
-{
 
-    m_e2DDirection_E = _eEDir;
-    switch (m_e2DDirection_E)
-    {
-    case Client::E_DIRECTION::LEFT:
-    case Client::E_DIRECTION::LEFT_UP:
-    case Client::E_DIRECTION::LEFT_DOWN:
-    {
-        _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-        m_pBody->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-        break;
-    }
-    case Client::E_DIRECTION::RIGHT:
-    case Client::E_DIRECTION::RIGHT_UP:
-    case Client::E_DIRECTION::RIGHT_DOWN:
-    {
-        _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-        m_pBody->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
-        break;
-    }
-    default:
-        break;
-    }
-    _vector vTmpDir = EDir_To_Vector(m_e2DDirection_E);
-    _vector  vDir = vTmpDir * m_f2DInteractOffset;
-    m_pBody2DTriggerCom->Set_Offset({ XMVectorGetX(vDir),XMVectorGetY(vDir) +  m_f2DCenterYOffset});
-
-    
-}
 
 void CPlayer::Set_3DTargetDirection(_fvector _vDir)
 {
@@ -2402,7 +2390,24 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 
        // }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
-		Set_BlockPlayerInput(!Is_PlayerInputBlocked());
+        //_vector vPalyerPos = Get_FinalPosition();
+        //AUTOMOVE_COMMAND tCommand{};
+        //tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+        //tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT;
+        //tCommand.fPreDelayTime = 4.f;
+        //tCommand.vTarget = vPalyerPos += { 2.f, 0.f, 0.f };
+        //Add_AutoMoveCommand(tCommand);
+        //tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT;
+        //tCommand.vTarget += { 0.f, 0.f, 2.f };
+        //Add_AutoMoveCommand(tCommand);
+        //tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT;
+        //tCommand.vTarget += { -2.f, 0.f, 0.f };
+        //Add_AutoMoveCommand(tCommand);
+        //tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT;
+        //tCommand.vTarget += { 0.f, 0.f, -2.f };
+        //Add_AutoMoveCommand(tCommand);
+
+        //Start_AutoMove(true);
     }
     if (m_pActorCom->Is_Kinematic())
     {

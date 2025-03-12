@@ -30,14 +30,15 @@ public:
 	HRESULT					Ready_Layer_UI(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Item(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_NPC(const _wstring& _strLayerTag);
-	HRESULT					Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppOut = nullptr);
+	HRESULT					Ready_Layer_Monster();
+	HRESULT					Ready_Layer_Monster_2D();
+	HRESULT					Ready_Layer_Monster_3D();
 	HRESULT					Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut = nullptr);
 	HRESULT					Ready_Layer_Effects(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Effects2D(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Slippery();
 	HRESULT					Ready_Layer_Defender();
 private:
-	void					Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength);
 	// Chapter6 나가기 이벤트 처리 전에 해 놓은 코드 (0310, 효림)
 	void					Create_IntroTrigger();
 

@@ -72,7 +72,6 @@ public:
 #pragma endregion
 
 public:
-	void						Add_CurArm(CCameraArm* _pCameraArm);
 	void						Add_ArmData(_wstring _wszArmTag, ARM_DATA* _pArmData, SUB_DATA* _pSubData);
 
 	_bool						Set_NextArmData(_wstring _wszNextArmName, _int _iTriggerID);
@@ -94,7 +93,7 @@ public:
 	virtual void				Start_ResetArm_To_SettingPoint(_float _fResetTime) override;
 	virtual void				Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType) override;
 	virtual void				Load_SavedArmData(RETURN_ARMDATA& _tSavedData, _float _fLoadTime);
-	
+
 	void						Load_InitialArmTag();
 
 private:

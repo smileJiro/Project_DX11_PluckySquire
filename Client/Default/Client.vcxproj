@@ -191,6 +191,7 @@
     <ClInclude Include="..\public\3DMapEmissiveObject.h" />
     <ClInclude Include="..\Public\Bomb.h" />
     <ClInclude Include="..\Public\Bombable.h" />
+    <ClInclude Include="..\Public\BombableBox.h" />
     <ClInclude Include="..\Public\BombableObject.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
     <ClInclude Include="..\Public\BossDeadState.h" />
@@ -292,6 +293,8 @@
     <ClInclude Include="..\public\Sneak_Tile.h" />
     <ClInclude Include="..\public\Sneak_Troop.h" />
     <ClInclude Include="..\Public\JellyKing.h" />
+    <ClInclude Include="..\Public\StampKey_1.h" />
+    <ClInclude Include="..\Public\StampKey_Q.h" />
     <ClInclude Include="..\public\TurnBookEffect.h" />
     <ClInclude Include="..\public\ZetPack_Child.h" />
     <ClInclude Include="..\Public\ZetPack_Father.h" />
@@ -547,6 +550,7 @@
     <ClCompile Include="..\private\3DMapEmissiveObject.cpp" />
     <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\Bombable.cpp" />
+    <ClCompile Include="..\Private\BombableBox.cpp" />
     <ClCompile Include="..\Private\BombableObject.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
     <ClCompile Include="..\Private\BossDeadState.cpp" />
@@ -646,6 +650,8 @@
     <ClCompile Include="..\private\Sneak_Tile.cpp" />
     <ClCompile Include="..\private\Sneak_Troop.cpp" />
     <ClCompile Include="..\Private\JellyKing.cpp" />
+    <ClCompile Include="..\Private\StampKey_1.cpp" />
+    <ClCompile Include="..\Private\StampKey_Q.cpp" />
     <ClCompile Include="..\private\TurnBookEffect.cpp" />
     <ClCompile Include="..\private\ZetPack_Child.cpp" />
     <ClCompile Include="..\Private\ZetPack_Father.cpp" />

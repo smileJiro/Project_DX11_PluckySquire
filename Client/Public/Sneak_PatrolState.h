@@ -52,6 +52,14 @@ private:
 	_bool m_isToWay = { false };
 	_float3 m_vDir = {};
 
+	//정찰시 움직임만
+	_bool m_isMoveOnly = { false };
+	//정찰시 움직임과 회전
+	_bool m_isMoveRotate = { false };
+	//정찰시 회전만
+	_bool m_isRotateOnly = { false };
+
+
 public:
 	static CSneak_PatrolState* Create(void* _pArg);
 

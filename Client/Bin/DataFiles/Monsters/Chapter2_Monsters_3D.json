@@ -1,37 +1,4 @@
 {
-    "2D": [
-        {
-            "MonsterTag": "Prototype_GameObject_Goblin",
-            "SectionTag": "Chapter1_P0708",
-            "LayerTag": "Layer_Monster",
-            "Position": [
-                460.0, 
-                100.0,
-                0
-            ],
-            "Scaling": [
-                1.0,
-                1.0,
-                1.0
-            ]
-        },
-        {
-            "MonsterTag": "Prototype_GameObject_Goblin",
-            "SectionTag": "Chapter1_P0708",
-            "LayerTag": "Layer_Monster",
-            "Position": [
-                700.0, 
-                20.0,
-                0
-            ],
-            "Scaling": [
-                1.0,
-                1.0,
-                1.0
-            ]
-        }
-    ],
-
     "3D": [
         {
             "MonsterTag": "Prototype_GameObject_Beetle",

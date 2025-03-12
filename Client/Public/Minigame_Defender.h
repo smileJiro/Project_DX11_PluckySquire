@@ -16,6 +16,7 @@ class CScrollModelObject;
 class CSection_Manager;
 class CDefenderCapsule;
 class CDialog_Manager;
+class CPlayer;
 //포탈에 입장하면 포탈 사라짐. 
 //BlockoInput 후 Dialog 시작
 //lDialog 끝나면 캐릭터가 앞으로 걸어가다가 TransformIn
@@ -39,6 +40,7 @@ public:
 		DEFENDER_PROG_NONE,
 		DEFENDER_PROG_ENTERED,
 		DEFENDER_PROG_BEGINNING_DIALOG,
+		DEFENDER_PROG_BEGINNING_DIALOG_ENDED,
 		DEFENDER_PROG_TRANSFORM_IN,
 		DEFENDER_PROG_GAME,
 		DEFENDER_PROG_MISSION_COMPLETE_FONT,
@@ -88,7 +90,7 @@ public:
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
 public:
-	void Start_Gamde();
+	void Start_Game();
 	void Restart_Game();
 	void Rescue_Person(CDefenderPerson* _pPerson);
 	void Mission_Complete();
@@ -116,6 +118,7 @@ private:
 	void On_PlayerAnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 private:
 	CSection_Manager* m_pSectionManager = nullptr;
+	CPlayer* m_pPlayer = nullptr;
 	CDefenderPlayer* m_pDefenderPlayer = nullptr;
 	CDialog_Manager* m_pDialogManager = nullptr;
 	DEFENDER_PROGRESS_STATE m_eGameState = DEFENDER_PROGRESS_STATE::DEFENDER_PROG_NONE;
