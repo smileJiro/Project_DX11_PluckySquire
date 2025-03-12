@@ -97,6 +97,10 @@ void CCharacter::Update(_float _fTimeDelta)
     {
         if (Process_AutoMove(_fTimeDelta))
         {
+            if (m_bAutoClearAutoMoves)
+            {
+                Clear_AutoMove();
+            }
             m_bAutoMoving = false;
             On_EndAutoMove();
         }
@@ -693,7 +697,7 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta)
 		return true;
 	}
 	_float fMoveSpeed = m_pControllerTransform->Get_SpeedPerSec();
-	_vector vDir = _vPosition - vCurrentPos;
+	_vector vDir = XMVector3Normalize( _vPosition - vCurrentPos);
 
     Move(vDir * fMoveSpeed, _fTimeDelta);
     return false;
@@ -747,7 +751,7 @@ void CCharacter::Free()
 
 
 
-void CCharacter::Enque_AutoMove(AUTOMOVE_COMMAND _pCommand)
+void CCharacter::Add_AutoMoveCommand(AUTOMOVE_COMMAND _pCommand)
 {
 	m_AutoMoveQue.push(_pCommand);
 }
@@ -764,8 +768,14 @@ void CCharacter::Start_AutoMove(_bool _bAutoClear)
 
 }
 
+void CCharacter::Stop_AutoMove()
+{
+    m_bAutoMoving = false;
+}
+
 void CCharacter::Clear_AutoMove()
 {
+    m_bAutoMoving = false;
 	while (false == m_AutoMoveQue.empty())
 		m_AutoMoveQue.pop();
 }
@@ -776,7 +786,7 @@ _bool CCharacter::Process_AutoMove(_float _fTimeDelta)
     assert(false == m_AutoMoveQue.empty());
     assert(m_bAutoMoving);
 
-    AUTOMOVE_COMMAND tCommand = m_AutoMoveQue.front();
+    AUTOMOVE_COMMAND& tCommand = m_AutoMoveQue.front();
     //√π Ω√¿€
     if (tCommand.Is_Start())
         static_cast<CModelObject*>(m_PartObjects[0])->Switch_Animation(tCommand.iAnimIndex);
