@@ -224,6 +224,11 @@ void CCharacter::Enter_Section(const _wstring _strIncludeSectionName)
     __super::Enter_Section(_strIncludeSectionName);
 }
 
+_bool CCharacter::Is_Dynamic()
+{
+    return static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Dynamic();
+}
+
 _bool CCharacter::Is_OnGround()
 {
     if (Is_PlatformerMode())
@@ -692,6 +697,11 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta)
 	_float fEpsilon = COORDINATE_2D == eCoord ? 10.f : 0.3f;
 	if (Check_Arrival(_vPosition, fEpsilon))
 	{
+        if(Is_Dynamic())
+        {
+			_float3 vPos; XMStoreFloat3(&vPos, _vPosition);
+            m_pActorCom->Set_GlobalPose(vPos);
+        }
 		Set_Position(_vPosition);
 		return true;
 	}
@@ -867,6 +877,8 @@ _bool CCharacter::Process_AutoMove_MoveTo(const AUTOMOVE_COMMAND& _pCommand, _fl
         Rotate_To_Radians(vDir, m_pControllerTransform->Get_RotationPerSec());
     }
     _bool _bResult = Move_To(_pCommand.vTarget, _fTimeDelta);
+    if (_bResult)
+        Stop_Move();
     return _bResult;
 }
 

@@ -126,6 +126,7 @@ public:
 
 public:
 	//GET
+	_bool Is_Dynamic();
 	_bool Is_OnGround();
 	_bool Is_PlatformerMode() { return m_bPlatformerMode; }
 	STAT& Get_Stat() { return m_tStat; }
