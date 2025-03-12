@@ -615,6 +615,17 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CCamera_Manager::GetInstance()->Load_CutSceneData(m_eLevelID);
 	CCamera_Manager::GetInstance()->Load_ArmData(m_eLevelID);
 
+
+	COORDINATE eCoord = pPlayer->Get_CurCoord();
+
+	if (COORDINATE_2D == eCoord)
+	{
+		auto pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D);
+		pCamera->Enter_Section(pPlayer->Get_Include_Section_Name());
+		pCamera->Switch_CameraView(nullptr);
+	}
+
+
 	return S_OK;
 }
 

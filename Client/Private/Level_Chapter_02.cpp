@@ -265,8 +265,8 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
 
 	// Intro ½ÃÀÛ
-	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);
-	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
+	/*CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);
+	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);*/
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
@@ -757,7 +757,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CCamera_Manager::GetInstance()->Load_CutSceneData(m_eLevelID);
 	CCamera_Manager::GetInstance()->Load_ArmData(m_eLevelID);
 
-	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
+	//CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 
 	return S_OK;
 }

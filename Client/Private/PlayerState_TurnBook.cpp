@@ -75,6 +75,12 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 		{
 			if (tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT])
 			{
+				if (CBook::ANIM_ACTION_CLOSEBYHAND == m_pBook->Get_CurrentAnimIndex()) {
+					m_pBook->Set_Animation(CBook::OPEN_TO_FLAT);
+					Set_State(TURN_LEFT);
+					return;
+				}
+
 				Event_Book_Main_Section_Change_Start(1, &vDefaultPos);
 				Set_State(TURN_LEFT);
 			}
@@ -176,6 +182,7 @@ void CPlayerState_TurnBook::Enter()
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;
 	}
+
 	m_bUpside = m_pBook->Get_FinalPosition().m128_f32[1] < m_pOwner->Get_FinalPosition().m128_f32[1];
 	m_eBookState = BOOK_STATE::IDLE;
 	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_TURN_MID);
