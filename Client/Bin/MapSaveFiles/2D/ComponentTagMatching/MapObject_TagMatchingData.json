@@ -2761,7 +2761,10 @@
   "TextureName": "C04_0910_fg_09_png1"
  },
  {
-  "Active": false,
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 4
+  },
   "BackGround": false,
   "Collider": false,
   "ModelType": 0,
