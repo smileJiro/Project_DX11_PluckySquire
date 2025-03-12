@@ -813,6 +813,8 @@ _vector CCamera_2D::Calculate_CameraPos(_float _fTimeDelta)
 			m_isTargetChanged = false;
 		}
 
+		cout << XMVectorGetX(vCurPos) << ", " << XMVectorGetY(vCurPos) << ", " << XMVectorGetZ(vCurPos) << ", " << endl;
+
 		vCurPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMLoadFloat3(&m_v2DTargetWorldPos), fRatio);
 		vCurPos = XMVectorSetW(vCurPos, 1.f);
 	}
